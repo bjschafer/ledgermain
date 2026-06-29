@@ -1,0 +1,315 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`normalized-output snapshots > buff: Fighting Defensively (formula DSL + dodge stacking) 1`] = `
+{
+  "changes": [
+    {
+      "formula": "-4",
+      "target": "attack",
+      "type": "untyped",
+    },
+    {
+      "formula": "if(gte(@skills.acr.rank, 3), 1) + 2",
+      "target": "ac",
+      "type": "dodge",
+    },
+  ],
+  "contextNotes": [],
+  "duration": {
+    "end": "turnStart",
+    "units": "round",
+    "value": "1",
+  },
+  "id": "V8cRFtOQA6ltklEl",
+  "name": "Fighting Defensively",
+  "sources": [
+    {
+      "id": "PZO1110",
+      "pages": "184",
+    },
+  ],
+  "subType": "temp",
+  "uuid": "Compendium.pf1.buffs.Item.V8cRFtOQA6ltklEl",
+}
+`;
+
+exports[`normalized-output snapshots > class feature: Rage 1`] = `
+{
+  "abilityType": "ex",
+  "changes": [],
+  "grantsBuffs": [
+    "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL",
+  ],
+  "id": "WSqWT9ZIshtC5vlV",
+  "name": "Rage",
+  "sources": [
+    {
+      "id": "PZO1110",
+      "pages": "32",
+    },
+  ],
+  "subType": "classFeat",
+  "tag": "rage",
+  "uses": {
+    "maxFormula": "4 + @abilities.con.mod + (2 * (@class.unlevel - 1))",
+    "per": "day",
+  },
+  "uuid": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV",
+}
+`;
+
+exports[`normalized-output snapshots > class: Barbarian 1`] = `
+{
+  "armorProf": [
+    "lgt",
+    "med",
+    "shl",
+  ],
+  "bab": "high",
+  "classSkills": [
+    "acr",
+    "art",
+    "clm",
+    "crf",
+    "han",
+    "int",
+    "kna",
+    "lor",
+    "per",
+    "rid",
+    "sur",
+    "swm",
+  ],
+  "features": [
+    {
+      "featureId": "9EX00obqhGHcrOdp",
+      "level": 1,
+      "name": "Fast Movement",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp",
+    },
+    {
+      "featureId": "WSqWT9ZIshtC5vlV",
+      "level": 1,
+      "name": "Rage",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV",
+    },
+    {
+      "featureId": "HdzsFdoGauXFjU2S",
+      "level": 2,
+      "name": "Rage Powers",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S",
+    },
+    {
+      "featureId": "7WaQxnVaaoL4AGr8",
+      "level": 2,
+      "name": "Uncanny Dodge",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8",
+    },
+    {
+      "featureId": "BoEkMviJrW0PKmhj",
+      "level": 3,
+      "name": "Trap Sense",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj",
+    },
+    {
+      "featureId": "ZfnHhhTFQVo0Lj4P",
+      "level": 5,
+      "name": "Improved Uncanny Dodge",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P",
+    },
+    {
+      "featureId": "RENIeTVjWB7Mq6Mw",
+      "level": 7,
+      "name": "Damage Reduction",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw",
+    },
+    {
+      "featureId": "IWNz5tJCnpig4UtX",
+      "level": 11,
+      "name": "Greater Rage",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX",
+    },
+    {
+      "featureId": "Q3x319WbNkCssApD",
+      "level": 14,
+      "name": "Indomitable Will",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.Q3x319WbNkCssApD",
+    },
+    {
+      "featureId": "aYdjgDZJCNvKpLQP",
+      "level": 16,
+      "name": "Tireless Rage",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP",
+    },
+    {
+      "featureId": "0v0NLj0tuVAu2Cla",
+      "level": 20,
+      "name": "Mighty Rage",
+      "resolved": true,
+      "uuid": "Compendium.pf1.class-abilities.Item.0v0NLj0tuVAu2Cla",
+    },
+  ],
+  "hd": 12,
+  "id": "g3pq7xWWdUVYw6ai",
+  "name": "Barbarian",
+  "saves": {
+    "fort": "high",
+    "ref": "low",
+    "will": "low",
+  },
+  "skillsPerLevel": 4,
+  "sources": [
+    {
+      "id": "PZO1110",
+      "pages": "31-34",
+    },
+  ],
+  "subType": "base",
+  "tag": "barbarian",
+  "uuid": "Compendium.pf1.classes.Item.g3pq7xWWdUVYw6ai",
+  "weaponProf": [
+    "simple",
+    "martial",
+  ],
+}
+`;
+
+exports[`normalized-output snapshots > feat: Cleave (prerequisites) 1`] = `
+{
+  "abilities": [
+    {
+      "ability": "str",
+      "min": 13,
+    },
+  ],
+  "bab": 1,
+  "feats": [
+    {
+      "id": "FUW5mIXHNBBIQ1Sq",
+      "name": "Power Attack",
+      "uuid": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq",
+    },
+  ],
+  "prereqText": "Str 13, Power Attack, base attack bonus +1.",
+  "skills": [],
+}
+`;
+
+exports[`normalized-output snapshots > race: Human 1`] = `
+{
+  "changes": [
+    {
+      "formula": "@attributes.hd.total",
+      "target": "bonusSkillRanks",
+      "type": "untyped",
+    },
+    {
+      "formula": "1",
+      "target": "bonusFeats",
+      "type": "untyped",
+    },
+  ],
+  "contextNotes": [],
+  "creatureSubtypes": [
+    "human",
+  ],
+  "creatureTypes": [
+    "humanoid",
+  ],
+  "id": "e6IaBxKgMxy1yKlr",
+  "languages": [
+    "common",
+  ],
+  "name": "Human",
+  "size": "med",
+  "sources": [
+    {
+      "id": "PZO1110",
+      "pages": "27",
+    },
+  ],
+  "speeds": {
+    "land": 30,
+  },
+  "uuid": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr",
+}
+`;
+
+exports[`normalized-output snapshots > spell: Fireball 1`] = `
+{
+  "actions": [
+    {
+      "actionType": "spellsave",
+      "area": "20-ft.-radius spread",
+      "damage": {
+        "parts": [
+          {
+            "formula": "(min(10, @cl))d6",
+            "types": [
+              "fire",
+            ],
+          },
+        ],
+      },
+      "duration": {
+        "units": "inst",
+      },
+      "id": "u5zwxkvmw4l9e0fd",
+      "name": "Use",
+      "range": {
+        "units": "long",
+      },
+      "save": {
+        "description": "Reflex half",
+        "type": "ref",
+      },
+    },
+  ],
+  "components": {
+    "material": true,
+    "somatic": true,
+    "verbal": true,
+  },
+  "descriptors": [
+    "fire",
+  ],
+  "id": "6oq1wcryviik9ice",
+  "learnedAt": {
+    "bloodline": {
+      "Efreeti": 3,
+    },
+    "class": {
+      "arcanist": 3,
+      "bloodrager": 3,
+      "magus": 3,
+      "occultist": 3,
+      "sorcerer": 3,
+      "wizard": 3,
+    },
+    "domain": {
+      "Fire": 3,
+    },
+    "subdomain": {},
+  },
+  "level": 3,
+  "name": "Fireball",
+  "school": "evo",
+  "sources": [
+    {
+      "id": "PZO1110",
+      "pages": "283",
+    },
+  ],
+  "uuid": "Compendium.pf1.spells.Item.6oq1wcryviik9ice",
+}
+`;
