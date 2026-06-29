@@ -452,6 +452,14 @@ button:focus-visible,
   margin-bottom: 12px;
 }
 
+/* feat category + legality filter controls */
+.feat-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
 .scroll {
   max-height: 360px;
   overflow-y: auto;

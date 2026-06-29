@@ -5,12 +5,27 @@ import type { AbilityId } from "@pf1/schema";
 import { casterLevel } from "../../model/casterLevel.js";
 import { toggleFeat } from "../../model/doc.js";
 import { ABILITY_IDS } from "../../model/doc.js";
-import { evaluatePrereqs, type PrereqContext } from "../../model/prereqs.js";
+import {
+  evaluatePrereqs,
+  type PrereqContext,
+  type PrereqResult,
+} from "../../model/prereqs.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
+const FEAT_CATEGORIES = [
+  "Combat",
+  "General",
+  "Metamagic",
+  "Item Creation",
+  "Teamwork",
+] as const;
+type FeatCategory = (typeof FEAT_CATEGORIES)[number];
+
 export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<FeatCategory | "All">("All");
+  const [hideIneligible, setHideIneligible] = useState(false);
   const selected = useMemo(() => new Set(doc.build.feats), [doc.build.feats]);
 
   const ctx: PrereqContext = useMemo(() => {
@@ -25,16 +40,33 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
     };
   }, [sheet, doc, selected, refData]);
 
-  const feats = useMemo(() => {
+  const { feats, prereqMap } = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return Object.values(refData.feats)
-      .filter((f) => !q || f.name.toLowerCase().includes(q))
+
+    // Compute prereq results once; reused for both filtering and rendering.
+    const map = new Map<string, PrereqResult>();
+    for (const feat of Object.values(refData.feats)) {
+      map.set(feat.id, evaluatePrereqs(feat, ctx));
+    }
+
+    const list = Object.values(refData.feats)
+      .filter((f) => {
+        if (q && !f.name.toLowerCase().includes(q)) return false;
+        if (category !== "All" && !f.tags.includes(category)) return false;
+        // Never hide a feat the character has already taken.
+        if (hideIneligible && !selected.has(f.id) && map.get(f.id)?.blocked) {
+          return false;
+        }
+        return true;
+      })
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.name.localeCompare(b.name);
       });
-  }, [refData.feats, query, selected]);
+
+    return { feats: list, prereqMap: map };
+  }, [refData.feats, query, category, hideIneligible, selected, ctx]);
 
   return (
     <Panel
@@ -49,10 +81,43 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
+      <div className="feat-filters">
+        <div className="chips">
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={category === "All"}
+            onClick={() => setCategory("All")}
+          >
+            All
+          </button>
+          {FEAT_CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              className="chip"
+              aria-pressed={category === cat}
+              onClick={() => setCategory(category === cat ? "All" : cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+        <div>
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={hideIneligible}
+            onClick={() => setHideIneligible((v) => !v)}
+          >
+            Hide ineligible
+          </button>
+        </div>
+      </div>
       <div className="scroll">
         {feats.slice(0, 150).map((feat) => {
           const isSel = selected.has(feat.id);
-          const res = evaluatePrereqs(feat, ctx);
+          const res = prereqMap.get(feat.id)!;
           const blocked = res.blocked && !isSel;
           return (
             <div
@@ -69,7 +134,10 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                       </span>
                     ))}
                     {res.softText ? (
-                      <span className="soft" title="Prerequisite text — verify manually (not auto-enforced)">
+                      <span
+                        className="soft"
+                        title="Prerequisite text — verify manually (not auto-enforced)"
+                      >
                         ⚠ {res.softText}
                       </span>
                     ) : null}
