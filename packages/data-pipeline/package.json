@@ -1,0 +1,28 @@
+{
+  "name": "@pf1/data-pipeline",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Fetches the pinned Foundry PF1 YAML packs and emits normalized, versioned JSON reference data.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "fetch": "tsx src/cli/fetch.ts",
+    "generate": "tsx src/cli/generate.ts",
+    "build:data": "tsx src/cli/fetch.ts && tsx src/cli/generate.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@pf1/schema": "workspace:*",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4.19.2"
+  }
+}
