@@ -15,6 +15,11 @@ const pkg = (rel: string) => fileURLToPath(new URL(rel, import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
+  // Pin the port so the origin (and thus the IndexedDB store) is stable across
+  // restarts. strictPort fails loudly if 5173 is taken instead of silently
+  // moving to 5174 (which would look like an empty app — different origin).
+  server: { port: 5173, strictPort: true },
+  preview: { port: 5173, strictPort: true },
   resolve: {
     alias: {
       "@pf1/engine": pkg("../../packages/engine/src/index.ts"),
