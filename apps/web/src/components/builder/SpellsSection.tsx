@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { toggleKnownSpell } from "../../model/doc.js";
+import { bonusSpellsForLevel, casterModelFor } from "../../model/spellcasting.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -10,12 +11,17 @@ interface SpellEntry {
   level: number;
 }
 
-export function SpellsSection({ doc, refData, update }: BuilderProps) {
+export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
 
   const casterTag = useMemo(
     () => doc.identity.classes.map((c) => c.tag).find((t) => refData.spellLists[t]),
     [doc.identity.classes, refData.spellLists],
+  );
+
+  const model = useMemo(
+    () => (casterTag ? casterModelFor(casterTag) : undefined),
+    [casterTag],
   );
 
   const entries = useMemo<SpellEntry[]>(() => {
@@ -41,6 +47,14 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
     );
   }
 
+  // Casting-ability modifier — used for bonus-spells-per-day guidance.
+  // Falls back to 0 if no model is registered (future non-wizard casters).
+  const castingAbilityMod = model ? sheet.abilities[model.ability].mod : 0;
+  const abilityLabel = model ? model.ability.toUpperCase() : "";
+
+  const knownLabel = model?.knownLabel ?? "Spells Known";
+  const knownCount = known.size;
+
   const q = query.trim().toLowerCase();
   const shown = q
     ? entries.filter((e) => e.name.toLowerCase().includes(q)).slice(0, 200)
@@ -55,47 +69,77 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
   }
   const levels = [...byLevel.keys()].sort((a, b) => a - b);
 
+  // Header badge: "Wizard · prepared (Int)" or "{casterTag} list"
+  const headerBadge = model
+    ? `${casterTag} · ${model.preparation} (${abilityLabel})`
+    : `${casterTag} list`;
+
+  // Empty-state copy uses the knownLabel so "spellbook" appears where appropriate.
+  const emptyState = q
+    ? "No spells match."
+    : `No spells in your ${knownLabel.toLowerCase()} yet — search to add some.`;
+
   return (
     <Panel
       title="Spells"
       step="vii"
-      right={<span className="hint">{casterTag} list · {known.size} known</span>}
+      right={
+        <span className="hint">
+          {headerBadge} · {knownCount} in {knownLabel.toLowerCase()}
+        </span>
+      }
     >
+      {/* Guidance hints: blurb + learning guidance */}
+      {model && (
+        <div className="spell-hints">
+          <p className="hint spell-hint-line">{model.blurb}</p>
+          <p className="hint spell-hint-line">{model.learnGuidance}</p>
+        </div>
+      )}
+
       <input
         className="search"
         type="text"
-        placeholder="Search the spell list to add…"
+        placeholder={`Search the ${casterTag} spell list to add…`}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
       <div className="scroll">
         {shown.length === 0 ? (
-          <div className="empty">
-            {q ? "No spells match." : "No spells known yet — search to add some."}
-          </div>
+          <div className="empty">{emptyState}</div>
         ) : (
-          levels.map((lvl) => (
-            <div key={lvl}>
-              <div className="spell-level-head">Level {lvl}</div>
-              {byLevel.get(lvl)!.map((sp) => {
-                const isKnown = known.has(sp.id);
-                return (
-                  <div key={sp.id} className={`pick-row${isKnown ? " is-selected" : ""}`}>
-                    <div className="pmain">
-                      <div className="pname">{sp.name}</div>
+          levels.map((lvl) => {
+            // Bonus-spells guidance for each level (cantrips never get a bonus).
+            const bonus =
+              model && lvl > 0 ? bonusSpellsForLevel(castingAbilityMod, lvl) : 0;
+            const levelLabel =
+              lvl === 0
+                ? "Cantrips"
+                : `Level ${lvl}${bonus > 0 ? ` · +${bonus} bonus spell/day (${abilityLabel})` : ""}`;
+
+            return (
+              <div key={lvl}>
+                <div className="spell-level-head">{levelLabel}</div>
+                {byLevel.get(lvl)!.map((sp) => {
+                  const isKnown = known.has(sp.id);
+                  return (
+                    <div key={sp.id} className={`pick-row${isKnown ? " is-selected" : ""}`}>
+                      <div className="pmain">
+                        <div className="pname">{sp.name}</div>
+                      </div>
+                      <button
+                        type="button"
+                        className={`pick-btn ${isKnown ? "remove" : "add"}`}
+                        onClick={() => update((d) => toggleKnownSpell(d, sp.id))}
+                      >
+                        {isKnown ? "Remove" : "Add"}
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      className={`pick-btn ${isKnown ? "remove" : "add"}`}
-                      onClick={() => update((d) => toggleKnownSpell(d, sp.id))}
-                    >
-                      {isKnown ? "Remove" : "Add"}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          ))
+                  );
+                })}
+              </div>
+            );
+          })
         )}
       </div>
     </Panel>

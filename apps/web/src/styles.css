@@ -607,6 +607,17 @@ button:focus-visible,
   opacity: 0.5;
 }
 
+.spell-hints {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.spell-hint-line {
+  margin: 0;
+}
+
 .spell-level-head {
   font-family: var(--mono);
   font-size: 11px;
