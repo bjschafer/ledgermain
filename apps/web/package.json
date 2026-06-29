@@ -1,0 +1,32 @@
+{
+  "name": "@pf1/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "PF1e character builder + live sheet (React + Vite). Stage 3.",
+  "type": "module",
+  "scripts": {
+    "predev": "bun scripts/copy-refdata.ts",
+    "dev": "vite",
+    "prebuild": "bun scripts/copy-refdata.ts",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@pf1/engine": "workspace:*",
+    "@pf1/schema": "workspace:*",
+    "dexie": "^4.0.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@pf1/data-pipeline": "workspace:*",
+    "@types/bun": "^1.1.14",
+    "@types/node": "^22",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}
