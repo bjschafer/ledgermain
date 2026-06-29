@@ -57,6 +57,14 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
                         class
                       </span>
                     ) : null}
+                    {s.trainedOnly ? (
+                      <span
+                        className="tag-trained"
+                        title="trained only — cannot be used without ranks"
+                      >
+                        trained only
+                      </span>
+                    ) : null}
                   </div>
                   <div className="smeta">
                     {s.ability.toUpperCase()} {signed(s.abilityMod)}
@@ -72,7 +80,12 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
                   onCommit={(n) => update((d) => setSkillRank(d, s.id, n))}
                   aria-label={`${skillName(s.id)} ranks`}
                 />
-                <span className="stotal num">{signed(s.total)}</span>
+                <span
+                  className={`stotal num${s.usable ? "" : " unusable"}`}
+                  title={s.usable ? undefined : "trained only — no ranks invested"}
+                >
+                  {signed(s.total)}
+                </span>
               </div>
             ))}
           </div>

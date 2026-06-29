@@ -206,6 +206,35 @@ describe("compute: fighter L5 (full plate + magic items, stacking + armor traini
   });
 });
 
+describe("trained-only skill flags", () => {
+  const doc = makeDoc({
+    classes: [{ tag: "wizard", level: 3 }],
+    abilities: { str: 10, dex: 10, con: 10, int: 14, wis: 10, cha: 10 },
+    // kar (Knowledge arcana) gets 2 ranks; acr (Acrobatics) stays at 0
+    skillRanks: { kar: 2 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("trained-only skill at 0 ranks: usable=false, trainedOnly=true (e.g. dev)", () => {
+    const skill = sheet.skills.dev!;
+    expect(skill.trainedOnly).toBe(true);
+    expect(skill.usable).toBe(false);
+  });
+
+  it("untrained-usable skill at 0 ranks: usable=true, trainedOnly=false (e.g. acr)", () => {
+    const skill = sheet.skills.acr!;
+    expect(skill.trainedOnly).toBe(false);
+    expect(skill.usable).toBe(true);
+  });
+
+  it("trained-only skill with ranks: usable=true (kar with 2 ranks)", () => {
+    const skill = sheet.skills.kar!;
+    expect(skill.trainedOnly).toBe(true);
+    expect(skill.usable).toBe(true);
+    expect(skill.ranks).toBe(2);
+  });
+});
+
 function itemByName(name: string): string {
   const entry = Object.entries(ref.items).find(([, it]) => it.name === name);
   if (!entry) throw new Error(`item not found: ${name}`);

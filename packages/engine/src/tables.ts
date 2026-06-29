@@ -109,3 +109,33 @@ export function skillUsesAcp(skillId: string): boolean {
 
 /** All known skill ids (keys of {@link SKILL_ABILITY}). */
 export const SKILL_IDS = Object.keys(SKILL_ABILITY);
+
+/**
+ * Skills that require at least 1 rank to be used (PF1 "trained only"). A
+ * character with 0 ranks in one of these skills cannot attempt the check.
+ * All other skills in {@link SKILL_ABILITY} can be used untrained.
+ */
+export const SKILL_TRAINED_ONLY: ReadonlySet<string> = new Set([
+  "dev", // Disable Device
+  "han", // Handle Animal
+  "kar", // Knowledge (arcana)
+  "kdu", // Knowledge (dungeoneering)
+  "ken", // Knowledge (engineering)
+  "kge", // Knowledge (geography)
+  "khi", // Knowledge (history)
+  "klo", // Knowledge (local)
+  "kna", // Knowledge (nature)
+  "kno", // Knowledge (nobility)
+  "kpl", // Knowledge (planes)
+  "kre", // Knowledge (religion)
+  "lin", // Linguistics
+  "pro", // Profession
+  "slt", // Sleight of Hand
+  "spl", // Spellcraft
+  "umd", // Use Magic Device
+]);
+
+/** Returns true if `skillId` is a trained-only skill (unusable at 0 ranks). */
+export function isTrainedOnly(skillId: string): boolean {
+  return SKILL_TRAINED_ONLY.has(skillId);
+}

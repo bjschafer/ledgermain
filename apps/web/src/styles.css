@@ -427,6 +427,21 @@ button:focus-visible,
   vertical-align: middle;
 }
 
+/* trained-only badge — muted, distinct from the gold class badge */
+.tag-trained {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* skill total when the skill cannot be used (trained-only, 0 ranks) */
+.stotal.unusable {
+  color: var(--faint);
+  text-decoration: line-through;
+}
+
 .skill-row .stotal {
   font-family: var(--mono);
   color: var(--ink);

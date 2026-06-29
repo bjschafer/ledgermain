@@ -220,4 +220,12 @@ export interface DerivedSkill {
   classSkill: boolean;
   /** Provenance for the misc modifiers. */
   components: ModifierComponent[];
+  /** True when this skill requires at least 1 rank to use (PF1 "trained only"). */
+  trainedOnly: boolean;
+  /**
+   * True when the skill can actually be attempted: either it is not
+   * trained-only, or the character has at least one rank invested.
+   * Equivalent to `ranks > 0 || !trainedOnly`.
+   */
+  usable: boolean;
 }

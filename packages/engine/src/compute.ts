@@ -32,6 +32,7 @@ import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolld
 import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
 import {
   babForLevels,
+  isTrainedOnly,
   SAVE_ABILITY,
   saveForLevels,
   SIZE_AC_MOD,
@@ -312,6 +313,8 @@ function computeSkills(
     const acp = skillUsesAcp(id) ? effectiveAcp : 0;
     const stack = resolveStack([...(miscBySkill.get(id) ?? []), ...globalSkillMods]);
     const total = ranks + abilityModifier + classSkillBonus + acp + stack.total;
+    const trainedOnly = isTrainedOnly(id);
+    const usable = ranks > 0 || !trainedOnly;
     skills[id] = {
       id,
       ability,
@@ -323,6 +326,8 @@ function computeSkills(
       total,
       classSkill,
       components: toComponents(stack.modifiers),
+      trainedOnly,
+      usable,
     };
   }
   return skills;
