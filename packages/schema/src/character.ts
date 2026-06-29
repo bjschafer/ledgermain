@@ -46,14 +46,25 @@ export interface CharacterDoc {
     spells: { known: string[]; prepared: unknown[] };
     gear: ItemInstance[];
     /**
-     * Per-character-level favored-class bonus choice. `"hp"` adds +1 HP for that
-     * level, `"skill"` adds +1 skill rank, `"other"` is a race/archetype option
-     * with no flat numeric effect. Omitted entirely until the builder collects it.
+     * Per-character-level favored-class bonus choice. In Standard PF1 mode one of
+     * `"hp"` (+1 HP), `"skill"` (+1 rank), or `"other"` (alternate per class/race).
+     * In house-rule mode `"both"` grants +1 HP AND +1 skill rank simultaneously;
+     * `"alternate"` still points to the alternate option. Both modes share this
+     * single array so documents are backward-compatible; the UI controls which
+     * options appear. Omitted entirely until the builder collects it.
      */
-    favoredClassBonus?: ("hp" | "skill" | "other")[];
+    favoredClassBonus?: ("hp" | "skill" | "other" | "both" | "alternate")[];
+    /**
+     * Per-character-level rolled HP values (index i = character level i+1).
+     * Level 1 is always maxed regardless of the stored value. Only used when
+     * `settings.hpMode === "rolled"`.
+     */
+    hpRolls?: number[];
     /**
      * User-set maximum HP (e.g. rolled). When present it overrides the computed
      * average max. Omitted = use the rules average.
+     * @deprecated Prefer `settings.hpMode` + `hpRolls` for per-level entry.
+     *   Still honoured for backward-compat when hpMode is absent/average.
      */
     maxHpOverride?: number;
     /**
@@ -61,6 +72,34 @@ export interface CharacterDoc {
      * ability at each 4th character level. Capped at floor(level/4) when applied.
      */
     abilityIncreases?: AbilityId[];
+    /**
+     * Character-level settings controlling HP mode, FCB rule variant, hero-point
+     * cap, and manual stat overrides.
+     */
+    settings?: {
+      /**
+       * How maximum HP is computed.
+       * - `"average"` (default): L1 max HD, subsequent levels `floor(HD/2)+1`.
+       * - `"max"`: every level is the full die value.
+       * - `"rolled"`: L1 max HD; levels 2-N use `hpRolls[level-1]` (falls back to
+       *   average when unset).
+       */
+      hpMode?: "average" | "max" | "rolled";
+      /**
+       * When true, each favored-class level that picks `"both"` grants +1 HP AND
+       * +1 skill rank simultaneously (house-rule). Default false = Standard PF1.
+       */
+      fcbHouserule?: boolean;
+      /** Override the default HERO_POINT_CAP (3). Must be a positive integer. */
+      heroPointsCap?: number;
+      /**
+       * Manual overrides for specific derived stats. Keys are from the bounded
+       * allowlist enforced by the engine: `hp.max`, `ac.normal`, `speeds.land`,
+       * `initiative.total`, `bab`, `cmd`, `cmb`, `saves.fort.total`,
+       * `saves.ref.total`, `saves.will.total`.
+       */
+      statOverrides?: Record<string, number>;
+    };
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -225,6 +264,8 @@ export interface HitPoints {
   current: number;
   temp: number;
   nonlethal: number;
+  /** Per-source breakdown of contributions to max HP (HD total, Con, FCB, etc.). */
+  components: ModifierComponent[];
 }
 
 export interface DerivedSkill {

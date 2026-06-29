@@ -233,31 +233,73 @@ function computeAc(
 
 /* ----------------------------------------------------------------------- HP */
 
+/** Allowlisted stat-override keys the engine recognises. */
+const STAT_OVERRIDE_KEYS = new Set([
+  "hp.max",
+  "ac.normal",
+  "speeds.land",
+  "initiative.total",
+  "bab",
+  "cmd",
+  "cmb",
+  "saves.fort.total",
+  "saves.ref.total",
+  "saves.will.total",
+]);
+
 function computeHp(
   doc: CharacterDoc,
   refData: RefData,
   conMod: number,
 ): HitPoints {
+  const mode = doc.build.settings?.hpMode ?? "average";
+  const hpRolls = doc.build.hpRolls ?? [];
+
   // Expand class levels in document order; the first overall level is maxed.
-  let auto = 0;
+  let hdBase = 0; // HP contribution from Hit Dice (before con/fcb)
   let isFirstLevel = true;
   let hd = 0;
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
     const die = def?.hd ?? 8;
     for (let i = 0; i < cls.level; i++) {
-      auto += isFirstLevel ? die : Math.floor(die / 2) + 1;
+      if (isFirstLevel) {
+        hdBase += die; // L1 always maxed regardless of mode
+      } else if (mode === "max") {
+        hdBase += die;
+      } else if (mode === "rolled") {
+        // hpRolls is indexed by character level (0-based = charLevel-1).
+        const charLevel = hd + 1; // hd not yet incremented
+        const rolled = hpRolls[charLevel - 1];
+        hdBase += rolled != null && rolled > 0 ? rolled : Math.floor(die / 2) + 1;
+      } else {
+        // average
+        hdBase += Math.floor(die / 2) + 1;
+      }
       isFirstLevel = false;
       hd++;
     }
   }
-  auto += conMod * hd;
-  // favored-class HP choices (explicit only)
-  const fcbHp = (doc.build.favoredClassBonus ?? []).filter((c) => c === "hp").length;
-  auto += fcbHp;
 
+  // Con modifier per Hit Die
+  const conTotal = conMod * hd;
+
+  // Favored-class HP choices (explicit only). "hp" and "both" each contribute +1.
+  const fcbHp = (doc.build.favoredClassBonus ?? []).filter(
+    (c) => c === "hp" || c === "both",
+  ).length;
+
+  const auto = hdBase + conTotal + fcbHp;
+
+  const components: ModifierComponent[] = [];
+  if (hdBase !== 0) components.push(synthetic("Hit Dice", "base", hdBase));
+  if (conTotal !== 0) components.push(synthetic(`Con (${conMod >= 0 ? "+" : ""}${conMod} × ${hd} HD)`, "ability", conTotal));
+  if (fcbHp !== 0) components.push(synthetic("Favored class", "untyped", fcbHp));
+
+  // Legacy override (backward compat, honoured in average/unset mode)
   const override = doc.build.maxHpOverride;
-  const max = override != null && override > 0 ? override : auto;
+  const hasLegacyOverride = override != null && override > 0 && mode === "average";
+  const max = hasLegacyOverride ? override : auto;
 
   return {
     auto,
@@ -265,6 +307,7 @@ function computeHp(
     current: doc.live.hp.current,
     temp: doc.live.hp.temp,
     nonlethal: doc.live.hp.nonlethal,
+    components,
   };
 }
 
@@ -437,7 +480,9 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // Skills
   const skills = computeSkills(doc, refData, abilities, collected);
 
-  return {
+  // Generic stat overrides (bounded allowlist)
+  const overrides = doc.build.settings?.statOverrides ?? {};
+  const sheet = {
     schemaVersion: SCHEMA_VERSION,
     level,
     abilities,
@@ -452,4 +497,50 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     speeds,
     skills,
   };
+
+  for (const [key, val] of Object.entries(overrides)) {
+    if (!STAT_OVERRIDE_KEYS.has(key)) continue;
+    const overrideComp: ModifierComponent = {
+      source: "Manual override",
+      type: "override",
+      value: val,
+      applied: true,
+    };
+    switch (key) {
+      case "hp.max":
+        sheet.hp = { ...sheet.hp, max: val, components: [...sheet.hp.components, overrideComp] };
+        break;
+      case "ac.normal": {
+        const acOverrideComp: AcComponent = { ...overrideComp, category: "generic" };
+        sheet.ac = { ...sheet.ac, normal: val, components: [...sheet.ac.components, acOverrideComp] };
+        break;
+      }
+      case "speeds.land":
+        sheet.speeds = { ...sheet.speeds, land: val };
+        break;
+      case "initiative.total":
+        sheet.initiative = { ...sheet.initiative, total: val, components: [...sheet.initiative.components, overrideComp] };
+        break;
+      case "bab":
+        sheet.bab = val;
+        break;
+      case "cmd":
+        sheet.cmd = val;
+        break;
+      case "cmb":
+        sheet.cmb = val;
+        break;
+      case "saves.fort.total":
+        sheet.saves = { ...sheet.saves, fort: { ...sheet.saves.fort, total: val, components: [...sheet.saves.fort.components, overrideComp] } };
+        break;
+      case "saves.ref.total":
+        sheet.saves = { ...sheet.saves, ref: { ...sheet.saves.ref, total: val, components: [...sheet.saves.ref.components, overrideComp] } };
+        break;
+      case "saves.will.total":
+        sheet.saves = { ...sheet.saves, will: { ...sheet.saves.will, total: val, components: [...sheet.saves.will.components, overrideComp] } };
+        break;
+    }
+  }
+
+  return sheet;
 }

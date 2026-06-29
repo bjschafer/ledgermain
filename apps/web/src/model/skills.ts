@@ -42,9 +42,9 @@ export function skillBudget(
     }
   }
 
-  // Favored-class "skill" bonuses.
+  // Favored-class "skill" bonuses. "both" (house-rule) also contributes +1 skill.
   for (const choice of doc.build.favoredClassBonus ?? []) {
-    if (choice === "skill") total += 1;
+    if (choice === "skill" || choice === "both") total += 1;
   }
 
   const spent = Object.values(doc.build.skillRanks).reduce((s, n) => s + n, 0);

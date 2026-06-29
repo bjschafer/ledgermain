@@ -153,6 +153,133 @@ export function setMaxHpOverride(doc: CharacterDoc, value: number | null): Chara
   return { ...doc, build: { ...doc.build, maxHpOverride: clamped } };
 }
 
+/**
+ * Set the HP calculation mode. `"average"` (default) uses PF1 standard averages;
+ * `"max"` maximises every die; `"rolled"` uses per-level rolls stored in `hpRolls`.
+ */
+export function setHpMode(
+  doc: CharacterDoc,
+  mode: "average" | "max" | "rolled",
+): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, hpMode: mode },
+    },
+  };
+}
+
+/**
+ * Store a rolled HP value for character level `charLevel` (1-based).
+ * Level 1 is always maxed by the engine regardless of the stored value, but the
+ * value is still recorded so the UI can display it.
+ * `value` is clamped to 1..100.
+ */
+export function setHpRoll(
+  doc: CharacterDoc,
+  charLevel: number,
+  value: number,
+): CharacterDoc {
+  if (charLevel < 1) return doc;
+  const clamped = clampInt(value, 1, 100);
+  const rolls = [...(doc.build.hpRolls ?? [])];
+  rolls[charLevel - 1] = clamped;
+  return { ...doc, build: { ...doc.build, hpRolls: rolls } };
+}
+
+/**
+ * Toggle the FCB house-rule. When true, each favored-class level can grant
+ * both +1 HP and +1 skill rank simultaneously via the `"both"` option.
+ */
+export function setFcbHouserule(doc: CharacterDoc, enabled: boolean): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, fcbHouserule: enabled },
+    },
+  };
+}
+
+/**
+ * Override the maximum number of hero points the character may hold.
+ * `null` or <= 0 removes the override, falling back to the default (3).
+ */
+export function setHeroPointsCap(doc: CharacterDoc, cap: number | null): CharacterDoc {
+  if (cap === null || Number.isNaN(cap) || cap <= 0) {
+    const settings = { ...doc.build.settings };
+    delete settings.heroPointsCap;
+    return { ...doc, build: { ...doc.build, settings } };
+  }
+  const clamped = clampInt(cap, 1, 999);
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, heroPointsCap: clamped },
+    },
+  };
+}
+
+/** Allowlisted keys for manual stat overrides. */
+export const STAT_OVERRIDE_KEYS = [
+  "hp.max",
+  "ac.normal",
+  "speeds.land",
+  "initiative.total",
+  "bab",
+  "cmd",
+  "cmb",
+  "saves.fort.total",
+  "saves.ref.total",
+  "saves.will.total",
+] as const;
+
+export type StatOverrideKey = (typeof STAT_OVERRIDE_KEYS)[number];
+
+/**
+ * Set or clear a manual override for a derived stat. `key` must be in the
+ * allowlist; `value` null removes the override. Values are stored as-is
+ * (the engine applies the override and appends provenance in the breakdown).
+ */
+export function setStatOverride(
+  doc: CharacterDoc,
+  key: StatOverrideKey,
+  value: number | null,
+): CharacterDoc {
+  const overrides = { ...(doc.build.settings?.statOverrides ?? {}) };
+  if (value === null || Number.isNaN(value)) {
+    delete overrides[key];
+  } else {
+    overrides[key] = value;
+  }
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, statOverrides: overrides },
+    },
+  };
+}
+
+/**
+ * Set the favored-class bonus choice for a specific character-level slot (0-based
+ * index). In Standard mode the valid choices are `"hp"`, `"skill"`, `"other"`;
+ * in house-rule mode `"both"` and `"alternate"` are also available.
+ * Out-of-range indices are silently ignored.
+ */
+export function setFavoredClassBonus(
+  doc: CharacterDoc,
+  levelIndex: number,
+  choice: "hp" | "skill" | "other" | "both" | "alternate",
+): CharacterDoc {
+  if (levelIndex < 0) return doc;
+  const arr = [...(doc.build.favoredClassBonus ?? [])];
+  arr[levelIndex] = choice;
+  return { ...doc, build: { ...doc.build, favoredClassBonus: arr } };
+}
+
 /** Total character level (sum of class levels). */
 export function totalLevel(doc: CharacterDoc): number {
   return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
