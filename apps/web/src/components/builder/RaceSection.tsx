@@ -18,7 +18,7 @@ export function RaceSection({ doc, refData, update }: BuilderProps) {
   const flexible = selected ? raceGrantsFlexibleAbility(selected) : false;
 
   return (
-    <Panel title="Race" step="iii">
+    <Panel title="Race" step="iii" storageKey="panel:Race">
       <div className="chips">
         {races.map(([id, race]) => (
           <button

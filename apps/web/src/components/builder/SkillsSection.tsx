@@ -29,6 +29,7 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title="Skills"
       step="v"
+      storageKey="panel:Skills"
       right={
         <span className={`budge${over ? " over" : ""}`}>
           ranks <b>{budget.spent}</b> / {budget.total} · <b>{budget.remaining}</b> left

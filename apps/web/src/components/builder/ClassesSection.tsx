@@ -50,6 +50,7 @@ export function ClassesSection({ doc, refData, update }: BuilderProps) {
       title="Classes"
       step="iv"
       right={<span className="hint">multiclass-capable · total level {totalLevel}</span>}
+      storageKey="panel:Classes"
     >
       <div className="chips" style={{ marginBottom: 14 }}>
         {baseClasses.map((c) => (

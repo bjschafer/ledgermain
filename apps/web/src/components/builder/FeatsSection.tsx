@@ -72,6 +72,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title="Feats"
       step="vi"
+      storageKey="panel:Feats"
       right={<span className="hint">{selected.size} selected</span>}
     >
       <input

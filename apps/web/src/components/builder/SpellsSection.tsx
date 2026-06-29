@@ -41,7 +41,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
 
   if (!casterTag) {
     return (
-      <Panel title="Spells" step="vii">
+      <Panel title="Spells" step="vii" storageKey="panel:Spells">
         <p className="empty">No spellcasting class selected.</p>
       </Panel>
     );
@@ -83,6 +83,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title="Spells"
       step="vii"
+      storageKey="panel:Spells"
       right={
         <span className="hint">
           {headerBadge} · {knownCount} in {knownLabel.toLowerCase()}

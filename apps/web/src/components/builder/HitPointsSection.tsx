@@ -8,6 +8,7 @@ import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
+
 export function HitPointsSection({ doc, sheet, refData, update }: BuilderProps) {
   const auto = sheet.hp.auto;
   const mode = doc.build.settings?.hpMode ?? "average";
@@ -23,6 +24,7 @@ export function HitPointsSection({ doc, sheet, refData, update }: BuilderProps) 
     <Panel
       title="Hit Points"
       step="★"
+      storageKey="panel:HitPoints"
       right={
         <span className="hint">
           {mode === "rolled" ? `rolled · max ${sheet.hp.max}` : `average ${auto}`}
