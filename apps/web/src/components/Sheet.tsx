@@ -80,7 +80,14 @@ export function Sheet({
         <div className="sheet-skill-list">
           {investedSkills.map((s) => (
             <div className={`sheet-skill${s.classSkill ? " is-class" : ""}`} key={s.id}>
-              <span className="sk-name">{skillName(s.id)}</span>
+              <span className="sk-name">
+                {skillName(s.id)}
+                {s.classSkill ? (
+                  <span className="tag-cls" title="class skill">
+                    class
+                  </span>
+                ) : null}
+              </span>
               <span className="sk-total num">{signed(s.total)}</span>
             </div>
           ))}

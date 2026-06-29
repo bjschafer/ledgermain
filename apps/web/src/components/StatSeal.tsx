@@ -40,7 +40,7 @@ export function StatSeal({
   }
 
   return (
-    <div>
+    <div className="seal-cell">
       <button
         type="button"
         className="seal"

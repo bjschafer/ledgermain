@@ -418,8 +418,13 @@ button:focus-visible,
   color: var(--faint);
 }
 
-.skill-row .tag-cls {
+/* shared class-skill badge — used in both the builder list and the live sheet */
+.tag-cls {
+  font-family: var(--mono);
+  font-size: 10px;
   color: var(--gold-dim);
+  margin-left: 4px;
+  vertical-align: middle;
 }
 
 .skill-row .stotal {
@@ -578,6 +583,16 @@ button:focus-visible,
   }
 }
 
+/* seal-cell wraps expandable seals so the button fills the grid cell height */
+.seal-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.seal-cell > .seal {
+  flex: 1 0 auto;
+}
+
 .seal {
   position: relative;
   background: var(--surface-2);
@@ -586,7 +601,13 @@ button:focus-visible,
   padding: 12px 10px 11px;
   text-align: center;
   width: 100%;
-  display: block;
+  /* flex column with centered content gives all seals uniform height regardless
+     of whether they have a foot line */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px;
 }
 
 .seal[data-expandable="true"] {
@@ -753,11 +774,6 @@ button:focus-visible,
   border-bottom: 0;
 }
 
-.sheet-skill.is-class .sk-name::after {
-  content: " ◆";
-  color: var(--gold-dim);
-  font-size: 9px;
-}
 
 .sheet-skill .sk-total {
   font-family: var(--mono);

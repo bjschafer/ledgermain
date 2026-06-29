@@ -52,7 +52,11 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
                 <div>
                   <div className="sname">
                     {skillName(s.id)}{" "}
-                    {s.classSkill ? <span className="smeta tag-cls">class</span> : null}
+                    {s.classSkill ? (
+                      <span className="tag-cls" title="class skill">
+                        class
+                      </span>
+                    ) : null}
                   </div>
                   <div className="smeta">
                     {s.ability.toUpperCase()} {signed(s.abilityMod)}
