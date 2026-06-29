@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { setSkillRank, totalLevel } from "../../model/doc.js";
 import { signed, skillName } from "../../model/names.js";
 import { skillBudget } from "../../model/skills.js";
+import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -59,13 +60,12 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
                     {s.acp ? ` · acp ${s.acp}` : ""}
                   </div>
                 </div>
-                <input
+                <NumberField
                   className="rank-input num"
-                  type="number"
+                  value={doc.build.skillRanks[s.id] ?? 0}
                   min={0}
                   max={maxRank}
-                  value={doc.build.skillRanks[s.id] ?? 0}
-                  onChange={(e) => update((d) => setSkillRank(d, s.id, Number(e.target.value)))}
+                  onCommit={(n) => update((d) => setSkillRank(d, s.id, n))}
                   aria-label={`${skillName(s.id)} ranks`}
                 />
                 <span className="stotal num">{signed(s.total)}</span>
