@@ -28,6 +28,11 @@ export interface NormalizeOptions {
   sourceRepo: string;
   sourceSha: string;
   systemVersion: string;
+  /**
+   * ISO timestamp recorded in meta. Pass the pinned commit's date (not the wall
+   * clock) so regeneration is byte-for-byte deterministic and diff-friendly.
+   */
+  generatedAt: string;
 }
 
 function byId<T extends { id: string }>(items: T[]): Record<string, T> {
@@ -148,7 +153,7 @@ export function normalize(opts: NormalizeOptions): {
     sourceSha: opts.sourceSha,
     systemVersion: opts.systemVersion,
     contentVersion,
-    generatedAt: new Date().toISOString(),
+    generatedAt: opts.generatedAt,
     counts,
     hashes: {}, // filled by the emitter once files are written
   };
