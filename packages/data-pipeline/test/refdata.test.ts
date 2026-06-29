@@ -99,7 +99,7 @@ describe("wizard spell list (inverted learnedAt.class)", () => {
   it("Fireball is a wizard level-3 spell", () => {
     const fireball = byName(ref.spells, "Fireball");
     expect(fireball.learnedAt.class.wizard).toBe(3);
-    expect(ref.spellLists.wizard[3]).toContain(fireball.id);
+    expect(ref.spellLists.wizard![3]).toContain(fireball.id);
   });
 
   it("preserves the damage formula DSL for the engine", () => {
@@ -111,7 +111,7 @@ describe("wizard spell list (inverted learnedAt.class)", () => {
   });
 
   it("every spell on the wizard list actually lists wizard in learnedAt", () => {
-    for (const [, ids] of Object.entries(ref.spellLists.wizard)) {
+    for (const [, ids] of Object.entries(ref.spellLists.wizard!)) {
       for (const id of ids) {
         expect(ref.spells[id]?.learnedAt.class.wizard).toBeTypeOf("number");
       }

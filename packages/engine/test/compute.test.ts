@@ -94,11 +94,11 @@ describe("compute: barbarian L1 (human, no armor)", () => {
   });
 
   it("class skills get the +3 class-skill bonus when ranked", () => {
-    expect(sheet.skills.acr.total).toBe(6); // 1 + dex2 + 3
-    expect(sheet.skills.per.total).toBe(5); // 1 + wis1 + 3
-    expect(sheet.skills.swm.total).toBe(7); // 1 + str3 + 3
-    expect(sheet.skills.int.total).toBe(3); // 1 + cha-1 + 3 (Intimidate)
-    expect(sheet.skills.acr.classSkill).toBe(true);
+    expect(sheet.skills.acr!.total).toBe(6); // 1 + dex2 + 3
+    expect(sheet.skills.per!.total).toBe(5); // 1 + wis1 + 3
+    expect(sheet.skills.swm!.total).toBe(7); // 1 + str3 + 3
+    expect(sheet.skills.int!.total).toBe(3); // 1 + cha-1 + 3 (Intimidate)
+    expect(sheet.skills.acr!.classSkill).toBe(true);
   });
 });
 
@@ -136,8 +136,8 @@ describe("compute: wizard L5 (human, no armor)", () => {
   });
 
   it("knowledge/spellcraft skills", () => {
-    expect(sheet.skills.spl.total).toBe(12); // 5 + int4 + 3
-    expect(sheet.skills.kar.total).toBe(12);
+    expect(sheet.skills.spl!.total).toBe(12); // 5 + int4 + 3
+    expect(sheet.skills.kar!.total).toBe(12);
   });
 });
 
@@ -196,7 +196,7 @@ describe("compute: fighter L5 (full plate + magic items, stacking + armor traini
 
   it("Climb reflects armor-training-reduced ACP", () => {
     // 5 ranks + str6 + 3 class + effective ACP (-6 + 1 armor training = -5)
-    expect(sheet.skills.clm.total).toBe(9);
+    expect(sheet.skills.clm!.total).toBe(9);
   });
 
   it("deflection AC bonus carries provenance", () => {
