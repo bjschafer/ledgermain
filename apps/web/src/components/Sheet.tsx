@@ -60,7 +60,13 @@ export function Sheet({
           components={sheet.ac.components}
           provTitle="AC components"
         />
-        <StatSeal label="Hit Points" value={sheet.hp.max} foot="max" />
+        <StatSeal
+          label="Hit Points"
+          value={sheet.hp.max}
+          foot="max"
+          components={sheet.hp.components}
+          provTitle="Hit Points breakdown"
+        />
         <StatSeal label="Init" value={signed(sheet.initiative.total)} components={sheet.initiative.components} />
         <StatSeal label="BAB" value={signed(sheet.bab)} />
         <StatSeal label="Fort" value={signed(sheet.saves.fort.total)} components={sheet.saves.fort.components} provTitle={`${SAVE_NAMES.fort} save`} />
