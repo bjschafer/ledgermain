@@ -41,3 +41,6 @@ export {
   SKILL_IDS,
   skillUsesAcp,
 } from "./tables.js";
+export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
+export { advanceRounds, type AdvanceResult } from "./duration.js";
+export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";

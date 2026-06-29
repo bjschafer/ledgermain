@@ -1,4 +1,4 @@
-import type { AbilityId, SkillId } from "./primitives.js";
+import type { AbilityId, Change, ContextNote, SkillId } from "./primitives.js";
 
 /**
  * The character document is the single source of truth: it holds build choices
@@ -49,12 +49,43 @@ export interface CharacterDoc {
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
+    /** Active condition ids (keys into the engine's conditions table). */
     conditions: string[];
     /** Active buffs with remaining duration + the changes they apply (Stage 4). */
-    activeBuffs: unknown[];
+    activeBuffs: ActiveBuff[];
     /** Resource pools: spell slots, ki, rounds/day, charges. */
     resources: Record<string, { used: number; max: number }>;
   };
+}
+
+/**
+ * A buff currently affecting the character at the table. It carries its own
+ * `changes` (a snapshot of the source buff's typed modifiers, or user-authored
+ * ones), so the document is self-contained and the engine can evaluate it without
+ * re-reading `RefData`. Mirrors DESIGN.md §3.1's `{ sourceId, remainingRounds,
+ * changes }` sketch, with display + caster-level context for formula evaluation.
+ */
+export interface ActiveBuff {
+  /** Unique instance id (multiple copies of the same buff can coexist). */
+  instanceId: string;
+  /** Source buff id from `RefData.buffs`; absent for user-authored buffs. */
+  buffId?: string;
+  /** Display label. */
+  name: string;
+  /** Typed modifiers this buff applies (same shape as any `Change`). */
+  changes: Change[];
+  /** Non-mechanical reminders to surface (e.g. "+2 vs fear"). */
+  contextNotes?: ContextNote[];
+  /**
+   * Caster/effect level used to resolve `@item.level` / `@cl` in the buff's
+   * formulas (e.g. Barkskin's natural-armor scaling). Absent → character level.
+   */
+  casterLevel?: number;
+  /**
+   * Rounds remaining before the buff auto-expires. `undefined` = indefinite
+   * (stays until manually removed; e.g. a worn-item or stance buff).
+   */
+  remainingRounds?: number;
 }
 
 /**

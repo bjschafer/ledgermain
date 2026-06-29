@@ -292,6 +292,10 @@ function computeSkills(
     else miscBySkill.set(baseId, [m]);
   }
 
+  // Global skill-check modifiers (`skills` target, e.g. shaken/sickened) apply
+  // to every skill in addition to any per-skill modifiers.
+  const globalSkillMods = forTarget(collected, "skills");
+
   const ids = new Set<string>([
     ...SKILL_IDS,
     ...Object.keys(doc.build.skillRanks ?? {}),
@@ -306,7 +310,7 @@ function computeSkills(
     const classSkill = classSkillSet.has(id);
     const classSkillBonus = classSkill && ranks >= 1 ? 3 : 0;
     const acp = skillUsesAcp(id) ? effectiveAcp : 0;
-    const stack = resolveStack(miscBySkill.get(id) ?? []);
+    const stack = resolveStack([...(miscBySkill.get(id) ?? []), ...globalSkillMods]);
     const total = ranks + abilityModifier + classSkillBonus + acp + stack.total;
     skills[id] = {
       id,
@@ -358,23 +362,31 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     will: computeSave("will", doc.identity.classes, refData, abilities.wis.mod, collected),
   };
 
-  // Attack
-  const attackStack = resolveStack(forTarget(collected, "attack"));
+  // Attack. `attack` applies to both lines; `mattack`/`rattack` are melee/ranged
+  // specific (e.g. prone's -4 is melee only).
+  const meleeStack = resolveStack([
+    ...forTarget(collected, "attack"),
+    ...forTarget(collected, "mattack"),
+  ]);
+  const rangedStack = resolveStack([
+    ...forTarget(collected, "attack"),
+    ...forTarget(collected, "rattack"),
+  ]);
   const meleeComponents: ModifierComponent[] = [
     synthetic("BAB", "base", bab),
     synthetic("Strength", "ability", strMod),
     ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
-    ...toComponents(attackStack.modifiers),
+    ...toComponents(meleeStack.modifiers),
   ];
   const rangedComponents: ModifierComponent[] = [
     synthetic("BAB", "base", bab),
     synthetic("Dexterity", "ability", dexMod),
     ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
-    ...toComponents(attackStack.modifiers),
+    ...toComponents(rangedStack.modifiers),
   ];
   const attack = {
-    melee: { total: bab + strMod + sizeAttackMod + attackStack.total, components: meleeComponents },
-    ranged: { total: bab + dexMod + sizeAttackMod + attackStack.total, components: rangedComponents },
+    melee: { total: bab + strMod + sizeAttackMod + meleeStack.total, components: meleeComponents },
+    ranged: { total: bab + dexMod + sizeAttackMod + rangedStack.total, components: rangedComponents },
   };
 
   // AC
@@ -382,7 +394,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
 
   // CMB / CMD
   const sizeSpecial = specialSizeMod(size);
-  const cmb = bab + strMod + sizeSpecial;
+  const cmbStack = resolveStack(forTarget(collected, "cmb"));
+  const cmb = bab + strMod + sizeSpecial + cmbStack.total;
   const cmdAcBonus = ac.components.reduce(
     (s, c) =>
       c.applied && (c.category === "dodge" || c.category === "deflection" || c.category === "generic")

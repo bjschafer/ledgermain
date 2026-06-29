@@ -1,13 +1,15 @@
 /**
- * Collects typed modifiers from all passive sources (race, equipped items,
- * granted class features) and evaluates each change's formula to a number against
- * the roll-data context. Dice-bearing change formulas (none target static stats
- * in the slice) are skipped. Active buffs/conditions are NOT collected here —
- * that is Stage 4.
+ * Collects typed modifiers from all sources — passive (race, equipped items,
+ * granted class features) AND live session state (active buffs, conditions) —
+ * evaluating each change's formula to a number against the roll-data context.
+ * Dice-bearing change formulas (none target static stats in the slice) are
+ * skipped. Buffs and conditions flow through the same evaluator + stacker as
+ * passive changes (Stage 4).
  */
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
+import { CONDITIONS } from "./conditions.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import type { TypedModifier } from "./stacking.js";
 
@@ -85,6 +87,31 @@ export function collectModifiers(
           out,
         );
       }
+    }
+  }
+
+  // --- active buffs (live state) ------------------------------------------
+  for (const buff of doc.live.activeBuffs ?? []) {
+    // `@item.level` / `@cl` in a buff formula = the buff's caster/effect level.
+    const buffRollData: RollData =
+      buff.casterLevel === undefined
+        ? rollData
+        : {
+            ...rollData,
+            cl: buff.casterLevel,
+            item: { level: buff.casterLevel },
+          };
+    for (const ch of buff.changes) {
+      evalChange(ch.formula, buffRollData, ch.target, ch.type, buff.name, buff.instanceId, out);
+    }
+  }
+
+  // --- conditions (live state) --------------------------------------------
+  for (const condId of doc.live.conditions ?? []) {
+    const cond = CONDITIONS[condId];
+    if (!cond) continue;
+    for (const ch of cond.changes) {
+      evalChange(ch.formula, rollData, ch.target, ch.type, cond.name, cond.id, out);
     }
   }
 
