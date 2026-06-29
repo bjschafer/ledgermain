@@ -1,0 +1,422 @@
+{
+  "0c4lYDywj6bQ0i8r": {
+    "armorProf": [],
+    "bab": "low",
+    "classSkills": [
+      "apr",
+      "art",
+      "crf",
+      "fly",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "pro",
+      "spl"
+    ],
+    "description": "<p>Beyond the veil of the mundane hide the secrets of absolute power. The works of beings beyond mortals, the legends of realms where gods and spirits tread, the lore of creations both wondrous and terrible—such mysteries call to those with the ambition and the intellect to rise above the common folk to grasp true might. Such is the path of the wizard. These shrewd magic-users seek, collect, and covet esoteric knowledge, drawing on cultic arts to work wonders beyond the abilities of mere mortals. While some might choose a particular field of magical study and become masters of such powers, others embrace versatility, reveling in the unbounded wonders of all magic. In either case, wizards prove a cunning and potent lot, capable of smiting their foes, empowering their allies, and shaping the world to their every desire.</p><p>Role: While universalist wizards might study to prepare themselves for any manner of danger, specialist wizards research schools of magic that make them exceptionally skilled within a specific focus. Yet no matter their specialty, all wizards are masters of the impossible and can aid their allies in overcoming any danger.</p>",
+    "features": [
+      {
+        "featureId": "pW1PNlDcdGl7KuEa",
+        "level": 1,
+        "name": "Arcane Bond",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
+      },
+      {
+        "featureId": "20JWTam2dn7jjZFV",
+        "level": 1,
+        "name": "Arcane School",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
+      },
+      {
+        "featureId": "IPy4aqFYbOppaqKC",
+        "level": 1,
+        "name": "Cantrips",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+      },
+      {
+        "featureId": "BS9WDbCy2Up3QHw9",
+        "level": 1,
+        "name": "Scribe Scroll",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BS9WDbCy2Up3QHw9"
+      },
+      {
+        "featureId": "4wdsdOkgv4uEkS9K",
+        "level": 1,
+        "name": "Spellbooks (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
+      },
+      {
+        "featureId": "LrjNAKP05lZq2tZZ",
+        "level": 1,
+        "name": "Wizard Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
+      },
+      {
+        "featureId": "2h3lI574tmVjOalQ",
+        "level": 5,
+        "name": "Bonus Feats (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2h3lI574tmVjOalQ"
+      }
+    ],
+    "hd": 6,
+    "id": "0c4lYDywj6bQ0i8r",
+    "name": "Wizard",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "77-83"
+      }
+    ],
+    "subType": "base",
+    "tag": "wizard",
+    "uuid": "Compendium.pf1.classes.Item.0c4lYDywj6bQ0i8r",
+    "weaponProf": [
+      "Club",
+      "Dagger",
+      "Heavy Crossbow",
+      "Light Crossbow",
+      "Quarterstaff"
+    ]
+  },
+  "SjFqQceVeVBzBwgn": {
+    "armorProf": [
+      "lgt",
+      "med",
+      "shl"
+    ],
+    "bab": "med",
+    "classSkills": [
+      "apr",
+      "dip",
+      "hea",
+      "kar",
+      "khi",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "pro",
+      "sen",
+      "spl"
+    ],
+    "description": "<p>In faith and the miracles of the divine, many find a greater purpose. Called to serve powers beyond most mortal understanding, all priests preach wonders and provide for the spiritual needs of their people. Clerics are more than mere priests, though; these emissaries of the divine work the will of their deities through strength of arms and the magic of their gods. Devoted to the tenets of the religions and philosophies that inspire them, these ecclesiastics quest to spread the knowledge and influence of their faith. Yet while they might share similar abilities, clerics prove as different from one another as the divinities they serve, with some offering healing and redemption, others judging law and truth, and still others spreading conflict and corruption. The ways of the cleric are varied, yet all who tread these paths walk with the mightiest of allies and bear the arms of the gods themselves.</p><p><strong>Role</strong>: More than capable of upholding the honor of their deities in battle, clerics often prove stalwart and capable combatants. Their true strength lies in their capability to draw upon the power of their deities, whether to increase their own and their allies’ prowess in battle, to vex their foes with divine magic, or to lend healing to companions in need. As their powers are influenced by their faith, all clerics must focus their worship upon a divine source. While the vast majority of clerics revere a specific deity, a small number dedicate themselves to a divine concept worthy of devotion—such as battle, death, justice, or knowledge—free of a deific abstraction. (Work with your GM if you prefer this path to selecting a specific deity.)</p><p><strong>Alignment</strong>: A cleric’s alignment must be within one step of her deity’s, along either the law/chaos axis or the good/evil axis.</p>",
+    "features": [
+      {
+        "featureId": "Wkv124hVPATT35bm",
+        "level": 1,
+        "name": "Aura",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Wkv124hVPATT35bm"
+      },
+      {
+        "featureId": "EvrFDqZDbbFS4Avb",
+        "level": 1,
+        "name": "Bonus Languages (CLE)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.EvrFDqZDbbFS4Avb"
+      },
+      {
+        "featureId": "kXXz1lO4i7CibHJ9",
+        "level": 1,
+        "name": "Channel Energy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kXXz1lO4i7CibHJ9"
+      },
+      {
+        "featureId": "exdHrqciehozr5SD",
+        "level": 1,
+        "name": "Chaotic, Evil, Good, and Lawful Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+      },
+      {
+        "featureId": "W4PGylYL7ghRfy5G",
+        "level": 1,
+        "name": "Cleric Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.W4PGylYL7ghRfy5G"
+      },
+      {
+        "featureId": "zrUJt7YpAJkf2NC6",
+        "level": 1,
+        "name": "Domains",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zrUJt7YpAJkf2NC6"
+      },
+      {
+        "featureId": "RaFl9SpbAlXqhsDk",
+        "level": 1,
+        "name": "Orisons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+      },
+      {
+        "featureId": "kx2ZfV2wjlAZgQ6E",
+        "level": 1,
+        "name": "Spontaneous Casting (CLE)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
+      }
+    ],
+    "hd": 8,
+    "id": "SjFqQceVeVBzBwgn",
+    "name": "Cleric",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38-48"
+      }
+    ],
+    "subType": "base",
+    "tag": "cleric",
+    "uuid": "Compendium.pf1.classes.Item.SjFqQceVeVBzBwgn",
+    "weaponProf": [
+      "simple",
+      "Favored Weapon"
+    ]
+  },
+  "WLqBCT5DqmGAx8Wd": {
+    "armorProf": [
+      "lgt",
+      "med",
+      "hvy",
+      "shl",
+      "twr"
+    ],
+    "bab": "high",
+    "classSkills": [
+      "art",
+      "clm",
+      "crf",
+      "han",
+      "int",
+      "kdu",
+      "ken",
+      "lor",
+      "pro",
+      "rid",
+      "sur",
+      "swm"
+    ],
+    "description": "<p><strong>Role</strong>: Fighters excel at combat—defeating their enemies, controlling the flow of battle, and surviving such sorties themselves. While their specific weapons and methods grant them a wide variety of tactics, few can match fighters for sheer battle prowess.</p>",
+    "features": [
+      {
+        "featureId": "CV8BsY3ciUb9TA1Y",
+        "level": 1,
+        "name": "Bonus Feats (FGT)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+      },
+      {
+        "featureId": "h0Brxw6khcjlEf1T",
+        "level": 2,
+        "name": "Bravery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T"
+      },
+      {
+        "featureId": "5JFfSqLMCpbRmERa",
+        "level": 3,
+        "name": "Armor Training",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa"
+      },
+      {
+        "featureId": "RzEzudurxQFirFoF",
+        "level": 5,
+        "name": "Weapon Training",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF"
+      },
+      {
+        "featureId": "iqeyCQIIVnNt0p3h",
+        "level": 7,
+        "name": "Armor Training (Heavy Armor)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h"
+      },
+      {
+        "featureId": "McXAM1BoPHZLO1n4",
+        "level": 20,
+        "name": "Weapon Mastery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4"
+      }
+    ],
+    "hd": 10,
+    "id": "WLqBCT5DqmGAx8Wd",
+    "name": "Fighter",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "low"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "55-56"
+      }
+    ],
+    "subType": "base",
+    "tag": "fighter",
+    "uuid": "Compendium.pf1.classes.Item.WLqBCT5DqmGAx8Wd",
+    "weaponProf": [
+      "simple",
+      "martial"
+    ]
+  },
+  "g3pq7xWWdUVYw6ai": {
+    "armorProf": [
+      "lgt",
+      "med",
+      "shl"
+    ],
+    "bab": "high",
+    "classSkills": [
+      "acr",
+      "art",
+      "clm",
+      "crf",
+      "han",
+      "int",
+      "kna",
+      "lor",
+      "per",
+      "rid",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>For some, there is only rage. In the ways of their people, in the fury of their passion, in the howl of battle, conflict is all these brutal souls know. Savages, hired muscle, masters of vicious martial techniques, they are not soldiers or professional warriors—they are the battle possessed, creatures of slaughter and spirits of war. Known as barbarians, these warmongers know little of training, preparation, or the rules of warfare; for them, only the moment exists, with the foes that stand before them and the knowledge that the next moment might hold their death. They possess a sixth sense in regard to danger and the endurance to weather all that might entail. These brutal warriors might rise from all walks of life, both civilized and savage, though whole societies embracing such philosophies roam the wild places of the world. Within barbarians storms the primal spirit of battle, and woe to those who face their rage.</p><p><strong>Role</strong>: Barbarians excel in combat, possessing the martial prowess and fortitude to take on foes seemingly far superior to themselves. With rage granting them boldness and daring beyond that of most other warriors, barbarians charge furiously into battle and ruin all who would stand in their way.</p>",
+    "features": [
+      {
+        "featureId": "9EX00obqhGHcrOdp",
+        "level": 1,
+        "name": "Fast Movement",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
+      },
+      {
+        "featureId": "WSqWT9ZIshtC5vlV",
+        "level": 1,
+        "name": "Rage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV"
+      },
+      {
+        "featureId": "HdzsFdoGauXFjU2S",
+        "level": 2,
+        "name": "Rage Powers",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S"
+      },
+      {
+        "featureId": "7WaQxnVaaoL4AGr8",
+        "level": 2,
+        "name": "Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+      },
+      {
+        "featureId": "BoEkMviJrW0PKmhj",
+        "level": 3,
+        "name": "Trap Sense",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
+      },
+      {
+        "featureId": "ZfnHhhTFQVo0Lj4P",
+        "level": 5,
+        "name": "Improved Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+      },
+      {
+        "featureId": "RENIeTVjWB7Mq6Mw",
+        "level": 7,
+        "name": "Damage Reduction",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
+      },
+      {
+        "featureId": "IWNz5tJCnpig4UtX",
+        "level": 11,
+        "name": "Greater Rage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX"
+      },
+      {
+        "featureId": "Q3x319WbNkCssApD",
+        "level": 14,
+        "name": "Indomitable Will",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Q3x319WbNkCssApD"
+      },
+      {
+        "featureId": "aYdjgDZJCNvKpLQP",
+        "level": 16,
+        "name": "Tireless Rage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP"
+      },
+      {
+        "featureId": "0v0NLj0tuVAu2Cla",
+        "level": 20,
+        "name": "Mighty Rage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0v0NLj0tuVAu2Cla"
+      }
+    ],
+    "hd": 12,
+    "id": "g3pq7xWWdUVYw6ai",
+    "name": "Barbarian",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "31-34"
+      }
+    ],
+    "subType": "base",
+    "tag": "barbarian",
+    "uuid": "Compendium.pf1.classes.Item.g3pq7xWWdUVYw6ai",
+    "weaponProf": [
+      "simple",
+      "martial"
+    ]
+  }
+}

@@ -1,0 +1,383 @@
+{
+  "Hf31mrYb3uucNyLO": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.acr",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.clm",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Racial vs Fear"
+      }
+    ],
+    "creatureSubtypes": [
+      "halfling"
+    ],
+    "creatureTypes": [
+      "humanoid"
+    ],
+    "description": "<h2>Starting Age</h2><table><thead><tr><th>Adulthood</th><th>Intuitive<sup>1</sup></th><th>Self-Taught<sup>2</sup></th><th>Trained<sup>3</sup></th></tr></thead><tbody><tr><td>20 years</td><td><p>+2d4 years<br />(22 – 28 years)</p></td><td><p>+3d6 years<br />(23 – 38 years)</p></td><td><p>+4d6 years<br />(24 – 44 years)</p></td></tr></tbody></table><p><sup>1</sup> This category includes barbarians, oracles, rogues, and sorcerers.<br /><sup>2</sup> This category includes bards, cavaliers, fighters, gunslingers, paladins, rangers, summoners, and witches.<br /><sup>3</sup> This category includes alchemists, clerics, druids, inquisitors, magi, monks, and wizards.</p><h2>Height and Weight</h2><table><thead><tr><th>Gender</th><th>Base Height</th><th>Height Modifier</th><th>Base Weight</th><th>Weight Modifier</th></tr></thead><tbody><tr><td>Male</td><td>2 ft. 8 in.</td><td><p>+2d4 in.<br />(2 ft. 10 in. – 3 ft. 4 in.)</p></td><td>30 lbs.</td><td><p>+(2d4 lbs.)<br />(32 – 38 lbs.)</p></td></tr><tr><td>Female</td><td>2 ft. 6 in.</td><td><p>+2d4 in.<br />(2 ft. 8 in. – 3 ft. 2 in.)</p></td><td>25 lbs.</td><td><p>+(2d4 lbs.)<br />(27 – 33 lbs.)</p></td></tr></tbody></table><h2>Standard Racial Traits</h2><ul><li><strong>Ability Score Modifiers</strong>: Halflings are nimble and strong-willed, but their small stature makes them weaker than other races. They gain +2 <em>Dexterity</em>, +2 <em>Charisma</em>, and –2 <em>Strength</em>.</li><li><strong>Type</strong>: Halflings are <em>humanoids</em> with the Halfling subtype.</li><li><strong>Size</strong>: Halflings are Small creatures and gain a +1 <em>size bonus</em> to their AC, a +1 <em>size bonus</em> on <em>attack rolls</em>, a –1 penalty to their <em>CMB</em> and <em>CMD</em>, and a +4 <em>size bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.wRWHk7tCUHR99PzD]{Stealth} checks.</li><li><strong>Base Speed (Slow)</strong>: Halflings have a base speed of 20 feet.</li><li><strong>Languages</strong>: Halflings begin play speaking Common and Halfling. Halflings with high <em>Intelligence</em> scores can choose from the following: Dwarven, Elven, Gnome, and Goblin.</li></ul><h3>Defense Racial Trait</h3><ul><li><strong>Fearless</strong>: Halflings receive a +2 <em>racial bonus</em> on all saving throws against fear. This bonus stacks with the bonus granted by halfling luck.</li><li><strong>Halfling Luck</strong>: Halflings receive a +1 <em>racial bonus</em> on all saving throws.</li></ul><h3>Feat and Skill Racial Trait</h3><ul><li><strong>Sure-Footed</strong>: Halflings receive a +2 <em>racial bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.gGfJO90ZuRT4sZ9X]{Acrobatics} and @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.ZAwjVOTwsBpZRgw4]{Climb} checks.</li><li><strong>Keen Senses</strong>: Halflings receive a +2 <em>racial bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr]{Perception} checks.</li></ul><h3>Offensive Racial Trait</h3><ul><li><strong>Weapon Familiarity</strong>: Halflings are proficient with @UUID[Compendium.pf1.weapons-and-ammo.cJV7OBm9KiF2WWiu]{slings} and treat any weapon with the word \"halfling\" in its name as a martial weapon.</li></ul>",
+    "id": "Hf31mrYb3uucNyLO",
+    "languages": [
+      "common",
+      "halfling"
+    ],
+    "name": "Halfling",
+    "size": "sm",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "26"
+      }
+    ],
+    "speeds": {
+      "land": 20
+    },
+    "uuid": "Compendium.pf1.races.Item.Hf31mrYb3uucNyLO"
+  },
+  "NgIhxRI0axrf3fcO": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Racial vs Enchantment Effects\nImmune to Magic Sleep"
+      },
+      {
+        "target": "skill.spl",
+        "text": "+[[2]] to Identify Magic Items"
+      },
+      {
+        "target": "cl",
+        "text": "+[[2]] to overcome Spell Resistance"
+      }
+    ],
+    "creatureSubtypes": [
+      "elf"
+    ],
+    "creatureTypes": [
+      "humanoid"
+    ],
+    "description": "<h2>Starting Age</h2><table><thead><tr><th>Adulthood</th><th>Intuitive<sup>1</sup></th><th>Self-Taught<sup>2</sup></th><th>Trained<sup>3</sup></th></tr></thead><tbody><tr><td>110 years</td><td><p>+4d6 years<br />(114 – 134 years)</p></td><td><p>+6d6 years<br />(116 – 146 years)</p></td><td><p>+10d6 years<br />(120 – 170 years)</p></td></tr></tbody></table><p><sup>1</sup> This category includes barbarians, oracles, rogues, and sorcerers.<br /><sup>2</sup> This category includes bards, cavaliers, fighters, gunslingers, paladins, rangers, summoners, and witches.<br /><sup>3</sup> This category includes alchemists, clerics, druids, inquisitors, magi, monks, and wizards.</p><h2>Height and Weight</h2><table><thead><tr><th>Gender</th><th>Base Height</th><th>Height Modifier</th><th>Base Weight</th><th>Weight Modifier</th></tr></thead><tbody><tr><td>Male</td><td>5 ft. 4 in.</td><td><p>+2d8 in.<br />(5 ft. 6 in. – 6 ft. 8 in.)</p></td><td>110 lbs.</td><td><p>+(2d8×3 lbs.)<br />(116 – 158 lbs.)</p></td></tr><tr><td>Female</td><td>5 ft. 4 in.</td><td><p>+2d6 in.<br />(5 ft. 6 in. – 6 ft. 4 in.)</p></td><td>90 lbs.</td><td><p>+(2d6×3 lbs.)<br />(96 – 126 lbs.)</p></td></tr></tbody></table><h2>Standard Racial Traits</h2><ul><li><strong>Ability Score Modifiers</strong>: Elves are nimble, both in body and mind, but their form is frail. They gain +2 <em>Dexterity</em>, +2 <em>Intelligence</em>, and –2 <em>Constitution</em>.</li><li><strong>Type</strong>: Elves are Humanoids with the elf subtype.</li><li><strong>Size</strong>: Elves are Medium creatures and thus receive no bonuses or penalties due to their size.</li><li><strong>Base Speed</strong>: Elves have a base speed of 30 feet.</li><li><strong>Languages</strong>: Elves begin play speaking Common and Elven. Elves with high <em>Intelligence</em> scores can choose from the following: Celestial, Draconic, Gnoll, Gnome, Goblin, Orc, and Sylvan.</li></ul><h3>Defense Racial Traits</h3><ul><li><strong>Elven Immunities</strong>: Elves are immune to magic <em>sleep</em> effects and gain a +2 racial saving throw bonus against <em>enchantment</em> spells and effects.</li></ul><h3>Feat and Skill Racial Traits</h3><ul><li><strong>Keen Senses</strong>: Elves receive a +2 <em>racial bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr]{Perception} checks.</li></ul><h3>Magical Racial Traits</h3><ul><li><strong>Elven Magic</strong>: Elves receive a +2 <em>racial bonus</em> on <em>caster level</em> checks made to overcome <em>spell resistance</em>. In addition, elves receive a +2 <em>racial bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.VRD7jxiIAxKPt6EF]{Spellcraft} skill checks made to identify the properties of magic items.</li></ul><h3>Offensive Racial Traits</h3><ul><li><strong>Weapon Familiarity</strong>: Elves are proficient with @UUID[Compendium.pf1.weapons-and-ammo.PqJih70EG2A1XNGf]{longbows} (including @UUID[Compendium.pf1.weapons-and-ammo.msTiRxZVnecbPCA8]{composite longbows}), @UUID[Compendium.pf1.weapons-and-ammo.zWRlna42PMJVX6un]{longswords}, @UUID[Compendium.pf1.weapons-and-ammo.LA6TC5679iOXDNwq]{rapiers}, and @UUID[Compendium.pf1.weapons-and-ammo.Ata6ajiY9wuAnBLB]{shortbows} (including @UUID[Compendium.pf1.weapons-and-ammo.GGS4thGbUH5eKndT]{composite shortbows}), and treat any weapon with the word \"elven\" in its name as a martial weapon.</li></ul><h3>Senses Racial Traits</h3><ul><li><strong>Low-Light Vision</strong>: Elves can see twice as far as <em>humans</em> in conditions of dim light.</li></ul>",
+    "id": "NgIhxRI0axrf3fcO",
+    "languages": [
+      "common",
+      "elven"
+    ],
+    "name": "Elf",
+    "size": "med",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "22"
+      }
+    ],
+    "speeds": {
+      "land": 30
+    },
+    "uuid": "Compendium.pf1.races.Item.NgIhxRI0axrf3fcO"
+  },
+  "cCepRrfH5SalFfT4": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Racial vs Enchantment Effects\nImmune to Magic Sleep"
+      }
+    ],
+    "creatureSubtypes": [
+      "human",
+      "elf"
+    ],
+    "creatureTypes": [
+      "humanoid"
+    ],
+    "description": "<h2>Starting Age</h2><table><thead><tr><th>Adulthood</th><th>Intuitive<sup>1</sup></th><th>Self-Taught<sup>2</sup></th><th>Trained<sup>3</sup></th></tr></thead><tbody><tr><td>20 years</td><td><p>+1d6 years<br />(21 – 26 years)</p></td><td><p>+2d6 years<br />(22 – 32 years)</p></td><td><p>+3d6 years<br />(23 – 38 years)</p></td></tr></tbody></table><p><sup>1</sup> This category includes barbarians, oracles, rogues, and sorcerers.<br /><sup>2</sup> This category includes bards, cavaliers, fighters, gunslingers, paladins, rangers, summoners, and witches.<br /><sup>3</sup> This category includes alchemists, clerics, druids, inquisitors, magi, monks, and wizards.</p><h2>Height and Weight</h2><table><thead><tr><th>Gender</th><th>Base Height</th><th>Height Modifier</th><th>Base Weight</th><th>Weight Modifier</th></tr></thead><tbody><tr><td>Male</td><td>5 ft. 2 in.</td><td><p>+2d8 in.<br />(5 ft. 4 in. – 6 ft. 6 in.)</p></td><td>100 lbs.</td><td><p>+(2d8×5 lbs.)<br />(110 – 180 lbs.)</p></td></tr><tr><td>Female</td><td>5 ft. 0 in.</td><td><p>+2d8 in.<br />(5 ft. 2 in. – 6 ft. 4 in.)</p></td><td>90 lbs.</td><td><p>+(2d8×5 lbs.)<br />(100 – 170 lbs.)</p></td></tr></tbody></table><h2>Standard Racial Traits</h2><ul><li><strong>Ability Score Modifiers</strong>: Half-elf characters gain a +2 bonus to one ability score of their choice at creation to represent their varied nature.</li><li><strong>Type</strong>: Half-elves are <em>humanoid</em> creatures with both the <em>human</em> and the <em>elf</em> subtypes.</li><li><strong>Size</strong>: Half-elves are Medium creatures and have no bonuses or penalties due to their size.</li><li><strong>Base Speed</strong>: Half-elves have a base speed of 30 feet.</li><li><strong>Languages</strong>: Half-elves begin play speaking Common and Elven. Half-elves with high <em>Intelligence</em> scores can choose any languages they want (except secret languages, such as Druidic).</li></ul><h3>Defense Racial Traits</h3><ul><li><strong>Elven Immunities</strong>: Half-elves are immune to magic <em>sleep</em> effects and gain a +2 racial saving throw bonus against <em>enchantment</em> spells and effects.</li></ul><h3>Feat and Skill Racial Traits</h3><ul><li><strong>Adaptability</strong>: Half-elves receive @UUID[Compendium.pf1.feats.7zJTztNW7hdaqjKc]{Skill Focus} as a bonus feat at 1st level.</li><li><strong>Keen Senses</strong>: Half-elves receive a +2 <em>racial bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr]{Perception} checks.</li></ul><h3>Senses Racial Traits</h3><ul><li><strong>Low-Light Vision</strong>: Half-elves can see twice as far as <em>humans</em> in conditions of dim light.</li></ul><h3>Other Racial Traits</h3><ul><li><strong>Elf Blood</strong>: Half-elves count as both elves and <em>humans</em> for any effect related to race.</li><li><strong>Multitalented</strong>: Half-elves choose two favored classes at first level and gain +1 hit point or +1 skill point whenever they take a level in either one of those classes.</li></ul>",
+    "id": "cCepRrfH5SalFfT4",
+    "languages": [
+      "common",
+      "elven"
+    ],
+    "name": "Half-Elf",
+    "size": "med",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "24"
+      }
+    ],
+    "speeds": {
+      "land": 30
+    },
+    "uuid": "Compendium.pf1.races.Item.cCepRrfH5SalFfT4"
+  },
+  "dCAXgdA6Db1Z3ccz": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.int",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "creatureSubtypes": [
+      "human",
+      "orc"
+    ],
+    "creatureTypes": [
+      "humanoid"
+    ],
+    "description": "<h2>Starting Age</h2><table><thead><tr><th>Adulthood</th><th>Intuitive<sup>1</sup></th><th>Self-Taught<sup>2</sup></th><th>Trained<sup>3</sup></th></tr></thead><tbody><tr><td>14 years</td><td><p>+1d4 years<br />(15 – 18 years)</p></td><td><p>+1d6 years<br />(15 – 20 years)</p></td><td><p>+2d6 years<br />(16 – 26 years)</p></td></tr></tbody></table><p><sup>1</sup> This category includes barbarians, oracles, rogues, and sorcerers.<br /><sup>2</sup> This category includes bards, cavaliers, fighters, gunslingers, paladins, rangers, summoners, and witches.<br /><sup>3</sup> This category includes alchemists, clerics, druids, inquisitors, magi, monks, and wizards.</p><h2>Height and Weight</h2><table><thead><tr><th>Gender</th><th>Base Height</th><th>Height Modifier</th><th>Base Weight</th><th>Weight Modifier</th></tr></thead><tbody><tr><td>Male</td><td>4 ft. 10 in.</td><td><p>+2d12 in.<br />(5 ft – 6 ft. 10 in.)</p></td><td>150 lbs.</td><td><p>+(2d12×7 lbs.)<br />(164 – 318 lbs.)</p></td></tr><tr><td>Female</td><td>4 ft. 5 in.</td><td><p>+2d12 in.<br />(4 ft. 7 in. – 6 ft. 5 in.)</p></td><td>110 lbs.</td><td><p>+(2d12×7 lbs.)<br />(124 – 278 lbs.)</p></td></tr></tbody></table><h2>Standard Racial Traits</h2><ul><li><strong>Ability Score Modifiers</strong>: Half-orc characters gain a +2 bonus to one ability score of their choice at creation to represent their varied nature.</li><li><strong>Type</strong>: Half-orcs are <em>Humanoid</em> creatures with both the <em>human</em> and <em>orc</em> subtypes.</li><li><strong>Size</strong>: Half-orcs are Medium creatures and thus have no bonuses or penalties due to their size.</li><li><strong>Base Speed</strong>: Half-orcs have a base speed of 30 feet.</li><li><strong>Languages</strong>: Half-orcs begin play speaking Common and Orc. Half-orcs with high <em>Intelligence</em> scores can choose from the following: Abyssal, Draconic, Giant, Gnoll, and Goblin.</li></ul><h3>Feat and Skill Racial Traits</h3><ul><li><strong>Intimidating</strong>: Half-orcs receive a +2 <em>racial bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.KNn8uxHu23phKC0y]{Intimidate} checks due to their fearsome nature.</li></ul><h3>Offensive Racial Traits</h3><ul><li><strong>Orc Ferocity</strong>: Once per day, when a half-orc is brought below 0 <em>hit points</em> but not killed, he can fight on for 1 more round as if @UUID[Compendium.pf1.pf1e-rules.NSqfXaj4MevUR2uJ.JournalEntryPage.dtHHibCiKZzdjyvp]{Disabled}. At the end of his next turn, unless brought to above 0 <em>hit points</em>, he immediately falls @UUID[Compendium.pf1.pf1e-rules.NSqfXaj4MevUR2uJ.JournalEntryPage.kHwbZ38VHCa1wkUF]{Unconscious} and begins @UUID[Compendium.pf1.pf1e-rules.NSqfXaj4MevUR2uJ.JournalEntryPage.zG6xEGMIerpbnND0]{Dying}.</li><li><strong>Weapon Familiarity</strong>: Half-orcs are proficient with greataxes and falchions and treat any weapon with the word \"orc\" in its name as a martial weapon.</li></ul><h3>Senses Racial Traits</h3><ul><li><strong>Darkvision</strong>: Half-orcs can see in the dark up to 60 feet.</li></ul><h3>Other Racial Traits</h3><ul><li><strong>Orc Blood</strong>: Half-orcs count as both <em>humans</em> and <em>orcs</em> for any effect related to race.</li></ul>",
+    "id": "dCAXgdA6Db1Z3ccz",
+    "languages": [
+      "common",
+      "orc"
+    ],
+    "name": "Half-Orc",
+    "size": "med",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "25"
+      }
+    ],
+    "speeds": {
+      "land": 30
+    },
+    "uuid": "Compendium.pf1.races.Item.dCAXgdA6Db1Z3ccz"
+  },
+  "e6IaBxKgMxy1yKlr": {
+    "changes": [
+      {
+        "formula": "@attributes.hd.total",
+        "target": "bonusSkillRanks",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "creatureSubtypes": [
+      "human"
+    ],
+    "creatureTypes": [
+      "humanoid"
+    ],
+    "description": "<h2>Starting Age</h2><table><thead><tr><th>Adulthood</th><th>Intuitive<sup>1</sup></th><th>Self-Taught<sup>2</sup></th><th>Trained<sup>3</sup></th></tr></thead><tbody><tr><td>15 years</td><td><p>+1d4 years<br />(16 – 19 years)</p></td><td><p>+1d6 years<br />(16 – 21 years)</p></td><td><p>+2d6 years<br />(17 – 27 years)</p></td></tr></tbody></table><p><sup>1</sup> This category includes barbarians, oracles, rogues, and sorcerers.<br /><sup>2</sup> This category includes bards, cavaliers, fighters, gunslingers, paladins, rangers, summoners, and witches.<br /><sup>3</sup> This category includes alchemists, clerics, druids, inquisitors, magi, monks, and wizards.</p><h2>Height and Weight</h2><table><thead><tr><th>Gender</th><th>Base Height</th><th>Height Modifier</th><th>Base Weight</th><th>Weight Modifier</th></tr></thead><tbody><tr><td>Male</td><td>4 ft. 10 in.</td><td><p>+2d10 in.<br />(5 ft – 6 ft. 6 in.)</p></td><td>120 lbs.</td><td><p>+(2d10×5 lbs.)<br />(130 – 220 lbs.)</p></td></tr><tr><td>Female</td><td>4 ft. 5 in.</td><td><p>+2d10 in.<br />(4 ft. 7 in. – 6 ft. 1 in.)</p></td><td>85 lbs.</td><td><p>+(2d10×5 lbs.)<br />(95 – 185 lbs.)</p></td></tr></tbody></table><h2>Standard Racial Traits</h2><ul><li><strong>Ability Score Modifiers</strong>: Human characters gain a +2 <em>racial bonus</em> to one ability score of their choice at creation to represent their varied nature.</li><li><strong>Type</strong>: Humans are <em>Humanoid</em> creatures with both the <em>human</em> subtypes.</li><li><strong>Size</strong>: Humans are Medium creatures and thus receive no bonuses or penalties due to their size.</li><li><strong>Base Speed</strong>: Humans have a base speed of 30 feet.</li><li><strong>Languages</strong>: Humans begin play speaking Common. Humans with high <em>Intelligence</em> scores can choose any languages they want (except secret languages, such as Druidic).</li></ul><h3>Feat and Skill Racial Traits</h3><ul><li><strong>Bonus Feat</strong>: Humans select one extra feat at 1st level.</li><li><strong>Skilled</strong>: Humans gain an additional skill rank at first level and one additional rank whenever they gain a level.</li></ul>",
+    "id": "e6IaBxKgMxy1yKlr",
+    "languages": [
+      "common"
+    ],
+    "name": "Human",
+    "size": "med",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "27"
+      }
+    ],
+    "speeds": {
+      "land": 30
+    },
+    "uuid": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr"
+  },
+  "efwHEwjvL9Z94MJI": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "str",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Racial vs Illusion Effects"
+      },
+      {
+        "target": "attack",
+        "text": "+[[1]] Racial vs Humanoids (Reptillian, Goblinoid)"
+      },
+      {
+        "target": "ac",
+        "text": "+[[4]] Dodge vs Giants"
+      }
+    ],
+    "creatureSubtypes": [
+      "gnome"
+    ],
+    "creatureTypes": [
+      "humanoid"
+    ],
+    "description": "<h2>Starting Age</h2><table><thead><tr><th>Adulthood</th><th>Intuitive<sup>1</sup></th><th>Self-Taught<sup>2</sup></th><th>Trained<sup>3</sup></th></tr></thead><tbody><tr><td>40 years</td><td><p>+4d6 years<br />(44 – 64 years)</p></td><td><p>+6d6 years<br />(46 – 76 years)</p></td><td><p>+9d6 years<br />(49 – 94 years)</p></td></tr></tbody></table><p><sup>1</sup> This category includes barbarians, oracles, rogues, and sorcerers.<br /><sup>2</sup> This category includes bards, cavaliers, fighters, gunslingers, paladins, rangers, summoners, and witches.<br /><sup>3</sup> This category includes alchemists, clerics, druids, inquisitors, magi, monks, and wizards.</p><h2>Height and Weight</h2><table><thead><tr><th>Gender</th><th>Base Height</th><th>Height Modifier</th><th>Base Weight</th><th>Weight Modifier</th></tr></thead><tbody><tr><td>Male</td><td>3 ft. 0 in.</td><td><p>+2d4 in.<br />(3 ft. 2 in. – 3 ft. 8 in.)</p></td><td>35 lbs.</td><td><p>+(2d4 lbs.)<br />(37 – 43 lbs.)</p></td></tr><tr><td>Female</td><td>2 ft. 10 in.</td><td><p>+2d4 in.<br />(3 ft. 0 in. – 3 ft. 6 in.)</p></td><td>30 lbs.</td><td><p>+(2d4 lbs.)<br />(32 – 38 lbs.)</p></td></tr></tbody></table><h2>Standard Racial Traits</h2><ul><li><strong>Ability Score Modifiers</strong>: Gnomes are physically weak but surprisingly hardy, and their attitude makes them naturally agreeable. They gain +2 <em>Constitution</em>, +2 <em>Charisma</em>, and -2 <em>Strength</em>.</li><li><strong>Type</strong>: Gnomes are Humanoid creatures with the gnome subtype.</li><li><strong>Size</strong>: Gnomes are Small creatures and thus gain a +1 <em>size bonus</em> to their AC, a +1 <em>size bonus</em> on <em>attack rolls</em>, a -1 penalty to their <em>Combat Maneuver Bonus</em> and <em>Combat Maneuver Defense</em>, and a +4 size bonus on <em>Stealth</em> checks.</li><li><strong>Base Speed (Slow)</strong>: Gnomes have a base speed of 20 feet.</li><li><strong>Languages</strong>: Gnomes begin play speaking Common, Gnome, and Sylvan. Gnomes with high <em>Intelligence</em> scores can choose from the following: Draconic, Dwarven, Elven, Giant, Goblin, and Orc. See the <em>Linguistics skill page</em> for more information about these languages.</li></ul><h3>Defense Racial Traits</h3><ul><li><strong>Defensive Training</strong>: Gnomes gain a +4 <em>dodge bonus</em> to AC against monsters of the <em>giant</em> subtype.</li><li><strong>Illusion Resistance</strong>: Gnomes gain a +2 racial saving throw bonus against <em>illusion</em> spells and effects.</li></ul><h3>Feat and Skill Racial Traits</h3><ul><li><strong>Keen Senses</strong>: Gnomes receive a +2 <em>racial bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr]{Perception} checks.</li><li><strong>Obsessive</strong>: Gnomes receive a +2 <em>racial bonus</em> on a @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.3E8pxbjI8MD3JbfQ]{Craft} or @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.224EaK0K72NhCeRi]{Profession} skill of their choice.</li></ul><h3>Magical Racial Traits</h3><ul><li><strong>Gnome Magic</strong>: Gnomes add +1 to the DC of any saving throws against <em>illusion</em> spells that they cast. Gnomes with <em>Charisma</em> scores of 11 or higher also gain the following <em>spell-like abilities</em>: 1/day — @UUID[Compendium.pf1.spells.zymaptg3vmnvfvxl]{Dancing Lights}, @UUID[Compendium.pf1.spells.mtxqp85izkb20djq]{Ghost Sound}, @UUID[Compendium.pf1.spells.a6isom7wx0nmhwfp]{Prestidigitation}, and @UUID[Compendium.pf1.spells.ct9fhh8uawn8e4md]{Speak with Animals}. The <em>caster level</em> for these effects is equal to the gnome's level. The DC for these spells is equal to 10 + the spell's level + the gnome's <em>Charisma</em> modifier.</li></ul><h3>Offensive Racial Traits</h3><ul><li><strong>Hatred</strong>: Gnomes receive a +1 bonus on <em>attack rolls</em> against <em>humanoid</em> creatures of the <em>reptilian</em> and <em>goblinoid</em> subtypes because of their special training against these hated foes.</li><li><strong>Weapon Familiarity</strong>: Gnomes treat any weapon with the word \"gnome\" in its name as a martial weapon.</li></ul><h3>Senses Racial Traits</h3><ul><li><strong>Low-Light Vision</strong>: Gnomes can see twice as far as <em>humans</em> in conditions of dim light.</li></ul>",
+    "id": "efwHEwjvL9Z94MJI",
+    "languages": [
+      "common",
+      "gnome",
+      "sylvan"
+    ],
+    "name": "Gnome",
+    "size": "sm",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "23"
+      }
+    ],
+    "speeds": {
+      "land": 20
+    },
+    "uuid": "Compendium.pf1.races.Item.efwHEwjvL9Z94MJI"
+  },
+  "nEltI9y37rKJTeWo": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "cmd",
+        "text": "+[[4]] Racial vs Bull Rush and Trip while on ground"
+      },
+      {
+        "target": "skill.per",
+        "text": "+[[2]] to Notice Unusual Stonework"
+      },
+      {
+        "target": "ac",
+        "text": "+[[4]] Dodge vs Giants"
+      },
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Racial vs Poisons, Spells and Spell-likes"
+      },
+      {
+        "target": "skill.apr",
+        "text": "+[[2]] Racial to Appraise Items with Gems"
+      },
+      {
+        "target": "attack",
+        "text": "+[[1]] Racial vs Humanoids (Orc, Goblinoid)"
+      }
+    ],
+    "creatureSubtypes": [
+      "dwarf"
+    ],
+    "creatureTypes": [
+      "humanoid"
+    ],
+    "description": "<h2>Starting Age</h2><table><thead><tr><th>Adulthood</th><th>Intuitive<sup>1</sup></th><th>Self-Taught<sup>2</sup></th><th>Trained<sup>3</sup></th></tr></thead><tbody><tr><td>40 years</td><td><p>+3d6 years<br />(43 – 58 years)</p></td><td><p>+5d6 years<br />(45 – 70 years)</p></td><td><p>+7d6 years<br />(47 – 82 years)</p></td></tr></tbody></table><p><sup>1</sup> This category includes barbarians, oracles, rogues, and sorcerers.<br /><sup>2</sup> This category includes bards, cavaliers, fighters, gunslingers, paladins, rangers, summoners, and witches.<br /><sup>3</sup> This category includes alchemists, clerics, druids, inquisitors, magi, monks, and wizards.</p><h2>Height and Weight</h2><table><thead><tr><th>Gender</th><th>Base Height</th><th>Height Modifier</th><th>Base Weight</th><th>Weight Modifier</th></tr></thead><tbody><tr><td>Male</td><td>3 ft. 9 in.</td><td><p>+2d4 in.<br />(3 ft. 11 in. – 4 ft. 5 in.)</p></td><td>150 lbs.</td><td><p>+(2d4×7 lbs.)<br />(164 – 206 lbs.)</p></td></tr><tr><td>Female</td><td>3 ft. 7 in.</td><td><p>+2d4 in.<br />(3 ft. 9 in. – 4 ft. 3 in.)</p></td><td>120 lbs.</td><td><p>+(2d4×7 lbs.)<br />(134 – 176 lbs.)</p></td></tr></tbody></table><h2>Standard Racial Traits</h2><ul><li><strong>Ability Score Modifiers</strong>: Dwarves are both tough and wise, but also a bit gruff. They gain +2 <em>Constitution</em>, +2 <em>Wisdom</em>, and –2 <em>Charisma</em>.</li><li><strong>Type</strong>: Dwarves are <em>humanoids</em> with the <em>dwarf</em> subtype.</li><li><strong>Size</strong>: Dwarves are Medium creatures and thus receive no bonuses or penalties due to their size.</li><li><strong>Base Speed (Slow and Steady)</strong>: Dwarves have a base speed of 20 feet, but their speed is never modified by armor or encumbrance.</li><li><strong>Languages</strong>: Dwarves begin play speaking Common and Dwarven. Dwarves with high <em>Intelligence</em> scores can choose from the following: Giant, Gnome, Goblin, Orc, Terran, and Undercommon.</li></ul><h3>Defense Racial Traits</h3><ul><li><strong>Defensive Training</strong>: Dwarves gain a +4 <em>dodge bonus</em> to AC against monsters of the <em>giant</em> subtype.</li><li><strong>Hardy</strong>: Dwarves gain a +2 <em>racial bonus</em> on saving throws against <em>poison</em>, spells, and <em>spell-like abilities</em>.</li><li><strong>Stability</strong>: Dwarves gain a +4 <em>racial bonus</em> to their <em>Combat Maneuver Defense</em> when resisting a <em>bull rush</em> or <em>trip</em> attempt while standing on the ground.</li></ul><h3>Feat and Skill Racial Traits</h3><ul><li><strong>Greed</strong>: Dwarves gain a +2 <em>racial bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.QGxoGsSIAOoe5dTW]{Appraise} checks made to determine the price of non-magical goods that contain precious metals or gemstones.</li><li><strong>Stonecunning</strong>: Dwarves gain a +2 bonus on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.2h6hz5AkTDxKPFxr]{Perception} checks to notice unusual stonework, such as traps and hidden doors located in stone walls or floors. They receive a check to notice such features whenever they pass within 10 feet of them, whether or not they are actively looking.</li></ul><h3>Senses Racial Traits</h3><ul><li><strong>Darkvision</strong>: Dwarves can see perfectly in the dark up to 60 feet.</li></ul><h3>Offensive Racial Traits</h3><ul><li><strong>Hatred</strong>: Dwarves gain a +1 <em>racial bonus</em> on <em>attack rolls</em> against <em>humanoid</em> creatures of the <em>orc</em> and <em>goblinoid</em> subtypes because of their special training against these hated foes.</li><li><strong>Weapon Familiarity</strong>: Dwarves are proficient with battleaxes, heavy picks, and warhammers, and treat any weapon with the word \"dwarven\" in its name as a martial weapon.</li></ul>",
+    "id": "nEltI9y37rKJTeWo",
+    "languages": [
+      "common",
+      "dwarven"
+    ],
+    "name": "Dwarf",
+    "size": "med",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "21"
+      }
+    ],
+    "speeds": {
+      "land": 20
+    },
+    "uuid": "Compendium.pf1.races.Item.nEltI9y37rKJTeWo"
+  }
+}

@@ -1,0 +1,3558 @@
+{
+  "0AIz2Gk74uaiLQIh": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "cl": 6,
+    "contextNotes": [],
+    "description": "<p>This ring offers continual magical protection in the form of a <em>deflection</em> bonus of +1 to +5 to <em>AC</em>.</p>",
+    "id": "0AIz2Gk74uaiLQIh",
+    "name": "Ring of Protection +2",
+    "price": 8000,
+    "slot": "ring",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "172"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "479"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.0AIz2Gk74uaiLQIh"
+  },
+  "1hPPkMMfEuJha8YB": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This belt grants the wearer an enhancement bonus to two physical ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. These bonuses are chosen when the belt is created and cannot be changed.</p>",
+    "id": "1hPPkMMfEuJha8YB",
+    "name": "Belt of Physical Might +4 (Str & Dex)",
+    "price": 40000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.1hPPkMMfEuJha8YB"
+  },
+  "2rDdqODASJmbq7WP": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "3",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "cl": 9,
+    "contextNotes": [],
+    "description": "<p>This garment offers magic protection in the form of a +1 to +5 <em>resistance bonus</em> on all saving throws (<em>Fortitude</em>, <em>Reflex</em>, and <em>Will</em>).</p>",
+    "id": "2rDdqODASJmbq7WP",
+    "name": "Cloak of Resistance +3",
+    "price": 9000,
+    "slot": "shoulders",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "264"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "507"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.2rDdqODASJmbq7WP"
+  },
+  "3jgVeXbVIQdRutRM": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "cha",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This attractive silver headband is decorated with a number of small red and orange gemstones.</p><p>The headband grants the wearer an <em>enhancement bonus</em> to <em>Charisma</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p>",
+    "id": "3jgVeXbVIQdRutRM",
+    "name": "Headband of Alluring Charisma +6",
+    "price": 36000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "248"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "516"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.3jgVeXbVIQdRutRM"
+  },
+  "4msC770tUkvMc3cL": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.clm",
+        "type": "competence"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This magic ring has the deceptively simple appearance of a plain leather cord that wraps securely around a finger. The ring continually grants the wearer a +5 competence bonus on Climb checks.</p>",
+    "id": "4msC770tUkvMc3cL",
+    "name": "Ring of Climbing",
+    "price": 2500,
+    "slot": "ring",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "168"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "479"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.4msC770tUkvMc3cL"
+  },
+  "5F06HJzeAlqTOot1": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "nac",
+        "type": "enh"
+      }
+    ],
+    "cl": 6,
+    "contextNotes": [],
+    "description": "<p>This amulet, usually containing some type of magically preserved monster hide or other natural armor—such as bone, horn, carapace, or beast scales—toughens the wearer’s body and flesh, giving him an <em>enhancement bonus</em> to his <em>natural armor</em> from +1 to +5, depending on the kind of amulet.</p>",
+    "id": "5F06HJzeAlqTOot1",
+    "name": "Amulet of Natural Armor +2",
+    "price": 8000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "256"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "500"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.5F06HJzeAlqTOot1"
+  },
+  "5WTK5HUkSZVClehk": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.crf",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>These tools serve the same purpose as @UUID[Compendium.pf1.items.Item.pvyrghmqefkulkik]{artisan's tools}, but masterwork artisan's tools are the perfect tools for the job, so you get a +2 circumstance bonus on Craft checks made with them.</p>",
+    "id": "5WTK5HUkSZVClehk",
+    "name": "Artisan's Tools, masterwork",
+    "price": 55,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "158, 161"
+      }
+    ],
+    "subType": "tool",
+    "uuid": "Compendium.pf1.items.Item.5WTK5HUkSZVClehk"
+  },
+  "5ZivT8vBANjQLueE": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This belt’s golden buckle depicts a bear’s head. The belt grants the wearer an <em>enhancement bonus</em> to <em>Constitution</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "5ZivT8vBANjQLueE",
+    "name": "Belt of Mighty Constitution +2",
+    "price": 4000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "209"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.5ZivT8vBANjQLueE"
+  },
+  "6JNWUofyniDkjhjk": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This belt has a large silver buckle, usually depicting the image of a tiger.</p><p>The belt grants the wearer an <em>enhancement bonus</em> to <em>Dexterity</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "6JNWUofyniDkjhjk",
+    "name": "Belt of Incredible Dexterity +4",
+    "price": 16000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "209"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.6JNWUofyniDkjhjk"
+  },
+  "71VGp1a4z1BQFNXu": {
+    "aura": {
+      "school": "misc"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "ac",
+        "type": "insight"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<h3>Effect</h3><p>+1 insight bonus to AC.</p><h3>Resonance</h3><p>+1 insight bonus on combat maneuver checks.</p>",
+    "id": "71VGp1a4z1BQFNXu",
+    "name": "Dusty Rose Prism Ioun Stone",
+    "price": 5000,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "149"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "521"
+      },
+      {
+        "id": "PZO1123",
+        "pages": "305"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.71VGp1a4z1BQFNXu"
+  },
+  "74nJBzdY4yvMZcBe": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.prf",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>If you want to perform using a @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.emzBKDFNkNnC7N8u]{Perform} skill associated with a musical instrument (keyboard, percussion, string, or wind), you must have an appropriate musical instrument; otherwise you can't use the skill. The listed cost and weight is for a typical small instrument you could carry by hand, such as a drum, lyre, bell, harp, or flute; larger instruments such as a cello or piano are of course larger and more expensive.</p>\n<p>This high-quality instrument grants a +2 <em>circumstance bonus</em> on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.emzBKDFNkNnC7N8u]{Perform} checks made to perform with the instrument.</p>",
+    "id": "74nJBzdY4yvMZcBe",
+    "name": "Musical instrument, masterwork",
+    "price": 100,
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "77"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "158, 161"
+      }
+    ],
+    "subType": "tool",
+    "uuid": "Compendium.pf1.items.Item.74nJBzdY4yvMZcBe"
+  },
+  "7P3H1yV8835Am6c6": {
+    "aura": {
+      "school": "evo"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "luck"
+      }
+    ],
+    "cl": 9,
+    "contextNotes": [],
+    "description": "<p>Although it appears to be a simple horseshoe, a lucky horseshoe focuses and channels the mystical energies of good fortune. As long as a lucky horseshoe's owner carries it on her person, she gains a +1 luck bonus on saving throws. Once per day, she can invoke the lucky horseshoe's power to gain a +4 luck bonus on a single saving throw. She must declare that she is using this ability before the roll is made.</p>",
+    "id": "7P3H1yV8835Am6c6",
+    "name": "Lucky Horseshoe",
+    "price": 6800,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "260"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.7P3H1yV8835Am6c6"
+  },
+  "9KkspSc1gaif4kzP": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "nac",
+        "type": "enh"
+      }
+    ],
+    "cl": 15,
+    "contextNotes": [],
+    "description": "<p>This amulet, usually containing some type of magically preserved monster hide or other natural armor—such as bone, horn, carapace, or beast scales—toughens the wearer’s body and flesh, giving him an <em>enhancement bonus</em> to his <em>natural armor</em> from +1 to +5, depending on the kind of amulet.</p>",
+    "id": "9KkspSc1gaif4kzP",
+    "name": "Amulet of Natural Armor +5",
+    "price": 50000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "256"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "500"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.9KkspSc1gaif4kzP"
+  },
+  "9OAxJICb7xkxnclB": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dev",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.slt",
+        "text": "+4 to conceal concealable thieves tools on your body"
+      }
+    ],
+    "description": "<p>This kit contains lockpicks and other tools you need to use the @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.cSdUATLHBFfw3v4s]{Disable Device} skill. Without these tools, you must use improvised tools, and you take a -2 circumstance penalty on Disable Device checks.</p><p>Smaller and made of stronger materials than most <em>thieves' tools</em>, the items in this kit are much easier to conceal. You gain a +4 bonus on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.joza8kAIiImrPft7]{Sleight of Hand} skill checks to conceal these tools on your body. They otherwise function as masterwork thieves tools (granting a +2 <em>circumstance bonus</em> on Disable Device checks).</p>",
+    "id": "9OAxJICb7xkxnclB",
+    "name": "Thieves' Tools, concealable",
+    "price": 190,
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "233"
+      }
+    ],
+    "subType": "adventuring",
+    "uuid": "Compendium.pf1.items.Item.9OAxJICb7xkxnclB"
+  },
+  "9Uxwqax0pLPyT2j7": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "nac",
+        "type": "enh"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This amulet, usually containing some type of magically preserved monster hide or other natural armor—such as bone, horn, carapace, or beast scales—toughens the wearer’s body and flesh, giving him an <em>enhancement bonus</em> to his <em>natural armor</em> from +1 to +5, depending on the kind of amulet.</p>",
+    "id": "9Uxwqax0pLPyT2j7",
+    "name": "Amulet of Natural Armor +1",
+    "price": 2000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "256"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "500"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.9Uxwqax0pLPyT2j7"
+  },
+  "BLMi1quBucvUtjbt": {
+    "aura": {
+      "school": "div"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.prf",
+        "type": "circumstance"
+      }
+    ],
+    "cl": 10,
+    "contextNotes": [],
+    "description": "<p>The samisen's three silken strings are magically keyed to the past, present, and future. A user must succeed at a DC 20 Perform (string instruments) check to play the correct tune and cast one of the following spell effects: @UUID[Compendium.pf1.spells.Item.b5mz8voksps5g4yq]{legend lore} (using the string of the past), @UUID[Compendium.pf1.spells.Item.g66w32kdup1f43bp]{scrying} (using the string of the present), or @UUID[Compendium.pf1.spells.Item.pwueht12qqo0268e]{divination} (using the string of the future). Each tune can be performed once per day, and the user must play the samisen for the required casting time of the spell effect. In the case of legend lore, if the required casting time is 1 or more days, the user needs to play for just 1 hour. As a masterwork samisen, the samisen of oracular vision provides a +2 circumstance bonus on all Perform checks using the instrument (including Perform checks to use its abilities).</p>",
+    "id": "BLMi1quBucvUtjbt",
+    "name": "Samisen of Oracular Vision",
+    "price": 46575,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO9053",
+        "pages": "60"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.BLMi1quBucvUtjbt"
+  },
+  "BP3w8KlGr97WYNe8": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This belt grants the wearer an enhancement bonus to two physical ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. These bonuses are chosen when the belt is created and cannot be changed.</p>",
+    "id": "BP3w8KlGr97WYNe8",
+    "name": "Belt of Physical Might +6 (Str & Dex)",
+    "price": 90000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.BP3w8KlGr97WYNe8"
+  },
+  "C8PhETwQQHuDKUkm": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This ring offers continual magical protection in the form of a <em>deflection</em> bonus of +1 to +5 to <em>AC</em>.</p>",
+    "id": "C8PhETwQQHuDKUkm",
+    "name": "Ring of Protection +4",
+    "price": 32000,
+    "slot": "ring",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "172"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "479"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.C8PhETwQQHuDKUkm"
+  },
+  "CI3CpcXYVz080fLG": {
+    "aura": {
+      "school": "evo"
+    },
+    "changes": [
+      {
+        "formula": "3",
+        "target": "nattack",
+        "type": "enh"
+      },
+      {
+        "formula": "3",
+        "target": "ndamage",
+        "type": "enh"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This amulet grants an enhancement bonus of +1 to +5 on attack and damage rolls with unarmed attacks and natural weapons.</p><p>Alternatively, this amulet can grant melee weapon special abilities, so long as they can be applied to unarmed attacks. See Table: Melee Weapon Special Abilities for a list of abilities. Special abilities count as additional bonuses for determining the market value of the item, but do not modify attack or damage bonuses. An amulet of mighty fists cannot have a modified bonus (enhancement bonus plus special ability bonus equivalents) higher than +5. An amulet of mighty fists does not need to have a +1 enhancement bonus to grant a melee weapon special ability.</p>",
+    "id": "CI3CpcXYVz080fLG",
+    "name": "Amulet of Mighty Fists +3",
+    "price": 36000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "255"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "496"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.CI3CpcXYVz080fLG"
+  },
+  "CSM3wLxqmR8qMpyT": {
+    "aura": {
+      "school": "misc"
+    },
+    "changes": [
+      {
+        "formula": "18",
+        "target": "spellResist",
+        "type": "untyped"
+      },
+      {
+        "formula": "4",
+        "target": "allSavingThrows",
+        "type": "resist"
+      },
+      {
+        "formula": "5",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
+    "cl": 14,
+    "contextNotes": [
+      {
+        "target": "cl",
+        "text": "+[[2]] enhancement bonus made to overcome spell resistance"
+      }
+    ],
+    "description": "<p>This normal-appearing garment is attuned to one of three types of alignment. It can be white (01–45 on d%, good alignment), gray (46–75, neither good nor evil alignment), or black (76–100, evil alignment). To most wearers, the robe offers no powers or has no effects unless the wearer’s alignment doesn’t match that of the robe (see below). Only an arcane spellcaster can fully realize this potent magic item’s powers once the robe is donned. These powers are as follows.</p><ul><li>+5 armor bonus to AC</li><li>Spell resistance 18</li><li>+4 resistance bonus on all saving throws</li><li>+2 enhancement bonus on caster level checks made to overcome spell resistance</li></ul><p>If a white robe is donned by an evil character, she immediately gains three permanent negative levels. The same is true with respect to a black robe donned by a good character. An evil or good character who puts on a gray robe, or a neutral character who dons either a white or black robe, gains two permanent negative levels. These negative levels remain as long as the garment is worn and cannot be overcome in any way (including through restoration spells). Negative levels are immediately removed if the robe is removed from the wearer.</p>",
+    "id": "CSM3wLxqmR8qMpyT",
+    "name": "Robe of the Archmagi (Black)",
+    "price": 75000,
+    "slot": "body",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "218"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "527"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.CSM3wLxqmR8qMpyT"
+  },
+  "DimjKFI7EQ94npji": {
+    "aura": {
+      "school": "evo"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "nattack",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "ndamage",
+        "type": "enh"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This amulet grants an enhancement bonus of +1 to +5 on attack and damage rolls with unarmed attacks and natural weapons.</p><p>Alternatively, this amulet can grant melee weapon special abilities, so long as they can be applied to unarmed attacks. See Table: Melee Weapon Special Abilities for a list of abilities. Special abilities count as additional bonuses for determining the market value of the item, but do not modify attack or damage bonuses. An amulet of mighty fists cannot have a modified bonus (enhancement bonus plus special ability bonus equivalents) higher than +5. An amulet of mighty fists does not need to have a +1 enhancement bonus to grant a melee weapon special ability.</p>",
+    "id": "DimjKFI7EQ94npji",
+    "name": "Amulet of Mighty Fists +2",
+    "price": 16000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "255"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "496"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.DimjKFI7EQ94npji"
+  },
+  "Dt0WMY6EU7M3g6mo": {
+    "aura": {
+      "school": "misc"
+    },
+    "changes": [
+      {
+        "formula": "18",
+        "target": "spellResist",
+        "type": "untyped"
+      },
+      {
+        "formula": "4",
+        "target": "allSavingThrows",
+        "type": "resist"
+      },
+      {
+        "formula": "5",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
+    "cl": 14,
+    "contextNotes": [
+      {
+        "target": "cl",
+        "text": "+[[2]] enhancement bonus made to overcome spell resistance"
+      }
+    ],
+    "description": "<p>This normal-appearing garment is attuned to one of three types of alignment. It can be white (01–45 on d%, good alignment), gray (46–75, neither good nor evil alignment), or black (76–100, evil alignment). To most wearers, the robe offers no powers or has no effects unless the wearer’s alignment doesn’t match that of the robe (see below). Only an arcane spellcaster can fully realize this potent magic item’s powers once the robe is donned. These powers are as follows.</p><ul><li>+5 armor bonus to AC</li><li>Spell resistance 18</li><li>+4 resistance bonus on all saving throws</li><li>+2 enhancement bonus on caster level checks made to overcome spell resistance</li></ul><p>If a white robe is donned by an evil character, she immediately gains three permanent negative levels. The same is true with respect to a black robe donned by a good character. An evil or good character who puts on a gray robe, or a neutral character who dons either a white or black robe, gains two permanent negative levels. These negative levels remain as long as the garment is worn and cannot be overcome in any way (including through restoration spells). Negative levels are immediately removed if the robe is removed from the wearer.</p>",
+    "id": "Dt0WMY6EU7M3g6mo",
+    "name": "Robe of the Archmagi (White)",
+    "price": 75000,
+    "slot": "body",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "218"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "527"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.Dt0WMY6EU7M3g6mo"
+  },
+  "EHHbtbyeYbgNaezp": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "skill.acr",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "skill.ste",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>These boot attachments consist of wide wooden frames, leather straps, and thin leather soles with no distinguishing marks or texture. They distribute your weight over a larger area and obscure the shape of your footprints. The DC to track you increases by 2, but you also take a -2 penalty on Acrobatics and Stealth checks.</p>",
+    "id": "EHHbtbyeYbgNaezp",
+    "name": "Track-obscuring soles",
+    "price": 8,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO9456",
+        "pages": "9"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.EHHbtbyeYbgNaezp"
+  },
+  "Ex7CexjHoS3hrgnV": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "skill.ste",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.ste",
+        "text": "+2 DC to notice and follow your tracks"
+      }
+    ],
+    "description": "<p>These soft and subtle boots are constructed of silk and specially cured leather. They are specially designed for catfolk feet. They work with the feline structure of the race's feet to soften footfalls and to reduce the imprints of their tracks.</p><p>While wearing softpaw boots, a catfolk gains a +1 circumstance bonus on Stealth checks. Furthermore, the DC to notice or follow the tracks of a catfolk wearing softpaw boots increases by +2.</p>",
+    "id": "Ex7CexjHoS3hrgnV",
+    "name": "Softpaw boots",
+    "price": 50,
+    "slot": "feet",
+    "sources": [
+      {
+        "id": "PZO1121"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.Ex7CexjHoS3hrgnV"
+  },
+  "FIMH8jUpVdQXyMBj": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "int",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This intricate gold headband is decorated with several small blue and deep purple gemstones.</p><p>The headband grants the wearer an <em>enhancement bonus</em> to <em>Intelligence</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn. A headband of vast intelligence has one skill associated with it per +2 bonus it grants. After being worn for 24 hours, the headband grants a number of skill ranks in those skills equal to the wearer’s total <em>Hit Dice</em>. These ranks do not stack with the ranks a creature already possesses. These skills are chosen when the headband is created. If no skill is listed, the headband is assumed to grant skill ranks in randomly determined <em>Knowledge</em> skills.</p>",
+    "id": "FIMH8jUpVdQXyMBj",
+    "name": "Headband of Vast Intelligence +4",
+    "price": 16000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "251"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.FIMH8jUpVdQXyMBj"
+  },
+  "GCU0bHWSSxVS7D6r": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "cha",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This simple copper headband has a small yellow gem set so that when it rests upon the forehead of the wearer, the yellow gem sits perched on the wearer’s brow as if it were a third eye in the middle of her forehead. Often, the headband contains additional designs to further accentuate the appearance of a third, crystal eye.</p><p>The headband grants the wearer an enhancement bonus to two mental ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p><p>These bonuses are chosen when the headband is created and cannot be changed.</p>",
+    "id": "GCU0bHWSSxVS7D6r",
+    "name": "Headband of Mental Prowess +6 (Wis & Cha)",
+    "price": 90000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.GCU0bHWSSxVS7D6r"
+  },
+  "GgSzAvYJmdk5JGL6": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.prf",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>A ventriloquist's dummy is made of finely sculpted and painted wood, shaped and dressed like a typical humanoid, and sized at roughly 2 feet. An insert in the back of the dummy allows a Small or Medium creature to manipulate it with one arm. When used as part of a routine, a ventriloquist's dummy adds a +2 circumstance bonus on Perform (comedy) checks.</p>",
+    "id": "GgSzAvYJmdk5JGL6",
+    "name": "Ventriloquist's Dummy",
+    "price": 100,
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "251"
+      }
+    ],
+    "subType": "adventuring",
+    "uuid": "Compendium.pf1.items.Item.GgSzAvYJmdk5JGL6"
+  },
+  "HSF0j88RR9JeTaJi": {
+    "aura": {
+      "school": "ill"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.ste",
+        "type": "competence"
+      }
+    ],
+    "cl": 3,
+    "contextNotes": [],
+    "description": "<p>These cloaks of famed elven design are enhanced to reflect the wearer's surroundings, aiding him in blending in with any terrain. When this plain gray cloak is worn with the hood drawn up around the head, the wearer gains a +5 competence bonus on Stealth checks.</p>",
+    "id": "HSF0j88RR9JeTaJi",
+    "name": "Cloak of Elvenkind",
+    "price": 2500,
+    "slot": "shoulders",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "263"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "507"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.HSF0j88RR9JeTaJi"
+  },
+  "I9IPRFE4DBooAKoy": {
+    "aura": {
+      "school": "evo"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "chaChecks",
+        "type": "competence"
+      }
+    ],
+    "cl": 11,
+    "contextNotes": [],
+    "description": "<p>This folding fan made from cypress wood and lacquered paper is said to have belonged to Kikuya, a legendary Minkai oiran, or courtesan. When held in the hand, Kikuya's sensu grants a +2 competence bonus on the bearer's Charisma-based checks. While held, the fan provides the somatic component for spells cast by the bearer. Once per day on command, the bearer can use one face of the fan to cast @UUID[Compendium.pf1.spells.Item.6orhthk4g27rncuu]{calm emotions}. Also once per day, the fan's other face can create a @UUID[Compendium.pf1.spells.Item.aoov6nqfm195txdb]{forceful hand}. In addition, the bearer can whisper behind Kikuya's sensu and send the words up to 3 miles away, as the @UUID[Compendium.pf1.spells.Item.v8czhud6wpmc9esu]{whispering wind} spell, once per day.</p>",
+    "id": "I9IPRFE4DBooAKoy",
+    "name": "Kikuya's Sensu",
+    "price": 30840,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO9052"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.I9IPRFE4DBooAKoy"
+  },
+  "K6ZLFTUU3nVm5QvF": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.spl",
+        "type": "competence"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [
+      {
+        "target": "concentration",
+        "text": "+[[5]] competence bonus to cast a spell defensively"
+      }
+    ],
+    "description": "<p>These plain gray leather gloves grant a +5 competence bonus on Spellcraft checks and concentration checks made to cast a spell defensively. Both gloves must be worn for the magic to be effective.</p>",
+    "id": "K6ZLFTUU3nVm5QvF",
+    "name": "Gloves of Elvenkind",
+    "price": 7500,
+    "slot": "hands",
+    "sources": [
+      {
+        "id": "PZO1121",
+        "pages": "29"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.K6ZLFTUU3nVm5QvF"
+  },
+  "KgDc9RWXqD5kjKvV": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "cl": 15,
+    "contextNotes": [],
+    "description": "<p>This ring offers continual magical protection in the form of a <em>deflection</em> bonus of +1 to +5 to <em>AC</em>.</p>",
+    "id": "KgDc9RWXqD5kjKvV",
+    "name": "Ring of Protection +5",
+    "price": 50000,
+    "slot": "ring",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "172"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "479"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.KgDc9RWXqD5kjKvV"
+  },
+  "KxHYgsJaMhsLI2Xu": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wisPen",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "chaPen",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "intPen",
+        "type": "untyped"
+      }
+    ],
+    "cl": 15,
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[4]] Insight vs mind-affecting effects and attempts to gather information from divinations"
+      }
+    ],
+    "description": "<p>This simple tin headpiece is a lesser replica of the powerful stannum crown. A tin cap feeds on its wearer's paranoia, granting her a +4 insight bonus on saving throws against mind-affecting effects and divinations that gather information about her. Donning a tin cap saps the mind of the wearer, imposing a -2 penalty to her Intelligence, Wisdom, and Charisma. The increased paranoia causes the wearer to always attempt saving throws, even against harmless effects. Removing the tin cap removes both the benefits and drawbacks until it is donned again.</p>",
+    "id": "KxHYgsJaMhsLI2Xu",
+    "name": "Tin Cap",
+    "price": 15000,
+    "slot": "head",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "265"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.KxHYgsJaMhsLI2Xu"
+  },
+  "MrxwYWWezbJTZLog": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This garment offers magic protection in the form of a +1 to +5 <em>resistance bonus</em> on all saving throws (<em>Fortitude</em>, <em>Reflex</em>, and <em>Will</em>).</p>",
+    "id": "MrxwYWWezbJTZLog",
+    "name": "Cloak of Resistance +1",
+    "price": 1000,
+    "slot": "shoulders",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "264"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "507"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.MrxwYWWezbJTZLog"
+  },
+  "MvIylLVVvfr3kcW2": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "con",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 16,
+    "contextNotes": [],
+    "description": "<p>This belt has a large platinum buckle and grants the wearer an enhancement bonus to all physical ability scores (Strength, Dexterity, and Constitution) of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "MvIylLVVvfr3kcW2",
+    "name": "Belt of Physical Perfection +4",
+    "price": 64000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.MvIylLVVvfr3kcW2"
+  },
+  "NSCUPBTATyMUTWei": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dip",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.dis",
+        "text": "+[[2]] circumstance to appear as a geisha, noble, or other high standing member of Minkai society"
+      }
+    ],
+    "description": "<p>This exquisite silken garment is vitally important formal wear for certain social roles in many Tian cultures, including Minkai. Properly donning a kimono requires assistance and a successful DC 15 Knowledge (nobility) check. When dealing with Minkaians or others familiar with the cultural significance of this garment, a properly worn kimono grants a +2 circumstance bonus on Diplomacy checks, as well as on Disguise checks made to appear as a geisha, noble, or other high standing member of Minkai society.</p>",
+    "id": "NSCUPBTATyMUTWei",
+    "name": "Silk kimono",
+    "price": 200,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO9481",
+        "pages": "28"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.NSCUPBTATyMUTWei"
+  },
+  "O1IuoaVvgX5nAl18": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "carryStr",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This backpack has numerous pockets for storing items that might be needed while adventuring. Hooks are included for attaching items such as canteens, pouches, or even a rolled-up blanket. It has padded bands that strap across the chest and the waist to distribute its weight more evenly. Like a common backpack, it can hold about 2 cubic feet of material in its main container. When wearing a masterwork backpack, treat your Strength score as +1 higher than normal when calculating your carrying capacity.</p>",
+    "id": "O1IuoaVvgX5nAl18",
+    "name": "Backpack, masterwork",
+    "price": 50,
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "58"
+      }
+    ],
+    "uuid": "Compendium.pf1.items.Item.O1IuoaVvgX5nAl18"
+  },
+  "PB4ABBOPG7l7gHe7": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This belt grants the wearer an enhancement bonus to two physical ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. These bonuses are chosen when the belt is created and cannot be changed.</p>",
+    "id": "PB4ABBOPG7l7gHe7",
+    "name": "Belt of Physical Might +2 (Str & Dex)",
+    "price": 10000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.PB4ABBOPG7l7gHe7"
+  },
+  "PC3K6eeXRdUwJxLA": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This belt has a large silver buckle, usually depicting the image of a tiger.</p><p>The belt grants the wearer an <em>enhancement bonus</em> to <em>Dexterity</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "PC3K6eeXRdUwJxLA",
+    "name": "Belt of Incredible Dexterity +2",
+    "price": 4000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "209"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.PC3K6eeXRdUwJxLA"
+  },
+  "PIbBQB3Ijy20VkcZ": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "cl": 6,
+    "contextNotes": [],
+    "description": "<p>This garment offers magic protection in the form of a +1 to +5 <em>resistance bonus</em> on all saving throws (<em>Fortitude</em>, <em>Reflex</em>, and <em>Will</em>).</p>",
+    "id": "PIbBQB3Ijy20VkcZ",
+    "name": "Cloak of Resistance +2",
+    "price": 4000,
+    "slot": "shoulders",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "264"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "507"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.PIbBQB3Ijy20VkcZ"
+  },
+  "RCfZR9SG7jgJXfRl": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "nac",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This amulet, usually containing some type of magically preserved monster hide or other natural armor—such as bone, horn, carapace, or beast scales—toughens the wearer’s body and flesh, giving him an <em>enhancement bonus</em> to his <em>natural armor</em> from +1 to +5, depending on the kind of amulet.</p>",
+    "id": "RCfZR9SG7jgJXfRl",
+    "name": "Amulet of Natural Armor +4",
+    "price": 32000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "256"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "500"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.RCfZR9SG7jgJXfRl"
+  },
+  "RTqAMP4th4qhWIQu": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "cha",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "int",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 16,
+    "contextNotes": [],
+    "description": "<p>This ornate headband is decorated with numerous clusters of small gemstones. The headband grants the wearer an enhancement bonus to all mental ability scores (Intelligence, Wisdom, and Charisma) of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn. The headband also grants skill ranks as a @UUID[Compendium.pf1.items.WWej7rMLpLLCHtJv]{headband of vast intelligence}.</p>",
+    "id": "RTqAMP4th4qhWIQu",
+    "name": "Headband of Mental Superiority +4",
+    "price": 64000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "251"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.RTqAMP4th4qhWIQu"
+  },
+  "SSgdlwKyAPjYQ8ak": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This belt’s golden buckle depicts a bear’s head. The belt grants the wearer an <em>enhancement bonus</em> to <em>Constitution</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "SSgdlwKyAPjYQ8ak",
+    "name": "Belt of Mighty Constitution +4",
+    "price": 16000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "209"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.SSgdlwKyAPjYQ8ak"
+  },
+  "SW70FFT9LrxexEWR": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This belt grants the wearer an enhancement bonus to two physical ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. These bonuses are chosen when the belt is created and cannot be changed.</p>",
+    "id": "SW70FFT9LrxexEWR",
+    "name": "Belt of Physical Might +6 (Str & Con)",
+    "price": 90000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.SW70FFT9LrxexEWR"
+  },
+  "SrzYJxuK9paHpYkU": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "skill.clm",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.clm",
+        "text": "can climb with one hand with -[[5]]"
+      }
+    ],
+    "description": "<p>The palms and fingers of these leather gloves are covered in small hairlike bristles, resembling those found on the feet of geckos, that aid you when climbing. Gecko gloves grant you a +1 circumstance bonus on Climb checks. They also enable you to climb with only one hand; doing so imposes a -5 penalty on your Climb checks.</p>",
+    "id": "SrzYJxuK9paHpYkU",
+    "name": "Gecko gloves",
+    "price": 300,
+    "slot": "hands",
+    "sources": [
+      {
+        "id": "PZO9453",
+        "pages": "25"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.SrzYJxuK9paHpYkU"
+  },
+  "T42Wv6W7rnwfobSt": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This belt’s golden buckle depicts a bear’s head. The belt grants the wearer an <em>enhancement bonus</em> to <em>Constitution</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "T42Wv6W7rnwfobSt",
+    "name": "Belt of Mighty Constitution +6",
+    "price": 36000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "209"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.T42Wv6W7rnwfobSt"
+  },
+  "Tr7sLJK5gZu6Dl7K": {
+    "changes": [
+      {
+        "formula": "min(0, -floor(@abilities.dex.mod / 2))",
+        "target": "dexChecks",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(0, -floor(@abilities.dex.mod / 2))",
+        "target": "dexSkills",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(0, -floor(@abilities.dex.mod / 2))",
+        "target": "cmd",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(0, -floor(@abilities.dex.mod / 2))",
+        "target": "ac",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This plain but heavy iron helmet covers the entire head and fastens around the neck and shoulders. The wearer becomes difficult to identify, as the mask obscures all facial features. A creature wearing an iron mask is always treated as having made an involuntary Disguise skill check with a result of 10 (with no further modifiers). Additionally, the creature can only apply half its Dexterity modifier to Dexterity checks, Dexterity- based skill checks, initiative checks, and Reflex saving throws. The creature adds only half of its Dexterity modifier to its Armor Class and CMD, and to attack rolls, if applicable. The creature treats all other creatures as if they had concealment against it.</p><p>A creature wearing an iron mask can use the Escape Artist skill to slip free (DC 35, or DC 40 for a masterwork iron mask). Breaking the mask requires a Strength check (DC 30, or DC 32 for a masterwork iron mask). An iron mask has hardness 10 and 30 hit points. Half the damage dealt to an iron mask applies to the creature wearing it.</p><p>Iron masks are typically designed for Medium creatures, but Small ones can be bought for the same price, or larger ones can be bought for higher prices (the price is calculated the same way as buying larger-sized manacles; see page 68 of <em>Ultimate Equipment</em>). Most iron masks have locks; add the cost of the desired lock to the price of the mask. Masterwork masks also often feature frightening or demeaning sculpted visages.</p>",
+    "id": "Tr7sLJK5gZu6Dl7K",
+    "name": "Iron Mask, masterwork",
+    "price": 150,
+    "slot": "clothing",
+    "sources": [
+      {
+        "id": "PZO9293",
+        "pages": "15"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.Tr7sLJK5gZu6Dl7K"
+  },
+  "UJvYJmYnOITo7OSe": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dev",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This kit contains lockpicks and other tools you need to use the @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.cSdUATLHBFfw3v4s]{Disable Device} skill. Without these tools, you must use improvised tools, and you take a -2 circumstance penalty on @UUID[Compendium.pf1.pf1e-rules.x175kVqUfLGPt8tC.JournalEntryPage.cSdUATLHBFfw3v4s]{Disable Device} checks.</p>\n<p>This kit contains extra tools and tools of better make, which grant a +2 <em>circumstance bonus</em> on Disable Device checks.</p>",
+    "id": "UJvYJmYnOITo7OSe",
+    "name": "Thieves' Tools, masterwork",
+    "price": 100,
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "77"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "158, 161"
+      }
+    ],
+    "subType": "tool",
+    "uuid": "Compendium.pf1.items.Item.UJvYJmYnOITo7OSe"
+  },
+  "UaTTXdN8gHqw7o9m": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "10",
+        "target": "skill.swm",
+        "type": "competence"
+      }
+    ],
+    "cl": 7,
+    "contextNotes": [],
+    "description": "<p>As a @UUID[Compendium.pf1.items.VlfPlBqOR7VWkx80]{ring of swimming}, except it grants a +10 competence bonus on its wearer's Swim checks.</p>",
+    "id": "UaTTXdN8gHqw7o9m",
+    "name": "Ring of Swimming (Improved)",
+    "price": 10000,
+    "slot": "ring",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "175"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "479"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.UaTTXdN8gHqw7o9m"
+  },
+  "UxSduRXsZrm0LuWV": {
+    "aura": {
+      "school": "evo"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "ndamage",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "nattack",
+        "type": "enh"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This amulet grants an enhancement bonus of +1 to +5 on attack and damage rolls with unarmed attacks and natural weapons.</p><p>Alternatively, this amulet can grant melee weapon special abilities, so long as they can be applied to unarmed attacks. See Table: Melee Weapon Special Abilities for a list of abilities. Special abilities count as additional bonuses for determining the market value of the item, but do not modify attack or damage bonuses. An amulet of mighty fists cannot have a modified bonus (enhancement bonus plus special ability bonus equivalents) higher than +5. An amulet of mighty fists does not need to have a +1 enhancement bonus to grant a melee weapon special ability.</p>",
+    "id": "UxSduRXsZrm0LuWV",
+    "name": "Amulet of Mighty Fists +4",
+    "price": 64000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "255"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "496"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.UxSduRXsZrm0LuWV"
+  },
+  "VkKpnSiSWntTHZXE": {
+    "aura": {
+      "school": "con"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.hea",
+        "type": "competence"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>These pure-white leather gloves bear symbols of healing and faith on the back of the hands. The wearer gains a +5 competence bonus on Heal checks.</p>",
+    "id": "VkKpnSiSWntTHZXE",
+    "name": "Healer's Gloves",
+    "price": 2500,
+    "slot": "hands",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "238"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.VkKpnSiSWntTHZXE"
+  },
+  "VlfPlBqOR7VWkx80": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.swm",
+        "type": "competence"
+      }
+    ],
+    "cl": 2,
+    "contextNotes": [],
+    "description": "<p>This silver ring usually has fishlike designs and motifs etched into the band. It continually grants the wearer a +5 competence bonus on Swim checks.</p>",
+    "id": "VlfPlBqOR7VWkx80",
+    "name": "Ring of Swimming",
+    "price": 2500,
+    "slot": "ring",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "175"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "479"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.VlfPlBqOR7VWkx80"
+  },
+  "WTGZpsYyhX57kXDe": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This simple copper headband has a small yellow gem set so that when it rests upon the forehead of the wearer, the yellow gem sits perched on the wearer’s brow as if it were a third eye in the middle of her forehead. Often, the headband contains additional designs to further accentuate the appearance of a third, crystal eye.</p><p>The headband grants the wearer an enhancement bonus to two mental ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p><p>These bonuses are chosen when the headband is created and cannot be changed. If the headband grants a bonus to Intelligence, it also grants skill ranks as a @UUID[Compendium.pf1.items.lrKImXw2wiv8DCD1]{headband of vast intelligence}.</p>",
+    "id": "WTGZpsYyhX57kXDe",
+    "name": "Headband of Mental Prowess +2 (Int & Cha)",
+    "price": 10000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.WTGZpsYyhX57kXDe"
+  },
+  "WWej7rMLpLLCHtJv": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "int",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This intricate gold headband is decorated with several small blue and deep purple gemstones.</p><p>The headband grants the wearer an <em>enhancement bonus</em> to <em>Intelligence</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn. A headband of vast intelligence has one skill associated with it per +2 bonus it grants. After being worn for 24 hours, the headband grants a number of skill ranks in those skills equal to the wearer’s total <em>Hit Dice</em>. These ranks do not stack with the ranks a creature already possesses. These skills are chosen when the headband is created. If no skill is listed, the headband is assumed to grant skill ranks in randomly determined <em>Knowledge</em> skills.</p>",
+    "id": "WWej7rMLpLLCHtJv",
+    "name": "Headband of Vast Intelligence +6",
+    "price": 36000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "251"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.WWej7rMLpLLCHtJv"
+  },
+  "X3XW4U4eO5UbfzNc": {
+    "aura": {
+      "school": "misc"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "init",
+        "type": "competence"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<h3>Effect</h3><p>This stone grants a +1 competence bonus on initiative checks.</p><h3>Resonance</h3><p>+1 insight bonus on combat maneuver checks.</p>",
+    "id": "X3XW4U4eO5UbfzNc",
+    "name": "Dusty Rose Prism Ioun Stone, cracked",
+    "price": 500,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO9211",
+        "pages": "46"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.X3XW4U4eO5UbfzNc"
+  },
+  "Xovy8oxmRxth4EVY": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "cha",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This attractive silver headband is decorated with a number of small red and orange gemstones.</p><p>The headband grants the wearer an <em>enhancement bonus</em> to <em>Charisma</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p>",
+    "id": "Xovy8oxmRxth4EVY",
+    "name": "Headband of Alluring Charisma +4",
+    "price": 16000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "248"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "516"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.Xovy8oxmRxth4EVY"
+  },
+  "XtmYhaZmWOzQkAXd": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "skill.dev",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "cmb.grapple",
+        "text": "DR 2/magic against attacks of opportunity provoked"
+      },
+      {
+        "target": "ref",
+        "text": "+[[1]] circumstance against defensive abilities that deal damage when you strike a creature with a nonreach weapon, unarmed strike, or natural attack"
+      }
+    ],
+    "description": "<p>Fine plates of articulated steel reinforce these elbow-length leather gloves, which are designed to allow animal handlers and animal hunters alike to confront beasts with natural defenses like spines and quills. While wearing the gloves, you gain DR 2/magic against attacks of opportunity provoked when you attempt a combat maneuver check to grapple a creature. You also gain this damage reduction and a +1 circumstance bonus on Reflex saves against defensive abilities that deal damage when you strike a creature with a nonreach weapon, unarmed strike, or natural attack. The thick gloves restrict your movement, imposing a -2 penalty on precision-based skill checks that involve your hands (such as using Disable Device to pick a lock)</p>",
+    "id": "XtmYhaZmWOzQkAXd",
+    "name": "Wrangler's gloves",
+    "price": 20,
+    "slot": "hands",
+    "sources": [
+      {
+        "id": "PZO9478",
+        "pages": "27"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.XtmYhaZmWOzQkAXd"
+  },
+  "ZeDy7NvpSS77XYpa": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "con",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 16,
+    "contextNotes": [],
+    "description": "<p>This belt has a large platinum buckle and grants the wearer an enhancement bonus to all physical ability scores (Strength, Dexterity, and Constitution) of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "ZeDy7NvpSS77XYpa",
+    "name": "Belt of Physical Perfection +6",
+    "price": 144000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.ZeDy7NvpSS77XYpa"
+  },
+  "b24bvd97p3za8KiO": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This belt grants the wearer an enhancement bonus to two physical ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. These bonuses are chosen when the belt is created and cannot be changed.</p>",
+    "id": "b24bvd97p3za8KiO",
+    "name": "Belt of Physical Might +2 (Str & Con)",
+    "price": 10000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.b24bvd97p3za8KiO"
+  },
+  "bOySfOOLWNtGZFDb": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This belt grants the wearer an enhancement bonus to two physical ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. These bonuses are chosen when the belt is created and cannot be changed.</p>",
+    "id": "bOySfOOLWNtGZFDb",
+    "name": "Belt of Physical Might +4 (Str & Con)",
+    "price": 40000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.bOySfOOLWNtGZFDb"
+  },
+  "bqdgdzahtubuuxmn": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dis",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This kit contains tools like makeup and fake facial hair, and provides a +2 <em>circumstance bonus</em> on <em>Disguise</em> checks. A disguise kit is exhausted after 10 uses.</p>",
+    "id": "bqdgdzahtubuuxmn",
+    "name": "Disguise Kit",
+    "price": 50,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "158, 161"
+      }
+    ],
+    "subType": "gear",
+    "uuid": "Compendium.pf1.items.Item.bqdgdzahtubuuxmn"
+  },
+  "bw0YmbdvqRVx8C88": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "3",
+        "target": "chaChecks",
+        "type": "competence"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This delicately engraved silver headband grants its wearer a +3 competence bonus on Charisma-based checks.</p>",
+    "id": "bw0YmbdvqRVx8C88",
+    "name": "Circlet of Persuasion",
+    "price": 4500,
+    "slot": "head",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "241"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "506"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.bw0YmbdvqRVx8C88"
+  },
+  "bxwDQ3cdQNABoGhm": {
+    "aura": {
+      "school": "con"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "allSavingThrows",
+        "type": "resist"
+      },
+      {
+        "formula": "4",
+        "target": "cl",
+        "type": "untyped"
+      }
+    ],
+    "cl": 15,
+    "contextNotes": [],
+    "description": "<p>The wearer can move and reposition the images on the kimono at will. The kimono grants its wearer a +4 resistance bonus on all saving throws and a +4 bonus on all caster level checks.</p><p>Once per day, the wearer can capture a single creature within 60 feet within the kimono (no save), shunting the victim into an extradimensional space similar to that created by a @UUID[Compendium.pf1.spells.Item.hi72gh3dlf7a1qyt]{maze} spell. Inside this otherworldly prison, the maze appears as an endless cherry orchard filled with walls of windblown cherry blossoms and cranes flying overhead. Each round on its turn, the victim inside the kimono may attempt a DC 20 Intelligence check to escape the kimono as a full-round action. If the victim doesn't escape, it is released after 10 minutes, returning to where it had been before the kimono drew it in. If this location is occupied by another creature or a solid object, the subject appears in the nearest open space.</p><p>Whenever a creature is drawn inside the kimono, the victim's image temporarily manifests as another embroidered design among the kimono's other images. While a victim is trapped inside, the kimono's bonuses on saving throws and caster level checks are increased by 2 (to +6). The kimono's increased bonuses return to normal when the victim is freed or released.</p>",
+    "id": "bxwDQ3cdQNABoGhm",
+    "name": "Otherworldly Kimono",
+    "price": 67000,
+    "slot": "body",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "216"
+      },
+      {
+        "id": "PZO9054",
+        "pages": "60"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.bxwDQ3cdQNABoGhm"
+  },
+  "cCFOABvA0UIEoX5e": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "cha",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "int",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This simple copper headband has a small yellow gem set so that when it rests upon the forehead of the wearer, the yellow gem sits perched on the wearer’s brow as if it were a third eye in the middle of her forehead. Often, the headband contains additional designs to further accentuate the appearance of a third, crystal eye.</p><p>The headband grants the wearer an enhancement bonus to two mental ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p><p>These bonuses are chosen when the headband is created and cannot be changed. If the headband grants a bonus to Intelligence, it also grants skill ranks as a @UUID[Compendium.pf1.items.lrKImXw2wiv8DCD1]{headband of vast intelligence}.</p>",
+    "id": "cCFOABvA0UIEoX5e",
+    "name": "Headband of Mental Prowess +6 (Int & Cha)",
+    "price": 90000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.cCFOABvA0UIEoX5e"
+  },
+  "crea6OdTB5SvkjjL": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 16,
+    "contextNotes": [],
+    "description": "<p>This ornate headband is decorated with numerous clusters of small gemstones. The headband grants the wearer an enhancement bonus to all mental ability scores (Intelligence, Wisdom, and Charisma) of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn. The headband also grants skill ranks as a @UUID[Compendium.pf1.items.WWej7rMLpLLCHtJv]{headband of vast intelligence}.</p>",
+    "id": "crea6OdTB5SvkjjL",
+    "name": "Headband of Mental Superiority +2",
+    "price": 16000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "251"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.crea6OdTB5SvkjjL"
+  },
+  "cubhtyskecferwpv": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "skill.crf.alchemy",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This compact version of a @UUID[Compendium.pf1.items.Item.vsanawzysjtywomw]{full-sized alchemist's lab} provides a +1 <em>circumstance bonus</em> on <em>Craft</em> (alchemy) checks.</p>",
+    "id": "cubhtyskecferwpv",
+    "name": "Portable Alchemist's Lab",
+    "price": 75,
+    "sources": [
+      {
+        "id": "PZO9410",
+        "pages": "19"
+      },
+      {
+        "id": "PZO1123",
+        "pages": "77"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "184"
+      }
+    ],
+    "subType": "tool",
+    "uuid": "Compendium.pf1.items.Item.cubhtyskecferwpv"
+  },
+  "d8dNMmffPaYxrxMM": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This simple bronze headband is decorated with an intricate pattern of fine green etchings.</p><p>The headband grants the wearer an <em>enhancement bonus</em> to <em>Wisdom</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p>",
+    "id": "d8dNMmffPaYxrxMM",
+    "name": "Headband of Inspired Wisdom +4",
+    "price": 16000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "516"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.d8dNMmffPaYxrxMM"
+  },
+  "dSU0Qz05SN6KRBEK": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "3",
+        "target": "nac",
+        "type": "enh"
+      }
+    ],
+    "cl": 9,
+    "contextNotes": [],
+    "description": "<p>This amulet, usually containing some type of magically preserved monster hide or other natural armor—such as bone, horn, carapace, or beast scales—toughens the wearer’s body and flesh, giving him an <em>enhancement bonus</em> to his <em>natural armor</em> from +1 to +5, depending on the kind of amulet.</p>",
+    "id": "dSU0Qz05SN6KRBEK",
+    "name": "Amulet of Natural Armor +3",
+    "price": 18000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "256"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "500"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.dSU0Qz05SN6KRBEK"
+  },
+  "ddolY7D1xWkCT3q9": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This belt is a thick leather affair, often decorated with huge metal buckles. The belt grants the wearer an <em>enhancement bonus</em> to <em>Strength</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "ddolY7D1xWkCT3q9",
+    "name": "Belt of Giant Strength +4",
+    "price": 16000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "208"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.ddolY7D1xWkCT3q9"
+  },
+  "dxoaodiakqybbbyc": {
+    "changes": [
+      {
+        "formula": "-4",
+        "target": "skill.per",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[8]] vs sight based attacks"
+      }
+    ],
+    "id": "dxoaodiakqybbbyc",
+    "name": "Smoked Goggles",
+    "price": 10,
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "57"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "183"
+      }
+    ],
+    "subType": "adventuring",
+    "uuid": "Compendium.pf1.items.Item.dxoaodiakqybbbyc"
+  },
+  "eIxzoEGDNZXWgnKk": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This belt is a thick leather affair, often decorated with huge metal buckles. The belt grants the wearer an <em>enhancement bonus</em> to <em>Strength</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "eIxzoEGDNZXWgnKk",
+    "name": "Belt of Giant Strength +2",
+    "price": 4000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "208"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.eIxzoEGDNZXWgnKk"
+  },
+  "fgf3caghH3ca4edJ": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This belt is a thick leather affair, often decorated with huge metal buckles. The belt grants the wearer an <em>enhancement bonus</em> to <em>Strength</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "fgf3caghH3ca4edJ",
+    "name": "Belt of Giant Strength +6",
+    "price": 36000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "208"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.fgf3caghH3ca4edJ"
+  },
+  "gEoAP62h3nRtBBYH": {
+    "changes": [
+      {
+        "formula": "-4",
+        "target": "skill.per",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[8]] vs sight based attacks"
+      }
+    ],
+    "id": "gEoAP62h3nRtBBYH",
+    "name": "Snow goggles",
+    "price": 12,
+    "slot": "eyes",
+    "sources": [
+      {
+        "id": "PZO9051",
+        "pages": "67"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.gEoAP62h3nRtBBYH"
+  },
+  "gTcqkPOYxuBehsPW": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 16,
+    "contextNotes": [],
+    "description": "<p>This belt has a large platinum buckle and grants the wearer an enhancement bonus to all physical ability scores (Strength, Dexterity, and Constitution) of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "gTcqkPOYxuBehsPW",
+    "name": "Belt of Physical Perfection +2",
+    "price": 16000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.gTcqkPOYxuBehsPW"
+  },
+  "gWk5ED2rKbYgtAil": {
+    "aura": {
+      "school": "conjuration and transmutation"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.crf.alchemy",
+        "type": "insight"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [
+      {
+        "target": "meleeWeapon",
+        "text": "+[[1]] Insight on attack and damage with alchemical items and bombs."
+      },
+      {
+        "target": "rangedWeapon",
+        "text": "+[[1]] Insight on attack and damage with alchemical items and bombs."
+      }
+    ],
+    "description": "<p>Two entwined wooden snakes run the length of this laurel rod, which is capped with a pair of brass wings. This mystical implement gives its possessor a +5 insight bonus on Craft (alchemy) checks and a +1 insight bonus on attack and damage rolls with alchemical items, including alchemists' bombs. When it's held in hand, the caduceus rod can be invoked five times per day to grant one of the following boons, each of which counts as a 6th-level spell-like ability.</p><p><strong>Awaken</strong>: The rod awakens all sleeping creatures within a 40-foot-radius burst centered on the wielder. Creatures in the burst gain immunity to sleep effects for 1 minute.</p><p><strong>Exchange</strong>: The wielder transmutes one of his prepared alchemical extracts into an extract of another formula in his formula book of equal or lower level.</p><p><strong>Mercy</strong>: All dying (-1 or fewer hit points) creatures in a 40-foot-radius burst centered on the wielder die. Each such creature can attempt a DC 19 Fortitude save to instead take 1d6 points of negative energy damage. This is a death effect.</p><p><strong>Revive</strong>: The wielder targets a creature within 40 feet with empowered breath of life.</p><p><strong>Slumber</strong>: As deep slumber, except that it affects a 20-foot-radius burst centered on the wielder, can affect up to 20 HD of creatures, and has a Will save DC of 19. The wielder of the rod is unaffected and can choose to exclude up to four other targets from the effects.</p>",
+    "id": "gWk5ED2rKbYgtAil",
+    "name": "Caduceus Rod",
+    "price": 142000,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "253"
+      }
+    ],
+    "subType": "other",
+    "uuid": "Compendium.pf1.items.Item.gWk5ED2rKbYgtAil"
+  },
+  "gohphqpkgmhnkniz": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "skill.swm",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This one-piece suit of clothing reduces one's drag in the water, making swimming easier. It provides a +1 <em>circumstance bonus</em> on <em>Swim</em> checks. The suit only grants this bonus if it is the outermost garment, and has no effect if worn over bulky clothes or armor or with cumbersome gear (such as a backpack, large weapons, and so on). Damage to the suit (such as from several rounds of combat against slashing and piercing attacks) negates the suit's bonus until it is repaired.</p>",
+    "id": "gohphqpkgmhnkniz",
+    "name": "Diving Suit",
+    "price": 10,
+    "slot": "clothing",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "89"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.gohphqpkgmhnkniz"
+  },
+  "gxbmvhmcyfyetnmt": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "skill.swm",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Usually composed of an inflated animal bladder sealed with pitch, a held flotation device adds a +1 <em>circumstance bonus</em> on <em>Swim</em> checks.</p>",
+    "id": "gxbmvhmcyfyetnmt",
+    "name": "Flotation Device",
+    "price": 1,
+    "sources": [
+      {
+        "id": "PZO9410",
+        "pages": "19"
+      }
+    ],
+    "subType": "gear",
+    "uuid": "Compendium.pf1.items.Item.gxbmvhmcyfyetnmt"
+  },
+  "hbymhteghwtcsyoy": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.clm",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>These crampons, pitons, ropes, and other tools give you a +2 <em>circumstance bonus</em> on <em>Climb</em> checks.</p>",
+    "id": "hbymhteghwtcsyoy",
+    "name": "Climber's Kit",
+    "price": 80,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "158, 161"
+      }
+    ],
+    "subType": "gear",
+    "uuid": "Compendium.pf1.items.Item.hbymhteghwtcsyoy"
+  },
+  "i59AylfZ8Yc8ijMV": {
+    "aura": {
+      "school": "ill"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.ste",
+        "type": "competence"
+      }
+    ],
+    "cl": 4,
+    "contextNotes": [],
+    "description": "<p>This black bodysuit grants its wearer a +2 armor bonus and a +5 competence bonus on Stealth checks. In addition, if the wearer is in illumination of less than normal light, she can use invisibility, as the spell, once per day. If the wearer is a ninja with the @UUID[Compendium.pf1.class-abilities.Item.2UoAjbdNzZJEjCq2]{vanishing trick} ninja trick, then the wearer can use that ability twice per day without the expenditure of any ki points and regardless of the surrounding light level.</p>",
+    "id": "i59AylfZ8Yc8ijMV",
+    "name": "Shozoku of the Night Wind",
+    "price": 12000,
+    "slot": "body",
+    "sources": [
+      {
+        "id": "PZO9050",
+        "pages": "60"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.i59AylfZ8Yc8ijMV"
+  },
+  "iCuo14damYkdjuD5": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This ring offers continual magical protection in the form of a <em>deflection</em> bonus of +1 to +5 to <em>AC</em>.</p>",
+    "id": "iCuo14damYkdjuD5",
+    "name": "Ring of Protection +1",
+    "price": 2000,
+    "slot": "ring",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "172"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "479"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.iCuo14damYkdjuD5"
+  },
+  "iuxYdlMGg614xHCF": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.acr",
+        "type": "competence"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>These soft boots are partially made out of living leaves and other natural materials. They enable the wearer to move nimbly about in virtually any surroundings, granting a +5 competence bonus on Acrobatics checks.</p>",
+    "id": "iuxYdlMGg614xHCF",
+    "name": "Boots of Elvenkind",
+    "price": 2500,
+    "slot": "feet",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "228"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "503"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.iuxYdlMGg614xHCF"
+  },
+  "ivAc2eDQHJ04aBbr": {
+    "changes": [
+      {
+        "formula": "min(0, -floor(@abilities.dex.mod / 2))",
+        "target": "dexSkills",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(0, -floor(@abilities.dex.mod / 2))",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(0, -floor(@abilities.dex.mod / 2))",
+        "target": "cmd",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(0, -floor(@abilities.dex.mod / 2))",
+        "target": "dexChecks",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This plain but heavy iron helmet covers the entire head and fastens around the neck and shoulders. The wearer becomes difficult to identify, as the mask obscures all facial features. A creature wearing an iron mask is always treated as having made an involuntary Disguise skill check with a result of 10 (with no further modifiers). Additionally, the creature can only apply half its Dexterity modifier to Dexterity checks, Dexterity- based skill checks, initiative checks, and Reflex saving throws. The creature adds only half of its Dexterity modifier to its Armor Class and CMD, and to attack rolls, if applicable. The creature treats all other creatures as if they had concealment against it.</p><p>A creature wearing an iron mask can use the Escape Artist skill to slip free (DC 35, or DC 40 for a masterwork iron mask). Breaking the mask requires a Strength check (DC 30, or DC 32 for a masterwork iron mask). An iron mask has hardness 10 and 30 hit points. Half the damage dealt to an iron mask applies to the creature wearing it.</p><p>Iron masks are typically designed for Medium creatures, but Small ones can be bought for the same price, or larger ones can be bought for higher prices (the price is calculated the same way as buying larger-sized manacles; see page 68 of <em>Ultimate Equipment</em>). Most iron masks have locks; add the cost of the desired lock to the price of the mask. Masterwork masks also often feature frightening or demeaning sculpted visages.</p>",
+    "id": "ivAc2eDQHJ04aBbr",
+    "name": "Iron Mask, common",
+    "price": 75,
+    "slot": "clothing",
+    "sources": [
+      {
+        "id": "PZO9293",
+        "pages": "15"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.ivAc2eDQHJ04aBbr"
+  },
+  "keBZA2Io5pYXhuP2": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "int",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This simple copper headband has a small yellow gem set so that when it rests upon the forehead of the wearer, the yellow gem sits perched on the wearer’s brow as if it were a third eye in the middle of her forehead. Often, the headband contains additional designs to further accentuate the appearance of a third, crystal eye.</p><p>The headband grants the wearer an enhancement bonus to two mental ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p><p>These bonuses are chosen when the headband is created and cannot be changed. If the headband grants a bonus to Intelligence, it also grants skill ranks as a @UUID[Compendium.pf1.items.lrKImXw2wiv8DCD1]{headband of vast intelligence}.</p>",
+    "id": "keBZA2Io5pYXhuP2",
+    "name": "Headband of Mental Prowess +4 (Int & Wis)",
+    "price": 40000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.keBZA2Io5pYXhuP2"
+  },
+  "lIPJinb2J7sEB0Ng": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This simple bronze headband is decorated with an intricate pattern of fine green etchings.</p><p>The headband grants the wearer an <em>enhancement bonus</em> to <em>Wisdom</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p>",
+    "id": "lIPJinb2J7sEB0Ng",
+    "name": "Headband of Inspired Wisdom +2",
+    "price": 4000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "516"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.lIPJinb2J7sEB0Ng"
+  },
+  "lOSTTNoeDWRcJJiS": {
+    "aura": {
+      "school": "evo"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "luck"
+      }
+    ],
+    "cl": 9,
+    "contextNotes": [],
+    "description": "<p>This item looks like and functions as a lucky horseshoe. In addition, if the horseshoe is placed prominently over the entrance of a building and left there for a period of at least 8 hours, it provides good luck to all those who spend time within that building. In order to gain this benefit, a character must spend at least 8 consecutive hours within the building; the benefit lasts for 24 hours. A single communal lucky horseshoe can provide its benefit to any number of creatures per day, but each creature can gain the benefits of only one lucky horseshoe at a time. Once a creature invokes the lucky horseshoe's ability, she can't benefit from another lucky horseshoe for 24 hours, though time she spends inside the building during that interval counts toward the 8 consecutive hours required to gain the communal lucky horseshoe's benefit for the next day.</p>",
+    "id": "lOSTTNoeDWRcJJiS",
+    "name": "Lucky Horseshoe, Communal",
+    "price": 15000,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "260"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.lOSTTNoeDWRcJJiS"
+  },
+  "lrKImXw2wiv8DCD1": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This intricate gold headband is decorated with several small blue and deep purple gemstones.</p><p>The headband grants the wearer an <em>enhancement bonus</em> to <em>Intelligence</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn. A headband of vast intelligence has one skill associated with it per +2 bonus it grants. After being worn for 24 hours, the headband grants a number of skill ranks in those skills equal to the wearer’s total <em>Hit Dice</em>. These ranks do not stack with the ranks a creature already possesses. These skills are chosen when the headband is created. If no skill is listed, the headband is assumed to grant skill ranks in randomly determined <em>Knowledge</em> skills.</p>",
+    "id": "lrKImXw2wiv8DCD1",
+    "name": "Headband of Vast Intelligence +2",
+    "price": 4000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "251"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.lrKImXw2wiv8DCD1"
+  },
+  "mZMk47yWUob6w0j1": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This simple bronze headband is decorated with an intricate pattern of fine green etchings.</p><p>The headband grants the wearer an <em>enhancement bonus</em> to <em>Wisdom</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p>",
+    "id": "mZMk47yWUob6w0j1",
+    "name": "Headband of Inspired Wisdom +6",
+    "price": 36000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "516"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.mZMk47yWUob6w0j1"
+  },
+  "miA60GvZRDET2nZN": {
+    "aura": {
+      "school": "misc"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "ac",
+        "type": "insight"
+      },
+      {
+        "formula": "-2",
+        "target": "str",
+        "type": "untyped"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<h3>Effect</h3><p>This stone grants a +1 insight bonus to AC and a –2 penalty to Strength.</p><h3>Resonance</h3><p>+1 insight bonus on combat maneuver checks.</p>",
+    "id": "miA60GvZRDET2nZN",
+    "name": "Dusty Rose Prism Ioun Stone, flawed",
+    "price": 4000,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO9211",
+        "pages": "47"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.miA60GvZRDET2nZN"
+  },
+  "n3O5vKPxvifAht8l": {
+    "aura": {
+      "school": "div"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.per",
+        "type": "competence"
+      }
+    ],
+    "cl": 3,
+    "contextNotes": [],
+    "description": "<p>These lenses are made of special crystal and fit over the eyes of the wearer. They grant a +5 competence bonus on Perception checks. Both lenses must be worn to gain the benefit. Wearing only one causes a character to become dizzy and stunned for 1 round.</p>",
+    "id": "n3O5vKPxvifAht8l",
+    "name": "Eyes of the Eagle",
+    "price": 2500,
+    "slot": "eyes",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "225"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "512"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.n3O5vKPxvifAht8l"
+  },
+  "oIIF8YbicaY18yuQ": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "cha",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This simple copper headband has a small yellow gem set so that when it rests upon the forehead of the wearer, the yellow gem sits perched on the wearer’s brow as if it were a third eye in the middle of her forehead. Often, the headband contains additional designs to further accentuate the appearance of a third, crystal eye.</p><p>The headband grants the wearer an enhancement bonus to two mental ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p><p>These bonuses are chosen when the headband is created and cannot be changed.</p>",
+    "id": "oIIF8YbicaY18yuQ",
+    "name": "Headband of Mental Prowess +4 (Wis & Cha)",
+    "price": 40000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.oIIF8YbicaY18yuQ"
+  },
+  "pByaFdX4Ih1Yty0t": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "skill.int",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Though Taramai is long dead, and that first Keleshite invasion now little more than scattered stone foundations crumbling amid the grass, his legacy remains a point of great cultural pride among the Kara, with several leaders since having claimed to be his reincarnation. Taramai also pioneered the now-standard Kara practice of wearing the litchina-a metal face mask sculpted to match a given warrior's face, so that the enemy can never read any fear or pain in a Kara's expression. Each warrior must earn his or her litchina in battle, and most Kara would sooner fight naked than go without theirs.</p><p>To be worn properly, a litchina must be attached to a helm or headpiece of some sort (usually via small hooks). While worn in this manner, it grants the wearer a +1 competence bonus to Intimidate. A magically enhanced litchina can count as occupying either the head, headband, or eyes slot (determined at the time of item creation). A standard litchina costs 100 gp and weighs 2 pounds.</p>",
+    "id": "pByaFdX4Ih1Yty0t",
+    "name": "Litchina",
+    "price": 100,
+    "slot": "clothing",
+    "sources": [
+      {
+        "id": "PZO9285",
+        "pages": "63"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.pByaFdX4Ih1Yty0t"
+  },
+  "pIqlopSr1Ya1CGeN": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "int",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This simple copper headband has a small yellow gem set so that when it rests upon the forehead of the wearer, the yellow gem sits perched on the wearer’s brow as if it were a third eye in the middle of her forehead. Often, the headband contains additional designs to further accentuate the appearance of a third, crystal eye.</p><p>The headband grants the wearer an enhancement bonus to two mental ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p><p>These bonuses are chosen when the headband is created and cannot be changed. If the headband grants a bonus to Intelligence, it also grants skill ranks as a @UUID[Compendium.pf1.items.lrKImXw2wiv8DCD1]{headband of vast intelligence}.</p>",
+    "id": "pIqlopSr1Ya1CGeN",
+    "name": "Headband of Mental Prowess +6 (Int & Wis)",
+    "price": 90000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.pIqlopSr1Ya1CGeN"
+  },
+  "qAx5CPzrFMPWdxbh": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.apr",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This simple lens allows a closer look at small objects. It is also useful as a substitute for a flint and steel when starting fires. Lighting a fire with a magnifying glass requires bright light, such as sunlight to focus, tinder to ignite, and at least a fullround action. A magnifying glass grants a +2 circumstance bonus on Appraise checks involving any item that is small or highly detailed. </p>",
+    "id": "qAx5CPzrFMPWdxbh",
+    "name": "Magnifying glass",
+    "price": 100,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "158, 161"
+      },
+      {
+        "id": "PZO1123",
+        "pages": "57"
+      }
+    ],
+    "subType": "adventuring",
+    "uuid": "Compendium.pf1.items.Item.qAx5CPzrFMPWdxbh"
+  },
+  "qlweoovcvtklmsre": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.hea",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This collection of bandages and herbs provides a +2 <em>circumstance bonus</em> on <em>Heal</em> checks. A healer's kit is exhausted after 10 uses.</p>",
+    "id": "qlweoovcvtklmsre",
+    "name": "Healer's Kit",
+    "price": 50,
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "77"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "158, 161"
+      }
+    ],
+    "subType": "tool",
+    "uuid": "Compendium.pf1.items.Item.qlweoovcvtklmsre"
+  },
+  "qyUIGgiy62wtP3rE": {
+    "aura": {
+      "school": "evo"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "nattack",
+        "type": "enh"
+      },
+      {
+        "formula": "5",
+        "target": "ndamage",
+        "type": "enh"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This amulet grants an enhancement bonus of +1 to +5 on attack and damage rolls with unarmed attacks and natural weapons.</p><p>Alternatively, this amulet can grant melee weapon special abilities, so long as they can be applied to unarmed attacks. See Table: Melee Weapon Special Abilities for a list of abilities. Special abilities count as additional bonuses for determining the market value of the item, but do not modify attack or damage bonuses. An amulet of mighty fists cannot have a modified bonus (enhancement bonus plus special ability bonus equivalents) higher than +5. An amulet of mighty fists does not need to have a +1 enhancement bonus to grant a melee weapon special ability.</p>",
+    "id": "qyUIGgiy62wtP3rE",
+    "name": "Amulet of Mighty Fists +5",
+    "price": 100000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "255"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "496"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.qyUIGgiy62wtP3rE"
+  },
+  "rHC8HqwEHd87itWE": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "con",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This belt grants the wearer an enhancement bonus to two physical ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. These bonuses are chosen when the belt is created and cannot be changed.</p>",
+    "id": "rHC8HqwEHd87itWE",
+    "name": "Belt of Physical Might +4 (Dex & Con)",
+    "price": 40000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.rHC8HqwEHd87itWE"
+  },
+  "sXdgwJBAyNAGaYZy": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This garment offers magic protection in the form of a +1 to +5 <em>resistance bonus</em> on all saving throws (<em>Fortitude</em>, <em>Reflex</em>, and <em>Will</em>).</p>",
+    "id": "sXdgwJBAyNAGaYZy",
+    "name": "Cloak of Resistance +4",
+    "price": 16000,
+    "slot": "shoulders",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "264"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "507"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.sXdgwJBAyNAGaYZy"
+  },
+  "sv1iKPTOpaiZMOWk": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This attractive silver headband is decorated with a number of small red and orange gemstones.</p><p>The headband grants the wearer an <em>enhancement bonus</em> to <em>Charisma</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p>",
+    "id": "sv1iKPTOpaiZMOWk",
+    "name": "Headband of Alluring Charisma +2",
+    "price": 4000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "248"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "516"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.sv1iKPTOpaiZMOWk"
+  },
+  "tDLXshPenKfKxuiW": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "con",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This belt grants the wearer an enhancement bonus to two physical ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. These bonuses are chosen when the belt is created and cannot be changed.</p>",
+    "id": "tDLXshPenKfKxuiW",
+    "name": "Belt of Physical Might +6 (Dex & Con)",
+    "price": 90000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.tDLXshPenKfKxuiW"
+  },
+  "uq4FKIOYqIkw7TFP": {
+    "aura": {
+      "school": "div"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "cl": 15,
+    "contextNotes": [],
+    "description": "<p>This conical iron jingasa, or war hat, grants the wearer a +1 deflection bonus to AC. When struck by a critical hit or sneak attack, the wearer can spend an immediate action to negate the critical hit or sneak attack (similar to the fortification armor special ability, but without requiring a roll). The damage is instead rolled normally. This ability functions only once, though the jingasa continues to grant its deflection bonus even after the other ability is expended.</p>",
+    "id": "uq4FKIOYqIkw7TFP",
+    "name": "Jingasa of the Fortunate Soldier",
+    "price": 5000,
+    "slot": "head",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "245"
+      },
+      {
+        "id": "PZO9052",
+        "pages": "60"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.uq4FKIOYqIkw7TFP"
+  },
+  "vsanawzysjtywomw": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.crf.alchemy",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>This lab is used for making alchemical items, and provides a +2 circumstance bonus on Craft (alchemy) checks. It has no bearing on the costs related to the Craft (alchemy) skill. Without this lab, a character with the Craft (alchemy) skill is assumed to have enough tools to use the skill but not enough to get the +2 bonus that the lab provides.</p>",
+    "id": "vsanawzysjtywomw",
+    "name": "Alchemist's Lab",
+    "price": 200,
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "77"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "158, 161"
+      }
+    ],
+    "subType": "tool",
+    "uuid": "Compendium.pf1.items.Item.vsanawzysjtywomw"
+  },
+  "w1SJ6hJYFwN8Pept": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "3",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "cl": 9,
+    "contextNotes": [],
+    "description": "<p>This ring offers continual magical protection in the form of a <em>deflection</em> bonus of +1 to +5 to <em>AC</em>.</p>",
+    "id": "w1SJ6hJYFwN8Pept",
+    "name": "Ring of Protection +3",
+    "price": 18000,
+    "slot": "ring",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "172"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "479"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.w1SJ6hJYFwN8Pept"
+  },
+  "wU8UByas24WFXOMn": {
+    "aura": {
+      "school": "abj"
+    },
+    "changes": [
+      {
+        "formula": "5",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "cl": 15,
+    "contextNotes": [],
+    "description": "<p>This garment offers magic protection in the form of a +1 to +5 <em>resistance bonus</em> on all saving throws (<em>Fortitude</em>, <em>Reflex</em>, and <em>Will</em>).</p>",
+    "id": "wU8UByas24WFXOMn",
+    "name": "Cloak of Resistance +5",
+    "price": 25000,
+    "slot": "shoulders",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "264"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "507"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.wU8UByas24WFXOMn"
+  },
+  "wYR4nVNl60tQjfHn": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "cha",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "int",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 16,
+    "contextNotes": [],
+    "description": "<p>This ornate headband is decorated with numerous clusters of small gemstones. The headband grants the wearer an enhancement bonus to all mental ability scores (Intelligence, Wisdom, and Charisma) of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn. The headband also grants skill ranks as a @UUID[Compendium.pf1.items.WWej7rMLpLLCHtJv]{headband of vast intelligence}.</p>",
+    "id": "wYR4nVNl60tQjfHn",
+    "name": "Headband of Mental Superiority +6",
+    "price": 144000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "251"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.wYR4nVNl60tQjfHn"
+  },
+  "xJJjwMm5Y5A8wFOP": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.blf",
+        "type": "circumstance"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "50% chance to avoid gaze attacks"
+      },
+      {
+        "target": "attack",
+        "text": "20% miss chance as other creatures count as concealed"
+      }
+    ],
+    "description": "<p>Whether made of sheer gauze or thicker material, a veil is useful for hiding one's facial expressions. While worn, a veil grants a +2 circumstance bonus on Bluff checks; however, the wearer treats all other creatures as having concealment. The wearer has a 50% chance to avoid gaze attacks, as if averting his eyes.</p>",
+    "id": "xJJjwMm5Y5A8wFOP",
+    "name": "Veil",
+    "price": 40,
+    "slot": "slotless",
+    "sources": [
+      {
+        "id": "PZO9476",
+        "pages": "28"
+      }
+    ],
+    "subType": "clothing",
+    "uuid": "Compendium.pf1.items.Item.xJJjwMm5Y5A8wFOP"
+  },
+  "yXDxW8hp2FgIxbdu": {
+    "aura": {
+      "school": "misc"
+    },
+    "changes": [
+      {
+        "formula": "18",
+        "target": "spellResist",
+        "type": "untyped"
+      },
+      {
+        "formula": "4",
+        "target": "allSavingThrows",
+        "type": "resist"
+      },
+      {
+        "formula": "5",
+        "target": "aac",
+        "type": "untyped"
+      }
+    ],
+    "cl": 14,
+    "contextNotes": [
+      {
+        "target": "cl",
+        "text": "+[[2]] enhancement bonus made to overcome spell resistance"
+      }
+    ],
+    "description": "<p>This normal-appearing garment is attuned to one of three types of alignment. It can be white (01–45 on d%, good alignment), gray (46–75, neither good nor evil alignment), or black (76–100, evil alignment). To most wearers, the robe offers no powers or has no effects unless the wearer’s alignment doesn’t match that of the robe (see below). Only an arcane spellcaster can fully realize this potent magic item’s powers once the robe is donned. These powers are as follows.</p><ul><li>+5 armor bonus to AC</li><li>Spell resistance 18</li><li>+4 resistance bonus on all saving throws</li><li>+2 enhancement bonus on caster level checks made to overcome spell resistance</li></ul><p>If a white robe is donned by an evil character, she immediately gains three permanent negative levels. The same is true with respect to a black robe donned by a good character. An evil or good character who puts on a gray robe, or a neutral character who dons either a white or black robe, gains two permanent negative levels. These negative levels remain as long as the garment is worn and cannot be overcome in any way (including through restoration spells). Negative levels are immediately removed if the robe is removed from the wearer.</p>",
+    "id": "yXDxW8hp2FgIxbdu",
+    "name": "Robe of the Archmagi (Grey)",
+    "price": 75000,
+    "slot": "body",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "218"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "527"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.yXDxW8hp2FgIxbdu"
+  },
+  "yXnu3THLQRFvG9Ow": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This simple copper headband has a small yellow gem set so that when it rests upon the forehead of the wearer, the yellow gem sits perched on the wearer’s brow as if it were a third eye in the middle of her forehead. Often, the headband contains additional designs to further accentuate the appearance of a third, crystal eye.</p><p>The headband grants the wearer an enhancement bonus to two mental ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p><p>These bonuses are chosen when the headband is created and cannot be changed.</p>",
+    "id": "yXnu3THLQRFvG9Ow",
+    "name": "Headband of Mental Prowess +2 (Wis & Cha)",
+    "price": 10000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.yXnu3THLQRFvG9Ow"
+  },
+  "z53icVRLBTR7A4Nq": {
+    "aura": {
+      "school": "evo"
+    },
+    "changes": [
+      {
+        "formula": "1",
+        "target": "ndamage",
+        "type": "enh"
+      },
+      {
+        "formula": "1",
+        "target": "nattack",
+        "type": "enh"
+      }
+    ],
+    "cl": 5,
+    "contextNotes": [],
+    "description": "<p>This amulet grants an enhancement bonus of +1 to +5 on attack and damage rolls with unarmed attacks and natural weapons.</p><p>Alternatively, this amulet can grant melee weapon special abilities, so long as they can be applied to unarmed attacks. See Table: Melee Weapon Special Abilities for a list of abilities. Special abilities count as additional bonuses for determining the market value of the item, but do not modify attack or damage bonuses. An amulet of mighty fists cannot have a modified bonus (enhancement bonus plus special ability bonus equivalents) higher than +5. An amulet of mighty fists does not need to have a +1 enhancement bonus to grant a melee weapon special ability.</p>",
+    "id": "z53icVRLBTR7A4Nq",
+    "name": "Amulet of Mighty Fists +1",
+    "price": 4000,
+    "slot": "neck",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "255"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "496"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.z53icVRLBTR7A4Nq"
+  },
+  "zO3g8QVOWUP8NWCX": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This simple copper headband has a small yellow gem set so that when it rests upon the forehead of the wearer, the yellow gem sits perched on the wearer’s brow as if it were a third eye in the middle of her forehead. Often, the headband contains additional designs to further accentuate the appearance of a third, crystal eye.</p><p>The headband grants the wearer an enhancement bonus to two mental ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p><p>These bonuses are chosen when the headband is created and cannot be changed. If the headband grants a bonus to Intelligence, it also grants skill ranks as a @UUID[Compendium.pf1.items.lrKImXw2wiv8DCD1]{headband of vast intelligence}.</p>",
+    "id": "zO3g8QVOWUP8NWCX",
+    "name": "Headband of Mental Prowess +2 (Int & Wis)",
+    "price": 10000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.zO3g8QVOWUP8NWCX"
+  },
+  "zn5a55rPoW9DSJOc": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "6",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 8,
+    "contextNotes": [],
+    "description": "<p>This belt has a large silver buckle, usually depicting the image of a tiger.</p><p>The belt grants the wearer an <em>enhancement bonus</em> to <em>Dexterity</em> of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn.</p>",
+    "id": "zn5a55rPoW9DSJOc",
+    "name": "Belt of Incredible Dexterity +6",
+    "price": 36000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "209"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.zn5a55rPoW9DSJOc"
+  },
+  "zoIfE9UeE65t9T4n": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "enh"
+      },
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This belt grants the wearer an enhancement bonus to two physical ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the belt is worn. These bonuses are chosen when the belt is created and cannot be changed.</p>",
+    "id": "zoIfE9UeE65t9T4n",
+    "name": "Belt of Physical Might +2 (Dex & Con)",
+    "price": 10000,
+    "slot": "belt",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "210"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "502"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.zoIfE9UeE65t9T4n"
+  },
+  "zuMcKpV6nIKN5s6z": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [
+      {
+        "formula": "4",
+        "target": "cha",
+        "type": "enh"
+      },
+      {
+        "formula": "4",
+        "target": "int",
+        "type": "enh"
+      }
+    ],
+    "cl": 12,
+    "contextNotes": [],
+    "description": "<p>This simple copper headband has a small yellow gem set so that when it rests upon the forehead of the wearer, the yellow gem sits perched on the wearer’s brow as if it were a third eye in the middle of her forehead. Often, the headband contains additional designs to further accentuate the appearance of a third, crystal eye.</p><p>The headband grants the wearer an enhancement bonus to two mental ability scores of +2, +4, or +6. Treat this as a temporary ability bonus for the first 24 hours the headband is worn.</p><p>These bonuses are chosen when the headband is created and cannot be changed. If the headband grants a bonus to Intelligence, it also grants skill ranks as a @UUID[Compendium.pf1.items.lrKImXw2wiv8DCD1]{headband of vast intelligence}.</p>",
+    "id": "zuMcKpV6nIKN5s6z",
+    "name": "Headband of Mental Prowess +4 (Int & Cha)",
+    "price": 40000,
+    "slot": "headband",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "250"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "517"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "Compendium.pf1.items.Item.zuMcKpV6nIKN5s6z"
+  }
+}

@@ -1,0 +1,599 @@
+{
+  "0v0NLj0tuVAu2Cla": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 20th level, when a barbarian enters rage, the morale bonus to her <em>Strength</em> and <em>Constitution</em> increases to +8 and the morale bonus on her <em>Will</em> saves increases to +4.</p>",
+    "grantsBuffs": [],
+    "id": "0v0NLj0tuVAu2Cla",
+    "name": "Mighty Rage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "34"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.0v0NLj0tuVAu2Cla"
+  },
+  "20JWTam2dn7jjZFV": {
+    "changes": [],
+    "description": "<p>A wizard can choose to specialize in one school of magic, gaining additional spells and powers based on that school. This choice must be made at 1st level, and once made, it cannot be changed. A wizard that does not select a school receives the <em>universalist</em> school instead.</p>\n<p>A wizard that chooses to specialize in one school of magic must select two other schools as his opposition schools, representing knowledge sacrificed in one area of arcane lore to gain mastery in another. A wizard who prepares spells from his opposition schools must use two spell slots of that level to prepare the spell. For example, a wizard with <em>evocation</em> as an opposition school must expend two of his available 3rd-level spell slots to prepare a @UUID[Compendium.pf1.spells.6oq1wcryviik9ice]{Fireball}. In addition, a specialist takes a –4 penalty on any <em>skill checks</em> made when crafting a magic item that has a spell from one of his opposition schools as a prerequisite. A <em>universalist</em> wizard can prepare spells from any school without restriction.</p>\n<p>Each arcane school gives the wizard a number of school powers. In addition, specialist wizards receive an additional spell slot of each spell level he can cast, from 1st on up. Each day, a wizard can prepare a spell from his specialty school in that slot. This spell must be in the wizard’s spellbook. A wizard can select a spell modified by a metamagic feat to prepare in his school slot, but it uses up a higher-level spell slot. Wizards with the <em>universalist</em> school do not receive a school slot.</p>",
+    "grantsBuffs": [],
+    "id": "20JWTam2dn7jjZFV",
+    "name": "Arcane School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "78-79, 79-82"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
+  },
+  "2h3lI574tmVjOalQ": {
+    "changes": [
+      {
+        "formula": "floor(@class.unlevel / 5)",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 5th, 10th, 15th, and 20th level, a wizard gains a bonus feat. At each such opportunity, he can choose a <em>metamagic feat</em>, an <em>item creation</em>, or @UUID[Compendium.pf1.feats.KlE26ofz7uAkd0IJ]{Spell Mastery}. The wizard must still meet all prerequisites for a bonus feat, including caster level minimums. These bonus feats are in addition to the feats that a character of any class gets from advancing levels. The wizard is not limited to the categories of <em>Item Creation Feats</em>, <em>Metamagic Feats</em>, or @UUID[Compendium.pf1.feats.KlE26ofz7uAkd0IJ]{Spell Mastery} when choosing those feats.</p>\n<p>A wizard may also choose an <em>Arcane Discovery</em> that he qualifies for in place of a bonus feat at these levels.</p>",
+    "grantsBuffs": [],
+    "id": "2h3lI574tmVjOalQ",
+    "name": "Bonus Feats (WIZ)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "79"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.2h3lI574tmVjOalQ"
+  },
+  "4wdsdOkgv4uEkS9K": {
+    "changes": [],
+    "description": "<p>The wizard must study his spellbook each day to prepare his spells. He cannot prepare any spell not recorded in his spellbook, except for @UUID[Compendium.pf1.spells.Item.j0bc0iii8zp1jiwr]{read magic}, which all wizards can prepare from memory.</p><p>A wizard begins play with a @UUID[Compendium.pf1.items.Item.onurpjwtdogsedsg]{spellbook} containing all 0-level wizard spells (except those from his prohibited schools, if any; see @UUID[Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV]{Arcane Schools}) plus three 1st-level spells of his choice. The wizard also selects a number of additional 1st-level spells equal to his Intelligence modifier to add to the spellbook. At each new wizard level, he gains two new spells of any spell level or levels that he can cast (based on his new wizard level) for his spellbook. At any time, a wizard can also add spells found in other wizards' spellbooks to his own (see Magic).</p>",
+    "grantsBuffs": [
+      "Compendium.pf1.items.Item.onurpjwtdogsedsg"
+    ],
+    "id": "4wdsdOkgv4uEkS9K",
+    "name": "Spellbooks (WIZ)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "79"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
+  },
+  "5JFfSqLMCpbRmERa": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "clamp(floor((@class.unlevel + 1) / 4), 0, 4)",
+        "target": "mDexA",
+        "type": "untyped"
+      },
+      {
+        "formula": "-clamp(floor((@class.unlevel + 1) / 4), 0, 4)",
+        "target": "acpA",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>Starting at 3rd level, a fighter learns to be more maneuverable while wearing armor. Whenever he is wearing <em>armor</em>, he reduces the armor check penalty by 1 (to a minimum of 0) and increases the maximum Dexterity bonus allowed by his armor by 1. Every four levels thereafter (7th, 11th, and 15th), these bonuses increase by +1 each time, to a maximum –4 reduction of the armor check penalty and a +4 increase of the maximum <em>Dexterity</em> bonus allowed.</p><p>In addition, a fighter can also move at his normal speed while wearing medium armor.</p>",
+    "grantsBuffs": [],
+    "id": "5JFfSqLMCpbRmERa",
+    "name": "Armor Training",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "55-56"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa"
+  },
+  "7WaQxnVaaoL4AGr8": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>This character gains the ability to react to danger before her senses would normally allow her to do so. She cannot be caught <em>@UUID[Compendium.pf1.pf1e-rules.NSqfXaj4MevUR2uJ.JournalEntryPage.eSvkrrl3US7RJTai]{flat-footed}</em>, nor does she lose her <em>Dex</em> bonus to AC if the attacker is invisible. She still loses her <em>Dexterity</em> bonus to <em>armor class</em> if immobilized. A character with this ability can still lose her <em>Dexterity</em> bonus to <em>armor class</em> if an opponent successfully uses the feint action against her.</p>\n<p>If a character already has <em>uncanny dodge</em> from a different class, she automatically gains <em>improved uncanny dodge</em> (see below) instead.</p>",
+    "grantsBuffs": [],
+    "id": "7WaQxnVaaoL4AGr8",
+    "name": "Uncanny Dodge",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "34, 69"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "15"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+  },
+  "9EX00obqhGHcrOdp": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "if(and(lte(@armor.type, 2), lt(@attributes.encumbrance.level, 2)), 10)",
+        "target": "landSpeed",
+        "type": "base"
+      }
+    ],
+    "description": "<p>The character’s land speed is faster than the norm for her race by +10 feet. This benefit applies only when he is wearing no <em>armor</em>, light <em>armor</em>, or medium <em>armor</em>, and not carrying a heavy load. Apply this bonus before modifying the character’s speed because of any load carried or armor worn. This bonus stacks with any other bonuses to the character’s land speed.</p>",
+    "grantsBuffs": [],
+    "id": "9EX00obqhGHcrOdp",
+    "name": "Fast Movement",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "31"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "16"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
+  },
+  "BS9WDbCy2Up3QHw9": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>The character gains @UUID[Compendium.pf1.feats.tlRu8SYjzA7WCHN7]{Scribe Scroll} as a bonus feat.</p>",
+    "grantsBuffs": [
+      "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"
+    ],
+    "id": "BS9WDbCy2Up3QHw9",
+    "name": "Scribe Scroll",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "79"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.BS9WDbCy2Up3QHw9"
+  },
+  "BoEkMviJrW0PKmhj": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 3rd level, this character gains a +1 bonus on <em>Reflex</em> saves made to avoid traps and a +1 <em>dodge bonus</em> to <em>armor class</em> against attacks made by traps. These bonuses increase by +1 every three levels thereafter (6th, 9th, 12th, 15th, and 18th level). Trap sense bonuses gained from multiple classes stack.</p>",
+    "grantsBuffs": [],
+    "id": "BoEkMviJrW0PKmhj",
+    "name": "Trap Sense",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "31, 69"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
+  },
+  "CV8BsY3ciUb9TA1Y": {
+    "changes": [
+      {
+        "formula": "1 + floor(@class.unlevel / 2)",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 1st level, and at every even level thereafter, a fighter gains a bonus feat in addition to those gained from normal advancement (meaning that the fighter gains a feat at every level). These bonus feats must be selected from those listed as <em>Combat Feats</em>, sometimes also called \"fighter bonus feats.\"</p>\n<p>Upon reaching 4th level, and every four levels thereafter (8th, 12th, and so on), a fighter can choose to learn a new bonus feat in place of a bonus feat he has already learned. In effect, the fighter loses the bonus feat in exchange for the new one. The old feat cannot be one that was used as a prerequisite for another feat, prestige class, or other ability. A fighter can only change one feat at any given level and must choose whether or not to swap the feat at the time he gains a new bonus feat for the level.</p>",
+    "grantsBuffs": [],
+    "id": "CV8BsY3ciUb9TA1Y",
+    "name": "Bonus Feats (FGT)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "55"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
+  },
+  "EvrFDqZDbbFS4Avb": {
+    "changes": [],
+    "description": "<p>A cleric's bonus language options include Celestial, Abyssal, and Infernal (the languages of good, chaotic evil, and lawful evil outsiders, respectively). These choices are in addition to the bonus languages available to the character because of her race.</p>",
+    "grantsBuffs": [],
+    "id": "EvrFDqZDbbFS4Avb",
+    "name": "Bonus Languages (CLE)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.EvrFDqZDbbFS4Avb"
+  },
+  "HdzsFdoGauXFjU2S": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>As a barbarian gains levels, she learns to use her rage in new ways. Starting at 2nd level, a barbarian gains a <em>rage power</em>. She gains another <em>rage power</em> for every two levels of barbarian attained after 2nd level. A barbarian gains the benefits of <em>rage powers</em> only while raging, and some of these powers require the barbarian to take an action first. Unless otherwise noted, a barbarian cannot select an individual power more than once.</p>\n<p>Any barbarian who meets the powers’ prerequisites can select and use rage powers. Totem rage powers grant powers related to a theme. A barbarian cannot select from more than one group of totem rage powers; for example, a barbarian who selects a beast totem rage power cannot later choose to gain any of the dragon totem rage powers (any rage power with \"dragon totem\" in its title).</p>",
+    "grantsBuffs": [],
+    "id": "HdzsFdoGauXFjU2S",
+    "name": "Rage Powers",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "32"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S"
+  },
+  "IPy4aqFYbOppaqKC": {
+    "changes": [],
+    "description": "<p>The character can prepare a number of cantrips, or 0-level spells, each day. These spells are cast like any other spell, but they do not consume spell slots. As with her other spells, these spells are not expended when cast.</p>",
+    "grantsBuffs": [],
+    "id": "IPy4aqFYbOppaqKC",
+    "name": "Cantrips",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "34, 70, 77"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "54, 65"
+      },
+      {
+        "id": "PZO1117",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "25"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "8, 49"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+  },
+  "IWNz5tJCnpig4UtX": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 11th level, when a barbarian enters rage, the morale bonus to her <em>Strength</em> and <em>Constitution</em> increases to +6 and the morale bonus on her <em>Will</em> saves increases to +3.</p>",
+    "grantsBuffs": [],
+    "id": "IWNz5tJCnpig4UtX",
+    "name": "Greater Rage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "34"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX"
+  },
+  "LrjNAKP05lZq2tZZ": {
+    "changes": [],
+    "description": "<p>A wizard casts arcane spells drawn from the sorcerer/wizard spell list presented in Spell Lists. A wizard must choose and prepare his spells ahead of time.</p><p>To learn, prepare, or cast a spell, the wizard must have an Intelligence score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a wizard's spell is 10 + the spell level + the wizard's Intelligence modifier.</p><p>A wizard can cast only a certain number of spells of each spell level per day. His base daily spell allotment is given on @UUID[Compendium.pf1.pf1e-rules.JournalEntry.GnZ4SFsgV11ab8Vz.JournalEntryPage.8HNFlPoMR5NxGMzD#wizard]{Table: Wizard}. In addition, he receives bonus spells per day if he has a high Intelligence score (see @UUID[Compendium.pf1.pf1e-rules.JournalEntry.GnZ4SFsgV11ab8Vz.JournalEntryPage.BfKeMBHQruwqyUXX]{Table: Ability Modifiers and Bonus Spells}).</p><p>A wizard may know any number of spells. He must choose and prepare his spells ahead of time by getting 8 hours of sleep and spending 1 hour studying his spellbook. While studying, the wizard decides which spells to prepare.</p>",
+    "grantsBuffs": [],
+    "id": "LrjNAKP05lZq2tZZ",
+    "name": "Wizard Spells",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "77"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
+  },
+  "McXAM1BoPHZLO1n4": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 20th level, a fighter chooses one weapon, such as the longsword, greataxe, or longbow. Any attacks made with that weapon automatically confirm all critical threats and have their damage multiplier increased by 1 (×2 becomes ×3, for example). In addition, he cannot be disarmed while wielding a weapon of this type.</p>",
+    "grantsBuffs": [],
+    "id": "McXAM1BoPHZLO1n4",
+    "name": "Weapon Mastery",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "56"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4"
+  },
+  "Q3x319WbNkCssApD": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>While in rage or bloodrage, a character of 14th level or higher gains a +4 bonus on <em>Will</em> saves to resist enchantment spells. This bonus stacks with all other modifiers, including the morale bonus on <em>Will</em> saves she also receives during her rage or bloodrage.</p>",
+    "grantsBuffs": [],
+    "id": "Q3x319WbNkCssApD",
+    "name": "Indomitable Will",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "34"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "16"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Q3x319WbNkCssApD"
+  },
+  "RENIeTVjWB7Mq6Mw": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 7th level, the character gains <em>damage reduction</em>. Subtract 1 from the damage the character takes each time she is dealt damage from a weapon or a natural attack. At 10th level, and every three class levels thereafter (13th, 16th, and 19th level), this <em>damage reduction</em> rises by 1 point. <em>Damage reduction</em> can reduce damage to 0 but not below 0.</p>",
+    "grantsBuffs": [],
+    "id": "RENIeTVjWB7Mq6Mw",
+    "name": "Damage Reduction",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "34"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "16"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
+  },
+  "RaFl9SpbAlXqhsDk": {
+    "changes": [],
+    "description": "<p>The character can prepare a number of orisons, or 0-level spells, each day. These spells are cast like any other spell, but they are not expended when cast and may be used again.</p>",
+    "grantsBuffs": [],
+    "id": "RaFl9SpbAlXqhsDk",
+    "name": "Orisons",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38, 48"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38, 42"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "35, 60"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+  },
+  "RzEzudurxQFirFoF": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>Starting at 5th level, a fighter can select one group of weapons, as noted below. Whenever he attacks with a weapon from this group, he gains a +1 bonus on attack and damage rolls.</p>\n<p>Every four levels thereafter (9th*, 13th, and 17th), a fighter becomes further trained in another group of weapons. He gains a +1 bonus on attack and damage rolls when using a weapon from this group. In addition, the bonuses granted by previous weapon groups increase by +1 each. For example, when a fighter reaches 9th level, he receives a +1 bonus on attack and damage rolls with one weapon group and a +2 bonus on attack and damage rolls with the weapon group selected at 5th level. Bonuses granted from overlapping groups do not stack. Take the highest bonus granted for a weapon if it resides in two or more groups.</p>\n<p>A fighter also adds this bonus to any combat maneuver checks made with weapons from his group. This bonus also applies to the fighter’s Combat Maneuver Defense when defending against disarm and sunder attempts made against weapons from this group.</p>\n<p>Weapon groups are defined as follows (GMs may add other weapons to these groups, or add entirely new groups):</p>\n<p><b>Axes:</b> axe-gauntlet, dwarven heavy, axe-gauntlet, dwarven light, bardiche, battleaxe, boarding axe, butchering axe, collapsible kumade, dwarven waraxe, gandasa, greataxe, handaxe, heavy pick, hooked axe, knuckle axe, kumade, kumade, collapsible, light pick, mattock, orc double axe, pata, throwing axe, and tongi.</p>\n<p><b>Blades, Heavy:</b> ankus, bastard sword, chakram, cutlass, double, double chicken saber, double walking stick katana, dueling sword, elven curve blade, estoc, falcata, falchion, flambard, greatsword, great terbutje, greatsword, katana, khopesh, klar, longsword, nine-ring broadsword, nodachi, rhoka sword, sawtooth sabre, scimitar, scythe, seven-branched sword, shotel, sickle-sword, split-blade sword, switchscythe, temple sword, terbutje, and two-bladed sword.</p>\n<p><b>Blades, Light:</b> bayonet, broken-back seax, butterfly knife, butterfly sword, chakram, dagger, deer horn knife, dogslicer, drow razor, dueling dagger, gladius, hunga munga, kama, katar, kerambit, kukri, machete, madu, manople, pata, quadrens, rapier, sanpkhang, sawtooth sabre, scizore, shortsword, sica, sickle, spiral rapier, starknife, swordbreaker dagger, sword cane, wakizashi, and war razor.</p>\n<p><b>Bows:</b> composite longbow, composite shortbow, longbow, orc hornbow, and shortbow.</p>\n<p><b>Close:</b> axe-gauntlet, dwarven heavy, axe-gauntlet, dwarven light, bayonet, brass knuckles, cestus, dan bong, dwarven war-shield, emei piercer, fighting fan, gauntlet, heavy shield, iron brush, katar, klar, light shield, madu, mere club, punching dagger, rope gauntlet, sap, scizore, spiked armor, spiked gauntlet, spiked shield, tekko-kagi, tonfa, tri-bladed katar, unarmed strike, wooden stake, waveblade, and wushu dart.</p>\n<p><b>Crossbows:</b> double crossbow, hand crossbow, heavy crossbow, launching crossbow, light repeating crossbow, heavy repeating crossbow, pelletbow, dwarven heavy, pelletbow, dwarven light, and tube arrow shooter, underwater heavy crossbow, underwater light crossbow</p>\n<p><b>Double:</b> bo staff, boarding gaff, chain-hammer, chain spear, dire flail, double walking stick katana, double-chained kama, dwarven urgrosh, gnome battle ladder, gnome hooked hammer, kusarigama, monk’s spade, orc double axe, quarterstaff, taiaha, two-bladed sword, and weighted spear.</p>\n<p>Firearms: all one-handed, two-handed, and siege firearms.</p>\n<p><b>Flails:</b> battle poi, bladed scarf, cat-o’-nine-tails, chain spear, dire flail, double chained kama, dwarven dorn-dergar, flail, flying talon, gnome pincher, halfling rope-shot, heavy flail, kusarigama, kyoketsu shoge, meteor hammer, morningstar, nine-section whip, nunchaku, sansetsukon, scorpion whip, spiked chain, urumi, and whip.</p>\n<p><b>Hammers:</b> aklys, battle aspergillum, chain-hammer, club, earth breaker, gnome piston maul, greatclub, heavy mace, lantern staff, light hammer, light mace, mere club, planson, ram hammer, dwarven, sphinx hammer, dwarven, taiaha, tetsubo, wahaika, and warhammer.</p>\n<p><b>Monk:</b> bo staff, brass knuckles, butterfly sword, cestus, dan bong, deer horn knife, double chained kama, double chicken saber, emei piercer, fighting fan, hanbo, jutte, kama, kusarigama, kyoketsu shoge, lungshuan tamo, monk’s spade, nine-ring broadsword, nine-section whip, nunchaku, quarterstaff, rope dart, sai, sanpkhang, sansetsukon, seven-branched sword, shang gou, shuriken, siangham, temple sword, tiger fork, tonfa, traveling kettle, tri-point double-edged sword, unarmed strike, urumi, and wushu dart.</p>\n<p><b>Natural:</b> unarmed strike and all natural weapons, such as bite, claw, gore, tail, and wing.</p>\n<p><b>Polearms:</b> bardiche, bec de corbin, bill, boarding gaff, crook, fauchard, giant-sticker, dwarven, glaive, glaive-guisarme, gnome ripsaw glaive, guisarme, halberd, hooked lance, horsechopper, lucerne hammer, mancatcher, monk’s spade, naginata, nodachi, ogre hook, ranseur, rhomphaia, tepoztopilli, and tiger fork.</p>\n<p><b>Siege engines:</b> Ballista, bombard, catapult, corvus, firedrake, firewyrm, gallery, ram, siege tower, springal, trebuchet, and all other siege engines.</p>\n<p><b>Spears:</b> amentum, boar spear, chain spear, double spear, elven branched spear, harpoon, javelin, lance, longspear, orc skull ram, pilum, planson, shortspear, sibat, spear, stormshaft javelin, tiger fork, trident, and weighted spear.</p>\n<p><b>Thrown:</b> aklys, amentum, atlatl, blowgun, bolas, boomerang, brutal bolas, chain-hammer, chakram, club, dagger, dart, deer horn knife, dueling dagger, flask thrower, halfling sling staff, harpoon, hunga munga, javelin, kestros, lasso, light hammer, net, pilum, poisoned sand tube, ram hammer, dwarven, rope dart, shortspear, shuriken, sibat, sling, sling glove, snag net, spear, sphinx hammer, dwarven, starknife, stormshaft javelin, throwing axe, throwing shield, trident, and wushu dart.</p>\n<p><b>Tribal:</b> Club, dagger, greatclub, handaxe, heavy shield, light shield, shortspear, spear, throwing axe, and unarmed strike.</p>",
+    "grantsBuffs": [],
+    "id": "RzEzudurxQFirFoF",
+    "name": "Weapon Training",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "56"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF"
+  },
+  "W4PGylYL7ghRfy5G": {
+    "changes": [],
+    "description": "<p>A cleric casts divine spells which are drawn from the cleric spell list presented in Spell Lists. Her alignment, however, may restrict her from casting certain spells opposed to her moral or ethical beliefs; see chaotic, evil, good, and lawful spells. A cleric must choose and prepare her spells in advance.</p><p>To prepare or cast a spell, a cleric must have a Wisdom score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a cleric's spell is 10 + the spell level + the cleric's Wisdom modifier.</p><p>Like other spellcasters, a cleric can cast only a certain number of spells of each spell level per day. Her base daily spell allotment is given on @UUID[Compendium.pf1.pf1e-rules.JournalEntry.GnZ4SFsgV11ab8Vz.JournalEntryPage.8HNFlPoMR5NxGMzD#cleric]{Table: Cleric}. In addition, she receives bonus spells per day if she has a high Wisdom score (see @UUID[Compendium.pf1.pf1e-rules.JournalEntry.GnZ4SFsgV11ab8Vz.JournalEntryPage.BfKeMBHQruwqyUXX]{Table: Ability Modifiers and Bonus Spells}).</p><p>Clerics meditate or pray for their spells. Each cleric must choose a time when she must spend 1 hour each day in quiet contemplation or supplication to regain her daily allotment of spells. A cleric may prepare and cast any spell on the cleric spell list, provided that she can cast spells of that level, but she must choose which spells to prepare during her daily meditation.</p>",
+    "grantsBuffs": [],
+    "id": "W4PGylYL7ghRfy5G",
+    "name": "Cleric Spells",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "39-40"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.W4PGylYL7ghRfy5G"
+  },
+  "WSqWT9ZIshtC5vlV": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>A barbarian can call upon inner reserves of strength and ferocity, granting her additional combat prowess. Starting at 1st level, a barbarian can rage for a number of rounds per day equal to 4 + her <em>Constitution</em> modifier. At each level after 1st, she can rage for 2 additional rounds. Temporary increases to <em>Constitution</em>, such as those gained from rage and spells like <em>bear’s endurance</em>, do not increase the total number of rounds that a barbarian can rage per day. A barbarian can enter rage as a free action. The total number of rounds of rage per day is renewed after resting for 8 hours, although these hours do not need to be consecutive.</p>\n<p>While in rage, a barbarian gains a +4 morale bonus to her <em>Strength</em> and <em>Constitution</em>, as well as a +2 morale bonus on <em>Will</em> saves. In addition, she takes a –2 penalty to <em>Armor Class</em>. The increase to <em>Constitution</em> grants the barbarian 2 hit points per Hit Dice, but these disappear when the rage ends and are not lost first like <em>temporary hit points</em>. While in rage, a barbarian cannot use any <em>Charisma</em>-, <em>Dexterity</em>-, or <em>Intelligence</em>-based skills (except <em>Acrobatics</em>, <em>Fly</em>, <em>Intimidate</em>, and <em>Ride</em>) or any ability that requires patience or concentration.</p>\n<p>A barbarian can end her rage as a free action and is <em>fatigued</em> after rage for a number of rounds equal to 2 times the number of rounds spent in the rage. A barbarian cannot enter a new rage while <em>fatigued</em> or <em>exhausted</em> but can otherwise enter rage multiple times during a single encounter or combat. If a barbarian falls <em>unconscious</em>, her rage immediately ends, placing her in peril of death.</p>",
+    "grantsBuffs": [
+      "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL"
+    ],
+    "id": "WSqWT9ZIshtC5vlV",
+    "name": "Rage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "32"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "rage",
+    "uses": {
+      "maxFormula": "4 + @abilities.con.mod + (2 * (@class.unlevel - 1))",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV"
+  },
+  "Wkv124hVPATT35bm": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>A cleric / warpriest of a chaotic, evil, good, or lawful deity has a particularly powerful aura corresponding to the deity's alignment (see @UUID[Compendium.pf1.spells.tr7m97npkbgm4wp7]{Detect Evil} for details).</p>",
+    "grantsBuffs": [],
+    "id": "Wkv124hVPATT35bm",
+    "name": "Aura",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "39"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Wkv124hVPATT35bm"
+  },
+  "ZfnHhhTFQVo0Lj4P": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>This character can no longer be flanked. This defense denies a rogue the ability to sneak attack the character by flanking her, unless the attacker has at least four more rogue levels than the target has class levels.</p>\n<p>If a character already has <em>@UUID[Compendium.pf1.class-abilities.7WaQxnVaaoL4AGr8]{uncanny dodge}</em> (see above) from another class, the levels from the classes that grant <em>uncanny dodge</em> stack to determine the minimum rogue level required to flank the character.</p>",
+    "grantsBuffs": [],
+    "id": "ZfnHhhTFQVo0Lj4P",
+    "name": "Improved Uncanny Dodge",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "34, 69"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "16"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+  },
+  "aYdjgDZJCNvKpLQP": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>Starting at 17th level, a barbarian no longer becomes <em>fatigued</em> at the end of her rage.</p>",
+    "grantsBuffs": [],
+    "id": "aYdjgDZJCNvKpLQP",
+    "name": "Tireless Rage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "34"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP"
+  },
+  "exdHrqciehozr5SD": {
+    "changes": [],
+    "description": "<p>The character can't cast spells of an alignment opposed to her own or her deity's (if she has one). Spells associated with particular alignments are indicated by the chaotic, evil, good, and lawful descriptors in their spell descriptions.</p>",
+    "grantsBuffs": [],
+    "id": "exdHrqciehozr5SD",
+    "name": "Chaotic, Evil, Good, and Lawful Spells",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41, 49"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "26, 60"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+  },
+  "h0Brxw6khcjlEf1T": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>Starting at 2nd level, a fighter gains a +1 bonus on <em>Will</em> saves against fear. This bonus increases by +1 for every four levels beyond 2nd.</p>",
+    "grantsBuffs": [],
+    "id": "h0Brxw6khcjlEf1T",
+    "name": "Bravery",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "55"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T"
+  },
+  "iqeyCQIIVnNt0p3h": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 7th level, a fighter can move at his normal speed while wearing heavy armor.</p>",
+    "grantsBuffs": [],
+    "id": "iqeyCQIIVnNt0p3h",
+    "name": "Armor Training (Heavy Armor)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "56"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h"
+  },
+  "kXXz1lO4i7CibHJ9": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Regardless of alignment, any cleric can release a wave of energy by channeling the power of her faith through her holy (or unholy) symbol. This energy can be used to cause or heal damage, depending on the type of energy channeled and the creatures targeted.</p>\n<p>A good cleric (or a neutral cleric who worships a good deity) channels positive energy and can choose to deal damage to <em>undead</em> creatures or to heal living creatures. An evil cleric (or a neutral cleric who worships an evil deity) channels negative energy and can choose to deal damage to living creatures or to heal <em>undead</em> creatures. A neutral cleric of a neutral deity (or one who is not devoted to a particular deity) must choose whether she channels positive or negative energy. Once this choice is made, it cannot be reversed. This decision also determines whether the cleric can cast spontaneous cure or inflict spells (see spontaneous casting).</p>\n<p>Channeling energy causes a burst that affects all creatures of one type (either <em>undead</em> or living) in a 30-foot radius centered on the cleric. The amount of damage dealt or healed is equal to 1d6 points of damage plus 1d6 points of damage for every two cleric levels beyond 1st (2d6 at 3rd, 3d6 at 5th, and so on). Creatures that take damage from channeled energy receive a <em>Will</em> save to halve the damage. The DC of this save is equal to 10 + 1/2 the cleric’s level + the cleric’s <em>Charisma</em> modifier. Creatures healed by channel energy cannot exceed their maximum hit point total—all excess healing is lost. A cleric may channel energy a number of times per day equal to 3 + her <em>Charisma</em> modifier. This is a standard action that does not provoke an attack of opportunity. A cleric can choose whether or not to include herself in this effect.</p>\n<p>A cleric must be able to present her holy symbol to use this ability.</p>",
+    "grantsBuffs": [],
+    "id": "kXXz1lO4i7CibHJ9",
+    "name": "Channel Energy",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "40"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "channelEnergy",
+    "uses": {
+      "maxFormula": "3 + @abilities.cha.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.kXXz1lO4i7CibHJ9"
+  },
+  "kx2ZfV2wjlAZgQ6E": {
+    "changes": [],
+    "description": "<p>A good cleric (or a neutral cleric of a good deity) can channel stored spell energy into healing spells that she did not prepare ahead of time. The cleric can \"lose\" any prepared spell that is not an orison or domain spell in order to cast any cure spell of the same spell level or lower (a cure spell is any spell with \"cure\" in its name).</p>\n<p>An evil cleric (or a neutral cleric of an evil deity) can’t convert prepared spells to cure spells but can convert them to inflict spells (an inflict spell is one with \"inflict\" in its name).</p>\n<p>A cleric who is neither good nor evil and whose deity is neither good nor evil can convert spells to either cure spells or inflict spells (player’s choice). Once the player makes this choice, it cannot be reversed. This choice also determines whether the cleric channels positive or negative energy (see channel energy).</p>",
+    "grantsBuffs": [],
+    "id": "kx2ZfV2wjlAZgQ6E",
+    "name": "Spontaneous Casting (CLE)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
+  },
+  "pW1PNlDcdGl7KuEa": {
+    "changes": [],
+    "description": "<p>At 1st level, wizards form a powerful bond with an object or a creature. This bond can take one of two forms: a <em>familiar</em> or a bonded object. A <em>familiar</em> is a magical pet that enhances the wizard’s skills and senses and can aid him in magic, while a bonded object is an item a wizard can use to cast additional spells or to serve as a magical item. Once a wizard makes this choice, it is permanent and cannot be changed.</p>\n<p>Wizards who select a bonded object begin play with one at no cost. Objects that are the subject of an arcane bond must fall into one of the following categories: amulet, ring, staff, wand, or weapon. These objects are always masterwork quality. Weapons acquired at 1st level are not made of any special material. If the object is an amulet or ring, it must be worn to have effect, while staves, wands, and weapons must be held in one hand. If a wizard attempts to cast a spell without his bonded object worn or in hand, he must make a <em>concentration</em> check or lose the spell. The DC for this check is equal to 20 + the spell’s level. If the object is a ring or amulet, it occupies the ring or neck slot accordingly.</p>\n<p>A bonded object can be used once per day to cast any one spell that the wizard has in his spellbook and is capable of casting, even if the spell is not prepared. This spell is treated like any other spell cast by the wizard, including casting time, duration, and other effects dependent on the wizard’s level. This spell cannot be modified by <em>metamagic feats</em> or other abilities. The bonded object cannot be used to cast spells from the wizard’s opposition schools (see <em>arcane school</em> below).</p>\n<p>A wizard can add additional magic abilities to his bonded object as if he has the required <em>Item Creation Feats</em> and if he meets the level prerequisites of the feat. For example, a wizard with a bonded dagger must be at least 5th level to add magic abilities to the dagger (see @UUID[Compendium.pf1.feats.4hNO4OAWYF5vXphH]{Craft Magic Arms and Armor} feat). If the bonded object is a wand, it loses its wand abilities when its last charge is consumed, but it is not destroyed and it retains all of its bonded object properties and can be used to craft a new wand. The magic properties of a bonded object, including any magic abilities added to the object, only function for the wizard who owns it. If a bonded object’s owner dies, or the item is replaced, the object reverts to being an ordinary masterwork item of the appropriate type.</p>\n<p>If a bonded object is damaged, it is restored to full hit points the next time the wizard prepares his spells. If the object of an arcane bond is lost or destroyed, it can be replaced after 1 week in a special ritual that costs 200 gp per wizard level plus the cost of the masterwork item. This ritual takes 8 hours to complete. Items replaced in this way do not possess any of the additional enchantments of the previous bonded item. A wizard can designate an existing magic item as his bonded item. This functions in the same way as replacing a lost or destroyed item except that the new magic item retains its abilities while gaining the benefits and drawbacks of becoming a bonded item.</p>",
+    "grantsBuffs": [],
+    "id": "pW1PNlDcdGl7KuEa",
+    "name": "Arcane Bond",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "78"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
+  },
+  "zrUJt7YpAJkf2NC6": {
+    "changes": [],
+    "description": "<p>A cleric’s deity influences her alignment, what magic she can perform, her values, and how others see her. A cleric chooses two <em>domains</em> from among those belonging to her deity. A cleric can select an alignment <em>domain</em> (Chaos, Evil, Good, or Law) only if her alignment matches that <em>domain</em>. If a cleric is not devoted to a particular deity, she still selects two <em>domains</em> to represent her spiritual inclinations and abilities (subject to GM approval). The restriction on alignment <em>domains</em> still applies.</p>\n<p>Each <em>domain</em> grants a number of <em>domain</em> powers, dependent upon the level of the cleric, as well as a number of bonus spells. A cleric gains one <em>domain</em> spell slot for each level of cleric spell she can cast, from 1st on up. Each day, a cleric can prepare one of the spells from her two <em>domain</em>s in that slot. If a <em>domain</em> spell is not on the cleric spell list, a cleric can prepare it only in her <em>domain</em> spell slot. Domain spells cannot be used to cast spells spontaneously.</p>\n<p>In addition, a cleric gains the listed powers from both of her domains, if she is of a high enough level. Unless otherwise noted, activating a domain power is a standard action.</p>",
+    "grantsBuffs": [],
+    "id": "zrUJt7YpAJkf2NC6",
+    "name": "Domains",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "40"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.zrUJt7YpAJkf2NC6"
+  }
+}

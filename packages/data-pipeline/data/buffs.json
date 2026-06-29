@@ -1,0 +1,5467 @@
+{
+  "0AfEoAsDnhvMUW2D": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "sac",
+        "type": "base"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "+[[2]] against touch AC from beam and ray attacks"
+      }
+    ],
+    "description": "<p>+[[2]] shield AC [force effect] as per @UUID[Compendium.pf1.technology.Item.alQVMlHc89hMxK2M].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "0AfEoAsDnhvMUW2D",
+    "name": "Hard Light Shield",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "30"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.0AfEoAsDnhvMUW2D"
+  },
+  "0Ec3mH1ddh76cvYU": {
+    "changes": [
+      {
+        "formula": "max(5, floor(@attributes.speed.burrow.total / 2))",
+        "target": "burrowSpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "max(5, floor(@attributes.speed.fly.total / 2))",
+        "target": "flySpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "max(5, floor(@attributes.speed.climb.total / 2))",
+        "target": "climbSpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "max(5, floor(@attributes.speed.land.total / 2))",
+        "target": "landSpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "max(5, floor(@attributes.speed.swim.total / 2))",
+        "target": "swimSpeed",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>All of the target’s speeds are reduced by half (to a minimum of 5 feet). In addition, the target cannot take a 5-foot step as per @UUID[Compendium.pf1.class-abilities.Item.nL9Ds9nflmID84vo] .</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "0Ec3mH1ddh76cvYU",
+    "name": "Debilitating Injury (Hampered)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "22"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.0Ec3mH1ddh76cvYU"
+  },
+  "0KISG8qU22ncv72d": {
+    "changes": [
+      {
+        "formula": "20",
+        "target": "climbSpeed",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants 20 feet climb speed as per @UUID[Compendium.pf1.spells.Item.3mfmhx8avu7h3iom].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "0KISG8qU22ncv72d",
+    "level": 3,
+    "name": "Spider Climb",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "347"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.0KISG8qU22ncv72d"
+  },
+  "0MmlqFG4XodHOIzn": {
+    "changes": [
+      {
+        "formula": "10",
+        "target": "skill.ste",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.ste",
+        "text": "@UUID[Compendium.pf1.class-abilities.Item.ytotO22rp5ji6rT1]{Hide in Plain Sight} as ranger in his favored terrain."
+      }
+    ],
+    "description": "<p>+[[10]] competence bonus on Stealth checks as per @UUID[Compendium.pf1.technology.Item.Nnrom1FPNcjBJRK8].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "0MmlqFG4XodHOIzn",
+    "name": "Chameleon Suit",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "30"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.0MmlqFG4XodHOIzn"
+  },
+  "0hRYCva2hdwUNFh6": {
+    "changes": [
+      {
+        "formula": "(min(6, floor(@item.level / 3)))",
+        "target": "attack",
+        "type": "luck"
+      },
+      {
+        "formula": "(min(6, floor(@item.level / 3)))",
+        "target": "strChecks",
+        "type": "luck"
+      },
+      {
+        "formula": "(min(6, floor(@item.level / 3)))",
+        "target": "strSkills",
+        "type": "luck"
+      },
+      {
+        "formula": "(min(6, floor(@item.level / 3)))",
+        "target": "wdamage",
+        "type": "luck"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You gain a +[[(min(6, floor(@item.level / 3)))]] luck bonus on attack rolls, weapon damage rolls, Strength checks, and Strength-based skill checks and also gains [[@item.level]] temp. HP as per @UUID[Compendium.pf1.spells.Item.0yvwyclhkf76veo1].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "0hRYCva2hdwUNFh6",
+    "level": 7,
+    "name": "Divine Power",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "273"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.0hRYCva2hdwUNFh6"
+  },
+  "1MspZVYeg3IMlGVL": {
+    "changes": [
+      {
+        "formula": "10",
+        "target": "skill.per",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[10]] competence bonus on Perception checks while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.9dvLuZUA2Wy1TBht].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "24"
+    },
+    "id": "1MspZVYeg3IMlGVL",
+    "name": "Veemod (Green)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "53"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.1MspZVYeg3IMlGVL"
+  },
+  "1W9YmqCqawLmMXmf": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "wis",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Wisdom as per @UUID[Compendium.pf1.spells.Item.b9ggsagifzk4fwut] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "1W9YmqCqawLmMXmf",
+    "level": 3,
+    "name": "Owl's Wisdom",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "318"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.1W9YmqCqawLmMXmf"
+  },
+  "1ovEWVzSp5yZXeVm": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "dex",
+        "type": "size"
+      },
+      {
+        "formula": "-2",
+        "target": "carryStr",
+        "type": "untyped"
+      },
+      {
+        "formula": "-0.5",
+        "target": "carryMult",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "size",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "size"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Adjusts:</p><ul><li>+[[2]] Size bonus to Strength</li><li>-2 Size penalty to Dexterity</li><li>+[[1]] Size</li></ul><p>Includes carry capacity adjustments partially accounting for your gear not changing in size.</p><p>See @UUID[Compendium.pf1.spells.jnlr9cuepka1l26e] for more details.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "1ovEWVzSp5yZXeVm",
+    "level": 1,
+    "name": "Enlarge Person",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "277, 278"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.1ovEWVzSp5yZXeVm"
+  },
+  "1z7euBqoJ1ZDCRW4": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "int",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Intelligence as per @UUID[Compendium.pf1.spells.Item.743anqr1ahefv8zd] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "1z7euBqoJ1ZDCRW4",
+    "level": 3,
+    "name": "Fox's Cunning",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "286"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.1z7euBqoJ1ZDCRW4"
+  },
+  "2Ob3MdeFHK2wLkyu": {
+    "changes": [
+      {
+        "formula": "ifelse(gte(@item.level, 8), -4, -2)",
+        "target": "allSavingThrows",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on saving throws as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8].</p>",
+    "id": "2Ob3MdeFHK2wLkyu",
+    "level": 1,
+    "name": "Evil Eye (Saves)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "66"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.2Ob3MdeFHK2wLkyu"
+  },
+  "2nOppbBQqZPcwXx5": {
+    "changes": [
+      {
+        "formula": "@item.level",
+        "target": "skill.per",
+        "type": "competence"
+      },
+      {
+        "formula": "@item.level",
+        "target": "init",
+        "type": "competence"
+      },
+      {
+        "formula": "@item.level",
+        "target": "skill.sur",
+        "type": "competence"
+      },
+      {
+        "formula": "@item.level",
+        "target": "skill.kge",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[@item.level]] competence bonus to initiative, knowledge (geography), perception and survival checks as per @UUID[Compendium.pf1.class-abilities.Item.BJbgAVT6pZhML9im].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "4"
+    },
+    "id": "2nOppbBQqZPcwXx5",
+    "name": "Terrain Training",
+    "sources": [
+      {
+        "id": "PZO9426",
+        "pages": "24"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.2nOppbBQqZPcwXx5"
+  },
+  "30MZFYjOgu59ZoXj": {
+    "changes": [
+      {
+        "formula": "4 + floor((@item.level - 1) / 7) * 2",
+        "target": "skill.per",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus to Perception as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "30MZFYjOgu59ZoXj",
+    "level": 1,
+    "name": "Animal Focus (Falcon)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "27"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.30MZFYjOgu59ZoXj"
+  },
+  "3V4SKStquBCW8grU": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "attack",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "attack",
+        "text": "Takes an additional -[[floor((@item.level + 2) / 6) * 2]] to attack rolls against attacks made by the rogue."
+      }
+    ],
+    "description": "<p>The target takes a –2 penalty on attack rolls. The target takes an additional –[[floor((@item.level + 2) / 6) * 2]] penalty to attack rolls against the rogue as per @UUID[Compendium.pf1.class-abilities.Item.nL9Ds9nflmID84vo].</p><hr />",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "3V4SKStquBCW8grU",
+    "level": 4,
+    "name": "Debilitating Injury (Disoriented)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "22"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.3V4SKStquBCW8grU"
+  },
+  "3cimRYgdw7AiOVci": {
+    "changes": [
+      {
+        "formula": "min(30, (10 + (floor(@item.level / 8) * 10)))",
+        "target": "skill.per",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You gain a +[[min(30, (10 + (floor(@item.level / 8) * 10)))]] enhancement bonus on Perception checks as per @UUID[Compendium.pf1.spells.Item.f9adpo6szijchpva].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "3cimRYgdw7AiOVci",
+    "level": 3,
+    "name": "Acute Senses",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "205"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.3cimRYgdw7AiOVci"
+  },
+  "3czZB6whbQo9WhxR": {
+    "changes": [
+      {
+        "formula": "clamp(floor(@item.level / 3), 1, 3)",
+        "target": "wdamage",
+        "type": "luck"
+      },
+      {
+        "formula": "clamp(floor(@item.level / 3), 1, 3)",
+        "target": "attack",
+        "type": "luck"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You have a luck bonus to attack rolls and weapon damage rolls as per @UUID[Compendium.pf1.spells.Item.21bxbzdaawjrnvyo] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "3czZB6whbQo9WhxR",
+    "level": 1,
+    "name": "Divine Favor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "273"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.3czZB6whbQo9WhxR"
+  },
+  "3p34GJemfcLdKckV": {
+    "changes": [
+      {
+        "formula": "1 + max(0, floor((@item.level + 1) / 6))",
+        "target": "attack",
+        "type": "competence"
+      },
+      {
+        "formula": "1 + max(0, floor((@item.level + 1) / 6))",
+        "target": "wdamage",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[1 + max(0, floor((@item.level + 1) / 6))]] Morale vs Fear and Charm effects"
+      }
+    ],
+    "description": "<p>You gain a morale bonus on saves vs charm and fear effects, and a competence bonus on attack rolls and weapon damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL].</p>",
+    "id": "3p34GJemfcLdKckV",
+    "level": 1,
+    "name": "Inspire Courage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "37"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV"
+  },
+  "43eVSSa6rSTl7ieD": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>See @UUID[Compendium.pf1.class-abilities.Item.uAI3k87VtkTt8hcw] for more details.</p>",
+    "id": "43eVSSa6rSTl7ieD",
+    "name": "Taunting Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "12"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.43eVSSa6rSTl7ieD"
+  },
+  "4gSZu1v9lw3vAD56": {
+    "changes": [
+      {
+        "formula": "1 + floor(@item.unlevel / 5)",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants a +[[1 + floor(@item.level / 5)]] resistance bonus as per @UUID[Compendium.pf1.class-abilities.Item.Bw3GiobZvSJb8dGI]{Resistant Touch}</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "4gSZu1v9lw3vAD56",
+    "level": 1,
+    "name": "Resistant Touch",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.4gSZu1v9lw3vAD56"
+  },
+  "4ox2XgPppFBnW2s9": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "concentration",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "cl",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>[[2 + floor((@item.level - 2) / 6)]] competence on next concentration, dispel or caster level check as per @UUID[Compendium.pf1.class-abilities.Item.2U4Brc6XSYEb6Azn]</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "4ox2XgPppFBnW2s9",
+    "level": 2,
+    "name": "Spell Aid",
+    "sources": [
+      {
+        "id": "PZO9426",
+        "pages": "24"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.4ox2XgPppFBnW2s9"
+  },
+  "4pD4QNKhhbbGuY6i": {
+    "changes": [
+      {
+        "formula": "60",
+        "target": "sensedv",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants Darkvision 60 ft. while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.dNF5qq8D1cSJHsEA].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "4pD4QNKhhbbGuY6i",
+    "name": "Veemod (Red)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "53"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.4pD4QNKhhbbGuY6i"
+  },
+  "5CWQRKQxsM14G93h": {
+    "changes": [
+      {
+        "formula": "ifelse(gte(@item.level, 8), -4, -2)",
+        "target": "ac",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on AC as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8]</p>",
+    "id": "5CWQRKQxsM14G93h",
+    "level": 1,
+    "name": "Evil Eye (AC)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "66"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.5CWQRKQxsM14G93h"
+  },
+  "64LMZn1hx4DeI08O": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[1]] circumstance bonus against bright light effects that cause dazzling or blindness."
+      }
+    ],
+    "description": "<p>Grants +[[1]] circumstance bonus on all saving throws against bright light effects that cause dazzling or blindness while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.jJfwLVduz8FtcgEg].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "24"
+    },
+    "id": "64LMZn1hx4DeI08O",
+    "name": "Veemod (Brown)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "53"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.64LMZn1hx4DeI08O"
+  },
+  "6PwPlGZVTqg3VUEd": {
+    "changes": [
+      {
+        "formula": "min(@abilities.con.base, lookup(@ageCategory.physical, 0, 0, 1, 3, 3))",
+        "target": "con",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(@abilities.str.base, lookup(@ageCategory.physical, 0, 0, 1, 3, 3))",
+        "target": "str",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(@abilities.dex.base, lookup(@ageCategory.physical, 0, 0, 1, 3, 3))",
+        "target": "dex",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You ignore the physical detriments of being old or middle-aged as per @UUID[Compendium.pf1.spells.Item.li8zwqjorsww6o82].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "24"
+    },
+    "id": "6PwPlGZVTqg3VUEd",
+    "name": "Age Resistance",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "205"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.6PwPlGZVTqg3VUEd"
+  },
+  "7DtG0pydiheVvIS8": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "ac",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Applies a -[[2]] penalty to your Armor Class until your next turn as per @UUID[Compendium.pf1.feats.Item.xq2TFr7bsYBBHOi5].</p>",
+    "duration": {
+      "end": "turnStart",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "7DtG0pydiheVvIS8",
+    "name": "Lunge",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "115, 130"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.7DtG0pydiheVvIS8"
+  },
+  "7ReQuzKvSVUtwuC9": {
+    "changes": [
+      {
+        "formula": "1 + floor((@item.level - 8) / 4)",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[1 + floor((@item.level-8) / 4)]] deflection bonus to AC and resistance [[5 + (floor(@item.level / 14) * 5)]] against all elements (acid, cold, electricity, fire, and sonic) as per @UUID[Compendium.pf1.class-abilities.Item.kHXw5V06TkymXxF3]{Aura of Protection (Domain Power)}</p>",
+    "id": "7ReQuzKvSVUtwuC9",
+    "level": 8,
+    "name": "Aura of Protection",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.7ReQuzKvSVUtwuC9"
+  },
+  "8AEPlLbeiTbQBJbV": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Allows to track consumed spell levels via charges and duration as per @UUID[Compendium.pf1.class-abilities.Item.hCNcTDUHw7vDAlhq]{Spell Deflection}.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "8AEPlLbeiTbQBJbV",
+    "name": "Spell Deflection",
+    "sources": [
+      {
+        "id": "PZO9286",
+        "pages": "8"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.8AEPlLbeiTbQBJbV"
+  },
+  "8MI2BpO4ewblrCvp": {
+    "changes": [
+      {
+        "formula": "min(@abilities.dex.base, lookup(@ageCategory.physical, 0, 0, 1, 1, 1))",
+        "target": "dex",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(@abilities.con.base, lookup(@ageCategory.physical, 0, 0, 1, 1, 1))",
+        "target": "con",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(@abilities.str.base, lookup(@ageCategory.physical, 0, 0, 1, 1, 1))",
+        "target": "str",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You ignore the physical detriments of being middle-aged as per @UUID[Compendium.pf1.spells.Item.li8zwqjorsww6o82].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "24"
+    },
+    "id": "8MI2BpO4ewblrCvp",
+    "name": "Age Resistance, Lesser",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "205"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.8MI2BpO4ewblrCvp"
+  },
+  "8e8Iqdi721djMcSi": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "Cannot be flanked."
+      }
+    ],
+    "description": "<p>Grants all-around vision (cannot be flanked) while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.vbJhd1aeLHgPsA6e].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "8e8Iqdi721djMcSi",
+    "name": "Veemod (Blue)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "53"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.8e8Iqdi721djMcSi"
+  },
+  "9HlefpSamj4Qme3p": {
+    "changes": [
+      {
+        "formula": "30",
+        "target": "swimSpeed",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.swm",
+        "text": "Can Take 10 even if distracted or endangered."
+      }
+    ],
+    "description": "<p>Grants swim speed of [[30]] feet along and the ability to take 10 even if distracted or endangered as per @UUID[Compendium.pf1.spells.Item.ts50hpvkdgerfp1a].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "9HlefpSamj4Qme3p",
+    "level": 1,
+    "name": "Touch of the Sea",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "250"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.9HlefpSamj4Qme3p"
+  },
+  "9LKumYEPIbzb1dQB": {
+    "changes": [
+      {
+        "formula": "5 * (1 + gte(@item.level, 8) + if(gte(@item.level, 15), 2))",
+        "target": "landSpeed",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The creature gains a [[5 * (1 + gte(@item.level, 8) + if(gte(@item.level, 15), 2))]]-foot enhancement bonus to its base land speed as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "9LKumYEPIbzb1dQB",
+    "level": 1,
+    "name": "Animal Focus (Stag)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "28"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.9LKumYEPIbzb1dQB"
+  },
+  "AclErIDcanB7Kd8D": {
+    "changes": [
+      {
+        "formula": "3",
+        "target": "skill.ste",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>+[[3]] competence bonus on Stealth checks in current terrain as per @UUID[Compendium.pf1.technology.Item.tYUaP6Yx45ekrOdR].</p>",
+    "id": "AclErIDcanB7Kd8D",
+    "name": "Neraplast Armor",
+    "sources": [
+      {
+        "id": "PZO9085",
+        "pages": "60"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.AclErIDcanB7Kd8D"
+  },
+  "AgqXOB4RbAi5QHnR": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "skill.acr",
+        "text": "+[[clamp((floor((@item.level + 3) / 4) * 10), 10, 30)]] to Jump."
+      }
+    ],
+    "description": "<p>Grants +[[clamp((floor((@item.level + 3) / 4) * 10), 10, 30)]] enhancement bonus on Acrobatics checks made to attempt high jumps or long jumps as per @UUID[Compendium.pf1.spells.Item.ns2zo6qgd9co02uf].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "AgqXOB4RbAi5QHnR",
+    "level": 1,
+    "name": "Jump",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "303"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.AgqXOB4RbAi5QHnR"
+  },
+  "B1lq0g41olpQMfzK": {
+    "changes": [
+      {
+        "formula": "-4",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "-4",
+        "target": "skills",
+        "type": "untyped"
+      },
+      {
+        "formula": "-4",
+        "target": "allSavingThrows",
+        "type": "untyped"
+      },
+      {
+        "formula": "-4",
+        "target": "attack",
+        "type": "untyped"
+      },
+      {
+        "formula": "-4",
+        "target": "allChecks",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You suffer -4 penalty to AC, attack rolls, saves, ability checks and skill checks as per @UUID[Compendium.pf1.class-abilities.Item.KPauZdmqDDxXj6OU].</p>",
+    "id": "B1lq0g41olpQMfzK",
+    "name": "Dire Prophecy",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "82"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.B1lq0g41olpQMfzK"
+  },
+  "Bw3S5PgpZWRrUqRD": {
+    "changes": [
+      {
+        "formula": "-(1 + floor(@item.level / 5))",
+        "target": "allSavingThrows",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Applies -[[(1 + floor(@item.unlevel / 5))]] penalty to saving throws as per @UUID[Compendium.pf1.class-abilities.Item.zx0lJIxpj8ZCDh97]{Taboo (Domain Power)}</p>",
+    "duration": {
+      "end": "turnStart",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "Bw3S5PgpZWRrUqRD",
+    "level": 1,
+    "name": "Taboo",
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "17"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.Bw3S5PgpZWRrUqRD"
+  },
+  "CgyclqlZAD1HCtjv": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "carryMult",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Triples the target's carrying capacity as per @Compendium[pf1.spells.ngcx59msygjom4h2].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "2 * @item.level"
+    },
+    "id": "CgyclqlZAD1HCtjv",
+    "level": 1,
+    "name": "Ant Haul",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "201"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.CgyclqlZAD1HCtjv"
+  },
+  "CjQ4VmDIRBb3k7Dg": {
+    "changes": [
+      {
+        "formula": "1 + floor(@classes.barbarianUnchained.level / 4)",
+        "target": "tattack",
+        "type": "competence"
+      },
+      {
+        "formula": "1 + floor(@classes.barbarianUnchained.level / 4)",
+        "target": "mattack",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The barbarian gains a +[[1]] competence bonus on melee attack rolls and thrown weapon attack rolls. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.042BafLhw5SsMsg6] for more details.</p>",
+    "id": "CjQ4VmDIRBb3k7Dg",
+    "name": "Accurate Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "9"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.CjQ4VmDIRBb3k7Dg"
+  },
+  "Cl3NcY8raqcmeP7x": {
+    "changes": [
+      {
+        "formula": "6",
+        "target": "allSavingThrows",
+        "type": "resist"
+      },
+      {
+        "formula": "2",
+        "target": "cl",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[6]] resistance to saves and +[[2]] to Caster Level checks as long as someone is trapped inside the Kimono as per @UUID[Compendium.pf1.buffs.Item.Cl3NcY8raqcmeP7x].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "10"
+    },
+    "id": "Cl3NcY8raqcmeP7x",
+    "name": "Otherworldly Kimono",
+    "sources": [
+      {
+        "id": "PZO9054",
+        "pages": "60"
+      },
+      {
+        "id": "PZO1123",
+        "pages": "216"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.Cl3NcY8raqcmeP7x"
+  },
+  "ClOy4KHJFDdt0ALh": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Strength as per @UUID[Compendium.pf1.spells.Item.05i5rxwim12hwktu].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "ClOy4KHJFDdt0ALh",
+    "level": 3,
+    "name": "Bull's Strength",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "251"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.ClOy4KHJFDdt0ALh"
+  },
+  "D2huasedfGMSetP7": {
+    "changes": [
+      {
+        "formula": "-1",
+        "target": "attack",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "-[[1]] vs Fear effects"
+      }
+    ],
+    "description": "<p>You take a -1 penalty on attack rolls and saving throws vs fear effects as per @UUID[Compendium.pf1.spells.Item.3etxlex8u32g0hrx] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "D2huasedfGMSetP7",
+    "level": 1,
+    "name": "Bane",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "346"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.D2huasedfGMSetP7"
+  },
+  "DRHyuCVDE4XW5Ayl": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "attack",
+        "text": "+[[@abilities.cha.mod]] on weapon damage rolls against oathbreaking creature."
+      }
+    ],
+    "description": "<p>Grants +[[@abilities.cha.mod]] competence on weapon damage rolls against oathbreaking creatures as per @UUID[Compendium.pf1.class-abilities.Item.31CnioMwm6kmFt8N].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "DRHyuCVDE4XW5Ayl",
+    "name": "Seek Retribution",
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "22"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.DRHyuCVDE4XW5Ayl"
+  },
+  "DTQBBe9QaeqI4jFp": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "resist"
+      },
+      {
+        "formula": "1",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[1]] deflection bonus to AC and a +[[1]] resistance bonus on saves as per @UUID[Compendium.pf1.spells.Item.menqakfoa1ftvi3f].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "DTQBBe9QaeqI4jFp",
+    "level": 3,
+    "name": "Shield Other",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "342"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.DTQBBe9QaeqI4jFp"
+  },
+  "DbgVlKyMojx8L3gR": {
+    "changes": [
+      {
+        "formula": "if(and(lt(@armor.type, 2), lt(@attributes.encumbrance.level, 1)), 10)",
+        "target": "climbSpeed",
+        "type": "racial"
+      },
+      {
+        "formula": "if(and(lt(@armor.type, 2), lt(@attributes.encumbrance.level, 1)), 10)",
+        "target": "swimSpeed",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants 10 foot climb speed and swim speed as per @UUID[Compendium.pf1.spells.Item.wijuvnfmtmq83jef]. This buff has no effect if you are wearing medium or heavy armor or carrying a medium or heavy load.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "DbgVlKyMojx8L3gR",
+    "level": 1,
+    "name": "Monkey Fish",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "188"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.DbgVlKyMojx8L3gR"
+  },
+  "DvcRWaWndZ1s2tB4": {
+    "changes": [
+      {
+        "formula": "4 + if(gte(@skills.acr.rank, 3), 2)",
+        "target": "ac",
+        "type": "dodge"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You can defend yourself as a standard action. You get a +[[4]] dodge bonus to your AC for 1 round. Your AC improves at the start of this action. You can’t combine total defense with fighting defensively or with the benefit of the Combat Expertise feat. You can’t make attacks of opportunity while using total defense.</p>",
+    "duration": {
+      "end": "turnStart",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "DvcRWaWndZ1s2tB4",
+    "name": "Total Defense",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "186"
+      }
+    ],
+    "subType": "temp",
+    "uuid": "Compendium.pf1.buffs.Item.DvcRWaWndZ1s2tB4"
+  },
+  "EDreDkg4ESQIwmEd": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants Temporary HP as per @UUID[Compendium.pf1.technology.Item.AmUgZQmCcIxg3DhV]{Force Field}.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "EDreDkg4ESQIwmEd",
+    "name": "Force Field",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "45"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.EDreDkg4ESQIwmEd"
+  },
+  "EWifq6MrCaGH6t3a": {
+    "changes": [
+      {
+        "formula": "@abilities.cha.mod",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "@abilities.cha.mod",
+        "target": "damage",
+        "type": "untyped"
+      },
+      {
+        "formula": "@abilities.cha.mod",
+        "target": "skills",
+        "type": "untyped"
+      },
+      {
+        "formula": "@abilities.cha.mod",
+        "target": "allChecks",
+        "type": "untyped"
+      },
+      {
+        "formula": "@abilities.cha.mod",
+        "target": "allSavingThrows",
+        "type": "untyped"
+      },
+      {
+        "formula": "@abilities.cha.mod",
+        "target": "attack",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "critical",
+        "text": "Any critical threat is automatically confirmed."
+      }
+    ],
+    "description": "<p>Adds Charisma modifier on all ability checks, attack rolls, damage rolls, saving throws, and skill checks and AC as per @UUID[Compendium.pf1.class-abilities.Item.Js2wvAGSZ1VqO7S1].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "EWifq6MrCaGH6t3a",
+    "name": "Moment of Triumph",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "34"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.EWifq6MrCaGH6t3a"
+  },
+  "EaNmiARTiepLXfcV": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "Immune to inhaled toxins or diseases"
+      }
+    ],
+    "description": "<p>Adds context note that target is immune to inhaled toxins or diseases as per @UUID[Compendium.pf1.technology.Item.3SHwrxfV7GG51ajY].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "EaNmiARTiepLXfcV",
+    "name": "Filter Mask",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "44"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.EaNmiARTiepLXfcV"
+  },
+  "EmavEsO0Mv42N03v": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "attack",
+        "type": "sacred"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "will",
+        "text": "+[[1]] Sacred bonus vs Fear effects."
+      }
+    ],
+    "description": "<p>You gain a +[[1]] sacred bonus on attack rolls and saves against fear effects, plus [[@item.level]] temporary hit point as per @UUID[Compendium.pf1.spells.Item.8wspht4k8tiugz6u].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "EmavEsO0Mv42N03v",
+    "level": 9,
+    "name": "Burst of Glory",
+    "sources": [
+      {
+        "id": "PZO9267",
+        "pages": "230"
+      },
+      {
+        "id": "PZO9202",
+        "pages": "21"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.EmavEsO0Mv42N03v"
+  },
+  "ExpWHnhptAuWwAqZ": {
+    "changes": [
+      {
+        "formula": "clamp(floor((@item.level + 5) / 4), 2, 6)",
+        "target": "skill.acr",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Gain a +[[clamp(floor((@item.level + 5) / 4), 2, 6)]] competence bonus on skill checks with a particular skill as long as you continue to hear the bard’s performance as per @UUID[Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq].</p>",
+    "duration": {
+      "end": "turnStart"
+    },
+    "id": "ExpWHnhptAuWwAqZ",
+    "level": 1,
+    "name": "Inspire Competence",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "37"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.ExpWHnhptAuWwAqZ"
+  },
+  "F9HgMbfh0AHe4zCP": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[2]] competence bonus on Perception checks and low-light vision as per @UUID[Compendium.pf1.spells.Item.54x9nw6ni4rpphcn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "F9HgMbfh0AHe4zCP",
+    "level": 1,
+    "name": "Keen Senses",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "230"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.F9HgMbfh0AHe4zCP"
+  },
+  "FA4nPvdBteR2pzqK": {
+    "changes": [
+      {
+        "formula": "5",
+        "target": "skill.per",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[5]] competence bonus on Perception checks while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.CgwAhfGBEFSqA9Lo].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "24"
+    },
+    "id": "FA4nPvdBteR2pzqK",
+    "name": "Veemod (White)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "53"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.FA4nPvdBteR2pzqK"
+  },
+  "FxGQVAP3ep7xiAC4": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants immunity to poison as per @UUID[Compendium.pf1.spells.Item.l7e01shgg8c44zfg].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "FxGQVAP3ep7xiAC4",
+    "level": 3,
+    "name": "Delay Poison",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "265"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.FxGQVAP3ep7xiAC4"
+  },
+  "FzUOIQgvjpzeNnnt": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Tracks duration and allows heal when dropped to 0 HP as per @UUID[Compendium.pf1.items.Item.z1Wf1DqtJQoVzbI9].</p>",
+    "id": "FzUOIQgvjpzeNnnt",
+    "name": "Seishinru, Spirit Elixir",
+    "sources": [
+      {
+        "id": "PZO9054",
+        "pages": "61"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.FzUOIQgvjpzeNnnt"
+  },
+  "G4KDVMpA5nH0r9sF": {
+    "changes": [
+      {
+        "formula": "10",
+        "target": "skill.per",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[2]] competence bonus on Perception checks while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.jhIfmOlvPbwZwCq1].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "24"
+    },
+    "id": "G4KDVMpA5nH0r9sF",
+    "name": "Veemod (Black)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "53"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.G4KDVMpA5nH0r9sF"
+  },
+  "GJ4CGcbf9RW7Jlqi": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "attack",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[2]] moral bonus to attacks as per @UUID[Compendium.pf1.class-abilities.Item.fAcozS7Vmm7xLGSX]</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "GJ4CGcbf9RW7Jlqi",
+    "name": "Strategy (Attack)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "35"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.GJ4CGcbf9RW7Jlqi"
+  },
+  "GLQo0kv6iZEvBGto": {
+    "changes": [
+      {
+        "formula": "5",
+        "target": "reach",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Increases natural reach by 5 feet as per @UUID[Compendium.pf1.spells.Item.steozrynqopyxiua] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "GLQo0kv6iZEvBGto",
+    "level": 1,
+    "name": "Long Arm",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "186"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.GLQo0kv6iZEvBGto"
+  },
+  "GS2jJQtdIw0TlCaD": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "ac",
+        "type": "deflection"
+      },
+      {
+        "formula": "2",
+        "target": "cmd",
+        "type": "deflection"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[2]] deflection bonus to AC and combat maneuver defense as per @UUID[Compendium.pf1.class-abilities.Item.yDG7xVuH7oqWS4Mt].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "GS2jJQtdIw0TlCaD",
+    "level": 1,
+    "name": "Deflection Aura",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "89"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.GS2jJQtdIw0TlCaD"
+  },
+  "GSImk5j94ry9OZIz": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "ac",
+        "type": "dodge"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[2]] dodge bonus to AC as per @UUID[Compendium.pf1.class-abilities.Item.fAcozS7Vmm7xLGSX]</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "GSImk5j94ry9OZIz",
+    "name": "Strategy (AC)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "35"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.GSImk5j94ry9OZIz"
+  },
+  "GTSxlSYtfXk5a0Oj": {
+    "changes": [
+      {
+        "formula": "12 + @item.level",
+        "target": "spellResist",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants spell resistance [[12 + @item.level]] as per @UUID[Compendium.pf1.spells.Item.4k9bh8ny1il2oner].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "GTSxlSYtfXk5a0Oj",
+    "level": 9,
+    "name": "Spell Resistance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "347"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.GTSxlSYtfXk5a0Oj"
+  },
+  "GdU6Xlwn2phRnfc6": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You are imbued with a +[[1]] resistance bonus on saves as per @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "GdU6Xlwn2phRnfc6",
+    "name": "Resistance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "334"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.GdU6Xlwn2phRnfc6"
+  },
+  "H9Qopdm0LVhvA4Pm": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants energy resistance [[floor((@item.level - 4) / 4) * 5]] to on energy type as per @UUID[Compendium.pf1.class-abilities.Item.TH51moex2K8P4UjM].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "H9Qopdm0LVhvA4Pm",
+    "level": 8,
+    "name": "Resist Energy",
+    "sources": [
+      {
+        "id": "PZO9478",
+        "pages": "13"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.H9Qopdm0LVhvA4Pm"
+  },
+  "HC9wMz9Ko93PgB8D": {
+    "changes": [
+      {
+        "formula": "1 + floor(@classes.barbarianUnchained.level / 4)",
+        "target": "twdamage",
+        "type": "untyped"
+      },
+      {
+        "formula": "1 + floor(@classes.barbarianUnchained.level / 4)",
+        "target": "mwdamage",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The barbarian gains a +[[1]] bonus on melee damage rolls and thrown weapon damage rolls. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.uJ4WSKQo1W8GZ9vr] for more details.</p>",
+    "id": "HC9wMz9Ko93PgB8D",
+    "name": "Powerful Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "11"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.HC9wMz9Ko93PgB8D"
+  },
+  "HdNb6j7U9qA2tnr1": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>See @UUID[Compendium.pf1.class-abilities.Item.3wRZrnb7itCksfhP] for more details.</p>",
+    "id": "HdNb6j7U9qA2tnr1",
+    "name": "Regenerative Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "12"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.HdNb6j7U9qA2tnr1"
+  },
+  "IlO0CNpAIKZtNYu8": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "aac",
+        "type": "base"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "+[[4]] against incorporeal touch attacks."
+      }
+    ],
+    "description": "<p>Grants +[[4]] armor bonus to AC which also applies against incorporeal touch attacks as per @UUID[Compendium.pf1.spells.Item.ucc0a31d1y86oleh].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "IlO0CNpAIKZtNYu8",
+    "level": 1,
+    "name": "Mage Armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "306"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.IlO0CNpAIKZtNYu8"
+  },
+  "IwthEw2sCUq4GfxY": {
+    "changes": [
+      {
+        "formula": "120",
+        "target": "sensedv",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants darkvision 120 ft. for 1 Hour per item level as per @UUID[Compendium.pf1.spells.Item.nntvnla4qnawr0xn] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "IwthEw2sCUq4GfxY",
+    "level": 7,
+    "name": "Darkvision, Greater",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "216"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.IwthEw2sCUq4GfxY"
+  },
+  "J197dkOWtvbSpgjF": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Allows rerolling a fortitude save with a +4 competence bonus as per @UUID[Compendium.pf1.class-abilities.Item.15IlbKFhTTuXwPU6].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "J197dkOWtvbSpgjF",
+    "name": "Danger Ward (Fortitude)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "64"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.J197dkOWtvbSpgjF"
+  },
+  "KLUCuieSvkTD4qem": {
+    "changes": [
+      {
+        "formula": "- (1 + floor(@classes.barbarianUnchained.level / 4))",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "1 + floor(@classes.barbarianUnchained.level / 4)",
+        "target": "attack",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The barbarian can focus her ferocity. She gains a +[[1]] bonus on melee damage rolls and thrown weapon damage rolls. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.isntpKkbAc8v2SuT] for more details.</p>",
+    "id": "KLUCuieSvkTD4qem",
+    "name": "Reckless Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "12"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.KLUCuieSvkTD4qem"
+  },
+  "KkpKycN7WMwnjlxU": {
+    "changes": [
+      {
+        "formula": "30",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "skill.ste",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants darkvision 30 feet and a +[[2]] competence bonus on Stealth as per @UUID[Compendium.pf1.spells.Item.mnsqk035k4hr8vjs] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "KkpKycN7WMwnjlxU",
+    "level": 5,
+    "name": "Blessing of the Mole",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "208"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.KkpKycN7WMwnjlxU"
+  },
+  "KsgdOd5vzGu7UDBe": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "cha",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Charisma as per @UUID[Compendium.pf1.spells.Item.d4oubr5bdoo8w1ev] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "KsgdOd5vzGu7UDBe",
+    "level": 3,
+    "name": "Eagle's Splendor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "275"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.KsgdOd5vzGu7UDBe"
+  },
+  "L6gBfTUHFJMiY9Uj": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "nac",
+        "type": "alchemical"
+      },
+      {
+        "formula": "-2",
+        "target": "cha",
+        "type": "alchemical"
+      },
+      {
+        "formula": "4",
+        "target": "con",
+        "type": "alchemical"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>+[[2]] natural armor bonus, +[[4]] alchemical bonus to Constitution, -2 penalty to Charisma as per @UUID[Compendium.pf1.class-abilities.Item.zrTVb83VhkFnEv6G].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "L6gBfTUHFJMiY9Uj",
+    "level": 1,
+    "name": "Mutagen, Con",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "26"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.L6gBfTUHFJMiY9Uj"
+  },
+  "LR64SMLpzgyMNNcm": {
+    "changes": [
+      {
+        "formula": "4 + floor((@item.level - 1) / 7) * 2",
+        "target": "skill.ste",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus to Perception as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "LR64SMLpzgyMNNcm",
+    "level": 1,
+    "name": "Animal Focus (Owl)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "28"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.LR64SMLpzgyMNNcm"
+  },
+  "MFogxSkB5dBmUI5i": {
+    "changes": [
+      {
+        "formula": "-1",
+        "target": "allSavingThrows",
+        "type": "untyped"
+      },
+      {
+        "formula": "-1",
+        "target": "skills",
+        "type": "untyped"
+      },
+      {
+        "formula": "-1",
+        "target": "attack",
+        "type": "untyped"
+      },
+      {
+        "formula": "-1",
+        "target": "wdamage",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You have a -1 luck penalty on attack rolls, weapon damage rolls, saves and skill checks as per @UUID[Compendium.pf1.spells.Item.hu8179fdqfkl0bqj].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "MFogxSkB5dBmUI5i",
+    "level": 5,
+    "name": "Prayer (Negative)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "324"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.MFogxSkB5dBmUI5i"
+  },
+  "Mgi0taTxLOPN6y2V": {
+    "changes": [
+      {
+        "formula": "2 + floor((@item.level - 1) / 7) * 2",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] enhancement bonus to Constitution as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "Mgi0taTxLOPN6y2V",
+    "level": 1,
+    "name": "Animal Focus (Bear)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "27"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.Mgi0taTxLOPN6y2V"
+  },
+  "N9I7rqVRxAi96UBn": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Tracks duration of the spell @UUID[Compendium.pf1.spells.Item.pau0ejk30fs1eebl]{Endure Elements}.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "N9I7rqVRxAi96UBn",
+    "level": 24,
+    "name": "Endure Elements",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "277"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.N9I7rqVRxAi96UBn"
+  },
+  "NWImcWGTjCtw1Zf0": {
+    "changes": [
+      {
+        "formula": "min(@attributes.speed.burrow.base, 30)",
+        "target": "burrowSpeed",
+        "type": "enh"
+      },
+      {
+        "formula": "min(@attributes.speed.climb.base, 30)",
+        "target": "climbSpeed",
+        "type": "enh"
+      },
+      {
+        "formula": "1",
+        "target": "ac",
+        "type": "haste"
+      },
+      {
+        "formula": "1",
+        "target": "attack",
+        "type": "haste"
+      },
+      {
+        "formula": "min(@attributes.speed.swim.base, 30)",
+        "target": "swimSpeed",
+        "type": "enh"
+      },
+      {
+        "formula": "min(@attributes.speed.land.base, 30)",
+        "target": "landSpeed",
+        "type": "enh"
+      },
+      {
+        "formula": "min(@attributes.speed.fly.base, 30)",
+        "target": "flySpeed",
+        "type": "enh"
+      },
+      {
+        "formula": "1",
+        "target": "ref",
+        "type": "haste"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>When making a full attack action, you may make one extra attack with one natural or manufactured weapon at your highest base attack bonus. This effect is not cumulative with similar effects, such as that provided by a <em>speed</em> weapon.</p><p>You also gain a +[[1]] bonus on attack rolls, dodge AC and Reflex saves.</p><p>All your modes of movement (including land, fly, burrow, climb and swim) increase by 30ft, to a maximum of twice your normal speed using that form of movement. This increase counts as an enhancement bonus, and it affects the creature’s jumping distance as normal for increased speed.</p><p>See @UUID[Compendium.pf1.spells.Item.s9amdo5398alb5p0] for more details.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "NWImcWGTjCtw1Zf0",
+    "level": 5,
+    "name": "Haste",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "293"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.NWImcWGTjCtw1Zf0"
+  },
+  "OCAbaLfEP5nPn6fc": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[1]] competence when caster is threatend by your allying cavalier/samurai."
+      },
+      {
+        "target": "attack",
+        "text": "+[[1]] competence on targets threatend by your allying cavalier/samurai."
+      }
+    ],
+    "description": "<p>Grants +[[@item.level]] competence on attack rolls and saving throws when allying cavalier/samurai threatens the target as per @UUID[Compendium.pf1.class-abilities.Item.k3DBzmRSzywR0sbm].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "floor(@item.level / 2)"
+    },
+    "id": "OCAbaLfEP5nPn6fc",
+    "level": 1,
+    "name": "Temporary Alliance",
+    "sources": [
+      {
+        "id": "PZO9482",
+        "pages": "24"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.OCAbaLfEP5nPn6fc"
+  },
+  "OEPLhd4m46A6QA31": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against fire as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "10 * @item.level"
+    },
+    "id": "OEPLhd4m46A6QA31",
+    "level": 3,
+    "name": "Resist Energy (Fire)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "334"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.OEPLhd4m46A6QA31"
+  },
+  "OQQYaNxXsb974T8j": {
+    "changes": [
+      {
+        "formula": "if(gt(@attributes.speed.swim.total, 0), max(1, floor(@attributes.speed.swim.total / 5 / 2)) * 5)",
+        "target": "swimSpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "if(gt(@attributes.speed.land.total, 0), max(1, floor(@attributes.speed.land.total / 5 / 2)) * 5)",
+        "target": "landSpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "if(gt(@attributes.speed.burrow.total, 0), max(1, floor(@attributes.speed.burrow.total / 5 / 2)) * 5)",
+        "target": "burrowSpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "if(gt(@attributes.speed.climb.total, 0), max(1, floor(@attributes.speed.climb.total / 5 / 2)) * 5)",
+        "target": "climbSpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "-1",
+        "target": "ref",
+        "type": "untyped"
+      },
+      {
+        "formula": "-1",
+        "target": "attack",
+        "type": "untyped"
+      },
+      {
+        "formula": "if(gt(@attributes.speed.fly.total, 0), max(1, floor(@attributes.speed.fly.total / 5 / 2)) * 5)",
+        "target": "flySpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "-1",
+        "target": "ac",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You are @Condition[staggered], and you have a -1 penalty to attack rolls, AC and Reflex saves.</p><p>In addition, you move at half speed (round down to the next 5-foot increment).</p><p>See @UUID[Compendium.pf1.spells.Item.jcr72piqo6g549e1] for more details.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "OQQYaNxXsb974T8j",
+    "level": 5,
+    "name": "Slow",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "344"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.OQQYaNxXsb974T8j"
+  },
+  "OdGQWPMk0TyRnFN7": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "nac",
+        "type": "base"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[2]] natural armor bonus and DR/Slashing [[@abilities.cha.mod]] as per @UUID[Compendium.pf1.class-abilities.Item.ppnLbY3ZrKGWxQ2R]{Wooden Flesh}.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "OdGQWPMk0TyRnFN7",
+    "level": 1,
+    "name": "Wooden Flesh",
+    "sources": [
+      {
+        "id": "PZO9494",
+        "pages": "26"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.OdGQWPMk0TyRnFN7"
+  },
+  "QAL8jtr7BkTSVpXK": {
+    "changes": [
+      {
+        "formula": "1 + floor(@item.level / 5)",
+        "target": "attack",
+        "type": "sacred"
+      },
+      {
+        "formula": "if(gte(@item.level, 10), (1 + floor(@item.level / 5)) * 2)",
+        "target": "critConfirm",
+        "type": "sacred"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[1 + floor(@item.level / 5)]] sacred / profane bonus on all attack rolls which is doubled to confirm critical hits at level 10 as per @UUID[Compendium.pf1.class-abilities.Item.j6ZSm23YrshsdfBt].</p>",
+    "duration": {
+      "units": "combat"
+    },
+    "id": "QAL8jtr7BkTSVpXK",
+    "level": 1,
+    "name": "Justice",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "39"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.QAL8jtr7BkTSVpXK"
+  },
+  "QYVZS8MfOKzjpCm1": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "attack",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[1]] Morale vs Fear effects"
+      }
+    ],
+    "description": "<p>You have a +[[1]] morale bonus to attack rolls and saves against fear effects as per @UUID[Compendium.pf1.spells.Item.wa0zb2pncesmm9lz] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "QYVZS8MfOKzjpCm1",
+    "level": 1,
+    "name": "Bless",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "249"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.QYVZS8MfOKzjpCm1"
+  },
+  "QkPDtDGeFcWZe6i9": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Allows rerolling a will save with a +4 competence bonus as per @UUID[Compendium.pf1.class-abilities.Item.15IlbKFhTTuXwPU6].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "QkPDtDGeFcWZe6i9",
+    "name": "Danger Ward (Will)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "64"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.QkPDtDGeFcWZe6i9"
+  },
+  "Ql31DWosn4CcGKew": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants +[[@abilities.cha.mod]] competence on attack and weapon damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.nC5At2htfNHdTSZ9].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "Ql31DWosn4CcGKew",
+    "name": "Poetic Inspiration",
+    "sources": [
+      {
+        "id": "PZO9491",
+        "pages": "14"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.Ql31DWosn4CcGKew"
+  },
+  "Qqo3DLdlbnXhXe7G": {
+    "changes": [
+      {
+        "formula": "min(5, floor(@item.level / 4))",
+        "target": "aac",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants an enhancement bonus of +[[min(5, floor(@item.level / 4))]] to your armor class or shield ac as per @UUID[Compendium.pf1.spells.Item.73han2zqxg59u18g].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "Qqo3DLdlbnXhXe7G",
+    "level": 5,
+    "name": "Magic Vestment",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "310"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.Qqo3DLdlbnXhXe7G"
+  },
+  "Rh3wrAV3ZfgSviyN": {
+    "changes": [
+      {
+        "formula": "max(-5, ceil(min(0, (@attributes.hp.value - @item.uses.value) / 5)))",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(10, floor(max(0, (@item.uses.value - @attributes.hp.value)) / 5) * 2)",
+        "target": "str",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The subject has a bonus to Strength and malus to AC based on it's current hp as per @UUID[Compendium.pf1.spells.Item.g09p4w3w8enp5tki] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "Rh3wrAV3ZfgSviyN",
+    "level": 5,
+    "name": "Blood Rage (Spell)",
+    "sources": [
+      {
+        "id": "PZO9413",
+        "pages": "28"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.Rh3wrAV3ZfgSviyN"
+  },
+  "SQNQcS6VOXlF7vJx": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "will",
+        "text": "+[[2]] Morale vs existing Enchantment [charm] and [compulsion] effects."
+      },
+      {
+        "target": "ac",
+        "text": "+[[2]] Deflection vs Evil creatures."
+      },
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Resistance vs Evil creatures."
+      },
+      {
+        "target": "ac",
+        "text": "Bodily contact prevented by Evil summoned creatures."
+      }
+    ],
+    "description": "<p>Grants low-light vision, resistance to acid 5, resistance to cold 5, and the benefits of @UUID[Compendium.pf1.spells.Item.skgjjub1hng29nwo]{Protection from Evil} as per @UUID[Compendium.pf1.spells.Item.4ratngmltr3z4om5].</p><hr />",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "SQNQcS6VOXlF7vJx",
+    "level": 3,
+    "name": "Angelic Aspect, Lesser",
+    "sources": [
+      {
+        "id": "PZO9431",
+        "pages": "28"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.SQNQcS6VOXlF7vJx"
+  },
+  "T2j3SnpatLbS32O1": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "attack",
+        "type": "morale"
+      },
+      {
+        "formula": "4",
+        "target": "allSavingThrows",
+        "type": "morale"
+      },
+      {
+        "formula": "4",
+        "target": "skills",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You gain a +[[4]] morale bonus on attack rolls, saves, and skill checks as per @UUID[Compendium.pf1.spells.Item.z0duc2v2n3ioynta].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "T2j3SnpatLbS32O1",
+    "level": 11,
+    "name": "Heroism, Greater",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "295"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.T2j3SnpatLbS32O1"
+  },
+  "U067K8fH1HcnJhI1": {
+    "changes": [
+      {
+        "formula": "min(@abilities.dex.base, lookup(@ageCategory.physical, 0, 0, 1, 3, 6))",
+        "target": "dex",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(@abilities.str.base, lookup(@ageCategory.physical, 0, 0, 1, 3, 6))",
+        "target": "str",
+        "type": "untyped"
+      },
+      {
+        "formula": "min(@abilities.con.base, lookup(@ageCategory.physical, 0, 0, 1, 3, 6))",
+        "target": "con",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You ignore the physical detriments of being venerable, old or middle-aged as per @UUID[Compendium.pf1.spells.Item.eqrqv2ofspk574d3].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "24"
+    },
+    "id": "U067K8fH1HcnJhI1",
+    "name": "Age Resistance, Greater",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "205"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.U067K8fH1HcnJhI1"
+  },
+  "U7fqIfaTpWEcpamb": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants see invisibility for 10 Minutes per item level as per @UUID[Compendium.pf1.spells.Item.nokru6mxk9p3r513] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "U7fqIfaTpWEcpamb",
+    "level": 3,
+    "name": "See Invisibility",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "339"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.U7fqIfaTpWEcpamb"
+  },
+  "UTsRSrDTUDDEvwT5": {
+    "changes": [
+      {
+        "formula": "1 + floor(@classes.barbarianUnchained.level / 4)",
+        "target": "ac",
+        "type": "dodge"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The barbarian can take on a more defensive posture. This grants her a +[[1]] dodge bonus to her Armor Class for the duration of her current rage. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.Z0EXCnJBeBUdIb4H] for more details.</p>",
+    "id": "UTsRSrDTUDDEvwT5",
+    "name": "Guarded Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "11"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.UTsRSrDTUDDEvwT5"
+  },
+  "Uc5GpPwgJcxwfnVa": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] circumstance against light-based effects that would dazzle or blind."
+      }
+    ],
+    "description": "<p>Grants +[[2]] circumstance bonus on saves against light-based effects that would dazzle or blind as per @UUID[Compendium.pf1.items.Item.Pg5aON2QSqZB9aYj]</p>",
+    "duration": {
+      "end": "turnStart",
+      "units": "hour",
+      "value": "8"
+    },
+    "id": "Uc5GpPwgJcxwfnVa",
+    "name": "Sunblock Kohl",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "15"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.Uc5GpPwgJcxwfnVa"
+  },
+  "UgjpRD8vtiSWRxuL": {
+    "changes": [
+      {
+        "formula": "4 + (floor((@classes.barbarian.level - 2) / 9) * 2)",
+        "target": "con",
+        "type": "morale"
+      },
+      {
+        "formula": "-2",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "4 + (floor((@classes.barbarian.level - 2) / 9) * 2)",
+        "target": "str",
+        "type": "morale"
+      },
+      {
+        "formula": "2 + floor((@classes.barbarian.level - 2) / 9)",
+        "target": "will",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allChecks",
+        "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+      },
+      {
+        "target": "skills",
+        "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+      }
+    ],
+    "description": "<p>Gain +[[4]] morale bonus to Strength and Constitution, +[[2]] morale bonus to Will saves, and -2 penalty to Armor Class as per @UUID[Compendium.pf1.class-abilities.WSqWT9ZIshtC5vlV].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "2 + @classes.barbarian.level * 2 + @abilities.con.mod"
+    },
+    "id": "UgjpRD8vtiSWRxuL",
+    "name": "Rage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "32"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL"
+  },
+  "V8cRFtOQA6ltklEl": {
+    "changes": [
+      {
+        "formula": "-4",
+        "target": "attack",
+        "type": "untyped"
+      },
+      {
+        "formula": "if(gte(@skills.acr.rank, 3), 1) + 2",
+        "target": "ac",
+        "type": "dodge"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You can choose to fight defensively when attacking. If you do so, you take a –4 penalty on all attacks in a round to gain a +[[2]] dodge bonus to AC until the start of your next turn.</p>",
+    "duration": {
+      "end": "turnStart",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "V8cRFtOQA6ltklEl",
+    "name": "Fighting Defensively",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "184"
+      }
+    ],
+    "subType": "temp",
+    "uuid": "Compendium.pf1.buffs.Item.V8cRFtOQA6ltklEl"
+  },
+  "VUSZRkECd6Qd1jGf": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "ref",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "ref",
+        "text": "+[[1]] when benefiting from cover"
+      },
+      {
+        "target": "ac",
+        "text": "+[[1]] when benefiting from cover"
+      }
+    ],
+    "description": "<p>Grants +[[2]] to AC and +[[1]] to Reflex as under the effect of Cover as per @UUID[Compendium.pf1.class-abilities.Item.jlGCqPjmgNH3lUXS].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1 + (floor(@item.level / 6))"
+    },
+    "id": "VUSZRkECd6Qd1jGf",
+    "name": "Sheltering Walls",
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "18"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.VUSZRkECd6Qd1jGf"
+  },
+  "VVLBWeV17x1UtP2H": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "attack",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[0]] competence against fear"
+      }
+    ],
+    "description": "<p>Grants +[[0]] competence against fear effects and +[[1]] competence on attack rolls as per @UUID[Compendium.pf1.class-abilities.Item.i7Od2w9px0gmbkjU].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "VVLBWeV17x1UtP2H",
+    "level": 2,
+    "name": "Lion's Call",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "36"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.VVLBWeV17x1UtP2H"
+  },
+  "W9TR1oh1KpDxOKr1": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants ER [[(1 + floor(@item.level / 3)) * 2]] against one energy type as per @UUID[Compendium.pf1.class-abilities.Item.zkcLVRBuqCmo7EKx]{Resistance}.</p>",
+    "duration": {
+      "units": "combat"
+    },
+    "id": "W9TR1oh1KpDxOKr1",
+    "level": 1,
+    "name": "Resistance",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "39"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.W9TR1oh1KpDxOKr1"
+  },
+  "WRwcMIspQq9acUQW": {
+    "changes": [
+      {
+        "formula": "120",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
+        "formula": "5",
+        "target": "skill.per",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[10]] competence bonus on Perception checks, Low-Light Vision and Darkvision 120 ft. while active as per @UUID[Compendium.pf1.technology.Item.eecEg8w7FECEclV5].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "WRwcMIspQq9acUQW",
+    "name": "Veemod (Powered Armor)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "61"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.WRwcMIspQq9acUQW"
+  },
+  "WgCWQxR53UdVSGPB": {
+    "changes": [
+      {
+        "formula": "2 + min(3, floor(@item.level / 6))",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants deflection bonus to AC as per @UUID[Compendium.pf1.spells.Item.y2uhoqr4itdbw5g4] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "WgCWQxR53UdVSGPB",
+    "level": 1,
+    "name": "Shield of Faith",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "342"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.WgCWQxR53UdVSGPB"
+  },
+  "WrxSFJ9MJvFO3Mmu": {
+    "changes": [
+      {
+        "formula": "1 + floor(@item.level / 5)",
+        "target": "ac",
+        "type": "sacred"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "+[[1 + floor(@item.level / 5)]] against critical confirmation"
+      }
+    ],
+    "description": "<p>Grants +[[1 + floor(@item.level / 5)]] sacred / profane bonus to armor class as per @UUID[Compendium.pf1.class-abilities.Item.APjE7Cvu9fQFYKca].</p>",
+    "duration": {
+      "units": "combat"
+    },
+    "id": "WrxSFJ9MJvFO3Mmu",
+    "level": 1,
+    "name": "Protection",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "39"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.WrxSFJ9MJvFO3Mmu"
+  },
+  "XBjEZImaTvGXh6Gq": {
+    "changes": [
+      {
+        "formula": "ifelse(gte(@item.level, 8), -4, -2)",
+        "target": "skills",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on skill checks as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8]</p>",
+    "id": "XBjEZImaTvGXh6Gq",
+    "level": 1,
+    "name": "Evil Eye (Skill)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "66"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.XBjEZImaTvGXh6Gq"
+  },
+  "XYly5prMmLVsLT1l": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants immunity to fatigued and exhausted for 10 minutes as per @UUID[Compendium.pf1.armors-and-shields.Item.rqSC4rXoO3EaCxjw]{Armor of the Tireless Warrior}</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "10"
+    },
+    "id": "XYly5prMmLVsLT1l",
+    "name": "Armor of the Tireless Warrior",
+    "sources": [
+      {
+        "id": "PZO9053",
+        "pages": "60"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.XYly5prMmLVsLT1l"
+  },
+  "YIXC5DZ4SvDaH9pR": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "cmb",
+        "type": "morale"
+      },
+      {
+        "formula": "4",
+        "target": "fort",
+        "type": "morale"
+      },
+      {
+        "formula": "4",
+        "target": "strChecks",
+        "type": "morale"
+      },
+      {
+        "formula": "4",
+        "target": "mattack",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[4]] morale on melee attack rolls, combat maneuver checks, Fortitude saves and Strength checks as per @UUID[Compendium.pf1.class-abilities.Item.U6dAFqYDRELQROy4].</p>",
+    "duration": {
+      "end": "initiative"
+    },
+    "id": "YIXC5DZ4SvDaH9pR",
+    "name": "Inspiring Flex",
+    "sources": [
+      {
+        "id": "PZO9446",
+        "pages": "18"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.YIXC5DZ4SvDaH9pR"
+  },
+  "YUrObSwqLffrici4": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants see in darkness while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.eyohSXJlccmDl3Ve].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "YUrObSwqLffrici4",
+    "name": "Veemod (Orange)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "53"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.YUrObSwqLffrici4"
+  },
+  "YX0ZXFOGqZXu57AN": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "ac",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "Takes an additional -[[floor((@item.level + 2) / 6) * 2]] to AC against attacks made by the rogue."
+      }
+    ],
+    "description": "<p>The target takes a –2 penalty to AC. The target takes an additional –[[floor((@item.level + 2) / 6) * 2]] penalty to AC against all attacks made by the rogue as per @UUID[Compendium.pf1.class-abilities.Item.nL9Ds9nflmID84vo].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "YX0ZXFOGqZXu57AN",
+    "level": 4,
+    "name": "Debilitating Injury (Bewildered)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "22"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.YX0ZXFOGqZXu57AN"
+  },
+  "Yr2fjmHuiTy4J6nC": {
+    "changes": [
+      {
+        "formula": "4 + floor((@item.level - 1) / 7) * 2",
+        "target": "skill.swm",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.acr",
+        "text": "+[[4 + floor((@item.level - 1) / 7) * 2]] to jump"
+      }
+    ],
+    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus on Swim checks and on Acrobatics checks to jump as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "Yr2fjmHuiTy4J6nC",
+    "level": 1,
+    "name": "Animal Focus (Frog)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "27"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.Yr2fjmHuiTy4J6nC"
+  },
+  "Z140LMTwEKHQXdW5": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "size"
+      },
+      {
+        "formula": "-2",
+        "target": "str",
+        "type": "size"
+      },
+      {
+        "formula": "1",
+        "target": "carryStr",
+        "type": "untyped"
+      },
+      {
+        "formula": "-1",
+        "target": "size",
+        "type": "untyped"
+      },
+      {
+        "formula": "0.5",
+        "target": "carryMult",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Adjusts:</p><ul><li>-2 Size penalty to Strength</li><li>+[[2]] Size bonus to Dexterity</li><li>-1 Size</li></ul><p>Included carry capacity adjustments partially account for your gear not changing in size.</p><p>See @UUID[Compendium.pf1.spells.2y9e1l6zso9tdg0a] spell for more details.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "Z140LMTwEKHQXdW5",
+    "level": 1,
+    "name": "Reduce Person",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "330, 331"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.Z140LMTwEKHQXdW5"
+  },
+  "Z92Q2f8oUrKW5y5M": {
+    "changes": [
+      {
+        "formula": "@item.level",
+        "target": "attack",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>[[@item.level]] morale on attack rolls as per @UUID[Compendium.pf1.class-abilities.Item.jeUsQWO39LRmFbaI].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "Z92Q2f8oUrKW5y5M",
+    "name": "For the Faith",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "37"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.Z92Q2f8oUrKW5y5M"
+  },
+  "a3P821aUxxJbSpVV": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "str",
+        "type": "alchemical"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "alchemical"
+      },
+      {
+        "formula": "2",
+        "target": "nac",
+        "type": "alchemical"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>+[[2]] natural armor bonus, +[[4]] alchemical bonus to Strength, -2 penalty to Intelligence as per @UUID[Compendium.pf1.class-abilities.Item.zrTVb83VhkFnEv6G].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "a3P821aUxxJbSpVV",
+    "level": 1,
+    "name": "Mutagen, Str",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "26"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.a3P821aUxxJbSpVV"
+  },
+  "a7hnzLkLPrqRti14": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants invisibility as per @UUID[Compendium.pf1.spells.Item.cxgi0ub77t6aink1].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "a7hnzLkLPrqRti14",
+    "level": 7,
+    "name": "Invisibility, Greater",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "301"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.a7hnzLkLPrqRti14"
+  },
+  "aIQ1v9zaOYTFbBcZ": {
+    "changes": [
+      {
+        "formula": "1 + max(0, floor((@item.level - 8) / 4))",
+        "target": "attack",
+        "type": "morale"
+      },
+      {
+        "formula": "1 + max(0, floor((@item.level - 8) / 4))",
+        "target": "damage",
+        "type": "morale"
+      },
+      {
+        "formula": "1 + max(0, floor((@item.level - 8) / 4))",
+        "target": "allSavingThrows",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[1 + max(0, floor((@item.level - 8) / 4))]] morale bonus on attack rolls, damage rolls, and saving throws as per @UUID[Compendium.pf1.class-abilities.Item.ofbPltoU3YPQXPn6].</p>",
+    "duration": {
+      "end": "initiative"
+    },
+    "id": "aIQ1v9zaOYTFbBcZ",
+    "level": 8,
+    "name": "Close at Hand",
+    "sources": [
+      {
+        "id": "PZO9268",
+        "pages": "30"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.aIQ1v9zaOYTFbBcZ"
+  },
+  "aRpdBq0hSvter9wi": {
+    "changes": [
+      {
+        "formula": "60",
+        "target": "flySpeed",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants a fly speed of 60 feet as per @UUID[Compendium.pf1.technology.Item.4FRBfHoD1W9SsrDr].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "aRpdBq0hSvter9wi",
+    "name": "Jetpack",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "48"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.aRpdBq0hSvter9wi"
+  },
+  "aS8JH3Up3T0djpua": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "ac",
+        "type": "dodge"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[2]] dodge bonus to AC as per @UUID[Compendium.pf1.class-abilities.Item.9BDg29hecpIqySP1].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "aS8JH3Up3T0djpua",
+    "name": "Act as One",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "35"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.aS8JH3Up3T0djpua"
+  },
+  "aXNBwNX1qgp8GqzM": {
+    "changes": [
+      {
+        "formula": "if(@attributes.speed.fly.total, 10)",
+        "target": "flySpeed",
+        "type": "enh"
+      },
+      {
+        "formula": "20",
+        "target": "landSpeed",
+        "type": "enh"
+      },
+      {
+        "formula": "if(@attributes.speed.climb.total, 10)",
+        "target": "climbSpeed",
+        "type": "enh"
+      },
+      {
+        "formula": "if(@attributes.speed.swim.total, 10)",
+        "target": "swimSpeed",
+        "type": "enh"
+      },
+      {
+        "formula": "if(@attributes.speed.burrow.total, 10)",
+        "target": "burrowSpeed",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[20]]-foot enhancement bonus to your base speed and a +[[10]]-foot enhancement bonus to your other modes of movement (burrow, climb, fly, swim, and so on) as per @UUID[Compendium.pf1.spells.Item.k78qs00yp7uybprw].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "aXNBwNX1qgp8GqzM",
+    "level": 5,
+    "name": "Longstrider, Greater",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "186"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.aXNBwNX1qgp8GqzM"
+  },
+  "aqCSTZjMKDXU0DeT": {
+    "changes": [
+      {
+        "formula": "1 + floor(@classes.barbarianUnchained.level / 4)",
+        "target": "cmb",
+        "type": "competence"
+      },
+      {
+        "formula": "1 + floor(@classes.barbarianUnchained.level / 4)",
+        "target": "cmd",
+        "type": "competence"
+      },
+      {
+        "formula": "8",
+        "target": "strChecks",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The barbarian gains a +[[1]] competence bonus on combat maneuvers and to her CMD. These bonuses increase by 1 for every 4 levels the barbarian has. In addition, she gains a +[[8]] competence bonus on Strength checks to lift, push, bend, or break objects (this does not apply to combat maneuvers).</p><p>See @UUID[Compendium.pf1.class-abilities.Item.3c9wm12qx3pWhh79] for more details.</p>",
+    "id": "aqCSTZjMKDXU0DeT",
+    "name": "Strength Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "12"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.aqCSTZjMKDXU0DeT"
+  },
+  "bU5ry2F5WAKhacZI": {
+    "changes": [
+      {
+        "formula": "min(5, floor(@item.level / 4))",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants a +[[min(5, floor(@item.level / 4))]] resistance bonus on all saving throws. You can end the effect at any time as a swift action to deal 2d8 points of force damage to all creatures within 5 feet as per @UUID[Compendium.pf1.spells.Item.1gz3zdpxu7uic5ky].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "bU5ry2F5WAKhacZI",
+    "level": 5,
+    "name": "Wrathful Mantle",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "257"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.bU5ry2F5WAKhacZI"
+  },
+  "bleCnwZmMAOu4nE4": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "alchemical"
+      },
+      {
+        "formula": "2",
+        "target": "nac",
+        "type": "alchemical"
+      },
+      {
+        "formula": "4",
+        "target": "dex",
+        "type": "alchemical"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>+[[2]] natural armor bonus, +[[4]] alchemical bonus to Dexterity, -2 penalty to Wisdom as per @UUID[Compendium.pf1.class-abilities.Item.zrTVb83VhkFnEv6G].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "bleCnwZmMAOu4nE4",
+    "level": 1,
+    "name": "Mutagen, Dex",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "26"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.bleCnwZmMAOu4nE4"
+  },
+  "cA2R9j90XCY3mRvl": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants DR [[1 + floor(@item.level / 5)]]/magic (or alignment at level 10) as per @UUID[Compendium.pf1.class-abilities.Item.yta6JuJRGAR0UEE7]{Resiliency}.</p>",
+    "duration": {
+      "units": "combat"
+    },
+    "id": "cA2R9j90XCY3mRvl",
+    "level": 1,
+    "name": "Resiliency",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "39"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.cA2R9j90XCY3mRvl"
+  },
+  "ciAO4KwMonUzAGY0": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + max(0, floor((@classes.barbarianUnchained.level - 2 ) / 9))",
+        "target": "mwdamage",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + max(0, floor((@classes.barbarianUnchained.level - 2 ) / 9))",
+        "target": "mattack",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + max(0, floor((@classes.barbarianUnchained.level - 2 ) / 9))",
+        "target": "twdamage",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + max(0, floor((@classes.barbarianUnchained.level - 2 ) / 9))",
+        "target": "will",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allChecks",
+        "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+      },
+      {
+        "target": "skills",
+        "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
+      }
+    ],
+    "description": "<p>Gain +[[2]] bonus to melee attack and melee damage rolls, thrown weapon damage rolls, and Will saving throws. Additionally you suffer -2 penalty to Armor Class. You also gain 2 temporary hit points per Hit Die and are unable to use various skills. </p><p>See @UUID[Compendium.pf1.class-abilities.2Az38ZPYwjYBKZd2] for more details.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "2 + @classes.barbarianUnchained.level * 2 + @abilities.con.mod"
+    },
+    "id": "ciAO4KwMonUzAGY0",
+    "name": "Rage (Unchained)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "8"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.ciAO4KwMonUzAGY0"
+  },
+  "d9bDSB4JceMd6Uq9": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Tracks duration of @UUID[Compendium.pf1.class-abilities.Item.xzTIam3Cx9JH5GNs].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "d9bDSB4JceMd6Uq9",
+    "name": "Way of the Samurai",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "21"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.d9bDSB4JceMd6Uq9"
+  },
+  "dHZ25yUwzmosJZbw": {
+    "changes": [
+      {
+        "formula": "ifelse(lte(@item.level, 8), 30, 60)",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "if(gte(@item.level, 15), 10)",
+        "target": "sensebse",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The creature gains darkvision to a range of 60 feet. At 8th level, the range increases by 30 feet. At 15th level, the creature also gains blindsense to a range of 10 feet as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "dHZ25yUwzmosJZbw",
+    "level": 1,
+    "name": "Animal Focus (Bat)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "27"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.dHZ25yUwzmosJZbw"
+  },
+  "dVqLY99ECYnLeoB5": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Dexterity as per @UUID[Compendium.pf1.spells.Item.ns8jbp0ilbvbvuif] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "dVqLY99ECYnLeoB5",
+    "level": 3,
+    "name": "Cat's Grace",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "252"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.dVqLY99ECYnLeoB5"
+  },
+  "dYMrU01t5FNMgNra": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>You gain DR 10/adamantine. You ignore the first 10 points of damage each time you take damage from a weapon, though an adamantine weapon bypasses the reduction. Once the spell has prevented a total of [[min(@item.level, 15) * 10]] points of damage, it is discharged as per @UUID[Compendium.pf1.spells.Item.knyako6zopc1chrv]{Stoneskin}.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "dYMrU01t5FNMgNra",
+    "level": 7,
+    "name": "Stoneskin",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "350"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.dYMrU01t5FNMgNra"
+  },
+  "e6LhyzMnHZc5Vlni": {
+    "changes": [
+      {
+        "formula": "2 + clamp(floor(@item.level / 8), 0, 2)",
+        "target": "ac",
+        "type": "deflection"
+      },
+      {
+        "formula": "2 + clamp(floor(@item.level / 8), 0, 2)",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Gain +[[2]] deflection bonus to AC and +[[2]] resistance bonus to saving throws.</p><p>This lasts until you are hit or you fail a saving throw.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.etzfM5q6bFFSnRjU] for more details.</p>",
+    "id": "e6LhyzMnHZc5Vlni",
+    "level": 1,
+    "name": "Ward",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "67"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "37"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.e6LhyzMnHZc5Vlni"
+  },
+  "eKiKTrSBNLubVI6g": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "skill.clm",
+        "text": "+[[10]] circumstance bonus while climbing scaling metal surfaces."
+      }
+    ],
+    "description": "<p>+[[10]] circumstance bonus while climbing metal surfaces as per @UUID[Compendium.pf1.technology.Item.nK3XfCurRf9nRZiD].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "eKiKTrSBNLubVI6g",
+    "name": "Magboots",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "49"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.eKiKTrSBNLubVI6g"
+  },
+  "ebyFqTewZ1K54aBX": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants DR [[floor(@item.level / 2)]]/lawful as per @UUID[Compendium.pf1.class-abilities.Item.3AIFigcs4uOgzDYD].</p>",
+    "id": "ebyFqTewZ1K54aBX",
+    "level": 10,
+    "name": "Chaos Totem, Greater",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "74"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.ebyFqTewZ1K54aBX"
+  },
+  "efd99dVtQUUSoz5Z": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against acid as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "10 * @item.level"
+    },
+    "id": "efd99dVtQUUSoz5Z",
+    "level": 3,
+    "name": "Resist Energy (Acid)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "334"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.efd99dVtQUUSoz5Z"
+  },
+  "fKqcMkjlkUL70WJ0": {
+    "changes": [
+      {
+        "formula": "60",
+        "target": "sensedv",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants darkvision 60 ft. for 1 Hour per item level as per @UUID[Compendium.pf1.spells.Item.mz9yr5yhr0f3oqtp] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "fKqcMkjlkUL70WJ0",
+    "level": 3,
+    "name": "Darkvision",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "264"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.fKqcMkjlkUL70WJ0"
+  },
+  "fqDf4Cbv8tqRbygg": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "attack",
+        "text": "Free @Use[Knockdown Stance;speaker] once per round in place of attack."
+      }
+    ],
+    "description": "<p>Adds context note and action for free trip replacement.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.IO2EwSxZUfTuDJ9l] for more details.</p>",
+    "id": "fqDf4Cbv8tqRbygg",
+    "name": "Knockdown Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "11"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.fqDf4Cbv8tqRbygg"
+  },
+  "gBRAvqqjrLw4Cnhm": {
+    "changes": [
+      {
+        "formula": "1 + floor(@item.level / 3)",
+        "target": "wdamage",
+        "type": "sacred"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[1 + floor(@item.level / 3)]] sacred / profane bonus on all weapon damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.LaSR2WkVuqgG1C6L].</p>",
+    "duration": {
+      "units": "combat"
+    },
+    "id": "gBRAvqqjrLw4Cnhm",
+    "level": 1,
+    "name": "Destruction",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "39"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.gBRAvqqjrLw4Cnhm"
+  },
+  "hiSHFDTHqBYTvsaR": {
+    "changes": [
+      {
+        "formula": "120",
+        "target": "sensetr",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants true seeing 120 ft. for 1 Minute per item level as per @UUID[Compendium.pf1.spells.Item.jbqo4o2b2tmdz7wv] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "hiSHFDTHqBYTvsaR",
+    "level": 9,
+    "name": "True Seeing",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "363"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.hiSHFDTHqBYTvsaR"
+  },
+  "hzu5SyhALN2TBoAe": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>Tracks @UUID[Compendium.pf1.class-abilities.Item.b7fTc7fndOIx7jbI]{Healing} Judgement state.</p>",
+    "duration": {
+      "units": "combat"
+    },
+    "id": "hzu5SyhALN2TBoAe",
+    "name": "Healing",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "39"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.hzu5SyhALN2TBoAe"
+  },
+  "iYm4uOJ9j9kv5IiM": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "skill.clm",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.acr",
+        "text": "+[[4]] Competence to Balance."
+      },
+      {
+        "target": "cmd",
+        "text": "+[[4]] Competence vs Bull Rush, Drag, Reposition, and Trip. Immune to Disarm."
+      }
+    ],
+    "description": "<p>Grants a +[[4]] competence bonus on Climb checks, on Acrobatics checks to balance, and to CMD against bull rush, drag, reposition, and trip attempts. While affected by this spell, the target is also immune to the disarm combat maneuver as per @UUID[Compendium.pf1.spells.Item.lmnwhrqgxf9cm9jq].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "iYm4uOJ9j9kv5IiM",
+    "level": 3,
+    "name": "Certain Grip",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "225"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.iYm4uOJ9j9kv5IiM"
+  },
+  "iy10UP3d0lEgwy2i": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "strChecks",
+        "type": "circumstance"
+      },
+      {
+        "formula": "20",
+        "target": "flySpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "6",
+        "target": "str",
+        "type": "enh"
+      },
+      {
+        "formula": "6",
+        "target": "dex",
+        "type": "enh"
+      },
+      {
+        "formula": "10",
+        "target": "landSpeed",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.fly",
+        "text": "Fly speed increases to 60 feet (average) in area of no gravity"
+      }
+    ],
+    "description": "<p>Grants:</p><ul><li>+[[2]] to strength checks</li><li>+[[6]] enh. to strength</li><li>+[[6]] enh. to dexterity</li><li>+[[10]] ft. land speed</li><li>20 ft. fly speed</li></ul><p>See @UUID[Compendium.pf1.technology.Item.eecEg8w7FECEclV5] for more details.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "iy10UP3d0lEgwy2i",
+    "name": "Powered Armor",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "61"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.iy10UP3d0lEgwy2i"
+  },
+  "jcwfjt5FwoJcMlyL": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[4]] morale against poison"
+      },
+      {
+        "target": "allSavingThrows",
+        "text": "+[[4]] morale against fear effects"
+      }
+    ],
+    "description": "<p>gains a +[[4]] morale bonus on saving throws against poison and fear effects for 12 hours as per @UUID[Compendium.pf1.items.Item.sIXmHL2dR2cQpA3Z].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "12"
+    },
+    "id": "jcwfjt5FwoJcMlyL",
+    "name": "Karyukai Tea Set",
+    "sources": [
+      {
+        "id": "PZO9053",
+        "pages": "60"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.jcwfjt5FwoJcMlyL"
+  },
+  "kFYQF6YT5GIO5EdP": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>Tracks @UUID[Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31]{Smiting} Judgement state.</p>",
+    "duration": {
+      "units": "combat"
+    },
+    "id": "kFYQF6YT5GIO5EdP",
+    "name": "Smiting",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "39"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.kFYQF6YT5GIO5EdP"
+  },
+  "kG8EriOOSJmDmYZd": {
+    "changes": [
+      {
+        "formula": "clamp(2 + floor((@item.level - 3) / 3), 2, 5)",
+        "target": "nac",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Your skin is toughened, granting you an enhancement bonus to your natural armor as per the @UUID[Compendium.pf1.spells.Item.la7kuehewu85ybnt] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "kG8EriOOSJmDmYZd",
+    "level": 3,
+    "name": "Barkskin",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "246"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.kG8EriOOSJmDmYZd"
+  },
+  "kXvipUvebDtVfxEv": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "allSavingThrows",
+        "type": "luck"
+      },
+      {
+        "formula": "1",
+        "target": "wdamage",
+        "type": "luck"
+      },
+      {
+        "formula": "1",
+        "target": "attack",
+        "type": "luck"
+      },
+      {
+        "formula": "1",
+        "target": "skills",
+        "type": "luck"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You have a +[[1]] luck bonus on attack rolls, weapon damage rolls, saves and skill checks as per @UUID[Compendium.pf1.spells.Item.hu8179fdqfkl0bqj].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "kXvipUvebDtVfxEv",
+    "level": 5,
+    "name": "Prayer (Positive)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "324"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.kXvipUvebDtVfxEv"
+  },
+  "klGH5FlCy3d7lydy": {
+    "changes": [
+      {
+        "formula": "30",
+        "target": "climbSpeed",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.acr",
+        "text": "If you have @Distance[10 ft;dual] to make a running start, you can long jump up to @Distance[10 ft;dual] without a check."
+      }
+    ],
+    "description": "<p>Grants climb speed of 30 feet as per @UUID[Compendium.pf1.spells.Item.p6irfohhgss1iod5].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "klGH5FlCy3d7lydy",
+    "level": 5,
+    "name": "Ape Walk",
+    "sources": [
+      {
+        "id": "PZO9412",
+        "pages": "28"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.klGH5FlCy3d7lydy"
+  },
+  "l0md6rNYbCHzDaZk": {
+    "changes": [
+      {
+        "formula": "2 + max(0, floor((@item.level - 2) / 6))",
+        "target": "skill.sur",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + max(0, floor((@item.level - 2) / 6))",
+        "target": "skill.per",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + max(0, floor((@item.level - 2) / 6))",
+        "target": "init",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + max(0, floor((@item.level - 2) / 6))",
+        "target": "skill.ste",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + max(0, floor((@item.level - 2) / 6))",
+        "target": "skill.kge",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[2 + max(0, floor((@item.level - 2) / 6))]] bonus to initiative, knowledge (geography), perception, stealth and survival checks as per @UUID[Compendium.pf1.class-abilities.Item.zyyB1AU3s5PAuBPU].</p>",
+    "duration": {
+      "end": "initiative"
+    },
+    "id": "l0md6rNYbCHzDaZk",
+    "level": 2,
+    "name": "Prepared for the Journey",
+    "sources": [
+      {
+        "id": "PZO9268",
+        "pages": "30"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.l0md6rNYbCHzDaZk"
+  },
+  "l42Gtrj8QGjdyRfd": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "skill.sur",
+        "type": "sacred"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.sur",
+        "text": "Full speed while traveling through the wilderness or while tracking."
+      }
+    ],
+    "description": "<p>You gain a +[[4]] sacred bonus on all Survival checks for the duration of the spell, and you do not have to move at half your speed while traveling through the wilderness or while tracking as per @UUID[Compendium.pf1.spells.Item.ilcdn4jmdj3g0wac].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "l42Gtrj8QGjdyRfd",
+    "level": 1,
+    "name": "Deadeye's Lore",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "226"
+      },
+      {
+        "id": "PZO9416",
+        "pages": "28"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.l42Gtrj8QGjdyRfd"
+  },
+  "l6s6haw5PHdNi9YD": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants DR/Evil as per @UUID[Compendium.pf1.spells.Item.dq65gtj0phmasj87].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "l6s6haw5PHdNi9YD",
+    "level": 10,
+    "name": "Divine Transfer",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "216"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.l6s6haw5PHdNi9YD"
+  },
+  "l9l2uKTWEAuTqXVq": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants Low-Light Vision while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.djUaPaLmCemzz8eu].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "l9l2uKTWEAuTqXVq",
+    "name": "Veemod (Gray)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "53"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.l9l2uKTWEAuTqXVq"
+  },
+  "lEwrgzT3mgwk1X4d": {
+    "changes": [
+      {
+        "formula": "@item.level",
+        "target": "allSavingThrows",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants + [[@item.level]] morale bonus on saving throws as per @UUID[Compendium.pf1.class-abilities.Item.1fEKSNPwGg6hB1Ui].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "lEwrgzT3mgwk1X4d",
+    "name": "Protector of the People (1 Requirement)",
+    "sources": [
+      {
+        "id": "PZO9488",
+        "pages": "15"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.lEwrgzT3mgwk1X4d"
+  },
+  "lV9zpEnZrArmfEFZ": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "con",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Constitution as per @UUID[Compendium.pf1.spells.Item.usdv1eqvibmxun6x] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "lV9zpEnZrArmfEFZ",
+    "level": 3,
+    "name": "Bear's Endurance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "246, 247"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.lV9zpEnZrArmfEFZ"
+  },
+  "lnC5Qmk5FwJvFjvE": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "attack",
+        "text": "+[[1]] morale on attack rolls while charging"
+      },
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] morale against fear effects"
+      }
+    ],
+    "description": "<p>Grants +[[2]] morale bonus on saves against fear and +[[1]] morale on attack rolls when charging.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "lnC5Qmk5FwJvFjvE",
+    "level": 1,
+    "name": "Daikyu of Commanding Presence",
+    "sources": [
+      {
+        "id": "PZO9053",
+        "pages": "60"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.lnC5Qmk5FwJvFjvE"
+  },
+  "lpBAgRhDew61Vmzo": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "will",
+        "text": "+[[4]] Morale vs Fear effects."
+      }
+    ],
+    "description": "<p>Grants +[[4]] morale bonus against fear effects as per @UUID[Compendium.pf1.spells.Item.eu4u4mr1naoiqohz].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "10"
+    },
+    "id": "lpBAgRhDew61Vmzo",
+    "name": "Remove Fear",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "332"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.lpBAgRhDew61Vmzo"
+  },
+  "mDv3xY2HllJpjqe2": {
+    "changes": [
+      {
+        "formula": "ifelse(gte(@item.level, 8), -4, -2)",
+        "target": "attack",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on attack rolls as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8].</p>",
+    "id": "mDv3xY2HllJpjqe2",
+    "level": 1,
+    "name": "Evil Eye (Atk)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "66"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.mDv3xY2HllJpjqe2"
+  },
+  "mKqlvosmPK2iAxL4": {
+    "changes": [
+      {
+        "formula": "1 + floor(@item.level / 5)",
+        "target": "allSavingThrows",
+        "type": "sacred"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[if(gte(@item.level, 10), (1 + floor(@item.level / 5)))] against curses, diseases, and poisons."
+      }
+    ],
+    "description": "<p>Grants +[[1 + floor(@item.level / 5)]] sacred / profane bonus on saving throws which is doubled against curses, diseases, and poisons at level 10 as per @UUID[Compendium.pf1.class-abilities.Item.asMZBthOLKiIF4bM].</p>",
+    "duration": {
+      "units": "combat"
+    },
+    "id": "mKqlvosmPK2iAxL4",
+    "level": 1,
+    "name": "Purity",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "39"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.mKqlvosmPK2iAxL4"
+  },
+  "mZ63Rbpnk9UCwtWN": {
+    "changes": [
+      {
+        "formula": "10 + floor((@item.level - 1) / 7) * 10",
+        "target": "sensesc",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The creature gains the scent ability with a range of [[10 + floor((@item.level - 1) / 7) * 10]] feet. The range doubles if the opponent is upwind, and is halved if the opponent is downwind as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "mZ63Rbpnk9UCwtWN",
+    "level": 1,
+    "name": "Animal Focus (Wolf)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "28"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.mZ63Rbpnk9UCwtWN"
+  },
+  "mw16hzWUcPmGkN9I": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "@item.level",
+        "target": "damage",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[4]] bonus to ac AC per @UUID[Compendium.pf1.class-abilities.Item.EAVNzT8lSiOIgTJx].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "mw16hzWUcPmGkN9I",
+    "level": 15,
+    "name": "Stampede",
+    "sources": [
+      {
+        "id": "PZO9489",
+        "pages": "31"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.mw16hzWUcPmGkN9I"
+  },
+  "nRHD11ZwDWlRyT8c": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "morale"
+      },
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "morale"
+      },
+      {
+        "formula": "1",
+        "target": "will",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skills",
+        "text": "Cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride)."
+      },
+      {
+        "target": "allChecks",
+        "text": "Cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration."
+      },
+      {
+        "target": "concentration",
+        "text": "Cannot use any ability that requires patience or concentration."
+      }
+    ],
+    "description": "<p>Grants a +[[2]] morale bonus to Strength and Constitution, a +[[1]] morale bonus on Will saves, and a -2 penalty to AC as per @UUID[Compendium.pf1.spells.Item.8u1xa5javcxc6szk]{Rage (Spell)}.</p>",
+    "id": "nRHD11ZwDWlRyT8c",
+    "level": 5,
+    "name": "Rage (Spell)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "329"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.nRHD11ZwDWlRyT8c"
+  },
+  "o0U6E2WvMBTectrc": {
+    "changes": [
+      {
+        "formula": "- (2 + floor((@classes.barbarianUnchained.level - 2) / 9))",
+        "target": "mattack",
+        "type": "untyped"
+      },
+      {
+        "formula": "- (2 + floor((@classes.barbarianUnchained.level - 2) / 9))",
+        "target": "mwdamage",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "ac",
+        "type": "untyped"
+      },
+      {
+        "formula": "- (2 + floor((@classes.barbarianUnchained.level - 2) / 9))",
+        "target": "twdamage",
+        "type": "untyped"
+      },
+      {
+        "formula": "- (2 + floor((@classes.barbarianUnchained.level - 2) / 9))",
+        "target": "will",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skills",
+        "text": "Calm Stance removes action restriction on skills while raging"
+      },
+      {
+        "target": "allChecks",
+        "text": "Calm Stance removes action restriction on abilities while raging"
+      }
+    ],
+    "description": "<p>The barbarian doesn’t gain any benefits from rage other than the temporary hit points, but she doesn’t take any of the penalties from rage (including the penalty to AC and the restriction on actions she can take).</p><p>See @UUID[Compendium.pf1.class-abilities.Item.8nVgKDcPUcJBCYL7] for more details.</p>",
+    "id": "o0U6E2WvMBTectrc",
+    "name": "Calm Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "9"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.o0U6E2WvMBTectrc"
+  },
+  "olTpyao476hOEzzm": {
+    "changes": [
+      {
+        "formula": "4",
+        "target": "sac",
+        "type": "base"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "+[[4]] against incorporeal touch attacks."
+      }
+    ],
+    "description": "<p>Grants +[[4]] Shield Bonus to AC which also applies to incorporeal touch attacks as per @UUID[Compendium.pf1.spells.Item.sz7j540uypmqqvti].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "olTpyao476hOEzzm",
+    "level": 1,
+    "name": "Shield",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "342"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.olTpyao476hOEzzm"
+  },
+  "ora1YS0VXYjJIQkh": {
+    "changes": [
+      {
+        "formula": "if(@skills.kno.rank, 2)",
+        "target": "skill.kno",
+        "type": "competence"
+      },
+      {
+        "formula": "if(@skills.kge.rank, 2)",
+        "target": "skill.kge",
+        "type": "competence"
+      },
+      {
+        "formula": "if(@skills.kpl.rank, 2)",
+        "target": "skill.kpl",
+        "type": "competence"
+      },
+      {
+        "formula": "if(@skills.klo.rank, 2)",
+        "target": "skill.klo",
+        "type": "competence"
+      },
+      {
+        "formula": "if(@skills.kna.rank, 2)",
+        "target": "skill.kna",
+        "type": "competence"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "competence"
+      },
+      {
+        "formula": "if(@skills.kdu.rank, 2)",
+        "target": "skill.kdu",
+        "type": "competence"
+      },
+      {
+        "formula": "if(@skills.kar.rank, 2)",
+        "target": "skill.kar",
+        "type": "competence"
+      },
+      {
+        "formula": "if(@skills.kre.rank, 2)",
+        "target": "skill.kre",
+        "type": "competence"
+      },
+      {
+        "formula": "if(@skills.khi.rank, 2)",
+        "target": "skill.khi",
+        "type": "competence"
+      },
+      {
+        "formula": "if(@skills.ken.rank, 2)",
+        "target": "skill.ken",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[2]] competence bonus on Perception checks and on all Knowledge checks that you are trained in as per @UUID[Compendium.pf1.spells.Item.r8bhei88g6h26fp0].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "ora1YS0VXYjJIQkh",
+    "level": 1,
+    "name": "Heightened Awareness",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "183"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.ora1YS0VXYjJIQkh"
+  },
+  "p2JgcKLVXMawO3uL": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants [[min(120, @item.level * 10)]] charges to track the amout of energy damage that can be absorbed as per @UUID[Compendium.pf1.spells.Item.1vh2ewwvzvxunoxk].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "p2JgcKLVXMawO3uL",
+    "level": 5,
+    "name": "Protection From Energy",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "327"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.p2JgcKLVXMawO3uL"
+  },
+  "p8gZ2WaceSCWT4LK": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against electricity as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "10 * @item.level"
+    },
+    "id": "p8gZ2WaceSCWT4LK",
+    "level": 3,
+    "name": "Resist Energy (Electricity)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "334"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.p8gZ2WaceSCWT4LK"
+  },
+  "pDKUOiA1UuKAoAX5": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "+[[@item.level]] to touch AC against beam weapons and rays."
+      }
+    ],
+    "description": "<p>Grants touch AC against beam weapons and rays as per various @UUID[Compendium.pf1.technology.Item.gTyNHqZf2jkmtTbC].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "pDKUOiA1UuKAoAX5",
+    "name": "Scatterlight suit",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "30"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.pDKUOiA1UuKAoAX5"
+  },
+  "pF2JuGqoD67yQl4k": {
+    "changes": [
+      {
+        "formula": "@item.level",
+        "target": "wdamage",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[@item.level]] competence on weapon damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.a5Hd7jgzLx85l4sC].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "pF2JuGqoD67yQl4k",
+    "level": 1,
+    "name": "Rally Allies",
+    "sources": [
+      {
+        "id": "PZO9482",
+        "pages": "24"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.pF2JuGqoD67yQl4k"
+  },
+  "pbyW9fpqSA3qAwmI": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants X-ray vision while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.s7otjXVeYmKuS1ra].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "1"
+    },
+    "id": "pbyW9fpqSA3qAwmI",
+    "name": "Veemod (Prismatic)",
+    "sources": [
+      {
+        "id": "PZO9272",
+        "pages": "53"
+      }
+    ],
+    "subType": "item",
+    "uuid": "Compendium.pf1.buffs.Item.pbyW9fpqSA3qAwmI"
+  },
+  "q59pZnNa8NoW2moc": {
+    "changes": [
+      {
+        "formula": "2 + floor((@item.level - 1) / 7) * 2",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] enhancement bonus to Constitution as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "q59pZnNa8NoW2moc",
+    "level": 1,
+    "name": "Animal Focus (Tiger)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "28"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.q59pZnNa8NoW2moc"
+  },
+  "qAb9TshwWpr5JDB2": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>The creature gains evasion, as the rogue class feature. At 12th level, this increases to improved evasion, as the rogue advanced talent as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "qAb9TshwWpr5JDB2",
+    "name": "Animal Focus (Mouse)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "28"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.qAb9TshwWpr5JDB2"
+  },
+  "qYlZuBMxxuL8g8j8": {
+    "changes": [
+      {
+        "formula": "10",
+        "target": "landSpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "4",
+        "target": "attack",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[10]] feet land speed and +[[4]] on attack rolls as per @UUID[Compendium.pf1.class-abilities.Item.SUIOnBzjXUMNQcak].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "@abilities.cha.mod"
+    },
+    "id": "qYlZuBMxxuL8g8j8",
+    "name": "Blaze of Glory",
+    "sources": [
+      {
+        "id": "PZO9447",
+        "pages": "7"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.qYlZuBMxxuL8g8j8"
+  },
+  "qmHamauveVs3q6F0": {
+    "changes": [
+      {
+        "formula": "10",
+        "target": "landSpeed",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants +[[10]] foot enhancement bonus to your base speed as per @UUID[Compendium.pf1.spells.Item.hosf489xyoexmp57].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "qmHamauveVs3q6F0",
+    "level": 1,
+    "name": "Longstrider",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "305"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.qmHamauveVs3q6F0"
+  },
+  "qmrE4n5BsnLVQV10": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants DR [[floor(@item.level / 2)]]/magic as per @UUID[Compendium.pf1.class-abilities.Item.VHvomvdheVblPlA8].</p>",
+    "id": "qmrE4n5BsnLVQV10",
+    "level": 6,
+    "name": "Spirit Steed",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "77"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.qmrE4n5BsnLVQV10"
+  },
+  "qmwVJUZ7ZuvF3tAB": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "attack",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[1]] Morale vs Fear effects"
+      }
+    ],
+    "description": "<p>You have a +[[1]] morale bonus to attack rolls and saves against fear effects as per @UUID[Compendium.pf1.spells.Item.ibk7jrc5rwubpia6] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "qmwVJUZ7ZuvF3tAB",
+    "level": 1,
+    "name": "Aid",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "239"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.qmwVJUZ7ZuvF3tAB"
+  },
+  "rYSQfpzeKIfUOR1G": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[4]] Morale vs death spells and magical death effects, even if a save is not normally allowed."
+      }
+    ],
+    "description": "<p>Grants +[[4]] morale bonus on saves against all death spells and magical death effects. You are granted a save to negate such effects even if one is not normally allowed. You are immune to energy drain and any negative energy effects, including channeled negative energy as per @UUID[Compendium.pf1.spells.Item.e0rlki4hwu76l5ya].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "rYSQfpzeKIfUOR1G",
+    "level": 7,
+    "name": "Death Ward",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "264"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.rYSQfpzeKIfUOR1G"
+  },
+  "rjnMUgUmdMU8pQwa": {
+    "changes": [
+      {
+        "formula": "2 + floor((@item.level - 1) / 7) * 2",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] enhancement bonus to Constitution as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "rjnMUgUmdMU8pQwa",
+    "level": 1,
+    "name": "Animal Focus (Bull)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "27"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.rjnMUgUmdMU8pQwa"
+  },
+  "sCy51w5LtO94euQQ": {
+    "changes": [
+      {
+        "formula": "@item.level",
+        "target": "attack",
+        "type": "competence"
+      },
+      {
+        "formula": "@item.level",
+        "target": "damage",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants + [[@item.level]] competence on all attack and damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.cMu6HFervQ41a4lD].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "sCy51w5LtO94euQQ",
+    "name": "For the King",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "36"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.sCy51w5LtO94euQQ"
+  },
+  "sIogsaNU2T2Qe3l9": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants invisibility as per @UUID[Compendium.pf1.spells.Item.oylikodnyku2zewu].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "sIogsaNU2T2Qe3l9",
+    "level": 3,
+    "name": "Invisibility",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "301"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.sIogsaNU2T2Qe3l9"
+  },
+  "sfmKrukx8vFoXLBf": {
+    "changes": [
+      {
+        "formula": "floor(@item.level / 2)",
+        "target": "skill.fly",
+        "type": "untyped"
+      },
+      {
+        "formula": "ifelse(or(gt(@attributes.encumbrance.level, 0), gt(@armor.type, 1)), 40, 60)",
+        "target": "flySpeed",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants fly speed as per @UUID[Compendium.pf1.spells.Item.7d6sv5ecvi7kho3m] spell.</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "sfmKrukx8vFoXLBf",
+    "level": 5,
+    "name": "Fly",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "284"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.sfmKrukx8vFoXLBf"
+  },
+  "tV3x332iNS0WpFf3": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against sonic as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "10 * @item.level"
+    },
+    "id": "tV3x332iNS0WpFf3",
+    "level": 3,
+    "name": "Resist Energy (Sonic)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "334"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.tV3x332iNS0WpFf3"
+  },
+  "u2g0irnJ5BeNvh0R": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against cold as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "10 * @item.level"
+    },
+    "id": "u2g0irnJ5BeNvh0R",
+    "level": 3,
+    "name": "Resist Energy (Cold)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "334"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.u2g0irnJ5BeNvh0R"
+  },
+  "ueH9tRS3YLwRgJ9e": {
+    "changes": [
+      {
+        "formula": "-2",
+        "target": "damage",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "skills",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "allChecks",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "attack",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Applies [[-2]] penalty on attack rolls, damage rolls, ability checks, skill checks, and saving throws as per @UUID[Compendium.pf1.class-abilities.Item.wNCdfdUHynq6gigh]{Taboo} class feature.</p>",
+    "id": "ueH9tRS3YLwRgJ9e",
+    "name": "Broken Taboo",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "30"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.ueH9tRS3YLwRgJ9e"
+  },
+  "uiV6m0dNrQRIXoqQ": {
+    "changes": [
+      {
+        "formula": "4 + floor((@item.level - 1) / 7) * 2",
+        "target": "skill.clm",
+        "type": "competence"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus on Climb checks as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "uiV6m0dNrQRIXoqQ",
+    "level": 1,
+    "name": "Animal Focus (Monkey)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "27"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.uiV6m0dNrQRIXoqQ"
+  },
+  "ulvEcJsFba6Fg4g9": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "attack",
+        "type": "morale"
+      },
+      {
+        "formula": "2",
+        "target": "allSavingThrows",
+        "type": "morale"
+      },
+      {
+        "formula": "2",
+        "target": "skills",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>You gain a +[[2]] morale bonus on attack rolls, saves, and skill checks as per @UUID[Compendium.pf1.spells.Item.vqfrp8t0c1lw1jna].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "ulvEcJsFba6Fg4g9",
+    "level": 5,
+    "name": "Heroism",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "295"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.ulvEcJsFba6Fg4g9"
+  },
+  "v9JaHLaVkP9O36TS": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>See @UUID[Compendium.pf1.class-abilities.Item.EKF5SHvuXhOjf2K6] for more details.</p>",
+    "id": "v9JaHLaVkP9O36TS",
+    "name": "Elemental Stance",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "10"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.v9JaHLaVkP9O36TS"
+  },
+  "vIB8zWUZ11j4OFKS": {
+    "changes": [
+      {
+        "formula": "30",
+        "target": "flySpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "60",
+        "target": "sensedv",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "+[[2]] Deflection vs Evil creatures."
+      },
+      {
+        "target": "ac",
+        "text": "Bodily contact prevented by Evil summoned creatures."
+      },
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Resistance vs Evil creatures."
+      },
+      {
+        "target": "attack",
+        "text": "Your natural attacks and any weapons you wield count as Good-aligned for the purposes of overcoming damage reduction."
+      },
+      {
+        "target": "will",
+        "text": "+[[2]] Morale vs existing Enchantment [charm] and [compulsion] effects."
+      }
+    ],
+    "description": "<p>Grants low-light vision, darkvision of 60 feet, resistance to acid 10, resistance to cold 10, DR 5/evil, and fly speed of 30 feet with average maneuverability. In addition, your natural weapons and any weapons you wield are considered good-aligned for the purpose of overcoming damage reduction as per @UUID[Compendium.pf1.spells.Item.8jrtvmhydudy7fks].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "vIB8zWUZ11j4OFKS",
+    "level": 9,
+    "name": "Angelic Aspect",
+    "sources": [
+      {
+        "id": "PZO9431",
+        "pages": "28"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.vIB8zWUZ11j4OFKS"
+  },
+  "vRHG0qhHPsWgFkAl": {
+    "changes": [
+      {
+        "formula": "ifelse(gte(@item.level, 8), -4, -2)",
+        "target": "allChecks",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on ability checks as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8]</p>",
+    "id": "vRHG0qhHPsWgFkAl",
+    "level": 1,
+    "name": "Evil Eye (Ability)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "66"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.vRHG0qhHPsWgFkAl"
+  },
+  "w58wV9ft9AZUxh4O": {
+    "changes": [
+      {
+        "formula": "@item.level * 2",
+        "target": "allSavingThrows",
+        "type": "morale"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p>Grants + [[@item.level * 2]] morale bonus on saving throws as per @UUID[Compendium.pf1.class-abilities.Item.1fEKSNPwGg6hB1Ui].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "w58wV9ft9AZUxh4O",
+    "name": "Protector of the People (2 Requirements)",
+    "sources": [
+      {
+        "id": "PZO9488",
+        "pages": "15"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.w58wV9ft9AZUxh4O"
+  },
+  "wdZ9dbMnPF0nlMoK": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "cmd",
+        "text": "Cannot be grappled."
+      },
+      {
+        "target": "cmb",
+        "text": "Automatically succeeds to escape a grapple or pin."
+      },
+      {
+        "target": "allSavingThrows",
+        "text": "Immune to effects that impedes movement."
+      },
+      {
+        "target": "skill.esc",
+        "text": "Automatically succeeds to escape a grapple or pin."
+      }
+    ],
+    "description": "<p>Grants immunity to paralysed condition as per @UUID[Compendium.pf1.spells.Item.lvzq2mwkqmozolpl].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level * 10"
+    },
+    "id": "wdZ9dbMnPF0nlMoK",
+    "level": 9,
+    "name": "Freedom of Movement",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "287"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.wdZ9dbMnPF0nlMoK"
+  },
+  "wgnn6S8tN2o5lYtM": {
+    "changes": [
+      {
+        "formula": "60",
+        "target": "flySpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "60",
+        "target": "sensedv",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Resistance vs Evil creatures. Allies within 20 feet (6 meters) have +[[4]] Resistance vs Evil Enemies.\n+[[4]] Racial vs poison.\nYou and allies within 20 feet (6 meters) are immune to spells of 3rd level or lower."
+      },
+      {
+        "target": "ac",
+        "text": "+[[2]] Deflection vs Evil creatures. Allies within 20 feet (6 meters) have +[[4]] Deflection vs Evil Enemies.\nBodily contact prevented by Evil summoned creatures."
+      },
+      {
+        "target": "will",
+        "text": "+[[2]] Morale vs existing Enchantment, [charm] and [compulsion] effects."
+      }
+    ],
+    "description": "<p>Grants low-light vision; darkvision 60 feet; DR 10/evil; immunity to acid, cold, and petrification; resistance to electricity 10 and fire 10; a +[[4]] racial bonus on saves against poison; and protective aura and truespeech as supernatural abilities for the duration of the spell. Also, your wings give you a fly speed of 60 feet with good maneuverability.</p><p>Protective aura provides a +[[4]] deflection bonus to AC and a +[[4]] resistance bonus on saving throws against attacks made or effects created by evil creatures to anyone within 20 feet. Otherwise, it functions as a @UUID[Compendium.pf1.spells.Item.1i8b1v3dngkxj6jp]{magic circle against evil} and a @UUID[Compendium.pf1.spells.Item.exwa9xra4u82j0sx]{lesser globe of invulnerability}, both with a radius of 20 feet.</p><p>Truespeech allows you to speak with any creature that has a language, as though using the @UUID[Compendium.pf1.spells.Item.m1rmcpcaixcpz9ib]{tongues} spell as per @UUID[Compendium.pf1.spells.Item.ujykn701inq3hm2n].</p><hr />",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "@item.level"
+    },
+    "id": "wgnn6S8tN2o5lYtM",
+    "level": 15,
+    "name": "Angelic Aspect, Greater",
+    "sources": [
+      {
+        "id": "PZO9431",
+        "pages": "28"
+      }
+    ],
+    "subType": "spell",
+    "uuid": "Compendium.pf1.buffs.Item.wgnn6S8tN2o5lYtM"
+  },
+  "wkVghPK4yWHkoLfh": {
+    "changes": [
+      {
+        "formula": "max(1, @item.level)",
+        "target": "ac",
+        "type": "deflection"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "Attack damage is split between ally and Samurai/Cavalier."
+      }
+    ],
+    "description": "<p>Grants +[[@item.level]] competence on attack rolls and saving throws when allying samurai threatens the target as per @UUID[Compendium.pf1.class-abilities.Item.k3DBzmRSzywR0sbm].</p>",
+    "duration": {
+      "end": "initiative"
+    },
+    "id": "wkVghPK4yWHkoLfh",
+    "level": 1,
+    "name": "Share the Danger",
+    "sources": [
+      {
+        "id": "PZO9482",
+        "pages": "24"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.wkVghPK4yWHkoLfh"
+  },
+  "wm3VB0brsAuhua0V": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "ac",
+        "text": "+[[2 + floor((@item.level - 1) / 7) * 2]] against attacks of opportunity"
+      },
+      {
+        "target": "attack",
+        "text": "+[[2 + floor((@item.level - 1) / 7) * 2]] to attacks of opportunity"
+      }
+    ],
+    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] bonus on attack rolls when making attacks of opportunity and a +[[2 + floor((@item.level - 1) / 7) * 2]] dodge bonus to AC against attacks of opportunity as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "minute",
+      "value": "1"
+    },
+    "id": "wm3VB0brsAuhua0V",
+    "level": 1,
+    "name": "Animal Focus (Snake)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "28"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.wm3VB0brsAuhua0V"
+  },
+  "yqdRqkADURTHBvVH": {
+    "changes": [
+      {
+        "formula": "1 + floor(@item.level / 3)",
+        "target": "concentration",
+        "type": "sacred"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "cl",
+        "text": "+[[1 + floor(@item.level / 3)]] sacred to overcome spell resistance."
+      }
+    ],
+    "description": "<p>Grants +[[1 + floor(@item.level / 3)]] sacred / profane bonus on concentration checks and caster level checks to overcome spell resistance as per@UUID[Compendium.pf1.class-abilities.Item.Po86Ft2nHRNpNogi].</p>",
+    "duration": {
+      "units": "combat"
+    },
+    "id": "yqdRqkADURTHBvVH",
+    "level": 1,
+    "name": "Piercing",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "39"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.yqdRqkADURTHBvVH"
+  },
+  "zbwheXCZgoOYOYNm": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Allows rerolling a reflex save with a +4 competence bonus as per @UUID[Compendium.pf1.class-abilities.Item.15IlbKFhTTuXwPU6].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "zbwheXCZgoOYOYNm",
+    "name": "Danger Ward (Reflex)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "64"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.zbwheXCZgoOYOYNm"
+  },
+  "zfVy9sBSm7rLjk5k": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "meleeWeapon",
+        "text": "+[[2]] bonus on nonlethal weapon damage roll"
+      },
+      {
+        "target": "rangedWeapon",
+        "text": "+[[2]] bonus on nonlethal weapon damage roll"
+      }
+    ],
+    "description": "<p>Grants +[[2]] bonus on nonlethal weapon damage roll as per @UUID[Compendium.pf1.class-abilities.Item.GFYCltmhmtqA3Kk9].</p>",
+    "duration": {
+      "end": "initiative",
+      "units": "round",
+      "value": "1"
+    },
+    "id": "zfVy9sBSm7rLjk5k",
+    "name": "Inspiring Pain",
+    "sources": [
+      {
+        "id": "PZO1136",
+        "pages": "20"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.zfVy9sBSm7rLjk5k"
+  }
+}
