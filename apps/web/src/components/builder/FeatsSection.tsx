@@ -104,14 +104,16 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
             </button>
           ))}
         </div>
-        <div>
+        {/* Orthogonal toggle — visually separate from category filters */}
+        <div className="feat-filter-toggle">
+          <span className="hint" style={{ fontSize: 11 }}>FILTER</span>
           <button
             type="button"
-            className="chip"
+            className="filter-toggle"
             aria-pressed={hideIneligible}
             onClick={() => setHideIneligible((v) => !v)}
           >
-            Hide ineligible
+            {hideIneligible ? "▪ Hide ineligible" : "▫ Hide ineligible"}
           </button>
         </div>
       </div>
