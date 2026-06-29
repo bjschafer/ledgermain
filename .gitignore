@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Raw Foundry clone — fetched on demand at the pinned SHA, never committed.
+# (The *normalized* JSON output under packages/data-pipeline/data/ IS committed.)
+.cache/
+packages/data-pipeline/.cache/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
