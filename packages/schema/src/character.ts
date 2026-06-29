@@ -56,6 +56,11 @@ export interface CharacterDoc {
      * average max. Omitted = use the rules average.
      */
     maxHpOverride?: number;
+    /**
+     * Level-up ability score increases (one +1 per entry); the player chooses one
+     * ability at each 4th character level. Capped at floor(level/4) when applied.
+     */
+    abilityIncreases?: AbilityId[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };

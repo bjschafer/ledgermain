@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import type { CharacterDoc, ItemInstance } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, ItemInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { compute, raceGrantsFlexibleAbility } from "../src/index.js";
@@ -310,6 +310,37 @@ describe("flexible racial +2 (Human / Half-Elf / Half-Orc)", () => {
     expect(sheet.abilities.str.total).toBe(base);
     const racial = sheet.abilities.str.components.find((c) => c.type === "racial");
     expect(racial).toBeUndefined();
+  });
+});
+
+describe("compute: level-up ability score increases", () => {
+  const base = { str: 14, dex: 12, con: 12, int: 10, wis: 10, cha: 8 };
+
+  function docWith(level: number, abilityIncreases: AbilityId[]) {
+    const d = makeDoc({ classes: [{ tag: "barbarian", level }], abilities: base });
+    return { ...d, build: { ...d.build, abilityIncreases } };
+  }
+
+  it("level 8 with two STR increases applies +2 to STR", () => {
+    const sheet = compute(docWith(8, ["str", "str"]), ref);
+    expect(sheet.abilities.str.total).toBe(base.str + 2);
+    expect(sheet.abilities.dex.total).toBe(base.dex);
+  });
+
+  it("level 8 with STR and DEX increases applies +1 to each", () => {
+    const sheet = compute(docWith(8, ["str", "dex"]), ref);
+    expect(sheet.abilities.str.total).toBe(base.str + 1);
+    expect(sheet.abilities.dex.total).toBe(base.dex + 1);
+  });
+
+  it("level 4 with two STR entries only applies one (cap = floor(4/4) = 1)", () => {
+    const sheet = compute(docWith(4, ["str", "str"]), ref);
+    expect(sheet.abilities.str.total).toBe(base.str + 1);
+  });
+
+  it("level 3 (below first threshold) applies no increases even when entries exist", () => {
+    const sheet = compute(docWith(3, ["str"]), ref);
+    expect(sheet.abilities.str.total).toBe(base.str);
   });
 });
 

@@ -11,6 +11,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { CONDITIONS } from "./conditions.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
+import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
 import { raceGrantsFlexibleAbility } from "./tables.js";
 
@@ -125,6 +126,20 @@ export function collectModifiers(
     for (const ch of cond.changes) {
       evalChange(ch.formula, rollData, ch.target, ch.type, cond.name, cond.id, out);
     }
+  }
+
+  // --- level-up ability score increases -----------------------------------
+  // Defensive cap: if level dropped after choices were made, don't over-apply.
+  const allowed = Math.floor(totalLevel(doc) / 4);
+  const increases = (doc.build.abilityIncreases ?? []).slice(0, allowed);
+  for (const ability of increases) {
+    out.push({
+      target: ability,
+      type: "untyped",
+      value: 1,
+      source: "Level-up increase",
+      sourceId: "ability-increase",
+    });
   }
 
   return out;

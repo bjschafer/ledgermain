@@ -283,6 +283,70 @@ button:focus-visible,
   color: var(--ink);
 }
 
+/* ability score increases (level-up) */
+.ability-inc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 520px) {
+  .ability-inc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.ability-inc-cell {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 8px;
+  text-align: center;
+}
+
+.ability-inc-cell .abbr {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.ability-inc-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.ability-inc-stepper button {
+  background: var(--surface);
+  border: 0;
+  width: 26px;
+  height: 28px;
+  font-size: 15px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.ability-inc-stepper button:hover:not(:disabled) {
+  background: #2c303a;
+}
+
+.ability-inc-stepper button:disabled {
+  cursor: not-allowed;
+  color: var(--faint);
+}
+
+.ability-inc-stepper .num {
+  width: 28px;
+  text-align: center;
+  font-size: 14px;
+}
+
 /* chip toggles (race / class) */
 .chips {
   display: flex;

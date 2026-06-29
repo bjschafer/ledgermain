@@ -1,10 +1,20 @@
-import { ABILITY_IDS, setAbility } from "../../model/doc.js";
+import {
+  ABILITY_IDS,
+  addAbilityIncrease,
+  removeAbilityIncrease,
+  setAbility,
+  totalLevel,
+} from "../../model/doc.js";
 import { ABILITY_ABBR, signed } from "../../model/names.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
 export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
+  const allowed = Math.floor(totalLevel(doc) / 4);
+  const increases = doc.build.abilityIncreases ?? [];
+  const assigned = increases.length;
+
   return (
     <Panel
       title="Ability Scores"
@@ -33,6 +43,45 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
           );
         })}
       </div>
+
+      {allowed >= 1 && (
+        <div style={{ marginTop: 16 }}>
+          <p className="hint" style={{ marginBottom: 8 }}>
+            Ability score increases · <b style={{ color: "var(--ink)" }}>{assigned}</b> /{" "}
+            {allowed} assigned{" "}
+            <span style={{ color: "var(--faint)" }}>(+1 every 4 levels)</span>
+          </p>
+          <div className="ability-inc-grid">
+            {ABILITY_IDS.map((id) => {
+              const count = increases.filter((a) => a === id).length;
+              return (
+                <div className="ability-inc-cell" key={id}>
+                  <div className="abbr">{ABILITY_ABBR[id]}</div>
+                  <div className="ability-inc-stepper">
+                    <button
+                      type="button"
+                      aria-label={`Remove ${ABILITY_ABBR[id]} increase`}
+                      disabled={count === 0}
+                      onClick={() => update((d) => removeAbilityIncrease(d, id))}
+                    >
+                      −
+                    </button>
+                    <span className="num">{count}</span>
+                    <button
+                      type="button"
+                      aria-label={`Add ${ABILITY_ABBR[id]} increase`}
+                      disabled={assigned >= allowed}
+                      onClick={() => update((d) => addAbilityIncrease(d, id))}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </Panel>
   );
 }

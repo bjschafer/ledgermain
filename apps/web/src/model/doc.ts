@@ -158,6 +158,30 @@ export function totalLevel(doc: CharacterDoc): number {
   return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
 }
 
+/**
+ * Append `ability` to `build.abilityIncreases` if the current length is below
+ * `floor(totalLevel / 4)`. Returns the doc unchanged when the budget is
+ * exhausted (so callers can always call unconditionally).
+ */
+export function addAbilityIncrease(doc: CharacterDoc, ability: AbilityId): CharacterDoc {
+  const allowed = Math.floor(totalLevel(doc) / 4);
+  const current = doc.build.abilityIncreases ?? [];
+  if (current.length >= allowed) return doc;
+  return { ...doc, build: { ...doc.build, abilityIncreases: [...current, ability] } };
+}
+
+/**
+ * Remove the LAST occurrence of `ability` from `build.abilityIncreases`.
+ * No-op if that ability has no entries.
+ */
+export function removeAbilityIncrease(doc: CharacterDoc, ability: AbilityId): CharacterDoc {
+  const current = doc.build.abilityIncreases ?? [];
+  const lastIdx = current.lastIndexOf(ability);
+  if (lastIdx === -1) return doc;
+  const next = [...current.slice(0, lastIdx), ...current.slice(lastIdx + 1)];
+  return { ...doc, build: { ...doc.build, abilityIncreases: next } };
+}
+
 function clampInt(n: number, min: number, max: number): number {
   if (Number.isNaN(n)) return min;
   return Math.max(min, Math.min(max, Math.trunc(n)));
