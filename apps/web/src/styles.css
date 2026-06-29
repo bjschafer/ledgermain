@@ -1,0 +1,792 @@
+/* ============================================================================
+   Scrivener — PF1e Character Forge
+   Direction: "Illuminated ledger" (see DESIGN_NOTES.md). Dark gilded workbench;
+   tabular ledger numerals; the signature is the gold stat seal + provenance.
+   ========================================================================== */
+
+:root {
+  --bg: #15171c;
+  --surface: #1d2027;
+  --surface-2: #23262f;
+  --line: #33373f;
+  --line-soft: #2a2e36;
+  --ink: #e8e3d6;
+  --muted: #9a9488;
+  --faint: #6f6a60;
+  --gold: #c9a227;
+  --gold-2: #e8c34a;
+  --gold-dim: #8a7320;
+  --oxblood: #b04a37;
+  --sage: #88a06a;
+
+  --display: "Fraunces", Georgia, serif;
+  --body: "Public Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius: 4px;
+  --gap: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, #1c2733 0%, transparent 60%),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: var(--gold-2);
+}
+
+.num {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* utility: eyebrow label */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ----------------------------------------------------------------- shell -- */
+
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0 16px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.masthead .wordmark {
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.masthead .wordmark .gilt {
+  color: var(--gold);
+}
+
+.masthead .tagline {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 28px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+@media (max-width: 940px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sheet-col {
+  position: sticky;
+  top: 16px;
+}
+
+@media (max-width: 940px) {
+  .sheet-col {
+    position: static;
+  }
+}
+
+/* ----------------------------------------------------------------- panel -- */
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: var(--gap);
+  overflow: hidden;
+}
+
+.panel > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.panel > header h2 {
+  font-size: 17px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.panel > header .step {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gold-dim);
+}
+
+.panel .body {
+  padding: 16px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.budge {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.budge b {
+  color: var(--ink);
+}
+
+.budge.over b {
+  color: var(--oxblood);
+}
+
+/* --------------------------------------------------------------- controls -- */
+
+label.field {
+  display: block;
+  margin-bottom: 12px;
+}
+
+label.field > span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  padding: 8px 10px;
+  font-family: var(--body);
+  font-size: 14px;
+}
+
+input[type="number"] {
+  font-family: var(--mono);
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible,
+.seal:focus-visible {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 2px;
+}
+
+/* ability score grid */
+.abilities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 520px) {
+  .abilities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.ability-cell {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px;
+  text-align: center;
+}
+
+.ability-cell .abbr {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.ability-cell input {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 18px;
+}
+
+.ability-cell .mod {
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ability-cell .mod b {
+  color: var(--ink);
+}
+
+/* chip toggles (race / class) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--ink);
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.chip:hover {
+  border-color: var(--gold-dim);
+}
+
+.chip[aria-pressed="true"] {
+  background: linear-gradient(180deg, #2c2718, #211d12);
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+
+/* class rows */
+.class-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.class-row:last-child {
+  border-bottom: 0;
+}
+
+.class-row .cname {
+  flex: 1;
+  font-weight: 600;
+}
+
+.class-row .favstar {
+  background: none;
+  border: 0;
+  color: var(--faint);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.class-row .favstar[aria-pressed="true"] {
+  color: var(--gold);
+}
+
+.lvl-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.lvl-stepper button {
+  background: var(--surface-2);
+  border: 0;
+  width: 28px;
+  height: 30px;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.lvl-stepper button:hover {
+  background: #2c303a;
+}
+
+.lvl-stepper .lvl {
+  width: 34px;
+  text-align: center;
+  font-family: var(--mono);
+}
+
+.btn-ghost {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.btn-ghost:hover {
+  border-color: var(--oxblood);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------- skill / feat / spell lists -- */
+
+.search {
+  margin-bottom: 12px;
+}
+
+.scroll {
+  max-height: 360px;
+  overflow-y: auto;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+}
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.skill-row:last-child {
+  border-bottom: 0;
+}
+
+.skill-row .sname {
+  font-size: 14px;
+}
+
+.skill-row .smeta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.skill-row .tag-cls {
+  color: var(--gold-dim);
+}
+
+.skill-row .stotal {
+  font-family: var(--mono);
+  color: var(--ink);
+  min-width: 34px;
+  text-align: right;
+}
+
+.rank-input {
+  width: 56px !important;
+  text-align: center;
+  padding: 4px !important;
+}
+
+/* feat / spell selectable rows */
+.pick-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.pick-row:last-child {
+  border-bottom: 0;
+}
+
+.pick-row .pmain {
+  flex: 1;
+  min-width: 0;
+}
+
+.pick-row .pname {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.pick-row .preq {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+
+.preq .ck-met {
+  color: var(--sage);
+}
+
+.preq .ck-unmet {
+  color: var(--oxblood);
+}
+
+.preq .soft {
+  color: var(--gold-dim);
+  font-style: italic;
+}
+
+.pick-row.is-selected {
+  background: #20231c;
+}
+
+.pick-row.is-blocked {
+  opacity: 0.78;
+}
+
+.pick-btn {
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  padding: 5px 12px;
+  font-size: 12px;
+  min-width: 74px;
+}
+
+.pick-btn.add:hover:not(:disabled) {
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+
+.pick-btn.remove {
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+
+.pick-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.spell-level-head {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 8px 12px 4px;
+  background: var(--surface-2);
+  position: sticky;
+  top: 0;
+}
+
+/* ================================================================ the SHEET -- */
+
+.sheet {
+  background:
+    linear-gradient(180deg, rgba(201, 162, 39, 0.05), transparent 120px),
+    var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.sheet .char-name {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.sheet .char-sub {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+}
+
+.rule-gold {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin: 16px 0;
+}
+
+/* seal grid */
+.seal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 1100px) {
+  .seal-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .seal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.seal {
+  position: relative;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 10px 11px;
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
+.seal[data-expandable="true"] {
+  cursor: pointer;
+}
+
+.seal[data-expandable="true"]:hover {
+  border-color: var(--gold-dim);
+}
+
+.seal[aria-expanded="true"] {
+  border-color: var(--gold);
+}
+
+.seal .seal-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.seal .seal-value {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--gold-2);
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+.seal .seal-foot {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  margin-top: 2px;
+}
+
+.seal .caret {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  color: var(--faint);
+  font-size: 9px;
+}
+
+/* provenance */
+.prov {
+  margin: 8px 0 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #181b21;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.prov .prov-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.prov .prov-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  padding: 2px 0;
+}
+
+.prov .prov-row .src {
+  color: var(--ink);
+}
+
+.prov .prov-row .type {
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.prov .prov-row .val {
+  font-family: var(--mono);
+  color: var(--ink);
+}
+
+.prov .prov-row.struck .src,
+.prov .prov-row.struck .val {
+  text-decoration: line-through;
+  color: var(--faint);
+}
+
+/* ability column on the sheet */
+.ability-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 420px) {
+  .ability-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ability-pip {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 7px 4px;
+  text-align: center;
+}
+
+.ability-pip .ap-abbr {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+
+.ability-pip .ap-mod {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ability-pip .ap-score {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+}
+
+/* saves + AC line block */
+.sheet h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-weight: 500;
+  margin: 18px 0 8px;
+}
+
+.sheet-skill-list {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.sheet-skill {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 13px;
+}
+
+.sheet-skill:last-child {
+  border-bottom: 0;
+}
+
+.sheet-skill.is-class .sk-name::after {
+  content: " ◆";
+  color: var(--gold-dim);
+  font-size: 9px;
+}
+
+.sheet-skill .sk-total {
+  font-family: var(--mono);
+  color: var(--ink);
+}
+
+/* states */
+.state-screen {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--muted);
+}
+
+.state-screen .glyph {
+  font-size: 40px;
+  color: var(--gold-dim);
+}
+
+.empty {
+  color: var(--faint);
+  font-style: italic;
+  font-size: 13px;
+  padding: 8px 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
