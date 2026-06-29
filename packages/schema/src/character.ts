@@ -70,6 +70,11 @@ export interface CharacterDoc {
     activeBuffs: ActiveBuff[];
     /** Resource pools: spell slots, ki, rounds/day, charges. */
     resources: Record<string, { used: number; max: number }>;
+    /**
+     * Hero points currently held (PF1 optional rule). Omitted = 0.
+     * Standard maximum held at once is 3 (see HERO_POINT_CAP in model/heroPoints).
+     */
+    heroPoints?: number;
   };
 }
 

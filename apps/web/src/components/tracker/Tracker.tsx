@@ -1,5 +1,6 @@
 import { BuffsPanel } from "./BuffsPanel.js";
 import { ConditionsPanel } from "./ConditionsPanel.js";
+import { HeroPointsPanel } from "./HeroPointsPanel.js";
 import { HpPanel } from "./HpPanel.js";
 import { ResourcesPanel } from "./ResourcesPanel.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -13,6 +14,7 @@ export function Tracker(props: BuilderProps) {
   return (
     <div className="tracker-col">
       <HpPanel {...props} />
+      <HeroPointsPanel {...props} />
       <ConditionsPanel {...props} />
       <BuffsPanel {...props} />
       <ResourcesPanel {...props} />

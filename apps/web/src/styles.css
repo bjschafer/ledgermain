@@ -1273,6 +1273,47 @@ button:focus-visible,
   margin-top: 8px;
 }
 
+/* hero points */
+.hero-display {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.hero-pips {
+  display: flex;
+  gap: 6px;
+}
+
+.hero-pip {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.hero-pip.filled {
+  color: var(--gold);
+}
+
+.hero-pip.empty {
+  color: var(--faint);
+}
+
+.hero-count {
+  font-size: 18px;
+  color: var(--muted);
+}
+
+.hero-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.hero-controls .btn-act:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
