@@ -23,7 +23,7 @@ test("renders and loads reference data in the browser with no errors", async ({ 
   await page.goto("/");
 
   // React mounted.
-  await expect(page.locator(".wordmark")).toContainText("Scrivener");
+  await expect(page.locator(".wordmark")).toContainText("Ledgermain");
 
   // RefData fetched + parsed client-side (pinned system version 11.11).
   await expect(page.getByText(/data 11\.11/)).toBeVisible({ timeout: 15_000 });

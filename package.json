@@ -1,5 +1,5 @@
 {
-  "name": "pathfinder-tracker",
+  "name": "ledgermain",
   "version": "0.0.0",
   "private": true,
   "description": "Pathfinder 1e in-play character tracker and builder (monorepo root).",

@@ -1,4 +1,4 @@
-# Pathfinder 1e In-Play Tracker
+# Ledgermain
 
 A web-based **in-play character sheet, tracker, and builder** for Pathfinder 1e. The center of gravity is *play at the table*: a rules-aware tracker that recomputes correct numbers as session state (HP, conditions, buffs, resources) changes. Built to run on Cloudflare.
 

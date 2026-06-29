@@ -23,7 +23,7 @@ export function App() {
       <header className="masthead">
         <div>
           <div className="wordmark">
-            Scriven<span className="gilt">er</span>
+            Ledger<span className="gilt">main</span>
           </div>
           <div className="tagline">Pathfinder 1e · build &amp; live sheet</div>
         </div>
