@@ -20,6 +20,17 @@
         "@types/node": "^22",
       },
     },
+    "packages/engine": {
+      "name": "@pf1/engine",
+      "version": "0.0.0",
+      "dependencies": {
+        "@pf1/schema": "workspace:*",
+      },
+      "devDependencies": {
+        "@pf1/data-pipeline": "workspace:*",
+        "@types/bun": "^1.1.14",
+      },
+    },
     "packages/schema": {
       "name": "@pf1/schema",
       "version": "0.0.0",
@@ -27,6 +38,8 @@
   },
   "packages": {
     "@pf1/data-pipeline": ["@pf1/data-pipeline@workspace:packages/data-pipeline"],
+
+    "@pf1/engine": ["@pf1/engine@workspace:packages/engine"],
 
     "@pf1/schema": ["@pf1/schema@workspace:packages/schema"],
 
