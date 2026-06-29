@@ -6,6 +6,7 @@ import { FeatsSection } from "./components/builder/FeatsSection.js";
 import { HitPointsSection } from "./components/builder/HitPointsSection.js";
 import { IdentitySection } from "./components/builder/IdentitySection.js";
 import { RaceSection } from "./components/builder/RaceSection.js";
+import { SettingsSection } from "./components/builder/SettingsSection.js";
 import { SkillsSection } from "./components/builder/SkillsSection.js";
 import { SpellsSection } from "./components/builder/SpellsSection.js";
 import type { BuilderProps } from "./components/builder/types.js";
@@ -13,7 +14,7 @@ import { Sheet } from "./components/Sheet.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { useCharacter } from "./state/useCharacter.js";
 
-type Mode = "build" | "play";
+type Mode = "build" | "play" | "settings";
 
 export function App() {
   const store = useCharacter();
@@ -46,6 +47,15 @@ export function App() {
             onClick={() => setMode("play")}
           >
             Play
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={mode === "settings"}
+            className={`mode-tab${mode === "settings" ? " active" : ""}`}
+            onClick={() => setMode("settings")}
+          >
+            Settings
           </button>
         </div>
         <div className="tagline">
@@ -100,6 +110,8 @@ function Workbench({ mode, ...props }: BuilderProps & { mode: Mode }) {
             <FeatsSection {...props} />
             <SpellsSection {...props} />
           </>
+        ) : mode === "settings" ? (
+          <SettingsSection {...props} />
         ) : (
           <Tracker {...props} />
         )}

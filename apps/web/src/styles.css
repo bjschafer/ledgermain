@@ -1325,6 +1325,228 @@ button:focus-visible,
   opacity: 0.4;
 }
 
+/* ---------------------------------------------------------------- settings -- */
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.settings-row .num {
+  width: 80px;
+}
+
+/* stat-override editor */
+.stat-overrides-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-override-row {
+  display: grid;
+  grid-template-columns: 160px 60px 90px auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-override-label {
+  font-size: 13px;
+}
+
+.stat-override-computed {
+  text-align: right;
+  color: var(--faint);
+  font-size: 13px;
+}
+
+.stat-override-input {
+  width: 90px;
+  text-align: right;
+}
+
+/* -------------------------------------------------------- collapsible panel -- */
+
+.panel.collapsible > header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.panel.collapsible > header:hover {
+  background: var(--surface-2);
+}
+
+.panel-caret {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gold-dim);
+  margin-left: auto;
+  transition: transform 0.15s;
+}
+
+.panel.collapsible.is-collapsed > header .panel-caret {
+  transform: rotate(-90deg);
+}
+
+/* subsection collapsible (ability increases, FCB) */
+.subsection {
+  margin-top: 16px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 14px;
+}
+
+.subsection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.subsection-header h3 {
+  font-size: 13px;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+
+.subsection-header .panel-caret {
+  margin-left: 0;
+}
+
+/* ------------------------------------------------------- FCB picker -- */
+
+.fcb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.fcb-row {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.fcb-level {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  text-align: right;
+}
+
+.fcb-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.fcb-chip {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.1s, background 0.1s;
+}
+
+.fcb-chip:hover {
+  border-color: var(--gold-dim);
+}
+
+.fcb-chip[aria-pressed="true"] {
+  background: linear-gradient(180deg, #2c2718, #211d12);
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+
+/* --------------------------------------------------------- HP rolled mode -- */
+
+.hp-rolls-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.hp-roll-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px;
+  align-items: center;
+  gap: 8px;
+}
+
+.hp-roll-level {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.hp-roll-info {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------- feat filter toggle -- */
+
+.feat-filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-toggle {
+  background: var(--surface-2);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+}
+
+.filter-toggle:hover {
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.filter-toggle[aria-pressed="true"] {
+  background: linear-gradient(180deg, #2c2718, #211d12);
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+
+/* class row metadata */
+.class-row .smeta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.class-row .cls-hd-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.class-row .cls-lv-label {
+  font-size: 11px;
+  color: var(--faint);
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
