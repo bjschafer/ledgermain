@@ -80,7 +80,45 @@ Companion to `DESIGN.md`. Stages are ordered to **de-risk the unknowns first** (
 
 **Tests**: component tests for prereq gating; e2e "build a L1 fighter" produces expected derived sheet.
 
-**Status**: Not Started
+**Status**: Complete (with caveats)
+
+**Notes / caveats (as built)**:
+- New app `apps/web` (`@pf1/web`): Vite + React 18 + TS, bun toolchain. `bun run dev`
+  serves it; `bun run build` produces a static bundle (Cloudflare Pages-ready, not
+  deployed). Repo gates green: `bun run typecheck` clean across all 4 packages;
+  `bun run test` = 75 pass (44 engine + 19 data-pipeline + 12 web).
+- **Testability split (the important bit)**: all builder logic is pure and
+  framework-agnostic in `src/model/` — `doc.ts` (CharacterDoc transitions),
+  `prereqs.ts` (feat gating), `skills.ts` (skill-point budget), `casterLevel.ts`,
+  `names.ts`. React components are thin views; `state/useCharacter.ts` is the only
+  binding (model → `compute()` → Dexie). Tests drive the model directly with no DOM.
+- **Builder → doc → compute flow**: every control calls `update(fn)` with a pure
+  model transition; the hook recomputes `compute(doc, refData)` on each change
+  (pure/cheap, per Stage 2 notes) and the sticky sheet re-renders. Provenance from
+  `DerivedSheet` is surfaced via expandable stat "seals" (overridden bonuses struck
+  through) — the design's signature element.
+- **RefData in the browser**: `loadRefData()` in data-pipeline is Node-fs based, so
+  the app uses `src/refdata/loader.ts` (fetch) instead; `scripts/copy-refdata.ts`
+  copies the vendored JSON into `public/data/` at predev/prebuild (gitignored — the
+  source of truth stays in `packages/data-pipeline/data/`). This module is the only
+  place that knows where data lives, so Stage 5 can swap in lazy R2 loading.
+- **Vite/workspace-TS gotcha**: `@pf1/engine` and `@pf1/schema` publish raw `.ts`;
+  `vite.config.ts` aliases the bare specifiers to their `src/index.ts` and Vite's
+  resolver falls back `./foo.js` → `./foo.ts` for their internal imports. Verified:
+  `vite build` transforms 64 modules and the dev server serves the engine source +
+  data over HTTP (200s).
+- **Feat prereqs**: hard-block ONLY on structured signals (ability min, BAB, caster
+  level, required `@UUID` feats); prose-only prereqs (`prereqText`) show a soft
+  warning and never block — matching DESIGN §4.
+- **Scope notes / Stage 4–5 hooks**: builder covers abilities, race, multiclass
+  classes+levels, skill ranks, feats, and caster spell selection (writes
+  `build.spells.known`). Engine doesn't yet apply feat `changes` (feats are recorded
+  for prereqs/display only) and spell *slots* aren't tracked — both land naturally in
+  Stage 4 (the live tracker reads `doc.live`). Caster level uses a small hardcoded
+  full-caster tag set (single-class assumption). Worn armor is entered as raw stats
+  on gear (the slice omits the armor pack). Persistence is local Dexie only; the doc
+  already carries `ownerId`/`version`/`updatedAt`, so Stage 5 adds the sync push/pull
+  without changing the storage shape.
 
 ---
 
