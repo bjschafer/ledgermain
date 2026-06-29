@@ -1,15 +1,18 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import {
   addClass,
   removeClass,
   setClassLevel,
   setFavoredClass,
+  setFavoredClassBonus,
 } from "../../model/doc.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
 export function ClassesSection({ doc, refData, update }: BuilderProps) {
+  const [fcbOpen, setFcbOpen] = useState(true);
+
   const baseClasses = useMemo(
     () =>
       Object.values(refData.classes)
@@ -20,6 +23,27 @@ export function ClassesSection({ doc, refData, update }: BuilderProps) {
 
   const chosen = new Set(doc.identity.classes.map((c) => c.tag));
   const totalLevel = doc.identity.classes.reduce((s, c) => s + c.level, 0);
+
+  const favoredClass = doc.identity.favoredClass;
+  const fcbHouserule = doc.build.settings?.fcbHouserule ?? false;
+  const fcbChoices = doc.build.favoredClassBonus ?? [];
+  // FCB slots = level of the favored class (or 0 when none chosen)
+  const fcbLevel =
+    favoredClass != null
+      ? (doc.identity.classes.find((c) => c.tag === favoredClass)?.level ?? 0)
+      : 0;
+
+  // Standard options; house-rule replaces "hp"+"skill" with "both"
+  const standardOptions = [
+    { value: "hp" as const, label: "+1 HP" },
+    { value: "skill" as const, label: "+1 Skill" },
+    { value: "other" as const, label: "Alternate" },
+  ];
+  const houseruleOptions = [
+    { value: "both" as const, label: "+1 HP & Skill" },
+    { value: "alternate" as const, label: "Alternate" },
+  ];
+  const fcbOptions = fcbHouserule ? houseruleOptions : standardOptions;
 
   return (
     <Panel
@@ -61,23 +85,26 @@ export function ClassesSection({ doc, refData, update }: BuilderProps) {
                 {isFav ? "★" : "☆"}
               </button>
               <span className="cname">{def?.name ?? cls.tag}</span>
-              <span className="smeta num">d{def?.hd ?? "?"}</span>
-              <div className="lvl-stepper">
-                <button
-                  type="button"
-                  aria-label="Lower level"
-                  onClick={() => update((d) => setClassLevel(d, cls.tag, cls.level - 1))}
-                >
-                  −
-                </button>
-                <span className="lvl">{cls.level}</span>
-                <button
-                  type="button"
-                  aria-label="Raise level"
-                  onClick={() => update((d) => setClassLevel(d, cls.tag, cls.level + 1))}
-                >
-                  +
-                </button>
+              <span className="cls-hd-label">Hit Die d{def?.hd ?? "?"}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <span className="cls-lv-label">Lv</span>
+                <div className="lvl-stepper">
+                  <button
+                    type="button"
+                    aria-label={`Lower ${def?.name ?? cls.tag} level`}
+                    onClick={() => update((d) => setClassLevel(d, cls.tag, cls.level - 1))}
+                  >
+                    −
+                  </button>
+                  <span className="lvl">{cls.level}</span>
+                  <button
+                    type="button"
+                    aria-label={`Raise ${def?.name ?? cls.tag} level`}
+                    onClick={() => update((d) => setClassLevel(d, cls.tag, cls.level + 1))}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
               <button
                 type="button"
@@ -89,6 +116,48 @@ export function ClassesSection({ doc, refData, update }: BuilderProps) {
             </div>
           );
         })
+      )}
+
+      {/* Favored-class bonus picker — only when a favored class is chosen */}
+      {fcbLevel > 0 && (
+        <div className="subsection">
+          <div
+            className="subsection-header"
+            onClick={() => setFcbOpen((o) => !o)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setFcbOpen((o) => !o); }}
+            aria-expanded={fcbOpen}
+          >
+            <h3>Favored Class Bonus</h3>
+            <span className="panel-caret">{fcbOpen ? "▾" : "▸"}</span>
+          </div>
+          {fcbOpen && (
+            <div className="fcb-list">
+              {Array.from({ length: fcbLevel }, (_, i) => {
+                const chosen = fcbChoices[i];
+                return (
+                  <div className="fcb-row" key={i}>
+                    <span className="fcb-level">Lv {i + 1}</span>
+                    <div className="fcb-chips">
+                      {fcbOptions.map((opt) => (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          className="fcb-chip"
+                          aria-pressed={chosen === opt.value}
+                          onClick={() => update((d) => setFavoredClassBonus(d, i, opt.value))}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       )}
     </Panel>
   );
