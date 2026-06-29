@@ -93,3 +93,22 @@ describe("setHeroPoints()", () => {
     expect(heroPoints(setHeroPoints(doc(), 10, 5))).toBe(5);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Hero-point cap from doc.build.settings.heroPointsCap
+// ---------------------------------------------------------------------------
+describe("heroPointsCap via doc settings", () => {
+  it("gainHeroPoint uses a custom cap when passed explicitly", () => {
+    // Simulate HeroPointsPanel reading doc.build.settings.heroPointsCap
+    const cap = 5;
+    let d = doc();
+    for (let i = 0; i < 10; i++) {
+      d = gainHeroPoint(d, cap);
+    }
+    expect(heroPoints(d)).toBe(cap);
+  });
+
+  it("setHeroPoints with custom cap clamps correctly", () => {
+    expect(heroPoints(setHeroPoints(doc(), 10, 7))).toBe(7);
+  });
+});

@@ -10,7 +10,8 @@ import type { BuilderProps } from "../builder/types.js";
 /** Live hero point pool — gain/spend at the table (PF1 optional rule). */
 export function HeroPointsPanel({ doc, update }: BuilderProps) {
   const current = heroPoints(doc);
-  const cap = HERO_POINT_CAP;
+  // Respect the per-character cap override (Settings); fall back to PF1 default.
+  const cap = doc.build.settings?.heroPointsCap ?? HERO_POINT_CAP;
 
   const pips = Array.from({ length: cap }, (_, i) => i < current);
 
@@ -42,7 +43,7 @@ export function HeroPointsPanel({ doc, update }: BuilderProps) {
           type="button"
           className="btn-act"
           disabled={current >= cap}
-          onClick={() => update((d) => gainHeroPoint(d))}
+          onClick={() => update((d) => gainHeroPoint(d, cap))}
         >
           Gain
         </button>
