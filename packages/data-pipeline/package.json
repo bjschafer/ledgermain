@@ -11,18 +11,18 @@
     }
   },
   "scripts": {
-    "fetch": "tsx src/cli/fetch.ts",
-    "generate": "tsx src/cli/generate.ts",
-    "build:data": "tsx src/cli/fetch.ts && tsx src/cli/generate.ts",
+    "fetch": "bun src/cli/fetch.ts",
+    "generate": "bun src/cli/generate.ts",
+    "build:data": "bun src/cli/fetch.ts && bun src/cli/generate.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run"
+    "test": "bun test"
   },
   "dependencies": {
     "@pf1/schema": "workspace:*",
     "yaml": "^2.6.1"
   },
   "devDependencies": {
-    "@types/node": "^22",
-    "tsx": "^4.19.2"
+    "@types/bun": "^1.1.14",
+    "@types/node": "^22"
   }
 }

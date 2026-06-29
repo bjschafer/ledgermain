@@ -4,18 +4,18 @@
   "private": true,
   "description": "Pathfinder 1e in-play character tracker and builder (monorepo root).",
   "type": "module",
-  "engines": {
-    "node": ">=20"
-  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
-    "build": "pnpm -r build",
-    "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck",
-    "data:fetch": "pnpm --filter @pf1/data-pipeline fetch",
-    "data:build": "pnpm --filter @pf1/data-pipeline generate"
+    "build": "bun run --filter '*' build",
+    "test": "bun run --filter '*' test",
+    "typecheck": "bun run --filter '*' typecheck",
+    "data:fetch": "bun run --filter @pf1/data-pipeline fetch",
+    "data:build": "bun run --filter @pf1/data-pipeline generate"
   },
   "devDependencies": {
-    "typescript": "^5.6.3",
-    "vitest": "^2.1.8"
+    "typescript": "^5.6.3"
   }
 }
