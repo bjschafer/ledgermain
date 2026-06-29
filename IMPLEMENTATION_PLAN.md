@@ -134,7 +134,54 @@ Companion to `DESIGN.md`. Stages are ordered to **de-risk the unknowns first** (
 
 **Tests**: toggle Haste+Bless+prone → assert exact AC/attack/save deltas; advance N rounds → buff expires and stats revert.
 
-**Status**: Not Started
+**Status**: Complete (with caveats)
+
+**Notes / caveats (as built)**:
+- **Engine** — buffs + conditions now flow through the *existing* evaluator +
+  stacker with full provenance. `collectModifiers` reads `doc.live.activeBuffs[].changes`
+  and `doc.live.conditions` (mapped via a new conditions table) alongside the
+  passive race/item/feature sources; nothing about the formula/stacking layer
+  changed. New modules: `conditions.ts` (clean-room table), `duration.ts`
+  (`advanceRounds`, pure), `resources.ts` (`deriveResourcePools`).
+- **Conditions modelled with real modifiers**: shaken, frightened, panicked,
+  sickened, fatigued, exhausted, entangled, grappled, prone, dazzled, deafened,
+  blinded, stunned, cowering. **Display-only** (no flat modifier — narrative or
+  not expressible on a static sheet): flat-footed, nauseated, staggered,
+  paralyzed, helpless, confused, dazed, unconscious. Approximations (left as
+  `contextNotes`, not auto-applied): prone's −4 AC is melee-only and grants +4 vs
+  ranged; blinded/stunned/cowering "lose Dex to AC"; speed-halving; fear/fatigue
+  ladders don't auto-supersede each other (toggling both stacks both).
+- **compute() additions** to support precise live effects: melee/ranged-specific
+  attack targets (`mattack`/`rattack`, e.g. prone), a global `skills` penalty
+  target (shaken/sickened), and `cmb` modifier collection. All provenance-bearing.
+- **Round-advance** is the pure `advanceRounds(buffs, n)`; the web wraps it in
+  `advanceRound(doc, n)` and an "Advance round" control auto-drops expired buffs.
+  Indefinite buffs (no `remainingRounds`) ignore the clock.
+- **Web** — Build/Play mode toggle; Play swaps the left column to the tracker
+  while the sticky provenance sheet (the signature seal/strike-through UI from
+  Stage 3) recomputes live. Live logic is pure + unit-tested in `src/model/`
+  (`hp`, `conditions`, `buffs`, `resources`); React panels are thin views.
+- **Resources**: class-feature pools (Rage rounds/day, Channel Energy) derived
+  from `uses.maxFormula` via `deriveResourcePools`. **Spell-slot limitation**
+  (as flagged in DESIGN/Stage 1): the vendored data has no per-class/level slot
+  tables and items carry no charge counts, so spell slots *and* item charges are
+  **manual pools** (user-entered max, drain/restore/rest). Not blocked on it.
+- **Buffs UI**: add from the 185-buff compendium (snapshotting `changes`, with a
+  best-effort suggested round duration from the buff's structured `duration`) or
+  author a custom buff (same `Change[]` shape — the "expert flexibility" door).
+- **Tests**: engine `tracker.test.ts` (Haste+Bless+prone exact deltas;
+  same-type morale bonus doesn't stack while a morale penalty does; fatigued
+  cascades to attack; round-advance expiry + stat revert; Rage pool derivation).
+  Web `tracker.test.ts` (HP through temp/nonlethal/rest, buff add/remove/round,
+  resource drain/restore/sync/rest). e2e `tracker.spec.ts` (condition toggle +
+  buff apply/expire in the real UI). Repo gates green: `bun run typecheck` clean
+  (4 packages); `bun run test` = 90 pass (50 engine + 19 data-pipeline + 21 web);
+  `bun run e2e` = 3 pass.
+- **For Stage 5 (persistence/sync)**: `doc.live` (hp/conditions/activeBuffs/
+  resources) is fully serializable and self-contained — `ActiveBuff` snapshots
+  its own `changes`, so a synced doc needs no RefData to recompute. No schema
+  shape change beyond typing `live.activeBuffs: ActiveBuff[]`. Autosave still
+  goes to local Dexie (version bump deferred to Stage 5, as noted there).
 
 ---
 
