@@ -85,16 +85,18 @@ Companion to `DESIGN.md`. Stages are ordered to **de-risk the unknowns first** (
 
 ---
 
-## Stage 5: Persistence Worker
+## Stage 5: Persistence + cross-device sync (Level 1)
 
-**Goal**: Save/load documents to Cloudflare; online-first.
+**Goal**: Save/load documents to Cloudflare, account-scoped, so a user can build on one device and play on another. Online-first. (See DESIGN.md §2.1.)
 
 **Success Criteria**:
-- Cloudflare Worker stores/retrieves character-doc blobs (D1 or KV) behind a thin API.
-- Client syncs IndexedDB ↔ server; server stays dumb (no game logic).
+- **Lightweight identity**: GitHub OAuth or email magic-link; sessions in KV/D1. Documents are owned (`ownerId`).
+- Cloudflare Worker stores/retrieves character-doc blobs (D1 or KV) behind a thin API; server stays dumb (no game logic).
+- Client syncs IndexedDB ↔ server: pull latest on open, push on change.
+- **Optimistic concurrency**: doc carries `version`/`updatedAt`; a save based on a stale `version` is rejected; client prompts to reload. (No merge engine — single-user multi-device.)
 - Deployed on Pages + Workers.
 
-**Tests**: round-trip a document; concurrent-edit last-write-wins behaves predictably.
+**Tests**: round-trip a document; a save against a stale `version` is rejected (409) and the client surfaces the reload prompt; a fresh device pulls the latest doc for the owner.
 
 **Status**: Not Started
 

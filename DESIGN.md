@@ -28,6 +28,18 @@ Derived stats are **never** computed server-side and **never** stored. The serve
 
 The corner to avoid: ever requiring a server round-trip to toggle a buff, apply damage, or compute a modifier.
 
+### 2.1 Cross-device sync — Level 1 for v1 (DECIDED)
+
+The payoff of the rule above: because the document is an opaque blob and the client owns all logic, syncing across a user's devices (build on desktop → play on laptop) is a *persistence + identity* problem, not a rules problem.
+
+**v1 = Level 1:** account-scoped cloud document. Each device pulls the latest on open and pushes on change. Single-user multi-device, so concurrency is handled by **optimistic concurrency**, not a merge engine: every save carries the `version` it was based on; the server rejects a stale write and the client prompts *"a newer version exists on another device — reload?"* The document therefore carries `ownerId` / `version` / `updatedAt` (see §3.1).
+
+Deliberately deferred, and *cheap because of this model* — they reuse the **same Durable Object sync infra**, so cross-device and party are one investment, not two:
+- **Level 2 — live mirror:** changes appear on the other device in near-real-time (DO + WebSocket).
+- **Level 3 — conflict-free concurrent editing:** CRDT (Yjs/Automerge); only if simultaneous editing becomes a real need.
+
+Identity stays boring: GitHub OAuth or email magic-link, sessions in KV/D1. (Cloudflare Access is org-oriented overkill.)
+
 ## 3. The backbone data model
 
 Two objects, one engine.
@@ -40,6 +52,9 @@ A serializable JSON object holding **build choices** and **live state**, but nev
 interface CharacterDoc {
   schemaVersion: number;
   id: string;
+  ownerId: string;          // sync: whose document this is (added in Stage 5)
+  version: number;          // sync: optimistic-concurrency counter, bumped on each save
+  updatedAt: string;        // sync: ISO timestamp of last change
   identity: { name; race; classes: { tag; level }[]; alignment; deity };
   abilities: { str; dex; con; int; wis; cha };      // base scores only
   build: {
