@@ -14,6 +14,12 @@ packages/data-pipeline/.cache/
 # stays in packages/data-pipeline/data/). Don't commit the duplicate.
 apps/web/public/data/
 
+# Playwright e2e artifacts (browsers are cached globally, not in-repo)
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
 # Editor / OS
 .DS_Store
 .idea/

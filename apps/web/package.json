@@ -11,7 +11,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "bun test"
+    "test": "bun test ./test",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@pf1/engine": "workspace:*",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@pf1/data-pipeline": "workspace:*",
+    "@playwright/test": "^1.61.1",
     "@types/bun": "^1.1.14",
     "@types/node": "^22",
     "@types/react": "^18.3.12",

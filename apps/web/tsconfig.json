@@ -9,5 +9,13 @@
     "allowImportingTsExtensions": true,
     "types": ["bun", "vite/client", "node"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts", "vite.config.ts", "scripts/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "test/**/*.ts",
+    "e2e/**/*.ts",
+    "vite.config.ts",
+    "playwright.config.ts",
+    "scripts/**/*.ts"
+  ]
 }
