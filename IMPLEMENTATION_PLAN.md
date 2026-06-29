@@ -50,7 +50,22 @@ Companion to `DESIGN.md`. Stages are ordered to **de-risk the unknowns first** (
 
 **Tests**: hand-computed fixtures for a L1 and a L5 build; targeted stacking tests (two morale bonuses don't stack; dodge+untyped do); formula evaluator unit tests.
 
-**Status**: Not Started
+**Status**: Complete (with caveats)
+
+**Notes / caveats (as built)**:
+- New package `packages/engine` (`@pf1/engine`): pure, framework-agnostic. Depends on `@pf1/schema`; `@pf1/data-pipeline` is a dev dep so tests run against the real vendored slice via `loadRefData()`. 44 engine tests pass; `bun run typecheck` clean across all three packages.
+- **Public API** (`src/index.ts`): `compute(doc, refData) -> DerivedSheet`; formula evaluator `parseFormula` / `evaluateFormula` / `tryEvaluateFormula` / `evaluateNode` / `containsDice` (+ `DiceTermError`, `FormulaSyntaxError`, `RollData`, `FormulaNode`); stacking `resolveStack` (+ `TypedModifier`, `ResolvedModifier`, `StackResult`); `collectModifiers` / `forTarget`; roll-data helpers `buildRollData` / `abilityMod` / `totalLevel`; rules tables `babForLevels` / `saveForLevels` / `specialSizeMod` / `SIZE_AC_MOD` / `SAVE_ABILITY` / `SKILL_ABILITY` / `SKILL_IDS` / `skillUsesAcp`.
+- **Formula DSL**: recursive-descent parser + tree-walking evaluator (no `eval`). Functions: `if`, `eq/ne/gt/gte/lt/lte`, `and/or/not`, `min/max`, `floor/ceil/round/abs/sign`, `clamp`. Missing `@paths` resolve to `0` (Foundry behaviour). Dice terms (`(min(10,@cl))d6`) parse into a node but throw `DiceTermError` on numeric eval; `tryEvaluateFormula` returns `null` for them — so damage formulas never crash the static sheet.
+- **Stacking** (clean-room): same-type bonuses → highest; `dodge`/`untyped`/`circumstance` → sum; penalties always stack; provenance (`applied` flag per source) retained for the Stage 4 UI.
+- **Schema**: `CharacterDoc` fleshed out with the DESIGN §3.1 sync fields (`ownerId`/`version`/`updatedAt`) and an `ItemInstance`/`WornArmor` gear model; `DerivedSheet` fully specified with per-source modifier provenance.
+- **PF1 rules decisions / assumptions**:
+  - *HP*: max at 1st character level; each later level adds `floor(HD/2)+1`; Con mod per HD; favored-class HP applied only from explicit `build.favoredClassBonus` `"hp"` entries (not auto-assumed).
+  - *Worn armor*: the vendored slice omits the `armors-and-shields` pack, so body-armor/shield AC/maxDex/ACP are recorded on `ItemInstance.armor`; only magic items (which carry `changes`) come from `RefData`.
+  - *Multiclass*: BAB and each save computed per class then summed (good-save +2 applies once per class).
+  - *Caster level*: `@cl` = highest single class level (single-class assumption); fine until prestige casting matters.
+  - *Armor training*: `mDexA` raises the max-Dex cap; `acpA` reduces ACP magnitude.
+  - *Buffs/conditions*: NOT applied here (Stage 4); only passive race/item/class-feature `changes` feed `compute`.
+- **For Stage 3/4**: `compute` is pure and cheap — recompute on every doc change. Provenance lives in `DerivedSheet` (`ResolvedStat.components`, `AbilityScore.components`, `Ac.components` with `category`, `DerivedSkill.components`); each carries `applied` for strike-through. Stage 4 buffs are just more `Change[]` to merge into `collectModifiers` (extend it to read `doc.live.activeBuffs`); the formula evaluator and stacker already handle their formulas/types.
 
 ---
 
