@@ -29,6 +29,11 @@ export interface CharacterDoc {
      * populates that, the engine applies no FCB (see engine HP assumptions).
      */
     favoredClass?: string;
+    /**
+     * For races with a flexible +2 (Human/Half-Elf/Half-Orc), the chosen
+     * ability. Ignored for races with fixed ability modifiers.
+     */
+    flexibleAbility?: AbilityId;
   };
   /** Base ability scores only — no racial/item adjustments baked in. */
   abilities: Record<AbilityId, number>;

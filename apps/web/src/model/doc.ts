@@ -55,7 +55,26 @@ export function setAbility(
 }
 
 export function setRace(doc: CharacterDoc, raceId: string): CharacterDoc {
-  return { ...doc, identity: { ...doc.identity, race: raceId } };
+  const identity = { ...doc.identity, race: raceId };
+  delete identity.flexibleAbility;
+  return { ...doc, identity };
+}
+
+/**
+ * Set or clear the flexible +2 ability choice (Human / Half-Elf / Half-Orc).
+ * When `ability` is null, the key is removed so a stale choice never lingers.
+ */
+export function setFlexibleAbility(
+  doc: CharacterDoc,
+  ability: AbilityId | null,
+): CharacterDoc {
+  const identity = { ...doc.identity };
+  if (ability === null) {
+    delete identity.flexibleAbility;
+  } else {
+    identity.flexibleAbility = ability;
+  }
+  return { ...doc, identity };
 }
 
 /** Add a class at level 1 (no-op if the tag is already present). */

@@ -40,6 +40,7 @@ export {
   SKILL_ABILITY,
   SKILL_IDS,
   skillUsesAcp,
+  raceGrantsFlexibleAbility,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";

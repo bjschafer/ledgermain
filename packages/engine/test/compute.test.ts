@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc, ItemInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute } from "../src/index.js";
+import { compute, raceGrantsFlexibleAbility } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -260,6 +260,56 @@ describe("trained-only skill flags", () => {
     expect(skill.trainedOnly).toBe(true);
     expect(skill.usable).toBe(true);
     expect(skill.ranks).toBe(2);
+  });
+});
+
+describe("flexible racial +2 (Human / Half-Elf / Half-Orc)", () => {
+  it("raceGrantsFlexibleAbility returns true for Human", () => {
+    const human = ref.races[raceId("Human")]!;
+    expect(raceGrantsFlexibleAbility(human)).toBe(true);
+  });
+
+  it("raceGrantsFlexibleAbility returns false for Elf (fixed +2 Dex, +2 Int, -2 Con)", () => {
+    const elf = ref.races[raceId("Elf")]!;
+    expect(raceGrantsFlexibleAbility(elf)).toBe(false);
+  });
+
+  it("flexible race with flexibleAbility='str' applies +2 racial bonus to STR", () => {
+    const base = 14;
+    const doc: CharacterDoc = {
+      ...makeDoc({
+        classes: [{ tag: "barbarian", level: 1 }],
+        abilities: { str: base, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+        race: "Human",
+      }),
+      identity: {
+        ...makeDoc({
+          classes: [{ tag: "barbarian", level: 1 }],
+          abilities: { str: base, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+          race: "Human",
+        }).identity,
+        flexibleAbility: "str",
+      },
+    };
+    const sheet = compute(doc, ref);
+    expect(sheet.abilities.str.total).toBe(base + 2);
+    const racial = sheet.abilities.str.components.find((c) => c.type === "racial");
+    expect(racial).toBeDefined();
+    expect(racial?.value).toBe(2);
+    expect(racial?.applied).toBe(true);
+  });
+
+  it("flexible race without flexibleAbility set applies no racial ability bonus", () => {
+    const base = 14;
+    const doc = makeDoc({
+      classes: [{ tag: "barbarian", level: 1 }],
+      abilities: { str: base, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+      race: "Human",
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.abilities.str.total).toBe(base);
+    const racial = sheet.abilities.str.components.find((c) => c.type === "racial");
+    expect(racial).toBeUndefined();
   });
 });
 

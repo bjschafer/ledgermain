@@ -6,7 +6,8 @@
  * class, which is the correct PF1 multiclass behaviour).
  */
 
-import type { AbilityId, BabTier, SaveTier, SizeId } from "@pf1/schema";
+import type { AbilityId, BabTier, Race, SaveTier, SizeId } from "@pf1/schema";
+import { ABILITY_IDS } from "@pf1/schema";
 
 /** Base attack bonus contributed by `level` levels of a class at `tier`. */
 export function babForLevels(tier: BabTier, level: number): number {
@@ -138,4 +139,14 @@ export const SKILL_TRAINED_ONLY: ReadonlySet<string> = new Set([
 /** Returns true if `skillId` is a trained-only skill (unusable at 0 ranks). */
 export function isTrainedOnly(skillId: string): boolean {
   return SKILL_TRAINED_ONLY.has(skillId);
+}
+
+/**
+ * Returns true when `race` grants a flexible +2 to an ability score of the
+ * player's choice (Human, Half-Elf, Half-Orc in PF1). These races have NO
+ * ability-score changes in `race.changes`; fixed-mod races (e.g. Elf: +2 Dex,
+ * +2 Int, −2 Con) have at least one change targeting an AbilityId.
+ */
+export function raceGrantsFlexibleAbility(race: Race): boolean {
+  return !race.changes.some((c) => (ABILITY_IDS as readonly string[]).includes(c.target));
 }

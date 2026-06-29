@@ -12,6 +12,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { CONDITIONS } from "./conditions.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import type { TypedModifier } from "./stacking.js";
+import { raceGrantsFlexibleAbility } from "./tables.js";
 
 /** A {@link TypedModifier} tagged with what it targets. */
 export interface CollectedModifier extends TypedModifier {
@@ -50,6 +51,17 @@ export function collectModifiers(
   if (race) {
     for (const ch of race.changes) {
       evalChange(ch.formula, rollData, ch.target, ch.type, race.name, race.id, out);
+    }
+    // Flexible +2 (Human / Half-Elf / Half-Orc): no fixed ability changes,
+    // player picks one ability score at character creation.
+    if (raceGrantsFlexibleAbility(race) && doc.identity.flexibleAbility) {
+      out.push({
+        target: doc.identity.flexibleAbility,
+        type: "racial",
+        value: 2,
+        source: `${race.name} (choice)`,
+        sourceId: race.id,
+      });
     }
   }
 
