@@ -547,6 +547,48 @@ button:focus-visible,
   top: 0;
 }
 
+/* ---------------------------------------------------- HP override (builder) -- */
+
+.hp-override-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hp-override-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 60px;
+}
+
+.hp-override-input {
+  width: 80px !important;
+  text-align: center;
+  padding: 4px !important;
+}
+
+.hp-override-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--gold-2);
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-weight: 400;
+}
+
+.hp-override-badge--auto {
+  color: var(--muted);
+  background: none;
+  border-color: var(--line);
+}
+
 /* ================================================================ the SHEET -- */
 
 .sheet {

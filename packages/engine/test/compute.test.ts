@@ -206,6 +206,34 @@ describe("compute: fighter L5 (full plate + magic items, stacking + armor traini
   });
 });
 
+describe("compute: maxHpOverride", () => {
+  const base = makeDoc({
+    classes: [{ tag: "barbarian", level: 1 }],
+    abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+  });
+  // Barbarian L1, con 10 → auto = 12 (max d12) + 0 con = 12
+
+  it("without override: max === auto (rules average)", () => {
+    const sheet = compute(base, ref);
+    expect(sheet.hp.auto).toBe(12);
+    expect(sheet.hp.max).toBe(12);
+  });
+
+  it("with override set: max equals override, auto is still the rules average", () => {
+    const doc = { ...base, build: { ...base.build, maxHpOverride: 8 } };
+    const sheet = compute(doc, ref);
+    expect(sheet.hp.auto).toBe(12);
+    expect(sheet.hp.max).toBe(8);
+  });
+
+  it("with override > auto: max equals override", () => {
+    const doc = { ...base, build: { ...base.build, maxHpOverride: 50 } };
+    const sheet = compute(doc, ref);
+    expect(sheet.hp.auto).toBe(12);
+    expect(sheet.hp.max).toBe(50);
+  });
+});
+
 describe("trained-only skill flags", () => {
   const doc = makeDoc({
     classes: [{ tag: "wizard", level: 3 }],

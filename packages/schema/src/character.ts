@@ -46,6 +46,11 @@ export interface CharacterDoc {
      * with no flat numeric effect. Omitted entirely until the builder collects it.
      */
     favoredClassBonus?: ("hp" | "skill" | "other")[];
+    /**
+     * User-set maximum HP (e.g. rolled). When present it overrides the computed
+     * average max. Omitted = use the rules average.
+     */
+    maxHpOverride?: number;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -198,6 +203,8 @@ export interface AcComponent extends ModifierComponent {
 }
 
 export interface HitPoints {
+  /** Rules-average maximum HP, before any user override (for display/reset). */
+  auto: number;
   max: number;
   /** From the document's live state. */
   current: number;

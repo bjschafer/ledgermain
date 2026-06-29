@@ -118,6 +118,22 @@ export function setGear(doc: CharacterDoc, gear: ItemInstance[]): CharacterDoc {
   return { ...doc, build: { ...doc.build, gear } };
 }
 
+/**
+ * Set or clear the user's maximum-HP override (e.g. rolled HP).
+ * When `value` is null, NaN, or <= 0, the override key is removed entirely so
+ * the engine falls back to the rules-average. Otherwise the value is stored as a
+ * clamped positive integer (1..100000).
+ */
+export function setMaxHpOverride(doc: CharacterDoc, value: number | null): CharacterDoc {
+  if (value === null || Number.isNaN(value) || value <= 0) {
+    const build = { ...doc.build };
+    delete build.maxHpOverride;
+    return { ...doc, build };
+  }
+  const clamped = clampInt(value, 1, 100000);
+  return { ...doc, build: { ...doc.build, maxHpOverride: clamped } };
+}
+
 /** Total character level (sum of class levels). */
 export function totalLevel(doc: CharacterDoc): number {
   return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);

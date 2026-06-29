@@ -10,6 +10,10 @@
  * modifier is added per Hit Die. The favored-class bonus is applied only from the
  * explicit `build.favoredClassBonus` choices (each `"hp"` entry = +1 HP); it is
  * NOT auto-assumed, since the builder (Stage 3) collects those choices.
+ *
+ * If `build.maxHpOverride` is set (a positive integer), it replaces the computed
+ * average as `sheet.hp.max`; the rules-average is always exposed as `sheet.hp.auto`
+ * so the UI can display it and offer a reset.
  */
 
 import type {
@@ -235,24 +239,28 @@ function computeHp(
   conMod: number,
 ): HitPoints {
   // Expand class levels in document order; the first overall level is maxed.
-  let max = 0;
+  let auto = 0;
   let isFirstLevel = true;
   let hd = 0;
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
     const die = def?.hd ?? 8;
     for (let i = 0; i < cls.level; i++) {
-      max += isFirstLevel ? die : Math.floor(die / 2) + 1;
+      auto += isFirstLevel ? die : Math.floor(die / 2) + 1;
       isFirstLevel = false;
       hd++;
     }
   }
-  max += conMod * hd;
+  auto += conMod * hd;
   // favored-class HP choices (explicit only)
   const fcbHp = (doc.build.favoredClassBonus ?? []).filter((c) => c === "hp").length;
-  max += fcbHp;
+  auto += fcbHp;
+
+  const override = doc.build.maxHpOverride;
+  const max = override != null && override > 0 ? override : auto;
 
   return {
+    auto,
     max,
     current: doc.live.hp.current,
     temp: doc.live.hp.temp,
