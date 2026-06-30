@@ -5,7 +5,13 @@ import type { AbilityId } from "@pf1/schema";
 import { casterLevel } from "../../model/casterLevel.js";
 import { toggleFeat } from "../../model/doc.js";
 import { ABILITY_IDS } from "../../model/doc.js";
-import { chosenFeatCount, expectedFeatCount } from "../../model/feats.js";
+import {
+  chosenFeatCount,
+  expectedFeatCount,
+  featChoiceDescriptor,
+  featChoiceOptions,
+  setFeatChoice,
+} from "../../model/feats.js";
 import {
   evaluatePrereqs,
   type PrereqContext,
@@ -68,6 +74,13 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
 
     return { feats: list, prereqMap: map };
   }, [refData.feats, query, category, hideIneligible, selected, ctx]);
+
+  // Skill options for Skill Focus and any other "skill" choice feats. Computed
+  // once per render cycle — the list is static (all skills, alphabetically).
+  const skillOptions = useMemo(
+    () => featChoiceOptions("skill", refData),
+    [refData],
+  );
 
   const chosen = chosenFeatCount(doc);
   const expected = expectedFeatCount(doc, refData);
@@ -132,6 +145,12 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           const isSel = selected.has(feat.id);
           const res = prereqMap.get(feat.id)!;
           const blocked = res.blocked && !isSel;
+          // For selected feats: look up any player-choice descriptor and options.
+          const choiceDesc = isSel ? featChoiceDescriptor(feat.name) : null;
+          const choiceOpts =
+            choiceDesc?.type === "skill"
+              ? skillOptions
+              : []; // weapon + future types have no options yet
           return (
             <div
               key={feat.id}
@@ -139,6 +158,30 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
             >
               <div className="pmain">
                 <div className="pname">{feat.name}</div>
+                {/* Inline choice picker for feats that require a selection */}
+                {choiceDesc && choiceOpts.length > 0 && (
+                  <div className="feat-choice">
+                    <label className="feat-choice-label">
+                      {choiceDesc.label}:
+                      <select
+                        className="feat-choice-select"
+                        value={doc.build.featChoices?.[feat.id] ?? ""}
+                        onChange={(e) =>
+                          update((d) =>
+                            setFeatChoice(d, feat.id, e.target.value || null),
+                          )
+                        }
+                      >
+                        <option value="">— choose a {choiceDesc.type} —</option>
+                        {choiceOpts.map((opt) => (
+                          <option key={opt.id} value={opt.id}>
+                            {opt.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+                )}
                 {(res.checks.length > 0 || res.softText) && (
                   <div className="preq">
                     {res.checks.map((c, i) => (

@@ -185,7 +185,18 @@ export function toggleFeat(doc: CharacterDoc, featId: string): CharacterDoc {
 	const feats = has
 		? doc.build.feats.filter((f) => f !== featId)
 		: [...doc.build.feats, featId];
-	return { ...doc, build: { ...doc.build, feats } };
+
+	let build = { ...doc.build, feats };
+
+	// When removing a feat, also clear its choice so stale entries don't accumulate
+	// in featChoices (e.g. if the player later re-adds a different instance of the feat).
+	if (has && doc.build.featChoices?.[featId] !== undefined) {
+		const featChoices = { ...doc.build.featChoices };
+		delete featChoices[featId];
+		build = { ...build, featChoices };
+	}
+
+	return { ...doc, build };
 }
 
 export function toggleKnownSpell(

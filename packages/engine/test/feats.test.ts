@@ -24,6 +24,8 @@ function makeDoc(over: {
   classes: { tag: string; level: number }[];
   abilities?: CharacterDoc["abilities"];
   feats?: string[];
+  featChoices?: Record<string, string>;
+  skillRanks?: CharacterDoc["build"]["skillRanks"];
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
 }): CharacterDoc {
   return {
@@ -42,7 +44,8 @@ function makeDoc(over: {
     },
     build: {
       feats: over.feats ?? [],
-      skillRanks: {},
+      featChoices: over.featChoices,
+      skillRanks: over.skillRanks ?? {},
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
@@ -226,5 +229,109 @@ describe("feat bonus stacking behaviour", () => {
     // With two enh bonuses, only the higher (+4) applies — net from base 10 is +4.
     expect(s1.abilities.str.total).toBe(12); // 10 + 2 enh
     expect(s2.abilities.str.total).toBe(14); // 10 + 4 enh (not 10+2+4)
+  });
+});
+
+// ─── Skill Focus ─────────────────────────────────────────────────────────────
+
+describe("Skill Focus feat", () => {
+  // Skill Focus (Perception): +3 untyped bonus on Perception. +6 at 10+ ranks.
+  // Wizard L1, wis 10 (wis mod 0), no ranks → base Perception = 0.
+
+  it("adds +3 to the chosen skill when a choice is set and ranks < 10", () => {
+    const base = makeDoc({ classes: [{ tag: "wizard", level: 1 }] });
+    const withFeat = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [featId("Skill Focus")],
+      featChoices: { [featId("Skill Focus")]: "per" },
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(featSheet.skills["per"]!.total - baseSheet.skills["per"]!.total).toBe(3);
+  });
+
+  it("applies the bonus to the chosen skill only (not all skills)", () => {
+    const base = makeDoc({ classes: [{ tag: "wizard", level: 1 }] });
+    const withFeat = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [featId("Skill Focus")],
+      featChoices: { [featId("Skill Focus")]: "per" },
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    // Perception gets +3; Stealth should be unchanged.
+    expect(featSheet.skills["per"]!.total - baseSheet.skills["per"]!.total).toBe(3);
+    expect(featSheet.skills["ste"]!.total).toBe(baseSheet.skills["ste"]!.total);
+  });
+
+  it("gives +0 when no choice is set (never crashes)", () => {
+    // feat present in build.feats but featChoices is absent / missing entry.
+    const base = makeDoc({ classes: [{ tag: "wizard", level: 1 }] });
+    const withFeatNoChoice = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [featId("Skill Focus")],
+      // featChoices intentionally omitted
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeatNoChoice, ref);
+    // No bonus without a choice — sheet is identical to base.
+    expect(featSheet.skills["per"]!.total).toBe(baseSheet.skills["per"]!.total);
+  });
+
+  it("moving the choice to a different skill moves the bonus", () => {
+    const fId = featId("Skill Focus");
+    const choosePer = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [fId],
+      featChoices: { [fId]: "per" },
+    });
+    const chooseSte = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [fId],
+      featChoices: { [fId]: "ste" },
+    });
+    const sheetPer = compute(choosePer, ref);
+    const sheetSte = compute(chooseSte, ref);
+    // With "per": Perception boosted, Stealth unchanged.
+    expect(sheetPer.skills["per"]!.miscMod).toBeGreaterThan(0);
+    expect(sheetPer.skills["ste"]!.miscMod).toBe(0);
+    // With "ste": Stealth boosted, Perception unchanged.
+    expect(sheetSte.skills["ste"]!.miscMod).toBeGreaterThan(0);
+    expect(sheetSte.skills["per"]!.miscMod).toBe(0);
+  });
+
+  it("gives +6 when the character has 10+ ranks in the chosen skill", () => {
+    const fId = featId("Skill Focus");
+    // A level-10 wizard can have 10 ranks in Perception.
+    const base = makeDoc({
+      classes: [{ tag: "wizard", level: 10 }],
+      skillRanks: { per: 10 },
+    });
+    const withFeat = makeDoc({
+      classes: [{ tag: "wizard", level: 10 }],
+      feats: [fId],
+      featChoices: { [fId]: "per" },
+      skillRanks: { per: 10 },
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(featSheet.skills["per"]!.total - baseSheet.skills["per"]!.total).toBe(6);
+  });
+
+  it("gives only +3 at exactly 9 ranks (threshold is 10)", () => {
+    const fId = featId("Skill Focus");
+    const base = makeDoc({
+      classes: [{ tag: "wizard", level: 10 }],
+      skillRanks: { per: 9 },
+    });
+    const withFeat = makeDoc({
+      classes: [{ tag: "wizard", level: 10 }],
+      feats: [fId],
+      featChoices: { [fId]: "per" },
+      skillRanks: { per: 9 },
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(featSheet.skills["per"]!.total - baseSheet.skills["per"]!.total).toBe(3);
   });
 });

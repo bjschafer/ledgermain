@@ -47,5 +47,13 @@ export {
   type SpellKnownProgression,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
+export {
+  FEAT_EFFECTS,
+  featNameSlug,
+  type FeatChange,
+  type StaticFeatEntry,
+  type ChoiceFeatEntry,
+  type FeatEntry,
+} from "./feat-effects.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";
 export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";

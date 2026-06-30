@@ -80,6 +80,20 @@ export interface CharacterDoc {
      */
     maxHpOverride?: number;
     /**
+     * Player choices for feats that require a selection (e.g. "Skill Focus" →
+     * a skill id; "Weapon Focus" → a weapon type string). Keyed by feat id
+     * (the same id stored in `feats[]`).
+     *
+     * One choice per feat id. Taking the same feat twice with different choices
+     * (e.g. Skill Focus (Perception) and Skill Focus (Stealth)) is a known future
+     * limitation — each feat id maps to exactly one choice here. When a feat is
+     * removed from `feats[]`, its entry here should also be deleted.
+     *
+     * Optional for back-compat: existing documents without this field behave as if
+     * no choices have been made (choice-feats emit no changes until a choice is set).
+     */
+    featChoices?: Record<string, string>;
+    /**
      * Level-up ability score increases (one +1 per entry); the player chooses one
      * ability at each 4th character level. Capped at floor(level/4) when applied.
      */

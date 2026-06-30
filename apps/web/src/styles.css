@@ -642,6 +642,28 @@ button:focus-visible,
 	opacity: 0.78;
 }
 
+/* inline choice picker (Skill Focus, future weapon feats, …) */
+.feat-choice {
+	margin-top: 5px;
+}
+
+.feat-choice-label {
+	font-size: 11px;
+	color: var(--muted);
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.feat-choice-select {
+	background: var(--surface-2);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	color: var(--ink);
+	font-size: 11px;
+	padding: 2px 6px;
+}
+
 .pick-btn {
 	flex-shrink: 0;
 	border-radius: var(--radius);

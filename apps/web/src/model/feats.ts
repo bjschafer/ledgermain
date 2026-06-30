@@ -1,5 +1,6 @@
 /**
- * Pure feat-count computations. No DOM, no React — testable as plain functions.
+ * Pure feat-related computations and transitions. No DOM, no React — testable as
+ * plain functions.
  *
  * Expected feat count formula (PF1 CRB):
  *   1 at character level 1
@@ -14,6 +15,9 @@
  */
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
+import { FEAT_EFFECTS, featNameSlug, type ChoiceFeatEntry } from "@pf1/engine";
+
+import { SKILL_NAMES } from "./names.js";
 
 /** Total character level (sum of all class levels). */
 function totalLevel(doc: CharacterDoc): number {
@@ -47,4 +51,58 @@ export function expectedFeatCount(doc: CharacterDoc, refData: RefData): number {
 /** The number of feats the character has currently chosen. */
 export function chosenFeatCount(doc: CharacterDoc): number {
   return doc.build.feats.length;
+}
+
+/**
+ * Set or clear the player's choice for a choice-based feat.
+ * Pass `null` to clear the choice (e.g. resetting after a mistake).
+ * Does not validate that `featId` is present in `doc.build.feats`.
+ */
+export function setFeatChoice(
+  doc: CharacterDoc,
+  featId: string,
+  choiceId: string | null,
+): CharacterDoc {
+  const current = doc.build.featChoices ?? {};
+  let next: Record<string, string>;
+  if (choiceId === null) {
+    next = { ...current };
+    delete next[featId];
+  } else {
+    next = { ...current, [featId]: choiceId };
+  }
+  return { ...doc, build: { ...doc.build, featChoices: next } };
+}
+
+/**
+ * Returns the choice descriptor for the feat with the given name slug, or `null`
+ * if the feat has no player choice (i.e. it is static or not in FEAT_EFFECTS).
+ * The descriptor drives the UI picker rendered in FeatsSection.
+ */
+export function featChoiceDescriptor(
+  featName: string,
+): ChoiceFeatEntry["choice"] | null {
+  const entry = FEAT_EFFECTS[featNameSlug(featName)];
+  if (!entry || entry.type !== "choice") return null;
+  return entry.choice;
+}
+
+/**
+ * Returns the list of selectable options for a given choice type.
+ * For "skill": the full skill list sorted alphabetically by display name.
+ * For "weapon": empty — the weapon model is not yet implemented (deferred).
+ * `refData` is accepted for future choice types that need it (e.g. weapon list
+ * from RefData items); the "skill" case ignores it since the list is static.
+ */
+export function featChoiceOptions(
+  choiceType: string,
+  _refData: RefData,
+): { id: string; name: string }[] {
+  if (choiceType === "skill") {
+    return Object.entries(SKILL_NAMES)
+      .map(([id, name]) => ({ id, name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }
+  // "weapon" and other future types: no options until those models exist.
+  return [];
 }

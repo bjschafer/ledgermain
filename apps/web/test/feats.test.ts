@@ -3,7 +3,14 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { chosenFeatCount, expectedFeatCount } from "../src/model/feats.js";
+import {
+  chosenFeatCount,
+  expectedFeatCount,
+  featChoiceDescriptor,
+  featChoiceOptions,
+  setFeatChoice,
+} from "../src/model/feats.js";
+import { toggleFeat } from "../src/model/doc.js";
 
 const ref = loadRefData();
 
@@ -17,6 +24,7 @@ function makeDoc(over: {
   classes: { tag: string; level: number }[];
   race?: string;
   feats?: string[];
+  featChoices?: Record<string, string>;
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -32,6 +40,7 @@ function makeDoc(over: {
     abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
     build: {
       feats: over.feats ?? [],
+      featChoices: over.featChoices,
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
@@ -132,5 +141,125 @@ describe("chosenFeatCount", () => {
       feats: ["feat1", "feat2"],
     });
     expect(chosenFeatCount(doc)).toBe(2);
+  });
+});
+
+// ─── setFeatChoice ───────────────────────────────────────────────────────────
+
+describe("setFeatChoice", () => {
+  const BASE = makeDoc({ classes: [{ tag: "wizard", level: 1 }], feats: ["feat-a", "feat-b"] });
+
+  it("sets a choice for a feat", () => {
+    const next = setFeatChoice(BASE, "feat-a", "per");
+    expect(next.build.featChoices?.["feat-a"]).toBe("per");
+  });
+
+  it("does not mutate the original doc (immutable transition)", () => {
+    setFeatChoice(BASE, "feat-a", "per");
+    expect(BASE.build.featChoices).toBeUndefined();
+  });
+
+  it("overwrites an existing choice", () => {
+    const withChoice = setFeatChoice(BASE, "feat-a", "per");
+    const updated = setFeatChoice(withChoice, "feat-a", "ste");
+    expect(updated.build.featChoices?.["feat-a"]).toBe("ste");
+  });
+
+  it("preserves choices for other feats when setting one", () => {
+    const withB = setFeatChoice(BASE, "feat-b", "blf");
+    const withBoth = setFeatChoice(withB, "feat-a", "per");
+    expect(withBoth.build.featChoices?.["feat-a"]).toBe("per");
+    expect(withBoth.build.featChoices?.["feat-b"]).toBe("blf");
+  });
+
+  it("clears a choice when null is passed", () => {
+    const withChoice = setFeatChoice(BASE, "feat-a", "per");
+    const cleared = setFeatChoice(withChoice, "feat-a", null);
+    expect(cleared.build.featChoices?.["feat-a"]).toBeUndefined();
+  });
+
+  it("preserves choices for other feats when clearing one", () => {
+    const withBoth = setFeatChoice(setFeatChoice(BASE, "feat-a", "per"), "feat-b", "blf");
+    const cleared = setFeatChoice(withBoth, "feat-a", null);
+    expect(cleared.build.featChoices?.["feat-b"]).toBe("blf");
+    expect(cleared.build.featChoices?.["feat-a"]).toBeUndefined();
+  });
+});
+
+// ─── toggleFeat clears choices ───────────────────────────────────────────────
+
+describe("toggleFeat clears feat choices on removal", () => {
+  it("removes the feat's choice entry when the feat is removed", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: ["feat-a"],
+      featChoices: { "feat-a": "per" },
+    });
+    const next = toggleFeat(doc, "feat-a");
+    expect(next.build.feats).not.toContain("feat-a");
+    expect(next.build.featChoices?.["feat-a"]).toBeUndefined();
+  });
+
+  it("preserves other feats' choices when removing one", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: ["feat-a", "feat-b"],
+      featChoices: { "feat-a": "per", "feat-b": "blf" },
+    });
+    const next = toggleFeat(doc, "feat-a");
+    expect(next.build.featChoices?.["feat-b"]).toBe("blf");
+    expect(next.build.featChoices?.["feat-a"]).toBeUndefined();
+  });
+
+  it("adding a feat does not affect featChoices", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [],
+      featChoices: { "feat-b": "blf" },
+    });
+    const next = toggleFeat(doc, "feat-a");
+    expect(next.build.feats).toContain("feat-a");
+    expect(next.build.featChoices?.["feat-b"]).toBe("blf");
+  });
+});
+
+// ─── featChoiceDescriptor ────────────────────────────────────────────────────
+
+describe("featChoiceDescriptor", () => {
+  it('returns skill choice descriptor for "Skill Focus"', () => {
+    const desc = featChoiceDescriptor("Skill Focus");
+    expect(desc).not.toBeNull();
+    expect(desc?.type).toBe("skill");
+    expect(desc?.label).toBeDefined();
+  });
+
+  it("returns null for a static feat (Iron Will)", () => {
+    expect(featChoiceDescriptor("Iron Will")).toBeNull();
+  });
+
+  it("returns null for an unknown feat slug", () => {
+    expect(featChoiceDescriptor("Nonexistent Feat XYZ")).toBeNull();
+  });
+});
+
+// ─── featChoiceOptions ───────────────────────────────────────────────────────
+
+describe("featChoiceOptions", () => {
+  it('returns the full skill list for type "skill"', () => {
+    const opts = featChoiceOptions("skill", ref);
+    expect(opts.length).toBeGreaterThan(0);
+    // Each option has an id and a name.
+    expect(opts[0]).toHaveProperty("id");
+    expect(opts[0]).toHaveProperty("name");
+  });
+
+  it("includes Perception in the skill options", () => {
+    const opts = featChoiceOptions("skill", ref);
+    expect(opts.some((o) => o.id === "per" && o.name === "Perception")).toBe(true);
+  });
+
+  it("returns empty for type weapon (deferred)", () => {
+    const opts = featChoiceOptions("weapon", ref);
+    expect(opts).toHaveLength(0);
   });
 });

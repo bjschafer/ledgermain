@@ -129,18 +129,31 @@ export function collectModifiers(
     }
   }
 
-  // --- feats (always-on, no-parameter effects only) -----------------------
+  // --- feats -----------------------------------------------------------------
   // doc.build.feats holds feat ids (keys into RefData.feats). We resolve each id
-  // to a name slug and look it up in FEAT_EFFECTS. Feats that require a player
-  // choice (Weapon Focus, Skill Focus, etc.) have no entry and are silently skipped.
+  // to a name slug and look it up in FEAT_EFFECTS.
+  //   Static entries: emit their changes unconditionally.
+  //   Choice entries: read doc.build.featChoices[featId]; if a choice is set,
+  //     call entry.build(choiceId) and emit the resulting changes. If no choice
+  //     is set yet, emit nothing — never crash on an incomplete doc.
   for (const featId of doc.build.feats ?? []) {
     const feat = refData.feats[featId];
     if (!feat) continue;
     const slug = featNameSlug(feat.name);
-    const effects = FEAT_EFFECTS[slug];
-    if (!effects) continue;
-    for (const ch of effects) {
-      evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
+    const entry = FEAT_EFFECTS[slug];
+    if (!entry) continue;
+
+    if (entry.type === "static") {
+      for (const ch of entry.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
+      }
+    } else {
+      // Choice-based feat: only emit changes when a choice has been stored.
+      const choiceId = doc.build.featChoices?.[featId];
+      if (!choiceId) continue;
+      for (const ch of entry.build(choiceId)) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
+      }
     }
   }
 
