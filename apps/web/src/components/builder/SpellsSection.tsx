@@ -50,6 +50,28 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
     [grantsCantrips, casterTag, refData],
   );
 
+  // Chosen cleric domains (each grants a bonus prepare-slot per accessed spell
+  // level; the prepare-from-domain UI lives in the tracker). Listed here
+  // read-only so the player knows what's available to prepare in a domain slot.
+  const clericDomains = doc.build.clericDomains ?? [];
+  const domainEntries = useMemo<SpellEntry[]>(() => {
+    if (!clericDomains.length) return [];
+    const out: SpellEntry[] = [];
+    for (const tag of clericDomains) {
+      const list = refData.domainSpellLists[tag];
+      if (!list) continue;
+      for (const [lvl, ids] of Object.entries(list)) {
+        const n = Number(lvl);
+        if (grantsCantrips && n === 0) continue;
+        for (const id of ids) {
+          const sp = refData.spells[id];
+          if (sp) out.push({ id, name: sp.name, level: n });
+        }
+      }
+    }
+    return out.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+  }, [clericDomains, refData, grantsCantrips]);
+
   // The searchable spell list: the whole class list EXCEPT cantrips when this
   // caster grants all of them.
   const entries = useMemo<SpellEntry[]>(() => {
@@ -159,6 +181,11 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
       <div className="scroll">
         {/* Granted cantrips: read-only, always present, collapsed by default. */}
         {cantrips.length > 0 && <GrantedCantripsBlock cantrips={cantrips} />}
+
+        {/* Domain spells: read-only reference list for the chosen domains. */}
+        {domainEntries.length > 0 && (
+          <DomainSpellsBlock domains={clericDomains} entries={domainEntries} />
+        )}
 
         {shown.length === 0 ? (
           <div className="empty">{emptyState}</div>
@@ -358,6 +385,64 @@ function GrantedCantripsBlock({ cantrips }: { cantrips: SpellEntry[] }) {
             <div className="pmain">
               <div className="pname">{sp.name}</div>
             </div>
+          </div>
+        ))}
+    </div>
+  );
+}
+
+/**
+ * Read-only domain-spell listing for the cleric's chosen domains. Groups spells
+ * by spell level so the player can see what's prepared into each level's bonus
+ * domain slot. Click-through preparation lives in the tracker's Prepared
+ * Spells panel — this block only shows what's available to prepare.
+ */
+function DomainSpellsBlock({
+  domains,
+  entries,
+}: {
+  domains: string[];
+  entries: SpellEntry[];
+}) {
+  const [collapsed, toggle] = useCollapsed(
+    `domain-spells:${domains.sort().join(",")}`,
+    true,
+  );
+  const byLevel = new Map<number, SpellEntry[]>();
+  for (const e of entries) {
+    (byLevel.get(e.level) ?? byLevel.set(e.level, []).get(e.level)!).push(e);
+  }
+  const levels = [...byLevel.keys()].sort((a, b) => a - b);
+
+  return (
+    <div className="spell-level-group is-granted is-domain">
+      <div
+        className="spell-level-head is-collapsible is-granted"
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={!collapsed}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggle();
+        }}
+      >
+        <span className="spell-level-label">Domain Spells ({domains.join(", ")})</span>
+        <span className="spell-level-count">{entries.length}</span>
+        <span className="panel-caret" aria-hidden="true">
+          {collapsed ? "▸" : "▾"}
+        </span>
+      </div>
+      {!collapsed &&
+        levels.map((lvl) => (
+          <div key={lvl} className="spell-domain-level">
+            <div className="spell-domain-level-head">Level {lvl}</div>
+            {byLevel.get(lvl)!.map((sp) => (
+              <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
+                <div className="pmain">
+                  <div className="pname">{sp.name}</div>
+                </div>
+              </div>
+            ))}
           </div>
         ))}
     </div>

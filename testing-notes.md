@@ -1,0 +1,3 @@
+- you can remove your class with no confirmation
+    - likewise there's no "locking" of race or other build-time stuff
+- archetypes

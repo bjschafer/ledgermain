@@ -2,8 +2,11 @@
  * Pure spellcasting model for the builder UI. Keeps caster-class knowledge in
  * one place so the registry can be extended when more spell lists are vendored.
  *
- * Wizard, sorcerer, and cleric are modelled today; the UI falls back gracefully
- * for any caster tag not in CASTER_MODELS.
+ * Wizard, sorcerer, and cleric are modelled today. Cleric domain spell lists
+ * (one bonus prepare-slot per accessible spell level per chosen domain) live in
+ * `refData.domainSpellLists`; the tracker's Prepared Spells panel renders
+ * those slots. The UI falls back gracefully for any caster tag not in
+ * CASTER_MODELS.
  */
 
 import { baseSpellsKnown, baseSpellsPerDay, type SpellKnownProgression, type SpellProgression } from "@pf1/engine";
@@ -94,9 +97,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "cleric",
     knownLabel: "Cleric List",
     learnGuidance:
-      "Clerics prepare a subset of the entire clerical spell list each day \u2014 no spellbook needed. Every spell on the list is available to prepare (plus domain spells from your deity).",
+      "Clerics prepare a subset of the entire cleric spell list each day \u2014 no spellbook needed. Each chosen domain also grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list (see Domain picker above).",
     blurb:
-      "Prepared divine caster: your \u201cknown\u201d list is the whole cleric spell list. Choose which spells to prepare each day. Domain spells are not modelled here yet.",
+      "Prepared divine caster: your \u201cknown\u201d list is the whole cleric spell list. Prepare and cast for the day, plus one domain spell per accessible level per chosen domain.",
     grantsAllCantrips: true,
   },
 };

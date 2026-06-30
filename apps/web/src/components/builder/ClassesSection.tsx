@@ -7,6 +7,7 @@ import {
 	setFavoredClass,
 	setFavoredClassBonus,
 } from "../../model/doc.js";
+import { DomainPicker } from "./DomainPicker.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -163,6 +164,11 @@ export function ClassesSection({ doc, refData, update }: BuilderProps) {
 						</div>
 					)}
 				</div>
+			)}
+
+			{/* Domain picker — cleric only (free-choice, soft warning only). */}
+			{doc.identity.classes.some((c) => c.tag === "cleric") && (
+				<DomainPicker doc={doc} refData={refData} update={update} />
 			)}
 		</Panel>
 	);
