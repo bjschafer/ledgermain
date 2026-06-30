@@ -23,6 +23,12 @@ export interface CharacterDoc {
     classes: { tag: string; level: number }[];
     alignment?: string;
     deity?: string;
+    gender?: string;
+    age?: string;
+    height?: string;
+    weight?: string;
+    /** Free-text physical description / appearance notes. */
+    appearance?: string;
     /**
      * Favored class tag (for the favored-class bonus). The per-level HP/skill
      * choices are recorded in `build.favoredClassBonus`; until the builder

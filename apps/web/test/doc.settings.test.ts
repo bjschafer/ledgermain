@@ -7,18 +7,70 @@ import { describe, expect, it } from "bun:test";
 
 import { createEmptyDoc } from "../src/model/doc.js";
 import {
+  setAge,
+  setAppearance,
+  setDeity,
   setFavoredClassBonus,
   setFcbHouserule,
+  setGender,
+  setHeight,
   setHeroPointsCap,
   setHpMode,
   setHpRoll,
   setStatOverride,
+  setWeight,
   STAT_OVERRIDE_KEYS,
 } from "../src/model/doc.js";
 
 function doc() {
   return createEmptyDoc("t");
 }
+
+// ---------------------------------------------------------------------------
+// Identity flavour setters
+// ---------------------------------------------------------------------------
+describe("identity flavour setters", () => {
+  it("setDeity stores a deity name", () => {
+    expect(setDeity(doc(), "Iomedae").identity.deity).toBe("Iomedae");
+  });
+
+  it("setGender stores gender text", () => {
+    expect(setGender(doc(), "Female").identity.gender).toBe("Female");
+  });
+
+  it("setAge stores age as a string", () => {
+    expect(setAge(doc(), "32").identity.age).toBe("32");
+  });
+
+  it("setHeight stores height as a string", () => {
+    expect(setHeight(doc(), "5'10\"").identity.height).toBe("5'10\"");
+  });
+
+  it("setWeight stores weight as a string", () => {
+    expect(setWeight(doc(), "180 lb").identity.weight).toBe("180 lb");
+  });
+
+  it("setAppearance stores appearance text", () => {
+    const text = "Tall with auburn hair and grey eyes.";
+    expect(setAppearance(doc(), text).identity.appearance).toBe(text);
+  });
+
+  it("none of the setters mutate the original doc", () => {
+    const d = doc();
+    setDeity(d, "Cayden");
+    setGender(d, "Male");
+    setAge(d, "25");
+    setHeight(d, "6'0\"");
+    setWeight(d, "190 lb");
+    setAppearance(d, "Some text");
+    expect(d.identity.deity).toBeUndefined();
+    expect(d.identity.gender).toBeUndefined();
+    expect(d.identity.age).toBeUndefined();
+    expect(d.identity.height).toBeUndefined();
+    expect(d.identity.weight).toBeUndefined();
+    expect(d.identity.appearance).toBeUndefined();
+  });
+});
 
 // ---------------------------------------------------------------------------
 // setHpMode

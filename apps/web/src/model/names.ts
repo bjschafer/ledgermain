@@ -73,6 +73,19 @@ export function skillName(id: SkillId): string {
   return SKILL_NAMES[id] ?? id;
 }
 
+/** Alignment code -> full display label. */
+export const ALIGNMENT_LABELS: Record<string, string> = {
+  LG: "Lawful Good",
+  NG: "Neutral Good",
+  CG: "Chaotic Good",
+  LN: "Lawful Neutral",
+  N: "Neutral",
+  CN: "Chaotic Neutral",
+  LE: "Lawful Evil",
+  NE: "Neutral Evil",
+  CE: "Chaotic Evil",
+};
+
 /** Format a signed modifier, e.g. 3 -> "+3", -1 -> "-1", 0 -> "+0". */
 export function signed(n: number): string {
   return n >= 0 ? `+${n}` : `${n}`;

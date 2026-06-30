@@ -1,7 +1,13 @@
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { ABILITY_IDS } from "../model/doc.js";
-import { ABILITY_ABBR, SAVE_NAMES, signed, skillName } from "../model/names.js";
+import {
+	ABILITY_ABBR,
+	ALIGNMENT_LABELS,
+	SAVE_NAMES,
+	signed,
+	skillName,
+} from "../model/names.js";
 import { StatSeal } from "./StatSeal.js";
 
 /**
@@ -37,6 +43,22 @@ export function Sheet({
 					"No race or class chosen"}
 				{sheet.level > 0 ? ` · CL ${sheet.level}` : ""}
 			</div>
+			{(() => {
+				const id = doc.identity;
+				const alignLabel = id.alignment
+					? (ALIGNMENT_LABELS[id.alignment] ?? id.alignment)
+					: null;
+				const details = [
+					alignLabel,
+					id.deity ? `Deity: ${id.deity}` : null,
+					id.gender,
+					id.age ? `Age ${id.age}` : null,
+					[id.height, id.weight].filter(Boolean).join(", ") || null,
+				].filter(Boolean);
+				return details.length > 0 ? (
+					<div className="char-identity">{details.join(" · ")}</div>
+				) : null;
+			})()}
 
 			<div className="ability-strip">
 				{ABILITY_IDS.map((id) => {

@@ -53,6 +53,33 @@ export function setAlignment(
 	return { ...doc, identity: { ...doc.identity, alignment } };
 }
 
+export function setDeity(doc: CharacterDoc, deity: string): CharacterDoc {
+	return { ...doc, identity: { ...doc.identity, deity } };
+}
+
+export function setGender(doc: CharacterDoc, gender: string): CharacterDoc {
+	return { ...doc, identity: { ...doc.identity, gender } };
+}
+
+export function setAge(doc: CharacterDoc, age: string): CharacterDoc {
+	return { ...doc, identity: { ...doc.identity, age } };
+}
+
+export function setHeight(doc: CharacterDoc, height: string): CharacterDoc {
+	return { ...doc, identity: { ...doc.identity, height } };
+}
+
+export function setWeight(doc: CharacterDoc, weight: string): CharacterDoc {
+	return { ...doc, identity: { ...doc.identity, weight } };
+}
+
+export function setAppearance(
+	doc: CharacterDoc,
+	appearance: string,
+): CharacterDoc {
+	return { ...doc, identity: { ...doc.identity, appearance } };
+}
+
 export function setAbility(
 	doc: CharacterDoc,
 	ability: AbilityId,
