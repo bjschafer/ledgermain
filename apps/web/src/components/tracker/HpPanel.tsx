@@ -24,7 +24,7 @@ export function HpPanel({ doc, sheet, update }: BuilderProps) {
 	const amt = Number.isNaN(amount) ? 0 : amount;
 
 	return (
-		<Panel title="Hit Points" step="hp">
+		<Panel title="Hit Points" step="hp" storageKey="panel:PlayHP">
 			<div className="hp-display">
 				<div className="hp-big num" data-low={isLow}>
 					{current}

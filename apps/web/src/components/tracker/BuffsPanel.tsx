@@ -83,6 +83,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
 		<Panel
 			title="Buffs"
 			step="bf"
+			storageKey="panel:Buffs"
 			right={
 				<div className="round-ctl">
 					<button

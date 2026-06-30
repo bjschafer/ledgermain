@@ -61,7 +61,7 @@ test("a timed buff changes a stat then expires when rounds advance", async ({ pa
   // Author a custom +1 attack buff lasting 1 round.
   await page.getByText("Custom buff (expert)").click();
   const form = page.locator(".cb-grid");
-  await form.getByLabel("Rounds").fill("1");
+  await form.getByLabel("Duration value").fill("1");
   await form.getByRole("button", { name: "Add" }).click();
 
   await expect(melee).toHaveText("+1");

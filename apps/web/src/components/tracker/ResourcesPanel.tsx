@@ -46,6 +46,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
 		<Panel
 			title="Resources"
 			step="rs"
+			storageKey="panel:Resources"
 			right={
 				<button
 					type="button"

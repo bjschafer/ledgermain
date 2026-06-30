@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 
 import { useCollapsed } from "../../state/useCollapsed.js";
 
@@ -32,11 +32,29 @@ export function Panel({
   );
   const isCollapsible = storageKey != null;
 
+  const onHeaderClick = isCollapsible
+    ? (e: MouseEvent<HTMLElement>) => {
+        // Don't collapse when the user interacts with controls inside the header
+        // (e.g. the "Advance round" or "Rest" buttons in tracker panels).
+        // e.target can be a text node, so resolve to the nearest Element first.
+        const node =
+          e.target instanceof Element
+            ? e.target
+            : (e.target as Node).parentElement;
+        const interactive = node?.closest(
+          "button, input, select, textarea, [role='button'], [contenteditable='true']",
+        );
+        // The header itself has role="button", so exclude it from the guard.
+        if (!interactive || interactive === e.currentTarget) toggle();
+      }
+    : undefined;
+
   const header = (
     <header
-      onClick={isCollapsible ? toggle : undefined}
+      onClick={onHeaderClick}
       role={isCollapsible ? "button" : undefined}
       tabIndex={isCollapsible ? 0 : undefined}
+      aria-label={isCollapsible ? title : undefined}
       aria-expanded={isCollapsible ? !collapsed : undefined}
       onKeyDown={
         isCollapsible

@@ -12,6 +12,7 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
     <Panel
       title="Conditions"
       step="cd"
+      storageKey="panel:Conditions"
       right={<span className="hint">{active.size} active</span>}
     >
       <div className="chips">

@@ -16,7 +16,7 @@ export function HeroPointsPanel({ doc, update }: BuilderProps) {
   const pips = Array.from({ length: cap }, (_, i) => i < current);
 
   return (
-    <Panel title="Hero Points" step="✦">
+    <Panel title="Hero Points" step="✦" storageKey="panel:HeroPoints">
       <div className="hero-display">
         <div className="hero-pips" aria-label={`${current} of ${cap} hero points`}>
           {pips.map((filled, i) => (
