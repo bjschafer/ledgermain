@@ -1,9 +1,14 @@
 import { describe, expect, it } from "bun:test";
 
+import { loadRefData } from "@pf1/data-pipeline";
+
 import {
   bonusSpellsForLevel,
   casterModelFor,
+  grantedCantrips,
 } from "../src/model/spellcasting.js";
+
+const ref = loadRefData();
 
 describe("bonusSpellsForLevel()", () => {
   it("returns 0 for cantrips (spell level 0) regardless of modifier", () => {
@@ -44,9 +49,31 @@ describe("casterModelFor()", () => {
     expect(m!.preparation).toBe("prepared");
     expect(m!.ability).toBe("int");
     expect(m!.knownLabel).toBe("Spellbook");
+    expect(m!.grantsAllCantrips).toBe(true);
   });
 
   it("returns undefined for an unregistered tag (e.g. bard)", () => {
     expect(casterModelFor("bard")).toBeUndefined();
+  });
+});
+
+describe("grantedCantrips()", () => {
+  it("returns all wizard cantrips from the class spell list, sorted by name", () => {
+    const list = grantedCantrips(ref, "wizard");
+    expect(list.length).toBeGreaterThan(0);
+    // Should be sorted
+    for (let i = 1; i < list.length; i++) {
+      expect(list[i - 1]!.name.localeCompare(list[i]!.name)).toBeLessThanOrEqual(0);
+    }
+  });
+
+  it("cantrip ids are the level-0 entries from spellLists", () => {
+    const list = grantedCantrips(ref, "wizard");
+    const expected = ref.spellLists["wizard"]![0]!;
+    expect(list.map((c) => c.id).sort()).toEqual([...expected].sort());
+  });
+
+  it("returns empty array for a tag with no spell list", () => {
+    expect(grantedCantrips(ref, "fighter")).toEqual([]);
   });
 });

@@ -14,6 +14,8 @@
 
 import type { CharacterDoc, PreparedSpell, RefData } from "@pf1/schema";
 
+import { casterModelFor } from "./spellcasting.js";
+
 function withPrepared(doc: CharacterDoc, prepared: PreparedSpell[]): CharacterDoc {
   return { ...doc, live: { ...doc.live, spells: { prepared } } };
 }
@@ -78,7 +80,7 @@ export function clearPrepared(doc: CharacterDoc): CharacterDoc {
 }
 
 /**
- * spellId → spell level for `casterTag`, inverted from the class spell list.
+ * spellId -> spell level for `casterTag`, inverted from the class spell list.
  * Used to bucket known/prepared spells by level for display and slot accounting.
  */
 export function spellLevelMap(refData: RefData, casterTag: string): Map<string, number> {
@@ -89,4 +91,51 @@ export function spellLevelMap(refData: RefData, casterTag: string): Map<string, 
     for (const id of ids) map.set(id, Number(lvl));
   }
   return map;
+}
+
+/**
+ * Strip granted cantrips from `build.spells.known` and `live.spells.prepared`
+ * for casters whose model grants all cantrips for free. Cantrips are derived
+ * from the class spell list instead of stored, so any previously-stored
+ * cantrip ids are orphans that inflate the spellbook count and duplicate the
+ * derived list. Idempotent; returns the same doc reference when nothing
+ * changes. Call after {@link migrateDoc} at load time (this needs RefData,
+ * which the pure doc migration does not).
+ */
+export function reconcileGrantedCantrips(
+  doc: CharacterDoc,
+  refData: RefData,
+): CharacterDoc {
+  const casterTag = doc.identity.classes
+    .map((c) => c.tag)
+    .find((t) => refData.spellLists[t]);
+  if (!casterTag) return doc;
+  const model = casterModelFor(casterTag);
+  if (!model?.grantsAllCantrips) return doc;
+  const cantrips = refData.spellLists[casterTag]?.[0];
+  if (!cantrips || cantrips.length === 0) return doc;
+  const cantripSet = new Set(cantrips);
+
+  const known = doc.build.spells.known;
+  const nextKnown = known.filter((id) => !cantripSet.has(id));
+  const prepared = doc.live.spells?.prepared ?? [];
+  const nextPrepared = prepared.filter((p) => !cantripSet.has(p.spellId));
+
+  if (
+    nextKnown.length === known.length &&
+    nextPrepared.length === prepared.length
+  ) {
+    return doc;
+  }
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      spells: { ...doc.build.spells, known: nextKnown },
+    },
+    live: {
+      ...doc.live,
+      spells: { prepared: nextPrepared },
+    },
+  };
 }

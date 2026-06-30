@@ -10,6 +10,7 @@ import { compute } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { db, loadOrCreateActive } from "../db/characters.js";
+import { reconcileGrantedCantrips } from "../model/preparedSpells.js";
 import { loadRefData } from "../refdata/loader.js";
 
 export type LoadStatus = "loading" | "ready" | "error";
@@ -36,7 +37,10 @@ export function useCharacter(): CharacterStore {
       .then(([ref, loaded]) => {
         if (!alive) return;
         setRefData(ref);
-        setDoc(loaded);
+        // `loaded` is already migrateDoc'd by the loader; reconcile strips any
+        // granted cantrips a pre-change doc may have stored in `known`/`prepared`
+        // (cantrips are now derived from the class list, not stored).
+        setDoc(reconcileGrantedCantrips(loaded, ref));
         setStatus("ready");
       })
       .catch((e: unknown) => {

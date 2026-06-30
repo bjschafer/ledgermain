@@ -1,18 +1,22 @@
 import { describe, expect, it } from "bun:test";
 
-import type { CharacterDoc } from "@pf1/schema";
+import { loadRefData } from "@pf1/data-pipeline";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
-import { createEmptyDoc, migrateDoc } from "../src/model/doc.js";
+import { addClass, createEmptyDoc, migrateDoc } from "../src/model/doc.js";
 import {
   clearPrepared,
   prepareSpell,
   preparedSpells,
+  reconcileGrantedCantrips,
   removePreparedAt,
   restPreparedSpells,
   setExpendedAt,
   unprepareSpell,
 } from "../src/model/preparedSpells.js";
 import { casterModelFor, spellSlotsByLevel } from "../src/model/spellcasting.js";
+
+const ref = loadRefData();
 
 function fresh(): CharacterDoc {
   return createEmptyDoc("t");
@@ -116,5 +120,66 @@ describe("spellSlotsByLevel() — wizard", () => {
   it("omits inaccessible spell levels", () => {
     const slots = spellSlotsByLevel(wizard, 1, 5);
     expect(slots.map((s) => s.level)).toEqual([0, 1]);
+  });
+});
+
+describe("reconcileGrantedCantrips()", () => {
+  // Two real wizard cantrip ids and one real level-1 spell from the vendored data.
+  const cantripIds = ref.spellLists["wizard"]![0]!;
+  const fireballId = ref.spellLists["wizard"]![3]![0]!;
+  const c1 = cantripIds[0]!;
+  const c2 = cantripIds[1]!;
+
+  function wizardDoc(): CharacterDoc {
+    return addClass(fresh(), "wizard");
+  }
+
+  it("strips cantrips from build.spells.known but keeps level 1+ spells", () => {
+    let doc = wizardDoc();
+    doc = {
+      ...doc,
+      build: {
+        ...doc.build,
+        spells: { known: [c1, fireballId, c2] },
+      },
+    };
+    const result = reconcileGrantedCantrips(doc, ref);
+    expect(result.build.spells.known).toEqual([fireballId]);
+  });
+
+  it("strips cantrips from live.spells.prepared but keeps level 1+ prepared", () => {
+    let doc = wizardDoc();
+    doc = {
+      ...doc,
+      build: { ...doc.build, spells: { known: [fireballId] } },
+      live: {
+        ...doc.live,
+        spells: {
+          prepared: [
+            { spellId: c1, expended: false },
+            { spellId: fireballId, expended: true },
+            { spellId: c2, expended: false },
+          ],
+        },
+      },
+    };
+    const result = reconcileGrantedCantrips(doc, ref);
+    expect(result.live.spells!.prepared).toEqual([
+      { spellId: fireballId, expended: true },
+    ]);
+  });
+
+  it("is a no-op when no cantrips are stored", () => {
+    let doc = wizardDoc();
+    doc = {
+      ...doc,
+      build: { ...doc.build, spells: { known: [fireballId] } },
+    };
+    expect(reconcileGrantedCantrips(doc, ref)).toBe(doc);
+  });
+
+  it("is a no-op for a non-caster (no spell list)", () => {
+    const doc = addClass(fresh(), "fighter");
+    expect(reconcileGrantedCantrips(doc, ref)).toBe(doc);
   });
 });

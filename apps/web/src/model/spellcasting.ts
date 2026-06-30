@@ -7,7 +7,7 @@
  */
 
 import { baseSpellsPerDay, type SpellProgression } from "@pf1/engine";
-import type { AbilityId } from "@pf1/schema";
+import type { AbilityId, RefData } from "@pf1/schema";
 
 // ---------------------------------------------------------------------------
 // Bonus spells per day
@@ -49,6 +49,14 @@ export interface CasterModel {
   learnGuidance: string;
   /** One-line explanation of prepared-vs-spontaneous for the UI hint. */
   blurb: string;
+  /**
+   * True if this caster knows every cantrip on its class list for free (no
+   * selection needed). Prepared casters (wizard) and some spontaneous ones
+   * (sorcerer) grant all; others (bard) learn a limited set. When true the
+   * builder excludes cantrips from the spellbook and the tracker sources them
+   * from the class list as read-only at-will spells.
+   */
+  grantsAllCantrips: boolean;
 }
 
 export const CASTER_MODELS: Record<string, CasterModel> = {
@@ -60,13 +68,39 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Wizards add 2 spells to their spellbook at each new level (more can be scribed from scrolls).",
     blurb:
-      "Prepared caster: spells live in your spellbook, then you prepare a subset each day. Your spellbook is your “known” list here.",
+      "Prepared caster: spells live in your spellbook, then you prepare a subset each day. Your spellbook is your \u201cknown\u201d list here.",
+    grantsAllCantrips: true,
   },
 };
 
 /** Returns the CasterModel for `tag`, or `undefined` if it is not in the registry. */
 export function casterModelFor(tag: string): CasterModel | undefined {
   return CASTER_MODELS[tag];
+}
+
+// ---------------------------------------------------------------------------
+// Granted cantrips
+// ---------------------------------------------------------------------------
+
+/**
+ * The cantrips (level-0 spells) a caster with `grantsAllCantrips` knows for
+ * free, derived from the class spell list. Sorted by name. Empty when the
+ * class has no vendored spell list. Callers should only invoke this for models
+ * whose `grantsAllCantrips` is true; the grant semantics are the caller's
+ * responsibility (this just reads the level-0 slice of the class list).
+ */
+export function grantedCantrips(
+  refData: RefData,
+  casterTag: string,
+): { id: string; name: string }[] {
+  const ids = refData.spellLists[casterTag]?.[0];
+  if (!ids) return [];
+  const out: { id: string; name: string }[] = [];
+  for (const id of ids) {
+    const sp = refData.spells[id];
+    out.push({ id, name: sp?.name ?? id });
+  }
+  return out.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 // ---------------------------------------------------------------------------

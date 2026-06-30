@@ -9,7 +9,7 @@ import {
   spellLevelMap,
   unprepareSpell,
 } from "../../model/preparedSpells.js";
-import { casterModelFor, spellSlotsByLevel } from "../../model/spellcasting.js";
+import { casterModelFor, grantedCantrips, spellSlotsByLevel } from "../../model/spellcasting.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -60,6 +60,13 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
   const slots = spellSlotsByLevel(model, classLevel, abilityMod);
+
+  // Granted cantrips: derived from the class list (never stored in `known`).
+  const cantripList = useMemo(
+    () =>
+      model.grantsAllCantrips ? grantedCantrips(refData, casterTag) : [],
+    [model, refData, casterTag],
+  );
 
   // Known spells (the spellbook) bucketed by this class's spell level.
   const knownByLevel = new Map<number, { id: string; name: string }[]>();
@@ -128,12 +135,18 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
 
       <div className="prep-levels">
         {slots.map(({ level, total, bonus }) => {
-          const rows = preparedByLevel.get(level) ?? [];
           const isCantrip = level === 0;
+          const rows = preparedByLevel.get(level) ?? [];
           const ready = isCantrip ? rows.length : rows.filter((r) => !r.expended).length;
           const over = rows.length > total;
           const full = rows.length >= total;
-          const knownHere = knownByLevel.get(level) ?? [];
+          // Cantrips: source the prepare-from picker from the granted list
+          // (the whole class list at level 0) rather than the spellbook, since
+          // granted cantrips aren't stored in `build.spells.known`.
+          const knownHere =
+            isCantrip && model.grantsAllCantrips
+              ? cantripList
+              : knownByLevel.get(level) ?? [];
 
           return (
             <section key={level} className="prep-level">
@@ -213,7 +226,9 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
               {knownHere.length > 0 ? (
                 <details className="prep-add">
                   <summary>
-                    Prepare from {model.knownLabel.toLowerCase()}…
+                    {isCantrip && model.grantsAllCantrips
+                      ? "Prepare from granted cantrips…"
+                      : `Prepare from ${model.knownLabel.toLowerCase()}…`}
                     {full && <span className="prep-full"> all slots filled</span>}
                   </summary>
                   <div className="prep-add-list">
