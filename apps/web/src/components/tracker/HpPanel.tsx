@@ -18,13 +18,15 @@ export function HpPanel({ doc, sheet, update }: BuilderProps) {
 	const max = sheet.hp.max;
 	const { current, temp, nonlethal } = doc.live.hp;
 	const effective = current - nonlethal;
+	const isLow = effective <= Math.floor(max / 4);
+	const fillPct = max > 0 ? Math.max(0, Math.min(1, effective / max)) : 1;
 
 	const amt = Number.isNaN(amount) ? 0 : amount;
 
 	return (
 		<Panel title="Hit Points" step="hp">
 			<div className="hp-display">
-				<div className="hp-big num" data-low={effective <= Math.floor(max / 4)}>
+				<div className="hp-big num" data-low={isLow}>
 					{current}
 					<span className="hp-slash">/</span>
 					{max}
@@ -37,6 +39,13 @@ export function HpPanel({ doc, sheet, update }: BuilderProps) {
 						<span className="hp-chip nl num">{nonlethal} nonlethal</span>
 					) : null}
 				</div>
+			</div>
+			<div className="hp-fill-track">
+				<div
+					className="hp-fill-bar"
+					data-low={isLow}
+					style={{ width: `${fillPct * 100}%` }}
+				/>
 			</div>
 
 			<div className="hp-controls">
