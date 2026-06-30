@@ -2,23 +2,9 @@
 
 A web-based **in-play character sheet, tracker, and builder** for Pathfinder 1e. The center of gravity is *play at the table*: a rules-aware tracker that recomputes correct numbers as session state (HP, conditions, buffs, resources) changes. Built to run on Cloudflare.
 
-See [`DESIGN.md`](./DESIGN.md) for architecture and [`IMPLEMENTATION_PLAN.md`](./IMPLEMENTATION_PLAN.md) for the staged plan + per-stage caveats.
-
-## Status — 4 of 5 stages complete
-
-| Stage | What | State |
-|---|---|---|
-| 1 | Data pipeline + schema (Foundry YAML → normalized JSON, pinned & vendored) | ✅ Complete |
-| 2 | Rules engine (formula DSL, typed bonus-stacking, `compute()`) | ✅ Complete |
-| 3 | Builder MVP (React/Vite, live sheet, IndexedDB) | ✅ Complete |
-| 4 | **In-play tracker** (HP, conditions, buffs w/ round durations, resources) | ✅ Complete |
-| 5 | Persistence + Level-1 cross-device sync (Cloudflare Worker, identity, optimistic concurrency) | ⏳ Not started |
-
-**Verified:** `typecheck` clean across all packages · 90 unit tests · 3 Playwright e2e (incl. condition-toggle-revert and buff-apply-then-expire).
-
 ## Layout (bun workspaces)
 
-```
+```text
 packages/schema         shared types: CharacterDoc, DerivedSheet, RefData
 packages/data-pipeline  pinned Foundry fetch → normalized JSON (vendored in data/)
 packages/engine         pure rules engine (clean-room; the crown jewel)
@@ -57,5 +43,3 @@ Currently **local only**: the working character autosaves to **IndexedDB** (data
 - It **survives dev-server and browser restarts**.
 - It is **per-browser and tied to the `http://localhost:5173` origin** — a different browser, an incognito window, a different port, or clearing site data will not show it.
 - There is **one active character** (no character-picker UI yet).
-
-Stage 5 adds account-scoped cloud persistence + cross-device sync (the doc already carries `ownerId`/`version`/`updatedAt` for it).
