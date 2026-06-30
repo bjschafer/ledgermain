@@ -4,8 +4,10 @@
  */
 import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 import {
+  ARCHETYPE_CLONE_DIR,
   CLONE_DIR,
   FOUNDRY_REPO,
   FOUNDRY_SHA,
@@ -13,6 +15,8 @@ import {
   PACKS_DIR,
   SYSTEM_VERSION,
 } from "../config.js";
+
+const ARCHETYPE_SOURCE_DIR = join(ARCHETYPE_CLONE_DIR, "source files", "Archetypes");
 
 /** Committer date of the pinned commit (ISO 8601) — deterministic per SHA. */
 function sourceCommitDate(): string {
@@ -38,6 +42,7 @@ function main(): void {
   console.log(`[generate] normalizing from ${PACKS_DIR}`);
   const { refData } = normalize({
     packsDir: PACKS_DIR,
+    archetypeSourceDir: ARCHETYPE_SOURCE_DIR,
     sourceRepo: FOUNDRY_REPO,
     sourceSha: FOUNDRY_SHA,
     systemVersion: SYSTEM_VERSION,

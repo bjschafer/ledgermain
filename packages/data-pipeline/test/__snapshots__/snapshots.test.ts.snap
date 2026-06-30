@@ -431,3 +431,25 @@ exports[`normalized-output snapshots weapon: Composite Longbow (ranged, STR-to-d
   "weight": 3,
 }
 `;
+
+exports[`normalized-output snapshots archetype: Two-Handed Fighter 1`] = `
+{
+  "classTag": "fighter",
+  "contributorModule": "baileymh/pf1e-archetypes",
+  "id": "fighter:two-handed-fighter",
+  "name": "Two-Handed Fighter",
+  "uuid": "archetype:fighter:two-handed-fighter",
+}
+`;
+
+exports[`normalized-output snapshots archetype feature: Two-Handed Fighter's Shattering Strike (paired swap) 1`] = `
+{
+  "archetypeId": "fighter:two-handed-fighter",
+  "classTag": "fighter",
+  "id": "fighter:two-handed-fighter:shattering-strike:2",
+  "level": 2,
+  "name": "Shattering Strike",
+  "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T",
+  "uuid": "archetype-feature:fighter:two-handed-fighter:shattering-strike:2",
+}
+`;

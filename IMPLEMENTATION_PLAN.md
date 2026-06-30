@@ -600,9 +600,30 @@ features exist and at what level, not how to compute them).
   packages), `bun run test` (149 engine + 34 data-pipeline + 256 web), `bun run data:fetch` +
   `data:build` regenerate cleanly, `apps/web` build picks up the new (empty) files via
   `copy-refdata.ts` unchanged.
-- **Next (11.2)**: `transform/archetypes.ts` — parse the cleaned fork's CSVs **by header name**
-  (column order/presence varies by class file), cross-ref `classes.json` for `pairedBaseFeatureUuid`,
-  emit real `archetypes.json`/`archetype-features.json` for the 5 slice classes.
+- **11.2 complete**: `packages/data-pipeline/src/transform/archetypes.ts` parses the cleaned fork's
+  per-class CSVs (`util/csv.ts`, a thin `csv-parse` wrapper — added as a dependency rather than
+  hand-rolling RFC4180 quoting/embedded-newline handling, which the data genuinely has) by header
+  name, groups rows into `Archetype`/`ArchetypeFeature` entries, and cross-refs `classes.json` for
+  `pairedBaseFeatureUuid` via `pairableBaseFeatureLevels()` (unambiguous = exactly one base-class
+  feature at that level, and it isn't a "Bonus Feat"-named slot). Output for the 5 slice classes:
+  182 archetypes / 805 features (fighter 67, barbarian 40, wizard 31, cleric 33, sorcerer 11 — close
+  to but not exactly the upstream README's per-class counts, which is expected/fine: those are
+  informal doc copy, not a contract, and our extraction is verified internally consistent).
+  Pairing rate varies a lot by class shape: fighter 183/383 and barbarian 63/149 pair cleanly (each
+  level mostly grants one named feature); cleric 0/129 and wizard 0/108 never pair (cleric's entire
+  kit sits at level 1 in our vendored data; wizard's only single-feature level is a Bonus Feat slot,
+  excluded by rule) — both correctly fall back to prose-only display. Verified against the actual
+  rules text (not just the dataset) for Two-Handed Fighter: Shattering Strike→Bravery (L2),
+  Overhand Chop→Armor Training (L3), Weapon Training→Weapon Training (L5), Backswing→Armor Training
+  (Heavy Armor) (L7) all pair correctly; Piledriver/Greater Power Attack/Devastating Blow (L11/15/19)
+  correctly stay unpaired since our vendored fighter data has no grant at those levels. One dropped
+  field from the original draft mapping: no `tags` on `Archetype` (the CSV's `Tags` column is just
+  `[[Class],[Archetype]]` — already fully captured by `classTag` + `name`, so storing it too would be
+  redundant). Repo gates green: typecheck (4 packages), `bun run test` (149 engine + 41 data-pipeline,
+  incl. 2 new snapshots + the Two-Handed Fighter pairing/ambiguity fact tests + 256 web), `data:build`
+  regenerates cleanly, `apps/web` build picks up real archetype JSON via `copy-refdata.ts` unchanged.
+- **Next (11.3)**: engine derived layer (`activeArchetypes` + slot-swap display, strike-through via
+  the `applied`-flag pattern from `stacking.ts`).
 
 ---
 

@@ -63,4 +63,16 @@ describe("normalized-output snapshots", () => {
   it("weapon: Composite Longbow (ranged, STR-to-damage)", () => {
     expect(byName(ref.weapons, "Composite Longbow")!).toMatchSnapshot();
   });
+
+  it("archetype: Two-Handed Fighter", () => {
+    expect(byName(ref.archetypes, "Two-Handed Fighter")!).toMatchSnapshot();
+  });
+
+  it("archetype feature: Two-Handed Fighter's Shattering Strike (paired swap)", () => {
+    const thf = byName(ref.archetypes, "Two-Handed Fighter")!;
+    const shatteringStrike = Object.values(ref.archetypeFeatures).find(
+      (f) => f.archetypeId === thf.id && f.name === "Shattering Strike",
+    )!;
+    expect(omitDescription(shatteringStrike)).toMatchSnapshot();
+  });
 });

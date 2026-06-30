@@ -1,8 +1,8 @@
 {
   "contentVersion": "13.351",
   "counts": {
-    "archetypeFeatures": 0,
-    "archetypes": 0,
+    "archetypeFeatures": 805,
+    "archetypes": 182,
     "armors": 62,
     "buffs": 185,
     "classFeatures": 38,
@@ -16,8 +16,8 @@
   "dataVersion": "11.11+10b87c070c86",
   "generatedAt": "2026-06-28T15:05:17+03:00",
   "hashes": {
-    "archetype-features.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
-    "archetypes.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "archetype-features.json": "f4ef6e1ed9a7ad53b6b3366575dc2486b48cf1b05dd545237705a84c606ef7f1",
+    "archetypes.json": "ac697e470625dc9ae02f0e60b43dea803568405dc1f2fdef25a8ae3a698e7825",
     "armors.json": "3df5b0145eb9577b86ba2cf6744a053a4fe5aed3ceee6cd30adcf31cd8872fa8",
     "buffs.json": "50190385b4abe12906ee47cc4443b31ee903fcab957315b5030b1a9fbe83efe2",
     "class-features.json": "7c78de966fe3694fd6d5509881660dee0ca5dc7ca03c6086cc35be4a94e880ec",

@@ -19,6 +19,11 @@ import type {
 
 import { SCHEMA_VERSION, SLICE } from "./config.js";
 import { transformArmor, isMundaneArmor } from "./transform/armor.js";
+import {
+  CLASS_ARCHETYPE_FILES,
+  pairableBaseFeatureLevels,
+  transformArchetypeRows,
+} from "./transform/archetypes.js";
 import { transformBuff } from "./transform/buffs.js";
 import { transformClass, transformClassFeature } from "./transform/classes.js";
 import { transformFeat } from "./transform/feats.js";
@@ -26,11 +31,14 @@ import { transformItem } from "./transform/items.js";
 import { transformRace } from "./transform/races.js";
 import { transformSpell } from "./transform/spells.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
+import { readCsv } from "./util/csv.js";
 import { readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { parseUuid } from "./util/uuid.js";
 
 export interface NormalizeOptions {
   packsDir: string;
+  /** Directory containing the per-class archetype CSVs (`<Class>.csv`). */
+  archetypeSourceDir: string;
   sourceRepo: string;
   sourceSha: string;
   systemVersion: string;
@@ -152,9 +160,20 @@ export function normalize(opts: NormalizeOptions): {
     classFiles[0]?.doc._stats?.coreVersion ??
     "unknown";
 
-  // --- archetypes (Stage 11.2 ingests the dataset; 11.1 just wires the shape) -
+  // --- archetypes (third-party dataset; Foundry ships none — see config.ts) --
+  const classesByTag = new Map(classes.map((c) => [c.tag, c]));
   const archetypes: Archetype[] = [];
   const archetypeFeatures: ArchetypeFeature[] = [];
+  for (const [classTag, fileName] of Object.entries(CLASS_ARCHETYPE_FILES)) {
+    const classDef = classesByTag.get(classTag);
+    if (!classDef) continue; // class not in this slice yet
+
+    const rows = readCsv(join(opts.archetypeSourceDir, fileName));
+    const pairable = pairableBaseFeatureLevels(classDef);
+    const result = transformArchetypeRows(classTag, rows, pairable);
+    archetypes.push(...result.archetypes);
+    archetypeFeatures.push(...result.archetypeFeatures);
+  }
 
   const counts = {
     races: races.length,

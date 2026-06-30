@@ -40,11 +40,11 @@ describe("metadata + provenance", () => {
     expect(ref.meta.hashes["weapons.json"]).toBeDefined();
   });
 
-  it("has the archetype collections wired (empty until Stage 11.2 ingests data)", () => {
+  it("has the archetype collections wired", () => {
     expect(ref.meta.hashes["archetypes.json"]).toBeDefined();
     expect(ref.meta.hashes["archetype-features.json"]).toBeDefined();
-    expect(ref.archetypes).toEqual({});
-    expect(ref.archetypeFeatures).toEqual({});
+    expect(Object.keys(ref.archetypes).length).toBeGreaterThan(0);
+    expect(Object.keys(ref.archetypeFeatures).length).toBeGreaterThan(0);
   });
 
   it("contains the expected slice", () => {
@@ -227,6 +227,68 @@ describe("mundane weapons (new in schema v2)", () => {
   it("every mundane weapon has a (slugified) group derived from baseTypes", () => {
     for (const w of Object.values(ref.weapons)) {
       expect(w.group).toMatch(/^[a-z0-9-]+$/);
+    }
+  });
+});
+
+describe("archetypes (Stage 11, third-party dataset — no archetype data in Foundry)", () => {
+  it("vendors archetypes for all 5 sliced classes", () => {
+    const tags = new Set(Object.values(ref.archetypes).map((a) => a.classTag));
+    expect(tags).toEqual(new Set(["fighter", "barbarian", "wizard", "cleric", "sorcerer"]));
+  });
+
+  it("every archetype feature points back to a real archetype of the same class", () => {
+    for (const f of Object.values(ref.archetypeFeatures)) {
+      const parent = ref.archetypes[f.archetypeId];
+      expect(parent).toBeDefined();
+      expect(parent?.classTag).toBe(f.classTag);
+    }
+  });
+
+  it("Two-Handed Fighter's swapped features pair to the correct base-class grants", () => {
+    const fighter = classByTag("fighter");
+    const thf = byName(ref.archetypes, "Two-Handed Fighter");
+    const byLevel = new Map(
+      Object.values(ref.archetypeFeatures)
+        .filter((f) => f.archetypeId === thf.id)
+        .map((f) => [f.level, f] as const),
+    );
+
+    const bravery = fighter.features.find((f) => f.name === "Bravery")!;
+    expect(byLevel.get(2)).toMatchObject({
+      name: "Shattering Strike",
+      pairedBaseFeatureUuid: bravery.uuid,
+    });
+
+    const armorTraining = fighter.features.find((f) => f.name === "Armor Training")!;
+    expect(byLevel.get(3)).toMatchObject({
+      name: "Overhand Chop",
+      pairedBaseFeatureUuid: armorTraining.uuid,
+    });
+
+    const weaponTraining = fighter.features.find((f) => f.name === "Weapon Training")!;
+    expect(byLevel.get(5)).toMatchObject({
+      name: "Weapon Training",
+      pairedBaseFeatureUuid: weaponTraining.uuid,
+    });
+
+    // 11th/15th/19th level features have no base-fighter grant in our slice to
+    // pair against (Stage 1 collapsed Weapon/Armor Training into single
+    // grants) — correctly left unpaired rather than guessed.
+    expect(byLevel.get(11)?.pairedBaseFeatureUuid).toBeUndefined();
+  });
+
+  it("doesn't auto-pair ambiguous multi-feature levels (cleric's entire kit sits at level 1)", () => {
+    for (const f of Object.values(ref.archetypeFeatures)) {
+      if (f.classTag === "cleric") expect(f.pairedBaseFeatureUuid).toBeUndefined();
+    }
+  });
+
+  it("doesn't auto-pair Bonus Feat slots even when otherwise unambiguous", () => {
+    const wizard = classByTag("wizard");
+    const bonusFeats = wizard.features.find((f) => f.name === "Bonus Feats (WIZ)")!;
+    for (const f of Object.values(ref.archetypeFeatures)) {
+      expect(f.pairedBaseFeatureUuid).not.toBe(bonusFeats.uuid);
     }
   });
 });
