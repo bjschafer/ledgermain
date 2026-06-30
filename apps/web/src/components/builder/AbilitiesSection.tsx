@@ -28,7 +28,12 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
       <div className="abilities-grid">
         {ABILITY_IDS.map((id) => {
           const score = sheet.abilities[id];
-          const racial = score.total - score.base;
+          // Only true racial modifiers (race changes + flexible +2 choice) carry
+          // the race's id as their sourceId. Level-up increases, items, buffs,
+          // etc. must not be folded into the "race" label.
+          const racial = score.components
+            .filter((c) => c.applied && c.sourceId === doc.identity.race)
+            .reduce((sum, c) => sum + c.value, 0);
           return (
             <div className="ability-cell" key={id}>
               <div className="abbr">{ABILITY_ABBR[id]}</div>
