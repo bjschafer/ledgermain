@@ -108,6 +108,7 @@ export function App() {
           update={store.update}
           onImportCharacter={(doc) => void store.importCharacter(doc)}
           onResetAll={() => void store.resetAll()}
+          onDeleteCharacter={(id) => void store.deleteCharacter(id)}
         />
       )}
     </div>
@@ -118,11 +119,13 @@ function Workbench({
   mode,
   onImportCharacter,
   onResetAll,
+  onDeleteCharacter,
   ...props
 }: BuilderProps & {
   mode: Mode;
   onImportCharacter: (doc: CharacterDoc) => void;
   onResetAll: () => void;
+  onDeleteCharacter: (id: string) => void;
 }) {
   return (
     <div className="layout">
@@ -145,6 +148,7 @@ function Workbench({
             {...props}
             onImportCharacter={onImportCharacter}
             onResetAll={onResetAll}
+            onDeleteCharacter={onDeleteCharacter}
           />
         ) : (
           <Tracker {...props} />

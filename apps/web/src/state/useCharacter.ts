@@ -13,6 +13,7 @@ import {
   type CharacterSummary,
   createCharacter as createCharacterDb,
   db,
+  deleteCharacter as deleteCharacterDb,
   importCharacter as importCharacterDb,
   listCharacters,
   loadCharacter as loadCharacterDb,
@@ -42,6 +43,8 @@ export interface CharacterStore {
   importCharacter: (doc: CharacterDoc) => Promise<void>;
   /** Wipe every saved character on this device and start over with one blank doc. */
   resetAll: () => Promise<void>;
+  /** Delete a single saved character; another (or a fresh blank one) becomes active. */
+  deleteCharacter: (id: string) => Promise<void>;
 }
 
 export function useCharacter(): CharacterStore {
@@ -127,6 +130,11 @@ export function useCharacter(): CharacterStore {
     [adopt],
   );
 
+  const deleteCharacter = useCallback(
+    async (id: string) => adopt(await deleteCharacterDb(id)),
+    [adopt],
+  );
+
   const sheet = useMemo(
     () => (doc && refData ? compute(doc, refData) : undefined),
     [doc, refData],
@@ -144,5 +152,6 @@ export function useCharacter(): CharacterStore {
     createCharacter,
     importCharacter,
     resetAll,
+    deleteCharacter,
   };
 }

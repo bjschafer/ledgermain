@@ -102,3 +102,12 @@ export async function resetAllCharacters(): Promise<CharacterDoc> {
   await db.characters.clear();
   return createCharacter();
 }
+
+/**
+ * Delete a single saved character. The next most-recently-active remaining
+ * character becomes active, or a fresh blank one if none remain.
+ */
+export async function deleteCharacter(id: string): Promise<CharacterDoc> {
+  await db.characters.delete(id);
+  return loadOrCreateActive();
+}

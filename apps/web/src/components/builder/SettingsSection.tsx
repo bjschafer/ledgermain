@@ -47,9 +47,11 @@ export function SettingsSection({
 	update,
 	onImportCharacter,
 	onResetAll,
+	onDeleteCharacter,
 }: BuilderProps & {
 	onImportCharacter: (doc: CharacterDoc) => void;
 	onResetAll: () => void;
+	onDeleteCharacter: (id: string) => void;
 }) {
 	const settings = doc.build.settings ?? {};
 	const hpMode = settings.hpMode ?? "average";
@@ -282,19 +284,65 @@ export function SettingsSection({
 			</Panel>
 
 			{/* Danger zone */}
-			<DangerZonePanel onResetAll={onResetAll} />
+			<DangerZonePanel
+				characterId={doc.id}
+				characterName={doc.identity.name}
+				onDeleteCharacter={onDeleteCharacter}
+				onResetAll={onResetAll}
+			/>
 		</>
 	);
 }
 
-/** Permanently wipes every saved character; gated behind a type-to-confirm input. */
-function DangerZonePanel({ onResetAll }: { onResetAll: () => void }) {
-	const [confirmText, setConfirmText] = useState("");
-	const canReset = confirmText.trim().toUpperCase() === "RESET";
+/**
+ * Permanently deletes this character, or every saved character; each action
+ * is gated behind its own type-to-confirm input.
+ */
+function DangerZonePanel({
+	characterId,
+	characterName,
+	onDeleteCharacter,
+	onResetAll,
+}: {
+	characterId: string;
+	characterName: string;
+	onDeleteCharacter: (id: string) => void;
+	onResetAll: () => void;
+}) {
+	const [deleteConfirmText, setDeleteConfirmText] = useState("");
+	const [resetConfirmText, setResetConfirmText] = useState("");
+	const canDelete = deleteConfirmText.trim().toUpperCase() === "DELETE";
+	const canReset = resetConfirmText.trim().toUpperCase() === "RESET";
 
 	return (
 		<Panel title="Danger Zone" step="⚙">
 			<p className="hint" style={{ marginBottom: 12 }}>
+				Permanently deletes this character ("{characterName || "Unnamed"}").
+				This cannot be undone.
+			</p>
+			<div className="settings-row">
+				<input
+					type="text"
+					className="danger-confirm"
+					placeholder='Type "DELETE" to confirm'
+					value={deleteConfirmText}
+					onChange={(e) => setDeleteConfirmText(e.target.value)}
+					aria-label="Type DELETE to confirm"
+				/>
+				<button
+					type="button"
+					className="btn-ghost btn-danger"
+					disabled={!canDelete}
+					onClick={() => {
+						onDeleteCharacter(characterId);
+						setDeleteConfirmText("");
+					}}
+				>
+					Delete this character
+				</button>
+			</div>
+
+			<p className="hint" style={{ margin: "16px 0 12px" }}>
 				Permanently deletes every saved character on this device, including
 				this one, and starts over with a single blank character. This cannot
 				be undone.
@@ -304,8 +352,8 @@ function DangerZonePanel({ onResetAll }: { onResetAll: () => void }) {
 					type="text"
 					className="danger-confirm"
 					placeholder='Type "RESET" to confirm'
-					value={confirmText}
-					onChange={(e) => setConfirmText(e.target.value)}
+					value={resetConfirmText}
+					onChange={(e) => setResetConfirmText(e.target.value)}
 					aria-label="Type RESET to confirm"
 				/>
 				<button
@@ -314,7 +362,7 @@ function DangerZonePanel({ onResetAll }: { onResetAll: () => void }) {
 					disabled={!canReset}
 					onClick={() => {
 						onResetAll();
-						setConfirmText("");
+						setResetConfirmText("");
 					}}
 				>
 					Reset everything
