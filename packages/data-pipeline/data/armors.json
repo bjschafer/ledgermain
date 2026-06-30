@@ -1,0 +1,1417 @@
+{
+  "0cIAkfoDAK5Pq2XU": {
+    "ac": 8,
+    "acp": 7,
+    "baseTypes": [
+      "Half-Plate"
+    ],
+    "id": "0cIAkfoDAK5Pq2XU",
+    "maxDex": 0,
+    "name": "Hellknight Half-Plate",
+    "price": 850,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "96"
+      },
+      {
+        "id": "PZO9293",
+        "pages": "63"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.0cIAkfoDAK5Pq2XU",
+    "weight": 50,
+    "weightClass": 3
+  },
+  "2LKdIUyCk6Imz6Gq": {
+    "ac": 1,
+    "baseTypes": [
+      "Reinforced Tunic"
+    ],
+    "id": "2LKdIUyCk6Imz6Gq",
+    "maxDex": 5,
+    "name": "Reinforced Tunic",
+    "price": 1,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "uuid": "Compendium.pf1.armors-and-shields.Item.2LKdIUyCk6Imz6Gq",
+    "weight": 5,
+    "weightClass": 1
+  },
+  "2fK608aSYU9QDmzw": {
+    "ac": 2,
+    "acp": 2,
+    "id": "2fK608aSYU9QDmzw",
+    "name": "Heavy Steel Shield",
+    "price": 20,
+    "proficiency": "heavyShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "142, 148, 151-152"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.2fK608aSYU9QDmzw",
+    "weight": 15
+  },
+  "3mQTIhwAaZgvJq12": {
+    "ac": 4,
+    "acp": 10,
+    "id": "3mQTIhwAaZgvJq12",
+    "maxDex": 2,
+    "name": "Tower Shield",
+    "price": 30,
+    "proficiency": "towerShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1110",
+        "pages": "151, 153"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.3mQTIhwAaZgvJq12",
+    "weight": 45
+  },
+  "4zQgEV3XyR9zvqwU": {
+    "ac": 9,
+    "acp": 5,
+    "baseTypes": [
+      "Full Plate"
+    ],
+    "id": "4zQgEV3XyR9zvqwU",
+    "maxDex": 1,
+    "name": "Hellknight Plate",
+    "price": 2000,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "97"
+      },
+      {
+        "id": "PZO9226",
+        "pages": "291"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.4zQgEV3XyR9zvqwU",
+    "weight": 50,
+    "weightClass": 3
+  },
+  "5TzaS38RPAx1oj9p": {
+    "ac": 6,
+    "acp": 4,
+    "baseTypes": [
+      "Breastplate"
+    ],
+    "id": "5TzaS38RPAx1oj9p",
+    "maxDex": 3,
+    "name": "Breastplate",
+    "price": 200,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "150, 151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.5TzaS38RPAx1oj9p",
+    "weight": 30,
+    "weightClass": 2
+  },
+  "6YCQkebsf4vR508H": {
+    "ac": 2,
+    "baseTypes": [
+      "Leather Armor"
+    ],
+    "id": "6YCQkebsf4vR508H",
+    "maxDex": 6,
+    "name": "Leather Armor",
+    "price": 10,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.6YCQkebsf4vR508H",
+    "weight": 15,
+    "weightClass": 1
+  },
+  "6gpjknDwY1HNvQcU": {
+    "ac": 1,
+    "baseTypes": [
+      "Quilted Cloth"
+    ],
+    "id": "6gpjknDwY1HNvQcU",
+    "maxDex": 8,
+    "name": "Quilted Cloth",
+    "price": 100,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "uuid": "Compendium.pf1.armors-and-shields.Item.6gpjknDwY1HNvQcU",
+    "weight": 15,
+    "weightClass": 1
+  },
+  "6i0yr19dgO50GygU": {
+    "ac": 7,
+    "acp": 5,
+    "baseTypes": [
+      "Field Plate"
+    ],
+    "id": "6i0yr19dgO50GygU",
+    "maxDex": 1,
+    "name": "Field Plate",
+    "price": 1200,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO9226",
+        "pages": "291"
+      },
+      {
+        "id": "PZO1111",
+        "pages": "211"
+      },
+      {
+        "id": "PZO9410",
+        "pages": "18"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.6i0yr19dgO50GygU",
+    "weight": 50,
+    "weightClass": 3
+  },
+  "6zjwZeZmhqmAFC82": {
+    "ac": 2,
+    "acp": 2,
+    "id": "6zjwZeZmhqmAFC82",
+    "name": "Heavy Wooden Shield",
+    "price": 7,
+    "proficiency": "heavyShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "151-152"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.6zjwZeZmhqmAFC82",
+    "weight": 10
+  },
+  "8e7QxmuuvJLpoGQO": {
+    "ac": 5,
+    "acp": 4,
+    "baseTypes": [
+      "Lamellar"
+    ],
+    "id": "8e7QxmuuvJLpoGQO",
+    "maxDex": 3,
+    "name": "Horn Lamellar",
+    "price": 100,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.8e7QxmuuvJLpoGQO",
+    "weight": 30,
+    "weightClass": 2
+  },
+  "9UAJTH51u59M1tau": {
+    "ac": 3,
+    "acp": 1,
+    "baseTypes": [
+      "Parade Armor"
+    ],
+    "id": "9UAJTH51u59M1tau",
+    "maxDex": 5,
+    "name": "Parade Armor",
+    "price": 25,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "uuid": "Compendium.pf1.armors-and-shields.Item.9UAJTH51u59M1tau",
+    "weight": 20,
+    "weightClass": 1
+  },
+  "9d4JuiQocfhoMewg": {
+    "ac": 1,
+    "baseTypes": [
+      "Silken Ceremonial"
+    ],
+    "id": "9d4JuiQocfhoMewg",
+    "name": "Silken Ceremonial",
+    "price": 30,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "129"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.9d4JuiQocfhoMewg",
+    "weight": 4,
+    "weightClass": 1
+  },
+  "B8H87SCG0E8n0iqw": {
+    "ac": 5,
+    "acp": 4,
+    "baseTypes": [
+      "Do-Maru"
+    ],
+    "id": "B8H87SCG0E8n0iqw",
+    "maxDex": 4,
+    "name": "Do-Maru",
+    "price": 200,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.B8H87SCG0E8n0iqw",
+    "weight": 30,
+    "weightClass": 2
+  },
+  "CRtBIIyBtNCsxztO": {
+    "ac": 7,
+    "acp": 7,
+    "baseTypes": [
+      "Splint Mail"
+    ],
+    "id": "CRtBIIyBtNCsxztO",
+    "maxDex": 0,
+    "name": "Splint Mail",
+    "price": 200,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "151, 153"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.CRtBIIyBtNCsxztO",
+    "weight": 45,
+    "weightClass": 3
+  },
+  "HpPFigQKr6C6Dej4": {
+    "ac": 7,
+    "acp": 6,
+    "baseTypes": [
+      "Banded Mail"
+    ],
+    "id": "HpPFigQKr6C6Dej4",
+    "maxDex": 1,
+    "name": "Banded Mail",
+    "price": 250,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "150, 151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.HpPFigQKr6C6Dej4",
+    "weight": 35,
+    "weightClass": 3
+  },
+  "KwwDSMKGF5P9vrQr": {
+    "ac": 7,
+    "acp": 7,
+    "baseTypes": [
+      "Kusari Gusoku"
+    ],
+    "id": "KwwDSMKGF5P9vrQr",
+    "maxDex": 1,
+    "name": "Kusari Gusoku",
+    "price": 350,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.KwwDSMKGF5P9vrQr",
+    "weight": 45,
+    "weightClass": 3
+  },
+  "Lq7YjIXW1SfV4EKr": {
+    "ac": 2,
+    "acp": 3,
+    "id": "Lq7YjIXW1SfV4EKr",
+    "name": "Steel Snarlshield",
+    "price": 50,
+    "proficiency": "heavyShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO9481",
+        "pages": "6"
+      },
+      {
+        "id": "PZO9411",
+        "pages": "22"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.Lq7YjIXW1SfV4EKr",
+    "weight": 20
+  },
+  "LvqGhztGDLYS9QES": {
+    "ac": 4,
+    "acp": 2,
+    "baseTypes": [
+      "Armored Coat"
+    ],
+    "id": "LvqGhztGDLYS9QES",
+    "maxDex": 3,
+    "name": "Erutaki Coat",
+    "price": 80,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO9481",
+        "pages": "6"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.LvqGhztGDLYS9QES",
+    "weight": 24,
+    "weightClass": 2
+  },
+  "NhfubfsOa0OqXFMu": {
+    "ac": 4,
+    "acp": 2,
+    "baseTypes": [
+      "Lamellar"
+    ],
+    "id": "NhfubfsOa0OqXFMu",
+    "maxDex": 3,
+    "name": "Leather Lamellar",
+    "price": 60,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.NhfubfsOa0OqXFMu",
+    "weight": 25,
+    "weightClass": 1
+  },
+  "Nt2xduBMY9qmPOMg": {
+    "ac": 6,
+    "acp": 5,
+    "baseTypes": [
+      "Lamellar"
+    ],
+    "id": "Nt2xduBMY9qmPOMg",
+    "maxDex": 3,
+    "name": "Steel Lamellar",
+    "price": 150,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      },
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.Nt2xduBMY9qmPOMg",
+    "weight": 35,
+    "weightClass": 2
+  },
+  "OZHfmAh4i6Bkoun3": {
+    "ac": 2,
+    "acp": 3,
+    "id": "OZHfmAh4i6Bkoun3",
+    "name": "Wooden Snarlshield",
+    "price": 50,
+    "proficiency": "heavyShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO9481",
+        "pages": "6"
+      },
+      {
+        "id": "PZO9411",
+        "pages": "22"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.OZHfmAh4i6Bkoun3",
+    "weight": 20
+  },
+  "RGgplsDVRbf6svr2": {
+    "ac": 3,
+    "acp": 1,
+    "baseTypes": [
+      "Hide Shirt"
+    ],
+    "id": "RGgplsDVRbf6svr2",
+    "maxDex": 4,
+    "name": "Hide Shirt",
+    "price": 20,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO9425",
+        "pages": "15"
+      },
+      {
+        "id": "PZO9000-S",
+        "pages": "11"
+      },
+      {
+        "id": "PZO9000-2S",
+        "pages": "13"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.RGgplsDVRbf6svr2",
+    "weight": 18,
+    "weightClass": 1
+  },
+  "WHTn1ouMVlmsEL1l": {
+    "ac": 8,
+    "acp": 7,
+    "baseTypes": [
+      "Fortress Plate"
+    ],
+    "id": "WHTn1ouMVlmsEL1l",
+    "maxDex": 0,
+    "name": "Alkenstar fortress plate",
+    "price": 2100,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO9481",
+        "pages": "6"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.WHTn1ouMVlmsEL1l",
+    "weight": 75,
+    "weightClass": 3
+  },
+  "WxHKxEn6HfIJAjFC": {
+    "ac": 3,
+    "acp": 1,
+    "baseTypes": [
+      "Studded Leather Armor"
+    ],
+    "id": "WxHKxEn6HfIJAjFC",
+    "maxDex": 5,
+    "name": "Hellknight Leather",
+    "price": 30,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "96"
+      },
+      {
+        "id": "PZO9293",
+        "pages": "63"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.WxHKxEn6HfIJAjFC",
+    "weight": 25,
+    "weightClass": 1
+  },
+  "XILfVRciS611ZJvm": {
+    "ac": 8,
+    "acp": 6,
+    "baseTypes": [
+      "O-Yoroi"
+    ],
+    "id": "XILfVRciS611ZJvm",
+    "maxDex": 2,
+    "name": "O-Yoroi",
+    "price": 1700,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.XILfVRciS611ZJvm",
+    "weight": 45,
+    "weightClass": 3
+  },
+  "Y10QTnY9wVXg5VCm": {
+    "ac": 8,
+    "acp": 7,
+    "baseTypes": [
+      "Half-Plate"
+    ],
+    "id": "Y10QTnY9wVXg5VCm",
+    "maxDex": 0,
+    "name": "Half-Plate",
+    "price": 600,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.Y10QTnY9wVXg5VCm",
+    "weight": 50,
+    "weightClass": 3
+  },
+  "YIHLiAF3zd2fJkXp": {
+    "ac": 1,
+    "baseTypes": [
+      "Haramaki"
+    ],
+    "id": "YIHLiAF3zd2fJkXp",
+    "name": "Haramaki",
+    "price": 3,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.YIHLiAF3zd2fJkXp",
+    "weight": 1,
+    "weightClass": 1
+  },
+  "YSkIxGaVmW9pAi2m": {
+    "ac": 8,
+    "acp": 7,
+    "baseTypes": [
+      "Agile Half-Plate"
+    ],
+    "id": "YSkIxGaVmW9pAi2m",
+    "maxDex": 0,
+    "name": "Agile Half-Plate",
+    "price": 850,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "179"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.YSkIxGaVmW9pAi2m",
+    "weight": 55,
+    "weightClass": 3
+  },
+  "aI6gSI7gnCLCucw0": {
+    "ac": 4,
+    "acp": 3,
+    "baseTypes": [
+      "Hide Armor"
+    ],
+    "id": "aI6gSI7gnCLCucw0",
+    "maxDex": 4,
+    "name": "Hide Armor",
+    "price": 15,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.aI6gSI7gnCLCucw0",
+    "weight": 25,
+    "weightClass": 2
+  },
+  "bP0vKIfcGKDgtiUc": {
+    "ac": 6,
+    "acp": 5,
+    "baseTypes": [
+      "Four-Mirror"
+    ],
+    "id": "bP0vKIfcGKDgtiUc",
+    "maxDex": 2,
+    "name": "Four-Mirror",
+    "price": 125,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.bP0vKIfcGKDgtiUc",
+    "weight": 45,
+    "weightClass": 2
+  },
+  "c5L61pgFgUETqPtm": {
+    "ac": 9,
+    "acp": 6,
+    "baseTypes": [
+      "Full Plate"
+    ],
+    "id": "c5L61pgFgUETqPtm",
+    "maxDex": 1,
+    "name": "Gray Maiden Plate",
+    "price": 1500,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "84"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.c5L61pgFgUETqPtm",
+    "weight": 50,
+    "weightClass": 3
+  },
+  "dx5t73HKQwvzl7NW": {
+    "ac": 1,
+    "baseTypes": [
+      "Armored Kilt"
+    ],
+    "id": "dx5t73HKQwvzl7NW",
+    "maxDex": 6,
+    "name": "Armored Kilt",
+    "price": 20,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO9410",
+        "pages": "18"
+      },
+      {
+        "id": "PZO1111",
+        "pages": "211"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.dx5t73HKQwvzl7NW",
+    "weight": 10,
+    "weightClass": 1
+  },
+  "f8Gm8CXYhEqCCNIR": {
+    "ac": 8,
+    "acp": 7,
+    "baseTypes": [
+      "Lamellar"
+    ],
+    "id": "f8Gm8CXYhEqCCNIR",
+    "maxDex": 0,
+    "name": "Stone Lamellar",
+    "price": 500,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.f8Gm8CXYhEqCCNIR",
+    "weight": 45,
+    "weightClass": 3
+  },
+  "gcw5rPJ8u0i6IjhV": {
+    "ac": 2,
+    "baseTypes": [
+      "Rosewood Armor"
+    ],
+    "id": "gcw5rPJ8u0i6IjhV",
+    "maxDex": 6,
+    "name": "Rosewood Armor",
+    "price": 50,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "uuid": "Compendium.pf1.armors-and-shields.Item.gcw5rPJ8u0i6IjhV",
+    "weight": 15,
+    "weightClass": 1
+  },
+  "gsE0PAOmCwivue5A": {
+    "ac": 1,
+    "acp": 1,
+    "baseTypes": [
+      "Buckler"
+    ],
+    "id": "gsE0PAOmCwivue5A",
+    "name": "Buckler",
+    "price": 5,
+    "proficiency": "other",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "150, 151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.gsE0PAOmCwivue5A",
+    "weight": 5
+  },
+  "h65qEp22nsyRoeRa": {
+    "ac": 9,
+    "acp": 6,
+    "baseTypes": [
+      "Full Plate"
+    ],
+    "id": "h65qEp22nsyRoeRa",
+    "maxDex": 1,
+    "name": "Full Plate",
+    "price": 1500,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "150, 151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.h65qEp22nsyRoeRa",
+    "weight": 50,
+    "weightClass": 3
+  },
+  "h8Jq6rEHJ8xc4SIn": {
+    "ac": 1,
+    "acp": 2,
+    "id": "h8Jq6rEHJ8xc4SIn",
+    "name": "Steel Madu",
+    "price": 50,
+    "proficiency": "lightShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "20"
+      },
+      {
+        "id": "PZO9404",
+        "pages": "22"
+      },
+      {
+        "id": "PZO9410",
+        "pages": "4"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "144"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.h8Jq6rEHJ8xc4SIn",
+    "weight": 6
+  },
+  "iGu21zy6QtroUZ4O": {
+    "ac": 4,
+    "acp": 2,
+    "baseTypes": [
+      "Chain Shirt"
+    ],
+    "id": "iGu21zy6QtroUZ4O",
+    "maxDex": 4,
+    "name": "Chain Shirt",
+    "price": 100,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "150, 151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.iGu21zy6QtroUZ4O",
+    "weight": 25,
+    "weightClass": 1
+  },
+  "iRB7ACzHf14VIk4M": {
+    "ac": 1,
+    "acp": 1,
+    "id": "iRB7ACzHf14VIk4M",
+    "name": "Light Steel Shield",
+    "price": 9,
+    "proficiency": "lightShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "142, 148, 151, 152"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.iRB7ACzHf14VIk4M",
+    "weight": 6
+  },
+  "inF1zaK0XoeTdBIc": {
+    "ac": 1,
+    "acp": 1,
+    "id": "inF1zaK0XoeTdBIc",
+    "name": "Dwarven War-Shield",
+    "price": 50,
+    "proficiency": "other",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO9481",
+        "pages": "9"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.inF1zaK0XoeTdBIc",
+    "weight": 8
+  },
+  "jmMTKB2OeTB4dUvm": {
+    "ac": 4,
+    "acp": 2,
+    "baseTypes": [
+      "Chain Coat"
+    ],
+    "id": "jmMTKB2OeTB4dUvm",
+    "maxDex": 5,
+    "name": "Chain Coat",
+    "price": 75,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO9481",
+        "pages": "6"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.jmMTKB2OeTB4dUvm",
+    "weight": 40,
+    "weightClass": 2
+  },
+  "juheM3y42yQrYbB9": {
+    "ac": 2,
+    "baseTypes": [
+      "Dancing Scarves"
+    ],
+    "id": "juheM3y42yQrYbB9",
+    "name": "Varisian dancing scarves",
+    "price": 150,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO9481",
+        "pages": "6"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.juheM3y42yQrYbB9",
+    "weight": 8,
+    "weightClass": 1
+  },
+  "kc4ZuOEIEx1ZlXgJ": {
+    "ac": 1,
+    "acp": 2,
+    "id": "kc4ZuOEIEx1ZlXgJ",
+    "name": "Leather Madu",
+    "price": 40,
+    "proficiency": "lightShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "20"
+      },
+      {
+        "id": "PZO9404",
+        "pages": "22"
+      },
+      {
+        "id": "PZO9410",
+        "pages": "4"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "144"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.kc4ZuOEIEx1ZlXgJ",
+    "weight": 5
+  },
+  "khCNizGc3q1SZsXg": {
+    "ac": 9,
+    "acp": 6,
+    "baseTypes": [
+      "Stoneplate"
+    ],
+    "id": "khCNizGc3q1SZsXg",
+    "maxDex": 1,
+    "name": "Stoneplate",
+    "price": 1800,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "uuid": "Compendium.pf1.armors-and-shields.Item.khCNizGc3q1SZsXg",
+    "weight": 75,
+    "weightClass": 3
+  },
+  "l1qNkx4xGXelq6yY": {
+    "ac": 1,
+    "acp": 1,
+    "id": "l1qNkx4xGXelq6yY",
+    "name": "Light Wooden Shield",
+    "price": 3,
+    "proficiency": "lightShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "142, 148, 151, 152"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.l1qNkx4xGXelq6yY",
+    "weight": 5
+  },
+  "mDqCTp8wMKbSOo1x": {
+    "ac": 1,
+    "acp": 1,
+    "id": "mDqCTp8wMKbSOo1x",
+    "name": "Klar",
+    "price": 12,
+    "proficiency": "lightShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "18"
+      },
+      {
+        "id": "PZO1002-PGE",
+        "pages": "11"
+      },
+      {
+        "id": "PZO9000-2S",
+        "pages": "13"
+      },
+      {
+        "id": "PZO1111",
+        "pages": "209"
+      },
+      {
+        "id": "PZO9226",
+        "pages": "290"
+      },
+      {
+        "id": "PZO9410",
+        "pages": "18"
+      },
+      {
+        "id": "PZO9425",
+        "pages": "14"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.mDqCTp8wMKbSOo1x",
+    "weight": 6
+  },
+  "mJYWI4VZBo0c0CCC": {
+    "ac": 4,
+    "acp": 2,
+    "baseTypes": [
+      "Armored Coat"
+    ],
+    "id": "mJYWI4VZBo0c0CCC",
+    "maxDex": 3,
+    "name": "Armored Coat",
+    "price": 50,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "179"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.mJYWI4VZBo0c0CCC",
+    "weight": 20,
+    "weightClass": 2
+  },
+  "mPopnW9RhIm8Qv1C": {
+    "ac": 7,
+    "acp": 7,
+    "baseTypes": [
+      "Lamellar"
+    ],
+    "id": "mPopnW9RhIm8Qv1C",
+    "maxDex": 0,
+    "name": "Iron Lamellar",
+    "price": 200,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.mPopnW9RhIm8Qv1C",
+    "weight": 50,
+    "weightClass": 3
+  },
+  "mcDNhbR4RQ5Z1ckQ": {
+    "ac": 1,
+    "acp": 2,
+    "id": "mcDNhbR4RQ5Z1ckQ",
+    "name": "Light Wooden Shield (Quickdraw)",
+    "price": 53,
+    "proficiency": "lightShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "179"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.mcDNhbR4RQ5Z1ckQ",
+    "weight": 6
+  },
+  "nnDSj5NxUb9Q8z8S": {
+    "ac": 5,
+    "acp": 4,
+    "baseTypes": [
+      "Scale Mail"
+    ],
+    "id": "nnDSj5NxUb9Q8z8S",
+    "maxDex": 3,
+    "name": "Scale Mail",
+    "price": 50,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.nnDSj5NxUb9Q8z8S",
+    "weight": 30,
+    "weightClass": 2
+  },
+  "q2HbIx7a7YpGJ3Kn": {
+    "ac": 6,
+    "acp": 4,
+    "baseTypes": [
+      "Agile Breastplate"
+    ],
+    "id": "q2HbIx7a7YpGJ3Kn",
+    "maxDex": 3,
+    "name": "Agile Breastplate",
+    "price": 400,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "179"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.q2HbIx7a7YpGJ3Kn",
+    "weight": 25,
+    "weightClass": 2
+  },
+  "q73l4hJuDIREmqDJ": {
+    "ac": 5,
+    "acp": 3,
+    "baseTypes": [
+      "Kikko"
+    ],
+    "id": "q73l4hJuDIREmqDJ",
+    "maxDex": 4,
+    "name": "Kikko",
+    "price": 250,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.q73l4hJuDIREmqDJ",
+    "weight": 25,
+    "weightClass": 2
+  },
+  "tCw8lthSpIXzvCOj": {
+    "ac": 3,
+    "acp": 1,
+    "baseTypes": [
+      "Spider-Silk Bodysuit"
+    ],
+    "id": "tCw8lthSpIXzvCOj",
+    "maxDex": 6,
+    "name": "Spider-Silk Bodysuit",
+    "price": 850,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "uuid": "Compendium.pf1.armors-and-shields.Item.tCw8lthSpIXzvCOj",
+    "weight": 4,
+    "weightClass": 1
+  },
+  "tmCIvphURV00VhY2": {
+    "ac": 7,
+    "acp": 6,
+    "baseTypes": [
+      "Tatami-Do"
+    ],
+    "id": "tmCIvphURV00VhY2",
+    "maxDex": 3,
+    "name": "Tatami-Do",
+    "price": 1000,
+    "proficiency": "heavyArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "129"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.tmCIvphURV00VhY2",
+    "weight": 45,
+    "weightClass": 3
+  },
+  "unY9jt1B8a5bbnzO": {
+    "ac": 6,
+    "acp": 5,
+    "baseTypes": [
+      "Chainmail"
+    ],
+    "id": "unY9jt1B8a5bbnzO",
+    "maxDex": 2,
+    "name": "Chainmail",
+    "price": 150,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "150, 151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.unY9jt1B8a5bbnzO",
+    "weight": 40,
+    "weightClass": 2
+  },
+  "wVKTG7gN2I8jalGg": {
+    "ac": 6,
+    "acp": 4,
+    "baseTypes": [
+      "Mountain Pattern"
+    ],
+    "id": "wVKTG7gN2I8jalGg",
+    "maxDex": 3,
+    "name": "Mountain Pattern",
+    "price": 250,
+    "proficiency": "mediumArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.wVKTG7gN2I8jalGg",
+    "weight": 40,
+    "weightClass": 2
+  },
+  "xeuREriTfdZR1yCD": {
+    "ac": 3,
+    "acp": 1,
+    "baseTypes": [
+      "Studded Leather Armor"
+    ],
+    "id": "xeuREriTfdZR1yCD",
+    "maxDex": 5,
+    "name": "Studded Leather Armor",
+    "price": 25,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "151, 153"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.xeuREriTfdZR1yCD",
+    "weight": 20,
+    "weightClass": 1
+  },
+  "yLlOfnD759pfPms8": {
+    "ac": 3,
+    "acp": 1,
+    "baseTypes": [
+      "Wooden Armor"
+    ],
+    "id": "yLlOfnD759pfPms8",
+    "maxDex": 3,
+    "name": "Wooden Armor",
+    "price": 20,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "uuid": "Compendium.pf1.armors-and-shields.Item.yLlOfnD759pfPms8",
+    "weight": 25,
+    "weightClass": 1
+  },
+  "z5iAeUTo3r6qlEfd": {
+    "ac": 1,
+    "acp": 2,
+    "id": "z5iAeUTo3r6qlEfd",
+    "name": "Light Steel Shield (Quickdraw)",
+    "price": 59,
+    "proficiency": "lightShield",
+    "slot": "shield",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "179"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.z5iAeUTo3r6qlEfd",
+    "weight": 7
+  },
+  "zJLsDErTaV81BkJM": {
+    "ac": 2,
+    "baseTypes": [
+      "Lamellar Cuirass"
+    ],
+    "id": "zJLsDErTaV81BkJM",
+    "maxDex": 4,
+    "name": "Lamellar Cuirass",
+    "price": 15,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "9"
+      },
+      {
+        "id": "PZO1118",
+        "pages": "128"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.zJLsDErTaV81BkJM",
+    "weight": 8,
+    "weightClass": 1
+  },
+  "ziXQ1DlDMGTAUOe9": {
+    "ac": 1,
+    "baseTypes": [
+      "Padded Armor"
+    ],
+    "id": "ziXQ1DlDMGTAUOe9",
+    "maxDex": 8,
+    "name": "Padded Armor",
+    "price": 5,
+    "proficiency": "lightArmor",
+    "slot": "armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "151"
+      }
+    ],
+    "uuid": "Compendium.pf1.armors-and-shields.Item.ziXQ1DlDMGTAUOe9",
+    "weight": 10,
+    "weightClass": 1
+  }
+}

@@ -202,9 +202,123 @@ Companion to `DESIGN.md`. Stages are ordered to **de-risk the unknowns first** (
 
 ---
 
+## Stage 6: Vendor base armor & weapons into RefData
+
+**Goal**: Stop forcing users to type AC/maxDex/ACP and damage-dice/crit by hand for the common
+cases. Vendor the upstream **mundane** armor (64) and weapon (~310) entries from the Foundry
+`armors-and-shields` and `weapons-and-ammo` packs into normalized JSON, exposed as `RefData.armors`
+and `RefData.weapons`. Named magical gear (Frost Brand, Elven Chain, +N items) is **out of scope**
+— generic "+N weapon" is achieved by selecting a mundane base and setting an enhancement bonus
+(Stages 7/8); named unique items remain a future enhancement.
+
+**Design: denormalize on select** — the engine reads armor/weapon physical stats directly off the
+`CharacterDoc` (`computeAc` reads `inst.armor.*`; `computeWeaponAttacks` reads `w.*`). Selecting a
+ref entry at add-time snapshots its fields onto the doc (the same pattern `ActiveBuff` uses for
+`changes` and `WornArmor` uses for AC). The engine therefore needs **no change** across Stages 6-8;
+ref-id fields added in 7/8 are display + future re-sync only.
+
+**Slice / filter**:
+- Armor: `type==="equipment" && subType∈{"armor","shield"} && !enh && !aura && !masterwork`
+  (drops the `armor-unique/` named magical suits). 64 entries (heavy 16, light 19, medium 14,
+  shields 15).
+- Weapons: `type==="weapon" && subType∈{"simple","martial","exotic"} && !enh && !aura &&
+  !masterwork` (drops the `magic-weapons/` named magical weapons, ammunition, siege, firearms
+  special ammo). ~310 entries.
+
+**Success Criteria**:
+- `packages/schema` defines `ArmorRef` and `WeaponRef`; extends `RefData` with `armors` and
+  `weapons`; bumps `RefDataMeta.schemaVersion` (1 → 2).
+- `packages/data-pipeline` reads the two new packs, applies new `transform/armor.ts` and
+  `transform/weapons.ts`, and emits `data/armors.json` + `data/weapons.json`.
+- `loadRefData()` (both Node and browser loaders) reassemble the new collections.
+- `meta.counts` records `armors` and `weapons`.
+- Repo gates green: `bun run typecheck` + `bun run test` clean across all 4 packages.
+
+**Tests**: snapshot tests on a representative entry per category (Full Plate, Buckler, Longsword,
+Composite Longbow); refdata fact tests ("Longsword is martial, crit 19/×2, damage 1d8"). Existing
+`refdata.test.ts` schemaVersion assertion updated to 2.
+
+**Status**: In Progress
+
+**Field mapping** (Foundry YAML → RefData):
+
+`ArmorRef` (extends `RefEntity`):
+- `slot` ← `subType` (`"armor"|"shield"`)
+- `ac` ← `system.armor.value`
+- `maxDex` ← `system.armor.dex`
+- `acp` ← `system.armor.acp` (kept positive; denormalizer negates when storing on `WornArmor`)
+- `weightClass` ← `system.equipmentSubtype` (`lightArmor→1`, `mediumArmor→2`, `heavyArmor→3`,
+  otherwise omit/0 — shields track via `slot` not weightClass)
+- `baseTypes` ← `system.baseTypes`
+- `price` ← `system.price`
+
+`WeaponRef` (extends `RefEntity`):
+- `damageDice` ← regex-parsed from the first `sizeRoll(N,F,…)` or `NdM` in
+  `system.actions[*].damage.parts[0].formula` (e.g. "1d8"); omitted if unparseable (rare).
+- `critRange` ← `actions[*].ability.critRange` (default 20)
+- `critMult` ← `actions[*].ability.critMult` (default 2)
+- `group` ← `slug(baseTypes[0])` (the per-weapon type Weapon Focus routes on, e.g. "longsword")
+- `category` ← action's range units / actionType (`mwak`+`melee`→`"melee"`; `rwak`+`ft`→`"ranged"`)
+- `attackAbility` ← `"str"` (mwak) / `"dex"` (rwak)
+- `damageAbility` ← `"str"` if `actions[*].ability.damage==="str"` else `"none"`
+- `damageMultiplier` ← `weaponSubtype==="2h" ? 1.5 : 1`
+- `proficiency` ← `subType` (`simple|martial|exotic`)
+- `weaponGroups` ← `system.weaponGroups` (Foundry tags like `bladesHeavy`)
+- `weaponSubtype` ← `system.weaponSubtype` (`1h|2h|ranged`)
+- `baseTypes`, `price`, `weight` ← as available
+
+---
+
+## Stage 7: Armor picker (GearSection)
+
+**Goal**: Replace/augment the manual "Add worn armor/shield" form with a search picker, keeping
+the manual form as the "Custom" fallback.
+
+**Success Criteria**:
+- Schema: add `armorId?: string` to `ItemInstance` (separate from `itemId` which keys
+  `RefData.items` — keeps the two ref tables unambiguous).
+- `model/doc.ts`: `addWornArmorFromRef(doc, armorRef)` snapshots `armorRef → WornArmor` (negating
+  `acp`) + sets `name`/`armorId`, appended to `build.gear`.
+- `GearSection`: a search row mirroring the magic-item picker, scoped to `refData.armors`. A small
+  "Custom" toggle reveals the existing manual form.
+- Engine: unchanged.
+
+**Tests**: `addWornArmorFromRef` reducer unit test (input `ArmorRef` → expected `WornArmor` + `armorId`).
+`bun run typecheck` + `bun run test` green.
+
+**Status**: Not Started
+
+---
+
+## Stage 8: Weapon picker (WeaponsSection)
+
+**Goal**: Add a search picker to `WeaponsSection` with an enhancement bonus selector and a "Custom"
+fallback to the existing manual form.
+
+**Success Criteria**:
+- Schema: add `weaponId?: string` to `WeaponInstance`.
+- `model/doc.ts`: `addWeaponFromRef(doc, weaponRef, enhancement?)` denormalizes `WeaponRef` →
+  `WeaponInstance` (overlaid with the user-chosen enhancement, name like "Longsword +1" when
+  nonzero) + sets `weaponId`.
+- `WeaponsSection` (already receives `refData` via props): picker UI + `+0…+5` enhancement
+  selector; "Custom" toggle reveals the existing manual form.
+- Engine: unchanged.
+
+**Tests**: `addWeaponFromRef` reducer unit test (with and without a nonzero enhancement).
+`bun run typecheck` + `bun run test` green. Optional e2e for "search longsword, set +1, assert
+derived attack/damage/crit".
+
+**Status**: Not Started
+
+---
+
 ## Deferred (de-risked by the architecture, not v1)
 
 - **Party/GM session** — Durable Object per session; documents already self-contained.
-- **Full offline PWA** — service worker + sync reconciliation; engine/doc already client-side.
+- **Full offline PWA** — service worker + sync reconciliation; engine already client-side.
 - **Import** — Pathbuilder/Foundry JSON → `CharacterDoc`.
 - **Homebrew authoring** — user entries in the same schema as SRD (the "expert flexibility" door).
+- **Named magical weapons/armor** (Frost Brand, Elven Chain) as selectable presets — Stages 6-8
+  vendor mundane bases only; named unique items have multi-part damage / special properties that
+  don't fit the current `WeaponInstance`/`WornArmor` shapes cleanly. Custom fallback covers them
+  for now.

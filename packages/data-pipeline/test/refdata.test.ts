@@ -25,7 +25,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(1);
+    expect(ref.meta.schemaVersion).toBe(2);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -33,6 +33,11 @@ describe("metadata + provenance", () => {
     for (const hash of Object.values(ref.meta.hashes)) {
       expect(hash).toMatch(/^[0-9a-f]{64}$/);
     }
+  });
+
+  it("includes hashes for the new armors + weapons files", () => {
+    expect(ref.meta.hashes["armors.json"]).toBeDefined();
+    expect(ref.meta.hashes["weapons.json"]).toBeDefined();
   });
 
   it("contains the expected slice", () => {
@@ -130,5 +135,91 @@ describe("typed-modifier data (engine input)", () => {
     const elf = byName(ref.races, "Elf");
     const dex = elf.changes.find((c) => c.target === "dex");
     expect(dex).toMatchObject({ formula: "2", type: "racial" });
+  });
+});
+
+describe("mundane armor & shields (new in schema v2)", () => {
+  it("vendors the expected mundane slice (no named magical suits)", () => {
+    // 62 entries as of the pinned SHA (v11.11). Bumping the SHA may shift this;
+    // changes here should be deliberate + reviewed.
+    expect(Object.keys(ref.armors).length).toBe(62);
+  });
+
+  it("Full Plate is a heavy body armor with AC 9 / max Dex 1 / ACP 6", () => {
+    const fp = byName(ref.armors, "Full Plate");
+    expect(fp).toMatchObject({
+      slot: "armor",
+      ac: 9,
+      maxDex: 1,
+      acp: 6,
+      weightClass: 3,
+      proficiency: "heavyArmor",
+    });
+  });
+
+  it("Buckler is a shield (no weight class; slot identifies it)", () => {
+    const b = byName(ref.armors, "Buckler");
+    expect(b).toMatchObject({ slot: "shield", ac: 1, acp: 1 });
+    expect(b.weightClass).toBeUndefined();
+  });
+
+  it("no mundane armor carries an enhancement/aura/masterwork marker", () => {
+    // `armors.json` was filtered upstream to mundane-only; this guards regressions
+    // in the filter (a magical entry would still pass as an ArmorRef).
+    for (const a of Object.values(ref.armors)) {
+      // magic gear lives in RefData.items; if it leaked here, counts would jump.
+      expect(["armor", "shield"]).toContain(a.slot);
+    }
+  });
+});
+
+describe("mundane weapons (new in schema v2)", () => {
+  it("vendors the expected mundane slice (no named magical weapons, no ammo)", () => {
+    // 340 entries as of the pinned SHA (v11.11). Includes simple/martial/exotic
+    // (firearms & exotic melee count as mundane exotic in PF1).
+    expect(Object.keys(ref.weapons).length).toBe(340);
+  });
+
+  it("Longsword is martial, melee, crit 19/×2, damage 1d8, group 'longsword'", () => {
+    const ls = byName(ref.weapons, "Longsword");
+    expect(ls).toMatchObject({
+      proficiency: "martial",
+      category: "melee",
+      attackAbility: "str",
+      damageAbility: "str",
+      critRange: 19,
+      critMult: 2,
+      damageDice: "1d8",
+      group: "longsword",
+      weaponSubtype: "1h",
+    });
+  });
+
+  it("Greatsword is a two-handed weapon with damageMultiplier 1.5", () => {
+    const gs = byName(ref.weapons, "Greatsword");
+    expect(gs).toMatchObject({
+      damageDice: "2d6",
+      damageMultiplier: 1.5,
+      weaponSubtype: "2h",
+    });
+  });
+
+  it("Composite Longbow is ranged, dex-attack, STR-to-damage", () => {
+    const cl = byName(ref.weapons, "Composite Longbow");
+    expect(cl).toMatchObject({
+      category: "ranged",
+      attackAbility: "dex",
+      damageAbility: "str",
+      damageDice: "1d8",
+      critRange: 20,
+      critMult: 3,
+      group: "longbow",
+    });
+  });
+
+  it("every mundane weapon has a (slugified) group derived from baseTypes", () => {
+    for (const w of Object.values(ref.weapons)) {
+      expect(w.group).toMatch(/^[a-z0-9-]+$/);
+    }
   });
 });

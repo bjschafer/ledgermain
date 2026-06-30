@@ -28,12 +28,14 @@ async function fetchAll(): Promise<RefData> {
     meta,
     races,
     classes,
-    classFeatures,
+    classFeature,
     feats,
     spells,
     buffs,
     items,
     spellLists,
+    armors,
+    weapons,
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
@@ -44,6 +46,20 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["buffs"]>("buffs.json"),
     getJson<RefData["items"]>("items.json"),
     getJson<RefData["spellLists"]>("spell-lists.json"),
+    getJson<RefData["armors"]>("armors.json"),
+    getJson<RefData["weapons"]>("weapons.json"),
   ]);
-  return { meta, races, classes, classFeatures, feats, spells, buffs, items, spellLists };
+  return {
+    meta,
+    races,
+    classes,
+    classFeatures: classFeature,
+    feats,
+    spells,
+    buffs,
+    items,
+    spellLists,
+    armors,
+    weapons,
+  };
 }

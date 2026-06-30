@@ -20,8 +20,11 @@ export const FOUNDRY_SHA = "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4";
 /** Human-readable system version corresponding to FOUNDRY_SHA. */
 export const SYSTEM_VERSION = "11.11";
 
-/** Bumped when the RefData *shape* changes (mirrors schema package intent). */
-export const SCHEMA_VERSION = 1;
+/**
+ * Bumped when the RefData *shape* changes (mirrors schema package intent).
+ * v2 added `armors` and `weapons` collections (Stage 6).
+ */
+export const SCHEMA_VERSION = 2;
 
 const here = dirname(fileURLToPath(import.meta.url));
 const packageRoot = resolve(here, "..");

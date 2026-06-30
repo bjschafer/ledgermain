@@ -28,6 +28,10 @@ export interface RefData {
   items: Record<string, Item>;
   /** Per-class spell lists, keyed by class tag → spell level → spell ids. */
   spellLists: Record<string, SpellList>;
+  /** Mundane base armor/shields (the `armors-and-shields` pack, magic excluded). */
+  armors: Record<string, ArmorRef>;
+  /** Mundane base weapons (the `weapons-and-ammo` pack, magic + ammo excluded). */
+  weapons: Record<string, WeaponRef>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -215,6 +219,86 @@ export interface Item extends RefEntity {
   changes: Change[];
   contextNotes: ContextNote[];
   aura?: { school?: string };
+}
+
+/* -------------------------------------------------------- armor & shields -- */
+
+/**
+ * A mundane base armor or shield from the `armors-and-shields` pack. Magic gear
+ * (Frost Brand etc.) is excluded; the enhancement bonus is handled separately
+ * as a user-set field on the character's weapon, and named magical armors live
+ * in `RefData.items` already (when they carry `changes`). The engine reads
+ * physical stats off the doc's `WornArmor`; the schema `armorId` on
+ * `ItemInstance` is purely a display + re-sync pointer back to this entry.
+ */
+export interface ArmorRef extends RefEntity {
+  /** "armor" (body slot) | "shield" (off-hand). */
+  slot: "armor" | "shield";
+  /** Base armor/shield AC bonus (e.g. 9 for Full Plate, 1 for a Buckler). */
+  ac: number;
+  /** Maximum Dexterity bonus the armor permits (omit for no cap). */
+  maxDex?: number;
+  /** Armor check penalty ∗as a positive magnitude∗ (e.g. 6 for Full Plate). */
+  acp?: number;
+  /**
+   * Armor weight class for `@armor.type` formulas: 1 light, 2 medium, 3 heavy.
+   * Omitted / 0 for shields (identified via `slot`; engine derives `armor.type`
+   * from body armor only).
+   */
+  weightClass?: 0 | 1 | 2 | 3;
+  /** Canonical base type label(s), e.g. ["Full Plate"]. */
+  baseTypes?: string[];
+  /** Foundry proficiency tag, e.g. "heavyArmor" / "lightShield" / "towerShield". */
+  proficiency?: string;
+  price?: number;
+  /** Total weight in pounds. */
+  weight?: number;
+}
+
+/* ---------------------------------------------------------------- weapons -- */
+
+/**
+ * A mundane base weapon from the `weapons-and-ammo` pack (simple / martial /
+ * exotic). Magic + ammo + siege subtypes are excluded; named magical weapons
+ * (Frost Brand) live in `RefData.items` already (when they carry `changes`).
+ * The engine computes per-weapon attack and damage from the doc's
+ * `WeaponInstance`; the schema `weaponId` is purely a display + re-sync pointer
+ * back to this entry.
+ */
+export interface WeaponRef extends RefEntity {
+  /** Damage dice for display, e.g. "1d8" (parsed from `sizeRoll(N,F,…)` / `NdM`). */
+  damageDice?: string;
+  /** Lower bound of the critical threat range (default 20). */
+  critRange?: number;
+  /** Critical hit multiplier (default 2). */
+  critMult?: number;
+  /**
+   * Per-weapon type slug the engine routes Weapon Focus / Specialization
+   * bonuses through (e.g. "longsword"); derived from `baseTypes[0]`.
+   */
+  group?: string;
+  /** Melee or ranged; which attack modifier target applies. */
+  category: "melee" | "ranged";
+  /** Ability used for the attack roll: "str" (mwak) or "dex" (rwak). */
+  attackAbility: "str" | "dex";
+  /** Ability added to damage: "str" when the source declares it, else "none". */
+  damageAbility?: "str" | "none";
+  /**
+   * Multiplier applied to the damage ability modifier (1 one-handed / ranged,
+   * 1.5 two-handed, 0.5 off-hand).
+   */
+  damageMultiplier?: number;
+  /** Foundry proficiency tag: "simple" | "martial" | "exotic". */
+  proficiency: string;
+  /** Foundry weapon-group tags, e.g. ["bladesHeavy"] (for Weapon Training). */
+  weaponGroups?: string[];
+  /** Foundry weapon subtype: "1h" | "2h" | "ranged" (drives damageMultiplier). */
+  weaponSubtype?: string;
+  /** Canonical base type label(s), e.g. ["Longsword"]. */
+  baseTypes?: string[];
+  price?: number;
+  /** Total weight in pounds. */
+  weight?: number;
 }
 
 export type { SourceRef };

@@ -313,3 +313,121 @@ exports[`normalized-output snapshots race: Human 1`] = `
   "uuid": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr",
 }
 `;
+
+exports[`normalized-output snapshots armor: Full Plate (mundane heavy body armor) 1`] = `
+{
+  "ac": 9,
+  "acp": 6,
+  "baseTypes": [
+    "Full Plate",
+  ],
+  "id": "h65qEp22nsyRoeRa",
+  "maxDex": 1,
+  "name": "Full Plate",
+  "price": 1500,
+  "proficiency": "heavyArmor",
+  "slot": "armor",
+  "sources": [
+    {
+      "id": "PZO1110",
+      "pages": "150, 151",
+    },
+  ],
+  "uuid": "Compendium.pf1.armors-and-shields.Item.h65qEp22nsyRoeRa",
+  "weight": 50,
+  "weightClass": 3,
+}
+`;
+
+exports[`normalized-output snapshots armor: Buckler (mundane shield) 1`] = `
+{
+  "ac": 1,
+  "acp": 1,
+  "baseTypes": [
+    "Buckler",
+  ],
+  "id": "gsE0PAOmCwivue5A",
+  "name": "Buckler",
+  "price": 5,
+  "proficiency": "other",
+  "slot": "shield",
+  "sources": [
+    {
+      "id": "PZO1110",
+      "pages": "150, 151",
+    },
+  ],
+  "uuid": "Compendium.pf1.armors-and-shields.Item.gsE0PAOmCwivue5A",
+  "weight": 5,
+}
+`;
+
+exports[`normalized-output snapshots weapon: Longsword (martial melee, crit range 19) 1`] = `
+{
+  "attackAbility": "str",
+  "baseTypes": [
+    "Longsword",
+  ],
+  "category": "melee",
+  "critMult": 2,
+  "critRange": 19,
+  "damageAbility": "str",
+  "damageDice": "1d8",
+  "group": "longsword",
+  "id": "zWRlna42PMJVX6un",
+  "name": "Longsword",
+  "price": 15,
+  "proficiency": "martial",
+  "sources": [
+    {
+      "id": "PZO1110",
+      "pages": "142, 147",
+    },
+    {
+      "id": "PZO1123",
+      "pages": "18",
+    },
+  ],
+  "uuid": "Compendium.pf1.weapons-and-ammo.Item.zWRlna42PMJVX6un",
+  "weaponGroups": [
+    "bladesHeavy",
+  ],
+  "weaponSubtype": "1h",
+  "weight": 4,
+}
+`;
+
+exports[`normalized-output snapshots weapon: Composite Longbow (ranged, STR-to-damage) 1`] = `
+{
+  "attackAbility": "dex",
+  "baseTypes": [
+    "Longbow",
+  ],
+  "category": "ranged",
+  "critMult": 3,
+  "critRange": 20,
+  "damageAbility": "str",
+  "damageDice": "1d8",
+  "group": "longbow",
+  "id": "msTiRxZVnecbPCA8",
+  "name": "Composite Longbow",
+  "price": 100,
+  "proficiency": "martial",
+  "sources": [
+    {
+      "id": "PZO1110",
+      "pages": "143, 147",
+    },
+    {
+      "id": "PZO9452",
+      "pages": "0",
+    },
+  ],
+  "uuid": "Compendium.pf1.weapons-and-ammo.Item.msTiRxZVnecbPCA8",
+  "weaponGroups": [
+    "bows",
+  ],
+  "weaponSubtype": "ranged",
+  "weight": 3,
+}
+`;

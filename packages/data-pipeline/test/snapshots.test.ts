@@ -47,4 +47,20 @@ describe("normalized-output snapshots", () => {
   it("race: Human", () => {
     expect(omitDescription(byName(ref.races, "Human")!)).toMatchSnapshot();
   });
+
+  it("armor: Full Plate (mundane heavy body armor)", () => {
+    expect(byName(ref.armors, "Full Plate")!).toMatchSnapshot();
+  });
+
+  it("armor: Buckler (mundane shield)", () => {
+    expect(byName(ref.armors, "Buckler")!).toMatchSnapshot();
+  });
+
+  it("weapon: Longsword (martial melee, crit range 19)", () => {
+    expect(byName(ref.weapons, "Longsword")!).toMatchSnapshot();
+  });
+
+  it("weapon: Composite Longbow (ranged, STR-to-damage)", () => {
+    expect(byName(ref.weapons, "Composite Longbow")!).toMatchSnapshot();
+  });
 });

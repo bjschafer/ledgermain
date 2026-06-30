@@ -217,16 +217,24 @@ export interface ActiveBuff {
  * A piece of gear on the character. Magic/typed-modifier items reference
  * `RefData.items` by id (their `changes` feed the stacking engine when equipped).
  *
- * The vendored data slice does NOT include the base `armors-and-shields` pack, so
- * worn body-armor/shield AC stats are recorded directly on the instance via
- * `armor`. (Stage 1 only vendored the magic-item subset that carries `changes`.)
+ * Base armor/shields selected from the picker snapshot their physical stats onto
+ * `armor` at add-time (from `RefData.armors`, referenced by `armorId`); the
+ * engine reads those stats off `armor` directly on compute. The `armorId` is a
+ * display + re-sync pointer; a magic-item `itemId` and an `armorId` may both be
+ * present (e.g. a named magical suit).
  */
 export interface ItemInstance {
   /** Reference into RefData.items. Optional for purely mundane gear. */
   itemId?: string;
+  /**
+   * Reference into `RefData.armors` when this gear entry was created by
+   * selecting a base armor/shield from the picker. Display + re-sync only —
+   * the engine reads physical stats from `armor`, not from this id.
+   */
+  armorId?: string;
   /** Only equipped items contribute their changes to the derived sheet. */
   equipped: boolean;
-  /** Worn armor/shield physical stats (not present in the vendored slice). */
+  /** Worn armor/shield physical stats (snapshotted from RefData.armors on pick). */
   armor?: WornArmor;
   /** Display label fallback when `itemId` is absent. */
   name?: string;
@@ -246,13 +254,20 @@ export interface WornArmor {
 }
 
 /**
- * A manually-entered weapon (base weapons are not vendored, same as armor).
- * Enough information to compute per-weapon attack and numeric damage bonus lines.
- * Dice and crit are stored for display; the engine never rolls.
+ * A weapon on the character — either hand-entered (the "Custom" picker fallback)
+ * or snapshotted from `RefData.weapons` via `weaponId`. Enough information to
+ * compute per-weapon attack and numeric damage bonus lines. Dice and crit are
+ * stored for display; the engine never rolls.
  */
 export interface WeaponInstance {
   /** Display name (e.g. "Longsword +1"). */
   name: string;
+  /**
+   * Reference into `RefData.weapons` when this weapon was created by selecting
+   * a base weapon from the picker. Display + re-sync only — the engine reads
+   * the per-weapon stats off this `WeaponInstance` directly.
+   */
+  weaponId?: string;
   /** Which ability modifier applies to the attack roll. */
   attackAbility: "str" | "dex";
   /**

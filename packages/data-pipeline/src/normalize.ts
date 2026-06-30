@@ -1,6 +1,7 @@
 import { join } from "node:path";
 
 import type {
+  ArmorRef,
   Buff,
   Class,
   ClassFeature,
@@ -11,15 +12,18 @@ import type {
   RefDataMeta,
   Spell,
   SpellList,
+  WeaponRef,
 } from "@pf1/schema";
 
 import { SCHEMA_VERSION, SLICE } from "./config.js";
+import { transformArmor, isMundaneArmor } from "./transform/armor.js";
 import { transformBuff } from "./transform/buffs.js";
 import { transformClass, transformClassFeature } from "./transform/classes.js";
 import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
 import { transformRace } from "./transform/races.js";
 import { transformSpell } from "./transform/spells.js";
+import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { parseUuid } from "./util/uuid.js";
 
@@ -130,6 +134,16 @@ export function normalize(opts: NormalizeOptions): {
     .map((pf) => transformItem(pf.doc))
     .filter((it) => it.changes.length > 0);
 
+  // --- armors & shields (mundane base gear; magic named suits excluded) ------
+  const armors: ArmorRef[] = readPack(join(packsDir, "armors-and-shields"))
+    .filter((pf) => isMundaneArmor(pf.doc))
+    .map((pf) => transformArmor(pf.doc));
+
+  // --- weapons (mundane base: simple / martial / exotic; magic + ammo excl) -
+  const weapons: WeaponRef[] = readPack(join(packsDir, "weapons-and-ammo"))
+    .filter((pf) => isMundaneWeapon(pf.doc))
+    .map((pf) => transformWeapon(pf.doc));
+
   // Determine content (core) version from any doc's _stats.
   const contentVersion =
     selectedClassDocs[0]?._stats?.coreVersion ??
@@ -144,6 +158,8 @@ export function normalize(opts: NormalizeOptions): {
     spells: spells.length,
     buffs: buffs.length,
     items: items.length,
+    armors: armors.length,
+    weapons: weapons.length,
   };
 
   const meta: RefDataMeta = {
@@ -168,6 +184,8 @@ export function normalize(opts: NormalizeOptions): {
     buffs: byId(buffs),
     items: byId(items),
     spellLists,
+    armors: byId(armors),
+    weapons: byId(weapons),
   };
 
   return { refData, contentVersion };
