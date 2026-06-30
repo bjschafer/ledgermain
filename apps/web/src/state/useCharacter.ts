@@ -4,7 +4,7 @@
  * transition from `model/doc`. `compute()` is pure and cheap, so the derived
  * sheet is recomputed on every document change (DESIGN.md §3.2 / Stage 2 notes).
  */
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { compute } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
@@ -33,6 +33,12 @@ export interface CharacterStore {
   sheet?: DerivedSheet;
   /** Saved characters on this device, most-recently-active first. */
   characters: CharacterSummary[];
+  /** True while a character-management action (below) is in flight. */
+  actionPending: boolean;
+  /** Message from the most recent failed character-management action, if any. */
+  actionError?: string;
+  /** Dismiss the current `actionError` without taking another action. */
+  clearActionError: () => void;
   /** Apply a pure transition (from model/doc) to the working document. */
   update: (fn: (doc: CharacterDoc) => CharacterDoc) => void;
   /** Make a different saved character the active one. */
@@ -53,9 +59,27 @@ export function useCharacter(): CharacterStore {
   const [refData, setRefData] = useState<RefData>();
   const [doc, setDoc] = useState<CharacterDoc>();
   const [characters, setCharacters] = useState<CharacterSummary[]>([]);
+  const [actionPending, setActionPending] = useState(false);
+  const [actionError, setActionError] = useState<string>();
 
-  const refreshList = useCallback(() => {
-    void listCharacters().then(setCharacters);
+  const clearActionError = useCallback(() => setActionError(undefined), []);
+
+  // Full re-fetch — only worth its IndexedDB table scan when the saved-character
+  // *set* actually changed (switch/create/import/delete/reset), not on every edit.
+  const refreshList = useCallback(async () => {
+    setCharacters(await listCharacters());
+  }, []);
+
+  // Cheap local patch for the common case: an autosave that only changed the
+  // active character's own content (e.g. a renamed identity). Avoids re-reading
+  // every saved character's full document body on every debounced edit.
+  const upsertLocalSummary = useCallback((d: CharacterDoc) => {
+    setCharacters((prev) => {
+      const next = prev.filter((c) => c.id !== d.id);
+      next.push({ id: d.id, name: d.identity.name, updatedAt: d.updatedAt });
+      next.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+      return next;
+    });
   }, []);
 
   useEffect(() => {
@@ -69,7 +93,7 @@ export function useCharacter(): CharacterStore {
         // (cantrips are now derived from the class list, not stored).
         setDoc(reconcileGrantedCantrips(loaded, ref));
         setStatus("ready");
-        refreshList();
+        void refreshList();
       })
       .catch((e: unknown) => {
         if (!alive) return;
@@ -82,57 +106,127 @@ export function useCharacter(): CharacterStore {
   }, [refreshList]);
 
   // Autosave to IndexedDB (debounced). Version stays put until Stage 5 adds the
-  // sync push that needs optimistic-concurrency bumps.
+  // sync push that needs optimistic-concurrency bumps. The pending timer is kept
+  // in a ref (not just the effect's local closure) so character-switching actions
+  // below can flush or cancel it explicitly instead of losing the race to it.
+  const pendingSaveRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     if (!doc) return;
-    const id = setTimeout(() => {
+    pendingSaveRef.current = setTimeout(() => {
+      pendingSaveRef.current = null;
+      const next = { ...doc, updatedAt: new Date().toISOString() };
       void db.characters
-        .put({ ...doc, updatedAt: new Date().toISOString() })
-        .then(refreshList);
+        .put(next)
+        .then(() => upsertLocalSummary(next))
+        .catch((e: unknown) => {
+          setActionError(e instanceof Error ? e.message : String(e));
+        });
     }, 300);
-    return () => clearTimeout(id);
-  }, [doc, refreshList]);
+    return () => {
+      if (pendingSaveRef.current != null) {
+        clearTimeout(pendingSaveRef.current);
+        pendingSaveRef.current = null;
+      }
+    };
+  }, [doc, upsertLocalSummary]);
+
+  /** Write the current doc immediately if an autosave is pending, then clear the timer. */
+  const flushPendingSave = useCallback(async () => {
+    if (pendingSaveRef.current == null || !doc) return;
+    clearTimeout(pendingSaveRef.current);
+    pendingSaveRef.current = null;
+    const next = { ...doc, updatedAt: new Date().toISOString() };
+    await db.characters.put(next);
+    upsertLocalSummary(next);
+  }, [doc, upsertLocalSummary]);
+
+  /** Discard a pending autosave without writing it (the doc is about to be deleted/wiped). */
+  const cancelPendingSave = useCallback(() => {
+    if (pendingSaveRef.current != null) {
+      clearTimeout(pendingSaveRef.current);
+      pendingSaveRef.current = null;
+    }
+  }, []);
 
   const update = useCallback((fn: (d: CharacterDoc) => CharacterDoc) => {
     setDoc((prev) => (prev ? fn(prev) : prev));
   }, []);
 
   const adopt = useCallback(
-    (loaded: CharacterDoc) => {
+    async (loaded: CharacterDoc) => {
       if (!refData) {
         throw new Error(
           "Cannot switch characters before reference data has loaded",
         );
       }
-      setDoc(reconcileGrantedCantrips(loaded, refData));
-      refreshList();
+      const reconciled = reconcileGrantedCantrips(loaded, refData);
+      // Refresh the list before flipping `doc`, so the two land in the same
+      // render — otherwise the switcher briefly shows an id with no matching
+      // option (its list query resolves a tick after `doc` does).
+      const list = await listCharacters();
+      setCharacters(list);
+      setDoc(reconciled);
     },
-    [refData, refreshList],
+    [refData],
   );
 
+  /** Runs a character-management action with pending/error tracking and re-entrancy guarding. */
+  const runAction = useCallback(async (fn: () => Promise<void>) => {
+    setActionPending(true);
+    setActionError(undefined);
+    try {
+      await fn();
+    } catch (e) {
+      setActionError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setActionPending(false);
+    }
+  }, []);
+
   const switchCharacter = useCallback(
-    async (id: string) => adopt(await loadCharacterDb(id)),
-    [adopt],
+    (id: string) =>
+      runAction(async () => {
+        await flushPendingSave();
+        await adopt(await loadCharacterDb(id));
+      }),
+    [adopt, flushPendingSave, runAction],
   );
 
   const createCharacter = useCallback(
-    async () => adopt(await createCharacterDb()),
-    [adopt],
+    () =>
+      runAction(async () => {
+        await flushPendingSave();
+        await adopt(await createCharacterDb());
+      }),
+    [adopt, flushPendingSave, runAction],
   );
 
   const importCharacter = useCallback(
-    async (parsed: CharacterDoc) => adopt(await importCharacterDb(parsed)),
-    [adopt],
+    (parsed: CharacterDoc) =>
+      runAction(async () => {
+        await flushPendingSave();
+        await adopt(await importCharacterDb(parsed));
+      }),
+    [adopt, flushPendingSave, runAction],
   );
 
   const resetAll = useCallback(
-    async () => adopt(await resetAllCharacters()),
-    [adopt],
+    () =>
+      runAction(async () => {
+        cancelPendingSave();
+        await adopt(await resetAllCharacters());
+      }),
+    [adopt, cancelPendingSave, runAction],
   );
 
   const deleteCharacter = useCallback(
-    async (id: string) => adopt(await deleteCharacterDb(id)),
-    [adopt],
+    (id: string) =>
+      runAction(async () => {
+        if (doc?.id === id) cancelPendingSave();
+        await adopt(await deleteCharacterDb(id));
+      }),
+    [adopt, cancelPendingSave, runAction, doc],
   );
 
   const sheet = useMemo(
@@ -147,6 +241,9 @@ export function useCharacter(): CharacterStore {
     doc,
     sheet,
     characters,
+    actionPending,
+    actionError,
+    clearActionError,
     update,
     switchCharacter,
     createCharacter,

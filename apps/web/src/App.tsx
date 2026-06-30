@@ -68,9 +68,20 @@ export function App() {
             <CharacterSwitcher
               characters={store.characters}
               activeId={store.doc.id}
+              disabled={store.actionPending}
               onSwitch={(id) => void store.switchCharacter(id)}
               onCreate={() => void store.createCharacter()}
             />
+          )}
+          {store.actionError && (
+            <button
+              type="button"
+              className="action-error"
+              onClick={store.clearActionError}
+              title="Dismiss"
+            >
+              ⚠ {store.actionError}
+            </button>
           )}
           <div className="tagline">
             {store.refData
@@ -109,6 +120,7 @@ export function App() {
           onImportCharacter={(doc) => void store.importCharacter(doc)}
           onResetAll={() => void store.resetAll()}
           onDeleteCharacter={(id) => void store.deleteCharacter(id)}
+          actionPending={store.actionPending}
         />
       )}
     </div>
@@ -120,12 +132,14 @@ function Workbench({
   onImportCharacter,
   onResetAll,
   onDeleteCharacter,
+  actionPending,
   ...props
 }: BuilderProps & {
   mode: Mode;
   onImportCharacter: (doc: CharacterDoc) => void;
   onResetAll: () => void;
   onDeleteCharacter: (id: string) => void;
+  actionPending: boolean;
 }) {
   return (
     <div className="layout">
@@ -149,6 +163,7 @@ function Workbench({
             onImportCharacter={onImportCharacter}
             onResetAll={onResetAll}
             onDeleteCharacter={onDeleteCharacter}
+            actionPending={actionPending}
           />
         ) : (
           <Tracker {...props} />

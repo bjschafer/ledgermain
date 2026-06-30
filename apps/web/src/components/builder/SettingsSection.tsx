@@ -48,10 +48,12 @@ export function SettingsSection({
 	onImportCharacter,
 	onResetAll,
 	onDeleteCharacter,
+	actionPending,
 }: BuilderProps & {
 	onImportCharacter: (doc: CharacterDoc) => void;
 	onResetAll: () => void;
 	onDeleteCharacter: (id: string) => void;
+	actionPending: boolean;
 }) {
 	const settings = doc.build.settings ?? {};
 	const hpMode = settings.hpMode ?? "average";
@@ -263,14 +265,23 @@ export function SettingsSection({
 					importing a different file adds it as a new one.
 				</p>
 				<div className="settings-row">
-					<button type="button" className="btn-ghost" onClick={handleExport}>
+					<button
+						type="button"
+						className="btn-ghost"
+						disabled={actionPending}
+						onClick={handleExport}
+					>
 						Export character (.json)
 					</button>
-					<label className="btn-ghost" style={{ cursor: "pointer" }}>
+					<label
+						className={`btn-ghost${actionPending ? " btn-disabled" : ""}`}
+						style={{ cursor: actionPending ? "wait" : "pointer" }}
+					>
 						Import character…
 						<input
 							type="file"
 							accept="application/json"
+							disabled={actionPending}
 							style={{ display: "none" }}
 							onChange={(e) => void handleImportChange(e)}
 						/>
@@ -287,9 +298,60 @@ export function SettingsSection({
 			<DangerZonePanel
 				characterId={doc.id}
 				characterName={doc.identity.name}
+				actionPending={actionPending}
 				onDeleteCharacter={onDeleteCharacter}
 				onResetAll={onResetAll}
 			/>
+		</>
+	);
+}
+
+/**
+ * A destructive action gated behind a type-to-confirm input: the button stays
+ * disabled until the user types `confirmWord` exactly.
+ */
+function ConfirmAction({
+	description,
+	confirmWord,
+	buttonLabel,
+	disabled,
+	onConfirm,
+}: {
+	description: string;
+	confirmWord: string;
+	buttonLabel: string;
+	disabled?: boolean;
+	onConfirm: () => void;
+}) {
+	const [confirmText, setConfirmText] = useState("");
+	const canConfirm = confirmText.trim().toUpperCase() === confirmWord;
+
+	return (
+		<>
+			<p className="hint" style={{ marginBottom: 12 }}>
+				{description}
+			</p>
+			<div className="settings-row">
+				<input
+					type="text"
+					className="danger-confirm"
+					placeholder={`Type "${confirmWord}" to confirm`}
+					value={confirmText}
+					onChange={(e) => setConfirmText(e.target.value)}
+					aria-label={`Type ${confirmWord} to confirm`}
+				/>
+				<button
+					type="button"
+					className="btn-ghost btn-danger"
+					disabled={!canConfirm || disabled}
+					onClick={() => {
+						onConfirm();
+						setConfirmText("");
+					}}
+				>
+					{buttonLabel}
+				</button>
+			</div>
 		</>
 	);
 }
@@ -301,72 +363,33 @@ export function SettingsSection({
 function DangerZonePanel({
 	characterId,
 	characterName,
+	actionPending,
 	onDeleteCharacter,
 	onResetAll,
 }: {
 	characterId: string;
 	characterName: string;
+	actionPending: boolean;
 	onDeleteCharacter: (id: string) => void;
 	onResetAll: () => void;
 }) {
-	const [deleteConfirmText, setDeleteConfirmText] = useState("");
-	const [resetConfirmText, setResetConfirmText] = useState("");
-	const canDelete = deleteConfirmText.trim().toUpperCase() === "DELETE";
-	const canReset = resetConfirmText.trim().toUpperCase() === "RESET";
-
 	return (
 		<Panel title="Danger Zone" step="⚙">
-			<p className="hint" style={{ marginBottom: 12 }}>
-				Permanently deletes this character ("{characterName || "Unnamed"}").
-				This cannot be undone.
-			</p>
-			<div className="settings-row">
-				<input
-					type="text"
-					className="danger-confirm"
-					placeholder='Type "DELETE" to confirm'
-					value={deleteConfirmText}
-					onChange={(e) => setDeleteConfirmText(e.target.value)}
-					aria-label="Type DELETE to confirm"
+			<ConfirmAction
+				description={`Permanently deletes this character ("${characterName || "Unnamed"}"). This cannot be undone.`}
+				confirmWord="DELETE"
+				buttonLabel="Delete this character"
+				disabled={actionPending}
+				onConfirm={() => onDeleteCharacter(characterId)}
+			/>
+			<div style={{ marginTop: 16 }}>
+				<ConfirmAction
+					description="Permanently deletes every saved character on this device, including this one, and starts over with a single blank character. This cannot be undone."
+					confirmWord="RESET"
+					buttonLabel="Reset everything"
+					disabled={actionPending}
+					onConfirm={onResetAll}
 				/>
-				<button
-					type="button"
-					className="btn-ghost btn-danger"
-					disabled={!canDelete}
-					onClick={() => {
-						onDeleteCharacter(characterId);
-						setDeleteConfirmText("");
-					}}
-				>
-					Delete this character
-				</button>
-			</div>
-
-			<p className="hint" style={{ margin: "16px 0 12px" }}>
-				Permanently deletes every saved character on this device, including
-				this one, and starts over with a single blank character. This cannot
-				be undone.
-			</p>
-			<div className="settings-row">
-				<input
-					type="text"
-					className="danger-confirm"
-					placeholder='Type "RESET" to confirm'
-					value={resetConfirmText}
-					onChange={(e) => setResetConfirmText(e.target.value)}
-					aria-label="Type RESET to confirm"
-				/>
-				<button
-					type="button"
-					className="btn-ghost btn-danger"
-					disabled={!canReset}
-					onClick={() => {
-						onResetAll();
-						setResetConfirmText("");
-					}}
-				>
-					Reset everything
-				</button>
 			</div>
 		</Panel>
 	);

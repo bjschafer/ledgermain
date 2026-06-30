@@ -33,6 +33,37 @@ export async function saveCharacter(doc: CharacterDoc): Promise<CharacterDoc> {
   return next;
 }
 
+// Which character is "active" is recorded explicitly in localStorage (shared
+// synchronously across same-origin tabs), not derived from `updatedAt`
+// recency. Recency alone lets a tab that's merely autosaving edits to
+// character A silently steal "active" status back from a tab that explicitly
+// switched to character B. localStorage may be unavailable (private
+// browsing, disabled storage) — treat that as "no explicit choice recorded"
+// and fall back to recency.
+const ACTIVE_ID_KEY = "pf1-tracker:activeCharacterId";
+
+function getStoredActiveId(): string | null {
+  try {
+    return localStorage.getItem(ACTIVE_ID_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function setStoredActiveId(id: string): void {
+  try {
+    localStorage.setItem(ACTIVE_ID_KEY, id);
+  } catch {
+    // Storage unavailable — active-character tracking degrades to recency-only.
+  }
+}
+
+/** Mark a document as the explicitly active one, then return it unchanged. */
+function rememberActive(doc: CharacterDoc): CharacterDoc {
+  setStoredActiveId(doc.id);
+  return doc;
+}
+
 // Concurrent calls (e.g. React StrictMode's mount→unmount→remount double-invoke
 // of the load effect) would otherwise race the read-then-create below and each
 // create their own blank character. Share one in-flight promise so a second
@@ -43,8 +74,12 @@ let activeLoadPromise: Promise<CharacterDoc> | null = null;
 export async function loadOrCreateActive(): Promise<CharacterDoc> {
   if (!activeLoadPromise) {
     activeLoadPromise = (async () => {
+      const storedId = getStoredActiveId();
+      const stored = storedId ? await db.characters.get(storedId) : undefined;
+      if (stored) return rememberActive(migrateDoc(stored));
       const existing = await db.characters.orderBy("updatedAt").last();
-      return existing ? migrateDoc(existing) : createCharacter();
+      if (existing) return rememberActive(migrateDoc(existing));
+      return createCharacter();
     })().finally(() => {
       activeLoadPromise = null;
     });
@@ -75,14 +110,14 @@ export async function loadCharacter(id: string): Promise<CharacterDoc> {
   if (!doc) throw new Error(`No saved character with id ${id}`);
   const next = { ...migrateDoc(doc), updatedAt: new Date().toISOString() };
   await db.characters.put(next);
-  return next;
+  return rememberActive(next);
 }
 
 /** Create a brand-new blank character and make it active. */
 export async function createCharacter(): Promise<CharacterDoc> {
   const fresh = createEmptyDoc(crypto.randomUUID());
   await db.characters.put(fresh);
-  return fresh;
+  return rememberActive(fresh);
 }
 
 /**
@@ -94,7 +129,7 @@ export async function createCharacter(): Promise<CharacterDoc> {
 export async function importCharacter(doc: CharacterDoc): Promise<CharacterDoc> {
   const next = { ...doc, updatedAt: new Date().toISOString() };
   await db.characters.put(next);
-  return next;
+  return rememberActive(next);
 }
 
 /** Wipe every saved character and start over with one fresh blank doc. */

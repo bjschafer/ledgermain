@@ -136,6 +136,23 @@ a {
 	padding: 4px 8px;
 }
 
+.char-switcher:disabled {
+	opacity: 0.6;
+	cursor: wait;
+}
+
+.action-error {
+	max-width: 280px;
+	background: none;
+	border: 1px solid var(--oxblood);
+	border-radius: var(--radius);
+	color: var(--oxblood);
+	font-size: 12px;
+	padding: 4px 8px;
+	text-align: right;
+	cursor: pointer;
+}
+
 .layout {
 	display: grid;
 	grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -553,6 +570,12 @@ button:focus-visible,
 	color: var(--muted);
 	padding: 4px 10px;
 	font-size: 12px;
+}
+
+.btn-ghost:disabled,
+.btn-ghost.btn-disabled {
+	opacity: 0.5;
+	pointer-events: none;
 }
 
 .btn-ghost:hover {
