@@ -99,7 +99,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel
       title="Feats"
-      step="vi"
+      step="vii"
       storageKey="panel:Feats"
       right={
         <span className={featCountClass} title={chosen !== expected ? "Feat count doesn't match expected" : undefined}>

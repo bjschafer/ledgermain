@@ -28,7 +28,7 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
 	return (
 		<Panel
 			title="Skills"
-			step="v"
+			step="vi"
 			storageKey="panel:Skills"
 			right={
 				<span className={`budge${over ? " over" : ""}`}>

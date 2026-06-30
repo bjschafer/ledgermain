@@ -28,7 +28,7 @@ export function HitPointsSection({
 	return (
 		<Panel
 			title="Hit Points"
-			step="★"
+			step="v"
 			storageKey="panel:HitPoints"
 			right={
 				<span className="hint">

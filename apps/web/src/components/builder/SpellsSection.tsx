@@ -129,7 +129,7 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
   return (
     <Panel
       title={model ? knownLabel : "Spells"}
-      step="vii"
+      step="x"
       storageKey="panel:Spells"
       right={
         <span className="hint">
