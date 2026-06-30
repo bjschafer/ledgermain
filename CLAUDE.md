@@ -82,3 +82,7 @@ The engine is a **clean-room reimplementation** from the published PF1 rules, ke
 - TypeScript strict everywhere. `bun run typecheck` is the gate that must stay green.
 - When touching the engine, add hand-computed fixture tests (the pattern in `packages/engine/test/`); the engine tests run against the real vendored data slice via `loadRefData()`.
 - Feat prereqs are **hybrid**: hard-block only on *structured* signals (ability min, BAB, caster level, required `@UUID` feats); prose-only prereqs (`prereqText`) show a soft warning and never block. Don't promise perfect prereq enforcement.
+
+## Git
+
+This is a personal project: **commit directly to `main` by default** — no feature branch or PR needed unless explicitly asked. **Commit working changes by default** once they typecheck (don't leave the tree dirty waiting to be asked). This applies to subagents too. Do not add `Co-Authored-By` trailers.
