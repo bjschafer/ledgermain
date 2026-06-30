@@ -42,7 +42,9 @@ export {
   skillUsesAcp,
   raceGrantsFlexibleAbility,
   baseSpellsPerDay,
+  baseSpellsKnown,
   type SpellProgression,
+  type SpellKnownProgression,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";

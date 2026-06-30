@@ -156,10 +156,10 @@ export function raceGrantsFlexibleAbility(race: Race): boolean {
 /**
  * Spell progressions whose base spells-per-day tables live here. Like BAB/saves,
  * these numbers are NOT in the vendored Foundry data (clean-room, from the
- * published rules). Only full prepared-arcane (wizard) is tabled today; add a
- * key + table to extend.
+ * published rules). Only full prepared-arcane (wizard) and spontaneous-arcane
+ * (sorcerer) are tabled today; add a key + table to extend.
  */
-export type SpellProgression = "wizard";
+export type SpellProgression = "wizard" | "sorcerer";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -191,8 +191,83 @@ const WIZARD_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
   /* L20 */ [4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 ];
 
+/**
+ * Sorcerer base spells per day, indexed `[classLevel - 1][spellLevel]`.
+ * `null` = not yet accessible or not applicable. Column 0 (cantrips) is always
+ * null because sorcerers cast cantrips at will (unlimited). Columns 1–9 are
+ * daily slots. Bonus spells from Charisma are NOT included here. (PF1 SRD —
+ * clean-room table from the published rules, open game content.)
+ */
+const SORCERER_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, 3, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, 4, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, 5, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 6, 3, null, null, null, null, null, null, null],
+  /* L5  */ [null, 6, 4, null, null, null, null, null, null, null],
+  /* L6  */ [null, 6, 5, 3, null, null, null, null, null, null],
+  /* L7  */ [null, 6, 6, 4, null, null, null, null, null, null],
+  /* L8  */ [null, 6, 6, 5, 3, null, null, null, null, null],
+  /* L9  */ [null, 6, 6, 6, 4, null, null, null, null, null],
+  /* L10 */ [null, 6, 6, 6, 5, 3, null, null, null, null],
+  /* L11 */ [null, 6, 6, 6, 6, 4, null, null, null, null],
+  /* L12 */ [null, 6, 6, 6, 6, 5, 3, null, null, null],
+  /* L13 */ [null, 6, 6, 6, 6, 6, 4, null, null, null],
+  /* L14 */ [null, 6, 6, 6, 6, 6, 5, 3, null, null],
+  /* L15 */ [null, 6, 6, 6, 6, 6, 6, 4, null, null],
+  /* L16 */ [null, 6, 6, 6, 6, 6, 6, 5, 3, null],
+  /* L17 */ [null, 6, 6, 6, 6, 6, 6, 6, 4, null],
+  /* L18 */ [null, 6, 6, 6, 6, 6, 6, 6, 5, 3],
+  /* L19 */ [null, 6, 6, 6, 6, 6, 6, 6, 6, 4],
+  /* L20 */ [null, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+];
+
+/**
+ * Sorcerer spells known per level, indexed `[classLevel - 1][spellLevel]`.
+ * Column 0 tracks cantrips known, but is not used when the model sets
+ * `grantsAllCantrips: true`. Columns 1–9 cap how many spells the sorcerer
+ * may know at that spell level. (PF1 SRD — clean-room, open game content.)
+ */
+const SORCERER_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [4, 2, null, null, null, null, null, null, null, null],
+  /* L2  */ [5, 2, null, null, null, null, null, null, null, null],
+  /* L3  */ [5, 3, null, null, null, null, null, null, null, null],
+  /* L4  */ [6, 3, 1, null, null, null, null, null, null, null],
+  /* L5  */ [6, 4, 2, null, null, null, null, null, null, null],
+  /* L6  */ [7, 4, 2, 1, null, null, null, null, null, null],
+  /* L7  */ [7, 4, 3, 2, null, null, null, null, null, null],
+  /* L8  */ [8, 4, 3, 2, 1, null, null, null, null, null],
+  /* L9  */ [8, 4, 3, 3, 2, null, null, null, null, null],
+  /* L10 */ [9, 4, 4, 3, 2, 1, null, null, null, null],
+  /* L11 */ [9, 4, 4, 3, 3, 2, null, null, null, null],
+  /* L12 */ [9, 4, 4, 4, 3, 2, 1, null, null, null],
+  /* L13 */ [9, 4, 4, 4, 3, 3, 2, null, null, null],
+  /* L14 */ [9, 4, 4, 4, 4, 3, 2, 1, null, null],
+  /* L15 */ [9, 4, 4, 4, 4, 3, 3, 2, null, null],
+  /* L16 */ [9, 4, 4, 4, 4, 4, 3, 2, 1, null],
+  /* L17 */ [9, 4, 4, 4, 4, 4, 3, 3, 2, null],
+  /* L18 */ [9, 4, 4, 4, 4, 4, 4, 3, 2, 1],
+  /* L19 */ [9, 4, 4, 4, 4, 4, 4, 3, 3, 2],
+  /* L20 */ [9, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+];
+
+/**
+ * Progressions for which a separate spells-known table exists. Spontaneous
+ * casters have a fixed set of spells they can know at each spell level (capped
+ * per the known table), as distinct from prepared casters whose spellbook IS
+ * their known list (unlimited within the rules for acquired spells).
+ */
+export type SpellKnownProgression = "sorcerer";
+
+const KNOWN_PROGRESSIONS: Record<
+  SpellKnownProgression,
+  readonly (readonly (number | null)[])[]
+> = {
+  sorcerer: SORCERER_SPELLS_KNOWN,
+};
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
+  sorcerer: SORCERER_SPELLS_PER_DAY,
 };
 
 /**
@@ -207,6 +282,23 @@ export function baseSpellsPerDay(
   spellLevel: number,
 ): number | null {
   const table = PROGRESSIONS[progression];
+  if (classLevel < 1 || classLevel > table.length) return null;
+  if (spellLevel < 0 || spellLevel > 9) return null;
+  return table[classLevel - 1]![spellLevel] ?? null;
+}
+
+/**
+ * Maximum number of spells a caster with `progression` can know at `spellLevel`
+ * when `classLevel`. Returns `null` when that spell level is not yet accessible.
+ * Out-of-range inputs return `null`. Only applicable to progressions that have a
+ * separate spells-known table (i.e. spontaneous casters like sorcerer).
+ */
+export function baseSpellsKnown(
+  progression: SpellKnownProgression,
+  classLevel: number,
+  spellLevel: number,
+): number | null {
+  const table = KNOWN_PROGRESSIONS[progression];
   if (classLevel < 1 || classLevel > table.length) return null;
   if (spellLevel < 0 || spellLevel > 9) return null;
   return table[classLevel - 1]![spellLevel] ?? null;

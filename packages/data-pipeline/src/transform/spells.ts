@@ -80,6 +80,7 @@ export function transformSpell(doc: RawDoc): Spell {
     level: asNumber(sys.level) ?? 0,
     school: typeof sys.school === "string" ? sys.school : undefined,
     descriptors: asStringArray(sys.descriptors),
+    sr: sys.sr === false ? false : sys.sr === true ? true : undefined,
     components: {
       verbal: components.verbal === true ? true : undefined,
       somatic: components.somatic === true ? true : undefined,

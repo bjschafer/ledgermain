@@ -128,13 +128,21 @@ export interface CharacterDoc {
     /** Resource pools: ki, rounds/day, item charges. */
     resources: Record<string, { used: number; max: number }>;
     /**
-     * Prepared-caster daily loadout. Each entry is one prepared instance (the
-     * same spell may be prepared into multiple slots), with `expended` set once
-     * it has been cast. Resting clears `expended` but keeps the loadout. Spell
-     * level is derived from RefData per the caster's class, not stored here.
-     * Omitted on documents created before spell preparation existed.
+     * Spell tracking for both prepared and spontaneous casters. The two
+     * sub-fields are never both meaningful for the same character — prepared
+     * casters use `prepared`; spontaneous casters use `slotsUsed`.
+     *
+     * `prepared`: each entry is one prepared instance (the same spell may be
+     * prepared into multiple slots); `expended` is set on cast; resting clears
+     * `expended` but keeps the loadout. Spell level is derived from RefData.
+     *
+     * `slotsUsed`: for spontaneous casters, maps spell level → number of slots
+     * consumed today. Total available = spellSlotsByLevel(model, ...).total.
+     * Reset to {} on a new day. Omitted / absent = zero used at each level.
+     *
+     * Both fields are optional for backwards-compat with older documents.
      */
-    spells?: { prepared: PreparedSpell[] };
+    spells?: { prepared: PreparedSpell[]; slotsUsed?: Record<number, number> };
     /**
      * Hero points currently held (PF1 optional rule). Omitted = 0.
      * Standard maximum held at once is 3 (see HERO_POINT_CAP in model/heroPoints).

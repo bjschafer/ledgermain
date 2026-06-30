@@ -216,6 +216,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.EvrFDqZDbbFS4Avb"
   },
+  "F5mCXQR9VZfKfpTH": {
+    "changes": [],
+    "description": "<p>Each sorcerer has a source of magic somewhere in her heritage that grants her spells, bonus feats, an additional class skill, and other special abilities. This source can represent a blood relation or an extreme event involving a creature somewhere in the family's past. For example, a sorcerer might have a dragon as a distant relative or her grandfather might have signed a terrible contract with a devil. Regardless of the source, this influence manifests in a number of ways as the sorcerer gains levels. A sorcerer must pick one bloodline upon taking her first level of sorcerer. Once made, this choice cannot be changed.</p>",
+    "grantsBuffs": [],
+    "id": "F5mCXQR9VZfKfpTH",
+    "name": "Sorcerer Bloodline",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "71-77"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.F5mCXQR9VZfKfpTH"
+  },
   "HdzsFdoGauXFjU2S": {
     "abilityType": "ex",
     "changes": [],
@@ -389,6 +404,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF"
   },
+  "W1KWAZxUNxfCv8rG": {
+    "changes": [
+      {
+        "formula": "floor((@class.unlevel - 1) / 6)",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 7th level, and every six levels thereafter, a sorcerer receives one bonus feat, chosen from a list specific to each bloodline. The sorcerer must meet the prerequisites for these bonus feats.</p>",
+    "grantsBuffs": [],
+    "id": "W1KWAZxUNxfCv8rG",
+    "name": "Bloodline Feat (SOR)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "71"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.W1KWAZxUNxfCv8rG"
+  },
   "W4PGylYL7ghRfy5G": {
     "changes": [],
     "description": "<p>A cleric casts divine spells which are drawn from the cleric spell list presented in Spell Lists. Her alignment, however, may restrict her from casting certain spells opposed to her moral or ethical beliefs; see chaotic, evil, good, and lawful spells. A cleric must choose and prepare her spells in advance.</p><p>To prepare or cast a spell, a cleric must have a Wisdom score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a cleric's spell is 10 + the spell level + the cleric's Wisdom modifier.</p><p>Like other spellcasters, a cleric can cast only a certain number of spells of each spell level per day. Her base daily spell allotment is given on @UUID[Compendium.pf1.pf1e-rules.JournalEntry.GnZ4SFsgV11ab8Vz.JournalEntryPage.8HNFlPoMR5NxGMzD#cleric]{Table: Cleric}. In addition, she receives bonus spells per day if she has a high Wisdom score (see @UUID[Compendium.pf1.pf1e-rules.JournalEntry.GnZ4SFsgV11ab8Vz.JournalEntryPage.BfKeMBHQruwqyUXX]{Table: Ability Modifiers and Bonus Spells}).</p><p>Clerics meditate or pray for their spells. Each cleric must choose a time when she must spend 1 hour each day in quiet contemplation or supplication to regain her daily allotment of spells. A cleric may prepare and cast any spell on the cleric spell list, provided that she can cast spells of that level, but she must choose which spells to prepare during her daily meditation.</p>",
@@ -478,6 +514,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP"
+  },
+  "dopWa3n4mgTGpTYi": {
+    "changes": [],
+    "description": "<p>Upon reaching 4th level, and at every even-numbered class level after that (6th, 8th, and so on), the character can choose to learn a new spell in place of one she already knows. In effect, the character loses the old spell in exchange for the new one. The new spell's level must be the same as that of the spell being exchanged. A character may swap only a single spell at any given level, and must choose whether or not to swap the spell at the same time that she gains new spells known for the level.</p><h3>Class Specific Restrictions</h3><ul><li>Psychics exchanged spell must be at least 1 level lower than the highest-level spell from the psychic’s class list that the psychic can cast.</li><li>Sorcerers cannot swap any bloodline spells.</li><li>Oracles cannot swap any cure or inflict spells, nor can she swap any spells gained from her mystery.</li></ul>",
+    "grantsBuffs": [],
+    "id": "dopWa3n4mgTGpTYi",
+    "name": "Exchange Spell (High)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "71"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
   },
   "exdHrqciehozr5SD": {
     "changes": [],
@@ -580,6 +631,63 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
+  },
+  "qlQxKPARGGdOgNWm": {
+    "changes": [],
+    "description": "<p>At 3rd level, and every two levels thereafter, a sorcerer learns an additional spell, derived from her bloodline. These spells are in addition to the number of spells already known to the sorcerer. These spells cannot be exchanged for different spells at higher levels.</p>",
+    "grantsBuffs": [],
+    "id": "qlQxKPARGGdOgNWm",
+    "name": "Bloodline Spells (SOR)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "71"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.qlQxKPARGGdOgNWm"
+  },
+  "vVkKDPniD09W5JgO": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>The character gains @UUID[Compendium.pf1.feats.ElqchQT5WB625HPg]{Eschew Materials} as a bonus feat.</p>",
+    "grantsBuffs": [
+      "Compendium.pf1.feats.Item.ElqchQT5WB625HPg"
+    ],
+    "id": "vVkKDPniD09W5JgO",
+    "name": "Eschew Materials",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "71"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "16"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.vVkKDPniD09W5JgO"
+  },
+  "yaL9DS7Eu5OmsxnV": {
+    "changes": [],
+    "description": "<p>A sorcerer casts arcane spells drawn primarily from the sorcerer/wizard spell list presented in Spell Lists. She can cast any spell she knows without preparing it ahead of time. To learn or cast a spell, a sorcerer must have a Charisma score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a sorcerer's spell is 10 + the spell level + the sorcerer's Charisma modifier.</p><p>Like other spellcasters, a sorcerer can cast only a certain number of spells of each spell level per day. Her base daily spell allotment is given on @UUID[Compendium.pf1.pf1e-rules.JournalEntry.GnZ4SFsgV11ab8Vz.JournalEntryPage.8HNFlPoMR5NxGMzD#class-features$10]{Table: Sorcerer}. In addition, she receives bonus spells per day if she has a high Charisma score (see @UUID[Compendium.pf1.pf1e-rules.JournalEntry.GnZ4SFsgV11ab8Vz.JournalEntryPage.BfKeMBHQruwqyUXX]{Table: Ability Modifiers and Bonus Spells}).</p><p>A sorcerer's selection of spells is extremely limited. A sorcerer begins play knowing four 0-level spells and two 1st-level spells of her choice. At each new sorcerer level, she gains one or more new spells, as indicated on @UUID[Compendium.pf1.pf1e-rules.JournalEntry.GnZ4SFsgV11ab8Vz.JournalEntryPage.8HNFlPoMR5NxGMzD#spells-known$9]{Table: Spells Known}. (Unlike spells per day, the number of spells a sorcerer knows is not affected by her Charisma score; the numbers on Table: Sorcerer Spells Known are fixed.) These new spells can be common spells chosen from the sorcerer/wizard spell list, or they can be unusual spells that the sorcerer has gained some understanding of through study.</p><p>Unlike a wizard or a cleric, a sorcerer need not prepare her spells in advance. She can cast any spell she knows at any time, assuming she has not yet used up her spells per day for that spell level.</p>",
+    "grantsBuffs": [],
+    "id": "yaL9DS7Eu5OmsxnV",
+    "name": "Sorcerer Spells",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "70"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.yaL9DS7Eu5OmsxnV"
   },
   "zrUJt7YpAJkf2NC6": {
     "changes": [],

@@ -5,7 +5,10 @@ import { loadRefData } from "@pf1/data-pipeline";
 import {
   bonusSpellsForLevel,
   casterModelFor,
+  concentrationDC,
   grantedCantrips,
+  spellSaveDC,
+  spellsKnownLimitsByLevel,
 } from "../src/model/spellcasting.js";
 
 const ref = loadRefData();
@@ -75,5 +78,71 @@ describe("grantedCantrips()", () => {
 
   it("returns empty array for a tag with no spell list", () => {
     expect(grantedCantrips(ref, "fighter")).toEqual([]);
+  });
+});
+
+describe("casterModelFor() — sorcerer", () => {
+  it("returns a spontaneous/cha model for sorcerer", () => {
+    const m = casterModelFor("sorcerer");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("cha");
+    expect(m!.grantsAllCantrips).toBe(true);
+    expect(m!.knownProgression).toBe("sorcerer");
+  });
+});
+
+describe("spellSaveDC()", () => {
+  it("level 3 spell, CHA +4 → DC 17", () => {
+    expect(spellSaveDC(3, 4)).toBe(17);
+  });
+
+  it("level 0 cantrip, INT +3 → DC 13", () => {
+    expect(spellSaveDC(0, 3)).toBe(13);
+  });
+
+  it("level 1, +0 modifier → DC 11", () => {
+    expect(spellSaveDC(1, 0)).toBe(11);
+  });
+});
+
+describe("concentrationDC()", () => {
+  it("level 0 cantrip → 15", () => {
+    expect(concentrationDC(0)).toBe(15);
+  });
+
+  it("level 3 → 21 (15 + 2*3)", () => {
+    expect(concentrationDC(3)).toBe(21);
+  });
+
+  it("level 9 → 33 (15 + 18)", () => {
+    expect(concentrationDC(9)).toBe(33);
+  });
+});
+
+describe("spellsKnownLimitsByLevel()", () => {
+  it("returns empty array for prepared caster (wizard)", () => {
+    const wizModel = casterModelFor("wizard")!;
+    expect(spellsKnownLimitsByLevel(wizModel, 5)).toEqual([]);
+  });
+
+  it("L1 sorcerer knows 2 first-level spells and no higher", () => {
+    const sorcModel = casterModelFor("sorcerer")!;
+    const limits = spellsKnownLimitsByLevel(sorcModel, 1);
+    const l0 = limits.find((l) => l.level === 0);
+    const l1 = limits.find((l) => l.level === 1);
+    const l2 = limits.find((l) => l.level === 2);
+    expect(l0).toBeDefined(); // 4 cantrips known
+    expect(l0!.limit).toBe(4);
+    expect(l1).toBeDefined();
+    expect(l1!.limit).toBe(2);
+    expect(l2).toBeUndefined(); // no 2nd-level access yet
+  });
+
+  it("L10 sorcerer can know up to 4 first-level and 4 second-level spells", () => {
+    const sorcModel = casterModelFor("sorcerer")!;
+    const limits = spellsKnownLimitsByLevel(sorcModel, 10);
+    expect(limits.find((l) => l.level === 1)!.limit).toBe(4);
+    expect(limits.find((l) => l.level === 2)!.limit).toBe(4);
   });
 });

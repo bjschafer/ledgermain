@@ -6,7 +6,7 @@
  * any caster tag not in CASTER_MODELS.
  */
 
-import { baseSpellsPerDay, type SpellProgression } from "@pf1/engine";
+import { baseSpellsKnown, baseSpellsPerDay, type SpellKnownProgression, type SpellProgression } from "@pf1/engine";
 import type { AbilityId, RefData } from "@pf1/schema";
 
 // ---------------------------------------------------------------------------
@@ -43,6 +43,11 @@ export interface CasterModel {
   ability: AbilityId;
   /** Spells-per-day progression table this class uses (engine `tables.ts`). */
   progression: SpellProgression;
+  /**
+   * Spells-known progression (spontaneous casters only). When set, the builder
+   * shows the known-limit advisory and the tracker uses it to cap additions.
+   */
+  knownProgression?: SpellKnownProgression;
   /** What the "known" list represents in the UI (e.g. "Spellbook"). */
   knownLabel: string;
   /** One-line guidance on how many spells this caster learns per level. */
@@ -69,6 +74,18 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Wizards add 2 spells to their spellbook at each new level (more can be scribed from scrolls).",
     blurb:
       "Prepared caster: spells live in your spellbook, then you prepare a subset each day. Your spellbook is your \u201cknown\u201d list here.",
+    grantsAllCantrips: true,
+  },
+  sorcerer: {
+    preparation: "spontaneous",
+    ability: "cha",
+    progression: "sorcerer",
+    knownProgression: "sorcerer",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Sorcerers learn a fixed set of spells known at each level (see spells-known table). You can cast any spell you know by spending a slot of that level.",
+    blurb:
+      "Spontaneous caster: you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
     grantsAllCantrips: true,
   },
 };
@@ -138,4 +155,54 @@ export function spellSlotsByLevel(
     out.push({ level, base, bonus, total: base + bonus });
   }
   return out;
+}
+
+// ---------------------------------------------------------------------------
+// Spells-known limits (spontaneous casters)
+// ---------------------------------------------------------------------------
+
+/**
+ * Maximum spells known at each accessible spell level for a spontaneous caster.
+ * Levels with no access (null) are omitted. Only meaningful when the model has
+ * a `knownProgression`. Returns empty array for prepared casters.
+ */
+export function spellsKnownLimitsByLevel(
+  model: CasterModel,
+  classLevel: number,
+): { level: number; limit: number }[] {
+  if (!model.knownProgression) return [];
+  const out: { level: number; limit: number }[] = [];
+  for (let level = 0; level <= 9; level++) {
+    const limit = baseSpellsKnown(model.knownProgression, classLevel, level);
+    if (limit === null) continue;
+    out.push({ level, limit });
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------------------
+// Spell detail helpers (Task 2)
+// ---------------------------------------------------------------------------
+
+/**
+ * Save DC for a spell: 10 + spell level + casting-ability modifier.
+ * Only meaningful when the spell actually allows a saving throw.
+ *
+ * @example
+ *   spellSaveDC(3, 4) // → 17  (10 + 3 + 4)
+ */
+export function spellSaveDC(spellLevel: number, abilityMod: number): number {
+  return 10 + spellLevel + abilityMod;
+}
+
+/**
+ * Concentration check DC to cast defensively (to avoid provoking an AoO):
+ * 15 + 2 × spell level. This is the standard PF1 defensive-casting DC.
+ *
+ * @example
+ *   concentrationDC(3) // → 21  (15 + 6)
+ *   concentrationDC(0) // → 15  (cantrips)
+ */
+export function concentrationDC(spellLevel: number): number {
+  return 15 + 2 * spellLevel;
 }

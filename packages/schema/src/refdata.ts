@@ -158,6 +158,8 @@ export interface Spell extends RefEntity {
   /** School abbreviation, e.g. "evo". */
   school?: string;
   descriptors: string[];
+  /** Whether spell resistance applies to this spell. */
+  sr?: boolean;
   components: {
     verbal?: boolean;
     somatic?: boolean;

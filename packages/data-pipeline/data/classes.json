@@ -100,6 +100,96 @@
       "Quarterstaff"
     ]
   },
+  "AoWSbnuTSGIxmv61": {
+    "armorProf": [],
+    "bab": "low",
+    "classSkills": [
+      "apr",
+      "art",
+      "blf",
+      "crf",
+      "fly",
+      "int",
+      "kar",
+      "lor",
+      "pro",
+      "spl",
+      "umd"
+    ],
+    "description": "<p>Scions of innately magical bloodlines, the chosen of deities, the spawn of monsters, pawns of fate and destiny, or simply flukes of fickle magic, sorcerers look within themselves for arcane prowess and draw forth might few mortals can imagine. Emboldened by lives ever threatening to be consumed by their innate powers, these magic-touched souls endlessly indulge in and refine their mysterious abilities, gradually learning how to harness their birthright and coax forth ever greater arcane feats. Just as varied as these innately powerful spellcasters’ abilities and inspirations are the ways in which they choose to utilize their gifts. While some seek to control their abilities through meditation and discipline, becoming masters of their fantastic birthright, others give in to their magic, letting it rule their lives with often explosive results. Regardless, sorcerers live and breathe that which other spellcasters devote their lives to mastering, and for them magic is more than a boon or a field of study; it is life itself.</p><p><strong>Role</strong>: Sorcerers excel at casting a selection of favored spells frequently, making them powerful battle mages. As they become familiar with a specific and ever-widening set of spells, sorcerers often discover new and versatile ways of making use of magics other spellcasters might overlook. Their bloodlines also grant them additional abilities, assuring that no two sorcerers are ever quite alike.</p>",
+    "features": [
+      {
+        "featureId": "IPy4aqFYbOppaqKC",
+        "level": 1,
+        "name": "Cantrips",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+      },
+      {
+        "featureId": "vVkKDPniD09W5JgO",
+        "level": 1,
+        "name": "Eschew Materials",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vVkKDPniD09W5JgO"
+      },
+      {
+        "featureId": "F5mCXQR9VZfKfpTH",
+        "level": 1,
+        "name": "Sorcerer Bloodline",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.F5mCXQR9VZfKfpTH"
+      },
+      {
+        "featureId": "yaL9DS7Eu5OmsxnV",
+        "level": 1,
+        "name": "Sorcerer Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yaL9DS7Eu5OmsxnV"
+      },
+      {
+        "featureId": "qlQxKPARGGdOgNWm",
+        "level": 3,
+        "name": "Bloodline Spells (SOR)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qlQxKPARGGdOgNWm"
+      },
+      {
+        "featureId": "dopWa3n4mgTGpTYi",
+        "level": 4,
+        "name": "Exchange Spell (High)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+      },
+      {
+        "featureId": "W1KWAZxUNxfCv8rG",
+        "level": 7,
+        "name": "Bloodline Feat (SOR)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.W1KWAZxUNxfCv8rG"
+      }
+    ],
+    "hd": 6,
+    "id": "AoWSbnuTSGIxmv61",
+    "name": "Sorcerer",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "70-77"
+      }
+    ],
+    "subType": "base",
+    "tag": "sorcerer",
+    "uuid": "Compendium.pf1.classes.Item.AoWSbnuTSGIxmv61",
+    "weaponProf": [
+      "simple"
+    ]
+  },
   "SjFqQceVeVBzBwgn": {
     "armorProf": [
       "lgt",

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { baseSpellsPerDay } from "../src/index.js";
+import { baseSpellsKnown, baseSpellsPerDay } from "../src/index.js";
 
 describe("baseSpellsPerDay() — wizard", () => {
   it("level-1 wizard: 3 cantrips, 1 first-level, no access above", () => {
@@ -32,5 +32,61 @@ describe("baseSpellsPerDay() — wizard", () => {
     expect(baseSpellsPerDay("wizard", 21, 1)).toBeNull();
     expect(baseSpellsPerDay("wizard", 5, -1)).toBeNull();
     expect(baseSpellsPerDay("wizard", 5, 10)).toBeNull();
+  });
+});
+
+describe("baseSpellsPerDay() — sorcerer", () => {
+  it("cantrips (level 0) are always null — sorcerers cast them at will", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      expect(baseSpellsPerDay("sorcerer", cl, 0)).toBeNull();
+    }
+  });
+
+  it("level-1 sorcerer: 3 first-level slots, no 2nd-level access", () => {
+    expect(baseSpellsPerDay("sorcerer", 1, 1)).toBe(3);
+    expect(baseSpellsPerDay("sorcerer", 1, 2)).toBeNull();
+  });
+
+  it("level-4 sorcerer unlocks 2nd-level spells (3 slots)", () => {
+    expect(baseSpellsPerDay("sorcerer", 4, 1)).toBe(6);
+    expect(baseSpellsPerDay("sorcerer", 4, 2)).toBe(3);
+    expect(baseSpellsPerDay("sorcerer", 4, 3)).toBeNull();
+  });
+
+  it("level-20 sorcerer: 6 slots at levels 1–9", () => {
+    for (let spLvl = 1; spLvl <= 9; spLvl++) {
+      expect(baseSpellsPerDay("sorcerer", 20, spLvl)).toBe(6);
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("sorcerer", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("sorcerer", 21, 1)).toBeNull();
+  });
+});
+
+describe("baseSpellsKnown() — sorcerer", () => {
+  it("L1 sorcerer knows 4 cantrips, 2 first-level spells", () => {
+    expect(baseSpellsKnown("sorcerer", 1, 0)).toBe(4);
+    expect(baseSpellsKnown("sorcerer", 1, 1)).toBe(2);
+    expect(baseSpellsKnown("sorcerer", 1, 2)).toBeNull();
+  });
+
+  it("L4 sorcerer unlocks 2nd-level known (1)", () => {
+    expect(baseSpellsKnown("sorcerer", 4, 2)).toBe(1);
+    expect(baseSpellsKnown("sorcerer", 3, 2)).toBeNull();
+  });
+
+  it("L20 sorcerer knows 4 spells of every level 1–9 and 9 cantrips", () => {
+    expect(baseSpellsKnown("sorcerer", 20, 0)).toBe(9);
+    for (let lvl = 1; lvl <= 9; lvl++) {
+      expect(baseSpellsKnown("sorcerer", 20, lvl)).toBe(4);
+    }
+  });
+
+  it("out-of-range returns null", () => {
+    expect(baseSpellsKnown("sorcerer", 0, 1)).toBeNull();
+    expect(baseSpellsKnown("sorcerer", 21, 1)).toBeNull();
+    expect(baseSpellsKnown("sorcerer", 5, 10)).toBeNull();
   });
 });

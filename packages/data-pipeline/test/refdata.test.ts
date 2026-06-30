@@ -37,7 +37,7 @@ describe("metadata + provenance", () => {
 
   it("contains the expected slice", () => {
     expect(Object.keys(ref.races)).toHaveLength(7);
-    expect(Object.keys(ref.classes)).toHaveLength(4);
+    expect(Object.keys(ref.classes)).toHaveLength(5); // fighter, barbarian, wizard, cleric, sorcerer
     expect(Object.keys(ref.feats)).toHaveLength(390);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
   });
