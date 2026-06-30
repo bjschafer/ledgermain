@@ -1157,6 +1157,136 @@ button:focus-visible,
 	padding: 8px 2px;
 }
 
+/* ---------------------------------------------------------- gear / inventory -- */
+
+.gear-list {
+	border: 1px solid var(--line-soft);
+	border-radius: var(--radius);
+	margin-bottom: 12px;
+}
+
+.gear-row {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 9px 12px;
+	border-bottom: 1px solid var(--line-soft);
+}
+
+.gear-row:last-child {
+	border-bottom: 0;
+}
+
+.gear-row.is-unequipped {
+	opacity: 0.55;
+}
+
+.gear-equip {
+	display: flex;
+	align-items: center;
+	padding-top: 2px;
+	flex-shrink: 0;
+}
+
+.gear-equip input[type="checkbox"] {
+	width: auto;
+	cursor: pointer;
+	accent-color: var(--gold);
+}
+
+.gear-main {
+	flex: 1;
+	min-width: 0;
+}
+
+.gear-name {
+	font-weight: 600;
+	font-size: 14px;
+}
+
+.gear-meta {
+	font-family: var(--mono);
+	font-size: 11px;
+	color: var(--muted);
+	margin-top: 2px;
+}
+
+.gear-changes {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2px 10px;
+	margin-top: 3px;
+}
+
+.gear-change {
+	font-size: 10px;
+	font-family: var(--mono);
+	color: var(--gold-dim);
+}
+
+/* gear add-row buttons (below the list) */
+.gear-add-row {
+	margin-top: 8px;
+}
+
+.gear-add-row + .gear-add-row {
+	margin-top: 6px;
+}
+
+/* magic-item picker */
+.gear-picker {
+	border: 1px solid var(--line-soft);
+	border-radius: var(--radius);
+	overflow: hidden;
+}
+
+.gear-picker-head {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	padding: 10px 12px 0;
+}
+
+.gear-picker-head .search {
+	flex: 1;
+	margin-bottom: 0;
+}
+
+.gear-picker .scroll {
+	max-height: 300px;
+	border: 0;
+	border-top: 1px solid var(--line-soft);
+	border-radius: 0;
+	margin-top: 10px;
+}
+
+/* worn armor inline form */
+.gear-armor-form {
+	border: 1px solid var(--line-soft);
+	border-radius: var(--radius);
+	padding: 12px;
+}
+
+.gear-armor-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 12px;
+}
+
+.gear-armor-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 8px;
+	margin-bottom: 10px;
+}
+
+@media (max-width: 520px) {
+	.gear-armor-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
 /* ============================================================ the TRACKER -- */
 
 /* mode tabs (Build / Play) */

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AbilitiesSection } from "./components/builder/AbilitiesSection.js";
 import { ClassesSection } from "./components/builder/ClassesSection.js";
 import { FeatsSection } from "./components/builder/FeatsSection.js";
+import { GearSection } from "./components/builder/GearSection.js";
 import { HitPointsSection } from "./components/builder/HitPointsSection.js";
 import { IdentitySection } from "./components/builder/IdentitySection.js";
 import { RaceSection } from "./components/builder/RaceSection.js";
@@ -108,6 +109,7 @@ function Workbench({ mode, ...props }: BuilderProps & { mode: Mode }) {
             <HitPointsSection {...props} />
             <SkillsSection {...props} />
             <FeatsSection {...props} />
+            <GearSection {...props} />
             <SpellsSection {...props} />
           </>
         ) : mode === "settings" ? (

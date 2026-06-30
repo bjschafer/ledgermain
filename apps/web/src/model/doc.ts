@@ -10,6 +10,7 @@ import type {
 	CharacterDoc,
 	ItemInstance,
 	SkillId,
+	WornArmor,
 } from "@pf1/schema";
 
 const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
@@ -227,6 +228,53 @@ export function toggleKnownSpell(
 }
 
 export function setGear(doc: CharacterDoc, gear: ItemInstance[]): CharacterDoc {
+	return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Append a magic item (by RefData id) to gear, equipped by default.
+ * No deduplication — the user may carry multiple copies of the same item.
+ */
+export function addGearItem(doc: CharacterDoc, itemId: string): CharacterDoc {
+	const gear = [...doc.build.gear, { itemId, equipped: true }];
+	return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Append a manually-entered worn armor or shield. `name` is the user-supplied
+ * display label (e.g. "Chainmail +1"). The item is equipped by default.
+ */
+export function addWornArmor(
+	doc: CharacterDoc,
+	armor: WornArmor,
+	name: string,
+): CharacterDoc {
+	const gear = [...doc.build.gear, { equipped: true, armor, name }];
+	return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Toggle the equipped flag for the gear item at `index`.
+ * Out-of-range indices are silently ignored.
+ */
+export function setGearEquipped(
+	doc: CharacterDoc,
+	index: number,
+	equipped: boolean,
+): CharacterDoc {
+	if (index < 0 || index >= doc.build.gear.length) return doc;
+	const gear = doc.build.gear.map((inst, i) =>
+		i === index ? { ...inst, equipped } : inst,
+	);
+	return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Remove the gear item at `index`. Out-of-range indices are silently ignored.
+ */
+export function removeGear(doc: CharacterDoc, index: number): CharacterDoc {
+	if (index < 0 || index >= doc.build.gear.length) return doc;
+	const gear = doc.build.gear.filter((_, i) => i !== index);
 	return { ...doc, build: { ...doc.build, gear } };
 }
 
