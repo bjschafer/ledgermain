@@ -735,25 +735,6 @@ button:focus-visible,
 	margin: 16px 0;
 }
 
-/* seal grid */
-.seal-grid {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: 10px;
-}
-
-@media (max-width: 1100px) {
-	.seal-grid {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
-
-@media (max-width: 420px) {
-	.seal-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
 /* seal-cell wraps expandable seals so the button fills the grid cell height */
 .seal-cell {
 	display: flex;
@@ -824,6 +805,92 @@ button:focus-visible,
 	right: 8px;
 	color: var(--faint);
 	font-size: 9px;
+}
+
+/* compact (de-emphasised) seal variant — used for BAB, Init, Speed */
+.seal.seal--compact {
+	min-height: 64px;
+}
+
+.seal.seal--compact .seal-value {
+	font-size: 18px;
+	color: var(--muted);
+}
+
+/* ------------------------------------------------------------ stat groups -- */
+
+/* Full-width hero band housing the HP seal */
+.stat-hero-band {
+	margin-bottom: 16px;
+}
+
+.stat-hero-band .seal {
+	background: linear-gradient(180deg, rgba(201, 162, 39, 0.10), rgba(201, 162, 39, 0.03)), var(--surface-2);
+	border-color: var(--gold-dim);
+	min-height: 100px;
+}
+
+.stat-hero-band .seal .seal-value {
+	font-size: 44px;
+}
+
+/* A labeled group: legend + hairline + sub-grid */
+.stat-group {
+	margin-top: 20px;
+}
+
+.stat-group-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 8px;
+}
+
+.stat-group-legend {
+	font-family: var(--mono);
+	font-size: 11px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--gold-dim);
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.stat-group-rule {
+	flex: 1;
+	height: 1px;
+	background: var(--line-soft);
+}
+
+/* Sub-grids within each group */
+.stat-group-grid {
+	display: grid;
+	gap: 10px;
+}
+
+.stat-group-grid--2 {
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.stat-group-grid--3 {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.stat-group-grid--4 {
+	grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1100px) {
+	.stat-group-grid--4 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 420px) {
+	.stat-group-grid--4,
+	.stat-group-grid--3 {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
 /* provenance */
