@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
 
-import type { WornArmor } from "@pf1/schema";
+import type { ArmorRef, WornArmor } from "@pf1/schema";
 
 import {
 	addGearItem,
 	addWornArmor,
+	addWornArmorFromRef,
 	removeGear,
 	setGearEquipped,
 } from "../../model/doc.js";
@@ -27,15 +28,28 @@ const ARMOR_TYPES = [
 	{ value: 3, label: "Heavy" },
 ] as const;
 
-const DEFAULT_ARMOR: WornArmor = { slot: "armor", ac: 0 };
+const WEIGHT_LABEL: Record<number, string> = { 0: "None", 1: "Light", 2: "Medium", 3: "Heavy" };
+
+/** A one-line summary of a {@link ArmorRef} for the picker preview. */
+function armorRefMeta(a: ArmorRef): string {
+	const weight = a.weightClass ? `${WEIGHT_LABEL[a.weightClass] ?? "—"} ` : "";
+	const slot = a.slot === "shield" ? "Shield" : `${weight}Armor`;
+	const dex = a.maxDex != null ? ` · max Dex +${a.maxDex}` : "";
+	const acp = a.acp ? ` · ACP −${a.acp}` : "";
+	return `${slot}${dex}${acp}`;
+}
 
 export function GearSection({ doc, refData, update }: BuilderProps) {
 	// Magic item picker state
 	const [itemQuery, setItemQuery] = useState("");
 	const [showItemPicker, setShowItemPicker] = useState(false);
 
-	// Worn armor form state
-	const [showArmorForm, setShowArmorForm] = useState(false);
+	// Worn armor picker state — `showArmorPicker` opens the card;
+	// `armorMode` toggles between "select" (search RefData) and "custom" (manual).
+	const [showArmorPicker, setShowArmorPicker] = useState(false);
+	const [armorMode, setArmorMode] = useState<"select" | "custom">("select");
+	const [armorQuery, setArmorQuery] = useState("");
+	// Custom-entry form state (the legacy manual form)
 	const [armorSlot, setArmorSlot] = useState<"armor" | "shield">("armor");
 	const [armorName, setArmorName] = useState("");
 	const [armorAc, setArmorAc] = useState(0);
@@ -54,10 +68,30 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 			.slice(0, 80);
 	}, [refData.items, itemQuery]);
 
+	// Filtered armors list for the worn-armor picker
+	const filteredArmors = useMemo(() => {
+		const q = armorQuery.trim().toLowerCase();
+		return Object.values(refData.armors)
+			.filter((a) => !q || a.name.toLowerCase().includes(q))
+			.sort((a, b) => a.name.localeCompare(b.name))
+			.slice(0, 80);
+	}, [refData.armors, armorQuery]);
+
 	function handleAddItem(itemId: string) {
 		update((d) => addGearItem(d, itemId));
 		setShowItemPicker(false);
 		setItemQuery("");
+	}
+
+	function closeArmorPicker() {
+		setShowArmorPicker(false);
+		setArmorMode("select");
+		setArmorQuery("");
+	}
+
+	function handleAddArmorRef(armor: ArmorRef) {
+		update((d) => addWornArmorFromRef(d, armor));
+		closeArmorPicker();
 	}
 
 	function handleAddArmor() {
@@ -70,14 +104,14 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 		};
 		const name = armorName.trim() || (armorSlot === "armor" ? "Worn Armor" : "Shield");
 		update((d) => addWornArmor(d, armor, name));
-		// Reset form
+		// Reset custom form
 		setArmorName("");
 		setArmorAc(0);
 		setArmorMaxDex("");
 		setArmorAcp(0);
 		setArmorType(0);
 		setArmorSlot("armor");
-		setShowArmorForm(false);
+		closeArmorPicker();
 	}
 
 	return (
@@ -89,30 +123,32 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 				<div className="gear-list">
 					{gear.map((inst, i) => {
 						const itemDef = inst.itemId ? refData.items[inst.itemId] : undefined;
+						const armorRef = inst.armorId ? refData.armors[inst.armorId] : undefined;
 						const displayName =
 							itemDef?.name ??
 							inst.name ??
+							armorRef?.name ??
 							(inst.armor ? `${inst.armor.slot === "shield" ? "Shield" : "Armor"} (${inst.armor.ac} AC)` : "Unknown item");
 						const changes = itemDef?.changes ?? [];
 
-						return (
-							<div key={i} className={`gear-row${inst.equipped ? "" : " is-unequipped"}`}>
-								<label className="gear-equip" title={inst.equipped ? "Unequip" : "Equip"}>
-									<input
-										type="checkbox"
-										checked={inst.equipped}
-										onChange={(e) => update((d) => setGearEquipped(d, i, e.target.checked))}
-									/>
-								</label>
-								<div className="gear-main">
-									<div className="gear-name">{displayName}</div>
-									{inst.armor && (
-										<div className="gear-meta">
-											AC +{inst.armor.ac}
-											{inst.armor.maxDex != null ? ` · max Dex +${inst.armor.maxDex}` : ""}
-											{inst.armor.acp ? ` · ACP ${inst.armor.acp}` : ""}
-										</div>
-									)}
+return (
+						<div key={i} className={`gear-row${inst.equipped ? "" : " is-unequipped"}`}>
+							<label className="gear-equip" title={inst.equipped ? "Unequip" : "Equip"}>
+								<input
+									type="checkbox"
+									checked={inst.equipped}
+									onChange={(e) => update((d) => setGearEquipped(d, i, e.target.checked))}
+								/>
+							</label>
+							<div className="gear-main">
+								<div className="gear-name">{displayName}</div>
+								{inst.armor && (
+									<div className="gear-meta">
+										AC +{inst.armor.ac}
+										{inst.armor.maxDex != null ? ` · max Dex +${inst.armor.maxDex}` : ""}
+										{inst.armor.acp ? ` · ACP ${inst.armor.acp}` : ""}
+									</div>
+								)}
 									{inst.equipped && changes.length > 0 && (
 										<div className="gear-changes">
 											{changes.map((ch, ci) => (
@@ -206,98 +242,163 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 
 			{/* Add worn armor / shield */}
 			<div className="gear-add-row">
-				{!showArmorForm ? (
+				{!showArmorPicker ? (
 					<button
 						type="button"
 						className="btn-ghost"
-						onClick={() => setShowArmorForm(true)}
+						onClick={() => setShowArmorPicker(true)}
 					>
 						+ Add worn armor / shield
 					</button>
 				) : (
 					<div className="gear-armor-form">
 						<div className="gear-armor-head">
-							<span className="eyebrow">Worn Armor / Shield</span>
-							<button
-								type="button"
-								className="btn-ghost"
-								onClick={() => setShowArmorForm(false)}
-							>
-								Cancel
-							</button>
-						</div>
-						<div className="gear-armor-grid">
-							<label className="field">
-								<span>Slot</span>
-								<select
-									value={armorSlot}
-									onChange={(e) => setArmorSlot(e.target.value as "armor" | "shield")}
+							<span className="eyebrow">
+								{armorMode === "select" ? "Select Armor / Shield" : "Custom Armor / Shield"}
+							</span>
+							<div className="head-actions">
+								{armorMode === "custom" && (
+									<button
+										type="button"
+										className="btn-ghost"
+										onClick={() => setArmorMode("select")}
+									>
+										← Back to list
+									</button>
+								)}
+								<button
+									type="button"
+									className="btn-ghost"
+									onClick={closeArmorPicker}
 								>
-									{ARMOR_SLOTS.map((s) => (
-										<option key={s} value={s}>
-											{s === "armor" ? "Body Armor" : "Shield"}
-										</option>
-									))}
-								</select>
-							</label>
-							<label className="field">
-								<span>Name</span>
-								<input
-									type="text"
-									placeholder={armorSlot === "armor" ? "Chainmail" : "Heavy Steel Shield"}
-									value={armorName}
-									onChange={(e) => setArmorName(e.target.value)}
-								/>
-							</label>
-							<label className="field">
-								<span>AC Bonus</span>
-								<input
-									type="number"
-									value={armorAc}
-									onChange={(e) => setArmorAc(Number(e.target.value))}
-								/>
-							</label>
-							{armorSlot === "armor" && (
-								<>
+									Cancel
+								</button>
+							</div>
+						</div>
+
+						{armorMode === "select" ? (
+							<div className="gear-picker">
+								<div className="gear-picker-head">
+									<input
+										className="search"
+										type="text"
+										placeholder="Search armor & shields…"
+										value={armorQuery}
+										onChange={(e) => setArmorQuery(e.target.value)}
+										autoFocus
+									/>
+								</div>
+								<div className="scroll">
+									{filteredArmors.length === 0 ? (
+										<div className="empty">No armor matches.</div>
+									) : (
+										filteredArmors.map((a) => (
+											<div key={a.id} className="pick-row">
+												<div className="pmain">
+													<div className="pname">{a.name}</div>
+													<div className="preq">
+														<span>{armorRefMeta(a)}</span>
+														<span className="ck-met">AC +{a.ac}</span>
+													</div>
+												</div>
+												<button
+													type="button"
+													className="pick-btn add"
+													onClick={() => handleAddArmorRef(a)}
+												>
+													Add
+												</button>
+											</div>
+										))
+									)}
+									{Object.keys(refData.armors).length > 80 && filteredArmors.length === 80 ? (
+										<div className="empty">Showing first 80 — refine your search.</div>
+									) : null}
+								</div>
+								<button
+									type="button"
+									className="btn-ghost armor-custom-link"
+									onClick={() => setArmorMode("custom")}
+								>
+									+ Custom entry…
+								</button>
+							</div>
+						) : (
+							<>
+								<div className="gear-armor-grid">
 									<label className="field">
-										<span>Max Dex (blank = no cap)</span>
-										<input
-											type="number"
-											value={armorMaxDex}
-											placeholder="—"
-											onChange={(e) => setArmorMaxDex(e.target.value)}
-										/>
-									</label>
-									<label className="field">
-										<span>Armor Check Penalty</span>
-										<input
-											type="number"
-											value={armorAcp}
-											onChange={(e) => setArmorAcp(Number(e.target.value))}
-										/>
-									</label>
-									<label className="field">
-										<span>Weight class</span>
+										<span>Slot</span>
 										<select
-											value={armorType}
-											onChange={(e) => setArmorType(Number(e.target.value))}
+											value={armorSlot}
+											onChange={(e) => setArmorSlot(e.target.value as "armor" | "shield")}
 										>
-											{ARMOR_TYPES.map(({ value, label }) => (
-												<option key={value} value={value}>{label}</option>
+											{ARMOR_SLOTS.map((s) => (
+												<option key={s} value={s}>
+													{s === "armor" ? "Body Armor" : "Shield"}
+												</option>
 											))}
 										</select>
 									</label>
-								</>
-							)}
-						</div>
-						<button
-							type="button"
-							className="pick-btn add"
-							onClick={handleAddArmor}
-							disabled={armorAc === 0 && armorSlot === "armor"}
-						>
-							Add to gear
-						</button>
+									<label className="field">
+										<span>Name</span>
+										<input
+											type="text"
+											placeholder={armorSlot === "armor" ? "Chainmail" : "Heavy Steel Shield"}
+											value={armorName}
+											onChange={(e) => setArmorName(e.target.value)}
+										/>
+									</label>
+									<label className="field">
+										<span>AC Bonus</span>
+										<input
+											type="number"
+											value={armorAc}
+											onChange={(e) => setArmorAc(Number(e.target.value))}
+										/>
+									</label>
+									{armorSlot === "armor" && (
+										<>
+											<label className="field">
+												<span>Max Dex (blank = no cap)</span>
+												<input
+													type="number"
+													value={armorMaxDex}
+													placeholder="—"
+													onChange={(e) => setArmorMaxDex(e.target.value)}
+												/>
+											</label>
+											<label className="field">
+												<span>Armor Check Penalty</span>
+												<input
+													type="number"
+													value={armorAcp}
+													onChange={(e) => setArmorAcp(Number(e.target.value))}
+												/>
+											</label>
+											<label className="field">
+												<span>Weight class</span>
+												<select
+													value={armorType}
+													onChange={(e) => setArmorType(Number(e.target.value))}
+												>
+													{ARMOR_TYPES.map(({ value, label }) => (
+														<option key={value} value={value}>{label}</option>
+													))}
+												</select>
+											</label>
+										</>
+									)}
+								</div>
+								<button
+									type="button"
+									className="pick-btn add"
+									onClick={handleAddArmor}
+									disabled={armorAc === 0 && armorSlot === "armor"}
+								>
+									Add to gear
+								</button>
+							</>
+						)}
 					</div>
 				)}
 			</div>

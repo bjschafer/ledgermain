@@ -4,12 +4,13 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import type { WornArmor } from "@pf1/schema";
+import type { ArmorRef, WornArmor } from "@pf1/schema";
 
 import { createEmptyDoc } from "../src/model/doc.js";
 import {
 	addGearItem,
 	addWornArmor,
+	addWornArmorFromRef,
 	removeGear,
 	setGearEquipped,
 } from "../src/model/doc.js";
@@ -70,6 +71,75 @@ describe("addWornArmor()", () => {
 	it("does not mutate the original doc", () => {
 		const d = doc();
 		addWornArmor(d, CHAINMAIL, "Chainmail");
+		expect(d.build.gear).toHaveLength(0);
+	});
+});
+
+// ---------------------------------------------------------------------------
+// addWornArmorFromRef
+// ---------------------------------------------------------------------------
+const FULL_PLATE: ArmorRef = {
+	id: "h65qEp22nsyRoeRa",
+	name: "Full Plate",
+	uuid: "Compendium.pf1.armors-and-shields.Item.h65qEp22nsyRoeRa",
+	slot: "armor",
+	ac: 9,
+	maxDex: 1,
+	acp: 6,
+	weightClass: 3,
+	proficiency: "heavyArmor",
+};
+const COMP_BUCKLER: ArmorRef = {
+	id: "gsE0PAOmCwivue5A",
+	name: "Buckler",
+	uuid: "Compendium.pf1.armors-and-shields.Item.gsE0PAOmCwivue5A",
+	slot: "shield",
+	ac: 1,
+	acp: 1,
+};
+
+describe("addWornArmorFromRef()", () => {
+	it("snapshots Full Plate onto a WornArmor (ACP negated, weightClass → type)", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE);
+		expect(d.build.gear).toHaveLength(1);
+		const inst = d.build.gear[0]!;
+		expect(inst.equipped).toBe(true);
+		expect(inst.armorId).toBe("h65qEp22nsyRoeRa");
+		expect(inst.name).toBe("Full Plate");
+		expect(inst.armor).toEqual({
+			slot: "armor",
+			ac: 9,
+			maxDex: 1,
+			acp: -6,
+			type: 3,
+		} satisfies WornArmor);
+		// never sets itemId (base armor lives in RefData.armors, not .items)
+		expect(inst.itemId).toBeUndefined();
+	});
+
+	it("omits type for shields (slot identifies them; engine derives armor.type from body armor only)", () => {
+		const d = addWornArmorFromRef(doc(), COMP_BUCKLER);
+		const inst = d.build.gear[0]!;
+		expect(inst.armor).toEqual({ slot: "shield", ac: 1, acp: -1 });
+		expect(inst.armorId).toBe("gsE0PAOmCwivue5A");
+	});
+
+	it("omits ACP entirely when the ref carries none", () => {
+		const padded: ArmorRef = {
+			...COMP_BUCKLER,
+			id: "x",
+			name: "Padded",
+			slot: "armor",
+			ac: 1,
+			acp: undefined,
+		};
+		const d = addWornArmorFromRef(doc(), padded);
+		expect(d.build.gear[0]!.armor).toEqual({ slot: "armor", ac: 1 });
+	});
+
+	it("does not mutate the original doc", () => {
+		const d = doc();
+		addWornArmorFromRef(d, FULL_PLATE);
 		expect(d.build.gear).toHaveLength(0);
 	});
 });

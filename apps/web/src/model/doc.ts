@@ -7,6 +7,7 @@
  */
 import type {
 	AbilityId,
+	ArmorRef,
 	CharacterDoc,
 	ItemInstance,
 	SkillId,
@@ -251,6 +252,33 @@ export function addWornArmor(
 	name: string,
 ): CharacterDoc {
 	const gear = [...doc.build.gear, { equipped: true, armor, name }];
+	return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Append a worn armor or shield selected from `RefData.armors`. Snapshots the
+ * physical stats onto a new `WornArmor` (negating ACP, since the schema stores
+ * penalties as negative and the ref keeps the source magnitude), and records
+ * the `armorId` for display + future re-sync. No deduplication.
+ */
+export function addWornArmorFromRef(
+	doc: CharacterDoc,
+	armor: ArmorRef,
+): CharacterDoc {
+	const worn: WornArmor = {
+		slot: armor.slot,
+		ac: armor.ac,
+		...(armor.maxDex != null ? { maxDex: armor.maxDex } : {}),
+		...(armor.acp ? { acp: -armor.acp } : {}),
+		...(armor.weightClass ? { type: armor.weightClass } : {}),
+	};
+	const inst: ItemInstance = {
+		equipped: true,
+		armor: worn,
+		armorId: armor.id,
+		name: armor.name,
+	};
+	const gear = [...doc.build.gear, inst];
 	return { ...doc, build: { ...doc.build, gear } };
 }
 

@@ -286,7 +286,12 @@ the manual form as the "Custom" fallback.
 **Tests**: `addWornArmorFromRef` reducer unit test (input `ArmorRef` → expected `WornArmor` + `armorId`).
 `bun run typecheck` + `bun run test` green.
 
-**Status**: Not Started
+**Status**: Complete
+
+**Notes / caveats (as built)**:
+- `addWornArmorFromRef(doc, armor)` snapshots `armor.ac`, `armor.maxDex`, `armor.weightClass` (→ `type`), and `armor.acp` **negated** (the schema stores ACP as a non-positive number; the ref keeps the source's positive magnitude). Shields omit `type` entirely — the engine derives `armor.type` from body armor only. `name` and `armorId` are both recorded; the gear-list display falls back to `refData.armors[armorId]?.name` if `inst.name` is ever cleared.
+- GearSection now opens a single "+ Add worn armor / shield" card with two modes: **Select** (search `refData.armors`, AC/max-Dex/ACP preview) and **Custom** (the original manual form). "Custom entry…" link at the bottom of the Select list switches to manual; "← Back to list" returns. The custom-entry `Add` still requires a non-zero AC for body armor (matches the pre-existing guard).
+- Engine: unchanged. `computeAc` reads `inst.armor.*` directly as before.
 
 ---
 
