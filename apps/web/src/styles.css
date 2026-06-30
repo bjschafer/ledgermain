@@ -1829,7 +1829,8 @@ button:focus-visible,
 
 /* ----------------------------- re-prepare row (Task 3) -- */
 
-.prep-clear-row {
+.prep-clear-row,
+.prep-actions {
 	display: flex;
 	align-items: center;
 	gap: 8px;

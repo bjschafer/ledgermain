@@ -166,11 +166,17 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
   const totalPrepared = prepared.length;
 
   return (
-    <Panel
-      title="Prepared Spells"
-      step="ps"
-      storageKey="panel:Prepared"
-      right={
+    <Panel title="Prepared Spells" step="ps" storageKey="panel:Prepared">
+      <div className="spell-hints">
+        <p className="hint spell-hint-line">
+          Prepare spells from your {model.knownLabel.toLowerCase()} into the day's
+          slots, then <strong>Cast</strong> to expend them. <strong>New day</strong>{" "}
+          refreshes every slot without changing what's prepared.
+        </p>
+      </div>
+
+      {/* Day actions: refresh slots vs. wipe the loadout to re-prepare */}
+      <div className="prep-actions">
         <button
           type="button"
           className="btn-ghost rest"
@@ -182,20 +188,8 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
         >
           New day
         </button>
-      }
-    >
-      <div className="spell-hints">
-        <p className="hint spell-hint-line">
-          Prepare spells from your {model.knownLabel.toLowerCase()} into the day's
-          slots, then <strong>Cast</strong> to expend them. <strong>New day</strong>{" "}
-          refreshes every slot without changing what's prepared.
-        </p>
-      </div>
-
-      {/* Re-prepare from scratch */}
-      {totalPrepared > 0 && (
-        <div className="prep-clear-row">
-          {confirmClear ? (
+        {totalPrepared > 0 &&
+          (confirmClear ? (
             <>
               <span className="prep-clear-confirm-label">Clear all prepared spells?</span>
               <button
@@ -224,9 +218,8 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
             >
               Re-prepare from scratch
             </button>
-          )}
-        </div>
-      )}
+          ))}
+      </div>
 
       {totalPrepared === 0 && (
         <p className="hint spell-hint-line prep-empty">
