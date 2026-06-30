@@ -5,8 +5,10 @@
  * evaluated against that class's roll-data context.
  *
  * What this CANNOT derive (documented limitation): the vendored data slice does
- * not include per-class/level spell-slot tables or item charge counts, so spell
- * slots and item charges are tracked as manual pools by the tracker UI.
+ * not include item charge counts, so item charges are tracked as manual pools by
+ * the tracker UI. Spell slots are handled separately — the web app composes the
+ * engine's hardcoded spells-per-day table (`baseSpellsPerDay` in `tables.ts`)
+ * with ability bonus spells in its prepared-spells panel.
  */
 
 import type { CharacterDoc, RefData } from "@pf1/schema";

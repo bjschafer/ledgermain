@@ -41,6 +41,8 @@ export {
   SKILL_IDS,
   skillUsesAcp,
   raceGrantsFlexibleAbility,
+  baseSpellsPerDay,
+  type SpellProgression,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";

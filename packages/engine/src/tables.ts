@@ -150,3 +150,64 @@ export function isTrainedOnly(skillId: string): boolean {
 export function raceGrantsFlexibleAbility(race: Race): boolean {
   return !race.changes.some((c) => (ABILITY_IDS as readonly string[]).includes(c.target));
 }
+
+/* ------------------------------------------------------------ spells/day -- */
+
+/**
+ * Spell progressions whose base spells-per-day tables live here. Like BAB/saves,
+ * these numbers are NOT in the vendored Foundry data (clean-room, from the
+ * published rules). Only full prepared-arcane (wizard) is tabled today; add a
+ * key + table to extend.
+ */
+export type SpellProgression = "wizard";
+
+/**
+ * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
+ * `null` = that spell level is not yet accessible at that class level (the "—"
+ * cells on the published table). Level-0 entries are how many cantrips may be
+ * prepared (each cast at will). Bonus spells from a high casting ability are
+ * added on top by {@link bonusSpellsForLevel} and are NOT included here.
+ */
+const WIZARD_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [3, 1, null, null, null, null, null, null, null, null],
+  /* L2  */ [4, 2, null, null, null, null, null, null, null, null],
+  /* L3  */ [4, 2, 1, null, null, null, null, null, null, null],
+  /* L4  */ [4, 3, 2, null, null, null, null, null, null, null],
+  /* L5  */ [4, 3, 2, 1, null, null, null, null, null, null],
+  /* L6  */ [4, 3, 3, 2, null, null, null, null, null, null],
+  /* L7  */ [4, 4, 3, 2, 1, null, null, null, null, null],
+  /* L8  */ [4, 4, 3, 3, 2, null, null, null, null, null],
+  /* L9  */ [4, 4, 4, 3, 2, 1, null, null, null, null],
+  /* L10 */ [4, 4, 4, 3, 3, 2, null, null, null, null],
+  /* L11 */ [4, 4, 4, 4, 3, 2, 1, null, null, null],
+  /* L12 */ [4, 4, 4, 4, 3, 3, 2, null, null, null],
+  /* L13 */ [4, 4, 4, 4, 4, 3, 2, 1, null, null],
+  /* L14 */ [4, 4, 4, 4, 4, 3, 3, 2, null, null],
+  /* L15 */ [4, 4, 4, 4, 4, 4, 3, 2, 1, null],
+  /* L16 */ [4, 4, 4, 4, 4, 4, 3, 3, 2, null],
+  /* L17 */ [4, 4, 4, 4, 4, 4, 4, 3, 2, 1],
+  /* L18 */ [4, 4, 4, 4, 4, 4, 4, 3, 3, 2],
+  /* L19 */ [4, 4, 4, 4, 4, 4, 4, 4, 3, 3],
+  /* L20 */ [4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+];
+
+const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
+  wizard: WIZARD_SPELLS_PER_DAY,
+};
+
+/**
+ * Base spells per day (before ability bonus) for `progression` at `classLevel`
+ * and `spellLevel` (0–9). Returns `null` when that spell level is not yet
+ * accessible — distinct from `0`, which a real table never lists but callers may
+ * treat the same way. Out-of-range inputs return `null`.
+ */
+export function baseSpellsPerDay(
+  progression: SpellProgression,
+  classLevel: number,
+  spellLevel: number,
+): number | null {
+  const table = PROGRESSIONS[progression];
+  if (classLevel < 1 || classLevel > table.length) return null;
+  if (spellLevel < 0 || spellLevel > 9) return null;
+  return table[classLevel - 1]![spellLevel] ?? null;
+}

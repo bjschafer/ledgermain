@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { toggleKnownSpell } from "../../model/doc.js";
-import { bonusSpellsForLevel, casterModelFor } from "../../model/spellcasting.js";
+import { casterModelFor } from "../../model/spellcasting.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -11,7 +11,7 @@ interface SpellEntry {
   level: number;
 }
 
-export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
+export function SpellsSection({ doc, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
 
   const casterTag = useMemo(
@@ -47,9 +47,6 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     );
   }
 
-  // Casting-ability modifier — used for bonus-spells-per-day guidance.
-  // Falls back to 0 if no model is registered (future non-wizard casters).
-  const castingAbilityMod = model ? sheet.abilities[model.ability].mod : 0;
   const abilityLabel = model ? model.ability.toUpperCase() : "";
 
   const knownLabel = model?.knownLabel ?? "Spells Known";
@@ -81,7 +78,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
 
   return (
     <Panel
-      title="Spells"
+      title={model ? knownLabel : "Spells"}
       step="vii"
       storageKey="panel:Spells"
       right={
@@ -90,11 +87,16 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
         </span>
       }
     >
-      {/* Guidance hints: blurb + learning guidance */}
+      {/* Guidance hints: what this list is, plus a pointer to the daily loop. */}
       {model && (
         <div className="spell-hints">
           <p className="hint spell-hint-line">{model.blurb}</p>
           <p className="hint spell-hint-line">{model.learnGuidance}</p>
+          <p className="hint spell-hint-line">
+            This is your {knownLabel.toLowerCase()} — the spells you <em>could</em>{" "}
+            prepare. Prepare and cast for the day from the tracker’s{" "}
+            <strong>Prepared Spells</strong> panel.
+          </p>
         </div>
       )}
 
@@ -110,13 +112,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
           <div className="empty">{emptyState}</div>
         ) : (
           levels.map((lvl) => {
-            // Bonus-spells guidance for each level (cantrips never get a bonus).
-            const bonus =
-              model && lvl > 0 ? bonusSpellsForLevel(castingAbilityMod, lvl) : 0;
-            const levelLabel =
-              lvl === 0
-                ? "Cantrips"
-                : `Level ${lvl}${bonus > 0 ? ` · +${bonus} bonus spell/day (${abilityLabel})` : ""}`;
+            const levelLabel = lvl === 0 ? "Cantrips" : `Level ${lvl}`;
 
             return (
               <div key={lvl}>

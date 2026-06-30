@@ -28,7 +28,7 @@ export function createEmptyDoc(id: string): CharacterDoc {
 			feats: [],
 			skillRanks: {},
 			classFeatureChoices: [],
-			spells: { known: [], prepared: [] },
+			spells: { known: [] },
 			gear: [],
 		},
 		live: {
@@ -36,8 +36,35 @@ export function createEmptyDoc(id: string): CharacterDoc {
 			conditions: [],
 			activeBuffs: [],
 			resources: {},
+			spells: { prepared: [] },
 		},
 	};
+}
+
+/**
+ * Normalize a document loaded from persistence to the current shape. Older docs
+ * stored `build.spells.prepared` (always empty/unused) and lacked `live.spells`;
+ * this moves preparation to live state. Idempotent and non-destructive.
+ */
+export function migrateDoc(doc: CharacterDoc): CharacterDoc {
+	const build = doc.build as typeof doc.build & {
+		spells?: { known?: string[]; prepared?: unknown };
+	};
+	const known = build.spells?.known ?? [];
+	let next = doc;
+	let changed = false;
+
+	if (!doc.live.spells) {
+		next = { ...next, live: { ...next.live, spells: { prepared: [] } } };
+		changed = true;
+	}
+	// Drop any legacy `build.spells.prepared`, keeping only `known`.
+	if (build.spells && "prepared" in build.spells) {
+		next = { ...next, build: { ...next.build, spells: { known } } };
+		changed = true;
+	}
+
+	return changed ? next : doc;
 }
 
 export { ABILITY_IDS };
@@ -168,10 +195,24 @@ export function toggleKnownSpell(
 	const known = doc.build.spells.known;
 	const has = known.includes(spellId);
 	const next = has ? known.filter((s) => s !== spellId) : [...known, spellId];
-	return {
+	const withKnown: CharacterDoc = {
 		...doc,
 		build: { ...doc.build, spells: { ...doc.build.spells, known: next } },
 	};
+	// Removing a spell from the spellbook invalidates any prepared instances of
+	// it — prune them so the prepared loadout never references unknown spells.
+	if (has && doc.live.spells?.prepared.some((p) => p.spellId === spellId)) {
+		return {
+			...withKnown,
+			live: {
+				...withKnown.live,
+				spells: {
+					prepared: doc.live.spells.prepared.filter((p) => p.spellId !== spellId),
+				},
+			},
+		};
+	}
+	return withKnown;
 }
 
 export function setGear(doc: CharacterDoc, gear: ItemInstance[]): CharacterDoc {

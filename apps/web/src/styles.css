@@ -1476,6 +1476,146 @@ button:focus-visible,
 	align-items: center;
 }
 
+/* prepared spells */
+.prep-empty {
+	margin: 0 0 12px;
+}
+
+.prep-levels {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.prep-level {
+	border: 1px solid var(--line-soft);
+	border-radius: var(--radius);
+	overflow: hidden;
+}
+
+.prep-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 6px 12px;
+	background: var(--surface-2);
+}
+
+.prep-head-label {
+	font-family: var(--mono);
+	font-size: 11px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--gold);
+}
+
+.prep-count {
+	font-size: 11px;
+	font-family: var(--mono);
+	color: var(--faint);
+}
+
+.prep-count.is-over {
+	color: var(--danger, #d9534f);
+}
+
+.prep-bonus {
+	color: var(--gold-dim);
+}
+
+.prep-rows {
+	display: flex;
+	flex-direction: column;
+}
+
+.prep-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 12px;
+	border-top: 1px solid var(--line-soft);
+}
+
+.prep-row .prep-name {
+	flex: 1;
+	min-width: 0;
+	font-size: 14px;
+}
+
+.prep-row.is-expended .prep-name {
+	color: var(--faint);
+	text-decoration: line-through;
+}
+
+.prep-atwill {
+	font-size: 10px;
+	font-family: var(--mono);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--gold-dim);
+}
+
+.prep-cast {
+	min-width: 64px;
+}
+
+.prep-x {
+	width: 28px;
+	text-align: center;
+	padding: 2px 0;
+}
+
+.prep-none {
+	margin: 0;
+	padding: 6px 12px;
+	font-size: 12px;
+	color: var(--faint);
+	border-top: 1px solid var(--line-soft);
+}
+
+.prep-nobook {
+	font-style: italic;
+}
+
+.prep-add {
+	border-top: 1px solid var(--line-soft);
+}
+
+.prep-add > summary {
+	cursor: pointer;
+	padding: 6px 12px;
+	font-size: 12px;
+	color: var(--gold-dim);
+	font-family: var(--mono);
+	letter-spacing: 0.04em;
+}
+
+.prep-add-list {
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid var(--line-soft);
+}
+
+.prep-add-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 5px 12px;
+}
+
+.prep-add-row .prep-name {
+	flex: 1;
+	min-width: 0;
+	font-size: 13px;
+}
+
+.prep-have {
+	font-size: 11px;
+	font-family: var(--mono);
+	color: var(--gold-2);
+}
+
 /* hero points */
 .hero-display {
 	display: flex;

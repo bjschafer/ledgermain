@@ -36,7 +36,7 @@ function makeDoc(over: {
       feats: [],
       skillRanks: over.skillRanks ?? {},
       classFeatureChoices: [],
-      spells: { known: [], prepared: [] },
+      spells: { known: [] },
       gear: over.gear ?? [],
     },
     live: {

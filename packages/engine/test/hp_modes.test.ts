@@ -37,7 +37,7 @@ function baseDoc(overrides: Partial<CharacterDoc["build"]> = {}): CharacterDoc {
       feats: [],
       skillRanks: {},
       classFeatureChoices: [],
-      spells: { known: [], prepared: [] },
+      spells: { known: [] },
       gear: [],
       ...overrides,
     },

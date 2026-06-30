@@ -17,9 +17,10 @@ import type { BuilderProps } from "../builder/types.js";
 
 /**
  * Drain/restore limited-use pools. Class-feature pools (Rage rounds/day, Channel
- * Energy) are derived from `uses.maxFormula`; spell slots and item charges are
- * manual pools because the vendored data has no slot/charge tables (documented
- * Stage 4 limitation).
+ * Energy) are derived from `uses.maxFormula`; item charges and other one-off
+ * pools are manual because the vendored data has no charge tables. Prepared
+ * spell slots have their own panel ({@link PreparedSpellsPanel}); this is no
+ * longer where spells are tracked.
  */
 export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
 	const derived = useMemo(
@@ -57,7 +58,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
 		>
 			{!hasAny ? (
 				<div className="empty">
-					No pools. Add spell slots or item charges below.
+					No pools. Add item charges or other one-off pools below.
 				</div>
 			) : (
 				<div className="res-list">
@@ -91,11 +92,11 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
 				</div>
 			)}
 
-			<h4 className="tracker-sub">Add a manual pool (spell slots, charges)</h4>
+			<h4 className="tracker-sub">Add a manual pool (item charges, misc)</h4>
 			<div className="res-add">
 				<input
 					type="text"
-					placeholder="e.g. Spell slots L1"
+					placeholder="e.g. Wand charges"
 					value={label}
 					onChange={(e) => setLabel(e.target.value)}
 				/>

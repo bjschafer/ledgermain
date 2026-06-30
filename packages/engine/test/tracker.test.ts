@@ -46,7 +46,7 @@ function makeDoc(over?: Partial<CharacterDoc["live"]>): CharacterDoc {
       feats: [],
       skillRanks: { acr: 5 },
       classFeatureChoices: [],
-      spells: { known: [], prepared: [] },
+      spells: { known: [] },
       gear: [],
     },
     live: {

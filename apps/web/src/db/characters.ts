@@ -9,7 +9,7 @@
 import Dexie, { type Table } from "dexie";
 
 import type { CharacterDoc } from "@pf1/schema";
-import { createEmptyDoc } from "../model/doc.js";
+import { createEmptyDoc, migrateDoc } from "../model/doc.js";
 
 class CharacterDb extends Dexie {
   characters!: Table<CharacterDoc, string>;
@@ -36,7 +36,7 @@ export async function saveCharacter(doc: CharacterDoc): Promise<CharacterDoc> {
 /** Load the most-recently-updated document, creating one if the store is empty. */
 export async function loadOrCreateActive(): Promise<CharacterDoc> {
   const existing = await db.characters.orderBy("updatedAt").last();
-  if (existing) return existing;
+  if (existing) return migrateDoc(existing);
   const fresh = createEmptyDoc(crypto.randomUUID());
   await db.characters.put(fresh);
   return fresh;

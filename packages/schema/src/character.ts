@@ -49,7 +49,13 @@ export interface CharacterDoc {
     skillRanks: Record<SkillId, number>;
     /** Archetypes, bonus-feat picks, etc. — typed in Stage 3. */
     classFeatureChoices: unknown[];
-    spells: { known: string[]; prepared: unknown[] };
+    /**
+     * Spells the character *knows*. For a prepared caster (wizard) this is the
+     * spellbook — the library you may prepare from. The daily prepared loadout
+     * and cast-tracking live in `live.spells`, NOT here, because preparation is
+     * session state that resets on rest (DESIGN: build.* vs live.*).
+     */
+    spells: { known: string[] };
     gear: ItemInstance[];
     /**
      * Per-character-level favored-class bonus choice. In Standard PF1 mode one of
@@ -113,14 +119,35 @@ export interface CharacterDoc {
     conditions: string[];
     /** Active buffs with remaining duration + the changes they apply (Stage 4). */
     activeBuffs: ActiveBuff[];
-    /** Resource pools: spell slots, ki, rounds/day, charges. */
+    /** Resource pools: ki, rounds/day, item charges. */
     resources: Record<string, { used: number; max: number }>;
+    /**
+     * Prepared-caster daily loadout. Each entry is one prepared instance (the
+     * same spell may be prepared into multiple slots), with `expended` set once
+     * it has been cast. Resting clears `expended` but keeps the loadout. Spell
+     * level is derived from RefData per the caster's class, not stored here.
+     * Omitted on documents created before spell preparation existed.
+     */
+    spells?: { prepared: PreparedSpell[] };
     /**
      * Hero points currently held (PF1 optional rule). Omitted = 0.
      * Standard maximum held at once is 3 (see HERO_POINT_CAP in model/heroPoints).
      */
     heroPoints?: number;
   };
+}
+
+/**
+ * One prepared spell instance in a prepared caster's daily loadout. The same
+ * `spellId` may appear in multiple entries (prepared into multiple slots).
+ * Cantrips are prepared like any spell but cast at will, so their `expended`
+ * flag is left untouched by the cast action.
+ */
+export interface PreparedSpell {
+  /** Spell id (key into `RefData.spells`); must be in `build.spells.known`. */
+  spellId: string;
+  /** True once this prepared instance has been cast; cleared on rest. */
+  expended: boolean;
 }
 
 /**

@@ -2,6 +2,7 @@ import { BuffsPanel } from "./BuffsPanel.js";
 import { ConditionsPanel } from "./ConditionsPanel.js";
 import { HeroPointsPanel } from "./HeroPointsPanel.js";
 import { HpPanel } from "./HpPanel.js";
+import { PreparedSpellsPanel } from "./PreparedSpellsPanel.js";
 import { ResourcesPanel } from "./ResourcesPanel.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -17,6 +18,7 @@ export function Tracker(props: BuilderProps) {
       <HeroPointsPanel {...props} />
       <ConditionsPanel {...props} />
       <BuffsPanel {...props} />
+      <PreparedSpellsPanel {...props} />
       <ResourcesPanel {...props} />
     </div>
   );
