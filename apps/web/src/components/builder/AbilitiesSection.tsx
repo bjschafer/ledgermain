@@ -1,8 +1,7 @@
 import {
 	ABILITY_IDS,
-	addAbilityIncrease,
-	removeAbilityIncrease,
 	setAbility,
+	setAbilityIncreaseCount,
 	totalLevel,
 } from "../../model/doc.js";
 import { ABILITY_ABBR, signed } from "../../model/names.js";
@@ -46,6 +45,7 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
 								value={doc.abilities[id]}
 								min={1}
 								max={50}
+								block
 								onCommit={(n) => update((d) => setAbility(d, id, n))}
 								aria-label={`${ABILITY_ABBR[id]} base score`}
 							/>
@@ -89,29 +89,19 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
 									return (
 										<div className="ability-inc-cell" key={id}>
 											<div className="abbr">{ABILITY_ABBR[id]}</div>
-											<div className="ability-inc-stepper">
-												<button
-													type="button"
-													aria-label={`Remove ${ABILITY_ABBR[id]} increase`}
-													disabled={count === 0}
-													onClick={() =>
-														update((d) => removeAbilityIncrease(d, id))
-													}
-												>
-													−
-												</button>
-												<span className="num">{count}</span>
-												<button
-													type="button"
-													aria-label={`Add ${ABILITY_ABBR[id]} increase`}
-													disabled={assigned >= allowed}
-													onClick={() =>
-														update((d) => addAbilityIncrease(d, id))
-													}
-												>
-													+
-												</button>
-											</div>
+											<NumberField
+												className="num"
+												size={2}
+												value={count}
+												min={0}
+												max={allowed}
+												minusDisabled={count === 0}
+												plusDisabled={assigned >= allowed}
+												onCommit={(n) =>
+													update((d) => setAbilityIncreaseCount(d, id, n))
+												}
+												aria-label={`${ABILITY_ABBR[id]} increases`}
+											/>
 										</div>
 									);
 								})}
