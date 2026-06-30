@@ -32,6 +32,10 @@ export interface RefData {
   armors: Record<string, ArmorRef>;
   /** Mundane base weapons (the `weapons-and-ammo` pack, magic + ammo excluded). */
   weapons: Record<string, WeaponRef>;
+  /** Archetypes for the sliced classes (third-party dataset; see Archetype). */
+  archetypes: Record<string, Archetype>;
+  /** Archetype class features; each points back to its parent via `archetypeId`. */
+  archetypeFeatures: Record<string, ArchetypeFeature>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -299,6 +303,50 @@ export interface WeaponRef extends RefEntity {
   price?: number;
   /** Total weight in pounds. */
   weight?: number;
+}
+
+/* -------------------------------------------------------------- archetypes -- */
+
+/**
+ * A PF1 class archetype (e.g. "Two-Handed Fighter"). Unlike the rest of RefData,
+ * archetypes are NOT sourced from the Foundry pf1 system — it ships no archetype
+ * data at all (confirmed: no `subType: archetype`, no parent-class field,
+ * anywhere in the pinned packs). Sourced instead from a third-party CSV dataset
+ * (see `ARCHETYPE_REPO`/`ARCHETYPE_SHA` in data-pipeline config); `id`/`uuid`
+ * are therefore synthetic slugs, not real Foundry identifiers.
+ */
+export interface Archetype extends RefEntity {
+  /** The base class this archetype modifies, e.g. "fighter". */
+  classTag: string;
+  /** Attribution for the source dataset (module name; content is OGL/Paizo CUP via AON). */
+  contributorModule: string;
+}
+
+/**
+ * A single archetype class feature — something an archetype adds, or that
+ * replaces a base-class feature at the same level.
+ *
+ * No `changes` (mechanical effects) in v1: the dataset declares which features
+ * exist and at what level, not how to compute them (its `Description` prose has
+ * at least one verified copy-paste error, so it isn't trustworthy as a mechanics
+ * source either — see IMPLEMENTATION_PLAN.md Stage 11). Any future numeric
+ * effect must be hand-authored from the published rules, same as
+ * `feat-effects.ts`/`tables.ts`.
+ */
+export interface ArchetypeFeature extends RefEntity {
+  /** Parent `Archetype.id`. */
+  archetypeId: string;
+  /** Inherited from the parent archetype, for convenient filtering. */
+  classTag: string;
+  level: number;
+  /**
+   * The base-class `ClassFeatureGrant.uuid` (from `Class.features`) this
+   * feature replaces, when the (classTag, level) pairing is unambiguous (a
+   * single base feature at that level, not a multi-occupant slot like Bonus
+   * Feats). `undefined` means the UI shows this feature's prose as a soft
+   * warning instead of a paired swap.
+   */
+  pairedBaseFeatureUuid?: string;
 }
 
 export type { SourceRef };

@@ -25,7 +25,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(2);
+    expect(ref.meta.schemaVersion).toBe(3);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -38,6 +38,13 @@ describe("metadata + provenance", () => {
   it("includes hashes for the new armors + weapons files", () => {
     expect(ref.meta.hashes["armors.json"]).toBeDefined();
     expect(ref.meta.hashes["weapons.json"]).toBeDefined();
+  });
+
+  it("has the archetype collections wired (empty until Stage 11.2 ingests data)", () => {
+    expect(ref.meta.hashes["archetypes.json"]).toBeDefined();
+    expect(ref.meta.hashes["archetype-features.json"]).toBeDefined();
+    expect(ref.archetypes).toEqual({});
+    expect(ref.archetypeFeatures).toEqual({});
   });
 
   it("contains the expected slice", () => {

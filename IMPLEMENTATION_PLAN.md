@@ -437,6 +437,175 @@ display.
 
 ---
 
+## Stage 11: Archetype data slice (core 5 classes)
+
+**Goal**: Add archetype selection to the builder, sourced from a third-party module. The upstream
+Foundry PF1 system (pinned at SHA `10b87c07`, v11.11) ships **no archetype data** — confirmed across
+`packs/`, `module/`, `lang/`, `module/models/`, and `module/migration/`; the only mentions are
+prose in 32 description strings (e.g. "any archetype class feature that replaces trap sense" in
+`class-abilities/danger-sense...yaml:32`). Coverage here mirrors the existing slice (fighter,
+barbarian, wizard, cleric, sorcerer); swap mechanics are display + slot-map only in v1, with prose
+soft-warnings for ambiguous cases.
+
+**Source**: `bjschafer/pf1e-archetypes` (GitHub, pinned at commit `815ef073685faf215be442cc5035c8198a89432b`)
+— a clean fork of `baileymh/pf1e-archetypes` (module GPL-3.0 code, OGL/CUP content; ~1,241
+archetypes + ~4,524 archetype class features across all classes). The README notes these items
+intentionally omit HD/HP/saves and `Changes`/attacks — they're a text + feature-list scaffold, which
+fits our model (the engine computes; data declares swaps). The repo ships three representations;
+ingest the CSV (and optionally the XML for cross-ref), never the `.db` artifacts.
+
+**Why a fork, not upstream directly**: every one of upstream's 44 archetype CSVs and 45 XML files
+(under `source files/Archetypes/` and `source files/XML/`) carries a literal, unresolved git
+merge-conflict block (`<<<<<<< HEAD` / `=======` / `>>>>>>> <hash>`) baked into the committed
+content, on both `main` and the only release tag (`0.2.7`). Verified across 6 spot-checked classes
+and again programmatically across all 89 affected files: the two halves of every conflict are
+byte-for-byte identical — a botched/duplicated export, not a real content fork. The fork strips the
+3 marker lines and the duplicate half per file (commit message has the full verification + file
+list); 2 files (`Prestige_Abilities.csv`, `SpecialAbilities.csv`) had no conflict markers and were
+left untouched. (`SpecialAbilities.csv` separately has an unrelated spreadsheet-paste artifact
+around line 4756 — not used by this stage, flagged for whoever touches it later.)
+
+**Column layout is not uniform across class files** — e.g. `Barbarian.csv` and `Summoner.csv` omit
+the `Base Feature` column entirely and order columns differently than `Fighter.csv`/`Wizard.csv`/
+`Cleric.csv`/`Sorcerer.csv`. The transform must parse by header name, never fixed column index.
+
+**Description text has at least one verified content error** (Two-Handed Fighter's "Shattering
+Strike" row contains Bravery's description, copy-pasted): treat `Description` as best-effort display
+prose, not an authoritative mechanical source — consistent with the project's existing clean-room
+posture (mechanics are written from the published rules directly; this dataset tells us *which*
+features exist and at what level, not how to compute them).
+
+**Design** — same clean-room posture as the rest of the pipeline (DESIGN.md §6):
+- **Ingest CSV/XML only** (`source files/Archetypes/<Class>.csv`, `source files/XML/<Class>.xml`);
+  never import the module's `.db` files, `module.json`, or `packs/` into our tree.
+- Emit our own normalized JSON (`archetypes.json`, `archetype-features.json`) carrying attribution
+  (`paizoSourceId`, `contributorModule: "baileymh/pf1e-archetypes"`).
+- **Swap mechanics are hybrid** (matches AGENTS.md prereq stance): structured signal =
+  `(classTag, level)` cross-ref against our existing `classes.json links.supplements[level].uuid`
+  to populate `pairedBaseFeatureUuid`; anything ambiguous stays as a prose soft-warning (the
+  `Description` text is preserved and rendered as a warning in the UI).
+- **No numeric effects in v1**: per the source's own caveat, archetype features carry no
+  `Changes`/attacks — the engine displays swapped slots and prose; per-feature mechanical bonuses
+  are deferred to a later stage.
+- **Ignore the CSV `Base Feature` column** (`<id-XXXXX` AON/FG-style refs, not Foundry UUIDs). Use
+  our `links.supplements` level map as the source of truth instead.
+- **Disable auto-pairing for `Bonus Feat` slots** (and any base-class level carrying multiple
+  features, e.g. fighter bonus feats at every even level): emit `pairedBaseFeatureUuid: undefined`
+  for those and treat as prose warning — archetypes rarely replace bonus feats anyway, and
+  level-only cross-ref is ambiguous when the slot has multiple occupants.
+
+**Success Criteria**:
+- `packages/schema` defines `Archetype` and `ArchetypeFeature`; extends `RefData` with
+  `archetypes` and `archetypeFeatures`; bumps `RefDataMeta.schemaVersion` (2 → 3).
+- `packages/data-pipeline` adds a second pinned source (`ARCHETYPE_REPO` = `bjschafer/pf1e-archetypes`,
+  `ARCHETYPE_SHA` = `815ef073685faf215be442cc5035c8198a89432b`, in `src/config.ts`); `data:fetch`
+  fetches both clones; new `transform/archetypes.ts` parses the CSV **by header name** (column order
+  and presence vary by class file — see Source notes above), reads the 5 slice classes, cross-refs
+  `classes.json`, emits `data/archetypes.json` + `data/archetype-features.json`.
+- Both `loadRefData()` paths (Node `index.ts`, browser `apps/web/src/refdata/loader.ts`) reassemble
+  the new collections; `scripts/copy-refdata.ts` ships the new files into `public/data/`.
+- `CharacterDoc.build.archetypes: string[]` (IDs); `DerivedSheet.activeArchetypes` carries the
+  resolved display + swap-map.
+- Builder has an archetype picker per class; tracker renders swapped slots with struck-through base
+  features (reuse the `applied`-flag strike-through pattern from `stacking.ts`).
+- Repo gates green: `bun run typecheck` + `bun run test`.
+
+**Tests**:
+- Data-pipeline snapshot tests: fighter `Shielded Fighter` swaps armor-training slot at level 3 via
+  UUID cross-ref (paired); `Aldori Defender` (prose-only "replaces") carries
+  `pairedBaseFeatureUuid: undefined` + retained prose; refdata fact test "Dragonheir Scion is a
+  fighter archetype".
+- Engine hand-fixture (the pattern in `packages/engine/test/`): a doc with
+  `build.archetypes: ["fighter:shielded-fighter"]` yields
+  `activeArchetypes[0].swappedSlots[3] === <armor-training-1 uuid>` and the struck-through base
+  feature marked `applied: false`.
+- Web model test (`apps/web/src/model/archetypes.test.ts`): selection → swaps → display list;
+  prose-warning fallback for the no-match case.
+- Existing `refdata.test.ts` schemaVersion assertion updated to 3.
+
+**Field mapping** (`bjschafer/pf1e-archetypes` CSV → RefData):
+
+`Archetype` (extends `RefEntity`):
+- `id` ← slug(`Combined`) — e.g. `"fighter:shielded-fighter"`
+- `classTag` ← slug(`Class`) — must match one of our `classes.json` `tag` values
+- `name` ← `Archetype`
+- `tags` ← parsed `Tags` JSON-array-of-arrays (`[[Class],[Archetype]]`)
+- `sourceIds` ← parsed from `Description` Paizo product refs (best-effort; same regex as
+  feats/`sourceIds`)
+- `contributorModule` ← `"baileymh/pf1e-archetypes"`
+
+`ArchetypeFeature` (extends `RefEntity`):
+- `id` ← `${archetypeId}:${slug(Class Ability)}:${Level}` — stable across re-emits
+- `archetypeId` ← parent `Archetype.id`
+- `classTag` ← inherited
+- `level` ← `Level`
+- `name` ← `Class Ability`
+- `description` ← `Description` (HTML; preserved verbatim — contains the "This ability replaces
+  X" prose the UI surfaces as a soft warning)
+- `pairedBaseFeatureUuid` ← `classes.json links.supplements[level].uuid` when that slot is
+  unambiguous (single feature, not a Bonus Feat); `undefined` otherwise
+- `attribution` ← `{ sourceIds, contributorModule }`
+
+**Sub-stages**:
+- 11.1 Schema (`Archetype`, `ArchetypeFeature`, `RefData` extension, `SCHEMA_VERSION=3`) +
+  dual-pinned config + fetch script (no data emitted yet).
+- 11.2 Normalizer transform + committed normalized JSON for the 5 classes (reviewable diff).
+- 11.3 Engine derived layer (`activeArchetypes` + slot-swap display, strike-through via
+  `applied`-flag).
+- 11.4 Web builder picker + tracker display + model tests for the 5 class sheets.
+- 11.5 Docs: update `AGENTS.md` RefData description and `DESIGN.md` data-flow note.
+
+**Risk register**:
+1. **CSV `Base Feature` ref format** is `<id-XXXXX` (AON/FG-style), not Foundry UUIDs. Resolution:
+   ignore that column; use our `classes.json links.supplements[].level → uuid` cross-ref instead.
+   Spot-check level alignment between CSV and `links.supplements` during 11.2.
+2. **Multiple features at one level** (fighter bonus feats every even level) make level-only
+   cross-ref ambiguous. Resolution: don't auto-pair when a base-class level carries multiple
+   features; emit `pairedBaseFeatureUuid: undefined` and treat as a prose warning. Disable
+   auto-pairing for `Bonus Feat` slots entirely.
+3. **Foundry v9 `.db` format drift**: if we ever want to reconcile with the module's emitted items
+   we'd need a shape migration (legacy `permission`/`data` → v11/v12 `ownership`/`system`). Out of
+   v1 scope; noted.
+4. **Licensing**: the module's GPL-3.0 covers packaging, not the OGL/CUP game-content text. Treat
+   as we already treat the vendored Foundry compendium prose — same posture, with attribution.
+5. **Upstream source corruption** (resolved pre-emptively): every archetype CSV/XML in
+   `baileymh/pf1e-archetypes` had a duplicated, unresolved git-conflict block. Resolved by forking to
+   `bjschafer/pf1e-archetypes`, verifying both conflict halves were byte-identical in all 89 affected
+   files, and committing a single clean copy (`815ef07`). If we ever re-sync from upstream, re-run the
+   same verify-then-strip step before diffing — don't assume a future upstream commit fixed it.
+6. **Column layout varies by class file** (`Barbarian.csv`/`Summoner.csv` omit `Base Feature` and use
+   a different column order than `Fighter.csv`/`Wizard.csv`/`Cleric.csv`/`Sorcerer.csv`). Resolution:
+   `transform/archetypes.ts` must look up columns by header name, never by fixed index.
+7. **`Description` text has known copy-paste errors** (verified: Two-Handed Fighter's "Shattering
+   Strike" row carries Bravery's description). Resolution: surface `Description` as display-only
+   prose (with attribution), never as a source for hand-authored mechanical effects — any future
+   numeric effect (post-v1) must be written from the published rules directly, same as
+   `feat-effects.ts`/`tables.ts` already are.
+
+**Status**: In Progress
+
+**Notes / caveats (as built so far)**:
+- **11.1 complete**: `packages/schema` gained `Archetype`/`ArchetypeFeature` (extend `RefEntity`;
+  `id`/`uuid` are synthetic slugs, not real Foundry ids) and `RefData.archetypes` /
+  `archetypeFeatures`. `packages/data-pipeline/src/config.ts` bumped `SCHEMA_VERSION` to 3 and added
+  the dual-pinned `ARCHETYPE_REPO`/`ARCHETYPE_SHA`/`ARCHETYPE_CLONE_DIR`. `cli/fetch.ts` now fetches
+  both pinned sources via a shared `fetchPinned()` helper. `normalize.ts`/`emit.ts`/`index.ts` (Node
+  loader) and `apps/web/src/refdata/loader.ts` (browser loader) all wire the two new collections
+  through as empty `{}` for now — no transform/ingestion yet (that's 11.2). One deviation from the
+  field-mapping draft above: dropped the speculative `sourceIds` (regex-parsed from `Description`)
+  and the nested `attribution` object — there's no existing regex utility to "reuse" (feats get
+  `sources` from a structured Foundry field, not prose-parsing) and the CSV's prose isn't reliable
+  enough to mine citations from. Kept `contributorModule` directly on `Archetype` only (not
+  duplicated onto every feature) for the same attribution purpose. Repo gates green: typecheck (4
+  packages), `bun run test` (149 engine + 34 data-pipeline + 256 web), `bun run data:fetch` +
+  `data:build` regenerate cleanly, `apps/web` build picks up the new (empty) files via
+  `copy-refdata.ts` unchanged.
+- **Next (11.2)**: `transform/archetypes.ts` — parse the cleaned fork's CSVs **by header name**
+  (column order/presence varies by class file), cross-ref `classes.json` for `pairedBaseFeatureUuid`,
+  emit real `archetypes.json`/`archetype-features.json` for the 5 slice classes.
+
+---
+
 ## Deferred (de-risked by the architecture, not v1)
 
 - **Party/GM session** — Durable Object per session; documents already self-contained.

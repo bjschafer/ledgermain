@@ -22,9 +22,23 @@ export const SYSTEM_VERSION = "11.11";
 
 /**
  * Bumped when the RefData *shape* changes (mirrors schema package intent).
- * v2 added `armors` and `weapons` collections (Stage 6).
+ * v2 added `armors` and `weapons` collections (Stage 6). v3 adds `archetypes`
+ * and `archetypeFeatures` (Stage 11).
  */
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
+
+/**
+ * Second pinned source: archetype data (Foundry's pf1 system ships none — see
+ * IMPLEMENTATION_PLAN.md Stage 11). This is `bjschafer/pf1e-archetypes`, a fork
+ * of `baileymh/pf1e-archetypes` with the upstream merge-conflict corruption
+ * (every CSV/XML file) resolved — both conflict halves were verified
+ * byte-identical before stripping. Pin like FOUNDRY_SHA: exact commit, never a
+ * branch.
+ */
+export const ARCHETYPE_REPO = "https://github.com/bjschafer/pf1e-archetypes.git";
+
+/** Pinned commit on the cleaned fork (see comment above). */
+export const ARCHETYPE_SHA = "815ef073685faf215be442cc5035c8198a89432b";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const packageRoot = resolve(here, "..");
@@ -33,6 +47,9 @@ const packageRoot = resolve(here, "..");
 export const CACHE_DIR = resolve(packageRoot, ".cache");
 export const CLONE_DIR = resolve(CACHE_DIR, "foundry-pf1");
 export const PACKS_DIR = resolve(CLONE_DIR, "packs");
+
+/** Where the archetype dataset clone lives (gitignored, fetched on demand). */
+export const ARCHETYPE_CLONE_DIR = resolve(CACHE_DIR, "pf1e-archetypes");
 
 /** Where the normalized JSON is vendored (committed to the repo). */
 export const OUTPUT_DIR = resolve(packageRoot, "data");

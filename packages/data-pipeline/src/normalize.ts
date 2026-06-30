@@ -2,6 +2,8 @@ import { join } from "node:path";
 
 import type {
   ArmorRef,
+  Archetype,
+  ArchetypeFeature,
   Buff,
   Class,
   ClassFeature,
@@ -150,6 +152,10 @@ export function normalize(opts: NormalizeOptions): {
     classFiles[0]?.doc._stats?.coreVersion ??
     "unknown";
 
+  // --- archetypes (Stage 11.2 ingests the dataset; 11.1 just wires the shape) -
+  const archetypes: Archetype[] = [];
+  const archetypeFeatures: ArchetypeFeature[] = [];
+
   const counts = {
     races: races.length,
     classes: classes.length,
@@ -160,6 +166,8 @@ export function normalize(opts: NormalizeOptions): {
     items: items.length,
     armors: armors.length,
     weapons: weapons.length,
+    archetypes: archetypes.length,
+    archetypeFeatures: archetypeFeatures.length,
   };
 
   const meta: RefDataMeta = {
@@ -186,6 +194,8 @@ export function normalize(opts: NormalizeOptions): {
     spellLists,
     armors: byId(armors),
     weapons: byId(weapons),
+    archetypes: byId(archetypes),
+    archetypeFeatures: byId(archetypeFeatures),
   };
 
   return { refData, contentVersion };
