@@ -255,6 +255,8 @@ export interface WornArmor {
   acp?: number;
   /** Armor weight class for `@armor.type` formulas: 0 none,1 light,2 med,3 heavy. */
   type?: number;
+  /** Magical armor/shield ability ids (e.g. "light-fortification", "ghost-touch") — display only. */
+  abilities?: string[];
 }
 
 /**
@@ -306,6 +308,8 @@ export interface WeaponInstance {
   group?: string;
   /** Melee or ranged; determines which attack modifier targets apply. Default "melee". */
   category?: "melee" | "ranged";
+  /** Magical weapon ability ids (e.g. "keen", "flaming") — keen modifies critRange at pick-time; others display-only. */
+  abilities?: string[];
 }
 
 /* ----------------------------------------------------------- derived sheet -- */

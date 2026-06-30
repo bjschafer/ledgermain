@@ -411,7 +411,29 @@ since the engine doesn't roll dice). Ability names + notes surface in the weapon
 **Tests**: keen longsword (critRange 19→17); flaming weapon display note; armor fortification
 display.
 
-**Status**: Not Started
+**Status**: Complete
+
+**Notes / caveats (as built)**:
+- Schema: `abilities?: string[]` on both `WeaponInstance` and `WornArmor`. Ability ids reference the
+  curated table in `apps/web/src/model/abilities.ts` (e.g. `"keen"`, `"flaming"`,
+  `"light-fortification"`).
+- Curated table: 13 weapon abilities (keen, flaming, frost, shock, flaming/icy/shocking burst,
+  holy, unholy, ghost touch, vicious, speed, defending) + 5 armor abilities (light/medium/heavy
+  fortification, ghost touch, bashing). Each entry carries `{ id, name, slot, bonusEquivalent,
+  note?, applyToWeaponRef? }`. Clean-room from PF1 RAW — not Foundry code (the upstream data has
+  only roll-table names, no portable mechanics).
+- **Keen** is the only ability with a mechanical effect: `critRange = max(1, 2 * critRange - 21)`
+  applied to the `WeaponRef` before denormalization. A longsword (critRange 19) with keen yields
+  critRange 17 (threat 17–20). All other abilities are display-only (the engine doesn't roll dice,
+  so "+1d6 fire" from Flaming surfaces as a note in the weapon meta line, not a computed value).
+- `addWeaponFromRef` and `addWornArmorFromRef` both accept `abilities?: string[]` as the final
+  parameter. Abilities are stored on the doc for display + future re-sync. The weapon/armor meta
+  line shows each ability's name + note (e.g. "Flaming (+1d6 fire)").
+- UI: both pickers get a row of toggle-chip buttons below the search/selectors row. Active chips
+  are highlighted. Clicking toggles the ability in/out of the selection. The enhancement-equivalent
+  bonus is shown as a tooltip for pricing reference (no mechanical effect).
+- Engine: unchanged. Keen modifies the stored `critRange` before the engine sees it; everything else
+  is display-only.
 
 ---
 

@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import type { WeaponInstance, WeaponRef } from "@pf1/schema";
 
 import { addWeapon, addWeaponFromRef, removeWeapon, updateWeapon } from "../../model/doc.js";
+import { abilityNotes, WEAPON_ABILITIES } from "../../model/abilities.js";
 import { WEAPON_MATERIALS } from "../../model/materials.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -221,6 +222,9 @@ function weaponMeta(w: WeaponInstance): string {
 	const critMult = w.critMult ?? 2;
 	parts.push(`crit ${critRange < 20 ? `${critRange}–20/×${critMult}` : `×${critMult}`}`);
 	if (w.group) parts.push(`type: ${w.group}`);
+	for (const note of abilityNotes(w.abilities)) {
+		parts.push(note.note ? `${note.name} (${note.note})` : note.name);
+	}
 	return parts.join(" · ");
 }
 
@@ -243,6 +247,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
 	const [weaponQuery, setWeaponQuery] = useState("");
 	const [enhancement, setEnhancement] = useState<number>(0);
 	const [material, setMaterial] = useState<string>("steel");
+	const [abilities, setAbilities] = useState<string[]>([]);
 	const [editingIndex, setEditingIndex] = useState<number | null>(null);
 	const weapons = doc.build.weapons ?? [];
 
@@ -254,21 +259,29 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
 			.slice(0, 80);
 	}, [refData.weapons, weaponQuery]);
 
+	function toggleAbility(id: string) {
+		setAbilities((prev) => prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]);
+	}
+
+	function resetPickerState() {
+		setEnhancement(0);
+		setMaterial("steel");
+		setAbilities([]);
+	}
+
 	function handleAdd(w: WeaponInstance) {
 		update((d) => addWeapon(d, w));
 		setShowAddCard(false);
 		setAddMode("select");
-		setEnhancement(0);
-		setMaterial("steel");
+		resetPickerState();
 	}
 
 	function handleAddFromRef(w: WeaponRef) {
-		update((d) => addWeaponFromRef(d, w, enhancement, material));
+		update((d) => addWeaponFromRef(d, w, enhancement, material, abilities));
 		setShowAddCard(false);
 		setAddMode("select");
 		setWeaponQuery("");
-		setEnhancement(0);
-		setMaterial("steel");
+		resetPickerState();
 	}
 
 	function handleEdit(index: number, w: WeaponInstance) {
@@ -286,16 +299,14 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
 		setShowAddCard(true);
 		setAddMode("select");
 		setWeaponQuery("");
-		setEnhancement(0);
-		setMaterial("steel");
+		resetPickerState();
 	}
 
 	function closeAddCard() {
 		setShowAddCard(false);
 		setAddMode("select");
 		setWeaponQuery("");
-		setEnhancement(0);
-		setMaterial("steel");
+		resetPickerState();
 	}
 
 	return (
@@ -403,7 +414,22 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
 									</select>
 								</label>
 							</div>
-								<div className="scroll">
+							{WEAPON_ABILITIES.length > 0 && (
+								<div className="ability-chips">
+									{WEAPON_ABILITIES.map((a) => (
+										<button
+											key={a.id}
+											type="button"
+											className={`chip${abilities.includes(a.id) ? " chip-on" : ""}`}
+											title={a.note ? `${a.name} (+${a.bonusEquivalent}) — ${a.note}` : `${a.name} (+${a.bonusEquivalent})`}
+											onClick={() => toggleAbility(a.id)}
+										>
+											{a.name}
+										</button>
+									))}
+								</div>
+							)}
+							<div className="scroll">
 									{filteredWeapons.length === 0 ? (
 										<div className="empty">No weapons match.</div>
 									) : (

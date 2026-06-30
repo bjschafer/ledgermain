@@ -192,6 +192,22 @@ describe("addWornArmorFromRef()", () => {
 		expect(inst.name).toBe("Full Plate");
 		expect(inst.armor!.material).toBeUndefined();
 	});
+
+	it("stores armor abilities (all display-only)", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE, 2, "mithral", ["light-fortification", "ghost-touch"]);
+		const inst = d.build.gear[0]!;
+		expect(inst.armor!.abilities).toEqual(["light-fortification", "ghost-touch"]);
+		expect(inst.armor!.enhancement).toBe(2);
+		expect(inst.armor!.material).toBe("mithral");
+		// abilities don't modify stats (all display-only for armor)
+		expect(inst.armor!.ac).toBe(9);
+		expect(inst.armor!.maxDex).toBe(3); // mithral +2
+	});
+
+	it("no abilities → no abilities field on the WornArmor", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE);
+		expect(d.build.gear[0]!.armor!.abilities).toBeUndefined();
+	});
 });
 
 // ---------------------------------------------------------------------------

@@ -16,6 +16,7 @@ import type {
 	WornArmor,
 } from "@pf1/schema";
 
+import { applyAbilitiesToWeapon } from "./abilities.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 
 const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
@@ -264,13 +265,15 @@ export function addWornArmor(
  * penalties as negative and the ref keeps the source magnitude), and records
  * the `armorId` for display + future re-sync. Optional `enhancement` and
  * `material` apply modifiers at pick-time (mithral: weight class shift, maxDex
- * +2, ACP −3). No deduplication.
+ * +2, ACP −3). Optional `abilities` are stored for display (all armor abilities
+ * are display-only). No deduplication.
  */
 export function addWornArmorFromRef(
 	doc: CharacterDoc,
 	armor: ArmorRef,
 	enhancement: number = 0,
 	material?: string,
+	abilities?: string[],
 ): CharacterDoc {
 	const ref = applyMaterialToArmor(armor, material);
 	const enh = clampInt(enhancement, 0, 10);
@@ -289,6 +292,7 @@ export function addWornArmorFromRef(
 		...(ref.maxDex != null ? { maxDex: ref.maxDex } : {}),
 		...(ref.acp ? { acp: -ref.acp } : {}),
 		...(ref.weightClass ? { type: ref.weightClass } : {}),
+		...(abilities && abilities.length > 0 ? { abilities } : {}),
 	};
 	const inst: ItemInstance = {
 		equipped: true,
@@ -572,20 +576,23 @@ export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterD
 
 /**
  * Append a weapon selected from `RefData.weapons`, overlaying a user-chosen
- * enhancement bonus and optional special material. Snapshots the ref's physical
- * stats onto a `WeaponInstance` (the engine reads those fields directly;
- * `weaponId` is a display + re-sync pointer only). The display name gets a
- * material prefix ("Silver Longsword") and " +N" suffix when enhancement is
- * positive. Zero-value optionals (matching engine defaults) are omitted so the
- * doc stays minimal. Material is display-only for weapons (no stat modifiers
- * the engine tracks).
+ * enhancement bonus, optional special material, and optional magical abilities.
+ * Snapshots the ref's physical stats onto a `WeaponInstance` (the engine reads
+ * those fields directly; `weaponId` is a display + re-sync pointer only). The
+ * display name gets a material prefix ("Silver Longsword") and " +N" suffix
+ * when enhancement is positive. Zero-value optionals (matching engine defaults)
+ * are omitted so the doc stays minimal. Material is display-only for weapons.
+ * Keen (if selected) doubles the crit range at pick-time; other abilities are
+ * display-only.
  */
 export function addWeaponFromRef(
 	doc: CharacterDoc,
 	weapon: WeaponRef,
 	enhancement: number = 0,
 	material?: string,
+	abilities?: string[],
 ): CharacterDoc {
+	const ref = applyAbilitiesToWeapon(weapon, abilities);
 	const enh = clampInt(enhancement, 0, 10);
 	const matName = material && material !== "steel" ? MATERIALS[material]?.name ?? null : null;
 	const name = [
@@ -595,18 +602,19 @@ export function addWeaponFromRef(
 	].filter(Boolean).join(" ");
 	const instance: WeaponInstance = {
 		name,
-		attackAbility: weapon.attackAbility,
-		damageAbility: weapon.damageAbility,
-		category: weapon.category,
+		attackAbility: ref.attackAbility,
+		damageAbility: ref.damageAbility,
+		category: ref.category,
 		...(enh > 0 ? { enhancement: enh } : {}),
 		...(material && material !== "steel" ? { material } : {}),
-		...(weapon.damageDice ? { damageDice: weapon.damageDice } : {}),
-		...(weapon.critRange && weapon.critRange !== 20 ? { critRange: weapon.critRange } : {}),
-		...(weapon.critMult && weapon.critMult !== 2 ? { critMult: weapon.critMult } : {}),
-		...(weapon.damageMultiplier && weapon.damageMultiplier !== 1
-			? { damageMultiplier: weapon.damageMultiplier }
+		...(abilities && abilities.length > 0 ? { abilities } : {}),
+		...(ref.damageDice ? { damageDice: ref.damageDice } : {}),
+		...(ref.critRange && ref.critRange !== 20 ? { critRange: ref.critRange } : {}),
+		...(ref.critMult && ref.critMult !== 2 ? { critMult: ref.critMult } : {}),
+		...(ref.damageMultiplier && ref.damageMultiplier !== 1
+			? { damageMultiplier: ref.damageMultiplier }
 			: {}),
-		...(weapon.group ? { group: weapon.group } : {}),
+		...(ref.group ? { group: ref.group } : {}),
 		weaponId: weapon.id,
 	};
 	const weapons = [...(doc.build.weapons ?? []), instance];

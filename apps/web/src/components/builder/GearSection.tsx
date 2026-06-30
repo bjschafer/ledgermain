@@ -9,6 +9,7 @@ import {
 	removeGear,
 	setGearEquipped,
 } from "../../model/doc.js";
+import { abilityNotes, ARMOR_ABILITIES } from "../../model/abilities.js";
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -54,6 +55,7 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 	const [armorQuery, setArmorQuery] = useState("");
 	const [armorEnhancement, setArmorEnhancement] = useState<number>(0);
 	const [armorMaterial, setArmorMaterial] = useState<string>("steel");
+	const [armorAbilities, setArmorAbilities] = useState<string[]>([]);
 	// Custom-entry form state (the legacy manual form)
 	const [armorSlot, setArmorSlot] = useState<"armor" | "shield">("armor");
 	const [armorName, setArmorName] = useState("");
@@ -94,11 +96,16 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 		setArmorQuery("");
 		setArmorEnhancement(0);
 		setArmorMaterial("steel");
+		setArmorAbilities([]);
 	}
 
 	function handleAddArmorRef(armor: ArmorRef) {
-		update((d) => addWornArmorFromRef(d, armor, armorEnhancement, armorMaterial));
+		update((d) => addWornArmorFromRef(d, armor, armorEnhancement, armorMaterial, armorAbilities));
 		closeArmorPicker();
+	}
+
+	function toggleArmorAbility(id: string) {
+		setArmorAbilities((prev) => prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]);
 	}
 
 	function handleAddArmor() {
@@ -152,8 +159,13 @@ return (
 								{inst.armor && (
 									<div className="gear-meta">
 										AC +{inst.armor.ac}
+										{inst.armor.enhancement ? ` +${inst.armor.enhancement} enh` : ""}
 										{inst.armor.maxDex != null ? ` · max Dex +${inst.armor.maxDex}` : ""}
 										{inst.armor.acp ? ` · ACP ${inst.armor.acp}` : ""}
+										{inst.armor.material ? ` · ${inst.armor.material}` : ""}
+										{abilityNotes(inst.armor.abilities).map((n) =>
+											` · ${n.note ? `${n.name} (${n.note})` : n.name}`,
+										).join("")}
 									</div>
 								)}
 									{inst.equipped && changes.length > 0 && (
@@ -315,11 +327,26 @@ return (
 												<option key={m.id} value={m.id}>{m.name}</option>
 											))}
 										</select>
-									</label>
+								</label>
+							</div>
+							{ARMOR_ABILITIES.length > 0 && (
+								<div className="ability-chips">
+									{ARMOR_ABILITIES.map((a) => (
+										<button
+											key={a.id}
+											type="button"
+											className={`chip${armorAbilities.includes(a.id) ? " chip-on" : ""}`}
+											title={a.note ? `${a.name} (+${a.bonusEquivalent}) — ${a.note}` : `${a.name} (+${a.bonusEquivalent})`}
+											onClick={() => toggleArmorAbility(a.id)}
+										>
+											{a.name}
+										</button>
+									))}
 								</div>
-								<div className="scroll">
-									{filteredArmors.length === 0 ? (
-										<div className="empty">No armor matches.</div>
+							)}
+							<div className="scroll">
+								{filteredArmors.length === 0 ? (
+									<div className="empty">No armor matches.</div>
 									) : (
 										filteredArmors.map((a) => (
 											<div key={a.id} className="pick-row">

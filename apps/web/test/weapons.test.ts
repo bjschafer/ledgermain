@@ -309,4 +309,44 @@ describe("addWeaponFromRef()", () => {
 		expect(w.name).toBe("Longsword");
 		expect(w.material).toBeUndefined();
 	});
+
+	it("keen doubles the crit range: longsword 19→17", () => {
+		// Longsword base critRange is 19 (threat 19-20). Keen doubles to 17-20.
+		const d = addWeaponFromRef(doc(), longswordRef, 0, "steel", ["keen"]);
+		const w = d.build.weapons![0]!;
+		expect(w.critRange).toBe(17);
+		expect(w.abilities).toEqual(["keen"]);
+	});
+
+	it("keen on a default-threat weapon (20) yields 19", () => {
+		// A weapon with critRange 20 (threat 20 only). Keen → 19-20.
+		const d = addWeaponFromRef(doc(), greatswordRef, 0, "steel", ["keen"]);
+		// Greatsword base critRange is 19 (from the refdata), not 20.
+		// So keen gives 2*19-21 = 17.
+		expect(d.build.weapons![0]!.critRange).toBe(17);
+	});
+
+	it("flaming is display-only (no stat change, stored in abilities)", () => {
+		const d = addWeaponFromRef(doc(), longswordRef, 1, "steel", ["flaming"]);
+		const w = d.build.weapons![0]!;
+		expect(w.abilities).toEqual(["flaming"]);
+		// critRange unchanged (flaming doesn't modify it)
+		expect(w.critRange).toBe(19);
+	});
+
+	it("combines keen + flaming + enhancement + material", () => {
+		const d = addWeaponFromRef(doc(), longswordRef, 2, "mithral", ["keen", "flaming"]);
+		const w = d.build.weapons![0]!;
+		expect(w.name).toBe("Mithral Longsword +2");
+		expect(w.enhancement).toBe(2);
+		expect(w.material).toBe("mithral");
+		expect(w.abilities).toEqual(["keen", "flaming"]);
+		expect(w.critRange).toBe(17); // keen: 2*19-21 = 17
+		expect(w.damageDice).toBe("1d8");
+	});
+
+	it("no abilities → no abilities field on the doc", () => {
+		const d = addWeaponFromRef(doc(), longswordRef);
+		expect(d.build.weapons![0]!.abilities).toBeUndefined();
+	});
 });
