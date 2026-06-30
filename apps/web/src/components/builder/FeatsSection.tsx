@@ -82,6 +82,15 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
     [refData],
   );
 
+  // Weapon options for Weapon Focus / Specialization: distinct group labels from
+  // doc.build.weapons. Returns empty when no weapons have a group set — the UI
+  // shows a soft hint ("add a weapon with a type first") in that case.
+  const weaponOptions = useMemo(
+    () => featChoiceOptions("weapon", refData, doc),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [doc.build.weapons, refData],
+  );
+
   const chosen = chosenFeatCount(doc);
   const expected = expectedFeatCount(doc, refData);
   const featCountClass =
@@ -150,7 +159,9 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           const choiceOpts =
             choiceDesc?.type === "skill"
               ? skillOptions
-              : []; // weapon + future types have no options yet
+              : choiceDesc?.type === "weapon"
+              ? weaponOptions
+              : [];
           return (
             <div
               key={feat.id}
@@ -180,6 +191,13 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                         ))}
                       </select>
                     </label>
+                  </div>
+                )}
+                {choiceDesc?.type === "weapon" && choiceOpts.length === 0 && (
+                  <div className="feat-choice">
+                    <span className="hint" style={{ fontSize: 11 }}>
+                      Add a weapon with a type (in the Weapons section) to enable this picker.
+                    </span>
                   </div>
                 )}
                 {(res.checks.length > 0 || res.softText) && (

@@ -89,20 +89,31 @@ export function featChoiceDescriptor(
 
 /**
  * Returns the list of selectable options for a given choice type.
- * For "skill": the full skill list sorted alphabetically by display name.
- * For "weapon": empty — the weapon model is not yet implemented (deferred).
- * `refData` is accepted for future choice types that need it (e.g. weapon list
- * from RefData items); the "skill" case ignores it since the list is static.
+ *
+ * - "skill": the full skill list sorted alphabetically by display name.
+ *   `refData` and `doc` are unused; the list is static.
+ * - "weapon": the distinct non-empty `group` labels present on `doc.build.weapons`,
+ *   sorted alphabetically. Returns empty when `doc` is not provided or the character
+ *   has no weapons with a group set — the UI renders a soft hint in that case.
  */
 export function featChoiceOptions(
   choiceType: string,
   _refData: RefData,
+  doc?: CharacterDoc,
 ): { id: string; name: string }[] {
   if (choiceType === "skill") {
     return Object.entries(SKILL_NAMES)
       .map(([id, name]) => ({ id, name }))
       .sort((a, b) => a.name.localeCompare(b.name));
   }
-  // "weapon" and other future types: no options until those models exist.
+  if (choiceType === "weapon" && doc) {
+    const seen = new Set<string>();
+    for (const w of doc.build.weapons ?? []) {
+      if (w.group) seen.add(w.group);
+    }
+    return [...seen]
+      .sort()
+      .map((g) => ({ id: g, name: g }));
+  }
   return [];
 }

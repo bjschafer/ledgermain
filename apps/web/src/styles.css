@@ -2265,3 +2265,33 @@ button:focus-visible,
 		transition: none !important;
 	}
 }
+
+/* ------------------------------------------------------- weapon attack lines -- */
+
+/* One entry per weapon, stacked vertically in the Attacks section of Sheet. */
+.weapon-attack-list {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.weapon-attack-row {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+/* Weapon display name above the stat row. */
+.weapon-attack-name {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--text-main);
+	padding-left: 2px;
+}
+
+/* Three-column grid: Attack | Dmg | Crit */
+.weapon-attack-stats {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+}

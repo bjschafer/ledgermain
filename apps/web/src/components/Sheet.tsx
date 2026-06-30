@@ -145,6 +145,55 @@ export function Sheet({
 				</div>
 			</div>
 
+			{/* Per-weapon attacks ----------------------------------------- */}
+			{sheet.attacks.length > 0 && (
+				<div className="stat-group">
+					<div className="stat-group-header">
+						<span className="stat-group-legend">Attacks</span>
+						<div className="stat-group-rule" />
+					</div>
+					<div className="weapon-attack-list">
+						{sheet.attacks.map((atk, i) => {
+							// Combine damageDice + signed numeric bonus into one display string.
+							const bonusStr = atk.damageBonus.total !== 0 ? signed(atk.damageBonus.total) : null;
+							const dmgStr =
+								[atk.damageDice, bonusStr].filter(Boolean).join("") ||
+								signed(atk.damageBonus.total);
+							return (
+								<div key={i} className="weapon-attack-row">
+									<span className="weapon-attack-name">{atk.name}</span>
+									<div className="weapon-attack-stats">
+										<StatSeal
+											label="Attack"
+											value={signed(atk.attack.total)}
+											components={atk.attack.components}
+											provTitle={`${atk.name} attack`}
+											className="seal--compact"
+										/>
+										<StatSeal
+											label="Dmg"
+											value={dmgStr}
+											components={
+												atk.damageBonus.components.length > 0
+													? atk.damageBonus.components
+													: undefined
+											}
+											provTitle={`${atk.name} damage`}
+											className="seal--compact"
+										/>
+										<StatSeal
+											label="Crit"
+											value={atk.crit}
+											className="seal--compact"
+										/>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			)}
+
 			{/* Saving Throws ---------------------------------------------- */}
 			<div className="stat-group">
 				<div className="stat-group-header">

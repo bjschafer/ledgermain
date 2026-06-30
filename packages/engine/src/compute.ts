@@ -398,16 +398,17 @@ function computeSkills(
  * Attack formula (PF1 CRB):
  *   attack = BAB + ability mod (STR or DEX per attackAbility) + size modifier
  *            + enhancement + general "attack" / "mattack" / "rattack" changes
+ *            + per-group changes (e.g. `attack.weapon.longsword` from Weapon Focus)
  *
  * Damage bonus (numeric; dice displayed separately):
  *   damage = floor(STR × damageMultiplier) [melee, damageAbility="str" only]
  *            + enhancement
  *            + any "damage" target changes from the collected modifier set
+ *            + per-group changes (e.g. `damage.weapon.longsword` from Weapon Specialization)
  *
- * HOOK (follow-up agent): per-weapon feat bonuses (Weapon Focus +1 attack,
- * Weapon Specialization +2 damage, matched by WeaponInstance.group) will be
- * layered in here by the feat-matching pass once feats emit per-group targets.
- * Do not implement feat matching in this function.
+ * Per-weapon feat bonuses (Weapon Focus, Weapon Specialization) are routed via
+ * group-specific targets (`attack.weapon.<group>` / `damage.weapon.<group>`) so the
+ * regular collect → stack pipeline handles them without special-casing here.
  */
 function computeWeaponAttacks(
   doc: CharacterDoc,
@@ -424,12 +425,13 @@ function computeWeaponAttacks(
     const attackAbilityMod = w.attackAbility === "dex" ? dexMod : strMod;
     const attackAbilityLabel = w.attackAbility === "dex" ? "Dexterity" : "Strength";
 
-    // General attack changes flow through the same targets as the base attack lines.
+    // General attack changes + per-group feat bonuses (e.g. Weapon Focus via "attack.weapon.<group>").
     const weaponAttackStack = resolveStack([
       ...forTarget(collected, "attack"),
       ...(category === "melee"
         ? forTarget(collected, "mattack")
         : forTarget(collected, "rattack")),
+      ...(w.group ? forTarget(collected, `attack.weapon.${w.group}`) : []),
     ]);
     const attackTotal = bab + attackAbilityMod + sizeAttackMod + enh + weaponAttackStack.total;
     const attackComponents: ModifierComponent[] = [
@@ -446,8 +448,11 @@ function computeWeaponAttacks(
     const appliesAbilityDamage = damageAbility === "str" && category === "melee";
     const abilityDamage = appliesAbilityDamage ? Math.floor(strMod * mult) : 0;
 
-    // General "damage" target changes (e.g. from active buffs that emit "damage").
-    const weaponDamageStack = resolveStack(forTarget(collected, "damage"));
+    // General "damage" target changes + per-group feat bonuses (e.g. Weapon Specialization via "damage.weapon.<group>").
+    const weaponDamageStack = resolveStack([
+      ...forTarget(collected, "damage"),
+      ...(w.group ? forTarget(collected, `damage.weapon.${w.group}`) : []),
+    ]);
     const damageTotal = abilityDamage + enh + weaponDamageStack.total;
 
     const damageComponents: ModifierComponent[] = [];

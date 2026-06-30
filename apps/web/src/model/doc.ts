@@ -10,6 +10,7 @@ import type {
 	CharacterDoc,
 	ItemInstance,
 	SkillId,
+	WeaponInstance,
 	WornArmor,
 } from "@pf1/schema";
 
@@ -510,6 +511,50 @@ export function setAbilityIncreaseCount(
 		build: {
 			...doc.build,
 			abilityIncreases: [...others, ...Array(target).fill(ability)],
+		},
+	};
+}
+
+/**
+ * Append a weapon to `build.weapons`. The new entry is always added at the end.
+ * No deduplication — the same weapon template may be added multiple times.
+ */
+export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterDoc {
+	const weapons = [...(doc.build.weapons ?? []), weapon];
+	return { ...doc, build: { ...doc.build, weapons } };
+}
+
+/**
+ * Partially update the weapon at `index` with the given `patch`.
+ * Out-of-range indices are silently ignored.
+ */
+export function updateWeapon(
+	doc: CharacterDoc,
+	index: number,
+	patch: Partial<WeaponInstance>,
+): CharacterDoc {
+	const weapons = doc.build.weapons ?? [];
+	if (index < 0 || index >= weapons.length) return doc;
+	return {
+		...doc,
+		build: {
+			...doc.build,
+			weapons: weapons.map((w, i) => (i === index ? { ...w, ...patch } : w)),
+		},
+	};
+}
+
+/**
+ * Remove the weapon at `index`. Out-of-range indices are silently ignored.
+ */
+export function removeWeapon(doc: CharacterDoc, index: number): CharacterDoc {
+	const weapons = doc.build.weapons ?? [];
+	if (index < 0 || index >= weapons.length) return doc;
+	return {
+		...doc,
+		build: {
+			...doc.build,
+			weapons: weapons.filter((_, i) => i !== index),
 		},
 	};
 }

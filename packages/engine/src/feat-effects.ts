@@ -136,25 +136,25 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
     },
   },
 
-  // Weapon Focus / Weapon Specialization — SCAFFOLDED BUT INERT.
-  // These are choice feats (player selects a weapon type), but the per-weapon
-  // attack-row model that they'd modify does not yet exist (items system, deferred).
-  // Declaring them here so the UI can render a weapon picker; `build` returns []
-  // until the weapon attack model lands. Do not add weapon targets to computeSkills.
+  // Weapon Focus: +1 untyped attack bonus with the chosen weapon type (PF1 CRB p. 136).
+  // The target `attack.weapon.<group>` is consumed by computeWeaponAttacks in compute.ts,
+  // which runs forTarget for the weapon's group when building each per-weapon attack line.
   "weapon-focus": {
     type: "choice",
     choice: { type: "weapon", label: "Weapon Type" },
-    build(_choiceId: string): FeatChange[] {
-      // +1 attack with chosen weapon — deferred until per-weapon attack model exists.
-      return [];
+    build(choiceId: string): FeatChange[] {
+      return [{ target: `attack.weapon.${choiceId}`, type: "untyped", formula: "1" }];
     },
   },
+
+  // Weapon Specialization: +2 untyped damage bonus with the chosen weapon type (PF1 CRB p. 137).
+  // NOTE: Requires Fighter 4 — not hard-enforced here (soft-prereq policy applies).
+  // The target `damage.weapon.<group>` is consumed by computeWeaponAttacks in compute.ts.
   "weapon-specialization": {
     type: "choice",
     choice: { type: "weapon", label: "Weapon Type" },
-    build(_choiceId: string): FeatChange[] {
-      // +2 damage with chosen weapon — deferred until per-weapon attack model exists.
-      return [];
+    build(choiceId: string): FeatChange[] {
+      return [{ target: `damage.weapon.${choiceId}`, type: "untyped", formula: "2" }];
     },
   },
 };

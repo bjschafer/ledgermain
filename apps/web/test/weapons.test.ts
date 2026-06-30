@@ -1,0 +1,204 @@
+/**
+ * Unit tests for weapon doc transitions (addWeapon, updateWeapon, removeWeapon)
+ * and the weapon-group choice option selector (featChoiceOptions "weapon" type).
+ */
+import { describe, expect, it } from "bun:test";
+
+import type { CharacterDoc, WeaponInstance } from "@pf1/schema";
+import { loadRefData } from "@pf1/data-pipeline";
+
+import { createEmptyDoc } from "../src/model/doc.js";
+import {
+	addWeapon,
+	removeWeapon,
+	updateWeapon,
+} from "../src/model/doc.js";
+import { featChoiceOptions } from "../src/model/feats.js";
+
+const ref = loadRefData();
+
+function doc(): CharacterDoc {
+	return createEmptyDoc("t");
+}
+
+const LONGSWORD: WeaponInstance = {
+	name: "Longsword",
+	attackAbility: "str",
+	damageDice: "1d8",
+	group: "longsword",
+	category: "melee",
+};
+
+const SHORTBOW: WeaponInstance = {
+	name: "Shortbow",
+	attackAbility: "dex",
+	damageAbility: "none",
+	damageDice: "1d6",
+	group: "shortbow",
+	category: "ranged",
+};
+
+// ---------------------------------------------------------------------------
+// addWeapon
+// ---------------------------------------------------------------------------
+describe("addWeapon()", () => {
+	it("appends a weapon to an empty weapons list", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		expect(d.build.weapons).toHaveLength(1);
+		expect(d.build.weapons![0]).toEqual(LONGSWORD);
+	});
+
+	it("appends when build.weapons is undefined (back-compat)", () => {
+		// createEmptyDoc does not set build.weapons.
+		const d = doc();
+		expect(d.build.weapons).toBeUndefined();
+		const next = addWeapon(d, LONGSWORD);
+		expect(next.build.weapons).toHaveLength(1);
+	});
+
+	it("appends a second weapon after the first", () => {
+		let d = addWeapon(doc(), LONGSWORD);
+		d = addWeapon(d, SHORTBOW);
+		expect(d.build.weapons).toHaveLength(2);
+		expect(d.build.weapons![0]!.name).toBe("Longsword");
+		expect(d.build.weapons![1]!.name).toBe("Shortbow");
+	});
+
+	it("does not mutate the original doc", () => {
+		const d = doc();
+		addWeapon(d, LONGSWORD);
+		expect(d.build.weapons).toBeUndefined();
+	});
+
+	it("allows adding the same weapon template more than once", () => {
+		let d = addWeapon(doc(), LONGSWORD);
+		d = addWeapon(d, LONGSWORD);
+		expect(d.build.weapons).toHaveLength(2);
+	});
+});
+
+// ---------------------------------------------------------------------------
+// updateWeapon
+// ---------------------------------------------------------------------------
+describe("updateWeapon()", () => {
+	it("applies a partial patch to the weapon at the given index", () => {
+		let d = addWeapon(doc(), LONGSWORD);
+		d = updateWeapon(d, 0, { name: "Longsword +2", enhancement: 2 });
+		expect(d.build.weapons![0]!.name).toBe("Longsword +2");
+		expect(d.build.weapons![0]!.enhancement).toBe(2);
+		// Other fields unchanged.
+		expect(d.build.weapons![0]!.damageDice).toBe("1d8");
+		expect(d.build.weapons![0]!.group).toBe("longsword");
+	});
+
+	it("only modifies the weapon at the specified index", () => {
+		let d = addWeapon(doc(), LONGSWORD);
+		d = addWeapon(d, SHORTBOW);
+		d = updateWeapon(d, 0, { name: "Magic Longsword" });
+		expect(d.build.weapons![0]!.name).toBe("Magic Longsword");
+		expect(d.build.weapons![1]!.name).toBe("Shortbow");
+	});
+
+	it("is a no-op for an out-of-range index (positive)", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		expect(updateWeapon(d, 5, { name: "Ghost" })).toBe(d);
+	});
+
+	it("is a no-op for an out-of-range index (negative)", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		expect(updateWeapon(d, -1, { name: "Ghost" })).toBe(d);
+	});
+
+	it("does not mutate the original doc", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		updateWeapon(d, 0, { name: "Changed" });
+		expect(d.build.weapons![0]!.name).toBe("Longsword");
+	});
+});
+
+// ---------------------------------------------------------------------------
+// removeWeapon
+// ---------------------------------------------------------------------------
+describe("removeWeapon()", () => {
+	it("removes the weapon at the given index", () => {
+		const d = removeWeapon(addWeapon(doc(), LONGSWORD), 0);
+		expect(d.build.weapons).toHaveLength(0);
+	});
+
+	it("removes only the specified weapon when multiple exist", () => {
+		let d = addWeapon(doc(), LONGSWORD);
+		d = addWeapon(d, SHORTBOW);
+		d = removeWeapon(d, 0);
+		expect(d.build.weapons).toHaveLength(1);
+		expect(d.build.weapons![0]!.name).toBe("Shortbow");
+	});
+
+	it("is a no-op for an out-of-range index (positive)", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		expect(removeWeapon(d, 5)).toBe(d);
+	});
+
+	it("is a no-op for an out-of-range index (negative)", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		expect(removeWeapon(d, -1)).toBe(d);
+	});
+
+	it("does not mutate the original doc", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		removeWeapon(d, 0);
+		expect(d.build.weapons).toHaveLength(1);
+	});
+});
+
+// ---------------------------------------------------------------------------
+// featChoiceOptions("weapon", refData, doc)
+// ---------------------------------------------------------------------------
+describe("featChoiceOptions weapon type", () => {
+	it("returns empty when no weapons are present", () => {
+		const opts = featChoiceOptions("weapon", ref, doc());
+		expect(opts).toHaveLength(0);
+	});
+
+	it("returns empty when weapons have no group set", () => {
+		const noGroup: WeaponInstance = { name: "Improvised", attackAbility: "str" };
+		const d = addWeapon(doc(), noGroup);
+		expect(featChoiceOptions("weapon", ref, d)).toHaveLength(0);
+	});
+
+	it("returns the distinct group label for a single weapon", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		const opts = featChoiceOptions("weapon", ref, d);
+		expect(opts).toHaveLength(1);
+		expect(opts[0]).toEqual({ id: "longsword", name: "longsword" });
+	});
+
+	it("deduplicates groups when two weapons share the same group", () => {
+		let d = addWeapon(doc(), LONGSWORD);
+		const longsword2: WeaponInstance = { ...LONGSWORD, name: "Longsword (backup)" };
+		d = addWeapon(d, longsword2);
+		const opts = featChoiceOptions("weapon", ref, d);
+		expect(opts).toHaveLength(1);
+		expect(opts[0]!.id).toBe("longsword");
+	});
+
+	it("returns all distinct groups sorted alphabetically", () => {
+		let d = addWeapon(doc(), SHORTBOW); // "shortbow" first in doc order
+		d = addWeapon(d, LONGSWORD); // "longsword" second
+		const opts = featChoiceOptions("weapon", ref, d);
+		expect(opts).toHaveLength(2);
+		// Alphabetical: longsword < shortbow
+		expect(opts[0]!.id).toBe("longsword");
+		expect(opts[1]!.id).toBe("shortbow");
+	});
+
+	it("ignores weapons with an empty or whitespace-only group", () => {
+		const blankGroup: WeaponInstance = { ...LONGSWORD, group: "" };
+		const d = addWeapon(doc(), blankGroup);
+		expect(featChoiceOptions("weapon", ref, d)).toHaveLength(0);
+	});
+
+	it("returns empty when doc is not provided (defensive)", () => {
+		// Calling without doc should not crash.
+		expect(featChoiceOptions("weapon", ref)).toHaveLength(0);
+	});
+});
