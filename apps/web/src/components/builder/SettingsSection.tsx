@@ -174,12 +174,19 @@ export function SettingsSection({ doc, sheet, update }: BuilderProps) {
 								<NumberField
 									className="num"
 									size={5}
-									value={override ?? computed ?? 0}
+									value={override ?? undefined}
+									allowEmpty
+									placeholder={computed != null ? String(computed) : undefined}
 									min={-999}
 									max={99999}
+									stepper={false}
 									onCommit={(n) =>
 										update((d) =>
-											setStatOverride(d, key, Number.isNaN(n) ? null : n),
+											setStatOverride(
+												d,
+												key,
+												n == null || Number.isNaN(n) ? null : n,
+											),
 										)
 									}
 									aria-label={`Override ${STAT_LABEL[key]}`}
