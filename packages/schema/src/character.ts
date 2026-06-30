@@ -102,6 +102,12 @@ export interface CharacterDoc {
        * +1 skill rank simultaneously (house-rule). Default false = Standard PF1.
        */
       fcbHouserule?: boolean;
+      /**
+       * Whether this character uses the hero-points optional rule. When false,
+       * the tracker hides the hero-points panel and `heroPointsCap` is ignored.
+       * Absent (default) = true, preserving existing characters' behaviour.
+       */
+      heroPointsEnabled?: boolean;
       /** Override the default HERO_POINT_CAP (3). Must be a positive integer. */
       heroPointsCap?: number;
       /**

@@ -5,6 +5,7 @@ import {
   HERO_POINT_CAP,
   gainHeroPoint,
   heroPoints,
+  heroPointsEnabled,
   setHeroPoints,
   spendHeroPoint,
 } from "../src/model/heroPoints.js";
@@ -110,5 +111,24 @@ describe("heroPointsCap via doc settings", () => {
 
   it("setHeroPoints with custom cap clamps correctly", () => {
     expect(heroPoints(setHeroPoints(doc(), 10, 7))).toBe(7);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// heroPointsEnabled() — optional-rule opt-out
+// ---------------------------------------------------------------------------
+describe("heroPointsEnabled()", () => {
+  it("defaults to true when the setting is absent", () => {
+    expect(heroPointsEnabled(doc())).toBe(true);
+  });
+
+  it("returns false when explicitly disabled", () => {
+    const d = { ...doc(), build: { ...doc().build, settings: { heroPointsEnabled: false } } };
+    expect(heroPointsEnabled(d)).toBe(false);
+  });
+
+  it("returns true when explicitly enabled", () => {
+    const d = { ...doc(), build: { ...doc().build, settings: { heroPointsEnabled: true } } };
+    expect(heroPointsEnabled(d)).toBe(true);
   });
 });

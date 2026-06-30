@@ -25,6 +25,15 @@ export function heroPoints(doc: CharacterDoc): number {
   return doc.live.heroPoints ?? 0;
 }
 
+/**
+ * Whether hero points are enabled for this character. Absent = true (the
+ * historical default); set `settings.heroPointsEnabled` to false to opt out of
+ * the optional rule entirely.
+ */
+export function heroPointsEnabled(doc: CharacterDoc): boolean {
+  return doc.build.settings?.heroPointsEnabled ?? true;
+}
+
 /** Gain one hero point, capped at `cap` (default: HERO_POINT_CAP). */
 export function gainHeroPoint(doc: CharacterDoc, cap = HERO_POINT_CAP): CharacterDoc {
   const next = clampToRange(heroPoints(doc) + 1, 0, cap);

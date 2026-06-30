@@ -291,6 +291,24 @@ export function setFcbHouserule(
 }
 
 /**
+ * Toggle whether the character uses hero points at all. When disabled, the
+ * tracker hides the hero-points panel and the cap override is ignored. The
+ * live pool is left untouched so re-enabling restores the previous count.
+ */
+export function setHeroPointsEnabled(
+	doc: CharacterDoc,
+	enabled: boolean,
+): CharacterDoc {
+	return {
+		...doc,
+		build: {
+			...doc.build,
+			settings: { ...doc.build.settings, heroPointsEnabled: enabled },
+		},
+	};
+}
+
+/**
  * Override the maximum number of hero points the character may hold.
  * `null` or <= 0 removes the override, falling back to the default (3).
  */

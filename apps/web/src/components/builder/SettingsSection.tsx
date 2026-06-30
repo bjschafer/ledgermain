@@ -7,6 +7,7 @@
 import {
 	setFcbHouserule,
 	setHeroPointsCap,
+	setHeroPointsEnabled,
 	setHpMode,
 	setStatOverride,
 	STAT_OVERRIDE_KEYS,
@@ -35,6 +36,7 @@ export function SettingsSection({ doc, sheet, update }: BuilderProps) {
 	const settings = doc.build.settings ?? {};
 	const hpMode = settings.hpMode ?? "average";
 	const fcbHouserule = settings.fcbHouserule ?? false;
+	const heroEnabled = settings.heroPointsEnabled ?? true;
 	const heroCap = settings.heroPointsCap ?? HERO_POINT_CAP;
 	const overrides = settings.statOverrides ?? {};
 
@@ -98,35 +100,56 @@ export function SettingsSection({ doc, sheet, update }: BuilderProps) {
 				</div>
 			</Panel>
 
-			{/* Hero point cap */}
-			<Panel title="Hero Point Cap" step="⚙">
+			{/* Hero points */}
+			<Panel title="Hero Points" step="⚙">
 				<p className="hint" style={{ marginBottom: 12 }}>
-					Override the maximum number of hero points this character may hold at
-					once. Default: {HERO_POINT_CAP}.
+					Hero points are a PF1 optional rule — a small pool spent at the
+					table for mechanical benefits. Disable if your table doesn't use
+					them.
 				</p>
-				<div className="settings-row">
-					<label className="hint" htmlFor="hero-cap-input">
-						Maximum hero points
-					</label>
-					<NumberField
-						className="num"
-						size={3}
-						value={heroCap}
-						min={1}
-						max={999}
-						onCommit={(n) => update((d) => setHeroPointsCap(d, n))}
-						aria-label="Hero point cap"
-					/>
-					{settings.heroPointsCap != null && (
-						<button
-							type="button"
-							className="btn-ghost"
-							onClick={() => update((d) => setHeroPointsCap(d, null))}
-						>
-							reset to {HERO_POINT_CAP}
-						</button>
-					)}
+				<div className="chips">
+					<button
+						type="button"
+						className="chip"
+						aria-pressed={heroEnabled}
+						onClick={() => update((d) => setHeroPointsEnabled(d, true))}
+					>
+						Enabled
+					</button>
+					<button
+						type="button"
+						className="chip"
+						aria-pressed={!heroEnabled}
+						onClick={() => update((d) => setHeroPointsEnabled(d, false))}
+					>
+						Disabled
+					</button>
 				</div>
+				{heroEnabled && (
+					<div className="settings-row" style={{ marginTop: 12 }}>
+						<label className="hint" htmlFor="hero-cap-input">
+							Maximum hero points
+						</label>
+						<NumberField
+							className="num"
+							size={3}
+							value={heroCap}
+							min={1}
+							max={999}
+							onCommit={(n) => update((d) => setHeroPointsCap(d, n))}
+							aria-label="Hero point cap"
+						/>
+						{settings.heroPointsCap != null && (
+							<button
+								type="button"
+								className="btn-ghost"
+								onClick={() => update((d) => setHeroPointsCap(d, null))}
+							>
+								reset to {HERO_POINT_CAP}
+							</button>
+						)}
+					</div>
+				)}
 			</Panel>
 
 			{/* Stat overrides */}

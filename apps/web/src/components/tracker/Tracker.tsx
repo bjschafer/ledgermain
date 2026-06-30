@@ -4,6 +4,7 @@ import { HeroPointsPanel } from "./HeroPointsPanel.js";
 import { HpPanel } from "./HpPanel.js";
 import { PreparedSpellsPanel } from "./PreparedSpellsPanel.js";
 import { ResourcesPanel } from "./ResourcesPanel.js";
+import { heroPointsEnabled } from "../../model/heroPoints.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -12,10 +13,11 @@ import type { BuilderProps } from "../builder/types.js";
  * mutation flows back through `update()` and the shared sheet recomputes live.
  */
 export function Tracker(props: BuilderProps) {
+  const heroOn = heroPointsEnabled(props.doc);
   return (
     <div className="tracker-col">
       <HpPanel {...props} />
-      <HeroPointsPanel {...props} />
+      {heroOn && <HeroPointsPanel {...props} />}
       <ConditionsPanel {...props} />
       <BuffsPanel {...props} />
       <PreparedSpellsPanel {...props} />

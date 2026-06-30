@@ -13,13 +13,14 @@ import {
   setFavoredClassBonus,
   setFcbHouserule,
   setGender,
-  setHeight,
-  setHeroPointsCap,
-  setHpMode,
-  setHpRoll,
-  setStatOverride,
-  setWeight,
-  STAT_OVERRIDE_KEYS,
+	setHeight,
+	setHeroPointsCap,
+	setHeroPointsEnabled,
+	setHpMode,
+	setHpRoll,
+	setStatOverride,
+	setWeight,
+	STAT_OVERRIDE_KEYS,
 } from "../src/model/doc.js";
 
 function doc() {
@@ -145,6 +146,31 @@ describe("setHeroPointsCap()", () => {
   it("removes the key for zero or negative", () => {
     expect(setHeroPointsCap(doc(), 0).build.settings?.heroPointsCap).toBeUndefined();
     expect(setHeroPointsCap(doc(), -1).build.settings?.heroPointsCap).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setHeroPointsEnabled
+// ---------------------------------------------------------------------------
+describe("setHeroPointsEnabled()", () => {
+  it("stores true when enabled", () => {
+    expect(setHeroPointsEnabled(doc(), true).build.settings?.heroPointsEnabled).toBe(true);
+  });
+
+  it("stores false when disabled", () => {
+    expect(setHeroPointsEnabled(doc(), false).build.settings?.heroPointsEnabled).toBe(false);
+  });
+
+  it("does not mutate the original doc", () => {
+    const d = doc();
+    setHeroPointsEnabled(d, false);
+    expect(d.build.settings?.heroPointsEnabled).toBeUndefined();
+  });
+
+  it("preserves the live hero-point pool when toggling off", () => {
+    const d = { ...doc(), live: { ...doc().live, heroPoints: 2 } };
+    const off = setHeroPointsEnabled(d, false);
+    expect(off.live.heroPoints).toBe(2);
   });
 });
 
