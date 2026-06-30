@@ -5,6 +5,7 @@ import type { AbilityId } from "@pf1/schema";
 import { casterLevel } from "../../model/casterLevel.js";
 import { toggleFeat } from "../../model/doc.js";
 import { ABILITY_IDS } from "../../model/doc.js";
+import { chosenFeatCount, expectedFeatCount } from "../../model/feats.js";
 import {
   evaluatePrereqs,
   type PrereqContext,
@@ -68,12 +69,21 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
     return { feats: list, prereqMap: map };
   }, [refData.feats, query, category, hideIneligible, selected, ctx]);
 
+  const chosen = chosenFeatCount(doc);
+  const expected = expectedFeatCount(doc, refData);
+  const featCountClass =
+    chosen === expected ? "hint" : chosen > expected ? "hint warn-over" : "hint warn-under";
+
   return (
     <Panel
       title="Feats"
       step="vi"
       storageKey="panel:Feats"
-      right={<span className="hint">{selected.size} selected</span>}
+      right={
+        <span className={featCountClass} title={chosen !== expected ? "Feat count doesn't match expected" : undefined}>
+          {chosen} / {expected} feats
+        </span>
+      }
     >
       <input
         className="search"

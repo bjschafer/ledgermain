@@ -192,6 +192,38 @@ export function Sheet({
 						foot="ft"
 						className="seal--compact"
 					/>
+					{(sheet.speeds.fly ?? 0) > 0 && (
+						<StatSeal
+							label="Fly"
+							value={sheet.speeds.fly!}
+							foot="ft"
+							className="seal--compact"
+						/>
+					)}
+					{(sheet.speeds.swim ?? 0) > 0 && (
+						<StatSeal
+							label="Swim"
+							value={sheet.speeds.swim!}
+							foot="ft"
+							className="seal--compact"
+						/>
+					)}
+					{(sheet.speeds.climb ?? 0) > 0 && (
+						<StatSeal
+							label="Climb"
+							value={sheet.speeds.climb!}
+							foot="ft"
+							className="seal--compact"
+						/>
+					)}
+					{(sheet.speeds.burrow ?? 0) > 0 && (
+						<StatSeal
+							label="Burrow"
+							value={sheet.speeds.burrow!}
+							foot="ft"
+							className="seal--compact"
+						/>
+					)}
 				</div>
 			</div>
 
