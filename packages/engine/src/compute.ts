@@ -251,6 +251,7 @@ function computeHp(
   doc: CharacterDoc,
   refData: RefData,
   conMod: number,
+  collected: CollectedModifier[],
 ): HitPoints {
   const mode = doc.build.settings?.hpMode ?? "average";
   const hpRolls = doc.build.hpRolls ?? [];
@@ -289,12 +290,16 @@ function computeHp(
     (c) => c === "hp" || c === "both",
   ).length;
 
-  const auto = hdBase + conTotal + fcbHp;
+  // HP bonuses from collected modifiers (e.g. Toughness feat, class features).
+  const hpStack = resolveStack(forTarget(collected, "hp"));
+
+  const auto = hdBase + conTotal + fcbHp + hpStack.total;
 
   const components: ModifierComponent[] = [];
   if (hdBase !== 0) components.push(synthetic("Hit Dice", "base", hdBase));
   if (conTotal !== 0) components.push(synthetic(`Con (${conMod >= 0 ? "+" : ""}${conMod} × ${hd} HD)`, "ability", conTotal));
   if (fcbHp !== 0) components.push(synthetic("Favored class", "untyped", fcbHp));
+  components.push(...toComponents(hpStack.modifiers));
 
   // Legacy override (backward compat, honoured in average/unset mode)
   const override = doc.build.maxHpOverride;
@@ -470,12 +475,22 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   };
 
   // HP
-  const hp = computeHp(doc, refData, abilities.con.mod);
+  const hp = computeHp(doc, refData, abilities.con.mod, collected);
 
-  // Speeds
+  // Speeds — start from race base, then apply per-mode bonus targets.
+  // Each mode "foo" listens to "fooSpeed" (e.g. fly → "flySpeed") so feat/feature
+  // bonuses can slot in via the same evalChange path used for other stats.
   const speeds: Record<string, number> = { ...(race?.speeds ?? { land: 30 }) };
   const landBonus = forTarget(collected, "landSpeed").reduce((s, m) => s + m.value, 0);
   if (landBonus) speeds.land = (speeds.land ?? 0) + landBonus;
+  const flyBonus = forTarget(collected, "flySpeed").reduce((s, m) => s + m.value, 0);
+  if (flyBonus) speeds.fly = (speeds.fly ?? 0) + flyBonus;
+  const swimBonus = forTarget(collected, "swimSpeed").reduce((s, m) => s + m.value, 0);
+  if (swimBonus) speeds.swim = (speeds.swim ?? 0) + swimBonus;
+  const climbBonus = forTarget(collected, "climbSpeed").reduce((s, m) => s + m.value, 0);
+  if (climbBonus) speeds.climb = (speeds.climb ?? 0) + climbBonus;
+  const burrowBonus = forTarget(collected, "burrowSpeed").reduce((s, m) => s + m.value, 0);
+  if (burrowBonus) speeds.burrow = (speeds.burrow ?? 0) + burrowBonus;
 
   // Skills
   const skills = computeSkills(doc, refData, abilities, collected);

@@ -10,6 +10,7 @@
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { CONDITIONS } from "./conditions.js";
+import { FEAT_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
@@ -125,6 +126,21 @@ export function collectModifiers(
     if (!cond) continue;
     for (const ch of cond.changes) {
       evalChange(ch.formula, rollData, ch.target, ch.type, cond.name, cond.id, out);
+    }
+  }
+
+  // --- feats (always-on, no-parameter effects only) -----------------------
+  // doc.build.feats holds feat ids (keys into RefData.feats). We resolve each id
+  // to a name slug and look it up in FEAT_EFFECTS. Feats that require a player
+  // choice (Weapon Focus, Skill Focus, etc.) have no entry and are silently skipped.
+  for (const featId of doc.build.feats ?? []) {
+    const feat = refData.feats[featId];
+    if (!feat) continue;
+    const slug = featNameSlug(feat.name);
+    const effects = FEAT_EFFECTS[slug];
+    if (!effects) continue;
+    for (const ch of effects) {
+      evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
     }
   }
 
