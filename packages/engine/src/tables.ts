@@ -156,10 +156,12 @@ export function raceGrantsFlexibleAbility(race: Race): boolean {
 /**
  * Spell progressions whose base spells-per-day tables live here. Like BAB/saves,
  * these numbers are NOT in the vendored Foundry data (clean-room, from the
- * published rules). Only full prepared-arcane (wizard) and spontaneous-arcane
- * (sorcerer) are tabled today; add a key + table to extend.
+ * published rules). Full prepared-arcane (wizard), full prepared-divine
+ * (cleric), and spontaneous-arcane (sorcerer) are tabled today; add a key +
+ * table to extend. Cleric shares the wizard base-spells-per-day numbers (the
+ * domain spell slot granted at each accessible level is not included here).
  */
-export type SpellProgression = "wizard" | "sorcerer";
+export type SpellProgression = "wizard" | "sorcerer" | "cleric";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -265,9 +267,20 @@ const KNOWN_PROGRESSIONS: Record<
   sorcerer: SORCERER_SPELLS_KNOWN,
 };
 
+/**
+ * Cleric base spells per day, indexed `[classLevel - 1][spellLevel]`. Clerics
+ * are full prepared-divine casters and use the same base spells-per-day numbers
+ * as the wizard (3/1 at L1, scaling to 4/every-level at L20). The domain spell
+ * slot granted at each accessible level is class-feature territory and is NOT
+ * included in this base table. Cantrips (level 0) are orisons prepared at will.
+ * (PF1 SRD — clean-room table from the published rules, open game content.)
+ */
+const CLERIC_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY;
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
+  cleric: CLERIC_SPELLS_PER_DAY,
 };
 
 /**

@@ -2,8 +2,8 @@
  * Pure spellcasting model for the builder UI. Keeps caster-class knowledge in
  * one place so the registry can be extended when more spell lists are vendored.
  *
- * Only the wizard is in the data slice today; the UI falls back gracefully for
- * any caster tag not in CASTER_MODELS.
+ * Wizard, sorcerer, and cleric are modelled today; the UI falls back gracefully
+ * for any caster tag not in CASTER_MODELS.
  */
 
 import { baseSpellsKnown, baseSpellsPerDay, type SpellKnownProgression, type SpellProgression } from "@pf1/engine";
@@ -86,6 +86,17 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Sorcerers learn a fixed set of spells known at each level (see spells-known table). You can cast any spell you know by spending a slot of that level.",
     blurb:
       "Spontaneous caster: you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
+    grantsAllCantrips: true,
+  },
+  cleric: {
+    preparation: "prepared",
+    ability: "wis",
+    progression: "cleric",
+    knownLabel: "Cleric List",
+    learnGuidance:
+      "Clerics prepare a subset of the entire clerical spell list each day \u2014 no spellbook needed. Every spell on the list is available to prepare (plus domain spells from your deity).",
+    blurb:
+      "Prepared divine caster: your \u201cknown\u201d list is the whole cleric spell list. Choose which spells to prepare each day. Domain spells are not modelled here yet.",
     grantsAllCantrips: true,
   },
 };

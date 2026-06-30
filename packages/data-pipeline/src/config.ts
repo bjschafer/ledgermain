@@ -63,7 +63,7 @@ export const SLICE = {
   /** Class tags to include (their feature links are resolved). */
   classTags: ["fighter", "barbarian", "wizard", "cleric", "sorcerer"],
   /** Class tags whose spell lists we derive by inverting `learnedAt.class`. */
-  spellListClassTags: ["wizard", "sorcerer"],
+  spellListClassTags: ["wizard", "sorcerer", "cleric"],
   /**
    * Race source folders under packs/races to include. The seven core races live
    * in packs/races/core/.
