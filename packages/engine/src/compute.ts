@@ -27,6 +27,7 @@ import type {
   ModifierComponent,
   RefData,
   ResolvedStat,
+  ResolvedWeaponAttack,
   SizeId,
 } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
@@ -389,6 +390,91 @@ function computeSkills(
   return skills;
 }
 
+/* --------------------------------------------------------------- weapons */
+
+/**
+ * Builds a ResolvedWeaponAttack for each entry in build.weapons.
+ *
+ * Attack formula (PF1 CRB):
+ *   attack = BAB + ability mod (STR or DEX per attackAbility) + size modifier
+ *            + enhancement + general "attack" / "mattack" / "rattack" changes
+ *
+ * Damage bonus (numeric; dice displayed separately):
+ *   damage = floor(STR × damageMultiplier) [melee, damageAbility="str" only]
+ *            + enhancement
+ *            + any "damage" target changes from the collected modifier set
+ *
+ * HOOK (follow-up agent): per-weapon feat bonuses (Weapon Focus +1 attack,
+ * Weapon Specialization +2 damage, matched by WeaponInstance.group) will be
+ * layered in here by the feat-matching pass once feats emit per-group targets.
+ * Do not implement feat matching in this function.
+ */
+function computeWeaponAttacks(
+  doc: CharacterDoc,
+  bab: number,
+  strMod: number,
+  dexMod: number,
+  sizeAttackMod: number,
+  collected: CollectedModifier[],
+): ResolvedWeaponAttack[] {
+  const weapons = doc.build.weapons ?? [];
+  return weapons.map((w) => {
+    const category = w.category ?? "melee";
+    const enh = w.enhancement ?? 0;
+    const attackAbilityMod = w.attackAbility === "dex" ? dexMod : strMod;
+    const attackAbilityLabel = w.attackAbility === "dex" ? "Dexterity" : "Strength";
+
+    // General attack changes flow through the same targets as the base attack lines.
+    const weaponAttackStack = resolveStack([
+      ...forTarget(collected, "attack"),
+      ...(category === "melee"
+        ? forTarget(collected, "mattack")
+        : forTarget(collected, "rattack")),
+    ]);
+    const attackTotal = bab + attackAbilityMod + sizeAttackMod + enh + weaponAttackStack.total;
+    const attackComponents: ModifierComponent[] = [
+      synthetic("BAB", "base", bab),
+      synthetic(attackAbilityLabel, "ability", attackAbilityMod),
+      ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
+      ...(enh !== 0 ? [synthetic(`${w.name} (enhancement)`, "enh", enh)] : []),
+      ...toComponents(weaponAttackStack.modifiers),
+    ];
+
+    // Ability-to-damage: only STR, only melee, scaled by damageMultiplier.
+    const damageAbility = w.damageAbility ?? "str";
+    const mult = w.damageMultiplier ?? 1;
+    const appliesAbilityDamage = damageAbility === "str" && category === "melee";
+    const abilityDamage = appliesAbilityDamage ? Math.floor(strMod * mult) : 0;
+
+    // General "damage" target changes (e.g. from active buffs that emit "damage").
+    const weaponDamageStack = resolveStack(forTarget(collected, "damage"));
+    const damageTotal = abilityDamage + enh + weaponDamageStack.total;
+
+    const damageComponents: ModifierComponent[] = [];
+    if (appliesAbilityDamage) {
+      const multLabel = mult !== 1 ? ` ×${mult}` : "";
+      damageComponents.push(synthetic(`Strength${multLabel}`, "ability", abilityDamage));
+    }
+    if (enh !== 0) damageComponents.push(synthetic(`${w.name} (enhancement)`, "enh", enh));
+    damageComponents.push(...toComponents(weaponDamageStack.modifiers));
+
+    // Critical hit string: "19–20/×2" or "×2".
+    const critRange = w.critRange ?? 20;
+    const critMult = w.critMult ?? 2;
+    const crit = critRange < 20 ? `${critRange}–20/×${critMult}` : `×${critMult}`;
+
+    const result: ResolvedWeaponAttack = {
+      name: w.name,
+      category,
+      attack: { total: attackTotal, components: attackComponents },
+      damageBonus: { total: damageTotal, components: damageComponents },
+      crit,
+    };
+    if (w.damageDice !== undefined) result.damageDice = w.damageDice;
+    return result;
+  });
+}
+
 /* ----------------------------------------------------------------- compute */
 
 export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
@@ -495,6 +581,9 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // Skills
   const skills = computeSkills(doc, refData, abilities, collected);
 
+  // Per-weapon attack lines
+  const attacks = computeWeaponAttacks(doc, bab, strMod, dexMod, sizeAttackMod, collected);
+
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};
   const sheet = {
@@ -508,6 +597,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     cmd,
     initiative,
     attack,
+    attacks,
     hp,
     speeds,
     skills,

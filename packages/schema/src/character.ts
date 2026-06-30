@@ -58,6 +58,11 @@ export interface CharacterDoc {
     spells: { known: string[] };
     gear: ItemInstance[];
     /**
+     * Manually-entered weapons. Optional for back-compat: existing documents without
+     * this field produce an empty `attacks` array on the DerivedSheet.
+     */
+    weapons?: WeaponInstance[];
+    /**
      * Per-character-level favored-class bonus choice. In Standard PF1 mode one of
      * `"hp"` (+1 HP), `"skill"` (+1 rank), or `"other"` (alternate per class/race).
      * In house-rule mode `"both"` grants +1 HP AND +1 skill rank simultaneously;
@@ -240,6 +245,48 @@ export interface WornArmor {
   type?: number;
 }
 
+/**
+ * A manually-entered weapon (base weapons are not vendored, same as armor).
+ * Enough information to compute per-weapon attack and numeric damage bonus lines.
+ * Dice and crit are stored for display; the engine never rolls.
+ */
+export interface WeaponInstance {
+  /** Display name (e.g. "Longsword +1"). */
+  name: string;
+  /** Which ability modifier applies to the attack roll. */
+  attackAbility: "str" | "dex";
+  /**
+   * Which ability modifier adds to the damage bonus.
+   * - `"str"` (default): STR × damageMultiplier, melee only.
+   * - `"none"`: no ability modifier to damage (ranged, finesse, thrown without STR).
+   */
+  damageAbility?: "str" | "none";
+  /**
+   * Multiplier applied to the damage ability modifier.
+   * 1 = one-handed (default), 1.5 = two-handed, 0.5 = off-hand.
+   */
+  damageMultiplier?: number;
+  /** Enhancement bonus; adds to both attack roll and damage bonus. Default 0. */
+  enhancement?: number;
+  /** Damage dice string for display only, e.g. "1d8". The engine does not roll. */
+  damageDice?: string;
+  /**
+   * Lower bound of the critical threat range. Default 20 (i.e. "20/×2").
+   * Example: 19 produces the string "19–20/×N".
+   */
+  critRange?: number;
+  /** Critical hit multiplier. Default 2 (×2). */
+  critMult?: number;
+  /**
+   * Weapon group / type label (e.g. "longsword", "greataxe").
+   * Stored for future use by feat-matching (Weapon Focus, Weapon Specialization).
+   * Has no effect on the computed values until that follow-up is implemented.
+   */
+  group?: string;
+  /** Melee or ranged; determines which attack modifier targets apply. Default "melee". */
+  category?: "melee" | "ranged";
+}
+
 /* ----------------------------------------------------------- derived sheet -- */
 
 /**
@@ -259,6 +306,8 @@ export interface DerivedSheet {
   initiative: ResolvedStat;
   /** Base melee/ranged attack bonus (single-attack, before weapon specifics). */
   attack: { melee: ResolvedStat; ranged: ResolvedStat };
+  /** Per-weapon attack + damage lines derived from build.weapons. */
+  attacks: ResolvedWeaponAttack[];
   hp: HitPoints;
   /** Movement speeds in feet, keyed by mode ("land", "fly", ...). */
   speeds: Record<string, number>;
@@ -293,6 +342,27 @@ export interface ModifierComponent {
 export interface ResolvedStat {
   total: number;
   components: ModifierComponent[];
+}
+
+/**
+ * Computed attack and numeric damage bonus for one weapon entry. Dice are
+ * display-only; the engine does not evaluate random rolls.
+ */
+export interface ResolvedWeaponAttack {
+  /** Weapon name (from WeaponInstance.name). */
+  name: string;
+  category: "melee" | "ranged";
+  /** Total attack bonus with full provenance (BAB + ability + size + enh + modifiers). */
+  attack: ResolvedStat;
+  /**
+   * Numeric damage bonus (no dice) with provenance.
+   * = floor(abilityMod × damageMultiplier) + enhancement + damage-target changes.
+   */
+  damageBonus: ResolvedStat;
+  /** Damage dice string for display (e.g. "1d8"), if the weapon entry includes it. */
+  damageDice?: string;
+  /** Critical hit string, e.g. "19–20/×2" or "×2". */
+  crit: string;
 }
 
 export interface ArmorClass {
