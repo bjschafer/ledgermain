@@ -94,13 +94,18 @@ export function spellLevelMap(refData: RefData, casterTag: string): Map<string, 
 }
 
 /**
- * Strip granted cantrips from `build.spells.known` and `live.spells.prepared`
- * for casters whose model grants all cantrips for free. Cantrips are derived
- * from the class spell list instead of stored, so any previously-stored
- * cantrip ids are orphans that inflate the spellbook count and duplicate the
- * derived list. Idempotent; returns the same doc reference when nothing
- * changes. Call after {@link migrateDoc} at load time (this needs RefData,
- * which the pure doc migration does not).
+ * Strip granted cantrips from `build.spells.known` and dedupe them in
+ * `live.spells.prepared` for casters whose model grants all cantrips for free.
+ *
+ * Cantrips are derived from the class spell list instead of stored in the
+ * spellbook, so any previously-stored cantrip ids in `known` are orphans.
+ * Prepared cantrips do take slots and survive — but a cantrip cast at will
+ * never needs more than one slot, so duplicate prepared instances are collapsed
+ * to the first occurrence.
+ *
+ * Idempotent; returns the same doc reference when nothing changes. Call after
+ * {@link migrateDoc} at load time (this needs RefData, which the pure doc
+ * migration does not).
  */
 export function reconcileGrantedCantrips(
   doc: CharacterDoc,
@@ -118,8 +123,15 @@ export function reconcileGrantedCantrips(
 
   const known = doc.build.spells.known;
   const nextKnown = known.filter((id) => !cantripSet.has(id));
+
   const prepared = doc.live.spells?.prepared ?? [];
-  const nextPrepared = prepared.filter((p) => !cantripSet.has(p.spellId));
+  const seen = new Set<string>();
+  const nextPrepared = prepared.filter((p) => {
+    if (!cantripSet.has(p.spellId)) return true;
+    if (seen.has(p.spellId)) return false;
+    seen.add(p.spellId);
+    return true;
+  });
 
   if (
     nextKnown.length === known.length &&

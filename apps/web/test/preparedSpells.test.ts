@@ -147,7 +147,7 @@ describe("reconcileGrantedCantrips()", () => {
     expect(result.build.spells.known).toEqual([fireballId]);
   });
 
-  it("strips cantrips from live.spells.prepared but keeps level 1+ prepared", () => {
+  it("dedupes cantrips in live.spells.prepared (keeps first instance)", () => {
     let doc = wizardDoc();
     doc = {
       ...doc,
@@ -158,14 +158,18 @@ describe("reconcileGrantedCantrips()", () => {
           prepared: [
             { spellId: c1, expended: false },
             { spellId: fireballId, expended: true },
+            { spellId: c1, expended: false },
             { spellId: c2, expended: false },
+            { spellId: c1, expended: true },
           ],
         },
       },
     };
     const result = reconcileGrantedCantrips(doc, ref);
     expect(result.live.spells!.prepared).toEqual([
+      { spellId: c1, expended: false },
       { spellId: fireballId, expended: true },
+      { spellId: c2, expended: false },
     ]);
   });
 

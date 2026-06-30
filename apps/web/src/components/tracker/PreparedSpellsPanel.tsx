@@ -234,10 +234,15 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
                   <div className="prep-add-list">
                     {knownHere.map((sp) => {
                       const count = preparedCountBySpell.get(sp.id) ?? 0;
+                      const cantripPrepared = isCantrip && count > 0;
                       return (
                         <div key={sp.id} className="prep-add-row">
                           <span className="prep-name">{sp.name}</span>
-                          {count > 0 && <span className="prep-have">×{count}</span>}
+                          {count > 0 && (
+                            <span className="prep-have">
+                              {isCantrip ? "prepared" : `×${count}`}
+                            </span>
+                          )}
                           {count > 0 && (
                             <button
                               type="button"
@@ -252,11 +257,13 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
                             type="button"
                             className="pick-btn add"
                             aria-label={`prepare ${sp.name}`}
-                            disabled={full}
+                            disabled={full || cantripPrepared}
                             title={
-                              full
-                                ? `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled — unprepare one first.`
-                                : undefined
+                              cantripPrepared
+                                ? "Cantrips cast at will — no need to prepare more than one."
+                                : full
+                                  ? `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled — unprepare one first.`
+                                  : undefined
                             }
                             onClick={() => update((d) => prepareSpell(d, sp.id))}
                           >
