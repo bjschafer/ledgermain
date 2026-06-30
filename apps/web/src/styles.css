@@ -1250,6 +1250,10 @@ button:focus-visible,
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	/* Prevent the panel header's flex layout from compressing this block —
+	   the stepper inside has flex-shrink:0 but the outer container does not,
+	   which lets it overflow the panel's overflow:hidden boundary. */
+	flex-shrink: 0;
 }
 
 .buff-list {
@@ -1308,6 +1312,25 @@ button:focus-visible,
 	padding: 4px;
 }
 
+/* Compact unit selector used next to duration NumberFields (buff rows + custom-buff form).
+   Overrides the global `select { width: 100% }` so it shrinks to content. */
+.dur-unit {
+	width: auto;
+	padding: 3px 4px;
+	font-size: 11px;
+	font-family: var(--mono);
+	color: var(--muted);
+	background: transparent;
+	border-color: var(--line-soft);
+}
+
+/* Flex container for the duration value + unit select in the custom-buff form. */
+.dur-field {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
 .scroll.short {
 	max-height: 200px;
 }
@@ -1326,7 +1349,7 @@ button:focus-visible,
 
 .cb-grid {
 	display: grid;
-	grid-template-columns: 1.4fr 1fr 1fr auto 64px auto;
+	grid-template-columns: 1.4fr 1fr 1fr auto auto auto;
 	gap: 6px;
 	margin-top: 10px;
 	align-items: center;

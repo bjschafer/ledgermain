@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import type { Buff } from "@pf1/schema";
+import type { ActiveBuff, Buff, CharacterDoc } from "@pf1/schema";
 
 import { Panel } from "../builder/Panel.js";
 import { NumberField } from "../builder/NumberField.js";
@@ -12,6 +12,9 @@ import {
 	removeBuff,
 	setBuffRounds,
 	suggestRounds,
+	type DurationUnit,
+	roundsToDisplay,
+	toRounds,
 } from "../../model/buffs.js";
 import { signed } from "../../model/names.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -106,41 +109,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
 			) : (
 				<div className="buff-list">
 					{doc.live.activeBuffs.map((b) => (
-						<div className="buff-row" key={b.instanceId}>
-							<div className="buff-main">
-								<div className="buff-name">{b.name}</div>
-								<div className="buff-changes num">
-									{b.changes.map((c, i) => (
-										<span key={i} className="buff-change">
-											{c.target} {c.type ? <em>[{c.type}]</em> : null}{" "}
-											{formulaHint(c.formula)}
-										</span>
-									))}
-								</div>
-							</div>
-							<label className="buff-rounds">
-								<NumberField
-									className="num"
-									size={3}
-									stepper={false}
-									allowEmpty
-									placeholder="∞"
-									value={b.remainingRounds}
-									onCommit={(n) =>
-										update((d) => setBuffRounds(d, b.instanceId, n))
-									}
-									aria-label={`${b.name} rounds remaining`}
-								/>
-								<span>rds</span>
-							</label>
-							<button
-								type="button"
-								className="btn-ghost"
-								onClick={() => update((d) => removeBuff(d, b.instanceId))}
-							>
-								Remove
-							</button>
-						</div>
+						<BuffRow key={b.instanceId} buff={b} update={update} />
 					))}
 				</div>
 			)}
@@ -199,6 +168,87 @@ function formulaHint(formula: string): string {
 	return Number.isFinite(n) ? signed(n) : formula;
 }
 
+/**
+ * A single active-buff row with unit-aware duration display and entry.
+ *
+ * The unit (rds / min / hr) is local state, initialized from the buff's current
+ * `remainingRounds` via {@link roundsToDisplay}. Changing the unit or the value
+ * converts back to whole rounds via {@link toRounds} and calls `setBuffRounds`.
+ */
+function BuffRow({
+	buff,
+	update,
+}: {
+	buff: ActiveBuff;
+	update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
+}) {
+	const [unit, setUnit] = useState<DurationUnit>(
+		() => roundsToDisplay(buff.remainingRounds)?.unit ?? "rds",
+	);
+
+	// Convert remainingRounds to the currently-selected unit for display.
+	// If the conversion rounds to 0 (e.g. 3 rounds in "hr" mode), show ∞ so
+	// the user knows to pick a smaller unit or type a value.
+	const factor = unit === "hr" ? 600 : unit === "min" ? 10 : 1;
+	const displayVal: number | undefined =
+		buff.remainingRounds != null
+			? Math.round(buff.remainingRounds / factor) || undefined
+			: undefined;
+
+	return (
+		<div className="buff-row">
+			<div className="buff-main">
+				<div className="buff-name">{buff.name}</div>
+				<div className="buff-changes num">
+					{buff.changes.map((c, i) => (
+						<span key={i} className="buff-change">
+							{c.target} {c.type ? <em>[{c.type}]</em> : null}{" "}
+							{formulaHint(c.formula)}
+						</span>
+					))}
+				</div>
+			</div>
+			<label className="buff-rounds">
+				<NumberField
+					className="num"
+					size={3}
+					stepper={false}
+					allowEmpty
+					placeholder="∞"
+					value={displayVal}
+					onCommit={(n) =>
+						update((d) =>
+							setBuffRounds(
+								d,
+								buff.instanceId,
+								n == null ? undefined : toRounds(n, unit),
+							),
+						)
+					}
+					aria-label={`${buff.name} duration`}
+				/>
+				<select
+					className="dur-unit"
+					value={unit}
+					onChange={(e) => setUnit(e.target.value as DurationUnit)}
+					aria-label={`${buff.name} duration unit`}
+				>
+					<option value="rds">rds</option>
+					<option value="min">min</option>
+					<option value="hr">hr</option>
+				</select>
+			</label>
+			<button
+				type="button"
+				className="btn-ghost"
+				onClick={() => update((d) => removeBuff(d, buff.instanceId))}
+			>
+				Remove
+			</button>
+		</div>
+	);
+}
+
 function CustomBuffForm({
 	onAdd,
 }: {
@@ -214,7 +264,8 @@ function CustomBuffForm({
 	const [target, setTarget] = useState("attack");
 	const [type, setType] = useState("untyped");
 	const [value, setValue] = useState(1);
-	const [rounds, setRounds] = useState<string>("");
+	const [durVal, setDurVal] = useState<number | undefined>(undefined);
+	const [durUnit, setDurUnit] = useState<DurationUnit>("rds");
 
 	return (
 		<details className="custom-buff">
@@ -255,16 +306,28 @@ function CustomBuffForm({
 					onCommit={(n) => setValue(n)}
 					aria-label="Value"
 				/>
-				<NumberField
-					className="num"
-					size={3}
-					stepper={false}
-					allowEmpty
-					placeholder="∞ rds"
-					value={rounds === "" ? undefined : Number(rounds)}
-					onCommit={(n) => setRounds(n == null ? "" : String(n))}
-					aria-label="Rounds"
-				/>
+				<div className="dur-field">
+					<NumberField
+						className="num"
+						size={3}
+						stepper={false}
+						allowEmpty
+						placeholder="∞"
+						value={durVal}
+						onCommit={setDurVal}
+						aria-label="Duration value"
+					/>
+					<select
+						className="dur-unit"
+						value={durUnit}
+						onChange={(e) => setDurUnit(e.target.value as DurationUnit)}
+						aria-label="Duration unit"
+					>
+						<option value="rds">rds</option>
+						<option value="min">min</option>
+						<option value="hr">hr</option>
+					</select>
+				</div>
 				<button
 					type="button"
 					className="pick-btn add"
@@ -274,9 +337,10 @@ function CustomBuffForm({
 							target,
 							type,
 							Number.isNaN(value) ? 0 : value,
-							rounds === "" ? undefined : Number(rounds),
+							durVal == null ? undefined : toRounds(durVal, durUnit),
 						);
 						setName("");
+						setDurVal(undefined);
 					}}
 				>
 					Add

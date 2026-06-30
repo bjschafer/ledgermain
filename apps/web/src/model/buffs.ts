@@ -117,3 +117,56 @@ export function suggestRounds(buff: Buff, casterLevel: number): number | undefin
       return undefined; // permanent / special
   }
 }
+
+// ---------------------------------------------------------------------------
+// Unit-aware duration helpers
+// ---------------------------------------------------------------------------
+
+/** The display unit for a buff duration. */
+export type DurationUnit = "rds" | "min" | "hr";
+
+/**
+ * Convert `remainingRounds` to a human-readable value + unit for display.
+ *
+ * Selection rule (first match wins):
+ * - Exact multiple of 600 → hours   (e.g. 1200 → { value: 2, unit: "hr"  })
+ * - Exact multiple of 10  → minutes (e.g.   40 → { value: 4, unit: "min" })
+ * - Otherwise             → rounds  (e.g.    7 → { value: 7, unit: "rds" })
+ * - `undefined` (indefinite buff)   → `undefined`
+ */
+export function roundsToDisplay(
+  rounds: number | undefined,
+): { value: number; unit: DurationUnit } | undefined {
+  if (rounds === undefined) return undefined;
+  if (rounds % 600 === 0) return { value: rounds / 600, unit: "hr" };
+  if (rounds % 10 === 0) return { value: rounds / 10, unit: "min" };
+  return { value: rounds, unit: "rds" };
+}
+
+/**
+ * Convert a value expressed in `unit` into whole rounds.
+ * Fractional values are rounded to the nearest round.
+ */
+export function toRounds(value: number, unit: DurationUnit): number {
+  switch (unit) {
+    case "hr":
+      return Math.round(value * 600);
+    case "min":
+      return Math.round(value * 10);
+    default:
+      return Math.round(value);
+  }
+}
+
+/**
+ * Format `remainingRounds` as a compact string for display labels.
+ * Uses the same unit-selection logic as {@link roundsToDisplay}.
+ * Examples: `40` → `"4 min"`, `1200` → `"2 hr"`, `7` → `"7 rds"`, `undefined` → `"∞"`.
+ */
+export function formatDuration(rounds: number | undefined): string {
+  if (rounds === undefined) return "∞";
+  const d = roundsToDisplay(rounds);
+  // d is always defined here (rounds !== undefined), but guard for TypeScript
+  if (!d) return `${rounds} rds`;
+  return `${d.value} ${d.unit}`;
+}
