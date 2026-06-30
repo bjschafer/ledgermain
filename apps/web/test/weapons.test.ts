@@ -10,6 +10,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { createEmptyDoc } from "../src/model/doc.js";
 import {
 	addWeapon,
+	addWeaponFromRef,
 	removeWeapon,
 	updateWeapon,
 } from "../src/model/doc.js";
@@ -200,5 +201,88 @@ describe("featChoiceOptions weapon type", () => {
 	it("returns empty when doc is not provided (defensive)", () => {
 		// Calling without doc should not crash.
 		expect(featChoiceOptions("weapon", ref)).toHaveLength(0);
+	});
+});
+
+// ---------------------------------------------------------------------------
+// addWeaponFromRef (Stage 8 — weapon picker)
+// ---------------------------------------------------------------------------
+const longswordRef = Object.values(ref.weapons).find((w) => w.name === "Longsword")!;
+const greatswordRef = Object.values(ref.weapons).find((w) => w.name === "Greatsword")!;
+const compositeLongbowRef = Object.values(ref.weapons).find((w) => w.name === "Composite Longbow")!;
+
+describe("addWeaponFromRef()", () => {
+	it("snapshots a mundane Longsword (no enhancement; crit range 19 stored, default ×2 omitted)", () => {
+		const d = addWeaponFromRef(doc(), longswordRef);
+		expect(d.build.weapons).toHaveLength(1);
+		const w = d.build.weapons![0]!;
+		expect(w).toEqual({
+			name: "Longsword",
+			attackAbility: "str",
+			damageAbility: "str",
+			category: "melee",
+			damageDice: "1d8",
+			critRange: 19, // 19 ≠ default 20 → stored
+			group: "longsword",
+			weaponId: longswordRef.id,
+		} satisfies WeaponInstance);
+		// crit ×2 is the default → omitted for doc minimalism.
+		expect(w.critMult).toBeUndefined();
+		expect(w.enhancement).toBeUndefined();
+	});
+
+	it("applies a +3 enhancement: name suffix, enhancement field set", () => {
+		const d = addWeaponFromRef(doc(), longswordRef, 3);
+		const w = d.build.weapons![0]!;
+		expect(w.name).toBe("Longsword +3");
+		expect(w.enhancement).toBe(3);
+		expect(w.weaponId).toBe(longswordRef.id);
+	});
+
+	it("omits critMult when it equals the default (2)", () => {
+		// Longsword is ×2 — the default — so the field is omitted for doc minimalism.
+		const d = addWeaponFromRef(doc(), longswordRef);
+		expect(d.build.weapons![0]!.critMult).toBeUndefined();
+	});
+
+	it("keeps critMult=3 for a Composite Longbow (non-default)", () => {
+		const d = addWeaponFromRef(doc(), compositeLongbowRef);
+		const w = d.build.weapons![0]!;
+		expect(w.critMult).toBe(3);
+		expect(w.critRange).toBeUndefined(); // 20 is the default
+		expect(w.category).toBe("ranged");
+		expect(w.attackAbility).toBe("dex");
+		expect(w.damageAbility).toBe("str"); // composite bows add STR to damage
+	});
+
+	it("records damageMultiplier=1.5 for a two-handed Greatsword", () => {
+		const d = addWeaponFromRef(doc(), greatswordRef);
+		const w = d.build.weapons![0]!;
+		expect(w.damageMultiplier).toBe(1.5);
+		expect(w.damageDice).toBe("2d6");
+		expect(w.critRange).toBe(19);
+	});
+
+	it("clamps enhancement to [0, 10] and floors negatives to 0", () => {
+		const d = addWeaponFromRef(doc(), longswordRef, -5);
+		expect(d.build.weapons![0]!.enhancement).toBeUndefined();
+		expect(d.build.weapons![0]!.name).toBe("Longsword");
+		// Sanity: a high enhancement still applies.
+		const d2 = addWeaponFromRef(doc(), longswordRef, 7);
+		expect(d2.build.weapons![0]!.enhancement).toBe(7);
+	});
+
+	it("does not mutate the original doc", () => {
+		const d = doc();
+		addWeaponFromRef(d, longswordRef, 1);
+		expect(d.build.weapons).toBeUndefined();
+	});
+
+	it("the snapshotted weapon still routes through the engine's group target", () => {
+		// featChoiceOptions reads w.group to populate the Weapon Focus choice list;
+		// a Longsword selected from ref should surface "longsword" there.
+		const d = addWeaponFromRef(doc(), longswordRef);
+		const opts = featChoiceOptions("weapon", ref, d);
+		expect(opts).toContainEqual({ id: "longsword", name: "longsword" });
 	});
 });

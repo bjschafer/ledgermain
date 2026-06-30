@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import type { WeaponInstance } from "@pf1/schema";
+import type { WeaponInstance, WeaponRef } from "@pf1/schema";
 
-import { addWeapon, removeWeapon, updateWeapon } from "../../model/doc.js";
+import { addWeapon, addWeaponFromRef, removeWeapon, updateWeapon } from "../../model/doc.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -223,14 +223,48 @@ function weaponMeta(w: WeaponInstance): string {
 	return parts.join(" · ");
 }
 
-export function WeaponsSection({ doc, update }: BuilderProps) {
-	const [showAddForm, setShowAddForm] = useState(false);
+/** One-line summary of a {@link WeaponRef} for the picker preview row. */
+function weaponRefMeta(w: WeaponRef): string {
+	const parts: string[] = [w.proficiency, w.category];
+	if (w.damageDice) parts.push(w.damageDice);
+	const critRange = w.critRange ?? 20;
+	const critMult = w.critMult ?? 2;
+	parts.push(`crit ${critRange < 20 ? `${critRange}–20/×${critMult}` : `×${critMult}`}`);
+	if (w.group) parts.push(`type: ${w.group}`);
+	return parts.join(" · ");
+}
+
+const ENHANCEMENT_OPTIONS = [0, 1, 2, 3, 4, 5] as const;
+
+export function WeaponsSection({ doc, refData, update }: BuilderProps) {
+	const [showAddCard, setShowAddCard] = useState(false);
+	const [addMode, setAddMode] = useState<"select" | "custom">("select");
+	const [weaponQuery, setWeaponQuery] = useState("");
+	const [enhancement, setEnhancement] = useState<number>(0);
 	const [editingIndex, setEditingIndex] = useState<number | null>(null);
 	const weapons = doc.build.weapons ?? [];
 
+	const filteredWeapons = useMemo(() => {
+		const q = weaponQuery.trim().toLowerCase();
+		return Object.values(refData.weapons)
+			.filter((w) => !q || w.name.toLowerCase().includes(q))
+			.sort((a, b) => a.name.localeCompare(b.name))
+			.slice(0, 80);
+	}, [refData.weapons, weaponQuery]);
+
 	function handleAdd(w: WeaponInstance) {
 		update((d) => addWeapon(d, w));
-		setShowAddForm(false);
+		setShowAddCard(false);
+		setAddMode("select");
+		setEnhancement(0);
+	}
+
+	function handleAddFromRef(w: WeaponRef) {
+		update((d) => addWeaponFromRef(d, w, enhancement));
+		setShowAddCard(false);
+		setAddMode("select");
+		setWeaponQuery("");
+		setEnhancement(0);
 	}
 
 	function handleEdit(index: number, w: WeaponInstance) {
@@ -239,13 +273,23 @@ export function WeaponsSection({ doc, update }: BuilderProps) {
 	}
 
 	function startEdit(index: number) {
-		setShowAddForm(false);
+		setShowAddCard(false);
 		setEditingIndex(index);
 	}
 
 	function startAdd() {
 		setEditingIndex(null);
-		setShowAddForm(true);
+		setShowAddCard(true);
+		setAddMode("select");
+		setWeaponQuery("");
+		setEnhancement(0);
+	}
+
+	function closeAddCard() {
+		setShowAddCard(false);
+		setAddMode("select");
+		setWeaponQuery("");
+		setEnhancement(0);
 	}
 
 	return (
@@ -291,17 +335,103 @@ export function WeaponsSection({ doc, update }: BuilderProps) {
 			)}
 
 			<div className="gear-add-row">
-				{!showAddForm ? (
+				{!showAddCard ? (
 					<button type="button" className="btn-ghost" onClick={startAdd}>
 						+ Add weapon
 					</button>
 				) : (
-					<WeaponForm
-						initial={BLANK_WEAPON}
-						onSave={handleAdd}
-						onCancel={() => setShowAddForm(false)}
-						saveLabel="Add to weapons"
-					/>
+					<div className="gear-armor-form">
+						<div className="gear-armor-head">
+							<span className="eyebrow">
+								{addMode === "select" ? "Select Weapon" : "Custom Weapon"}
+							</span>
+							<div className="head-actions">
+								{addMode === "custom" && (
+									<button
+										type="button"
+										className="btn-ghost"
+										onClick={() => setAddMode("select")}
+									>
+										← Back to list
+									</button>
+								)}
+								<button type="button" className="btn-ghost" onClick={closeAddCard}>
+									Cancel
+								</button>
+							</div>
+						</div>
+
+						{addMode === "select" ? (
+							<div className="gear-picker">
+								<div className="gear-picker-head">
+									<input
+										className="search"
+										type="text"
+										placeholder="Search weapons…"
+										value={weaponQuery}
+										onChange={(e) => setWeaponQuery(e.target.value)}
+										autoFocus
+									/>
+									<label className="field enh-field">
+										<span>Enh.</span>
+										<select
+											value={enhancement}
+											onChange={(e) => setEnhancement(Number(e.target.value))}
+										>
+											{ENHANCEMENT_OPTIONS.map((n) => (
+												<option key={n} value={n}>
+													+{n}
+												</option>
+											))}
+										</select>
+									</label>
+								</div>
+								<div className="scroll">
+									{filteredWeapons.length === 0 ? (
+										<div className="empty">No weapons match.</div>
+									) : (
+										filteredWeapons.map((w) => (
+											<div key={w.id} className="pick-row">
+												<div className="pmain">
+													<div className="pname">
+														{w.name}
+														{enhancement > 0 ? ` +${enhancement}` : ""}
+													</div>
+													<div className="preq">
+														<span>{weaponRefMeta(w)}</span>
+													</div>
+												</div>
+												<button
+													type="button"
+													className="pick-btn add"
+													onClick={() => handleAddFromRef(w)}
+												>
+													Add
+												</button>
+											</div>
+										))
+									)}
+									{Object.keys(refData.weapons).length > 80 && filteredWeapons.length === 80 ? (
+										<div className="empty">Showing first 80 — refine your search.</div>
+									) : null}
+								</div>
+								<button
+									type="button"
+									className="btn-ghost armor-custom-link"
+									onClick={() => setAddMode("custom")}
+								>
+									+ Custom entry…
+								</button>
+							</div>
+						) : (
+							<WeaponForm
+								initial={BLANK_WEAPON}
+								onSave={handleAdd}
+								onCancel={closeAddCard}
+								saveLabel="Add to weapons"
+							/>
+						)}
+					</div>
 				)}
 			</div>
 		</Panel>

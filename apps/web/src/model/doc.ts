@@ -12,6 +12,7 @@ import type {
 	ItemInstance,
 	SkillId,
 	WeaponInstance,
+	WeaponRef,
 	WornArmor,
 } from "@pf1/schema";
 
@@ -549,6 +550,40 @@ export function setAbilityIncreaseCount(
  */
 export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterDoc {
 	const weapons = [...(doc.build.weapons ?? []), weapon];
+	return { ...doc, build: { ...doc.build, weapons } };
+}
+
+/**
+ * Append a weapon selected from `RefData.weapons`, overlaying a user-chosen
+ * enhancement bonus. Snapshots the ref's physical stats onto a
+ * `WeaponInstance` (the engine reads those fields directly; `weaponId` is a
+ * display + re-sync pointer only). The display name gets a " +N" suffix when
+ * `enhancement` is positive. Zero-value optionals (matching engine defaults)
+ * are omitted so the doc stays minimal.
+ */
+export function addWeaponFromRef(
+	doc: CharacterDoc,
+	weapon: WeaponRef,
+	enhancement: number = 0,
+): CharacterDoc {
+	const enh = clampInt(enhancement, 0, 10);
+	const name = enh > 0 ? `${weapon.name} +${enh}` : weapon.name;
+	const instance: WeaponInstance = {
+		name,
+		attackAbility: weapon.attackAbility,
+		damageAbility: weapon.damageAbility,
+		category: weapon.category,
+		...(enh > 0 ? { enhancement: enh } : {}),
+		...(weapon.damageDice ? { damageDice: weapon.damageDice } : {}),
+		...(weapon.critRange && weapon.critRange !== 20 ? { critRange: weapon.critRange } : {}),
+		...(weapon.critMult && weapon.critMult !== 2 ? { critMult: weapon.critMult } : {}),
+		...(weapon.damageMultiplier && weapon.damageMultiplier !== 1
+			? { damageMultiplier: weapon.damageMultiplier }
+			: {}),
+		...(weapon.group ? { group: weapon.group } : {}),
+		weaponId: weapon.id,
+	};
+	const weapons = [...(doc.build.weapons ?? []), instance];
 	return { ...doc, build: { ...doc.build, weapons } };
 }
 

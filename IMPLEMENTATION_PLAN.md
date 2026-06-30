@@ -313,7 +313,24 @@ fallback to the existing manual form.
 `bun run typecheck` + `bun run test` green. Optional e2e for "search longsword, set +1, assert
 derived attack/damage/crit".
 
-**Status**: Not Started
+**Status**: Complete
+
+**Notes / caveats (as built)**:
+- `addWeaponFromRef(doc, weaponRef, enhancement = 0)` snapshots the ref's fields onto a
+  `WeaponInstance` (overlaying the enhancement: name suffix ` +N`, `enhancement` field set only
+  when N > 0). Default-valued optionals (`critRange===20`, `critMult===2`,
+  `damageMultiplier===1`) are omitted for doc minimalism — the engine falls back to its own
+  defaults. Enhancement is clamped to `[0, 10]`.
+- `WeaponsSection` now destructures `refData` (it was already passed in via `BuilderProps` but
+  unused). The "+ Add weapon" button opens a card with two modes: **Select** (search
+  `refData.weapons`, an `Enh.` selector +0..+5 that applies to the next Add, a preview row per
+  weapon showing proficiency / category / damage dice / crit / group) and **Custom** (the
+  existing `WeaponForm`, linked via "+ Custom entry…").
+- The enhancement selector is *picker-global* (set it once, click Add on each weapon you want
+  at that bonus). Clicking "Add" closes the picker; reopening it resets enhancement to +0.
+- Engine: unchanged. `computeWeaponAttacks` reads the snapshot fields directly as before;
+  feat routing still works because `addWeaponFromRef` populates `w.group` from the ref's
+  slugified `baseTypes[0]` (verified by a featChoiceOptions integration test).
 
 ---
 
