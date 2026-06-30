@@ -115,6 +115,12 @@ describe("updateWeapon()", () => {
 		updateWeapon(d, 0, { name: "Changed" });
 		expect(d.build.weapons![0]!.name).toBe("Longsword");
 	});
+
+	it("clamps enhancement to [0, 10] on update", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		const updated = updateWeapon(d, 0, { enhancement: 99 });
+		expect(updated.build.weapons![0]!.enhancement).toBe(10);
+	});
 });
 
 // ---------------------------------------------------------------------------

@@ -13,6 +13,7 @@ import {
 	addWornArmorFromRef,
 	removeGear,
 	setGearEquipped,
+	updateGearItem,
 } from "../src/model/doc.js";
 
 function doc() {
@@ -275,5 +276,43 @@ describe("removeGear()", () => {
 		const d = addGearItem(doc(), "item-a");
 		removeGear(d, 0);
 		expect(d.build.gear).toHaveLength(1);
+	});
+});
+
+// ---------------------------------------------------------------------------
+// updateGearItem
+// ---------------------------------------------------------------------------
+describe("updateGearItem()", () => {
+	it("patches armor stats + name on the gear item at the given index", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE, 2, "mithral");
+		const updated = updateGearItem(d, 0, {
+			armor: { ...d.build.gear[0]!.armor!, enhancement: 3 },
+			name: "Mithral Full Plate +3",
+		});
+		expect(updated.build.gear[0]!.armor!.enhancement).toBe(3);
+		expect(updated.build.gear[0]!.name).toBe("Mithral Full Plate +3");
+		// other fields preserved
+		expect(updated.build.gear[0]!.armor!.ac).toBe(9);
+		expect(updated.build.gear[0]!.armorId).toBe("h65qEp22nsyRoeRa");
+	});
+
+	it("clamps armor enhancement to [0, 10]", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE);
+		const updated = updateGearItem(d, 0, {
+			armor: { ...d.build.gear[0]!.armor!, enhancement: 99 },
+		});
+		expect(updated.build.gear[0]!.armor!.enhancement).toBe(10);
+	});
+
+	it("is a no-op for out-of-range index", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE);
+		expect(updateGearItem(d, 5, { name: "x" })).toBe(d);
+		expect(updateGearItem(d, -1, { name: "x" })).toBe(d);
+	});
+
+	it("does not mutate the original doc", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE, 2);
+		updateGearItem(d, 0, { name: "changed" });
+		expect(d.build.gear[0]!.name).toBe("Full Plate +2");
 	});
 });

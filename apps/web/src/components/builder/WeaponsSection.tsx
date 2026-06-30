@@ -49,24 +49,30 @@ function WeaponForm({
 	saveLabel: string;
 }) {
 	const [form, setForm] = useState<WeaponInstance>({ ...initial });
+	const [abilities, setAbilities] = useState<string[]>(initial.abilities ?? []);
 
 	function field<K extends keyof WeaponInstance>(key: K, val: WeaponInstance[K]) {
 		setForm((f) => ({ ...f, [key]: val }));
+	}
+
+	function toggleAbility(id: string) {
+		setAbilities((prev) => prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]);
 	}
 
 	function handleSave() {
 		const weapon: WeaponInstance = {
 			...form,
 			name: form.name.trim(),
-			// Omit empty optional strings so they don't linger as "" in the doc.
 			damageDice: form.damageDice?.trim() || undefined,
 			group: form.group?.trim() || undefined,
+			abilities: abilities.length > 0 ? abilities : undefined,
 		};
-		// Omit zero-value optional numbers that default gracefully.
 		if (weapon.enhancement === 0) delete weapon.enhancement;
 		if (weapon.critRange === 20) delete weapon.critRange;
 		if (weapon.critMult === 2) delete weapon.critMult;
 		if (weapon.damageMultiplier === 1) delete weapon.damageMultiplier;
+		if (!weapon.material || weapon.material === "steel") delete weapon.material;
+		if (!weapon.abilities) delete weapon.abilities;
 		onSave(weapon);
 	}
 
@@ -92,15 +98,35 @@ function WeaponForm({
 					/>
 				</label>
 				<label className="field">
+					<span>Enhancement bonus</span>
+					<select
+						value={form.enhancement ?? 0}
+						onChange={(e) => field("enhancement", Number(e.target.value))}
+					>
+						{ENHANCEMENT_OPTIONS.map((n) => (
+							<option key={n} value={n}>+{n}</option>
+						))}
+					</select>
+				</label>
+				<label className="field">
+					<span>Material</span>
+					<select
+						value={form.material ?? "steel"}
+						onChange={(e) => field("material", e.target.value)}
+					>
+						{WEAPON_MATERIALS.map((m) => (
+							<option key={m.id} value={m.id}>{m.name}</option>
+						))}
+					</select>
+				</label>
+				<label className="field">
 					<span>Category</span>
 					<select
 						value={form.category ?? "melee"}
 						onChange={(e) => field("category", e.target.value as "melee" | "ranged")}
 					>
 						{CATEGORIES.map((c) => (
-							<option key={c} value={c}>
-								{c}
-							</option>
+							<option key={c} value={c}>{c}</option>
 						))}
 					</select>
 				</label>
@@ -111,9 +137,7 @@ function WeaponForm({
 						onChange={(e) => field("attackAbility", e.target.value as "str" | "dex")}
 					>
 						{ATTACK_ABILITIES.map(({ value, label }) => (
-							<option key={value} value={value}>
-								{label}
-							</option>
+							<option key={value} value={value}>{label}</option>
 						))}
 					</select>
 				</label>
@@ -124,9 +148,7 @@ function WeaponForm({
 						onChange={(e) => field("damageAbility", e.target.value as "str" | "none")}
 					>
 						{DAMAGE_ABILITIES.map(({ value, label }) => (
-							<option key={value} value={value}>
-								{label}
-							</option>
+							<option key={value} value={value}>{label}</option>
 						))}
 					</select>
 				</label>
@@ -137,21 +159,9 @@ function WeaponForm({
 						onChange={(e) => field("damageMultiplier", Number(e.target.value))}
 					>
 						{DAMAGE_MULTIPLIERS.map(({ value, label }) => (
-							<option key={value} value={value}>
-								{label}
-							</option>
+							<option key={value} value={value}>{label}</option>
 						))}
 					</select>
-				</label>
-				<label className="field">
-					<span>Enhancement bonus</span>
-					<input
-						type="number"
-						value={form.enhancement ?? 0}
-						min={0}
-						max={10}
-						onChange={(e) => field("enhancement", Number(e.target.value))}
-					/>
 				</label>
 				<label className="field">
 					<span>Damage dice (display only)</span>
@@ -167,7 +177,7 @@ function WeaponForm({
 					<input
 						type="number"
 						value={form.critRange ?? 20}
-						min={15}
+						min={1}
 						max={20}
 						onChange={(e) => field("critRange", Number(e.target.value))}
 					/>
@@ -183,7 +193,7 @@ function WeaponForm({
 					/>
 				</label>
 				<label className="field">
-					<span>Weapon type (for Weapon Focus / Spec, e.g. "longsword")</span>
+					<span>Weapon type (for Weapon Focus / Spec)</span>
 					<input
 						type="text"
 						value={form.group ?? ""}
@@ -192,6 +202,22 @@ function WeaponForm({
 					/>
 				</label>
 			</div>
+			{WEAPON_ABILITIES.length > 0 && (
+				<div className="ability-chips">
+					{WEAPON_ABILITIES.map((a) => (
+						<button
+							key={a.id}
+							type="button"
+							className="chip"
+							aria-pressed={abilities.includes(a.id)}
+							title={a.note ? `${a.name} (+${a.bonusEquivalent}) — ${a.note}` : `${a.name} (+${a.bonusEquivalent})`}
+							onClick={() => toggleAbility(a.id)}
+						>
+							{a.name}
+						</button>
+					))}
+				</div>
+			)}
 			<button
 				type="button"
 				className="pick-btn add"
@@ -420,7 +446,8 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
 										<button
 											key={a.id}
 											type="button"
-											className={`chip${abilities.includes(a.id) ? " chip-on" : ""}`}
+											className="chip"
+											aria-pressed={abilities.includes(a.id)}
 											title={a.note ? `${a.name} (+${a.bonusEquivalent}) — ${a.note}` : `${a.name} (+${a.bonusEquivalent})`}
 											onClick={() => toggleAbility(a.id)}
 										>

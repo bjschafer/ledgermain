@@ -330,6 +330,26 @@ export function removeGear(doc: CharacterDoc, index: number): CharacterDoc {
 }
 
 /**
+ * Partially update the gear item at `index`. Merges a `Partial<ItemInstance>`
+ * patch — can update `armor`, `name`, `equipped`, etc. Out-of-range indices
+ * are silently ignored. Armor enhancement is clamped to [0, 10] when present.
+ */
+export function updateGearItem(
+	doc: CharacterDoc,
+	index: number,
+	patch: Partial<ItemInstance>,
+): CharacterDoc {
+	if (index < 0 || index >= doc.build.gear.length) return doc;
+	const current = doc.build.gear[index]!;
+	const merged: ItemInstance = { ...current, ...patch };
+	if (merged.armor?.enhancement != null) {
+		merged.armor = { ...merged.armor, enhancement: clampInt(merged.armor.enhancement, 0, 10) };
+	}
+	const gear = doc.build.gear.map((g, i) => (i === index ? merged : g));
+	return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
  * Set or clear the user's maximum-HP override (e.g. rolled HP).
  * When `value` is null, NaN, or <= 0, the override key is removed entirely so
  * the engine falls back to the rules-average. Otherwise the value is stored as a
@@ -622,8 +642,8 @@ export function addWeaponFromRef(
 }
 
 /**
- * Partially update the weapon at `index` with the given `patch`.
- * Out-of-range indices are silently ignored.
+ * Partially update the weapon at `index` with the given `patch`. Enhancement
+ * is clamped to [0, 10]. Out-of-range indices are silently ignored.
  */
 export function updateWeapon(
 	doc: CharacterDoc,
@@ -632,11 +652,15 @@ export function updateWeapon(
 ): CharacterDoc {
 	const weapons = doc.build.weapons ?? [];
 	if (index < 0 || index >= weapons.length) return doc;
+	const merged = { ...weapons[index]!, ...patch };
+	if (merged.enhancement != null) {
+		merged.enhancement = clampInt(merged.enhancement, 0, 10);
+	}
 	return {
 		...doc,
 		build: {
 			...doc.build,
-			weapons: weapons.map((w, i) => (i === index ? { ...w, ...patch } : w)),
+			weapons: weapons.map((w, i) => (i === index ? merged : w)),
 		},
 	};
 }
