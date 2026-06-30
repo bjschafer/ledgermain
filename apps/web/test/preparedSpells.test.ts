@@ -3,9 +3,11 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
-import { addClass, createEmptyDoc, migrateDoc } from "../src/model/doc.js";
+import { addClass, createEmptyDoc, migrateDoc, setClericDomains } from "../src/model/doc.js";
 import {
   clearPrepared,
+  domainSpellLevelMap,
+  prepareDomainSpell,
   prepareSpell,
   preparedSpells,
   reconcileGrantedCantrips,
@@ -185,5 +187,83 @@ describe("reconcileGrantedCantrips()", () => {
   it("is a no-op for a non-caster (no spell list)", () => {
     const doc = addClass(fresh(), "fighter");
     expect(reconcileGrantedCantrips(doc, ref)).toBe(doc);
+  });
+});
+
+describe("domain spell slots (cleric)", () => {
+  function clericDoc(): CharacterDoc {
+    let doc = addClass(fresh(), "cleric");
+    doc = setClericDomains(doc, ["Air"]);
+    return doc;
+  }
+
+  it("prepareDomainSpell stores an instance with kind: 'domain'", () => {
+    const doc = clericDoc();
+    const out = prepareDomainSpell(doc, "obscuringMist");
+    expect(preparedSpells(out)).toEqual([
+      { spellId: "obscuringMist", expended: false, kind: "domain" },
+    ]);
+  });
+
+  it("prepareSpell stores an instance WITHOUT kind (defaults to 'normal')", () => {
+    const doc = clericDoc();
+    const out = prepareSpell(doc, "cureLightWounds");
+    expect(preparedSpells(out)).toEqual([
+      { spellId: "cureLightWounds", expended: false },
+    ]);
+  });
+
+  it("unprepareSpell with kind restricts removal to that slot kind", () => {
+    let doc = clericDoc();
+    doc = prepareSpell(doc, "cureLightWounds"); // normal
+    doc = prepareDomainSpell(doc, "obscuringMist"); // domain
+    // unprepare looking only for a domain slot of cureLightWounds — no match.
+    doc = unprepareSpell(doc, "cureLightWounds", "domain");
+    expect(preparedSpells(doc).length).toBe(2);
+    // remove the domain obscuringMist — keeps the normal.
+    doc = unprepareSpell(doc, "obscuringMist", "domain");
+    expect(preparedSpells(doc)).toEqual([
+      { spellId: "cureLightWounds", expended: false },
+    ]);
+  });
+
+  it("unprepareSpell without kind finds any slot", () => {
+    let doc = clericDoc();
+    doc = prepareDomainSpell(doc, "obscuringMist");
+    doc = unprepareSpell(doc, "obscuringMist");
+    expect(preparedSpells(doc)).toEqual([]);
+  });
+
+  it("domainSpellLevelMap inverts the chosen domains' lists", () => {
+    const airIds = ref.domainSpellLists["Air"];
+    expect(airIds).toBeDefined();
+    const map = domainSpellLevelMap(ref, ["Air"]);
+    // Sanity: Air L1 (Obscuring Mist) → level 1 in the map.
+    const l1id = airIds![1]![0]!;
+    expect(map.get(l1id)).toBe(1);
+    // Empty when no tags chosen.
+    expect(domainSpellLevelMap(ref, []).size).toBe(0);
+    // Unknown tag yields nothing.
+    expect(domainSpellLevelMap(ref, ["NotARealDomain"]).size).toBe(0);
+  });
+
+  it("setClericDomains caps at two domains and ignores blanks", () => {
+    const doc = setClericDomains(fresh(), ["Air", "Fire", "Void", "", " "]);
+    expect(doc.build.clericDomains).toEqual(["Air", "Fire"]);
+  });
+
+  it("migrateDoc backfills clericDomains for older docs", () => {
+    const stale: CharacterDoc = {
+      ...createEmptyDoc("t"),
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+      } as unknown as CharacterDoc["build"],
+    };
+    const out = migrateDoc(stale);
+    expect(out.build.clericDomains).toEqual([]);
   });
 });

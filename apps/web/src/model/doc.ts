@@ -24,7 +24,7 @@ const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
 /** A fresh, valid level-0 document with default scores and no choices made. */
 export function createEmptyDoc(id: string): CharacterDoc {
 	return {
-		schemaVersion: 1,
+		schemaVersion: 2,
 		id,
 		ownerId: "local",
 		version: 1,
@@ -34,6 +34,7 @@ export function createEmptyDoc(id: string): CharacterDoc {
 		build: {
 			feats: [],
 			skillRanks: {},
+			clericDomains: [],
 			classFeatureChoices: [],
 			spells: { known: [] },
 			gear: [],
@@ -51,7 +52,9 @@ export function createEmptyDoc(id: string): CharacterDoc {
 /**
  * Normalize a document loaded from persistence to the current shape. Older docs
  * stored `build.spells.prepared` (always empty/unused) and lacked `live.spells`;
- * this moves preparation to live state. Idempotent and non-destructive.
+ * this moves preparation to live state. v2 adds `build.clericDomains` and
+ * `PreparedSpell.kind` (defaulting to `"normal"` for pre-existing entries —
+ * domain slot support for clerics). Idempotent and non-destructive.
  */
 export function migrateDoc(doc: CharacterDoc): CharacterDoc {
 	const build = doc.build as typeof doc.build & {
@@ -70,6 +73,15 @@ export function migrateDoc(doc: CharacterDoc): CharacterDoc {
 		next = { ...next, build: { ...next.build, spells: { known } } };
 		changed = true;
 	}
+	// v2: ensure `clericDomains` exists (default empty). No schemaVersion bump
+	// here — the field is optional; this just backfills the canonical empty
+	// array so downstream `includes` checks don't crash on older docs.
+	if (!next.build.clericDomains) {
+		next = { ...next, build: { ...next.build, clericDomains: [] } };
+		changed = true;
+	}
+	// `PreparedSpell.kind` is optional and defaults to "normal" — existing
+	// prepared entries need no rewrite; tracker code treats absent as normal.
 
 	return changed ? next : doc;
 }
@@ -89,6 +101,23 @@ export function setAlignment(
 
 export function setDeity(doc: CharacterDoc, deity: string): CharacterDoc {
 	return { ...doc, identity: { ...doc.identity, deity } };
+}
+
+/**
+ * Set the cleric's chosen domain tags (PF1 normally two; UI caps at two here).
+ * Pass `[]` to clear. Tags must match keys in `refData.domainSpellLists`; no
+ * validation here (pure model layer — the builder picker gates the choices).
+ * Replaces the whole list (not add-remove) to keep domain swapping simple.
+ */
+export function setClericDomains(
+	doc: CharacterDoc,
+	domains: string[],
+): CharacterDoc {
+	const trimmed = domains.filter((d) => typeof d === "string" && d.length > 0);
+	return {
+		...doc,
+		build: { ...doc.build, clericDomains: trimmed.slice(0, 2) },
+	};
 }
 
 export function setGender(doc: CharacterDoc, gender: string): CharacterDoc {

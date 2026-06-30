@@ -23,9 +23,10 @@ export const SYSTEM_VERSION = "11.11";
 /**
  * Bumped when the RefData *shape* changes (mirrors schema package intent).
  * v2 added `armors` and `weapons` collections (Stage 6). v3 adds `archetypes`
- * and `archetypeFeatures` (Stage 11).
+ * and `archetypeFeatures` (Stage 11). v4 adds per-domain spell lists
+ * (`domainSpellLists`, `domain-spell-lists.json`) for cleric domains.
  */
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none — see

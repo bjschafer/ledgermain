@@ -107,15 +107,21 @@ export function normalize(opts: NormalizeOptions): {
     .filter((pf) => pf.doc.type === "feat")
     .map((pf) => transformFeat(pf.doc));
 
-  // --- spells (those any sliced spell-list class can learn) ------------------
+  // --- spells (those any sliced spell-list class can learn, OR a domain) -----
+  // Domain-only spells (e.g. Control Winds — druid class, but Air domain L5)
+  // would otherwise be dropped, taking their `learnedAt.domain` data with them.
+  // Keeping any spell with a non-empty domain/subdomain entry lets us invert a
+  // per-domain spell list for clerics.
   const spellListTags = new Set<string>(SLICE.spellListClassTags);
   const spells: Spell[] = [];
   for (const pf of readPack(join(packsDir, "spells"))) {
     if (pf.doc.type !== "spell") continue;
     const spell = transformSpell(pf.doc);
-    if (Object.keys(spell.learnedAt.class).some((t) => spellListTags.has(t))) {
-      spells.push(spell);
-    }
+    const hasClass = Object.keys(spell.learnedAt.class).some((t) => spellListTags.has(t));
+    const hasDomain =
+      Object.keys(spell.learnedAt.domain ?? {}).length > 0 ||
+      Object.keys(spell.learnedAt.subdomain ?? {}).length > 0;
+    if (hasClass || hasDomain) spells.push(spell);
   }
 
   // --- per-class spell lists (invert learnedAt.class) ------------------------
@@ -131,6 +137,29 @@ export function normalize(opts: NormalizeOptions): {
       list[Number(lvl)]!.sort();
     }
     spellLists[tag] = list;
+  }
+
+  // --- per-domain spell lists (invert learnedAt.domain + learnedAt.subdomain) -
+  // Domain tags appear across all spells whose `learnedAt.domain`/`.subdomain`
+  // is populated. A cleric's two chosen domains each grant a bonus prepared
+  // slot per spell level (1–9), drawable from the matching list here.
+  const domainTags = new Set<string>();
+  for (const spell of spells) {
+    for (const tag of Object.keys(spell.learnedAt.domain ?? {})) domainTags.add(tag);
+    for (const tag of Object.keys(spell.learnedAt.subdomain ?? {})) domainTags.add(tag);
+  }
+  const domainSpellLists: Record<string, SpellList> = {};
+  for (const tag of domainTags) {
+    const list: SpellList = {};
+    for (const spell of spells) {
+      const lvl = spell.learnedAt.domain?.[tag] ?? spell.learnedAt.subdomain?.[tag];
+      if (lvl === undefined) continue;
+      (list[lvl] ??= []).push(spell.id);
+    }
+    for (const lvl of Object.keys(list)) {
+      list[Number(lvl)]!.sort();
+    }
+    domainSpellLists[tag] = list;
   }
 
   // --- buffs (all; small + engine-relevant) ----------------------------------
@@ -187,6 +216,7 @@ export function normalize(opts: NormalizeOptions): {
     weapons: weapons.length,
     archetypes: archetypes.length,
     archetypeFeatures: archetypeFeatures.length,
+    domainSpellLists: Object.keys(domainSpellLists).length,
   };
 
   const meta: RefDataMeta = {
@@ -211,6 +241,7 @@ export function normalize(opts: NormalizeOptions): {
     buffs: byId(buffs),
     items: byId(items),
     spellLists,
+    domainSpellLists,
     armors: byId(armors),
     weapons: byId(weapons),
     archetypes: byId(archetypes),

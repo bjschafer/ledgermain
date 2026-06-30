@@ -25,7 +25,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(3);
+    expect(ref.meta.schemaVersion).toBe(4);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -128,6 +128,54 @@ describe("wizard spell list (inverted learnedAt.class)", () => {
         expect(ref.spells[id]?.learnedAt.class.wizard).toBeTypeOf("number");
       }
     }
+  });
+});
+
+describe("cleric domain spell lists (inverted learnedAt.domain)", () => {
+  it("emits a non-empty domainSpellLists collection", () => {
+    expect(Object.keys(ref.domainSpellLists).length).toBeGreaterThan(0);
+    expect(ref.meta.counts.domainSpellLists).toBe(Object.keys(ref.domainSpellLists).length);
+  });
+
+  it("every entry is keyed by a domain tag present in some spell's learnedAt.domain", () => {
+    const tagsFromSpells = new Set<string>();
+    for (const sp of Object.values(ref.spells)) {
+      for (const t of Object.keys(sp.learnedAt.domain ?? {})) tagsFromSpells.add(t);
+    }
+    for (const tag of Object.keys(ref.domainSpellLists)) {
+      expect(tagsFromSpells.has(tag)).toBe(true);
+    }
+  });
+
+  it("every spell id on a domain list actually carries that domain at the level", () => {
+    for (const [tag, list] of Object.entries(ref.domainSpellLists)) {
+      for (const [lvl, ids] of Object.entries(list)) {
+        for (const id of ids) {
+          const sp = ref.spells[id];
+          expect(sp, `${tag} L${lvl} ${id}`).toBeDefined();
+          const lvl2 = sp!.learnedAt.domain?.[tag] ?? sp!.learnedAt.subdomain?.[tag];
+          expect(lvl2, `${tag} ${id}`).toBe(Number(lvl));
+        }
+      }
+    }
+  });
+
+  it("domain-only spells that no sliced class knows are present in refData.spells", () => {
+    // Find a spell whose learnedAt.class has no sliced tag but which carries a
+    // domain entry — it must still be in the vendored spells (required for the
+    // domain-slot UI to resolve it by id).
+    const sliced = new Set(["wizard", "sorcerer", "cleric"]);
+    let foundDomainOnly = false;
+    for (const sp of Object.values(ref.spells)) {
+      const classTags = Object.keys(sp.learnedAt.class);
+      const onSliced = classTags.some((t) => sliced.has(t));
+      const hasDomain = Object.keys(sp.learnedAt.domain ?? {}).length > 0;
+      if (!onSliced && hasDomain) {
+        foundDomainOnly = true;
+        break;
+      }
+    }
+    expect(foundDomainOnly).toBe(true);
   });
 });
 

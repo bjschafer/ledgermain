@@ -1,639 +1,80 @@
-# Implementation Plan — PF1e In-Play Tracker
+# Domain Spells + Channel Energy — Cleric
 
-Companion to `DESIGN.md`. Stages are ordered to **de-risk the unknowns first** (data shape, then engine), then build UI on a proven foundation. Each stage should compile, pass tests, and be committable.
+Wiring up cleric domains (spell lists + domain slots) and surfacing channel
+energy's dice/save-DC scaling. Channel Energy's *uses/day* pool is already
+data-driven from `uses.maxFormula = "3 + @abilities.cha.mod"` (resources.ts) —
+the missing piece is the damage-dice and save-DC display, which are prose-only in
+the vendored feature (no `changes`).
 
-> **Licensing: DECIDED — clean-room (license-free).** The engine is reimplemented from the PF1 rules; Foundry's GPL code is used only as a behavioral test oracle, never copied. See DESIGN.md §6. Stage 2 is written accordingly.
+Clean-room: nothing is read from Foundry's source code. Domain-spell *data*
+(`learnedAt.domain` on per-spell docs) IS used — that's open content, not source
+code. Channel-dice/DC numbers are clean-room from the published PF1 rules text
+that lives only in the feature's prose description.
 
----
+## Stage 1: Data pipeline — per-domain spell lists
 
-## Stage 1: Data pipeline + schema
-
-**Goal**: A reproducible build that turns the Foundry YAML packs into our own normalized JSON, for a vertical slice of content.
-
-**Slice**: core races, 3–4 base classes (fighter, barbarian, wizard, cleric) with their `class-abilities` links resolved, the feats those need, and the spells for one class.
-
-**Success Criteria**:
-- `packages/schema` defines `RefData` types (Class, Race, Feat, Spell, Buff, Item).
-- `packages/data-pipeline` reads `packs/**/*.yaml`, resolves `links.supplements` UUIDs and `@UUID[...]` refs, emits normalized JSON.
-- Per-class spell lists derived by inverting `learnedAt.class`.
-- Free-text feat prereqs parsed into structured form where possible; unparsed remainder retained as `prereqText`.
-- Output is versioned and content-addressable (so updates are diffable).
-
-**Tests**: snapshot tests on the slice; assert known facts (barbarian BAB=high, gets Rage at L1 via resolved link; Cleave lists Power Attack as a structured prereq; Fireball is wizard L3).
-
-**Status**: Complete
-
-**Notes / caveats (as built)**:
-- Monorepo: `packages/schema` (`RefData` + members, `CharacterDoc`/`DerivedSheet` stubs) and `packages/data-pipeline` (pinned fetch → transform → emit). pnpm workspaces, TS strict, Vitest. 19 tests pass; 6 snapshots.
-- **Pinning**: source SHA + system version live in `packages/data-pipeline/src/config.ts`. `pnpm data:fetch` does a shallow fetch of the exact SHA into a gitignored `.cache/`; `pnpm data:build` regenerates. Bumping data = edit `FOUNDRY_SHA`, re-run, review diff.
-- **Vendoring**: normalized JSON committed under `packages/data-pipeline/data/` (key-sorted for stable diffs, per-file sha256 in `meta.json`). App builds with no network.
-- **Slice as built**: 7 core races; 4 classes (fighter/barbarian/wizard/cleric) with `links.supplements` fully resolved into level-tagged grants (+ a `classFeatures` collection holding the resolved entries, e.g. Rage's `uses.maxFormula`); all 390 feats (curating wasn't simpler); 1897 wizard-learnable spells + inverted `wizard` spell list; 185 buffs; 111 items that carry typed-modifier `changes` (the engine-relevant subset of the 1124-item pack).
-- **Feat prereqs**: hybrid parse — 262/390 feats yield structured signals (ability minimums, BAB, caster level, `@UUID` feat refs, best-effort skill ranks); full prose retained as `prereqText` (with `@UUID` enrichers resolved to display names). Skill-name → id mapping deferred (raw retained).
-
-**For Stage 2 (rules engine)**:
-- The typed-modifier model is already in the data: every `Change` is `{ formula, target, type }`. `type` is the stacking category (observed: `untyped`, `dodge`, `morale`, `racial`, `enhancement`, `deflection`). `target` covers ability scores (`str`/`dex`/…), `attack`, `ac`, `skill.<id>`, `cl`, and build-time targets like `bonusFeats`/`bonusSkillRanks`.
-- **Formula DSL** to evaluate (clean-room): functions seen include `if`, `gte`, `min`, `max`; data paths like `@abilities.con.mod`, `@cl`, `@skills.acr.rank`, `@class.unlevel`, `@attributes.hd.total`, `@item.level`; and dice terms embedded in formulas, e.g. `(min(10, @cl))d6`. Resource pools use `maxFormula` (e.g. Rage `4 + @abilities.con.mod + (2 * (@class.unlevel - 1))`).
-- `contextNotes` (`{ target, text }`) are non-mechanical reminders (e.g. "+2 vs Enchantment") — surface on the sheet, do not auto-apply.
-- BAB/save numeric tables are NOT in the data (only the `high|med|low` / `high|low` tiers) — hardcode the three BAB and two save progressions in the engine.
-
----
-
-## Stage 2: Rules engine core
-
-**Goal**: `compute(doc, refData) -> DerivedSheet` for a static (no-buffs) character.
-
-**Success Criteria**:
-- Ability mods, BAB (tier tables), saves (tier tables + ability), AC (all components), CMB/CMD, skill totals (ranks + class-skill bonus + ability + ACP), HP.
-- **Typed bonus-stacking** implemented per PF1 rules (highest-within-type; dodge & untyped stack; penalties stack).
-- **Formula evaluator** for the DSL: `@data.paths`, `if/gte/min/max`, dice terms.
-- (Per licensing decision) clean-room implementation validated against Foundry behavior as an oracle.
-
-**Tests**: hand-computed fixtures for a L1 and a L5 build; targeted stacking tests (two morale bonuses don't stack; dodge+untyped do); formula evaluator unit tests.
-
-**Status**: Complete (with caveats)
-
-**Notes / caveats (as built)**:
-- New package `packages/engine` (`@pf1/engine`): pure, framework-agnostic. Depends on `@pf1/schema`; `@pf1/data-pipeline` is a dev dep so tests run against the real vendored slice via `loadRefData()`. 44 engine tests pass; `bun run typecheck` clean across all three packages.
-- **Public API** (`src/index.ts`): `compute(doc, refData) -> DerivedSheet`; formula evaluator `parseFormula` / `evaluateFormula` / `tryEvaluateFormula` / `evaluateNode` / `containsDice` (+ `DiceTermError`, `FormulaSyntaxError`, `RollData`, `FormulaNode`); stacking `resolveStack` (+ `TypedModifier`, `ResolvedModifier`, `StackResult`); `collectModifiers` / `forTarget`; roll-data helpers `buildRollData` / `abilityMod` / `totalLevel`; rules tables `babForLevels` / `saveForLevels` / `specialSizeMod` / `SIZE_AC_MOD` / `SAVE_ABILITY` / `SKILL_ABILITY` / `SKILL_IDS` / `skillUsesAcp`.
-- **Formula DSL**: recursive-descent parser + tree-walking evaluator (no `eval`). Functions: `if`, `eq/ne/gt/gte/lt/lte`, `and/or/not`, `min/max`, `floor/ceil/round/abs/sign`, `clamp`. Missing `@paths` resolve to `0` (Foundry behaviour). Dice terms (`(min(10,@cl))d6`) parse into a node but throw `DiceTermError` on numeric eval; `tryEvaluateFormula` returns `null` for them — so damage formulas never crash the static sheet.
-- **Stacking** (clean-room): same-type bonuses → highest; `dodge`/`untyped`/`circumstance` → sum; penalties always stack; provenance (`applied` flag per source) retained for the Stage 4 UI.
-- **Schema**: `CharacterDoc` fleshed out with the DESIGN §3.1 sync fields (`ownerId`/`version`/`updatedAt`) and an `ItemInstance`/`WornArmor` gear model; `DerivedSheet` fully specified with per-source modifier provenance.
-- **PF1 rules decisions / assumptions**:
-  - *HP*: max at 1st character level; each later level adds `floor(HD/2)+1`; Con mod per HD; favored-class HP applied only from explicit `build.favoredClassBonus` `"hp"` entries (not auto-assumed).
-  - *Worn armor*: the vendored slice omits the `armors-and-shields` pack, so body-armor/shield AC/maxDex/ACP are recorded on `ItemInstance.armor`; only magic items (which carry `changes`) come from `RefData`.
-  - *Multiclass*: BAB and each save computed per class then summed (good-save +2 applies once per class).
-  - *Caster level*: `@cl` = highest single class level (single-class assumption); fine until prestige casting matters.
-  - *Armor training*: `mDexA` raises the max-Dex cap; `acpA` reduces ACP magnitude.
-  - *Buffs/conditions*: NOT applied here (Stage 4); only passive race/item/class-feature `changes` feed `compute`.
-- **For Stage 3/4**: `compute` is pure and cheap — recompute on every doc change. Provenance lives in `DerivedSheet` (`ResolvedStat.components`, `AbilityScore.components`, `Ac.components` with `category`, `DerivedSkill.components`); each carries `applied` for strike-through. Stage 4 buffs are just more `Change[]` to merge into `collectModifiers` (extend it to read `doc.live.activeBuffs`); the formula evaluator and stacker already handle their formulas/types.
-
----
-
-## Stage 3: Builder MVP
-
-**Goal**: Create a valid character from scratch through the UI, persisting to a local document.
-
-**Success Criteria**:
-- React app: ability score entry, race pick, class/level pick (multiclass-capable), skill rank allocation, feat selection (with prereq warnings, hard-block where structured), spell selection for casters.
-- Builder writes the `CharacterDoc`; sheet view renders `compute()` output live.
-- Document stored in IndexedDB (Dexie).
-
-**Tests**: component tests for prereq gating; e2e "build a L1 fighter" produces expected derived sheet.
-
-**Status**: Complete (with caveats)
-
-**Notes / caveats (as built)**:
-- New app `apps/web` (`@pf1/web`): Vite + React 18 + TS, bun toolchain. `bun run dev`
-  serves it; `bun run build` produces a static bundle (Cloudflare Pages-ready, not
-  deployed). Repo gates green: `bun run typecheck` clean across all 4 packages;
-  `bun run test` = 75 pass (44 engine + 19 data-pipeline + 12 web).
-- **Testability split (the important bit)**: all builder logic is pure and
-  framework-agnostic in `src/model/` — `doc.ts` (CharacterDoc transitions),
-  `prereqs.ts` (feat gating), `skills.ts` (skill-point budget), `casterLevel.ts`,
-  `names.ts`. React components are thin views; `state/useCharacter.ts` is the only
-  binding (model → `compute()` → Dexie). Tests drive the model directly with no DOM.
-- **Builder → doc → compute flow**: every control calls `update(fn)` with a pure
-  model transition; the hook recomputes `compute(doc, refData)` on each change
-  (pure/cheap, per Stage 2 notes) and the sticky sheet re-renders. Provenance from
-  `DerivedSheet` is surfaced via expandable stat "seals" (overridden bonuses struck
-  through) — the design's signature element.
-- **RefData in the browser**: `loadRefData()` in data-pipeline is Node-fs based, so
-  the app uses `src/refdata/loader.ts` (fetch) instead; `scripts/copy-refdata.ts`
-  copies the vendored JSON into `public/data/` at predev/prebuild (gitignored — the
-  source of truth stays in `packages/data-pipeline/data/`). This module is the only
-  place that knows where data lives, so Stage 5 can swap in lazy R2 loading.
-- **Vite/workspace-TS gotcha**: `@pf1/engine` and `@pf1/schema` publish raw `.ts`;
-  `vite.config.ts` aliases the bare specifiers to their `src/index.ts` and Vite's
-  resolver falls back `./foo.js` → `./foo.ts` for their internal imports. Verified:
-  `vite build` transforms 64 modules and the dev server serves the engine source +
-  data over HTTP (200s).
-- **Feat prereqs**: hard-block ONLY on structured signals (ability min, BAB, caster
-  level, required `@UUID` feats); prose-only prereqs (`prereqText`) show a soft
-  warning and never block — matching DESIGN §4.
-- **Scope notes / Stage 4–5 hooks**: builder covers abilities, race, multiclass
-  classes+levels, skill ranks, feats, and caster spell selection (writes
-  `build.spells.known`). Engine doesn't yet apply feat `changes` (feats are recorded
-  for prereqs/display only) and spell *slots* aren't tracked — both land naturally in
-  Stage 4 (the live tracker reads `doc.live`). Caster level uses a small hardcoded
-  full-caster tag set (single-class assumption). Worn armor is entered as raw stats
-  on gear (the slice omits the armor pack). Persistence is local Dexie only; the doc
-  already carries `ownerId`/`version`/`updatedAt`, so Stage 5 adds the sync push/pull
-  without changing the storage shape.
-
----
-
-## Stage 4: In-play tracker
-
-**Goal**: The differentiator — mutate live state at the table and watch correct numbers update.
-
-**Success Criteria**:
-- HP/temp/nonlethal controls; condition toggles that feed real modifiers into `compute()`.
-- Buffs (from the `buffs` pack + user-authored) with **round-based durations** that count down; expired buffs auto-drop.
-- Resource pools (spell slots, ki, rounds/day, charges) drain/restore; rest restores.
-- Modified values show their provenance (which buff/condition contributed), with overridden bonuses struck through.
-
-**Tests**: toggle Haste+Bless+prone → assert exact AC/attack/save deltas; advance N rounds → buff expires and stats revert.
-
-**Status**: Complete (with caveats)
-
-**Notes / caveats (as built)**:
-- **Engine** — buffs + conditions now flow through the *existing* evaluator +
-  stacker with full provenance. `collectModifiers` reads `doc.live.activeBuffs[].changes`
-  and `doc.live.conditions` (mapped via a new conditions table) alongside the
-  passive race/item/feature sources; nothing about the formula/stacking layer
-  changed. New modules: `conditions.ts` (clean-room table), `duration.ts`
-  (`advanceRounds`, pure), `resources.ts` (`deriveResourcePools`).
-- **Conditions modelled with real modifiers**: shaken, frightened, panicked,
-  sickened, fatigued, exhausted, entangled, grappled, prone, dazzled, deafened,
-  blinded, stunned, cowering. **Display-only** (no flat modifier — narrative or
-  not expressible on a static sheet): flat-footed, nauseated, staggered,
-  paralyzed, helpless, confused, dazed, unconscious. Approximations (left as
-  `contextNotes`, not auto-applied): prone's −4 AC is melee-only and grants +4 vs
-  ranged; blinded/stunned/cowering "lose Dex to AC"; speed-halving; fear/fatigue
-  ladders don't auto-supersede each other (toggling both stacks both).
-- **compute() additions** to support precise live effects: melee/ranged-specific
-  attack targets (`mattack`/`rattack`, e.g. prone), a global `skills` penalty
-  target (shaken/sickened), and `cmb` modifier collection. All provenance-bearing.
-- **Round-advance** is the pure `advanceRounds(buffs, n)`; the web wraps it in
-  `advanceRound(doc, n)` and an "Advance round" control auto-drops expired buffs.
-  Indefinite buffs (no `remainingRounds`) ignore the clock.
-- **Web** — Build/Play mode toggle; Play swaps the left column to the tracker
-  while the sticky provenance sheet (the signature seal/strike-through UI from
-  Stage 3) recomputes live. Live logic is pure + unit-tested in `src/model/`
-  (`hp`, `conditions`, `buffs`, `resources`); React panels are thin views.
-- **Resources**: class-feature pools (Rage rounds/day, Channel Energy) derived
-  from `uses.maxFormula` via `deriveResourcePools`. **Spell-slot limitation**
-  (as flagged in DESIGN/Stage 1): the vendored data has no per-class/level slot
-  tables and items carry no charge counts, so spell slots *and* item charges are
-  **manual pools** (user-entered max, drain/restore/rest). Not blocked on it.
-- **Buffs UI**: add from the 185-buff compendium (snapshotting `changes`, with a
-  best-effort suggested round duration from the buff's structured `duration`) or
-  author a custom buff (same `Change[]` shape — the "expert flexibility" door).
-- **Tests**: engine `tracker.test.ts` (Haste+Bless+prone exact deltas;
-  same-type morale bonus doesn't stack while a morale penalty does; fatigued
-  cascades to attack; round-advance expiry + stat revert; Rage pool derivation).
-  Web `tracker.test.ts` (HP through temp/nonlethal/rest, buff add/remove/round,
-  resource drain/restore/sync/rest). e2e `tracker.spec.ts` (condition toggle +
-  buff apply/expire in the real UI). Repo gates green: `bun run typecheck` clean
-  (4 packages); `bun run test` = 90 pass (50 engine + 19 data-pipeline + 21 web);
-  `bun run e2e` = 3 pass.
-- **For Stage 5 (persistence/sync)**: `doc.live` (hp/conditions/activeBuffs/
-  resources) is fully serializable and self-contained — `ActiveBuff` snapshots
-  its own `changes`, so a synced doc needs no RefData to recompute. No schema
-  shape change beyond typing `live.activeBuffs: ActiveBuff[]`. Autosave still
-  goes to local Dexie (version bump deferred to Stage 5, as noted there).
-
----
-
-## Stage 5: Persistence + cross-device sync (Level 1)
-
-**Goal**: Save/load documents to Cloudflare, account-scoped, so a user can build on one device and play on another. Online-first. (See DESIGN.md §2.1.)
-
-**Success Criteria**:
-- **Lightweight identity**: GitHub OAuth or email magic-link; sessions in KV/D1. Documents are owned (`ownerId`).
-- Cloudflare Worker stores/retrieves character-doc blobs (D1 or KV) behind a thin API; server stays dumb (no game logic).
-- Client syncs IndexedDB ↔ server: pull latest on open, push on change.
-- **Optimistic concurrency**: doc carries `version`/`updatedAt`; a save based on a stale `version` is rejected; client prompts to reload. (No merge engine — single-user multi-device.)
-- Deployed on Pages + Workers.
-
-**Tests**: round-trip a document; a save against a stale `version` is rejected (409) and the client surfaces the reload prompt; a fresh device pulls the latest doc for the owner.
-
+**Goal**: vendored `domain-spell-lists.json` keyed by domain tag → spell level → ids.
+**Success Criteria**: `refData.domainSpellLists["Air"]` is a populated SpellList; spells
+that are domain-only (not on any sliced class list) are now in `refData.spells`.
+**Tests**: refdata test asserting Air domain has a known-level-1 entry; counts.
 **Status**: Not Started
 
----
+- Widen spell filter (`normalize.ts:116`) to also keep spells with non-empty
+  `learnedAt.domain` / `learnedAt.subdomain`.
+- Invert per-domain lists into `domainSpellLists: Record<string, SpellList>`.
+- Add `domainSpellLists` to `RefData` schema (refdata.ts).
+- Emit `domain-spell-lists.json` (emit.ts); load in data-pipeline `index.ts` + web `loader.ts`.
+- Bump `SCHEMA_VERSION` 3→4; add counts; regenerate vendored JSON.
 
-## Stage 6: Vendor base armor & weapons into RefData
+## Stage 2: Schema + pure transitions
 
-**Goal**: Stop forcing users to type AC/maxDex/ACP and damage-dice/crit by hand for the common
-cases. Vendor the upstream **mundane** armor (64) and weapon (~310) entries from the Foundry
-`armors-and-shields` and `weapons-and-ammo` packs into normalized JSON, exposed as `RefData.armors`
-and `RefData.weapons`. Named magical gear (Frost Brand, Elven Chain, +N items) is **out of scope**
-— generic "+N weapon" is achieved by selecting a mundane base and setting an enhancement bonus
-(Stages 7/8); named unique items remain a future enhancement.
+**Goal**: store the cleric's chosen domains and a domain-slot kind on prepared spells.
+**Success Criteria**: `build.clericDomains` round-trips; `PreparedSpell.kind` defaults "normal";
+`migrateDoc` upgrades schemaVersion 1→2; pure transitions wired + unit-tested.
+**Tests**: doc-transition tests (setClericDomains, prepareDomainSpell, unprepare by kind).
+**Status**: Not Started
 
-**Design: denormalize on select** — the engine reads armor/weapon physical stats directly off the
-`CharacterDoc` (`computeAc` reads `inst.armor.*`; `computeWeaponAttacks` reads `w.*`). Selecting a
-ref entry at add-time snapshots its fields onto the doc (the same pattern `ActiveBuff` uses for
-`changes` and `WornArmor` uses for AC). The engine therefore needs **no change** across Stages 6-8;
-ref-id fields added in 7/8 are display + future re-sync only.
+- `character.ts`: add `build.clericDomains?: string[]`; add `kind?: "normal"|"domain"` to
+  `PreparedSpell`; bump doc `schemaVersion` literal in `createEmptyDoc` 1→2; `migrateDoc`.
+- `doc.ts`: `setClericDomains`, `prepareDomainSpell`/`unprepareDomainSpell`, `removePreparedAt`
+  preserves `kind`; `clearPrepared` keeps kind-agnostic.
+- `preparedSpells.ts`: `domainSpellLevelMap(refData, domainTags)` helper.
 
-**Slice / filter**:
-- Armor: `type==="equipment" && subType∈{"armor","shield"} && !enh && !aura && !masterwork`
-  (drops the `armor-unique/` named magical suits). 64 entries (heavy 16, light 19, medium 14,
-  shields 15).
-- Weapons: `type==="weapon" && subType∈{"simple","martial","exotic"} && !enh && !aura &&
-  !masterwork` (drops the `magic-weapons/` named magical weapons, ammunition, siege, firearms
-  special ammo). ~310 entries.
+## Stage 3: Builder UI — domain picker + domain spells surfaced
 
-**Success Criteria**:
-- `packages/schema` defines `ArmorRef` and `WeaponRef`; extends `RefData` with `armors` and
-  `weapons`; bumps `RefDataMeta.schemaVersion` (1 → 2).
-- `packages/data-pipeline` reads the two new packs, applies new `transform/armor.ts` and
-  `transform/weapons.ts`, and emits `data/armors.json` + `data/weapons.json`.
-- `loadRefData()` (both Node and browser loaders) reassemble the new collections.
-- `meta.counts` records `armors` and `weapons`.
-- Repo gates green: `bun run typecheck` + `bun run test` clean across all 4 packages.
+**Goal**: user picks up to two domains; cleric-only domain spells appear in the builder.
+**Success Criteria**: selecting "Air" domain shows Air spells; choice persists.
+**Tests**: e2e or component-level render snapshot.
+**Status**: Not Started
 
-**Tests**: snapshot tests on a representative entry per category (Full Plate, Buckler, Longsword,
-Composite Longbow); refdata fact tests ("Longsword is martial, crit 19/×2, damage 1d8"). Existing
-`refdata.test.ts` schemaVersion assertion updated to 2.
+- New `DomainPicker.tsx` (renders when cleric is selected; free-choice, soft-warning only).
+- Wire into `ClassesSection.tsx` (or `IdentitySection` near deity).
+- `SpellsSection.tsx`: surface domain spells for the chosen domains (read-only or
+  auto-add to known — read-only preferred; prepared-from-domain handled in tracker).
+- Refresh cleric `CasterModel` `learnGuidance`/`blurb` to drop "domain not modelled" caveat.
 
-**Status**: Complete
+## Stage 4: Tracker UI — domain slot + channel dice/DC
 
-**Field mapping** (Foundry YAML → RefData):
+**Goal**: prepared-spells panel shows one domain slot per accessible spell level; channel
+pool shows dice (Xd6) + save DC.
+**Success Criteria**: cleric can prepare a domain-only spell in the domain slot; ResourcesPanel
+renders "Channel Energy · 4d6 (DC 15)".
+**Tests**: engine `channelEnergyDetail` helper test; tracker render check.
+**Status**: Not Started
 
-`ArmorRef` (extends `RefEntity`):
-- `slot` ← `subType` (`"armor"|"shield"`)
-- `ac` ← `system.armor.value`
-- `maxDex` ← `system.armor.dex`
-- `acp` ← `system.armor.acp` (kept positive; denormalizer negates when storing on `WornArmor`)
-- `weightClass` ← `system.equipmentSubtype` (`lightArmor→1`, `mediumArmor→2`, `heavyArmor→3`,
-  otherwise omit/0 — shields track via `slot` not weightClass)
-- `baseTypes` ← `system.baseTypes`
-- `price` ← `system.price`
+- Engine: `channelEnergyDetail(clericLevel, chaMod)` clean-room helper in `tables.ts`;
+  `resources.ts` sets `pool.detail` when feature.tag === "channelEnergy"; `DerivedResourcePool.detail?`.
+- `ResourcesPanel.tsx`: render `pool.detail` as the sub-line.
+- `PreparedSpellsPanel.tsx` PreparedView: per-level domain slot (1 each accessible level 1-9);
+  domain prepare-from picker sourced from `domainSpellLists[chosen]`; bucketing by kind.
 
-`WeaponRef` (extends `RefEntity`):
-- `damageDice` ← regex-parsed from the first `sizeRoll(N,F,…)` or `NdM` in
-  `system.actions[*].damage.parts[0].formula` (e.g. "1d8"); omitted if unparseable (rare).
-- `critRange` ← `actions[*].ability.critRange` (default 20)
-- `critMult` ← `actions[*].ability.critMult` (default 2)
-- `group` ← `slug(baseTypes[0])` (the per-weapon type Weapon Focus routes on, e.g. "longsword")
-- `category` ← action's range units / actionType (`mwak`+`melee`→`"melee"`; `rwak`+`ft`→`"ranged"`)
-- `attackAbility` ← `"str"` (mwak) / `"dex"` (rwak)
-- `damageAbility` ← `"str"` if `actions[*].ability.damage==="str"` else `"none"`
-- `damageMultiplier` ← `weaponSubtype==="2h" ? 1.5 : 1`
-- `proficiency` ← `subType` (`simple|martial|exotic`)
-- `weaponGroups` ← `system.weaponGroups` (Foundry tags like `bladesHeavy`)
-- `weaponSubtype` ← `system.weaponSubtype` (`1h|2h|ranged`)
-- `baseTypes`, `price`, `weight` ← as available
+## Notes / deferred
 
----
-
-## Stage 7: Armor picker (GearSection)
-
-**Goal**: Replace/augment the manual "Add worn armor/shield" form with a search picker, keeping
-the manual form as the "Custom" fallback.
-
-**Success Criteria**:
-- Schema: add `armorId?: string` to `ItemInstance` (separate from `itemId` which keys
-  `RefData.items` — keeps the two ref tables unambiguous).
-- `model/doc.ts`: `addWornArmorFromRef(doc, armorRef)` snapshots `armorRef → WornArmor` (negating
-  `acp`) + sets `name`/`armorId`, appended to `build.gear`.
-- `GearSection`: a search row mirroring the magic-item picker, scoped to `refData.armors`. A small
-  "Custom" toggle reveals the existing manual form.
-- Engine: unchanged.
-
-**Tests**: `addWornArmorFromRef` reducer unit test (input `ArmorRef` → expected `WornArmor` + `armorId`).
-`bun run typecheck` + `bun run test` green.
-
-**Status**: Complete
-
-**Notes / caveats (as built)**:
-- `addWornArmorFromRef(doc, armor)` snapshots `armor.ac`, `armor.maxDex`, `armor.weightClass` (→ `type`), and `armor.acp` **negated** (the schema stores ACP as a non-positive number; the ref keeps the source's positive magnitude). Shields omit `type` entirely — the engine derives `armor.type` from body armor only. `name` and `armorId` are both recorded; the gear-list display falls back to `refData.armors[armorId]?.name` if `inst.name` is ever cleared.
-- GearSection now opens a single "+ Add worn armor / shield" card with two modes: **Select** (search `refData.armors`, AC/max-Dex/ACP preview) and **Custom** (the original manual form). "Custom entry…" link at the bottom of the Select list switches to manual; "← Back to list" returns. The custom-entry `Add` still requires a non-zero AC for body armor (matches the pre-existing guard).
-- Engine: unchanged. `computeAc` reads `inst.armor.*` directly as before.
-
----
-
-## Stage 8: Weapon picker (WeaponsSection)
-
-**Goal**: Add a search picker to `WeaponsSection` with an enhancement bonus selector and a "Custom"
-fallback to the existing manual form.
-
-**Success Criteria**:
-- Schema: add `weaponId?: string` to `WeaponInstance`.
-- `model/doc.ts`: `addWeaponFromRef(doc, weaponRef, enhancement?)` denormalizes `WeaponRef` →
-  `WeaponInstance` (overlaid with the user-chosen enhancement, name like "Longsword +1" when
-  nonzero) + sets `weaponId`.
-- `WeaponsSection` (already receives `refData` via props): picker UI + `+0…+5` enhancement
-  selector; "Custom" toggle reveals the existing manual form.
-- Engine: unchanged.
-
-**Tests**: `addWeaponFromRef` reducer unit test (with and without a nonzero enhancement).
-`bun run typecheck` + `bun run test` green. Optional e2e for "search longsword, set +1, assert
-derived attack/damage/crit".
-
-**Status**: Complete
-
-**Notes / caveats (as built)**:
-- `addWeaponFromRef(doc, weaponRef, enhancement = 0)` snapshots the ref's fields onto a
-  `WeaponInstance` (overlaying the enhancement: name suffix ` +N`, `enhancement` field set only
-  when N > 0). Default-valued optionals (`critRange===20`, `critMult===2`,
-  `damageMultiplier===1`) are omitted for doc minimalism — the engine falls back to its own
-  defaults. Enhancement is clamped to `[0, 10]`.
-- `WeaponsSection` now destructures `refData` (it was already passed in via `BuilderProps` but
-  unused). The "+ Add weapon" button opens a card with two modes: **Select** (search
-  `refData.weapons`, an `Enh.` selector +0..+5 that applies to the next Add, a preview row per
-  weapon showing proficiency / category / damage dice / crit / group) and **Custom** (the
-  existing `WeaponForm`, linked via "+ Custom entry…").
-- The enhancement selector is *picker-global* (set it once, click Add on each weapon you want
-  at that bonus). Clicking "Add" closes the picker; reopening it resets enhancement to +0.
-- Engine: unchanged. `computeWeaponAttacks` reads the snapshot fields directly as before;
-  feat routing still works because `addWeaponFromRef` populates `w.group` from the ref's
-  slugified `baseTypes[0]` (verified by a featChoiceOptions integration test).
-
----
-
-## Stage 9: Armor enhancement selector + material support
-
-**Goal**: Close the armor-enhancement gap (weapons have an Enh. selector, armor doesn't) and add
-special-material support (mithral, adamantine, etc.) for both armor and weapons. Mithral modifies
-base stats at pick-time (weight class shift, maxDex +2, ACP −3, weight ×0.5); other materials are
-display-only for now (DR/hardness not modeled by the engine).
-
-**Design**: denormalize-on-select continues — material modifiers are applied to the base ref's
-stats at pick-time, snapshotting the final values onto the doc. The engine reads the final values
-as before. The `material` tag is stored on the doc for display + future re-sync.
-
-**Success Criteria**:
-- Schema: `enhancement?: number` on `WornArmor`; `material?: string` on both `WornArmor` and
-  `WeaponInstance`.
-- Engine: `computeAc` pushes armor/shield enhancement as a separate `{type: "enh"}` candidate
-  alongside the base `{type: "untyped"}` candidate — provenance shows the breakdown, stacking is
-  RAW-correct (armor base + shield base stack; two enh sources to the same slot don't).
-- Model: `addWornArmorFromRef(doc, armor, enhancement, material)` applies material modifiers
-  (mithral: weightClass −1 min 1, maxDex +2, acp −3, weight ×0.5) and snapshots final stats.
-  `addWeaponFromRef` gains a `material` parameter (display-only for now).
-- UI: both pickers get a Material selector alongside the existing Enhancement selector.
-- Curated material table in `apps/web/src/model/materials.ts` (clean-room from PF1 RAW, not
-  Foundry code).
-
-**Tests**: mithral Full Plate modifier test (heavy→medium, maxDex 1→3, acp 6→3); armor
-enhancement AC test (base + enh as separate provenance components); engine stacking test
-(armor enh + shield enh both apply).
-
-**Status**: Complete
-
-**Notes / caveats (as built)**:
-- Schema: `enhancement?: number` + `material?: string` on `WornArmor`; `material?: string` on
-  `WeaponInstance`. Armor enhancement is stored separately from base `ac` (not folded in) so the
-  engine can push it as a separate `{type: "enh"}` candidate for clean provenance.
-- Engine: `computeAc` pushes armor/shield enhancement as `{category, type: "enh", value}` alongside
-  the base `{category, type: "untyped", value}`. The `(category|type)` grouping means armor base +
-  armor enhancement stack (different types), but two enhancement sources to the same slot don't
-  (same `armor|enh` group → highest wins, provenance strikes through the loser). Armor enhancement
-  and shield enhancement both apply (different categories → different groups). Verified by 3 new
-  engine tests.
-- Materials: curated table in `apps/web/src/model/materials.ts` (clean-room from PF1 RAW). Mithral
-  applies: `weightClass - 1` (min 1), `maxDex + 2`, `acp - 3` (reduces penalty magnitude). Other
-  materials (adamantine, darkwood, silver, cold iron) are display-only for now (DR / hardness bypass
-  not modeled by the engine).
-- `addWornArmorFromRef` and `addWeaponFromRef` both accept `enhancement` + `material` params.
-  Material modifiers are applied to the `ArmorRef` before denormalization (while ACP is still a
-  positive magnitude). Name gets a material prefix ("Mithral Full Plate") and enhancement suffix
-  ("+3") — combined: "Mithral Full Plate +3".
-
----
-
-## Stage 10: Magical weapon & armor abilities (curated)
-
-**Goal**: Support common magical abilities (flaming, keen, frost, etc.) on weapons and armor. The
-upstream data carries only the *names* (roll-tables in `ultimate-equipment/`) and ad-hoc per-item
-effects — no portable mechanics. A curated table in ledgermain maps each ability to its mechanical
-effect (if any) + display note.
-
-**Design**: abilities are stored as `abilities?: string[]` on `WeaponInstance`/`WornArmor`. At
-pick-time, mechanical effects are applied (keen doubles crit range; everything else is display-only
-since the engine doesn't roll dice). Ability names + notes surface in the weapon/armor meta line.
-
-**Success Criteria**:
-- Schema: `abilities?: string[]` on `WeaponInstance` and `WornArmor`.
-- Curated table in `apps/web/src/model/abilities.ts` with ~10 weapon abilities (keen, flaming,
-  frost, shock, ghost touch, holy, unholy, vicious, speed, defending) and ~5 armor abilities
-  (light/medium/heavy fortification, ghost touch, bashing). Each entry: `{ id, name, slot,
-  bonusEquivalent, note?, applyCritRange? }`.
-- Model: `addWeaponFromRef` / `addWornArmorFromRef` accept `abilities[]`; keen applies
-  `critRange = max(1, 2 * critRange - 21)` at pick-time.
-- UI: multi-select ability chips in both pickers; selected abilities surface in the weapon/armor
-  meta line. Enhancement-equivalent bonus shown for reference (pricing only — no mechanical effect).
-- Engine: unchanged (keen modifies the stored critRange before the engine sees it).
-
-**Tests**: keen longsword (critRange 19→17); flaming weapon display note; armor fortification
-display.
-
-**Status**: Complete
-
-**Notes / caveats (as built)**:
-- Schema: `abilities?: string[]` on both `WeaponInstance` and `WornArmor`. Ability ids reference the
-  curated table in `apps/web/src/model/abilities.ts` (e.g. `"keen"`, `"flaming"`,
-  `"light-fortification"`).
-- Curated table: 13 weapon abilities (keen, flaming, frost, shock, flaming/icy/shocking burst,
-  holy, unholy, ghost touch, vicious, speed, defending) + 5 armor abilities (light/medium/heavy
-  fortification, ghost touch, bashing). Each entry carries `{ id, name, slot, bonusEquivalent,
-  note?, applyToWeaponRef? }`. Clean-room from PF1 RAW — not Foundry code (the upstream data has
-  only roll-table names, no portable mechanics).
-- **Keen** is the only ability with a mechanical effect: `critRange = max(1, 2 * critRange - 21)`
-  applied to the `WeaponRef` before denormalization. A longsword (critRange 19) with keen yields
-  critRange 17 (threat 17–20). All other abilities are display-only (the engine doesn't roll dice,
-  so "+1d6 fire" from Flaming surfaces as a note in the weapon meta line, not a computed value).
-- `addWeaponFromRef` and `addWornArmorFromRef` both accept `abilities?: string[]` as the final
-  parameter. Abilities are stored on the doc for display + future re-sync. The weapon/armor meta
-  line shows each ability's name + note (e.g. "Flaming (+1d6 fire)").
-- UI: both pickers get a row of toggle-chip buttons below the search/selectors row. Active chips
-  are highlighted. Clicking toggles the ability in/out of the selection. The enhancement-equivalent
-  bonus is shown as a tooltip for pricing reference (no mechanical effect).
-- Engine: unchanged. Keen modifies the stored `critRange` before the engine sees it; everything else
-  is display-only.
-
----
-
-## Stage 11: Archetype data slice (core 5 classes)
-
-**Goal**: Add archetype selection to the builder, sourced from a third-party module. The upstream
-Foundry PF1 system (pinned at SHA `10b87c07`, v11.11) ships **no archetype data** — confirmed across
-`packs/`, `module/`, `lang/`, `module/models/`, and `module/migration/`; the only mentions are
-prose in 32 description strings (e.g. "any archetype class feature that replaces trap sense" in
-`class-abilities/danger-sense...yaml:32`). Coverage here mirrors the existing slice (fighter,
-barbarian, wizard, cleric, sorcerer); swap mechanics are display + slot-map only in v1, with prose
-soft-warnings for ambiguous cases.
-
-**Source**: `bjschafer/pf1e-archetypes` (GitHub, pinned at commit `815ef073685faf215be442cc5035c8198a89432b`)
-— a clean fork of `baileymh/pf1e-archetypes` (module GPL-3.0 code, OGL/CUP content; ~1,241
-archetypes + ~4,524 archetype class features across all classes). The README notes these items
-intentionally omit HD/HP/saves and `Changes`/attacks — they're a text + feature-list scaffold, which
-fits our model (the engine computes; data declares swaps). The repo ships three representations;
-ingest the CSV (and optionally the XML for cross-ref), never the `.db` artifacts.
-
-**Why a fork, not upstream directly**: every one of upstream's 44 archetype CSVs and 45 XML files
-(under `source files/Archetypes/` and `source files/XML/`) carries a literal, unresolved git
-merge-conflict block (`<<<<<<< HEAD` / `=======` / `>>>>>>> <hash>`) baked into the committed
-content, on both `main` and the only release tag (`0.2.7`). Verified across 6 spot-checked classes
-and again programmatically across all 89 affected files: the two halves of every conflict are
-byte-for-byte identical — a botched/duplicated export, not a real content fork. The fork strips the
-3 marker lines and the duplicate half per file (commit message has the full verification + file
-list); 2 files (`Prestige_Abilities.csv`, `SpecialAbilities.csv`) had no conflict markers and were
-left untouched. (`SpecialAbilities.csv` separately has an unrelated spreadsheet-paste artifact
-around line 4756 — not used by this stage, flagged for whoever touches it later.)
-
-**Column layout is not uniform across class files** — e.g. `Barbarian.csv` and `Summoner.csv` omit
-the `Base Feature` column entirely and order columns differently than `Fighter.csv`/`Wizard.csv`/
-`Cleric.csv`/`Sorcerer.csv`. The transform must parse by header name, never fixed column index.
-
-**Description text has at least one verified content error** (Two-Handed Fighter's "Shattering
-Strike" row contains Bravery's description, copy-pasted): treat `Description` as best-effort display
-prose, not an authoritative mechanical source — consistent with the project's existing clean-room
-posture (mechanics are written from the published rules directly; this dataset tells us *which*
-features exist and at what level, not how to compute them).
-
-**Design** — same clean-room posture as the rest of the pipeline (DESIGN.md §6):
-- **Ingest CSV/XML only** (`source files/Archetypes/<Class>.csv`, `source files/XML/<Class>.xml`);
-  never import the module's `.db` files, `module.json`, or `packs/` into our tree.
-- Emit our own normalized JSON (`archetypes.json`, `archetype-features.json`) carrying attribution
-  (`paizoSourceId`, `contributorModule: "baileymh/pf1e-archetypes"`).
-- **Swap mechanics are hybrid** (matches AGENTS.md prereq stance): structured signal =
-  `(classTag, level)` cross-ref against our existing `classes.json links.supplements[level].uuid`
-  to populate `pairedBaseFeatureUuid`; anything ambiguous stays as a prose soft-warning (the
-  `Description` text is preserved and rendered as a warning in the UI).
-- **No numeric effects in v1**: per the source's own caveat, archetype features carry no
-  `Changes`/attacks — the engine displays swapped slots and prose; per-feature mechanical bonuses
-  are deferred to a later stage.
-- **Ignore the CSV `Base Feature` column** (`<id-XXXXX` AON/FG-style refs, not Foundry UUIDs). Use
-  our `links.supplements` level map as the source of truth instead.
-- **Disable auto-pairing for `Bonus Feat` slots** (and any base-class level carrying multiple
-  features, e.g. fighter bonus feats at every even level): emit `pairedBaseFeatureUuid: undefined`
-  for those and treat as prose warning — archetypes rarely replace bonus feats anyway, and
-  level-only cross-ref is ambiguous when the slot has multiple occupants.
-
-**Success Criteria**:
-- `packages/schema` defines `Archetype` and `ArchetypeFeature`; extends `RefData` with
-  `archetypes` and `archetypeFeatures`; bumps `RefDataMeta.schemaVersion` (2 → 3).
-- `packages/data-pipeline` adds a second pinned source (`ARCHETYPE_REPO` = `bjschafer/pf1e-archetypes`,
-  `ARCHETYPE_SHA` = `815ef073685faf215be442cc5035c8198a89432b`, in `src/config.ts`); `data:fetch`
-  fetches both clones; new `transform/archetypes.ts` parses the CSV **by header name** (column order
-  and presence vary by class file — see Source notes above), reads the 5 slice classes, cross-refs
-  `classes.json`, emits `data/archetypes.json` + `data/archetype-features.json`.
-- Both `loadRefData()` paths (Node `index.ts`, browser `apps/web/src/refdata/loader.ts`) reassemble
-  the new collections; `scripts/copy-refdata.ts` ships the new files into `public/data/`.
-- `CharacterDoc.build.archetypes: string[]` (IDs); `DerivedSheet.activeArchetypes` carries the
-  resolved display + swap-map.
-- Builder has an archetype picker per class; tracker renders swapped slots with struck-through base
-  features (reuse the `applied`-flag strike-through pattern from `stacking.ts`).
-- Repo gates green: `bun run typecheck` + `bun run test`.
-
-**Tests**:
-- Data-pipeline snapshot tests: fighter `Shielded Fighter` swaps armor-training slot at level 3 via
-  UUID cross-ref (paired); `Aldori Defender` (prose-only "replaces") carries
-  `pairedBaseFeatureUuid: undefined` + retained prose; refdata fact test "Dragonheir Scion is a
-  fighter archetype".
-- Engine hand-fixture (the pattern in `packages/engine/test/`): a doc with
-  `build.archetypes: ["fighter:shielded-fighter"]` yields
-  `activeArchetypes[0].swappedSlots[3] === <armor-training-1 uuid>` and the struck-through base
-  feature marked `applied: false`.
-- Web model test (`apps/web/src/model/archetypes.test.ts`): selection → swaps → display list;
-  prose-warning fallback for the no-match case.
-- Existing `refdata.test.ts` schemaVersion assertion updated to 3.
-
-**Field mapping** (`bjschafer/pf1e-archetypes` CSV → RefData):
-
-`Archetype` (extends `RefEntity`):
-- `id` ← slug(`Combined`) — e.g. `"fighter:shielded-fighter"`
-- `classTag` ← slug(`Class`) — must match one of our `classes.json` `tag` values
-- `name` ← `Archetype`
-- `tags` ← parsed `Tags` JSON-array-of-arrays (`[[Class],[Archetype]]`)
-- `sourceIds` ← parsed from `Description` Paizo product refs (best-effort; same regex as
-  feats/`sourceIds`)
-- `contributorModule` ← `"baileymh/pf1e-archetypes"`
-
-`ArchetypeFeature` (extends `RefEntity`):
-- `id` ← `${archetypeId}:${slug(Class Ability)}:${Level}` — stable across re-emits
-- `archetypeId` ← parent `Archetype.id`
-- `classTag` ← inherited
-- `level` ← `Level`
-- `name` ← `Class Ability`
-- `description` ← `Description` (HTML; preserved verbatim — contains the "This ability replaces
-  X" prose the UI surfaces as a soft warning)
-- `pairedBaseFeatureUuid` ← `classes.json links.supplements[level].uuid` when that slot is
-  unambiguous (single feature, not a Bonus Feat); `undefined` otherwise
-- `attribution` ← `{ sourceIds, contributorModule }`
-
-**Sub-stages**:
-- 11.1 Schema (`Archetype`, `ArchetypeFeature`, `RefData` extension, `SCHEMA_VERSION=3`) +
-  dual-pinned config + fetch script (no data emitted yet).
-- 11.2 Normalizer transform + committed normalized JSON for the 5 classes (reviewable diff).
-- 11.3 Engine derived layer (`activeArchetypes` + slot-swap display, strike-through via
-  `applied`-flag).
-- 11.4 Web builder picker + tracker display + model tests for the 5 class sheets.
-- 11.5 Docs: update `AGENTS.md` RefData description and `DESIGN.md` data-flow note.
-
-**Risk register**:
-1. **CSV `Base Feature` ref format** is `<id-XXXXX` (AON/FG-style), not Foundry UUIDs. Resolution:
-   ignore that column; use our `classes.json links.supplements[].level → uuid` cross-ref instead.
-   Spot-check level alignment between CSV and `links.supplements` during 11.2.
-2. **Multiple features at one level** (fighter bonus feats every even level) make level-only
-   cross-ref ambiguous. Resolution: don't auto-pair when a base-class level carries multiple
-   features; emit `pairedBaseFeatureUuid: undefined` and treat as a prose warning. Disable
-   auto-pairing for `Bonus Feat` slots entirely.
-3. **Foundry v9 `.db` format drift**: if we ever want to reconcile with the module's emitted items
-   we'd need a shape migration (legacy `permission`/`data` → v11/v12 `ownership`/`system`). Out of
-   v1 scope; noted.
-4. **Licensing**: the module's GPL-3.0 covers packaging, not the OGL/CUP game-content text. Treat
-   as we already treat the vendored Foundry compendium prose — same posture, with attribution.
-5. **Upstream source corruption** (resolved pre-emptively): every archetype CSV/XML in
-   `baileymh/pf1e-archetypes` had a duplicated, unresolved git-conflict block. Resolved by forking to
-   `bjschafer/pf1e-archetypes`, verifying both conflict halves were byte-identical in all 89 affected
-   files, and committing a single clean copy (`815ef07`). If we ever re-sync from upstream, re-run the
-   same verify-then-strip step before diffing — don't assume a future upstream commit fixed it.
-6. **Column layout varies by class file** (`Barbarian.csv`/`Summoner.csv` omit `Base Feature` and use
-   a different column order than `Fighter.csv`/`Wizard.csv`/`Cleric.csv`/`Sorcerer.csv`). Resolution:
-   `transform/archetypes.ts` must look up columns by header name, never by fixed index.
-7. **`Description` text has known copy-paste errors** (verified: Two-Handed Fighter's "Shattering
-   Strike" row carries Bravery's description). Resolution: surface `Description` as display-only
-   prose (with attribution), never as a source for hand-authored mechanical effects — any future
-   numeric effect (post-v1) must be written from the published rules directly, same as
-   `feat-effects.ts`/`tables.ts` already are.
-
-**Status**: In Progress
-
-**Notes / caveats (as built so far)**:
-- **11.1 complete**: `packages/schema` gained `Archetype`/`ArchetypeFeature` (extend `RefEntity`;
-  `id`/`uuid` are synthetic slugs, not real Foundry ids) and `RefData.archetypes` /
-  `archetypeFeatures`. `packages/data-pipeline/src/config.ts` bumped `SCHEMA_VERSION` to 3 and added
-  the dual-pinned `ARCHETYPE_REPO`/`ARCHETYPE_SHA`/`ARCHETYPE_CLONE_DIR`. `cli/fetch.ts` now fetches
-  both pinned sources via a shared `fetchPinned()` helper. `normalize.ts`/`emit.ts`/`index.ts` (Node
-  loader) and `apps/web/src/refdata/loader.ts` (browser loader) all wire the two new collections
-  through as empty `{}` for now — no transform/ingestion yet (that's 11.2). One deviation from the
-  field-mapping draft above: dropped the speculative `sourceIds` (regex-parsed from `Description`)
-  and the nested `attribution` object — there's no existing regex utility to "reuse" (feats get
-  `sources` from a structured Foundry field, not prose-parsing) and the CSV's prose isn't reliable
-  enough to mine citations from. Kept `contributorModule` directly on `Archetype` only (not
-  duplicated onto every feature) for the same attribution purpose. Repo gates green: typecheck (4
-  packages), `bun run test` (149 engine + 34 data-pipeline + 256 web), `bun run data:fetch` +
-  `data:build` regenerate cleanly, `apps/web` build picks up the new (empty) files via
-  `copy-refdata.ts` unchanged.
-- **11.2 complete**: `packages/data-pipeline/src/transform/archetypes.ts` parses the cleaned fork's
-  per-class CSVs (`util/csv.ts`, a thin `csv-parse` wrapper — added as a dependency rather than
-  hand-rolling RFC4180 quoting/embedded-newline handling, which the data genuinely has) by header
-  name, groups rows into `Archetype`/`ArchetypeFeature` entries, and cross-refs `classes.json` for
-  `pairedBaseFeatureUuid` via `pairableBaseFeatureLevels()` (unambiguous = exactly one base-class
-  feature at that level, and it isn't a "Bonus Feat"-named slot). Output for the 5 slice classes:
-  182 archetypes / 805 features (fighter 67, barbarian 40, wizard 31, cleric 33, sorcerer 11 — close
-  to but not exactly the upstream README's per-class counts, which is expected/fine: those are
-  informal doc copy, not a contract, and our extraction is verified internally consistent).
-  Pairing rate varies a lot by class shape: fighter 183/383 and barbarian 63/149 pair cleanly (each
-  level mostly grants one named feature); cleric 0/129 and wizard 0/108 never pair (cleric's entire
-  kit sits at level 1 in our vendored data; wizard's only single-feature level is a Bonus Feat slot,
-  excluded by rule) — both correctly fall back to prose-only display. Verified against the actual
-  rules text (not just the dataset) for Two-Handed Fighter: Shattering Strike→Bravery (L2),
-  Overhand Chop→Armor Training (L3), Weapon Training→Weapon Training (L5), Backswing→Armor Training
-  (Heavy Armor) (L7) all pair correctly; Piledriver/Greater Power Attack/Devastating Blow (L11/15/19)
-  correctly stay unpaired since our vendored fighter data has no grant at those levels. One dropped
-  field from the original draft mapping: no `tags` on `Archetype` (the CSV's `Tags` column is just
-  `[[Class],[Archetype]]` — already fully captured by `classTag` + `name`, so storing it too would be
-  redundant). Repo gates green: typecheck (4 packages), `bun run test` (149 engine + 41 data-pipeline,
-  incl. 2 new snapshots + the Two-Handed Fighter pairing/ambiguity fact tests + 256 web), `data:build`
-  regenerates cleanly, `apps/web` build picks up real archetype JSON via `copy-refdata.ts` unchanged.
-- **Next (11.3)**: engine derived layer (`activeArchetypes` + slot-swap display, strike-through via
-  the `applied`-flag pattern from `stacking.ts`).
-
----
-
-## Deferred (de-risked by the architecture, not v1)
-
-- **Party/GM session** — Durable Object per session; documents already self-contained.
-- **Full offline PWA** — service worker + sync reconciliation; engine already client-side.
-- **Import** — Pathbuilder/Foundry JSON → `CharacterDoc`.
-- **Homebrew authoring** — user entries in the same schema as SRD (the "expert flexibility" door).
-- **Named magical weapons/armor** (Frost Brand, Elven Chain) as selectable presets — Stages 6-8
-  vendor mundane bases only; named unique items have multi-part damage / special properties that
-  don't fit the current `WeaponInstance`/`WornArmor` shapes cleanly. Custom fallback covers them
-  for now.
+- Domain *powers* (the granted abilities from a domain) and subdomains are out of scope —
+  the Foundry `domains/` pack carries prose-only descriptions; surfacing them is display-only
+  future work (same v1 stance as archetypes).
+- Cleric alignment-restricted spells (Chaotic/Evil/Good/Lawful Spells feature) is prose-only;
+  spontaneous-casting cure/inflict alignment choice is also deferred — both are display/UX,
+  not numeric-tracking work.
+- Deity → domain validation is free-choice (no deities pack); matches the project's
+  hybrid-prereqs "soft-warning only" philosophy.

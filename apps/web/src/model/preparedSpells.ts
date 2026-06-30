@@ -25,20 +25,40 @@ export function preparedSpells(doc: CharacterDoc): PreparedSpell[] {
   return doc.live.spells?.prepared ?? [];
 }
 
-/** Append one un-expended prepared instance of `spellId`. */
+/** Append one un-expended prepared instance of `spellId` (normal slot). */
 export function prepareSpell(doc: CharacterDoc, spellId: string): CharacterDoc {
+  // `kind: "normal"` is the default per schema; omit so older docs/tests that
+  // assert the bare shape continue to pass. Domain entries explicitly set it.
   return withPrepared(doc, [...preparedSpells(doc), { spellId, expended: false }]);
 }
 
 /**
- * Remove one prepared instance of `spellId`, preferring an un-expended one so a
- * decrement doesn't silently discard a still-available slot. No-op if none are
- * prepared.
+ * Append one un-expended prepared instance of `spellId` into a domain slot.
+ * Clerics may prepare a domain spell in a domain slot (one per accessible spell
+ * level per chosen domain); the caller is responsible for the capacity check.
  */
-export function unprepareSpell(doc: CharacterDoc, spellId: string): CharacterDoc {
+export function prepareDomainSpell(doc: CharacterDoc, spellId: string): CharacterDoc {
+  return withPrepared(doc, [
+    ...preparedSpells(doc),
+    { spellId, expended: false, kind: "domain" },
+  ]);
+}
+
+/**
+ * Remove one prepared instance of `spellId`, preferring an un-expended one so a
+ * decrement doesn't silently discard a still-available slot. Optional `kind`
+ * restricts the removal to that slot kind (e.g. only a domain slot). No-op if
+ * none are prepared of the matching kind.
+ */
+export function unprepareSpell(
+  doc: CharacterDoc,
+  spellId: string,
+  kind?: "normal" | "domain",
+): CharacterDoc {
   const list = preparedSpells(doc);
-  let idx = list.findIndex((p) => p.spellId === spellId && !p.expended);
-  if (idx < 0) idx = list.findIndex((p) => p.spellId === spellId);
+  const matchesKind = (p: PreparedSpell) => kind === undefined || (p.kind ?? "normal") === kind;
+  let idx = list.findIndex((p) => p.spellId === spellId && !p.expended && matchesKind(p));
+  if (idx < 0) idx = list.findIndex((p) => p.spellId === spellId && matchesKind(p));
   if (idx < 0) return doc;
   return withPrepared(doc, list.filter((_, i) => i !== idx));
 }
@@ -89,6 +109,33 @@ export function spellLevelMap(refData: RefData, casterTag: string): Map<string, 
   if (!list) return map;
   for (const [lvl, ids] of Object.entries(list)) {
     for (const id of ids) map.set(id, Number(lvl));
+  }
+  return map;
+}
+
+/**
+ * spellId -> spell level for the given domain tags, inverted from
+ * `refData.domainSpellLists`. Used to bucket domain-slot prepared spells by
+ * level and to validate that a spell prepared in a domain slot belongs to one
+ * of the cleric's chosen domains. Empty if none of `domainTags` are vendored.
+ * When a spell appears in more than one chosen domain at differing levels,
+ * the lowest level wins (rare; canonical domains agree on level-by-level).
+ */
+export function domainSpellLevelMap(
+  refData: RefData,
+  domainTags: readonly string[],
+): Map<string, number> {
+  const map = new Map<string, number>();
+  for (const tag of domainTags) {
+    const list = refData.domainSpellLists[tag];
+    if (!list) continue;
+    for (const [lvl, ids] of Object.entries(list)) {
+      const n = Number(lvl);
+      for (const id of ids) {
+        const existing = map.get(id);
+        if (existing === undefined || n < existing) map.set(id, n);
+      }
+    }
   }
   return map;
 }

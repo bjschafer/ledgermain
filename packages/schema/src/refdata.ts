@@ -28,6 +28,13 @@ export interface RefData {
   items: Record<string, Item>;
   /** Per-class spell lists, keyed by class tag → spell level → spell ids. */
   spellLists: Record<string, SpellList>;
+  /**
+   * Per-domain spell lists, keyed by domain tag (e.g. "Air", "Fire") → spell
+   * level → spell ids. Inverted from `Spell.learnedAt.domain`. A cleric's two
+   * chosen domains each grant one bonus prepared slot per accessible spell
+   * level, drawable from this list. Empty for non-cleric slices.
+   */
+  domainSpellLists: Record<string, SpellList>;
   /** Mundane base armor/shields (the `armors-and-shields` pack, magic excluded). */
   armors: Record<string, ArmorRef>;
   /** Mundane base weapons (the `weapons-and-ammo` pack, magic + ammo excluded). */

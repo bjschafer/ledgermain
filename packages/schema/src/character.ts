@@ -47,6 +47,14 @@ export interface CharacterDoc {
     /** Feat ids chosen (keys into RefData.feats). */
     feats: string[];
     skillRanks: Record<SkillId, number>;
+    /**
+     * Cleric domain tags chosen at L1 (PF1 grants two; UI is free-choice since
+     * the vendored data carries no deity/domain mapping — matches the project's
+     * hybrid-prereqs "soft warning only" policy). Empty for non-clerics. Each
+     * chosen domain grants one bonus prepared slot per accessible spell level,
+     * drawable from `refData.domainSpellLists[<tag>]`.
+     */
+    clericDomains?: string[];
     /** Archetypes, bonus-feat picks, etc. — typed in Stage 3. */
     classFeatureChoices: unknown[];
     /**
@@ -181,6 +189,15 @@ export interface PreparedSpell {
   spellId: string;
   /** True once this prepared instance has been cast; cleared on rest. */
   expended: boolean;
+  /**
+   * Which slot this prepared instance occupies. `"normal"` (default, omitted for
+   * backward-compat with pre-v2 docs) is a standard class slot; `"domain"` is a
+   * cleric's bonus domain slot, sourced from `refData.domainSpellLists[<tag>]`
+   * for one of the cleric's chosen domains. A `"domain"` slot is reserved per
+   * accessible spell level per chosen domain (each is exclusive: a domain spell
+   * may only be prepared in a domain slot and vice versa).
+   */
+  kind?: "normal" | "domain";
 }
 
 /**
