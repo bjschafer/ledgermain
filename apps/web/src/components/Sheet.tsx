@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { ABILITY_IDS } from "../model/doc.js";
@@ -34,6 +36,12 @@ export function Sheet({
 	const rollableSkills = Object.values(sheet.skills)
 		.filter((s) => s.usable)
 		.sort((a, b) => skillName(a.id).localeCompare(skillName(b.id)));
+
+	// Tie the HP box's fill level to remaining HP (drains as damage is taken).
+	const hpMax = sheet.hp.max;
+	const hpEffective = doc.live.hp.current - doc.live.hp.nonlethal;
+	const hpPct = hpMax > 0 ? Math.max(0, Math.min(1, hpEffective / hpMax)) : 1;
+	const hpLow = hpMax > 0 && hpEffective <= Math.floor(hpMax / 4);
 
 	return (
 		<section className="sheet" aria-label="Live character sheet">
@@ -80,7 +88,11 @@ export function Sheet({
 			<div className="rule-gold" />
 
 			{/* HP hero band — current HP as dominant numeral, max in foot */}
-			<div className="stat-hero-band">
+			<div
+				className="stat-hero-band"
+				data-hp-low={hpLow}
+				style={{ "--hp-pct": `${hpPct * 100}%` } as CSSProperties}
+			>
 				<StatSeal
 					label="Hit Points"
 					value={doc.live.hp.current}

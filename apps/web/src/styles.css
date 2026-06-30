@@ -215,7 +215,8 @@ label.field > span {
 
 input[type="text"],
 input[type="number"],
-select {
+select,
+textarea {
 	width: 100%;
 	background: var(--surface-2);
 	border: 1px solid var(--line);
@@ -224,6 +225,25 @@ select {
 	padding: 8px 10px;
 	font-family: var(--body);
 	font-size: 14px;
+}
+
+textarea {
+	min-height: 64px;
+	resize: vertical;
+	line-height: 1.4;
+}
+
+/* Collapsible subsection for the optional "extra" identity fields. */
+.identity-more > summary {
+	cursor: pointer;
+	font-size: 12px;
+	color: var(--gold-dim);
+	font-family: var(--mono);
+	letter-spacing: 0.06em;
+	margin-bottom: 12px;
+}
+.identity-more[open] > summary {
+	margin-bottom: 16px;
 }
 
 input[type="number"] {
@@ -278,6 +298,10 @@ input[type="number"] {
 
 .stepper input[type="number"],
 .stepper .stepper-val {
+	/* content-box so the inline `width: <size>ch` is the visible-digit width;
+	   under the global border-box the 6px padding would clip a narrow field
+	   (e.g. the size=2 round-advance counter). */
+	box-sizing: content-box;
 	min-width: 0;
 	flex: 0 0 auto;
 	text-align: center;
@@ -822,16 +846,42 @@ button:focus-visible,
 /* Full-width hero band housing the HP seal */
 .stat-hero-band {
 	margin-bottom: 16px;
+	/* Default fill level; the inline style on this element overrides it per-HP.
+	   It MUST live here (not on `.seal`) so `.seal` inherits the live value — a
+	   `--hp-pct` declared on `.seal` would shadow the inherited one and pin it. */
+	--hp-pct: 100%;
 }
 
 .stat-hero-band .seal {
-	background: linear-gradient(180deg, rgba(201, 162, 39, 0.10), rgba(201, 162, 39, 0.03)), var(--surface-2);
+	/* HP-driven gauge: the box itself is a horizontal bar — a gold fill recedes
+	   left→right as HP drops (`--hp-pct`, inherited from `.stat-hero-band`), the
+	   spent portion darkened. Turns oxblood when HP is low. */
+	--hp-fill: rgba(201, 162, 39, 0.42);
+	background:
+		linear-gradient(
+			to right,
+			var(--hp-fill) var(--hp-pct),
+			rgba(0, 0, 0, 0.5) var(--hp-pct)
+		),
+		var(--surface-2);
 	border-color: var(--gold-dim);
 	min-height: 100px;
+	transition: background 0.4s ease, border-color 0.4s ease;
+}
+.stat-hero-band[data-hp-low="true"] .seal {
+	--hp-fill: rgba(176, 74, 55, 0.6);
+	border-color: var(--oxblood);
 }
 
 .stat-hero-band .seal .seal-value {
 	font-size: 44px;
+}
+
+/* The HP box sits on a gold fill, so the dim default foot color is unreadable. */
+.stat-hero-band .seal .seal-foot {
+	color: var(--ink);
+	font-size: 11px;
+	opacity: 0.8;
 }
 
 /* A labeled group: legend + hairline + sub-grid */

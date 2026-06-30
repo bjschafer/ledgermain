@@ -39,6 +39,8 @@ export function IdentitySection({ doc, update }: BuilderProps) {
           ))}
         </select>
       </label>
+      <details className="identity-more">
+        <summary>More details</summary>
       <label className="field">
         <span>Deity</span>
         <input
@@ -87,6 +89,7 @@ export function IdentitySection({ doc, update }: BuilderProps) {
           onChange={(e) => update((d) => setAppearance(d, e.target.value))}
         />
       </label>
+      </details>
     </Panel>
   );
 }
