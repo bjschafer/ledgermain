@@ -158,7 +158,7 @@ function computeAc(
 
   cands.push({ category: "base", type: "base", value: 10, source: "Base", applied: true } as AcCand);
 
-  // worn armor / shield + max-dex cap
+// worn armor / shield + max-dex cap
   let maxDexCap: number | undefined;
   let armorTotal = 0;
   let shieldTotal = 0;
@@ -169,11 +169,17 @@ function computeAc(
     if (a.slot === "shield") {
       shieldTotal += a.ac;
       cands.push({ category: "shield", type: "untyped", value: a.ac, source: label });
+      if (a.enhancement) {
+        cands.push({ category: "shield", type: "enh", value: a.enhancement, source: `${label} (enhancement)` });
+      }
     } else {
       armorTotal += a.ac;
       cands.push({ category: "armor", type: "untyped", value: a.ac, source: label });
+      if (a.enhancement) {
+        cands.push({ category: "armor", type: "enh", value: a.enhancement, source: `${label} (enhancement)` });
+      }
       if (a.maxDex !== undefined) {
-        maxDexCap = maxDexCap === undefined ? a.maxDex : Math.min(maxDexCap, a.maxDex);
+        maxDexCap = maxDexCap === undefined ? a.maxDex : Math.min(maxDexCap ?? a.maxDex, a.maxDex);
       }
     }
   }

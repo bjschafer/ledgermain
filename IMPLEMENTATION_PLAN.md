@@ -238,7 +238,7 @@ ref-id fields added in 7/8 are display + future re-sync only.
 Composite Longbow); refdata fact tests ("Longsword is martial, crit 19/×2, damage 1d8"). Existing
 `refdata.test.ts` schemaVersion assertion updated to 2.
 
-**Status**: In Progress
+**Status**: Complete
 
 **Field mapping** (Foundry YAML → RefData):
 
@@ -331,6 +331,87 @@ derived attack/damage/crit".
 - Engine: unchanged. `computeWeaponAttacks` reads the snapshot fields directly as before;
   feat routing still works because `addWeaponFromRef` populates `w.group` from the ref's
   slugified `baseTypes[0]` (verified by a featChoiceOptions integration test).
+
+---
+
+## Stage 9: Armor enhancement selector + material support
+
+**Goal**: Close the armor-enhancement gap (weapons have an Enh. selector, armor doesn't) and add
+special-material support (mithral, adamantine, etc.) for both armor and weapons. Mithral modifies
+base stats at pick-time (weight class shift, maxDex +2, ACP −3, weight ×0.5); other materials are
+display-only for now (DR/hardness not modeled by the engine).
+
+**Design**: denormalize-on-select continues — material modifiers are applied to the base ref's
+stats at pick-time, snapshotting the final values onto the doc. The engine reads the final values
+as before. The `material` tag is stored on the doc for display + future re-sync.
+
+**Success Criteria**:
+- Schema: `enhancement?: number` on `WornArmor`; `material?: string` on both `WornArmor` and
+  `WeaponInstance`.
+- Engine: `computeAc` pushes armor/shield enhancement as a separate `{type: "enh"}` candidate
+  alongside the base `{type: "untyped"}` candidate — provenance shows the breakdown, stacking is
+  RAW-correct (armor base + shield base stack; two enh sources to the same slot don't).
+- Model: `addWornArmorFromRef(doc, armor, enhancement, material)` applies material modifiers
+  (mithral: weightClass −1 min 1, maxDex +2, acp −3, weight ×0.5) and snapshots final stats.
+  `addWeaponFromRef` gains a `material` parameter (display-only for now).
+- UI: both pickers get a Material selector alongside the existing Enhancement selector.
+- Curated material table in `apps/web/src/model/materials.ts` (clean-room from PF1 RAW, not
+  Foundry code).
+
+**Tests**: mithral Full Plate modifier test (heavy→medium, maxDex 1→3, acp 6→3); armor
+enhancement AC test (base + enh as separate provenance components); engine stacking test
+(armor enh + shield enh both apply).
+
+**Status**: Complete
+
+**Notes / caveats (as built)**:
+- Schema: `enhancement?: number` + `material?: string` on `WornArmor`; `material?: string` on
+  `WeaponInstance`. Armor enhancement is stored separately from base `ac` (not folded in) so the
+  engine can push it as a separate `{type: "enh"}` candidate for clean provenance.
+- Engine: `computeAc` pushes armor/shield enhancement as `{category, type: "enh", value}` alongside
+  the base `{category, type: "untyped", value}`. The `(category|type)` grouping means armor base +
+  armor enhancement stack (different types), but two enhancement sources to the same slot don't
+  (same `armor|enh` group → highest wins, provenance strikes through the loser). Armor enhancement
+  and shield enhancement both apply (different categories → different groups). Verified by 3 new
+  engine tests.
+- Materials: curated table in `apps/web/src/model/materials.ts` (clean-room from PF1 RAW). Mithral
+  applies: `weightClass - 1` (min 1), `maxDex + 2`, `acp - 3` (reduces penalty magnitude). Other
+  materials (adamantine, darkwood, silver, cold iron) are display-only for now (DR / hardness bypass
+  not modeled by the engine).
+- `addWornArmorFromRef` and `addWeaponFromRef` both accept `enhancement` + `material` params.
+  Material modifiers are applied to the `ArmorRef` before denormalization (while ACP is still a
+  positive magnitude). Name gets a material prefix ("Mithral Full Plate") and enhancement suffix
+  ("+3") — combined: "Mithral Full Plate +3".
+
+---
+
+## Stage 10: Magical weapon & armor abilities (curated)
+
+**Goal**: Support common magical abilities (flaming, keen, frost, etc.) on weapons and armor. The
+upstream data carries only the *names* (roll-tables in `ultimate-equipment/`) and ad-hoc per-item
+effects — no portable mechanics. A curated table in ledgermain maps each ability to its mechanical
+effect (if any) + display note.
+
+**Design**: abilities are stored as `abilities?: string[]` on `WeaponInstance`/`WornArmor`. At
+pick-time, mechanical effects are applied (keen doubles crit range; everything else is display-only
+since the engine doesn't roll dice). Ability names + notes surface in the weapon/armor meta line.
+
+**Success Criteria**:
+- Schema: `abilities?: string[]` on `WeaponInstance` and `WornArmor`.
+- Curated table in `apps/web/src/model/abilities.ts` with ~10 weapon abilities (keen, flaming,
+  frost, shock, ghost touch, holy, unholy, vicious, speed, defending) and ~5 armor abilities
+  (light/medium/heavy fortification, ghost touch, bashing). Each entry: `{ id, name, slot,
+  bonusEquivalent, note?, applyCritRange? }`.
+- Model: `addWeaponFromRef` / `addWornArmorFromRef` accept `abilities[]`; keen applies
+  `critRange = max(1, 2 * critRange - 21)` at pick-time.
+- UI: multi-select ability chips in both pickers; selected abilities surface in the weapon/armor
+  meta line. Enhancement-equivalent bonus shown for reference (pricing only — no mechanical effect).
+- Engine: unchanged (keen modifies the stored critRange before the engine sees it).
+
+**Tests**: keen longsword (critRange 19→17); flaming weapon display note; armor fortification
+display.
+
+**Status**: Not Started
 
 ---
 

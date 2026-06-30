@@ -285,4 +285,28 @@ describe("addWeaponFromRef()", () => {
 		const opts = featChoiceOptions("weapon", ref, d);
 		expect(opts).toContainEqual({ id: "longsword", name: "longsword" });
 	});
+
+	it("applies a material prefix to the display name (silver +1 longsword)", () => {
+		const d = addWeaponFromRef(doc(), longswordRef, 1, "silver");
+		const w = d.build.weapons![0]!;
+		expect(w.name).toBe("Alchemical Silver Longsword +1");
+		expect(w.material).toBe("silver");
+	});
+
+	it("combines material + enhancement: 'Mithral Greatsword +3'", () => {
+		const d = addWeaponFromRef(doc(), greatswordRef, 3, "mithral");
+		const w = d.build.weapons![0]!;
+		expect(w.name).toBe("Mithral Greatsword +3");
+		expect(w.material).toBe("mithral");
+		// mithral is display-only for weapons (no stat modifiers the engine tracks)
+		expect(w.damageDice).toBe("2d6");
+		expect(w.damageMultiplier).toBe(1.5);
+	});
+
+	it("steel material is the default (no prefix, no material field)", () => {
+		const d = addWeaponFromRef(doc(), longswordRef, 0, "steel");
+		const w = d.build.weapons![0]!;
+		expect(w.name).toBe("Longsword");
+		expect(w.material).toBeUndefined();
+	});
 });

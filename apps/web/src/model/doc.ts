@@ -16,6 +16,8 @@ import type {
 	WornArmor,
 } from "@pf1/schema";
 
+import { applyMaterialToArmor, MATERIALS } from "./materials.js";
+
 const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
 
 /** A fresh, valid level-0 document with default scores and no choices made. */
@@ -260,24 +262,39 @@ export function addWornArmor(
  * Append a worn armor or shield selected from `RefData.armors`. Snapshots the
  * physical stats onto a new `WornArmor` (negating ACP, since the schema stores
  * penalties as negative and the ref keeps the source magnitude), and records
- * the `armorId` for display + future re-sync. No deduplication.
+ * the `armorId` for display + future re-sync. Optional `enhancement` and
+ * `material` apply modifiers at pick-time (mithral: weight class shift, maxDex
+ * +2, ACP −3). No deduplication.
  */
 export function addWornArmorFromRef(
 	doc: CharacterDoc,
 	armor: ArmorRef,
+	enhancement: number = 0,
+	material?: string,
 ): CharacterDoc {
+	const ref = applyMaterialToArmor(armor, material);
+	const enh = clampInt(enhancement, 0, 10);
+	const matName = material && material !== "steel" ? MATERIALS[material]?.name ?? null : null;
+	const name = [
+		matName,
+		armor.name,
+		...(enh > 0 ? [`+${enh}`] : []),
+	].filter(Boolean).join(" ");
+
 	const worn: WornArmor = {
-		slot: armor.slot,
-		ac: armor.ac,
-		...(armor.maxDex != null ? { maxDex: armor.maxDex } : {}),
-		...(armor.acp ? { acp: -armor.acp } : {}),
-		...(armor.weightClass ? { type: armor.weightClass } : {}),
+		slot: ref.slot,
+		ac: ref.ac,
+		...(enh > 0 ? { enhancement: enh } : {}),
+		...(material && material !== "steel" ? { material } : {}),
+		...(ref.maxDex != null ? { maxDex: ref.maxDex } : {}),
+		...(ref.acp ? { acp: -ref.acp } : {}),
+		...(ref.weightClass ? { type: ref.weightClass } : {}),
 	};
 	const inst: ItemInstance = {
 		equipped: true,
 		armor: worn,
 		armorId: armor.id,
-		name: armor.name,
+		name,
 	};
 	const gear = [...doc.build.gear, inst];
 	return { ...doc, build: { ...doc.build, gear } };
@@ -555,25 +572,34 @@ export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterD
 
 /**
  * Append a weapon selected from `RefData.weapons`, overlaying a user-chosen
- * enhancement bonus. Snapshots the ref's physical stats onto a
- * `WeaponInstance` (the engine reads those fields directly; `weaponId` is a
- * display + re-sync pointer only). The display name gets a " +N" suffix when
- * `enhancement` is positive. Zero-value optionals (matching engine defaults)
- * are omitted so the doc stays minimal.
+ * enhancement bonus and optional special material. Snapshots the ref's physical
+ * stats onto a `WeaponInstance` (the engine reads those fields directly;
+ * `weaponId` is a display + re-sync pointer only). The display name gets a
+ * material prefix ("Silver Longsword") and " +N" suffix when enhancement is
+ * positive. Zero-value optionals (matching engine defaults) are omitted so the
+ * doc stays minimal. Material is display-only for weapons (no stat modifiers
+ * the engine tracks).
  */
 export function addWeaponFromRef(
 	doc: CharacterDoc,
 	weapon: WeaponRef,
 	enhancement: number = 0,
+	material?: string,
 ): CharacterDoc {
 	const enh = clampInt(enhancement, 0, 10);
-	const name = enh > 0 ? `${weapon.name} +${enh}` : weapon.name;
+	const matName = material && material !== "steel" ? MATERIALS[material]?.name ?? null : null;
+	const name = [
+		matName,
+		weapon.name,
+		...(enh > 0 ? [`+${enh}`] : []),
+	].filter(Boolean).join(" ");
 	const instance: WeaponInstance = {
 		name,
 		attackAbility: weapon.attackAbility,
 		damageAbility: weapon.damageAbility,
 		category: weapon.category,
 		...(enh > 0 ? { enhancement: enh } : {}),
+		...(material && material !== "steel" ? { material } : {}),
 		...(weapon.damageDice ? { damageDice: weapon.damageDice } : {}),
 		...(weapon.critRange && weapon.critRange !== 20 ? { critRange: weapon.critRange } : {}),
 		...(weapon.critMult && weapon.critMult !== 2 ? { critMult: weapon.critMult } : {}),

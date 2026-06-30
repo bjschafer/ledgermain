@@ -243,8 +243,12 @@ export interface ItemInstance {
 /** Physical stats of a worn piece of body armor or a shield. */
 export interface WornArmor {
   slot: "armor" | "shield";
-  /** Base armor/shield AC bonus. */
+  /** Base armor/shield AC bonus (excluding enhancement — tracked separately). */
   ac: number;
+  /** Enhancement bonus to armor/shield AC (a +3 suit of full plate has `ac:9, enhancement:3`). */
+  enhancement?: number;
+  /** Special material tag (e.g. "mithral", "adamantine") — display + pick-time modifiers applied. */
+  material?: string;
   /** Maximum Dexterity bonus the armor permits (omit for no cap). */
   maxDex?: number;
   /** Armor check penalty (a negative number, or 0). */
@@ -283,6 +287,8 @@ export interface WeaponInstance {
   damageMultiplier?: number;
   /** Enhancement bonus; adds to both attack roll and damage bonus. Default 0. */
   enhancement?: number;
+  /** Special material tag (e.g. "mithral", "adamantine", "silver") — display only for weapons. */
+  material?: string;
   /** Damage dice string for display only, e.g. "1d8". The engine does not roll. */
   damageDice?: string;
   /**

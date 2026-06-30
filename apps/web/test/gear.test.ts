@@ -142,6 +142,56 @@ describe("addWornArmorFromRef()", () => {
 		addWornArmorFromRef(d, FULL_PLATE);
 		expect(d.build.gear).toHaveLength(0);
 	});
+
+	it("applies mithral: weight class 3→2, maxDex 1→3, acp 6→3, name prefixed", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, "mithral");
+		const inst = d.build.gear[0]!;
+		expect(inst.name).toBe("Mithral Full Plate");
+		expect(inst.armor).toEqual({
+			slot: "armor",
+			ac: 9,
+			material: "mithral",
+			maxDex: 3,
+			acp: -3,
+			type: 2,
+		} satisfies WornArmor);
+	});
+
+	it("applies +3 enhancement: name suffix, enhancement field set", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE, 3);
+		const inst = d.build.gear[0]!;
+		expect(inst.name).toBe("Full Plate +3");
+		expect(inst.armor!.enhancement).toBe(3);
+	});
+
+	it("combines mithral + enhancement: 'Mithral Full Plate +3'", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE, 3, "mithral");
+		const inst = d.build.gear[0]!;
+		expect(inst.name).toBe("Mithral Full Plate +3");
+		expect(inst.armor!.enhancement).toBe(3);
+		expect(inst.armor!.material).toBe("mithral");
+		expect(inst.armor!.maxDex).toBe(3); // 1 + 2 mithral
+		expect(inst.armor!.acp).toBe(-3); // -(6 - 3 mithral)
+		expect(inst.armor!.type).toBe(2); // 3 - 1 mithral
+	});
+
+	it("adamantine is display-only (no stat modifiers)", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, "adamantine");
+		const inst = d.build.gear[0]!;
+		expect(inst.name).toBe("Adamantine Full Plate");
+		expect(inst.armor!.material).toBe("adamantine");
+		// stats unchanged from base
+		expect(inst.armor!.maxDex).toBe(1);
+		expect(inst.armor!.acp).toBe(-6);
+		expect(inst.armor!.type).toBe(3);
+	});
+
+	it("steel is the default (no prefix, no material field)", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, "steel");
+		const inst = d.build.gear[0]!;
+		expect(inst.name).toBe("Full Plate");
+		expect(inst.armor!.material).toBeUndefined();
+	});
 });
 
 // ---------------------------------------------------------------------------

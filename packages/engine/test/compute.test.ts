@@ -206,6 +206,102 @@ describe("compute: fighter L5 (full plate + magic items, stacking + armor traini
   });
 });
 
+describe("compute: armor & shield enhancement bonuses to AC", () => {
+  it("armor enhancement adds to AC as a separate enh-typed component", () => {
+    const gear: ItemInstance[] = [
+      {
+        equipped: true,
+        name: "Full Plate +3",
+        armor: { slot: "armor", ac: 9, enhancement: 3, maxDex: 1, type: 3 },
+      },
+    ];
+    const d = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      abilities: { str: 10, dex: 14, con: 10, int: 10, wis: 10, cha: 10 },
+      gear,
+    });
+    const sheet = compute(d, ref);
+    // 10 + 9 armor + 3 enh + 1 capped-dex = 23
+    expect(sheet.ac.normal).toBe(23);
+    // Both components appear in provenance
+    const armorBase = sheet.ac.components.find(
+      (c) => c.category === "armor" && c.type === "untyped",
+    );
+    const armorEnh = sheet.ac.components.find(
+      (c) => c.category === "armor" && c.type === "enh",
+    );
+    expect(armorBase?.value).toBe(9);
+    expect(armorBase?.applied).toBe(true);
+    expect(armorEnh?.value).toBe(3);
+    expect(armorEnh?.applied).toBe(true);
+  });
+
+  it("armor enhancement + shield enhancement both apply (different categories)", () => {
+    const gear: ItemInstance[] = [
+      {
+        equipped: true,
+        name: "Full Plate +2",
+        armor: { slot: "armor", ac: 9, enhancement: 2, maxDex: 1, type: 3 },
+      },
+      {
+        equipped: true,
+        name: "Heavy Steel Shield +2",
+        armor: { slot: "shield", ac: 2, enhancement: 2 },
+      },
+    ];
+    const d = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      abilities: { str: 10, dex: 14, con: 10, int: 10, wis: 10, cha: 10 },
+      gear,
+    });
+    const sheet = compute(d, ref);
+    // 10 + 9 armor + 2 armor-enh + 2 shield + 2 shield-enh + 1 capped-dex = 26
+    expect(sheet.ac.normal).toBe(26);
+    // Shield enhancement appears as a separate enh component in the shield category
+    const shieldEnh = sheet.ac.components.find(
+      (c) => c.category === "shield" && c.type === "enh",
+    );
+    expect(shieldEnh?.value).toBe(2);
+    expect(shieldEnh?.applied).toBe(true);
+  });
+
+  it("two armor enhancement sources to the same slot don't stack (highest enh wins)", () => {
+    // Edge case: two equipped body armors (unusual but the engine handles it).
+    // Note: base armor AC is type "untyped" which sums by PF1 rules; enhancement
+    // is type "enh" which takes the highest within a (category|type) group.
+    const gear: ItemInstance[] = [
+      {
+        equipped: true,
+        name: "Full Plate +3",
+        armor: { slot: "armor", ac: 9, enhancement: 3, maxDex: 1, type: 3 },
+      },
+      {
+        equipped: true,
+        name: "Breastplate +1",
+        armor: { slot: "armor", ac: 4, enhancement: 1, maxDex: 3, type: 2 },
+      },
+    ];
+    const d = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      abilities: { str: 10, dex: 14, con: 10, int: 10, wis: 10, cha: 10 },
+      gear,
+    });
+    const sheet = compute(d, ref);
+    // Only one enh component should be applied (the +3, not the +1).
+    const enhApplied = sheet.ac.components.filter(
+      (c) => c.category === "armor" && c.type === "enh" && c.applied,
+    );
+    expect(enhApplied).toHaveLength(1);
+    expect(enhApplied[0]!.value).toBe(3);
+    // The +1 enh should be present but struck through (not applied).
+    const enhNotApplied = sheet.ac.components.filter(
+      (c) => c.category === "armor" && c.type === "enh" && !c.applied,
+    );
+    expect(enhNotApplied).toHaveLength(1);
+    expect(enhNotApplied[0]!.value).toBe(1);
+  });
+});
+
 describe("compute: maxHpOverride", () => {
   const base = makeDoc({
     classes: [{ tag: "barbarian", level: 1 }],

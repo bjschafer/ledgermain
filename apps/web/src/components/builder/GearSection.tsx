@@ -9,6 +9,7 @@ import {
 	removeGear,
 	setGearEquipped,
 } from "../../model/doc.js";
+import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -30,6 +31,8 @@ const ARMOR_TYPES = [
 
 const WEIGHT_LABEL: Record<number, string> = { 0: "None", 1: "Light", 2: "Medium", 3: "Heavy" };
 
+const ENHANCEMENT_OPTIONS = [0, 1, 2, 3, 4, 5] as const;
+
 /** A one-line summary of a {@link ArmorRef} for the picker preview. */
 function armorRefMeta(a: ArmorRef): string {
 	const weight = a.weightClass ? `${WEIGHT_LABEL[a.weightClass] ?? "—"} ` : "";
@@ -49,6 +52,8 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 	const [showArmorPicker, setShowArmorPicker] = useState(false);
 	const [armorMode, setArmorMode] = useState<"select" | "custom">("select");
 	const [armorQuery, setArmorQuery] = useState("");
+	const [armorEnhancement, setArmorEnhancement] = useState<number>(0);
+	const [armorMaterial, setArmorMaterial] = useState<string>("steel");
 	// Custom-entry form state (the legacy manual form)
 	const [armorSlot, setArmorSlot] = useState<"armor" | "shield">("armor");
 	const [armorName, setArmorName] = useState("");
@@ -87,10 +92,12 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 		setShowArmorPicker(false);
 		setArmorMode("select");
 		setArmorQuery("");
+		setArmorEnhancement(0);
+		setArmorMaterial("steel");
 	}
 
 	function handleAddArmorRef(armor: ArmorRef) {
-		update((d) => addWornArmorFromRef(d, armor));
+		update((d) => addWornArmorFromRef(d, armor, armorEnhancement, armorMaterial));
 		closeArmorPicker();
 	}
 
@@ -287,6 +294,28 @@ return (
 										onChange={(e) => setArmorQuery(e.target.value)}
 										autoFocus
 									/>
+									<label className="field enh-field">
+										<span>Enh.</span>
+										<select
+											value={armorEnhancement}
+											onChange={(e) => setArmorEnhancement(Number(e.target.value))}
+										>
+											{ENHANCEMENT_OPTIONS.map((n) => (
+												<option key={n} value={n}>+{n}</option>
+											))}
+										</select>
+									</label>
+									<label className="field enh-field">
+										<span>Material</span>
+										<select
+											value={armorMaterial}
+											onChange={(e) => setArmorMaterial(e.target.value)}
+										>
+											{ARMOR_MATERIALS.map((m) => (
+												<option key={m.id} value={m.id}>{m.name}</option>
+											))}
+										</select>
+									</label>
 								</div>
 								<div className="scroll">
 									{filteredArmors.length === 0 ? (
