@@ -1560,6 +1560,19 @@ button:focus-visible,
 	min-width: 64px;
 }
 
+/* Armed "Recover" awaiting a confirming second click. */
+.prep-cast.prep-confirm {
+	background: var(--gold-2);
+	color: var(--bg, #1a1a1a);
+	border-color: var(--gold);
+	font-weight: 600;
+}
+
+.prep-full {
+	color: var(--gold-dim);
+	font-style: italic;
+}
+
 .prep-x {
 	width: 28px;
 	text-align: center;

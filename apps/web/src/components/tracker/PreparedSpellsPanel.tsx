@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import {
   prepareSpell,
@@ -35,6 +35,10 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
     [doc.identity.classes, refData.spellLists],
   );
   const model = casterTag ? casterModelFor(casterTag) : undefined;
+  // Index of the prepared instance whose "Recover" is armed (awaiting a second
+  // confirming click), or null. Recovering an expended spell mid-session is rare
+  // and easy to fumble, so it takes two taps.
+  const [confirmRecover, setConfirmRecover] = useState<number | null>(null);
   const levelMap = useMemo(
     () => (casterTag ? spellLevelMap(refData, casterTag) : new Map<string, number>()),
     [refData, casterTag],
@@ -86,6 +90,7 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
     };
     (preparedByLevel.get(lvl) ?? preparedByLevel.set(lvl, []).get(lvl)!).push(row);
   });
+  for (const arr of preparedByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
 
   const anyExpended = prepared.some((p) => p.expended);
   const totalPrepared = prepared.length;
@@ -127,6 +132,7 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
           const isCantrip = level === 0;
           const ready = isCantrip ? rows.length : rows.filter((r) => !r.expended).length;
           const over = rows.length > total;
+          const full = rows.length >= total;
           const knownHere = knownByLevel.get(level) ?? [];
 
           return (
@@ -157,15 +163,36 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
                       <span className="prep-name">{r.name}</span>
                       {isCantrip ? (
                         <span className="prep-atwill">at will</span>
+                      ) : r.expended ? (
+                        <button
+                          type="button"
+                          className={`pick-btn add prep-cast${
+                            confirmRecover === r.index ? " prep-confirm" : ""
+                          }`}
+                          onClick={() => {
+                            if (confirmRecover === r.index) {
+                              update((d) => setExpendedAt(d, r.index, false));
+                              setConfirmRecover(null);
+                            } else {
+                              setConfirmRecover(r.index);
+                            }
+                          }}
+                          onBlur={() =>
+                            setConfirmRecover((i) => (i === r.index ? null : i))
+                          }
+                        >
+                          {confirmRecover === r.index ? "Confirm?" : "Recover"}
+                        </button>
                       ) : (
                         <button
                           type="button"
-                          className={`pick-btn ${r.expended ? "add" : "remove"} prep-cast`}
-                          onClick={() =>
-                            update((d) => setExpendedAt(d, r.index, !r.expended))
-                          }
+                          className="pick-btn remove prep-cast"
+                          onClick={() => {
+                            update((d) => setExpendedAt(d, r.index, true));
+                            setConfirmRecover(null);
+                          }}
                         >
-                          {r.expended ? "Recover" : "Cast"}
+                          Cast
                         </button>
                       )}
                       <button
@@ -185,7 +212,10 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
 
               {knownHere.length > 0 ? (
                 <details className="prep-add">
-                  <summary>Prepare from {model.knownLabel.toLowerCase()}…</summary>
+                  <summary>
+                    Prepare from {model.knownLabel.toLowerCase()}…
+                    {full && <span className="prep-full"> all slots filled</span>}
+                  </summary>
                   <div className="prep-add-list">
                     {knownHere.map((sp) => {
                       const count = preparedCountBySpell.get(sp.id) ?? 0;
@@ -207,6 +237,12 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
                             type="button"
                             className="pick-btn add"
                             aria-label={`prepare ${sp.name}`}
+                            disabled={full}
+                            title={
+                              full
+                                ? `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled — unprepare one first.`
+                                : undefined
+                            }
                             onClick={() => update((d) => prepareSpell(d, sp.id))}
                           >
                             Prepare
