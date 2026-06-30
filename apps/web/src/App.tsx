@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import type { CharacterDoc } from "@pf1/schema";
+
 import { AbilitiesSection } from "./components/builder/AbilitiesSection.js";
 import { ClassesSection } from "./components/builder/ClassesSection.js";
 import { FeatsSection } from "./components/builder/FeatsSection.js";
@@ -12,6 +14,7 @@ import { SettingsSection } from "./components/builder/SettingsSection.js";
 import { SkillsSection } from "./components/builder/SkillsSection.js";
 import { SpellsSection } from "./components/builder/SpellsSection.js";
 import type { BuilderProps } from "./components/builder/types.js";
+import { CharacterSwitcher } from "./components/CharacterSwitcher.js";
 import { Sheet } from "./components/Sheet.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { useCharacter } from "./state/useCharacter.js";
@@ -60,8 +63,20 @@ export function App() {
             Settings
           </button>
         </div>
-        <div className="tagline">
-          {store.refData ? `data ${store.refData.meta.dataVersion.slice(0, 10)}` : ""}
+        <div className="masthead-right">
+          {store.doc && (
+            <CharacterSwitcher
+              characters={store.characters}
+              activeId={store.doc.id}
+              onSwitch={(id) => void store.switchCharacter(id)}
+              onCreate={() => void store.createCharacter()}
+            />
+          )}
+          <div className="tagline">
+            {store.refData
+              ? `data ${store.refData.meta.dataVersion.slice(0, 10)}`
+              : ""}
+          </div>
         </div>
       </header>
 
@@ -91,13 +106,24 @@ export function App() {
           sheet={store.sheet}
           refData={store.refData}
           update={store.update}
+          onImportCharacter={(doc) => void store.importCharacter(doc)}
+          onResetAll={() => void store.resetAll()}
         />
       )}
     </div>
   );
 }
 
-function Workbench({ mode, ...props }: BuilderProps & { mode: Mode }) {
+function Workbench({
+  mode,
+  onImportCharacter,
+  onResetAll,
+  ...props
+}: BuilderProps & {
+  mode: Mode;
+  onImportCharacter: (doc: CharacterDoc) => void;
+  onResetAll: () => void;
+}) {
   return (
     <div className="layout">
       <div className="build-col">
@@ -115,7 +141,11 @@ function Workbench({ mode, ...props }: BuilderProps & { mode: Mode }) {
             <SpellsSection {...props} />
           </>
         ) : mode === "settings" ? (
-          <SettingsSection {...props} />
+          <SettingsSection
+            {...props}
+            onImportCharacter={onImportCharacter}
+            onResetAll={onResetAll}
+          />
         ) : (
           <Tracker {...props} />
         )}

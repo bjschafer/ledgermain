@@ -4,6 +4,14 @@
  * overrides for the bounded allowlist. Each control calls a pure model
  * transition and delegates persistence to the parent's `update` callback.
  */
+import { useState, type ChangeEvent } from "react";
+
+import type { CharacterDoc } from "@pf1/schema";
+
+import {
+	characterExportFilename,
+	characterExportJson,
+} from "../../model/exportCharacter.js";
 import {
 	setFcbHouserule,
 	setHeroPointsCap,
@@ -14,6 +22,7 @@ import {
 	type StatOverrideKey,
 } from "../../model/doc.js";
 import { HERO_POINT_CAP } from "../../model/heroPoints.js";
+import { parseImportedDoc } from "../../model/importCharacter.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -32,13 +41,50 @@ const STAT_LABEL: Record<StatOverrideKey, string> = {
 	"saves.will.total": "Will save",
 };
 
-export function SettingsSection({ doc, sheet, update }: BuilderProps) {
+export function SettingsSection({
+	doc,
+	sheet,
+	update,
+	onImportCharacter,
+	onResetAll,
+}: BuilderProps & {
+	onImportCharacter: (doc: CharacterDoc) => void;
+	onResetAll: () => void;
+}) {
 	const settings = doc.build.settings ?? {};
 	const hpMode = settings.hpMode ?? "average";
 	const fcbHouserule = settings.fcbHouserule ?? false;
 	const heroEnabled = settings.heroPointsEnabled ?? true;
 	const heroCap = settings.heroPointsCap ?? HERO_POINT_CAP;
 	const overrides = settings.statOverrides ?? {};
+	const [importError, setImportError] = useState<string>();
+
+	function handleExport() {
+		const blob = new Blob([characterExportJson(doc)], {
+			type: "application/json",
+		});
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = characterExportFilename(doc);
+		a.click();
+		URL.revokeObjectURL(url);
+	}
+
+	async function handleImportChange(e: ChangeEvent<HTMLInputElement>) {
+		const file = e.target.files?.[0];
+		e.target.value = "";
+		if (!file) return;
+		try {
+			const parsed = parseImportedDoc(JSON.parse(await file.text()));
+			setImportError(undefined);
+			onImportCharacter(parsed);
+		} catch (err) {
+			setImportError(
+				err instanceof Error ? err.message : "Couldn't read that file.",
+			);
+		}
+	}
 
 	return (
 		<>
@@ -205,7 +251,76 @@ export function SettingsSection({ doc, sheet, update }: BuilderProps) {
 					})}
 				</div>
 			</Panel>
+
+			{/* Export / import */}
+			<Panel title="Export / Import" step="⚙">
+				<p className="hint" style={{ marginBottom: 12 }}>
+					Export this character to a JSON file you can back up or move to
+					another device. Importing a file makes it the active character —
+					re-importing the same export updates that character in place;
+					importing a different file adds it as a new one.
+				</p>
+				<div className="settings-row">
+					<button type="button" className="btn-ghost" onClick={handleExport}>
+						Export character (.json)
+					</button>
+					<label className="btn-ghost" style={{ cursor: "pointer" }}>
+						Import character…
+						<input
+							type="file"
+							accept="application/json"
+							style={{ display: "none" }}
+							onChange={(e) => void handleImportChange(e)}
+						/>
+					</label>
+				</div>
+				{importError && (
+					<p className="hint" style={{ color: "var(--oxblood)", marginTop: 8 }}>
+						{importError}
+					</p>
+				)}
+			</Panel>
+
+			{/* Danger zone */}
+			<DangerZonePanel onResetAll={onResetAll} />
 		</>
+	);
+}
+
+/** Permanently wipes every saved character; gated behind a type-to-confirm input. */
+function DangerZonePanel({ onResetAll }: { onResetAll: () => void }) {
+	const [confirmText, setConfirmText] = useState("");
+	const canReset = confirmText.trim().toUpperCase() === "RESET";
+
+	return (
+		<Panel title="Danger Zone" step="⚙">
+			<p className="hint" style={{ marginBottom: 12 }}>
+				Permanently deletes every saved character on this device, including
+				this one, and starts over with a single blank character. This cannot
+				be undone.
+			</p>
+			<div className="settings-row">
+				<input
+					type="text"
+					className="danger-confirm"
+					placeholder='Type "RESET" to confirm'
+					value={confirmText}
+					onChange={(e) => setConfirmText(e.target.value)}
+					aria-label="Type RESET to confirm"
+				/>
+				<button
+					type="button"
+					className="btn-ghost btn-danger"
+					disabled={!canReset}
+					onClick={() => {
+						onResetAll();
+						setConfirmText("");
+					}}
+				>
+					Reset everything
+				</button>
+			</div>
+		</Panel>
 	);
 }
 

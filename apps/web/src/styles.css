@@ -119,6 +119,23 @@ a {
 	color: var(--muted);
 }
 
+.masthead-right {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
+}
+
+.char-switcher {
+	width: auto;
+	background: var(--surface-2);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	color: var(--ink);
+	font-size: 12px;
+	padding: 4px 8px;
+}
+
 .layout {
 	display: grid;
 	grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -2079,6 +2096,21 @@ button:focus-visible,
 
 .settings-row .num {
 	width: 80px;
+}
+
+.danger-confirm {
+	width: 180px;
+}
+
+.btn-danger {
+	border-color: var(--oxblood);
+	color: var(--oxblood);
+}
+
+.btn-danger:disabled {
+	border-color: var(--line);
+	color: var(--faint);
+	cursor: not-allowed;
 }
 
 /* stat-override editor */
