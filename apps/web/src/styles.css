@@ -1580,6 +1580,15 @@ button:focus-visible,
 	font-size: 14px;
 }
 
+/* prep-row-main: wraps name + inline spell detail expander */
+.prep-row-main {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
 .prep-row.is-expended .prep-name {
 	color: var(--faint);
 	text-decoration: line-through;
@@ -1603,6 +1612,13 @@ button:focus-visible,
 	color: var(--bg, #1a1a1a);
 	border-color: var(--gold);
 	font-weight: 600;
+}
+
+/* Task 5: hover keeps the same gold-on-dark look so text stays readable */
+.prep-cast.prep-confirm:hover {
+	background: var(--gold);
+	color: var(--bg, #1a1a1a);
+	border-color: var(--gold-2);
 }
 
 .prep-full {
@@ -1664,6 +1680,168 @@ button:focus-visible,
 	font-size: 11px;
 	font-family: var(--mono);
 	color: var(--gold-2);
+}
+
+/* ------------------------------------------------- spell detail (Task 2) -- */
+
+.spell-detail {
+	margin-top: 2px;
+}
+
+.spell-detail-summary {
+	font-size: 10px;
+	font-family: var(--mono);
+	color: var(--faint);
+	cursor: pointer;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	list-style: none;
+}
+
+.spell-detail-summary::-webkit-details-marker {
+	display: none;
+}
+
+.spell-detail-body {
+	margin-top: 6px;
+	padding: 8px 0 4px;
+	border-top: 1px solid var(--line-soft);
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.spell-detail-row {
+	display: flex;
+	gap: 8px;
+	font-size: 12px;
+}
+
+.spell-detail-label {
+	font-family: var(--mono);
+	font-size: 10px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--gold-dim);
+	min-width: 96px;
+	flex-shrink: 0;
+}
+
+.spell-detail-value {
+	color: var(--ink);
+}
+
+.spell-detail-desc {
+	margin-top: 6px;
+	font-size: 12px;
+	color: var(--muted);
+	line-height: 1.5;
+	max-height: 200px;
+	overflow-y: auto;
+	border-top: 1px solid var(--line-soft);
+	padding-top: 6px;
+}
+
+.spell-detail-desc p {
+	margin: 0 0 6px;
+}
+
+.spell-detail-desc p:last-child {
+	margin-bottom: 0;
+}
+
+/* ---------------------------------------- spontaneous pips (Task 1d) -- */
+
+.spontaneous-pips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	padding: 6px 12px;
+	border-top: 1px solid var(--line-soft);
+}
+
+.spontaneous-pip {
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	border: 1px solid var(--gold-dim);
+	background: var(--surface-2);
+	cursor: default;
+	padding: 0;
+}
+
+.spontaneous-pip.is-used {
+	background: var(--gold-dim);
+	border-color: var(--gold);
+	cursor: pointer;
+	opacity: 0.6;
+}
+
+.spontaneous-pip.is-used:hover {
+	opacity: 1;
+	border-color: var(--oxblood);
+}
+
+/* --------------------------------- collapsible spell hints (Task 4) -- */
+
+.spell-hints-details {
+	margin-bottom: 10px;
+}
+
+.spell-hints-summary {
+	font-size: 11px;
+	font-family: var(--mono);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--gold-dim);
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 0;
+}
+
+.spell-hints-summary::-webkit-details-marker {
+	display: none;
+}
+
+.spell-hints-summary:hover {
+	color: var(--gold);
+}
+
+/* ----------------------------- known-count badge (Task 1e) -- */
+
+.spell-known-count {
+	font-size: 10px;
+	font-family: var(--mono);
+	color: var(--faint);
+	letter-spacing: 0.05em;
+}
+
+.spell-known-count.is-full {
+	color: var(--gold-dim);
+}
+
+.spell-known-count.is-over {
+	color: var(--danger, #d9534f);
+}
+
+/* ----------------------------- re-prepare row (Task 3) -- */
+
+.prep-clear-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 12px;
+	border-bottom: 1px solid var(--line-soft);
+	margin-bottom: 8px;
+}
+
+.prep-clear-confirm-label {
+	font-size: 12px;
+	color: var(--muted);
+	flex: 1;
 }
 
 /* hero points */

@@ -1,7 +1,12 @@
 import { useMemo, useState } from "react";
 
 import { toggleKnownSpell } from "../../model/doc.js";
-import { casterModelFor, grantedCantrips } from "../../model/spellcasting.js";
+import {
+  casterModelFor,
+  grantedCantrips,
+  spellsKnownLimitsByLevel,
+} from "../../model/spellcasting.js";
+import { spellLevelMap } from "../../model/preparedSpells.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -25,6 +30,11 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
     [casterTag],
   );
 
+  const classLevel = useMemo(
+    () => doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 1,
+    [doc.identity.classes, casterTag],
+  );
+
   const grantsCantrips = !!model?.grantsAllCantrips;
 
   // Granted cantrips: derived from the class list, never stored in `known`.
@@ -40,8 +50,8 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
     [grantsCantrips, casterTag, refData],
   );
 
-  // The searchable spellbook: the whole class list EXCEPT cantrips when this
-  // caster grants all of them (cantrips have no Add/Remove — they're free).
+  // The searchable spell list: the whole class list EXCEPT cantrips when this
+  // caster grants all of them.
   const entries = useMemo<SpellEntry[]>(() => {
     if (!casterTag) return [];
     const list = refData.spellLists[casterTag] ?? {};
@@ -58,6 +68,27 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
   }, [casterTag, refData, grantsCantrips]);
 
   const known = useMemo(() => new Set(doc.build.spells.known), [doc.build.spells.known]);
+
+  // Spells-known limits for spontaneous casters (advisory only).
+  const knownLimits = useMemo(() => {
+    if (!model) return new Map<number, number>();
+    const limits = spellsKnownLimitsByLevel(model, classLevel);
+    return new Map(limits.map((l) => [l.level, l.limit]));
+  }, [model, classLevel]);
+
+  // Count known spells per level (for the advisory).
+  const levelMap = useMemo(
+    () => (casterTag ? spellLevelMap(refData, casterTag) : new Map<string, number>()),
+    [refData, casterTag],
+  );
+  const knownCountByLevel = useMemo(() => {
+    const counts = new Map<number, number>();
+    for (const id of known) {
+      const lvl = levelMap.get(id);
+      if (lvl !== undefined) counts.set(lvl, (counts.get(lvl) ?? 0) + 1);
+    }
+    return counts;
+  }, [known, levelMap]);
 
   if (!casterTag) {
     return (
@@ -86,12 +117,11 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
   }
   const levels = [...byLevel.keys()].sort((a, b) => a - b);
 
-  // Header badge: "Wizard · prepared (Int)" or "{casterTag} list"
+  // Header badge: "sorcerer · spontaneous (Cha)" etc.
   const headerBadge = model
     ? `${casterTag} · ${model.preparation} (${abilityLabel})`
     : `${casterTag} list`;
 
-  // Empty-state copy uses the knownLabel so "spellbook" appears where appropriate.
   const emptyState = q
     ? "No spells match."
     : `No spells in your ${knownLabel.toLowerCase()} yet — search to add some.`;
@@ -107,23 +137,16 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
         </span>
       }
     >
-      {/* Guidance hints: what this list is, plus a pointer to the daily loop. */}
+      {/* Guidance hints: collapsible (Task 4). Default collapsed to save space. */}
       {model && (
-        <div className="spell-hints">
-          <p className="hint spell-hint-line">{model.blurb}</p>
-          <p className="hint spell-hint-line">{model.learnGuidance}</p>
-          {grantsCantrips && (
-            <p className="hint spell-hint-line">
-              You know <strong>all {cantrips.length} cantrips</strong> on the{" "}
-              {casterTag} list — they’re listed below and cost no spellbook slot.
-            </p>
-          )}
-          <p className="hint spell-hint-line">
-            This is your {knownLabel.toLowerCase()} — the spells you <em>could</em>{" "}
-            prepare. Prepare and cast for the day from the tracker’s{" "}
-            <strong>Prepared Spells</strong> panel.
-          </p>
-        </div>
+        <SpellHints
+          model={{ blurb: model.blurb, learnGuidance: model.learnGuidance }}
+          casterTag={casterTag}
+          cantrips={cantrips}
+          grantsCantrips={grantsCantrips}
+          knownLabel={knownLabel}
+          isSpontaneous={model.preparation === "spontaneous"}
+        />
       )}
 
       <input
@@ -147,6 +170,9 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
               entries={byLevel.get(lvl)!}
               known={known}
               onToggle={(id) => update((d) => toggleKnownSpell(d, id))}
+              knownLimit={knownLimits.get(lvl)}
+              knownCount={knownCountByLevel.get(lvl) ?? 0}
+              isSpontaneous={model?.preparation === "spontaneous"}
             />
           ))
         )}
@@ -155,24 +181,98 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
   );
 }
 
+// ---------------------------------------------------------------------------
+// Collapsible guidance hints (Task 4)
+// ---------------------------------------------------------------------------
+
 /**
- * A collapsible group of spells at one spell level. The header shows the level
- * label and a count; clicking toggles collapse (persisted per level so the view
- * survives reloads). Rows are Add/Remove toggles against `known`.
+ * Guidance notes about the spellbook/known list. Collapsed by default to save
+ * screen space; the user can expand once and the state persists via localStorage.
+ */
+function SpellHints({
+  model,
+  casterTag,
+  cantrips,
+  grantsCantrips,
+  knownLabel,
+  isSpontaneous,
+}: {
+  model: { blurb: string; learnGuidance: string };
+  casterTag: string;
+  cantrips: SpellEntry[];
+  grantsCantrips: boolean;
+  knownLabel: string;
+  isSpontaneous: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <details
+      className="spell-hints-details"
+      open={open}
+      onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
+    >
+      <summary className="spell-hints-summary">
+        How {casterTag} spellcasting works
+        <span className="panel-caret" aria-hidden="true">{open ? " ▾" : " ▸"}</span>
+      </summary>
+      <div className="spell-hints">
+        <p className="hint spell-hint-line">{model.blurb}</p>
+        <p className="hint spell-hint-line">{model.learnGuidance}</p>
+        {grantsCantrips && (
+          <p className="hint spell-hint-line">
+            You know <strong>all {cantrips.length} cantrips</strong> on the{" "}
+            {casterTag} list — they're listed below and cost no spellbook slot.
+          </p>
+        )}
+        {isSpontaneous ? (
+          <p className="hint spell-hint-line">
+            This is your <strong>{knownLabel}</strong> — the spells you can cast. Cast
+            them on the fly from the tracker's <strong>Spells</strong> panel by spending
+            a slot of the appropriate level.
+          </p>
+        ) : (
+          <p className="hint spell-hint-line">
+            This is your {knownLabel.toLowerCase()} — the spells you <em>could</em>{" "}
+            prepare. Prepare and cast for the day from the tracker's{" "}
+            <strong>Prepared Spells</strong> panel.
+          </p>
+        )}
+      </div>
+    </details>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Spell level group
+// ---------------------------------------------------------------------------
+
+/**
+ * A collapsible group of spells at one spell level. For spontaneous casters,
+ * shows a known-limit advisory when the count approaches or exceeds the cap.
  */
 function SpellLevelGroup({
   level,
   entries,
   known,
   onToggle,
+  knownLimit,
+  knownCount,
+  isSpontaneous,
 }: {
   level: number;
   entries: SpellEntry[];
   known: Set<string>;
   onToggle: (id: string) => void;
+  knownLimit?: number;
+  knownCount: number;
+  isSpontaneous: boolean;
 }) {
   const [collapsed, toggle] = useCollapsed(`spell-level:${level}`, false);
   const label = level === 0 ? "Cantrips" : `Level ${level}`;
+
+  const isAtLimit = isSpontaneous && knownLimit !== undefined && knownCount >= knownLimit;
+  const isOver = isSpontaneous && knownLimit !== undefined && knownCount > knownLimit;
+
   return (
     <div className="spell-level-group">
       <div
@@ -186,6 +286,11 @@ function SpellLevelGroup({
         }}
       >
         <span className="spell-level-label">{label}</span>
+        {isSpontaneous && knownLimit !== undefined && (
+          <span className={`spell-known-count${isOver ? " is-over" : isAtLimit ? " is-full" : ""}`}>
+            {knownCount}/{knownLimit} known
+          </span>
+        )}
         <span className="spell-level-count">{entries.length}</span>
         <span className="panel-caret" aria-hidden="true">
           {collapsed ? "▸" : "▾"}
@@ -194,6 +299,11 @@ function SpellLevelGroup({
       {!collapsed &&
         entries.map((sp) => {
           const isKnown = known.has(sp.id);
+          const wouldExceed =
+            isSpontaneous &&
+            knownLimit !== undefined &&
+            !isKnown &&
+            knownCount >= knownLimit;
           return (
             <div key={sp.id} className={`pick-row${isKnown ? " is-selected" : ""}`}>
               <div className="pmain">
@@ -203,8 +313,13 @@ function SpellLevelGroup({
                 type="button"
                 className={`pick-btn ${isKnown ? "remove" : "add"}`}
                 onClick={() => onToggle(sp.id)}
+                title={
+                  wouldExceed
+                    ? `You already know ${knownCount}/${knownLimit} level-${level} spells — adding more exceeds your known limit.`
+                    : undefined
+                }
               >
-                {isKnown ? "Remove" : "Add"}
+                {isKnown ? "Remove" : wouldExceed ? "Add (over limit)" : "Add"}
               </button>
             </div>
           );
@@ -214,9 +329,8 @@ function SpellLevelGroup({
 }
 
 /**
- * The read-only granted-cantrips block: listed for reference, not selectable
- * (the caster knows them all for free). Collapsed by default since you rarely
- * need to interact with the list.
+ * The read-only granted-cantrips block: listed for reference, not selectable.
+ * Collapsed by default since you rarely need to interact with the list.
  */
 function GrantedCantripsBlock({ cantrips }: { cantrips: SpellEntry[] }) {
   const [collapsed, toggle] = useCollapsed("spell-granted-cantrips", true);
