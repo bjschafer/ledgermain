@@ -32,6 +32,7 @@ import type {
 } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import { resolveClassFeatures } from "./archetypes.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
@@ -597,6 +598,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
 
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};
+  const { classFeatures, activeArchetypes } = resolveClassFeatures(doc, refData);
   const sheet = {
     schemaVersion: SCHEMA_VERSION,
     level,
@@ -612,6 +614,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     hp,
     speeds,
     skills,
+    classFeatures,
+    activeArchetypes,
   };
 
   for (const [key, val] of Object.entries(overrides)) {

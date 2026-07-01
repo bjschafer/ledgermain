@@ -55,7 +55,13 @@ export interface CharacterDoc {
      * drawable from `refData.domainSpellLists[<tag>]`.
      */
     clericDomains?: string[];
-    /** Archetypes, bonus-feat picks, etc. — typed in Stage 3. */
+    /**
+     * Archetype ids chosen (keys into `RefData.archetypes`, e.g.
+     * `"fighter:two-handed-fighter"`). No conflict validation — matches the
+     * project's hybrid soft-warning posture (see IMPLEMENTATION_PLAN.md Stage 11.3).
+     */
+    archetypes?: string[];
+    /** Bonus-feat picks, etc. — typed in Stage 3. */
     classFeatureChoices: unknown[];
     /**
      * Spells the character *knows*. For a prepared caster (wizard) this is the
@@ -354,6 +360,45 @@ export interface DerivedSheet {
   /** Movement speeds in feet, keyed by mode ("land", "fly", ...). */
   speeds: Record<string, number>;
   skills: Record<SkillId, DerivedSkill>;
+  /** Every granted base-class feature up to current level, with archetype-swap strike-through. */
+  classFeatures: DerivedClassFeature[];
+  /** One entry per chosen `build.archetypes` id, with its swap map + own feature list. */
+  activeArchetypes: DerivedArchetype[];
+}
+
+/**
+ * One granted base-class feature. `applied: false` means an active archetype's
+ * `pairedBaseFeatureUuid` matches this grant's `uuid` — the UI strikes it
+ * through, same visual language as `ModifierComponent.applied`.
+ */
+export interface DerivedClassFeature {
+  level: number;
+  classTag: string;
+  /** Key into `RefData.classFeatures`. */
+  featureId: string;
+  name: string;
+  applied: boolean;
+  /** Set when `applied` is false: the archetype feature name that replaced it. */
+  replacedBy?: string;
+}
+
+/** One feature granted by an active archetype (in addition to/instead of the base grant). */
+export interface DerivedArchetypeFeature {
+  level: number;
+  name: string;
+  description?: string;
+  /** True when this feature has no `pairedBaseFeatureUuid` — prose-only soft warning, not a swap. */
+  ambiguous: boolean;
+}
+
+/** A resolved archetype the character has chosen, with its swap map + feature list. */
+export interface DerivedArchetype {
+  id: string;
+  name: string;
+  classTag: string;
+  /** Spell/class level -> the base-class grant uuid this archetype swaps out at that level. */
+  swappedSlots: Record<number, string>;
+  features: DerivedArchetypeFeature[];
 }
 
 export interface AbilityScore {
