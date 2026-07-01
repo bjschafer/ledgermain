@@ -65,6 +65,14 @@ export interface CasterModel {
    * from the class list as read-only at-will spells.
    */
   grantsAllCantrips: boolean;
+  /**
+   * True when this caster has no curated "known" list at all — every spell on
+   * the class list is available to prepare each day (e.g. cleric). When true,
+   * the builder shows the class list read-only instead of an Add/Remove
+   * picker, and the tracker's prepare-from picker sources directly from the
+   * class list instead of `build.spells.known`.
+   */
+  preparesFromClassList: boolean;
 }
 
 export const CASTER_MODELS: Record<string, CasterModel> = {
@@ -78,6 +86,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     blurb:
       "Prepared caster: spells live in your spellbook, then you prepare a subset each day. Your spellbook is your \u201cknown\u201d list here.",
     grantsAllCantrips: true,
+    preparesFromClassList: false,
   },
   sorcerer: {
     preparation: "spontaneous",
@@ -90,6 +99,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     blurb:
       "Spontaneous caster: you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
     grantsAllCantrips: true,
+    preparesFromClassList: false,
   },
   cleric: {
     preparation: "prepared",
@@ -97,10 +107,11 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "cleric",
     knownLabel: "Cleric List",
     learnGuidance:
-      "Clerics prepare a subset of the entire cleric spell list each day \u2014 no spellbook needed. Each chosen domain also grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list (see Domain picker above).",
+      "Clerics have no spellbook and nothing to learn \u2014 the entire cleric spell list below is always available to prepare from. Each chosen domain also grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list (see Domain picker above).",
     blurb:
-      "Prepared divine caster: your \u201cknown\u201d list is the whole cleric spell list. Prepare and cast for the day, plus one domain spell per accessible level per chosen domain.",
+      "Prepared divine caster: there's no \u201cknown\u201d list to curate \u2014 prepare any spell(s) from the full cleric list each day, plus one domain spell per accessible level per chosen domain.",
     grantsAllCantrips: true,
+    preparesFromClassList: true,
   },
 };
 
@@ -167,6 +178,21 @@ export function spellSlotsByLevel(
     if (base === null) continue;
     const bonus = bonusSpellsForLevel(abilityMod, level);
     out.push({ level, base, bonus, total: base + bonus });
+  }
+  return out;
+}
+
+/**
+ * Spell levels (0–9) this caster can access at `classLevel`, per the base
+ * progression table. Ability-score bonus spells never unlock a new level, so
+ * (unlike {@link spellSlotsByLevel}) this needs no ability modifier — it's
+ * cheap to call from the builder, before a computed sheet exists, to filter
+ * a spell-list reference down to what's actually reachable yet.
+ */
+export function accessibleSpellLevels(model: CasterModel, classLevel: number): number[] {
+  const out: number[] = [];
+  for (let level = 0; level <= 9; level++) {
+    if (baseSpellsPerDay(model.progression, classLevel, level) !== null) out.push(level);
   }
   return out;
 }

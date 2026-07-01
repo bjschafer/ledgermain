@@ -141,6 +141,36 @@ export function domainSpellLevelMap(
 }
 
 /**
+ * Full class spell list for `casterTag`, grouped by level and sorted by name
+ * within each level. Pass `excludeCantrips` to drop level 0 (for casters that
+ * grant cantrips for free elsewhere via {@link import("./spellcasting.js").grantedCantrips}).
+ * Used by both the builder's read-only class-list reference and the tracker's
+ * prepare-from-class-list picker (for casters with `preparesFromClassList`),
+ * so the two surfaces can never disagree about what's on the list.
+ */
+export function classSpellsByLevel(
+  refData: RefData,
+  casterTag: string,
+  opts?: { excludeCantrips?: boolean },
+): Map<number, { id: string; name: string }[]> {
+  const map = new Map<number, { id: string; name: string }[]>();
+  const list = refData.spellLists[casterTag];
+  if (!list) return map;
+  for (const [lvl, ids] of Object.entries(list)) {
+    const n = Number(lvl);
+    if (opts?.excludeCantrips && n === 0) continue;
+    const entries: { id: string; name: string }[] = [];
+    for (const id of ids) {
+      const sp = refData.spells[id];
+      if (sp) entries.push({ id, name: sp.name });
+    }
+    entries.sort((a, b) => a.name.localeCompare(b.name));
+    map.set(n, entries);
+  }
+  return map;
+}
+
+/**
  * Strip granted cantrips from `build.spells.known` and dedupe them in
  * `live.spells.prepared` for casters whose model grants all cantrips for free.
  *

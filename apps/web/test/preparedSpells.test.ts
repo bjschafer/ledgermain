@@ -5,6 +5,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { addClass, createEmptyDoc, migrateDoc, setClericDomains } from "../src/model/doc.js";
 import {
+  classSpellsByLevel,
   clearPrepared,
   domainSpellLevelMap,
   prepareDomainSpell,
@@ -187,6 +188,33 @@ describe("reconcileGrantedCantrips()", () => {
   it("is a no-op for a non-caster (no spell list)", () => {
     const doc = addClass(fresh(), "fighter");
     expect(reconcileGrantedCantrips(doc, ref)).toBe(doc);
+  });
+});
+
+describe("classSpellsByLevel()", () => {
+  it("groups the cleric class list by level, sorted by name within a level", () => {
+    const byLevel = classSpellsByLevel(ref, "cleric");
+    const l1 = byLevel.get(1);
+    expect(l1).toBeDefined();
+    expect(l1!.length).toBeGreaterThan(0);
+    for (let i = 1; i < l1!.length; i++) {
+      expect(l1![i - 1]!.name.localeCompare(l1![i]!.name)).toBeLessThanOrEqual(0);
+    }
+    // Every id at level 1 really is a level-1 cleric spell per the raw list.
+    const rawL1 = new Set(ref.spellLists["cleric"]![1]);
+    expect(l1!.every((sp) => rawL1.has(sp.id))).toBe(true);
+  });
+
+  it("excludeCantrips drops level 0 entirely", () => {
+    const withCantrips = classSpellsByLevel(ref, "cleric");
+    expect(withCantrips.has(0)).toBe(true);
+    const without = classSpellsByLevel(ref, "cleric", { excludeCantrips: true });
+    expect(without.has(0)).toBe(false);
+    expect(without.get(1)).toEqual(withCantrips.get(1));
+  });
+
+  it("returns an empty map for a tag with no spell list", () => {
+    expect(classSpellsByLevel(ref, "fighter").size).toBe(0);
   });
 });
 

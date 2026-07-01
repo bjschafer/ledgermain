@@ -4,6 +4,7 @@ import type { Spell } from "@pf1/schema";
 import type { RefData } from "@pf1/schema";
 
 import {
+  classSpellsByLevel,
   clearPrepared,
   domainSpellLevelMap,
   prepareDomainSpell,
@@ -336,14 +337,22 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
     [model, refData, casterTag],
   );
 
-  const knownByLevel = new Map<number, { id: string; name: string }[]>();
-  for (const id of doc.build.spells.known) {
-    const lvl = levelMap.get(id);
-    const sp = refData.spells[id];
-    if (lvl === undefined || !sp) continue;
-    (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({ id, name: sp.name });
-  }
-  for (const arr of knownByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
+  // Casters with no curated "known" list (cleric) prepare directly from the
+  // full class spell list; everyone else prepares from `build.spells.known`.
+  const knownByLevel = useMemo(() => {
+    if (model.preparesFromClassList) {
+      return classSpellsByLevel(refData, casterTag, { excludeCantrips: model.grantsAllCantrips });
+    }
+    const map = new Map<number, { id: string; name: string }[]>();
+    for (const id of doc.build.spells.known) {
+      const lvl = levelMap.get(id);
+      const sp = refData.spells[id];
+      if (lvl === undefined || !sp) continue;
+      (map.get(lvl) ?? map.set(lvl, []).get(lvl)!).push({ id, name: sp.name });
+    }
+    for (const arr of map.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
+    return map;
+  }, [model, refData, casterTag, doc.build.spells.known, levelMap]);
 
   const prepared = preparedSpells(doc);
   const preparedByLevel = new Map<number, PreparedRow[]>();

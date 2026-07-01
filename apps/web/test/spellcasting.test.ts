@@ -3,11 +3,13 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import {
+  accessibleSpellLevels,
   bonusSpellsForLevel,
   casterModelFor,
   concentrationDC,
   grantedCantrips,
   spellSaveDC,
+  spellSlotsByLevel,
   spellsKnownLimitsByLevel,
 } from "../src/model/spellcasting.js";
 
@@ -53,10 +55,21 @@ describe("casterModelFor()", () => {
     expect(m!.ability).toBe("int");
     expect(m!.knownLabel).toBe("Spellbook");
     expect(m!.grantsAllCantrips).toBe(true);
+    expect(m!.preparesFromClassList).toBe(false);
   });
 
   it("returns undefined for an unregistered tag (e.g. bard)", () => {
     expect(casterModelFor("bard")).toBeUndefined();
+  });
+});
+
+describe("casterModelFor() — cleric", () => {
+  it("prepares from the full class list, not a curated known list", () => {
+    const m = casterModelFor("cleric");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("prepared");
+    expect(m!.ability).toBe("wis");
+    expect(m!.preparesFromClassList).toBe(true);
   });
 });
 
@@ -89,6 +102,7 @@ describe("casterModelFor() — sorcerer", () => {
     expect(m!.ability).toBe("cha");
     expect(m!.grantsAllCantrips).toBe(true);
     expect(m!.knownProgression).toBe("sorcerer");
+    expect(m!.preparesFromClassList).toBe(false);
   });
 });
 
@@ -117,6 +131,29 @@ describe("concentrationDC()", () => {
 
   it("level 9 → 33 (15 + 18)", () => {
     expect(concentrationDC(9)).toBe(33);
+  });
+});
+
+describe("accessibleSpellLevels()", () => {
+  it("a level-1 cleric can access cantrips and level 1 only", () => {
+    const cleric = casterModelFor("cleric")!;
+    expect(accessibleSpellLevels(cleric, 1)).toEqual([0, 1]);
+  });
+
+  it("a level-3 cleric can access up to level 2", () => {
+    const cleric = casterModelFor("cleric")!;
+    expect(accessibleSpellLevels(cleric, 3)).toEqual([0, 1, 2]);
+  });
+
+  it("a level-17 cleric can access every level 0-9", () => {
+    const cleric = casterModelFor("cleric")!;
+    expect(accessibleSpellLevels(cleric, 17)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  });
+
+  it("matches the levels spellSlotsByLevel reports as accessible (ability mod 0)", () => {
+    const cleric = casterModelFor("cleric")!;
+    const fromSlots = spellSlotsByLevel(cleric, 5, 0).map((s) => s.level);
+    expect(accessibleSpellLevels(cleric, 5)).toEqual(fromSlots);
   });
 });
 
