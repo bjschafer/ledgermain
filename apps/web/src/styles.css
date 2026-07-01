@@ -2173,7 +2173,7 @@ button:focus-visible,
 
 .panel-caret {
 	font-family: var(--mono);
-	font-size: 11px;
+	font-size: 14px;
 	color: var(--gold-dim);
 	margin-left: auto;
 	transition: transform 0.15s;
