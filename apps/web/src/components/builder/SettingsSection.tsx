@@ -411,6 +411,8 @@ function AboutAndLegalPanel() {
 				<a href="/NOTICE.md">Full notice &amp; attribution</a>
 				{" · "}
 				<a href="/LICENSE">MIT (code)</a>
+				{" · "}
+				<a href="https://github.com/bjschafer/ledgermain">Source on GitHub</a>
 			</p>
 			<p className="hint" style={{ fontSize: 11, marginTop: 10 }}>
 				This product uses trademarks and/or copyrights owned by Paizo Inc.,
