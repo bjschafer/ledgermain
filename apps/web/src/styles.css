@@ -592,8 +592,17 @@ button:focus-visible,
 	cursor: pointer;
 }
 
-.checkbox-field input[type="checkbox"]:disabled {
-	cursor: not-allowed;
+/*
+ * Swapped in for the checkbox when its value is implied rather than
+ * user-set (e.g. masterwork once a weapon has a magic enhancement bonus).
+ * A disabled checkbox is deliberately avoided here — browsers desaturate
+ * disabled controls at the native paint layer in a way accent-color can't
+ * override, which reads as broken/inconsistent next to an enabled one.
+ */
+.checkbox-implied {
+	font-size: 12px;
+	font-style: italic;
+	color: var(--gold-dim);
 }
 
 .armor-custom-link {
