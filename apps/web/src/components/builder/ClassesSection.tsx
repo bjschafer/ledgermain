@@ -14,6 +14,7 @@ import type { BuilderProps } from "./types.js";
 
 export function ClassesSection({ doc, refData, update }: BuilderProps) {
 	const [fcbOpen, setFcbOpen] = useState(true);
+	const [confirmRemoveTag, setConfirmRemoveTag] = useState<string | null>(null);
 
 	const baseClasses = useMemo(
 		() =>
@@ -65,11 +66,9 @@ export function ClassesSection({ doc, refData, update }: BuilderProps) {
 						type="button"
 						className="chip"
 						aria-pressed={chosen.has(c.tag)}
-						onClick={() =>
-							update((d) =>
-								chosen.has(c.tag) ? removeClass(d, c.tag) : addClass(d, c.tag),
-							)
-						}
+						disabled={chosen.has(c.tag)}
+						title={chosen.has(c.tag) ? "Already added — use remove below to change classes" : undefined}
+						onClick={() => update((d) => addClass(d, c.tag))}
 					>
 						{c.name}
 					</button>
@@ -108,13 +107,38 @@ export function ClassesSection({ doc, refData, update }: BuilderProps) {
 									aria-label={`${def?.name ?? cls.tag} level`}
 								/>
 							</div>
-							<button
-								type="button"
-								className="btn-ghost"
-								onClick={() => update((d) => removeClass(d, cls.tag))}
-							>
-								remove
-							</button>
+							{confirmRemoveTag === cls.tag ? (
+								<>
+									<span className="prep-clear-confirm-label">
+										Remove {def?.name ?? cls.tag} (lv {cls.level})?
+									</span>
+									<button
+										type="button"
+										className="pick-btn remove"
+										onClick={() => {
+											update((d) => removeClass(d, cls.tag));
+											setConfirmRemoveTag(null);
+										}}
+									>
+										Remove
+									</button>
+									<button
+										type="button"
+										className="btn-ghost"
+										onClick={() => setConfirmRemoveTag(null)}
+									>
+										Cancel
+									</button>
+								</>
+							) : (
+								<button
+									type="button"
+									className="btn-ghost"
+									onClick={() => setConfirmRemoveTag(cls.tag)}
+								>
+									remove
+								</button>
+							)}
 						</div>
 					);
 				})

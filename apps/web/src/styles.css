@@ -42,6 +42,7 @@ body {
 	background:
 		radial-gradient(1200px 600px at 80% -10%, #1c2733 0%, transparent 60%),
 		var(--bg);
+	background-repeat: no-repeat;
 	color: var(--ink);
 	font-family: var(--body);
 	font-size: 15px;
@@ -1560,6 +1561,10 @@ button:focus-visible,
 .chip.cond .dot {
 	color: var(--gold-dim);
 	margin-left: 3px;
+}
+
+.cond-legend {
+	margin-top: 8px;
 }
 
 .cond-notes {
