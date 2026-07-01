@@ -1,6 +1,7 @@
 /**
- * Unit tests for weapon doc transitions (addWeapon, updateWeapon, removeWeapon)
- * and the weapon-group choice option selector (featChoiceOptions "weapon" type).
+ * Unit tests for weapon doc transitions (addWeapon, updateWeapon, replaceWeapon,
+ * removeWeapon) and the weapon-group choice option selector
+ * (featChoiceOptions "weapon" type).
  */
 import { describe, expect, it } from "bun:test";
 
@@ -12,6 +13,7 @@ import {
 	addWeapon,
 	addWeaponFromRef,
 	removeWeapon,
+	replaceWeapon,
 	updateWeapon,
 } from "../src/model/doc.js";
 import { featChoiceOptions } from "../src/model/feats.js";
@@ -141,6 +143,64 @@ describe("updateWeapon()", () => {
 		let d = addWeapon(doc(), { ...LONGSWORD, enhancement: 9 });
 		d = updateWeapon(d, 0, { abilities: ["keen", "flaming"] });
 		expect(d.build.weapons![0]!.abilities).toEqual(["keen"]);
+	});
+});
+
+// ---------------------------------------------------------------------------
+// replaceWeapon
+// ---------------------------------------------------------------------------
+describe("replaceWeapon()", () => {
+	it("wholesale-replaces the weapon at the given index", () => {
+		const d = replaceWeapon(addWeapon(doc(), LONGSWORD), 0, SHORTBOW);
+		expect(d.build.weapons![0]).toEqual(SHORTBOW);
+	});
+
+	it("regression: reverting enhancement back to 0 actually clears it (the edit-form bug)", () => {
+		// The edit form omits `enhancement` from its saved object once it's 0
+		// (doc minimalism). updateWeapon's merge-patch semantics would then
+		// treat that omission as "leave unchanged" and keep the stale +1.
+		// replaceWeapon must not have that problem.
+		let d = addWeapon(doc(), { ...LONGSWORD, enhancement: 1 });
+		expect(d.build.weapons![0]!.enhancement).toBe(1);
+		const edited: WeaponInstance = { ...LONGSWORD }; // no `enhancement` key at all
+		d = replaceWeapon(d, 0, edited);
+		expect(d.build.weapons![0]!.enhancement).toBeUndefined();
+	});
+
+	it("same regression for material/abilities/masterwork reverting to their defaults", () => {
+		let d = addWeapon(doc(), {
+			...LONGSWORD,
+			enhancement: 1,
+			material: "silver",
+			abilities: ["keen"],
+		});
+		const edited: WeaponInstance = { ...LONGSWORD, enhancement: 1 }; // material/abilities dropped
+		d = replaceWeapon(d, 0, edited);
+		expect(d.build.weapons![0]!.material).toBeUndefined();
+		expect(d.build.weapons![0]!.abilities).toBeUndefined();
+	});
+
+	it("still runs the replacement through normalizeWeaponInstance's invariants", () => {
+		const d = replaceWeapon(
+			addWeapon(doc(), LONGSWORD),
+			0,
+			{ ...LONGSWORD, enhancement: 99, masterwork: true },
+		);
+		const w = d.build.weapons![0]!;
+		expect(w.enhancement).toBe(10); // clamped
+		expect(w.masterwork).toBeUndefined(); // dropped: enhancement > 0
+	});
+
+	it("is a no-op for an out-of-range index", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		expect(replaceWeapon(d, 5, SHORTBOW)).toBe(d);
+		expect(replaceWeapon(d, -1, SHORTBOW)).toBe(d);
+	});
+
+	it("does not mutate the original doc", () => {
+		const d = addWeapon(doc(), LONGSWORD);
+		replaceWeapon(d, 0, SHORTBOW);
+		expect(d.build.weapons![0]!.name).toBe("Longsword");
 	});
 });
 

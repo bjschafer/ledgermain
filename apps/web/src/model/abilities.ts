@@ -22,6 +22,11 @@ export interface AbilityDef {
   /** Display note shown in the weapon/armor meta line (e.g. "+1d6 fire"). */
   note?: string;
   /**
+   * Ability id that must also be selected before this one is valid (PF1 RAW:
+   * e.g. "flaming-burst" upgrades "flaming" and can't exist without it).
+   */
+  requires?: string;
+  /**
    * Mechanical effect applied to a {@link WeaponRef} at pick-time before
    * denormalization. Currently only `keen` uses this (doubles crit range).
    */
@@ -68,6 +73,7 @@ const ABILITIES: Record<string, AbilityDef> = {
     slot: "weapon",
     bonusEquivalent: 2,
     note: "+1d6 fire (+×d10 on crit)",
+    requires: "flaming",
   },
   "icy-burst": {
     id: "icy-burst",
@@ -75,6 +81,7 @@ const ABILITIES: Record<string, AbilityDef> = {
     slot: "weapon",
     bonusEquivalent: 2,
     note: "+1d6 cold (+×d10 on crit)",
+    requires: "frost",
   },
   "shocking-burst": {
     id: "shocking-burst",
@@ -82,6 +89,7 @@ const ABILITIES: Record<string, AbilityDef> = {
     slot: "weapon",
     bonusEquivalent: 2,
     note: "+1d6 elec (+×d10 on crit)",
+    requires: "shock",
   },
   holy: {
     id: "holy",
@@ -200,22 +208,63 @@ export function totalBonusEquivalent(abilityIds?: string[]): number {
   return abilityIds.reduce((sum, id) => sum + (ABILITIES[id]?.bonusEquivalent ?? 0), 0);
 }
 
+/** Drop any ability whose `requires` prerequisite isn't present in the same list. */
+function withPrereqsMet(abilityIds: string[]): string[] {
+  return abilityIds.filter((id) => {
+    const req = ABILITIES[id]?.requires;
+    return !req || abilityIds.includes(req);
+  });
+}
+
 /**
- * Keep only as many leading `abilityIds` as fit within PF1's +10
- * enhancement-equivalent cap, given an existing `enhancement` bonus.
- * Enhancement itself counts against the cap, so e.g. `enhancement=9` leaves
- * only 1 point of budget for abilities.
+ * Reduce a weapon/armor ability selection to a valid PF1 combination for a
+ * given `enhancement`: abilities whose prerequisite (e.g. "flaming-burst"
+ * needs "flaming") isn't present are dropped, then the remainder is
+ * truncated (keeping earliest-selected first) so `enhancement` plus the kept
+ * abilities' combined bonus-equivalent never exceeds the +10 cap. Prereqs
+ * are re-checked once more after truncation, since the cap could drop a
+ * prerequisite while its dependent survives.
  */
-export function clampAbilitiesToBudget(abilityIds: string[], enhancement: number): string[] {
+export function sanitizeAbilities(abilityIds: string[], enhancement: number): string[] {
   let budget = 10 - enhancement;
   const kept: string[] = [];
-  for (const id of abilityIds) {
+  for (const id of withPrereqsMet(abilityIds)) {
     const cost = ABILITIES[id]?.bonusEquivalent ?? 0;
     if (cost > budget) continue;
     kept.push(id);
     budget -= cost;
   }
-  return kept;
+  return withPrereqsMet(kept);
+}
+
+/**
+ * Whether `id` could be added to `current` (already-selected ability ids)
+ * given `enhancement`: false if abilities aren't allowed yet (enhancement <
+ * 1), the ability's prerequisite isn't already selected, or adding it would
+ * push the combined bonus-equivalent over the +10 cap. Already-selected
+ * abilities are always selectable (so they can be toggled off).
+ */
+export function abilitySelectable(current: string[], id: string, enhancement: number): boolean {
+  if (current.includes(id)) return true;
+  if (enhancement < 1) return false;
+  const def = ABILITIES[id];
+  if (!def) return false;
+  if (def.requires && !current.includes(def.requires)) return false;
+  return totalBonusEquivalent(current) + def.bonusEquivalent <= 10 - enhancement;
+}
+
+/**
+ * Toggle `id` in/out of `current`, honoring the same rules as
+ * {@link abilitySelectable} for additions. Deselecting a prerequisite
+ * cascades to also remove any dependents left in an invalid state (e.g.
+ * turning off "flaming" also turns off "flaming-burst").
+ */
+export function toggleAbilitySelection(current: string[], id: string, enhancement: number): string[] {
+  if (current.includes(id)) {
+    return withPrereqsMet(current.filter((a) => a !== id));
+  }
+  if (!abilitySelectable(current, id, enhancement)) return current;
+  return [...current, id];
 }
 
 /**

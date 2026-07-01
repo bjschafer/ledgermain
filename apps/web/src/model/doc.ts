@@ -16,7 +16,7 @@ import type {
 	WornArmor,
 } from "@pf1/schema";
 
-import { applyAbilitiesToWeapon, clampAbilitiesToBudget } from "./abilities.js";
+import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 
 const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
@@ -703,7 +703,7 @@ function normalizeWeaponInstance(weapon: WeaponInstance): WeaponInstance {
 	if (enh < 1) {
 		delete next.abilities;
 	} else if (next.abilities && next.abilities.length > 0) {
-		const kept = clampAbilitiesToBudget(next.abilities, enh);
+		const kept = sanitizeAbilities(next.abilities, enh);
 		if (kept.length > 0) next.abilities = kept;
 		else delete next.abilities;
 	}
@@ -777,9 +777,10 @@ export function addWeaponFromRef(
 }
 
 /**
- * Partially update the weapon at `index` with the given `patch`, then
- * re-apply {@link normalizeWeaponInstance}. Out-of-range indices are
- * silently ignored.
+ * Partially update the weapon at `index` with the given `patch` (fields
+ * absent from `patch` are left unchanged — see {@link replaceWeapon} for the
+ * "caller has a full replacement object" case), then re-apply
+ * {@link normalizeWeaponInstance}. Out-of-range indices are silently ignored.
  */
 export function updateWeapon(
 	doc: CharacterDoc,
@@ -794,6 +795,28 @@ export function updateWeapon(
 		build: {
 			...doc.build,
 			weapons: weapons.map((w, i) => (i === index ? merged : w)),
+		},
+	};
+}
+
+/**
+ * Replace the weapon at `index` wholesale with `weapon`. Use this (not
+ * `updateWeapon`) when the caller already has a complete, edited
+ * `WeaponInstance` — e.g. the edit form, which omits fields that match a
+ * default (like `enhancement: 0`) for doc minimalism. `updateWeapon`'s merge
+ * semantics would treat that omission as "leave unchanged" and silently keep
+ * the stale value (so reverting a weapon from +1 back to +0 wouldn't stick).
+ * Out-of-range indices are silently ignored.
+ */
+export function replaceWeapon(doc: CharacterDoc, index: number, weapon: WeaponInstance): CharacterDoc {
+	const weapons = doc.build.weapons ?? [];
+	if (index < 0 || index >= weapons.length) return doc;
+	const next = normalizeWeaponInstance(weapon);
+	return {
+		...doc,
+		build: {
+			...doc.build,
+			weapons: weapons.map((w, i) => (i === index ? next : w)),
 		},
 	};
 }
