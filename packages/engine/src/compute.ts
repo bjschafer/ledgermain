@@ -404,7 +404,8 @@ function computeSkills(
  *
  * Attack formula (PF1 CRB):
  *   attack = BAB + ability mod (STR or DEX per attackAbility) + size modifier
- *            + enhancement + general "attack" / "mattack" / "rattack" changes
+ *            + enhancement (or +1 masterwork if enhancement is 0)
+ *            + general "attack" / "mattack" / "rattack" changes
  *            + per-group changes (e.g. `attack.weapon.longsword` from Weapon Focus)
  *
  * Damage bonus (numeric; dice displayed separately):
@@ -429,6 +430,9 @@ function computeWeaponAttacks(
   return weapons.map((w) => {
     const category = w.category ?? "melee";
     const enh = w.enhancement ?? 0;
+    // Masterwork's +1 attack bonus is implied (and superseded) by any magic
+    // enhancement bonus, so it only applies to a non-magical (+0) weapon.
+    const masterworkBonus = enh === 0 && w.masterwork ? 1 : 0;
     const attackAbilityMod = w.attackAbility === "dex" ? dexMod : strMod;
     const attackAbilityLabel = w.attackAbility === "dex" ? "Dexterity" : "Strength";
 
@@ -440,12 +444,14 @@ function computeWeaponAttacks(
         : forTarget(collected, "rattack")),
       ...(w.group ? forTarget(collected, `attack.weapon.${w.group}`) : []),
     ]);
-    const attackTotal = bab + attackAbilityMod + sizeAttackMod + enh + weaponAttackStack.total;
+    const attackTotal =
+      bab + attackAbilityMod + sizeAttackMod + enh + masterworkBonus + weaponAttackStack.total;
     const attackComponents: ModifierComponent[] = [
       synthetic("BAB", "base", bab),
       synthetic(attackAbilityLabel, "ability", attackAbilityMod),
       ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
       ...(enh !== 0 ? [synthetic(`${w.name} (enhancement)`, "enh", enh)] : []),
+      ...(masterworkBonus !== 0 ? [synthetic(`${w.name} (masterwork)`, "enh", masterworkBonus)] : []),
       ...toComponents(weaponAttackStack.modifiers),
     ];
 

@@ -121,6 +121,27 @@ describe("updateWeapon()", () => {
 		const updated = updateWeapon(d, 0, { enhancement: 99 });
 		expect(updated.build.weapons![0]!.enhancement).toBe(10);
 	});
+
+	it("drops abilities when enhancement is patched down to 0", () => {
+		let d = addWeapon(doc(), LONGSWORD);
+		d = updateWeapon(d, 0, { enhancement: 1, abilities: ["keen"] });
+		expect(d.build.weapons![0]!.abilities).toEqual(["keen"]);
+		d = updateWeapon(d, 0, { enhancement: 0 });
+		expect(d.build.weapons![0]!.abilities).toBeUndefined();
+	});
+
+	it("drops masterwork once enhancement is patched to a positive value", () => {
+		let d = addWeapon(doc(), { ...LONGSWORD, masterwork: true });
+		expect(d.build.weapons![0]!.masterwork).toBe(true);
+		d = updateWeapon(d, 0, { enhancement: 1 });
+		expect(d.build.weapons![0]!.masterwork).toBeUndefined();
+	});
+
+	it("truncates abilities to stay within the +10 combined-bonus cap", () => {
+		let d = addWeapon(doc(), { ...LONGSWORD, enhancement: 9 });
+		d = updateWeapon(d, 0, { abilities: ["keen", "flaming"] });
+		expect(d.build.weapons![0]!.abilities).toEqual(["keen"]);
+	});
 });
 
 // ---------------------------------------------------------------------------
@@ -316,9 +337,9 @@ describe("addWeaponFromRef()", () => {
 		expect(w.material).toBeUndefined();
 	});
 
-	it("keen doubles the crit range: longsword 19→17", () => {
+	it("keen doubles the crit range: longsword 19→17 (requires +1 enhancement)", () => {
 		// Longsword base critRange is 19 (threat 19-20). Keen doubles to 17-20.
-		const d = addWeaponFromRef(doc(), longswordRef, 0, "steel", ["keen"]);
+		const d = addWeaponFromRef(doc(), longswordRef, 1, "steel", ["keen"]);
 		const w = d.build.weapons![0]!;
 		expect(w.critRange).toBe(17);
 		expect(w.abilities).toEqual(["keen"]);
@@ -326,10 +347,19 @@ describe("addWeaponFromRef()", () => {
 
 	it("keen on a default-threat weapon (20) yields 19", () => {
 		// A weapon with critRange 20 (threat 20 only). Keen → 19-20.
-		const d = addWeaponFromRef(doc(), greatswordRef, 0, "steel", ["keen"]);
+		const d = addWeaponFromRef(doc(), greatswordRef, 1, "steel", ["keen"]);
 		// Greatsword base critRange is 19 (from the refdata), not 20.
 		// So keen gives 2*19-21 = 17.
 		expect(d.build.weapons![0]!.critRange).toBe(17);
+	});
+
+	it("special abilities require enhancement >= 1: dropped (and not applied) at +0", () => {
+		// PF1 magic item rules: a special ability can't be added to a weapon
+		// with no enhancement bonus. Keen's crit-range effect must not apply either.
+		const d = addWeaponFromRef(doc(), longswordRef, 0, "steel", ["keen"]);
+		const w = d.build.weapons![0]!;
+		expect(w.abilities).toBeUndefined();
+		expect(w.critRange).toBe(19); // unchanged base threat, not doubled
 	});
 
 	it("flaming is display-only (no stat change, stored in abilities)", () => {
@@ -354,5 +384,28 @@ describe("addWeaponFromRef()", () => {
 	it("no abilities → no abilities field on the doc", () => {
 		const d = addWeaponFromRef(doc(), longswordRef);
 		expect(d.build.weapons![0]!.abilities).toBeUndefined();
+	});
+
+	it("masterwork on a +0 weapon: name prefix and flag set", () => {
+		const d = addWeaponFromRef(doc(), longswordRef, 0, "steel", undefined, true);
+		const w = d.build.weapons![0]!;
+		expect(w.name).toBe("Masterwork Longsword");
+		expect(w.masterwork).toBe(true);
+		expect(w.enhancement).toBeUndefined();
+	});
+
+	it("masterwork is dropped once enhancement is positive (implied by the magic bonus)", () => {
+		const d = addWeaponFromRef(doc(), longswordRef, 1, "steel", undefined, true);
+		const w = d.build.weapons![0]!;
+		expect(w.name).toBe("Longsword +1");
+		expect(w.masterwork).toBeUndefined();
+	});
+
+	it("caps enhancement + abilities' combined bonus-equivalent at +10", () => {
+		// keen (+1) and flaming (+1) cost 2 total; only 1 point of budget remains at +9.
+		const d = addWeaponFromRef(doc(), longswordRef, 9, "steel", ["keen", "flaming"]);
+		const w = d.build.weapons![0]!;
+		expect(w.enhancement).toBe(9);
+		expect(w.abilities).toEqual(["keen"]);
 	});
 });

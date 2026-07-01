@@ -171,6 +171,47 @@ describe("weapons: enhancement bonus adds to both attack and damage", () => {
   });
 });
 
+describe("weapons: masterwork adds +1 to attack only, unless superseded by enhancement", () => {
+  const masterworkSword: WeaponInstance = {
+    name: "Masterwork Longsword",
+    attackAbility: "str",
+    masterwork: true,
+    damageDice: "1d8",
+  };
+  const magicMasterworkSword: WeaponInstance = {
+    name: "Longsword +1",
+    attackAbility: "str",
+    masterwork: true,
+    enhancement: 1,
+    damageDice: "1d8",
+  };
+  const doc = makeDoc(
+    { str: 16, dex: 14, con: 14, int: 10, wis: 12, cha: 8 },
+    [masterworkSword, magicMasterworkSword],
+  );
+  const sheet = compute(doc, ref);
+
+  it("masterwork alone: attack = BAB(1) + STR(3) + masterwork(1) = 5", () => {
+    expect(sheet.attacks[0]!.attack.total).toBe(5);
+  });
+
+  it("masterwork alone: damage unaffected = STR(3)", () => {
+    expect(sheet.attacks[0]!.damageBonus.total).toBe(3);
+  });
+
+  it("masterwork + enhancement: masterwork does not stack with the +1 enhancement", () => {
+    // attack = BAB(1) + STR(3) + enh(1) = 5, not 6.
+    expect(sheet.attacks[1]!.attack.total).toBe(5);
+  });
+
+  it("masterwork component only appears when enhancement is 0", () => {
+    const comps0 = sheet.attacks[0]!.attack.components;
+    expect(comps0.find((c) => c.source.includes("masterwork"))?.value).toBe(1);
+    const comps1 = sheet.attacks[1]!.attack.components;
+    expect(comps1.find((c) => c.source.includes("masterwork"))).toBeUndefined();
+  });
+});
+
 describe("weapons: two-handed weapon applies 1.5× STR to damage", () => {
   // STR 16 → mod +3; floor(3 × 1.5) = floor(4.5) = 4
   const greatsword: WeaponInstance = {

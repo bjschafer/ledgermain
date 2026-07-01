@@ -328,6 +328,12 @@ export interface WeaponInstance {
   damageMultiplier?: number;
   /** Enhancement bonus; adds to both attack roll and damage bonus. Default 0. */
   enhancement?: number;
+  /**
+   * Masterwork quality (+1 to attack, no damage effect). Only meaningful at
+   * `enhancement` 0 — any magic enhancement bonus already implies masterwork,
+   * so this is dropped once `enhancement` is positive.
+   */
+  masterwork?: boolean;
   /** Special material tag (e.g. "mithral", "adamantine", "silver") — display only for weapons. */
   material?: string;
   /** Damage dice string for display only, e.g. "1d8". The engine does not roll. */
@@ -347,7 +353,13 @@ export interface WeaponInstance {
   group?: string;
   /** Melee or ranged; determines which attack modifier targets apply. Default "melee". */
   category?: "melee" | "ranged";
-  /** Magical weapon ability ids (e.g. "keen", "flaming") — keen modifies critRange at pick-time; others display-only. */
+  /**
+   * Magical weapon ability ids (e.g. "keen", "flaming") — keen modifies
+   * critRange at pick-time; others display-only. Requires `enhancement >= 1`
+   * (PF1 magic item rules); `enhancement` plus the abilities' combined
+   * bonus-equivalent is capped at +10 total. Both rules are enforced by the
+   * `model/doc.ts` weapon transitions, not by the schema itself.
+   */
   abilities?: string[];
 }
 

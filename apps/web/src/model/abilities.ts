@@ -191,6 +191,34 @@ export function applyAbilitiesToWeapon(
 }
 
 /**
+ * Sum of `bonusEquivalent` across a list of ability ids — the "cost" of those
+ * abilities in enhancement-bonus terms, per PF1's +10 total-bonus cap on
+ * magic weapons/armor (enhancement + abilities combined).
+ */
+export function totalBonusEquivalent(abilityIds?: string[]): number {
+  if (!abilityIds || abilityIds.length === 0) return 0;
+  return abilityIds.reduce((sum, id) => sum + (ABILITIES[id]?.bonusEquivalent ?? 0), 0);
+}
+
+/**
+ * Keep only as many leading `abilityIds` as fit within PF1's +10
+ * enhancement-equivalent cap, given an existing `enhancement` bonus.
+ * Enhancement itself counts against the cap, so e.g. `enhancement=9` leaves
+ * only 1 point of budget for abilities.
+ */
+export function clampAbilitiesToBudget(abilityIds: string[], enhancement: number): string[] {
+  let budget = 10 - enhancement;
+  const kept: string[] = [];
+  for (const id of abilityIds) {
+    const cost = ABILITIES[id]?.bonusEquivalent ?? 0;
+    if (cost > budget) continue;
+    kept.push(id);
+    budget -= cost;
+  }
+  return kept;
+}
+
+/**
  * Collect display notes for a list of ability ids. Returns an array of
  * `{ name, note }` pairs for the meta line.
  */

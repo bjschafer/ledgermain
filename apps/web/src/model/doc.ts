@@ -16,7 +16,7 @@ import type {
 	WornArmor,
 } from "@pf1/schema";
 
-import { applyAbilitiesToWeapon } from "./abilities.js";
+import { applyAbilitiesToWeapon, clampAbilitiesToBudget } from "./abilities.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 
 const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
@@ -683,24 +683,55 @@ export function setAbilityIncreaseCount(
 }
 
 /**
+ * Enforces PF1's magic weapon invariants on a `WeaponInstance`:
+ *  - `enhancement` clamped to [0, 10].
+ *  - `masterwork` dropped once `enhancement` is positive (a magic enhancement
+ *    bonus already implies masterwork quality; the flag is only meaningful
+ *    at +0).
+ *  - `abilities` require `enhancement >= 1` (a mundane weapon can't carry a
+ *    special ability) — cleared entirely otherwise.
+ *  - `abilities` truncated (keeping earliest-selected first) so `enhancement`
+ *    plus their combined bonus-equivalent never exceeds +10.
+ */
+function normalizeWeaponInstance(weapon: WeaponInstance): WeaponInstance {
+	const next = { ...weapon };
+	if (next.enhancement != null) {
+		next.enhancement = clampInt(next.enhancement, 0, 10);
+	}
+	const enh = next.enhancement ?? 0;
+	if (enh > 0) delete next.masterwork;
+	if (enh < 1) {
+		delete next.abilities;
+	} else if (next.abilities && next.abilities.length > 0) {
+		const kept = clampAbilitiesToBudget(next.abilities, enh);
+		if (kept.length > 0) next.abilities = kept;
+		else delete next.abilities;
+	}
+	return next;
+}
+
+/**
  * Append a weapon to `build.weapons`. The new entry is always added at the end.
  * No deduplication — the same weapon template may be added multiple times.
  */
 export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterDoc {
-	const weapons = [...(doc.build.weapons ?? []), weapon];
+	const weapons = [...(doc.build.weapons ?? []), normalizeWeaponInstance(weapon)];
 	return { ...doc, build: { ...doc.build, weapons } };
 }
 
 /**
  * Append a weapon selected from `RefData.weapons`, overlaying a user-chosen
- * enhancement bonus, optional special material, and optional magical abilities.
- * Snapshots the ref's physical stats onto a `WeaponInstance` (the engine reads
- * those fields directly; `weaponId` is a display + re-sync pointer only). The
- * display name gets a material prefix ("Silver Longsword") and " +N" suffix
- * when enhancement is positive. Zero-value optionals (matching engine defaults)
- * are omitted so the doc stays minimal. Material is display-only for weapons.
- * Keen (if selected) doubles the crit range at pick-time; other abilities are
- * display-only.
+ * enhancement bonus, optional masterwork flag, optional special material, and
+ * optional magical abilities. Snapshots the ref's physical stats onto a
+ * `WeaponInstance` (the engine reads those fields directly; `weaponId` is a
+ * display + re-sync pointer only). The display name gets a "Masterwork"
+ * prefix (only when non-magical — see {@link normalizeWeaponInstance}), a
+ * material prefix ("Silver Longsword"), and a " +N" suffix when enhancement
+ * is positive. Zero-value optionals (matching engine defaults) are omitted so
+ * the doc stays minimal. Material is display-only for weapons. Keen (if
+ * selected) doubles the crit range at pick-time; other abilities are
+ * display-only. Abilities without `enhancement >= 1`, or beyond the +10
+ * combined-bonus cap, are dropped by `normalizeWeaponInstance`.
  */
 export function addWeaponFromRef(
 	doc: CharacterDoc,
@@ -708,23 +739,30 @@ export function addWeaponFromRef(
 	enhancement: number = 0,
 	material?: string,
 	abilities?: string[],
+	masterwork?: boolean,
 ): CharacterDoc {
-	const ref = applyAbilitiesToWeapon(weapon, abilities);
 	const enh = clampInt(enhancement, 0, 10);
+	// Special abilities (including keen's crit-range doubling) require the
+	// weapon to carry at least a +1 enhancement bonus — see normalizeWeaponInstance.
+	const effectiveAbilities = enh >= 1 ? abilities : undefined;
+	const ref = applyAbilitiesToWeapon(weapon, effectiveAbilities);
+	const mw = enh === 0 && masterwork === true;
 	const matName = material && material !== "steel" ? MATERIALS[material]?.name ?? null : null;
 	const name = [
+		mw ? "Masterwork" : null,
 		matName,
 		weapon.name,
 		...(enh > 0 ? [`+${enh}`] : []),
 	].filter(Boolean).join(" ");
-	const instance: WeaponInstance = {
+	const instance: WeaponInstance = normalizeWeaponInstance({
 		name,
 		attackAbility: ref.attackAbility,
 		damageAbility: ref.damageAbility,
 		category: ref.category,
 		...(enh > 0 ? { enhancement: enh } : {}),
+		...(mw ? { masterwork: true } : {}),
 		...(material && material !== "steel" ? { material } : {}),
-		...(abilities && abilities.length > 0 ? { abilities } : {}),
+		...(effectiveAbilities && effectiveAbilities.length > 0 ? { abilities: effectiveAbilities } : {}),
 		...(ref.damageDice ? { damageDice: ref.damageDice } : {}),
 		...(ref.critRange && ref.critRange !== 20 ? { critRange: ref.critRange } : {}),
 		...(ref.critMult && ref.critMult !== 2 ? { critMult: ref.critMult } : {}),
@@ -733,14 +771,15 @@ export function addWeaponFromRef(
 			: {}),
 		...(ref.group ? { group: ref.group } : {}),
 		weaponId: weapon.id,
-	};
+	});
 	const weapons = [...(doc.build.weapons ?? []), instance];
 	return { ...doc, build: { ...doc.build, weapons } };
 }
 
 /**
- * Partially update the weapon at `index` with the given `patch`. Enhancement
- * is clamped to [0, 10]. Out-of-range indices are silently ignored.
+ * Partially update the weapon at `index` with the given `patch`, then
+ * re-apply {@link normalizeWeaponInstance}. Out-of-range indices are
+ * silently ignored.
  */
 export function updateWeapon(
 	doc: CharacterDoc,
@@ -749,10 +788,7 @@ export function updateWeapon(
 ): CharacterDoc {
 	const weapons = doc.build.weapons ?? [];
 	if (index < 0 || index >= weapons.length) return doc;
-	const merged = { ...weapons[index]!, ...patch };
-	if (merged.enhancement != null) {
-		merged.enhancement = clampInt(merged.enhancement, 0, 10);
-	}
+	const merged = normalizeWeaponInstance({ ...weapons[index]!, ...patch });
 	return {
 		...doc,
 		build: {
