@@ -2,6 +2,10 @@
   "name": "ledgermain",
   "account_id": "5b51f634ca1cf16a0c47a4fcd00a5cf3",
   "compatibility_date": "2026-06-30",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "ledgermain.whizkid.dev", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application"
