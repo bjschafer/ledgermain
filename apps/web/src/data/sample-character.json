@@ -26,7 +26,7 @@
     "con": 12,
     "int": 10,
     "wis": 16,
-    "cha": 12
+    "cha": 15
   },
   "build": {
     "feats": [
@@ -111,7 +111,7 @@
     "conditions": [],
     "activeBuffs": [
       {
-        "instanceId": "923482ee-3f36-41b4-bd73-0abf2b28f2fd",
+        "instanceId": "eea2d3b1-2d85-478f-8c1c-5bb47f5107b6",
         "buffId": "ClOy4KHJFDdt0ALh",
         "name": "Bull's Strength",
         "changes": [
@@ -126,7 +126,7 @@
         "remainingRounds": 42
       },
       {
-        "instanceId": "9fd18126-9612-42fb-a668-a428af1c2fb9",
+        "instanceId": "566aae7d-4b2c-4b9a-b452-22c61ca4f217",
         "buffId": "QYVZS8MfOKzjpCm1",
         "name": "Bless",
         "changes": [
@@ -149,7 +149,7 @@
     "resources": {
       "kXXz1lO4i7CibHJ9": {
         "used": 2,
-        "max": 3
+        "max": 4
       }
     },
     "spells": {

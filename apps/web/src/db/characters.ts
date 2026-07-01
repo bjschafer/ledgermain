@@ -78,15 +78,21 @@ export async function loadOrCreateActive(): Promise<CharacterDoc> {
     activeLoadPromise = (async () => {
       const storedId = getStoredActiveId();
       const stored = storedId ? await db.characters.get(storedId) : undefined;
-      if (stored) return rememberActive(migrateDoc(stored));
-      const existing = await db.characters.orderBy("updatedAt").last();
-      if (existing) return rememberActive(migrateDoc(existing));
-      // Genuinely first-ever launch (empty store, no explicit choice recorded):
-      // seed a pre-built sample character alongside the fresh blank one so
-      // there's something to explore. It is NOT made active — the player lands
-      // on their own blank sheet and can switch to the sample via the picker.
-      await seedSampleCharacter();
-      return createCharacter();
+      const active = stored
+        ? rememberActive(migrateDoc(stored))
+        : await (async () => {
+            const existing = await db.characters.orderBy("updatedAt").last();
+            return existing ? rememberActive(migrateDoc(existing)) : createCharacter();
+          })();
+      // Backfill the bundled sample character if it isn't in this store yet —
+      // not just on a genuinely empty store. A device/deployment that already
+      // had its own character(s) before this feature shipped would otherwise
+      // never pass through the empty-store branch and would never see it.
+      // Runs after `active` is resolved so it can't be mistaken for the
+      // most-recently-updated document above; never touches the active-id
+      // pointer.
+      await ensureSampleCharacterSeeded();
+      return active;
     })().finally(() => {
       activeLoadPromise = null;
     });
@@ -94,8 +100,10 @@ export async function loadOrCreateActive(): Promise<CharacterDoc> {
   return activeLoadPromise;
 }
 
-/** Insert the bundled sample character, without touching the active-id pointer. */
-async function seedSampleCharacter(): Promise<void> {
+/** Insert the bundled sample character if it isn't already present. */
+async function ensureSampleCharacterSeeded(): Promise<void> {
+  const existing = await db.characters.get(sampleCharacterJson.id);
+  if (existing) return;
   const sample = parseImportedDoc(sampleCharacterJson);
   await db.characters.put(sample);
 }

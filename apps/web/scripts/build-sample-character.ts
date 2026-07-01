@@ -91,7 +91,8 @@ doc = setAbility(doc, "dex", 12);
 doc = setAbility(doc, "con", 12);
 doc = setAbility(doc, "int", 10);
 doc = setAbility(doc, "wis", 16);
-doc = setAbility(doc, "cha", 12);
+// 15 base (13 after the dwarf -2 racial) — Selective Channeling requires Cha 13.
+doc = setAbility(doc, "cha", 15);
 
 doc = addClass(doc, "cleric");
 doc = setClassLevel(doc, "cleric", 5);
