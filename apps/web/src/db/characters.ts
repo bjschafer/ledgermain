@@ -9,7 +9,9 @@
 import Dexie, { type Table } from "dexie";
 
 import type { CharacterDoc } from "@pf1/schema";
+import sampleCharacterJson from "../data/sample-character.json";
 import { createEmptyDoc, migrateDoc } from "../model/doc.js";
+import { parseImportedDoc } from "../model/importCharacter.js";
 
 class CharacterDb extends Dexie {
   characters!: Table<CharacterDoc, string>;
@@ -79,12 +81,23 @@ export async function loadOrCreateActive(): Promise<CharacterDoc> {
       if (stored) return rememberActive(migrateDoc(stored));
       const existing = await db.characters.orderBy("updatedAt").last();
       if (existing) return rememberActive(migrateDoc(existing));
+      // Genuinely first-ever launch (empty store, no explicit choice recorded):
+      // seed a pre-built sample character alongside the fresh blank one so
+      // there's something to explore. It is NOT made active — the player lands
+      // on their own blank sheet and can switch to the sample via the picker.
+      await seedSampleCharacter();
       return createCharacter();
     })().finally(() => {
       activeLoadPromise = null;
     });
   }
   return activeLoadPromise;
+}
+
+/** Insert the bundled sample character, without touching the active-id pointer. */
+async function seedSampleCharacter(): Promise<void> {
+  const sample = parseImportedDoc(sampleCharacterJson);
+  await db.characters.put(sample);
 }
 
 /** Lightweight summary for the character switcher — avoids shipping full docs around. */

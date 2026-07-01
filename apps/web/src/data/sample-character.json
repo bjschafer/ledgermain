@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 2,
+  "id": "sample-kordrek-ironvein",
+  "ownerId": "local",
+  "version": 1,
+  "updatedAt": "2026-01-01T00:00:00.000Z",
+  "identity": {
+    "name": "Kordrek Ironvein",
+    "race": "nEltI9y37rKJTeWo",
+    "classes": [
+      {
+        "tag": "cleric",
+        "level": 5
+      }
+    ],
+    "alignment": "LG",
+    "deity": "Torag",
+    "gender": "Male",
+    "height": "4 ft. 3 in.",
+    "weight": "185 lb.",
+    "favoredClass": "cleric"
+  },
+  "abilities": {
+    "str": 14,
+    "dex": 12,
+    "con": 12,
+    "int": 10,
+    "wis": 16,
+    "cha": 12
+  },
+  "build": {
+    "feats": [
+      "8snLqsJN4LLL00Nq",
+      "WnWRcte0jppClLpz",
+      "7zJTztNW7hdaqjKc"
+    ],
+    "skillRanks": {
+      "hea": 5,
+      "kre": 3,
+      "dip": 3,
+      "sen": 3
+    },
+    "clericDomains": [
+      "War",
+      "Strength"
+    ],
+    "archetypes": [],
+    "classFeatureChoices": [],
+    "spells": {
+      "known": []
+    },
+    "gear": [
+      {
+        "equipped": true,
+        "armor": {
+          "slot": "armor",
+          "ac": 6,
+          "maxDex": 2,
+          "acp": -5,
+          "type": 2
+        },
+        "armorId": "unY9jt1B8a5bbnzO",
+        "name": "Chainmail"
+      },
+      {
+        "equipped": true,
+        "armor": {
+          "slot": "shield",
+          "ac": 2,
+          "acp": -2
+        },
+        "armorId": "2fK608aSYU9QDmzw",
+        "name": "Heavy Steel Shield"
+      },
+      {
+        "itemId": "MrxwYWWezbJTZLog",
+        "equipped": true
+      }
+    ],
+    "favoredClassBonus": [
+      "hp",
+      "hp",
+      "hp",
+      "hp",
+      "hp"
+    ],
+    "abilityIncreases": [
+      "wis"
+    ],
+    "featChoices": {
+      "7zJTztNW7hdaqjKc": "hea"
+    },
+    "weapons": [
+      {
+        "name": "Heavy Mace",
+        "attackAbility": "str",
+        "damageAbility": "str",
+        "category": "melee",
+        "damageDice": "1d8",
+        "group": "heavy-mace",
+        "weaponId": "AbmnL8ilLH6r95Oa"
+      }
+    ]
+  },
+  "live": {
+    "hp": {
+      "current": 34,
+      "temp": 0,
+      "nonlethal": 0
+    },
+    "conditions": [],
+    "activeBuffs": [
+      {
+        "instanceId": "923482ee-3f36-41b4-bd73-0abf2b28f2fd",
+        "buffId": "ClOy4KHJFDdt0ALh",
+        "name": "Bull's Strength",
+        "changes": [
+          {
+            "formula": "4",
+            "target": "str",
+            "type": "enh"
+          }
+        ],
+        "contextNotes": [],
+        "casterLevel": 5,
+        "remainingRounds": 42
+      },
+      {
+        "instanceId": "9fd18126-9612-42fb-a668-a428af1c2fb9",
+        "buffId": "QYVZS8MfOKzjpCm1",
+        "name": "Bless",
+        "changes": [
+          {
+            "formula": "1",
+            "target": "attack",
+            "type": "morale"
+          }
+        ],
+        "contextNotes": [
+          {
+            "target": "allSavingThrows",
+            "text": "+[[1]] Morale vs Fear effects"
+          }
+        ],
+        "casterLevel": 5,
+        "remainingRounds": 6
+      }
+    ],
+    "resources": {
+      "kXXz1lO4i7CibHJ9": {
+        "used": 2,
+        "max": 3
+      }
+    },
+    "spells": {
+      "prepared": [
+        {
+          "spellId": "o8ds5jtvf0hf92dw",
+          "expended": false
+        },
+        {
+          "spellId": "ip9onjfp6nf1vlv9",
+          "expended": false
+        },
+        {
+          "spellId": "g8j278xcu2s1zlwy",
+          "expended": false
+        },
+        {
+          "spellId": "xoc3vhg3btmfjauq",
+          "expended": true
+        },
+        {
+          "spellId": "xoc3vhg3btmfjauq",
+          "expended": false
+        },
+        {
+          "spellId": "wa0zb2pncesmm9lz",
+          "expended": true
+        },
+        {
+          "spellId": "21bxbzdaawjrnvyo",
+          "expended": false
+        },
+        {
+          "spellId": "e67esdjp4nojtbr7",
+          "expended": false
+        },
+        {
+          "spellId": "zujht80bgjdk9cyb",
+          "expended": false
+        },
+        {
+          "spellId": "norn02g8zdsspf2j",
+          "expended": false
+        },
+        {
+          "spellId": "gmgwyjfpeuuc4t4o",
+          "expended": false
+        },
+        {
+          "spellId": "cvv6oimqks9n62vy",
+          "expended": true,
+          "kind": "domain"
+        },
+        {
+          "spellId": "jnlr9cuepka1l26e",
+          "expended": false,
+          "kind": "domain"
+        },
+        {
+          "spellId": "avofn5q2v0f0qxjy",
+          "expended": false,
+          "kind": "domain"
+        },
+        {
+          "spellId": "05i5rxwim12hwktu",
+          "expended": false,
+          "kind": "domain"
+        },
+        {
+          "spellId": "73han2zqxg59u18g",
+          "expended": false,
+          "kind": "domain"
+        },
+        {
+          "spellId": "73han2zqxg59u18g",
+          "expended": false,
+          "kind": "domain"
+        }
+      ]
+    },
+    "heroPoints": 2
+  }
+}

@@ -15,6 +15,7 @@ import { SkillsSection } from "./components/builder/SkillsSection.js";
 import { SpellsSection } from "./components/builder/SpellsSection.js";
 import type { BuilderProps } from "./components/builder/types.js";
 import { CharacterSwitcher } from "./components/CharacterSwitcher.js";
+import { PreviewNotice } from "./components/PreviewNotice.js";
 import { Sheet } from "./components/Sheet.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { useCharacter } from "./state/useCharacter.js";
@@ -27,6 +28,7 @@ export function App() {
 
   return (
     <div className="app">
+      <PreviewNotice />
       <header className="masthead">
         <div>
           <div className="wordmark">

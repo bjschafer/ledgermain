@@ -2499,3 +2499,42 @@ button:focus-visible,
 	grid-template-columns: repeat(3, 1fr);
 	gap: 8px;
 }
+
+/* ---------------------------------------------------------- preview notice -- */
+
+.preview-notice-backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	display: grid;
+	place-items: center;
+	background: rgba(10, 11, 14, 0.72);
+	padding: 16px;
+}
+
+.preview-notice {
+	max-width: 440px;
+	background: var(--surface);
+	border: 1px solid var(--gold-dim);
+	border-radius: var(--radius);
+	padding: 20px 24px;
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.preview-notice-title {
+	font-family: var(--display);
+	font-size: 18px;
+	color: var(--gold);
+	margin-bottom: 10px;
+}
+
+.preview-notice p {
+	color: var(--muted);
+	font-size: 13px;
+	line-height: 1.5;
+	margin-bottom: 12px;
+}
+
+.preview-notice .btn-ghost {
+	float: right;
+}

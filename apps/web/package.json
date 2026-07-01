@@ -10,6 +10,7 @@
     "prebuild": "bun scripts/copy-refdata.ts",
     "build": "vite build",
     "preview": "vite preview",
+    "sample:build": "bun scripts/build-sample-character.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "bun test ./test",
     "e2e": "playwright test"
