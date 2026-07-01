@@ -15,7 +15,8 @@
     "typecheck": "bun run --filter '*' typecheck",
     "e2e": "bun run --filter @pf1/web e2e",
     "data:fetch": "bun run --filter @pf1/data-pipeline fetch",
-    "data:build": "bun run --filter @pf1/data-pipeline generate"
+    "data:build": "bun run --filter @pf1/data-pipeline generate",
+    "deploy": "bun run build && bun run --filter @pf1/web deploy"
   },
   "devDependencies": {
     "typescript": "^5.6.3"
