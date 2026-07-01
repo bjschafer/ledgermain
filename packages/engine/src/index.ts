@@ -45,6 +45,8 @@ export {
   baseSpellsKnown,
   type SpellProgression,
   type SpellKnownProgression,
+  channelEnergyDetail,
+  type ChannelEnergyDetail,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export {

@@ -1,9 +1,12 @@
 import { useMemo, useState } from "react";
 
 import type { Spell } from "@pf1/schema";
+import type { RefData } from "@pf1/schema";
 
 import {
   clearPrepared,
+  domainSpellLevelMap,
+  prepareDomainSpell,
   prepareSpell,
   preparedSpells,
   removePreparedAt,
@@ -107,6 +110,203 @@ function SpellDetail({
 }
 
 // ---------------------------------------------------------------------------
+// Domain slots — bonus prepared slots for a cleric with chosen domains.
+// ---------------------------------------------------------------------------
+
+/**
+ * The bonus domain-slot grid for a cleric with chosen domains. PF1 grants ONE
+ * domain spell slot per accessible cleric spell level (1–9); the chosen domains
+ * determine which spells SOURCED the prepare-from picker offers (union, deduped
+ * by id across the chosen domains at each level). Each domain-prepare instance
+ * stores `kind: "domain"` on the doc, keeping it out of the class-slot capacity
+ * check in {@link PreparedView}.
+ */
+function DomainSlotsSection({
+  doc,
+  refData,
+  update,
+  slots,
+  abilityMod,
+}: {
+  doc: BuilderProps["doc"];
+  refData: RefData;
+  update: BuilderProps["update"];
+  slots: ReturnType<typeof spellSlotsByLevel>;
+  classLevel: number;
+  abilityMod: number;
+}) {
+  const domains = doc.build.clericDomains ?? [];
+  const domainMap = useMemo(
+    () => domainSpellLevelMap(refData, domains),
+    [refData, domains],
+  );
+
+  // Bucket domain-kind prepared instances by their domain spell level.
+  type Row = { index: number; spellId: string; name: string; expended: boolean };
+  const preparedByLevel = new Map<number, Row[]>();
+  const prepared = preparedSpells(doc);
+  prepared.forEach((p, index) => {
+    if ((p.kind ?? "normal") !== "domain") return;
+    const lvl = domainMap.get(p.spellId);
+    if (lvl === undefined) return;
+    const row: Row = {
+      index,
+      spellId: p.spellId,
+      name: refData.spells[p.spellId]?.name ?? p.spellId,
+      expended: p.expended,
+    };
+    (preparedByLevel.get(lvl) ?? preparedByLevel.set(lvl, []).get(lvl)!).push(row);
+  });
+  for (const arr of preparedByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
+
+  // Per accessible spell level (1–9), build the union of domain spells the
+  // chosen domains offer at that level (deduped by spell id).
+  const pickableByLevel = useMemo(() => {
+    const out = new Map<number, { id: string; name: string }[]>();
+    for (const slot of slots) {
+      if (slot.level < 1 || slot.base === null) continue;
+      const ids = new Set<string>();
+      for (const tag of domains) {
+        const list = refData.domainSpellLists[tag];
+        if (!list) continue;
+        for (const id of list[slot.level] ?? []) ids.add(id);
+      }
+      const entries: { id: string; name: string }[] = [];
+      for (const id of ids) {
+        const sp = refData.spells[id];
+        if (sp) entries.push({ id, name: sp.name });
+      }
+      entries.sort((a, b) => a.name.localeCompare(b.name));
+      out.set(slot.level, entries);
+    }
+    return out;
+  }, [slots, domains, refData]);
+
+  const accessibleLevels = [...pickableByLevel.keys()].sort((a, b) => a - b);
+  if (accessibleLevels.length === 0) return null;
+
+  return (
+    <div className="domain-slots">
+      <header className="domain-slots-head">
+        <h4 className="domain-slots-title">Domain Slots ({domains.join(", ")})</h4>
+        <p className="hint domain-slots-hint">
+          One bonus prepare-slot per accessible cleric spell level. Fill it from
+          the chosen domains' spell list (a domain-only spell not on the cleric
+          list may only be prepared here).
+        </p>
+      </header>
+
+      {accessibleLevels.map((level) => {
+        const rows = preparedByLevel.get(level) ?? [];
+        const total = 1; // PF1: one domain slot per accessible level
+        const full = rows.length >= total;
+        const pickable = pickableByLevel.get(level) ?? [];
+
+        return (
+          <section key={level} className="prep-level is-domain">
+            <header className="prep-head">
+              <span className="prep-head-label">Domain L{level}</span>
+              <span className={`prep-count${rows.length > total ? " is-over" : ""}`}>
+                {rows.length}/{total} prepared
+                {rows.length > 0 && ` · ${rows.filter((r) => !r.expended).length} ready`}
+              </span>
+            </header>
+
+            {rows.length > 0 ? (
+              <div className="prep-rows">
+                {rows.map((r) => {
+                  const spellData = refData.spells[r.spellId];
+                  return (
+                    <div
+                      key={r.index}
+                      className={`prep-row${r.expended ? " is-expended" : ""}`}
+                    >
+                      <div className="prep-row-main">
+                        <span className="prep-name">{r.name}</span>
+                        {spellData && (
+                          <SpellDetail
+                            spell={spellData}
+                            spellLevel={level}
+                            abilityMod={abilityMod}
+                          />
+                        )}
+                      </div>
+                      {r.expended ? (
+                        <button
+                          type="button"
+                          className="pick-btn add prep-cast"
+                          onClick={() => update((d) => setExpendedAt(d, r.index, false))}
+                        >
+                          Recover
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="pick-btn remove prep-cast"
+                          onClick={() => update((d) => setExpendedAt(d, r.index, true))}
+                        >
+                          Cast
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        className="btn-ghost prep-x"
+                        aria-label={`unprepare ${r.name}`}
+                        onClick={() => update((d) => removePreparedAt(d, r.index))}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="prep-none">— domain slot empty —</p>
+            )}
+
+            {pickable.length > 0 ? (
+              <details className="prep-add">
+                <summary>
+                  Prepare from {" "}{domains.join(", ")} level-{level} list…
+                  {full && <span className="prep-full"> domain slot filled</span>}
+                </summary>
+                <div className="prep-add-list">
+                  {pickable.map((sp) => {
+                    const count = rows.filter((r) => r.spellId === sp.id && !r.expended).length;
+                    return (
+                      <div key={sp.id} className="prep-add-row">
+                        <span className="prep-name">{sp.name}</span>
+                        {count > 0 && <span className="prep-have">prepared</span>}
+                        <button
+                          type="button"
+                          className="pick-btn add"
+                          aria-label={`prepare ${sp.name} in the domain slot`}
+                          disabled={full}
+                          title={
+                            full
+                              ? "Domain slot is filled — unprepare the current spell first."
+                              : undefined
+                          }
+                          onClick={() => update((d) => prepareDomainSpell(d, sp.id))}
+                        >
+                          Prepare
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </details>
+            ) : (
+              <p className="prep-none">No level-{level} spells in the chosen domains.</p>
+            )}
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Prepared-caster (wizard) view
 // ---------------------------------------------------------------------------
 
@@ -149,6 +349,9 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
   const preparedByLevel = new Map<number, PreparedRow[]>();
   const preparedCountBySpell = new Map<string, number>();
   prepared.forEach((p, index) => {
+    // Exclude domain-slot instances — they are bucketed/rendered separately to
+    // keep the class slots capacity check honest.
+    if ((p.kind ?? "normal") === "domain") return;
     const lvl = levelMap.get(p.spellId);
     if (lvl === undefined) return;
     preparedCountBySpell.set(p.spellId, (preparedCountBySpell.get(p.spellId) ?? 0) + 1);
@@ -387,13 +590,21 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
           );
         })}
       </div>
+
+      {/* Domain slots: one per accessible spell level per chosen domain. */}
+      {(doc.build.clericDomains ?? []).length > 0 && casterTag === "cleric" && (
+        <DomainSlotsSection
+          doc={doc}
+          refData={refData}
+          update={update}
+          slots={slots}
+          classLevel={classLevel}
+          abilityMod={abilityMod}
+        />
+      )}
     </Panel>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Spontaneous-caster (sorcerer) view
-// ---------------------------------------------------------------------------
 
 /**
  * Spontaneous caster daily tracking. Shows per-level slot pools (used/total)

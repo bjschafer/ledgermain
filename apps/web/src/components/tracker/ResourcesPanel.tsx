@@ -70,7 +70,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
 							<ResourceRow
 								key={pool.id}
 								name={pool.name}
-								sub={pool.per ? `per ${pool.per}` : "derived"}
+								sub={pool.detail ?? (pool.per ? `per ${pool.per}` : "derived")}
 								left={pool.max - used}
 								max={pool.max}
 								onDrain={() => drain(pool.id)}

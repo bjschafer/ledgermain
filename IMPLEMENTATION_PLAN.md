@@ -17,7 +17,7 @@ that lives only in the feature's prose description.
 **Success Criteria**: `refData.domainSpellLists["Air"]` is a populated SpellList; spells
 that are domain-only (not on any sliced class list) are now in `refData.spells`.
 **Tests**: refdata test asserting Air domain has a known-level-1 entry; counts.
-**Status**: Not Started
+**Status**: Complete — 37 domains, 43 new spells (2381 → 2424); Control Winds @ Air L5 vendored.
 
 - Widen spell filter (`normalize.ts:116`) to also keep spells with non-empty
   `learnedAt.domain` / `learnedAt.subdomain`.
@@ -32,7 +32,7 @@ that are domain-only (not on any sliced class list) are now in `refData.spells`.
 **Success Criteria**: `build.clericDomains` round-trips; `PreparedSpell.kind` defaults "normal";
 `migrateDoc` upgrades schemaVersion 1→2; pure transitions wired + unit-tested.
 **Tests**: doc-transition tests (setClericDomains, prepareDomainSpell, unprepare by kind).
-**Status**: Not Started
+**Status**: Complete — preparedSpells.test.ts gained the "domain spell slots (cleric)" suite.
 
 - `character.ts`: add `build.clericDomains?: string[]`; add `kind?: "normal"|"domain"` to
   `PreparedSpell`; bump doc `schemaVersion` literal in `createEmptyDoc` 1→2; `migrateDoc`.
@@ -45,7 +45,8 @@ that are domain-only (not on any sliced class list) are now in `refData.spells`.
 **Goal**: user picks up to two domains; cleric-only domain spells appear in the builder.
 **Success Criteria**: selecting "Air" domain shows Air spells; choice persists.
 **Tests**: e2e or component-level render snapshot.
-**Status**: Not Started
+**Status**: Complete — DomainPicker rendered inside ClassesSection (cleric only);
+SpellsSection renders a read-only DomainSpellsBlock grouped by level for chosen domains.
 
 - New `DomainPicker.tsx` (renders when cleric is selected; free-choice, soft-warning only).
 - Wire into `ClassesSection.tsx` (or `IdentitySection` near deity).
@@ -60,7 +61,11 @@ pool shows dice (Xd6) + save DC.
 **Success Criteria**: cleric can prepare a domain-only spell in the domain slot; ResourcesPanel
 renders "Channel Energy · 4d6 (DC 15)".
 **Tests**: engine `channelEnergyDetail` helper test; tracker render check.
-**Status**: Not Started
+**Status**: Complete — `channelEnergyDetail` clean-room in tables.ts; `DerivedResourcePool.detail`
+populated when feature.tag === "channelEnergy"; ResourcesPanel surfaces it as the sub-line.
+PreparedView excludes domain-kind entries from the class-slot capacity check and renders a
+DomainSlotsSection beneath the levels grid (one bonus slot per accessible spell level, picker
+sources from the union of chosen domains' lists).
 
 - Engine: `channelEnergyDetail(clericLevel, chaMod)` clean-room helper in `tables.ts`;
   `resources.ts` sets `pool.detail` when feature.tag === "channelEnergy"; `DerivedResourcePool.detail?`.

@@ -316,3 +316,44 @@ export function baseSpellsKnown(
   if (spellLevel < 0 || spellLevel > 9) return null;
   return table[classLevel - 1]![spellLevel] ?? null;
 }
+
+/* -------------------------------------------------------- channel energy -- */
+
+/**
+ * Cleric channel-energy scaling, clean-room from the published PF1 rules (the
+ * Channel Energy class feature's `changes[]` is prose-only upstream — dice and
+ * save DC are NOT among the vendored `uses.maxFormula` data).
+ *
+ * Damage/Healing dice = `1d6 + 1d6 per 2 cleric levels beyond 1st`, so at L1
+ * it is 1d6, L3 it is 2d6, L5 it is 3d6, and so on. Equivalently:
+ * `floor((clericLevel + 1) / 2)` d6.
+ *
+ * Save DC uses the standard "10 + ½ class level + casting-ability modifier"
+ * template; for channel energy the casting ability is Charisma.
+ */
+export interface ChannelEnergyDetail {
+  /** Number of d6 rolled when channeling (1 at L1, 10 at L19). */
+  dice: number;
+  /** Display string, e.g. "4d6". */
+  diceLabel: string;
+  /** Will-save DC to halve the damage, 10 + floor(clericLevel/2) + chaMod. */
+  saveDC: number;
+}
+
+/**
+ * Channel-energy dice count and save DC for a cleric of `clericLevel` with a
+ * Charisma modifier of `chaMod`. Out-of-range level returns `dice: 0`.
+ * The alignment choice (positive vs. negative — heal vs. damage) is display
+ * only; the underlying numbers are symmetric.
+ */
+export function channelEnergyDetail(
+  clericLevel: number,
+  chaMod: number,
+): ChannelEnergyDetail {
+  if (clericLevel <= 0) {
+    return { dice: 0, diceLabel: "0d6", saveDC: 10 + Math.max(0, chaMod) };
+  }
+  const dice = Math.floor((clericLevel + 1) / 2);
+  const saveDC = 10 + Math.floor(clericLevel / 2) + chaMod;
+  return { dice, diceLabel: `${dice}d6`, saveDC };
+}

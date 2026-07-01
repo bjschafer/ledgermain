@@ -164,5 +164,23 @@ describe("resource pools derived from class features", () => {
     // 4 + Con mod(2) + 2*(5-1) = 14 rounds/day
     expect(rage?.max).toBe(14);
     expect(rage?.per).toBe("day");
+    // Rage carries no prose-only scaling → no detail line.
+    expect(rage?.detail).toBeUndefined();
+  });
+
+  it("derives Channel Energy uses/day + a 'Xd6 (DC Y)' detail for a cleric", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      // Cha 14 (+2) → 3 + 2 = 5 uses/day. L5 → 3d6, DC = 10 + 2 + 2 = 14.
+      abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 14 },
+      identity: { name: "Hex", race: raceId("Human"), classes: [{ tag: "cleric", level: 5 }] },
+    };
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const channel = pools.find((p) => p.name === "Channel Energy");
+    expect(channel).toBeDefined();
+    expect(channel?.max).toBe(5);
+    expect(channel?.per).toBe("day");
+    expect(channel?.detail).toBe("3d6 (DC 14)");
   });
 });
