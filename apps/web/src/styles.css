@@ -814,10 +814,35 @@ button:focus-visible,
 
 .pick-row.is-granted .pname {
 	font-style: italic;
+	/* Brighter than the row's own --faint so the name reads as the primary
+	   content and the "details" toggle beneath it reads as secondary, rather
+	   than the two blending into one dim block. */
+	color: var(--muted);
 }
 
 .spell-level-head.is-granted {
 	color: var(--gold-dim);
+}
+
+/* sub-level headers nested inside a granted block (e.g. domain spells grouped
+   by level within the Domain Spells reference) — same family as
+   .spell-level-head, one notch quieter since they're a level deeper. */
+.spell-domain-level {
+	margin-bottom: 2px;
+}
+
+.spell-domain-level:last-child {
+	margin-bottom: 0;
+}
+
+.spell-domain-level-head {
+	font-family: var(--mono);
+	font-size: 10px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--gold-dim);
+	padding: 6px 12px 4px;
+	background: var(--surface-2);
 }
 
 /* ---------------------------------------------------- HP override (builder) -- */
@@ -1907,10 +1932,13 @@ button:focus-visible,
 /* ------------------------------------------------- spell detail (Task 2) -- */
 
 .spell-detail {
-	margin-top: 2px;
+	margin-top: 6px;
 }
 
 .spell-detail-summary {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
 	font-size: 10px;
 	font-family: var(--mono);
 	color: var(--faint);
@@ -1920,8 +1948,23 @@ button:focus-visible,
 	list-style: none;
 }
 
+.spell-detail-summary:hover {
+	color: var(--muted);
+}
+
 .spell-detail-summary::-webkit-details-marker {
 	display: none;
+}
+
+.spell-detail-summary::before {
+	content: "▸";
+	display: inline-block;
+	font-size: 9px;
+	transition: transform 0.15s ease;
+}
+
+.spell-detail[open] > .spell-detail-summary::before {
+	transform: rotate(90deg);
 }
 
 .spell-detail-body {

@@ -202,9 +202,15 @@ function DomainSlotsSection({
                 <div className="prep-add-list">
                   {pickable.map((sp) => {
                     const count = rows.filter((r) => r.spellId === sp.id && !r.expended).length;
+                    const spellData = refData.spells[sp.id];
                     return (
                       <div key={sp.id} className="prep-add-row">
-                        <span className="prep-name">{sp.name}</span>
+                        <div className="prep-row-main">
+                          <span className="prep-name">{sp.name}</span>
+                          {spellData && (
+                            <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
+                          )}
+                        </div>
                         {count > 0 && <span className="prep-have">prepared</span>}
                         <button
                           type="button"
@@ -479,9 +485,15 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
                     {knownHere.map((sp) => {
                       const count = preparedCountBySpell.get(sp.id) ?? 0;
                       const cantripPrepared = isCantrip && count > 0;
+                      const spellData = refData.spells[sp.id];
                       return (
                         <div key={sp.id} className="prep-add-row">
-                          <span className="prep-name">{sp.name}</span>
+                          <div className="prep-row-main">
+                            <span className="prep-name">{sp.name}</span>
+                            {spellData && (
+                              <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
+                            )}
+                          </div>
                           {count > 0 && (
                             <span className="prep-have">
                               {isCantrip ? "prepared" : `×${count}`}
