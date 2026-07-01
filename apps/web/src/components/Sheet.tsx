@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { ABILITY_IDS } from "../model/doc.js";
+import { casterLevelForClass, isCasterTag } from "../model/casterLevel.js";
 import {
 	ABILITY_ABBR,
 	ALIGNMENT_LABELS,
@@ -32,6 +33,19 @@ export function Sheet({
 			return `${def?.name ?? c.tag} ${c.level}`;
 		})
 		.join(" / ");
+	// Per-class caster level. PF1 CL is per casting class, never summed; the
+	// engine's `@cl` and model/casterLevel.ts both treat CL as max over full-caster
+	// tags, but the sheet lists each so a multiclass caster can read them off.
+	// `casterLevelForClass` is the seam where paladin/ranger-style divergences
+	// (CL != class level) get wired in — don't read c.level directly here.
+	const casterLine = doc.identity.classes
+		.filter((c) => isCasterTag(c.tag))
+		.map((c) => {
+			const def = Object.values(refData.classes).find((cl) => cl.tag === c.tag);
+			const cl = casterLevelForClass(c.tag, c.level);
+			return `CL ${def?.name ?? c.tag} ${cl}`;
+		})
+		.join(" / ");
 
 	const rollableSkills = Object.values(sheet.skills)
 		.filter((s) => s.usable)
@@ -49,8 +63,11 @@ export function Sheet({
 			<div className="char-sub">
 				{[race?.name, classLine].filter(Boolean).join(" · ") ||
 					"No race or class chosen"}
-				{sheet.level > 0 ? ` · CL ${sheet.level}` : ""}
+				{sheet.level > 0 ? ` · Lvl ${sheet.level}` : ""}
 			</div>
+			{casterLine ? (
+				<div className="char-sub char-caster">{casterLine}</div>
+			) : null}
 			{(() => {
 				const id = doc.identity;
 				const alignLabel = id.alignment

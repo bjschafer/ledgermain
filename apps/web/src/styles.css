@@ -1030,6 +1030,11 @@ button:focus-visible,
 	letter-spacing: 0.04em;
 }
 
+.sheet .char-sub.char-caster {
+	color: var(--gold);
+	margin-top: 2px;
+}
+
 .rule-gold {
 	height: 1px;
 	background: linear-gradient(90deg, var(--gold), transparent);
