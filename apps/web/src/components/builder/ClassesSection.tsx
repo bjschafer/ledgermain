@@ -66,9 +66,11 @@ export function ClassesSection({ doc, refData, update }: BuilderProps) {
 						type="button"
 						className="chip"
 						aria-pressed={chosen.has(c.tag)}
-						disabled={chosen.has(c.tag)}
-						title={chosen.has(c.tag) ? "Already added — use remove below to change classes" : undefined}
-						onClick={() => update((d) => addClass(d, c.tag))}
+						onClick={() =>
+							chosen.has(c.tag)
+								? setConfirmRemoveTag(c.tag)
+								: update((d) => addClass(d, c.tag))
+						}
 					>
 						{c.name}
 					</button>
