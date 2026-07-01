@@ -25,6 +25,7 @@ function makeDoc(over: {
   race?: string;
   feats?: string[];
   featChoices?: Record<string, string>;
+  gmFeatSlots?: number;
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -45,6 +46,7 @@ function makeDoc(over: {
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
+      gmGrants: over.gmFeatSlots != null ? { featSlots: over.gmFeatSlots } : undefined,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -141,6 +143,54 @@ describe("chosenFeatCount", () => {
       feats: ["feat1", "feat2"],
     });
     expect(chosenFeatCount(doc)).toBe(2);
+  });
+});
+
+// ─── expectedFeatCount: GM-grant addend ──────────────────────────────────────
+describe("expectedFeatCount: GM-grant feat-slot addend", () => {
+  it("adds a positive grant to the expected count", () => {
+    const base = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf" });
+    const granted = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      race: "Elf",
+      gmFeatSlots: 2,
+    });
+    expect(expectedFeatCount(base, ref)).toBe(1);
+    expect(expectedFeatCount(granted, ref)).toBe(3);
+  });
+
+  it("a negative grant (claw-back) reduces the expected count", () => {
+    const granted = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      race: "Elf",
+      gmFeatSlots: -1,
+    });
+    expect(expectedFeatCount(granted, ref)).toBe(0);
+  });
+
+  it("an absent gmGrants object behaves as 0 (back-compat)", () => {
+    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf" });
+    expect(doc.build.gmGrants).toBeUndefined();
+    expect(expectedFeatCount(doc, ref)).toBe(1);
+  });
+
+  it("a gmGrants object with no featSlots key behaves as 0", () => {
+    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf" });
+    const withSkillOnly: CharacterDoc = {
+      ...doc,
+      build: { ...doc.build, gmGrants: { skillRanks: 5 } },
+    };
+    expect(expectedFeatCount(withSkillOnly, ref)).toBe(1);
+  });
+
+  it("does not change chosenFeatCount (grants adjust budget, not chosen)", () => {
+    const granted = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      race: "Elf",
+      feats: ["a", "b"],
+      gmFeatSlots: 2,
+    });
+    expect(chosenFeatCount(granted)).toBe(2);
   });
 });
 

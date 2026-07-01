@@ -118,6 +118,22 @@ export interface CharacterDoc {
      */
     abilityIncreases?: AbilityId[];
     /**
+     * GM/homebrew grants that adjust the build-resource budgets. All values are
+     * additive addends to the rules-derived totals: `skillRanks` to the
+     * skill-point budget (`model/skills.ts:skillBudget`), `featSlots` to the
+     * expected feat count (`model/feats.ts:expectedFeatCount`). Negative values
+     * are permitted (a GM may claw back), clamped to [-999, 999] by the
+     * transitions.
+     *
+     * These are *budget* adjustments, not specific grants — they loosen (or
+     * tighten) how many ranks/feats the player may spend, not which ones.
+     * A GM who wants "give the player Toughness" instead adds the feat id to
+     * `feats[]` and uses `featSlots` to loosen the budget so the over-budget
+     * warning doesn't fire. Omitted fields behave as 0.
+     * Back-compat: documents without `gmGrants` are unaffected.
+     */
+    gmGrants?: { skillRanks?: number; featSlots?: number };
+    /**
      * Character-level settings controlling HP mode, FCB rule variant, hero-point
      * cap, and manual stat overrides.
      */

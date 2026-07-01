@@ -47,6 +47,9 @@ export function skillBudget(
     if (choice === "skill" || choice === "both") total += 1;
   }
 
+  // GM/homebrew addend (see build.gmGrants). Omitted/absent = 0.
+  total += doc.build.gmGrants?.skillRanks ?? 0;
+
   const spent = Object.values(doc.build.skillRanks).reduce((s, n) => s + n, 0);
   return { total, spent, remaining: total - spent };
 }

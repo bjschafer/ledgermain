@@ -13,6 +13,8 @@ import {
   setFavoredClassBonus,
   setFcbHouserule,
   setGender,
+	setGmGrantFeatSlots,
+	setGmGrantSkillRanks,
 	setHeight,
 	setHeroPointsCap,
 	setHeroPointsEnabled,
@@ -226,5 +228,88 @@ describe("setFavoredClassBonus()", () => {
   it("is a no-op for negative index", () => {
     const d = doc();
     expect(setFavoredClassBonus(d, -1, "hp")).toBe(d);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// GM grants (setGmGrantSkillRanks / setGmGrantFeatSlots)
+// ---------------------------------------------------------------------------
+describe("setGmGrantSkillRanks()", () => {
+  it("stores a positive addend on gmGrants", () => {
+    expect(setGmGrantSkillRanks(doc(), 4).build.gmGrants?.skillRanks).toBe(4);
+  });
+
+  it("allows a negative addend (claw-back)", () => {
+    expect(setGmGrantSkillRanks(doc(), -2).build.gmGrants?.skillRanks).toBe(-2);
+  });
+
+  it("clamps to [-999, 999]", () => {
+    expect(setGmGrantSkillRanks(doc(), 1000).build.gmGrants?.skillRanks).toBe(999);
+    expect(setGmGrantSkillRanks(doc(), -1000).build.gmGrants?.skillRanks).toBe(-999);
+  });
+
+  it("treats NaN as a clear", () => {
+    const d = setGmGrantSkillRanks(doc(), 5);
+    expect(setGmGrantSkillRanks(d, Number.NaN).build.gmGrants?.skillRanks).toBeUndefined();
+  });
+
+  it("removes the key when passed null", () => {
+    const d = setGmGrantSkillRanks(doc(), 5);
+    expect(setGmGrantSkillRanks(d, null).build.gmGrants?.skillRanks).toBeUndefined();
+  });
+
+  it("drops the gmGrants object when both keys are cleared", () => {
+    let d = setGmGrantSkillRanks(doc(), 5);
+    d = setGmGrantFeatSlots(d, 1);
+    d = setGmGrantSkillRanks(d, null);
+    d = setGmGrantFeatSlots(d, null);
+    expect(d.build.gmGrants).toBeUndefined();
+  });
+
+  it("preserves the featSlots key when only skillRanks is cleared", () => {
+    let d = setGmGrantSkillRanks(doc(), 5);
+    d = setGmGrantFeatSlots(d, 1);
+    d = setGmGrantSkillRanks(d, null);
+    expect(d.build.gmGrants?.skillRanks).toBeUndefined();
+    expect(d.build.gmGrants?.featSlots).toBe(1);
+  });
+
+  it("does not mutate the original doc", () => {
+    const d = doc();
+    setGmGrantSkillRanks(d, 4);
+    expect(d.build.gmGrants).toBeUndefined();
+  });
+});
+
+describe("setGmGrantFeatSlots()", () => {
+  it("stores a positive addend on gmGrants", () => {
+    expect(setGmGrantFeatSlots(doc(), 2).build.gmGrants?.featSlots).toBe(2);
+  });
+
+  it("allows a negative addend (claw-back)", () => {
+    expect(setGmGrantFeatSlots(doc(), -1).build.gmGrants?.featSlots).toBe(-1);
+  });
+
+  it("clamps to [-999, 999]", () => {
+    expect(setGmGrantFeatSlots(doc(), 2000).build.gmGrants?.featSlots).toBe(999);
+    expect(setGmGrantFeatSlots(doc(), -2000).build.gmGrants?.featSlots).toBe(-999);
+  });
+
+  it("treats NaN as a clear", () => {
+    const d = setGmGrantFeatSlots(doc(), 2);
+    expect(setGmGrantFeatSlots(d, Number.NaN).build.gmGrants?.featSlots).toBeUndefined();
+  });
+
+  it("removes the key when passed null", () => {
+    const d = setGmGrantFeatSlots(doc(), 2);
+    expect(setGmGrantFeatSlots(d, null).build.gmGrants?.featSlots).toBeUndefined();
+  });
+
+  it("preserves the skillRanks key when only featSlots is cleared", () => {
+    let d = setGmGrantSkillRanks(doc(), 5);
+    d = setGmGrantFeatSlots(d, 1);
+    d = setGmGrantFeatSlots(d, null);
+    expect(d.build.gmGrants?.featSlots).toBeUndefined();
+    expect(d.build.gmGrants?.skillRanks).toBe(5);
   });
 });

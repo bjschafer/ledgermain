@@ -45,7 +45,12 @@ export function expectedFeatCount(doc: CharacterDoc, refData: RefData): number {
   const fL = fighterClass?.level ?? 0;
   const fighterBonus = fL > 0 ? 1 + Math.floor(fL / 2) : 0;
 
-  return baseFeatCount + humanBonus + fighterBonus;
+  // GM/homebrew addend (see build.gmGrants). Omitted/absent = 0; may be
+  // negative (a GM can claw back slots). Added after rules-derived totals so
+  // the over-budget check in the builder sees the loosened budget.
+  return (
+    baseFeatCount + humanBonus + fighterBonus + (doc.build.gmGrants?.featSlots ?? 0)
+  );
 }
 
 /** The number of feats the character has currently chosen. */
