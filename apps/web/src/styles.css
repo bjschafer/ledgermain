@@ -580,29 +580,72 @@ button:focus-visible,
 }
 
 /*
- * Checkbox-valued field (e.g. "Masterwork"). Layout is inherited from
- * whichever field class it's paired with (.field for a stacked grid cell,
- * .enh-field for an inline toolbar row) — this only themes the checkbox
- * itself, using the same accent-color treatment as the gear/inventory
- * equip checkbox (.gear-equip) for visual consistency across the app.
+ * Two-state toggle button for a boolean field (e.g. "Masterwork"), sized
+ * like a real text/select control (same box model as the generic
+ * input/select rule above) so it sits flush with sibling fields instead of
+ * leaving dead space the way a small native checkbox would. Unpressed looks
+ * like an ordinary control; pressed borrows the same gold-gradient
+ * treatment as a selected .chip / .filter-toggle for visual consistency.
  */
-.checkbox-field input[type="checkbox"] {
-	width: auto;
-	accent-color: var(--gold);
+.field-toggle {
+	width: 100%;
+	background: var(--surface-2);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	color: var(--muted);
+	padding: 8px 10px;
+	font-size: 14px;
+	text-align: left;
 	cursor: pointer;
+	transition:
+		border-color 0.12s,
+		background 0.12s,
+		color 0.12s;
+}
+
+.field-toggle:hover {
+	border-color: var(--gold-dim);
+}
+
+.field-toggle[aria-pressed="true"] {
+	background: linear-gradient(180deg, #2c2718, #211d12);
+	border-color: var(--gold);
+	color: var(--gold-2);
+	font-weight: 600;
+}
+
+/* Compact variant for an inline toolbar row (paired with .enh-field). */
+.field-toggle.compact {
+	width: auto;
+	min-width: 60px;
+	padding: 5px 10px;
+	font-size: 13px;
 }
 
 /*
- * Swapped in for the checkbox when its value is implied rather than
- * user-set (e.g. masterwork once a weapon has a magic enhancement bonus).
- * A disabled checkbox is deliberately avoided here — browsers desaturate
- * disabled controls at the native paint layer in a way accent-color can't
- * override, which reads as broken/inconsistent next to an enabled one.
+ * Swapped in for the toggle when its value is implied rather than user-set
+ * (e.g. masterwork once a weapon has a magic enhancement bonus) — plain
+ * static text in the same box footprint as .field-toggle, so the layout
+ * doesn't shift between the two states.
  */
-.checkbox-implied {
-	font-size: 12px;
+.field-implied {
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	background: var(--surface-2);
+	border: 1px solid var(--line-soft);
+	border-radius: var(--radius);
+	color: var(--muted);
+	padding: 8px 10px;
+	font-size: 13px;
 	font-style: italic;
-	color: var(--gold-dim);
+}
+
+.field-implied.compact {
+	width: auto;
+	padding: 5px 10px;
+	font-size: 12px;
+	white-space: nowrap;
 }
 
 .armor-custom-link {

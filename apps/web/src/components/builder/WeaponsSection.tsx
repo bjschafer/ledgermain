@@ -138,18 +138,21 @@ function WeaponForm({
 						))}
 					</select>
 				</label>
-				<label className="field checkbox-field">
+				<label className="field">
 					<span>Masterwork</span>
 					{enh > 0 ? (
-						<span className="checkbox-implied" title="Implied by the weapon's magic enhancement bonus">
-							✓ implied by enhancement
-						</span>
+						<p className="field-implied" title="Implied by the weapon's magic enhancement bonus">
+							Implied by enhancement
+						</p>
 					) : (
-						<input
-							type="checkbox"
-							checked={!!form.masterwork}
-							onChange={(e) => field("masterwork", e.target.checked)}
-						/>
+						<button
+							type="button"
+							className="field-toggle"
+							aria-pressed={!!form.masterwork}
+							onClick={() => field("masterwork", !form.masterwork)}
+						>
+							{form.masterwork ? "Yes" : "No"}
+						</button>
 					)}
 				</label>
 				<label className="field">
@@ -503,21 +506,21 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
 										))}
 									</select>
 								</label>
-								<label className="field enh-field checkbox-field">
+								<label className="field enh-field">
 									<span>Masterwork</span>
 									{enhancement > 0 ? (
-										<span
-											className="checkbox-implied"
-											title="Implied by the weapon's magic enhancement bonus"
-										>
-											✓ implied
-										</span>
+										<p className="field-implied compact" title="Implied by the weapon's magic enhancement bonus">
+											implied
+										</p>
 									) : (
-										<input
-											type="checkbox"
-											checked={masterwork}
-											onChange={(e) => setMasterwork(e.target.checked)}
-										/>
+										<button
+											type="button"
+											className="field-toggle compact"
+											aria-pressed={masterwork}
+											onClick={() => setMasterwork((v) => !v)}
+										>
+											{masterwork ? "Yes" : "No"}
+										</button>
 									)}
 								</label>
 							</div>
