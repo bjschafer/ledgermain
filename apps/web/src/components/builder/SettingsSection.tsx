@@ -373,6 +373,9 @@ export function SettingsSection({
 				)}
 			</Panel>
 
+			{/* About & legal */}
+			<AboutAndLegalPanel />
+
 			{/* Danger zone */}
 			<DangerZonePanel
 				characterId={doc.id}
@@ -382,6 +385,39 @@ export function SettingsSection({
 				onResetAll={onResetAll}
 			/>
 		</>
+	);
+}
+
+/**
+ * Static "About & Legal" panel — surfaces the repo's mixed-license notice so
+ * the deployed app is compliant at runtime (OGL §10 requires the License to
+ * accompany distributed Open Game Content; Paizo's Community Use Policy
+ * requires attribution). The linked files are copied into `public/` by
+ * `scripts/copy-refdata.ts`.
+ */
+function AboutAndLegalPanel() {
+	return (
+		<Panel title="About & Legal" step="ℹ">
+			<p className="hint" style={{ marginBottom: 10 }}>
+				Ledgermain is a Pathfinder 1e character builder & tracker.
+				Code is MIT; compendium data is Open Game Content under the OGL v1.0a;
+				Paizo Product Identity references are used under Paizo's Community Use
+				Policy. Not affiliated with Paizo Inc., Foundry Gaming LLC, or Wizards
+				of the Coast.
+			</p>
+			<p className="hint" style={{ marginBottom: 4 }}>
+				<a href="/OGL.txt">Open Game License v1.0a</a>
+				{" · "}
+				<a href="/NOTICE.md">Full notice &amp; attribution</a>
+				{" · "}
+				<a href="/LICENSE">MIT (code)</a>
+			</p>
+			<p className="hint" style={{ fontSize: 11, marginTop: 10 }}>
+				This product uses trademarks and/or copyrights owned by Paizo Inc.,
+				used under Paizo's Community Use Policy. We are expressly prohibited
+				from charging you to use or access this product.
+			</p>
+		</Panel>
 	);
 }
 

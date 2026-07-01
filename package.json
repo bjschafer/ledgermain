@@ -2,6 +2,7 @@
   "name": "ledgermain",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Pathfinder 1e in-play character tracker and builder (monorepo root).",
   "type": "module",
   "workspaces": [

@@ -2,7 +2,8 @@
   "name": "@pf1/data-pipeline",
   "version": "0.0.0",
   "private": true,
-  "description": "Fetches the pinned Foundry PF1 YAML packs and emits normalized, versioned JSON reference data.",
+  "license": "MIT",
+  "description": "Fetches the pinned Foundry PF1 YAML packs and emits normalized, versioned JSON reference data. The fetch/generate scripts are MIT; the vendored normalized data under ./data/ is Open Game Content governed by the repo-root OGL.txt.",
   "type": "module",
   "exports": {
     ".": {
