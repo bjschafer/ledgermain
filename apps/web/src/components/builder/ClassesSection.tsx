@@ -7,12 +7,14 @@ import {
 	setFavoredClass,
 	setFavoredClassBonus,
 } from "../../model/doc.js";
+import { ArchetypePicker } from "./ArchetypePicker.js";
+import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { DomainPicker } from "./DomainPicker.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
-export function ClassesSection({ doc, refData, update }: BuilderProps) {
+export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 	const [fcbOpen, setFcbOpen] = useState(true);
 	const [confirmRemoveTag, setConfirmRemoveTag] = useState<string | null>(null);
 
@@ -196,6 +198,11 @@ export function ClassesSection({ doc, refData, update }: BuilderProps) {
 			{doc.identity.classes.some((c) => c.tag === "cleric") && (
 				<DomainPicker doc={doc} refData={refData} update={update} />
 			)}
+
+			{/* Archetype picker — only classes covered by the vendored dataset show options. */}
+			<ArchetypePicker doc={doc} refData={refData} update={update} />
+
+			<ClassFeaturesList sheet={sheet} />
 		</Panel>
 	);
 }

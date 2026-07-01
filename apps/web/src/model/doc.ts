@@ -35,6 +35,7 @@ export function createEmptyDoc(id: string): CharacterDoc {
 			feats: [],
 			skillRanks: {},
 			clericDomains: [],
+			archetypes: [],
 			classFeatureChoices: [],
 			spells: { known: [] },
 			gear: [],
@@ -80,6 +81,11 @@ export function migrateDoc(doc: CharacterDoc): CharacterDoc {
 		next = { ...next, build: { ...next.build, clericDomains: [] } };
 		changed = true;
 	}
+	// Same treatment for `archetypes` (Stage 11.3) — optional, backfilled to `[]`.
+	if (!next.build.archetypes) {
+		next = { ...next, build: { ...next.build, archetypes: [] } };
+		changed = true;
+	}
 	// `PreparedSpell.kind` is optional and defaults to "normal" — existing
 	// prepared entries need no rewrite; tracker code treats absent as normal.
 
@@ -118,6 +124,20 @@ export function setClericDomains(
 		...doc,
 		build: { ...doc.build, clericDomains: trimmed.slice(0, 2) },
 	};
+}
+
+/**
+ * Set the chosen archetype ids (keys into `refData.archetypes`). Replaces the
+ * whole list, same shape as `setClericDomains`. No conflict validation here —
+ * the model layer stays free-choice; the engine's `resolveClassFeatures`
+ * applies swaps last-wins if two chosen archetypes ever overlap a slot.
+ */
+export function setArchetypes(
+	doc: CharacterDoc,
+	archetypes: string[],
+): CharacterDoc {
+	const trimmed = archetypes.filter((a) => typeof a === "string" && a.length > 0);
+	return { ...doc, build: { ...doc.build, archetypes: trimmed } };
 }
 
 export function setGender(doc: CharacterDoc, gender: string): CharacterDoc {
