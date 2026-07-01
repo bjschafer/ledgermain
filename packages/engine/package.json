@@ -2,6 +2,7 @@
   "name": "@pf1/engine",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Pure, framework-agnostic PF1 rules engine: formula DSL evaluator, typed bonus-stacking, and compute(doc, refData) -> DerivedSheet.",
   "type": "module",
   "exports": {

@@ -14,6 +14,8 @@ import {
 } from "../../model/exportCharacter.js";
 import {
 	setFcbHouserule,
+	setGmGrantFeatSlots,
+	setGmGrantSkillRanks,
 	setHeroPointsCap,
 	setHeroPointsEnabled,
 	setHpMode,
@@ -61,6 +63,8 @@ export function SettingsSection({
 	const heroEnabled = settings.heroPointsEnabled ?? true;
 	const heroCap = settings.heroPointsCap ?? HERO_POINT_CAP;
 	const overrides = settings.statOverrides ?? {};
+	const gmSkillRanks = doc.build.gmGrants?.skillRanks;
+	const gmFeatSlots = doc.build.gmGrants?.featSlots;
 	const [importError, setImportError] = useState<string>();
 
 	function handleExport() {
@@ -202,6 +206,81 @@ export function SettingsSection({
 				)}
 			</Panel>
 
+			{/* GM grants */}
+			<Panel title="GM Grants" step="⚙">
+				<p className="hint" style={{ marginBottom: 12 }}>
+					Homebrew adjustments to how many skill ranks and feats this character
+					may spend. Additive to the rules-derived budget — negative values
+					claw back. Leave blank to use the rules amount.
+				</p>
+				<div className="settings-row" style={{ marginBottom: 10 }}>
+					<label className="hint" htmlFor="gm-skill-input">
+						Extra skill ranks
+					</label>
+					<NumberField
+						className="num"
+						size={5}
+						value={gmSkillRanks ?? undefined}
+						allowEmpty
+						placeholder="0"
+						min={-999}
+						max={999}
+						stepper={false}
+						onCommit={(n) =>
+							update((d) =>
+								setGmGrantSkillRanks(
+									d,
+									n == null || Number.isNaN(n) ? null : n,
+								),
+							)
+						}
+						aria-label="Extra skill ranks"
+					/>
+					{gmSkillRanks != null && (
+						<button
+							type="button"
+							className="btn-ghost"
+							onClick={() => update((d) => setGmGrantSkillRanks(d, null))}
+						>
+							clear
+						</button>
+					)}
+				</div>
+				<div className="settings-row">
+					<label className="hint" htmlFor="gm-feat-input">
+						Extra feat slots
+					</label>
+					<NumberField
+						className="num"
+						size={5}
+						value={gmFeatSlots ?? undefined}
+						allowEmpty
+						placeholder="0"
+						min={-999}
+						max={999}
+						stepper={false}
+						onCommit={(n) =>
+							update((d) =>
+								setGmGrantFeatSlots(
+									d,
+									n == null || Number.isNaN(n) ? null : n,
+								),
+							)
+						}
+						aria-label="Extra feat slots"
+					/>
+					{gmFeatSlots != null && (
+						<button
+							type="button"
+							className="btn-ghost"
+							onClick={() => update((d) => setGmGrantFeatSlots(d, null))}
+						>
+							clear
+						</button>
+					)}
+				</div>
+			</Panel>
+
 			{/* Stat overrides */}
 			<Panel title="Manual Stat Overrides" step="⚙">
 				<p className="hint" style={{ marginBottom: 12 }}>
@@ -294,6 +373,9 @@ export function SettingsSection({
 				)}
 			</Panel>
 
+			{/* About & legal */}
+			<AboutAndLegalPanel />
+
 			{/* Danger zone */}
 			<DangerZonePanel
 				characterId={doc.id}
@@ -303,6 +385,41 @@ export function SettingsSection({
 				onResetAll={onResetAll}
 			/>
 		</>
+	);
+}
+
+/**
+ * Static "About & Legal" panel — surfaces the repo's mixed-license notice so
+ * the deployed app is compliant at runtime (OGL §10 requires the License to
+ * accompany distributed Open Game Content; Paizo's Community Use Policy
+ * requires attribution). The linked files are copied into `public/` by
+ * `scripts/copy-refdata.ts`.
+ */
+function AboutAndLegalPanel() {
+	return (
+		<Panel title="About & Legal" step="ℹ">
+			<p className="hint" style={{ marginBottom: 10 }}>
+				Ledgermain is a Pathfinder 1e character builder & tracker.
+				Code is MIT; compendium data is Open Game Content under the OGL v1.0a;
+				Paizo Product Identity references are used under Paizo's Community Use
+				Policy. Not affiliated with Paizo Inc., Foundry Gaming LLC, or Wizards
+				of the Coast.
+			</p>
+			<p className="hint" style={{ marginBottom: 4 }}>
+				<a href="/OGL.txt">Open Game License v1.0a</a>
+				{" · "}
+				<a href="/NOTICE.md">Full notice &amp; attribution</a>
+				{" · "}
+				<a href="/LICENSE">MIT (code)</a>
+				{" · "}
+				<a href="https://github.com/bjschafer/ledgermain">Source on GitHub</a>
+			</p>
+			<p className="hint" style={{ fontSize: 11, marginTop: 10 }}>
+				This product uses trademarks and/or copyrights owned by Paizo Inc.,
+				used under Paizo's Community Use Policy. We are expressly prohibited
+				from charging you to use or access this product.
+			</p>
+		</Panel>
 	);
 }
 

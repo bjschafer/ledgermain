@@ -13,6 +13,11 @@ packages/data-pipeline/.cache/
 # Web app: RefData copied from data-pipeline at predev/prebuild (source of truth
 # stays in packages/data-pipeline/data/). Don't commit the duplicate.
 apps/web/public/data/
+# License/notice copies copied from repo root at predev/prebuild by
+# scripts/copy-refdata.ts -- don't commit these duplicates.
+apps/web/public/OGL.txt
+apps/web/public/NOTICE.md
+apps/web/public/LICENSE
 
 # Playwright e2e artifacts (browsers are cached globally, not in-repo)
 test-results/

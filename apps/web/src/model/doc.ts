@@ -510,6 +510,54 @@ export function setHeroPointsCap(
 	};
 }
 
+/**
+ * Set the GM-grant skill-rank addend (homebrew). `null` deletes the sub-key,
+ * falling back to a 0 addend. Clamped to [-999, 999] (negative allows a GM
+ * to claw back ranks). Mirrors `setHeroPointsCap` for symmetry/clamp posture.
+ */
+export function setGmGrantSkillRanks(
+	doc: CharacterDoc,
+	n: number | null,
+): CharacterDoc {
+	return setGmGrant(doc, "skillRanks", n);
+}
+
+/**
+ * Set the GM-grant feat-slot addend (homebrew). Same posture as
+ * `setGmGrantSkillRanks`.
+ */
+export function setGmGrantFeatSlots(
+	doc: CharacterDoc,
+	n: number | null,
+): CharacterDoc {
+	return setGmGrant(doc, "featSlots", n);
+}
+
+function setGmGrant(
+	doc: CharacterDoc,
+	key: "skillRanks" | "featSlots",
+	n: number | null,
+): CharacterDoc {
+	const current = doc.build.gmGrants ?? {};
+	if (n === null || Number.isNaN(n)) {
+		if (!(key in current)) {
+			return { ...doc, build: { ...doc.build, gmGrants: current } };
+		}
+		const next = { ...current };
+		delete next[key];
+		const cleaned = Object.keys(next).length === 0 ? undefined : next;
+		return { ...doc, build: { ...doc.build, gmGrants: cleaned } };
+	}
+	const clamped = clampInt(n, -999, 999);
+	return {
+		...doc,
+		build: {
+			...doc.build,
+			gmGrants: { ...current, [key]: clamped },
+		},
+	};
+}
+
 /** Allowlisted keys for manual stat overrides. */
 export const STAT_OVERRIDE_KEYS = [
 	"hp.max",
