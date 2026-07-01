@@ -213,6 +213,31 @@ a {
 
 .panel .body {
 	padding: 16px;
+	padding-bottom: 22px;
+	position: relative;
+}
+
+/* Drag grip in the bottom-right corner of every panel body — a small corner
+   bracket (crop-mark style) rather than a native textarea-style grip, to sit
+   quietly against the panel's thin borders until hovered. Height-only resize
+   (the grid layout owns column widths), persisted per panel via
+   useResizableHeight; the header's "reset size" button clears the override. */
+.panel-resize-handle {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	width: 9px;
+	height: 9px;
+	cursor: ns-resize;
+	border-right: 2px solid var(--gold-dim);
+	border-bottom: 2px solid var(--gold-dim);
+	border-bottom-right-radius: 2px;
+	opacity: 0.3;
+}
+
+.panel-resize-handle:hover {
+	opacity: 1;
+	border-color: var(--oxblood);
 }
 
 .hint {

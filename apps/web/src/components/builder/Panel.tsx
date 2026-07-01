@@ -1,6 +1,8 @@
 import type { MouseEvent, ReactNode } from "react";
+import { useCallback, useRef } from "react";
 
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { useResizableHeight } from "../../state/useResizableHeight.js";
 
 /**
  * A titled builder panel. `step` is a short ledger-style marker (e.g. "i", "ii").
@@ -8,6 +10,11 @@ import { useCollapsed } from "../../state/useCollapsed.js";
  * When `storageKey` is provided the panel becomes collapsible: a caret appears in
  * the header and clicking the header toggles the body. The collapsed state is
  * persisted to localStorage so it survives reloads. Default is expanded.
+ *
+ * Every panel is also resizable: a corner grip in the bottom-right lets the
+ * user drag the body taller/shorter (persisted per `storageKey`/title). Once
+ * resized, a "reset size" control appears in the header to return to the
+ * natural, content-driven height.
  */
 export function Panel({
   title,
@@ -31,6 +38,31 @@ export function Panel({
     defaultCollapsed,
   );
   const isCollapsible = storageKey != null;
+
+  const [height, setHeight, resetHeight] = useResizableHeight(
+    storageKey ?? title,
+  );
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  const onResizeStart = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      const startY = e.clientY;
+      const startHeight =
+        bodyRef.current?.getBoundingClientRect().height ?? 0;
+
+      const onMove = (moveEvent: globalThis.MouseEvent) => {
+        setHeight(startHeight + (moveEvent.clientY - startY));
+      };
+      const onUp = () => {
+        window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("mouseup", onUp);
+      };
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onUp);
+    },
+    [setHeight],
+  );
 
   const onHeaderClick = isCollapsible
     ? (e: MouseEvent<HTMLElement>) => {
@@ -69,6 +101,11 @@ export function Panel({
         {step ? <span className="step">{step}</span> : null}
       </h2>
       {right}
+      {height != null ? (
+        <button type="button" className="btn-ghost" onClick={resetHeight}>
+          reset size
+        </button>
+      ) : null}
       {isCollapsible ? (
         <span className="panel-caret" aria-hidden="true">
           {collapsed ? "▸" : "▾"}
@@ -77,10 +114,28 @@ export function Panel({
     </header>
   );
 
+  const bodyVisible = !isCollapsible || !collapsed;
+
   return (
     <section className={`panel${isCollapsible ? " collapsible" : ""}${isCollapsible && collapsed ? " is-collapsed" : ""}`}>
       {header}
-      {(!isCollapsible || !collapsed) ? <div className="body">{children}</div> : null}
+      {bodyVisible ? (
+        <div
+          className="body"
+          ref={bodyRef}
+          style={height != null ? { height, overflowY: "auto" } : undefined}
+        >
+          {children}
+          <div
+            className="panel-resize-handle"
+            onMouseDown={onResizeStart}
+            role="separator"
+            aria-orientation="horizontal"
+            aria-label={`Resize ${title} panel`}
+            title="Drag to resize"
+          />
+        </div>
+      ) : null}
     </section>
   );
 }
