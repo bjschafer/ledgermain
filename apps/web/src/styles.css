@@ -579,6 +579,68 @@ button:focus-visible,
 	min-width: 60px;
 }
 
+/* themed checkbox toggle (e.g. "Masterwork") — matches the .chip aria-pressed look */
+label.checkbox-field {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	margin-bottom: 12px;
+}
+
+label.checkbox-field > span {
+	display: inline;
+	font-size: 13px;
+	color: var(--ink);
+	margin-bottom: 0;
+}
+
+.checkbox-field input[type="checkbox"] {
+	appearance: none;
+	position: relative;
+	flex-shrink: 0;
+	width: 18px;
+	height: 18px;
+	margin: 0;
+	background: var(--surface-2);
+	border: 1px solid var(--line);
+	border-radius: 4px;
+	cursor: pointer;
+	transition:
+		border-color 0.12s,
+		background 0.12s;
+}
+
+.checkbox-field input[type="checkbox"]:hover:not(:disabled) {
+	border-color: var(--gold-dim);
+}
+
+.checkbox-field input[type="checkbox"]:checked {
+	background: linear-gradient(180deg, #2c2718, #211d12);
+	border-color: var(--gold);
+}
+
+.checkbox-field input[type="checkbox"]:checked::after {
+	content: "";
+	position: absolute;
+	left: 5px;
+	top: 1px;
+	width: 5px;
+	height: 9px;
+	border: solid var(--gold-2);
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+
+.checkbox-field input[type="checkbox"]:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.checkbox-field:has(input:disabled) {
+	cursor: not-allowed;
+}
+
 .armor-custom-link {
 	margin-top: 4px;
 	font-size: 13px;

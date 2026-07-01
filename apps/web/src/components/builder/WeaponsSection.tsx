@@ -138,14 +138,17 @@ function WeaponForm({
 						))}
 					</select>
 				</label>
-				<label className="field" title={enh > 0 ? "Implied by the weapon's magic enhancement bonus" : undefined}>
-					<span>Masterwork</span>
+				<label
+					className="field checkbox-field"
+					title={enh > 0 ? "Implied by the weapon's magic enhancement bonus" : undefined}
+				>
 					<input
 						type="checkbox"
 						checked={enh > 0 ? true : !!form.masterwork}
 						disabled={enh > 0}
 						onChange={(e) => field("masterwork", e.target.checked)}
 					/>
+					<span>Masterwork</span>
 				</label>
 				<label className="field">
 					<span>Material</span>
@@ -499,16 +502,16 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
 									</select>
 								</label>
 								<label
-									className="field enh-field"
+									className="field enh-field checkbox-field"
 									title={enhancement > 0 ? "Implied by the weapon's magic enhancement bonus" : undefined}
 								>
-									<span>Masterwork</span>
 									<input
 										type="checkbox"
 										checked={enhancement > 0 ? true : masterwork}
 										disabled={enhancement > 0}
 										onChange={(e) => setMasterwork(e.target.checked)}
 									/>
+									<span>Masterwork</span>
 								</label>
 							</div>
 							{WEAPON_ABILITIES.length > 0 && (
