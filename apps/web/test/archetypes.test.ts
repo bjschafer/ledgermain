@@ -4,6 +4,7 @@ import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
+import { checkArchetypeConflict } from "../src/model/archetypes.js";
 import { addClass, createEmptyDoc, migrateDoc, setArchetypes, setClassLevel } from "../src/model/doc.js";
 
 const ref = loadRefData();
@@ -73,5 +74,27 @@ describe("archetype selection -> compute() (model -> engine integration)", () =>
     expect(sheet.classFeatures.length).toBeGreaterThan(0);
     expect(sheet.classFeatures.every((f) => f.applied)).toBe(true);
     expect(sheet.activeArchetypes).toEqual([]);
+  });
+});
+
+describe("checkArchetypeConflict()", () => {
+  it("blocks a second archetype that swaps the same base-feature slot", () => {
+    const armoredHulk = byName(ref.archetypes, "Armored Hulk");
+    const brutalPugilist = byName(ref.archetypes, "Brutal Pugilist");
+    const result = checkArchetypeConflict(ref, [armoredHulk.id], brutalPugilist.id);
+    expect(result.blocked).toBe(true);
+    expect(result.conflictsWith).toBe("Armored Hulk");
+  });
+
+  it("allows two archetypes that don't overlap any swapped slot (different classes)", () => {
+    const armoredHulk = byName(ref.archetypes, "Armored Hulk"); // barbarian
+    const twoHanded = byName(ref.archetypes, "Two-Handed Fighter"); // fighter
+    const result = checkArchetypeConflict(ref, [armoredHulk.id], twoHanded.id);
+    expect(result.blocked).toBe(false);
+  });
+
+  it("never blocks re-selecting the same archetype", () => {
+    const thf = byName(ref.archetypes, "Two-Handed Fighter");
+    expect(checkArchetypeConflict(ref, [thf.id], thf.id).blocked).toBe(false);
   });
 });

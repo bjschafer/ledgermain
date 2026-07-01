@@ -1,12 +1,37 @@
 import type { DerivedSheet } from "@pf1/schema";
 
 /**
+ * Collapsible HTML description, same pattern as `SpellDetail` (reuses its CSS
+ * classes — visually it's the same "prose reveal" element, just for an
+ * archetype feature instead of a spell).
+ */
+function FeatureDescription({ html }: { html: string }) {
+	return (
+		<details className="spell-detail">
+			<summary className="spell-detail-summary">description</summary>
+			<div
+				className="spell-detail-desc"
+				// Archetype feature descriptions come from the vendored third-party
+				// dataset (open game content) and contain only formatting tags
+				// (<p>, <i>, <strong>) — no user input.
+				// eslint-disable-next-line react/no-danger
+				dangerouslySetInnerHTML={{ __html: html }}
+			/>
+		</details>
+	);
+}
+
+/**
  * Displays every granted base-class feature (struck through when an active
  * archetype swaps it out, same visual language as `Provenance`'s `applied`
- * flag), followed by each active archetype's own feature list. Archetype
- * features with no unambiguous base-feature match render as a soft warning
- * ("may replace an existing ability — see description") rather than a swap,
- * per the project's hybrid-prereqs posture.
+ * flag), followed by each active archetype's own feature list with its prose
+ * description. Archetype features with no unambiguous base-feature match get
+ * a soft warning ("may replace an existing ability — see description") rather
+ * than a swap, per the project's hybrid-prereqs posture; the description is
+ * the "see" part of that warning, not just a decoration. The dataset has at
+ * least one verified copy-paste error in this prose (Two-Handed Fighter's
+ * Shattering Strike row carries Bravery's text) — display-only, never a
+ * mechanics source.
  */
 export function ClassFeaturesList({ sheet }: { sheet: DerivedSheet }) {
 	if (sheet.classFeatures.length === 0) return null;
@@ -45,17 +70,23 @@ export function ClassFeaturesList({ sheet }: { sheet: DerivedSheet }) {
 			{sheet.activeArchetypes.map((a) => (
 				<div className="cf-archetype" key={a.id}>
 					<span className="hint">{a.name}</span>
-					<div className="cf-names">
+					<div className="cf-archetype-features">
 						{a.features.map((f, i) => (
-							<span key={`${a.id}-${i}`} className="cf-name">
-								Lv {f.level} · {f.name}
-								{f.ambiguous ? (
-									<span className="soft" title="No unambiguous base-feature match — verify manually">
-										{" "}
-										⚠ may replace an existing ability
-									</span>
-								) : null}
-							</span>
+							<div className="cf-archetype-feature" key={`${a.id}-${i}`}>
+								<span className="cf-name">
+									Lv {f.level} · {f.name}
+									{f.ambiguous ? (
+										<span
+											className="soft"
+											title="No unambiguous base-feature match — verify manually"
+										>
+											{" "}
+											⚠ may replace an existing ability
+										</span>
+									) : null}
+								</span>
+								{f.description ? <FeatureDescription html={f.description} /> : null}
+							</div>
 						))}
 					</div>
 				</div>

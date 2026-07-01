@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
+import { checkArchetypeConflict } from "../../model/archetypes.js";
 import { setArchetypes } from "../../model/doc.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -13,13 +14,16 @@ interface ArchetypePickerProps {
 }
 
 /**
- * Archetype selection, free-choice and unbounded (PF1 allows stacking multiple
- * archetypes on one class when their swaps don't conflict — the project's
- * hybrid-prereqs posture leaves that legality check to the player, same as
- * elsewhere). Only classes covered by the vendored dataset (fighter, barbarian,
- * wizard, cleric, sorcerer) show any options.
+ * Archetype selection, free-choice within the 5 classes the vendored dataset
+ * covers. A candidate that would swap the same base-class feature slot as an
+ * already-chosen archetype is hard-blocked (structured signal — see
+ * `model/archetypes.ts`), since `resolveClassFeatures` applies swaps last-wins
+ * and the earlier pick would silently do nothing. Collapsed by default: with
+ * ~180 archetypes across 5 classes this list is the single largest picker in
+ * the builder, and most characters won't use one.
  */
 export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) {
+	const [open, setOpen] = useState(false);
 	const [query, setQuery] = useState("");
 	const chosen = doc.build.archetypes ?? [];
 
@@ -39,7 +43,8 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
 
 	const q = query.trim().toLowerCase();
 
-	function toggle(id: string) {
+	function toggle(id: string, blocked: boolean) {
+		if (blocked) return;
 		const set = new Set(chosen);
 		if (set.has(id)) set.delete(id);
 		else set.add(id);
@@ -48,45 +53,76 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
 
 	return (
 		<div className="subsection archetype-picker">
-			<h4 className="tracker-sub">Archetypes</h4>
-			<p className="hint">
-				Structural swaps only in v1 — no numeric effects from archetype
-				features yet. Free-choice; multiple archetypes may be picked even if
-				their swaps overlap.
-			</p>
-			<input
-				className="search"
-				type="text"
-				placeholder="Search archetypes…"
-				value={query}
-				onChange={(e) => setQuery(e.target.value)}
-			/>
-			{classTags.map((tag) => {
-				const options = byClass.get(tag)!;
-				const shown = q
-					? options.filter((o) => o.name.toLowerCase().includes(q))
-					: options;
-				if (shown.length === 0) return null;
-				const classDef = Object.values(refData.classes).find((c) => c.tag === tag);
-				return (
-					<div key={tag} className="archetype-class-group">
-						<span className="hint">{classDef?.name ?? tag}</span>
-						<div className="chips">
-							{shown.map((a) => (
-								<button
-									key={a.id}
-									type="button"
-									className="chip"
-									aria-pressed={chosen.includes(a.id)}
-									onClick={() => toggle(a.id)}
-								>
-									{a.name}
-								</button>
-							))}
-						</div>
-					</div>
-				);
-			})}
+			<div
+				className="subsection-header"
+				onClick={() => setOpen((o) => !o)}
+				role="button"
+				tabIndex={0}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") setOpen((o) => !o);
+				}}
+				aria-expanded={open}
+			>
+				<h3>
+					Archetypes
+					{chosen.length > 0 ? <span className="hint"> · {chosen.length} chosen</span> : null}
+				</h3>
+				<span className="panel-caret">{open ? "▾" : "▸"}</span>
+			</div>
+			{open && (
+				<>
+					<p className="hint">
+						Structural swaps only in v1 — no numeric effects from archetype
+						features yet. Picking one that would replace an already-swapped
+						ability is blocked (it would silently do nothing).
+					</p>
+					<input
+						className="search"
+						type="text"
+						placeholder="Search archetypes…"
+						value={query}
+						onChange={(e) => setQuery(e.target.value)}
+					/>
+					{classTags.map((tag) => {
+						const options = byClass.get(tag)!;
+						const shown = q
+							? options.filter((o) => o.name.toLowerCase().includes(q))
+							: options;
+						if (shown.length === 0) return null;
+						const classDef = Object.values(refData.classes).find((c) => c.tag === tag);
+						return (
+							<div key={tag} className="archetype-class-group">
+								<span className="hint">{classDef?.name ?? tag}</span>
+								<div className="chips">
+									{shown.map((a) => {
+										const isChosen = chosen.includes(a.id);
+										const conflict = isChosen
+											? { blocked: false }
+											: checkArchetypeConflict(refData, chosen, a.id);
+										return (
+											<button
+												key={a.id}
+												type="button"
+												className="chip"
+												aria-pressed={isChosen}
+												disabled={conflict.blocked}
+												title={
+													conflict.blocked
+														? `Conflicts with ${conflict.conflictsWith} — both swap the same ability`
+														: undefined
+												}
+												onClick={() => toggle(a.id, conflict.blocked)}
+											>
+												{a.name}
+											</button>
+										);
+									})}
+								</div>
+							</div>
+						);
+					})}
+				</>
+			)}
 		</div>
 	);
 }

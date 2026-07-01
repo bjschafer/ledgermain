@@ -83,3 +83,21 @@ export function resolveClassFeatures(
 
   return { classFeatures, activeArchetypes };
 }
+
+/**
+ * Every base-class-feature uuid this archetype swaps out (across all its
+ * levels, regardless of the character's current level — a swap the character
+ * hasn't reached yet still makes taking a second, overlapping archetype
+ * pointless once they level up). Used to detect conflicting archetype picks
+ * before they're added to `build.archetypes`, since `resolveClassFeatures`
+ * itself just applies swaps last-wins and silently drops the earlier one.
+ */
+export function archetypeSwappedUuids(refData: RefData, archetypeId: string): Set<string> {
+  const uuids = new Set<string>();
+  for (const f of Object.values(refData.archetypeFeatures)) {
+    if (f.archetypeId === archetypeId && f.pairedBaseFeatureUuid) {
+      uuids.add(f.pairedBaseFeatureUuid);
+    }
+  }
+  return uuids;
+}

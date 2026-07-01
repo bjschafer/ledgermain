@@ -59,4 +59,8 @@ export {
 } from "./feat-effects.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";
 export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
-export { resolveClassFeatures, type ResolvedClassFeatures } from "./archetypes.js";
+export {
+  resolveClassFeatures,
+  archetypeSwappedUuids,
+  type ResolvedClassFeatures,
+} from "./archetypes.js";

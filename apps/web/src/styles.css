@@ -501,6 +501,15 @@ button:focus-visible,
 	color: var(--gold-2);
 }
 
+.chip:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.chip:disabled:hover {
+	border-color: var(--line);
+}
+
 .ability-chips {
 	display: flex;
 	flex-wrap: wrap;
@@ -2269,8 +2278,7 @@ button:focus-visible,
 }
 
 /* class features list (base grants + archetype swaps) */
-.cf-level-row,
-.cf-archetype {
+.cf-level-row {
 	display: flex;
 	align-items: baseline;
 	gap: 10px;
@@ -2307,6 +2315,18 @@ button:focus-visible,
 
 .cf-archetype {
 	margin-top: 8px;
+}
+
+.cf-archetype-features {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-top: 4px;
+}
+
+.cf-archetype-feature .spell-detail {
+	margin-top: 2px;
+	margin-left: 12px;
 }
 
 /* ------------------------------------------------------- FCB picker -- */

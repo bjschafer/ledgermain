@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { resolveClassFeatures } from "../src/index.js";
+import { archetypeSwappedUuids, resolveClassFeatures } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -137,5 +137,27 @@ describe("resolveClassFeatures: ambiguous archetype features never strike throug
     expect(archEntry.features.every((f) => f.ambiguous)).toBe(true);
     expect(Object.keys(archEntry.swappedSlots)).toHaveLength(0);
     expect(classFeatures.every((f) => f.applied)).toBe(true);
+  });
+});
+
+describe("archetypeSwappedUuids", () => {
+  it("two barbarian archetypes that both swap the same rage-power slot share a uuid", () => {
+    const armoredHulk = byName(ref.archetypes, "Armored Hulk");
+    const brutalPugilist = byName(ref.archetypes, "Brutal Pugilist");
+    const a = archetypeSwappedUuids(ref, armoredHulk.id);
+    const b = archetypeSwappedUuids(ref, brutalPugilist.id);
+    const overlap = [...a].filter((u) => b.has(u));
+    expect(overlap.length).toBeGreaterThan(0);
+  });
+
+  it("Two-Handed Fighter's swapped uuids include Bravery's grant", () => {
+    const thf = byName(ref.archetypes, "Two-Handed Fighter");
+    const fighterDef = Object.values(ref.classes).find((c) => c.tag === "fighter")!;
+    const braveryGrant = fighterDef.features.find((f) => f.name === "Bravery")!;
+    expect(archetypeSwappedUuids(ref, thf.id).has(braveryGrant.uuid)).toBe(true);
+  });
+
+  it("unknown archetype id yields an empty set", () => {
+    expect(archetypeSwappedUuids(ref, "not-a-real-id").size).toBe(0);
   });
 });
