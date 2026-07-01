@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 
-import type { Spell } from "@pf1/schema";
 import type { RefData } from "@pf1/schema";
 
 import {
@@ -18,9 +17,7 @@ import {
 } from "../../model/preparedSpells.js";
 import {
   casterModelFor,
-  concentrationDC,
   grantedCantrips,
-  spellSaveDC,
   spellSlotsByLevel,
 } from "../../model/spellcasting.js";
 import {
@@ -31,6 +28,7 @@ import {
 } from "../../model/spontaneousSpells.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
+import { SpellDetail } from "../SpellDetail.js";
 
 interface PreparedRow {
   /** Index into `doc.live.spells.prepared` (stable within this render). */
@@ -38,76 +36,6 @@ interface PreparedRow {
   spellId: string;
   name: string;
   expended: boolean;
-}
-
-// ---------------------------------------------------------------------------
-// Spell detail helpers
-// ---------------------------------------------------------------------------
-
-/** Save info from the first action that has a save, or null. */
-function spellSave(spell: Spell): { type: string; description: string } | null {
-  for (const action of spell.actions) {
-    if (action.save?.type && action.save.description) {
-      return { type: action.save.type, description: action.save.description };
-    }
-  }
-  return null;
-}
-
-/**
- * Collapsible spell detail panel showing save DC, concentration DC, SR, and
- * the HTML description. Rendered inline under the spell name in both prepared
- * and spontaneous views.
- */
-function SpellDetail({
-  spell,
-  spellLevel,
-  abilityMod,
-}: {
-  spell: Spell;
-  spellLevel: number;
-  abilityMod: number;
-}) {
-  const save = spellSave(spell);
-  const dc = save ? spellSaveDC(spellLevel, abilityMod) : null;
-  const concDC = concentrationDC(spellLevel);
-
-  return (
-    <details className="spell-detail">
-      <summary className="spell-detail-summary">details</summary>
-      <div className="spell-detail-body">
-        {dc !== null && (
-          <div className="spell-detail-row">
-            <span className="spell-detail-label">Save</span>
-            <span className="spell-detail-value">
-              DC {dc} {save!.description}
-            </span>
-          </div>
-        )}
-        {spell.sr === false && (
-          <div className="spell-detail-row">
-            <span className="spell-detail-label">SR</span>
-            <span className="spell-detail-value">No</span>
-          </div>
-        )}
-        <div className="spell-detail-row">
-          <span className="spell-detail-label">Concentration</span>
-          <span className="spell-detail-value">DC {concDC} to cast defensively</span>
-        </div>
-        {spell.description && (
-          <div
-            className="spell-detail-desc"
-            // HTML descriptions come from the Foundry PF1 data (open game
-            // content) and contain only spell text — no user input. We render
-            // them with dangerouslySetInnerHTML because they use formatting
-            // tags (<p>, <i>, <strong>) that are meaningless as plain text.
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: spell.description }}
-          />
-        )}
-      </div>
-    </details>
-  );
 }
 
 // ---------------------------------------------------------------------------

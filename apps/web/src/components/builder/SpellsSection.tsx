@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 
+import type { RefData } from "@pf1/schema";
+
 import { toggleKnownSpell } from "../../model/doc.js";
 import {
   accessibleSpellLevels,
@@ -9,6 +11,7 @@ import {
 } from "../../model/spellcasting.js";
 import { classSpellsByLevel, spellLevelMap } from "../../model/preparedSpells.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { SpellDetail } from "../SpellDetail.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -18,7 +21,7 @@ interface SpellEntry {
   level: number;
 }
 
-export function SpellsSection({ doc, refData, update }: BuilderProps) {
+export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
 
   const casterTag = useMemo(
@@ -148,6 +151,7 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
   }
 
   const abilityLabel = model ? model.ability.toUpperCase() : "";
+  const abilityMod = model ? sheet.abilities[model.ability].mod : 0;
 
   const knownLabel = model?.knownLabel ?? "Spells Known";
   const knownCount = known.size;
@@ -212,11 +216,18 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
       )}
       <div className="scroll">
         {/* Granted cantrips: read-only, always present, collapsed by default. */}
-        {cantrips.length > 0 && <GrantedCantripsBlock cantrips={cantrips} />}
+        {cantrips.length > 0 && (
+          <GrantedCantripsBlock cantrips={cantrips} refData={refData} abilityMod={abilityMod} />
+        )}
 
         {/* Domain spells: read-only reference list for the chosen domains. */}
         {domainEntries.length > 0 && (
-          <DomainSpellsBlock domains={clericDomains} entries={domainEntries} />
+          <DomainSpellsBlock
+            domains={clericDomains}
+            entries={domainEntries}
+            refData={refData}
+            abilityMod={abilityMod}
+          />
         )}
 
         {preparesFromClassList ? (
@@ -224,7 +235,14 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
             <div className="empty">No spells on the {casterTag} list yet.</div>
           ) : (
             entriesLevels.map((lvl) => (
-              <SpellLevelGroup key={lvl} level={lvl} entries={entriesByLevel.get(lvl)!} readOnly />
+              <SpellLevelGroup
+                key={lvl}
+                level={lvl}
+                entries={entriesByLevel.get(lvl)!}
+                refData={refData}
+                abilityMod={abilityMod}
+                readOnly
+              />
             ))
           )
         ) : shown.length === 0 ? (
@@ -235,6 +253,8 @@ export function SpellsSection({ doc, refData, update }: BuilderProps) {
               key={lvl}
               level={lvl}
               entries={byLevel.get(lvl)!}
+              refData={refData}
+              abilityMod={abilityMod}
               known={known}
               onToggle={(id) => update((d) => toggleKnownSpell(d, id))}
               knownLimit={knownLimits.get(lvl)}
@@ -328,6 +348,8 @@ function SpellHints({
 function SpellLevelGroup({
   level,
   entries,
+  refData,
+  abilityMod,
   known = EMPTY_KNOWN,
   onToggle,
   knownLimit,
@@ -337,6 +359,8 @@ function SpellLevelGroup({
 }: {
   level: number;
   entries: SpellEntry[];
+  refData: RefData;
+  abilityMod: number;
   known?: Set<string>;
   onToggle?: (id: string) => void;
   knownLimit?: number;
@@ -382,6 +406,7 @@ function SpellLevelGroup({
             knownLimit !== undefined &&
             !isKnown &&
             knownCount >= knownLimit;
+          const spellData = refData.spells[sp.id];
           return (
             <div
               key={sp.id}
@@ -389,6 +414,9 @@ function SpellLevelGroup({
             >
               <div className="pmain">
                 <div className="pname">{sp.name}</div>
+                {spellData && (
+                  <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
+                )}
               </div>
               {!readOnly && (
                 <button
@@ -417,7 +445,15 @@ const EMPTY_KNOWN: Set<string> = new Set();
  * The read-only granted-cantrips block: listed for reference, not selectable.
  * Collapsed by default since you rarely need to interact with the list.
  */
-function GrantedCantripsBlock({ cantrips }: { cantrips: SpellEntry[] }) {
+function GrantedCantripsBlock({
+  cantrips,
+  refData,
+  abilityMod,
+}: {
+  cantrips: SpellEntry[];
+  refData: RefData;
+  abilityMod: number;
+}) {
   const [collapsed, toggle] = useCollapsed("spell-granted-cantrips", true);
   return (
     <div className="spell-level-group is-granted">
@@ -438,13 +474,19 @@ function GrantedCantripsBlock({ cantrips }: { cantrips: SpellEntry[] }) {
         </span>
       </div>
       {!collapsed &&
-        cantrips.map((sp) => (
-          <div key={sp.id} className="pick-row is-granted">
-            <div className="pmain">
-              <div className="pname">{sp.name}</div>
+        cantrips.map((sp) => {
+          const spellData = refData.spells[sp.id];
+          return (
+            <div key={sp.id} className="pick-row is-granted">
+              <div className="pmain">
+                <div className="pname">{sp.name}</div>
+                {spellData && (
+                  <SpellDetail spell={spellData} spellLevel={0} abilityMod={abilityMod} />
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
     </div>
   );
 }
@@ -458,9 +500,13 @@ function GrantedCantripsBlock({ cantrips }: { cantrips: SpellEntry[] }) {
 function DomainSpellsBlock({
   domains,
   entries,
+  refData,
+  abilityMod,
 }: {
   domains: string[];
   entries: SpellEntry[];
+  refData: RefData;
+  abilityMod: number;
 }) {
   const [collapsed, toggle] = useCollapsed(
     `domain-spells:${domains.sort().join(",")}`,
@@ -494,13 +540,19 @@ function DomainSpellsBlock({
         levels.map((lvl) => (
           <div key={lvl} className="spell-domain-level">
             <div className="spell-domain-level-head">Level {lvl}</div>
-            {byLevel.get(lvl)!.map((sp) => (
-              <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
-                <div className="pmain">
-                  <div className="pname">{sp.name}</div>
+            {byLevel.get(lvl)!.map((sp) => {
+              const spellData = refData.spells[sp.id];
+              return (
+                <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
+                  <div className="pmain">
+                    <div className="pname">{sp.name}</div>
+                    {spellData && (
+                      <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ))}
     </div>
