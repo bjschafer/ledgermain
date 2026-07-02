@@ -2,6 +2,7 @@ import { FAMILIARS } from "@pf1/engine";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { setArcaneBond } from "../../model/doc.js";
+import { useCollapsed } from "../../state/useCollapsed.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -34,6 +35,7 @@ const FAMILIAR_BONUS_LABELS: Record<string, string> = {
  */
 export function ArcaneBondPicker({ doc, update }: ArcaneBondPickerProps) {
 	const isWizard = doc.identity.classes.some((c) => c.tag === "wizard");
+	const [collapsed, toggleCollapsed] = useCollapsed("subsection:ArcaneBond", false);
 	if (!isWizard) return null;
 
 	const bond = doc.build.arcaneBond;
@@ -41,90 +43,115 @@ export function ArcaneBondPicker({ doc, update }: ArcaneBondPickerProps) {
 		bond?.type === "familiar" && bond.familiarKind
 			? FAMILIARS[bond.familiarKind]
 			: undefined;
+	const bondSummary =
+		bond?.type === "familiar"
+			? `Familiar${familiar ? ` · ${familiar.name}` : ""}`
+			: bond?.type === "object"
+				? `Bonded object${bond.bondedItemName ? ` · ${bond.bondedItemName}` : ""}`
+				: null;
 
 	return (
 		<div className="subsection arcane-bond-picker">
-			<h4 className="tracker-sub">Arcane Bond</h4>
-			<p className="hint arcane-bond-hint">
-				Wizards form an arcane bond at level 1: a familiar (grants you its
-				master bonus, and Alertness while it's within arm's reach) or a bonded
-				object (cast any one spell from your spellbook once per day; casting
-				without the object in hand requires a concentration check, DC 20 +
-				spell level).
-			</p>
-			<div className="chips arcane-bond-type">
-				<button
-					type="button"
-					className="chip"
-					aria-pressed={bond?.type === "familiar"}
-					onClick={() =>
-						update((d) =>
-							d.build.arcaneBond?.type === "familiar"
-								? setArcaneBond(d, null)
-								: setArcaneBond(d, { type: "familiar", familiarKind: "bat" }),
-						)
-					}
-				>
-					Familiar
-				</button>
-				<button
-					type="button"
-					className="chip"
-					aria-pressed={bond?.type === "object"}
-					onClick={() =>
-						update((d) =>
-							d.build.arcaneBond?.type === "object"
-								? setArcaneBond(d, null)
-								: setArcaneBond(d, { type: "object" }),
-						)
-					}
-				>
-					Bonded object
-				</button>
+			<div
+				className="subsection-header"
+				onClick={toggleCollapsed}
+				role="button"
+				tabIndex={0}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") toggleCollapsed();
+				}}
+				aria-expanded={!collapsed}
+			>
+				<h3>
+					Arcane Bond
+					{bondSummary ? <span className="hint"> · {bondSummary}</span> : null}
+				</h3>
+				<span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
 			</div>
-
-			{bond?.type === "familiar" && (
+			{!collapsed && (
 				<>
-					<select
-						className="arcane-bond-select"
-						value={bond.familiarKind ?? ""}
-						onChange={(e) =>
-							update((d) =>
-								setArcaneBond(d, { type: "familiar", familiarKind: e.target.value }),
-							)
-						}
-						aria-label="Familiar kind"
-					>
-						{Object.entries(FAMILIARS).map(([kind, def]) => (
-							<option key={kind} value={kind}>
-								{def.name}
-							</option>
-						))}
-					</select>
-					{familiar && (
-						<p className="hint arcane-bond-effect">
-							{FAMILIAR_BONUS_LABELS[bond.familiarKind!]
-								? `Master bonus: ${FAMILIAR_BONUS_LABELS[bond.familiarKind!]} (applied to your sheet).`
-								: null}
-							{familiar.note ? ` ${familiar.name}: ${familiar.note}.` : null}
-						</p>
+					<p className="hint arcane-bond-hint">
+						Wizards form an arcane bond at level 1: a familiar (grants you its
+						master bonus, and Alertness while it's within arm's reach) or a bonded
+						object (cast any one spell from your spellbook once per day; casting
+						without the object in hand requires a concentration check, DC 20 +
+						spell level).
+					</p>
+					<div className="chips arcane-bond-type">
+						<button
+							type="button"
+							className="chip"
+							aria-pressed={bond?.type === "familiar"}
+							onClick={() =>
+								update((d) =>
+									d.build.arcaneBond?.type === "familiar"
+										? setArcaneBond(d, null)
+										: setArcaneBond(d, { type: "familiar", familiarKind: "bat" }),
+								)
+							}
+						>
+							Familiar
+						</button>
+						<button
+							type="button"
+							className="chip"
+							aria-pressed={bond?.type === "object"}
+							onClick={() =>
+								update((d) =>
+									d.build.arcaneBond?.type === "object"
+										? setArcaneBond(d, null)
+										: setArcaneBond(d, { type: "object" }),
+								)
+							}
+						>
+							Bonded object
+						</button>
+					</div>
+
+					{bond?.type === "familiar" && (
+						<>
+							<select
+								className="arcane-bond-select"
+								value={bond.familiarKind ?? ""}
+								onChange={(e) =>
+									update((d) =>
+										setArcaneBond(d, { type: "familiar", familiarKind: e.target.value }),
+									)
+								}
+								aria-label="Familiar kind"
+							>
+								{Object.entries(FAMILIARS).map(([kind, def]) => (
+									<option key={kind} value={kind}>
+										{def.name}
+									</option>
+								))}
+							</select>
+							{familiar && (
+								<p className="hint arcane-bond-effect">
+									{FAMILIAR_BONUS_LABELS[bond.familiarKind!]
+										? `Master bonus: ${FAMILIAR_BONUS_LABELS[bond.familiarKind!]} (applied to your sheet).`
+										: null}
+									{familiar.note ? ` ${familiar.name}: ${familiar.note}.` : null}
+								</p>
+							)}
+						</>
+					)}
+
+					{bond?.type === "object" && (
+						<input
+							type="text"
+							className="arcane-bond-object-name"
+							placeholder="Bonded object (e.g. ring, staff, wand…)"
+							value={bond.bondedItemName ?? ""}
+							onChange={(e) =>
+								update((d) =>
+									setArcaneBond(d, { type: "object", bondedItemName: e.target.value }),
+								)
+							}
+							aria-label="Bonded object name"
+						/>
 					)}
 				</>
-			)}
-
-			{bond?.type === "object" && (
-				<input
-					type="text"
-					className="arcane-bond-object-name"
-					placeholder="Bonded object (e.g. ring, staff, wand…)"
-					value={bond.bondedItemName ?? ""}
-					onChange={(e) =>
-						update((d) =>
-							setArcaneBond(d, { type: "object", bondedItemName: e.target.value }),
-						)
-					}
-					aria-label="Bonded object name"
-				/>
 			)}
 		</div>
 	);

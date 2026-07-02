@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setClericDomains } from "../../model/doc.js";
+import { useCollapsed } from "../../state/useCollapsed.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -25,6 +26,7 @@ interface DomainPickerProps {
 export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
 	const isCleric = doc.identity.classes.some((c) => c.tag === "cleric");
 	const [query, setQuery] = useState("");
+	const [collapsed, toggleCollapsed] = useCollapsed("subsection:Domains", false);
 
 	const domains = useMemo(
 		() =>
@@ -52,37 +54,56 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
 
 	return (
 		<div className="subsection domain-picker">
-			<h4 className="tracker-sub">Domains</h4>
-			<p className="hint domain-picker-hint">
-				Pick two domains (PF1 grants two at level 1). Each grants one bonus
-				prepare-slot per accessible spell level, drawable from that domain's
-				spell list. Free-choice — no deity validation.
-			</p>
-			<input
-				className="search"
-				type="text"
-				placeholder={`Search ${domains.length} domains…`}
-				value={query}
-				onChange={(e) => setQuery(e.target.value)}
-			/>
-			<div className="chips domain-chips">
-				{shown.map((tag) => (
-					<button
-						key={tag}
-						type="button"
-						className="chip"
-						aria-pressed={chosen.includes(tag)}
-						onClick={() => toggle(tag)}
-					>
-						{tag}
-					</button>
-				))}
+			<div
+				className="subsection-header"
+				onClick={toggleCollapsed}
+				role="button"
+				tabIndex={0}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") toggleCollapsed();
+				}}
+				aria-expanded={!collapsed}
+			>
+				<h3>
+					Domains
+					{chosen.length > 0 ? <span className="hint"> · {chosen.join(", ")}</span> : null}
+				</h3>
+				<span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
 			</div>
-			{chosen.length > 0 && (
-				<p className="hint domain-chosen">
-					<span>Chosen: </span>
-					<strong>{chosen.join(", ")}</strong>
-				</p>
+			{!collapsed && (
+				<>
+					<p className="hint domain-picker-hint">
+						Pick two domains (PF1 grants two at level 1). Each grants one bonus
+						prepare-slot per accessible spell level, drawable from that domain's
+						spell list. Free-choice — no deity validation.
+					</p>
+					<input
+						className="search"
+						type="text"
+						placeholder={`Search ${domains.length} domains…`}
+						value={query}
+						onChange={(e) => setQuery(e.target.value)}
+					/>
+					<div className="chips domain-chips">
+						{shown.map((tag) => (
+							<button
+								key={tag}
+								type="button"
+								className="chip"
+								aria-pressed={chosen.includes(tag)}
+								onClick={() => toggle(tag)}
+							>
+								{tag}
+							</button>
+						))}
+					</div>
+					{chosen.length > 0 && (
+						<p className="hint domain-chosen">
+							<span>Chosen: </span>
+							<strong>{chosen.join(", ")}</strong>
+						</p>
+					)}
+				</>
 			)}
 		</div>
 	);

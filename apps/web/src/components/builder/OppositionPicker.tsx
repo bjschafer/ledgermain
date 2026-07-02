@@ -2,6 +2,7 @@ import type { CharacterDoc, WizardSchoolTag } from "@pf1/schema";
 
 import { setWizardOppositionSchools } from "../../model/doc.js";
 import { SCHOOL_LABELS, SCHOOL_TAGS } from "../../model/spellcasting.js";
+import { useCollapsed } from "../../state/useCollapsed.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -24,6 +25,7 @@ export function OppositionPicker({ doc, update }: OppositionPickerProps) {
     const school = doc.build.wizardSchool;
     const chosen = doc.build.wizardOppositionSchools ?? [];
     const options = SCHOOL_TAGS.filter((tag) => tag !== "uni" && tag !== school);
+    const [collapsed, toggleCollapsed] = useCollapsed("subsection:OppositionSchools", false);
 
     function toggle(tag: string) {
         const set = new Set(chosen);
@@ -34,34 +36,53 @@ export function OppositionPicker({ doc, update }: OppositionPickerProps) {
 
     return (
         <div className="subsection opposition-picker">
-            <h4 className="tracker-sub">Opposition Schools</h4>
-            <p className="hint opposition-picker-hint">
-                Pick two opposition schools (PF1 requires two for a specialist).
-                Preparing a spell from an opposition school costs two slots instead
-                of one.
-            </p>
-            <div className="chips opposition-chips">
-                {options.map((tag) => (
-                    <button
-                        key={tag}
-                        type="button"
-                        className="chip"
-                        aria-pressed={chosen.includes(tag)}
-                        onClick={() => toggle(tag)}
-                    >
-                        {SCHOOL_LABELS[tag]}
-                    </button>
-                ))}
+            <div
+                className="subsection-header"
+                onClick={toggleCollapsed}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") toggleCollapsed();
+                }}
+                aria-expanded={!collapsed}
+            >
+                <h3>
+                    Opposition Schools
+                    {chosen.length > 0 ? <span className="hint"> · {chosen.length} chosen</span> : null}
+                </h3>
+                <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
             </div>
-            {chosen.length > 0 && (
-                <p className="hint opposition-chosen">
-                    <span>Chosen: </span>
-                    <strong>
-                        {chosen
-                            .map((t) => SCHOOL_LABELS[t as WizardSchoolTag] ?? t)
-                            .join(", ")}
-                    </strong>
-                </p>
+            {!collapsed && (
+                <>
+                    <p className="hint opposition-picker-hint">
+                        Pick two opposition schools (PF1 requires two for a specialist).
+                        Preparing a spell from an opposition school costs two slots instead
+                        of one.
+                    </p>
+                    <div className="chips opposition-chips">
+                        {options.map((tag) => (
+                            <button
+                                key={tag}
+                                type="button"
+                                className="chip"
+                                aria-pressed={chosen.includes(tag)}
+                                onClick={() => toggle(tag)}
+                            >
+                                {SCHOOL_LABELS[tag]}
+                            </button>
+                        ))}
+                    </div>
+                    {chosen.length > 0 && (
+                        <p className="hint opposition-chosen">
+                            <span>Chosen: </span>
+                            <strong>
+                                {chosen
+                                    .map((t) => SCHOOL_LABELS[t as WizardSchoolTag] ?? t)
+                                    .join(", ")}
+                            </strong>
+                        </p>
+                    )}
+                </>
             )}
         </div>
     );
