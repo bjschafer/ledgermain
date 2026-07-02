@@ -1,3 +1,2 @@
-- All schools in spellbook browse for adding doesn't work. also the ux isn't *super* clear between searching to add spells vs looking through existing spells
 - buffs that have formulas, are usually unclear to the layman what they are
 - make collapsible stuff like arcane school, opposition school, arcane bond, etc same way FCB is collapsible

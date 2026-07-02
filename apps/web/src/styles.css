@@ -712,6 +712,14 @@ button:focus-visible,
 	margin-bottom: 12px;
 }
 
+/* Known-vs-browse tab bar above the spellbook search box — a mode switch,
+   not a multi-select filter, so it's visually set off from .spell-school-filters. */
+.spell-mode-toggle {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--line-soft);
+}
+
 .spell-school-filters {
 	margin-bottom: 12px;
 }

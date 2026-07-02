@@ -27,6 +27,11 @@ interface SpellEntry {
 export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
   const [school, setSchool] = useState<string>("All");
+  // Explicit view mode, rather than deriving "browsing" from query/school being
+  // non-default: that made "All schools" a no-op once it was already the
+  // default, so there was no way to browse the unfiltered class list, and the
+  // known-vs-browse view switched implicitly with no visible indicator.
+  const [mode, setMode] = useState<"known" | "browsing">("known");
 
   const casterTag = useMemo(
     () => doc.identity.classes.map((c) => c.tag).find((t) => refData.spellLists[t]),
@@ -178,10 +183,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const knownCount = known.size;
 
   const q = query.trim().toLowerCase();
-  // Typing a search term or picking a school chip switches from "what I know"
-  // to "browse the full class list" — the only way to discover new spells to
-  // add without already knowing their name.
-  const browsing = q.length > 0 || school !== "All";
+  const browsing = mode === "browsing";
   const shown = browsing
     ? entries
         .filter((e) => (!q || e.name.toLowerCase().includes(q)) && (school === "All" || e.school === school))
@@ -242,12 +244,40 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {!preparesFromClassList && (
         <>
+          {/* Explicit view toggle: which list below is showing. Switching to
+              "Browse" with no search/school filter shows the full class list. */}
+          <div className="chips spell-mode-toggle" role="tablist" aria-label="Spell list view">
+            <button
+              type="button"
+              className="chip"
+              role="tab"
+              aria-selected={!browsing}
+              aria-pressed={!browsing}
+              onClick={() => setMode("known")}
+            >
+              {knownLabel} ({knownCount})
+            </button>
+            <button
+              type="button"
+              className="chip"
+              role="tab"
+              aria-selected={browsing}
+              aria-pressed={browsing}
+              onClick={() => setMode("browsing")}
+            >
+              Browse spell list
+            </button>
+          </div>
           <input
             className="search"
             type="text"
             placeholder={`Search the ${casterTag} spell list to add…`}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              if (e.target.value.trim().length > 0) setMode("browsing");
+            }}
+            onFocus={() => setMode("browsing")}
           />
           {/* Browse by school when you don't already know a spell's name. */}
           <div className="chips spell-school-filters">
@@ -255,7 +285,10 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
               type="button"
               className="chip"
               aria-pressed={school === "All"}
-              onClick={() => setSchool("All")}
+              onClick={() => {
+                setSchool("All");
+                setMode("browsing");
+              }}
             >
               All schools
             </button>
@@ -265,7 +298,10 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
                 type="button"
                 className="chip"
                 aria-pressed={school === sc}
-                onClick={() => setSchool(school === sc ? "All" : sc)}
+                onClick={() => {
+                  setSchool(school === sc ? "All" : sc);
+                  setMode("browsing");
+                }}
               >
                 {schoolLabel(sc)}
               </button>
