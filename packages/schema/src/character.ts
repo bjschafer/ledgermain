@@ -1,6 +1,22 @@
 import type { AbilityId, Change, ContextNote, SkillId } from "./primitives.js";
 
 /**
+ * A PF1 wizard arcane school tag: one of the eight specialist schools, or
+ * "uni" for Universalist (no specialization). Matches `Spell.school` values
+ * in the vendored data.
+ */
+export type WizardSchoolTag =
+  | "abj"
+  | "con"
+  | "div"
+  | "enc"
+  | "evo"
+  | "ill"
+  | "nec"
+  | "trs"
+  | "uni";
+
+/**
  * The character document is the single source of truth: it holds build choices
  * and live session state, but NEVER derived values. Fleshed out in Stage 2 to
  * the extent the rules engine needs as input; the builder (Stage 3) will add the
@@ -64,6 +80,27 @@ export interface CharacterDoc {
      * Back-compat: documents without this field are unaffected.
      */
     sorcererBloodline?: string;
+    /**
+     * Wizard specialization school tag. One of the eight PF1 schools
+     * ("abj","con","div","enc","evo","ill","nec","trs") or "uni" (Universalist —
+     * no opposition schools, no bonus slot). Free-choice; the vendored Foundry
+     * data has no per-school mapping of school features. Default undefined =
+     * Universalist (back-compat: existing wizard docs load as Universalist).
+     *
+     * A specialist (any non-"uni" tag) gains one bonus prepared slot per
+     * accessible spell level 1–9 (rendered with `PreparedSpell.kind ===
+     * "school"`), exclusive to spells of that school, plus two opposition
+     * schools (see `wizardOppositionSchools`). A Universalist gains NO bonus
+     * slot (PF1 RAW — their compensation is school powers, deferred).
+     */
+    wizardSchool?: WizardSchoolTag;
+    /**
+     * Two opposition school tags for a specialist wizard; empty/omitted for
+     * Universalist. Opposition-school spells cost two normal slots to prepare
+     * (PF1 RAW). Free-choice (no school-vs-opposition validation — soft-warning
+     * posture, matching the cleric domain free-choice policy).
+     */
+    wizardOppositionSchools?: string[];
     /**
      * Archetype ids chosen (keys into `RefData.archetypes`, e.g.
      * `"fighter:two-handed-fighter"`). No conflict validation — matches the
@@ -226,9 +263,15 @@ export interface PreparedSpell {
    * cleric's bonus domain slot, sourced from `refData.domainSpellLists[<tag>]`
    * for one of the cleric's chosen domains. A `"domain"` slot is reserved per
    * accessible spell level per chosen domain (each is exclusive: a domain spell
-   * may only be prepared in a domain slot and vice versa).
+   * may only be prepared in a domain slot and vice versa). `"school"` is a
+   * specialist wizard's bonus school slot (one per accessible spell level
+   * 1–9), exclusive to spells whose `Spell.school` matches `build.wizardSchool`
+   * — never granted to a Universalist. A `"normal"`-kind spell whose school is
+   * one of `build.wizardOppositionSchools` costs two normal slots to prepare
+   * (PF1 RAW), accounted for in `model/preparedSpells.oppositionCost`, not by
+   * a distinct `kind`.
    */
-  kind?: "normal" | "domain";
+  kind?: "normal" | "domain" | "school";
 }
 
 /**

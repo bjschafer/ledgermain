@@ -8,6 +8,7 @@ import {
   bloodlineSpellsKnown,
   casterModelFor,
   grantedCantrips,
+  schoolLabel,
   spellsKnownLimitsByLevel,
 } from "../../model/spellcasting.js";
 import { classSpellsByLevel, spellLevelMap } from "../../model/preparedSpells.js";
@@ -22,19 +23,6 @@ interface SpellEntry {
   level: number;
   school?: string;
 }
-
-/** Foundry school abbreviations -> display labels, for the browse filter chips. */
-const SCHOOL_LABELS: Record<string, string> = {
-  abj: "Abjuration",
-  con: "Conjuration",
-  div: "Divination",
-  enc: "Enchantment",
-  evo: "Evocation",
-  ill: "Illusion",
-  nec: "Necromancy",
-  trs: "Transmutation",
-  uni: "Universal",
-};
 
 export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
@@ -172,7 +160,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const schools = useMemo(() => {
     const set = new Set<string>();
     for (const e of entries) if (e.school) set.add(e.school);
-    return [...set].sort((a, b) => (SCHOOL_LABELS[a] ?? a).localeCompare(SCHOOL_LABELS[b] ?? b));
+    return [...set].sort((a, b) => schoolLabel(a).localeCompare(schoolLabel(b)));
   }, [entries]);
 
   if (!casterTag) {
@@ -279,7 +267,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
                 aria-pressed={school === sc}
                 onClick={() => setSchool(school === sc ? "All" : sc)}
               >
-                {SCHOOL_LABELS[sc] ?? sc}
+                {schoolLabel(sc)}
               </button>
             ))}
           </div>

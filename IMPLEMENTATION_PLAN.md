@@ -292,7 +292,29 @@ Mirror `setClericDomains` shape + blank-stripping. `setWizardSchool("uni")` clea
 7. `apps/web/src/components/tracker/PreparedSpellsPanel.tsx` — school-slot rows + opposition-cost badge.
 8. Three test files as above.
 
-**Status**: Not Started
+**Status**: Complete. As-built notes:
+- `SCHOOL_LABELS`/`SCHOOL_TAGS` (school tag → display label) ended up centralized
+  in `apps/web/src/model/spellcasting.ts` rather than `SchoolPicker.tsx` — the
+  builder's existing `SpellsSection.tsx` already had a local (and drifted —
+  "Universal" vs "Universalist") copy for its browse-by-school filter chips;
+  consolidated to one source of truth (plus a `schoolLabel()` helper for the
+  untyped `Spell.school` string) instead of shipping a second copy.
+- Opposition cost is accounted by weighting each normal-slot `PreparedRow` with
+  a `cost` (1 or 2) and summing per level, rather than a separate slot kind —
+  matches the plan's "refine the existing slot-counting loop" note. The
+  per-level header now reads `usedCapacity/total prepared` (cost-weighted)
+  instead of a raw instance count.
+- Switching a specialist to Universalist (or to a different school) does not
+  purge now-orphaned `kind: "school"` prepared instances from `live.spells`;
+  they simply stop rendering (no UI section to show them in). Harmless
+  (excluded from normal-slot capacity either way) but noted as a minor gap —
+  a future "rest"/re-prepare already clears the whole loadout if it matters.
+- Manually verified end-to-end in a real browser (Playwright, dev server): a
+  wizard 5 Evocation specialist opposing Enchantment/Necromancy shows School
+  Slots L1–L3, prepares Burning Hands into a school slot (1/1), preparing
+  Sleep into a normal slot shows a "COSTS 2 SLOTS" badge and the L1 header
+  reads 2/3 prepared; switching to Universalist hides both the opposition
+  picker and the School Slots section.
 
 ---
 

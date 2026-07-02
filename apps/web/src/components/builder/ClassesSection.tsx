@@ -13,6 +13,7 @@ import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { DomainPicker } from "./DomainPicker.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
+import { SchoolPicker } from "./SchoolPicker.js";
 import type { BuilderProps } from "./types.js";
 
 export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
@@ -203,6 +204,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 			{/* Bloodline picker — sorcerer only (free-choice, soft warning only). */}
 			{doc.identity.classes.some((c) => c.tag === "sorcerer") && (
 				<BloodlinePicker doc={doc} refData={refData} update={update} />
+			)}
+
+			{/* Arcane school picker — wizard only (free-choice, soft warning only). */}
+			{doc.identity.classes.some((c) => c.tag === "wizard") && (
+				<SchoolPicker doc={doc} update={update} />
 			)}
 
 			{/* Archetype picker — only classes covered by the vendored dataset show options. */}

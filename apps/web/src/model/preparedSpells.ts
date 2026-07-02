@@ -12,7 +12,7 @@
  * stable within one render of the prepared list.
  */
 
-import type { CharacterDoc, PreparedSpell, RefData } from "@pf1/schema";
+import type { CharacterDoc, PreparedSpell, RefData, Spell } from "@pf1/schema";
 
 import { casterModelFor } from "./spellcasting.js";
 
@@ -45,6 +45,20 @@ export function prepareDomainSpell(doc: CharacterDoc, spellId: string): Characte
 }
 
 /**
+ * Append one un-expended prepared instance of `spellId` into a specialist
+ * wizard's bonus school slot. One per accessible spell level (1–9); the
+ * caller is responsible for the capacity check (see {@link schoolSlotCapacity})
+ * and for restricting the offered spell to the wizard's school (see
+ * {@link isSchoolSlotEligible}).
+ */
+export function prepareSchoolSpell(doc: CharacterDoc, spellId: string): CharacterDoc {
+  return withPrepared(doc, [
+    ...preparedSpells(doc),
+    { spellId, expended: false, kind: "school" },
+  ]);
+}
+
+/**
  * Remove one prepared instance of `spellId`, preferring an un-expended one so a
  * decrement doesn't silently discard a still-available slot. Optional `kind`
  * restricts the removal to that slot kind (e.g. only a domain slot). No-op if
@@ -53,7 +67,7 @@ export function prepareDomainSpell(doc: CharacterDoc, spellId: string): Characte
 export function unprepareSpell(
   doc: CharacterDoc,
   spellId: string,
-  kind?: "normal" | "domain",
+  kind?: "normal" | "domain" | "school",
 ): CharacterDoc {
   const list = preparedSpells(doc);
   const matchesKind = (p: PreparedSpell) => kind === undefined || (p.kind ?? "normal") === kind;
@@ -138,6 +152,43 @@ export function domainSpellLevelMap(
     }
   }
   return map;
+}
+
+// ---------------------------------------------------------------------------
+// Wizard specialization schools — bonus school slot + opposition cost.
+// ---------------------------------------------------------------------------
+
+/**
+ * True when `spell` may be prepared in the wizard's bonus school slot
+ * (`spell.school === build.wizardSchool`). Always false for a Universalist or
+ * when no school is chosen — Universalists get no bonus school slot (PF1 RAW
+ * correction: their compensation is arcane-school powers, deferred to Stage 4).
+ */
+export function isSchoolSlotEligible(spell: Spell, doc: CharacterDoc): boolean {
+  const school = doc.build.wizardSchool;
+  if (!school || school === "uni") return false;
+  return spell.school === school;
+}
+
+/**
+ * How many normal slots preparing `spell` costs: 1 normally, 2 when
+ * `spell.school` is one of the wizard's chosen opposition schools (PF1 RAW —
+ * opposition-school spells always count double against the daily prepared
+ * limit). Non-wizards (no `wizardOppositionSchools` set) always cost 1.
+ */
+export function oppositionCost(spell: Spell, doc: CharacterDoc): number {
+  const opposition = doc.build.wizardOppositionSchools ?? [];
+  if (opposition.length === 0) return 1;
+  return spell.school && opposition.includes(spell.school) ? 2 : 1;
+}
+
+/**
+ * A specialist wizard gets exactly one bonus school slot per accessible spell
+ * level 1–9 (never cantrips, never a Universalist). Mirrors the cleric's
+ * one-domain-slot-per-level capacity in `DomainSlotsSection`.
+ */
+export function schoolSlotCapacity(level: number): number {
+  return level >= 1 && level <= 9 ? 1 : 0;
 }
 
 /**

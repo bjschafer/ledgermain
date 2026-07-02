@@ -6,11 +6,15 @@ import {
   classSpellsByLevel,
   clearPrepared,
   domainSpellLevelMap,
+  isSchoolSlotEligible,
+  oppositionCost,
   prepareDomainSpell,
+  prepareSchoolSpell,
   prepareSpell,
   preparedSpells,
   removePreparedAt,
   restPreparedSpells,
+  schoolSlotCapacity,
   setExpendedAt,
   spellLevelMap,
   unprepareSpell,
@@ -19,6 +23,7 @@ import {
   bloodlineSpellsKnown,
   casterModelFor,
   grantedCantrips,
+  SCHOOL_LABELS,
   spellSlotsByLevel,
 } from "../../model/spellcasting.js";
 import {
@@ -37,6 +42,12 @@ interface PreparedRow {
   spellId: string;
   name: string;
   expended: boolean;
+  /**
+   * Normal-slot cost of this instance: 1 normally, 2 when the spell is one of
+   * the wizard's chosen opposition schools (see `oppositionCost`). 1 for every
+   * non-wizard caster (no `wizardOppositionSchools` set).
+   */
+  cost: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -243,6 +254,203 @@ function DomainSlotsSection({
 }
 
 // ---------------------------------------------------------------------------
+// School slots — bonus prepared slots for a specialist wizard.
+// ---------------------------------------------------------------------------
+
+/**
+ * The bonus school-slot grid for a specialist wizard. PF1 grants ONE school
+ * spell slot per accessible spell level 1–9 (never cantrips, never a
+ * Universalist — see the RAW correction in IMPLEMENTATION_PLAN.md Stage 2);
+ * the picker is filtered to spells whose `Spell.school` matches the chosen
+ * specialization. Each school-prepare instance stores `kind: "school"` on the
+ * doc, keeping it out of the class-slot capacity check in {@link PreparedView}
+ * (mirrors {@link DomainSlotsSection}).
+ */
+function SchoolSlotsSection({
+  doc,
+  refData,
+  update,
+  slots,
+  abilityMod,
+}: {
+  doc: BuilderProps["doc"];
+  refData: RefData;
+  update: BuilderProps["update"];
+  slots: ReturnType<typeof spellSlotsByLevel>;
+  abilityMod: number;
+}) {
+  const school = doc.build.wizardSchool;
+  const levelMap = useMemo(() => spellLevelMap(refData, "wizard"), [refData]);
+
+  // Bucket school-kind prepared instances by their wizard spell level.
+  type Row = { index: number; spellId: string; name: string; expended: boolean };
+  const preparedByLevel = new Map<number, Row[]>();
+  const prepared = preparedSpells(doc);
+  prepared.forEach((p, index) => {
+    if ((p.kind ?? "normal") !== "school") return;
+    const lvl = levelMap.get(p.spellId);
+    if (lvl === undefined) return;
+    const row: Row = {
+      index,
+      spellId: p.spellId,
+      name: refData.spells[p.spellId]?.name ?? p.spellId,
+      expended: p.expended,
+    };
+    (preparedByLevel.get(lvl) ?? preparedByLevel.set(lvl, []).get(lvl)!).push(row);
+  });
+  for (const arr of preparedByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
+
+  // Per accessible spell level (1–9), the wizard-list spells of the chosen
+  // school (in-school only — a school slot may not hold an off-school spell).
+  const pickableByLevel = useMemo(() => {
+    const out = new Map<number, { id: string; name: string }[]>();
+    if (!school || school === "uni") return out;
+    for (const slot of slots) {
+      if (slot.level < 1 || slot.base === null) continue;
+      const ids = refData.spellLists["wizard"]?.[slot.level] ?? [];
+      const entries: { id: string; name: string }[] = [];
+      for (const id of ids) {
+        const sp = refData.spells[id];
+        if (sp && isSchoolSlotEligible(sp, doc)) entries.push({ id, name: sp.name });
+      }
+      entries.sort((a, b) => a.name.localeCompare(b.name));
+      out.set(slot.level, entries);
+    }
+    return out;
+  }, [slots, school, refData, doc]);
+
+  const accessibleLevels = [...pickableByLevel.keys()].sort((a, b) => a - b);
+  if (!school || school === "uni" || accessibleLevels.length === 0) return null;
+
+  const schoolLabel = SCHOOL_LABELS[school] ?? school;
+
+  return (
+    <div className="school-slots">
+      <header className="school-slots-head">
+        <h4 className="school-slots-title">School Slots ({schoolLabel})</h4>
+        <p className="hint school-slots-hint">
+          One bonus prepare-slot per accessible spell level, exclusive to{" "}
+          {schoolLabel} spells (a Universalist gets none).
+        </p>
+      </header>
+
+      {accessibleLevels.map((level) => {
+        const rows = preparedByLevel.get(level) ?? [];
+        const total = schoolSlotCapacity(level);
+        const full = rows.length >= total;
+        const pickable = pickableByLevel.get(level) ?? [];
+
+        return (
+          <section key={level} className="prep-level is-school">
+            <header className="prep-head">
+              <span className="prep-head-label">School L{level}</span>
+              <span className={`prep-count${rows.length > total ? " is-over" : ""}`}>
+                {rows.length}/{total} prepared
+                {rows.length > 0 && ` · ${rows.filter((r) => !r.expended).length} ready`}
+              </span>
+            </header>
+
+            {rows.length > 0 ? (
+              <div className="prep-rows">
+                {rows.map((r) => {
+                  const spellData = refData.spells[r.spellId];
+                  return (
+                    <div
+                      key={r.index}
+                      className={`prep-row${r.expended ? " is-expended" : ""}`}
+                    >
+                      <div className="prep-row-main">
+                        <span className="prep-name">{r.name}</span>
+                        {spellData && (
+                          <SpellDetail
+                            spell={spellData}
+                            spellLevel={level}
+                            abilityMod={abilityMod}
+                          />
+                        )}
+                      </div>
+                      {r.expended ? (
+                        <button
+                          type="button"
+                          className="pick-btn add prep-cast"
+                          onClick={() => update((d) => setExpendedAt(d, r.index, false))}
+                        >
+                          Recover
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="pick-btn remove prep-cast"
+                          onClick={() => update((d) => setExpendedAt(d, r.index, true))}
+                        >
+                          Cast
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        className="btn-ghost prep-x"
+                        aria-label={`unprepare ${r.name}`}
+                        onClick={() => update((d) => removePreparedAt(d, r.index))}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="prep-none">— school slot empty —</p>
+            )}
+
+            {pickable.length > 0 ? (
+              <details className="prep-add">
+                <summary>
+                  Prepare from {schoolLabel} level-{level} list…
+                  {full && <span className="prep-full"> school slot filled</span>}
+                </summary>
+                <div className="prep-add-list">
+                  {pickable.map((sp) => {
+                    const count = rows.filter((r) => r.spellId === sp.id && !r.expended).length;
+                    const spellData = refData.spells[sp.id];
+                    return (
+                      <div key={sp.id} className="prep-add-row">
+                        <div className="prep-row-main">
+                          <span className="prep-name">{sp.name}</span>
+                          {spellData && (
+                            <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
+                          )}
+                        </div>
+                        {count > 0 && <span className="prep-have">prepared</span>}
+                        <button
+                          type="button"
+                          className="pick-btn add"
+                          aria-label={`prepare ${sp.name} in the school slot`}
+                          disabled={full}
+                          title={
+                            full
+                              ? "School slot is filled — unprepare the current spell first."
+                              : undefined
+                          }
+                          onClick={() => update((d) => prepareSchoolSpell(d, sp.id))}
+                        >
+                          Prepare
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </details>
+            ) : (
+              <p className="prep-none">No level-{level} {schoolLabel} spells on the wizard list.</p>
+            )}
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Prepared-caster (wizard) view
 // ---------------------------------------------------------------------------
 
@@ -293,17 +501,20 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
   const preparedByLevel = new Map<number, PreparedRow[]>();
   const preparedCountBySpell = new Map<string, number>();
   prepared.forEach((p, index) => {
-    // Exclude domain-slot instances — they are bucketed/rendered separately to
-    // keep the class slots capacity check honest.
-    if ((p.kind ?? "normal") === "domain") return;
+    // Exclude domain- and school-slot instances — they are bucketed/rendered
+    // separately to keep the class slots capacity check honest.
+    const kind = p.kind ?? "normal";
+    if (kind === "domain" || kind === "school") return;
     const lvl = levelMap.get(p.spellId);
     if (lvl === undefined) return;
     preparedCountBySpell.set(p.spellId, (preparedCountBySpell.get(p.spellId) ?? 0) + 1);
+    const spellData = refData.spells[p.spellId];
     const row: PreparedRow = {
       index,
       spellId: p.spellId,
-      name: refData.spells[p.spellId]?.name ?? p.spellId,
+      name: spellData?.name ?? p.spellId,
       expended: p.expended,
+      cost: spellData ? oppositionCost(spellData, doc) : 1,
     };
     (preparedByLevel.get(lvl) ?? preparedByLevel.set(lvl, []).get(lvl)!).push(row);
   });
@@ -386,8 +597,12 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
           const isCantrip = level === 0;
           const rows = preparedByLevel.get(level) ?? [];
           const ready = isCantrip ? rows.length : rows.filter((r) => !r.expended).length;
-          const over = rows.length > total;
-          const full = rows.length >= total;
+          // Slot capacity is cost-weighted: an opposition-school spell prepared
+          // into a normal slot occupies 2 (PF1 RAW), not 1.
+          const usedCapacity = rows.reduce((s, r) => s + r.cost, 0);
+          const remaining = total - usedCapacity;
+          const over = usedCapacity > total;
+          const full = remaining <= 0;
           const knownHere =
             isCantrip && model.grantsAllCantrips
               ? cantripList
@@ -400,7 +615,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
                   {isCantrip ? "Cantrips" : `Level ${level}`}
                 </span>
                 <span className={`prep-count${over ? " is-over" : ""}`}>
-                  {rows.length}/{total} prepared
+                  {usedCapacity}/{total} prepared
                   {!isCantrip && ` · ${ready} ready`}
                   {bonus > 0 && (
                     <span className="prep-bonus">
@@ -422,6 +637,9 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
                       >
                         <div className="prep-row-main">
                           <span className="prep-name">{r.name}</span>
+                          {r.cost === 2 && (
+                            <span className="prep-opposition-badge">costs 2 slots</span>
+                          )}
                           {spellData && (
                             <SpellDetail
                               spell={spellData}
@@ -493,10 +711,15 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
                       const count = preparedCountBySpell.get(sp.id) ?? 0;
                       const cantripPrepared = isCantrip && count > 0;
                       const spellData = refData.spells[sp.id];
+                      const cost = spellData ? oppositionCost(spellData, doc) : 1;
+                      const wontFit = remaining < cost;
                       return (
                         <div key={sp.id} className="prep-add-row">
                           <div className="prep-row-main">
                             <span className="prep-name">{sp.name}</span>
+                            {cost === 2 && (
+                              <span className="prep-opposition-badge">costs 2 slots</span>
+                            )}
                             {spellData && (
                               <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
                             )}
@@ -520,12 +743,14 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
                             type="button"
                             className="pick-btn add"
                             aria-label={`prepare ${sp.name}`}
-                            disabled={full || cantripPrepared}
+                            disabled={wontFit || cantripPrepared}
                             title={
                               cantripPrepared
                                 ? "Cantrips cast at will — no need to prepare more than one."
-                                : full
-                                  ? `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled — unprepare one first.`
+                                : wontFit
+                                  ? cost === 2
+                                    ? `${sp.name} is an opposition-school spell and costs 2 slots — only ${remaining} remaining.`
+                                    : `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled — unprepare one first.`
                                   : undefined
                             }
                             onClick={() => update((d) => prepareSpell(d, sp.id))}
@@ -558,6 +783,19 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
           abilityMod={abilityMod}
         />
       )}
+
+      {/* School slots: one per accessible spell level, specialist wizard only. */}
+      {casterTag === "wizard" &&
+        doc.build.wizardSchool &&
+        doc.build.wizardSchool !== "uni" && (
+          <SchoolSlotsSection
+            doc={doc}
+            refData={refData}
+            update={update}
+            slots={slots}
+            abilityMod={abilityMod}
+          />
+        )}
     </Panel>
   );
 }

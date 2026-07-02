@@ -3,17 +3,28 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
-import { addClass, createEmptyDoc, migrateDoc, setClericDomains } from "../src/model/doc.js";
+import {
+  addClass,
+  createEmptyDoc,
+  migrateDoc,
+  setClericDomains,
+  setWizardOppositionSchools,
+  setWizardSchool,
+} from "../src/model/doc.js";
 import {
   classSpellsByLevel,
   clearPrepared,
   domainSpellLevelMap,
+  isSchoolSlotEligible,
+  oppositionCost,
   prepareDomainSpell,
+  prepareSchoolSpell,
   prepareSpell,
   preparedSpells,
   reconcileGrantedCantrips,
   removePreparedAt,
   restPreparedSpells,
+  schoolSlotCapacity,
   setExpendedAt,
   unprepareSpell,
 } from "../src/model/preparedSpells.js";
@@ -293,5 +304,81 @@ describe("domain spell slots (cleric)", () => {
     };
     const out = migrateDoc(stale);
     expect(out.build.clericDomains).toEqual([]);
+  });
+});
+
+describe("wizard school slots + opposition cost", () => {
+  // Real wizard level-1 spells from the vendored data: Burning Hands (evo),
+  // Sleep (enc). Used for the plan's worked example (an Evocation specialist
+  // opposing Enchantment).
+  function spellIdByName(name: string): string {
+    const entry = Object.entries(ref.spells).find(([, s]) => s.name === name);
+    if (!entry) throw new Error(`spell not found: ${name}`);
+    return entry[0];
+  }
+  const burningHandsId = spellIdByName("Burning Hands");
+  const sleepId = spellIdByName("Sleep");
+  const burningHands = ref.spells[burningHandsId]!;
+  const sleep = ref.spells[sleepId]!;
+
+  function evocationWizardDoc(): CharacterDoc {
+    let doc = addClass(fresh(), "wizard");
+    doc = setWizardSchool(doc, "evo");
+    doc = setWizardOppositionSchools(doc, ["enc", "nec"]);
+    return doc;
+  }
+
+  it("isSchoolSlotEligible is true for an in-school spell, false for others", () => {
+    const doc = evocationWizardDoc();
+    expect(isSchoolSlotEligible(burningHands, doc)).toBe(true);
+    expect(isSchoolSlotEligible(sleep, doc)).toBe(false);
+  });
+
+  it("isSchoolSlotEligible is always false for a Universalist", () => {
+    const doc = setWizardSchool(addClass(fresh(), "wizard"), "uni");
+    expect(isSchoolSlotEligible(burningHands, doc)).toBe(false);
+    expect(isSchoolSlotEligible(sleep, doc)).toBe(false);
+  });
+
+  it("isSchoolSlotEligible is always false when no school is chosen", () => {
+    const doc = addClass(fresh(), "wizard");
+    expect(isSchoolSlotEligible(burningHands, doc)).toBe(false);
+  });
+
+  it("oppositionCost is 2 for an opposition-school spell, 1 otherwise", () => {
+    const doc = evocationWizardDoc();
+    expect(oppositionCost(sleep, doc)).toBe(2);
+    expect(oppositionCost(burningHands, doc)).toBe(1);
+  });
+
+  it("oppositionCost is 1 for everyone when no opposition schools are set", () => {
+    const doc = addClass(fresh(), "wizard");
+    expect(oppositionCost(sleep, doc)).toBe(1);
+    expect(oppositionCost(burningHands, doc)).toBe(1);
+  });
+
+  it("schoolSlotCapacity is one per level 1-9, zero for cantrips", () => {
+    expect(schoolSlotCapacity(0)).toBe(0);
+    expect(schoolSlotCapacity(1)).toBe(1);
+    expect(schoolSlotCapacity(9)).toBe(1);
+    expect(schoolSlotCapacity(10)).toBe(0);
+  });
+
+  it("prepareSchoolSpell stores an instance with kind: 'school'", () => {
+    const doc = evocationWizardDoc();
+    const out = prepareSchoolSpell(doc, burningHandsId);
+    expect(preparedSpells(out)).toEqual([
+      { spellId: burningHandsId, expended: false, kind: "school" },
+    ]);
+  });
+
+  it("unprepareSpell with kind: 'school' restricts removal to school slots", () => {
+    let doc = evocationWizardDoc();
+    doc = prepareSpell(doc, burningHandsId); // normal
+    doc = prepareSchoolSpell(doc, burningHandsId); // school
+    doc = unprepareSpell(doc, burningHandsId, "school");
+    expect(preparedSpells(doc)).toEqual([
+      { spellId: burningHandsId, expended: false },
+    ]);
   });
 });

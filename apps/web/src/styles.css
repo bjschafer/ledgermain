@@ -2088,6 +2088,14 @@ button:focus-visible,
 	color: var(--gold-2);
 }
 
+.prep-opposition-badge {
+	font-size: 10px;
+	font-family: var(--mono);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--danger, #d9534f);
+}
+
 /* ------------------------------------------------- spell detail (Task 2) -- */
 
 .spell-detail {

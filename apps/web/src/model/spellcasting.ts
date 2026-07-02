@@ -10,7 +10,7 @@
  */
 
 import { baseSpellsKnown, baseSpellsPerDay, type SpellKnownProgression, type SpellProgression } from "@pf1/engine";
-import type { AbilityId, RefData } from "@pf1/schema";
+import type { AbilityId, RefData, WizardSchoolTag } from "@pf1/schema";
 
 // ---------------------------------------------------------------------------
 // Bonus spells per day
@@ -285,4 +285,50 @@ export function bloodlineSpellsKnown(
     }
   }
   return out.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ---------------------------------------------------------------------------
+// Wizard specialization schools
+// ---------------------------------------------------------------------------
+
+/**
+ * Wizard specialization school tag -> display label. Hand-authored (trivial;
+ * the vendored Foundry data has no arcane-school display-name mapping, only
+ * the bare `Spell.school` abbreviation each spell carries). The single source
+ * of truth for both the builder's school/opposition pickers and the spell
+ * browse filter chips.
+ */
+export const SCHOOL_LABELS: Record<WizardSchoolTag, string> = {
+  abj: "Abjuration",
+  con: "Conjuration",
+  div: "Divination",
+  enc: "Enchantment",
+  evo: "Evocation",
+  ill: "Illusion",
+  nec: "Necromancy",
+  trs: "Transmutation",
+  uni: "Universalist",
+};
+
+/** All wizard school tags (the eight specialist schools + Universalist). */
+export const SCHOOL_TAGS: WizardSchoolTag[] = [
+  "abj",
+  "con",
+  "div",
+  "enc",
+  "evo",
+  "ill",
+  "nec",
+  "trs",
+  "uni",
+];
+
+/**
+ * Display label for a school tag read off `Spell.school` (a bare `string` in
+ * the schema, not narrowed to `WizardSchoolTag`). Falls back to the raw tag
+ * for any value outside the known set (shouldn't happen with vendored data,
+ * but keeps display code crash-free).
+ */
+export function schoolLabel(tag: string): string {
+  return SCHOOL_LABELS[tag as WizardSchoolTag] ?? tag;
 }

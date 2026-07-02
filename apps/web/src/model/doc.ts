@@ -13,6 +13,7 @@ import type {
 	SkillId,
 	WeaponInstance,
 	WeaponRef,
+	WizardSchoolTag,
 	WornArmor,
 } from "@pf1/schema";
 
@@ -140,6 +141,43 @@ export function setSorcererBloodline(
 	return {
 		...doc,
 		build: { ...doc.build, sorcererBloodline: trimmed.length > 0 ? trimmed : undefined },
+	};
+}
+
+/**
+ * Set the wizard's specialization school (or `"uni"` for Universalist). Pass
+ * `null` to clear the choice entirely (back-compat "unset" state, treated
+ * identically to Universalist by the model layer). Setting `"uni"` clears
+ * `wizardOppositionSchools` — a Universalist has none. Setting any other tag
+ * leaves opposition alone; the player must set it via
+ * `setWizardOppositionSchools` (no auto-suggestion — free-choice, same
+ * soft-warning posture as `setClericDomains`).
+ */
+export function setWizardSchool(
+	doc: CharacterDoc,
+	tag: WizardSchoolTag | null,
+): CharacterDoc {
+	const build = { ...doc.build, wizardSchool: tag ?? undefined };
+	if (tag === "uni") {
+		build.wizardOppositionSchools = [];
+	}
+	return { ...doc, build };
+}
+
+/**
+ * Set the specialist wizard's two opposition school tags. Pass `null` (or an
+ * empty array) to clear. Caps at two and strips blanks, same shape as
+ * `setClericDomains`. No validation that a tag differs from
+ * `build.wizardSchool` — free-choice, soft-warning posture.
+ */
+export function setWizardOppositionSchools(
+	doc: CharacterDoc,
+	tags: string[] | null,
+): CharacterDoc {
+	const trimmed = (tags ?? []).filter((t) => typeof t === "string" && t.length > 0);
+	return {
+		...doc,
+		build: { ...doc.build, wizardOppositionSchools: trimmed.slice(0, 2) },
 	};
 }
 
