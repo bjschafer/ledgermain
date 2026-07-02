@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
-import type { ActiveBuff, Buff, CharacterDoc } from "@pf1/schema";
+import type { ActiveBuff, Buff, CharacterDoc, Change } from "@pf1/schema";
+import { unappliedChanges, unappliedTargetLabel } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
 import { NumberField } from "../builder/NumberField.js";
@@ -127,7 +128,9 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
 				{matches.map((buff) => (
 					<div className="pick-row" key={buff.id}>
 						<div className="pmain">
-							<div className="pname">{buff.name}</div>
+							<div className="pname">
+								{buff.name} <PartialBadge changes={buff.changes} />
+							</div>
 							<div className="preq">
 								{buff.changes.slice(0, 4).map((c, i) => (
 									<span key={i}>
@@ -170,6 +173,24 @@ function formulaHint(formula: string): string {
 }
 
 /**
+ * Compact "this buff has effects the sheet can't apply" flag. Shown whenever
+ * a buff's changes include a target `compute()` doesn't consume (see
+ * `@pf1/engine`'s targets.ts) — e.g. Spell Resistance's `spellResist` or
+ * Divine Power's `strChecks`/`strSkills`. Non-blocking, matches the existing
+ * `.soft` prose-prereq warning style.
+ */
+function PartialBadge({ changes }: { changes: readonly Change[] }) {
+	const missing = unappliedChanges(changes);
+	if (missing.length === 0) return null;
+	const labels = missing.map((c) => unappliedTargetLabel(c.target));
+	return (
+		<span className="soft" title={`Not auto-applied: ${labels.join(", ")}`}>
+			⚠ partial
+		</span>
+	);
+}
+
+/**
  * A single active-buff row with unit-aware duration display and entry.
  *
  * The unit (rds / min / hr) is local state, initialized from the buff's current
@@ -199,7 +220,9 @@ function BuffRow({
 	return (
 		<div className="buff-row">
 			<div className="buff-main">
-				<div className="buff-name">{buff.name}</div>
+				<div className="buff-name">
+					{buff.name} <PartialBadge changes={buff.changes} />
+				</div>
 				<div className="buff-changes num">
 					{buff.changes.map((c, i) => (
 						<span key={i} className="buff-change">

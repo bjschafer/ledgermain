@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
-import type { ArmorRef, ItemInstance, WornArmor } from "@pf1/schema";
+import type { ArmorRef, Change, ItemInstance, WornArmor } from "@pf1/schema";
+import { unappliedChanges, unappliedTargetLabel } from "@pf1/engine";
 
 import {
 	addGearItem,
@@ -232,6 +233,25 @@ function ArmorForm({
 	);
 }
 
+/**
+ * Compact "this item has effects the sheet can't apply" flag, shown when an
+ * item's changes include a target `compute()` doesn't consume (see
+ * `@pf1/engine`'s targets.ts) — e.g. Amulet of Mighty Fists' `nattack`/
+ * `ndamage`, or Circlet of Persuasion's `chaChecks`. Non-blocking, matches
+ * the existing `.soft` prose-prereq warning style. Manual armor entries have
+ * no `changes` array to check, so they never show this badge.
+ */
+function PartialBadge({ changes }: { changes: readonly Change[] }) {
+	const missing = unappliedChanges(changes);
+	if (missing.length === 0) return null;
+	const labels = missing.map((c) => unappliedTargetLabel(c.target));
+	return (
+		<span className="soft" title={`Not auto-applied: ${labels.join(", ")}`}>
+			⚠ partial
+		</span>
+	);
+}
+
 /** A one-line summary of a {@link ArmorRef} for the picker preview. */
 function armorRefMeta(a: ArmorRef): string {
 	const weight = a.weightClass ? `${WEIGHT_LABEL[a.weightClass] ?? "—"} ` : "";
@@ -356,7 +376,9 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 								/>
 							</label>
 							<div className="gear-main">
-								<div className="gear-name">{displayName}</div>
+								<div className="gear-name">
+									{displayName} {itemDef && <PartialBadge changes={changes} />}
+								</div>
 								{inst.armor && (
 									<div className="gear-meta">
 										AC +{inst.armor.ac}
@@ -437,7 +459,9 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 								filteredItems.map((item) => (
 									<div key={item.id} className="pick-row">
 										<div className="pmain">
-											<div className="pname">{item.name}</div>
+											<div className="pname">
+												{item.name} <PartialBadge changes={item.changes} />
+											</div>
 											{item.slot && (
 												<div className="preq">
 													<span>{item.slot}</span>

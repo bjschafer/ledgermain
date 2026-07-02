@@ -64,3 +64,9 @@ export {
   archetypeSwappedUuids,
   type ResolvedClassFeatures,
 } from "./archetypes.js";
+export {
+  isTargetApplied,
+  unappliedChanges,
+  unappliedTargetLabel,
+  UNAPPLIED_TARGET_LABELS,
+} from "./targets.js";
