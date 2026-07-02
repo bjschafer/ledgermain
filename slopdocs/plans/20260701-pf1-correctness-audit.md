@@ -17,12 +17,13 @@ That diff is what surfaced A2/A5/A6/C2.
 
 | id | task | agent | status |
 |----|------|-------|--------|
-| A1 | sorcerer spells-known table wrong L7+ | sonnet | done |
-| A2+A5+A7 | compute.ts: wdamage routing, size change, per-HD min HP | sonnet | done |
-| A4+A6+A8 | web model: nonlethal healing, bonusFeats budget, prereq warn | sonnet | done |
-| B1+B2+B4 | nits: burst prereqs/ghost-touch/vicious, fear typing, @cl durations | sonnet | done |
-| B3 | masterwork armor (ACP −1) in armor picker | sonnet | done |
-| A3 | pipeline drops `operator: set` (+ speed totals in rollData) | sonnet | done (sequenced after A1/A2 — same engine files) |
+| A1 | sorcerer spells-known table wrong L7+ | sonnet | done (3086744) |
+| A2+A5+A7 | compute.ts: wdamage routing, size change, per-HD min HP | sonnet | done (4f91959) |
+| A4+A6+A8 | web model: nonlethal healing, bonusFeats budget, prereq warn | sonnet | done (3db6822; note: bonusFeats also counts Scribe Scroll / Eschew Materials — player adds those feats explicitly to balance the budget) |
+| B1+B2+B4 | nits: burst prereqs/ghost-touch/vicious, fear typing, @cl durations | sonnet | done (f13a464) |
+| B3 | masterwork armor (ACP −1) in armor picker | sonnet | done (316e3e8) |
+| A3 | pipeline drops `operator: set` (+ speed totals in rollData) | sonnet | done (0353097; Change.operator lives in schema/src/primitives.ts, set semantics = lowest wins, rollData speeds = race base only) |
+| A6b | auto-grant fixed class bonus feats (Scribe Scroll / Eschew Materials) instead of budgeting a slot for them | fable (agent hit spend limit) | done (431086e; name-match rule: bonusFeats feature whose name matches a feat = fixed grant, else budgeted slot) |
 | C1 | iterative attacks display | — | not started (bigger feature, needs user call) |
 | C2 | surface "unsupported effects" on buffs/items | — | not started (pairs with A3 decision) |
 
