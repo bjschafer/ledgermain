@@ -1,1 +1,0 @@
-- buffs that have formulas, are usually unclear to the layman what they are
