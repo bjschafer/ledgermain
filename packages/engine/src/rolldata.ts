@@ -25,15 +25,30 @@ export function totalLevel(doc: CharacterDoc): number {
   return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
 }
 
+/** Movement modes the engine tracks and exposes under `@attributes.speed.*`. */
+const SPEED_MODES = ["land", "fly", "swim", "climb", "burrow"] as const;
+
 /**
  * Build the roll-data context. If `abilities` is omitted, ability mods are
  * derived from the document's base scores (used for the bootstrap pass that
  * resolves ability-targeting changes, which are constant formulas in practice).
+ *
+ * If `speeds` is omitted, it defaults to the character's race base speeds
+ * (`refData.races[doc.identity.race]?.speeds`, falling back to `{ land: 30 }`)
+ * — i.e. PRE-buff, pre-additive-modifier speeds. This is deliberately the
+ * simple choice (race base only, not race + passive `landSpeed`-style
+ * bonuses): some vendored buffs (Slow, Debilitating Injury) author their
+ * formulas against `@attributes.speed.<mode>.total`, and evaluating those
+ * against the race baseline is enough to make them non-degenerate. Getting
+ * passive bonuses folded in first would require an extra collect() pass
+ * (collect → speeds → rollData → collect again) for a case the vendored data
+ * doesn't currently exercise.
  */
 export function buildRollData(
   doc: CharacterDoc,
   refData: RefData,
   abilities?: Record<AbilityId, AbilityView>,
+  speeds?: Record<string, number>,
 ): RollData {
   const level = totalLevel(doc);
 
@@ -67,6 +82,12 @@ export function buildRollData(
     }
   }
 
+  const baseSpeeds = speeds ?? refData.races[doc.identity.race]?.speeds ?? { land: 30 };
+  const speedAttr: Record<string, { total: number }> = {};
+  for (const mode of SPEED_MODES) {
+    speedAttr[mode] = { total: baseSpeeds[mode] ?? 0 };
+  }
+
   return {
     abilities: abilityData,
     classes,
@@ -78,6 +99,7 @@ export function buildRollData(
     attributes: {
       hd: { total: level },
       encumbrance: { level: 0 },
+      speed: speedAttr,
     },
     armor: { type: armorType },
     item: { level: 0 },

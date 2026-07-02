@@ -49,6 +49,7 @@
       },
       {
         "formula": "max(5, floor(@attributes.speed.land.total / 2))",
+        "operator": "set",
         "target": "landSpeed",
         "type": "untyped"
       },
@@ -80,6 +81,7 @@
     "changes": [
       {
         "formula": "20",
+        "operator": "set",
         "target": "climbSpeed",
         "type": "racial"
       }
@@ -594,6 +596,7 @@
     "changes": [
       {
         "formula": "60",
+        "operator": "set",
         "target": "sensedv",
         "type": "untyped"
       }
@@ -832,6 +835,7 @@
     "changes": [
       {
         "formula": "30",
+        "operator": "set",
         "target": "swimSpeed",
         "type": "racial"
       }
@@ -1210,11 +1214,13 @@
     "changes": [
       {
         "formula": "if(and(lt(@armor.type, 2), lt(@attributes.encumbrance.level, 1)), 10)",
+        "operator": "set",
         "target": "climbSpeed",
         "type": "racial"
       },
       {
         "formula": "if(and(lt(@armor.type, 2), lt(@attributes.encumbrance.level, 1)), 10)",
+        "operator": "set",
         "target": "swimSpeed",
         "type": "racial"
       }
@@ -1656,6 +1662,7 @@
     "changes": [
       {
         "formula": "12 + @item.level",
+        "operator": "set",
         "target": "spellResist",
         "type": "untyped"
       }
@@ -1683,6 +1690,7 @@
     "changes": [
       {
         "formula": "1",
+        "operator": "set",
         "target": "allSavingThrows",
         "type": "resist"
       }
@@ -1803,6 +1811,7 @@
     "changes": [
       {
         "formula": "120",
+        "operator": "set",
         "target": "sensedv",
         "type": "untyped"
       }
@@ -1876,6 +1885,7 @@
     "changes": [
       {
         "formula": "30",
+        "operator": "set",
         "target": "sensedv",
         "type": "untyped"
       },
@@ -2202,21 +2212,25 @@
     "changes": [
       {
         "formula": "if(gt(@attributes.speed.swim.total, 0), max(1, floor(@attributes.speed.swim.total / 5 / 2)) * 5)",
+        "operator": "set",
         "target": "swimSpeed",
         "type": "untyped"
       },
       {
         "formula": "if(gt(@attributes.speed.land.total, 0), max(1, floor(@attributes.speed.land.total / 5 / 2)) * 5)",
+        "operator": "set",
         "target": "landSpeed",
         "type": "untyped"
       },
       {
         "formula": "if(gt(@attributes.speed.burrow.total, 0), max(1, floor(@attributes.speed.burrow.total / 5 / 2)) * 5)",
+        "operator": "set",
         "target": "burrowSpeed",
         "type": "untyped"
       },
       {
         "formula": "if(gt(@attributes.speed.climb.total, 0), max(1, floor(@attributes.speed.climb.total / 5 / 2)) * 5)",
+        "operator": "set",
         "target": "climbSpeed",
         "type": "untyped"
       },
@@ -2232,6 +2246,7 @@
       },
       {
         "formula": "if(gt(@attributes.speed.fly.total, 0), max(1, floor(@attributes.speed.fly.total / 5 / 2)) * 5)",
+        "operator": "set",
         "target": "flySpeed",
         "type": "untyped"
       },
@@ -2802,6 +2817,7 @@
     "changes": [
       {
         "formula": "120",
+        "operator": "set",
         "target": "sensedv",
         "type": "untyped"
       },
@@ -3509,11 +3525,13 @@
     "changes": [
       {
         "formula": "ifelse(lte(@item.level, 8), 30, 60)",
+        "operator": "set",
         "target": "sensedv",
         "type": "racial"
       },
       {
         "formula": "if(gte(@item.level, 15), 10)",
+        "operator": "set",
         "target": "sensebse",
         "type": "racial"
       }
@@ -3682,6 +3700,7 @@
     "changes": [
       {
         "formula": "60",
+        "operator": "set",
         "target": "sensedv",
         "type": "untyped"
       }
@@ -3754,6 +3773,7 @@
     "changes": [
       {
         "formula": "120",
+        "operator": "set",
         "target": "sensetr",
         "type": "untyped"
       }
@@ -4316,6 +4336,7 @@
     "changes": [
       {
         "formula": "10 + floor((@item.level - 1) / 7) * 10",
+        "operator": "set",
         "target": "sensesc",
         "type": "racial"
       }
@@ -4961,6 +4982,7 @@
       },
       {
         "formula": "ifelse(or(gt(@attributes.encumbrance.level, 0), gt(@armor.type, 1)), 40, 60)",
+        "operator": "set",
         "target": "flySpeed",
         "type": "untyped"
       }
@@ -5145,11 +5167,13 @@
     "changes": [
       {
         "formula": "30",
+        "operator": "set",
         "target": "flySpeed",
         "type": "untyped"
       },
       {
         "formula": "60",
+        "operator": "set",
         "target": "sensedv",
         "type": "untyped"
       }
@@ -5284,11 +5308,13 @@
     "changes": [
       {
         "formula": "60",
+        "operator": "set",
         "target": "flySpeed",
         "type": "untyped"
       },
       {
         "formula": "60",
+        "operator": "set",
         "target": "sensedv",
         "type": "untyped"
       }

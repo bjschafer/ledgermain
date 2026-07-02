@@ -28,6 +28,10 @@ export function normalizeChanges(value: unknown): Change[] {
       formula: String(c.formula ?? ""),
       target: String(c.target ?? ""),
       type: String(c.type ?? "untyped"),
+      // Only "set" is a meaningful departure from the default additive
+      // behavior, so omit the field entirely otherwise (keeps the vendored
+      // JSON minimal — see Change's doc comment for semantics).
+      ...(c.operator === "set" ? { operator: "set" as const } : {}),
     }))
     .filter((c) => c.target !== "");
 }

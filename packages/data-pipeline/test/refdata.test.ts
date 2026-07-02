@@ -191,6 +191,17 @@ describe("typed-modifier data (engine input)", () => {
     const dex = elf.changes.find((c) => c.target === "dex");
     expect(dex).toMatchObject({ formula: "2", type: "racial" });
   });
+
+  it("Slow carries operator: set on its speed changes (A3)", () => {
+    const slow = byName(ref.buffs, "Slow");
+    const landSpeed = slow.changes.find((c) => c.target === "landSpeed");
+    expect(landSpeed).toBeDefined();
+    expect(landSpeed?.operator).toBe("set");
+    // Additive (non-speed) changes on the same buff must NOT pick up an
+    // operator — normalizeChanges only carries "set" through.
+    const attack = slow.changes.find((c) => c.target === "attack");
+    expect(attack?.operator).toBeUndefined();
+  });
 });
 
 describe("mundane armor & shields (new in schema v2)", () => {

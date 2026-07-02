@@ -67,6 +67,17 @@ export interface Change {
   formula: string;
   target: string;
   type: string;
+  /**
+   * Foundry's change operator. Absent (or "add") means the formula's value is
+   * added to the target like any other typed modifier. "set" means the
+   * formula's *result* replaces the target's value outright rather than
+   * adding to it (e.g. Slow halves speed via a set-change, not a penalty).
+   * We deliberately do NOT carry Foundry's `priority` field — in the vendored
+   * slice, every "set" change targets a speed/sense value, and the engine
+   * resolves set-vs-set ordering itself (lowest value wins) rather than
+   * relying on authored priority.
+   */
+  operator?: "add" | "set";
 }
 
 /**

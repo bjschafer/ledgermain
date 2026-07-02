@@ -588,6 +588,7 @@
     "changes": [
       {
         "formula": "18",
+        "operator": "set",
         "target": "spellResist",
         "type": "untyped"
       },
@@ -670,6 +671,7 @@
     "changes": [
       {
         "formula": "18",
+        "operator": "set",
         "target": "spellResist",
         "type": "untyped"
       },
@@ -3305,6 +3307,7 @@
     "changes": [
       {
         "formula": "18",
+        "operator": "set",
         "target": "spellResist",
         "type": "untyped"
       },

@@ -19,6 +19,13 @@ import { raceGrantsFlexibleAbility } from "./tables.js";
 /** A {@link TypedModifier} tagged with what it targets. */
 export interface CollectedModifier extends TypedModifier {
   target: string;
+  /**
+   * Foundry's change operator, carried through from {@link Change}. Absent
+   * means additive (the default); "set" means the evaluated formula replaces
+   * the target's value rather than adding to it. Only speed targets consume
+   * "set" today (see compute.ts); other targets ignore it.
+   */
+  operator?: "add" | "set";
 }
 
 function evalChange(
@@ -29,6 +36,7 @@ function evalChange(
   source: string,
   sourceId: string,
   out: CollectedModifier[],
+  operator?: "add" | "set",
 ): void {
   let value: number | null;
   try {
@@ -38,7 +46,7 @@ function evalChange(
     return;
   }
   if (value === null || Number.isNaN(value)) return;
-  out.push({ target, type: type || "untyped", value, source, sourceId });
+  out.push({ target, type: type || "untyped", value, source, sourceId, operator });
 }
 
 export function collectModifiers(
@@ -52,7 +60,7 @@ export function collectModifiers(
   const race = refData.races[doc.identity.race];
   if (race) {
     for (const ch of race.changes) {
-      evalChange(ch.formula, rollData, ch.target, ch.type, race.name, race.id, out);
+      evalChange(ch.formula, rollData, ch.target, ch.type, race.name, race.id, out, ch.operator);
     }
     // Flexible +2 (Human / Half-Elf / Half-Orc): no fixed ability changes,
     // player picks one ability score at character creation.
@@ -73,7 +81,7 @@ export function collectModifiers(
     const item = refData.items[inst.itemId];
     if (!item) continue;
     for (const ch of item.changes) {
-      evalChange(ch.formula, rollData, ch.target, ch.type, item.name, item.id, out);
+      evalChange(ch.formula, rollData, ch.target, ch.type, item.name, item.id, out, ch.operator);
     }
   }
 
@@ -99,6 +107,7 @@ export function collectModifiers(
           feature.name,
           feature.id,
           out,
+          ch.operator,
         );
       }
     }
@@ -116,7 +125,16 @@ export function collectModifiers(
             item: { level: buff.casterLevel },
           };
     for (const ch of buff.changes) {
-      evalChange(ch.formula, buffRollData, ch.target, ch.type, buff.name, buff.instanceId, out);
+      evalChange(
+        ch.formula,
+        buffRollData,
+        ch.target,
+        ch.type,
+        buff.name,
+        buff.instanceId,
+        out,
+        ch.operator,
+      );
     }
   }
 
@@ -125,7 +143,7 @@ export function collectModifiers(
     const cond = CONDITIONS[condId];
     if (!cond) continue;
     for (const ch of cond.changes) {
-      evalChange(ch.formula, rollData, ch.target, ch.type, cond.name, cond.id, out);
+      evalChange(ch.formula, rollData, ch.target, ch.type, cond.name, cond.id, out, ch.operator);
     }
   }
 
@@ -174,7 +192,12 @@ export function collectModifiers(
   return out;
 }
 
-/** Filter collected modifiers down to a single target. */
-export function forTarget(mods: CollectedModifier[], target: string): TypedModifier[] {
+/**
+ * Filter collected modifiers down to a single target. Returns the full
+ * {@link CollectedModifier} (not just {@link TypedModifier}) so callers that
+ * need to branch on `operator` (e.g. speed set-changes in compute.ts) can —
+ * it's still assignable wherever a `TypedModifier[]` is expected.
+ */
+export function forTarget(mods: CollectedModifier[], target: string): CollectedModifier[] {
   return mods.filter((m) => m.target === target);
 }

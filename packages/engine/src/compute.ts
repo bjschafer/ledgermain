@@ -70,6 +70,33 @@ function shiftSize(size: SizeId, steps: number): SizeId {
   return SIZE_LADDER[clamped]!;
 }
 
+/**
+ * Applies collected modifiers for one movement mode to `speeds[mode]` in
+ * place. Foundry's `operator: "set"` changes (Slow, Debilitating Injury, ...)
+ * replace the mode's value outright rather than adding to it; when more than
+ * one "set" change targets the same mode at once, the LOWEST wins — every
+ * "set" change in the vendored slice is a penalty, so "lowest" is "most
+ * restrictive," which is the correct way for such effects to combine. Plain
+ * additive changes still apply on top of the base value whenever no "set" is
+ * present for that mode.
+ */
+function applySpeedTarget(
+  speeds: Record<string, number>,
+  collected: CollectedModifier[],
+  mode: string,
+  target: string,
+): void {
+  const mods = forTarget(collected, target);
+  if (mods.length === 0) return;
+  const setMods = mods.filter((m) => m.operator === "set");
+  if (setMods.length > 0) {
+    speeds[mode] = Math.min(...setMods.map((m) => m.value));
+    return;
+  }
+  const addTotal = mods.reduce((s, m) => s + m.value, 0);
+  if (addTotal) speeds[mode] = (speeds[mode] ?? 0) + addTotal;
+}
+
 function toComponents(mods: ResolvedModifier[]): ModifierComponent[] {
   return mods.map((m) => ({
     source: m.source,
@@ -533,19 +560,24 @@ function computeWeaponAttacks(
 
 export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const level = totalLevel(doc);
+  const race = refData.races[doc.identity.race];
+  // Pre-buff base speeds, threaded into rollData so set-formulas (Slow,
+  // Debilitating Injury, ...) that reference `@attributes.speed.<mode>.total`
+  // evaluate against real values instead of the missing-path default of 0.
+  // Race base only (not race + passive bonuses) — see buildRollData's doc comment.
+  const baseSpeeds = race?.speeds ?? { land: 30 };
 
   // Bootstrap: resolve ability-targeting changes against base scores, then build
   // the final roll data and re-collect everything against the final abilities.
-  const bootRollData = buildRollData(doc, refData);
+  const bootRollData = buildRollData(doc, refData, undefined, baseSpeeds);
   const bootCollected = collectModifiers(doc, refData, bootRollData);
   const bootAbilities = computeAbilities(doc, bootCollected);
-  const rollData = buildRollData(doc, refData, bootAbilities);
+  const rollData = buildRollData(doc, refData, bootAbilities, baseSpeeds);
   const collected = collectModifiers(doc, refData, rollData);
   const abilities = computeAbilities(doc, collected);
 
   // BAB
   let bab = 0;
-  const race = refData.races[doc.identity.race];
   const baseSize: SizeId = race?.size ?? "med";
   // Enlarge/Reduce Person and similar effects shift the character along the
   // size ladder; round toward zero (a +1.5 or -0.5 step isn't a thing PF1
@@ -624,20 +656,15 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // HP
   const hp = computeHp(doc, refData, abilities.con.mod, collected);
 
-  // Speeds — start from race base, then apply per-mode bonus targets.
+  // Speeds — start from race base, then apply per-mode targets.
   // Each mode "foo" listens to "fooSpeed" (e.g. fly → "flySpeed") so feat/feature
   // bonuses can slot in via the same evalChange path used for other stats.
-  const speeds: Record<string, number> = { ...(race?.speeds ?? { land: 30 }) };
-  const landBonus = forTarget(collected, "landSpeed").reduce((s, m) => s + m.value, 0);
-  if (landBonus) speeds.land = (speeds.land ?? 0) + landBonus;
-  const flyBonus = forTarget(collected, "flySpeed").reduce((s, m) => s + m.value, 0);
-  if (flyBonus) speeds.fly = (speeds.fly ?? 0) + flyBonus;
-  const swimBonus = forTarget(collected, "swimSpeed").reduce((s, m) => s + m.value, 0);
-  if (swimBonus) speeds.swim = (speeds.swim ?? 0) + swimBonus;
-  const climbBonus = forTarget(collected, "climbSpeed").reduce((s, m) => s + m.value, 0);
-  if (climbBonus) speeds.climb = (speeds.climb ?? 0) + climbBonus;
-  const burrowBonus = forTarget(collected, "burrowSpeed").reduce((s, m) => s + m.value, 0);
-  if (burrowBonus) speeds.burrow = (speeds.burrow ?? 0) + burrowBonus;
+  const speeds: Record<string, number> = { ...baseSpeeds };
+  applySpeedTarget(speeds, collected, "land", "landSpeed");
+  applySpeedTarget(speeds, collected, "fly", "flySpeed");
+  applySpeedTarget(speeds, collected, "swim", "swimSpeed");
+  applySpeedTarget(speeds, collected, "climb", "climbSpeed");
+  applySpeedTarget(speeds, collected, "burrow", "burrowSpeed");
 
   // Skills
   const skills = computeSkills(doc, refData, abilities, collected);
