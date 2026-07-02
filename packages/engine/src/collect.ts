@@ -7,7 +7,7 @@
  * passive changes (Stage 4).
  */
 
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
@@ -27,6 +27,32 @@ export interface CollectedModifier extends TypedModifier {
    * "set" today (see compute.ts); other targets ignore it.
    */
   operator?: "add" | "set";
+}
+
+/** `@item.level` / `@cl` in a buff formula = the buff's caster/effect level. */
+function withBuffCasterLevel(buff: Pick<ActiveBuff, "casterLevel">, rollData: RollData): RollData {
+  return buff.casterLevel === undefined
+    ? rollData
+    : { ...rollData, cl: buff.casterLevel, item: { level: buff.casterLevel } };
+}
+
+/**
+ * Resolve one buff change's formula to a number, honoring the buff's
+ * `casterLevel` override the same way {@link collectModifiers} does. For UI
+ * use — shows a player what a buff's formula actually amounts to rather than
+ * the raw `@data.path` string. Returns `null` for dice terms or malformed
+ * formulas; callers should fall back to displaying the raw formula.
+ */
+export function evaluateBuffChange(
+  change: Pick<Change, "formula">,
+  buff: Pick<ActiveBuff, "casterLevel">,
+  rollData: RollData,
+): number | null {
+  try {
+    return tryEvaluateFormula(change.formula, withBuffCasterLevel(buff, rollData));
+  } catch {
+    return null;
+  }
 }
 
 function evalChange(
@@ -116,15 +142,7 @@ export function collectModifiers(
 
   // --- active buffs (live state) ------------------------------------------
   for (const buff of doc.live.activeBuffs ?? []) {
-    // `@item.level` / `@cl` in a buff formula = the buff's caster/effect level.
-    const buffRollData: RollData =
-      buff.casterLevel === undefined
-        ? rollData
-        : {
-            ...rollData,
-            cl: buff.casterLevel,
-            item: { level: buff.casterLevel },
-          };
+    const buffRollData = withBuffCasterLevel(buff, rollData);
     for (const ch of buff.changes) {
       evalChange(
         ch.formula,

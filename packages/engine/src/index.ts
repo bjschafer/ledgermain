@@ -7,7 +7,12 @@
  */
 
 export { compute } from "./compute.js";
-export { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
+export {
+  collectModifiers,
+  forTarget,
+  evaluateBuffChange,
+  type CollectedModifier,
+} from "./collect.js";
 export {
   resolveStack,
   type TypedModifier,

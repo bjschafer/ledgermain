@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 
 import type { ActiveBuff, Buff, CharacterDoc, Change } from "@pf1/schema";
-import { unappliedChanges, unappliedTargetLabel } from "@pf1/engine";
+import { buildRollData, evaluateBuffChange, unappliedChanges, unappliedTargetLabel } from "@pf1/engine";
+import type { RollData } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
 import { NumberField } from "../builder/NumberField.js";
@@ -59,6 +60,14 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
 	const [step, setStep] = useState(1);
 	const casterLevel = Math.max(1, sheet.level);
 
+	// Same roll-data shape compute() evaluated buffs against, so previews and
+	// active-buff rows show the actual resolved value rather than the raw
+	// `@data.path` formula string.
+	const rollData = useMemo(
+		() => buildRollData(doc, refData, sheet.abilities, sheet.speeds),
+		[doc, refData, sheet.abilities, sheet.speeds],
+	);
+
 	const matches = useMemo(() => {
 		const q = query.trim().toLowerCase();
 		return Object.values(refData.buffs)
@@ -111,7 +120,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
 			) : (
 				<div className="buff-list">
 					{doc.live.activeBuffs.map((b) => (
-						<BuffRow key={b.instanceId} buff={b} update={update} />
+						<BuffRow key={b.instanceId} buff={b} rollData={rollData} update={update} />
 					))}
 				</div>
 			)}
@@ -133,8 +142,8 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
 							</div>
 							<div className="preq">
 								{buff.changes.slice(0, 4).map((c, i) => (
-									<span key={i}>
-										{c.target} {formulaHint(c.formula)}
+									<span key={i} title={c.formula}>
+										{c.target} {formulaHint(c, { casterLevel }, rollData)}
 									</span>
 								))}
 							</div>
@@ -166,10 +175,19 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
 	);
 }
 
-/** Show a numeric formula as a signed value; leave anything with @paths verbatim. */
-function formulaHint(formula: string): string {
-	const n = Number(formula);
-	return Number.isFinite(n) ? signed(n) : formula;
+/**
+ * Show what a buff change's formula actually amounts to right now, evaluated
+ * against the character's current stats (e.g. `@abilities.cha.mod` -> "+3").
+ * Falls back to the raw formula string for dice terms or evaluation errors
+ * (the formula is still shown in full via the element's `title` tooltip).
+ */
+function formulaHint(
+	change: Pick<Change, "formula">,
+	buff: Pick<ActiveBuff, "casterLevel">,
+	rollData: RollData,
+): string {
+	const value = evaluateBuffChange(change, buff, rollData);
+	return value === null ? change.formula : signed(value);
 }
 
 /**
@@ -199,9 +217,11 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
  */
 function BuffRow({
 	buff,
+	rollData,
 	update,
 }: {
 	buff: ActiveBuff;
+	rollData: RollData;
 	update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
 }) {
 	const [unit, setUnit] = useState<DurationUnit>(
@@ -225,9 +245,9 @@ function BuffRow({
 				</div>
 				<div className="buff-changes num">
 					{buff.changes.map((c, i) => (
-						<span key={i} className="buff-change">
+						<span key={i} className="buff-change" title={c.formula}>
 							{c.target} {c.type ? <em>[{c.type}]</em> : null}{" "}
-							{formulaHint(c.formula)}
+							{formulaHint(c, buff, rollData)}
 						</span>
 					))}
 				</div>
