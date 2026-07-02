@@ -2411,10 +2411,9 @@ button:focus-visible,
 /* class features list (base grants + archetype swaps) */
 .cf-level-row {
 	display: flex;
-	align-items: baseline;
+	align-items: flex-start;
 	gap: 10px;
 	padding: 3px 0;
-	flex-wrap: wrap;
 }
 
 .cf-level {
@@ -2422,12 +2421,7 @@ button:focus-visible,
 	font-size: 11px;
 	color: var(--muted);
 	min-width: 42px;
-}
-
-.cf-names {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 4px 14px;
+	padding-top: 1px;
 }
 
 .cf-name {

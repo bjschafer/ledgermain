@@ -202,7 +202,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 			{/* Archetype picker — only classes covered by the vendored dataset show options. */}
 			<ArchetypePicker doc={doc} refData={refData} update={update} />
 
-			<ClassFeaturesList sheet={sheet} />
+			<ClassFeaturesList sheet={sheet} refData={refData} />
 		</Panel>
 	);
 }

@@ -1,4 +1,4 @@
-import type { DerivedSheet } from "@pf1/schema";
+import type { DerivedSheet, RefData } from "@pf1/schema";
 
 /**
  * Collapsible HTML description, same pattern as `SpellDetail` (reuses its CSS
@@ -33,7 +33,13 @@ function FeatureDescription({ html }: { html: string }) {
  * Shattering Strike row carries Bravery's text) — display-only, never a
  * mechanics source.
  */
-export function ClassFeaturesList({ sheet }: { sheet: DerivedSheet }) {
+export function ClassFeaturesList({
+	sheet,
+	refData,
+}: {
+	sheet: DerivedSheet;
+	refData: RefData;
+}) {
 	if (sheet.classFeatures.length === 0) return null;
 
 	const byLevel = new Map<number, typeof sheet.classFeatures>();
@@ -51,17 +57,22 @@ export function ClassFeaturesList({ sheet }: { sheet: DerivedSheet }) {
 				{levels.map((level) => (
 					<div className="cf-level-row" key={level}>
 						<span className="cf-level">Lv {level}</span>
-						<div className="cf-names">
-							{byLevel.get(level)!.map((f, i) => (
-								<span
-									key={`${f.featureId}-${i}`}
-									className={`cf-name${f.applied ? "" : " struck"}`}
-									title={f.replacedBy ? `Replaced by ${f.replacedBy}` : undefined}
-								>
-									{f.name}
-									{f.replacedBy ? <span className="cf-replaced"> → {f.replacedBy}</span> : null}
-								</span>
-							))}
+						<div className="cf-archetype-features">
+							{byLevel.get(level)!.map((f, i) => {
+								const description = refData.classFeatures[f.featureId]?.description;
+								return (
+									<div className="cf-archetype-feature" key={`${f.featureId}-${i}`}>
+										<span
+											className={`cf-name${f.applied ? "" : " struck"}`}
+											title={f.replacedBy ? `Replaced by ${f.replacedBy}` : undefined}
+										>
+											{f.name}
+											{f.replacedBy ? <span className="cf-replaced"> → {f.replacedBy}</span> : null}
+										</span>
+										{description ? <FeatureDescription html={description} /> : null}
+									</div>
+								);
+							})}
 						</div>
 					</div>
 				))}
