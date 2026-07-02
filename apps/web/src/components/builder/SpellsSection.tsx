@@ -19,10 +19,25 @@ interface SpellEntry {
   id: string;
   name: string;
   level: number;
+  school?: string;
 }
+
+/** Foundry school abbreviations -> display labels, for the browse filter chips. */
+const SCHOOL_LABELS: Record<string, string> = {
+  abj: "Abjuration",
+  con: "Conjuration",
+  div: "Divination",
+  enc: "Enchantment",
+  evo: "Evocation",
+  ill: "Illusion",
+  nec: "Necromancy",
+  trs: "Transmutation",
+  uni: "Universal",
+};
 
 export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
+  const [school, setSchool] = useState<string>("All");
 
   const casterTag = useMemo(
     () => doc.identity.classes.map((c) => c.tag).find((t) => refData.spellLists[t]),
@@ -97,7 +112,9 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     const byLevel = classSpellsByLevel(refData, casterTag, { excludeCantrips: grantsCantrips });
     const out: SpellEntry[] = [];
     for (const [lvl, list] of byLevel) {
-      for (const sp of list) out.push({ id: sp.id, name: sp.name, level: lvl });
+      for (const sp of list) {
+        out.push({ id: sp.id, name: sp.name, level: lvl, school: refData.spells[sp.id]?.school });
+      }
     }
     return out.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
   }, [casterTag, refData, grantsCantrips]);
@@ -142,6 +159,13 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     return counts;
   }, [known, levelMap]);
 
+  // Schools actually present on this class's list, for the browse filter chips.
+  const schools = useMemo(() => {
+    const set = new Set<string>();
+    for (const e of entries) if (e.school) set.add(e.school);
+    return [...set].sort((a, b) => (SCHOOL_LABELS[a] ?? a).localeCompare(SCHOOL_LABELS[b] ?? b));
+  }, [entries]);
+
   if (!casterTag) {
     return (
       <Panel title="Spells" step="vii" storageKey="panel:Spells">
@@ -157,8 +181,14 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const knownCount = known.size;
 
   const q = query.trim().toLowerCase();
-  const shown = q
-    ? entries.filter((e) => e.name.toLowerCase().includes(q)).slice(0, 200)
+  // Typing a search term or picking a school chip switches from "what I know"
+  // to "browse the full class list" — the only way to discover new spells to
+  // add without already knowing their name.
+  const browsing = q.length > 0 || school !== "All";
+  const shown = browsing
+    ? entries
+        .filter((e) => (!q || e.name.toLowerCase().includes(q)) && (school === "All" || e.school === school))
+        .slice(0, 200)
     : entries.filter((e) => known.has(e.id));
 
   // Group by spell level for display.
@@ -168,16 +198,24 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     arr.push(e);
     byLevel.set(e.level, arr);
   }
-  const levels = [...byLevel.keys()].sort((a, b) => a - b);
+  // While showing the known list (not actively searching/browsing), always
+  // show a heading for every accessible level — even at 0 known — so you can
+  // see at a glance how many spells you still need to add at each level.
+  // Cantrips (level 0) live in knownLimits, not accessibleLevels, since
+  // they're at-will and never consume a per-day slot. While actively
+  // searching or browsing by school, only show levels with matches.
+  const levels = browsing
+    ? [...byLevel.keys()].sort((a, b) => a - b)
+    : [...new Set([...(accessibleLevels ?? []), ...knownLimits.keys(), ...byLevel.keys()])].sort(
+        (a, b) => a - b,
+      );
 
   // Header badge: "sorcerer · spontaneous (Cha)" etc.
   const headerBadge = model
     ? `${casterTag} · ${model.preparation} (${abilityLabel})`
     : `${casterTag} list`;
 
-  const emptyState = q
-    ? "No spells match."
-    : `No spells in your ${knownLabel.toLowerCase()} yet — search to add some.`;
+  const emptyState = browsing ? "No spells match." : null;
 
   return (
     <Panel
@@ -188,7 +226,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
         <span className="hint">
           {preparesFromClassList
             ? `${headerBadge} · ${entriesLevels.reduce((n, lvl) => n + entriesByLevel.get(lvl)!.length, 0)} accessible on the ${casterTag} list`
-            : `${headerBadge} · ${knownCount} in ${knownLabel.toLowerCase()}`}
+            : `${headerBadge} · ${knownCount} known`}
         </span>
       }
     >
@@ -206,13 +244,37 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
       )}
 
       {!preparesFromClassList && (
-        <input
-          className="search"
-          type="text"
-          placeholder={`Search the ${casterTag} spell list to add…`}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+        <>
+          <input
+            className="search"
+            type="text"
+            placeholder={`Search the ${casterTag} spell list to add…`}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          {/* Browse by school when you don't already know a spell's name. */}
+          <div className="chips spell-school-filters">
+            <button
+              type="button"
+              className="chip"
+              aria-pressed={school === "All"}
+              onClick={() => setSchool("All")}
+            >
+              All schools
+            </button>
+            {schools.map((sc) => (
+              <button
+                key={sc}
+                type="button"
+                className="chip"
+                aria-pressed={school === sc}
+                onClick={() => setSchool(school === sc ? "All" : sc)}
+              >
+                {SCHOOL_LABELS[sc] ?? sc}
+              </button>
+            ))}
+          </div>
+        </>
       )}
       <div className="scroll">
         {/* Granted cantrips: read-only, always present, collapsed by default. */}
@@ -245,14 +307,16 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
               />
             ))
           )
-        ) : shown.length === 0 ? (
-          <div className="empty">{emptyState}</div>
+        ) : levels.length === 0 ? (
+          <div className="empty">
+            {emptyState ?? `No spells in your ${knownLabel.toLowerCase()} yet — search to add some.`}
+          </div>
         ) : (
           levels.map((lvl) => (
             <SpellLevelGroup
               key={lvl}
               level={lvl}
-              entries={byLevel.get(lvl)!}
+              entries={byLevel.get(lvl) ?? []}
               refData={refData}
               abilityMod={abilityMod}
               known={known}
@@ -323,13 +387,13 @@ function SpellHints({
           <p className="hint spell-hint-line">
             Nothing to add or remove here — browse the full list below, then
             prepare from it each day in the tracker's{" "}
-            <strong>Prepared Spells</strong> panel.
+            <strong>Spells</strong> panel.
           </p>
         ) : (
           <p className="hint spell-hint-line">
             This is your {knownLabel.toLowerCase()} — the spells you <em>could</em>{" "}
             prepare. Prepare and cast for the day from the tracker's{" "}
-            <strong>Prepared Spells</strong> panel.
+            <strong>Spells</strong> panel.
           </p>
         )}
       </div>

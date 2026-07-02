@@ -712,6 +712,10 @@ button:focus-visible,
 	margin-bottom: 12px;
 }
 
+.spell-school-filters {
+	margin-bottom: 12px;
+}
+
 /* feat category + legality filter controls */
 .feat-filters {
 	display: flex;
