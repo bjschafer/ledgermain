@@ -1,3 +1,8 @@
-- you can remove your class with no confirmation
-    - likewise there's no "locking" of race or other build-time stuff
-- archetypes
+- 0 *in* spells known should say "0 spells known" i think
+- do *not* know all cantrips
+- maybe have empty level headings under spells known so you know what/how many you need to add under build
+- Resources "Rest (full)" button is weirdly positioned, as is "New day" in spells on play
+- Can we stop having new characters build with 0 hp? they should build with max hp by default
+- can we have *no* class selected for a new character? so we don't have to do multiple clicks to select class and unselect the default fighter?
+- we need explanations on class features
+- adding spells to spells known needs a way to browse, somehow.
