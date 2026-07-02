@@ -466,6 +466,15 @@ export interface ModifierComponent {
 export interface ResolvedStat {
   total: number;
   components: ModifierComponent[];
+  /**
+   * Full-attack iterative sequence (e.g. [11, 6] for BAB 6 => "+11/+6"),
+   * including the first attack. Only ever set on `DerivedSheet.attack.melee` /
+   * `.ranged` and `ResolvedWeaponAttack.attack`, where extra attacks from BAB
+   * apply; omitted (rather than a 1-length array) when BAB grants no extras.
+   * Every other `ResolvedStat` consumer (saves, initiative, cmb, ...) leaves
+   * this undefined.
+   */
+  iteratives?: number[];
 }
 
 /**
@@ -476,7 +485,10 @@ export interface ResolvedWeaponAttack {
   /** Weapon name (from WeaponInstance.name). */
   name: string;
   category: "melee" | "ranged";
-  /** Total attack bonus with full provenance (BAB + ability + size + enh + modifiers). */
+  /**
+   * Total attack bonus with full provenance (BAB + ability + size + enh + modifiers).
+   * `attack.iteratives`, when set, is this weapon's full attack sequence.
+   */
   attack: ResolvedStat;
   /**
    * Numeric damage bonus (no dice) with provenance.

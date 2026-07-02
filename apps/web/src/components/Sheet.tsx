@@ -9,6 +9,7 @@ import {
 	ALIGNMENT_LABELS,
 	SAVE_NAMES,
 	signed,
+	signedSequence,
 	skillName,
 } from "../model/names.js";
 import { StatSeal } from "./StatSeal.js";
@@ -147,13 +148,13 @@ export function Sheet({
 				<div className="stat-group-grid stat-group-grid--4">
 					<StatSeal
 						label="Melee"
-						value={signed(sheet.attack.melee.total)}
+						value={signedSequence(sheet.attack.melee.total, sheet.attack.melee.iteratives)}
 						components={sheet.attack.melee.components}
 						provTitle="Melee attack"
 					/>
 					<StatSeal
 						label="Ranged"
-						value={signed(sheet.attack.ranged.total)}
+						value={signedSequence(sheet.attack.ranged.total, sheet.attack.ranged.iteratives)}
 						components={sheet.attack.ranged.components}
 						provTitle="Ranged attack"
 					/>
@@ -182,7 +183,7 @@ export function Sheet({
 									<div className="weapon-attack-stats">
 										<StatSeal
 											label="Attack"
-											value={signed(atk.attack.total)}
+											value={signedSequence(atk.attack.total, atk.attack.iteratives)}
 											components={atk.attack.components}
 											provTitle={`${atk.name} attack`}
 											className="seal--compact"

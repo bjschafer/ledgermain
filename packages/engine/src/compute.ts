@@ -452,6 +452,25 @@ function computeSkills(
   return skills;
 }
 
+/* ------------------------------------------------------------ iteratives */
+
+/**
+ * Full-attack iterative sequence (PF1 CRB): an extra attack at BAB +6, +11,
+ * and +16, each at a cumulative -5, capped at 4 attacks total.
+ *
+ * Returns `undefined` for a single attack (BAB < 6) so callers can omit the
+ * field entirely rather than storing a length-1 array.
+ *
+ * Display-only and intentionally narrow: this does NOT account for
+ * haste/speed extra attacks, two-weapon fighting, or flurry of blows — those
+ * modify the iterative sequence beyond plain BAB and are out of scope here.
+ */
+export function iterativeSequence(bab: number, attackTotal: number): number[] | undefined {
+  if (bab < 6) return undefined;
+  const count = Math.min(4, 1 + Math.floor((bab - 1) / 5));
+  return Array.from({ length: count }, (_, k) => attackTotal - 5 * k);
+}
+
 /* --------------------------------------------------------------- weapons */
 
 /**
@@ -544,10 +563,11 @@ function computeWeaponAttacks(
     const critMult = w.critMult ?? 2;
     const crit = critRange < 20 ? `${critRange}–20/×${critMult}` : `×${critMult}`;
 
+    const iteratives = iterativeSequence(bab, attackTotal);
     const result: ResolvedWeaponAttack = {
       name: w.name,
       category,
-      attack: { total: attackTotal, components: attackComponents },
+      attack: { total: attackTotal, components: attackComponents, ...(iteratives ? { iteratives } : {}) },
       damageBonus: { total: damageTotal, components: damageComponents },
       crit,
     };
@@ -624,9 +644,21 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
     ...toComponents(rangedStack.modifiers),
   ];
+  const meleeTotal = bab + strMod + sizeAttackMod + meleeStack.total;
+  const rangedTotal = bab + dexMod + sizeAttackMod + rangedStack.total;
+  const meleeIteratives = iterativeSequence(bab, meleeTotal);
+  const rangedIteratives = iterativeSequence(bab, rangedTotal);
   const attack = {
-    melee: { total: bab + strMod + sizeAttackMod + meleeStack.total, components: meleeComponents },
-    ranged: { total: bab + dexMod + sizeAttackMod + rangedStack.total, components: rangedComponents },
+    melee: {
+      total: meleeTotal,
+      components: meleeComponents,
+      ...(meleeIteratives ? { iteratives: meleeIteratives } : {}),
+    },
+    ranged: {
+      total: rangedTotal,
+      components: rangedComponents,
+      ...(rangedIteratives ? { iteratives: rangedIteratives } : {}),
+    },
   };
 
   // AC

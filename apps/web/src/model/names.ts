@@ -90,3 +90,12 @@ export const ALIGNMENT_LABELS: Record<string, string> = {
 export function signed(n: number): string {
   return n >= 0 ? `+${n}` : `${n}`;
 }
+
+/**
+ * Format a full-attack sequence, e.g. [11, 6] -> "+11/+6". Falls back to a
+ * single signed total when there's no iterative sequence (BAB < 6).
+ */
+export function signedSequence(total: number, iteratives?: number[]): string {
+  if (!iteratives || iteratives.length < 2) return signed(total);
+  return iteratives.map(signed).join("/");
+}
