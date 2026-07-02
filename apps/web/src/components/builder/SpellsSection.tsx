@@ -244,8 +244,11 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {!preparesFromClassList && (
         <>
-          {/* Explicit view toggle: which list below is showing. Switching to
-              "Browse" with no search/school filter shows the full class list. */}
+          {/* Explicit view toggle: which list below is showing. This is the
+              *only* thing that changes the view — the search box and school
+              chips below are plain filters, scoped to browse mode, and never
+              flip the tab themselves (surprising the user by hijacking their
+              typing/clicking into a different view would violate POLA). */}
           <div className="chips spell-mode-toggle" role="tablist" aria-label="Spell list view">
             <button
               type="button"
@@ -268,45 +271,40 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
               Browse spell list
             </button>
           </div>
-          <input
-            className="search"
-            type="text"
-            placeholder={`Search the ${casterTag} spell list to add…`}
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              if (e.target.value.trim().length > 0) setMode("browsing");
-            }}
-            onFocus={() => setMode("browsing")}
-          />
-          {/* Browse by school when you don't already know a spell's name. */}
-          <div className="chips spell-school-filters">
-            <button
-              type="button"
-              className="chip"
-              aria-pressed={school === "All"}
-              onClick={() => {
-                setSchool("All");
-                setMode("browsing");
-              }}
-            >
-              All schools
-            </button>
-            {schools.map((sc) => (
-              <button
-                key={sc}
-                type="button"
-                className="chip"
-                aria-pressed={school === sc}
-                onClick={() => {
-                  setSchool(school === sc ? "All" : sc);
-                  setMode("browsing");
-                }}
-              >
-                {schoolLabel(sc)}
-              </button>
-            ))}
-          </div>
+          {browsing && (
+            <>
+              <input
+                className="search"
+                type="text"
+                placeholder={`Search the ${casterTag} spell list to add…`}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                autoFocus
+              />
+              {/* Browse by school when you don't already know a spell's name. */}
+              <div className="chips spell-school-filters">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={school === "All"}
+                  onClick={() => setSchool("All")}
+                >
+                  All schools
+                </button>
+                {schools.map((sc) => (
+                  <button
+                    key={sc}
+                    type="button"
+                    className="chip"
+                    aria-pressed={school === sc}
+                    onClick={() => setSchool(school === sc ? "All" : sc)}
+                  >
+                    {schoolLabel(sc)}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </>
       )}
       <div className="scroll">
