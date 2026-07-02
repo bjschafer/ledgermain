@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "@pf1/data-pipeline";
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import type { CharacterDoc } from "@pf1/schema";
 
 import {
   addClass,
