@@ -1,7 +1,11 @@
 /**
  * Unit tests for the weapon/armor ability helpers: the +10 enhancement-
- * equivalent cap, the "burst" abilities' prerequisite on their base energy
- * ability, and the shared selection helpers the builder UI drives off of.
+ * equivalent cap, and the shared selection helpers the builder UI drives off
+ * of. Note: PF1 RAW "burst" abilities (flaming-burst/icy-burst/
+ * shocking-burst) do NOT require their base energy ability (a "+1 flaming
+ * burst" weapon is legal on its own) — the `requires` plumbing is exercised
+ * only via `keen`/`speed`-style combinations here since no current ability
+ * data declares a `requires` prerequisite.
  */
 import { describe, expect, it } from "bun:test";
 
@@ -38,25 +42,29 @@ describe("sanitizeAbilities()", () => {
 		expect(sanitizeAbilities(["keen", "flaming"], 9)).toEqual(["keen"]);
 	});
 
-	it("drops flaming-burst without flaming present (unmet prerequisite)", () => {
-		expect(sanitizeAbilities(["flaming-burst"], 5)).toEqual([]);
+	it("keeps flaming-burst without flaming present (RAW: no base-ability prerequisite)", () => {
+		expect(sanitizeAbilities(["flaming-burst"], 5)).toEqual(["flaming-burst"]);
 	});
 
 	it("keeps flaming-burst when flaming is also selected", () => {
 		expect(sanitizeAbilities(["flaming", "flaming-burst"], 5)).toEqual(["flaming", "flaming-burst"]);
 	});
 
-	it("drops icy-burst without frost, and shocking-burst without shock", () => {
-		expect(sanitizeAbilities(["icy-burst"], 5)).toEqual([]);
-		expect(sanitizeAbilities(["shocking-burst"], 5)).toEqual([]);
+	it("keeps icy-burst without frost, and shocking-burst without shock", () => {
+		expect(sanitizeAbilities(["icy-burst"], 5)).toEqual(["icy-burst"]);
+		expect(sanitizeAbilities(["shocking-burst"], 5)).toEqual(["shocking-burst"]);
 	});
 
-	it("re-checks prerequisites after budget truncation drops the base ability", () => {
-		// enh=8 leaves 2 points of budget. Input order puts flaming-burst(2) before
-		// flaming(1): flaming-burst is kept first (uses the whole budget), then
-		// flaming is truncated for lack of remaining budget — which then makes
-		// flaming-burst's prerequisite unmet, so it must also be dropped.
-		expect(sanitizeAbilities(["flaming-burst", "flaming"], 8)).toEqual([]);
+	it("keeps flaming-burst even at minimal remaining budget", () => {
+		// enh=1 leaves 9 points of budget, well within flaming-burst's cost of 2.
+		expect(sanitizeAbilities(["flaming-burst"], 1)).toEqual(["flaming-burst"]);
+	});
+
+	it("truncates independently when budget can't fit both abilities", () => {
+		// enh=8 leaves 2 points of budget. flaming-burst(2) is kept first (uses
+		// the whole budget); flaming(1) no longer has a prerequisite relationship
+		// to it, so it's simply truncated for lack of remaining budget.
+		expect(sanitizeAbilities(["flaming-burst", "flaming"], 8)).toEqual(["flaming-burst"]);
 	});
 });
 
@@ -69,8 +77,8 @@ describe("abilitySelectable()", () => {
 		expect(abilitySelectable([], "keen", 1)).toBe(true);
 	});
 
-	it("is false for flaming-burst until flaming is already selected", () => {
-		expect(abilitySelectable([], "flaming-burst", 5)).toBe(false);
+	it("is true for flaming-burst on its own (RAW: no base-ability prerequisite)", () => {
+		expect(abilitySelectable([], "flaming-burst", 5)).toBe(true);
 		expect(abilitySelectable(["flaming"], "flaming-burst", 5)).toBe(true);
 	});
 
@@ -95,8 +103,8 @@ describe("toggleAbilitySelection()", () => {
 		expect(toggleAbilitySelection([], "keen", 0)).toEqual([]);
 	});
 
-	it("is a no-op when the prerequisite isn't selected", () => {
-		expect(toggleAbilitySelection([], "flaming-burst", 5)).toEqual([]);
+	it("adds flaming-burst on its own (RAW: no base-ability prerequisite)", () => {
+		expect(toggleAbilitySelection([], "flaming-burst", 5)).toEqual(["flaming-burst"]);
 	});
 
 	it("is a no-op when it would exceed the +10 cap", () => {
@@ -107,13 +115,13 @@ describe("toggleAbilitySelection()", () => {
 		expect(toggleAbilitySelection(["keen", "flaming"], "keen", 5)).toEqual(["flaming"]);
 	});
 
-	it("cascades: removing a prerequisite also removes its dependent", () => {
+	it("removing flaming does not cascade to flaming-burst (RAW: independent abilities)", () => {
 		const selected = ["flaming", "flaming-burst"];
-		expect(toggleAbilitySelection(selected, "flaming", 5)).toEqual([]);
+		expect(toggleAbilitySelection(selected, "flaming", 5)).toEqual(["flaming-burst"]);
 	});
 
-	it("cascade only affects the dependent, not unrelated abilities", () => {
+	it("leaves unrelated abilities alone when removing one with no dependents", () => {
 		const selected = ["flaming", "flaming-burst", "keen"];
-		expect(toggleAbilitySelection(selected, "flaming", 5)).toEqual(["keen"]);
+		expect(toggleAbilitySelection(selected, "flaming", 5)).toEqual(["flaming-burst", "keen"]);
 	});
 });

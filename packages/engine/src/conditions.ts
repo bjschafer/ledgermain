@@ -44,22 +44,22 @@ const CONDITION_LIST: ConditionDef[] = [
   {
     id: "shaken",
     name: "Shaken",
-    summary: "-2 morale penalty on attack rolls, saving throws, and skill checks.",
+    summary: "-2 penalty on attack rolls, saving throws, and skill checks.",
     changes: [
-      u("-2", "attack", "morale"),
-      u("-2", "allSavingThrows", "morale"),
-      u("-2", "skills", "morale"),
+      u("-2", "attack"),
+      u("-2", "allSavingThrows"),
+      u("-2", "skills"),
     ],
   },
   {
     id: "frightened",
     name: "Frightened",
     summary:
-      "-2 morale on attacks, saves, and skill checks; must flee from the source if able.",
+      "-2 on attacks, saves, and skill checks; must flee from the source if able.",
     changes: [
-      u("-2", "attack", "morale"),
-      u("-2", "allSavingThrows", "morale"),
-      u("-2", "skills", "morale"),
+      u("-2", "attack"),
+      u("-2", "allSavingThrows"),
+      u("-2", "skills"),
     ],
     contextNotes: [{ target: "allChecks", text: "Must flee from the source of fear if able." }],
   },
@@ -192,8 +192,8 @@ const CONDITION_LIST: ConditionDef[] = [
   {
     id: "panicked",
     name: "Panicked",
-    summary: "-2 morale on saves/skills; drops items and flees; cannot attack.",
-    changes: [u("-2", "allSavingThrows", "morale"), u("-2", "skills", "morale")],
+    summary: "-2 on saves/skills; drops items and flees; cannot attack.",
+    changes: [u("-2", "allSavingThrows"), u("-2", "skills")],
     contextNotes: [{ target: "allChecks", text: "Drops held items and flees; cannot attack." }],
   },
   {

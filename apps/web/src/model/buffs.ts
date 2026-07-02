@@ -103,7 +103,10 @@ export function advanceRound(doc: CharacterDoc, rounds = 1): AdvanceRoundResult 
 export function suggestRounds(buff: Buff, casterLevel: number): number | undefined {
   const d = buff.duration;
   if (!d?.units) return undefined;
-  const perLevel = /@item\.level/.test(d.value ?? "");
+  // Vendored durations express "per caster level" either as `@item.level` or
+  // `@cl` (e.g. "10 * @cl"); `\b` after `cl` keeps this from matching
+  // `@classes.*`/`@class.level`, which are unrelated paths.
+  const perLevel = /@item\.level|@cl\b/.test(d.value ?? "");
   const literal = Number(d.value);
   const base = perLevel ? Math.max(1, casterLevel) : Number.isFinite(literal) ? literal : 1;
   switch (d.units) {

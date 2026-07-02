@@ -73,7 +73,8 @@ const ABILITIES: Record<string, AbilityDef> = {
     slot: "weapon",
     bonusEquivalent: 2,
     note: "+1d6 fire (+×d10 on crit)",
-    requires: "flaming",
+    // PF1 RAW: Flaming Burst is a standalone ability that includes flaming's
+    // +1d6 fire — it does not require "flaming" to also be selected.
   },
   "icy-burst": {
     id: "icy-burst",
@@ -81,7 +82,8 @@ const ABILITIES: Record<string, AbilityDef> = {
     slot: "weapon",
     bonusEquivalent: 2,
     note: "+1d6 cold (+×d10 on crit)",
-    requires: "frost",
+    // PF1 RAW: Icy Burst is a standalone ability that includes frost's +1d6
+    // cold — it does not require "frost" to also be selected.
   },
   "shocking-burst": {
     id: "shocking-burst",
@@ -89,7 +91,8 @@ const ABILITIES: Record<string, AbilityDef> = {
     slot: "weapon",
     bonusEquivalent: 2,
     note: "+1d6 elec (+×d10 on crit)",
-    requires: "shock",
+    // PF1 RAW: Shocking Burst is a standalone ability that includes shock's
+    // +1d6 electricity — it does not require "shock" to also be selected.
   },
   holy: {
     id: "holy",
@@ -116,7 +119,7 @@ const ABILITIES: Record<string, AbilityDef> = {
     name: "Vicious",
     slot: "weapon",
     bonusEquivalent: 1,
-    note: "+2 dmg / 1d6 self",
+    note: "+2d6 dmg / 1d6 self",
   },
   speed: {
     id: "speed",
@@ -159,7 +162,7 @@ const ABILITIES: Record<string, AbilityDef> = {
     id: "armor-ghost-touch",
     name: "Ghost Touch",
     slot: "armor",
-    bonusEquivalent: 1,
+    bonusEquivalent: 3,
   },
   bashing: {
     id: "bashing",

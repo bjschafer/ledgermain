@@ -1,10 +1,23 @@
 import { describe, expect, it } from "bun:test";
+import type { Buff } from "@pf1/schema";
 
 import {
   formatDuration,
   roundsToDisplay,
+  suggestRounds,
   toRounds,
 } from "../src/model/buffs.js";
+
+function buffWithDuration(units: string, value: string): Buff {
+  return {
+    id: "test-buff",
+    name: "Test Buff",
+    uuid: "Compendium.pf1.test.Item.test-buff",
+    changes: [],
+    contextNotes: [],
+    duration: { units, value },
+  };
+}
 
 describe("roundsToDisplay", () => {
   it("returns undefined for indefinite (undefined rounds)", () => {
@@ -107,5 +120,31 @@ describe("formatDuration", () => {
 
   it("90 → '9 min'", () => {
     expect(formatDuration(90)).toBe("9 min");
+  });
+});
+
+describe("suggestRounds", () => {
+  it("treats @item.level as per-level (existing behavior)", () => {
+    // duration "@item.level" minutes at CL4 → 4 * 10 = 40 rounds.
+    expect(suggestRounds(buffWithDuration("minute", "@item.level"), 4)).toBe(40);
+  });
+
+  it("treats @cl as per-level (vendored durations use @cl, not @item.level)", () => {
+    // duration "@cl" minutes at CL4 → 4 * 10 = 40 rounds.
+    expect(suggestRounds(buffWithDuration("minute", "@cl"), 4)).toBe(40);
+  });
+
+  it("treats a formula containing @cl (e.g. '10 * @cl') as per-level too", () => {
+    expect(suggestRounds(buffWithDuration("round", "10 * @cl"), 3)).toBe(3);
+  });
+
+  it("does not mistake @classes.*/@class.level paths for @cl", () => {
+    // Not a per-level match: falls back to the literal-number parse, which
+    // fails for a non-numeric formula and defaults to 1 round of base.
+    expect(suggestRounds(buffWithDuration("round", "@classes.barbarian.level"), 5)).toBe(1);
+  });
+
+  it("returns undefined for a buff with no duration units", () => {
+    expect(suggestRounds({ ...buffWithDuration("round", "1"), duration: undefined }, 5)).toBeUndefined();
   });
 });
