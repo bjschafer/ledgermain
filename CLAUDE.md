@@ -43,7 +43,7 @@ To update data: edit `FOUNDRY_SHA` / `SYSTEM_VERSION` in `packages/data-pipeline
 
 Four bun-workspace packages, one data-flow rule.
 
-```
+```text
 packages/schema         shared types: CharacterDoc, DerivedSheet, RefData (the contracts everything imports)
 packages/data-pipeline  pinned Foundry YAML → normalized JSON (vendored under data/, committed)
 packages/engine         pure rules engine — compute(doc, refData) -> DerivedSheet (the crown jewel)
@@ -62,6 +62,7 @@ Derived stats are **never** computed or stored server-side — the server (Stage
 - **`compute(doc, refData) -> DerivedSheet`** (engine) — pure, framework-agnostic, returns every displayed number. Toggle anything in the doc → recompute. It's cheap; the web app recomputes on every change rather than memoizing cleverly.
 
 The engine has two genuinely hard pieces, both clean-room (see licensing below):
+
 1. **Typed bonus-stacking** (`stacking.ts`) — highest-within-type; `dodge`/`untyped`/`circumstance` sum; penalties always stack. Retains per-source provenance (`applied` flag) so the UI can strike through overridden bonuses.
 2. **Formula DSL evaluator** (`formula.ts`) — recursive-descent parser + tree-walker (no `eval`) for the Foundry roll-formula dialect: `@data.paths`, functions (`if`, `gte`, `min`, `max`, …), and dice terms. Missing paths resolve to `0` (Foundry behavior). Dice terms parse but throw on numeric eval; use `tryEvaluateFormula` (returns `null`) so damage formulas never crash the static sheet. BAB/save numeric tables are hardcoded in `tables.ts` (the YAML only carries `high|med|low` tiers).
 
@@ -82,6 +83,7 @@ The engine is a **clean-room reimplementation** from the published PF1 rules, ke
 - TypeScript strict everywhere. `bun run typecheck` is the gate that must stay green.
 - When touching the engine, add hand-computed fixture tests (the pattern in `packages/engine/test/`); the engine tests run against the real vendored data slice via `loadRefData()`.
 - Feat prereqs are **hybrid**: hard-block only on *structured* signals (ability min, BAB, caster level, required `@UUID` feats); prose-only prereqs (`prereqText`) show a soft warning and never block. Don't promise perfect prereq enforcement.
+- Always check for the dev server listening before killing and starting it.
 
 ## Git
 
