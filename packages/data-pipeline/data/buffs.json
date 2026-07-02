@@ -13,7 +13,7 @@
         "text": "+[[2]] against touch AC from beam and ray attacks"
       }
     ],
-    "description": "<p>+[[2]] shield AC [force effect] as per @UUID[Compendium.pf1.technology.Item.alQVMlHc89hMxK2M].</p>",
+    "description": "<p>+[[2]] shield AC [force effect] as per Hard light shield.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -60,7 +60,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>All of the target’s speeds are reduced by half (to a minimum of 5 feet). In addition, the target cannot take a 5-foot step as per @UUID[Compendium.pf1.class-abilities.Item.nL9Ds9nflmID84vo] .</p>",
+    "description": "<p>All of the target’s speeds are reduced by half (to a minimum of 5 feet). In addition, the target cannot take a 5-foot step as per Debilitating Injury .</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -87,7 +87,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants 20 feet climb speed as per @UUID[Compendium.pf1.spells.Item.3mfmhx8avu7h3iom].</p>",
+    "description": "<p>Grants 20 feet climb speed as per Spider Climb.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -116,10 +116,10 @@
     "contextNotes": [
       {
         "target": "skill.ste",
-        "text": "@UUID[Compendium.pf1.class-abilities.Item.ytotO22rp5ji6rT1]{Hide in Plain Sight} as ranger in his favored terrain."
+        "text": "Hide in Plain Sight as ranger in his favored terrain."
       }
     ],
-    "description": "<p>+[[10]] competence bonus on Stealth checks as per @UUID[Compendium.pf1.technology.Item.Nnrom1FPNcjBJRK8].</p>",
+    "description": "<p>+[[10]] competence bonus on Stealth checks as per Chameleon suit.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -160,7 +160,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You gain a +[[(min(6, floor(@item.level / 3)))]] luck bonus on attack rolls, weapon damage rolls, Strength checks, and Strength-based skill checks and also gains [[@item.level]] temp. HP as per @UUID[Compendium.pf1.spells.Item.0yvwyclhkf76veo1].</p>",
+    "description": "<p>You gain a +[[(min(6, floor(@item.level / 3)))]] luck bonus on attack rolls, weapon damage rolls, Strength checks, and Strength-based skill checks and also gains [[@item.level]] temp. HP as per Divine Power.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -187,7 +187,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[10]] competence bonus on Perception checks while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.9dvLuZUA2Wy1TBht].</p>",
+    "description": "<p>Grants +[[10]] competence bonus on Perception checks while active as per Veemod goggles with Veemod (green).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -213,7 +213,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The subject has a +[[4]] enhancement bonus to Wisdom as per @UUID[Compendium.pf1.spells.Item.b9ggsagifzk4fwut] spell.</p>",
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Wisdom as per Owl's Wisdom spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -260,7 +260,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Adjusts:</p><ul><li>+[[2]] Size bonus to Strength</li><li>-2 Size penalty to Dexterity</li><li>+[[1]] Size</li></ul><p>Includes carry capacity adjustments partially accounting for your gear not changing in size.</p><p>See @UUID[Compendium.pf1.spells.jnlr9cuepka1l26e] for more details.</p>",
+    "description": "<p>Adjusts:</p><ul><li>+[[2]] Size bonus to Strength</li><li>-2 Size penalty to Dexterity</li><li>+[[1]] Size</li></ul><p>Includes carry capacity adjustments partially accounting for your gear not changing in size.</p><p>See Enlarge Person for more details.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -287,7 +287,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The subject has a +[[4]] enhancement bonus to Intelligence as per @UUID[Compendium.pf1.spells.Item.743anqr1ahefv8zd] spell.</p>",
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Intelligence as per Fox's Cunning spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -314,7 +314,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on saving throws as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8].</p>",
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on saving throws as per Evil Eye.</p>",
     "id": "2Ob3MdeFHK2wLkyu",
     "level": 1,
     "name": "Evil Eye (Saves)",
@@ -351,7 +351,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[@item.level]] competence bonus to initiative, knowledge (geography), perception and survival checks as per @UUID[Compendium.pf1.class-abilities.Item.BJbgAVT6pZhML9im].</p>",
+    "description": "<p>Grants +[[@item.level]] competence bonus to initiative, knowledge (geography), perception and survival checks as per Terrain Training.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -377,7 +377,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus to Perception as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus to Perception as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -409,7 +409,7 @@
         "text": "Takes an additional -[[floor((@item.level + 2) / 6) * 2]] to attack rolls against attacks made by the rogue."
       }
     ],
-    "description": "<p>The target takes a –2 penalty on attack rolls. The target takes an additional –[[floor((@item.level + 2) / 6) * 2]] penalty to attack rolls against the rogue as per @UUID[Compendium.pf1.class-abilities.Item.nL9Ds9nflmID84vo].</p><hr />",
+    "description": "<p>The target takes a –2 penalty on attack rolls. The target takes an additional –[[floor((@item.level + 2) / 6) * 2]] penalty to attack rolls against the rogue as per Debilitating Injury.</p><hr />",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -436,7 +436,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You gain a +[[min(30, (10 + (floor(@item.level / 8) * 10)))]] enhancement bonus on Perception checks as per @UUID[Compendium.pf1.spells.Item.f9adpo6szijchpva].</p>",
+    "description": "<p>You gain a +[[min(30, (10 + (floor(@item.level / 8) * 10)))]] enhancement bonus on Perception checks as per Acute Senses.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -468,7 +468,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You have a luck bonus to attack rolls and weapon damage rolls as per @UUID[Compendium.pf1.spells.Item.21bxbzdaawjrnvyo] spell.</p>",
+    "description": "<p>You have a luck bonus to attack rolls and weapon damage rolls as per Divine Favor spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -505,7 +505,7 @@
         "text": "+[[1 + max(0, floor((@item.level + 1) / 6))]] Morale vs Fear and Charm effects"
       }
     ],
-    "description": "<p>You gain a morale bonus on saves vs charm and fear effects, and a competence bonus on attack rolls and weapon damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL].</p>",
+    "description": "<p>You gain a morale bonus on saves vs charm and fear effects, and a competence bonus on attack rolls and weapon damage rolls as per Inspire Courage.</p>",
     "id": "3p34GJemfcLdKckV",
     "level": 1,
     "name": "Inspire Courage",
@@ -521,7 +521,7 @@
   "43eVSSa6rSTl7ieD": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>See @UUID[Compendium.pf1.class-abilities.Item.uAI3k87VtkTt8hcw] for more details.</p>",
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>See Taunting Stance (UC) for more details.</p>",
     "id": "43eVSSa6rSTl7ieD",
     "name": "Taunting Stance",
     "sources": [
@@ -542,7 +542,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants a +[[1 + floor(@item.level / 5)]] resistance bonus as per @UUID[Compendium.pf1.class-abilities.Item.Bw3GiobZvSJb8dGI]{Resistant Touch}</p>",
+    "description": "<p>Grants a +[[1 + floor(@item.level / 5)]] resistance bonus as per Resistant Touch</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -574,7 +574,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>[[2 + floor((@item.level - 2) / 6)]] competence on next concentration, dispel or caster level check as per @UUID[Compendium.pf1.class-abilities.Item.2U4Brc6XSYEb6Azn]</p>",
+    "description": "<p>[[2 + floor((@item.level - 2) / 6)]] competence on next concentration, dispel or caster level check as per Spell Aid</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -602,7 +602,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants Darkvision 60 ft. while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.dNF5qq8D1cSJHsEA].</p>",
+    "description": "<p>Grants Darkvision 60 ft. while active as per Veemod goggles with Veemod (red).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -628,7 +628,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on AC as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8]</p>",
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on AC as per Evil Eye</p>",
     "id": "5CWQRKQxsM14G93h",
     "level": 1,
     "name": "Evil Eye (AC)",
@@ -649,7 +649,7 @@
         "text": "+[[1]] circumstance bonus against bright light effects that cause dazzling or blindness."
       }
     ],
-    "description": "<p>Grants +[[1]] circumstance bonus on all saving throws against bright light effects that cause dazzling or blindness while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.jJfwLVduz8FtcgEg].</p>",
+    "description": "<p>Grants +[[1]] circumstance bonus on all saving throws against bright light effects that cause dazzling or blindness while active as per Veemod goggles with Veemod (brown).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -685,7 +685,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You ignore the physical detriments of being old or middle-aged as per @UUID[Compendium.pf1.spells.Item.li8zwqjorsww6o82].</p>",
+    "description": "<p>You ignore the physical detriments of being old or middle-aged as per Age Resistance.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -711,7 +711,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Applies a -[[2]] penalty to your Armor Class until your next turn as per @UUID[Compendium.pf1.feats.Item.xq2TFr7bsYBBHOi5].</p>",
+    "description": "<p>Applies a -[[2]] penalty to your Armor Class until your next turn as per Lunge.</p>",
     "duration": {
       "end": "turnStart",
       "units": "round",
@@ -737,7 +737,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[1 + floor((@item.level-8) / 4)]] deflection bonus to AC and resistance [[5 + (floor(@item.level / 14) * 5)]] against all elements (acid, cold, electricity, fire, and sonic) as per @UUID[Compendium.pf1.class-abilities.Item.kHXw5V06TkymXxF3]{Aura of Protection (Domain Power)}</p>",
+    "description": "<p>Grants +[[1 + floor((@item.level-8) / 4)]] deflection bonus to AC and resistance [[5 + (floor(@item.level / 14) * 5)]] against all elements (acid, cold, electricity, fire, and sonic) as per Aura of Protection (Domain Power)</p>",
     "id": "7ReQuzKvSVUtwuC9",
     "level": 8,
     "name": "Aura of Protection",
@@ -753,7 +753,7 @@
   "8AEPlLbeiTbQBJbV": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Allows to track consumed spell levels via charges and duration as per @UUID[Compendium.pf1.class-abilities.Item.hCNcTDUHw7vDAlhq]{Spell Deflection}.</p>",
+    "description": "<p>Allows to track consumed spell levels via charges and duration as per Spell Deflection.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -789,7 +789,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You ignore the physical detriments of being middle-aged as per @UUID[Compendium.pf1.spells.Item.li8zwqjorsww6o82].</p>",
+    "description": "<p>You ignore the physical detriments of being middle-aged as per Age Resistance.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -814,7 +814,7 @@
         "text": "Cannot be flanked."
       }
     ],
-    "description": "<p>Grants all-around vision (cannot be flanked) while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.vbJhd1aeLHgPsA6e].</p>",
+    "description": "<p>Grants all-around vision (cannot be flanked) while active as per Veemod goggles with Veemod (blue).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -846,7 +846,7 @@
         "text": "Can Take 10 even if distracted or endangered."
       }
     ],
-    "description": "<p>Grants swim speed of [[30]] feet along and the ability to take 10 even if distracted or endangered as per @UUID[Compendium.pf1.spells.Item.ts50hpvkdgerfp1a].</p>",
+    "description": "<p>Grants swim speed of [[30]] feet along and the ability to take 10 even if distracted or endangered as per Touch of the Sea.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -873,7 +873,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The creature gains a [[5 * (1 + gte(@item.level, 8) + if(gte(@item.level, 15), 2))]]-foot enhancement bonus to its base land speed as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains a [[5 * (1 + gte(@item.level, 8) + if(gte(@item.level, 15), 2))]]-foot enhancement bonus to its base land speed as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -900,7 +900,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>+[[3]] competence bonus on Stealth checks in current terrain as per @UUID[Compendium.pf1.technology.Item.tYUaP6Yx45ekrOdR].</p>",
+    "description": "<p>+[[3]] competence bonus on Stealth checks in current terrain as per Neraplast armor.</p>",
     "id": "AclErIDcanB7Kd8D",
     "name": "Neraplast Armor",
     "sources": [
@@ -920,7 +920,7 @@
         "text": "+[[clamp((floor((@item.level + 3) / 4) * 10), 10, 30)]] to Jump."
       }
     ],
-    "description": "<p>Grants +[[clamp((floor((@item.level + 3) / 4) * 10), 10, 30)]] enhancement bonus on Acrobatics checks made to attempt high jumps or long jumps as per @UUID[Compendium.pf1.spells.Item.ns2zo6qgd9co02uf].</p>",
+    "description": "<p>Grants +[[clamp((floor((@item.level + 3) / 4) * 10), 10, 30)]] enhancement bonus on Acrobatics checks made to attempt high jumps or long jumps as per Jump.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -967,7 +967,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You suffer -4 penalty to AC, attack rolls, saves, ability checks and skill checks as per @UUID[Compendium.pf1.class-abilities.Item.KPauZdmqDDxXj6OU].</p>",
+    "description": "<p>You suffer -4 penalty to AC, attack rolls, saves, ability checks and skill checks as per Dire Prophecy.</p>",
     "id": "B1lq0g41olpQMfzK",
     "name": "Dire Prophecy",
     "sources": [
@@ -988,7 +988,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Applies -[[(1 + floor(@item.unlevel / 5))]] penalty to saving throws as per @UUID[Compendium.pf1.class-abilities.Item.zx0lJIxpj8ZCDh97]{Taboo (Domain Power)}</p>",
+    "description": "<p>Applies -[[(1 + floor(@item.unlevel / 5))]] penalty to saving throws as per Taboo (Domain Power)</p>",
     "duration": {
       "end": "turnStart",
       "units": "minute",
@@ -1047,7 +1047,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The barbarian gains a +[[1]] competence bonus on melee attack rolls and thrown weapon attack rolls. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.042BafLhw5SsMsg6] for more details.</p>",
+    "description": "<p>The barbarian gains a +[[1]] competence bonus on melee attack rolls and thrown weapon attack rolls. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See Accurate Stance (UC) for more details.</p>",
     "id": "CjQ4VmDIRBb3k7Dg",
     "name": "Accurate Stance",
     "sources": [
@@ -1073,7 +1073,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[6]] resistance to saves and +[[2]] to Caster Level checks as long as someone is trapped inside the Kimono as per @UUID[Compendium.pf1.buffs.Item.Cl3NcY8raqcmeP7x].</p>",
+    "description": "<p>Grants +[[6]] resistance to saves and +[[2]] to Caster Level checks as long as someone is trapped inside the Kimono as per Otherworldly Kimono.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1103,7 +1103,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The subject has a +[[4]] enhancement bonus to Strength as per @UUID[Compendium.pf1.spells.Item.05i5rxwim12hwktu].</p>",
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Strength as per Bull's Strength.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1135,7 +1135,7 @@
         "text": "-[[1]] vs Fear effects"
       }
     ],
-    "description": "<p>You take a -1 penalty on attack rolls and saving throws vs fear effects as per @UUID[Compendium.pf1.spells.Item.3etxlex8u32g0hrx] spell.</p>",
+    "description": "<p>You take a -1 penalty on attack rolls and saving throws vs fear effects as per Bane spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1161,7 +1161,7 @@
         "text": "+[[@abilities.cha.mod]] on weapon damage rolls against oathbreaking creature."
       }
     ],
-    "description": "<p>Grants +[[@abilities.cha.mod]] competence on weapon damage rolls against oathbreaking creatures as per @UUID[Compendium.pf1.class-abilities.Item.31CnioMwm6kmFt8N].</p>",
+    "description": "<p>Grants +[[@abilities.cha.mod]] competence on weapon damage rolls against oathbreaking creatures as per Seek Retribution.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -1192,7 +1192,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[1]] deflection bonus to AC and a +[[1]] resistance bonus on saves as per @UUID[Compendium.pf1.spells.Item.menqakfoa1ftvi3f].</p>",
+    "description": "<p>Grants +[[1]] deflection bonus to AC and a +[[1]] resistance bonus on saves as per Shield Other.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -1226,7 +1226,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants 10 foot climb speed and swim speed as per @UUID[Compendium.pf1.spells.Item.wijuvnfmtmq83jef]. This buff has no effect if you are wearing medium or heavy armor or carrying a medium or heavy load.</p>",
+    "description": "<p>Grants 10 foot climb speed and swim speed as per Monkey Fish. This buff has no effect if you are wearing medium or heavy armor or carrying a medium or heavy load.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1273,7 +1273,7 @@
   "EDreDkg4ESQIwmEd": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants Temporary HP as per @UUID[Compendium.pf1.technology.Item.AmUgZQmCcIxg3DhV]{Force Field}.</p>",
+    "description": "<p>Grants Temporary HP as per Force Field.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1329,7 +1329,7 @@
         "text": "Any critical threat is automatically confirmed."
       }
     ],
-    "description": "<p>Adds Charisma modifier on all ability checks, attack rolls, damage rolls, saving throws, and skill checks and AC as per @UUID[Compendium.pf1.class-abilities.Item.Js2wvAGSZ1VqO7S1].</p>",
+    "description": "<p>Adds Charisma modifier on all ability checks, attack rolls, damage rolls, saving throws, and skill checks and AC as per Moment of Triumph.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -1354,7 +1354,7 @@
         "text": "Immune to inhaled toxins or diseases"
       }
     ],
-    "description": "<p>Adds context note that target is immune to inhaled toxins or diseases as per @UUID[Compendium.pf1.technology.Item.3SHwrxfV7GG51ajY].</p>",
+    "description": "<p>Adds context note that target is immune to inhaled toxins or diseases as per Filter mask.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -1385,7 +1385,7 @@
         "text": "+[[1]] Sacred bonus vs Fear effects."
       }
     ],
-    "description": "<p>You gain a +[[1]] sacred bonus on attack rolls and saves against fear effects, plus [[@item.level]] temporary hit point as per @UUID[Compendium.pf1.spells.Item.8wspht4k8tiugz6u].</p>",
+    "description": "<p>You gain a +[[1]] sacred bonus on attack rolls and saves against fear effects, plus [[@item.level]] temporary hit point as per Burst of Glory.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -1416,7 +1416,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Gain a +[[clamp(floor((@item.level + 5) / 4), 2, 6)]] competence bonus on skill checks with a particular skill as long as you continue to hear the bard’s performance as per @UUID[Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq].</p>",
+    "description": "<p>Gain a +[[clamp(floor((@item.level + 5) / 4), 2, 6)]] competence bonus on skill checks with a particular skill as long as you continue to hear the bard’s performance as per Inspire Competence.</p>",
     "duration": {
       "end": "turnStart"
     },
@@ -1441,7 +1441,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[2]] competence bonus on Perception checks and low-light vision as per @UUID[Compendium.pf1.spells.Item.54x9nw6ni4rpphcn].</p>",
+    "description": "<p>Grants +[[2]] competence bonus on Perception checks and low-light vision as per Keen Senses.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1468,7 +1468,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[5]] competence bonus on Perception checks while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.CgwAhfGBEFSqA9Lo].</p>",
+    "description": "<p>Grants +[[5]] competence bonus on Perception checks while active as per Veemod goggles with Veemod (white).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -1488,7 +1488,7 @@
   "FxGQVAP3ep7xiAC4": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants immunity to poison as per @UUID[Compendium.pf1.spells.Item.l7e01shgg8c44zfg].</p>",
+    "description": "<p>Grants immunity to poison as per Delay Poison.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -1509,7 +1509,7 @@
   "FzUOIQgvjpzeNnnt": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Tracks duration and allows heal when dropped to 0 HP as per @UUID[Compendium.pf1.items.Item.z1Wf1DqtJQoVzbI9].</p>",
+    "description": "<p>Tracks duration and allows heal when dropped to 0 HP as per Seishinru, Spirit Elixir.</p>",
     "id": "FzUOIQgvjpzeNnnt",
     "name": "Seishinru, Spirit Elixir",
     "sources": [
@@ -1530,7 +1530,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[2]] competence bonus on Perception checks while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.jhIfmOlvPbwZwCq1].</p>",
+    "description": "<p>Grants +[[2]] competence bonus on Perception checks while active as per Veemod goggles with Veemod (black).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -1556,7 +1556,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[2]] moral bonus to attacks as per @UUID[Compendium.pf1.class-abilities.Item.fAcozS7Vmm7xLGSX]</p>",
+    "description": "<p>Grants +[[2]] moral bonus to attacks as per Strategy</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -1582,7 +1582,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Increases natural reach by 5 feet as per @UUID[Compendium.pf1.spells.Item.steozrynqopyxiua] spell.</p>",
+    "description": "<p>Increases natural reach by 5 feet as per Long Arm spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1614,7 +1614,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[2]] deflection bonus to AC and combat maneuver defense as per @UUID[Compendium.pf1.class-abilities.Item.yDG7xVuH7oqWS4Mt].</p>",
+    "description": "<p>Grants +[[2]] deflection bonus to AC and combat maneuver defense as per Deflection Aura.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -1641,7 +1641,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[2]] dodge bonus to AC as per @UUID[Compendium.pf1.class-abilities.Item.fAcozS7Vmm7xLGSX]</p>",
+    "description": "<p>Grants +[[2]] dodge bonus to AC as per Strategy</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -1668,7 +1668,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants spell resistance [[12 + @item.level]] as per @UUID[Compendium.pf1.spells.Item.4k9bh8ny1il2oner].</p>",
+    "description": "<p>Grants spell resistance [[12 + @item.level]] as per Spell Resistance.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1696,7 +1696,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You are imbued with a +[[1]] resistance bonus on saves as per @UUID[Compendium.pf1.spells.Item.g8j278xcu2s1zlwy].</p>",
+    "description": "<p>You are imbued with a +[[1]] resistance bonus on saves as per Resistance.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1716,7 +1716,7 @@
   "H9Qopdm0LVhvA4Pm": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants energy resistance [[floor((@item.level - 4) / 4) * 5]] to on energy type as per @UUID[Compendium.pf1.class-abilities.Item.TH51moex2K8P4UjM].</p>",
+    "description": "<p>Grants energy resistance [[floor((@item.level - 4) / 4) * 5]] to on energy type as per Resist Energy.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1748,7 +1748,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The barbarian gains a +[[1]] bonus on melee damage rolls and thrown weapon damage rolls. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.uJ4WSKQo1W8GZ9vr] for more details.</p>",
+    "description": "<p>The barbarian gains a +[[1]] bonus on melee damage rolls and thrown weapon damage rolls. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See Powerful Stance (UC) for more details.</p>",
     "id": "HC9wMz9Ko93PgB8D",
     "name": "Powerful Stance",
     "sources": [
@@ -1763,7 +1763,7 @@
   "HdNb6j7U9qA2tnr1": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>See @UUID[Compendium.pf1.class-abilities.Item.3wRZrnb7itCksfhP] for more details.</p>",
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>See Regenerative Stance (UC) for more details.</p>",
     "id": "HdNb6j7U9qA2tnr1",
     "name": "Regenerative Stance",
     "sources": [
@@ -1789,7 +1789,7 @@
         "text": "+[[4]] against incorporeal touch attacks."
       }
     ],
-    "description": "<p>Grants +[[4]] armor bonus to AC which also applies against incorporeal touch attacks as per @UUID[Compendium.pf1.spells.Item.ucc0a31d1y86oleh].</p>",
+    "description": "<p>Grants +[[4]] armor bonus to AC which also applies against incorporeal touch attacks as per Mage Armor.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -1817,7 +1817,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants darkvision 120 ft. for 1 Hour per item level as per @UUID[Compendium.pf1.spells.Item.nntvnla4qnawr0xn] spell.</p>",
+    "description": "<p>Grants darkvision 120 ft. for 1 Hour per item level as per Darkvision, Greater spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -1838,7 +1838,7 @@
   "J197dkOWtvbSpgjF": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Allows rerolling a fortitude save with a +4 competence bonus as per @UUID[Compendium.pf1.class-abilities.Item.15IlbKFhTTuXwPU6].</p>",
+    "description": "<p>Allows rerolling a fortitude save with a +4 competence bonus as per Danger Ward.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1869,7 +1869,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The barbarian can focus her ferocity. She gains a +[[1]] bonus on melee damage rolls and thrown weapon damage rolls. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.isntpKkbAc8v2SuT] for more details.</p>",
+    "description": "<p>The barbarian can focus her ferocity. She gains a +[[1]] bonus on melee damage rolls and thrown weapon damage rolls. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See Reckless Stance (UC) for more details.</p>",
     "id": "KLUCuieSvkTD4qem",
     "name": "Reckless Stance",
     "sources": [
@@ -1896,7 +1896,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants darkvision 30 feet and a +[[2]] competence bonus on Stealth as per @UUID[Compendium.pf1.spells.Item.mnsqk035k4hr8vjs] spell.</p>",
+    "description": "<p>Grants darkvision 30 feet and a +[[2]] competence bonus on Stealth as per Blessing of the Mole spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1923,7 +1923,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The subject has a +[[4]] enhancement bonus to Charisma as per @UUID[Compendium.pf1.spells.Item.d4oubr5bdoo8w1ev] spell.</p>",
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Charisma as per Eagle's Splendor spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1960,7 +1960,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>+[[2]] natural armor bonus, +[[4]] alchemical bonus to Constitution, -2 penalty to Charisma as per @UUID[Compendium.pf1.class-abilities.Item.zrTVb83VhkFnEv6G].</p>",
+    "description": "<p>+[[2]] natural armor bonus, +[[4]] alchemical bonus to Constitution, -2 penalty to Charisma as per Mutagen.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -1987,7 +1987,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus to Perception as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus to Perception as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2029,7 +2029,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You have a -1 luck penalty on attack rolls, weapon damage rolls, saves and skill checks as per @UUID[Compendium.pf1.spells.Item.hu8179fdqfkl0bqj].</p>",
+    "description": "<p>You have a -1 luck penalty on attack rolls, weapon damage rolls, saves and skill checks as per Prayer.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -2056,7 +2056,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] enhancement bonus to Constitution as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] enhancement bonus to Constitution as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2077,7 +2077,7 @@
   "N9I7rqVRxAi96UBn": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Tracks duration of the spell @UUID[Compendium.pf1.spells.Item.pau0ejk30fs1eebl]{Endure Elements}.</p>",
+    "description": "<p>Tracks duration of the spell Endure Elements.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -2139,7 +2139,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>When making a full attack action, you may make one extra attack with one natural or manufactured weapon at your highest base attack bonus. This effect is not cumulative with similar effects, such as that provided by a <em>speed</em> weapon.</p><p>You also gain a +[[1]] bonus on attack rolls, dodge AC and Reflex saves.</p><p>All your modes of movement (including land, fly, burrow, climb and swim) increase by 30ft, to a maximum of twice your normal speed using that form of movement. This increase counts as an enhancement bonus, and it affects the creature’s jumping distance as normal for increased speed.</p><p>See @UUID[Compendium.pf1.spells.Item.s9amdo5398alb5p0] for more details.</p>",
+    "description": "<p>When making a full attack action, you may make one extra attack with one natural or manufactured weapon at your highest base attack bonus. This effect is not cumulative with similar effects, such as that provided by a <em>speed</em> weapon.</p><p>You also gain a +[[1]] bonus on attack rolls, dodge AC and Reflex saves.</p><p>All your modes of movement (including land, fly, burrow, climb and swim) increase by 30ft, to a maximum of twice your normal speed using that form of movement. This increase counts as an enhancement bonus, and it affects the creature’s jumping distance as normal for increased speed.</p><p>See Haste for more details.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -2169,7 +2169,7 @@
         "text": "+[[1]] competence on targets threatend by your allying cavalier/samurai."
       }
     ],
-    "description": "<p>Grants +[[@item.level]] competence on attack rolls and saving throws when allying cavalier/samurai threatens the target as per @UUID[Compendium.pf1.class-abilities.Item.k3DBzmRSzywR0sbm].</p>",
+    "description": "<p>Grants +[[@item.level]] competence on attack rolls and saving throws when allying cavalier/samurai threatens the target as per Temporary Alliance.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -2190,7 +2190,7 @@
   "OEPLhd4m46A6QA31": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against fire as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against fire as per Resist Energy.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2257,7 +2257,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You are @Condition[staggered], and you have a -1 penalty to attack rolls, AC and Reflex saves.</p><p>In addition, you move at half speed (round down to the next 5-foot increment).</p><p>See @UUID[Compendium.pf1.spells.Item.jcr72piqo6g549e1] for more details.</p>",
+    "description": "<p>You are @Condition[staggered], and you have a -1 penalty to attack rolls, AC and Reflex saves.</p><p>In addition, you move at half speed (round down to the next 5-foot increment).</p><p>See Slow for more details.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -2284,7 +2284,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[2]] natural armor bonus and DR/Slashing [[@abilities.cha.mod]] as per @UUID[Compendium.pf1.class-abilities.Item.ppnLbY3ZrKGWxQ2R]{Wooden Flesh}.</p>",
+    "description": "<p>Grants +[[2]] natural armor bonus and DR/Slashing [[@abilities.cha.mod]] as per Wooden Flesh.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2316,7 +2316,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[1 + floor(@item.level / 5)]] sacred / profane bonus on all attack rolls which is doubled to confirm critical hits at level 10 as per @UUID[Compendium.pf1.class-abilities.Item.j6ZSm23YrshsdfBt].</p>",
+    "description": "<p>Grants +[[1 + floor(@item.level / 5)]] sacred / profane bonus on all attack rolls which is doubled to confirm critical hits at level 10 as per Justice.</p>",
     "duration": {
       "units": "combat"
     },
@@ -2346,7 +2346,7 @@
         "text": "+[[1]] Morale vs Fear effects"
       }
     ],
-    "description": "<p>You have a +[[1]] morale bonus to attack rolls and saves against fear effects as per @UUID[Compendium.pf1.spells.Item.wa0zb2pncesmm9lz] spell.</p>",
+    "description": "<p>You have a +[[1]] morale bonus to attack rolls and saves against fear effects as per Bless spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2367,7 +2367,7 @@
   "QkPDtDGeFcWZe6i9": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Allows rerolling a will save with a +4 competence bonus as per @UUID[Compendium.pf1.class-abilities.Item.15IlbKFhTTuXwPU6].</p>",
+    "description": "<p>Allows rerolling a will save with a +4 competence bonus as per Danger Ward.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -2387,7 +2387,7 @@
   "Ql31DWosn4CcGKew": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants +[[@abilities.cha.mod]] competence on attack and weapon damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.nC5At2htfNHdTSZ9].</p>",
+    "description": "<p>Grants +[[@abilities.cha.mod]] competence on attack and weapon damage rolls as per Poetic Inspiration.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -2413,7 +2413,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants an enhancement bonus of +[[min(5, floor(@item.level / 4))]] to your armor class or shield ac as per @UUID[Compendium.pf1.spells.Item.73han2zqxg59u18g].</p>",
+    "description": "<p>Grants an enhancement bonus of +[[min(5, floor(@item.level / 4))]] to your armor class or shield ac as per Magic Vestment.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -2445,7 +2445,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The subject has a bonus to Strength and malus to AC based on it's current hp as per @UUID[Compendium.pf1.spells.Item.g09p4w3w8enp5tki] spell.</p>",
+    "description": "<p>The subject has a bonus to Strength and malus to AC based on it's current hp as per Blood Rage spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -2483,7 +2483,7 @@
         "text": "Bodily contact prevented by Evil summoned creatures."
       }
     ],
-    "description": "<p>Grants low-light vision, resistance to acid 5, resistance to cold 5, and the benefits of @UUID[Compendium.pf1.spells.Item.skgjjub1hng29nwo]{Protection from Evil} as per @UUID[Compendium.pf1.spells.Item.4ratngmltr3z4om5].</p><hr />",
+    "description": "<p>Grants low-light vision, resistance to acid 5, resistance to cold 5, and the benefits of Protection from Evil as per Angelic Aspect, Lesser.</p><hr />",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2520,7 +2520,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You gain a +[[4]] morale bonus on attack rolls, saves, and skill checks as per @UUID[Compendium.pf1.spells.Item.z0duc2v2n3ioynta].</p>",
+    "description": "<p>You gain a +[[4]] morale bonus on attack rolls, saves, and skill checks as per Heroism, Greater.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2557,7 +2557,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You ignore the physical detriments of being venerable, old or middle-aged as per @UUID[Compendium.pf1.spells.Item.eqrqv2ofspk574d3].</p>",
+    "description": "<p>You ignore the physical detriments of being venerable, old or middle-aged as per Age Resistance, Greater.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -2577,7 +2577,7 @@
   "U7fqIfaTpWEcpamb": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants see invisibility for 10 Minutes per item level as per @UUID[Compendium.pf1.spells.Item.nokru6mxk9p3r513] spell.</p>",
+    "description": "<p>Grants see invisibility for 10 Minutes per item level as per See Invisibility spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2604,7 +2604,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The barbarian can take on a more defensive posture. This grants her a +[[1]] dodge bonus to her Armor Class for the duration of her current rage. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.Z0EXCnJBeBUdIb4H] for more details.</p>",
+    "description": "<p>The barbarian can take on a more defensive posture. This grants her a +[[1]] dodge bonus to her Armor Class for the duration of her current rage. This bonus increases by 1 for every 4 levels the barbarian has.</p><p>See Guarded Stance (UC) for more details.</p>",
     "id": "UTsRSrDTUDDEvwT5",
     "name": "Guarded Stance",
     "sources": [
@@ -2624,7 +2624,7 @@
         "text": "+[[2]] circumstance against light-based effects that would dazzle or blind."
       }
     ],
-    "description": "<p>Grants +[[2]] circumstance bonus on saves against light-based effects that would dazzle or blind as per @UUID[Compendium.pf1.items.Item.Pg5aON2QSqZB9aYj]</p>",
+    "description": "<p>Grants +[[2]] circumstance bonus on saves against light-based effects that would dazzle or blind as per Sunblock kohl</p>",
     "duration": {
       "end": "turnStart",
       "units": "hour",
@@ -2674,7 +2674,7 @@
         "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
       }
     ],
-    "description": "<p>Gain +[[4]] morale bonus to Strength and Constitution, +[[2]] morale bonus to Will saves, and -2 penalty to Armor Class as per @UUID[Compendium.pf1.class-abilities.WSqWT9ZIshtC5vlV].</p>",
+    "description": "<p>Gain +[[4]] morale bonus to Strength and Constitution, +[[2]] morale bonus to Will saves, and -2 penalty to Armor Class as per Rage.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -2745,7 +2745,7 @@
         "text": "+[[1]] when benefiting from cover"
       }
     ],
-    "description": "<p>Grants +[[2]] to AC and +[[1]] to Reflex as under the effect of Cover as per @UUID[Compendium.pf1.class-abilities.Item.jlGCqPjmgNH3lUXS].</p>",
+    "description": "<p>Grants +[[2]] to AC and +[[1]] to Reflex as under the effect of Cover as per Sheltering Walls.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -2776,7 +2776,7 @@
         "text": "+[[0]] competence against fear"
       }
     ],
-    "description": "<p>Grants +[[0]] competence against fear effects and +[[1]] competence on attack rolls as per @UUID[Compendium.pf1.class-abilities.Item.i7Od2w9px0gmbkjU].</p>",
+    "description": "<p>Grants +[[0]] competence against fear effects and +[[1]] competence on attack rolls as per Lion's Call.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -2797,7 +2797,7 @@
   "W9TR1oh1KpDxOKr1": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants ER [[(1 + floor(@item.level / 3)) * 2]] against one energy type as per @UUID[Compendium.pf1.class-abilities.Item.zkcLVRBuqCmo7EKx]{Resistance}.</p>",
+    "description": "<p>Grants ER [[(1 + floor(@item.level / 3)) * 2]] against one energy type as per Resistance.</p>",
     "duration": {
       "units": "combat"
     },
@@ -2828,7 +2828,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[10]] competence bonus on Perception checks, Low-Light Vision and Darkvision 120 ft. while active as per @UUID[Compendium.pf1.technology.Item.eecEg8w7FECEclV5].</p>",
+    "description": "<p>Grants +[[10]] competence bonus on Perception checks, Low-Light Vision and Darkvision 120 ft. while active as per Powered Armor.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -2854,7 +2854,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants deflection bonus to AC as per @UUID[Compendium.pf1.spells.Item.y2uhoqr4itdbw5g4] spell.</p>",
+    "description": "<p>Grants deflection bonus to AC as per Shield of Faith spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2886,7 +2886,7 @@
         "text": "+[[1 + floor(@item.level / 5)]] against critical confirmation"
       }
     ],
-    "description": "<p>Grants +[[1 + floor(@item.level / 5)]] sacred / profane bonus to armor class as per @UUID[Compendium.pf1.class-abilities.Item.APjE7Cvu9fQFYKca].</p>",
+    "description": "<p>Grants +[[1 + floor(@item.level / 5)]] sacred / profane bonus to armor class as per Protection.</p>",
     "duration": {
       "units": "combat"
     },
@@ -2911,7 +2911,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on skill checks as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8]</p>",
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on skill checks as per Evil Eye</p>",
     "id": "XBjEZImaTvGXh6Gq",
     "level": 1,
     "name": "Evil Eye (Skill)",
@@ -2927,7 +2927,7 @@
   "XYly5prMmLVsLT1l": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants immunity to fatigued and exhausted for 10 minutes as per @UUID[Compendium.pf1.armors-and-shields.Item.rqSC4rXoO3EaCxjw]{Armor of the Tireless Warrior}</p>",
+    "description": "<p>Grants immunity to fatigued and exhausted for 10 minutes as per Armor of the Tireless Warrior</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2968,7 +2968,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[4]] morale on melee attack rolls, combat maneuver checks, Fortitude saves and Strength checks as per @UUID[Compendium.pf1.class-abilities.Item.U6dAFqYDRELQROy4].</p>",
+    "description": "<p>Grants +[[4]] morale on melee attack rolls, combat maneuver checks, Fortitude saves and Strength checks as per Inspiring Flex.</p>",
     "duration": {
       "end": "initiative"
     },
@@ -2986,7 +2986,7 @@
   "YUrObSwqLffrici4": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants see in darkness while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.eyohSXJlccmDl3Ve].</p>",
+    "description": "<p>Grants see in darkness while active as per Veemod goggles with Veemod (orange).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -3017,7 +3017,7 @@
         "text": "Takes an additional -[[floor((@item.level + 2) / 6) * 2]] to AC against attacks made by the rogue."
       }
     ],
-    "description": "<p>The target takes a –2 penalty to AC. The target takes an additional –[[floor((@item.level + 2) / 6) * 2]] penalty to AC against all attacks made by the rogue as per @UUID[Compendium.pf1.class-abilities.Item.nL9Ds9nflmID84vo].</p>",
+    "description": "<p>The target takes a –2 penalty to AC. The target takes an additional –[[floor((@item.level + 2) / 6) * 2]] penalty to AC against all attacks made by the rogue as per Debilitating Injury.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -3049,7 +3049,7 @@
         "text": "+[[4 + floor((@item.level - 1) / 7) * 2]] to jump"
       }
     ],
-    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus on Swim checks and on Acrobatics checks to jump as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus on Swim checks and on Acrobatics checks to jump as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3096,7 +3096,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Adjusts:</p><ul><li>-2 Size penalty to Strength</li><li>+[[2]] Size bonus to Dexterity</li><li>-1 Size</li></ul><p>Included carry capacity adjustments partially account for your gear not changing in size.</p><p>See @UUID[Compendium.pf1.spells.2y9e1l6zso9tdg0a] spell for more details.</p>",
+    "description": "<p>Adjusts:</p><ul><li>-2 Size penalty to Strength</li><li>+[[2]] Size bonus to Dexterity</li><li>-1 Size</li></ul><p>Included carry capacity adjustments partially account for your gear not changing in size.</p><p>See Reduce Person spell for more details.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3123,7 +3123,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>[[@item.level]] morale on attack rolls as per @UUID[Compendium.pf1.class-abilities.Item.jeUsQWO39LRmFbaI].</p>",
+    "description": "<p>[[@item.level]] morale on attack rolls as per For the Faith.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -3159,7 +3159,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>+[[2]] natural armor bonus, +[[4]] alchemical bonus to Strength, -2 penalty to Intelligence as per @UUID[Compendium.pf1.class-abilities.Item.zrTVb83VhkFnEv6G].</p>",
+    "description": "<p>+[[2]] natural armor bonus, +[[4]] alchemical bonus to Strength, -2 penalty to Intelligence as per Mutagen.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3180,7 +3180,7 @@
   "a7hnzLkLPrqRti14": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants invisibility as per @UUID[Compendium.pf1.spells.Item.cxgi0ub77t6aink1].</p>",
+    "description": "<p>Grants invisibility as per Invisibility, Greater.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -3217,7 +3217,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[1 + max(0, floor((@item.level - 8) / 4))]] morale bonus on attack rolls, damage rolls, and saving throws as per @UUID[Compendium.pf1.class-abilities.Item.ofbPltoU3YPQXPn6].</p>",
+    "description": "<p>Grants +[[1 + max(0, floor((@item.level - 8) / 4))]] morale bonus on attack rolls, damage rolls, and saving throws as per Close at Hand.</p>",
     "duration": {
       "end": "initiative"
     },
@@ -3242,7 +3242,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants a fly speed of 60 feet as per @UUID[Compendium.pf1.technology.Item.4FRBfHoD1W9SsrDr].</p>",
+    "description": "<p>Grants a fly speed of 60 feet as per Jetpack.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -3268,7 +3268,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[2]] dodge bonus to AC as per @UUID[Compendium.pf1.class-abilities.Item.9BDg29hecpIqySP1].</p>",
+    "description": "<p>Grants +[[2]] dodge bonus to AC as per Act as One.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -3314,7 +3314,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[20]]-foot enhancement bonus to your base speed and a +[[10]]-foot enhancement bonus to your other modes of movement (burrow, climb, fly, swim, and so on) as per @UUID[Compendium.pf1.spells.Item.k78qs00yp7uybprw].</p>",
+    "description": "<p>Grants +[[20]]-foot enhancement bonus to your base speed and a +[[10]]-foot enhancement bonus to your other modes of movement (burrow, climb, fly, swim, and so on) as per Longstrider, Greater.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -3351,7 +3351,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The barbarian gains a +[[1]] competence bonus on combat maneuvers and to her CMD. These bonuses increase by 1 for every 4 levels the barbarian has. In addition, she gains a +[[8]] competence bonus on Strength checks to lift, push, bend, or break objects (this does not apply to combat maneuvers).</p><p>See @UUID[Compendium.pf1.class-abilities.Item.3c9wm12qx3pWhh79] for more details.</p>",
+    "description": "<p>The barbarian gains a +[[1]] competence bonus on combat maneuvers and to her CMD. These bonuses increase by 1 for every 4 levels the barbarian has. In addition, she gains a +[[8]] competence bonus on Strength checks to lift, push, bend, or break objects (this does not apply to combat maneuvers).</p><p>See Strength Stance (UC) for more details.</p>",
     "id": "aqCSTZjMKDXU0DeT",
     "name": "Strength Stance",
     "sources": [
@@ -3372,7 +3372,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants a +[[min(5, floor(@item.level / 4))]] resistance bonus on all saving throws. You can end the effect at any time as a swift action to deal 2d8 points of force damage to all creatures within 5 feet as per @UUID[Compendium.pf1.spells.Item.1gz3zdpxu7uic5ky].</p>",
+    "description": "<p>Grants a +[[min(5, floor(@item.level / 4))]] resistance bonus on all saving throws. You can end the effect at any time as a swift action to deal 2d8 points of force damage to all creatures within 5 feet as per Wrathful Mantle.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3409,7 +3409,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>+[[2]] natural armor bonus, +[[4]] alchemical bonus to Dexterity, -2 penalty to Wisdom as per @UUID[Compendium.pf1.class-abilities.Item.zrTVb83VhkFnEv6G].</p>",
+    "description": "<p>+[[2]] natural armor bonus, +[[4]] alchemical bonus to Dexterity, -2 penalty to Wisdom as per Mutagen.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3430,7 +3430,7 @@
   "cA2R9j90XCY3mRvl": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants DR [[1 + floor(@item.level / 5)]]/magic (or alignment at level 10) as per @UUID[Compendium.pf1.class-abilities.Item.yta6JuJRGAR0UEE7]{Resiliency}.</p>",
+    "description": "<p>Grants DR [[1 + floor(@item.level / 5)]]/magic (or alignment at level 10) as per Resiliency.</p>",
     "duration": {
       "units": "combat"
     },
@@ -3484,7 +3484,7 @@
         "text": "A barbarian cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration while raging."
       }
     ],
-    "description": "<p>Gain +[[2]] bonus to melee attack and melee damage rolls, thrown weapon damage rolls, and Will saving throws. Additionally you suffer -2 penalty to Armor Class. You also gain 2 temporary hit points per Hit Die and are unable to use various skills. </p><p>See @UUID[Compendium.pf1.class-abilities.2Az38ZPYwjYBKZd2] for more details.</p>",
+    "description": "<p>Gain +[[2]] bonus to melee attack and melee damage rolls, thrown weapon damage rolls, and Will saving throws. Additionally you suffer -2 penalty to Armor Class. You also gain 2 temporary hit points per Hit Die and are unable to use various skills. </p><p>See Rage (UC) for more details.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -3504,7 +3504,7 @@
   "d9bDSB4JceMd6Uq9": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Tracks duration of @UUID[Compendium.pf1.class-abilities.Item.xzTIam3Cx9JH5GNs].</p>",
+    "description": "<p>Tracks duration of Way of the Samurai.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3537,7 +3537,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The creature gains darkvision to a range of 60 feet. At 8th level, the range increases by 30 feet. At 15th level, the creature also gains blindsense to a range of 10 feet as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains darkvision to a range of 60 feet. At 8th level, the range increases by 30 feet. At 15th level, the creature also gains blindsense to a range of 10 feet as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3564,7 +3564,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The subject has a +[[4]] enhancement bonus to Dexterity as per @UUID[Compendium.pf1.spells.Item.ns8jbp0ilbvbvuif] spell.</p>",
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Dexterity as per Cat's Grace spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3585,7 +3585,7 @@
   "dYMrU01t5FNMgNra": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>You gain DR 10/adamantine. You ignore the first 10 points of damage each time you take damage from a weapon, though an adamantine weapon bypasses the reduction. Once the spell has prevented a total of [[min(@item.level, 15) * 10]] points of damage, it is discharged as per @UUID[Compendium.pf1.spells.Item.knyako6zopc1chrv]{Stoneskin}.</p>",
+    "description": "<p>You gain DR 10/adamantine. You ignore the first 10 points of damage each time you take damage from a weapon, though an adamantine weapon bypasses the reduction. Once the spell has prevented a total of [[min(@item.level, 15) * 10]] points of damage, it is discharged as per Stoneskin.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3617,7 +3617,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Gain +[[2]] deflection bonus to AC and +[[2]] resistance bonus to saving throws.</p><p>This lasts until you are hit or you fail a saving throw.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.etzfM5q6bFFSnRjU] for more details.</p>",
+    "description": "<p>Gain +[[2]] deflection bonus to AC and +[[2]] resistance bonus to saving throws.</p><p>This lasts until you are hit or you fail a saving throw.</p><p>See Ward for more details.</p>",
     "id": "e6LhyzMnHZc5Vlni",
     "level": 1,
     "name": "Ward",
@@ -3642,7 +3642,7 @@
         "text": "+[[10]] circumstance bonus while climbing scaling metal surfaces."
       }
     ],
-    "description": "<p>+[[10]] circumstance bonus while climbing metal surfaces as per @UUID[Compendium.pf1.technology.Item.nK3XfCurRf9nRZiD].</p>",
+    "description": "<p>+[[10]] circumstance bonus while climbing metal surfaces as per Magboots.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -3662,7 +3662,7 @@
   "ebyFqTewZ1K54aBX": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants DR [[floor(@item.level / 2)]]/lawful as per @UUID[Compendium.pf1.class-abilities.Item.3AIFigcs4uOgzDYD].</p>",
+    "description": "<p>Grants DR [[floor(@item.level / 2)]]/lawful as per Chaos Totem, Greater.</p>",
     "id": "ebyFqTewZ1K54aBX",
     "level": 10,
     "name": "Chaos Totem, Greater",
@@ -3678,7 +3678,7 @@
   "efd99dVtQUUSoz5Z": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against acid as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against acid as per Resist Energy.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3706,7 +3706,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants darkvision 60 ft. for 1 Hour per item level as per @UUID[Compendium.pf1.spells.Item.mz9yr5yhr0f3oqtp] spell.</p>",
+    "description": "<p>Grants darkvision 60 ft. for 1 Hour per item level as per Darkvision spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -3732,7 +3732,7 @@
         "text": "Free @Use[Knockdown Stance;speaker] once per round in place of attack."
       }
     ],
-    "description": "<p>Adds context note and action for free trip replacement.</p><p>See @UUID[Compendium.pf1.class-abilities.Item.IO2EwSxZUfTuDJ9l] for more details.</p>",
+    "description": "<p>Adds context note and action for free trip replacement.</p><p>See Knockdown Stance (UC) for more details.</p>",
     "id": "fqDf4Cbv8tqRbygg",
     "name": "Knockdown Stance",
     "sources": [
@@ -3753,7 +3753,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[1 + floor(@item.level / 3)]] sacred / profane bonus on all weapon damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.LaSR2WkVuqgG1C6L].</p>",
+    "description": "<p>Grants +[[1 + floor(@item.level / 3)]] sacred / profane bonus on all weapon damage rolls as per Destruction.</p>",
     "duration": {
       "units": "combat"
     },
@@ -3779,7 +3779,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants true seeing 120 ft. for 1 Minute per item level as per @UUID[Compendium.pf1.spells.Item.jbqo4o2b2tmdz7wv] spell.</p>",
+    "description": "<p>Grants true seeing 120 ft. for 1 Minute per item level as per True Seeing spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3800,7 +3800,7 @@
   "hzu5SyhALN2TBoAe": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>Tracks @UUID[Compendium.pf1.class-abilities.Item.b7fTc7fndOIx7jbI]{Healing} Judgement state.</p>",
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>Tracks Healing Judgement state.</p>",
     "duration": {
       "units": "combat"
     },
@@ -3833,7 +3833,7 @@
         "text": "+[[4]] Competence vs Bull Rush, Drag, Reposition, and Trip. Immune to Disarm."
       }
     ],
-    "description": "<p>Grants a +[[4]] competence bonus on Climb checks, on Acrobatics checks to balance, and to CMD against bull rush, drag, reposition, and trip attempts. While affected by this spell, the target is also immune to the disarm combat maneuver as per @UUID[Compendium.pf1.spells.Item.lmnwhrqgxf9cm9jq].</p>",
+    "description": "<p>Grants a +[[4]] competence bonus on Climb checks, on Acrobatics checks to balance, and to CMD against bull rush, drag, reposition, and trip attempts. While affected by this spell, the target is also immune to the disarm combat maneuver as per Certain Grip.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -3885,7 +3885,7 @@
         "text": "Fly speed increases to 60 feet (average) in area of no gravity"
       }
     ],
-    "description": "<p>Grants:</p><ul><li>+[[2]] to strength checks</li><li>+[[6]] enh. to strength</li><li>+[[6]] enh. to dexterity</li><li>+[[10]] ft. land speed</li><li>20 ft. fly speed</li></ul><p>See @UUID[Compendium.pf1.technology.Item.eecEg8w7FECEclV5] for more details.</p>",
+    "description": "<p>Grants:</p><ul><li>+[[2]] to strength checks</li><li>+[[6]] enh. to strength</li><li>+[[6]] enh. to dexterity</li><li>+[[10]] ft. land speed</li><li>20 ft. fly speed</li></ul><p>See Powered Armor for more details.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -3914,7 +3914,7 @@
         "text": "+[[4]] morale against fear effects"
       }
     ],
-    "description": "<p>gains a +[[4]] morale bonus on saving throws against poison and fear effects for 12 hours as per @UUID[Compendium.pf1.items.Item.sIXmHL2dR2cQpA3Z].</p>",
+    "description": "<p>gains a +[[4]] morale bonus on saving throws against poison and fear effects for 12 hours as per Karyukai Tea Set.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -3934,7 +3934,7 @@
   "kFYQF6YT5GIO5EdP": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>Tracks @UUID[Compendium.pf1.class-abilities.Item.BNP9ZzsT0hEy2V31]{Smiting} Judgement state.</p>",
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>Tracks Smiting Judgement state.</p>",
     "duration": {
       "units": "combat"
     },
@@ -3958,7 +3958,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Your skin is toughened, granting you an enhancement bonus to your natural armor as per the @UUID[Compendium.pf1.spells.Item.la7kuehewu85ybnt] spell.</p>",
+    "description": "<p>Your skin is toughened, granting you an enhancement bonus to your natural armor as per the Barkskin spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4000,7 +4000,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You have a +[[1]] luck bonus on attack rolls, weapon damage rolls, saves and skill checks as per @UUID[Compendium.pf1.spells.Item.hu8179fdqfkl0bqj].</p>",
+    "description": "<p>You have a +[[1]] luck bonus on attack rolls, weapon damage rolls, saves and skill checks as per Prayer.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -4032,7 +4032,7 @@
         "text": "If you have @Distance[10 ft;dual] to make a running start, you can long jump up to @Distance[10 ft;dual] without a check."
       }
     ],
-    "description": "<p>Grants climb speed of 30 feet as per @UUID[Compendium.pf1.spells.Item.p6irfohhgss1iod5].</p>",
+    "description": "<p>Grants climb speed of 30 feet as per Ape Walk.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4079,7 +4079,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[2 + max(0, floor((@item.level - 2) / 6))]] bonus to initiative, knowledge (geography), perception, stealth and survival checks as per @UUID[Compendium.pf1.class-abilities.Item.zyyB1AU3s5PAuBPU].</p>",
+    "description": "<p>Grants +[[2 + max(0, floor((@item.level - 2) / 6))]] bonus to initiative, knowledge (geography), perception, stealth and survival checks as per Prepared for the Journey.</p>",
     "duration": {
       "end": "initiative"
     },
@@ -4109,7 +4109,7 @@
         "text": "Full speed while traveling through the wilderness or while tracking."
       }
     ],
-    "description": "<p>You gain a +[[4]] sacred bonus on all Survival checks for the duration of the spell, and you do not have to move at half your speed while traveling through the wilderness or while tracking as per @UUID[Compendium.pf1.spells.Item.ilcdn4jmdj3g0wac].</p>",
+    "description": "<p>You gain a +[[4]] sacred bonus on all Survival checks for the duration of the spell, and you do not have to move at half your speed while traveling through the wilderness or while tracking as per Deadeye's Lore.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -4134,7 +4134,7 @@
   "l6s6haw5PHdNi9YD": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants DR/Evil as per @UUID[Compendium.pf1.spells.Item.dq65gtj0phmasj87].</p>",
+    "description": "<p>Grants DR/Evil as per Divine Transfer.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -4155,7 +4155,7 @@
   "l9l2uKTWEAuTqXVq": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants Low-Light Vision while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.djUaPaLmCemzz8eu].</p>",
+    "description": "<p>Grants Low-Light Vision while active as per Veemod goggles with Veemod (gray).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -4181,7 +4181,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants + [[@item.level]] morale bonus on saving throws as per @UUID[Compendium.pf1.class-abilities.Item.1fEKSNPwGg6hB1Ui].</p>",
+    "description": "<p>Grants + [[@item.level]] morale bonus on saving throws as per Protector of the People.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -4207,7 +4207,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The subject has a +[[4]] enhancement bonus to Constitution as per @UUID[Compendium.pf1.spells.Item.usdv1eqvibmxun6x] spell.</p>",
+    "description": "<p>The subject has a +[[4]] enhancement bonus to Constitution as per Bear's Endurance spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4263,7 +4263,7 @@
         "text": "+[[4]] Morale vs Fear effects."
       }
     ],
-    "description": "<p>Grants +[[4]] morale bonus against fear effects as per @UUID[Compendium.pf1.spells.Item.eu4u4mr1naoiqohz].</p>",
+    "description": "<p>Grants +[[4]] morale bonus against fear effects as per Remove Fear.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4289,7 +4289,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on attack rolls as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8].</p>",
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on attack rolls as per Evil Eye.</p>",
     "id": "mDv3xY2HllJpjqe2",
     "level": 1,
     "name": "Evil Eye (Atk)",
@@ -4316,7 +4316,7 @@
         "text": "+[[if(gte(@item.level, 10), (1 + floor(@item.level / 5)))] against curses, diseases, and poisons."
       }
     ],
-    "description": "<p>Grants +[[1 + floor(@item.level / 5)]] sacred / profane bonus on saving throws which is doubled against curses, diseases, and poisons at level 10 as per @UUID[Compendium.pf1.class-abilities.Item.asMZBthOLKiIF4bM].</p>",
+    "description": "<p>Grants +[[1 + floor(@item.level / 5)]] sacred / profane bonus on saving throws which is doubled against curses, diseases, and poisons at level 10 as per Purity.</p>",
     "duration": {
       "units": "combat"
     },
@@ -4342,7 +4342,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The creature gains the scent ability with a range of [[10 + floor((@item.level - 1) / 7) * 10]] feet. The range doubles if the opponent is upwind, and is halved if the opponent is downwind as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains the scent ability with a range of [[10 + floor((@item.level - 1) / 7) * 10]] feet. The range doubles if the opponent is upwind, and is halved if the opponent is downwind as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4374,7 +4374,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[4]] bonus to ac AC per @UUID[Compendium.pf1.class-abilities.Item.EAVNzT8lSiOIgTJx].</p>",
+    "description": "<p>Grants +[[4]] bonus to ac AC per Stampede.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -4429,7 +4429,7 @@
         "text": "Cannot use any ability that requires patience or concentration."
       }
     ],
-    "description": "<p>Grants a +[[2]] morale bonus to Strength and Constitution, a +[[1]] morale bonus on Will saves, and a -2 penalty to AC as per @UUID[Compendium.pf1.spells.Item.8u1xa5javcxc6szk]{Rage (Spell)}.</p>",
+    "description": "<p>Grants a +[[2]] morale bonus to Strength and Constitution, a +[[1]] morale bonus on Will saves, and a -2 penalty to AC as per Rage (Spell).</p>",
     "id": "nRHD11ZwDWlRyT8c",
     "level": 5,
     "name": "Rage (Spell)",
@@ -4480,7 +4480,7 @@
         "text": "Calm Stance removes action restriction on abilities while raging"
       }
     ],
-    "description": "<p>The barbarian doesn’t gain any benefits from rage other than the temporary hit points, but she doesn’t take any of the penalties from rage (including the penalty to AC and the restriction on actions she can take).</p><p>See @UUID[Compendium.pf1.class-abilities.Item.8nVgKDcPUcJBCYL7] for more details.</p>",
+    "description": "<p>The barbarian doesn’t gain any benefits from rage other than the temporary hit points, but she doesn’t take any of the penalties from rage (including the penalty to AC and the restriction on actions she can take).</p><p>See Calm Stance (UC) for more details.</p>",
     "id": "o0U6E2WvMBTectrc",
     "name": "Calm Stance",
     "sources": [
@@ -4506,7 +4506,7 @@
         "text": "+[[4]] against incorporeal touch attacks."
       }
     ],
-    "description": "<p>Grants +[[4]] Shield Bonus to AC which also applies to incorporeal touch attacks as per @UUID[Compendium.pf1.spells.Item.sz7j540uypmqqvti].</p>",
+    "description": "<p>Grants +[[4]] Shield Bonus to AC which also applies to incorporeal touch attacks as per Shield.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4583,7 +4583,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[2]] competence bonus on Perception checks and on all Knowledge checks that you are trained in as per @UUID[Compendium.pf1.spells.Item.r8bhei88g6h26fp0].</p>",
+    "description": "<p>Grants +[[2]] competence bonus on Perception checks and on all Knowledge checks that you are trained in as per Heightened Awareness.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4604,7 +4604,7 @@
   "p2JgcKLVXMawO3uL": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants [[min(120, @item.level * 10)]] charges to track the amout of energy damage that can be absorbed as per @UUID[Compendium.pf1.spells.Item.1vh2ewwvzvxunoxk].</p>",
+    "description": "<p>Grants [[min(120, @item.level * 10)]] charges to track the amout of energy damage that can be absorbed as per Protection from Energy.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4625,7 +4625,7 @@
   "p8gZ2WaceSCWT4LK": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against electricity as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against electricity as per Resist Energy.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4651,7 +4651,7 @@
         "text": "+[[@item.level]] to touch AC against beam weapons and rays."
       }
     ],
-    "description": "<p>Grants touch AC against beam weapons and rays as per various @UUID[Compendium.pf1.technology.Item.gTyNHqZf2jkmtTbC].</p>",
+    "description": "<p>Grants touch AC against beam weapons and rays as per various Scatterlight suit (red).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -4677,7 +4677,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[@item.level]] competence on weapon damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.a5Hd7jgzLx85l4sC].</p>",
+    "description": "<p>Grants +[[@item.level]] competence on weapon damage rolls as per Rally Allies.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -4698,7 +4698,7 @@
   "pbyW9fpqSA3qAwmI": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants X-ray vision while active as per @UUID[Compendium.pf1.technology.Item.0BtaS9u6bxDBaKhH] with @UUID[Compendium.pf1.technology.Item.s7otjXVeYmKuS1ra].</p>",
+    "description": "<p>Grants X-ray vision while active as per Veemod goggles with Veemod (prismatic).</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -4724,7 +4724,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] enhancement bonus to Constitution as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] enhancement bonus to Constitution as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4745,7 +4745,7 @@
   "qAb9TshwWpr5JDB2": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>The creature gains evasion, as the rogue class feature. At 12th level, this increases to improved evasion, as the rogue advanced talent as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains evasion, as the rogue class feature. At 12th level, this increases to improved evasion, as the rogue advanced talent as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4776,7 +4776,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[10]] feet land speed and +[[4]] on attack rolls as per @UUID[Compendium.pf1.class-abilities.Item.SUIOnBzjXUMNQcak].</p>",
+    "description": "<p>Grants +[[10]] feet land speed and +[[4]] on attack rolls as per Blaze of Glory.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -4802,7 +4802,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants +[[10]] foot enhancement bonus to your base speed as per @UUID[Compendium.pf1.spells.Item.hosf489xyoexmp57].</p>",
+    "description": "<p>Grants +[[10]] foot enhancement bonus to your base speed as per Longstrider.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -4823,7 +4823,7 @@
   "qmrE4n5BsnLVQV10": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants DR [[floor(@item.level / 2)]]/magic as per @UUID[Compendium.pf1.class-abilities.Item.VHvomvdheVblPlA8].</p>",
+    "description": "<p>Grants DR [[floor(@item.level / 2)]]/magic as per Spirit Steed.</p>",
     "id": "qmrE4n5BsnLVQV10",
     "level": 6,
     "name": "Spirit Steed",
@@ -4850,7 +4850,7 @@
         "text": "+[[1]] Morale vs Fear effects"
       }
     ],
-    "description": "<p>You have a +[[1]] morale bonus to attack rolls and saves against fear effects as per @UUID[Compendium.pf1.spells.Item.ibk7jrc5rwubpia6] spell.</p>",
+    "description": "<p>You have a +[[1]] morale bonus to attack rolls and saves against fear effects as per Aid spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4876,7 +4876,7 @@
         "text": "+[[4]] Morale vs death spells and magical death effects, even if a save is not normally allowed."
       }
     ],
-    "description": "<p>Grants +[[4]] morale bonus on saves against all death spells and magical death effects. You are granted a save to negate such effects even if one is not normally allowed. You are immune to energy drain and any negative energy effects, including channeled negative energy as per @UUID[Compendium.pf1.spells.Item.e0rlki4hwu76l5ya].</p>",
+    "description": "<p>Grants +[[4]] morale bonus on saves against all death spells and magical death effects. You are granted a save to negate such effects even if one is not normally allowed. You are immune to energy drain and any negative energy effects, including channeled negative energy as per Death Ward.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4903,7 +4903,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] enhancement bonus to Constitution as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] enhancement bonus to Constitution as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4935,7 +4935,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants + [[@item.level]] competence on all attack and damage rolls as per @UUID[Compendium.pf1.class-abilities.Item.cMu6HFervQ41a4lD].</p>",
+    "description": "<p>Grants + [[@item.level]] competence on all attack and damage rolls as per For the King.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -4955,7 +4955,7 @@
   "sIogsaNU2T2Qe3l9": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants invisibility as per @UUID[Compendium.pf1.spells.Item.oylikodnyku2zewu].</p>",
+    "description": "<p>Grants invisibility as per Invisibility.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -4988,7 +4988,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants fly speed as per @UUID[Compendium.pf1.spells.Item.7d6sv5ecvi7kho3m] spell.</p>",
+    "description": "<p>Grants fly speed as per Fly spell.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5009,7 +5009,7 @@
   "tV3x332iNS0WpFf3": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against sonic as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against sonic as per Resist Energy.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5030,7 +5030,7 @@
   "u2g0irnJ5BeNvh0R": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against cold as per @UUID[Compendium.pf1.spells.Item.tkjnm3lw7ni82tag].</p>",
+    "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against cold as per Resist Energy.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5072,7 +5072,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Applies [[-2]] penalty on attack rolls, damage rolls, ability checks, skill checks, and saving throws as per @UUID[Compendium.pf1.class-abilities.Item.wNCdfdUHynq6gigh]{Taboo} class feature.</p>",
+    "description": "<p>Applies [[-2]] penalty on attack rolls, damage rolls, ability checks, skill checks, and saving throws as per Taboo class feature.</p>",
     "id": "ueH9tRS3YLwRgJ9e",
     "name": "Broken Taboo",
     "sources": [
@@ -5093,7 +5093,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus on Climb checks as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains a +[[4 + floor((@item.level - 1) / 7) * 2]] competence bonus on Climb checks as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5130,7 +5130,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>You gain a +[[2]] morale bonus on attack rolls, saves, and skill checks as per @UUID[Compendium.pf1.spells.Item.vqfrp8t0c1lw1jna].</p>",
+    "description": "<p>You gain a +[[2]] morale bonus on attack rolls, saves, and skill checks as per Heroism.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5151,7 +5151,7 @@
   "v9JaHLaVkP9O36TS": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>See @UUID[Compendium.pf1.class-abilities.Item.EKF5SHvuXhOjf2K6] for more details.</p>",
+    "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>See Elemental Stance (UC) for more details.</p>",
     "id": "v9JaHLaVkP9O36TS",
     "name": "Elemental Stance",
     "sources": [
@@ -5200,7 +5200,7 @@
         "text": "+[[2]] Morale vs existing Enchantment [charm] and [compulsion] effects."
       }
     ],
-    "description": "<p>Grants low-light vision, darkvision of 60 feet, resistance to acid 10, resistance to cold 10, DR 5/evil, and fly speed of 30 feet with average maneuverability. In addition, your natural weapons and any weapons you wield are considered good-aligned for the purpose of overcoming damage reduction as per @UUID[Compendium.pf1.spells.Item.8jrtvmhydudy7fks].</p>",
+    "description": "<p>Grants low-light vision, darkvision of 60 feet, resistance to acid 10, resistance to cold 10, DR 5/evil, and fly speed of 30 feet with average maneuverability. In addition, your natural weapons and any weapons you wield are considered good-aligned for the purpose of overcoming damage reduction as per Angelic Aspect.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5227,7 +5227,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on ability checks as per @UUID[Compendium.pf1.class-abilities.Item.U4o5YunSfhiWoZi8]</p>",
+    "description": "<p>The target takes a -[[ifelse(gte(@item.level, 8), 4, 2)]] penalty on ability checks as per Evil Eye</p>",
     "id": "vRHG0qhHPsWgFkAl",
     "level": 1,
     "name": "Evil Eye (Ability)",
@@ -5249,7 +5249,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Grants + [[@item.level * 2]] morale bonus on saving throws as per @UUID[Compendium.pf1.class-abilities.Item.1fEKSNPwGg6hB1Ui].</p>",
+    "description": "<p>Grants + [[@item.level * 2]] morale bonus on saving throws as per Protector of the People.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -5286,7 +5286,7 @@
         "text": "Automatically succeeds to escape a grapple or pin."
       }
     ],
-    "description": "<p>Grants immunity to paralysed condition as per @UUID[Compendium.pf1.spells.Item.lvzq2mwkqmozolpl].</p>",
+    "description": "<p>Grants immunity to paralysed condition as per Freedom of Movement.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5333,7 +5333,7 @@
         "text": "+[[2]] Morale vs existing Enchantment, [charm] and [compulsion] effects."
       }
     ],
-    "description": "<p>Grants low-light vision; darkvision 60 feet; DR 10/evil; immunity to acid, cold, and petrification; resistance to electricity 10 and fire 10; a +[[4]] racial bonus on saves against poison; and protective aura and truespeech as supernatural abilities for the duration of the spell. Also, your wings give you a fly speed of 60 feet with good maneuverability.</p><p>Protective aura provides a +[[4]] deflection bonus to AC and a +[[4]] resistance bonus on saving throws against attacks made or effects created by evil creatures to anyone within 20 feet. Otherwise, it functions as a @UUID[Compendium.pf1.spells.Item.1i8b1v3dngkxj6jp]{magic circle against evil} and a @UUID[Compendium.pf1.spells.Item.exwa9xra4u82j0sx]{lesser globe of invulnerability}, both with a radius of 20 feet.</p><p>Truespeech allows you to speak with any creature that has a language, as though using the @UUID[Compendium.pf1.spells.Item.m1rmcpcaixcpz9ib]{tongues} spell as per @UUID[Compendium.pf1.spells.Item.ujykn701inq3hm2n].</p><hr />",
+    "description": "<p>Grants low-light vision; darkvision 60 feet; DR 10/evil; immunity to acid, cold, and petrification; resistance to electricity 10 and fire 10; a +[[4]] racial bonus on saves against poison; and protective aura and truespeech as supernatural abilities for the duration of the spell. Also, your wings give you a fly speed of 60 feet with good maneuverability.</p><p>Protective aura provides a +[[4]] deflection bonus to AC and a +[[4]] resistance bonus on saving throws against attacks made or effects created by evil creatures to anyone within 20 feet. Otherwise, it functions as a magic circle against evil and a lesser globe of invulnerability, both with a radius of 20 feet.</p><p>Truespeech allows you to speak with any creature that has a language, as though using the tongues spell as per Angelic Aspect, Greater.</p><hr />",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5365,7 +5365,7 @@
         "text": "Attack damage is split between ally and Samurai/Cavalier."
       }
     ],
-    "description": "<p>Grants +[[@item.level]] competence on attack rolls and saving throws when allying samurai threatens the target as per @UUID[Compendium.pf1.class-abilities.Item.k3DBzmRSzywR0sbm].</p>",
+    "description": "<p>Grants +[[@item.level]] competence on attack rolls and saving throws when allying samurai threatens the target as per Temporary Alliance.</p>",
     "duration": {
       "end": "initiative"
     },
@@ -5393,7 +5393,7 @@
         "text": "+[[2 + floor((@item.level - 1) / 7) * 2]] to attacks of opportunity"
       }
     ],
-    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] bonus on attack rolls when making attacks of opportunity and a +[[2 + floor((@item.level - 1) / 7) * 2]] dodge bonus to AC against attacks of opportunity as per @UUID[Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn].</p>",
+    "description": "<p>The creature gains a +[[2 + floor((@item.level - 1) / 7) * 2]] bonus on attack rolls when making attacks of opportunity and a +[[2 + floor((@item.level - 1) / 7) * 2]] dodge bonus to AC against attacks of opportunity as per Animal Focus.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5425,7 +5425,7 @@
         "text": "+[[1 + floor(@item.level / 3)]] sacred to overcome spell resistance."
       }
     ],
-    "description": "<p>Grants +[[1 + floor(@item.level / 3)]] sacred / profane bonus on concentration checks and caster level checks to overcome spell resistance as per@UUID[Compendium.pf1.class-abilities.Item.Po86Ft2nHRNpNogi].</p>",
+    "description": "<p>Grants +[[1 + floor(@item.level / 3)]] sacred / profane bonus on concentration checks and caster level checks to overcome spell resistance as perPiercing.</p>",
     "duration": {
       "units": "combat"
     },
@@ -5444,7 +5444,7 @@
   "zbwheXCZgoOYOYNm": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Allows rerolling a reflex save with a +4 competence bonus as per @UUID[Compendium.pf1.class-abilities.Item.15IlbKFhTTuXwPU6].</p>",
+    "description": "<p>Allows rerolling a reflex save with a +4 competence bonus as per Danger Ward.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -5473,7 +5473,7 @@
         "text": "+[[2]] bonus on nonlethal weapon damage roll"
       }
     ],
-    "description": "<p>Grants +[[2]] bonus on nonlethal weapon damage roll as per @UUID[Compendium.pf1.class-abilities.Item.GFYCltmhmtqA3Kk9].</p>",
+    "description": "<p>Grants +[[2]] bonus on nonlethal weapon damage roll as per Inspiring Pain.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",

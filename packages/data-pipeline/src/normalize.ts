@@ -1,3 +1,4 @@
+import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 import type {
@@ -33,7 +34,7 @@ import { transformSpell } from "./transform/spells.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { readCsv } from "./util/csv.js";
 import { readPack, readPackById, type RawDoc } from "./util/packs.js";
-import { parseUuid } from "./util/uuid.js";
+import { makeUuid, parseUuid } from "./util/uuid.js";
 
 export interface NormalizeOptions {
   packsDir: string;
@@ -55,12 +56,35 @@ function byId<T extends { id: string }>(items: T[]): Record<string, T> {
   return out;
 }
 
+/**
+ * Indexes every doc across every pack (not just the ones in this dataset's
+ * slice) by uuid, so bare `@UUID[...]` enrichers in description prose can be
+ * resolved to a display name even when they point outside the slice (e.g. a
+ * buff describing a `technology` item). Keyed under both the well-formed
+ * `Compendium.pf1.<pack>.Item.<id>` form and the `.Item.`-less form some
+ * source prose uses.
+ */
+function buildUuidIndex(packsDir: string): Map<string, string> {
+  const index = new Map<string, string>();
+  for (const dirName of readdirSync(packsDir)) {
+    if (!statSync(join(packsDir, dirName)).isDirectory()) continue;
+    for (const pf of readPack(join(packsDir, dirName))) {
+      index.set(makeUuid(dirName, pf.doc._id), pf.doc.name);
+      index.set(`Compendium.pf1.${dirName}.${pf.doc._id}`, pf.doc.name);
+    }
+  }
+  return index;
+}
+
 /** Build the normalized RefData slice from the source packs. */
 export function normalize(opts: NormalizeOptions): {
   refData: RefData;
   contentVersion: string;
 } {
   const { packsDir } = opts;
+
+  const uuidIndex = buildUuidIndex(packsDir);
+  const resolveUuid = (uuid: string): string | undefined => uuidIndex.get(uuid);
 
   // --- classes (filtered to the slice) + their resolved feature links --------
   const classFiles = readPack(join(packsDir, "classes")).filter(
@@ -85,12 +109,12 @@ export function normalize(opts: NormalizeOptions): {
   const classFeatures: ClassFeature[] = [];
   for (const id of referencedFeatureIds) {
     const pf = classAbilitiesById.get(id);
-    if (pf) classFeatures.push(transformClassFeature(pf.doc));
+    if (pf) classFeatures.push(transformClassFeature(pf.doc, resolveUuid));
   }
   const classFeaturesById = byId(classFeatures);
 
   const classes: Class[] = selectedClassDocs.map((d) =>
-    transformClass(d, (id) => classFeaturesById[id]?.name ?? null),
+    transformClass(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
   );
 
   // --- races (filtered to slice folders) -------------------------------------
@@ -100,12 +124,12 @@ export function normalize(opts: NormalizeOptions): {
         pf.doc.type === "race" &&
         SLICE.raceFolders.some((f) => pf.relPath.startsWith(`${f}/`)),
     )
-    .map((pf) => transformRace(pf.doc));
+    .map((pf) => transformRace(pf.doc, resolveUuid));
 
   // --- feats (all of them; prereq refs point within this set) ----------------
   const feats: Feat[] = readPack(join(packsDir, "feats"))
     .filter((pf) => pf.doc.type === "feat")
-    .map((pf) => transformFeat(pf.doc));
+    .map((pf) => transformFeat(pf.doc, resolveUuid));
 
   // --- spells (those any sliced spell-list class can learn, OR a domain) -----
   // Domain-only spells (e.g. Control Winds — druid class, but Air domain L5)
@@ -116,7 +140,7 @@ export function normalize(opts: NormalizeOptions): {
   const spells: Spell[] = [];
   for (const pf of readPack(join(packsDir, "spells"))) {
     if (pf.doc.type !== "spell") continue;
-    const spell = transformSpell(pf.doc);
+    const spell = transformSpell(pf.doc, resolveUuid);
     const hasClass = Object.keys(spell.learnedAt.class).some((t) => spellListTags.has(t));
     const hasDomain =
       Object.keys(spell.learnedAt.domain ?? {}).length > 0 ||
@@ -188,12 +212,12 @@ export function normalize(opts: NormalizeOptions): {
   // --- buffs (all; small + engine-relevant) ----------------------------------
   const buffs: Buff[] = readPack(join(packsDir, "buffs"))
     .filter((pf) => pf.doc.type === "buff")
-    .map((pf) => transformBuff(pf.doc));
+    .map((pf) => transformBuff(pf.doc, resolveUuid));
 
   // --- items (engine-relevant subset: those carrying typed modifiers) --------
   const items: Item[] = readPack(join(packsDir, "items"))
     .filter((pf) => pf.doc.type !== "folder")
-    .map((pf) => transformItem(pf.doc))
+    .map((pf) => transformItem(pf.doc, resolveUuid))
     .filter((it) => it.changes.length > 0);
 
   // --- armors & shields (mundane base gear; magic named suits excluded) ------

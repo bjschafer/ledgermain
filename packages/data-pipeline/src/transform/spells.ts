@@ -2,7 +2,13 @@ import type { Spell, SpellAction } from "@pf1/schema";
 
 import type { RawDoc } from "../util/packs.js";
 import { makeUuid } from "../util/uuid.js";
-import { asNumber, asStringArray, normalizeSources } from "./common.js";
+import {
+  asNumber,
+  asStringArray,
+  descriptionValue,
+  normalizeSources,
+  type UuidResolver,
+} from "./common.js";
 
 function numberMap(value: unknown): Record<string, number> {
   const out: Record<string, number> = {};
@@ -65,9 +71,8 @@ function transformActions(value: unknown): SpellAction[] {
   return out;
 }
 
-export function transformSpell(doc: RawDoc): Spell {
+export function transformSpell(doc: RawDoc, resolveUuid: UuidResolver): Spell {
   const sys = (doc.system ?? {}) as Record<string, unknown>;
-  const desc = sys.description as Record<string, unknown> | undefined;
   const components = (sys.components ?? {}) as Record<string, unknown>;
   const learnedAt = (sys.learnedAt ?? {}) as Record<string, unknown>;
 
@@ -75,7 +80,7 @@ export function transformSpell(doc: RawDoc): Spell {
     id: doc._id,
     name: doc.name,
     uuid: makeUuid("spells", doc._id),
-    description: typeof desc?.value === "string" ? desc.value : undefined,
+    description: descriptionValue(sys, resolveUuid),
     sources: normalizeSources(sys.sources),
     level: asNumber(sys.level) ?? 0,
     school: typeof sys.school === "string" ? sys.school : undefined,

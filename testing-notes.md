@@ -1,8 +1,3 @@
-- 0 *in* spells known should say "0 spells known" i think
-- do *not* know all cantrips
-- maybe have empty level headings under spells known so you know what/how many you need to add under build
-- Resources "Rest (full)" button is weirdly positioned, as is "New day" in spells on play
-- Can we stop having new characters build with 0 hp? they should build with max hp by default
-- can we have *no* class selected for a new character? so we don't have to do multiple clicks to select class and unselect the default fighter?
-- we need explanations on class features
-- adding spells to spells known needs a way to browse, somehow.
+- All schools in spellbook browse for adding doesn't work. also the ux isn't *super* clear between searching to add spells vs looking through existing spells
+- buffs that have formulas, are usually unclear to the layman what they are
+- make collapsible stuff like arcane school, opposition school, arcane bond, etc same way FCB is collapsible

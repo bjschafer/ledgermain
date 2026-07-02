@@ -1,7 +1,8 @@
 import type { AbilityId, FeatPrerequisites, FeatRef } from "@pf1/schema";
 
-import { stripHtml } from "../util/html.js";
+import { resolveUuidLinks, stripHtml } from "../util/html.js";
 import { parseUuid } from "../util/uuid.js";
+import type { UuidResolver } from "./common.js";
 
 /**
  * Feat prerequisites are FREE TEXT inside the description HTML. This is a hybrid
@@ -35,20 +36,20 @@ export function extractPrereqSection(html: string): string | null {
 }
 
 /** Pull `@UUID[Compendium.pf1.feats.Item.<id>]{Name}` feat references. */
-function extractFeatRefs(sectionHtml: string): FeatRef[] {
-  const re = /@UUID\[([^\]]+)\]\{([^}]*)\}/g;
+function extractFeatRefs(sectionHtml: string, resolveUuid: UuidResolver): FeatRef[] {
+  const re = /@UUID\[([^\]]+)\](?:\{([^}]*)\})?/g;
   const refs: FeatRef[] = [];
   const seen = new Set<string>();
   let m: RegExpExecArray | null;
   while ((m = re.exec(sectionHtml)) !== null) {
     const uuid = m[1]!;
-    const name = m[2]!.trim();
     const parsed = parseUuid(uuid);
     // Only refs into the feats pack are feat prerequisites.
     if (!parsed || parsed.pack !== "feats") continue;
     if (seen.has(parsed.id)) continue;
     seen.add(parsed.id);
-    refs.push({ id: parsed.id, name: name || parsed.id, uuid });
+    const name = m[2]?.trim() || resolveUuid(uuid) || parsed.id;
+    refs.push({ id: parsed.id, name, uuid });
   }
   return refs;
 }
@@ -95,17 +96,20 @@ function parseSkills(text: string): { skill: string | null; ranks: number; raw: 
   return out;
 }
 
-export function parsePrerequisites(descriptionHtml: string | undefined): FeatPrerequisites {
+export function parsePrerequisites(
+  descriptionHtml: string | undefined,
+  resolveUuid: UuidResolver,
+): FeatPrerequisites {
   const empty: FeatPrerequisites = { abilities: [], feats: [], skills: [] };
   if (!descriptionHtml) return empty;
 
   const section = extractPrereqSection(descriptionHtml);
   if (!section) return empty;
 
-  const text = stripHtml(section);
+  const text = stripHtml(resolveUuidLinks(section, resolveUuid));
   const result: FeatPrerequisites = {
     abilities: parseAbilities(text),
-    feats: extractFeatRefs(section),
+    feats: extractFeatRefs(section, resolveUuid),
     skills: parseSkills(text),
     prereqText: text || undefined,
   };

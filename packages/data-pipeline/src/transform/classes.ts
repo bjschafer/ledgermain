@@ -11,17 +11,14 @@ import { makeUuid, parseUuid } from "../util/uuid.js";
 import {
   asNumber,
   asStringArray,
+  descriptionValue,
   normalizeChanges,
   normalizeSources,
+  type UuidResolver,
 } from "./common.js";
 
-function descValue(sys: Record<string, unknown>): string | undefined {
-  const d = sys.description as Record<string, unknown> | undefined;
-  return typeof d?.value === "string" ? d.value : undefined;
-}
-
 /** Transform a `class-abilities` pack entry (e.g. Rage). */
-export function transformClassFeature(doc: RawDoc): ClassFeature {
+export function transformClassFeature(doc: RawDoc, resolveUuid: UuidResolver): ClassFeature {
   const sys = (doc.system ?? {}) as Record<string, unknown>;
   const uses = sys.uses as Record<string, unknown> | undefined;
   const links = sys.links as Record<string, unknown> | undefined;
@@ -36,7 +33,7 @@ export function transformClassFeature(doc: RawDoc): ClassFeature {
     id: doc._id,
     name: doc.name,
     uuid: makeUuid("class-abilities", doc._id),
-    description: descValue(sys),
+    description: descriptionValue(sys, resolveUuid),
     sources: normalizeSources(sys.sources),
     tag: typeof sys.tag === "string" ? sys.tag : undefined,
     subType: typeof sys.subType === "string" ? sys.subType : undefined,
@@ -62,6 +59,7 @@ export function transformClassFeature(doc: RawDoc): ClassFeature {
 export function transformClass(
   doc: RawDoc,
   resolveFeatureName: (id: string) => string | null,
+  resolveUuid: UuidResolver,
 ): Class {
   const sys = (doc.system ?? {}) as Record<string, unknown>;
   const saves = (sys.savingThrows ?? {}) as Record<string, { value?: unknown }>;
@@ -95,7 +93,7 @@ export function transformClass(
     id: doc._id,
     name: doc.name,
     uuid: makeUuid("classes", doc._id),
-    description: descValue(sys),
+    description: descriptionValue(sys, resolveUuid),
     sources: normalizeSources(sys.sources),
     tag: typeof sys.tag === "string" ? sys.tag : doc.name.toLowerCase(),
     subType: typeof sys.subType === "string" ? sys.subType : "base",
