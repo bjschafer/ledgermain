@@ -79,10 +79,14 @@ function ArmorForm({
 		if (armor.acp) clean.acp = armor.acp;
 		if (armor.type) clean.type = armor.type;
 		if (armor.abilities?.length) clean.abilities = armor.abilities;
+		// Masterwork is only meaningful at +0 — a magic enhancement bonus
+		// already implies it (mirrors the weapon masterwork invariant).
+		if (armor.masterwork && !armor.enhancement) clean.masterwork = true;
 		onSave(clean, name.trim());
 	}
 
 	const isArmorSlot = form.slot === "armor";
+	const hasEnhancement = (form.enhancement ?? 0) > 0;
 
 	return (
 		<div className="gear-armor-form">
@@ -113,6 +117,23 @@ function ArmorForm({
 							<option key={n} value={n}>+{n}</option>
 						))}
 					</select>
+				</label>
+				<label className="field">
+					<span>Masterwork</span>
+					{hasEnhancement ? (
+						<p className="field-implied" title="Implied by the armor's magic enhancement bonus">
+							Implied by enhancement
+						</p>
+					) : (
+						<button
+							type="button"
+							className="field-toggle"
+							aria-pressed={!!form.masterwork}
+							onClick={() => field("masterwork", !form.masterwork)}
+						>
+							{form.masterwork ? "Yes" : "No"}
+						</button>
+					)}
 				</label>
 				<label className="field">
 					<span>Material</span>
@@ -233,6 +254,7 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 	const [armorEnhancement, setArmorEnhancement] = useState<number>(0);
 	const [armorMaterial, setArmorMaterial] = useState<string>("steel");
 	const [armorAbilities, setArmorAbilities] = useState<string[]>([]);
+	const [armorMasterwork, setArmorMasterwork] = useState<boolean>(false);
 	const [editingGearIndex, setEditingGearIndex] = useState<number | null>(null);
 
 	const gear = doc.build.gear;
@@ -268,10 +290,13 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 		setArmorEnhancement(0);
 		setArmorMaterial("steel");
 		setArmorAbilities([]);
+		setArmorMasterwork(false);
 	}
 
 	function handleAddArmorRef(armor: ArmorRef) {
-		update((d) => addWornArmorFromRef(d, armor, armorEnhancement, armorMaterial, armorAbilities));
+		update((d) =>
+			addWornArmorFromRef(d, armor, armorEnhancement, armorMaterial, armorAbilities, armorMasterwork),
+		);
 		closeArmorPicker();
 	}
 
@@ -336,6 +361,7 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 									<div className="gear-meta">
 										AC +{inst.armor.ac}
 										{inst.armor.enhancement ? ` +${inst.armor.enhancement} enh` : ""}
+										{inst.armor.masterwork && !inst.armor.enhancement ? " · masterwork" : ""}
 										{inst.armor.maxDex != null ? ` · max Dex +${inst.armor.maxDex}` : ""}
 										{inst.armor.acp ? ` · ACP ${inst.armor.acp}` : ""}
 										{inst.armor.material ? ` · ${inst.armor.material}` : ""}
@@ -513,6 +539,23 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 											))}
 										</select>
 								</label>
+								<label className="field enh-field">
+									<span>Masterwork</span>
+									{armorEnhancement > 0 ? (
+										<p className="field-implied compact" title="Implied by the armor's magic enhancement bonus">
+											implied
+										</p>
+									) : (
+										<button
+											type="button"
+											className="field-toggle compact"
+											aria-pressed={armorMasterwork}
+											onClick={() => setArmorMasterwork((v) => !v)}
+										>
+											{armorMasterwork ? "Yes" : "No"}
+										</button>
+									)}
+								</label>
 							</div>
 							{ARMOR_ABILITIES.length > 0 && (
 								<div className="ability-chips">
@@ -537,7 +580,11 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 										filteredArmors.map((a) => (
 											<div key={a.id} className="pick-row">
 												<div className="pmain">
-													<div className="pname">{a.name}</div>
+													<div className="pname">
+														{armorEnhancement === 0 && armorMasterwork ? "Masterwork " : ""}
+														{a.name}
+														{armorEnhancement > 0 ? ` +${armorEnhancement}` : ""}
+													</div>
 													<div className="preq">
 														<span>{armorRefMeta(a)}</span>
 														<span className="ck-met">AC +{a.ac}</span>

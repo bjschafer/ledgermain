@@ -172,7 +172,8 @@ describe("addWornArmorFromRef()", () => {
 		expect(inst.armor!.enhancement).toBe(3);
 		expect(inst.armor!.material).toBe("mithral");
 		expect(inst.armor!.maxDex).toBe(3); // 1 + 2 mithral
-		expect(inst.armor!.acp).toBe(-3); // -(6 - 3 mithral)
+		// -(6 - 3 mithral - 1 masterwork-implied-by-enhancement, B3)
+		expect(inst.armor!.acp).toBe(-2);
 		expect(inst.armor!.type).toBe(2); // 3 - 1 mithral
 	});
 
@@ -208,6 +209,82 @@ describe("addWornArmorFromRef()", () => {
 	it("no abilities → no abilities field on the WornArmor", () => {
 		const d = addWornArmorFromRef(doc(), FULL_PLATE);
 		expect(d.build.gear[0]!.armor!.abilities).toBeUndefined();
+	});
+
+	// -------------------------------------------------------------------------
+	// masterwork (B3)
+	// -------------------------------------------------------------------------
+	const CHAIN_SHIRT: ArmorRef = {
+		id: "chain-shirt",
+		name: "Chain Shirt",
+		uuid: "Compendium.pf1.armors-and-shields.Item.chainShirt",
+		slot: "armor",
+		ac: 4,
+		maxDex: 4,
+		acp: 2,
+		weightClass: 1,
+		proficiency: "lightArmor",
+	};
+	const BREASTPLATE: ArmorRef = {
+		id: "breastplate",
+		name: "Breastplate",
+		uuid: "Compendium.pf1.armors-and-shields.Item.breastplate",
+		slot: "armor",
+		ac: 6,
+		maxDex: 3,
+		acp: 4,
+		weightClass: 2,
+		proficiency: "mediumArmor",
+	};
+	const PADDED: ArmorRef = {
+		id: "padded",
+		name: "Padded",
+		uuid: "Compendium.pf1.armors-and-shields.Item.padded",
+		slot: "armor",
+		ac: 1,
+		maxDex: 8,
+		acp: 0,
+		weightClass: 1,
+		proficiency: "lightArmor",
+	};
+
+	it("masterwork chain shirt: ACP -2 reduced to -1, name prefixed", () => {
+		const d = addWornArmorFromRef(doc(), CHAIN_SHIRT, 0, undefined, undefined, true);
+		const inst = d.build.gear[0]!;
+		expect(inst.name).toBe("Masterwork Chain Shirt");
+		expect(inst.armor!.acp).toBe(-1);
+		expect(inst.armor!.masterwork).toBe(true);
+	});
+
+	it("masterwork breastplate: ACP -4 reduced to -3", () => {
+		const d = addWornArmorFromRef(doc(), BREASTPLATE, 0, undefined, undefined, true);
+		const inst = d.build.gear[0]!;
+		expect(inst.name).toBe("Masterwork Breastplate");
+		expect(inst.armor!.acp).toBe(-3);
+	});
+
+	it("+1 breastplate (no explicit masterwork flag): ACP still reduced to -3, masterwork not stored", () => {
+		const d = addWornArmorFromRef(doc(), BREASTPLATE, 1);
+		const inst = d.build.gear[0]!;
+		expect(inst.name).toBe("Breastplate +1");
+		expect(inst.armor!.acp).toBe(-3);
+		expect(inst.armor!.masterwork).toBeUndefined();
+	});
+
+	it("masterwork name prefix present at +0, absent at +1 (implied instead)", () => {
+		const atZero = addWornArmorFromRef(doc(), CHAIN_SHIRT, 0, undefined, undefined, true);
+		expect(atZero.build.gear[0]!.name).toBe("Masterwork Chain Shirt");
+
+		const atPlusOne = addWornArmorFromRef(doc(), CHAIN_SHIRT, 1, undefined, undefined, true);
+		expect(atPlusOne.build.gear[0]!.name).toBe("Chain Shirt +1");
+		expect(atPlusOne.build.gear[0]!.armor!.masterwork).toBeUndefined();
+	});
+
+	it("masterwork armor with 0 base ACP stays clamped at 0 (no acp key)", () => {
+		const d = addWornArmorFromRef(doc(), PADDED, 0, undefined, undefined, true);
+		const inst = d.build.gear[0]!;
+		expect(inst.armor!.acp).toBeUndefined();
+		expect(inst.armor!.masterwork).toBe(true);
 	});
 });
 
@@ -314,5 +391,15 @@ describe("updateGearItem()", () => {
 		const d = addWornArmorFromRef(doc(), FULL_PLATE, 2);
 		updateGearItem(d, 0, { name: "changed" });
 		expect(d.build.gear[0]!.name).toBe("Full Plate +2");
+	});
+
+	it("drops masterwork once enhancement becomes positive (B3 invariant)", () => {
+		const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, undefined, undefined, true);
+		expect(d.build.gear[0]!.armor!.masterwork).toBe(true);
+		const updated = updateGearItem(d, 0, {
+			armor: { ...d.build.gear[0]!.armor!, enhancement: 2 },
+		});
+		expect(updated.build.gear[0]!.armor!.masterwork).toBeUndefined();
+		expect(updated.build.gear[0]!.armor!.enhancement).toBe(2);
 	});
 });

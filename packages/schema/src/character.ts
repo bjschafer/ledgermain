@@ -294,6 +294,15 @@ export interface WornArmor {
   acp?: number;
   /** Armor weight class for `@armor.type` formulas: 0 none,1 light,2 med,3 heavy. */
   type?: number;
+  /**
+   * Masterwork quality (reduces armor check penalty by 1, floor 0 magnitude).
+   * Only meaningful at `enhancement` 0 — any magic enhancement bonus already
+   * implies masterwork quality, so this is dropped once `enhancement` is
+   * positive. The ACP reduction is baked into the snapshotted `acp` value
+   * at pick-time (see `model/doc.ts` `addWornArmorFromRef`), mirroring how
+   * weapon enhancement is snapshotted rather than recomputed by the engine.
+   */
+  masterwork?: boolean;
   /** Magical armor/shield ability ids (e.g. "light-fortification", "ghost-touch") — display only. */
   abilities?: string[];
 }
