@@ -114,10 +114,11 @@ describe("baseSpellsKnown() — sorcerer", () => {
     expect(baseSpellsKnown("sorcerer", 3, 2)).toBeNull();
   });
 
-  it("L20 sorcerer knows 4 spells of every level 1–9 and 9 cantrips", () => {
+  it("L20 sorcerer knows 9 cantrips and 5/5/4/4/4/3/3/3/3 spells at levels 1–9", () => {
     expect(baseSpellsKnown("sorcerer", 20, 0)).toBe(9);
+    const expected = [5, 5, 4, 4, 4, 3, 3, 3, 3];
     for (let lvl = 1; lvl <= 9; lvl++) {
-      expect(baseSpellsKnown("sorcerer", 20, lvl)).toBe(4);
+      expect(baseSpellsKnown("sorcerer", 20, lvl)).toBe(expected[lvl - 1]!);
     }
   });
 

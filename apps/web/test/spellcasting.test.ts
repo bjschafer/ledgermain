@@ -176,10 +176,10 @@ describe("spellsKnownLimitsByLevel()", () => {
     expect(l2).toBeUndefined(); // no 2nd-level access yet
   });
 
-  it("L10 sorcerer can know up to 4 first-level and 4 second-level spells", () => {
+  it("L10 sorcerer can know up to 5 first-level and 4 second-level spells", () => {
     const sorcModel = casterModelFor("sorcerer")!;
     const limits = spellsKnownLimitsByLevel(sorcModel, 10);
-    expect(limits.find((l) => l.level === 1)!.limit).toBe(4);
+    expect(limits.find((l) => l.level === 1)!.limit).toBe(5);
     expect(limits.find((l) => l.level === 2)!.limit).toBe(4);
   });
 });
