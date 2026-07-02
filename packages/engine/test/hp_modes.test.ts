@@ -157,6 +157,79 @@ describe("HP components: Con modifier", () => {
 });
 
 // ---------------------------------------------------------------------------
+// Per-HD minimum 1 HP (PF1 CRB: "a creature always gains at least 1 hit point
+// per Hit Die, no matter its Constitution modifier").
+// ---------------------------------------------------------------------------
+describe("HP per-HD minimum", () => {
+  it("rolled mode: a rolled 2 with Con -3 still contributes 1 HP for that level, not -1", () => {
+    // Wizard (d6). Con 4 -> mod -3. L1 is always maxed (die=6) regardless of
+    // Con, so its floor never binds; check the L2 contribution specifically by
+    // comparing totals: L1 max(6-3,1)=3, L2 rolled=2 -> naive 2-3=-1, floored to 1.
+    // Expected auto = 3 (L1) + 1 (L2, floored) = 4.
+    const doc = baseDoc({
+      hpRolls: [0, 2],
+      settings: { hpMode: "rolled" },
+    });
+    doc.identity.classes = [{ tag: "wizard", level: 2 }];
+    doc.abilities.con = 4; // mod -3
+    const sheet = compute(doc, ref);
+    expect(sheet.hp.auto).toBe(4);
+  });
+
+  it("does not affect L1 (always maxed) even with a harsh Con penalty", () => {
+    // Wizard L1, d6, Con 4 (mod -3): naive would be 6-3=3, which never hits the
+    // per-HD floor of 1, so this should equal the unfloored value.
+    const doc = baseDoc();
+    doc.identity.classes = [{ tag: "wizard", level: 1 }];
+    doc.abilities.con = 4; // mod -3
+    const sheet = compute(doc, ref);
+    expect(sheet.hp.auto).toBe(3);
+  });
+
+  it("floors an extreme Con penalty at 1 HP for that level (average mode)", () => {
+    // Wizard L2, d6 average (floor(6/2)+1=4), Con -10 (score 1, mod -5... but
+    // ability scores are clamped elsewhere; use a still-legal low score).
+    // Con 1 -> mod -5. L2 average levelHp=4; naive 4-5=-1, floored to 1.
+    const doc = baseDoc();
+    doc.identity.classes = [{ tag: "wizard", level: 2 }];
+    doc.abilities.con = 1; // mod -5
+    const sheet = compute(doc, ref);
+    // L1 maxed: 6-5=1, never negative here since maxed die 6 - 5 = 1 already.
+    // L2 average 4-5=-1 -> floored to 1. Total = 1 + 1 = 2.
+    expect(sheet.hp.auto).toBe(2);
+  });
+
+  it("Hit Dice and Con components still sum to the true (floored) total", () => {
+    const doc = baseDoc();
+    doc.identity.classes = [{ tag: "wizard", level: 2 }];
+    doc.abilities.con = 1; // mod -5
+    const sheet = compute(doc, ref);
+    // Raw (pre-Con) Hit Dice: L1 max(6) + L2 average(4) = 10. Applied Con delta
+    // is the actual floored shortfall (-8), not the naive -5*2=-10, because
+    // both levels hit the per-HD floor of 1.
+    const hdComp = sheet.hp.components.find((c) => c.source === "Hit Dice");
+    const conComp = sheet.hp.components.find((c) => c.source.startsWith("Con"));
+    expect(hdComp?.value).toBe(10);
+    expect(conComp?.value).toBe(-8);
+    expect((hdComp?.value ?? 0) + (conComp?.value ?? 0)).toBe(sheet.hp.auto);
+  });
+
+  it("preserves existing (unfloored) behavior when the minimum never binds", () => {
+    // Barbarian L3, con 10 (mod 0) is the existing AVERAGE_TOTAL fixture; a
+    // positive Con case is already covered above by the pre-existing suite.
+    // This confirms a moderate negative Con that never dips a level below 1
+    // also matches the naive conMod*hd calculation.
+    const doc = baseDoc(); // barbarian d12, L3
+    doc.abilities.con = 8; // mod -1
+    const sheet = compute(doc, ref);
+    // L1=12-1=11, L2=7-1=6, L3=7-1=6 -> 23 (none hit the floor)
+    expect(sheet.hp.auto).toBe(23);
+    const conComp = sheet.hp.components.find((c) => c.source.startsWith("Con"));
+    expect(conComp?.value).toBe(-3); // naive conMod(-1) * hd(3) = -3, matches
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Stat overrides
 // ---------------------------------------------------------------------------
 describe("Generic stat overrides", () => {

@@ -50,6 +50,26 @@ import {
 
 const SCHEMA_VERSION = 1;
 
+/** Size categories smallest to largest, for stepping by a "size" change target. */
+const SIZE_LADDER: readonly SizeId[] = [
+  "fine",
+  "dim",
+  "tiny",
+  "sm",
+  "med",
+  "lg",
+  "huge",
+  "grg",
+  "col",
+];
+
+/** Shifts `size` by `steps` along {@link SIZE_LADDER}, clamped at either end. */
+function shiftSize(size: SizeId, steps: number): SizeId {
+  const idx = SIZE_LADDER.indexOf(size);
+  const clamped = Math.min(SIZE_LADDER.length - 1, Math.max(0, idx + steps));
+  return SIZE_LADDER[clamped]!;
+}
+
 function toComponents(mods: ResolvedModifier[]): ModifierComponent[] {
   return mods.map((m) => ({
     source: m.source,
@@ -265,33 +285,41 @@ function computeHp(
   const hpRolls = doc.build.hpRolls ?? [];
 
   // Expand class levels in document order; the first overall level is maxed.
-  let hdBase = 0; // HP contribution from Hit Dice (before con/fcb)
+  // PF1 enforces a minimum of 1 HP per Hit Die after Con, so each level's
+  // contribution is floored at 1 individually — a large negative Con penalty
+  // can't drag a level (or the whole total) below its per-HD minimum.
+  let hdBase = 0; // raw HP contribution from Hit Dice, pre-Con (display only)
+  let hpFromLevels = 0; // actual HP from levels, post-Con, each level floored at 1
   let isFirstLevel = true;
   let hd = 0;
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
     const die = def?.hd ?? 8;
     for (let i = 0; i < cls.level; i++) {
+      let levelHp: number;
       if (isFirstLevel) {
-        hdBase += die; // L1 always maxed regardless of mode
+        levelHp = die; // L1 always maxed regardless of mode
       } else if (mode === "max") {
-        hdBase += die;
+        levelHp = die;
       } else if (mode === "rolled") {
         // hpRolls is indexed by character level (0-based = charLevel-1).
         const charLevel = hd + 1; // hd not yet incremented
         const rolled = hpRolls[charLevel - 1];
-        hdBase += rolled != null && rolled > 0 ? rolled : Math.floor(die / 2) + 1;
+        levelHp = rolled != null && rolled > 0 ? rolled : Math.floor(die / 2) + 1;
       } else {
         // average
-        hdBase += Math.floor(die / 2) + 1;
+        levelHp = Math.floor(die / 2) + 1;
       }
+      hdBase += levelHp;
+      hpFromLevels += Math.max(1, levelHp + conMod);
       isFirstLevel = false;
       hd++;
     }
   }
 
-  // Con modifier per Hit Die
-  const conTotal = conMod * hd;
+  // Con modifier per Hit Die, as actually applied (reflects the per-HD floor
+  // above, so this can differ from the naive `conMod * hd` when it binds).
+  const conTotal = hpFromLevels - hdBase;
 
   // Favored-class HP choices (explicit only). "hp" and "both" each contribute +1.
   const fcbHp = (doc.build.favoredClassBonus ?? []).filter(
@@ -462,8 +490,16 @@ function computeWeaponAttacks(
     const abilityDamage = appliesAbilityDamage ? Math.floor(strMod * mult) : 0;
 
     // General "damage" target changes + per-group feat bonuses (e.g. Weapon Specialization via "damage.weapon.<group>").
+    // "wdamage" (all weapon damage), "mwdamage" (melee), "rwdamage" (ranged) come
+    // from vendored buffs/conditions (Divine Favor, Rage, sickened, etc.). We
+    // don't model thrown weapons as a distinct category, so "twdamage" (thrown)
+    // is approximated onto ranged lines alongside "rwdamage".
     const weaponDamageStack = resolveStack([
       ...forTarget(collected, "damage"),
+      ...forTarget(collected, "wdamage"),
+      ...(category === "melee"
+        ? forTarget(collected, "mwdamage")
+        : [...forTarget(collected, "rwdamage"), ...forTarget(collected, "twdamage")]),
       ...(w.group ? forTarget(collected, `damage.weapon.${w.group}`) : []),
     ]);
     const damageTotal = abilityDamage + enh + weaponDamageStack.total;
@@ -510,7 +546,14 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // BAB
   let bab = 0;
   const race = refData.races[doc.identity.race];
-  const size: SizeId = race?.size ?? "med";
+  const baseSize: SizeId = race?.size ?? "med";
+  // Enlarge/Reduce Person and similar effects shift the character along the
+  // size ladder; round toward zero (a +1.5 or -0.5 step isn't a thing PF1
+  // formulas produce, but be defensive) and clamp at the ladder's ends.
+  const sizeShift = Math.trunc(
+    forTarget(collected, "size").reduce((s, m) => s + m.value, 0),
+  );
+  const size: SizeId = shiftSize(baseSize, sizeShift);
   const sizeAttackMod = SIZE_AC_MOD[size];
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);

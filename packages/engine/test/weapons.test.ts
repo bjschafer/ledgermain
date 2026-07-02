@@ -279,6 +279,127 @@ describe("weapons: +2 attack buff flows into per-weapon attack", () => {
   });
 });
 
+describe("weapons: 'wdamage' target applies to every weapon regardless of category", () => {
+  // Divine Favor et al. emit "wdamage" (a luck bonus), which should stack into
+  // every weapon's damage line whether melee or ranged.
+  const wdamageBuff: ActiveBuff = {
+    instanceId: "buff-wdamage",
+    name: "Divine Favor",
+    changes: [{ target: "wdamage", type: "luck", formula: "1" }],
+  };
+  const meleeWeapon: WeaponInstance = {
+    name: "Shortsword",
+    category: "melee",
+    attackAbility: "str",
+    damageDice: "1d6",
+  };
+  const rangedWeapon: WeaponInstance = {
+    name: "Longbow",
+    category: "ranged",
+    attackAbility: "dex",
+    damageAbility: "none",
+    damageDice: "1d8",
+  };
+  const doc = makeDoc(
+    { str: 16, dex: 14, con: 14, int: 10, wis: 12, cha: 8 },
+    [meleeWeapon, rangedWeapon],
+    [wdamageBuff],
+  );
+  const sheet = compute(doc, ref);
+
+  it("melee line: damage = STR(3) + wdamage(1) = 4", () => {
+    expect(sheet.attacks[0]!.damageBonus.total).toBe(4);
+  });
+
+  it("ranged line: damage = 0 + wdamage(1) = 1", () => {
+    expect(sheet.attacks[1]!.damageBonus.total).toBe(1);
+  });
+
+  it("wdamage buff appears in both weapons' damage provenance", () => {
+    const meleeComps = sheet.attacks[0]!.damageBonus.components;
+    const rangedComps = sheet.attacks[1]!.damageBonus.components;
+    expect(meleeComps.find((c) => c.source === "Divine Favor")?.value).toBe(1);
+    expect(rangedComps.find((c) => c.source === "Divine Favor")?.value).toBe(1);
+  });
+});
+
+describe("weapons: 'mwdamage' only applies to melee lines", () => {
+  const mwdamageBuff: ActiveBuff = {
+    instanceId: "buff-mwdamage",
+    name: "Rage (Unchained)",
+    changes: [{ target: "mwdamage", type: "morale", formula: "2" }],
+  };
+  const meleeWeapon: WeaponInstance = {
+    name: "Shortsword",
+    category: "melee",
+    attackAbility: "str",
+    damageDice: "1d6",
+  };
+  const rangedWeapon: WeaponInstance = {
+    name: "Longbow",
+    category: "ranged",
+    attackAbility: "dex",
+    damageAbility: "none",
+    damageDice: "1d8",
+  };
+  const doc = makeDoc(
+    { str: 16, dex: 14, con: 14, int: 10, wis: 12, cha: 8 },
+    [meleeWeapon, rangedWeapon],
+    [mwdamageBuff],
+  );
+  const sheet = compute(doc, ref);
+
+  it("melee line: damage = STR(3) + mwdamage(2) = 5", () => {
+    expect(sheet.attacks[0]!.damageBonus.total).toBe(5);
+  });
+
+  it("ranged line is unaffected: damage = 0", () => {
+    expect(sheet.attacks[1]!.damageBonus.total).toBe(0);
+  });
+});
+
+describe("weapons: 'rwdamage' and 'twdamage' both apply to ranged lines only", () => {
+  // We don't model thrown weapons as a distinct category from ranged, so
+  // "twdamage" (thrown weapon damage) is approximated onto ranged lines.
+  const rwdamageBuff: ActiveBuff = {
+    instanceId: "buff-rwdamage",
+    name: "Rally Allies",
+    changes: [{ target: "rwdamage", type: "morale", formula: "1" }],
+  };
+  const twdamageBuff: ActiveBuff = {
+    instanceId: "buff-twdamage",
+    name: "Powerful Stance (thrown)",
+    changes: [{ target: "twdamage", type: "untyped", formula: "1" }],
+  };
+  const meleeWeapon: WeaponInstance = {
+    name: "Shortsword",
+    category: "melee",
+    attackAbility: "str",
+    damageDice: "1d6",
+  };
+  const rangedWeapon: WeaponInstance = {
+    name: "Longbow",
+    category: "ranged",
+    attackAbility: "dex",
+    damageAbility: "none",
+    damageDice: "1d8",
+  };
+  const doc = makeDoc(
+    { str: 16, dex: 14, con: 14, int: 10, wis: 12, cha: 8 },
+    [meleeWeapon, rangedWeapon],
+    [rwdamageBuff, twdamageBuff],
+  );
+  const sheet = compute(doc, ref);
+
+  it("melee line is unaffected: damage = STR(3)", () => {
+    expect(sheet.attacks[0]!.damageBonus.total).toBe(3);
+  });
+
+  it("ranged line: damage = rwdamage(1) + twdamage(1) = 2", () => {
+    expect(sheet.attacks[1]!.damageBonus.total).toBe(2);
+  });
+});
+
 describe("weapons: no weapons → attacks array is empty", () => {
   const doc = makeDoc({ str: 16, dex: 14, con: 14, int: 10, wis: 12, cha: 8 });
   const sheet = compute(doc, ref);
