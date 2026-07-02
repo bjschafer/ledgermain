@@ -4,6 +4,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 
 import {
   accessibleSpellLevels,
+  bloodlineSpellsKnown,
   bonusSpellsForLevel,
   casterModelFor,
   concentrationDC,
@@ -181,5 +182,32 @@ describe("spellsKnownLimitsByLevel()", () => {
     const limits = spellsKnownLimitsByLevel(sorcModel, 10);
     expect(limits.find((l) => l.level === 1)!.limit).toBe(5);
     expect(limits.find((l) => l.level === 2)!.limit).toBe(4);
+  });
+});
+
+describe("bloodlineSpellsKnown()", () => {
+  it("returns [] below sorcerer level 3 (Draconic's L1 spell unlocks at 3)", () => {
+    expect(bloodlineSpellsKnown(ref, "Draconic", 1)).toEqual([]);
+    expect(bloodlineSpellsKnown(ref, "Draconic", 2)).toEqual([]);
+  });
+
+  it("L3 sorcerer unlocks exactly the bloodline's 1st-level spell", () => {
+    const spells = bloodlineSpellsKnown(ref, "Draconic", 3);
+    expect(spells.length).toBe(1);
+    expect(spells[0]!.level).toBe(1);
+    expect(spells[0]!.name).toBe("Mage Armor");
+  });
+
+  it("L7 sorcerer unlocks bloodline spells of levels 1-3", () => {
+    const spells = bloodlineSpellsKnown(ref, "Draconic", 7);
+    expect(spells.map((s) => s.level).sort()).toEqual([1, 2, 3]);
+  });
+
+  it("returns [] for an unknown bloodline tag (soft fail, no throw)", () => {
+    expect(bloodlineSpellsKnown(ref, "NotARealBloodline", 20)).toEqual([]);
+  });
+
+  it("returns [] when no bloodline is chosen (undefined tag)", () => {
+    expect(bloodlineSpellsKnown(ref, undefined, 20)).toEqual([]);
   });
 });

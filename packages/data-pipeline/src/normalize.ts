@@ -121,7 +121,8 @@ export function normalize(opts: NormalizeOptions): {
     const hasDomain =
       Object.keys(spell.learnedAt.domain ?? {}).length > 0 ||
       Object.keys(spell.learnedAt.subdomain ?? {}).length > 0;
-    if (hasClass || hasDomain) spells.push(spell);
+    const hasBloodline = Object.keys(spell.learnedAt.bloodline ?? {}).length > 0;
+    if (hasClass || hasDomain || hasBloodline) spells.push(spell);
   }
 
   // --- per-class spell lists (invert learnedAt.class) ------------------------
@@ -160,6 +161,28 @@ export function normalize(opts: NormalizeOptions): {
       list[Number(lvl)]!.sort();
     }
     domainSpellLists[tag] = list;
+  }
+
+  // --- per-bloodline spell lists (invert learnedAt.bloodline) -----------------
+  // A sorcerer's chosen bloodline grants bonus spells known at odd sorcerer
+  // levels ≥3, drawable from this list. Bloodline-only spells (e.g. a spell
+  // tagged "Abyssal" but not on the sorcerer class list) would otherwise be
+  // dropped by the slice filter above — keep any spell with a non-empty
+  // bloodline entry, mirroring the domain retain-term.
+  const bloodlineTags = new Set<string>();
+  for (const spell of spells) {
+    for (const tag of Object.keys(spell.learnedAt.bloodline ?? {})) bloodlineTags.add(tag);
+  }
+  const bloodlineSpellLists: Record<string, SpellList> = {};
+  for (const tag of bloodlineTags) {
+    const list: SpellList = {};
+    for (const spell of spells) {
+      const lvl = spell.learnedAt.bloodline?.[tag];
+      if (lvl === undefined) continue;
+      (list[lvl] ??= []).push(spell.id);
+    }
+    for (const lvl of Object.keys(list)) list[Number(lvl)]!.sort();
+    bloodlineSpellLists[tag] = list;
   }
 
   // --- buffs (all; small + engine-relevant) ----------------------------------
@@ -217,6 +240,7 @@ export function normalize(opts: NormalizeOptions): {
     archetypes: archetypes.length,
     archetypeFeatures: archetypeFeatures.length,
     domainSpellLists: Object.keys(domainSpellLists).length,
+    bloodlineSpellLists: Object.keys(bloodlineSpellLists).length,
   };
 
   const meta: RefDataMeta = {
@@ -242,6 +266,7 @@ export function normalize(opts: NormalizeOptions): {
     items: byId(items),
     spellLists,
     domainSpellLists,
+    bloodlineSpellLists,
     armors: byId(armors),
     weapons: byId(weapons),
     archetypes: byId(archetypes),

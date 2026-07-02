@@ -249,3 +249,40 @@ export function spellSaveDC(spellLevel: number, abilityMod: number): number {
 export function concentrationDC(spellLevel: number): number {
   return 15 + 2 * spellLevel;
 }
+
+// ---------------------------------------------------------------------------
+// Bloodline bonus spells (sorcerer)
+// ---------------------------------------------------------------------------
+
+/**
+ * Bloodline bonus spells known at `sorcererLevel` for the given `bloodlineTag`.
+ * PF1 rule: a bloodline's level-`L` spell (1-indexed spell level) is unlocked
+ * at sorcerer level `2L+1`. Returns the ids of unlocked bloodline spells (only
+ * those whose spell level ≤ floor((sorcererLevel-1)/2)). Empty if the tag is
+ * unknown to refData or the sorcererLevel is below 3. Sorted by name.
+ *
+ * These are *bonus* spells known — the builder adds them to the displayed
+ * known list automatically and they do NOT count against the spells-known cap.
+ *
+ * @example
+ *   bloodlineSpellsKnown(ref, "Draconic", 7)  // → spells of level 1..3
+ *   bloodlineSpellsKnown(ref, "Draconic", 2)  // → []  (starts at L3)
+ */
+export function bloodlineSpellsKnown(
+  refData: RefData,
+  bloodlineTag: string | undefined,
+  sorcererLevel: number,
+): { id: string; name: string; level: number }[] {
+  if (!bloodlineTag) return [];
+  const list = refData.bloodlineSpellLists[bloodlineTag];
+  if (!list) return [];
+  const out: { id: string; name: string; level: number }[] = [];
+  for (let level = 1; level <= 9; level++) {
+    if (2 * level + 1 > sorcererLevel) break;
+    for (const id of list[level] ?? []) {
+      const sp = refData.spells[id];
+      out.push({ id, name: sp?.name ?? id, level });
+    }
+  }
+  return out.sort((a, b) => a.name.localeCompare(b.name));
+}

@@ -5,6 +5,7 @@ import type { RefData } from "@pf1/schema";
 import { toggleKnownSpell } from "../../model/doc.js";
 import {
   accessibleSpellLevels,
+  bloodlineSpellsKnown,
   casterModelFor,
   grantedCantrips,
   spellsKnownLimitsByLevel,
@@ -100,6 +101,14 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     }
     return out.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
   }, [clericDomains, refData, grantsCantrips, accessibleLevels]);
+
+  // Bloodline bonus spells known (sorcerer only): auto-granted, read-only, and
+  // exempt from the spells-known cap — listed here for reference alongside the
+  // domain spells block above. See model/spellcasting.bloodlineSpellsKnown.
+  const bloodlineEntries = useMemo<SpellEntry[]>(() => {
+    if (casterTag !== "sorcerer") return [];
+    return bloodlineSpellsKnown(refData, doc.build.sorcererBloodline, classLevel);
+  }, [casterTag, refData, doc.build.sorcererBloodline, classLevel]);
 
   const preparesFromClassList = !!model?.preparesFromClassList;
 
@@ -287,6 +296,16 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
           <DomainSpellsBlock
             domains={clericDomains}
             entries={domainEntries}
+            refData={refData}
+            abilityMod={abilityMod}
+          />
+        )}
+
+        {/* Bloodline spells: read-only, auto-granted, exempt from the known cap. */}
+        {bloodlineEntries.length > 0 && (
+          <BloodlineSpellsBlock
+            bloodline={doc.build.sorcererBloodline ?? ""}
+            entries={bloodlineEntries}
             refData={refData}
             abilityMod={abilityMod}
           />
@@ -610,6 +629,74 @@ function DomainSpellsBlock({
                 <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
                   <div className="pmain">
                     <div className="pname">{sp.name}</div>
+                    {spellData && (
+                      <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+    </div>
+  );
+}
+
+/**
+ * Read-only bloodline-spell listing for the sorcerer's chosen bloodline.
+ * Auto-granted at odd sorcerer levels ≥3 (see `bloodlineSpellsKnown`); these
+ * are exempt from the spells-known cap since they never touch
+ * `doc.build.spells.known` — this block is purely a reference list, badged
+ * "bloodline" so the player can tell them apart from chosen known spells.
+ */
+function BloodlineSpellsBlock({
+  bloodline,
+  entries,
+  refData,
+  abilityMod,
+}: {
+  bloodline: string;
+  entries: SpellEntry[];
+  refData: RefData;
+  abilityMod: number;
+}) {
+  const [collapsed, toggle] = useCollapsed(`bloodline-spells:${bloodline}`, true);
+  const byLevel = new Map<number, SpellEntry[]>();
+  for (const e of entries) {
+    (byLevel.get(e.level) ?? byLevel.set(e.level, []).get(e.level)!).push(e);
+  }
+  const levels = [...byLevel.keys()].sort((a, b) => a - b);
+
+  return (
+    <div className="spell-level-group is-granted is-bloodline">
+      <div
+        className="spell-level-head is-collapsible is-granted"
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={!collapsed}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggle();
+        }}
+      >
+        <span className="spell-level-label">Bloodline Spells ({bloodline})</span>
+        <span className="spell-level-count">{entries.length}</span>
+        <span className="panel-caret" aria-hidden="true">
+          {collapsed ? "▸" : "▾"}
+        </span>
+      </div>
+      {!collapsed &&
+        levels.map((lvl) => (
+          <div key={lvl} className="spell-domain-level">
+            <div className="spell-domain-level-head">Level {lvl}</div>
+            {byLevel.get(lvl)!.map((sp) => {
+              const spellData = refData.spells[sp.id];
+              return (
+                <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
+                  <div className="pmain">
+                    <div className="pname">
+                      {sp.name} <span className="tag-bloodline">bloodline</span>
+                    </div>
                     {spellData && (
                       <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
                     )}

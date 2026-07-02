@@ -127,6 +127,23 @@ export function setClericDomains(
 }
 
 /**
+ * Set the sorcerer's chosen bloodline tag (single tag, unlike the two-domain
+ * cleric shape). Pass `null` (or a blank/whitespace string) to clear. No
+ * validation that the tag exists in `refData.bloodlineSpellLists` (soft-warning
+ * posture, same as `setClericDomains`).
+ */
+export function setSorcererBloodline(
+	doc: CharacterDoc,
+	tag: string | null,
+): CharacterDoc {
+	const trimmed = typeof tag === "string" ? tag.trim() : "";
+	return {
+		...doc,
+		build: { ...doc.build, sorcererBloodline: trimmed.length > 0 ? trimmed : undefined },
+	};
+}
+
+/**
  * Set the chosen archetype ids (keys into `refData.archetypes`). Replaces the
  * whole list, same shape as `setClericDomains`. No conflict validation here —
  * the model layer stays free-choice; the engine's `resolveClassFeatures`

@@ -16,6 +16,7 @@ import {
   unprepareSpell,
 } from "../../model/preparedSpells.js";
 import {
+  bloodlineSpellsKnown,
   casterModelFor,
   grantedCantrips,
   spellSlotsByLevel,
@@ -597,6 +598,20 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: Buil
     const sp = refData.spells[id];
     if (lvl === undefined || !sp) continue;
     (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({ id, name: sp.name });
+  }
+  // Bloodline bonus spells known: auto-granted, castable at the table just like
+  // chosen known spells (they still consume a slot of the matching level — only
+  // the spells-known *cap* exempts them, not slot spending). Merge in, skipping
+  // ids already present (e.g. also separately added to `known`) to avoid dupes.
+  if (casterTag === "sorcerer") {
+    const known = new Set(doc.build.spells.known);
+    for (const sp of bloodlineSpellsKnown(refData, doc.build.sorcererBloodline, classLevel)) {
+      if (known.has(sp.id)) continue;
+      (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
+        id: sp.id,
+        name: sp.name,
+      });
+    }
   }
   for (const arr of knownByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
 

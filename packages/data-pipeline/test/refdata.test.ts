@@ -25,7 +25,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(4);
+    expect(ref.meta.schemaVersion).toBe(5);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -176,6 +176,67 @@ describe("cleric domain spell lists (inverted learnedAt.domain)", () => {
       }
     }
     expect(foundDomainOnly).toBe(true);
+  });
+});
+
+describe("sorcerer bloodline spell lists (inverted learnedAt.bloodline)", () => {
+  it("emits a non-empty bloodlineSpellLists collection", () => {
+    expect(Object.keys(ref.bloodlineSpellLists).length).toBeGreaterThan(0);
+    expect(ref.meta.counts.bloodlineSpellLists).toBe(
+      Object.keys(ref.bloodlineSpellLists).length,
+    );
+  });
+
+  it("Draconic contains the expected known 1st-level spell", () => {
+    const draconic = ref.bloodlineSpellLists["Draconic"];
+    expect(draconic).toBeDefined();
+    const l1Ids = draconic![1] ?? [];
+    expect(l1Ids.length).toBeGreaterThan(0);
+    const names = l1Ids.map((id) => ref.spells[id]?.name);
+    expect(names).toContain("Mage Armor");
+  });
+
+  it("every entry is keyed by a bloodline tag present in some spell's learnedAt.bloodline", () => {
+    const tagsFromSpells = new Set<string>();
+    for (const sp of Object.values(ref.spells)) {
+      for (const t of Object.keys(sp.learnedAt.bloodline ?? {})) tagsFromSpells.add(t);
+    }
+    for (const tag of Object.keys(ref.bloodlineSpellLists)) {
+      expect(tagsFromSpells.has(tag)).toBe(true);
+    }
+  });
+
+  it("every spell id on a bloodline list actually carries that bloodline at the level", () => {
+    for (const [tag, list] of Object.entries(ref.bloodlineSpellLists)) {
+      for (const [lvl, ids] of Object.entries(list)) {
+        for (const id of ids) {
+          const sp = ref.spells[id];
+          expect(sp, `${tag} L${lvl} ${id}`).toBeDefined();
+          expect(sp!.learnedAt.bloodline?.[tag], `${tag} ${id}`).toBe(Number(lvl));
+        }
+      }
+    }
+  });
+
+  it("bloodline-only spells that no sliced class knows are present in refData.spells", () => {
+    // Regression for the keep-filter extension: a spell carrying only a
+    // bloodline entry (no sliced class list, no domain) would otherwise be
+    // dropped by the slice filter before it could be inverted.
+    const sliced = new Set(["wizard", "sorcerer", "cleric"]);
+    let foundBloodlineOnly = false;
+    for (const sp of Object.values(ref.spells)) {
+      const classTags = Object.keys(sp.learnedAt.class);
+      const onSliced = classTags.some((t) => sliced.has(t));
+      const hasDomain =
+        Object.keys(sp.learnedAt.domain ?? {}).length > 0 ||
+        Object.keys(sp.learnedAt.subdomain ?? {}).length > 0;
+      const hasBloodline = Object.keys(sp.learnedAt.bloodline ?? {}).length > 0;
+      if (!onSliced && !hasDomain && hasBloodline) {
+        foundBloodlineOnly = true;
+        break;
+      }
+    }
+    expect(foundBloodlineOnly).toBe(true);
   });
 });
 

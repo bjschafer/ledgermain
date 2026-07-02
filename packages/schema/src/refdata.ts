@@ -35,6 +35,15 @@ export interface RefData {
    * level, drawable from this list. Empty for non-cleric slices.
    */
   domainSpellLists: Record<string, SpellList>;
+  /**
+   * Per-bloodline spell lists, keyed by bloodline tag (e.g. "Draconic",
+   * "Abyssal") → spell level → spell ids. Inverted from `Spell.learnedAt.bloodline`.
+   * A sorcerer's chosen bloodline grants one bonus spell known per odd sorcerer
+   * level starting at 3 (level-`L` bloodline spell unlocked at sorcerer level
+   * `2L+1`); these do not count against the spells-known cap. Empty for non-sorcerer
+   * slices. 39 bloodlines in the current vendored slice.
+   */
+  bloodlineSpellLists: Record<string, SpellList>;
   /** Mundane base armor/shields (the `armors-and-shields` pack, magic excluded). */
   armors: Record<string, ArmorRef>;
   /** Mundane base weapons (the `weapons-and-ammo` pack, magic + ammo excluded). */

@@ -4,6 +4,7 @@
     "archetypeFeatures": 805,
     "archetypes": 182,
     "armors": 62,
+    "bloodlineSpellLists": 39,
     "buffs": 185,
     "classFeatures": 38,
     "classes": 5,
@@ -11,7 +12,7 @@
     "feats": 390,
     "items": 111,
     "races": 7,
-    "spells": 2424,
+    "spells": 2442,
     "weapons": 340
   },
   "dataVersion": "11.11+10b87c070c86",
@@ -20,6 +21,7 @@
     "archetype-features.json": "f4ef6e1ed9a7ad53b6b3366575dc2486b48cf1b05dd545237705a84c606ef7f1",
     "archetypes.json": "ac697e470625dc9ae02f0e60b43dea803568405dc1f2fdef25a8ae3a698e7825",
     "armors.json": "3df5b0145eb9577b86ba2cf6744a053a4fe5aed3ceee6cd30adcf31cd8872fa8",
+    "bloodline-spell-lists.json": "983a90d501b324bca5e1933ff72b22c9c03ed991d72e05819e60fc0071364543",
     "buffs.json": "6e423719dd9ef542e385c239fd5e61f455113fc807fce70d445c71e5c6d35864",
     "class-features.json": "7c78de966fe3694fd6d5509881660dee0ca5dc7ca03c6086cc35be4a94e880ec",
     "classes.json": "7c1a39cccb675d576d2abbf6b91328bb11bd15ae8a82716f6e05874e11709452",
@@ -28,10 +30,10 @@
     "items.json": "1607580108858bb33e6056ca9d5bd4f272c0198d3de5838f67bf7f40848792eb",
     "races.json": "facb3de6cc2834b192ad6d155b529826e3eedcb28808eda18310c1f01f107819",
     "spell-lists.json": "7c5818ca81746c32dbba2b303608ef53c0a3de67e89f3abbe3d48c3cdade3263",
-    "spells.json": "6ac4051f97a923f3a7df14e27d29350e61fadd07ae67a3a9a97ecaefb665a70e",
+    "spells.json": "ab154b005599b18382c22cb3229da9dfcafa8fccb12066cc3c549be2c0670cb1",
     "weapons.json": "286e9b97a5c1ca8b9b1126149b0abc4c3ddc968522d857d1d421e7abe06a0042"
   },
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

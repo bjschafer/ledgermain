@@ -56,6 +56,15 @@ export interface CharacterDoc {
      */
     clericDomains?: string[];
     /**
+     * Sorcerer bloodline tag (key into `refData.bloodlineSpellLists`), chosen at L1.
+     * Free-choice since the vendored data carries no sorcerer-heritage mapping —
+     * matches the project's hybrid soft-warning posture (see clericDomains above).
+     * Empty/undefined for non-sorcerers. The chosen bloodline grants bonus spells
+     * known at odd sorcerer levels ≥3 (see model/spellcasting.bloodlineSpellsKnown).
+     * Back-compat: documents without this field are unaffected.
+     */
+    sorcererBloodline?: string;
+    /**
      * Archetype ids chosen (keys into `RefData.archetypes`, e.g.
      * `"fighter:two-handed-fighter"`). No conflict validation — matches the
      * project's hybrid soft-warning posture (see IMPLEMENTATION_PLAN.md Stage 11.3).

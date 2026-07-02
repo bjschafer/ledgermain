@@ -30,6 +30,7 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     items: readJson(dir, "items.json"),
     spellLists: readJson(dir, "spell-lists.json"),
     domainSpellLists: readJson(dir, "domain-spell-lists.json"),
+    bloodlineSpellLists: readJson(dir, "bloodline-spell-lists.json"),
     armors: readJson(dir, "armors.json"),
     weapons: readJson(dir, "weapons.json"),
     archetypes: readJson(dir, "archetypes.json"),
