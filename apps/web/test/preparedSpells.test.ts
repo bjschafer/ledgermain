@@ -10,6 +10,7 @@ import {
   setClericDomains,
   setWizardOppositionSchools,
   setWizardSchool,
+  toggleKnownSpell,
 } from "../src/model/doc.js";
 import {
   classSpellsByLevel,
@@ -325,23 +326,36 @@ describe("wizard school slots + opposition cost", () => {
     let doc = addClass(fresh(), "wizard");
     doc = setWizardSchool(doc, "evo");
     doc = setWizardOppositionSchools(doc, ["enc", "nec"]);
+    doc = toggleKnownSpell(doc, burningHandsId);
+    doc = toggleKnownSpell(doc, sleepId);
     return doc;
   }
 
-  it("isSchoolSlotEligible is true for an in-school spell, false for others", () => {
+  it("isSchoolSlotEligible is true for an in-school spell in the spellbook, false for others", () => {
     const doc = evocationWizardDoc();
     expect(isSchoolSlotEligible(burningHands, doc)).toBe(true);
     expect(isSchoolSlotEligible(sleep, doc)).toBe(false);
   });
 
+  it("isSchoolSlotEligible is false for an in-school spell NOT in the spellbook", () => {
+    // Same evocation specialty, but Burning Hands was never learned — PF1 RAW
+    // requires the bonus school slot to be filled from the wizard's spellbook.
+    let doc = addClass(fresh(), "wizard");
+    doc = setWizardSchool(doc, "evo");
+    expect(isSchoolSlotEligible(burningHands, doc)).toBe(false);
+  });
+
   it("isSchoolSlotEligible is always false for a Universalist", () => {
-    const doc = setWizardSchool(addClass(fresh(), "wizard"), "uni");
+    let doc = setWizardSchool(addClass(fresh(), "wizard"), "uni");
+    doc = toggleKnownSpell(doc, burningHandsId);
+    doc = toggleKnownSpell(doc, sleepId);
     expect(isSchoolSlotEligible(burningHands, doc)).toBe(false);
     expect(isSchoolSlotEligible(sleep, doc)).toBe(false);
   });
 
   it("isSchoolSlotEligible is always false when no school is chosen", () => {
-    const doc = addClass(fresh(), "wizard");
+    let doc = addClass(fresh(), "wizard");
+    doc = toggleKnownSpell(doc, burningHandsId);
     expect(isSchoolSlotEligible(burningHands, doc)).toBe(false);
   });
 

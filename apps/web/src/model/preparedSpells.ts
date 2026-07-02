@@ -159,15 +159,19 @@ export function domainSpellLevelMap(
 // ---------------------------------------------------------------------------
 
 /**
- * True when `spell` may be prepared in the wizard's bonus school slot
- * (`spell.school === build.wizardSchool`). Always false for a Universalist or
- * when no school is chosen — Universalists get no bonus school slot (PF1 RAW
+ * True when `spell` may be prepared in the wizard's bonus school slot: it must
+ * match the wizard's specialty school (`spell.school === build.wizardSchool`)
+ * AND already be in the wizard's spellbook (`build.spells.known`) — PF1 RAW,
+ * the bonus slot is not a free pick from the whole school, only from spells
+ * the wizard has actually learned. Always false for a Universalist or when no
+ * school is chosen — Universalists get no bonus school slot (PF1 RAW
  * correction: their compensation is arcane-school powers, deferred to Stage 4).
  */
 export function isSchoolSlotEligible(spell: Spell, doc: CharacterDoc): boolean {
   const school = doc.build.wizardSchool;
   if (!school || school === "uni") return false;
-  return spell.school === school;
+  if (spell.school !== school) return false;
+  return doc.build.spells.known.includes(spell.id);
 }
 
 /**

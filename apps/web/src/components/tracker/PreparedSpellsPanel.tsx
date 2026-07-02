@@ -300,8 +300,9 @@ function SchoolSlotsSection({
   });
   for (const arr of preparedByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
 
-  // Per accessible spell level (1–9), the wizard-list spells of the chosen
-  // school (in-school only — a school slot may not hold an off-school spell).
+  // Per accessible spell level (1–9), the wizard's spellbook spells of the
+  // chosen school (in-school AND already known — PF1 RAW requires the bonus
+  // slot to be filled from the spellbook, not any spell of that school).
   const pickableByLevel = useMemo(() => {
     const out = new Map<number, { id: string; name: string }[]>();
     if (!school || school === "uni") return out;
