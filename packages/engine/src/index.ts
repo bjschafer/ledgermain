@@ -57,6 +57,7 @@ export {
   type ChoiceFeatEntry,
   type FeatEntry,
 } from "./feat-effects.js";
+export { FAMILIARS, FAMILIAR_KINDS, type FamiliarDef } from "./familiars.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";
 export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
 export {

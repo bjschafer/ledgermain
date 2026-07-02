@@ -10,6 +10,7 @@
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { CONDITIONS } from "./conditions.js";
+import { FAMILIARS } from "./familiars.js";
 import { FEAT_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { totalLevel } from "./rolldata.js";
@@ -171,6 +172,29 @@ export function collectModifiers(
       if (!choiceId) continue;
       for (const ch of entry.build(choiceId)) {
         evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
+      }
+    }
+  }
+
+  // --- arcane bond: familiar master bonus ----------------------------------
+  // A familiar grants its master a small always-on bonus (hand-authored table
+  // in familiars.ts). Unknown kinds and bonded objects apply nothing — bonded
+  // objects have no numeric effect in v1 (display-only RAW notes in the UI).
+  const bond = doc.build.arcaneBond;
+  if (bond?.type === "familiar" && bond.familiarKind) {
+    const familiar = FAMILIARS[bond.familiarKind];
+    if (familiar) {
+      for (const ch of familiar.changes) {
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          `${familiar.name} (familiar)`,
+          `familiar:${bond.familiarKind}`,
+          out,
+          ch.operator,
+        );
       }
     }
   }

@@ -182,6 +182,48 @@ export function setWizardOppositionSchools(
 }
 
 /**
+ * Set or clear the arcane bond (wizard L1 choice: familiar or bonded object).
+ * `null` clears. A familiar bond requires a non-blank `familiarKind` (the
+ * transition no-ops otherwise, so callers can pass raw picker state); whether
+ * the kind exists in the engine's familiar table is NOT validated here (soft
+ * warning posture — unknown kinds simply apply nothing in the engine). An
+ * object bond stores the display name as typed; whitespace-only names are
+ * dropped entirely (a player may record "bonded object" without naming the
+ * item). Stored raw, not trimmed, so a controlled input can carry mid-typing
+ * spaces.
+ */
+export function setArcaneBond(
+	doc: CharacterDoc,
+	bond:
+		| { type: "familiar"; familiarKind: string }
+		| { type: "object"; bondedItemName?: string }
+		| null,
+): CharacterDoc {
+	if (bond === null) {
+		const build = { ...doc.build };
+		delete build.arcaneBond;
+		return { ...doc, build };
+	}
+	if (bond.type === "familiar") {
+		const kind = bond.familiarKind.trim();
+		if (kind.length === 0) return doc;
+		return {
+			...doc,
+			build: { ...doc.build, arcaneBond: { type: "familiar", familiarKind: kind } },
+		};
+	}
+	const name = bond.bondedItemName;
+	const hasName = typeof name === "string" && name.trim().length > 0;
+	return {
+		...doc,
+		build: {
+			...doc.build,
+			arcaneBond: { type: "object", ...(hasName ? { bondedItemName: name } : {}) },
+		},
+	};
+}
+
+/**
  * Set the chosen archetype ids (keys into `refData.archetypes`). Replaces the
  * whole list, same shape as `setClericDomains`. No conflict validation here —
  * the model layer stays free-choice; the engine's `resolveClassFeatures`

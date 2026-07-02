@@ -403,7 +403,11 @@ setArcaneBond(doc, bond: { type: "familiar" | "object"; familiarKind?: string; b
 7. `apps/web/src/components/tracker/` — familiar/bonded-object surface + tooltip.
 8. Two test files as above + one stacking fixture.
 
-**Status**: Not Started
+**Status**: Complete (2026-07-02). As-built notes:
+- `bondedItemRef` (an `ItemInstance.id`) was impossible as planned — `ItemInstance` has no id field (gear is addressed by array index). Used the plan's own v1 fallback: free-text `bondedItemName`, stored raw when non-blank so a controlled input can carry mid-typing spaces.
+- No separate tracker panel: the familiar's numeric provenance flows automatically through the sheet's skill/save/HP breakdowns (`"Bat (familiar)"` components), and `ArcaneBondPicker` itself carries the master-bonus summary, the hawk/owl conditional notes, and the bonded-object RAW text (1/day cast + DC 20 + spell level concentration). Alertness-while-adjacent is noted in the picker hint.
+- Stacking fixture uses an active buff (competence Stealth) rather than an item, exercising the same collect→stack path.
+- Verified end-to-end in the browser: bat Fly +0→+3, toad Max HP 6→9, rat Fort +0→+2, bonded-object name persists across reload (Dexie), re-clicking the active type chip clears the bond, no console/page errors.
 
 ---
 

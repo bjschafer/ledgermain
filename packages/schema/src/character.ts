@@ -102,6 +102,30 @@ export interface CharacterDoc {
      */
     wizardOppositionSchools?: string[];
     /**
+     * Arcane bond chosen at L1 by wizards (some sorcerer archetypes also bond —
+     * that gate is deferred; the picker renders for wizards only in v1). A
+     * familiar grants its published master bonus (hand-authored table in
+     * `@pf1/engine` `familiars.ts`, applied through the engine's
+     * change-collection path — e.g. bat +3 Fly, toad +3 hit points). A bonded
+     * object records the player's choice and surfaces its RAW mechanics as
+     * display text only (the 1/day cast-any-spellbook-spell and the DC 20 +
+     * spell level concentration check when casting without the object are NOT
+     * modeled numerically in v1).
+     *
+     * `familiarKind` keys into the engine familiar table (e.g. "bat"); unknown
+     * kinds apply nothing (soft warning, never a crash). `bondedItemName` is a
+     * free-text display label for the bonded object in v1 (no `build.gear`
+     * ref — gear entries have no stable ids to point at).
+     * Back-compat: documents without `arcaneBond` are unaffected.
+     */
+    arcaneBond?: {
+      type: "familiar" | "object";
+      /** Present iff `type === "familiar"`; keys into the engine familiar table. */
+      familiarKind?: string;
+      /** Present iff `type === "object"`; free-text display name (v1). */
+      bondedItemName?: string;
+    };
+    /**
      * Archetype ids chosen (keys into `RefData.archetypes`, e.g.
      * `"fighter:two-handed-fighter"`). No conflict validation — matches the
      * project's hybrid soft-warning posture (see IMPLEMENTATION_PLAN.md Stage 11.3).

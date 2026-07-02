@@ -7,6 +7,7 @@ import {
 	setFavoredClass,
 	setFavoredClassBonus,
 } from "../../model/doc.js";
+import { ArcaneBondPicker } from "./ArcaneBondPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
@@ -209,6 +210,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 			{/* Arcane school picker — wizard only (free-choice, soft warning only). */}
 			{doc.identity.classes.some((c) => c.tag === "wizard") && (
 				<SchoolPicker doc={doc} update={update} />
+			)}
+
+			{/* Arcane bond picker — wizard only (familiar or bonded object). */}
+			{doc.identity.classes.some((c) => c.tag === "wizard") && (
+				<ArcaneBondPicker doc={doc} update={update} />
 			)}
 
 			{/* Archetype picker — only classes covered by the vendored dataset show options. */}
