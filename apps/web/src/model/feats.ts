@@ -13,6 +13,15 @@
  *     "floor((@class.unlevel - 1) / 6)" bloodline feats — plus any other
  *     vendored class features that grant a bonus feat slot).
  *
+ * Fixed feat grants vs. bonus feat SLOTS: a `bonusFeats` feature whose name
+ * matches a real feat in RefData (Wizard's "Scribe Scroll", Sorcerer's
+ * "Eschew Materials") is a *specific* feat the class hands the character —
+ * not a free slot the player fills. Those are surfaced via `grantedFeats()`
+ * (the UI shows them as read-only "granted" entries) and are EXCLUDED from
+ * the expected-count budget; features with no matching feat name ("Bonus
+ * Feats (FGT)", "Bloodline Feat (SOR)") remain player-choice slots counted
+ * by `expectedFeatCount`.
+ *
  * Only "Human" by race name grants the racial bonus feat here. Half-Elves receive
  * Skill Focus as a specific racial feat (Adaptability), which is not a free feat
  * selection, so they are not counted. Half-Orcs have no bonus feat trait.
@@ -35,14 +44,65 @@ function totalLevel(doc: CharacterDoc): number {
   return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
 }
 
+/** feat name (lowercased, trimmed) -> feat id, for fixed-grant detection. */
+function featIdByName(refData: RefData): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const feat of Object.values(refData.feats)) {
+    map.set(feat.name.trim().toLowerCase(), feat.id);
+  }
+  return map;
+}
+
+/** A specific feat handed to the character by a class feature (no slot used). */
+export interface GrantedFeat {
+  /** Id into RefData.feats. */
+  featId: string;
+  featName: string;
+  /** Class that granted it (tag) and the granting feature's name, for display. */
+  classTag: string;
+  featureName: string;
+}
+
+/**
+ * Specific feats granted outright by class features: any granted, resolved
+ * feature carrying a `bonusFeats` change whose *name* matches a feat in
+ * RefData (Wizard "Scribe Scroll", Sorcerer "Eschew Materials"). These are
+ * auto-applied — the player never spends a slot or adds them manually.
+ * Deduped by feat id (first grant wins).
+ */
+export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[] {
+  const byName = featIdByName(refData);
+  const out: GrantedFeat[] = [];
+  const seen = new Set<string>();
+  for (const cls of doc.identity.classes) {
+    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    if (!classDef) continue;
+    for (const grant of classDef.features) {
+      if (grant.level > cls.level || !grant.resolved) continue;
+      const feature = refData.classFeatures[grant.featureId];
+      if (!feature) continue;
+      if (!(feature.changes ?? []).some((ch) => ch.target === "bonusFeats")) continue;
+      const featId = byName.get(feature.name.trim().toLowerCase());
+      if (!featId || seen.has(featId)) continue;
+      seen.add(featId);
+      out.push({ featId, featName: feature.name, classTag: cls.tag, featureName: feature.name });
+    }
+  }
+  return out;
+}
+
 /**
  * Sum of "bonusFeats"-targeting changes from every granted, resolved class
- * feature across all of the character's classes. Mirrors the granted-feature
- * walk in `collect.ts`: each class feature's formula is evaluated with
- * `@class.unlevel`/`@class.level` bound to *that* class's level.
+ * feature across all of the character's classes — free SLOTS only: features
+ * that are fixed feat grants (name matches a feat; see `grantedFeats`) are
+ * skipped, since the specific feat is auto-applied rather than budgeted.
+ * Mirrors the granted-feature walk in `collect.ts`: each class feature's
+ * formula is evaluated with `@class.unlevel`/`@class.level` bound to *that*
+ * class's level.
  */
 function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
   const rollData = buildRollData(doc, refData);
+  const byName = featIdByName(refData);
   let total = 0;
   for (const cls of doc.identity.classes) {
     const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
@@ -55,6 +115,8 @@ function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
       if (grant.level > cls.level || !grant.resolved) continue;
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
+      // Fixed feat grant, not a slot — handled by grantedFeats().
+      if (byName.has(feature.name.trim().toLowerCase())) continue;
       for (const ch of feature.changes ?? []) {
         if (ch.target !== "bonusFeats") continue;
         let value: number | null;
@@ -102,6 +164,20 @@ export function expectedFeatCount(doc: CharacterDoc, refData: RefData): number {
 /** The number of feats the character has currently chosen. */
 export function chosenFeatCount(doc: CharacterDoc): number {
   return doc.build.feats.length;
+}
+
+/**
+ * Chosen feats that count against the slot budget: manually-added duplicates
+ * of class-granted feats (e.g. a wizard who added Scribe Scroll by hand before
+ * auto-granting existed) are excluded, so they never eat a slot. Compare this
+ * — not `chosenFeatCount` — against `expectedFeatCount`.
+ */
+export function chosenFeatCountExcludingGranted(
+  doc: CharacterDoc,
+  refData: RefData,
+): number {
+  const granted = new Set(grantedFeats(doc, refData).map((g) => g.featId));
+  return doc.build.feats.filter((id) => !granted.has(id)).length;
 }
 
 /**

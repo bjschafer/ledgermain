@@ -5,9 +5,11 @@ import { loadRefData } from "@pf1/data-pipeline";
 
 import {
   chosenFeatCount,
+  chosenFeatCountExcludingGranted,
   expectedFeatCount,
   featChoiceDescriptor,
   featChoiceOptions,
+  grantedFeats,
   setFeatChoice,
 } from "../src/model/feats.js";
 import { toggleFeat } from "../src/model/doc.js";
@@ -126,58 +128,99 @@ describe("expectedFeatCount: Fighter bonus feats", () => {
     expect(expectedFeatCount(doc, ref)).toBe(5);
   });
 
-  it("Fighter 1 / Wizard 1 multiclass Elf → 1 base + 1 fighter + 1 wizard (Scribe Scroll) = 3", () => {
+  it("Fighter 1 / Wizard 1 multiclass Elf → 1 base + 1 fighter = 2 (Scribe Scroll auto-granted, not a slot)", () => {
     const doc = makeDoc({
       classes: [{ tag: "fighter", level: 1 }, { tag: "wizard", level: 1 }],
       race: "Elf",
     });
     // charLevel=2: base ceil(2/2)=1; humanBonus=0;
     // fighter bonus: fL=1 → 1+floor(1/2)=1
-    // wizard bonus: wL=1 grants "Scribe Scroll" (a genuine bonus feat, formula "1")
-    // total=1+0+1+1=3
-    expect(expectedFeatCount(doc, ref)).toBe(3);
+    // wizard's "Scribe Scroll" is a fixed feat grant → grantedFeats(), not a slot
+    // total=1+0+1=2
+    expect(expectedFeatCount(doc, ref)).toBe(2);
   });
 });
 
 describe("expectedFeatCount: Wizard bonus feats", () => {
-  // Wizard grants "Scribe Scroll" as a bonus feat at 1st level (formula "1"),
-  // then Arcane School bonus feats at 5th/10th/15th/20th (floor(unlevel / 5)).
+  // Wizard's "Scribe Scroll" (formula "1") is a FIXED grant of that specific
+  // feat — auto-granted via grantedFeats(), excluded from the slot budget.
+  // Arcane School bonus feats at 5th/10th/15th/20th (floor(unlevel / 5)) are
+  // free slots and stay in the budget.
 
-  it("Wizard 1 Elf → 1 base + 1 Scribe Scroll = 2", () => {
+  it("Wizard 1 Elf → 1 base, Scribe Scroll granted not budgeted = 1", () => {
     const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf" });
-    expect(expectedFeatCount(doc, ref)).toBe(2);
+    expect(expectedFeatCount(doc, ref)).toBe(1);
   });
 
-  it("Wizard 10 Elf → 5 base + 3 bonus (1 Scribe Scroll + 2 Arcane School) = 8", () => {
+  it("Wizard 10 Elf → 5 base + 2 Arcane School = 7", () => {
     const doc = makeDoc({ classes: [{ tag: "wizard", level: 10 }], race: "Elf" });
-    // base: ceil(10/2)=5; Scribe Scroll=1; Arcane School: floor(10/5)=2 → total=8
-    expect(expectedFeatCount(doc, ref)).toBe(8);
+    // base: ceil(10/2)=5; Arcane School: floor(10/5)=2; Scribe Scroll granted → total=7
+    expect(expectedFeatCount(doc, ref)).toBe(7);
   });
 });
 
 describe("expectedFeatCount: Sorcerer bonus feats", () => {
-  // Sorcerer grants "Eschew Materials" as a bonus feat at 1st level (formula "1"),
-  // then a bloodline bonus feat at 7th and every 6 levels thereafter
-  // (floor((unlevel - 1) / 6)).
+  // Sorcerer's "Eschew Materials" is a fixed grant (auto-granted, not
+  // budgeted); the bloodline bonus feat at 7th and every 6 levels thereafter
+  // (floor((unlevel - 1) / 6)) is a free slot and stays in the budget.
 
-  it("Sorcerer 7 Elf → 4 base + 2 bonus (1 Eschew Materials + 1 bloodline feat) = 6", () => {
+  it("Sorcerer 7 Elf → 4 base + 1 bloodline feat = 5", () => {
     const doc = makeDoc({ classes: [{ tag: "sorcerer", level: 7 }], race: "Elf" });
-    // base: ceil(7/2)=4; Eschew Materials=1; bloodline: floor((7-1)/6)=1 → total=6
-    expect(expectedFeatCount(doc, ref)).toBe(6);
+    // base: ceil(7/2)=4; bloodline: floor((7-1)/6)=1; Eschew Materials granted → total=5
+    expect(expectedFeatCount(doc, ref)).toBe(5);
   });
 });
 
 describe("expectedFeatCount: multiclass fighter + wizard bonus feats stack", () => {
-  it("Fighter 2 / Wizard 5 Elf → base + fighter bonus + wizard bonus", () => {
+  it("Fighter 2 / Wizard 5 Elf → base + fighter bonus + wizard slot bonus", () => {
     const doc = makeDoc({
       classes: [{ tag: "fighter", level: 2 }, { tag: "wizard", level: 5 }],
       race: "Elf",
     });
     // charLevel=7: base ceil(7/2)=4
     // fighter bonus: fL=2 → 1+floor(2/2)=2
-    // wizard bonus: wL=5 → Scribe Scroll(1) + Arcane School floor(5/5)=1 → 2
-    // total=4+0+2+2=8
-    expect(expectedFeatCount(doc, ref)).toBe(8);
+    // wizard bonus: wL=5 → Arcane School floor(5/5)=1 (Scribe Scroll granted, not budgeted)
+    // total=4+0+2+1=7
+    expect(expectedFeatCount(doc, ref)).toBe(7);
+  });
+});
+
+describe("grantedFeats: fixed class feat grants", () => {
+  function featIdNamed(name: string): string {
+    const feat = Object.values(ref.feats).find((f) => f.name === name);
+    if (!feat) throw new Error(`feat not found: ${name}`);
+    return feat.id;
+  }
+
+  it("Wizard 1 is granted Scribe Scroll", () => {
+    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }] });
+    const granted = grantedFeats(doc, ref);
+    expect(granted.map((g) => g.featName)).toEqual(["Scribe Scroll"]);
+    expect(granted[0]!.featId).toBe(featIdNamed("Scribe Scroll"));
+    expect(granted[0]!.classTag).toBe("wizard");
+  });
+
+  it("Sorcerer 1 is granted Eschew Materials", () => {
+    const doc = makeDoc({ classes: [{ tag: "sorcerer", level: 1 }] });
+    expect(grantedFeats(doc, ref).map((g) => g.featName)).toEqual(["Eschew Materials"]);
+  });
+
+  it("Fighter has no fixed grants (bonus feats are player-choice slots)", () => {
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 10 }] });
+    expect(grantedFeats(doc, ref)).toEqual([]);
+  });
+
+  it("a manually-added duplicate of a granted feat doesn't consume a budget slot", () => {
+    const scribe = featIdNamed("Scribe Scroll");
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      race: "Elf",
+      feats: [scribe, "some-other-feat"],
+    });
+    // Raw chosen count still sees both entries…
+    expect(chosenFeatCount(doc)).toBe(2);
+    // …but the budget-facing count excludes the granted duplicate.
+    expect(chosenFeatCountExcludingGranted(doc, ref)).toBe(1);
   });
 });
 

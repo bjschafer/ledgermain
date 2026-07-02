@@ -6,10 +6,11 @@ import { casterLevel } from "../../model/casterLevel.js";
 import { toggleFeat } from "../../model/doc.js";
 import { ABILITY_IDS } from "../../model/doc.js";
 import {
-  chosenFeatCount,
+  chosenFeatCountExcludingGranted,
   expectedFeatCount,
   featChoiceDescriptor,
   featChoiceOptions,
+  grantedFeats,
   setFeatChoice,
 } from "../../model/feats.js";
 import {
@@ -35,6 +36,12 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
   const [hideIneligible, setHideIneligible] = useState(false);
   const selected = useMemo(() => new Set(doc.build.feats), [doc.build.feats]);
 
+  // Feats granted outright by class features (Scribe Scroll, Eschew
+  // Materials): shown read-only, never budgeted, and counted as owned for
+  // prerequisite checks.
+  const granted = useMemo(() => grantedFeats(doc, refData), [doc, refData]);
+  const grantedIds = useMemo(() => new Set(granted.map((g) => g.featId)), [granted]);
+
   const ctx: PrereqContext = useMemo(() => {
     const abilityTotals = {} as Record<AbilityId, number>;
     for (const id of ABILITY_IDS) abilityTotals[id] = sheet.abilities[id].total;
@@ -42,10 +49,10 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
       abilityTotals,
       bab: sheet.bab,
       casterLevel: casterLevel(doc),
-      selectedFeats: selected,
+      selectedFeats: new Set([...selected, ...grantedIds]),
       refData,
     };
-  }, [sheet, doc, selected, refData]);
+  }, [sheet, doc, selected, grantedIds, refData]);
 
   const { feats, prereqMap } = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -60,6 +67,10 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
       .filter((f) => {
         if (q && !f.name.toLowerCase().includes(q)) return false;
         if (category !== "All" && !f.tags.includes(category)) return false;
+        // Class-granted feats live in their own read-only block above the
+        // picker — hide them here unless a legacy manual copy is selected
+        // (so it can still be removed).
+        if (grantedIds.has(f.id) && !selected.has(f.id)) return false;
         // Never hide a feat the character has already taken.
         if (hideIneligible && !selected.has(f.id) && map.get(f.id)?.blocked) {
           return false;
@@ -73,7 +84,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
       });
 
     return { feats: list, prereqMap: map };
-  }, [refData.feats, query, category, hideIneligible, selected, ctx]);
+  }, [refData.feats, query, category, hideIneligible, selected, grantedIds, ctx]);
 
   // Skill options for Skill Focus and any other "skill" choice feats. Computed
   // once per render cycle — the list is static (all skills, alphabetically).
@@ -91,7 +102,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
     [doc.build.weapons, refData],
   );
 
-  const chosen = chosenFeatCount(doc);
+  const chosen = chosenFeatCountExcludingGranted(doc, refData);
   const expected = expectedFeatCount(doc, refData);
   const featCountClass =
     chosen === expected ? "hint" : chosen > expected ? "hint warn-over" : "hint warn-under";
@@ -149,6 +160,25 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           </button>
         </div>
       </div>
+      {granted.length > 0 && (
+        <div className="granted-feats">
+          {granted.map((g) => (
+            <div key={g.featId} className="pick-row is-selected">
+              <div className="pmain">
+                <div className="pname">{g.featName}</div>
+                <div className="preq">
+                  <span className="soft">
+                    Granted by {g.classTag} — no feat slot used
+                  </span>
+                </div>
+              </div>
+              <button type="button" className="pick-btn" disabled title="Class feature grant — always on">
+                Granted
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="scroll">
         {feats.slice(0, 150).map((feat) => {
           const isSel = selected.has(feat.id);
