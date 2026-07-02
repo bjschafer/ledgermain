@@ -68,8 +68,9 @@ export function evaluatePrereqs(feat: Feat, ctx: PrereqContext): PrereqResult {
 
   const blocked = checks.some((c) => !c.met);
   const softText = p.prereqText?.trim() || undefined;
-  // Soft warning: prose prereqs exist that our structured parse didn't cover.
-  const warn = !blocked && checks.length === 0 && softText != null;
+  // Soft warning: prose prereqs exist that our structured parse didn't cover,
+  // whether or not there are also structured checks (which still drive `blocked`).
+  const warn = !blocked && softText != null;
 
   return { blocked, warn, checks, softText };
 }

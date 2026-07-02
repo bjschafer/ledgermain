@@ -57,6 +57,11 @@ function makeDoc(over: {
   };
 }
 
+// Cleric has no `bonusFeats`-targeting class features in the vendored slice, so
+// it is used here as a "no class bonus" vehicle for exercising the base
+// progression + human racial bonus in isolation. (Wizard/Sorcerer/Fighter each
+// have granted class features that add to the count — see the dedicated
+// describe blocks below.)
 describe("expectedFeatCount: base progression", () => {
   it("level 0 (no classes) → 0 feats", () => {
     const doc = makeDoc({ classes: [], race: "Human" });
@@ -64,36 +69,36 @@ describe("expectedFeatCount: base progression", () => {
   });
 
   it("level 1 Human → 1 base + 1 human = 2", () => {
-    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Human" });
-    // base: ceil(1/2)=1; humanBonus=1; fighterBonus=0
+    const doc = makeDoc({ classes: [{ tag: "cleric", level: 1 }], race: "Human" });
+    // base: ceil(1/2)=1; humanBonus=1; classBonus=0
     expect(expectedFeatCount(doc, ref)).toBe(2);
   });
 
   it("level 1 Elf → 1 base, no racial bonus", () => {
-    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf" });
+    const doc = makeDoc({ classes: [{ tag: "cleric", level: 1 }], race: "Elf" });
     expect(expectedFeatCount(doc, ref)).toBe(1);
   });
 
   it("level 3 Human → 2 base + 1 human = 3", () => {
-    const doc = makeDoc({ classes: [{ tag: "wizard", level: 3 }], race: "Human" });
+    const doc = makeDoc({ classes: [{ tag: "cleric", level: 3 }], race: "Human" });
     // base: ceil(3/2)=2; humanBonus=1
     expect(expectedFeatCount(doc, ref)).toBe(3);
   });
 
   it("level 5 Elf → 3 base feats (odd levels 1, 3, 5)", () => {
-    const doc = makeDoc({ classes: [{ tag: "wizard", level: 5 }], race: "Elf" });
+    const doc = makeDoc({ classes: [{ tag: "cleric", level: 5 }], race: "Elf" });
     // base: ceil(5/2)=3
     expect(expectedFeatCount(doc, ref)).toBe(3);
   });
 
   it("level 6 Elf → still 3 base feats (no feat at even level 6)", () => {
-    const doc = makeDoc({ classes: [{ tag: "wizard", level: 6 }], race: "Elf" });
+    const doc = makeDoc({ classes: [{ tag: "cleric", level: 6 }], race: "Elf" });
     // base: ceil(6/2)=3
     expect(expectedFeatCount(doc, ref)).toBe(3);
   });
 
   it("level 7 Elf → 4 base feats (new feat at odd level 7)", () => {
-    const doc = makeDoc({ classes: [{ tag: "wizard", level: 7 }], race: "Elf" });
+    const doc = makeDoc({ classes: [{ tag: "cleric", level: 7 }], race: "Elf" });
     // base: ceil(7/2)=4
     expect(expectedFeatCount(doc, ref)).toBe(4);
   });
@@ -121,13 +126,58 @@ describe("expectedFeatCount: Fighter bonus feats", () => {
     expect(expectedFeatCount(doc, ref)).toBe(5);
   });
 
-  it("Fighter 1 / Wizard 1 multiclass Elf → 1 base + 1 fighter = 2", () => {
+  it("Fighter 1 / Wizard 1 multiclass Elf → 1 base + 1 fighter + 1 wizard (Scribe Scroll) = 3", () => {
     const doc = makeDoc({
       classes: [{ tag: "fighter", level: 1 }, { tag: "wizard", level: 1 }],
       race: "Elf",
     });
-    // charLevel=2: base ceil(2/2)=1; humanBonus=0; fL=1: fighterBonus=1+floor(1/2)=1 → total=2
+    // charLevel=2: base ceil(2/2)=1; humanBonus=0;
+    // fighter bonus: fL=1 → 1+floor(1/2)=1
+    // wizard bonus: wL=1 grants "Scribe Scroll" (a genuine bonus feat, formula "1")
+    // total=1+0+1+1=3
+    expect(expectedFeatCount(doc, ref)).toBe(3);
+  });
+});
+
+describe("expectedFeatCount: Wizard bonus feats", () => {
+  // Wizard grants "Scribe Scroll" as a bonus feat at 1st level (formula "1"),
+  // then Arcane School bonus feats at 5th/10th/15th/20th (floor(unlevel / 5)).
+
+  it("Wizard 1 Elf → 1 base + 1 Scribe Scroll = 2", () => {
+    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf" });
     expect(expectedFeatCount(doc, ref)).toBe(2);
+  });
+
+  it("Wizard 10 Elf → 5 base + 3 bonus (1 Scribe Scroll + 2 Arcane School) = 8", () => {
+    const doc = makeDoc({ classes: [{ tag: "wizard", level: 10 }], race: "Elf" });
+    // base: ceil(10/2)=5; Scribe Scroll=1; Arcane School: floor(10/5)=2 → total=8
+    expect(expectedFeatCount(doc, ref)).toBe(8);
+  });
+});
+
+describe("expectedFeatCount: Sorcerer bonus feats", () => {
+  // Sorcerer grants "Eschew Materials" as a bonus feat at 1st level (formula "1"),
+  // then a bloodline bonus feat at 7th and every 6 levels thereafter
+  // (floor((unlevel - 1) / 6)).
+
+  it("Sorcerer 7 Elf → 4 base + 2 bonus (1 Eschew Materials + 1 bloodline feat) = 6", () => {
+    const doc = makeDoc({ classes: [{ tag: "sorcerer", level: 7 }], race: "Elf" });
+    // base: ceil(7/2)=4; Eschew Materials=1; bloodline: floor((7-1)/6)=1 → total=6
+    expect(expectedFeatCount(doc, ref)).toBe(6);
+  });
+});
+
+describe("expectedFeatCount: multiclass fighter + wizard bonus feats stack", () => {
+  it("Fighter 2 / Wizard 5 Elf → base + fighter bonus + wizard bonus", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 2 }, { tag: "wizard", level: 5 }],
+      race: "Elf",
+    });
+    // charLevel=7: base ceil(7/2)=4
+    // fighter bonus: fL=2 → 1+floor(2/2)=2
+    // wizard bonus: wL=5 → Scribe Scroll(1) + Arcane School floor(5/5)=1 → 2
+    // total=4+0+2+2=8
+    expect(expectedFeatCount(doc, ref)).toBe(8);
   });
 });
 
@@ -147,11 +197,12 @@ describe("chosenFeatCount", () => {
 });
 
 // ─── expectedFeatCount: GM-grant addend ──────────────────────────────────────
+// Uses Cleric (no `bonusFeats`-targeting class features) to isolate the addend.
 describe("expectedFeatCount: GM-grant feat-slot addend", () => {
   it("adds a positive grant to the expected count", () => {
-    const base = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf" });
+    const base = makeDoc({ classes: [{ tag: "cleric", level: 1 }], race: "Elf" });
     const granted = makeDoc({
-      classes: [{ tag: "wizard", level: 1 }],
+      classes: [{ tag: "cleric", level: 1 }],
       race: "Elf",
       gmFeatSlots: 2,
     });
@@ -161,7 +212,7 @@ describe("expectedFeatCount: GM-grant feat-slot addend", () => {
 
   it("a negative grant (claw-back) reduces the expected count", () => {
     const granted = makeDoc({
-      classes: [{ tag: "wizard", level: 1 }],
+      classes: [{ tag: "cleric", level: 1 }],
       race: "Elf",
       gmFeatSlots: -1,
     });
@@ -169,13 +220,13 @@ describe("expectedFeatCount: GM-grant feat-slot addend", () => {
   });
 
   it("an absent gmGrants object behaves as 0 (back-compat)", () => {
-    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf" });
+    const doc = makeDoc({ classes: [{ tag: "cleric", level: 1 }], race: "Elf" });
     expect(doc.build.gmGrants).toBeUndefined();
     expect(expectedFeatCount(doc, ref)).toBe(1);
   });
 
   it("a gmGrants object with no featSlots key behaves as 0", () => {
-    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf" });
+    const doc = makeDoc({ classes: [{ tag: "cleric", level: 1 }], race: "Elf" });
     const withSkillOnly: CharacterDoc = {
       ...doc,
       build: { ...doc.build, gmGrants: { skillRanks: 5 } },

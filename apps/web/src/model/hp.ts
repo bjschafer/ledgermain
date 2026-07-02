@@ -8,6 +8,8 @@
  *   - Damage is absorbed by temporary HP first, then reduces current HP (which
  *     may go negative — the table tracks dying/death by the number).
  *   - Healing restores current HP up to max; it never restores temporary HP.
+ *     Curing hit point damage also removes an equal amount of nonlethal damage
+ *     (PF1 CRB, Nonlethal Damage), floored at 0.
  *   - Nonlethal damage accumulates separately; when it meets/exceeds current HP
  *     the creature is staggered/unconscious (a display concern, not modelled here).
  */
@@ -37,12 +39,19 @@ export function applyDamage(doc: CharacterDoc, amount: number): CharacterDoc {
   });
 }
 
-/** Heal `amount` of current HP, capped at `max`. Does not restore temp HP. */
+/**
+ * Heal `amount` of current HP, capped at `max`. Does not restore temp HP.
+ * Also removes an equal amount of nonlethal damage (floored at 0).
+ */
 export function applyHealing(doc: CharacterDoc, amount: number, max: number): CharacterDoc {
   const heal = nonNeg(amount);
   if (heal === 0) return doc;
   const { current, temp, nonlethal } = doc.live.hp;
-  return withHp(doc, { current: Math.min(max, current + heal), temp, nonlethal });
+  return withHp(doc, {
+    current: Math.min(max, current + heal),
+    temp,
+    nonlethal: nonNeg(nonlethal - heal),
+  });
 }
 
 /** Set the temporary HP pool (temp HP does not stack; the highest applies). */

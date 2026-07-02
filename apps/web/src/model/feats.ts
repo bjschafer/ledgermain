@@ -6,8 +6,12 @@
  *   1 at character level 1
  *   + 1 per odd character level beyond 1 (i.e. at levels 3, 5, 7, ...)
  *   + 1 if the character's race is Human (bonus feat at 1st level)
- *   + Fighter bonus combat feats: 1 at fighter level 1, +1 every even fighter level
- *     (levels 2, 4, 6, 8, 10, 12, 14, 16, 18, 20) → total = 1 + floor(fL / 2)
+ *   + Class bonus feats: every granted, resolved class feature whose `changes`
+ *     include a `target === "bonusFeats"` entry contributes its evaluated
+ *     formula value (e.g. Fighter's "1 + floor(@class.unlevel / 2)", Wizard's
+ *     "floor(@class.unlevel / 5)" Arcane School feats, Sorcerer's
+ *     "floor((@class.unlevel - 1) / 6)" bloodline feats — plus any other
+ *     vendored class features that grant a bonus feat slot).
  *
  * Only "Human" by race name grants the racial bonus feat here. Half-Elves receive
  * Skill Focus as a specific racial feat (Adaptability), which is not a free feat
@@ -15,13 +19,56 @@
  */
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
-import { FEAT_EFFECTS, featNameSlug, type ChoiceFeatEntry } from "@pf1/engine";
+import {
+  FEAT_EFFECTS,
+  buildRollData,
+  featNameSlug,
+  tryEvaluateFormula,
+  type ChoiceFeatEntry,
+  type RollData,
+} from "@pf1/engine";
 
 import { SKILL_NAMES } from "./names.js";
 
 /** Total character level (sum of all class levels). */
 function totalLevel(doc: CharacterDoc): number {
   return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
+}
+
+/**
+ * Sum of "bonusFeats"-targeting changes from every granted, resolved class
+ * feature across all of the character's classes. Mirrors the granted-feature
+ * walk in `collect.ts`: each class feature's formula is evaluated with
+ * `@class.unlevel`/`@class.level` bound to *that* class's level.
+ */
+function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
+  const rollData = buildRollData(doc, refData);
+  let total = 0;
+  for (const cls of doc.identity.classes) {
+    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    if (!classDef) continue;
+    const featureRollData: RollData = {
+      ...rollData,
+      class: { level: cls.level, unlevel: cls.level },
+    };
+    for (const grant of classDef.features) {
+      if (grant.level > cls.level || !grant.resolved) continue;
+      const feature = refData.classFeatures[grant.featureId];
+      if (!feature) continue;
+      for (const ch of feature.changes ?? []) {
+        if (ch.target !== "bonusFeats") continue;
+        let value: number | null;
+        try {
+          value = tryEvaluateFormula(ch.formula, featureRollData);
+        } catch {
+          continue;
+        }
+        if (value === null || Number.isNaN(value)) continue;
+        total += Math.trunc(value);
+      }
+    }
+  }
+  return Math.max(0, total);
 }
 
 /**
@@ -40,16 +87,15 @@ export function expectedFeatCount(doc: CharacterDoc, refData: RefData): number {
   const race = refData.races[doc.identity.race];
   const humanBonus = race?.name === "Human" ? 1 : 0;
 
-  // Fighter bonus combat feats: 1 + floor(fL / 2), where fL = fighter class level.
-  const fighterClass = doc.identity.classes.find((c) => c.tag === "fighter");
-  const fL = fighterClass?.level ?? 0;
-  const fighterBonus = fL > 0 ? 1 + Math.floor(fL / 2) : 0;
+  // Class bonus feats (Fighter combat feats, Wizard Arcane School feats,
+  // Sorcerer bloodline feats, etc.) — see classBonusFeats() doc comment.
+  const classBonus = classBonusFeats(doc, refData);
 
   // GM/homebrew addend (see build.gmGrants). Omitted/absent = 0; may be
   // negative (a GM can claw back slots). Added after rules-derived totals so
   // the over-budget check in the builder sees the loosened budget.
   return (
-    baseFeatCount + humanBonus + fighterBonus + (doc.build.gmGrants?.featSlots ?? 0)
+    baseFeatCount + humanBonus + classBonus + (doc.build.gmGrants?.featSlots ?? 0)
   );
 }
 

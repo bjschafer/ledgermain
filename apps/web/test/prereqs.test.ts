@@ -34,7 +34,7 @@ describe("feat prereq gating", () => {
     expect(powerAttackCheck?.met).toBe(false);
   });
 
-  it("ALLOWS a feat once every structured prerequisite is met (no warning)", () => {
+  it("ALLOWS a feat once every structured prerequisite is met", () => {
     const powerAttack = featByName("Power Attack");
     const cleave = featByName("Cleave");
     const res = evaluatePrereqs(
@@ -42,8 +42,24 @@ describe("feat prereq gating", () => {
       ctx({ selectedFeats: new Set([powerAttack.id]) }),
     );
     expect(res.blocked).toBe(false);
-    expect(res.warn).toBe(false);
     expect(res.checks.every((c) => c.met)).toBe(true);
+  });
+
+  it("WARNS even when structured checks are all met, as long as prereqText exists", () => {
+    // Cleave has fully-structured prereqs (Str 13, Power Attack, BAB +1), all met
+    // here, but it also carries verbatim prereqText — the advisory should still
+    // surface (blocked, driven only by structured checks, stays false).
+    const powerAttack = featByName("Power Attack");
+    const cleave = featByName("Cleave");
+    const res = evaluatePrereqs(
+      cleave,
+      ctx({ selectedFeats: new Set([powerAttack.id]) }),
+    );
+    expect(res.blocked).toBe(false);
+    expect(res.checks.length).toBeGreaterThan(0);
+    expect(res.checks.every((c) => c.met)).toBe(true);
+    expect(res.softText).toBeTruthy();
+    expect(res.warn).toBe(true);
   });
 
   it("BLOCKS on an unmet ability minimum", () => {

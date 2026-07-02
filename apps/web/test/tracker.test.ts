@@ -54,6 +54,20 @@ describe("HP math", () => {
     expect(d.live.hp.current).toBe(12);
   });
 
+  it("healing hit point damage also removes an equal amount of nonlethal damage", () => {
+    let d = doc();
+    d = { ...d, live: { ...d.live, hp: { current: 4, temp: 0, nonlethal: 8 } } };
+    d = applyHealing(d, 5, 12); // heal 5: nonlethal 8 -> 3
+    expect(d.live.hp.nonlethal).toBe(3);
+  });
+
+  it("healing more than current nonlethal floors nonlethal at 0", () => {
+    let d = doc();
+    d = { ...d, live: { ...d.live, hp: { current: 4, temp: 0, nonlethal: 3 } } };
+    d = applyHealing(d, 5, 12); // heal 5 > nonlethal 3 -> floored at 0
+    expect(d.live.hp.nonlethal).toBe(0);
+  });
+
   it("nonlethal accumulates and heals separately; rest clears everything", () => {
     let d = doc();
     d = { ...d, live: { ...d.live, hp: { current: 4, temp: 3, nonlethal: 0 } } };
