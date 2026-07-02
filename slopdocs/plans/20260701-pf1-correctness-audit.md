@@ -24,8 +24,8 @@ That diff is what surfaced A2/A5/A6/C2.
 | B3 | masterwork armor (ACP −1) in armor picker | sonnet | done (316e3e8) |
 | A3 | pipeline drops `operator: set` (+ speed totals in rollData) | sonnet | done (0353097; Change.operator lives in schema/src/primitives.ts, set semantics = lowest wins, rollData speeds = race base only) |
 | A6b | auto-grant fixed class bonus feats (Scribe Scroll / Eschew Materials) instead of budgeting a slot for them | fable (agent hit spend limit) | done (431086e; name-match rule: bonusFeats feature whose name matches a feat = fixed grant, else budgeted slot) |
-| C1 | iterative attacks display | — | not started (bigger feature, needs user call) |
-| C2 | surface "unsupported effects" on buffs/items | — | not started (pairs with A3 decision) |
+| C1 | iterative attacks display | sonnet | done (a19f2fa; ResolvedStat.iteratives?, engine iterativeSequence(); haste/TWF/flurry still excluded) |
+| C2 | surface "unsupported effects" on buffs/items | sonnet | done (953c518; engine/src/targets.ts is the applied-target registry — update it whenever compute() consumes a new target) |
 
 ## A. Real bugs
 
