@@ -49,7 +49,7 @@ describe("metadata + provenance", () => {
 
   it("contains the expected slice", () => {
     expect(Object.keys(ref.races)).toHaveLength(7);
-    expect(Object.keys(ref.classes)).toHaveLength(5); // fighter, barbarian, wizard, cleric, sorcerer
+    expect(Object.keys(ref.classes)).toHaveLength(6); // fighter, barbarian, wizard, cleric, sorcerer, rogue
     expect(Object.keys(ref.feats)).toHaveLength(390);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
   });
@@ -352,9 +352,11 @@ describe("mundane weapons (new in schema v2)", () => {
 });
 
 describe("archetypes (Stage 11, third-party dataset — no archetype data in Foundry)", () => {
-  it("vendors archetypes for all 5 sliced classes", () => {
+  it("vendors archetypes for all 6 sliced classes", () => {
     const tags = new Set(Object.values(ref.archetypes).map((a) => a.classTag));
-    expect(tags).toEqual(new Set(["fighter", "barbarian", "wizard", "cleric", "sorcerer"]));
+    expect(tags).toEqual(
+      new Set(["fighter", "barbarian", "wizard", "cleric", "sorcerer", "rogue"]),
+    );
   });
 
   it("every archetype feature points back to a real archetype of the same class", () => {

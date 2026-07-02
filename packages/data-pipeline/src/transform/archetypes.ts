@@ -20,6 +20,7 @@ export const CLASS_ARCHETYPE_FILES: Record<string, string> = {
   wizard: "Wizard.csv",
   cleric: "Cleric.csv",
   sorcerer: "Sorcerer.csv",
+  rogue: "Rogue UC.csv",
 };
 
 /** A row from one of the per-class archetype CSVs (header-name-keyed). */

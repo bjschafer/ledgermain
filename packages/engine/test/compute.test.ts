@@ -141,6 +141,50 @@ describe("compute: wizard L5 (human, no armor)", () => {
   });
 });
 
+describe("compute: rogue L5 (human, no armor)", () => {
+  const doc = makeDoc({
+    classes: [{ tag: "rogue", level: 5 }],
+    abilities: { str: 12, dex: 16, con: 14, int: 14, wis: 10, cha: 8 },
+    // ste (Stealth, class skill) maxed at 5 ranks; hea (Heal) is NOT a rogue
+    // class skill, ranked to confirm no class-skill bonus applies to it.
+    skillRanks: { ste: 5, hea: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +3 (3/4 medium progression: floor(5*3/4))", () => {
+    expect(sheet.bab).toBe(3);
+  });
+
+  it("saves: Fort +3 (poor base 1 + con2), Ref +7 (good base 4 + dex3), Will +1 (poor base 1 + wis0)", () => {
+    expect(sheet.saves.fort.total).toBe(3);
+    expect(sheet.saves.ref.total).toBe(7);
+    expect(sheet.saves.will.total).toBe(1);
+  });
+
+  it("HP 38 (8 max d8 + 4*5 avg d8 + Con2*5)", () => {
+    expect(sheet.hp.max).toBe(38);
+  });
+
+  it("class skill (Stealth) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.ste!.total).toBe(11); // 5 ranks + dex3 + 3
+    expect(sheet.skills.ste!.classSkill).toBe(true);
+  });
+
+  it("non-class skill (Heal) gets no class-skill bonus", () => {
+    expect(sheet.skills.hea!.total).toBe(1); // 1 rank + wis0
+    expect(sheet.skills.hea!.classSkill).toBe(false);
+  });
+
+  it("8 + Int skill points/level in ref data (rogue class def)", () => {
+    const rogueEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "rogue");
+    expect(rogueEntry).toBeDefined();
+    expect(rogueEntry![1].skillsPerLevel).toBe(8);
+    expect(rogueEntry![1].hd).toBe(8);
+    expect(rogueEntry![1].bab).toBe("med");
+    expect(rogueEntry![1].saves).toEqual({ fort: "low", ref: "high", will: "low" });
+  });
+});
+
 describe("compute: fighter L5 (full plate + magic items, stacking + armor training)", () => {
   const gear: ItemInstance[] = [
     {

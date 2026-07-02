@@ -100,6 +100,129 @@
       "Quarterstaff"
     ]
   },
+  "24b0LaabeAlUx5gN": {
+    "armorProf": [
+      "lgt"
+    ],
+    "bab": "med",
+    "classSkills": [
+      "acr",
+      "apr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dev",
+      "dip",
+      "dis",
+      "esc",
+      "int",
+      "kdu",
+      "klo",
+      "lin",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "sen",
+      "slt",
+      "ste",
+      "swm",
+      "umd"
+    ],
+    "description": "<p>Life is an endless adventure for those who live by their wits. Ever just one step ahead of danger, rogues bank on their cunning, skill, and charm to bend fate to their favor. Never knowing what to expect, they prepare for everything, becoming masters of a wide variety of skills, training themselves to be adept manipulators, agile acrobats, shadowy stalkers, or masters of any of dozens of other professions or talents. Thieves and gamblers, fast talkers and diplomats, bandits and bounty hunters, and explorers and investigators all might be considered rogues, as well as countless other professions that rely upon wits, prowess, or luck. Although many rogues favor cities and the innumerable opportunities of civilization, some embrace lives on the road, journeying far, meeting exotic people, and facing fantastic danger in pursuit of equally fantastic riches. In the end, any who desire to shape their fates and live life on their own terms might come to be called rogues.</p><p>Role: Rogues excel at moving about unseen and catching foes unaware, and tend to avoid head-to-head combat. Their varied skills and abilities allow them to be highly versatile, with great variations in expertise existing between different rogues. Most, however, excel in overcoming hindrances of all types, from unlocking doors and disarming traps to outwitting magical hazards and conning dull-witted opponents.</p>",
+    "features": [
+      {
+        "featureId": "6pjr8jMFSKqXkBKk",
+        "level": 1,
+        "name": "Sneak Attack",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.6pjr8jMFSKqXkBKk"
+      },
+      {
+        "featureId": "pEODJDoTk7uhCZY7",
+        "level": 1,
+        "name": "Trapfinding",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pEODJDoTk7uhCZY7"
+      },
+      {
+        "featureId": "KQYCRLEdD4bGA5ak",
+        "level": 2,
+        "name": "Evasion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KQYCRLEdD4bGA5ak"
+      },
+      {
+        "featureId": "iBTrvPtn3jczInbn",
+        "level": 2,
+        "name": "Rogue Talents",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.iBTrvPtn3jczInbn"
+      },
+      {
+        "featureId": "BoEkMviJrW0PKmhj",
+        "level": 3,
+        "name": "Trap Sense",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
+      },
+      {
+        "featureId": "7WaQxnVaaoL4AGr8",
+        "level": 4,
+        "name": "Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+      },
+      {
+        "featureId": "ZfnHhhTFQVo0Lj4P",
+        "level": 8,
+        "name": "Improved Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+      },
+      {
+        "featureId": "EQ7JGo4P1XirLO46",
+        "level": 10,
+        "name": "Advanced Talents (ROG)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.EQ7JGo4P1XirLO46"
+      },
+      {
+        "featureId": "KmVwFz2ajNtvgvbp",
+        "level": 20,
+        "name": "Master Strike",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KmVwFz2ajNtvgvbp"
+      }
+    ],
+    "hd": 8,
+    "id": "24b0LaabeAlUx5gN",
+    "name": "Rogue",
+    "saves": {
+      "fort": "low",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 8,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "67-70"
+      }
+    ],
+    "subType": "base",
+    "tag": "rogue",
+    "uuid": "Compendium.pf1.classes.Item.24b0LaabeAlUx5gN",
+    "weaponProf": [
+      "simple",
+      "Hand Crossbow",
+      "Rapier",
+      "Sap",
+      "Shortbow",
+      "Shortsword"
+    ]
+  },
   "AoWSbnuTSGIxmv61": {
     "armorProf": [],
     "bab": "low",

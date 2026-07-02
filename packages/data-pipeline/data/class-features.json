@@ -95,6 +95,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa"
   },
+  "6pjr8jMFSKqXkBKk": {
+    "changes": [],
+    "description": "<p>If a character can catch an opponent when he is unable to defend himself effectively from her attack, she can strike a vital spot for extra damage.</p><p>The character’s attack deals extra damage anytime her target would be denied a <em>Dexterity</em> bonus to <em>AC</em> (whether the target actually has a <em>Dexterity</em> bonus or not), or when the character flanks her target. This extra damage is 1d6 at 1st level, and increases by 1d6 every two class levels thereafter. Should the character score a <em>critical hit</em> with a sneak attack, this extra damage is not multiplied. Ranged attacks can count as sneak attacks only if the target is within 30 feet.</p><p>With a weapon that deals nonlethal damage (like a sap, whip, or an unarmed strike), a character can make a sneak attack that deals nonlethal damage instead of lethal damage. She cannot use a weapon that deals lethal damage to deal nonlethal damage in a sneak attack, not even with the usual –4 penalty.</p><p>The character must be able to see the target well enough to pick out a vital spot and must be able to reach such a spot. A character cannot sneak attack while striking a creature with concealment.</p>",
+    "grantsBuffs": [],
+    "id": "6pjr8jMFSKqXkBKk",
+    "name": "Sneak Attack",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "68"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.6pjr8jMFSKqXkBKk"
+  },
   "7WaQxnVaaoL4AGr8": {
     "abilityType": "ex",
     "changes": [],
@@ -201,6 +216,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
   },
+  "EQ7JGo4P1XirLO46": {
+    "changes": [],
+    "description": "<p>At 10th level, and every two levels thereafter, a rogue can choose one of the following advanced talents in place of a rogue talent.</p>",
+    "grantsBuffs": [],
+    "id": "EQ7JGo4P1XirLO46",
+    "name": "Advanced Talents (ROG)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "69-70"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.EQ7JGo4P1XirLO46"
+  },
   "EvrFDqZDbbFS4Avb": {
     "changes": [],
     "description": "<p>A cleric's bonus language options include Celestial, Abyssal, and Infernal (the languages of good, chaotic evil, and lawful evil outsiders, respectively). These choices are in addition to the bonus languages available to the character because of her race.</p>",
@@ -293,6 +323,42 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX"
+  },
+  "KQYCRLEdD4bGA5ak": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>This character can avoid damage from many area-effect attacks. If she makes a successful Reflex saving throw against an attack that normally deals half damage on a successful save, she instead takes no damage. <em>Evasion</em> can be used only if the character is wearing light armor or no armor. A helpless character does not gain the benefit of evasion.</p>",
+    "grantsBuffs": [],
+    "id": "KQYCRLEdD4bGA5ak",
+    "name": "Evasion",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59, 68"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "15"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.KQYCRLEdD4bGA5ak"
+  },
+  "KmVwFz2ajNtvgvbp": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>Upon reaching 20th level, a rogue becomes incredibly deadly when dealing sneak attack damage. Each time the rogue deals sneak attack damage, she can choose one of the following three effects:</p><p>The target can be...</p><ul><li>put to sleep for 1d4 hours</li><li>@Condition[paralyzed;info] for 2d6 rounds, or</li><li>slain</li></ul><p>Regardless of the effect chosen, the target receives a Fortitude save to negate the additional effect. The DC of this save is equal to 10 + 1/2 the rogue’s level + the rogue’s Intelligence modifier. Once a creature has been the target of a master strike, regardless of whether or not the save is made, that creature is immune to that rogue’s master strike for 24 hours. Creatures that are immune to sneak attack damage are also immune to this ability.</p>",
+    "grantsBuffs": [],
+    "id": "KmVwFz2ajNtvgvbp",
+    "name": "Master Strike",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "70"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.KmVwFz2ajNtvgvbp"
   },
   "LrjNAKP05lZq2tZZ": {
     "changes": [],
@@ -565,6 +631,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T"
   },
+  "iBTrvPtn3jczInbn": {
+    "changes": [],
+    "description": "<p>As a rogue gains experience, she learns a number of talents that aid her and confound her foes. Starting at 2nd level, a rogue gains one rogue talent. She gains an additional rogue talent for every 2 levels of rogue attained after 2nd level. A rogue cannot select an individual talent more than once.</p>\n<p>Talents marked with an asterisk add effects to a rogue’s sneak attack. Only one of these talents can be applied to an individual attack and the decision must be made before the attack roll is made.</p>\n<p>A rogue cannot choose a ninja trick with the same name as a rogue talent.</p>",
+    "grantsBuffs": [],
+    "id": "iBTrvPtn3jczInbn",
+    "name": "Rogue Talents",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "68-69"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.iBTrvPtn3jczInbn"
+  },
   "iqeyCQIIVnNt0p3h": {
     "abilityType": "ex",
     "changes": [],
@@ -616,6 +697,35 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
+  },
+  "pEODJDoTk7uhCZY7": {
+    "changes": [
+      {
+        "formula": "max(1, floor(@class.unlevel / 2))",
+        "target": "skill.dev",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>The character adds 1/2 her class level to Perception skill checks made to locate traps and to Disable Device checks (minimum 1). The character can use Disable Device to disarm magical traps.</p>",
+    "grantsBuffs": [],
+    "id": "pEODJDoTk7uhCZY7",
+    "name": "Trapfinding",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "63"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "31"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "20"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.pEODJDoTk7uhCZY7"
   },
   "pW1PNlDcdGl7KuEa": {
     "changes": [],

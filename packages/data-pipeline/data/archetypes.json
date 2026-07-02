@@ -979,6 +979,545 @@
     "name": "Weapon Master",
     "uuid": "archetype:fighter:weapon-master"
   },
+  "rogue:acrobat": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:acrobat",
+    "name": "Acrobat",
+    "uuid": "archetype:rogue:acrobat"
+  },
+  "rogue:bandit": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:bandit",
+    "name": "Bandit",
+    "uuid": "archetype:rogue:bandit"
+  },
+  "rogue:bekyar-kidnapper": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:bekyar-kidnapper",
+    "name": "Bekyar Kidnapper",
+    "uuid": "archetype:rogue:bekyar-kidnapper"
+  },
+  "rogue:bellflower-irrigator": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:bellflower-irrigator",
+    "name": "Bellflower Irrigator",
+    "uuid": "archetype:rogue:bellflower-irrigator"
+  },
+  "rogue:burglar": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:burglar",
+    "name": "Burglar",
+    "uuid": "archetype:rogue:burglar"
+  },
+  "rogue:carnivalist": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:carnivalist",
+    "name": "Carnivalist",
+    "uuid": "archetype:rogue:carnivalist"
+  },
+  "rogue:cat-burglar": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:cat-burglar",
+    "name": "Cat Burglar",
+    "uuid": "archetype:rogue:cat-burglar"
+  },
+  "rogue:chameleon": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:chameleon",
+    "name": "Chameleon",
+    "uuid": "archetype:rogue:chameleon"
+  },
+  "rogue:charlatan": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:charlatan",
+    "name": "Charlatan",
+    "uuid": "archetype:rogue:charlatan"
+  },
+  "rogue:consigliere": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:consigliere",
+    "name": "Consigliere",
+    "uuid": "archetype:rogue:consigliere"
+  },
+  "rogue:construct-saboteur": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:construct-saboteur",
+    "name": "Construct Saboteur",
+    "uuid": "archetype:rogue:construct-saboteur"
+  },
+  "rogue:counterfeit-mage": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:counterfeit-mage",
+    "name": "Counterfeit Mage",
+    "uuid": "archetype:rogue:counterfeit-mage"
+  },
+  "rogue:cutpurse": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:cutpurse",
+    "name": "Cutpurse",
+    "uuid": "archetype:rogue:cutpurse"
+  },
+  "rogue:dark-lurker": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:dark-lurker",
+    "name": "Dark Lurker",
+    "uuid": "archetype:rogue:dark-lurker"
+  },
+  "rogue:deadly-courtesan": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:deadly-courtesan",
+    "name": "Deadly Courtesan",
+    "uuid": "archetype:rogue:deadly-courtesan"
+  },
+  "rogue:desert-raider": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:desert-raider",
+    "name": "Desert Raider",
+    "uuid": "archetype:rogue:desert-raider"
+  },
+  "rogue:discretion-specialist": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:discretion-specialist",
+    "name": "Discretion Specialist",
+    "uuid": "archetype:rogue:discretion-specialist"
+  },
+  "rogue:dreamthief": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:dreamthief",
+    "name": "Dreamthief",
+    "uuid": "archetype:rogue:dreamthief"
+  },
+  "rogue:driver": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:driver",
+    "name": "Driver",
+    "uuid": "archetype:rogue:driver"
+  },
+  "rogue:earthshadow": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:earthshadow",
+    "name": "Earthshadow",
+    "uuid": "archetype:rogue:earthshadow"
+  },
+  "rogue:eldritch-raider": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:eldritch-raider",
+    "name": "Eldritch Raider",
+    "uuid": "archetype:rogue:eldritch-raider"
+  },
+  "rogue:eldritch-scoundrel": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:eldritch-scoundrel",
+    "name": "Eldritch Scoundrel",
+    "uuid": "archetype:rogue:eldritch-scoundrel"
+  },
+  "rogue:escapologist": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:escapologist",
+    "name": "Escapologist",
+    "uuid": "archetype:rogue:escapologist"
+  },
+  "rogue:false-medium": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:false-medium",
+    "name": "False Medium",
+    "uuid": "archetype:rogue:false-medium"
+  },
+  "rogue:fey-prankster": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:fey-prankster",
+    "name": "Fey Prankster",
+    "uuid": "archetype:rogue:fey-prankster"
+  },
+  "rogue:filcher": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:filcher",
+    "name": "Filcher",
+    "uuid": "archetype:rogue:filcher"
+  },
+  "rogue:galtan-agitator": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:galtan-agitator",
+    "name": "Galtan Agitator",
+    "uuid": "archetype:rogue:galtan-agitator"
+  },
+  "rogue:guerrilla": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:guerrilla",
+    "name": "Guerrilla",
+    "uuid": "archetype:rogue:guerrilla"
+  },
+  "rogue:guild-agent": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:guild-agent",
+    "name": "Guild Agent",
+    "uuid": "archetype:rogue:guild-agent"
+  },
+  "rogue:gun-smuggler": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:gun-smuggler",
+    "name": "Gun Smuggler",
+    "uuid": "archetype:rogue:gun-smuggler"
+  },
+  "rogue:heister": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:heister",
+    "name": "Heister",
+    "uuid": "archetype:rogue:heister"
+  },
+  "rogue:investigator": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:investigator",
+    "name": "Investigator",
+    "uuid": "archetype:rogue:investigator"
+  },
+  "rogue:kintargo-rebel": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:kintargo-rebel",
+    "name": "Kintargo Rebel",
+    "uuid": "archetype:rogue:kintargo-rebel"
+  },
+  "rogue:kitsune-trickster": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:kitsune-trickster",
+    "name": "Kitsune Trickster",
+    "uuid": "archetype:rogue:kitsune-trickster"
+  },
+  "rogue:knife-master": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:knife-master",
+    "name": "Knife Master",
+    "uuid": "archetype:rogue:knife-master"
+  },
+  "rogue:makeshift-scrapper": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:makeshift-scrapper",
+    "name": "Makeshift Scrapper",
+    "uuid": "archetype:rogue:makeshift-scrapper"
+  },
+  "rogue:master-of-disguise": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:master-of-disguise",
+    "name": "Master of Disguise",
+    "uuid": "archetype:rogue:master-of-disguise"
+  },
+  "rogue:nameless-shadow": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:nameless-shadow",
+    "name": "Nameless Shadow",
+    "uuid": "archetype:rogue:nameless-shadow"
+  },
+  "rogue:needler": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:needler",
+    "name": "Needler",
+    "uuid": "archetype:rogue:needler"
+  },
+  "rogue:numerian-scavenger": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:numerian-scavenger",
+    "name": "Numerian Scavenger",
+    "uuid": "archetype:rogue:numerian-scavenger"
+  },
+  "rogue:okeno-liberator": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:okeno-liberator",
+    "name": "Okeno Liberator",
+    "uuid": "archetype:rogue:okeno-liberator"
+  },
+  "rogue:phantom-thief": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:phantom-thief",
+    "name": "Phantom Thief",
+    "uuid": "archetype:rogue:phantom-thief"
+  },
+  "rogue:pirate": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:pirate",
+    "name": "Pirate",
+    "uuid": "archetype:rogue:pirate"
+  },
+  "rogue:planar-sneak": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:planar-sneak",
+    "name": "Planar Sneak",
+    "uuid": "archetype:rogue:planar-sneak"
+  },
+  "rogue:poisoner": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:poisoner",
+    "name": "Poisoner",
+    "uuid": "archetype:rogue:poisoner"
+  },
+  "rogue:rake": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:rake",
+    "name": "Rake",
+    "uuid": "archetype:rogue:rake"
+  },
+  "rogue:relic-raider": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:relic-raider",
+    "name": "Relic Raider",
+    "uuid": "archetype:rogue:relic-raider"
+  },
+  "rogue:river-rat": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:river-rat",
+    "name": "River Rat",
+    "uuid": "archetype:rogue:river-rat"
+  },
+  "rogue:roof-runner": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:roof-runner",
+    "name": "Roof Runner",
+    "uuid": "archetype:rogue:roof-runner"
+  },
+  "rogue:rotdrinker": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:rotdrinker",
+    "name": "Rotdrinker",
+    "uuid": "archetype:rogue:rotdrinker"
+  },
+  "rogue:sanctified-rogue": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:sanctified-rogue",
+    "name": "Sanctified Rogue",
+    "uuid": "archetype:rogue:sanctified-rogue"
+  },
+  "rogue:sapper": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:sapper",
+    "name": "Sapper",
+    "uuid": "archetype:rogue:sapper"
+  },
+  "rogue:scout": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:scout",
+    "name": "Scout",
+    "uuid": "archetype:rogue:scout"
+  },
+  "rogue:scroll-scoundrel": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:scroll-scoundrel",
+    "name": "Scroll Scoundrel",
+    "uuid": "archetype:rogue:scroll-scoundrel"
+  },
+  "rogue:sczarni-swindler": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:sczarni-swindler",
+    "name": "Sczarni Swindler",
+    "uuid": "archetype:rogue:sczarni-swindler"
+  },
+  "rogue:seeker-of-the-lost": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:seeker-of-the-lost",
+    "name": "Seeker of the Lost",
+    "uuid": "archetype:rogue:seeker-of-the-lost"
+  },
+  "rogue:shadow-scion": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:shadow-scion",
+    "name": "Shadow Scion",
+    "uuid": "archetype:rogue:shadow-scion"
+  },
+  "rogue:shadow-walker": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:shadow-walker",
+    "name": "Shadow Walker",
+    "uuid": "archetype:rogue:shadow-walker"
+  },
+  "rogue:sharper": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:sharper",
+    "name": "Sharper",
+    "uuid": "archetype:rogue:sharper"
+  },
+  "rogue:skulking-slayer": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:skulking-slayer",
+    "name": "Skulking Slayer",
+    "uuid": "archetype:rogue:skulking-slayer"
+  },
+  "rogue:sly-saboteur": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:sly-saboteur",
+    "name": "Sly Saboteur",
+    "uuid": "archetype:rogue:sly-saboteur"
+  },
+  "rogue:smuggler": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:smuggler",
+    "name": "Smuggler",
+    "uuid": "archetype:rogue:smuggler"
+  },
+  "rogue:snare-setter": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:snare-setter",
+    "name": "Snare Setter",
+    "uuid": "archetype:rogue:snare-setter"
+  },
+  "rogue:sniper": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:sniper",
+    "name": "Sniper",
+    "uuid": "archetype:rogue:sniper"
+  },
+  "rogue:snoop": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:snoop",
+    "name": "Snoop",
+    "uuid": "archetype:rogue:snoop"
+  },
+  "rogue:survivalist": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:survivalist",
+    "name": "Survivalist",
+    "uuid": "archetype:rogue:survivalist"
+  },
+  "rogue:swamp-poisoner": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:swamp-poisoner",
+    "name": "Swamp Poisoner",
+    "uuid": "archetype:rogue:swamp-poisoner"
+  },
+  "rogue:swashbuckler": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:swashbuckler",
+    "name": "Swashbuckler",
+    "uuid": "archetype:rogue:swashbuckler"
+  },
+  "rogue:swordmaster": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:swordmaster",
+    "name": "Swordmaster",
+    "uuid": "archetype:rogue:swordmaster"
+  },
+  "rogue:sylvan-trickster": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:sylvan-trickster",
+    "name": "Sylvan Trickster",
+    "uuid": "archetype:rogue:sylvan-trickster"
+  },
+  "rogue:thug": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:thug",
+    "name": "Thug",
+    "uuid": "archetype:rogue:thug"
+  },
+  "rogue:tidal-trickster": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:tidal-trickster",
+    "name": "Tidal Trickster",
+    "uuid": "archetype:rogue:tidal-trickster"
+  },
+  "rogue:toxic-talon": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:toxic-talon",
+    "name": "Toxic Talon",
+    "uuid": "archetype:rogue:toxic-talon"
+  },
+  "rogue:trapsmith": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:trapsmith",
+    "name": "Trapsmith",
+    "uuid": "archetype:rogue:trapsmith"
+  },
+  "rogue:underground-chemist": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:underground-chemist",
+    "name": "Underground Chemist",
+    "uuid": "archetype:rogue:underground-chemist"
+  },
+  "rogue:vexing-dodger": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:vexing-dodger",
+    "name": "Vexing Dodger",
+    "uuid": "archetype:rogue:vexing-dodger"
+  },
+  "rogue:waylayer": {
+    "classTag": "rogue",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "rogue:waylayer",
+    "name": "Waylayer",
+    "uuid": "archetype:rogue:waylayer"
+  },
   "sorcerer:dragon-drinker": {
     "classTag": "sorcerer",
     "contributorModule": "baileymh/pf1e-archetypes",
