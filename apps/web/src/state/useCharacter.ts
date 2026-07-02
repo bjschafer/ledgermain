@@ -234,6 +234,26 @@ export function useCharacter(): CharacterStore {
     [doc, refData],
   );
 
+  // A freshly created character starts at 0/0 HP (no class picked yet); once
+  // building gives it its first nonzero max, start at full instead of forcing
+  // a manual "Rest" click before play. Only fires on that first 0 -> nonzero
+  // transition (guarded by current/temp both still being untouched), so it
+  // never overrides HP the player has since tracked in Play mode.
+  const prevMaxHpRef = useRef<number | undefined>(undefined);
+  useEffect(() => {
+    if (!sheet) return;
+    const max = sheet.hp.max;
+    const prevMax = prevMaxHpRef.current;
+    prevMaxHpRef.current = max;
+    if (prevMax === 0 && max > 0) {
+      setDoc((d) =>
+        d && d.live.hp.current === 0 && d.live.hp.temp === 0
+          ? { ...d, live: { ...d.live, hp: { ...d.live.hp, current: max } } }
+          : d,
+      );
+    }
+  }, [sheet]);
+
   return {
     status,
     error,
