@@ -18,7 +18,7 @@ interface DomainPickerProps {
  * hybrid-prereqs philosophy. Domain tags come from `refData.domainSpellLists`.
  *
  * The chosen domains each grant one bonus prepared slot per accessible spell
- * level (1–9); the tracker's Prepared Spells panel renders those slots and
+ * level (1–9); the tracker's Spells panel renders those slots and
  * lets the cleric prepare a domain spell into them. This picker only sets the
  * choice — the slot capacity + prepare-from-domain UI live in the tracker.
  */

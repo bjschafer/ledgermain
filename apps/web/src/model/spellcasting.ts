@@ -4,7 +4,7 @@
  *
  * Wizard, sorcerer, and cleric are modelled today. Cleric domain spell lists
  * (one bonus prepare-slot per accessible spell level per chosen domain) live in
- * `refData.domainSpellLists`; the tracker's Prepared Spells panel renders
+ * `refData.domainSpellLists`; the tracker's Spells panel renders
  * those slots. The UI falls back gracefully for any caster tag not in
  * CASTER_MODELS.
  */
@@ -59,10 +59,13 @@ export interface CasterModel {
   blurb: string;
   /**
    * True if this caster knows every cantrip on its class list for free (no
-   * selection needed). Prepared casters (wizard) and some spontaneous ones
-   * (sorcerer) grant all; others (bard) learn a limited set. When true the
-   * builder excludes cantrips from the spellbook and the tracker sources them
-   * from the class list as read-only at-will spells.
+   * selection needed) — e.g. a wizard's spellbook starts with all 0-level
+   * wizard spells. When true the builder excludes cantrips from the
+   * spellbook and the tracker sources them from the class list as read-only
+   * at-will spells. When false (e.g. sorcerer), cantrips are capped by the
+   * class's spells-known table at level 0 and picked/removed the same way as
+   * any other known spell level; the tracker still casts them at will
+   * (unlimited, no slot spent) once known.
    */
   grantsAllCantrips: boolean;
   /**
@@ -95,10 +98,10 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     knownProgression: "sorcerer",
     knownLabel: "Spells Known",
     learnGuidance:
-      "Sorcerers learn a fixed set of spells known at each level (see spells-known table). You can cast any spell you know by spending a slot of that level.",
+      "Sorcerers learn a fixed set of spells known at each level (see spells-known table), including a limited number of cantrips. You can cast any spell you know by spending a slot of that level; cantrips are cast at will.",
     blurb:
       "Spontaneous caster: you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
-    grantsAllCantrips: true,
+    grantsAllCantrips: false,
     preparesFromClassList: false,
   },
   cleric: {

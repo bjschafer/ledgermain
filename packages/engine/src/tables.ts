@@ -225,8 +225,7 @@ const SORCERER_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
 
 /**
  * Sorcerer spells known per level, indexed `[classLevel - 1][spellLevel]`.
- * Column 0 tracks cantrips known, but is not used when the model sets
- * `grantsAllCantrips: true`. Columns 1–9 cap how many spells the sorcerer
+ * Column 0 caps cantrips known; columns 1–9 cap how many spells the sorcerer
  * may know at that spell level. (PF1 SRD — clean-room, open game content.)
  */
 const SORCERER_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [

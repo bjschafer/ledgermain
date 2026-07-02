@@ -312,17 +312,11 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
   const totalPrepared = prepared.length;
 
   return (
-    <Panel title="Prepared Spells" step="ps" storageKey="panel:Prepared">
-      <div className="spell-hints">
-        <p className="hint spell-hint-line">
-          Prepare spells from your {model.knownLabel.toLowerCase()} into the day's
-          slots, then <strong>Cast</strong> to expend them. <strong>New day</strong>{" "}
-          refreshes every slot without changing what's prepared.
-        </p>
-      </div>
-
-      {/* Day actions: refresh slots vs. wipe the loadout to re-prepare */}
-      <div className="prep-actions">
+    <Panel
+      title="Spells"
+      step="ps"
+      storageKey="panel:Prepared"
+      right={
         <button
           type="button"
           className="btn-ghost rest"
@@ -334,6 +328,18 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
         >
           New day
         </button>
+      }
+    >
+      <div className="spell-hints">
+        <p className="hint spell-hint-line">
+          Prepare spells from your {model.knownLabel.toLowerCase()} into the day's
+          slots, then <strong>Cast</strong> to expend them. <strong>New day</strong>{" "}
+          refreshes every slot without changing what's prepared.
+        </p>
+      </div>
+
+      {/* Wipe the loadout to re-prepare from scratch */}
+      <div className="prep-actions">
         {totalPrepared > 0 &&
           (confirmClear ? (
             <>
@@ -583,13 +589,8 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: Buil
   const status = spontaneousSlotStatus(doc, model, classLevel, abilityMod);
   const anyUsed = status.some((s) => s.used > 0);
 
-  // Cantrips: granted from the class list (at-will, no slots tracked).
-  const cantripList = useMemo(
-    () => model.grantsAllCantrips ? grantedCantrips(refData, casterTag) : [],
-    [model, refData, casterTag],
-  );
-
-  // Known spells by spell level (excluding cantrips when grantsAllCantrips).
+  // Known spells by spell level (cantrips land in level 0 here too, unless
+  // grantsAllCantrips sources them from the whole class list below instead).
   const knownByLevel = new Map<number, { id: string; name: string }[]>();
   for (const id of doc.build.spells.known) {
     const lvl = levelMap.get(id);
@@ -598,6 +599,12 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: Buil
     (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({ id, name: sp.name });
   }
   for (const arr of knownByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
+
+  // Cantrips: at-will, no slots tracked. Either the whole class list (when
+  // grantsAllCantrips) or the caster's limited known cantrips (level 0).
+  const cantripList = model.grantsAllCantrips
+    ? grantedCantrips(refData, casterTag)
+    : (knownByLevel.get(0) ?? []);
 
   return (
     <Panel
@@ -760,7 +767,7 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
 
   if (!casterTag || !model) {
     return (
-      <Panel title="Prepared Spells" step="ps" storageKey="panel:Prepared">
+      <Panel title="Spells" step="ps" storageKey="panel:Prepared">
         <p className="empty">
           {casterTag
             ? "Spell tracking isn't modelled for this class yet."

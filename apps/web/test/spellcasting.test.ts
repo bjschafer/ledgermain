@@ -100,7 +100,7 @@ describe("casterModelFor() — sorcerer", () => {
     expect(m).toBeDefined();
     expect(m!.preparation).toBe("spontaneous");
     expect(m!.ability).toBe("cha");
-    expect(m!.grantsAllCantrips).toBe(true);
+    expect(m!.grantsAllCantrips).toBe(false);
     expect(m!.knownProgression).toBe("sorcerer");
     expect(m!.preparesFromClassList).toBe(false);
   });

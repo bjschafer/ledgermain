@@ -1679,6 +1679,15 @@ button:focus-visible,
 	margin-left: auto;
 }
 
+/* The header caret also carries its own margin-left: auto (for panels with no
+   `right` content), which would otherwise split the free space between it and
+   a preceding .btn-ghost.rest, floating the button away from the edge instead
+   of sitting flush next to the caret. Let the button's own auto margin do the
+   pushing and keep the caret adjacent. */
+.panel > header .btn-ghost.rest ~ .panel-caret {
+	margin-left: 0;
+}
+
 /* conditions */
 .chip.cond.display-only {
 	opacity: 0.82;
