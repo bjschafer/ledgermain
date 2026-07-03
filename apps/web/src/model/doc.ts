@@ -19,6 +19,7 @@ import type {
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
+import { slugifySkillLabel } from "./names.js";
 
 const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
 
@@ -330,6 +331,58 @@ export function setSkillRank(
 	const next = { ...doc.build.skillRanks };
 	if (r <= 0) delete next[skill];
 	else next[skill] = r;
+	return { ...doc, build: { ...doc.build, skillRanks: next } };
+}
+
+/**
+ * Add a new Craft/Profession/Perform subskill instance (issue #24), keyed
+ * `"<base>.<slug>"` where `<slug>` is derived from the player's free-text
+ * label (see `model/names.ts:slugifySkillLabel` — the slug IS the label,
+ * there is no separate stored display string). Starts at 1 rank so the row
+ * doesn't immediately vanish (0-rank skill entries are pruned by
+ * `setSkillRank`, same as every other skill). A blank label, or one that
+ * slugifies to nothing, is a no-op. Slug collisions (two instances with the
+ * same label) are disambiguated with a numeric suffix.
+ */
+export function addSkillInstance(
+	doc: CharacterDoc,
+	base: string,
+	label: string,
+): CharacterDoc {
+	const slug = slugifySkillLabel(label);
+	if (!slug) return doc;
+	let id = `${base}.${slug}`;
+	for (let n = 2; doc.build.skillRanks[id] != null; n++) {
+		id = `${base}.${slug}-${n}`;
+	}
+	return setSkillRank(doc, id, 1);
+}
+
+/**
+ * Rename a parameterized skill instance by re-slugging its label — moves the
+ * existing ranks to the new id (or is a no-op if the label is blank/unchanged,
+ * or the new slug collides with an existing instance). Bare ids (no ".") are
+ * not renameable this way; nothing in the UI currently offers it, but this
+ * keeps `skillName`'s doc comment about renames true.
+ */
+export function renameSkillInstance(
+	doc: CharacterDoc,
+	id: SkillId,
+	newLabel: string,
+): CharacterDoc {
+	const dot = id.indexOf(".");
+	if (dot === -1) return doc;
+	const base = id.slice(0, dot);
+	const slug = slugifySkillLabel(newLabel);
+	if (!slug) return doc;
+	const newId = `${base}.${slug}`;
+	if (newId === id) return doc;
+	if (doc.build.skillRanks[newId] != null) return doc;
+	const ranks = doc.build.skillRanks[id];
+	if (ranks == null) return doc;
+	const next = { ...doc.build.skillRanks };
+	delete next[id];
+	next[newId] = ranks;
 	return { ...doc, build: { ...doc.build, skillRanks: next } };
 }
 

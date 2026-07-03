@@ -780,6 +780,34 @@ button:focus-visible,
 	vertical-align: middle;
 }
 
+/* remove button for a parameterized Craft/Profession/Perform instance */
+.skill-remove {
+	background: none;
+	border: none;
+	color: var(--faint);
+	font-size: 13px;
+	line-height: 1;
+	margin-left: 6px;
+	padding: 0 2px;
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+.skill-remove:hover {
+	color: var(--ink);
+}
+
+/* "add a Craft/Profession/Perform instance" row, below the skill list */
+.skill-add-row {
+	display: flex;
+	gap: 8px;
+	margin-top: 8px;
+}
+
+.skill-add-row input {
+	flex: 1;
+}
+
 /* bloodline-spell badge — marks auto-granted sorcerer bloodline spells (not
    part of the chosen known list, exempt from the known-spell cap). */
 .tag-bloodline {

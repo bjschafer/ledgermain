@@ -69,8 +69,47 @@ export const SKILL_NAMES: Record<SkillId, string> = {
   umd: "Use Magic Device",
 };
 
+/**
+ * Turn a user-entered label into a stable slug for a parameterized skill id
+ * (e.g. "Alchemy" -> "alchemy", "Basket Weaving!" -> "basket-weaving").
+ * Lowercase, non-alphanumeric runs collapse to a single "-", leading/trailing
+ * "-" trimmed. Returns "" for a label with no alphanumeric content.
+ */
+export function slugifySkillLabel(label: string): string {
+  return label
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/** Reverse of {@link slugifySkillLabel} for display: "basket-weaving" -> "Basket Weaving". */
+function humanizeSlug(slug: string): string {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+/**
+ * Skill id -> display name. A parameterized instance id ("crf.alchemy") has
+ * no separate stored label — see engine's `PARAMETERIZED_SKILL_PREFIXES` doc
+ * comment for why: the slug IS the label, humanized back for display
+ * ("Craft (Alchemy)"). This keeps id and label a single source of truth (no
+ * stale label if the underlying id is ever inspected/edited directly) at the
+ * cost of a rename changing the id — acceptable since renaming a subskill
+ * instance is rare and goes through `model/doc.ts`'s `renameSkillInstance`,
+ * which moves the ranks to the new id atomically.
+ */
 export function skillName(id: SkillId): string {
-  return SKILL_NAMES[id] ?? id;
+  const dot = id.indexOf(".");
+  if (dot === -1) return SKILL_NAMES[id] ?? id;
+  const base = id.slice(0, dot);
+  const slug = id.slice(dot + 1);
+  const baseName = SKILL_NAMES[base] ?? base;
+  const label = humanizeSlug(slug);
+  return label ? `${baseName} (${label})` : baseName;
 }
 
 /** Alignment code -> full display label. */
