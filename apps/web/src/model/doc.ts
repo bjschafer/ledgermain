@@ -632,6 +632,35 @@ export function setHeroPointsCap(
 }
 
 /**
+ * Toggle whether the character tracks XP at all (issue #27). Off by default —
+ * unlike hero points, the app's default posture is milestone leveling. The
+ * live `xp` total is left untouched so re-enabling restores the prior count.
+ */
+export function setXpEnabled(doc: CharacterDoc, enabled: boolean): CharacterDoc {
+	return {
+		...doc,
+		build: {
+			...doc.build,
+			settings: { ...doc.build.settings, xpEnabled: enabled },
+		},
+	};
+}
+
+/** Set the character's XP advancement track (slow/medium/fast). */
+export function setXpTrack(
+	doc: CharacterDoc,
+	track: "slow" | "medium" | "fast",
+): CharacterDoc {
+	return {
+		...doc,
+		build: {
+			...doc.build,
+			settings: { ...doc.build.settings, xpTrack: track },
+		},
+	};
+}
+
+/**
  * Set the GM-grant skill-rank addend (homebrew). `null` deletes the sub-key,
  * falling back to a 0 addend. Clamped to [-999, 999] (negative allows a GM
  * to claw back ranks). Mirrors `setHeroPointsCap` for symmetry/clamp posture.

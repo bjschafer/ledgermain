@@ -20,10 +20,13 @@ import {
 	setHeroPointsEnabled,
 	setHpMode,
 	setStatOverride,
+	setXpEnabled,
+	setXpTrack,
 	STAT_OVERRIDE_KEYS,
 	type StatOverrideKey,
 } from "../../model/doc.js";
 import { HERO_POINT_CAP } from "../../model/heroPoints.js";
+import { DEFAULT_XP_TRACK, type XpTrack } from "../../model/xp.js";
 import { parseImportedDoc } from "../../model/importCharacter.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
@@ -62,6 +65,8 @@ export function SettingsSection({
 	const fcbHouserule = settings.fcbHouserule ?? false;
 	const heroEnabled = settings.heroPointsEnabled ?? true;
 	const heroCap = settings.heroPointsCap ?? HERO_POINT_CAP;
+	const xpEnabled = settings.xpEnabled ?? false;
+	const xpTrack = settings.xpTrack ?? DEFAULT_XP_TRACK;
 	const overrides = settings.statOverrides ?? {};
 	const gmSkillRanks = doc.build.gmGrants?.skillRanks;
 	const gmFeatSlots = doc.build.gmGrants?.featSlots;
@@ -202,6 +207,51 @@ export function SettingsSection({
 								reset to {HERO_POINT_CAP}
 							</button>
 						)}
+					</div>
+				)}
+			</Panel>
+
+			{/* XP tracking */}
+			<Panel title="Experience Points" step="⚙">
+				<p className="hint" style={{ marginBottom: 12 }}>
+					XP tracking is an optional rule — off by default, since many tables
+					(including this one) level up at milestones instead. Enable it to
+					log XP and see how far you are from the next level.
+				</p>
+				<div className="chips">
+					<button
+						type="button"
+						className="chip"
+						aria-pressed={xpEnabled}
+						onClick={() => update((d) => setXpEnabled(d, true))}
+					>
+						Enabled
+					</button>
+					<button
+						type="button"
+						className="chip"
+						aria-pressed={!xpEnabled}
+						onClick={() => update((d) => setXpEnabled(d, false))}
+					>
+						Disabled
+					</button>
+				</div>
+				{xpEnabled && (
+					<div className="settings-row" style={{ marginTop: 12 }}>
+						<label className="hint" htmlFor="xp-track-select">
+							Advancement track
+						</label>
+						<select
+							id="xp-track-select"
+							value={xpTrack}
+							onChange={(e) =>
+								update((d) => setXpTrack(d, e.target.value as XpTrack))
+							}
+						>
+							<option value="slow">Slow</option>
+							<option value="medium">Medium (default)</option>
+							<option value="fast">Fast</option>
+						</select>
 					</div>
 				)}
 			</Panel>
