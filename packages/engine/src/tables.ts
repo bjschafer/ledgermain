@@ -172,10 +172,18 @@ export function raceGrantsFlexibleAbility(race: Race): boolean {
  * these numbers are NOT in the vendored Foundry data (clean-room, from the
  * published rules). Full prepared-arcane (wizard), full prepared-divine
  * (cleric), and spontaneous-arcane (sorcerer) are tabled today; add a key +
- * table to extend. Cleric shares the wizard base-spells-per-day numbers (the
- * domain spell slot granted at each accessible level is not included here).
+ * table to extend. Cleric and druid share the wizard base-spells-per-day
+ * numbers (the domain spell slot granted at each accessible level for cleric,
+ * and druid's lack of one, are not included here).
  */
-export type SpellProgression = "wizard" | "sorcerer" | "cleric" | "paladin" | "ranger" | "bard";
+export type SpellProgression =
+  | "wizard"
+  | "sorcerer"
+  | "cleric"
+  | "paladin"
+  | "ranger"
+  | "bard"
+  | "druid";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -284,6 +292,16 @@ export type SpellKnownProgression = "sorcerer" | "bard";
 const CLERIC_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY;
 
 /**
+ * Druid base spells per day, indexed `[classLevel - 1][spellLevel]`. Druids
+ * are full prepared-divine casters and use the same base spells-per-day
+ * numbers as the wizard/cleric ("Table: Druid" in the Core Rulebook is
+ * numerically identical to "Table: Cleric"). Cantrips (level 0) are orisons
+ * prepared at will. (PF1 SRD — clean-room table from the published rules,
+ * open game content.)
+ */
+const DRUID_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY;
+
+/**
  * Paladin/ranger base spells per day, indexed `[classLevel - 1][spellLevel]`.
  * Both are quarter-casters that gain no spellcasting until 4th level and cap at
  * 4th-level spells; "Table: Paladin" and "Table: Ranger" in the Core Rulebook
@@ -389,6 +407,7 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   paladin: PALADIN_RANGER_SPELLS_PER_DAY,
   ranger: PALADIN_RANGER_SPELLS_PER_DAY,
   bard: BARD_SPELLS_PER_DAY,
+  druid: DRUID_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<

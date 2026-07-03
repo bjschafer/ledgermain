@@ -426,6 +426,53 @@ describe("compute: bard L5 (human, no armor)", () => {
   });
 });
 
+describe("compute: druid L5 (human, no armor)", () => {
+  const doc = makeDoc({
+    classes: [{ tag: "druid", level: 5 }],
+    abilities: { str: 10, dex: 12, con: 14, int: 10, wis: 18, cha: 8 },
+    // sur (Survival, class skill) and kna (Knowledge [nature], class skill)
+    // both exercise Nature Sense's flat +2; dip (Diplomacy) is NOT a druid
+    // class skill, ranked to confirm no class-skill bonus applies to it.
+    skillRanks: { sur: 5, kna: 2, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +3 (3/4 medium progression: floor(5*3/4))", () => {
+    expect(sheet.bab).toBe(3);
+  });
+
+  it("saves: Fort +6 (good base 4 + con2), Ref +2 (poor base 1 + dex1), Will +8 (good base 4 + wis4)", () => {
+    expect(sheet.saves.fort.total).toBe(6);
+    expect(sheet.saves.ref.total).toBe(2);
+    expect(sheet.saves.will.total).toBe(8);
+  });
+
+  it("HP 38 (8 max d8 + 4*5 avg d8 + Con2*5)", () => {
+    expect(sheet.hp.max).toBe(38);
+  });
+
+  it("4 + Int skill points/level in ref data (druid class def)", () => {
+    const druidEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "druid");
+    expect(druidEntry).toBeDefined();
+    expect(druidEntry![1].skillsPerLevel).toBe(4);
+    expect(druidEntry![1].hd).toBe(8);
+    expect(druidEntry![1].bab).toBe("med");
+    expect(druidEntry![1].saves).toEqual({ fort: "high", ref: "low", will: "high" });
+  });
+
+  it("Nature Sense's vendored +2 untyped bonus reaches Survival and Knowledge (nature)", () => {
+    expect(sheet.skills.sur!.total).toBe(14); // 5 ranks + wis4 + classSkill3 + NatureSense2
+    expect(sheet.skills.sur!.classSkill).toBe(true);
+    expect(sheet.skills.kna!.total).toBe(7); // 2 ranks + int0 + classSkill3 + NatureSense2
+    expect(sheet.skills.kna!.classSkill).toBe(true);
+  });
+
+  it("non-class skill (Diplomacy) gets no class-skill bonus or Nature Sense", () => {
+    expect(sheet.skills.dip!.total).toBe(0); // 1 rank + cha-1
+    expect(sheet.skills.dip!.classSkill).toBe(false);
+  });
+});
+
 describe("compute: monk L5 (human, no armor)", () => {
   const doc = makeDoc({
     classes: [{ tag: "monk", level: 5 }],

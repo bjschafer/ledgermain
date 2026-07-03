@@ -1,4 +1,20 @@
 {
+  "0j7haa7K5O1CJ3ot": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>Starting at 4th level, a druid gains a +4 bonus on saving throws against the spell-like and supernatural abilities of fey. This bonus also applies to spells and effects that target plants, such as <em>blight</em>, <em>entangle</em>, <em>spike growth</em>, and <em>warp wood</em>.</p>",
+    "grantsBuffs": [],
+    "id": "0j7haa7K5O1CJ3ot",
+    "name": "Resist Nature's Lure",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "51"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.0j7haa7K5O1CJ3ot"
+  },
   "0v0NLj0tuVAu2Cla": {
     "abilityType": "ex",
     "changes": [],
@@ -780,6 +796,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.HAqAsb5H56C6cZm3"
   },
+  "HL53FUqkS4PZCMIK": {
+    "changes": [],
+    "description": "<p>A druid's bonus language options include Sylvan, the language of woodland creatures. This choice is in addition to the bonus languages available to the character because of her race.</p><p>A druid also knows Druidic, a secret language known only to druids, which she learns upon becoming a 1st-level druid. Druidic is a free language for a druid; that is, she knows it in addition to her regular allotment of languages and it doesn't take up a language slot. Druids are forbidden to teach this language to nondruids.</p><p>Druidic has its own alphabet.</p>",
+    "grantsBuffs": [],
+    "id": "HL53FUqkS4PZCMIK",
+    "name": "Bonus Languages (DRU)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "50"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.HL53FUqkS4PZCMIK"
+  },
   "HdzsFdoGauXFjU2S": {
     "abilityType": "ex",
     "changes": [],
@@ -957,6 +988,25 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.M4bXVPXouXroIt90"
+  },
+  "MXj2WoyW7vLxiVYw": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>The character gains the ability to change her appearance at will, as if using the alter self spell, but only while in her normal form.</p>",
+    "grantsBuffs": [],
+    "id": "MXj2WoyW7vLxiVYw",
+    "name": "A Thousand Faces",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "51"
+      },
+      {
+        "id": "PZO1140"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.MXj2WoyW7vLxiVYw"
   },
   "McXAM1BoPHZLO1n4": {
     "abilityType": "ex",
@@ -1185,6 +1235,33 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.U2YBSx1s8cT8iDq1"
   },
+  "UJPlPj3RUKLvmKzM": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.sur",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "skill.kna",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>A druid gains a +2 bonus on <em>Knowledge</em> (nature) and <em>Survival</em> checks.</p>",
+    "grantsBuffs": [],
+    "id": "UJPlPj3RUKLvmKzM",
+    "name": "Nature Sense",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "50"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM"
+  },
   "VjHjPja5QABBgRvR": {
     "changes": [
       {
@@ -1385,6 +1462,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.XmALhWqXdN9yOmtd"
   },
+  "YGxrR8krrZAviojA": {
+    "changes": [],
+    "description": "<p>A druid casts divine spells which are drawn from the druid spell list. Her alignment may restrict her from casting certain spells opposed to her moral or ethical beliefs; see Chaotic, Evil, Good, and Lawful Spells. A druid must choose and prepare her spells in advance.</p><p>To prepare or cast a spell, the druid must have a Wisdom score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a druid's spell is 10 + the spell level + the druid's Wisdom modifier.</p><p>Like other spellcasters, a druid can cast only a certain number of spells of each spell level per day. Her base daily spell allotment is given on Table: Druid. In addition, she receives bonus spells per day if she has a high Wisdom score (see Table: Ability Modifiers and Bonus Spells).</p><p>A druid must spend 1 hour each day in a trance-like meditation on the mysteries of nature to regain her daily allotment of spells. A druid may prepare and cast any spell on the druid spell list, provided that she can cast spells of that level, but she must choose which spells to prepare during her daily meditation.</p>",
+    "grantsBuffs": [],
+    "id": "YGxrR8krrZAviojA",
+    "name": "Druid Spells",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "49"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.YGxrR8krrZAviojA"
+  },
   "Yr8dfM2d8JEWoYkr": {
     "abilityType": "ex",
     "changes": [],
@@ -1507,6 +1599,26 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP"
+  },
+  "adslhIPLFgIaHBfh": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>The character leaves no trail in natural surroundings and cannot be tracked. She may choose to leave a trail if so desired.</p>",
+    "grantsBuffs": [],
+    "id": "adslhIPLFgIaHBfh",
+    "name": "Trackless Step",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "51"
+      },
+      {
+        "id": "PZO1140",
+        "pages": "28"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh"
   },
   "bCdFkzKiVg52ufhu": {
     "abilityType": "su",
@@ -1996,6 +2108,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
   },
+  "sJdBOE9lwz5XAkUi": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 4th level, a druid gains the ability to turn herself into any small or Medium <em>animal</em> and back again once per day. Her options for new forms include all creatures with the <em>animal</em> type. This ability functions like the beast shape I spell, except as noted here. The effect lasts for 1 hour per druid level, or until she changes back. Changing form (to <em>animal</em> or back) is a standard action and doesn’t provoke an attack of opportunity. The form chosen must be that of an animal the druid is familiar with.</p><p>A druid loses her ability to speak while in <em>animal</em> form because she is limited to the sounds that a normal, untrained animal can make, but she can communicate normally with other animals of the same general grouping as her new form. (The normal sound a wild parrot makes is a squawk, so changing to this form does not permit speech.)</p><p>A druid can use this ability an additional time per day at 6th level and every two levels thereafter, for a total of eight times at 18th level. At 20th level, a druid can use wild shape at will. As a druid gains in levels, this ability allows the druid to take on the form of larger and smaller animals, <em>elementals</em>, and plants. Each form expends one daily usage of this ability, regardless of the form taken.</p><p>At 6th level, a druid can use wild shape to change into a Large or Tiny <em>animal</em> or a Small <em>elemental</em>. When taking the form of an <em>animal</em>, a druid’s wild shape now functions as beast shape II. When taking the form of an <em>elemental</em>, the druid’s wild shape functions as elemental body I.</p><p>At 8th level, a druid can use wild shape to change into a Huge or Diminutive <em>animal</em>, a Medium <em>elemental</em>, or a Small or Medium plant creature. When taking the form of animals, a druid’s wild shape now functions as beast shape III. When taking the form of an elemental, the druid’s wild shape now functions as elemental body II. When taking the form of a plant creature, the druid’s wild shape functions as plant shape I.</p><p>At 10th level, a druid can use wild shape to change into a Large <em>elemental</em> or a Large plant creature. When taking the form of an <em>elemental</em>, the druid’s wild shape now functions as elemental body III. When taking the form of a plant, the druid’s wild shape now functions as plant shape II.</p><p>At 12th level, a druid can use wild shape to change into a Huge <em>elemental</em> or a Huge plant creature. When taking the form of an <em>elemental</em>, the druid’s wild shape now functions as elemental body IV. When taking the form of a plant, the druid’s wild shape now functions as plant shape III.</p>",
+    "grantsBuffs": [],
+    "id": "sJdBOE9lwz5XAkUi",
+    "name": "Wild Shape",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "51"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "wildShape",
+    "uses": {
+      "maxFormula": "min(floor((@class.unlevel - 2) / 2), 8)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi"
+  },
   "sk0HNTe9lKBpHQpN": {
     "abilityType": "ex",
     "changes": [],
@@ -2047,6 +2180,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.tWE66WvFjS1o0S4y"
+  },
+  "utbMg45UlQKSuak9": {
+    "changes": [],
+    "description": "<p>A druid can channel stored spell energy into summoning spells that she hasn’t prepared ahead of time. She can \"lose\" a prepared spell in order to cast any <em>summon nature’s ally</em> spell of the same level or lower.</p>",
+    "grantsBuffs": [],
+    "id": "utbMg45UlQKSuak9",
+    "name": "Spontaneous Casting (DRU)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "49"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.utbMg45UlQKSuak9"
   },
   "vVkKDPniD09W5JgO": {
     "changes": [
@@ -2101,6 +2249,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.wHfy3OJmTimVgXuO"
   },
+  "wZ40bxNVn95BbLBV": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 1st level, a druid forms a bond with nature. This bond can take one of two forms. The first is a close tie to the natural world, granting the druid one of the following cleric domains: <em>Air</em>, <em>Animal</em>, <em>Earth</em>, <em>Fire</em>, <em>Plant</em>, <em>Water</em>, or <em>Weather</em>. Druids also have access to a set of <em>Animal and Terrain Domains</em>. When determining the powers and bonus spells granted by this domain, the druid’s effective cleric level is equal to her druid level. A druid that selects this option also receives additional domain spell slots, just like a cleric. She must prepare the spell from her domain in this slot and this spell cannot be used to cast a spell spontaneously.</p>\n<p>The second option is to form a close bond with an <em>animal companion</em>. A druid may begin play with any of the animals listed in <em>Animal Choices</em>. This animal is a loyal companion that accompanies the druid on her adventures.</p>\n<p>Unlike normal animals of its kind, an animal companion’s Hit Dice, abilities, skills, and feats advance as the druid advances in level. If a character receives an animal companion from more than one source, her effective druid levels stack for the purposes of determining the statistics and abilities of the companion. Most animal companions increase in size when their druid reaches 4th or 7th level, depending on the companion. If a druid releases her companion from service, she may gain a new one by performing a ceremony requiring 24 uninterrupted hours of prayer in the environment where the new companion typically lives. This ceremony can also replace an animal companion that has perished.</p>",
+    "grantsBuffs": [],
+    "id": "wZ40bxNVn95BbLBV",
+    "name": "Nature Bond",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "50"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.wZ40bxNVn95BbLBV"
+  },
   "wew6ophJrcab24m6": {
     "abilityType": "ex",
     "changes": [],
@@ -2147,6 +2311,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ytotO22rp5ji6rT1"
+  },
+  "yzmKDxR63yS5fqlc": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 9th level, a druid gains immunity to all poisons.</p>",
+    "grantsBuffs": [],
+    "id": "yzmKDxR63yS5fqlc",
+    "name": "Venom Immunity",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "51"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.yzmKDxR63yS5fqlc"
   },
   "z4NJaCcj9VZpBv7d": {
     "abilityType": "sp",

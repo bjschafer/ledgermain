@@ -215,4 +215,30 @@ describe("resource pools derived from class features", () => {
     expect(loh?.per).toBe("day");
     expect(loh?.detail).toBe("2d6");
   });
+
+  it("derives Wild Shape uses/day from the druid's maxFormula (already vendored, no hand-authoring needed)", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      // min(floor((6-2)/2), 8) = 2 uses/day at L6.
+      identity: { name: "Fern", race: raceId("Human"), classes: [{ tag: "druid", level: 6 }] },
+    };
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const wildShape = pools.find((p) => p.name === "Wild Shape");
+    expect(wildShape).toBeDefined();
+    expect(wildShape?.max).toBe(2);
+    expect(wildShape?.per).toBe("day");
+    // No hand-authored dice/save scaling — the form's stat block isn't modeled.
+    expect(wildShape?.detail).toBeUndefined();
+  });
+
+  it("Wild Shape is inaccessible (0 uses, filtered out) below 4th level", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      identity: { name: "Fern", race: raceId("Human"), classes: [{ tag: "druid", level: 3 }] },
+    };
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    expect(pools.find((p) => p.name === "Wild Shape")).toBeUndefined();
+  });
 });

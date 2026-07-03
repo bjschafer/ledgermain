@@ -2,14 +2,16 @@
  * Pure spellcasting model for the builder UI. Keeps caster-class knowledge in
  * one place so the registry can be extended when more spell lists are vendored.
  *
- * Wizard, sorcerer, cleric, paladin, ranger, and bard are modelled today.
- * Cleric domain spell lists (one bonus prepare-slot per accessible spell
- * level per chosen domain) live in `refData.domainSpellLists`; the tracker's
- * Spells panel renders those slots. The UI falls back gracefully for any
- * caster tag not in CASTER_MODELS. Paladin/ranger are prepared divine
+ * Wizard, sorcerer, cleric, paladin, ranger, bard, and druid are modelled
+ * today. Cleric domain spell lists (one bonus prepare-slot per accessible
+ * spell level per chosen domain) live in `refData.domainSpellLists`; the
+ * tracker's Spells panel renders those slots. The UI falls back gracefully
+ * for any caster tag not in CASTER_MODELS. Paladin/ranger are prepared divine
  * half-casters like cleric but with no cantrips and no bonus domain-style
  * slots. Bard is a spontaneous arcane caster like sorcerer (own
- * spells-per-day/known tables, caps at 6th-level spells).
+ * spells-per-day/known tables, caps at 6th-level spells). Druid is a full
+ * prepared-divine caster identical in shape to cleric but with no domain
+ * slots.
  */
 
 import { baseSpellsKnown, baseSpellsPerDay, type SpellKnownProgression, type SpellProgression } from "@pf1/engine";
@@ -155,6 +157,18 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Spontaneous caster: you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
+  },
+  druid: {
+    preparation: "prepared",
+    ability: "wis",
+    progression: "druid",
+    knownLabel: "Druid List",
+    learnGuidance:
+      "Druids have no spellbook and nothing to learn — the entire druid spell list below is always available to prepare from.",
+    blurb:
+      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full druid list each day. (Druids can also spontaneously swap a prepared spell for a summon nature's ally spell of the same level or lower — not modeled here, same posture as cleric's spontaneous cure/inflict casting.)",
+    grantsAllCantrips: true,
+    preparesFromClassList: true,
   },
 };
 

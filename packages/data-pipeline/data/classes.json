@@ -446,6 +446,170 @@
       "Whip"
     ]
   },
+  "7eZQP0MzeO2svmVF": {
+    "armorProf": [
+      "lgt",
+      "med",
+      "shl",
+      "No Metal Armors"
+    ],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "clm",
+      "crf",
+      "fly",
+      "han",
+      "hea",
+      "kge",
+      "kna",
+      "lor",
+      "per",
+      "pro",
+      "rid",
+      "spl",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>Within the purity of the elements and the order of the wilds lingers a power beyond the marvels of civilization. Furtive yet undeniable, these primal magics are guarded over by servants of philosophical balance known as druids. Allies to beasts and manipulators of nature, these often misunderstood protectors of the wild strive to shield their lands from all who would threaten them and prove the might of the wilds to those who lock themselves behind city walls. Rewarded for their devotion with incredible powers, druids gain unparalleled shape-shifting abilities, the companionship of mighty beasts, and the power to call upon nature’s wrath. The mightiest temper powers akin to storms, earthquakes, and volcanoes with primeval wisdom long abandoned and forgotten by civilization.</p><p><strong>Role</strong>: While some druids might keep to the fringe of battle, allowing companions and summoned creatures to fight while they confound foes with the powers of nature, others transform into deadly beasts and savagely wade into combat. Druids worship personifications of elemental forces, natural powers, or nature itself. Typically this means devotion to a nature deity, though druids are just as likely to revere vague spirits, animalistic demigods, or even specific awe-inspiring natural wonders.</p>",
+    "features": [
+      {
+        "featureId": "HL53FUqkS4PZCMIK",
+        "level": 1,
+        "name": "Bonus Languages (DRU)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HL53FUqkS4PZCMIK"
+      },
+      {
+        "featureId": "exdHrqciehozr5SD",
+        "level": 1,
+        "name": "Chaotic, Evil, Good, and Lawful Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+      },
+      {
+        "featureId": "YGxrR8krrZAviojA",
+        "level": 1,
+        "name": "Druid Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YGxrR8krrZAviojA"
+      },
+      {
+        "featureId": "wZ40bxNVn95BbLBV",
+        "level": 1,
+        "name": "Nature Bond",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wZ40bxNVn95BbLBV"
+      },
+      {
+        "featureId": "UJPlPj3RUKLvmKzM",
+        "level": 1,
+        "name": "Nature Sense",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM"
+      },
+      {
+        "featureId": "RaFl9SpbAlXqhsDk",
+        "level": 1,
+        "name": "Orisons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+      },
+      {
+        "featureId": "utbMg45UlQKSuak9",
+        "level": 1,
+        "name": "Spontaneous Casting (DRU)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.utbMg45UlQKSuak9"
+      },
+      {
+        "featureId": "Yr8dfM2d8JEWoYkr",
+        "level": 1,
+        "name": "Wild Empathy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+      },
+      {
+        "featureId": "5iXq1igb1Cq0qobT",
+        "level": 2,
+        "name": "Woodland Stride",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT"
+      },
+      {
+        "featureId": "adslhIPLFgIaHBfh",
+        "level": 3,
+        "name": "Trackless Step",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh"
+      },
+      {
+        "featureId": "0j7haa7K5O1CJ3ot",
+        "level": 4,
+        "name": "Resist Nature's Lure",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0j7haa7K5O1CJ3ot"
+      },
+      {
+        "featureId": "sJdBOE9lwz5XAkUi",
+        "level": 4,
+        "name": "Wild Shape",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi"
+      },
+      {
+        "featureId": "yzmKDxR63yS5fqlc",
+        "level": 9,
+        "name": "Venom Immunity",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yzmKDxR63yS5fqlc"
+      },
+      {
+        "featureId": "MXj2WoyW7vLxiVYw",
+        "level": 13,
+        "name": "A Thousand Faces",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.MXj2WoyW7vLxiVYw"
+      },
+      {
+        "featureId": "5JlthJkVGEHPZypG",
+        "level": 15,
+        "name": "Timeless Body",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5JlthJkVGEHPZypG"
+      }
+    ],
+    "hd": 8,
+    "id": "7eZQP0MzeO2svmVF",
+    "name": "Druid",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48-54"
+      }
+    ],
+    "subType": "base",
+    "tag": "druid",
+    "uuid": "Compendium.pf1.classes.Item.7eZQP0MzeO2svmVF",
+    "weaponProf": [
+      "Club",
+      "Dagger",
+      "Dart",
+      "Quarterstaff",
+      "Scimitar",
+      "Scythe",
+      "Sickle",
+      "Shortspear",
+      "Sling",
+      "Spear"
+    ]
+  },
   "AoWSbnuTSGIxmv61": {
     "armorProf": [],
     "bab": "low",

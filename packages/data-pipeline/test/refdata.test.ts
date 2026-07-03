@@ -49,7 +49,7 @@ describe("metadata + provenance", () => {
 
   it("contains the expected slice", () => {
     expect(Object.keys(ref.races)).toHaveLength(7);
-    expect(Object.keys(ref.classes)).toHaveLength(10); // fighter, barbarian, wizard, cleric, sorcerer, rogue, paladin, ranger, bard, monk
+    expect(Object.keys(ref.classes)).toHaveLength(11); // fighter, barbarian, wizard, cleric, sorcerer, rogue, paladin, ranger, bard, monk, druid
     expect(Object.keys(ref.feats)).toHaveLength(390);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
   });
@@ -352,7 +352,7 @@ describe("mundane weapons (new in schema v2)", () => {
 });
 
 describe("archetypes (Stage 11, third-party dataset — no archetype data in Foundry)", () => {
-  it("vendors archetypes for all 10 sliced classes", () => {
+  it("vendors archetypes for all 11 sliced classes", () => {
     const tags = new Set(Object.values(ref.archetypes).map((a) => a.classTag));
     expect(tags).toEqual(
       new Set([
@@ -366,6 +366,7 @@ describe("archetypes (Stage 11, third-party dataset — no archetype data in Fou
         "ranger",
         "bard",
         "monk",
+        "druid",
       ]),
     );
   });

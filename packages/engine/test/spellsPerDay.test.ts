@@ -72,6 +72,35 @@ describe("baseSpellsPerDay() — cleric", () => {
   });
 });
 
+describe("baseSpellsPerDay() — druid", () => {
+  it("level-1 druid: 3 orisons, 1 first-level, no access above", () => {
+    expect(baseSpellsPerDay("druid", 1, 0)).toBe(3);
+    expect(baseSpellsPerDay("druid", 1, 1)).toBe(1);
+    expect(baseSpellsPerDay("druid", 1, 2)).toBeNull();
+    expect(baseSpellsPerDay("druid", 1, 9)).toBeNull();
+  });
+
+  it("3rd-level druid unlocks 2nd-level spells (1 slot)", () => {
+    expect(baseSpellsPerDay("druid", 3, 2)).toBe(1);
+    expect(baseSpellsPerDay("druid", 3, 3)).toBeNull();
+  });
+
+  it("matches wizard/cleric progression at every level/spell-level pair", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      for (let spLvl = 0; spLvl <= 9; spLvl++) {
+        expect(baseSpellsPerDay("druid", cl, spLvl)).toBe(baseSpellsPerDay("wizard", cl, spLvl));
+      }
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("druid", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("druid", 21, 1)).toBeNull();
+    expect(baseSpellsPerDay("druid", 5, -1)).toBeNull();
+    expect(baseSpellsPerDay("druid", 5, 10)).toBeNull();
+  });
+});
+
 describe("baseSpellsPerDay() — sorcerer", () => {
   it("cantrips (level 0) are always null — sorcerers cast them at will", () => {
     for (let cl = 1; cl <= 20; cl++) {

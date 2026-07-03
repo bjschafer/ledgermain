@@ -1000,6 +1000,503 @@
     "name": "Varisian Pilgrim",
     "uuid": "archetype:cleric:varisian-pilgrim"
   },
+  "druid:aerie-protector": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:aerie-protector",
+    "name": "Aerie Protector",
+    "uuid": "archetype:druid:aerie-protector"
+  },
+  "druid:ancient-guardian": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:ancient-guardian",
+    "name": "Ancient Guardian",
+    "uuid": "archetype:druid:ancient-guardian"
+  },
+  "druid:ape-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:ape-shaman",
+    "name": "Ape Shaman",
+    "uuid": "archetype:druid:ape-shaman"
+  },
+  "druid:aquatic-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:aquatic-druid",
+    "name": "Aquatic Druid",
+    "uuid": "archetype:druid:aquatic-druid"
+  },
+  "druid:arctic-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:arctic-druid",
+    "name": "Arctic Druid",
+    "uuid": "archetype:druid:arctic-druid"
+  },
+  "druid:bat-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:bat-shaman",
+    "name": "Bat Shaman",
+    "uuid": "archetype:druid:bat-shaman"
+  },
+  "druid:bear-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:bear-shaman",
+    "name": "Bear Shaman",
+    "uuid": "archetype:druid:bear-shaman"
+  },
+  "druid:blight-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:blight-druid",
+    "name": "Blight Druid",
+    "uuid": "archetype:druid:blight-druid"
+  },
+  "druid:boar-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:boar-shaman",
+    "name": "Boar Shaman",
+    "uuid": "archetype:druid:boar-shaman"
+  },
+  "druid:cave-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:cave-druid",
+    "name": "Cave Druid",
+    "uuid": "archetype:druid:cave-druid"
+  },
+  "druid:death-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:death-druid",
+    "name": "Death Druid",
+    "uuid": "archetype:druid:death-druid"
+  },
+  "druid:defender-of-the-true-world": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:defender-of-the-true-world",
+    "name": "Defender of the True World",
+    "uuid": "archetype:druid:defender-of-the-true-world"
+  },
+  "druid:desert-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:desert-druid",
+    "name": "Desert Druid",
+    "uuid": "archetype:druid:desert-druid"
+  },
+  "druid:devolutionist": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:devolutionist",
+    "name": "Devolutionist",
+    "uuid": "archetype:druid:devolutionist"
+  },
+  "druid:dinosaur-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:dinosaur-druid",
+    "name": "Dinosaur Druid",
+    "uuid": "archetype:druid:dinosaur-druid"
+  },
+  "druid:draconic-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:draconic-druid",
+    "name": "Draconic Druid",
+    "uuid": "archetype:druid:draconic-druid"
+  },
+  "druid:dragon-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:dragon-shaman",
+    "name": "Dragon Shaman",
+    "uuid": "archetype:druid:dragon-shaman"
+  },
+  "druid:drovier": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:drovier",
+    "name": "Drovier",
+    "uuid": "archetype:druid:drovier"
+  },
+  "druid:eagle-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:eagle-shaman",
+    "name": "Eagle Shaman",
+    "uuid": "archetype:druid:eagle-shaman"
+  },
+  "druid:feral-child": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:feral-child",
+    "name": "Feral Child",
+    "uuid": "archetype:druid:feral-child"
+  },
+  "druid:feral-shifter": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:feral-shifter",
+    "name": "Feral Shifter",
+    "uuid": "archetype:druid:feral-shifter"
+  },
+  "druid:feyspeaker": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:feyspeaker",
+    "name": "Feyspeaker",
+    "uuid": "archetype:druid:feyspeaker"
+  },
+  "druid:fungal-pilgrim": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:fungal-pilgrim",
+    "name": "Fungal Pilgrim",
+    "uuid": "archetype:druid:fungal-pilgrim"
+  },
+  "druid:goliath-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:goliath-druid",
+    "name": "Goliath Druid",
+    "uuid": "archetype:druid:goliath-druid"
+  },
+  "druid:green-faith-initiate": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:green-faith-initiate",
+    "name": "Green Faith Initiate",
+    "uuid": "archetype:druid:green-faith-initiate"
+  },
+  "druid:green-scourge": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:green-scourge",
+    "name": "Green Scourge",
+    "uuid": "archetype:druid:green-scourge"
+  },
+  "druid:halcyon-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:halcyon-druid",
+    "name": "Halcyon Druid",
+    "uuid": "archetype:druid:halcyon-druid"
+  },
+  "druid:jungle-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:jungle-druid",
+    "name": "Jungle Druid",
+    "uuid": "archetype:druid:jungle-druid"
+  },
+  "druid:kraken-caller": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:kraken-caller",
+    "name": "Kraken Caller",
+    "uuid": "archetype:druid:kraken-caller"
+  },
+  "druid:leshy-warden": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:leshy-warden",
+    "name": "Leshy Warden",
+    "uuid": "archetype:druid:leshy-warden"
+  },
+  "druid:life-channeler": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:life-channeler",
+    "name": "Life Channeler",
+    "uuid": "archetype:druid:life-channeler"
+  },
+  "druid:lion-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:lion-shaman",
+    "name": "Lion Shaman",
+    "uuid": "archetype:druid:lion-shaman"
+  },
+  "druid:mantella": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:mantella",
+    "name": "Mantella",
+    "uuid": "archetype:druid:mantella"
+  },
+  "druid:menhir-savant": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:menhir-savant",
+    "name": "Menhir Savant",
+    "uuid": "archetype:druid:menhir-savant"
+  },
+  "druid:mooncaller": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:mooncaller",
+    "name": "Mooncaller",
+    "uuid": "archetype:druid:mooncaller"
+  },
+  "druid:mountain-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:mountain-druid",
+    "name": "Mountain Druid",
+    "uuid": "archetype:druid:mountain-druid"
+  },
+  "druid:naga-aspirant": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:naga-aspirant",
+    "name": "Naga Aspirant",
+    "uuid": "archetype:druid:naga-aspirant"
+  },
+  "druid:nature-fang": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:nature-fang",
+    "name": "Nature Fang",
+    "uuid": "archetype:druid:nature-fang"
+  },
+  "druid:nature-priest": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:nature-priest",
+    "name": "Nature Priest",
+    "uuid": "archetype:druid:nature-priest"
+  },
+  "druid:nithveil-adept": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:nithveil-adept",
+    "name": "Nithveil Adept",
+    "uuid": "archetype:druid:nithveil-adept"
+  },
+  "druid:pack-lord": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:pack-lord",
+    "name": "Pack Lord",
+    "uuid": "archetype:druid:pack-lord"
+  },
+  "druid:plains-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:plains-druid",
+    "name": "Plains Druid",
+    "uuid": "archetype:druid:plains-druid"
+  },
+  "druid:planar-extremist": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:planar-extremist",
+    "name": "Planar Extremist",
+    "uuid": "archetype:druid:planar-extremist"
+  },
+  "druid:progenitor": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:progenitor",
+    "name": "Progenitor",
+    "uuid": "archetype:druid:progenitor"
+  },
+  "druid:river-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:river-druid",
+    "name": "River Druid",
+    "uuid": "archetype:druid:river-druid"
+  },
+  "druid:road-keeper": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:road-keeper",
+    "name": "Road Keeper",
+    "uuid": "archetype:druid:road-keeper"
+  },
+  "druid:rot-warden": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:rot-warden",
+    "name": "Rot Warden",
+    "uuid": "archetype:druid:rot-warden"
+  },
+  "druid:saurian-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:saurian-shaman",
+    "name": "Saurian Shaman",
+    "uuid": "archetype:druid:saurian-shaman"
+  },
+  "druid:season-keeper": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:season-keeper",
+    "name": "Season Keeper",
+    "uuid": "archetype:druid:season-keeper"
+  },
+  "druid:season-sage": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:season-sage",
+    "name": "Season Sage",
+    "uuid": "archetype:druid:season-sage"
+  },
+  "druid:serpent-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:serpent-shaman",
+    "name": "Serpent Shaman",
+    "uuid": "archetype:druid:serpent-shaman"
+  },
+  "druid:shark-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:shark-shaman",
+    "name": "Shark Shaman",
+    "uuid": "archetype:druid:shark-shaman"
+  },
+  "druid:skinshaper": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:skinshaper",
+    "name": "Skinshaper",
+    "uuid": "archetype:druid:skinshaper"
+  },
+  "druid:sky-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:sky-druid",
+    "name": "Sky Druid",
+    "uuid": "archetype:druid:sky-druid"
+  },
+  "druid:storm-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:storm-druid",
+    "name": "Storm Druid",
+    "uuid": "archetype:druid:storm-druid"
+  },
+  "druid:sunrider": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:sunrider",
+    "name": "Sunrider",
+    "uuid": "archetype:druid:sunrider"
+  },
+  "druid:supernaturalist": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:supernaturalist",
+    "name": "Supernaturalist",
+    "uuid": "archetype:druid:supernaturalist"
+  },
+  "druid:survivor": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:survivor",
+    "name": "Survivor",
+    "uuid": "archetype:druid:survivor"
+  },
+  "druid:swamp-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:swamp-druid",
+    "name": "Swamp Druid",
+    "uuid": "archetype:druid:swamp-druid"
+  },
+  "druid:swarm-monger": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:swarm-monger",
+    "name": "Swarm Monger",
+    "uuid": "archetype:druid:swarm-monger"
+  },
+  "druid:tempest-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:tempest-druid",
+    "name": "Tempest Druid",
+    "uuid": "archetype:druid:tempest-druid"
+  },
+  "druid:tempest-tamer": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:tempest-tamer",
+    "name": "Tempest Tamer",
+    "uuid": "archetype:druid:tempest-tamer"
+  },
+  "druid:toxicologist": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:toxicologist",
+    "name": "Toxicologist",
+    "uuid": "archetype:druid:toxicologist"
+  },
+  "druid:treesinger": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:treesinger",
+    "name": "Treesinger",
+    "uuid": "archetype:druid:treesinger"
+  },
+  "druid:troll-fury": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:troll-fury",
+    "name": "Troll Fury",
+    "uuid": "archetype:druid:troll-fury"
+  },
+  "druid:undine-adept": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:undine-adept",
+    "name": "Undine Adept",
+    "uuid": "archetype:druid:undine-adept"
+  },
+  "druid:urban-druid": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:urban-druid",
+    "name": "Urban Druid",
+    "uuid": "archetype:druid:urban-druid"
+  },
+  "druid:urushiol": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:urushiol",
+    "name": "Urushiol",
+    "uuid": "archetype:druid:urushiol"
+  },
+  "druid:wild-whisperer": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:wild-whisperer",
+    "name": "Wild Whisperer",
+    "uuid": "archetype:druid:wild-whisperer"
+  },
+  "druid:wolf-shaman": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:wolf-shaman",
+    "name": "Wolf Shaman",
+    "uuid": "archetype:druid:wolf-shaman"
+  },
+  "druid:world-walker": {
+    "classTag": "druid",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "druid:world-walker",
+    "name": "World Walker",
+    "uuid": "archetype:druid:world-walker"
+  },
   "fighter:aerial-assaulter": {
     "classTag": "fighter",
     "contributorModule": "baileymh/pf1e-archetypes",
