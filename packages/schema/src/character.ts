@@ -237,6 +237,17 @@ export interface CharacterDoc {
        */
       statOverrides?: Record<string, number>;
     };
+    /**
+     * Player-curated bookmarks into already-computed sheet numbers (issue #2,
+     * "saved rolls"). Per the owner decision on that issue, there is no dice
+     * roller — this is a static lookup: pin a stat (e.g. "Full attack —
+     * Composite Longbow") so its current total is one glance away on the Play
+     * tab instead of hunting through the full sheet. A saved roll is always
+     * resolved live against the current `DerivedSheet` (see
+     * `model/savedRolls.ts`); nothing here is a frozen snapshot, so it stays
+     * correct as buffs/feats/gear change.
+     */
+    savedRolls?: SavedRoll[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -297,6 +308,36 @@ export interface PreparedSpell {
    */
   kind?: "normal" | "domain" | "school";
 }
+
+/**
+ * A player-curated bookmark into one already-computed `DerivedSheet` number
+ * (see `build.savedRolls`). `label` is user-editable display text, seeded
+ * from the source's default name at add-time.
+ */
+export interface SavedRoll {
+  /** Unique instance id (stable across renames). */
+  id: string;
+  label: string;
+  source: SavedRollSource;
+}
+
+/**
+ * What a `SavedRoll` points at. Every variant resolves against a live
+ * `DerivedSheet` — no value is ever stored here — so a saved roll always
+ * reflects the character's current buffs/feats/gear. `weapon`/`skill`
+ * references are by stable id/name rather than array index, since
+ * `build.weapons` and skill lists can be reordered or edited.
+ */
+export type SavedRollSource =
+  | { kind: "melee" }
+  | { kind: "ranged" }
+  /** One `DerivedSheet.attacks[]` entry, matched by `ResolvedWeaponAttack.name`. */
+  | { kind: "weapon"; weaponName: string }
+  | { kind: "cmb" }
+  | { kind: "cmd" }
+  | { kind: "initiative" }
+  | { kind: "save"; save: "fort" | "ref" | "will" }
+  | { kind: "skill"; skillId: SkillId };
 
 /**
  * A buff currently affecting the character at the table. It carries its own

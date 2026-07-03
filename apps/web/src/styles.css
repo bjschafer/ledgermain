@@ -1876,6 +1876,26 @@ button:focus-visible,
 	border-bottom: 1px solid var(--line-soft);
 }
 
+/* Saved rolls: the name/value/remove line stays a row, but the row itself
+   becomes a column so an expanded provenance breakdown can sit full-width
+   below it instead of being squeezed into a narrow flex cell. */
+.saved-roll-row {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 6px;
+}
+
+.saved-roll-row-line {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.saved-roll-value-btn:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
 .res-row:last-child {
 	border-bottom: 0;
 }
@@ -1896,6 +1916,25 @@ button:focus-visible,
 	font-family: var(--mono);
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
+}
+
+/* Saved-rolls' rename field: reads as plain text until focused. */
+.saved-roll-name {
+	width: auto;
+	background: transparent;
+	border: 1px solid transparent;
+	padding: 2px 4px;
+	margin: -2px -4px;
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	color: inherit;
+}
+
+.saved-roll-name:hover,
+.saved-roll-name:focus {
+	background: var(--surface-2);
+	border-color: var(--line);
 }
 
 .res-count {

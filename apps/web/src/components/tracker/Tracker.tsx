@@ -1,9 +1,11 @@
 import { BuffsPanel } from "./BuffsPanel.js";
 import { ConditionsPanel } from "./ConditionsPanel.js";
+import { FeatsPanel } from "./FeatsPanel.js";
 import { HeroPointsPanel } from "./HeroPointsPanel.js";
 import { HpPanel } from "./HpPanel.js";
 import { PreparedSpellsPanel } from "./PreparedSpellsPanel.js";
 import { ResourcesPanel } from "./ResourcesPanel.js";
+import { SavedRollsPanel } from "./SavedRollsPanel.js";
 import { heroPointsEnabled } from "../../model/heroPoints.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -18,10 +20,12 @@ export function Tracker(props: BuilderProps) {
     <div className="tracker-col">
       <HpPanel {...props} />
       {heroOn && <HeroPointsPanel {...props} />}
+      <SavedRollsPanel {...props} />
       <ConditionsPanel {...props} />
       <BuffsPanel {...props} />
       <PreparedSpellsPanel {...props} />
       <ResourcesPanel {...props} />
+      <FeatsPanel {...props} />
     </div>
   );
 }
