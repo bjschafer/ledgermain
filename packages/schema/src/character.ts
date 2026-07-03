@@ -317,6 +317,64 @@ export interface CharacterDoc {
      * Standard maximum held at once is 3 (see HERO_POINT_CAP in model/heroPoints).
      */
     heroPoints?: number;
+    /**
+     * Ability damage (issue #18): points of damage currently suffered per
+     * ability, keyed by {@link AbilityId}. PF1 RAW: damage does NOT lower the
+     * score itself — it imposes a −1 penalty on every modifier-derived stat
+     * (skills, saves, attack, AC, HP for Con, spell DCs, ...) for every 2 full
+     * points of damage. The engine (`collectModifiers`) applies this as a
+     * provenance-tagged penalty to the ability's total that nets to exactly
+     * `floor(points/2)` off the modifier — see `compute.ts`'s ability-mod math
+     * for why subtracting an even number always lands exactly. Heals naturally
+     * at 1 point/ability/day of rest (model/afflictions.ts `restAbilityDamage`,
+     * not auto-wired to any single "rest" action — see that module's comment).
+     * Damage ≥ the ability's current total score means unconscious (Str/Dex/
+     * Con) or unable to act coherently (Int/Wis/Cha) — the UI surfaces a
+     * warning; the engine does not model incapacitation. Omitted/0 = no damage.
+     * Back-compat: absent entirely for documents predating this feature.
+     */
+    abilityDamage?: Partial<Record<AbilityId, number>>;
+    /**
+     * Ability drain (issue #18): points permanently drained per ability, keyed
+     * by {@link AbilityId}. Unlike damage, drain actually lowers the ability's
+     * effective score (it flows into `AbilityScore.total`/`.mod`, never
+     * `.base`) until magically restored (e.g. Restoration) — there is no
+     * natural-healing path for drain. Omitted/0 = no drain. Back-compat:
+     * absent entirely for documents predating this feature.
+     */
+    abilityDrain?: Partial<Record<AbilityId, number>>;
+    /**
+     * Ability penalty (issue #18): points of *temporary* penalty per ability
+     * (e.g. a spell or hazard effect that isn't modeled as a buff), keyed by
+     * {@link AbilityId}. Same −1-per-2-points modifier math as
+     * {@link abilityDamage}, but never lethal and never heals over time — it
+     * simply goes away when the player clears it (its cause ending). Kept
+     * distinct from `abilityDamage` so the UI/provenance can label the source
+     * correctly and so damage-specific rules (unconsciousness, 1/day healing)
+     * don't accidentally apply to it. Omitted/0 = no penalty. Back-compat:
+     * absent entirely for documents predating this feature.
+     */
+    abilityPenalty?: Partial<Record<AbilityId, number>>;
+    /**
+     * Negative levels (issue #19), split into `temporary` (e.g. from energy
+     * drain effects — RAW allows a Fortitude save to remove each temporary
+     * level 24h after gaining it; this app displays the distinction only, no
+     * timer) and `permanent` (only removed by Restoration-type magic). Each
+     * negative level (temporary + permanent combined) imposes, per PF1 RAW: −1
+     * on attack rolls, saving throws, and skill checks (applied via synthetic
+     * `attack`/`allSavingThrows`/`skills` changes — see `collectModifiers`),
+     * and −5 max HP (synthetic `hp` change). It also imposes −1 effective
+     * caster level per negative level, which has no home in the current engine
+     * (no derived "caster level" stat outside build-time prereqs — see
+     * `model/casterLevel.ts`'s doc comment for why folding it in there would be
+     * wrong), and −1 on ability checks, which the engine also doesn't model as
+     * a distinct roll — both are documented gaps, not silently dropped. If
+     * total negative levels reach or exceed the character's Hit Dice, PF1 RAW
+     * kills the character; the UI surfaces a warning only. Omitted/both-0 = no
+     * negative levels. Back-compat: absent entirely for documents predating
+     * this feature.
+     */
+    negativeLevels?: { temporary?: number; permanent?: number };
   };
 }
 
