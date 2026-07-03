@@ -493,6 +493,12 @@ export interface DerivedClassFeature {
   applied: boolean;
   /** Set when `applied` is false: the archetype feature name that replaced it. */
   replacedBy?: string;
+  /**
+   * One-line mechanical summary that the prose-only `changes[]` carries upstream
+   * (e.g. sneak attack's "3d6"). Undefined for features with no hand-authored
+   * numeric detail. The UI renders this next to the feature name.
+   */
+  detail?: string;
 }
 
 /** One feature granted by an active archetype (in addition to/instead of the base grant). */

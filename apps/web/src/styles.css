@@ -2468,6 +2468,10 @@ button:focus-visible,
 	color: var(--gold-dim);
 }
 
+.cf-detail {
+	color: var(--muted);
+}
+
 .cf-archetype {
 	margin-top: 8px;
 }

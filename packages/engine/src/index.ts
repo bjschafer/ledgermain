@@ -52,6 +52,8 @@ export {
   type SpellKnownProgression,
   channelEnergyDetail,
   type ChannelEnergyDetail,
+  sneakAttackDice,
+  type SneakAttackDetail,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export {

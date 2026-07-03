@@ -15,6 +15,8 @@ import type {
   RefData,
 } from "@pf1/schema";
 
+import { sneakAttackDice } from "./tables.js";
+
 export interface ResolvedClassFeatures {
   classFeatures: DerivedClassFeature[];
   activeArchetypes: DerivedArchetype[];
@@ -69,6 +71,13 @@ export function resolveClassFeatures(
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;
       const replacedBy = replacedByUuid.get(grant.uuid);
+      // Sneak Attack's die count has no vendored tag (Foundry only tags
+      // channelEnergy/rage) — matched by name, same posture as feat-effects.ts's
+      // name-slug lookup.
+      const detail =
+        cls.tag === "rogue" && grant.name === "Sneak Attack"
+          ? sneakAttackDice(cls.level).diceLabel
+          : undefined;
       classFeatures.push({
         level: grant.level,
         classTag: cls.tag,
@@ -76,6 +85,7 @@ export function resolveClassFeatures(
         name: grant.name,
         applied: !replacedBy,
         replacedBy,
+        detail,
       });
     }
   }

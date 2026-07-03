@@ -140,6 +140,38 @@ describe("resolveClassFeatures: ambiguous archetype features never strike throug
   });
 });
 
+describe("resolveClassFeatures: Acrobat (rogue archetype) swaps Trap Sense for Second Chance", () => {
+  // Closes out issue #13's "check archetype slice picks up the new class"
+  // item — Rogue UC.csv archetypes are vendored alongside the base class.
+  const acrobat = byName(ref.archetypes, "Acrobat");
+  const doc = makeDoc({
+    classes: [{ tag: "rogue", level: 5 }],
+    archetypes: [acrobat.id],
+  });
+  const { classFeatures, activeArchetypes } = resolveClassFeatures(doc, ref);
+
+  it("activeArchetypes carries one resolved rogue archetype", () => {
+    expect(activeArchetypes).toHaveLength(1);
+    expect(activeArchetypes[0]!.classTag).toBe("rogue");
+    expect(activeArchetypes[0]!.name).toBe("Acrobat");
+  });
+
+  it("Trap Sense (the swapped base feature) is struck through", () => {
+    const trapSense = classFeatures.find((f) => f.name === "Trap Sense")!;
+    expect(trapSense).toBeDefined();
+    expect(trapSense.applied).toBe(false);
+    expect(trapSense.replacedBy).toBe("Second Chance");
+  });
+
+  it("archetype's own features are listed, including the unpaired L1 grant", () => {
+    const expertAcrobat = activeArchetypes[0]!.features.find(
+      (f) => f.name === "Expert Acrobat",
+    )!;
+    expect(expertAcrobat).toBeDefined();
+    expect(expertAcrobat.ambiguous).toBe(true);
+  });
+});
+
 describe("archetypeSwappedUuids", () => {
   it("two barbarian archetypes that both swap the same rage-power slot share a uuid", () => {
     const armoredHulk = byName(ref.archetypes, "Armored Hulk");

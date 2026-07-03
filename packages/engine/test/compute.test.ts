@@ -183,6 +183,13 @@ describe("compute: rogue L5 (human, no armor)", () => {
     expect(rogueEntry![1].bab).toBe("med");
     expect(rogueEntry![1].saves).toEqual({ fort: "low", ref: "high", will: "low" });
   });
+
+  it("Sneak Attack class feature carries hand-authored dice detail (3d6 at L5)", () => {
+    const sneakAttack = sheet.classFeatures.find((f) => f.name === "Sneak Attack");
+    expect(sneakAttack).toBeDefined();
+    expect(sneakAttack!.classTag).toBe("rogue");
+    expect(sneakAttack!.detail).toBe("3d6");
+  });
 });
 
 describe("compute: fighter L5 (full plate + magic items, stacking + armor training)", () => {

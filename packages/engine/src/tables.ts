@@ -356,3 +356,34 @@ export function channelEnergyDetail(
   const saveDC = 10 + Math.floor(clericLevel / 2) + chaMod;
   return { dice, diceLabel: `${dice}d6`, saveDC };
 }
+
+/* ---------------------------------------------------------- sneak attack -- */
+
+/**
+ * Rogue sneak-attack dice, clean-room from the published PF1 SRD (the Sneak
+ * Attack class feature's `changes[]` is prose-only upstream — the die count
+ * is NOT among the vendored data).
+ *
+ * Extra damage = `1d6 at 1st level, +1d6 every two rogue levels thereafter`,
+ * so at L1 it is 1d6, L2 it is 1d6, L3 it is 2d6, L5 it is 3d6, and so on.
+ * Equivalently: `floor((rogueLevel + 1) / 2)` d6 — the same formula shape as
+ * `channelEnergyDetail`'s dice count.
+ */
+export interface SneakAttackDetail {
+  /** Number of d6 rolled on a sneak attack (0 with no rogue levels, 10 at L19+). */
+  dice: number;
+  /** Display string, e.g. "3d6". */
+  diceLabel: string;
+}
+
+/**
+ * Sneak-attack dice count for a rogue of `rogueLevel`. Out-of-range level
+ * returns `dice: 0`.
+ */
+export function sneakAttackDice(rogueLevel: number): SneakAttackDetail {
+  if (rogueLevel <= 0) {
+    return { dice: 0, diceLabel: "0d6" };
+  }
+  const dice = Math.floor((rogueLevel + 1) / 2);
+  return { dice, diceLabel: `${dice}d6` };
+}

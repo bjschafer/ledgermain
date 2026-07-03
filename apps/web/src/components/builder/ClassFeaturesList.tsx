@@ -67,6 +67,7 @@ export function ClassFeaturesList({
 											title={f.replacedBy ? `Replaced by ${f.replacedBy}` : undefined}
 										>
 											{f.name}
+											{f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
 											{f.replacedBy ? <span className="cf-replaced"> → {f.replacedBy}</span> : null}
 										</span>
 										{description ? <FeatureDescription html={description} /> : null}
