@@ -92,3 +92,25 @@ export function asNumber(value: unknown): number | undefined {
   }
   return undefined;
 }
+
+/**
+ * Foundry stores weight as `{ value: number }` (armors, weapons, items all
+ * share this shape). Extracts the plain number, or `undefined` when absent.
+ */
+export function readWeight(value: unknown): number | undefined {
+  if (!isDict(value)) return undefined;
+  return asNumber(value.value);
+}
+
+/**
+ * Limited-use resource shape shared by class features and items: a formula
+ * for the max ("5 + @abilities.wis.mod") and a recharge period ("day",
+ * "charges", "single", ...). Foundry tracks a live `value` too, but that's
+ * current-use state, not reference data, so it's intentionally dropped here.
+ */
+export function normalizeUses(value: unknown): { maxFormula?: string; per?: string } | undefined {
+  if (!isDict(value)) return undefined;
+  const maxFormula = str(value.maxFormula);
+  const per = str(value.per);
+  return maxFormula !== undefined || per !== undefined ? { maxFormula, per } : undefined;
+}

@@ -33,7 +33,7 @@ import { transformRace } from "./transform/races.js";
 import { transformSpell } from "./transform/spells.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { readCsv } from "./util/csv.js";
-import { readPack, readPackById, type RawDoc } from "./util/packs.js";
+import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { makeUuid, parseUuid } from "./util/uuid.js";
 
 export interface NormalizeOptions {
@@ -214,11 +214,20 @@ export function normalize(opts: NormalizeOptions): {
     .filter((pf) => pf.doc.type === "buff")
     .map((pf) => transformBuff(pf.doc, resolveUuid));
 
-  // --- items (engine-relevant subset: those carrying typed modifiers) --------
+  // --- items (full usable breadth of the `items` pack) -----------------------
+  // Every real (non-folder) doc in the pack is one of five Item subtypes —
+  // loot, equipment, container, weapon (splash/thrown one-shots like
+  // alchemist's fire), consumable (staves, rods, poisons) — all of which are
+  // representable gear, so nothing is excluded by type. Folder documents are
+  // interleaved in the same directory and excluded via `isFolderDoc` (their
+  // own `type` field mirrors the folder's *content* type, e.g. "Item", not
+  // "folder", so a naive type check doesn't catch them — see isFolderDoc doc
+  // comment). Note: Foundry's pf1 system does not ship potions/scrolls/wands
+  // as static compendium items — those are generated at runtime from the
+  // spells compendium, so there is nothing to vendor for them here.
   const items: Item[] = readPack(join(packsDir, "items"))
-    .filter((pf) => pf.doc.type !== "folder")
-    .map((pf) => transformItem(pf.doc, resolveUuid))
-    .filter((it) => it.changes.length > 0);
+    .filter((pf) => !isFolderDoc(pf.doc))
+    .map((pf) => transformItem(pf.doc, resolveUuid));
 
   // --- armors & shields (mundane base gear; magic named suits excluded) ------
   const armors: ArmorRef[] = readPack(join(packsDir, "armors-and-shields"))

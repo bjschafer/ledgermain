@@ -351,6 +351,67 @@ describe("mundane weapons (new in schema v2)", () => {
   });
 });
 
+describe("items (issue #15 — full usable breadth of the `items` pack)", () => {
+  it("vendors (nearly) every non-folder entry in the pack", () => {
+    // 1089 entries as of the pinned SHA (v11.11): the `items` pack has 1124
+    // YAML docs total, of which 35 are Folder documents (organizational only,
+    // excluded via `isFolderDoc`) — 1124 - 35 = 1089. No item *type* is
+    // excluded: loot, equipment, container, weapon (splash/thrown one-shots),
+    // and consumable (staves/rods/poisons) all vend. Bumping the SHA may
+    // shift this; changes here should be deliberate + reviewed.
+    expect(Object.keys(ref.items).length).toBe(1089);
+  });
+
+  it("no Folder document leaked in as a fake item", () => {
+    // Folder docs' own `type` mirrors the content they organize (e.g. "Item"),
+    // not "folder", so a naive type filter wouldn't catch them — this guards
+    // the `isFolderDoc`-based `_key` check in normalize.ts.
+    for (const name of ["Adventuring Gear", "Wondrous Items", "Magic Items"]) {
+      expect(Object.values(ref.items).find((it) => it.name === name)).toBeUndefined();
+    }
+  });
+
+  it("Cloak of Resistance +1 carries a typed `resist` change on all saves", () => {
+    const cloak = byName(ref.items, "Cloak of Resistance +1");
+    expect(cloak).toMatchObject({
+      subType: "wondrous",
+      slot: "shoulders",
+      price: 1000,
+      weight: 1,
+      cl: 5,
+    });
+    expect(cloak.changes).toEqual([
+      { formula: "1", target: "allSavingThrows", type: "resist" },
+    ]);
+  });
+
+  it("Ring of Protection +1 carries a typed `deflection` change to AC", () => {
+    const ring = byName(ref.items, "Ring of Protection +1");
+    expect(ring).toMatchObject({ subType: "wondrous", slot: "ring", price: 2000, cl: 5 });
+    expect(ring.changes).toEqual([{ formula: "1", target: "ac", type: "deflection" }]);
+  });
+
+  it("Staff of Healing captures charges as uses.{maxFormula,per} (no live value)", () => {
+    // Foundry's raw `system.uses` is `{ value: 10, maxFormula: "10", per:
+    // "charges" }`; RefData is static reference data, so only the reference
+    // shape (max + recharge period) is captured — `value` (current charges)
+    // is per-instance session state that belongs on the character side.
+    const staff = byName(ref.items, "Staff of Healing");
+    expect(staff.uses).toEqual({ maxFormula: "10", per: "charges" });
+  });
+
+  it("a single-use consumable (poison) captures uses.per without a maxFormula", () => {
+    const poison = byName(ref.items, "Blue Whinnis");
+    expect(poison.uses).toEqual({ maxFormula: undefined, per: "single" });
+  });
+
+  it("mundane adventuring gear vends with price + weight but no changes", () => {
+    const bladder = byName(ref.items, "Air Bladder");
+    expect(bladder).toMatchObject({ subType: "adventuring", price: 0.1, weight: 0.5 });
+    expect(bladder.changes).toEqual([]);
+  });
+});
+
 describe("archetypes (Stage 11, third-party dataset — no archetype data in Foundry)", () => {
   it("vendors archetypes for all 11 sliced classes", () => {
     const tags = new Set(Object.values(ref.archetypes).map((a) => a.classTag));

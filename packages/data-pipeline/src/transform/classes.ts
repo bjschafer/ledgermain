@@ -14,13 +14,13 @@ import {
   descriptionValue,
   normalizeChanges,
   normalizeSources,
+  normalizeUses,
   type UuidResolver,
 } from "./common.js";
 
 /** Transform a `class-abilities` pack entry (e.g. Rage). */
 export function transformClassFeature(doc: RawDoc, resolveUuid: UuidResolver): ClassFeature {
   const sys = (doc.system ?? {}) as Record<string, unknown>;
-  const uses = sys.uses as Record<string, unknown> | undefined;
   const links = sys.links as Record<string, unknown> | undefined;
   const supplements = Array.isArray(links?.supplements)
     ? (links!.supplements as Record<string, unknown>[])
@@ -38,14 +38,7 @@ export function transformClassFeature(doc: RawDoc, resolveUuid: UuidResolver): C
     tag: typeof sys.tag === "string" ? sys.tag : undefined,
     subType: typeof sys.subType === "string" ? sys.subType : undefined,
     abilityType: typeof sys.abilityType === "string" ? sys.abilityType : undefined,
-    uses:
-      uses && (uses.maxFormula != null || uses.per != null)
-        ? {
-            maxFormula:
-              typeof uses.maxFormula === "string" ? uses.maxFormula : undefined,
-            per: typeof uses.per === "string" ? uses.per : undefined,
-          }
-        : undefined,
+    uses: normalizeUses(sys.uses),
     changes: normalizeChanges(sys.changes),
     grantsBuffs,
   };
