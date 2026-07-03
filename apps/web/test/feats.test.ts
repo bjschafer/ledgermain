@@ -191,36 +191,42 @@ describe("expectedFeatCount: Ranger Combat Style bonus feats", () => {
   });
 });
 
-describe("expectedFeatCount: Monk Bonus Feat + a vendored-data quirk (Unarmed Strike)", () => {
+describe("expectedFeatCount: Monk Bonus Feat (Unarmed Strike quirk fixed)", () => {
   // Monk's "Bonus Feat (MNK)" (granted at rL 1) carries a vendored `changes[]`
   // entry targeting `bonusFeats` with formula "1 + floor((@class.unlevel + 2)
   // / 4)" — flows through the same generic classBonusFeats() pipeline with no
   // hand-authoring needed (issue #13 step 1 audit).
   //
-  // Also discovered while auditing: Monk's "Unarmed Strike" class feature
-  // ALSO carries a vendored `changes[]` entry targeting `bonusFeats` with a
-  // flat formula of "1" — this looks like Foundry's way of representing the
-  // automatic Improved Unarmed Strike grant every monk gets at L1, but
-  // classBonusFeats()'s fixed-grant filter only skips features whose *name*
-  // matches a real feat's name exactly ("Unarmed Strike" != "Improved
-  // Unarmed Strike"), so it isn't recognized as a fixed grant and instead
-  // inflates the free bonus-feat-slot budget by +1 at every monk level. This
-  // is a real, monk-specific instance of the classBonusFeats/grantedFeats
-  // name-matching gap — closely tied to Unarmed Strike, which is explicitly
-  // step 2 scope (hand-authoring unarmed damage/Flurry), so it's left
-  // unfixed here and documented in IMPLEMENTATION_PLAN.md instead. The
-  // expectations below assert the ACTUAL (off-by-one-slot) behavior rather
-  // than the SRD-correct one.
+  // Also discovered while auditing (step 1): Monk's "Unarmed Strike" class
+  // feature ALSO carries a vendored `changes[]` entry targeting `bonusFeats`
+  // with a flat formula of "1" — Foundry's way of representing the automatic
+  // Improved Unarmed Strike grant every monk gets at L1. Its feature name
+  // ("Unarmed Strike") doesn't match the feat it grants ("Improved Unarmed
+  // Strike"), so `classBonusFeats()`'s by-name fixed-grant filter used to
+  // miss it and inflate the free bonus-feat-slot budget by +1 at every monk
+  // level. Fixed in step 2 via `FEATURE_NAME_OVERRIDES` in `feats.ts` — the
+  // expectations below assert the SRD-correct (un-inflated) behavior.
 
-  it("Monk 1 Elf → 1 base + Bonus Feat(1) + Unarmed Strike quirk(1) = 3", () => {
+  it("Monk 1 Elf → 1 base + Bonus Feat(1), Unarmed Strike no longer inflates the budget = 2", () => {
     const doc = makeDoc({ classes: [{ tag: "monk", level: 1 }], race: "Elf" });
-    expect(expectedFeatCount(doc, ref)).toBe(3);
+    expect(expectedFeatCount(doc, ref)).toBe(2);
   });
 
-  it("Monk 5 Elf → 3 base + Bonus Feat(2) + Unarmed Strike quirk(1) = 6", () => {
+  it("Monk 5 Elf → 3 base + Bonus Feat(2) = 5", () => {
     const doc = makeDoc({ classes: [{ tag: "monk", level: 5 }], race: "Elf" });
-    // base: ceil(5/2)=3; Bonus Feat: 1+floor(7/4)=2; quirk: +1 → total=6
-    expect(expectedFeatCount(doc, ref)).toBe(6);
+    // base: ceil(5/2)=3; Bonus Feat: 1+floor(7/4)=2 → total=5
+    expect(expectedFeatCount(doc, ref)).toBe(5);
+  });
+
+  it("Monk 1 is granted Improved Unarmed Strike (via the Unarmed Strike -> Improved Unarmed Strike override)", () => {
+    const doc = makeDoc({ classes: [{ tag: "monk", level: 1 }], race: "Elf" });
+    const granted = grantedFeats(doc, ref);
+    // Stunning Fist is a separate, pre-existing fixed grant (its class feature
+    // name already matches a real feat by name, no override needed) — both
+    // are granted outright at monk level 1.
+    expect(granted.map((g) => g.featName)).toEqual(["Stunning Fist", "Improved Unarmed Strike"]);
+    const unarmed = granted.find((g) => g.featureName === "Unarmed Strike");
+    expect(unarmed!.classTag).toBe("monk");
   });
 });
 

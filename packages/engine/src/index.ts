@@ -60,6 +60,9 @@ export {
   type SmiteEvilDetail,
   layOnHandsDice,
   type LayOnHandsDetail,
+  unarmedDamageDie,
+  type UnarmedDamageDetail,
+  flurryOfBlowsLabel,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export {

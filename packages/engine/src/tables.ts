@@ -587,3 +587,66 @@ export function layOnHandsDice(paladinLevel: number): LayOnHandsDetail {
   const dice = Math.floor(paladinLevel / 2);
   return { dice, diceLabel: `${dice}d6` };
 }
+
+/* -------------------------------------------------------- unarmed strike -- */
+
+/**
+ * Monk unarmed strike damage die, clean-room from the published PF1 SRD
+ * "Table: Monk Unarmed Damage" — Medium column only (this engine doesn't
+ * model non-Medium creature sizes for this table; same posture as other
+ * hand-authored dice tables here). The Monk class feature's own vendored
+ * `description` embeds the full Small/Medium/Large table upstream, and it
+ * also carries a real dice-bearing action formula
+ * (`sizeRoll(ceil(@class.unlevel/11), 6 + floor(@class.unlevel/4) % 3 * 2, @size)`)
+ * — but per this project's formula-DSL convention (`formula.ts`: dice terms
+ * parse but throw on numeric eval), that's not evaluated here; the display
+ * table below is hand-authored directly from the SRD text instead, same
+ * posture as `sneakAttackDice` and `smiteEvilDetail`.
+ *
+ * Progression: 1d6 (L1-3), 1d8 (L4-7), 1d10 (L8-11), 2d6 (L12-15),
+ * 2d8 (L16-19), 2d10 (L20).
+ */
+export interface UnarmedDamageDetail {
+  /** Display string, e.g. "1d8". */
+  dieLabel: string;
+}
+
+/**
+ * Unarmed strike damage die for a monk of `monkLevel` (Medium size).
+ * Out-of-range (<=0) level is clamped to the L1-3 tier, since a monk's
+ * Unarmed Strike class feature is always granted at 1st level.
+ */
+export function unarmedDamageDie(monkLevel: number): UnarmedDamageDetail {
+  const level = Math.max(1, monkLevel);
+  if (level <= 3) return { dieLabel: "1d6" };
+  if (level <= 7) return { dieLabel: "1d8" };
+  if (level <= 11) return { dieLabel: "1d10" };
+  if (level <= 15) return { dieLabel: "2d6" };
+  if (level <= 19) return { dieLabel: "2d8" };
+  return { dieLabel: "2d10" }; // L20
+}
+
+/* ------------------------------------------------------- flurry of blows -- */
+
+/**
+ * Monk Flurry of Blows display summary, clean-room from the published PF1
+ * SRD: as a full-attack action, a monk may forgo her normal attacks to make
+ * a flurry of extra unarmed (or monk weapon) attacks, using her monk level
+ * in place of her true BAB for those attacks, all at a flat -2 penalty. She
+ * gets 1 extra attack at 1st level (2 attacks total), a 2nd extra attack at
+ * 8th level (3 attacks total, "as if using Improved Two-Weapon Fighting"),
+ * and a 3rd extra attack at 15th level (4 attacks total, "as if using
+ * Greater Two-Weapon Fighting").
+ *
+ * Note: the SRD actually reduces the flat -2 penalty to -1 at monk level 11
+ * and drops it entirely at level 16 — this display-only summary keeps a flat
+ * -2 at every tier for simplicity, since (per this project's scope) Flurry
+ * of Blows is NOT wired into the live attacks/iteratives table at all (that
+ * table only models true-BAB full-attack routines); this is a static
+ * reference note, not a live roll input.
+ */
+export function flurryOfBlowsLabel(monkLevel: number): string {
+  if (monkLevel <= 0) return "";
+  const attacks = monkLevel <= 7 ? 2 : monkLevel <= 14 ? 3 : 4;
+  return `${attacks} attacks at -2 (BAB = monk level)`;
+}

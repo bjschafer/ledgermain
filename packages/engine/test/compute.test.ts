@@ -510,6 +510,20 @@ describe("compute: monk L5 (human, no armor)", () => {
     expect(stunningFist?.per).toBe("day");
   });
 
+  it("Unarmed Strike class feature carries hand-authored damage-die detail (1d8 at L5)", () => {
+    const unarmedStrike = sheet.classFeatures.find((f) => f.name === "Unarmed Strike");
+    expect(unarmedStrike).toBeDefined();
+    expect(unarmedStrike!.classTag).toBe("monk");
+    expect(unarmedStrike!.detail).toBe("1d8");
+  });
+
+  it("Flurry of Blows class feature carries hand-authored attack-count detail (2 attacks at L5)", () => {
+    const flurryOfBlows = sheet.classFeatures.find((f) => f.name === "Flurry of Blows");
+    expect(flurryOfBlows).toBeDefined();
+    expect(flurryOfBlows!.classTag).toBe("monk");
+    expect(flurryOfBlows!.detail).toBe("2 attacks at -2 (BAB = monk level)");
+  });
+
   // Diamond Soul (L13, "10 + @class.unlevel" targeting "spellResist") is
   // correctly vendored but has nowhere to land: Spell Resistance isn't a
   // tracked stat anywhere in DerivedSheet or consumed as a compute.ts target

@@ -20,7 +20,10 @@
  * (the UI shows them as read-only "granted" entries) and are EXCLUDED from
  * the expected-count budget; features with no matching feat name ("Bonus
  * Feats (FGT)", "Bloodline Feat (SOR)") remain player-choice slots counted
- * by `expectedFeatCount`.
+ * by `expectedFeatCount`. Some class features are named DIFFERENTLY than the
+ * specific feat they grant (Monk's "Unarmed Strike" grants "Improved Unarmed
+ * Strike" — see `FEATURE_NAME_OVERRIDES` below); those are resolved through
+ * the override map before the by-name lookup.
  *
  * Only "Human" by race name grants the racial bonus feat here. Half-Elves receive
  * Skill Focus as a specific racial feat (Adaptability), which is not a free feat
@@ -53,6 +56,28 @@ function featIdByName(refData: RefData): Map<string, string> {
   return map;
 }
 
+/**
+ * Class feature name (lowercased, trimmed) -> the actual granted feat's name
+ * (lowercased, trimmed), for the handful of cases where Foundry names the
+ * class feature differently than the specific feat it auto-grants. Monk's
+ * "Unarmed Strike" class feature carries a vendored `{formula: "1", target:
+ * "bonusFeats", type: "untyped"}` change representing the automatic grant of
+ * "Improved Unarmed Strike" (confirmed via the class feature's description
+ * text and the vendored `links.supplements` UUID pointing at that feat) —
+ * but "unarmed strike" doesn't match "improved unarmed strike" by name, so
+ * without this override it falls through to being counted as a floating
+ * bonus-feat slot instead of the specific fixed grant it actually is.
+ */
+const FEATURE_NAME_OVERRIDES: Record<string, string> = {
+  "unarmed strike": "improved unarmed strike",
+};
+
+/** The feat name (lowercased, trimmed) a class feature name resolves to. */
+function resolvedFeatureName(featureName: string): string {
+  const key = featureName.trim().toLowerCase();
+  return FEATURE_NAME_OVERRIDES[key] ?? key;
+}
+
 /** A specific feat handed to the character by a class feature (no slot used). */
 export interface GrantedFeat {
   /** Id into RefData.feats. */
@@ -82,10 +107,11 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
       if (!(feature.changes ?? []).some((ch) => ch.target === "bonusFeats")) continue;
-      const featId = byName.get(feature.name.trim().toLowerCase());
+      const featId = byName.get(resolvedFeatureName(feature.name));
       if (!featId || seen.has(featId)) continue;
       seen.add(featId);
-      out.push({ featId, featName: feature.name, classTag: cls.tag, featureName: feature.name });
+      const featName = refData.feats[featId]?.name ?? feature.name;
+      out.push({ featId, featName, classTag: cls.tag, featureName: feature.name });
     }
   }
   return out;
@@ -116,7 +142,7 @@ function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
       // Fixed feat grant, not a slot — handled by grantedFeats().
-      if (byName.has(feature.name.trim().toLowerCase())) continue;
+      if (byName.has(resolvedFeatureName(feature.name))) continue;
       for (const ch of feature.changes ?? []) {
         if (ch.target !== "bonusFeats") continue;
         let value: number | null;

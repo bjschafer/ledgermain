@@ -16,7 +16,13 @@ import type {
   RefData,
 } from "@pf1/schema";
 
-import { sneakAttackDice, smiteEvilDetail, smiteEvilLabel } from "./tables.js";
+import {
+  sneakAttackDice,
+  smiteEvilDetail,
+  smiteEvilLabel,
+  unarmedDamageDie,
+  flurryOfBlowsLabel,
+} from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 
 export interface ResolvedClassFeatures {
@@ -79,15 +85,20 @@ export function resolveClassFeatures(
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;
       const replacedBy = replacedByUuid.get(grant.uuid);
-      // Sneak Attack's die count and Smite Evil's attack/damage/AC scaling
-      // have no vendored tag/changes (Foundry only tags channelEnergy/rage) —
-      // matched by name, same posture as feat-effects.ts's name-slug lookup.
+      // Sneak Attack's die count, Smite Evil's attack/damage/AC scaling, and
+      // Monk's unarmed damage die / Flurry of Blows summary have no vendored
+      // tag/changes (Foundry only tags channelEnergy/rage) — matched by
+      // name, same posture as feat-effects.ts's name-slug lookup.
       let detail: string | undefined;
       if (cls.tag === "rogue" && grant.name === "Sneak Attack") {
         detail = sneakAttackDice(cls.level).diceLabel;
       } else if (cls.tag === "paladin" && grant.name === "Smite Evil") {
         const chaMod = abilities?.cha?.mod ?? 0;
         detail = smiteEvilLabel(smiteEvilDetail(cls.level, chaMod));
+      } else if (cls.tag === "monk" && grant.name === "Unarmed Strike") {
+        detail = unarmedDamageDie(cls.level).dieLabel;
+      } else if (cls.tag === "monk" && grant.name === "Flurry of Blows") {
+        detail = flurryOfBlowsLabel(cls.level);
       }
       classFeatures.push({
         level: grant.level,
