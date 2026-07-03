@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import type { ActiveBuff, Buff, CharacterDoc, Change } from "@pf1/schema";
+import type { ActiveBuff, Buff, CharacterDoc, Change, ContextNote } from "@pf1/schema";
 import { buildRollData, evaluateBuffChange, unappliedChanges, unappliedTargetLabel } from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
 
@@ -9,6 +9,7 @@ import { NumberField } from "../builder/NumberField.js";
 import {
 	addBuff,
 	advanceRound,
+	hasNoModeledEffect,
 	makeActiveBuff,
 	makeCustomBuff,
 	removeBuff,
@@ -41,6 +42,17 @@ const TARGETS = [
 	"cmb",
 	"cmd",
 	"skills",
+	"spellResist",
+	"dr",
+	"dr.magic",
+	"dr.silver",
+	"dr.coldIron",
+	"dr.adamantine",
+	"eres.fire",
+	"eres.cold",
+	"eres.electricity",
+	"eres.acid",
+	"eres.sonic",
 ];
 const TYPES = [
 	"untyped",
@@ -138,7 +150,8 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
 					<div className="pick-row" key={buff.id}>
 						<div className="pmain">
 							<div className="pname">
-								{buff.name} <PartialBadge changes={buff.changes} />
+								{buff.name} <PartialBadge changes={buff.changes} />{" "}
+								<NoEffectHint changes={buff.changes} contextNotes={buff.contextNotes} />
 							</div>
 							<div className="preq">
 								{buff.changes.slice(0, 4).map((c, i) => (
@@ -209,6 +222,29 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
 }
 
 /**
+ * "This buff does nothing on this sheet" flag — for buffs with an empty
+ * `changes[]` AND an empty `contextNotes[]` (e.g. Stoneskin, Invisibility):
+ * toggling them is a silent trap with no visible effect at all. Distinct from
+ * {@link PartialBadge}, which flags buffs that DO have changes but some of
+ * them land on an unconsumed target. See `model/buffs.ts`'s
+ * `hasNoModeledEffect` and issue #21.
+ */
+function NoEffectHint({
+	changes,
+	contextNotes,
+}: {
+	changes: readonly Change[];
+	contextNotes?: readonly ContextNote[];
+}) {
+	if (!hasNoModeledEffect({ changes, contextNotes })) return null;
+	return (
+		<span className="soft" title="This buff has no changes or reminders — it's a reminder only, with nothing for the sheet to apply.">
+			reminder only — no modeled effect
+		</span>
+	);
+}
+
+/**
  * A single active-buff row with unit-aware duration display and entry.
  *
  * The unit (rds / min / hr) is local state, initialized from the buff's current
@@ -241,7 +277,8 @@ function BuffRow({
 		<div className="buff-row">
 			<div className="buff-main">
 				<div className="buff-name">
-					{buff.name} <PartialBadge changes={buff.changes} />
+					{buff.name} <PartialBadge changes={buff.changes} />{" "}
+					<NoEffectHint changes={buff.changes} contextNotes={buff.contextNotes} />
 				</div>
 				<div className="buff-changes num">
 					{buff.changes.map((c, i) => (

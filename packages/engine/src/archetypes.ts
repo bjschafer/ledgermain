@@ -23,6 +23,7 @@ import {
   smiteEvilLabel,
   unarmedDamageDie,
   flurryOfBlowsLabel,
+  barbarianDamageReduction,
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 
@@ -167,6 +168,8 @@ export function resolveClassFeatures(
       detail = unarmedDamageDie(classLevel).dieLabel;
     } else if (classTag === "monk" && grant.name === "Flurry of Blows") {
       detail = flurryOfBlowsLabel(classLevel);
+    } else if (classTag === "barbarian" && grant.name === "Damage Reduction") {
+      detail = barbarianDamageReduction(classLevel).label;
     }
     classFeatures.push({
       level: grant.level,

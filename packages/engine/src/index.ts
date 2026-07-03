@@ -66,6 +66,8 @@ export {
   unarmedDamageDie,
   type UnarmedDamageDetail,
   flurryOfBlowsLabel,
+  barbarianDamageReduction,
+  type BarbarianDrDetail,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
@@ -108,3 +110,4 @@ export {
   type RangerChoice,
   type CombatStyle,
 } from "./ranger.js";
+export { computeDefenses } from "./defenses.js";
