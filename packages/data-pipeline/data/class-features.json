@@ -30,6 +30,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
   },
+  "2M56kfIOws5yYtxq": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>A bard of 3rd level or higher can use his performance to help an ally succeed at a task. The ally must be within 30 feet and able to see and hear the bard. The ally gets a +2 <em>competence bonus</em> on skill checks with a particular skill as long as she continues to hear the bard’s performance. This bonus increases by +1 for every four levels the bard has attained beyond 3rd (+3 at 7th, +4 at 11th, +5 at 15th, and +6 at 19th).</p>\n<p>Certain uses of this ability are infeasible, such as <em>Stealth</em>, and may be disallowed at the GM’s discretion. A bard can’t inspire competence in himself. inspire competence relies on audible components.</p>",
+    "grantsBuffs": [],
+    "id": "2M56kfIOws5yYtxq",
+    "name": "Inspire Competence",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "37"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq"
+  },
   "2TsDfK0SKC8IGVx4": {
     "abilityType": "su",
     "changes": [],
@@ -175,6 +191,15 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT"
+  },
+  "5lDEyC6WejFyTEho": {
+    "changes": [],
+    "description": "<p>Upon reaching 5th level, and at every third class level after that (8th, 11th, and so on), the character can choose to learn a new spell in place of one he already knows. In effect, the character \"loses\" the old spell in exchange for the new one. The new spell's level must be the same as that of the spell being exchanged, and it must be at least one level lower than the highest-level class spell the character can cast. A character may swap only a single spell at any given level and must choose whether or not to swap the spell at the same time that he gains new spells known for the level.</p><h3>Class Specific Restrictions</h3><ul><li>Occultist swapped spell must come from the same list of spells provided by the implement school of the spell lost.</li><li>Mediums are allowed to swap spells of all levels the medium can currently cast, even highest-level.</li><li>Hunters cannot swap any summon nature’s ally spells.</li></ul>",
+    "grantsBuffs": [],
+    "id": "5lDEyC6WejFyTEho",
+    "name": "Exchange Spell (Medium)",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
   },
   "6h8ESfQp4dwX4qhk": {
     "changes": [],
@@ -518,6 +543,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Fm1FXt1gZX5PxBrT"
   },
+  "FnfX1SMG9uzBghnB": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>This ability functions just like Suggestion, but allows a bard of 18th level or higher to make a suggestion simultaneously to any number of creatures that he has already <em>fascinated</em>. Mass suggestion is an <em>enchantment</em> (<em>compulsion</em>), mind-affecting, language dependent ability that relies on audible components.</p>",
+    "grantsBuffs": [],
+    "id": "FnfX1SMG9uzBghnB",
+    "name": "Mass Suggestion",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.FnfX1SMG9uzBghnB"
+  },
   "GAHaeOGTBeR6LJ3K": {
     "abilityType": "ex",
     "changes": [],
@@ -533,6 +574,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.GAHaeOGTBeR6LJ3K"
+  },
+  "HAqAsb5H56C6cZm3": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 2nd level, a bard can choose one type of <em>Perform</em> skill. He can use his bonus in that skill in place of his bonus in associated skills. When substituting in this way, the bard uses his total <em>Perform</em> skill bonus, including class skill bonus, in place of its associated skill’s bonus, whether or not he has ranks in that skill or if it is a class skill. At 6th level, and every 4 levels thereafter, the bard can select an additional type of <em>Perform</em> to substitute.</p><p>The types of Perform and their associated skills are:</p><ul><li>Act (Bluff, Disguise)</li><li>Comedy (Bluff, Intimidate)</li><li>Dance (Acrobatics, Fly)</li><li>Keyboard Instruments (Diplomacy, Intimidate)</li><li>Oratory (Diplomacy, Sense Motive)</li><li>Percussion (Handle Animal, Intimidate)</li><li>Sing (Bluff, Sense Motive)</li><li>String (Bluff, Diplomacy)</li><li>Wind (Diplomacy, Handle Animal)</li></ul>",
+    "grantsBuffs": [],
+    "id": "HAqAsb5H56C6cZm3",
+    "name": "Versatile Performance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.HAqAsb5H56C6cZm3"
   },
   "HdzsFdoGauXFjU2S": {
     "abilityType": "ex",
@@ -633,6 +690,38 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.KmVwFz2ajNtvgvbp"
   },
+  "Kq3GVZ1yMv3ERQCJ": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, a bard can use his performance to counter magic effects that depend on sight. Each round of the Distraction, he makes a <em>Perform</em> (act, comedy, dance, or oratory) skill check. Any creature within 30 feet of the bard (including the bard himself) that is affected by an <em>illusion</em> (<em>pattern</em>) or <em>illusion</em> (<em>figment</em>) magical attack may use the bard’s <em>Perform</em> check result in place of its saving throw if, after the saving throw is rolled, the <em>Perform</em> check result proves to be higher. If a creature within range of the Distraction is already under the effect of a non-instantaneous <em>illusion</em> (<em>pattern</em>) or <em>illusion</em> (<em>figment</em>) magical attack, it gains another saving throw against the effect each round it sees the Distraction, but it must use the bard’s <em>Perform</em> check result for the save. Distraction does not work on effects that don’t allow saves. Distraction relies on visual components.</p>",
+    "grantsBuffs": [],
+    "id": "Kq3GVZ1yMv3ERQCJ",
+    "name": "Distraction",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "36"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Kq3GVZ1yMv3ERQCJ"
+  },
+  "LIFTbzT5WDcsDn0O": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>A bard of 15th level or higher can inspire tremendous heroism in himself or a single ally within 30 feet. For every three bard levels the character attains beyond 15th, he can inspire heroics in one additional creature. To inspire heroics, all of the targets must be able to see and hear the bard. Inspired creatures gain a +4 <em>morale bonus</em> on saving throws and a +4 <em>dodge bonus</em> to AC. The effect lasts for as long as the targets are able to witness the performance. Inspire heroics is a mind-affecting ability that relies on audible and visual components.</p>",
+    "grantsBuffs": [],
+    "id": "LIFTbzT5WDcsDn0O",
+    "name": "Inspire Heroics",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.LIFTbzT5WDcsDn0O"
+  },
   "LrjNAKP05lZq2tZZ": {
     "changes": [],
     "description": "<p>A wizard casts arcane spells drawn from the sorcerer/wizard spell list presented in Spell Lists. A wizard must choose and prepare his spells ahead of time.</p><p>To learn, prepare, or cast a spell, the wizard must have an Intelligence score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a wizard's spell is 10 + the spell level + the wizard's Intelligence modifier.</p><p>A wizard can cast only a certain number of spells of each spell level per day. His base daily spell allotment is given on Table: Wizard. In addition, he receives bonus spells per day if he has a high Intelligence score (see Table: Ability Modifiers and Bonus Spells).</p><p>A wizard may know any number of spells. He must choose and prepare his spells ahead of time by getting 8 hours of sleep and spending 1 hour studying his spellbook. While studying, the wizard decides which spells to prepare.</p>",
@@ -663,6 +752,28 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4"
+  },
+  "Pb9pxYrx6tS87euP": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "max(1, floor(@class.unlevel / 2))",
+        "target": "skill.knowledge",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>The character adds half his class level (minimum 1) to all <em>Knowledge</em> skill checks and may make all <em>Knowledge</em> skill checks untrained.</p>",
+    "grantsBuffs": [],
+    "id": "Pb9pxYrx6tS87euP",
+    "name": "Bardic Knowledge",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "35"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
   },
   "Q3x319WbNkCssApD": {
     "abilityType": "ex",
@@ -704,6 +815,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
   },
+  "RF8ioMkLc7LNnNT1": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, a bard learns to counter magic effects that depend on sound (but not spells that have verbal <em>components</em>.) Each round of the countersong he makes a <em>Perform</em> (keyboard, percussion, wind, string, or sing) skill check. Any creature within 30 feet of the bard (including the bard himself) that is affected by a sonic or language-dependent magical attack may use the bard’s <em>Perform</em> check result in place of its saving throw if, after the saving throw is rolled, the <em>Perform</em> check result proves to be higher. If a creature within range of the countersong is already under the effect of a non-instantaneous sonic or language-dependent magical attack, it gains another saving throw against the effect each round it hears the countersong, but it must use the bard’s <em>Perform</em> skill check result for the save. Countersong does not work on effects that don’t allow saves. Countersong relies on audible components.</p>",
+    "grantsBuffs": [],
+    "id": "RF8ioMkLc7LNnNT1",
+    "name": "Countersong",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "36"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.RF8ioMkLc7LNnNT1"
+  },
   "RNIkkvqaq2iVrahs": {
     "abilityType": "su",
     "changes": [],
@@ -719,6 +846,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.RNIkkvqaq2iVrahs"
+  },
+  "RSoy0ll1sNno6mJD": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>A bard of 20th level or higher can use his performance to cause one enemy to die from joy or sorrow. To be affected, the target must be able to see and hear the bard perform for 1 full round and be within 30 feet. The target receives a <em>Will</em> save (DC 10 + 1/2 the bard’s level + the bard’s <em>Cha</em> modifier) to negate the effect. If a creature’s saving throw succeeds, the target is <em>staggered</em> for 1d4 rounds, and the bard cannot use deadly performance on that creature again for 24 hours. If a creature’s saving throw fails, it dies. Deadly performance is a mind-effecting death effect that relies on audible and visual components.</p>",
+    "grantsBuffs": [],
+    "id": "RSoy0ll1sNno6mJD",
+    "name": "Deadly Performance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.RSoy0ll1sNno6mJD"
   },
   "RaFl9SpbAlXqhsDk": {
     "changes": [],
@@ -758,6 +901,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF"
+  },
+  "S4VHXq1asXBwaRwo": {
+    "changes": [],
+    "description": "<p>A bard casts arcane spells drawn from the bard spell list presented in Spell Lists. He can cast any spell he knows without preparing it ahead of time. Every bard spell has a verbal component (song, recitation, or music). To learn or cast a spell, a bard must have a Charisma score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a bard's spell is 10 + the spell level + the bard's Charisma modifier.</p><p>Like other spellcasters, a bard can cast only a certain number of spells of each spell level per day. His base daily spell allotment is given on Table: Bard. In addition, he receives bonus spells per day if he has a high Charisma score (see Table: Ability Modifiers and Bonus Spells).</p><p>The bard's selection of spells is extremely limited. A bard begins play knowing four 0-level spells and two 1st-level spells of the bard's choice. At each new bard level, he gains one or more new spells, as indicated on Table: Bard Spells Known. (Unlike spells per day, the number of spells a bard knows is not affected by his Charisma score. The numbers on Table: Bard Spells Known are fixed.)</p><p>A bard need not prepare his spells in advance. He can cast any spell he knows at any time, assuming he has not yet used up his allotment of spells per day for the spell's level.</p>",
+    "grantsBuffs": [],
+    "id": "S4VHXq1asXBwaRwo",
+    "name": "Bard Spells",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "35"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
   },
   "U2YBSx1s8cT8iDq1": {
     "abilityType": "ex",
@@ -871,6 +1029,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Wkv124hVPATT35bm"
   },
+  "X7gqbGkXTox6Ojhy": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>A bard of 9th level or higher can use his performance to inspire greatness in himself or a single willing ally within 30 feet, granting extra fighting capability. For every three levels a bard attains beyond 9th, he can target one additional ally while using this performance (up to a maximum of four at 18th level). To inspire greatness, all of the targets must be able to see and hear the bard. A creature inspired with greatness gains 2 bonus <em>Hit Dice</em> (d10s), the commensurate number of <em>temporary hit points</em> (apply the target’s <em>Constitution</em> modifier, if any, to these bonus <em>Hit Dice</em>), a +2 <em>competence bonus</em> on <em>attack rolls</em>, and a +1 <em>competence bonus</em> on <em>Fortitude</em> saves. The bonus <em>Hit Dice</em> count as regular <em>Hit Dice</em> for determining the effect of spells that are <em>Hit Dice</em> dependent. Inspire greatness is a mind-affecting ability and it relies on audible and visual components.</p>",
+    "grantsBuffs": [],
+    "id": "X7gqbGkXTox6Ojhy",
+    "name": "Inspire Greatness",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "37"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.X7gqbGkXTox6Ojhy"
+  },
   "Xi5BENHWBu1hLHKl": {
     "changes": [],
     "description": "<p>Beginning at 4th level, a ranger gains the ability to cast a small number of divine spells, which are drawn from the ranger spell list presented in Spell Lists. A ranger must choose and prepare his spells in advance.</p><p>To prepare or cast a spell, a ranger must have a Wisdom score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a ranger's spell is 10 + the spell level + the ranger's Wisdom modifier.</p><p>Like other spellcasters, a ranger can cast only a certain number of spells of each spell level per day. His base daily spell allotment is given on Table: Ranger. In addition, he receives bonus spells per day if he has a high Wisdom score (see Table: Ability Modifiers and Bonus Spells). When Table: Ranger indicates that the ranger gets 0 spells per day of a given spell level, he gains only the bonus spells he would be entitled to based on his Wisdom score for that spell level.</p><p>A ranger must spend 1 hour per day in quiet meditation to regain his daily allotment of spells. A ranger may prepare and cast any spell on the ranger spell list, provided that he can cast spells of that level, but he must choose which spells to prepare during his daily meditation.</p><p>Through 3rd level, a ranger has no caster level. At 4th level and higher, his caster level is equal to his ranger level – 3.</p>",
@@ -925,6 +1099,26 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+  },
+  "ZfCUTi1MiLgR4T7I": {
+    "changes": [],
+    "description": "<p>A bard is trained to use the <em>Perform</em> skill to create magical effects on those around him, including himself if desired. He can use this ability for a number of rounds per day equal to 4 + his <em>Charisma</em> modifier. At each level after 1st a bard can use bardic performance for 2 additional rounds per day. Each round, the bard can produce any one of the types of bardic performance that he has mastered, as indicated by his level.</p>\n<p>Starting a bardic performance is a <em>standard action</em>, but it can be maintained each round as a <em>free action</em>. Changing a bardic performance from one effect to another requires the bard to stop the previous performance and start a new one as a <em>standard action</em>. A bardic performance cannot be disrupted, but it ends immediately if the bard is killed, <em>paralyzed</em>, <em>stunned</em>, knocked <em>unconscious</em>, or otherwise prevented from taking a <em>free action</em> to maintain it each round. A bard cannot have more than one bardic performance in effect at one time.</p>\n<p>At 7th level, a bard can start a bardic performance as a <em>move action</em> instead of a <em>standard action</em>. At 13th level, a bard can start a bardic performance as a <em>swift action</em>.</p>\n<p>Each bardic performance has audible <em>components</em>, visual <em>components</em>, or both.</p>\n<p>If a bardic performance has audible components, the targets must be able to hear the bard for the performance to have any effect, and many such performances are language dependent (as noted in the description). A <em>deaf</em> bard has a 20% chance to fail when attempting to use a bardic performance with an audible component. If he fails this check, the attempt still counts against his daily limit. Deaf creatures are immune to bardic performances with audible components.</p>\n<p>If a bardic performance has a visual component, the targets must have line of sight to the bard for the performance to have any effect. A <em>blind</em> bard has a 50% chance to fail when attempting to use a bardic performance with a visual component. If he fails this check, the attempt still counts against his daily limit. Blind creatures are immune to bardic performances with visual components.</p>",
+    "grantsBuffs": [],
+    "id": "ZfCUTi1MiLgR4T7I",
+    "name": "Bardic Performance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "35"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bardicPerformance",
+    "uses": {
+      "maxFormula": "4 + @abilities.cha.mod + ((@class.unlevel * 2) - 2)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.ZfCUTi1MiLgR4T7I"
   },
   "ZfnHhhTFQVo0Lj4P": {
     "abilityType": "ex",
@@ -1050,6 +1244,24 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T"
   },
+  "h56K6HEBOItImPPL": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>A 1st level bard can use his performance to inspire courage in his allies (including himself), bolstering them against fear and improving their combat abilities. To be affected, an ally must be able to perceive the bard’s performance. An affected ally receives a +1 <em>morale bonus</em> on saving throws against <em>charm</em> and fear effects and a +1 <em>competence bonus</em> on attack and weapon damage rolls. At 5th level, and every six bard levels thereafter, this bonus increases by +1, to a maximum of +4 at 17th level. Inspire courage is a mind-affecting ability. inspire courage can use audible or visual components. The bard must choose which component to use when starting his performance.</p>",
+    "grantsBuffs": [
+      "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV"
+    ],
+    "id": "h56K6HEBOItImPPL",
+    "name": "Inspire Courage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "37"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL"
+  },
   "iBTrvPtn3jczInbn": {
     "changes": [],
     "description": "<p>As a rogue gains experience, she learns a number of talents that aid her and confound her foes. Starting at 2nd level, a rogue gains one rogue talent. She gains an additional rogue talent for every 2 levels of rogue attained after 2nd level. A rogue cannot select an individual talent more than once.</p>\n<p>Talents marked with an asterisk add effects to a rogue’s sneak attack. Only one of these talents can be applied to an individual attack and the decision must be made before the attack roll is made.</p>\n<p>A rogue cannot choose a ninja trick with the same name as a rogue talent.</p>",
@@ -1080,6 +1292,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.iFq0EX4yovswIox9"
+  },
+  "iGrgU1XzlweVO2tb": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>A bard of 12th level or higher can use his performance to create an effect equivalent to the <em>mass cure serious wounds</em>, using the bard’s level as the <em>caster level</em>. In addition, this performance removes the <em>fatigued</em>, <em>sickened</em>, and <em>shaken</em> condition from all those affected. Using this ability requires 4 rounds of continuous performance, and the targets must be able to see and hear the bard throughout the performance. Soothing performance relies on audible and visual components.</p>",
+    "grantsBuffs": [],
+    "id": "iGrgU1XzlweVO2tb",
+    "name": "Soothing Performance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.iGrgU1XzlweVO2tb"
   },
   "iqeyCQIIVnNt0p3h": {
     "abilityType": "ex",
@@ -1148,6 +1376,27 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
+  },
+  "msQWK7TW7mufzf8l": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 5th level, the bard becomes a master of lore and can take 10 on any <em>Knowledge</em> skill check that he has ranks in. A bard can choose not to take 10 and can instead roll normally. In addition, once per day, the bard can take 20 on any <em>Knowledge</em> skill check as a <em>standard action</em>. He can use this ability one additional time per day for every six levels he possesses beyond 5th, to a maximum of three times per day at 17th level.</p>",
+    "grantsBuffs": [],
+    "id": "msQWK7TW7mufzf8l",
+    "name": "Lore Master",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "loreMaster",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel + 1) / 6)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l"
   },
   "nzqkSBc6tvAqG8o2": {
     "abilityType": "ex",
@@ -1229,6 +1478,54 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.pW1PNlDcdGl7KuEa"
   },
+  "pmWnRksUzrKvNOvy": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>The character can use his performance to foster a sense of growing dread in his enemies, causing them to take become shaken. To be affected, an enemy must be within 30 feet and able to see and hear the bard’s performance. The effect persists for as long as the enemy is within 30 feet and the bard continues the performance. The performance cannot cause a creature to become frightened or panicked, even if the targets are already <em>shaken</em> from another effect. Dirge of doom is a mind-affecting <em>fear</em> effect, and it relies on audible and visual components.</p>",
+    "grantsBuffs": [],
+    "id": "pmWnRksUzrKvNOvy",
+    "name": "Dirge of Doom",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "37"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.pmWnRksUzrKvNOvy"
+  },
+  "qamuc5DZdOJMlRrD": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 10th level, the bard can use any skill, even if the skill normally requires him to be trained. At 16th level, the bard considers all skills to be class skills. At 19th level, the bard can take 10 on any skill check, even if it is not normally allowed.</p>",
+    "grantsBuffs": [],
+    "id": "qamuc5DZdOJMlRrD",
+    "name": "Jack of All Trades",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.qamuc5DZdOJMlRrD"
+  },
+  "qfjvZrIgJUjRXUUL": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>A bard of 14th level or higher can use his performance to cause fear in his enemies. To be affected, an enemy must be able to hear the bard perform and be within 30 feet. Each enemy within range receives a <em>Will</em> save (DC 10 + 1/2 the bard’s level + the bard’s <em>Cha</em> modifier) to negate the effect. If the save succeeds, the creature is immune to this ability for 24 hours. If the save fails, the target becomes <em>frightened</em> and flees for as long as the target can hear the bard’s performance. Frightening tune relies on audible components.</p>",
+    "grantsBuffs": [],
+    "id": "qfjvZrIgJUjRXUUL",
+    "name": "Frightening Tune",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.qfjvZrIgJUjRXUUL"
+  },
   "qlQxKPARGGdOgNWm": {
     "changes": [],
     "description": "<p>At 3rd level, and every two levels thereafter, a sorcerer learns an additional spell, derived from her bloodline. These spells are in addition to the number of spells already known to the sorcerer. These spells cannot be exchanged for different spells at higher levels.</p>",
@@ -1308,6 +1605,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.tHObxrPeyhimmz9V"
   },
+  "tWE66WvFjS1o0S4y": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, a bard can use his performance to cause one or more creatures to become <em>fascinated</em> with him. Each creature to be fascinated must be within 90 feet, able to see and hear the bard, and capable of paying attention to him. The bard must also be able to see the creatures affected. The Distraction of a nearby combat or other dangers prevents the ability from working. For every three levels a bard has attained beyond 1st, he can target one additional creature with this ability.</p>\n<p>Each creature within range receives a <em>Will</em> save (DC 10 + 1/2 the bard’s level + the bard’s <em>Cha</em> modifier) to negate the effect. If a creature’s saving throw succeeds, the bard cannot attempt to fascinate that creature again for 24 hours. If its saving throw fails, the creature sits quietly and observes the performance for as long as the bard continues to maintain it. While <em>fascinated</em>, a target takes a –4 penalty on skill checks made as reactions, such as <em>Perception</em> checks. Any potential threat to the target allows the target to make a new saving throw against the effect. Any obvious threat, such as someone drawing a weapon, casting a spell, or aiming a weapon at the target, automatically breaks the effect.</p>\n<p>Fascinate is an <em>enchantment</em> (<em>compulsion</em>), mind-affecting ability. Fascinate relies on audible and visual components in order to function.</p>",
+    "grantsBuffs": [],
+    "id": "tWE66WvFjS1o0S4y",
+    "name": "Fascinate",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "37"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.tWE66WvFjS1o0S4y"
+  },
   "vVkKDPniD09W5JgO": {
     "changes": [
       {
@@ -1335,6 +1648,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.vVkKDPniD09W5JgO"
   },
+  "vtrruBLKeimBrupy": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>A bard of 6th level or higher can use his performance to make a Suggestion (as per the spell) to a creature that he has already <em>fascinated</em> (see above). Using this ability does not disrupt the fascinate effect, but it does require a <em>standard action</em> to activate (in addition to the <em>free action</em> to continue the fascinate effect). A bard can use this ability more than once against an individual creature during an individual performance.</p>\n<p>A <em>Will</em> saving throw (DC 10 + 1/2 bard’s level + bard’s <em>Cha</em> modifier) negates the effect. This ability affects only a single creature (but see Suggestion, Mass, below). Suggestion is an <em>enchantment</em> (<em>compulsion</em>), mind-affecting, language-dependent ability and relies on audible components.</p>",
+    "grantsBuffs": [],
+    "id": "vtrruBLKeimBrupy",
+    "name": "Suggestion",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "37"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.vtrruBLKeimBrupy"
+  },
   "wHfy3OJmTimVgXuO": {
     "abilityType": "su",
     "changes": [],
@@ -1344,6 +1673,22 @@
     "name": "Aura of Justice",
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.wHfy3OJmTimVgXuO"
+  },
+  "wew6ophJrcab24m6": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 2nd level, the character becomes resistant to the bardic performance of others, and to sonic effects in general. The character gains a +4 bonus on saving throws made against bardic performance, sonic, and language-dependent effects.</p>",
+    "grantsBuffs": [],
+    "id": "wew6ophJrcab24m6",
+    "name": "Well-Versed",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.wew6ophJrcab24m6"
   },
   "yaL9DS7Eu5OmsxnV": {
     "changes": [],

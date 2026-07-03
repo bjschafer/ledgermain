@@ -223,6 +223,229 @@
       "Shortsword"
     ]
   },
+  "6GjOjO6r3R06fLwE": {
+    "armorProf": [
+      "lgt",
+      "shl"
+    ],
+    "bab": "med",
+    "classSkills": [
+      "acr",
+      "apr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dip",
+      "dis",
+      "esc",
+      "int",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "sen",
+      "slt",
+      "spl",
+      "ste",
+      "umd"
+    ],
+    "description": "<p>Untold wonders and secrets exist for those skillful enough to discover them. Through cleverness, talent, and magic, these cunning few unravel the wiles of the world, becoming adept in the arts of persuasion, manipulation, and inspiration. Typically masters of one or many forms of artistry, bards possess an uncanny ability to know more than they should and use what they learn to keep themselves and their allies ever one step ahead of danger. Bards are quick-witted and captivating, and their skills might lead them down many paths, be they gamblers or jacks-of-all-trades, scholars or performers, leaders or scoundrels, or even all of the above. For bards, every day brings its own opportunities, adventures, and challenges, and only by bucking the odds, knowing the most, and being the best might they claim the treasures of each.</p><p><strong>Role</strong>: Bards capably confuse and confound their foes while inspiring their allies to ever-greater daring. While accomplished with both weapons and magic, the true strength of bards lies outside melee, where they can support their companions and undermine their foes without fear of interruptions to their performances.</p>",
+    "features": [
+      {
+        "featureId": "S4VHXq1asXBwaRwo",
+        "level": 1,
+        "name": "Bard Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
+      },
+      {
+        "featureId": "Pb9pxYrx6tS87euP",
+        "level": 1,
+        "name": "Bardic Knowledge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
+      },
+      {
+        "featureId": "ZfCUTi1MiLgR4T7I",
+        "level": 1,
+        "name": "Bardic Performance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZfCUTi1MiLgR4T7I"
+      },
+      {
+        "featureId": "IPy4aqFYbOppaqKC",
+        "level": 1,
+        "name": "Cantrips",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+      },
+      {
+        "featureId": "RF8ioMkLc7LNnNT1",
+        "level": 1,
+        "name": "Countersong",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RF8ioMkLc7LNnNT1"
+      },
+      {
+        "featureId": "Kq3GVZ1yMv3ERQCJ",
+        "level": 1,
+        "name": "Distraction",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Kq3GVZ1yMv3ERQCJ"
+      },
+      {
+        "featureId": "tWE66WvFjS1o0S4y",
+        "level": 1,
+        "name": "Fascinate",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tWE66WvFjS1o0S4y"
+      },
+      {
+        "featureId": "h56K6HEBOItImPPL",
+        "level": 1,
+        "name": "Inspire Courage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL"
+      },
+      {
+        "featureId": "HAqAsb5H56C6cZm3",
+        "level": 2,
+        "name": "Versatile Performance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HAqAsb5H56C6cZm3"
+      },
+      {
+        "featureId": "wew6ophJrcab24m6",
+        "level": 2,
+        "name": "Well-Versed",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wew6ophJrcab24m6"
+      },
+      {
+        "featureId": "2M56kfIOws5yYtxq",
+        "level": 3,
+        "name": "Inspire Competence",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "msQWK7TW7mufzf8l",
+        "level": 5,
+        "name": "Lore Master",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l"
+      },
+      {
+        "featureId": "vtrruBLKeimBrupy",
+        "level": 6,
+        "name": "Suggestion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vtrruBLKeimBrupy"
+      },
+      {
+        "featureId": "pmWnRksUzrKvNOvy",
+        "level": 8,
+        "name": "Dirge of Doom",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pmWnRksUzrKvNOvy"
+      },
+      {
+        "featureId": "X7gqbGkXTox6Ojhy",
+        "level": 9,
+        "name": "Inspire Greatness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.X7gqbGkXTox6Ojhy"
+      },
+      {
+        "featureId": "qamuc5DZdOJMlRrD",
+        "level": 10,
+        "name": "Jack of All Trades",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qamuc5DZdOJMlRrD"
+      },
+      {
+        "featureId": "iGrgU1XzlweVO2tb",
+        "level": 12,
+        "name": "Soothing Performance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.iGrgU1XzlweVO2tb"
+      },
+      {
+        "featureId": "qfjvZrIgJUjRXUUL",
+        "level": 14,
+        "name": "Frightening Tune",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qfjvZrIgJUjRXUUL"
+      },
+      {
+        "featureId": "LIFTbzT5WDcsDn0O",
+        "level": 15,
+        "name": "Inspire Heroics",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.LIFTbzT5WDcsDn0O"
+      },
+      {
+        "featureId": "FnfX1SMG9uzBghnB",
+        "level": 18,
+        "name": "Mass Suggestion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FnfX1SMG9uzBghnB"
+      },
+      {
+        "featureId": "RSoy0ll1sNno6mJD",
+        "level": 20,
+        "name": "Deadly Performance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RSoy0ll1sNno6mJD"
+      }
+    ],
+    "hd": 8,
+    "id": "6GjOjO6r3R06fLwE",
+    "name": "Bard",
+    "saves": {
+      "fort": "low",
+      "ref": "high",
+      "will": "high"
+    },
+    "skillsPerLevel": 6,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "34-38"
+      }
+    ],
+    "subType": "base",
+    "tag": "bard",
+    "uuid": "Compendium.pf1.classes.Item.6GjOjO6r3R06fLwE",
+    "weaponProf": [
+      "simple",
+      "Longsword",
+      "Rapier",
+      "Sap",
+      "Shortsword",
+      "Shortbow",
+      "Whip"
+    ]
+  },
   "AoWSbnuTSGIxmv61": {
     "armorProf": [],
     "bab": "low",

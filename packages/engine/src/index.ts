@@ -44,6 +44,7 @@ export {
   SAVE_ABILITY,
   SKILL_ABILITY,
   SKILL_IDS,
+  SKILL_GROUPS,
   skillUsesAcp,
   raceGrantsFlexibleAbility,
   baseSpellsPerDay,

@@ -112,6 +112,20 @@ export function skillUsesAcp(skillId: string): boolean {
 export const SKILL_IDS = Object.keys(SKILL_ABILITY);
 
 /**
+ * Foundry PF1's `Change.target` grammar includes a handful of "compound
+ * skill" group aliases (e.g. `skill.knowledge`) that mean "every sub-skill
+ * in this family," distinct from `skill.<id>` targeting one specific skill
+ * (e.g. `skill.dev` for Trapfinding). Only `knowledge` is in the vendored
+ * slice today (Bard's Bardic Knowledge — `target: "skill.knowledge"`,
+ * confirmed in `packs/class-abilities/bardic-knowledge...yaml`); add more
+ * aliases here if a future class feature/buff needs one (e.g. `perform`,
+ * `craft`, `profession` all being similarly compound in the full PF1 rules).
+ */
+export const SKILL_GROUPS: Record<string, readonly string[]> = {
+  knowledge: SKILL_IDS.filter((id) => id.startsWith("k")),
+};
+
+/**
  * Skills that require at least 1 rank to be used (PF1 "trained only"). A
  * character with 0 ranks in one of these skills cannot attempt the check.
  * All other skills in {@link SKILL_ABILITY} can be used untrained.
@@ -161,7 +175,7 @@ export function raceGrantsFlexibleAbility(race: Race): boolean {
  * table to extend. Cleric shares the wizard base-spells-per-day numbers (the
  * domain spell slot granted at each accessible level is not included here).
  */
-export type SpellProgression = "wizard" | "sorcerer" | "cleric" | "paladin" | "ranger";
+export type SpellProgression = "wizard" | "sorcerer" | "cleric" | "paladin" | "ranger" | "bard";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -257,14 +271,7 @@ const SORCERER_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
  * per the known table), as distinct from prepared casters whose spellbook IS
  * their known list (unlimited within the rules for acquired spells).
  */
-export type SpellKnownProgression = "sorcerer";
-
-const KNOWN_PROGRESSIONS: Record<
-  SpellKnownProgression,
-  readonly (readonly (number | null)[])[]
-> = {
-  sorcerer: SORCERER_SPELLS_KNOWN,
-};
+export type SpellKnownProgression = "sorcerer" | "bard";
 
 /**
  * Cleric base spells per day, indexed `[classLevel - 1][spellLevel]`. Clerics
@@ -310,12 +317,86 @@ const PALADIN_RANGER_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
   /* L20 */ [null, 4, 4, 3, 3, null, null, null, null, null],
 ];
 
+/**
+ * Bard base spells per day, indexed `[classLevel - 1][spellLevel]`. Bards are
+ * spontaneous arcane casters like sorcerers and, like sorcerers, cast cantrips
+ * at will — column 0 is always null here (not a daily resource); the cantrip
+ * *count known* is capped separately by {@link BARD_SPELLS_KNOWN}'s column 0.
+ * Bards cap at 6th-level spells (columns 7–9 always null). (PF1 SRD —
+ * clean-room table from the published rules, open game content; cross-checked
+ * against d20pfsrd.com and aonprd.com, both matching exactly. Note: this
+ * confirms bards do NOT get a 0-level column in the official "Spells per Day"
+ * table, unlike a first-pass assumption that `cantrips: true` implied one —
+ * verified directly against the published table header and rows.)
+ */
+const BARD_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, 2, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, 3, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 3, 1, null, null, null, null, null, null, null],
+  /* L5  */ [null, 4, 2, null, null, null, null, null, null, null],
+  /* L6  */ [null, 4, 3, null, null, null, null, null, null, null],
+  /* L7  */ [null, 4, 3, 1, null, null, null, null, null, null],
+  /* L8  */ [null, 4, 4, 2, null, null, null, null, null, null],
+  /* L9  */ [null, 5, 4, 3, null, null, null, null, null, null],
+  /* L10 */ [null, 5, 4, 3, 1, null, null, null, null, null],
+  /* L11 */ [null, 5, 4, 4, 2, null, null, null, null, null],
+  /* L12 */ [null, 5, 5, 4, 3, null, null, null, null, null],
+  /* L13 */ [null, 5, 5, 4, 3, 1, null, null, null, null],
+  /* L14 */ [null, 5, 5, 4, 4, 2, null, null, null, null],
+  /* L15 */ [null, 5, 5, 5, 4, 3, null, null, null, null],
+  /* L16 */ [null, 5, 5, 5, 4, 3, 1, null, null, null],
+  /* L17 */ [null, 5, 5, 5, 4, 4, 2, null, null, null],
+  /* L18 */ [null, 5, 5, 5, 5, 4, 3, null, null, null],
+  /* L19 */ [null, 5, 5, 5, 5, 5, 4, null, null, null],
+  /* L20 */ [null, 5, 5, 5, 5, 5, 5, null, null, null],
+];
+
+/**
+ * Bard spells known per level, indexed `[classLevel - 1][spellLevel]`. Column
+ * 0 caps cantrips known; columns 1–6 cap how many spells the bard may know at
+ * that spell level (bards cap at 6th-level spells; columns 7–9 always null).
+ * (PF1 SRD — clean-room, open game content; cross-checked against
+ * d20pfsrd.com and aonprd.com, both matching exactly.)
+ */
+const BARD_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [4, 2, null, null, null, null, null, null, null, null],
+  /* L2  */ [5, 3, null, null, null, null, null, null, null, null],
+  /* L3  */ [6, 4, null, null, null, null, null, null, null, null],
+  /* L4  */ [6, 4, 2, null, null, null, null, null, null, null],
+  /* L5  */ [6, 4, 3, null, null, null, null, null, null, null],
+  /* L6  */ [6, 4, 4, null, null, null, null, null, null, null],
+  /* L7  */ [6, 5, 4, 2, null, null, null, null, null, null],
+  /* L8  */ [6, 5, 4, 3, null, null, null, null, null, null],
+  /* L9  */ [6, 5, 4, 4, null, null, null, null, null, null],
+  /* L10 */ [6, 5, 5, 4, 2, null, null, null, null, null],
+  /* L11 */ [6, 6, 5, 4, 3, null, null, null, null, null],
+  /* L12 */ [6, 6, 5, 4, 4, null, null, null, null, null],
+  /* L13 */ [6, 6, 5, 5, 4, 2, null, null, null, null],
+  /* L14 */ [6, 6, 6, 5, 4, 3, null, null, null, null],
+  /* L15 */ [6, 6, 6, 5, 4, 4, null, null, null, null],
+  /* L16 */ [6, 6, 6, 5, 5, 4, 2, null, null, null],
+  /* L17 */ [6, 6, 6, 6, 5, 4, 3, null, null, null],
+  /* L18 */ [6, 6, 6, 6, 5, 4, 4, null, null, null],
+  /* L19 */ [6, 6, 6, 6, 5, 5, 4, null, null, null],
+  /* L20 */ [6, 6, 6, 6, 6, 5, 5, null, null, null],
+];
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
   cleric: CLERIC_SPELLS_PER_DAY,
   paladin: PALADIN_RANGER_SPELLS_PER_DAY,
   ranger: PALADIN_RANGER_SPELLS_PER_DAY,
+  bard: BARD_SPELLS_PER_DAY,
+};
+
+const KNOWN_PROGRESSIONS: Record<
+  SpellKnownProgression,
+  readonly (readonly (number | null)[])[]
+> = {
+  sorcerer: SORCERER_SPELLS_KNOWN,
+  bard: BARD_SPELLS_KNOWN,
 };
 
 /**

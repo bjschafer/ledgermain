@@ -2,12 +2,14 @@
  * Pure spellcasting model for the builder UI. Keeps caster-class knowledge in
  * one place so the registry can be extended when more spell lists are vendored.
  *
- * Wizard, sorcerer, cleric, paladin, and ranger are modelled today. Cleric
- * domain spell lists (one bonus prepare-slot per accessible spell level per
- * chosen domain) live in `refData.domainSpellLists`; the tracker's Spells
- * panel renders those slots. The UI falls back gracefully for any caster tag
- * not in CASTER_MODELS. Paladin/ranger are prepared divine half-casters like
- * cleric but with no cantrips and no bonus domain-style slots.
+ * Wizard, sorcerer, cleric, paladin, ranger, and bard are modelled today.
+ * Cleric domain spell lists (one bonus prepare-slot per accessible spell
+ * level per chosen domain) live in `refData.domainSpellLists`; the tracker's
+ * Spells panel renders those slots. The UI falls back gracefully for any
+ * caster tag not in CASTER_MODELS. Paladin/ranger are prepared divine
+ * half-casters like cleric but with no cantrips and no bonus domain-style
+ * slots. Bard is a spontaneous arcane caster like sorcerer (own
+ * spells-per-day/known tables, caps at 6th-level spells).
  */
 
 import { baseSpellsKnown, baseSpellsPerDay, type SpellKnownProgression, type SpellProgression } from "@pf1/engine";
@@ -140,6 +142,19 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full ranger list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
     grantsAllCantrips: false,
     preparesFromClassList: true,
+  },
+  bard: {
+    preparation: "spontaneous",
+    ability: "cha",
+    progression: "bard",
+    knownProgression: "bard",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Bards learn a fixed set of spells known at each level (see spells-known table), including a limited number of cantrips. You can cast any spell you know by spending a slot of that level; cantrips are cast at will. Bards cap out at 6th-level spells.",
+    blurb:
+      "Spontaneous caster: you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
   },
 };
 

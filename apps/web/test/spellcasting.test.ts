@@ -59,8 +59,8 @@ describe("casterModelFor()", () => {
     expect(m!.preparesFromClassList).toBe(false);
   });
 
-  it("returns undefined for an unregistered tag (e.g. bard)", () => {
-    expect(casterModelFor("bard")).toBeUndefined();
+  it("returns undefined for an unregistered tag (e.g. monk)", () => {
+    expect(casterModelFor("monk")).toBeUndefined();
   });
 });
 

@@ -43,6 +43,7 @@ import {
   saveForLevels,
   SIZE_AC_MOD,
   SKILL_ABILITY,
+  SKILL_GROUPS,
   SKILL_IDS,
   skillUsesAcp,
   specialSizeMod,
@@ -402,14 +403,20 @@ function computeSkills(
   const acpReduction = forTarget(collected, "acpA").reduce((s, m) => s + Math.abs(m.value), 0);
   const effectiveAcp = Math.min(0, wornAcp + acpReduction);
 
-  // Pre-group skill.* modifiers by base skill id (subskills route to the parent).
+  // Pre-group skill.* modifiers by base skill id (subskills route to the
+  // parent). A handful of ids are compound-skill group aliases (e.g.
+  // `skill.knowledge` for Bardic Knowledge) rather than one real skill id —
+  // fan those out to every skill id in the group (see SKILL_GROUPS).
   const miscBySkill = new Map<string, TypedModifier[]>();
   for (const m of collected) {
     if (!m.target.startsWith("skill.")) continue;
     const baseId = m.target.slice("skill.".length).split(".")[0]!;
-    const arr = miscBySkill.get(baseId);
-    if (arr) arr.push(m);
-    else miscBySkill.set(baseId, [m]);
+    const targetIds = SKILL_GROUPS[baseId] ?? [baseId];
+    for (const id of targetIds) {
+      const arr = miscBySkill.get(id);
+      if (arr) arr.push(m);
+      else miscBySkill.set(id, [m]);
+    }
   }
 
   // Global skill-check modifiers (`skills` target, e.g. shaken/sickened) apply

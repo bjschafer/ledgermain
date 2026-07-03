@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { AbilityId, CharacterDoc, ItemInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, raceGrantsFlexibleAbility } from "../src/index.js";
+import { compute, deriveResourcePools, raceGrantsFlexibleAbility } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -288,6 +288,141 @@ describe("compute: ranger L5 (human, no armor)", () => {
     expect(rangerEntry![1].hd).toBe(10);
     expect(rangerEntry![1].bab).toBe("high");
     expect(rangerEntry![1].saves).toEqual({ fort: "high", ref: "high", will: "low" });
+  });
+});
+
+describe("compute: bard L5 (human, no armor)", () => {
+  const doc = makeDoc({
+    classes: [{ tag: "bard", level: 5 }],
+    abilities: { str: 10, dex: 14, con: 14, int: 10, wis: 10, cha: 16 },
+    // prf (Perform, class skill) maxed at 5 ranks; kar (Knowledge [arcana],
+    // also a bard class skill) ranked to exercise Bardic Knowledge's group
+    // bonus; hea (Heal) is NOT a bard class skill, ranked to confirm no
+    // class-skill bonus applies to it.
+    skillRanks: { prf: 5, kar: 2, hea: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +3 (3/4 medium progression: floor(5*3/4))", () => {
+    expect(sheet.bab).toBe(3);
+  });
+
+  it("saves: Fort +3 (poor base 1 + con2), Ref +6 (good base 4 + dex2), Will +4 (good base 4 + wis0)", () => {
+    expect(sheet.saves.fort.total).toBe(3);
+    expect(sheet.saves.ref.total).toBe(6);
+    expect(sheet.saves.will.total).toBe(4);
+  });
+
+  it("HP 38 (8 max d8 + 4*5 avg d8 + Con2*5)", () => {
+    expect(sheet.hp.max).toBe(38);
+  });
+
+  it("class skill (Perform) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.prf!.total).toBe(11); // 5 ranks + cha3 + 3
+    expect(sheet.skills.prf!.classSkill).toBe(true);
+  });
+
+  it("non-class skill (Heal) gets no class-skill bonus", () => {
+    expect(sheet.skills.hea!.total).toBe(1); // 1 rank + wis0
+    expect(sheet.skills.hea!.classSkill).toBe(false);
+  });
+
+  it("6 + Int skill points/level in ref data (bard class def)", () => {
+    const bardEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "bard");
+    expect(bardEntry).toBeDefined();
+    expect(bardEntry![1].skillsPerLevel).toBe(6);
+    expect(bardEntry![1].hd).toBe(8);
+    expect(bardEntry![1].bab).toBe("med");
+    expect(bardEntry![1].saves).toEqual({ fort: "low", ref: "high", will: "high" });
+  });
+
+  it("Bardic Knowledge's untyped bonus reaches a real Knowledge skill via the skill.knowledge group target", () => {
+    // Bardic Knowledge's vendored changes[]: max(1, floor(@class.unlevel / 2))
+    // untyped bonus to target "skill.knowledge" — a Foundry compound-skill
+    // group alias (means "every Knowledge skill"), not one specific skill id
+    // like Rogue's Trapfinding ("skill.dev"). Discovered while building this
+    // fixture that the engine didn't fan group targets out to real skill ids
+    // (it created a bogus synthetic "knowledge" bucket instead) — fixed via
+    // SKILL_GROUPS in tables.ts + compute.ts's skill pre-grouping pass.
+    // floor(5/2) = 2.
+    expect(sheet.skills.kar!.total).toBe(7); // 2 ranks + int0 + classSkill3 + BK2
+    expect(sheet.skills.kar!.classSkill).toBe(true);
+  });
+
+  it("Bardic Performance resource pool: 4 + Cha mod + 2*(level-1) rounds/day", () => {
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const performance = pools.find((p) => p.name === "Bardic Performance");
+    expect(performance).toBeDefined();
+    expect(performance?.max).toBe(15); // 4 + cha3 + (5*2 - 2)
+    expect(performance?.per).toBe("day");
+  });
+
+  it("Lore Master resource pool: floor((level+1)/6) uses/day", () => {
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const loreMaster = pools.find((p) => p.name === "Lore Master");
+    expect(loreMaster).toBeDefined();
+    expect(loreMaster?.max).toBe(1); // floor(6/6)
+    expect(loreMaster?.per).toBe("day");
+  });
+
+  it("Inspire Courage (vendored linked buff 3p34GJemfcLdKckV) scales attack + weapon damage via @item.level", () => {
+    const inspireCourage = ref.buffs["3p34GJemfcLdKckV"]!;
+    expect(inspireCourage.name).toBe("Inspire Courage");
+
+    const withWeapon = {
+      ...doc,
+      build: { ...doc.build, weapons: [{ name: "Rapier", attackAbility: "str" as const }] },
+    };
+    const baseSheet = compute(withWeapon, ref);
+
+    const buffed = {
+      ...withWeapon,
+      live: {
+        ...withWeapon.live,
+        activeBuffs: [
+          {
+            instanceId: "inspire-courage",
+            buffId: inspireCourage.id,
+            name: inspireCourage.name,
+            changes: inspireCourage.changes,
+            casterLevel: 5, // 1 + max(0, floor((5+1)/6)) = 2 (the L5-L10 tier)
+          },
+        ],
+      },
+    };
+    const buffedSheet = compute(buffed, ref);
+
+    expect(buffedSheet.attack.melee.total - baseSheet.attack.melee.total).toBe(2);
+    expect(buffedSheet.attacks[0]!.attack.total - baseSheet.attacks[0]!.attack.total).toBe(2);
+    expect(
+      buffedSheet.attacks[0]!.damageBonus.total - baseSheet.attacks[0]!.damageBonus.total,
+    ).toBe(2);
+  });
+
+  it("Inspire Courage's tier breakpoints match the SRD (+1 at L1, +2 at L5, +3 at L11, +4 at L17)", () => {
+    const inspireCourage = ref.buffs["3p34GJemfcLdKckV"]!;
+    const buffedAt = (casterLevel: number) => {
+      const withBuff = {
+        ...doc,
+        live: {
+          ...doc.live,
+          activeBuffs: [
+            {
+              instanceId: "inspire-courage",
+              buffId: inspireCourage.id,
+              name: inspireCourage.name,
+              changes: inspireCourage.changes,
+              casterLevel,
+            },
+          ],
+        },
+      };
+      return compute(withBuff, ref);
+    };
+    expect(buffedAt(1).attack.melee.total - sheet.attack.melee.total).toBe(1);
+    expect(buffedAt(5).attack.melee.total - sheet.attack.melee.total).toBe(2);
+    expect(buffedAt(11).attack.melee.total - sheet.attack.melee.total).toBe(3);
+    expect(buffedAt(17).attack.melee.total - sheet.attack.melee.total).toBe(4);
   });
 });
 

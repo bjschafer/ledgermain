@@ -204,6 +204,46 @@ describe("resolveClassFeatures: Paladin.csv / Ranger.csv are picked up (issue #1
   });
 });
 
+describe("resolveClassFeatures: Animal Speaker (bard archetype) swaps Inspire Competence for Soothing Performance", () => {
+  // Closes out issue #13's "check archetype slice picks up the new class"
+  // item for Bard — Bard.csv archetypes are vendored alongside the base class.
+  const animalSpeaker = byName(ref.archetypes, "Animal Speaker");
+  const doc = makeDoc({
+    classes: [{ tag: "bard", level: 6 }],
+    archetypes: [animalSpeaker.id],
+  });
+  const { classFeatures, activeArchetypes } = resolveClassFeatures(doc, ref);
+
+  it("activeArchetypes carries one resolved bard archetype", () => {
+    expect(activeArchetypes).toHaveLength(1);
+    expect(activeArchetypes[0]!.classTag).toBe("bard");
+    expect(activeArchetypes[0]!.name).toBe("Animal Speaker");
+  });
+
+  it("Inspire Competence (the swapped L3 base feature) is struck through", () => {
+    const inspireCompetence = classFeatures.find((f) => f.name === "Inspire Competence")!;
+    expect(inspireCompetence).toBeDefined();
+    expect(inspireCompetence.applied).toBe(false);
+    expect(inspireCompetence.replacedBy).toBe("Soothing Performance");
+  });
+
+  it("Suggestion (the swapped L6 base feature) is struck through too", () => {
+    const suggestion = classFeatures.find((f) => f.name === "Suggestion")!;
+    expect(suggestion).toBeDefined();
+    expect(suggestion.applied).toBe(false);
+    expect(suggestion.replacedBy).toBe("Attract Rats");
+  });
+
+  it("archetype's own features are listed", () => {
+    const soothingPerformance = activeArchetypes[0]!.features.find(
+      (f) => f.name === "Soothing Performance",
+    )!;
+    expect(soothingPerformance).toBeDefined();
+    const attractRats = activeArchetypes[0]!.features.find((f) => f.name === "Attract Rats")!;
+    expect(attractRats).toBeDefined();
+  });
+});
+
 describe("archetypeSwappedUuids", () => {
   it("two barbarian archetypes that both swap the same rage-power slot share a uuid", () => {
     const armoredHulk = byName(ref.archetypes, "Armored Hulk");

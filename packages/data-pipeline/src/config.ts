@@ -73,9 +73,10 @@ export const SLICE = {
     "rogue",
     "paladin",
     "ranger",
+    "bard",
   ],
   /** Class tags whose spell lists we derive by inverting `learnedAt.class`. */
-  spellListClassTags: ["wizard", "sorcerer", "cleric", "paladin", "ranger"],
+  spellListClassTags: ["wizard", "sorcerer", "cleric", "paladin", "ranger", "bard"],
   /**
    * Race source folders under packs/races to include. The seven core races live
    * in packs/races/core/.

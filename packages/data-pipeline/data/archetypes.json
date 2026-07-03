@@ -279,6 +279,496 @@
     "name": "Wildborn",
     "uuid": "archetype:barbarian:wildborn"
   },
+  "bard:animal-speaker": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:animal-speaker",
+    "name": "Animal Speaker",
+    "uuid": "archetype:bard:animal-speaker"
+  },
+  "bard:arcane-duelist": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:arcane-duelist",
+    "name": "Arcane Duelist",
+    "uuid": "archetype:bard:arcane-duelist"
+  },
+  "bard:arcane-healer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:arcane-healer",
+    "name": "Arcane Healer",
+    "uuid": "archetype:bard:arcane-healer"
+  },
+  "bard:archaeologist": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:archaeologist",
+    "name": "Archaeologist",
+    "uuid": "archetype:bard:archaeologist"
+  },
+  "bard:archivist": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:archivist",
+    "name": "Archivist",
+    "uuid": "archetype:bard:archivist"
+  },
+  "bard:argent-voice": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:argent-voice",
+    "name": "Argent Voice",
+    "uuid": "archetype:bard:argent-voice"
+  },
+  "bard:arrowsong-minstrel": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:arrowsong-minstrel",
+    "name": "Arrowsong Minstrel",
+    "uuid": "archetype:bard:arrowsong-minstrel"
+  },
+  "bard:averaka-arbiter": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:averaka-arbiter",
+    "name": "Averaka Arbiter",
+    "uuid": "archetype:bard:averaka-arbiter"
+  },
+  "bard:brazen-deceiver": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:brazen-deceiver",
+    "name": "Brazen Deceiver",
+    "uuid": "archetype:bard:brazen-deceiver"
+  },
+  "bard:buccaneer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:buccaneer",
+    "name": "Buccaneer",
+    "uuid": "archetype:bard:buccaneer"
+  },
+  "bard:busker": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:busker",
+    "name": "Busker",
+    "uuid": "archetype:bard:busker"
+  },
+  "bard:celebrity": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:celebrity",
+    "name": "Celebrity",
+    "uuid": "archetype:bard:celebrity"
+  },
+  "bard:chelish-diva": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:chelish-diva",
+    "name": "Chelish Diva",
+    "uuid": "archetype:bard:chelish-diva"
+  },
+  "bard:chronicler-of-worlds": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:chronicler-of-worlds",
+    "name": "Chronicler of Worlds",
+    "uuid": "archetype:bard:chronicler-of-worlds"
+  },
+  "bard:court-bard": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:court-bard",
+    "name": "Court Bard",
+    "uuid": "archetype:bard:court-bard"
+  },
+  "bard:court-fool": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:court-fool",
+    "name": "Court Fool",
+    "uuid": "archetype:bard:court-fool"
+  },
+  "bard:cultivator": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:cultivator",
+    "name": "Cultivator",
+    "uuid": "archetype:bard:cultivator"
+  },
+  "bard:daredevil": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:daredevil",
+    "name": "Daredevil",
+    "uuid": "archetype:bard:daredevil"
+  },
+  "bard:dawnflower-dervish": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:dawnflower-dervish",
+    "name": "Dawnflower Dervish",
+    "uuid": "archetype:bard:dawnflower-dervish"
+  },
+  "bard:demagogue": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:demagogue",
+    "name": "Demagogue",
+    "uuid": "archetype:bard:demagogue"
+  },
+  "bard:dervish-dancer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:dervish-dancer",
+    "name": "Dervish Dancer",
+    "uuid": "archetype:bard:dervish-dancer"
+  },
+  "bard:detective": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:detective",
+    "name": "Detective",
+    "uuid": "archetype:bard:detective"
+  },
+  "bard:disciple-of-the-forked-tongue": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:disciple-of-the-forked-tongue",
+    "name": "Disciple of the Forked Tongue",
+    "uuid": "archetype:bard:disciple-of-the-forked-tongue"
+  },
+  "bard:dragon-herald": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:dragon-herald",
+    "name": "Dragon Herald",
+    "uuid": "archetype:bard:dragon-herald"
+  },
+  "bard:dragon-yapper": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:dragon-yapper",
+    "name": "Dragon Yapper",
+    "uuid": "archetype:bard:dragon-yapper"
+  },
+  "bard:duettist": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:duettist",
+    "name": "Duettist",
+    "uuid": "archetype:bard:duettist"
+  },
+  "bard:dwarven-scholar": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:dwarven-scholar",
+    "name": "Dwarven Scholar",
+    "uuid": "archetype:bard:dwarven-scholar"
+  },
+  "bard:faith-singer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:faith-singer",
+    "name": "Faith Singer",
+    "uuid": "archetype:bard:faith-singer"
+  },
+  "bard:fey-courtier": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:fey-courtier",
+    "name": "Fey Courtier",
+    "uuid": "archetype:bard:fey-courtier"
+  },
+  "bard:fey-prankster": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:fey-prankster",
+    "name": "Fey Prankster",
+    "uuid": "archetype:bard:fey-prankster"
+  },
+  "bard:filidh": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:filidh",
+    "name": "Filidh",
+    "uuid": "archetype:bard:filidh"
+  },
+  "bard:first-world-minstrel": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:first-world-minstrel",
+    "name": "First World Minstrel",
+    "uuid": "archetype:bard:first-world-minstrel"
+  },
+  "bard:flame-dancer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:flame-dancer",
+    "name": "Flame Dancer",
+    "uuid": "archetype:bard:flame-dancer"
+  },
+  "bard:flamesinger": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:flamesinger",
+    "name": "Flamesinger",
+    "uuid": "archetype:bard:flamesinger"
+  },
+  "bard:fortune-teller": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:fortune-teller",
+    "name": "Fortune-Teller",
+    "uuid": "archetype:bard:fortune-teller"
+  },
+  "bard:geisha": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:geisha",
+    "name": "Geisha",
+    "uuid": "archetype:bard:geisha"
+  },
+  "bard:hatharat-agent": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:hatharat-agent",
+    "name": "Hatharat Agent",
+    "uuid": "archetype:bard:hatharat-agent"
+  },
+  "bard:hoaxer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:hoaxer",
+    "name": "Hoaxer",
+    "uuid": "archetype:bard:hoaxer"
+  },
+  "bard:impervious-messenger": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:impervious-messenger",
+    "name": "Impervious Messenger",
+    "uuid": "archetype:bard:impervious-messenger"
+  },
+  "bard:juggler": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:juggler",
+    "name": "Juggler",
+    "uuid": "archetype:bard:juggler"
+  },
+  "bard:lotus-geisha": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:lotus-geisha",
+    "name": "Lotus Geisha",
+    "uuid": "archetype:bard:lotus-geisha"
+  },
+  "bard:luring-piper": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:luring-piper",
+    "name": "Luring Piper",
+    "uuid": "archetype:bard:luring-piper"
+  },
+  "bard:magician": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:magician",
+    "name": "Magician",
+    "uuid": "archetype:bard:magician"
+  },
+  "bard:masked-performer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:masked-performer",
+    "name": "Masked Performer",
+    "uuid": "archetype:bard:masked-performer"
+  },
+  "bard:mute-musician": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:mute-musician",
+    "name": "Mute Musician",
+    "uuid": "archetype:bard:mute-musician"
+  },
+  "bard:negotiator": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:negotiator",
+    "name": "Negotiator",
+    "uuid": "archetype:bard:negotiator"
+  },
+  "bard:phrenologist": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:phrenologist",
+    "name": "Phrenologist",
+    "uuid": "archetype:bard:phrenologist"
+  },
+  "bard:pitax-academy-of-grand-arts": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:pitax-academy-of-grand-arts",
+    "name": "Pitax: Academy of Grand Arts",
+    "uuid": "archetype:bard:pitax-academy-of-grand-arts"
+  },
+  "bard:plant-speaker": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:plant-speaker",
+    "name": "Plant Speaker",
+    "uuid": "archetype:bard:plant-speaker"
+  },
+  "bard:prankster": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:prankster",
+    "name": "Prankster",
+    "uuid": "archetype:bard:prankster"
+  },
+  "bard:provocateur": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:provocateur",
+    "name": "Provocateur",
+    "uuid": "archetype:bard:provocateur"
+  },
+  "bard:ringleader": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:ringleader",
+    "name": "Ringleader",
+    "uuid": "archetype:bard:ringleader"
+  },
+  "bard:sandman": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:sandman",
+    "name": "Sandman",
+    "uuid": "archetype:bard:sandman"
+  },
+  "bard:savage-skald": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:savage-skald",
+    "name": "Savage Skald",
+    "uuid": "archetype:bard:savage-skald"
+  },
+  "bard:sea-singer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:sea-singer",
+    "name": "Sea Singer",
+    "uuid": "archetype:bard:sea-singer"
+  },
+  "bard:shadow-puppeteer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:shadow-puppeteer",
+    "name": "Shadow Puppeteer",
+    "uuid": "archetype:bard:shadow-puppeteer"
+  },
+  "bard:silver-balladeer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:silver-balladeer",
+    "name": "Silver Balladeer",
+    "uuid": "archetype:bard:silver-balladeer"
+  },
+  "bard:solacer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:solacer",
+    "name": "Solacer",
+    "uuid": "archetype:bard:solacer"
+  },
+  "bard:songhealer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:songhealer",
+    "name": "Songhealer",
+    "uuid": "archetype:bard:songhealer"
+  },
+  "bard:sorrowsoul": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:sorrowsoul",
+    "name": "Sorrowsoul",
+    "uuid": "archetype:bard:sorrowsoul"
+  },
+  "bard:sound-striker": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:sound-striker",
+    "name": "Sound Striker",
+    "uuid": "archetype:bard:sound-striker"
+  },
+  "bard:speaker-of-the-palatine-eye": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:speaker-of-the-palatine-eye",
+    "name": "Speaker of the Palatine Eye",
+    "uuid": "archetype:bard:speaker-of-the-palatine-eye"
+  },
+  "bard:stonesinger": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:stonesinger",
+    "name": "Stonesinger",
+    "uuid": "archetype:bard:stonesinger"
+  },
+  "bard:street-performer": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:street-performer",
+    "name": "Street Performer",
+    "uuid": "archetype:bard:street-performer"
+  },
+  "bard:studious-librarian": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:studious-librarian",
+    "name": "Studious Librarian",
+    "uuid": "archetype:bard:studious-librarian"
+  },
+  "bard:voice-of-brigh": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:voice-of-brigh",
+    "name": "Voice of Brigh",
+    "uuid": "archetype:bard:voice-of-brigh"
+  },
+  "bard:voice-of-the-wild": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:voice-of-the-wild",
+    "name": "Voice of the Wild",
+    "uuid": "archetype:bard:voice-of-the-wild"
+  },
+  "bard:wasteland-chronicler": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:wasteland-chronicler",
+    "name": "Wasteland Chronicler",
+    "uuid": "archetype:bard:wasteland-chronicler"
+  },
+  "bard:watersinger": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:watersinger",
+    "name": "Watersinger",
+    "uuid": "archetype:bard:watersinger"
+  },
+  "bard:wit": {
+    "classTag": "bard",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bard:wit",
+    "name": "Wit",
+    "uuid": "archetype:bard:wit"
+  },
   "cleric:angelfire-apostle": {
     "classTag": "cleric",
     "contributorModule": "baileymh/pf1e-archetypes",

@@ -163,6 +163,51 @@ describe("baseSpellsPerDay() — paladin / ranger (identical half-caster progres
   });
 });
 
+describe("baseSpellsPerDay() — bard", () => {
+  it("cantrips (level 0) are always null — bards cast them at will, like sorcerers", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      expect(baseSpellsPerDay("bard", cl, 0)).toBeNull();
+    }
+  });
+
+  it("level-1 bard: 1 first-level slot, no 2nd-level access", () => {
+    expect(baseSpellsPerDay("bard", 1, 1)).toBe(1);
+    expect(baseSpellsPerDay("bard", 1, 2)).toBeNull();
+  });
+
+  it("level-4 bard unlocks 2nd-level spells (1 slot)", () => {
+    expect(baseSpellsPerDay("bard", 4, 1)).toBe(3);
+    expect(baseSpellsPerDay("bard", 4, 2)).toBe(1);
+    expect(baseSpellsPerDay("bard", 4, 3)).toBeNull();
+  });
+
+  it("caps at 6th-level spells — levels 7-9 are always null", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      for (let spLvl = 7; spLvl <= 9; spLvl++) {
+        expect(baseSpellsPerDay("bard", cl, spLvl)).toBeNull();
+      }
+    }
+  });
+
+  it("level-16 bard unlocks 6th-level spells (1 slot)", () => {
+    expect(baseSpellsPerDay("bard", 16, 6)).toBe(1);
+    expect(baseSpellsPerDay("bard", 15, 6)).toBeNull();
+  });
+
+  it("level-20 bard: 5 slots at levels 1-6", () => {
+    for (let spLvl = 1; spLvl <= 6; spLvl++) {
+      expect(baseSpellsPerDay("bard", 20, spLvl)).toBe(5);
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("bard", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("bard", 21, 1)).toBeNull();
+    expect(baseSpellsPerDay("bard", 5, -1)).toBeNull();
+    expect(baseSpellsPerDay("bard", 5, 10)).toBeNull();
+  });
+});
+
 describe("baseSpellsKnown() — sorcerer", () => {
   it("L1 sorcerer knows 4 cantrips, 2 first-level spells", () => {
     expect(baseSpellsKnown("sorcerer", 1, 0)).toBe(4);
@@ -187,5 +232,40 @@ describe("baseSpellsKnown() — sorcerer", () => {
     expect(baseSpellsKnown("sorcerer", 0, 1)).toBeNull();
     expect(baseSpellsKnown("sorcerer", 21, 1)).toBeNull();
     expect(baseSpellsKnown("sorcerer", 5, 10)).toBeNull();
+  });
+});
+
+describe("baseSpellsKnown() — bard", () => {
+  it("L1 bard knows 4 cantrips, 2 first-level spells", () => {
+    expect(baseSpellsKnown("bard", 1, 0)).toBe(4);
+    expect(baseSpellsKnown("bard", 1, 1)).toBe(2);
+    expect(baseSpellsKnown("bard", 1, 2)).toBeNull();
+  });
+
+  it("L4 bard unlocks 2nd-level known (2)", () => {
+    expect(baseSpellsKnown("bard", 4, 2)).toBe(2);
+    expect(baseSpellsKnown("bard", 3, 2)).toBeNull();
+  });
+
+  it("caps at 6th-level spells — levels 7-9 are always null", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      for (let spLvl = 7; spLvl <= 9; spLvl++) {
+        expect(baseSpellsKnown("bard", cl, spLvl)).toBeNull();
+      }
+    }
+  });
+
+  it("L20 bard knows 6 cantrips and 6/6/6/6/5/5 spells at levels 1–6", () => {
+    expect(baseSpellsKnown("bard", 20, 0)).toBe(6);
+    const expected = [6, 6, 6, 6, 5, 5];
+    for (let lvl = 1; lvl <= 6; lvl++) {
+      expect(baseSpellsKnown("bard", 20, lvl)).toBe(expected[lvl - 1]!);
+    }
+  });
+
+  it("out-of-range returns null", () => {
+    expect(baseSpellsKnown("bard", 0, 1)).toBeNull();
+    expect(baseSpellsKnown("bard", 21, 1)).toBeNull();
+    expect(baseSpellsKnown("bard", 5, 10)).toBeNull();
   });
 });
