@@ -31,6 +31,11 @@ blob-report/
 .wrangler/
 .dev.vars
 
+# Vite per-developer env overrides (e.g. apps/web/.env.local with a real
+# VITE_API_URL) — see apps/web/.env.example for the committed template.
+.env.local
+.env.*.local
+
 # Editor / OS
 .DS_Store
 .idea/
