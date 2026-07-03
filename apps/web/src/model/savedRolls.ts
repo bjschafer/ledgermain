@@ -19,7 +19,7 @@ import type {
   SavedRollSource,
 } from "@pf1/schema";
 
-import { SAVE_NAMES, signed, signedSequence, skillName } from "./names.js";
+import { SAVE_NAMES, signed, signedSequence } from "./names.js";
 
 let counter = 0;
 /** Stable-ish id without requiring crypto in every environment (mirrors model/buffs.ts). */
@@ -37,14 +37,19 @@ export interface SavedRollOption {
 }
 
 /**
- * Every source currently pickable from the sheet: base melee/ranged, each
- * per-weapon attack line, CMB/CMD, initiative, the three saves, every usable
- * skill, and a fully custom bookmark. Options with no live counterpart (e.g. a
- * since-removed weapon) simply don't appear here — they're still
- * resolvable-but-missing on an already-saved roll via {@link resolveSavedRoll}.
+ * Every source currently pickable from the sheet: a fully custom bookmark
+ * first (the most common starting point for a situational full-attack
+ * combo), then base melee/ranged, each per-weapon attack line, CMB/CMD,
+ * initiative, and the three saves. Skills are deliberately not offered here
+ * (niche for saved rolls) but `resolveSource` still handles `kind: "skill"`
+ * for rolls saved before this change. Options with no live
+ * counterpart (e.g. a since-removed weapon) simply don't appear here —
+ * they're still resolvable-but-missing on an already-saved roll via
+ * {@link resolveSavedRoll}.
  */
 export function availableSavedRollSources(sheet: DerivedSheet): SavedRollOption[] {
   const out: SavedRollOption[] = [
+    { source: { kind: "custom" }, label: "Custom" },
     { source: { kind: "melee" }, label: "Melee Attack" },
     { source: { kind: "ranged" }, label: "Ranged Attack" },
   ];
@@ -57,11 +62,6 @@ export function availableSavedRollSources(sheet: DerivedSheet): SavedRollOption[
   for (const save of ["fort", "ref", "will"] as const) {
     out.push({ source: { kind: "save", save }, label: `${SAVE_NAMES[save]} Save` });
   }
-  for (const s of Object.values(sheet.skills)) {
-    if (!s.usable) continue;
-    out.push({ source: { kind: "skill", skillId: s.id }, label: skillName(s.id) });
-  }
-  out.push({ source: { kind: "custom" }, label: "Custom" });
   return out;
 }
 

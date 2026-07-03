@@ -1966,8 +1966,10 @@ button:focus-visible,
 	text-transform: uppercase;
 }
 
-/* Saved-rolls' rename field: reads as plain text until focused. */
-.saved-roll-name {
+/* Saved-rolls' rename field: reads as plain text until focused. Selector
+   needs the `input[type="text"]` element+attribute specificity to actually
+   override the global input styling above, not just a bare class. */
+input[type="text"].saved-roll-name {
 	width: auto;
 	background: transparent;
 	border: 1px solid transparent;
@@ -1979,8 +1981,8 @@ button:focus-visible,
 	color: inherit;
 }
 
-.saved-roll-name:hover,
-.saved-roll-name:focus {
+input[type="text"].saved-roll-name:hover,
+input[type="text"].saved-roll-name:focus {
 	background: var(--surface-2);
 	border-color: var(--line);
 }

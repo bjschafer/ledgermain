@@ -64,7 +64,7 @@ export function SavedRollsPanel({ doc, sheet, update }: BuilderProps) {
       <input
         className="search"
         type="text"
-        placeholder="Search attacks, saves, skills…"
+        placeholder="Search attacks, saves…"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
