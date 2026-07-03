@@ -1944,6 +1944,56 @@ button:focus-visible,
 	align-items: center;
 }
 
+/* Attached-feat chips under a saved roll's label. Reuses the base .chip pill;
+   compact so a few fit on one line inside the row. */
+.saved-roll-chips {
+	margin-top: 4px;
+	gap: 4px;
+}
+
+.chip.feat-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 2px 8px;
+	font-size: 11px;
+}
+
+/* A feat the character no longer owns: struck through + dimmed (same visual
+   language as ModifierComponent.applied: false in Provenance). */
+.chip.feat-chip.unowned {
+	text-decoration: line-through;
+	opacity: 0.55;
+}
+
+.chip.feat-chip .chip-x {
+	background: none;
+	border: none;
+	padding: 0;
+	font-size: 10px;
+	color: var(--muted);
+	cursor: pointer;
+	line-height: 1;
+}
+
+.chip.feat-chip .chip-x:hover {
+	color: var(--ink);
+}
+
+/* At-table reminders from applied feat effects ("within 30 ft · full attack
+   only") — one muted line under the roll's value row. */
+.saved-roll-notes {
+	font-size: 12px;
+	color: var(--muted);
+	padding: 0 2px 2px;
+}
+
+.saved-roll-feat-add select {
+	width: auto;
+	flex: 1;
+	max-width: 260px;
+}
+
 .res-row:last-child {
 	border-bottom: 0;
 }

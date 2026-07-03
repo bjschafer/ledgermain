@@ -1,13 +1,19 @@
 import { useEffect, useId, useMemo, useState } from "react";
 
-import type { SavedRoll } from "@pf1/schema";
+import type { SavedRoll, SavedRollFeatRef } from "@pf1/schema";
 
 import {
   addSavedRoll,
+  addSavedRollFeat,
+  attachableFeats,
   availableSavedRollSources,
+  ownedFeatSlugs,
   removeSavedRoll,
+  removeSavedRollFeat,
   resolveSavedRoll,
+  setSavedRollFeatOption,
   updateSavedRoll,
+  type AttachableFeat,
   type ResolvedSavedRoll,
 } from "../../model/savedRolls.js";
 import { NumberField } from "../builder/NumberField.js";
@@ -21,15 +27,24 @@ import type { BuilderProps } from "../builder/types.js";
  * skill) so it's one glance away during play instead of scrolling the whole
  * character sheet. Every row re-resolves against the live `DerivedSheet` on
  * every render, so a saved roll never goes stale as buffs/feats/gear change.
- * A saved roll can carry a flat attack/damage adjustment (for situational
- * feats the engine doesn't toggle, e.g. Rapid Shot, Deadly Aim) or point at
+ * A saved roll can carry attached feats (folded in from the engine's
+ * situational-feat registry — Rapid Shot, Deadly Aim, Power Attack, ... — or
+ * as reminder-only chips), a flat attack/damage adjustment, or point at
  * nothing at all (`source.kind === "custom"`) for one-off bookmarks.
  */
-export function SavedRollsPanel({ doc, sheet, update }: BuilderProps) {
+export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
 
   const saved = doc.build.savedRolls ?? [];
-  const resolved = useMemo(() => saved.map((r) => resolveSavedRoll(r, sheet)), [saved, sheet]);
+  const owned = useMemo(() => ownedFeatSlugs(doc, refData), [doc, refData]);
+  const resolved = useMemo(
+    () => saved.map((r) => resolveSavedRoll(r, sheet, owned)),
+    [saved, sheet, owned],
+  );
+  const attachable = useMemo(
+    () => saved.map((r) => attachableFeats(doc, refData, r.source)),
+    [saved, doc, refData],
+  );
 
   const options = useMemo(() => availableSavedRollSources(sheet), [sheet]);
   const matches = useMemo(() => {
@@ -48,8 +63,14 @@ export function SavedRollsPanel({ doc, sheet, update }: BuilderProps) {
               key={roll.id}
               roll={roll}
               resolved={resolved[i]!}
+              attachable={attachable[i]!}
               onUpdate={(patch) => update((d) => updateSavedRoll(d, roll.id, patch))}
               onRemove={() => update((d) => removeSavedRoll(d, roll.id))}
+              onAddFeat={(ref) => update((d) => addSavedRollFeat(d, roll.id, ref))}
+              onRemoveFeat={(slug) => update((d) => removeSavedRollFeat(d, roll.id, slug))}
+              onSetFeatOption={(slug, option) =>
+                update((d) => setSavedRollFeatOption(d, roll.id, slug, option))
+              }
             />
           ))}
         </div>
@@ -57,9 +78,10 @@ export function SavedRollsPanel({ doc, sheet, update }: BuilderProps) {
 
       <h4 className="tracker-sub">Add a saved roll</h4>
       <p className="hint spell-hint-line">
-        Pick a source below, then expand the saved row to layer a manual
-        adjustment (e.g. Rapid Shot's −2) or, for "Custom", enter a value and
-        damage note by hand.
+        Pick a source below, then expand the saved row to attach feats (Rapid
+        Shot, Deadly Aim, Power Attack fold in automatically) or layer a
+        manual adjustment — for "Custom", enter a value and damage note by
+        hand.
       </p>
       <input
         className="search"
@@ -90,27 +112,41 @@ export function SavedRollsPanel({ doc, sheet, update }: BuilderProps) {
 }
 
 /**
- * One saved roll: a name/value/damage/remove line, expanding below (full row
- * width) to its `Provenance` breakdown plus editable attack/damage
+ * One saved roll: a name/value/damage/remove line with attached-feat chips +
+ * feat notes underneath, expanding below (full row width) to its `Provenance`
+ * breakdown plus feat attach/detach controls and editable attack/damage
  * adjustments — or, for a custom roll, a manual value + damage note.
  */
 function SavedRollRow({
   roll,
   resolved,
+  attachable,
   onUpdate,
   onRemove,
+  onAddFeat,
+  onRemoveFeat,
+  onSetFeatOption,
 }: {
   roll: SavedRoll;
   resolved: ResolvedSavedRoll;
+  attachable: AttachableFeat[];
   onUpdate: (
     patch: Partial<Pick<SavedRoll, "label" | "attackModifier" | "damageModifier" | "customDamage">>,
   ) => void;
   onRemove: () => void;
+  onAddFeat: (ref: SavedRollFeatRef) => void;
+  onRemoveFeat: (slug: string) => void;
+  onSetFeatOption: (slug: string, option: string | undefined) => void;
 }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const isCustom = roll.source.kind === "custom";
   const isWeapon = roll.source.kind === "weapon";
+
+  const attached = new Set((roll.feats ?? []).map((f) => f.slug));
+  const addChoices = attachable.filter((f) => !attached.has(f.slug));
+  /** Registry options for an attached chip's variant select, when the feat declares any. */
+  const optionsFor = (slug: string) => attachable.find((f) => f.slug === slug)?.options;
 
   return (
     <div className="res-row saved-roll-row">
@@ -118,6 +154,49 @@ function SavedRollRow({
         <div className="res-main">
           <RenameField value={roll.label} onCommit={(label) => onUpdate({ label })} />
           {resolved.missing ? <div className="res-sub">source no longer available</div> : null}
+          {resolved.featChips.length > 0 ? (
+            <div className="chips saved-roll-chips">
+              {resolved.featChips.map((chip) => (
+                <span
+                  key={chip.slug}
+                  className={`chip feat-chip${!chip.owned ? " unowned" : ""}`}
+                  title={
+                    !chip.owned
+                      ? `${chip.name} — not currently owned; not applied`
+                      : chip.modeled
+                        ? undefined
+                        : `${chip.name} — reminder only (no automatic numbers)`
+                  }
+                >
+                  {chip.name}
+                  {open && optionsFor(chip.slug) ? (
+                    <select
+                      className="dur-unit"
+                      value={chip.option ?? ""}
+                      aria-label={`${chip.name} variant`}
+                      onChange={(e) => onSetFeatOption(chip.slug, e.target.value || undefined)}
+                    >
+                      {optionsFor(chip.slug)!.map((o) => (
+                        <option key={o.id} value={o.id}>
+                          {o.label}
+                        </option>
+                      ))}
+                    </select>
+                  ) : null}
+                  {open ? (
+                    <button
+                      type="button"
+                      className="chip-x"
+                      onClick={() => onRemoveFeat(chip.slug)}
+                      aria-label={`detach ${chip.name}`}
+                    >
+                      ✕
+                    </button>
+                  ) : null}
+                </span>
+              ))}
+            </div>
+          ) : null}
         </div>
         <button
           type="button"
@@ -141,6 +220,9 @@ function SavedRollRow({
           </button>
         </div>
       </div>
+      {resolved.notes.length > 0 ? (
+        <div className="saved-roll-notes">{resolved.notes.join(" · ")}</div>
+      ) : null}
       {open ? (
         <div id={panelId} className="saved-roll-detail">
           {resolved.components.length > 0 ? (
@@ -149,6 +231,34 @@ function SavedRollRow({
               components={resolved.components}
             />
           ) : null}
+
+          {addChoices.length > 0 ? (
+            <label className="saved-roll-adjust saved-roll-feat-add">
+              + feat
+              <select
+                value=""
+                aria-label={`attach a feat to ${roll.label}`}
+                onChange={(e) => {
+                  const feat = addChoices.find((f) => f.slug === e.target.value);
+                  if (!feat) return;
+                  onAddFeat({
+                    slug: feat.slug,
+                    name: feat.name,
+                    option: feat.options?.[0]?.id,
+                  });
+                }}
+              >
+                <option value="">Attach a feat…</option>
+                {addChoices.map((f) => (
+                  <option key={f.slug} value={f.slug}>
+                    {f.name}
+                    {f.modeled ? " (auto)" : ""}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
+
           <label className="saved-roll-adjust">
             {isCustom ? "Value" : "Attack adjustment"}
             <NumberField
