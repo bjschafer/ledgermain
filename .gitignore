@@ -35,4 +35,8 @@ blob-report/
 npm-debug.log*
 pnpm-debug.log*
 
-.claude/
+# Claude Code: worktrees and machine/session-local state stay untracked.
+# Shared config (e.g. .claude/skills/) is committed.
+.claude/worktrees/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
