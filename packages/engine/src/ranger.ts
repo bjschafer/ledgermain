@@ -89,9 +89,15 @@ export interface CombatStyle {
 }
 
 /**
- * Ranger combat styles (PF1 CRB p. 64). Only the two Core Rulebook styles;
- * later books add more (Two-Handed Weapon, Weapon and Shield, Natural Weapon,
- * Crossbow, Mounted Combat, …) — deferred.
+ * Ranger combat styles: the two Core Rulebook styles (Archery, Two-Weapon
+ * Combat — CRB p. 64) plus the five from Ultimate Combat (Crossbow, Mounted
+ * Combat, Natural Weapon, Two-Handed Weapon, Weapon and Shield).
+ *
+ * `featSlugs` lists a style's bonus feats at every style level so the feat
+ * picker can waive their prerequisites (and badge the tree). The trees are
+ * best-effort from the published rules — matching the project's soft-warning
+ * posture, a missing entry just means that one feat isn't auto-waived, and an
+ * entry whose feat isn't in the vendored dataset is simply inert.
  */
 export const COMBAT_STYLES: readonly CombatStyle[] = [
   {
@@ -120,6 +126,71 @@ export const COMBAT_STYLES: readonly CombatStyle[] = [
       "two-weapon-defense",
       "greater-two-weapon-fighting",
       "two-weapon-rend",
+    ],
+  },
+  {
+    id: "crossbow",
+    label: "Crossbow",
+    featSlugs: [
+      "deadly-aim",
+      "precise-shot",
+      "rapid-reload",
+      "crossbow-mastery",
+      "improved-precise-shot",
+      "pinpoint-targeting",
+      "shot-on-the-run",
+    ],
+  },
+  {
+    id: "mounted-combat",
+    label: "Mounted Combat",
+    featSlugs: [
+      "mounted-archery",
+      "mounted-combat",
+      "ride-by-attack",
+      "spirited-charge",
+      "trample",
+      "mounted-skirmisher",
+      "unseat",
+    ],
+  },
+  {
+    id: "natural-weapon",
+    label: "Natural Weapon",
+    featSlugs: [
+      "aspect-of-the-beast",
+      "improved-natural-attack",
+      "rending-claws",
+      "weapon-focus",
+      "eldritch-claws",
+      "vital-strike",
+      "improved-vital-strike",
+      "greater-vital-strike",
+    ],
+  },
+  {
+    id: "two-handed-weapon",
+    label: "Two-Handed Weapon",
+    featSlugs: [
+      "cleave",
+      "power-attack",
+      "pushing-assault",
+      "furious-focus",
+      "great-cleave",
+      "dreadful-carnage",
+      "improved-sunder",
+    ],
+  },
+  {
+    id: "weapon-and-shield",
+    label: "Weapon and Shield",
+    featSlugs: [
+      "improved-shield-bash",
+      "shield-focus",
+      "shield-slam",
+      "bashing-finish",
+      "shield-master",
+      "greater-shield-focus",
     ],
   },
 ];

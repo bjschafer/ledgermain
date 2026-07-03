@@ -85,18 +85,39 @@ describe("favoredBonusBudget (4s − 2 total +2-increments)", () => {
 });
 
 describe("COMBAT_STYLES", () => {
-  it("has the two CRB styles, each with a non-empty feat tree", () => {
+  it("has the CRB + Ultimate Combat styles, each with a non-empty feat tree", () => {
     const ids = COMBAT_STYLES.map((s) => s.id);
-    expect(ids).toEqual(["archery", "two-weapon"]);
+    // Two CRB styles first, then the five from Ultimate Combat.
+    expect(ids).toEqual([
+      "archery",
+      "two-weapon",
+      "crossbow",
+      "mounted-combat",
+      "natural-weapon",
+      "two-handed-weapon",
+      "weapon-and-shield",
+    ]);
     for (const style of COMBAT_STYLES) {
       expect(style.featSlugs.length).toBeGreaterThan(0);
     }
   });
 
-  it("archery includes rapid-shot and manyshot", () => {
+  it("has stable, unique kebab-case slugs in each tree", () => {
+    for (const style of COMBAT_STYLES) {
+      const unique = new Set(style.featSlugs);
+      expect(unique.size).toBe(style.featSlugs.length);
+      for (const slug of style.featSlugs) {
+        expect(slug).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+      }
+    }
+  });
+
+  it("archery includes rapid-shot and manyshot; two-handed includes power-attack", () => {
     const archery = COMBAT_STYLES.find((s) => s.id === "archery")!;
     expect(archery.featSlugs).toContain("rapid-shot");
     expect(archery.featSlugs).toContain("manyshot");
+    const twoHanded = COMBAT_STYLES.find((s) => s.id === "two-handed-weapon")!;
+    expect(twoHanded.featSlugs).toContain("power-attack");
   });
 });
 
