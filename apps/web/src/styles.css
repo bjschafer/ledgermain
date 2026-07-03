@@ -920,6 +920,10 @@ button:focus-visible,
 	margin: 0;
 }
 
+.saved-roll-add-hint {
+	margin: 4px 0 12px;
+}
+
 .spell-level-head {
 	font-family: var(--mono);
 	font-size: 11px;
@@ -2565,6 +2569,10 @@ input[type="text"].saved-roll-name:focus {
 
 .subsection-header .panel-caret {
 	margin-left: 0;
+}
+
+.subsection-header h4.tracker-sub {
+	margin: 0;
 }
 
 .subsection h4.tracker-sub {

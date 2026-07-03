@@ -16,6 +16,7 @@ import {
   type AttachableFeat,
   type ResolvedSavedRoll,
 } from "../../model/savedRolls.js";
+import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { Provenance } from "../Provenance.js";
@@ -34,6 +35,10 @@ import type { BuilderProps } from "../builder/types.js";
  */
 export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
+  const [addCollapsed, toggleAddCollapsed] = useCollapsed(
+    "subsection:SavedRolls:add",
+    true,
+  );
 
   const saved = doc.build.savedRolls ?? [];
   const owned = useMemo(() => ownedFeatSlugs(doc, refData), [doc, refData]);
@@ -76,36 +81,54 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
         </div>
       )}
 
-      <h4 className="tracker-sub">Add a saved roll</h4>
-      <p className="hint spell-hint-line">
-        Pick a source below, then expand the saved row to attach feats (Rapid
-        Shot, Deadly Aim, Power Attack fold in automatically) or layer a
-        manual adjustment — for "Custom", enter a value and damage note by
-        hand.
-      </p>
-      <input
-        className="search"
-        type="text"
-        placeholder="Search attacks, saves…"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <div className="scroll short">
-        {matches.map((opt, i) => (
-          <div className="pick-row" key={`${opt.source.kind}-${i}`}>
-            <div className="pmain">
-              <div className="pname">{opt.label}</div>
+      <div className="subsection saved-roll-add">
+        <div
+          className="subsection-header"
+          onClick={toggleAddCollapsed}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") toggleAddCollapsed();
+          }}
+          aria-expanded={!addCollapsed}
+        >
+          <h4 className="tracker-sub">Add a saved roll</h4>
+          <span className="panel-caret">{addCollapsed ? "▸" : "▾"}</span>
+        </div>
+        {!addCollapsed && (
+          <>
+            <p className="hint saved-roll-add-hint">
+              Pick a source below, then expand the saved row to attach feats
+              (Rapid Shot, Deadly Aim, Power Attack fold in automatically) or
+              layer a manual adjustment — for "Custom", enter a value and
+              damage note by hand.
+            </p>
+            <input
+              className="search"
+              type="text"
+              placeholder="Search attacks, saves…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll short">
+              {matches.map((opt, i) => (
+                <div className="pick-row" key={`${opt.source.kind}-${i}`}>
+                  <div className="pmain">
+                    <div className="pname">{opt.label}</div>
+                  </div>
+                  <button
+                    type="button"
+                    className="pick-btn add"
+                    onClick={() => update((d) => addSavedRoll(d, opt.source, opt.label))}
+                  >
+                    Add
+                  </button>
+                </div>
+              ))}
+              {matches.length === 0 ? <div className="empty">No matches.</div> : null}
             </div>
-            <button
-              type="button"
-              className="pick-btn add"
-              onClick={() => update((d) => addSavedRoll(d, opt.source, opt.label))}
-            >
-              Add
-            </button>
-          </div>
-        ))}
-        {matches.length === 0 ? <div className="empty">No matches.</div> : null}
+          </>
+        )}
       </div>
     </Panel>
   );
