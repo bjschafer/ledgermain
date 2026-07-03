@@ -245,6 +245,19 @@ a {
 	font-size: 13px;
 }
 
+/* -------------------------------------------------------- warn-over / warn-under --
+   Modifier classes appended to count badges (e.g. `.hint.warn-over`) when a
+   picked count is over/under its expected value — used by FeatsSection and
+   TraitsSection. Previously unstyled (issue #29). */
+.warn-over {
+	color: var(--danger, #d9534f);
+}
+
+.warn-under {
+	color: var(--faint);
+}
+/* ---------------------------------------------------------------------------- */
+
 .budge {
 	font-family: var(--mono);
 	font-size: 12px;

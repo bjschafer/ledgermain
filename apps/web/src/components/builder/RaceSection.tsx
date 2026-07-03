@@ -16,12 +16,18 @@ import type { BuilderProps } from "./types.js";
 export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   const [pendingRaceId, setPendingRaceId] = useState<string | null>(null);
   const [langInput, setLangInput] = useState("");
+  const [query, setQuery] = useState("");
 
-  const races = useMemo(
-    () =>
-      Object.entries(refData.races).sort((a, b) => a[1].name.localeCompare(b[1].name)),
-    [refData],
-  );
+  const races = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return Object.entries(refData.races)
+      .filter(([, race]) => !q || race.name.toLowerCase().includes(q))
+      .sort((a, b) => {
+        const isSel = doc.identity.race === a[0] ? 0 : 1;
+        const isSelB = doc.identity.race === b[0] ? 0 : 1;
+        return isSel - isSelB || a[1].name.localeCompare(b[1].name);
+      });
+  }, [refData, query, doc.identity.race]);
   const selected = refData.races[doc.identity.race];
   const flexible = selected ? raceGrantsFlexibleAbility(selected) : false;
   const pendingRace = pendingRaceId != null ? refData.races[pendingRaceId] : undefined;
@@ -47,6 +53,13 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
 
   return (
     <Panel title="Race" step="iii" storageKey="panel:Race">
+      <input
+        className="search"
+        type="text"
+        placeholder="Search races…"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
       <div className="chips">
         {races.map(([id, race]) => (
           <button
@@ -71,6 +84,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
             {race.name}
           </button>
         ))}
+        {races.length === 0 ? <div className="empty">No races match.</div> : null}
       </div>
       {pendingRaceId != null && (
         <p className="hint" style={{ marginTop: 12 }}>
