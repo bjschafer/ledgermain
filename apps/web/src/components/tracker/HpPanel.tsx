@@ -39,6 +39,7 @@ function statusLabel(state: HpState): string {
 export function HpPanel({ doc, sheet, update }: BuilderProps) {
 	const [amount, setAmount] = useState(5);
 	const max = sheet.hp.max;
+	const restMode = doc.build.settings?.restMode ?? "full";
 	const { current, temp, nonlethal } = doc.live.hp;
 	const effective = current - nonlethal;
 	const isLow = effective <= Math.floor(max / 4);
@@ -151,7 +152,14 @@ export function HpPanel({ doc, sheet, update }: BuilderProps) {
 				<button
 					type="button"
 					className="btn-ghost rest"
-					onClick={() => update((d) => restHp(d, max))}
+					title={
+						restMode === "natural"
+							? `Natural rest: heal ${sheet.level} HP (1×level), clear nonlethal`
+							: "Full rest: heal to max, clear nonlethal"
+					}
+					onClick={() =>
+						update((d) => restHp(d, max, { mode: restMode, level: sheet.level }))
+					}
 				>
 					Rest ⤿
 				</button>

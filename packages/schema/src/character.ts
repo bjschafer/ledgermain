@@ -290,6 +290,20 @@ export interface CharacterDoc {
        */
       hpMode?: "average" | "max" | "rolled";
       /**
+       * How the tracker's "Rest"/"New Day" actions heal HP overnight (issue #32).
+       * - `"full"` (default): heal straight to max — a common table house-rule
+       *   simplification, and the tracker's pre-#32 behavior, preserved for
+       *   every existing document that predates this setting.
+       * - `"natural"`: PF1 RAW natural healing rate — 1 HP × character level
+       *   per night of rest, capped at max. Full bed rest (2×level, requiring
+       *   a full day of doing nothing else) is out of scope for v1; this only
+       *   models one night. Nonlethal damage clears entirely under either
+       *   mode: RAW heals nonlethal at 1×level per HOUR, and a "new day"
+       *   action represents 8+ hours, so a full clear is the exact result,
+       *   not an approximation.
+       */
+      restMode?: "full" | "natural";
+      /**
        * When true, each favored-class level that picks `"both"` grants +1 HP AND
        * +1 skill rank simultaneously (house-rule). Default false = Standard PF1.
        */

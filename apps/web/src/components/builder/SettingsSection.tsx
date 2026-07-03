@@ -19,6 +19,7 @@ import {
 	setHeroPointsCap,
 	setHeroPointsEnabled,
 	setHpMode,
+	setRestMode,
 	setStatOverride,
 	setXpEnabled,
 	setXpTrack,
@@ -62,6 +63,7 @@ export function SettingsSection({
 }) {
 	const settings = doc.build.settings ?? {};
 	const hpMode = settings.hpMode ?? "average";
+	const restMode = settings.restMode ?? "full";
 	const fcbHouserule = settings.fcbHouserule ?? false;
 	const heroEnabled = settings.heroPointsEnabled ?? true;
 	const heroCap = settings.heroPointsCap ?? HERO_POINT_CAP;
@@ -129,6 +131,38 @@ export function SettingsSection({
 					{hpMode === "max" && "Every level equals the full die value."}
 					{hpMode === "rolled" &&
 						"L1 = max HD; enter your rolls per level in the Hit Points panel."}
+				</p>
+			</Panel>
+
+			{/* Rest healing mode */}
+			<Panel title="Rest Healing" step="⚙">
+				<p className="hint" style={{ marginBottom: 12 }}>
+					Controls how much HP the "Rest" button and "New Day" action restore
+					overnight.
+				</p>
+				<div className="chips">
+					<button
+						type="button"
+						className="chip"
+						aria-pressed={restMode === "full"}
+						onClick={() => update((d) => setRestMode(d, "full"))}
+					>
+						Full (house rule)
+					</button>
+					<button
+						type="button"
+						className="chip"
+						aria-pressed={restMode === "natural"}
+						onClick={() => update((d) => setRestMode(d, "natural"))}
+					>
+						Natural (1×level per night, RAW)
+					</button>
+				</div>
+				<p className="hint" style={{ marginTop: 10, fontSize: 12 }}>
+					{restMode === "full"
+						? "Heals current HP straight to max — a common table simplification."
+						: "Heals 1 HP per character level per night, capped at max (PF1 RAW). Full bed rest (2×level/day) isn't modelled yet."}
+					{" "}Nonlethal damage always clears fully on rest.
 				</p>
 			</Panel>
 

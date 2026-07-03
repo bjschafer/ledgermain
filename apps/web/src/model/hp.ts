@@ -85,9 +85,34 @@ export function healNonlethal(doc: CharacterDoc, amount: number): CharacterDoc {
   return withHp(doc, { ...doc.live.hp, nonlethal: nonNeg(doc.live.hp.nonlethal - heal) });
 }
 
-/** Rest: full current HP, all nonlethal removed, temp cleared. */
-export function restHp(doc: CharacterDoc, max: number): CharacterDoc {
-  return withHp(doc, { current: max, temp: 0, nonlethal: 0 });
+/**
+ * Rest for one night. Always clears temp HP and nonlethal damage entirely:
+ * temp HP is a spell-granted buffer, not something rest restores, and PF1 RAW
+ * heals nonlethal at 1 HP/level per HOUR — over the 8+ hours a "new day"
+ * action represents, that's far more than any accumulated nonlethal total, so
+ * a full clear is the exact result under both modes below, not a shortcut.
+ *
+ * `opts.mode` controls current-HP healing (issue #32):
+ * - `"full"` (default): heal straight to `max` — the pre-#32 behavior, and
+ *   still the default for any document without a `restMode` setting.
+ * - `"natural"`: PF1 RAW night's-rest rate — current HP heals by `opts.level`
+ *   × 1, capped at `max`. Full bed rest (2×level, a full day of doing nothing
+ *   else) is deliberately out of scope for v1 — this only models one night.
+ *
+ * `opts` is optional (and `mode`/`level` within it) so pre-#32 two-arg call
+ * sites keep compiling and keep their heal-to-max behavior unchanged.
+ */
+export function restHp(
+  doc: CharacterDoc,
+  max: number,
+  opts?: { mode?: "full" | "natural"; level?: number },
+): CharacterDoc {
+  const mode = opts?.mode ?? "full";
+  const current =
+    mode === "natural"
+      ? Math.min(max, doc.live.hp.current + Math.max(0, opts?.level ?? 0))
+      : max;
+  return withHp(doc, { current, temp: 0, nonlethal: 0 });
 }
 
 /** Manually set the "stabilized" flag (issue #20) — see the schema doc comment on `live.stable`. */

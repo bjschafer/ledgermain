@@ -642,6 +642,26 @@ export function setHpMode(
 }
 
 /**
+ * Set the overnight rest-healing mode (issue #32). `"full"` (default, absent
+ * = full) heals to max on Rest/New Day; `"natural"` uses the PF1 RAW rate of
+ * 1 HP × character level per night, capped at max — see `model/hp.ts`'s
+ * `restHp` doc comment for the full rule (and why full bed rest is out of
+ * scope for v1).
+ */
+export function setRestMode(
+	doc: CharacterDoc,
+	mode: "full" | "natural",
+): CharacterDoc {
+	return {
+		...doc,
+		build: {
+			...doc.build,
+			settings: { ...doc.build.settings, restMode: mode },
+		},
+	};
+}
+
+/**
  * Store a rolled HP value for character level `charLevel` (1-based).
  * Level 1 is always maxed by the engine regardless of the stored value, but the
  * value is still recorded so the UI can display it.

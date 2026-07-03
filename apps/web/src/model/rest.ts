@@ -11,13 +11,11 @@
  * `model/afflictions.ts`, `model/resources.ts`, `model/preparedSpells.ts`,
  * and `model/spontaneousSpells.ts`, in this order:
  *
- *   1. HP — `restHp` (full current HP, nonlethal cleared, temp HP cleared).
- *      PF1 RAW natural healing is actually 1 HP/level per night (2/level for
- *      a full day of complete bed rest), not "full heal" — `restHp` already
- *      diverges from that (it's the pre-existing behavior of the HP panel's
- *      "Rest" button, kept as-is here rather than reimplemented; tightening
- *      it to the RAW rate is a separate concern, not part of unifying the
- *      button).
+ *   1. HP — `restHp`, respecting `doc.build.settings.restMode` (issue #32):
+ *      `"full"` (default, absent = full) heals straight to max; `"natural"`
+ *      heals 1 HP × character level (PF1 RAW night's-rest rate, capped at
+ *      max — full 2×level bed rest is out of scope for v1). Nonlethal and
+ *      temp HP are cleared either way — see `restHp`'s doc comment.
  *   2. Ability damage — `restAbilityDamage`: -1 per damaged ability. Drain
  *      and penalties are untouched (see that function's doc comment).
  *   3. Resources — `restAllResources`: every stored pool's `used` -> 0.
@@ -60,9 +58,10 @@ export interface RestNewDayResult {
 }
 
 /**
- * Apply a full "new day" rest to `doc`. `derived` supplies max HP (from
- * `restHp`'s HP-max parameter) — omit it to skip the HP reset (e.g. a caller
- * that only cares about the other effects). `refData` lets spell-slot resets
+ * Apply a full "new day" rest to `doc`. `derived` supplies max HP and
+ * character level (for `restHp`'s natural-mode heal rate) — omit it to skip
+ * the HP reset (e.g. a caller that only cares about the other effects).
+ * `refData` lets spell-slot resets
  * cover every caster class on a multiclass document — omit it to reset only
  * the primary/flat spell fields (matches pre-multiclass behavior).
  */
@@ -74,7 +73,8 @@ export function restNewDay(
   let next = doc;
 
   if (derived) {
-    next = restHp(next, derived.hp.max);
+    const mode = doc.build.settings?.restMode ?? "full";
+    next = restHp(next, derived.hp.max, { mode, level: derived.level });
   }
 
   next = restAbilityDamage(next);

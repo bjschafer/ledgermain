@@ -78,6 +78,31 @@ describe("HP math", () => {
     d = restHp(d, 12);
     expect(d.live.hp).toEqual({ current: 12, temp: 0, nonlethal: 0 });
   });
+
+  it("restHp with no opts (or mode 'full') heals straight to max, as before #32", () => {
+    let d = doc();
+    d = { ...d, live: { ...d.live, hp: { current: 4, temp: 3, nonlethal: 6 } } };
+    expect(restHp(d, 20).live.hp).toEqual({ current: 20, temp: 0, nonlethal: 0 });
+    expect(restHp(d, 20, { mode: "full", level: 5 }).live.hp).toEqual({
+      current: 20,
+      temp: 0,
+      nonlethal: 0,
+    });
+  });
+
+  it("restHp mode 'natural' heals exactly 1×level, capped at max, and still clears nonlethal/temp (issue #32)", () => {
+    let d = doc();
+    d = { ...d, live: { ...d.live, hp: { current: 4, temp: 3, nonlethal: 6 } } };
+    d = restHp(d, 20, { mode: "natural", level: 5 });
+    expect(d.live.hp).toEqual({ current: 9, temp: 0, nonlethal: 0 }); // 4 + 5
+  });
+
+  it("restHp mode 'natural' caps healing at max", () => {
+    let d = doc();
+    d = { ...d, live: { ...d.live, hp: { current: 18, temp: 0, nonlethal: 0 } } };
+    d = restHp(d, 20, { mode: "natural", level: 10 });
+    expect(d.live.hp.current).toBe(20);
+  });
 });
 
 describe("conditions", () => {

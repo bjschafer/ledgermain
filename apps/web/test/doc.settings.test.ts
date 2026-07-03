@@ -20,6 +20,7 @@ import {
 	setHeroPointsEnabled,
 	setHpMode,
 	setHpRoll,
+	setRestMode,
 	setStatOverride,
 	setWeight,
 	STAT_OVERRIDE_KEYS,
@@ -89,6 +90,26 @@ describe("setHpMode()", () => {
     const d = doc();
     setHpMode(d, "max");
     expect(d.build.settings?.hpMode).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setRestMode (issue #32)
+// ---------------------------------------------------------------------------
+describe("setRestMode()", () => {
+  it("stores the chosen mode", () => {
+    expect(setRestMode(doc(), "natural").build.settings?.restMode).toBe("natural");
+    expect(setRestMode(doc(), "full").build.settings?.restMode).toBe("full");
+  });
+
+  it("is absent by default (treated as 'full' by consumers)", () => {
+    expect(doc().build.settings?.restMode).toBeUndefined();
+  });
+
+  it("does not mutate the original doc", () => {
+    const d = doc();
+    setRestMode(d, "natural");
+    expect(d.build.settings?.restMode).toBeUndefined();
   });
 });
 

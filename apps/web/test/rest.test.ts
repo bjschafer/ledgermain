@@ -126,4 +126,36 @@ describe("restNewDay()", () => {
     expect(result.doc.live.abilityDamage?.dex).toBeUndefined();
     expect(preparedSpells(result.doc)[0]!.expended).toBe(false);
   });
+
+  it("respects settings.restMode 'natural': heals 1×level instead of to max (issue #32)", () => {
+    let doc = clericSorcererDoc(); // cleric 4 / sorcerer 3 = level 7
+    doc = {
+      ...doc,
+      build: { ...doc.build, settings: { ...doc.build.settings, restMode: "natural" } },
+    };
+    const maxSheet = compute(doc, ref);
+    const startCurrent = Math.max(0, maxSheet.hp.max - 5);
+    doc = {
+      ...doc,
+      live: { ...doc.live, hp: { current: startCurrent, temp: 3, nonlethal: 2 } },
+    };
+
+    const sheet = compute(doc, ref);
+    expect(sheet.level).toBe(7);
+    const result = restNewDay(doc, sheet, ref);
+
+    // Heals 7 (level), capped at max.
+    expect(result.doc.live.hp.current).toBe(Math.min(sheet.hp.max, startCurrent + 7));
+    // Nonlethal and temp still fully cleared under natural mode.
+    expect(result.doc.live.hp.nonlethal).toBe(0);
+    expect(result.doc.live.hp.temp).toBe(0);
+  });
+
+  it("absent settings.restMode behaves as 'full' (heal to max) — pre-#32 default preserved", () => {
+    let doc = clericSorcererDoc();
+    doc = applyDamage(doc, 5);
+    const sheet = compute(doc, ref);
+    const result = restNewDay(doc, sheet, ref);
+    expect(result.doc.live.hp.current).toBe(sheet.hp.max);
+  });
 });
