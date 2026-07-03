@@ -1768,6 +1768,24 @@ button:focus-visible,
 	color: var(--ink);
 }
 
+/* afflictions (ability damage/drain/penalty + negative levels) */
+.affliction-warnings {
+	margin-top: 10px;
+}
+
+.affliction-warn {
+	color: var(--danger, #d9534f);
+}
+
+.affliction-warn b {
+	color: var(--danger, #d9534f);
+}
+
+.affliction-neglevels {
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
 /* buffs */
 .round-ctl {
 	display: flex;

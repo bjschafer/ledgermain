@@ -1,3 +1,4 @@
+import { AfflictionsPanel } from "./AfflictionsPanel.js";
 import { BuffsPanel } from "./BuffsPanel.js";
 import { ConditionsPanel } from "./ConditionsPanel.js";
 import { FeatsPanel } from "./FeatsPanel.js";
@@ -22,6 +23,7 @@ export function Tracker(props: BuilderProps) {
       {heroOn && <HeroPointsPanel {...props} />}
       <SavedRollsPanel {...props} />
       <ConditionsPanel {...props} />
+      <AfflictionsPanel {...props} />
       <BuffsPanel {...props} />
       <PreparedSpellsPanel {...props} />
       <ResourcesPanel {...props} />
