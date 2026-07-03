@@ -319,6 +319,28 @@ export interface SavedRoll {
   id: string;
   label: string;
   source: SavedRollSource;
+  /**
+   * Flat adjustment layered on top of the source's attack bonus (or, for
+   * `source.kind === "custom"`, the roll's entire value) — for situational
+   * feats the engine doesn't model as a toggle (Rapid Shot -2, Deadly Aim -1,
+   * Two-Weapon Fighting -2, ...). Applied to every entry of an iterative
+   * full-attack sequence equally. Not rescaled automatically as level/BAB
+   * changes (e.g. Power Attack/Deadly Aim's BAB-tiered damage) — a flat
+   * number the player sets and updates by hand. Zero/undefined = no adjustment.
+   */
+  attackModifier?: number;
+  /**
+   * Flat adjustment to the source's damage bonus (e.g. Deadly Aim's +2/+3,
+   * Power Attack's +2/+3/+4). Only meaningful when the source resolves a
+   * damage line (`kind: "weapon"`); ignored otherwise.
+   */
+  damageModifier?: number;
+  /**
+   * Freeform damage note (e.g. "2d6+4, x3 crit"). Only meaningful for
+   * `source.kind === "custom"`, which has no engine-computed damage to
+   * adjust — display-only, never parsed or evaluated.
+   */
+  customDamage?: string;
 }
 
 /**
@@ -326,7 +348,9 @@ export interface SavedRoll {
  * `DerivedSheet` — no value is ever stored here — so a saved roll always
  * reflects the character's current buffs/feats/gear. `weapon`/`skill`
  * references are by stable id/name rather than array index, since
- * `build.weapons` and skill lists can be reordered or edited.
+ * `build.weapons` and skill lists can be reordered or edited. `custom` has no
+ * engine source at all — its value is entirely `SavedRoll.attackModifier` —
+ * for one-off bookmarks the other variants don't cover.
  */
 export type SavedRollSource =
   | { kind: "melee" }
@@ -337,7 +361,8 @@ export type SavedRollSource =
   | { kind: "cmd" }
   | { kind: "initiative" }
   | { kind: "save"; save: "fort" | "ref" | "will" }
-  | { kind: "skill"; skillId: SkillId };
+  | { kind: "skill"; skillId: SkillId }
+  | { kind: "custom" };
 
 /**
  * A buff currently affecting the character at the table. It carries its own

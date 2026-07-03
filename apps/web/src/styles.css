@@ -1891,9 +1891,57 @@ button:focus-visible,
 	gap: 10px;
 }
 
-.saved-roll-value-btn:disabled {
-	opacity: 0.6;
-	cursor: default;
+/* Reset native <button> chrome — .res-count previously only styled a <div>,
+   so as a real button it needs its own background/border or it inherits the
+   browser's light default (low-contrast gold-on-white in the dark theme). */
+.saved-roll-value-btn {
+	background: none;
+	border: 1px solid transparent;
+	border-radius: var(--radius);
+	padding: 4px 8px;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.saved-roll-value-btn:hover {
+	border-color: var(--gold-dim);
+}
+
+.saved-roll-value-btn .caret {
+	font-size: 10px;
+	color: var(--faint);
+}
+
+.saved-roll-damage {
+	font-size: 13px;
+	font-family: var(--mono);
+	color: var(--muted);
+	white-space: nowrap;
+}
+
+.saved-roll-detail {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 2px 2px 4px;
+}
+
+.saved-roll-adjust {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 12px;
+	color: var(--muted);
+}
+
+.saved-roll-adjust input[type="text"] {
+	width: auto;
+	flex: 1;
+}
+
+.saved-roll-adjust--wide {
+	align-items: center;
 }
 
 .res-row:last-child {
