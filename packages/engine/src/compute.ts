@@ -195,6 +195,26 @@ const FLAT_FOOTED_CATEGORIES: ReadonlySet<AcCategory> = new Set<AcCategory>([
   "generic",
 ]);
 
+/**
+ * RAW: CMD benefits from these eight *named* AC bonus types (deflection,
+ * dodge, circumstance, insight, luck, morale, profane, sacred) in addition to
+ * BAB/Str/Dex/size. Armor, shield, and natural-armor bonuses never apply.
+ * Untyped/enhancement/racial/etc. AC bonuses are likewise excluded — a
+ * vendored source that wants an untyped bonus to also affect CMD (e.g. a
+ * monk's Wis-to-AC class feature) carries its own explicit `cmd`-target
+ * change for that (see the CMB/CMD block in {@link compute}).
+ */
+const CMD_AC_TYPES: ReadonlySet<string> = new Set([
+  "deflection",
+  "dodge",
+  "circumstance",
+  "insight",
+  "luck",
+  "morale",
+  "profane",
+  "sacred",
+]);
+
 function computeAc(
   doc: CharacterDoc,
   size: SizeId,
@@ -714,15 +734,35 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const sizeSpecial = specialSizeMod(size);
   const cmbStack = resolveStack(forTarget(collected, "cmb"));
   const cmb = bab + strMod + sizeSpecial + cmbStack.total;
-  const cmdAcBonus = ac.components.reduce(
-    (s, c) =>
-      c.applied && (c.category === "dodge" || c.category === "deflection" || c.category === "generic")
-        ? s + c.value
-        : s,
-    0,
+
+  // CMD = 10 + BAB + Str + Dex + special size mod, auto-including any of the
+  // eight RAW-named AC bonus types (CMD_AC_TYPES above) plus whatever carries
+  // an explicit "cmd"-target change. Read from the same `collected` "ac"
+  // modifiers computeAc reads (armor/shield/natural bonuses live under the
+  // separate "aac"/"sac"/"nac" targets, so filtering to bare "ac" already
+  // excludes them without a category check).
+  //
+  // Some vendored sources (Iron Mask, the Deflection Aura buff, monk's
+  // Wis-to-AC class feature) carry BOTH a generic "ac" change and their own
+  // explicit "cmd" change with an identical formula. Auto-deriving both would
+  // double-count, so a source with an explicit "cmd" change is excluded from
+  // the auto-derivation entirely (the explicit change wins for that source —
+  // dedup by sourceId/source, matching the provenance key `collect.ts`
+  // already stamps on every modifier). The two pools are then stacked
+  // together in one `resolveStack` pass, so cross-pool same-type competition
+  // (e.g. an explicit cmd deflection bonus vs. a separate deflection ring)
+  // still resolves to the highest per type, per RAW.
+  //
+  // Note: neither `cmb` nor `cmd` carries a components/provenance array on
+  // DerivedSheet (unlike `ac.components`), so a deduped auto-derivation has
+  // nothing to mark `applied: false` on — it's simply absent from the sum.
+  const explicitCmdMods = forTarget(collected, "cmd");
+  const explicitCmdSourceIds = new Set(explicitCmdMods.map((m) => m.sourceId ?? m.source));
+  const autoCmdFromAc = forTarget(collected, "ac").filter(
+    (m) => CMD_AC_TYPES.has(m.type.toLowerCase()) && !explicitCmdSourceIds.has(m.sourceId ?? m.source),
   );
-  const cmdStack = resolveStack(forTarget(collected, "cmd"));
-  const cmd = 10 + bab + strMod + dexMod + sizeSpecial + cmdAcBonus + cmdStack.total;
+  const cmdStack = resolveStack([...autoCmdFromAc, ...explicitCmdMods]);
+  const cmd = 10 + bab + strMod + dexMod + sizeSpecial + cmdStack.total;
 
   // Initiative
   const initStack = resolveStack(forTarget(collected, "init"));

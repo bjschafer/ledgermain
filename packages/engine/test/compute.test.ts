@@ -712,7 +712,7 @@ describe("compute: monk L5 (human, no armor)", () => {
 describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
   const abilities = { str: 14, dex: 16, con: 14, int: 10, wis: 16, cha: 8 } as const;
 
-  it("unarmored monk with positive Wis gets the AC/CMD bonus", () => {
+  it("unarmored monk with positive Wis gets the AC/CMD bonus exactly once (issue #33)", () => {
     const doc = makeDoc({ classes: [{ tag: "monk", level: 5 }], abilities });
     const sheet = compute(doc, ref);
     // AC Bonus (MNK): if(not shield && not armored && not encumbered, 1) *
@@ -721,14 +721,14 @@ describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
     // touch-AC category).
     expect(sheet.ac.normal).toBe(17); // 10 base + dex3 + wisToAc4
     expect(sheet.ac.touch).toBe(17);
-    // CMD ALSO gets +4 twice here: once via cmdAcBonus (derived generically
-    // from any "dodge"/"deflection"/"generic" ac.components, which already
-    // picks up AC Bonus's "ac"-target change) and again via AC Bonus's own
-    // separate explicit "cmd"-target change carrying the identical formula.
-    // This is a real double-count in the vendored data + this engine's CMD
-    // derivation, not a test error — documented in IMPLEMENTATION_PLAN.md.
-    // cmd = 10 + bab3 + str2 + dex3 + size0 + cmdAcBonus4 + cmdStack4 = 26
-    expect(sheet.cmd).toBe(26);
+    // AC Bonus (MNK) carries BOTH a generic "ac" change and its own explicit
+    // "cmd" change with the identical untyped formula. Untyped AC bonuses are
+    // not one of RAW's eight CMD-eligible types (deflection/dodge/
+    // circumstance/insight/luck/morale/profane/sacred), so the "ac" copy is
+    // never auto-derived into CMD regardless of dedup; only the explicit
+    // "cmd" copy counts, applied exactly once (issue #33 fix).
+    // cmd = 10 + bab3 + str2 + dex3 + size0 + wisToAc4(explicit cmd only) = 22
+    expect(sheet.cmd).toBe(22);
   });
 
   it("armored monk does NOT get the AC/CMD bonus (the armor half of the gate works correctly)", () => {
@@ -758,6 +758,137 @@ describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
   // yet, issue #16), so a monk wielding a shield or carrying a heavy load
   // would incorrectly still receive this bonus. The armor check — the most
   // common real-world case — works correctly, per the assertions above.
+});
+
+describe("compute: CMD RAW-correct derivation, no double-counting (issue #33)", () => {
+  // Fighter L5, no gear, no buffs: bab5 + str2 + dex3 + size0.
+  // cmd = 10 + 5 + 2 + 3 = 20; ac.normal = 10 + dex3 = 13.
+  const baseDoc = () =>
+    makeDoc({
+      classes: [{ tag: "fighter", level: 5 }],
+      abilities: { str: 14, dex: 16, con: 12, int: 10, wis: 10, cha: 8 },
+    });
+  const baseSheet = compute(baseDoc(), ref);
+
+  it("baseline sanity: CMD 20, AC 13", () => {
+    expect(baseSheet.cmd).toBe(20);
+    expect(baseSheet.ac.normal).toBe(13);
+  });
+
+  it("Iron Mask (masterwork) no longer double-counts its Dex-halving penalty into CMD", () => {
+    // Iron Mask, masterwork: two identical untyped changes, one targeting
+    // "ac" and one targeting "cmd", both
+    // `min(0, -floor(@abilities.dex.mod / 2))`. With dexMod=3: floor(3/2)=1,
+    // so the formula evaluates to -1 on each target.
+    const doc = {
+      ...baseDoc(),
+      build: {
+        ...baseDoc().build,
+        gear: [{ equipped: true, itemId: itemByName("Iron Mask, masterwork") }],
+      },
+    };
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(12); // 13 - 1
+    // Untyped is not one of RAW's eight CMD-eligible AC bonus types, so the
+    // "ac" copy is never auto-derived into CMD (dedup is moot here — it's
+    // excluded on type alone); only the explicit "cmd" copy applies once.
+    // cmd = 20 - 1 = 19, NOT 20 - 1 - 1 = 18 (the pre-fix double count).
+    expect(sheet.cmd).toBe(19);
+  });
+
+  it("Deflection Aura buff applies its +2 deflection to CMD exactly once", () => {
+    const { id: buffId, buff } = buffByName("Deflection Aura");
+    const doc = {
+      ...baseDoc(),
+      live: {
+        ...baseDoc().live,
+        activeBuffs: [{ instanceId: "deflection-aura", buffId, name: buff.name, changes: buff.changes }],
+      },
+    };
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(15); // 13 + 2 deflection
+    // Deflection Aura carries both an "ac" deflection change and its own
+    // explicit "cmd" deflection change (same formula, same source). The "ac"
+    // copy is excluded from auto-derivation because this source also has an
+    // explicit "cmd" change, so only that explicit +2 counts.
+    // cmd = 20 + 2 = 22, NOT 20 + 2 + 2 = 24 (the pre-fix double count).
+    expect(sheet.cmd).toBe(22);
+  });
+
+  it("a plain deflection source with no explicit cmd change (Shield of Faith) still auto-derives into CMD", () => {
+    const { id: buffId, buff } = buffByName("Shield of Faith");
+    const doc = {
+      ...baseDoc(),
+      live: {
+        ...baseDoc().live,
+        activeBuffs: [{ instanceId: "shield-of-faith", buffId, name: buff.name, changes: buff.changes }],
+      },
+    };
+    const sheet = compute(doc, ref);
+    // Formula: 2 + min(3, floor(@item.level / 6)); no casterLevel override on
+    // the ActiveBuff → @item.level reads as the missing-path default of 0, so
+    // it evaluates to 2 + min(3, 0) = 2 deflection, "ac" target only.
+    expect(sheet.ac.normal).toBe(15); // 13 + 2
+    expect(sheet.cmd).toBe(22); // 20 + 2, auto-derived (deflection is CMD-eligible)
+  });
+
+  it("a dodge bonus (Total Defense, ac-only) auto-derives into CMD", () => {
+    const { id: buffId, buff } = buffByName("Total Defense");
+    const doc = {
+      ...baseDoc(),
+      live: {
+        ...baseDoc().live,
+        activeBuffs: [{ instanceId: "total-defense", buffId, name: buff.name, changes: buff.changes }],
+      },
+    };
+    const sheet = compute(doc, ref);
+    // Formula: 4 + if(gte(@skills.acr.rank, 3), 2); no Acrobatics ranks on
+    // this doc → gte(0, 3) is false, so it evaluates to a flat +4 dodge.
+    expect(sheet.ac.normal).toBe(17); // 13 + 4
+    expect(sheet.cmd).toBe(24); // 20 + 4, auto-derived (dodge is CMD-eligible)
+  });
+
+  it("an armor bonus does NOT reach CMD", () => {
+    const doc = {
+      ...baseDoc(),
+      build: {
+        ...baseDoc().build,
+        gear: [
+          {
+            equipped: true,
+            name: "Studded Leather",
+            armor: { slot: "armor" as const, ac: 3, maxDex: 5, acp: -1, type: 1 },
+          },
+        ],
+      },
+    };
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(16); // 13 + 3 armor (maxDex 5 doesn't cap dex3)
+    expect(sheet.cmd).toBe(20); // unchanged — armor bonuses never apply to CMD
+  });
+
+  it("two deflection sources still only apply the highest to CMD (stacking rules hold within CMD)", () => {
+    // Ring of Protection +2: plain "ac" deflection, no explicit "cmd" change
+    // (auto-derives). Deflection Aura: "ac" deflection +2 AND an explicit
+    // "cmd" deflection +2 (its "ac" copy is excluded per the dedup test
+    // above). Both are type "deflection" (a non-stacking type), so the
+    // combined CMD stack should apply only one +2, not both.
+    const { id: buffId, buff } = buffByName("Deflection Aura");
+    const doc = {
+      ...baseDoc(),
+      build: {
+        ...baseDoc().build,
+        gear: [{ equipped: true, itemId: itemByName("Ring of Protection +2") }],
+      },
+      live: {
+        ...baseDoc().live,
+        activeBuffs: [{ instanceId: "deflection-aura", buffId, name: buff.name, changes: buff.changes }],
+      },
+    };
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(15); // 13 + 2 (deflection doesn't stack with itself in AC either)
+    expect(sheet.cmd).toBe(22); // 20 + 2, NOT 20 + 2 + 2 = 24
+  });
 });
 
 describe("compute: fighter L5 (full plate + magic items, stacking + armor training)", () => {
@@ -1063,4 +1194,11 @@ function itemByName(name: string): string {
   const entry = Object.entries(ref.items).find(([, it]) => it.name === name);
   if (!entry) throw new Error(`item not found: ${name}`);
   return entry[0];
+}
+
+function buffByName(name: string) {
+  const entry = Object.entries(ref.buffs).find(([, b]) => b.name === name);
+  if (!entry) throw new Error(`buff not found: ${name}`);
+  const [id, buff] = entry;
+  return { id, buff };
 }
