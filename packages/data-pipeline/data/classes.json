@@ -640,6 +640,231 @@
       "Favored Weapon"
     ]
   },
+  "W8dxwZ1CZiwLKsqr": {
+    "armorProf": [],
+    "bab": "med",
+    "classSkills": [
+      "acr",
+      "art",
+      "clm",
+      "crf",
+      "esc",
+      "int",
+      "khi",
+      "kre",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "rid",
+      "sen",
+      "ste",
+      "swm"
+    ],
+    "description": "<p>For the truly exemplary, martial skill transcends the battlefield—it is a lifestyle, a doctrine, a state of mind. These warrior-artists search out methods of battle beyond swords and shields, finding weapons within themselves just as capable of crippling or killing as any blade. These monks (so called since they adhere to ancient philosophies and strict martial disciplines) elevate their bodies to become weapons of war, from battle-minded ascetics to self-taught brawlers. Monks tread the path of discipline, and those with the will to endure that path discover within themselves not what they are, but what they are meant to be.</p><p><strong>Role</strong>: Monks excel at overcoming even the most daunting perils, striking where it’s least expected, and taking advantage of enemy vulnerabilities. Fleet of foot and skilled in combat, monks can navigate any battlefield with ease, aiding allies wherever they are needed most.</p>",
+    "features": [
+      {
+        "featureId": "4zVndIJ8NMWWzl1T",
+        "level": 1,
+        "name": "AC Bonus (MNK)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4zVndIJ8NMWWzl1T"
+      },
+      {
+        "featureId": "VjHjPja5QABBgRvR",
+        "level": 1,
+        "name": "Bonus Feat (MNK)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.VjHjPja5QABBgRvR"
+      },
+      {
+        "featureId": "JKJoHy5NveXGaZqv",
+        "level": 1,
+        "name": "Flurry of Blows",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.JKJoHy5NveXGaZqv"
+      },
+      {
+        "featureId": "2ausI8g6SsmbOpgF",
+        "level": 1,
+        "name": "Stunning Fist",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2ausI8g6SsmbOpgF"
+      },
+      {
+        "featureId": "a4SPdPuOFdmfJdHN",
+        "level": 1,
+        "name": "Unarmed Strike",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.a4SPdPuOFdmfJdHN"
+      },
+      {
+        "featureId": "KQYCRLEdD4bGA5ak",
+        "level": 2,
+        "name": "Evasion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KQYCRLEdD4bGA5ak"
+      },
+      {
+        "featureId": "CK5L0YJDENqBxLqv",
+        "level": 3,
+        "name": "Fast Movement (MNK)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.CK5L0YJDENqBxLqv"
+      },
+      {
+        "featureId": "E7enBZN7FCsoyIof",
+        "level": 3,
+        "name": "Maneuver Training",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.E7enBZN7FCsoyIof"
+      },
+      {
+        "featureId": "8VUae7CIgCidvSfg",
+        "level": 3,
+        "name": "Still Mind",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.8VUae7CIgCidvSfg"
+      },
+      {
+        "featureId": "2Og23i3rRXu5QQlg",
+        "level": 4,
+        "name": "Ki Pool",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2Og23i3rRXu5QQlg"
+      },
+      {
+        "featureId": "M4bXVPXouXroIt90",
+        "level": 4,
+        "name": "Slow Fall",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.M4bXVPXouXroIt90"
+      },
+      {
+        "featureId": "WJEF9WHs27kaFYJL",
+        "level": 5,
+        "name": "High Jump",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WJEF9WHs27kaFYJL"
+      },
+      {
+        "featureId": "82G7gl4C1AvtSHI4",
+        "level": 5,
+        "name": "Purity of Body",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.82G7gl4C1AvtSHI4"
+      },
+      {
+        "featureId": "ZPrMO00Iz2SfrNMq",
+        "level": 7,
+        "name": "Wholeness of Body",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZPrMO00Iz2SfrNMq"
+      },
+      {
+        "featureId": "Cc2eFfhJYlClCGEH",
+        "level": 9,
+        "name": "Improved Evasion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Cc2eFfhJYlClCGEH"
+      },
+      {
+        "featureId": "nRffrQSKTqjeBAO5",
+        "level": 11,
+        "name": "Diamond Body",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nRffrQSKTqjeBAO5"
+      },
+      {
+        "featureId": "XJtvco1XWggmr5LU",
+        "level": 12,
+        "name": "Abundant Step",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.XJtvco1XWggmr5LU"
+      },
+      {
+        "featureId": "bCdFkzKiVg52ufhu",
+        "level": 13,
+        "name": "Diamond Soul",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.bCdFkzKiVg52ufhu"
+      },
+      {
+        "featureId": "n4SWyKVcdmZK4t7d",
+        "level": 15,
+        "name": "Quivering Palm",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.n4SWyKVcdmZK4t7d"
+      },
+      {
+        "featureId": "5JlthJkVGEHPZypG",
+        "level": 17,
+        "name": "Timeless Body",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5JlthJkVGEHPZypG"
+      },
+      {
+        "featureId": "NKzRm45051DUHkd5",
+        "level": 17,
+        "name": "Tongue of the Sun and Moon",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NKzRm45051DUHkd5"
+      },
+      {
+        "featureId": "dtnkUkinLVIl1b2T",
+        "level": 19,
+        "name": "Empty Body",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dtnkUkinLVIl1b2T"
+      },
+      {
+        "featureId": "NNEU7hzPSu2LTyZv",
+        "level": 20,
+        "name": "Perfect Self",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NNEU7hzPSu2LTyZv"
+      }
+    ],
+    "hd": 8,
+    "id": "W8dxwZ1CZiwLKsqr",
+    "name": "Monk",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "high"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "56-60"
+      }
+    ],
+    "subType": "base",
+    "tag": "monk",
+    "uuid": "Compendium.pf1.classes.Item.W8dxwZ1CZiwLKsqr",
+    "weaponProf": [
+      "Brass Knuckles",
+      "Cestus",
+      "Club",
+      "Light Crossbow",
+      "Heavy Crossbow",
+      "Dagger",
+      "Handaxe",
+      "Javelin",
+      "Kama",
+      "Nunchaku",
+      "Quarterstaff",
+      "Sai",
+      "Shortspear",
+      "Shortsword",
+      "Shuriken",
+      "Siangham",
+      "Sling",
+      "Spear",
+      "Temple Sword"
+    ]
+  },
   "WLqBCT5DqmGAx8Wd": {
     "armorProf": [
       "lgt",

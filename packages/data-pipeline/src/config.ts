@@ -74,6 +74,7 @@ export const SLICE = {
     "paladin",
     "ranger",
     "bard",
+    "monk",
   ],
   /** Class tags whose spell lists we derive by inverting `learnedAt.class`. */
   spellListClassTags: ["wizard", "sorcerer", "cleric", "paladin", "ranger", "bard"],

@@ -244,6 +244,40 @@ describe("resolveClassFeatures: Animal Speaker (bard archetype) swaps Inspire Co
   });
 });
 
+describe("resolveClassFeatures: Maneuver Master (monk archetype) swaps Evasion for Resilience", () => {
+  // Closes out issue #13's "check archetype slice picks up the new class"
+  // item for Monk — Monk.csv archetypes are vendored alongside the base
+  // class. (Note: the vendored CSV's row prose for this archetype describes
+  // itself as "ironskin monk" throughout, though the `Archetype` column name
+  // is "Maneuver Master" — a quirk of the source dataset, not something this
+  // pass fixes; asserting on the mechanical swap only, not the prose.)
+  const maneuverMaster = byName(ref.archetypes, "Maneuver Master");
+  const doc = makeDoc({
+    classes: [{ tag: "monk", level: 5 }],
+    archetypes: [maneuverMaster.id],
+  });
+  const { classFeatures, activeArchetypes } = resolveClassFeatures(doc, ref);
+
+  it("activeArchetypes carries one resolved monk archetype", () => {
+    expect(activeArchetypes).toHaveLength(1);
+    expect(activeArchetypes[0]!.classTag).toBe("monk");
+    expect(activeArchetypes[0]!.name).toBe("Maneuver Master");
+  });
+
+  it("Evasion (the swapped L2 base feature) is struck through", () => {
+    const evasion = classFeatures.find((f) => f.name === "Evasion")!;
+    expect(evasion).toBeDefined();
+    expect(evasion.applied).toBe(false);
+    expect(evasion.replacedBy).toBe("Resilience");
+  });
+
+  it("archetype's own features are listed", () => {
+    const resilience = activeArchetypes[0]!.features.find((f) => f.name === "Resilience")!;
+    expect(resilience).toBeDefined();
+    expect(resilience.ambiguous).toBe(false);
+  });
+});
+
 describe("archetypeSwappedUuids", () => {
   it("two barbarian archetypes that both swap the same rage-power slot share a uuid", () => {
     const armoredHulk = byName(ref.archetypes, "Armored Hulk");

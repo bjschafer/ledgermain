@@ -46,6 +46,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.2M56kfIOws5yYtxq"
   },
+  "2Og23i3rRXu5QQlg": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 4th level, a monk gains a pool of ki points, supernatural energy he can use to accomplish amazing feats. The number of points in a monk's ki pool is equal to 1/2 his monk level + his <em>Wisdom</em> modifier. As long as he has at least 1 point in his ki pool, he can make a ki strike.</p>\n<ul>\n<li><b>At 4th level</b>, ki strike allows his unarmed attacks to be treated as magic weapons for the purpose of overcoming <em>damage reduction</em>.</li>\n<li><b>At 7th level</b>, his unarmed attacks are also treated as <em>cold iron</em> and <em>silver</em> for the purpose of overcoming <em>damage reduction</em>.</li>\n<li><b>At 10th level</b>, his unarmed attacks are also treated as lawful weapons for the purpose of overcoming <em>damage reduction</em>.</li>\n<li><b>At 16th level</b>, his unarmed attacks are treated as <em>adamantine</em> weapons for the purpose of overcoming <em>damage reduction</em> and bypassing <em>hardness</em>.</li>\n</ul>\n<p>By spending 1 point from his ki pool, a monk can do one of the following:</p>\n<ul>\n<li>Make one additional attack at his highest <em>attack bonus</em> when making a flurry of blows attack, or</li>\n<li>Increase his speed by 20 feet for 1 round, or</li>\n<li>Give himself a +4 <em>dodge bonus</em> to <em>AC</em> for 1 round.</li>\n</ul>\n<p>Each of these powers is activated as a <em>swift action</em>.</p>\n<p>The ki pool is replenished each morning after 8 hours of rest or meditation; these hours do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "2Og23i3rRXu5QQlg",
+    "name": "Ki Pool",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "kiPool",
+    "uses": {
+      "maxFormula": "floor(@class.unlevel / 2) + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.2Og23i3rRXu5QQlg"
+  },
   "2TsDfK0SKC8IGVx4": {
     "abilityType": "su",
     "changes": [],
@@ -82,6 +103,39 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.2YqtYAfLcV7KWkpJ"
+  },
+  "2ausI8g6SsmbOpgF": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 1st level, the monk gains Stunning Fist as a bonus feat, even if he does not meet the prerequisites.</p><p>At 4th level, and every 4 levels thereafter, the monk gains the ability to apply a new condition to the target of his Stunning Fist. This condition replaces stunning the target for 1 round, and a successful saving throw still negates the effect.</p><h4>Condition Options</h4><ul><li><p>At 4th level, he can choose to make the target fatigued.</p></li><li><p>At 8th level, he can make the target sickened for 1 minute.</p></li><li><p>At 12th level, he can make the target staggered for 1d6+1 rounds.</p></li><li><p>At 16th level, he can permanently blind or deafen the target.</p></li><li><p>At 20th level, he can paralyze the target for 1d6+1 rounds.</p></li></ul><p>The monk must choose which condition will apply before the attack roll is made. These effects do not stack with themselves (a creature sickened by <em>Stunning Fist</em> cannot become nauseated if hit by <em>Stunning Fist</em> again), but additional hits do increase the duration.</p>",
+    "grantsBuffs": [
+      "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN"
+    ],
+    "id": "2ausI8g6SsmbOpgF",
+    "name": "Stunning Fist",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "14"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "stunningFist",
+    "uses": {
+      "maxFormula": "@class.unlevel + floor((@attributes.hd.total - @class.unlevel ) / 4)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.2ausI8g6SsmbOpgF"
   },
   "2h3lI574tmVjOalQ": {
     "changes": [
@@ -121,6 +175,37 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.4wdsdOkgv4uEkS9K"
   },
+  "4zVndIJ8NMWWzl1T": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "if(and(and(lt(@shield.type, 1), lt(@armor.type, 1)), lt(@attributes.encumbrance.level, 1)), 1) * (@abilities.wis.mod + floor(@class.unlevel / 4))",
+        "target": "cmd",
+        "type": "untyped"
+      },
+      {
+        "formula": "if(and(and(lt(@shield.type, 1), lt(@armor.type, 1)), lt(@attributes.encumbrance.level, 1)), 1) * (@abilities.wis.mod + floor(@class.unlevel / 4))",
+        "target": "ac",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>When unarmored and unencumbered, the monk adds his Wisdom bonus (if any) to his AC and his CMD. In addition, a monk gains a +1 bonus to AC and CMD at 4th level. This bonus increases by 1 for every four monk levels thereafter, up to a maximum of +5 at 20th level. </p><p>These bonuses to AC apply even against touch attacks or when the monk is flat-footed. He loses these bonuses when he is immobilized or helpless, when he wears any armor, when he carries a shield, or when he carries a medium or heavy load.</p>",
+    "grantsBuffs": [],
+    "id": "4zVndIJ8NMWWzl1T",
+    "name": "AC Bonus (MNK)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "57"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "14"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.4zVndIJ8NMWWzl1T"
+  },
   "5JFfSqLMCpbRmERa": {
     "abilityType": "ex",
     "changes": [
@@ -147,6 +232,26 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa"
+  },
+  "5JlthJkVGEHPZypG": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>This character no longer takes ability score penalties for aging and cannot be magically aged. Any penalties she may have already incurred, however, remain in place. Bonuses still accrue, and the character still dies of old age when her time is up.</p>",
+    "grantsBuffs": [],
+    "id": "5JlthJkVGEHPZypG",
+    "name": "Timeless Body",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "51, 60"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.5JlthJkVGEHPZypG"
   },
   "5NS7Ec3WhKIkhygg": {
     "abilityType": "ex",
@@ -250,6 +355,42 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+  },
+  "82G7gl4C1AvtSHI4": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 5th level, a monk gains <em>immunity</em> to all diseases, including <em>supernatural</em> and magical diseases.</p>",
+    "grantsBuffs": [],
+    "id": "82G7gl4C1AvtSHI4",
+    "name": "Purity of Body",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "18"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.82G7gl4C1AvtSHI4"
+  },
+  "8VUae7CIgCidvSfg": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>The monk gains a +2 bonus on <em>saving throws</em> against <em>enchantment</em> spells and effects.</p>",
+    "grantsBuffs": [],
+    "id": "8VUae7CIgCidvSfg",
+    "name": "Still Mind",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.8VUae7CIgCidvSfg"
   },
   "9EX00obqhGHcrOdp": {
     "abilityType": "ex",
@@ -386,6 +527,32 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.C5tWPm12qyz5ND9u"
   },
+  "CK5L0YJDENqBxLqv": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "10 * (floor(@class.unlevel / 3))",
+        "target": "landSpeed",
+        "type": "enh"
+      }
+    ],
+    "description": "<p>At 3rd level, a monk gains an <em>enhancement bonus</em> to his land speed, as seen below. A monk in armor or carrying a medium or heavy load loses this extra speed.</p><table><thead><tr><th>Starting Level</th><th>Bonus Speed</th></tr></thead><tbody><tr><td>3</td><td>+10 ft.</td></tr><tr><td>6</td><td>+20 ft.</td></tr><tr><td>9</td><td>+30 ft.</td></tr><tr><td>12</td><td>+40 ft.</td></tr><tr><td>15</td><td>+50 ft.</td></tr><tr><td>18</td><td>+60 ft.</td></tr></tbody></table>",
+    "grantsBuffs": [],
+    "id": "CK5L0YJDENqBxLqv",
+    "name": "Fast Movement (MNK)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "15"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.CK5L0YJDENqBxLqv"
+  },
   "CV8BsY3ciUb9TA1Y": {
     "changes": [
       {
@@ -449,6 +616,28 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.E0skJEqlJOvB5CoA"
+  },
+  "E7enBZN7FCsoyIof": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "@class.unlevel - @attributes.bab.total",
+        "target": "cmb",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 3rd level, a monk uses his monk level in place of his <em>base attack bonus</em> when calculating his <em>Combat Maneuver Bonus</em>. Base attack bonuses granted from other classes are unaffected and are added normally.</p>",
+    "grantsBuffs": [],
+    "id": "E7enBZN7FCsoyIof",
+    "name": "Maneuver Training",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.E7enBZN7FCsoyIof"
   },
   "E90iE6Ynyq1cgGXA": {
     "abilityType": "ex",
@@ -654,6 +843,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX"
   },
+  "JKJoHy5NveXGaZqv": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>Starting at 1st level, a monk can make a flurry of blows as a full-attack action.</p>\n<p>When doing so, he may make one additional attack, taking a –2 penalty on all of his <em>attack rolls</em>, as if using the Two-Weapon Fighting feat. These attacks can be any combination of unarmed strikes and attacks with a <em>monk</em> special weapon (he does not need to use two weapons to utilize this ability).</p>\n<p>For the purpose of these attacks, the monk’s <em>base attack bonus</em> from his monk class levels is equal to his monk level. For all other purposes, such as qualifying for a feat or a prestige class, the monk uses his normal <em>base attack bonus</em>.</p>\n<p>At 8th level, the monk can make two additional attacks when he uses flurry of blows, as if using Improved Two-Weapon Fighting (even if the monk does not meet the prerequisites for the feat).</p>\n<p>At 15th level, the monk can make three additional attacks using flurry of blows, as if using Greater Two-Weapon Fighting (even if the monk does not meet the prerequisites for the feat).</p>\n<p>A monk applies his full <em>Strength</em> bonus to his damage rolls for all successful attacks made with flurry of blows, whether the attacks are made with an off-hand or with a weapon wielded in both hands. A monk may substitute <em>disarm</em>, <em>sunder</em>, and <em>trip combat maneuvers</em> for unarmed attacks as part of a flurry of blows. A monk cannot use any weapon other than an <em>unarmed strike</em> or a special monk weapon as part of a flurry of blows. A monk with <em>natural weapons</em> cannot use such weapons as part of a flurry of blows, nor can he make <em>natural attacks</em> in addition to his flurry of blows attacks.</p>",
+    "grantsBuffs": [],
+    "id": "JKJoHy5NveXGaZqv",
+    "name": "Flurry of Blows",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "57-58"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.JKJoHy5NveXGaZqv"
+  },
   "KQYCRLEdD4bGA5ak": {
     "abilityType": "ex",
     "changes": [],
@@ -737,6 +942,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.LrjNAKP05lZq2tZZ"
   },
+  "M4bXVPXouXroIt90": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 4th level or higher, a monk within arm’s reach of a wall can use it to slow his descent. When first gaining this ability, he takes damage as if the fall were 20 feet shorter than it actually is. The monk’s ability to slow his fall (that is, to reduce the effective distance of the fall when next to a wall) improves with his monk level until at 20th level he can use a nearby wall to slow his descent and fall any distance without harm.</p>",
+    "grantsBuffs": [],
+    "id": "M4bXVPXouXroIt90",
+    "name": "Slow Fall",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.M4bXVPXouXroIt90"
+  },
   "McXAM1BoPHZLO1n4": {
     "abilityType": "ex",
     "changes": [],
@@ -752,6 +973,37 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4"
+  },
+  "NKzRm45051DUHkd5": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>A monk of 17th level or higher can speak with any living creature.</p>",
+    "grantsBuffs": [],
+    "id": "NKzRm45051DUHkd5",
+    "name": "Tongue of the Sun and Moon",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "60"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.NKzRm45051DUHkd5"
+  },
+  "NNEU7hzPSu2LTyZv": {
+    "changes": [],
+    "description": "<p>At 20th level, a monk becomes a magical creature. He is forevermore treated as an <em>outsider</em> rather than as a <em>humanoid</em> (or whatever the monk’s creature type was) for the purpose of spells and magical effects. Additionally, the monk gains <em>damage reduction</em> 10/<em>chaotic</em>, which allows him to ignore the first 10 points of damage from any attack made by a nonchaotic weapon or by any <em>natural attack</em> made by a creature that doesn’t have similar <em>damage reduction</em>. Unlike other <em>outsiders</em>, the monk can still be brought back from the <em>dead</em> as if he were a member of his previous creature type.</p>",
+    "grantsBuffs": [],
+    "id": "NNEU7hzPSu2LTyZv",
+    "name": "Perfect Self",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "60"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.NNEU7hzPSu2LTyZv"
   },
   "Pb9pxYrx6tS87euP": {
     "abilityType": "ex",
@@ -933,6 +1185,31 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.U2YBSx1s8cT8iDq1"
   },
+  "VjHjPja5QABBgRvR": {
+    "changes": [
+      {
+        "formula": "1 + floor((@class.unlevel + 2) / 4)",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 1st level, 2nd level, and every 4 levels thereafter, a monk may select a bonus feat. These feats must be taken from the following list:</p>\n<p>Catch Off-Guard, Combat Reflexes, Deflect Arrows, Dodge, Improved Grapple, Scorpion Style, and Throw Anything.</p>\n<p>At 6th level, the following feats are added to the list:</p>\n<p>Gorgon's Fist, Improved Bull Rush, Improved Disarm, Improved Feint, Improved Trip, and Mobility.</p>\n<p>At 10th level, the following feats are added to the list:</p>\n<p>Improved Critical, Medusa's Wrath, Snatch Arrows, and Spring Attack.</p>\n<p>A monk need not have any of the prerequisites normally required for these feats to select them.</p>",
+    "grantsBuffs": [],
+    "id": "VjHjPja5QABBgRvR",
+    "name": "Bonus Feat (MNK)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "58"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "14"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.VjHjPja5QABBgRvR"
+  },
   "W1KWAZxUNxfCv8rG": {
     "changes": [
       {
@@ -968,6 +1245,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.W4PGylYL7ghRfy5G"
+  },
+  "WJEF9WHs27kaFYJL": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 5th level, a monk adds his level to all <em>Acrobatics</em> checks made to jump, both for vertical jumps and horizontal jumps. In addition, he always counts as having a running start when making jump checks using <em>Acrobatics</em>. By spending 1 point from his ki pool as a <em>swift action</em>, a monk gains a +20 bonus on <em>Acrobatics</em> checks made to jump for 1 round.</p>",
+    "grantsBuffs": [],
+    "id": "WJEF9WHs27kaFYJL",
+    "name": "High Jump",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.WJEF9WHs27kaFYJL"
   },
   "WSqWT9ZIshtC5vlV": {
     "abilityType": "ex",
@@ -1045,6 +1338,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.X7gqbGkXTox6Ojhy"
   },
+  "XJtvco1XWggmr5LU": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 12th level or higher, a monk can slip magically between spaces, as if using the spell Dimension Door. Using this ability is a <em>move action</em> that consumes 2 points from his ki pool. His <em>caster level</em> for this effect is equal to his monk level. He cannot take other creatures with him when he uses this ability.</p>",
+    "grantsBuffs": [],
+    "id": "XJtvco1XWggmr5LU",
+    "name": "Abundant Step",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.XJtvco1XWggmr5LU"
+  },
   "Xi5BENHWBu1hLHKl": {
     "changes": [],
     "description": "<p>Beginning at 4th level, a ranger gains the ability to cast a small number of divine spells, which are drawn from the ranger spell list presented in Spell Lists. A ranger must choose and prepare his spells in advance.</p><p>To prepare or cast a spell, a ranger must have a Wisdom score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a ranger's spell is 10 + the spell level + the ranger's Wisdom modifier.</p><p>Like other spellcasters, a ranger can cast only a certain number of spells of each spell level per day. His base daily spell allotment is given on Table: Ranger. In addition, he receives bonus spells per day if he has a high Wisdom score (see Table: Ability Modifiers and Bonus Spells). When Table: Ranger indicates that the ranger gets 0 spells per day of a given spell level, he gains only the bonus spells he would be entitled to based on his Wisdom score for that spell level.</p><p>A ranger must spend 1 hour per day in quiet meditation to regain his daily allotment of spells. A ranger may prepare and cast any spell on the ranger spell list, provided that he can cast spells of that level, but he must choose which spells to prepare during his daily meditation.</p><p>Through 3rd level, a ranger has no caster level. At 4th level and higher, his caster level is equal to his ranger level – 3.</p>",
@@ -1100,6 +1409,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
   },
+  "ZPrMO00Iz2SfrNMq": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 7th level or higher, a monk can heal his own wounds as a <em>standard action</em>. He can heal a number of <em>hit points</em> of damage equal to his monk level by using 2 points from his ki pool.</p>",
+    "grantsBuffs": [],
+    "id": "ZPrMO00Iz2SfrNMq",
+    "name": "Wholeness of Body",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.ZPrMO00Iz2SfrNMq"
+  },
   "ZfCUTi1MiLgR4T7I": {
     "changes": [],
     "description": "<p>A bard is trained to use the <em>Perform</em> skill to create magical effects on those around him, including himself if desired. He can use this ability for a number of rounds per day equal to 4 + his <em>Charisma</em> modifier. At each level after 1st a bard can use bardic performance for 2 additional rounds per day. Each round, the bard can produce any one of the types of bardic performance that he has mastered, as indicated by his level.</p>\n<p>Starting a bardic performance is a <em>standard action</em>, but it can be maintained each round as a <em>free action</em>. Changing a bardic performance from one effect to another requires the bard to stop the previous performance and start a new one as a <em>standard action</em>. A bardic performance cannot be disrupted, but it ends immediately if the bard is killed, <em>paralyzed</em>, <em>stunned</em>, knocked <em>unconscious</em>, or otherwise prevented from taking a <em>free action</em> to maintain it each round. A bard cannot have more than one bardic performance in effect at one time.</p>\n<p>At 7th level, a bard can start a bardic performance as a <em>move action</em> instead of a <em>standard action</em>. At 13th level, a bard can start a bardic performance as a <em>swift action</em>.</p>\n<p>Each bardic performance has audible <em>components</em>, visual <em>components</em>, or both.</p>\n<p>If a bardic performance has audible components, the targets must be able to hear the bard for the performance to have any effect, and many such performances are language dependent (as noted in the description). A <em>deaf</em> bard has a 20% chance to fail when attempting to use a bardic performance with an audible component. If he fails this check, the attempt still counts against his daily limit. Deaf creatures are immune to bardic performances with audible components.</p>\n<p>If a bardic performance has a visual component, the targets must have line of sight to the bard for the performance to have any effect. A <em>blind</em> bard has a 50% chance to fail when attempting to use a bardic performance with a visual component. If he fails this check, the attempt still counts against his daily limit. Blind creatures are immune to bardic performances with visual components.</p>",
@@ -1140,6 +1465,33 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
   },
+  "a4SPdPuOFdmfJdHN": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 1st level, a monk gains Improved Unarmed Strike as a bonus feat. A monk’s attacks may be with fist, elbows, knees, and feet. This means that a monk may make unarmed strikes with his hands full. There is no such thing as an off-hand attack for a monk striking unarmed. A monk may thus apply his full <em>Strength</em> bonus on damage rolls for all his unarmed strikes.</p><p>Usually a monk’s unarmed strikes deal lethal damage, but he can choose to deal <em>nonlethal damage</em> instead with no penalty on his <em>attack roll</em>. He has the same choice to deal lethal or <em>nonlethal damage</em> while <em>grappling</em>.</p><p>A monk’s unarmed strike is treated as both a manufactured weapon and a natural weapon for the purpose of spells and effects that enhance or improve either manufactured weapons or <em>natural weapons</em>.</p><p>A monk also deals more damage with his unarmed strikes than a normal person would, as shown above on Table: Monk. The unarmed damage values listed on <em>Table: Monk</em> are for Medium monks. A Small monk deals less damage than the amount given there with his unarmed attacks, while a Large monk deals more damage; see Table: Small or Large Monk Unarmed Damage.</p><hr /><table><caption><strong>Table: Monk Unarmed Damage</strong></caption><thead><tr><th>Level</th><th>Small</th><th>Medium</th><th>Large</th></tr></thead><tbody><tr><td>1st–3rd</td><td>1d4</td><td>1d6</td><td>1d8</td></tr><tr><td>4th–7th</td><td>1d6</td><td>1d8</td><td>2d6</td></tr><tr><td>8th–11th</td><td>1d8</td><td>1d10</td><td>2d8</td></tr><tr><td>12th–15th</td><td>1d10</td><td>2d6</td><td>3d6</td></tr><tr><td>16th–19th</td><td>2d6</td><td>2d8</td><td>3d8</td></tr><tr><td>20th</td><td>2d8</td><td>2d10</td><td>4d8</td></tr></tbody></table>",
+    "grantsBuffs": [
+      "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr"
+    ],
+    "id": "a4SPdPuOFdmfJdHN",
+    "name": "Unarmed Strike",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "58-59"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "14"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.a4SPdPuOFdmfJdHN"
+  },
   "aYdjgDZJCNvKpLQP": {
     "abilityType": "ex",
     "changes": [],
@@ -1155,6 +1507,28 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP"
+  },
+  "bCdFkzKiVg52ufhu": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "10 + @class.unlevel",
+        "target": "spellResist",
+        "type": "base"
+      }
+    ],
+    "description": "<p>At 13th level, a monk gains <em>spell resistance</em> equal to his current monk level + 10. In order to affect the monk with a spell, a spellcaster must get a result on a <em>caster level</em> check (1d20 + <em>caster level</em>) that equals or exceeds the monk’s <em>spell resistance</em>.</p>",
+    "grantsBuffs": [],
+    "id": "bCdFkzKiVg52ufhu",
+    "name": "Diamond Soul",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59-60"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.bCdFkzKiVg52ufhu"
   },
   "cUv3fmnuhtQjgQM5": {
     "abilityType": "su",
@@ -1186,6 +1560,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+  },
+  "dtnkUkinLVIl1b2T": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 19th level, a monk gains the ability to assume an ethereal state for 1 minute as though using the spell Etherealness. Using this ability is a <em>move action</em> that consumes 3 points from his ki pool. This ability only affects the monk and cannot be used to make other creatures ethereal.</p>",
+    "grantsBuffs": [],
+    "id": "dtnkUkinLVIl1b2T",
+    "name": "Empty Body",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "60"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.dtnkUkinLVIl1b2T"
   },
   "eYuNS8kf9Z3V6kjO": {
     "abilityType": "su",
@@ -1397,6 +1787,43 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l"
+  },
+  "n4SWyKVcdmZK4t7d": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Starting at 15th level, a monk can set up vibrations within the body of another creature that can thereafter be fatal if the monk so desires. He can use this quivering palm attack once per day, and he must announce his intent before making his <em>attack roll</em>. Creatures immune to critical hits cannot be affected. Otherwise, if the monk strikes successfully and the target takes damage from the blow, the quivering palm attack succeeds. Thereafter, the monk can try to slay the victim at any later time, as long as the attempt is made within a number of days equal to his monk level. To make such an attempt, the monk merely wills the target to die (a <em>free action</em>), and unless the target makes a <em>Fortitude saving throw</em> (DC 10 + 1/2 the monk’s level + the monk’s <em>Wis</em> modifier), it dies. If the <em>saving throw</em> is successful, the target is no longer in danger from that particular quivering palm attack, but it may still be affected by another one at a later time. A monk can have no more than 1 quivering palm in effect at one time. If a monk uses quivering palm while another is still in effect, the previous effect is negated.</p>",
+    "grantsBuffs": [],
+    "id": "n4SWyKVcdmZK4t7d",
+    "name": "Quivering Palm",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "60"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "quiveringPalm",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.n4SWyKVcdmZK4t7d"
+  },
+  "nRffrQSKTqjeBAO5": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 11th level, a monk gains <em>immunity</em> to poisons of all kinds.</p>",
+    "grantsBuffs": [],
+    "id": "nRffrQSKTqjeBAO5",
+    "name": "Diamond Body",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.nRffrQSKTqjeBAO5"
   },
   "nzqkSBc6tvAqG8o2": {
     "abilityType": "ex",

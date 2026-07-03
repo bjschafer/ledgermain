@@ -191,6 +191,39 @@ describe("expectedFeatCount: Ranger Combat Style bonus feats", () => {
   });
 });
 
+describe("expectedFeatCount: Monk Bonus Feat + a vendored-data quirk (Unarmed Strike)", () => {
+  // Monk's "Bonus Feat (MNK)" (granted at rL 1) carries a vendored `changes[]`
+  // entry targeting `bonusFeats` with formula "1 + floor((@class.unlevel + 2)
+  // / 4)" — flows through the same generic classBonusFeats() pipeline with no
+  // hand-authoring needed (issue #13 step 1 audit).
+  //
+  // Also discovered while auditing: Monk's "Unarmed Strike" class feature
+  // ALSO carries a vendored `changes[]` entry targeting `bonusFeats` with a
+  // flat formula of "1" — this looks like Foundry's way of representing the
+  // automatic Improved Unarmed Strike grant every monk gets at L1, but
+  // classBonusFeats()'s fixed-grant filter only skips features whose *name*
+  // matches a real feat's name exactly ("Unarmed Strike" != "Improved
+  // Unarmed Strike"), so it isn't recognized as a fixed grant and instead
+  // inflates the free bonus-feat-slot budget by +1 at every monk level. This
+  // is a real, monk-specific instance of the classBonusFeats/grantedFeats
+  // name-matching gap — closely tied to Unarmed Strike, which is explicitly
+  // step 2 scope (hand-authoring unarmed damage/Flurry), so it's left
+  // unfixed here and documented in IMPLEMENTATION_PLAN.md instead. The
+  // expectations below assert the ACTUAL (off-by-one-slot) behavior rather
+  // than the SRD-correct one.
+
+  it("Monk 1 Elf → 1 base + Bonus Feat(1) + Unarmed Strike quirk(1) = 3", () => {
+    const doc = makeDoc({ classes: [{ tag: "monk", level: 1 }], race: "Elf" });
+    expect(expectedFeatCount(doc, ref)).toBe(3);
+  });
+
+  it("Monk 5 Elf → 3 base + Bonus Feat(2) + Unarmed Strike quirk(1) = 6", () => {
+    const doc = makeDoc({ classes: [{ tag: "monk", level: 5 }], race: "Elf" });
+    // base: ceil(5/2)=3; Bonus Feat: 1+floor(7/4)=2; quirk: +1 → total=6
+    expect(expectedFeatCount(doc, ref)).toBe(6);
+  });
+});
+
 describe("expectedFeatCount: multiclass fighter + wizard bonus feats stack", () => {
   it("Fighter 2 / Wizard 5 Elf → base + fighter bonus + wizard slot bonus", () => {
     const doc = makeDoc({

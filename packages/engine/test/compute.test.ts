@@ -426,6 +426,164 @@ describe("compute: bard L5 (human, no armor)", () => {
   });
 });
 
+describe("compute: monk L5 (human, no armor)", () => {
+  const doc = makeDoc({
+    classes: [{ tag: "monk", level: 5 }],
+    abilities: { str: 14, dex: 16, con: 14, int: 10, wis: 16, cha: 8 },
+    // acr (Acrobatics, class skill) maxed at 5 ranks; dip (Diplomacy) is NOT a
+    // monk class skill, ranked to confirm no class-skill bonus applies.
+    skillRanks: { acr: 5, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +3 (3/4 medium progression: floor(5*3/4))", () => {
+    expect(sheet.bab).toBe(3);
+  });
+
+  it("saves: Fort +6, Ref +7, Will +7 (all good/high base 4 + ability)", () => {
+    expect(sheet.saves.fort.total).toBe(6); // good base 4 + con2
+    expect(sheet.saves.ref.total).toBe(7); // good base 4 + dex3
+    expect(sheet.saves.will.total).toBe(7); // good base 4 + wis3
+  });
+
+  it("HP 38 (8 max d8 + 4*5 avg d8 + Con2*5)", () => {
+    expect(sheet.hp.max).toBe(38);
+  });
+
+  it("class skill (Acrobatics) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.acr!.total).toBe(11); // 5 ranks + dex3 + 3
+    expect(sheet.skills.acr!.classSkill).toBe(true);
+  });
+
+  it("non-class skill (Diplomacy) gets no class-skill bonus", () => {
+    expect(sheet.skills.dip!.total).toBe(0); // 1 rank + cha-1
+    expect(sheet.skills.dip!.classSkill).toBe(false);
+  });
+
+  it("4 + Int skill points/level in ref data (monk class def), non-caster (no spellcasting block)", () => {
+    const monkEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "monk");
+    expect(monkEntry).toBeDefined();
+    expect(monkEntry![1].skillsPerLevel).toBe(4);
+    expect(monkEntry![1].hd).toBe(8);
+    expect(monkEntry![1].bab).toBe("med");
+    expect(monkEntry![1].saves).toEqual({ fort: "high", ref: "high", will: "high" });
+  });
+
+  it("Maneuver Training's CMB correction: @attributes.bab.total is never wired into rollData, so it adds full monk level rather than level-minus-BAB", () => {
+    // Maneuver Training's vendored changes[]: "@class.unlevel - @attributes.bab.total"
+    // untyped bonus to cmb — intended (per SRD) to swap medium-BAB CMB for a
+    // full-monk-level CMB, i.e. a "+ (unlevel - actualBAB)" correction. But
+    // rolldata.ts's RollData never populates an `attributes.bab` path at all,
+    // and this formula is evaluated by collectModifiers() *before* compute()
+    // derives `bab` as a local variable — so `@attributes.bab.total` resolves
+    // via the formula DSL's documented missing-path-to-0 behavior, and the
+    // change nets to `unlevel - 0 = unlevel` (here, 5), not `unlevel - bab`
+    // (here, 5 - 3 = 2). The character still ends up with a *higher* CMB than
+    // a non-monk of the same BAB (correct in spirit), just inflated beyond the
+    // SRD's intended full-monk-level value. Documented in IMPLEMENTATION_PLAN.md
+    // rather than fixed: wiring `@attributes.bab.total` would mean either
+    // reordering compute() (BAB before collect()) or a second collect pass,
+    // out of scope for this vendoring step.
+    // cmb = bab(3) + str2 + sizeSpecial(0) + maneuverTraining(5 - 0) = 10
+    expect(sheet.cmb).toBe(10);
+  });
+
+  it("Fast Movement: +10 land speed at L3-5 (10 * floor(unlevel / 3))", () => {
+    // floor(5/3) = 1 → +10ft, applied as an "enh" additive to landSpeed via
+    // the generic applySpeedTarget/landSpeed pipeline — no hand-authoring
+    // needed.
+    expect(sheet.speeds.land).toBe(40); // 30 base (medium, human) + 10
+  });
+
+  it("Ki Pool resource pool (granted at monk L4+): floor(unlevel/2) + Wis mod", () => {
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const kiPool = pools.find((p) => p.name === "Ki Pool");
+    expect(kiPool).toBeDefined();
+    expect(kiPool?.max).toBe(5); // floor(5/2) + wis3 = 2 + 3
+    expect(kiPool?.per).toBe("day");
+  });
+
+  it("Ki Pool is absent before monk L4 (feature grants at rL 4)", () => {
+    const preKiDoc = { ...doc, identity: { ...doc.identity, classes: [{ tag: "monk", level: 3 }] } };
+    const preKiSheet = compute(preKiDoc, ref);
+    const pools = deriveResourcePools(preKiDoc, ref, preKiSheet.abilities);
+    expect(pools.find((p) => p.name === "Ki Pool")).toBeUndefined();
+  });
+
+  it("Stunning Fist resource pool: unlevel + floor((hd.total - unlevel) / 4) uses/day", () => {
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const stunningFist = pools.find((p) => p.name === "Stunning Fist");
+    expect(stunningFist).toBeDefined();
+    // Pure monk: hd.total === unlevel, so the correction term is 0 → just 5.
+    expect(stunningFist?.max).toBe(5);
+    expect(stunningFist?.per).toBe("day");
+  });
+
+  // Diamond Soul (L13, "10 + @class.unlevel" targeting "spellResist") is
+  // correctly vendored but has nowhere to land: Spell Resistance isn't a
+  // tracked stat anywhere in DerivedSheet or consumed as a compute.ts target
+  // (this app doesn't model SR at all yet) — documented as a gap in
+  // IMPLEMENTATION_PLAN.md rather than built here.
+  //
+  // Still Mind (L3) carries a vendored `contextNotes` entry (+2 saves vs.
+  // enchantment) rather than a `changes[]` entry — same shape as Ranger's
+  // Track, and same non-gap: `ClassFeature` has no `contextNotes` field at
+  // all, so nothing in the pipeline captures it and the engine's own
+  // `contextNotes` concept (conditions.ts) is an unrelated, hand-authored
+  // mechanism. Already covered by the general note from the Ranger pass.
+});
+
+describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
+  const abilities = { str: 14, dex: 16, con: 14, int: 10, wis: 16, cha: 8 } as const;
+
+  it("unarmored monk with positive Wis gets the AC/CMD bonus", () => {
+    const doc = makeDoc({ classes: [{ tag: "monk", level: 5 }], abilities });
+    const sheet = compute(doc, ref);
+    // AC Bonus (MNK): if(not shield && not armored && not encumbered, 1) *
+    // (wisMod + floor(unlevel/4)) = 1 * (3 + 1) = 4, untyped, category
+    // "generic" — applies to ac.normal (and ac.touch, since "generic" is a
+    // touch-AC category).
+    expect(sheet.ac.normal).toBe(17); // 10 base + dex3 + wisToAc4
+    expect(sheet.ac.touch).toBe(17);
+    // CMD ALSO gets +4 twice here: once via cmdAcBonus (derived generically
+    // from any "dodge"/"deflection"/"generic" ac.components, which already
+    // picks up AC Bonus's "ac"-target change) and again via AC Bonus's own
+    // separate explicit "cmd"-target change carrying the identical formula.
+    // This is a real double-count in the vendored data + this engine's CMD
+    // derivation, not a test error — documented in IMPLEMENTATION_PLAN.md.
+    // cmd = 10 + bab3 + str2 + dex3 + size0 + cmdAcBonus4 + cmdStack4 = 26
+    expect(sheet.cmd).toBe(26);
+  });
+
+  it("armored monk does NOT get the AC/CMD bonus (the armor half of the gate works correctly)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "monk", level: 5 }],
+      abilities,
+      gear: [
+        {
+          equipped: true,
+          name: "Studded Leather",
+          armor: { slot: "armor", ac: 3, maxDex: 5, acp: -1, type: 1 },
+        },
+      ],
+    });
+    const sheet = compute(doc, ref);
+    // @armor.type is correctly populated by rolldata.ts from equipped gear,
+    // so lt(@armor.type, 1) is false and the whole if(...) short-circuits to
+    // 0 * (...) = 0 — both the "ac" and "cmd" targeted changes zero out
+    // together, so there's no bonus to double-count here either.
+    expect(sheet.ac.normal).toBe(16); // 10 base + armor3 + dex3 + wisToAc0
+    expect(sheet.cmd).toBe(18); // 10 + bab3 + str2 + dex3 + size0 + 0 + 0
+  });
+
+  // NOT tested here (documented gap, not built — see IMPLEMENTATION_PLAN.md):
+  // @shield.type is never populated in rolldata.ts (missing path → 0) and
+  // @attributes.encumbrance.level is hardcoded to 0 (no encumbrance model
+  // yet, issue #16), so a monk wielding a shield or carrying a heavy load
+  // would incorrectly still receive this bonus. The armor check — the most
+  // common real-world case — works correctly, per the assertions above.
+});
+
 describe("compute: fighter L5 (full plate + magic items, stacking + armor training)", () => {
   const gear: ItemInstance[] = [
     {

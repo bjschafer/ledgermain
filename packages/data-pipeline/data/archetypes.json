@@ -1469,6 +1469,97 @@
     "name": "Weapon Master",
     "uuid": "archetype:fighter:weapon-master"
   },
+  "monk:brazen-disciple": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:brazen-disciple",
+    "name": "Brazen Disciple",
+    "uuid": "archetype:monk:brazen-disciple"
+  },
+  "monk:disciple-of-wholeness": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:disciple-of-wholeness",
+    "name": "Disciple of Wholeness",
+    "uuid": "archetype:monk:disciple-of-wholeness"
+  },
+  "monk:drunken-master": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:drunken-master",
+    "name": "Drunken Master",
+    "uuid": "archetype:monk:drunken-master"
+  },
+  "monk:harrow-warden": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:harrow-warden",
+    "name": "Harrow Warden",
+    "uuid": "archetype:monk:harrow-warden"
+  },
+  "monk:invested-regent": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:invested-regent",
+    "name": "Invested Regent",
+    "uuid": "archetype:monk:invested-regent"
+  },
+  "monk:maneuver-master": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:maneuver-master",
+    "name": "Maneuver Master",
+    "uuid": "archetype:monk:maneuver-master"
+  },
+  "monk:master-of-many-styles": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:master-of-many-styles",
+    "name": "Master of Many Styles",
+    "uuid": "archetype:monk:master-of-many-styles"
+  },
+  "monk:monk-of-the-empty-hand": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:monk-of-the-empty-hand",
+    "name": "Monk of the Empty Hand",
+    "uuid": "archetype:monk:monk-of-the-empty-hand"
+  },
+  "monk:monk-of-the-seven-forms": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:monk-of-the-seven-forms",
+    "name": "Monk of the Seven Forms",
+    "uuid": "archetype:monk:monk-of-the-seven-forms"
+  },
+  "monk:nornkith": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:nornkith",
+    "name": "Nornkith",
+    "uuid": "archetype:monk:nornkith"
+  },
+  "monk:sage-counselor": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:sage-counselor",
+    "name": "Sage Counselor",
+    "uuid": "archetype:monk:sage-counselor"
+  },
+  "monk:scaled-fist": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:scaled-fist",
+    "name": "Scaled Fist",
+    "uuid": "archetype:monk:scaled-fist"
+  },
+  "monk:soul-shepherd": {
+    "classTag": "monk",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "monk:soul-shepherd",
+    "name": "Soul Shepherd",
+    "uuid": "archetype:monk:soul-shepherd"
+  },
   "paladin:banishing-warden": {
     "classTag": "paladin",
     "contributorModule": "baileymh/pf1e-archetypes",
