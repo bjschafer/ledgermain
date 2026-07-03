@@ -131,6 +131,16 @@ export interface CharacterDoc {
      * project's hybrid soft-warning posture (see IMPLEMENTATION_PLAN.md Stage 11.3).
      */
     archetypes?: string[];
+    /**
+     * Free-text bonus languages the character has picked up beyond the
+     * racial set (`RefData.races[*].languages`) — from a positive Int
+     * modifier, Linguistics ranks, or background. No fixed vocabulary in the
+     * vendored data, so this is unvalidated free text (soft-warning posture,
+     * matching `clericDomains`/`archetypes` above); `model/languages.ts`
+     * computes a *suggested* count as a hint only, never a cap.
+     * Back-compat: documents without this field show no bonus languages.
+     */
+    bonusLanguages?: string[];
     /** Bonus-feat picks, etc. — typed in Stage 3. */
     classFeatureChoices: unknown[];
     /**
