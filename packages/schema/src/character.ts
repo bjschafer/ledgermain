@@ -62,6 +62,17 @@ export interface CharacterDoc {
   build: {
     /** Feat ids chosen (keys into RefData.feats). */
     feats: string[];
+    /**
+     * Character-trait ids chosen at creation (keys into `@pf1/engine`
+     * `TRAITS`). PF1 characters normally take two, from two different
+     * categories (combat/faith/magic/social) — free-choice, soft-warned only
+     * above two (matches the project's hybrid soft-warning posture; see
+     * `model/traits.ts`). Traits are hand-authored clean-room content (not in
+     * the vendored Foundry data pack — see `@pf1/engine` `traits.ts`).
+     * Optional/back-compat: documents without this field behave as if no
+     * traits were chosen.
+     */
+    traits?: string[];
     skillRanks: Record<SkillId, number>;
     /**
      * Cleric domain tags chosen at L1 (PF1 grants two; UI is free-choice since

@@ -13,6 +13,7 @@ import { RaceSection } from "./components/builder/RaceSection.js";
 import { SettingsSection } from "./components/builder/SettingsSection.js";
 import { SkillsSection } from "./components/builder/SkillsSection.js";
 import { SpellsSection } from "./components/builder/SpellsSection.js";
+import { TraitsSection } from "./components/builder/TraitsSection.js";
 import type { BuilderProps } from "./components/builder/types.js";
 import { CharacterSwitcher } from "./components/CharacterSwitcher.js";
 import { PreviewNotice } from "./components/PreviewNotice.js";
@@ -151,6 +152,7 @@ function Workbench({
             <IdentitySection {...props} />
             <AbilitiesSection {...props} />
             <RaceSection {...props} />
+            <TraitsSection {...props} />
             <ClassesSection {...props} />
             <HitPointsSection {...props} />
             <SkillsSection {...props} />
