@@ -830,6 +830,24 @@ button:focus-visible,
 	font-size: 14px;
 }
 
+/* Marks a feat that belongs to the ranger's chosen combat-style tree (prereqs
+   waived). Gold pill so it reads as a granted allowance, not a warning. */
+.style-badge {
+	display: inline-block;
+	margin-left: 8px;
+	padding: 1px 7px;
+	border: 1px solid var(--gold-dim);
+	border-radius: 999px;
+	font-family: var(--mono);
+	font-weight: 500;
+	font-size: 10px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--gold-2);
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
 .pick-row .preq {
 	font-family: var(--mono);
 	font-size: 11px;
@@ -2027,12 +2045,9 @@ button:focus-visible,
 	min-width: 0;
 }
 
-.ranger-bonus {
-	display: inline-flex;
-	align-items: center;
-	gap: 2px;
-	font-size: 13px;
-	color: var(--muted);
+/* Keep the bonus stepper from stretching; the type select takes the slack. */
+.ranger-row .stepper {
+	flex: 0 0 auto;
 }
 
 .ranger-budget.warn {

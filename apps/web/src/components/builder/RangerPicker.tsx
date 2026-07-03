@@ -175,17 +175,15 @@ function FavoredList({
 									</option>
 								))}
 							</select>
-							<label className="ranger-bonus">
-								+
-								<NumberField
-									className="num"
-									size={3}
-									stepper={false}
-									value={e.bonus}
-									onCommit={(n) => onBonus(i, n ?? 0)}
-									aria-label={`${title} ${i + 1} bonus`}
-								/>
-							</label>
+							<NumberField
+								className="num"
+								size={2}
+								min={0}
+								step={2}
+								value={e.bonus}
+								onCommit={(n) => onBonus(i, n ?? 0)}
+								aria-label={`${title} ${i + 1} bonus`}
+							/>
 							<button
 								type="button"
 								className="btn-ghost"

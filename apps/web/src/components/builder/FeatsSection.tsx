@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 
 import type { AbilityId } from "@pf1/schema";
 
+import { featNameSlug } from "@pf1/engine";
+
 import { casterLevel } from "../../model/casterLevel.js";
 import { combatStyleFeatSlugs } from "../../model/ranger.js";
 import { toggleFeat } from "../../model/doc.js";
@@ -43,6 +45,11 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
   const granted = useMemo(() => grantedFeats(doc, refData), [doc, refData]);
   const grantedIds = useMemo(() => new Set(granted.map((g) => g.featId)), [granted]);
 
+  // The chosen ranger combat style's feat tree (empty for non-rangers / no
+  // style): these feats can be taken with prereqs waived, and are badged so the
+  // tree is identifiable even when the character already meets the prereqs.
+  const styleSlugs = useMemo(() => combatStyleFeatSlugs(doc), [doc]);
+
   const ctx: PrereqContext = useMemo(() => {
     const abilityTotals = {} as Record<AbilityId, number>;
     for (const id of ABILITY_IDS) abilityTotals[id] = sheet.abilities[id].total;
@@ -52,9 +59,9 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
       casterLevel: casterLevel(doc),
       selectedFeats: new Set([...selected, ...grantedIds]),
       refData,
-      bypassBlockedSlugs: combatStyleFeatSlugs(doc),
+      bypassBlockedSlugs: styleSlugs,
     };
-  }, [sheet, doc, selected, grantedIds, refData]);
+  }, [sheet, doc, selected, grantedIds, refData, styleSlugs]);
 
   const { feats, prereqMap } = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -186,6 +193,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           const isSel = selected.has(feat.id);
           const res = prereqMap.get(feat.id)!;
           const blocked = res.blocked && !isSel;
+          const inStyle = styleSlugs.has(featNameSlug(feat.name));
           // For selected feats: look up any player-choice descriptor and options.
           const choiceDesc = isSel ? featChoiceDescriptor(feat.name) : null;
           const choiceOpts =
@@ -200,7 +208,21 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
               className={`pick-row${isSel ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
             >
               <div className="pmain">
-                <div className="pname">{feat.name}</div>
+                <div className="pname">
+                  {feat.name}
+                  {inStyle ? (
+                    <span
+                      className="style-badge"
+                      title={
+                        res.bypassed
+                          ? "Ranger combat style — you may take this feat even though its prerequisites are unmet"
+                          : "In your ranger combat style's feat tree"
+                      }
+                    >
+                      combat style{res.bypassed ? " · prereqs waived" : ""}
+                    </span>
+                  ) : null}
+                </div>
                 {/* Inline choice picker for feats that require a selection */}
                 {choiceDesc && choiceOpts.length > 0 && (
                   <div className="feat-choice">
@@ -245,14 +267,6 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                         title="Prerequisite text — verify manually (not auto-enforced)"
                       >
                         ⚠ {res.softText}
-                      </span>
-                    ) : null}
-                    {res.bypassed ? (
-                      <span
-                        className="soft"
-                        title="Ranger combat style — the normal prerequisites are waived for this feat"
-                      >
-                        ⚑ combat style
                       </span>
                     ) : null}
                   </div>
