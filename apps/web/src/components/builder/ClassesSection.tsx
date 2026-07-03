@@ -14,6 +14,7 @@ import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { DomainPicker } from "./DomainPicker.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
+import { RangerPicker } from "./RangerPicker.js";
 import { SchoolPicker } from "./SchoolPicker.js";
 import type { BuilderProps } from "./types.js";
 
@@ -216,6 +217,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 			{doc.identity.classes.some((c) => c.tag === "wizard") && (
 				<ArcaneBondPicker doc={doc} update={update} />
 			)}
+
+			{/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}
+			<RangerPicker doc={doc} update={update} />
 
 			{/* Archetype picker — only classes covered by the vendored dataset show options. */}
 			<ArchetypePicker doc={doc} refData={refData} update={update} />

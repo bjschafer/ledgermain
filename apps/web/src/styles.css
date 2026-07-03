@@ -1984,6 +1984,61 @@ button:focus-visible,
 	color: var(--ink);
 }
 
+/* Ranger favored-enemy/terrain chips: a faint accent tint to set them apart
+   from feat chips, but the same shape / unowned strike-through language. */
+.chip.feat-chip.ranger-chip {
+	border-style: dashed;
+}
+
+/* ── Ranger picker (favored enemy/terrain + combat style) ──────────────── */
+.ranger-block {
+	margin-top: 10px;
+}
+
+.ranger-block-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.ranger-style-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+}
+
+.ranger-rows {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: 6px 0;
+}
+
+.ranger-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.ranger-row .bloodline-select {
+	flex: 1;
+	min-width: 0;
+}
+
+.ranger-bonus {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	font-size: 13px;
+	color: var(--muted);
+}
+
+.ranger-budget.warn {
+	color: var(--danger, #b4331f);
+}
+
 /* At-table reminders from applied feat effects ("within 30 ft · full attack
    only") — one muted line under the roll's value row. */
 .saved-roll-notes {

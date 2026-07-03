@@ -33,6 +33,7 @@ import type {
 import { ABILITY_IDS } from "@pf1/schema";
 
 import { resolveClassFeatures } from "./archetypes.js";
+import { computeRanger } from "./ranger.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
@@ -734,6 +735,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     skills,
     classFeatures,
     activeArchetypes,
+    ranger: computeRanger(doc),
   };
 
   for (const [key, val] of Object.entries(overrides)) {

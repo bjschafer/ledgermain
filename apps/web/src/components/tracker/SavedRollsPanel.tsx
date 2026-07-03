@@ -1,21 +1,24 @@
 import { useEffect, useId, useMemo, useState } from "react";
 
-import type { SavedRoll, SavedRollFeatRef } from "@pf1/schema";
+import type { SavedRoll, SavedRollFeatRef, SavedRollRangerRef } from "@pf1/schema";
 
 import {
   addSavedRoll,
   addSavedRollFeat,
+  addSavedRollRanger,
   attachableFeats,
   availableSavedRollSources,
   ownedFeatSlugs,
   removeSavedRoll,
   removeSavedRollFeat,
+  removeSavedRollRanger,
   resolveSavedRoll,
   setSavedRollFeatOption,
   updateSavedRoll,
   type AttachableFeat,
   type ResolvedSavedRoll,
 } from "../../model/savedRolls.js";
+import { attachableRangerBonuses } from "../../model/ranger.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
@@ -50,6 +53,7 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
     () => saved.map((r) => attachableFeats(doc, refData, r.source)),
     [saved, doc, refData],
   );
+  const rangerAttachable = useMemo(() => attachableRangerBonuses(sheet), [sheet]);
 
   const options = useMemo(() => availableSavedRollSources(sheet), [sheet]);
   const matches = useMemo(() => {
@@ -69,12 +73,17 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
               roll={roll}
               resolved={resolved[i]!}
               attachable={attachable[i]!}
+              rangerAttachable={rangerAttachable}
               onUpdate={(patch) => update((d) => updateSavedRoll(d, roll.id, patch))}
               onRemove={() => update((d) => removeSavedRoll(d, roll.id))}
               onAddFeat={(ref) => update((d) => addSavedRollFeat(d, roll.id, ref))}
               onRemoveFeat={(slug) => update((d) => removeSavedRollFeat(d, roll.id, slug))}
               onSetFeatOption={(slug, option) =>
                 update((d) => setSavedRollFeatOption(d, roll.id, slug, option))
+              }
+              onAddRanger={(ref) => update((d) => addSavedRollRanger(d, roll.id, ref))}
+              onRemoveRanger={(kind, type) =>
+                update((d) => removeSavedRollRanger(d, roll.id, kind, type))
               }
             />
           ))}
@@ -144,15 +153,19 @@ function SavedRollRow({
   roll,
   resolved,
   attachable,
+  rangerAttachable,
   onUpdate,
   onRemove,
   onAddFeat,
   onRemoveFeat,
   onSetFeatOption,
+  onAddRanger,
+  onRemoveRanger,
 }: {
   roll: SavedRoll;
   resolved: ResolvedSavedRoll;
   attachable: AttachableFeat[];
+  rangerAttachable: SavedRollRangerRef[];
   onUpdate: (
     patch: Partial<Pick<SavedRoll, "label" | "attackModifier" | "damageModifier" | "customDamage">>,
   ) => void;
@@ -160,6 +173,8 @@ function SavedRollRow({
   onAddFeat: (ref: SavedRollFeatRef) => void;
   onRemoveFeat: (slug: string) => void;
   onSetFeatOption: (slug: string, option: string | undefined) => void;
+  onAddRanger: (ref: SavedRollRangerRef) => void;
+  onRemoveRanger: (kind: SavedRollRangerRef["kind"], type: string) => void;
 }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
@@ -171,14 +186,41 @@ function SavedRollRow({
   /** Registry options for an attached chip's variant select, when the feat declares any. */
   const optionsFor = (slug: string) => attachable.find((f) => f.slug === slug)?.options;
 
+  const rangerAttached = new Set((roll.rangerBonuses ?? []).map((b) => `${b.kind}:${b.type}`));
+  const rangerAddChoices = rangerAttachable.filter((b) => !rangerAttached.has(`${b.kind}:${b.type}`));
+
   return (
     <div className="res-row saved-roll-row">
       <div className="saved-roll-row-line">
         <div className="res-main">
           <RenameField value={roll.label} onCommit={(label) => onUpdate({ label })} />
           {resolved.missing ? <div className="res-sub">source no longer available</div> : null}
-          {resolved.featChips.length > 0 ? (
+          {resolved.featChips.length > 0 || resolved.rangerChips.length > 0 ? (
             <div className="chips saved-roll-chips">
+              {resolved.rangerChips.map((chip) => (
+                <span
+                  key={`${chip.kind}:${chip.type}`}
+                  className={`chip feat-chip ranger-chip${!chip.applied ? " unowned" : ""}`}
+                  title={
+                    chip.applied
+                      ? `${chip.name} — ${chip.kind === "favored-enemy" ? "favored enemy" : "favored terrain"} +${chip.bonus}`
+                      : `${chip.name} — no longer a favored pick; not applied`
+                  }
+                >
+                  {chip.name}
+                  {chip.applied ? ` +${chip.bonus}` : ""}
+                  {open ? (
+                    <button
+                      type="button"
+                      className="chip-x"
+                      onClick={() => onRemoveRanger(chip.kind, chip.type)}
+                      aria-label={`detach ${chip.name}`}
+                    >
+                      ✕
+                    </button>
+                  ) : null}
+                </span>
+              ))}
               {resolved.featChips.map((chip) => (
                 <span
                   key={chip.slug}
@@ -276,6 +318,27 @@ function SavedRollRow({
                   <option key={f.slug} value={f.slug}>
                     {f.name}
                     {f.modeled ? " (auto)" : ""}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
+
+          {rangerAddChoices.length > 0 ? (
+            <label className="saved-roll-adjust saved-roll-feat-add">
+              + favored
+              <select
+                value=""
+                aria-label={`attach a favored enemy or terrain to ${roll.label}`}
+                onChange={(e) => {
+                  const ref = rangerAddChoices.find((b) => `${b.kind}:${b.type}` === e.target.value);
+                  if (ref) onAddRanger(ref);
+                }}
+              >
+                <option value="">Favored enemy / terrain…</option>
+                {rangerAddChoices.map((b) => (
+                  <option key={`${b.kind}:${b.type}`} value={`${b.kind}:${b.type}`}>
+                    {b.name} ({b.kind === "favored-enemy" ? "enemy" : "terrain"})
                   </option>
                 ))}
               </select>

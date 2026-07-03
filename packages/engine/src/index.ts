@@ -90,3 +90,15 @@ export {
   unappliedTargetLabel,
   UNAPPLIED_TARGET_LABELS,
 } from "./targets.js";
+export {
+  FAVORED_ENEMY_TYPES,
+  FAVORED_TERRAIN_TYPES,
+  COMBAT_STYLES,
+  rangerLevel,
+  favoredEnemySlots,
+  favoredTerrainSlots,
+  favoredBonusBudget,
+  computeRanger,
+  type RangerChoice,
+  type CombatStyle,
+} from "./ranger.js";

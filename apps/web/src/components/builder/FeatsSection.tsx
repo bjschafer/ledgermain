@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import type { AbilityId } from "@pf1/schema";
 
 import { casterLevel } from "../../model/casterLevel.js";
+import { combatStyleFeatSlugs } from "../../model/ranger.js";
 import { toggleFeat } from "../../model/doc.js";
 import { ABILITY_IDS } from "../../model/doc.js";
 import {
@@ -51,6 +52,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
       casterLevel: casterLevel(doc),
       selectedFeats: new Set([...selected, ...grantedIds]),
       refData,
+      bypassBlockedSlugs: combatStyleFeatSlugs(doc),
     };
   }, [sheet, doc, selected, grantedIds, refData]);
 
@@ -243,6 +245,14 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                         title="Prerequisite text — verify manually (not auto-enforced)"
                       >
                         ⚠ {res.softText}
+                      </span>
+                    ) : null}
+                    {res.bypassed ? (
+                      <span
+                        className="soft"
+                        title="Ranger combat style — the normal prerequisites are waived for this feat"
+                      >
+                        ⚑ combat style
                       </span>
                     ) : null}
                   </div>

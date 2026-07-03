@@ -131,6 +131,40 @@ export interface CharacterDoc {
      * project's hybrid soft-warning posture (see IMPLEMENTATION_PLAN.md Stage 11.3).
      */
     archetypes?: string[];
+    /**
+     * Ranger favored enemies (PF1 CRB p. 64). Each entry is a chosen creature
+     * type (key into `@pf1/engine` `FAVORED_ENEMY_TYPES`) plus the scaling bonus
+     * the player has assigned to it. A ranger gains a new favored enemy at
+     * levels 1, 5, 10, 15, 20 and, at each of those milestones, may also raise
+     * one existing favored enemy's bonus by +2 — so the *distribution* is a
+     * player choice, not derivable from level alone (which is why `bonus` is
+     * stored per entry rather than computed). Free-choice, soft-validated: the
+     * builder hints the available slot count / total bonus budget but never
+     * hard-blocks (matches the project's hybrid posture). Empty/undefined for
+     * non-rangers and back-compat docs.
+     *
+     * The bonus is inherently situational (it applies only vs. that creature
+     * type), so it is NEVER folded into the always-on derived sheet — it
+     * surfaces via `SavedRoll.rangerBonuses` attachments, resolved live against
+     * `DerivedSheet.ranger`.
+     */
+    favoredEnemies?: { type: string; bonus: number }[];
+    /**
+     * Ranger favored terrains (PF1 CRB p. 65). Same shape and same
+     * situational/soft-validated treatment as {@link favoredEnemies}; a new
+     * terrain is gained at levels 3, 8, 13, 18. `type` keys into `@pf1/engine`
+     * `FAVORED_TERRAIN_TYPES`. Surfaces via `SavedRoll.rangerBonuses`.
+     */
+    favoredTerrains?: { type: string; bonus: number }[];
+    /**
+     * Ranger combat style (PF1 CRB p. 64). One of `@pf1/engine` `COMBAT_STYLES`
+     * (CRB: `"archery"` | `"two-weapon"`). Chosen at level 2. The bonus-feat
+     * *count* already flows through the generic `classBonusFeats` pipeline; this
+     * choice records which style tree those bonus feats must come from and lets
+     * the feat picker waive prerequisites for that tree's feats (a ranger need
+     * not meet the normal prereqs — CRB). Free-choice; undefined = unchosen.
+     */
+    combatStyle?: string;
     /** Bonus-feat picks, etc. — typed in Stage 3. */
     classFeatureChoices: unknown[];
     /**
@@ -348,6 +382,31 @@ export interface SavedRoll {
    * this field existed, which resolve identically to `[]`.
    */
   feats?: SavedRollFeatRef[];
+  /**
+   * Ranger situational class-feature bonuses folded into this roll at resolve
+   * time (Favored Enemy, Favored Terrain). Each ref names a chosen `type`; its
+   * numeric bonus is looked up LIVE from `DerivedSheet.ranger` (never
+   * snapshotted), so re-assigning bonuses keeps saved rolls correct — same
+   * "recompute, don't memoize" posture as feat attachments. A ref whose `type`
+   * is no longer among the character's favored enemies/terrains renders as a
+   * reminder chip but contributes no numbers (mirrors an un-owned feat).
+   */
+  rangerBonuses?: SavedRollRangerRef[];
+}
+
+/**
+ * One ranger situational bonus attached to a `SavedRoll`. Unlike a feat ref
+ * (keyed by a fixed registry slug), the bonus magnitude is a per-character
+ * build choice, so it is resolved live from `DerivedSheet.ranger` by matching
+ * `type` — see `apps/web/src/model/savedRolls.ts`.
+ */
+export interface SavedRollRangerRef {
+  /** Which ranger feature this bonus comes from. */
+  kind: "favored-enemy" | "favored-terrain";
+  /** Chosen creature-type / terrain id (matches `build.favoredEnemies[].type` etc.). */
+  type: string;
+  /** Display name snapshot (e.g. "Undead", "Forest") so a since-removed pick still renders a chip. */
+  name: string;
 }
 
 /**
@@ -565,6 +624,22 @@ export interface DerivedSheet {
   classFeatures: DerivedClassFeature[];
   /** One entry per chosen `build.archetypes` id, with its swap map + own feature list. */
   activeArchetypes: DerivedArchetype[];
+  /**
+   * Ranger situational selections, present only when the character has ranger
+   * levels. A live projection of `build.favoredEnemies`/`favoredTerrains`/
+   * `combatStyle` (bonuses pass through the player's assignment), read by the
+   * builder pickers for display and by `SavedRoll.rangerBonuses` resolution to
+   * fold favored-enemy/terrain bonuses into attached rolls. Absent for
+   * non-rangers.
+   */
+  ranger?: DerivedRanger;
+}
+
+/** Ranger favored enemies/terrains + combat style, projected onto the sheet (see `DerivedSheet.ranger`). */
+export interface DerivedRanger {
+  favoredEnemies: { type: string; bonus: number }[];
+  favoredTerrains: { type: string; bonus: number }[];
+  combatStyle?: string;
 }
 
 /**

@@ -32,6 +32,7 @@ import type {
   ResolvedWeaponAttack,
   SavedRoll,
   SavedRollFeatRef,
+  SavedRollRangerRef,
   SavedRollSource,
 } from "@pf1/schema";
 import { SITUATIONAL_FEAT_EFFECTS, featNameSlug, type SituationalFeatEntry } from "@pf1/engine";
@@ -82,6 +83,17 @@ export function availableSavedRollSources(sheet: DerivedSheet): SavedRollOption[
   return out;
 }
 
+/** One ranger situational bonus attached to a saved roll, resolved for chip display. */
+export interface SavedRollRangerChip {
+  kind: "favored-enemy" | "favored-terrain";
+  type: string;
+  name: string;
+  /** Bonus resolved LIVE from `sheet.ranger`; 0 when the type is no longer a favored pick. */
+  bonus: number;
+  /** True when the type is still among the character's favored enemies/terrains (its number is applied). */
+  applied: boolean;
+}
+
 /** A resolved damage line, shown alongside a saved roll's attack value. */
 export interface ResolvedSavedRollDamage {
   /** e.g. "1d8+6" (dice + signed bonus), or a freeform note for a custom roll. */
@@ -117,6 +129,8 @@ export interface ResolvedSavedRoll {
   notes: string[];
   /** Attached feats, resolved for chip display. */
   featChips: SavedRollFeatChip[];
+  /** Attached ranger favored-enemy/terrain bonuses, resolved for chip display. */
+  rangerChips: SavedRollRangerChip[];
 }
 
 /** Source kinds attack-like enough for feat effects to apply their numbers. */
@@ -195,17 +209,33 @@ function weaponDamage(
 }
 
 /**
- * Fold a saved roll's attached feats into attack/damage deltas + provenance +
- * notes + chip descriptors. Numeric contributions only ever apply when
- * `isAttackLike` — save/skill/initiative/CMB/CMD sources still get chips,
- * just no folded numbers.
+ * Fold a saved roll's attached feats AND ranger situational bonuses into
+ * attack/damage deltas + provenance + notes + chip descriptors.
+ *
+ * Feat numeric contributions only ever apply when `isAttackLike` (save/skill/
+ * initiative/CMB/CMD sources still get feat chips, just no folded numbers),
+ * because the situational-feat registry is specifically attack/damage tweaks.
+ *
+ * Ranger favored-enemy/terrain bonuses, by contrast, apply their number to
+ * WHATEVER the player attached them to (a favored-enemy roll can be an attack,
+ * a Perception check, …) — same "player judges applicability" posture as the
+ * feats, but not gated to attack-like sources. Favored Enemy contributes both
+ * attack and damage (vs. that creature type); Favored Terrain contributes only
+ * the roll total. Bonuses are read LIVE from `sheet.ranger`, so a since-removed
+ * favored pick resolves to a reminder chip with `applied: false`.
  */
-function foldFeats(
+function foldAttachments(
   featRefs: SavedRollFeatRef[],
+  rangerRefs: SavedRollRangerRef[],
   isAttackLike: boolean,
-  bab: number,
+  sheet: DerivedSheet,
   ownedFeatSlugs: ReadonlySet<string> | undefined,
-): { fold: FeatFold; notes: string[]; chips: SavedRollFeatChip[] } {
+): {
+  fold: FeatFold;
+  notes: string[];
+  featChips: SavedRollFeatChip[];
+  rangerChips: SavedRollRangerChip[];
+} {
   const fold: FeatFold = {
     attackDelta: 0,
     extraAttacks: 0,
@@ -214,7 +244,8 @@ function foldFeats(
     damageComponents: [],
   };
   const notes: string[] = [];
-  const chips: SavedRollFeatChip[] = [];
+  const featChips: SavedRollFeatChip[] = [];
+  const rangerChips: SavedRollRangerChip[] = [];
 
   for (const ref of featRefs) {
     const owned = ownedFeatSlugs === undefined || ownedFeatSlugs.has(ref.slug);
@@ -222,7 +253,7 @@ function foldFeats(
     const modeled = entry !== undefined;
     const applied = isAttackLike && owned && modeled;
     if (applied) {
-      const effect = entry.effect({ bab }, ref.option);
+      const effect = entry.effect({ bab: sheet.bab }, ref.option);
       if (effect.attack) {
         fold.attackDelta += effect.attack;
         fold.attackComponents.push({ source: ref.name, type: "untyped", value: effect.attack, applied: true });
@@ -234,10 +265,27 @@ function foldFeats(
       if (effect.extraAttacks) fold.extraAttacks += effect.extraAttacks;
       if (effect.note) notes.push(effect.note);
     }
-    chips.push({ slug: ref.slug, name: ref.name, option: ref.option, applied, modeled, owned });
+    featChips.push({ slug: ref.slug, name: ref.name, option: ref.option, applied, modeled, owned });
   }
 
-  return { fold, notes, chips };
+  for (const ref of rangerRefs) {
+    const list =
+      ref.kind === "favored-enemy" ? sheet.ranger?.favoredEnemies : sheet.ranger?.favoredTerrains;
+    const bonus = list?.find((e) => e.type === ref.type)?.bonus ?? 0;
+    const applied = bonus > 0;
+    if (applied) {
+      fold.attackDelta += bonus;
+      fold.attackComponents.push({ source: ref.name, type: "untyped", value: bonus, applied: true });
+      // Favored Enemy also boosts damage vs. that creature type; Favored Terrain does not.
+      if (ref.kind === "favored-enemy") {
+        fold.damageDelta += bonus;
+        fold.damageComponents.push({ source: ref.name, type: "untyped", value: bonus, applied: true });
+      }
+    }
+    rangerChips.push({ kind: ref.kind, type: ref.type, name: ref.name, bonus, applied });
+  }
+
+  return { fold, notes, featChips, rangerChips };
 }
 
 /**
@@ -254,11 +302,26 @@ export function resolveSavedRoll(
   const attackModifier = roll.attackModifier ?? 0;
   const damageModifier = roll.damageModifier ?? 0;
   const isAttackLike = ATTACK_LIKE_KINDS.has(roll.source.kind);
-  const { fold, notes, chips } = foldFeats(roll.feats ?? [], isAttackLike, sheet.bab, ownedFeatSlugs);
+  const { fold, notes, featChips, rangerChips } = foldAttachments(
+    roll.feats ?? [],
+    roll.rangerBonuses ?? [],
+    isAttackLike,
+    sheet,
+    ownedFeatSlugs,
+  );
 
   const resolved = resolveSource(roll.source, sheet, attackModifier, damageModifier, fold);
   if (!resolved) {
-    return { id: roll.id, label: roll.label, display: "—", components: [], missing: true, notes, featChips: chips };
+    return {
+      id: roll.id,
+      label: roll.label,
+      display: "—",
+      components: [],
+      missing: true,
+      notes,
+      featChips,
+      rangerChips,
+    };
   }
   const damage =
     resolved.damage ??
@@ -273,7 +336,8 @@ export function resolveSavedRoll(
     missing: false,
     damage,
     notes,
-    featChips: chips,
+    featChips,
+    rangerChips,
   };
 }
 
@@ -310,11 +374,11 @@ function resolveSource(
       };
     }
     case "cmb":
-      return signedResult(sheet.cmb, undefined, attackModifier, []);
+      return signedResult(sheet.cmb, undefined, attackModifier, [], featFold);
     case "cmd":
       return {
-        display: String(sheet.cmd + attackModifier),
-        components: withManualAdjustment([], attackModifier),
+        display: String(sheet.cmd + attackModifier + featFold.attackDelta),
+        components: [...withManualAdjustment([], attackModifier), ...featFold.attackComponents],
       };
     case "initiative":
       return signedResult(
@@ -322,6 +386,7 @@ function resolveSource(
         undefined,
         attackModifier,
         sheet.initiative.components,
+        featFold,
       );
     case "save":
       return signedResult(
@@ -329,11 +394,12 @@ function resolveSource(
         undefined,
         attackModifier,
         sheet.saves[source.save].components,
+        featFold,
       );
     case "skill": {
       const s = sheet.skills[source.skillId];
       if (!s) return null;
-      return signedResult(s.total, undefined, attackModifier, s.components);
+      return signedResult(s.total, undefined, attackModifier, s.components, featFold);
     }
     case "custom":
       return signedResult(0, undefined, attackModifier, [], featFold);
@@ -410,6 +476,34 @@ export function setSavedRollFeatOption(
   return mapSavedRoll(doc, rollId, (r) => ({
     ...r,
     feats: (r.feats ?? []).map((f) => (f.slug === slug ? { ...f, option } : f)),
+  }));
+}
+
+/**
+ * Attach a ranger favored-enemy/terrain bonus to a saved roll. Replaces any
+ * existing ref of the same kind+type (idempotent re-attach). The bonus itself
+ * is resolved live at display time, so only the choice is stored here.
+ */
+export function addSavedRollRanger(doc: CharacterDoc, rollId: string, ref: SavedRollRangerRef): CharacterDoc {
+  return mapSavedRoll(doc, rollId, (r) => ({
+    ...r,
+    rangerBonuses: [
+      ...(r.rangerBonuses ?? []).filter((b) => !(b.kind === ref.kind && b.type === ref.type)),
+      ref,
+    ],
+  }));
+}
+
+/** Detach a ranger bonus (by kind+type) from a saved roll. */
+export function removeSavedRollRanger(
+  doc: CharacterDoc,
+  rollId: string,
+  kind: SavedRollRangerRef["kind"],
+  type: string,
+): CharacterDoc {
+  return mapSavedRoll(doc, rollId, (r) => ({
+    ...r,
+    rangerBonuses: (r.rangerBonuses ?? []).filter((b) => !(b.kind === kind && b.type === type)),
   }));
 }
 
