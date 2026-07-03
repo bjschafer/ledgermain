@@ -73,14 +73,14 @@ describe("sorcerer bloodline arcana (collectModifiers)", () => {
     const doc = makeSorcerer(7);
     const rollData = buildRollData(doc, ref);
     const mods = collectModifiers(doc, ref, rollData);
-    expect(mods.some((m) => m.sourceId.startsWith("bloodline:"))).toBe(false);
+    expect(mods.some((m) => m.sourceId?.startsWith("bloodline:"))).toBe(false);
   });
 
   it("an unknown bloodline tag is ignored, not an error", () => {
     const doc = makeSorcerer(7, "NotARealBloodline");
     const rollData = buildRollData(doc, ref);
     const mods = collectModifiers(doc, ref, rollData);
-    expect(mods.some((m) => m.sourceId.startsWith("bloodline:"))).toBe(false);
+    expect(mods.some((m) => m.sourceId?.startsWith("bloodline:"))).toBe(false);
   });
 
   it("a non-sorcerer with a stale bloodline field gets nothing", () => {
@@ -90,7 +90,7 @@ describe("sorcerer bloodline arcana (collectModifiers)", () => {
     };
     const rollData = buildRollData(doc, ref);
     const mods = collectModifiers(doc, ref, rollData);
-    expect(mods.some((m) => m.sourceId.startsWith("bloodline:"))).toBe(false);
+    expect(mods.some((m) => m.sourceId?.startsWith("bloodline:"))).toBe(false);
   });
 
   it("Abyssal grants an inherent Strength bonus only once level 9 is reached", () => {
