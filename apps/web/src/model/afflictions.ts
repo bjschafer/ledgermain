@@ -9,12 +9,13 @@
  * "compute a knockout").
  *
  * Natural healing: PF1 RAW heals 1 point of ability damage per ability per day
- * of rest. This app's "rest" action is fragmented across three independent
- * panel buttons (HP's "Rest ⤿", Resources' "Rest (full)", Prepared Spells'
- * rest-to-clear-expended) with no single new-day event to hook — so this
- * module deliberately does NOT auto-decrement damage on any of them. Players
- * heal ability damage the same way they'd zero out anything else here: the
- * per-ability stepper's − button, once per day of rest.
+ * of rest. This is now wired into the single "new day" action (`model/rest.ts`
+ * `restNewDay`, issue #30) via {@link restAbilityDamage} below — previously
+ * this module deliberately left it unwired (issue #18) because "rest" was
+ * fragmented across independent panel buttons with no single new-day event to
+ * hook. Players can still adjust ability damage by hand via the per-ability
+ * stepper for anything `restNewDay` doesn't cover (e.g. multiple recoveries at
+ * once, or correcting a value).
  */
 import type { AbilityId, CharacterDoc } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
@@ -78,6 +79,25 @@ export function activeAbilityAfflictions(
     }
   }
   return out;
+}
+
+/**
+ * Rest / new day: heal 1 point of ability DAMAGE per currently-damaged
+ * ability (PF1 RAW natural healing, one day of rest = 1 point per ability).
+ * Ability DRAIN (lowers the score itself; only restoration magic heals it)
+ * and ability PENALTIES (tied to whatever ongoing effect caused them, not to
+ * daily rest) are deliberately left untouched. Returns the same doc reference
+ * when no ability currently has damage.
+ */
+export function restAbilityDamage(doc: CharacterDoc): CharacterDoc {
+  const map = doc.live.abilityDamage;
+  if (!map) return doc;
+  let next = doc;
+  for (const ability of ABILITY_IDS) {
+    const points = map[ability] ?? 0;
+    if (points > 0) next = setAbilityAffliction(next, "damage", ability, points - 1);
+  }
+  return next;
 }
 
 /** Negative levels, split temporary/permanent (both 0 when unset). */

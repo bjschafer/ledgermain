@@ -4,6 +4,7 @@ import { ConditionsPanel } from "./ConditionsPanel.js";
 import { FeatsPanel } from "./FeatsPanel.js";
 import { HeroPointsPanel } from "./HeroPointsPanel.js";
 import { HpPanel } from "./HpPanel.js";
+import { NewDayBar } from "./NewDayBar.js";
 import { PreparedSpellsPanel } from "./PreparedSpellsPanel.js";
 import { ResourcesPanel } from "./ResourcesPanel.js";
 import { SavedRollsPanel } from "./SavedRollsPanel.js";
@@ -22,6 +23,7 @@ export function Tracker(props: BuilderProps) {
   const xpOn = xpEnabled(props.doc);
   return (
     <div className="tracker-col">
+      <NewDayBar {...props} />
       <HpPanel {...props} />
       {heroOn && <HeroPointsPanel {...props} />}
       {xpOn && <XpPanel {...props} />}

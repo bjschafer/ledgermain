@@ -1671,6 +1671,31 @@ button:focus-visible,
 	padding: 6px 12px;
 }
 
+/* new-day bar (issue #30) — sits above the tracker panels, one level up from
+   any single panel's own "rest" button since it acts across all of them. */
+.new-day-bar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-bottom: var(--gap);
+}
+
+.btn-act.new-day {
+	border-color: var(--gold-dim);
+	color: var(--gold-2);
+	font-weight: 600;
+}
+
+.btn-act.new-day:hover {
+	border-color: var(--gold-2);
+	background: var(--surface-2);
+}
+
+.new-day-reminder {
+	font-size: 12px;
+}
+
 /* HP panel */
 .hp-display {
 	display: flex;
