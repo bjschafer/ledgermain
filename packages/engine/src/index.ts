@@ -67,10 +67,13 @@ export {
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export {
   FEAT_EFFECTS,
+  SITUATIONAL_FEAT_EFFECTS,
   featNameSlug,
   type FeatChange,
   type StaticFeatEntry,
   type ChoiceFeatEntry,
+  type SituationalFeatEffect,
+  type SituationalFeatEntry,
   type FeatEntry,
 } from "./feat-effects.js";
 export { FAMILIARS, FAMILIAR_KINDS, type FamiliarDef } from "./familiars.js";

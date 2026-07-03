@@ -184,7 +184,7 @@ export function collectModifiers(
       for (const ch of entry.changes) {
         evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
       }
-    } else {
+    } else if (entry.type === "choice") {
       // Choice-based feat: only emit changes when a choice has been stored.
       const choiceId = doc.build.featChoices?.[featId];
       if (!choiceId) continue;
@@ -192,6 +192,9 @@ export function collectModifiers(
         evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
       }
     }
+    // "situational" entries never live in FEAT_EFFECTS (see SITUATIONAL_FEAT_EFFECTS
+    // in feat-effects.ts) — this branch exists only so the type checker sees an
+    // exhaustive narrowing if FEAT_EFFECTS's value type ever widens.
   }
 
   // --- arcane bond: familiar master bonus ----------------------------------

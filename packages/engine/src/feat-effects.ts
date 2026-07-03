@@ -47,7 +47,37 @@ export interface ChoiceFeatEntry {
   build(choiceId: string): FeatChange[];
 }
 
-export type FeatEntry = StaticFeatEntry | ChoiceFeatEntry;
+/**
+ * A situational feat effect for the saved-rolls UI (attack/damage tweaks that
+ * only apply under a condition the player judges at the table — range, full
+ * attack, grip). These are NEVER emitted by `collect.ts` / `compute()`: they
+ * are surfaced only through the separate {@link SITUATIONAL_FEAT_EFFECTS} map
+ * and folded in by `apps/web/src/model/savedRolls.ts` at resolve time, never
+ * as unconditional `Change`s. Keeping the map separate (rather than adding a
+ * third case to `FEAT_EFFECTS`) makes it structurally impossible for one of
+ * these to leak into the always-on derived sheet.
+ */
+export interface SituationalFeatEffect {
+  /** Delta applied to every attack in the sequence. */
+  attack?: number;
+  /** Delta applied to the damage bonus. */
+  damage?: number;
+  /** Extra attack entries at the (adjusted) highest bonus. */
+  extraAttacks?: number;
+  /** At-table reminder, e.g. "within 30 ft". */
+  note?: string;
+}
+
+export interface SituationalFeatEntry {
+  type: "situational";
+  /** Which saved-roll sources this sensibly attaches to (picker filter, not enforcement). */
+  appliesTo: "melee" | "ranged" | "any";
+  /** Variant selector, e.g. Power Attack grip. When present the UI renders a small select. */
+  options?: { id: string; label: string }[];
+  effect(ctx: { bab: number }, option?: string): SituationalFeatEffect;
+}
+
+export type FeatEntry = StaticFeatEntry | ChoiceFeatEntry | SituationalFeatEntry;
 
 /**
  * Normalize a feat name to a stable slug for use as a map key.
@@ -156,5 +186,89 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
     build(choiceId: string): FeatChange[] {
       return [{ target: `damage.weapon.${choiceId}`, type: "untyped", formula: "2" }];
     },
+  },
+};
+
+/**
+ * Situational feat effects for the saved-rolls attachment feature (see the
+ * `SituationalFeatEntry` doc comment above). Deliberately kept OUT of
+ * `FEAT_EFFECTS` — `compute()` must never read from this map. Each entry's
+ * `effect()` is pure and takes the character's current BAB (for the
+ * BAB-tiered feats) plus an optional variant `option` id.
+ */
+export const SITUATIONAL_FEAT_EFFECTS: Readonly<Record<string, SituationalFeatEntry>> = {
+  // Point-Blank Shot: +1 attack and +1 damage with ranged weapons within 30 ft
+  // (PF1 CRB p. 131).
+  "point-blank-shot": {
+    type: "situational",
+    appliesTo: "ranged",
+    effect: () => ({ attack: 1, damage: 1, note: "within 30 ft" }),
+  },
+
+  // Precise Shot: no -4 penalty on ranged attacks against a target engaged in
+  // melee (PF1 CRB p. 131). No numeric effect here — the -4 it removes is
+  // never modeled as an active penalty, so this is a reminder-only note.
+  "precise-shot": {
+    type: "situational",
+    appliesTo: "ranged",
+    effect: () => ({ note: "no −4 for firing into melee" }),
+  },
+
+  // Rapid Shot: one extra ranged attack at the highest bonus, all ranged
+  // attacks that round take a -2 penalty; full attack only (PF1 CRB p. 131).
+  "rapid-shot": {
+    type: "situational",
+    appliesTo: "ranged",
+    effect: () => ({ attack: -2, extraAttacks: 1, note: "full attack only" }),
+  },
+
+  // Manyshot: the first attack of a full attack fires two arrows, dealing
+  // double the ability/precision-independent damage once but rolling
+  // precision damage (e.g. sneak attack) only once (PF1 CRB p. 130).
+  // Not numerically modeled — reminder only.
+  manyshot: {
+    type: "situational",
+    appliesTo: "ranged",
+    effect: () => ({ note: "first attack: 2 arrows (precision damage once)" }),
+  },
+
+  // Deadly Aim: trade ranged attack bonus for damage, scaling with BAB
+  // (PF1 CRB p. 119). p = 1 + floor(BAB / 4): -1/+2 at BAB 1-3, -2/+4 at
+  // BAB 4-7, -3/+6 at BAB 8-11, -4/+8 at BAB 12-15, ...
+  "deadly-aim": {
+    type: "situational",
+    appliesTo: "ranged",
+    effect: (ctx) => {
+      const p = 1 + Math.floor(ctx.bab / 4);
+      return { attack: -p, damage: 2 * p };
+    },
+  },
+
+  // Power Attack: trade melee attack bonus for damage, scaling with BAB
+  // (PF1 CRB p. 131). p = 1 + floor(BAB / 4); attack penalty is always -p.
+  // Damage bonus is 2p one-handed (default; also covers light/off-hand here
+  // for simplicity -- two options only) or 3p two-handed.
+  "power-attack": {
+    type: "situational",
+    appliesTo: "melee",
+    options: [
+      { id: "one-handed", label: "One-handed" },
+      { id: "two-handed", label: "Two-handed" },
+    ],
+    effect: (ctx, option) => {
+      const p = 1 + Math.floor(ctx.bab / 4);
+      const damage = option === "two-handed" ? 3 * p : 2 * p;
+      return { attack: -p, damage };
+    },
+  },
+
+  // Furious Focus: ignore the Power Attack penalty on the first attack of a
+  // full-attack action, or on a single attack made as a standard action
+  // (PF1 CRB p. 124, Advanced Player's Guide). Reminder only — the saved-roll
+  // model doesn't split "first attack" from the rest of the sequence.
+  "furious-focus": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({ note: "ignore Power Attack penalty on first attack each turn" }),
   },
 };
