@@ -396,6 +396,19 @@ export interface CharacterDoc {
      * this feature.
      */
     negativeLevels?: { temporary?: number; permanent?: number };
+    /**
+     * Manual "stabilized" flag for a dying character (issue #20). PF1 RAW
+     * stabilizes a dying character (current HP negative, above the death
+     * threshold) via a DC 10 + |current HP| Constitution check, any magical
+     * healing, or a DC 15 Heal check — all rolled/adjudicated at the table,
+     * not by this app (no dice roller, ever — owner decision), so this just
+     * records the outcome the player reports. Only meaningful while
+     * `model/hp.ts` `hpState` would otherwise report `"dying"`; ignored once
+     * HP returns to 0+ or falls to/below the death threshold. Omitted/false =
+     * not stabilized (still losing 1 hp/round while dying). Back-compat:
+     * absent entirely for documents predating this feature.
+     */
+    stable?: boolean;
   };
 }
 

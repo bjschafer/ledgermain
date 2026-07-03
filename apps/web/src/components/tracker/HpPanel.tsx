@@ -7,10 +7,33 @@ import {
 	applyDamage,
 	applyHealing,
 	healNonlethal,
+	hpState,
 	restHp,
+	setStable,
 	setTempHp,
+	type HpState,
 } from "../../model/hp.js";
 import type { BuilderProps } from "../builder/types.js";
+
+/** Human-readable status line for each `hpState` result; empty for `ok` (no noise on a healthy character). */
+function statusLabel(state: HpState): string {
+	switch (state.status) {
+		case "ok":
+			return "";
+		case "disabled":
+			return "Disabled (0 HP) — staggered: one move or standard action per round; a strenuous act deals 1 more damage.";
+		case "dying":
+			return `Dying — losing 1 HP/round while unconscious. Dies at ${state.diesAt} HP.`;
+		case "stable":
+			return `Stable — unconscious, no longer losing HP. Dies at ${state.diesAt} HP if bleeding resumes.`;
+		case "dead":
+			return `Dead — HP at or below ${state.diesAt}.`;
+		case "staggered-nonlethal":
+			return "Staggered — nonlethal damage equals current HP.";
+		case "unconscious-nonlethal":
+			return "Unconscious — nonlethal damage exceeds current HP (not dying).";
+	}
+}
 
 /** Current/temp/nonlethal HP with fast damage + healing controls. */
 export function HpPanel({ doc, sheet, update }: BuilderProps) {
@@ -20,6 +43,12 @@ export function HpPanel({ doc, sheet, update }: BuilderProps) {
 	const effective = current - nonlethal;
 	const isLow = effective <= Math.floor(max / 4);
 	const fillPct = max > 0 ? Math.max(0, Math.min(1, effective / max)) : 1;
+
+	const state = hpState(doc, sheet);
+	// The stabilize toggle only makes sense in the negative-but-above-the-death-
+	// threshold range regardless of the current flag value, so the player can
+	// flip it on or back off while the character is actually dying.
+	const dyingRange = current < 0 && current > state.diesAt;
 
 	const amt = Number.isNaN(amount) ? 0 : amount;
 
@@ -47,6 +76,22 @@ export function HpPanel({ doc, sheet, update }: BuilderProps) {
 					style={{ width: `${fillPct * 100}%` }}
 				/>
 			</div>
+
+			{state.status !== "ok" ? (
+				<div className="hp-status-line affliction-warn" data-status={state.status}>
+					{statusLabel(state)}
+				</div>
+			) : null}
+			{dyingRange ? (
+				<label className="hp-inline hp-stable-toggle">
+					<input
+						type="checkbox"
+						checked={!!doc.live.stable}
+						onChange={(e) => update((d) => setStable(d, e.target.checked))}
+					/>
+					<span>Stabilized</span>
+				</label>
+			) : null}
 
 			<div className="hp-controls">
 				<NumberField
