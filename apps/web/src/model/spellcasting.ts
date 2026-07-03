@@ -15,7 +15,7 @@
  */
 
 import { baseSpellsKnown, baseSpellsPerDay, type SpellKnownProgression, type SpellProgression } from "@pf1/engine";
-import type { AbilityId, RefData, WizardSchoolTag } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, RefData, WizardSchoolTag } from "@pf1/schema";
 
 // ---------------------------------------------------------------------------
 // Bonus spells per day
@@ -385,4 +385,91 @@ export const SCHOOL_TAGS: WizardSchoolTag[] = [
  */
 export function schoolLabel(tag: string): string {
   return SCHOOL_LABELS[tag as WizardSchoolTag] ?? tag;
+}
+
+// ---------------------------------------------------------------------------
+// Multiclass caster-class helpers (issue #22)
+// ---------------------------------------------------------------------------
+
+/**
+ * Every class on the document that has a vendored spell list, in
+ * `identity.classes` array order. A single-class caster returns a one-element
+ * array; a non-caster returns `[]`. This is the one place that enumerates
+ * "which classes cast spells" — everything else (the builder's class
+ * switcher, the tracker panel, `primaryCasterClassTag`) should call this
+ * instead of re-deriving it.
+ */
+export function casterClassesOf(
+  doc: CharacterDoc,
+  refData: RefData,
+): { tag: string; level: number }[] {
+  return doc.identity.classes.filter((c) => !!refData.spellLists[c.tag]);
+}
+
+/**
+ * The document's *primary* caster class: the first (in `identity.classes`
+ * order) class with a spell list, or `undefined` if the character casts no
+ * spells at all. Legacy per-class spell state — the flat `build.spells.known`
+ * list, a `PreparedSpell` with no `classTag`, and the flat
+ * `live.spells.slotsUsed` — is always attributed to this class, which is what
+ * makes every pre-multiclass document (and every single-caster document
+ * going forward) load and behave identically with zero migration.
+ */
+export function primaryCasterClassTag(doc: CharacterDoc, refData: RefData): string | undefined {
+  return casterClassesOf(doc, refData)[0]?.tag;
+}
+
+/**
+ * The class tag to actually *store* on a new per-class record (a
+ * `PreparedSpell.classTag`, a `slotsUsedByClass` key, …): `undefined` when
+ * `classTag` is the primary caster class (so the record lands in the legacy
+ * flat field instead of `byClass`/`slotsUsedByClass`), else `classTag`
+ * unchanged. Centralizes the "primary class stays in the flat field" rule so
+ * `model/doc.ts`, `model/preparedSpells.ts`, and `model/spontaneousSpells.ts`
+ * don't each re-derive it.
+ */
+export function storedClassTag(
+  doc: CharacterDoc,
+  refData: RefData,
+  classTag: string,
+): string | undefined {
+  return classTag === primaryCasterClassTag(doc, refData) ? undefined : classTag;
+}
+
+/**
+ * The known-spell list for `classTag`: the flat `build.spells.known` for the
+ * primary caster class, or `build.spells.byClass[classTag].known` (defaulting
+ * to `[]`) for any other caster class. The only correct way to read a
+ * multiclass character's spellbook — never read `doc.build.spells.known`
+ * directly outside this module once more than one caster class is possible.
+ */
+export function knownSpellsFor(doc: CharacterDoc, refData: RefData, classTag: string): string[] {
+  if (classTag === primaryCasterClassTag(doc, refData)) return doc.build.spells.known;
+  return doc.build.spells.byClass?.[classTag]?.known ?? [];
+}
+
+/**
+ * Write `known` as the spell list for `classTag`, routing to the flat
+ * `build.spells.known` for the primary caster class or to
+ * `build.spells.byClass[classTag]` otherwise. Paired with {@link knownSpellsFor}.
+ */
+export function setKnownSpellsFor(
+  doc: CharacterDoc,
+  refData: RefData,
+  classTag: string,
+  known: string[],
+): CharacterDoc {
+  if (classTag === primaryCasterClassTag(doc, refData)) {
+    return { ...doc, build: { ...doc.build, spells: { ...doc.build.spells, known } } };
+  }
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      spells: {
+        ...doc.build.spells,
+        byClass: { ...doc.build.spells.byClass, [classTag]: { known } },
+      },
+    },
+  };
 }

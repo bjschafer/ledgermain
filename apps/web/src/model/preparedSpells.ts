@@ -14,33 +14,83 @@
 
 import type { CharacterDoc, PreparedSpell, RefData, Spell } from "@pf1/schema";
 
-import { casterModelFor } from "./spellcasting.js";
+import {
+  casterClassesOf,
+  casterModelFor,
+  knownSpellsFor,
+  setKnownSpellsFor,
+  storedClassTag,
+} from "./spellcasting.js";
 
 function withPrepared(doc: CharacterDoc, prepared: PreparedSpell[]): CharacterDoc {
-  return { ...doc, live: { ...doc.live, spells: { prepared } } };
+  return {
+    ...doc,
+    live: {
+      ...doc.live,
+      spells: {
+        prepared,
+        // Preserve spontaneous slot-usage fields: a multiclass character (e.g.
+        // cleric/sorcerer, issue #22) can have BOTH a prepared loadout AND
+        // spontaneous slots meaningful at once, one per caster class.
+        ...(doc.live.spells?.slotsUsed !== undefined
+          ? { slotsUsed: doc.live.spells.slotsUsed }
+          : {}),
+        ...(doc.live.spells?.slotsUsedByClass !== undefined
+          ? { slotsUsedByClass: doc.live.spells.slotsUsedByClass }
+          : {}),
+      },
+    },
+  };
 }
 
-/** The current prepared loadout (empty for docs without `live.spells`). */
+/**
+ * The current prepared loadout (empty for docs without `live.spells`),
+ * across every caster class. Callers that care about one class's loadout
+ * should filter by `(p.classTag ?? primaryCasterClassTag(doc, refData)) ===
+ * classTag`; the index into THIS array is what `removePreparedAt`/
+ * `setExpendedAt` expect, so filter without discarding the original index
+ * (e.g. `preparedSpells(doc).forEach((p, index) => { if (!matches) return; ... })`).
+ */
 export function preparedSpells(doc: CharacterDoc): PreparedSpell[] {
   return doc.live.spells?.prepared ?? [];
 }
 
-/** Append one un-expended prepared instance of `spellId` (normal slot). */
-export function prepareSpell(doc: CharacterDoc, spellId: string): CharacterDoc {
+/**
+ * Append one un-expended prepared instance of `spellId` (normal slot).
+ * `classTag` is the *stored* class tag (see `model/spellcasting.ts`
+ * `storedClassTag`) — `undefined` for the primary caster class, so a
+ * single-caster document's prepared entries are shaped exactly as before
+ * multiclass support.
+ */
+export function prepareSpell(
+  doc: CharacterDoc,
+  spellId: string,
+  classTag?: string,
+): CharacterDoc {
   // `kind: "normal"` is the default per schema; omit so older docs/tests that
   // assert the bare shape continue to pass. Domain entries explicitly set it.
-  return withPrepared(doc, [...preparedSpells(doc), { spellId, expended: false }]);
+  return withPrepared(doc, [
+    ...preparedSpells(doc),
+    { spellId, expended: false, ...(classTag ? { classTag } : {}) },
+  ]);
 }
 
 /**
  * Append one un-expended prepared instance of `spellId` into a domain slot.
  * Clerics may prepare a domain spell in a domain slot (one per accessible spell
  * level per chosen domain); the caller is responsible for the capacity check.
+ * `classTag` is the stored class tag (see {@link prepareSpell}) — domain
+ * slots only ever apply to a cleric class, but a cleric/X multiclass still
+ * needs to tag its instances when cleric isn't the primary class.
  */
-export function prepareDomainSpell(doc: CharacterDoc, spellId: string): CharacterDoc {
+export function prepareDomainSpell(
+  doc: CharacterDoc,
+  spellId: string,
+  classTag?: string,
+): CharacterDoc {
   return withPrepared(doc, [
     ...preparedSpells(doc),
-    { spellId, expended: false, kind: "domain" },
+    { spellId, expended: false, kind: "domain", ...(classTag ? { classTag } : {}) },
   ]);
 }
 
@@ -49,30 +99,44 @@ export function prepareDomainSpell(doc: CharacterDoc, spellId: string): Characte
  * wizard's bonus school slot. One per accessible spell level (1–9); the
  * caller is responsible for the capacity check (see {@link schoolSlotCapacity})
  * and for restricting the offered spell to the wizard's school (see
- * {@link isSchoolSlotEligible}).
+ * {@link isSchoolSlotEligible}). `classTag` is the stored class tag (see
+ * {@link prepareSpell}).
  */
-export function prepareSchoolSpell(doc: CharacterDoc, spellId: string): CharacterDoc {
+export function prepareSchoolSpell(
+  doc: CharacterDoc,
+  spellId: string,
+  classTag?: string,
+): CharacterDoc {
   return withPrepared(doc, [
     ...preparedSpells(doc),
-    { spellId, expended: false, kind: "school" },
+    { spellId, expended: false, kind: "school", ...(classTag ? { classTag } : {}) },
   ]);
 }
 
 /**
  * Remove one prepared instance of `spellId`, preferring an un-expended one so a
  * decrement doesn't silently discard a still-available slot. Optional `kind`
- * restricts the removal to that slot kind (e.g. only a domain slot). No-op if
- * none are prepared of the matching kind.
+ * restricts the removal to that slot kind (e.g. only a domain slot). `classTag`
+ * (the stored class tag, see {@link prepareSpell}) restricts the removal to
+ * that caster class — `undefined` matches only the primary class's instances
+ * so a same-named spell prepared by a different class in the loadout is never
+ * touched. No-op if none are prepared matching all the given filters.
  */
 export function unprepareSpell(
   doc: CharacterDoc,
   spellId: string,
   kind?: "normal" | "domain" | "school",
+  classTag?: string,
 ): CharacterDoc {
   const list = preparedSpells(doc);
   const matchesKind = (p: PreparedSpell) => kind === undefined || (p.kind ?? "normal") === kind;
-  let idx = list.findIndex((p) => p.spellId === spellId && !p.expended && matchesKind(p));
-  if (idx < 0) idx = list.findIndex((p) => p.spellId === spellId && matchesKind(p));
+  const matchesClass = (p: PreparedSpell) => (p.classTag ?? undefined) === classTag;
+  let idx = list.findIndex(
+    (p) => p.spellId === spellId && !p.expended && matchesKind(p) && matchesClass(p),
+  );
+  if (idx < 0) {
+    idx = list.findIndex((p) => p.spellId === spellId && matchesKind(p) && matchesClass(p));
+  }
   if (idx < 0) return doc;
   return withPrepared(doc, list.filter((_, i) => i !== idx));
 }
@@ -98,19 +162,34 @@ export function setExpendedAt(
   );
 }
 
-/** Rest / new day: clear every `expended` flag, keeping the loadout intact. */
-export function restPreparedSpells(doc: CharacterDoc): CharacterDoc {
+/**
+ * Rest / new day: clear every `expended` flag, keeping the loadout intact.
+ * `classTag` (the stored class tag, see {@link prepareSpell}) restricts the
+ * reset to that caster class only — a multiclass character's other prepared
+ * class(es) are untouched, so each class's "New day" button only rests its
+ * own loadout.
+ */
+export function restPreparedSpells(doc: CharacterDoc, classTag?: string): CharacterDoc {
   const list = preparedSpells(doc);
-  if (!list.some((p) => p.expended)) return doc;
+  const matches = (p: PreparedSpell) => (p.classTag ?? undefined) === classTag;
+  if (!list.some((p) => p.expended && matches(p))) return doc;
   return withPrepared(
     doc,
-    list.map((p) => ({ ...p, expended: false })),
+    list.map((p) => (matches(p) ? { ...p, expended: false } : p)),
   );
 }
 
-/** Empty the entire loadout (e.g. to re-prepare from scratch). */
-export function clearPrepared(doc: CharacterDoc): CharacterDoc {
-  return preparedSpells(doc).length === 0 ? doc : withPrepared(doc, []);
+/**
+ * Empty the loadout for one caster class (e.g. to re-prepare from scratch).
+ * `classTag` (the stored class tag, see {@link prepareSpell}) restricts the
+ * clear to that class; a multiclass character's other prepared class(es)
+ * survive.
+ */
+export function clearPrepared(doc: CharacterDoc, classTag?: string): CharacterDoc {
+  const list = preparedSpells(doc);
+  const toKeep = list.filter((p) => (p.classTag ?? undefined) !== classTag);
+  if (toKeep.length === list.length) return doc;
+  return withPrepared(doc, toKeep);
 }
 
 /**
@@ -161,17 +240,19 @@ export function domainSpellLevelMap(
 /**
  * True when `spell` may be prepared in the wizard's bonus school slot: it must
  * match the wizard's specialty school (`spell.school === build.wizardSchool`)
- * AND already be in the wizard's spellbook (`build.spells.known`) — PF1 RAW,
- * the bonus slot is not a free pick from the whole school, only from spells
- * the wizard has actually learned. Always false for a Universalist or when no
+ * AND already be in the wizard's spellbook (`build.spells.known`, or its
+ * `byClass["wizard"]` list for a multiclass wizard who isn't the primary
+ * caster class — see `model/spellcasting.ts` `knownSpellsFor`) — PF1 RAW, the
+ * bonus slot is not a free pick from the whole school, only from spells the
+ * wizard has actually learned. Always false for a Universalist or when no
  * school is chosen — Universalists get no bonus school slot (PF1 RAW
  * correction: their compensation is arcane-school powers, deferred to Stage 4).
  */
-export function isSchoolSlotEligible(spell: Spell, doc: CharacterDoc): boolean {
+export function isSchoolSlotEligible(spell: Spell, doc: CharacterDoc, refData: RefData): boolean {
   const school = doc.build.wizardSchool;
   if (!school || school === "uni") return false;
   if (spell.school !== school) return false;
-  return doc.build.spells.known.includes(spell.id);
+  return knownSpellsFor(doc, refData, "wizard").includes(spell.id);
 }
 
 /**
@@ -226,14 +307,19 @@ export function classSpellsByLevel(
 }
 
 /**
- * Strip granted cantrips from `build.spells.known` and dedupe them in
+ * Strip granted cantrips from a caster class's known list and dedupe them in
  * `live.spells.prepared` for casters whose model grants all cantrips for free.
+ * Runs once per caster class on the document (issue #22 multiclass support —
+ * e.g. a cleric/wizard multiclass reconciles both independently), so one
+ * class's cantrips are never pruned by another's.
  *
  * Cantrips are derived from the class spell list instead of stored in the
  * spellbook, so any previously-stored cantrip ids in `known` are orphans.
  * Prepared cantrips do take slots and survive — but a cantrip cast at will
  * never needs more than one slot, so duplicate prepared instances are collapsed
- * to the first occurrence.
+ * to the first occurrence (per class — the same spell id prepared for two
+ * different classes, e.g. a spell on both the cleric and wizard lists, is
+ * deduped independently for each).
  *
  * Idempotent; returns the same doc reference when nothing changes. Call after
  * {@link migrateDoc} at load time (this needs RefData, which the pure doc
@@ -243,43 +329,41 @@ export function reconcileGrantedCantrips(
   doc: CharacterDoc,
   refData: RefData,
 ): CharacterDoc {
-  const casterTag = doc.identity.classes
-    .map((c) => c.tag)
-    .find((t) => refData.spellLists[t]);
-  if (!casterTag) return doc;
+  let next = doc;
+  for (const { tag } of casterClassesOf(doc, refData)) {
+    next = reconcileGrantedCantripsForClass(next, refData, tag);
+  }
+  return next;
+}
+
+function reconcileGrantedCantripsForClass(
+  doc: CharacterDoc,
+  refData: RefData,
+  casterTag: string,
+): CharacterDoc {
   const model = casterModelFor(casterTag);
   if (!model?.grantsAllCantrips) return doc;
   const cantrips = refData.spellLists[casterTag]?.[0];
   if (!cantrips || cantrips.length === 0) return doc;
   const cantripSet = new Set(cantrips);
+  const classTag = storedClassTag(doc, refData, casterTag);
 
-  const known = doc.build.spells.known;
+  const known = knownSpellsFor(doc, refData, casterTag);
   const nextKnown = known.filter((id) => !cantripSet.has(id));
 
   const prepared = doc.live.spells?.prepared ?? [];
   const seen = new Set<string>();
   const nextPrepared = prepared.filter((p) => {
+    if ((p.classTag ?? undefined) !== classTag) return true; // other classes untouched
     if (!cantripSet.has(p.spellId)) return true;
     if (seen.has(p.spellId)) return false;
     seen.add(p.spellId);
     return true;
   });
 
-  if (
-    nextKnown.length === known.length &&
-    nextPrepared.length === prepared.length
-  ) {
+  if (nextKnown.length === known.length && nextPrepared.length === prepared.length) {
     return doc;
   }
-  return {
-    ...doc,
-    build: {
-      ...doc.build,
-      spells: { ...doc.build.spells, known: nextKnown },
-    },
-    live: {
-      ...doc.live,
-      spells: { prepared: nextPrepared },
-    },
-  };
+  const withKnown = setKnownSpellsFor(doc, refData, casterTag, nextKnown);
+  return withPrepared(withKnown, nextPrepared);
 }

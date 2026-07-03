@@ -198,8 +198,21 @@ export interface CharacterDoc {
      * spellbook — the library you may prepare from. The daily prepared loadout
      * and cast-tracking live in `live.spells`, NOT here, because preparation is
      * session state that resets on rest (DESIGN: build.* vs live.*).
+     *
+     * Multiclass casters (issue #22): `known` always holds the *primary*
+     * caster class's list — the first class in `identity.classes` (in array
+     * order) that has a spell list (see `model/spellcasting.ts`
+     * `casterClassesOf`/`primaryCasterClassTag`). A second-or-later caster
+     * class's known list lives in `byClass`, keyed by class tag. This keeps
+     * every single-caster document — which is every document predating this
+     * feature, and every document with only one caster class going forward —
+     * byte-identical: `byClass` is never populated unless the character has
+     * 2+ caster classes, and even then the primary class's spells stay in the
+     * flat `known` array rather than being duplicated into `byClass`.
+     * `model/spellcasting.ts`'s `knownSpellsFor`/`setKnownSpellsFor` are the
+     * only code that should read or write either field.
      */
-    spells: { known: string[] };
+    spells: { known: string[]; byClass?: Record<string, { known: string[] }> };
     gear: ItemInstance[];
     /**
      * Manually-entered weapons. Optional for back-compat: existing documents without
@@ -344,8 +357,22 @@ export interface CharacterDoc {
      * Reset to {} on a new day. Omitted / absent = zero used at each level.
      *
      * Both fields are optional for backwards-compat with older documents.
+     *
+     * Multiclass casters (issue #22): `slotsUsed` always holds the *primary*
+     * caster class's spontaneous slot usage (see `build.spells.known`'s doc
+     * comment for what "primary" means); a second spontaneous caster class
+     * (e.g. a bard/sorcerer multiclass) tracks its usage in
+     * `slotsUsedByClass`, keyed by class tag. Every `PreparedSpell` also
+     * carries an optional `classTag`, undefined for the primary class's
+     * instances (see `PreparedSpell.classTag`). Single-caster documents never
+     * populate `slotsUsedByClass` or any `PreparedSpell.classTag`, so their
+     * shape and behavior are unchanged by this feature.
      */
-    spells?: { prepared: PreparedSpell[]; slotsUsed?: Record<number, number> };
+    spells?: {
+      prepared: PreparedSpell[];
+      slotsUsed?: Record<number, number>;
+      slotsUsedByClass?: Record<string, Record<number, number>>;
+    };
     /**
      * Hero points currently held (PF1 optional rule). Omitted = 0.
      * Standard maximum held at once is 3 (see HERO_POINT_CAP in model/heroPoints).
@@ -458,6 +485,16 @@ export interface PreparedSpell {
    * a distinct `kind`.
    */
   kind?: "normal" | "domain" | "school";
+  /**
+   * Which caster class (key into `identity.classes[].tag`) this prepared
+   * instance belongs to — issue #22 multiclass support. Undefined means the
+   * document's *primary* caster class (see `build.spells.known`'s doc
+   * comment): every prepared instance on a single-caster document, and every
+   * instance predating this field, is implicitly the (only) caster class's,
+   * so this stays undefined for them — zero migration needed. Only a second
+   * (or further) caster class's instances set this explicitly.
+   */
+  classTag?: string;
 }
 
 /**

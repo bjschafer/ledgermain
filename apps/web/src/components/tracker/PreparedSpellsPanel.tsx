@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 
 import type { RefData } from "@pf1/schema";
 
@@ -21,10 +21,13 @@ import {
 } from "../../model/preparedSpells.js";
 import {
   bloodlineSpellsKnown,
+  casterClassesOf,
   casterModelFor,
   grantedCantrips,
+  knownSpellsFor,
   SCHOOL_LABELS,
   spellSlotsByLevel,
+  storedClassTag,
 } from "../../model/spellcasting.js";
 import {
   castSpontaneousSlot,
@@ -68,6 +71,7 @@ function DomainSlotsSection({
   update,
   slots,
   abilityMod,
+  classTag,
 }: {
   doc: BuilderProps["doc"];
   refData: RefData;
@@ -75,6 +79,8 @@ function DomainSlotsSection({
   slots: ReturnType<typeof spellSlotsByLevel>;
   classLevel: number;
   abilityMod: number;
+  /** Stored class tag (see `model/spellcasting.ts` `storedClassTag`) — cleric's domain slots are always its own, but this scopes the bucketing correctly for a cleric that isn't the document's primary caster class. */
+  classTag?: string;
 }) {
   const domains = doc.build.clericDomains ?? [];
   const domainMap = useMemo(
@@ -87,6 +93,7 @@ function DomainSlotsSection({
   const preparedByLevel = new Map<number, Row[]>();
   const prepared = preparedSpells(doc);
   prepared.forEach((p, index) => {
+    if ((p.classTag ?? undefined) !== classTag) return;
     if ((p.kind ?? "normal") !== "domain") return;
     const lvl = domainMap.get(p.spellId);
     if (lvl === undefined) return;
@@ -234,7 +241,7 @@ function DomainSlotsSection({
                               ? "Domain slot is filled — unprepare the current spell first."
                               : undefined
                           }
-                          onClick={() => update((d) => prepareDomainSpell(d, sp.id))}
+                          onClick={() => update((d) => prepareDomainSpell(d, sp.id, classTag))}
                         >
                           Prepare
                         </button>
@@ -272,12 +279,15 @@ function SchoolSlotsSection({
   update,
   slots,
   abilityMod,
+  classTag,
 }: {
   doc: BuilderProps["doc"];
   refData: RefData;
   update: BuilderProps["update"];
   slots: ReturnType<typeof spellSlotsByLevel>;
   abilityMod: number;
+  /** Stored class tag (see `model/spellcasting.ts` `storedClassTag`) — wizard school slots are always the wizard's own, but this scopes the bucketing correctly for a wizard that isn't the document's primary caster class. */
+  classTag?: string;
 }) {
   const school = doc.build.wizardSchool;
   const levelMap = useMemo(() => spellLevelMap(refData, "wizard"), [refData]);
@@ -287,6 +297,7 @@ function SchoolSlotsSection({
   const preparedByLevel = new Map<number, Row[]>();
   const prepared = preparedSpells(doc);
   prepared.forEach((p, index) => {
+    if ((p.classTag ?? undefined) !== classTag) return;
     if ((p.kind ?? "normal") !== "school") return;
     const lvl = levelMap.get(p.spellId);
     if (lvl === undefined) return;
@@ -312,7 +323,7 @@ function SchoolSlotsSection({
       const entries: { id: string; name: string }[] = [];
       for (const id of ids) {
         const sp = refData.spells[id];
-        if (sp && isSchoolSlotEligible(sp, doc)) entries.push({ id, name: sp.name });
+        if (sp && isSchoolSlotEligible(sp, doc, refData)) entries.push({ id, name: sp.name });
       }
       entries.sort((a, b) => a.name.localeCompare(b.name));
       out.set(slot.level, entries);
@@ -432,7 +443,7 @@ function SchoolSlotsSection({
                               ? "School slot is filled — unprepare the current spell first."
                               : undefined
                           }
-                          onClick={() => update((d) => prepareSchoolSpell(d, sp.id))}
+                          onClick={() => update((d) => prepareSchoolSpell(d, sp.id, classTag))}
                         >
                           Prepare
                         </button>
@@ -460,12 +471,19 @@ function SchoolSlotsSection({
  * with Cast/Recover, a picker to prepare more spells, and actions to rest
  * (un-expend) or clear the loadout for re-preparation.
  */
-function PreparedView({ doc, sheet, refData, update, casterTag, model }: BuilderProps & {
+function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwitcher }: BuilderProps & {
   casterTag: string;
   model: ReturnType<typeof casterModelFor> & {};
+  classSwitcher?: ReactNode;
 }) {
   const [confirmRecover, setConfirmRecover] = useState<number | null>(null);
   const [confirmClear, setConfirmClear] = useState(false);
+
+  // Stored class tag (see `model/spellcasting.ts` `storedClassTag`): undefined
+  // for the primary caster class (the single-caster case, unchanged from
+  // before), else `casterTag` — every prepared instance for THIS class
+  // carries this exact value in its (possibly absent) `classTag`.
+  const classTag = storedClassTag(doc, refData, casterTag);
 
   const levelMap = useMemo(
     () => spellLevelMap(refData, casterTag),
@@ -481,14 +499,19 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
     [model, refData, casterTag],
   );
 
+  const known = useMemo(
+    () => knownSpellsFor(doc, refData, casterTag),
+    [doc, refData, casterTag],
+  );
+
   // Casters with no curated "known" list (cleric) prepare directly from the
-  // full class spell list; everyone else prepares from `build.spells.known`.
+  // full class spell list; everyone else prepares from their known list.
   const knownByLevel = useMemo(() => {
     if (model.preparesFromClassList) {
       return classSpellsByLevel(refData, casterTag, { excludeCantrips: model.grantsAllCantrips });
     }
     const map = new Map<number, { id: string; name: string }[]>();
-    for (const id of doc.build.spells.known) {
+    for (const id of known) {
       const lvl = levelMap.get(id);
       const sp = refData.spells[id];
       if (lvl === undefined || !sp) continue;
@@ -496,12 +519,21 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
     }
     for (const arr of map.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
     return map;
-  }, [model, refData, casterTag, doc.build.spells.known, levelMap]);
+  }, [model, refData, casterTag, known, levelMap]);
 
-  const prepared = preparedSpells(doc);
+  // Only this class's prepared instances (a multiclass character's other
+  // caster class(es) are bucketed/rendered by their own PreparedView), kept
+  // paired with their ORIGINAL array index — `removePreparedAt`/`setExpendedAt`
+  // index into the full `live.spells.prepared` array, not this filtered view.
+  const allPrepared = preparedSpells(doc);
+  const classPrepared: { p: (typeof allPrepared)[number]; index: number }[] = [];
+  allPrepared.forEach((p, index) => {
+    if ((p.classTag ?? undefined) === classTag) classPrepared.push({ p, index });
+  });
+
   const preparedByLevel = new Map<number, PreparedRow[]>();
   const preparedCountBySpell = new Map<string, number>();
-  prepared.forEach((p, index) => {
+  classPrepared.forEach(({ p, index }) => {
     // Exclude domain- and school-slot instances — they are bucketed/rendered
     // separately to keep the class slots capacity check honest.
     const kind = p.kind ?? "normal";
@@ -521,8 +553,8 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
   });
   for (const arr of preparedByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
 
-  const anyExpended = prepared.some((p) => p.expended);
-  const totalPrepared = prepared.length;
+  const anyExpended = classPrepared.some(({ p }) => p.expended);
+  const totalPrepared = classPrepared.length;
 
   return (
     <Panel
@@ -535,7 +567,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
           className="btn-ghost rest"
           disabled={!anyExpended}
           onClick={() => {
-            update((d) => restPreparedSpells(d));
+            update((d) => restPreparedSpells(d, classTag));
             setConfirmClear(false);
           }}
         >
@@ -543,6 +575,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
         </button>
       }
     >
+      {classSwitcher}
       <div className="spell-hints">
         <p className="hint spell-hint-line">
           Prepare spells from your {model.knownLabel.toLowerCase()} into the day's
@@ -561,7 +594,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
                 type="button"
                 className="pick-btn remove"
                 onClick={() => {
-                  update((d) => clearPrepared(d));
+                  update((d) => clearPrepared(d, classTag));
                   setConfirmClear(false);
                 }}
               >
@@ -735,7 +768,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
                               type="button"
                               className="pick-btn remove"
                               aria-label={`unprepare one ${sp.name}`}
-                              onClick={() => update((d) => unprepareSpell(d, sp.id))}
+                              onClick={() => update((d) => unprepareSpell(d, sp.id, undefined, classTag))}
                             >
                               −
                             </button>
@@ -754,7 +787,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
                                     : `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled — unprepare one first.`
                                   : undefined
                             }
-                            onClick={() => update((d) => prepareSpell(d, sp.id))}
+                            onClick={() => update((d) => prepareSpell(d, sp.id, classTag))}
                           >
                             Prepare
                           </button>
@@ -782,6 +815,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
           slots={slots}
           classLevel={classLevel}
           abilityMod={abilityMod}
+          classTag={classTag}
         />
       )}
 
@@ -795,6 +829,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
             update={update}
             slots={slots}
             abilityMod={abilityMod}
+            classTag={classTag}
           />
         )}
     </Panel>
@@ -807,10 +842,16 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model }: Builder
  * one slot. No preparation needed — any known spell can be cast at any level
  * slot for which it qualifies.
  */
-function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: BuilderProps & {
+function SpontaneousView({ doc, sheet, refData, update, casterTag, model, classSwitcher }: BuilderProps & {
   casterTag: string;
   model: ReturnType<typeof casterModelFor> & {};
+  classSwitcher?: ReactNode;
 }) {
+  // Stored class tag (see `model/spellcasting.ts` `storedClassTag`): undefined
+  // for the primary caster class, else `casterTag` — scopes slotsUsed(ByClass)
+  // to this class only.
+  const classTag = storedClassTag(doc, refData, casterTag);
+
   const levelMap = useMemo(
     () => spellLevelMap(refData, casterTag),
     [refData, casterTag],
@@ -826,13 +867,18 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: Buil
   );
   const slotBonusByLevel = new Map(slotsPerLevel.map((s) => [s.level, s.bonus]));
 
-  const status = spontaneousSlotStatus(doc, model, classLevel, abilityMod);
+  const status = spontaneousSlotStatus(doc, model, classLevel, abilityMod, classTag);
   const anyUsed = status.some((s) => s.used > 0);
+
+  const knownList = useMemo(
+    () => knownSpellsFor(doc, refData, casterTag),
+    [doc, refData, casterTag],
+  );
 
   // Known spells by spell level (cantrips land in level 0 here too, unless
   // grantsAllCantrips sources them from the whole class list below instead).
   const knownByLevel = new Map<number, { id: string; name: string }[]>();
-  for (const id of doc.build.spells.known) {
+  for (const id of knownList) {
     const lvl = levelMap.get(id);
     const sp = refData.spells[id];
     if (lvl === undefined || !sp) continue;
@@ -843,7 +889,7 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: Buil
   // the spells-known *cap* exempts them, not slot spending). Merge in, skipping
   // ids already present (e.g. also separately added to `known`) to avoid dupes.
   if (casterTag === "sorcerer") {
-    const known = new Set(doc.build.spells.known);
+    const known = new Set(knownList);
     for (const sp of bloodlineSpellsKnown(refData, doc.build.sorcererBloodline, classLevel)) {
       if (known.has(sp.id)) continue;
       (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
@@ -870,12 +916,13 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: Buil
           type="button"
           className="btn-ghost rest"
           disabled={!anyUsed}
-          onClick={() => update((d) => resetSpontaneousSlots(d))}
+          onClick={() => update((d) => resetSpontaneousSlots(d, classTag))}
         >
           New day
         </button>
       }
     >
+      {classSwitcher}
       <div className="spell-hints">
         <p className="hint spell-hint-line">
           Spontaneous caster: spend a slot of the required level to cast any
@@ -946,7 +993,7 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: Buil
                     title={i < used ? "Click to restore slot (undo cast)" : "Slot available"}
                     onClick={() => {
                       if (i < used) {
-                        update((d) => restoreSpontaneousSlot(d, level));
+                        update((d) => restoreSpontaneousSlot(d, level, classTag));
                       }
                     }}
                   />
@@ -980,7 +1027,7 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: Buil
                           }
                           onClick={() =>
                             update((d) =>
-                              castSpontaneousSlot(d, model, classLevel, abilityMod, level),
+                              castSpontaneousSlot(d, model, classLevel, abilityMod, level, classTag),
                             )
                           }
                         >
@@ -1010,13 +1057,20 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model }: Buil
 /**
  * The daily spell tracking panel. For prepared casters (wizard) this is the
  * loadout loop; for spontaneous casters (sorcerer) it is the slot-pool view.
- * Wizard-only until Task 1d; extended here to branch on model.preparation.
+ *
+ * Multiclass support (issue #22): with 2+ caster classes on the document, a
+ * class switcher lets the player pick which class's spells this panel shows
+ * — including which preparation MODE applies, since a cleric/sorcerer
+ * multiclass needs the prepared loop for one class's tab and the spontaneous
+ * slot-pool view for the other. A single-caster document never renders the
+ * switcher, so its behavior is unchanged from before multiclass support.
  */
 export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProps) {
-  const casterTag = useMemo(
-    () => doc.identity.classes.map((c) => c.tag).find((t) => refData.spellLists[t]),
-    [doc.identity.classes, refData.spellLists],
-  );
+  const casters = useMemo(() => casterClassesOf(doc, refData), [doc, refData]);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const casterTag =
+    (selectedTag && casters.some((c) => c.tag === selectedTag) ? selectedTag : casters[0]?.tag) ??
+    undefined;
   const model = casterTag ? casterModelFor(casterTag) : undefined;
 
   if (!casterTag || !model) {
@@ -1031,6 +1085,25 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
     );
   }
 
+  const classSwitcher =
+    casters.length > 1 ? (
+      <div className="chips spell-class-switcher" role="tablist" aria-label="Caster class">
+        {casters.map((c) => (
+          <button
+            key={c.tag}
+            type="button"
+            className="chip"
+            role="tab"
+            aria-selected={casterTag === c.tag}
+            aria-pressed={casterTag === c.tag}
+            onClick={() => setSelectedTag(c.tag)}
+          >
+            {refData.classes[c.tag]?.name ?? c.tag} {c.level}
+          </button>
+        ))}
+      </div>
+    ) : null;
+
   if (model.preparation === "spontaneous") {
     return (
       <SpontaneousView
@@ -1040,6 +1113,7 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
         update={update}
         casterTag={casterTag}
         model={model}
+        classSwitcher={classSwitcher}
       />
     );
   }
@@ -1052,6 +1126,7 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
       update={update}
       casterTag={casterTag}
       model={model}
+      classSwitcher={classSwitcher}
     />
   );
 }
