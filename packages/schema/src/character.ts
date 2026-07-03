@@ -543,6 +543,41 @@ export interface DerivedSheet {
   classFeatures: DerivedClassFeature[];
   /** One entry per chosen `build.archetypes` id, with its swap map + own feature list. */
   activeArchetypes: DerivedArchetype[];
+  /**
+   * Damage reduction / energy resistance / spell resistance, display-only
+   * (issue #21). Undefined when the character has none of the three — the UI
+   * renders nothing rather than an empty "Defenses" line.
+   */
+  defenses?: Defenses;
+}
+
+/**
+ * DR / energy resistance / spell resistance, gathered from the same collected-
+ * modifier pipeline as every other change target (race/item/class-feature/buff/
+ * condition) plus the hand-authored barbarian Damage Reduction progression.
+ * Display-only: nothing here feeds back into damage/attack math.
+ */
+export interface Defenses {
+  /** One entry per distinct bypass qualifier (e.g. "—", "magic", "cold iron"). */
+  dr: DefenseEntry[];
+  /** One entry per distinct energy type (e.g. "fire", "cold"). */
+  resistances: DefenseEntry[];
+  /** Spell resistance, if any source grants it. */
+  sr?: { total: number; components: ModifierComponent[] };
+}
+
+/**
+ * One DR or energy-resistance line. Same same-qualifier sources don't stack in
+ * PF1 (you benefit from the single highest value of a given qualifier) — the
+ * losing sources still appear in `components` with `applied: false`, same
+ * strike-through convention as `ModifierComponent` elsewhere.
+ */
+export interface DefenseEntry {
+  /** The winning (highest) value for this qualifier. */
+  total: number;
+  /** Bypass type ("—" for DR/—, "magic", "cold iron", ...) or energy type ("fire", "cold", ...). */
+  qualifier: string;
+  components: ModifierComponent[];
 }
 
 /**

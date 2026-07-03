@@ -34,6 +34,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 
 import { resolveClassFeatures } from "./archetypes.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
+import { computeDefenses } from "./defenses.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
 import {
@@ -714,6 +715,9 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // Per-weapon attack lines
   const attacks = computeWeaponAttacks(doc, bab, strMod, dexMod, sizeAttackMod, collected);
 
+  // DR / energy resistance / spell resistance — display-only (issue #21).
+  const defenses = computeDefenses(doc, collected);
+
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};
   const { classFeatures, activeArchetypes } = resolveClassFeatures(doc, refData, abilities);
@@ -734,6 +738,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     skills,
     classFeatures,
     activeArchetypes,
+    defenses,
   };
 
   for (const [key, val] of Object.entries(overrides)) {

@@ -139,6 +139,47 @@ export function Sheet({
 				</div>
 			</div>
 
+			{/* Defenses (DR / energy resistance / SR) — issue #21, display-only. */}
+			{sheet.defenses ? (
+				<div className="stat-group">
+					<div className="stat-group-header">
+						<span className="stat-group-legend">Defenses</span>
+						<div className="stat-group-rule" />
+					</div>
+					<div className="stat-group-grid stat-group-grid--3">
+						{sheet.defenses.dr.map((entry) => (
+							<StatSeal
+								key={`dr-${entry.qualifier}`}
+								label={`DR/${entry.qualifier}`}
+								value={entry.total}
+								components={entry.components}
+								provTitle={`DR/${entry.qualifier}`}
+								className="seal--compact"
+							/>
+						))}
+						{sheet.defenses.resistances.map((entry) => (
+							<StatSeal
+								key={`eres-${entry.qualifier}`}
+								label={`Resist ${entry.qualifier.charAt(0).toUpperCase()}${entry.qualifier.slice(1)}`}
+								value={entry.total}
+								components={entry.components}
+								provTitle={`${entry.qualifier} resistance`}
+								className="seal--compact"
+							/>
+						))}
+						{sheet.defenses.sr ? (
+							<StatSeal
+								label="SR"
+								value={sheet.defenses.sr.total}
+								components={sheet.defenses.sr.components}
+								provTitle="Spell resistance"
+								className="seal--compact"
+							/>
+						) : null}
+					</div>
+				</div>
+			) : null}
+
 			{/* Offense --------------------------------------------------- */}
 			<div className="stat-group">
 				<div className="stat-group-header">

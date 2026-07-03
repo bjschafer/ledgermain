@@ -14,19 +14,20 @@ describe("isTargetApplied", () => {
     "size",
     "str",
     "bonusFeats",
+    "spellResist",
+    "dr",
+    "dr.magic",
+    "eres.fire",
   ])("treats %s as applied", (target) => {
     expect(isTargetApplied(target)).toBe(true);
   });
 
-  it.each([
-    "spellResist",
-    "nattack",
-    "allChecks",
-    "carryMult",
-    "sensedv",
-  ])("treats %s as unapplied", (target) => {
-    expect(isTargetApplied(target)).toBe(false);
-  });
+  it.each(["nattack", "allChecks", "carryMult", "sensedv"])(
+    "treats %s as unapplied",
+    (target) => {
+      expect(isTargetApplied(target)).toBe(false);
+    },
+  );
 });
 
 describe("unappliedChanges", () => {
@@ -38,10 +39,7 @@ describe("unappliedChanges", () => {
       { formula: "3", target: "reach", type: "untyped" },
     ];
 
-    expect(unappliedChanges(changes)).toEqual([
-      { formula: "2", target: "spellResist", type: "untyped" },
-      { formula: "3", target: "reach", type: "untyped" },
-    ]);
+    expect(unappliedChanges(changes)).toEqual([{ formula: "3", target: "reach", type: "untyped" }]);
   });
 });
 
@@ -59,8 +57,8 @@ describe("real refdata buffs", () => {
     expect(unappliedChanges(buff.changes)).toEqual([]);
   });
 
-  it("Spell Resistance has at least one unapplied change", () => {
+  it("Spell Resistance has no unapplied changes now that spellResist feeds the defenses line", () => {
     const buff = buffByName("Spell Resistance");
-    expect(unappliedChanges(buff.changes).length).toBeGreaterThan(0);
+    expect(unappliedChanges(buff.changes)).toEqual([]);
   });
 });

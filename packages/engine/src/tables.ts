@@ -669,3 +669,33 @@ export function flurryOfBlowsLabel(monkLevel: number): string {
   const attacks = monkLevel <= 7 ? 2 : monkLevel <= 14 ? 3 : 4;
   return `${attacks} attacks at -2 (BAB = monk level)`;
 }
+
+/* ------------------------------------------------------ barbarian DR ---- */
+
+/**
+ * Barbarian Damage Reduction, clean-room from the published PF1 SRD (the
+ * Damage Reduction class feature's `changes[]` is empty upstream — Foundry
+ * doesn't model DR via `changes` at all in this vendored slice — so both the
+ * class-feature `detail` string and the defenses-line contribution are
+ * hand-authored here, same posture as `sneakAttackDice`/`smiteEvilDetail`).
+ *
+ * "At 7th level, a barbarian gains DR 1/—. ... This increases by 1 point for
+ * every three barbarian levels attained after 7th level, to a maximum of
+ * 5/— at 19th level."  => 1/— at 7, 2/— at 10, 3/— at 13, 4/— at 16, 5/— at 19.
+ */
+export interface BarbarianDrDetail {
+  /** DR amount (0 below 7th level, 5 at L19+). */
+  amount: number;
+  /** Display string, e.g. "3/—" (or "0/—" below 7th level, not normally shown). */
+  label: string;
+}
+
+/**
+ * Barbarian Damage Reduction for a barbarian of `barbarianLevel`. Below 7th
+ * level, `amount` is 0 (the feature isn't granted yet).
+ */
+export function barbarianDamageReduction(barbarianLevel: number): BarbarianDrDetail {
+  if (barbarianLevel < 7) return { amount: 0, label: "0/—" };
+  const amount = 1 + Math.floor((barbarianLevel - 7) / 3);
+  return { amount, label: `${amount}/—` };
+}

@@ -63,6 +63,8 @@ export {
   unarmedDamageDie,
   type UnarmedDamageDetail,
   flurryOfBlowsLabel,
+  barbarianDamageReduction,
+  type BarbarianDrDetail,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export {
@@ -87,3 +89,4 @@ export {
   unappliedTargetLabel,
   UNAPPLIED_TARGET_LABELS,
 } from "./targets.js";
+export { computeDefenses } from "./defenses.js";

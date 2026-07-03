@@ -78,6 +78,9 @@ const APPLIED_TARGETS = new Set<string>([
   // consumed outside compute() by apps/web/src/model/feats.ts + skills.ts
   "bonusFeats",
   "bonusSkillRanks",
+  // spell resistance / damage reduction (computeDefenses, issue #21)
+  "spellResist",
+  "dr",
 ]);
 
 /**
@@ -87,8 +90,18 @@ const APPLIED_TARGETS = new Set<string>([
  * - `skill.<id>` — per-skill bonuses, grouped by base skill id in computeSkills.
  * - `attack.weapon.<group>` / `damage.weapon.<group>` — per-weapon-group feat
  *   bonuses (e.g. Weapon Focus / Weapon Specialization) in computeWeaponAttacks.
+ * - `dr.<bypass>` / `eres.<energy>` — qualified DR / energy resistance
+ *   (computeDefenses, issue #21). Not a vendored Foundry vocabulary (no
+ *   `dr`/`eres`-shaped target occurs upstream today) — this engine's own
+ *   convention so a user-authored buff can grant them.
  */
-const APPLIED_TARGET_PREFIXES = ["skill.", "attack.weapon.", "damage.weapon."];
+const APPLIED_TARGET_PREFIXES = [
+  "skill.",
+  "attack.weapon.",
+  "damage.weapon.",
+  "dr.",
+  "eres.",
+];
 
 /** True if `compute()` (or the model-layer budgets it feeds) applies `target`. */
 export function isTargetApplied(target: string): boolean {
@@ -111,7 +124,6 @@ export const UNAPPLIED_TARGET_LABELS: Record<string, string> = {
   nattack: "natural attack rolls",
   ndamage: "natural attack damage",
   tattack: "touch attack rolls",
-  spellResist: "spell resistance",
   concentration: "concentration checks",
   cl: "caster level",
   critConfirm: "crit confirmation rolls",

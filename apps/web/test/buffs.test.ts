@@ -1,8 +1,10 @@
 import { describe, expect, it } from "bun:test";
 import type { Buff } from "@pf1/schema";
+import { loadRefData } from "@pf1/data-pipeline";
 
 import {
   formatDuration,
+  hasNoModeledEffect,
   roundsToDisplay,
   suggestRounds,
   toRounds,
@@ -146,5 +148,52 @@ describe("suggestRounds", () => {
 
   it("returns undefined for a buff with no duration units", () => {
     expect(suggestRounds({ ...buffWithDuration("round", "1"), duration: undefined }, 5)).toBeUndefined();
+  });
+});
+
+describe("hasNoModeledEffect", () => {
+  it("empty changes + empty contextNotes -> true (a silent no-op buff)", () => {
+    expect(hasNoModeledEffect({ changes: [], contextNotes: [] })).toBe(true);
+  });
+
+  it("empty changes + undefined contextNotes -> true", () => {
+    expect(hasNoModeledEffect({ changes: [] })).toBe(true);
+  });
+
+  it("a buff with only contextNotes (no changes) does NOT get flagged", () => {
+    expect(
+      hasNoModeledEffect({
+        changes: [],
+        contextNotes: [{ target: "cmd", text: "Cannot be grappled." }],
+      }),
+    ).toBe(false);
+  });
+
+  it("a buff with changes (no contextNotes) does NOT get flagged", () => {
+    expect(
+      hasNoModeledEffect({
+        changes: [{ formula: "2", target: "ac", type: "dodge" }],
+        contextNotes: [],
+      }),
+    ).toBe(false);
+  });
+
+  it("real vendored data: Stoneskin and Invisibility are flagged", () => {
+    const ref = loadRefData();
+    const stoneskin = Object.values(ref.buffs).find((b) => b.name === "Stoneskin");
+    const invisibility = Object.values(ref.buffs).find((b) => b.name === "Invisibility");
+    expect(stoneskin).toBeDefined();
+    expect(invisibility).toBeDefined();
+    expect(hasNoModeledEffect(stoneskin!)).toBe(true);
+    expect(hasNoModeledEffect(invisibility!)).toBe(true);
+  });
+
+  it("real vendored data: Freedom of Movement has contextNotes only and is NOT flagged", () => {
+    const ref = loadRefData();
+    const fom = Object.values(ref.buffs).find((b) => b.name === "Freedom of Movement");
+    expect(fom).toBeDefined();
+    expect(fom!.changes).toEqual([]);
+    expect(fom!.contextNotes.length).toBeGreaterThan(0);
+    expect(hasNoModeledEffect(fom!)).toBe(false);
   });
 });

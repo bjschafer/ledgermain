@@ -51,6 +51,21 @@ export function makeCustomBuff(
   };
 }
 
+/**
+ * True when a buff has no `changes[]` AND no `contextNotes[]` — toggling it
+ * does literally nothing visible on the sheet (e.g. several vendored buffs
+ * like Stoneskin and Invisibility carry only prose `description`, which this
+ * app never surfaces mechanically). A buff with only `contextNotes` (e.g.
+ * Freedom of Movement) still reads as a reminder, so it is NOT flagged — see
+ * issue #21.
+ */
+export function hasNoModeledEffect(buff: {
+  changes: readonly Change[];
+  contextNotes?: readonly ContextNote[];
+}): boolean {
+  return buff.changes.length === 0 && (buff.contextNotes?.length ?? 0) === 0;
+}
+
 export function addBuff(doc: CharacterDoc, buff: ActiveBuff): CharacterDoc {
   return { ...doc, live: { ...doc.live, activeBuffs: [...doc.live.activeBuffs, buff] } };
 }
