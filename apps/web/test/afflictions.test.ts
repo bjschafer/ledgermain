@@ -5,6 +5,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 
 import { addClass, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
 import {
+  abilityZeroWarnings,
   activeAbilityAfflictions,
   getAbilityAffliction,
   getNegativeLevels,
@@ -185,5 +186,65 @@ describe("negLevelDeathWarning()", () => {
     d = setNegativeLevels(d, "permanent", 5);
     const sheet = compute(d, ref);
     expect(negLevelDeathWarning(d, sheet)).toBe(true);
+  });
+});
+
+describe("abilityZeroWarnings() (issue #31)", () => {
+  it("empty with no afflictions", () => {
+    const sheet = compute(fighterAt(1), ref);
+    expect(abilityZeroWarnings(sheet)).toEqual([]);
+  });
+
+  it("Dex drained to 0 warns paralyzed", () => {
+    let d = fighterAt(1, { dex: 10 });
+    d = setAbilityAffliction(d, "drain", "dex", 10);
+    const sheet = compute(d, ref);
+    expect(sheet.abilities.dex.total).toBe(0);
+    expect(abilityZeroWarnings(sheet)).toContainEqual({ ability: "dex", effect: "paralyzed" });
+  });
+
+  it("Str drained to 0 warns helpless", () => {
+    let d = fighterAt(1, { str: 10 });
+    d = setAbilityAffliction(d, "drain", "str", 10);
+    const sheet = compute(d, ref);
+    expect(abilityZeroWarnings(sheet)).toContainEqual({
+      ability: "str",
+      effect: "helpless (unable to move)",
+    });
+  });
+
+  it("Con drained to 0 warns dead", () => {
+    let d = fighterAt(1, { con: 10 });
+    d = setAbilityAffliction(d, "drain", "con", 10);
+    const sheet = compute(d, ref);
+    expect(abilityZeroWarnings(sheet)).toContainEqual({ ability: "con", effect: "dead" });
+  });
+
+  it("Int/Wis/Cha drained to 0 warn unconscious", () => {
+    let d = fighterAt(1, { int: 10, wis: 10, cha: 10 });
+    d = setAbilityAffliction(d, "drain", "int", 10);
+    d = setAbilityAffliction(d, "drain", "wis", 10);
+    d = setAbilityAffliction(d, "drain", "cha", 10);
+    const sheet = compute(d, ref);
+    const warnings = abilityZeroWarnings(sheet);
+    expect(warnings).toContainEqual({ ability: "int", effect: "unconscious" });
+    expect(warnings).toContainEqual({ ability: "wis", effect: "unconscious" });
+    expect(warnings).toContainEqual({ ability: "cha", effect: "unconscious" });
+  });
+
+  it("an ability at exactly 1 does not warn (boundary)", () => {
+    let d = fighterAt(1, { con: 10 });
+    d = setAbilityAffliction(d, "drain", "con", 9);
+    const sheet = compute(d, ref);
+    expect(sheet.abilities.con.total).toBe(1);
+    expect(abilityZeroWarnings(sheet)).toEqual([]);
+  });
+
+  it("damage-reached-current-score and total-reduced-to-0 warnings can both fire for the same ability", () => {
+    let d = fighterAt(1, { con: 10 });
+    d = setAbilityAffliction(d, "damage", "con", 10); // damage === score, and drives the derived total to 0
+    const sheet = compute(d, ref);
+    expect(isDisabledByDamage(d, sheet, "con")).toBe(true);
+    expect(abilityZeroWarnings(sheet)).toContainEqual({ ability: "con", effect: "dead" });
   });
 });

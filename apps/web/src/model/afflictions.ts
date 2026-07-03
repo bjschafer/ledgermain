@@ -166,3 +166,39 @@ export function negLevelDeathWarning(doc: CharacterDoc, derived: DerivedSheet): 
   const total = totalNegativeLevels(doc);
   return total > 0 && total >= derived.level;
 }
+
+/**
+ * PF1 RAW: an ability score reduced to 0 or below has an immediate mechanical
+ * consequence independent of HP — Str 0 leaves a creature helpless (unable to
+ * move), Dex 0 leaves it paralyzed, Con 0 kills it outright (`model/hp.ts`
+ * `hpState` enforces the death itself, checked first and independent of the
+ * HP-loss dying track — see its doc comment), and Int/Wis/Cha 0 knocks it
+ * unconscious. Reads the derived TOTAL (damage + drain + penalty, already
+ * combined by the engine), not raw build score, so it reacts to drain and
+ * penalties too, not just damage.
+ *
+ * Distinct from {@link isDisabledByDamage} above: that warns when ability
+ * DAMAGE alone reaches the *current* score (RAW's separate "damage equals
+ * current score" unconsciousness rule, issue #18). This one fires when the
+ * derived total has actually been driven to 0 or below by any combination of
+ * afflictions. The two can both be true for the same ability at once (heavy
+ * damage alone can push the derived total to 0) — callers should word them so
+ * they read as complementary facts, not a duplicated warning.
+ */
+export function abilityZeroWarnings(
+  derived: DerivedSheet,
+): { ability: AbilityId; effect: string }[] {
+  return ABILITY_IDS.filter((id) => derived.abilities[id].total <= 0).map((ability) => ({
+    ability,
+    effect: ABILITY_ZERO_EFFECT[ability],
+  }));
+}
+
+const ABILITY_ZERO_EFFECT: Record<AbilityId, string> = {
+  str: "helpless (unable to move)",
+  dex: "paralyzed",
+  con: "dead",
+  int: "unconscious",
+  wis: "unconscious",
+  cha: "unconscious",
+};

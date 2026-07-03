@@ -4,6 +4,7 @@ import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
+import { setAbilityAffliction } from "../src/model/afflictions.js";
 import { addClass, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
 import { hpState, setStable } from "../src/model/hp.js";
 
@@ -118,6 +119,45 @@ describe("hpState()", () => {
     const d = withHp(fighterWithCon(10), { current: 5, temp: 50, nonlethal: 0 });
     const sheet = compute(d, ref);
     expect(hpState(d, sheet).status).toBe("ok");
+  });
+});
+
+describe("hpState() — Con drained to (or below) 0 is dead regardless of HP (issue #31)", () => {
+  it("Con total 0 (drain) is dead even at full positive HP", () => {
+    let d = fighterWithCon(10);
+    d = setAbilityAffliction(d, "drain", "con", 10);
+    d = withHp(d, { current: 12 });
+    const sheet = compute(d, ref);
+    expect(sheet.abilities.con.total).toBe(0);
+    expect(hpState(d, sheet).status).toBe("dead");
+  });
+
+  it("Con total below 0 (heavy drain) is also dead at full positive HP", () => {
+    let d = fighterWithCon(10);
+    d = setAbilityAffliction(d, "drain", "con", 15);
+    d = withHp(d, { current: 12 });
+    const sheet = compute(d, ref);
+    expect(sheet.abilities.con.total).toBe(-5);
+    expect(hpState(d, sheet).status).toBe("dead");
+  });
+
+  it("Con total 1 uses the normal HP-based thresholds instead of the forced-dead rule", () => {
+    let d = fighterWithCon(10);
+    d = setAbilityAffliction(d, "drain", "con", 9);
+    const withCon1 = compute(d, ref);
+    expect(withCon1.abilities.con.total).toBe(1);
+
+    const full = withHp(d, { current: 12 });
+    expect(hpState(full, compute(full, ref)).status).toBe("ok");
+
+    const zero = withHp(d, { current: 0 });
+    expect(hpState(zero, compute(zero, ref)).status).toBe("disabled");
+
+    const atThreshold = withHp(d, { current: -1 });
+    expect(hpState(atThreshold, compute(atThreshold, ref))).toEqual({
+      status: "dead",
+      diesAt: -1,
+    });
   });
 });
 

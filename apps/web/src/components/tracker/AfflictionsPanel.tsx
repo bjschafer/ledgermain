@@ -6,6 +6,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import {
+	abilityZeroWarnings,
 	activeAbilityAfflictions,
 	disabledByDamageLabel,
 	getNegativeLevels,
@@ -28,8 +29,12 @@ const KIND_LABELS: Record<AbilityAfflictionKind, string> = {
 /**
  * Ability damage/drain/penalty (issue #18) + negative levels (issue #19).
  * Numbers themselves are computed by the engine (`@pf1/engine` collect.ts);
- * this panel only edits `doc.live.*` and surfaces the two RAW thresholds the
- * engine deliberately doesn't model (unconsciousness, death) as warnings.
+ * this panel only edits `doc.live.*` and surfaces the RAW thresholds the
+ * engine deliberately doesn't model as warnings: ability damage reaching the
+ * current score (unconsciousness), negative levels reaching Hit Dice (death),
+ * and — issue #31 — any derived ability total dropping to 0 or below (its own
+ * per-ability RAW effect; Con's is death, enforced separately by `hpState` in
+ * `model/hp.ts`).
  *
  * No auto-decrement on rest: the app's "rest" action is fragmented across
  * three independent panel buttons (HP/Resources/Prepared Spells) with no
@@ -45,6 +50,7 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
 
 	const disabledAbilities = ABILITY_IDS.filter((id) => isDisabledByDamage(doc, sheet, id));
 	const dying = negLevelDeathWarning(doc, sheet);
+	const zeroAbilities = abilityZeroWarnings(sheet);
 
 	const [addAbility, setAddAbility] = useState<AbilityId>("str");
 	const [addKind, setAddKind] = useState<AbilityAfflictionKind>("damage");
@@ -77,12 +83,18 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
 				</div>
 			)}
 
-			{(disabledAbilities.length > 0 || dying) && (
+			{(disabledAbilities.length > 0 || zeroAbilities.length > 0 || dying) && (
 				<ul className="cond-notes affliction-warnings">
 					{disabledAbilities.map((id) => (
 						<li key={id} className="affliction-warn">
 							<b>{ABILITY_NAMES[id]} damage</b> has reached the current score —{" "}
 							{disabledByDamageLabel(id)}.
+						</li>
+					))}
+					{zeroAbilities.map(({ ability, effect }) => (
+						<li key={`zero-${ability}`} className="affliction-warn">
+							<b>{ABILITY_NAMES[ability]}</b> has dropped to 0 or below — the character is{" "}
+							{effect} (PF1 RAW).
 						</li>
 					))}
 					{dying ? (
