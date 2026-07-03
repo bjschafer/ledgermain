@@ -210,7 +210,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
 			{/* Arcane school picker — wizard only (free-choice, soft warning only). */}
 			{doc.identity.classes.some((c) => c.tag === "wizard") && (
-				<SchoolPicker doc={doc} update={update} />
+				<SchoolPicker doc={doc} refData={refData} update={update} />
 			)}
 
 			{/* Arcane bond picker — wizard only (familiar or bonded object). */}

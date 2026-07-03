@@ -1,0 +1,319 @@
+{
+  "1Mut8aiSxsfRO8Xd": {
+    "description": "<p><em>The conjurer focuses on the study of summoning monsters and magic alike to bend to his will.</em></p><p><strong>Focused Arcane Schools</strong>: Infernal Binder Subschool,Creation Subschool, Extradimension Subschool, Teleportation Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "biOw5dSbJGsGVFwN",
+        "level": 0,
+        "name": "Acid Dart (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.biOw5dSbJGsGVFwN"
+      },
+      {
+        "featureId": "yTfzAVpEYSJaPQVZ",
+        "level": 0,
+        "name": "Summoner's Charm",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yTfzAVpEYSJaPQVZ"
+      },
+      {
+        "featureId": "cdre9IojG8R7LJLC",
+        "level": 8,
+        "name": "Dimensional Steps",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.cdre9IojG8R7LJLC"
+      }
+    ],
+    "id": "1Mut8aiSxsfRO8Xd",
+    "name": "Conjuration School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "80"
+      }
+    ],
+    "tag": "con",
+    "uuid": "Compendium.pf1.class-abilities.Item.1Mut8aiSxsfRO8Xd"
+  },
+  "3j7RxplJSeXVt0X1": {
+    "description": "<p><em>The abjurer uses magic against itself, and masters the art of defensive and warding magics.</em></p><p><strong>Focused Arcane Schools</strong>: Banishment Subschool, Counterspell Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "qIFUwyCjea79rUri",
+        "level": 0,
+        "name": "Protective Ward",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qIFUwyCjea79rUri"
+      },
+      {
+        "featureId": "UeYdiNoaF0gG08Y5",
+        "level": 0,
+        "name": "Resistance (Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UeYdiNoaF0gG08Y5"
+      },
+      {
+        "featureId": "EkxAlV7mWUQTMe3q",
+        "level": 6,
+        "name": "Energy Absorbtion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.EkxAlV7mWUQTMe3q"
+      }
+    ],
+    "id": "3j7RxplJSeXVt0X1",
+    "name": "Abjuration School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "79-80"
+      }
+    ],
+    "tag": "abj",
+    "uuid": "Compendium.pf1.class-abilities.Item.3j7RxplJSeXVt0X1"
+  },
+  "DtpcqOC89tTG3QkO": {
+    "description": "<p><em>The enchanter uses magic to control and manipulate the minds of his victims.</em></p><p><strong>Focused Arcane Schools</strong>: Controller Subschool, Manipulator Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "rO2rMMlGeDdyIxJv",
+        "level": 0,
+        "name": "Dazing Touch (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.rO2rMMlGeDdyIxJv"
+      },
+      {
+        "featureId": "wnb7IxOCmhk4SXzR",
+        "level": 0,
+        "name": "Enchanting Smile",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wnb7IxOCmhk4SXzR"
+      },
+      {
+        "featureId": "75Y2PY8Uha3o0fHE",
+        "level": 8,
+        "name": "Aura of Despair",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.75Y2PY8Uha3o0fHE"
+      }
+    ],
+    "id": "DtpcqOC89tTG3QkO",
+    "name": "Enchantment School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "tag": "enc",
+    "uuid": "Compendium.pf1.class-abilities.Item.DtpcqOC89tTG3QkO"
+  },
+  "Sy1M5VOCitnDDNKw": {
+    "description": "<p><em>Evokers revel in the raw power of magic, and can use it to create and destroy with shocking ease.</em></p><p><strong>Focused Arcane Schools</strong>: Admixture Subschool, Generation Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "OZ1vgybloYDVfWff",
+        "level": 0,
+        "name": "Force Missile",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.OZ1vgybloYDVfWff"
+      },
+      {
+        "featureId": "mv9UJny1ud4EYKTj",
+        "level": 0,
+        "name": "Intense Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mv9UJny1ud4EYKTj"
+      },
+      {
+        "featureId": "52vhE9asxPlXIr39",
+        "level": 8,
+        "name": "Elemental Wall",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.52vhE9asxPlXIr39"
+      }
+    ],
+    "id": "Sy1M5VOCitnDDNKw",
+    "name": "Evocation School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "tag": "evo",
+    "uuid": "Compendium.pf1.class-abilities.Item.Sy1M5VOCitnDDNKw"
+  },
+  "ZuFI7iaKeWv3n5pA": {
+    "description": "<p><em>The dread and feared necromancer commands undead and uses the foul power of unlife against his enemies.</em></p><p><strong>Focused Arcane Schools</strong>: Life Subschool, Undead Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "1XDvZLP9UPjr1glZ",
+        "level": 0,
+        "name": "Grave Touch (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1XDvZLP9UPjr1glZ"
+      },
+      {
+        "featureId": "jI66IOBVloeSyeGz",
+        "level": 0,
+        "name": "Power over Undead",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jI66IOBVloeSyeGz"
+      },
+      {
+        "featureId": "5JrtpLs5AJZ5NI40",
+        "level": 8,
+        "name": "Life Sight",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5JrtpLs5AJZ5NI40"
+      }
+    ],
+    "id": "ZuFI7iaKeWv3n5pA",
+    "name": "Necromancy School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81-82"
+      }
+    ],
+    "tag": "nec",
+    "uuid": "Compendium.pf1.class-abilities.Item.ZuFI7iaKeWv3n5pA"
+  },
+  "ctFPHquS2GydVoZV": {
+    "description": "<p><em>Diviners are masters of remote viewing, prophecies, and using magic to explore the world.</em></p><p><strong>Focused Arcane Schools</strong>: Foresight Subschool, Prophecy Subschool, Scryer Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "mITkHIcXI1Sfax21",
+        "level": 0,
+        "name": "Diviner's Fortune",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mITkHIcXI1Sfax21"
+      },
+      {
+        "featureId": "S0CoHzJwn5NlgQU9",
+        "level": 0,
+        "name": "Forewarned",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.S0CoHzJwn5NlgQU9"
+      },
+      {
+        "featureId": "ID7tKA56K3gOoWBM",
+        "level": 8,
+        "name": "Scrying Adept",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ID7tKA56K3gOoWBM"
+      }
+    ],
+    "id": "ctFPHquS2GydVoZV",
+    "name": "Divination School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "80-81"
+      }
+    ],
+    "tag": "div",
+    "uuid": "Compendium.pf1.class-abilities.Item.ctFPHquS2GydVoZV"
+  },
+  "tSmRmVuqYPDTyVZY": {
+    "description": "<p><em>Wizards who do not specialize (known as as universalists) have the most diversity of all arcane spellcasters.</em></p><p><strong>Focused Arcane Schools</strong>: Arcanamirium Crafter Subschool</p><h3>School Powers</h3><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "n11lJHH3cBKXdRdj",
+        "level": 0,
+        "name": "Hand of the Apprentice",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.n11lJHH3cBKXdRdj"
+      },
+      {
+        "featureId": "L4sgpJ5DxgYddhem",
+        "level": 8,
+        "name": "Metamagic Mastery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.L4sgpJ5DxgYddhem"
+      }
+    ],
+    "id": "tSmRmVuqYPDTyVZY",
+    "name": "Universalist School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "82"
+      }
+    ],
+    "tag": "uni",
+    "uuid": "Compendium.pf1.class-abilities.Item.tSmRmVuqYPDTyVZY"
+  },
+  "vDbEHvI9kgPiz4Za": {
+    "description": "<p><em>Transmuters use magic to change the world around them.</em></p><p><strong>Focused Arcane Schools</strong>: Enhancement Subschool, Shapechange Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "K5qGe9bp4lDynT3K",
+        "level": 0,
+        "name": "Physical Enhancement",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.K5qGe9bp4lDynT3K"
+      },
+      {
+        "featureId": "x48O0CAEs10yL68R",
+        "level": 0,
+        "name": "Telekinetic Fist",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.x48O0CAEs10yL68R"
+      },
+      {
+        "featureId": "A3KJJHMNlAjUzcx6",
+        "level": 8,
+        "name": "Change Shape",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.A3KJJHMNlAjUzcx6"
+      }
+    ],
+    "id": "vDbEHvI9kgPiz4Za",
+    "name": "Transmutation School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "82"
+      }
+    ],
+    "tag": "trs",
+    "uuid": "Compendium.pf1.class-abilities.Item.vDbEHvI9kgPiz4Za"
+  },
+  "xKyCz5YIEJFBQICl": {
+    "description": "<p><em>Illusionists use magic to weave confounding images, figments, and phantoms to baffle and vex their foes.</em></p><p><strong>Focused Arcane Schools</strong>: Deception Subschool, Phantasm Subschool, Mage of the Veil Subschool, Shadow Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "xHg1RuRmKpSKbSsd",
+        "level": 0,
+        "name": "Blinding Ray",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xHg1RuRmKpSKbSsd"
+      },
+      {
+        "featureId": "pDaXowPKX4scZL0E",
+        "level": 0,
+        "name": "Extended Illusions",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pDaXowPKX4scZL0E"
+      },
+      {
+        "featureId": "W7nMOLi2kXGEKe72",
+        "level": 8,
+        "name": "Invisibility Field",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.W7nMOLi2kXGEKe72"
+      }
+    ],
+    "id": "xKyCz5YIEJFBQICl",
+    "name": "Illusion School",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "tag": "ill",
+    "uuid": "Compendium.pf1.class-abilities.Item.xKyCz5YIEJFBQICl"
+  }
+}

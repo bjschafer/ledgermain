@@ -1,4 +1,46 @@
 {
+  "01m5lHnOP2E2FS5B": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can cause your melee weapon to fly from your grasp and strike a foe before instantly returning. As a standard action, you can make a single attack using a melee weapon at a range of 30 feet. This attack is treated as a ranged attack with a thrown weapon, except that you add your Wisdom modifier to the attack roll instead of your Dexterity modifier (damage still relies on Strength). This ability cannot be used to perform a combat maneuver. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "01m5lHnOP2E2FS5B",
+    "name": "Hand of the Acolyte (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "handOfTheAcolyte",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.01m5lHnOP2E2FS5B"
+  },
+  "0BFuaPpChxXneJwF": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can cause your hand to shimmer with divine radiance, allowing you to touch a creature as a standard action and give it a bonus equal to your cleric level on a single Charisma-based skill check or Charisma ability check. This ability lasts for 1 hour or until the creature touched elects to apply the bonus to a roll. You can use this ability to grant the bonus a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "0BFuaPpChxXneJwF",
+    "name": "Touch of Glory",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "touchOfGlory",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.0BFuaPpChxXneJwF"
+  },
   "0j7haa7K5O1CJ3ot": {
     "abilityType": "ex",
     "changes": [],
@@ -30,6 +72,64 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.0v0NLj0tuVAu2Cla"
+  },
+  "1XDvZLP9UPjr1glZ": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can make a melee touch attack that causes a living creature to become <em>shaken</em> for a number of rounds equal to 1/2 your wizard level (minimum 1). If you touch a <em>shaken</em> creature with this ability, it becomes <em>frightened</em> for 1 round if it has fewer Hit Dice than your wizard level. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "1XDvZLP9UPjr1glZ",
+    "name": "Grave Touch (WIZ)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81-82"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "graveTouchWiz",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.1XDvZLP9UPjr1glZ"
+  },
+  "1jMb1iCiNjS5yfwe": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 4th level, you gain the service of an animal companion. Your effective druid level for this animal companion is equal to your cleric level – 3. (Druids who take this ability through their nature bond class feature use their druid level – 3 to determine the abilities of their animal companions).</p>",
+    "grantsBuffs": [],
+    "id": "1jMb1iCiNjS5yfwe",
+    "name": "Animal Companion",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.1jMb1iCiNjS5yfwe"
+  },
+  "1qz9sHHlXkyJDCxo": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can cast Charm Person as a swift action, with a DC of 10 + 1/2 your cleric level + your Wisdom modifier. You can only have one creature charmed in this way at a time. The total number of rounds of this effect per day is equal to your cleric level. The rounds do not need to be consecutive, and you can dismiss the charm at any time as a free action. Each attempt to use this ability consumes 1 round of its duration, whether or not the creature succeeds on its save to resist the effect.</p>",
+    "grantsBuffs": [],
+    "id": "1qz9sHHlXkyJDCxo",
+    "name": "Charming Smile",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "charmingSmile",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.1qz9sHHlXkyJDCxo"
   },
   "20JWTam2dn7jjZFV": {
     "changes": [],
@@ -174,6 +274,48 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.2h3lI574tmVjOalQ"
   },
+  "2mnWAoFKqKKxWCt4": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You have the ability to ignore impediments to your mobility. For a number of rounds per day equal to your cleric level, you can move normally regardless of magical effects that impede movement, as if you were affected by freedom of movement. This effect occurs automatically as soon as it applies. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "2mnWAoFKqKKxWCt4",
+    "name": "Liberation (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "liberation",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.2mnWAoFKqKKxWCt4"
+  },
+  "4diLPqggIUsWxR0N": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can touch a creature as a standard action to heal it of 1d6 points of nonlethal damage + 1 point per cleric level. This touch also removes the fatigued, shaken, and sickened conditions (but has no effect on more severe conditions). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "4diLPqggIUsWxR0N",
+    "name": "Calming Touch",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "calmingTouch",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.4diLPqggIUsWxR0N"
+  },
   "4wdsdOkgv4uEkS9K": {
     "changes": [],
     "description": "<p>The wizard must study his spellbook each day to prepare his spells. He cannot prepare any spell not recorded in his spellbook, except for read magic, which all wizards can prepare from memory.</p><p>A wizard begins play with a spellbook containing all 0-level wizard spells (except those from his prohibited schools, if any; see Arcane Schools) plus three 1st-level spells of his choice. The wizard also selects a number of additional 1st-level spells equal to his Intelligence modifier to add to the spellbook. At each new wizard level, he gains two new spells of any spell level or levels that he can cast (based on his new wizard level) for his spellbook. At any time, a wizard can also add spells found in other wizards' spellbooks to his own (see Magic).</p>",
@@ -222,6 +364,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.4zVndIJ8NMWWzl1T"
   },
+  "52vhE9asxPlXIr39": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can create a wall of energy that lasts for a number of rounds per day equal to your wizard level. These rounds do not need to be consecutive. This wall deals acid, cold, electricity, or fire damage, determined when you create it. The elemental wall otherwise functions like Wall Of Fire.</p>",
+    "grantsBuffs": [],
+    "id": "52vhE9asxPlXIr39",
+    "name": "Elemental Wall",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "elementalWall",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.52vhE9asxPlXIr39"
+  },
   "5JFfSqLMCpbRmERa": {
     "abilityType": "ex",
     "changes": [
@@ -268,6 +431,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5JlthJkVGEHPZypG"
+  },
+  "5JrtpLs5AJZ5NI40": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you gain blindsight to a range of 10 feet for a number of rounds per day equal to your wizard level. This ability only allows you to detect living creatures and undead creatures. This sight also tells you whether a creature is living or undead. Constructs and other creatures that are neither living nor undead cannot be seen with this ability. The range of this ability increases by 10 feet at 12th level, and by an additional 10 feet for every four levels beyond 12th. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "5JrtpLs5AJZ5NI40",
+    "name": "Life Sight",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "82"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.5JrtpLs5AJZ5NI40"
   },
   "5NS7Ec3WhKIkhygg": {
     "abilityType": "ex",
@@ -352,6 +531,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.6pjr8jMFSKqXkBKk"
   },
+  "75Y2PY8Uha3o0fHE": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura of despair for a number of rounds per day equal to your wizard level. Enemies within this aura take a –2 penalty on ability checks, attack rolls, damage rolls, <em>saving throw</em>s, and skill checks. These rounds do not need to be consecutive. This is a mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "75Y2PY8Uha3o0fHE",
+    "name": "Aura of Despair",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "auraOfDespair",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.75Y2PY8Uha3o0fHE"
+  },
   "7WaQxnVaaoL4AGr8": {
     "abilityType": "ex",
     "changes": [],
@@ -371,6 +571,27 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+  },
+  "7td8qAPvj9YEasha": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can touch a creature as a standard action, granting a sacred bonus on attack rolls, skill checks, ability checks, and saving throws equal to half your cleric level (minimum 1) for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "7td8qAPvj9YEasha",
+    "name": "Touch of Good",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "touchOfGood",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.7td8qAPvj9YEasha"
   },
   "82G7gl4C1AvtSHI4": {
     "abilityType": "ex",
@@ -408,6 +629,69 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.8VUae7CIgCidvSfg"
   },
+  "8hVa9HwekAWpgHid": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can speak an inspiring word to a creature within 30 feet. That creature receives a +2 morale bonus on attack rolls, skill checks, ability checks, and saving throws for a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this power a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "8hVa9HwekAWpgHid",
+    "name": "Inspiring Word (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "inspiringWord",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.8hVa9HwekAWpgHid"
+  },
+  "8iWGEKKdoKTHsDy5": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can touch a living creature as a standard action, healing it for 1d4 points of damage plus 1 for every two cleric levels you possess. You can only use this ability on a creature that is below 0 hit points. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "8iWGEKKdoKTHsDy5",
+    "name": "Rebuke Death",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "rebukeDeath",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.8iWGEKKdoKTHsDy5"
+  },
+  "90Z23Z4U7ujOcvco": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can cause a creature to become sickened as a melee touch attack. Creatures sickened by your touch count as good for the purposes of spells with the evil descriptor. This ability lasts for a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "90Z23Z4U7ujOcvco",
+    "name": "Touch of Evil",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "touchOfEvil",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.90Z23Z4U7ujOcvco"
+  },
   "9EX00obqhGHcrOdp": {
     "abilityType": "ex",
     "changes": [
@@ -433,6 +717,127 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
+  },
+  "9ezUAbso44HrKLyr": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can give a weapon touched the dancing special weapon quality for 4 rounds. You can use this ability once per day at 8th level, and an additional time per day for every four levels beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "9ezUAbso44HrKLyr",
+    "name": "Dancing Weapons",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "dancingWeapons",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 4) / 4)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.9ezUAbso44HrKLyr"
+  },
+  "A3KJJHMNlAjUzcx6": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can change your shape for a number of rounds per day equal to your wizard level. These rounds do not need to be consecutive. This ability otherwise functions like Beast Shape II or Elemental Body I. At 12th level, this ability functions like Beast Shape III or Elemental Body II.</p>",
+    "grantsBuffs": [],
+    "id": "A3KJJHMNlAjUzcx6",
+    "name": "Change Shape",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "82"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "changeShape",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.A3KJJHMNlAjUzcx6"
+  },
+  "APcvztd1jGZJ4xm7": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 6th level, as an immediate action, you can reroll any one d20 roll that you have just made before the results of the roll are revealed. You must take the result of the reroll, even if it's worse than the original roll. You can use this ability once per day at 6th level, and one additional time per day for every six cleric levels beyond 6th.</p>",
+    "grantsBuffs": [],
+    "id": "APcvztd1jGZJ4xm7",
+    "name": "Good Fortune",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "goodFortune",
+    "uses": {
+      "maxFormula": "floor(@class.unlevel / 6)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.APcvztd1jGZJ4xm7"
+  },
+  "An77ZbKHexO7P0UC": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 6th level, you gain resist acid 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to acid.</p>",
+    "grantsBuffs": [],
+    "id": "An77ZbKHexO7P0UC",
+    "name": "Acid Resistance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "43"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.An77ZbKHexO7P0UC"
+  },
+  "Aw4xfA8YSYHGiUXV": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura of madness for a number of rounds per day equal to your cleric level. Enemies within this aura are affected by confusion unless they make a Will save with a DC equal to 10 + 1/2 your cleric level + your Wisdom modifier. The confusion effect ends immediately when the creature leaves the area or the aura expires. Creatures that succeed on their saving throw are immune to this aura for 24 hours. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "Aw4xfA8YSYHGiUXV",
+    "name": "Aura of Madness",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "auraOfMadness",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Aw4xfA8YSYHGiUXV"
+  },
+  "AwMFhb8HETerKlVk": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can touch a willing creature as a standard action, infusing it with the power of divine order and allowing it to treat all attack rolls, skill checks, ability checks, and saving throws for 1 round as if the natural d20 roll resulted in an 11. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "AwMFhb8HETerKlVk",
+    "name": "Touch of Law",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "touchOfLaw",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.AwMFhb8HETerKlVk"
   },
   "BO7BEFHDcf6qBaYV": {
     "abilityType": "ex",
@@ -527,6 +932,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Bs5i98ja24ODe9WL"
   },
+  "Bw3GiobZvSJb8dGI": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can touch an ally to grant him your resistance bonus for 1 minute. When you use this ability, you lose your resistance bonus granted by the Protection domain for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "Bw3GiobZvSJb8dGI",
+    "name": "Resistant Touch",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "resistantTouch",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Bw3GiobZvSJb8dGI"
+  },
   "C5tWPm12qyz5ND9u": {
     "abilityType": "ex",
     "changes": [],
@@ -610,6 +1036,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Cc2eFfhJYlClCGEH"
   },
+  "Dre4YCOxboyBbIjg": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Whenever you channel positive energy to harm undead creatures, add your cleric level to the damage dealt. Undead do not add their channel resistance to their saves when you channel positive energy.</p>",
+    "grantsBuffs": [],
+    "id": "Dre4YCOxboyBbIjg",
+    "name": "Sun's Blessing",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Dre4YCOxboyBbIjg"
+  },
   "E0skJEqlJOvB5CoA": {
     "changes": [
       {
@@ -686,6 +1128,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.EQ7JGo4P1XirLO46"
   },
+  "EkxAlV7mWUQTMe3q": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 6th level, you gain an amount of energy absorption equal to 3 times your wizard level per day. Whenever you take energy damage, apply immunity, vulnerability (if any), and resistance first and apply the rest to this absorption, reducing your daily total by that amount. Any damage in excess of your absorption is applied to you normally.</p>",
+    "grantsBuffs": [],
+    "id": "EkxAlV7mWUQTMe3q",
+    "name": "Energy Absorbtion",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "80"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.EkxAlV7mWUQTMe3q"
+  },
   "Er8h3fZ2edJEviTv": {
     "abilityType": "su",
     "changes": [],
@@ -731,6 +1189,69 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.F5mCXQR9VZfKfpTH"
+  },
+  "F6D6MV5q8BOjiCTU": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura of freedom for a number of rounds per day equal to your cleric level. Allies within this aura are not affected by the confused, grappled, frightened, panicked, paralyzed, pinned, or shaken conditions. This aura only suppresses these effects, and they return once a creature leaves the aura or when the aura ends, if applicable. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "F6D6MV5q8BOjiCTU",
+    "name": "Freedom's Call",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "freedomsCall",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.F6D6MV5q8BOjiCTU"
+  },
+  "FZdWscHJvJpGPoDz": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can call down a number of bolts of lightning per day equal to your cleric level. You can call down as many bolts as you want with a single standard action, but no creature can be the target of more than one bolt and no two targets can be more than 30 feet apart. This ability otherwise functions as call lightning.</p>",
+    "grantsBuffs": [],
+    "id": "FZdWscHJvJpGPoDz",
+    "name": "Lightning Lord",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "lightningLord",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.FZdWscHJvJpGPoDz"
+  },
+  "FcJawJG5igJPDHnQ": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can touch a willing creature as a standard action, giving it a bit of luck. For the next round, any time the target rolls a d20, he may roll twice and take the more favorable result. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "FcJawJG5igJPDHnQ",
+    "name": "Bit of Luck",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bitOfLuck",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.FcJawJG5igJPDHnQ"
   },
   "Fm1FXt1gZX5PxBrT": {
     "abilityType": "ex",
@@ -780,6 +1301,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.GAHaeOGTBeR6LJ3K"
   },
+  "GidNLmDQBdokwgUn": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 6th level, you can cause a host of wooden thorns to burst from your skin as a free action. While bramble armor is in effect, any foe striking you with an unarmed strike or a melee weapon without reach takes 1d6 points of piercing damage + 1 point per two cleric levels you possess. You can use this ability for a number of rounds per day equal to your cleric level. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "GidNLmDQBdokwgUn",
+    "name": "Bramble Armor",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "brambleArmor",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.GidNLmDQBdokwgUn"
+  },
   "HAqAsb5H56C6cZm3": {
     "abilityType": "ex",
     "changes": [],
@@ -826,6 +1368,38 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.HdzsFdoGauXFjU2S"
+  },
+  "ID7tKA56K3gOoWBM": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you are always aware when you are being observed via magic, as if you had a permanent Detect Scrying. In addition, whenever you scry on a subject, treat the subject as one step more familiar to you. Very familiar subjects get a –10 penalty on their save to avoid your scrying attempts.</p>",
+    "grantsBuffs": [],
+    "id": "ID7tKA56K3gOoWBM",
+    "name": "Scrying Adept",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.ID7tKA56K3gOoWBM"
+  },
+  "IJo18Mq51RssxEqr": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 8th level, you heal damage instead of taking damage from channeled negative energy. If the channeled negative energy targets undead, you heal hit points just like undead in the area.</p>",
+    "grantsBuffs": [],
+    "id": "IJo18Mq51RssxEqr",
+    "name": "Death's Embrace (CLE)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "43"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.IJo18Mq51RssxEqr"
   },
   "IPy4aqFYbOppaqKC": {
     "changes": [],
@@ -874,6 +1448,48 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.IWNz5tJCnpig4UtX"
   },
+  "Iu8gyBT93dRpGtgH": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can touch a creature to give it great strength. For 1 round, the target gains an enhancement bonus equal to 1/2 your cleric level (minimum +1) to melee attacks, combat maneuver checks that rely on Strength, Strength-based skills, and Strength checks. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "Iu8gyBT93dRpGtgH",
+    "name": "Strength Surge (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "strengthSurge",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Iu8gyBT93dRpGtgH"
+  },
+  "J4QibEdTUK559sGO": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can give a weapon touched the axiomatic special weapon quality for a number of rounds equal to 1/2 your cleric level. You can use this ability once per day at 8th level, and an additional time per day for every four levels beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "J4QibEdTUK559sGO",
+    "name": "Staff of Order",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "staffOfOrder",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 4) / 4)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.J4QibEdTUK559sGO"
+  },
   "JKJoHy5NveXGaZqv": {
     "abilityType": "ex",
     "changes": [],
@@ -889,6 +1505,106 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.JKJoHy5NveXGaZqv"
+  },
+  "Jle1tYl0Fr251J97": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can cause a living creature to become dazed for 1 round as a melee touch attack. Creatures with more Hit Dice than your cleric level are unaffected. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "Jle1tYl0Fr251J97",
+    "name": "Dazing Touch (CLE)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Jle1tYl0Fr251J97"
+  },
+  "Jsa2hTi4YCwLzFdf": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can create an illusion that hides the appearance of yourself and any number of allies within 30 feet for 1 round per cleric level. This ability otherwise functions like the spell veil. The save DC to disbelive this effect is equal to 10 + 1/2 your cleric level + your Wisdom modifier. The rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "Jsa2hTi4YCwLzFdf",
+    "name": "Master's Illusion",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "mastersIllusion",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Jsa2hTi4YCwLzFdf"
+  },
+  "K5qGe9bp4lDynT3K": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "1 + floor(@class.unlevel / 5)",
+        "target": "str",
+        "type": "enh"
+      }
+    ],
+    "description": "<p>You gain a +1 enhancement bonus to one physical ability score (<em>Strength</em>, <em>Dexterity</em>, or <em>Constitution</em>). This bonus increases by +1 for every five wizard levels you possess to a maximum of +5 at 20th level. You can change this bonus to a new ability score when you prepare spells. At 20th level, this bonus applies to two physical ability scores of your choice.</p>",
+    "grantsBuffs": [],
+    "id": "K5qGe9bp4lDynT3K",
+    "name": "Physical Enhancement",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "82"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.K5qGe9bp4lDynT3K"
+  },
+  "K7R4SXNKvzq5xmQK": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 6th level, you gain resist cold 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to cold.</p>",
+    "grantsBuffs": [],
+    "id": "K7R4SXNKvzq5xmQK",
+    "name": "Cold Resistance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.K7R4SXNKvzq5xmQK"
+  },
+  "KF3SgIKeBACJhSZ1": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura that wards against death for a number of rounds per day equal to your cleric level. Living creatures in this area are immune to all death effects, energy drain, and effects that cause negative levels. This ward does not remove negative levels that a creature has already gained, but the negative levels have no effect while the creature is inside the warded area. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "KF3SgIKeBACJhSZ1",
+    "name": "Ward Against Death",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "wardAgainstDeath",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.KF3SgIKeBACJhSZ1"
   },
   "KQYCRLEdD4bGA5ak": {
     "abilityType": "ex",
@@ -909,6 +1625,48 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.KQYCRLEdD4bGA5ak"
+  },
+  "KXN1Y4DDcWd8ZraE": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura of divine presence for a number of rounds per day equal to your cleric level. All allies within this aura are treated as if under the effects of a sanctuary spell with a DC equal to 10 + 1/2 your cleric level + your Wisdom modifier. These rounds do not need to be consecutive. Activating this ability is a standard action. If an ally leaves the area or makes an attack, the effect ends for that ally. If you make an attack, the effect ends for you and your allies.</p>",
+    "grantsBuffs": [],
+    "id": "KXN1Y4DDcWd8ZraE",
+    "name": "Divine Presence",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "divinePresence",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.KXN1Y4DDcWd8ZraE"
+  },
+  "Kgcm3ye8CYGipsg3": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can create a storm burst targeting any foe within 30 feet as a ranged touch attack. The storm burst deals 1d6 points of nonlethal damage + 1 point for every two cleric levels you possess. In addition, the target is buffeted by winds and rain, causing it to take a –2 penalty on attack rolls for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "Kgcm3ye8CYGipsg3",
+    "name": "Storm Burst",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "stormBurst",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Kgcm3ye8CYGipsg3"
   },
   "KmVwFz2ajNtvgvbp": {
     "abilityType": "ex",
@@ -942,6 +1700,48 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Kq3GVZ1yMv3ERQCJ"
   },
+  "L4sgpJ5DxgYddhem": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can apply any one <em>metamagic feat</em> that you know to a spell you are about to cast. This does not alter the level of the spell or the casting time. You can use this ability once per day at 8th level and one additional time per day for every two wizard levels you possess beyond 8th. Any time you use this ability to apply a metamagic feat that increases the spell level by more than 1, you must use an additional daily usage for each level above 1 that the feat adds to the spell. Even though this ability does not modify the spell’s actual level, you cannot use this ability to cast a spell whose modified spell level would be above the level of the highest-level spell that you are capable of casting.</p>",
+    "grantsBuffs": [],
+    "id": "L4sgpJ5DxgYddhem",
+    "name": "Metamagic Mastery",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "82"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "metamagicMastery",
+    "uses": {
+      "maxFormula": "1 + floor((@class.unlevel - 8) / 2)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.L4sgpJ5DxgYddhem"
+  },
+  "L5jrgNDA43dMH1wm": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can unleash an acid dart targeting any foe within 30 feet as a ranged touch attack. This acid dart deals 1d6 points of acid damage + 1 point for every two cleric levels you possess. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "L5jrgNDA43dMH1wm",
+    "name": "Acid Dart",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "43"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "acidDart",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.L5jrgNDA43dMH1wm"
+  },
   "LIFTbzT5WDcsDn0O": {
     "abilityType": "su",
     "changes": [],
@@ -957,6 +1757,48 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.LIFTbzT5WDcsDn0O"
+  },
+  "LY6y8GWhXzK8wDDZ": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a free action, your hands can become as hard as wood, covered in tiny thorns. While you have wooden fists, your unarmed strikes do not provoke attacks of opportunity, deal lethal damage, and gain a bonus on damage rolls equal to 1/2 your cleric level (minimum +1). You can use this ability for a number of rounds per day equal to 3 + your Wisdom modifier. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "LY6y8GWhXzK8wDDZ",
+    "name": "Wooden Fist",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "woodenFist",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.LY6y8GWhXzK8wDDZ"
+  },
+  "Le6qmKF8wkhVCPCz": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a melee touch attack, you can cause a creature's vision to be fraught with shadows and darkness. The creature touched treats all other creatures as if they had concealment, suffering a 20% miss chance on all attack rolls. This effect lasts for a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "Le6qmKF8wkhVCPCz",
+    "name": "Touch of Darkness",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "touchOfDarkness",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Le6qmKF8wkhVCPCz"
   },
   "LrjNAKP05lZq2tZZ": {
     "changes": [],
@@ -988,6 +1830,27 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.M4bXVPXouXroIt90"
+  },
+  "M8IQnVMYyqh1Mrl7": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, your vision is not impaired by lighting conditions, even in absolute darkness and magic darkness. You can use this ability for a number of rounds per day equal to 1/2 your cleric level. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "M8IQnVMYyqh1Mrl7",
+    "name": "Eyes of Darkness",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "eyesOfDarkness",
+    "uses": {
+      "maxFormula": "floor(@class.unlevel / 2)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.M8IQnVMYyqh1Mrl7"
   },
   "MXj2WoyW7vLxiVYw": {
     "abilityType": "su",
@@ -1024,6 +1887,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.McXAM1BoPHZLO1n4"
   },
+  "NDysrxC1AH0gLcqd": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, as a swift action, you gain the use of one combat feat for a number of rounds per day equal to your cleric level. These rounds do not need to be consecutive and you can change the feat chosen each time you use this ability. You must meet the prerequisites to use this feat.</p>",
+    "grantsBuffs": [],
+    "id": "NDysrxC1AH0gLcqd",
+    "name": "Weapon Master",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "weaponMaster",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.NDysrxC1AH0gLcqd"
+  },
   "NKzRm45051DUHkd5": {
     "abilityType": "ex",
     "changes": [],
@@ -1054,6 +1938,48 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.NNEU7hzPSu2LTyZv"
+  },
+  "OZ1vgybloYDVfWff": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action you can unleash a force missile that automatically strikes a foe, as Magic Missile. The force missile deals 1d4 points of damage plus the damage from your intense spells evocation power. This is a force effect. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "OZ1vgybloYDVfWff",
+    "name": "Force Missile",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "forceMissile",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.OZ1vgybloYDVfWff"
+  },
+  "PXdTxpse6nHDdQyR": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can touch a creature as a standard action to give it a bonus on melee damage rolls equal to 1/2 your cleric level for 1 round (minimum +1). You can do so a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "PXdTxpse6nHDdQyR",
+    "name": "Battle Rage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "battleRage",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.PXdTxpse6nHDdQyR"
   },
   "Pb9pxYrx6tS87euP": {
     "abilityType": "ex",
@@ -1096,6 +2022,43 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Q3x319WbNkCssApD"
+  },
+  "QZJtfwamnWW0mHjJ": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot nimbus of light for a number of rounds per day equal to your cleric level. This acts as a Daylight spell. In addition, undead within this radius take an amount of damage equal to your cleric level each round that they remain inside the nimbus. Spells and spell-like abilities with the darkness descriptor are automatically dispelled if brought inside this nimbus. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "QZJtfwamnWW0mHjJ",
+    "name": "Nimbus of Light",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "nimbusOfLight",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.QZJtfwamnWW0mHjJ"
+  },
+  "QkHDkpopJ7P8g14c": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>You gain a +2 insight bonus on saving throws against all mind-affecting effects.</p>",
+    "grantsBuffs": [],
+    "id": "QkHDkpopJ7P8g14c",
+    "name": "Guarded Mind",
+    "sources": [
+      {
+        "id": "PZO1139",
+        "pages": "182"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.QkHDkpopJ7P8g14c"
   },
   "RENIeTVjWB7Mq6Mw": {
     "abilityType": "ex",
@@ -1188,6 +2151,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
   },
+  "Rjh7zvCZr2BEgioo": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a free action, you can gain increased mobility for 1 round. For the next round, you ignore all difficult terrain and do not take any penalties for moving through it. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "Rjh7zvCZr2BEgioo",
+    "name": "Agile Feet (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "agileFeet",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Rjh7zvCZr2BEgioo"
+  },
   "RzEzudurxQFirFoF": {
     "abilityType": "ex",
     "changes": [],
@@ -1204,6 +2188,28 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF"
   },
+  "S0CoHzJwn5NlgQU9": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "max(1, floor(@class.unlevel / 2))",
+        "target": "init",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>You can always act in the surprise round even if you fail to make a <em>Perception</em> roll to notice a foe, but you are still considered flat-footed until you take an action. In addition, you receive a bonus on initiative checks equal to 1/2 your wizard level (minimum +1). At 20th level, anytime you roll initiative, assume the roll resulted in a natural 20.</p>",
+    "grantsBuffs": [],
+    "id": "S0CoHzJwn5NlgQU9",
+    "name": "Forewarned",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "80-81"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.S0CoHzJwn5NlgQU9"
+  },
   "S4VHXq1asXBwaRwo": {
     "changes": [],
     "description": "<p>A bard casts arcane spells drawn from the bard spell list presented in Spell Lists. He can cast any spell he knows without preparing it ahead of time. Every bard spell has a verbal component (song, recitation, or music). To learn or cast a spell, a bard must have a Charisma score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a bard's spell is 10 + the spell level + the bard's Charisma modifier.</p><p>Like other spellcasters, a bard can cast only a certain number of spells of each spell level per day. His base daily spell allotment is given on Table: Bard. In addition, he receives bonus spells per day if he has a high Charisma score (see Table: Ability Modifiers and Bonus Spells).</p><p>The bard's selection of spells is extremely limited. A bard begins play knowing four 0-level spells and two 1st-level spells of the bard's choice. At each new bard level, he gains one or more new spells, as indicated on Table: Bard Spells Known. (Unlike spells per day, the number of spells a bard knows is not affected by his Charisma score. The numbers on Table: Bard Spells Known are fixed.)</p><p>A bard need not prepare his spells in advance. He can cast any spell he knows at any time, assuming he has not yet used up his allotment of spells per day for the spell's level.</p>",
@@ -1218,6 +2224,27 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.S4VHXq1asXBwaRwo"
+  },
+  "T4q7Ib0ED01PNDyT": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You gain the destructive smite power: the supernatural ability to make a single melee attack with a morale bonus on damage rolls equal to 1/2 your cleric level (minimum 1). You must declare the destructive smite before making the attack. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><hr /><p><strong>Usage:</strong> Add conditional modifer to your attacks with following formula:</p><p><code>max(1, floor(@class.unlevel / 2))</code></p>",
+    "grantsBuffs": [],
+    "id": "T4q7Ib0ED01PNDyT",
+    "name": "Destructive Smite",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "43"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "destructiveSmite",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.T4q7Ib0ED01PNDyT"
   },
   "U2YBSx1s8cT8iDq1": {
     "abilityType": "ex",
@@ -1261,6 +2288,80 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM"
+  },
+  "UeYdiNoaF0gG08Y5": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>You gain resistance 5 to an energy type of your choice, chosen when you prepare spells. This resistance can be changed each day. At 11th level, this resistance increases to 10. At 20th level, this resistance changes to immunity to the chosen energy type.</p>",
+    "grantsBuffs": [],
+    "id": "UeYdiNoaF0gG08Y5",
+    "name": "Resistance (Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "79-80"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.UeYdiNoaF0gG08Y5"
+  },
+  "V57hEfKt1MroRI91": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can unleash a scorching bolt of divine fire from your outstretched hand. You can target any single foe within 30 feet as a ranged touch attack with this bolt of fire. If you hit the foe, the fire bolt deals 1d6 points of fire damage + 1 point for every two cleric levels you possess. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "V57hEfKt1MroRI91",
+    "name": "Fire Bolt",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "fireBolt",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.V57hEfKt1MroRI91"
+  },
+  "VFejQ7mOCxSp26xk": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 6th level, you gain resist fire 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to fire.</p>",
+    "grantsBuffs": [],
+    "id": "VFejQ7mOCxSp26xk",
+    "name": "Fire Resistance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.VFejQ7mOCxSp26xk"
+  },
+  "Vf0LVJue8NkXSupp": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can give a weapon touched the anarchic special weapon quality for a number of rounds equal to 1/2 your cleric level. You can use this ability once per day at 8th level, and an additional time per day for every four levels beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "Vf0LVJue8NkXSupp",
+    "name": "Chaos Blade",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "chaosBlade",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 4) / 4)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Vf0LVJue8NkXSupp"
   },
   "VjHjPja5QABBgRvR": {
     "changes": [
@@ -1323,6 +2424,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.W4PGylYL7ghRfy5G"
   },
+  "W7nMOLi2kXGEKe72": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can make yourself <em>Invisible</em> as a swift action for a number of rounds per day equal to your wizard level. These rounds do not need to be consecutive. This otherwise functions as Invisibility, Greater.</p>",
+    "grantsBuffs": [],
+    "id": "W7nMOLi2kXGEKe72",
+    "name": "Invisibility Field",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "invisibilityField",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.W7nMOLi2kXGEKe72"
+  },
   "WJEF9WHs27kaFYJL": {
     "abilityType": "ex",
     "changes": [],
@@ -1338,6 +2460,27 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.WJEF9WHs27kaFYJL"
+  },
+  "WMtJbAlvzaLnzYVy": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can add your cleric level as an enhancement bonus to your Strength score for a number of rounds per day equal to your cleric level. This bonus only applies on Strength checks and Strength-based skill checks. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "WMtJbAlvzaLnzYVy",
+    "name": "Might of the Gods",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "mightOfTheGods",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.WMtJbAlvzaLnzYVy"
   },
   "WSqWT9ZIshtC5vlV": {
     "abilityType": "ex",
@@ -1382,6 +2525,27 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.WhE4j0Jc82npdMCP"
+  },
+  "Wj2W2g5Ive3PlIlg": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can create a blast rune in any adjacent square. Any creature entering this square takes 1d6 points of damage + 1 point for every two cleric levels you possess. This rune deals either acid, cold, electricity, or fire damage, decided when you create the rune. The rune is invisible and lasts a number of rounds equal to your cleric level or until discharged. You cannot create a blast rune in a square occupied by another creature. This rune counts as a 1st-level spell for the purposes of dispelling. It can be discovered with a DC 26 Perception skill check and disarmed with a DC 26 Disable Device skill check. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "Wj2W2g5Ive3PlIlg",
+    "name": "Blast Rune (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "blastRune",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Wj2W2g5Ive3PlIlg"
   },
   "Wkv124hVPATT35bm": {
     "abilityType": "ex",
@@ -1431,6 +2595,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.XJtvco1XWggmr5LU"
   },
+  "XhpyFMIbhL5ogMVe": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can lace spells you cast with the raw madness that waits in the outer darkness. Activating this ability is a swift action that you must use as you cast a spell that targets a single creature and that allows a Will saving throw to negate or reduce the spell’s primary effect. If the target fails to resist the spell, the target is also confused for a number of rounds equal to the spell’s level as visions of the void cause temporary insanity.</p>\n<p>The victim must succeed at a new saving throw each round to end the effect— these additional saving throws apply only to the additional confusion effect and not to the original spell effect. Part the veil is a mind-affecting effect. You can use this ability a number of times per day equal to 1/2 your class level.</p>",
+    "grantsBuffs": [],
+    "id": "XhpyFMIbhL5ogMVe",
+    "name": "Part the Veil",
+    "sources": [
+      {
+        "id": "PZO1139",
+        "pages": "182"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "partTheVeil",
+    "uses": {
+      "maxFormula": "floor(@class.unlevel / 2)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.XhpyFMIbhL5ogMVe"
+  },
   "Xi5BENHWBu1hLHKl": {
     "changes": [],
     "description": "<p>Beginning at 4th level, a ranger gains the ability to cast a small number of divine spells, which are drawn from the ranger spell list presented in Spell Lists. A ranger must choose and prepare his spells in advance.</p><p>To prepare or cast a spell, a ranger must have a Wisdom score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a ranger's spell is 10 + the spell level + the ranger's Wisdom modifier.</p><p>Like other spellcasters, a ranger can cast only a certain number of spells of each spell level per day. His base daily spell allotment is given on Table: Ranger. In addition, he receives bonus spells per day if he has a high Wisdom score (see Table: Ability Modifiers and Bonus Spells). When Table: Ranger indicates that the ranger gets 0 spells per day of a given spell level, he gains only the bonus spells he would be entitled to based on his Wisdom score for that spell level.</p><p>A ranger must spend 1 hour per day in quiet meditation to regain his daily allotment of spells. A ranger may prepare and cast any spell on the ranger spell list, provided that he can cast spells of that level, but he must choose which spells to prepare during his daily meditation.</p><p>Through 3rd level, a ranger has no caster level. At 4th level and higher, his caster level is equal to his ranger level – 3.</p>",
@@ -1477,6 +2662,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.YGxrR8krrZAviojA"
   },
+  "YeNdVzgR4OZMezrx": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can speak with animals, as per the spell, for a number of rounds per day equal to 3 + your cleric level.</p>",
+    "grantsBuffs": [],
+    "id": "YeNdVzgR4OZMezrx",
+    "name": "Speak with Animals",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "speakWithAnimals",
+    "uses": {
+      "maxFormula": "3 + @class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.YeNdVzgR4OZMezrx"
+  },
   "Yr8dfM2d8JEWoYkr": {
     "abilityType": "ex",
     "changes": [],
@@ -1500,6 +2706,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+  },
+  "ZJORj88OzUMjc1dB": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can attach another spell that you cast to one of your blast runes, causing that spell to affect the creature that triggers the rune, in addition to the damage. This spell must be of at least one level lower than the highest-level cleric spell you can cast and it must target one or more creatures. Regardless of the number of targets the spell can normally affect, it only affects the creature that triggers the rune.</p>",
+    "grantsBuffs": [],
+    "id": "ZJORj88OzUMjc1dB",
+    "name": "Spell Rune",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.ZJORj88OzUMjc1dB"
   },
   "ZPrMO00Iz2SfrNMq": {
     "abilityType": "su",
@@ -1584,6 +2806,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.a4SPdPuOFdmfJdHN"
   },
+  "a7yviTyteK4X7A0c": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 6th level, all of your cure spells are treated as if they were empowered, increasing the amount of damage healed by half (+50%). This does not apply to damage dealt to undead with a cure spell. This does not stack with the Empower Spell metamagic feat.</p><hr /><p><strong>Usage:</strong> Add the following formula do your cure spells:</p><p><code>floor((&lt;existing formula&gt;) * 1.5)</code></p>",
+    "grantsBuffs": [],
+    "id": "a7yviTyteK4X7A0c",
+    "name": "Healer's Blessing",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.a7yviTyteK4X7A0c"
+  },
   "aYdjgDZJCNvKpLQP": {
     "abilityType": "ex",
     "changes": [],
@@ -1642,6 +2880,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.bCdFkzKiVg52ufhu"
   },
+  "biOw5dSbJGsGVFwN": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a standard action you can unleash an acid dart targeting any foe within 30 feet as a ranged touch attack. The acid dart deals 1d6 points of acid damage + 1 for every two wizard levels you possess. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier. This attack ignores spell resistance.</p>",
+    "grantsBuffs": [],
+    "id": "biOw5dSbJGsGVFwN",
+    "name": "Acid Dart (WIZ)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "80"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "acidDartWiz",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.biOw5dSbJGsGVFwN"
+  },
   "cUv3fmnuhtQjgQM5": {
     "abilityType": "su",
     "changes": [],
@@ -1657,6 +2916,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.cUv3fmnuhtQjgQM5"
+  },
+  "cdre9IojG8R7LJLC": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can use this ability to teleport up to 30 feet per wizard level per day as a standard action. This teleportation must be used in 5-foot increments and such movement does not provoke an <em>attack of opportunity</em>. You can bring other willing creatures with you, but you must expend an equal amount of distance for each additional creature brought with you.</p>",
+    "grantsBuffs": [],
+    "id": "cdre9IojG8R7LJLC",
+    "name": "Dimensional Steps",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "80"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.cdre9IojG8R7LJLC"
   },
   "dopWa3n4mgTGpTYi": {
     "changes": [],
@@ -1689,6 +2964,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.dtnkUkinLVIl1b2T"
   },
+  "eEuj2X72Q5jP6xAj": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, whenever a spell or effect targets you and one or more allies within 30 feet, you can use this ability to allow your allies to use your saving throw against the effect in place of their own. Each ally must decide individually before the rolls are made. Using this ability is an immediate action. You can use this ability once per day at 8th level, and one additional time per day for every four cleric levels beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "eEuj2X72Q5jP6xAj",
+    "name": "Unity",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "unity",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 4) / 4)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.eEuj2X72Q5jP6xAj"
+  },
   "eYuNS8kf9Z3V6kjO": {
     "abilityType": "su",
     "changes": [
@@ -1711,6 +3007,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.eYuNS8kf9Z3V6kjO"
   },
+  "eZ569ZcO7BeZAqB6": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can imbue a target with chaos as a melee touch attack. For the next round, anytime the target rolls a d20, he must roll twice and take the less favorable result. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "eZ569ZcO7BeZAqB6",
+    "name": "Touch of Chaos",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "touchOfChaos",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.eZ569ZcO7BeZAqB6"
+  },
   "exdHrqciehozr5SD": {
     "changes": [],
     "description": "<p>The character can't cast spells of an alignment opposed to her own or her deity's (if she has one). Spells associated with particular alignments are indicated by the chaotic, evil, good, and lawful descriptors in their spell descriptions.</p>",
@@ -1729,6 +3046,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+  },
+  "fkjS3pJidUdLWsFF": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can teleport up to 10 feet per cleric level per day as a move action. This teleportation must be used in 5-foot increments and such movement does not provoke attacks of opportunity. You must have line of sight to your destination to use this ability. You can bring other willing creatures with you, but you must expend an equal amount of distance for each creature brought.</p>",
+    "grantsBuffs": [],
+    "id": "fkjS3pJidUdLWsFF",
+    "name": "Dimensional Hop (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.fkjS3pJidUdLWsFF"
   },
   "h0Brxw6khcjlEf1T": {
     "abilityType": "ex",
@@ -1763,6 +3096,72 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.h56K6HEBOItImPPL"
+  },
+  "hVrmBvlqeeLbwVxn": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can create an illusory double of yourself as a move action. This double functions as a single Mirror Image and lasts for a number of rounds equal to your cleric level, or until the illusory duplicate is dispelled or destroyed. You can have no more than one copycat at a time. This ability does not stack with the mirror image spell. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "hVrmBvlqeeLbwVxn",
+    "name": "Copycat",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "copycat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.hVrmBvlqeeLbwVxn"
+  },
+  "hd6MiVc69RyEuDpU": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 8th level, you receive Leadership as a bonus feat. In addition, you gain a +2 bonus on your leadership score as long as you uphold the tenets of your deity (or divine concept if you do not venerate a deity).</p>",
+    "grantsBuffs": [
+      "Compendium.pf1.feats.Item.R3a1OV18RwDJftvq"
+    ],
+    "id": "hd6MiVc69RyEuDpU",
+    "name": "Leadership",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.hd6MiVc69RyEuDpU"
+  },
+  "hslkjPA3AVl3hDWu": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can use a targeted dispel magic effect as a melee touch attack. You can use this ability once per day at 8th level and one additional time per day for every four cleric levels beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "hslkjPA3AVl3hDWu",
+    "name": "Dispelling Touch",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "dispellingTouch",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 4) / 4)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.hslkjPA3AVl3hDWu"
   },
   "iBTrvPtn3jczInbn": {
     "changes": [],
@@ -1827,6 +3226,48 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h"
   },
+  "iv3eNHISB84mHLox": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can touch a creature to learn about its abilities and weaknesses. With a successful touch attack, you gain information as if you made the appropriate Knowledge skill check with a result equal to 15 + your cleric level + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "iv3eNHISB84mHLox",
+    "name": "Lore Keeper (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "loreKeeper",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.iv3eNHISB84mHLox"
+  },
+  "jI66IOBVloeSyeGz": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You receive Command Undead or Turn Undead as a bonus feat. You can channel energy a number of times per day equal to 3 + your <em>Intelligence</em> modifier, but only to use the selected feat. You can take other feats to add to this ability, such as Extra Channel and Improved Channel, but not feats that alter this ability, such as Elemental Channel and Alignment Channel. The DC to save against these feats is equal to 10 + 1/2 your wizard level + your <em>Charisma</em> modifier. At 20th level, undead cannot add their channel resistance to the save against this ability.</p>",
+    "grantsBuffs": [],
+    "id": "jI66IOBVloeSyeGz",
+    "name": "Power over Undead",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "powerOverUndead",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.jI66IOBVloeSyeGz"
+  },
   "jiBCmy0kP1Uwaz0D": {
     "abilityType": "su",
     "changes": [],
@@ -1842,6 +3283,29 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.jiBCmy0kP1Uwaz0D"
+  },
+  "kHXw5V06TkymXxF3": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura of protection for a number of rounds per day equal to your cleric level. You and your allies within this aura gain a +1 deflection bonus to AC and resistance 5 against all elements (acid, cold, electricity, fire, and sonic). The deflection bonus increases by +1 for every four cleric levels you possess beyond 8th. At 14th level, the resistance against all elements increases to 10. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [
+      "Compendium.pf1.buffs.Item.7ReQuzKvSVUtwuC9"
+    ],
+    "id": "kHXw5V06TkymXxF3",
+    "name": "Aura of Protection (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "auraOfProtection",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.kHXw5V06TkymXxF3"
   },
   "kXXz1lO4i7CibHJ9": {
     "abilityType": "su",
@@ -1879,6 +3343,48 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
   },
+  "mITkHIcXI1Sfax21": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>When you activate this school power, you can touch any creature as a standard action to give it an insight bonus on all of its attack rolls, skill checks, ability checks, and saving throws equal to 1/2 your wizard level (minimum +1) for 1 round. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "mITkHIcXI1Sfax21",
+    "name": "Diviner's Fortune",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "divinersFortune",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.mITkHIcXI1Sfax21"
+  },
+  "mS7LSsQQkjVvKx9z": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>Your touch can fill a creature with lethargy, causing a living creature to become staggered for 1 round as a melee touch attack. If you touch a staggered living creature, that creature falls asleep for 1 round instead. Undead creatures touched are staggered for a number of rounds equal to your Wisdom modifier. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "mS7LSsQQkjVvKx9z",
+    "name": "Gentle Rest (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "gentleRest",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.mS7LSsQQkjVvKx9z"
+  },
   "msQWK7TW7mufzf8l": {
     "abilityType": "ex",
     "changes": [],
@@ -1899,6 +3405,43 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.msQWK7TW7mufzf8l"
+  },
+  "mv9UJny1ud4EYKTj": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Whenever you cast an evocation spell that deals hit point damage, add 1/2 your wizard level to the damage (minimum +1). This bonus only applies once to a spell, not once per missile or ray, and cannot be split between multiple missiles or rays. This bonus damage is not increased by <em>Empower Spell</em> or similar effects. This damage is of the same type as the spell. At 20th level, whenever you cast an evocation spell you can roll twice to penetrate a creature’s spell resistance and take the better result.</p>",
+    "grantsBuffs": [],
+    "id": "mv9UJny1ud4EYKTj",
+    "name": "Intense Spells",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.mv9UJny1ud4EYKTj"
+  },
+  "n11lJHH3cBKXdRdj": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You cause your melee weapon to fly from your grasp and strike a foe before instantly returning to you. As a standard action, you can make a single attack using a melee weapon at a range of 30 feet. This attack is treated as a ranged attack with a thrown weapon, except that you add your <em>Intelligence</em> modifier on the attack roll instead of your <em>Dexterity</em> modifier (damage still relies on <em>Strength</em>). This ability cannot be used to perform a combat maneuver. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "n11lJHH3cBKXdRdj",
+    "name": "Hand of the Apprentice",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "82"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "handOfTheApprentice",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.n11lJHH3cBKXdRdj"
   },
   "n4SWyKVcdmZK4t7d": {
     "abilityType": "su",
@@ -1953,6 +3496,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nzqkSBc6tvAqG8o2"
   },
+  "o8rxNsQ7P7Yjlvvu": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can unleash an arc of electricity targeting any foe within 30 feet as a ranged touch attack. This arc of electricity deals 1d6 points of electricity damage + 1 point for every two cleric levels you possess. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "o8rxNsQ7P7Yjlvvu",
+    "name": "Lightning Arc",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "lightningArc",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.o8rxNsQ7P7Yjlvvu"
+  },
   "oRac7XDHBN0JzuyY": {
     "abilityType": "ex",
     "changes": [],
@@ -1972,6 +3536,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.oRac7XDHBN0JzuyY"
+  },
+  "pDaXowPKX4scZL0E": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Any illusion spell you cast with a duration of \"concentration\" lasts a number of additional rounds equal to 1/2 your wizard level after you stop maintaining concentration (minimum +1 round). At 20th level, you can make one illusion spell with a duration of \"concentration\" become permanent. You can have no more than one illusion made permanent in this way at one time. If you designate another illusion as permanent, the previous permanent illusion ends.</p>",
+    "grantsBuffs": [],
+    "id": "pDaXowPKX4scZL0E",
+    "name": "Extended Illusions",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.pDaXowPKX4scZL0E"
   },
   "pEODJDoTk7uhCZY7": {
     "changes": [
@@ -2032,6 +3612,27 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.pmWnRksUzrKvNOvy"
+  },
+  "qIFUwyCjea79rUri": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a standard action, you can create a 10-foot-radius field of protective magic centered on you that lasts for a number of rounds equal to your <em>Intelligence</em> modifier. All allies in this area (including you) receive a +1 deflection bonus to their <em>Armor Class</em>. This bonus increases by +1 for every five wizard levels you possess. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "qIFUwyCjea79rUri",
+    "name": "Protective Ward",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "80"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "protectiveWard",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.qIFUwyCjea79rUri"
   },
   "qamuc5DZdOJMlRrD": {
     "abilityType": "ex",
@@ -2108,6 +3709,47 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
   },
+  "rO2rMMlGeDdyIxJv": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can cause a living creature to become <em>dazed</em> for 1 round as a melee touch attack. Creatures with more Hit Dice than your wizard level are unaffected. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "rO2rMMlGeDdyIxJv",
+    "name": "Dazing Touch (WIZ)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.rO2rMMlGeDdyIxJv"
+  },
+  "ructcpEg6rejcpYQ": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can fire an icicle from your finger, targeting any foe within 30 feet as a ranged touch attack. The icicle deals 1d6 points of cold damage + 1 point for every two cleric levels you possess. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "ructcpEg6rejcpYQ",
+    "name": "Icicle",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "icicle",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.ructcpEg6rejcpYQ"
+  },
   "sJdBOE9lwz5XAkUi": {
     "abilityType": "su",
     "changes": [],
@@ -2149,6 +3791,43 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.sk0HNTe9lKBpHQpN"
   },
+  "szRzBgTW01Vov922": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 4th level, you gain the service of an animal companion. Your effective druid level for this animal companion is equal to your cleric level –2. You may choose either a viper or a constrictor snake (Pathfinder RPG Core Rulebook 54) as your companion.</p>",
+    "grantsBuffs": [],
+    "id": "szRzBgTW01Vov922",
+    "name": "Serpent Companion",
+    "sources": [
+      {
+        "id": "PZO1139",
+        "pages": "181"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.szRzBgTW01Vov922"
+  },
+  "t3eiENbbesGZBnc2": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can give a weapon you touch the holy special weapon quality for a number of rounds equal to 1/2 your cleric level. You can use this ability once per day at 8th level, and an additional time per day for every four levels beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "t3eiENbbesGZBnc2",
+    "name": "Holy Lance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "holyLance",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 4) / 4)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.t3eiENbbesGZBnc2"
+  },
   "tHObxrPeyhimmz9V": {
     "abilityType": "su",
     "changes": [],
@@ -2181,6 +3860,43 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.tWE66WvFjS1o0S4y"
   },
+  "tap9LNVtXblKh0sv": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 6th level, you gain resist electricity 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to electricity.</p>",
+    "grantsBuffs": [],
+    "id": "tap9LNVtXblKh0sv",
+    "name": "Electricity Resistance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.tap9LNVtXblKh0sv"
+  },
+  "u5LefrXZxQgLqmyJ": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a melee touch attack, you can cause a living creature to take 1d6 points of damage per round. This effect persists for a number of rounds equal to 1/2 your cleric level (minimum 1) or until stopped with a DC 15 Heal check or any spell or effect that heals damage. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "u5LefrXZxQgLqmyJ",
+    "name": "Bleeding Touch",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bleedingTouch",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.u5LefrXZxQgLqmyJ"
+  },
   "utbMg45UlQKSuak9": {
     "changes": [],
     "description": "<p>A druid can channel stored spell energy into summoning spells that she hasn’t prepared ahead of time. She can \"lose\" a prepared spell in order to cast any <em>summon nature’s ally</em> spell of the same level or lower.</p>",
@@ -2195,6 +3911,48 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.utbMg45UlQKSuak9"
+  },
+  "v4wH3dsMLl1Bm542": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can give a creature a vision of madness as a melee touch attack. Choose one of the following: attack rolls, saving throws, or skill checks. The target receives a bonus to the chosen rolls equal to 1/2 your cleric level (minimum +1) and a penalty to the other two types of rolls equal to 1/2 your cleric level (minimum –1). This effect fades after 3 rounds. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "v4wH3dsMLl1Bm542",
+    "name": "Vision of Madness",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "visionOfMadness",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.v4wH3dsMLl1Bm542"
+  },
+  "vDsgDSlIerRm7ISE": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action, you can activate a gaze attack with a 30-foot range (Pathfinder RPG Bestiary 300). This is an active gaze attack that can target a single creature within range. The target must make a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier). Those that fail take 1d6 points of nonlethal damage + 1 point for every two cleric levels you possess and are fascinated until the beginning of your next turn. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. This is a mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "vDsgDSlIerRm7ISE",
+    "name": "Venomous Stare",
+    "sources": [
+      {
+        "id": "PZO1139",
+        "pages": "181"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "venomousStare",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.vDsgDSlIerRm7ISE"
   },
   "vVkKDPniD09W5JgO": {
     "changes": [
@@ -2249,6 +4007,27 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.wHfy3OJmTimVgXuO"
   },
+  "wK9bxQqe49GfT9xh": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can give a weapon touched the unholy special weapon quality for a number of rounds equal to 1/2 your cleric level. You can use this ability once per day at 8th level, and an additional time per day for every four levels beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "wK9bxQqe49GfT9xh",
+    "name": "Scythe of Evil",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "scytheOfEvil",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 4) / 4)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.wK9bxQqe49GfT9xh"
+  },
   "wZ40bxNVn95BbLBV": {
     "abilityType": "ex",
     "changes": [],
@@ -2280,6 +4059,117 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.wew6ophJrcab24m6"
+  },
+  "wnb7IxOCmhk4SXzR": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "2 + floor(@class.unlevel / 5)",
+        "target": "skill.int",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + floor(@class.unlevel / 5)",
+        "target": "skill.dip",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + floor(@class.unlevel / 5)",
+        "target": "skill.blf",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>You gain a +2 enhancement bonus on <em>Bluff</em>, <em>Diplomacy</em>, and <em>Intimidate</em> skill checks. This bonus increases by +1 for every five wizard levels you possess, up to a maximum of +6 at 20th level. At 20th level, whenever you succeed at a <em>saving throw</em> against a spell of the enchantment school, that spell is reflected back at its caster, as per <em>spell turning</em>.</p>",
+    "grantsBuffs": [],
+    "id": "wnb7IxOCmhk4SXzR",
+    "name": "Enchanting Smile",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.wnb7IxOCmhk4SXzR"
+  },
+  "x48O0CAEs10yL68R": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action you can strike with a telekinetic fist, targeting any foe within 30 feet as a ranged touch attack. The telekinetic fist deals 1d4 points of bludgeoning damage + 1 for every two wizard levels you possess. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "x48O0CAEs10yL68R",
+    "name": "Telekinetic Fist",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "82"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "telekineticFist",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.x48O0CAEs10yL68R"
+  },
+  "xHg1RuRmKpSKbSsd": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a standard action you can fire a shimmering ray at any foe within 30 feet as a ranged touch attack. The ray causes creatures to be <em>blinded</em> for 1 round. Creatures with more Hit Dice than your wizard level are <em>dazzled</em> for 1 round instead. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "xHg1RuRmKpSKbSsd",
+    "name": "Blinding Ray",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "81"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "blindingRay",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.xHg1RuRmKpSKbSsd"
+  },
+  "yTfzAVpEYSJaPQVZ": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Whenever you cast a conjuration (<em>summoning</em>) spell, increase the duration by a number of rounds equal to 1/2 your wizard level (minimum 1). This increase is not doubled by Extend Spell. At 20th level, you can change the duration of all <em>summon monster</em> spells to permanent. You can have no more than one summon monster spell made permanent in this way at one time. If you designate another <em>summon monster</em> spell as permanent, the previous spell immediately ends.</p>",
+    "grantsBuffs": [],
+    "id": "yTfzAVpEYSJaPQVZ",
+    "name": "Summoner's Charm",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "80"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.yTfzAVpEYSJaPQVZ"
+  },
+  "yUdt1JIkSsQabXTF": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>Starting at 6th level, you can use Clairaudience/Clairvoyance at will as a spell-like ability using your cleric level as the caster level. You can use this ability for a number of rounds per day equal to your cleric level. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "yUdt1JIkSsQabXTF",
+    "name": "Remote Viewing",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "remoteViewing",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.yUdt1JIkSsQabXTF"
   },
   "yaL9DS7Eu5OmsxnV": {
     "changes": [],
@@ -2331,7 +4221,7 @@
   "z4NJaCcj9VZpBv7d": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p>Upon reaching 5th level, a paladin forms a divine bond with her god. This bond can take one of two forms. Once the form is chosen, it cannot be changed.</p><p>@Embed[Compendium.pf1.class-abilities.Item.PGGPzJqGE3kO6RRr inline=true]</p><p>@Embed[Compendium.pf1.class-abilities.Item.65R8BjDqqLQBdmn0 inline=true]</p>",
+    "description": "<p>Upon reaching 5th level, a paladin forms a divine bond with her god. This bond can take one of two forms. Once the form is chosen, it cannot be changed.</p><p></p><p></p>",
     "grantsBuffs": [],
     "id": "z4NJaCcj9VZpBv7d",
     "name": "Divine Bond",
@@ -2343,6 +4233,27 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.z4NJaCcj9VZpBv7d"
+  },
+  "zeLaBkwTp9wlzZJv": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can cast mending at will, using your cleric level as the caster level to repair damaged objects. In addition, you can cause damage to objects and construct creatures by striking them with a melee touch attack. Objects and constructs take 1d6 points of damage +1 for every two cleric levels you possess. This attack bypasses an amount of damage reduction and hardness equal to your cleric level. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "zeLaBkwTp9wlzZJv",
+    "name": "Artificer's Touch",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "artificersTouch",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.zeLaBkwTp9wlzZJv"
   },
   "zrUJt7YpAJkf2NC6": {
     "changes": [],

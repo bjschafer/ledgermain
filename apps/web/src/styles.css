@@ -2689,6 +2689,11 @@ input[type="text"].saved-roll-name:focus {
 	color: var(--muted);
 }
 
+.cf-origin {
+	color: var(--muted);
+	font-style: italic;
+}
+
 .cf-archetype {
 	margin-top: 8px;
 }

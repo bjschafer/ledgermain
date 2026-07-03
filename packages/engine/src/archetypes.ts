@@ -10,6 +10,7 @@
 import type {
   AbilityId,
   CharacterDoc,
+  ClassFeatureGrant,
   DerivedArchetype,
   DerivedArchetypeFeature,
   DerivedClassFeature,
@@ -28,6 +29,75 @@ import type { AbilityView } from "./rolldata.js";
 export interface ResolvedClassFeatures {
   classFeatures: DerivedClassFeature[];
   activeArchetypes: DerivedArchetype[];
+}
+
+/** A single class-feature grant the character qualifies for, with its granting context. */
+export interface GrantedFeature {
+  classTag: string;
+  level: number;
+  grant: ClassFeatureGrant;
+  /** Set when this grant came from a chosen domain/school rather than the class itself. */
+  origin?: { kind: "domain" | "school"; label: string };
+}
+
+/**
+ * Every class-feature grant a character currently qualifies for: base-class
+ * features (gated by that class's level) plus any granted by a chosen cleric
+ * domain or wizard arcane school (gated by the granting class's level — a
+ * domain power scales off cleric level, a school power off wizard level).
+ * Shared by `resolveClassFeatures` (display) and `deriveResourcePools`
+ * (uses/day tracking) so both stay in sync automatically.
+ */
+export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): GrantedFeature[] {
+  const out: GrantedFeature[] = [];
+
+  for (const cls of doc.identity.classes) {
+    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    if (!classDef) continue;
+    for (const grant of classDef.features) {
+      if (grant.level > cls.level || !grant.resolved) continue;
+      out.push({ classTag: cls.tag, level: grant.level, grant });
+    }
+  }
+
+  const clericLevel = doc.identity.classes.find((c) => c.tag === "cleric")?.level ?? 0;
+  if (clericLevel > 0) {
+    for (const tag of doc.build.clericDomains ?? []) {
+      const domain = Object.values(refData.domains).find((d) => d.tag === tag);
+      if (!domain) continue;
+      for (const grant of domain.features) {
+        if (grant.level > clericLevel || !grant.resolved) continue;
+        out.push({
+          classTag: "cleric",
+          level: grant.level,
+          grant,
+          origin: { kind: "domain", label: domain.name },
+        });
+      }
+    }
+  }
+
+  const wizardLevel = doc.identity.classes.find((c) => c.tag === "wizard")?.level ?? 0;
+  if (wizardLevel > 0) {
+    // `build.wizardSchool` undefined means Universalist (back-compat — see
+    // `WizardSchoolTag` doc comment in @pf1/schema): a Universalist still gets
+    // Hand of the Apprentice / Metamagic Mastery, just no bonus spell slot.
+    const schoolTag = doc.build.wizardSchool ?? "uni";
+    const school = Object.values(refData.wizardSchools).find((s) => s.tag === schoolTag);
+    if (school) {
+      for (const grant of school.features) {
+        if (grant.level > wizardLevel || !grant.resolved) continue;
+        out.push({
+          classTag: "wizard",
+          level: grant.level,
+          grant,
+          origin: { kind: "school", label: school.name },
+        });
+      }
+    }
+  }
+
+  return out;
 }
 
 /**
@@ -79,37 +149,35 @@ export function resolveClassFeatures(
   }
 
   const classFeatures: DerivedClassFeature[] = [];
-  for (const cls of doc.identity.classes) {
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
-    if (!classDef) continue;
-    for (const grant of classDef.features) {
-      if (grant.level > cls.level || !grant.resolved) continue;
-      const replacedBy = replacedByUuid.get(grant.uuid);
-      // Sneak Attack's die count, Smite Evil's attack/damage/AC scaling, and
-      // Monk's unarmed damage die / Flurry of Blows summary have no vendored
-      // tag/changes (Foundry only tags channelEnergy/rage) — matched by
-      // name, same posture as feat-effects.ts's name-slug lookup.
-      let detail: string | undefined;
-      if (cls.tag === "rogue" && grant.name === "Sneak Attack") {
-        detail = sneakAttackDice(cls.level).diceLabel;
-      } else if (cls.tag === "paladin" && grant.name === "Smite Evil") {
-        const chaMod = abilities?.cha?.mod ?? 0;
-        detail = smiteEvilLabel(smiteEvilDetail(cls.level, chaMod));
-      } else if (cls.tag === "monk" && grant.name === "Unarmed Strike") {
-        detail = unarmedDamageDie(cls.level).dieLabel;
-      } else if (cls.tag === "monk" && grant.name === "Flurry of Blows") {
-        detail = flurryOfBlowsLabel(cls.level);
-      }
-      classFeatures.push({
-        level: grant.level,
-        classTag: cls.tag,
-        featureId: grant.featureId,
-        name: grant.name,
-        applied: !replacedBy,
-        replacedBy,
-        detail,
-      });
+  for (const { classTag, grant, origin } of collectGrantedFeatures(doc, refData)) {
+    const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
+    const replacedBy = replacedByUuid.get(grant.uuid);
+    // Sneak Attack's die count, Smite Evil's attack/damage/AC scaling, and
+    // Monk's unarmed damage die / Flurry of Blows summary have no vendored
+    // tag/changes (Foundry only tags channelEnergy/rage) — matched by
+    // name, same posture as feat-effects.ts's name-slug lookup. Domain/school
+    // grants never match these class+name pairs, so `detail` stays undefined.
+    let detail: string | undefined;
+    if (classTag === "rogue" && grant.name === "Sneak Attack") {
+      detail = sneakAttackDice(classLevel).diceLabel;
+    } else if (classTag === "paladin" && grant.name === "Smite Evil") {
+      const chaMod = abilities?.cha?.mod ?? 0;
+      detail = smiteEvilLabel(smiteEvilDetail(classLevel, chaMod));
+    } else if (classTag === "monk" && grant.name === "Unarmed Strike") {
+      detail = unarmedDamageDie(classLevel).dieLabel;
+    } else if (classTag === "monk" && grant.name === "Flurry of Blows") {
+      detail = flurryOfBlowsLabel(classLevel);
     }
+    classFeatures.push({
+      level: grant.level,
+      classTag,
+      featureId: grant.featureId,
+      name: grant.name,
+      applied: !replacedBy,
+      replacedBy,
+      detail,
+      origin,
+    });
   }
   classFeatures.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
 

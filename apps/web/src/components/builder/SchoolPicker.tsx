@@ -1,14 +1,18 @@
-import type { CharacterDoc, WizardSchoolTag } from "@pf1/schema";
+import { useMemo } from "react";
+
+import type { CharacterDoc, RefData, WizardSchoolTag } from "@pf1/schema";
 
 import { setWizardSchool } from "../../model/doc.js";
 import { SCHOOL_LABELS, SCHOOL_TAGS } from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 import { OppositionPicker } from "./OppositionPicker.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface SchoolPickerProps {
     doc: CharacterDoc;
+    refData: RefData;
     update: Updater;
 }
 
@@ -18,16 +22,22 @@ interface SchoolPickerProps {
  * spell level (1–9), exclusive to their school, plus two opposition schools
  * (see `OppositionPicker`, rendered inline here once a specialist school is
  * chosen). A Universalist gains NO bonus slot — their compensation is
- * arcane-school powers (Hand of the Apprentice, Metamagic Mastery), deferred
- * to Stage 4 — so choosing "Universalist" hides the opposition picker and
- * changes nothing mechanically in this stage.
+ * arcane-school powers (Hand of the Apprentice, Metamagic Mastery), which
+ * ARE surfaced: `@pf1/engine`'s `collectGrantedFeatures` grants every school's
+ * powers (including an implicit Universalist's) into `classFeatures`, shown
+ * below via `FeatureDescription` and in the builder's Class Features list.
  */
-export function SchoolPicker({ doc, update }: SchoolPickerProps) {
+export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
     const isWizard = doc.identity.classes.some((c) => c.tag === "wizard");
     const [collapsed, toggleCollapsed] = useCollapsed("subsection:ArcaneSchool", false);
+    const schoolByTag = useMemo(
+        () => new Map(Object.values(refData.wizardSchools).map((s) => [s.tag, s])),
+        [refData],
+    );
     if (!isWizard) return null;
 
     const chosen = doc.build.wizardSchool ?? "";
+    const school = schoolByTag.get(chosen || "uni");
 
     return (
         <div className="subsection school-picker">
@@ -54,7 +64,9 @@ export function SchoolPicker({ doc, update }: SchoolPickerProps) {
                         Universalist. A specialist gains one bonus prepared slot per
                         accessible spell level, exclusive to that school, and must pick two
                         opposition schools. A Universalist gains no bonus slot — their
-                        compensation is arcane-school powers, deferred for now.
+                        compensation is arcane-school powers (Hand of the Apprentice,
+                        Metamagic Mastery), granted below and in Class Features regardless
+                        of which school you pick.
                     </p>
                     <select
                         className="school-select"
@@ -75,6 +87,13 @@ export function SchoolPicker({ doc, update }: SchoolPickerProps) {
                     </select>
 
                     {chosen && chosen !== "uni" && <OppositionPicker doc={doc} update={update} />}
+
+                    {school?.description && (
+                        <div className="domain-description">
+                            <span className="hint">{school.name}</span>
+                            <FeatureDescription html={school.description} />
+                        </div>
+                    )}
                 </>
             )}
         </div>

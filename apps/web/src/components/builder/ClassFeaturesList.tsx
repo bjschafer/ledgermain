@@ -5,7 +5,7 @@ import type { DerivedSheet, RefData } from "@pf1/schema";
  * classes — visually it's the same "prose reveal" element, just for an
  * archetype feature instead of a spell).
  */
-function FeatureDescription({ html }: { html: string }) {
+export function FeatureDescription({ html }: { html: string }) {
 	return (
 		<details className="spell-detail">
 			<summary className="spell-detail-summary">description</summary>
@@ -31,7 +31,9 @@ function FeatureDescription({ html }: { html: string }) {
  * the "see" part of that warning, not just a decoration. The dataset has at
  * least one verified copy-paste error in this prose (Two-Handed Fighter's
  * Shattering Strike row carries Bravery's text) — display-only, never a
- * mechanics source.
+ * mechanics source. Entries granted by a chosen cleric domain or wizard
+ * arcane school (rather than the class itself) carry an `origin` label
+ * (e.g. "— Fire Domain") — see `collectGrantedFeatures` in `@pf1/engine`.
  */
 export function ClassFeaturesList({
 	sheet,
@@ -68,6 +70,7 @@ export function ClassFeaturesList({
 										>
 											{f.name}
 											{f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
+											{f.origin ? <span className="cf-origin"> — {f.origin.label}</span> : null}
 											{f.replacedBy ? <span className="cf-replaced"> → {f.replacedBy}</span> : null}
 										</span>
 										{description ? <FeatureDescription html={description} /> : null}

@@ -26,9 +26,12 @@ export const SYSTEM_VERSION = "11.11";
  * and `archetypeFeatures` (Stage 11). v4 adds per-domain spell lists
  * (`domainSpellLists`, `domain-spell-lists.json`) for cleric domains. v5 adds
  * per-bloodline spell lists (`bloodlineSpellLists`, `bloodline-spell-lists.json`)
- * for sorcerer bloodlines.
+ * for sorcerer bloodlines. v6 adds `domains`/`domains.json` and
+ * `wizardSchools`/`wizard-schools.json` — resolved granted-power lists for
+ * cleric domains and wizard arcane schools (top-level only, see `Domain`/
+ * `WizardSchool` doc comments in `@pf1/schema`).
  */
-export const SCHEMA_VERSION = 5;
+export const SCHEMA_VERSION = 6;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none — see

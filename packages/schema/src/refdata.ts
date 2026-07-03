@@ -1,3 +1,4 @@
+import type { WizardSchoolTag } from "./character.js";
 import type {
   AbilityId,
   BabTier,
@@ -52,6 +53,10 @@ export interface RefData {
   archetypes: Record<string, Archetype>;
   /** Archetype class features; each points back to its parent via `archetypeId`. */
   archetypeFeatures: Record<string, ArchetypeFeature>;
+  /** Cleric domains (top-level only, see `Domain` doc comment). */
+  domains: Record<string, Domain>;
+  /** Wizard arcane schools (top-level only, see `WizardSchool` doc comment). */
+  wizardSchools: Record<string, WizardSchool>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -122,6 +127,30 @@ export interface ClassFeatureGrant {
   name: string;
   /** False if the UUID could not be resolved within the generated slice. */
   resolved: boolean;
+}
+
+/**
+ * A cleric domain (top-level `class-abilities/domains/*.yaml` only — subdomains
+ * and druid-specific terrain/plane domains are excluded, see data-pipeline
+ * `normalize.ts`: subdomains carry no structural link back to their parent
+ * domain in the source data, so their granted powers can't be resolved).
+ */
+export interface Domain extends RefEntity {
+  /** Matches `Spell.learnedAt.domain` / `RefData.domainSpellLists` keys (e.g. "Fire"). */
+  tag: string;
+  /** Granted powers by level, resolved from `links.supplements` (same shape as `Class.features`). */
+  features: ClassFeatureGrant[];
+}
+
+/**
+ * A wizard arcane school (top-level `class-abilities/wizard-schools/*.yaml`
+ * only, including Universalist — the elemental/focused-school variant rules
+ * are excluded).
+ */
+export interface WizardSchool extends RefEntity {
+  tag: WizardSchoolTag;
+  /** Granted powers by level, resolved from `links.supplements`. */
+  features: ClassFeatureGrant[];
 }
 
 /** An entry from the `class-abilities` pack (e.g. Rage, Bravery). */

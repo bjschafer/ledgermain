@@ -25,7 +25,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(5);
+    expect(ref.meta.schemaVersion).toBe(6);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -176,6 +176,78 @@ describe("cleric domain spell lists (inverted learnedAt.domain)", () => {
       }
     }
     expect(foundDomainOnly).toBe(true);
+  });
+});
+
+describe("cleric domain powers (top-level domains/*.yaml)", () => {
+  it("emits ~35 domains (subdomains/druid-domains excluded)", () => {
+    expect(Object.keys(ref.domains).length).toBeGreaterThan(30);
+    expect(ref.meta.counts.domains).toBe(Object.keys(ref.domains).length);
+  });
+
+  it("Fire Domain grants Fire Bolt (level 1) and Fire Resistance (level 6)", () => {
+    const fire = byName(ref.domains, "Fire Domain");
+    expect(fire.tag).toBe("Fire");
+    const byLevel = Object.fromEntries(fire.features.map((f) => [f.name, f.level]));
+    expect(byLevel["Fire Bolt"]).toBeLessThanOrEqual(1);
+    expect(byLevel["Fire Resistance"]).toBe(6);
+  });
+
+  it("every domain tag matches a real domainSpellLists key", () => {
+    for (const domain of Object.values(ref.domains)) {
+      expect(ref.domainSpellLists[domain.tag]).toBeDefined();
+    }
+  });
+
+  it("resolved granted powers all map into classFeatures", () => {
+    // A handful of domains (Darkness, Rune) grant a bonus FEAT rather than a
+    // class-abilities entry (e.g. Blind-Fight) — `links.supplements` points at
+    // the `feats` pack, which `resolveFeatureGrants`'s resolver doesn't search,
+    // so those come back `resolved: false` (kept, not dropped — same posture
+    // as `Class.features`' pre-existing unresolved-link handling).
+    let unresolvedCount = 0;
+    for (const domain of Object.values(ref.domains)) {
+      for (const grant of domain.features) {
+        if (!grant.resolved) {
+          unresolvedCount++;
+          continue;
+        }
+        expect(ref.classFeatures[grant.featureId], `${domain.name}: ${grant.name}`).toBeDefined();
+      }
+    }
+    expect(unresolvedCount).toBeGreaterThan(0);
+  });
+});
+
+describe("wizard arcane school powers (top-level wizard-schools/*.yaml)", () => {
+  it("emits exactly 9 schools (8 specialist + Universalist)", () => {
+    expect(Object.keys(ref.wizardSchools).length).toBe(9);
+    expect(ref.meta.counts.wizardSchools).toBe(9);
+  });
+
+  it("Evocation School grants Force Missile + Intense Spells (level 1) and Elemental Wall (level 8)", () => {
+    const evo = byName(ref.wizardSchools, "Evocation School");
+    expect(evo.tag).toBe("evo");
+    const byLevel = Object.fromEntries(evo.features.map((f) => [f.name, f.level]));
+    expect(byLevel["Force Missile"]).toBeLessThanOrEqual(1);
+    expect(byLevel["Intense Spells"]).toBeLessThanOrEqual(1);
+    expect(byLevel["Elemental Wall"]).toBe(8);
+  });
+
+  it("Universalist School grants Hand of the Apprentice + Metamagic Mastery", () => {
+    const uni = byName(ref.wizardSchools, "Universalist School");
+    expect(uni.tag).toBe("uni");
+    const names = uni.features.map((f) => f.name).sort();
+    expect(names).toEqual(["Hand of the Apprentice", "Metamagic Mastery"]);
+  });
+
+  it("every granted power resolves into classFeatures", () => {
+    for (const school of Object.values(ref.wizardSchools)) {
+      for (const grant of school.features) {
+        expect(grant.resolved, `${school.name}: ${grant.name}`).toBe(true);
+        expect(ref.classFeatures[grant.featureId]).toBeDefined();
+      }
+    }
   });
 });
 

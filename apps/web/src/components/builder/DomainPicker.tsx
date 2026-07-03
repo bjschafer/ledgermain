@@ -4,6 +4,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setClericDomains } from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -33,6 +34,11 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
 			Object.keys(refData.domainSpellLists)
 				.filter((t) => t.length > 0)
 				.sort((a, b) => a.localeCompare(b)),
+		[refData],
+	);
+
+	const domainByTag = useMemo(
+		() => new Map(Object.values(refData.domains).map((d) => [d.tag, d])),
 		[refData],
 	);
 
@@ -103,6 +109,16 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
 							<strong>{chosen.join(", ")}</strong>
 						</p>
 					)}
+					{chosen.map((tag) => {
+						const domain = domainByTag.get(tag);
+						if (!domain?.description) return null;
+						return (
+							<div className="domain-description" key={tag}>
+								<span className="hint">{domain.name}</span>
+								<FeatureDescription html={domain.description} />
+							</div>
+						);
+					})}
 				</>
 			)}
 		</div>

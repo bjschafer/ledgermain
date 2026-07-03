@@ -1,0 +1,1018 @@
+{
+  "6JYvxEtSqmjDbDWr": {
+    "description": "<p><strong>Granted Powers:</strong> In strength and brawn there is truth—your faith gives you incredible might and power.</p><p><strong>Subdomains:</strong> Competition, Ferocity, Fist, Resolve, Self-Realization</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Enlarge Person</li><li>2nd—Bull's Strength</li><li>3rd—Magic Vestment</li><li>4th—Spell Immunity</li><li>5th—Righteous Might</li><li>6th—Stoneskin</li><li>7th—Grasping Hand</li><li>8th—Clenched Fist</li><li>9th—Crushing Hand</li></ul>",
+    "features": [
+      {
+        "featureId": "Iu8gyBT93dRpGtgH",
+        "level": 0,
+        "name": "Strength Surge (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Iu8gyBT93dRpGtgH"
+      },
+      {
+        "featureId": "WMtJbAlvzaLnzYVy",
+        "level": 8,
+        "name": "Might of the Gods",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WMtJbAlvzaLnzYVy"
+      }
+    ],
+    "id": "6JYvxEtSqmjDbDWr",
+    "name": "Strength Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "tag": "Strength",
+    "uuid": "Compendium.pf1.class-abilities.Item.6JYvxEtSqmjDbDWr"
+  },
+  "6SPes1mowA2wUkMP": {
+    "description": "<p><strong>Granted Powers:</strong> You see truth in the pure and burning light of the sun, and can call upon its blessing or wrath to work great deeds.</p><p><strong>Subdomains:</strong> Day, Light, Revelation, Thirst</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Endure Elements</li><li>2nd—Heat Metal</li><li>3rd—Searing Light</li><li>4th—Fire Shield</li><li>5th—Flame Strike</li><li>6th—Fire Seeds</li><li>7th—Sunbeam</li><li>8th—Sunburst</li><li>9th—Prismatic Sphere</li></ul>",
+    "features": [
+      {
+        "featureId": "Dre4YCOxboyBbIjg",
+        "level": 0,
+        "name": "Sun's Blessing",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Dre4YCOxboyBbIjg"
+      },
+      {
+        "featureId": "QZJtfwamnWW0mHjJ",
+        "level": 8,
+        "name": "Nimbus of Light",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QZJtfwamnWW0mHjJ"
+      }
+    ],
+    "id": "6SPes1mowA2wUkMP",
+    "name": "Sun Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "tag": "Sun",
+    "uuid": "Compendium.pf1.class-abilities.Item.6SPes1mowA2wUkMP"
+  },
+  "7a930CN37xb968mP": {
+    "description": "<p><strong>Granted Powers:</strong> You are an explorer and find enlightenment in the simple joy of travel, be it by foot or conveyance or magic. Increase your base speed by 10 feet.</p><p><strong>Subdomains:</strong> Exploration, Portal, Trade</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Longstrider</li><li>2nd—Locate Object</li><li>3rd—Fly</li><li>4th—Dimension Door</li><li>5th—Teleport</li><li>6th—Find the Path</li><li>7th—Teleport, Greater</li><li>8th—Phase Door</li><li>9th—Astral Projection</li></ul>",
+    "features": [
+      {
+        "featureId": "Rjh7zvCZr2BEgioo",
+        "level": 0,
+        "name": "Agile Feet (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Rjh7zvCZr2BEgioo"
+      },
+      {
+        "featureId": "fkjS3pJidUdLWsFF",
+        "level": 8,
+        "name": "Dimensional Hop (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fkjS3pJidUdLWsFF"
+      }
+    ],
+    "id": "7a930CN37xb968mP",
+    "name": "Travel Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "tag": "Travel",
+    "uuid": "Compendium.pf1.class-abilities.Item.7a930CN37xb968mP"
+  },
+  "8ZykO6OBolskftgi": {
+    "description": "<p><strong>Granted Powers:</strong> You are sinister and cruel, and have wholly pledged your soul to the cause of evil.</p><p><strong>Subdomains:</strong> Cannibalism, Corruption, Daemon, Demodand, Demon, Devil, Fear, Kyton, Plague, Sahkil</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Protection From Good</li><li>2nd—Align Weapon (evil only)</li><li>3rd—Magic Circle against Good</li><li>4th—Unholy Blight</li><li>5th—Dispel Good</li><li>6th—Create Undead</li><li>7th—Blasphemy</li><li>8th—Unholy Aura</li><li>9th—Summon Monster IX (evil spell only)</li></ul>",
+    "features": [
+      {
+        "featureId": "90Z23Z4U7ujOcvco",
+        "level": 0,
+        "name": "Touch of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.90Z23Z4U7ujOcvco"
+      },
+      {
+        "featureId": "wK9bxQqe49GfT9xh",
+        "level": 8,
+        "name": "Scythe of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wK9bxQqe49GfT9xh"
+      }
+    ],
+    "id": "8ZykO6OBolskftgi",
+    "name": "Evil Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "43"
+      }
+    ],
+    "tag": "Evil",
+    "uuid": "Compendium.pf1.class-abilities.Item.8ZykO6OBolskftgi"
+  },
+  "CmsDojp7mFWiTB4n": {
+    "description": "<p><strong>Granted Powers:</strong> You revel in ruin and devastation, and can deliver particularly destructive attacks.</p><p><strong>Subdomains:</strong> Catastrophe, Hatred, Rage, Torture</p><h3>Domain Powers</h3><p></p><p>Destructive Aura (Su): At 8th level, you can emit a 30-foot aura of destruction for a number of rounds per day equal to your cleric level. All attacks made against targets in this aura (including you) gain a morale bonus on damage equal to 1/2 your cleric level and all critical threats are automatically confirmed. These rounds do not need to be consecutive.</p><h3>Domain Spells</h3><ul><li>1st—True Strike</li><li>2nd—Shatter</li><li>3rd—Rage</li><li>4th—Inflict Critical Wounds</li><li>5th—Shout</li><li>6th—Harm</li><li>7th—Disintegrate</li><li>8th—Earthquake</li><li>9th—Implosion</li></ul>",
+    "features": [
+      {
+        "featureId": "T4q7Ib0ED01PNDyT",
+        "level": 0,
+        "name": "Destructive Smite",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.T4q7Ib0ED01PNDyT"
+      }
+    ],
+    "id": "CmsDojp7mFWiTB4n",
+    "name": "Destruction Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "43"
+      }
+    ],
+    "tag": "Destruction",
+    "uuid": "Compendium.pf1.class-abilities.Item.CmsDojp7mFWiTB4n"
+  },
+  "IXqYkTnaEgHG2ui3": {
+    "description": "<p><strong>Granted Powers:</strong> You have mastery over earth, metal, and stone, can fire darts of acid, and command earth creatures.</p><p><strong>Subdomains:</strong> Caves, Metal, Petrification, Radiation</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Magic Stone</li><li>2nd—Soften Earth and Stone</li><li>3rd—Stone Shape</li><li>4th—Spike Stones</li><li>5th—Wall Of Stone</li><li>6th—Stoneskin</li><li>7th—Elemental Body IV (earth only)</li><li>8th—Earthquake</li><li>9th—Elemental Swarm (earth spell only)</li></ul>",
+    "features": [
+      {
+        "featureId": "L5jrgNDA43dMH1wm",
+        "level": 0,
+        "name": "Acid Dart",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.L5jrgNDA43dMH1wm"
+      },
+      {
+        "featureId": "An77ZbKHexO7P0UC",
+        "level": 6,
+        "name": "Acid Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.An77ZbKHexO7P0UC"
+      }
+    ],
+    "id": "IXqYkTnaEgHG2ui3",
+    "name": "Earth Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "43"
+      }
+    ],
+    "tag": "Earth",
+    "uuid": "Compendium.pf1.class-abilities.Item.IXqYkTnaEgHG2ui3"
+  },
+  "IfsUqkdorBKIdTII": {
+    "description": "<p><strong>Granted Powers:</strong> You are a scholar and a sage of legends. In addition, you treat all Knowledge skills as class skills.</p><p><strong>Subdomains:</strong> Aeon, Education, Espionage, Memory, Thought</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Comprehend Languages,</li><li>2nd—Detect Thoughts,</li><li>3rd—Speak with Dead,</li><li>4th—Divination,</li><li>5th—True Seeing,</li><li>6th—Find the Path,</li><li>7th—Legend Lore,</li><li>8th—Discern Location,</li><li>9th—Foresight.</li></ul>",
+    "features": [
+      {
+        "featureId": "iv3eNHISB84mHLox",
+        "level": 0,
+        "name": "Lore Keeper (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.iv3eNHISB84mHLox"
+      },
+      {
+        "featureId": "yUdt1JIkSsQabXTF",
+        "level": 6,
+        "name": "Remote Viewing",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yUdt1JIkSsQabXTF"
+      }
+    ],
+    "id": "IfsUqkdorBKIdTII",
+    "name": "Knowledge Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "tag": "Knowledge",
+    "uuid": "Compendium.pf1.class-abilities.Item.IfsUqkdorBKIdTII"
+  },
+  "Io7oIAjPo9rRbvDS": {
+    "description": "<p><strong>Granted Powers:</strong> You can speak with and befriend animals with ease. In addition, you treat Knowledge (nature) as a class skill.</p><p><strong>Subdomains:</strong> Feather, Fur, Insect</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Calm Animals</li><li>2nd—Hold Animal</li><li>3rd—Dominate Animal</li><li>4th—Summon Nature's Ally IV (animals only)</li><li>5th—Beast Shape III (animals only)</li><li>6th—Antilife Shell</li><li>7th—Animal Shapes</li><li>8th—Summon Nature's Ally VIII (animals only)</li><li>9th—Shapechange</li></ul>",
+    "features": [
+      {
+        "featureId": "YeNdVzgR4OZMezrx",
+        "level": 0,
+        "name": "Speak with Animals",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YeNdVzgR4OZMezrx"
+      },
+      {
+        "featureId": "1jMb1iCiNjS5yfwe",
+        "level": 4,
+        "name": "Animal Companion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1jMb1iCiNjS5yfwe"
+      }
+    ],
+    "id": "Io7oIAjPo9rRbvDS",
+    "name": "Animal Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "tag": "Animal",
+    "uuid": "Compendium.pf1.class-abilities.Item.Io7oIAjPo9rRbvDS"
+  },
+  "KbcnBk7n4tctvnI9": {
+    "description": "<p><strong>Granted Powers:</strong> You can call forth fire, command creatures of the inferno, and your flesh does not burn.</p><p><strong>Subdomains:</strong> Arson, Ash, Smoke</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Burning Hands</li><li>2nd—Produce Flame</li><li>3rd—Fireball</li><li>4th—Wall Of Fire</li><li>5th—Fire Shield</li><li>6th—Fire Seeds</li><li>7th—Elemental Body IV (fire only)</li><li>8th—Incendiary Cloud</li><li>9th—Elemental Swarm (fire spell only)</li></ul>",
+    "features": [
+      {
+        "featureId": "V57hEfKt1MroRI91",
+        "level": 0,
+        "name": "Fire Bolt",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.V57hEfKt1MroRI91"
+      },
+      {
+        "featureId": "VFejQ7mOCxSp26xk",
+        "level": 6,
+        "name": "Fire Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.VFejQ7mOCxSp26xk"
+      }
+    ],
+    "id": "KbcnBk7n4tctvnI9",
+    "name": "Fire Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "tag": "Fire",
+    "uuid": "Compendium.pf1.class-abilities.Item.KbcnBk7n4tctvnI9"
+  },
+  "LbTp3TdtQ2S7wtvG": {
+    "description": "<p><strong>Granted Powers:</strong> You manipulate shadows and darkness. In addition, you receive Blind-Fight as a bonus feat.</p><p><strong>Subdomains:</strong> Loss, Moon, Night, Shadow</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Obscuring Mist</li><li>2nd—Blindness/Deafness (only to cause blindness)</li><li>3rd—Deeper Darkness</li><li>4th—Shadow Conjuration</li><li>5th—Summon Monster V (summons 1d3 shadows)</li><li>6th—Shadow Walk</li><li>7th—Power Word Blind</li><li>8th—Shadow Evocation, Greater</li><li>9th—Shades</li></ul>",
+    "features": [
+      {
+        "featureId": "pmAO1Sni8xx71pLF",
+        "level": 0,
+        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
+        "resolved": false,
+        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
+      },
+      {
+        "featureId": "Le6qmKF8wkhVCPCz",
+        "level": 0,
+        "name": "Touch of Darkness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Le6qmKF8wkhVCPCz"
+      },
+      {
+        "featureId": "M8IQnVMYyqh1Mrl7",
+        "level": 8,
+        "name": "Eyes of Darkness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.M8IQnVMYyqh1Mrl7"
+      }
+    ],
+    "id": "LbTp3TdtQ2S7wtvG",
+    "name": "Darkness Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "tag": "Darkness",
+    "uuid": "Compendium.pf1.class-abilities.Item.LbTp3TdtQ2S7wtvG"
+  },
+  "Mh85MGrAFDPWHI3m": {
+    "description": "<p><strong>Granted Powers:</strong> Your touch infuses life and weapons with chaos, and you revel in all things anarchic.</p><p><strong>Subdomains:</strong> Azata, Demodand, Demon, Entropy, Protean, Revelry, Riot, Whimsy</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Protection From Law</li><li>2nd—Align Weapon (chaos only)</li><li>3rd—Magic Circle against Law</li><li>4th—Chaos Hammer</li><li>5th—Dispel Law</li><li>6th—Animate Objects</li><li>7th—Word Of Chaos</li><li>8th—Cloak of Chaos</li><li>9th—Summon Monster IX (chaos spell only)</li></ul>",
+    "features": [
+      {
+        "featureId": "eZ569ZcO7BeZAqB6",
+        "level": 0,
+        "name": "Touch of Chaos",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eZ569ZcO7BeZAqB6"
+      },
+      {
+        "featureId": "Vf0LVJue8NkXSupp",
+        "level": 8,
+        "name": "Chaos Blade",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Vf0LVJue8NkXSupp"
+      }
+    ],
+    "id": "Mh85MGrAFDPWHI3m",
+    "name": "Chaos Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "tag": "Chaos",
+    "uuid": "Compendium.pf1.class-abilities.Item.Mh85MGrAFDPWHI3m"
+  },
+  "MjHk9UdpaiosqVMq": {
+    "description": "<p><strong>Granted Powers:</strong> You follow a strict and ordered code of laws, and in so doing, achieve enlightenment.</p><p><strong>Subdomains:</strong> Archon, Devil, Inevitable, Judgment, Kyton, Legislation, Loyalty, Slavery, Sovereignty, Tyranny</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Protection From Chaos</li><li>2nd—Align Weapon (law only)</li><li>3rd—Magic Circle against Chaos</li><li>4th—Order's Wrath</li><li>5th—Dispel Chaos</li><li>6th—Hold Monster</li><li>7th—Dictum</li><li>8th—Shield of Law</li><li>9th—Summon Monster IX (law spell only)</li></ul>",
+    "features": [
+      {
+        "featureId": "AwMFhb8HETerKlVk",
+        "level": 0,
+        "name": "Touch of Law",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AwMFhb8HETerKlVk"
+      },
+      {
+        "featureId": "J4QibEdTUK559sGO",
+        "level": 8,
+        "name": "Staff of Order",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.J4QibEdTUK559sGO"
+      }
+    ],
+    "id": "MjHk9UdpaiosqVMq",
+    "name": "Law Domain",
+    "tag": "Law",
+    "uuid": "Compendium.pf1.class-abilities.Item.MjHk9UdpaiosqVMq"
+  },
+  "NjMyfBFJ42xbUpwC": {
+    "description": "<p><strong>Granted Powers:</strong> You are a spirit of freedom and a staunch foe against all who would enslave and oppress.</p><p><strong>Subdomains:</strong> Freedom, Revolution, Self-Realization</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Remove Fear</li><li>2nd—Remove Paralysis</li><li>3rd—Remove Curse</li><li>4th—Freedom of Movement</li><li>5th—Break Enchantment</li><li>6th—Dispel Magic, Greater</li><li>7th—Refuge</li><li>8th—Mind Blank</li><li>9th—Freedom</li></ul>",
+    "features": [
+      {
+        "featureId": "2mnWAoFKqKKxWCt4",
+        "level": 0,
+        "name": "Liberation (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2mnWAoFKqKKxWCt4"
+      },
+      {
+        "featureId": "F6D6MV5q8BOjiCTU",
+        "level": 8,
+        "name": "Freedom's Call",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.F6D6MV5q8BOjiCTU"
+      }
+    ],
+    "id": "NjMyfBFJ42xbUpwC",
+    "name": "Liberation Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "tag": "Liberation",
+    "uuid": "Compendium.pf1.class-abilities.Item.NjMyfBFJ42xbUpwC"
+  },
+  "RL0hOHIz4MnsVgv9": {
+    "description": "<p><strong>Granted Powers:</strong> You are infused with the glory of the divine, and are a true foe of the undead. In addition, when you channel positive energy to harm undead creatures, the save DC to halve the damage is increased by 2.</p><p><strong>Subdomains:</strong> Chivalry, Heroism, Honor, Hubris, Legend</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Shield Of Faith</li><li>2nd—Bless Weapon</li><li>3rd—Searing Light</li><li>4th—Holy Smite</li><li>5th—Righteous Might</li><li>6th—Undeath to Death</li><li>7th—Holy Sword</li><li>8th—Holy Aura</li><li>9th—Gate</li></ul><hr /><p><strong>Usage:</strong> Add context note to Channel Energy class feature with the following content: <code>+2 to save DC against undead to half the damage.</code></p>",
+    "features": [
+      {
+        "featureId": "0BFuaPpChxXneJwF",
+        "level": 0,
+        "name": "Touch of Glory",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0BFuaPpChxXneJwF"
+      },
+      {
+        "featureId": "KXN1Y4DDcWd8ZraE",
+        "level": 8,
+        "name": "Divine Presence",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KXN1Y4DDcWd8ZraE"
+      }
+    ],
+    "id": "RL0hOHIz4MnsVgv9",
+    "name": "Glory Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "tag": "Glory",
+    "uuid": "Compendium.pf1.class-abilities.Item.RL0hOHIz4MnsVgv9"
+  },
+  "T1zx6IZMFgUOTKuC": {
+    "description": "<p><strong>Granted Powers:</strong> You are a master of illusions and deceptions. Bluff, Disguise, and Stealth are class skills.</p><p><strong>Subdomains:</strong> Ambush, Deception, Espionage, Greed, Innuendo, Thievery</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Disguise Self</li><li>2nd—Invisibility</li><li>3rd—Nondetection</li><li>4th—Confusion</li><li>5th—False Vision</li><li>6th—Mislead</li><li>7th—Screen</li><li>8th—Invisibility, Mass</li><li>9th—Time Stop</li></ul>",
+    "features": [
+      {
+        "featureId": "hVrmBvlqeeLbwVxn",
+        "level": 0,
+        "name": "Copycat",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hVrmBvlqeeLbwVxn"
+      },
+      {
+        "featureId": "Jsa2hTi4YCwLzFdf",
+        "level": 8,
+        "name": "Master's Illusion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Jsa2hTi4YCwLzFdf"
+      }
+    ],
+    "id": "T1zx6IZMFgUOTKuC",
+    "name": "Trickery Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "tag": "Trickery",
+    "uuid": "Compendium.pf1.class-abilities.Item.T1zx6IZMFgUOTKuC"
+  },
+  "UwsvNVAJJGYtuRiN": {
+    "description": "<p><strong>Granted Powers:</strong> Your touch can heal wounds, and your presence instills unity and strengthens emotional bonds.</p><p><strong>Subdomains:</strong> Cooperation, Education, Family, Home</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><p><strong>Domain Spells:</strong></p><ul><li>1st—Bless</li><li>2nd—Shield Other</li><li>3rd—Prayer</li><li>4th—Imbue with Spell Ability</li><li>5th—Telepathic Bond</li><li>6th—Heroes' Feast</li><li>7th—Refuge</li><li>8th—Cure Critical Wounds, Mass</li><li>9th—Miracle</li></ul>",
+    "features": [
+      {
+        "featureId": "4diLPqggIUsWxR0N",
+        "level": 0,
+        "name": "Calming Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4diLPqggIUsWxR0N"
+      },
+      {
+        "featureId": "eEuj2X72Q5jP6xAj",
+        "level": 8,
+        "name": "Unity",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eEuj2X72Q5jP6xAj"
+      }
+    ],
+    "id": "UwsvNVAJJGYtuRiN",
+    "name": "Community Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "tag": "Community",
+    "uuid": "Compendium.pf1.class-abilities.Item.UwsvNVAJJGYtuRiN"
+  },
+  "XnsjytioucuaZFAA": {
+    "description": "<p><strong>Granted Powers:</strong> You can repair damage to objects, animate objects with life, and create objects from nothing.</p><p><strong>Subdomains</strong> Alchemy, Construct, Industry, Toil, Trap</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Animate Rope</li><li>2nd—Wood Shape</li><li>3rd—Stone Shape</li><li>4th—Minor Creation</li><li>5th—Fabricate</li><li>6th—Major Creation</li><li>7th—Wall of Iron</li><li>8th—Instant Summons</li><li>9th—Prismatic Sphere</li></ul>",
+    "features": [
+      {
+        "featureId": "zeLaBkwTp9wlzZJv",
+        "level": 0,
+        "name": "Artificer's Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zeLaBkwTp9wlzZJv"
+      },
+      {
+        "featureId": "9ezUAbso44HrKLyr",
+        "level": 8,
+        "name": "Dancing Weapons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9ezUAbso44HrKLyr"
+      }
+    ],
+    "id": "XnsjytioucuaZFAA",
+    "name": "Artifice Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "tag": "Artifice",
+    "uuid": "Compendium.pf1.class-abilities.Item.XnsjytioucuaZFAA"
+  },
+  "Zi8PhdwJRQfN71AD": {
+    "description": "<p><strong>Granted Powers:</strong> You find solace in the green, can grow defensive thorns, and can communicate with plants.</p><p><strong>Subdomains:</strong> Decay, Growth, Leshy, Thorns</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Entangle</li><li>2nd—Barkskin</li><li>3rd—Plant Growth</li><li>4th—Command Plants</li><li>5th—Wall Of Thorns</li><li>6th—Repel Wood</li><li>7th—Animate Plants</li><li>8th—Control Plants</li><li>9th—Shambler</li></ul>",
+    "features": [
+      {
+        "featureId": "LY6y8GWhXzK8wDDZ",
+        "level": 0,
+        "name": "Wooden Fist",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.LY6y8GWhXzK8wDDZ"
+      },
+      {
+        "featureId": "GidNLmDQBdokwgUn",
+        "level": 6,
+        "name": "Bramble Armor",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.GidNLmDQBdokwgUn"
+      }
+    ],
+    "id": "Zi8PhdwJRQfN71AD",
+    "name": "Plant Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "tag": "Plant",
+    "uuid": "Compendium.pf1.class-abilities.Item.Zi8PhdwJRQfN71AD"
+  },
+  "arKp5dB4xzfDpGVG": {
+    "description": "<p><strong>Granted Powers:</strong> In strange and eldritch runes you find potent magic. You gain Scribe Scroll as a bonus feat.</p><p><strong>Subdomains:</strong> Language, Legislation, Wards</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Erase</li><li>2nd—Secret Page</li><li>3rd—Glyph Of Warding</li><li>4th—Explosive Runes</li><li>5th—Planar Binding, Lesser</li><li>6th—Glyph of Warding, Greater</li><li>7th—Instant Summons</li><li>8th—Symbol of Death</li><li>9th—Teleportation Circle</li></ul>",
+    "features": [
+      {
+        "featureId": "Wj2W2g5Ive3PlIlg",
+        "level": 0,
+        "name": "Blast Rune (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Wj2W2g5Ive3PlIlg"
+      },
+      {
+        "featureId": "tlRu8SYjzA7WCHN7",
+        "level": 0,
+        "name": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7",
+        "resolved": false,
+        "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"
+      },
+      {
+        "featureId": "ZJORj88OzUMjc1dB",
+        "level": 8,
+        "name": "Spell Rune",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZJORj88OzUMjc1dB"
+      }
+    ],
+    "id": "arKp5dB4xzfDpGVG",
+    "name": "Rune Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "47"
+      }
+    ],
+    "tag": "Rune",
+    "uuid": "Compendium.pf1.class-abilities.Item.arKp5dB4xzfDpGVG"
+  },
+  "cokp2kdswCQm9TZw": {
+    "description": "<p><strong>Granted Powers:</strong> You have pledged your life and soul to goodness and purity.</p><p><strong>Subdomains:</strong> Agathion, Archon, Azata, Friendship, Redemption</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Protection From Evil</li><li>2nd—Align Weapon (good only)</li><li>3rd—Magic Circle against Evil</li><li>4th—Holy Smite</li><li>5th—Dispel Evil</li><li>6th—Blade Barrier</li><li>7th—Holy Word</li><li>8th—Holy Aura</li><li>9th—Summon Monster IX (good spell only)</li></ul>",
+    "features": [
+      {
+        "featureId": "7td8qAPvj9YEasha",
+        "level": 0,
+        "name": "Touch of Good",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7td8qAPvj9YEasha"
+      },
+      {
+        "featureId": "t3eiENbbesGZBnc2",
+        "level": 8,
+        "name": "Holy Lance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.t3eiENbbesGZBnc2"
+      }
+    ],
+    "id": "cokp2kdswCQm9TZw",
+    "name": "Good Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "tag": "Good",
+    "uuid": "Compendium.pf1.class-abilities.Item.cokp2kdswCQm9TZw"
+  },
+  "eROVW8PzBztdcMd6": {
+    "description": "<p><strong>Granted Powers:</strong> You see death not as something to be feared, but as a final rest and reward for a life well spent. The taint of undeath is a mockery of what you hold dear.</p><p><strong>Subdomains:</strong> Ancestors, Psychopomp (Repose), Souls</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Deathwatch</li><li>2nd—Gentle Repose</li><li>3rd—Speak with Dead</li><li>4th—Death Ward</li><li>5th—Slay Living</li><li>6th—Undeath to Death</li><li>7th—Destruction</li><li>8th—Waves of Exhaustion</li><li>9th—Wail of the Banshee</li></ul>",
+    "features": [
+      {
+        "featureId": "mS7LSsQQkjVvKx9z",
+        "level": 0,
+        "name": "Gentle Rest (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mS7LSsQQkjVvKx9z"
+      },
+      {
+        "featureId": "KF3SgIKeBACJhSZ1",
+        "level": 8,
+        "name": "Ward Against Death",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KF3SgIKeBACJhSZ1"
+      }
+    ],
+    "id": "eROVW8PzBztdcMd6",
+    "name": "Repose Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "tag": "Repose",
+    "uuid": "Compendium.pf1.class-abilities.Item.eROVW8PzBztdcMd6"
+  },
+  "flMrvQOBVwXagqow": {
+    "description": "<p><strong>Granted Powers:</strong> You can manipulate lightning, mist, and wind, traffic with air creatures, and are resistant to electricity damage.</p><p><strong>Subdomains:</strong> Cloud, Lightning, Wind</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Obscuring Mist</li><li>2nd—Wind Wall</li><li>3rd—Gaseous Form</li><li>4th—Air Walk</li><li>5th—Control Winds</li><li>6th—Chain Lightning</li><li>7th—Elemental Body IV (air only)</li><li>8th— Whirlwind</li><li>9th— Elemental Swarm (air spell only)</li></ul>",
+    "features": [
+      {
+        "featureId": "o8rxNsQ7P7Yjlvvu",
+        "level": 0,
+        "name": "Lightning Arc",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.o8rxNsQ7P7Yjlvvu"
+      },
+      {
+        "featureId": "tap9LNVtXblKh0sv",
+        "level": 6,
+        "name": "Electricity Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tap9LNVtXblKh0sv"
+      }
+    ],
+    "id": "flMrvQOBVwXagqow",
+    "name": "Air Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "41"
+      }
+    ],
+    "tag": "Air",
+    "uuid": "Compendium.pf1.class-abilities.Item.flMrvQOBVwXagqow"
+  },
+  "j4VAabAOxzPbyUUY": {
+    "description": "<p><strong>Granted Powers:</strong> You are a crusader for your god, always ready and willing to fight to defend your faith.</p><p><strong>Subdomains:</strong> Blood, Duels, Tactics</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Magic Weapon</li><li>2nd—Spiritual Weapon</li><li>3rd—Magic Vestment</li><li>4th—Divine Power</li><li>5th—Flame Strike</li><li>6th—Blade Barrier</li><li>7th—Power Word Blind</li><li>8th—Power Word Stun</li><li>9th—Power Word Kill</li></ul>",
+    "features": [
+      {
+        "featureId": "PXdTxpse6nHDdQyR",
+        "level": 0,
+        "name": "Battle Rage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.PXdTxpse6nHDdQyR"
+      },
+      {
+        "featureId": "NDysrxC1AH0gLcqd",
+        "level": 8,
+        "name": "Weapon Master",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NDysrxC1AH0gLcqd"
+      }
+    ],
+    "id": "j4VAabAOxzPbyUUY",
+    "name": "War Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "tag": "War",
+    "uuid": "Compendium.pf1.class-abilities.Item.j4VAabAOxzPbyUUY"
+  },
+  "jb0WCVxSOi5e8gEE": {
+    "description": "<p><strong>Granted Powers:</strong> You embrace the madness that lurks deep in your heart, and can unleash it to drive your foes insane or to sacrifice certain abilities to hone others.</p><p><strong>Subdomains:</strong> Insanity, Nightmare, Truth</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Confusion, Lesser</li><li>2nd—Touch of Idiocy</li><li>3rd—Rage</li><li>4th—Confusion</li><li>5th—Nightmare</li><li>6th—Phantasmal Killer</li><li>7th—Insanity</li><li>8th—Scintillating Pattern</li><li>9th—Weird</li></ul>",
+    "features": [
+      {
+        "featureId": "v4wH3dsMLl1Bm542",
+        "level": 0,
+        "name": "Vision of Madness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.v4wH3dsMLl1Bm542"
+      },
+      {
+        "featureId": "Aw4xfA8YSYHGiUXV",
+        "level": 8,
+        "name": "Aura of Madness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Aw4xfA8YSYHGiUXV"
+      }
+    ],
+    "id": "jb0WCVxSOi5e8gEE",
+    "name": "Madness Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "tag": "Madness",
+    "uuid": "Compendium.pf1.class-abilities.Item.jb0WCVxSOi5e8gEE"
+  },
+  "laADhid8uT3tpolP": {
+    "description": "<p><strong>Granted Powers:</strong> You are a true student of all things mystical, and see divinity in the purity of magic.</p><p><strong>Subdomains:</strong> Alchemy, Arcane, Divine, Rites</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Identify</li><li>2nd—Magic Mouth</li><li>3rd—Dispel Magic</li><li>4th—Imbue with Spell Ability</li><li>5th—Spell Resistance</li><li>6th—Antimagic Field</li><li>7th—Spell Turning</li><li>8th—Protection from Spells</li><li>9th—Mage's Disjunction</li></ul>",
+    "features": [
+      {
+        "featureId": "01m5lHnOP2E2FS5B",
+        "level": 0,
+        "name": "Hand of the Acolyte (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.01m5lHnOP2E2FS5B"
+      },
+      {
+        "featureId": "hslkjPA3AVl3hDWu",
+        "level": 8,
+        "name": "Dispelling Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hslkjPA3AVl3hDWu"
+      }
+    ],
+    "id": "laADhid8uT3tpolP",
+    "name": "Magic Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "tag": "Magic",
+    "uuid": "Compendium.pf1.class-abilities.Item.laADhid8uT3tpolP"
+  },
+  "lqCm6Fy7JVezprqU": {
+    "description": "<p><strong>Granted Powers:</strong> Your touch staves off pain and death, and your healing magic is particularly vital and potent.</p><p><strong>Subdomains:</strong> Medicine, Restoration, Resurrection</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Cure Light Wounds,</li><li>2nd—Cure Moderate Wounds,</li><li>3rd—Cure Serious Wounds,</li><li>4th—Cure Critical Wounds,</li><li>5th—Breath Of Life,</li><li>6th—Heal,</li><li>7th—Regenerate,</li><li>8th—Cure Critical Wounds, Mass,</li><li>9th—Heal, Mass.</li></ul>",
+    "features": [
+      {
+        "featureId": "8iWGEKKdoKTHsDy5",
+        "level": 0,
+        "name": "Rebuke Death",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.8iWGEKKdoKTHsDy5"
+      },
+      {
+        "featureId": "a7yviTyteK4X7A0c",
+        "level": 6,
+        "name": "Healer's Blessing",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.a7yviTyteK4X7A0c"
+      }
+    ],
+    "id": "lqCm6Fy7JVezprqU",
+    "name": "Healing Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "44"
+      }
+    ],
+    "tag": "Healing",
+    "uuid": "Compendium.pf1.class-abilities.Item.lqCm6Fy7JVezprqU"
+  },
+  "mtDcvNtXAwM66T9v": {
+    "description": "<p><strong>Granted Powers:</strong> You can manipulate water and mist and ice, conjure creatures of water, and resist cold.</p><p><strong>Subdomains:</strong> Flotsam, Flowing, Ice, Oceans, Rivers</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Obscuring Mist</li><li>2nd—Fog Cloud</li><li>3rd—Water Breathing</li><li>4th—Control Water</li><li>5th—Ice Storm</li><li>6th—Cone of Cold</li><li>7th—Elemental Body IV (water only),</li><li>8th—Horrid Wilting</li><li>9th—Elemental Swarm (water spell only).</li></ul>",
+    "features": [
+      {
+        "featureId": "ructcpEg6rejcpYQ",
+        "level": 0,
+        "name": "Icicle",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ructcpEg6rejcpYQ"
+      },
+      {
+        "featureId": "K7R4SXNKvzq5xmQK",
+        "level": 6,
+        "name": "Cold Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.K7R4SXNKvzq5xmQK"
+      }
+    ],
+    "id": "mtDcvNtXAwM66T9v",
+    "name": "Water Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "tag": "Water",
+    "uuid": "Compendium.pf1.class-abilities.Item.mtDcvNtXAwM66T9v"
+  },
+  "nO0zMK4hEqV4QHwz": {
+    "description": "<p><strong>Granted Powers:</strong> Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Subdomains:</strong> Defense, Fortifications, Purity, Solitude</p><h3>Domain Powers</h3><p></p><p>{Aura of Protection (Su)}</p><h3>Domain Spells</h3><ul><li>1st—Sanctuary</li><li>2nd—Shield Other</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Spell Resistance</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Prismatic Sphere</li></ul>",
+    "features": [
+      {
+        "featureId": "Bw3GiobZvSJb8dGI",
+        "level": 0,
+        "name": "Resistant Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Bw3GiobZvSJb8dGI"
+      },
+      {
+        "featureId": "kHXw5V06TkymXxF3",
+        "level": 8,
+        "name": "Aura of Protection (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kHXw5V06TkymXxF3"
+      }
+    ],
+    "id": "nO0zMK4hEqV4QHwz",
+    "name": "Protection Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "tag": "Protection",
+    "uuid": "Compendium.pf1.class-abilities.Item.nO0zMK4hEqV4QHwz"
+  },
+  "pEeqEUa2kznrhmzM": {
+    "description": "<p><strong>Granted Powers:</strong> You can cause the living to bleed at a touch, and find comfort in the presence of the dead.</p><p><strong>Subdomains:</strong> Murder, Plague, Psychopomp (Death), Shadow, Undead</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Cause Fear</li><li>2nd—Death Knell</li><li>3rd—Animate Dead</li><li>4th—Death Ward</li><li>5th—Slay Living</li><li>6th—Create Undead</li><li>7th—Destruction</li><li>8th—Create Greater Undead</li><li>9th—Wail of the Banshee</li></ul><h3>Pharasma-Friendly Death Domain</h3><p>Source: <a href=\"http://paizo.com/paizo/blog/v5748dyo5lbvp\">Paizo Blog</a></p><table><thead><tr><th>Domain Spell Level</th><th>Domain Spell</th><th>Replacement</th></tr></thead><tbody><tr><td>3rd</td><td>Animate Dead</td><td>Speak with Dead</td></tr><tr><td>6th</td><td>Create Undead</td><td>Antilife Shell</td></tr><tr><td>8th</td><td>Create Greater Undead</td><td>Symbol of Death</td></tr></tbody></table>",
+    "features": [
+      {
+        "featureId": "u5LefrXZxQgLqmyJ",
+        "level": 0,
+        "name": "Bleeding Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.u5LefrXZxQgLqmyJ"
+      },
+      {
+        "featureId": "IJo18Mq51RssxEqr",
+        "level": 8,
+        "name": "Death's Embrace (CLE)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IJo18Mq51RssxEqr"
+      }
+    ],
+    "id": "pEeqEUa2kznrhmzM",
+    "name": "Death Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "tag": "Death",
+    "uuid": "Compendium.pf1.class-abilities.Item.pEeqEUa2kznrhmzM"
+  },
+  "qCSvyJt8O7tNF5QC": {
+    "description": "<p><strong>Granted Powers:</strong> With power over storm and sky, you can call down the wrath of the gods upon the world below.</p><p><strong>Subdomains:</strong> Monsoon, Seasons, Storms</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Obscuring Mist</li><li>2nd—Fog Cloud</li><li>3rd—Call Lightning</li><li>4th—Sleet Storm</li><li>5th—Ice Storm</li><li>6th—Control Winds</li><li>7th—Control Weather</li><li>8th—Whirlwind</li><li>9th—Storm Of Vengeance</li></ul>",
+    "features": [
+      {
+        "featureId": "Kgcm3ye8CYGipsg3",
+        "level": 0,
+        "name": "Storm Burst",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Kgcm3ye8CYGipsg3"
+      },
+      {
+        "featureId": "FZdWscHJvJpGPoDz",
+        "level": 8,
+        "name": "Lightning Lord",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FZdWscHJvJpGPoDz"
+      }
+    ],
+    "id": "qCSvyJt8O7tNF5QC",
+    "name": "Weather Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "48"
+      }
+    ],
+    "tag": "Weather",
+    "uuid": "Compendium.pf1.class-abilities.Item.qCSvyJt8O7tNF5QC"
+  },
+  "qQMqUdWYnnwvCym7": {
+    "description": "<p><strong>Granted Powers:</strong> You are infused with luck, and your mere presence can spread good fortune.</p><p><strong>Subdomains:</strong> Curse, Fate, Imagination</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—True Strike</li><li>2nd—Aid</li><li>3rd—Protection from Energy</li><li>4th—Freedom of Movement</li><li>5th—Break Enchantment</li><li>6th—Mislead</li><li>7th—Spell Turning</li><li>8th—Moment of Prescience</li><li>9th—Miracle</li></ul>",
+    "features": [
+      {
+        "featureId": "FcJawJG5igJPDHnQ",
+        "level": 0,
+        "name": "Bit of Luck",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FcJawJG5igJPDHnQ"
+      },
+      {
+        "featureId": "APcvztd1jGZJ4xm7",
+        "level": 6,
+        "name": "Good Fortune",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.APcvztd1jGZJ4xm7"
+      }
+    ],
+    "id": "qQMqUdWYnnwvCym7",
+    "name": "Luck Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "45"
+      }
+    ],
+    "tag": "Luck",
+    "uuid": "Compendium.pf1.class-abilities.Item.qQMqUdWYnnwvCym7"
+  },
+  "tNavVVsvNpg3Dkl5": {
+    "description": "<p><strong>Granted Powers:</strong> You are a true lord of reptiles, and your gaze can drive weak creatures into unconsciousness.</p><p><strong>Subdomains:</strong> Dragon, Saurian, Venom</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Magic Fang</li><li>2nd—Animal Trance</li><li>3rd—Magic Fang, Greater</li><li>4th—Poison</li><li>5th—Animal Growth</li><li>6th—Eyebite</li><li>7th—Creeping Doom (takes the form of Diminutive-sized reptiles),</li><li>8th—Animal Shapes</li><li>9th—Shapechange*Only reptiles.</li></ul>",
+    "features": [
+      {
+        "featureId": "vDsgDSlIerRm7ISE",
+        "level": 0,
+        "name": "Venomous Stare",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vDsgDSlIerRm7ISE"
+      },
+      {
+        "featureId": "szRzBgTW01Vov922",
+        "level": 4,
+        "name": "Serpent Companion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.szRzBgTW01Vov922"
+      }
+    ],
+    "id": "tNavVVsvNpg3Dkl5",
+    "name": "Scalykind Domain",
+    "sources": [
+      {
+        "id": "PZO1139",
+        "pages": "181"
+      }
+    ],
+    "tag": "Scalykind",
+    "uuid": "Compendium.pf1.class-abilities.Item.tNavVVsvNpg3Dkl5"
+  },
+  "vsJbpWNPb1YEO5ia": {
+    "description": "<p><strong>Granted Powers:</strong> You can call upon the cold darkness between the stars to gain flight, travel to other worlds, or summon monsters from beyond to do your bidding.</p><p><strong>Subdomains:</strong> Dark Tapestry, Isolation, Stars</p><h3>Domain Powers</h3><p></p><p></p><p>The victim must succeed at a new saving throw each round to end the effect— these additional saving throws apply only to the additional confusion effect and not to the original spell effect. Part the veil is a mind-affecting effect. You can use this ability a number of times per day equal to 1/2 your class level.</p><h3>Domain Spells</h3><ul><li>1st—Feather Fall</li><li>2nd—Levitate</li><li>3rd—Fly</li><li>4th—Planar Binding, Lesser</li><li>5th—Overland Flight</li><li>6th—Planar Binding</li><li>7th—Reverse Gravity</li><li>8th—Planar Binding, Greater</li><li>9th—Interplanetary Teleport</li></ul>",
+    "features": [
+      {
+        "featureId": "QkHDkpopJ7P8g14c",
+        "level": 0,
+        "name": "Guarded Mind",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QkHDkpopJ7P8g14c"
+      },
+      {
+        "featureId": "XhpyFMIbhL5ogMVe",
+        "level": 8,
+        "name": "Part the Veil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.XhpyFMIbhL5ogMVe"
+      }
+    ],
+    "id": "vsJbpWNPb1YEO5ia",
+    "name": "Void Domain",
+    "sources": [
+      {
+        "id": "PZO1139",
+        "pages": "182"
+      }
+    ],
+    "tag": "Void",
+    "uuid": "Compendium.pf1.class-abilities.Item.vsJbpWNPb1YEO5ia"
+  },
+  "xLQEQwb3WmNglsBX": {
+    "description": "<p><strong>Granted Powers:</strong> You can baffle and befuddle foes with a touch or a smile, and your beauty and grace are divine.</p><p><strong>Subdomains:</strong> Captivation, Love, Lust</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Charm Person</li><li>2nd—Calm Emotions</li><li>3rd—Suggestion</li><li>4th—Heroism</li><li>5th—Charm Monster</li><li>6th—Geas/Quest</li><li>7th—Insanity</li><li>8th—Demand</li><li>9th—Dominate Monster</li></ul>",
+    "features": [
+      {
+        "featureId": "Jle1tYl0Fr251J97",
+        "level": 0,
+        "name": "Dazing Touch (CLE)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Jle1tYl0Fr251J97"
+      },
+      {
+        "featureId": "1qz9sHHlXkyJDCxo",
+        "level": 8,
+        "name": "Charming Smile",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1qz9sHHlXkyJDCxo"
+      }
+    ],
+    "id": "xLQEQwb3WmNglsBX",
+    "name": "Charm Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "42"
+      }
+    ],
+    "tag": "Charm",
+    "uuid": "Compendium.pf1.class-abilities.Item.xLQEQwb3WmNglsBX"
+  },
+  "zd4J4rCdY6cAZdJK": {
+    "description": "<p><strong>Granted Powers:</strong> You are a great leader, an inspiration to all who follow the teachings of your faith.</p><p><strong>Subdomains:</strong> Aristocracy, Hubris, Leadership, Martyr</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Divine Favor</li><li>2nd—Enthrall</li><li>3rd—Magic Vestment</li><li>4th—Discern Lies</li><li>5th—Command, Greater</li><li>6th—Geas/Quest</li><li>7th—Repulsion</li><li>8th—Demand</li><li>9th—Storm Of Vengeance</li></ul>",
+    "features": [
+      {
+        "featureId": "8hVa9HwekAWpgHid",
+        "level": 0,
+        "name": "Inspiring Word (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.8hVa9HwekAWpgHid"
+      },
+      {
+        "featureId": "hd6MiVc69RyEuDpU",
+        "level": 8,
+        "name": "Leadership",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hd6MiVc69RyEuDpU"
+      }
+    ],
+    "id": "zd4J4rCdY6cAZdJK",
+    "name": "Nobility Domain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "46"
+      }
+    ],
+    "tag": "Nobility",
+    "uuid": "Compendium.pf1.class-abilities.Item.zd4J4rCdY6cAZdJK"
+  }
+}

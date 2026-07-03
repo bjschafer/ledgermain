@@ -13,6 +13,7 @@
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
+import { collectGrantedFeatures } from "./archetypes.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
 import { channelEnergyDetail, layOnHandsDice, smiteEvilDetail, smiteEvilLabel } from "./tables.js";
@@ -54,55 +55,52 @@ export function deriveResourcePools(
   );
   const pools: DerivedResourcePool[] = [];
 
-  for (const cls of doc.identity.classes) {
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
-    if (!classDef) continue;
-    // `@class.unlevel` inside a feature formula refers to THIS class's level.
-    const featureRollData = { ...rollData, class: { level: cls.level, unlevel: cls.level } };
-    for (const grant of classDef.features) {
-      if (grant.level > cls.level || !grant.resolved) continue;
-      const feature = refData.classFeatures[grant.featureId];
-      const formula = feature?.uses?.maxFormula;
-      if (!feature || !formula) continue;
-      let max: number | null;
-      try {
-        max = tryEvaluateFormula(formula, featureRollData);
-      } catch {
-        continue;
-      }
-      if (max === null || Number.isNaN(max) || max <= 0) continue;
-      if (pools.some((p) => p.id === feature.id)) continue;
-
-      // Channel-energy dice/save scaling, Lay on Hands' healing dice, and
-      // Smite Evil's attack/damage/AC scaling are prose-only upstream (the
-      // dice live on an action formula, and the attack/damage/AC math has no
-      // `changes[]` entry at all) — derive them here clean-room so the
-      // tracker can surface them. Uses THIS class's level (the feature
-      // RollData context).
-      let detail: string | undefined;
-      // `featureRollData` is a RollData spread; index access returns `unknown`.
-      const featureAbilities = (featureRollData as RollData).abilities as
-        | { cha?: { mod?: number } }
-        | undefined;
-      const chaMod = featureAbilities?.cha?.mod ?? 0;
-      if (feature.tag === "channelEnergy" && cls.tag === "cleric") {
-        const ch = channelEnergyDetail(cls.level, chaMod);
-        detail = `${ch.diceLabel} (DC ${ch.saveDC})`;
-      } else if (feature.tag === "layOnHands" && cls.tag === "paladin") {
-        detail = layOnHandsDice(cls.level).diceLabel;
-      } else if (feature.tag === "smiteEvil" && cls.tag === "paladin") {
-        detail = smiteEvilLabel(smiteEvilDetail(cls.level, chaMod));
-      }
-
-      pools.push({
-        id: feature.id,
-        name: feature.name,
-        max: Math.trunc(max),
-        per: feature.uses?.per,
-        classTag: cls.tag,
-        detail,
-      });
+  for (const { classTag, grant } of collectGrantedFeatures(doc, refData)) {
+    const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
+    // `@class.unlevel` inside a feature formula refers to THIS (granting) class's
+    // level — for a domain/school grant that's the cleric/wizard level.
+    const featureRollData = { ...rollData, class: { level: classLevel, unlevel: classLevel } };
+    const feature = refData.classFeatures[grant.featureId];
+    const formula = feature?.uses?.maxFormula;
+    if (!feature || !formula) continue;
+    let max: number | null;
+    try {
+      max = tryEvaluateFormula(formula, featureRollData);
+    } catch {
+      continue;
     }
+    if (max === null || Number.isNaN(max) || max <= 0) continue;
+    if (pools.some((p) => p.id === feature.id)) continue;
+
+    // Channel-energy dice/save scaling, Lay on Hands' healing dice, and
+    // Smite Evil's attack/damage/AC scaling are prose-only upstream (the
+    // dice live on an action formula, and the attack/damage/AC math has no
+    // `changes[]` entry at all) — derive them here clean-room so the
+    // tracker can surface them. Uses THIS class's level (the feature
+    // RollData context).
+    let detail: string | undefined;
+    // `featureRollData` is a RollData spread; index access returns `unknown`.
+    const featureAbilities = (featureRollData as RollData).abilities as
+      | { cha?: { mod?: number } }
+      | undefined;
+    const chaMod = featureAbilities?.cha?.mod ?? 0;
+    if (feature.tag === "channelEnergy" && classTag === "cleric") {
+      const ch = channelEnergyDetail(classLevel, chaMod);
+      detail = `${ch.diceLabel} (DC ${ch.saveDC})`;
+    } else if (feature.tag === "layOnHands" && classTag === "paladin") {
+      detail = layOnHandsDice(classLevel).diceLabel;
+    } else if (feature.tag === "smiteEvil" && classTag === "paladin") {
+      detail = smiteEvilLabel(smiteEvilDetail(classLevel, chaMod));
+    }
+
+    pools.push({
+      id: feature.id,
+      name: feature.name,
+      max: Math.trunc(max),
+      per: feature.uses?.per,
+      classTag,
+      detail,
+    });
   }
 
   return pools;

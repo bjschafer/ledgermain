@@ -8,6 +8,7 @@ import type {
   Buff,
   Class,
   ClassFeature,
+  Domain,
   Feat,
   Item,
   Race,
@@ -16,6 +17,7 @@ import type {
   Spell,
   SpellList,
   WeaponRef,
+  WizardSchool,
 } from "@pf1/schema";
 
 import { SCHEMA_VERSION, SLICE } from "./config.js";
@@ -26,7 +28,12 @@ import {
   transformArchetypeRows,
 } from "./transform/archetypes.js";
 import { transformBuff } from "./transform/buffs.js";
-import { transformClass, transformClassFeature } from "./transform/classes.js";
+import {
+  transformClass,
+  transformClassFeature,
+  transformDomain,
+  transformWizardSchool,
+} from "./transform/classes.js";
 import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
 import { transformRace } from "./transform/races.js";
@@ -97,9 +104,34 @@ export function normalize(opts: NormalizeOptions): {
   // Read the full class-abilities pack once (keyed by id) for resolution.
   const classAbilitiesById = readPackById(join(packsDir, "class-abilities"));
 
-  // Collect the feature ids referenced by selected classes.
+  // --- domains + wizard schools (top-level only; see Domain/WizardSchool docs) -
+  // Foundry stores these as `type: feat` docs under class-abilities/domains/ and
+  // class-abilities/wizard-schools/; each folder also contains a `type: Item`
+  // folder-marker doc ("Druid Domains", "Subdomains", "Elemental Schools",
+  // "Focused Schools") with no `system` at all, excluded by the `type === "feat"`
+  // check. Nested subfolders (subdomains, druid-domains, elemental/focused
+  // schools) are excluded by the relPath depth check — see IMPLEMENTATION_PLAN.md.
+  const classAbilitiesDocs = [...classAbilitiesById.values()];
+  const domainDocs = classAbilitiesDocs
+    .filter(
+      (pf) =>
+        pf.doc.type === "feat" &&
+        pf.relPath.startsWith("domains/") &&
+        pf.relPath.split("/").length === 2,
+    )
+    .map((pf) => pf.doc);
+  const schoolDocs = classAbilitiesDocs
+    .filter(
+      (pf) =>
+        pf.doc.type === "feat" &&
+        pf.relPath.startsWith("wizard-schools/") &&
+        pf.relPath.split("/").length === 2,
+    )
+    .map((pf) => pf.doc);
+
+  // Collect the feature ids referenced by selected classes + domains + schools.
   const referencedFeatureIds = new Set<string>();
-  for (const cls of selectedClassDocs) {
+  for (const cls of [...selectedClassDocs, ...domainDocs, ...schoolDocs]) {
     for (const uuid of supplementUuids(cls)) {
       const parsed = parseUuid(uuid);
       if (parsed?.pack === "class-abilities") referencedFeatureIds.add(parsed.id);
@@ -116,6 +148,15 @@ export function normalize(opts: NormalizeOptions): {
   const classes: Class[] = selectedClassDocs.map((d) =>
     transformClass(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
   );
+
+  const domains: Domain[] = domainDocs.map((d) =>
+    transformDomain(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
+  );
+  const wizardSchools: WizardSchool[] = schoolDocs
+    .map((d) =>
+      transformWizardSchool(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
+    )
+    .filter((s): s is WizardSchool => s !== null);
 
   // --- races (filtered to slice folders) -------------------------------------
   const races: Race[] = readPack(join(packsDir, "races"))
@@ -265,6 +306,8 @@ export function normalize(opts: NormalizeOptions): {
     archetypeFeatures: archetypeFeatures.length,
     domainSpellLists: Object.keys(domainSpellLists).length,
     bloodlineSpellLists: Object.keys(bloodlineSpellLists).length,
+    domains: domains.length,
+    wizardSchools: wizardSchools.length,
   };
 
   const meta: RefDataMeta = {
@@ -295,6 +338,8 @@ export function normalize(opts: NormalizeOptions): {
     weapons: byId(weapons),
     archetypes: byId(archetypes),
     archetypeFeatures: byId(archetypeFeatures),
+    domains: byId(domains),
+    wizardSchools: byId(wizardSchools),
   };
 
   return { refData, contentVersion };

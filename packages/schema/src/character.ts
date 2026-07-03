@@ -84,14 +84,19 @@ export interface CharacterDoc {
      * Wizard specialization school tag. One of the eight PF1 schools
      * ("abj","con","div","enc","evo","ill","nec","trs") or "uni" (Universalist —
      * no opposition schools, no bonus slot). Free-choice; the vendored Foundry
-     * data has no per-school mapping of school features. Default undefined =
-     * Universalist (back-compat: existing wizard docs load as Universalist).
+     * data has no per-school mapping of *spell-slot* effects (that part is
+     * still hand-authored). Default undefined = Universalist (back-compat:
+     * existing wizard docs load as Universalist).
      *
      * A specialist (any non-"uni" tag) gains one bonus prepared slot per
      * accessible spell level 1–9 (rendered with `PreparedSpell.kind ===
      * "school"`), exclusive to spells of that school, plus two opposition
      * schools (see `wizardOppositionSchools`). A Universalist gains NO bonus
-     * slot (PF1 RAW — their compensation is school powers, deferred).
+     * slot (PF1 RAW — their compensation is school powers). School powers
+     * (Hand of the Apprentice, Intense Spells, etc., for every school
+     * including Universalist) ARE vendored and granted via
+     * `refData.wizardSchools` / `collectGrantedFeatures` in `@pf1/engine` —
+     * `undefined` here resolves to Universalist for power-granting too.
      */
     wizardSchool?: WizardSchoolTag;
     /**
@@ -662,6 +667,13 @@ export interface DerivedClassFeature {
    * numeric detail. The UI renders this next to the feature name.
    */
   detail?: string;
+  /**
+   * Set when this feature came from a chosen cleric domain or wizard arcane
+   * school rather than the class itself — both share `classTag: "cleric"`/
+   * `"wizard"` with the class's own intrinsic features, so this disambiguates
+   * e.g. "Fire Bolt" (Fire Domain) from Channel Energy (cleric itself).
+   */
+  origin?: { kind: "domain" | "school"; label: string };
 }
 
 /** One feature granted by an active archetype (in addition to/instead of the base grant). */

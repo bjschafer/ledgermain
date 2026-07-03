@@ -3,7 +3,7 @@
 Three PF1e spellcaster class features are currently unimplemented (audit, 2026-07-01):
 
 - **Sorcerer bloodlines** — no schema field, no engine logic, no UI. The *only* surviving surface is bonus-feat **slot counting** (`apps/web/src/model/feats.ts` reads the `bonusFeats` change from the prose-only "Bloodline Feat (SOR)" class feature). The spell associations already exist in vendored data (`spells.json` carries `learnedAt.bloodline` for 39 bloodlines across 220 spells in the current slice) but the pipeline does **not** invert them.
-- **Wizard specialization schools** — no schema field, no slot mechanic (specialist +1 school slot/level, opposition spells cost 2 slots), no UI. "Arcane School" is a prose-only `ClassFeature` (`changes: []`); no per-school power data is vendored.
+- **Wizard specialization schools** — no schema field, no slot mechanic (specialist +1 school slot/level, opposition spells cost 2 slots), no UI. "Arcane School" is a prose-only `ClassFeature` (`changes: []`) for the *slot* mechanic. [Corrected 2026-07-03: per-school **power** data (Hand of the Apprentice, Intense Spells, etc.) IS vendored, under `class-abilities/wizard-schools/*.yaml` — this claim was wrong. Implemented; see Stage 4 correction below.]
 - **Arcane bonds** — no schema field, no familiar skill bonuses, no concentration-without-bonded-object penalty, no UI. "Arcane Bond" is prose-only. No familiar stat blocks are vendored anywhere.
 
 The shared root cause: Foundry models each as a single prose-only `ClassFeature` with no structured sub-entries for the actual choices (which bloodline, which school, familiar vs. bonded object). The placeholder `build.classFeatureChoices: unknown[]` (`packages/schema/src/character.ts:65`) exists but is untyped, always `[]`, and read by no code. We will **not** use it — each feature gets a *named* field, mirroring the working cleric-domain precedent (`build.clericDomains` + `refData.domainSpellLists` + `PreparedSpell.kind === "domain"`).
@@ -21,9 +21,11 @@ The three features differ sharply in how much vendored data we can lean on, whic
 
 So: bloodline **spells** first (pure pipeline + schema + UI, mirrors domains exactly), then wizard **school slots** (schema + engine slot mechanic + UI; no new data needed), then **arcane bonds** (largest hand-authoring). Bloodline **arcana/powers** and school **powers** (the passive-ability effects) are deferred to a final stage — they're real but not table-blocking, and each school/bloodline has prose-only data we'd have to hand-transcribe clean-room.
 
+> **Correction (2026-07-03)**: "school *powers* are prose" (row 19) and "not vendored" (line 26, for schools) were wrong — see the Stage 4 correction note. Wizard school powers turned out to be structured `class-abilities/wizard-schools/*.yaml` data, not prose to hand-transcribe; same for cleric domain powers (not tracked in this table at all, since domains were already a "working precedent," but the same gap existed and is now closed). Bloodline arcana/powers (row 18) is unaffected by this correction — still genuinely prose-only.
+
 ### Licensing note (DESIGN §6)
 
-Per-school powers, bloodline arcana/powers, and familiar stat blocks are **not** in the vendored Foundry content. They must be **hand-authored clean-room from the published PF1 rules**, never copied/transcribed from Foundry's GPL system code. The precedents are `packages/engine/src/tables.ts` (hardcoded BAB/save/spell-progressions) and `packages/engine/src/feat-effects.ts` (hand-authored feat change sets). Each stage that hand-authors data adds a new such file.
+Bloodline arcana/powers and familiar stat blocks are **not** in the vendored Foundry content and must be **hand-authored clean-room from the published PF1 rules**, never copied/transcribed from Foundry's GPL system code (the precedents are `packages/engine/src/tables.ts` and `packages/engine/src/feat-effects.ts`). Wizard school powers and cleric domain powers, by contrast, ARE vendored compendium *data* (OGL / Paizo Community Use, same posture as feats/spells/classes elsewhere in this pipeline) — normalized directly, no hand-authoring or GPL-code involvement.
 
 ---
 
@@ -198,9 +200,9 @@ Implement: read `refData.bloodlineSpellLists[tag]` keys 1-9; include level `L` o
 
 ## Stage 2: Wizard specialization schools (slots + opposition)
 
-**Goal**: A wizard picks one specialization school (or "Universalist") and two opposition schools (none if Universalist). The specialist gets **one bonus prepared slot per spell level (1–9, not cantrips)** that must be filled from their school's spell list; opposition-school spells cost **two slots** to prepare. UI renders school slots next to the existing normal slots (mirroring the cleric domain slot rendering). School *powers* — the passive arcane-school abilities (diviner's foresight, evoker's elemental damage, etc.) — are **deferred** to Stage 4.
+**Goal**: A wizard picks one specialization school (or "Universalist") and two opposition schools (none if Universalist). The specialist gets **one bonus prepared slot per spell level (1–9, not cantrips)** that must be filled from their school's spell list; opposition-school spells cost **two slots** to prepare. UI renders school slots next to the existing normal slots (mirroring the cleric domain slot rendering). School *powers* — the passive arcane-school abilities (diviner's foresight, evoker's elemental damage, etc.) — were originally scoped as **deferred** to Stage 4, but **are now implemented** (2026-07-03) — see the Stage 4 correction note.
 
-> **PF1 RAW check (corrected 2026-07-02)**: a Universalist gets **no** bonus slot and no opposition schools — their compensation is the Hand of the Apprentice / Metamagic Mastery school powers, which defer to Stage 4 with all other school powers. Only specialists (the eight non-"uni" tags) get the +1 school slot per level. This simplifies the slot logic: `kind: "school"` slots exist only when `wizardSchool` is set and ≠ `"uni"`.
+> **PF1 RAW check (corrected 2026-07-02)**: a Universalist gets **no** bonus slot and no opposition schools — their compensation is the Hand of the Apprentice / Metamagic Mastery school powers. Only specialists (the eight non-"uni" tags) get the +1 school slot per level. This simplifies the slot logic: `kind: "school"` slots exist only when `wizardSchool` is set and ≠ `"uni"`.
 
 **Scope** (in / out):
 - IN: Schema `build.wizardSchool?: string` (school tag: `"abj" | "con" | "div" | "enc" | "evo" | "ill" | "nec" | "trs" | "uni"`). Free-choice; no "oppose X requires school Y" validation (soft-warning posture).
@@ -209,7 +211,7 @@ Implement: read `refData.bloodlineSpellLists[tag]` keys 1-9; include level `L` o
 - IN: Model: opposition-preparation cost. A prepared spell with `spell.school ∈ oppositionSchools` consumes 2 normal slots of its level (PF1 RAW). Implemented in the prepare/spell-accounting model (`apps/web/src/model/` — wherever domain slot counting lives).
 - IN: Builder UI: `SchoolPicker.tsx` (8 schools + Universalist); `OppositionPicker.tsx` (pick ≤2; disabled when Universalist). Wire in `ClassesSection.tsx` next to the sorcerer-bloodline branch from Stage 1.
 - IN: Tracker UI: `PreparedSpellsPanel.tsx` renders one "school slot" per accessible spell level (when specialist), sourced from `refData.spellLists["wizard"]` filtered by `spell.school === wizardSchool'.
-- OUT: School **powers** (arcane-school passive abilities). Defer to Stage 4. This includes the Universalist's Hand of the Apprentice / Metamagic Mastery — a Universalist gets **no bonus slot** (see RAW check above), so choosing "uni" changes nothing mechanically in this stage beyond disabling the opposition picker.
+- OUT (at the time): School **powers** (arcane-school passive abilities), including the Universalist's Hand of the Apprentice / Metamagic Mastery. **Now implemented** (2026-07-03, see Stage 4 correction) — a Universalist still gets **no bonus slot** (see RAW check above), but does get its school powers, same as any specialist.
 - OUT: Archetype interactions that alter/swap arcane school (`wizard:bonded-wizard`, `wizard:familiar-adept`, etc. — prose-only in `archetype-features.json`). Surface as a soft warning only.
 
 **Schema change** (`packages/schema/src/character.ts`):
@@ -411,23 +413,27 @@ setArcaneBond(doc, bond: { type: "familiar" | "object"; familiarKind?: string; b
 
 ---
 
-## Stage 4 (deferred): Bloodline arcana/powers + school powers
+## Stage 4 (partially done): Bloodline arcana/powers + school powers
 
-**Goal**: Author the **passive abilities** that today are prose-only: a sorcerer's bloodline arcana (e.g. Draconic "+1 HP/HD", Fey "+2 vs enchantment) and bloodline powers (the named abilities unlocked at SL 1/3/9/15/20); a wizard's arcane school powers (diviner's foreknowledge, evoker's elemental damage, etc.). These are real but **not table-blocking** — a test session runs fine with bonus spells/slots + bloodline-tagged badge; missing the passive arcana shows up as HP being 1/HD too low, or a missing +2 vs. enchant, which a tester can hand-track until this stage lands.
+**Goal**: Author the **passive abilities** that today are prose-only: a sorcerer's bloodline arcana (e.g. Draconic "+1 HP/HD", Fey "+2 vs enchantment) and bloodline powers (the named abilities unlocked at SL 1/3/9/15/20); a wizard's arcane school powers (diviner's foreknowledge, evoker's elemental damage, etc.); and — found in the same audit — a cleric's domain powers (Fire Domain's Fire Bolt/Fire Resistance, etc.), which this doc never separately called out as deferred.
 
-**Why deferred**:
-- Each bloodline (~40) and each school (8 + Universalist) needs its powers hand-authored clean-room from published PF1 rules (none are in the vendored Foundry content as structured data). That's ~50 small change-set entries with bespoke conditions (Draconic's "+1 HP/HD" needs a new `target`; Fey's "+2 vs enchantment" needs a bounded save-tag mechanism that doesn't exist yet).
+> **Correction (2026-07-03)**: the premise "none are in the vendored Foundry content as structured data" below was **wrong** for wizard school powers and cleric domain powers — both live as fully structured `type: feat` entries under `class-abilities/wizard-schools/*.yaml` and `class-abilities/domains/*.yaml` respectively (name, description, level-gated `links.supplements`, `uses.maxFormula` for per-day powers), in the exact shape `transformClassFeature`/`transformClass` already handled for ordinary class features. **Implemented**: `packages/schema/src/refdata.ts` (`Domain`, `WizardSchool`, `RefData.domains`/`wizardSchools`), `packages/data-pipeline/src/transform/classes.ts` (`transformDomain`, `transformWizardSchool`, shared `resolveFeatureGrants`), `packages/engine/src/archetypes.ts` (`collectGrantedFeatures` — feeds both `resolveClassFeatures` display and `resources.ts`'s uses/day pools automatically), and the `DomainPicker`/`SchoolPicker`/`ClassFeaturesList` builder UI (origin-labeled entries, e.g. "Fire Bolt — Fire Domain"). Scope: top-level domains/schools only (35 domains, 9 schools) — subdomains and druid-domains are excluded (no structural link back to a parent domain in the source data), as are the elemental/focused-school variant rules.
+>
+> **Sorcerer bloodline arcana/powers remains genuinely unvendored** (prose-only) — the rest of this section's analysis still applies to that half only.
+
+**Why still deferred (bloodline arcana/powers only)**:
+- Each bloodline (~40) needs its arcana/powers hand-authored clean-room from published PF1 rules (not in the vendored Foundry content as structured data, unlike wizard schools/cleric domains above). That's dozens of small change-set entries with bespoke conditions (Draconic's "+1 HP/HD" needs a new `target`; Fey's "+2 vs enchantment" needs a bounded save-tag mechanism that doesn't exist yet).
 - The bonuses route through the engine's change-application path (same path as `feat-effects.ts`), but several need new targets (`hd.bonus` for the +1 HP/HD; `saves.vs.<descriptor>` for descriptor-bounded saves) that aren't currently consumed in `compute.ts`.
 - The UI work is small (render the auto-granted abilities in the build summary) but the data entry is the lion's share.
 
 **Scope sketch** (not committing yet):
-- New engine files `packages/engine/src/bloodlines.ts` + `packages/engine/src/schools.ts` mirroring `familiars.ts` / `feat-effects.ts` — each entry `{ id, name, levelUnlocked, changes: Change[], context?: ContextNote }`.
+- New engine file `packages/engine/src/bloodlines.ts` mirroring `familiars.ts` / `feat-effects.ts` — each entry `{ id, name, levelUnlocked, changes: Change[], context?: ContextNote }`.
 - Some entries need new engine targets: `hd.bonus` (+1 HP/HD), `saves.vs.enchantment` (+2 vs a descriptor). Adding new targets is a knock-on change to `compute.ts` — small, but each one needs a fixture. Evaluate whether to (a) add the targets, or (b) defer the abilities that need them and ship only the ones that fit existing targets (Draconic "+1/HD HP" is the most table-visible, since every sorcerer Draconic missing it has wrong max HP).
-- UI: builder summary surfaces "Bloodline: Draconic — Arcana: +1 HP/HD, Powers: Claws (L1), Breath Weapon (L9, …)"; tracker renders them in the class-features panel.
+- UI: builder summary surfaces "Bloodline: Draconic — Arcana: +1 HP/HD, Powers: Claws (L1), Breath Weapon (L9, …)"; tracker renders them in the class-features panel (same `origin`-label pattern now used for domain/school powers).
 
-**Decision deferred until Stages 1–3 land.** Reassess after the tester confirms which passive bonuses they actually miss in play — it may turn out only the +1 HP/HD (Draconic) and a couple of save bonuses are table-visible enough to justify the data-entry cost.
+**Decision deferred.** Reassess after the tester confirms which passive bonuses they actually miss in play — it may turn out only the +1 HP/HD (Draconic) and a couple of save bonuses are table-visible enough to justify the data-entry cost.
 
-**Status**: Not Started (deferred per staging rationale above)
+**Status**: Wizard school powers + cleric domain powers **Done** (2026-07-03). Sorcerer bloodline arcana/powers: Not Started (deferred per staging rationale above — genuinely hand-authoring, unlike the other two).
 
 ---
 

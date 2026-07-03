@@ -82,7 +82,9 @@ export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
 export {
   resolveClassFeatures,
   archetypeSwappedUuids,
+  collectGrantedFeatures,
   type ResolvedClassFeatures,
+  type GrantedFeature,
 } from "./archetypes.js";
 export {
   isTargetApplied,
