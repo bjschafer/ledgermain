@@ -535,6 +535,14 @@ button:focus-visible,
 	border-color: var(--line);
 }
 
+/* A non-interactive chip that only shows a value (e.g. racial languages) —
+   same shape as a toggle .chip, but no press/hover affordance. */
+.chip.display-only {
+	opacity: 0.82;
+	border-style: dashed;
+	cursor: default;
+}
+
 .ability-chips {
 	display: flex;
 	flex-wrap: wrap;

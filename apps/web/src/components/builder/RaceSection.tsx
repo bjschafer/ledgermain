@@ -3,13 +3,19 @@ import { useMemo, useState } from "react";
 import { raceGrantsFlexibleAbility } from "@pf1/engine";
 import { ABILITY_IDS } from "@pf1/schema";
 
-import { setFlexibleAbility, setRace } from "../../model/doc.js";
+import { setBonusLanguages, setFlexibleAbility, setRace } from "../../model/doc.js";
+import {
+  languageLabel,
+  racialLanguages,
+  suggestedBonusLanguageCount,
+} from "../../model/languages.js";
 import { ABILITY_ABBR } from "../../model/names.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
-export function RaceSection({ doc, refData, update }: BuilderProps) {
+export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   const [pendingRaceId, setPendingRaceId] = useState<string | null>(null);
+  const [langInput, setLangInput] = useState("");
 
   const races = useMemo(
     () =>
@@ -19,6 +25,25 @@ export function RaceSection({ doc, refData, update }: BuilderProps) {
   const selected = refData.races[doc.identity.race];
   const flexible = selected ? raceGrantsFlexibleAbility(selected) : false;
   const pendingRace = pendingRaceId != null ? refData.races[pendingRaceId] : undefined;
+  const racial = racialLanguages(doc, refData);
+  const bonusLanguages = doc.build.bonusLanguages ?? [];
+  const suggestedCount = suggestedBonusLanguageCount(doc, sheet.abilities.int.mod);
+
+  function addLanguage() {
+    const trimmed = langInput.trim();
+    if (!trimmed) return;
+    update((d) => setBonusLanguages(d, [...(d.build.bonusLanguages ?? []), trimmed]));
+    setLangInput("");
+  }
+
+  function removeLanguage(index: number) {
+    update((d) =>
+      setBonusLanguages(
+        d,
+        (d.build.bonusLanguages ?? []).filter((_, i) => i !== index),
+      ),
+    );
+  }
 
   return (
     <Panel title="Race" step="iii" storageKey="panel:Race">
@@ -101,6 +126,64 @@ export function RaceSection({ doc, refData, update }: BuilderProps) {
           </div>
         </div>
       )}
+      <div style={{ marginTop: 12 }}>
+        <p className="hint">Racial languages</p>
+        <div className="chips" style={{ marginTop: 6 }}>
+          {racial.length > 0 ? (
+            racial.map((id) => (
+              <span key={id} className="chip display-only">
+                {languageLabel(id)}
+              </span>
+            ))
+          ) : (
+            <p className="hint">Choose a race to see its languages.</p>
+          )}
+        </div>
+      </div>
+      <div style={{ marginTop: 12 }}>
+        <p className="hint">
+          Bonus languages
+          {suggestedCount > 0
+            ? ` · suggested ${suggestedCount} (Int bonus + Linguistics ranks)`
+            : ""}
+        </p>
+        <div className="chips" style={{ marginTop: 6 }}>
+          {bonusLanguages.map((lang, i) => (
+            <button
+              key={`${lang}-${i}`}
+              type="button"
+              className="chip"
+              aria-pressed="true"
+              title="Click to remove"
+              onClick={() => removeLanguage(i)}
+            >
+              {lang} ×
+            </button>
+          ))}
+        </div>
+        <div className="lang-add-row" style={{ marginTop: 6, display: "flex", gap: 8 }}>
+          <input
+            type="text"
+            placeholder="Add a language…"
+            value={langInput}
+            onChange={(e) => setLangInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addLanguage();
+              }
+            }}
+          />
+          <button
+            type="button"
+            className="btn-ghost"
+            disabled={!langInput.trim()}
+            onClick={addLanguage}
+          >
+            + Add
+          </button>
+        </div>
+      </div>
     </Panel>
   );
 }

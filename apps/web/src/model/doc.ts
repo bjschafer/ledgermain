@@ -237,6 +237,22 @@ export function setArchetypes(
 	return { ...doc, build: { ...doc.build, archetypes: trimmed } };
 }
 
+/**
+ * Set the free-text bonus languages (`build.bonusLanguages` — see
+ * `model/languages.ts`). Replaces the whole list, same shape as
+ * `setArchetypes`; blank entries are dropped. No dedup here (the display
+ * layer in `model/languages.ts` dedupes against racial languages) and no
+ * validation against a real-world language list — soft-warning posture,
+ * matching the project's other free-choice fields.
+ */
+export function setBonusLanguages(
+	doc: CharacterDoc,
+	languages: string[],
+): CharacterDoc {
+	const trimmed = languages.map((l) => l.trim()).filter((l) => l.length > 0);
+	return { ...doc, build: { ...doc.build, bonusLanguages: trimmed } };
+}
+
 export function setGender(doc: CharacterDoc, gender: string): CharacterDoc {
 	return { ...doc, identity: { ...doc.identity, gender } };
 }

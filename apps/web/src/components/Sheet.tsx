@@ -4,6 +4,7 @@ import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { ABILITY_IDS } from "../model/doc.js";
 import { casterLevelForClass, isCasterTag } from "../model/casterLevel.js";
+import { combinedLanguages } from "../model/languages.js";
 import {
 	ABILITY_ABBR,
 	ALIGNMENT_LABELS,
@@ -83,6 +84,14 @@ export function Sheet({
 				].filter(Boolean);
 				return details.length > 0 ? (
 					<div className="char-identity">{details.join(" · ")}</div>
+				) : null;
+			})()}
+			{(() => {
+				const languages = combinedLanguages(doc, refData);
+				return languages.length > 0 ? (
+					<div className="char-identity char-languages">
+						Languages: {languages.join(", ")}
+					</div>
 				) : null;
 			})()}
 
