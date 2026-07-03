@@ -19,6 +19,11 @@ export function transformRace(doc: RawDoc, resolveUuid: UuidResolver): Race {
     if (typeof val === "number") speeds[mode] = val;
   }
 
+  // A minority of non-core races carry a `system.classSkills` list (e.g.
+  // Adaro -> Swim is always a class skill). Omit the field entirely rather
+  // than storing an empty array when the source has no such grant.
+  const classSkills = asStringArray(sys.classSkills);
+
   return {
     id: doc._id,
     name: doc.name,
@@ -32,5 +37,6 @@ export function transformRace(doc: RawDoc, resolveUuid: UuidResolver): Race {
     creatureSubtypes: asStringArray(sys.creatureSubtypes),
     changes: normalizeChanges(sys.changes),
     contextNotes: normalizeContextNotes(sys.contextNotes, resolveUuid),
+    ...(classSkills.length > 0 ? { classSkills } : {}),
   };
 }

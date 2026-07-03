@@ -71,6 +71,18 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre"
+    ],
     "contextNotes": [],
     "creatureSubtypes": [],
     "creatureTypes": [
@@ -118,6 +130,9 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "swm"
+    ],
     "contextNotes": [],
     "creatureSubtypes": [
       "aquatic"
@@ -162,6 +177,9 @@
         "target": "dex",
         "type": "racial"
       }
+    ],
+    "classSkills": [
+      "fly"
     ],
     "contextNotes": [],
     "creatureSubtypes": [],
@@ -458,6 +476,9 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "swm"
+    ],
     "contextNotes": [],
     "creatureSubtypes": [
       "water"
@@ -507,6 +528,9 @@
         "target": "int",
         "type": "racial"
       }
+    ],
+    "classSkills": [
+      "swm"
     ],
     "contextNotes": [
       {
@@ -715,6 +739,9 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "swm"
+    ],
     "contextNotes": [
       {
         "target": "allSavingThrows",
@@ -759,6 +786,18 @@
         "target": "cha",
         "type": "racial"
       }
+    ],
+    "classSkills": [
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre"
     ],
     "contextNotes": [],
     "creatureSubtypes": [
@@ -1138,6 +1177,9 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "swm"
+    ],
     "contextNotes": [],
     "creatureSubtypes": [
       "aquatic"
@@ -1192,6 +1234,9 @@
         "target": "con",
         "type": "racial"
       }
+    ],
+    "classSkills": [
+      "ste"
     ],
     "contextNotes": [],
     "creatureSubtypes": [
@@ -1339,6 +1384,9 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "swm"
+    ],
     "contextNotes": [],
     "creatureSubtypes": [
       "aquatic"
@@ -1377,6 +1425,9 @@
         "target": "dex",
         "type": "racial"
       }
+    ],
+    "classSkills": [
+      "fly"
     ],
     "contextNotes": [
       {
@@ -1595,6 +1646,9 @@
         "type": "base"
       }
     ],
+    "classSkills": [
+      "swm"
+    ],
     "contextNotes": [],
     "creatureSubtypes": [
       "aquatic"
@@ -1783,6 +1837,9 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "swm"
+    ],
     "contextNotes": [],
     "creatureSubtypes": [
       "aquatic"
@@ -1837,6 +1894,9 @@
         "target": "skill.han",
         "type": "racial"
       }
+    ],
+    "classSkills": [
+      "swm"
     ],
     "contextNotes": [],
     "creatureSubtypes": [
@@ -1941,6 +2001,10 @@
         "target": "dex",
         "type": "racial"
       }
+    ],
+    "classSkills": [
+      "per",
+      "ste"
     ],
     "contextNotes": [],
     "creatureSubtypes": [
@@ -2104,6 +2168,9 @@
         "target": "nac",
         "type": "base"
       }
+    ],
+    "classSkills": [
+      "swm"
     ],
     "contextNotes": [],
     "creatureSubtypes": [
@@ -2308,6 +2375,9 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "sur"
+    ],
     "contextNotes": [
       {
         "target": "allSavingThrows",
@@ -2465,6 +2535,9 @@
         "target": "str",
         "type": "racial"
       }
+    ],
+    "classSkills": [
+      "swm"
     ],
     "contextNotes": [],
     "creatureSubtypes": [
@@ -3161,6 +3234,9 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "swm"
+    ],
     "contextNotes": [],
     "creatureSubtypes": [
       "native"
@@ -3751,6 +3827,9 @@
         "type": "racial"
       }
     ],
+    "classSkills": [
+      "fly"
+    ],
     "contextNotes": [
       {
         "target": "skill.per",
@@ -3916,6 +3995,9 @@
         "target": "cha",
         "type": "racial"
       }
+    ],
+    "classSkills": [
+      "fly"
     ],
     "contextNotes": [],
     "creatureSubtypes": [],

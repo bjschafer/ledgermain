@@ -4,9 +4,11 @@
  * as the 7 core races but with content the core slice never touched: a
  * skill-tagged ability spread (Tiefling), a small-size race with a
  * `nac`/"base"-typed natural-armor change (Kobold), a non-30ft base land
- * speed (Oread), and a race whose unmodeled racial trait (Drow Noble's
- * scaling spell resistance) must evaluate without throwing even though
- * nothing in the DerivedSheet surfaces it.
+ * speed (Oread), a race whose unmodeled racial trait (Drow Noble's scaling
+ * spell resistance) must evaluate without throwing even though nothing in
+ * the DerivedSheet surfaces it, and races that carry a `classSkills` grant
+ * (issue #28) that the engine must union into the character's class-skill
+ * set alongside the class-granted ones.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -25,7 +27,7 @@ function raceId(name: string): string {
 }
 
 /** Fighter L1, all abilities at 10 (mod 0) before racial changes, no gear. */
-function makeDoc(raceName: string): CharacterDoc {
+function makeDoc(raceName: string, skillRanks: Record<string, number> = {}): CharacterDoc {
   return {
     schemaVersion: 1,
     id: `race-test-${raceName}`,
@@ -40,7 +42,7 @@ function makeDoc(raceName: string): CharacterDoc {
     abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
     build: {
       feats: [],
-      skillRanks: {},
+      skillRanks,
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
@@ -146,5 +148,34 @@ describe("vendored non-core race: Drow Noble (unmodeled scaling SR degrades grac
     expect(sheet.abilities.con.total).toBe(8);
     expect(sheet.abilities.wis.total).toBe(12);
     expect(sheet.abilities.dex.total).toBe(14);
+  });
+});
+
+describe("race-granted class skills (issue #28)", () => {
+  // Strix always treat Fly as a class skill (system.classSkills: ["fly"]).
+  // Fighter's own classSkills list does NOT include Fly, so this is a grant
+  // the class alone would never produce.
+  it("Strix (race classSkills: fly) grants the +3 bonus once ranks are invested, Fighter has no Fly class-skill of its own", () => {
+    const sheet = compute(makeDoc("Strix", { fly: 1 }), ref);
+    expect(sheet.skills.fly!.classSkill).toBe(true);
+    expect(sheet.skills.fly!.classSkillBonus).toBe(3);
+  });
+
+  it("without ranks invested, the race grant alone does not add the +3 (bonus requires ranks >= 1)", () => {
+    const sheet = compute(makeDoc("Strix"), ref);
+    expect(sheet.skills.fly!.classSkill).toBe(true);
+    expect(sheet.skills.fly!.classSkillBonus).toBe(0);
+  });
+
+  it("Human (no race classSkills) leaves Fly as a non-class skill for a Fighter", () => {
+    const sheet = compute(makeDoc("Human", { fly: 1 }), ref);
+    expect(sheet.skills.fly!.classSkill).toBe(false);
+    expect(sheet.skills.fly!.classSkillBonus).toBe(0);
+  });
+
+  it("Adaro (race classSkills: swm) overlapping Fighter's own Swim class-skill does not double the +3", () => {
+    const sheet = compute(makeDoc("Adaro", { swm: 1 }), ref);
+    expect(sheet.skills.swm!.classSkill).toBe(true);
+    expect(sheet.skills.swm!.classSkillBonus).toBe(3);
   });
 });
