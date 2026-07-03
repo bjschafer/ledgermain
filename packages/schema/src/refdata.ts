@@ -96,6 +96,13 @@ export interface Race extends RefEntity {
    */
   changes: Change[];
   contextNotes: ContextNote[];
+  /**
+   * Skills that are always class skills for this race, regardless of class
+   * (e.g. Adaro always treat Swim as a class skill). Present on a minority of
+   * non-core races; omitted (rather than an empty array) when the source has
+   * no such grant.
+   */
+  classSkills?: SkillId[];
 }
 
 /* ----------------------------------------------------------------- classes -- */

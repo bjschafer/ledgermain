@@ -392,15 +392,19 @@ function computeSkills(
   abilities: Record<AbilityId, AbilityView>,
   collected: CollectedModifier[],
 ): Record<string, DerivedSkill> {
-  // Class-skill set: union of all the character's classes' classSkills. The
-  // vendored class lists carry the bare "crf"/"pro"/"prf" id (never a
-  // per-instance one), so membership for a parameterized instance is
-  // resolved via its base id below (see skillBaseId).
+  // Class-skill set: union of all the character's classes' classSkills, plus
+  // any class skills granted unconditionally by the race (e.g. Adaro always
+  // treat Swim as a class skill). Both vendored lists carry the bare
+  // "crf"/"pro"/"prf" id (never a per-instance one), so membership for a
+  // parameterized instance is resolved via its base id below (see
+  // skillBaseId).
   const classSkillSet = new Set<string>();
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
     for (const s of def?.classSkills ?? []) classSkillSet.add(s);
   }
+  const race = refData.races[doc.identity.race];
+  for (const s of race?.classSkills ?? []) classSkillSet.add(s);
 
   // Effective armor check penalty (negative), reduced by armor-training acpA.
   const wornAcp = (doc.build.gear ?? []).reduce(
