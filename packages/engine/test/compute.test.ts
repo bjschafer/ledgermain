@@ -238,6 +238,13 @@ describe("compute: paladin L5 (human, no armor)", () => {
     expect(paladinEntry![1].bab).toBe("high");
     expect(paladinEntry![1].saves).toEqual({ fort: "high", ref: "low", will: "high" });
   });
+
+  it("Smite Evil class feature carries hand-authored attack/damage/AC detail (Cha +3, L5)", () => {
+    const smiteEvil = sheet.classFeatures.find((f) => f.name === "Smite Evil");
+    expect(smiteEvil).toBeDefined();
+    expect(smiteEvil!.classTag).toBe("paladin");
+    expect(smiteEvil!.detail).toBe("+3 atk, +5 dmg, +3 AC vs. evil");
+  });
 });
 
 describe("compute: ranger L5 (human, no armor)", () => {

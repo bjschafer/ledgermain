@@ -183,4 +183,36 @@ describe("resource pools derived from class features", () => {
     expect(channel?.per).toBe("day");
     expect(channel?.detail).toBe("3d6 (DC 14)");
   });
+
+  it("derives Smite Evil uses/day (uses.maxFormula, already vendored) + hand-authored attack/dmg/AC detail", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      // Cha 16 (+3). HD total 5 → floor((5-1)/3)+1 = 2 uses/day.
+      abilities: { str: 14, dex: 10, con: 14, int: 10, wis: 12, cha: 16 },
+      identity: { name: "Aria", race: raceId("Human"), classes: [{ tag: "paladin", level: 5 }] },
+    };
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const smite = pools.find((p) => p.name === "Smite Evil");
+    expect(smite).toBeDefined();
+    expect(smite?.max).toBe(2);
+    expect(smite?.per).toBe("day");
+    expect(smite?.detail).toBe("+3 atk, +5 dmg, +3 AC vs. evil");
+  });
+
+  it("derives Lay on Hands uses/day (uses.maxFormula, already vendored) + hand-authored healing-dice detail", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      // Cha 16 (+3). L5 → floor(5/2) + 3 = 5 uses/day; healing dice floor(5/2) = 2d6.
+      abilities: { str: 14, dex: 10, con: 14, int: 10, wis: 12, cha: 16 },
+      identity: { name: "Aria", race: raceId("Human"), classes: [{ tag: "paladin", level: 5 }] },
+    };
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const loh = pools.find((p) => p.name === "Lay on Hands");
+    expect(loh).toBeDefined();
+    expect(loh?.max).toBe(5);
+    expect(loh?.per).toBe("day");
+    expect(loh?.detail).toBe("2d6");
+  });
 });

@@ -8,6 +8,7 @@
  */
 
 import type {
+  AbilityId,
   CharacterDoc,
   DerivedArchetype,
   DerivedArchetypeFeature,
@@ -15,16 +16,23 @@ import type {
   RefData,
 } from "@pf1/schema";
 
-import { sneakAttackDice } from "./tables.js";
+import { sneakAttackDice, smiteEvilDetail, smiteEvilLabel } from "./tables.js";
+import type { AbilityView } from "./rolldata.js";
 
 export interface ResolvedClassFeatures {
   classFeatures: DerivedClassFeature[];
   activeArchetypes: DerivedArchetype[];
 }
 
+/**
+ * `abilities` (from a computed sheet) lets Smite Evil's Cha-keyed detail
+ * resolve against final scores; omit it to treat Cha modifier as 0 (matches
+ * `deriveResourcePools`'s optional-abilities posture).
+ */
 export function resolveClassFeatures(
   doc: CharacterDoc,
   refData: RefData,
+  abilities?: Record<AbilityId, AbilityView>,
 ): ResolvedClassFeatures {
   // uuid of a base-class grant -> the archetype feature name that replaces it.
   const replacedByUuid = new Map<string, string>();
@@ -71,13 +79,16 @@ export function resolveClassFeatures(
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;
       const replacedBy = replacedByUuid.get(grant.uuid);
-      // Sneak Attack's die count has no vendored tag (Foundry only tags
-      // channelEnergy/rage) — matched by name, same posture as feat-effects.ts's
-      // name-slug lookup.
-      const detail =
-        cls.tag === "rogue" && grant.name === "Sneak Attack"
-          ? sneakAttackDice(cls.level).diceLabel
-          : undefined;
+      // Sneak Attack's die count and Smite Evil's attack/damage/AC scaling
+      // have no vendored tag/changes (Foundry only tags channelEnergy/rage) —
+      // matched by name, same posture as feat-effects.ts's name-slug lookup.
+      let detail: string | undefined;
+      if (cls.tag === "rogue" && grant.name === "Sneak Attack") {
+        detail = sneakAttackDice(cls.level).diceLabel;
+      } else if (cls.tag === "paladin" && grant.name === "Smite Evil") {
+        const chaMod = abilities?.cha?.mod ?? 0;
+        detail = smiteEvilLabel(smiteEvilDetail(cls.level, chaMod));
+      }
       classFeatures.push({
         level: grant.level,
         classTag: cls.tag,

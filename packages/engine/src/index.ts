@@ -54,6 +54,11 @@ export {
   type ChannelEnergyDetail,
   sneakAttackDice,
   type SneakAttackDetail,
+  smiteEvilDetail,
+  smiteEvilLabel,
+  type SmiteEvilDetail,
+  layOnHandsDice,
+  type LayOnHandsDetail,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export {

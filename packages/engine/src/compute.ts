@@ -706,7 +706,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
 
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};
-  const { classFeatures, activeArchetypes } = resolveClassFeatures(doc, refData);
+  const { classFeatures, activeArchetypes } = resolveClassFeatures(doc, refData, abilities);
   const sheet = {
     schemaVersion: SCHEMA_VERSION,
     level,

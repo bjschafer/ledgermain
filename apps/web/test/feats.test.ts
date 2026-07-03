@@ -171,6 +171,26 @@ describe("expectedFeatCount: Sorcerer bonus feats", () => {
   });
 });
 
+describe("expectedFeatCount: Ranger Combat Style bonus feats", () => {
+  // Ranger's "Combat Style Feat" (granted at rL 2) carries a vendored
+  // `changes[]` entry targeting `bonusFeats` with formula
+  // "floor((@class.unlevel + 2) / 4)" — this flows through the same generic
+  // classBonusFeats() pipeline as Fighter/Wizard/Sorcerer with no
+  // hand-authoring needed (issue #13 step 2 audit). No feat is literally
+  // named "Combat Style Feat", so it's a free slot, not a fixed grant.
+
+  it("Ranger 6 Elf → 3 base + 2 combat style = 5", () => {
+    const doc = makeDoc({ classes: [{ tag: "ranger", level: 6 }], race: "Elf" });
+    // base: ceil(6/2)=3; combat style: floor((6+2)/4)=2 → total=5
+    expect(expectedFeatCount(doc, ref)).toBe(5);
+  });
+
+  it("Ranger 1 Elf → 1 base, no combat style slot yet (feature grants at rL 2)", () => {
+    const doc = makeDoc({ classes: [{ tag: "ranger", level: 1 }], race: "Elf" });
+    expect(expectedFeatCount(doc, ref)).toBe(1);
+  });
+});
+
 describe("expectedFeatCount: multiclass fighter + wizard bonus feats stack", () => {
   it("Fighter 2 / Wizard 5 Elf → base + fighter bonus + wizard slot bonus", () => {
     const doc = makeDoc({

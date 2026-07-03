@@ -423,3 +423,86 @@ export function sneakAttackDice(rogueLevel: number): SneakAttackDetail {
   const dice = Math.floor((rogueLevel + 1) / 2);
   return { dice, diceLabel: `${dice}d6` };
 }
+
+/* ------------------------------------------------------------ smite evil -- */
+
+/**
+ * Paladin Smite Evil scaling, clean-room from the published PF1 SRD (the
+ * Smite Evil class feature's `changes[]` is prose-only upstream — only the
+ * `uses.maxFormula` use-count is vendored; the attack/damage/AC math is not).
+ *
+ * "the paladin adds her Charisma bonus (if any) to her attack rolls and adds
+ * her paladin level to all damage rolls made against the target of her
+ * smite. ... the paladin gains a deflection bonus equal to her Charisma
+ * modifier (if any) to her AC against attacks made by the target of the
+ * smite." Both the attack and AC bonuses are "(if any)" — a negative Cha
+ * modifier does not become a penalty, so both floor at 0. Damage is a flat
+ * `paladinLevel` (not halved, not dice) against the general smite target; the
+ * SRD's "2 points of damage per level" against evil outsiders/evil dragons/
+ * undead is a first-successful-attack-only escalation and is display/prose
+ * territory, not modeled here (same posture as prose-only feature text
+ * elsewhere in this engine).
+ */
+export interface SmiteEvilDetail {
+  /** Bonus to attack rolls vs. the smite target: max(0, chaMod). */
+  attackBonus: number;
+  /** Bonus to damage rolls vs. the smite target: flat paladinLevel. */
+  damageBonus: number;
+  /** Deflection bonus to AC vs. the smite target: max(0, chaMod). */
+  acBonus: number;
+}
+
+/**
+ * Smite Evil's attack/damage/AC bonuses for a paladin of `paladinLevel` with
+ * a Charisma modifier of `chaMod`. Out-of-range level returns all-zero
+ * bonuses (a 0-level "paladin" has no Smite Evil).
+ */
+export function smiteEvilDetail(paladinLevel: number, chaMod: number): SmiteEvilDetail {
+  if (paladinLevel <= 0) {
+    return { attackBonus: 0, damageBonus: 0, acBonus: 0 };
+  }
+  const chaBonus = Math.max(0, chaMod);
+  return { attackBonus: chaBonus, damageBonus: paladinLevel, acBonus: chaBonus };
+}
+
+/**
+ * One-line display string for a {@link SmiteEvilDetail}, e.g.
+ * "+3 atk, +5 dmg, +3 AC vs. evil". Shared by `resolveClassFeatures`'s
+ * classFeature `detail` and `deriveResourcePools`'s pool `detail` so the two
+ * surfaces (class-features list, resource-pool row) never drift.
+ */
+export function smiteEvilLabel(detail: SmiteEvilDetail): string {
+  return `+${detail.attackBonus} atk, +${detail.damageBonus} dmg, +${detail.acBonus} AC vs. evil`;
+}
+
+/* -------------------------------------------------------- lay on hands ---- */
+
+/**
+ * Paladin Lay on Hands healing dice, clean-room from the published PF1 SRD
+ * (the healing dice live on the class feature's `action.damage` formula
+ * upstream, which is NOT part of the vendored `ClassFeature` shape — only
+ * `uses.maxFormula` is captured — so the dice count doesn't come from the
+ * pipeline's JSON and is hand-authored here, same posture as
+ * `sneakAttackDice`).
+ *
+ * "a paladin can heal 1d6 hit points of damage for every two paladin levels
+ * she possesses" — `floor(paladinLevel / 2)` d6.
+ */
+export interface LayOnHandsDetail {
+  /** Number of d6 healed per use (0 below 2nd level, 10 at L20). */
+  dice: number;
+  /** Display string, e.g. "2d6". */
+  diceLabel: string;
+}
+
+/**
+ * Lay on Hands healing dice count for a paladin of `paladinLevel`.
+ * Out-of-range level returns `dice: 0`.
+ */
+export function layOnHandsDice(paladinLevel: number): LayOnHandsDetail {
+  if (paladinLevel <= 0) {
+    return { dice: 0, diceLabel: "0d6" };
+  }
+  const dice = Math.floor(paladinLevel / 2);
+  return { dice, diceLabel: `${dice}d6` };
+}

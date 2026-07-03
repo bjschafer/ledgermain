@@ -445,6 +445,21 @@ A sweep of the other sliced classes for the same shape (choice-bearing, prose-on
 - *Non-gap*: **Armor Training** carries structured `changes` in the vendored data and already applies via the class-feature path. **Bravery** is prose-only but choice-free and situational (+1 Will vs fear per 4 levels) — context-note material at most.
 - *Non-gap*: **Channel Energy** is already modeled (`tables.ts` `channelEnergyDetail` + resource pools).
 
+### Paladin/Ranger mechanical audit (issue #13 step 2, 2026-07-02)
+
+Following the same treatment as Rogue's step 2 (`sneakAttackDice`): Smite Evil's attack/damage/AC scaling is hand-authored clean-room (`smiteEvilDetail` in `packages/engine/src/tables.ts`, wired into `resolveClassFeatures`'s `detail` field) since it's unconditional and table-visible every session it's active. Lay on Hands' healing dice similarly got a small hand-authored `layOnHandsDice` wired into `resources.ts`'s tag-gated detail (mirroring `channelEnergy`'s special case — Lay on Hands does carry a real `tag: "layOnHands"` upstream, so no new machinery was needed). Divine Grace and both classes' `uses.maxFormula` resource pools (Smite Evil uses/day, Lay on Hands uses/day) already worked for free via the generic changes-formula/resource pipeline, confirmed by fixture tests rather than assumed. Ranger's Combat Style Feat *bonus feat count* (`floor((@class.unlevel + 2) / 4)` targeting `bonusFeats`) also already flows through the generic `classBonusFeats` pipeline in `apps/web/src/model/feats.ts` with no changes.
+
+Deferred, same posture as Rogue Talents / Barbarian Rage Powers (prose-only, choice-bearing, no vendored numeric formula — already render via `ClassFeaturesList.tsx`'s engine-free prose display):
+
+- **Favored Enemy** (ranger) — bonus to attack/damage/skill checks vs. a chosen creature type, scaling with ranger level. Would need `build.favoredEnemies?: string[]` + a hand-authored effects table (the scaling bonus itself, +2 at L1 growing every 5 levels, is well-defined but the creature-type targeting has no structured representation in this schema yet). Deferred.
+- **Favored Terrain** (ranger) — bonus to Perception/Stealth/Survival/initiative in a chosen terrain type. Would need `build.favoredTerrains?: string[]` + effects table. Deferred.
+- **Ranger Combat Style *feat choice*** (as opposed to the bonus-feat *count*, which is mechanical and already works — see above) — which combat-style feat tree (Archery, Two-Weapon Combat, etc.) the bonus feat slots must be filled from. Would need a `build.combatStyle?: string` field plus prerequisite-bypass logic for the chosen tree's feats. Deferred.
+- **Divine Bond** (paladin) — weapon bond (temporary weapon enhancement bonus) or mount (special mount table, similar shape to the druid animal companion / summoner eidolon systems this project hasn't built). Deferred.
+- **Mercy** (paladin) — Lay on Hands additionally cures a condition per mercy known, scaling in number with level. Would need `build.paladinMercies?: string[]` + a condition-cure effects table. Deferred.
+- **Hunter's Bond** (ranger) — companion or party attack-bonus-sharing ability; overlaps with the deferred animal-companion system. Deferred.
+- *Non-gap*: **Divine Grace** already applies via the generic `changes[]` pipeline (`@abilities.cha.mod` → `allSavingThrows`, untyped) — no hand-authoring needed.
+- *Non-gap (documented gap, not built)*: **Track** (ranger) carries a vendored `contextNotes[]` entry (`+max(1, floor(@class.unlevel/2))` to Survival checks to follow tracks) but this engine's `contextNotes` support (`packages/engine/src/conditions.ts`) is a separate, hand-authored condition mechanism — it does NOT consume RefData's vendored `contextNotes` from class features/items/races (`ClassFeature` in `packages/schema/src/refdata.ts` has no `contextNotes` field at all; the data-pipeline transform never captures it for class-abilities). Wiring vendored `contextNotes` generically would be new engine machinery, out of scope for this step. Track's skill bonus is therefore not modeled; a player must apply it manually.
+
 ---
 
 ## Verification posture (all stages)
