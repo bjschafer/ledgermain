@@ -25,6 +25,12 @@ playwright-report/
 blob-report/
 .playwright/
 
+# Wrangler local dev state (Miniflare's local KV/D1/etc. simulation) and
+# per-developer local secrets (`wrangler secret put` equivalent for
+# `wrangler dev` — see apps/api/README.md). Never commit real secrets.
+.wrangler/
+.dev.vars
+
 # Editor / OS
 .DS_Store
 .idea/
