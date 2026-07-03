@@ -40,12 +40,14 @@ import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stack
 import {
   babForLevels,
   isTrainedOnly,
+  PARAMETERIZED_SKILL_PREFIXES,
   SAVE_ABILITY,
   saveForLevels,
   SIZE_AC_MOD,
   SKILL_ABILITY,
   SKILL_GROUPS,
   SKILL_IDS,
+  skillBaseId,
   skillUsesAcp,
   specialSizeMod,
 } from "./tables.js";
@@ -389,7 +391,10 @@ function computeSkills(
   abilities: Record<AbilityId, AbilityView>,
   collected: CollectedModifier[],
 ): Record<string, DerivedSkill> {
-  // Class-skill set: union of all the character's classes' classSkills.
+  // Class-skill set: union of all the character's classes' classSkills. The
+  // vendored class lists carry the bare "crf"/"pro"/"prf" id (never a
+  // per-instance one), so membership for a parameterized instance is
+  // resolved via its base id below (see skillBaseId).
   const classSkillSet = new Set<string>();
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
@@ -404,15 +409,43 @@ function computeSkills(
   const acpReduction = forTarget(collected, "acpA").reduce((s, m) => s + Math.abs(m.value), 0);
   const effectiveAcp = Math.min(0, wornAcp + acpReduction);
 
-  // Pre-group skill.* modifiers by base skill id (subskills route to the
-  // parent). A handful of ids are compound-skill group aliases (e.g.
-  // `skill.knowledge` for Bardic Knowledge) rather than one real skill id —
-  // fan those out to every skill id in the group (see SKILL_GROUPS).
-  const miscBySkill = new Map<string, TypedModifier[]>();
+  // Every skill.* modifier target, split into its "skill." suffix. Resolved
+  // against the final id set below (a raw target with a dot, e.g.
+  // "skill.crf.alchemy", already names one specific parameterized instance
+  // regardless of whether that instance exists elsewhere on the doc).
+  const skillTargets: { rest: string; m: TypedModifier }[] = [];
   for (const m of collected) {
-    if (!m.target.startsWith("skill.")) continue;
-    const baseId = m.target.slice("skill.".length).split(".")[0]!;
-    const targetIds = SKILL_GROUPS[baseId] ?? [baseId];
+    if (m.target.startsWith("skill.")) {
+      skillTargets.push({ rest: m.target.slice("skill.".length), m });
+    }
+  }
+
+  // Base id set: every static skill id, every ranked instance (including
+  // parameterized ones like "crf.alchemy" from build.skillRanks), and any
+  // parameterized instance named explicitly by a modifier target even if it
+  // has no ranks yet.
+  const idsSoFar = new Set<string>([
+    ...SKILL_IDS,
+    ...Object.keys(doc.build.skillRanks ?? {}),
+    ...skillTargets.filter((t) => t.rest.includes(".")).map((t) => t.rest),
+  ]);
+
+  // Pre-group skill.* modifiers by base skill id (subskills route to the
+  // parent). Three kinds of "rest": (1) a dotted rest names one specific
+  // parameterized instance ("crf.alchemy") — targets only that id; (2) a
+  // static compound-skill group alias (e.g. "knowledge" for Bardic
+  // Knowledge) — fans out to its fixed member list (SKILL_GROUPS); (3) one
+  // of the parameterized prefixes (crf/pro/prf) — fans out to the bare id
+  // PLUS every "<prefix>.*" instance the character actually has (data-
+  // dependent, so resolved against idsSoFar rather than a static table).
+  const miscBySkill = new Map<string, TypedModifier[]>();
+  for (const { rest, m } of skillTargets) {
+    const targetIds: readonly string[] = rest.includes(".")
+      ? [rest]
+      : (SKILL_GROUPS[rest] ??
+        (PARAMETERIZED_SKILL_PREFIXES.has(rest)
+          ? [rest, ...[...idsSoFar].filter((id) => id.startsWith(`${rest}.`))]
+          : [rest]));
     for (const id of targetIds) {
       const arr = miscBySkill.get(id);
       if (arr) arr.push(m);
@@ -424,18 +457,15 @@ function computeSkills(
   // to every skill in addition to any per-skill modifiers.
   const globalSkillMods = forTarget(collected, "skills");
 
-  const ids = new Set<string>([
-    ...SKILL_IDS,
-    ...Object.keys(doc.build.skillRanks ?? {}),
-    ...miscBySkill.keys(),
-  ]);
+  const ids = new Set<string>([...idsSoFar, ...miscBySkill.keys()]);
 
   const skills: Record<string, DerivedSkill> = {};
   for (const id of ids) {
-    const ability = SKILL_ABILITY[id] ?? "int";
+    const baseId = skillBaseId(id);
+    const ability = SKILL_ABILITY[baseId] ?? "int";
     const abilityModifier = abilities[ability].mod;
     const ranks = doc.build.skillRanks?.[id] ?? 0;
-    const classSkill = classSkillSet.has(id);
+    const classSkill = classSkillSet.has(id) || classSkillSet.has(baseId);
     const classSkillBonus = classSkill && ranks >= 1 ? 3 : 0;
     const acp = skillUsesAcp(id) ? effectiveAcp : 0;
     const stack = resolveStack([...(miscBySkill.get(id) ?? []), ...globalSkillMods]);

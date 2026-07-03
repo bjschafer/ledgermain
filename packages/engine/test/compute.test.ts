@@ -426,6 +426,130 @@ describe("compute: bard L5 (human, no armor)", () => {
   });
 });
 
+describe("compute: Craft/Profession/Perform parameterized subskills (issue #24)", () => {
+  // Bard L5: "prf" is a bard class skill (bare id, confirmed in the vendored
+  // class data — classes.json never lists a per-instance craft/profession/
+  // perform id), so both prf.* instances below should independently pick up
+  // the class-skill +3. "pro" is trained-only (SKILL_TRAINED_ONLY), so
+  // pro.blacksmithing inherits that from its base id.
+  const doc = makeDoc({
+    classes: [{ tag: "bard", level: 5 }],
+    abilities: { str: 10, dex: 14, con: 14, int: 10, wis: 10, cha: 16 },
+    skillRanks: {
+      "prf.oratory": 5,
+      "prf.dancing": 2,
+      "pro.blacksmithing": 3,
+    },
+  });
+  const sheet = compute(doc, ref);
+
+  it("two Perform instances have independent ranks/totals (cha3 + class +3)", () => {
+    expect(sheet.skills["prf.oratory"]!.ranks).toBe(5);
+    expect(sheet.skills["prf.oratory"]!.total).toBe(11); // 5 + cha3 + 3
+    expect(sheet.skills["prf.dancing"]!.ranks).toBe(2);
+    expect(sheet.skills["prf.dancing"]!.total).toBe(8); // 2 + cha3 + 3
+  });
+
+  it("both Perform instances resolve to Charisma and are marked class skills (base id 'prf' is a bard class skill)", () => {
+    expect(sheet.skills["prf.oratory"]!.ability).toBe("cha");
+    expect(sheet.skills["prf.dancing"]!.ability).toBe("cha");
+    expect(sheet.skills["prf.oratory"]!.classSkill).toBe(true);
+    expect(sheet.skills["prf.dancing"]!.classSkill).toBe(true);
+  });
+
+  it("Profession instance inherits trained-only from its base id 'pro'", () => {
+    expect(sheet.skills["pro.blacksmithing"]!.trainedOnly).toBe(true);
+    expect(sheet.skills["pro.blacksmithing"]!.usable).toBe(true); // ranked
+  });
+
+  it("an unranked bare 'pro' still renders as trained-only and unusable", () => {
+    expect(sheet.skills.pro!.trainedOnly).toBe(true);
+    expect(sheet.skills.pro!.ranks).toBe(0);
+    expect(sheet.skills.pro!.usable).toBe(false);
+  });
+
+  it("a 'skill.prf' group-style modifier (e.g. a Versatile-Performance-shaped buff) hits every prf.* instance, not unrelated skills", () => {
+    const buffed = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "test-perform-boost",
+            name: "Test Perform Boost",
+            changes: [{ formula: "2", target: "skill.prf", type: "untyped" }],
+          },
+        ],
+      },
+    };
+    const buffedSheet = compute(buffed, ref);
+    expect(buffedSheet.skills["prf.oratory"]!.total - sheet.skills["prf.oratory"]!.total).toBe(2);
+    expect(buffedSheet.skills["prf.dancing"]!.total - sheet.skills["prf.dancing"]!.total).toBe(2);
+    // The bare "prf" id (unranked, but still rendered) also gets the group bonus...
+    expect(buffedSheet.skills.prf!.total - sheet.skills.prf!.total).toBe(2);
+    // ...but an unrelated skill (Diplomacy) is untouched.
+    expect(buffedSheet.skills.dip!.total).toBe(sheet.skills.dip!.total);
+  });
+
+  it("a 'skill.prf.oratory' specific-instance modifier hits only that one instance", () => {
+    const buffed = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "test-oratory-boost",
+            name: "Test Oratory Boost",
+            changes: [{ formula: "4", target: "skill.prf.oratory", type: "untyped" }],
+          },
+        ],
+      },
+    };
+    const buffedSheet = compute(buffed, ref);
+    expect(buffedSheet.skills["prf.oratory"]!.total - sheet.skills["prf.oratory"]!.total).toBe(4);
+    expect(buffedSheet.skills["prf.dancing"]!.total).toBe(sheet.skills["prf.dancing"]!.total);
+    expect(buffedSheet.skills.prf!.total).toBe(sheet.skills.prf!.total);
+  });
+});
+
+describe("compute: Craft/Profession/Perform back-compat (bare ids, pre-#24 documents)", () => {
+  // A document written before parameterized subskill support existed only
+  // ever has the bare "crf"/"pro"/"prf" ids in skillRanks. Confirms those
+  // keep behaving exactly as before: unaffected by skillBaseId resolution
+  // (a bare id IS its own base id) and by the new parameterized-prefix
+  // fan-out (a "skill.crf" target still reaches the bare "crf" id itself).
+  const doc = makeDoc({
+    classes: [{ tag: "rogue", level: 5 }],
+    abilities: { str: 10, dex: 14, con: 12, int: 12, wis: 10, cha: 10 },
+    skillRanks: { crf: 3 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("bare 'crf' resolves ability/class-skill/total exactly as a non-parameterized skill", () => {
+    expect(sheet.skills.crf!.ability).toBe("int");
+    expect(sheet.skills.crf!.classSkill).toBe(true); // rogue class skill
+    expect(sheet.skills.crf!.total).toBe(7); // 3 ranks + int1 + class3
+  });
+
+  it("a 'skill.crf' modifier target still reaches the bare id", () => {
+    const buffed = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "test-craft-boost",
+            name: "Test Craft Boost",
+            changes: [{ formula: "1", target: "skill.crf", type: "untyped" }],
+          },
+        ],
+      },
+    };
+    const buffedSheet = compute(buffed, ref);
+    expect(buffedSheet.skills.crf!.total - sheet.skills.crf!.total).toBe(1);
+  });
+});
+
 describe("compute: druid L5 (human, no armor)", () => {
   const doc = makeDoc({
     classes: [{ tag: "druid", level: 5 }],

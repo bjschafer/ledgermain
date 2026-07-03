@@ -102,9 +102,34 @@ export const SKILL_ABILITY: Record<string, AbilityId> = {
   umd: "cha", // Use Magic Device
 };
 
+/**
+ * Craft, Profession, and Perform are each a *family* of independently-ranked
+ * subskills in PF1 (Craft [alchemy], Perform [oratory], ...), not one skill
+ * line. A character may hold zero, one, or several instances of each, keyed
+ * `"<prefix>.<slug>"` (e.g. `"crf.alchemy"`, `"prf.oratory"`) — see
+ * {@link skillBaseId}. The bare `"crf"`/`"pro"`/`"prf"` id remains valid on
+ * its own (back-compat with existing documents, and usable as an
+ * unlabeled/generic instance).
+ */
+export const PARAMETERIZED_SKILL_PREFIXES: ReadonlySet<string> = new Set([
+  "crf",
+  "pro",
+  "prf",
+]);
+
+/**
+ * Returns the "real" `SKILL_ABILITY`/`SKILL_TRAINED_ONLY` lookup key for a
+ * skill id — stripping a parameterized-instance suffix if present (e.g.
+ * `"crf.alchemy"` -> `"crf"`). A plain id (no dot) is returned unchanged.
+ */
+export function skillBaseId(skillId: string): string {
+  const dot = skillId.indexOf(".");
+  return dot === -1 ? skillId : skillId.slice(0, dot);
+}
+
 /** Armor check penalty applies to Strength- and Dexterity-based skill checks. */
 export function skillUsesAcp(skillId: string): boolean {
-  const ability = SKILL_ABILITY[skillId];
+  const ability = SKILL_ABILITY[skillBaseId(skillId)];
   return ability === "str" || ability === "dex";
 }
 
@@ -118,8 +143,15 @@ export const SKILL_IDS = Object.keys(SKILL_ABILITY);
  * (e.g. `skill.dev` for Trapfinding). Only `knowledge` is in the vendored
  * slice today (Bard's Bardic Knowledge — `target: "skill.knowledge"`,
  * confirmed in `packs/class-abilities/bardic-knowledge...yaml`); add more
- * aliases here if a future class feature/buff needs one (e.g. `perform`,
- * `craft`, `profession` all being similarly compound in the full PF1 rules).
+ * aliases here for a fixed SRD family (all of whose members are known ahead
+ * of time, like Knowledge's subtypes).
+ *
+ * Craft/Profession/Perform are deliberately NOT modeled here even though
+ * they're also "compound" in the full PF1 rules: their member list isn't
+ * fixed — it's whatever parameterized instances (`crf.<slug>`, ...) a given
+ * character has created. That fan-out is data-dependent and handled
+ * dynamically in `compute.ts`'s skill-target routing via
+ * {@link PARAMETERIZED_SKILL_PREFIXES} instead of a static list here.
  */
 export const SKILL_GROUPS: Record<string, readonly string[]> = {
   knowledge: SKILL_IDS.filter((id) => id.startsWith("k")),
@@ -152,7 +184,7 @@ export const SKILL_TRAINED_ONLY: ReadonlySet<string> = new Set([
 
 /** Returns true if `skillId` is a trained-only skill (unusable at 0 ranks). */
 export function isTrainedOnly(skillId: string): boolean {
-  return SKILL_TRAINED_ONLY.has(skillId);
+  return SKILL_TRAINED_ONLY.has(skillBaseId(skillId));
 }
 
 /**

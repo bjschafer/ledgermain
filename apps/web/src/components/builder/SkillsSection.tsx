@@ -1,14 +1,21 @@
 import { useMemo, useState } from "react";
 
-import { setSkillRank, totalLevel } from "../../model/doc.js";
-import { signed, skillName } from "../../model/names.js";
+import { PARAMETERIZED_SKILL_PREFIXES } from "@pf1/engine";
+
+import { addSkillInstance, setSkillRank, totalLevel } from "../../model/doc.js";
+import { signed, skillName, SKILL_NAMES } from "../../model/names.js";
 import { skillBudget } from "../../model/skills.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
+/** crf/pro/prf, in a stable display order (matches PARAMETERIZED_SKILL_PREFIXES). */
+const SUBSKILL_BASES = [...PARAMETERIZED_SKILL_PREFIXES];
+
 export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
 	const [query, setQuery] = useState("");
+	const [newBase, setNewBase] = useState(SUBSKILL_BASES[0]!);
+	const [newLabel, setNewLabel] = useState("");
 
 	const budget = useMemo(
 		() => skillBudget(doc, refData, sheet.abilities.int.mod),
@@ -24,6 +31,12 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
 	}, [sheet.skills, query]);
 
 	const over = budget.remaining < 0;
+
+	function addSubskill() {
+		if (!newLabel.trim()) return;
+		update((d) => addSkillInstance(d, newBase, newLabel));
+		setNewLabel("");
+	}
 
 	return (
 		<Panel
@@ -69,6 +82,16 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
 												trained only
 											</span>
 										) : null}
+										{s.id.includes(".") ? (
+											<button
+												type="button"
+												className="skill-remove"
+												title={`Remove ${skillName(s.id)}`}
+												onClick={() => update((d) => setSkillRank(d, s.id, 0))}
+											>
+												×
+											</button>
+										) : null}
 									</div>
 									<div className="smeta">
 										{s.ability.toUpperCase()} {signed(s.abilityMod)}
@@ -95,6 +118,39 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
 								</span>
 							</div>
 						))}
+					</div>
+					<div className="skill-add-row">
+						<select
+							value={newBase}
+							onChange={(e) => setNewBase(e.target.value)}
+							aria-label="Craft/Profession/Perform type"
+						>
+							{SUBSKILL_BASES.map((base) => (
+								<option key={base} value={base}>
+									{SKILL_NAMES[base] ?? base}
+								</option>
+							))}
+						</select>
+						<input
+							type="text"
+							placeholder="e.g. Alchemy, Oratory, Blacksmithing…"
+							value={newLabel}
+							onChange={(e) => setNewLabel(e.target.value)}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									e.preventDefault();
+									addSubskill();
+								}
+							}}
+						/>
+						<button
+							type="button"
+							className="btn-ghost"
+							disabled={!newLabel.trim()}
+							onClick={addSubskill}
+						>
+							+ Add
+						</button>
 					</div>
 				</>
 			)}

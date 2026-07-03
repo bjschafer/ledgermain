@@ -105,6 +105,19 @@ describe("skillBudget: base progression (no GM grant)", () => {
     const b = skillBudget(doc, ref, 0);
     expect(b.spent).toBe(3);
   });
+
+  it("spent counts parameterized Craft/Profession/Perform instances too (issue #24)", () => {
+    // Two Perform instances plus a bare Craft entry — skillBudget sums every
+    // key in skillRanks regardless of whether it's a plain or "base.slug" id,
+    // so no special-casing was needed here for the new subskill ids.
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 2 }],
+      race: "Elf",
+      skillRanks: { "prf.oratory": 2, "prf.dancing": 1, crf: 1 },
+    });
+    const b = skillBudget(doc, ref, 0);
+    expect(b.spent).toBe(4);
+  });
 });
 
 describe("skillBudget: GM-grant skill-rank addend", () => {
