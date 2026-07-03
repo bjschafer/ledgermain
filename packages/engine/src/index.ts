@@ -65,6 +65,7 @@ export {
   flurryOfBlowsLabel,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
+export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
 export {
   FEAT_EFFECTS,
   featNameSlug,

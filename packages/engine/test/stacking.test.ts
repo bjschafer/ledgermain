@@ -48,6 +48,17 @@ describe("stacking: dodge / untyped / circumstance stack", () => {
   });
 });
 
+describe("stacking: trait bonuses do not stack", () => {
+  it("two trait bonuses to the same target → highest only, not summed", () => {
+    // e.g. two character traits both granting a +1/+2 trait bonus to the same
+    // save/skill (PF1: trait bonuses never stack with each other).
+    const r = resolveStack([mod("trait", 1, "Trait A"), mod("trait", 2, "Trait B")]);
+    expect(r.total).toBe(2);
+    expect(r.modifiers.find((m) => m.source === "Trait A")!.applied).toBe(false);
+    expect(r.modifiers.find((m) => m.source === "Trait B")!.applied).toBe(true);
+  });
+});
+
 describe("stacking: penalties always stack", () => {
   it("same-type penalties stack", () => {
     const r = resolveStack([mod("morale", -2), mod("morale", -2)]);

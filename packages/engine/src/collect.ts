@@ -13,6 +13,7 @@ import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
 import { FEAT_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
+import { TRAITS } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
 import { raceGrantsFlexibleAbility } from "./tables.js";
@@ -163,6 +164,19 @@ export function collectModifiers(
     if (!cond) continue;
     for (const ch of cond.changes) {
       evalChange(ch.formula, rollData, ch.target, ch.type, cond.name, cond.id, out, ch.operator);
+    }
+  }
+
+  // --- traits (build choices) ----------------------------------------------
+  // doc.build.traits holds trait ids (keys into the engine's hand-authored
+  // TRAITS table — traits aren't in the vendored Foundry pack). Unknown ids
+  // are skipped, matching the conditions/feats posture: never crash on an
+  // unrecognized id.
+  for (const traitId of doc.build.traits ?? []) {
+    const trait = TRAITS[traitId];
+    if (!trait) continue;
+    for (const ch of trait.changes) {
+      evalChange(ch.formula, rollData, ch.target, ch.type, trait.name, trait.id, out, ch.operator);
     }
   }
 
