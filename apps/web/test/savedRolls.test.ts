@@ -7,13 +7,24 @@ import type { CharacterDoc } from "@pf1/schema";
 import { addClass, addWeapon, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
 import {
   addSavedRoll,
+  addSavedRollFeat,
+  attachableFeats,
   availableSavedRollSources,
+  ownedFeatSlugs,
   removeSavedRoll,
+  removeSavedRollFeat,
   resolveSavedRoll,
+  setSavedRollFeatOption,
   updateSavedRoll,
 } from "../src/model/savedRolls.js";
 
 const ref = loadRefData();
+
+function featId(name: string): string {
+  const entry = Object.entries(ref.feats).find(([, f]) => f.name === name);
+  if (!entry) throw new Error(`feat not found: ${name}`);
+  return entry[0];
+}
 
 function fresh(): CharacterDoc {
   let doc = createEmptyDoc("t");
@@ -248,5 +259,234 @@ describe("resolveSavedRoll() for a fully custom roll", () => {
     const sheet = compute(fresh(), ref);
     const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
     expect(resolved.damage).toBeUndefined();
+  });
+});
+
+/** Fixture with a ranged weapon too (Longbow), for feat-attachment tests. */
+function freshWithBow(): CharacterDoc {
+  return addWeapon(fresh(), {
+    name: "Longbow",
+    attackAbility: "dex",
+    damageAbility: "none",
+    damageDice: "1d8",
+    category: "ranged",
+  });
+}
+
+describe("saved-roll feat attachment transitions", () => {
+  it("addSavedRollFeat appends a ref; re-adding the same slug replaces it", () => {
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack" });
+    expect(doc.build.savedRolls![0]!.feats).toEqual([{ slug: "power-attack", name: "Power Attack" }]);
+
+    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack", option: "two-handed" });
+    expect(doc.build.savedRolls![0]!.feats).toEqual([
+      { slug: "power-attack", name: "Power Attack", option: "two-handed" },
+    ]);
+  });
+
+  it("removeSavedRollFeat drops only the matching slug", () => {
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack" });
+    doc = addSavedRollFeat(doc, id, { slug: "furious-focus", name: "Furious Focus" });
+    doc = removeSavedRollFeat(doc, id, "power-attack");
+    expect(doc.build.savedRolls![0]!.feats).toEqual([{ slug: "furious-focus", name: "Furious Focus" }]);
+  });
+
+  it("setSavedRollFeatOption sets and clears the variant", () => {
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack" });
+    doc = setSavedRollFeatOption(doc, id, "power-attack", "two-handed");
+    expect(doc.build.savedRolls![0]!.feats![0]!.option).toBe("two-handed");
+    doc = setSavedRollFeatOption(doc, id, "power-attack", undefined);
+    expect(doc.build.savedRolls![0]!.feats![0]!.option).toBeUndefined();
+  });
+});
+
+describe("resolveSavedRoll() with attached feats", () => {
+  // Fixture: Fighter 8 -> BAB 8 (iteratives), all abilities 10.
+  // Deadly Aim / Power Attack tier at BAB 8: p = 1 + floor(8/4) = 3.
+
+  it("PBS + Rapid Shot + Deadly Aim on the base ranged attack: -4 to every entry, one extra at the top", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "ranged" }, "Full ranged");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "point-blank-shot", name: "Point-Blank Shot" });
+    doc = addSavedRollFeat(doc, id, { slug: "rapid-shot", name: "Rapid Shot" });
+    doc = addSavedRollFeat(doc, id, { slug: "deadly-aim", name: "Deadly Aim" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    // Attack delta: +1 (PBS) - 2 (Rapid Shot) - 3 (Deadly Aim) = -4.
+    const base = sheet.attack.ranged.iteratives!; // [+8, +3] at BAB 8, dex 10
+    const adjusted = base.map((n) => n - 4);
+    const expected = [adjusted[0]!, ...adjusted]; // Rapid Shot extra at the top
+    expect(resolved.display).toBe(expected.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
+
+    // Provenance: one component per numerically-contributing feat.
+    expect(resolved.components).toContainEqual({
+      source: "Point-Blank Shot", type: "untyped", value: 1, applied: true,
+    });
+    expect(resolved.components).toContainEqual({
+      source: "Rapid Shot", type: "untyped", value: -2, applied: true,
+    });
+    expect(resolved.components).toContainEqual({
+      source: "Deadly Aim", type: "untyped", value: -3, applied: true,
+    });
+
+    // Notes from applied entries.
+    expect(resolved.notes).toEqual(["within 30 ft", "full attack only"]);
+
+    // All three chips applied.
+    expect(resolved.featChips.map((c) => c.applied)).toEqual([true, true, true]);
+  });
+
+  it("extraAttacks ordering: base +8/+3 with Rapid Shot alone -> +6/+6/+1", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "ranged" }, "Rapid");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "rapid-shot", name: "Rapid Shot" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    const base = sheet.attack.ranged.iteratives!;
+    const adjusted = base.map((n) => n - 2);
+    const expected = [adjusted[0]!, ...adjusted];
+    expect(resolved.display).toBe(expected.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
+  });
+
+  it("Power Attack two-handed on a melee weapon: -3 attack, +9 damage at BAB 8, with provenance", () => {
+    const sheet = compute(fresh(), ref);
+    const atk = sheet.attacks.find((a) => a.name === "Longsword")!;
+    let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "PA Longsword");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack", option: "two-handed" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    const adjusted = atk.attack.iteratives!.map((n) => n - 3);
+    expect(resolved.display).toBe(adjusted.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
+    expect(resolved.components).toContainEqual({
+      source: "Power Attack", type: "untyped", value: -3, applied: true,
+    });
+
+    const expectedBonus = atk.damageBonus.total + 9;
+    expect(resolved.damage!.display).toBe(`${atk.damageDice}+${expectedBonus}`);
+    expect(resolved.damage!.components).toContainEqual({
+      source: "Power Attack", type: "untyped", value: 9, applied: true,
+    });
+  });
+
+  it("Power Attack defaults to one-handed (+6 damage at BAB 8) when no option is set", () => {
+    const sheet = compute(fresh(), ref);
+    const atk = sheet.attacks.find((a) => a.name === "Longsword")!;
+    let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "PA Longsword");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    expect(resolved.damage!.display).toBe(`${atk.damageDice}+${atk.damageBonus.total + 6}`);
+  });
+
+  it("an un-owned feat contributes nothing but chips with applied: false", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet, new Set<string>());
+
+    expect(resolved.display).toBe(
+      sheet.attack.melee.iteratives!.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"),
+    );
+    expect(resolved.featChips).toEqual([
+      { slug: "power-attack", name: "Power Attack", option: undefined, applied: false, modeled: true, owned: false },
+    ]);
+  });
+
+  it("an un-modeled feat chips without touching numbers", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "iron-will", name: "Iron Will" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    expect(resolved.display).toBe(
+      sheet.attack.melee.iteratives!.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"),
+    );
+    expect(resolved.components).toBe(sheet.attack.melee.components); // untouched, reference-equal
+    expect(resolved.featChips).toEqual([
+      { slug: "iron-will", name: "Iron Will", option: undefined, applied: false, modeled: false, owned: true },
+    ]);
+  });
+
+  it("feats on a non-attack source (save) render as chips only, never numbers", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "save", save: "fort" }, "Fort");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    expect(resolved.components).toBe(sheet.saves.fort.components);
+    expect(resolved.featChips[0]!.applied).toBe(false);
+    expect(resolved.notes).toEqual([]);
+  });
+
+  it("feat effects apply to a custom roll (attack-like)", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "custom" }, "Custom full attack");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = updateSavedRoll(doc, id, { attackModifier: 10 });
+    doc = addSavedRollFeat(doc, id, { slug: "rapid-shot", name: "Rapid Shot" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    // 10 - 2 = +8, plus one extra attack at the top -> "+8/+8".
+    expect(resolved.display).toBe("+8/+8");
+  });
+});
+
+describe("ownedFeatSlugs() / attachableFeats()", () => {
+  function withFeats(...names: string[]): CharacterDoc {
+    const doc = freshWithBow();
+    return { ...doc, build: { ...doc.build, feats: names.map(featId) } };
+  }
+
+  it("ownedFeatSlugs maps build.feats through RefData names to slugs", () => {
+    const doc = withFeats("Power Attack", "Iron Will");
+    expect(ownedFeatSlugs(doc, ref)).toEqual(new Set(["power-attack", "iron-will"]));
+  });
+
+  it("orders modeled+compatible feats first for a ranged source", () => {
+    const doc = withFeats("Iron Will", "Power Attack", "Rapid Shot", "Point-Blank Shot");
+    const list = attachableFeats(doc, ref, { kind: "ranged" });
+    expect(list.map((f) => f.slug)).toEqual([
+      // ranged-compatible modeled feats, alphabetical
+      "point-blank-shot",
+      "rapid-shot",
+      // the rest, alphabetical (Power Attack is modeled but melee-only)
+      "iron-will",
+      "power-attack",
+    ]);
+    expect(list[0]!.modeled).toBe(true);
+    expect(list[2]!.modeled).toBe(false);
+  });
+
+  it("orders melee-compatible feats first for a melee source and carries options", () => {
+    const doc = withFeats("Rapid Shot", "Power Attack");
+    const list = attachableFeats(doc, ref, { kind: "melee" });
+    expect(list.map((f) => f.slug)).toEqual(["power-attack", "rapid-shot"]);
+    expect(list[0]!.options).toEqual([
+      { id: "one-handed", label: "One-handed" },
+      { id: "two-handed", label: "Two-handed" },
+    ]);
+  });
+
+  it("uses the weapon's category for weapon sources (Longbow -> ranged-compatible first)", () => {
+    const doc = withFeats("Power Attack", "Deadly Aim");
+    const list = attachableFeats(doc, ref, { kind: "weapon", weaponName: "Longbow" });
+    expect(list.map((f) => f.slug)).toEqual(["deadly-aim", "power-attack"]);
+  });
+
+  it("treats every modeled feat as compatible for custom sources", () => {
+    const doc = withFeats("Iron Will", "Power Attack", "Deadly Aim");
+    const list = attachableFeats(doc, ref, { kind: "custom" });
+    expect(list.map((f) => f.slug)).toEqual(["deadly-aim", "power-attack", "iron-will"]);
   });
 });

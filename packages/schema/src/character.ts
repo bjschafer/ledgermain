@@ -341,6 +341,28 @@ export interface SavedRoll {
    * adjust — display-only, never parsed or evaluated.
    */
   customDamage?: string;
+  /**
+   * Feats folded into this roll at resolve time, by engine name slug (stable
+   * across data bumps — see `featNameSlug`/`SITUATIONAL_FEAT_EFFECTS` in
+   * `@pf1/engine`). Optional; absent on every saved roll persisted before
+   * this field existed, which resolve identically to `[]`.
+   */
+  feats?: SavedRollFeatRef[];
+}
+
+/**
+ * One feat attached to a `SavedRoll`. Applies its registry effect (if any) at
+ * resolve time in `apps/web/src/model/savedRolls.ts`; renders as a chip
+ * either way (a feat with no registry entry is still a useful at-table
+ * reminder, just not a numeric contributor).
+ */
+export interface SavedRollFeatRef {
+  /** `featNameSlug` of the feat (key into SITUATIONAL_FEAT_EFFECTS, or any owned feat as a reminder chip). */
+  slug: string;
+  /** Display name, snapshotted at attach time so un-modeled/removed feats still render a chip. */
+  name: string;
+  /** Selected variant id when the registry entry declares `options`. */
+  option?: string;
 }
 
 /**
