@@ -1698,6 +1698,23 @@ button:focus-visible,
 	color: var(--muted);
 }
 
+/* HP dying/disabled/staggered status (issue #20) — reuses the .affliction-warn
+   color introduced for the Afflictions panel so the two read as one system. */
+.hp-status-line {
+	font-size: 12px;
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+
+.hp-stable-toggle {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 10px;
+	font-size: 12px;
+	color: var(--muted);
+}
+
 .hp-controls {
 	display: grid;
 	grid-template-columns: auto 1fr 1fr;
