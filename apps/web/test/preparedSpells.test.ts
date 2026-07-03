@@ -326,15 +326,15 @@ describe("wizard school slots + opposition cost", () => {
     let doc = addClass(fresh(), "wizard");
     doc = setWizardSchool(doc, "evo");
     doc = setWizardOppositionSchools(doc, ["enc", "nec"]);
-    doc = toggleKnownSpell(doc, burningHandsId);
-    doc = toggleKnownSpell(doc, sleepId);
+    doc = toggleKnownSpell(doc, ref, burningHandsId, "wizard");
+    doc = toggleKnownSpell(doc, ref, sleepId, "wizard");
     return doc;
   }
 
   it("isSchoolSlotEligible is true for an in-school spell in the spellbook, false for others", () => {
     const doc = evocationWizardDoc();
-    expect(isSchoolSlotEligible(burningHands, doc)).toBe(true);
-    expect(isSchoolSlotEligible(sleep, doc)).toBe(false);
+    expect(isSchoolSlotEligible(burningHands, doc, ref)).toBe(true);
+    expect(isSchoolSlotEligible(sleep, doc, ref)).toBe(false);
   });
 
   it("isSchoolSlotEligible is false for an in-school spell NOT in the spellbook", () => {
@@ -342,21 +342,21 @@ describe("wizard school slots + opposition cost", () => {
     // requires the bonus school slot to be filled from the wizard's spellbook.
     let doc = addClass(fresh(), "wizard");
     doc = setWizardSchool(doc, "evo");
-    expect(isSchoolSlotEligible(burningHands, doc)).toBe(false);
+    expect(isSchoolSlotEligible(burningHands, doc, ref)).toBe(false);
   });
 
   it("isSchoolSlotEligible is always false for a Universalist", () => {
     let doc = setWizardSchool(addClass(fresh(), "wizard"), "uni");
-    doc = toggleKnownSpell(doc, burningHandsId);
-    doc = toggleKnownSpell(doc, sleepId);
-    expect(isSchoolSlotEligible(burningHands, doc)).toBe(false);
-    expect(isSchoolSlotEligible(sleep, doc)).toBe(false);
+    doc = toggleKnownSpell(doc, ref, burningHandsId, "wizard");
+    doc = toggleKnownSpell(doc, ref, sleepId, "wizard");
+    expect(isSchoolSlotEligible(burningHands, doc, ref)).toBe(false);
+    expect(isSchoolSlotEligible(sleep, doc, ref)).toBe(false);
   });
 
   it("isSchoolSlotEligible is always false when no school is chosen", () => {
     let doc = addClass(fresh(), "wizard");
-    doc = toggleKnownSpell(doc, burningHandsId);
-    expect(isSchoolSlotEligible(burningHands, doc)).toBe(false);
+    doc = toggleKnownSpell(doc, ref, burningHandsId, "wizard");
+    expect(isSchoolSlotEligible(burningHands, doc, ref)).toBe(false);
   });
 
   it("oppositionCost is 2 for an opposition-school spell, 1 otherwise", () => {

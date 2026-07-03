@@ -6,8 +6,10 @@ import { toggleKnownSpell } from "../../model/doc.js";
 import {
   accessibleSpellLevels,
   bloodlineSpellsKnown,
+  casterClassesOf,
   casterModelFor,
   grantedCantrips,
+  knownSpellsFor,
   schoolLabel,
   spellsKnownLimitsByLevel,
 } from "../../model/spellcasting.js";
@@ -33,10 +35,18 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // known-vs-browse view switched implicitly with no visible indicator.
   const [mode, setMode] = useState<"known" | "browsing">("known");
 
-  const casterTag = useMemo(
-    () => doc.identity.classes.map((c) => c.tag).find((t) => refData.spellLists[t]),
-    [doc.identity.classes, refData.spellLists],
+  // Every caster class on the document (issue #22 multiclass support). With
+  // exactly one, this section behaves exactly as before — no switcher chrome
+  // — and with 2+, a class switcher below picks which class's spells the rest
+  // of this panel shows.
+  const casters = useMemo(
+    () => casterClassesOf(doc, refData),
+    [doc, refData],
   );
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const casterTag =
+    (selectedTag && casters.some((c) => c.tag === selectedTag) ? selectedTag : casters[0]?.tag) ??
+    undefined;
 
   const model = useMemo(
     () => (casterTag ? casterModelFor(casterTag) : undefined),
@@ -77,7 +87,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // read-only so the player knows what's available to prepare in a domain slot.
   const clericDomains = doc.build.clericDomains ?? [];
   const domainEntries = useMemo<SpellEntry[]>(() => {
-    if (!clericDomains.length) return [];
+    if (!clericDomains.length || casterTag !== "cleric") return [];
     const out: SpellEntry[] = [];
     for (const tag of clericDomains) {
       const list = refData.domainSpellLists[tag];
@@ -93,7 +103,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
       }
     }
     return out.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
-  }, [clericDomains, refData, grantsCantrips, accessibleLevels]);
+  }, [clericDomains, refData, grantsCantrips, accessibleLevels, casterTag]);
 
   // Bloodline bonus spells known (sorcerer only): auto-granted, read-only, and
   // exempt from the spells-known cap — listed here for reference alongside the
@@ -138,7 +148,10 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     [entriesByLevel],
   );
 
-  const known = useMemo(() => new Set(doc.build.spells.known), [doc.build.spells.known]);
+  const known = useMemo(
+    () => new Set(casterTag ? knownSpellsFor(doc, refData, casterTag) : []),
+    [doc, refData, casterTag],
+  );
 
   // Spells-known limits for spontaneous casters (advisory only).
   const knownLimits = useMemo(() => {
@@ -229,6 +242,26 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
         </span>
       }
     >
+      {/* Class switcher: only shown for a multiclass caster (2+ classes with a
+          spell list) — a single-caster character never sees this chrome. */}
+      {casters.length > 1 && (
+        <div className="chips spell-class-switcher" role="tablist" aria-label="Caster class">
+          {casters.map((c) => (
+            <button
+              key={c.tag}
+              type="button"
+              className="chip"
+              role="tab"
+              aria-selected={casterTag === c.tag}
+              aria-pressed={casterTag === c.tag}
+              onClick={() => setSelectedTag(c.tag)}
+            >
+              {refData.classes[c.tag]?.name ?? c.tag} {c.level}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Guidance hints: collapsible (Task 4). Default collapsed to save space. */}
       {model && (
         <SpellHints
@@ -361,7 +394,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
               refData={refData}
               abilityMod={abilityMod}
               known={known}
-              onToggle={(id) => update((d) => toggleKnownSpell(d, id))}
+              onToggle={(id) => update((d) => toggleKnownSpell(d, refData, id, casterTag))}
               knownLimit={knownLimits.get(lvl)}
               knownCount={knownCountByLevel.get(lvl) ?? 0}
               isSpontaneous={model?.preparation === "spontaneous"}
