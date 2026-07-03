@@ -290,6 +290,19 @@ export interface CharacterDoc {
       /** Override the default HERO_POINT_CAP (3). Must be a positive integer. */
       heroPointsCap?: number;
       /**
+       * Whether this character tracks XP at all (PF1 optional rule — the
+       * owner's table plays milestone). Absent (default) = false, hiding the
+       * XP panel entirely; set true to opt in. Unlike `heroPointsEnabled`,
+       * this defaults OFF since XP tracking is the exception, not the norm.
+       */
+      xpEnabled?: boolean;
+      /**
+       * Which hand-authored PF1 CRB advancement track (slow/medium/fast)
+       * governs `nextLevelAt` thresholds (see model/xp.ts). Only meaningful
+       * when `xpEnabled`. Absent = `"medium"`.
+       */
+      xpTrack?: "slow" | "medium" | "fast";
+      /**
        * Manual overrides for specific derived stats. Keys are from the bounded
        * allowlist enforced by the engine: `hp.max`, `ac.normal`, `speeds.land`,
        * `initiative.total`, `bab`, `cmd`, `cmb`, `saves.fort.total`,
@@ -409,6 +422,13 @@ export interface CharacterDoc {
      * absent entirely for documents predating this feature.
      */
     stable?: boolean;
+    /**
+     * Total XP earned so far (PF1 optional rule; see `settings.xpEnabled`).
+     * Omitted = 0. Purely informational — XP never auto-levels the
+     * character; the level (`identity.classes[].level`) stays a player choice
+     * made at the table (see model/xp.ts for why this lives client-side only).
+     */
+    xp?: number;
   };
 }
 
