@@ -55,11 +55,37 @@ export function deriveResourcePools(
   );
   const pools: DerivedResourcePool[] = [];
 
-  for (const { classTag, grant } of collectGrantedFeatures(doc, refData)) {
+  for (const { classTag, grant, resourcePool } of collectGrantedFeatures(doc, refData)) {
     const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
     // `@class.unlevel` inside a feature formula refers to THIS (granting) class's
     // level — for a domain/school grant that's the cleric/wizard level.
     const featureRollData = { ...rollData, class: { level: classLevel, unlevel: classLevel } };
+
+    // Bloodline powers (issue #34) carry a pre-computed formula (no vendored
+    // `RefData.classFeatures` entry exists for them — see `bloodlines.ts`).
+    // Evaluated against the plain `rollData` (its formulas reference
+    // `@classes.sorcerer.level` directly, not the granting-class-contextual
+    // `@class.unlevel` the vendored-feature path below relies on).
+    if (resourcePool) {
+      let poolMax: number | null;
+      try {
+        poolMax = tryEvaluateFormula(resourcePool.usesFormula, rollData);
+      } catch {
+        continue;
+      }
+      if (poolMax === null || Number.isNaN(poolMax) || poolMax <= 0) continue;
+      if (pools.some((p) => p.id === grant.featureId)) continue;
+      pools.push({
+        id: grant.featureId,
+        name: grant.name,
+        max: Math.trunc(poolMax),
+        per: resourcePool.per,
+        classTag,
+        detail: resourcePool.detail,
+      });
+      continue;
+    }
+
     const feature = refData.classFeatures[grant.featureId];
     const formula = feature?.uses?.maxFormula;
     if (!feature || !formula) continue;

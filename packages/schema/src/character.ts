@@ -92,6 +92,19 @@ export interface CharacterDoc {
      */
     sorcererBloodline?: string;
     /**
+     * Energy-type / subtype variant for bloodlines whose powers name a
+     * player-chosen energy type (Draconic's dragon type, Elemental's
+     * element) — issue #34. Free-form id into `@pf1/engine`
+     * `BLOODLINES[sorcererBloodline].variantOptions` (e.g. "red" for a
+     * Draconic sorcerer, "fire" for Elemental). Display-only: it selects
+     * which flavor text a power's summary/context notes show, not any
+     * numeric `Change` (see `bloodlines.ts`'s doc comment for why). Ignored
+     * for bloodlines that don't declare `variantOptions`. Unknown/absent
+     * values resolve to generic, non-crashing display text — never a crash.
+     * Back-compat: documents without this field are unaffected.
+     */
+    sorcererBloodlineVariant?: string;
+    /**
      * Wizard specialization school tag. One of the eight PF1 schools
      * ("abj","con","div","enc","evo","ill","nec","trs") or "uni" (Universalist —
      * no opposition schools, no bonus slot). Free-choice; the vendored Foundry
@@ -866,12 +879,14 @@ export interface DerivedClassFeature {
    */
   detail?: string;
   /**
-   * Set when this feature came from a chosen cleric domain or wizard arcane
-   * school rather than the class itself — both share `classTag: "cleric"`/
-   * `"wizard"` with the class's own intrinsic features, so this disambiguates
-   * e.g. "Fire Bolt" (Fire Domain) from Channel Energy (cleric itself).
+   * Set when this feature came from a chosen cleric domain, wizard arcane
+   * school, or sorcerer bloodline (issue #34) rather than the class itself —
+   * all three share `classTag: "cleric"`/`"wizard"`/`"sorcerer"` with the
+   * class's own intrinsic features, so this disambiguates e.g. "Fire Bolt"
+   * (Fire Domain) from Channel Energy (cleric itself), or "Claws" (Draconic
+   * Bloodline) from a sorcerer's other features.
    */
-  origin?: { kind: "domain" | "school"; label: string };
+  origin?: { kind: "domain" | "school" | "bloodline"; label: string };
 }
 
 /** One feature granted by an active archetype (in addition to/instead of the base grant). */

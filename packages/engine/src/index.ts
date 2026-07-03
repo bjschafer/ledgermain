@@ -72,6 +72,16 @@ export {
 export { CONDITIONS, CONDITION_IDS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
 export {
+  BLOODLINES,
+  BLOODLINE_TAGS,
+  bloodlineVariantLabel,
+  type BloodlineDef,
+  type BloodlinePower,
+  type BloodlinePowerLevel,
+  type BloodlineResourcePool,
+  type BloodlineVariantOption,
+} from "./bloodlines.js";
+export {
   FEAT_EFFECTS,
   SITUATIONAL_FEAT_EFFECTS,
   featNameSlug,
