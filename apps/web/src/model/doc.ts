@@ -10,6 +10,7 @@ import type {
 	ArmorRef,
 	CharacterDoc,
 	ItemInstance,
+	RefData,
 	SkillId,
 	WeaponInstance,
 	WeaponRef,
@@ -19,6 +20,7 @@ import type {
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
+import { knownSpellsFor, setKnownSpellsFor, storedClassTag } from "./spellcasting.js";
 
 const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
 
@@ -352,26 +354,41 @@ export function toggleFeat(doc: CharacterDoc, featId: string): CharacterDoc {
 	return { ...doc, build };
 }
 
+/**
+ * Add/remove `spellId` from `classTag`'s known-spell list (the spellbook, for
+ * a curated-list caster). `classTag` is explicit rather than assumed — pass
+ * the caster class the player is currently viewing (see
+ * `model/spellcasting.ts` `casterClassesOf`); for a single-caster document
+ * that is always its one caster class, so behavior is unchanged from before
+ * multiclass support. Removing a spell also prunes any of that class's
+ * prepared instances of it, so the prepared loadout never references an
+ * unknown spell.
+ */
 export function toggleKnownSpell(
 	doc: CharacterDoc,
+	refData: RefData,
 	spellId: string,
+	classTag: string,
 ): CharacterDoc {
-	const known = doc.build.spells.known;
+	const known = knownSpellsFor(doc, refData, classTag);
 	const has = known.includes(spellId);
 	const next = has ? known.filter((s) => s !== spellId) : [...known, spellId];
-	const withKnown: CharacterDoc = {
-		...doc,
-		build: { ...doc.build, spells: { ...doc.build.spells, known: next } },
-	};
+	const withKnown = setKnownSpellsFor(doc, refData, classTag, next);
 	// Removing a spell from the spellbook invalidates any prepared instances of
-	// it — prune them so the prepared loadout never references unknown spells.
-	if (has && doc.live.spells?.prepared.some((p) => p.spellId === spellId)) {
+	// it FOR THIS CLASS — prune them so the prepared loadout never references
+	// unknown spells (a different class's prepared instances of a same-named
+	// spell id, e.g. one on both the cleric and wizard lists, are untouched).
+	const tag = storedClassTag(doc, refData, classTag);
+	if (has && doc.live.spells?.prepared.some((p) => p.spellId === spellId && p.classTag === tag)) {
 		return {
 			...withKnown,
 			live: {
 				...withKnown.live,
 				spells: {
-					prepared: doc.live.spells.prepared.filter((p) => p.spellId !== spellId),
+					...withKnown.live.spells!,
+					prepared: withKnown.live.spells!.prepared.filter(
+						(p) => !(p.spellId === spellId && p.classTag === tag),
+					),
 				},
 			},
 		};

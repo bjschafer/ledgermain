@@ -8,6 +8,14 @@
  * No spell-selection transitions live here — `build.spells.known` is the
  * source of truth for which spells the character knows; see `doc.ts` for
  * `toggleKnownSpell`. This module is only about spending and restoring slots.
+ *
+ * Every function takes an optional `classTag` (issue #22 multiclass support):
+ * it is the *stored* class tag (see `model/spellcasting.ts` `storedClassTag`)
+ * — `undefined` for the primary caster class (or the only one, on a
+ * single-caster document), tracked in the legacy flat `slotsUsed`; any other
+ * caster class (e.g. the sorcerer half of a bard/sorcerer multiclass) tracks
+ * its usage independently in `slotsUsedByClass[classTag]`. Omitting
+ * `classTag` reproduces pre-multiclass behavior exactly.
  */
 
 import type { CharacterDoc } from "@pf1/schema";
@@ -19,18 +27,42 @@ import { spellSlotsByLevel } from "./spellcasting.js";
 // Helpers
 // ---------------------------------------------------------------------------
 
-function slotsUsed(doc: CharacterDoc): Record<number, number> {
+function slotsUsed(doc: CharacterDoc, classTag?: string): Record<number, number> {
+  if (classTag) return doc.live.spells?.slotsUsedByClass?.[classTag] ?? {};
   return doc.live.spells?.slotsUsed ?? {};
 }
 
-function withSlotsUsed(doc: CharacterDoc, used: Record<number, number>): CharacterDoc {
+function withSlotsUsed(
+  doc: CharacterDoc,
+  used: Record<number, number>,
+  classTag?: string,
+): CharacterDoc {
+  const prepared = doc.live.spells?.prepared ?? [];
+  if (classTag) {
+    return {
+      ...doc,
+      live: {
+        ...doc.live,
+        spells: {
+          prepared,
+          ...(doc.live.spells?.slotsUsed !== undefined
+            ? { slotsUsed: doc.live.spells.slotsUsed }
+            : {}),
+          slotsUsedByClass: { ...doc.live.spells?.slotsUsedByClass, [classTag]: used },
+        },
+      },
+    };
+  }
   return {
     ...doc,
     live: {
       ...doc.live,
       spells: {
-        prepared: doc.live.spells?.prepared ?? [],
+        prepared,
         slotsUsed: used,
+        ...(doc.live.spells?.slotsUsedByClass !== undefined
+          ? { slotsUsedByClass: doc.live.spells.slotsUsedByClass }
+          : {}),
       },
     },
   };
@@ -44,8 +76,8 @@ function withSlotsUsed(doc: CharacterDoc, used: Record<number, number>): Charact
  * How many slots have been used today at `spellLevel`. Returns 0 when none
  * have been used or the document pre-dates spontaneous tracking.
  */
-export function slotsUsedAtLevel(doc: CharacterDoc, spellLevel: number): number {
-  return slotsUsed(doc)[spellLevel] ?? 0;
+export function slotsUsedAtLevel(doc: CharacterDoc, spellLevel: number, classTag?: string): number {
+  return slotsUsed(doc, classTag)[spellLevel] ?? 0;
 }
 
 /**
@@ -69,9 +101,10 @@ export function spontaneousSlotStatus(
   model: CasterModel,
   classLevel: number,
   abilityMod: number,
+  classTag?: string,
 ): SpontaneousLevelStatus[] {
   const slots = spellSlotsByLevel(model, classLevel, abilityMod);
-  const used = slotsUsed(doc);
+  const used = slotsUsed(doc, classTag);
   return slots.map(({ level, total }) => {
     const usedCount = used[level] ?? 0;
     return {
@@ -98,14 +131,15 @@ export function castSpontaneousSlot(
   classLevel: number,
   abilityMod: number,
   spellLevel: number,
+  classTag?: string,
 ): CharacterDoc {
   const slots = spellSlotsByLevel(model, classLevel, abilityMod);
   const entry = slots.find((s) => s.level === spellLevel);
   if (!entry || entry.total <= 0) return doc;
-  const current = slotsUsed(doc);
+  const current = slotsUsed(doc, classTag);
   const used = current[spellLevel] ?? 0;
   if (used >= entry.total) return doc; // already maxed
-  return withSlotsUsed(doc, { ...current, [spellLevel]: used + 1 });
+  return withSlotsUsed(doc, { ...current, [spellLevel]: used + 1 }, classTag);
 }
 
 /**
@@ -115,21 +149,22 @@ export function castSpontaneousSlot(
 export function restoreSpontaneousSlot(
   doc: CharacterDoc,
   spellLevel: number,
+  classTag?: string,
 ): CharacterDoc {
-  const current = slotsUsed(doc);
+  const current = slotsUsed(doc, classTag);
   const used = current[spellLevel] ?? 0;
   if (used <= 0) return doc;
   const next = { ...current, [spellLevel]: used - 1 };
   if (next[spellLevel] === 0) delete next[spellLevel];
-  return withSlotsUsed(doc, next);
+  return withSlotsUsed(doc, next, classTag);
 }
 
 /**
  * New day: reset all used slots to zero. Returns the same doc reference when
  * no slots were used.
  */
-export function resetSpontaneousSlots(doc: CharacterDoc): CharacterDoc {
-  const current = slotsUsed(doc);
+export function resetSpontaneousSlots(doc: CharacterDoc, classTag?: string): CharacterDoc {
+  const current = slotsUsed(doc, classTag);
   if (Object.keys(current).length === 0) return doc;
-  return withSlotsUsed(doc, {});
+  return withSlotsUsed(doc, {}, classTag);
 }
