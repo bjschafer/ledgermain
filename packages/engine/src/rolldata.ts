@@ -49,6 +49,7 @@ export function buildRollData(
   refData: RefData,
   abilities?: Record<AbilityId, AbilityView>,
   speeds?: Record<string, number>,
+  bab?: number,
 ): RollData {
   const level = totalLevel(doc);
 
@@ -98,6 +99,7 @@ export function buildRollData(
     skills,
     attributes: {
       hd: { total: level },
+      bab: { total: bab ?? 0 },
       encumbrance: { level: 0 },
       speed: speedAttr,
     },

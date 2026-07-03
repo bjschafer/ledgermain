@@ -594,17 +594,24 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // Race base only (not race + passive bonuses) — see buildRollData's doc comment.
   const baseSpeeds = race?.speeds ?? { land: 30 };
 
+  // BAB — computed from class levels alone (no feat/buff in this slice
+  // modifies it), so it's available before roll data is built. Vendored
+  // formulas (e.g. Monk's Maneuver Training) reference `@attributes.bab.total`.
+  let bab = 0;
+  for (const cls of doc.identity.classes) {
+    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    if (def) bab += babForLevels(def.bab, cls.level);
+  }
+
   // Bootstrap: resolve ability-targeting changes against base scores, then build
   // the final roll data and re-collect everything against the final abilities.
-  const bootRollData = buildRollData(doc, refData, undefined, baseSpeeds);
+  const bootRollData = buildRollData(doc, refData, undefined, baseSpeeds, bab);
   const bootCollected = collectModifiers(doc, refData, bootRollData);
   const bootAbilities = computeAbilities(doc, bootCollected);
-  const rollData = buildRollData(doc, refData, bootAbilities, baseSpeeds);
+  const rollData = buildRollData(doc, refData, bootAbilities, baseSpeeds, bab);
   const collected = collectModifiers(doc, refData, rollData);
   const abilities = computeAbilities(doc, collected);
 
-  // BAB
-  let bab = 0;
   const baseSize: SizeId = race?.size ?? "med";
   // Enlarge/Reduce Person and similar effects shift the character along the
   // size ladder; round toward zero (a +1.5 or -0.5 step isn't a thing PF1
@@ -614,10 +621,6 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   );
   const size: SizeId = shiftSize(baseSize, sizeShift);
   const sizeAttackMod = SIZE_AC_MOD[size];
-  for (const cls of doc.identity.classes) {
-    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
-    if (def) bab += babForLevels(def.bab, cls.level);
-  }
 
   const strMod = abilities.str.mod;
   const dexMod = abilities.dex.mod;

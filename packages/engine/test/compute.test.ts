@@ -469,23 +469,14 @@ describe("compute: monk L5 (human, no armor)", () => {
     expect(monkEntry![1].saves).toEqual({ fort: "high", ref: "high", will: "high" });
   });
 
-  it("Maneuver Training's CMB correction: @attributes.bab.total is never wired into rollData, so it adds full monk level rather than level-minus-BAB", () => {
+  it("Maneuver Training's CMB correction: @attributes.bab.total is wired into rollData, so it nets to level-minus-BAB", () => {
     // Maneuver Training's vendored changes[]: "@class.unlevel - @attributes.bab.total"
-    // untyped bonus to cmb — intended (per SRD) to swap medium-BAB CMB for a
-    // full-monk-level CMB, i.e. a "+ (unlevel - actualBAB)" correction. But
-    // rolldata.ts's RollData never populates an `attributes.bab` path at all,
-    // and this formula is evaluated by collectModifiers() *before* compute()
-    // derives `bab` as a local variable — so `@attributes.bab.total` resolves
-    // via the formula DSL's documented missing-path-to-0 behavior, and the
-    // change nets to `unlevel - 0 = unlevel` (here, 5), not `unlevel - bab`
-    // (here, 5 - 3 = 2). The character still ends up with a *higher* CMB than
-    // a non-monk of the same BAB (correct in spirit), just inflated beyond the
-    // SRD's intended full-monk-level value. Documented in IMPLEMENTATION_PLAN.md
-    // rather than fixed: wiring `@attributes.bab.total` would mean either
-    // reordering compute() (BAB before collect()) or a second collect pass,
-    // out of scope for this vendoring step.
-    // cmb = bab(3) + str2 + sizeSpecial(0) + maneuverTraining(5 - 0) = 10
-    expect(sheet.cmb).toBe(10);
+    // untyped bonus to cmb — swaps medium-BAB CMB for a full-monk-level CMB,
+    // i.e. a "+ (unlevel - actualBAB)" correction. BAB is now computed before
+    // roll data is built and threaded through as `attributes.bab.total`, so
+    // this nets to `unlevel - bab` (5 - 3 = 2), not the pre-fix `unlevel - 0`.
+    // cmb = bab(3) + str2 + sizeSpecial(0) + maneuverTraining(5 - 3) = 7
+    expect(sheet.cmb).toBe(7);
   });
 
   it("Fast Movement: +10 land speed at L3-5 (10 * floor(unlevel / 3))", () => {
