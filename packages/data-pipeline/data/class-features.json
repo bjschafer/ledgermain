@@ -30,6 +30,43 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.20JWTam2dn7jjZFV"
   },
+  "2TsDfK0SKC8IGVx4": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Once per day, a paladin can call out to the powers of good to aid her in her struggle against evil. As a swift action, the paladin chooses one target within sight to smite. If this target is evil, the paladin adds her <em>Cha</em> bonus (if any) to her attack rolls and adds her paladin level to all damage rolls made against the target of her smite. If the target of smite evil is an outsider with the evil subtype, an evil-aligned dragon, or an undead creature, the bonus to damage on the first successful attack increases to 2 points of damage per level the paladin possesses. Regardless of the target, smite evil attacks automatically bypass any <em>DR</em> the creature might possess.</p>\n<p>In addition, while smite evil is in effect, the paladin gains a deflection bonus equal to her <em>Charisma</em> modifier (if any) to her <em>AC</em> against attacks made by the target of the smite. If the paladin targets a creature that is not evil, the smite is wasted with no effect.</p>\n<p>The smite evil effect remains until the target of the smite is dead or the next time the paladin rests and regains her uses of this ability. At 4th level, and at every three levels thereafter, the paladin may smite evil one additional time per day, as indicated on Table: Paladin, to a maximum of seven times per day at 19th level.</p>",
+    "grantsBuffs": [],
+    "id": "2TsDfK0SKC8IGVx4",
+    "name": "Smite Evil",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "60-61"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "smiteEvil",
+    "uses": {
+      "maxFormula": "floor((@attributes.hd.total - 1) / 3) + 1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.2TsDfK0SKC8IGVx4"
+  },
+  "2YqtYAfLcV7KWkpJ": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At will, a paladin can use Detect Evil, as the spell. A paladin can, as a move action, concentrate on a single item or individual within 60 feet and determine if it is evil, learning the strength of its aura as if having studied it for 3 rounds. While focusing on one individual or object, the paladin does not detect evil in any other object or individual within range.</p>",
+    "grantsBuffs": [],
+    "id": "2YqtYAfLcV7KWkpJ",
+    "name": "Detect Evil",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "60"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.2YqtYAfLcV7KWkpJ"
+  },
   "2h3lI574tmVjOalQ": {
     "changes": [
       {
@@ -95,6 +132,65 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa"
   },
+  "5NS7Ec3WhKIkhygg": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>The character can, as a <em>standard action</em>, denote one target within his line of sight as his quarry. Whenever he is following the tracks of his quarry, the character can take 10 on his <em>Survival skill checks</em> while moving at normal speed, without penalty. In addition, he receives a +2 <em>insight bonus</em> on <em>attack rolls</em> made against his quarry, and all critical threats are automatically confirmed. The character can have no more than one quarry at a time and the creature’s type must correspond to one of his favored enemy types or must be selected as a studied target. He can dismiss this effect at any time as a <em>free action</em>, but he cannot select a new quarry for 24 hours. If the chracter sees proof that his quarry is <em>dead</em>, he can select a new quarry after waiting 1 hour.</p>",
+    "grantsBuffs": [],
+    "id": "5NS7Ec3WhKIkhygg",
+    "name": "Quarry",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "67"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "55"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.5NS7Ec3WhKIkhygg"
+  },
+  "5iXq1igb1Cq0qobT": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>This character may move through any sort of undergrowth (such as natural thorns, briars, overgrown areas, and similar terrain) at her normal speed and without taking damage or suffering any other impairment. Thorns, briars, and overgrown areas that have been magically manipulated to impede motion, however, still affect her.</p>",
+    "grantsBuffs": [],
+    "id": "5iXq1igb1Cq0qobT",
+    "name": "Woodland Stride",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "51, 66-67, 76"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "29"
+      },
+      {
+        "id": "PZO1140",
+        "pages": "27"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT"
+  },
+  "6h8ESfQp4dwX4qhk": {
+    "changes": [],
+    "description": "<p>Beginning at 4th level, a paladin gains the ability to cast a small number of divine spells which are drawn from the paladin spell list presented in Spell Lists. A paladin must choose and prepare her spells in advance.</p><p>To prepare or cast a spell, a paladin must have a Charisma score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a paladin's spell is 10 + the spell level + the paladin's Charisma modifier.</p><p>Like other spellcasters, a paladin can cast only a certain number of spells of each spell level per day. Her base daily spell allotment is given on Table: Paladin. In addition, she receives bonus spells per day if she has a high Charisma score (see Table: Ability Modifiers and Bonus Spells). When Table: Paladin indicates that the paladin gets 0 spells per day of a given spell level, she gains only the bonus spells she would be entitled to based on her Charisma score for that spell level.</p><p>A paladin must spend 1 hour each day in quiet prayer and meditation to regain her daily allotment of spells. A paladin may prepare and cast any spell on the paladin spell list, provided that she can cast spells of that level, but she must choose which spells to prepare during her daily meditation.</p><p>Through 3rd level, a paladin has no caster level. At 4th level and higher, her caster level is equal to her paladin level – 3.</p>",
+    "grantsBuffs": [],
+    "id": "6h8ESfQp4dwX4qhk",
+    "name": "Paladin Spells",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "62-63"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.6h8ESfQp4dwX4qhk"
+  },
   "6pjr8jMFSKqXkBKk": {
     "changes": [],
     "description": "<p>If a character can catch an opponent when he is unable to defend himself effectively from her attack, she can strike a vital spot for extra damage.</p><p>The character’s attack deals extra damage anytime her target would be denied a <em>Dexterity</em> bonus to <em>AC</em> (whether the target actually has a <em>Dexterity</em> bonus or not), or when the character flanks her target. This extra damage is 1d6 at 1st level, and increases by 1d6 every two class levels thereafter. Should the character score a <em>critical hit</em> with a sneak attack, this extra damage is not multiplied. Ranged attacks can count as sneak attacks only if the target is within 30 feet.</p><p>With a weapon that deals nonlethal damage (like a sap, whip, or an unarmed strike), a character can make a sneak attack that deals nonlethal damage instead of lethal damage. She cannot use a weapon that deals lethal damage to deal nonlethal damage in a sneak attack, not even with the usual –4 penalty.</p><p>The character must be able to see the target well enough to pick out a vital spot and must be able to reach such a spot. A character cannot sneak attack while striking a creature with concealment.</p>",
@@ -156,6 +252,44 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
   },
+  "BO7BEFHDcf6qBaYV": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "floor((@class.unlevel + 2) / 4)",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 2nd level, a ranger must select one <em>combat style</em> to pursue.</p><p>The ranger’s expertise manifests in the form of bonus feats at 2nd, 6th, 10th, 14th, and 18th level. He can choose feats from his selected combat style, even if he does not have the normal prerequisites.</p><p>The benefits of the ranger’s chosen style feats apply only when he wears light, medium, or no armor. He loses all benefits of his combat style feats when wearing heavy armor. Once a ranger selects a combat style, it cannot be changed.</p><hr /><table><thead><tr><th>Ranger Combat Styles</th></tr></thead><tbody><tr><td>Archery</td></tr><tr><td>Crossbow</td></tr><tr><td>Deceptive</td></tr><tr><td>Elemental</td></tr><tr><td>Faithful (Achaekek)</td></tr><tr><td>Faithful (Besmara)</td></tr><tr><td>Faithful (Calistria)</td></tr><tr><td>Faithful (Cayden Cailean)</td></tr><tr><td>Faithful (Desna)</td></tr><tr><td>Faithful (Erastil)</td></tr><tr><td>Faithful (Gorum)</td></tr><tr><td>Faithful (Gozreh)</td></tr><tr><td>Faithful (Iomedae)</td></tr><tr><td>Faithful (Irori)</td></tr><tr><td>Faithful (Kurgess)</td></tr><tr><td>Faithful (Lamashtu)</td></tr><tr><td>Faithful (Norgorber)</td></tr><tr><td>Faithful (Sarenrae)</td></tr><tr><td>Faithful (Torag)</td></tr><tr><td>Faithful (Zon-Kuthon)</td></tr><tr><td>Menacing</td></tr><tr><td>Mounted Combat</td></tr><tr><td>Natural Weapon</td></tr><tr><td>Thrown Weapon</td></tr><tr><td>Two-Handed Weapon</td></tr><tr><td>Two-Weapon Combat</td></tr><tr><td>Underhanded</td></tr><tr><td>Underwater</td></tr><tr><td>Weapon and Shield</td></tr></tbody></table>",
+    "grantsBuffs": [],
+    "id": "BO7BEFHDcf6qBaYV",
+    "name": "Combat Style Feat",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "65"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.BO7BEFHDcf6qBaYV"
+  },
+  "BPRtCoYTMDwsITXJ": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 20th level, a paladin becomes a conduit for the power of her god. Her <em>DR</em> increases to 10/evil. Whenever she uses smite evil and successfully strikes an evil outsider, the outsider is also subject to a Banishment, using her paladin level as the caster level (her weapon and holy symbol automatically count as objects that the subject hates). After the Banishment effect and the damage from the attack is resolved, the smite immediately ends. In addition, whenever she channels positive energy or uses lay on hands to heal a creature, she heals the maximum possible amount.</p>",
+    "grantsBuffs": [],
+    "id": "BPRtCoYTMDwsITXJ",
+    "name": "Holy Champion",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "63"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.BPRtCoYTMDwsITXJ"
+  },
   "BS9WDbCy2Up3QHw9": {
     "changes": [
       {
@@ -195,6 +329,38 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
   },
+  "Bs5i98ja24ODe9WL": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 4th level, a ranger forms a bond with his hunting companions. This bond can take one of two forms. Once the form is chosen, it cannot be changed. The first is a bond to his companions. This bond allows him to spend a <em>move action</em> to grant half his <em>favored enemy</em> bonus against a single target of the appropriate type to all allies within 30 feet who can see or hear him. This bonus lasts for a number of rounds equal to the ranger’s <em>Wisdom</em> modifier (minimum 1). This bonus does not stack with any <em>favored enemy</em> bonuses possessed by his allies; they use whichever bonus is higher.</p>\n<p>The second option is to form a close bond with an <em>animal companion</em>. A ranger who selects an <em>animal companion</em> can choose from the following list: <em>badger</em>, <em>bird</em>, <em>camel</em>, <em>cat (small)</em>, <em>dire rat</em>, <em>dog</em>, <em>horse</em>, <em>pony</em>, snake (<em>viper</em> or <em>constrictor</em>), or <em>wolf</em>. If the campaign takes place wholly or partly in an aquatic environment, the ranger may choose a shark instead. This animal is a loyal companion that accompanies the ranger on his adventures as appropriate for its kind. A ranger’s <em>animal companion</em> shares his <em>favored enemy</em> and <em>favored terrain</em> bonuses.</p>\n<p>This ability functions like the <em>druid animal companion</em> ability (which is part of the Nature Bond class feature), except that the ranger’s effective <em>druid</em> level is equal to his ranger level –3.</p>\n<p>A ranger can select a antelope, baboon, bustard, capybara, elk, falcon, kangaroo, <em>lizard</em> (<em>giant gecko</em>), marsupial devil, ram, reindeer, <em>snake</em> (reef snake or <em>spitting cobra</em>), stag, trumpeter swan, thylacine, wolfdog, yak, or zebra as an <em>animal companion</em>. If the campaign takes place in an aquatic environment, the ranger can choose an armorfish or reef snake. A falconer ranger can select a falcon companion instead of a bird companion.</p>\n<p>If the campaign takes place in an aquatic environment, the ranger can choose a stingray.</p>\n<p>The <em>ambusher</em>, <em>bully</em>, <em>daredevil</em>, <em>feytouched companion</em>, <em>precocious companion</em>, <em>totem guide</em>, <em>tracker</em>, <em>verdant companion</em>, and <em>wrecker archetypes</em> are all particularly appropriate for a <em>ranger’s animal companion</em>.</p>",
+    "grantsBuffs": [],
+    "id": "Bs5i98ja24ODe9WL",
+    "name": "Hunter's Bond",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "66"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Bs5i98ja24ODe9WL"
+  },
+  "C5tWPm12qyz5ND9u": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 3rd level, a paladin is immune to all diseases, including supernatural and magical diseases, including <em>mummy rot</em>.</p>",
+    "grantsBuffs": [],
+    "id": "C5tWPm12qyz5ND9u",
+    "name": "Divine Health",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "61"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.C5tWPm12qyz5ND9u"
+  },
   "CV8BsY3ciUb9TA1Y": {
     "changes": [
       {
@@ -216,6 +382,65 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.CV8BsY3ciUb9TA1Y"
   },
+  "Cc2eFfhJYlClCGEH": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>The characters’s evasion ability improves. He still takes no damage on a successful Reflex saving throw against attacks, but henceforth he takes only half damage on a failed save. A helpless character does not gain the benefit of improved evasion.</p>",
+    "grantsBuffs": [],
+    "id": "Cc2eFfhJYlClCGEH",
+    "name": "Improved Evasion",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "59, 67, 70"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Cc2eFfhJYlClCGEH"
+  },
+  "E0skJEqlJOvB5CoA": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>A ranger gains Endurance as a bonus feat at 3rd level.</p>",
+    "grantsBuffs": [
+      "Compendium.pf1.feats.Item.ehqx8txNRGMaNOPt"
+    ],
+    "id": "E0skJEqlJOvB5CoA",
+    "name": "Endurance",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "65"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.E0skJEqlJOvB5CoA"
+  },
+  "E90iE6Ynyq1cgGXA": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>A ranger of 12th level or higher can use the <em>Stealth</em> skill to hide in any of his favored terrains, even if the terrain doesn’t grant <em>cover</em> or <em>concealment</em>.</p>",
+    "grantsBuffs": [],
+    "id": "E90iE6Ynyq1cgGXA",
+    "name": "Camouflage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "67"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.E90iE6Ynyq1cgGXA"
+  },
   "EQ7JGo4P1XirLO46": {
     "changes": [],
     "description": "<p>At 10th level, and every two levels thereafter, a rogue can choose one of the following advanced talents in place of a rogue talent.</p>",
@@ -230,6 +455,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.EQ7JGo4P1XirLO46"
+  },
+  "Er8h3fZ2edJEviTv": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 3rd level, and every three levels thereafter, a paladin can select one mercy. Each mercy adds an effect to the paladin's lay on hands ability. Whenever the paladin uses lay on hands to heal damage to one target, the target also receives the additional effects from all of the mercies possessed by the paladin. A mercy can remove a condition caused by a curse, disease, or poison without curing the affliction. Such conditions return after 1 hour unless the mercy actually removes the affliction that causes the condition.</p>\n<p>At 3rd level, the paladin can select from the following initial mercies.</p>\n<ul>\n<li><em>Deceived:</em> The target can immediately attempt a new saving throw to disbelieve any ongoing illusions that it failed to disbelieve within the last minute.</li>\n<li><em>Fatigued: </em>The target is no longer <em>fatigued</em>.</li>\n<li><em>Riled:</em> The <em>paladin's lay on hands</em> also acts as <em>calm emotions</em>, but only for the purpose of suppressing morale bonuses (such as from the <em>rage</em> spell) and emotion effects that aren't fear effects. Use the <em>paladin's</em> level as the <em>caster level</em>. </li>\n<li><em>Shaken:</em> The target is no longer <em>shaken</em>.</li>\n<li><em>Sickened:</em> The target is no longer <em>sickened</em>.</li>\n</ul>\n<p>At 6th level, a paladin adds the following mercies to the list of those that can be selected.</p>\n<ul>\n<li><em>Dazed:</em> The target is no longer <em>dazed</em>.</li>\n<li><em>Diseased:</em> The paladin's lay on hands ability also acts as <em>remove disease</em>, using the paladin's level as the caster level.</li>\n<li><em>Enfeebled:</em> The <em>paladin</em> dispels any magical effects that are reducing one of the target's ability scores (<em>paladin's</em> choice). </li>\n<li><em>Haunted:</em> The <em>paladin's lay on hands</em> also acts as <em>protection from evil</em>, but only for the purpose of allowing a new saving throw against <em>enchantment</em> (<em>charm</em>) and <em>enchantment</em> (<em>compulsion</em>) effects, making the target immune to any attempts to possess or exercise mental control over the target, or preventing a life force from controlling the target (all as described in the second effect of <em>protection from evil</em>). Use the <em>paladin's</em> level as the <em>caster level</em>. </li>\n<li><em>Staggered: </em>The target is no longer <em>staggered</em>, unless the target is at exactly 0 hit points.</li>\n<li><em>Targeted: </em>The <em>paladin's lay on hands</em> also acts as <em>sanctuary</em>, using the <em>paladin's</em> level as the <em>caster level</em>. The saving throw DC to negate this effect is equal to 10 + 1/2 the <em>paladin's</em> level + the <em>paladin's Charisma</em> modifier. </li>\n</ul>\n<p>At 9th level, a paladin adds the following mercies to the list of those that can be selected.</p>\n<ul>\n<li><em>Confused: </em>The target is no longer <em>confused</em>.</li>\n<li><em>Cursed:</em> The paladin's lay on hands ability also acts as <em>remove curse</em>, using the paladin's level as the caster level.</li>\n<li><em>Exhausted: </em>The target is no longer <em>exhausted</em>. The paladin must have the fatigue mercy before selecting this mercy.</li>\n<li><em>Frightened: </em>The target is no longer <em>frightened</em>. The paladin must have the <em>shaken</em> mercy before selecting this mercy.</li>\n<li><em>Injured:</em> The target gains <em>fast healing</em> 3 for a number of rounds equal to 1/2 the <em>paladin's</em> level. </li>\n<li><em>Nauseated:</em> The target is no longer <em>nauseated</em>. The paladin must have the <em>sickened</em> mercy before selecting this mercy.</li>\n<li><em>Poisoned: </em>The paladin's lay on hands ability also acts as <em>neutralize poison</em>, using the paladin's level as the caster level.</li>\n<li><em>Restorative:</em> The target heals 1d4 points of <em>ability damage</em> from a single ability score of the <em>paladin's</em> choosing. The <em>paladin</em> must have the enfeebled mercy before selecting this mercy. </li>\n</ul>\n<p>At 12th level, a paladin adds the following mercies to the list of those that can be selected.</p>\n<ul>\n<li><em>Amputated: </em>The <em>paladin's lay on hands</em> also acts as <em>regenerate</em>, but only for the purposes of regrowing severed body members, <em>broken</em> bones, and ruined organs. The <em>paladin</em> must have the injured mercy before she can select this mercy. </li>\n<li><em>Blinded:</em> The target is no longer <em>blinded</em>.</li>\n<li><em>Deafened: </em>The target is no longer <em>deafened</em>.</li>\n<li><em>Ensorcelled:</em> The <em>paladin's lay on hands</em> also acts as <em>dispel magic</em>, using the <em>paladin's</em> level as her <em>caster level</em> (maximum 20). Source <em>PPC:HH</em></li>\n<li><em>Paralyzed: </em>The target is no longer <em>paralyzed</em>.</li>\n<li><em>Petrified:</em> The <em>paladin's lay on hands</em> ability also acts as <em>stone to flesh</em>, but only for the purpose of removing the <em>petrified</em> condition from a creature. </li>\n<li><em>Stunned:</em> The target is no longer <em>stunned</em>.</li>\n</ul>\n<p>These abilities are cumulative. For example, a 12th-level paladin's lay on hands ability heals 6d6 points of damage and might also cure <em>Fatigued</em> and <em>Exhausted</em> conditions as well as removing diseases and neutralizing poisons. Once a condition or spell effect is chosen, it can't be changed.</p>",
+    "grantsBuffs": [],
+    "id": "Er8h3fZ2edJEviTv",
+    "name": "Mercy",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "61-62"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Er8h3fZ2edJEviTv"
   },
   "EvrFDqZDbbFS4Avb": {
     "changes": [],
@@ -260,6 +501,38 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.F5mCXQR9VZfKfpTH"
+  },
+  "Fm1FXt1gZX5PxBrT": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>This character can avoid damage from many area-effect attacks. If she makes a successful Reflex saving throw against an attack that normally deals half damage on a successful save, she instead takes no damage. <em>Evasion</em> can be used only if the character is wearing light armor, medium armor, or no armor. A helpless character does not gain the benefit of evasion.</p>",
+    "grantsBuffs": [],
+    "id": "Fm1FXt1gZX5PxBrT",
+    "name": "Evasion (Medium Armor)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "67"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Fm1FXt1gZX5PxBrT"
+  },
+  "GAHaeOGTBeR6LJ3K": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>A ranger of 20th level becomes a master hunter. He can always move at full speed while using <em>Survival</em> to follow tracks without penalty. He can, as a <em>standard action</em>, make a single attack against a <em>favored enemy</em> at his full <em>attack bonus</em>. If the attack hits, the target takes damage normally and must make a <em>Fortitude</em> save or die. The DC of this save is equal to 10 + 1/2 the ranger’s level + the ranger’s <em>Wisdom</em> modifier. A ranger can choose instead to deal an amount of <em>nonlethal damage</em> equal to the creature’s current <em>hit points</em>. A successful save negates this damage. A ranger can use this ability once per day against each <em>favored enemy</em> type he possesses, but not against the same creature more than once in a 24-hour period.</p>",
+    "grantsBuffs": [],
+    "id": "GAHaeOGTBeR6LJ3K",
+    "name": "Master Hunter",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "67"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.GAHaeOGTBeR6LJ3K"
   },
   "HdzsFdoGauXFjU2S": {
     "abilityType": "ex",
@@ -431,6 +704,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
   },
+  "RNIkkvqaq2iVrahs": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 3rd level, a paladin is immune to fear (magical or otherwise). Each ally within 10 feet of her gains a +4 morale bonus on <em>saving throws</em> against fear effects. This ability functions only while the paladin is conscious, not if she is <em>unconscious</em> or dead.</p>",
+    "grantsBuffs": [],
+    "id": "RNIkkvqaq2iVrahs",
+    "name": "Aura of Courage",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "61"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.RNIkkvqaq2iVrahs"
+  },
   "RaFl9SpbAlXqhsDk": {
     "changes": [],
     "description": "<p>The character can prepare a number of orisons, or 0-level spells, each day. These spells are cast like any other spell, but they are not expended when cast and may be used again.</p>",
@@ -469,6 +758,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF"
+  },
+  "U2YBSx1s8cT8iDq1": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 3rd level, a ranger may select a type of terrain from Table: Ranger Favored Terrains. The ranger gains a +2 bonus on <em>initiative</em> checks and <em>Knowledge</em> (geography), <em>Perception</em>, <em>Stealth</em>, and <em>Survival skill checks</em> when he is in this terrain. A ranger traveling through his <em>favored terrain</em> normally leaves no trail and cannot be tracked (though he may leave a trail if he so chooses).</p>\n<p>At 8th level and every five levels thereafter, the ranger may select an additional <em>favored terrain</em>. In addition, at each such interval, the skill bonus and <em>initiative</em> bonus in any one <em>favored terrain</em> (including the one just selected, if so desired), increases by +2.</p>\n<p>If a specific terrain falls into more than one category of <em>favored terrain</em>, the ranger’s bonuses do not stack; he simply uses whichever bonus is higher.</p>\n<hr />\n<table><caption>Table: Ranger Favored Terrains</caption>\n<thead>\n<tr>\n<th>Favored Terrains</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Cold (ice, glaciers, snow, and tundra)</td>\n</tr>\n<tr>\n<td>Desert (sand and wastelands)</td>\n</tr>\n<tr>\n<td>Forest (coniferous and deciduous)</td>\n</tr>\n<tr>\n<td>Jungle</td>\n</tr>\n<tr>\n<td>Mountain (including hills)</td>\n</tr>\n<tr>\n<td>Plains</td>\n</tr>\n<tr>\n<td>Planes (pick one, other than <em>Material Plane</em>)</td>\n</tr>\n<tr>\n<td>Swamp</td>\n</tr>\n<tr>\n<td>Underground (caves and dungeons)</td>\n</tr>\n<tr>\n<td>Urban (buildings, streets, and sewers)</td>\n</tr>\n<tr>\n<td>Water (above and below the surface)</td>\n</tr>\n</tbody>\n</table>",
+    "grantsBuffs": [],
+    "id": "U2YBSx1s8cT8iDq1",
+    "name": "Favored Terrain",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "65"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.U2YBSx1s8cT8iDq1"
   },
   "W1KWAZxUNxfCv8rG": {
     "changes": [
@@ -529,6 +834,27 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV"
   },
+  "WhE4j0Jc82npdMCP": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Beginning at 2nd level, a paladin can heal wounds (her own or those of others) by touch. Each day she can use this ability a number of times equal to 1/2 her paladin level plus her <em>Charisma</em> modifier. With one use of this ability, a paladin can heal 1d6 hit points of damage for every two paladin levels she possesses. Using this ability is a standard action, unless the paladin targets herself, in which case it is a swift action. Despite the name of this ability, a paladin only needs one free hand to use this ability.</p>\n<p>Alternatively, a paladin can use this healing power to deal damage to undead creatures, dealing 1d6 points of damage for every two levels the paladin possesses. Using lay on hands in this way requires a successful melee touch attack and doesn't provoke an <em>attack of opportunity</em>. Undead do not receive a <em>saving throw</em> against this damage.</p>",
+    "grantsBuffs": [],
+    "id": "WhE4j0Jc82npdMCP",
+    "name": "Lay on Hands",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "61"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "layOnHands",
+    "uses": {
+      "maxFormula": "floor(@class.unlevel / 2) + @abilities.cha.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.WhE4j0Jc82npdMCP"
+  },
   "Wkv124hVPATT35bm": {
     "abilityType": "ex",
     "changes": [],
@@ -544,6 +870,61 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Wkv124hVPATT35bm"
+  },
+  "Xi5BENHWBu1hLHKl": {
+    "changes": [],
+    "description": "<p>Beginning at 4th level, a ranger gains the ability to cast a small number of divine spells, which are drawn from the ranger spell list presented in Spell Lists. A ranger must choose and prepare his spells in advance.</p><p>To prepare or cast a spell, a ranger must have a Wisdom score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a ranger's spell is 10 + the spell level + the ranger's Wisdom modifier.</p><p>Like other spellcasters, a ranger can cast only a certain number of spells of each spell level per day. His base daily spell allotment is given on Table: Ranger. In addition, he receives bonus spells per day if he has a high Wisdom score (see Table: Ability Modifiers and Bonus Spells). When Table: Ranger indicates that the ranger gets 0 spells per day of a given spell level, he gains only the bonus spells he would be entitled to based on his Wisdom score for that spell level.</p><p>A ranger must spend 1 hour per day in quiet meditation to regain his daily allotment of spells. A ranger may prepare and cast any spell on the ranger spell list, provided that he can cast spells of that level, but he must choose which spells to prepare during his daily meditation.</p><p>Through 3rd level, a ranger has no caster level. At 4th level and higher, his caster level is equal to his ranger level – 3.</p>",
+    "grantsBuffs": [],
+    "id": "Xi5BENHWBu1hLHKl",
+    "name": "Ranger Spells",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "66"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Xi5BENHWBu1hLHKl"
+  },
+  "XmALhWqXdN9yOmtd": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 1st level, a ranger selects a creature type from the ranger <em>favored enemies</em> table. He gains a +2 bonus on <em>Bluff</em>, <em>Knowledge</em>, <em>Perception</em>, <em>Sense Motive</em>, and <em>Survival</em> checks against creatures of his selected type. Likewise, he gets a +2 bonus on weapon attack and damage rolls against them. A ranger may make <em>Knowledge skill checks</em> untrained when attempting to identify these creatures.</p><p>At 5th level and every five levels thereafter (10th, 15th, and 20th level), the ranger may select an additional <em>favored enemy</em>. In addition, at each such interval, the bonus against any one <em>favored enemy</em> (including the one just selected, if so desired) increases by +2.</p><p>If the ranger chooses <em>humanoids</em> or <em>outsiders</em> as a <em>favored enemy</em>, he must also choose an associated subtype, as indicated on the table below. (Note that there are other types of humanoid to choose from—those called out specifically on the table below are merely the most common.) If a specific creature falls into more than one category of <em>favored enemy</em>, the ranger’s bonuses do not stack; he simply uses whichever bonus is higher.</p><hr /><table><thead><tr><th>Type (Subtype)</th></tr></thead><tbody><tr><td>Aberration</td></tr><tr><td>Animal</td></tr><tr><td>Construct</td></tr><tr><td>Dragon</td></tr><tr><td>Fey</td></tr><tr><td>Humanoid (aquatic)</td></tr><tr><td>Humanoid (dwarf)</td></tr><tr><td>Humanoid (elf)</td></tr><tr><td>Humanoid (giant)</td></tr><tr><td>Humanoid (goblinoid)</td></tr><tr><td>Humanoid (gnoll)</td></tr><tr><td>Humanoid (gnome)</td></tr><tr><td>Humanoid (halfling)</td></tr><tr><td>Humanoid (human)</td></tr><tr><td>Humanoid (orc)</td></tr><tr><td>Humanoid (reptilian)</td></tr><tr><td>Humanoid (other subtype)</td></tr><tr><td>Magical beast</td></tr><tr><td>Monstrous humanoid</td></tr><tr><td>Ooze</td></tr><tr><td>Outsider (air)</td></tr><tr><td>Outsider (chaotic)</td></tr><tr><td>Outsider (earth)</td></tr><tr><td>Outsider (evil)</td></tr><tr><td>Outsider (fire)</td></tr><tr><td>Outsider (good)</td></tr><tr><td>Outsider (lawful)</td></tr><tr><td>Outsider (native)</td></tr><tr><td>Outsider (water)</td></tr><tr><td>Plant</td></tr><tr><td>Undead</td></tr><tr><td>Vermin</td></tr></tbody></table>",
+    "grantsBuffs": [],
+    "id": "XmALhWqXdN9yOmtd",
+    "name": "Favored Enemy",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "64"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.XmALhWqXdN9yOmtd"
+  },
+  "Yr8dfM2d8JEWoYkr": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>A character can improve the attitude of an <em>animal</em>. This ability functions just like a <em>Diplomacy</em> check made to improve the attitude of a person. The character rolls 1d20 and adds her class level and her <em>Charisma</em> modifier to determine the wild empathy check result.</p><p>The typical domestic <em>animal</em> has a starting attitude of indifferent, while wild <em>animals</em> are usually unfriendly.</p><p>To use wild empathy, the character and the <em>animal</em> must be able to study each other, which means that they must be within 30 feet of one another under normal conditions. Generally, influencing an <em>animal</em> in this way takes 1 minute but, as with influencing people, it might take more or less time.</p><p>A character can also use this ability to influence a magical beast with an <em>Intelligence</em> score of 1 or 2, but she takes a –4 penalty on the check.</p>",
+    "grantsBuffs": [],
+    "id": "Yr8dfM2d8JEWoYkr",
+    "name": "Wild Empathy",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "50, 64-65"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "28"
+      },
+      {
+        "id": "PZO1140",
+        "pages": "27"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
   },
   "ZfnHhhTFQVo0Lj4P": {
     "abilityType": "ex",
@@ -581,6 +962,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.aYdjgDZJCNvKpLQP"
   },
+  "cUv3fmnuhtQjgQM5": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 14th level, a paladin's weapons are treated as good-aligned for the purposes of overcoming <em>Damage Reduction</em>. Any attack made against an enemy within 10 feet of her is treated as good-aligned for the purposes of overcoming <em>Damage Reduction</em>.</p>\n<p>This ability functions only while the paladin is conscious, not if she is <em>unconscious</em> or dead.</p>",
+    "grantsBuffs": [],
+    "id": "cUv3fmnuhtQjgQM5",
+    "name": "Aura of Faith",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "63"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.cUv3fmnuhtQjgQM5"
+  },
   "dopWa3n4mgTGpTYi": {
     "changes": [],
     "description": "<p>Upon reaching 4th level, and at every even-numbered class level after that (6th, 8th, and so on), the character can choose to learn a new spell in place of one she already knows. In effect, the character loses the old spell in exchange for the new one. The new spell's level must be the same as that of the spell being exchanged. A character may swap only a single spell at any given level, and must choose whether or not to swap the spell at the same time that she gains new spells known for the level.</p><h3>Class Specific Restrictions</h3><ul><li>Psychics exchanged spell must be at least 1 level lower than the highest-level spell from the psychic’s class list that the psychic can cast.</li><li>Sorcerers cannot swap any bloodline spells.</li><li>Oracles cannot swap any cure or inflict spells, nor can she swap any spells gained from her mystery.</li></ul>",
@@ -595,6 +992,28 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+  },
+  "eYuNS8kf9Z3V6kjO": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "@abilities.cha.mod",
+        "target": "allSavingThrows",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 2nd level, a paladin gains a bonus equal to her <em>Charisma</em> bonus (if any) on all <em>Saving Throws</em>.</p>",
+    "grantsBuffs": [],
+    "id": "eYuNS8kf9Z3V6kjO",
+    "name": "Divine Grace",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "61"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.eYuNS8kf9Z3V6kjO"
   },
   "exdHrqciehozr5SD": {
     "changes": [],
@@ -646,6 +1065,22 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.iBTrvPtn3jczInbn"
   },
+  "iFq0EX4yovswIox9": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 17th level, a paladin gains <em>DR</em> 5/evil and immunity to compulsion spells and spell-like abilities. Each ally within 10 feet of her gains a +4 morale bonus on <em>saving throws</em> against compulsion effects.</p>\n<p>This ability functions only while the paladin is conscious, not if she is <em>unconscious</em> or dead.</p>",
+    "grantsBuffs": [],
+    "id": "iFq0EX4yovswIox9",
+    "name": "Aura of Righteousness",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "63"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.iFq0EX4yovswIox9"
+  },
   "iqeyCQIIVnNt0p3h": {
     "abilityType": "ex",
     "changes": [],
@@ -661,6 +1096,22 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.iqeyCQIIVnNt0p3h"
+  },
+  "jiBCmy0kP1Uwaz0D": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, a paladin is immune to charm spells and spell-like abilities. Each ally within 10 feet of her gains a +4 morale bonus on <em>saving throws</em> against charm effects.</p>\n<p>This ability functions only while the paladin is conscious, not if she is <em>unconscious</em> or dead.</p>",
+    "grantsBuffs": [],
+    "id": "jiBCmy0kP1Uwaz0D",
+    "name": "Aura of Resolve",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "63"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.jiBCmy0kP1Uwaz0D"
   },
   "kXXz1lO4i7CibHJ9": {
     "abilityType": "su",
@@ -697,6 +1148,42 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
+  },
+  "nzqkSBc6tvAqG8o2": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>The power of a paladin's aura of good (see the Detect Good spell) is equal to her paladin level.</p>",
+    "grantsBuffs": [],
+    "id": "nzqkSBc6tvAqG8o2",
+    "name": "Aura of Good",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "60"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.nzqkSBc6tvAqG8o2"
+  },
+  "oRac7XDHBN0JzuyY": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 19th level, the character's ability to hunt his quarry improves. He can now select a quarry as a <em>free action</em>, and can now take 20 while using <em>Survival</em> to track his quarry, while moving at normal speed without penalty. His <em>insight bonus</em> to attack his quarry increases to +4. If his quarry is killed or dismissed, he can select a new one after 10 minutes have passed.</p>",
+    "grantsBuffs": [],
+    "id": "oRac7XDHBN0JzuyY",
+    "name": "Improved Quarry",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "67"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "55"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.oRac7XDHBN0JzuyY"
   },
   "pEODJDoTk7uhCZY7": {
     "changes": [
@@ -757,6 +1244,70 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.qlQxKPARGGdOgNWm"
   },
+  "r8wPs0bB3WhOLxbX": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>The character adds half his level (minimum 1) to <em>Survival skill checks</em> made to follow tracks.</p>",
+    "grantsBuffs": [],
+    "id": "r8wPs0bB3WhOLxbX",
+    "name": "Track",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "64"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "40"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "28, 53"
+      },
+      {
+        "id": "PZO1140",
+        "pages": "27"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
+  },
+  "sk0HNTe9lKBpHQpN": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>The character can move at his normal speed while using Survival to follow tracks without taking the normal –5 penalty. He takes only a –10 penalty (instead of the normal –20) when moving at up to twice normal speed while tracking.</p>",
+    "grantsBuffs": [],
+    "id": "sk0HNTe9lKBpHQpN",
+    "name": "Swift Tracker",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "67"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "29, 55"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.sk0HNTe9lKBpHQpN"
+  },
+  "tHObxrPeyhimmz9V": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When a paladin reaches 4th level, she gains the supernatural ability to channel positive energy like a cleric. Using this ability consumes two uses of her lay on hands ability. A paladin uses her level as her effective cleric level when channeling positive energy. This is a <em>Charisma</em>-based ability.</p>",
+    "grantsBuffs": [],
+    "id": "tHObxrPeyhimmz9V",
+    "name": "Channel Positive Energy",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "62"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.tHObxrPeyhimmz9V"
+  },
   "vVkKDPniD09W5JgO": {
     "changes": [
       {
@@ -784,6 +1335,16 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.vVkKDPniD09W5JgO"
   },
+  "wHfy3OJmTimVgXuO": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 11th level, a paladin can expend two uses of her smite evil ability to grant the ability to smite evil to all allies within 10 feet, using her bonuses. Allies must use this smite evil ability by the start of the paladin’s next turn and the bonuses last for 1 minute. Using this ability is a free action. Evil creatures gain no benefit from this ability.</p>",
+    "grantsBuffs": [],
+    "id": "wHfy3OJmTimVgXuO",
+    "name": "Aura of Justice",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.wHfy3OJmTimVgXuO"
+  },
   "yaL9DS7Eu5OmsxnV": {
     "changes": [],
     "description": "<p>A sorcerer casts arcane spells drawn primarily from the sorcerer/wizard spell list presented in Spell Lists. She can cast any spell she knows without preparing it ahead of time. To learn or cast a spell, a sorcerer must have a Charisma score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a sorcerer's spell is 10 + the spell level + the sorcerer's Charisma modifier.</p><p>Like other spellcasters, a sorcerer can cast only a certain number of spells of each spell level per day. Her base daily spell allotment is given on Table: Sorcerer. In addition, she receives bonus spells per day if she has a high Charisma score (see Table: Ability Modifiers and Bonus Spells).</p><p>A sorcerer's selection of spells is extremely limited. A sorcerer begins play knowing four 0-level spells and two 1st-level spells of her choice. At each new sorcerer level, she gains one or more new spells, as indicated on Table: Spells Known. (Unlike spells per day, the number of spells a sorcerer knows is not affected by her Charisma score; the numbers on Table: Sorcerer Spells Known are fixed.) These new spells can be common spells chosen from the sorcerer/wizard spell list, or they can be unusual spells that the sorcerer has gained some understanding of through study.</p><p>Unlike a wizard or a cleric, a sorcerer need not prepare her spells in advance. She can cast any spell she knows at any time, assuming she has not yet used up her spells per day for that spell level.</p>",
@@ -798,6 +1359,38 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.yaL9DS7Eu5OmsxnV"
+  },
+  "ytotO22rp5ji6rT1": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>While in any of his favored terrains, a ranger of 17th level or higher can use the Stealth skill even while being observed.</p>",
+    "grantsBuffs": [],
+    "id": "ytotO22rp5ji6rT1",
+    "name": "Hide in Plain Sight",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "67"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.ytotO22rp5ji6rT1"
+  },
+  "z4NJaCcj9VZpBv7d": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>Upon reaching 5th level, a paladin forms a divine bond with her god. This bond can take one of two forms. Once the form is chosen, it cannot be changed.</p><p>@Embed[Compendium.pf1.class-abilities.Item.PGGPzJqGE3kO6RRr inline=true]</p><p>@Embed[Compendium.pf1.class-abilities.Item.65R8BjDqqLQBdmn0 inline=true]</p>",
+    "grantsBuffs": [],
+    "id": "z4NJaCcj9VZpBv7d",
+    "name": "Divine Bond",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "63"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.z4NJaCcj9VZpBv7d"
   },
   "zrUJt7YpAJkf2NC6": {
     "changes": [],

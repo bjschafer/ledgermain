@@ -192,6 +192,98 @@ describe("compute: rogue L5 (human, no armor)", () => {
   });
 });
 
+describe("compute: paladin L5 (human, no armor)", () => {
+  const doc = makeDoc({
+    classes: [{ tag: "paladin", level: 5 }],
+    abilities: { str: 14, dex: 10, con: 14, int: 10, wis: 12, cha: 16 },
+    // dip (Diplomacy, class skill) maxed at 5 ranks; ste (Stealth) is NOT a
+    // paladin class skill, ranked to confirm no class-skill bonus applies.
+    skillRanks: { dip: 5, ste: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +5 (high progression: 1/level)", () => {
+    expect(sheet.bab).toBe(5);
+  });
+
+  it("saves: Fort +9, Ref +4, Will +8 (good/poor base + ability + Divine Grace's Cha3 on all saves)", () => {
+    // Divine Grace (L2 class feature) applies @abilities.cha.mod as an untyped
+    // bonus to allSavingThrows via its vendored `changes[]` — exercised here
+    // for free by the generic class-feature/formula pipeline (no step-2
+    // hand-authoring needed for this one).
+    expect(sheet.saves.fort.total).toBe(9); // good base 4 + con2 + cha3
+    expect(sheet.saves.ref.total).toBe(4); // poor base 1 + dex0 + cha3
+    expect(sheet.saves.will.total).toBe(8); // good base 4 + wis1 + cha3
+  });
+
+  it("HP 44 (10 max d10 + 4*6 avg d10 + Con2*5)", () => {
+    expect(sheet.hp.max).toBe(44);
+  });
+
+  it("class skill (Diplomacy) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.dip!.total).toBe(11); // 5 ranks + cha3 + 3
+    expect(sheet.skills.dip!.classSkill).toBe(true);
+  });
+
+  it("non-class skill (Stealth) gets no class-skill bonus", () => {
+    expect(sheet.skills.ste!.total).toBe(1); // 1 rank + dex0
+    expect(sheet.skills.ste!.classSkill).toBe(false);
+  });
+
+  it("2 + Int skill points/level in ref data (paladin class def)", () => {
+    const paladinEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "paladin");
+    expect(paladinEntry).toBeDefined();
+    expect(paladinEntry![1].skillsPerLevel).toBe(2);
+    expect(paladinEntry![1].hd).toBe(10);
+    expect(paladinEntry![1].bab).toBe("high");
+    expect(paladinEntry![1].saves).toEqual({ fort: "high", ref: "low", will: "high" });
+  });
+});
+
+describe("compute: ranger L5 (human, no armor)", () => {
+  const doc = makeDoc({
+    classes: [{ tag: "ranger", level: 5 }],
+    abilities: { str: 16, dex: 14, con: 12, int: 10, wis: 12, cha: 8 },
+    // sur (Survival, class skill) maxed at 5 ranks; dip (Diplomacy) is NOT a
+    // ranger class skill, ranked to confirm no class-skill bonus applies.
+    skillRanks: { sur: 5, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +5 (high progression: 1/level)", () => {
+    expect(sheet.bab).toBe(5);
+  });
+
+  it("saves: Fort +5 (good base 4 + con1), Ref +6 (good base 4 + dex2), Will +2 (poor base 1 + wis1)", () => {
+    expect(sheet.saves.fort.total).toBe(5);
+    expect(sheet.saves.ref.total).toBe(6);
+    expect(sheet.saves.will.total).toBe(2);
+  });
+
+  it("HP 39 (10 max d10 + 4*7 avg d10 + Con1*5)", () => {
+    expect(sheet.hp.max).toBe(39);
+  });
+
+  it("class skill (Survival) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.sur!.total).toBe(9); // 5 ranks + wis1 + 3
+    expect(sheet.skills.sur!.classSkill).toBe(true);
+  });
+
+  it("non-class skill (Diplomacy) gets no class-skill bonus", () => {
+    expect(sheet.skills.dip!.total).toBe(0); // 1 rank + cha-1
+    expect(sheet.skills.dip!.classSkill).toBe(false);
+  });
+
+  it("6 + Int skill points/level in ref data (ranger class def)", () => {
+    const rangerEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "ranger");
+    expect(rangerEntry).toBeDefined();
+    expect(rangerEntry![1].skillsPerLevel).toBe(6);
+    expect(rangerEntry![1].hd).toBe(10);
+    expect(rangerEntry![1].bab).toBe("high");
+    expect(rangerEntry![1].saves).toEqual({ fort: "high", ref: "high", will: "low" });
+  });
+});
+
 describe("compute: fighter L5 (full plate + magic items, stacking + armor training)", () => {
   const gear: ItemInstance[] = [
     {

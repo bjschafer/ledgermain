@@ -172,6 +172,38 @@ describe("resolveClassFeatures: Acrobat (rogue archetype) swaps Trap Sense for S
   });
 });
 
+describe("resolveClassFeatures: Paladin.csv / Ranger.csv are picked up (issue #13 step 1)", () => {
+  // Not exhaustive — just proves the new CLASS_ARCHETYPE_FILES entries resolve
+  // into real Archetype/ArchetypeFeature records for both classes.
+  it("a paladin archetype (Hospitaler) resolves with features", () => {
+    const hospitaler = byName(ref.archetypes, "Hospitaler");
+    const doc = makeDoc({
+      classes: [{ tag: "paladin", level: 20 }],
+      archetypes: [hospitaler.id],
+    });
+    const { activeArchetypes } = resolveClassFeatures(doc, ref);
+
+    const entry = activeArchetypes.find((a) => a.id === hospitaler.id)!;
+    expect(entry).toBeDefined();
+    expect(entry.classTag).toBe("paladin");
+    expect(entry.features.length).toBeGreaterThan(0);
+  });
+
+  it("a ranger archetype (Beast Master) resolves with features", () => {
+    const beastMaster = byName(ref.archetypes, "Beast Master");
+    const doc = makeDoc({
+      classes: [{ tag: "ranger", level: 20 }],
+      archetypes: [beastMaster.id],
+    });
+    const { activeArchetypes } = resolveClassFeatures(doc, ref);
+
+    const entry = activeArchetypes.find((a) => a.id === beastMaster.id)!;
+    expect(entry).toBeDefined();
+    expect(entry.classTag).toBe("ranger");
+    expect(entry.features.length).toBeGreaterThan(0);
+  });
+});
+
 describe("archetypeSwappedUuids", () => {
   it("two barbarian archetypes that both swap the same rage-power slot share a uuid", () => {
     const armoredHulk = byName(ref.archetypes, "Armored Hulk");

@@ -102,6 +102,67 @@ describe("baseSpellsPerDay() — sorcerer", () => {
   });
 });
 
+describe("baseSpellsPerDay() — paladin / ranger (identical half-caster progression)", () => {
+  it("levels 1-3: no spellcasting yet", () => {
+    for (const progression of ["paladin", "ranger"] as const) {
+      for (let cl = 1; cl <= 3; cl++) {
+        for (let spLvl = 0; spLvl <= 9; spLvl++) {
+          expect(baseSpellsPerDay(progression, cl, spLvl)).toBeNull();
+        }
+      }
+    }
+  });
+
+  it("level 4: 0 first-level slots (accessible but no bonus slot yet), no 2nd-level access", () => {
+    expect(baseSpellsPerDay("paladin", 4, 1)).toBe(0);
+    expect(baseSpellsPerDay("ranger", 4, 1)).toBe(0);
+    expect(baseSpellsPerDay("paladin", 4, 2)).toBeNull();
+    expect(baseSpellsPerDay("ranger", 4, 2)).toBeNull();
+  });
+
+  it("cantrips (level 0) are always null — neither class casts them", () => {
+    for (const progression of ["paladin", "ranger"] as const) {
+      for (let cl = 1; cl <= 20; cl++) {
+        expect(baseSpellsPerDay(progression, cl, 0)).toBeNull();
+      }
+    }
+  });
+
+  it("caps at 4th-level spells — levels 5-9 are always null", () => {
+    for (const progression of ["paladin", "ranger"] as const) {
+      for (let cl = 1; cl <= 20; cl++) {
+        for (let spLvl = 5; spLvl <= 9; spLvl++) {
+          expect(baseSpellsPerDay(progression, cl, spLvl)).toBeNull();
+        }
+      }
+    }
+  });
+
+  it("level 20 (max row): 4/4/3/3 at spell levels 1-4", () => {
+    const expected = [4, 4, 3, 3];
+    for (const progression of ["paladin", "ranger"] as const) {
+      for (let spLvl = 1; spLvl <= 4; spLvl++) {
+        expect(baseSpellsPerDay(progression, 20, spLvl)).toBe(expected[spLvl - 1]!);
+      }
+    }
+  });
+
+  it("paladin and ranger tables are identical at every level/spell-level pair", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      for (let spLvl = 0; spLvl <= 9; spLvl++) {
+        expect(baseSpellsPerDay("paladin", cl, spLvl)).toBe(baseSpellsPerDay("ranger", cl, spLvl));
+      }
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("paladin", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("paladin", 21, 1)).toBeNull();
+    expect(baseSpellsPerDay("ranger", 5, -1)).toBeNull();
+    expect(baseSpellsPerDay("ranger", 5, 10)).toBeNull();
+  });
+});
+
 describe("baseSpellsKnown() — sorcerer", () => {
   it("L1 sorcerer knows 4 cantrips, 2 first-level spells", () => {
     expect(baseSpellsKnown("sorcerer", 1, 0)).toBe(4);

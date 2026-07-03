@@ -21,6 +21,8 @@ export const CLASS_ARCHETYPE_FILES: Record<string, string> = {
   cleric: "Cleric.csv",
   sorcerer: "Sorcerer.csv",
   rogue: "Rogue UC.csv",
+  paladin: "Paladin.csv",
+  ranger: "Ranger.csv",
 };
 
 /** A row from one of the per-class archetype CSVs (header-name-keyed). */

@@ -631,5 +631,336 @@
       "simple",
       "martial"
     ]
+  },
+  "ohptcds1d5oG6Bjh": {
+    "armorProf": [
+      "lgt",
+      "med",
+      "hvy",
+      "shl"
+    ],
+    "bab": "high",
+    "classSkills": [
+      "art",
+      "crf",
+      "dip",
+      "han",
+      "hea",
+      "kno",
+      "kre",
+      "lor",
+      "pro",
+      "rid",
+      "sen",
+      "spl"
+    ],
+    "description": "<p>Through a select, worthy few shines the power of the divine. Called paladins, these noble souls dedicate their swords and lives to the battle against evil. Knights, crusaders, and law-bringers, paladins seek not just to spread divine justice but to embody the teachings of the virtuous deities they serve. In pursuit of their lofty goals, they adhere to ironclad laws of morality and discipline. As reward for their righteousness, these holy champions are blessed with boons to aid them in their quests: powers to banish evil, heal the innocent, and inspire the faithful. Although their convictions might lead them into conflict with the very souls they would save, paladins weather endless challenges of faith and dark temptations, risking their lives to do right and fighting to bring about a brighter future.</p><p><strong>Role</strong>: Paladins serve as beacons for their allies within the chaos of battle. While deadly opponents of evil, they can also empower goodly souls to aid in their crusades. Their magic and martial skills also make them well suited to defending others and blessing the fallen with the strength to continue fighting.</p>",
+    "features": [
+      {
+        "featureId": "nzqkSBc6tvAqG8o2",
+        "level": 1,
+        "name": "Aura of Good",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nzqkSBc6tvAqG8o2"
+      },
+      {
+        "featureId": "2YqtYAfLcV7KWkpJ",
+        "level": 1,
+        "name": "Detect Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2YqtYAfLcV7KWkpJ"
+      },
+      {
+        "featureId": "2TsDfK0SKC8IGVx4",
+        "level": 1,
+        "name": "Smite Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2TsDfK0SKC8IGVx4"
+      },
+      {
+        "featureId": "eYuNS8kf9Z3V6kjO",
+        "level": 2,
+        "name": "Divine Grace",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eYuNS8kf9Z3V6kjO"
+      },
+      {
+        "featureId": "WhE4j0Jc82npdMCP",
+        "level": 2,
+        "name": "Lay on Hands",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WhE4j0Jc82npdMCP"
+      },
+      {
+        "featureId": "RNIkkvqaq2iVrahs",
+        "level": 3,
+        "name": "Aura of Courage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RNIkkvqaq2iVrahs"
+      },
+      {
+        "featureId": "C5tWPm12qyz5ND9u",
+        "level": 3,
+        "name": "Divine Health",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.C5tWPm12qyz5ND9u"
+      },
+      {
+        "featureId": "Er8h3fZ2edJEviTv",
+        "level": 3,
+        "name": "Mercy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Er8h3fZ2edJEviTv"
+      },
+      {
+        "featureId": "tHObxrPeyhimmz9V",
+        "level": 4,
+        "name": "Channel Positive Energy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tHObxrPeyhimmz9V"
+      },
+      {
+        "featureId": "6h8ESfQp4dwX4qhk",
+        "level": 4,
+        "name": "Paladin Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.6h8ESfQp4dwX4qhk"
+      },
+      {
+        "featureId": "z4NJaCcj9VZpBv7d",
+        "level": 5,
+        "name": "Divine Bond",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.z4NJaCcj9VZpBv7d"
+      },
+      {
+        "featureId": "jiBCmy0kP1Uwaz0D",
+        "level": 8,
+        "name": "Aura of Resolve",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jiBCmy0kP1Uwaz0D"
+      },
+      {
+        "featureId": "wHfy3OJmTimVgXuO",
+        "level": 11,
+        "name": "Aura of Justice",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wHfy3OJmTimVgXuO"
+      },
+      {
+        "featureId": "cUv3fmnuhtQjgQM5",
+        "level": 14,
+        "name": "Aura of Faith",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.cUv3fmnuhtQjgQM5"
+      },
+      {
+        "featureId": "iFq0EX4yovswIox9",
+        "level": 17,
+        "name": "Aura of Righteousness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.iFq0EX4yovswIox9"
+      },
+      {
+        "featureId": "BPRtCoYTMDwsITXJ",
+        "level": 20,
+        "name": "Holy Champion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BPRtCoYTMDwsITXJ"
+      }
+    ],
+    "hd": 10,
+    "id": "ohptcds1d5oG6Bjh",
+    "name": "Paladin",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "60-64"
+      }
+    ],
+    "subType": "base",
+    "tag": "paladin",
+    "uuid": "Compendium.pf1.classes.Item.ohptcds1d5oG6Bjh",
+    "weaponProf": [
+      "simple",
+      "martial"
+    ]
+  },
+  "w3wjj6s3N69BsMc3": {
+    "armorProf": [
+      "lgt",
+      "med",
+      "shl"
+    ],
+    "bab": "high",
+    "classSkills": [
+      "art",
+      "clm",
+      "crf",
+      "han",
+      "hea",
+      "int",
+      "kdu",
+      "kge",
+      "kna",
+      "lor",
+      "per",
+      "pro",
+      "rid",
+      "spl",
+      "ste",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>For those who relish the thrill of the hunt, there are only predators and prey. Be they scouts, trackers, or bounty hunters, rangers share much in common: unique mastery of specialized weapons, skill at stalking even the most elusive game, and the expertise to defeat a wide range of quarries. Knowledgeable, patient, and skilled hunters, these rangers hound man, beast, and monster alike, gaining insight into the way of the predator, skill in varied environments, and ever more lethal martial prowess. While some track man-eating creatures to protect the frontier, others pursue more cunning game—even fugitives among their own people.</p><p><strong>Role</strong>: Ranger are deft skirmishers, either in melee or at range, capable of skillfully dancing in and out of battle. Their abilities allow them to deal significant harm to specific types of foes, but their skills are valuable against all manner of enemies.</p>",
+    "features": [
+      {
+        "featureId": "XmALhWqXdN9yOmtd",
+        "level": 1,
+        "name": "Favored Enemy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.XmALhWqXdN9yOmtd"
+      },
+      {
+        "featureId": "r8wPs0bB3WhOLxbX",
+        "level": 1,
+        "name": "Track",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
+      },
+      {
+        "featureId": "Yr8dfM2d8JEWoYkr",
+        "level": 1,
+        "name": "Wild Empathy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+      },
+      {
+        "featureId": "BO7BEFHDcf6qBaYV",
+        "level": 2,
+        "name": "Combat Style Feat",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BO7BEFHDcf6qBaYV"
+      },
+      {
+        "featureId": "E0skJEqlJOvB5CoA",
+        "level": 3,
+        "name": "Endurance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.E0skJEqlJOvB5CoA"
+      },
+      {
+        "featureId": "U2YBSx1s8cT8iDq1",
+        "level": 3,
+        "name": "Favored Terrain",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.U2YBSx1s8cT8iDq1"
+      },
+      {
+        "featureId": "Bs5i98ja24ODe9WL",
+        "level": 4,
+        "name": "Hunter's Bond",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Bs5i98ja24ODe9WL"
+      },
+      {
+        "featureId": "Xi5BENHWBu1hLHKl",
+        "level": 4,
+        "name": "Ranger Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Xi5BENHWBu1hLHKl"
+      },
+      {
+        "featureId": "5iXq1igb1Cq0qobT",
+        "level": 7,
+        "name": "Woodland Stride",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT"
+      },
+      {
+        "featureId": "sk0HNTe9lKBpHQpN",
+        "level": 8,
+        "name": "Swift Tracker",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sk0HNTe9lKBpHQpN"
+      },
+      {
+        "featureId": "Fm1FXt1gZX5PxBrT",
+        "level": 9,
+        "name": "Evasion (Medium Armor)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Fm1FXt1gZX5PxBrT"
+      },
+      {
+        "featureId": "5NS7Ec3WhKIkhygg",
+        "level": 11,
+        "name": "Quarry",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5NS7Ec3WhKIkhygg"
+      },
+      {
+        "featureId": "E90iE6Ynyq1cgGXA",
+        "level": 12,
+        "name": "Camouflage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.E90iE6Ynyq1cgGXA"
+      },
+      {
+        "featureId": "Cc2eFfhJYlClCGEH",
+        "level": 16,
+        "name": "Improved Evasion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Cc2eFfhJYlClCGEH"
+      },
+      {
+        "featureId": "ytotO22rp5ji6rT1",
+        "level": 17,
+        "name": "Hide in Plain Sight",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ytotO22rp5ji6rT1"
+      },
+      {
+        "featureId": "oRac7XDHBN0JzuyY",
+        "level": 19,
+        "name": "Improved Quarry",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.oRac7XDHBN0JzuyY"
+      },
+      {
+        "featureId": "GAHaeOGTBeR6LJ3K",
+        "level": 20,
+        "name": "Master Hunter",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.GAHaeOGTBeR6LJ3K"
+      }
+    ],
+    "hd": 10,
+    "id": "w3wjj6s3N69BsMc3",
+    "name": "Ranger",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 6,
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "64-67"
+      }
+    ],
+    "subType": "base",
+    "tag": "ranger",
+    "uuid": "Compendium.pf1.classes.Item.w3wjj6s3N69BsMc3",
+    "weaponProf": [
+      "simple",
+      "martial"
+    ]
   }
 }

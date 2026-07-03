@@ -2,11 +2,12 @@
  * Pure spellcasting model for the builder UI. Keeps caster-class knowledge in
  * one place so the registry can be extended when more spell lists are vendored.
  *
- * Wizard, sorcerer, and cleric are modelled today. Cleric domain spell lists
- * (one bonus prepare-slot per accessible spell level per chosen domain) live in
- * `refData.domainSpellLists`; the tracker's Spells panel renders
- * those slots. The UI falls back gracefully for any caster tag not in
- * CASTER_MODELS.
+ * Wizard, sorcerer, cleric, paladin, and ranger are modelled today. Cleric
+ * domain spell lists (one bonus prepare-slot per accessible spell level per
+ * chosen domain) live in `refData.domainSpellLists`; the tracker's Spells
+ * panel renders those slots. The UI falls back gracefully for any caster tag
+ * not in CASTER_MODELS. Paladin/ranger are prepared divine half-casters like
+ * cleric but with no cantrips and no bonus domain-style slots.
  */
 
 import { baseSpellsKnown, baseSpellsPerDay, type SpellKnownProgression, type SpellProgression } from "@pf1/engine";
@@ -114,6 +115,30 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     blurb:
       "Prepared divine caster: there's no \u201cknown\u201d list to curate \u2014 prepare any spell(s) from the full cleric list each day, plus one domain spell per accessible level per chosen domain.",
     grantsAllCantrips: true,
+    preparesFromClassList: true,
+  },
+  paladin: {
+    preparation: "prepared",
+    ability: "cha",
+    progression: "paladin",
+    knownLabel: "Paladin List",
+    learnGuidance:
+      "Paladins have no spellbook and nothing to learn — the entire paladin spell list below is always available to prepare from once you reach 4th level. Paladins never gain cantrips.",
+    blurb:
+      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full paladin list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
+    grantsAllCantrips: false,
+    preparesFromClassList: true,
+  },
+  ranger: {
+    preparation: "prepared",
+    ability: "wis",
+    progression: "ranger",
+    knownLabel: "Ranger List",
+    learnGuidance:
+      "Rangers have no spellbook and nothing to learn — the entire ranger spell list below is always available to prepare from once you reach 4th level. Rangers never gain cantrips.",
+    blurb:
+      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full ranger list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
+    grantsAllCantrips: false,
     preparesFromClassList: true,
   },
 };

@@ -64,9 +64,18 @@ export const OUTPUT_DIR = resolve(packageRoot, "data");
  */
 export const SLICE = {
   /** Class tags to include (their feature links are resolved). */
-  classTags: ["fighter", "barbarian", "wizard", "cleric", "sorcerer", "rogue"],
+  classTags: [
+    "fighter",
+    "barbarian",
+    "wizard",
+    "cleric",
+    "sorcerer",
+    "rogue",
+    "paladin",
+    "ranger",
+  ],
   /** Class tags whose spell lists we derive by inverting `learnedAt.class`. */
-  spellListClassTags: ["wizard", "sorcerer", "cleric"],
+  spellListClassTags: ["wizard", "sorcerer", "cleric", "paladin", "ranger"],
   /**
    * Race source folders under packs/races to include. The seven core races live
    * in packs/races/core/.

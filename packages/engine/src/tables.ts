@@ -161,7 +161,7 @@ export function raceGrantsFlexibleAbility(race: Race): boolean {
  * table to extend. Cleric shares the wizard base-spells-per-day numbers (the
  * domain spell slot granted at each accessible level is not included here).
  */
-export type SpellProgression = "wizard" | "sorcerer" | "cleric";
+export type SpellProgression = "wizard" | "sorcerer" | "cleric" | "paladin" | "ranger";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -276,10 +276,46 @@ const KNOWN_PROGRESSIONS: Record<
  */
 const CLERIC_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY;
 
+/**
+ * Paladin/ranger base spells per day, indexed `[classLevel - 1][spellLevel]`.
+ * Both are quarter-casters that gain no spellcasting until 4th level and cap at
+ * 4th-level spells; "Table: Paladin" and "Table: Ranger" in the Core Rulebook
+ * are numerically identical to each other. Column 0 (cantrips) is always null —
+ * neither class casts cantrips/orisons. Bonus spells from a high casting
+ * ability (Cha for paladin, Wis for ranger) are added on top by
+ * {@link bonusSpellsForLevel} and are NOT included here.
+ * (PF1 SRD — clean-room table from the published rules, open game content;
+ * cross-checked against d20pfsrd.com and aonprd.com.)
+ */
+const PALADIN_RANGER_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 0, null, null, null, null, null, null, null, null],
+  /* L5  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L6  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L7  */ [null, 1, 0, null, null, null, null, null, null, null],
+  /* L8  */ [null, 1, 1, null, null, null, null, null, null, null],
+  /* L9  */ [null, 2, 1, null, null, null, null, null, null, null],
+  /* L10 */ [null, 2, 1, 0, null, null, null, null, null, null],
+  /* L11 */ [null, 2, 1, 1, null, null, null, null, null, null],
+  /* L12 */ [null, 2, 2, 1, null, null, null, null, null, null],
+  /* L13 */ [null, 3, 2, 1, 0, null, null, null, null, null],
+  /* L14 */ [null, 3, 2, 1, 1, null, null, null, null, null],
+  /* L15 */ [null, 3, 2, 2, 1, null, null, null, null, null],
+  /* L16 */ [null, 3, 3, 2, 1, null, null, null, null, null],
+  /* L17 */ [null, 4, 3, 2, 1, null, null, null, null, null],
+  /* L18 */ [null, 4, 3, 2, 2, null, null, null, null, null],
+  /* L19 */ [null, 4, 3, 3, 2, null, null, null, null, null],
+  /* L20 */ [null, 4, 4, 3, 3, null, null, null, null, null],
+];
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
   cleric: CLERIC_SPELLS_PER_DAY,
+  paladin: PALADIN_RANGER_SPELLS_PER_DAY,
+  ranger: PALADIN_RANGER_SPELLS_PER_DAY,
 };
 
 /**
