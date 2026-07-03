@@ -48,7 +48,9 @@ describe("metadata + provenance", () => {
   });
 
   it("contains the expected slice", () => {
-    expect(Object.keys(ref.races)).toHaveLength(7);
+    // 7 core races (packs/races/core) + 73 non-core races (packs/races/other,
+    // vendored per issue #26: aasimar, tiefling, goblin, kobold, drow, ...).
+    expect(Object.keys(ref.races)).toHaveLength(80);
     expect(Object.keys(ref.classes)).toHaveLength(11); // fighter, barbarian, wizard, cleric, sorcerer, rogue, paladin, ranger, bard, monk, druid
     expect(Object.keys(ref.feats)).toHaveLength(390);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);

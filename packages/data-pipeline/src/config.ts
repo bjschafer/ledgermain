@@ -86,5 +86,5 @@ export const SLICE = {
    * Race source folders under packs/races to include. The seven core races live
    * in packs/races/core/.
    */
-  raceFolders: ["core"],
+  raceFolders: ["core", "other"],
 } as const;
