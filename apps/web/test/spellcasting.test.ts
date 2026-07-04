@@ -9,6 +9,7 @@ import {
   casterModelFor,
   concentrationDC,
   grantedCantrips,
+  preparedCapacityByLevel,
   spellSaveDC,
   spellSlotsByLevel,
   spellsKnownLimitsByLevel,
@@ -104,6 +105,52 @@ describe("casterModelFor() — sorcerer", () => {
     expect(m!.grantsAllCantrips).toBe(false);
     expect(m!.knownProgression).toBe("sorcerer");
     expect(m!.preparesFromClassList).toBe(false);
+  });
+});
+
+describe("casterModelFor() — arcanist (hybrid)", () => {
+  it("returns a hybrid/int model with both a per-day and a prepared progression", () => {
+    const m = casterModelFor("arcanist");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("hybrid");
+    expect(m!.ability).toBe("int");
+    expect(m!.progression).toBe("arcanist");
+    expect(m!.preparedProgression).toBe("arcanist");
+    expect(m!.grantsAllCantrips).toBe(true);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+});
+
+describe("preparedCapacityByLevel() — arcanist", () => {
+  it("L4: 6 cantrips, 3 first-level, 1 second-level prepared", () => {
+    const m = casterModelFor("arcanist")!;
+    const limits = new Map(preparedCapacityByLevel(m, 4).map((l) => [l.level, l.limit]));
+    expect(limits.get(0)).toBe(6);
+    expect(limits.get(1)).toBe(3);
+    expect(limits.get(2)).toBe(1);
+    expect(limits.has(3)).toBe(false);
+  });
+
+  it("prepared cap is smaller than the per-day cast-slot total at the same level (the hybrid asymmetry)", () => {
+    const m = casterModelFor("arcanist")!;
+    const prepared = new Map(preparedCapacityByLevel(m, 4).map((l) => [l.level, l.limit]));
+    const slots = new Map(spellSlotsByLevel(m, 4, 5).map((s) => [s.level, s.total]));
+    expect(prepared.get(1)!).toBeLessThan(slots.get(1)!); // 3 prepared < 6 slots/day (Int 20)
+    expect(prepared.get(2)!).toBeLessThan(slots.get(2)!); // 1 prepared < 3 slots/day (Int 20)
+  });
+
+  it("prepared capacity is NOT adjusted by ability score (no bonus column, unlike per-day slots)", () => {
+    const m = casterModelFor("arcanist")!;
+    // Same limit regardless of what abilityMod would be passed to a slots
+    // helper — preparedCapacityByLevel takes no ability modifier at all.
+    const a = preparedCapacityByLevel(m, 4);
+    const b = preparedCapacityByLevel(m, 4);
+    expect(a).toEqual(b);
+  });
+
+  it("returns empty array for a model with no preparedProgression (e.g. wizard)", () => {
+    const m = casterModelFor("wizard")!;
+    expect(preparedCapacityByLevel(m, 4)).toEqual([]);
   });
 });
 

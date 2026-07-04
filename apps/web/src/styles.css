@@ -2445,6 +2445,19 @@ input[type="text"].saved-roll-name:focus {
   gap: 10px;
 }
 
+.hybrid-section-title {
+  margin: 14px 0 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.hybrid-section-title:first-of-type {
+  margin-top: 4px;
+}
+
 .prep-level {
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);

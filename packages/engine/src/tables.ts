@@ -211,7 +211,8 @@ export type SpellProgression =
   | "paladin"
   | "ranger"
   | "bard"
-  | "druid";
+  | "druid"
+  | "arcanist";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -428,6 +429,46 @@ const BARD_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
   /* L20 */ [6, 6, 6, 6, 6, 5, 5, null, null, null],
 ];
 
+/**
+ * Arcanist base spells PER DAY (the slot pool spent to cast — sorcerer-shaped),
+ * indexed `[classLevel - 1][spellLevel]`. Column 0 (cantrips) is always null:
+ * the arcanist's ACG "Spells per Day" table has no 0-level column at all —
+ * cantrips are governed entirely by {@link ARCANIST_SPELLS_PREPARED}'s column 0
+ * instead (prepared daily, then cast at will, same simplification this engine
+ * already applies to wizard/cleric/druid cantrips). Bonus spells from a high
+ * Intelligence score are added on top by {@link bonusSpellsForLevel} and are
+ * NOT included here. Arcanists are a HYBRID caster (ACG): they *prepare* a
+ * limited number of spells from their spellbook each day (capped by
+ * {@link ARCANIST_SPELLS_PREPARED}, wizard-shaped) but *cast* spontaneously
+ * from among those prepared spells by spending a slot of the matching level
+ * from THIS table (sorcerer-shaped) — casting never expends the specific
+ * prepared spell, only a slot. (PF1 ACG SRD — clean-room table from the
+ * published rules, open game content; cross-checked against aonprd.com and
+ * the legacy PRD mirror, both matching exactly.)
+ */
+const ARCANIST_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, 2, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, 3, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, 4, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 4, 2, null, null, null, null, null, null, null],
+  /* L5  */ [null, 4, 3, null, null, null, null, null, null, null],
+  /* L6  */ [null, 4, 4, 2, null, null, null, null, null, null],
+  /* L7  */ [null, 4, 4, 3, null, null, null, null, null, null],
+  /* L8  */ [null, 4, 4, 4, 2, null, null, null, null, null],
+  /* L9  */ [null, 4, 4, 4, 3, null, null, null, null, null],
+  /* L10 */ [null, 4, 4, 4, 4, 2, null, null, null, null],
+  /* L11 */ [null, 4, 4, 4, 4, 3, null, null, null, null],
+  /* L12 */ [null, 4, 4, 4, 4, 4, 2, null, null, null],
+  /* L13 */ [null, 4, 4, 4, 4, 4, 3, null, null, null],
+  /* L14 */ [null, 4, 4, 4, 4, 4, 4, 2, null, null],
+  /* L15 */ [null, 4, 4, 4, 4, 4, 4, 3, null, null],
+  /* L16 */ [null, 4, 4, 4, 4, 4, 4, 4, 2, null],
+  /* L17 */ [null, 4, 4, 4, 4, 4, 4, 4, 3, null],
+  /* L18 */ [null, 4, 4, 4, 4, 4, 4, 4, 4, 2],
+  /* L19 */ [null, 4, 4, 4, 4, 4, 4, 4, 4, 3],
+  /* L20 */ [null, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+];
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
@@ -436,6 +477,7 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   ranger: PALADIN_RANGER_SPELLS_PER_DAY,
   bard: BARD_SPELLS_PER_DAY,
   druid: DRUID_SPELLS_PER_DAY,
+  arcanist: ARCANIST_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {
@@ -472,6 +514,72 @@ export function baseSpellsKnown(
   spellLevel: number,
 ): number | null {
   const table = KNOWN_PROGRESSIONS[progression];
+  if (classLevel < 1 || classLevel > table.length) return null;
+  if (spellLevel < 0 || spellLevel > 9) return null;
+  return table[classLevel - 1]![spellLevel] ?? null;
+}
+
+/**
+ * Arcanist spells PREPARED (the wizard-shaped half of the hybrid ACG class):
+ * how many distinct spells from her spellbook she may ready each day at each
+ * spell level, indexed `[classLevel - 1][spellLevel]` (column 0 = cantrips).
+ * Distinct from {@link ARCANIST_SPELLS_PER_DAY}: an arcanist prepares FEWER
+ * spells than she has slots to cast (e.g. at L4: 3 first-level spells
+ * prepared vs. 4 first-level slots per day), then spends slots casting any
+ * of her prepared spells repeatedly. Unlike bonus spells-per-day, this table
+ * is NOT adjusted by a high Intelligence score (no vendored/SRD bonus column
+ * for "spells prepared", mirroring how spells-KNOWN tables for sorcerer/bard
+ * also take no ability bonus). (PF1 ACG SRD — clean-room, open game content;
+ * cross-checked against aonprd.com and the legacy PRD mirror, both matching
+ * exactly.)
+ */
+export type SpellPreparedProgression = "arcanist";
+
+const ARCANIST_SPELLS_PREPARED: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [4, 2, null, null, null, null, null, null, null, null],
+  /* L2  */ [5, 2, null, null, null, null, null, null, null, null],
+  /* L3  */ [5, 3, null, null, null, null, null, null, null, null],
+  /* L4  */ [6, 3, 1, null, null, null, null, null, null, null],
+  /* L5  */ [6, 4, 2, null, null, null, null, null, null, null],
+  /* L6  */ [7, 4, 2, 1, null, null, null, null, null, null],
+  /* L7  */ [7, 5, 3, 2, null, null, null, null, null, null],
+  /* L8  */ [8, 5, 3, 2, 1, null, null, null, null, null],
+  /* L9  */ [8, 5, 4, 3, 2, null, null, null, null, null],
+  /* L10 */ [9, 5, 4, 3, 2, 1, null, null, null, null],
+  /* L11 */ [9, 5, 5, 4, 3, 2, null, null, null, null],
+  /* L12 */ [9, 5, 5, 4, 3, 2, 1, null, null, null],
+  /* L13 */ [9, 5, 5, 4, 4, 3, 2, null, null, null],
+  /* L14 */ [9, 5, 5, 4, 4, 3, 2, 1, null, null],
+  /* L15 */ [9, 5, 5, 4, 4, 4, 3, 2, null, null],
+  /* L16 */ [9, 5, 5, 4, 4, 4, 3, 2, 1, null],
+  /* L17 */ [9, 5, 5, 4, 4, 4, 3, 3, 2, null],
+  /* L18 */ [9, 5, 5, 4, 4, 4, 3, 3, 2, 1],
+  /* L19 */ [9, 5, 5, 4, 4, 4, 3, 3, 3, 2],
+  /* L20 */ [9, 5, 5, 4, 4, 4, 3, 3, 3, 3],
+];
+
+const PREPARED_PROGRESSIONS: Record<
+  SpellPreparedProgression,
+  readonly (readonly (number | null)[])[]
+> = {
+  arcanist: ARCANIST_SPELLS_PREPARED,
+};
+
+/**
+ * Maximum number of distinct spells a caster with `progression` may have
+ * PREPARED (readied from her spellbook) at `spellLevel` when `classLevel`.
+ * Returns `null` when that spell level is not yet accessible. Out-of-range
+ * inputs return `null`. Distinct from {@link baseSpellsPerDay} (the daily slot
+ * pool spent casting) and {@link baseSpellsKnown} (a spontaneous caster's
+ * permanent known-spells cap) — see {@link ARCANIST_SPELLS_PREPARED}'s doc
+ * comment for why the arcanist needs a third, separate table.
+ */
+export function baseSpellsPrepared(
+  progression: SpellPreparedProgression,
+  classLevel: number,
+  spellLevel: number,
+): number | null {
+  const table = PREPARED_PROGRESSIONS[progression];
   if (classLevel < 1 || classLevel > table.length) return null;
   if (spellLevel < 0 || spellLevel > 9) return null;
   return table[classLevel - 1]![spellLevel] ?? null;

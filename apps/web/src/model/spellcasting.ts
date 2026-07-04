@@ -2,22 +2,32 @@
  * Pure spellcasting model for the builder UI. Keeps caster-class knowledge in
  * one place so the registry can be extended when more spell lists are vendored.
  *
- * Wizard, sorcerer, cleric, paladin, ranger, bard, and druid are modelled
- * today. Cleric domain spell lists (one bonus prepare-slot per accessible
- * spell level per chosen domain) live in `refData.domainSpellLists`; the
- * tracker's Spells panel renders those slots. The UI falls back gracefully
+ * Wizard, sorcerer, cleric, paladin, ranger, bard, druid, and arcanist are
+ * modelled today. Cleric domain spell lists (one bonus prepare-slot per
+ * accessible spell level per chosen domain) live in `refData.domainSpellLists`;
+ * the tracker's Spells panel renders those slots. The UI falls back gracefully
  * for any caster tag not in CASTER_MODELS. Paladin/ranger are prepared divine
  * half-casters like cleric but with no cantrips and no bonus domain-style
  * slots. Bard is a spontaneous arcane caster like sorcerer (own
  * spells-per-day/known tables, caps at 6th-level spells). Druid is a full
  * prepared-divine caster identical in shape to cleric but with no domain
- * slots.
+ * slots. Arcanist (ACG) is a HYBRID caster: a wizard-shaped unbounded
+ * spellbook (`build.spells.known`, `preparesFromClassList: false`,
+ * `grantsAllCantrips: true` — same simplification as wizard/cleric/druid,
+ * treating prepared cantrips as at-will once readied) from which a LIMITED
+ * number of spells are prepared each day (`preparedProgression`, wizard-
+ * shaped), then cast spontaneously by spending a slot of the matching level
+ * from a SEPARATE per-day slot pool (`progression`, sorcerer-shaped) — casting
+ * never expends the specific prepared spell. See `preparedCapacityByLevel`
+ * below and the "hybrid" branch in `PreparedSpellsPanel.tsx`.
  */
 
 import {
   baseSpellsKnown,
   baseSpellsPerDay,
+  baseSpellsPrepared,
   type SpellKnownProgression,
+  type SpellPreparedProgression,
   type SpellProgression,
 } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, RefData, WizardSchoolTag } from "@pf1/schema";
@@ -51,16 +61,35 @@ export function bonusSpellsForLevel(abilityMod: number, spellLevel: number): num
 // ---------------------------------------------------------------------------
 
 export interface CasterModel {
-  preparation: "prepared" | "spontaneous";
+  /**
+   * "hybrid" (arcanist, ACG) prepares a limited number of spells from her
+   * spellbook each day (like `"prepared"`, capped by `preparedProgression`)
+   * but then CASTS spontaneously from among those prepared spells by spending
+   * a per-level slot (like `"spontaneous"`, capped by `progression`) — casting
+   * never expends the specific prepared spell, only a slot.
+   */
+  preparation: "prepared" | "spontaneous" | "hybrid";
   /** The ability score that governs spellcasting for this class. */
   ability: AbilityId;
-  /** Spells-per-day progression table this class uses (engine `tables.ts`). */
+  /**
+   * Spells-per-day progression table this class uses (engine `tables.ts`).
+   * For a `"hybrid"` caster this is the CASTING slot-pool table (sorcerer-
+   * shaped) — see `preparedProgression` for the separate wizard-shaped daily
+   * prepare cap.
+   */
   progression: SpellProgression;
   /**
    * Spells-known progression (spontaneous casters only). When set, the builder
    * shows the known-limit advisory and the tracker uses it to cap additions.
    */
   knownProgression?: SpellKnownProgression;
+  /**
+   * Spells-PREPARED progression (`"hybrid"` casters only, e.g. arcanist): how
+   * many distinct spells from the spellbook may be readied each day at each
+   * spell level. Distinct from `progression`'s per-day slot count (how many
+   * TIMES those prepared spells may be cast) — see `preparedCapacityByLevel`.
+   */
+  preparedProgression?: SpellPreparedProgression;
   /** What the "known" list represents in the UI (e.g. "Spellbook"). */
   knownLabel: string;
   /** One-line guidance on how many spells this caster learns per level. */
@@ -175,6 +204,19 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },
+  arcanist: {
+    preparation: "hybrid",
+    ability: "int",
+    progression: "arcanist",
+    preparedProgression: "arcanist",
+    knownLabel: "Spellbook",
+    learnGuidance:
+      "Arcanists add 2 spells to their spellbook at each new level (more can be scribed from scrolls), same as a wizard.",
+    blurb:
+      "Hybrid caster: each day, prepare a limited number of spells from your spellbook (wizard-style, capped by the Spells Prepared table) in the tracker's Spells panel, then cast any of them spontaneously by spending a slot of that level (sorcerer-style, capped by the Spells per Day table). Casting never expends the specific prepared spell — only a slot.",
+    grantsAllCantrips: true,
+    preparesFromClassList: false,
+  },
 };
 
 /** Returns the CasterModel for `tag`, or `undefined` if it is not in the registry. */
@@ -276,6 +318,32 @@ export function spellsKnownLimitsByLevel(
   const out: { level: number; limit: number }[] = [];
   for (let level = 0; level <= 9; level++) {
     const limit = baseSpellsKnown(model.knownProgression, classLevel, level);
+    if (limit === null) continue;
+    out.push({ level, limit });
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------------------
+// Spells-prepared capacity ("hybrid" caster, e.g. arcanist)
+// ---------------------------------------------------------------------------
+
+/**
+ * Maximum number of distinct spells a `"hybrid"` caster (e.g. arcanist) may
+ * have PREPARED (readied from her spellbook) at each spell level, including
+ * cantrips (level 0) — unlike {@link spellSlotsByLevel}'s per-day slot pool,
+ * this is never adjusted by ability-score bonus spells (no vendored/SRD bonus
+ * column for "spells prepared"). Levels with no access (null) are omitted.
+ * Returns empty array when the model has no `preparedProgression`.
+ */
+export function preparedCapacityByLevel(
+  model: CasterModel,
+  classLevel: number,
+): { level: number; limit: number }[] {
+  if (!model.preparedProgression) return [];
+  const out: { level: number; limit: number }[] = [];
+  for (let level = 0; level <= 9; level++) {
+    const limit = baseSpellsPrepared(model.preparedProgression, classLevel, level);
     if (limit === null) continue;
     out.push({ level, limit });
   }

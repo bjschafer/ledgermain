@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { baseSpellsKnown, baseSpellsPerDay } from "../src/index.js";
+import { baseSpellsKnown, baseSpellsPerDay, baseSpellsPrepared } from "../src/index.js";
 
 describe("baseSpellsPerDay() — wizard", () => {
   it("level-1 wizard: 3 cantrips, 1 first-level, no access above", () => {
@@ -294,5 +294,71 @@ describe("baseSpellsKnown() — bard", () => {
     expect(baseSpellsKnown("bard", 0, 1)).toBeNull();
     expect(baseSpellsKnown("bard", 21, 1)).toBeNull();
     expect(baseSpellsKnown("bard", 5, 10)).toBeNull();
+  });
+});
+
+describe("baseSpellsPerDay() — arcanist (hybrid: cast-slot pool)", () => {
+  it("cantrips (level 0) are always null — cantrips are governed by the prepared table instead", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      expect(baseSpellsPerDay("arcanist", cl, 0)).toBeNull();
+    }
+  });
+
+  it("level-1 arcanist: 2 first-level slots, no 2nd-level access", () => {
+    expect(baseSpellsPerDay("arcanist", 1, 1)).toBe(2);
+    expect(baseSpellsPerDay("arcanist", 1, 2)).toBeNull();
+  });
+
+  it("level-4 arcanist unlocks 2nd-level spells: 4 first-level / 2 second-level slots", () => {
+    expect(baseSpellsPerDay("arcanist", 4, 1)).toBe(4);
+    expect(baseSpellsPerDay("arcanist", 4, 2)).toBe(2);
+    expect(baseSpellsPerDay("arcanist", 4, 3)).toBeNull();
+  });
+
+  it("level-20 arcanist: 4 slots at every level 1-9", () => {
+    for (let spLvl = 1; spLvl <= 9; spLvl++) {
+      expect(baseSpellsPerDay("arcanist", 20, spLvl)).toBe(4);
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("arcanist", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("arcanist", 21, 1)).toBeNull();
+    expect(baseSpellsPerDay("arcanist", 5, -1)).toBeNull();
+    expect(baseSpellsPerDay("arcanist", 5, 10)).toBeNull();
+  });
+});
+
+describe("baseSpellsPrepared() — arcanist (hybrid: wizard-shaped spellbook readying)", () => {
+  it("L1 arcanist: 4 cantrips, 2 first-level spells prepared", () => {
+    expect(baseSpellsPrepared("arcanist", 1, 0)).toBe(4);
+    expect(baseSpellsPrepared("arcanist", 1, 1)).toBe(2);
+    expect(baseSpellsPrepared("arcanist", 1, 2)).toBeNull();
+  });
+
+  it("L4 arcanist: 6 cantrips, 3 first-level, 1 second-level prepared — fewer spells prepared than slots to cast them", () => {
+    expect(baseSpellsPrepared("arcanist", 4, 0)).toBe(6);
+    expect(baseSpellsPrepared("arcanist", 4, 1)).toBe(3);
+    expect(baseSpellsPrepared("arcanist", 4, 2)).toBe(1);
+    expect(baseSpellsPrepared("arcanist", 4, 3)).toBeNull();
+    // Fewer prepared than slots at every accessible level: casting spends a
+    // slot, not the specific prepared spell, so this asymmetry is the point.
+    expect(baseSpellsPrepared("arcanist", 4, 1)!).toBeLessThan(baseSpellsPerDay("arcanist", 4, 1)!);
+    expect(baseSpellsPrepared("arcanist", 4, 2)!).toBeLessThan(baseSpellsPerDay("arcanist", 4, 2)!);
+  });
+
+  it("L20 arcanist: 9 cantrips and 5/5/4/4/4/3/3/3/3 prepared at levels 1-9", () => {
+    expect(baseSpellsPrepared("arcanist", 20, 0)).toBe(9);
+    const expected = [5, 5, 4, 4, 4, 3, 3, 3, 3];
+    for (let lvl = 1; lvl <= 9; lvl++) {
+      expect(baseSpellsPrepared("arcanist", 20, lvl)).toBe(expected[lvl - 1]!);
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPrepared("arcanist", 0, 1)).toBeNull();
+    expect(baseSpellsPrepared("arcanist", 21, 1)).toBeNull();
+    expect(baseSpellsPrepared("arcanist", 5, -1)).toBeNull();
+    expect(baseSpellsPrepared("arcanist", 5, 10)).toBeNull();
   });
 });

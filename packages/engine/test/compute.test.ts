@@ -1319,3 +1319,65 @@ describe("compute: item breadth (issue #15)", () => {
     expect(() => compute(doc, ref)).not.toThrow();
   });
 });
+
+describe("compute: arcanist L4 (human, no armor) — ACG hybrid caster (issue #13)", () => {
+  // Str/Dex/Con/Wis held at 10 (mod 0) so BAB/saves read as their bare tier
+  // values below; Int 20 (mod +5) drives spell DC/bonus slots, Cha 14 (mod +2)
+  // drives Consume Spells uses/day.
+  const doc = makeDoc({
+    classes: [{ tag: "arcanist", level: 4 }],
+    abilities: { str: 10, dex: 10, con: 10, int: 20, wis: 10, cha: 14 },
+    skillRanks: { spl: 4, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +2 (1/2 low progression: floor(4/2))", () => {
+    expect(sheet.bab).toBe(2);
+  });
+
+  it("saves: Fort +1, Ref +1 (poor base), Will +4 (good base) — abilities held at 0 mod", () => {
+    expect(sheet.saves.fort.total).toBe(1);
+    expect(sheet.saves.ref.total).toBe(1);
+    expect(sheet.saves.will.total).toBe(4);
+  });
+
+  it("HP 18 (d6 HD: 6 max L1 + 4 avg * 3 more levels, Con at 0 mod)", () => {
+    expect(sheet.hp.max).toBe(18);
+  });
+
+  it("2 + Int skill points/level, d6 HD, low BAB, fort/ref low + will high in ref data (arcanist class def)", () => {
+    const arcanistEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "arcanist");
+    expect(arcanistEntry).toBeDefined();
+    expect(arcanistEntry![1].skillsPerLevel).toBe(2);
+    expect(arcanistEntry![1].hd).toBe(6);
+    expect(arcanistEntry![1].bab).toBe("low");
+    expect(arcanistEntry![1].saves).toEqual({ fort: "low", ref: "low", will: "high" });
+  });
+
+  it("spellcraft (class skill) gets the +3 class-skill bonus; non-class skill does not", () => {
+    expect(sheet.skills.spl!.total).toBe(12); // 4 ranks + int5 + classSkill3
+    expect(sheet.skills.spl!.classSkill).toBe(true);
+    expect(sheet.skills.dip!.total).toBe(3); // 1 rank + cha2, dip not an arcanist class skill
+    expect(sheet.skills.dip!.classSkill).toBe(false);
+  });
+
+  it("Int modifier +5 feeds spell DC (10 + spell level + Int mod)", () => {
+    expect(sheet.abilities.int.mod).toBe(5);
+  });
+
+  it("Arcane Reservoir resource pool: 3 + arcanist level, no ability bonus (RAW cap; daily refill is a separate 3 + level/2 formula not modeled — see IMPLEMENTATION_PLAN.md)", () => {
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const reservoir = pools.find((p) => p.name === "Arcane Reservoir");
+    expect(reservoir).toBeDefined();
+    expect(reservoir?.max).toBe(7); // 3 + 4
+    expect(reservoir?.per).toBe("day");
+  });
+
+  it("Consume Spells resource pool: Cha modifier uses/day", () => {
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const consumeSpells = pools.find((p) => p.name === "Consume Spells");
+    expect(consumeSpells).toBeDefined();
+    expect(consumeSpells?.max).toBe(2); // cha mod +2
+    expect(consumeSpells?.per).toBe("day");
+  });
+});
