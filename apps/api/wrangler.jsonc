@@ -9,30 +9,34 @@
   "name": "ledgermain-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-07-03",
+  "account_id": "5b51f634ca1cf16a0c47a4fcd00a5cf3",
 
-  // Non-secret config. GITHUB_CLIENT_ID is public (OAuth client ids are not
-  // secret); GITHUB_CLIENT_SECRET is set via `wrangler secret put` (README).
+  // Non-secret config. DISCORD_CLIENT_ID is public (OAuth client ids are not
+  // secret); DISCORD_CLIENT_SECRET is set via `wrangler secret put` (README).
   "vars": {
     // Comma-separated allow-list of web-app origins permitted to (a) receive
     // the post-login redirect and (b) call this API via CORS. Never trust an
     // arbitrary caller-supplied redirect_uri/Origin — always check membership
     // in this list.
-    "ALLOWED_APP_ORIGINS": "http://localhost:5173",
-    "GITHUB_CLIENT_ID": "REPLACE_ME_GITHUB_OAUTH_CLIENT_ID",
+    "ALLOWED_APP_ORIGINS": "http://localhost:5173,https://ledgermain.whizkid.dev",
+    "DISCORD_CLIENT_ID": "REPLACE_ME_DISCORD_OAUTH_CLIENT_ID",
   },
 
   // Two KV namespaces:
   //  - KV: session tokens (`session:<token>` -> {ownerId, createdAt}) and
   //    short-lived OAuth `state` nonces (`oauthstate:<nonce>` -> redirectUri).
   //  - CHARACTERS: opaque CharacterDoc blobs, keyed `<ownerId>::<docId>`.
-  // Placeholder ids below — the owner must run `wrangler kv namespace create`
-  // for each and paste the real ids in before deploying (see README.md).
   // Local `wrangler dev`/vitest-pool-workers use Miniflare's local KV
   // simulation and do not need real ids to work.
   "kv_namespaces": [
-    { "binding": "KV", "id": "REPLACE_ME_KV_NAMESPACE_ID" },
-    { "binding": "CHARACTERS", "id": "REPLACE_ME_CHARACTERS_NAMESPACE_ID" },
+    { "binding": "KV", "id": "94d09d616b3648dfb5f9bf7d5393cce3" },
+    { "binding": "CHARACTERS", "id": "c648b619c69240148cb8c5204769a3b6" },
   ],
+
+  // Same zone as apps/web (ledgermain.whizkid.dev) — a sibling subdomain
+  // keeps the two origins obviously related without sharing one origin
+  // (which would reintroduce cookie/CORS complexity this design avoids).
+  "routes": [{ "pattern": "api.ledgermain.whizkid.dev", "custom_domain": true }],
 
   "observability": {
     "enabled": true,

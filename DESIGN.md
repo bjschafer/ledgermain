@@ -39,7 +39,7 @@ Deliberately deferred, and _cheap because of this model_ — they reuse the **sa
 - **Level 2 — live mirror:** changes appear on the other device in near-real-time (DO + WebSocket).
 - **Level 3 — conflict-free concurrent editing:** CRDT (Yjs/Automerge); only if simultaneous editing becomes a real need.
 
-Identity stays boring: GitHub OAuth or email magic-link, sessions in KV/D1. (Cloudflare Access is org-oriented overkill.)
+Identity stays boring: Discord OAuth, sessions in KV/D1. (GitHub OAuth and email magic-link were the alternatives considered; Discord fits the actual TTRPG-player audience better than a dev-tool login, and needs no email-sending infra. Cloudflare Access is org-oriented overkill — it assumes an IdP the project owner administers, the opposite of "a stranger can sign up.")
 
 ## 3. The backbone data model
 

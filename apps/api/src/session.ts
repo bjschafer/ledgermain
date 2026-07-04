@@ -8,7 +8,7 @@
  */
 
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
-const OAUTH_STATE_TTL_SECONDS = 60 * 10; // 10 minutes — just long enough for the GitHub redirect round trip
+const OAUTH_STATE_TTL_SECONDS = 60 * 10; // 10 minutes — just long enough for the Discord redirect round trip
 
 export interface Session {
   ownerId: string;
@@ -58,10 +58,10 @@ export async function ownerIdFromRequest(
 // --- OAuth state (CSRF nonce + redirect_uri round-trip) ---------------------
 
 /**
- * What `/auth/github/start` stashes in KV against the OAuth `state` param.
+ * What `/auth/discord/start` stashes in KV against the OAuth `state` param.
  * `browserNonce` is the login-CSRF binding: a second random value that only
  * ever travels in a short-lived HttpOnly cookie set on the *initiating*
- * browser (see `github-oauth.ts`). Without it, an attacker could start
+ * browser (see `discord-oauth.ts`). Without it, an attacker could start
  * their own OAuth flow, capture the valid `state`, and get a victim's
  * browser to complete the callback — logging the victim into the
  * attacker's account. The callback requires cookie == stored nonce before

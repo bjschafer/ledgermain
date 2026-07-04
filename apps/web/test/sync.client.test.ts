@@ -116,8 +116,8 @@ describe("deleteRemoteCharacter", () => {
 
 describe("fetchMe", () => {
   test("returns the ownerId on 200", async () => {
-    mockFetch(() => Response.json({ ownerId: "github:1" }));
-    expect(await fetchMe(API_BASE, TOKEN)).toBe("github:1");
+    mockFetch(() => Response.json({ ownerId: "discord:1" }));
+    expect(await fetchMe(API_BASE, TOKEN)).toBe("discord:1");
   });
 
   test("returns null on 401 instead of throwing", async () => {

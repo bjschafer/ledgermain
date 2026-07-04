@@ -25,10 +25,10 @@ describe("parseSessionFragment", () => {
 });
 
 describe("loginUrl", () => {
-  test("points at the API's GitHub OAuth start route with redirect_uri", () => {
+  test("points at the API's Discord OAuth start route with redirect_uri", () => {
     const url = new URL(loginUrl("https://api.example.com", "https://app.example.com/"));
     expect(url.origin).toBe("https://api.example.com");
-    expect(url.pathname).toBe("/auth/github/start");
+    expect(url.pathname).toBe("/auth/discord/start");
     expect(url.searchParams.get("redirect_uri")).toBe("https://app.example.com/");
   });
 });

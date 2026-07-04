@@ -1,11 +1,13 @@
 /**
- * GitHub OAuth login (DESIGN.md §2.1: "GitHub OAuth or email magic-link").
- * Picked GitHub since the target audience (this project's owner + players)
- * are developers who already have accounts, and it needs no email-sending
- * infrastructure. The Worker never sees the user's GitHub password; it only
- * exchanges an authorization `code` for an access token, reads the stable
- * numeric account id, and immediately discards the GitHub token — this app
- * has no ongoing use for the GitHub API beyond identifying the user once.
+ * Discord OAuth login (DESIGN.md §2.1: "GitHub OAuth or email magic-link";
+ * Discord was picked over GitHub because the actual target audience — TTRPG
+ * players, not developers — overwhelmingly already has a Discord account,
+ * while a GitHub account is a dev-tool assumption that doesn't hold broadly.
+ * It also needs no email-sending infrastructure. The Worker never sees the
+ * user's Discord password; it only exchanges an authorization `code` for an
+ * access token, reads the stable numeric (snowflake) account id, and
+ * immediately discards the Discord token — this app has no ongoing use for
+ * the Discord API beyond identifying the user once.
  *
  * Login-CSRF defense: the OAuth `state` alone only proves the callback came
  * from a flow *someone* started — not that the browser completing it is the
@@ -27,15 +29,15 @@ import {
   timingSafeStringEqual,
 } from "./session.js";
 
-const GITHUB_AUTHORIZE_URL = "https://github.com/login/oauth/authorize";
-const GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token";
-const GITHUB_USER_URL = "https://api.github.com/user";
+const DISCORD_AUTHORIZE_URL = "https://discord.com/oauth2/authorize";
+const DISCORD_TOKEN_URL = "https://discord.com/api/oauth2/token";
+const DISCORD_USER_URL = "https://discord.com/api/users/@me";
 
 /**
  * `__Host-` prefix: the browser only accepts the cookie with `Secure`,
  * `Path=/`, and no `Domain` attribute, guaranteeing it can't be planted by
  * a subdomain or over plain HTTP. Path=/ (required by the prefix) is
- * broader than the two /auth/github/* endpoints, but the cookie is
+ * broader than the two /auth/discord/* endpoints, but the cookie is
  * HttpOnly, 10-minute, and meaningless outside the callback check, so the
  * wider path costs nothing. Browsers treat localhost as a secure context,
  * so `wrangler dev` over http://localhost still works.
@@ -60,12 +62,12 @@ function readNonceCookie(request: Request): string | undefined {
 }
 
 /**
- * `GET /auth/github/start?redirect_uri=<web app origin>`
+ * `GET /auth/discord/start?redirect_uri=<web app origin>`
  *
- * Redirects to GitHub's OAuth consent screen. `redirect_uri` must match one
+ * Redirects to Discord's OAuth consent screen. `redirect_uri` must match one
  * of `ALLOWED_APP_ORIGINS` exactly (by origin) — never trust an
  * arbitrary caller-supplied redirect, that's an open-redirect / token-theft
- * vector. It's round-tripped via GitHub's own `state` param (stored
+ * vector. It's round-tripped via Discord's own `state` param (stored
  * server-side against a random nonce) so the callback knows where to send
  * the signed-in user back to. Also sets the browser-nonce cookie described
  * in the module doc comment.
@@ -88,10 +90,11 @@ export async function handleStart(request: Request, env: Env): Promise<Response>
 
   const browserNonce = newBrowserNonce();
   const state = await createOAuthState(env.KV, { redirectUri, browserNonce });
-  const authorize = new URL(GITHUB_AUTHORIZE_URL);
-  authorize.searchParams.set("client_id", env.GITHUB_CLIENT_ID);
-  authorize.searchParams.set("redirect_uri", new URL("/auth/github/callback", url).toString());
-  authorize.searchParams.set("scope", "read:user");
+  const authorize = new URL(DISCORD_AUTHORIZE_URL);
+  authorize.searchParams.set("client_id", env.DISCORD_CLIENT_ID);
+  authorize.searchParams.set("response_type", "code");
+  authorize.searchParams.set("redirect_uri", new URL("/auth/discord/callback", url).toString());
+  authorize.searchParams.set("scope", "identify");
   authorize.searchParams.set("state", state);
   // Built by hand rather than `Response.redirect()` (immutable headers) —
   // the Set-Cookie for the browser nonce has to ride on this redirect.
@@ -104,28 +107,28 @@ export async function handleStart(request: Request, env: Env): Promise<Response>
   });
 }
 
-interface GithubTokenResponse {
+interface DiscordTokenResponse {
   access_token?: string;
   error?: string;
   error_description?: string;
 }
 
-interface GithubUserResponse {
-  id?: number;
+interface DiscordUserResponse {
+  id?: string; // snowflake, always a numeric string — never parse it as a JS number
 }
 
 /**
- * `GET /auth/github/callback?code=...&state=...`
+ * `GET /auth/discord/callback?code=...&state=...`
  *
  * Verifies the browser-nonce cookie against the KV state record (login-CSRF
- * defense — see module doc comment), exchanges `code` for a GitHub access
- * token, reads the stable numeric GitHub user id (never the mutable
- * login/email — DESIGN §2.1 wants a durable `ownerId`), mints a session,
- * and redirects back to the app with the session token in the URL
- * **fragment** (`#session=...`), never a query string — fragments are not
- * sent to servers/proxies/Referer headers. The client-side sync module
- * reads `location.hash`, moves the token into localStorage, and strips it
- * from the URL.
+ * defense — see module doc comment), exchanges `code` for a Discord access
+ * token, reads the stable snowflake user id (never the mutable username —
+ * DESIGN §2.1 wants a durable `ownerId`), mints a session, and redirects
+ * back to the app with the session token in the URL **fragment**
+ * (`#session=...`), never a query string — fragments are not sent to
+ * servers/proxies/Referer headers. The client-side sync module reads
+ * `location.hash`, moves the token into localStorage, and strips it from
+ * the URL.
  */
 export async function handleCallback(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
@@ -146,36 +149,37 @@ export async function handleCallback(request: Request, env: Env): Promise<Respon
     return new Response("OAuth flow was not initiated by this browser", { status: 400 });
   }
 
-  const tokenRes = await fetch(GITHUB_TOKEN_URL, {
+  // Discord's token endpoint is a standard OAuth2 token endpoint — it wants
+  // application/x-www-form-urlencoded, not JSON (unlike GitHub's, which
+  // accepts either).
+  const tokenRes = await fetch(DISCORD_TOKEN_URL, {
     method: "POST",
-    headers: { "content-type": "application/json", accept: "application/json" },
-    body: JSON.stringify({
-      client_id: env.GITHUB_CLIENT_ID,
-      client_secret: env.GITHUB_CLIENT_SECRET,
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: env.DISCORD_CLIENT_ID,
+      client_secret: env.DISCORD_CLIENT_SECRET,
+      grant_type: "authorization_code",
       code,
+      redirect_uri: new URL("/auth/discord/callback", url).toString(),
     }),
   });
-  if (!tokenRes.ok) return new Response("GitHub token exchange failed", { status: 502 });
-  const tokenBody = (await tokenRes.json()) as GithubTokenResponse;
+  if (!tokenRes.ok) return new Response("Discord token exchange failed", { status: 502 });
+  const tokenBody = (await tokenRes.json()) as DiscordTokenResponse;
   if (!tokenBody.access_token) {
     const detail = tokenBody.error_description ?? tokenBody.error ?? "unknown error";
-    return new Response(`GitHub token exchange failed: ${detail}`, { status: 502 });
+    return new Response(`Discord token exchange failed: ${detail}`, { status: 502 });
   }
 
-  const userRes = await fetch(GITHUB_USER_URL, {
-    headers: {
-      authorization: `Bearer ${tokenBody.access_token}`,
-      "user-agent": "ledgermain-api",
-      accept: "application/vnd.github+json",
-    },
+  const userRes = await fetch(DISCORD_USER_URL, {
+    headers: { authorization: `Bearer ${tokenBody.access_token}` },
   });
-  if (!userRes.ok) return new Response("GitHub user lookup failed", { status: 502 });
-  const user = (await userRes.json()) as GithubUserResponse;
-  if (typeof user.id !== "number") {
-    return new Response("GitHub user lookup returned no id", { status: 502 });
+  if (!userRes.ok) return new Response("Discord user lookup failed", { status: 502 });
+  const user = (await userRes.json()) as DiscordUserResponse;
+  if (typeof user.id !== "string" || !user.id) {
+    return new Response("Discord user lookup returned no id", { status: 502 });
   }
 
-  const ownerId = `github:${user.id}`;
+  const ownerId = `discord:${user.id}`;
   const token = await createSession(env.KV, ownerId);
 
   const dest = new URL(stored.redirectUri);

@@ -1,6 +1,6 @@
 /**
  * Stage 5 persistence Worker (DESIGN.md §2.1). A thin router over three
- * concerns: GitHub OAuth login, session lookup, and CRUD on opaque
+ * concerns: Discord OAuth login, session lookup, and CRUD on opaque
  * `CharacterDoc` blobs. No framework — the route table is small enough that
  * a dependency would cost more than it saves (workers-best-practices:
  * prefer bindings/small code over unnecessary layers).
@@ -8,7 +8,7 @@
 import "./env.js";
 import { deleteCharacter, getCharacter, listCharacters, putCharacter } from "./characters.js";
 import { handlePreflight, withCors } from "./cors.js";
-import { handleCallback, handleStart } from "./github-oauth.js";
+import { handleCallback, handleStart } from "./discord-oauth.js";
 import { errorJson, json } from "./http.js";
 import { deleteSession, ownerIdFromRequest } from "./session.js";
 
@@ -28,10 +28,10 @@ async function route(request: Request, env: Env): Promise<Response> {
 
   if (method === "OPTIONS") return handlePreflight(request, env);
 
-  if (pathname === "/auth/github/start" && method === "GET") {
+  if (pathname === "/auth/discord/start" && method === "GET") {
     return handleStart(request, env);
   }
-  if (pathname === "/auth/github/callback" && method === "GET") {
+  if (pathname === "/auth/discord/callback" && method === "GET") {
     return handleCallback(request, env);
   }
   if (pathname === "/auth/logout" && method === "POST") {

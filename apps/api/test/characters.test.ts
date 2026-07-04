@@ -15,7 +15,7 @@ function docBody(overrides: Partial<Record<string, unknown>> = {}) {
 }
 
 describe("character CRUD", () => {
-  const ownerId = "github:1";
+  const ownerId = "discord:1";
 
   it("rejects unauthenticated requests", async () => {
     const res = await request("https://api.test/api/characters");
@@ -90,7 +90,7 @@ describe("character CRUD", () => {
       method: "PUT",
       body: JSON.stringify(docBody({ id: "char-3", version: 1 })),
     });
-    const otherOwnerRes = await authedRequest("github:999", "/api/characters/char-3");
+    const otherOwnerRes = await authedRequest("discord:999", "/api/characters/char-3");
     expect(otherOwnerRes.status).toBe(404);
   });
 

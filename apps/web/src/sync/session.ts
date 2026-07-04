@@ -1,6 +1,6 @@
 /**
  * Bearer-token session storage for the sync API (see `apps/api/src/session.ts`
- * / `apps/api/src/github-oauth.ts` for the server half). No cookies — the
+ * / `apps/api/src/discord-oauth.ts` for the server half). No cookies — the
  * API and this app are near-certainly different origins, so a bearer token
  * in `localStorage` sidesteps cross-site cookie/`SameSite` complexity
  * entirely (documented in `apps/api/README.md`).
@@ -14,9 +14,9 @@ export function parseSessionFragment(hash: string): string | null {
   return token ? decodeURIComponent(token) : null;
 }
 
-/** Build the URL that starts the GitHub OAuth login flow. Pure. */
+/** Build the URL that starts the Discord OAuth login flow. Pure. */
 export function loginUrl(apiBase: string, redirectUri: string): string {
-  const url = new URL("/auth/github/start", apiBase);
+  const url = new URL("/auth/discord/start", apiBase);
   url.searchParams.set("redirect_uri", redirectUri);
   return url.toString();
 }
