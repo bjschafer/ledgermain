@@ -12,7 +12,7 @@
 import type { CharacterDoc } from "@pf1/schema";
 
 /** Tags of classes recognised as casters in the Stage 1 data slice. */
-const FULL_CASTER_TAGS = new Set(["wizard", "cleric", "sorcerer", "druid", "oracle"]);
+const FULL_CASTER_TAGS = new Set(["wizard", "cleric", "sorcerer", "druid", "oracle", "arcanist"]);
 
 /**
  * Per-class caster level. Defaults to class level for full casters and 0 for
