@@ -18,7 +18,10 @@
  *      temp HP are cleared either way — see `restHp`'s doc comment.
  *   2. Ability damage — `restAbilityDamage`: -1 per damaged ability. Drain
  *      and penalties are untouched (see that function's doc comment).
- *   3. Resources — `restAllResources`: every stored pool's `used` -> 0.
+ *   3. Resources — `restAllResources`: every stored pool's `used` resets so
+ *      remaining uses match its refill value (`max` for almost every pool;
+ *      Arcane Reservoir's is lower per RAW — issue #43). Requires `refData`
+ *      to derive pools; without it, falls back to the old always-full reset.
  *   4. Spells — `restPreparedSpells` + `resetSpontaneousSlots`, once per
  *      caster class (issue #22 multiclass support) when `refData` is given,
  *      so a multiclass character's prepared loadout AND spontaneous slots
@@ -37,6 +40,7 @@
  *     judgment (e.g. a paused encounter vs. genuinely resting 8 hours) that
  *     this app doesn't model — left alone by design, not an oversight.
  */
+import { deriveResourcePools } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { getNegativeLevels, restAbilityDamage } from "./afflictions.js";
@@ -78,7 +82,10 @@ export function restNewDay(
   }
 
   next = restAbilityDamage(next);
-  next = restAllResources(next);
+  next = restAllResources(
+    next,
+    refData ? deriveResourcePools(next, refData, derived?.abilities) : undefined,
+  );
 
   if (refData) {
     for (const { tag } of casterClassesOf(next, refData)) {

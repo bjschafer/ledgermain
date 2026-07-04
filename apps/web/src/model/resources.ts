@@ -71,11 +71,26 @@ export function restoreResource(doc: CharacterDoc, id: string, n = 1): Character
   return withPools(doc, { ...doc.live.resources, [id]: { ...pool, used } });
 }
 
-/** Rest: every pool refilled to full (used → 0). */
-export function restAllResources(doc: CharacterDoc): CharacterDoc {
+/**
+ * Rest: every pool's remaining uses reset to its refill value (issue #43).
+ * `derived` (from `deriveResourcePools`) supplies each pool's `restValue` —
+ * `max` for almost every pool (byte-identical to the old always-full
+ * behavior), but strictly below `max` for Arcane Reservoir (see
+ * `DerivedResourcePool.restValue`'s doc comment for the RAW citation).
+ * A pool with no matching entry in `derived` (manual pools: spell slots,
+ * item charges, or any call site that omits `derived` entirely) falls back
+ * to the pre-#43 behavior of refilling to full.
+ */
+export function restAllResources(
+  doc: CharacterDoc,
+  derived?: readonly Pick<DerivedResourcePool, "id" | "restValue">[],
+): CharacterDoc {
+  const restValueById = new Map(derived?.map((p) => [p.id, p.restValue]));
   const resources: Pools = {};
   for (const [id, pool] of Object.entries(doc.live.resources)) {
-    resources[id] = { ...pool, used: 0 };
+    const restValue = restValueById.get(id);
+    const used = restValue === undefined ? 0 : Math.max(0, pool.max - restValue);
+    resources[id] = { ...pool, used };
   }
   return withPools(doc, resources);
 }

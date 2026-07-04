@@ -289,6 +289,42 @@ describe("feats that raise a derived resource pool's max (feat-effects.ts FEAT_P
     expect(featReservoir?.max).toBe(10);
   });
 
+  it("issue #43: Arcane Reservoir's daily refill (3 + floor(level/2)) is below cap, and Extra Reservoir's +3 applies to both", () => {
+    const base: CharacterDoc = {
+      ...makeDoc(),
+      identity: { name: "Lyle", race: raceId("Human"), classes: [{ tag: "arcanist", level: 4 }] },
+    };
+    const withFeat: CharacterDoc = {
+      ...base,
+      build: { ...base.build, feats: [featId("Extra Reservoir")] },
+    };
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    const baseReservoir = deriveResourcePools(base, ref, baseSheet.abilities).find(
+      (p) => p.name === "Arcane Reservoir",
+    );
+    const featReservoir = deriveResourcePools(withFeat, ref, featSheet.abilities).find(
+      (p) => p.name === "Arcane Reservoir",
+    );
+    // Cap 7 (3 + 4), refill 3 + floor(4/2) = 5 -- strictly below cap.
+    expect(baseReservoir?.max).toBe(7);
+    expect(baseReservoir?.restValue).toBe(5);
+    // Extra Reservoir: cap 10 (7 + 3), refill 5 + 3 = 8 (feat text applies
+    // the +3 to both "three more points ... and the maximum").
+    expect(featReservoir?.max).toBe(10);
+    expect(featReservoir?.restValue).toBe(8);
+  });
+
+  it("issue #43: a non-Arcane-Reservoir pool (Rage) still refills to its cap", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      identity: { name: "Grog", race: raceId("Human"), classes: [{ tag: "barbarian", level: 5 }] },
+    };
+    const sheet = compute(doc, ref);
+    const rage = deriveResourcePools(doc, ref, sheet.abilities).find((p) => p.name === "Rage");
+    expect(rage?.restValue).toBe(rage?.max);
+  });
+
   it("Extra Rage: barbarian 5's Rage (4 + Con mod + 2*(lvl-1) = 14) gains +6 -> 20", () => {
     const doc: CharacterDoc = {
       ...makeDoc(),
