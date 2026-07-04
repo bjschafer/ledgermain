@@ -152,6 +152,61 @@ a {
   cursor: pointer;
 }
 
+/* Stage 5 sync status (DESIGN.md §2.1) — rendered only when VITE_API_URL is configured. */
+.sync-signin,
+.sync-signout {
+	background: none;
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	color: var(--ink);
+	font-size: 11px;
+	padding: 3px 8px;
+	cursor: pointer;
+}
+
+.sync-status {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-family: var(--mono);
+	font-size: 11px;
+	color: var(--muted);
+}
+
+.sync-status.sync-error {
+	color: var(--oxblood);
+}
+
+.sync-conflict {
+	max-width: 320px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
+	background: none;
+	border: 1px solid var(--oxblood);
+	border-radius: var(--radius);
+	color: var(--oxblood);
+	font-size: 12px;
+	padding: 6px 10px;
+	text-align: right;
+}
+
+.sync-conflict-actions {
+	display: flex;
+	gap: 6px;
+}
+
+.sync-conflict-actions button {
+	background: none;
+	border: 1px solid var(--oxblood);
+	border-radius: var(--radius);
+	color: var(--oxblood);
+	font-size: 11px;
+	padding: 3px 8px;
+	cursor: pointer;
+}
+
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);

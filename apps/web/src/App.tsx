@@ -18,6 +18,7 @@ import type { BuilderProps } from "./components/builder/types.js";
 import { CharacterSwitcher } from "./components/CharacterSwitcher.js";
 import { PreviewNotice } from "./components/PreviewNotice.js";
 import { Sheet } from "./components/Sheet.js";
+import { SyncStatus } from "./components/SyncStatus.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { useCharacter } from "./state/useCharacter.js";
 
@@ -67,6 +68,12 @@ export function App() {
           </button>
         </div>
         <div className="masthead-right">
+          <SyncStatus
+            status={store.syncStatus}
+            onSignIn={store.signIn}
+            onSignOut={() => void store.signOut()}
+            onResolveConflict={(action) => void store.resolveConflict(action)}
+          />
           {store.doc && (
             <CharacterSwitcher
               characters={store.characters}

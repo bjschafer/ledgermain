@@ -6,11 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Ledgermain is a web-based **in-play character sheet, tracker, and builder for Pathfinder 1e**. The product's center of gravity is _play at the table_ — a rules-aware tracker that recomputes correct numbers as live session state (HP, conditions, buffs, resources) changes, not just a builder. Read `DESIGN.md` for architecture rationale and `IMPLEMENTATION_PLAN.md` for the staged build plan with detailed per-stage "as built" caveats — these two docs are the source of truth for _why_ things are shaped the way they are.
 
-Stages 1–4 are complete; Stage 5 (Cloudflare Worker persistence + cross-device sync) is **not started**, so `apps/api` does not yet exist.
+Stages 1–4 are complete. Stage 5 (Cloudflare Worker persistence + cross-device sync, DESIGN.md §2.1) has a first cut: `apps/api` (GitHub OAuth + `CharacterDoc` CRUD with optimistic-concurrency conflict detection) and a client sync module in `apps/web/src/sync/` (background push/pull, wired thinly into `state/useCharacter.ts`). Nothing has been deployed or had real Cloudflare account resources created — see `apps/api/README.md` for the owner's deploy steps. `VITE_API_URL` unset (the default) keeps the app in local-only mode, unchanged from before Stage 5.
 
 ## Commands
 
-Toolchain is **bun** with workspaces (despite `pnpm` references in some doc prose — the actual scripts and lockfile are bun). Tests run on **`bun test`**, not vitest (ignore README's vitest mention).
+Toolchain is **bun** with workspaces (despite `pnpm` references in some doc prose — the actual scripts and lockfile are bun). Tests run on **`bun test`**, not vitest (ignore README's vitest mention) — **except** `apps/api`, whose Worker routes need a real Workers runtime to test against (`@cloudflare/vitest-pool-workers`); its `test` script shells out to `vitest run`, and `bun run test` (root) picks it up automatically via the existing `--filter '*'` mechanism, no special-casing needed.
 
 ```bash
 bun install
@@ -45,13 +45,14 @@ To update data: edit `FOUNDRY_SHA` / `SYSTEM_VERSION` in `packages/data-pipeline
 
 ## Architecture
 
-Four bun-workspace packages, one data-flow rule.
+Five bun-workspace packages, one data-flow rule.
 
 ```text
 packages/schema         shared types: CharacterDoc, DerivedSheet, RefData (the contracts everything imports)
 packages/data-pipeline  pinned Foundry YAML → normalized JSON (vendored under data/, committed)
 packages/engine         pure rules engine — compute(doc, refData) -> DerivedSheet (the crown jewel)
 apps/web                React + Vite builder + live tracker
+apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5, DESIGN.md §2.1)
 ```
 
 ### The one rule that governs everything
@@ -75,7 +76,7 @@ The engine has two genuinely hard pieces, both clean-room (see licensing below):
 All builder/tracker **logic is pure and in `apps/web/src/model/`** (`doc.ts` doc transitions, `prereqs.ts`, `skills.ts`, `hp.ts`, `buffs.ts`, etc.) — tested directly with no DOM. React components in `components/` are thin views. `state/useCharacter.ts` is the **only** binding layer: model transition → `compute()` → Dexie. When adding a feature, put the logic in a `model/` module with tests, then wire a thin component.
 
 - **RefData in the browser**: `data-pipeline`'s `loadRefData()` is Node-fs based; the app instead uses `src/refdata/loader.ts` (fetch). `scripts/copy-refdata.ts` copies vendored JSON into `public/data/` at predev/prebuild (gitignored — source of truth stays in the package). `refdata/loader.ts` is the _only_ place that knows where data lives, so Stage 5 can swap in lazy R2 loading there.
-- **Persistence**: IndexedDB via Dexie (`src/db/characters.ts`, database `pf1-tracker`). One active character; autosaves and restores most-recently-edited on load.
+- **Persistence**: IndexedDB via Dexie (`src/db/characters.ts`, database `pf1-tracker`) is the source of truth; one active character; autosaves and restores most-recently-edited on load. `src/sync/` (Stage 5) layers optional background push/pull to `apps/api` on top — pure decision logic in `sync/planSync.ts`, a thin `fetch` wrapper in `sync/client.ts`, orchestration in `sync/backgroundSync.ts`, all wired into `state/useCharacter.ts`. Degrades to a complete no-op when `VITE_API_URL` is unset.
 - **Vite/workspace-TS gotcha**: `@pf1/engine` and `@pf1/schema` publish raw `.ts` (no build step). `apps/web/vite.config.ts` aliases the bare specifiers to their `src/index.ts`; Vite's resolver handles their internal `./foo.js` → `./foo.ts` fallback. Keep these aliases in sync if package entry points move.
 
 ## Licensing — clean-room discipline (important)

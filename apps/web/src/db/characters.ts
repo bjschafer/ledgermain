@@ -125,6 +125,16 @@ export async function listCharacters(): Promise<CharacterSummary[]> {
   }));
 }
 
+/**
+ * Envelope-only `{ id, version }` for every locally-stored character (Stage 5
+ * sync — `src/sync/backgroundSync.ts`'s open-sync pass compares these against
+ * the server's list without needing to read/parse every full document).
+ */
+export async function listVersions(): Promise<{ id: string; version: number }[]> {
+  const all = await db.characters.toArray();
+  return all.map((doc) => ({ id: doc.id, version: doc.version }));
+}
+
 /** Load a specific saved character by id and mark it active (bumps `updatedAt`). */
 export async function loadCharacter(id: string): Promise<CharacterDoc> {
   const doc = await db.characters.get(id);
