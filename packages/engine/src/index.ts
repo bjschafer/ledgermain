@@ -93,10 +93,14 @@ export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
 export {
   resolveClassFeatures,
   archetypeSwappedUuids,
+  activeArchetypeSwaps,
+  archetypeHasModeledEffects,
+  barbarianDamageReductionReplaced,
   collectGrantedFeatures,
   type ResolvedClassFeatures,
   type GrantedFeature,
 } from "./archetypes.js";
+export { ARCHETYPE_FEATURE_EFFECTS, type ArchetypeFeatureEffect } from "./archetype-effects.js";
 export {
   isTargetApplied,
   unappliedChanges,

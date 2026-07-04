@@ -27,8 +27,9 @@
  * wrong for DR/resistance qualifiers).
  */
 
-import type { CharacterDoc, Defenses, DefenseEntry, ModifierComponent } from "@pf1/schema";
+import type { CharacterDoc, Defenses, DefenseEntry, ModifierComponent, RefData } from "@pf1/schema";
 
+import { barbarianDamageReductionReplaced } from "./archetypes.js";
 import type { CollectedModifier } from "./collect.js";
 import { forTarget } from "./collect.js";
 import { resolveStack } from "./stacking.js";
@@ -157,6 +158,7 @@ function barbarianLevel(doc: CharacterDoc): number {
  */
 export function computeDefenses(
   doc: CharacterDoc,
+  refData: RefData,
   collected: CollectedModifier[],
 ): Defenses | undefined {
   const drMods: QualifiedMod[] = collected
@@ -170,7 +172,13 @@ export function computeDefenses(
     }));
 
   const barbLevel = barbarianLevel(doc);
-  if (barbLevel >= 7) {
+  // Issue #7: an archetype that replaces the barbarian's Damage Reduction
+  // (Savage Barbarian, Wildborn, Invulnerable Rager, ...) must stop this
+  // hardcoded progression from contributing — it isn't a vendored `Change`
+  // (the class feature's `changes[]` is empty upstream), so the general
+  // swap-suppression in `collect.ts` never touches it; this needs its own
+  // check. See `barbarianDamageReductionReplaced`'s doc comment.
+  if (barbLevel >= 7 && !barbarianDamageReductionReplaced(doc, refData)) {
     const { amount } = barbarianDamageReduction(barbLevel);
     if (amount > 0) {
       drMods.push({

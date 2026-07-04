@@ -1,10 +1,13 @@
 /**
  * Resolve a character's granted base-class features and any archetype swaps
- * layered on top. Archetypes carry no numeric effects in v1 (see
- * `packages/schema/src/refdata.ts` `ArchetypeFeature` doc comment) — this is
- * structural/display resolution only: which base feature is struck through,
- * and which archetype feature replaced it (or, when the dataset couldn't pair
- * a slot unambiguously, a prose-only soft warning instead of a swap).
+ * layered on top: which base feature is struck through, which archetype
+ * feature replaced it (or, when the dataset couldn't pair a slot
+ * unambiguously, a prose-only soft warning instead of a swap), and — for the
+ * small hand-authored slice in `archetype-effects.ts` (issue #7) — the
+ * archetype feature's own mechanical `detail` summary. The vendored archetype
+ * dataset itself carries no numeric effects (see `packages/schema/src/
+ * refdata.ts` `ArchetypeFeature` doc comment); any numbers shown here come
+ * from `ARCHETYPE_FEATURE_EFFECTS`, not the dataset.
  */
 
 import type {
@@ -17,6 +20,7 @@ import type {
   RefData,
 } from "@pf1/schema";
 
+import { ARCHETYPE_FEATURE_EFFECTS } from "./archetype-effects.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import {
   sneakAttackDice,
@@ -144,6 +148,86 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
 }
 
 /**
+ * uuid of every base-class-feature grant currently swapped out by an active
+ * archetype (gated by the character's CURRENT level in the granting class,
+ * unlike {@link archetypeSwappedUuids} which ignores level and is used for
+ * pre-pick conflict detection instead) -> the archetype feature name that
+ * replaces it. Shared by `resolveClassFeatures` (struck-through display) and
+ * `collectModifiers` (so a swapped-out base feature's `changes[]` — e.g. Armor
+ * Training's `mDexA`/`acpA`, Diamond Soul's `spellResist` — stop contributing
+ * the moment the swap actually takes effect; see `collect.ts`'s "granted
+ * class features" section, and the issue #7 audit that found this WAS a real
+ * bug prior to this function existing: `collectModifiers` iterated
+ * `classDef.features` with no awareness of `doc.build.archetypes` at all).
+ */
+export function activeArchetypeSwaps(doc: CharacterDoc, refData: RefData): Map<string, string> {
+  const replacedByUuid = new Map<string, string>();
+  for (const archetypeId of doc.build.archetypes ?? []) {
+    const archetype = refData.archetypes[archetypeId];
+    if (!archetype) continue;
+    const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
+    for (const f of Object.values(refData.archetypeFeatures)) {
+      if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
+      if (f.pairedBaseFeatureUuid) replacedByUuid.set(f.pairedBaseFeatureUuid, f.name);
+    }
+  }
+  return replacedByUuid;
+}
+
+/**
+ * Barbarian archetype ids whose feature at `level` fully replaces the
+ * barbarian's Damage Reduction progression via an AMBIGUOUS (unpaired) swap —
+ * i.e. one feature that folds in more than one base-feature slot at once, so
+ * the CSV pairing script in `data-pipeline` can't link it via
+ * `pairedBaseFeatureUuid` the normal 1:1 way. Hand-verified from the
+ * published rules (Invulnerable Rager's Invulnerability replaces uncanny
+ * dodge, improved uncanny dodge, AND damage reduction in one feature). Used
+ * by {@link barbarianDamageReductionReplaced} alongside the normal paired-swap
+ * check (which already covers e.g. Savage Barbarian/Wildborn, both clean 1:1
+ * swaps of "Damage Reduction").
+ */
+const AMBIGUOUS_DR_REPLACEMENTS: ReadonlyMap<string, number> = new Map([
+  ["barbarian:invulnerable-rager", 2],
+]);
+
+/**
+ * True when the character's barbarian Damage Reduction — `defenses.ts`'s
+ * hardcoded `barbarianDamageReduction` table, not a vendored `Change` (the
+ * class feature's `changes[]` is empty upstream) — has been replaced by an
+ * active archetype at the character's current barbarian level. `defenses.ts`
+ * uses this to skip that hardcoded contribution so it doesn't sit alongside
+ * (or silently outrank) the archetype's own `dr`/`nac`-target effect from
+ * `archetype-effects.ts`.
+ */
+export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: RefData): boolean {
+  const barbLevel = doc.identity.classes.find((c) => c.tag === "barbarian")?.level ?? 0;
+  if (barbLevel < 2) return false;
+
+  const barbClass = Object.values(refData.classes).find((c) => c.tag === "barbarian");
+  const drGrantUuid = barbClass?.features.find((f) => f.name === "Damage Reduction")?.uuid;
+  if (drGrantUuid && activeArchetypeSwaps(doc, refData).has(drGrantUuid)) return true;
+
+  for (const archetypeId of doc.build.archetypes ?? []) {
+    const gateLevel = AMBIGUOUS_DR_REPLACEMENTS.get(archetypeId);
+    if (gateLevel !== undefined && barbLevel >= gateLevel) return true;
+  }
+  return false;
+}
+
+/**
+ * True when at least one of `archetypeId`'s features has a hand-authored
+ * entry in `ARCHETYPE_FEATURE_EFFECTS` (issue #7) — used by `ArchetypePicker`
+ * to badge which archetypes carry modeled numeric effects vs. structural/
+ * prose-only swaps.
+ */
+export function archetypeHasModeledEffects(refData: RefData, archetypeId: string): boolean {
+  for (const f of Object.values(refData.archetypeFeatures)) {
+    if (f.archetypeId === archetypeId && ARCHETYPE_FEATURE_EFFECTS[f.id]) return true;
+  }
+  return false;
+}
+
+/**
  * `abilities` (from a computed sheet) lets Smite Evil's Cha-keyed detail
  * resolve against final scores; omit it to treat Cha modifier as 0 (matches
  * `deriveResourcePools`'s optional-abilities posture).
@@ -153,8 +237,7 @@ export function resolveClassFeatures(
   refData: RefData,
   abilities?: Record<AbilityId, AbilityView>,
 ): ResolvedClassFeatures {
-  // uuid of a base-class grant -> the archetype feature name that replaces it.
-  const replacedByUuid = new Map<string, string>();
+  const replacedByUuid = activeArchetypeSwaps(doc, refData);
   const activeArchetypes: DerivedArchetype[] = [];
 
   for (const archetypeId of doc.build.archetypes ?? []) {
@@ -174,10 +257,10 @@ export function resolveClassFeatures(
         name: f.name,
         description: f.description,
         ambiguous: !f.pairedBaseFeatureUuid,
+        detail: ARCHETYPE_FEATURE_EFFECTS[f.id]?.detail?.(clsLevel),
       });
       if (f.pairedBaseFeatureUuid) {
         swappedSlots[f.level] = f.pairedBaseFeatureUuid;
-        replacedByUuid.set(f.pairedBaseFeatureUuid, f.name);
       }
     }
 

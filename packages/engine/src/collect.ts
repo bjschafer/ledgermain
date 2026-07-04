@@ -9,6 +9,8 @@
 
 import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 
+import { ARCHETYPE_FEATURE_EFFECTS } from "./archetype-effects.js";
+import { activeArchetypeSwaps } from "./archetypes.js";
 import { BLOODLINES } from "./bloodlines.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
@@ -115,6 +117,14 @@ export function collectModifiers(
   }
 
   // --- granted class features ---------------------------------------------
+  // Issue #7 audit: an active archetype's swapped-out base feature (e.g.
+  // Two-Handed Fighter replacing Armor Training) previously kept contributing
+  // its `changes[]` here regardless — this loop had no awareness of
+  // `doc.build.archetypes` at all. `archetypeSwaps` (uuid -> replacing
+  // archetype feature name, gated on the character's current level in that
+  // class — see `activeArchetypeSwaps` in `archetypes.ts`) fixes that: a
+  // swapped grant is skipped entirely, same as if the character never had it.
+  const archetypeSwaps = activeArchetypeSwaps(doc, refData);
   for (const cls of doc.identity.classes) {
     const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
     if (!classDef) continue;
@@ -125,6 +135,7 @@ export function collectModifiers(
     };
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;
+      if (archetypeSwaps.has(grant.uuid)) continue;
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
       for (const ch of feature.changes ?? []) {
@@ -135,6 +146,38 @@ export function collectModifiers(
           ch.type,
           feature.name,
           feature.id,
+          out,
+          ch.operator,
+        );
+      }
+    }
+  }
+
+  // --- archetype feature effects (issue #7) -------------------------------
+  // Hand-authored numeric effects for the small slice of archetype features
+  // that grant an unconditional bonus (see `archetype-effects.ts`'s doc
+  // comment for the audit/scope rationale) — gated the same way base class
+  // features are: the granting class's level must reach the feature's level.
+  for (const archetypeId of doc.build.archetypes ?? []) {
+    const archetype = refData.archetypes[archetypeId];
+    if (!archetype) continue;
+    const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
+    const archFeatureRollData: RollData = {
+      ...rollData,
+      class: { level: clsLevel, unlevel: clsLevel },
+    };
+    for (const f of Object.values(refData.archetypeFeatures)) {
+      if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
+      const entry = ARCHETYPE_FEATURE_EFFECTS[f.id];
+      if (!entry) continue;
+      for (const ch of entry.changes) {
+        evalChange(
+          ch.formula,
+          archFeatureRollData,
+          ch.target,
+          ch.type,
+          f.name,
+          f.uuid,
           out,
           ch.operator,
         );
