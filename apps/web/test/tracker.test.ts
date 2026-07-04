@@ -11,7 +11,12 @@ import {
   restHp,
   setTempHp,
 } from "../src/model/hp.js";
-import { hasCondition, toggleCondition } from "../src/model/conditions.js";
+import {
+  hasCondition,
+  isImpliedCondition,
+  supersedingCondition,
+  toggleCondition,
+} from "../src/model/conditions.js";
 import {
   addBuff,
   advanceRound,
@@ -113,6 +118,93 @@ describe("conditions", () => {
     expect(hasCondition(d, "prone")).toBe(true);
     d = toggleCondition(d, "prone");
     expect(hasCondition(d, "prone")).toBe(false);
+  });
+});
+
+describe("condition ladders (issue #10)", () => {
+  const ladders: Array<[string, string, string?]> = [
+    ["shaken", "frightened", "panicked"],
+    ["fatigued", "exhausted"],
+    ["sickened", "nauseated"],
+    ["dazzled", "blinded"],
+    ["grappled", "pinned"],
+  ];
+
+  for (const [mild, stricter, strictest] of ladders) {
+    describe(`${mild} < ${stricter}${strictest ? ` < ${strictest}` : ""}`, () => {
+      it("activating the stricter condition removes the milder one (auto-upgrade)", () => {
+        let d = doc();
+        d = toggleCondition(d, mild);
+        expect(hasCondition(d, mild)).toBe(true);
+        d = toggleCondition(d, stricter);
+        expect(hasCondition(d, mild)).toBe(false);
+        expect(hasCondition(d, stricter)).toBe(true);
+      });
+
+      it("activating the milder condition while the stricter is active is a no-op", () => {
+        let d = doc();
+        d = toggleCondition(d, stricter);
+        d = toggleCondition(d, mild);
+        expect(hasCondition(d, mild)).toBe(false);
+        expect(hasCondition(d, stricter)).toBe(true);
+      });
+
+      it("the milder condition reports as implied while the stricter is active", () => {
+        let d = doc();
+        expect(isImpliedCondition(d, mild)).toBe(false);
+        d = toggleCondition(d, stricter);
+        expect(isImpliedCondition(d, mild)).toBe(true);
+        expect(supersedingCondition(d, mild)).toBe(stricter);
+      });
+
+      it("deactivating the stricter condition does NOT auto-restore the milder one", () => {
+        let d = doc();
+        d = toggleCondition(d, mild);
+        d = toggleCondition(d, stricter); // upgrades: mild removed, stricter added
+        d = toggleCondition(d, stricter); // deactivate stricter
+        expect(hasCondition(d, stricter)).toBe(false);
+        expect(hasCondition(d, mild)).toBe(false); // table decides, not auto-restored
+      });
+
+      if (strictest) {
+        it("activating the strictest condition upgrades past both milder ones", () => {
+          let d = doc();
+          d = toggleCondition(d, mild);
+          d = toggleCondition(d, strictest);
+          expect(hasCondition(d, mild)).toBe(false);
+          expect(hasCondition(d, stricter)).toBe(false);
+          expect(hasCondition(d, strictest)).toBe(true);
+        });
+
+        it("the strictest condition supersedes both milder ones for implied-checks", () => {
+          let d = doc();
+          d = toggleCondition(d, strictest);
+          expect(isImpliedCondition(d, mild)).toBe(true);
+          expect(isImpliedCondition(d, stricter)).toBe(true);
+          expect(supersedingCondition(d, mild)).toBe(strictest);
+        });
+      }
+    });
+  }
+
+  it("conditions outside any ladder are unaffected by ladder logic", () => {
+    let d = doc();
+    d = toggleCondition(d, "prone");
+    d = toggleCondition(d, "deafened");
+    expect(hasCondition(d, "prone")).toBe(true);
+    expect(hasCondition(d, "deafened")).toBe(true);
+    expect(isImpliedCondition(d, "prone")).toBe(false);
+    expect(isImpliedCondition(d, "deafened")).toBe(false);
+  });
+
+  it("conditions in different ladders don't interact", () => {
+    let d = doc();
+    d = toggleCondition(d, "frightened");
+    d = toggleCondition(d, "exhausted");
+    d = toggleCondition(d, "pinned");
+    expect(hasCondition(d, "frightened")).toBe(true);
+    expect(hasCondition(d, "exhausted")).toBe(true);
+    expect(hasCondition(d, "pinned")).toBe(true);
   });
 });
 

@@ -12,9 +12,16 @@
  *     swing (e.g. prone's +4 AC vs ranged) is a reminder, not auto-applied.
  *   - `target: "skills"` is a global skill-check penalty (every skill); the
  *     engine applies it to each skill alongside per-skill `skill.<id>` changes.
- *   - Fear (shaken/frightened) and fatigue (fatigued/exhausted) ladders do NOT
- *     auto-replace each other — if a player toggles both, both apply. The rules
- *     say the worse one supersedes; that's a UI/judgement call left to the table.
+ *   - Fear (shaken/frightened/panicked), fatigue (fatigued/exhausted), sickness
+ *     (sickened/nauseated), dazzled/blinded, and grappled/pinned form RAW
+ *     mutual-exclusivity ladders (`CONDITION_LADDERS` below) — the worse state
+ *     supersedes the milder one and their effects don't stack. This table stays
+ *     permissive on purpose: it does NOT auto-resolve the ladder itself, so a
+ *     hand-authored doc that (incorrectly) has both flags set still gets both
+ *     `Change[]` applied — the engine just reports what's active. Auto-upgrade /
+ *     "milder is implied" enforcement lives at the toggle layer instead
+ *     (`apps/web/src/model/conditions.ts`), which is the natural place to
+ *     intercept a player's click before it ever reaches the doc.
  *   - `displayOnly` conditions carry no `changes` (their effect is narrative or
  *     not expressible as a flat modifier); they still surface as reminders.
  */
@@ -90,6 +97,19 @@ const CONDITION_LIST: ConditionDef[] = [
       {
         target: "allChecks",
         text: "-2 on most checks except to escape; cannot take actions needing two hands.",
+      },
+    ],
+  },
+  {
+    id: "pinned",
+    name: "Pinned",
+    summary: "-4 AC (additional), denied Dexterity bonus to AC; cannot move; very limited actions.",
+    changes: [u("-4", "ac")],
+    contextNotes: [
+      { target: "ac", text: "Also denied Dexterity bonus to AC (not auto-applied)." },
+      {
+        target: "allChecks",
+        text: "Cannot move; may only attempt to escape, take verbal/mental actions, or cast spells with no somatic/material component (concentration check DC 10 + grappler's CMB + spell level). A more severe form of grappled — their effects don't stack.",
       },
     ],
   },
@@ -225,3 +245,21 @@ export const CONDITIONS: Record<string, ConditionDef> = Object.fromEntries(
 );
 
 export const CONDITION_IDS: readonly string[] = CONDITION_LIST.map((c) => c.id);
+
+/**
+ * RAW mutual-exclusivity ladders: each entry is a chain of condition ids from
+ * mildest to most severe. Within a ladder, only the most severe active member
+ * "counts" — its effects supersede every milder member and none stack (see
+ * SRD condition summary language: "Panicked is a more extreme state of fear
+ * than shaken or frightened"; "Pinned is a more severe version of grappled,
+ * and their effects do not stack"; etc). This table is pure data — the
+ * enforcement (auto-upgrade on toggle, treating the milder entry as implied
+ * while a stricter one is active) lives in `apps/web/src/model/conditions.ts`.
+ */
+export const CONDITION_LADDERS: readonly (readonly string[])[] = [
+  ["shaken", "frightened", "panicked"],
+  ["fatigued", "exhausted"],
+  ["sickened", "nauseated"],
+  ["dazzled", "blinded"],
+  ["grappled", "pinned"],
+];
