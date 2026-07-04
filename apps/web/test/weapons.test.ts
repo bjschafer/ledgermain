@@ -8,10 +8,10 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc, WeaponInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { createEmptyDoc } from "../src/model/doc.js";
 import {
   addWeapon,
   addWeaponFromRef,
+  createEmptyDoc,
   removeWeapon,
   replaceWeapon,
   updateWeapon,

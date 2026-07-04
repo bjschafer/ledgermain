@@ -17,6 +17,10 @@ bun install
 bun run dev          # @pf1/web on http://localhost:5173 (predev copies RefData into public/data/)
 bun run build        # build all packages
 bun run typecheck    # tsc --noEmit across all packages — the primary gate
+bun run lint         # oxlint across the workspace (must stay green; warnings tolerated)
+bun run lint:fix     # oxlint --fix (auto-fixes safe rules)
+bun run fmt          # oxfmt across the workspace
+bun run fmt:check    # oxfmt --check (CI-shaped gate)
 bun run test         # all unit tests (engine + data-pipeline + web)
 bun run e2e          # Playwright (Chromium); boots its own dev server
 ```
@@ -81,6 +85,8 @@ The engine is a **clean-room reimplementation** from the published PF1 rules, ke
 ## Conventions
 
 - TypeScript strict everywhere. `bun run typecheck` is the gate that must stay green.
+- Lint must stay green: `bun run lint` (errors block; warnings tolerated). Run `bun run lint:fix` first to auto-fix. Don't add new lint warnings to existing code paths.
+- Run `bun run fmt` before committing; `bun run fmt:check` must be green. Don't commit hand-formatted code that fights oxfmt — if you disagree with a fmt result, change your code, don't fight the tool.
 - When touching the engine, add hand-computed fixture tests (the pattern in `packages/engine/test/`); the engine tests run against the real vendored data slice via `loadRefData()`.
 - Feat prereqs are **hybrid**: hard-block only on _structured_ signals (ability min, BAB, caster level, required `@UUID` feats); prose-only prereqs (`prereqText`) show a soft warning and never block. Don't promise perfect prereq enforcement.
 - Always check for the dev server listening before killing and starting it.

@@ -5,8 +5,8 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { createEmptyDoc } from "../src/model/doc.js";
 import {
+  createEmptyDoc,
   setAge,
   setAppearance,
   setDeity,

@@ -40,7 +40,7 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
   const [addCollapsed, toggleAddCollapsed] = useCollapsed("subsection:SavedRolls:add", true);
 
-  const saved = doc.build.savedRolls ?? [];
+  const saved = useMemo(() => doc.build.savedRolls ?? [], [doc]);
   const owned = useMemo(() => ownedFeatSlugs(doc, refData), [doc, refData]);
   const resolved = useMemo(
     () => saved.map((r) => resolveSavedRoll(r, sheet, owned)),

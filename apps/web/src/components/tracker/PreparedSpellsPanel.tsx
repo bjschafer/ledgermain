@@ -82,7 +82,7 @@ function DomainSlotsSection({
   /** Stored class tag (see `model/spellcasting.ts` `storedClassTag`) — cleric's domain slots are always its own, but this scopes the bucketing correctly for a cleric that isn't the document's primary caster class. */
   classTag?: string;
 }) {
-  const domains = doc.build.clericDomains ?? [];
+  const domains = useMemo(() => doc.build.clericDomains ?? [], [doc]);
   const domainMap = useMemo(() => domainSpellLevelMap(refData, domains), [refData, domains]);
 
   // Bucket domain-kind prepared instances by their domain spell level.

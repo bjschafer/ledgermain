@@ -79,7 +79,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // Chosen cleric domains (each grants a bonus prepare-slot per accessed spell
   // level; the prepare-from-domain UI lives in the tracker). Listed here
   // read-only so the player knows what's available to prepare in a domain slot.
-  const clericDomains = doc.build.clericDomains ?? [];
+  const clericDomains = useMemo(() => doc.build.clericDomains ?? [], [doc]);
   const domainEntries = useMemo<SpellEntry[]>(() => {
     if (!clericDomains.length || casterTag !== "cleric") return [];
     const out: SpellEntry[] = [];

@@ -6,8 +6,7 @@ import { featNameSlug } from "@pf1/engine";
 
 import { casterLevel } from "../../model/casterLevel.js";
 import { combatStyleFeatSlugs } from "../../model/ranger.js";
-import { toggleFeat } from "../../model/doc.js";
-import { ABILITY_IDS } from "../../model/doc.js";
+import { ABILITY_IDS, toggleFeat } from "../../model/doc.js";
 import {
   chosenFeatCountExcludingGranted,
   expectedFeatCount,

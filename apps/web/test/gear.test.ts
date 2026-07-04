@@ -6,11 +6,11 @@ import { describe, expect, it } from "bun:test";
 
 import type { ArmorRef, WornArmor } from "@pf1/schema";
 
-import { createEmptyDoc } from "../src/model/doc.js";
 import {
   addGearItem,
   addWornArmor,
   addWornArmorFromRef,
+  createEmptyDoc,
   removeGear,
   setGearEquipped,
   updateGearItem,

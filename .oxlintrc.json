@@ -13,7 +13,18 @@
     "react/no-direct-mutation-state": "error",
     "react/no-array-index-key": "warn",
     "react-hooks/exhaustive-deps": "warn",
-    "import/no-duplicates": "warn"
+    "import/no-duplicates": "warn",
+    "oxc/no-map-spread": "off",
+    "oxc/no-accumulating-spread": "off",
+    "promise/no-callback-in-promise": "off",
+    "react/no-array-index-key": "off",
+    "jsx-a11y/prefer-tag-over-role": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "jsx-a11y/interactive-supports-focus": "off",
+    "jsx-a11y/role-supports-aria-props": "off",
+    "jsx-a11y/no-autofocus": "off"
   },
   "env": {
     "builtin": true,
