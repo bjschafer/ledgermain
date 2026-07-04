@@ -452,9 +452,7 @@ describe("items (issue #15 — full usable breadth of the `items` pack)", () => 
       weight: 1,
       cl: 5,
     });
-    expect(cloak.changes).toEqual([
-      { formula: "1", target: "allSavingThrows", type: "resist" },
-    ]);
+    expect(cloak.changes).toEqual([{ formula: "1", target: "allSavingThrows", type: "resist" }]);
   });
 
   it("Ring of Protection +1 carries a typed `deflection` change to AC", () => {

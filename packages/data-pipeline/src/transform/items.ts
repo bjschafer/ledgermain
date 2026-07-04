@@ -31,9 +31,6 @@ export function transformItem(doc: RawDoc, resolveUuid: UuidResolver): Item {
     changes: normalizeChanges(sys.changes),
     contextNotes: normalizeContextNotes(sys.contextNotes, resolveUuid),
     uses: normalizeUses(sys.uses),
-    aura:
-      aura && typeof aura.school === "string"
-        ? { school: aura.school }
-        : undefined,
+    aura: aura && typeof aura.school === "string" ? { school: aura.school } : undefined,
   };
 }

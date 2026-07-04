@@ -2,30 +2,30 @@
 
 Three PF1e spellcaster class features are currently unimplemented (audit, 2026-07-01):
 
-- **Sorcerer bloodlines** — no schema field, no engine logic, no UI. The *only* surviving surface is bonus-feat **slot counting** (`apps/web/src/model/feats.ts` reads the `bonusFeats` change from the prose-only "Bloodline Feat (SOR)" class feature). The spell associations already exist in vendored data (`spells.json` carries `learnedAt.bloodline` for 39 bloodlines across 220 spells in the current slice) but the pipeline does **not** invert them.
-- **Wizard specialization schools** — no schema field, no slot mechanic (specialist +1 school slot/level, opposition spells cost 2 slots), no UI. "Arcane School" is a prose-only `ClassFeature` (`changes: []`) for the *slot* mechanic. [Corrected 2026-07-03: per-school **power** data (Hand of the Apprentice, Intense Spells, etc.) IS vendored, under `class-abilities/wizard-schools/*.yaml` — this claim was wrong. Implemented; see Stage 4 correction below.]
+- **Sorcerer bloodlines** — no schema field, no engine logic, no UI. The _only_ surviving surface is bonus-feat **slot counting** (`apps/web/src/model/feats.ts` reads the `bonusFeats` change from the prose-only "Bloodline Feat (SOR)" class feature). The spell associations already exist in vendored data (`spells.json` carries `learnedAt.bloodline` for 39 bloodlines across 220 spells in the current slice) but the pipeline does **not** invert them.
+- **Wizard specialization schools** — no schema field, no slot mechanic (specialist +1 school slot/level, opposition spells cost 2 slots), no UI. "Arcane School" is a prose-only `ClassFeature` (`changes: []`) for the _slot_ mechanic. [Corrected 2026-07-03: per-school **power** data (Hand of the Apprentice, Intense Spells, etc.) IS vendored, under `class-abilities/wizard-schools/*.yaml` — this claim was wrong. Implemented; see Stage 4 correction below.]
 - **Arcane bonds** — no schema field, no familiar skill bonuses, no concentration-without-bonded-object penalty, no UI. "Arcane Bond" is prose-only. No familiar stat blocks are vendored anywhere.
 
-The shared root cause: Foundry models each as a single prose-only `ClassFeature` with no structured sub-entries for the actual choices (which bloodline, which school, familiar vs. bonded object). The placeholder `build.classFeatureChoices: unknown[]` (`packages/schema/src/character.ts:65`) exists but is untyped, always `[]`, and read by no code. We will **not** use it — each feature gets a *named* field, mirroring the working cleric-domain precedent (`build.clericDomains` + `refData.domainSpellLists` + `PreparedSpell.kind === "domain"`).
+The shared root cause: Foundry models each as a single prose-only `ClassFeature` with no structured sub-entries for the actual choices (which bloodline, which school, familiar vs. bonded object). The placeholder `build.classFeatureChoices: unknown[]` (`packages/schema/src/character.ts:65`) exists but is untyped, always `[]`, and read by no code. We will **not** use it — each feature gets a _named_ field, mirroring the working cleric-domain precedent (`build.clericDomains` + `refData.domainSpellLists` + `PreparedSpell.kind === "domain"`).
 
 ### Ordering / tractability
 
 The three features differ sharply in how much vendored data we can lean on, which sets the staging:
 
-| Feature | Vendored data we can lean on | Hand-authoring burden |
-|---|---|---|
-| Sorcerer bloodline **spells** | ✅ `spells.json.learnedAt.bloodline` (39 bloodlines, 220 spells in the current slice — verified 2026-07-02; grows slightly once the keep-filter retains bloodline-only spells) — just needs a pipeline inversion mirroring the domain one | none |
-| Sorcerer bloodline **arcana/powers** | ❌ not vendored (prose-only feature) | per-bloodline Change sets, clean-room |
-| Wizard school **slots/opposition** | ❌ no `arcane-schools` pack read; only spell `school` tag (abj/evo/...) | 8 school tags (trivial); school *powers* are prose |
-| Arcane bonds | ❌ no familiar stat blocks anywhere | full familiar table, clean-room |
+| Feature                              | Vendored data we can lean on                                                                                                                                                                                                              | Hand-authoring burden                              |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Sorcerer bloodline **spells**        | ✅ `spells.json.learnedAt.bloodline` (39 bloodlines, 220 spells in the current slice — verified 2026-07-02; grows slightly once the keep-filter retains bloodline-only spells) — just needs a pipeline inversion mirroring the domain one | none                                               |
+| Sorcerer bloodline **arcana/powers** | ❌ not vendored (prose-only feature)                                                                                                                                                                                                      | per-bloodline Change sets, clean-room              |
+| Wizard school **slots/opposition**   | ❌ no `arcane-schools` pack read; only spell `school` tag (abj/evo/...)                                                                                                                                                                   | 8 school tags (trivial); school _powers_ are prose |
+| Arcane bonds                         | ❌ no familiar stat blocks anywhere                                                                                                                                                                                                       | full familiar table, clean-room                    |
 
 So: bloodline **spells** first (pure pipeline + schema + UI, mirrors domains exactly), then wizard **school slots** (schema + engine slot mechanic + UI; no new data needed), then **arcane bonds** (largest hand-authoring). Bloodline **arcana/powers** and school **powers** (the passive-ability effects) are deferred to a final stage — they're real but not table-blocking, and each school/bloodline has prose-only data we'd have to hand-transcribe clean-room.
 
-> **Correction (2026-07-03)**: "school *powers* are prose" (row 19) and "not vendored" (line 26, for schools) were wrong — see the Stage 4 correction note. Wizard school powers turned out to be structured `class-abilities/wizard-schools/*.yaml` data, not prose to hand-transcribe; same for cleric domain powers (not tracked in this table at all, since domains were already a "working precedent," but the same gap existed and is now closed). Bloodline arcana/powers (row 18) is unaffected by this correction — still genuinely prose-only.
+> **Correction (2026-07-03)**: "school _powers_ are prose" (row 19) and "not vendored" (line 26, for schools) were wrong — see the Stage 4 correction note. Wizard school powers turned out to be structured `class-abilities/wizard-schools/*.yaml` data, not prose to hand-transcribe; same for cleric domain powers (not tracked in this table at all, since domains were already a "working precedent," but the same gap existed and is now closed). Bloodline arcana/powers (row 18) is unaffected by this correction — still genuinely prose-only.
 
 ### Licensing note (DESIGN §6)
 
-Bloodline arcana/powers and familiar stat blocks are **not** in the vendored Foundry content and must be **hand-authored clean-room from the published PF1 rules**, never copied/transcribed from Foundry's GPL system code (the precedents are `packages/engine/src/tables.ts` and `packages/engine/src/feat-effects.ts`). Wizard school powers and cleric domain powers, by contrast, ARE vendored compendium *data* (OGL / Paizo Community Use, same posture as feats/spells/classes elsewhere in this pipeline) — normalized directly, no hand-authoring or GPL-code involvement.
+Bloodline arcana/powers and familiar stat blocks are **not** in the vendored Foundry content and must be **hand-authored clean-room from the published PF1 rules**, never copied/transcribed from Foundry's GPL system code (the precedents are `packages/engine/src/tables.ts` and `packages/engine/src/feat-effects.ts`). Wizard school powers and cleric domain powers, by contrast, ARE vendored compendium _data_ (OGL / Paizo Community Use, same posture as feats/spells/classes elsewhere in this pipeline) — normalized directly, no hand-authoring or GPL-code involvement.
 
 ---
 
@@ -34,14 +34,15 @@ Bloodline arcana/powers and familiar stat blocks are **not** in the vendored Fou
 **Goal**: Sorcerers pick a bloodline in the builder; bloodline bonus spells auto-populate the known list as the sorcerer levels (one per odd sorcerer level starting at 3), do **not** count against the spells-known cap, and render with a "bloodline" badge. Mirrors the cleric domain system end-to-end and is the template Stages 2–3 reuse.
 
 **Scope** (in / out):
+
 - IN: Pipeline inversion `learnedAt.bloodline` → `refData.bloodlineSpellLists` (mirror `normalize.ts:142-163` domain block exactly), emitted as `bloodline-spell-lists.json`. Extend the spell-slice keep filter (`normalize.ts:110-125`) so bloodline-only spells are retained (mirror the existing `hasDomain` term).
 - IN: Schema `RefData.bloodlineSpellLists: Record<string, SpellList>` (mirror `refdata.ts:37`).
 - IN: Schema `build.sorcererBloodline?: string` (mirror `build.clericDomains?: string[]` at `character.ts:57`).
 - IN: Engine/Model: `bloodlineSpellsKnown(refData, bloodlineTag, sorcererLevel) -> string[]` in `apps/web/src/model/spellcasting.ts`. PF1 rule: a bloodline's level-`L` spell (1–9) is unlocked at sorcerer level `2L+1`. Returns spell ids the sorcerer has unlocked, sorted.
 - IN: Builder UI: a `BloodlinePicker.tsx` rendered in `ClassesSection.tsx` for sorcerers (mirror `DomainPicker.tsx`). Dropdown of `Object.keys(refData.bloodlineSpellLists)`; chosen tag persisted via a `setSorcererBloodline` transition in `doc.ts` (mirror `setClericDomains` at `doc.ts:118`).
-- IN: Known-list rendering (`SpellsSection.tsx` / wherever the sorcerer's known spells are listed): merge `bloodlineSpellsKnown` into the displayed known list with a "bloodline" badge; exclude them from the spells-known *cap* check (they're bonus known, not chosen known).
+- IN: Known-list rendering (`SpellsSection.tsx` / wherever the sorcerer's known spells are listed): merge `bloodlineSpellsKnown` into the displayed known list with a "bloodline" badge; exclude them from the spells-known _cap_ check (they're bonus known, not chosen known).
 - OUT: Bloodline **arcana** and **powers** (passive abilities like Draconic's breath weapon, +1 HP/HD from Fey, etc.) — deferred to Stage 4.
-- OUT: Bloodline bonus **feat** selection — the *slot count* is already correct (audit A6); picking *which* bloodline feat fills the slot is a feat-picker concern that defers with Stage 4 (the feat list per bloodline isn't vendored).
+- OUT: Bloodline bonus **feat** selection — the _slot count_ is already correct (audit A6); picking _which_ bloodline feat fills the slot is a feat-picker concern that defers with Stage 4 (the feat list per bloodline isn't vendored).
 - OUT: Wildblooded /crossblooded variants — non-core, defer.
 
 **Schema change** (`packages/schema/src/refdata.ts`):
@@ -109,13 +110,14 @@ Wire into `RefData` returned object (line 234-249) and the `counts` block (lines
 `{ key: "bloodlineSpellLists", file: "bloodline-spell-lists.json" }`.
 
 **Both RefData loaders must learn the new file** (the domain precedent touched all of these — verified 2026-07-02):
+
 - `packages/data-pipeline/src/index.ts:32` — add `bloodlineSpellLists: readJson(dir, "bloodline-spell-lists.json")` (Node loader, used by engine tests).
 - `apps/web/src/refdata/loader.ts` — add the fetch row (mirror `domain-spell-lists.json` at lines 37/52/68).
 - `packages/data-pipeline/src/config.ts:29` — bump `SCHEMA_VERSION` 4 → 5 and extend its comment ("v5 adds `bloodlineSpellLists`"), same convention as the v4 domain bump.
 
 Regen: `bun run data:build`. Review the diff — expect ~39 bloodline entries.
 
-**Engine changes** — none. `compute()` is unchanged; bloodline spells are a builder/tracker display concern (they expand the known list, not a derived stat). The engine's spells-known **table** (the cap) is untouched — bloodline spells are *bonus* known and sit outside the cap, enforced at the UI layer. (Same posture as `gmGrants`, which lives entirely in the web model layer.)
+**Engine changes** — none. `compute()` is unchanged; bloodline spells are a builder/tracker display concern (they expand the known list, not a derived stat). The engine's spells-known **table** (the cap) is untouched — bloodline spells are _bonus_ known and sit outside the cap, enforced at the UI layer. (Same posture as `gmGrants`, which lives entirely in the web model layer.)
 
 **Model transitions** (`apps/web/src/model/doc.ts`):
 
@@ -146,18 +148,20 @@ export function bloodlineSpellsKnown(
   refData: RefData,
   bloodlineTag: string | undefined,
   sorcererLevel: number,
-): { id: string; name: string; level: number }[]
+): { id: string; name: string; level: number }[];
 ```
 
 Implement: read `refData.bloodlineSpellLists[tag]` keys 1-9; include level `L` only when `2L+1 <= sorcererLevel` (i.e. `L <= (sorcererLevel - 1)/2`). Returns `[]` gracefully when `tag` is undefined/unknown.
 
 **UI** (`apps/web/src/components/builder/`):
+
 - `BloodlinePicker.tsx` — dropdown (`<select>`) of `Object.keys(refData.bloodlineSpellLists).sort()`. One tag can be chosen/none. Mirrors `DomainPicker.tsx`'s free-choice + soft-warning shape (no deity lock).
 - `ClassesSection.tsx` — render `BloodlinePicker` when the character has sorcerer levels (gate checks `casterModelFor("sorcerer"` or class list), next to the existing `DomainPicker` cleric branch (around line 197-200).
 - Spells-known display: merge `bloodlineSpellsKnown` into the known list for the cap check (subtract from / exempt them), and render them with a "bloodline" badge (mirror whatever "domain" badge markup exists). They're read-only — not user-removable.
 - Tracker: the spontaneous cast surface builds its castable list from `build.spells.known` (`PreparedSpellsPanel.tsx:276-289` `knownByLevel`) — merge `bloodlineSpellsKnown` there too, or the sorcerer can't cast their bloodline spells at the table.
 
 **Success Criteria**:
+
 - `bun run typecheck` green.
 - `bun run data:build` regenerates `bloodline-spell-lists.json` with ~40 bloodline entries; `git diff` on the data dir reviewed.
 - `bun run test` green; existing fixtures unchanged; new tests pass.
@@ -166,6 +170,7 @@ Implement: read `refData.bloodlineSpellLists[tag]` keys 1-9; include level `L` o
 - Soft warning: choosing an unknown bloodline tag (typed into a malformed import JSON) shows a soft warning, never hard-blocks.
 
 **Tests** (red-first per the workflow):
+
 - `packages/data-pipeline/test/normalize.test.ts` (or wherever pipeline tests live): `bloodlineSpellLists["Draconic"]` is non-empty and contains the expected known DD-spell at level 1; bloodline-only spells survive the slice (regression for the keep-filter extension).
 - `apps/web/test/spellcasting.test.ts`: `bloodlineSpellsKnown(ref, "Draconic", 1)` → `[]`; `(ref, "Draconic", 3)` → one 1st-level spell; `(ref, "Draconic", 7)` → levels 1..3; `(ref, "Unknown" , 20)` → `[]` (soft fail, no throw); `(ref, undefined, 20)` → `[]`.
 - `apps/web/test/doc.bloodline.test.ts` (new): `setSorcererBloodline` set, clear, blank-stripping.
@@ -173,6 +178,7 @@ Implement: read `refData.bloodlineSpellLists[tag]` keys 1-9; include level `L` o
 - One engine-fixture regression asserting `compute()` output is byte-identical with/without `sorcererBloodline` (the engine ignores the field by design — this test pins that).
 
 **Files touched** (estimate):
+
 1. `packages/schema/src/refdata.ts` — `RefData.bloodlineSpellLists` + JSDoc.
 2. `packages/schema/src/character.ts` — `build.sorcererBloodline` + JSDoc.
 3. `packages/data-pipeline/src/normalize.ts` — keep-filter term + inversion block + `RefData` return + `counts`.
@@ -190,6 +196,7 @@ Implement: read `refData.bloodlineSpellLists[tag]` keys 1-9; include level `L` o
 15. Three test files as above.
 
 **Status**: Complete (2026-07-02). As-built notes:
+
 - `bloodlineSpellLists` landed as v5 (`SCHEMA_VERSION` 4→5); 39 bloodlines, 2442 spells (18 more than before — bloodline-only spells retained by the extended keep-filter).
 - `BloodlinePicker.tsx` uses a `<select>` dropdown (single tag) rather than the chip-toggle style `DomainPicker.tsx` uses for its two-tag choice — simpler UI for a single free-choice value.
 - Bloodline spells render as a read-only reference block in `SpellsSection.tsx` (mirrors the existing `DomainSpellsBlock` pattern) rather than being merged into the toggleable `known` list — since they're never added to `doc.build.spells.known`, they're naturally exempt from the spells-known cap by construction (no separate exemption bookkeeping needed). Each spell row carries a `.tag-bloodline` badge.
@@ -200,11 +207,12 @@ Implement: read `refData.bloodlineSpellLists[tag]` keys 1-9; include level `L` o
 
 ## Stage 2: Wizard specialization schools (slots + opposition)
 
-**Goal**: A wizard picks one specialization school (or "Universalist") and two opposition schools (none if Universalist). The specialist gets **one bonus prepared slot per spell level (1–9, not cantrips)** that must be filled from their school's spell list; opposition-school spells cost **two slots** to prepare. UI renders school slots next to the existing normal slots (mirroring the cleric domain slot rendering). School *powers* — the passive arcane-school abilities (diviner's foresight, evoker's elemental damage, etc.) — were originally scoped as **deferred** to Stage 4, but **are now implemented** (2026-07-03) — see the Stage 4 correction note.
+**Goal**: A wizard picks one specialization school (or "Universalist") and two opposition schools (none if Universalist). The specialist gets **one bonus prepared slot per spell level (1–9, not cantrips)** that must be filled from their school's spell list; opposition-school spells cost **two slots** to prepare. UI renders school slots next to the existing normal slots (mirroring the cleric domain slot rendering). School _powers_ — the passive arcane-school abilities (diviner's foresight, evoker's elemental damage, etc.) — were originally scoped as **deferred** to Stage 4, but **are now implemented** (2026-07-03) — see the Stage 4 correction note.
 
 > **PF1 RAW check (corrected 2026-07-02)**: a Universalist gets **no** bonus slot and no opposition schools — their compensation is the Hand of the Apprentice / Metamagic Mastery school powers. Only specialists (the eight non-"uni" tags) get the +1 school slot per level. This simplifies the slot logic: `kind: "school"` slots exist only when `wizardSchool` is set and ≠ `"uni"`.
 
 **Scope** (in / out):
+
 - IN: Schema `build.wizardSchool?: string` (school tag: `"abj" | "con" | "div" | "enc" | "evo" | "ill" | "nec" | "trs" | "uni"`). Free-choice; no "oppose X requires school Y" validation (soft-warning posture).
 - IN: Schema `build.wizardOppositionSchools?: string[]` (≤2 tags; empty/omitted for Universalist).
 - IN: Schema: extend `PreparedSpell.kind` (`character.ts:222`) from `"normal" | "domain"` to `"normal" | "domain" | "school"`. `"school"` slots may only hold spells whose `spell.school` tag equals the wizard's specialization; one per accessible spell level (mirror domain slot exclusivity).
@@ -266,12 +274,14 @@ Mirror `setClericDomains` shape + blank-stripping. `setWizardSchool("uni")` clea
 - School slot capacity: one `kind: "school"` slot per accessible spell level 1–9 (never level 0), specialists only — mirror the cleric domain-slot accounting in `PreparedSpellsPanel.tsx` (`DomainSlotsSection`), which keeps domain slots out of the normal-slot capacity via `kind`.
 
 **UI** (`apps/web/src/components/builder/`):
+
 - `SchoolPicker.tsx` — 9-option `<select>` (8 schools + Universalist). When non-Universalist, reveal `OppositionPicker` (multi-pick ≤2 from the remaining 7 schools).
 - `ClassesSection.tsx` — render both for wizards, next to the sorcerer-bloodline branch.
 - `PreparedSpellsPanel.tsx` — render one "school slot" row per accessible spell level 1–9 (specialists only), mirroring the existing `DomainSlotsSection`. The slot is exclusive to in-school spells (filtered picker). No school-slot rows for Universalist.
 - Tracker spell-cost surface: when preparing an opposition-school spell, the UI shows "costs 2 slots" badge and the prepare action decrements 2 normal slots.
 
 **Success Criteria**:
+
 - `bun run typecheck && bun run test` green; existing fixtures unchanged; new tests pass.
 - Builder: a wizard 5 Evocation specialist picks Evocation + opposition {enchantment, necromancy}; the Spells panel shows one school slot per accessible spell level 1–3 (wizard 5 casts up to 3rd) exclusive to evo spells; preparing Burning Hands (evo) into a school slot works; preparing Sleep (enc, opposition) into a normal slot consumes 2 normal slots.
 - Universalist wizard 5: no school slots, no opposition picker, opposition-cost is 1 for everything — mechanically identical to a doc with no `wizardSchool` at all.
@@ -279,12 +289,14 @@ Mirror `setClericDomains` shape + blank-stripping. `setWizardSchool("uni")` clea
 - Back-compat: an existing wizard doc with no `wizardSchool` loads as Universalist with identical derived stats to before the change.
 
 **Tests**:
+
 - `apps/web/test/doc.school.test.ts` (new): set/clear/blank-strip for `wizardSchool` + `wizardOppositionSchools`; setting "uni" clears opposition; cap at 2 opposition schools.
 - Model accounting tests: `oppositionCost(sleep, evocation-with-enc-opposition-doc) === 2`; `oppositionCost(burningHands, same-doc) === 1`; `isSchoolSlotEligible(burningHands, evocation-doc) === true`, `(sleep, evocation-doc) === false`; `(anySpell, universalist-doc) === false` (Universalist has no school slots).
 - `apps/web/test/preparedSpells.test.ts`: extend an existing slot-accounting test (or add one) — specialist preparing an opposition spell into a normal slot consumes 2; into a school slot is rejected (in-school only).
 - Regression: an engine fixture with `wizardSchool` set produces byte-identical `compute()` output (the engine ignores the field by design — pins that).
 
 **Files touched**:
+
 1. `packages/schema/src/character.ts` — two build fields + `PreparedSpell.kind` extension + JSDoc.
 2. `apps/web/src/model/doc.ts` — two transitions.
 3. `apps/web/src/model/` (prepare accounting module) — `isSchoolSlotEligible`, `oppositionCost`, `schoolSlotCapacity`.
@@ -295,6 +307,7 @@ Mirror `setClericDomains` shape + blank-stripping. `setWizardSchool("uni")` clea
 8. Three test files as above.
 
 **Status**: Complete. As-built notes:
+
 - `SCHOOL_LABELS`/`SCHOOL_TAGS` (school tag → display label) ended up centralized
   in `apps/web/src/model/spellcasting.ts` rather than `SchoolPicker.tsx` — the
   builder's existing `SpellsSection.tsx` already had a local (and drifted —
@@ -322,11 +335,12 @@ Mirror `setClericDomains` shape + blank-stripping. `setWizardSchool("uni")` clea
 
 ## Stage 3: Arcane bonds (familiar + bonded object)
 
-**Goal**: A wizard (or sorcerer with the Tattooed Sorcerer archetype — defer that interaction) records an arcane bond: a *familiar* or a *bonded object*. Familiars grant their published master bonus (e.g. bat → +3 Fly, toad → +3 hit points). Bonded objects record the choice; their main RAW pain ("cast any spellbook spell 1/day"; "concentration DC 20 + spell level without the object") is surfaced as a play-tab tooltip, **not** modeled numerically in v1. Familiar stat blocks are hand-authored clean-room (none are vendored).
+**Goal**: A wizard (or sorcerer with the Tattooed Sorcerer archetype — defer that interaction) records an arcane bond: a _familiar_ or a _bonded object_. Familiars grant their published master bonus (e.g. bat → +3 Fly, toad → +3 hit points). Bonded objects record the choice; their main RAW pain ("cast any spellbook spell 1/day"; "concentration DC 20 + spell level without the object") is surfaced as a play-tab tooltip, **not** modeled numerically in v1. Familiar stat blocks are hand-authored clean-room (none are vendored).
 
 **Scope** (in / out):
+
 - IN: Schema `build.arcaneBond?: { type: "familiar" | "object"; familiarKind?: string; bondedItemRef?: string }`. `familiarKind` keys into the hand-authored familiar table. `bondedItemRef` is an `ItemInstance.id` (player's own gear) for the bonded object; optional in v1 (player may record "bonded object" without specifying which item).
-- IN: Hand-authored familiar table — new engine data file `packages/engine/src/familiars.ts` (mirrors the hand-authored shape of `tables.ts` / `feat-effects.ts`). The PF1 Core familiar list with each familiar's **master bonus** (corrected 2026-07-02 — the earlier draft listed 3.5e values; PF1 CRB values are): bat +3 Fly, cat +3 Stealth, lizard +3 Climb, monkey +3 Acrobatics, rat +2 Fortitude saves, raven +3 Appraise, viper +3 Bluff, toad +3 hit points, weasel +2 Reflex saves; hawk (+3 sight-based Perception in bright light) and owl (+3 sight-based Perception in shadows) are *conditional* — model those two as a display note, not an always-on `Change`. Bonuses are expressed as `Change`s with engine target names (`skill.fly`, `skill.ste`, `skill.clm`, `skill.acr`, `skill.apr`, `skill.blf`, `fort`, `ref`, `hp` — all already-consumed targets, verified in `targets.ts`/`feat-effects.ts`) and type `"untyped"` (PF1 gives these bonuses no type; matches the `feat-effects.ts` precedent, e.g. Alertness). **Clean-room from published PF1 rules** (DESIGN §6) — never transcribe Foundry source.
+- IN: Hand-authored familiar table — new engine data file `packages/engine/src/familiars.ts` (mirrors the hand-authored shape of `tables.ts` / `feat-effects.ts`). The PF1 Core familiar list with each familiar's **master bonus** (corrected 2026-07-02 — the earlier draft listed 3.5e values; PF1 CRB values are): bat +3 Fly, cat +3 Stealth, lizard +3 Climb, monkey +3 Acrobatics, rat +2 Fortitude saves, raven +3 Appraise, viper +3 Bluff, toad +3 hit points, weasel +2 Reflex saves; hawk (+3 sight-based Perception in bright light) and owl (+3 sight-based Perception in shadows) are _conditional_ — model those two as a display note, not an always-on `Change`. Bonuses are expressed as `Change`s with engine target names (`skill.fly`, `skill.ste`, `skill.clm`, `skill.acr`, `skill.apr`, `skill.blf`, `fort`, `ref`, `hp` — all already-consumed targets, verified in `targets.ts`/`feat-effects.ts`) and type `"untyped"` (PF1 gives these bonuses no type; matches the `feat-effects.ts` precedent, e.g. Alertness). **Clean-room from published PF1 rules** (DESIGN §6) — never transcribe Foundry source.
 - IN: Engine: apply the chosen familiar's skill-bonus `Change`s through the existing change-application path (`collect.ts` / `compute.ts` — wherever buff/feat changes get applied). The familiar is sourced from `build.arcaneBond.familiarKind` + the familiar table by id.
 - IN: Builder UI: `ArcaneBondPicker.tsx` — toggle bond type; if familiar, a `<select>` over the hand-authored familiar table; if object, a free-text/item-ref picker (v1: free-text name; wiring to an existing `ItemInstance` deferred).
 - IN: tracker UI: the sheet's "race/class features" panel surfaces "Familiar: bat — +3 Fly" (or the `note` for hawk/owl); bonded object shows "Bonded Object: <name or record>" plus an inline tooltip explaining the 1/day spontaneous-cast-from-spellbook and the no-object concentration penalty.
@@ -377,11 +391,13 @@ setArcaneBond(doc, bond: { type: "familiar" | "object"; familiarKind?: string; b
 `null` clears the bond. Setting `type: "familiar"` requires `familiarKind` (transition asserts non-blank; soft warning only if the kind isn't in the table). Setting `type: "object"` with `bondedItemRef` validates that the ref exists in `doc.build.gear` (if not — soft warning, not a hard block).
 
 **UI** (`apps/web/src/components/`):
+
 - `builder/ArcaneBondPicker.tsx` — toggle (two radio buttons). If familiar: dropdown over `Object.keys(FAMILIARS)` (imported from the engine). If object: text input for the bonded object's display name + optional `gear` picker (v1: name only).
 - `builder/ClassesSection.tsx` — render for wizards (and once archetypes are wired, Tattooed Sorcerer — defer the archetype gate).
 - `tracker/` (wherever the character's class-feature surface is rendered — likely the play-tab class-features panel): "Familiar: bat" row with the bonus provenance (e.g. "+3 Fly (bat familiar)"), or the conditional `note` for hawk/owl. Bonded object row with the tooltip explaining the raw mechanics (1/day cast + concentration DC 20 + spell level when casting without it).
 
 **Success Criteria**:
+
 - `bun run typecheck && bun run test` green; existing fixtures unchanged; new tests pass.
 - Builder: a wizard with `arcaneBond = { type: "familiar", familiarKind: "bat" }` shows a +3 untyped Fly bonus with "Bat familiar" provenance in the skill panel; a toad familiar raises max HP by 3 with provenance (verify via fixtures).
 - Bonded object with `bondedItemRef` set: the tooltip renders and the chosen gear item is flagged (v1: UI flag only — the engine doesn't enforce removing the bonded object, which is a play action).
@@ -390,12 +406,14 @@ setArcaneBond(doc, bond: { type: "familiar" | "object"; familiarKind?: string; b
 - Licensing: the new `familiars.ts` is authored from published PF1 rules; no Foundry source is transcribed (verify by the absence of any paste/clipboard evidence — the file should look like `tables.ts` / `feat-effects.ts`: hand-curated constants).
 
 **Tests**:
+
 - `packages/engine/test/familiars.test.ts` (new): hand-computed. bat → +3 Fly (`skill.fly`); cat → +3 Stealth (`skill.ste`); toad → max HP +3; rat → Fort save +2; weasel → Ref save +2. Choose a familiar whose kind isn't in the table → `compute()` returns the sheet unchanged (graceful soft-fail).
 - `apps/web/test/doc.bond.test.ts` (new): `setArcaneBond` set/clear; familiar requires kind; blank-stripping; setting object with unknown gear-ref is accepted (soft warning only).
 - Stacking fixture: wizard with cat familiar (+3 Stealth untyped) + a competence-typed Stealth item bonus → both apply and sum (untyped stacks with typed; verifies the familiar bonus routes through `stacking.ts` and shows provenance).
 - Regression: an engine fixture without `arcaneBond` is byte-identical to before the change.
 
 **Files touched**:
+
 1. `packages/schema/src/character.ts` — `build.arcaneBond` + JSDoc.
 2. `packages/engine/src/familiars.ts` — new, hand-authored.
 3. `packages/engine/src/compute.ts` (or `collect.ts`) — apply familiar changes from `build.arcaneBond.familiarKind`.
@@ -406,6 +424,7 @@ setArcaneBond(doc, bond: { type: "familiar" | "object"; familiarKind?: string; b
 8. Two test files as above + one stacking fixture.
 
 **Status**: Complete (2026-07-02). As-built notes:
+
 - `bondedItemRef` (an `ItemInstance.id`) was impossible as planned — `ItemInstance` has no id field (gear is addressed by array index). Used the plan's own v1 fallback: free-text `bondedItemName`, stored raw when non-blank so a controlled input can carry mid-typing spaces.
 - No separate tracker panel: the familiar's numeric provenance flows automatically through the sheet's skill/save/HP breakdowns (`"Bat (familiar)"` components), and `ArcaneBondPicker` itself carries the master-bonus summary, the hawk/owl conditional notes, and the bonded-object RAW text (1/day cast + DC 20 + spell level concentration). Alertness-while-adjacent is noted in the picker hint.
 - Stacking fixture uses an active buff (competence Stealth) rather than an item, exercising the same collect→stack path.
@@ -422,11 +441,13 @@ setArcaneBond(doc, bond: { type: "familiar" | "object"; familiarKind?: string; b
 > **Sorcerer bloodline arcana/powers remains genuinely unvendored** (prose-only) — the rest of this section's analysis still applies to that half only.
 
 **Why still deferred (bloodline arcana/powers only)**:
+
 - Each bloodline (~40) needs its arcana/powers hand-authored clean-room from published PF1 rules (not in the vendored Foundry content as structured data, unlike wizard schools/cleric domains above). That's dozens of small change-set entries with bespoke conditions (Draconic's "+1 HP/HD" needs a new `target`; Fey's "+2 vs enchantment" needs a bounded save-tag mechanism that doesn't exist yet).
 - The bonuses route through the engine's change-application path (same path as `feat-effects.ts`), but several need new targets (`hd.bonus` for the +1 HP/HD; `saves.vs.<descriptor>` for descriptor-bounded saves) that aren't currently consumed in `compute.ts`.
 - The UI work is small (render the auto-granted abilities in the build summary) but the data entry is the lion's share.
 
 **Scope sketch** (not committing yet):
+
 - New engine file `packages/engine/src/bloodlines.ts` mirroring `familiars.ts` / `feat-effects.ts` — each entry `{ id, name, levelUnlocked, changes: Change[], context?: ContextNote }`.
 - Some entries need new engine targets: `hd.bonus` (+1 HP/HD), `saves.vs.enchantment` (+2 vs a descriptor). Adding new targets is a knock-on change to `compute.ts` — small, but each one needs a fixture. Evaluate whether to (a) add the targets, or (b) defer the abilities that need them and ship only the ones that fit existing targets (Draconic "+1/HD HP" is the most table-visible, since every sorcerer Draconic missing it has wrong max HP).
 - UI: builder summary surfaces "Bloodline: Draconic — Arcana: +1 HP/HD, Powers: Claws (L1), Breath Weapon (L9, …)"; tracker renders them in the class-features panel (same `origin`-label pattern now used for domain/school powers).
@@ -448,26 +469,26 @@ A sweep of the other sliced classes for the same shape (choice-bearing, prose-on
 - **Barbarian rage powers** — `Rage Powers` class feature is prose-only (`changes: []`); no schema field for which powers were picked, no effects. Same treatment as this plan would apply: a named `build.ragePowers?: string[]` + hand-authored effects table. Deferred — reassess after Stages 1–3.
 - **Rogue talents / advanced talents / master strike** — `Rogue Talents`, `Advanced Talents`, and `Master Strike` class features are prose-only (`changes: []`); no schema field for which talents were picked, no effects. Same treatment: a named `build.rogueTalents?: string[]` + hand-authored effects table. (Sneak Attack's dice progression is the one piece of Rogue that got hand-authored — `sneakAttackDice` in `packages/engine/src/tables.ts` — since it's unconditional and table-visible every session; talent selection is a separate, deferred concern.) Deferred — reassess after Stages 1–3.
 - **Fighter weapon training group choices** — `Weapon Training` is prose-only; the group picks (L5/9/13/17) have no schema field. The engine already routes `attack.weapon.<group>` / `damage.weapon.<group>` targets (Weapon Focus uses them), so the effects path exists; only the choice field + change emission are missing. Deferred.
-- *Non-gap*: **Armor Training** carries structured `changes` in the vendored data and already applies via the class-feature path. **Bravery** is prose-only but choice-free and situational (+1 Will vs fear per 4 levels) — context-note material at most.
-- *Non-gap*: **Channel Energy** is already modeled (`tables.ts` `channelEnergyDetail` + resource pools).
+- _Non-gap_: **Armor Training** carries structured `changes` in the vendored data and already applies via the class-feature path. **Bravery** is prose-only but choice-free and situational (+1 Will vs fear per 4 levels) — context-note material at most.
+- _Non-gap_: **Channel Energy** is already modeled (`tables.ts` `channelEnergyDetail` + resource pools).
 
 ### Paladin/Ranger mechanical audit (issue #13 step 2, 2026-07-02)
 
-Following the same treatment as Rogue's step 2 (`sneakAttackDice`): Smite Evil's attack/damage/AC scaling is hand-authored clean-room (`smiteEvilDetail` in `packages/engine/src/tables.ts`, wired into `resolveClassFeatures`'s `detail` field) since it's unconditional and table-visible every session it's active. Lay on Hands' healing dice similarly got a small hand-authored `layOnHandsDice` wired into `resources.ts`'s tag-gated detail (mirroring `channelEnergy`'s special case — Lay on Hands does carry a real `tag: "layOnHands"` upstream, so no new machinery was needed). Divine Grace and both classes' `uses.maxFormula` resource pools (Smite Evil uses/day, Lay on Hands uses/day) already worked for free via the generic changes-formula/resource pipeline, confirmed by fixture tests rather than assumed. Ranger's Combat Style Feat *bonus feat count* (`floor((@class.unlevel + 2) / 4)` targeting `bonusFeats`) also already flows through the generic `classBonusFeats` pipeline in `apps/web/src/model/feats.ts` with no changes.
+Following the same treatment as Rogue's step 2 (`sneakAttackDice`): Smite Evil's attack/damage/AC scaling is hand-authored clean-room (`smiteEvilDetail` in `packages/engine/src/tables.ts`, wired into `resolveClassFeatures`'s `detail` field) since it's unconditional and table-visible every session it's active. Lay on Hands' healing dice similarly got a small hand-authored `layOnHandsDice` wired into `resources.ts`'s tag-gated detail (mirroring `channelEnergy`'s special case — Lay on Hands does carry a real `tag: "layOnHands"` upstream, so no new machinery was needed). Divine Grace and both classes' `uses.maxFormula` resource pools (Smite Evil uses/day, Lay on Hands uses/day) already worked for free via the generic changes-formula/resource pipeline, confirmed by fixture tests rather than assumed. Ranger's Combat Style Feat _bonus feat count_ (`floor((@class.unlevel + 2) / 4)` targeting `bonusFeats`) also already flows through the generic `classBonusFeats` pipeline in `apps/web/src/model/feats.ts` with no changes.
 
-**Built (2026-07-03), the "situational bundle":** Favored Enemy, Favored Terrain, and Combat Style *feat choice* are now implemented. Because none of these bonuses are always-on (they apply only vs. a specific creature type / in a specific terrain — the player judges at the table), they surface through the **saved-roll attachment path** rather than the always-on derived sheet, extending the same mechanism as the situational-feat attachments (`SITUATIONAL_FEAT_EFFECTS`). Shape:
+**Built (2026-07-03), the "situational bundle":** Favored Enemy, Favored Terrain, and Combat Style _feat choice_ are now implemented. Because none of these bonuses are always-on (they apply only vs. a specific creature type / in a specific terrain — the player judges at the table), they surface through the **saved-roll attachment path** rather than the always-on derived sheet, extending the same mechanism as the situational-feat attachments (`SITUATIONAL_FEAT_EFFECTS`). Shape:
 
-- Rules tables + level→slot/budget math are hand-authored clean-room in `packages/engine/src/ranger.ts` (`FAVORED_ENEMY_TYPES`, `FAVORED_TERRAIN_TYPES`, `COMBAT_STYLES` — the two CRB styles plus the five from Ultimate Combat (Crossbow, Mounted Combat, Natural Weapon, Two-Handed Weapon, Weapon and Shield), each with its per-style feat tree (all 51 tree slugs verified to resolve to vendored feats); `favoredEnemySlots`/`favoredTerrainSlots`/`favoredBonusBudget`; `computeRanger` → `DerivedSheet.ranger`). Bonuses are *player-assigned per pick* (`build.favoredEnemies`/`favoredTerrains` = `{type, bonus}[]`) because the RAW distribution (add a new type at +2 AND raise one existing by +2 at each milestone) is a choice, not derivable from level — the picker soft-validates against the budget but never hard-blocks.
+- Rules tables + level→slot/budget math are hand-authored clean-room in `packages/engine/src/ranger.ts` (`FAVORED_ENEMY_TYPES`, `FAVORED_TERRAIN_TYPES`, `COMBAT_STYLES` — the two CRB styles plus the five from Ultimate Combat (Crossbow, Mounted Combat, Natural Weapon, Two-Handed Weapon, Weapon and Shield), each with its per-style feat tree (all 51 tree slugs verified to resolve to vendored feats); `favoredEnemySlots`/`favoredTerrainSlots`/`favoredBonusBudget`; `computeRanger` → `DerivedSheet.ranger`). Bonuses are _player-assigned per pick_ (`build.favoredEnemies`/`favoredTerrains` = `{type, bonus}[]`) because the RAW distribution (add a new type at +2 AND raise one existing by +2 at each milestone) is a choice, not derivable from level — the picker soft-validates against the budget but never hard-blocks.
 - **Favored Enemy / Favored Terrain** attach to a saved roll (`SavedRoll.rangerBonuses`, resolved live from `sheet.ranger` in `apps/web/src/model/savedRolls.ts` — favored enemy folds attack+damage, terrain folds the roll total; a since-removed pick degrades to a reminder chip). Builder UI: `RangerPicker.tsx`.
-- **Combat Style feat choice** (`build.combatStyle`) waives the *hard* prereq block for that style's feat tree (`prereqs.ts` `bypassBlockedSlugs`, fed by `model/ranger.combatStyleFeatSlugs`; the feat picker shows a "⚑ combat style" note). The bonus-feat *count* already worked (see above).
+- **Combat Style feat choice** (`build.combatStyle`) waives the _hard_ prereq block for that style's feat tree (`prereqs.ts` `bypassBlockedSlugs`, fed by `model/ranger.combatStyleFeatSlugs`; the feat picker shows a "⚑ combat style" note). The bonus-feat _count_ already worked (see above).
 
 Still deferred:
 
 - **Divine Bond** (paladin) — weapon bond (temporary weapon enhancement bonus) or mount (special mount table, similar shape to the druid animal companion / summoner eidolon systems this project hasn't built). Deferred.
 - **Mercy** (paladin) — Lay on Hands additionally cures a condition per mercy known, scaling in number with level. Would need `build.paladinMercies?: string[]` + a condition-cure effects table. Deferred.
 - **Hunter's Bond** (ranger) — companion or party attack-bonus-sharing ability; overlaps with the deferred animal-companion system. Deferred.
-- *Non-gap*: **Divine Grace** already applies via the generic `changes[]` pipeline (`@abilities.cha.mod` → `allSavingThrows`, untyped) — no hand-authoring needed.
-- *Non-gap (documented gap, not built)*: **Track** (ranger) carries a vendored `contextNotes[]` entry (`+max(1, floor(@class.unlevel/2))` to Survival checks to follow tracks) but this engine's `contextNotes` support (`packages/engine/src/conditions.ts`) is a separate, hand-authored condition mechanism — it does NOT consume RefData's vendored `contextNotes` from class features/items/races (`ClassFeature` in `packages/schema/src/refdata.ts` has no `contextNotes` field at all; the data-pipeline transform never captures it for class-abilities). Wiring vendored `contextNotes` generically would be new engine machinery, out of scope for this step. Track's skill bonus is therefore not modeled; a player must apply it manually.
+- _Non-gap_: **Divine Grace** already applies via the generic `changes[]` pipeline (`@abilities.cha.mod` → `allSavingThrows`, untyped) — no hand-authoring needed.
+- _Non-gap (documented gap, not built)_: **Track** (ranger) carries a vendored `contextNotes[]` entry (`+max(1, floor(@class.unlevel/2))` to Survival checks to follow tracks) but this engine's `contextNotes` support (`packages/engine/src/conditions.ts`) is a separate, hand-authored condition mechanism — it does NOT consume RefData's vendored `contextNotes` from class features/items/races (`ClassFeature` in `packages/schema/src/refdata.ts` has no `contextNotes` field at all; the data-pipeline transform never captures it for class-abilities). Wiring vendored `contextNotes` generically would be new engine machinery, out of scope for this step. Track's skill bonus is therefore not modeled; a player must apply it manually.
 
 ### Monk mechanical audit (issue #13 step 1, 2026-07-02)
 
@@ -477,11 +498,11 @@ Only the core `monk` class is vendored (tag `monk`); `monk-unchained` (the optio
 
 Four real gaps/quirks were found during the step 1 audit:
 
-- **~~Maneuver Training's CMB correction was inflated~~ — fixed.** Its vendored formula (`@class.unlevel - @attributes.bab.total`, untyped, target `cmb`) swaps medium-BAB CMB for full-monk-level CMB. `packages/engine/src/rolldata.ts`'s `buildRollData` didn't populate an `attributes.bab` path at all, and `collectModifiers()` ran *before* `compute()` derived `bab` as a local variable — so `@attributes.bab.total` always resolved to the formula DSL's missing-path default of `0`. Fixed by hoisting the BAB-from-class-levels computation (it only depends on `doc.identity.classes`, not on any collected modifier) above roll-data construction in `compute()` and threading it through `buildRollData(..., bab)` into `attributes.bab.total`. See the fixture test in `packages/engine/test/compute.test.ts` for the corrected numeric example.
+- **~~Maneuver Training's CMB correction was inflated~~ — fixed.** Its vendored formula (`@class.unlevel - @attributes.bab.total`, untyped, target `cmb`) swaps medium-BAB CMB for full-monk-level CMB. `packages/engine/src/rolldata.ts`'s `buildRollData` didn't populate an `attributes.bab` path at all, and `collectModifiers()` ran _before_ `compute()` derived `bab` as a local variable — so `@attributes.bab.total` always resolved to the formula DSL's missing-path default of `0`. Fixed by hoisting the BAB-from-class-levels computation (it only depends on `doc.identity.classes`, not on any collected modifier) above roll-data construction in `compute()` and threading it through `buildRollData(..., bab)` into `attributes.bab.total`. See the fixture test in `packages/engine/test/compute.test.ts` for the corrected numeric example.
 - **AC Bonus (Wis-to-AC) only correctly gates on armor** (shield/encumbrance are out of scope — see below), and no longer double-counts in CMD. Its vendored formula checks three conditions (`lt(@shield.type, 1)`, `lt(@armor.type, 1)`, `lt(@attributes.encumbrance.level, 1)`) before applying `wisMod + floor(unlevel/4)` to both `ac` and `cmd`. `@armor.type` is correctly populated by `rolldata.ts` from equipped gear, so the "not wearing armor" case works. `@shield.type` is never populated anywhere in `rolldata.ts` (missing path → `0`, i.e. always reads as "no shield"), and `@attributes.encumbrance.level` is hardcoded to `0` (no encumbrance model yet — issue #16's territory). So a monk wielding a shield or carrying a heavy load incorrectly still receives the bonus; building shield-slot tracking or encumbrance is out of scope here. **Issue #33 (fixed):** CMD used to double-count whenever a source carried both a generic `ac`-target change and its own explicit `cmd`-target change with the identical formula — the same untyped "generic"-category change fed `cmd` once via `computeAc`'s old `cmdAcBonus` (derived from any `dodge`/`deflection`/`generic` `ac.components`, an overly broad category bucket) and again via the explicit `cmd` change. This hit monk's AC Bonus, Iron Mask (both masterwork and common), and the Deflection Aura buff. Fixed in `compute.ts`'s CMB/CMD block: CMD's AC-sourced contribution is now derived by bonus **type** (RAW's eight named types — `deflection`/`dodge`/`circumstance`/`insight`/`luck`/`morale`/`profane`/`sacred`, via the `CMD_AC_TYPES` set) directly from the same `collected` "ac"-target modifiers `computeAc` reads, rather than from the AC category bucket; untyped/enhancement/racial/etc. AC bonuses are excluded from auto-derivation entirely (armor/shield/natural already were, since those live under separate `aac`/`sac`/`nac` targets). When a source has both an auto-eligible `ac` change and its own explicit `cmd` change, the `ac` copy is excluded by `sourceId`/`source` dedup, and the two pools are stacked together in one `resolveStack` pass so cross-pool same-type competition (e.g. an explicit cmd deflection bonus vs. a separate deflection ring) still resolves to the highest per type. See the "compute: CMD RAW-correct derivation, no double-counting (issue #33)" fixture block in `compute.test.ts` (Iron Mask, Deflection Aura, a plain-deflection auto-derive case, a dodge auto-derive case, an armor-exclusion case, and a two-deflection-sources stacking case), plus the updated monk AC-bonus test. Neither `cmb` nor `cmd` carries a provenance/components array on `DerivedSheet` (unlike `ac.components`), so the deduped auto-derivation has nothing to mark `applied: false` on — it's simply absent from the sum. Flat-footed CMD (losing Dex/dodge) was left out of scope, since it didn't fall out of this fix trivially and no vendored data exercises it yet.
 - **Diamond Soul's Spell Resistance change has nowhere to land.** Its vendored formula (`10 + @class.unlevel`, target `spellResist`) is correctly formed, but Spell Resistance isn't a tracked stat anywhere in `DerivedSheet` or consumed as a `compute.ts` target — this app doesn't model SR at all yet. Not built here; would need a new `spellResist` field + compute wiring if ever prioritized.
-- **~~Unarmed Strike's vendored `bonusFeats` change is mis-attributed~~ — fixed.** Its `changes[]` entry (flat `"1"`, target `bonusFeats`) represents the automatic Improved Unarmed Strike grant every monk gets at L1, but `classBonusFeats()`'s fixed-grant filter only skipped a class feature when its *name* matched a real feat's name exactly (`"Unarmed Strike"` != `"Improved Unarmed Strike"`), so it wasn't recognized as an auto-granted feat and instead inflated `expectedFeatCount`'s free bonus-feat-slot budget by +1 at every monk level. Fixed in `apps/web/src/model/feats.ts` by adding a small `FEATURE_NAME_OVERRIDES` map (feature name -> the feat name it actually grants, currently just `"unarmed strike" -> "improved unarmed strike"`) consulted by both `grantedFeats()` and `classBonusFeats()` before their by-name lookups, rather than generic UUID-based feat-grant resolution (bigger, more invasive data-pipeline change, out of scope). See `apps/web/test/feats.test.ts`'s Monk Unarmed Strike block for the corrected numeric example and the assertion that "Improved Unarmed Strike" now surfaces via `grantedFeats()`.
-- *Non-gap*: **Still Mind**'s vendored `contextNotes` entry is unconsumed — same shape and same non-gap as ranger Track above (`ClassFeature` has no `contextNotes` field at all).
+- **~~Unarmed Strike's vendored `bonusFeats` change is mis-attributed~~ — fixed.** Its `changes[]` entry (flat `"1"`, target `bonusFeats`) represents the automatic Improved Unarmed Strike grant every monk gets at L1, but `classBonusFeats()`'s fixed-grant filter only skipped a class feature when its _name_ matched a real feat's name exactly (`"Unarmed Strike"` != `"Improved Unarmed Strike"`), so it wasn't recognized as an auto-granted feat and instead inflated `expectedFeatCount`'s free bonus-feat-slot budget by +1 at every monk level. Fixed in `apps/web/src/model/feats.ts` by adding a small `FEATURE_NAME_OVERRIDES` map (feature name -> the feat name it actually grants, currently just `"unarmed strike" -> "improved unarmed strike"`) consulted by both `grantedFeats()` and `classBonusFeats()` before their by-name lookups, rather than generic UUID-based feat-grant resolution (bigger, more invasive data-pipeline change, out of scope). See `apps/web/test/feats.test.ts`'s Monk Unarmed Strike block for the corrected numeric example and the assertion that "Improved Unarmed Strike" now surfaces via `grantedFeats()`.
+- _Non-gap_: **Still Mind**'s vendored `contextNotes` entry is unconsumed — same shape and same non-gap as ranger Track above (`ClassFeature` has no `contextNotes` field at all).
 
 ### Druid mechanical audit (issue #13 step 2, 2026-07-03)
 
@@ -496,8 +517,8 @@ Deferred, same posture as Rogue Talents / Barbarian Rage Powers (prose-only, cho
 
 - **Nature Bond** — choice of an animal companion (needs the not-yet-built animal-companion system, same gap as paladin's Divine Bond mount option) or a cleric-style domain (would need its own choice field: the app's existing `DomainPicker`/`build.clericDomains` is hardcoded to cleric's "pick two domains" behavior — Nature Bond grants only one, and its domain spell list would need a similar bonus-prepare-slot treatment). Deferred.
 - **Wild Empathy** — a `1d20 + druid level + Cha modifier` check, structurally like a skill check but with no vendored `uses.maxFormula` (it's an at-will re-triable check, not a limited resource) and no existing "special check" display surface in the tracker (unlike Smite Evil/Lay on Hands, which hook into the resource-pool `detail` line). Would need a new UI concept, not just a hand-authored formula. Deferred; the ability's text renders as-is via `ClassFeaturesList.tsx`.
-- *Non-gap*: **Spontaneous Casting (DRU)** (swap a prepared spell for Summon Nature's Ally) is prose-only and unmodeled, but this is consistent with the app never having modeled Cleric's parallel spontaneous cure/inflict casting either — not a druid-specific gap.
-- *Non-gap*: **Chaotic/Evil/Good/Lawful Spells** (alignment-gated spell-list restriction) has no numeric content to hand-author; it's a restriction on which spells may be prepared, not a bonus.
+- _Non-gap_: **Spontaneous Casting (DRU)** (swap a prepared spell for Summon Nature's Ally) is prose-only and unmodeled, but this is consistent with the app never having modeled Cleric's parallel spontaneous cure/inflict casting either — not a druid-specific gap.
+- _Non-gap_: **Chaotic/Evil/Good/Lawful Spells** (alignment-gated spell-list restriction) has no numeric content to hand-author; it's a restriction on which spells may be prepared, not a bonus.
 
 ---
 

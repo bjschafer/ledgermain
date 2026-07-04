@@ -2,12 +2,7 @@ import type { ArmorRef } from "@pf1/schema";
 
 import type { RawDoc } from "../util/packs.js";
 import { makeUuid } from "../util/uuid.js";
-import {
-  asNumber,
-  asStringArray,
-  normalizeSources,
-  readWeight,
-} from "./common.js";
+import { asNumber, asStringArray, normalizeSources, readWeight } from "./common.js";
 
 const ARMOR_WEIGHT: Record<string, ArmorRef["weightClass"]> = {
   lightArmor: 1,

@@ -805,7 +805,9 @@ describe("compute: CMD RAW-correct derivation, no double-counting (issue #33)", 
       ...baseDoc(),
       live: {
         ...baseDoc().live,
-        activeBuffs: [{ instanceId: "deflection-aura", buffId, name: buff.name, changes: buff.changes }],
+        activeBuffs: [
+          { instanceId: "deflection-aura", buffId, name: buff.name, changes: buff.changes },
+        ],
       },
     };
     const sheet = compute(doc, ref);
@@ -824,7 +826,9 @@ describe("compute: CMD RAW-correct derivation, no double-counting (issue #33)", 
       ...baseDoc(),
       live: {
         ...baseDoc().live,
-        activeBuffs: [{ instanceId: "shield-of-faith", buffId, name: buff.name, changes: buff.changes }],
+        activeBuffs: [
+          { instanceId: "shield-of-faith", buffId, name: buff.name, changes: buff.changes },
+        ],
       },
     };
     const sheet = compute(doc, ref);
@@ -841,7 +845,9 @@ describe("compute: CMD RAW-correct derivation, no double-counting (issue #33)", 
       ...baseDoc(),
       live: {
         ...baseDoc().live,
-        activeBuffs: [{ instanceId: "total-defense", buffId, name: buff.name, changes: buff.changes }],
+        activeBuffs: [
+          { instanceId: "total-defense", buffId, name: buff.name, changes: buff.changes },
+        ],
       },
     };
     const sheet = compute(doc, ref);
@@ -885,7 +891,9 @@ describe("compute: CMD RAW-correct derivation, no double-counting (issue #33)", 
       },
       live: {
         ...baseDoc().live,
-        activeBuffs: [{ instanceId: "deflection-aura", buffId, name: buff.name, changes: buff.changes }],
+        activeBuffs: [
+          { instanceId: "deflection-aura", buffId, name: buff.name, changes: buff.changes },
+        ],
       },
     };
     const sheet = compute(doc, ref);
