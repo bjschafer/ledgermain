@@ -120,7 +120,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         "Whenever you cast a spell of the polymorph subschool, its duration increases by 50% (minimum 1 round).",
       changes: [],
       contextNotes: [
-        { target: "allChecks", text: "+50% duration on polymorph-subschool spells only — apply manually." },
+        {
+          target: "allChecks",
+          text: "+50% duration on polymorph-subschool spells only — apply manually.",
+        },
       ],
     },
     powers: [
@@ -139,10 +142,12 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         id: "longLimbs",
         level: 3,
         name: "Long Limbs",
-        summary:
-          "+5 ft. reach on melee touch attacks (+10 ft. at 11th, +15 ft. at 17th).",
+        summary: "+5 ft. reach on melee touch attacks (+10 ft. at 11th, +15 ft. at 17th).",
         contextNotes: [
-          { target: "reach", text: "Only extends reach for melee touch attacks — situational, not auto-applied." },
+          {
+            target: "reach",
+            text: "Only extends reach for melee touch attacks — situational, not auto-applied.",
+          },
         ],
       },
       {
@@ -151,7 +156,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Unusual Anatomy",
         summary: "25% chance to ignore a critical hit or sneak attack (50% at 13th level).",
         contextNotes: [
-          { target: "allChecks", text: "Roll the percentile chance manually when hit by a crit/sneak attack." },
+          {
+            target: "allChecks",
+            text: "Roll the percentile chance manually when hit by a crit/sneak attack.",
+          },
         ],
       },
       {
@@ -185,7 +193,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         "Whenever you cast a summon monster spell, the summoned creatures gain DR/good equal to 1/2 your sorcerer level (minimum 1).",
       changes: [],
       contextNotes: [
-        { target: "allChecks", text: "DR/good applies to summoned creatures, not you — situational, not auto-applied." },
+        {
+          target: "allChecks",
+          text: "DR/good applies to summoned creatures, not you — situational, not auto-applied.",
+        },
       ],
     },
     powers: [
@@ -202,15 +213,12 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         level: 3,
         name: "Demon Resistances",
         summary: "Resist electricity 5 and +2 vs. poison (electricity 10, +4 vs. poison at 9th).",
-        changes: [
-          c(
-            "if(gte(@classes.sorcerer.level, 9), 10, 5)",
-            "eres.electricity",
-            "untyped",
-          ),
-        ],
+        changes: [c("if(gte(@classes.sorcerer.level, 9), 10, 5)", "eres.electricity", "untyped")],
         contextNotes: [
-          { target: "allSavingThrows", text: "+2 (+4 at 9th) vs. poison only — not a general save bonus." },
+          {
+            target: "allSavingThrows",
+            text: "+2 (+4 at 9th) vs. poison only — not a general save bonus.",
+          },
         ],
       },
       {
@@ -232,7 +240,9 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Added Summonings",
         summary:
           "Summon monster spells that call a demon (or fiendish-templated creature) summon one additional creature of the same kind.",
-        contextNotes: [{ target: "allChecks", text: "Only affects demon/fiendish summon monster spells." }],
+        contextNotes: [
+          { target: "allChecks", text: "Only affects demon/fiendish summon monster spells." },
+        ],
       },
       {
         id: "demonicMight",
@@ -246,7 +256,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
           c("10", "eres.fire", "untyped"),
         ],
         contextNotes: [
-          { target: "allChecks", text: "Also grants electricity/poison immunity and 60-ft. telepathy (display only)." },
+          {
+            target: "allChecks",
+            text: "Also grants electricity/poison immunity and 60-ft. telepathy (display only).",
+          },
         ],
       },
     ],
@@ -260,7 +273,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         "Whenever you apply a metamagic feat that increases a spell's effective slot by at least one level, the spell's save DC increases by 1.",
       changes: [],
       contextNotes: [
-        { target: "allChecks", text: "+1 DC only on metamagic'd spells that raise the slot level — apply manually." },
+        {
+          target: "allChecks",
+          text: "+1 DC only on metamagic'd spells that raise the slot level — apply manually.",
+        },
       ],
     },
     powers: [
@@ -288,14 +304,18 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         level: 9,
         name: "New Arcana",
         summary: "Add one sorcerer/wizard spell to your spells known (repeats at 13th and 17th).",
-        contextNotes: [{ target: "allChecks", text: "Add the chosen spell to your known-spells list manually." }],
+        contextNotes: [
+          { target: "allChecks", text: "Add the chosen spell to your known-spells list manually." },
+        ],
       },
       {
         id: "schoolPower",
         level: 15,
         name: "School Power",
         summary: "Spells of one chosen school gain +2 to their save DC (stacks with Spell Focus).",
-        contextNotes: [{ target: "allChecks", text: "+2 DC only for the chosen school — apply manually." }],
+        contextNotes: [
+          { target: "allChecks", text: "+2 DC only for the chosen school — apply manually." },
+        ],
       },
       {
         id: "arcaneApotheosis",
@@ -303,7 +323,12 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Arcane Apotheosis",
         summary:
           "Apply metamagic feats without increasing casting time at will; may expend spell slots (3 slot-levels per charge) to power charged magic items.",
-        contextNotes: [{ target: "allChecks", text: "Display only — no charge-conversion tracking on the sheet." }],
+        contextNotes: [
+          {
+            target: "allChecks",
+            text: "Display only — no charge-conversion tracking on the sheet.",
+          },
+        ],
       },
     ],
   },
@@ -316,7 +341,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         "Whenever you cast a summon monster spell, the summoned creatures gain DR/evil equal to 1/2 your sorcerer level (minimum 1).",
       changes: [],
       contextNotes: [
-        { target: "allChecks", text: "DR/evil applies to summoned creatures, not you — situational, not auto-applied." },
+        {
+          target: "allChecks",
+          text: "DR/evil applies to summoned creatures, not you — situational, not auto-applied.",
+        },
       ],
     },
     powers: [
@@ -344,13 +372,18 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Wings of Heaven",
         summary:
           "Grow wings for a fly speed of 60 ft. (good maneuverability), usable in 1-minute increments.",
-        resourcePool: { usesFormula: "@classes.sorcerer.level", per: "day", detail: "Minutes of flight/day" },
+        resourcePool: {
+          usesFormula: "@classes.sorcerer.level",
+          per: "day",
+          detail: "Minutes of flight/day",
+        },
       },
       {
         id: "conviction",
         level: 15,
         name: "Conviction",
-        summary: "Reroll one ability check, attack roll, skill check, or saving throw before results are revealed.",
+        summary:
+          "Reroll one ability check, attack roll, skill check, or saving throw before results are revealed.",
         resourcePool: { usesFormula: "1", per: "day" },
       },
       {
@@ -362,7 +395,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         changes: [c("10", "eres.electricity", "untyped"), c("10", "eres.fire", "untyped")],
         contextNotes: [
           { target: "allSavingThrows", text: "+4 vs. poison only — not a general save bonus." },
-          { target: "allChecks", text: "Also grants acid/cold/petrification immunity, unlimited flight, and tongues (display only)." },
+          {
+            target: "allChecks",
+            text: "Also grants acid/cold/petrification immunity, unlimited flight, and tongues (display only).",
+          },
         ],
       },
     ],
@@ -376,7 +412,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         "Whenever you cast a spell with a range of personal, you gain a luck bonus equal to the spell's level on saving throws for 1 round.",
       changes: [],
       contextNotes: [
-        { target: "allSavingThrows", text: "Luck bonus only for 1 round after a personal-range spell — apply manually." },
+        {
+          target: "allSavingThrows",
+          text: "Luck bonus only for 1 round after a personal-range spell — apply manually.",
+        },
       ],
     },
     powers: [
@@ -395,7 +434,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         summary:
           "+1 luck bonus to AC and saves during surprise rounds or when unaware of an attack (+1 more at 7th and every 4 levels, max +5 at 19th).",
         contextNotes: [
-          { target: "ac", text: "Only applies during a surprise round or while unaware of the attack — situational." },
+          {
+            target: "ac",
+            text: "Only applies during a surprise round or while unaware of the attack — situational.",
+          },
         ],
       },
       {
@@ -412,7 +454,12 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Within Reach",
         summary:
           "When an attack or spell would kill you, DC 20 Will save to instead drop to -1 hp and stabilize.",
-        contextNotes: [{ target: "allChecks", text: "Only triggers on a killing blow — situational, not auto-applied." }],
+        contextNotes: [
+          {
+            target: "allChecks",
+            text: "Only triggers on a killing blow — situational, not auto-applied.",
+          },
+        ],
       },
       {
         id: "destinyRealized",
@@ -433,7 +480,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         "+1 hit point per sorcerer level. Whenever you cast a spell that deals energy damage of your dragon type, it deals +1 damage per die rolled.",
       changes: [c("@classes.sorcerer.level", "hp", "untyped")],
       contextNotes: [
-        { target: "allChecks", text: "+1 damage/die only on spells matching your dragon type's energy — apply manually." },
+        {
+          target: "allChecks",
+          text: "+1 damage/die only on spells matching your dragon type's energy — apply manually.",
+        },
       ],
     },
     variantPrompt: "Dragon type (sets your energy type and breath weapon shape)",
@@ -490,7 +540,8 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         id: "wings",
         level: 15,
         name: "Wings",
-        summary: "Grow leathery wings for a fly speed of 60 ft. (average maneuverability), dismissible as a free action.",
+        summary:
+          "Grow leathery wings for a fly speed of 60 ft. (average maneuverability), dismissible as a free action.",
         changes: [c("60", "flySpeed", "untyped")],
       },
       {
@@ -498,7 +549,12 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         level: 20,
         name: "Power of Wyrms",
         summary: "Immune to paralysis, sleep, and your energy type; blindsense 60 ft.",
-        contextNotes: [{ target: "allChecks", text: "Immunities and blindsense aren't tracked on the sheet — display only." }],
+        contextNotes: [
+          {
+            target: "allChecks",
+            text: "Immunities and blindsense aren't tracked on the sheet — display only.",
+          },
+        ],
       },
     ],
   },
@@ -507,9 +563,15 @@ const BLOODLINE_LIST: BloodlineDef[] = [
     tag: "Elemental",
     name: "Elemental",
     arcana: {
-      summary: "Spells you cast that deal energy damage can have their damage type changed to match your chosen element.",
+      summary:
+        "Spells you cast that deal energy damage can have their damage type changed to match your chosen element.",
       changes: [],
-      contextNotes: [{ target: "allChecks", text: "Energy-type swap is a casting-time choice — not modeled numerically." }],
+      contextNotes: [
+        {
+          target: "allChecks",
+          text: "Energy-type swap is a casting-time choice — not modeled numerically.",
+        },
+      ],
     },
     variantPrompt: "Element (sets your energy type and 15th-level movement mode)",
     variantOptions: [
@@ -523,7 +585,8 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         id: "elementalRay",
         level: 1,
         name: "Elemental Ray",
-        summary: "Ranged touch attack (30 ft.): 1d6 + 1 per two sorcerer levels of your energy type.",
+        summary:
+          "Ranged touch attack (30 ft.): 1d6 + 1 per two sorcerer levels of your energy type.",
         resourcePool: POOL_3_CHA,
       },
       {
@@ -553,7 +616,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         summary:
           "Gain a movement mode keyed to your element: Air flies 60 ft., Earth burrows 30 ft., Fire adds 30 ft. to base speed, Water swims 60 ft.",
         contextNotes: [
-          { target: "allChecks", text: "Movement mode depends on your chosen element — not tracked as a Change; add it manually." },
+          {
+            target: "allChecks",
+            text: "Movement mode depends on your chosen element — not tracked as a Change; add it manually.",
+          },
         ],
       },
       {
@@ -561,7 +627,9 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         level: 20,
         name: "Elemental Body",
         summary: "Immune to sneak attacks, critical hits, and damage of your chosen energy type.",
-        contextNotes: [{ target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." }],
+        contextNotes: [
+          { target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." },
+        ],
       },
     ],
   },
@@ -573,7 +641,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
       summary: "Whenever you cast a spell of the compulsion subschool, its save DC increases by 2.",
       changes: [],
       contextNotes: [
-        { target: "allChecks", text: "+2 DC only on compulsion-subschool spells — apply manually." },
+        {
+          target: "allChecks",
+          text: "+2 DC only on compulsion-subschool spells — apply manually.",
+        },
       ],
     },
     powers: [
@@ -590,20 +661,31 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         level: 3,
         name: "Woodland Stride",
         summary: "Move through natural undergrowth at normal speed without harm or impediment.",
-        contextNotes: [{ target: "landSpeed", text: "Magically manipulated terrain still affects you — display only." }],
+        contextNotes: [
+          {
+            target: "landSpeed",
+            text: "Magically manipulated terrain still affects you — display only.",
+          },
+        ],
       },
       {
         id: "fleetingGlance",
         level: 9,
         name: "Fleeting Glance",
-        summary: "Turn invisible (as greater invisibility) for a number of rounds per day equal to sorcerer level.",
-        resourcePool: { usesFormula: "@classes.sorcerer.level", per: "day", detail: "Rounds of invisibility/day" },
+        summary:
+          "Turn invisible (as greater invisibility) for a number of rounds per day equal to sorcerer level.",
+        resourcePool: {
+          usesFormula: "@classes.sorcerer.level",
+          per: "day",
+          detail: "Rounds of invisibility/day",
+        },
       },
       {
         id: "feyMagic",
         level: 15,
         name: "Fey Magic",
-        summary: "Reroll a caster level check to overcome spell resistance, taking the second result.",
+        summary:
+          "Reroll a caster level check to overcome spell resistance, taking the second result.",
         resourcePool: { usesFormula: "1", per: "day" },
       },
       {
@@ -614,7 +696,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
           "Immune to poison; DR 10/cold iron; animals won't attack you unless magically forced to; cast shadow walk once/day.",
         changes: [c("10", "dr.cold-iron", "untyped")],
         contextNotes: [
-          { target: "allChecks", text: "Also grants poison immunity, animal non-aggression, and shadow walk (display only)." },
+          {
+            target: "allChecks",
+            text: "Also grants poison immunity, animal non-aggression, and shadow walk (display only).",
+          },
         ],
       },
     ],
@@ -635,8 +720,7 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         id: "corruptingTouch",
         level: 1,
         name: "Corrupting Touch",
-        summary:
-          "Melee touch attack: target is shaken for 1/2 sorcerer level rounds (minimum 1).",
+        summary: "Melee touch attack: target is shaken for 1/2 sorcerer level rounds (minimum 1).",
         resourcePool: POOL_3_CHA,
       },
       {
@@ -646,7 +730,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         summary: "Resist fire 5 and +2 vs. poison (fire 10, +4 vs. poison at 9th).",
         changes: [c("if(gte(@classes.sorcerer.level, 9), 10, 5)", "eres.fire", "untyped")],
         contextNotes: [
-          { target: "allSavingThrows", text: "+2 (+4 at 9th) vs. poison only — not a general save bonus." },
+          {
+            target: "allSavingThrows",
+            text: "+2 (+4 at 9th) vs. poison only — not a general save bonus.",
+          },
         ],
       },
       {
@@ -661,7 +748,8 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         id: "onDarkWings",
         level: 15,
         name: "On Dark Wings",
-        summary: "Grow bat wings as a standard action for a fly speed of 60 ft. (average maneuverability).",
+        summary:
+          "Grow bat wings as a standard action for a fly speed of 60 ft. (average maneuverability).",
         changes: [c("60", "flySpeed", "untyped")],
       },
       {
@@ -672,7 +760,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
           "Immune to fire and poison; resist acid 10 and cold 10; see perfectly in darkness to 60 ft.",
         changes: [c("10", "eres.acid", "untyped"), c("10", "eres.cold", "untyped")],
         contextNotes: [
-          { target: "allChecks", text: "Also grants fire/poison immunity and 60-ft. darkvision (display only)." },
+          {
+            target: "allChecks",
+            text: "Also grants fire/poison immunity and 60-ft. darkvision (display only).",
+          },
         ],
       },
     ],
@@ -686,7 +777,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         "Corporeal undead that were once humanoid are treated as humanoid for your mind-affecting spells.",
       changes: [],
       contextNotes: [
-        { target: "allChecks", text: "Only relevant when targeting certain undead with mind-affecting spells." },
+        {
+          target: "allChecks",
+          text: "Only relevant when targeting certain undead with mind-affecting spells.",
+        },
       ],
     },
     powers: [
@@ -702,7 +796,8 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         id: "deathsGift",
         level: 3,
         name: "Death's Gift",
-        summary: "Resist cold 5 and DR 5/— vs. nonlethal damage (cold 10 and DR 10/— vs. nonlethal at 9th).",
+        summary:
+          "Resist cold 5 and DR 5/— vs. nonlethal damage (cold 10 and DR 10/— vs. nonlethal at 9th).",
         changes: [c("if(gte(@classes.sorcerer.level, 9), 10, 5)", "eres.cold", "untyped")],
         contextNotes: [
           {
@@ -723,7 +818,8 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         id: "incorporealForm",
         level: 15,
         name: "Incorporeal Form",
-        summary: "Become incorporeal for 1 round per sorcerer level (half damage from corporeal magic sources).",
+        summary:
+          "Become incorporeal for 1 round per sorcerer level (half damage from corporeal magic sources).",
         resourcePool: { usesFormula: "1", per: "day" },
       },
       {
@@ -734,7 +830,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
           "Immune to cold, nonlethal damage, paralysis, and sleep; DR 5/—; unintelligent undead ignore you; +4 morale vs. undead spells/abilities.",
         changes: [c("5", "dr", "untyped")],
         contextNotes: [
-          { target: "allSavingThrows", text: "+4 morale vs. undead spells/abilities only — not a general save bonus." },
+          {
+            target: "allSavingThrows",
+            text: "+4 morale vs. undead spells/abilities only — not a general save bonus.",
+          },
         ],
       },
     ],
@@ -748,7 +847,10 @@ export const BLOODLINES: Record<string, BloodlineDef> = Object.fromEntries(
 export const BLOODLINE_TAGS: readonly string[] = BLOODLINE_LIST.map((b) => b.tag);
 
 /** Human-readable label for a bloodline's chosen variant id, or `undefined` if unset/unknown. */
-export function bloodlineVariantLabel(tag: string, variantId: string | undefined): string | undefined {
+export function bloodlineVariantLabel(
+  tag: string,
+  variantId: string | undefined,
+): string | undefined {
   if (!variantId) return undefined;
   const bloodline = BLOODLINES[tag];
   return bloodline?.variantOptions?.find((v) => v.id === variantId)?.label;

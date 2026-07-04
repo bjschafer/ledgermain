@@ -47,7 +47,10 @@ function makeSorcerer(level: number, sorcererBloodline?: string): CharacterDoc {
 
 function bloodlineFeatureNames(doc: CharacterDoc): string[] {
   const { classFeatures } = resolveClassFeatures(doc, ref);
-  return classFeatures.filter((f) => f.origin?.kind === "bloodline").map((f) => f.name).sort();
+  return classFeatures
+    .filter((f) => f.origin?.kind === "bloodline")
+    .map((f) => f.name)
+    .sort();
 }
 
 describe("sorcerer bloodline arcana (collectModifiers)", () => {
@@ -94,7 +97,11 @@ describe("sorcerer bloodline arcana (collectModifiers)", () => {
   });
 
   it("Abyssal grants an inherent Strength bonus only once level 9 is reached", () => {
-    const low = collectModifiers(makeSorcerer(8, "Abyssal"), ref, buildRollData(makeSorcerer(8, "Abyssal"), ref));
+    const low = collectModifiers(
+      makeSorcerer(8, "Abyssal"),
+      ref,
+      buildRollData(makeSorcerer(8, "Abyssal"), ref),
+    );
     expect(low.some((m) => m.target === "str")).toBe(false);
 
     const doc9 = makeSorcerer(9, "Abyssal");

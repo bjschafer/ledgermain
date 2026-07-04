@@ -154,7 +154,10 @@ export function setSorcererBloodline(doc: CharacterDoc, tag: string | null): Cha
  * `setSorcererBloodline`. Display-only: the engine derives no numeric Change
  * from this field (see `bloodlines.ts`'s doc comment).
  */
-export function setSorcererBloodlineVariant(doc: CharacterDoc, variant: string | null): CharacterDoc {
+export function setSorcererBloodlineVariant(
+  doc: CharacterDoc,
+  variant: string | null,
+): CharacterDoc {
   const trimmed = typeof variant === "string" ? variant.trim() : "";
   return {
     ...doc,
