@@ -142,6 +142,137 @@ describe("deriveFamiliar (Mortlach the cat, hand-computed fixture)", () => {
     expect(buffedFamiliar!.ac.flatFooted).toBe(18);
   });
 
+  it("issue #44: shared Bless (+1 morale attack) raises bite/claw attack, not damage", () => {
+    const withBuff: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "bless-1",
+            name: "Bless",
+            changes: [{ target: "attack", type: "morale", formula: "1" }],
+          },
+        ],
+        familiar: { sharedBuffIds: ["bless-1"] },
+      },
+    };
+    const buffedFamiliar = deriveFamiliar(withBuff, master, rollData);
+    const bite = buffedFamiliar!.attacks.find((a) => a.name === "Bite");
+    const claw = buffedFamiliar!.attacks.find((a) => a.name === "Claw");
+    expect(bite).toMatchObject({ attack: 7, damageDice: "1d3", damageBonus: -4 });
+    expect(claw).toMatchObject({ attack: 7, damageDice: "1d2", damageBonus: -4, count: 2 });
+  });
+
+  it("issue #44: a shared damage buff raises every attack's damage bonus", () => {
+    const withBuff: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "damage-buff-1",
+            name: "Bard's Song",
+            changes: [{ target: "damage", type: "morale", formula: "2" }],
+          },
+        ],
+        familiar: { sharedBuffIds: ["damage-buff-1"] },
+      },
+    };
+    const buffedFamiliar = deriveFamiliar(withBuff, master, rollData);
+    const bite = buffedFamiliar!.attacks.find((a) => a.name === "Bite");
+    expect(bite).toMatchObject({ attack: 6, damageBonus: -2 });
+  });
+
+  it("issue #44: shared Expeditious Retreat (+30 enhancement landSpeed) raises land speed to 60", () => {
+    const withBuff: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "expeditious-1",
+            name: "Expeditious Retreat",
+            changes: [{ target: "landSpeed", type: "enhancement", formula: "30" }],
+          },
+        ],
+        familiar: { sharedBuffIds: ["expeditious-1"] },
+      },
+    };
+    const buffedFamiliar = deriveFamiliar(withBuff, master, rollData);
+    expect(buffedFamiliar!.speeds.land).toBe(60);
+  });
+
+  it("issue #44: shared init bonus raises initiative", () => {
+    const withBuff: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "init-1",
+            name: "Heroism",
+            changes: [{ target: "init", type: "luck", formula: "2" }],
+          },
+        ],
+        familiar: { sharedBuffIds: ["init-1"] },
+      },
+    };
+    const buffedFamiliar = deriveFamiliar(withBuff, master, rollData);
+    expect(buffedFamiliar!.init).toBe(familiar!.init + 2);
+  });
+
+  it("issue #44: a shared Dex buff cascades coherently into AC, Ref, attack, and Stealth", () => {
+    const withBuff: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "cats-grace-1",
+            name: "Cat's Grace",
+            changes: [{ target: "dex", type: "enhancement", formula: "4" }],
+          },
+        ],
+        familiar: { sharedBuffIds: ["cats-grace-1"] },
+      },
+    };
+    const buffedFamiliar = deriveFamiliar(withBuff, master, rollData)!;
+    // Dex mod moves from +2 (score 15) to +4 (score 19) — a +2 delta that
+    // should show up identically everywhere Dex feeds into the sheet.
+    expect(buffedFamiliar.abilities.dex).toEqual({ score: 19, mod: 4 });
+    expect(buffedFamiliar.ac.normal).toBe(familiar!.ac.normal + 2);
+    expect(buffedFamiliar.ac.touch).toBe(familiar!.ac.touch + 2);
+    // Flat-footed AC never includes Dex, so it's untouched.
+    expect(buffedFamiliar.ac.flatFooted).toBe(familiar!.ac.flatFooted);
+    expect(buffedFamiliar.saves.ref).toBe(familiar!.saves.ref + 2);
+    // Attack now uses the (higher) Dex mod instead of Str for the better-of.
+    const bite = buffedFamiliar.attacks.find((a) => a.name === "Bite");
+    expect(bite?.attack).toBe(familiar!.attacks.find((a) => a.name === "Bite")!.attack + 2);
+    expect(buffedFamiliar.skills.ste!.total).toBe(familiar!.skills.ste!.total + 2);
+    expect(buffedFamiliar.init).toBe(familiar!.init + 2);
+  });
+
+  it("issue #44: an active-but-unshared buff contributes nothing to the familiar", () => {
+    const withUnsharedBuff: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "bless-unshared",
+            name: "Bless",
+            changes: [{ target: "attack", type: "morale", formula: "1" }],
+          },
+        ],
+        familiar: { sharedBuffIds: [] }, // NOT shared
+      },
+    };
+    const unsharedFamiliar = deriveFamiliar(withUnsharedBuff, master, rollData);
+    expect(unsharedFamiliar!.attacks).toEqual(familiar!.attacks);
+    expect(unsharedFamiliar!.ac).toEqual(familiar!.ac);
+  });
+
   it("special abilities at master level 4: Alertness/Improved Evasion/Share Spells/Empathic Link (L1) + Deliver Touch Spells (L3)", () => {
     const names = familiar!.specialAbilities.map((a) => a.name);
     expect(names).toEqual(
