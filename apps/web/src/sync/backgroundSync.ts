@@ -38,6 +38,9 @@ export async function runOpenSync(
   const [locals, remotes] = await Promise.all([store.list(), listRemoteCharacters(apiBase, token)]);
   const actions = planSync(locals, remotes);
 
+  /* oxlint-disable no-await-in-loop -- per-doc actions are deliberately
+     sequential: the count is small (one user's characters), failures stay
+     isolated per doc, and it avoids a request burst on app open. */
   for (const action of actions) {
     try {
       if (action.kind === "pull") {

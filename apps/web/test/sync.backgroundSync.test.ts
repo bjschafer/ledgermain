@@ -56,7 +56,6 @@ describe("runOpenSync", () => {
 
   test("pushes a character that exists only locally", async () => {
     const localDoc = createEmptyDoc("only-local");
-    let pushed: CharacterDoc | undefined;
     jsonHandler({
       "/api/characters": () => Response.json({ characters: [] }),
       "/api/characters/only-local": () =>

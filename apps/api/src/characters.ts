@@ -50,10 +50,12 @@ async function readBodyWithCap(request: Request, maxBytes: number): Promise<stri
   let out = "";
   let total = 0;
   for (;;) {
+    // oxlint-disable-next-line no-await-in-loop -- stream chunks are inherently sequential
     const { done, value } = await reader.read();
     if (done) break;
     total += value.byteLength;
     if (total > maxBytes) {
+      // oxlint-disable-next-line no-await-in-loop -- abort path, loop exits here
       await reader.cancel();
       throw new PayloadTooLargeError();
     }
