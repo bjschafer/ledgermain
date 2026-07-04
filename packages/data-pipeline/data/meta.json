@@ -22,7 +22,7 @@
   "hashes": {
     "archetype-features.json": "fb8d360f11c33dc36086be359167fc9bb2bed27b69107595e27e12d2d7d1785b",
     "archetypes.json": "299260739b64ee8cca45b3fe13369198640985bf3d6e0dfe04a9a8cfffd0b89a",
-    "armors.json": "3df5b0145eb9577b86ba2cf6744a053a4fe5aed3ceee6cd30adcf31cd8872fa8",
+    "armors.json": "ed7612e0cefb17fdacc8b8ed3f462cd43d1b5e4ebd90a53fcd1f7d37f58aca29",
     "bloodline-spell-lists.json": "983a90d501b324bca5e1933ff72b22c9c03ed991d72e05819e60fc0071364543",
     "buffs.json": "07e59d90cfc4897c247bcba53a88305c2264fd36a5bac7a1906b16bb5f5b93d5",
     "class-features.json": "a3abe1e7bd97e69e6ae16a6ecad39f37d817125ec465ef3d9cd981a3895b0a63",
@@ -37,7 +37,7 @@
     "weapons.json": "286e9b97a5c1ca8b9b1126149b0abc4c3ddc968522d857d1d421e7abe06a0042",
     "wizard-schools.json": "2deb86825bb6722a9ab2b574e4bf16350296c4411131b5de9636a362dab5e95a"
   },
-  "schemaVersion": 6,
+  "schemaVersion": 7,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

@@ -37,6 +37,7 @@ export function transformArmor(doc: RawDoc): ArmorRef {
     proficiency: equipSub,
     price: asNumber(sys.price),
     weight,
+    asf: asNumber(sys.spellFailure),
   };
 }
 

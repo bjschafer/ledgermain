@@ -318,6 +318,7 @@ exports[`normalized-output snapshots armor: Full Plate (mundane heavy body armor
 {
   "ac": 9,
   "acp": 6,
+  "asf": 35,
   "baseTypes": [
     "Full Plate",
   ],
@@ -343,6 +344,7 @@ exports[`normalized-output snapshots armor: Buckler (mundane shield) 1`] = `
 {
   "ac": 1,
   "acp": 1,
+  "asf": 5,
   "baseTypes": [
     "Buckler",
   ],

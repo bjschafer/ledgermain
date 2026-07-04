@@ -2,6 +2,7 @@
   "0cIAkfoDAK5Pq2XU": {
     "ac": 8,
     "acp": 7,
+    "asf": 40,
     "baseTypes": ["Half-Plate"],
     "id": "0cIAkfoDAK5Pq2XU",
     "maxDex": 0,
@@ -25,6 +26,7 @@
   },
   "2LKdIUyCk6Imz6Gq": {
     "ac": 1,
+    "asf": 5,
     "baseTypes": ["Reinforced Tunic"],
     "id": "2LKdIUyCk6Imz6Gq",
     "maxDex": 5,
@@ -39,6 +41,7 @@
   "2fK608aSYU9QDmzw": {
     "ac": 2,
     "acp": 2,
+    "asf": 15,
     "id": "2fK608aSYU9QDmzw",
     "name": "Heavy Steel Shield",
     "price": 20,
@@ -56,6 +59,7 @@
   "3mQTIhwAaZgvJq12": {
     "ac": 4,
     "acp": 10,
+    "asf": 50,
     "id": "3mQTIhwAaZgvJq12",
     "maxDex": 2,
     "name": "Tower Shield",
@@ -78,6 +82,7 @@
   "4zQgEV3XyR9zvqwU": {
     "ac": 9,
     "acp": 5,
+    "asf": 35,
     "baseTypes": ["Full Plate"],
     "id": "4zQgEV3XyR9zvqwU",
     "maxDex": 1,
@@ -102,6 +107,7 @@
   "5TzaS38RPAx1oj9p": {
     "ac": 6,
     "acp": 4,
+    "asf": 25,
     "baseTypes": ["Breastplate"],
     "id": "5TzaS38RPAx1oj9p",
     "maxDex": 3,
@@ -121,6 +127,7 @@
   },
   "6YCQkebsf4vR508H": {
     "ac": 2,
+    "asf": 10,
     "baseTypes": ["Leather Armor"],
     "id": "6YCQkebsf4vR508H",
     "maxDex": 6,
@@ -140,6 +147,7 @@
   },
   "6gpjknDwY1HNvQcU": {
     "ac": 1,
+    "asf": 10,
     "baseTypes": ["Quilted Cloth"],
     "id": "6gpjknDwY1HNvQcU",
     "maxDex": 8,
@@ -154,6 +162,7 @@
   "6i0yr19dgO50GygU": {
     "ac": 7,
     "acp": 5,
+    "asf": 35,
     "baseTypes": ["Field Plate"],
     "id": "6i0yr19dgO50GygU",
     "maxDex": 1,
@@ -182,6 +191,7 @@
   "6zjwZeZmhqmAFC82": {
     "ac": 2,
     "acp": 2,
+    "asf": 15,
     "id": "6zjwZeZmhqmAFC82",
     "name": "Heavy Wooden Shield",
     "price": 7,
@@ -199,6 +209,7 @@
   "8e7QxmuuvJLpoGQO": {
     "ac": 5,
     "acp": 4,
+    "asf": 25,
     "baseTypes": ["Lamellar"],
     "id": "8e7QxmuuvJLpoGQO",
     "maxDex": 3,
@@ -223,6 +234,7 @@
   "9UAJTH51u59M1tau": {
     "ac": 3,
     "acp": 1,
+    "asf": 15,
     "baseTypes": ["Parade Armor"],
     "id": "9UAJTH51u59M1tau",
     "maxDex": 5,
@@ -259,6 +271,7 @@
   "B8H87SCG0E8n0iqw": {
     "ac": 5,
     "acp": 4,
+    "asf": 25,
     "baseTypes": ["Do-Maru"],
     "id": "B8H87SCG0E8n0iqw",
     "maxDex": 4,
@@ -283,6 +296,7 @@
   "CRtBIIyBtNCsxztO": {
     "ac": 7,
     "acp": 7,
+    "asf": 40,
     "baseTypes": ["Splint Mail"],
     "id": "CRtBIIyBtNCsxztO",
     "maxDex": 0,
@@ -303,6 +317,7 @@
   "HpPFigQKr6C6Dej4": {
     "ac": 7,
     "acp": 6,
+    "asf": 35,
     "baseTypes": ["Banded Mail"],
     "id": "HpPFigQKr6C6Dej4",
     "maxDex": 1,
@@ -323,6 +338,7 @@
   "KwwDSMKGF5P9vrQr": {
     "ac": 7,
     "acp": 7,
+    "asf": 35,
     "baseTypes": ["Kusari Gusoku"],
     "id": "KwwDSMKGF5P9vrQr",
     "maxDex": 1,
@@ -347,6 +363,7 @@
   "Lq7YjIXW1SfV4EKr": {
     "ac": 2,
     "acp": 3,
+    "asf": 15,
     "id": "Lq7YjIXW1SfV4EKr",
     "name": "Steel Snarlshield",
     "price": 50,
@@ -368,6 +385,7 @@
   "LvqGhztGDLYS9QES": {
     "ac": 4,
     "acp": 2,
+    "asf": 20,
     "baseTypes": ["Armored Coat"],
     "id": "LvqGhztGDLYS9QES",
     "maxDex": 3,
@@ -388,6 +406,7 @@
   "NhfubfsOa0OqXFMu": {
     "ac": 4,
     "acp": 2,
+    "asf": 20,
     "baseTypes": ["Lamellar"],
     "id": "NhfubfsOa0OqXFMu",
     "maxDex": 3,
@@ -412,6 +431,7 @@
   "Nt2xduBMY9qmPOMg": {
     "ac": 6,
     "acp": 5,
+    "asf": 25,
     "baseTypes": ["Lamellar"],
     "id": "Nt2xduBMY9qmPOMg",
     "maxDex": 3,
@@ -436,6 +456,7 @@
   "OZHfmAh4i6Bkoun3": {
     "ac": 2,
     "acp": 3,
+    "asf": 15,
     "id": "OZHfmAh4i6Bkoun3",
     "name": "Wooden Snarlshield",
     "price": 50,
@@ -457,6 +478,7 @@
   "RGgplsDVRbf6svr2": {
     "ac": 3,
     "acp": 1,
+    "asf": 15,
     "baseTypes": ["Hide Shirt"],
     "id": "RGgplsDVRbf6svr2",
     "maxDex": 4,
@@ -485,6 +507,7 @@
   "WHTn1ouMVlmsEL1l": {
     "ac": 8,
     "acp": 7,
+    "asf": 40,
     "baseTypes": ["Fortress Plate"],
     "id": "WHTn1ouMVlmsEL1l",
     "maxDex": 0,
@@ -505,6 +528,7 @@
   "WxHKxEn6HfIJAjFC": {
     "ac": 3,
     "acp": 1,
+    "asf": 15,
     "baseTypes": ["Studded Leather Armor"],
     "id": "WxHKxEn6HfIJAjFC",
     "maxDex": 5,
@@ -529,6 +553,7 @@
   "XILfVRciS611ZJvm": {
     "ac": 8,
     "acp": 6,
+    "asf": 35,
     "baseTypes": ["O-Yoroi"],
     "id": "XILfVRciS611ZJvm",
     "maxDex": 2,
@@ -553,6 +578,7 @@
   "Y10QTnY9wVXg5VCm": {
     "ac": 8,
     "acp": 7,
+    "asf": 40,
     "baseTypes": ["Half-Plate"],
     "id": "Y10QTnY9wVXg5VCm",
     "maxDex": 0,
@@ -595,6 +621,7 @@
   "YSkIxGaVmW9pAi2m": {
     "ac": 8,
     "acp": 7,
+    "asf": 40,
     "baseTypes": ["Agile Half-Plate"],
     "id": "YSkIxGaVmW9pAi2m",
     "maxDex": 0,
@@ -619,6 +646,7 @@
   "aI6gSI7gnCLCucw0": {
     "ac": 4,
     "acp": 3,
+    "asf": 20,
     "baseTypes": ["Hide Armor"],
     "id": "aI6gSI7gnCLCucw0",
     "maxDex": 4,
@@ -639,6 +667,7 @@
   "bP0vKIfcGKDgtiUc": {
     "ac": 6,
     "acp": 5,
+    "asf": 30,
     "baseTypes": ["Four-Mirror"],
     "id": "bP0vKIfcGKDgtiUc",
     "maxDex": 2,
@@ -663,6 +692,7 @@
   "c5L61pgFgUETqPtm": {
     "ac": 9,
     "acp": 6,
+    "asf": 35,
     "baseTypes": ["Full Plate"],
     "id": "c5L61pgFgUETqPtm",
     "maxDex": 1,
@@ -706,6 +736,7 @@
   "f8Gm8CXYhEqCCNIR": {
     "ac": 8,
     "acp": 7,
+    "asf": 40,
     "baseTypes": ["Lamellar"],
     "id": "f8Gm8CXYhEqCCNIR",
     "maxDex": 0,
@@ -729,6 +760,7 @@
   },
   "gcw5rPJ8u0i6IjhV": {
     "ac": 2,
+    "asf": 10,
     "baseTypes": ["Rosewood Armor"],
     "id": "gcw5rPJ8u0i6IjhV",
     "maxDex": 6,
@@ -743,6 +775,7 @@
   "gsE0PAOmCwivue5A": {
     "ac": 1,
     "acp": 1,
+    "asf": 5,
     "baseTypes": ["Buckler"],
     "id": "gsE0PAOmCwivue5A",
     "name": "Buckler",
@@ -761,6 +794,7 @@
   "h65qEp22nsyRoeRa": {
     "ac": 9,
     "acp": 6,
+    "asf": 35,
     "baseTypes": ["Full Plate"],
     "id": "h65qEp22nsyRoeRa",
     "maxDex": 1,
@@ -781,6 +815,7 @@
   "h8Jq6rEHJ8xc4SIn": {
     "ac": 1,
     "acp": 2,
+    "asf": 5,
     "id": "h8Jq6rEHJ8xc4SIn",
     "name": "Steel Madu",
     "price": 50,
@@ -810,6 +845,7 @@
   "iGu21zy6QtroUZ4O": {
     "ac": 4,
     "acp": 2,
+    "asf": 20,
     "baseTypes": ["Chain Shirt"],
     "id": "iGu21zy6QtroUZ4O",
     "maxDex": 4,
@@ -830,6 +866,7 @@
   "iRB7ACzHf14VIk4M": {
     "ac": 1,
     "acp": 1,
+    "asf": 5,
     "id": "iRB7ACzHf14VIk4M",
     "name": "Light Steel Shield",
     "price": 9,
@@ -847,6 +884,7 @@
   "inF1zaK0XoeTdBIc": {
     "ac": 1,
     "acp": 1,
+    "asf": 20,
     "id": "inF1zaK0XoeTdBIc",
     "name": "Dwarven War-Shield",
     "price": 50,
@@ -864,6 +902,7 @@
   "jmMTKB2OeTB4dUvm": {
     "ac": 4,
     "acp": 2,
+    "asf": 30,
     "baseTypes": ["Chain Coat"],
     "id": "jmMTKB2OeTB4dUvm",
     "maxDex": 5,
@@ -902,6 +941,7 @@
   "kc4ZuOEIEx1ZlXgJ": {
     "ac": 1,
     "acp": 2,
+    "asf": 5,
     "id": "kc4ZuOEIEx1ZlXgJ",
     "name": "Leather Madu",
     "price": 40,
@@ -931,6 +971,7 @@
   "khCNizGc3q1SZsXg": {
     "ac": 9,
     "acp": 6,
+    "asf": 35,
     "baseTypes": ["Stoneplate"],
     "id": "khCNizGc3q1SZsXg",
     "maxDex": 1,
@@ -945,6 +986,7 @@
   "l1qNkx4xGXelq6yY": {
     "ac": 1,
     "acp": 1,
+    "asf": 5,
     "id": "l1qNkx4xGXelq6yY",
     "name": "Light Wooden Shield",
     "price": 3,
@@ -962,6 +1004,7 @@
   "mDqCTp8wMKbSOo1x": {
     "ac": 1,
     "acp": 1,
+    "asf": 5,
     "id": "mDqCTp8wMKbSOo1x",
     "name": "Klar",
     "price": 12,
@@ -1003,6 +1046,7 @@
   "mJYWI4VZBo0c0CCC": {
     "ac": 4,
     "acp": 2,
+    "asf": 20,
     "baseTypes": ["Armored Coat"],
     "id": "mJYWI4VZBo0c0CCC",
     "maxDex": 3,
@@ -1027,6 +1071,7 @@
   "mPopnW9RhIm8Qv1C": {
     "ac": 7,
     "acp": 7,
+    "asf": 40,
     "baseTypes": ["Lamellar"],
     "id": "mPopnW9RhIm8Qv1C",
     "maxDex": 0,
@@ -1051,6 +1096,7 @@
   "mcDNhbR4RQ5Z1ckQ": {
     "ac": 1,
     "acp": 2,
+    "asf": 5,
     "id": "mcDNhbR4RQ5Z1ckQ",
     "name": "Light Wooden Shield (Quickdraw)",
     "price": 53,
@@ -1072,6 +1118,7 @@
   "nnDSj5NxUb9Q8z8S": {
     "ac": 5,
     "acp": 4,
+    "asf": 25,
     "baseTypes": ["Scale Mail"],
     "id": "nnDSj5NxUb9Q8z8S",
     "maxDex": 3,
@@ -1092,6 +1139,7 @@
   "q2HbIx7a7YpGJ3Kn": {
     "ac": 6,
     "acp": 4,
+    "asf": 25,
     "baseTypes": ["Agile Breastplate"],
     "id": "q2HbIx7a7YpGJ3Kn",
     "maxDex": 3,
@@ -1116,6 +1164,7 @@
   "q73l4hJuDIREmqDJ": {
     "ac": 5,
     "acp": 3,
+    "asf": 20,
     "baseTypes": ["Kikko"],
     "id": "q73l4hJuDIREmqDJ",
     "maxDex": 4,
@@ -1140,6 +1189,7 @@
   "tCw8lthSpIXzvCOj": {
     "ac": 3,
     "acp": 1,
+    "asf": 10,
     "baseTypes": ["Spider-Silk Bodysuit"],
     "id": "tCw8lthSpIXzvCOj",
     "maxDex": 6,
@@ -1154,6 +1204,7 @@
   "tmCIvphURV00VhY2": {
     "ac": 7,
     "acp": 6,
+    "asf": 35,
     "baseTypes": ["Tatami-Do"],
     "id": "tmCIvphURV00VhY2",
     "maxDex": 3,
@@ -1178,6 +1229,7 @@
   "unY9jt1B8a5bbnzO": {
     "ac": 6,
     "acp": 5,
+    "asf": 30,
     "baseTypes": ["Chainmail"],
     "id": "unY9jt1B8a5bbnzO",
     "maxDex": 2,
@@ -1198,6 +1250,7 @@
   "wVKTG7gN2I8jalGg": {
     "ac": 6,
     "acp": 4,
+    "asf": 30,
     "baseTypes": ["Mountain Pattern"],
     "id": "wVKTG7gN2I8jalGg",
     "maxDex": 3,
@@ -1222,6 +1275,7 @@
   "xeuREriTfdZR1yCD": {
     "ac": 3,
     "acp": 1,
+    "asf": 15,
     "baseTypes": ["Studded Leather Armor"],
     "id": "xeuREriTfdZR1yCD",
     "maxDex": 5,
@@ -1242,6 +1296,7 @@
   "yLlOfnD759pfPms8": {
     "ac": 3,
     "acp": 1,
+    "asf": 15,
     "baseTypes": ["Wooden Armor"],
     "id": "yLlOfnD759pfPms8",
     "maxDex": 3,
@@ -1256,6 +1311,7 @@
   "z5iAeUTo3r6qlEfd": {
     "ac": 1,
     "acp": 2,
+    "asf": 5,
     "id": "z5iAeUTo3r6qlEfd",
     "name": "Light Steel Shield (Quickdraw)",
     "price": 59,
@@ -1276,6 +1332,7 @@
   },
   "zJLsDErTaV81BkJM": {
     "ac": 2,
+    "asf": 5,
     "baseTypes": ["Lamellar Cuirass"],
     "id": "zJLsDErTaV81BkJM",
     "maxDex": 4,
@@ -1299,6 +1356,7 @@
   },
   "ziXQ1DlDMGTAUOe9": {
     "ac": 1,
+    "asf": 5,
     "baseTypes": ["Padded Armor"],
     "id": "ziXQ1DlDMGTAUOe9",
     "maxDex": 8,
