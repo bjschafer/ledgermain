@@ -293,6 +293,11 @@ export function setAbility(doc: CharacterDoc, ability: AbilityId, value: number)
 export function setRace(doc: CharacterDoc, raceId: string): CharacterDoc {
   const identity = { ...doc.identity, race: raceId };
   delete identity.flexibleAbility;
+  // Multitalented's 2nd favored class (issue #4) is Half-Elf-specific; drop
+  // it on any race change so it can't linger and inflate the FCB budget for
+  // a race that never grants it (model/race.ts:favoredClassBonusLevels also
+  // guards against this independently, but clearing here keeps the doc tidy).
+  delete identity.favoredClass2;
   return { ...doc, identity };
 }
 
@@ -330,7 +335,27 @@ export function setClassLevel(doc: CharacterDoc, tag: string, level: number): Ch
 }
 
 export function setFavoredClass(doc: CharacterDoc, tag: string): CharacterDoc {
-  return { ...doc, identity: { ...doc.identity, favoredClass: tag } };
+  const identity = { ...doc.identity, favoredClass: tag };
+  // Can't be the same as the 2nd favored class — see favoredClass2 doc
+  // comment (favoredClassBonusLevels would double-count that class's level).
+  if (identity.favoredClass2 === tag) delete identity.favoredClass2;
+  return { ...doc, identity };
+}
+
+/**
+ * Set/clear the Half-Elf Multitalented 2nd favored class (issue #4). Pass
+ * `null` to clear it (toggling the same tag off again in the UI). A no-op
+ * when `tag` matches the primary favored class — see `favoredClass2` doc
+ * comment on `CharacterDoc.identity`.
+ */
+export function setFavoredClass2(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const identity = { ...doc.identity };
+  if (tag === null || tag === identity.favoredClass) {
+    delete identity.favoredClass2;
+  } else {
+    identity.favoredClass2 = tag;
+  }
+  return { ...doc, identity };
 }
 
 export function setSkillRank(doc: CharacterDoc, skill: SkillId, ranks: number): CharacterDoc {

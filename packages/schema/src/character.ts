@@ -43,6 +43,19 @@ export interface CharacterDoc {
      */
     favoredClass?: string;
     /**
+     * Second favored-class tag, for Half-Elf's Multitalented racial trait
+     * (issue #4): half-elves pick TWO favored classes, earning the FCB choice
+     * for a level in EITHER one. `undefined` for every other race (and for a
+     * half-elf who hasn't picked a second yet). There's no structured RefData
+     * flag for Multitalented — the vendored Half-Elf entry only carries it as
+     * prose in `description` — so callers key off race NAME ("Half-Elf"; see
+     * `model/race.ts:isMultitalented`), same posture as `model/feats.ts`'s
+     * Human-bonus-feat check. Never set to the same tag as `favoredClass`
+     * (see `model/doc.ts:setFavoredClass2`) — `model/race.ts:favoredClassBonusLevels`
+     * sums both classes' levels, so a duplicate would double-count.
+     */
+    favoredClass2?: string;
+    /**
      * For races with a flexible +2 (Human/Half-Elf/Half-Orc), the chosen
      * ability. Ignored for races with fixed ability modifiers.
      */

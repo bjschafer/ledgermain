@@ -757,6 +757,17 @@ button:focus-visible,
   color: var(--gold);
 }
 
+/* 2nd favored class (Half-Elf Multitalented, issue #4) — distinct color so it
+   reads as a different slot from the primary favored-class star. */
+.class-row .favstar2[aria-pressed="true"] {
+  color: var(--gold-2);
+}
+
+.class-row .favstar2:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 /* (legacy `.lvl-stepper` removed — class level and the round-step counter
    now use the shared `.stepper` pill via NumberField) */
 

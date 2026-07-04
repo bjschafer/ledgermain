@@ -5,8 +5,10 @@ import {
   removeClass,
   setClassLevel,
   setFavoredClass,
+  setFavoredClass2,
   setFavoredClassBonus,
 } from "../../model/doc.js";
+import { favoredClassBonusLevels, isMultitalented } from "../../model/race.js";
 import { ArcaneBondPicker } from "./ArcaneBondPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
@@ -33,14 +35,14 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   const chosen = new Set(doc.identity.classes.map((c) => c.tag));
   const totalLevel = doc.identity.classes.reduce((s, c) => s + c.level, 0);
 
-  const favoredClass = doc.identity.favoredClass;
   const fcbHouserule = doc.build.settings?.fcbHouserule ?? false;
   const fcbChoices = doc.build.favoredClassBonus ?? [];
-  // FCB slots = level of the favored class (or 0 when none chosen)
-  const fcbLevel =
-    favoredClass != null
-      ? (doc.identity.classes.find((c) => c.tag === favoredClass)?.level ?? 0)
-      : 0;
+  // Half-Elf's Multitalented (issue #4): two favored classes instead of one —
+  // see model/race.ts. Keyed off race name; no structured RefData flag exists.
+  const multitalented = isMultitalented(doc, refData);
+  // FCB slots = level of the favored class(es) (0 when none chosen; both
+  // classes' levels for a Multitalented half-elf with a 2nd pick).
+  const fcbLevel = favoredClassBonusLevels(doc, refData);
 
   // Standard options; house-rule replaces "hp"+"skill" with "both"
   const standardOptions = [
@@ -83,6 +85,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         doc.identity.classes.map((cls) => {
           const def = baseClasses.find((c) => c.tag === cls.tag);
           const isFav = doc.identity.favoredClass === cls.tag;
+          const isFav2 = doc.identity.favoredClass2 === cls.tag;
           return (
             <div className="class-row" key={cls.tag}>
               <button
@@ -94,6 +97,22 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
               >
                 {isFav ? "★" : "☆"}
               </button>
+              {multitalented && (
+                <button
+                  type="button"
+                  className="favstar favstar2"
+                  aria-pressed={isFav2}
+                  disabled={isFav}
+                  title={
+                    isFav
+                      ? "Already your primary favored class"
+                      : "2nd favored class (Half-Elf Multitalented)"
+                  }
+                  onClick={() => update((d) => setFavoredClass2(d, isFav2 ? null : cls.tag))}
+                >
+                  {isFav2 ? "✪" : "✩"}
+                </button>
+              )}
               <span className="cname">{def?.name ?? cls.tag}</span>
               <span className="cls-hd-label">Hit Die d{def?.hd ?? "?"}</span>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -164,6 +183,12 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
           </div>
           {fcbOpen && (
             <div className="fcb-list">
+              {multitalented && doc.identity.favoredClass2 != null && (
+                <p className="hint">
+                  Multitalented: slots below cover levels in both favored classes combined, not just
+                  the starred primary.
+                </p>
+              )}
               {Array.from({ length: fcbLevel }, (_, i) => {
                 const chosen = fcbChoices[i];
                 return (
