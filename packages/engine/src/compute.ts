@@ -357,6 +357,67 @@ function computeAc(
   };
 }
 
+/* ------------------------------------------------------- armor speed / ASF */
+
+/**
+ * Highest armor `type` (weight class: 0 none/1 light/2 med/3 heavy) among
+ * equipped BODY armor — shields don't impose the "Table: Speed" reduction
+ * (issue #8). `WornArmor.type` already reflects any material-driven shift
+ * (mithral lightens by one step, see `model/materials.ts`), so this
+ * automatically picks up e.g. mithral full plate reading as medium.
+ */
+function heaviestWornArmorType(doc: CharacterDoc): number {
+  let max = 0;
+  for (const inst of doc.build.gear ?? []) {
+    if (inst.equipped && inst.armor?.slot === "armor" && inst.armor.type) {
+      max = Math.max(max, inst.armor.type);
+    }
+  }
+  return max;
+}
+
+/**
+ * Class tags recognised as arcane spellcasters for arcane-spell-failure (ASF)
+ * display (issue #8) — clean-room from PF1 RAW, not derived from Foundry data
+ * (the vendored `ClassRef` carries no arcane/divine flag). This is the arcane
+ * subset of `tables.ts`'s `SpellProgression` tags: wizard and sorcerer are
+ * full/spontaneous arcane casters, bard is a spontaneous arcane caster;
+ * cleric/druid/paladin/ranger are divine and never incur ASF at all.
+ */
+const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set(["wizard", "sorcerer", "bard"]);
+
+/**
+ * Total arcane spell failure chance (%) from equipped armor + shields (issue
+ * #8), only for characters with at least one arcane-casting class — divine-
+ * only characters get `undefined` back (ASF doesn't apply to them at all).
+ *
+ * Bard nuance (PF1 RAW): a bard ignores ASF while wearing light armor (or
+ * none) and no shield. That exemption is applied here only when bard is the
+ * character's ONLY arcane class — a multiclass wizard/bard still incurs ASF
+ * for her wizard spells regardless of what she's wearing, so `total` stays
+ * the plain sum in that case (this app doesn't track spells per casting
+ * class, so the exemption is all-or-nothing rather than per-spell).
+ */
+function computeArcaneSpellFailure(
+  doc: CharacterDoc,
+): { total: number; bardExempt: boolean } | undefined {
+  const classTags = new Set(doc.identity.classes.filter((c) => c.level > 0).map((c) => c.tag));
+  const arcaneTags = [...classTags].filter((t) => ARCANE_CASTER_TAGS.has(t));
+  if (arcaneTags.length === 0) return undefined;
+
+  let rawTotal = 0;
+  let hasShield = false;
+  for (const inst of doc.build.gear ?? []) {
+    if (!inst.equipped || !inst.armor) continue;
+    rawTotal += inst.armor.asf ?? 0;
+    if (inst.armor.slot === "shield") hasShield = true;
+  }
+
+  const bardOnly = arcaneTags.length === 1 && arcaneTags[0] === "bard";
+  const bardExempt = bardOnly && !hasShield && heaviestWornArmorType(doc) < 2;
+  return { total: bardExempt ? 0 : rawTotal, bardExempt };
+}
+
 /* ----------------------------------------------------------------------- HP */
 
 /** Allowlisted stat-override keys the engine recognises. */
@@ -863,13 +924,23 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   applySpeedTarget(speeds, collected, "swim", "swimSpeed");
   applySpeedTarget(speeds, collected, "climb", "climbSpeed");
   applySpeedTarget(speeds, collected, "burrow", "burrowSpeed");
-  // Encumbrance (issue #16, optional rule): a medium/heavy load reduces land
-  // speed per the RAW "Table: Speed" mapping, taking the lower of that and
-  // whatever the above targets already produced (e.g. a "set" effect like
-  // Slow) — RAW load penalties apply only to land speed, not fly/swim/etc.
-  if (encumbrance?.speedPenalty && speeds.land !== undefined) {
+  // Encumbrance (issue #16, optional rule) and worn medium/heavy ARMOR (issue
+  // #8, always-on core rule — unlike encumbrance, not settings-gated) both
+  // reduce land speed per the RAW "Table: Speed" mapping. The two don't
+  // stack: PF1 RAW reduces speed to the SAME tabled value regardless of
+  // which condition triggers it, so this is a single reduction gated by
+  // "either applies," not two sequential ones (chaining the table twice
+  // would over-reduce, e.g. 30 -> 20 -> 15). Takes the lower of the tabled
+  // value and whatever the above targets already produced (e.g. a "set"
+  // effect like Slow) — RAW load/armor speed penalties apply only to land
+  // speed, not fly/swim/etc.
+  const armorSpeedPenalty = heaviestWornArmorType(doc) >= 2;
+  if ((encumbrance?.speedPenalty || armorSpeedPenalty) && speeds.land !== undefined) {
     speeds.land = Math.min(speeds.land, encumberedSpeed(speeds.land));
   }
+
+  // Arcane spell failure (issue #8) — display-only, only for arcane casters.
+  const arcaneSpellFailure = computeArcaneSpellFailure(doc);
 
   // Skills
   const skills = computeSkills(doc, refData, abilities, collected, encumbrance);
@@ -903,6 +974,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     ranger: computeRanger(doc),
     defenses,
     encumbrance,
+    arcaneSpellFailure,
   };
 
   for (const [key, val] of Object.entries(overrides)) {
