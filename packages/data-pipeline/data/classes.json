@@ -655,6 +655,109 @@
     "uuid": "Compendium.pf1.classes.Item.AoWSbnuTSGIxmv61",
     "weaponProf": ["simple"]
   },
+  "GK6rAenFfgJNNJCX": {
+    "armorProf": [],
+    "bab": "low",
+    "classSkills": [
+      "apr",
+      "art",
+      "crf",
+      "fly",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "pro",
+      "spl",
+      "umd"
+    ],
+    "description": "<p>Some spellcasters seek the secrets of magic, pursuing the power to make the impossible possible. Others are born with magic in their blood, commanding unbelievable forces as effortlessly as they breathe. Yet still others seek to meld the science of arcane scholars with the natural might of innate casters. These arcanists seek to discover the mysterious laws of magic and through will and expertise bend those forces to their whims. Arcanists are the shapers and tinkers of the arcane world, and no magic can resist their control.</p><p><strong>Role</strong>: Arcanists are scholars of all things magical. They constantly seek out new forms of magic to discover how they work, and in many cases, to collect the energy of such magic for their own uses. Many arcanists are seen as reckless, more concerned with the potency of magic than the ramifications of unleashing such power.</p><p><strong>Parent Classes</strong>: <em>Sorcerer</em> and <em>wizard</em>.</p>",
+    "features": [
+      {
+        "featureId": "CtDtLshBC8pc64JV",
+        "level": 1,
+        "name": "Arcane Reservoir",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.CtDtLshBC8pc64JV"
+      },
+      {
+        "featureId": "A1QrvmpPlh7SuixM",
+        "level": 1,
+        "name": "Arcanist Exploits",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.A1QrvmpPlh7SuixM"
+      },
+      {
+        "featureId": "lY1ODOAMA7pi3hTS",
+        "level": 1,
+        "name": "Arcanist Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.lY1ODOAMA7pi3hTS"
+      },
+      {
+        "featureId": "IPy4aqFYbOppaqKC",
+        "level": 1,
+        "name": "Cantrips",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+      },
+      {
+        "featureId": "jkigrVeg3TUKg0Gy",
+        "level": 1,
+        "name": "Consume Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jkigrVeg3TUKg0Gy"
+      },
+      {
+        "featureId": "WyrFeMHvGdFsFQKU",
+        "level": 1,
+        "name": "Spellbooks (ARC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WyrFeMHvGdFsFQKU"
+      },
+      {
+        "featureId": "US5ZPnvMTejXFcBZ",
+        "level": 11,
+        "name": "Greater Exploits",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.US5ZPnvMTejXFcBZ"
+      },
+      {
+        "featureId": "KUwXUOcHG054iBHQ",
+        "level": 20,
+        "name": "Magical Supremacy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KUwXUOcHG054iBHQ"
+      }
+    ],
+    "hd": 6,
+    "id": "GK6rAenFfgJNNJCX",
+    "name": "Arcanist",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "8-14"
+      }
+    ],
+    "subType": "base",
+    "tag": "arcanist",
+    "uuid": "Compendium.pf1.classes.Item.GK6rAenFfgJNNJCX",
+    "weaponProf": ["simple"]
+  },
   "SjFqQceVeVBzBwgn": {
     "armorProf": ["lgt", "med", "shl"],
     "bab": "med",

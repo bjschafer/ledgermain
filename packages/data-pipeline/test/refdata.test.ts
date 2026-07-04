@@ -51,7 +51,7 @@ describe("metadata + provenance", () => {
     // 7 core races (packs/races/core) + 73 non-core races (packs/races/other,
     // vendored per issue #26: aasimar, tiefling, goblin, kobold, drow, ...).
     expect(Object.keys(ref.races)).toHaveLength(80);
-    expect(Object.keys(ref.classes)).toHaveLength(11); // fighter, barbarian, wizard, cleric, sorcerer, rogue, paladin, ranger, bard, monk, druid
+    expect(Object.keys(ref.classes)).toHaveLength(12); // fighter, barbarian, wizard, cleric, sorcerer, rogue, paladin, ranger, bard, monk, druid, arcanist
     expect(Object.keys(ref.feats)).toHaveLength(390);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
   });
@@ -483,7 +483,7 @@ describe("items (issue #15 — full usable breadth of the `items` pack)", () => 
 });
 
 describe("archetypes (Stage 11, third-party dataset — no archetype data in Foundry)", () => {
-  it("vendors archetypes for all 11 sliced classes", () => {
+  it("vendors archetypes for all 12 sliced classes", () => {
     const tags = new Set(Object.values(ref.archetypes).map((a) => a.classTag));
     expect(tags).toEqual(
       new Set([
@@ -498,6 +498,7 @@ describe("archetypes (Stage 11, third-party dataset — no archetype data in Fou
         "bard",
         "monk",
         "druid",
+        "arcanist",
       ]),
     );
   });

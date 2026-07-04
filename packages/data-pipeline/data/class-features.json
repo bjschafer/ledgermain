@@ -735,6 +735,15 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.9ezUAbso44HrKLyr"
   },
+  "A1QrvmpPlh7SuixM": {
+    "changes": [],
+    "description": "<p>By bending and sometimes even breaking the rules of magic, the arcanist learns to exploit gaps and exceptions in the laws of magic. Some of these exploits allow her to break down various forms of magic, adding their essence to her arcane reservoir.</p>\n<p>At 1st level and every 2 levels thereafter, the arcanist learns a new arcane exploit selected from the following list. An arcanist exploit cannot be selected more than once. Once an arcanist exploit has been selected, it cannot be changed. Most arcanist exploits require the arcanist to expend points from her arcane reservoir to function.</p>\n<p>Unless otherwise noted, the saving throw DC for an arcanist exploit is equal to 10 + 1/2 the arcanist’s level + the arcanist’s Charisma modifier.</p>",
+    "grantsBuffs": [],
+    "id": "A1QrvmpPlh7SuixM",
+    "name": "Arcanist Exploits",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.A1QrvmpPlh7SuixM"
+  },
   "A3KJJHMNlAjUzcx6": {
     "abilityType": "sp",
     "changes": [],
@@ -1029,6 +1038,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Cc2eFfhJYlClCGEH"
+  },
+  "CtDtLshBC8pc64JV": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>An arcanist has an innate pool of magical energy that she can draw upon to fuel her arcanist exploits and enhance her spells. The arcanist’s arcane reservoir can hold a maximum amount of magical energy equal to 3 + the arcanist’s level. Each day, when preparing spells, the arcanist’s arcane reservoir fills with raw magical energy, gaining a number of points equal to 3 + 1/2 her arcanist level. Any points she had from the previous day are lost. She can also regain these points through the consume spells class feature and some arcanist exploits. The arcane reservoir can never hold more points than the maximum amount noted above; points gained in excess of this total are lost.</p><p>Points from the arcanist reservoir are used to fuel many of the arcanist’s powers. In addition, the arcanist can expend 1 point from her arcane reservoir as a free action whenever she casts an arcanist spell. If she does, she can choose to increase the caster level by 1 or increase the spell’s DC by 1. She can expend no more than 1 point from her reservoir on a given spell in this way.</p>",
+    "grantsBuffs": [],
+    "id": "CtDtLshBC8pc64JV",
+    "name": "Arcane Reservoir",
+    "subType": "classFeat",
+    "tag": "arcaneReservoir",
+    "uses": {
+      "maxFormula": "3 + @class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.CtDtLshBC8pc64JV"
   },
   "Dre4YCOxboyBbIjg": {
     "abilityType": "su",
@@ -1617,6 +1641,16 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.KQYCRLEdD4bGA5ak"
+  },
+  "KUwXUOcHG054iBHQ": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 20th level, the arcanist learns how to convert her arcane reservoir into spells and back again. She can cast any spell she has prepared by expending a number of points from her arcane reservoir equal to 1 + the level of the spell to be cast instead of expending a spell slot. When she casts a spell in this fashion, she treats her caster level as 2 higher than normal, and the DCs of any saving throws associated with the spell increase by 2. She cannot further expend points from her arcane reservoir to enhance a spell cast in this way.</p>",
+    "grantsBuffs": [],
+    "id": "KUwXUOcHG054iBHQ",
+    "name": "Magical Supremacy",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.KUwXUOcHG054iBHQ"
   },
   "KXN1Y4DDcWd8ZraE": {
     "abilityType": "su",
@@ -2281,6 +2315,15 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.UJPlPj3RUKLvmKzM"
   },
+  "US5ZPnvMTejXFcBZ": {
+    "changes": [],
+    "description": "<p>At 11th level and every 2 levels thereafter, an arcanist can choose a greater exploit in place of an arcanist exploit.</p>",
+    "grantsBuffs": [],
+    "id": "US5ZPnvMTejXFcBZ",
+    "name": "Greater Exploits",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.US5ZPnvMTejXFcBZ"
+  },
   "UeYdiNoaF0gG08Y5": {
     "abilityType": "ex",
     "changes": [],
@@ -2552,6 +2595,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Wkv124hVPATT35bm"
+  },
+  "WyrFeMHvGdFsFQKU": {
+    "changes": [],
+    "description": "<p>An arcanist must study her spellbook each day to prepare her spells. She can’t prepare any spell not recorded in her spellbook, except for read magic (which all arcanists can prepare from memory).</p><p>An arcanist begins play with a spellbook containing all 0-level wizard/sorcerer spells plus three 1st-level spells of her choice. The arcanist also selects a number of additional 1st-level spells equal to her Intelligence modifier to add to the spellbook. At each new arcanist level, she gains two new spells of any spell level or levels that she can cast (based on her new arcanist level) for her spellbook. At any time, an arcanist can also add spells found in wizards' or other arcanists' spellbooks to her own (see Arcane Magic Writings).</p>",
+    "grantsBuffs": ["Compendium.pf1.items.Item.onurpjwtdogsedsg"],
+    "id": "WyrFeMHvGdFsFQKU",
+    "name": "Spellbooks (ARC)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "9"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.WyrFeMHvGdFsFQKU"
   },
   "X7gqbGkXTox6Ojhy": {
     "abilityType": "su",
@@ -3268,6 +3326,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.jiBCmy0kP1Uwaz0D"
   },
+  "jkigrVeg3TUKg0Gy": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, an arcanist can expend an available arcanist spell slot as a move action, making it unavailable for the rest of the day, just as if she had used it to cast a spell. She can use this ability a number of times per day equal to her Charisma modifier (minimum 1). Doing this adds a number of points to her arcane reservoir equal to the level of the spell slot consumed. She cannot consume cantrips (0 level spells) in this way. Points gained in excess of the reservoir’s maximum are lost.</p>",
+    "grantsBuffs": [],
+    "id": "jkigrVeg3TUKg0Gy",
+    "name": "Consume Spells",
+    "subType": "classFeat",
+    "tag": "consumeSpells",
+    "uses": {
+      "maxFormula": "@abilities.cha.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.jkigrVeg3TUKg0Gy"
+  },
   "kHXw5V06TkymXxF3": {
     "abilityType": "su",
     "changes": [],
@@ -3324,6 +3397,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.kx2ZfV2wjlAZgQ6E"
+  },
+  "lY1ODOAMA7pi3hTS": {
+    "changes": [],
+    "description": "<p>An arcanist casts arcane spells drawn from the sorcerer/wizard spell list. An arcanist must prepare her spells ahead of time, but unlike a wizard, her spells are not expended when they’re cast. Instead, she can cast any spell that she has prepared consuming a spell slot of the appropriate level, assuming she hasn’t yet used up her spell slots per day for that level.</p><p>To learn, prepare, or cast a spell, the arcanist must have an Intelligence score equal to at least 10 + the spell’s level. The saving throw DC against an arcanist’s spell is 10 + the spell’s level + the arcanist’s Intelligence modifier.</p><p>An arcanist can only cast a certain number of spells of each spell level per day. Her base daily spell allotment is given on Table: Arcanist. In addition, she receives bonus spells per day if she has a high Intelligence score (see Table: Ability Modifiers and Bonus Spells).</p><p>An arcanist may know any number of spells, but the number she can prepare each day is limited. At 1st level, she can prepare four 0-level spells and two 1st-level spells each day. At each new arcanist level, the number of spells she can prepare each day increases, adding new spell levels as indicated on Table: Spells Prepared. Unlike the number of spells she can cast per day, the number of spells an arcanist can prepare each day is not affected by her Intelligence score. Feats and other effects that modify the number of spells known by a spellcaster instead affect the number of spells an arcanist can prepare.</p><p>An arcanist must choose and prepare her spells ahead of time by getting 8 hours of sleep and spending 1 hour studying her spellbook. While studying, the arcanist decides what spells to prepare and refreshes her available spell slots for the day.</p><p>Like a sorcerer, an arcanist can choose to apply any metamagic feats she knows to a prepared spell as she casts it, with the same increase in casting time (see Spontaneous Casting and Metamagic Feats on page 113 of the Core Rulebook). However, she may also prepare a spell with any metamagic feats she knows and cast it without increasing casting time like a wizard. She cannot combine these options—a spell prepared with metamagic feats cannot be further modified with another metamagic feat at the time of casting (unless she has the metamixing arcanist exploit, detailed below).</p>",
+    "grantsBuffs": [],
+    "id": "lY1ODOAMA7pi3hTS",
+    "name": "Arcanist Spells",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "121"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.lY1ODOAMA7pi3hTS"
   },
   "mITkHIcXI1Sfax21": {
     "abilityType": "sp",

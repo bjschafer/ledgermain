@@ -1,4 +1,81 @@
 {
+  "arcanist:arcane-tinkerer": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:arcane-tinkerer",
+    "name": "Arcane Tinkerer",
+    "uuid": "archetype:arcanist:arcane-tinkerer"
+  },
+  "arcanist:blood-arcanist": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:blood-arcanist",
+    "name": "Blood Arcanist",
+    "uuid": "archetype:arcanist:blood-arcanist"
+  },
+  "arcanist:brown-fur-transmuter": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:brown-fur-transmuter",
+    "name": "Brown-Fur Transmuter",
+    "uuid": "archetype:arcanist:brown-fur-transmuter"
+  },
+  "arcanist:eldritch-font": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:eldritch-font",
+    "name": "Eldritch Font",
+    "uuid": "archetype:arcanist:eldritch-font"
+  },
+  "arcanist:elemental-master": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:elemental-master",
+    "name": "Elemental Master",
+    "uuid": "archetype:arcanist:elemental-master"
+  },
+  "arcanist:magaambyan-initiate": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:magaambyan-initiate",
+    "name": "Magaambyan Initiate",
+    "uuid": "archetype:arcanist:magaambyan-initiate"
+  },
+  "arcanist:occultist": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:occultist",
+    "name": "Occultist",
+    "uuid": "archetype:arcanist:occultist"
+  },
+  "arcanist:school-savant": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:school-savant",
+    "name": "School Savant",
+    "uuid": "archetype:arcanist:school-savant"
+  },
+  "arcanist:tarot-student": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:tarot-student",
+    "name": "Tarot Student",
+    "uuid": "archetype:arcanist:tarot-student"
+  },
+  "arcanist:twilight-sage": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:twilight-sage",
+    "name": "Twilight Sage",
+    "uuid": "archetype:arcanist:twilight-sage"
+  },
+  "arcanist:white-mage": {
+    "classTag": "arcanist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "arcanist:white-mage",
+    "name": "White Mage",
+    "uuid": "archetype:arcanist:white-mage"
+  },
   "barbarian:armored-hulk": {
     "classTag": "barbarian",
     "contributorModule": "baileymh/pf1e-archetypes",
