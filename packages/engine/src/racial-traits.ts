@@ -1,8 +1,9 @@
 /**
  * Clean-room PF1 alternate racial traits table (issue #35, DESIGN §6):
  * hand-authored from the published rules (Advanced Race Guide / core races,
- * public SRD/OGL content) — alternate racial traits are NOT part of the
- * vendored Foundry data pack (only each race's *standard* traits are, as
+ * Inner Sea Races for the Sylph "Mostly Human" alternate, public SRD/OGL
+ * content) — alternate racial traits are NOT part of the vendored Foundry
+ * data pack (only each race's *standard* traits are, as
  * `Race.changes`/`Race.contextNotes`), so there is no upstream JSON to
  * normalize. Same posture as `traits.ts`/`bloodlines.ts`/`tables.ts` for
  * content the compendium doesn't carry.
@@ -39,13 +40,23 @@
  *     "+2 vs fear and despair", Steel Soul's "+4 vs spells") carry
  *     `displayOnly: true` with a `contextNotes` reminder rather than a flat
  *     always-on number that would over-apply — the same bar `traits.ts` uses.
- *   - Speed-changing alternates (Halfling Fleet of Foot: base speed 30) are
- *     deliberately omitted from v1: base speed is `Race.speeds`, not a
- *     `Change`, so there is no clean per-trait override without new machinery.
+ *   - Speed-changing alternates that ADD to base speed (Sylph Like the Wind:
+ *     +5 ft) go through the normal pipeline via the engine's `landSpeed`
+ *     change target — `compute.ts`'s `applySpeedTarget` folds any additive
+ *     `landSpeed` modifier onto `Race.speeds.land` alongside fly/swim/climb/
+ *     burrow, the same mechanism feats/buffs already use for speed boosts.
+ *     Speed-changing alternates that instead REPLACE the tabled base speed
+ *     outright (Halfling Fleet of Foot: reset to 30 ft, a no-op for Halflings
+ *     but relevant for subraces/size changes) remain deliberately omitted:
+ *     base speed is read straight off `Race.speeds`, and there's no delta to
+ *     express with a `Change` for a flat override — that needs new machinery
+ *     (e.g. a `set` operator honored here, mirroring the `set` handling
+ *     `applySpeedTarget` already does for other sources) and is left for a
+ *     follow-up rather than bundled into this table.
  *
  * Scope: the seven core races (Human, Half-Elf, Half-Orc, Elf, Dwarf, Gnome,
- * Halfling) — the races the overwhelming majority of characters use. The
- * table is pure data; extending it to non-core races is additive.
+ * Halfling), plus the Sylph (owner plays one — ARG/Inner Sea Races). The
+ * table is pure data; extending it to further non-core races is additive.
  *
  * Map key / id: a stable `${race-slug}-${trait-slug}` string, used directly as
  * the `build.racialTraits` entry and `RACIAL_TRAITS[id]` lookup.
@@ -354,6 +365,63 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
       {
         target: "landSpeed",
         text: "Ignore difficult terrain from rubble, broken ground, and uneven stone when taking a 5-foot step.",
+      },
+    ],
+  },
+
+  // ── Sylph (ARG / Inner Sea Races) ───────────────────────────────────────────
+  // None of the four swappable standard traits below (Energy Resistance,
+  // Spell-Like Ability, Air Affinity, Type) carry a vendored `Race.changes` OR
+  // `Race.contextNotes` entry for the Sylph (its `changes[]` is just the
+  // Dex/Int/Con ability adjustments, `contextNotes` is empty) — the compendium
+  // models them only as prose in `Race.description`. So, same as the Dwarf
+  // section above, there is nothing structured to suppress; `replaces` alone
+  // records the swap for the UI/conflict-detection.
+  {
+    id: "sylph-like-the-wind",
+    race: "Sylph",
+    name: "Like the Wind",
+    summary: "+5 ft racial bonus to base speed (in place of electricity resistance 5).",
+    replaces: ["Energy Resistance"],
+    changes: [c("5", "landSpeed")],
+  },
+  {
+    id: "sylph-whispering-wind",
+    race: "Sylph",
+    name: "Whispering Wind",
+    summary: "+4 racial bonus on Stealth checks (in place of the feather fall spell-like ability).",
+    replaces: ["Spell-Like Ability"],
+    changes: [c("4", "skill.ste")],
+  },
+  {
+    id: "sylph-storm-in-the-blood",
+    race: "Sylph",
+    name: "Storm in the Blood",
+    summary:
+      "Fast healing 2 for 1 round whenever you take electricity damage, up to 2 hp per level per day (in place of air affinity).",
+    replaces: ["Air Affinity"],
+    changes: [],
+    displayOnly: true,
+    contextNotes: [
+      {
+        target: "fastHealing",
+        text: "Fast healing 2 for 1 round when taking electricity damage (whether or not resistance absorbs it), up to 2 hp/level/day (situational — not auto-applied).",
+      },
+    ],
+  },
+  {
+    id: "sylph-mostly-human",
+    race: "Sylph",
+    name: "Mostly Human",
+    summary:
+      "Counts as both a humanoid (human) and an outsider (native) for all purposes, at the cost of automatic Auran (in place of the standard type/subtype/languages).",
+    replaces: ["Type", "Languages"],
+    changes: [],
+    displayOnly: true,
+    contextNotes: [
+      {
+        target: "type",
+        text: "Type/subtype becomes humanoid (human) and outsider (native) simultaneously (affected by both, e.g. charm person and enlarge person); no longer automatically knows Auran (may still choose it as a bonus language with sufficient Int).",
       },
     ],
   },
