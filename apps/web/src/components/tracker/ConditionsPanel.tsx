@@ -1,7 +1,7 @@
 import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
-import { toggleCondition } from "../../model/conditions.js";
+import { supersedingCondition, toggleCondition } from "../../model/conditions.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /** Toggle the core PF1 conditions; the sheet's numbers update live via compute(). */
@@ -19,21 +19,31 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
         {CONDITION_IDS.map((id) => {
           const cond = CONDITIONS[id]!;
           const on = active.has(id);
+          const supersededBy = supersedingCondition(doc, id);
+          const implied = supersededBy !== undefined;
+          const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
           return (
             <button
               key={id}
               type="button"
-              className={`chip cond${cond.displayOnly ? " display-only" : ""}`}
+              className={`chip cond${cond.displayOnly ? " display-only" : ""}${implied ? " implied" : ""}`}
               aria-pressed={on}
+              disabled={implied}
               title={
-                cond.displayOnly
-                  ? `${cond.summary} (display-only — not wired to the engine, no flat modifier applied)`
-                  : cond.summary
+                implied
+                  ? `Implied by ${impliedName} — that's the stricter condition on this ladder. Turn ${impliedName} off to control ${cond.name} directly.`
+                  : cond.displayOnly
+                    ? `${cond.summary} (display-only — not wired to the engine, no flat modifier applied)`
+                    : cond.summary
               }
               onClick={() => update((d) => toggleCondition(d, id))}
             >
               {cond.name}
-              {cond.displayOnly ? (
+              {implied ? (
+                <span className="dot" title={`Implied by ${impliedName}`}>
+                  ▲
+                </span>
+              ) : cond.displayOnly ? (
                 <span className="dot" title="Display-only (no flat modifier)">
                   ·
                 </span>
@@ -43,7 +53,9 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
         })}
       </div>
       <div className="hint cond-legend">
-        Dashed border = display-only, not wired to a numeric modifier yet.
+        Dashed border = display-only, not wired to a numeric modifier yet. ▲ = implied by a stricter
+        condition on the same ladder (e.g. frightened implies shaken); turn the stricter one off to
+        toggle this directly.
       </div>
       {active.size > 0 ? (
         <ul className="cond-notes">

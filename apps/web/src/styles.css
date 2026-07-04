@@ -1976,6 +1976,13 @@ button:focus-visible,
   border-style: dashed;
 }
 
+/* A ladder member currently superseded by a stricter active sibling (e.g.
+   shaken while frightened is on) — covered, not independently toggleable.
+   `.chip:disabled` already handles opacity/cursor; this just adjusts it. */
+.chip.cond.implied {
+  opacity: 0.55;
+}
+
 .chip.cond .dot {
   color: var(--gold-dim);
   margin-left: 3px;

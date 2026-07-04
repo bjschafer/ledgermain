@@ -123,6 +123,24 @@ describe("buffs + conditions feed compute() with exact deltas", () => {
     // Str -2 -> mod drops by 1 -> melee attack -1; Dex -2 -> AC/ranged drop.
     expect(sheet.attack.melee.total - base.attack.melee.total).toBe(-1);
   });
+
+  it("panicked (issue #10): -2 saves/skills, no attack penalty (a panicked creature can't attack)", () => {
+    const doc = makeDoc({ conditions: ["panicked"] });
+    const sheet = compute(doc, ref);
+    expect(sheet.saves.will.total - base.saves.will.total).toBe(-2);
+    expect(sheet.skills.acr!.total - base.skills.acr!.total).toBe(-2);
+    expect(sheet.attack.melee.total - base.attack.melee.total).toBe(0);
+  });
+
+  it("pinned (issue #10): flat -4 AC on top of grappled's own penalties (the two don't stack in the ladder)", () => {
+    const doc = makeDoc({ conditions: ["pinned"] });
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal - base.ac.normal).toBe(-4);
+    // Pinned's own table entry doesn't duplicate grappled's -4 Dex/-2 attack —
+    // ladder auto-upgrade (apps/web/src/model/conditions.ts) is what keeps
+    // "grappled" from also being active once "pinned" is toggled on.
+    expect(sheet.attack.melee.total - base.attack.melee.total).toBe(0);
+  });
 });
 
 describe("duration: advancing rounds expires timed buffs", () => {
