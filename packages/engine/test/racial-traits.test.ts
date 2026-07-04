@@ -102,6 +102,58 @@ describe("Elf Fleet-Footed (suppress Keen Senses, grant initiative)", () => {
   });
 });
 
+describe("Sylph Like the Wind (base-speed delta, +5 ft)", () => {
+  it("bumps land speed from 30 to 35", () => {
+    const base = compute(makeDoc("Sylph"), ref);
+    const withTrait = compute(makeDoc("Sylph", ["sylph-like-the-wind"]), ref);
+    expect(base.speeds.land).toBe(30);
+    expect(withTrait.speeds.land).toBe(35);
+  });
+});
+
+describe("Sylph Whispering Wind (+4 racial Stealth, stacks with ranks/Dex)", () => {
+  it("adds +4 on top of existing Dex mod and ranks", () => {
+    const base = compute(makeDoc("Sylph"), ref);
+    const withTrait = compute(makeDoc("Sylph", ["sylph-whispering-wind"]), ref);
+    expect(withTrait.skills.ste!.total).toBe(base.skills.ste!.total + 4);
+  });
+
+  it("stacks correctly alongside ranks and a Dex bump (not a flat override)", () => {
+    // Sylph Dex +2 (mod +1) baseline; add 3 skill ranks (class skill for
+    // fighter is false, so no +3 class-skill bonus — just ranks + ability +
+    // the racial 4) to prove the racial bonus composes rather than replacing
+    // the skill total outright.
+    const doc = makeDoc("Sylph", ["sylph-whispering-wind"]);
+    doc.build.skillRanks = { ste: 3 };
+    const withRanks = compute(doc, ref);
+    const plainDoc = makeDoc("Sylph");
+    plainDoc.build.skillRanks = { ste: 3 };
+    const plainWithRanks = compute(plainDoc, ref);
+    expect(withRanks.skills.ste!.total).toBe(plainWithRanks.skills.ste!.total + 4);
+  });
+});
+
+describe("Sylph Storm in the Blood (displayOnly, no flat change)", () => {
+  it("appears with no computed change and a contextNote reminder", () => {
+    const base = compute(makeDoc("Sylph"), ref);
+    const withTrait = compute(makeDoc("Sylph", ["sylph-storm-in-the-blood"]), ref);
+    // No sheet number changes — this is display-only / situational.
+    expect(withTrait.hp.max).toBe(base.hp.max);
+    expect(withTrait.saves).toEqual(base.saves);
+    expect(withTrait.skills).toEqual(base.skills);
+  });
+});
+
+describe("Sylph Mostly Human (displayOnly, no flat change)", () => {
+  it("has no computed change (type/subtype/language swap only)", () => {
+    const base = compute(makeDoc("Sylph"), ref);
+    const withTrait = compute(makeDoc("Sylph", ["sylph-mostly-human"]), ref);
+    expect(withTrait.saves).toEqual(base.saves);
+    expect(withTrait.skills).toEqual(base.skills);
+    expect(withTrait.speeds).toEqual(base.speeds);
+  });
+});
+
 describe("guards", () => {
   it("ignores an alternate racial trait whose race doesn't match", () => {
     // A Halfling trait id on a Half-Orc must be inert.

@@ -65,6 +65,21 @@ describe("toggle + availability", () => {
     expect(human).not.toContain("halfling-outrider");
   });
 
+  it("Sylph alternates are scoped to Sylph only", () => {
+    const sylph = availableRacialTraits(makeDoc("Sylph"), ref).map((t) => t.id);
+    expect(sylph).toEqual(
+      expect.arrayContaining([
+        "sylph-like-the-wind",
+        "sylph-whispering-wind",
+        "sylph-storm-in-the-blood",
+        "sylph-mostly-human",
+      ]),
+    );
+    expect(availableRacialTraits(makeDoc("Human"), ref).map((t) => t.id)).not.toContain(
+      "sylph-like-the-wind",
+    );
+  });
+
   it("setRace clears chosen alternate racial traits", () => {
     const doc = makeDoc("Human", ["human-focused-study"]);
     const switched = setRace(doc, raceId("Elf"));
@@ -84,6 +99,19 @@ describe("conflict detection", () => {
   it("no conflict when alternates replace different standard traits", () => {
     // Sacred Tattoo (Orc Ferocity) + Shaman's Apprentice (Intimidating).
     const doc = makeDoc("Half-Orc", ["half-orc-sacred-tattoo", "half-orc-shamans-apprentice"]);
+    expect(conflictingRacialTraitIds(doc, ref).size).toBe(0);
+  });
+
+  it("all four Sylph alternates coexist without conflict (each replaces a distinct standard trait)", () => {
+    // Like the Wind (Energy Resistance), Whispering Wind (Spell-Like Ability),
+    // Storm in the Blood (Air Affinity), Mostly Human (Type/Languages) — no
+    // two of these swap the same standard trait, unlike Halfling's pair above.
+    const doc = makeDoc("Sylph", [
+      "sylph-like-the-wind",
+      "sylph-whispering-wind",
+      "sylph-storm-in-the-blood",
+      "sylph-mostly-human",
+    ]);
     expect(conflictingRacialTraitIds(doc, ref).size).toBe(0);
   });
 });
