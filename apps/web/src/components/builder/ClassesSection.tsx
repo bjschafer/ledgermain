@@ -14,6 +14,7 @@ import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { DomainPicker } from "./DomainPicker.js";
+import { FamiliarPicker } from "./FamiliarPicker.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import { RangerPicker } from "./RangerPicker.js";
@@ -234,6 +235,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {doc.identity.classes.some((c) => c.tag === "wizard") && (
         <ArcaneBondPicker doc={doc} update={update} />
       )}
+
+      {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}
+      <FamiliarPicker doc={doc} update={update} />
 
       {/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}
       <RangerPicker doc={doc} update={update} />

@@ -396,6 +396,22 @@ export interface CharacterDoc {
      * correct as buffs/feats/gear change.
      */
     savedRolls?: SavedRoll[];
+    /**
+     * A tracked familiar (PF1 arcane familiar) — independent of `arcaneBond`
+     * above (which only models the Wizard class feature's master-SIDE bonus
+     * choice between a familiar-kind and a bonded object). This field models
+     * the familiar itself as a trackable creature with its own derived
+     * AC/saves/attacks/skills — see `@pf1/engine` `deriveFamiliar` — so any
+     * class/feature that grants a familiar (Wizard arcane bond, an Arcanist
+     * exploit, a feat, ...) can use it, not just wizards. Reuses the same
+     * species slugs as `@pf1/engine` `FAMILIAR_KINDS` (bat/cat/hawk/...) for
+     * continuity with `arcaneBond`, but is a distinct field — a wizard could
+     * in principle set `arcaneBond.type === "familiar"` (for the RAW master
+     * bonus) and also this `familiar` (for the full trackable stat block)
+     * pointing at the same species. Optional/back-compat: documents without
+     * this field have no tracked familiar.
+     */
+    familiar?: FamiliarBuild;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -527,7 +543,69 @@ export interface CharacterDoc {
      * Back-compat: absent entirely for documents predating this feature.
      */
     money?: { pp?: number; gp?: number; sp?: number; cp?: number };
+    /**
+     * Live session state for the tracked familiar (`build.familiar`) — damage
+     * bookkeeping plus which of the master's `activeBuffs` are shared onto it
+     * (e.g. casting Mage Armor "on" the familiar). Absent/omitted while
+     * `build.familiar` is unset, and whenever a familiar has taken no damage
+     * and shares no buffs. See {@link FamiliarLiveState}.
+     */
+    familiar?: FamiliarLiveState;
+    /**
+     * Whether the tracked familiar (`build.familiar`) is within arm's reach of
+     * its master right now. PF1 RAW: while a familiar is within arm's reach,
+     * its master gains the benefit of the Alertness feat (+2 Perception, +2
+     * Sense Motive) even if the master doesn't otherwise have Alertness.
+     * Situational table state (not a species trait — every familiar species
+     * grants this the same way), so it lives here rather than on
+     * `@pf1/engine`'s per-species table. Ignored (no bonus) when
+     * `build.familiar` is unset. Absent/undefined defaults to true (the
+     * common case — the familiar usually rides along); explicit `false` is
+     * how the player records the familiar being left behind. Back-compat:
+     * documents predating this field behave as if the default applied.
+     *
+     * Known simplification: if the master separately has the real Alertness
+     * feat (`build.feats`), this stacks with it as a second untyped +2
+     * (PF1 RAW wouldn't double a feat a character already has) — an
+     * acceptably rare edge case, not worth a cross-check against `build.feats`.
+     */
+    familiarInReach?: boolean;
   };
+}
+
+/**
+ * A tracked familiar's build choices (`build.familiar`) — see that field's
+ * doc comment for how this relates to `build.arcaneBond`.
+ */
+export interface FamiliarBuild {
+  /** Species id — key into `@pf1/engine` `BASE_FAMILIARS` (e.g. "cat"). */
+  speciesId: string;
+  /** Player-given name (e.g. "Mortlach"). */
+  name: string;
+  /** Free-text notes (e.g. personality, tricks, house-rule tweaks). */
+  notes?: string;
+}
+
+/**
+ * Live session state for a tracked familiar (`live.familiar`) — see that
+ * field's doc comment.
+ */
+export interface FamiliarLiveState {
+  /** Lethal damage taken so far (current HP = derived max − damage). Omitted/0 = undamaged. */
+  damage?: number;
+  /** Nonlethal damage taken so far. Omitted/0 = none. */
+  nonlethal?: number;
+  /**
+   * Instance ids from `live.activeBuffs` (the MASTER's buff list — a familiar
+   * has no separate buff list of its own in v1) that also apply to the
+   * familiar's derived sheet (e.g. a shared Mage Armor). Toggled via
+   * `apps/web/src/model/familiar.ts`; resolved by `@pf1/engine`
+   * `deriveFamiliar`, which evaluates each shared buff's `changes[]` against
+   * the familiar the same way the master's own sheet does for `ac`/`aac`/
+   * `sac`/`nac`, `fort`/`ref`/`will`/`allSavingThrows`, and `skill.*` targets.
+   * Omitted/empty = no shared buffs.
+   */
+  sharedBuffIds?: string[];
 }
 
 /**

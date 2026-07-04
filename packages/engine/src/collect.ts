@@ -346,6 +346,56 @@ export function collectModifiers(
     }
   }
 
+  // --- tracked familiar (build.familiar): master bonus + Alertness --------
+  // A tracked familiar (issue: familiar support — independent of the
+  // Wizard-only `arcaneBond` field above; see CharacterDoc.build.familiar's
+  // doc comment) grants its master the SAME published per-species bonus as
+  // an arcane-bond familiar. Reuses the `FAMILIARS` table above rather than
+  // duplicating the hand-authored data a second time — a familiar's master
+  // bonus doesn't depend on which field granted the familiar. It also grants
+  // the master the Alertness feat's benefit while in reach (PF1 RAW "familiar
+  // basics"), gated on `live.familiarInReach` (default true) and using the
+  // exact same untyped +2/+2 shape as the real Alertness feat entry in
+  // `feat-effects.ts` (so a master who separately has BOTH stacks them — a
+  // documented, accepted edge case; see the schema doc comment on
+  // `live.familiarInReach`).
+  const trackedFamiliar = doc.build.familiar;
+  if (trackedFamiliar?.speciesId) {
+    const familiarDef = FAMILIARS[trackedFamiliar.speciesId];
+    if (familiarDef) {
+      for (const ch of familiarDef.changes) {
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          `${familiarDef.name} (familiar: ${trackedFamiliar.name})`,
+          `familiar:tracked:${trackedFamiliar.speciesId}`,
+          out,
+          ch.operator,
+        );
+      }
+    }
+    if (doc.live.familiarInReach ?? true) {
+      out.push(
+        {
+          target: "skill.per",
+          type: "untyped",
+          value: 2,
+          source: "Alertness (familiar in reach)",
+          sourceId: "familiar-alertness",
+        },
+        {
+          target: "skill.sen",
+          type: "untyped",
+          value: 2,
+          source: "Alertness (familiar in reach)",
+          sourceId: "familiar-alertness",
+        },
+      );
+    }
+  }
+
   // --- level-up ability score increases -----------------------------------
   // Defensive cap: if level dropped after choices were made, don't over-apply.
   const allowed = Math.floor(totalLevel(doc) / 4);
