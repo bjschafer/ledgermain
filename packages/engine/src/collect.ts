@@ -9,6 +9,7 @@
 
 import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 
+import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { ARCHETYPE_FEATURE_EFFECTS } from "./archetype-effects.js";
 import { activeArchetypeSwaps } from "./archetypes.js";
 import { BLOODLINES } from "./bloodlines.js";
@@ -288,6 +289,26 @@ export function collectModifiers(
             ch.operator,
           );
         }
+      }
+    }
+  }
+
+  // --- arcanist exploits (build choice, issue #42) -------------------------
+  // Exploit ids are hand-authored clean-room content (not in the vendored
+  // Foundry data pack — see `@pf1/engine` `arcanist-exploits.ts`), same
+  // posture as `traits.ts` above. Gated on the character actually having
+  // arcanist levels (a non-arcanist with a stale `arcanistExploits` field
+  // gets nothing). Every base exploit is `displayOnly` with `changes: []`
+  // today (see that file's doc comment), so this loop currently contributes
+  // no numeric modifiers — it's wired the same way traits/bloodline powers
+  // are so a future exploit with a real unconditional Change works for free.
+  const arcanistLevel = doc.identity.classes.find((c) => c.tag === "arcanist")?.level ?? 0;
+  if (arcanistLevel > 0) {
+    for (const exploitId of doc.build.arcanistExploits ?? []) {
+      const exploit = ARCANIST_EXPLOITS[exploitId];
+      if (!exploit) continue;
+      for (const ch of exploit.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, exploit.name, exploit.id, out);
       }
     }
   }

@@ -412,6 +412,14 @@ export interface CharacterDoc {
      * this field have no tracked familiar.
      */
     familiar?: FamiliarBuild;
+    /**
+     * Arcanist exploit ids chosen (keys into `@pf1/engine` `ARCANIST_EXPLOITS`
+     * — issue #42). Gained at 1st level and every 2 levels thereafter (1st,
+     * 3rd, 5th, ...), plus one per "Extra Arcanist Exploit" feat taken; see
+     * `model/arcanistExploits.ts` for the budget math. Free-choice, soft
+     * warning only on overspend — same posture as `traits`/`racialTraits`.
+     */
+    arcanistExploits?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -1115,13 +1123,15 @@ export interface DerivedClassFeature {
   detail?: string;
   /**
    * Set when this feature came from a chosen cleric domain, wizard arcane
-   * school, or sorcerer bloodline (issue #34) rather than the class itself —
-   * all three share `classTag: "cleric"`/`"wizard"`/`"sorcerer"` with the
-   * class's own intrinsic features, so this disambiguates e.g. "Fire Bolt"
-   * (Fire Domain) from Channel Energy (cleric itself), or "Claws" (Draconic
-   * Bloodline) from a sorcerer's other features.
+   * school, sorcerer bloodline (issue #34), or arcanist exploit (issue #42)
+   * rather than the class itself — all four share `classTag: "cleric"`/
+   * `"wizard"`/`"sorcerer"`/`"arcanist"` with the class's own intrinsic
+   * features, so this disambiguates e.g. "Fire Bolt" (Fire Domain) from
+   * Channel Energy (cleric itself), "Claws" (Draconic Bloodline) from a
+   * sorcerer's other features, or "Quick Study" (an exploit) from an
+   * arcanist's own Arcane Reservoir.
    */
-  origin?: { kind: "domain" | "school" | "bloodline"; label: string };
+  origin?: { kind: "domain" | "school" | "bloodline" | "exploit"; label: string };
 }
 
 /** One feature granted by an active archetype (in addition to/instead of the base grant). */
