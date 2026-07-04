@@ -7,7 +7,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { compute } from "@pf1/engine";
+import { compute, deriveResourcePools } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
@@ -16,6 +16,7 @@ import { addClass, createEmptyDoc, setClassLevel, toggleKnownSpell } from "../sr
 import { addNonlethal, applyDamage, setTempHp } from "../src/model/hp.js";
 import { prepareSpell, preparedSpells, setExpendedAt } from "../src/model/preparedSpells.js";
 import { restNewDay } from "../src/model/rest.js";
+import { drainResource, remaining, syncDerivedPools } from "../src/model/resources.js";
 import { casterModelFor, storedClassTag } from "../src/model/spellcasting.js";
 import { castSpontaneousSlot, slotsUsedAtLevel } from "../src/model/spontaneousSpells.js";
 
@@ -157,5 +158,65 @@ describe("restNewDay()", () => {
     const sheet = compute(doc, ref);
     const result = restNewDay(doc, sheet, ref);
     expect(result.doc.live.hp.current).toBe(sheet.hp.max);
+  });
+
+  it("issue #43: Arcane Reservoir rests to its RAW refill (below cap), not to max", () => {
+    const extraReservoirId = Object.entries(ref.feats).find(
+      ([, f]) => f.name === "Extra Reservoir",
+    )![0];
+    let doc = addClass(createEmptyDoc("t"), "arcanist");
+    doc = setClassLevel(doc, "arcanist", 4);
+    doc = { ...doc, build: { ...doc.build, feats: [extraReservoirId] } };
+
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const reservoir = pools.find((p) => p.name === "Arcane Reservoir")!;
+    expect(reservoir.max).toBe(10); // 3 + 4 + 3 (Extra Reservoir)
+    expect(reservoir.restValue).toBe(8); // 3 + floor(4/2) + 3
+
+    // Sync the live pool at full, spend down to 2 remaining (used = 8).
+    doc = syncDerivedPools(doc, pools);
+    doc = drainResource(doc, reservoir.id, 8);
+    expect(remaining(doc.live.resources[reservoir.id]!)).toBe(2);
+
+    // Renewed day sets the pool to the refill value (8), not the cap (10).
+    const result = restNewDay(doc, sheet, ref);
+    expect(remaining(result.doc.live.resources[reservoir.id]!)).toBe(8);
+    expect(result.doc.live.resources[reservoir.id]!.max).toBe(10);
+  });
+
+  it("issue #43: resting with more than the refill remaining still drops to the refill value (leftover points are lost)", () => {
+    let doc = addClass(createEmptyDoc("t"), "arcanist");
+    doc = setClassLevel(doc, "arcanist", 4);
+
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const reservoir = pools.find((p) => p.name === "Arcane Reservoir")!;
+    expect(reservoir.max).toBe(7); // 3 + 4
+    expect(reservoir.restValue).toBe(5); // 3 + floor(4/2)
+
+    // Full pool (7 remaining) going into rest.
+    doc = syncDerivedPools(doc, pools);
+    expect(remaining(doc.live.resources[reservoir.id]!)).toBe(7);
+
+    const result = restNewDay(doc, sheet, ref);
+    // RAW: rest SETS the pool to the refill value; the 2 points above it
+    // are lost rather than carried through to cap.
+    expect(remaining(result.doc.live.resources[reservoir.id]!)).toBe(5);
+  });
+
+  it("issue #43: a non-Arcane-Reservoir pool (Rage) still rests to its cap", () => {
+    let doc = addClass(createEmptyDoc("t"), "barbarian");
+    doc = setClassLevel(doc, "barbarian", 5);
+
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const rage = pools.find((p) => p.name === "Rage")!;
+    doc = syncDerivedPools(doc, pools);
+    doc = drainResource(doc, rage.id, rage.max);
+    expect(remaining(doc.live.resources[rage.id]!)).toBe(0);
+
+    const result = restNewDay(doc, sheet, ref);
+    expect(remaining(result.doc.live.resources[rage.id]!)).toBe(rage.max);
   });
 });
