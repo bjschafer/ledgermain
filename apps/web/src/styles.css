@@ -2977,6 +2977,20 @@ input[type="text"].saved-roll-name:focus {
   color: var(--muted);
 }
 
+/* Marks an archetype with a hand-authored numeric effect (issue #7) — used
+   both inline in an ArchetypePicker chip and in its explanatory hint text. */
+.badge-modeled {
+  display: inline-block;
+  font-size: 0.7em;
+  font-weight: 700;
+  line-height: 1;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: var(--bg);
+  background: var(--gold-dim);
+  vertical-align: middle;
+}
+
 .cf-origin {
   color: var(--muted);
   font-style: italic;
