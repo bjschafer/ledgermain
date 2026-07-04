@@ -29,6 +29,7 @@ import { addBuff, makeActiveBuff } from "../src/model/buffs.js";
 import { deriveFamiliarSheet, toggleSharedBuff } from "../src/model/familiar.js";
 import { chosenFeatCount, expectedFeatCount } from "../src/model/feats.js";
 import { casterLevel } from "../src/model/casterLevel.js";
+import { skillBudget } from "../src/model/skills.js";
 import {
   casterModelFor,
   concentrationDC,
@@ -64,6 +65,13 @@ describe("Lyle — identity, build choices recorded on the document", () => {
     expect(baseDoc.build.traits).toEqual(["reactionary", "magicalLineage"]);
     expect(baseDoc.build.feats).toHaveLength(4);
     expect(baseDoc.build.gmGrants?.featSlots).toBe(2);
+  });
+
+  it("favored class bonus: house rule 'both' recorded for all 4 arcanist levels", () => {
+    expect(baseDoc.identity.favoredClass).toBe("arcanist");
+    expect(baseDoc.build.settings?.fcbHouserule).toBe(true);
+    expect(baseDoc.build.favoredClassBonus).toEqual(["both", "both", "both", "both"]);
+    expect(baseDoc.build.gmGrants?.skillRanks).toBe(2);
   });
 
   it("feat budget: 4 chosen matches 4 expected (2 rules-derived + the 2-feat house rule)", () => {
@@ -157,6 +165,13 @@ describe("Lyle — no buffs (fresh import baseline)", () => {
     expect(sheet.skills.per?.classSkill).toBe(false);
     expect(sheet.skills.sen?.classSkill).toBe(false);
     expect(sheet.skills.ste?.classSkill).toBe(false);
+  });
+
+  it("skill budget: 34 spent, 34 available (28 base + 4 FCB 'both' + 2 GM grant), no overspend", () => {
+    const budget = skillBudget(baseDoc, ref, sheet.abilities.int.mod);
+    expect(budget.total).toBe(34);
+    expect(budget.spent).toBe(34);
+    expect(budget.remaining).toBe(0); // clean — the builder shows no overspend/unspent warning
   });
 });
 

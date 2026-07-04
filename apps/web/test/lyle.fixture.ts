@@ -25,8 +25,12 @@ import {
   setAlignment,
   setBonusLanguages,
   setClassLevel,
+  setFavoredClass,
+  setFavoredClassBonus,
+  setFcbHouserule,
   setGender,
   setGmGrantFeatSlots,
+  setGmGrantSkillRanks,
   setHeight,
   setMaxHpOverride,
   setMoney,
@@ -151,9 +155,32 @@ export function buildLyleDoc(ref: RefData): CharacterDoc {
   doc = setAbility(doc, "cha", 12);
 
   // --- class -------------------------------------------------------------------
-  doc = addClass(doc, "arcanist");
+  doc = addClass(doc, "arcanist"); // also defaults identity.favoredClass to "arcanist"
   doc = setClassLevel(doc, "arcanist", 4);
-  doc = setMaxHpOverride(doc, 25); // PDF: 25 max HP (d6 HD + FCB, entered directly per spec)
+
+  // --- favored class bonus (house rule: "both") --------------------------------
+  // Lyle's table plays the FCB house rule "both": each of his 4 favored-class
+  // levels grants +1 HP AND +1 skill rank simultaneously (settings.fcbHouserule
+  // + build.favoredClassBonus — see CharacterDoc doc comments). Recorded
+  // explicitly (setFavoredClass is a no-op here since addClass already defaults
+  // it to "arcanist", but stating it keeps the choice visible/greppable).
+  doc = setFavoredClass(doc, "arcanist");
+  doc = setFcbHouserule(doc, true);
+  for (let level = 0; level < 4; level++) {
+    doc = setFavoredClassBonus(doc, level, "both");
+  }
+
+  // PDF: 25 max HP (d6 HD average + Con + the 4 FCB-HP already folded in).
+  // `maxHpOverride` REPLACES the engine's rules-derived `auto` HP total rather
+  // than adding to it (see packages/engine/src/compute.ts `computeHp`: the
+  // override path only applies in hpMode "average", the default/unset value
+  // here, and short-circuits before `fcbHp` is added to `max`). So recording
+  // the FCB choices above does not double-count the +4 HP against this
+  // override — it only feeds the skill-rank budget (model/skills.ts) and the
+  // otherwise-unused `auto` figure. Kept as an override (not switched to
+  // rolled-HP entry) because Lyle's actual per-level rolls aren't in the PDF
+  // spec, only the final total.
+  doc = setMaxHpOverride(doc, 25);
   doc = restHp(doc, 25); // full HP, no damage taken — a fresh import shouldn't start at 0/25
 
   // --- traits (character traits, not racial) ----------------------------------
@@ -177,6 +204,12 @@ export function buildLyleDoc(ref: RefData): CharacterDoc {
   }
 
   // --- skills --------------------------------------------------------------------
+  // Budget: 4 class levels x (2 skillsPerLevel + 5 Int mod) = 28, +4 from the FCB
+  // "both" house rule above = 32. Lyle's Hero Lab sheet shows 34 spent ranks and
+  // two additional "+1 Skill Points" campaign adjustments beyond the FCB grant —
+  // recorded as a GM grant (same posture as the feat-slot house rule above) so
+  // the budget lands at 34 with nothing unspent/overspent.
+  doc = setGmGrantSkillRanks(doc, 2);
   for (const [skill, ranks] of Object.entries(SKILL_RANKS)) {
     doc = setSkillRank(doc, skill, ranks);
   }
