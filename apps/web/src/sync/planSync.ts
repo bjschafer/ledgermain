@@ -46,10 +46,7 @@ export function planAction(
 }
 
 /** Plan a full on-open sync pass across every character known locally and/or remotely. */
-export function planSync(
-  locals: VersionedSummary[],
-  remotes: VersionedSummary[],
-): SyncAction[] {
+export function planSync(locals: VersionedSummary[], remotes: VersionedSummary[]): SyncAction[] {
   const localById = new Map(locals.map((l) => [l.id, l]));
   const remoteById = new Map(remotes.map((r) => [r.id, r]));
   const ids = new Set([...localById.keys(), ...remoteById.keys()]);

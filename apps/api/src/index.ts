@@ -6,12 +6,7 @@
  * prefer bindings/small code over unnecessary layers).
  */
 import "./env.js";
-import {
-  deleteCharacter,
-  getCharacter,
-  listCharacters,
-  putCharacter,
-} from "./characters.js";
+import { deleteCharacter, getCharacter, listCharacters, putCharacter } from "./characters.js";
 import { handlePreflight, withCors } from "./cors.js";
 import { handleCallback, handleStart } from "./github-oauth.js";
 import { errorJson, json } from "./http.js";

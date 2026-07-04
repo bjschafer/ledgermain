@@ -36,7 +36,9 @@ afterEach(() => {
 describe("listRemoteCharacters", () => {
   test("sends a bearer token and parses the envelope list", async () => {
     mockFetch(() =>
-      Response.json({ characters: [{ id: "a", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }] }),
+      Response.json({
+        characters: [{ id: "a", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }],
+      }),
     );
     const result = await listRemoteCharacters(API_BASE, TOKEN);
     expect(result).toEqual([{ id: "a", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }]);

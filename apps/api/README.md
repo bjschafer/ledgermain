@@ -42,16 +42,16 @@ the account owner should do from this worktree.
 
 ## Routes
 
-| Route | Auth | Notes |
-|---|---|---|
-| `GET /auth/github/start?redirect_uri=<origin>` | none | 302 → GitHub's OAuth consent screen. `redirect_uri` must match one of `ALLOWED_APP_ORIGINS` (origin match) or this 400s. |
-| `GET /auth/github/callback?code&state` | none | Exchanges the code, mints a session, 302s to `<redirect_uri>#session=<token>`. |
-| `POST /auth/logout` | bearer | Deletes the session. |
-| `GET /api/me` | bearer | `{ ownerId }` or 401. |
-| `GET /api/characters` | bearer | `{ characters: [{ id, version, updatedAt }] }` — envelope only. |
-| `GET /api/characters/:id` | bearer | Full document JSON, or 404. |
-| `PUT /api/characters/:id` | bearer | Body = full `CharacterDoc`. 400 on bad JSON/shape, 413 over 2 MB, 409 on a stale `version`, 200 `{ id, version, updatedAt }` on success. |
-| `DELETE /api/characters/:id` | bearer | 204, idempotent. |
+| Route                                          | Auth   | Notes                                                                                                                                    |
+| ---------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /auth/github/start?redirect_uri=<origin>` | none   | 302 → GitHub's OAuth consent screen. `redirect_uri` must match one of `ALLOWED_APP_ORIGINS` (origin match) or this 400s.                 |
+| `GET /auth/github/callback?code&state`         | none   | Exchanges the code, mints a session, 302s to `<redirect_uri>#session=<token>`.                                                           |
+| `POST /auth/logout`                            | bearer | Deletes the session.                                                                                                                     |
+| `GET /api/me`                                  | bearer | `{ ownerId }` or 401.                                                                                                                    |
+| `GET /api/characters`                          | bearer | `{ characters: [{ id, version, updatedAt }] }` — envelope only.                                                                          |
+| `GET /api/characters/:id`                      | bearer | Full document JSON, or 404.                                                                                                              |
+| `PUT /api/characters/:id`                      | bearer | Body = full `CharacterDoc`. 400 on bad JSON/shape, 413 over 2 MB, 409 on a stale `version`, 200 `{ id, version, updatedAt }` on success. |
+| `DELETE /api/characters/:id`                   | bearer | 204, idempotent.                                                                                                                         |
 
 CORS: `ALLOWED_APP_ORIGINS` (comma-separated, exact origin match — never
 `*`) gates both the OAuth `redirect_uri` and the `Access-Control-Allow-Origin`

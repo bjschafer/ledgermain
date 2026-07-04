@@ -179,7 +179,10 @@ export function useCharacter(): CharacterStore {
         const result = await runOpenSync(apiBase, token, dexieSyncStore);
         setSyncStatus(
           result.errors.length > 0
-            ? { kind: "error", message: result.errors.map((e) => `${e.id}: ${e.message}`).join("; ") }
+            ? {
+                kind: "error",
+                message: result.errors.map((e) => `${e.id}: ${e.message}`).join("; "),
+              }
             : { kind: "idle" },
         );
         // If another device's newer copy of the character currently on
@@ -459,7 +462,8 @@ export function useCharacter(): CharacterStore {
       }
       const outcome = await pushOnChange(apiBase, token, resolved);
       if (outcome.kind === "ok") setSyncStatus({ kind: "idle" });
-      else if (outcome.kind === "conflict") setSyncStatus({ kind: "conflict", conflict: outcome.conflict });
+      else if (outcome.kind === "conflict")
+        setSyncStatus({ kind: "conflict", conflict: outcome.conflict });
       else setSyncStatus({ kind: "error", message: outcome.message });
     },
     [syncStatus, doc, refData, refreshList],

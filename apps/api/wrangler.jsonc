@@ -18,7 +18,7 @@
     // arbitrary caller-supplied redirect_uri/Origin — always check membership
     // in this list.
     "ALLOWED_APP_ORIGINS": "http://localhost:5173",
-    "GITHUB_CLIENT_ID": "REPLACE_ME_GITHUB_OAUTH_CLIENT_ID"
+    "GITHUB_CLIENT_ID": "REPLACE_ME_GITHUB_OAUTH_CLIENT_ID",
   },
 
   // Two KV namespaces:
@@ -31,11 +31,11 @@
   // simulation and do not need real ids to work.
   "kv_namespaces": [
     { "binding": "KV", "id": "REPLACE_ME_KV_NAMESPACE_ID" },
-    { "binding": "CHARACTERS", "id": "REPLACE_ME_CHARACTERS_NAMESPACE_ID" }
+    { "binding": "CHARACTERS", "id": "REPLACE_ME_CHARACTERS_NAMESPACE_ID" },
   ],
 
   "observability": {
     "enabled": true,
-    "head_sampling_rate": 1
-  }
+    "head_sampling_rate": 1,
+  },
 }

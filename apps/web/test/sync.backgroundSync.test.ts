@@ -43,7 +43,9 @@ describe("runOpenSync", () => {
     const remoteDoc = createEmptyDoc("only-remote");
     jsonHandler({
       "/api/characters": () =>
-        Response.json({ characters: [{ id: "only-remote", version: 1, updatedAt: remoteDoc.updatedAt }] }),
+        Response.json({
+          characters: [{ id: "only-remote", version: 1, updatedAt: remoteDoc.updatedAt }],
+        }),
       "/api/characters/only-remote": () => Response.json(remoteDoc),
     });
     const store = fakeStore();
@@ -58,7 +60,11 @@ describe("runOpenSync", () => {
     jsonHandler({
       "/api/characters": () => Response.json({ characters: [] }),
       "/api/characters/only-local": () =>
-        Response.json({ id: "only-local", version: localDoc.version, updatedAt: localDoc.updatedAt }),
+        Response.json({
+          id: "only-local",
+          version: localDoc.version,
+          updatedAt: localDoc.updatedAt,
+        }),
     });
     const store = fakeStore([localDoc]);
     const result = await runOpenSync(API_BASE, TOKEN, store);
@@ -69,7 +75,9 @@ describe("runOpenSync", () => {
     const inSync = createEmptyDoc("in-sync");
     jsonHandler({
       "/api/characters": () =>
-        Response.json({ characters: [{ id: "in-sync", version: inSync.version, updatedAt: inSync.updatedAt }] }),
+        Response.json({
+          characters: [{ id: "in-sync", version: inSync.version, updatedAt: inSync.updatedAt }],
+        }),
     });
     const store = fakeStore([inSync]);
     const result = await runOpenSync(API_BASE, TOKEN, store);
@@ -79,7 +87,9 @@ describe("runOpenSync", () => {
   test("records an error instead of throwing when a fetch fails", async () => {
     jsonHandler({
       "/api/characters": () =>
-        Response.json({ characters: [{ id: "boom", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }] }),
+        Response.json({
+          characters: [{ id: "boom", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }],
+        }),
       "/api/characters/boom": () => new Response("server error", { status: 500 }),
     });
     const store = fakeStore();
@@ -104,7 +114,8 @@ describe("pushOnChange", () => {
     const local = createEmptyDoc("char-1");
     const remote = { ...createEmptyDoc("char-1"), version: 9 };
     jsonHandler({
-      "/api/characters/char-1": () => Response.json({ error: "conflict", current: remote }, { status: 409 }),
+      "/api/characters/char-1": () =>
+        Response.json({ error: "conflict", current: remote }, { status: 409 }),
     });
     expect(await pushOnChange(API_BASE, TOKEN, local)).toEqual({
       kind: "conflict",

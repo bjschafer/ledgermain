@@ -2,8 +2,8 @@
   "name": "@pf1/api",
   "version": "0.0.0",
   "private": true,
-  "license": "MIT",
   "description": "Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5 cross-device sync, DESIGN.md §2.1). Never computes or interprets game data.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",

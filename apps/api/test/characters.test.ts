@@ -40,7 +40,9 @@ describe("character CRUD", () => {
     const { characters } = (await listRes.json()) as {
       characters: { id: string; version: number }[];
     };
-    expect(characters).toEqual([{ id: "char-1", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }]);
+    expect(characters).toEqual([
+      { id: "char-1", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" },
+    ]);
 
     const getRes = await authedRequest(ownerId, "/api/characters/char-1");
     expect(getRes.status).toBe(200);

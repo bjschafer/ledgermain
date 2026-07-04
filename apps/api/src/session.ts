@@ -43,7 +43,10 @@ export async function deleteSession(kv: KVNamespace, token: string): Promise<voi
  * header. Returns `null` for a missing/malformed header or an unknown/expired
  * token — callers turn that into a 401, never a crash.
  */
-export async function ownerIdFromRequest(request: Request, kv: KVNamespace): Promise<string | null> {
+export async function ownerIdFromRequest(
+  request: Request,
+  kv: KVNamespace,
+): Promise<string | null> {
   const auth = request.headers.get("authorization");
   if (!auth?.startsWith("Bearer ")) return null;
   const token = auth.slice("Bearer ".length).trim();
