@@ -16,6 +16,7 @@ import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
 import { FEAT_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
+import { RACIAL_TRAITS } from "./racial-traits.js";
 import { TRAITS } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
@@ -90,7 +91,23 @@ export function collectModifiers(
   // --- race ---------------------------------------------------------------
   const race = refData.races[doc.identity.race];
   if (race) {
+    // Alternate racial traits (issue #35) that apply to THIS race — a stale id
+    // from a race change (or an unknown id) is ignored, matching the
+    // traits/conditions/feats posture. Each swaps a standard trait for an
+    // alternate: `suppressTargets` drops the replaced standard trait's
+    // structured `Race.change` (so e.g. a Human taking Focused Study loses the
+    // `bonusFeats` grant), and the alternate's own `changes[]` are applied
+    // below alongside every other change source.
+    const activeRacialTraits = (doc.build.racialTraits ?? [])
+      .map((id) => RACIAL_TRAITS[id])
+      .filter((t): t is typeof t & {} => t != null && t.race === race.name);
+    const suppressed = new Set<string>();
+    for (const t of activeRacialTraits) {
+      for (const target of t.suppressTargets ?? []) suppressed.add(target);
+    }
+
     for (const ch of race.changes) {
+      if (suppressed.has(ch.target)) continue;
       evalChange(ch.formula, rollData, ch.target, ch.type, race.name, race.id, out, ch.operator);
     }
     // Flexible +2 (Human / Half-Elf / Half-Orc): no fixed ability changes,
@@ -103,6 +120,12 @@ export function collectModifiers(
         source: `${race.name} (choice)`,
         sourceId: race.id,
       });
+    }
+    // The chosen alternates' own granted modifiers.
+    for (const t of activeRacialTraits) {
+      for (const ch of t.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, t.name, t.id, out, ch.operator);
+      }
     }
   }
 

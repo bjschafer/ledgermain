@@ -10,6 +10,12 @@ import {
   suggestedBonusLanguageCount,
 } from "../../model/languages.js";
 import { ABILITY_ABBR } from "../../model/names.js";
+import {
+  availableRacialTraits,
+  conflictingRacialTraitIds,
+  hasRacialTrait,
+  toggleRacialTrait,
+} from "../../model/racialTraits.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -30,6 +36,8 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   }, [refData, query, doc.identity.race]);
   const selected = refData.races[doc.identity.race];
   const flexible = selected ? raceGrantsFlexibleAbility(selected) : false;
+  const racialTraits = availableRacialTraits(doc, refData);
+  const racialTraitConflicts = conflictingRacialTraitIds(doc, refData);
   const pendingRace = pendingRaceId != null ? refData.races[pendingRaceId] : undefined;
   const racial = racialLanguages(doc, refData);
   const bonusLanguages = doc.build.bonusLanguages ?? [];
@@ -137,6 +145,61 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
                 {ABILITY_ABBR[id]}
               </button>
             ))}
+          </div>
+        </div>
+      )}
+      {racialTraits.length > 0 && (
+        <div style={{ marginTop: 12 }}>
+          <p className="hint">
+            Alternate racial traits · swap a standard trait for an alternate
+            {racialTraitConflicts.size > 0 ? (
+              <span className="soft" style={{ marginLeft: 6 }}>
+                ⚠ two traits replace the same standard trait
+              </span>
+            ) : null}
+          </p>
+          <div style={{ marginTop: 6 }}>
+            {racialTraits.map((tr) => {
+              const isSel = hasRacialTrait(doc, tr.id);
+              const conflict = isSel && racialTraitConflicts.has(tr.id);
+              return (
+                <div key={tr.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                  <div className="pmain">
+                    <div className="pname">
+                      {tr.name}
+                      <span className="tag-bloodline" title={`Replaces ${tr.replaces.join(", ")}`}>
+                        replaces {tr.replaces.join(", ")}
+                      </span>
+                      {conflict ? (
+                        <span
+                          className="soft"
+                          title="Another chosen trait replaces the same standard trait"
+                        >
+                          ⚠ conflict
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="preq">
+                      <span className="soft">{tr.summary}</span>
+                    </div>
+                    {isSel
+                      ? tr.contextNotes?.map((note, i) => (
+                          <div key={i} className="hint" style={{ marginTop: 2 }}>
+                            ⚠ {note.text}
+                          </div>
+                        ))
+                      : null}
+                  </div>
+                  <button
+                    type="button"
+                    className={`pick-btn ${isSel ? "remove" : "add"}`}
+                    onClick={() => update((d) => toggleRacialTrait(d, tr.id))}
+                  >
+                    {isSel ? "Remove" : "Add"}
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

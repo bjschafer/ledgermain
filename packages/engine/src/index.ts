@@ -67,6 +67,11 @@ export {
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
 export {
+  RACIAL_TRAITS,
+  alternateRacialTraitsForRace,
+  type AlternateRacialTrait,
+} from "./racial-traits.js";
+export {
   BLOODLINES,
   BLOODLINE_TAGS,
   bloodlineVariantLabel,

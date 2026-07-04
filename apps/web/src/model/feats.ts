@@ -41,6 +41,7 @@ import {
 } from "@pf1/engine";
 
 import { SKILL_NAMES } from "./names.js";
+import { suppressedRaceTargets } from "./racialTraits.js";
 
 /** Total character level (sum of all class levels). */
 function totalLevel(doc: CharacterDoc): number {
@@ -171,9 +172,12 @@ export function expectedFeatCount(doc: CharacterDoc, refData: RefData): number {
   // Equivalently: ceil(charLevel / 2).
   const baseFeatCount = Math.ceil(charLevel / 2);
 
-  // +1 bonus feat for Human race.
+  // +1 bonus feat for Human race — unless an alternate racial trait swapped out
+  // the Human bonus feat (e.g. Focused Study, which suppresses `bonusFeats`;
+  // issue #35).
   const race = refData.races[doc.identity.race];
-  const humanBonus = race?.name === "Human" ? 1 : 0;
+  const humanBonus =
+    race?.name === "Human" && !suppressedRaceTargets(doc, refData).has("bonusFeats") ? 1 : 0;
 
   // Class bonus feats (Fighter combat feats, Wizard Arcane School feats,
   // Sorcerer bloodline feats, etc.) — see classBonusFeats() doc comment.

@@ -8,6 +8,8 @@
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import { buildRollData, tryEvaluateFormula } from "@pf1/engine";
 
+import { suppressedRaceTargets } from "./racialTraits.js";
+
 export interface SkillBudget {
   total: number;
   spent: number;
@@ -28,11 +30,15 @@ export function skillBudget(doc: CharacterDoc, refData: RefData, intMod: number)
   }
 
   // Racial bonus skill ranks (e.g. Human's +1/level via `@attributes.hd.total`).
+  // An alternate racial trait that swaps out the granting standard trait (e.g.
+  // Human's Skilled, replaced by Eye for Talent) suppresses its bonusSkillRanks
+  // change — mirror the engine's `collect.ts` suppression here (issue #35).
   const race = refData.races[doc.identity.race];
   if (race) {
+    const suppressed = suppressedRaceTargets(doc, refData);
     const rollData = buildRollData(doc, refData);
     for (const ch of race.changes) {
-      if (ch.target !== "bonusSkillRanks") continue;
+      if (ch.target !== "bonusSkillRanks" || suppressed.has(ch.target)) continue;
       const v = tryEvaluateFormula(ch.formula, rollData);
       if (v != null && !Number.isNaN(v)) total += v;
     }

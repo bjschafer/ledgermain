@@ -77,6 +77,21 @@ export interface CharacterDoc {
      * traits were chosen.
      */
     traits?: string[];
+    /**
+     * Alternate racial trait ids chosen (keys into `@pf1/engine`
+     * `RACIAL_TRAITS`, issue #35). Each swaps one or more of the race's
+     * standard traits for an alternate — the engine applies the alternate's
+     * `changes[]` and suppresses the replaced standard trait's structured race
+     * change (e.g. a Human taking Focused Study drops the `bonusFeats` grant).
+     * Free-choice/soft-warned only: two alternates that replace the same
+     * standard trait conflict (see `model/racialTraits.ts`), never blocked.
+     * Alternate racial traits are hand-authored clean-room content (not in the
+     * vendored Foundry pack — see `@pf1/engine` `racial-traits.ts`). Cleared on
+     * any race change (`model/doc.ts:setRace`); ids whose race doesn't match the
+     * current race are ignored by the engine. Optional/back-compat: absent =
+     * none chosen.
+     */
+    racialTraits?: string[];
     skillRanks: Record<SkillId, number>;
     /**
      * Cleric domain tags chosen at L1 (PF1 grants two; UI is free-choice since

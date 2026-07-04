@@ -298,7 +298,13 @@ export function setRace(doc: CharacterDoc, raceId: string): CharacterDoc {
   // a race that never grants it (model/race.ts:favoredClassBonusLevels also
   // guards against this independently, but clearing here keeps the doc tidy).
   delete identity.favoredClass2;
-  return { ...doc, identity };
+  // Alternate racial traits (issue #35) belong to a specific race; drop them on
+  // any race change so a stale swap can't apply (the engine also ignores ids
+  // whose race doesn't match, but clearing here keeps the doc tidy and the
+  // picker in sync).
+  const build = { ...doc.build };
+  delete build.racialTraits;
+  return { ...doc, identity, build };
 }
 
 /**
