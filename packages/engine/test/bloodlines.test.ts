@@ -68,8 +68,8 @@ describe("sorcerer bloodline arcana (collectModifiers)", () => {
     const doc = makeSorcerer(1, "Draconic");
     const rollData = buildRollData(doc, ref);
     const mods = collectModifiers(doc, ref, rollData);
-    const hpMods = mods.filter((m) => m.target === "hp");
-    expect(hpMods[0]!.value).toBe(1);
+    const hpMod = mods.find((m) => m.target === "hp");
+    expect(hpMod!.value).toBe(1);
   });
 
   it("no bloodline chosen grants no bloodline modifiers", () => {
