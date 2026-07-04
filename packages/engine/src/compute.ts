@@ -949,7 +949,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const attacks = computeWeaponAttacks(doc, bab, strMod, dexMod, sizeAttackMod, collected);
 
   // DR / energy resistance / spell resistance — display-only (issue #21).
-  const defenses = computeDefenses(doc, collected);
+  const defenses = computeDefenses(doc, refData, collected);
 
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};

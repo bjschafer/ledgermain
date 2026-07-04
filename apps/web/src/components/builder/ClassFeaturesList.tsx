@@ -34,6 +34,10 @@ export function FeatureDescription({ html }: { html: string }) {
  * mechanics source. Entries granted by a chosen cleric domain or wizard
  * arcane school (rather than the class itself) carry an `origin` label
  * (e.g. "— Fire Domain") — see `collectGrantedFeatures` in `@pf1/engine`.
+ * A small hand-authored slice of archetype features carry a real numeric
+ * effect (issue #7, `@pf1/engine` `archetype-effects.ts`) — those show a
+ * `detail` summary next to the name (e.g. "DR 5/—"), same visual language as
+ * a base class feature's `detail`.
  */
 export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; refData: RefData }) {
   if (sheet.classFeatures.length === 0) return null;
@@ -84,6 +88,7 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
               <div className="cf-archetype-feature" key={`${a.id}-${i}`}>
                 <span className="cf-name">
                   Lv {f.level} · {f.name}
+                  {f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
                   {f.ambiguous ? (
                     <span
                       className="soft"

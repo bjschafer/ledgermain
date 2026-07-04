@@ -1038,6 +1038,13 @@ export interface DerivedArchetypeFeature {
   description?: string;
   /** True when this feature has no `pairedBaseFeatureUuid` — prose-only soft warning, not a swap. */
   ambiguous: boolean;
+  /**
+   * One-line mechanical summary for the small hand-authored slice of
+   * archetype features with real numeric effects (issue #7) — e.g. "DR 5/—".
+   * Undefined for the vast majority of archetype features, which are
+   * structural/prose-only (see `@pf1/engine` `archetype-effects.ts`).
+   */
+  detail?: string;
 }
 
 /** A resolved archetype the character has chosen, with its swap map + feature list. */
