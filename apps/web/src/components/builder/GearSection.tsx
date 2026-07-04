@@ -1,18 +1,29 @@
 import { useMemo, useState } from "react";
 
 import type { ArmorRef, Change, ItemInstance, WornArmor } from "@pf1/schema";
-import { unappliedChanges, unappliedTargetLabel } from "@pf1/engine";
+import {
+  gearUnitWeight,
+  tryEvaluateFormula,
+  unappliedChanges,
+  unappliedTargetLabel,
+} from "@pf1/engine";
 
 import {
+  addCustomGearItem,
   addGearItem,
   addWornArmor,
   addWornArmorFromRef,
+  type MoneyField,
   removeGear,
+  setGearCharges,
   setGearEquipped,
+  setGearQuantity,
+  setMoney,
   updateGearItem,
 } from "../../model/doc.js";
 import { abilityNotes, ARMOR_ABILITIES } from "../../model/abilities.js";
 import { ARMOR_MATERIALS } from "../../model/materials.js";
+import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -264,6 +275,27 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
   );
 }
 
+/**
+ * Maximum charges for a linked item's `uses.maxFormula` (issue #16), e.g. a
+ * Staff of Healing's 10. Every `maxFormula` in the current vendored slice is
+ * a plain numeric constant (no `@item.level`/`@cl` reference — verified
+ * against the full items pack), so this never needs item-instance context;
+ * `tryEvaluateFormula` still guards against a future non-numeric value by
+ * returning `null` rather than crashing the gear list. Only "charges"-style
+ * pools are surfaced (potions/scrolls with `per: "single"` are one-shot and
+ * tracked by removing the gear entry instead, not a charge counter).
+ */
+function itemMaxCharges(item: { uses?: { maxFormula?: string; per?: string } } | undefined) {
+  const formula = item?.uses?.maxFormula;
+  if (!formula) return null;
+  try {
+    const max = tryEvaluateFormula(formula);
+    return max !== null && Number.isFinite(max) && max > 0 ? Math.trunc(max) : null;
+  } catch {
+    return null;
+  }
+}
+
 /** A one-line summary of a {@link ArmorRef} for the picker preview. */
 function armorRefMeta(a: ArmorRef): string {
   const weight = a.weightClass ? `${WEIGHT_LABEL[a.weightClass] ?? "—"} ` : "";
@@ -272,6 +304,15 @@ function armorRefMeta(a: ArmorRef): string {
   const acp = a.acp ? ` · ACP −${a.acp}` : "";
   return `${slot}${dex}${acp}`;
 }
+
+const MONEY_FIELDS: { field: MoneyField; label: string }[] = [
+  { field: "pp", label: "pp" },
+  { field: "gp", label: "gp" },
+  { field: "sp", label: "sp" },
+  { field: "cp", label: "cp" },
+];
+
+const BLANK_CUSTOM_GEAR = { name: "", weight: 0, price: 0, quantity: 1 };
 
 export function GearSection({ doc, refData, update }: BuilderProps) {
   // Magic item picker state
@@ -289,7 +330,12 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
   const [armorMasterwork, setArmorMasterwork] = useState<boolean>(false);
   const [editingGearIndex, setEditingGearIndex] = useState<number | null>(null);
 
+  // Custom mundane gear (ammo, rations, rope, ...) quick-add form.
+  const [showCustomGear, setShowCustomGear] = useState(false);
+  const [customGear, setCustomGear] = useState(BLANK_CUSTOM_GEAR);
+
   const gear = doc.build.gear;
+  const money = doc.live.money ?? {};
 
   // Filtered items list for the magic-item picker
   const filteredItems = useMemo(() => {
@@ -313,6 +359,18 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
     update((d) => addGearItem(d, itemId));
     setShowItemPicker(false);
     setItemQuery("");
+  }
+
+  function handleAddCustomGear() {
+    update((d) =>
+      addCustomGearItem(d, customGear.name, {
+        weight: customGear.weight,
+        price: customGear.price,
+        quantity: customGear.quantity,
+      }),
+    );
+    setShowCustomGear(false);
+    setCustomGear(BLANK_CUSTOM_GEAR);
   }
 
   function closeArmorPicker() {
@@ -357,6 +415,28 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 
   return (
     <Panel title="Gear & Inventory" step="viii" storageKey="panel:Gear" defaultCollapsed={false}>
+      {/* Wealth (issue #16) — always tracked, unlike encumbrance. */}
+      <div className="wealth-row">
+        <span className="eyebrow">Wealth</span>
+        <div className="wealth-fields">
+          {MONEY_FIELDS.map(({ field, label }) => (
+            <label key={field} className="field wealth-field">
+              <span>{label}</span>
+              <NumberField
+                className="num"
+                size={5}
+                value={money[field] ?? 0}
+                min={0}
+                max={9999999}
+                commitOnChange
+                onCommit={(n) => update((d) => setMoney(d, field, n))}
+                aria-label={`${label} (coins)`}
+              />
+            </label>
+          ))}
+        </div>
+      </div>
+
       {/* Current gear list */}
       {gear.length === 0 ? (
         <p className="empty">No gear added yet.</p>
@@ -373,6 +453,11 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
                 ? `${inst.armor.slot === "shield" ? "Shield" : "Armor"} (${inst.armor.ac} AC)`
                 : "Unknown item");
             const changes = itemDef?.changes ?? [];
+            const unitWeight = gearUnitWeight(inst, refData);
+            const unitPrice = itemDef?.price ?? inst.price;
+            const qty = inst.quantity ?? 1;
+            const maxCharges = itemMaxCharges(itemDef);
+            const chargesUsed = Math.min(inst.chargesUsed ?? 0, maxCharges ?? Infinity);
 
             if (editingGearIndex === i && inst.armor) {
               return (
@@ -422,7 +507,47 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
                       ))}
                     </div>
                   )}
+                  {(unitWeight > 0 || unitPrice) && (
+                    <div className="gear-meta">
+                      {unitWeight > 0 &&
+                        (qty > 1
+                          ? `${unitWeight * qty} lb (${unitWeight} lb × ${qty})`
+                          : `${unitWeight} lb`)}
+                      {unitWeight > 0 && unitPrice ? " · " : ""}
+                      {unitPrice ? `${unitPrice} gp` : ""}
+                    </div>
+                  )}
+                  {maxCharges != null && (
+                    <div className="gear-meta gear-charges">
+                      <span>
+                        charges: {maxCharges - chargesUsed}/{maxCharges}
+                      </span>
+                      <NumberField
+                        className="num"
+                        size={2}
+                        value={chargesUsed}
+                        min={0}
+                        max={maxCharges}
+                        commitOnChange
+                        onCommit={(n) => update((d) => setGearCharges(d, i, n))}
+                        aria-label={`${displayName} charges used`}
+                      />
+                    </div>
+                  )}
                 </div>
+                <label className="gear-qty" title="Quantity">
+                  <span className="hint">qty</span>
+                  <NumberField
+                    className="num"
+                    size={3}
+                    value={qty}
+                    min={0}
+                    max={99999}
+                    commitOnChange
+                    onCommit={(n) => update((d) => setGearQuantity(d, i, n))}
+                    aria-label={`${displayName} quantity`}
+                  />
+                </label>
                 {inst.armor && (
                   <button
                     type="button"
@@ -677,6 +802,84 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
                 saveLabel="Add to gear"
               />
             )}
+          </div>
+        )}
+      </div>
+
+      {/* Custom mundane gear (issue #16) — ammo, rations, rope, and anything
+          else not in the vendored items pack. Weight/price are entered by
+          hand since there's no RefData entry to look them up from. */}
+      <div className="gear-add-row">
+        {!showCustomGear ? (
+          <button type="button" className="btn-ghost" onClick={() => setShowCustomGear(true)}>
+            + Add custom gear (ammo, consumables, ...)
+          </button>
+        ) : (
+          <div className="gear-armor-form">
+            <div className="gear-armor-head">
+              <span className="eyebrow">New Custom Gear</span>
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => {
+                  setShowCustomGear(false);
+                  setCustomGear(BLANK_CUSTOM_GEAR);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+            <div className="gear-armor-grid">
+              <label className="field">
+                <span>Name</span>
+                <input
+                  type="text"
+                  value={customGear.name}
+                  placeholder="Arrows"
+                  autoFocus
+                  onChange={(e) => setCustomGear((f) => ({ ...f, name: e.target.value }))}
+                />
+              </label>
+              <label className="field">
+                <span>Quantity</span>
+                <NumberField
+                  value={customGear.quantity}
+                  min={0}
+                  max={99999}
+                  commitOnChange
+                  onCommit={(n) => setCustomGear((f) => ({ ...f, quantity: n }))}
+                  aria-label="Quantity"
+                />
+              </label>
+              <label className="field">
+                <span>Unit weight (lb)</span>
+                <input
+                  type="number"
+                  value={customGear.weight}
+                  min={0}
+                  step={0.1}
+                  onChange={(e) => setCustomGear((f) => ({ ...f, weight: Number(e.target.value) }))}
+                />
+              </label>
+              <label className="field">
+                <span>Unit price (gp)</span>
+                <input
+                  type="number"
+                  value={customGear.price}
+                  min={0}
+                  step={0.01}
+                  onChange={(e) => setCustomGear((f) => ({ ...f, price: Number(e.target.value) }))}
+                />
+              </label>
+            </div>
+            <button
+              type="button"
+              className="pick-btn add"
+              disabled={!customGear.name.trim()}
+              onClick={handleAddCustomGear}
+            >
+              Add to gear
+            </button>
           </div>
         )}
       </div>

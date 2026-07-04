@@ -474,6 +474,15 @@ export interface CharacterDoc {
      * made at the table (see model/xp.ts for why this lives client-side only).
      */
     xp?: number;
+    /**
+     * Coin purse (issue #16 inventory bookkeeping — always tracked, unlike
+     * the gated `encumbranceEnabled` rule). Each denomination is optional;
+     * an absent denomination means 0, matching the rest of the schema's
+     * "omit the default" convention. Display/bookkeeping only — no derived
+     * stat reads this, and the engine never auto-spends or auto-earns coin.
+     * Back-compat: absent entirely for documents predating this feature.
+     */
+    money?: { pp?: number; gp?: number; sp?: number; cp?: number };
   };
 }
 
@@ -672,6 +681,48 @@ export interface ItemInstance {
   armor?: WornArmor;
   /** Display label fallback when `itemId` is absent. */
   name?: string;
+  /**
+   * How many of this item the character carries (issue #16). Absent means 1 —
+   * every gear entry predating this field, and every entry added since where
+   * the player never touched the stepper, behaves exactly as before. Used to
+   * scale weight (unit weight × quantity) for both the gear-row display and
+   * `@pf1/engine`'s `totalCarriedWeight` (encumbrance). This is how ammo/bulk
+   * consumables are tracked (e.g. "Arrows" ×20) — there is no auto-decrement
+   * on attack (no dice roller; attacks aren't "resolved" by this app), so the
+   * player adjusts the stepper by hand as they use items up.
+   */
+  quantity?: number;
+  /**
+   * Charges spent so far on a limited-use item (issue #16), e.g. 3 of a Staff
+   * of Healing's 10. Only meaningful when the linked `RefData.items[itemId]`
+   * carries `uses.maxFormula` — the UI reads the max from there rather than
+   * storing it here, so the max always stays in sync if the vendored data
+   * changes. Absent means 0 (full charges). Deliberately NOT modeled as a
+   * generic `live.resources` pool keyed by a derived id: `ItemInstance`s live
+   * in an unordered array with no stable per-instance identity (the same item
+   * name can appear more than once, and removing an earlier entry shifts
+   * every later index), so a pool keyed by array position would silently
+   * misattribute charge state after any edit. Storing the count directly on
+   * the instance means it always travels with the correct array element.
+   * Ignored for gear with no `itemId` or whose ref carries no `uses`.
+   * Back-compat: absent entirely for documents predating this feature.
+   */
+  chargesUsed?: number;
+  /**
+   * Unit weight in pounds, for gear with no `itemId`/`armorId` (a free-text
+   * custom entry — see `model/doc.ts` `addCustomGearItem`). Ignored when
+   * `itemId` or `armor` is present; those look their weight up from
+   * `RefData.items[itemId].weight` / `armor.weight` instead, so the vendored
+   * data stays the single source of truth for anything it covers. Omitted =
+   * 0 lb (e.g. a Harrow deck-style item with no listed weight).
+   */
+  weight?: number;
+  /**
+   * Unit price in gp, for gear with no `itemId` (mirrors `weight` above —
+   * `itemId` entries read `RefData.items[itemId].price` instead). Display
+   * only; never affects any derived stat. Omitted = no price shown.
+   */
+  price?: number;
 }
 
 /** Physical stats of a worn piece of body armor or a shield. */
@@ -700,6 +751,14 @@ export interface WornArmor {
   masterwork?: boolean;
   /** Magical armor/shield ability ids (e.g. "light-fortification", "ghost-touch") — display only. */
   abilities?: string[];
+  /**
+   * Weight in pounds, snapshotted from `ArmorRef.weight` at pick-time (issue
+   * #16 encumbrance), or entered directly for a hand-authored custom armor
+   * entry. Feeds `@pf1/engine`'s `totalCarriedWeight`; ignored entirely when
+   * `settings.encumbranceEnabled` is off. Omitted = 0 lb (e.g. a manually
+   * entered armor the player didn't bother to weigh).
+   */
+  weight?: number;
 }
 
 /**

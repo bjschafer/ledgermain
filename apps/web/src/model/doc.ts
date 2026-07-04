@@ -515,6 +515,10 @@ export function addWornArmorFromRef(
     ...(acpMagnitude ? { acp: -acpMagnitude } : {}),
     ...(ref.weightClass ? { type: ref.weightClass } : {}),
     ...(abilities && abilities.length > 0 ? { abilities } : {}),
+    // Weight (issue #16 encumbrance) is read from the base ref, not
+    // `applyMaterialToArmor`'s output — mithral's real-world weight halving
+    // isn't modeled by that helper yet (documented gap in materials.ts).
+    ...(armor.weight ? { weight: armor.weight } : {}),
   };
   const inst: ItemInstance = {
     equipped: true,
@@ -571,6 +575,97 @@ export function updateGearItem(
   }
   const gear = doc.build.gear.map((g, i) => (i === index ? merged : g));
   return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Append a free-text mundane gear item (issue #16) — the picker fallback for
+ * anything not in `RefData.items` (ammo, rations, rope, potions bought at
+ * market, ...). Unlike `addGearItem`, there is no `itemId`: weight/price are
+ * entered directly since there's no ref to look them up from. Equipped by
+ * default (a custom item like ammo isn't really "worn," but `equipped` also
+ * doubles as "carried, not left behind" for the encumbrance total, and every
+ * other gear-add path defaults it true).  A blank `name` is a no-op (returns
+ * `doc` unchanged) so the UI can call this unconditionally from a form submit.
+ */
+export function addCustomGearItem(
+  doc: CharacterDoc,
+  name: string,
+  opts?: { weight?: number; price?: number; quantity?: number },
+): CharacterDoc {
+  const label = name.trim();
+  if (!label) return doc;
+  const inst: ItemInstance = { equipped: true, name: label };
+  if (opts?.weight != null && opts.weight > 0) inst.weight = opts.weight;
+  if (opts?.price != null && opts.price > 0) inst.price = opts.price;
+  if (opts?.quantity != null) {
+    const q = clampInt(opts.quantity, 0, 99999);
+    if (q !== 1) inst.quantity = q;
+  }
+  const gear = [...doc.build.gear, inst];
+  return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Set how many of the gear item at `index` the character carries (issue #16).
+ * Clamped to [0, 99999]; a value of exactly 1 (the implicit default) deletes
+ * the key entirely so the doc stays minimal, matching the rest of this
+ * module's "omit the default" convention. Out-of-range indices are silently
+ * ignored.
+ */
+export function setGearQuantity(doc: CharacterDoc, index: number, quantity: number): CharacterDoc {
+  if (index < 0 || index >= doc.build.gear.length) return doc;
+  const q = clampInt(quantity, 0, 99999);
+  const gear = doc.build.gear.map((inst, i) => {
+    if (i !== index) return inst;
+    const next = { ...inst };
+    if (q === 1) delete next.quantity;
+    else next.quantity = q;
+    return next;
+  });
+  return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Set charges spent so far on the gear item at `index` (issue #16 — e.g. 3 of
+ * a Staff of Healing's 10). Clamped to >= 0 only; the UI is responsible for
+ * clamping against the item's actual max (looked up from
+ * `RefData.items[itemId].uses.maxFormula`), since this module has no RefData
+ * access. A value of exactly 0 deletes the key (full charges, the implicit
+ * default). Out-of-range indices are silently ignored.
+ */
+export function setGearCharges(
+  doc: CharacterDoc,
+  index: number,
+  chargesUsed: number,
+): CharacterDoc {
+  if (index < 0 || index >= doc.build.gear.length) return doc;
+  const c = Math.max(0, Math.trunc(Number.isNaN(chargesUsed) ? 0 : chargesUsed));
+  const gear = doc.build.gear.map((inst, i) => {
+    if (i !== index) return inst;
+    const next = { ...inst };
+    if (c === 0) delete next.chargesUsed;
+    else next.chargesUsed = c;
+    return next;
+  });
+  return { ...doc, build: { ...doc.build, gear } };
+}
+
+/** Denomination keys for `live.money` (issue #16). */
+export type MoneyField = "pp" | "gp" | "sp" | "cp";
+
+/**
+ * Set one coin denomination in the character's purse (issue #16). Negative or
+ * NaN input clamps to 0; a 0 value deletes that denomination's key entirely
+ * (and the whole `money` object once every denomination is 0), matching the
+ * rest of this module's "omit the default" convention.
+ */
+export function setMoney(doc: CharacterDoc, field: MoneyField, value: number): CharacterDoc {
+  const v = Math.max(0, Math.trunc(Number.isNaN(value) ? 0 : value));
+  const money = { ...doc.live.money };
+  if (v === 0) delete money[field];
+  else money[field] = v;
+  const cleaned = Object.keys(money).length === 0 ? undefined : money;
+  return { ...doc, live: { ...doc.live, money: cleaned } };
 }
 
 /**

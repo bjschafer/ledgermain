@@ -1,18 +1,23 @@
 /**
  * Unit tests for gear-related doc transitions: addGearItem, addWornArmor,
- * setGearEquipped, removeGear.
+ * setGearEquipped, removeGear, plus issue #16 additions (quantity, charges,
+ * custom gear, money).
  */
 import { describe, expect, it } from "bun:test";
 
 import type { ArmorRef, WornArmor } from "@pf1/schema";
 
 import {
+  addCustomGearItem,
   addGearItem,
   addWornArmor,
   addWornArmorFromRef,
   createEmptyDoc,
   removeGear,
+  setGearCharges,
   setGearEquipped,
+  setGearQuantity,
+  setMoney,
   updateGearItem,
 } from "../src/model/doc.js";
 
@@ -404,5 +409,141 @@ describe("updateGearItem()", () => {
     });
     expect(updated.build.gear[0]!.armor!.masterwork).toBeUndefined();
     expect(updated.build.gear[0]!.armor!.enhancement).toBe(2);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// addCustomGearItem (issue #16)
+// ---------------------------------------------------------------------------
+describe("addCustomGearItem()", () => {
+  it("appends a free-text gear entry with weight/price/quantity", () => {
+    const d = addCustomGearItem(doc(), "Arrows", { weight: 0.15, price: 0.05, quantity: 20 });
+    expect(d.build.gear).toHaveLength(1);
+    const inst = d.build.gear[0]!;
+    expect(inst.name).toBe("Arrows");
+    expect(inst.equipped).toBe(true);
+    expect(inst.weight).toBe(0.15);
+    expect(inst.price).toBe(0.05);
+    expect(inst.quantity).toBe(20);
+    expect(inst.itemId).toBeUndefined();
+  });
+
+  it("omits quantity when it's the implicit default of 1", () => {
+    const d = addCustomGearItem(doc(), "Rope", { weight: 10 });
+    expect(d.build.gear[0]!.quantity).toBeUndefined();
+  });
+
+  it("omits weight/price when zero or absent", () => {
+    const d = addCustomGearItem(doc(), "Trinket");
+    expect(d.build.gear[0]!.weight).toBeUndefined();
+    expect(d.build.gear[0]!.price).toBeUndefined();
+  });
+
+  it("trims the name and is a no-op for a blank name", () => {
+    const trimmed = addCustomGearItem(doc(), "  Rations  ");
+    expect(trimmed.build.gear[0]!.name).toBe("Rations");
+    const blank = addCustomGearItem(doc(), "   ");
+    expect(blank.build.gear).toHaveLength(0);
+  });
+
+  it("does not mutate the original doc", () => {
+    const d = doc();
+    addCustomGearItem(d, "Arrows", { quantity: 20 });
+    expect(d.build.gear).toHaveLength(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setGearQuantity (issue #16)
+// ---------------------------------------------------------------------------
+describe("setGearQuantity()", () => {
+  it("sets a quantity on a gear entry", () => {
+    const d = setGearQuantity(addGearItem(doc(), "arrow"), 0, 20);
+    expect(d.build.gear[0]!.quantity).toBe(20);
+  });
+
+  it("deletes the key when set back to 1 (the implicit default)", () => {
+    const withQty = setGearQuantity(addGearItem(doc(), "arrow"), 0, 20);
+    const back = setGearQuantity(withQty, 0, 1);
+    expect(back.build.gear[0]!.quantity).toBeUndefined();
+  });
+
+  it("clamps to [0, 99999]", () => {
+    const d = setGearQuantity(addGearItem(doc(), "arrow"), 0, -5);
+    expect(d.build.gear[0]!.quantity).toBe(0);
+    const over = setGearQuantity(addGearItem(doc(), "arrow"), 0, 1_000_000);
+    expect(over.build.gear[0]!.quantity).toBe(99999);
+  });
+
+  it("is a no-op for out-of-range index", () => {
+    const d = addGearItem(doc(), "arrow");
+    expect(setGearQuantity(d, 5, 3)).toBe(d);
+    expect(setGearQuantity(d, -1, 3)).toBe(d);
+  });
+
+  it("does not mutate the original doc", () => {
+    const d = addGearItem(doc(), "arrow");
+    setGearQuantity(d, 0, 20);
+    expect(d.build.gear[0]!.quantity).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setGearCharges (issue #16)
+// ---------------------------------------------------------------------------
+describe("setGearCharges()", () => {
+  it("sets charges used on a gear entry", () => {
+    const d = setGearCharges(addGearItem(doc(), "staff-of-healing"), 0, 3);
+    expect(d.build.gear[0]!.chargesUsed).toBe(3);
+  });
+
+  it("deletes the key when set back to 0 (full charges)", () => {
+    const withCharges = setGearCharges(addGearItem(doc(), "staff-of-healing"), 0, 3);
+    const back = setGearCharges(withCharges, 0, 0);
+    expect(back.build.gear[0]!.chargesUsed).toBeUndefined();
+  });
+
+  it("clamps negative/NaN input to 0", () => {
+    const d = setGearCharges(addGearItem(doc(), "staff-of-healing"), 0, -3);
+    expect(d.build.gear[0]!.chargesUsed).toBeUndefined();
+  });
+
+  it("is a no-op for out-of-range index", () => {
+    const d = addGearItem(doc(), "staff-of-healing");
+    expect(setGearCharges(d, 5, 3)).toBe(d);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setMoney (issue #16)
+// ---------------------------------------------------------------------------
+describe("setMoney()", () => {
+  it("sets one denomination", () => {
+    const d = setMoney(doc(), "gp", 150);
+    expect(d.live.money).toEqual({ gp: 150 });
+  });
+
+  it("accumulates multiple denominations independently", () => {
+    let d = setMoney(doc(), "gp", 150);
+    d = setMoney(d, "sp", 20);
+    d = setMoney(d, "pp", 2);
+    expect(d.live.money).toEqual({ gp: 150, sp: 20, pp: 2 });
+  });
+
+  it("setting a denomination to 0 removes that key", () => {
+    const withGp = setMoney(doc(), "gp", 150);
+    const cleared = setMoney(withGp, "gp", 0);
+    expect(cleared.live.money).toBeUndefined();
+  });
+
+  it("clamps negative/NaN input to 0 (removes the key)", () => {
+    const d = setMoney(doc(), "cp", -5);
+    expect(d.live.money).toBeUndefined();
+  });
+
+  it("does not mutate the original doc", () => {
+    const d = doc();
+    setMoney(d, "gp", 100);
+    expect(d.live.money).toBeUndefined();
   });
 });

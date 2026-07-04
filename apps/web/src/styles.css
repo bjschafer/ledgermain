@@ -1528,6 +1528,56 @@ button:focus-visible,
 
 /* ---------------------------------------------------------- gear / inventory -- */
 
+/* Wealth (coin purse) — always-on inventory bookkeeping, issue #16. */
+.wealth-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.wealth-fields {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wealth-field {
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+}
+
+.wealth-field > span {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Per-row quantity stepper + charge tracker, issue #16. */
+.gear-qty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.gear-qty > span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gear-charges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .gear-list {
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
