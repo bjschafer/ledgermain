@@ -11,11 +11,17 @@ import {
   restFamiliar,
   setFamiliarInReach,
 } from "../../model/familiar.js";
-import { signed, skillName } from "../../model/names.js";
+import {
+  formatFamiliarAttackDamage,
+  formatFamiliarAttackName,
+  formatFamiliarAttackRoll,
+  formatFamiliarSummary,
+  partitionFamiliarSkills,
+  PRIMARY_FAMILIAR_SKILLS,
+} from "../../model/familiarDisplay.js";
+import { signed } from "../../model/names.js";
+import { StatSeal } from "../StatSeal.js";
 import type { BuilderProps } from "../builder/types.js";
-
-/** The six PF1 "animal" universal-monster-rule class skills, always shown even at 0 ranks. */
-const ALWAYS_SHOWN_SKILLS = ["ste", "per", "acr", "clm", "fly", "swm"];
 
 /**
  * Tracker panel for a tracked familiar (`build.familiar`) — HP tracker plus
@@ -37,22 +43,20 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
 
   const skillIds = Array.from(
     new Set([
-      ...ALWAYS_SHOWN_SKILLS,
+      ...PRIMARY_FAMILIAR_SKILLS,
       ...Object.entries(doc.build.skillRanks ?? {})
         .filter(([, ranks]) => ranks > 0)
         .map(([id]) => id),
     ]),
-  ).sort((a, b) => skillName(a).localeCompare(skillName(b)));
+  );
+  const { primary: primarySkills, secondary: secondarySkills } = partitionFamiliarSkills(
+    skillIds,
+    familiar,
+  );
 
   return (
     <Panel title={`Familiar — ${familiar.name}`} step="fam" storageKey="panel:Familiar">
-      <div className="familiar-summary hint">
-        {familiar.speciesName}, {familiar.size}. Speed{" "}
-        {Object.entries(familiar.speeds)
-          .map(([mode, ft]) => (mode === "land" ? `${ft} ft.` : `${mode} ${ft} ft.`))
-          .join(", ")}
-        . {familiar.senses.join(", ")}.
-      </div>
+      <div className="familiar-summary hint">{formatFamiliarSummary(familiar)}</div>
 
       <label className="hp-inline familiar-in-reach">
         <input
@@ -121,58 +125,109 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
         </button>
       </div>
 
-      <div className="familiar-stats">
-        <div>
-          AC {familiar.ac.normal}, touch {familiar.ac.touch}, flat-footed {familiar.ac.flatFooted}
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Defense</span>
+          <div className="stat-group-rule" />
         </div>
-        <div>
-          Fort {signed(familiar.saves.fort)}, Ref {signed(familiar.saves.ref)}, Will{" "}
-          {signed(familiar.saves.will)}
+        <div className="stat-group-grid stat-group-grid--4">
+          <StatSeal
+            label="AC"
+            value={familiar.ac.normal}
+            components={familiar.ac.components}
+            provTitle="Familiar AC components"
+            className="seal--compact"
+          />
+          <StatSeal label="Touch" value={familiar.ac.touch} className="seal--compact" />
+          <StatSeal label="Flat-Footed" value={familiar.ac.flatFooted} className="seal--compact" />
+          <StatSeal label="CMD" value={familiar.cmd} className="seal--compact" />
+          {familiar.spellResistance !== undefined ? (
+            <StatSeal label="SR" value={familiar.spellResistance} className="seal--compact" />
+          ) : null}
         </div>
-        <div>
-          BAB {signed(familiar.bab)}, CMB {signed(familiar.cmb)}, CMD {familiar.cmd}
+      </div>
+
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Offense</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--2">
+          <StatSeal label="BAB" value={signed(familiar.bab)} className="seal--compact" />
+          <StatSeal label="CMB" value={signed(familiar.cmb)} className="seal--compact" />
         </div>
         {familiar.attacks.length > 0 ? (
-          <div className="familiar-attacks">
-            {familiar.attacks
-              .map(
-                (a) =>
-                  `${a.count > 1 ? `${a.count} ${a.name.toLowerCase()}s` : a.name} ${signed(a.attack)} (${
-                    a.damageDice
-                  }${a.damageBonus !== 0 ? signed(a.damageBonus) : ""}${a.note ? ` ${a.note}` : ""})`,
-              )
-              .join(", ")}
+          <div className="weapon-attack-list familiar-attack-list">
+            {familiar.attacks.map((a, i) => (
+              <div key={i} className="weapon-attack-row">
+                <span className="weapon-attack-name">{formatFamiliarAttackName(a)}</span>
+                <div className="weapon-attack-stats familiar-attack-stats">
+                  <StatSeal
+                    label="Attack"
+                    value={formatFamiliarAttackRoll(a)}
+                    className="seal--compact"
+                  />
+                  <StatSeal
+                    label="Damage"
+                    value={formatFamiliarAttackDamage(a)}
+                    className="seal--compact"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         ) : null}
       </div>
 
-      <h4 className="tracker-sub">Skills</h4>
-      <div className="familiar-skills num">
-        {skillIds.map((id) => {
-          const skill = familiar.skills[id];
-          if (!skill) return null;
-          return (
-            <span key={id} className="familiar-skill">
-              {skillName(id)} {signed(skill.total)}
-            </span>
-          );
-        })}
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Saves</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--3">
+          <StatSeal label="Fort" value={signed(familiar.saves.fort)} className="seal--compact" />
+          <StatSeal label="Ref" value={signed(familiar.saves.ref)} className="seal--compact" />
+          <StatSeal label="Will" value={signed(familiar.saves.will)} className="seal--compact" />
+        </div>
       </div>
+
+      <h4 className="tracker-sub">Skills</h4>
+      <div className="familiar-skill-grid">
+        {primarySkills.map((s) => (
+          <div key={s.id} className="familiar-skill familiar-skill--primary">
+            <span className="fs-name">{s.name}</span>
+            <span className="fs-val num">{signed(s.total)}</span>
+          </div>
+        ))}
+      </div>
+
+      {secondarySkills.length > 0 ? (
+        <details className="spell-detail familiar-skills-more">
+          <summary className="spell-detail-summary">
+            Show {secondarySkills.length} more skill{secondarySkills.length === 1 ? "" : "s"}
+          </summary>
+          <div className="familiar-skill-grid">
+            {secondarySkills.map((s) => (
+              <div key={s.id} className="familiar-skill">
+                <span className="fs-name">{s.name}</span>
+                <span className="fs-val num">{signed(s.total)}</span>
+              </div>
+            ))}
+          </div>
+        </details>
+      ) : null}
 
       {familiar.specialAbilities.length > 0 ? (
         <>
           <h4 className="tracker-sub">Special abilities</h4>
-          <ul className="familiar-abilities hint">
+          <div className="chips familiar-abilities">
             {familiar.specialAbilities.map((a) => (
-              <li key={a.name} title={a.detail}>
+              <span key={a.name} className="chip display-only" title={a.detail}>
                 {a.name}
-              </li>
+              </span>
             ))}
-          </ul>
+          </div>
         </>
-      ) : null}
-      {familiar.spellResistance !== undefined ? (
-        <div className="hint">Spell Resistance {familiar.spellResistance}</div>
       ) : null}
     </Panel>
   );

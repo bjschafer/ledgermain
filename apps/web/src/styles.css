@@ -3269,3 +3269,85 @@ input[type="text"].saved-roll-name:focus {
 .preview-notice .btn-ghost {
   float: right;
 }
+
+/* --------------------------------------------------------- Familiar panel -- */
+/* `FamiliarPanel.tsx` reuses the sheet's stat-group/StatSeal/weapon-attack-list
+   vocabulary at compact scale (`seal--compact`) so the familiar reads as a
+   smaller sibling of the main sheet rather than its own ad-hoc look. Skills
+   get a dedicated compact grid (aligned name + modifier) instead of the seal
+   treatment, since a dozen-plus skills as full seals would be too heavy. */
+
+.familiar-summary {
+  margin-bottom: 10px;
+}
+
+.familiar-in-reach {
+  margin-bottom: 14px;
+}
+
+.familiar-stat-group {
+  margin-top: 16px;
+}
+
+.familiar-attack-list {
+  margin-top: 10px;
+}
+
+.familiar-attack-stats {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.familiar-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 6px;
+}
+
+.familiar-skill {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+/* The relevant-at-the-table skills (physical checks + anything with a
+   genuinely useful total) get a gold-dim accent so they read as primary at a
+   glance; everything else lives behind the "show more" disclosure below. */
+.familiar-skill--primary {
+  border-color: var(--gold-dim);
+}
+
+.familiar-skill .fs-name {
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.familiar-skill--primary .fs-name {
+  color: var(--gold-2);
+}
+
+.familiar-skill .fs-val {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.familiar-skill--primary .fs-val {
+  color: var(--gold-2);
+}
+
+.familiar-skills-more {
+  margin-top: 8px;
+}
+
+.familiar-skills-more .familiar-skill-grid {
+  margin-top: 8px;
+}
+
+.familiar-abilities {
+  margin-bottom: 4px;
+}
