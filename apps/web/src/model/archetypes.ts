@@ -70,10 +70,7 @@ function isClassStructurallyUnpaired(refData: RefData, classTag: string): boolea
  * `checkArchetypeConflict`'s hard block instead, since it can actually detect
  * overlaps there.
  *
- * TODO(picker wiring): apps/web/src/components/builder/ArchetypePicker.tsx
- * (owned by another agent's archetype-numerics work in this merge) doesn't
- * render these yet — wire a `archetypeConflictWarnings(doc, refData).map(...)`
- * block into it under the chip grid.
+ * Rendered by ArchetypePicker.tsx below its hint text.
  */
 export function archetypeConflictWarnings(doc: CharacterDoc, refData: RefData): string[] {
   const chosen = doc.build.archetypes ?? [];

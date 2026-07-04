@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { archetypeHasModeledEffects } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
-import { checkArchetypeConflict } from "../../model/archetypes.js";
+import { archetypeConflictWarnings, checkArchetypeConflict } from "../../model/archetypes.js";
 import { setArchetypes } from "../../model/doc.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -78,6 +78,11 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
             Features below); the rest show prose only. Picking one that would replace an
             already-swapped ability is blocked (it would silently do nothing).
           </p>
+          {archetypeConflictWarnings(doc, refData).map((w) => (
+            <p key={w} className="hint affliction-warn">
+              ⚠ {w}
+            </p>
+          ))}
           <input
             className="search"
             type="text"
