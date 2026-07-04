@@ -190,6 +190,46 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
 };
 
 /**
+ * Feats that raise the maximum of a class-feature-derived resource pool
+ * (Rage rounds/day, Ki pool, Arcane Reservoir, …). Kept OUT of `FEAT_EFFECTS`
+ * because pools aren't part of the typed-stacking `Change` pipeline
+ * (`collect.ts` / `evalChange`) — they're a flat maximum read by
+ * `deriveResourcePools` (`resources.ts`) off a class feature's `uses.maxFormula`.
+ * `featureTag` matches `RefData.classFeatures[id].tag`; `maxDelta` is added to
+ * that pool's derived max once per instance of the feat in `doc.build.feats`
+ * (all six of these are RAW "you can take this feat multiple times, effects
+ * stack" — `deriveResourcePools` multiplies by the count it finds).
+ * Clean-room from d20pfsrd/Archives of Nethys, not transcribed from Foundry.
+ */
+export interface FeatPoolEffect {
+  /** `RefData.classFeatures[...].tag` of the pool this feat's bonus targets. */
+  featureTag: string;
+  /** Amount added to the pool's max, per instance of the feat taken. */
+  maxDelta: number;
+}
+
+export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
+  // Extra Rage: +6 rounds/day of rage (PF1 CRB p. 122).
+  "extra-rage": { featureTag: "rage", maxDelta: 6 },
+
+  // Extra Ki: +2 ki pool points (PF1 CRB p. 122).
+  "extra-ki": { featureTag: "kiPool", maxDelta: 2 },
+
+  // Extra Performance: +6 rounds/day of bardic performance (PF1 CRB p. 122).
+  "extra-performance": { featureTag: "bardicPerformance", maxDelta: 6 },
+
+  // Extra Channel: +2 uses/day of channel energy (PF1 CRB p. 122).
+  "extra-channel": { featureTag: "channelEnergy", maxDelta: 2 },
+
+  // Extra Lay On Hands: +2 uses/day of lay on hands (PF1 CRB p. 122).
+  "extra-lay-on-hands": { featureTag: "layOnHands", maxDelta: 2 },
+
+  // Extra Reservoir: +3 points to the arcane reservoir maximum (Advanced
+  // Class Guide p. 12).
+  "extra-reservoir": { featureTag: "arcaneReservoir", maxDelta: 3 },
+};
+
+/**
  * Situational feat effects for the saved-rolls attachment feature (see the
  * `SituationalFeatEntry` doc comment above). Deliberately kept OUT of
  * `FEAT_EFFECTS` — `compute()` must never read from this map. Each entry's

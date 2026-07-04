@@ -15,6 +15,12 @@ function raceId(name: string): string {
   return entry[0];
 }
 
+function featId(name: string): string {
+  const entry = Object.entries(ref.feats).find(([, f]) => f.name === name);
+  if (!entry) throw new Error(`feat not found: ${name}`);
+  return entry[0];
+}
+
 function buffByName(name: string): Buff {
   const found = Object.values(ref.buffs).find((b) => b.name === name);
   if (!found) throw new Error(`buff not found: ${name}`);
@@ -258,5 +264,65 @@ describe("resource pools derived from class features", () => {
     const sheet = compute(doc, ref);
     const pools = deriveResourcePools(doc, ref, sheet.abilities);
     expect(pools.find((p) => p.name === "Wild Shape")).toBeUndefined();
+  });
+});
+
+describe("feats that raise a derived resource pool's max (feat-effects.ts FEAT_POOL_EFFECTS)", () => {
+  it("Extra Reservoir: arcanist 4's Arcane Reservoir (3 + level = 7) gains +3 -> 10", () => {
+    const base: CharacterDoc = {
+      ...makeDoc(),
+      identity: { name: "Lyle", race: raceId("Human"), classes: [{ tag: "arcanist", level: 4 }] },
+    };
+    const withFeat: CharacterDoc = {
+      ...base,
+      build: { ...base.build, feats: [featId("Extra Reservoir")] },
+    };
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    const baseReservoir = deriveResourcePools(base, ref, baseSheet.abilities).find(
+      (p) => p.name === "Arcane Reservoir",
+    );
+    const featReservoir = deriveResourcePools(withFeat, ref, featSheet.abilities).find(
+      (p) => p.name === "Arcane Reservoir",
+    );
+    expect(baseReservoir?.max).toBe(7);
+    expect(featReservoir?.max).toBe(10);
+  });
+
+  it("Extra Rage: barbarian 5's Rage (4 + Con mod + 2*(lvl-1) = 14) gains +6 -> 20", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      identity: { name: "Grog", race: raceId("Human"), classes: [{ tag: "barbarian", level: 5 }] },
+      build: { ...makeDoc().build, feats: [featId("Extra Rage")] },
+    };
+    const sheet = compute(doc, ref);
+    const rage = deriveResourcePools(doc, ref, sheet.abilities).find((p) => p.name === "Rage");
+    expect(rage?.max).toBe(20);
+  });
+
+  it("Extra Rage stacks when taken twice: +12 total -> 26", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      identity: { name: "Grog", race: raceId("Human"), classes: [{ tag: "barbarian", level: 5 }] },
+      build: { ...makeDoc().build, feats: [featId("Extra Rage"), featId("Extra Rage")] },
+    };
+    const sheet = compute(doc, ref);
+    const rage = deriveResourcePools(doc, ref, sheet.abilities).find((p) => p.name === "Rage");
+    expect(rage?.max).toBe(26);
+  });
+
+  it("a feat's pool bonus doesn't leak onto an unrelated pool of the same character", () => {
+    // A cleric with Extra Rage (no rage class feature present) should show no
+    // Rage pool at all, and Channel Energy should be unaffected.
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 14 },
+      identity: { name: "Hex", race: raceId("Human"), classes: [{ tag: "cleric", level: 5 }] },
+      build: { ...makeDoc().build, feats: [featId("Extra Rage")] },
+    };
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    expect(pools.find((p) => p.name === "Rage")).toBeUndefined();
+    expect(pools.find((p) => p.name === "Channel Energy")?.max).toBe(5);
   });
 });

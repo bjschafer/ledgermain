@@ -14,6 +14,7 @@
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { collectGrantedFeatures } from "./archetypes.js";
+import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
 import { channelEnergyDetail, layOnHandsDice, smiteEvilDetail, smiteEvilLabel } from "./tables.js";
@@ -50,6 +51,7 @@ export function deriveResourcePools(
 ): DerivedResourcePool[] {
   const rollData = buildRollData(doc, refData, abilities as Parameters<typeof buildRollData>[2]);
   const pools: DerivedResourcePool[] = [];
+  const poolMaxBonusByFeatureTag = collectFeatPoolBonuses(doc, refData);
 
   for (const { classTag, grant, resourcePool } of collectGrantedFeatures(doc, refData)) {
     const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
@@ -115,10 +117,15 @@ export function deriveResourcePools(
       detail = smiteEvilLabel(smiteEvilDetail(classLevel, chaMod));
     }
 
+    // Feats that raise this pool's maximum (Extra Rage, Extra Reservoir, …
+    // see feat-effects.ts FEAT_POOL_EFFECTS) — additive, keyed by the
+    // class-feature's tag so unrelated same-named pools aren't affected.
+    const featBonus = feature.tag ? (poolMaxBonusByFeatureTag.get(feature.tag) ?? 0) : 0;
+
     pools.push({
       id: feature.id,
       name: feature.name,
-      max: Math.trunc(max),
+      max: Math.trunc(max) + featBonus,
       per: feature.uses?.per,
       classTag,
       detail,
@@ -126,4 +133,23 @@ export function deriveResourcePools(
   }
 
   return pools;
+}
+
+/**
+ * Sum, per class-feature tag, how much `doc.build.feats` raises that
+ * feature's derived pool max (see `FEAT_POOL_EFFECTS`). A feat taken multiple
+ * times (e.g. two copies of Extra Reservoir in `doc.build.feats` — see
+ * `model/feats.ts`'s "manually-added duplicates" budget note) contributes its
+ * `maxDelta` once per occurrence, matching the feats' own "stacks" wording.
+ */
+function collectFeatPoolBonuses(doc: CharacterDoc, refData: RefData): Map<string, number> {
+  const bonuses = new Map<string, number>();
+  for (const featId of doc.build.feats ?? []) {
+    const feat = refData.feats[featId];
+    if (!feat) continue;
+    const effect = FEAT_POOL_EFFECTS[featNameSlug(feat.name)];
+    if (!effect) continue;
+    bonuses.set(effect.featureTag, (bonuses.get(effect.featureTag) ?? 0) + effect.maxDelta);
+  }
+  return bonuses;
 }

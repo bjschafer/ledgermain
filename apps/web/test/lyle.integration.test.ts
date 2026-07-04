@@ -294,18 +294,15 @@ describe("Lyle — resource pools (Arcane Reservoir / Consume Spells / wand / po
     expect(consumeSpells.max).toBe(2);
   });
 
-  it("STRUCTURAL GAP: Arcane Reservoir derives to 7, not the PDF's 10 — Extra Reservoir's +3 isn't wired into deriveResourcePools", () => {
-    // deriveResourcePools only reads a class FEATURE's own uses.maxFormula
-    // ("3 + @class.unlevel" for Arcane Reservoir = 3+4 = 7); no feat anywhere
-    // in this app feeds a derived resource-pool max (same story for e.g. a
-    // Barbarian feat that would extend Rage rounds — this is a pre-existing,
-    // general limitation, not something the arcanist work introduced). Not
-    // fixed here per the task's scope (would need new feat->pool wiring
-    // machinery); documented as a known gap in the final report instead.
+  it("Arcane Reservoir derives to 10, matching the PDF — Extra Reservoir's +3 feeds deriveResourcePools", () => {
+    // Arcane Reservoir's own uses.maxFormula ("3 + @class.unlevel") gives 3+4=7;
+    // Extra Reservoir (in Lyle's feats — see lyle.fixture.ts) adds +3 via
+    // FEAT_POOL_EFFECTS (feat-effects.ts), honored by deriveResourcePools
+    // (resources.ts). 7 + 3 = 10.
     const sheet = compute(baseDoc, ref);
     const pools = deriveResourcePools(baseDoc, ref, sheet.abilities);
     const reservoir = pools.find((p) => p.name === "Arcane Reservoir")!;
-    expect(reservoir.max).toBe(7);
+    expect(reservoir.max).toBe(10);
   });
 
   it("wand charges and potion count are seeded as manual pools (no vendored wand items — issue #36)", () => {

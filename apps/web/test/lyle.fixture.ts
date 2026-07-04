@@ -240,14 +240,12 @@ export function buildLyleDoc(ref: RefData): CharacterDoc {
   // --- live resource pools -----------------------------------------------------
   // Arcane Reservoir / Consume Spells are class-feature-derived pools
   // (deriveResourcePools reads their `uses.maxFormula` off the class feature,
-  // not from here) — seeded at full (used: 0) for a fresh import. NOTE: the
-  // derived Arcane Reservoir max is 7 (3 + class level), NOT the PDF's 10,
-  // because Extra Reservoir's +3 isn't wired into deriveResourcePools (feats
-  // never feed derived resource-pool maxes anywhere in this app) — a
-  // pre-existing, structural gap, not something introduced by the arcanist
-  // work; see the integration test and final report for detail.
+  // not from here) — seeded at full (used: 0) for a fresh import. Arcane
+  // Reservoir's derived max is 10: the feature's own "3 + class level" = 7,
+  // plus Extra Reservoir's +3 (FEAT_POOL_EFFECTS in feat-effects.ts, honored
+  // by deriveResourcePools) — matches the PDF exactly.
   doc = { ...doc, live: { ...doc.live, resources: { ...doc.live.resources } } };
-  doc = seedPool(doc, "CtDtLshBC8pc64JV", 7); // Arcane Reservoir (class-derived max)
+  doc = seedPool(doc, "CtDtLshBC8pc64JV", 10); // Arcane Reservoir (class-derived max)
   doc = seedPool(doc, "jkigrVeg3TUKg0Gy", 2); // Consume Spells (class-derived max, Cha mod)
   doc = addManualPool(doc, "Wand of mage armor", 47);
   doc = addManualPool(doc, "Potion of cure light wounds", 4);
