@@ -209,9 +209,15 @@ function computeAc(
   }
   const cands: AcCand[] = [];
 
-  cands.push({ category: "base", type: "base", value: 10, source: "Base", applied: true } as AcCand);
+  cands.push({
+    category: "base",
+    type: "base",
+    value: 10,
+    source: "Base",
+    applied: true,
+  } as AcCand);
 
-// worn armor / shield + max-dex cap
+  // worn armor / shield + max-dex cap
   let maxDexCap: number | undefined;
   let armorTotal = 0;
   let shieldTotal = 0;
@@ -223,13 +229,23 @@ function computeAc(
       shieldTotal += a.ac;
       cands.push({ category: "shield", type: "untyped", value: a.ac, source: label });
       if (a.enhancement) {
-        cands.push({ category: "shield", type: "enh", value: a.enhancement, source: `${label} (enhancement)` });
+        cands.push({
+          category: "shield",
+          type: "enh",
+          value: a.enhancement,
+          source: `${label} (enhancement)`,
+        });
       }
     } else {
       armorTotal += a.ac;
       cands.push({ category: "armor", type: "untyped", value: a.ac, source: label });
       if (a.enhancement) {
-        cands.push({ category: "armor", type: "enh", value: a.enhancement, source: `${label} (enhancement)` });
+        cands.push({
+          category: "armor",
+          type: "enh",
+          value: a.enhancement,
+          source: `${label} (enhancement)`,
+        });
       }
       if (a.maxDex !== undefined) {
         maxDexCap = maxDexCap === undefined ? a.maxDex : Math.min(maxDexCap ?? a.maxDex, a.maxDex);
@@ -365,7 +381,10 @@ function computeHp(
 
   const components: ModifierComponent[] = [];
   if (hdBase !== 0) components.push(synthetic("Hit Dice", "base", hdBase));
-  if (conTotal !== 0) components.push(synthetic(`Con (${conMod >= 0 ? "+" : ""}${conMod} × ${hd} HD)`, "ability", conTotal));
+  if (conTotal !== 0)
+    components.push(
+      synthetic(`Con (${conMod >= 0 ? "+" : ""}${conMod} × ${hd} HD)`, "ability", conTotal),
+    );
   if (fcbHp !== 0) components.push(synthetic("Favored class", "untyped", fcbHp));
   components.push(...toComponents(hpStack.modifiers));
 
@@ -556,9 +575,7 @@ function computeWeaponAttacks(
     // General attack changes + per-group feat bonuses (e.g. Weapon Focus via "attack.weapon.<group>").
     const weaponAttackStack = resolveStack([
       ...forTarget(collected, "attack"),
-      ...(category === "melee"
-        ? forTarget(collected, "mattack")
-        : forTarget(collected, "rattack")),
+      ...(category === "melee" ? forTarget(collected, "mattack") : forTarget(collected, "rattack")),
       ...(w.group ? forTarget(collected, `attack.weapon.${w.group}`) : []),
     ]);
     const attackTotal =
@@ -568,7 +585,9 @@ function computeWeaponAttacks(
       synthetic(attackAbilityLabel, "ability", attackAbilityMod),
       ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
       ...(enh !== 0 ? [synthetic(`${w.name} (enhancement)`, "enh", enh)] : []),
-      ...(masterworkBonus !== 0 ? [synthetic(`${w.name} (masterwork)`, "enh", masterworkBonus)] : []),
+      ...(masterworkBonus !== 0
+        ? [synthetic(`${w.name} (masterwork)`, "enh", masterworkBonus)]
+        : []),
       ...toComponents(weaponAttackStack.modifiers),
     ];
 
@@ -610,7 +629,11 @@ function computeWeaponAttacks(
     const result: ResolvedWeaponAttack = {
       name: w.name,
       category,
-      attack: { total: attackTotal, components: attackComponents, ...(iteratives ? { iteratives } : {}) },
+      attack: {
+        total: attackTotal,
+        components: attackComponents,
+        ...(iteratives ? { iteratives } : {}),
+      },
       damageBonus: { total: damageTotal, components: damageComponents },
       crit,
     };
@@ -652,9 +675,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // Enlarge/Reduce Person and similar effects shift the character along the
   // size ladder; round toward zero (a +1.5 or -0.5 step isn't a thing PF1
   // formulas produce, but be defensive) and clamp at the ladder's ends.
-  const sizeShift = Math.trunc(
-    forTarget(collected, "size").reduce((s, m) => s + m.value, 0),
-  );
+  const sizeShift = Math.trunc(forTarget(collected, "size").reduce((s, m) => s + m.value, 0));
   const size: SizeId = shiftSize(baseSize, sizeShift);
   const sizeAttackMod = SIZE_AC_MOD[size];
 
@@ -716,7 +737,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const cmb = bab + strMod + sizeSpecial + cmbStack.total;
   const cmdAcBonus = ac.components.reduce(
     (s, c) =>
-      c.applied && (c.category === "dodge" || c.category === "deflection" || c.category === "generic")
+      c.applied &&
+      (c.category === "dodge" || c.category === "deflection" || c.category === "generic")
         ? s + c.value
         : s,
     0,
@@ -791,14 +813,22 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
         break;
       case "ac.normal": {
         const acOverrideComp: AcComponent = { ...overrideComp, category: "generic" };
-        sheet.ac = { ...sheet.ac, normal: val, components: [...sheet.ac.components, acOverrideComp] };
+        sheet.ac = {
+          ...sheet.ac,
+          normal: val,
+          components: [...sheet.ac.components, acOverrideComp],
+        };
         break;
       }
       case "speeds.land":
         sheet.speeds = { ...sheet.speeds, land: val };
         break;
       case "initiative.total":
-        sheet.initiative = { ...sheet.initiative, total: val, components: [...sheet.initiative.components, overrideComp] };
+        sheet.initiative = {
+          ...sheet.initiative,
+          total: val,
+          components: [...sheet.initiative.components, overrideComp],
+        };
         break;
       case "bab":
         sheet.bab = val;
@@ -810,13 +840,34 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
         sheet.cmb = val;
         break;
       case "saves.fort.total":
-        sheet.saves = { ...sheet.saves, fort: { ...sheet.saves.fort, total: val, components: [...sheet.saves.fort.components, overrideComp] } };
+        sheet.saves = {
+          ...sheet.saves,
+          fort: {
+            ...sheet.saves.fort,
+            total: val,
+            components: [...sheet.saves.fort.components, overrideComp],
+          },
+        };
         break;
       case "saves.ref.total":
-        sheet.saves = { ...sheet.saves, ref: { ...sheet.saves.ref, total: val, components: [...sheet.saves.ref.components, overrideComp] } };
+        sheet.saves = {
+          ...sheet.saves,
+          ref: {
+            ...sheet.saves.ref,
+            total: val,
+            components: [...sheet.saves.ref.components, overrideComp],
+          },
+        };
         break;
       case "saves.will.total":
-        sheet.saves = { ...sheet.saves, will: { ...sheet.saves.will, total: val, components: [...sheet.saves.will.components, overrideComp] } };
+        sheet.saves = {
+          ...sheet.saves,
+          will: {
+            ...sheet.saves.will,
+            total: val,
+            components: [...sheet.saves.will.components, overrideComp],
+          },
+        };
         break;
     }
   }

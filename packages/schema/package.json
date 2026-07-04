@@ -2,8 +2,8 @@
   "name": "@pf1/schema",
   "version": "0.0.0",
   "private": true,
-  "license": "MIT",
   "description": "Shared TypeScript types for PF1 reference data, character documents, and derived sheets.",
+  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {

@@ -41,54 +41,54 @@ export function IdentitySection({ doc, update }: BuilderProps) {
       </label>
       <details className="identity-more">
         <summary>More details</summary>
-      <label className="field">
-        <span>Deity</span>
-        <input
-          type="text"
-          value={doc.identity.deity ?? ""}
-          onChange={(e) => update((d) => setDeity(d, e.target.value))}
-        />
-      </label>
-      <label className="field">
-        <span>Gender</span>
-        <input
-          type="text"
-          value={doc.identity.gender ?? ""}
-          onChange={(e) => update((d) => setGender(d, e.target.value))}
-        />
-      </label>
-      <label className="field">
-        <span>Age</span>
-        <input
-          type="text"
-          value={doc.identity.age ?? ""}
-          onChange={(e) => update((d) => setAge(d, e.target.value))}
-        />
-      </label>
-      <label className="field">
-        <span>Height</span>
-        <input
-          type="text"
-          value={doc.identity.height ?? ""}
-          onChange={(e) => update((d) => setHeight(d, e.target.value))}
-        />
-      </label>
-      <label className="field">
-        <span>Weight</span>
-        <input
-          type="text"
-          value={doc.identity.weight ?? ""}
-          onChange={(e) => update((d) => setWeight(d, e.target.value))}
-        />
-      </label>
-      <label className="field">
-        <span>Appearance</span>
-        <textarea
-          rows={3}
-          value={doc.identity.appearance ?? ""}
-          onChange={(e) => update((d) => setAppearance(d, e.target.value))}
-        />
-      </label>
+        <label className="field">
+          <span>Deity</span>
+          <input
+            type="text"
+            value={doc.identity.deity ?? ""}
+            onChange={(e) => update((d) => setDeity(d, e.target.value))}
+          />
+        </label>
+        <label className="field">
+          <span>Gender</span>
+          <input
+            type="text"
+            value={doc.identity.gender ?? ""}
+            onChange={(e) => update((d) => setGender(d, e.target.value))}
+          />
+        </label>
+        <label className="field">
+          <span>Age</span>
+          <input
+            type="text"
+            value={doc.identity.age ?? ""}
+            onChange={(e) => update((d) => setAge(d, e.target.value))}
+          />
+        </label>
+        <label className="field">
+          <span>Height</span>
+          <input
+            type="text"
+            value={doc.identity.height ?? ""}
+            onChange={(e) => update((d) => setHeight(d, e.target.value))}
+          />
+        </label>
+        <label className="field">
+          <span>Weight</span>
+          <input
+            type="text"
+            value={doc.identity.weight ?? ""}
+            onChange={(e) => update((d) => setWeight(d, e.target.value))}
+          />
+        </label>
+        <label className="field">
+          <span>Appearance</span>
+          <textarea
+            rows={3}
+            value={doc.identity.appearance ?? ""}
+            onChange={(e) => update((d) => setAppearance(d, e.target.value))}
+          />
+        </label>
       </details>
     </Panel>
   );

@@ -91,7 +91,9 @@ describe("availableSavedRollSources()", () => {
     expect(kinds).toContain("cmd");
     expect(kinds).toContain("initiative");
     expect(options.filter((o) => o.source.kind === "save")).toHaveLength(3);
-    expect(options.some((o) => o.source.kind === "weapon" && o.source.weaponName === "Longsword")).toBe(true);
+    expect(
+      options.some((o) => o.source.kind === "weapon" && o.source.weaponName === "Longsword"),
+    ).toBe(true);
     expect(kinds).toContain("custom");
   });
 
@@ -278,9 +280,15 @@ describe("saved-roll feat attachment transitions", () => {
     let doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");
     const id = doc.build.savedRolls![0]!.id;
     doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack" });
-    expect(doc.build.savedRolls![0]!.feats).toEqual([{ slug: "power-attack", name: "Power Attack" }]);
+    expect(doc.build.savedRolls![0]!.feats).toEqual([
+      { slug: "power-attack", name: "Power Attack" },
+    ]);
 
-    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack", option: "two-handed" });
+    doc = addSavedRollFeat(doc, id, {
+      slug: "power-attack",
+      name: "Power Attack",
+      option: "two-handed",
+    });
     expect(doc.build.savedRolls![0]!.feats).toEqual([
       { slug: "power-attack", name: "Power Attack", option: "two-handed" },
     ]);
@@ -292,7 +300,9 @@ describe("saved-roll feat attachment transitions", () => {
     doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack" });
     doc = addSavedRollFeat(doc, id, { slug: "furious-focus", name: "Furious Focus" });
     doc = removeSavedRollFeat(doc, id, "power-attack");
-    expect(doc.build.savedRolls![0]!.feats).toEqual([{ slug: "furious-focus", name: "Furious Focus" }]);
+    expect(doc.build.savedRolls![0]!.feats).toEqual([
+      { slug: "furious-focus", name: "Furious Focus" },
+    ]);
   });
 
   it("setSavedRollFeatOption sets and clears the variant", () => {
@@ -327,13 +337,22 @@ describe("resolveSavedRoll() with attached feats", () => {
 
     // Provenance: one component per numerically-contributing feat.
     expect(resolved.components).toContainEqual({
-      source: "Point-Blank Shot", type: "untyped", value: 1, applied: true,
+      source: "Point-Blank Shot",
+      type: "untyped",
+      value: 1,
+      applied: true,
     });
     expect(resolved.components).toContainEqual({
-      source: "Rapid Shot", type: "untyped", value: -2, applied: true,
+      source: "Rapid Shot",
+      type: "untyped",
+      value: -2,
+      applied: true,
     });
     expect(resolved.components).toContainEqual({
-      source: "Deadly Aim", type: "untyped", value: -3, applied: true,
+      source: "Deadly Aim",
+      type: "untyped",
+      value: -3,
+      applied: true,
     });
 
     // Notes from applied entries.
@@ -361,19 +380,29 @@ describe("resolveSavedRoll() with attached feats", () => {
     const atk = sheet.attacks.find((a) => a.name === "Longsword")!;
     let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "PA Longsword");
     const id = doc.build.savedRolls![0]!.id;
-    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack", option: "two-handed" });
+    doc = addSavedRollFeat(doc, id, {
+      slug: "power-attack",
+      name: "Power Attack",
+      option: "two-handed",
+    });
     const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
 
     const adjusted = atk.attack.iteratives!.map((n) => n - 3);
     expect(resolved.display).toBe(adjusted.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
     expect(resolved.components).toContainEqual({
-      source: "Power Attack", type: "untyped", value: -3, applied: true,
+      source: "Power Attack",
+      type: "untyped",
+      value: -3,
+      applied: true,
     });
 
     const expectedBonus = atk.damageBonus.total + 9;
     expect(resolved.damage!.display).toBe(`${atk.damageDice}+${expectedBonus}`);
     expect(resolved.damage!.components).toContainEqual({
-      source: "Power Attack", type: "untyped", value: 9, applied: true,
+      source: "Power Attack",
+      type: "untyped",
+      value: 9,
+      applied: true,
     });
   });
 
@@ -398,7 +427,14 @@ describe("resolveSavedRoll() with attached feats", () => {
       sheet.attack.melee.iteratives!.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"),
     );
     expect(resolved.featChips).toEqual([
-      { slug: "power-attack", name: "Power Attack", option: undefined, applied: false, modeled: true, owned: false },
+      {
+        slug: "power-attack",
+        name: "Power Attack",
+        option: undefined,
+        applied: false,
+        modeled: true,
+        owned: false,
+      },
     ]);
   });
 
@@ -414,7 +450,14 @@ describe("resolveSavedRoll() with attached feats", () => {
     );
     expect(resolved.components).toBe(sheet.attack.melee.components); // untouched, reference-equal
     expect(resolved.featChips).toEqual([
-      { slug: "iron-will", name: "Iron Will", option: undefined, applied: false, modeled: false, owned: true },
+      {
+        slug: "iron-will",
+        name: "Iron Will",
+        option: undefined,
+        applied: false,
+        modeled: false,
+        owned: true,
+      },
     ]);
   });
 

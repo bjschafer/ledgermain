@@ -39,19 +39,13 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // exactly one, this section behaves exactly as before — no switcher chrome
   // — and with 2+, a class switcher below picks which class's spells the rest
   // of this panel shows.
-  const casters = useMemo(
-    () => casterClassesOf(doc, refData),
-    [doc, refData],
-  );
+  const casters = useMemo(() => casterClassesOf(doc, refData), [doc, refData]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const casterTag =
     (selectedTag && casters.some((c) => c.tag === selectedTag) ? selectedTag : casters[0]?.tag) ??
     undefined;
 
-  const model = useMemo(
-    () => (casterTag ? casterModelFor(casterTag) : undefined),
-    [casterTag],
-  );
+  const model = useMemo(() => (casterTag ? casterModelFor(casterTag) : undefined), [casterTag]);
 
   const classLevel = useMemo(
     () => doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 1,
@@ -199,7 +193,10 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const browsing = mode === "browsing";
   const shown = browsing
     ? entries
-        .filter((e) => (!q || e.name.toLowerCase().includes(q)) && (school === "All" || e.school === school))
+        .filter(
+          (e) =>
+            (!q || e.name.toLowerCase().includes(q)) && (school === "All" || e.school === school),
+        )
         .slice(0, 200)
     : entries.filter((e) => known.has(e.id));
 
@@ -383,7 +380,8 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
           )
         ) : levels.length === 0 ? (
           <div className="empty">
-            {emptyState ?? `No spells in your ${knownLabel.toLowerCase()} yet — search to add some.`}
+            {emptyState ??
+              `No spells in your ${knownLabel.toLowerCase()} yet — search to add some.`}
           </div>
         ) : (
           levels.map((lvl) => (
@@ -440,34 +438,34 @@ function SpellHints({
     >
       <summary className="spell-hints-summary">
         How {casterTag} spellcasting works
-        <span className="panel-caret" aria-hidden="true">{open ? " ▾" : " ▸"}</span>
+        <span className="panel-caret" aria-hidden="true">
+          {open ? " ▾" : " ▸"}
+        </span>
       </summary>
       <div className="spell-hints">
         <p className="hint spell-hint-line">{model.blurb}</p>
         <p className="hint spell-hint-line">{model.learnGuidance}</p>
         {grantsCantrips && (
           <p className="hint spell-hint-line">
-            You know <strong>all {cantrips.length} cantrips</strong> on the{" "}
-            {casterTag} list — they're listed below and cost no spellbook slot.
+            You know <strong>all {cantrips.length} cantrips</strong> on the {casterTag} list —
+            they're listed below and cost no spellbook slot.
           </p>
         )}
         {isSpontaneous ? (
           <p className="hint spell-hint-line">
-            This is your <strong>{knownLabel}</strong> — the spells you can cast. Cast
-            them on the fly from the tracker's <strong>Spells</strong> panel by spending
-            a slot of the appropriate level.
+            This is your <strong>{knownLabel}</strong> — the spells you can cast. Cast them on the
+            fly from the tracker's <strong>Spells</strong> panel by spending a slot of the
+            appropriate level.
           </p>
         ) : preparesFromClassList ? (
           <p className="hint spell-hint-line">
-            Nothing to add or remove here — browse the full list below, then
-            prepare from it each day in the tracker's{" "}
-            <strong>Spells</strong> panel.
+            Nothing to add or remove here — browse the full list below, then prepare from it each
+            day in the tracker's <strong>Spells</strong> panel.
           </p>
         ) : (
           <p className="hint spell-hint-line">
-            This is your {knownLabel.toLowerCase()} — the spells you <em>could</em>{" "}
-            prepare. Prepare and cast for the day from the tracker's{" "}
-            <strong>Spells</strong> panel.
+            This is your {knownLabel.toLowerCase()} — the spells you <em>could</em> prepare. Prepare
+            and cast for the day from the tracker's <strong>Spells</strong> panel.
           </p>
         )}
       </div>
@@ -540,10 +538,7 @@ function SpellLevelGroup({
         entries.map((sp) => {
           const isKnown = known.has(sp.id);
           const wouldExceed =
-            isSpontaneous &&
-            knownLimit !== undefined &&
-            !isKnown &&
-            knownCount >= knownLimit;
+            isSpontaneous && knownLimit !== undefined && !isKnown && knownCount >= knownLimit;
           const spellData = refData.spells[sp.id];
           return (
             <div
@@ -646,10 +641,7 @@ function DomainSpellsBlock({
   refData: RefData;
   abilityMod: number;
 }) {
-  const [collapsed, toggle] = useCollapsed(
-    `domain-spells:${domains.sort().join(",")}`,
-    true,
-  );
+  const [collapsed, toggle] = useCollapsed(`domain-spells:${domains.sort().join(",")}`, true);
   const byLevel = new Map<number, SpellEntry[]>();
   for (const e of entries) {
     (byLevel.get(e.level) ?? byLevel.set(e.level, []).get(e.level)!).push(e);

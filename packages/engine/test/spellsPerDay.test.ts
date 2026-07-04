@@ -57,9 +57,7 @@ describe("baseSpellsPerDay() — cleric", () => {
   it("matches wizard progression at every level/spell-level pair", () => {
     for (let cl = 1; cl <= 20; cl++) {
       for (let spLvl = 0; spLvl <= 9; spLvl++) {
-        expect(baseSpellsPerDay("cleric", cl, spLvl)).toBe(
-          baseSpellsPerDay("wizard", cl, spLvl),
-        );
+        expect(baseSpellsPerDay("cleric", cl, spLvl)).toBe(baseSpellsPerDay("wizard", cl, spLvl));
       }
     }
   });

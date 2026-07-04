@@ -109,9 +109,7 @@ export function restHp(
 ): CharacterDoc {
   const mode = opts?.mode ?? "full";
   const current =
-    mode === "natural"
-      ? Math.min(max, doc.live.hp.current + Math.max(0, opts?.level ?? 0))
-      : max;
+    mode === "natural" ? Math.min(max, doc.live.hp.current + Math.max(0, opts?.level ?? 0)) : max;
   return withHp(doc, { current, temp: 0, nonlethal: 0 });
 }
 

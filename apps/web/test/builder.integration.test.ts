@@ -3,13 +3,7 @@ import { describe, expect, it } from "bun:test";
 import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import {
-  addClass,
-  createEmptyDoc,
-  setAbility,
-  setRace,
-  setSkillRank,
-} from "../src/model/doc.js";
+import { addClass, createEmptyDoc, setAbility, setRace, setSkillRank } from "../src/model/doc.js";
 
 const ref = loadRefData();
 

@@ -12,47 +12,45 @@ import type { BuilderProps } from "../builder/types.js";
  * level" per the chosen advancement track (`model/xp.ts`).
  */
 export function XpPanel({ doc, update }: BuilderProps) {
-	const progress = xpProgress(doc);
-	const [amount, setAmount] = useState(0);
+  const progress = xpProgress(doc);
+  const [amount, setAmount] = useState(0);
 
-	return (
-		<Panel title="Experience" step="✦" storageKey="panel:Xp">
-			<div className="xp-display">
-				<span className="xp-count num">{progress.current.toLocaleString()} XP</span>
-				<span className="hint">
-					{progress.nextThreshold != null
-						? `next level at ${progress.nextThreshold.toLocaleString()} XP (${progress.track})`
-						: `max tracked level (${progress.track})`}
-				</span>
-			</div>
+  return (
+    <Panel title="Experience" step="✦" storageKey="panel:Xp">
+      <div className="xp-display">
+        <span className="xp-count num">{progress.current.toLocaleString()} XP</span>
+        <span className="hint">
+          {progress.nextThreshold != null
+            ? `next level at ${progress.nextThreshold.toLocaleString()} XP (${progress.track})`
+            : `max tracked level (${progress.track})`}
+        </span>
+      </div>
 
-			{progress.readyToLevel && (
-				<p className="hint xp-ready">Ready to level up!</p>
-			)}
+      {progress.readyToLevel && <p className="hint xp-ready">Ready to level up!</p>}
 
-			<div className="xp-controls">
-				<NumberField
-					className="num"
-					size={6}
-					value={amount}
-					min={-999_999}
-					max={999_999}
-					stepper={false}
-					onCommit={(n) => setAmount(n)}
-					aria-label="XP amount to add"
-				/>
-				<button
-					type="button"
-					className="btn-act"
-					disabled={amount === 0}
-					onClick={() => {
-						update((d) => addXp(d, amount));
-						setAmount(0);
-					}}
-				>
-					Add XP
-				</button>
-			</div>
-		</Panel>
-	);
+      <div className="xp-controls">
+        <NumberField
+          className="num"
+          size={6}
+          value={amount}
+          min={-999_999}
+          max={999_999}
+          stepper={false}
+          onCommit={(n) => setAmount(n)}
+          aria-label="XP amount to add"
+        />
+        <button
+          type="button"
+          className="btn-act"
+          disabled={amount === 0}
+          onClick={() => {
+            update((d) => addXp(d, amount));
+            setAmount(0);
+          }}
+        >
+          Add XP
+        </button>
+      </div>
+    </Panel>
+  );
 }

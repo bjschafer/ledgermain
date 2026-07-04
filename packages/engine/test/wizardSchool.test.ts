@@ -54,7 +54,10 @@ function makeDoc(wizardSchool?: string, wizardOppositionSchools?: string[]): Cha
 }
 
 function schoolFeatures(features: DerivedClassFeature[]): string[] {
-  return features.filter((f) => f.origin?.kind === "school").map((f) => f.name).sort();
+  return features
+    .filter((f) => f.origin?.kind === "school")
+    .map((f) => f.name)
+    .sort();
 }
 
 describe("build.wizardSchool grants school powers", () => {

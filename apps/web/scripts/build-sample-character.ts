@@ -47,7 +47,10 @@ import { drainResource, syncDerivedPools } from "../src/model/resources.js";
 
 const ref = loadRefData();
 
-function byName<T extends { name: string }>(record: Record<string, T>, name: string): T & { id: string } {
+function byName<T extends { name: string }>(
+  record: Record<string, T>,
+  name: string,
+): T & { id: string } {
   const entry = Object.entries(record).find(([, v]) => v.name === name);
   if (!entry) throw new Error(`RefData lookup failed: no entry named "${name}"`);
   return { ...entry[1], id: entry[0] } as T & { id: string };

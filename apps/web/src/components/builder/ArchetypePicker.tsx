@@ -23,106 +23,104 @@ interface ArchetypePickerProps {
  * the builder, and most characters won't use one.
  */
 export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) {
-	const [open, setOpen] = useState(false);
-	const [query, setQuery] = useState("");
-	const chosen = doc.build.archetypes ?? [];
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const chosen = doc.build.archetypes ?? [];
 
-	const byClass = useMemo(() => {
-		const groups = new Map<string, { id: string; name: string }[]>();
-		for (const a of Object.values(refData.archetypes)) {
-			const list = groups.get(a.classTag) ?? [];
-			list.push({ id: a.id, name: a.name });
-			groups.set(a.classTag, list);
-		}
-		for (const list of groups.values()) list.sort((a, b) => a.name.localeCompare(b.name));
-		return groups;
-	}, [refData]);
+  const byClass = useMemo(() => {
+    const groups = new Map<string, { id: string; name: string }[]>();
+    for (const a of Object.values(refData.archetypes)) {
+      const list = groups.get(a.classTag) ?? [];
+      list.push({ id: a.id, name: a.name });
+      groups.set(a.classTag, list);
+    }
+    for (const list of groups.values()) list.sort((a, b) => a.name.localeCompare(b.name));
+    return groups;
+  }, [refData]);
 
-	const classTags = doc.identity.classes.map((c) => c.tag).filter((tag) => byClass.has(tag));
-	if (classTags.length === 0) return null;
+  const classTags = doc.identity.classes.map((c) => c.tag).filter((tag) => byClass.has(tag));
+  if (classTags.length === 0) return null;
 
-	const q = query.trim().toLowerCase();
+  const q = query.trim().toLowerCase();
 
-	function toggle(id: string, blocked: boolean) {
-		if (blocked) return;
-		const set = new Set(chosen);
-		if (set.has(id)) set.delete(id);
-		else set.add(id);
-		update((d) => setArchetypes(d, [...set]));
-	}
+  function toggle(id: string, blocked: boolean) {
+    if (blocked) return;
+    const set = new Set(chosen);
+    if (set.has(id)) set.delete(id);
+    else set.add(id);
+    update((d) => setArchetypes(d, [...set]));
+  }
 
-	return (
-		<div className="subsection archetype-picker">
-			<div
-				className="subsection-header"
-				onClick={() => setOpen((o) => !o)}
-				role="button"
-				tabIndex={0}
-				onKeyDown={(e) => {
-					if (e.key === "Enter" || e.key === " ") setOpen((o) => !o);
-				}}
-				aria-expanded={open}
-			>
-				<h3>
-					Archetypes
-					{chosen.length > 0 ? <span className="hint"> · {chosen.length} chosen</span> : null}
-				</h3>
-				<span className="panel-caret">{open ? "▾" : "▸"}</span>
-			</div>
-			{open && (
-				<>
-					<p className="hint">
-						Structural swaps only in v1 — no numeric effects from archetype
-						features yet. Picking one that would replace an already-swapped
-						ability is blocked (it would silently do nothing).
-					</p>
-					<input
-						className="search"
-						type="text"
-						placeholder="Search archetypes…"
-						value={query}
-						onChange={(e) => setQuery(e.target.value)}
-					/>
-					{classTags.map((tag) => {
-						const options = byClass.get(tag)!;
-						const shown = q
-							? options.filter((o) => o.name.toLowerCase().includes(q))
-							: options;
-						if (shown.length === 0) return null;
-						const classDef = Object.values(refData.classes).find((c) => c.tag === tag);
-						return (
-							<div key={tag} className="archetype-class-group">
-								<span className="hint">{classDef?.name ?? tag}</span>
-								<div className="chips">
-									{shown.map((a) => {
-										const isChosen = chosen.includes(a.id);
-										const conflict = isChosen
-											? { blocked: false }
-											: checkArchetypeConflict(refData, chosen, a.id);
-										return (
-											<button
-												key={a.id}
-												type="button"
-												className="chip"
-												aria-pressed={isChosen}
-												disabled={conflict.blocked}
-												title={
-													conflict.blocked
-														? `Conflicts with ${conflict.conflictsWith} — both swap the same ability`
-														: undefined
-												}
-												onClick={() => toggle(a.id, conflict.blocked)}
-											>
-												{a.name}
-											</button>
-										);
-									})}
-								</div>
-							</div>
-						);
-					})}
-				</>
-			)}
-		</div>
-	);
+  return (
+    <div className="subsection archetype-picker">
+      <div
+        className="subsection-header"
+        onClick={() => setOpen((o) => !o)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") setOpen((o) => !o);
+        }}
+        aria-expanded={open}
+      >
+        <h3>
+          Archetypes
+          {chosen.length > 0 ? <span className="hint"> · {chosen.length} chosen</span> : null}
+        </h3>
+        <span className="panel-caret">{open ? "▾" : "▸"}</span>
+      </div>
+      {open && (
+        <>
+          <p className="hint">
+            Structural swaps only in v1 — no numeric effects from archetype features yet. Picking
+            one that would replace an already-swapped ability is blocked (it would silently do
+            nothing).
+          </p>
+          <input
+            className="search"
+            type="text"
+            placeholder="Search archetypes…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          {classTags.map((tag) => {
+            const options = byClass.get(tag)!;
+            const shown = q ? options.filter((o) => o.name.toLowerCase().includes(q)) : options;
+            if (shown.length === 0) return null;
+            const classDef = Object.values(refData.classes).find((c) => c.tag === tag);
+            return (
+              <div key={tag} className="archetype-class-group">
+                <span className="hint">{classDef?.name ?? tag}</span>
+                <div className="chips">
+                  {shown.map((a) => {
+                    const isChosen = chosen.includes(a.id);
+                    const conflict = isChosen
+                      ? { blocked: false }
+                      : checkArchetypeConflict(refData, chosen, a.id);
+                    return (
+                      <button
+                        key={a.id}
+                        type="button"
+                        className="chip"
+                        aria-pressed={isChosen}
+                        disabled={conflict.blocked}
+                        title={
+                          conflict.blocked
+                            ? `Conflicts with ${conflict.conflictsWith} — both swap the same ability`
+                            : undefined
+                        }
+                        onClick={() => toggle(a.id, conflict.blocked)}
+                      >
+                        {a.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </>
+      )}
+    </div>
+  );
 }

@@ -1,6 +1,6 @@
 # Ledgermain
 
-A web-based **in-play character sheet, tracker, and builder** for Pathfinder 1e. The center of gravity is *play at the table*: a rules-aware tracker that recomputes correct numbers as session state (HP, conditions, buffs, resources) changes. Built to run on Cloudflare.
+A web-based **in-play character sheet, tracker, and builder** for Pathfinder 1e. The center of gravity is _play at the table_: a rules-aware tracker that recomputes correct numbers as session state (HP, conditions, buffs, resources) changes. Built to run on Cloudflare.
 
 ## Layout (bun workspaces)
 
@@ -43,7 +43,7 @@ file location:
 
 - **MIT** -- all source code (engine, schema, data-pipeline scripts, web
   app, build/config). The engine is a clean-room reimplementation of the
-  PF1 rules; the Foundry PF1 system's GPL-3.0 *code* is never copied into
+  PF1 rules; the Foundry PF1 system's GPL-3.0 _code_ is never copied into
   this repo (its `.cache/` clone is gitignored and used only as a
   behavioral test oracle). See [`LICENSE`](./LICENSE).
 - **Open Game License v1.0a** -- the vendored compendium JSON under

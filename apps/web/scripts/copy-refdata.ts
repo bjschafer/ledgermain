@@ -26,7 +26,7 @@ cpSync(src, dest, { recursive: true });
 
 // Ship the OGL + NOTICE alongside the data so the deployed app is compliant.
 for (const file of ["OGL.txt", "NOTICE.md", "LICENSE"]) {
-	copyFileSync(join(repoRoot, file), join(publicDir, file));
+  copyFileSync(join(repoRoot, file), join(publicDir, file));
 }
 
 console.log(`[copy-refdata] ${src} -> ${dest}`);

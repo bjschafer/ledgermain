@@ -156,9 +156,7 @@ export function useCharacter(): CharacterStore {
   const adopt = useCallback(
     async (loaded: CharacterDoc) => {
       if (!refData) {
-        throw new Error(
-          "Cannot switch characters before reference data has loaded",
-        );
+        throw new Error("Cannot switch characters before reference data has loaded");
       }
       const reconciled = reconcileGrantedCantrips(loaded, refData);
       // Refresh the list before flipping `doc`, so the two land in the same
@@ -229,10 +227,7 @@ export function useCharacter(): CharacterStore {
     [adopt, cancelPendingSave, runAction, doc],
   );
 
-  const sheet = useMemo(
-    () => (doc && refData ? compute(doc, refData) : undefined),
-    [doc, refData],
-  );
+  const sheet = useMemo(() => (doc && refData ? compute(doc, refData) : undefined), [doc, refData]);
 
   // A freshly created character starts at 0/0 HP (no class picked yet); once
   // building gives it its first nonzero max, start at full instead of forcing

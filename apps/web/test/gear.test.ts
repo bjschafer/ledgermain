@@ -8,16 +8,16 @@ import type { ArmorRef, WornArmor } from "@pf1/schema";
 
 import { createEmptyDoc } from "../src/model/doc.js";
 import {
-	addGearItem,
-	addWornArmor,
-	addWornArmorFromRef,
-	removeGear,
-	setGearEquipped,
-	updateGearItem,
+  addGearItem,
+  addWornArmor,
+  addWornArmorFromRef,
+  removeGear,
+  setGearEquipped,
+  updateGearItem,
 } from "../src/model/doc.js";
 
 function doc() {
-	return createEmptyDoc("t");
+  return createEmptyDoc("t");
 }
 
 const CHAINMAIL: WornArmor = { slot: "armor", ac: 4, maxDex: 3, acp: -2, type: 2 };
@@ -27,379 +27,382 @@ const SHIELD: WornArmor = { slot: "shield", ac: 2, acp: 0 };
 // addGearItem
 // ---------------------------------------------------------------------------
 describe("addGearItem()", () => {
-	it("appends an item instance with the given itemId, equipped by default", () => {
-		const d = addGearItem(doc(), "ring-of-protection");
-		expect(d.build.gear).toHaveLength(1);
-		const inst = d.build.gear[0]!;
-		expect(inst.itemId).toBe("ring-of-protection");
-		expect(inst.equipped).toBe(true);
-	});
+  it("appends an item instance with the given itemId, equipped by default", () => {
+    const d = addGearItem(doc(), "ring-of-protection");
+    expect(d.build.gear).toHaveLength(1);
+    const inst = d.build.gear[0]!;
+    expect(inst.itemId).toBe("ring-of-protection");
+    expect(inst.equipped).toBe(true);
+  });
 
-	it("can add multiple items (no deduplication)", () => {
-		const d = addGearItem(addGearItem(doc(), "item-a"), "item-a");
-		expect(d.build.gear).toHaveLength(2);
-	});
+  it("can add multiple items (no deduplication)", () => {
+    const d = addGearItem(addGearItem(doc(), "item-a"), "item-a");
+    expect(d.build.gear).toHaveLength(2);
+  });
 
-	it("does not mutate the original doc", () => {
-		const d = doc();
-		addGearItem(d, "ring-of-protection");
-		expect(d.build.gear).toHaveLength(0);
-	});
+  it("does not mutate the original doc", () => {
+    const d = doc();
+    addGearItem(d, "ring-of-protection");
+    expect(d.build.gear).toHaveLength(0);
+  });
 });
 
 // ---------------------------------------------------------------------------
 // addWornArmor
 // ---------------------------------------------------------------------------
 describe("addWornArmor()", () => {
-	it("appends an armor instance, equipped by default", () => {
-		const d = addWornArmor(doc(), CHAINMAIL, "Chainmail");
-		expect(d.build.gear).toHaveLength(1);
-		const inst = d.build.gear[0]!;
-		expect(inst.equipped).toBe(true);
-		expect(inst.name).toBe("Chainmail");
-		expect(inst.armor).toEqual(CHAINMAIL);
-		expect(inst.itemId).toBeUndefined();
-	});
+  it("appends an armor instance, equipped by default", () => {
+    const d = addWornArmor(doc(), CHAINMAIL, "Chainmail");
+    expect(d.build.gear).toHaveLength(1);
+    const inst = d.build.gear[0]!;
+    expect(inst.equipped).toBe(true);
+    expect(inst.name).toBe("Chainmail");
+    expect(inst.armor).toEqual(CHAINMAIL);
+    expect(inst.itemId).toBeUndefined();
+  });
 
-	it("allows both armor and shield to coexist", () => {
-		let d = addWornArmor(doc(), CHAINMAIL, "Breastplate");
-		d = addWornArmor(d, SHIELD, "Heavy Steel Shield");
-		expect(d.build.gear).toHaveLength(2);
-		expect(d.build.gear[0]!.armor?.slot).toBe("armor");
-		expect(d.build.gear[1]!.armor?.slot).toBe("shield");
-	});
+  it("allows both armor and shield to coexist", () => {
+    let d = addWornArmor(doc(), CHAINMAIL, "Breastplate");
+    d = addWornArmor(d, SHIELD, "Heavy Steel Shield");
+    expect(d.build.gear).toHaveLength(2);
+    expect(d.build.gear[0]!.armor?.slot).toBe("armor");
+    expect(d.build.gear[1]!.armor?.slot).toBe("shield");
+  });
 
-	it("does not mutate the original doc", () => {
-		const d = doc();
-		addWornArmor(d, CHAINMAIL, "Chainmail");
-		expect(d.build.gear).toHaveLength(0);
-	});
+  it("does not mutate the original doc", () => {
+    const d = doc();
+    addWornArmor(d, CHAINMAIL, "Chainmail");
+    expect(d.build.gear).toHaveLength(0);
+  });
 });
 
 // ---------------------------------------------------------------------------
 // addWornArmorFromRef
 // ---------------------------------------------------------------------------
 const FULL_PLATE: ArmorRef = {
-	id: "h65qEp22nsyRoeRa",
-	name: "Full Plate",
-	uuid: "Compendium.pf1.armors-and-shields.Item.h65qEp22nsyRoeRa",
-	slot: "armor",
-	ac: 9,
-	maxDex: 1,
-	acp: 6,
-	weightClass: 3,
-	proficiency: "heavyArmor",
+  id: "h65qEp22nsyRoeRa",
+  name: "Full Plate",
+  uuid: "Compendium.pf1.armors-and-shields.Item.h65qEp22nsyRoeRa",
+  slot: "armor",
+  ac: 9,
+  maxDex: 1,
+  acp: 6,
+  weightClass: 3,
+  proficiency: "heavyArmor",
 };
 const COMP_BUCKLER: ArmorRef = {
-	id: "gsE0PAOmCwivue5A",
-	name: "Buckler",
-	uuid: "Compendium.pf1.armors-and-shields.Item.gsE0PAOmCwivue5A",
-	slot: "shield",
-	ac: 1,
-	acp: 1,
+  id: "gsE0PAOmCwivue5A",
+  name: "Buckler",
+  uuid: "Compendium.pf1.armors-and-shields.Item.gsE0PAOmCwivue5A",
+  slot: "shield",
+  ac: 1,
+  acp: 1,
 };
 
 describe("addWornArmorFromRef()", () => {
-	it("snapshots Full Plate onto a WornArmor (ACP negated, weightClass → type)", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE);
-		expect(d.build.gear).toHaveLength(1);
-		const inst = d.build.gear[0]!;
-		expect(inst.equipped).toBe(true);
-		expect(inst.armorId).toBe("h65qEp22nsyRoeRa");
-		expect(inst.name).toBe("Full Plate");
-		expect(inst.armor).toEqual({
-			slot: "armor",
-			ac: 9,
-			maxDex: 1,
-			acp: -6,
-			type: 3,
-		} satisfies WornArmor);
-		// never sets itemId (base armor lives in RefData.armors, not .items)
-		expect(inst.itemId).toBeUndefined();
-	});
+  it("snapshots Full Plate onto a WornArmor (ACP negated, weightClass → type)", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE);
+    expect(d.build.gear).toHaveLength(1);
+    const inst = d.build.gear[0]!;
+    expect(inst.equipped).toBe(true);
+    expect(inst.armorId).toBe("h65qEp22nsyRoeRa");
+    expect(inst.name).toBe("Full Plate");
+    expect(inst.armor).toEqual({
+      slot: "armor",
+      ac: 9,
+      maxDex: 1,
+      acp: -6,
+      type: 3,
+    } satisfies WornArmor);
+    // never sets itemId (base armor lives in RefData.armors, not .items)
+    expect(inst.itemId).toBeUndefined();
+  });
 
-	it("omits type for shields (slot identifies them; engine derives armor.type from body armor only)", () => {
-		const d = addWornArmorFromRef(doc(), COMP_BUCKLER);
-		const inst = d.build.gear[0]!;
-		expect(inst.armor).toEqual({ slot: "shield", ac: 1, acp: -1 });
-		expect(inst.armorId).toBe("gsE0PAOmCwivue5A");
-	});
+  it("omits type for shields (slot identifies them; engine derives armor.type from body armor only)", () => {
+    const d = addWornArmorFromRef(doc(), COMP_BUCKLER);
+    const inst = d.build.gear[0]!;
+    expect(inst.armor).toEqual({ slot: "shield", ac: 1, acp: -1 });
+    expect(inst.armorId).toBe("gsE0PAOmCwivue5A");
+  });
 
-	it("omits ACP entirely when the ref carries none", () => {
-		const padded: ArmorRef = {
-			...COMP_BUCKLER,
-			id: "x",
-			name: "Padded",
-			slot: "armor",
-			ac: 1,
-			acp: undefined,
-		};
-		const d = addWornArmorFromRef(doc(), padded);
-		expect(d.build.gear[0]!.armor).toEqual({ slot: "armor", ac: 1 });
-	});
+  it("omits ACP entirely when the ref carries none", () => {
+    const padded: ArmorRef = {
+      ...COMP_BUCKLER,
+      id: "x",
+      name: "Padded",
+      slot: "armor",
+      ac: 1,
+      acp: undefined,
+    };
+    const d = addWornArmorFromRef(doc(), padded);
+    expect(d.build.gear[0]!.armor).toEqual({ slot: "armor", ac: 1 });
+  });
 
-	it("does not mutate the original doc", () => {
-		const d = doc();
-		addWornArmorFromRef(d, FULL_PLATE);
-		expect(d.build.gear).toHaveLength(0);
-	});
+  it("does not mutate the original doc", () => {
+    const d = doc();
+    addWornArmorFromRef(d, FULL_PLATE);
+    expect(d.build.gear).toHaveLength(0);
+  });
 
-	it("applies mithral: weight class 3→2, maxDex 1→3, acp 6→3, name prefixed", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, "mithral");
-		const inst = d.build.gear[0]!;
-		expect(inst.name).toBe("Mithral Full Plate");
-		expect(inst.armor).toEqual({
-			slot: "armor",
-			ac: 9,
-			material: "mithral",
-			maxDex: 3,
-			acp: -3,
-			type: 2,
-		} satisfies WornArmor);
-	});
+  it("applies mithral: weight class 3→2, maxDex 1→3, acp 6→3, name prefixed", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, "mithral");
+    const inst = d.build.gear[0]!;
+    expect(inst.name).toBe("Mithral Full Plate");
+    expect(inst.armor).toEqual({
+      slot: "armor",
+      ac: 9,
+      material: "mithral",
+      maxDex: 3,
+      acp: -3,
+      type: 2,
+    } satisfies WornArmor);
+  });
 
-	it("applies +3 enhancement: name suffix, enhancement field set", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE, 3);
-		const inst = d.build.gear[0]!;
-		expect(inst.name).toBe("Full Plate +3");
-		expect(inst.armor!.enhancement).toBe(3);
-	});
+  it("applies +3 enhancement: name suffix, enhancement field set", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 3);
+    const inst = d.build.gear[0]!;
+    expect(inst.name).toBe("Full Plate +3");
+    expect(inst.armor!.enhancement).toBe(3);
+  });
 
-	it("combines mithral + enhancement: 'Mithral Full Plate +3'", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE, 3, "mithral");
-		const inst = d.build.gear[0]!;
-		expect(inst.name).toBe("Mithral Full Plate +3");
-		expect(inst.armor!.enhancement).toBe(3);
-		expect(inst.armor!.material).toBe("mithral");
-		expect(inst.armor!.maxDex).toBe(3); // 1 + 2 mithral
-		// -(6 - 3 mithral - 1 masterwork-implied-by-enhancement, B3)
-		expect(inst.armor!.acp).toBe(-2);
-		expect(inst.armor!.type).toBe(2); // 3 - 1 mithral
-	});
+  it("combines mithral + enhancement: 'Mithral Full Plate +3'", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 3, "mithral");
+    const inst = d.build.gear[0]!;
+    expect(inst.name).toBe("Mithral Full Plate +3");
+    expect(inst.armor!.enhancement).toBe(3);
+    expect(inst.armor!.material).toBe("mithral");
+    expect(inst.armor!.maxDex).toBe(3); // 1 + 2 mithral
+    // -(6 - 3 mithral - 1 masterwork-implied-by-enhancement, B3)
+    expect(inst.armor!.acp).toBe(-2);
+    expect(inst.armor!.type).toBe(2); // 3 - 1 mithral
+  });
 
-	it("adamantine is display-only (no stat modifiers)", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, "adamantine");
-		const inst = d.build.gear[0]!;
-		expect(inst.name).toBe("Adamantine Full Plate");
-		expect(inst.armor!.material).toBe("adamantine");
-		// stats unchanged from base
-		expect(inst.armor!.maxDex).toBe(1);
-		expect(inst.armor!.acp).toBe(-6);
-		expect(inst.armor!.type).toBe(3);
-	});
+  it("adamantine is display-only (no stat modifiers)", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, "adamantine");
+    const inst = d.build.gear[0]!;
+    expect(inst.name).toBe("Adamantine Full Plate");
+    expect(inst.armor!.material).toBe("adamantine");
+    // stats unchanged from base
+    expect(inst.armor!.maxDex).toBe(1);
+    expect(inst.armor!.acp).toBe(-6);
+    expect(inst.armor!.type).toBe(3);
+  });
 
-	it("steel is the default (no prefix, no material field)", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, "steel");
-		const inst = d.build.gear[0]!;
-		expect(inst.name).toBe("Full Plate");
-		expect(inst.armor!.material).toBeUndefined();
-	});
+  it("steel is the default (no prefix, no material field)", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, "steel");
+    const inst = d.build.gear[0]!;
+    expect(inst.name).toBe("Full Plate");
+    expect(inst.armor!.material).toBeUndefined();
+  });
 
-	it("stores armor abilities (all display-only)", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE, 2, "mithral", ["light-fortification", "ghost-touch"]);
-		const inst = d.build.gear[0]!;
-		expect(inst.armor!.abilities).toEqual(["light-fortification", "ghost-touch"]);
-		expect(inst.armor!.enhancement).toBe(2);
-		expect(inst.armor!.material).toBe("mithral");
-		// abilities don't modify stats (all display-only for armor)
-		expect(inst.armor!.ac).toBe(9);
-		expect(inst.armor!.maxDex).toBe(3); // mithral +2
-	});
+  it("stores armor abilities (all display-only)", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 2, "mithral", [
+      "light-fortification",
+      "ghost-touch",
+    ]);
+    const inst = d.build.gear[0]!;
+    expect(inst.armor!.abilities).toEqual(["light-fortification", "ghost-touch"]);
+    expect(inst.armor!.enhancement).toBe(2);
+    expect(inst.armor!.material).toBe("mithral");
+    // abilities don't modify stats (all display-only for armor)
+    expect(inst.armor!.ac).toBe(9);
+    expect(inst.armor!.maxDex).toBe(3); // mithral +2
+  });
 
-	it("no abilities → no abilities field on the WornArmor", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE);
-		expect(d.build.gear[0]!.armor!.abilities).toBeUndefined();
-	});
+  it("no abilities → no abilities field on the WornArmor", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE);
+    expect(d.build.gear[0]!.armor!.abilities).toBeUndefined();
+  });
 
-	// -------------------------------------------------------------------------
-	// masterwork (B3)
-	// -------------------------------------------------------------------------
-	const CHAIN_SHIRT: ArmorRef = {
-		id: "chain-shirt",
-		name: "Chain Shirt",
-		uuid: "Compendium.pf1.armors-and-shields.Item.chainShirt",
-		slot: "armor",
-		ac: 4,
-		maxDex: 4,
-		acp: 2,
-		weightClass: 1,
-		proficiency: "lightArmor",
-	};
-	const BREASTPLATE: ArmorRef = {
-		id: "breastplate",
-		name: "Breastplate",
-		uuid: "Compendium.pf1.armors-and-shields.Item.breastplate",
-		slot: "armor",
-		ac: 6,
-		maxDex: 3,
-		acp: 4,
-		weightClass: 2,
-		proficiency: "mediumArmor",
-	};
-	const PADDED: ArmorRef = {
-		id: "padded",
-		name: "Padded",
-		uuid: "Compendium.pf1.armors-and-shields.Item.padded",
-		slot: "armor",
-		ac: 1,
-		maxDex: 8,
-		acp: 0,
-		weightClass: 1,
-		proficiency: "lightArmor",
-	};
+  // -------------------------------------------------------------------------
+  // masterwork (B3)
+  // -------------------------------------------------------------------------
+  const CHAIN_SHIRT: ArmorRef = {
+    id: "chain-shirt",
+    name: "Chain Shirt",
+    uuid: "Compendium.pf1.armors-and-shields.Item.chainShirt",
+    slot: "armor",
+    ac: 4,
+    maxDex: 4,
+    acp: 2,
+    weightClass: 1,
+    proficiency: "lightArmor",
+  };
+  const BREASTPLATE: ArmorRef = {
+    id: "breastplate",
+    name: "Breastplate",
+    uuid: "Compendium.pf1.armors-and-shields.Item.breastplate",
+    slot: "armor",
+    ac: 6,
+    maxDex: 3,
+    acp: 4,
+    weightClass: 2,
+    proficiency: "mediumArmor",
+  };
+  const PADDED: ArmorRef = {
+    id: "padded",
+    name: "Padded",
+    uuid: "Compendium.pf1.armors-and-shields.Item.padded",
+    slot: "armor",
+    ac: 1,
+    maxDex: 8,
+    acp: 0,
+    weightClass: 1,
+    proficiency: "lightArmor",
+  };
 
-	it("masterwork chain shirt: ACP -2 reduced to -1, name prefixed", () => {
-		const d = addWornArmorFromRef(doc(), CHAIN_SHIRT, 0, undefined, undefined, true);
-		const inst = d.build.gear[0]!;
-		expect(inst.name).toBe("Masterwork Chain Shirt");
-		expect(inst.armor!.acp).toBe(-1);
-		expect(inst.armor!.masterwork).toBe(true);
-	});
+  it("masterwork chain shirt: ACP -2 reduced to -1, name prefixed", () => {
+    const d = addWornArmorFromRef(doc(), CHAIN_SHIRT, 0, undefined, undefined, true);
+    const inst = d.build.gear[0]!;
+    expect(inst.name).toBe("Masterwork Chain Shirt");
+    expect(inst.armor!.acp).toBe(-1);
+    expect(inst.armor!.masterwork).toBe(true);
+  });
 
-	it("masterwork breastplate: ACP -4 reduced to -3", () => {
-		const d = addWornArmorFromRef(doc(), BREASTPLATE, 0, undefined, undefined, true);
-		const inst = d.build.gear[0]!;
-		expect(inst.name).toBe("Masterwork Breastplate");
-		expect(inst.armor!.acp).toBe(-3);
-	});
+  it("masterwork breastplate: ACP -4 reduced to -3", () => {
+    const d = addWornArmorFromRef(doc(), BREASTPLATE, 0, undefined, undefined, true);
+    const inst = d.build.gear[0]!;
+    expect(inst.name).toBe("Masterwork Breastplate");
+    expect(inst.armor!.acp).toBe(-3);
+  });
 
-	it("+1 breastplate (no explicit masterwork flag): ACP still reduced to -3, masterwork not stored", () => {
-		const d = addWornArmorFromRef(doc(), BREASTPLATE, 1);
-		const inst = d.build.gear[0]!;
-		expect(inst.name).toBe("Breastplate +1");
-		expect(inst.armor!.acp).toBe(-3);
-		expect(inst.armor!.masterwork).toBeUndefined();
-	});
+  it("+1 breastplate (no explicit masterwork flag): ACP still reduced to -3, masterwork not stored", () => {
+    const d = addWornArmorFromRef(doc(), BREASTPLATE, 1);
+    const inst = d.build.gear[0]!;
+    expect(inst.name).toBe("Breastplate +1");
+    expect(inst.armor!.acp).toBe(-3);
+    expect(inst.armor!.masterwork).toBeUndefined();
+  });
 
-	it("masterwork name prefix present at +0, absent at +1 (implied instead)", () => {
-		const atZero = addWornArmorFromRef(doc(), CHAIN_SHIRT, 0, undefined, undefined, true);
-		expect(atZero.build.gear[0]!.name).toBe("Masterwork Chain Shirt");
+  it("masterwork name prefix present at +0, absent at +1 (implied instead)", () => {
+    const atZero = addWornArmorFromRef(doc(), CHAIN_SHIRT, 0, undefined, undefined, true);
+    expect(atZero.build.gear[0]!.name).toBe("Masterwork Chain Shirt");
 
-		const atPlusOne = addWornArmorFromRef(doc(), CHAIN_SHIRT, 1, undefined, undefined, true);
-		expect(atPlusOne.build.gear[0]!.name).toBe("Chain Shirt +1");
-		expect(atPlusOne.build.gear[0]!.armor!.masterwork).toBeUndefined();
-	});
+    const atPlusOne = addWornArmorFromRef(doc(), CHAIN_SHIRT, 1, undefined, undefined, true);
+    expect(atPlusOne.build.gear[0]!.name).toBe("Chain Shirt +1");
+    expect(atPlusOne.build.gear[0]!.armor!.masterwork).toBeUndefined();
+  });
 
-	it("masterwork armor with 0 base ACP stays clamped at 0 (no acp key)", () => {
-		const d = addWornArmorFromRef(doc(), PADDED, 0, undefined, undefined, true);
-		const inst = d.build.gear[0]!;
-		expect(inst.armor!.acp).toBeUndefined();
-		expect(inst.armor!.masterwork).toBe(true);
-	});
+  it("masterwork armor with 0 base ACP stays clamped at 0 (no acp key)", () => {
+    const d = addWornArmorFromRef(doc(), PADDED, 0, undefined, undefined, true);
+    const inst = d.build.gear[0]!;
+    expect(inst.armor!.acp).toBeUndefined();
+    expect(inst.armor!.masterwork).toBe(true);
+  });
 });
 
 // ---------------------------------------------------------------------------
 // setGearEquipped
 // ---------------------------------------------------------------------------
 describe("setGearEquipped()", () => {
-	it("unequips a gear item at the given index", () => {
-		const d = setGearEquipped(addGearItem(doc(), "item-a"), 0, false);
-		expect(d.build.gear[0]!.equipped).toBe(false);
-	});
+  it("unequips a gear item at the given index", () => {
+    const d = setGearEquipped(addGearItem(doc(), "item-a"), 0, false);
+    expect(d.build.gear[0]!.equipped).toBe(false);
+  });
 
-	it("re-equips a previously unequipped item", () => {
-		const unequipped = setGearEquipped(addGearItem(doc(), "item-a"), 0, false);
-		const reequipped = setGearEquipped(unequipped, 0, true);
-		expect(reequipped.build.gear[0]!.equipped).toBe(true);
-	});
+  it("re-equips a previously unequipped item", () => {
+    const unequipped = setGearEquipped(addGearItem(doc(), "item-a"), 0, false);
+    const reequipped = setGearEquipped(unequipped, 0, true);
+    expect(reequipped.build.gear[0]!.equipped).toBe(true);
+  });
 
-	it("only modifies the specified index", () => {
-		let d = addGearItem(doc(), "item-a");
-		d = addGearItem(d, "item-b");
-		d = setGearEquipped(d, 0, false);
-		expect(d.build.gear[0]!.equipped).toBe(false);
-		expect(d.build.gear[1]!.equipped).toBe(true);
-	});
+  it("only modifies the specified index", () => {
+    let d = addGearItem(doc(), "item-a");
+    d = addGearItem(d, "item-b");
+    d = setGearEquipped(d, 0, false);
+    expect(d.build.gear[0]!.equipped).toBe(false);
+    expect(d.build.gear[1]!.equipped).toBe(true);
+  });
 
-	it("is a no-op for out-of-range index", () => {
-		const d = addGearItem(doc(), "item-a");
-		expect(setGearEquipped(d, 5, false)).toBe(d);
-		expect(setGearEquipped(d, -1, false)).toBe(d);
-	});
+  it("is a no-op for out-of-range index", () => {
+    const d = addGearItem(doc(), "item-a");
+    expect(setGearEquipped(d, 5, false)).toBe(d);
+    expect(setGearEquipped(d, -1, false)).toBe(d);
+  });
 
-	it("does not mutate the original doc", () => {
-		const d = addGearItem(doc(), "item-a");
-		setGearEquipped(d, 0, false);
-		expect(d.build.gear[0]!.equipped).toBe(true);
-	});
+  it("does not mutate the original doc", () => {
+    const d = addGearItem(doc(), "item-a");
+    setGearEquipped(d, 0, false);
+    expect(d.build.gear[0]!.equipped).toBe(true);
+  });
 });
 
 // ---------------------------------------------------------------------------
 // removeGear
 // ---------------------------------------------------------------------------
 describe("removeGear()", () => {
-	it("removes the item at the given index", () => {
-		const d = removeGear(addGearItem(doc(), "item-a"), 0);
-		expect(d.build.gear).toHaveLength(0);
-	});
+  it("removes the item at the given index", () => {
+    const d = removeGear(addGearItem(doc(), "item-a"), 0);
+    expect(d.build.gear).toHaveLength(0);
+  });
 
-	it("removes only the specified item when multiple exist", () => {
-		let d = addGearItem(doc(), "item-a");
-		d = addGearItem(d, "item-b");
-		d = addGearItem(d, "item-c");
-		d = removeGear(d, 1);
-		expect(d.build.gear).toHaveLength(2);
-		expect(d.build.gear[0]!.itemId).toBe("item-a");
-		expect(d.build.gear[1]!.itemId).toBe("item-c");
-	});
+  it("removes only the specified item when multiple exist", () => {
+    let d = addGearItem(doc(), "item-a");
+    d = addGearItem(d, "item-b");
+    d = addGearItem(d, "item-c");
+    d = removeGear(d, 1);
+    expect(d.build.gear).toHaveLength(2);
+    expect(d.build.gear[0]!.itemId).toBe("item-a");
+    expect(d.build.gear[1]!.itemId).toBe("item-c");
+  });
 
-	it("is a no-op for out-of-range index", () => {
-		const d = addGearItem(doc(), "item-a");
-		expect(removeGear(d, 5)).toBe(d);
-		expect(removeGear(d, -1)).toBe(d);
-	});
+  it("is a no-op for out-of-range index", () => {
+    const d = addGearItem(doc(), "item-a");
+    expect(removeGear(d, 5)).toBe(d);
+    expect(removeGear(d, -1)).toBe(d);
+  });
 
-	it("does not mutate the original doc", () => {
-		const d = addGearItem(doc(), "item-a");
-		removeGear(d, 0);
-		expect(d.build.gear).toHaveLength(1);
-	});
+  it("does not mutate the original doc", () => {
+    const d = addGearItem(doc(), "item-a");
+    removeGear(d, 0);
+    expect(d.build.gear).toHaveLength(1);
+  });
 });
 
 // ---------------------------------------------------------------------------
 // updateGearItem
 // ---------------------------------------------------------------------------
 describe("updateGearItem()", () => {
-	it("patches armor stats + name on the gear item at the given index", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE, 2, "mithral");
-		const updated = updateGearItem(d, 0, {
-			armor: { ...d.build.gear[0]!.armor!, enhancement: 3 },
-			name: "Mithral Full Plate +3",
-		});
-		expect(updated.build.gear[0]!.armor!.enhancement).toBe(3);
-		expect(updated.build.gear[0]!.name).toBe("Mithral Full Plate +3");
-		// other fields preserved
-		expect(updated.build.gear[0]!.armor!.ac).toBe(9);
-		expect(updated.build.gear[0]!.armorId).toBe("h65qEp22nsyRoeRa");
-	});
+  it("patches armor stats + name on the gear item at the given index", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 2, "mithral");
+    const updated = updateGearItem(d, 0, {
+      armor: { ...d.build.gear[0]!.armor!, enhancement: 3 },
+      name: "Mithral Full Plate +3",
+    });
+    expect(updated.build.gear[0]!.armor!.enhancement).toBe(3);
+    expect(updated.build.gear[0]!.name).toBe("Mithral Full Plate +3");
+    // other fields preserved
+    expect(updated.build.gear[0]!.armor!.ac).toBe(9);
+    expect(updated.build.gear[0]!.armorId).toBe("h65qEp22nsyRoeRa");
+  });
 
-	it("clamps armor enhancement to [0, 10]", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE);
-		const updated = updateGearItem(d, 0, {
-			armor: { ...d.build.gear[0]!.armor!, enhancement: 99 },
-		});
-		expect(updated.build.gear[0]!.armor!.enhancement).toBe(10);
-	});
+  it("clamps armor enhancement to [0, 10]", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE);
+    const updated = updateGearItem(d, 0, {
+      armor: { ...d.build.gear[0]!.armor!, enhancement: 99 },
+    });
+    expect(updated.build.gear[0]!.armor!.enhancement).toBe(10);
+  });
 
-	it("is a no-op for out-of-range index", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE);
-		expect(updateGearItem(d, 5, { name: "x" })).toBe(d);
-		expect(updateGearItem(d, -1, { name: "x" })).toBe(d);
-	});
+  it("is a no-op for out-of-range index", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE);
+    expect(updateGearItem(d, 5, { name: "x" })).toBe(d);
+    expect(updateGearItem(d, -1, { name: "x" })).toBe(d);
+  });
 
-	it("does not mutate the original doc", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE, 2);
-		updateGearItem(d, 0, { name: "changed" });
-		expect(d.build.gear[0]!.name).toBe("Full Plate +2");
-	});
+  it("does not mutate the original doc", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 2);
+    updateGearItem(d, 0, { name: "changed" });
+    expect(d.build.gear[0]!.name).toBe("Full Plate +2");
+  });
 
-	it("drops masterwork once enhancement becomes positive (B3 invariant)", () => {
-		const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, undefined, undefined, true);
-		expect(d.build.gear[0]!.armor!.masterwork).toBe(true);
-		const updated = updateGearItem(d, 0, {
-			armor: { ...d.build.gear[0]!.armor!, enhancement: 2 },
-		});
-		expect(updated.build.gear[0]!.armor!.masterwork).toBeUndefined();
-		expect(updated.build.gear[0]!.armor!.enhancement).toBe(2);
-	});
+  it("drops masterwork once enhancement becomes positive (B3 invariant)", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, undefined, undefined, true);
+    expect(d.build.gear[0]!.armor!.masterwork).toBe(true);
+    const updated = updateGearItem(d, 0, {
+      armor: { ...d.build.gear[0]!.armor!, enhancement: 2 },
+    });
+    expect(updated.build.gear[0]!.armor!.masterwork).toBeUndefined();
+    expect(updated.build.gear[0]!.armor!.enhancement).toBe(2);
+  });
 });

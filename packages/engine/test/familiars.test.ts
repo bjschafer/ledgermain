@@ -74,9 +74,9 @@ describe("familiar master bonuses (hand-computed)", () => {
   it("toad grants +3 max HP", () => {
     const sheet = familiarSheet("toad");
     expect(sheet.hp.max).toBe(baseline.hp.max + 3);
-    expect(
-      sheet.hp.components.some((c) => c.source === "Toad (familiar)" && c.value === 3),
-    ).toBe(true);
+    expect(sheet.hp.components.some((c) => c.source === "Toad (familiar)" && c.value === 3)).toBe(
+      true,
+    );
   });
 
   it("rat grants +2 Fortitude", () => {
@@ -124,10 +124,7 @@ describe("bonds that apply nothing", () => {
   });
 
   it("a bonded object computes identically to no bond (display-only in v1)", () => {
-    const sheet = compute(
-      makeDoc({ type: "object", bondedItemName: "Grandfather's ring" }),
-      ref,
-    );
+    const sheet = compute(makeDoc({ type: "object", bondedItemName: "Grandfather's ring" }), ref);
     expect(sheet).toEqual(baseline);
   });
 

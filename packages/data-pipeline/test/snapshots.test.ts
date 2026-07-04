@@ -25,10 +25,13 @@ describe("normalized-output snapshots", () => {
   });
 
   it("class feature: Rage", () => {
-    expect(omitDescription(ref.classFeatures[
-      byName(ref.classes, "Barbarian")!.features.find((f) => f.name === "Rage")!
-        .featureId
-    ]!)).toMatchSnapshot();
+    expect(
+      omitDescription(
+        ref.classFeatures[
+          byName(ref.classes, "Barbarian")!.features.find((f) => f.name === "Rage")!.featureId
+        ]!,
+      ),
+    ).toMatchSnapshot();
   });
 
   it("feat: Cleave (prerequisites)", () => {
@@ -40,8 +43,7 @@ describe("normalized-output snapshots", () => {
   });
 
   it("buff: Fighting Defensively (formula DSL + dodge stacking)", () => {
-    expect(omitDescription(byName(ref.buffs, "Fighting Defensively")!))
-      .toMatchSnapshot();
+    expect(omitDescription(byName(ref.buffs, "Fighting Defensively")!)).toMatchSnapshot();
   });
 
   it("race: Human", () => {

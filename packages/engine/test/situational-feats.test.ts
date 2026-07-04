@@ -102,7 +102,13 @@ describe("SITUATIONAL_FEAT_EFFECTS", () => {
 
   describe("appliesTo tags", () => {
     it("ranged feats are tagged ranged", () => {
-      for (const slug of ["point-blank-shot", "precise-shot", "rapid-shot", "manyshot", "deadly-aim"]) {
+      for (const slug of [
+        "point-blank-shot",
+        "precise-shot",
+        "rapid-shot",
+        "manyshot",
+        "deadly-aim",
+      ]) {
         expect(SITUATIONAL_FEAT_EFFECTS[slug]!.appliesTo).toBe("ranged");
       }
     });

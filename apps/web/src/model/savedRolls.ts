@@ -139,7 +139,10 @@ const ATTACK_LIKE_KINDS = new Set<SavedRollSource["kind"]>(["melee", "ranged", "
 /** Append a synthetic "Manual adjustment" component when `modifier` is nonzero. */
 function withManualAdjustment(base: ModifierComponent[], modifier: number): ModifierComponent[] {
   if (!modifier) return base;
-  return [...base, { source: "Manual adjustment", type: "untyped", value: modifier, applied: true }];
+  return [
+    ...base,
+    { source: "Manual adjustment", type: "untyped", value: modifier, applied: true },
+  ];
 }
 
 /** Feat-effect contributions folded into an attack-like source's sequence/damage. */
@@ -203,7 +206,9 @@ function weaponDamage(
   return {
     display,
     components:
-      featDamageComponents.length > 0 ? [...adjustedComponents, ...featDamageComponents] : adjustedComponents,
+      featDamageComponents.length > 0
+        ? [...adjustedComponents, ...featDamageComponents]
+        : adjustedComponents,
     crit: atk.crit,
   };
 }
@@ -256,11 +261,21 @@ function foldAttachments(
       const effect = entry.effect({ bab: sheet.bab }, ref.option);
       if (effect.attack) {
         fold.attackDelta += effect.attack;
-        fold.attackComponents.push({ source: ref.name, type: "untyped", value: effect.attack, applied: true });
+        fold.attackComponents.push({
+          source: ref.name,
+          type: "untyped",
+          value: effect.attack,
+          applied: true,
+        });
       }
       if (effect.damage) {
         fold.damageDelta += effect.damage;
-        fold.damageComponents.push({ source: ref.name, type: "untyped", value: effect.damage, applied: true });
+        fold.damageComponents.push({
+          source: ref.name,
+          type: "untyped",
+          value: effect.damage,
+          applied: true,
+        });
       }
       if (effect.extraAttacks) fold.extraAttacks += effect.extraAttacks;
       if (effect.note) notes.push(effect.note);
@@ -275,11 +290,21 @@ function foldAttachments(
     const applied = bonus > 0;
     if (applied) {
       fold.attackDelta += bonus;
-      fold.attackComponents.push({ source: ref.name, type: "untyped", value: bonus, applied: true });
+      fold.attackComponents.push({
+        source: ref.name,
+        type: "untyped",
+        value: bonus,
+        applied: true,
+      });
       // Favored Enemy also boosts damage vs. that creature type; Favored Terrain does not.
       if (ref.kind === "favored-enemy") {
         fold.damageDelta += bonus;
-        fold.damageComponents.push({ source: ref.name, type: "untyped", value: bonus, applied: true });
+        fold.damageComponents.push({
+          source: ref.name,
+          type: "untyped",
+          value: bonus,
+          applied: true,
+        });
       }
     }
     rangerChips.push({ kind: ref.kind, type: ref.type, name: ref.name, bonus, applied });
@@ -369,7 +394,13 @@ function resolveSource(
       const atk = sheet.attacks.find((a) => a.name === source.weaponName);
       if (!atk) return null;
       return {
-        ...signedResult(atk.attack.total, atk.attack.iteratives, attackModifier, atk.attack.components, featFold),
+        ...signedResult(
+          atk.attack.total,
+          atk.attack.iteratives,
+          attackModifier,
+          atk.attack.components,
+          featFold,
+        ),
         damage: weaponDamage(atk, damageModifier, featFold.damageDelta, featFold.damageComponents),
       };
     }
@@ -407,7 +438,11 @@ function resolveSource(
 }
 
 /** Add a saved roll pointing at `source`, displayed as `label`. */
-export function addSavedRoll(doc: CharacterDoc, source: SavedRollSource, label: string): CharacterDoc {
+export function addSavedRoll(
+  doc: CharacterDoc,
+  source: SavedRollSource,
+  label: string,
+): CharacterDoc {
   const roll: SavedRoll = { id: newSavedRollId(), label, source };
   return {
     ...doc,
@@ -440,7 +475,11 @@ export function updateSavedRoll(
   };
 }
 
-function mapSavedRoll(doc: CharacterDoc, rollId: string, fn: (r: SavedRoll) => SavedRoll): CharacterDoc {
+function mapSavedRoll(
+  doc: CharacterDoc,
+  rollId: string,
+  fn: (r: SavedRoll) => SavedRoll,
+): CharacterDoc {
   return {
     ...doc,
     build: {
@@ -451,7 +490,11 @@ function mapSavedRoll(doc: CharacterDoc, rollId: string, fn: (r: SavedRoll) => S
 }
 
 /** Attach a feat to a saved roll. Replaces any existing ref with the same slug. */
-export function addSavedRollFeat(doc: CharacterDoc, rollId: string, ref: SavedRollFeatRef): CharacterDoc {
+export function addSavedRollFeat(
+  doc: CharacterDoc,
+  rollId: string,
+  ref: SavedRollFeatRef,
+): CharacterDoc {
   return mapSavedRoll(doc, rollId, (r) => ({
     ...r,
     feats: [...(r.feats ?? []).filter((f) => f.slug !== ref.slug), ref],
@@ -484,7 +527,11 @@ export function setSavedRollFeatOption(
  * existing ref of the same kind+type (idempotent re-attach). The bonus itself
  * is resolved live at display time, so only the choice is stored here.
  */
-export function addSavedRollRanger(doc: CharacterDoc, rollId: string, ref: SavedRollRangerRef): CharacterDoc {
+export function addSavedRollRanger(
+  doc: CharacterDoc,
+  rollId: string,
+  ref: SavedRollRangerRef,
+): CharacterDoc {
   return mapSavedRoll(doc, rollId, (r) => ({
     ...r,
     rangerBonuses: [
@@ -509,7 +556,9 @@ export function removeSavedRollRanger(
 
 /** The character's currently-owned feats, by `featNameSlug`. For `resolveSavedRoll`'s `ownedFeatSlugs`. */
 export function ownedFeatSlugs(doc: CharacterDoc, refData: RefData): Set<string> {
-  return new Set(doc.build.feats.map((featId) => featNameSlug(refData.feats[featId]?.name ?? featId)));
+  return new Set(
+    doc.build.feats.map((featId) => featNameSlug(refData.feats[featId]?.name ?? featId)),
+  );
 }
 
 /** One feat pickable as a saved-roll attachment (the "+ feat" picker). */
@@ -561,7 +610,11 @@ function compatibleAppliesTo(
  * chips, just not privileged in the ordering). Does not exclude feats already
  * attached to a given roll — that filtering is the UI's job.
  */
-export function attachableFeats(doc: CharacterDoc, refData: RefData, source: SavedRollSource): AttachableFeat[] {
+export function attachableFeats(
+  doc: CharacterDoc,
+  refData: RefData,
+  source: SavedRollSource,
+): AttachableFeat[] {
   const compatible = compatibleAppliesTo(doc, source);
   const all: AttachableFeat[] = doc.build.feats.map((featId) => {
     const name = refData.feats[featId]?.name ?? featId;

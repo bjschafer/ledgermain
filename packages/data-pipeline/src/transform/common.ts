@@ -41,10 +41,7 @@ export function normalizeChanges(value: unknown): Change[] {
     .filter((c) => c.target !== "");
 }
 
-export function normalizeContextNotes(
-  value: unknown,
-  resolveUuid: UuidResolver,
-): ContextNote[] {
+export function normalizeContextNotes(value: unknown, resolveUuid: UuidResolver): ContextNote[] {
   return asRecordArray(value)
     .map((n) => ({
       target: String(n.target ?? ""),

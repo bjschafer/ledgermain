@@ -46,7 +46,10 @@ function makeWizard(level: number, wizardSchool?: WizardSchoolTag): CharacterDoc
 
 function schoolFeatureNames(doc: CharacterDoc): string[] {
   const { classFeatures } = resolveClassFeatures(doc, ref);
-  return classFeatures.filter((f) => f.origin?.kind === "school").map((f) => f.name).sort();
+  return classFeatures
+    .filter((f) => f.origin?.kind === "school")
+    .map((f) => f.name)
+    .sort();
 }
 
 describe("wizard arcane school powers", () => {

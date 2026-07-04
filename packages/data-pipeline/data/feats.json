@@ -22,9 +22,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.0KZvBoqEfb1AUZ64"
   },
   "0VM8AdwP25nHWnV8": {
@@ -61,11 +59,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Maneuver",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Combat Maneuver", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.0VM8AdwP25nHWnV8"
   },
   "0X4q0Ypx3L05Sqzg": {
@@ -106,12 +100,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.0X4q0Ypx3L05Sqzg"
   },
   "0bZf3SDkvVOe2ujH": {
@@ -130,10 +119,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Saving Throw"
-    ],
+    "tags": ["General", "Saving Throw"],
     "uuid": "Compendium.pf1.feats.Item.0bZf3SDkvVOe2ujH"
   },
   "0bpGtfB3ksWHe0lW": {
@@ -160,11 +146,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Critical", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.0bpGtfB3ksWHe0lW"
   },
   "0spsP9ylE3goD3jc": {
@@ -190,11 +172,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Defensive",
-      "Mount"
-    ],
+    "tags": ["Combat", "Defensive", "Mount"],
     "uuid": "Compendium.pf1.feats.Item.0spsP9ylE3goD3jc"
   },
   "0yDBOWqCLugDCUeW": {
@@ -231,9 +209,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.0yDBOWqCLugDCUeW"
   },
   "11ClnanF4PdEPd9g": {
@@ -253,12 +229,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Ranged",
-      "Weapon",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Ranged", "Weapon", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.11ClnanF4PdEPd9g"
   },
   "1AY9Xjbg109TsnVl": {
@@ -299,12 +270,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.1AY9Xjbg109TsnVl"
   },
   "1HfwfBOSWtdxFQ2s": {
@@ -324,9 +290,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Channeling"
-    ],
+    "tags": ["Channeling"],
     "uuid": "Compendium.pf1.feats.Item.1HfwfBOSWtdxFQ2s"
   },
   "1Uk54nyzdK9Yfjt4": {
@@ -362,9 +326,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.1Uk54nyzdK9Yfjt4"
   },
   "1foaZv9wfqZVrZ90": {
@@ -387,9 +349,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.1foaZv9wfqZVrZ90"
   },
   "1hxjrJ68yWsiCCFD": {
@@ -415,10 +375,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Saving Throw"
-    ],
+    "tags": ["General", "Saving Throw"],
     "uuid": "Compendium.pf1.feats.Item.1hxjrJ68yWsiCCFD"
   },
   "26k1Gi7t5BoqxhIj": {
@@ -439,10 +396,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.26k1Gi7t5BoqxhIj"
   },
   "2AfSIVge3bg8r6wr": {
@@ -468,11 +422,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Unarmed",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Unarmed", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.2AfSIVge3bg8r6wr"
   },
   "2Gd0V8lDe6BkG7nl": {
@@ -499,11 +449,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Critical", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.2Gd0V8lDe6BkG7nl"
   },
   "2YuxcUNFMPNBpekG": {
@@ -522,10 +468,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic",
-      "Magic"
-    ],
+    "tags": ["Metamagic", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.2YuxcUNFMPNBpekG"
   },
   "2aTFNMs3pW6nUBlr": {
@@ -544,11 +487,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Unarmed",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Unarmed", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr"
   },
   "3HjwKckDBDDPcY2c": {
@@ -574,10 +513,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Magic"
-    ],
+    "tags": ["General", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.3HjwKckDBDDPcY2c"
   },
   "3KKtUz4ayCMaHeXQ": {
@@ -602,10 +538,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Skinwalker"
-    ],
+    "tags": ["General", "Skinwalker"],
     "uuid": "Compendium.pf1.feats.Item.3KKtUz4ayCMaHeXQ"
   },
   "3MqcLuZfUJB8xMby": {
@@ -631,9 +564,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.3MqcLuZfUJB8xMby"
   },
   "3S01BGUthIbp3Hju": {
@@ -659,12 +590,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Movement",
-      "Combat Maneuver"
-    ],
+    "tags": ["Combat", "Offensive", "Movement", "Combat Maneuver"],
     "uuid": "Compendium.pf1.feats.Item.3S01BGUthIbp3Hju"
   },
   "3cq9YbgcMrAXC76j": {
@@ -684,10 +610,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.3cq9YbgcMrAXC76j"
   },
   "3fNdl7eIUJ5d5fwg": {
@@ -719,12 +642,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon",
-      "Two Weapons",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Weapon", "Two Weapons", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.3fNdl7eIUJ5d5fwg"
   },
   "3lfNiysSNv1ahV4F": {
@@ -744,9 +662,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.3lfNiysSNv1ahV4F"
   },
   "3owNW4QoIZK6Pwm5": {
@@ -765,9 +681,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.3owNW4QoIZK6Pwm5"
   },
   "3v85ul6tGGBZbtBg": {
@@ -794,10 +708,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.3v85ul6tGGBZbtBg"
   },
   "3vO9s9gtQcRAjNl2": {
@@ -833,9 +744,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.3vO9s9gtQcRAjNl2"
   },
   "45zmh18kvRS0H641": {
@@ -861,9 +770,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.45zmh18kvRS0H641"
   },
   "4FheAz49TCHTCl6O": {
@@ -882,11 +789,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Teamwork",
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Teamwork", "Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.4FheAz49TCHTCl6O"
   },
   "4VUSgCTR3kUUtKxp": {
@@ -912,9 +815,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.4VUSgCTR3kUUtKxp"
   },
   "4Z5VmbdMnFWyBLwf": {
@@ -940,9 +841,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.4Z5VmbdMnFWyBLwf"
   },
   "4ZCIdXMHwxWABqK7": {
@@ -968,9 +867,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.4ZCIdXMHwxWABqK7"
   },
   "4fAgch4ut1JYPBbL": {
@@ -1018,13 +915,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Mount",
-      "Movement",
-      "Offensive",
-      "Combat Maneuver"
-    ],
+    "tags": ["Combat", "Mount", "Movement", "Offensive", "Combat Maneuver"],
     "uuid": "Compendium.pf1.feats.Item.4fAgch4ut1JYPBbL"
   },
   "4hNO4OAWYF5vXphH": {
@@ -1045,10 +936,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.4hNO4OAWYF5vXphH"
   },
   "53urYIbYYpQuoSLd": {
@@ -1074,10 +962,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.53urYIbYYpQuoSLd"
   },
   "54QWaanZra9hi7LV": {
@@ -1097,9 +982,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.54QWaanZra9hi7LV"
   },
   "57ELWypg7Rq3XBwG": {
@@ -1136,10 +1019,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.57ELWypg7Rq3XBwG"
   },
   "5X0iLon184CkZ1sI": {
@@ -1160,9 +1040,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.5X0iLon184CkZ1sI"
   },
   "5r33SwOguzVDBb3m": {
@@ -1186,10 +1064,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.5r33SwOguzVDBb3m"
   },
   "5xhMBEM8iB0xrE3X": {
@@ -1241,10 +1116,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.6HSMdwX1VS6nZ6Zf"
   },
   "6Qttn4c2JAddxXP4": {
@@ -1270,9 +1142,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.6Qttn4c2JAddxXP4"
   },
   "6RmcdXzrNGEWDT0h": {
@@ -1303,9 +1173,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.6RmcdXzrNGEWDT0h"
   },
   "6b29HYy9MgWVO7oW": {
@@ -1330,10 +1198,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.6b29HYy9MgWVO7oW"
   },
   "6dfwJL4eOK4J0oK5": {
@@ -1360,10 +1225,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.6dfwJL4eOK4J0oK5"
   },
   "6hmIs98sJoJzzIq0": {
@@ -1389,11 +1251,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Skill",
-      "Item Creation"
-    ],
+    "tags": ["General", "Skill", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.6hmIs98sJoJzzIq0"
   },
   "6lqGh0NvprZpUUwV": {
@@ -1413,9 +1271,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Monster"
-    ],
+    "tags": ["Monster"],
     "uuid": "Compendium.pf1.feats.Item.6lqGh0NvprZpUUwV"
   },
   "6wPjZJNZpTfGJjTR": {
@@ -1472,11 +1328,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Movement"
-    ],
+    "tags": ["Combat", "Offensive", "Movement"],
     "uuid": "Compendium.pf1.feats.Item.6wPjZJNZpTfGJjTR"
   },
   "6yGoL82RidBHmXPb": {
@@ -1496,9 +1348,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.6yGoL82RidBHmXPb"
   },
   "711B9WNFgpdDKKf2": {
@@ -1533,12 +1383,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.711B9WNFgpdDKKf2"
   },
   "75XcMJS5yUIuhzsU": {
@@ -1564,9 +1409,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.75XcMJS5yUIuhzsU"
   },
   "77gXSucrxfrE9yWk": {
@@ -1585,10 +1428,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic",
-      "Magic"
-    ],
+    "tags": ["Metamagic", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.77gXSucrxfrE9yWk"
   },
   "7P84frgqSmscfkUC": {
@@ -1608,9 +1448,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.7P84frgqSmscfkUC"
   },
   "7bJjKqNRrvpXJ4L3": {
@@ -1636,9 +1474,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.7bJjKqNRrvpXJ4L3"
   },
   "7mD4ZksvKFaorAfj": {
@@ -1665,11 +1501,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick",
-      "Defensive"
-    ],
+    "tags": ["Combat", "Combat Trick", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.7mD4ZksvKFaorAfj"
   },
   "7pQ5ew0XWvQaT826": {
@@ -1699,10 +1531,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.7pQ5ew0XWvQaT826"
   },
   "7wKFKyTQ97nci84x": {
@@ -1726,10 +1555,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.7wKFKyTQ97nci84x"
   },
   "7zJTztNW7hdaqjKc": {
@@ -1748,10 +1574,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Skill"
-    ],
+    "tags": ["General", "Skill"],
     "uuid": "Compendium.pf1.feats.Item.7zJTztNW7hdaqjKc"
   },
   "86WJUgilNgbeQXBH": {
@@ -1780,10 +1603,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.86WJUgilNgbeQXBH"
   },
   "8Gd3pvhQtXUmpKi1": {
@@ -1809,9 +1629,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.8Gd3pvhQtXUmpKi1"
   },
   "8GgeuFw6SDXaHGh1": {
@@ -1837,9 +1655,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.8GgeuFw6SDXaHGh1"
   },
   "8VZQJOyAXbXghxd7": {
@@ -1858,9 +1674,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.8VZQJOyAXbXghxd7"
   },
   "8mS9B8Uc8odklIpl": {
@@ -1892,13 +1706,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Mount",
-      "Offensive",
-      "Movement",
-      "Combat Maneuver"
-    ],
+    "tags": ["Combat", "Mount", "Offensive", "Movement", "Combat Maneuver"],
     "uuid": "Compendium.pf1.feats.Item.8mS9B8Uc8odklIpl"
   },
   "8rsFtye3PwM6CKli": {
@@ -1917,9 +1725,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.8rsFtye3PwM6CKli"
   },
   "8snLqsJN4LLL00Nq": {
@@ -1938,10 +1744,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Defensive"
-    ],
+    "tags": ["General", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.8snLqsJN4LLL00Nq"
   },
   "8viuSwNbDvZZaiak": {
@@ -1962,9 +1765,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Monster"
-    ],
+    "tags": ["Monster"],
     "uuid": "Compendium.pf1.feats.Item.8viuSwNbDvZZaiak"
   },
   "8w8oazSjfoqLMCR1": {
@@ -1994,10 +1795,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.8w8oazSjfoqLMCR1"
   },
   "91lGWgfmuQFUQit5": {
@@ -2017,9 +1815,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.91lGWgfmuQFUQit5"
   },
   "9SLkAHfOX4UEnkmS": {
@@ -2056,9 +1852,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.9SLkAHfOX4UEnkmS"
   },
   "9j6OM2njOSADu8H9": {
@@ -2078,11 +1872,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Teamwork",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Teamwork", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.9j6OM2njOSADu8H9"
   },
   "9jvLagEYC2EAJ6lJ": {
@@ -2113,10 +1903,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.9jvLagEYC2EAJ6lJ"
   },
   "9mcYid7xJY9NiySx": {
@@ -2135,9 +1922,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic"
-    ],
+    "tags": ["Metamagic"],
     "uuid": "Compendium.pf1.feats.Item.9mcYid7xJY9NiySx"
   },
   "9p0aAtCyLdcwnftS": {
@@ -2169,11 +1954,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Defensive",
-      "Movement"
-    ],
+    "tags": ["Combat", "Defensive", "Movement"],
     "uuid": "Compendium.pf1.feats.Item.9p0aAtCyLdcwnftS"
   },
   "ACEQfonKVqh0fwkK": {
@@ -2204,10 +1985,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.ACEQfonKVqh0fwkK"
   },
   "AZoNxM18sC74qeo9": {
@@ -2227,9 +2005,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.AZoNxM18sC74qeo9"
   },
   "Aj5upleDpV0t2wda": {
@@ -2255,9 +2031,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.Aj5upleDpV0t2wda"
   },
   "Ak0uWIHfOROMnywq": {
@@ -2277,9 +2051,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.Ak0uWIHfOROMnywq"
   },
   "Amz4lAaIp0x0ehPf": {
@@ -2306,11 +2078,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Critical", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.Amz4lAaIp0x0ehPf"
   },
   "AtAPt8O9FxrYjiej": {
@@ -2336,9 +2104,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.AtAPt8O9FxrYjiej"
   },
   "AuzOXSPSI7Q3iNK8": {
@@ -2358,9 +2124,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.AuzOXSPSI7Q3iNK8"
   },
   "Av67GzsPJ0qjipZ1": {
@@ -2389,10 +2153,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.Av67GzsPJ0qjipZ1"
   },
   "B3D3sXpydYZrgAuB": {
@@ -2422,10 +2183,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.B3D3sXpydYZrgAuB"
   },
   "B6wEQOUMv2ifm2Nj": {
@@ -2456,10 +2214,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Movement"
-    ],
+    "tags": ["General", "Movement"],
     "uuid": "Compendium.pf1.feats.Item.B6wEQOUMv2ifm2Nj"
   },
   "BJBC4lbo7xGWPsKJ": {
@@ -2480,11 +2235,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Proficiency",
-      "Weapon"
-    ],
+    "tags": ["Combat", "Proficiency", "Weapon"],
     "uuid": "Compendium.pf1.feats.Item.BJBC4lbo7xGWPsKJ"
   },
   "BTrciHHPtsTY01Hq": {
@@ -2517,10 +2268,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.BTrciHHPtsTY01Hq"
   },
   "BbZIN6lmkZDry3ml": {
@@ -2546,9 +2294,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.BbZIN6lmkZDry3ml"
   },
   "BkKYCzEGNTzZRiTz": {
@@ -2567,10 +2313,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Movement"
-    ],
+    "tags": ["General", "Movement"],
     "uuid": "Compendium.pf1.feats.Item.BkKYCzEGNTzZRiTz"
   },
   "Bl0fVCqJaXS7tXvn": {
@@ -2596,9 +2339,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.Bl0fVCqJaXS7tXvn"
   },
   "CLSsMyNmdcNAOUKC": {
@@ -2617,9 +2358,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.CLSsMyNmdcNAOUKC"
   },
   "CYHloH6aEnfgdxAV": {
@@ -2654,12 +2393,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.CYHloH6aEnfgdxAV"
   },
   "CjLNTqNGz4zU4zpp": {
@@ -2679,9 +2413,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.CjLNTqNGz4zU4zpp"
   },
   "D10dGyw3V0n77Msl": {
@@ -2707,9 +2439,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.D10dGyw3V0n77Msl"
   },
   "D5VflgZupUiegFAY": {
@@ -2756,11 +2486,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Movement"
-    ],
+    "tags": ["Combat", "Offensive", "Movement"],
     "uuid": "Compendium.pf1.feats.Item.D5VflgZupUiegFAY"
   },
   "DAC7m76dINHq2liy": {
@@ -2784,11 +2510,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Ifrit",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Ifrit", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.DAC7m76dINHq2liy"
   },
   "DMSYzt5jD9vk0DGy": {
@@ -2820,11 +2542,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation",
-      "Monster"
-    ],
+    "tags": ["General", "Item Creation", "Monster"],
     "uuid": "Compendium.pf1.feats.Item.DMSYzt5jD9vk0DGy"
   },
   "DUg7ErlHBmdhlh8n": {
@@ -2849,10 +2567,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.DUg7ErlHBmdhlh8n"
   },
   "DaedlCctLlmtUbrT": {
@@ -2872,9 +2587,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.DaedlCctLlmtUbrT"
   },
   "DorPGQ2mifJbMKH8": {
@@ -2895,10 +2608,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.DorPGQ2mifJbMKH8"
   },
   "EdcHghQAYBIDao3s": {
@@ -2919,10 +2629,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.EdcHghQAYBIDao3s"
   },
   "Ee7JHADKEK37tTHs": {
@@ -2947,12 +2654,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon",
-      "Two Weapons",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Weapon", "Two Weapons", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.Ee7JHADKEK37tTHs"
   },
   "EiSKVmyOAd6mGdEb": {
@@ -2982,10 +2684,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.EiSKVmyOAd6mGdEb"
   },
   "ElqchQT5WB625HPg": {
@@ -3004,10 +2703,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Magic"
-    ],
+    "tags": ["General", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.ElqchQT5WB625HPg"
   },
   "F2GJXemdlPolvx4D": {
@@ -3047,9 +2743,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.F8jywnqod8RLELNO"
   },
   "F9mKy0SmRo4bTdni": {
@@ -3068,10 +2762,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.F9mKy0SmRo4bTdni"
   },
   "FSDatwC1s6GoV1Sf": {
@@ -3102,11 +2793,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Weapon", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.FSDatwC1s6GoV1Sf"
   },
   "FUW5mIXHNBBIQ1Sq": {
@@ -3132,10 +2819,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.FUW5mIXHNBBIQ1Sq"
   },
   "Fir5fuh0SqWX6wtw": {
@@ -3164,10 +2848,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.Fir5fuh0SqWX6wtw"
   },
   "FoH6mHqWlkYnWLF6": {
@@ -3201,9 +2882,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.FoH6mHqWlkYnWLF6"
   },
   "FszchlqR39lnNduC": {
@@ -3222,9 +2901,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.FszchlqR39lnNduC"
   },
   "FtAXizfqhTNauRYh": {
@@ -3257,10 +2934,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.FtAXizfqhTNauRYh"
   },
   "GCAaufQOqpQagrSk": {
@@ -3280,9 +2954,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.GCAaufQOqpQagrSk"
   },
   "GD9p63eAGY4TppNL": {
@@ -3309,9 +2981,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.GD9p63eAGY4TppNL"
   },
   "GEo7nDHxddLxi66j": {
@@ -3348,10 +3018,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.GEo7nDHxddLxi66j"
   },
   "GUN1ISsoORAqxNOM": {
@@ -3382,10 +3049,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.GUN1ISsoORAqxNOM"
   },
   "GsjouI6B8X7BA5wN": {
@@ -3421,11 +3085,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Unarmed",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Unarmed", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN"
   },
   "HMCAM3Zyo77kG8Yg": {
@@ -3451,10 +3111,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.HMCAM3Zyo77kG8Yg"
   },
   "HVu9JzllWoLzKKqH": {
@@ -3475,10 +3132,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.HVu9JzllWoLzKKqH"
   },
   "HbfpROYGuhT2OLIQ": {
@@ -3519,12 +3173,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.HbfpROYGuhT2OLIQ"
   },
   "HdLIUDhskAwWcRBZ": {
@@ -3553,10 +3202,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.HdLIUDhskAwWcRBZ"
   },
   "HoN8pq9Q72T8WbOX": {
@@ -3587,10 +3233,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.HoN8pq9Q72T8WbOX"
   },
   "HvYZ9O5dhlfkFjDq": {
@@ -3624,10 +3267,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.HvYZ9O5dhlfkFjDq"
   },
   "I34hZ82Wa8O0ibpX": {
@@ -3647,11 +3287,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Nagaji",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Nagaji", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.I34hZ82Wa8O0ibpX"
   },
   "IER2MzJrjSvxMlNS": {
@@ -3678,11 +3314,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Weapon"
-    ],
+    "tags": ["Combat", "Offensive", "Weapon"],
     "uuid": "Compendium.pf1.feats.Item.IER2MzJrjSvxMlNS"
   },
   "IOPS4W1mVH76IgxX": {
@@ -3712,10 +3344,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.IOPS4W1mVH76IgxX"
   },
   "IPfsLy9sWXF6IBP1": {
@@ -3734,11 +3363,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon",
-      "Proficiency"
-    ],
+    "tags": ["Combat", "Weapon", "Proficiency"],
     "uuid": "Compendium.pf1.feats.Item.IPfsLy9sWXF6IBP1"
   },
   "IWcbDa0ITsDdiHjo": {
@@ -3769,10 +3394,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.IWcbDa0ITsDdiHjo"
   },
   "IsGNUF8XmxwTkxmI": {
@@ -3795,10 +3417,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.IsGNUF8XmxwTkxmI"
   },
   "J1yi4hFKYdXqZE3h": {
@@ -3817,10 +3436,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic",
-      "Magic"
-    ],
+    "tags": ["Metamagic", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.J1yi4hFKYdXqZE3h"
   },
   "JNlMhMhcDO8wkXiw": {
@@ -3841,11 +3457,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Critical", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.JNlMhMhcDO8wkXiw"
   },
   "JSPFo2fBkNlrtVqi": {
@@ -3865,10 +3477,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.JSPFo2fBkNlrtVqi"
   },
   "JUBqOpBA3agQwNvu": {
@@ -3893,10 +3502,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Magic"
-    ],
+    "tags": ["General", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.JUBqOpBA3agQwNvu"
   },
   "JYp3KC5jVI9sgsSL": {
@@ -3920,10 +3526,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.JYp3KC5jVI9sgsSL"
   },
   "JreaiTHdyWFNj3Tb": {
@@ -3948,10 +3551,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Defensive"
-    ],
+    "tags": ["Combat", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.JreaiTHdyWFNj3Tb"
   },
   "Jsoscf4TXFoHYOd0": {
@@ -3977,9 +3577,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.Jsoscf4TXFoHYOd0"
   },
   "K1BvVIrp30BUKQB5": {
@@ -4006,11 +3604,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Critical", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.K1BvVIrp30BUKQB5"
   },
   "K4FEFu94JKOP2l51": {
@@ -4036,10 +3630,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.K4FEFu94JKOP2l51"
   },
   "KPaC3H6EQGG4sXLT": {
@@ -4075,10 +3666,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Monster"
-    ],
+    "tags": ["Combat", "Monster"],
     "uuid": "Compendium.pf1.feats.Item.KPaC3H6EQGG4sXLT"
   },
   "KSc5UH9Os4iqzK3M": {
@@ -4098,9 +3686,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.KSc5UH9Os4iqzK3M"
   },
   "Kbuy0bkPlOYz5yaO": {
@@ -4135,12 +3721,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.Kbuy0bkPlOYz5yaO"
   },
   "KlE26ofz7uAkd0IJ": {
@@ -4160,10 +3741,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Magic"
-    ],
+    "tags": ["General", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.KlE26ofz7uAkd0IJ"
   },
   "KxoxorctRlefGwil": {
@@ -4182,9 +3760,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic"
-    ],
+    "tags": ["Metamagic"],
     "uuid": "Compendium.pf1.feats.Item.KxoxorctRlefGwil"
   },
   "L10V7jTzmMYz62zz": {
@@ -4203,10 +3779,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Skill"
-    ],
+    "tags": ["General", "Skill"],
     "uuid": "Compendium.pf1.feats.Item.L10V7jTzmMYz62zz"
   },
   "LJgvLlAoX4FHf93G": {
@@ -4233,10 +3806,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.LJgvLlAoX4FHf93G"
   },
   "LSykiaxYWzva2boF": {
@@ -4262,10 +3832,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Magic"
-    ],
+    "tags": ["General", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.LSykiaxYWzva2boF"
   },
   "LUOETW7Fm0oPKKWj": {
@@ -4300,12 +3867,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.LUOETW7Fm0oPKKWj"
   },
   "LVycOywOAhOFqp5A": {
@@ -4330,9 +3892,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.LVycOywOAhOFqp5A"
   },
   "MCHLkpm99e5wbTbB": {
@@ -4362,10 +3922,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.MCHLkpm99e5wbTbB"
   },
   "MWbOlWeXOxxsBacw": {
@@ -4385,9 +3942,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.MWbOlWeXOxxsBacw"
   },
   "MaBR8MFF9sibtF4z": {
@@ -4413,10 +3968,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.MaBR8MFF9sibtF4z"
   },
   "MpecI8kzg7WFzwwS": {
@@ -4446,10 +3998,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.MpecI8kzg7WFzwwS"
   },
   "Mz8ZG6nqW3NKFZhK": {
@@ -4474,12 +4023,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Movement",
-      "Offensive",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Movement", "Offensive", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.Mz8ZG6nqW3NKFZhK"
   },
   "N2utLmu8WBxNWo5y": {
@@ -4503,10 +4047,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.N2utLmu8WBxNWo5y"
   },
   "NABgOSBRECIREaha": {
@@ -4537,12 +4078,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Ranged",
-      "Weapon",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Ranged", "Weapon", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.NABgOSBRECIREaha"
   },
   "NFxHebU1XhEs5WJh": {
@@ -4567,10 +4103,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Defensive"
-    ],
+    "tags": ["Combat", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.NFxHebU1XhEs5WJh"
   },
   "NJoSHKbpJj9aD84E": {
@@ -4591,9 +4124,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Monster"
-    ],
+    "tags": ["Monster"],
     "uuid": "Compendium.pf1.feats.Item.NJoSHKbpJj9aD84E"
   },
   "NS0DdgEs4bxZm9Gx": {
@@ -4623,10 +4154,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.NS0DdgEs4bxZm9Gx"
   },
   "NdrNsfFKYGy3VXDF": {
@@ -4652,11 +4180,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Teamwork",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Teamwork", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.NdrNsfFKYGy3VXDF"
   },
   "O0e0UCim27GPKFuW": {
@@ -4682,9 +4206,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.O0e0UCim27GPKFuW"
   },
   "O0jbkTJcIji9BNiF": {
@@ -4703,10 +4225,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Skill"
-    ],
+    "tags": ["General", "Skill"],
     "uuid": "Compendium.pf1.feats.Item.O0jbkTJcIji9BNiF"
   },
   "O109YFcItBFUDHvu": {
@@ -4725,10 +4244,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic",
-      "Magic"
-    ],
+    "tags": ["Metamagic", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.O109YFcItBFUDHvu"
   },
   "O7Dn4bXZtMW0UstG": {
@@ -4748,9 +4264,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Channeling"
-    ],
+    "tags": ["Channeling"],
     "uuid": "Compendium.pf1.feats.Item.O7Dn4bXZtMW0UstG"
   },
   "P4tmHYQVGowcstjO": {
@@ -4770,9 +4284,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Monster"
-    ],
+    "tags": ["Monster"],
     "uuid": "Compendium.pf1.feats.Item.P4tmHYQVGowcstjO"
   },
   "PBqk2ZYEdehWcprC": {
@@ -4786,9 +4298,7 @@
       "skills": []
     },
     "subType": "feat",
-    "tags": [
-      "Monster"
-    ],
+    "tags": ["Monster"],
     "uuid": "Compendium.pf1.feats.Item.PBqk2ZYEdehWcprC"
   },
   "PGTjF7uoFx7wP1WO": {
@@ -4808,9 +4318,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.PGTjF7uoFx7wP1WO"
   },
   "PehrgtZkD4jn5PUV": {
@@ -4839,10 +4347,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.PehrgtZkD4jn5PUV"
   },
   "PjyRS3MdzvsVPyN8": {
@@ -4883,9 +4388,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.PjyRS3MdzvsVPyN8"
   },
   "PkktjwppuVzoLn19": {
@@ -4906,9 +4409,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.PkktjwppuVzoLn19"
   },
   "PlCHtwe6e3f7pZYR": {
@@ -4954,10 +4455,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Saving Throw"
-    ],
+    "tags": ["General", "Saving Throw"],
     "uuid": "Compendium.pf1.feats.Item.PrthT5jZl4t3znqR"
   },
   "PxwM4Uf4mcYs3Auq": {
@@ -4983,9 +4481,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.PxwM4Uf4mcYs3Auq"
   },
   "Q1cY8r0Pvb66pMG0": {
@@ -5004,10 +4500,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Skill"
-    ],
+    "tags": ["General", "Skill"],
     "uuid": "Compendium.pf1.feats.Item.Q1cY8r0Pvb66pMG0"
   },
   "QQE5EGIh7KDABnv2": {
@@ -5022,9 +4515,7 @@
       "skills": []
     },
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.QQE5EGIh7KDABnv2"
   },
   "QSMKp6riDytO2ajn": {
@@ -5054,10 +4545,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.QSMKp6riDytO2ajn"
   },
   "QWQH2kZgd1xZicuX": {
@@ -5077,9 +4565,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Monster"
-    ],
+    "tags": ["Monster"],
     "uuid": "Compendium.pf1.feats.Item.QWQH2kZgd1xZicuX"
   },
   "QaMwiDFQdDwycTUO": {
@@ -5099,10 +4585,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.QaMwiDFQdDwycTUO"
   },
   "QhUjSBWAp6EYFM8K": {
@@ -5128,9 +4611,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.QhUjSBWAp6EYFM8K"
   },
   "QlfQpoqFeSTC9AAT": {
@@ -5170,9 +4651,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Oread"
-    ],
+    "tags": ["Oread"],
     "uuid": "Compendium.pf1.feats.Item.QsGY4DuSVU3iIfjA"
   },
   "QvfsBWvx7Rfb9Wb7": {
@@ -5207,12 +4686,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Movement",
-      "Offensive",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Movement", "Offensive", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.QvfsBWvx7Rfb9Wb7"
   },
   "QvlxYVVsBDlykPKe": {
@@ -5232,12 +4706,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon",
-      "Magic",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Weapon", "Magic", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.QvlxYVVsBDlykPKe"
   },
   "R351L670WEKmPCFW": {
@@ -5271,10 +4740,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.R351L670WEKmPCFW"
   },
   "R3a1OV18RwDJftvq": {
@@ -5294,9 +4760,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.R3a1OV18RwDJftvq"
   },
   "R5nnb83RW7qHkVmA": {
@@ -5369,11 +4833,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Movement",
-      "Defensive"
-    ],
+    "tags": ["Combat", "Movement", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.R7L4SlGRlnThqFrP"
   },
   "RADDhLqKsKxEROeZ": {
@@ -5397,10 +4857,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.RADDhLqKsKxEROeZ"
   },
   "RDgJ7awoKBhacWsu": {
@@ -5420,9 +4877,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.RDgJ7awoKBhacWsu"
   },
   "RE14LhYMDTcjAyHd": {
@@ -5449,11 +4904,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Critical", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.RE14LhYMDTcjAyHd"
   },
   "RaOVZlAzRHFKyr24": {
@@ -5480,10 +4931,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Style"
-    ],
+    "tags": ["Combat", "Style"],
     "uuid": "Compendium.pf1.feats.Item.RaOVZlAzRHFKyr24"
   },
   "RmhtvELGu73iR8yh": {
@@ -5503,10 +4951,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Monster"
-    ],
+    "tags": ["Combat", "Monster"],
     "uuid": "Compendium.pf1.feats.Item.RmhtvELGu73iR8yh"
   },
   "SI5S8eZGMOwIDkiq": {
@@ -5547,9 +4992,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.SI5S8eZGMOwIDkiq"
   },
   "SKStYsOqcnZPzytA": {
@@ -5575,10 +5018,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Conduit"
-    ],
+    "tags": ["Combat", "Conduit"],
     "uuid": "Compendium.pf1.feats.Item.SKStYsOqcnZPzytA"
   },
   "SMyexRzOm5PfjT5I": {
@@ -5597,10 +5037,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Skill"
-    ],
+    "tags": ["General", "Skill"],
     "uuid": "Compendium.pf1.feats.Item.SMyexRzOm5PfjT5I"
   },
   "SNLBrZVKytb0S3tS": {
@@ -5634,10 +5071,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.SNLBrZVKytb0S3tS"
   },
   "SS99IHuvIvzQ1v92": {
@@ -5668,9 +5102,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.SS99IHuvIvzQ1v92"
   },
   "SUACufUXl12sUvnQ": {
@@ -5689,9 +5121,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.SUACufUXl12sUvnQ"
   },
   "SkiZsGPMlsMNeBhf": {
@@ -5728,9 +5158,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.SkiZsGPMlsMNeBhf"
   },
   "SxJ3UUccsCHjI6WN": {
@@ -5750,9 +5178,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.SxJ3UUccsCHjI6WN"
   },
   "TEK26tHXdje9NV4Y": {
@@ -5782,10 +5208,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.TEK26tHXdje9NV4Y"
   },
   "TF9tm6ls38bkwqij": {
@@ -5812,9 +5235,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.TF9tm6ls38bkwqij"
   },
   "TGmNCGtnHf0icozK": {
@@ -5841,10 +5262,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.TGmNCGtnHf0icozK"
   },
   "THh2QoWGXIJUaGsw": {
@@ -5870,9 +5288,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.THh2QoWGXIJUaGsw"
   },
   "TN4EcG5WwQQPzl51": {
@@ -5892,9 +5308,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.TN4EcG5WwQQPzl51"
   },
   "Ta1GLdnipoC2qpCO": {
@@ -5915,9 +5329,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.Ta1GLdnipoC2qpCO"
   },
   "TbOPtIL8Fv8obXtP": {
@@ -5938,11 +5350,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Critical", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.TbOPtIL8Fv8obXtP"
   },
   "UatLCbhallkclT6U": {
@@ -5973,9 +5381,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.UatLCbhallkclT6U"
   },
   "UcEIgufLJlIfhHmu": {
@@ -6007,10 +5413,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.UcEIgufLJlIfhHmu"
   },
   "UnmST9BvRhxT4vq3": {
@@ -6061,10 +5464,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.UnmST9BvRhxT4vq3"
   },
   "UqQk2exo5s8hL71s": {
@@ -6095,9 +5495,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Item Creation"
-    ],
+    "tags": ["Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.UqQk2exo5s8hL71s"
   },
   "Uuiu3p982omhMEPj": {
@@ -6116,9 +5514,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.Uuiu3p982omhMEPj"
   },
   "V041fsvlhNcFhz5k": {
@@ -6138,9 +5534,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.V041fsvlhNcFhz5k"
   },
   "V2zY7BltkpSXwejy": {
@@ -6159,10 +5553,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Magic"
-    ],
+    "tags": ["General", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.V2zY7BltkpSXwejy"
   },
   "V6du9lXESc2spA7B": {
@@ -6183,10 +5574,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.V6du9lXESc2spA7B"
   },
   "V8GIvVaAofyw9xIl": {
@@ -6205,10 +5593,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Magic"
-    ],
+    "tags": ["General", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.V8GIvVaAofyw9xIl"
   },
   "VHsCghfyT6J43b5G": {
@@ -6228,9 +5613,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.VHsCghfyT6J43b5G"
   },
   "VK8TgwfjeomMwGjd": {
@@ -6261,12 +5644,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Two Weapons",
-      "Weapon"
-    ],
+    "tags": ["Combat", "Offensive", "Two Weapons", "Weapon"],
     "uuid": "Compendium.pf1.feats.Item.VK8TgwfjeomMwGjd"
   },
   "VMVAqGze4cs3naya": {
@@ -6291,10 +5669,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Movement"
-    ],
+    "tags": ["General", "Movement"],
     "uuid": "Compendium.pf1.feats.Item.VMVAqGze4cs3naya"
   },
   "VPruDiNTrlRVlJRA": {
@@ -6330,9 +5705,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.VPruDiNTrlRVlJRA"
   },
   "ViwAwl9iKWgh77pP": {
@@ -6352,9 +5725,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.ViwAwl9iKWgh77pP"
   },
   "Vov43JkBzhtPn2T9": {
@@ -6378,10 +5749,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.Vov43JkBzhtPn2T9"
   },
   "Vq8zGwac1PqaY4IF": {
@@ -6422,12 +5790,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Movement",
-      "Offensive",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Movement", "Offensive", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.Vq8zGwac1PqaY4IF"
   },
   "VtTtf8P02AhoumaB": {
@@ -6458,9 +5821,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.VtTtf8P02AhoumaB"
   },
   "W5w7Az6CbDm6bgpE": {
@@ -6487,9 +5848,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.W5w7Az6CbDm6bgpE"
   },
   "WKIVfdosc5SqYzmP": {
@@ -6510,10 +5869,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon"
-    ],
+    "tags": ["Combat", "Weapon"],
     "uuid": "Compendium.pf1.feats.Item.WKIVfdosc5SqYzmP"
   },
   "WOny1lHnaikwNDzH": {
@@ -6539,10 +5895,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.WOny1lHnaikwNDzH"
   },
   "WYuwfu2h0LWNkU4Y": {
@@ -6581,9 +5934,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.WZj7zDvuelEoeXWX"
   },
   "WmXRmJIpmK9nejvC": {
@@ -6615,10 +5966,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.WmXRmJIpmK9nejvC"
   },
   "WnWRcte0jppClLpz": {
@@ -6643,9 +5991,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Channeling"
-    ],
+    "tags": ["Channeling"],
     "uuid": "Compendium.pf1.feats.Item.WnWRcte0jppClLpz"
   },
   "WoUopEGAWb3pGp6I": {
@@ -6664,9 +6010,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Teamwork"
-    ],
+    "tags": ["Teamwork"],
     "uuid": "Compendium.pf1.feats.Item.WoUopEGAWb3pGp6I"
   },
   "WtVQV3QZvm2VHIAX": {
@@ -6695,10 +6039,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.WtVQV3QZvm2VHIAX"
   },
   "Wyg5K1Y72Jf5Yehb": {
@@ -6722,9 +6063,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.Wyg5K1Y72Jf5Yehb"
   },
   "WzxMRQNiRbWuR7Gw": {
@@ -6750,9 +6089,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.WzxMRQNiRbWuR7Gw"
   },
   "XAQntETXIH2e5GwF": {
@@ -6773,10 +6110,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat Trick",
-      "Kobold"
-    ],
+    "tags": ["Combat Trick", "Kobold"],
     "uuid": "Compendium.pf1.feats.Item.XAQntETXIH2e5GwF"
   },
   "XEe84rVBLzlDq7Ae": {
@@ -6823,9 +6157,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.XEe84rVBLzlDq7Ae"
   },
   "XGvS0hHv58XAeQij": {
@@ -6866,12 +6198,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.XGvS0hHv58XAeQij"
   },
   "XMQRJ6eGKu3KILKe": {
@@ -6891,9 +6218,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.XMQRJ6eGKu3KILKe"
   },
   "XRPuApgE1Ltz4YHN": {
@@ -6925,11 +6250,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick",
-      "Defensive"
-    ],
+    "tags": ["Combat", "Combat Trick", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.XRPuApgE1Ltz4YHN"
   },
   "XfdKpTa4w1wuhJKU": {
@@ -6950,10 +6271,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Teamwork"
-    ],
+    "tags": ["Combat", "Teamwork"],
     "uuid": "Compendium.pf1.feats.Item.XfdKpTa4w1wuhJKU"
   },
   "XhGkCdqvLjdyET0n": {
@@ -6973,9 +6291,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.XhGkCdqvLjdyET0n"
   },
   "XxZgIRc2UMLXHtZh": {
@@ -7016,12 +6332,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.XxZgIRc2UMLXHtZh"
   },
   "YDqp3yrAsuXh103W": {
@@ -7052,12 +6363,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon",
-      "Two Weapons",
-      "Defensive"
-    ],
+    "tags": ["Combat", "Weapon", "Two Weapons", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.YDqp3yrAsuXh103W"
   },
   "YLCvMNeAF9V31m1h": {
@@ -7083,11 +6389,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Weapon", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.YLCvMNeAF9V31m1h"
   },
   "YfSxUIhoYTL1o3Yp": {
@@ -7113,9 +6415,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.YfSxUIhoYTL1o3Yp"
   },
   "YlmQY1Dwjs2EusuT": {
@@ -7141,9 +6441,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.YlmQY1Dwjs2EusuT"
   },
   "ZMxgexE56Ru4qrdx": {
@@ -7169,9 +6467,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.ZMxgexE56Ru4qrdx"
   },
   "Zeq6RWYv5otvg8q7": {
@@ -7203,10 +6499,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.Zeq6RWYv5otvg8q7"
   },
   "ZmQkRk93nbHxsQSt": {
@@ -7241,12 +6534,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.ZmQkRk93nbHxsQSt"
   },
   "ZyqqdwtKnQncl5Fd": {
@@ -7275,10 +6563,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.ZyqqdwtKnQncl5Fd"
   },
   "aUYSiYrtVHkgfHD6": {
@@ -7310,10 +6595,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.aUYSiYrtVHkgfHD6"
   },
   "aakJ9PeaLxE6qluW": {
@@ -7333,9 +6615,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.aakJ9PeaLxE6qluW"
   },
   "asmQDyDYTtuXg8b4": {
@@ -7371,11 +6651,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Weapon"
-    ],
+    "tags": ["Combat", "Offensive", "Weapon"],
     "uuid": "Compendium.pf1.feats.Item.asmQDyDYTtuXg8b4"
   },
   "bHcqTC4Lf3aVl3VO": {
@@ -7411,11 +6687,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Ranged",
-      "Defensive"
-    ],
+    "tags": ["Combat", "Ranged", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.bHcqTC4Lf3aVl3VO"
   },
   "bPu6oC4wfuadvMOp": {
@@ -7459,10 +6731,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.bSvHafwjbsYsXeoW"
   },
   "bXeW4kLCErPBFpNB": {
@@ -7481,9 +6750,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.bXeW4kLCErPBFpNB"
   },
   "bZ1YdzkT8NtRIEJ4": {
@@ -7502,10 +6769,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.bZ1YdzkT8NtRIEJ4"
   },
   "bkw0OuBdByzeWF0N": {
@@ -7525,11 +6789,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Gnome",
-      "Elf",
-      "Dwarf"
-    ],
+    "tags": ["Gnome", "Elf", "Dwarf"],
     "uuid": "Compendium.pf1.feats.Item.bkw0OuBdByzeWF0N"
   },
   "bqoIfsrF8BF1GC28": {
@@ -7548,9 +6808,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.bqoIfsrF8BF1GC28"
   },
   "btXWioB3SKJv8YEG": {
@@ -7569,10 +6827,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic",
-      "Magic"
-    ],
+    "tags": ["Metamagic", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.btXWioB3SKJv8YEG"
   },
   "cKthdANSm9kgKc29": {
@@ -7609,10 +6864,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.cKthdANSm9kgKc29"
   },
   "cKxfEL5XOWuzLhfO": {
@@ -7638,10 +6890,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Saving Throw"
-    ],
+    "tags": ["General", "Saving Throw"],
     "uuid": "Compendium.pf1.feats.Item.cKxfEL5XOWuzLhfO"
   },
   "dNmpRd9N0eyEJuUw": {
@@ -7670,10 +6919,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.dNmpRd9N0eyEJuUw"
   },
   "dPLj98GIzbwcoOjn": {
@@ -7693,9 +6939,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.dPLj98GIzbwcoOjn"
   },
   "dahncmkl8bFmFlmi": {
@@ -7721,9 +6965,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Grit"
-    ],
+    "tags": ["Grit"],
     "uuid": "Compendium.pf1.feats.Item.dahncmkl8bFmFlmi"
   },
   "dn2KgHFQRbuoNRx0": {
@@ -7759,12 +7001,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.dn2KgHFQRbuoNRx0"
   },
   "dyTsGfZBwrXNfdH9": {
@@ -7796,11 +7033,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Critical", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.dyTsGfZBwrXNfdH9"
   },
   "e1zIVW9AcrmRrYvx": {
@@ -7836,12 +7069,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.e1zIVW9AcrmRrYvx"
   },
   "eZ1aqBIrR5L8sVu8": {
@@ -7871,10 +7099,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.eZ1aqBIrR5L8sVu8"
   },
   "ecPbtSHMr6hCIjrt": {
@@ -7901,10 +7126,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.ecPbtSHMr6hCIjrt"
   },
   "ecb9SMCyYPaPLCSy": {
@@ -7929,11 +7151,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Critical", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.ecb9SMCyYPaPLCSy"
   },
   "ehqx8txNRGMaNOPt": {
@@ -7952,9 +7170,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.ehqx8txNRGMaNOPt"
   },
   "en3iH9cxZtYQNd08": {
@@ -7996,10 +7212,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.en3iH9cxZtYQNd08"
   },
   "ezNxW33BtSafLl0J": {
@@ -8049,10 +7262,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Skill"
-    ],
+    "tags": ["General", "Skill"],
     "uuid": "Compendium.pf1.feats.Item.f5FPqAYWlKj3zCIY"
   },
   "f5rgOsdDlseGr4o5": {
@@ -8072,9 +7282,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Channeling"
-    ],
+    "tags": ["Channeling"],
     "uuid": "Compendium.pf1.feats.Item.f5rgOsdDlseGr4o5"
   },
   "f8BDCG8XvJlfGfFG": {
@@ -8104,11 +7312,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick",
-      "Combat Maneuver"
-    ],
+    "tags": ["Combat", "Combat Trick", "Combat Maneuver"],
     "uuid": "Compendium.pf1.feats.Item.f8BDCG8XvJlfGfFG"
   },
   "fCn7TNdREiH7fzuv": {
@@ -8129,10 +7333,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.fCn7TNdREiH7fzuv"
   },
   "fVRnBIHR4Jq6btvm": {
@@ -8151,11 +7352,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Saving Throw",
-      "Defensive"
-    ],
+    "tags": ["General", "Saving Throw", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.fVRnBIHR4Jq6btvm"
   },
   "fnAVlh0TXLt5XbNJ": {
@@ -8175,10 +7372,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Kitsune"
-    ],
+    "tags": ["General", "Kitsune"],
     "uuid": "Compendium.pf1.feats.Item.fnAVlh0TXLt5XbNJ"
   },
   "ftBTltVkin3Ko3NJ": {
@@ -8198,11 +7392,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Channeling",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Channeling", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.ftBTltVkin3Ko3NJ"
   },
   "gGfXQq0IZrxdcZDx": {
@@ -8221,11 +7411,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Weapon"
-    ],
+    "tags": ["Combat", "Offensive", "Weapon"],
     "uuid": "Compendium.pf1.feats.Item.gGfXQq0IZrxdcZDx"
   },
   "gGx5DrPAWiFc0WOt": {
@@ -8252,9 +7438,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.gGx5DrPAWiFc0WOt"
   },
   "gTrGPxzN054GfpkM": {
@@ -8289,12 +7473,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.gTrGPxzN054GfpkM"
   },
   "gagxv8M42Z8M0hvW": {
@@ -8323,10 +7502,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.gagxv8M42Z8M0hvW"
   },
   "go4xOiSUP8R1QJ5N": {
@@ -8362,12 +7538,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.go4xOiSUP8R1QJ5N"
   },
   "gtvBVEKBRF2SzfeJ": {
@@ -8396,10 +7567,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Android"
-    ],
+    "tags": ["General", "Android"],
     "uuid": "Compendium.pf1.feats.Item.gtvBVEKBRF2SzfeJ"
   },
   "h0pRzRlCHFtMmbJC": {
@@ -8425,10 +7593,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.h0pRzRlCHFtMmbJC"
   },
   "h1vqUG9Kh3f7oKWK": {
@@ -8465,10 +7630,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.h1vqUG9Kh3f7oKWK"
   },
   "h8Ap9cxdsXWRC6Tc": {
@@ -8487,10 +7649,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic",
-      "Magic"
-    ],
+    "tags": ["Metamagic", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.h8Ap9cxdsXWRC6Tc"
   },
   "h9nHYLxXvIXBTmup": {
@@ -8509,10 +7668,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.h9nHYLxXvIXBTmup"
   },
   "hc7CRKHvhmKRzNKb": {
@@ -8553,12 +7709,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.hc7CRKHvhmKRzNKb"
   },
   "hmIyhTP9CuKD1E5X": {
@@ -8596,10 +7747,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.hmIyhTP9CuKD1E5X"
   },
   "iAbIGhm7T2OK9Brt": {
@@ -8618,10 +7766,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Saving Throw"
-    ],
+    "tags": ["General", "Saving Throw"],
     "uuid": "Compendium.pf1.feats.Item.iAbIGhm7T2OK9Brt"
   },
   "ieltigobtFrlTXIt": {
@@ -8658,12 +7803,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Two Weapons",
-      "Weapon",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Two Weapons", "Weapon", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.ieltigobtFrlTXIt"
   },
   "ieww7CP6JK5pwtpg": {
@@ -8683,9 +7823,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Channeling"
-    ],
+    "tags": ["Channeling"],
     "uuid": "Compendium.pf1.feats.Item.ieww7CP6JK5pwtpg"
   },
   "j7eMQ1ExZORIO63I": {
@@ -8715,10 +7853,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.j7eMQ1ExZORIO63I"
   },
   "jCxcObXJfdDrx4WS": {
@@ -8737,9 +7872,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.jCxcObXJfdDrx4WS"
   },
   "jGYtflqD2m71KaEg": {
@@ -8759,9 +7892,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.jGYtflqD2m71KaEg"
   },
   "jKVhOxHu6VmUgFdp": {
@@ -8798,13 +7929,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Mount",
-      "Weapon",
-      "Offensive",
-      "Movement"
-    ],
+    "tags": ["Combat", "Mount", "Weapon", "Offensive", "Movement"],
     "uuid": "Compendium.pf1.feats.Item.jKVhOxHu6VmUgFdp"
   },
   "jMGCqF0DGOVqyYUt": {
@@ -8824,9 +7949,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.jMGCqF0DGOVqyYUt"
   },
   "jVFjMIyQD6TOAsmj": {
@@ -8845,10 +7968,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic",
-      "Magic"
-    ],
+    "tags": ["Metamagic", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.jVFjMIyQD6TOAsmj"
   },
   "jbvXxHpu7BVbCpwr": {
@@ -8885,11 +8005,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Movement",
-      "Defensive"
-    ],
+    "tags": ["Combat", "Movement", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.jbvXxHpu7BVbCpwr"
   },
   "k3ZioHnhvOHUQvF9": {
@@ -8915,9 +8031,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.k3ZioHnhvOHUQvF9"
   },
   "kl3ehmJ2wydNdtvu": {
@@ -8947,10 +8061,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.kl3ehmJ2wydNdtvu"
   },
   "kn854Ovz0BDA2Dgz": {
@@ -8982,10 +8093,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.kn854Ovz0BDA2Dgz"
   },
   "lIlQnrRkC3YJ1V6t": {
@@ -9006,10 +8114,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.lIlQnrRkC3YJ1V6t"
   },
   "lNyMFFQaOxxTOW7M": {
@@ -9050,12 +8155,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.lNyMFFQaOxxTOW7M"
   },
   "lRWXptGqGabk1vfH": {
@@ -9081,10 +8181,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical"
-    ],
+    "tags": ["Combat", "Critical"],
     "uuid": "Compendium.pf1.feats.Item.lRWXptGqGabk1vfH"
   },
   "laMCsQj0tA1t0eWr": {
@@ -9120,10 +8217,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.laMCsQj0tA1t0eWr"
   },
   "lcBEHycuiTEcCof4": {
@@ -9148,9 +8242,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.lcBEHycuiTEcCof4"
   },
   "lcsiFYTpkBpIGeeF": {
@@ -9181,9 +8273,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.lcsiFYTpkBpIGeeF"
   },
   "lgMKavJ4ePylzlqA": {
@@ -9215,11 +8305,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Critical", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.lgMKavJ4ePylzlqA"
   },
   "liPAO5urMI9chctT": {
@@ -9251,12 +8337,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Mount",
-      "Offensive",
-      "Movement"
-    ],
+    "tags": ["Combat", "Mount", "Offensive", "Movement"],
     "uuid": "Compendium.pf1.feats.Item.liPAO5urMI9chctT"
   },
   "ln2Dhw97Fol1BCxU": {
@@ -9277,11 +8358,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Teamwork",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Teamwork", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.ln2Dhw97Fol1BCxU"
   },
   "lpXdFoT6OqS5vi2X": {
@@ -9317,12 +8394,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.lpXdFoT6OqS5vi2X"
   },
   "lrm4C05AtgTksHYU": {
@@ -9346,10 +8418,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.lrm4C05AtgTksHYU"
   },
   "lxDJhpqwtR3J4UXx": {
@@ -9368,9 +8437,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.lxDJhpqwtR3J4UXx"
   },
   "mI0ymYPoggxjOWwQ": {
@@ -9396,9 +8463,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.mI0ymYPoggxjOWwQ"
   },
   "mKrQhQAd4Xr3tB8Q": {
@@ -9429,9 +8494,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.mKrQhQAd4Xr3tB8Q"
   },
   "mY29nl8eCF5GjchB": {
@@ -9461,12 +8524,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.mY29nl8eCF5GjchB"
   },
   "n1wLrcwaqOSDqrOo": {
@@ -9491,9 +8549,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Monster"
-    ],
+    "tags": ["Monster"],
     "uuid": "Compendium.pf1.feats.Item.n1wLrcwaqOSDqrOo"
   },
   "n250dFlbykAIAg5Z": {
@@ -9514,11 +8570,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Weapon", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.n250dFlbykAIAg5Z"
   },
   "nNVFVFRBCT4O2ab9": {
@@ -9539,10 +8591,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.nNVFVFRBCT4O2ab9"
   },
   "nVNkWyzh4EVyxouV": {
@@ -9569,11 +8618,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Critical",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Critical", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.nVNkWyzh4EVyxouV"
   },
   "nW2GUYlGhZ2bmgdz": {
@@ -9599,10 +8644,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.nW2GUYlGhZ2bmgdz"
   },
   "nWFr8SNcjcMqsXSH": {
@@ -9621,10 +8663,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Magic"
-    ],
+    "tags": ["General", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.nWFr8SNcjcMqsXSH"
   },
   "nhUawPP4jfED3CYV": {
@@ -9656,11 +8695,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Unarmed"
-    ],
+    "tags": ["Combat", "Offensive", "Unarmed"],
     "uuid": "Compendium.pf1.feats.Item.nhUawPP4jfED3CYV"
   },
   "nxfb1Cxl628nYR3L": {
@@ -9680,10 +8715,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.nxfb1Cxl628nYR3L"
   },
   "oP4Srsuk0dF2Zf9F": {
@@ -9703,9 +8735,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.oP4Srsuk0dF2Zf9F"
   },
   "oRJlgRLS32fmoQpy": {
@@ -9725,9 +8755,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Magic"
-    ],
+    "tags": ["Magic"],
     "uuid": "Compendium.pf1.feats.Item.oRJlgRLS32fmoQpy"
   },
   "oY7COqEz5J61AX7C": {
@@ -9747,9 +8775,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.oY7COqEz5J61AX7C"
   },
   "pDzBCnBZXHydBPJx": {
@@ -9774,10 +8800,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.pDzBCnBZXHydBPJx"
   },
   "pTPorNenRhXAtdYg": {
@@ -9800,10 +8823,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.pTPorNenRhXAtdYg"
   },
   "pUmoxJHnoITAStYq": {
@@ -9828,10 +8848,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.pUmoxJHnoITAStYq"
   },
   "pgRX4VpFemwv9R0E": {
@@ -9851,9 +8868,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Channeling"
-    ],
+    "tags": ["Channeling"],
     "uuid": "Compendium.pf1.feats.Item.pgRX4VpFemwv9R0E"
   },
   "pmAO1Sni8xx71pLF": {
@@ -9872,10 +8887,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
   },
   "pyyYB527dUcwvK66": {
@@ -9901,9 +8913,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.pyyYB527dUcwvK66"
   },
   "qQCgBVieojhmMuHL": {
@@ -9923,9 +8933,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.qQCgBVieojhmMuHL"
   },
   "qYv70Ch9RQfi1LQQ": {
@@ -9951,10 +8959,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.qYv70Ch9RQfi1LQQ"
   },
   "qjtxhqhbtzfhsCGn": {
@@ -9980,9 +8985,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.qjtxhqhbtzfhsCGn"
   },
   "r0oGCxDYVKC5NJF9": {
@@ -10013,10 +9016,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.r0oGCxDYVKC5NJF9"
   },
   "rMR6ahXEfYqASE7D": {
@@ -10035,9 +9035,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.rMR6ahXEfYqASE7D"
   },
   "rZb2Q25YleDEih3J": {
@@ -10063,9 +9061,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.rZb2Q25YleDEih3J"
   },
   "rd6l1sioW9ecVcSm": {
@@ -10085,9 +9081,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.rd6l1sioW9ecVcSm"
   },
   "rp9HV7wYcMb333si": {
@@ -10119,13 +9113,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Mount",
-      "Ranged",
-      "Offensive",
-      "Weapon"
-    ],
+    "tags": ["Combat", "Mount", "Ranged", "Offensive", "Weapon"],
     "uuid": "Compendium.pf1.feats.Item.rp9HV7wYcMb333si"
   },
   "rpsKqlUNGhqRV97z": {
@@ -10156,10 +9144,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.rpsKqlUNGhqRV97z"
   },
   "rt2cBQvEU0ANE3z4": {
@@ -10180,10 +9165,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.rt2cBQvEU0ANE3z4"
   },
   "sOCyCmNxe2MBbEaI": {
@@ -10220,11 +9202,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Unarmed",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Unarmed", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.sOCyCmNxe2MBbEaI"
   },
   "sWnRp7fvHlK2egrw": {
@@ -10249,10 +9227,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.sWnRp7fvHlK2egrw"
   },
   "tD76K8QGco9scT0r": {
@@ -10273,10 +9248,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.tD76K8QGco9scT0r"
   },
   "tFWADj9sdIRLjdOY": {
@@ -10303,10 +9275,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Style"
-    ],
+    "tags": ["Combat", "Style"],
     "uuid": "Compendium.pf1.feats.Item.tFWADj9sdIRLjdOY"
   },
   "tGDNVHHZnNFPPgiY": {
@@ -10348,12 +9317,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon",
-      "Two Weapons",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Weapon", "Two Weapons", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.tGDNVHHZnNFPPgiY"
   },
   "tZEAN61G7WEFHD4J": {
@@ -10382,10 +9346,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.tZEAN61G7WEFHD4J"
   },
   "tcBSikJXg2YhVXPF": {
@@ -10415,10 +9376,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.tcBSikJXg2YhVXPF"
   },
   "tk0zKjZTUTvs0y7g": {
@@ -10448,10 +9406,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.tk0zKjZTUTvs0y7g"
   },
   "tkWfEP1fD7CZt8Kw": {
@@ -10492,12 +9447,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.tkWfEP1fD7CZt8Kw"
   },
   "tlRu8SYjzA7WCHN7": {
@@ -10518,10 +9468,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Item Creation"
-    ],
+    "tags": ["General", "Item Creation"],
     "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"
   },
   "tocde3sKG1O3GKgd": {
@@ -10552,11 +9499,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Maneuver",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Combat Maneuver", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.tocde3sKG1O3GKgd"
   },
   "u7rGDZUL296QIuA0": {
@@ -10575,11 +9518,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General",
-      "Magic",
-      "Defensive"
-    ],
+    "tags": ["General", "Magic", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.u7rGDZUL296QIuA0"
   },
   "u9wRB7bsYgX0jCdk": {
@@ -10616,9 +9555,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.u9wRB7bsYgX0jCdk"
   },
   "ugQyUpqPBDsqLyra": {
@@ -10655,11 +9592,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Movement"
-    ],
+    "tags": ["Combat", "Offensive", "Movement"],
     "uuid": "Compendium.pf1.feats.Item.ugQyUpqPBDsqLyra"
   },
   "uotzThdayYmtFieG": {
@@ -10685,9 +9618,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.uotzThdayYmtFieG"
   },
   "vRjWh9GGi2iUzmsF": {
@@ -10716,10 +9647,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.vRjWh9GGi2iUzmsF"
   },
   "vWiTqHC4Y3Xn1Pme": {
@@ -10738,10 +9666,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Weapon"
-    ],
+    "tags": ["Combat", "Weapon"],
     "uuid": "Compendium.pf1.feats.Item.vWiTqHC4Y3Xn1Pme"
   },
   "vZI5uTnmKJuEXPnu": {
@@ -10765,11 +9690,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Ifrit",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Ifrit", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.vZI5uTnmKJuEXPnu"
   },
   "vhN413T0ASvOxBL1": {
@@ -10794,10 +9715,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Monster"
-    ],
+    "tags": ["Combat", "Monster"],
     "uuid": "Compendium.pf1.feats.Item.vhN413T0ASvOxBL1"
   },
   "vxDz1Rt1XKfFvWBV": {
@@ -10823,9 +9741,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Panache"
-    ],
+    "tags": ["Panache"],
     "uuid": "Compendium.pf1.feats.Item.vxDz1Rt1XKfFvWBV"
   },
   "w23dO02t0poRrno0": {
@@ -10862,12 +9778,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Ranged",
-      "Weapon",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Ranged", "Weapon", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.w23dO02t0poRrno0"
   },
   "wFoLrh5FeeqBXsQ8": {
@@ -10886,10 +9797,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Metamagic",
-      "Magic"
-    ],
+    "tags": ["Metamagic", "Magic"],
     "uuid": "Compendium.pf1.feats.Item.wFoLrh5FeeqBXsQ8"
   },
   "wJNggbGTZBx7BW9W": {
@@ -10930,12 +9838,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive",
-      "Combat Maneuver",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Offensive", "Combat Maneuver", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.wJNggbGTZBx7BW9W"
   },
   "xEiu70gtsZsq4eSo": {
@@ -10955,9 +9858,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.xEiu70gtsZsq4eSo"
   },
   "xKJhMF8gS9c53RGl": {
@@ -10987,10 +9888,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.xKJhMF8gS9c53RGl"
   },
   "xq2TFr7bsYBBHOi5": {
@@ -11011,10 +9909,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.xq2TFr7bsYBBHOi5"
   },
   "y3GhqdsCdE9IyYQc": {
@@ -11033,9 +9928,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.y3GhqdsCdE9IyYQc"
   },
   "yB4JlE2GC1MYlweS": {
@@ -11077,10 +9970,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.yB4JlE2GC1MYlweS"
   },
   "yE3hVOvBq9rx6TAw": {
@@ -11100,11 +9990,7 @@
       "skills": []
     },
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Magic",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Magic", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.yE3hVOvBq9rx6TAw"
   },
   "yQ06clVxFV6dOjc1": {
@@ -11129,9 +10015,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "General"
-    ],
+    "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.yQ06clVxFV6dOjc1"
   },
   "yW1RFRSh4Ma2uYc9": {
@@ -11150,11 +10034,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Teamwork",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Teamwork", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.yW1RFRSh4Ma2uYc9"
   },
   "yg43xz1qpQ3jEGk2": {
@@ -11181,9 +10061,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat"
-    ],
+    "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.yg43xz1qpQ3jEGk2"
   },
   "ymtj17MI4MdwB0v2": {
@@ -11225,12 +10103,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Ranged",
-      "Weapon",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Ranged", "Weapon", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.ymtj17MI4MdwB0v2"
   },
   "ypozx6qcx3ilwH9B": {
@@ -11255,10 +10128,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.ypozx6qcx3ilwH9B"
   },
   "z5G64ZSUDNdgeICT": {
@@ -11290,10 +10160,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.z5G64ZSUDNdgeICT"
   },
   "zD6KBnFbY1Nrok5h": {
@@ -11319,9 +10186,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.zD6KBnFbY1Nrok5h"
   },
   "zKNk7a4XxXsygJ67": {
@@ -11342,10 +10207,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Offensive"
-    ],
+    "tags": ["Combat", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.zKNk7a4XxXsygJ67"
   },
   "zN9kRaSjKJ1qsfDE": {
@@ -11371,9 +10233,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Skill Unlock"
-    ],
+    "tags": ["Skill Unlock"],
     "uuid": "Compendium.pf1.feats.Item.zN9kRaSjKJ1qsfDE"
   },
   "zOxJqI5CG4VoycmQ": {
@@ -11423,10 +10283,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Combat Trick"
-    ],
+    "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.zrxZvMHYH2QHKH8f"
   },
   "ztV5oURW9cFsLdXT": {
@@ -11468,12 +10325,7 @@
       }
     ],
     "subType": "feat",
-    "tags": [
-      "Combat",
-      "Ranged",
-      "Offensive",
-      "Weapon"
-    ],
+    "tags": ["Combat", "Ranged", "Offensive", "Weapon"],
     "uuid": "Compendium.pf1.feats.Item.ztV5oURW9cFsLdXT"
   }
 }

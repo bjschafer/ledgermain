@@ -28,7 +28,8 @@ function makeDoc(overrides: Partial<CharacterDoc["build"]> = {}, rangerLvl = 10)
     identity: {
       name: "Test",
       race: "human",
-      classes: rangerLvl > 0 ? [{ tag: "ranger", level: rangerLvl }] : [{ tag: "fighter", level: 5 }],
+      classes:
+        rangerLvl > 0 ? [{ tag: "ranger", level: rangerLvl }] : [{ tag: "fighter", level: 5 }],
     },
     abilities: { str: 14, dex: 16, con: 12, int: 10, wis: 12, cha: 8 },
     build: {

@@ -14,10 +14,7 @@ export function isLocalHost(hostname: string): boolean {
 }
 
 /** Whether the notice should be shown for this hostname + prior dismissal. */
-export function shouldShowPreviewNotice(
-  hostname: string,
-  dismissed: boolean,
-): boolean {
+export function shouldShowPreviewNotice(hostname: string, dismissed: boolean): boolean {
   return !isLocalHost(hostname) && !dismissed;
 }
 

@@ -104,7 +104,9 @@ describe("afflictions: ability damage (issue #18)", () => {
       ref,
     );
     expect(zero.abilities.str.total).toBe(base.abilities.str.total);
-    expect(zero.abilities.str.components.find((c) => c.source === "Ability damage")).toBeUndefined();
+    expect(
+      zero.abilities.str.components.find((c) => c.source === "Ability damage"),
+    ).toBeUndefined();
   });
 });
 
@@ -201,7 +203,10 @@ describe("afflictions: negative levels (issue #19)", () => {
   it("zero/absent negative levels = no change", () => {
     const base = compute(makeDoc({ abilities: BASE_ABILITIES }), ref);
     const zero = compute(
-      makeDoc({ abilities: BASE_ABILITIES, live: { negativeLevels: { temporary: 0, permanent: 0 } } }),
+      makeDoc({
+        abilities: BASE_ABILITIES,
+        live: { negativeLevels: { temporary: 0, permanent: 0 } },
+      }),
       ref,
     );
     expect(zero.attack.melee.total).toBe(base.attack.melee.total);

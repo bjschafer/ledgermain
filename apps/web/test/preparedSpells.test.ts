@@ -248,9 +248,7 @@ describe("domain spell slots (cleric)", () => {
   it("prepareSpell stores an instance WITHOUT kind (defaults to 'normal')", () => {
     const doc = clericDoc();
     const out = prepareSpell(doc, "cureLightWounds");
-    expect(preparedSpells(out)).toEqual([
-      { spellId: "cureLightWounds", expended: false },
-    ]);
+    expect(preparedSpells(out)).toEqual([{ spellId: "cureLightWounds", expended: false }]);
   });
 
   it("unprepareSpell with kind restricts removal to that slot kind", () => {
@@ -262,9 +260,7 @@ describe("domain spell slots (cleric)", () => {
     expect(preparedSpells(doc).length).toBe(2);
     // remove the domain obscuringMist — keeps the normal.
     doc = unprepareSpell(doc, "obscuringMist", "domain");
-    expect(preparedSpells(doc)).toEqual([
-      { spellId: "cureLightWounds", expended: false },
-    ]);
+    expect(preparedSpells(doc)).toEqual([{ spellId: "cureLightWounds", expended: false }]);
   });
 
   it("unprepareSpell without kind finds any slot", () => {
@@ -391,8 +387,6 @@ describe("wizard school slots + opposition cost", () => {
     doc = prepareSpell(doc, burningHandsId); // normal
     doc = prepareSchoolSpell(doc, burningHandsId); // school
     doc = unprepareSpell(doc, burningHandsId, "school");
-    expect(preparedSpells(doc)).toEqual([
-      { spellId: burningHandsId, expended: false },
-    ]);
+    expect(preparedSpells(doc)).toEqual([{ spellId: burningHandsId, expended: false }]);
   });
 });

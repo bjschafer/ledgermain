@@ -43,7 +43,7 @@ the code you're testing.
 
 This is silently wrong in exactly the situations this harness creates:
 several worktrees/background jobs running concurrently, or the user's own
-`bun run dev` already up. If some *other* checkout's server is on 5173, your
+`bun run dev` already up. If some _other_ checkout's server is on 5173, your
 test run passes or fails against **that** code, not the one in your working
 tree, and nothing tells you.
 

@@ -94,9 +94,7 @@ export function normalize(opts: NormalizeOptions): {
   const resolveUuid = (uuid: string): string | undefined => uuidIndex.get(uuid);
 
   // --- classes (filtered to the slice) + their resolved feature links --------
-  const classFiles = readPack(join(packsDir, "classes")).filter(
-    (pf) => pf.doc.type === "class",
-  );
+  const classFiles = readPack(join(packsDir, "classes")).filter((pf) => pf.doc.type === "class");
   const selectedClassDocs = classFiles
     .map((pf) => pf.doc)
     .filter((d) => (SLICE.classTags as readonly string[]).includes(asTag(d)));
@@ -153,17 +151,14 @@ export function normalize(opts: NormalizeOptions): {
     transformDomain(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
   );
   const wizardSchools: WizardSchool[] = schoolDocs
-    .map((d) =>
-      transformWizardSchool(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
-    )
+    .map((d) => transformWizardSchool(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid))
     .filter((s): s is WizardSchool => s !== null);
 
   // --- races (filtered to slice folders) -------------------------------------
   const races: Race[] = readPack(join(packsDir, "races"))
     .filter(
       (pf) =>
-        pf.doc.type === "race" &&
-        SLICE.raceFolders.some((f) => pf.relPath.startsWith(`${f}/`)),
+        pf.doc.type === "race" && SLICE.raceFolders.some((f) => pf.relPath.startsWith(`${f}/`)),
     )
     .map((pf) => transformRace(pf.doc, resolveUuid));
 

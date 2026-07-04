@@ -40,8 +40,7 @@ export function transformClassFeature(doc: RawDoc, resolveUuid: UuidResolver): C
     uses:
       uses && (uses.maxFormula != null || uses.per != null)
         ? {
-            maxFormula:
-              typeof uses.maxFormula === "string" ? uses.maxFormula : undefined,
+            maxFormula: typeof uses.maxFormula === "string" ? uses.maxFormula : undefined,
             per: typeof uses.per === "string" ? uses.per : undefined,
           }
         : undefined,
@@ -53,9 +52,7 @@ export function transformClassFeature(doc: RawDoc, resolveUuid: UuidResolver): C
 /** Extract the `links.supplements` array off a raw doc's `system`, if present. */
 function supplementsOf(sys: Record<string, unknown>): Record<string, unknown>[] {
   const links = sys.links as Record<string, unknown> | undefined;
-  return Array.isArray(links?.supplements)
-    ? (links!.supplements as Record<string, unknown>[])
-    : [];
+  return Array.isArray(links?.supplements) ? (links!.supplements as Record<string, unknown>[]) : [];
 }
 
 /**

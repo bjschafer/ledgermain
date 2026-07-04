@@ -264,7 +264,9 @@ describe("Generic stat overrides", () => {
   });
 
   it("unknown override keys are silently ignored", () => {
-    const doc = baseDoc({ settings: { statOverrides: { "unknown.key": 5 } as Record<string, number> } });
+    const doc = baseDoc({
+      settings: { statOverrides: { "unknown.key": 5 } as Record<string, number> },
+    });
     // Should not throw, and sheet is otherwise unmodified
     const sheet = compute(doc, ref);
     expect(sheet.hp.auto).toBe(AVERAGE_TOTAL);

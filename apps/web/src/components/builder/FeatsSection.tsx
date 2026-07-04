@@ -16,21 +16,11 @@ import {
   grantedFeats,
   setFeatChoice,
 } from "../../model/feats.js";
-import {
-  evaluatePrereqs,
-  type PrereqContext,
-  type PrereqResult,
-} from "../../model/prereqs.js";
+import { evaluatePrereqs, type PrereqContext, type PrereqResult } from "../../model/prereqs.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
-const FEAT_CATEGORIES = [
-  "Combat",
-  "General",
-  "Metamagic",
-  "Item Creation",
-  "Teamwork",
-] as const;
+const FEAT_CATEGORIES = ["Combat", "General", "Metamagic", "Item Creation", "Teamwork"] as const;
 type FeatCategory = (typeof FEAT_CATEGORIES)[number];
 
 export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
@@ -97,10 +87,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
 
   // Skill options for Skill Focus and any other "skill" choice feats. Computed
   // once per render cycle — the list is static (all skills, alphabetically).
-  const skillOptions = useMemo(
-    () => featChoiceOptions("skill", refData),
-    [refData],
-  );
+  const skillOptions = useMemo(() => featChoiceOptions("skill", refData), [refData]);
 
   // Weapon options for Weapon Focus / Specialization: distinct group labels from
   // doc.build.weapons. Returns empty when no weapons have a group set — the UI
@@ -122,7 +109,10 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
       step="vii"
       storageKey="panel:Feats"
       right={
-        <span className={featCountClass} title={chosen !== expected ? "Feat count doesn't match expected" : undefined}>
+        <span
+          className={featCountClass}
+          title={chosen !== expected ? "Feat count doesn't match expected" : undefined}
+        >
           {chosen} / {expected} feats
         </span>
       }
@@ -158,7 +148,9 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
         </div>
         {/* Orthogonal toggle — visually separate from category filters */}
         <div className="feat-filter-toggle">
-          <span className="hint" style={{ fontSize: 11 }}>FILTER</span>
+          <span className="hint" style={{ fontSize: 11 }}>
+            FILTER
+          </span>
           <button
             type="button"
             className="filter-toggle"
@@ -176,12 +168,15 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
               <div className="pmain">
                 <div className="pname">{g.featName}</div>
                 <div className="preq">
-                  <span className="soft">
-                    Granted by {g.classTag} — no feat slot used
-                  </span>
+                  <span className="soft">Granted by {g.classTag} — no feat slot used</span>
                 </div>
               </div>
-              <button type="button" className="pick-btn" disabled title="Class feature grant — always on">
+              <button
+                type="button"
+                className="pick-btn"
+                disabled
+                title="Class feature grant — always on"
+              >
                 Granted
               </button>
             </div>
@@ -200,8 +195,8 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
             choiceDesc?.type === "skill"
               ? skillOptions
               : choiceDesc?.type === "weapon"
-              ? weaponOptions
-              : [];
+                ? weaponOptions
+                : [];
           return (
             <div
               key={feat.id}
@@ -232,9 +227,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                         className="feat-choice-select"
                         value={doc.build.featChoices?.[feat.id] ?? ""}
                         onChange={(e) =>
-                          update((d) =>
-                            setFeatChoice(d, feat.id, e.target.value || null),
-                          )
+                          update((d) => setFeatChoice(d, feat.id, e.target.value || null))
                         }
                       >
                         <option value="">— choose a {choiceDesc.type} —</option>

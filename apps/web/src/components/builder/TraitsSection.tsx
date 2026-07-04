@@ -1,6 +1,12 @@
 import { useMemo, useState } from "react";
 
-import { TRAITS, TRAIT_IDS, unappliedChanges, unappliedTargetLabel, type TraitCategory } from "@pf1/engine";
+import {
+  TRAITS,
+  TRAIT_IDS,
+  unappliedChanges,
+  unappliedTargetLabel,
+  type TraitCategory,
+} from "@pf1/engine";
 
 import {
   chosenTraitCount,

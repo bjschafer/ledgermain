@@ -2,11 +2,7 @@ import type { WeaponRef } from "@pf1/schema";
 
 import type { RawDoc } from "../util/packs.js";
 import { makeUuid } from "../util/uuid.js";
-import {
-  asNumber,
-  asStringArray,
-  normalizeSources,
-} from "./common.js";
+import { asNumber, asStringArray, normalizeSources } from "./common.js";
 
 /** Weapon subtypes we vendor. Ammunition, siege, and magical excluded. */
 const PROFICIENCIES = new Set(["simple", "martial", "exotic"]);
@@ -110,7 +106,14 @@ function categoryOf(
   rangeUnits: string | undefined,
 ): "melee" | "ranged" {
   if (rangeUnits === "melee" || rangeUnits === "reach") return "melee";
-  if (rangeUnits === "ft" || rangeUnits === "touch" || rangeUnits === "close" || rangeUnits === "medium" || rangeUnits === "long") return "ranged";
+  if (
+    rangeUnits === "ft" ||
+    rangeUnits === "touch" ||
+    rangeUnits === "close" ||
+    rangeUnits === "medium" ||
+    rangeUnits === "long"
+  )
+    return "ranged";
   if (actionType === "rwak") return "ranged";
   return "melee";
 }
@@ -144,11 +147,11 @@ function readWeight(v: unknown): number | undefined {
 
 /** Foundry stores collections as objects keyed by random ids; coerce to array. */
 function recordToArray(v: unknown): Record<string, unknown>[] {
-  if (Array.isArray(v)) return v.filter((x): x is Record<string, unknown> =>
-    typeof x === "object" && x !== null,
-  );
-  if (v && typeof v === "object") return Object.values(v).filter(
-    (x): x is Record<string, unknown> => typeof x === "object" && x !== null,
-  );
+  if (Array.isArray(v))
+    return v.filter((x): x is Record<string, unknown> => typeof x === "object" && x !== null);
+  if (v && typeof v === "object")
+    return Object.values(v).filter(
+      (x): x is Record<string, unknown> => typeof x === "object" && x !== null,
+    );
   return [];
 }

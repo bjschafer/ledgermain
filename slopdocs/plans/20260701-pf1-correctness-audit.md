@@ -15,21 +15,22 @@ That diff is what surfaced A2/A5/A6/C2.
 
 ## Status board
 
-| id | task | agent | status |
-|----|------|-------|--------|
-| A1 | sorcerer spells-known table wrong L7+ | sonnet | done (3086744) |
-| A2+A5+A7 | compute.ts: wdamage routing, size change, per-HD min HP | sonnet | done (4f91959) |
-| A4+A6+A8 | web model: nonlethal healing, bonusFeats budget, prereq warn | sonnet | done (3db6822; note: bonusFeats also counts Scribe Scroll / Eschew Materials — player adds those feats explicitly to balance the budget) |
-| B1+B2+B4 | nits: burst prereqs/ghost-touch/vicious, fear typing, @cl durations | sonnet | done (f13a464) |
-| B3 | masterwork armor (ACP −1) in armor picker | sonnet | done (316e3e8) |
-| A3 | pipeline drops `operator: set` (+ speed totals in rollData) | sonnet | done (0353097; Change.operator lives in schema/src/primitives.ts, set semantics = lowest wins, rollData speeds = race base only) |
-| A6b | auto-grant fixed class bonus feats (Scribe Scroll / Eschew Materials) instead of budgeting a slot for them | fable (agent hit spend limit) | done (431086e; name-match rule: bonusFeats feature whose name matches a feat = fixed grant, else budgeted slot) |
-| C1 | iterative attacks display | sonnet | done (a19f2fa; ResolvedStat.iteratives?, engine iterativeSequence(); haste/TWF/flurry still excluded) |
-| C2 | surface "unsupported effects" on buffs/items | sonnet | done (953c518; engine/src/targets.ts is the applied-target registry — update it whenever compute() consumes a new target) |
+| id       | task                                                                                                       | agent                         | status                                                                                                                                   |
+| -------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| A1       | sorcerer spells-known table wrong L7+                                                                      | sonnet                        | done (3086744)                                                                                                                           |
+| A2+A5+A7 | compute.ts: wdamage routing, size change, per-HD min HP                                                    | sonnet                        | done (4f91959)                                                                                                                           |
+| A4+A6+A8 | web model: nonlethal healing, bonusFeats budget, prereq warn                                               | sonnet                        | done (3db6822; note: bonusFeats also counts Scribe Scroll / Eschew Materials — player adds those feats explicitly to balance the budget) |
+| B1+B2+B4 | nits: burst prereqs/ghost-touch/vicious, fear typing, @cl durations                                        | sonnet                        | done (f13a464)                                                                                                                           |
+| B3       | masterwork armor (ACP −1) in armor picker                                                                  | sonnet                        | done (316e3e8)                                                                                                                           |
+| A3       | pipeline drops `operator: set` (+ speed totals in rollData)                                                | sonnet                        | done (0353097; Change.operator lives in schema/src/primitives.ts, set semantics = lowest wins, rollData speeds = race base only)         |
+| A6b      | auto-grant fixed class bonus feats (Scribe Scroll / Eschew Materials) instead of budgeting a slot for them | fable (agent hit spend limit) | done (431086e; name-match rule: bonusFeats feature whose name matches a feat = fixed grant, else budgeted slot)                          |
+| C1       | iterative attacks display                                                                                  | sonnet                        | done (a19f2fa; ResolvedStat.iteratives?, engine iterativeSequence(); haste/TWF/flurry still excluded)                                    |
+| C2       | surface "unsupported effects" on buffs/items                                                               | sonnet                        | done (953c518; engine/src/targets.ts is the applied-target registry — update it whenever compute() consumes a new target)                |
 
 ## A. Real bugs
 
 ### A1. Sorcerer spells-known table wrong from L7 up
+
 `packages/engine/src/tables.ts` `SORCERER_SPELLS_KNOWN`. Current table caps 1st-level known at
 4 forever; L20 row is all 4s. Real PF1 CRB table (0th..9th):
 
@@ -50,6 +51,7 @@ Rows L1–L6 in the code are already correct. Impact: builder advisory + tracker
 legal picks (e.g. 5th 1st-level spell at sorc L7).
 
 ### A2. Weapon-damage buff/condition targets dropped
+
 Engine consumes only `damage` / `damage.weapon.<group>` in `computeWeaponAttacks`
 (`packages/engine/src/compute.ts`). Vendored buffs + `conditions.ts` emit `wdamage` (all
 weapons), `mwdamage` (melee), `twdamage` (thrown), `rwdamage` (ranged). Affected content the
@@ -60,31 +62,36 @@ Fix: in computeWeaponAttacks fold `wdamage` into every line, `mwdamage` into mel
 `rwdamage`+`twdamage` into ranged (we don't distinguish thrown; document that).
 
 ### A3. Pipeline drops `operator`/`priority`; set-changes applied additively
+
 `normalizeChanges` in `packages/data-pipeline/src/transform/common.ts` keeps only
 formula/target/type. 18 buffs in the pack use `operator: set` (Slow, Fly, Debilitating Injury,
 Darkvision(s), Spider Climb, True Seeing, Resistance, Animal Focus senses, Monkey Fish,
 angelic aspects, Blessing of the Mole, Spell Resistance…). Two stacked problems:
+
 1. set-changes are added instead of replacing;
 2. their formulas reference `@attributes.speed.<mode>.total`, which is missing from rollData
    (`packages/engine/src/rolldata.ts`) → resolves 0.
-Concrete today: **Debilitating Injury (Hampered) grants +5 to every speed** (max(5, floor(0/2))
-added); Slow's halving is a no-op (if(gt(0,0),…)→0).
-Fix: add `operator?: "add"|"set"` (+ priority if needed) to `Change` in
-`packages/schema/src/refdata.ts`, carry through normalizeChanges (regen data), put current
-speed totals into rollData, and give collect/compute set semantics for speed targets
-(set wins over add; evaluate set against pre-buff base). Regen: `bun run data:build`.
+   Concrete today: **Debilitating Injury (Hampered) grants +5 to every speed** (max(5, floor(0/2))
+   added); Slow's halving is a no-op (if(gt(0,0),…)→0).
+   Fix: add `operator?: "add"|"set"` (+ priority if needed) to `Change` in
+   `packages/schema/src/refdata.ts`, carry through normalizeChanges (regen data), put current
+   speed totals into rollData, and give collect/compute set semantics for speed targets
+   (set wins over add; evaluate set against pre-buff base). Regen: `bun run data:build`.
 
 ### A4. Healing doesn't remove equal nonlethal
+
 `apps/web/src/model/hp.ts` `applyHealing`. PF1 CRB (Nonlethal Damage): curing hit point damage
 also removes an equal amount of nonlethal. Fix: subtract heal amount from nonlethal (floor 0).
 
 ### A5. Enlarge/Reduce Person `size` change unconsumed
+
 `size` target (+1/−1 size step) is collected then dropped: Str/Dex apply but AC/attack size
 mod, CMB/CMD special size mod, and displayed size stay Medium. Fix: consume `size` in
 compute() as a step offset on the race SizeId (clamp to fine..col) before size mods are read.
 (`carryMult`/`carryStr` also dropped — fine, encumbrance is out of scope entirely.)
 
 ### A6. Wizard/sorcerer bonus feats missing from expected feat count
+
 `apps/web/src/model/feats.ts` `expectedFeatCount` hardcodes human + fighter. Vendored class
 features already carry `bonusFeats` changes: Fighter `1+floor(@class.unlevel/2)`, Wizard
 `floor(@class.unlevel/5)`, Sorcerer bloodline `floor((@class.unlevel-1)/6)` (see
@@ -93,11 +100,13 @@ rollData with class.unlevel = that class's level) and drop the hardcoded fighter
 human +1.
 
 ### A7. Per-HD minimum 1 HP not enforced
+
 `computeHp` (compute.ts) does `hdBase + conMod*hd`. PF1: min 1 HP per HD after Con. Fix: apply
 per-level `max(1, levelHp + conMod)`; keep component display coherent (Con component becomes
 the actual applied delta).
 
 ### A8. Prose prereqs hidden when structured checks exist
+
 `apps/web/src/model/prereqs.ts`: `warn` only when `checks.length === 0`. Feat with structured
 prereqs + extra prose shows no advisory once structured pass. Fix: warn whenever softText
 exists (blocked stays structured-only).
@@ -135,7 +144,7 @@ BAB/save progressions; wizard+cleric & sorcerer spells-per-day; bonus-spells for
 (floor((mod−SL)/4)+1 gated mod≥SL); channel energy (floor((L+1)/2)d6, DC 10+L/2+Cha);
 stacking engine semantics; SIZE_AC_MOD & specialSizeMod; skill→ability map, trained-only set,
 ACP application, class-skill +3, skill budget (min 1/level, human bonusSkillRanks, retroactive
-Int); keen 2*range−21; fighter (1+floor(f/2)) + human feat budget; per-class caster level
+Int); keen 2\*range−21; fighter (1+floor(f/2)) + human feat budget; per-class caster level
 (issue #11 fix); touch/flat-footed AC category sets; CMB/CMD composition; formula parser
 (2d6 tokenization, missing path→0, function set matches observed data); prepared/spontaneous
 slot accounting; weapon groups are per-weapon-type (right granularity for Weapon Focus).

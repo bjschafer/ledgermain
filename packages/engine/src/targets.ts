@@ -95,13 +95,7 @@ const APPLIED_TARGETS = new Set<string>([
  *   `dr`/`eres`-shaped target occurs upstream today) — this engine's own
  *   convention so a user-authored buff can grant them.
  */
-const APPLIED_TARGET_PREFIXES = [
-  "skill.",
-  "attack.weapon.",
-  "damage.weapon.",
-  "dr.",
-  "eres.",
-];
+const APPLIED_TARGET_PREFIXES = ["skill.", "attack.weapon.", "damage.weapon.", "dr.", "eres."];
 
 /** True if `compute()` (or the model-layer budgets it feeds) applies `target`. */
 export function isTargetApplied(target: string): boolean {

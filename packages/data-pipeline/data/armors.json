@@ -2,9 +2,7 @@
   "0cIAkfoDAK5Pq2XU": {
     "ac": 8,
     "acp": 7,
-    "baseTypes": [
-      "Half-Plate"
-    ],
+    "baseTypes": ["Half-Plate"],
     "id": "0cIAkfoDAK5Pq2XU",
     "maxDex": 0,
     "name": "Hellknight Half-Plate",
@@ -27,9 +25,7 @@
   },
   "2LKdIUyCk6Imz6Gq": {
     "ac": 1,
-    "baseTypes": [
-      "Reinforced Tunic"
-    ],
+    "baseTypes": ["Reinforced Tunic"],
     "id": "2LKdIUyCk6Imz6Gq",
     "maxDex": 5,
     "name": "Reinforced Tunic",
@@ -82,9 +78,7 @@
   "4zQgEV3XyR9zvqwU": {
     "ac": 9,
     "acp": 5,
-    "baseTypes": [
-      "Full Plate"
-    ],
+    "baseTypes": ["Full Plate"],
     "id": "4zQgEV3XyR9zvqwU",
     "maxDex": 1,
     "name": "Hellknight Plate",
@@ -108,9 +102,7 @@
   "5TzaS38RPAx1oj9p": {
     "ac": 6,
     "acp": 4,
-    "baseTypes": [
-      "Breastplate"
-    ],
+    "baseTypes": ["Breastplate"],
     "id": "5TzaS38RPAx1oj9p",
     "maxDex": 3,
     "name": "Breastplate",
@@ -129,9 +121,7 @@
   },
   "6YCQkebsf4vR508H": {
     "ac": 2,
-    "baseTypes": [
-      "Leather Armor"
-    ],
+    "baseTypes": ["Leather Armor"],
     "id": "6YCQkebsf4vR508H",
     "maxDex": 6,
     "name": "Leather Armor",
@@ -150,9 +140,7 @@
   },
   "6gpjknDwY1HNvQcU": {
     "ac": 1,
-    "baseTypes": [
-      "Quilted Cloth"
-    ],
+    "baseTypes": ["Quilted Cloth"],
     "id": "6gpjknDwY1HNvQcU",
     "maxDex": 8,
     "name": "Quilted Cloth",
@@ -166,9 +154,7 @@
   "6i0yr19dgO50GygU": {
     "ac": 7,
     "acp": 5,
-    "baseTypes": [
-      "Field Plate"
-    ],
+    "baseTypes": ["Field Plate"],
     "id": "6i0yr19dgO50GygU",
     "maxDex": 1,
     "name": "Field Plate",
@@ -213,9 +199,7 @@
   "8e7QxmuuvJLpoGQO": {
     "ac": 5,
     "acp": 4,
-    "baseTypes": [
-      "Lamellar"
-    ],
+    "baseTypes": ["Lamellar"],
     "id": "8e7QxmuuvJLpoGQO",
     "maxDex": 3,
     "name": "Horn Lamellar",
@@ -239,9 +223,7 @@
   "9UAJTH51u59M1tau": {
     "ac": 3,
     "acp": 1,
-    "baseTypes": [
-      "Parade Armor"
-    ],
+    "baseTypes": ["Parade Armor"],
     "id": "9UAJTH51u59M1tau",
     "maxDex": 5,
     "name": "Parade Armor",
@@ -254,9 +236,7 @@
   },
   "9d4JuiQocfhoMewg": {
     "ac": 1,
-    "baseTypes": [
-      "Silken Ceremonial"
-    ],
+    "baseTypes": ["Silken Ceremonial"],
     "id": "9d4JuiQocfhoMewg",
     "name": "Silken Ceremonial",
     "price": 30,
@@ -279,9 +259,7 @@
   "B8H87SCG0E8n0iqw": {
     "ac": 5,
     "acp": 4,
-    "baseTypes": [
-      "Do-Maru"
-    ],
+    "baseTypes": ["Do-Maru"],
     "id": "B8H87SCG0E8n0iqw",
     "maxDex": 4,
     "name": "Do-Maru",
@@ -305,9 +283,7 @@
   "CRtBIIyBtNCsxztO": {
     "ac": 7,
     "acp": 7,
-    "baseTypes": [
-      "Splint Mail"
-    ],
+    "baseTypes": ["Splint Mail"],
     "id": "CRtBIIyBtNCsxztO",
     "maxDex": 0,
     "name": "Splint Mail",
@@ -327,9 +303,7 @@
   "HpPFigQKr6C6Dej4": {
     "ac": 7,
     "acp": 6,
-    "baseTypes": [
-      "Banded Mail"
-    ],
+    "baseTypes": ["Banded Mail"],
     "id": "HpPFigQKr6C6Dej4",
     "maxDex": 1,
     "name": "Banded Mail",
@@ -349,9 +323,7 @@
   "KwwDSMKGF5P9vrQr": {
     "ac": 7,
     "acp": 7,
-    "baseTypes": [
-      "Kusari Gusoku"
-    ],
+    "baseTypes": ["Kusari Gusoku"],
     "id": "KwwDSMKGF5P9vrQr",
     "maxDex": 1,
     "name": "Kusari Gusoku",
@@ -396,9 +368,7 @@
   "LvqGhztGDLYS9QES": {
     "ac": 4,
     "acp": 2,
-    "baseTypes": [
-      "Armored Coat"
-    ],
+    "baseTypes": ["Armored Coat"],
     "id": "LvqGhztGDLYS9QES",
     "maxDex": 3,
     "name": "Erutaki Coat",
@@ -418,9 +388,7 @@
   "NhfubfsOa0OqXFMu": {
     "ac": 4,
     "acp": 2,
-    "baseTypes": [
-      "Lamellar"
-    ],
+    "baseTypes": ["Lamellar"],
     "id": "NhfubfsOa0OqXFMu",
     "maxDex": 3,
     "name": "Leather Lamellar",
@@ -444,9 +412,7 @@
   "Nt2xduBMY9qmPOMg": {
     "ac": 6,
     "acp": 5,
-    "baseTypes": [
-      "Lamellar"
-    ],
+    "baseTypes": ["Lamellar"],
     "id": "Nt2xduBMY9qmPOMg",
     "maxDex": 3,
     "name": "Steel Lamellar",
@@ -491,9 +457,7 @@
   "RGgplsDVRbf6svr2": {
     "ac": 3,
     "acp": 1,
-    "baseTypes": [
-      "Hide Shirt"
-    ],
+    "baseTypes": ["Hide Shirt"],
     "id": "RGgplsDVRbf6svr2",
     "maxDex": 4,
     "name": "Hide Shirt",
@@ -521,9 +485,7 @@
   "WHTn1ouMVlmsEL1l": {
     "ac": 8,
     "acp": 7,
-    "baseTypes": [
-      "Fortress Plate"
-    ],
+    "baseTypes": ["Fortress Plate"],
     "id": "WHTn1ouMVlmsEL1l",
     "maxDex": 0,
     "name": "Alkenstar fortress plate",
@@ -543,9 +505,7 @@
   "WxHKxEn6HfIJAjFC": {
     "ac": 3,
     "acp": 1,
-    "baseTypes": [
-      "Studded Leather Armor"
-    ],
+    "baseTypes": ["Studded Leather Armor"],
     "id": "WxHKxEn6HfIJAjFC",
     "maxDex": 5,
     "name": "Hellknight Leather",
@@ -569,9 +529,7 @@
   "XILfVRciS611ZJvm": {
     "ac": 8,
     "acp": 6,
-    "baseTypes": [
-      "O-Yoroi"
-    ],
+    "baseTypes": ["O-Yoroi"],
     "id": "XILfVRciS611ZJvm",
     "maxDex": 2,
     "name": "O-Yoroi",
@@ -595,9 +553,7 @@
   "Y10QTnY9wVXg5VCm": {
     "ac": 8,
     "acp": 7,
-    "baseTypes": [
-      "Half-Plate"
-    ],
+    "baseTypes": ["Half-Plate"],
     "id": "Y10QTnY9wVXg5VCm",
     "maxDex": 0,
     "name": "Half-Plate",
@@ -616,9 +572,7 @@
   },
   "YIHLiAF3zd2fJkXp": {
     "ac": 1,
-    "baseTypes": [
-      "Haramaki"
-    ],
+    "baseTypes": ["Haramaki"],
     "id": "YIHLiAF3zd2fJkXp",
     "name": "Haramaki",
     "price": 3,
@@ -641,9 +595,7 @@
   "YSkIxGaVmW9pAi2m": {
     "ac": 8,
     "acp": 7,
-    "baseTypes": [
-      "Agile Half-Plate"
-    ],
+    "baseTypes": ["Agile Half-Plate"],
     "id": "YSkIxGaVmW9pAi2m",
     "maxDex": 0,
     "name": "Agile Half-Plate",
@@ -667,9 +619,7 @@
   "aI6gSI7gnCLCucw0": {
     "ac": 4,
     "acp": 3,
-    "baseTypes": [
-      "Hide Armor"
-    ],
+    "baseTypes": ["Hide Armor"],
     "id": "aI6gSI7gnCLCucw0",
     "maxDex": 4,
     "name": "Hide Armor",
@@ -689,9 +639,7 @@
   "bP0vKIfcGKDgtiUc": {
     "ac": 6,
     "acp": 5,
-    "baseTypes": [
-      "Four-Mirror"
-    ],
+    "baseTypes": ["Four-Mirror"],
     "id": "bP0vKIfcGKDgtiUc",
     "maxDex": 2,
     "name": "Four-Mirror",
@@ -715,9 +663,7 @@
   "c5L61pgFgUETqPtm": {
     "ac": 9,
     "acp": 6,
-    "baseTypes": [
-      "Full Plate"
-    ],
+    "baseTypes": ["Full Plate"],
     "id": "c5L61pgFgUETqPtm",
     "maxDex": 1,
     "name": "Gray Maiden Plate",
@@ -736,9 +682,7 @@
   },
   "dx5t73HKQwvzl7NW": {
     "ac": 1,
-    "baseTypes": [
-      "Armored Kilt"
-    ],
+    "baseTypes": ["Armored Kilt"],
     "id": "dx5t73HKQwvzl7NW",
     "maxDex": 6,
     "name": "Armored Kilt",
@@ -762,9 +706,7 @@
   "f8Gm8CXYhEqCCNIR": {
     "ac": 8,
     "acp": 7,
-    "baseTypes": [
-      "Lamellar"
-    ],
+    "baseTypes": ["Lamellar"],
     "id": "f8Gm8CXYhEqCCNIR",
     "maxDex": 0,
     "name": "Stone Lamellar",
@@ -787,9 +729,7 @@
   },
   "gcw5rPJ8u0i6IjhV": {
     "ac": 2,
-    "baseTypes": [
-      "Rosewood Armor"
-    ],
+    "baseTypes": ["Rosewood Armor"],
     "id": "gcw5rPJ8u0i6IjhV",
     "maxDex": 6,
     "name": "Rosewood Armor",
@@ -803,9 +743,7 @@
   "gsE0PAOmCwivue5A": {
     "ac": 1,
     "acp": 1,
-    "baseTypes": [
-      "Buckler"
-    ],
+    "baseTypes": ["Buckler"],
     "id": "gsE0PAOmCwivue5A",
     "name": "Buckler",
     "price": 5,
@@ -823,9 +761,7 @@
   "h65qEp22nsyRoeRa": {
     "ac": 9,
     "acp": 6,
-    "baseTypes": [
-      "Full Plate"
-    ],
+    "baseTypes": ["Full Plate"],
     "id": "h65qEp22nsyRoeRa",
     "maxDex": 1,
     "name": "Full Plate",
@@ -874,9 +810,7 @@
   "iGu21zy6QtroUZ4O": {
     "ac": 4,
     "acp": 2,
-    "baseTypes": [
-      "Chain Shirt"
-    ],
+    "baseTypes": ["Chain Shirt"],
     "id": "iGu21zy6QtroUZ4O",
     "maxDex": 4,
     "name": "Chain Shirt",
@@ -930,9 +864,7 @@
   "jmMTKB2OeTB4dUvm": {
     "ac": 4,
     "acp": 2,
-    "baseTypes": [
-      "Chain Coat"
-    ],
+    "baseTypes": ["Chain Coat"],
     "id": "jmMTKB2OeTB4dUvm",
     "maxDex": 5,
     "name": "Chain Coat",
@@ -951,9 +883,7 @@
   },
   "juheM3y42yQrYbB9": {
     "ac": 2,
-    "baseTypes": [
-      "Dancing Scarves"
-    ],
+    "baseTypes": ["Dancing Scarves"],
     "id": "juheM3y42yQrYbB9",
     "name": "Varisian dancing scarves",
     "price": 150,
@@ -1001,9 +931,7 @@
   "khCNizGc3q1SZsXg": {
     "ac": 9,
     "acp": 6,
-    "baseTypes": [
-      "Stoneplate"
-    ],
+    "baseTypes": ["Stoneplate"],
     "id": "khCNizGc3q1SZsXg",
     "maxDex": 1,
     "name": "Stoneplate",
@@ -1075,9 +1003,7 @@
   "mJYWI4VZBo0c0CCC": {
     "ac": 4,
     "acp": 2,
-    "baseTypes": [
-      "Armored Coat"
-    ],
+    "baseTypes": ["Armored Coat"],
     "id": "mJYWI4VZBo0c0CCC",
     "maxDex": 3,
     "name": "Armored Coat",
@@ -1101,9 +1027,7 @@
   "mPopnW9RhIm8Qv1C": {
     "ac": 7,
     "acp": 7,
-    "baseTypes": [
-      "Lamellar"
-    ],
+    "baseTypes": ["Lamellar"],
     "id": "mPopnW9RhIm8Qv1C",
     "maxDex": 0,
     "name": "Iron Lamellar",
@@ -1148,9 +1072,7 @@
   "nnDSj5NxUb9Q8z8S": {
     "ac": 5,
     "acp": 4,
-    "baseTypes": [
-      "Scale Mail"
-    ],
+    "baseTypes": ["Scale Mail"],
     "id": "nnDSj5NxUb9Q8z8S",
     "maxDex": 3,
     "name": "Scale Mail",
@@ -1170,9 +1092,7 @@
   "q2HbIx7a7YpGJ3Kn": {
     "ac": 6,
     "acp": 4,
-    "baseTypes": [
-      "Agile Breastplate"
-    ],
+    "baseTypes": ["Agile Breastplate"],
     "id": "q2HbIx7a7YpGJ3Kn",
     "maxDex": 3,
     "name": "Agile Breastplate",
@@ -1196,9 +1116,7 @@
   "q73l4hJuDIREmqDJ": {
     "ac": 5,
     "acp": 3,
-    "baseTypes": [
-      "Kikko"
-    ],
+    "baseTypes": ["Kikko"],
     "id": "q73l4hJuDIREmqDJ",
     "maxDex": 4,
     "name": "Kikko",
@@ -1222,9 +1140,7 @@
   "tCw8lthSpIXzvCOj": {
     "ac": 3,
     "acp": 1,
-    "baseTypes": [
-      "Spider-Silk Bodysuit"
-    ],
+    "baseTypes": ["Spider-Silk Bodysuit"],
     "id": "tCw8lthSpIXzvCOj",
     "maxDex": 6,
     "name": "Spider-Silk Bodysuit",
@@ -1238,9 +1154,7 @@
   "tmCIvphURV00VhY2": {
     "ac": 7,
     "acp": 6,
-    "baseTypes": [
-      "Tatami-Do"
-    ],
+    "baseTypes": ["Tatami-Do"],
     "id": "tmCIvphURV00VhY2",
     "maxDex": 3,
     "name": "Tatami-Do",
@@ -1264,9 +1178,7 @@
   "unY9jt1B8a5bbnzO": {
     "ac": 6,
     "acp": 5,
-    "baseTypes": [
-      "Chainmail"
-    ],
+    "baseTypes": ["Chainmail"],
     "id": "unY9jt1B8a5bbnzO",
     "maxDex": 2,
     "name": "Chainmail",
@@ -1286,9 +1198,7 @@
   "wVKTG7gN2I8jalGg": {
     "ac": 6,
     "acp": 4,
-    "baseTypes": [
-      "Mountain Pattern"
-    ],
+    "baseTypes": ["Mountain Pattern"],
     "id": "wVKTG7gN2I8jalGg",
     "maxDex": 3,
     "name": "Mountain Pattern",
@@ -1312,9 +1222,7 @@
   "xeuREriTfdZR1yCD": {
     "ac": 3,
     "acp": 1,
-    "baseTypes": [
-      "Studded Leather Armor"
-    ],
+    "baseTypes": ["Studded Leather Armor"],
     "id": "xeuREriTfdZR1yCD",
     "maxDex": 5,
     "name": "Studded Leather Armor",
@@ -1334,9 +1242,7 @@
   "yLlOfnD759pfPms8": {
     "ac": 3,
     "acp": 1,
-    "baseTypes": [
-      "Wooden Armor"
-    ],
+    "baseTypes": ["Wooden Armor"],
     "id": "yLlOfnD759pfPms8",
     "maxDex": 3,
     "name": "Wooden Armor",
@@ -1370,9 +1276,7 @@
   },
   "zJLsDErTaV81BkJM": {
     "ac": 2,
-    "baseTypes": [
-      "Lamellar Cuirass"
-    ],
+    "baseTypes": ["Lamellar Cuirass"],
     "id": "zJLsDErTaV81BkJM",
     "maxDex": 4,
     "name": "Lamellar Cuirass",
@@ -1395,9 +1299,7 @@
   },
   "ziXQ1DlDMGTAUOe9": {
     "ac": 1,
-    "baseTypes": [
-      "Padded Armor"
-    ],
+    "baseTypes": ["Padded Armor"],
     "id": "ziXQ1DlDMGTAUOe9",
     "maxDex": 8,
     "name": "Padded Armor",

@@ -5,7 +5,13 @@ import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { checkArchetypeConflict } from "../src/model/archetypes.js";
-import { addClass, createEmptyDoc, migrateDoc, setArchetypes, setClassLevel } from "../src/model/doc.js";
+import {
+  addClass,
+  createEmptyDoc,
+  migrateDoc,
+  setArchetypes,
+  setClassLevel,
+} from "../src/model/doc.js";
 
 const ref = loadRefData();
 

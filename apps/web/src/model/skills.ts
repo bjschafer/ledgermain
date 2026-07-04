@@ -18,11 +18,7 @@ export interface SkillBudget {
  * @param intMod final Intelligence modifier (from the derived sheet, so racial
  *   and item bonuses are included).
  */
-export function skillBudget(
-  doc: CharacterDoc,
-  refData: RefData,
-  intMod: number,
-): SkillBudget {
+export function skillBudget(doc: CharacterDoc, refData: RefData, intMod: number): SkillBudget {
   let total = 0;
 
   for (const c of doc.identity.classes) {

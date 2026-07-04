@@ -12,29 +12,29 @@
 
 import type { CharacterDoc, DerivedSheet, RefData, SavedRollRangerRef } from "@pf1/schema";
 import {
-	COMBAT_STYLES,
-	FAVORED_ENEMY_TYPES,
-	FAVORED_TERRAIN_TYPES,
-	favoredBonusBudget,
-	favoredEnemySlots,
-	favoredTerrainSlots,
-	featNameSlug,
-	rangerLevel,
+  COMBAT_STYLES,
+  FAVORED_ENEMY_TYPES,
+  FAVORED_TERRAIN_TYPES,
+  favoredBonusBudget,
+  favoredEnemySlots,
+  favoredTerrainSlots,
+  featNameSlug,
+  rangerLevel,
 } from "@pf1/engine";
 
 export {
-	COMBAT_STYLES,
-	FAVORED_ENEMY_TYPES,
-	FAVORED_TERRAIN_TYPES,
-	favoredBonusBudget,
-	favoredEnemySlots,
-	favoredTerrainSlots,
-	rangerLevel,
+  COMBAT_STYLES,
+  FAVORED_ENEMY_TYPES,
+  FAVORED_TERRAIN_TYPES,
+  favoredBonusBudget,
+  favoredEnemySlots,
+  favoredTerrainSlots,
+  rangerLevel,
 } from "@pf1/engine";
 
 /** True when the character has any ranger levels (gate for the pickers). */
 export function isRanger(doc: CharacterDoc): boolean {
-	return rangerLevel(doc) > 0;
+  return rangerLevel(doc) > 0;
 }
 
 /** A favored-enemy / favored-terrain row on the build doc. */
@@ -44,74 +44,89 @@ export type FavoredEntry = { type: string; bonus: number };
 const DEFAULT_BONUS = 2;
 
 function replaceEnemies(doc: CharacterDoc, list: FavoredEntry[]): CharacterDoc {
-	return { ...doc, build: { ...doc.build, favoredEnemies: list } };
+  return { ...doc, build: { ...doc.build, favoredEnemies: list } };
 }
 
 function replaceTerrains(doc: CharacterDoc, list: FavoredEntry[]): CharacterDoc {
-	return { ...doc, build: { ...doc.build, favoredTerrains: list } };
+  return { ...doc, build: { ...doc.build, favoredTerrains: list } };
 }
 
 /* --------------------------------------------------------------- enemies -- */
 
 export function addFavoredEnemy(doc: CharacterDoc, type = ""): CharacterDoc {
-	return replaceEnemies(doc, [...(doc.build.favoredEnemies ?? []), { type, bonus: DEFAULT_BONUS }]);
+  return replaceEnemies(doc, [...(doc.build.favoredEnemies ?? []), { type, bonus: DEFAULT_BONUS }]);
 }
 
 export function removeFavoredEnemy(doc: CharacterDoc, index: number): CharacterDoc {
-	return replaceEnemies(
-		doc,
-		(doc.build.favoredEnemies ?? []).filter((_, i) => i !== index),
-	);
+  return replaceEnemies(
+    doc,
+    (doc.build.favoredEnemies ?? []).filter((_, i) => i !== index),
+  );
 }
 
 export function setFavoredEnemyType(doc: CharacterDoc, index: number, type: string): CharacterDoc {
-	return replaceEnemies(
-		doc,
-		(doc.build.favoredEnemies ?? []).map((e, i) => (i === index ? { ...e, type } : e)),
-	);
+  return replaceEnemies(
+    doc,
+    (doc.build.favoredEnemies ?? []).map((e, i) => (i === index ? { ...e, type } : e)),
+  );
 }
 
-export function setFavoredEnemyBonus(doc: CharacterDoc, index: number, bonus: number): CharacterDoc {
-	const clamped = Number.isFinite(bonus) ? Math.max(0, Math.round(bonus)) : 0;
-	return replaceEnemies(
-		doc,
-		(doc.build.favoredEnemies ?? []).map((e, i) => (i === index ? { ...e, bonus: clamped } : e)),
-	);
+export function setFavoredEnemyBonus(
+  doc: CharacterDoc,
+  index: number,
+  bonus: number,
+): CharacterDoc {
+  const clamped = Number.isFinite(bonus) ? Math.max(0, Math.round(bonus)) : 0;
+  return replaceEnemies(
+    doc,
+    (doc.build.favoredEnemies ?? []).map((e, i) => (i === index ? { ...e, bonus: clamped } : e)),
+  );
 }
 
 /* -------------------------------------------------------------- terrains -- */
 
 export function addFavoredTerrain(doc: CharacterDoc, type = ""): CharacterDoc {
-	return replaceTerrains(doc, [...(doc.build.favoredTerrains ?? []), { type, bonus: DEFAULT_BONUS }]);
+  return replaceTerrains(doc, [
+    ...(doc.build.favoredTerrains ?? []),
+    { type, bonus: DEFAULT_BONUS },
+  ]);
 }
 
 export function removeFavoredTerrain(doc: CharacterDoc, index: number): CharacterDoc {
-	return replaceTerrains(
-		doc,
-		(doc.build.favoredTerrains ?? []).filter((_, i) => i !== index),
-	);
+  return replaceTerrains(
+    doc,
+    (doc.build.favoredTerrains ?? []).filter((_, i) => i !== index),
+  );
 }
 
-export function setFavoredTerrainType(doc: CharacterDoc, index: number, type: string): CharacterDoc {
-	return replaceTerrains(
-		doc,
-		(doc.build.favoredTerrains ?? []).map((e, i) => (i === index ? { ...e, type } : e)),
-	);
+export function setFavoredTerrainType(
+  doc: CharacterDoc,
+  index: number,
+  type: string,
+): CharacterDoc {
+  return replaceTerrains(
+    doc,
+    (doc.build.favoredTerrains ?? []).map((e, i) => (i === index ? { ...e, type } : e)),
+  );
 }
 
-export function setFavoredTerrainBonus(doc: CharacterDoc, index: number, bonus: number): CharacterDoc {
-	const clamped = Number.isFinite(bonus) ? Math.max(0, Math.round(bonus)) : 0;
-	return replaceTerrains(
-		doc,
-		(doc.build.favoredTerrains ?? []).map((e, i) => (i === index ? { ...e, bonus: clamped } : e)),
-	);
+export function setFavoredTerrainBonus(
+  doc: CharacterDoc,
+  index: number,
+  bonus: number,
+): CharacterDoc {
+  const clamped = Number.isFinite(bonus) ? Math.max(0, Math.round(bonus)) : 0;
+  return replaceTerrains(
+    doc,
+    (doc.build.favoredTerrains ?? []).map((e, i) => (i === index ? { ...e, bonus: clamped } : e)),
+  );
 }
 
 /* ----------------------------------------------------------- combat style -- */
 
 /** Set (or clear, with `null`) the ranger combat style tag. Free-choice. */
 export function setCombatStyle(doc: CharacterDoc, id: string | null): CharacterDoc {
-	return { ...doc, build: { ...doc.build, combatStyle: id ?? undefined } };
+  return { ...doc, build: { ...doc.build, combatStyle: id ?? undefined } };
 }
 
 /**
@@ -121,9 +136,9 @@ export function setCombatStyle(doc: CharacterDoc, id: string | null): CharacterD
  * Empty when no style is chosen or the character isn't a ranger.
  */
 export function combatStyleFeatSlugs(doc: CharacterDoc): ReadonlySet<string> {
-	if (!isRanger(doc) || !doc.build.combatStyle) return new Set();
-	const style = COMBAT_STYLES.find((s) => s.id === doc.build.combatStyle);
-	return new Set(style?.featSlugs ?? []);
+  if (!isRanger(doc) || !doc.build.combatStyle) return new Set();
+  const style = COMBAT_STYLES.find((s) => s.id === doc.build.combatStyle);
+  return new Set(style?.featSlugs ?? []);
 }
 
 /**
@@ -133,27 +148,27 @@ export function combatStyleFeatSlugs(doc: CharacterDoc): ReadonlySet<string> {
  * enforces it (hybrid soft-warning posture).
  */
 export interface FavoredBudget {
-	slots: number;
-	chosen: number;
-	bonusBudget: number;
-	bonusAssigned: number;
+  slots: number;
+  chosen: number;
+  bonusBudget: number;
+  bonusAssigned: number;
 }
 
 function summarize(list: FavoredEntry[], slots: number): FavoredBudget {
-	return {
-		slots,
-		chosen: list.length,
-		bonusBudget: favoredBonusBudget(slots),
-		bonusAssigned: list.reduce((sum, e) => sum + e.bonus, 0),
-	};
+  return {
+    slots,
+    chosen: list.length,
+    bonusBudget: favoredBonusBudget(slots),
+    bonusAssigned: list.reduce((sum, e) => sum + e.bonus, 0),
+  };
 }
 
 export function favoredEnemyBudget(doc: CharacterDoc): FavoredBudget {
-	return summarize(doc.build.favoredEnemies ?? [], favoredEnemySlots(rangerLevel(doc)));
+  return summarize(doc.build.favoredEnemies ?? [], favoredEnemySlots(rangerLevel(doc)));
 }
 
 export function favoredTerrainBudget(doc: CharacterDoc): FavoredBudget {
-	return summarize(doc.build.favoredTerrains ?? [], favoredTerrainSlots(rangerLevel(doc)));
+  return summarize(doc.build.favoredTerrains ?? [], favoredTerrainSlots(rangerLevel(doc)));
 }
 
 /**
@@ -162,9 +177,9 @@ export function favoredTerrainBudget(doc: CharacterDoc): FavoredBudget {
  * wrapper over {@link combatStyleFeatSlugs} for per-feat checks.
  */
 export function isCombatStyleFeat(doc: CharacterDoc, refData: RefData, featId: string): boolean {
-	const name = refData.feats[featId]?.name;
-	if (!name) return false;
-	return combatStyleFeatSlugs(doc).has(featNameSlug(name));
+  const name = refData.feats[featId]?.name;
+  if (!name) return false;
+  return combatStyleFeatSlugs(doc).has(featNameSlug(name));
 }
 
 const ENEMY_LABELS = new Map(FAVORED_ENEMY_TYPES.map((c) => [c.id, c.label]));
@@ -177,23 +192,27 @@ const TERRAIN_LABELS = new Map(FAVORED_TERRAIN_TYPES.map((c) => [c.id, c.label])
  * to offer "+ favored enemy/terrain" attachments.
  */
 export function attachableRangerBonuses(sheet: DerivedSheet): SavedRollRangerRef[] {
-	const r = sheet.ranger;
-	if (!r) return [];
-	const label = (map: Map<string, string>, type: string) => map.get(type) ?? type;
-	return [
-		...r.favoredEnemies
-			.filter((e) => e.type)
-			.map((e): SavedRollRangerRef => ({
-				kind: "favored-enemy",
-				type: e.type,
-				name: label(ENEMY_LABELS, e.type),
-			})),
-		...r.favoredTerrains
-			.filter((e) => e.type)
-			.map((e): SavedRollRangerRef => ({
-				kind: "favored-terrain",
-				type: e.type,
-				name: label(TERRAIN_LABELS, e.type),
-			})),
-	];
+  const r = sheet.ranger;
+  if (!r) return [];
+  const label = (map: Map<string, string>, type: string) => map.get(type) ?? type;
+  return [
+    ...r.favoredEnemies
+      .filter((e) => e.type)
+      .map(
+        (e): SavedRollRangerRef => ({
+          kind: "favored-enemy",
+          type: e.type,
+          name: label(ENEMY_LABELS, e.type),
+        }),
+      ),
+    ...r.favoredTerrains
+      .filter((e) => e.type)
+      .map(
+        (e): SavedRollRangerRef => ({
+          kind: "favored-terrain",
+          type: e.type,
+          name: label(TERRAIN_LABELS, e.type),
+        }),
+      ),
+  ];
 }

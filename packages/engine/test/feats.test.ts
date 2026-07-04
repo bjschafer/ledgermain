@@ -40,7 +40,12 @@ function makeDoc(over: {
       classes: over.classes,
     },
     abilities: over.abilities ?? {
-      str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10,
+      str: 10,
+      dex: 10,
+      con: 10,
+      int: 10,
+      wis: 10,
+      cha: 10,
     },
     build: {
       feats: over.feats ?? [],
@@ -213,15 +218,27 @@ describe("feat bonus stacking behaviour", () => {
       classes: [{ tag: "barbarian", level: 1 }],
       abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
       activeBuffs: [
-        { instanceId: "b1", name: "Bull's Strength +2", changes: [{ target: "str", type: "enh", formula: "2" }] },
+        {
+          instanceId: "b1",
+          name: "Bull's Strength +2",
+          changes: [{ target: "str", type: "enh", formula: "2" }],
+        },
       ],
     });
     const docTwo = makeDoc({
       classes: [{ tag: "barbarian", level: 1 }],
       abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
       activeBuffs: [
-        { instanceId: "b1", name: "Bull's Strength +2", changes: [{ target: "str", type: "enh", formula: "2" }] },
-        { instanceId: "b2", name: "Bull's Strength +4", changes: [{ target: "str", type: "enh", formula: "4" }] },
+        {
+          instanceId: "b1",
+          name: "Bull's Strength +2",
+          changes: [{ target: "str", type: "enh", formula: "2" }],
+        },
+        {
+          instanceId: "b2",
+          name: "Bull's Strength +4",
+          changes: [{ target: "str", type: "enh", formula: "4" }],
+        },
       ],
     });
     const s1 = compute(docOne, ref);

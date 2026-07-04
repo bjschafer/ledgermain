@@ -24,7 +24,10 @@ function doc() {
 }
 
 /** A level-`level` fighter with the given ability scores, for derived-sheet tests. */
-function fighterAt(level: number, abilities: Partial<Record<"str" | "dex" | "con" | "int" | "wis" | "cha", number>> = {}) {
+function fighterAt(
+  level: number,
+  abilities: Partial<Record<"str" | "dex" | "con" | "int" | "wis" | "cha", number>> = {},
+) {
   let d = createEmptyDoc("t");
   d = addClass(d, "fighter");
   d = setClassLevel(d, "fighter", level);
@@ -52,8 +55,12 @@ describe("ability afflictions: get/set", () => {
   });
 
   it("truncates fractional/NaN input", () => {
-    expect(getAbilityAffliction(setAbilityAffliction(doc(), "penalty", "dex", 2.9), "penalty", "dex")).toBe(2);
-    expect(getAbilityAffliction(setAbilityAffliction(doc(), "penalty", "dex", NaN), "penalty", "dex")).toBe(0);
+    expect(
+      getAbilityAffliction(setAbilityAffliction(doc(), "penalty", "dex", 2.9), "penalty", "dex"),
+    ).toBe(2);
+    expect(
+      getAbilityAffliction(setAbilityAffliction(doc(), "penalty", "dex", NaN), "penalty", "dex"),
+    ).toBe(0);
   });
 
   it("setting to 0 removes the entry rather than storing an explicit 0", () => {

@@ -75,10 +75,7 @@ describe("stacking: penalties always stack", () => {
 
 describe("stacking: provenance", () => {
   it("records every input modifier with an applied flag and source", () => {
-    const r = resolveStack([
-      mod("competence", 2, "Item A"),
-      mod("competence", 5, "Item B"),
-    ]);
+    const r = resolveStack([mod("competence", 2, "Item A"), mod("competence", 5, "Item B")]);
     expect(r.modifiers).toHaveLength(2);
     expect(r.modifiers.map((m) => m.source).sort()).toEqual(["Item A", "Item B"]);
     expect(r.modifiers.find((m) => m.source === "Item B")!.applied).toBe(true);

@@ -30,12 +30,7 @@ export {
   type RollData,
   type FormulaNode,
 } from "./formula.js";
-export {
-  buildRollData,
-  abilityMod,
-  totalLevel,
-  type AbilityView,
-} from "./rolldata.js";
+export { buildRollData, abilityMod, totalLevel, type AbilityView } from "./rolldata.js";
 export {
   babForLevels,
   saveForLevels,

@@ -15,28 +15,26 @@ import { migrateDoc } from "./doc.js";
  * character document, so the import UI can explain the rejection.
  */
 export function parseImportedDoc(value: unknown): CharacterDoc {
-	if (!looksLikeCharacterDoc(value)) {
-		throw new Error(
-			"That file doesn't look like a Ledgermain character export.",
-		);
-	}
-	return migrateDoc(value);
+  if (!looksLikeCharacterDoc(value)) {
+    throw new Error("That file doesn't look like a Ledgermain character export.");
+  }
+  return migrateDoc(value);
 }
 
 function looksLikeCharacterDoc(value: unknown): value is CharacterDoc {
-	if (!isPlainObject(value)) return false;
-	return (
-		typeof value.schemaVersion === "number" &&
-		typeof value.id === "string" &&
-		value.id.length > 0 &&
-		isPlainObject(value.identity) &&
-		typeof value.identity.name === "string" &&
-		isPlainObject(value.abilities) &&
-		isPlainObject(value.build) &&
-		isPlainObject(value.live)
-	);
+  if (!isPlainObject(value)) return false;
+  return (
+    typeof value.schemaVersion === "number" &&
+    typeof value.id === "string" &&
+    value.id.length > 0 &&
+    isPlainObject(value.identity) &&
+    typeof value.identity.name === "string" &&
+    isPlainObject(value.abilities) &&
+    isPlainObject(value.build) &&
+    isPlainObject(value.live)
+  );
 }
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
-	return typeof value === "object" && value !== null && !Array.isArray(value);
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }

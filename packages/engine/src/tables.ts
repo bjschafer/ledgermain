@@ -111,11 +111,7 @@ export const SKILL_ABILITY: Record<string, AbilityId> = {
  * its own (back-compat with existing documents, and usable as an
  * unlabeled/generic instance).
  */
-export const PARAMETERIZED_SKILL_PREFIXES: ReadonlySet<string> = new Set([
-  "crf",
-  "pro",
-  "prf",
-]);
+export const PARAMETERIZED_SKILL_PREFIXES: ReadonlySet<string> = new Set(["crf", "pro", "prf"]);
 
 /**
  * Returns the "real" `SKILL_ABILITY`/`SKILL_TRAINED_ONLY` lookup key for a
@@ -442,10 +438,7 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   druid: DRUID_SPELLS_PER_DAY,
 };
 
-const KNOWN_PROGRESSIONS: Record<
-  SpellKnownProgression,
-  readonly (readonly (number | null)[])[]
-> = {
+const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {
   sorcerer: SORCERER_SPELLS_KNOWN,
   bard: BARD_SPELLS_KNOWN,
 };
@@ -513,10 +506,7 @@ export interface ChannelEnergyDetail {
  * The alignment choice (positive vs. negative — heal vs. damage) is display
  * only; the underlying numbers are symmetric.
  */
-export function channelEnergyDetail(
-  clericLevel: number,
-  chaMod: number,
-): ChannelEnergyDetail {
+export function channelEnergyDetail(clericLevel: number, chaMod: number): ChannelEnergyDetail {
   if (clericLevel <= 0) {
     return { dice: 0, diceLabel: "0d6", saveDC: 10 + Math.max(0, chaMod) };
   }

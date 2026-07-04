@@ -2,24 +2,30 @@
   "name": "ledgermain",
   "version": "0.0.0",
   "private": true,
-  "license": "MIT",
   "description": "Pathfinder 1e in-play character tracker and builder (monorepo root).",
-  "type": "module",
+  "license": "MIT",
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
+  "type": "module",
   "scripts": {
     "dev": "bun run --filter @pf1/web dev",
     "build": "bun run --filter '*' build",
     "test": "bun run --filter '*' test",
     "typecheck": "bun run --filter '*' typecheck",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint . --fix",
+    "fmt": "oxfmt .",
+    "fmt:check": "oxfmt . --check",
     "e2e": "bun run --filter @pf1/web e2e",
     "data:fetch": "bun run --filter @pf1/data-pipeline fetch",
     "data:build": "bun run --filter @pf1/data-pipeline generate",
     "deploy": "bun run build && bun run --filter @pf1/web deploy"
   },
   "devDependencies": {
+    "oxfmt": "^0.57.0",
+    "oxlint": "^1.72.0",
     "typescript": "^5.6.3"
   }
 }

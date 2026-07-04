@@ -73,9 +73,13 @@ describe("formula: functions", () => {
     // 4 + @abilities.con.mod + (2 * (@class.unlevel - 1))
     const formula = "4 + @abilities.con.mod + (2 * (@class.unlevel - 1))";
     // L1 barbarian, Con 16 (+3): 4 + 3 + 0 = 7
-    expect(evaluateFormula(formula, { abilities: { con: { mod: 3 } }, class: { unlevel: 1 } })).toBe(7);
+    expect(
+      evaluateFormula(formula, { abilities: { con: { mod: 3 } }, class: { unlevel: 1 } }),
+    ).toBe(7);
     // L5 barbarian, Con 14 (+2): 4 + 2 + (2 * 4) = 14
-    expect(evaluateFormula(formula, { abilities: { con: { mod: 2 } }, class: { unlevel: 5 } })).toBe(14);
+    expect(
+      evaluateFormula(formula, { abilities: { con: { mod: 2 } }, class: { unlevel: 5 } }),
+    ).toBe(14);
   });
 
   it("evaluates armor-training's clamp formula", () => {

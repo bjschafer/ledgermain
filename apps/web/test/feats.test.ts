@@ -130,7 +130,10 @@ describe("expectedFeatCount: Fighter bonus feats", () => {
 
   it("Fighter 1 / Wizard 1 multiclass Elf → 1 base + 1 fighter = 2 (Scribe Scroll auto-granted, not a slot)", () => {
     const doc = makeDoc({
-      classes: [{ tag: "fighter", level: 1 }, { tag: "wizard", level: 1 }],
+      classes: [
+        { tag: "fighter", level: 1 },
+        { tag: "wizard", level: 1 },
+      ],
       race: "Elf",
     });
     // charLevel=2: base ceil(2/2)=1; humanBonus=0;
@@ -233,7 +236,10 @@ describe("expectedFeatCount: Monk Bonus Feat (Unarmed Strike quirk fixed)", () =
 describe("expectedFeatCount: multiclass fighter + wizard bonus feats stack", () => {
   it("Fighter 2 / Wizard 5 Elf → base + fighter bonus + wizard slot bonus", () => {
     const doc = makeDoc({
-      classes: [{ tag: "fighter", level: 2 }, { tag: "wizard", level: 5 }],
+      classes: [
+        { tag: "fighter", level: 2 },
+        { tag: "wizard", level: 5 },
+      ],
       race: "Elf",
     });
     // charLevel=7: base ceil(7/2)=4

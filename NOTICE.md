@@ -11,13 +11,13 @@ License** -- see [`LICENSE`](./LICENSE). Copyright (c) 2026 Braxton Schafer.
 
 This covers, in particular:
 
-| Path | What |
-|---|---|
-| `packages/engine/**` | Pure rules engine: bonus-stacking, formula DSL, `compute()` |
-| `packages/schema/**` | TypeScript type definitions (`CharacterDoc`, `DerivedSheet`, `RefData`) |
-| `packages/data-pipeline/src/**` | The fetch / normalize / generate pipeline *scripts* |
-| `apps/web/src/**` | React + Vite character builder & live tracker |
-| root + per-package `package.json`, `tsconfig.json`, `vite.config.ts`, etc. | Build/config |
+| Path                                                                       | What                                                                    |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `packages/engine/**`                                                       | Pure rules engine: bonus-stacking, formula DSL, `compute()`             |
+| `packages/schema/**`                                                       | TypeScript type definitions (`CharacterDoc`, `DerivedSheet`, `RefData`) |
+| `packages/data-pipeline/src/**`                                            | The fetch / normalize / generate pipeline _scripts_                     |
+| `apps/web/src/**`                                                          | React + Vite character builder & live tracker                           |
+| root + per-package `package.json`, `tsconfig.json`, `vite.config.ts`, etc. | Build/config                                                            |
 
 ### Clean-room discipline
 
@@ -27,15 +27,15 @@ not derived from, transcribed, or ported from any third-party GPL source.
 
 The Foundry VTT Pathfinder 1e system
 (`https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1`) ships
-under **GPL-3.0** for its *code* (`module/**`, `packs/**` YAML loaders, etc.).
+under **GPL-3.0** for its _code_ (`module/**`, `packs/**` YAML loaders, etc.).
 We **never** copy, transcribe, or port that GPL-3.0 code into this repository.
 The system is fetched on demand by `packages/data-pipeline/src/cli/fetch.ts`
 into `packages/data-pipeline/.cache/` -- that directory is `.gitignore`d and is
 **never committed** -- and is used **only** as:
 
-1. the source of the OGL compendium *data* (see Sec.2), and
-2. a *behavioral correctness oracle* for the engine unit tests (we compare
-   *outputs* -- given input X, both produce Y -- never code structure).
+1. the source of the OGL compendium _data_ (see Sec.2), and
+2. a _behavioral correctness oracle_ for the engine unit tests (we compare
+   _outputs_ -- given input X, both produce Y -- never code structure).
 
 Because no GPL-3.0 code is incorporated into this repository, the GPL's
 copyleft obligations do not attach. Algorithms and rules themselves are not
@@ -51,6 +51,7 @@ mirrored into `apps/web/public/data/` and the production `dist/` bundle) is
 This is derivative Open Game Content drawn from two pinned, upstream sources:
 
 ### a. Foundry VTT Pathfinder 1e system
+
 - Repo: `https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1`
 - Pinned commit: `10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4` (system v11.11)
 - The upstream ships an `OGL.txt` whose Section 15 covers Wizards of the Coast
@@ -59,6 +60,7 @@ This is derivative Open Game Content drawn from two pinned, upstream sources:
   Game Content.
 
 ### b. pf1e-archetypes dataset
+
 - Repo: `https://github.com/bjschafer/pf1e-archetypes`
 - Pinned commit: `815ef073685faf215be442cc5035c8198a89432b` (a fork of
   `baileymh/pf1e-archetypes` with upstream merge-conflict corruption fixed
@@ -89,7 +91,7 @@ Some entries in the vendored data reference Paizo **Product Identity** within
 the meaning of OGL Sec.1(e) and Sec.7 -- for example: deity names (Asmodeus, Cayden
 Cailean, Desna, Gozreh, Irori, Pharasma, Sarenrae, Torag, Urgathoa, Zon-Kuthon,
 ...), Golarion ethnonyms and place names referenced by certain archetypes
-(*Shoanti*, *Varisian*, Korvosa, ...), and AP/character references in archetype
+(_Shoanti_, _Varisian_, Korvosa, ...), and AP/character references in archetype
 descriptions. Product Identity is **not** Open Game Content and is not
 licensed by the OGL itself.
 
@@ -117,10 +119,10 @@ Community Use Policy.
 ## 4. Application runtime notice
 
 The deployed web app at `apps/web` ships a copy of `OGL.txt` and a short
- NOTICE at `/OGL.txt` and `/NOTICE.txt` (copied by
- `apps/web/scripts/copy-refdata.ts`), and surfaces both via an "About &
- Legal" panel inside Settings. Nothing in the app's UI -- declarative text,
- character exports, derived numbers -- is itself Product Identity.
+NOTICE at `/OGL.txt` and `/NOTICE.txt` (copied by
+`apps/web/scripts/copy-refdata.ts`), and surfaces both via an "About &
+Legal" panel inside Settings. Nothing in the app's UI -- declarative text,
+character exports, derived numbers -- is itself Product Identity.
 
 ## 5. Not affiliated
 

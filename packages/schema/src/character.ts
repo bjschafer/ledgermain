@@ -5,16 +5,7 @@ import type { AbilityId, Change, ContextNote, SkillId } from "./primitives.js";
  * "uni" for Universalist (no specialization). Matches `Spell.school` values
  * in the vendored data.
  */
-export type WizardSchoolTag =
-  | "abj"
-  | "con"
-  | "div"
-  | "enc"
-  | "evo"
-  | "ill"
-  | "nec"
-  | "trs"
-  | "uni";
+export type WizardSchoolTag = "abj" | "con" | "div" | "enc" | "evo" | "ill" | "nec" | "trs" | "uni";
 
 /**
  * The character document is the single source of truth: it holds build choices

@@ -83,10 +83,7 @@ function DomainSlotsSection({
   classTag?: string;
 }) {
   const domains = doc.build.clericDomains ?? [];
-  const domainMap = useMemo(
-    () => domainSpellLevelMap(refData, domains),
-    [refData, domains],
-  );
+  const domainMap = useMemo(() => domainSpellLevelMap(refData, domains), [refData, domains]);
 
   // Bucket domain-kind prepared instances by their domain spell level.
   type Row = { index: number; spellId: string; name: string; expended: boolean };
@@ -138,9 +135,8 @@ function DomainSlotsSection({
       <header className="domain-slots-head">
         <h4 className="domain-slots-title">Domain Slots ({domains.join(", ")})</h4>
         <p className="hint domain-slots-hint">
-          One bonus prepare-slot per accessible cleric spell level. Fill it from
-          the chosen domains' spell list (a domain-only spell not on the cleric
-          list may only be prepared here).
+          One bonus prepare-slot per accessible cleric spell level. Fill it from the chosen domains'
+          spell list (a domain-only spell not on the cleric list may only be prepared here).
         </p>
       </header>
 
@@ -165,10 +161,7 @@ function DomainSlotsSection({
                 {rows.map((r) => {
                   const spellData = refData.spells[r.spellId];
                   return (
-                    <div
-                      key={r.index}
-                      className={`prep-row${r.expended ? " is-expended" : ""}`}
-                    >
+                    <div key={r.index} className={`prep-row${r.expended ? " is-expended" : ""}`}>
                       <div className="prep-row-main">
                         <span className="prep-name">{r.name}</span>
                         {spellData && (
@@ -215,7 +208,7 @@ function DomainSlotsSection({
             {pickable.length > 0 ? (
               <details className="prep-add">
                 <summary>
-                  Prepare from {" "}{domains.join(", ")} level-{level} list…
+                  Prepare from {domains.join(", ")} level-{level} list…
                   {full && <span className="prep-full"> domain slot filled</span>}
                 </summary>
                 <div className="prep-add-list">
@@ -227,7 +220,11 @@ function DomainSlotsSection({
                         <div className="prep-row-main">
                           <span className="prep-name">{sp.name}</span>
                           {spellData && (
-                            <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
+                            <SpellDetail
+                              spell={spellData}
+                              spellLevel={level}
+                              abilityMod={abilityMod}
+                            />
                           )}
                         </div>
                         {count > 0 && <span className="prep-have">prepared</span>}
@@ -341,8 +338,8 @@ function SchoolSlotsSection({
       <header className="school-slots-head">
         <h4 className="school-slots-title">School Slots ({schoolLabel})</h4>
         <p className="hint school-slots-hint">
-          One bonus prepare-slot per accessible spell level, exclusive to{" "}
-          {schoolLabel} spells (a Universalist gets none).
+          One bonus prepare-slot per accessible spell level, exclusive to {schoolLabel} spells (a
+          Universalist gets none).
         </p>
       </header>
 
@@ -367,10 +364,7 @@ function SchoolSlotsSection({
                 {rows.map((r) => {
                   const spellData = refData.spells[r.spellId];
                   return (
-                    <div
-                      key={r.index}
-                      className={`prep-row${r.expended ? " is-expended" : ""}`}
-                    >
+                    <div key={r.index} className={`prep-row${r.expended ? " is-expended" : ""}`}>
                       <div className="prep-row-main">
                         <span className="prep-name">{r.name}</span>
                         {spellData && (
@@ -429,7 +423,11 @@ function SchoolSlotsSection({
                         <div className="prep-row-main">
                           <span className="prep-name">{sp.name}</span>
                           {spellData && (
-                            <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
+                            <SpellDetail
+                              spell={spellData}
+                              spellLevel={level}
+                              abilityMod={abilityMod}
+                            />
                           )}
                         </div>
                         {count > 0 && <span className="prep-have">prepared</span>}
@@ -453,7 +451,9 @@ function SchoolSlotsSection({
                 </div>
               </details>
             ) : (
-              <p className="prep-none">No level-{level} {schoolLabel} spells on the wizard list.</p>
+              <p className="prep-none">
+                No level-{level} {schoolLabel} spells on the wizard list.
+              </p>
             )}
           </section>
         );
@@ -471,7 +471,15 @@ function SchoolSlotsSection({
  * with Cast/Recover, a picker to prepare more spells, and actions to rest
  * (un-expend) or clear the loadout for re-preparation.
  */
-function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwitcher }: BuilderProps & {
+function PreparedView({
+  doc,
+  sheet,
+  refData,
+  update,
+  casterTag,
+  model,
+  classSwitcher,
+}: BuilderProps & {
   casterTag: string;
   model: ReturnType<typeof casterModelFor> & {};
   classSwitcher?: ReactNode;
@@ -485,24 +493,18 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
   // carries this exact value in its (possibly absent) `classTag`.
   const classTag = storedClassTag(doc, refData, casterTag);
 
-  const levelMap = useMemo(
-    () => spellLevelMap(refData, casterTag),
-    [refData, casterTag],
-  );
+  const levelMap = useMemo(() => spellLevelMap(refData, casterTag), [refData, casterTag]);
   const classLevel = doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 0;
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
   const slots = spellSlotsByLevel(model, classLevel, abilityMod);
 
   const cantripList = useMemo(
-    () => model.grantsAllCantrips ? grantedCantrips(refData, casterTag) : [],
+    () => (model.grantsAllCantrips ? grantedCantrips(refData, casterTag) : []),
     [model, refData, casterTag],
   );
 
-  const known = useMemo(
-    () => knownSpellsFor(doc, refData, casterTag),
-    [doc, refData, casterTag],
-  );
+  const known = useMemo(() => knownSpellsFor(doc, refData, casterTag), [doc, refData, casterTag]);
 
   // Casters with no curated "known" list (cleric) prepare directly from the
   // full class spell list; everyone else prepares from their known list.
@@ -578,9 +580,9 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
       {classSwitcher}
       <div className="spell-hints">
         <p className="hint spell-hint-line">
-          Prepare spells from your {model.knownLabel.toLowerCase()} into the day's
-          slots, then <strong>Cast</strong> to expend them. <strong>New day</strong>{" "}
-          refreshes every slot without changing what's prepared.
+          Prepare spells from your {model.knownLabel.toLowerCase()} into the day's slots, then{" "}
+          <strong>Cast</strong> to expend them. <strong>New day</strong> refreshes every slot
+          without changing what's prepared.
         </p>
       </div>
 
@@ -600,20 +602,12 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
               >
                 Clear all
               </button>
-              <button
-                type="button"
-                className="btn-ghost"
-                onClick={() => setConfirmClear(false)}
-              >
+              <button type="button" className="btn-ghost" onClick={() => setConfirmClear(false)}>
                 Cancel
               </button>
             </>
           ) : (
-            <button
-              type="button"
-              className="btn-ghost"
-              onClick={() => setConfirmClear(true)}
-            >
+            <button type="button" className="btn-ghost" onClick={() => setConfirmClear(true)}>
               Re-prepare from scratch
             </button>
           ))}
@@ -638,16 +632,12 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
           const over = usedCapacity > total;
           const full = remaining <= 0;
           const knownHere =
-            isCantrip && model.grantsAllCantrips
-              ? cantripList
-              : knownByLevel.get(level) ?? [];
+            isCantrip && model.grantsAllCantrips ? cantripList : (knownByLevel.get(level) ?? []);
 
           return (
             <section key={level} className="prep-level">
               <header className="prep-head">
-                <span className="prep-head-label">
-                  {isCantrip ? "Cantrips" : `Level ${level}`}
-                </span>
+                <span className="prep-head-label">{isCantrip ? "Cantrips" : `Level ${level}`}</span>
                 <span className={`prep-count${over ? " is-over" : ""}`}>
                   {usedCapacity}/{total} prepared
                   {!isCantrip && ` · ${ready} ready`}
@@ -665,10 +655,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
                   {rows.map((r) => {
                     const spellData = refData.spells[r.spellId];
                     return (
-                      <div
-                        key={r.index}
-                        className={`prep-row${r.expended ? " is-expended" : ""}`}
-                      >
+                      <div key={r.index} className={`prep-row${r.expended ? " is-expended" : ""}`}>
                         <div className="prep-row-main">
                           <span className="prep-name">{r.name}</span>
                           {r.cost === 2 && (
@@ -698,9 +685,7 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
                                 setConfirmRecover(r.index);
                               }
                             }}
-                            onBlur={() =>
-                              setConfirmRecover((i) => (i === r.index ? null : i))
-                            }
+                            onBlur={() => setConfirmRecover((i) => (i === r.index ? null : i))}
                           >
                             {confirmRecover === r.index ? "Confirm?" : "Recover"}
                           </button>
@@ -755,7 +740,11 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
                               <span className="prep-opposition-badge">costs 2 slots</span>
                             )}
                             {spellData && (
-                              <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
+                              <SpellDetail
+                                spell={spellData}
+                                spellLevel={level}
+                                abilityMod={abilityMod}
+                              />
                             )}
                           </div>
                           {count > 0 && (
@@ -768,7 +757,9 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
                               type="button"
                               className="pick-btn remove"
                               aria-label={`unprepare one ${sp.name}`}
-                              onClick={() => update((d) => unprepareSpell(d, sp.id, undefined, classTag))}
+                              onClick={() =>
+                                update((d) => unprepareSpell(d, sp.id, undefined, classTag))
+                              }
                             >
                               −
                             </button>
@@ -820,18 +811,16 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
       )}
 
       {/* School slots: one per accessible spell level, specialist wizard only. */}
-      {casterTag === "wizard" &&
-        doc.build.wizardSchool &&
-        doc.build.wizardSchool !== "uni" && (
-          <SchoolSlotsSection
-            doc={doc}
-            refData={refData}
-            update={update}
-            slots={slots}
-            abilityMod={abilityMod}
-            classTag={classTag}
-          />
-        )}
+      {casterTag === "wizard" && doc.build.wizardSchool && doc.build.wizardSchool !== "uni" && (
+        <SchoolSlotsSection
+          doc={doc}
+          refData={refData}
+          update={update}
+          slots={slots}
+          abilityMod={abilityMod}
+          classTag={classTag}
+        />
+      )}
     </Panel>
   );
 }
@@ -842,7 +831,15 @@ function PreparedView({ doc, sheet, refData, update, casterTag, model, classSwit
  * one slot. No preparation needed — any known spell can be cast at any level
  * slot for which it qualifies.
  */
-function SpontaneousView({ doc, sheet, refData, update, casterTag, model, classSwitcher }: BuilderProps & {
+function SpontaneousView({
+  doc,
+  sheet,
+  refData,
+  update,
+  casterTag,
+  model,
+  classSwitcher,
+}: BuilderProps & {
   casterTag: string;
   model: ReturnType<typeof casterModelFor> & {};
   classSwitcher?: ReactNode;
@@ -852,10 +849,7 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model, classS
   // to this class only.
   const classTag = storedClassTag(doc, refData, casterTag);
 
-  const levelMap = useMemo(
-    () => spellLevelMap(refData, casterTag),
-    [refData, casterTag],
-  );
+  const levelMap = useMemo(() => spellLevelMap(refData, casterTag), [refData, casterTag]);
   const classLevel = doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 0;
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
@@ -925,8 +919,8 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model, classS
       {classSwitcher}
       <div className="spell-hints">
         <p className="hint spell-hint-line">
-          Spontaneous caster: spend a slot of the required level to cast any
-          spell you know. <strong>New day</strong> restores all slots.
+          Spontaneous caster: spend a slot of the required level to cast any spell you know.{" "}
+          <strong>New day</strong> restores all slots.
         </p>
       </div>
 
@@ -945,11 +939,7 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model, classS
                   <div className="prep-row-main">
                     <span className="prep-name">{c.name}</span>
                     {spellData && (
-                      <SpellDetail
-                        spell={spellData}
-                        spellLevel={0}
-                        abilityMod={abilityMod}
-                      />
+                      <SpellDetail spell={spellData} spellLevel={0} abilityMod={abilityMod} />
                     )}
                   </div>
                   <span className="prep-atwill">at will</span>
@@ -1027,7 +1017,14 @@ function SpontaneousView({ doc, sheet, refData, update, casterTag, model, classS
                           }
                           onClick={() =>
                             update((d) =>
-                              castSpontaneousSlot(d, model, classLevel, abilityMod, level, classTag),
+                              castSpontaneousSlot(
+                                d,
+                                model,
+                                classLevel,
+                                abilityMod,
+                                level,
+                                classTag,
+                              ),
                             )
                           }
                         >
