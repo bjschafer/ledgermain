@@ -50,6 +50,7 @@ export function buildRollData(
   abilities?: Record<AbilityId, AbilityView>,
   speeds?: Record<string, number>,
   bab?: number,
+  encumbranceLevel?: 0 | 1 | 2,
 ): RollData {
   const level = totalLevel(doc);
 
@@ -100,7 +101,10 @@ export function buildRollData(
     attributes: {
       hd: { total: level },
       bab: { total: bab ?? 0 },
-      encumbrance: { level: 0 },
+      // Only wired to a real tier when `settings.encumbranceEnabled` is on
+      // (issue #16) — see `compute.ts`; absent/off characters keep the
+      // historical hardcoded 0 (no load ever gates a formula for them).
+      encumbrance: { level: encumbranceLevel ?? 0 },
       speed: speedAttr,
     },
     armor: { type: armorType },

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import type { AbilityId, CharacterDoc, ItemInstance } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, ItemInstance, WeaponInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { compute, deriveResourcePools, raceGrantsFlexibleAbility } from "../src/index.js";
@@ -19,6 +19,8 @@ function makeDoc(over: {
   race?: string;
   skillRanks?: Record<string, number>;
   gear?: ItemInstance[];
+  weapons?: WeaponInstance[];
+  settings?: NonNullable<CharacterDoc["build"]>["settings"];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -38,6 +40,8 @@ function makeDoc(over: {
       classFeatureChoices: [],
       spells: { known: [] },
       gear: over.gear ?? [],
+      ...(over.weapons ? { weapons: over.weapons } : {}),
+      ...(over.settings ? { settings: over.settings } : {}),
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -755,12 +759,50 @@ describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
     expect(sheet.cmd).toBe(18); // 10 + bab3 + str2 + dex3 + size0 + 0 + 0
   });
 
-  // NOT tested here (documented gap, not built — see IMPLEMENTATION_PLAN.md):
-  // @shield.type is never populated in rolldata.ts (missing path → 0) and
-  // @attributes.encumbrance.level is hardcoded to 0 (no encumbrance model
-  // yet, issue #16), so a monk wielding a shield or carrying a heavy load
-  // would incorrectly still receive this bonus. The armor check — the most
-  // common real-world case — works correctly, per the assertions above.
+  it("encumbered monk (medium load, encumbranceEnabled) does NOT get the AC/CMD bonus (issue #16)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "monk", level: 5 }],
+      abilities,
+      settings: { encumbranceEnabled: true },
+      // Str 14 carrying capacity: 58/116/175 (CRB table). 100 lb lands in
+      // the medium band (59-116).
+      gear: [{ equipped: true, name: "Heavy Backpack", weight: 100 }],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.encumbrance?.tier).toBe("medium");
+    // @attributes.encumbrance.level is now 1 (medium), so lt(level, 1) is
+    // false — the gate zeroes out exactly like the armored-monk case above.
+    expect(sheet.ac.normal).toBe(13); // 10 base + dex3 + wisToAc0
+    expect(sheet.cmd).toBe(18); // 10 + bab3 + str2 + dex3 + size0 + 0
+  });
+
+  it("encumbered monk (heavy load, encumbranceEnabled) does NOT get the AC/CMD bonus (issue #16)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "monk", level: 5 }],
+      abilities,
+      settings: { encumbranceEnabled: true },
+      // Str 14 carrying capacity: 58/116/175. 200 lb pushes past heavy (175).
+      gear: [{ equipped: true, name: "Anvil", weight: 200 }],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.encumbrance?.tier).toBe("heavy");
+    // @attributes.encumbrance.level is now correctly wired to 2 (heavy), so
+    // lt(@attributes.encumbrance.level, 1) is false — the monk AC/CMD bonus
+    // gate correctly zeroes out, closing the documented pre-#16 gap. Heavy
+    // load ALSO caps max Dex to +1 (Dex mod here is +3), so the "Dexterity"
+    // AC component is capped down to 1 as well.
+    expect(sheet.ac.normal).toBe(11); // 10 base + dex(capped 1) + wisToAc0
+    // CMD's Dex term is never capped by armor OR load (RAW — only AC's Dex
+    // bonus is capped), so this is identical to the medium-load case above.
+    expect(sheet.cmd).toBe(18); // 10 + bab3 + str2 + dex3(uncapped) + size0 + 0
+    const dexComponent = sheet.ac.components.find((c) => c.category === "dex");
+    expect(dexComponent?.value).toBe(1);
+    expect(dexComponent?.source).toBe("Dexterity (Heavy load)");
+  });
+
+  // Remaining documented gap: @shield.type is never populated in rolldata.ts
+  // (missing path → 0), so a monk wielding a shield still incorrectly
+  // receives this bonus. Encumbrance is now wired (see the two tests above).
 });
 
 describe("compute: CMD RAW-correct derivation, no double-counting (issue #33)", () => {

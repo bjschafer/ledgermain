@@ -1557,6 +1557,50 @@ button:focus-visible,
   text-transform: uppercase;
 }
 
+/* Load readout — only rendered when settings.encumbranceEnabled, issue #16. */
+.load-row {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  margin-bottom: 12px;
+}
+
+.load-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.load-weight {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.load-thresholds {
+  font-size: 11px;
+}
+
+.load-tier-badge {
+  cursor: default;
+}
+
+.load-tier-badge.load-tier-medium {
+  border-color: var(--gold-dim);
+  color: var(--gold-dim);
+}
+
+.load-tier-badge.load-tier-heavy {
+  border-color: var(--oxblood);
+  color: var(--oxblood);
+}
+
+.load-penalty-note {
+  margin-top: 4px;
+  font-size: 11px;
+}
+
 /* Per-row quantity stepper + charge tracker, issue #16. */
 .gear-qty {
   display: flex;

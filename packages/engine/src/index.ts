@@ -116,3 +116,17 @@ export {
   type CombatStyle,
 } from "./ranger.js";
 export { computeDefenses } from "./defenses.js";
+export {
+  carryingCapacity,
+  sizeCarryingMultiplier,
+  loadThresholds,
+  loadTier,
+  encumbranceLevelFor,
+  loadMaxDexCap,
+  loadAcp,
+  loadTierLabel,
+  encumberedSpeed,
+  gearUnitWeight,
+  totalCarriedWeight,
+  computeEncumbrance,
+} from "./encumbrance.js";

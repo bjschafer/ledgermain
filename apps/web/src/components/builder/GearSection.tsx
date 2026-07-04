@@ -314,7 +314,7 @@ const MONEY_FIELDS: { field: MoneyField; label: string }[] = [
 
 const BLANK_CUSTOM_GEAR = { name: "", weight: 0, price: 0, quantity: 1 };
 
-export function GearSection({ doc, refData, update }: BuilderProps) {
+export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   // Magic item picker state
   const [itemQuery, setItemQuery] = useState("");
   const [showItemPicker, setShowItemPicker] = useState(false);
@@ -336,6 +336,7 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
 
   const gear = doc.build.gear;
   const money = doc.live.money ?? {};
+  const encumbrance = sheet.encumbrance;
 
   // Filtered items list for the magic-item picker
   const filteredItems = useMemo(() => {
@@ -436,6 +437,30 @@ export function GearSection({ doc, refData, update }: BuilderProps) {
           ))}
         </div>
       </div>
+
+      {/* Load readout (issue #16) — only meaningful when the optional
+          encumbrance rule is enabled in Settings; otherwise no UI at all. */}
+      {encumbrance && (
+        <div className={`load-row load-${encumbrance.tier}`}>
+          <span className="eyebrow">Load</span>
+          <div className="load-summary">
+            <span className="load-weight num">{encumbrance.totalWeight} lb</span>
+            <span className="load-thresholds hint">
+              light ≤{encumbrance.thresholds.light} · medium ≤{encumbrance.thresholds.medium} ·
+              heavy ≤{encumbrance.thresholds.heavy}
+            </span>
+            <span className={`chip display-only load-tier-badge load-tier-${encumbrance.tier}`}>
+              {encumbrance.tier[0]!.toUpperCase()}
+              {encumbrance.tier.slice(1)} load
+            </span>
+          </div>
+          {encumbrance.tier !== "light" && (
+            <p className="hint load-penalty-note">
+              Max Dex +{encumbrance.maxDexCap} to AC · ACP {encumbrance.acp} · land speed reduced
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Current gear list */}
       {gear.length === 0 ? (

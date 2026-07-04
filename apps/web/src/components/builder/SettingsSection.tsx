@@ -10,6 +10,7 @@ import type { CharacterDoc } from "@pf1/schema";
 
 import { characterExportFilename, characterExportJson } from "../../model/exportCharacter.js";
 import {
+  setEncumbranceEnabled,
   setFcbHouserule,
   setGmGrantFeatSlots,
   setGmGrantSkillRanks,
@@ -66,6 +67,7 @@ export function SettingsSection({
   const heroCap = settings.heroPointsCap ?? HERO_POINT_CAP;
   const xpEnabled = settings.xpEnabled ?? false;
   const xpTrack = settings.xpTrack ?? DEFAULT_XP_TRACK;
+  const encumbranceEnabled = settings.encumbranceEnabled ?? false;
   const overrides = settings.statOverrides ?? {};
   const gmSkillRanks = doc.build.gmGrants?.skillRanks;
   const gmFeatSlots = doc.build.gmGrants?.featSlots;
@@ -271,6 +273,39 @@ export function SettingsSection({
               <option value="fast">Fast</option>
             </select>
           </div>
+        )}
+      </Panel>
+
+      {/* Encumbrance (issue #16) */}
+      <Panel title="Encumbrance" step="⚙">
+        <p className="hint" style={{ marginBottom: 12 }}>
+          Carrying capacity is a PF1 OPTIONAL rule — many tables skip it. Enable to compute a
+          Strength-based load tier (light/medium/heavy) from your total gear weight and apply its
+          RAW penalties (max Dex to AC, armor check penalty, reduced land speed).
+        </p>
+        <div className="chips">
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={encumbranceEnabled}
+            onClick={() => update((d) => setEncumbranceEnabled(d, true))}
+          >
+            Enabled
+          </button>
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={!encumbranceEnabled}
+            onClick={() => update((d) => setEncumbranceEnabled(d, false))}
+          >
+            Disabled (default)
+          </button>
+        </div>
+        {encumbranceEnabled && (
+          <p className="hint" style={{ marginTop: 10, fontSize: 12 }}>
+            See the Load readout on the Gear &amp; Inventory panel (Build tab) for your current
+            weight, thresholds, and tier.
+          </p>
         )}
       </Panel>
 

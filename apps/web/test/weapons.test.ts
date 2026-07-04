@@ -312,6 +312,7 @@ describe("addWeaponFromRef()", () => {
       critRange: 19, // 19 ≠ default 20 → stored
       group: "longsword",
       weaponId: longswordRef.id,
+      weight: longswordRef.weight,
     } satisfies WeaponInstance);
     // crit ×2 is the default → omitted for doc minimalism.
     expect(w.critMult).toBeUndefined();

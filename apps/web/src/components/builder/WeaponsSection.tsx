@@ -42,6 +42,7 @@ const BLANK_WEAPON: WeaponInstance = {
   critMult: 2,
   group: "",
   category: "melee",
+  weight: 0,
 };
 
 /** Tooltip for an ability chip, explaining why it's disabled when relevant. */
@@ -105,6 +106,7 @@ function WeaponForm({
     if (!weapon.material || weapon.material === "steel") delete weapon.material;
     if (!weapon.abilities) delete weapon.abilities;
     if (!weapon.masterwork || (weapon.enhancement ?? 0) > 0) delete weapon.masterwork;
+    if (!weapon.weight) delete weapon.weight;
     onSave(weapon);
   }
 
@@ -260,6 +262,16 @@ function WeaponForm({
             value={form.group ?? ""}
             placeholder="longsword"
             onChange={(e) => field("group", e.target.value)}
+          />
+        </label>
+        <label className="field">
+          <span>Weight (lb, for encumbrance)</span>
+          <input
+            type="number"
+            value={form.weight ?? 0}
+            min={0}
+            step={0.5}
+            onChange={(e) => field("weight", Number(e.target.value))}
           />
         </label>
       </div>

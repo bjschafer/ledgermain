@@ -340,6 +340,22 @@ export interface CharacterDoc {
        * `saves.ref.total`, `saves.will.total`.
        */
       statOverrides?: Record<string, number>;
+      /**
+       * Whether this character uses the PF1 OPTIONAL carrying-capacity /
+       * encumbrance rule (issue #16) — the owner's table doesn't use it, so
+       * this defaults OFF (same posture as `xpEnabled`, unlike
+       * `heroPointsEnabled` which defaults on). When false (or absent), the
+       * engine applies zero load-based penalties and computes no
+       * `DerivedSheet.encumbrance` — existing documents are completely
+       * unaffected. When true, total carried weight (gear weight × quantity,
+       * plus equipped armor/weapon weight) is compared against the
+       * Strength-based carrying-capacity table (`@pf1/engine`
+       * `carryingCapacity`) to derive a light/medium/heavy load tier, which
+       * then feeds RAW max-Dex-to-AC caps, armor-check-penalty, and land
+       * speed reduction (see `DerivedSheet.encumbrance` and
+       * `@pf1/engine/encumbrance.ts`).
+       */
+      encumbranceEnabled?: boolean;
     };
     /**
      * Player-curated bookmarks into already-computed sheet numbers (issue #2,
@@ -824,6 +840,13 @@ export interface WeaponInstance {
    * `model/doc.ts` weapon transitions, not by the schema itself.
    */
   abilities?: string[];
+  /**
+   * Weight in pounds, snapshotted from `WeaponRef.weight` at pick-time (issue
+   * #16 encumbrance), or entered directly for a hand-authored custom weapon.
+   * Feeds `@pf1/engine`'s `totalCarriedWeight`; ignored when
+   * `settings.encumbranceEnabled` is off. Omitted = 0 lb.
+   */
+  weight?: number;
 }
 
 /* ----------------------------------------------------------- derived sheet -- */
@@ -870,6 +893,39 @@ export interface DerivedSheet {
    * renders nothing rather than an empty "Defenses" line.
    */
   defenses?: Defenses;
+  /**
+   * Carrying capacity / encumbrance (issue #16) — an OPTIONAL PF1 rule, only
+   * computed when `build.settings.encumbranceEnabled` is true. Undefined
+   * whenever the setting is off/absent, which is the default for every
+   * existing document: this keeps `compute()` byte-identical for characters
+   * that predate the feature and for every table that doesn't use the rule.
+   */
+  encumbrance?: DerivedEncumbrance;
+}
+
+/** Light/medium/heavy carrying-capacity tier (PF1 CRB "Carrying Capacity"). */
+export type LoadTier = "light" | "medium" | "heavy";
+
+/**
+ * Encumbrance (issue #16), computed only when `build.settings.encumbranceEnabled`
+ * is true — see `@pf1/engine/encumbrance.ts` for the hand-authored carrying-
+ * capacity table and load-tier penalties this is built from.
+ */
+export interface DerivedEncumbrance {
+  /** Sum of gear weight × quantity, plus equipped armor/weapon weight, in pounds. */
+  totalWeight: number;
+  /** Effective Strength score (post racial/item/buff modifiers) the thresholds were computed from. */
+  strScore: number;
+  /** Light/medium/heavy weight ceilings in pounds (size-multiplier applied). */
+  thresholds: { light: number; medium: number; heavy: number };
+  /** Which tier `totalWeight` falls into. "up to" a threshold stays the lighter tier (PF1 RAW). */
+  tier: LoadTier;
+  /** RAW max Dexterity bonus to AC for this tier; undefined at light load (no load-based cap). */
+  maxDexCap?: number;
+  /** RAW armor check penalty from this tier alone (0, -3, or -6) — combines with worn-armor ACP. */
+  acp: number;
+  /** True for medium/heavy — land speed is reduced per the RAW "Table: Speed" mapping. */
+  speedPenalty: boolean;
 }
 
 /** Ranger favored enemies/terrains + combat style, projected onto the sheet (see `DerivedSheet.ranger`). */

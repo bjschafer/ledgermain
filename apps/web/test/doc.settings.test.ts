@@ -10,6 +10,7 @@ import {
   setAge,
   setAppearance,
   setDeity,
+  setEncumbranceEnabled,
   setFavoredClassBonus,
   setFcbHouserule,
   setGender,
@@ -194,6 +195,29 @@ describe("setHeroPointsEnabled()", () => {
     const d = { ...doc(), live: { ...doc().live, heroPoints: 2 } };
     const off = setHeroPointsEnabled(d, false);
     expect(off.live.heroPoints).toBe(2);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setEncumbranceEnabled (issue #16)
+// ---------------------------------------------------------------------------
+describe("setEncumbranceEnabled()", () => {
+  it("is absent on a fresh doc (default off)", () => {
+    expect(doc().build.settings?.encumbranceEnabled).toBeUndefined();
+  });
+
+  it("stores true when enabled", () => {
+    expect(setEncumbranceEnabled(doc(), true).build.settings?.encumbranceEnabled).toBe(true);
+  });
+
+  it("stores false when disabled", () => {
+    expect(setEncumbranceEnabled(doc(), false).build.settings?.encumbranceEnabled).toBe(false);
+  });
+
+  it("does not mutate the original doc", () => {
+    const d = doc();
+    setEncumbranceEnabled(d, true);
+    expect(d.build.settings?.encumbranceEnabled).toBeUndefined();
   });
 });
 

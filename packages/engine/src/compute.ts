@@ -21,6 +21,7 @@ import type {
   AcComponent,
   ArmorClass,
   CharacterDoc,
+  DerivedEncumbrance,
   DerivedSheet,
   DerivedSkill,
   HitPoints,
@@ -36,6 +37,12 @@ import { resolveClassFeatures } from "./archetypes.js";
 import { computeRanger } from "./ranger.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
 import { computeDefenses } from "./defenses.js";
+import {
+  computeEncumbrance,
+  encumbranceLevelFor,
+  encumberedSpeed,
+  loadTierLabel,
+} from "./encumbrance.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
 import {
@@ -220,6 +227,7 @@ function computeAc(
   size: SizeId,
   dexMod: number,
   collected: CollectedModifier[],
+  encumbrance?: DerivedEncumbrance,
 ): ArmorClass {
   // Gather candidates as {category, type, value, source}, then stack within each
   // (category|type) group so e.g. armor base + armor enhancement stack but two
@@ -279,8 +287,30 @@ function computeAc(
   const mDexBonus = forTarget(collected, "mDexA").reduce((s, m) => s + m.value, 0);
   if (maxDexCap !== undefined) maxDexCap += mDexBonus;
 
-  const cappedDex = maxDexCap === undefined ? dexMod : Math.min(dexMod, maxDexCap);
-  cands.push({ category: "dex", type: "untyped", value: cappedDex, source: "Dexterity" });
+  // Encumbrance (issue #16, optional rule): a medium/heavy load imposes its
+  // own max-Dex-to-AC cap, combining with any worn-armor cap as "whichever is
+  // more restrictive wins" (PF1 RAW — the two never stack additively).
+  const loadCap = encumbrance?.maxDexCap;
+  const combinedDexCap =
+    loadCap === undefined
+      ? maxDexCap
+      : maxDexCap === undefined
+        ? loadCap
+        : Math.min(maxDexCap, loadCap);
+  const cappedDex = combinedDexCap === undefined ? dexMod : Math.min(dexMod, combinedDexCap);
+  // Label the Dexterity line with the load tier only when the load's cap is
+  // the one actually binding (equal-or-more restrictive than any armor cap) —
+  // otherwise it reads exactly as it did before this feature existed.
+  const dexBoundByLoad =
+    loadCap !== undefined &&
+    cappedDex < dexMod &&
+    (maxDexCap === undefined || loadCap <= maxDexCap);
+  cands.push({
+    category: "dex",
+    type: "untyped",
+    value: cappedDex,
+    source: dexBoundByLoad ? `Dexterity (${loadTierLabel(encumbrance!.tier)})` : "Dexterity",
+  });
 
   const sizeMod = SIZE_AC_MOD[size];
   if (sizeMod !== 0) cands.push({ category: "size", type: "size", value: sizeMod, source: "Size" });
@@ -430,6 +460,7 @@ function computeSkills(
   refData: RefData,
   abilities: Record<AbilityId, AbilityView>,
   collected: CollectedModifier[],
+  encumbrance?: DerivedEncumbrance,
 ): Record<string, DerivedSkill> {
   // Class-skill set: union of all the character's classes' classSkills, plus
   // any class skills granted unconditionally by the race (e.g. Adaro always
@@ -451,7 +482,10 @@ function computeSkills(
     0,
   );
   const acpReduction = forTarget(collected, "acpA").reduce((s, m) => s + Math.abs(m.value), 0);
-  const effectiveAcp = Math.min(0, wornAcp + acpReduction);
+  // Encumbrance (issue #16, optional rule): a medium/heavy load imposes its
+  // own flat armor check penalty, additive with worn armor's ACP (PF1 RAW).
+  const loadAcp = encumbrance?.acp ?? 0;
+  const effectiveAcp = Math.min(0, wornAcp + acpReduction + loadAcp);
 
   // Every skill.* modifier target, split into its "skill." suffix. Resolved
   // against the final id set below (a raw target with a dot, e.g.
@@ -511,11 +545,19 @@ function computeSkills(
     const ranks = doc.build.skillRanks?.[id] ?? 0;
     const classSkill = classSkillSet.has(id) || classSkillSet.has(baseId);
     const classSkillBonus = classSkill && ranks >= 1 ? 3 : 0;
-    const acp = skillUsesAcp(id) ? effectiveAcp : 0;
+    const usesAcp = skillUsesAcp(id);
+    const acp = usesAcp ? effectiveAcp : 0;
     const stack = resolveStack([...(miscBySkill.get(id) ?? []), ...globalSkillMods]);
     const total = ranks + abilityModifier + classSkillBonus + acp + stack.total;
     const trainedOnly = isTrainedOnly(id);
     const usable = ranks > 0 || !trainedOnly;
+    // Load-tier ACP is already folded into `acp` above; this is a display-only
+    // provenance chip (issue #16) alongside the misc-modifier breakdown, not a
+    // second addend into `total`.
+    const loadAcpComponent: ModifierComponent[] =
+      usesAcp && loadAcp !== 0 && encumbrance
+        ? [synthetic(loadTierLabel(encumbrance.tier), "penalty", loadAcp)]
+        : [];
     skills[id] = {
       id,
       ability,
@@ -526,7 +568,7 @@ function computeSkills(
       miscMod: stack.total,
       total,
       classSkill,
-      components: toComponents(stack.modifiers),
+      components: [...loadAcpComponent, ...toComponents(stack.modifiers)],
       trainedOnly,
       usable,
     };
@@ -682,16 +724,32 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     if (def) bab += babForLevels(def.bab, cls.level);
   }
 
+  const baseSize: SizeId = race?.size ?? "med";
+
   // Bootstrap: resolve ability-targeting changes against base scores, then build
   // the final roll data and re-collect everything against the final abilities.
   const bootRollData = buildRollData(doc, refData, undefined, baseSpeeds, bab);
   const bootCollected = collectModifiers(doc, refData, bootRollData);
   const bootAbilities = computeAbilities(doc, bootCollected);
-  const rollData = buildRollData(doc, refData, bootAbilities, baseSpeeds, bab);
+
+  // Encumbrance (issue #16, optional rule — default off). Computed from the
+  // BOOT-pass Strength (already reflects racial/item/buff ability changes, via
+  // the same collected-modifier pass as everything else) so the resulting
+  // `@attributes.encumbrance.level` can feed the FINAL roll data below, which
+  // is what vendored formulas (e.g. monk's Wis-to-AC gate) actually evaluate
+  // against. Uses `baseSize` (race size, not any Enlarge/Reduce Person shift)
+  // for the same reason `rolldata.ts` uses race-base speeds: computing the
+  // size-shift itself requires `collected`, which would make this circular.
+  const encumbranceEnabled = doc.build.settings?.encumbranceEnabled ?? false;
+  const encumbrance = encumbranceEnabled
+    ? computeEncumbrance(doc, refData, bootAbilities.str.total, baseSize)
+    : undefined;
+  const encumbranceLevel = encumbrance ? encumbranceLevelFor(encumbrance.tier) : 0;
+
+  const rollData = buildRollData(doc, refData, bootAbilities, baseSpeeds, bab, encumbranceLevel);
   const collected = collectModifiers(doc, refData, rollData);
   const abilities = computeAbilities(doc, collected);
 
-  const baseSize: SizeId = race?.size ?? "med";
   // Enlarge/Reduce Person and similar effects shift the character along the
   // size ladder; round toward zero (a +1.5 or -0.5 step isn't a thing PF1
   // formulas produce, but be defensive) and clamp at the ladder's ends.
@@ -749,7 +807,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   };
 
   // AC
-  const ac = computeAc(doc, size, dexMod, collected);
+  const ac = computeAc(doc, size, dexMod, collected, encumbrance);
 
   // CMB / CMD
   const sizeSpecial = specialSizeMod(size);
@@ -805,9 +863,16 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   applySpeedTarget(speeds, collected, "swim", "swimSpeed");
   applySpeedTarget(speeds, collected, "climb", "climbSpeed");
   applySpeedTarget(speeds, collected, "burrow", "burrowSpeed");
+  // Encumbrance (issue #16, optional rule): a medium/heavy load reduces land
+  // speed per the RAW "Table: Speed" mapping, taking the lower of that and
+  // whatever the above targets already produced (e.g. a "set" effect like
+  // Slow) — RAW load penalties apply only to land speed, not fly/swim/etc.
+  if (encumbrance?.speedPenalty && speeds.land !== undefined) {
+    speeds.land = Math.min(speeds.land, encumberedSpeed(speeds.land));
+  }
 
   // Skills
-  const skills = computeSkills(doc, refData, abilities, collected);
+  const skills = computeSkills(doc, refData, abilities, collected, encumbrance);
 
   // Per-weapon attack lines
   const attacks = computeWeaponAttacks(doc, bab, strMod, dexMod, sizeAttackMod, collected);
@@ -837,6 +902,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     activeArchetypes,
     ranger: computeRanger(doc),
     defenses,
+    encumbrance,
   };
 
   for (const [key, val] of Object.entries(overrides)) {

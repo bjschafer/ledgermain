@@ -793,6 +793,23 @@ export function setXpEnabled(doc: CharacterDoc, enabled: boolean): CharacterDoc 
   };
 }
 
+/**
+ * Toggle the OPTIONAL PF1 carrying-capacity / encumbrance rule (issue #16).
+ * Off by default (absent = false) — the owner's table doesn't use it, same
+ * posture as `setXpEnabled`. When off, `compute()` applies zero load-based
+ * penalties and produces no `DerivedSheet.encumbrance`, so existing documents
+ * are completely unaffected by this feature's mere existence.
+ */
+export function setEncumbranceEnabled(doc: CharacterDoc, enabled: boolean): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, encumbranceEnabled: enabled },
+    },
+  };
+}
+
 /** Set the character's XP advancement track (slow/medium/fast). */
 export function setXpTrack(doc: CharacterDoc, track: "slow" | "medium" | "fast"): CharacterDoc {
   return {
@@ -1051,6 +1068,7 @@ export function addWeaponFromRef(
       ? { damageMultiplier: ref.damageMultiplier }
       : {}),
     ...(ref.group ? { group: ref.group } : {}),
+    ...(ref.weight ? { weight: ref.weight } : {}),
     weaponId: weapon.id,
   });
   const weapons = [...(doc.build.weapons ?? []), instance];
