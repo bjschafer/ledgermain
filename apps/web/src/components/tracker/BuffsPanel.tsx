@@ -24,6 +24,7 @@ import {
   roundsToDisplay,
   toRounds,
 } from "../../model/buffs.js";
+import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js";
 import { signed } from "../../model/names.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -133,7 +134,14 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
       ) : (
         <div className="buff-list">
           {doc.live.activeBuffs.map((b) => (
-            <BuffRow key={b.instanceId} buff={b} rollData={rollData} update={update} />
+            <BuffRow
+              key={b.instanceId}
+              buff={b}
+              rollData={rollData}
+              update={update}
+              hasFamiliar={!!doc.build.familiar}
+              sharedWithFamiliar={isSharedWithFamiliar(doc, b.instanceId)}
+            />
           ))}
         </div>
       )}
@@ -255,10 +263,16 @@ function BuffRow({
   buff,
   rollData,
   update,
+  hasFamiliar = false,
+  sharedWithFamiliar = false,
 }: {
   buff: ActiveBuff;
   rollData: RollData;
   update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
+  /** Whether the character has a tracked familiar (`build.familiar`) — hides the share toggle when false. */
+  hasFamiliar?: boolean;
+  /** Whether this buff instance is currently shared onto the familiar's derived sheet. */
+  sharedWithFamiliar?: boolean;
 }) {
   const [unit, setUnit] = useState<DurationUnit>(
     () => roundsToDisplay(buff.remainingRounds)?.unit ?? "rds",
@@ -314,6 +328,19 @@ function BuffRow({
           <option value="hr">hr</option>
         </select>
       </label>
+      {hasFamiliar ? (
+        <label
+          className="buff-share-familiar"
+          title="Also apply this buff's changes to the familiar"
+        >
+          <input
+            type="checkbox"
+            checked={sharedWithFamiliar}
+            onChange={() => update((d) => toggleSharedBuff(d, buff.instanceId))}
+          />
+          <span>Familiar</span>
+        </label>
+      ) : null}
       <button
         type="button"
         className="btn-ghost"

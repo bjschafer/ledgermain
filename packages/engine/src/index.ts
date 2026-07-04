@@ -95,6 +95,24 @@ export {
   type FeatEntry,
 } from "./feat-effects.js";
 export { FAMILIARS, FAMILIAR_KINDS, type FamiliarDef } from "./familiars.js";
+export {
+  BASE_FAMILIARS,
+  BASE_FAMILIAR_IDS,
+  deriveFamiliar,
+  familiarIntScore,
+  familiarNaturalArmorAdj,
+  familiarSpecialAbilities,
+  FAMILIAR_SPECIAL_ABILITIES,
+  type BaseFamiliar,
+  type FamiliarNaturalAttack,
+  type FamiliarMasterInputs,
+  type FamiliarSpecialAbility,
+  type FlyManeuverability,
+  type DerivedFamiliar,
+  type DerivedFamiliarAc,
+  type DerivedFamiliarAttack,
+  type DerivedFamiliarSkill,
+} from "./familiar.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";
 export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
 export {
