@@ -992,6 +992,30 @@ button:focus-visible,
   opacity: 0.78;
 }
 
+/* A selected feat whose structured prereqs no longer hold (issue #9) — e.g. a
+   required feat was removed after this one was taken. Distinct from
+   `is-blocked` (never-taken feats only): kept, per the hybrid policy, but
+   flagged so it doesn't silently look like a fully-qualified pick. */
+.pick-row.is-unqualified {
+  border-left: 2px solid var(--oxblood);
+}
+
+.unqualified-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border: 1px solid var(--oxblood);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--oxblood);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
 /* inline choice picker (Skill Focus, future weapon feats, …) */
 .feat-choice {
   margin-top: 5px;

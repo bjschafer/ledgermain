@@ -93,3 +93,28 @@ export function evaluatePrereqs(feat: Feat, ctx: PrereqContext): PrereqResult {
 
   return { blocked, warn, checks, softText, bypassed };
 }
+
+/**
+ * Feats the character already has selected whose structured prerequisites are
+ * no longer met — typically because a prerequisite feat they used to qualify
+ * on was since removed (issue #9: "add the requirements, add the feat, then
+ * remove the requirements while retaining the feat and all of its effects").
+ *
+ * Per the hybrid policy this never auto-removes anything: `evaluatePrereqs`'s
+ * `blocked` only gates the "Add" button for feats not yet taken (`FeatsSection`
+ * computes `blocked && !isSel`), so an already-selected feat whose prereqs lapse
+ * keeps working with no separate signal today beyond the individual ✗ marks in
+ * its own check list. This surfaces that same live-recomputed `blocked` value
+ * as an explicit, testable list so the UI can flag those rows distinctly (and,
+ * later, so a summary count can be shown even when the feat list is filtered).
+ */
+export function unqualifiedSelectedFeats(
+  selectedFeatIds: readonly string[],
+  ctx: PrereqContext,
+): string[] {
+  return selectedFeatIds.filter((id) => {
+    const feat = ctx.refData.feats[id];
+    if (!feat) return false;
+    return evaluatePrereqs(feat, ctx).blocked;
+  });
+}

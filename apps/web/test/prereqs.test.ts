@@ -2,7 +2,11 @@ import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { evaluatePrereqs, type PrereqContext } from "../src/model/prereqs.js";
+import {
+  evaluatePrereqs,
+  unqualifiedSelectedFeats,
+  type PrereqContext,
+} from "../src/model/prereqs.js";
 
 const ref = loadRefData();
 
@@ -74,5 +78,47 @@ describe("feat prereq gating", () => {
     expect(res.warn).toBe(true);
     expect(res.checks).toHaveLength(0);
     expect(res.softText).toBeTruthy();
+  });
+});
+
+describe("unqualifiedSelectedFeats() — issue #9 (retained feat whose prereq was removed)", () => {
+  it("flags a selected feat once its required feat is no longer selected", () => {
+    const powerAttack = featByName("Power Attack");
+    const cleave = featByName("Cleave");
+    // Cleave was added while Power Attack was selected; Power Attack was then
+    // removed — Cleave stays in build.feats, but its structured prereq is
+    // unmet again.
+    const context = ctx({ selectedFeats: new Set() }); // Power Attack no longer selected
+    expect(unqualifiedSelectedFeats([cleave.id], context)).toEqual([cleave.id]);
+    // Power Attack itself (Str 13, met by the baseline ctx()) is still fine —
+    // only the dependent (Cleave) is flagged.
+    expect(unqualifiedSelectedFeats([powerAttack.id, cleave.id], context)).toEqual([cleave.id]);
+  });
+
+  it("does not flag a feat whose prereqs are still met", () => {
+    const powerAttack = featByName("Power Attack");
+    const cleave = featByName("Cleave");
+    const context = ctx({ selectedFeats: new Set([powerAttack.id]) });
+    expect(unqualifiedSelectedFeats([cleave.id], context)).toEqual([]);
+  });
+
+  it("does not flag a feat with only prose prereqs (never structurally blocked)", () => {
+    const mounted = featByName("Mounted Combat");
+    expect(unqualifiedSelectedFeats([mounted.id], ctx())).toEqual([]);
+  });
+
+  it("respects the ranger combat-style bypass — a waived feat is never flagged", () => {
+    // Cleave's prereqs (Power Attack, Str 13, BAB +1) are unmet, but bypassed
+    // via the combat-style slug set — same waiver evaluatePrereqs applies.
+    const cleave = featByName("Cleave");
+    const context = ctx({
+      selectedFeats: new Set(),
+      bypassBlockedSlugs: new Set(["cleave"]),
+    });
+    expect(unqualifiedSelectedFeats([cleave.id], context)).toEqual([]);
+  });
+
+  it("ignores an id with no matching feat in RefData", () => {
+    expect(unqualifiedSelectedFeats(["not-a-real-feat-id"], ctx())).toEqual([]);
   });
 });

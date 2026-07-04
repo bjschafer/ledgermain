@@ -15,7 +15,12 @@ import {
   grantedFeats,
   setFeatChoice,
 } from "../../model/feats.js";
-import { evaluatePrereqs, type PrereqContext, type PrereqResult } from "../../model/prereqs.js";
+import {
+  evaluatePrereqs,
+  unqualifiedSelectedFeats,
+  type PrereqContext,
+  type PrereqResult,
+} from "../../model/prereqs.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -84,6 +89,14 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
     return { feats: list, prereqMap: map };
   }, [refData.feats, query, category, hideIneligible, selected, grantedIds, ctx]);
 
+  // Already-taken feats whose structured prereqs no longer hold — typically a
+  // required feat was later removed (issue #9). Never auto-removed; flagged
+  // so the player notices instead of silently keeping the feat's effects.
+  const unqualified = useMemo(
+    () => new Set(unqualifiedSelectedFeats(doc.build.feats, ctx)),
+    [doc.build.feats, ctx],
+  );
+
   // Skill options for Skill Focus and any other "skill" choice feats. Computed
   // once per render cycle — the list is static (all skills, alphabetically).
   const skillOptions = useMemo(() => featChoiceOptions("skill", refData), [refData]);
@@ -108,12 +121,23 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
       step="vii"
       storageKey="panel:Feats"
       right={
-        <span
-          className={featCountClass}
-          title={chosen !== expected ? "Feat count doesn't match expected" : undefined}
-        >
-          {chosen} / {expected} feats
-        </span>
+        <>
+          <span
+            className={featCountClass}
+            title={chosen !== expected ? "Feat count doesn't match expected" : undefined}
+          >
+            {chosen} / {expected} feats
+          </span>
+          {unqualified.size > 0 && (
+            <span
+              className="hint warn-over"
+              title="These feats' prerequisites are no longer met (a required feat was likely removed) — they're kept per the hybrid prereq policy, but verify manually"
+            >
+              {" "}
+              · ⚠ {unqualified.size} no longer qualif{unqualified.size === 1 ? "ies" : "y"}
+            </span>
+          )}
+        </>
       }
     >
       <input
@@ -187,6 +211,10 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           const isSel = selected.has(feat.id);
           const res = prereqMap.get(feat.id)!;
           const blocked = res.blocked && !isSel;
+          // Already taken, but a structured prereq (usually a required feat)
+          // no longer holds — issue #9. Distinct from `blocked`, which only
+          // ever applies to not-yet-taken feats.
+          const isUnqualified = isSel && unqualified.has(feat.id);
           const inStyle = styleSlugs.has(featNameSlug(feat.name));
           // For selected feats: look up any player-choice descriptor and options.
           const choiceDesc = isSel ? featChoiceDescriptor(feat.name) : null;
@@ -199,11 +227,19 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           return (
             <div
               key={feat.id}
-              className={`pick-row${isSel ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
+              className={`pick-row${isSel ? " is-selected" : ""}${blocked ? " is-blocked" : ""}${isUnqualified ? " is-unqualified" : ""}`}
             >
               <div className="pmain">
                 <div className="pname">
                   {feat.name}
+                  {isUnqualified ? (
+                    <span
+                      className="unqualified-badge"
+                      title="A prerequisite (usually another feat) was removed — this feat is kept, but no longer qualifies. Verify manually or remove it."
+                    >
+                      ⚠ no longer qualifies
+                    </span>
+                  ) : null}
                   {inStyle ? (
                     <span
                       className="style-badge"
