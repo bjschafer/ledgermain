@@ -17,6 +17,7 @@ import type {
   RefData,
 } from "@pf1/schema";
 
+import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import {
   sneakAttackDice,
   smiteEvilDetail,
@@ -37,8 +38,21 @@ export interface GrantedFeature {
   classTag: string;
   level: number;
   grant: ClassFeatureGrant;
-  /** Set when this grant came from a chosen domain/school rather than the class itself. */
-  origin?: { kind: "domain" | "school"; label: string };
+  /** Set when this grant came from a chosen domain/school/bloodline rather than the class itself. */
+  origin?: { kind: "domain" | "school" | "bloodline"; label: string };
+  /**
+   * Pre-computed display detail for grants with no vendored `RefData.classFeatures`
+   * entry to look up (bloodline powers — see `bloodlines.ts`; hand-authored, not in
+   * the vendored pack). `undefined` for domain/school/base-class grants, which
+   * `resolveClassFeatures` derives `detail` for itself (or leaves undefined).
+   */
+  detail?: string;
+  /**
+   * Pre-computed uses/day pool for grants with no vendored `uses.maxFormula` to
+   * read (bloodline powers). `deriveResourcePools` uses this directly instead of
+   * looking up `refData.classFeatures[grant.featureId]` when set.
+   */
+  resourcePool?: BloodlineResourcePool;
 }
 
 /**
@@ -98,6 +112,34 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
+  // Sorcerer bloodline powers (issue #34) — hand-authored (see bloodlines.ts),
+  // gated on actual sorcerer levels the same way domain/school grants are
+  // gated on cleric/wizard levels above. A non-sorcerer with a stale
+  // `sorcererBloodline` field (or an unresolvable bloodline tag) gets nothing.
+  const sorcererLevel = doc.identity.classes.find((c) => c.tag === "sorcerer")?.level ?? 0;
+  if (sorcererLevel > 0 && doc.build.sorcererBloodline) {
+    const bloodline = BLOODLINES[doc.build.sorcererBloodline];
+    if (bloodline) {
+      for (const power of bloodline.powers) {
+        if (power.level > sorcererLevel) continue;
+        out.push({
+          classTag: "sorcerer",
+          level: power.level,
+          grant: {
+            level: power.level,
+            uuid: `bloodline:${bloodline.tag}:${power.id}`,
+            featureId: `bloodline:${bloodline.tag}:${power.id}`,
+            name: power.name,
+            resolved: true,
+          },
+          origin: { kind: "bloodline", label: `${bloodline.name} Bloodline` },
+          detail: power.resourcePool?.detail,
+          resourcePool: power.resourcePool,
+        });
+      }
+    }
+  }
+
   return out;
 }
 
@@ -149,7 +191,10 @@ export function resolveClassFeatures(
   }
 
   const classFeatures: DerivedClassFeature[] = [];
-  for (const { classTag, grant, origin } of collectGrantedFeatures(doc, refData)) {
+  for (const { classTag, grant, origin, detail: providedDetail } of collectGrantedFeatures(
+    doc,
+    refData,
+  )) {
     const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
     const replacedBy = replacedByUuid.get(grant.uuid);
     // Sneak Attack's die count, Smite Evil's attack/damage/AC scaling, and
@@ -157,17 +202,23 @@ export function resolveClassFeatures(
     // tag/changes (Foundry only tags channelEnergy/rage) — matched by
     // name, same posture as feat-effects.ts's name-slug lookup. Domain/school
     // grants never match these class+name pairs, so `detail` stays undefined.
-    let detail: string | undefined;
-    if (classTag === "rogue" && grant.name === "Sneak Attack") {
+    // Bloodline grants (issue #34) carry a pre-computed `providedDetail`
+    // instead (no vendored feature to derive it from) — takes priority.
+    let detail: string | undefined = providedDetail;
+    if (detail === undefined && classTag === "rogue" && grant.name === "Sneak Attack") {
       detail = sneakAttackDice(classLevel).diceLabel;
-    } else if (classTag === "paladin" && grant.name === "Smite Evil") {
+    } else if (detail === undefined && classTag === "paladin" && grant.name === "Smite Evil") {
       const chaMod = abilities?.cha?.mod ?? 0;
       detail = smiteEvilLabel(smiteEvilDetail(classLevel, chaMod));
-    } else if (classTag === "monk" && grant.name === "Unarmed Strike") {
+    } else if (detail === undefined && classTag === "monk" && grant.name === "Unarmed Strike") {
       detail = unarmedDamageDie(classLevel).dieLabel;
-    } else if (classTag === "monk" && grant.name === "Flurry of Blows") {
+    } else if (detail === undefined && classTag === "monk" && grant.name === "Flurry of Blows") {
       detail = flurryOfBlowsLabel(classLevel);
-    } else if (classTag === "barbarian" && grant.name === "Damage Reduction") {
+    } else if (
+      detail === undefined &&
+      classTag === "barbarian" &&
+      grant.name === "Damage Reduction"
+    ) {
       detail = barbarianDamageReduction(classLevel).label;
     }
     classFeatures.push({

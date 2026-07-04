@@ -6,10 +6,12 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute } from "../src/index.js";
 
 /**
- * Stage 1 (sorcerer bloodline spells) is a builder/tracker display concern —
- * `compute()` never reads `build.sorcererBloodline`. This pins that: a doc
- * with the field set produces byte-identical DerivedSheet output to the same
- * doc without it.
+ * Issue #34 (bloodline arcana + powers) gave `build.sorcererBloodline` real
+ * numeric weight: a KNOWN bloodline tag (one of the 10 CRB bloodlines
+ * hand-authored in `@pf1/engine` `bloodlines.ts`) now changes `compute()`'s
+ * output (e.g. Draconic's +1 HP/level arcana). An UNKNOWN tag, or the field
+ * set on a non-sorcerer, still changes nothing — same posture as an
+ * unresolvable cleric domain/wizard school tag.
  */
 const ref = loadRefData();
 
@@ -19,7 +21,10 @@ function raceId(name: string): string {
   return entry[0];
 }
 
-function makeDoc(sorcererBloodline?: string): CharacterDoc {
+function makeDoc(
+  classes: { tag: string; level: number }[],
+  sorcererBloodline?: string,
+): CharacterDoc {
   return {
     schemaVersion: 1,
     id: "test",
@@ -29,7 +34,7 @@ function makeDoc(sorcererBloodline?: string): CharacterDoc {
     identity: {
       name: "Test",
       race: raceId("Human"),
-      classes: [{ tag: "sorcerer", level: 7 }],
+      classes,
     },
     abilities: { str: 10, dex: 12, con: 12, int: 10, wis: 10, cha: 18 },
     build: {
@@ -49,16 +54,26 @@ function makeDoc(sorcererBloodline?: string): CharacterDoc {
   };
 }
 
-describe("compute() ignores build.sorcererBloodline", () => {
-  it("a sorcerer 7 with a bloodline chosen computes byte-identically to one without", () => {
-    const withBloodline = compute(makeDoc("Draconic"), ref);
-    const withoutBloodline = compute(makeDoc(undefined), ref);
-    expect(withBloodline).toEqual(withoutBloodline);
+describe("compute() + build.sorcererBloodline (issue #34)", () => {
+  it("a Draconic sorcerer 7 gets +7 HP (arcana) over the same doc with no bloodline", () => {
+    const withBloodline = compute(makeDoc([{ tag: "sorcerer", level: 7 }], "Draconic"), ref);
+    const withoutBloodline = compute(makeDoc([{ tag: "sorcerer", level: 7 }], undefined), ref);
+    expect(withBloodline.hp.max).toBe(withoutBloodline.hp.max + 7);
+    const bonus = withBloodline.hp.components.find((c) => c.source.includes("Draconic"));
+    expect(bonus).toBeDefined();
+    expect(bonus!.value).toBe(7);
+    expect(bonus!.applied).toBe(true);
   });
 
-  it("an unknown bloodline tag also computes byte-identically (engine ignores the field entirely)", () => {
-    const withUnknown = compute(makeDoc("NotARealBloodline"), ref);
-    const withoutBloodline = compute(makeDoc(undefined), ref);
+  it("an unknown bloodline tag computes byte-identically to no bloodline (engine ignores it)", () => {
+    const withUnknown = compute(makeDoc([{ tag: "sorcerer", level: 7 }], "NotARealBloodline"), ref);
+    const withoutBloodline = compute(makeDoc([{ tag: "sorcerer", level: 7 }], undefined), ref);
     expect(withUnknown).toEqual(withoutBloodline);
+  });
+
+  it("a non-sorcerer with a stale Draconic bloodline field gets nothing", () => {
+    const withBloodline = compute(makeDoc([{ tag: "fighter", level: 7 }], "Draconic"), ref);
+    const withoutBloodline = compute(makeDoc([{ tag: "fighter", level: 7 }], undefined), ref);
+    expect(withBloodline).toEqual(withoutBloodline);
   });
 });

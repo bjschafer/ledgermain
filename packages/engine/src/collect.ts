@@ -9,6 +9,7 @@
 
 import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 
+import { BLOODLINES } from "./bloodlines.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
 import { FEAT_EFFECTS, featNameSlug } from "./feat-effects.js";
@@ -177,6 +178,51 @@ export function collectModifiers(
     if (!trait) continue;
     for (const ch of trait.changes) {
       evalChange(ch.formula, rollData, ch.target, ch.type, trait.name, trait.id, out, ch.operator);
+    }
+  }
+
+  // --- sorcerer bloodline arcana + powers (build choice, issue #34) ----------
+  // Bloodline arcana/powers are hand-authored clean-room content (not in the
+  // vendored Foundry data pack — see `@pf1/engine` `bloodlines.ts`), same
+  // posture as `traits.ts` above. Gated on the character actually having
+  // sorcerer levels (a non-sorcerer with a stale `sorcererBloodline` field
+  // gets nothing) and, per power, on the sorcerer level reaching that power's
+  // gate. `rollData.classes.sorcerer.level` (built by `buildRollData`) already
+  // carries the right value for the `@classes.sorcerer.level` formulas these
+  // entries use, so no per-grant RollData override is needed (unlike the
+  // domain/school `@class.unlevel` convention above, which is granting-class
+  // contextual).
+  const sorcererLevel = doc.identity.classes.find((c) => c.tag === "sorcerer")?.level ?? 0;
+  if (sorcererLevel > 0 && doc.build.sorcererBloodline) {
+    const bloodline = BLOODLINES[doc.build.sorcererBloodline];
+    if (bloodline) {
+      for (const ch of bloodline.arcana.changes) {
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          `${bloodline.name} Bloodline (Arcana)`,
+          `bloodline:${bloodline.tag}:arcana`,
+          out,
+          ch.operator,
+        );
+      }
+      for (const power of bloodline.powers) {
+        if (power.level > sorcererLevel) continue;
+        for (const ch of power.changes ?? []) {
+          evalChange(
+            ch.formula,
+            rollData,
+            ch.target,
+            ch.type,
+            `${power.name} (${bloodline.name} Bloodline)`,
+            `bloodline:${bloodline.tag}:${power.id}`,
+            out,
+            ch.operator,
+          );
+        }
+      }
     }
   }
 

@@ -134,7 +134,34 @@ export function setSorcererBloodline(doc: CharacterDoc, tag: string | null): Cha
   const trimmed = typeof tag === "string" ? tag.trim() : "";
   return {
     ...doc,
-    build: { ...doc.build, sorcererBloodline: trimmed.length > 0 ? trimmed : undefined },
+    build: {
+      ...doc.build,
+      sorcererBloodline: trimmed.length > 0 ? trimmed : undefined,
+      // A variant (dragon type / element) only makes sense for the
+      // bloodline it was picked under — clear it on any bloodline change,
+      // same posture as setWizardSchool clearing opposition schools.
+      sorcererBloodlineVariant: undefined,
+    },
+  };
+}
+
+/**
+ * Set the energy-type/subtype variant (e.g. Draconic dragon type, Elemental
+ * element) for bloodlines that need one (issue #34; see
+ * `@pf1/engine` `BLOODLINES[tag].variantOptions`). Pass `null` (or a blank
+ * string) to clear. Free-choice, no validation that the id exists in the
+ * bloodline's `variantOptions` — soft-warning posture, matching
+ * `setSorcererBloodline`. Display-only: the engine derives no numeric Change
+ * from this field (see `bloodlines.ts`'s doc comment).
+ */
+export function setSorcererBloodlineVariant(doc: CharacterDoc, variant: string | null): CharacterDoc {
+  const trimmed = typeof variant === "string" ? variant.trim() : "";
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      sorcererBloodlineVariant: trimmed.length > 0 ? trimmed : undefined,
+    },
   };
 }
 
