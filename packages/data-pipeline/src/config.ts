@@ -28,9 +28,11 @@ export const SYSTEM_VERSION = "11.11";
  * for sorcerer bloodlines. v6 adds `domains`/`domains.json` and
  * `wizardSchools`/`wizard-schools.json` — resolved granted-power lists for
  * cleric domains and wizard arcane schools (top-level only, see `Domain`/
- * `WizardSchool` doc comments in `@pf1/schema`).
+ * `WizardSchool` doc comments in `@pf1/schema`). v7 adds `ArmorRef.asf`
+ * (armors.json) — arcane spell failure chance, from Foundry's
+ * `system.spellFailure` (issue #8).
  */
-export const SCHEMA_VERSION = 6;
+export const SCHEMA_VERSION = 7;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none — see

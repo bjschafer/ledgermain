@@ -410,6 +410,110 @@ describe("updateGearItem()", () => {
     expect(updated.build.gear[0]!.armor!.masterwork).toBeUndefined();
     expect(updated.build.gear[0]!.armor!.enhancement).toBe(2);
   });
+
+  // -------------------------------------------------------------------------
+  // arcane spell failure (ASF) snapshot + mithral -10% (issue #8)
+  // -------------------------------------------------------------------------
+  const FULL_PLATE_ASF: ArmorRef = { ...FULL_PLATE, asf: 35 };
+
+  it("snapshots ASF from the ref", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE_ASF);
+    expect(d.build.gear[0]!.armor!.asf).toBe(35);
+  });
+
+  it("mithral reduces ASF by 10%", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE_ASF, 0, "mithral");
+    expect(d.build.gear[0]!.armor!.asf).toBe(25);
+  });
+
+  it("adamantine does not affect ASF (display-only material)", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE_ASF, 0, "adamantine");
+    expect(d.build.gear[0]!.armor!.asf).toBe(35);
+  });
+
+  it("mithral never reduces ASF below 0 (0 is omitted, same convention as ACP/weight)", () => {
+    const lowAsf: ArmorRef = { ...FULL_PLATE, id: "y", asf: 5 };
+    const d = addWornArmorFromRef(doc(), lowAsf, 0, "mithral");
+    expect(d.build.gear[0]!.armor!.asf).toBeUndefined();
+  });
+
+  it("omits ASF entirely when the ref carries none", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE); // no asf field
+    expect(d.build.gear[0]!.armor!.asf).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// armor special-ability +10 cap (issue #8) — mirrors the weapon invariant
+// ---------------------------------------------------------------------------
+describe("armor special abilities are capped at +10 combined bonus-equivalent (issue #8)", () => {
+  it("keeps abilities whose combined cost + enhancement is within budget", () => {
+    // light-fortification(+1) + medium-fortification(+3) + heavy-fortification(+5) = 9,
+    // plus enhancement 1 = 10 exactly at the cap.
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 1, undefined, [
+      "light-fortification",
+      "medium-fortification",
+      "heavy-fortification",
+    ]);
+    expect(d.build.gear[0]!.armor!.abilities).toEqual([
+      "light-fortification",
+      "medium-fortification",
+      "heavy-fortification",
+    ]);
+  });
+
+  it("truncates abilities beyond the +10 cap, keeping earliest-selected first", () => {
+    // Same three (cost 9) plus armor-ghost-touch (+3) would total 12 against
+    // a budget of 9 (enhancement 1) — the last one is dropped.
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 1, undefined, [
+      "light-fortification",
+      "medium-fortification",
+      "heavy-fortification",
+      "armor-ghost-touch",
+    ]);
+    expect(d.build.gear[0]!.armor!.abilities).toEqual([
+      "light-fortification",
+      "medium-fortification",
+      "heavy-fortification",
+    ]);
+  });
+
+  it("drops all abilities when enhancement is 0 (a mundane suit can't carry a special ability)", () => {
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 0, undefined, ["light-fortification"]);
+    expect(d.build.gear[0]!.armor!.abilities).toBeUndefined();
+  });
+
+  it("addWornArmor() (hand-entered) enforces the same cap", () => {
+    const overCap: WornArmor = {
+      slot: "armor",
+      ac: 9,
+      enhancement: 1,
+      abilities: ["light-fortification", "medium-fortification", "heavy-fortification", "bashing"],
+    };
+    const d = addWornArmor(doc(), overCap, "Custom Full Plate");
+    // budget = 10 - 1 = 9; light(1) + medium(3) + heavy(5) = 9 exactly, bashing(1) dropped.
+    expect(d.build.gear[0]!.armor!.abilities).toEqual([
+      "light-fortification",
+      "medium-fortification",
+      "heavy-fortification",
+    ]);
+  });
+
+  it("updateGearItem() re-enforces the cap when enhancement is lowered", () => {
+    // enhancement 1, budget 9: light(1) + medium(3) + heavy(5) = 9, exact fit.
+    const d = addWornArmorFromRef(doc(), FULL_PLATE, 1, undefined, [
+      "light-fortification",
+      "medium-fortification",
+      "heavy-fortification",
+    ]);
+    expect(d.build.gear[0]!.armor!.abilities).toHaveLength(3);
+    // Lower enhancement to 0: abilities require enhancement >= 1, so all are dropped
+    // (re-evaluated against the new enhancement, not trusted as already valid).
+    const loweredToZero = updateGearItem(d, 0, {
+      armor: { ...d.build.gear[0]!.armor!, enhancement: 0 },
+    });
+    expect(loweredToZero.build.gear[0]!.armor!.abilities).toBeUndefined();
+  });
 });
 
 // ---------------------------------------------------------------------------

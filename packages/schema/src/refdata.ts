@@ -318,6 +318,13 @@ export interface ArmorRef extends RefEntity {
   price?: number;
   /** Total weight in pounds. */
   weight?: number;
+  /**
+   * Arcane spell failure chance, as a percentage magnitude (e.g. 35 for Full
+   * Plate, 5 for a Buckler) — Foundry's `system.spellFailure` field. Shields
+   * carry this too (a shield's ASF stacks with worn body armor's). Omitted
+   * means 0% (issue #8).
+   */
+  asf?: number;
 }
 
 /* ---------------------------------------------------------------- weapons -- */

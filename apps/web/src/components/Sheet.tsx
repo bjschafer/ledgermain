@@ -134,6 +134,20 @@ export function Sheet({
           <StatSeal label="Touch" value={sheet.ac.touch} />
           <StatSeal label="Flat-Footed" value={sheet.ac.flatFooted} />
           <StatSeal label="CMD" value={sheet.cmd} />
+          {/* Arcane spell failure (issue #8) — display-only, shown only for
+              arcane casters (wizard/sorcerer/bard). */}
+          {sheet.arcaneSpellFailure ? (
+            <StatSeal
+              label="Arcane Spell Failure"
+              value={`${sheet.arcaneSpellFailure.total}%`}
+              foot={
+                sheet.arcaneSpellFailure.bardExempt
+                  ? "Bard: exempt in light armor, no shield"
+                  : undefined
+              }
+              className="seal--compact"
+            />
+          ) : null}
         </div>
       </div>
 

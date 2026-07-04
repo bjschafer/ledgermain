@@ -788,6 +788,13 @@ export interface WornArmor {
    * entered armor the player didn't bother to weigh).
    */
   weight?: number;
+  /**
+   * Arcane spell failure chance (%), snapshotted from `ArmorRef.asf` at
+   * pick-time, reduced by mithral's -10% (issue #8; see `model/materials.ts`).
+   * Display-only — feeds `DerivedSheet.arcaneSpellFailure`, shown only when
+   * the character has an arcane-casting class. Omitted = 0%.
+   */
+  asf?: number;
 }
 
 /**
@@ -914,6 +921,22 @@ export interface DerivedSheet {
    * that predate the feature and for every table that doesn't use the rule.
    */
   encumbrance?: DerivedEncumbrance;
+  /**
+   * Total arcane spell failure chance (%) from equipped armor/shields (issue
+   * #8), shown only when the character has an arcane-casting class (wizard,
+   * sorcerer, or bard in the current vendored class slice — divine casters
+   * never incur ASF and this stays undefined for them). No component
+   * breakdown, same posture as `speeds` (see `DerivedEncumbrance` doc
+   * comment) — display-only, no cast-failure mechanics.
+   *
+   * `bardExempt` is true when the character's ONLY arcane class is bard and
+   * they're wearing light armor (or none) with no shield — PF1 RAW exempts
+   * bards from ASF under those conditions; `total` reads 0 in that case. A
+   * bard who also has another arcane class (e.g. multiclass wizard/bard), or
+   * who's in medium/heavy armor or carrying a shield, does not get the
+   * exemption and `total` is the plain sum.
+   */
+  arcaneSpellFailure?: { total: number; bardExempt: boolean };
 }
 
 /** Light/medium/heavy carrying-capacity tier (PF1 CRB "Carrying Capacity"). */
