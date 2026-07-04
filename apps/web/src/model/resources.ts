@@ -20,10 +20,7 @@ function withPools(doc: CharacterDoc, resources: Pools): CharacterDoc {
 }
 
 /** Ensure each derived pool exists with the current max, preserving `used`. */
-export function syncDerivedPools(
-  doc: CharacterDoc,
-  derived: DerivedResourcePool[],
-): CharacterDoc {
+export function syncDerivedPools(doc: CharacterDoc, derived: DerivedResourcePool[]): CharacterDoc {
   let changed = false;
   const resources: Pools = { ...doc.live.resources };
   for (const pool of derived) {

@@ -6,19 +6,19 @@ import type { DerivedSheet, RefData } from "@pf1/schema";
  * archetype feature instead of a spell).
  */
 export function FeatureDescription({ html }: { html: string }) {
-	return (
-		<details className="spell-detail">
-			<summary className="spell-detail-summary">description</summary>
-			<div
-				className="spell-detail-desc"
-				// Archetype feature descriptions come from the vendored third-party
-				// dataset (open game content) and contain only formatting tags
-				// (<p>, <i>, <strong>) — no user input.
-				// eslint-disable-next-line react/no-danger
-				dangerouslySetInnerHTML={{ __html: html }}
-			/>
-		</details>
-	);
+  return (
+    <details className="spell-detail">
+      <summary className="spell-detail-summary">description</summary>
+      <div
+        className="spell-detail-desc"
+        // Archetype feature descriptions come from the vendored third-party
+        // dataset (open game content) and contain only formatting tags
+        // (<p>, <i>, <strong>) — no user input.
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </details>
+  );
 }
 
 /**
@@ -35,77 +35,71 @@ export function FeatureDescription({ html }: { html: string }) {
  * arcane school (rather than the class itself) carry an `origin` label
  * (e.g. "— Fire Domain") — see `collectGrantedFeatures` in `@pf1/engine`.
  */
-export function ClassFeaturesList({
-	sheet,
-	refData,
-}: {
-	sheet: DerivedSheet;
-	refData: RefData;
-}) {
-	if (sheet.classFeatures.length === 0) return null;
+export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; refData: RefData }) {
+  if (sheet.classFeatures.length === 0) return null;
 
-	const byLevel = new Map<number, typeof sheet.classFeatures>();
-	for (const f of sheet.classFeatures) {
-		const list = byLevel.get(f.level) ?? [];
-		list.push(f);
-		byLevel.set(f.level, list);
-	}
-	const levels = [...byLevel.keys()].sort((a, b) => a - b);
+  const byLevel = new Map<number, typeof sheet.classFeatures>();
+  for (const f of sheet.classFeatures) {
+    const list = byLevel.get(f.level) ?? [];
+    list.push(f);
+    byLevel.set(f.level, list);
+  }
+  const levels = [...byLevel.keys()].sort((a, b) => a - b);
 
-	return (
-		<div className="subsection class-features">
-			<h4 className="tracker-sub">Class Features</h4>
-			<div className="cf-levels">
-				{levels.map((level) => (
-					<div className="cf-level-row" key={level}>
-						<span className="cf-level">Lv {level}</span>
-						<div className="cf-archetype-features">
-							{byLevel.get(level)!.map((f, i) => {
-								const description = refData.classFeatures[f.featureId]?.description;
-								return (
-									<div className="cf-archetype-feature" key={`${f.featureId}-${i}`}>
-										<span
-											className={`cf-name${f.applied ? "" : " struck"}`}
-											title={f.replacedBy ? `Replaced by ${f.replacedBy}` : undefined}
-										>
-											{f.name}
-											{f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
-											{f.origin ? <span className="cf-origin"> — {f.origin.label}</span> : null}
-											{f.replacedBy ? <span className="cf-replaced"> → {f.replacedBy}</span> : null}
-										</span>
-										{description ? <FeatureDescription html={description} /> : null}
-									</div>
-								);
-							})}
-						</div>
-					</div>
-				))}
-			</div>
+  return (
+    <div className="subsection class-features">
+      <h4 className="tracker-sub">Class Features</h4>
+      <div className="cf-levels">
+        {levels.map((level) => (
+          <div className="cf-level-row" key={level}>
+            <span className="cf-level">Lv {level}</span>
+            <div className="cf-archetype-features">
+              {byLevel.get(level)!.map((f, i) => {
+                const description = refData.classFeatures[f.featureId]?.description;
+                return (
+                  <div className="cf-archetype-feature" key={`${f.featureId}-${i}`}>
+                    <span
+                      className={`cf-name${f.applied ? "" : " struck"}`}
+                      title={f.replacedBy ? `Replaced by ${f.replacedBy}` : undefined}
+                    >
+                      {f.name}
+                      {f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
+                      {f.origin ? <span className="cf-origin"> — {f.origin.label}</span> : null}
+                      {f.replacedBy ? <span className="cf-replaced"> → {f.replacedBy}</span> : null}
+                    </span>
+                    {description ? <FeatureDescription html={description} /> : null}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
 
-			{sheet.activeArchetypes.map((a) => (
-				<div className="cf-archetype" key={a.id}>
-					<span className="hint">{a.name}</span>
-					<div className="cf-archetype-features">
-						{a.features.map((f, i) => (
-							<div className="cf-archetype-feature" key={`${a.id}-${i}`}>
-								<span className="cf-name">
-									Lv {f.level} · {f.name}
-									{f.ambiguous ? (
-										<span
-											className="soft"
-											title="No unambiguous base-feature match — verify manually"
-										>
-											{" "}
-											⚠ may replace an existing ability
-										</span>
-									) : null}
-								</span>
-								{f.description ? <FeatureDescription html={f.description} /> : null}
-							</div>
-						))}
-					</div>
-				</div>
-			))}
-		</div>
-	);
+      {sheet.activeArchetypes.map((a) => (
+        <div className="cf-archetype" key={a.id}>
+          <span className="hint">{a.name}</span>
+          <div className="cf-archetype-features">
+            {a.features.map((f, i) => (
+              <div className="cf-archetype-feature" key={`${a.id}-${i}`}>
+                <span className="cf-name">
+                  Lv {f.level} · {f.name}
+                  {f.ambiguous ? (
+                    <span
+                      className="soft"
+                      title="No unambiguous base-feature match — verify manually"
+                    >
+                      {" "}
+                      ⚠ may replace an existing ability
+                    </span>
+                  ) : null}
+                </span>
+                {f.description ? <FeatureDescription html={f.description} /> : null}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }

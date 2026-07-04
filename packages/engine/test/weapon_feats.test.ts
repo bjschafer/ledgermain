@@ -186,7 +186,9 @@ describe("Weapon Specialization (longsword)", () => {
     });
     const baseSheet = compute(base, ref);
     const featSheet = compute(withFeat, ref);
-    expect(featSheet.attacks[0]!.damageBonus.total - baseSheet.attacks[0]!.damageBonus.total).toBe(2);
+    expect(featSheet.attacks[0]!.damageBonus.total - baseSheet.attacks[0]!.damageBonus.total).toBe(
+      2,
+    );
   });
 
   it("does NOT add +2 damage to a weapon of a different group", () => {
@@ -199,7 +201,9 @@ describe("Weapon Specialization (longsword)", () => {
     const baseSheet = compute(base, ref);
     const featSheet = compute(withFeat, ref);
     // Longsword gets +2 damage; dagger is unchanged.
-    expect(featSheet.attacks[0]!.damageBonus.total - baseSheet.attacks[0]!.damageBonus.total).toBe(2);
+    expect(featSheet.attacks[0]!.damageBonus.total - baseSheet.attacks[0]!.damageBonus.total).toBe(
+      2,
+    );
     expect(featSheet.attacks[1]!.damageBonus.total).toBe(baseSheet.attacks[1]!.damageBonus.total);
   });
 
@@ -243,7 +247,9 @@ describe("Weapon Focus + Weapon Specialization together", () => {
     const baseSheet = compute(base, ref);
     const featSheet = compute(withBoth, ref);
     expect(featSheet.attacks[0]!.attack.total - baseSheet.attacks[0]!.attack.total).toBe(1);
-    expect(featSheet.attacks[0]!.damageBonus.total - baseSheet.attacks[0]!.damageBonus.total).toBe(2);
+    expect(featSheet.attacks[0]!.damageBonus.total - baseSheet.attacks[0]!.damageBonus.total).toBe(
+      2,
+    );
   });
 });
 

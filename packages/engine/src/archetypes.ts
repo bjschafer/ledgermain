@@ -118,8 +118,7 @@ export function resolveClassFeatures(
   for (const archetypeId of doc.build.archetypes ?? []) {
     const archetype = refData.archetypes[archetypeId];
     if (!archetype) continue;
-    const clsLevel =
-      doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
+    const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
 
     const swappedSlots: Record<number, string> = {};
     const features: DerivedArchetypeFeature[] = [];

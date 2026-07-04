@@ -113,13 +113,14 @@ describe("favored enemy/terrain saved-roll folding", () => {
     doc = setFavoredEnemyBonus(doc, 0, 4);
     doc = addSavedRoll(doc, { kind: "weapon", weaponName: "Longbow" }, "Longbow vs Undead");
     const rollId = doc.build.savedRolls![0]!.id;
-    doc = addSavedRollRanger(doc, rollId, { kind: "favored-enemy", type: "undead", name: "Undead" });
+    doc = addSavedRollRanger(doc, rollId, {
+      kind: "favored-enemy",
+      type: "undead",
+      name: "Undead",
+    });
 
     const sheet = compute(doc, ref);
-    const baseline = resolveSavedRoll(
-      { ...doc.build.savedRolls![0]!, rangerBonuses: [] },
-      sheet,
-    );
+    const baseline = resolveSavedRoll({ ...doc.build.savedRolls![0]!, rangerBonuses: [] }, sheet);
     const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
 
     const baseAtk = Number(baseline.display.split("/")[0]);
@@ -137,7 +138,11 @@ describe("favored enemy/terrain saved-roll folding", () => {
     doc = setFavoredEnemyBonus(doc, 0, 4);
     doc = addSavedRoll(doc, { kind: "weapon", weaponName: "Longbow" }, "Longbow vs Undead");
     const rollId = doc.build.savedRolls![0]!.id;
-    doc = addSavedRollRanger(doc, rollId, { kind: "favored-enemy", type: "undead", name: "Undead" });
+    doc = addSavedRollRanger(doc, rollId, {
+      kind: "favored-enemy",
+      type: "undead",
+      name: "Undead",
+    });
     doc = removeFavoredEnemy(doc, 0); // player drops the favored enemy
 
     const sheet = compute(doc, ref);
@@ -152,7 +157,11 @@ describe("favored enemy/terrain saved-roll folding", () => {
     doc = setFavoredTerrainBonus(doc, 0, 2);
     doc = addSavedRoll(doc, { kind: "initiative" }, "Init in Forest");
     const rollId = doc.build.savedRolls![0]!.id;
-    doc = addSavedRollRanger(doc, rollId, { kind: "favored-terrain", type: "forest", name: "Forest" });
+    doc = addSavedRollRanger(doc, rollId, {
+      kind: "favored-terrain",
+      type: "forest",
+      name: "Forest",
+    });
 
     const sheet = compute(doc, ref);
     const base = resolveSavedRoll({ ...doc.build.savedRolls![0]!, rangerBonuses: [] }, sheet);

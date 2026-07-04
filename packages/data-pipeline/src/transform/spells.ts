@@ -23,9 +23,7 @@ function numberMap(value: unknown): Record<string, number> {
 
 function transformActions(value: unknown): SpellAction[] {
   if (!value || typeof value !== "object") return [];
-  const entries = Array.isArray(value)
-    ? value
-    : Object.values(value as Record<string, unknown>);
+  const entries = Array.isArray(value) ? value : Object.values(value as Record<string, unknown>);
   const out: SpellAction[] = [];
   for (const raw of entries) {
     if (!raw || typeof raw !== "object") continue;
@@ -48,8 +46,7 @@ function transformActions(value: unknown): SpellAction[] {
       save: save
         ? {
             type: typeof save.type === "string" ? save.type : undefined,
-            description:
-              typeof save.description === "string" ? save.description : undefined,
+            description: typeof save.description === "string" ? save.description : undefined,
           }
         : undefined,
       range: range

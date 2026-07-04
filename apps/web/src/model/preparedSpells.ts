@@ -62,11 +62,7 @@ export function preparedSpells(doc: CharacterDoc): PreparedSpell[] {
  * single-caster document's prepared entries are shaped exactly as before
  * multiclass support.
  */
-export function prepareSpell(
-  doc: CharacterDoc,
-  spellId: string,
-  classTag?: string,
-): CharacterDoc {
+export function prepareSpell(doc: CharacterDoc, spellId: string, classTag?: string): CharacterDoc {
   // `kind: "normal"` is the default per schema; omit so older docs/tests that
   // assert the bare shape continue to pass. Domain entries explicitly set it.
   return withPrepared(doc, [
@@ -138,22 +134,24 @@ export function unprepareSpell(
     idx = list.findIndex((p) => p.spellId === spellId && matchesKind(p) && matchesClass(p));
   }
   if (idx < 0) return doc;
-  return withPrepared(doc, list.filter((_, i) => i !== idx));
+  return withPrepared(
+    doc,
+    list.filter((_, i) => i !== idx),
+  );
 }
 
 /** Remove the prepared instance at `index`. */
 export function removePreparedAt(doc: CharacterDoc, index: number): CharacterDoc {
   const list = preparedSpells(doc);
   if (index < 0 || index >= list.length) return doc;
-  return withPrepared(doc, list.filter((_, i) => i !== index));
+  return withPrepared(
+    doc,
+    list.filter((_, i) => i !== index),
+  );
 }
 
 /** Set the `expended` flag of the prepared instance at `index` (cast / undo). */
-export function setExpendedAt(
-  doc: CharacterDoc,
-  index: number,
-  expended: boolean,
-): CharacterDoc {
+export function setExpendedAt(doc: CharacterDoc, index: number, expended: boolean): CharacterDoc {
   const list = preparedSpells(doc);
   if (index < 0 || index >= list.length || list[index]!.expended === expended) return doc;
   return withPrepared(
@@ -325,10 +323,7 @@ export function classSpellsByLevel(
  * {@link migrateDoc} at load time (this needs RefData, which the pure doc
  * migration does not).
  */
-export function reconcileGrantedCantrips(
-  doc: CharacterDoc,
-  refData: RefData,
-): CharacterDoc {
+export function reconcileGrantedCantrips(doc: CharacterDoc, refData: RefData): CharacterDoc {
   let next = doc;
   for (const { tag } of casterClassesOf(doc, refData)) {
     next = reconcileGrantedCantripsForClass(next, refData, tag);

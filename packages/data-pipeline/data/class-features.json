@@ -230,9 +230,7 @@
       }
     ],
     "description": "<p>At 1st level, the monk gains Stunning Fist as a bonus feat, even if he does not meet the prerequisites.</p><p>At 4th level, and every 4 levels thereafter, the monk gains the ability to apply a new condition to the target of his Stunning Fist. This condition replaces stunning the target for 1 round, and a successful saving throw still negates the effect.</p><h4>Condition Options</h4><ul><li><p>At 4th level, he can choose to make the target fatigued.</p></li><li><p>At 8th level, he can make the target sickened for 1 minute.</p></li><li><p>At 12th level, he can make the target staggered for 1d6+1 rounds.</p></li><li><p>At 16th level, he can permanently blind or deafen the target.</p></li><li><p>At 20th level, he can paralyze the target for 1d6+1 rounds.</p></li></ul><p>The monk must choose which condition will apply before the attack roll is made. These effects do not stack with themselves (a creature sickened by <em>Stunning Fist</em> cannot become nauseated if hit by <em>Stunning Fist</em> again), but additional hits do increase the duration.</p>",
-    "grantsBuffs": [
-      "Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN"
-    ],
+    "grantsBuffs": ["Compendium.pf1.feats.Item.GsjouI6B8X7BA5wN"],
     "id": "2ausI8g6SsmbOpgF",
     "name": "Stunning Fist",
     "sources": [
@@ -319,9 +317,7 @@
   "4wdsdOkgv4uEkS9K": {
     "changes": [],
     "description": "<p>The wizard must study his spellbook each day to prepare his spells. He cannot prepare any spell not recorded in his spellbook, except for read magic, which all wizards can prepare from memory.</p><p>A wizard begins play with a spellbook containing all 0-level wizard spells (except those from his prohibited schools, if any; see Arcane Schools) plus three 1st-level spells of his choice. The wizard also selects a number of additional 1st-level spells equal to his Intelligence modifier to add to the spellbook. At each new wizard level, he gains two new spells of any spell level or levels that he can cast (based on his new wizard level) for his spellbook. At any time, a wizard can also add spells found in other wizards' spellbooks to his own (see Magic).</p>",
-    "grantsBuffs": [
-      "Compendium.pf1.items.Item.onurpjwtdogsedsg"
-    ],
+    "grantsBuffs": ["Compendium.pf1.items.Item.onurpjwtdogsedsg"],
     "id": "4wdsdOkgv4uEkS9K",
     "name": "Spellbooks (WIZ)",
     "sources": [
@@ -886,9 +882,7 @@
       }
     ],
     "description": "<p>The character gains Scribe Scroll as a bonus feat.</p>",
-    "grantsBuffs": [
-      "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"
-    ],
+    "grantsBuffs": ["Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"],
     "id": "BS9WDbCy2Up3QHw9",
     "name": "Scribe Scroll",
     "sources": [
@@ -1061,9 +1055,7 @@
       }
     ],
     "description": "<p>A ranger gains Endurance as a bonus feat at 3rd level.</p>",
-    "grantsBuffs": [
-      "Compendium.pf1.feats.Item.ehqx8txNRGMaNOPt"
-    ],
+    "grantsBuffs": ["Compendium.pf1.feats.Item.ehqx8txNRGMaNOPt"],
     "id": "E0skJEqlJOvB5CoA",
     "name": "Endurance",
     "sources": [
@@ -2486,9 +2478,7 @@
     "abilityType": "ex",
     "changes": [],
     "description": "<p>A barbarian can call upon inner reserves of strength and ferocity, granting her additional combat prowess. Starting at 1st level, a barbarian can rage for a number of rounds per day equal to 4 + her <em>Constitution</em> modifier. At each level after 1st, she can rage for 2 additional rounds. Temporary increases to <em>Constitution</em>, such as those gained from rage and spells like <em>bear’s endurance</em>, do not increase the total number of rounds that a barbarian can rage per day. A barbarian can enter rage as a free action. The total number of rounds of rage per day is renewed after resting for 8 hours, although these hours do not need to be consecutive.</p>\n<p>While in rage, a barbarian gains a +4 morale bonus to her <em>Strength</em> and <em>Constitution</em>, as well as a +2 morale bonus on <em>Will</em> saves. In addition, she takes a –2 penalty to <em>Armor Class</em>. The increase to <em>Constitution</em> grants the barbarian 2 hit points per Hit Dice, but these disappear when the rage ends and are not lost first like <em>temporary hit points</em>. While in rage, a barbarian cannot use any <em>Charisma</em>-, <em>Dexterity</em>-, or <em>Intelligence</em>-based skills (except <em>Acrobatics</em>, <em>Fly</em>, <em>Intimidate</em>, and <em>Ride</em>) or any ability that requires patience or concentration.</p>\n<p>A barbarian can end her rage as a free action and is <em>fatigued</em> after rage for a number of rounds equal to 2 times the number of rounds spent in the rage. A barbarian cannot enter a new rage while <em>fatigued</em> or <em>exhausted</em> but can otherwise enter rage multiple times during a single encounter or combat. If a barbarian falls <em>unconscious</em>, her rage immediately ends, placing her in peril of death.</p>",
-    "grantsBuffs": [
-      "Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL"
-    ],
+    "grantsBuffs": ["Compendium.pf1.buffs.Item.UgjpRD8vtiSWRxuL"],
     "id": "WSqWT9ZIshtC5vlV",
     "name": "Rage",
     "sources": [
@@ -2788,9 +2778,7 @@
       }
     ],
     "description": "<p>At 1st level, a monk gains Improved Unarmed Strike as a bonus feat. A monk’s attacks may be with fist, elbows, knees, and feet. This means that a monk may make unarmed strikes with his hands full. There is no such thing as an off-hand attack for a monk striking unarmed. A monk may thus apply his full <em>Strength</em> bonus on damage rolls for all his unarmed strikes.</p><p>Usually a monk’s unarmed strikes deal lethal damage, but he can choose to deal <em>nonlethal damage</em> instead with no penalty on his <em>attack roll</em>. He has the same choice to deal lethal or <em>nonlethal damage</em> while <em>grappling</em>.</p><p>A monk’s unarmed strike is treated as both a manufactured weapon and a natural weapon for the purpose of spells and effects that enhance or improve either manufactured weapons or <em>natural weapons</em>.</p><p>A monk also deals more damage with his unarmed strikes than a normal person would, as shown above on Table: Monk. The unarmed damage values listed on <em>Table: Monk</em> are for Medium monks. A Small monk deals less damage than the amount given there with his unarmed attacks, while a Large monk deals more damage; see Table: Small or Large Monk Unarmed Damage.</p><hr /><table><caption><strong>Table: Monk Unarmed Damage</strong></caption><thead><tr><th>Level</th><th>Small</th><th>Medium</th><th>Large</th></tr></thead><tbody><tr><td>1st–3rd</td><td>1d4</td><td>1d6</td><td>1d8</td></tr><tr><td>4th–7th</td><td>1d6</td><td>1d8</td><td>2d6</td></tr><tr><td>8th–11th</td><td>1d8</td><td>1d10</td><td>2d8</td></tr><tr><td>12th–15th</td><td>1d10</td><td>2d6</td><td>3d6</td></tr><tr><td>16th–19th</td><td>2d6</td><td>2d8</td><td>3d8</td></tr><tr><td>20th</td><td>2d8</td><td>2d10</td><td>4d8</td></tr></tbody></table>",
-    "grantsBuffs": [
-      "Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr"
-    ],
+    "grantsBuffs": ["Compendium.pf1.feats.Item.2aTFNMs3pW6nUBlr"],
     "id": "a4SPdPuOFdmfJdHN",
     "name": "Unarmed Strike",
     "sources": [
@@ -3083,9 +3071,7 @@
     "abilityType": "su",
     "changes": [],
     "description": "<p>A 1st level bard can use his performance to inspire courage in his allies (including himself), bolstering them against fear and improving their combat abilities. To be affected, an ally must be able to perceive the bard’s performance. An affected ally receives a +1 <em>morale bonus</em> on saving throws against <em>charm</em> and fear effects and a +1 <em>competence bonus</em> on attack and weapon damage rolls. At 5th level, and every six bard levels thereafter, this bonus increases by +1, to a maximum of +4 at 17th level. Inspire courage is a mind-affecting ability. inspire courage can use audible or visual components. The bard must choose which component to use when starting his performance.</p>",
-    "grantsBuffs": [
-      "Compendium.pf1.buffs.Item.3p34GJemfcLdKckV"
-    ],
+    "grantsBuffs": ["Compendium.pf1.buffs.Item.3p34GJemfcLdKckV"],
     "id": "h56K6HEBOItImPPL",
     "name": "Inspire Courage",
     "sources": [
@@ -3128,9 +3114,7 @@
       }
     ],
     "description": "<p>At 8th level, you receive Leadership as a bonus feat. In addition, you gain a +2 bonus on your leadership score as long as you uphold the tenets of your deity (or divine concept if you do not venerate a deity).</p>",
-    "grantsBuffs": [
-      "Compendium.pf1.feats.Item.R3a1OV18RwDJftvq"
-    ],
+    "grantsBuffs": ["Compendium.pf1.feats.Item.R3a1OV18RwDJftvq"],
     "id": "hd6MiVc69RyEuDpU",
     "name": "Leadership",
     "sources": [
@@ -3288,9 +3272,7 @@
     "abilityType": "su",
     "changes": [],
     "description": "<p>At 8th level, you can emit a 30-foot aura of protection for a number of rounds per day equal to your cleric level. You and your allies within this aura gain a +1 deflection bonus to AC and resistance 5 against all elements (acid, cold, electricity, fire, and sonic). The deflection bonus increases by +1 for every four cleric levels you possess beyond 8th. At 14th level, the resistance against all elements increases to 10. These rounds do not need to be consecutive.</p>",
-    "grantsBuffs": [
-      "Compendium.pf1.buffs.Item.7ReQuzKvSVUtwuC9"
-    ],
+    "grantsBuffs": ["Compendium.pf1.buffs.Item.7ReQuzKvSVUtwuC9"],
     "id": "kHXw5V06TkymXxF3",
     "name": "Aura of Protection (Domain Power)",
     "sources": [
@@ -3963,9 +3945,7 @@
       }
     ],
     "description": "<p>The character gains Eschew Materials as a bonus feat.</p>",
-    "grantsBuffs": [
-      "Compendium.pf1.feats.Item.ElqchQT5WB625HPg"
-    ],
+    "grantsBuffs": ["Compendium.pf1.feats.Item.ElqchQT5WB625HPg"],
     "id": "vVkKDPniD09W5JgO",
     "name": "Eschew Materials",
     "sources": [

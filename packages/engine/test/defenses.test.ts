@@ -71,7 +71,15 @@ describe("compute: defenses (issue #21)", () => {
       {
         total: 3,
         qualifier: "—",
-        components: [{ source: "Damage Reduction", sourceId: "barbarian-dr", type: "untyped", value: 3, applied: true }],
+        components: [
+          {
+            source: "Damage Reduction",
+            sourceId: "barbarian-dr",
+            type: "untyped",
+            value: 3,
+            applied: true,
+          },
+        ],
       },
     ]);
     expect(sheet.defenses!.resistances).toEqual([]);
@@ -92,7 +100,13 @@ describe("compute: defenses (issue #21)", () => {
     expect(sheet.defenses!.sr).toBeDefined();
     expect(sheet.defenses!.sr!.total).toBe(23);
     expect(sheet.defenses!.sr!.components).toEqual([
-      { source: "Diamond Soul", sourceId: expect.any(String), type: "base", value: 23, applied: true },
+      {
+        source: "Diamond Soul",
+        sourceId: expect.any(String),
+        type: "base",
+        value: 23,
+        applied: true,
+      },
     ]);
   });
 
@@ -117,7 +131,13 @@ describe("compute: defenses (issue #21)", () => {
         total: 10,
         qualifier: "fire",
         components: [
-          { source: "Resist Energy (Fire)", sourceId: "buff-1", type: "untyped", value: 10, applied: true },
+          {
+            source: "Resist Energy (Fire)",
+            sourceId: "buff-1",
+            type: "untyped",
+            value: 10,
+            applied: true,
+          },
         ],
       },
     ]);

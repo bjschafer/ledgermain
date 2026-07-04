@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Ledgermain is a web-based **in-play character sheet, tracker, and builder for Pathfinder 1e**. The product's center of gravity is *play at the table* — a rules-aware tracker that recomputes correct numbers as live session state (HP, conditions, buffs, resources) changes, not just a builder. Read `DESIGN.md` for architecture rationale and `IMPLEMENTATION_PLAN.md` for the staged build plan with detailed per-stage "as built" caveats — these two docs are the source of truth for *why* things are shaped the way they are.
+Ledgermain is a web-based **in-play character sheet, tracker, and builder for Pathfinder 1e**. The product's center of gravity is _play at the table_ — a rules-aware tracker that recomputes correct numbers as live session state (HP, conditions, buffs, resources) changes, not just a builder. Read `DESIGN.md` for architecture rationale and `IMPLEMENTATION_PLAN.md` for the staged build plan with detailed per-stage "as built" caveats — these two docs are the source of truth for _why_ things are shaped the way they are.
 
 Stages 1–4 are complete; Stage 5 (Cloudflare Worker persistence + cross-device sync) is **not started**, so `apps/api` does not yet exist.
 
@@ -17,6 +17,10 @@ bun install
 bun run dev          # @pf1/web on http://localhost:5173 (predev copies RefData into public/data/)
 bun run build        # build all packages
 bun run typecheck    # tsc --noEmit across all packages — the primary gate
+bun run lint         # oxlint across the workspace (must stay green; warnings tolerated)
+bun run lint:fix     # oxlint --fix (auto-fixes safe rules)
+bun run fmt          # oxfmt across the workspace
+bun run fmt:check    # oxfmt --check (CI-shaped gate)
 bun run test         # all unit tests (engine + data-pipeline + web)
 bun run e2e          # Playwright (Chromium); boots its own dev server
 ```
@@ -58,7 +62,7 @@ Derived stats are **never** computed or stored server-side — the server (Stage
 
 ### Two objects, one engine
 
-- **`CharacterDoc`** (schema) — the single source of truth. Holds *build choices* (`build.*`) and *live session state* (`live.*`: hp, conditions, activeBuffs, resources) but **never derived values**. Carries `ownerId`/`version`/`updatedAt` already, for Stage 5 optimistic-concurrency sync.
+- **`CharacterDoc`** (schema) — the single source of truth. Holds _build choices_ (`build.*`) and _live session state_ (`live.*`: hp, conditions, activeBuffs, resources) but **never derived values**. Carries `ownerId`/`version`/`updatedAt` already, for Stage 5 optimistic-concurrency sync.
 - **`compute(doc, refData) -> DerivedSheet`** (engine) — pure, framework-agnostic, returns every displayed number. Toggle anything in the doc → recompute. It's cheap; the web app recomputes on every change rather than memoizing cleverly.
 
 The engine has two genuinely hard pieces, both clean-room (see licensing below):
@@ -70,19 +74,21 @@ The engine has two genuinely hard pieces, both clean-room (see licensing below):
 
 All builder/tracker **logic is pure and in `apps/web/src/model/`** (`doc.ts` doc transitions, `prereqs.ts`, `skills.ts`, `hp.ts`, `buffs.ts`, etc.) — tested directly with no DOM. React components in `components/` are thin views. `state/useCharacter.ts` is the **only** binding layer: model transition → `compute()` → Dexie. When adding a feature, put the logic in a `model/` module with tests, then wire a thin component.
 
-- **RefData in the browser**: `data-pipeline`'s `loadRefData()` is Node-fs based; the app instead uses `src/refdata/loader.ts` (fetch). `scripts/copy-refdata.ts` copies vendored JSON into `public/data/` at predev/prebuild (gitignored — source of truth stays in the package). `refdata/loader.ts` is the *only* place that knows where data lives, so Stage 5 can swap in lazy R2 loading there.
+- **RefData in the browser**: `data-pipeline`'s `loadRefData()` is Node-fs based; the app instead uses `src/refdata/loader.ts` (fetch). `scripts/copy-refdata.ts` copies vendored JSON into `public/data/` at predev/prebuild (gitignored — source of truth stays in the package). `refdata/loader.ts` is the _only_ place that knows where data lives, so Stage 5 can swap in lazy R2 loading there.
 - **Persistence**: IndexedDB via Dexie (`src/db/characters.ts`, database `pf1-tracker`). One active character; autosaves and restores most-recently-edited on load.
 - **Vite/workspace-TS gotcha**: `@pf1/engine` and `@pf1/schema` publish raw `.ts` (no build step). `apps/web/vite.config.ts` aliases the bare specifiers to their `src/index.ts`; Vite's resolver handles their internal `./foo.js` → `./foo.ts` fallback. Keep these aliases in sync if package entry points move.
 
 ## Licensing — clean-room discipline (important)
 
-The engine is a **clean-room reimplementation** from the published PF1 rules, kept license-free. Foundry's GPL-3.0 system code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied, transcribed, or ported**. When validating engine behavior, compare *outputs* (given input X, both produce Y), not code structure. Compendium *data* is used under OGL / Paizo Community Use with attribution intact. Do not paste upstream source into this repo. See `DESIGN.md` §6.
+The engine is a **clean-room reimplementation** from the published PF1 rules, kept license-free. Foundry's GPL-3.0 system code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied, transcribed, or ported**. When validating engine behavior, compare _outputs_ (given input X, both produce Y), not code structure. Compendium _data_ is used under OGL / Paizo Community Use with attribution intact. Do not paste upstream source into this repo. See `DESIGN.md` §6.
 
 ## Conventions
 
 - TypeScript strict everywhere. `bun run typecheck` is the gate that must stay green.
+- Lint must stay green: `bun run lint` (errors block; warnings tolerated). Run `bun run lint:fix` first to auto-fix. Don't add new lint warnings to existing code paths.
+- Run `bun run fmt` before committing; `bun run fmt:check` must be green. Don't commit hand-formatted code that fights oxfmt — if you disagree with a fmt result, change your code, don't fight the tool.
 - When touching the engine, add hand-computed fixture tests (the pattern in `packages/engine/test/`); the engine tests run against the real vendored data slice via `loadRefData()`.
-- Feat prereqs are **hybrid**: hard-block only on *structured* signals (ability min, BAB, caster level, required `@UUID` feats); prose-only prereqs (`prereqText`) show a soft warning and never block. Don't promise perfect prereq enforcement.
+- Feat prereqs are **hybrid**: hard-block only on _structured_ signals (ability min, BAB, caster level, required `@UUID` feats); prose-only prereqs (`prereqText`) show a soft warning and never block. Don't promise perfect prereq enforcement.
 - Always check for the dev server listening before killing and starting it.
 
 ## Git

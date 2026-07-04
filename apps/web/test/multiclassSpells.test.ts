@@ -153,7 +153,9 @@ describe("domain slots stay cleric-only in a cleric/X multiclass", () => {
     let doc = clericWizardDoc();
     doc = setClericDomains(doc, ["Air"]);
     doc = prepareDomainSpell(doc, domainSpellId, storedClassTag(doc, ref, "cleric"));
-    expect(preparedSpells(doc)).toEqual([{ spellId: domainSpellId, expended: false, kind: "domain" }]);
+    expect(preparedSpells(doc)).toEqual([
+      { spellId: domainSpellId, expended: false, kind: "domain" },
+    ]);
   });
 
   it("wizard-primary multiclass: cleric's domain instance is explicitly classTag: 'cleric'", () => {

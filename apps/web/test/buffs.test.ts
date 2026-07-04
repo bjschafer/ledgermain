@@ -147,7 +147,9 @@ describe("suggestRounds", () => {
   });
 
   it("returns undefined for a buff with no duration units", () => {
-    expect(suggestRounds({ ...buffWithDuration("round", "1"), duration: undefined }, 5)).toBeUndefined();
+    expect(
+      suggestRounds({ ...buffWithDuration("round", "1"), duration: undefined }, 5),
+    ).toBeUndefined();
   });
 });
 

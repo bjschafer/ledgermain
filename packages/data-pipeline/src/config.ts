@@ -11,8 +11,7 @@ import { fileURLToPath } from "node:url";
  *
  * Updating data is therefore always a deliberate, reviewable act.
  */
-export const FOUNDRY_REPO =
-  "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git";
+export const FOUNDRY_REPO = "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git";
 
 /** Pinned upstream commit (Foundry PF1 system v11.11). */
 export const FOUNDRY_SHA = "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4";

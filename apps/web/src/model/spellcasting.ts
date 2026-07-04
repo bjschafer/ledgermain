@@ -14,7 +14,12 @@
  * slots.
  */
 
-import { baseSpellsKnown, baseSpellsPerDay, type SpellKnownProgression, type SpellProgression } from "@pf1/engine";
+import {
+  baseSpellsKnown,
+  baseSpellsPerDay,
+  type SpellKnownProgression,
+  type SpellProgression,
+} from "@pf1/engine";
 import type { AbilityId, CharacterDoc, RefData, WizardSchoolTag } from "@pf1/schema";
 
 // ---------------------------------------------------------------------------

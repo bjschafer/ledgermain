@@ -5,25 +5,25 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { createEmptyDoc } from "../src/model/doc.js";
 import {
+  createEmptyDoc,
   setAge,
   setAppearance,
   setDeity,
   setFavoredClassBonus,
   setFcbHouserule,
   setGender,
-	setGmGrantFeatSlots,
-	setGmGrantSkillRanks,
-	setHeight,
-	setHeroPointsCap,
-	setHeroPointsEnabled,
-	setHpMode,
-	setHpRoll,
-	setRestMode,
-	setStatOverride,
-	setWeight,
-	STAT_OVERRIDE_KEYS,
+  setGmGrantFeatSlots,
+  setGmGrantSkillRanks,
+  setHeight,
+  setHeroPointsCap,
+  setHeroPointsEnabled,
+  setHpMode,
+  setHpRoll,
+  setRestMode,
+  setStatOverride,
+  setWeight,
+  STAT_OVERRIDE_KEYS,
 } from "../src/model/doc.js";
 
 function doc() {

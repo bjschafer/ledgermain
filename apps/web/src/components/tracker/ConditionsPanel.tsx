@@ -25,16 +25,26 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
               type="button"
               className={`chip cond${cond.displayOnly ? " display-only" : ""}`}
               aria-pressed={on}
-              title={cond.displayOnly ? `${cond.summary} (display-only — not wired to the engine, no flat modifier applied)` : cond.summary}
+              title={
+                cond.displayOnly
+                  ? `${cond.summary} (display-only — not wired to the engine, no flat modifier applied)`
+                  : cond.summary
+              }
               onClick={() => update((d) => toggleCondition(d, id))}
             >
               {cond.name}
-              {cond.displayOnly ? <span className="dot" title="Display-only (no flat modifier)">·</span> : null}
+              {cond.displayOnly ? (
+                <span className="dot" title="Display-only (no flat modifier)">
+                  ·
+                </span>
+              ) : null}
             </button>
           );
         })}
       </div>
-      <div className="hint cond-legend">Dashed border = display-only, not wired to a numeric modifier yet.</div>
+      <div className="hint cond-legend">
+        Dashed border = display-only, not wired to a numeric modifier yet.
+      </div>
       {active.size > 0 ? (
         <ul className="cond-notes">
           {[...active].map((id) => {

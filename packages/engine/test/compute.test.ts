@@ -666,7 +666,10 @@ describe("compute: monk L5 (human, no armor)", () => {
   });
 
   it("Ki Pool is absent before monk L4 (feature grants at rL 4)", () => {
-    const preKiDoc = { ...doc, identity: { ...doc.identity, classes: [{ tag: "monk", level: 3 }] } };
+    const preKiDoc = {
+      ...doc,
+      identity: { ...doc.identity, classes: [{ tag: "monk", level: 3 }] },
+    };
     const preKiSheet = compute(preKiDoc, ref);
     const pools = deriveResourcePools(preKiDoc, ref, preKiSheet.abilities);
     expect(pools.find((p) => p.name === "Ki Pool")).toBeUndefined();
@@ -977,9 +980,7 @@ describe("compute: armor & shield enhancement bonuses to AC", () => {
     const armorBase = sheet.ac.components.find(
       (c) => c.category === "armor" && c.type === "untyped",
     );
-    const armorEnh = sheet.ac.components.find(
-      (c) => c.category === "armor" && c.type === "enh",
-    );
+    const armorEnh = sheet.ac.components.find((c) => c.category === "armor" && c.type === "enh");
     expect(armorBase?.value).toBe(9);
     expect(armorBase?.applied).toBe(true);
     expect(armorEnh?.value).toBe(3);
@@ -1008,9 +1009,7 @@ describe("compute: armor & shield enhancement bonuses to AC", () => {
     // 10 + 9 armor + 2 armor-enh + 2 shield + 2 shield-enh + 1 capped-dex = 26
     expect(sheet.ac.normal).toBe(26);
     // Shield enhancement appears as a separate enh component in the shield category
-    const shieldEnh = sheet.ac.components.find(
-      (c) => c.category === "shield" && c.type === "enh",
-    );
+    const shieldEnh = sheet.ac.components.find((c) => c.category === "shield" && c.type === "enh");
     expect(shieldEnh?.value).toBe(2);
     expect(shieldEnh?.applied).toBe(true);
   });

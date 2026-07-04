@@ -48,11 +48,7 @@ export function deriveResourcePools(
   refData: RefData,
   abilities?: Record<string, AbilityView>,
 ): DerivedResourcePool[] {
-  const rollData = buildRollData(
-    doc,
-    refData,
-    abilities as Parameters<typeof buildRollData>[2],
-  );
+  const rollData = buildRollData(doc, refData, abilities as Parameters<typeof buildRollData>[2]);
   const pools: DerivedResourcePool[] = [];
 
   for (const { classTag, grant } of collectGrantedFeatures(doc, refData)) {

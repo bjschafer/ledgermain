@@ -4,11 +4,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import {
-  createEmptyDoc,
-  setWizardOppositionSchools,
-  setWizardSchool,
-} from "../src/model/doc.js";
+import { createEmptyDoc, setWizardOppositionSchools, setWizardSchool } from "../src/model/doc.js";
 
 function doc() {
   return createEmptyDoc("t");
@@ -51,10 +47,9 @@ describe("setWizardSchool()", () => {
 
 describe("setWizardOppositionSchools()", () => {
   it("sets up to two opposition tags", () => {
-    expect(setWizardOppositionSchools(doc(), ["enc", "nec"]).build.wizardOppositionSchools).toEqual([
-      "enc",
-      "nec",
-    ]);
+    expect(setWizardOppositionSchools(doc(), ["enc", "nec"]).build.wizardOppositionSchools).toEqual(
+      ["enc", "nec"],
+    );
   });
 
   it("caps at two opposition schools", () => {

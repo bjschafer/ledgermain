@@ -110,8 +110,8 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
       )}
       {selected ? (
         <p className="hint" style={{ marginTop: 12 }}>
-          {selected.name} · size {selected.size} · speed {selected.speeds.land ?? 30} ft.
-          Racial ability and skill bonuses flow into the sheet automatically.
+          {selected.name} · size {selected.size} · speed {selected.speeds.land ?? 30} ft. Racial
+          ability and skill bonuses flow into the sheet automatically.
         </p>
       ) : (
         <p className="hint" style={{ marginTop: 12 }}>

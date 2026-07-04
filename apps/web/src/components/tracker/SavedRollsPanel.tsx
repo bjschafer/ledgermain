@@ -38,12 +38,9 @@ import type { BuilderProps } from "../builder/types.js";
  */
 export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
-  const [addCollapsed, toggleAddCollapsed] = useCollapsed(
-    "subsection:SavedRolls:add",
-    true,
-  );
+  const [addCollapsed, toggleAddCollapsed] = useCollapsed("subsection:SavedRolls:add", true);
 
-  const saved = doc.build.savedRolls ?? [];
+  const saved = useMemo(() => doc.build.savedRolls ?? [], [doc]);
   const owned = useMemo(() => ownedFeatSlugs(doc, refData), [doc, refData]);
   const resolved = useMemo(
     () => saved.map((r) => resolveSavedRoll(r, sheet, owned)),
@@ -107,10 +104,9 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
         {!addCollapsed && (
           <>
             <p className="hint saved-roll-add-hint">
-              Pick a source below, then expand the saved row to attach feats
-              (Rapid Shot, Deadly Aim, Power Attack fold in automatically) or
-              layer a manual adjustment — for "Custom", enter a value and
-              damage note by hand.
+              Pick a source below, then expand the saved row to attach feats (Rapid Shot, Deadly
+              Aim, Power Attack fold in automatically) or layer a manual adjustment — for "Custom",
+              enter a value and damage note by hand.
             </p>
             <input
               className="search"
@@ -187,7 +183,9 @@ function SavedRollRow({
   const optionsFor = (slug: string) => attachable.find((f) => f.slug === slug)?.options;
 
   const rangerAttached = new Set((roll.rangerBonuses ?? []).map((b) => `${b.kind}:${b.type}`));
-  const rangerAddChoices = rangerAttachable.filter((b) => !rangerAttached.has(`${b.kind}:${b.type}`));
+  const rangerAddChoices = rangerAttachable.filter(
+    (b) => !rangerAttached.has(`${b.kind}:${b.type}`),
+  );
 
   return (
     <div className="res-row saved-roll-row">
@@ -280,7 +278,12 @@ function SavedRollRow({
           </span>
         ) : null}
         <div className="res-btns">
-          <button type="button" className="btn-ghost" onClick={onRemove} aria-label={`remove ${roll.label}`}>
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={onRemove}
+            aria-label={`remove ${roll.label}`}
+          >
             ✕
           </button>
         </div>
@@ -331,7 +334,9 @@ function SavedRollRow({
                 value=""
                 aria-label={`attach a favored enemy or terrain to ${roll.label}`}
                 onChange={(e) => {
-                  const ref = rangerAddChoices.find((b) => `${b.kind}:${b.type}` === e.target.value);
+                  const ref = rangerAddChoices.find(
+                    (b) => `${b.kind}:${b.type}` === e.target.value,
+                  );
                   if (ref) onAddRanger(ref);
                 }}
               >

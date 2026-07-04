@@ -46,7 +46,10 @@ function makeCleric(level: number, clericDomains: string[]): CharacterDoc {
 
 function domainFeatureNames(doc: CharacterDoc): string[] {
   const { classFeatures } = resolveClassFeatures(doc, ref);
-  return classFeatures.filter((f) => f.origin?.kind === "domain").map((f) => f.name).sort();
+  return classFeatures
+    .filter((f) => f.origin?.kind === "domain")
+    .map((f) => f.name)
+    .sort();
 }
 
 describe("cleric domain powers", () => {

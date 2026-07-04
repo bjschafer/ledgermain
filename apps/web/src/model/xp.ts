@@ -34,34 +34,31 @@ export const DEFAULT_XP_TRACK: XpTrack = "medium";
  * Level 1 always starts at 0 XP. Values run through level 20.
  */
 export const XP_TRACKS: Record<XpTrack, readonly number[]> = {
-	slow: [
-		0, 3_000, 7_500, 14_000, 23_000, 35_000, 53_000, 77_000, 115_000, 160_000,
-		235_000, 330_000, 475_000, 665_000, 955_000, 1_350_000, 1_900_000,
-		2_700_000, 3_850_000, 5_350_000,
-	],
-	medium: [
-		0, 2_000, 5_000, 9_000, 15_000, 23_000, 35_000, 51_000, 75_000, 105_000,
-		155_000, 220_000, 315_000, 445_000, 635_000, 890_000, 1_300_000,
-		1_800_000, 2_550_000, 3_600_000,
-	],
-	fast: [
-		0, 1_300, 3_300, 6_000, 10_000, 15_000, 23_000, 34_000, 50_000, 71_000,
-		105_000, 145_000, 210_000, 295_000, 425_000, 600_000, 850_000, 1_200_000,
-		1_700_000, 2_400_000,
-	],
+  slow: [
+    0, 3_000, 7_500, 14_000, 23_000, 35_000, 53_000, 77_000, 115_000, 160_000, 235_000, 330_000,
+    475_000, 665_000, 955_000, 1_350_000, 1_900_000, 2_700_000, 3_850_000, 5_350_000,
+  ],
+  medium: [
+    0, 2_000, 5_000, 9_000, 15_000, 23_000, 35_000, 51_000, 75_000, 105_000, 155_000, 220_000,
+    315_000, 445_000, 635_000, 890_000, 1_300_000, 1_800_000, 2_550_000, 3_600_000,
+  ],
+  fast: [
+    0, 1_300, 3_300, 6_000, 10_000, 15_000, 23_000, 34_000, 50_000, 71_000, 105_000, 145_000,
+    210_000, 295_000, 425_000, 600_000, 850_000, 1_200_000, 1_700_000, 2_400_000,
+  ],
 } as const;
 
 /** Highest character level with a known threshold in the advancement tables. */
 export const MAX_TRACKED_LEVEL = 20;
 
 function clampToRange(n: number, min: number, max: number): number {
-	if (Number.isNaN(n)) return min;
-	return Math.max(min, Math.min(max, Math.trunc(n)));
+  if (Number.isNaN(n)) return min;
+  return Math.max(min, Math.min(max, Math.trunc(n)));
 }
 
 /** Current total XP earned (0 when the field is absent). */
 export function xp(doc: CharacterDoc): number {
-	return doc.live.xp ?? 0;
+  return doc.live.xp ?? 0;
 }
 
 /**
@@ -70,12 +67,12 @@ export function xp(doc: CharacterDoc): number {
  * leveling; set `settings.xpEnabled` to opt in to the optional rule.
  */
 export function xpEnabled(doc: CharacterDoc): boolean {
-	return doc.build.settings?.xpEnabled ?? false;
+  return doc.build.settings?.xpEnabled ?? false;
 }
 
 /** The character's chosen advancement track (default `"medium"`). */
 export function xpTrack(doc: CharacterDoc): XpTrack {
-	return doc.build.settings?.xpTrack ?? DEFAULT_XP_TRACK;
+  return doc.build.settings?.xpTrack ?? DEFAULT_XP_TRACK;
 }
 
 /**
@@ -86,36 +83,33 @@ export function xpTrack(doc: CharacterDoc): XpTrack {
  * recomputed here, so this stays a cheap pure function with no dependency on
  * the engine or a `DerivedSheet`.
  */
-export function nextLevelAt(
-	track: XpTrack,
-	currentLevel: number,
-): number | null {
-	const table = XP_TRACKS[track];
-	if (currentLevel < 1 || currentLevel >= table.length) return null;
-	return table[currentLevel] ?? null;
+export function nextLevelAt(track: XpTrack, currentLevel: number): number | null {
+  const table = XP_TRACKS[track];
+  if (currentLevel < 1 || currentLevel >= table.length) return null;
+  return table[currentLevel] ?? null;
 }
 
 /** Add `amount` XP, floored at 0 total (negative `amount` is allowed to correct entries). */
 export function addXp(doc: CharacterDoc, amount: number): CharacterDoc {
-	const next = clampToRange(xp(doc) + amount, 0, Number.MAX_SAFE_INTEGER);
-	return { ...doc, live: { ...doc.live, xp: next } };
+  const next = clampToRange(xp(doc) + amount, 0, Number.MAX_SAFE_INTEGER);
+  return { ...doc, live: { ...doc.live, xp: next } };
 }
 
 /** Set total XP to an explicit value, clamped to >= 0. NaN is treated as 0. */
 export function setXp(doc: CharacterDoc, value: number): CharacterDoc {
-	const next = clampToRange(value, 0, Number.MAX_SAFE_INTEGER);
-	return { ...doc, live: { ...doc.live, xp: next } };
+  const next = clampToRange(value, 0, Number.MAX_SAFE_INTEGER);
+  return { ...doc, live: { ...doc.live, xp: next } };
 }
 
 /** Snapshot of a character's XP standing, for the tracker panel. */
 export interface XpProgress {
-	current: number;
-	track: XpTrack;
-	level: number;
-	/** XP required for `level + 1`, or `null` past `MAX_TRACKED_LEVEL`. */
-	nextThreshold: number | null;
-	/** True once `current` has reached (or passed) `nextThreshold`. */
-	readyToLevel: boolean;
+  current: number;
+  track: XpTrack;
+  level: number;
+  /** XP required for `level + 1`, or `null` past `MAX_TRACKED_LEVEL`. */
+  nextThreshold: number | null;
+  /** True once `current` has reached (or passed) `nextThreshold`. */
+  readyToLevel: boolean;
 }
 
 /**
@@ -124,15 +118,15 @@ export interface XpProgress {
  * anything XP-derived.
  */
 export function xpProgress(doc: CharacterDoc): XpProgress {
-	const current = xp(doc);
-	const track = xpTrack(doc);
-	const level = totalLevel(doc);
-	const nextThreshold = nextLevelAt(track, level);
-	return {
-		current,
-		track,
-		level,
-		nextThreshold,
-		readyToLevel: nextThreshold != null && current >= nextThreshold,
-	};
+  const current = xp(doc);
+  const track = xpTrack(doc);
+  const level = totalLevel(doc);
+  const nextThreshold = nextLevelAt(track, level);
+  return {
+    current,
+    track,
+    level,
+    nextThreshold,
+    readyToLevel: nextThreshold != null && current >= nextThreshold,
+  };
 }

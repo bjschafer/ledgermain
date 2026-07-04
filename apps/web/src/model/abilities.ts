@@ -186,10 +186,7 @@ export const ARMOR_ABILITIES = Object.values(ABILITIES).filter((a) => a.slot ===
  * return the patched ref. Currently only `keen` has a mechanical effect
  * (crit range doubling). Returns the original ref if no abilities apply.
  */
-export function applyAbilitiesToWeapon(
-  weapon: WeaponRef,
-  abilityIds?: string[],
-): WeaponRef {
+export function applyAbilitiesToWeapon(weapon: WeaponRef, abilityIds?: string[]): WeaponRef {
   if (!abilityIds || abilityIds.length === 0) return weapon;
   let ref = weapon;
   for (const id of abilityIds) {
@@ -262,7 +259,11 @@ export function abilitySelectable(current: string[], id: string, enhancement: nu
  * cascades to also remove any dependents left in an invalid state (e.g.
  * turning off "flaming" also turns off "flaming-burst").
  */
-export function toggleAbilitySelection(current: string[], id: string, enhancement: number): string[] {
+export function toggleAbilitySelection(
+  current: string[],
+  id: string,
+  enhancement: number,
+): string[] {
   if (current.includes(id)) {
     return withPrereqsMet(current.filter((a) => a !== id));
   }
@@ -274,9 +275,7 @@ export function toggleAbilitySelection(current: string[], id: string, enhancemen
  * Collect display notes for a list of ability ids. Returns an array of
  * `{ name, note }` pairs for the meta line.
  */
-export function abilityNotes(
-  abilityIds?: string[],
-): { name: string; note?: string }[] {
+export function abilityNotes(abilityIds?: string[]): { name: string; note?: string }[] {
   if (!abilityIds || abilityIds.length === 0) return [];
   return abilityIds
     .map((id) => ABILITIES[id])

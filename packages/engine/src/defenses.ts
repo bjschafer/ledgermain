@@ -155,10 +155,19 @@ function barbarianLevel(doc: CharacterDoc): number {
  * character has no DR, no resistances, and no spell resistance at all — the
  * UI renders nothing rather than an empty "Defenses" row.
  */
-export function computeDefenses(doc: CharacterDoc, collected: CollectedModifier[]): Defenses | undefined {
+export function computeDefenses(
+  doc: CharacterDoc,
+  collected: CollectedModifier[],
+): Defenses | undefined {
   const drMods: QualifiedMod[] = collected
     .filter((m) => isDrTarget(m.target))
-    .map((m) => ({ qualifier: drQualifier(m.target), type: m.type, value: m.value, source: m.source, sourceId: m.sourceId }));
+    .map((m) => ({
+      qualifier: drQualifier(m.target),
+      type: m.type,
+      value: m.value,
+      source: m.source,
+      sourceId: m.sourceId,
+    }));
 
   const barbLevel = barbarianLevel(doc);
   if (barbLevel >= 7) {
@@ -176,7 +185,13 @@ export function computeDefenses(doc: CharacterDoc, collected: CollectedModifier[
 
   const eresMods: QualifiedMod[] = collected
     .filter((m) => isEresTarget(m.target))
-    .map((m) => ({ qualifier: eresQualifier(m.target), type: m.type, value: m.value, source: m.source, sourceId: m.sourceId }));
+    .map((m) => ({
+      qualifier: eresQualifier(m.target),
+      type: m.type,
+      value: m.value,
+      source: m.source,
+      sourceId: m.sourceId,
+    }));
 
   const dr = groupByQualifier(drMods);
   const resistances = groupByQualifier(eresMods);

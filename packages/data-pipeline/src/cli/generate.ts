@@ -34,9 +34,7 @@ import { normalize } from "../normalize.js";
 
 function main(): void {
   if (!existsSync(PACKS_DIR)) {
-    throw new Error(
-      `[generate] packs not found at ${PACKS_DIR}. Run \`pnpm data:fetch\` first.`,
-    );
+    throw new Error(`[generate] packs not found at ${PACKS_DIR}. Run \`pnpm data:fetch\` first.`);
   }
 
   console.log(`[generate] normalizing from ${PACKS_DIR}`);

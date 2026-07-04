@@ -17,9 +17,8 @@
  * stepper for anything `restNewDay` doesn't cover (e.g. multiple recoveries at
  * once, or correcting a value).
  */
-import type { AbilityId, CharacterDoc } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
-import type { DerivedSheet } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, DerivedSheet } from "@pf1/schema";
 
 /** The three PF1 ability-affliction flavors this module edits. */
 export type AbilityAfflictionKind = "damage" | "drain" | "penalty";

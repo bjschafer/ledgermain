@@ -2,8 +2,8 @@
   "name": "@pf1/web",
   "version": "0.0.0",
   "private": true,
-  "license": "MIT",
   "description": "PF1e character builder + live sheet (React + Vite). Stage 3.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "predev": "bun scripts/copy-refdata.ts",

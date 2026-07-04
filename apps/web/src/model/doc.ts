@@ -6,16 +6,16 @@
  * elsewhere. Mirrors DESIGN.md §3.1.
  */
 import type {
-	AbilityId,
-	ArmorRef,
-	CharacterDoc,
-	ItemInstance,
-	RefData,
-	SkillId,
-	WeaponInstance,
-	WeaponRef,
-	WizardSchoolTag,
-	WornArmor,
+  AbilityId,
+  ArmorRef,
+  CharacterDoc,
+  ItemInstance,
+  RefData,
+  SkillId,
+  WeaponInstance,
+  WeaponRef,
+  WizardSchoolTag,
+  WornArmor,
 } from "@pf1/schema";
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
@@ -27,31 +27,31 @@ const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
 
 /** A fresh, valid level-0 document with default scores and no choices made. */
 export function createEmptyDoc(id: string): CharacterDoc {
-	return {
-		schemaVersion: 2,
-		id,
-		ownerId: "local",
-		version: 1,
-		updatedAt: new Date().toISOString(),
-		identity: { name: "New Adventurer", race: "", classes: [] },
-		abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
-		build: {
-			feats: [],
-			skillRanks: {},
-			clericDomains: [],
-			archetypes: [],
-			classFeatureChoices: [],
-			spells: { known: [] },
-			gear: [],
-		},
-		live: {
-			hp: { current: 0, temp: 0, nonlethal: 0 },
-			conditions: [],
-			activeBuffs: [],
-			resources: {},
-			spells: { prepared: [] },
-		},
-	};
+  return {
+    schemaVersion: 2,
+    id,
+    ownerId: "local",
+    version: 1,
+    updatedAt: new Date().toISOString(),
+    identity: { name: "New Adventurer", race: "", classes: [] },
+    abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+    build: {
+      feats: [],
+      skillRanks: {},
+      clericDomains: [],
+      archetypes: [],
+      classFeatureChoices: [],
+      spells: { known: [] },
+      gear: [],
+    },
+    live: {
+      hp: { current: 0, temp: 0, nonlethal: 0 },
+      conditions: [],
+      activeBuffs: [],
+      resources: {},
+      spells: { prepared: [] },
+    },
+  };
 }
 
 /**
@@ -62,55 +62,52 @@ export function createEmptyDoc(id: string): CharacterDoc {
  * domain slot support for clerics). Idempotent and non-destructive.
  */
 export function migrateDoc(doc: CharacterDoc): CharacterDoc {
-	const build = doc.build as typeof doc.build & {
-		spells?: { known?: string[]; prepared?: unknown };
-	};
-	const known = build.spells?.known ?? [];
-	let next = doc;
-	let changed = false;
+  const build = doc.build as typeof doc.build & {
+    spells?: { known?: string[]; prepared?: unknown };
+  };
+  const known = build.spells?.known ?? [];
+  let next = doc;
+  let changed = false;
 
-	if (!doc.live.spells) {
-		next = { ...next, live: { ...next.live, spells: { prepared: [] } } };
-		changed = true;
-	}
-	// Drop any legacy `build.spells.prepared`, keeping only `known`.
-	if (build.spells && "prepared" in build.spells) {
-		next = { ...next, build: { ...next.build, spells: { known } } };
-		changed = true;
-	}
-	// v2: ensure `clericDomains` exists (default empty). No schemaVersion bump
-	// here — the field is optional; this just backfills the canonical empty
-	// array so downstream `includes` checks don't crash on older docs.
-	if (!next.build.clericDomains) {
-		next = { ...next, build: { ...next.build, clericDomains: [] } };
-		changed = true;
-	}
-	// Same treatment for `archetypes` (Stage 11.3) — optional, backfilled to `[]`.
-	if (!next.build.archetypes) {
-		next = { ...next, build: { ...next.build, archetypes: [] } };
-		changed = true;
-	}
-	// `PreparedSpell.kind` is optional and defaults to "normal" — existing
-	// prepared entries need no rewrite; tracker code treats absent as normal.
+  if (!doc.live.spells) {
+    next = { ...next, live: { ...next.live, spells: { prepared: [] } } };
+    changed = true;
+  }
+  // Drop any legacy `build.spells.prepared`, keeping only `known`.
+  if (build.spells && "prepared" in build.spells) {
+    next = { ...next, build: { ...next.build, spells: { known } } };
+    changed = true;
+  }
+  // v2: ensure `clericDomains` exists (default empty). No schemaVersion bump
+  // here — the field is optional; this just backfills the canonical empty
+  // array so downstream `includes` checks don't crash on older docs.
+  if (!next.build.clericDomains) {
+    next = { ...next, build: { ...next.build, clericDomains: [] } };
+    changed = true;
+  }
+  // Same treatment for `archetypes` (Stage 11.3) — optional, backfilled to `[]`.
+  if (!next.build.archetypes) {
+    next = { ...next, build: { ...next.build, archetypes: [] } };
+    changed = true;
+  }
+  // `PreparedSpell.kind` is optional and defaults to "normal" — existing
+  // prepared entries need no rewrite; tracker code treats absent as normal.
 
-	return changed ? next : doc;
+  return changed ? next : doc;
 }
 
 export { ABILITY_IDS };
 
 export function setName(doc: CharacterDoc, name: string): CharacterDoc {
-	return { ...doc, identity: { ...doc.identity, name } };
+  return { ...doc, identity: { ...doc.identity, name } };
 }
 
-export function setAlignment(
-	doc: CharacterDoc,
-	alignment: string,
-): CharacterDoc {
-	return { ...doc, identity: { ...doc.identity, alignment } };
+export function setAlignment(doc: CharacterDoc, alignment: string): CharacterDoc {
+  return { ...doc, identity: { ...doc.identity, alignment } };
 }
 
 export function setDeity(doc: CharacterDoc, deity: string): CharacterDoc {
-	return { ...doc, identity: { ...doc.identity, deity } };
+  return { ...doc, identity: { ...doc.identity, deity } };
 }
 
 /**
@@ -119,15 +116,12 @@ export function setDeity(doc: CharacterDoc, deity: string): CharacterDoc {
  * validation here (pure model layer — the builder picker gates the choices).
  * Replaces the whole list (not add-remove) to keep domain swapping simple.
  */
-export function setClericDomains(
-	doc: CharacterDoc,
-	domains: string[],
-): CharacterDoc {
-	const trimmed = domains.filter((d) => typeof d === "string" && d.length > 0);
-	return {
-		...doc,
-		build: { ...doc.build, clericDomains: trimmed.slice(0, 2) },
-	};
+export function setClericDomains(doc: CharacterDoc, domains: string[]): CharacterDoc {
+  const trimmed = domains.filter((d) => typeof d === "string" && d.length > 0);
+  return {
+    ...doc,
+    build: { ...doc.build, clericDomains: trimmed.slice(0, 2) },
+  };
 }
 
 /**
@@ -136,15 +130,12 @@ export function setClericDomains(
  * validation that the tag exists in `refData.bloodlineSpellLists` (soft-warning
  * posture, same as `setClericDomains`).
  */
-export function setSorcererBloodline(
-	doc: CharacterDoc,
-	tag: string | null,
-): CharacterDoc {
-	const trimmed = typeof tag === "string" ? tag.trim() : "";
-	return {
-		...doc,
-		build: { ...doc.build, sorcererBloodline: trimmed.length > 0 ? trimmed : undefined },
-	};
+export function setSorcererBloodline(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const trimmed = typeof tag === "string" ? tag.trim() : "";
+  return {
+    ...doc,
+    build: { ...doc.build, sorcererBloodline: trimmed.length > 0 ? trimmed : undefined },
+  };
 }
 
 /**
@@ -156,15 +147,12 @@ export function setSorcererBloodline(
  * `setWizardOppositionSchools` (no auto-suggestion — free-choice, same
  * soft-warning posture as `setClericDomains`).
  */
-export function setWizardSchool(
-	doc: CharacterDoc,
-	tag: WizardSchoolTag | null,
-): CharacterDoc {
-	const build = { ...doc.build, wizardSchool: tag ?? undefined };
-	if (tag === "uni") {
-		build.wizardOppositionSchools = [];
-	}
-	return { ...doc, build };
+export function setWizardSchool(doc: CharacterDoc, tag: WizardSchoolTag | null): CharacterDoc {
+  const build = { ...doc.build, wizardSchool: tag ?? undefined };
+  if (tag === "uni") {
+    build.wizardOppositionSchools = [];
+  }
+  return { ...doc, build };
 }
 
 /**
@@ -173,15 +161,12 @@ export function setWizardSchool(
  * `setClericDomains`. No validation that a tag differs from
  * `build.wizardSchool` — free-choice, soft-warning posture.
  */
-export function setWizardOppositionSchools(
-	doc: CharacterDoc,
-	tags: string[] | null,
-): CharacterDoc {
-	const trimmed = (tags ?? []).filter((t) => typeof t === "string" && t.length > 0);
-	return {
-		...doc,
-		build: { ...doc.build, wizardOppositionSchools: trimmed.slice(0, 2) },
-	};
+export function setWizardOppositionSchools(doc: CharacterDoc, tags: string[] | null): CharacterDoc {
+  const trimmed = (tags ?? []).filter((t) => typeof t === "string" && t.length > 0);
+  return {
+    ...doc,
+    build: { ...doc.build, wizardOppositionSchools: trimmed.slice(0, 2) },
+  };
 }
 
 /**
@@ -196,34 +181,34 @@ export function setWizardOppositionSchools(
  * spaces.
  */
 export function setArcaneBond(
-	doc: CharacterDoc,
-	bond:
-		| { type: "familiar"; familiarKind: string }
-		| { type: "object"; bondedItemName?: string }
-		| null,
+  doc: CharacterDoc,
+  bond:
+    | { type: "familiar"; familiarKind: string }
+    | { type: "object"; bondedItemName?: string }
+    | null,
 ): CharacterDoc {
-	if (bond === null) {
-		const build = { ...doc.build };
-		delete build.arcaneBond;
-		return { ...doc, build };
-	}
-	if (bond.type === "familiar") {
-		const kind = bond.familiarKind.trim();
-		if (kind.length === 0) return doc;
-		return {
-			...doc,
-			build: { ...doc.build, arcaneBond: { type: "familiar", familiarKind: kind } },
-		};
-	}
-	const name = bond.bondedItemName;
-	const hasName = typeof name === "string" && name.trim().length > 0;
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			arcaneBond: { type: "object", ...(hasName ? { bondedItemName: name } : {}) },
-		},
-	};
+  if (bond === null) {
+    const build = { ...doc.build };
+    delete build.arcaneBond;
+    return { ...doc, build };
+  }
+  if (bond.type === "familiar") {
+    const kind = bond.familiarKind.trim();
+    if (kind.length === 0) return doc;
+    return {
+      ...doc,
+      build: { ...doc.build, arcaneBond: { type: "familiar", familiarKind: kind } },
+    };
+  }
+  const name = bond.bondedItemName;
+  const hasName = typeof name === "string" && name.trim().length > 0;
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      arcaneBond: { type: "object", ...(hasName ? { bondedItemName: name } : {}) },
+    },
+  };
 }
 
 /**
@@ -232,12 +217,9 @@ export function setArcaneBond(
  * the model layer stays free-choice; the engine's `resolveClassFeatures`
  * applies swaps last-wins if two chosen archetypes ever overlap a slot.
  */
-export function setArchetypes(
-	doc: CharacterDoc,
-	archetypes: string[],
-): CharacterDoc {
-	const trimmed = archetypes.filter((a) => typeof a === "string" && a.length > 0);
-	return { ...doc, build: { ...doc.build, archetypes: trimmed } };
+export function setArchetypes(doc: CharacterDoc, archetypes: string[]): CharacterDoc {
+  const trimmed = archetypes.filter((a) => typeof a === "string" && a.length > 0);
+  return { ...doc, build: { ...doc.build, archetypes: trimmed } };
 }
 
 /**
@@ -248,108 +230,85 @@ export function setArchetypes(
  * validation against a real-world language list — soft-warning posture,
  * matching the project's other free-choice fields.
  */
-export function setBonusLanguages(
-	doc: CharacterDoc,
-	languages: string[],
-): CharacterDoc {
-	const trimmed = languages.map((l) => l.trim()).filter((l) => l.length > 0);
-	return { ...doc, build: { ...doc.build, bonusLanguages: trimmed } };
+export function setBonusLanguages(doc: CharacterDoc, languages: string[]): CharacterDoc {
+  const trimmed = languages.map((l) => l.trim()).filter((l) => l.length > 0);
+  return { ...doc, build: { ...doc.build, bonusLanguages: trimmed } };
 }
 
 export function setGender(doc: CharacterDoc, gender: string): CharacterDoc {
-	return { ...doc, identity: { ...doc.identity, gender } };
+  return { ...doc, identity: { ...doc.identity, gender } };
 }
 
 export function setAge(doc: CharacterDoc, age: string): CharacterDoc {
-	return { ...doc, identity: { ...doc.identity, age } };
+  return { ...doc, identity: { ...doc.identity, age } };
 }
 
 export function setHeight(doc: CharacterDoc, height: string): CharacterDoc {
-	return { ...doc, identity: { ...doc.identity, height } };
+  return { ...doc, identity: { ...doc.identity, height } };
 }
 
 export function setWeight(doc: CharacterDoc, weight: string): CharacterDoc {
-	return { ...doc, identity: { ...doc.identity, weight } };
+  return { ...doc, identity: { ...doc.identity, weight } };
 }
 
-export function setAppearance(
-	doc: CharacterDoc,
-	appearance: string,
-): CharacterDoc {
-	return { ...doc, identity: { ...doc.identity, appearance } };
+export function setAppearance(doc: CharacterDoc, appearance: string): CharacterDoc {
+  return { ...doc, identity: { ...doc.identity, appearance } };
 }
 
-export function setAbility(
-	doc: CharacterDoc,
-	ability: AbilityId,
-	value: number,
-): CharacterDoc {
-	const clamped = clampInt(value, 1, 50);
-	return { ...doc, abilities: { ...doc.abilities, [ability]: clamped } };
+export function setAbility(doc: CharacterDoc, ability: AbilityId, value: number): CharacterDoc {
+  const clamped = clampInt(value, 1, 50);
+  return { ...doc, abilities: { ...doc.abilities, [ability]: clamped } };
 }
 
 export function setRace(doc: CharacterDoc, raceId: string): CharacterDoc {
-	const identity = { ...doc.identity, race: raceId };
-	delete identity.flexibleAbility;
-	return { ...doc, identity };
+  const identity = { ...doc.identity, race: raceId };
+  delete identity.flexibleAbility;
+  return { ...doc, identity };
 }
 
 /**
  * Set or clear the flexible +2 ability choice (Human / Half-Elf / Half-Orc).
  * When `ability` is null, the key is removed so a stale choice never lingers.
  */
-export function setFlexibleAbility(
-	doc: CharacterDoc,
-	ability: AbilityId | null,
-): CharacterDoc {
-	const identity = { ...doc.identity };
-	if (ability === null) {
-		delete identity.flexibleAbility;
-	} else {
-		identity.flexibleAbility = ability;
-	}
-	return { ...doc, identity };
+export function setFlexibleAbility(doc: CharacterDoc, ability: AbilityId | null): CharacterDoc {
+  const identity = { ...doc.identity };
+  if (ability === null) {
+    delete identity.flexibleAbility;
+  } else {
+    identity.flexibleAbility = ability;
+  }
+  return { ...doc, identity };
 }
 
 /** Add a class at level 1 (no-op if the tag is already present). */
 export function addClass(doc: CharacterDoc, tag: string): CharacterDoc {
-	if (doc.identity.classes.some((c) => c.tag === tag)) return doc;
-	const classes = [...doc.identity.classes, { tag, level: 1 }];
-	const favoredClass = doc.identity.favoredClass ?? tag;
-	return { ...doc, identity: { ...doc.identity, classes, favoredClass } };
+  if (doc.identity.classes.some((c) => c.tag === tag)) return doc;
+  const classes = [...doc.identity.classes, { tag, level: 1 }];
+  const favoredClass = doc.identity.favoredClass ?? tag;
+  return { ...doc, identity: { ...doc.identity, classes, favoredClass } };
 }
 
 export function removeClass(doc: CharacterDoc, tag: string): CharacterDoc {
-	const classes = doc.identity.classes.filter((c) => c.tag !== tag);
-	return { ...doc, identity: { ...doc.identity, classes } };
+  const classes = doc.identity.classes.filter((c) => c.tag !== tag);
+  return { ...doc, identity: { ...doc.identity, classes } };
 }
 
-export function setClassLevel(
-	doc: CharacterDoc,
-	tag: string,
-	level: number,
-): CharacterDoc {
-	const lvl = clampInt(level, 1, 20);
-	const classes = doc.identity.classes.map((c) =>
-		c.tag === tag ? { ...c, level: lvl } : c,
-	);
-	return { ...doc, identity: { ...doc.identity, classes } };
+export function setClassLevel(doc: CharacterDoc, tag: string, level: number): CharacterDoc {
+  const lvl = clampInt(level, 1, 20);
+  const classes = doc.identity.classes.map((c) => (c.tag === tag ? { ...c, level: lvl } : c));
+  return { ...doc, identity: { ...doc.identity, classes } };
 }
 
 export function setFavoredClass(doc: CharacterDoc, tag: string): CharacterDoc {
-	return { ...doc, identity: { ...doc.identity, favoredClass: tag } };
+  return { ...doc, identity: { ...doc.identity, favoredClass: tag } };
 }
 
-export function setSkillRank(
-	doc: CharacterDoc,
-	skill: SkillId,
-	ranks: number,
-): CharacterDoc {
-	const r = clampInt(ranks, 0, totalLevel(doc));
-	const next = { ...doc.build.skillRanks };
-	if (r <= 0) delete next[skill];
-	else next[skill] = r;
-	return { ...doc, build: { ...doc.build, skillRanks: next } };
+export function setSkillRank(doc: CharacterDoc, skill: SkillId, ranks: number): CharacterDoc {
+  const r = clampInt(ranks, 0, totalLevel(doc));
+  const next = { ...doc.build.skillRanks };
+  if (r <= 0) delete next[skill];
+  else next[skill] = r;
+  return { ...doc, build: { ...doc.build, skillRanks: next } };
 }
 
 /**
@@ -362,18 +321,14 @@ export function setSkillRank(
  * slugifies to nothing, is a no-op. Slug collisions (two instances with the
  * same label) are disambiguated with a numeric suffix.
  */
-export function addSkillInstance(
-	doc: CharacterDoc,
-	base: string,
-	label: string,
-): CharacterDoc {
-	const slug = slugifySkillLabel(label);
-	if (!slug) return doc;
-	let id = `${base}.${slug}`;
-	for (let n = 2; doc.build.skillRanks[id] != null; n++) {
-		id = `${base}.${slug}-${n}`;
-	}
-	return setSkillRank(doc, id, 1);
+export function addSkillInstance(doc: CharacterDoc, base: string, label: string): CharacterDoc {
+  const slug = slugifySkillLabel(label);
+  if (!slug) return doc;
+  let id = `${base}.${slug}`;
+  for (let n = 2; doc.build.skillRanks[id] != null; n++) {
+    id = `${base}.${slug}-${n}`;
+  }
+  return setSkillRank(doc, id, 1);
 }
 
 /**
@@ -384,43 +339,41 @@ export function addSkillInstance(
  * keeps `skillName`'s doc comment about renames true.
  */
 export function renameSkillInstance(
-	doc: CharacterDoc,
-	id: SkillId,
-	newLabel: string,
+  doc: CharacterDoc,
+  id: SkillId,
+  newLabel: string,
 ): CharacterDoc {
-	const dot = id.indexOf(".");
-	if (dot === -1) return doc;
-	const base = id.slice(0, dot);
-	const slug = slugifySkillLabel(newLabel);
-	if (!slug) return doc;
-	const newId = `${base}.${slug}`;
-	if (newId === id) return doc;
-	if (doc.build.skillRanks[newId] != null) return doc;
-	const ranks = doc.build.skillRanks[id];
-	if (ranks == null) return doc;
-	const next = { ...doc.build.skillRanks };
-	delete next[id];
-	next[newId] = ranks;
-	return { ...doc, build: { ...doc.build, skillRanks: next } };
+  const dot = id.indexOf(".");
+  if (dot === -1) return doc;
+  const base = id.slice(0, dot);
+  const slug = slugifySkillLabel(newLabel);
+  if (!slug) return doc;
+  const newId = `${base}.${slug}`;
+  if (newId === id) return doc;
+  if (doc.build.skillRanks[newId] != null) return doc;
+  const ranks = doc.build.skillRanks[id];
+  if (ranks == null) return doc;
+  const next = { ...doc.build.skillRanks };
+  delete next[id];
+  next[newId] = ranks;
+  return { ...doc, build: { ...doc.build, skillRanks: next } };
 }
 
 export function toggleFeat(doc: CharacterDoc, featId: string): CharacterDoc {
-	const has = doc.build.feats.includes(featId);
-	const feats = has
-		? doc.build.feats.filter((f) => f !== featId)
-		: [...doc.build.feats, featId];
+  const has = doc.build.feats.includes(featId);
+  const feats = has ? doc.build.feats.filter((f) => f !== featId) : [...doc.build.feats, featId];
 
-	let build = { ...doc.build, feats };
+  let build = { ...doc.build, feats };
 
-	// When removing a feat, also clear its choice so stale entries don't accumulate
-	// in featChoices (e.g. if the player later re-adds a different instance of the feat).
-	if (has && doc.build.featChoices?.[featId] !== undefined) {
-		const featChoices = { ...doc.build.featChoices };
-		delete featChoices[featId];
-		build = { ...build, featChoices };
-	}
+  // When removing a feat, also clear its choice so stale entries don't accumulate
+  // in featChoices (e.g. if the player later re-adds a different instance of the feat).
+  if (has && doc.build.featChoices?.[featId] !== undefined) {
+    const featChoices = { ...doc.build.featChoices };
+    delete featChoices[featId];
+    build = { ...build, featChoices };
+  }
 
-	return { ...doc, build };
+  return { ...doc, build };
 }
 
 /**
@@ -434,39 +387,39 @@ export function toggleFeat(doc: CharacterDoc, featId: string): CharacterDoc {
  * unknown spell.
  */
 export function toggleKnownSpell(
-	doc: CharacterDoc,
-	refData: RefData,
-	spellId: string,
-	classTag: string,
+  doc: CharacterDoc,
+  refData: RefData,
+  spellId: string,
+  classTag: string,
 ): CharacterDoc {
-	const known = knownSpellsFor(doc, refData, classTag);
-	const has = known.includes(spellId);
-	const next = has ? known.filter((s) => s !== spellId) : [...known, spellId];
-	const withKnown = setKnownSpellsFor(doc, refData, classTag, next);
-	// Removing a spell from the spellbook invalidates any prepared instances of
-	// it FOR THIS CLASS — prune them so the prepared loadout never references
-	// unknown spells (a different class's prepared instances of a same-named
-	// spell id, e.g. one on both the cleric and wizard lists, are untouched).
-	const tag = storedClassTag(doc, refData, classTag);
-	if (has && doc.live.spells?.prepared.some((p) => p.spellId === spellId && p.classTag === tag)) {
-		return {
-			...withKnown,
-			live: {
-				...withKnown.live,
-				spells: {
-					...withKnown.live.spells!,
-					prepared: withKnown.live.spells!.prepared.filter(
-						(p) => !(p.spellId === spellId && p.classTag === tag),
-					),
-				},
-			},
-		};
-	}
-	return withKnown;
+  const known = knownSpellsFor(doc, refData, classTag);
+  const has = known.includes(spellId);
+  const next = has ? known.filter((s) => s !== spellId) : [...known, spellId];
+  const withKnown = setKnownSpellsFor(doc, refData, classTag, next);
+  // Removing a spell from the spellbook invalidates any prepared instances of
+  // it FOR THIS CLASS — prune them so the prepared loadout never references
+  // unknown spells (a different class's prepared instances of a same-named
+  // spell id, e.g. one on both the cleric and wizard lists, are untouched).
+  const tag = storedClassTag(doc, refData, classTag);
+  if (has && doc.live.spells?.prepared.some((p) => p.spellId === spellId && p.classTag === tag)) {
+    return {
+      ...withKnown,
+      live: {
+        ...withKnown.live,
+        spells: {
+          ...withKnown.live.spells!,
+          prepared: withKnown.live.spells!.prepared.filter(
+            (p) => !(p.spellId === spellId && p.classTag === tag),
+          ),
+        },
+      },
+    };
+  }
+  return withKnown;
 }
 
 export function setGear(doc: CharacterDoc, gear: ItemInstance[]): CharacterDoc {
-	return { ...doc, build: { ...doc.build, gear } };
+  return { ...doc, build: { ...doc.build, gear } };
 }
 
 /**
@@ -474,21 +427,17 @@ export function setGear(doc: CharacterDoc, gear: ItemInstance[]): CharacterDoc {
  * No deduplication — the user may carry multiple copies of the same item.
  */
 export function addGearItem(doc: CharacterDoc, itemId: string): CharacterDoc {
-	const gear = [...doc.build.gear, { itemId, equipped: true }];
-	return { ...doc, build: { ...doc.build, gear } };
+  const gear = [...doc.build.gear, { itemId, equipped: true }];
+  return { ...doc, build: { ...doc.build, gear } };
 }
 
 /**
  * Append a manually-entered worn armor or shield. `name` is the user-supplied
  * display label (e.g. "Chainmail +1"). The item is equipped by default.
  */
-export function addWornArmor(
-	doc: CharacterDoc,
-	armor: WornArmor,
-	name: string,
-): CharacterDoc {
-	const gear = [...doc.build.gear, { equipped: true, armor, name }];
-	return { ...doc, build: { ...doc.build, gear } };
+export function addWornArmor(doc: CharacterDoc, armor: WornArmor, name: string): CharacterDoc {
+  const gear = [...doc.build.gear, { equipped: true, armor, name }];
+  return { ...doc, build: { ...doc.build, gear } };
 }
 
 /**
@@ -506,75 +455,64 @@ export function addWornArmor(
  * positive. No deduplication.
  */
 export function addWornArmorFromRef(
-	doc: CharacterDoc,
-	armor: ArmorRef,
-	enhancement: number = 0,
-	material?: string,
-	abilities?: string[],
-	masterwork?: boolean,
+  doc: CharacterDoc,
+  armor: ArmorRef,
+  enhancement: number = 0,
+  material?: string,
+  abilities?: string[],
+  masterwork?: boolean,
 ): CharacterDoc {
-	const ref = applyMaterialToArmor(armor, material);
-	const enh = clampInt(enhancement, 0, 10);
-	const mw = enh === 0 && masterwork === true;
-	const matName = material && material !== "steel" ? MATERIALS[material]?.name ?? null : null;
-	const name = [
-		mw ? "Masterwork" : null,
-		matName,
-		armor.name,
-		...(enh > 0 ? [`+${enh}`] : []),
-	].filter(Boolean).join(" ");
+  const ref = applyMaterialToArmor(armor, material);
+  const enh = clampInt(enhancement, 0, 10);
+  const mw = enh === 0 && masterwork === true;
+  const matName = material && material !== "steel" ? (MATERIALS[material]?.name ?? null) : null;
+  const name = [mw ? "Masterwork" : null, matName, armor.name, ...(enh > 0 ? [`+${enh}`] : [])]
+    .filter(Boolean)
+    .join(" ");
 
-	// Masterwork quality (explicit at +0, or implied by a magic enhancement
-	// bonus) reduces the armor check penalty by 1, floored at 0 magnitude so
-	// it can never flip into a positive (bonus) ACP.
-	const acpMagnitude = masterwork || enh >= 1
-		? Math.max(0, (ref.acp ?? 0) - 1)
-		: ref.acp;
+  // Masterwork quality (explicit at +0, or implied by a magic enhancement
+  // bonus) reduces the armor check penalty by 1, floored at 0 magnitude so
+  // it can never flip into a positive (bonus) ACP.
+  const acpMagnitude = masterwork || enh >= 1 ? Math.max(0, (ref.acp ?? 0) - 1) : ref.acp;
 
-	const worn: WornArmor = {
-		slot: ref.slot,
-		ac: ref.ac,
-		...(enh > 0 ? { enhancement: enh } : {}),
-		...(mw ? { masterwork: true } : {}),
-		...(material && material !== "steel" ? { material } : {}),
-		...(ref.maxDex != null ? { maxDex: ref.maxDex } : {}),
-		...(acpMagnitude ? { acp: -acpMagnitude } : {}),
-		...(ref.weightClass ? { type: ref.weightClass } : {}),
-		...(abilities && abilities.length > 0 ? { abilities } : {}),
-	};
-	const inst: ItemInstance = {
-		equipped: true,
-		armor: worn,
-		armorId: armor.id,
-		name,
-	};
-	const gear = [...doc.build.gear, inst];
-	return { ...doc, build: { ...doc.build, gear } };
+  const worn: WornArmor = {
+    slot: ref.slot,
+    ac: ref.ac,
+    ...(enh > 0 ? { enhancement: enh } : {}),
+    ...(mw ? { masterwork: true } : {}),
+    ...(material && material !== "steel" ? { material } : {}),
+    ...(ref.maxDex != null ? { maxDex: ref.maxDex } : {}),
+    ...(acpMagnitude ? { acp: -acpMagnitude } : {}),
+    ...(ref.weightClass ? { type: ref.weightClass } : {}),
+    ...(abilities && abilities.length > 0 ? { abilities } : {}),
+  };
+  const inst: ItemInstance = {
+    equipped: true,
+    armor: worn,
+    armorId: armor.id,
+    name,
+  };
+  const gear = [...doc.build.gear, inst];
+  return { ...doc, build: { ...doc.build, gear } };
 }
 
 /**
  * Toggle the equipped flag for the gear item at `index`.
  * Out-of-range indices are silently ignored.
  */
-export function setGearEquipped(
-	doc: CharacterDoc,
-	index: number,
-	equipped: boolean,
-): CharacterDoc {
-	if (index < 0 || index >= doc.build.gear.length) return doc;
-	const gear = doc.build.gear.map((inst, i) =>
-		i === index ? { ...inst, equipped } : inst,
-	);
-	return { ...doc, build: { ...doc.build, gear } };
+export function setGearEquipped(doc: CharacterDoc, index: number, equipped: boolean): CharacterDoc {
+  if (index < 0 || index >= doc.build.gear.length) return doc;
+  const gear = doc.build.gear.map((inst, i) => (i === index ? { ...inst, equipped } : inst));
+  return { ...doc, build: { ...doc.build, gear } };
 }
 
 /**
  * Remove the gear item at `index`. Out-of-range indices are silently ignored.
  */
 export function removeGear(doc: CharacterDoc, index: number): CharacterDoc {
-	if (index < 0 || index >= doc.build.gear.length) return doc;
-	const gear = doc.build.gear.filter((_, i) => i !== index);
-	return { ...doc, build: { ...doc.build, gear } };
+  if (index < 0 || index >= doc.build.gear.length) return doc;
+  const gear = doc.build.gear.filter((_, i) => i !== index);
+  return { ...doc, build: { ...doc.build, gear } };
 }
 
 /**
@@ -586,23 +524,23 @@ export function removeGear(doc: CharacterDoc, index: number): CharacterDoc {
  * implies masterwork quality).
  */
 export function updateGearItem(
-	doc: CharacterDoc,
-	index: number,
-	patch: Partial<ItemInstance>,
+  doc: CharacterDoc,
+  index: number,
+  patch: Partial<ItemInstance>,
 ): CharacterDoc {
-	if (index < 0 || index >= doc.build.gear.length) return doc;
-	const current = doc.build.gear[index]!;
-	const merged: ItemInstance = { ...current, ...patch };
-	if (merged.armor?.enhancement != null) {
-		merged.armor = { ...merged.armor, enhancement: clampInt(merged.armor.enhancement, 0, 10) };
-	}
-	if (merged.armor?.masterwork && (merged.armor.enhancement ?? 0) > 0) {
-		const armor = { ...merged.armor };
-		delete armor.masterwork;
-		merged.armor = armor;
-	}
-	const gear = doc.build.gear.map((g, i) => (i === index ? merged : g));
-	return { ...doc, build: { ...doc.build, gear } };
+  if (index < 0 || index >= doc.build.gear.length) return doc;
+  const current = doc.build.gear[index]!;
+  const merged: ItemInstance = { ...current, ...patch };
+  if (merged.armor?.enhancement != null) {
+    merged.armor = { ...merged.armor, enhancement: clampInt(merged.armor.enhancement, 0, 10) };
+  }
+  if (merged.armor?.masterwork && (merged.armor.enhancement ?? 0) > 0) {
+    const armor = { ...merged.armor };
+    delete armor.masterwork;
+    merged.armor = armor;
+  }
+  const gear = doc.build.gear.map((g, i) => (i === index ? merged : g));
+  return { ...doc, build: { ...doc.build, gear } };
 }
 
 /**
@@ -611,34 +549,28 @@ export function updateGearItem(
  * the engine falls back to the rules-average. Otherwise the value is stored as a
  * clamped positive integer (1..100000).
  */
-export function setMaxHpOverride(
-	doc: CharacterDoc,
-	value: number | null,
-): CharacterDoc {
-	if (value === null || Number.isNaN(value) || value <= 0) {
-		const build = { ...doc.build };
-		delete build.maxHpOverride;
-		return { ...doc, build };
-	}
-	const clamped = clampInt(value, 1, 100000);
-	return { ...doc, build: { ...doc.build, maxHpOverride: clamped } };
+export function setMaxHpOverride(doc: CharacterDoc, value: number | null): CharacterDoc {
+  if (value === null || Number.isNaN(value) || value <= 0) {
+    const build = { ...doc.build };
+    delete build.maxHpOverride;
+    return { ...doc, build };
+  }
+  const clamped = clampInt(value, 1, 100000);
+  return { ...doc, build: { ...doc.build, maxHpOverride: clamped } };
 }
 
 /**
  * Set the HP calculation mode. `"average"` (default) uses PF1 standard averages;
  * `"max"` maximises every die; `"rolled"` uses per-level rolls stored in `hpRolls`.
  */
-export function setHpMode(
-	doc: CharacterDoc,
-	mode: "average" | "max" | "rolled",
-): CharacterDoc {
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			settings: { ...doc.build.settings, hpMode: mode },
-		},
-	};
+export function setHpMode(doc: CharacterDoc, mode: "average" | "max" | "rolled"): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, hpMode: mode },
+    },
+  };
 }
 
 /**
@@ -648,17 +580,14 @@ export function setHpMode(
  * `restHp` doc comment for the full rule (and why full bed rest is out of
  * scope for v1).
  */
-export function setRestMode(
-	doc: CharacterDoc,
-	mode: "full" | "natural",
-): CharacterDoc {
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			settings: { ...doc.build.settings, restMode: mode },
-		},
-	};
+export function setRestMode(doc: CharacterDoc, mode: "full" | "natural"): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, restMode: mode },
+    },
+  };
 }
 
 /**
@@ -667,33 +596,26 @@ export function setRestMode(
  * value is still recorded so the UI can display it.
  * `value` is clamped to 1..100.
  */
-export function setHpRoll(
-	doc: CharacterDoc,
-	charLevel: number,
-	value: number,
-): CharacterDoc {
-	if (charLevel < 1) return doc;
-	const clamped = clampInt(value, 1, 100);
-	const rolls = [...(doc.build.hpRolls ?? [])];
-	rolls[charLevel - 1] = clamped;
-	return { ...doc, build: { ...doc.build, hpRolls: rolls } };
+export function setHpRoll(doc: CharacterDoc, charLevel: number, value: number): CharacterDoc {
+  if (charLevel < 1) return doc;
+  const clamped = clampInt(value, 1, 100);
+  const rolls = [...(doc.build.hpRolls ?? [])];
+  rolls[charLevel - 1] = clamped;
+  return { ...doc, build: { ...doc.build, hpRolls: rolls } };
 }
 
 /**
  * Toggle the FCB house-rule. When true, each favored-class level can grant
  * both +1 HP and +1 skill rank simultaneously via the `"both"` option.
  */
-export function setFcbHouserule(
-	doc: CharacterDoc,
-	enabled: boolean,
-): CharacterDoc {
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			settings: { ...doc.build.settings, fcbHouserule: enabled },
-		},
-	};
+export function setFcbHouserule(doc: CharacterDoc, enabled: boolean): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, fcbHouserule: enabled },
+    },
+  };
 }
 
 /**
@@ -701,40 +623,34 @@ export function setFcbHouserule(
  * tracker hides the hero-points panel and the cap override is ignored. The
  * live pool is left untouched so re-enabling restores the previous count.
  */
-export function setHeroPointsEnabled(
-	doc: CharacterDoc,
-	enabled: boolean,
-): CharacterDoc {
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			settings: { ...doc.build.settings, heroPointsEnabled: enabled },
-		},
-	};
+export function setHeroPointsEnabled(doc: CharacterDoc, enabled: boolean): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, heroPointsEnabled: enabled },
+    },
+  };
 }
 
 /**
  * Override the maximum number of hero points the character may hold.
  * `null` or <= 0 removes the override, falling back to the default (3).
  */
-export function setHeroPointsCap(
-	doc: CharacterDoc,
-	cap: number | null,
-): CharacterDoc {
-	if (cap === null || Number.isNaN(cap) || cap <= 0) {
-		const settings = { ...doc.build.settings };
-		delete settings.heroPointsCap;
-		return { ...doc, build: { ...doc.build, settings } };
-	}
-	const clamped = clampInt(cap, 1, 999);
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			settings: { ...doc.build.settings, heroPointsCap: clamped },
-		},
-	};
+export function setHeroPointsCap(doc: CharacterDoc, cap: number | null): CharacterDoc {
+  if (cap === null || Number.isNaN(cap) || cap <= 0) {
+    const settings = { ...doc.build.settings };
+    delete settings.heroPointsCap;
+    return { ...doc, build: { ...doc.build, settings } };
+  }
+  const clamped = clampInt(cap, 1, 999);
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, heroPointsCap: clamped },
+    },
+  };
 }
 
 /**
@@ -743,27 +659,24 @@ export function setHeroPointsCap(
  * live `xp` total is left untouched so re-enabling restores the prior count.
  */
 export function setXpEnabled(doc: CharacterDoc, enabled: boolean): CharacterDoc {
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			settings: { ...doc.build.settings, xpEnabled: enabled },
-		},
-	};
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, xpEnabled: enabled },
+    },
+  };
 }
 
 /** Set the character's XP advancement track (slow/medium/fast). */
-export function setXpTrack(
-	doc: CharacterDoc,
-	track: "slow" | "medium" | "fast",
-): CharacterDoc {
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			settings: { ...doc.build.settings, xpTrack: track },
-		},
-	};
+export function setXpTrack(doc: CharacterDoc, track: "slow" | "medium" | "fast"): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, xpTrack: track },
+    },
+  };
 }
 
 /**
@@ -771,61 +684,55 @@ export function setXpTrack(
  * falling back to a 0 addend. Clamped to [-999, 999] (negative allows a GM
  * to claw back ranks). Mirrors `setHeroPointsCap` for symmetry/clamp posture.
  */
-export function setGmGrantSkillRanks(
-	doc: CharacterDoc,
-	n: number | null,
-): CharacterDoc {
-	return setGmGrant(doc, "skillRanks", n);
+export function setGmGrantSkillRanks(doc: CharacterDoc, n: number | null): CharacterDoc {
+  return setGmGrant(doc, "skillRanks", n);
 }
 
 /**
  * Set the GM-grant feat-slot addend (homebrew). Same posture as
  * `setGmGrantSkillRanks`.
  */
-export function setGmGrantFeatSlots(
-	doc: CharacterDoc,
-	n: number | null,
-): CharacterDoc {
-	return setGmGrant(doc, "featSlots", n);
+export function setGmGrantFeatSlots(doc: CharacterDoc, n: number | null): CharacterDoc {
+  return setGmGrant(doc, "featSlots", n);
 }
 
 function setGmGrant(
-	doc: CharacterDoc,
-	key: "skillRanks" | "featSlots",
-	n: number | null,
+  doc: CharacterDoc,
+  key: "skillRanks" | "featSlots",
+  n: number | null,
 ): CharacterDoc {
-	const current = doc.build.gmGrants ?? {};
-	if (n === null || Number.isNaN(n)) {
-		if (!(key in current)) {
-			return { ...doc, build: { ...doc.build, gmGrants: current } };
-		}
-		const next = { ...current };
-		delete next[key];
-		const cleaned = Object.keys(next).length === 0 ? undefined : next;
-		return { ...doc, build: { ...doc.build, gmGrants: cleaned } };
-	}
-	const clamped = clampInt(n, -999, 999);
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			gmGrants: { ...current, [key]: clamped },
-		},
-	};
+  const current = doc.build.gmGrants ?? {};
+  if (n === null || Number.isNaN(n)) {
+    if (!(key in current)) {
+      return { ...doc, build: { ...doc.build, gmGrants: current } };
+    }
+    const next = { ...current };
+    delete next[key];
+    const cleaned = Object.keys(next).length === 0 ? undefined : next;
+    return { ...doc, build: { ...doc.build, gmGrants: cleaned } };
+  }
+  const clamped = clampInt(n, -999, 999);
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      gmGrants: { ...current, [key]: clamped },
+    },
+  };
 }
 
 /** Allowlisted keys for manual stat overrides. */
 export const STAT_OVERRIDE_KEYS = [
-	"hp.max",
-	"ac.normal",
-	"speeds.land",
-	"initiative.total",
-	"bab",
-	"cmd",
-	"cmb",
-	"saves.fort.total",
-	"saves.ref.total",
-	"saves.will.total",
+  "hp.max",
+  "ac.normal",
+  "speeds.land",
+  "initiative.total",
+  "bab",
+  "cmd",
+  "cmb",
+  "saves.fort.total",
+  "saves.ref.total",
+  "saves.will.total",
 ] as const;
 
 export type StatOverrideKey = (typeof STAT_OVERRIDE_KEYS)[number];
@@ -836,23 +743,23 @@ export type StatOverrideKey = (typeof STAT_OVERRIDE_KEYS)[number];
  * (the engine applies the override and appends provenance in the breakdown).
  */
 export function setStatOverride(
-	doc: CharacterDoc,
-	key: StatOverrideKey,
-	value: number | null,
+  doc: CharacterDoc,
+  key: StatOverrideKey,
+  value: number | null,
 ): CharacterDoc {
-	const overrides = { ...(doc.build.settings?.statOverrides ?? {}) };
-	if (value === null || Number.isNaN(value)) {
-		delete overrides[key];
-	} else {
-		overrides[key] = value;
-	}
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			settings: { ...doc.build.settings, statOverrides: overrides },
-		},
-	};
+  const overrides = { ...doc.build.settings?.statOverrides };
+  if (value === null || Number.isNaN(value)) {
+    delete overrides[key];
+  } else {
+    overrides[key] = value;
+  }
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, statOverrides: overrides },
+    },
+  };
 }
 
 /**
@@ -862,19 +769,19 @@ export function setStatOverride(
  * Out-of-range indices are silently ignored.
  */
 export function setFavoredClassBonus(
-	doc: CharacterDoc,
-	levelIndex: number,
-	choice: "hp" | "skill" | "other" | "both" | "alternate",
+  doc: CharacterDoc,
+  levelIndex: number,
+  choice: "hp" | "skill" | "other" | "both" | "alternate",
 ): CharacterDoc {
-	if (levelIndex < 0) return doc;
-	const arr = [...(doc.build.favoredClassBonus ?? [])];
-	arr[levelIndex] = choice;
-	return { ...doc, build: { ...doc.build, favoredClassBonus: arr } };
+  if (levelIndex < 0) return doc;
+  const arr = [...(doc.build.favoredClassBonus ?? [])];
+  arr[levelIndex] = choice;
+  return { ...doc, build: { ...doc.build, favoredClassBonus: arr } };
 }
 
 /** Total character level (sum of class levels). */
 export function totalLevel(doc: CharacterDoc): number {
-	return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
+  return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
 }
 
 /**
@@ -882,32 +789,26 @@ export function totalLevel(doc: CharacterDoc): number {
  * `floor(totalLevel / 4)`. Returns the doc unchanged when the budget is
  * exhausted (so callers can always call unconditionally).
  */
-export function addAbilityIncrease(
-	doc: CharacterDoc,
-	ability: AbilityId,
-): CharacterDoc {
-	const allowed = Math.floor(totalLevel(doc) / 4);
-	const current = doc.build.abilityIncreases ?? [];
-	if (current.length >= allowed) return doc;
-	return {
-		...doc,
-		build: { ...doc.build, abilityIncreases: [...current, ability] },
-	};
+export function addAbilityIncrease(doc: CharacterDoc, ability: AbilityId): CharacterDoc {
+  const allowed = Math.floor(totalLevel(doc) / 4);
+  const current = doc.build.abilityIncreases ?? [];
+  if (current.length >= allowed) return doc;
+  return {
+    ...doc,
+    build: { ...doc.build, abilityIncreases: [...current, ability] },
+  };
 }
 
 /**
  * Remove the LAST occurrence of `ability` from `build.abilityIncreases`.
  * No-op if that ability has no entries.
  */
-export function removeAbilityIncrease(
-	doc: CharacterDoc,
-	ability: AbilityId,
-): CharacterDoc {
-	const current = doc.build.abilityIncreases ?? [];
-	const lastIdx = current.lastIndexOf(ability);
-	if (lastIdx === -1) return doc;
-	const next = [...current.slice(0, lastIdx), ...current.slice(lastIdx + 1)];
-	return { ...doc, build: { ...doc.build, abilityIncreases: next } };
+export function removeAbilityIncrease(doc: CharacterDoc, ability: AbilityId): CharacterDoc {
+  const current = doc.build.abilityIncreases ?? [];
+  const lastIdx = current.lastIndexOf(ability);
+  if (lastIdx === -1) return doc;
+  const next = [...current.slice(0, lastIdx), ...current.slice(lastIdx + 1)];
+  return { ...doc, build: { ...doc.build, abilityIncreases: next } };
 }
 
 /**
@@ -918,24 +819,24 @@ export function removeAbilityIncrease(
  * count per ability.
  */
 export function setAbilityIncreaseCount(
-	doc: CharacterDoc,
-	ability: AbilityId,
-	count: number,
+  doc: CharacterDoc,
+  ability: AbilityId,
+  count: number,
 ): CharacterDoc {
-	const allowed = Math.floor(totalLevel(doc) / 4);
-	const current = doc.build.abilityIncreases ?? [];
-	const others = current.filter((a) => a !== ability);
-	const room = Math.max(0, allowed - others.length);
-	const target = clampInt(count, 0, room);
-	const have = current.length - others.length;
-	if (target === have) return doc;
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			abilityIncreases: [...others, ...Array(target).fill(ability)],
-		},
-	};
+  const allowed = Math.floor(totalLevel(doc) / 4);
+  const current = doc.build.abilityIncreases ?? [];
+  const others = current.filter((a) => a !== ability);
+  const room = Math.max(0, allowed - others.length);
+  const target = clampInt(count, 0, room);
+  const have = current.length - others.length;
+  if (target === have) return doc;
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      abilityIncreases: [...others, ...Array(target).fill(ability)],
+    },
+  };
 }
 
 /**
@@ -950,20 +851,20 @@ export function setAbilityIncreaseCount(
  *    plus their combined bonus-equivalent never exceeds +10.
  */
 function normalizeWeaponInstance(weapon: WeaponInstance): WeaponInstance {
-	const next = { ...weapon };
-	if (next.enhancement != null) {
-		next.enhancement = clampInt(next.enhancement, 0, 10);
-	}
-	const enh = next.enhancement ?? 0;
-	if (enh > 0) delete next.masterwork;
-	if (enh < 1) {
-		delete next.abilities;
-	} else if (next.abilities && next.abilities.length > 0) {
-		const kept = sanitizeAbilities(next.abilities, enh);
-		if (kept.length > 0) next.abilities = kept;
-		else delete next.abilities;
-	}
-	return next;
+  const next = { ...weapon };
+  if (next.enhancement != null) {
+    next.enhancement = clampInt(next.enhancement, 0, 10);
+  }
+  const enh = next.enhancement ?? 0;
+  if (enh > 0) delete next.masterwork;
+  if (enh < 1) {
+    delete next.abilities;
+  } else if (next.abilities && next.abilities.length > 0) {
+    const kept = sanitizeAbilities(next.abilities, enh);
+    if (kept.length > 0) next.abilities = kept;
+    else delete next.abilities;
+  }
+  return next;
 }
 
 /**
@@ -971,8 +872,8 @@ function normalizeWeaponInstance(weapon: WeaponInstance): WeaponInstance {
  * No deduplication — the same weapon template may be added multiple times.
  */
 export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterDoc {
-	const weapons = [...(doc.build.weapons ?? []), normalizeWeaponInstance(weapon)];
-	return { ...doc, build: { ...doc.build, weapons } };
+  const weapons = [...(doc.build.weapons ?? []), normalizeWeaponInstance(weapon)];
+  return { ...doc, build: { ...doc.build, weapons } };
 }
 
 /**
@@ -990,46 +891,45 @@ export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterD
  * combined-bonus cap, are dropped by `normalizeWeaponInstance`.
  */
 export function addWeaponFromRef(
-	doc: CharacterDoc,
-	weapon: WeaponRef,
-	enhancement: number = 0,
-	material?: string,
-	abilities?: string[],
-	masterwork?: boolean,
+  doc: CharacterDoc,
+  weapon: WeaponRef,
+  enhancement: number = 0,
+  material?: string,
+  abilities?: string[],
+  masterwork?: boolean,
 ): CharacterDoc {
-	const enh = clampInt(enhancement, 0, 10);
-	// Special abilities (including keen's crit-range doubling) require the
-	// weapon to carry at least a +1 enhancement bonus — see normalizeWeaponInstance.
-	const effectiveAbilities = enh >= 1 ? abilities : undefined;
-	const ref = applyAbilitiesToWeapon(weapon, effectiveAbilities);
-	const mw = enh === 0 && masterwork === true;
-	const matName = material && material !== "steel" ? MATERIALS[material]?.name ?? null : null;
-	const name = [
-		mw ? "Masterwork" : null,
-		matName,
-		weapon.name,
-		...(enh > 0 ? [`+${enh}`] : []),
-	].filter(Boolean).join(" ");
-	const instance: WeaponInstance = normalizeWeaponInstance({
-		name,
-		attackAbility: ref.attackAbility,
-		damageAbility: ref.damageAbility,
-		category: ref.category,
-		...(enh > 0 ? { enhancement: enh } : {}),
-		...(mw ? { masterwork: true } : {}),
-		...(material && material !== "steel" ? { material } : {}),
-		...(effectiveAbilities && effectiveAbilities.length > 0 ? { abilities: effectiveAbilities } : {}),
-		...(ref.damageDice ? { damageDice: ref.damageDice } : {}),
-		...(ref.critRange && ref.critRange !== 20 ? { critRange: ref.critRange } : {}),
-		...(ref.critMult && ref.critMult !== 2 ? { critMult: ref.critMult } : {}),
-		...(ref.damageMultiplier && ref.damageMultiplier !== 1
-			? { damageMultiplier: ref.damageMultiplier }
-			: {}),
-		...(ref.group ? { group: ref.group } : {}),
-		weaponId: weapon.id,
-	});
-	const weapons = [...(doc.build.weapons ?? []), instance];
-	return { ...doc, build: { ...doc.build, weapons } };
+  const enh = clampInt(enhancement, 0, 10);
+  // Special abilities (including keen's crit-range doubling) require the
+  // weapon to carry at least a +1 enhancement bonus — see normalizeWeaponInstance.
+  const effectiveAbilities = enh >= 1 ? abilities : undefined;
+  const ref = applyAbilitiesToWeapon(weapon, effectiveAbilities);
+  const mw = enh === 0 && masterwork === true;
+  const matName = material && material !== "steel" ? (MATERIALS[material]?.name ?? null) : null;
+  const name = [mw ? "Masterwork" : null, matName, weapon.name, ...(enh > 0 ? [`+${enh}`] : [])]
+    .filter(Boolean)
+    .join(" ");
+  const instance: WeaponInstance = normalizeWeaponInstance({
+    name,
+    attackAbility: ref.attackAbility,
+    damageAbility: ref.damageAbility,
+    category: ref.category,
+    ...(enh > 0 ? { enhancement: enh } : {}),
+    ...(mw ? { masterwork: true } : {}),
+    ...(material && material !== "steel" ? { material } : {}),
+    ...(effectiveAbilities && effectiveAbilities.length > 0
+      ? { abilities: effectiveAbilities }
+      : {}),
+    ...(ref.damageDice ? { damageDice: ref.damageDice } : {}),
+    ...(ref.critRange && ref.critRange !== 20 ? { critRange: ref.critRange } : {}),
+    ...(ref.critMult && ref.critMult !== 2 ? { critMult: ref.critMult } : {}),
+    ...(ref.damageMultiplier && ref.damageMultiplier !== 1
+      ? { damageMultiplier: ref.damageMultiplier }
+      : {}),
+    ...(ref.group ? { group: ref.group } : {}),
+    weaponId: weapon.id,
+  });
+  const weapons = [...(doc.build.weapons ?? []), instance];
+  return { ...doc, build: { ...doc.build, weapons } };
 }
 
 /**
@@ -1039,20 +939,20 @@ export function addWeaponFromRef(
  * {@link normalizeWeaponInstance}. Out-of-range indices are silently ignored.
  */
 export function updateWeapon(
-	doc: CharacterDoc,
-	index: number,
-	patch: Partial<WeaponInstance>,
+  doc: CharacterDoc,
+  index: number,
+  patch: Partial<WeaponInstance>,
 ): CharacterDoc {
-	const weapons = doc.build.weapons ?? [];
-	if (index < 0 || index >= weapons.length) return doc;
-	const merged = normalizeWeaponInstance({ ...weapons[index]!, ...patch });
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			weapons: weapons.map((w, i) => (i === index ? merged : w)),
-		},
-	};
+  const weapons = doc.build.weapons ?? [];
+  if (index < 0 || index >= weapons.length) return doc;
+  const merged = normalizeWeaponInstance({ ...weapons[index]!, ...patch });
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      weapons: weapons.map((w, i) => (i === index ? merged : w)),
+    },
+  };
 }
 
 /**
@@ -1064,35 +964,39 @@ export function updateWeapon(
  * the stale value (so reverting a weapon from +1 back to +0 wouldn't stick).
  * Out-of-range indices are silently ignored.
  */
-export function replaceWeapon(doc: CharacterDoc, index: number, weapon: WeaponInstance): CharacterDoc {
-	const weapons = doc.build.weapons ?? [];
-	if (index < 0 || index >= weapons.length) return doc;
-	const next = normalizeWeaponInstance(weapon);
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			weapons: weapons.map((w, i) => (i === index ? next : w)),
-		},
-	};
+export function replaceWeapon(
+  doc: CharacterDoc,
+  index: number,
+  weapon: WeaponInstance,
+): CharacterDoc {
+  const weapons = doc.build.weapons ?? [];
+  if (index < 0 || index >= weapons.length) return doc;
+  const next = normalizeWeaponInstance(weapon);
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      weapons: weapons.map((w, i) => (i === index ? next : w)),
+    },
+  };
 }
 
 /**
  * Remove the weapon at `index`. Out-of-range indices are silently ignored.
  */
 export function removeWeapon(doc: CharacterDoc, index: number): CharacterDoc {
-	const weapons = doc.build.weapons ?? [];
-	if (index < 0 || index >= weapons.length) return doc;
-	return {
-		...doc,
-		build: {
-			...doc.build,
-			weapons: weapons.filter((_, i) => i !== index),
-		},
-	};
+  const weapons = doc.build.weapons ?? [];
+  if (index < 0 || index >= weapons.length) return doc;
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      weapons: weapons.filter((_, i) => i !== index),
+    },
+  };
 }
 
 function clampInt(n: number, min: number, max: number): number {
-	if (Number.isNaN(n)) return min;
-	return Math.max(min, Math.min(max, Math.trunc(n)));
+  if (Number.isNaN(n)) return min;
+  return Math.max(min, Math.min(max, Math.trunc(n)));
 }

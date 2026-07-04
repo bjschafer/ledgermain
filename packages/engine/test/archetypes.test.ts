@@ -83,9 +83,7 @@ describe("resolveClassFeatures: Two-Handed Fighter swaps Bravery for Shattering 
   });
 
   it("other base features are untouched", () => {
-    const armorTraining1 = classFeatures.find(
-      (f) => f.name === "Armor Training" && f.level === 3,
-    )!;
+    const armorTraining1 = classFeatures.find((f) => f.name === "Armor Training" && f.level === 3)!;
     expect(armorTraining1.applied).toBe(false); // swapped by Overhand Chop at L3
     expect(armorTraining1.replacedBy).toBe("Overhand Chop");
   });
@@ -164,9 +162,7 @@ describe("resolveClassFeatures: Acrobat (rogue archetype) swaps Trap Sense for S
   });
 
   it("archetype's own features are listed, including the unpaired L1 grant", () => {
-    const expertAcrobat = activeArchetypes[0]!.features.find(
-      (f) => f.name === "Expert Acrobat",
-    )!;
+    const expertAcrobat = activeArchetypes[0]!.features.find((f) => f.name === "Expert Acrobat")!;
     expect(expertAcrobat).toBeDefined();
     expect(expertAcrobat.ambiguous).toBe(true);
   });

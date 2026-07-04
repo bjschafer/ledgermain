@@ -92,18 +92,10 @@
     "subType": "base",
     "tag": "wizard",
     "uuid": "Compendium.pf1.classes.Item.0c4lYDywj6bQ0i8r",
-    "weaponProf": [
-      "Club",
-      "Dagger",
-      "Heavy Crossbow",
-      "Light Crossbow",
-      "Quarterstaff"
-    ]
+    "weaponProf": ["Club", "Dagger", "Heavy Crossbow", "Light Crossbow", "Quarterstaff"]
   },
   "24b0LaabeAlUx5gN": {
-    "armorProf": [
-      "lgt"
-    ],
+    "armorProf": ["lgt"],
     "bab": "med",
     "classSkills": [
       "acr",
@@ -214,20 +206,10 @@
     "subType": "base",
     "tag": "rogue",
     "uuid": "Compendium.pf1.classes.Item.24b0LaabeAlUx5gN",
-    "weaponProf": [
-      "simple",
-      "Hand Crossbow",
-      "Rapier",
-      "Sap",
-      "Shortbow",
-      "Shortsword"
-    ]
+    "weaponProf": ["simple", "Hand Crossbow", "Rapier", "Sap", "Shortbow", "Shortsword"]
   },
   "6GjOjO6r3R06fLwE": {
-    "armorProf": [
-      "lgt",
-      "shl"
-    ],
+    "armorProf": ["lgt", "shl"],
     "bab": "med",
     "classSkills": [
       "acr",
@@ -436,23 +418,10 @@
     "subType": "base",
     "tag": "bard",
     "uuid": "Compendium.pf1.classes.Item.6GjOjO6r3R06fLwE",
-    "weaponProf": [
-      "simple",
-      "Longsword",
-      "Rapier",
-      "Sap",
-      "Shortsword",
-      "Shortbow",
-      "Whip"
-    ]
+    "weaponProf": ["simple", "Longsword", "Rapier", "Sap", "Shortsword", "Shortbow", "Whip"]
   },
   "7eZQP0MzeO2svmVF": {
-    "armorProf": [
-      "lgt",
-      "med",
-      "shl",
-      "No Metal Armors"
-    ],
+    "armorProf": ["lgt", "med", "shl", "No Metal Armors"],
     "bab": "med",
     "classSkills": [
       "art",
@@ -613,19 +582,7 @@
   "AoWSbnuTSGIxmv61": {
     "armorProf": [],
     "bab": "low",
-    "classSkills": [
-      "apr",
-      "art",
-      "blf",
-      "crf",
-      "fly",
-      "int",
-      "kar",
-      "lor",
-      "pro",
-      "spl",
-      "umd"
-    ],
+    "classSkills": ["apr", "art", "blf", "crf", "fly", "int", "kar", "lor", "pro", "spl", "umd"],
     "description": "<p>Scions of innately magical bloodlines, the chosen of deities, the spawn of monsters, pawns of fate and destiny, or simply flukes of fickle magic, sorcerers look within themselves for arcane prowess and draw forth might few mortals can imagine. Emboldened by lives ever threatening to be consumed by their innate powers, these magic-touched souls endlessly indulge in and refine their mysterious abilities, gradually learning how to harness their birthright and coax forth ever greater arcane feats. Just as varied as these innately powerful spellcasters’ abilities and inspirations are the ways in which they choose to utilize their gifts. While some seek to control their abilities through meditation and discipline, becoming masters of their fantastic birthright, others give in to their magic, letting it rule their lives with often explosive results. Regardless, sorcerers live and breathe that which other spellcasters devote their lives to mastering, and for them magic is more than a boon or a field of study; it is life itself.</p><p><strong>Role</strong>: Sorcerers excel at casting a selection of favored spells frequently, making them powerful battle mages. As they become familiar with a specific and ever-widening set of spells, sorcerers often discover new and versatile ways of making use of magics other spellcasters might overlook. Their bloodlines also grant them additional abilities, assuring that no two sorcerers are ever quite alike.</p>",
     "features": [
       {
@@ -696,16 +653,10 @@
     "subType": "base",
     "tag": "sorcerer",
     "uuid": "Compendium.pf1.classes.Item.AoWSbnuTSGIxmv61",
-    "weaponProf": [
-      "simple"
-    ]
+    "weaponProf": ["simple"]
   },
   "SjFqQceVeVBzBwgn": {
-    "armorProf": [
-      "lgt",
-      "med",
-      "shl"
-    ],
+    "armorProf": ["lgt", "med", "shl"],
     "bab": "med",
     "classSkills": [
       "apr",
@@ -799,10 +750,7 @@
     "subType": "base",
     "tag": "cleric",
     "uuid": "Compendium.pf1.classes.Item.SjFqQceVeVBzBwgn",
-    "weaponProf": [
-      "simple",
-      "Favored Weapon"
-    ]
+    "weaponProf": ["simple", "Favored Weapon"]
   },
   "W8dxwZ1CZiwLKsqr": {
     "armorProf": [],
@@ -1030,13 +978,7 @@
     ]
   },
   "WLqBCT5DqmGAx8Wd": {
-    "armorProf": [
-      "lgt",
-      "med",
-      "hvy",
-      "shl",
-      "twr"
-    ],
+    "armorProf": ["lgt", "med", "hvy", "shl", "twr"],
     "bab": "high",
     "classSkills": [
       "art",
@@ -1115,17 +1057,10 @@
     "subType": "base",
     "tag": "fighter",
     "uuid": "Compendium.pf1.classes.Item.WLqBCT5DqmGAx8Wd",
-    "weaponProf": [
-      "simple",
-      "martial"
-    ]
+    "weaponProf": ["simple", "martial"]
   },
   "g3pq7xWWdUVYw6ai": {
-    "armorProf": [
-      "lgt",
-      "med",
-      "shl"
-    ],
+    "armorProf": ["lgt", "med", "shl"],
     "bab": "high",
     "classSkills": [
       "acr",
@@ -1239,18 +1174,10 @@
     "subType": "base",
     "tag": "barbarian",
     "uuid": "Compendium.pf1.classes.Item.g3pq7xWWdUVYw6ai",
-    "weaponProf": [
-      "simple",
-      "martial"
-    ]
+    "weaponProf": ["simple", "martial"]
   },
   "ohptcds1d5oG6Bjh": {
-    "armorProf": [
-      "lgt",
-      "med",
-      "hvy",
-      "shl"
-    ],
+    "armorProf": ["lgt", "med", "hvy", "shl"],
     "bab": "high",
     "classSkills": [
       "art",
@@ -1399,17 +1326,10 @@
     "subType": "base",
     "tag": "paladin",
     "uuid": "Compendium.pf1.classes.Item.ohptcds1d5oG6Bjh",
-    "weaponProf": [
-      "simple",
-      "martial"
-    ]
+    "weaponProf": ["simple", "martial"]
   },
   "w3wjj6s3N69BsMc3": {
-    "armorProf": [
-      "lgt",
-      "med",
-      "shl"
-    ],
+    "armorProf": ["lgt", "med", "shl"],
     "bab": "high",
     "classSkills": [
       "art",
@@ -1570,9 +1490,6 @@
     "subType": "base",
     "tag": "ranger",
     "uuid": "Compendium.pf1.classes.Item.w3wjj6s3N69BsMc3",
-    "weaponProf": [
-      "simple",
-      "martial"
-    ]
+    "weaponProf": ["simple", "martial"]
   }
 }

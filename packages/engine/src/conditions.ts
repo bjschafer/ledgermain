@@ -45,34 +45,20 @@ const CONDITION_LIST: ConditionDef[] = [
     id: "shaken",
     name: "Shaken",
     summary: "-2 penalty on attack rolls, saving throws, and skill checks.",
-    changes: [
-      u("-2", "attack"),
-      u("-2", "allSavingThrows"),
-      u("-2", "skills"),
-    ],
+    changes: [u("-2", "attack"), u("-2", "allSavingThrows"), u("-2", "skills")],
   },
   {
     id: "frightened",
     name: "Frightened",
-    summary:
-      "-2 on attacks, saves, and skill checks; must flee from the source if able.",
-    changes: [
-      u("-2", "attack"),
-      u("-2", "allSavingThrows"),
-      u("-2", "skills"),
-    ],
+    summary: "-2 on attacks, saves, and skill checks; must flee from the source if able.",
+    changes: [u("-2", "attack"), u("-2", "allSavingThrows"), u("-2", "skills")],
     contextNotes: [{ target: "allChecks", text: "Must flee from the source of fear if able." }],
   },
   {
     id: "sickened",
     name: "Sickened",
     summary: "-2 on attack rolls, weapon damage, saving throws, and skill/ability checks.",
-    changes: [
-      u("-2", "attack"),
-      u("-2", "allSavingThrows"),
-      u("-2", "skills"),
-      u("-2", "wdamage"),
-    ],
+    changes: [u("-2", "attack"), u("-2", "allSavingThrows"), u("-2", "skills"), u("-2", "wdamage")],
   },
   {
     id: "fatigued",
@@ -101,7 +87,10 @@ const CONDITION_LIST: ConditionDef[] = [
     summary: "-4 to Dexterity, -2 on attacks and most checks; cannot move freely.",
     changes: [u("-4", "dex"), u("-2", "attack")],
     contextNotes: [
-      { target: "allChecks", text: "-2 on most checks except to escape; cannot take actions needing two hands." },
+      {
+        target: "allChecks",
+        text: "-2 on most checks except to escape; cannot take actions needing two hands.",
+      },
     ],
   },
   {
@@ -110,7 +99,10 @@ const CONDITION_LIST: ConditionDef[] = [
     summary: "-4 on melee attack rolls and -4 AC vs melee; +4 AC vs ranged.",
     changes: [u("-4", "mattack"), u("-4", "ac")],
     contextNotes: [
-      { target: "ac", text: "The -4 AC applies only vs melee; you instead gain +4 AC vs ranged (not auto-applied)." },
+      {
+        target: "ac",
+        text: "The -4 AC applies only vs melee; you instead gain +4 AC vs ranged (not auto-applied).",
+      },
     ],
   },
   {
@@ -124,7 +116,12 @@ const CONDITION_LIST: ConditionDef[] = [
     name: "Deafened",
     summary: "-4 on initiative; 20% spell failure for spells with verbal components.",
     changes: [u("-4", "init")],
-    contextNotes: [{ target: "allChecks", text: "20% chance of spell failure for spells with verbal components." }],
+    contextNotes: [
+      {
+        target: "allChecks",
+        text: "20% chance of spell failure for spells with verbal components.",
+      },
+    ],
   },
   {
     id: "blinded",
@@ -132,7 +129,10 @@ const CONDITION_LIST: ConditionDef[] = [
     summary: "-2 AC, loses Dexterity to AC, half speed, -4 on Strength/Dexterity skill checks.",
     changes: [u("-2", "ac")],
     contextNotes: [
-      { target: "ac", text: "Also loses Dexterity bonus to AC and is flat-footed (not auto-applied)." },
+      {
+        target: "ac",
+        text: "Also loses Dexterity bonus to AC and is flat-footed (not auto-applied).",
+      },
       { target: "skills", text: "-4 on Strength- and Dexterity-based skill checks." },
     ],
   },
@@ -157,7 +157,8 @@ const CONDITION_LIST: ConditionDef[] = [
   {
     id: "flatFooted",
     name: "Flat-Footed",
-    summary: "Loses Dexterity bonus to AC; cannot make attacks of opportunity. Use the flat-footed AC value.",
+    summary:
+      "Loses Dexterity bonus to AC; cannot make attacks of opportunity. Use the flat-footed AC value.",
     changes: [],
     displayOnly: true,
   },

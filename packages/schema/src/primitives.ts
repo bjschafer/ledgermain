@@ -8,14 +8,7 @@
 /** Six ability scores, by their three-letter abbreviation. */
 export type AbilityId = "str" | "dex" | "con" | "int" | "wis" | "cha";
 
-export const ABILITY_IDS: readonly AbilityId[] = [
-  "str",
-  "dex",
-  "con",
-  "int",
-  "wis",
-  "cha",
-];
+export const ABILITY_IDS: readonly AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
 
 /**
  * Base-attack-bonus progression tier. PF1 has exactly three; the numeric table
@@ -34,16 +27,7 @@ export type SaveTier = "high" | "low";
 export type SkillId = string;
 
 /** Creature size category abbreviations as used by the PF1 data. */
-export type SizeId =
-  | "fine"
-  | "dim"
-  | "tiny"
-  | "sm"
-  | "med"
-  | "lg"
-  | "huge"
-  | "grg"
-  | "col";
+export type SizeId = "fine" | "dim" | "tiny" | "sm" | "med" | "lg" | "huge" | "grg" | "col";
 
 /** A reference to a published source book + page(s). */
 export interface SourceRef {

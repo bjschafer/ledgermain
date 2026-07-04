@@ -87,9 +87,7 @@ export function App() {
             </button>
           )}
           <div className="tagline">
-            {store.refData
-              ? `data ${store.refData.meta.dataVersion.slice(0, 10)}`
-              : ""}
+            {store.refData ? `data ${store.refData.meta.dataVersion.slice(0, 10)}` : ""}
           </div>
         </div>
       </header>

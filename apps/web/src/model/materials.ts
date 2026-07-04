@@ -85,10 +85,7 @@ export const WEAPON_MATERIALS = Object.values(MATERIALS).filter((m) => m.applies
  * patched ref. Returns the original ref unchanged if the material is unknown
  * or has no armor modifiers.
  */
-export function applyMaterialToArmor(
-  armor: ArmorRef,
-  materialId?: string,
-): ArmorRef {
+export function applyMaterialToArmor(armor: ArmorRef, materialId?: string): ArmorRef {
   if (!materialId || materialId === "steel") return armor;
   const mat = MATERIALS[materialId];
   if (!mat?.applyToArmorRef) return armor;

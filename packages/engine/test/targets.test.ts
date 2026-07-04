@@ -22,12 +22,9 @@ describe("isTargetApplied", () => {
     expect(isTargetApplied(target)).toBe(true);
   });
 
-  it.each(["nattack", "allChecks", "carryMult", "sensedv"])(
-    "treats %s as unapplied",
-    (target) => {
-      expect(isTargetApplied(target)).toBe(false);
-    },
-  );
+  it.each(["nattack", "allChecks", "carryMult", "sensedv"])("treats %s as unapplied", (target) => {
+    expect(isTargetApplied(target)).toBe(false);
+  });
 });
 
 describe("unappliedChanges", () => {

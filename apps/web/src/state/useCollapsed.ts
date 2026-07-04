@@ -31,13 +31,8 @@ function writeStorage(key: string, val: boolean): void {
  * @param defaultCollapsed  Initial state when no stored value exists. Default `false`.
  * @returns [collapsed, toggle] — `toggle` flips the state and persists it.
  */
-export function useCollapsed(
-  key: string,
-  defaultCollapsed = false,
-): [boolean, () => void] {
-  const [collapsed, setCollapsed] = useState<boolean>(() =>
-    readStorage(key, defaultCollapsed),
-  );
+export function useCollapsed(key: string, defaultCollapsed = false): [boolean, () => void] {
+  const [collapsed, setCollapsed] = useState<boolean>(() => readStorage(key, defaultCollapsed));
 
   const toggle = useCallback(() => {
     setCollapsed((c) => {

@@ -33,23 +33,17 @@ export function Panel({
   /** Initial collapsed state when no localStorage value exists. Default false. */
   defaultCollapsed?: boolean;
 }) {
-  const [collapsed, toggle] = useCollapsed(
-    storageKey ?? "",
-    defaultCollapsed,
-  );
+  const [collapsed, toggle] = useCollapsed(storageKey ?? "", defaultCollapsed);
   const isCollapsible = storageKey != null;
 
-  const [height, setHeight, resetHeight] = useResizableHeight(
-    storageKey ?? title,
-  );
+  const [height, setHeight, resetHeight] = useResizableHeight(storageKey ?? title);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   const onResizeStart = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
       const startY = e.clientY;
-      const startHeight =
-        bodyRef.current?.getBoundingClientRect().height ?? 0;
+      const startHeight = bodyRef.current?.getBoundingClientRect().height ?? 0;
 
       const onMove = (moveEvent: globalThis.MouseEvent) => {
         setHeight(startHeight + (moveEvent.clientY - startY));
@@ -69,10 +63,7 @@ export function Panel({
         // Don't collapse when the user interacts with controls inside the header
         // (e.g. the "Advance round" or "Rest" buttons in tracker panels).
         // e.target can be a text node, so resolve to the nearest Element first.
-        const node =
-          e.target instanceof Element
-            ? e.target
-            : (e.target as Node).parentElement;
+        const node = e.target instanceof Element ? e.target : (e.target as Node).parentElement;
         const interactive = node?.closest(
           "button, input, select, textarea, [role='button'], [contenteditable='true']",
         );
@@ -117,7 +108,9 @@ export function Panel({
   const bodyVisible = !isCollapsible || !collapsed;
 
   return (
-    <section className={`panel${isCollapsible ? " collapsible" : ""}${isCollapsible && collapsed ? " is-collapsed" : ""}`}>
+    <section
+      className={`panel${isCollapsible ? " collapsible" : ""}${isCollapsible && collapsed ? " is-collapsed" : ""}`}
+    >
       {header}
       {bodyVisible ? (
         <div

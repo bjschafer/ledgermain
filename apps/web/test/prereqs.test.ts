@@ -37,10 +37,7 @@ describe("feat prereq gating", () => {
   it("ALLOWS a feat once every structured prerequisite is met", () => {
     const powerAttack = featByName("Power Attack");
     const cleave = featByName("Cleave");
-    const res = evaluatePrereqs(
-      cleave,
-      ctx({ selectedFeats: new Set([powerAttack.id]) }),
-    );
+    const res = evaluatePrereqs(cleave, ctx({ selectedFeats: new Set([powerAttack.id]) }));
     expect(res.blocked).toBe(false);
     expect(res.checks.every((c) => c.met)).toBe(true);
   });
@@ -51,10 +48,7 @@ describe("feat prereq gating", () => {
     // surface (blocked, driven only by structured checks, stays false).
     const powerAttack = featByName("Power Attack");
     const cleave = featByName("Cleave");
-    const res = evaluatePrereqs(
-      cleave,
-      ctx({ selectedFeats: new Set([powerAttack.id]) }),
-    );
+    const res = evaluatePrereqs(cleave, ctx({ selectedFeats: new Set([powerAttack.id]) }));
     expect(res.blocked).toBe(false);
     expect(res.checks.length).toBeGreaterThan(0);
     expect(res.checks.every((c) => c.met)).toBe(true);

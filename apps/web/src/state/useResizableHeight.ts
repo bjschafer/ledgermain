@@ -33,12 +33,8 @@ function writeStorage(key: string, val: number | null): void {
  * @returns [height, setHeight, reset] — `height` is `null` when unset (natural
  *   height). `setHeight` persists a new value; `reset` clears the override.
  */
-export function useResizableHeight(
-  key: string,
-): [number | null, (px: number) => void, () => void] {
-  const [height, setHeightState] = useState<number | null>(() =>
-    readStorage(key),
-  );
+export function useResizableHeight(key: string): [number | null, (px: number) => void, () => void] {
+  const [height, setHeightState] = useState<number | null>(() => readStorage(key));
 
   const setHeight = useCallback(
     (px: number) => {

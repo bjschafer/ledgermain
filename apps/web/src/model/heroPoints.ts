@@ -50,7 +50,11 @@ export function spendHeroPoint(doc: CharacterDoc): CharacterDoc {
  * Set the hero point pool to an explicit value, clamped to 0..cap.
  * NaN is treated as 0.
  */
-export function setHeroPoints(doc: CharacterDoc, value: number, cap = HERO_POINT_CAP): CharacterDoc {
+export function setHeroPoints(
+  doc: CharacterDoc,
+  value: number,
+  cap = HERO_POINT_CAP,
+): CharacterDoc {
   const next = clampToRange(value, 0, cap);
   return withHeroPoints(doc, next);
 }

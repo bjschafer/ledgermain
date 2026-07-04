@@ -1,9 +1,7 @@
 {
   "05NnBuNnkMsaNoXf": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Punching Dagger"
-    ],
+    "baseTypes": ["Punching Dagger"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -25,17 +23,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.05NnBuNnkMsaNoXf",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "05rD6YP5sVSrKY28": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Shortsword"
-    ],
+    "baseTypes": ["Shortsword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -57,17 +51,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.05rD6YP5sVSrKY28",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "09cH5nya3F2uUv9p": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Ankus"
-    ],
+    "baseTypes": ["Ankus"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -85,17 +75,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.09cH5nya3F2uUv9p",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 5
   },
   "0MFbQaJ3MUWV2fGM": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Heavy Crank Crossbow"
-    ],
+    "baseTypes": ["Heavy Crank Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -113,17 +99,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.0MFbQaJ3MUWV2fGM",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
   "0TcB4dJHX1TDYslC": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Hunga Munga"
-    ],
+    "baseTypes": ["Hunga Munga"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -141,18 +123,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.0TcB4dJHX1TDYslC",
-    "weaponGroups": [
-      "bladesLight",
-      "thrown"
-    ],
+    "weaponGroups": ["bladesLight", "thrown"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "0amLz3l4v3ICwuSk": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Doru"
-    ],
+    "baseTypes": ["Doru"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -170,19 +147,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.0amLz3l4v3ICwuSk",
-    "weaponGroups": [
-      "spears",
-      "thrown"
-    ],
+    "weaponGroups": ["spears", "thrown"],
     "weaponSubtype": "1h",
     "weight": 6
   },
   "1Jmh8NgyCJFL7C5Q": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Weighted Spear",
-      "Spear"
-    ],
+    "baseTypes": ["Weighted Spear", "Spear"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -201,18 +172,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.1Jmh8NgyCJFL7C5Q",
-    "weaponGroups": [
-      "double",
-      "spears"
-    ],
+    "weaponGroups": ["double", "spears"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "1KIIeEf7TlYtLclG": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Cat-o'-Nine-Tails"
-    ],
+    "baseTypes": ["Cat-o'-Nine-Tails"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -230,17 +196,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.1KIIeEf7TlYtLclG",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "1TiILWBLdzYpnPky": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Claw Blades"
-    ],
+    "baseTypes": ["Claw Blades"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -258,17 +220,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.1TiILWBLdzYpnPky",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "1Uj8aLq8rBND1ydd": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Flailpole"
-    ],
+    "baseTypes": ["Flailpole"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -287,18 +245,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.1Uj8aLq8rBND1ydd",
-    "weaponGroups": [
-      "flails",
-      "polearms"
-    ],
+    "weaponGroups": ["flails", "polearms"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "1qsCQ6TiPgSsNPFj": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Maxim M1910 Machine Gun"
-    ],
+    "baseTypes": ["Maxim M1910 Machine Gun"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -316,17 +269,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.1qsCQ6TiPgSsNPFj",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 140
   },
   "1vNxFfAeYalooWIF": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Shotel"
-    ],
+    "baseTypes": ["Shotel"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -344,17 +293,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.1vNxFfAeYalooWIF",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "2GcN9zdtzr0YbLve": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Orc Hornbow"
-    ],
+    "baseTypes": ["Orc Hornbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -372,17 +317,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.2GcN9zdtzr0YbLve",
-    "weaponGroups": [
-      "bows"
-    ],
+    "weaponGroups": ["bows"],
     "weaponSubtype": "ranged",
     "weight": 7
   },
   "2aof2pUTrlWL3F5d": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sai"
-    ],
+    "baseTypes": ["Sai"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -404,17 +345,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.2aof2pUTrlWL3F5d",
-    "weaponGroups": [
-      "monk"
-    ],
+    "weaponGroups": ["monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "2fmoFtdX5zsAyAwo": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Iron Brush"
-    ],
+    "baseTypes": ["Iron Brush"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -436,16 +373,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.2fmoFtdX5zsAyAwo",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light"
   },
   "2mw29eyL5mzZgKqR": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Trident"
-    ],
+    "baseTypes": ["Trident"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -467,18 +400,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.2mw29eyL5mzZgKqR",
-    "weaponGroups": [
-      "spears",
-      "thrown"
-    ],
+    "weaponGroups": ["spears", "thrown"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "2pK6KVVGJgaJMWE7": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Double-Barreled Musket"
-    ],
+    "baseTypes": ["Double-Barreled Musket"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -500,17 +428,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.2pK6KVVGJgaJMWE7",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 11
   },
   "2vXORcAOiFLpgGNP": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sanpkhang"
-    ],
+    "baseTypes": ["Sanpkhang"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -528,18 +452,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.2vXORcAOiFLpgGNP",
-    "weaponGroups": [
-      "bladesLight",
-      "monk"
-    ],
+    "weaponGroups": ["bladesLight", "monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "3CB7btXEdhNgCWGn": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Swordbreaker Dagger"
-    ],
+    "baseTypes": ["Swordbreaker Dagger"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -557,18 +476,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.3CB7btXEdhNgCWGn",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 3
   },
   "3pMUGj64GvIVpAwS": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Dwarven Heavy Pelletbow",
-      "Heavy Crossbow"
-    ],
+    "baseTypes": ["Dwarven Heavy Pelletbow", "Heavy Crossbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 19,
@@ -586,17 +500,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.3pMUGj64GvIVpAwS",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 8
   },
   "3wDmT1GpNgUNTgDv": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Heavy Crossbow"
-    ],
+    "baseTypes": ["Heavy Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -614,17 +524,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.3wDmT1GpNgUNTgDv",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 8
   },
   "3ymi1TiBmp2nTbxj": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Double-Barreled Pistol"
-    ],
+    "baseTypes": ["Double-Barreled Pistol"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -646,17 +552,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.3ymi1TiBmp2nTbxj",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 5
   },
   "42M7kFLkyccrj1uf": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Shuriken"
-    ],
+    "baseTypes": ["Shuriken"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -682,18 +584,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.42M7kFLkyccrj1uf",
-    "weaponGroups": [
-      "monk",
-      "thrown"
-    ],
+    "weaponGroups": ["monk", "thrown"],
     "weaponSubtype": "ranged",
     "weight": 0.1
   },
   "4Ljn6CWNcYi1OebL": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Shoanti Bolas"
-    ],
+    "baseTypes": ["Shoanti Bolas"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -711,17 +608,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.4Ljn6CWNcYi1OebL",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "4SXdTVk6mXoxoJFR": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Nine-Section Whip"
-    ],
+    "baseTypes": ["Nine-Section Whip"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -743,18 +636,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.4SXdTVk6mXoxoJFR",
-    "weaponGroups": [
-      "flails",
-      "monk"
-    ],
+    "weaponGroups": ["flails", "monk"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "4gTggKvYq8jePFNq": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Terbutje"
-    ],
+    "baseTypes": ["Terbutje"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -772,17 +660,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.4gTggKvYq8jePFNq",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 2
   },
   "4gxX2chWtbQNT2wP": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Rhoka Sword"
-    ],
+    "baseTypes": ["Rhoka Sword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -800,17 +684,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.4gxX2chWtbQNT2wP",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 6
   },
   "4nFjnETINUoBFWKX": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Two-Bladed Sword"
-    ],
+    "baseTypes": ["Two-Bladed Sword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -833,17 +713,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.4nFjnETINUoBFWKX",
-    "weaponGroups": [
-      "double"
-    ],
+    "weaponGroups": ["double"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "4ygv4epeaYaWk8q6": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Hook Hand"
-    ],
+    "baseTypes": ["Hook Hand"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -861,17 +737,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.4ygv4epeaYaWk8q6",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "5GqOcC49oDGe7VRH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Estoc"
-    ],
+    "baseTypes": ["Estoc"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -889,17 +761,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.5GqOcC49oDGe7VRH",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "5qS9De0NqbisLTCS": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Great Terbutje"
-    ],
+    "baseTypes": ["Great Terbutje"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -917,17 +785,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.5qS9De0NqbisLTCS",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "5xOwEtugqeDjUkAG": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Thorn Bracer"
-    ],
+    "baseTypes": ["Thorn Bracer"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -950,9 +814,7 @@
   },
   "62WMCpS2zAVnC5ny": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Shortbow"
-    ],
+    "baseTypes": ["Shortbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -975,9 +837,7 @@
   },
   "6AfGnpzoFUpKLJgM": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kunai"
-    ],
+    "baseTypes": ["Kunai"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -995,17 +855,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.6AfGnpzoFUpKLJgM",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "6IIMmcOnRzR48J8u": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Syringe Spear"
-    ],
+    "baseTypes": ["Syringe Spear"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -1024,19 +880,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.6IIMmcOnRzR48J8u",
-    "weaponGroups": [
-      "spears",
-      "thrown"
-    ],
+    "weaponGroups": ["spears", "thrown"],
     "weaponSubtype": "2h",
     "weight": 6
   },
   "6Lr8eHIz8IpatgO0": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kobold Tail Attachment (Razored)",
-      "Kobold Tail Attachment"
-    ],
+    "baseTypes": ["Kobold Tail Attachment (Razored)", "Kobold Tail Attachment"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -1059,9 +909,7 @@
   },
   "6dixCIl251JU2pJH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Nagant M1895 Revolver"
-    ],
+    "baseTypes": ["Nagant M1895 Revolver"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -1079,17 +927,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.6dixCIl251JU2pJH",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "6eAg4BT0RM8tfyUN": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Quarterstaff"
-    ],
+    "baseTypes": ["Quarterstaff"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -1111,18 +955,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.6eAg4BT0RM8tfyUN",
-    "weaponGroups": [
-      "double",
-      "monk"
-    ],
+    "weaponGroups": ["double", "monk"],
     "weaponSubtype": "2h",
     "weight": 4
   },
   "6evY2t6MSaSxECbv": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sarissa"
-    ],
+    "baseTypes": ["Sarissa"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -1141,17 +980,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.6evY2t6MSaSxECbv",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "6jcpvbj0JtD3PMc1": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Repeating Hand Crossbow"
-    ],
+    "baseTypes": ["Repeating Hand Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -1169,17 +1004,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.6jcpvbj0JtD3PMc1",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "6oevs2mE3QqqQEAK": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Net"
-    ],
+    "baseTypes": ["Net"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -1200,17 +1031,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.6oevs2mE3QqqQEAK",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "7Wx6OgcshMS6djwD": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Rhomphaia"
-    ],
+    "baseTypes": ["Rhomphaia"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -1234,9 +1061,7 @@
   },
   "7mqv5v3G0yN4tsi4": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Scorpion Whip"
-    ],
+    "baseTypes": ["Scorpion Whip"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -1254,17 +1079,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.7mqv5v3G0yN4tsi4",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "light",
     "weight": 3
   },
   "7sMY07dTQ2JKGYMl": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Harpoon"
-    ],
+    "baseTypes": ["Harpoon"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -1283,18 +1104,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.7sMY07dTQ2JKGYMl",
-    "weaponGroups": [
-      "spears",
-      "thrown"
-    ],
+    "weaponGroups": ["spears", "thrown"],
     "weaponSubtype": "2h",
     "weight": 16
   },
   "7zvBqNNlc5i5EtFd": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Wooden Stake"
-    ],
+    "baseTypes": ["Wooden Stake"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -1311,19 +1127,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.7zvBqNNlc5i5EtFd",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "891YnkwG0uH5lYF7": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dagger Pistol",
-      "Dagger",
-      "Pistol"
-    ],
+    "baseTypes": ["Dagger Pistol", "Dagger", "Pistol"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -1345,17 +1155,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.891YnkwG0uH5lYF7",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
   "8KCwDN3vuwoF6erS": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Grappling Hook"
-    ],
+    "baseTypes": ["Grappling Hook"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -1373,17 +1179,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.8KCwDN3vuwoF6erS",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 14
   },
   "8ZfCKla7JiarRC75": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Axe Musket"
-    ],
+    "baseTypes": ["Axe Musket"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -1405,17 +1207,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.8ZfCKla7JiarRC75",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "8swHnPGMoZGkVHjp": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Revolver"
-    ],
+    "baseTypes": ["Revolver"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -1433,17 +1231,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.8swHnPGMoZGkVHjp",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "9cn9pmPR4WPGbgUH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Light Axe-Gauntlet"
-    ],
+    "baseTypes": ["Dwarven Light Axe-Gauntlet"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -1461,18 +1255,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.9cn9pmPR4WPGbgUH",
-    "weaponGroups": [
-      "axes",
-      "close"
-    ],
+    "weaponGroups": ["axes", "close"],
     "weaponSubtype": "light",
     "weight": 5
   },
   "9meWuDhxKqBDil51": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Poisoned Sand Tube"
-    ],
+    "baseTypes": ["Poisoned Sand Tube"],
     "category": "ranged",
     "damageAbility": "none",
     "group": "poisoned-sand-tube",
@@ -1487,17 +1276,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.9meWuDhxKqBDil51",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
   "A7H1FjMo0jGDY3dB": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Machete"
-    ],
+    "baseTypes": ["Machete"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -1515,17 +1300,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.A7H1FjMo0jGDY3dB",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "AbmnL8ilLH6r95Oa": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Heavy Mace"
-    ],
+    "baseTypes": ["Heavy Mace"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -1547,17 +1328,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.AbmnL8ilLH6r95Oa",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "1h",
     "weight": 8
   },
   "Ata6ajiY9wuAnBLB": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Shortbow"
-    ],
+    "baseTypes": ["Shortbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -1579,17 +1356,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Ata6ajiY9wuAnBLB",
-    "weaponGroups": [
-      "bows"
-    ],
+    "weaponGroups": ["bows"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "AzvaEePCpHBoKWnw": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Amentum"
-    ],
+    "baseTypes": ["Amentum"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -1606,18 +1379,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.AzvaEePCpHBoKWnw",
-    "weaponGroups": [
-      "spears",
-      "thrown"
-    ],
+    "weaponGroups": ["spears", "thrown"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
   "BaTA4cc9Htq1428Z": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Hanbo"
-    ],
+    "baseTypes": ["Hanbo"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -1635,18 +1403,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.BaTA4cc9Htq1428Z",
-    "weaponGroups": [
-      "hammers",
-      "monk"
-    ],
+    "weaponGroups": ["hammers", "monk"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "BcY8IkVwo2hXC6ND": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Light Flail"
-    ],
+    "baseTypes": ["Light Flail"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -1668,17 +1431,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.BcY8IkVwo2hXC6ND",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "1h",
     "weight": 5
   },
   "BgTqaNqyS3tnLGAg": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Hand Crossbow"
-    ],
+    "baseTypes": ["Hand Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -1700,17 +1459,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.BgTqaNqyS3tnLGAg",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "BqLC11fOz18bwiuU": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Drow Razor"
-    ],
+    "baseTypes": ["Drow Razor"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -1728,17 +1483,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.BqLC11fOz18bwiuU",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "CU9dMfuV00LkB3Zo": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Aklys"
-    ],
+    "baseTypes": ["Aklys"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -1756,18 +1507,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.CU9dMfuV00LkB3Zo",
-    "weaponGroups": [
-      "hammers",
-      "thrown"
-    ],
+    "weaponGroups": ["hammers", "thrown"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "CUFJ4SDh7TKSrjx0": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Blowgun"
-    ],
+    "baseTypes": ["Blowgun"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -1789,17 +1535,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.CUFJ4SDh7TKSrjx0",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
   "CadEsVvAN7kdruSH": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Thark Rifle"
-    ],
+    "baseTypes": ["Thark Rifle"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -1817,17 +1559,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.CadEsVvAN7kdruSH",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
   "CbqPpYdIwqOOSTdR": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Light Crank Crossbow"
-    ],
+    "baseTypes": ["Light Crank Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -1845,17 +1583,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.CbqPpYdIwqOOSTdR",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "DGp5B70pcMEfcnqx": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dan Bong"
-    ],
+    "baseTypes": ["Dan Bong"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -1877,18 +1611,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.DGp5B70pcMEfcnqx",
-    "weaponGroups": [
-      "close",
-      "monk"
-    ],
+    "weaponGroups": ["close", "monk"],
     "weaponSubtype": "light"
   },
   "DWen2GjBlnSsFoir": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Double Walking Stick Katana",
-      "Quarterstaff"
-    ],
+    "baseTypes": ["Double Walking Stick Katana", "Quarterstaff"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -1911,18 +1639,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.DWen2GjBlnSsFoir",
-    "weaponGroups": [
-      "bladesHeavy",
-      "double"
-    ],
+    "weaponGroups": ["bladesHeavy", "double"],
     "weaponSubtype": "2h",
     "weight": 6
   },
   "Du2nBZfVUxVgU644": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dagger"
-    ],
+    "baseTypes": ["Dagger"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -1940,17 +1663,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Du2nBZfVUxVgU644",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "Dwk80eD0rB93lPnN": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Light Hammer"
-    ],
+    "baseTypes": ["Light Hammer"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -1972,19 +1691,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Dwk80eD0rB93lPnN",
-    "weaponGroups": [
-      "hammers",
-      "thrown"
-    ],
+    "weaponGroups": ["hammers", "thrown"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "DzMgrtqI8ECS74u6": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dueling Dagger",
-      "Dagger"
-    ],
+    "baseTypes": ["Dueling Dagger", "Dagger"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -2002,18 +1715,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.DzMgrtqI8ECS74u6",
-    "weaponGroups": [
-      "bladesLight",
-      "thrown"
-    ],
+    "weaponGroups": ["bladesLight", "thrown"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "E4Xl3ABY1u53Dt7h": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Tetsubo"
-    ],
+    "baseTypes": ["Tetsubo"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -2036,18 +1744,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.E4Xl3ABY1u53Dt7h",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "EC7p0d1z4wtFhThr": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Gladius",
-      "Shortsword"
-    ],
+    "baseTypes": ["Gladius", "Shortsword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -2065,17 +1768,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.EC7p0d1z4wtFhThr",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 3
   },
   "EIBbk25EwcmJqoKC": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Battle Aspergillum"
-    ],
+    "baseTypes": ["Battle Aspergillum"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -2093,17 +1792,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.EIBbk25EwcmJqoKC",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "light",
     "weight": 4
   },
   "EOyNLLDmi1aiZNL6": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Culverin"
-    ],
+    "baseTypes": ["Culverin"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -2125,17 +1820,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.EOyNLLDmi1aiZNL6",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 40
   },
   "ETT1LsO2zXg9J551": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Brass Knife"
-    ],
+    "baseTypes": ["Brass Knife"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -2153,17 +1844,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.ETT1LsO2zXg9J551",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "Ey9KrEfCDEqBAXuO": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Double-Barreled Shotgun"
-    ],
+    "baseTypes": ["Double-Barreled Shotgun"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -2185,17 +1872,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Ey9KrEfCDEqBAXuO",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 15
   },
   "F4G4W6IN2adn2Ek6": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Blade Boot"
-    ],
+    "baseTypes": ["Blade Boot"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -2213,18 +1896,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.F4G4W6IN2adn2Ek6",
-    "weaponGroups": [
-      "bladesLight",
-      "close"
-    ],
+    "weaponGroups": ["bladesLight", "close"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "F5ZLN44A3QWL8S7k": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Pilum"
-    ],
+    "baseTypes": ["Pilum"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -2242,18 +1920,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.F5ZLN44A3QWL8S7k",
-    "weaponGroups": [
-      "spears",
-      "thrown"
-    ],
+    "weaponGroups": ["spears", "thrown"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "F9GR4mUpehjkNdMj": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Handaxe"
-    ],
+    "baseTypes": ["Handaxe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -2275,18 +1948,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.F9GR4mUpehjkNdMj",
-    "weaponGroups": [
-      "axes",
-      "tribal"
-    ],
+    "weaponGroups": ["axes", "tribal"],
     "weaponSubtype": "light",
     "weight": 3
   },
   "FADCspPM6J4xZ2Fi": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Morningstar"
-    ],
+    "baseTypes": ["Morningstar"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -2308,17 +1976,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.FADCspPM6J4xZ2Fi",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "1h",
     "weight": 6
   },
   "FGtPRARd9Z57clLg": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Double Hackbut"
-    ],
+    "baseTypes": ["Double Hackbut"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -2340,17 +2004,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.FGtPRARd9Z57clLg",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 18
   },
   "FvNfZb72TIpdRPTv": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Tongi"
-    ],
+    "baseTypes": ["Tongi"],
     "category": "melee",
     "critMult": 3,
     "critRange": 19,
@@ -2368,17 +2028,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.FvNfZb72TIpdRPTv",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "G96EeduQ7ttyMNXT": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Chain-Hammer"
-    ],
+    "baseTypes": ["Chain-Hammer"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -2397,19 +2053,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.G96EeduQ7ttyMNXT",
-    "weaponGroups": [
-      "double",
-      "hammers",
-      "thrown"
-    ],
+    "weaponGroups": ["double", "hammers", "thrown"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "GGS4thGbUH5eKndT": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Shortbow"
-    ],
+    "baseTypes": ["Shortbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -2431,17 +2081,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.GGS4thGbUH5eKndT",
-    "weaponGroups": [
-      "bows"
-    ],
+    "weaponGroups": ["bows"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "GSOV1nL3D76xqnKY": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Dragoon Musket"
-    ],
+    "baseTypes": ["Dragoon Musket"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -2459,17 +2105,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.GSOV1nL3D76xqnKY",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
   "GbstglnVnDh9wzuA": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Butterfly Sword"
-    ],
+    "baseTypes": ["Butterfly Sword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -2491,18 +2133,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.GbstglnVnDh9wzuA",
-    "weaponGroups": [
-      "bladesLight",
-      "monk"
-    ],
+    "weaponGroups": ["bladesLight", "monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "GlbFk7TosnBKkr8d": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Coat Pistol"
-    ],
+    "baseTypes": ["Coat Pistol"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -2524,17 +2161,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.GlbFk7TosnBKkr8d",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
   "GydLTGUvuK9zzQbm": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Flask Thrower"
-    ],
+    "baseTypes": ["Flask Thrower"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -2551,17 +2184,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.GydLTGUvuK9zzQbm",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "HAWfNGeslOUBDnsZ": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Terbutje"
-    ],
+    "baseTypes": ["Terbutje"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -2584,9 +2213,7 @@
   },
   "I3TJukhU9F0pHKOV": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Boar Spear"
-    ],
+    "baseTypes": ["Boar Spear"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -2605,17 +2232,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.I3TJukhU9F0pHKOV",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "I6Ktb02Aj0En0D4F": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Light Crossbow"
-    ],
+    "baseTypes": ["Light Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -2633,17 +2256,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.I6Ktb02Aj0En0D4F",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "IOKMMNXFRZkx5wvJ": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Rifle"
-    ],
+    "baseTypes": ["Rifle"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -2665,17 +2284,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.IOKMMNXFRZkx5wvJ",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
   "IdkQOHJcRMq1Rm1r": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Gauntlet"
-    ],
+    "baseTypes": ["Gauntlet"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -2697,17 +2312,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.IdkQOHJcRMq1Rm1r",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "Ie2dCYsVxielCiZd": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kusarigama"
-    ],
+    "baseTypes": ["Kusarigama"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -2730,19 +2341,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Ie2dCYsVxielCiZd",
-    "weaponGroups": [
-      "double",
-      "flails",
-      "monk"
-    ],
+    "weaponGroups": ["double", "flails", "monk"],
     "weaponSubtype": "2h",
     "weight": 3
   },
   "IfotwHH89d60H3pR": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Heavy Flail"
-    ],
+    "baseTypes": ["Heavy Flail"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -2765,17 +2370,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.IfotwHH89d60H3pR",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "IuMbrWJqt6pLLmbz": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Atlatl"
-    ],
+    "baseTypes": ["Atlatl"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -2793,17 +2394,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.IuMbrWJqt6pLLmbz",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "IxZC7La61pQSiK1r": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Flying Blade"
-    ],
+    "baseTypes": ["Flying Blade"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -2822,17 +2419,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.IxZC7La61pQSiK1r",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "JIB2GKFRf0FLPUCN": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Quadrens"
-    ],
+    "baseTypes": ["Quadrens"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -2850,17 +2443,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.JIB2GKFRf0FLPUCN",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "JIljkqPWhmvAPYbI": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Battle Axe"
-    ],
+    "baseTypes": ["Battle Axe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -2878,17 +2467,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.JIljkqPWhmvAPYbI",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "1h",
     "weight": 6
   },
   "JKPD38M3uQJI1Ccu": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Gnome Battle Ladder"
-    ],
+    "baseTypes": ["Gnome Battle Ladder"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -2907,17 +2492,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.JKPD38M3uQJI1Ccu",
-    "weaponGroups": [
-      "double"
-    ],
+    "weaponGroups": ["double"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "JRfUcNzydUeBm76p": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Spear-Sling"
-    ],
+    "baseTypes": ["Spear-Sling"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -2935,17 +2516,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.JRfUcNzydUeBm76p",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "JVObA6FqSBzZfikV": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Longhammer"
-    ],
+    "baseTypes": ["Dwarven Longhammer"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -2964,17 +2541,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.JVObA6FqSBzZfikV",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "2h",
     "weight": 20
   },
   "JkoO6jywpLP87OHt": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Ogre Hook"
-    ],
+    "baseTypes": ["Ogre Hook"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -2993,17 +2566,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.JkoO6jywpLP87OHt",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "K7RqtYrhq2iAlgP0": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Gandasa"
-    ],
+    "baseTypes": ["Gandasa"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3021,17 +2590,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.K7RqtYrhq2iAlgP0",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "K8dPqxhasxHI3loc": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Giant-Sticker"
-    ],
+    "baseTypes": ["Dwarven Giant-Sticker"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3050,18 +2615,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.K8dPqxhasxHI3loc",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "KAKysOTelOMG5c7U": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Dwarven Light Pelletbow",
-      "Light Crossbow"
-    ],
+    "baseTypes": ["Dwarven Light Pelletbow", "Light Crossbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 19,
@@ -3079,17 +2639,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.KAKysOTelOMG5c7U",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "KNRgpSzXPdrELTn2": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Dorn-Dergar"
-    ],
+    "baseTypes": ["Dwarven Dorn-Dergar"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3108,17 +2664,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.KNRgpSzXPdrELTn2",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "2h",
     "weight": 15
   },
   "KSDtlxi2hMPkgaro": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Gnome Piston Maul"
-    ],
+    "baseTypes": ["Gnome Piston Maul"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3137,17 +2689,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.KSDtlxi2hMPkgaro",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "2h",
     "weight": 15
   },
   "KVnt2bU40TdySu6L": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Lizard King War Trident"
-    ],
+    "baseTypes": ["Lizard King War Trident"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3171,9 +2719,7 @@
   },
   "KkLxcudnFBKuK7JI": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Boarding Axe"
-    ],
+    "baseTypes": ["Boarding Axe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3191,17 +2737,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.KkLxcudnFBKuK7JI",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "light",
     "weight": 3
   },
   "KmbhZ4Z674Yk9yIh": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Javelin"
-    ],
+    "baseTypes": ["Javelin"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -3223,18 +2765,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.KmbhZ4Z674Yk9yIh",
-    "weaponGroups": [
-      "spears",
-      "thrown"
-    ],
+    "weaponGroups": ["spears", "thrown"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "Kn9rGMb1KReqJhc1": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Nunchaku"
-    ],
+    "baseTypes": ["Nunchaku"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3256,18 +2793,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Kn9rGMb1KReqJhc1",
-    "weaponGroups": [
-      "flails",
-      "monk"
-    ],
+    "weaponGroups": ["flails", "monk"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "KtgSPHGqIRTwhwZM": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Bastard Sword"
-    ],
+    "baseTypes": ["Bastard Sword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -3289,17 +2821,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.KtgSPHGqIRTwhwZM",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 6
   },
   "Kvx2ZzrmSLQVNDpg": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Manople"
-    ],
+    "baseTypes": ["Manople"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3317,17 +2845,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Kvx2ZzrmSLQVNDpg",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "Kzhe4nUgCkHTFuyf": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Wakizashi"
-    ],
+    "baseTypes": ["Wakizashi"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -3349,17 +2873,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Kzhe4nUgCkHTFuyf",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "L4KYkvLrUYAQJcdl": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Siangham"
-    ],
+    "baseTypes": ["Siangham"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3381,17 +2901,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.L4KYkvLrUYAQJcdl",
-    "weaponGroups": [
-      "monk"
-    ],
+    "weaponGroups": ["monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "LA6TC5679iOXDNwq": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Rapier"
-    ],
+    "baseTypes": ["Rapier"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -3413,17 +2929,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.LA6TC5679iOXDNwq",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "1h",
     "weight": 2
   },
   "LC0RB4eEczWDuEE4": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Rope Gauntlet"
-    ],
+    "baseTypes": ["Rope Gauntlet"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3441,17 +2953,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.LC0RB4eEczWDuEE4",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "LE0iqTr3fFX0GYXM": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Tri-Point Double-Edged Sword"
-    ],
+    "baseTypes": ["Tri-Point Double-Edged Sword"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3474,17 +2982,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.LE0iqTr3fFX0GYXM",
-    "weaponGroups": [
-      "monk"
-    ],
+    "weaponGroups": ["monk"],
     "weaponSubtype": "2h",
     "weight": 14
   },
   "LHIAhoMnq1tv9axA": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Jutte"
-    ],
+    "baseTypes": ["Jutte"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3506,17 +3010,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.LHIAhoMnq1tv9axA",
-    "weaponGroups": [
-      "monk"
-    ],
+    "weaponGroups": ["monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "LLxwE2hkeMFFGUHz": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Flickmace"
-    ],
+    "baseTypes": ["Flickmace"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3528,17 +3028,13 @@
     "price": 20,
     "proficiency": "exotic",
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.LLxwE2hkeMFFGUHz",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "1h",
     "weight": 10
   },
   "LWPBZON5AHSjxqXi": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Throwing Arrow Cord"
-    ],
+    "baseTypes": ["Throwing Arrow Cord"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -3555,16 +3051,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.LWPBZON5AHSjxqXi",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged"
   },
   "Lgyo1r1XDa3bYOp7": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sibat"
-    ],
+    "baseTypes": ["Sibat"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -3590,18 +3082,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Lgyo1r1XDa3bYOp7",
-    "weaponGroups": [
-      "spears",
-      "thrown"
-    ],
+    "weaponGroups": ["spears", "thrown"],
     "weaponSubtype": "1h",
     "weight": 2
   },
   "LijZp7Tvvyis9Ja5": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kumade"
-    ],
+    "baseTypes": ["Kumade"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3620,17 +3107,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.LijZp7Tvvyis9Ja5",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "2h",
     "weight": 4
   },
   "LtX8f84MPa1OT1iI": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Knobkerrie"
-    ],
+    "baseTypes": ["Knobkerrie"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3648,18 +3131,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.LtX8f84MPa1OT1iI",
-    "weaponGroups": [
-      "hammers",
-      "thrown"
-    ],
+    "weaponGroups": ["hammers", "thrown"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "M5hGOEmDx7iVwqFx": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Ram Hammer"
-    ],
+    "baseTypes": ["Dwarven Ram Hammer"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3677,18 +3155,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.M5hGOEmDx7iVwqFx",
-    "weaponGroups": [
-      "hammers",
-      "thrown"
-    ],
+    "weaponGroups": ["hammers", "thrown"],
     "weaponSubtype": "1h",
     "weight": 5
   },
   "MFGjEFJURHJ9jcGx": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Garrote"
-    ],
+    "baseTypes": ["Garrote"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3707,17 +3180,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.MFGjEFJURHJ9jcGx",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "2h",
     "weight": 1
   },
   "MK5NI8fCMwndhONO": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Chakram"
-    ],
+    "baseTypes": ["Chakram"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3735,19 +3204,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.MK5NI8fCMwndhONO",
-    "weaponGroups": [
-      "bladesLight",
-      "bladesHeavy",
-      "thrown"
-    ],
+    "weaponGroups": ["bladesLight", "bladesHeavy", "thrown"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
   "MgcUgsDhxQPUjljs": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Double Spear"
-    ],
+    "baseTypes": ["Double Spear"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3766,17 +3229,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.MgcUgsDhxQPUjljs",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "N37FFAdWjVV6EolR": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Shortspear"
-    ],
+    "baseTypes": ["Shortspear"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -3798,19 +3257,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.N37FFAdWjVV6EolR",
-    "weaponGroups": [
-      "spears",
-      "thrown",
-      "tribal"
-    ],
+    "weaponGroups": ["spears", "thrown", "tribal"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "NVmHsonsX3jF4ZUi": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Waraxe"
-    ],
+    "baseTypes": ["Dwarven Waraxe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3832,17 +3285,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.NVmHsonsX3jF4ZUi",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "1h",
     "weight": 8
   },
   "NXPkbKit1oDiWUdZ": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Hooked Axe"
-    ],
+    "baseTypes": ["Hooked Axe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3860,17 +3309,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.NXPkbKit1oDiWUdZ",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "1h",
     "weight": 7
   },
   "NXy3C6WfJ67ZAPsy": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Gnome Ripsaw Glaive"
-    ],
+    "baseTypes": ["Gnome Ripsaw Glaive"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3889,17 +3334,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.NXy3C6WfJ67ZAPsy",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "O1rCSxU8ey85PnBb": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Bill"
-    ],
+    "baseTypes": ["Bill"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -3918,17 +3359,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.O1rCSxU8ey85PnBb",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 11
   },
   "O2LhGbHS4g2RRBw1": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Boarding Gaff"
-    ],
+    "baseTypes": ["Boarding Gaff"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -3947,18 +3384,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.O2LhGbHS4g2RRBw1",
-    "weaponGroups": [
-      "double",
-      "polearms"
-    ],
+    "weaponGroups": ["double", "polearms"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "OPTlPwKg2NyQAjhe": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Whip"
-    ],
+    "baseTypes": ["Whip"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -3980,17 +3412,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.OPTlPwKg2NyQAjhe",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "1h",
     "weight": 2
   },
   "OWZ0bqr3L0MzeRsu": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Khopesh"
-    ],
+    "baseTypes": ["Khopesh"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -4008,17 +3436,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.OWZ0bqr3L0MzeRsu",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 8
   },
   "Ot4NtUyqNkKPXujH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Jolting Dart"
-    ],
+    "baseTypes": ["Jolting Dart"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -4036,17 +3460,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Ot4NtUyqNkKPXujH",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 0.5
   },
   "P1zlk4ivL3jjyvp2": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Lasso"
-    ],
+    "baseTypes": ["Lasso"],
     "category": "ranged",
     "damageAbility": "none",
     "group": "lasso",
@@ -4073,17 +3493,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.P1zlk4ivL3jjyvp2",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 5
   },
   "P2HkbmWWfqb9fOwD": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Butchering Axe"
-    ],
+    "baseTypes": ["Butchering Axe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -4102,17 +3518,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.P2HkbmWWfqb9fOwD",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "2h",
     "weight": 25
   },
   "P2YUScSoUD60dab5": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Deer Horn Knife"
-    ],
+    "baseTypes": ["Deer Horn Knife"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -4130,19 +3542,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.P2YUScSoUD60dab5",
-    "weaponGroups": [
-      "bladesLight",
-      "monk",
-      "thrown"
-    ],
+    "weaponGroups": ["bladesLight", "monk", "thrown"],
     "weaponSubtype": "light",
     "weight": 3
   },
   "P3gUxPKX72ZnojXx": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sica"
-    ],
+    "baseTypes": ["Sica"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4160,17 +3566,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.P3gUxPKX72ZnojXx",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "PDVR2OAcIJTtYT21": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Pickaxe"
-    ],
+    "baseTypes": ["Pickaxe"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -4194,10 +3596,7 @@
   },
   "PMH2RqF2x1X4Baoj": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Halfling Stitched Sling",
-      "Light Flail"
-    ],
+    "baseTypes": ["Halfling Stitched Sling", "Light Flail"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4219,9 +3618,7 @@
   },
   "PT81W3PcwSrepF3I": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Dragon Pistol"
-    ],
+    "baseTypes": ["Dragon Pistol"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -4243,17 +3640,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.PT81W3PcwSrepF3I",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "PeUTJgqI4cNADvyW": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Shield Spikes (Heavy)"
-    ],
+    "baseTypes": ["Shield Spikes (Heavy)"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4271,17 +3664,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.PeUTJgqI4cNADvyW",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "1h",
     "weight": 5
   },
   "PmiF2bF8uhzghtuz": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Orc Double Axe"
-    ],
+    "baseTypes": ["Orc Double Axe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -4304,18 +3693,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.PmiF2bF8uhzghtuz",
-    "weaponGroups": [
-      "axes",
-      "double"
-    ],
+    "weaponGroups": ["axes", "double"],
     "weaponSubtype": "2h",
     "weight": 15
   },
   "PnCZEHzxpiz8NRSH": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Blunderbuss"
-    ],
+    "baseTypes": ["Blunderbuss"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -4337,17 +3721,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.PnCZEHzxpiz8NRSH",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 8
   },
   "PqJih70EG2A1XNGf": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Longbow"
-    ],
+    "baseTypes": ["Longbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -4369,17 +3749,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.PqJih70EG2A1XNGf",
-    "weaponGroups": [
-      "bows"
-    ],
+    "weaponGroups": ["bows"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "Q0lPhlUtRuqoWfyI": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Boomerang"
-    ],
+    "baseTypes": ["Boomerang"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -4397,17 +3773,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Q0lPhlUtRuqoWfyI",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "Q5VvVqVzUQQtGyNK": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Nine-Ring Broadsword"
-    ],
+    "baseTypes": ["Nine-Ring Broadsword"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -4429,18 +3801,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Q5VvVqVzUQQtGyNK",
-    "weaponGroups": [
-      "bladesHeavy",
-      "monk"
-    ],
+    "weaponGroups": ["bladesHeavy", "monk"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "QIZOnIIzvUKYLekN": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Halfling Rope-Shot"
-    ],
+    "baseTypes": ["Halfling Rope-Shot"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4458,17 +3825,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.QIZOnIIzvUKYLekN",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "QXs5iZ1gpobwCNp9": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Boulder Helmet"
-    ],
+    "baseTypes": ["Dwarven Boulder Helmet"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4486,17 +3849,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.QXs5iZ1gpobwCNp9",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 10
   },
   "QgxsKomo8GDsEGNe": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Buckler Gun"
-    ],
+    "baseTypes": ["Buckler Gun"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -4518,17 +3877,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.QgxsKomo8GDsEGNe",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "QhRGBeQuwG6OWZxM": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Paddle-Foot Pistol"
-    ],
+    "baseTypes": ["Paddle-Foot Pistol"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -4546,17 +3901,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.QhRGBeQuwG6OWZxM",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 5
   },
   "QigjqjvJ8j6f62Mo": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Tailblade"
-    ],
+    "baseTypes": ["Tailblade"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4568,17 +3919,13 @@
     "price": 11,
     "proficiency": "martial",
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.QigjqjvJ8j6f62Mo",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 0.5
   },
   "QnbMu8d1Sjeiv5GM": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Bec de Corbin"
-    ],
+    "baseTypes": ["Bec de Corbin"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -4597,17 +3944,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.QnbMu8d1Sjeiv5GM",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "RFfwbr0xWBDWvExu": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Musket"
-    ],
+    "baseTypes": ["Musket"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -4629,18 +3972,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.RFfwbr0xWBDWvExu",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 9
   },
   "RJjfMEjDC0K5C6uV": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kobold Tail Attachment (Sweeper)",
-      "Kobold Tail Attachment"
-    ],
+    "baseTypes": ["Kobold Tail Attachment (Sweeper)", "Kobold Tail Attachment"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4663,9 +4001,7 @@
   },
   "RRh1u2ccgLv1ynu8": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Pistol"
-    ],
+    "baseTypes": ["Pistol"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -4687,17 +4023,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.RRh1u2ccgLv1ynu8",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "RSvRoQyG8GpS8vhH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Spiked Gauntlet"
-    ],
+    "baseTypes": ["Spiked Gauntlet"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4719,17 +4051,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.RSvRoQyG8GpS8vhH",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "RWbjRwSPsuPAUDhw": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Light Crossbow"
-    ],
+    "baseTypes": ["Light Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -4751,17 +4079,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.RWbjRwSPsuPAUDhw",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "RY3sfrMSDs0OGLAH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dire Flail"
-    ],
+    "baseTypes": ["Dire Flail"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4784,18 +4108,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.RY3sfrMSDs0OGLAH",
-    "weaponGroups": [
-      "double",
-      "flails"
-    ],
+    "weaponGroups": ["double", "flails"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "Rk9RhWGqoKk0G55Z": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Heavy Slaver's Crossbow"
-    ],
+    "baseTypes": ["Heavy Slaver's Crossbow"],
     "category": "ranged",
     "critMult": 1,
     "critRange": 19,
@@ -4813,17 +4132,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Rk9RhWGqoKk0G55Z",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
   "RvkCDJ4OfxNXcyph": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Naginata"
-    ],
+    "baseTypes": ["Naginata"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -4846,17 +4161,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.RvkCDJ4OfxNXcyph",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 9
   },
   "SW6Os7QVZTWc4Ctd": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Barbazu Beard"
-    ],
+    "baseTypes": ["Barbazu Beard"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4874,17 +4185,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.SW6Os7QVZTWc4Ctd",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 5
   },
   "SeTVo0gHXbTt0Pih": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Light Slaver's Crossbow"
-    ],
+    "baseTypes": ["Light Slaver's Crossbow"],
     "category": "ranged",
     "critMult": 1,
     "critRange": 19,
@@ -4902,17 +4209,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.SeTVo0gHXbTt0Pih",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "SjYkpvZqfgvh0EAd": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Scimitar"
-    ],
+    "baseTypes": ["Scimitar"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -4934,17 +4237,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.SjYkpvZqfgvh0EAd",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "Sq5ocwUeMYr2qBjE": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Mere Club"
-    ],
+    "baseTypes": ["Mere Club"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -4962,18 +4261,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Sq5ocwUeMYr2qBjE",
-    "weaponGroups": [
-      "close",
-      "hammers"
-    ],
+    "weaponGroups": ["close", "hammers"],
     "weaponSubtype": "1h",
     "weight": 2
   },
   "T5N66YUFkpdxXv3d": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Stingchuck"
-    ],
+    "baseTypes": ["Stingchuck"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -4990,17 +4284,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.T5N66YUFkpdxXv3d",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 9
   },
   "TGPELygeHlA4eDrj": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dire Bolas"
-    ],
+    "baseTypes": ["Dire Bolas"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -5018,17 +4308,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.TGPELygeHlA4eDrj",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "TdVKK47usXLu4zxs": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Injection Spear"
-    ],
+    "baseTypes": ["Injection Spear"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -5047,17 +4333,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.TdVKK47usXLu4zxs",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "TvXC404n2AjNH7Mc": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Elven Leafblade"
-    ],
+    "baseTypes": ["Elven Leafblade"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -5080,9 +4362,7 @@
   },
   "ULs1jzXVbMt9magg": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Glaive-Guisarme"
-    ],
+    "baseTypes": ["Glaive-Guisarme"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -5101,17 +4381,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.ULs1jzXVbMt9magg",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "Uw42p33QKEUhlSMi": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kukri"
-    ],
+    "baseTypes": ["Kukri"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -5133,17 +4409,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Uw42p33QKEUhlSMi",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "V2eFtz6QWSP5bipu": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Shrillshaft Javelin"
-    ],
+    "baseTypes": ["Shrillshaft Javelin"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -5161,17 +4433,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.V2eFtz6QWSP5bipu",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "V40BXJ7fUxfXI2H4": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sharpened Combat Scabbard"
-    ],
+    "baseTypes": ["Sharpened Combat Scabbard"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -5189,17 +4457,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.V40BXJ7fUxfXI2H4",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 1
   },
   "VM6EF0t88wdSMQDd": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Gnome Hooked Hammer"
-    ],
+    "baseTypes": ["Gnome Hooked Hammer"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -5222,18 +4486,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.VM6EF0t88wdSMQDd",
-    "weaponGroups": [
-      "double"
-    ],
+    "weaponGroups": ["double"],
     "weaponSubtype": "2h",
     "weight": 6
   },
   "VMZo6xAnkmOv5qop": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kobold Tail Attachment (Long Lash)",
-      "Kobold Tail Attachment"
-    ],
+    "baseTypes": ["Kobold Tail Attachment (Long Lash)", "Kobold Tail Attachment"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -5256,10 +4515,7 @@
   },
   "VSY713AzcxKiAp42": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Cutlass",
-      "Scimitar"
-    ],
+    "baseTypes": ["Cutlass", "Scimitar"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -5277,17 +4533,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.VSY713AzcxKiAp42",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "Vh5O2NapyCHRzosU": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Heavy Pick"
-    ],
+    "baseTypes": ["Heavy Pick"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -5309,17 +4561,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Vh5O2NapyCHRzosU",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "1h",
     "weight": 6
   },
   "VhBxnIv5zfzrlb93": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Pepperbox"
-    ],
+    "baseTypes": ["Pepperbox"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -5341,17 +4589,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.VhBxnIv5zfzrlb93",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 5
   },
   "VudBuNqCanzGfOvk": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sword Cane"
-    ],
+    "baseTypes": ["Sword Cane"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -5369,17 +4613,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.VudBuNqCanzGfOvk",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "VwxTLVOEPfbvIv9B": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sling Glove"
-    ],
+    "baseTypes": ["Sling Glove"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -5397,17 +4637,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.VwxTLVOEPfbvIv9B",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "W04roMBNFAtgR2ZS": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sansetsukon"
-    ],
+    "baseTypes": ["Sansetsukon"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -5430,18 +4666,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.W04roMBNFAtgR2ZS",
-    "weaponGroups": [
-      "flails",
-      "monk"
-    ],
+    "weaponGroups": ["flails", "monk"],
     "weaponSubtype": "2h",
     "weight": 3
   },
   "WKd82kvMjQdU8K50": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Double Chicken Saber"
-    ],
+    "baseTypes": ["Double Chicken Saber"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -5463,18 +4694,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.WKd82kvMjQdU8K50",
-    "weaponGroups": [
-      "bladesHeavy",
-      "monk"
-    ],
+    "weaponGroups": ["bladesHeavy", "monk"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "WKeBSFyzkZeAl3B9": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Fighting Fan"
-    ],
+    "baseTypes": ["Fighting Fan"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -5496,17 +4722,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.WKeBSFyzkZeAl3B9",
-    "weaponGroups": [
-      "close",
-      "monk"
-    ],
+    "weaponGroups": ["close", "monk"],
     "weaponSubtype": "light"
   },
   "WPzYtI0SsZbOXl0y": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Nodachi"
-    ],
+    "baseTypes": ["Nodachi"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -5529,18 +4750,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.WPzYtI0SsZbOXl0y",
-    "weaponGroups": [
-      "bladesHeavy",
-      "polearms"
-    ],
+    "weaponGroups": ["bladesHeavy", "polearms"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "Wx22UaMqWgCrYi7r": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Greataxe"
-    ],
+    "baseTypes": ["Greataxe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -5563,17 +4779,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Wx22UaMqWgCrYi7r",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "XCLQKtU665jMBcJj": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Stormshaft Javelin"
-    ],
+    "baseTypes": ["Stormshaft Javelin"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -5591,18 +4803,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.XCLQKtU665jMBcJj",
-    "weaponGroups": [
-      "spears",
-      "thrown"
-    ],
+    "weaponGroups": ["spears", "thrown"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "XkWvIAhFMzakFssS": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kasatha Spinal Sword"
-    ],
+    "baseTypes": ["Kasatha Spinal Sword"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -5625,9 +4832,7 @@
   },
   "Y4zuC6CQxCFXcojX": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Wushu Dart"
-    ],
+    "baseTypes": ["Wushu Dart"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -5649,18 +4854,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Y4zuC6CQxCFXcojX",
-    "weaponGroups": [
-      "close",
-      "monk",
-      "thrown"
-    ],
+    "weaponGroups": ["close", "monk", "thrown"],
     "weaponSubtype": "light"
   },
   "YCrz2YNXSylt4Gl3": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Madsen Light Machine Gun"
-    ],
+    "baseTypes": ["Madsen Light Machine Gun"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -5678,17 +4877,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.YCrz2YNXSylt4Gl3",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 20
   },
   "YHAGfpGI0Ghd9udz": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Cylinder Rifle"
-    ],
+    "baseTypes": ["Cylinder Rifle"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -5706,17 +4901,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.YHAGfpGI0Ghd9udz",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
   "YLHECG6xMoqBUpmN": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Shang Gou"
-    ],
+    "baseTypes": ["Shang Gou"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -5738,17 +4929,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.YLHECG6xMoqBUpmN",
-    "weaponGroups": [
-      "monk"
-    ],
+    "weaponGroups": ["monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "Ybiyah8XFZ1Yhh35": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Scythe"
-    ],
+    "baseTypes": ["Scythe"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -5767,17 +4954,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Ybiyah8XFZ1Yhh35",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "Yeli1JRCgnmVyhWT": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Light Mace"
-    ],
+    "baseTypes": ["Light Mace"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -5799,17 +4982,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Yeli1JRCgnmVyhWT",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "light",
     "weight": 4
   },
   "Yk7E8UZVMLPyiiIt": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Tepoztopilli"
-    ],
+    "baseTypes": ["Tepoztopilli"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -5833,9 +5012,7 @@
   },
   "ZBnZt4RlEg7ckoKE": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Halfling Sling Staff"
-    ],
+    "baseTypes": ["Halfling Sling Staff"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -5857,17 +5034,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.ZBnZt4RlEg7ckoKE",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "ZDzIeyL6Zc9M6xq5": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Maulaxe"
-    ],
+    "baseTypes": ["Dwarven Maulaxe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -5885,18 +5058,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.ZDzIeyL6Zc9M6xq5",
-    "weaponGroups": [
-      "axes",
-      "hammers"
-    ],
+    "weaponGroups": ["axes", "hammers"],
     "weaponSubtype": "light",
     "weight": 5
   },
   "ZGnp5XXy2PPIW3GS": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Collapsible Kumade"
-    ],
+    "baseTypes": ["Collapsible Kumade"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -5915,17 +5083,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.ZGnp5XXy2PPIW3GS",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "2h",
     "weight": 4
   },
   "a6LXGyA2jkJEDFQK": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Lantern Staff"
-    ],
+    "baseTypes": ["Lantern Staff"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -5944,17 +5108,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.a6LXGyA2jkJEDFQK",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "2h",
     "weight": 9
   },
   "a6w5DSGKSZo6LvTN": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sickle-Sword"
-    ],
+    "baseTypes": ["Sickle-Sword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -5972,17 +5132,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.a6w5DSGKSZo6LvTN",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "aBSCa5u1Xa3GIRCU": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Emei Piercer"
-    ],
+    "baseTypes": ["Emei Piercer"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -6004,17 +5160,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.aBSCa5u1Xa3GIRCU",
-    "weaponGroups": [
-      "close",
-      "monk"
-    ],
+    "weaponGroups": ["close", "monk"],
     "weaponSubtype": "light"
   },
   "aLCy6zW8AldME74r": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Radium Pistol"
-    ],
+    "baseTypes": ["Radium Pistol"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -6032,17 +5183,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.aLCy6zW8AldME74r",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "aOdrdreTnUg36jrP": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Flying Talon"
-    ],
+    "baseTypes": ["Flying Talon"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -6060,17 +5207,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.aOdrdreTnUg36jrP",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "light",
     "weight": 5
   },
   "aQRocmXzAwvZkBEZ": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Chain Spear"
-    ],
+    "baseTypes": ["Chain Spear"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -6089,19 +5232,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.aQRocmXzAwvZkBEZ",
-    "weaponGroups": [
-      "double",
-      "flails",
-      "spears"
-    ],
+    "weaponGroups": ["double", "flails", "spears"],
     "weaponSubtype": "2h",
     "weight": 13
   },
   "aZ4tLZL0LIZAHnQ1": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Armor Spikes"
-    ],
+    "baseTypes": ["Armor Spikes"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -6119,17 +5256,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.aZ4tLZL0LIZAHnQ1",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 10
   },
   "abv8SSqPMJW1jrIM": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Knuckle Axe"
-    ],
+    "baseTypes": ["Knuckle Axe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -6147,17 +5280,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.abv8SSqPMJW1jrIM",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "aji2yHRoqFAHHfm6": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Urgrosh"
-    ],
+    "baseTypes": ["Dwarven Urgrosh"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -6180,17 +5309,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.aji2yHRoqFAHHfm6",
-    "weaponGroups": [
-      "double"
-    ],
+    "weaponGroups": ["double"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "an7axxZjvKQogI90": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Air Repeater"
-    ],
+    "baseTypes": ["Air Repeater"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -6208,17 +5333,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.an7axxZjvKQogI90",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "awNlvqmRM1TZRVR9": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Longspear"
-    ],
+    "baseTypes": ["Longspear"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -6241,17 +5362,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.awNlvqmRM1TZRVR9",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 9
   },
   "b05rtRtGyH7s4F67": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sawtoothed Sabre"
-    ],
+    "baseTypes": ["Sawtoothed Sabre"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -6269,18 +5386,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.b05rtRtGyH7s4F67",
-    "weaponGroups": [
-      "bladesHeavy",
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesHeavy", "bladesLight"],
     "weaponSubtype": "1h",
     "weight": 2
   },
   "b0hY6M0sYwvjnMZH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Earth Breaker"
-    ],
+    "baseTypes": ["Earth Breaker"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -6299,17 +5411,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.b0hY6M0sYwvjnMZH",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "2h",
     "weight": 14
   },
   "b5FfLdVhbcxQrNdU": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Brass Knuckles"
-    ],
+    "baseTypes": ["Brass Knuckles"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -6327,18 +5435,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.b5FfLdVhbcxQrNdU",
-    "weaponGroups": [
-      "close",
-      "monk"
-    ],
+    "weaponGroups": ["close", "monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "bEZGQcXqVZtvS4hd": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Crystal Chakram"
-    ],
+    "baseTypes": ["Crystal Chakram"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 18,
@@ -6356,17 +5459,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.bEZGQcXqVZtvS4hd",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "bTmiY6Bkj2kSPUKV": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Sphinx Hammer"
-    ],
+    "baseTypes": ["Dwarven Sphinx Hammer"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -6385,18 +5484,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.bTmiY6Bkj2kSPUKV",
-    "weaponGroups": [
-      "hammers",
-      "thrown"
-    ],
+    "weaponGroups": ["hammers", "thrown"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "bYvcTqrIQa3Y9Tvs": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Breech-Loader"
-    ],
+    "baseTypes": ["Breech-Loader"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -6414,17 +5508,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.bYvcTqrIQa3Y9Tvs",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "bfIz1vVKGX9p8MHT": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Tonfa"
-    ],
+    "baseTypes": ["Tonfa"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -6446,18 +5536,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.bfIz1vVKGX9p8MHT",
-    "weaponGroups": [
-      "close",
-      "monk"
-    ],
+    "weaponGroups": ["close", "monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "c2cwyWi0Jn5PMggb": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Mancatcher"
-    ],
+    "baseTypes": ["Mancatcher"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -6476,17 +5561,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.c2cwyWi0Jn5PMggb",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "cF6y7ikfa8mSiIcE": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Orc Skull Ram"
-    ],
+    "baseTypes": ["Orc Skull Ram"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -6505,17 +5586,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.cF6y7ikfa8mSiIcE",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 20
   },
   "cJV7OBm9KiF2WWiu": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sling"
-    ],
+    "baseTypes": ["Sling"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -6536,17 +5613,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.cJV7OBm9KiF2WWiu",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged"
   },
   "cKJ0wG42qRrrJJeI": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dueling Sword",
-      "Longsword"
-    ],
+    "baseTypes": ["Dueling Sword", "Longsword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -6576,17 +5648,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.cKJ0wG42qRrrJJeI",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "cLA0y1lyV3YDAmLf": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Phaleros"
-    ],
+    "baseTypes": ["Phaleros"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -6604,17 +5672,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.cLA0y1lyV3YDAmLf",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "cfxzk6zSmOMMVoOo": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Flask Pike"
-    ],
+    "baseTypes": ["Flask Pike"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -6633,17 +5697,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.cfxzk6zSmOMMVoOo",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 9
   },
   "chRnSkihSh4stCRq": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Lungchuan Tamo"
-    ],
+    "baseTypes": ["Lungchuan Tamo"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -6665,17 +5725,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.chRnSkihSh4stCRq",
-    "weaponGroups": [
-      "monk"
-    ],
+    "weaponGroups": ["monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "cy4pO52j4iAedcHZ": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Stonebow"
-    ],
+    "baseTypes": ["Stonebow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -6693,17 +5749,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.cy4pO52j4iAedcHZ",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "d2Xx40c91wwckazK": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Sword Cane Pistol"
-    ],
+    "baseTypes": ["Sword Cane Pistol"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -6725,17 +5777,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.d2Xx40c91wwckazK",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
   "dSvOrS64ClyN9isO": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Light Pick"
-    ],
+    "baseTypes": ["Light Pick"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -6757,17 +5805,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.dSvOrS64ClyN9isO",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "light",
     "weight": 3
   },
   "darjoc2dHbh3Czxy": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Longaxe"
-    ],
+    "baseTypes": ["Dwarven Longaxe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -6786,17 +5830,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.darjoc2dHbh3Czxy",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "2h",
     "weight": 14
   },
   "dgmR0QtZF8vePzcz": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Scythe"
-    ],
+    "baseTypes": ["Scythe"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -6819,17 +5859,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.dgmR0QtZF8vePzcz",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "eD48G3YnHyBYB3LC": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Heavy Wrist Launcher"
-    ],
+    "baseTypes": ["Heavy Wrist Launcher"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -6852,10 +5888,7 @@
   },
   "eYmic2XB4xFI0WqY": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kobold Tail Attachment (Spiked)",
-      "Kobold Tail Attachment"
-    ],
+    "baseTypes": ["Kobold Tail Attachment (Spiked)", "Kobold Tail Attachment"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -6878,9 +5911,7 @@
   },
   "eo3sVsK4g1Besenj": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Spring Blade"
-    ],
+    "baseTypes": ["Spring Blade"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -6903,9 +5934,7 @@
   },
   "fENJ0EkHVeYGWOji": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Flindbar"
-    ],
+    "baseTypes": ["Flindbar"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -6923,17 +5952,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.fENJ0EkHVeYGWOji",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "1h",
     "weight": 6
   },
   "fNnwtbOHb1pdqaBb": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Mattock"
-    ],
+    "baseTypes": ["Mattock"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -6952,17 +5977,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.fNnwtbOHb1pdqaBb",
-    "weaponGroups": [
-      "axes"
-    ],
+    "weaponGroups": ["axes"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "fOSuWwRSZLTrROch": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dagger"
-    ],
+    "baseTypes": ["Dagger"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -6984,19 +6005,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.fOSuWwRSZLTrROch",
-    "weaponGroups": [
-      "bladesLight",
-      "thrown",
-      "tribal"
-    ],
+    "weaponGroups": ["bladesLight", "thrown", "tribal"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "fqiZkTAd1BlgOaII": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Scizore"
-    ],
+    "baseTypes": ["Scizore"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7014,18 +6029,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.fqiZkTAd1BlgOaII",
-    "weaponGroups": [
-      "bladesLight",
-      "close"
-    ],
+    "weaponGroups": ["bladesLight", "close"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "fygngW2uhIVwedwz": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Taiaha"
-    ],
+    "baseTypes": ["Taiaha"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7043,18 +6053,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.fygngW2uhIVwedwz",
-    "weaponGroups": [
-      "double",
-      "hammers"
-    ],
+    "weaponGroups": ["double", "hammers"],
     "weaponSubtype": "1h",
     "weight": 8
   },
   "fzP5dhevEliYzAv4": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Mosin-Nagant M1891 Rifle"
-    ],
+    "baseTypes": ["Mosin-Nagant M1891 Rifle"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -7072,17 +6077,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.fzP5dhevEliYzAv4",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 9
   },
   "gAs85NM90mIR4O4Z": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Throwing Axe"
-    ],
+    "baseTypes": ["Throwing Axe"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -7104,19 +6105,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.gAs85NM90mIR4O4Z",
-    "weaponGroups": [
-      "axes",
-      "thrown",
-      "tribal"
-    ],
+    "weaponGroups": ["axes", "thrown", "tribal"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "gYFqEtGQkZFiPPmG": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Dragoon Pistol"
-    ],
+    "baseTypes": ["Dragoon Pistol"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -7134,17 +6129,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.gYFqEtGQkZFiPPmG",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 5
   },
   "gdtr2WxIRgDdNMlg": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Elven Branched Spear"
-    ],
+    "baseTypes": ["Elven Branched Spear"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -7163,17 +6154,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.gdtr2WxIRgDdNMlg",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "gkjYb2YKcFce5AQy": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Gnome Flick-Mace"
-    ],
+    "baseTypes": ["Gnome Flick-Mace"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7196,9 +6183,7 @@
   },
   "hBB8NF2FxK4WRIAS": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Pata"
-    ],
+    "baseTypes": ["Pata"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -7216,18 +6201,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.hBB8NF2FxK4WRIAS",
-    "weaponGroups": [
-      "axes",
-      "bladesLight"
-    ],
+    "weaponGroups": ["axes", "bladesLight"],
     "weaponSubtype": "light",
     "weight": 3
   },
   "hBgclgYrnhecN3pX": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Guisarme"
-    ],
+    "baseTypes": ["Guisarme"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -7250,17 +6230,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.hBgclgYrnhecN3pX",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "hHwOUIg2oTyV6vME": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Lawrence 1917 Flamethrower"
-    ],
+    "baseTypes": ["Lawrence 1917 Flamethrower"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -7278,17 +6254,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.hHwOUIg2oTyV6vME",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 20
   },
   "hIKoJ07Ykvh9IWQU": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Shield Spikes (Light)"
-    ],
+    "baseTypes": ["Shield Spikes (Light)"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7306,17 +6278,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.hIKoJ07Ykvh9IWQU",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 5
   },
   "hPkTX7pOJ5shyv1n": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kestros"
-    ],
+    "baseTypes": ["Kestros"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -7334,17 +6302,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.hPkTX7pOJ5shyv1n",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
   "hk5OdTCMKyImK8Qm": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kyoketsu Shoge"
-    ],
+    "baseTypes": ["Kyoketsu Shoge"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7367,18 +6331,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.hk5OdTCMKyImK8Qm",
-    "weaponGroups": [
-      "flails",
-      "monk"
-    ],
+    "weaponGroups": ["flails", "monk"],
     "weaponSubtype": "2h",
     "weight": 1
   },
   "hk9XXmx25qaSgOUV": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Bo Staff"
-    ],
+    "baseTypes": ["Bo Staff"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7397,18 +6356,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.hk9XXmx25qaSgOUV",
-    "weaponGroups": [
-      "double",
-      "monk"
-    ],
+    "weaponGroups": ["double", "monk"],
     "weaponSubtype": "2h",
     "weight": 3
   },
   "huwXevOSIgMnwPgl": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Barbed Spear"
-    ],
+    "baseTypes": ["Barbed Spear"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7427,17 +6381,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.huwXevOSIgMnwPgl",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "hvWgMofsY3heVbFo": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Split-Blade Sword"
-    ],
+    "baseTypes": ["Split-Blade Sword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7455,17 +6405,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.hvWgMofsY3heVbFo",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 8
   },
   "i1746993ztqNRZwk": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Tiger Fork"
-    ],
+    "baseTypes": ["Tiger Fork"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7488,19 +6434,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.i1746993ztqNRZwk",
-    "weaponGroups": [
-      "monk",
-      "polearms",
-      "spears"
-    ],
+    "weaponGroups": ["monk", "polearms", "spears"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "iSURd9p5uDXTaQwP": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Bayonet"
-    ],
+    "baseTypes": ["Bayonet"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7519,18 +6459,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.iSURd9p5uDXTaQwP",
-    "weaponGroups": [
-      "bladesLight",
-      "close"
-    ],
+    "weaponGroups": ["bladesLight", "close"],
     "weaponSubtype": "2h",
     "weight": 1
   },
   "iSbfuFMtzdCEhqgr": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Elven Curve Blade"
-    ],
+    "baseTypes": ["Elven Curve Blade"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -7553,17 +6488,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.iSbfuFMtzdCEhqgr",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "2h",
     "weight": 7
   },
   "igwRYyXsVoDgIPSi": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dogslicer"
-    ],
+    "baseTypes": ["Dogslicer"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -7581,17 +6512,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.igwRYyXsVoDgIPSi",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "ik99jFlELGHbSryg": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kama"
-    ],
+    "baseTypes": ["Kama"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7613,18 +6540,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.ik99jFlELGHbSryg",
-    "weaponGroups": [
-      "bladesLight",
-      "monk"
-    ],
+    "weaponGroups": ["bladesLight", "monk"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "ioPvNyyv6L4hv0aW": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Aldori Dueling Sword"
-    ],
+    "baseTypes": ["Aldori Dueling Sword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -7642,17 +6564,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.ioPvNyyv6L4hv0aW",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "j1ZxglTWSOgubdHH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Totem Spear"
-    ],
+    "baseTypes": ["Totem Spear"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -7671,17 +6589,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.j1ZxglTWSOgubdHH",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 6
   },
   "jKhkfr91Tmd4xfVA": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Falcata"
-    ],
+    "baseTypes": ["Falcata"],
     "category": "melee",
     "critMult": 3,
     "critRange": 19,
@@ -7699,18 +6613,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.jKhkfr91Tmd4xfVA",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "jk9EoGeHslLieXsf": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Reflex Bow",
-      "Longbow"
-    ],
+    "baseTypes": ["Reflex Bow", "Longbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -7728,17 +6637,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.jk9EoGeHslLieXsf",
-    "weaponGroups": [
-      "bows"
-    ],
+    "weaponGroups": ["bows"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "jv1jhEk1gPk6iPLv": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Bich'hwa"
-    ],
+    "baseTypes": ["Bich'hwa"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -7761,9 +6666,7 @@
   },
   "kBfgnl7ccM6QLCcH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Bolas"
-    ],
+    "baseTypes": ["Bolas"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -7785,17 +6688,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.kBfgnl7ccM6QLCcH",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "kRFQLnjgl2cTlTrc": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Tekko-Kagi"
-    ],
+    "baseTypes": ["Tekko-Kagi"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -7817,16 +6716,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.kRFQLnjgl2cTlTrc",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light"
   },
   "kTiSd8vO1cPMxXWo": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Double Waraxe"
-    ],
+    "baseTypes": ["Dwarven Double Waraxe"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -7844,18 +6739,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.kTiSd8vO1cPMxXWo",
-    "weaponGroups": [
-      "axes",
-      "double"
-    ],
+    "weaponGroups": ["axes", "double"],
     "weaponSubtype": "1h",
     "weight": 12
   },
   "kY1zv3pOlGUfyX29": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Broken-Back Seax"
-    ],
+    "baseTypes": ["Broken-Back Seax"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -7873,17 +6763,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.kY1zv3pOlGUfyX29",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "1h",
     "weight": 4
   },
   "lNkiFRCBELwKFaTg": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Longbow"
-    ],
+    "baseTypes": ["Longbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -7906,10 +6792,7 @@
   },
   "lPysXmaoVEP6zB1L": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Wrist Launcher",
-      "Hand Crossbow"
-    ],
+    "baseTypes": ["Wrist Launcher", "Hand Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -7931,9 +6814,7 @@
   },
   "lhRflc0WUdsF1s4h": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Throwing Shield"
-    ],
+    "baseTypes": ["Throwing Shield"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -7951,16 +6832,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.lhRflc0WUdsF1s4h",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged"
   },
   "li01iaRoxd4PAmhD": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Waveblade"
-    ],
+    "baseTypes": ["Waveblade"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -7978,17 +6855,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.li01iaRoxd4PAmhD",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "lq720GoSQPgO0p7P": {
     "attackAbility": "str",
-    "baseTypes": [
-      "War Razor"
-    ],
+    "baseTypes": ["War Razor"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -8006,17 +6879,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.lq720GoSQPgO0p7P",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "lxN8LUTXzcckKu32": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Baston Fighting Stick"
-    ],
+    "baseTypes": ["Baston Fighting Stick"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8039,9 +6908,7 @@
   },
   "mCwwHo32SU7kjGyu": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dart"
-    ],
+    "baseTypes": ["Dart"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -8063,17 +6930,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.mCwwHo32SU7kjGyu",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 0.5
   },
   "mDJlmENIJf6IpZFc": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Spider-Leg Sickle"
-    ],
+    "baseTypes": ["Spider-Leg Sickle"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8096,9 +6959,7 @@
   },
   "mMFuhvE1DOjWH3Xa": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Repeating Heavy Crossbow"
-    ],
+    "baseTypes": ["Repeating Heavy Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -8120,17 +6981,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.mMFuhvE1DOjWH3Xa",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
   "mkwz0g7RwRwWkFkN": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sap"
-    ],
+    "baseTypes": ["Sap"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8152,17 +7009,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.mkwz0g7RwRwWkFkN",
-    "weaponGroups": [
-      "close"
-    ],
+    "weaponGroups": ["close"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "mmbO3NscIzMFXyqH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Double-Chained Kama"
-    ],
+    "baseTypes": ["Double-Chained Kama"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8185,19 +7038,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.mmbO3NscIzMFXyqH",
-    "weaponGroups": [
-      "double",
-      "flails",
-      "monk"
-    ],
+    "weaponGroups": ["double", "flails", "monk"],
     "weaponSubtype": "2h",
     "weight": 4
   },
   "msTiRxZVnecbPCA8": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Longbow"
-    ],
+    "baseTypes": ["Longbow"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -8219,17 +7066,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.msTiRxZVnecbPCA8",
-    "weaponGroups": [
-      "bows"
-    ],
+    "weaponGroups": ["bows"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
   "n0vno5RNBzsHvH33": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Brutal Bola"
-    ],
+    "baseTypes": ["Brutal Bola"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -8246,9 +7089,7 @@
   },
   "n3E6bZfR6PVCRS3j": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Temple Sword"
-    ],
+    "baseTypes": ["Temple Sword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -8266,18 +7107,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.n3E6bZfR6PVCRS3j",
-    "weaponGroups": [
-      "bladesHeavy",
-      "monk"
-    ],
+    "weaponGroups": ["bladesHeavy", "monk"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "nSZTb7vN2SH2KwRG": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Halfling Double Sling"
-    ],
+    "baseTypes": ["Halfling Double Sling"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -8295,18 +7131,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.nSZTb7vN2SH2KwRG",
-    "weaponGroups": [
-      "double",
-      "thrown"
-    ],
+    "weaponGroups": ["double", "thrown"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
   "nU8nLU0HR7npPYH1": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Heavy Axe-Gauntlet"
-    ],
+    "baseTypes": ["Dwarven Heavy Axe-Gauntlet"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -8324,18 +7155,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.nU8nLU0HR7npPYH1",
-    "weaponGroups": [
-      "axes",
-      "close"
-    ],
+    "weaponGroups": ["axes", "close"],
     "weaponSubtype": "1h",
     "weight": 5
   },
   "naiJiv2t267Xyi09": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Ranseur"
-    ],
+    "baseTypes": ["Ranseur"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -8358,17 +7184,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.naiJiv2t267Xyi09",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "nq0b69zA7Q35n0oE": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sea-Knife"
-    ],
+    "baseTypes": ["Sea-Knife"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -8386,17 +7208,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.nq0b69zA7Q35n0oE",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "o4vWDCKqxbn9Gelq": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Snag Net"
-    ],
+    "baseTypes": ["Snag Net"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8421,17 +7239,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.o4vWDCKqxbn9Gelq",
-    "weaponGroups": [
-      "thrown"
-    ],
+    "weaponGroups": ["thrown"],
     "weaponSubtype": "ranged",
     "weight": 10
   },
   "o6KcJwTvbUYlmX3W": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Bardiche"
-    ],
+    "baseTypes": ["Bardiche"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -8450,18 +7264,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.o6KcJwTvbUYlmX3W",
-    "weaponGroups": [
-      "axes",
-      "polearms"
-    ],
+    "weaponGroups": ["axes", "polearms"],
     "weaponSubtype": "2h",
     "weight": 14
   },
   "oAb9EXEzaLRGfYxL": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Sickle"
-    ],
+    "baseTypes": ["Sickle"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8483,18 +7292,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.oAb9EXEzaLRGfYxL",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "oHZXxOeY04Wp3jrE": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Spiral Rapier",
-      "Rapier"
-    ],
+    "baseTypes": ["Spiral Rapier", "Rapier"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -8517,9 +7321,7 @@
   },
   "oXoCHa3VES4B98oz": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Lucerne Hammer"
-    ],
+    "baseTypes": ["Lucerne Hammer"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8538,17 +7340,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.oXoCHa3VES4B98oz",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "otf7OZQZhkAWoUR4": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Meteor Hammer"
-    ],
+    "baseTypes": ["Meteor Hammer"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8579,17 +7377,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.otf7OZQZhkAWoUR4",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "oyUApQSVsAqzyjdz": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Greatsword"
-    ],
+    "baseTypes": ["Greatsword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -8612,17 +7406,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.oyUApQSVsAqzyjdz",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "pB36YwY2TIyKQV2S": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Combat Scabbard"
-    ],
+    "baseTypes": ["Combat Scabbard"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8640,17 +7430,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.pB36YwY2TIyKQV2S",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "1h",
     "weight": 1
   },
   "pCFqtR5WrJmeZnDF": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Warhammer"
-    ],
+    "baseTypes": ["Warhammer"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -8672,18 +7458,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.pCFqtR5WrJmeZnDF",
-    "weaponGroups": [
-      "hammers"
-    ],
+    "weaponGroups": ["hammers"],
     "weaponSubtype": "1h",
     "weight": 5
   },
   "pIRXX5fRRgO9JfF2": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Wahaika",
-      "Club"
-    ],
+    "baseTypes": ["Wahaika", "Club"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -8701,18 +7482,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.pIRXX5fRRgO9JfF2",
-    "weaponGroups": [
-      "hammers",
-      "thrown"
-    ],
+    "weaponGroups": ["hammers", "thrown"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "pRzR6YPVwzDi0JwP": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Battle Poi"
-    ],
+    "baseTypes": ["Battle Poi"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8730,17 +7506,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.pRzR6YPVwzDi0JwP",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "pSUwFnrg0b07Jcdf": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Planson"
-    ],
+    "baseTypes": ["Planson"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8759,18 +7531,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.pSUwFnrg0b07Jcdf",
-    "weaponGroups": [
-      "hammers",
-      "spears"
-    ],
+    "weaponGroups": ["hammers", "spears"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "pYuWJveZVUQcdUfF": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Butterfly Knife"
-    ],
+    "baseTypes": ["Butterfly Knife"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -8788,17 +7555,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.pYuWJveZVUQcdUfF",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "prQK9j1wfKuHR3jq": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Launching Crossbow"
-    ],
+    "baseTypes": ["Launching Crossbow"],
     "category": "ranged",
     "critMult": 1,
     "critRange": 20,
@@ -8815,17 +7578,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.prQK9j1wfKuHR3jq",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 8
   },
   "q1HlpY1NoUveS47l": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Handwraps"
-    ],
+    "baseTypes": ["Handwraps"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -8846,9 +7605,7 @@
   },
   "qEpaSO593GKaXJuo": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Hurlbat"
-    ],
+    "baseTypes": ["Hurlbat"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -8866,18 +7623,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.qEpaSO593GKaXJuo",
-    "weaponGroups": [
-      "axes",
-      "thrown"
-    ],
+    "weaponGroups": ["axes", "thrown"],
     "weaponSubtype": "ranged",
     "weight": 2
   },
   "rWtJpp7d6d3BTO8a": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Seven-Branched Sword"
-    ],
+    "baseTypes": ["Seven-Branched Sword"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -8900,18 +7652,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.rWtJpp7d6d3BTO8a",
-    "weaponGroups": [
-      "bladesHeavy",
-      "monk"
-    ],
+    "weaponGroups": ["bladesHeavy", "monk"],
     "weaponSubtype": "2h",
     "weight": 7
   },
   "rXxv6Q9b6Px3qhFE": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Tube Arrow Shooter"
-    ],
+    "baseTypes": ["Tube Arrow Shooter"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -8937,17 +7684,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.rXxv6Q9b6Px3qhFE",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 0.5
   },
   "rsDtJY6xEH7v7uLU": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Horsechopper"
-    ],
+    "baseTypes": ["Horsechopper"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -8971,9 +7714,7 @@
   },
   "s0LFk8Jk5CsgOj7V": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Spear"
-    ],
+    "baseTypes": ["Spear"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -8996,19 +7737,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.s0LFk8Jk5CsgOj7V",
-    "weaponGroups": [
-      "spears",
-      "thrown",
-      "tribal"
-    ],
+    "weaponGroups": ["spears", "thrown", "tribal"],
     "weaponSubtype": "2h",
     "weight": 6
   },
   "sSvnAbXKDOSrMvGc": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Cestus"
-    ],
+    "baseTypes": ["Cestus"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -9026,18 +7761,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.sSvnAbXKDOSrMvGc",
-    "weaponGroups": [
-      "close",
-      "monk"
-    ],
+    "weaponGroups": ["close", "monk"],
     "weaponSubtype": "light",
     "weight": 1
   },
   "saoOrjayCdgPmTqk": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kerambit"
-    ],
+    "baseTypes": ["Kerambit"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -9059,16 +7789,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.saoOrjayCdgPmTqk",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light"
   },
   "t5h6nBc1BuN8Eh5d": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Gastraphetes"
-    ],
+    "baseTypes": ["Gastraphetes"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -9086,17 +7812,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.t5h6nBc1BuN8Eh5d",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
   "tJ6SgELD1EMxgwE6": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Flambard"
-    ],
+    "baseTypes": ["Flambard"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -9115,17 +7837,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.tJ6SgELD1EMxgwE6",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "2h",
     "weight": 6
   },
   "tSvbLpTfOIUnoGd0": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Repeating Light Crossbow"
-    ],
+    "baseTypes": ["Repeating Light Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -9147,17 +7865,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.tSvbLpTfOIUnoGd0",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "tgIwUmP2Qyop5SzH": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Urumi"
-    ],
+    "baseTypes": ["Urumi"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -9195,18 +7909,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.tgIwUmP2Qyop5SzH",
-    "weaponGroups": [
-      "flails",
-      "monk"
-    ],
+    "weaponGroups": ["flails", "monk"],
     "weaponSubtype": "1h",
     "weight": 6
   },
   "tjuTlbdI85ClQhf6": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Starknife"
-    ],
+    "baseTypes": ["Starknife"],
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
@@ -9228,18 +7937,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.tjuTlbdI85ClQhf6",
-    "weaponGroups": [
-      "bladesLight",
-      "thrown"
-    ],
+    "weaponGroups": ["bladesLight", "thrown"],
     "weaponSubtype": "light",
     "weight": 3
   },
   "u6Hv3AYMgkAtR7Jm": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Spiked Chain"
-    ],
+    "baseTypes": ["Spiked Chain"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9262,17 +7966,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.u6Hv3AYMgkAtR7Jm",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "uGfh3EEOi61LGdw1": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Crook"
-    ],
+    "baseTypes": ["Crook"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9291,17 +7991,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.uGfh3EEOi61LGdw1",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 5
   },
   "uMKYQeN9RWCuuucG": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Fire Lance"
-    ],
+    "baseTypes": ["Fire Lance"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -9323,17 +8019,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.uMKYQeN9RWCuuucG",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
   "uj2DDCSDd1vLgb5q": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Fauchard"
-    ],
+    "baseTypes": ["Fauchard"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -9352,17 +8044,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.uj2DDCSDd1vLgb5q",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "v2G8vwbfvZDmseCQ": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Monk's Spade"
-    ],
+    "baseTypes": ["Monk's Spade"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9385,19 +8073,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.v2G8vwbfvZDmseCQ",
-    "weaponGroups": [
-      "double",
-      "monk",
-      "polearms"
-    ],
+    "weaponGroups": ["double", "monk", "polearms"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "v5oMOHGuej5FrYqe": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Boarding Pike"
-    ],
+    "baseTypes": ["Boarding Pike"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -9416,17 +8098,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.v5oMOHGuej5FrYqe",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 9
   },
   "v8Ee5Iagp62xsUQZ": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Falchion"
-    ],
+    "baseTypes": ["Falchion"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -9449,17 +8127,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.v8Ee5Iagp62xsUQZ",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "vA4IZffRD0XvqXnh": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Greatclub"
-    ],
+    "baseTypes": ["Greatclub"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9482,18 +8156,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.vA4IZffRD0XvqXnh",
-    "weaponGroups": [
-      "hammers",
-      "tribal"
-    ],
+    "weaponGroups": ["hammers", "tribal"],
     "weaponSubtype": "2h",
     "weight": 8
   },
   "vkUakr0V4RE9CAyk": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Bladed Scarf"
-    ],
+    "baseTypes": ["Bladed Scarf"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9512,17 +8181,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.vkUakr0V4RE9CAyk",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "2h",
     "weight": 2
   },
   "vqF4kshibBDN624D": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Heavy Crossbow"
-    ],
+    "baseTypes": ["Heavy Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -9544,17 +8209,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.vqF4kshibBDN624D",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 8
   },
   "vu3N4zCRDTUJ5FW4": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Club"
-    ],
+    "baseTypes": ["Club"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9575,19 +8236,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.vu3N4zCRDTUJ5FW4",
-    "weaponGroups": [
-      "hammers",
-      "thrown",
-      "tribal"
-    ],
+    "weaponGroups": ["hammers", "thrown", "tribal"],
     "weaponSubtype": "1h",
     "weight": 3
   },
   "vxZSrbYP8uSRzLWb": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Katana"
-    ],
+    "baseTypes": ["Katana"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -9609,17 +8264,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.vxZSrbYP8uSRzLWb",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 6
   },
   "vyRDu111njgEV8xw": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Double Crossbow"
-    ],
+    "baseTypes": ["Double Crossbow"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 19,
@@ -9637,17 +8288,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.vyRDu111njgEV8xw",
-    "weaponGroups": [
-      "crossbows"
-    ],
+    "weaponGroups": ["crossbows"],
     "weaponSubtype": "ranged",
     "weight": 18
   },
   "wKIv4yCj8L3ADceU": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Glaive"
-    ],
+    "baseTypes": ["Glaive"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -9670,17 +8317,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.wKIv4yCj8L3ADceU",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "wUBozJUAb1DYim2w": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Pepperbox Rifle"
-    ],
+    "baseTypes": ["Pepperbox Rifle"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -9702,18 +8345,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.wUBozJUAb1DYim2w",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 15
   },
   "woLWajpm5tajnZXG": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Kobold Tail Attachment (Pounder)",
-      "Kobold Tail Attachment"
-    ],
+    "baseTypes": ["Kobold Tail Attachment (Pounder)", "Kobold Tail Attachment"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9736,9 +8374,7 @@
   },
   "wuW25pHWYQGW81jL": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Lance"
-    ],
+    "baseTypes": ["Lance"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -9761,17 +8397,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.wuW25pHWYQGW81jL",
-    "weaponGroups": [
-      "spears"
-    ],
+    "weaponGroups": ["spears"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "x1nte1KpHWKsDlww": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Dwarven Chain-Flail"
-    ],
+    "baseTypes": ["Dwarven Chain-Flail"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9789,9 +8421,7 @@
   },
   "xQegVPdAOD8rq2Rl": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Traveling Kettle"
-    ],
+    "baseTypes": ["Traveling Kettle"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9809,17 +8439,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.xQegVPdAOD8rq2Rl",
-    "weaponGroups": [
-      "monk"
-    ],
+    "weaponGroups": ["monk"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "xRAy5aBcjRvvbz8z": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Rope Dart"
-    ],
+    "baseTypes": ["Rope Dart"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -9845,17 +8471,12 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.xRAy5aBcjRvvbz8z",
-    "weaponGroups": [
-      "monk",
-      "thrown"
-    ],
+    "weaponGroups": ["monk", "thrown"],
     "weaponSubtype": "ranged"
   },
   "xTI5vJSolVpLzrkz": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Gnome Pincher"
-    ],
+    "baseTypes": ["Gnome Pincher"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9873,17 +8494,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.xTI5vJSolVpLzrkz",
-    "weaponGroups": [
-      "flails"
-    ],
+    "weaponGroups": ["flails"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "xWh4TQU1hx0tVFC5": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Warhammer Musket"
-    ],
+    "baseTypes": ["Warhammer Musket"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -9905,17 +8522,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.xWh4TQU1hx0tVFC5",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "xhUw4hzZlljYFCzj": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Radium Rifle"
-    ],
+    "baseTypes": ["Radium Rifle"],
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
@@ -9933,17 +8546,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.xhUw4hzZlljYFCzj",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 10
   },
   "xth1zh33BxA5x0cs": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Punching Dagger"
-    ],
+    "baseTypes": ["Punching Dagger"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -9961,19 +8570,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.xth1zh33BxA5x0cs",
-    "weaponGroups": [
-      "bladesHeavy",
-      "bladesLight",
-      "close"
-    ],
+    "weaponGroups": ["bladesHeavy", "bladesLight", "close"],
     "weaponSubtype": "light",
     "weight": 2
   },
   "yCdJdLHsqUb7yLs1": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Ratfolk Tailblade"
-    ],
+    "baseTypes": ["Ratfolk Tailblade"],
     "category": "melee",
     "critMult": 2,
     "critRange": 20,
@@ -9991,17 +8594,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.yCdJdLHsqUb7yLs1",
-    "weaponGroups": [
-      "bladesLight"
-    ],
+    "weaponGroups": ["bladesLight"],
     "weaponSubtype": "light",
     "weight": 0.5
   },
   "yf0CZx5k5SEHcgOW": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Hooked Lance"
-    ],
+    "baseTypes": ["Hooked Lance"],
     "category": "melee",
     "critMult": 4,
     "critRange": 20,
@@ -10024,17 +8623,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.yf0CZx5k5SEHcgOW",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 10
   },
   "ygEm8O4e0ayAvAsd": {
     "attackAbility": "dex",
-    "baseTypes": [
-      "Shotgun"
-    ],
+    "baseTypes": ["Shotgun"],
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
@@ -10056,17 +8651,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.ygEm8O4e0ayAvAsd",
-    "weaponGroups": [
-      "firearms"
-    ],
+    "weaponGroups": ["firearms"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
   "zLdHrDEnRQGbZJrv": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Halberd"
-    ],
+    "baseTypes": ["Halberd"],
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
@@ -10089,17 +8680,13 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.zLdHrDEnRQGbZJrv",
-    "weaponGroups": [
-      "polearms"
-    ],
+    "weaponGroups": ["polearms"],
     "weaponSubtype": "2h",
     "weight": 12
   },
   "zOgD72irWuvqTCUq": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Elven Thornblade"
-    ],
+    "baseTypes": ["Elven Thornblade"],
     "category": "melee",
     "critMult": 2,
     "critRange": 18,
@@ -10122,9 +8709,7 @@
   },
   "zWRlna42PMJVX6un": {
     "attackAbility": "str",
-    "baseTypes": [
-      "Longsword"
-    ],
+    "baseTypes": ["Longsword"],
     "category": "melee",
     "critMult": 2,
     "critRange": 19,
@@ -10146,9 +8731,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.zWRlna42PMJVX6un",
-    "weaponGroups": [
-      "bladesHeavy"
-    ],
+    "weaponGroups": ["bladesHeavy"],
     "weaponSubtype": "1h",
     "weight": 4
   }

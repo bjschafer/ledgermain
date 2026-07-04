@@ -256,9 +256,7 @@ describe("wizard arcane school powers (top-level wizard-schools/*.yaml)", () => 
 describe("sorcerer bloodline spell lists (inverted learnedAt.bloodline)", () => {
   it("emits a non-empty bloodlineSpellLists collection", () => {
     expect(Object.keys(ref.bloodlineSpellLists).length).toBeGreaterThan(0);
-    expect(ref.meta.counts.bloodlineSpellLists).toBe(
-      Object.keys(ref.bloodlineSpellLists).length,
-    );
+    expect(ref.meta.counts.bloodlineSpellLists).toBe(Object.keys(ref.bloodlineSpellLists).length);
   });
 
   it("Draconic contains the expected known 1st-level spell", () => {

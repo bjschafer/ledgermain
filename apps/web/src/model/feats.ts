@@ -182,9 +182,7 @@ export function expectedFeatCount(doc: CharacterDoc, refData: RefData): number {
   // GM/homebrew addend (see build.gmGrants). Omitted/absent = 0; may be
   // negative (a GM can claw back slots). Added after rules-derived totals so
   // the over-budget check in the builder sees the loosened budget.
-  return (
-    baseFeatCount + humanBonus + classBonus + (doc.build.gmGrants?.featSlots ?? 0)
-  );
+  return baseFeatCount + humanBonus + classBonus + (doc.build.gmGrants?.featSlots ?? 0);
 }
 
 /** The number of feats the character has currently chosen. */
@@ -198,10 +196,7 @@ export function chosenFeatCount(doc: CharacterDoc): number {
  * auto-granting existed) are excluded, so they never eat a slot. Compare this
  * — not `chosenFeatCount` — against `expectedFeatCount`.
  */
-export function chosenFeatCountExcludingGranted(
-  doc: CharacterDoc,
-  refData: RefData,
-): number {
+export function chosenFeatCountExcludingGranted(doc: CharacterDoc, refData: RefData): number {
   const granted = new Set(grantedFeats(doc, refData).map((g) => g.featId));
   return doc.build.feats.filter((id) => !granted.has(id)).length;
 }
@@ -232,9 +227,7 @@ export function setFeatChoice(
  * if the feat has no player choice (i.e. it is static or not in FEAT_EFFECTS).
  * The descriptor drives the UI picker rendered in FeatsSection.
  */
-export function featChoiceDescriptor(
-  featName: string,
-): ChoiceFeatEntry["choice"] | null {
+export function featChoiceDescriptor(featName: string): ChoiceFeatEntry["choice"] | null {
   const entry = FEAT_EFFECTS[featNameSlug(featName)];
   if (!entry || entry.type !== "choice") return null;
   return entry.choice;
@@ -264,9 +257,7 @@ export function featChoiceOptions(
     for (const w of doc.build.weapons ?? []) {
       if (w.group) seen.add(w.group);
     }
-    return [...seen]
-      .sort()
-      .map((g) => ({ id: g, name: g }));
+    return [...seen].sort().map((g) => ({ id: g, name: g }));
   }
   return [];
 }

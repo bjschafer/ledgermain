@@ -185,10 +185,10 @@ describe("weapons: masterwork adds +1 to attack only, unless superseded by enhan
     enhancement: 1,
     damageDice: "1d8",
   };
-  const doc = makeDoc(
-    { str: 16, dex: 14, con: 14, int: 10, wis: 12, cha: 8 },
-    [masterworkSword, magicMasterworkSword],
-  );
+  const doc = makeDoc({ str: 16, dex: 14, con: 14, int: 10, wis: 12, cha: 8 }, [
+    masterworkSword,
+    magicMasterworkSword,
+  ]);
   const sheet = compute(doc, ref);
 
   it("masterwork alone: attack = BAB(1) + STR(3) + masterwork(1) = 5", () => {

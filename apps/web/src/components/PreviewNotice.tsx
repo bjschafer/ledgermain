@@ -19,24 +19,19 @@ export function PreviewNotice() {
 
   return (
     <div className="preview-notice-backdrop" role="presentation">
-      <div
-        className="preview-notice"
-        role="alertdialog"
-        aria-labelledby="preview-notice-title"
-      >
+      <div className="preview-notice" role="alertdialog" aria-labelledby="preview-notice-title">
         <div id="preview-notice-title" className="preview-notice-title">
           ⚠ Preview build
         </div>
         <p>
           Ledgermain is under active development. Everything is saved{" "}
-          <strong>locally in this browser only</strong> — there's no account,
-          no sync, and no backup. Clearing site data or switching devices
-          loses it for good, so don't track anything here you'd be upset to
-          lose.
+          <strong>locally in this browser only</strong> — there's no account, no sync, and no
+          backup. Clearing site data or switching devices loses it for good, so don't track anything
+          here you'd be upset to lose.
         </p>
         <p>
-          A pre-built sample character is included in the character picker
-          (top right) if you'd like to poke around before building your own.
+          A pre-built sample character is included in the character picker (top right) if you'd like
+          to poke around before building your own.
         </p>
         <button type="button" className="btn-ghost" onClick={dismiss}>
           Got it
