@@ -7,8 +7,8 @@
  * picker can apply them to any base armor/weapon at selection time.
  *
  * Only mithral has mechanical effects the engine tracks (weight class shift,
- * maxDex +2, ACP −3). Other materials are display-only for now (DR / hardness
- * bypass not modelled by the engine).
+ * maxDex +2, ACP −3, ASF −10%, issue #8). Other materials are display-only
+ * for now (DR / hardness bypass not modelled by the engine).
  */
 import type { ArmorRef } from "@pf1/schema";
 
@@ -23,7 +23,9 @@ export interface MaterialDef {
    * Returns stat patches to merge onto an {@link ArmorRef} before
    * denormalization (ACP is a positive magnitude here, not yet negated).
    */
-  applyToArmorRef?: (a: ArmorRef) => Partial<Pick<ArmorRef, "maxDex" | "acp" | "weightClass">>;
+  applyToArmorRef?: (
+    a: ArmorRef,
+  ) => Partial<Pick<ArmorRef, "maxDex" | "acp" | "weightClass" | "asf">>;
 }
 
 const MATERIALS: Record<string, MaterialDef> = {
@@ -44,6 +46,7 @@ const MATERIALS: Record<string, MaterialDef> = {
       weightClass: a.weightClass
         ? (Math.max(1, a.weightClass - 1) as ArmorRef["weightClass"])
         : undefined,
+      asf: a.asf ? Math.max(0, a.asf - 10) : undefined,
     }),
   },
   adamantine: {

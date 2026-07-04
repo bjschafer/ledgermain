@@ -462,11 +462,44 @@ export function addGearItem(doc: CharacterDoc, itemId: string): CharacterDoc {
 }
 
 /**
+ * Enforces PF1's magic armor/shield invariants on a `WornArmor` (issue #8;
+ * mirrors `normalizeWeaponInstance`, applied to the armor half of the same
+ * "+10 total bonus" rule):
+ *  - `enhancement` clamped to [0, 10].
+ *  - `masterwork` dropped once `enhancement` is positive (a magic enhancement
+ *    bonus already implies masterwork quality; the flag is only meaningful
+ *    at +0).
+ *  - `abilities` require `enhancement >= 1` (a mundane suit can't carry a
+ *    special ability) — cleared entirely otherwise.
+ *  - `abilities` truncated (keeping earliest-selected first) so `enhancement`
+ *    plus their combined bonus-equivalent never exceeds +10 — PF1 RAW caps
+ *    armor/shield special abilities by the same total-bonus rule as weapons.
+ */
+function normalizeWornArmor(armor: WornArmor): WornArmor {
+  const next = { ...armor };
+  if (next.enhancement != null) {
+    next.enhancement = clampInt(next.enhancement, 0, 10);
+  }
+  const enh = next.enhancement ?? 0;
+  if (enh > 0) delete next.masterwork;
+  if (enh < 1) {
+    delete next.abilities;
+  } else if (next.abilities && next.abilities.length > 0) {
+    const kept = sanitizeAbilities(next.abilities, enh);
+    if (kept.length > 0) next.abilities = kept;
+    else delete next.abilities;
+  }
+  return next;
+}
+
+/**
  * Append a manually-entered worn armor or shield. `name` is the user-supplied
  * display label (e.g. "Chainmail +1"). The item is equipped by default.
+ * {@link normalizeWornArmor} enforces the enhancement/abilities invariants
+ * (e.g. a hand-entered suit can't carry abilities beyond the +10 cap either).
  */
 export function addWornArmor(doc: CharacterDoc, armor: WornArmor, name: string): CharacterDoc {
-  const gear = [...doc.build.gear, { equipped: true, armor, name }];
+  const gear = [...doc.build.gear, { equipped: true, armor: normalizeWornArmor(armor), name }];
   return { ...doc, build: { ...doc.build, gear } };
 }
 
@@ -476,13 +509,15 @@ export function addWornArmor(doc: CharacterDoc, armor: WornArmor, name: string):
  * penalties as negative and the ref keeps the source magnitude), and records
  * the `armorId` for display + future re-sync. Optional `enhancement` and
  * `material` apply modifiers at pick-time (mithral: weight class shift, maxDex
- * +2, ACP −3). Optional `abilities` are stored for display (all armor abilities
- * are display-only). Optional `masterwork` (only meaningful at `enhancement`
- * 0 — a magic enhancement bonus already implies masterwork quality, mirroring
- * `normalizeWeaponInstance`) reduces the snapshotted ACP magnitude by 1
- * (floored at 0); the "Masterwork" name prefix is shown only when explicitly
- * set at +0, since it's implied (and not called out) once enhancement is
- * positive. No deduplication.
+ * +2, ACP −3, ASF −10%). Optional `abilities` are stored for display (all
+ * armor abilities are display-only) and run through {@link normalizeWornArmor},
+ * which drops them below `enhancement` 1 and truncates the combined
+ * bonus-equivalent to the same +10 cap as magic weapons (issue #8). Optional
+ * `masterwork` (only meaningful at `enhancement` 0 — a magic enhancement bonus
+ * already implies masterwork quality, mirroring `normalizeWeaponInstance`)
+ * reduces the snapshotted ACP magnitude by 1 (floored at 0); the "Masterwork"
+ * name prefix is shown only when explicitly set at +0, since it's implied
+ * (and not called out) once enhancement is positive. No deduplication.
  */
 export function addWornArmorFromRef(
   doc: CharacterDoc,
@@ -505,7 +540,7 @@ export function addWornArmorFromRef(
   // it can never flip into a positive (bonus) ACP.
   const acpMagnitude = masterwork || enh >= 1 ? Math.max(0, (ref.acp ?? 0) - 1) : ref.acp;
 
-  const worn: WornArmor = {
+  const worn: WornArmor = normalizeWornArmor({
     slot: ref.slot,
     ac: ref.ac,
     ...(enh > 0 ? { enhancement: enh } : {}),
@@ -515,11 +550,14 @@ export function addWornArmorFromRef(
     ...(acpMagnitude ? { acp: -acpMagnitude } : {}),
     ...(ref.weightClass ? { type: ref.weightClass } : {}),
     ...(abilities && abilities.length > 0 ? { abilities } : {}),
+    // ASF (issue #8) is read from `ref`, not the base `armor`, so mithral's
+    // -10% (applied by `applyMaterialToArmor`) is captured in the snapshot.
+    ...(ref.asf ? { asf: ref.asf } : {}),
     // Weight (issue #16 encumbrance) is read from the base ref, not
     // `applyMaterialToArmor`'s output — mithral's real-world weight halving
     // isn't modeled by that helper yet (documented gap in materials.ts).
     ...(armor.weight ? { weight: armor.weight } : {}),
-  };
+  });
   const inst: ItemInstance = {
     equipped: true,
     armor: worn,
@@ -552,10 +590,12 @@ export function removeGear(doc: CharacterDoc, index: number): CharacterDoc {
 /**
  * Partially update the gear item at `index`. Merges a `Partial<ItemInstance>`
  * patch — can update `armor`, `name`, `equipped`, etc. Out-of-range indices
- * are silently ignored. Armor enhancement is clamped to [0, 10] when present;
- * `armor.masterwork` is dropped once enhancement becomes positive (mirrors
+ * are silently ignored. A present `armor` is run through
+ * {@link normalizeWornArmor}: enhancement clamped to [0, 10]; `masterwork`
+ * dropped once enhancement becomes positive (mirrors
  * `normalizeWeaponInstance`'s invariant — a magic enhancement bonus already
- * implies masterwork quality).
+ * implies masterwork quality); `abilities` dropped below enhancement 1 and
+ * truncated to the +10 combined-bonus cap (issue #8).
  */
 export function updateGearItem(
   doc: CharacterDoc,
@@ -565,13 +605,8 @@ export function updateGearItem(
   if (index < 0 || index >= doc.build.gear.length) return doc;
   const current = doc.build.gear[index]!;
   const merged: ItemInstance = { ...current, ...patch };
-  if (merged.armor?.enhancement != null) {
-    merged.armor = { ...merged.armor, enhancement: clampInt(merged.armor.enhancement, 0, 10) };
-  }
-  if (merged.armor?.masterwork && (merged.armor.enhancement ?? 0) > 0) {
-    const armor = { ...merged.armor };
-    delete armor.masterwork;
-    merged.armor = armor;
+  if (merged.armor) {
+    merged.armor = normalizeWornArmor(merged.armor);
   }
   const gear = doc.build.gear.map((g, i) => (i === index ? merged : g));
   return { ...doc, build: { ...doc.build, gear } };
