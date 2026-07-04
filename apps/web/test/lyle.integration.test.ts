@@ -313,8 +313,14 @@ describe("Lyle — resource pools (Arcane Reservoir / Consume Spells / wand / po
     expect(baseDoc.live.resources["Potion of cure light wounds"]).toEqual({ used: 0, max: 4 });
   });
 
-  it("3 hero points, no active buffs on a fresh import", () => {
+  it("3 hero points, no active buffs, HP starts full on a fresh import", () => {
     expect(baseDoc.live.heroPoints).toBe(3);
     expect(baseDoc.live.activeBuffs).toEqual([]);
+    // Regression guard: the exported doc must carry live.hp.current itself —
+    // the app's "start at full HP" auto-heal only fires on a brand-new
+    // character's first 0 -> nonzero max transition, not reliably on importing
+    // a character over an already-built one, so an importable export can't
+    // rely on it and must ship with hp.current already set.
+    expect(baseDoc.live.hp).toEqual({ current: 25, temp: 0, nonlethal: 0 });
   });
 });

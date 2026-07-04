@@ -42,6 +42,7 @@ import { prepareSpell } from "../src/model/preparedSpells.js";
 import { setFamiliar, setFamiliarInReach, setFamiliarNotes } from "../src/model/familiar.js";
 import { setHeroPoints } from "../src/model/heroPoints.js";
 import { addManualPool } from "../src/model/resources.js";
+import { restHp } from "../src/model/hp.js";
 
 /** Find a RefData entity's id by its exact display name. Throws if not found (fail fast). */
 function idByName<T extends { name: string }>(map: Record<string, T>, name: string): string {
@@ -153,6 +154,7 @@ export function buildLyleDoc(ref: RefData): CharacterDoc {
   doc = addClass(doc, "arcanist");
   doc = setClassLevel(doc, "arcanist", 4);
   doc = setMaxHpOverride(doc, 25); // PDF: 25 max HP (d6 HD + FCB, entered directly per spec)
+  doc = restHp(doc, 25); // full HP, no damage taken — a fresh import shouldn't start at 0/25
 
   // --- traits (character traits, not racial) ----------------------------------
   doc = toggleTrait(doc, "reactionary"); // +2 trait Initiative
