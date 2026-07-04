@@ -24,9 +24,10 @@ import {
   STAT_OVERRIDE_KEYS,
   type StatOverrideKey,
 } from "../../model/doc.js";
+import type { ImportReport } from "../../model/externalImport.js";
 import { HERO_POINT_CAP } from "../../model/heroPoints.js";
+import { importCharacterFile } from "../../model/importExternalFile.js";
 import { DEFAULT_XP_TRACK, type XpTrack } from "../../model/xp.js";
-import { parseImportedDoc } from "../../model/importCharacter.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -48,6 +49,7 @@ const STAT_LABEL: Record<StatOverrideKey, string> = {
 export function SettingsSection({
   doc,
   sheet,
+  refData,
   update,
   onImportCharacter,
   onResetAll,
@@ -72,6 +74,7 @@ export function SettingsSection({
   const gmSkillRanks = doc.build.gmGrants?.skillRanks;
   const gmFeatSlots = doc.build.gmGrants?.featSlots;
   const [importError, setImportError] = useState<string>();
+  const [importReport, setImportReport] = useState<ImportReport>();
 
   function handleExport() {
     const blob = new Blob([characterExportJson(doc)], {
@@ -85,15 +88,24 @@ export function SettingsSection({
     URL.revokeObjectURL(url);
   }
 
+  /**
+   * Reads the file's text and auto-detects its format: a native Ledgermain
+   * export (.json), a Pathbuilder 1e export (.json), or a Hero Lab classic
+   * export (.xml) — see `model/importExternalFile.ts`. A native export
+   * carries no `report` (nothing to map); the other two formats always
+   * produce one so the player can see what did/didn't come across.
+   */
   async function handleImportChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
     try {
-      const parsed = parseImportedDoc(JSON.parse(await file.text()));
+      const { doc: parsed, report } = importCharacterFile(await file.text(), refData);
       setImportError(undefined);
+      setImportReport(report);
       onImportCharacter(parsed);
     } catch (err) {
+      setImportReport(undefined);
       setImportError(err instanceof Error ? err.message : "Couldn't read that file.");
     }
   }
@@ -422,9 +434,12 @@ export function SettingsSection({
       {/* Export / import */}
       <Panel title="Export / Import" step="⚙">
         <p className="hint" style={{ marginBottom: 12 }}>
-          Export this character to a JSON file you can back up or move to another device. Importing
-          a file makes it the active character — re-importing the same export updates that character
-          in place; importing a different file adds it as a new one.
+          Export this character to a JSON file you can back up or move to another device. The
+          importer auto-detects the file: a Ledgermain export (.json) makes the character active in
+          place (re-importing the same export updates it; a different file adds a new one); a
+          Pathbuilder 1e export (.json) or Hero Lab classic export (.xml) is added as a new
+          character, best-effort — anything that couldn't be matched to this app's reference data is
+          listed below so you can add it by hand.
         </p>
         <div className="settings-row">
           <button
@@ -442,7 +457,7 @@ export function SettingsSection({
             Import character…
             <input
               type="file"
-              accept="application/json"
+              accept=".json,.xml,application/json,text/xml"
               disabled={actionPending}
               style={{ display: "none" }}
               onChange={(e) => void handleImportChange(e)}
@@ -454,6 +469,7 @@ export function SettingsSection({
             {importError}
           </p>
         )}
+        {importReport && <ImportReportPanel report={importReport} />}
       </Panel>
 
       {/* About & legal */}
@@ -468,6 +484,52 @@ export function SettingsSection({
         onResetAll={onResetAll}
       />
     </>
+  );
+}
+
+const SOURCE_LABEL: Record<ImportReport["source"], string> = {
+  pathbuilder: "Pathbuilder 1e",
+  herolab: "Hero Lab classic",
+};
+
+/**
+ * Renders the mapped/unmapped tally + full lists from a Pathbuilder/Hero Lab
+ * import (issue #3) — a native Ledgermain export never produces a report
+ * (see `handleImportChange` above), so this only ever appears after a
+ * best-effort external import.
+ */
+function ImportReportPanel({ report }: { report: ImportReport }) {
+  return (
+    <div className="import-report" style={{ marginTop: 12 }}>
+      <p className="hint" style={{ marginBottom: 6 }}>
+        Imported from {SOURCE_LABEL[report.source]}: {report.mapped.length} mapped,{" "}
+        {report.unmapped.length} not recognized.
+      </p>
+      {report.unmapped.length > 0 && (
+        <details open>
+          <summary className="hint">Not recognized ({report.unmapped.length})</summary>
+          <ul style={{ margin: "6px 0 10px", paddingLeft: 20 }}>
+            {report.unmapped.map((line, i) => (
+              <li key={i} className="hint" style={{ fontSize: 12 }}>
+                {line}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+      {report.mapped.length > 0 && (
+        <details>
+          <summary className="hint">Mapped ({report.mapped.length})</summary>
+          <ul style={{ margin: "6px 0 0", paddingLeft: 20 }}>
+            {report.mapped.map((line, i) => (
+              <li key={i} className="hint" style={{ fontSize: 12 }}>
+                {line}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+    </div>
   );
 }
 
