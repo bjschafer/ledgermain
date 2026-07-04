@@ -21,7 +21,14 @@ import {
   setMoney,
   updateGearItem,
 } from "../../model/doc.js";
-import { abilityNotes, ARMOR_ABILITIES } from "../../model/abilities.js";
+import {
+  abilityNotes,
+  abilitySelectable,
+  type AbilityDef,
+  ARMOR_ABILITIES,
+  toggleAbilitySelection,
+  totalBonusEquivalent,
+} from "../../model/abilities.js";
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
@@ -33,6 +40,20 @@ function changeLabel(change: { formula: string; target: string; type: string }):
   const type = change.type && change.type !== "untyped" ? ` ${change.type}` : "";
   const target = change.target ? ` to ${change.target}` : "";
   return `${val}${type}${target}`;
+}
+
+/** Tooltip for an armor ability chip, explaining why it's disabled when relevant (issue #8). */
+function armorAbilityChipTitle(a: AbilityDef, current: string[], enhancement: number): string {
+  const base = a.note
+    ? `${a.name} (+${a.bonusEquivalent}) — ${a.note}`
+    : `${a.name} (+${a.bonusEquivalent})`;
+  if (current.includes(a.id)) return base;
+  if (enhancement < 1) return `${base} — requires a +1 enhancement bonus`;
+  if (a.requires && !current.includes(a.requires)) {
+    const reqName = ARMOR_ABILITIES.find((w) => w.id === a.requires)?.name ?? a.requires;
+    return `${base} — requires ${reqName}`;
+  }
+  return base;
 }
 
 const ARMOR_SLOTS = ["armor", "shield"] as const;
@@ -72,8 +93,12 @@ function ArmorForm({
     setForm((f) => ({ ...f, [key]: val }));
   }
 
+  const enhForAbilities = form.enhancement ?? 0;
+  const abilitiesLocked = enhForAbilities < 1;
+  const usedBonus = totalBonusEquivalent(abilities);
+
   function toggleAbility(id: string) {
-    setAbilities((prev) => (prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]));
+    setAbilities((prev) => toggleAbilitySelection(prev, id, enhForAbilities));
   }
 
   function handleSave() {
@@ -90,6 +115,7 @@ function ArmorForm({
     if (armor.maxDex != null) clean.maxDex = armor.maxDex;
     if (armor.acp) clean.acp = armor.acp;
     if (armor.type) clean.type = armor.type;
+    if (armor.asf) clean.asf = armor.asf;
     if (armor.abilities?.length) clean.abilities = armor.abilities;
     // Masterwork is only meaningful at +0 — a magic enhancement bonus
     // already implies it (mirrors the weapon masterwork invariant).
@@ -186,6 +212,16 @@ function ArmorForm({
             onChange={(e) => field("ac", Number(e.target.value))}
           />
         </label>
+        <label className="field">
+          <span>Arcane Spell Failure %</span>
+          <input
+            type="number"
+            value={form.asf ?? 0}
+            min={0}
+            max={100}
+            onChange={(e) => field("asf", Number(e.target.value))}
+          />
+        </label>
         {isArmorSlot && (
           <>
             <label className="field">
@@ -225,23 +261,28 @@ function ArmorForm({
         )}
       </div>
       {ARMOR_ABILITIES.length > 0 && (
-        <div className="ability-chips">
-          {ARMOR_ABILITIES.map((a) => (
-            <button
-              key={a.id}
-              type="button"
-              className="chip"
-              aria-pressed={abilities.includes(a.id)}
-              title={
-                a.note
-                  ? `${a.name} (+${a.bonusEquivalent}) — ${a.note}`
-                  : `${a.name} (+${a.bonusEquivalent})`
-              }
-              onClick={() => toggleAbility(a.id)}
-            >
-              {a.name}
-            </button>
-          ))}
+        <div className="ability-chips-section">
+          <span className="section-label">Special abilities</span>
+          <p className="hint">
+            {abilitiesLocked
+              ? "Requires at least a +1 enhancement bonus"
+              : `Enhancement + abilities: ${enhForAbilities + usedBonus}/10`}
+          </p>
+          <div className="ability-chips">
+            {ARMOR_ABILITIES.map((a) => (
+              <button
+                key={a.id}
+                type="button"
+                className="chip"
+                aria-pressed={abilities.includes(a.id)}
+                disabled={!abilitySelectable(abilities, a.id, enhForAbilities)}
+                title={armorAbilityChipTitle(a, abilities, enhForAbilities)}
+                onClick={() => toggleAbility(a.id)}
+              >
+                {a.name}
+              </button>
+            ))}
+          </div>
         </div>
       )}
       <button
@@ -302,7 +343,8 @@ function armorRefMeta(a: ArmorRef): string {
   const slot = a.slot === "shield" ? "Shield" : `${weight}Armor`;
   const dex = a.maxDex != null ? ` · max Dex +${a.maxDex}` : "";
   const acp = a.acp ? ` · ACP −${a.acp}` : "";
-  return `${slot}${dex}${acp}`;
+  const asf = a.asf ? ` · ASF ${a.asf}%` : "";
+  return `${slot}${dex}${acp}${asf}`;
 }
 
 const MONEY_FIELDS: { field: MoneyField; label: string }[] = [
@@ -399,7 +441,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   }
 
   function toggleArmorAbility(id: string) {
-    setArmorAbilities((prev) => (prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]));
+    setArmorAbilities((prev) => toggleAbilitySelection(prev, id, armorEnhancement));
   }
 
   function handleAddCustomArmor(armor: WornArmor, name: string) {
@@ -517,6 +559,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                       {inst.armor.masterwork && !inst.armor.enhancement ? " · masterwork" : ""}
                       {inst.armor.maxDex != null ? ` · max Dex +${inst.armor.maxDex}` : ""}
                       {inst.armor.acp ? ` · ACP ${inst.armor.acp}` : ""}
+                      {inst.armor.asf ? ` · ASF ${inst.armor.asf}%` : ""}
                       {inst.armor.material ? ` · ${inst.armor.material}` : ""}
                       {abilityNotes(inst.armor.abilities)
                         .map((n) => ` · ${n.note ? `${n.name} (${n.note})` : n.name}`)
@@ -761,23 +804,28 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                   </label>
                 </div>
                 {ARMOR_ABILITIES.length > 0 && (
-                  <div className="ability-chips">
-                    {ARMOR_ABILITIES.map((a) => (
-                      <button
-                        key={a.id}
-                        type="button"
-                        className="chip"
-                        aria-pressed={armorAbilities.includes(a.id)}
-                        title={
-                          a.note
-                            ? `${a.name} (+${a.bonusEquivalent}) — ${a.note}`
-                            : `${a.name} (+${a.bonusEquivalent})`
-                        }
-                        onClick={() => toggleArmorAbility(a.id)}
-                      >
-                        {a.name}
-                      </button>
-                    ))}
+                  <div className="ability-chips-section">
+                    <span className="section-label">Special abilities</span>
+                    <p className="hint">
+                      {armorEnhancement < 1
+                        ? "Requires at least a +1 enhancement bonus"
+                        : `Enhancement + abilities: ${armorEnhancement + totalBonusEquivalent(armorAbilities)}/10`}
+                    </p>
+                    <div className="ability-chips">
+                      {ARMOR_ABILITIES.map((a) => (
+                        <button
+                          key={a.id}
+                          type="button"
+                          className="chip"
+                          aria-pressed={armorAbilities.includes(a.id)}
+                          disabled={!abilitySelectable(armorAbilities, a.id, armorEnhancement)}
+                          title={armorAbilityChipTitle(a, armorAbilities, armorEnhancement)}
+                          onClick={() => toggleArmorAbility(a.id)}
+                        >
+                          {a.name}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
                 <div className="scroll">
