@@ -22,6 +22,18 @@ export interface PackFile {
   relPath: string;
 }
 
+/**
+ * Foundry compendium Folder documents are interleaved with real content in the
+ * same pack directory (e.g. an "Adventuring Gear" folder doc alongside the
+ * items filed under it). A folder doc's own `type` field mirrors the *content
+ * type it organizes* (e.g. "Item"), not the literal string "folder" — so the
+ * only reliable signal is its `_key`, which Foundry always prefixes
+ * `!folders!` for folder documents (vs. e.g. `!items!` for real entries).
+ */
+export function isFolderDoc(doc: RawDoc): boolean {
+  return typeof doc._key === "string" && doc._key.startsWith("!folders!");
+}
+
 /** Recursively list all `*.yaml` files under a directory. */
 function listYamlFiles(dir: string, base = dir): string[] {
   const out: string[] = [];

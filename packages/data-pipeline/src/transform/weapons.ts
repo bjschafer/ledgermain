@@ -6,6 +6,7 @@ import {
   asNumber,
   asStringArray,
   normalizeSources,
+  readWeight,
 } from "./common.js";
 
 /** Weapon subtypes we vendor. Ammunition, siege, and magical excluded. */
@@ -134,12 +135,6 @@ function slugifyBase(base?: string): string | undefined {
 
 function str(v: unknown): string | undefined {
   return typeof v === "string" ? v : undefined;
-}
-
-function readWeight(v: unknown): number | undefined {
-  if (!v || typeof v !== "object") return undefined;
-  const w = v as Record<string, unknown>;
-  return asNumber(w.value);
 }
 
 /** Foundry stores collections as objects keyed by random ids; coerce to array. */

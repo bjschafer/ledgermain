@@ -1202,3 +1202,71 @@ function buffByName(name: string) {
   const [id, buff] = entry;
   return { id, buff };
 }
+
+// --- issue #15 (item/equipment breadth) -------------------------------------
+//
+// The `items` pack widened from 111 to 1089 vendored entries (every non-folder
+// doc, not just those carrying typed `changes`). All 111 typed-change items —
+// including Cloak of Resistance and Ring of Protection, exercised below — were
+// *already* present under the old filter (it selected on `changes.length >
+// 0`), so there are no genuinely new stat-granting items to add here; the
+// first two cases below are regression coverage confirming the broadened
+// dataset didn't disturb them. "Staff of Healing" and "Air Bladder" are
+// genuinely new (mundane / changeless), added by the breadth expansion, and
+// exercise the previously-absent charges shape and a no-op equip path.
+describe("compute: item breadth (issue #15)", () => {
+  it("Cloak of Resistance +1 applies a resist bonus to all saves when equipped", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      abilities: { str: 14, dex: 12, con: 14, int: 10, wis: 10, cha: 8 },
+      gear: [{ equipped: true, itemId: itemByName("Cloak of Resistance +1") }],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.saves.fort.total).toBe(5); // 2 base (good) + con2 + 1 resist
+    expect(sheet.saves.ref.total).toBe(2); // 0 base (poor) + dex1 + 1 resist
+    expect(sheet.saves.will.total).toBe(1); // 0 base (poor) + wis0 + 1 resist
+  });
+
+  it("Ring of Protection +1 applies a deflection bonus to AC/CMD with provenance", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      abilities: { str: 14, dex: 12, con: 14, int: 10, wis: 10, cha: 8 },
+      gear: [{ equipped: true, itemId: itemByName("Ring of Protection +1") }],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(12); // 10 + dex1 + deflection1
+    const defl = sheet.ac.components.find((c) => c.category === "deflection");
+    expect(defl).toMatchObject({ source: "Ring of Protection +1", value: 1, applied: true });
+  });
+
+  it("a charged consumable (Staff of Healing) vends with a maxFormula/per charges shape", () => {
+    // Confirms the newly-captured `uses` shape on RefData.items — reference
+    // data only (no live `value`; current charges are session state, not
+    // modeled by this issue).
+    const staff = ref.items[itemByName("Staff of Healing")]!;
+    expect(staff.uses).toEqual({ maxFormula: "10", per: "charges" });
+    expect(staff.changes).toEqual([]);
+
+    // Equipping a changeless charged item is a no-op on the derived sheet
+    // (no crash, no phantom bonus) — this is the common case for the ~978
+    // newly-vendored mundane/consumable items that carry no typed changes.
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      abilities: { str: 14, dex: 12, con: 14, int: 10, wis: 10, cha: 8 },
+      gear: [{ equipped: true, itemId: itemByName("Staff of Healing") }],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.saves.fort.total).toBe(4); // 2 base (good) + con2, unaffected by the staff
+  });
+
+  it("mundane adventuring gear (Air Bladder) equips cleanly with weight + price captured", () => {
+    const air = ref.items[itemByName("Air Bladder")];
+    expect(air).toMatchObject({ subType: "adventuring", price: 0.1, weight: 0.5 });
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      abilities: { str: 14, dex: 12, con: 14, int: 10, wis: 10, cha: 8 },
+      gear: [{ equipped: true, itemId: itemByName("Air Bladder") }],
+    });
+    expect(() => compute(doc, ref)).not.toThrow();
+  });
+});

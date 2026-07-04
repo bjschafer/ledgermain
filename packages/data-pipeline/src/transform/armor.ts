@@ -6,6 +6,7 @@ import {
   asNumber,
   asStringArray,
   normalizeSources,
+  readWeight,
 } from "./common.js";
 
 const ARMOR_WEIGHT: Record<string, ArmorRef["weightClass"]> = {
@@ -68,10 +69,4 @@ function isMagical(sys: Record<string, unknown>): boolean {
 
 function str(v: unknown): string | undefined {
   return typeof v === "string" ? v : undefined;
-}
-
-function readWeight(v: unknown): number | undefined {
-  if (!v || typeof v !== "object") return undefined;
-  const w = v as Record<string, unknown>;
-  return asNumber(w.value);
 }

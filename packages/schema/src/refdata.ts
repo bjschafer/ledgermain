@@ -270,10 +270,19 @@ export interface Item extends RefEntity {
   /** Equipment slot, e.g. "ring", "head". */
   slot?: string;
   price?: number;
+  /** Total weight in pounds, where tracked (captured for #16 encumbrance). */
+  weight?: number;
   /** Caster level of the item, where applicable. */
   cl?: number;
   changes: Change[];
   contextNotes: ContextNote[];
+  /**
+   * Limited-use resource, e.g. a staff's charges or a poison's single use.
+   * Foundry also tracks a live `value` (current charges), but that's
+   * per-instance session state, not reference data — the character-side
+   * `ItemInstance` is where a concrete item's current charges would live.
+   */
+  uses?: { maxFormula?: string; per?: string };
   aura?: { school?: string };
 }
 

@@ -8,6 +8,8 @@ import {
   normalizeChanges,
   normalizeContextNotes,
   normalizeSources,
+  normalizeUses,
+  readWeight,
   type UuidResolver,
 } from "./common.js";
 
@@ -24,9 +26,11 @@ export function transformItem(doc: RawDoc, resolveUuid: UuidResolver): Item {
     subType: typeof sys.subType === "string" ? sys.subType : undefined,
     slot: typeof sys.slot === "string" ? sys.slot : undefined,
     price: asNumber(sys.price),
+    weight: readWeight(sys.weight),
     cl: asNumber(sys.cl),
     changes: normalizeChanges(sys.changes),
     contextNotes: normalizeContextNotes(sys.contextNotes, resolveUuid),
+    uses: normalizeUses(sys.uses),
     aura:
       aura && typeof aura.school === "string"
         ? { school: aura.school }
