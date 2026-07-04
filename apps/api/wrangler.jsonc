@@ -3,9 +3,8 @@
   // Stage 5 persistence Worker (DESIGN.md §2.1). Dumb persistence only — never
   // computes or interprets game data, beyond the envelope fields
   // (ownerId/version/updatedAt) CharacterDoc already carries for optimistic
-  // concurrency. See README.md for what the owner must do before deploying
-  // (this repo/worktree never creates or touches real Cloudflare account
-  // resources — local `wrangler dev` / vitest-pool-workers only).
+  // concurrency. See README.md for the remaining owner-side deploy step
+  // (registering the Discord Application and setting its client secret).
   "name": "ledgermain-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-07-03",
@@ -19,7 +18,7 @@
     // arbitrary caller-supplied redirect_uri/Origin — always check membership
     // in this list.
     "ALLOWED_APP_ORIGINS": "http://localhost:5173,https://ledgermain.whizkid.dev",
-    "DISCORD_CLIENT_ID": "REPLACE_ME_DISCORD_OAUTH_CLIENT_ID",
+    "DISCORD_CLIENT_ID": "1523090357108346941",
   },
 
   // Two KV namespaces:
