@@ -4,7 +4,7 @@ import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
-import { checkArchetypeConflict } from "../src/model/archetypes.js";
+import { archetypeConflictWarnings, checkArchetypeConflict } from "../src/model/archetypes.js";
 import {
   addClass,
   createEmptyDoc,
@@ -102,5 +102,81 @@ describe("checkArchetypeConflict()", () => {
   it("never blocks re-selecting the same archetype", () => {
     const thf = byName(ref.archetypes, "Two-Handed Fighter");
     expect(checkArchetypeConflict(ref, [thf.id], thf.id).blocked).toBe(false);
+  });
+});
+
+describe("archetypeConflictWarnings() — cleric/wizard soft-warning fallback (issue #5)", () => {
+  it("confirms the data gap this warning exists to cover: cleric/wizard archetype features carry no pairedBaseFeatureUuid at all", () => {
+    const clericFeatures = Object.values(ref.archetypeFeatures).filter(
+      (f) => f.classTag === "cleric",
+    );
+    const wizardFeatures = Object.values(ref.archetypeFeatures).filter(
+      (f) => f.classTag === "wizard",
+    );
+    expect(clericFeatures.length).toBeGreaterThan(0);
+    expect(wizardFeatures.length).toBeGreaterThan(0);
+    expect(clericFeatures.every((f) => f.pairedBaseFeatureUuid == null)).toBe(true);
+    expect(wizardFeatures.every((f) => f.pairedBaseFeatureUuid == null)).toBe(true);
+    // ...and checkArchetypeConflict is consequently blind to any real overlap.
+    const cloistered = byName(ref.archetypes, "Cloistered Cleric");
+    const crusader = byName(ref.archetypes, "Crusader");
+    expect(checkArchetypeConflict(ref, [cloistered.id], crusader.id).blocked).toBe(false);
+  });
+
+  it("warns when 2 cleric archetypes are chosen together", () => {
+    const cloistered = byName(ref.archetypes, "Cloistered Cleric");
+    const crusader = byName(ref.archetypes, "Crusader");
+    let doc = addClass(createEmptyDoc("t"), "cleric");
+    doc = setClassLevel(doc, "cleric", 5);
+    doc = setArchetypes(doc, [cloistered.id, crusader.id]);
+
+    const warnings = archetypeConflictWarnings(doc, ref);
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0]).toContain("Cloistered Cleric");
+    expect(warnings[0]).toContain("Crusader");
+  });
+
+  it("warns when 2 wizard archetypes are chosen together", () => {
+    const spellslinger = byName(ref.archetypes, "Spellslinger");
+    const runesage = byName(ref.archetypes, "Runesage");
+    let doc = addClass(createEmptyDoc("t"), "wizard");
+    doc = setClassLevel(doc, "wizard", 5);
+    doc = setArchetypes(doc, [spellslinger.id, runesage.id]);
+
+    const warnings = archetypeConflictWarnings(doc, ref);
+    expect(warnings).toHaveLength(1);
+  });
+
+  it("no warning with only 1 archetype chosen", () => {
+    const cloistered = byName(ref.archetypes, "Cloistered Cleric");
+    let doc = addClass(createEmptyDoc("t"), "cleric");
+    doc = setClassLevel(doc, "cleric", 5);
+    doc = setArchetypes(doc, [cloistered.id]);
+
+    expect(archetypeConflictWarnings(doc, ref)).toEqual([]);
+  });
+
+  it("no warning for classes with real pairing data (fighter) — the hard block already covers those", () => {
+    const armoredHulk = byName(ref.archetypes, "Armored Hulk"); // barbarian, has pairing data
+    const twoHanded = byName(ref.archetypes, "Two-Handed Fighter"); // fighter, has pairing data
+    let doc = addClass(createEmptyDoc("t"), "fighter");
+    doc = addClass(doc, "barbarian");
+    doc = setClassLevel(doc, "fighter", 5);
+    doc = setClassLevel(doc, "barbarian", 5);
+    doc = setArchetypes(doc, [armoredHulk.id, twoHanded.id]);
+
+    expect(archetypeConflictWarnings(doc, ref)).toEqual([]);
+  });
+
+  it("no warning across different classes even both structurally unpaired-eligible (cleric + wizard, only 1 each)", () => {
+    const cloistered = byName(ref.archetypes, "Cloistered Cleric");
+    const spellslinger = byName(ref.archetypes, "Spellslinger");
+    let doc = addClass(createEmptyDoc("t"), "cleric");
+    doc = addClass(doc, "wizard");
+    doc = setClassLevel(doc, "cleric", 5);
+    doc = setClassLevel(doc, "wizard", 5);
+    doc = setArchetypes(doc, [cloistered.id, spellslinger.id]);
+
+    expect(archetypeConflictWarnings(doc, ref)).toEqual([]);
   });
 });
