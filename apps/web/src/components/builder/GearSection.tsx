@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import type { ArmorRef, Change, ItemInstance, WornArmor } from "@pf1/schema";
+import type { ArmorRef, Change, Item, ItemInstance, WornArmor } from "@pf1/schema";
 import {
   gearUnitWeight,
   tryEvaluateFormula,
@@ -337,6 +337,20 @@ function itemMaxCharges(item: { uses?: { maxFormula?: string; per?: string } } |
   }
 }
 
+/**
+ * One-line metadata summary for an {@link Item} in the picker (slot · weight ·
+ * price). Weight and price are now vendored for most mundane gear (issue #37),
+ * so this is no longer gated on `slot` the way the old preview was — a plain
+ * torch or bedroll still gets its weight/price shown.
+ */
+function itemMeta(item: Item): string {
+  const parts: string[] = [];
+  if (item.slot) parts.push(item.slot);
+  if (item.weight) parts.push(`${item.weight} lb`);
+  if (item.price) parts.push(`${item.price} gp`);
+  return parts.join(" · ");
+}
+
 /** A one-line summary of a {@link ArmorRef} for the picker preview. */
 function armorRefMeta(a: ArmorRef): string {
   const weight = a.weightClass ? `${WEIGHT_LABEL[a.weightClass] ?? "—"} ` : "";
@@ -646,7 +660,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
       <div className="gear-add-row">
         {!showItemPicker ? (
           <button type="button" className="btn-ghost" onClick={() => setShowItemPicker(true)}>
-            + Add magic item
+            + Add item
           </button>
         ) : (
           <div className="gear-picker">
@@ -654,7 +668,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
               <input
                 className="search"
                 type="text"
-                placeholder="Search magic items…"
+                placeholder="Search items…"
                 value={itemQuery}
                 onChange={(e) => setItemQuery(e.target.value)}
                 autoFocus
@@ -674,40 +688,43 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
               {filteredItems.length === 0 ? (
                 <div className="empty">No items match.</div>
               ) : (
-                filteredItems.map((item) => (
-                  <div key={item.id} className="pick-row">
-                    <div className="pmain">
-                      <div className="pname">
-                        {item.name} <PartialBadge changes={item.changes} />
-                      </div>
-                      {item.slot && (
-                        <div className="preq">
-                          <span>{item.slot}</span>
-                          {item.changes.length > 0 && (
-                            <span className="ck-met">
-                              {item.changes.slice(0, 3).map((ch, i) => (
-                                <span key={i}>
-                                  {i > 0 ? " · " : ""}
-                                  {changeLabel(ch)}
-                                </span>
-                              ))}
-                              {item.changes.length > 3 ? (
-                                <span> +{item.changes.length - 3} more</span>
-                              ) : null}
-                            </span>
-                          )}
+                filteredItems.map((item) => {
+                  const meta = itemMeta(item);
+                  return (
+                    <div key={item.id} className="pick-row">
+                      <div className="pmain">
+                        <div className="pname">
+                          {item.name} <PartialBadge changes={item.changes} />
                         </div>
-                      )}
+                        {(meta || item.changes.length > 0) && (
+                          <div className="preq">
+                            {meta && <span>{meta}</span>}
+                            {item.changes.length > 0 && (
+                              <span className="ck-met">
+                                {item.changes.slice(0, 3).map((ch, i) => (
+                                  <span key={i}>
+                                    {i > 0 ? " · " : ""}
+                                    {changeLabel(ch)}
+                                  </span>
+                                ))}
+                                {item.changes.length > 3 ? (
+                                  <span> +{item.changes.length - 3} more</span>
+                                ) : null}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        className="pick-btn add"
+                        onClick={() => handleAddItem(item.id)}
+                      >
+                        Add
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      className="pick-btn add"
-                      onClick={() => handleAddItem(item.id)}
-                    >
-                      Add
-                    </button>
-                  </div>
-                ))
+                  );
+                })
               )}
               {Object.keys(refData.items).length > 80 && filteredItems.length === 80 ? (
                 <div className="empty">Showing first 80 — refine your search.</div>
