@@ -100,20 +100,24 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
         >
           Heal
         </button>
+      </div>
+
+      <div className="hp-row">
         <div className="hp-nl">
+          <span className="hp-inline-label">Nonlethal</span>
           <button
             type="button"
             className="btn-ghost"
             onClick={() => update((d) => addFamiliarNonlethal(d, amt))}
           >
-            +{amt} nonlethal
+            +{amt}
           </button>
           <button
             type="button"
             className="btn-ghost"
             onClick={() => update((d) => healFamiliarNonlethal(d, amt))}
           >
-            −{amt} nonlethal
+            −{amt}
           </button>
         </div>
         <button
