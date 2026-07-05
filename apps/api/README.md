@@ -111,11 +111,23 @@ registering an app under their own Discord account:
      interactively, from a terminal you trust; never paste the secret into
      a file, another CLI's argument list, or an agent transcript.
 2. **Deploy**: `wrangler deploy` (from `apps/api/`).
-3. **Wire the web app**: set `apps/web`'s API-base env var (see
-   `apps/web/src/sync/config.ts`) to `https://api.ledgermain.whizkid.dev`,
-   and rebuild/redeploy `apps/web`. Leaving it unset keeps the app in
-   local-only mode — this is intentionally the default (see that module's
-   doc comment).
+3. **Wire the web app** — set `apps/web`'s API-base env var (`VITE_API_URL`,
+   see `apps/web/src/sync/config.ts`) to `https://api.ledgermain.whizkid.dev`.
+   This is a **build-time** value: Vite inlines `import.meta.env.VITE_API_URL`
+   when `vite build` runs, so it must be present in the build environment, not
+   the runtime one. For the auto-deploy (Workers Builds on push to `main`),
+   set it as a **Build variable** in the Cloudflare dashboard: the
+   `ledgermain` Worker → **Settings → Build → Build variables and secrets** →
+   add `VITE_API_URL=https://api.ledgermain.whizkid.dev`, then re-run the
+   latest build (or push a commit) so the next bundle picks it up. It is
+   deliberately **not** committed and **not** in `wrangler.jsonc`: wrangler
+   `vars` are runtime bindings (wrong layer — the bundle is already frozen by
+   the time the Worker runs), and keeping it out of the repo means a forker's
+   build defaults to safe local-only mode. Leaving it unset keeps the app in
+   local-only mode — the intended default (see that module's doc comment).
+   (For a one-off *manual* deploy from a laptop, instead run
+   `VITE_API_URL=https://api.ledgermain.whizkid.dev bun run --filter @pf1/web build`
+   then `wrangler deploy` from `apps/web/`.)
 
 ## Deliberately out of scope for v1 (see DESIGN §2.1)
 
