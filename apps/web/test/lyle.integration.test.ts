@@ -27,6 +27,10 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { buildLyleDoc } from "./lyle.fixture.js";
 import { addBuff, makeActiveBuff } from "../src/model/buffs.js";
 import { deriveFamiliarSheet, toggleSharedBuff } from "../src/model/familiar.js";
+import {
+  chosenArcanistExploitCount,
+  expectedArcanistExploitCount,
+} from "../src/model/arcanistExploits.js";
 import { chosenFeatCount, expectedFeatCount } from "../src/model/feats.js";
 import { casterLevel } from "../src/model/casterLevel.js";
 import { skillBudget } from "../src/model/skills.js";
@@ -77,6 +81,12 @@ describe("Lyle — identity, build choices recorded on the document", () => {
   it("feat budget: 4 chosen matches 4 expected (2 rules-derived + the 2-feat house rule)", () => {
     expect(chosenFeatCount(baseDoc)).toBe(4);
     expect(expectedFeatCount(baseDoc, ref)).toBe(4);
+  });
+
+  it("arcanist exploits: Familiar, Potent Magic, Quick Study — budget exact (2 base + 1 Extra Arcanist Exploit)", () => {
+    expect(baseDoc.build.arcanistExploits).toEqual(["familiar", "potentMagic", "quickStudy"]);
+    expect(chosenArcanistExploitCount(baseDoc)).toBe(3);
+    expect(expectedArcanistExploitCount(baseDoc, ref)).toBe(3);
   });
 
   it("regression: arcanist is now recognised as a caster class (casterLevel.ts fix)", () => {

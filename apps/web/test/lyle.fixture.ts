@@ -43,7 +43,8 @@ import {
 import { toggleTrait } from "../src/model/traits.js";
 import { toggleRacialTrait } from "../src/model/racialTraits.js";
 import { prepareSpell } from "../src/model/preparedSpells.js";
-import { setFamiliar, setFamiliarInReach, setFamiliarNotes } from "../src/model/familiar.js";
+import { toggleArcanistExploit } from "../src/model/arcanistExploits.js";
+import { setFamiliar, setFamiliarInReach } from "../src/model/familiar.js";
 import { setHeroPoints } from "../src/model/heroPoints.js";
 import { addManualPool } from "../src/model/resources.js";
 import { restHp } from "../src/model/hp.js";
@@ -262,13 +263,11 @@ export function buildLyleDoc(ref: RefData): CharacterDoc {
   // --- familiar (Mortlach the cat) -------------------------------------------------
   doc = setFamiliar(doc, "cat", "Mortlach");
   doc = setFamiliarInReach(doc, true);
-  // Arcanist exploits (Familiar, Potent Magic, Quick Study) have no dedicated
-  // build field yet (the exploit picker is deferred) — recorded as a note per
-  // the spec's documented pragmatic path.
-  doc = setFamiliarNotes(
-    doc,
-    "Arcanist exploits: Familiar (Mortlach), Potent Magic, Quick Study — no exploit picker yet, recorded here as a note.",
-  );
+  // Arcanist exploits: 2 base at level 4 (gained 1st/3rd) + 1 from the Extra
+  // Arcanist Exploit feat = 3 — matches expectedArcanistExploitCount exactly.
+  for (const exploitId of ["familiar", "potentMagic", "quickStudy"]) {
+    doc = toggleArcanistExploit(doc, exploitId);
+  }
 
   // --- live resource pools -----------------------------------------------------
   // Arcane Reservoir / Consume Spells are class-feature-derived pools
