@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 
 import { FOUNDRY_SHA, loadRefData } from "../src/index.js";
+import { SUPPLEMENTAL_BLOODLINE_TAGS } from "../src/supplements.js";
 
 /**
  * These tests assert known PF1 facts against the vendored normalized data. They
@@ -268,18 +269,40 @@ describe("sorcerer bloodline spell lists (inverted learnedAt.bloodline)", () => 
     expect(names).toContain("Mage Armor");
   });
 
-  it("every entry is keyed by a bloodline tag present in some spell's learnedAt.bloodline", () => {
+  it("Aberrant is present from the hand-authored supplement (absent upstream)", () => {
+    // Issue #38: Aberrant is fully authored in @pf1/engine BLOODLINES but no
+    // vendored spell tags it, so the derived inversion yields nothing. The
+    // supplement (see src/supplements.ts) backfills its CRB bonus-spell list.
+    expect(SUPPLEMENTAL_BLOODLINE_TAGS.has("Aberrant")).toBe(true);
+    const aberrant = ref.bloodlineSpellLists["Aberrant"];
+    expect(aberrant).toBeDefined();
+    // One bonus spell per level 1..9, in ascending order.
+    for (let level = 1; level <= 9; level++) {
+      const ids = aberrant![level] ?? [];
+      expect(ids, `L${level}`).toHaveLength(1);
+    }
+    const l1Name = aberrant![1]!.map((id) => ref.spells[id]?.name);
+    expect(l1Name).toContain("Enlarge Person");
+    const l9Name = aberrant![9]!.map((id) => ref.spells[id]?.name);
+    expect(l9Name).toContain("Shapechange");
+  });
+
+  it("every derived entry is keyed by a bloodline tag present in some spell's learnedAt.bloodline", () => {
+    // Supplemented tags (src/supplements.ts) are hand-authored and intentionally
+    // trace to no spell's learnedAt.bloodline — exempt them from the invariant.
     const tagsFromSpells = new Set<string>();
     for (const sp of Object.values(ref.spells)) {
       for (const t of Object.keys(sp.learnedAt.bloodline ?? {})) tagsFromSpells.add(t);
     }
     for (const tag of Object.keys(ref.bloodlineSpellLists)) {
+      if (SUPPLEMENTAL_BLOODLINE_TAGS.has(tag)) continue;
       expect(tagsFromSpells.has(tag)).toBe(true);
     }
   });
 
-  it("every spell id on a bloodline list actually carries that bloodline at the level", () => {
+  it("every spell id on a derived bloodline list actually carries that bloodline at the level", () => {
     for (const [tag, list] of Object.entries(ref.bloodlineSpellLists)) {
+      if (SUPPLEMENTAL_BLOODLINE_TAGS.has(tag)) continue;
       for (const [lvl, ids] of Object.entries(list)) {
         for (const id of ids) {
           const sp = ref.spells[id];

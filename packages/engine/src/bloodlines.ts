@@ -8,11 +8,11 @@
  * content the compendium doesn't carry.
  *
  * Scope: the 10 Core Rulebook bloodlines (issue #34). `packages/data-pipeline`
- * vendors 39 bloodline tags for spells; note "Aberrant" is NOT among them (a
- * gap in the upstream Foundry pack, not this table — see BloodlinePicker's
- * doc comment). This table keys "Aberrant" anyway since arcana/powers are
- * independent of the spell-list dataset; it just won't show up in the
- * spell-list picker's dropdown yet.
+ * vendors 40 bloodline tags for spells. "Aberrant" is absent from the upstream
+ * Foundry pack (no spell tags it), so its bonus-spell list is hand-authored as
+ * a data-pipeline supplement (issue #38 — see `data-pipeline/src/supplements.ts`);
+ * this table keys "Aberrant" for arcana/powers, which are independent of the
+ * spell-list dataset.
  *
  * Modelling posture (mirrors traits.ts):
  *   - `arcana.changes` / `power.changes` hold ONLY genuinely unconditional,

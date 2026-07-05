@@ -18,9 +18,10 @@ interface BloodlinePickerProps {
  * Sorcerer bloodline selection (PF1 grants exactly one, chosen at L1).
  * Free-choice: the vendored data has no sorcerer-heritage mapping, so
  * validation is "soft warning only" per the project's hybrid-prereqs
- * philosophy. Bloodline tags come from `refData.bloodlineSpellLists` (39
- * tags — note "Aberrant" isn't among them, a gap in the upstream Foundry
- * pack; see `@pf1/engine` `bloodlines.ts`'s doc comment).
+ * philosophy. Bloodline tags come from `refData.bloodlineSpellLists` (40
+ * tags — "Aberrant" has no upstream spell tags, so its bonus-spell list is
+ * hand-authored as a data-pipeline supplement; see `src/supplements.ts` and
+ * `@pf1/engine` `bloodlines.ts`'s doc comment).
  *
  * The chosen bloodline grants one bonus spell known per odd sorcerer level
  * starting at 3; the known-list panel merges those in with a "bloodline"

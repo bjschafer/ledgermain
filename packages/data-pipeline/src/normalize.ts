@@ -38,6 +38,7 @@ import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
 import { transformRace } from "./transform/races.js";
 import { transformSpell } from "./transform/spells.js";
+import { resolveBloodlineSupplements } from "./supplements.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { readCsv } from "./util/csv.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
@@ -244,6 +245,13 @@ export function normalize(opts: NormalizeOptions): {
     for (const lvl of Object.keys(list)) list[Number(lvl)]!.sort();
     bloodlineSpellLists[tag] = list;
   }
+  // Fill in bloodlines the upstream pack never tags (e.g. Aberrant) from the
+  // hand-authored CRB supplement, resolved to vendored spell ids by name.
+  const spellIdByName = new Map(spells.map((s) => [s.name, s.id]));
+  Object.assign(
+    bloodlineSpellLists,
+    resolveBloodlineSupplements(spellIdByName, bloodlineSpellLists),
+  );
 
   // --- buffs (all; small + engine-relevant) ----------------------------------
   const buffs: Buff[] = readPack(join(packsDir, "buffs"))
