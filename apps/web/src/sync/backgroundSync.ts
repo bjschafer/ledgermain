@@ -16,11 +16,14 @@ export interface SyncStore {
   list(): Promise<VersionedSummary[]>;
   get(id: string): Promise<CharacterDoc | undefined>;
   put(doc: CharacterDoc): Promise<void>;
+  delete(id: string): Promise<void>;
 }
 
 export interface OpenSyncResult {
   pulled: string[];
   pushed: string[];
+  /** Locally-dropped ids because the server holds a delete tombstone (#39). */
+  deleted: string[];
   errors: { id: string; message: string }[];
 }
 
@@ -34,9 +37,9 @@ export async function runOpenSync(
   token: string,
   store: SyncStore,
 ): Promise<OpenSyncResult> {
-  const result: OpenSyncResult = { pulled: [], pushed: [], errors: [] };
-  const [locals, remotes] = await Promise.all([store.list(), listRemoteCharacters(apiBase, token)]);
-  const actions = planSync(locals, remotes);
+  const result: OpenSyncResult = { pulled: [], pushed: [], deleted: [], errors: [] };
+  const [locals, listing] = await Promise.all([store.list(), listRemoteCharacters(apiBase, token)]);
+  const actions = planSync(locals, listing.characters, listing.tombstones);
 
   /* oxlint-disable no-await-in-loop -- per-doc actions are deliberately
      sequential: the count is small (one user's characters), failures stay
@@ -49,6 +52,11 @@ export async function runOpenSync(
           await store.put(remoteDoc);
           result.pulled.push(action.id);
         }
+      } else if (action.kind === "delete-local") {
+        // The server holds a delete tombstone for a character we still have
+        // locally — drop it here rather than pushing it back up (issue #39).
+        await store.delete(action.id);
+        result.deleted.push(action.id);
       } else if (action.kind === "push") {
         const localDoc = await store.get(action.id);
         if (!localDoc) continue; // planned from a since-changed local summary; nothing left to push

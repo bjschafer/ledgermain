@@ -44,6 +44,24 @@ describe("planAction", () => {
       id: "a",
     });
   });
+
+  test("deletes the local copy when the id is tombstoned", () => {
+    expect(planAction({ id: "a", version: 9 }, undefined, "a", true)).toEqual({
+      kind: "delete-local",
+      id: "a",
+    });
+  });
+
+  test("a tombstoned id wins even if the server still lists a copy", () => {
+    expect(planAction({ id: "a", version: 1 }, { id: "a", version: 5 }, "a", true)).toEqual({
+      kind: "delete-local",
+      id: "a",
+    });
+  });
+
+  test("a tombstoned id with no local copy is a no-op (never pulls it back)", () => {
+    expect(planAction(undefined, undefined, "a", true)).toEqual({ kind: "same", id: "a" });
+  });
 });
 
 describe("planSync", () => {
@@ -67,6 +85,19 @@ describe("planSync", () => {
       "ahead-locally": "push",
       "in-sync": "same",
     });
+  });
+
+  test("plans a delete-local for a locally-present but tombstoned id", () => {
+    const actions = planSync(
+      [
+        { id: "keep", version: 1 },
+        { id: "deleted-elsewhere", version: 4 },
+      ],
+      [{ id: "keep", version: 1 }],
+      [{ id: "deleted-elsewhere" }],
+    );
+    const byId = Object.fromEntries(actions.map((a) => [a.id, a.kind]));
+    expect(byId).toEqual({ keep: "same", "deleted-elsewhere": "delete-local" });
   });
 
   test("returns an empty plan for no characters at all", () => {

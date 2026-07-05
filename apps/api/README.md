@@ -125,7 +125,7 @@ registering an app under their own Discord account:
    the time the Worker runs), and keeping it out of the repo means a forker's
    build defaults to safe local-only mode. Leaving it unset keeps the app in
    local-only mode — the intended default (see that module's doc comment).
-   (For a one-off *manual* deploy from a laptop, instead run
+   (For a one-off _manual_ deploy from a laptop, instead run
    `VITE_API_URL=https://api.ledgermain.whizkid.dev bun run --filter @pf1/web build`
    then `wrangler deploy` from `apps/web/`.)
 

@@ -34,17 +34,31 @@ afterEach(() => {
 });
 
 describe("listRemoteCharacters", () => {
-  test("sends a bearer token and parses the envelope list", async () => {
+  test("sends a bearer token and parses the envelope list plus tombstones", async () => {
+    mockFetch(() =>
+      Response.json({
+        characters: [{ id: "a", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }],
+        tombstones: [{ id: "b", deletedAt: "2026-01-02T00:00:00.000Z" }],
+      }),
+    );
+    const result = await listRemoteCharacters(API_BASE, TOKEN);
+    expect(result).toEqual({
+      characters: [{ id: "a", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }],
+      tombstones: [{ id: "b", deletedAt: "2026-01-02T00:00:00.000Z" }],
+    });
+    expect(calls[0]?.url).toBe(`${API_BASE}/api/characters`);
+    const headers = new Headers(calls[0]?.init?.headers);
+    expect(headers.get("authorization")).toBe(`Bearer ${TOKEN}`);
+  });
+
+  test("defaults tombstones to [] when the API omits the field (older deployment)", async () => {
     mockFetch(() =>
       Response.json({
         characters: [{ id: "a", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }],
       }),
     );
     const result = await listRemoteCharacters(API_BASE, TOKEN);
-    expect(result).toEqual([{ id: "a", version: 1, updatedAt: "2026-01-01T00:00:00.000Z" }]);
-    expect(calls[0]?.url).toBe(`${API_BASE}/api/characters`);
-    const headers = new Headers(calls[0]?.init?.headers);
-    expect(headers.get("authorization")).toBe(`Bearer ${TOKEN}`);
+    expect(result.tombstones).toEqual([]);
   });
 
   test("throws ApiError on a non-OK response", async () => {

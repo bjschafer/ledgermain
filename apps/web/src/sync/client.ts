@@ -22,6 +22,17 @@ export interface RemoteCharacterSummary {
   updatedAt: string;
 }
 
+/** A server-side delete record: this id was deleted at `deletedAt` (issue #39). */
+export interface RemoteTombstone {
+  id: string;
+  deletedAt: string;
+}
+
+export interface RemoteListing {
+  characters: RemoteCharacterSummary[];
+  tombstones: RemoteTombstone[];
+}
+
 async function authedFetch(
   apiBase: string,
   path: string,
@@ -33,15 +44,19 @@ async function authedFetch(
   return fetch(`${apiBase}${path}`, { ...init, headers });
 }
 
-/** `GET /api/characters` — envelope-only summaries for every doc this account owns. */
-export async function listRemoteCharacters(
-  apiBase: string,
-  token: string,
-): Promise<RemoteCharacterSummary[]> {
+/**
+ * `GET /api/characters` — envelope-only summaries for every doc this account
+ * owns, plus any delete `tombstones` (issue #39). `tombstones` defaults to `[]`
+ * for tolerance of an older API deployment that predates the field.
+ */
+export async function listRemoteCharacters(apiBase: string, token: string): Promise<RemoteListing> {
   const res = await authedFetch(apiBase, "/api/characters", token);
   if (!res.ok) throw new ApiError(res.status, await res.text());
-  const body = (await res.json()) as { characters: RemoteCharacterSummary[] };
-  return body.characters;
+  const body = (await res.json()) as {
+    characters: RemoteCharacterSummary[];
+    tombstones?: RemoteTombstone[];
+  };
+  return { characters: body.characters, tombstones: body.tombstones ?? [] };
 }
 
 /** `GET /api/characters/:id` — `null` on 404 (never thrown; a missing doc is an expected case here). */

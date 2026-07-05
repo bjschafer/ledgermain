@@ -57,6 +57,38 @@ describe("character CRUD", () => {
     expect(afterDelete.status).toBe(404);
   });
 
+  it("records a tombstone on delete and clears it when the id is re-pushed", async () => {
+    await authedRequest(ownerId, "/api/characters/tomb-1", {
+      method: "PUT",
+      body: JSON.stringify(docBody({ id: "tomb-1", version: 1 })),
+    });
+    await authedRequest(ownerId, "/api/characters/tomb-1", { method: "DELETE" });
+
+    // The list surfaces a tombstone so open-sync can drop a resurfaced copy (#39).
+    const listRes = await authedRequest(ownerId, "/api/characters");
+    const listing = (await listRes.json()) as {
+      characters: { id: string }[];
+      tombstones: { id: string; deletedAt: string }[];
+    };
+    expect(listing.characters.map((c) => c.id)).not.toContain("tomb-1");
+    expect(listing.tombstones.map((t) => t.id)).toContain("tomb-1");
+    const tomb = listing.tombstones.find((t) => t.id === "tomb-1");
+    expect(Number.isNaN(Date.parse(tomb?.deletedAt ?? "nope"))).toBe(false);
+
+    // Re-pushing the id authoritatively revives it: the tombstone is cleared.
+    await authedRequest(ownerId, "/api/characters/tomb-1", {
+      method: "PUT",
+      body: JSON.stringify(docBody({ id: "tomb-1", version: 2 })),
+    });
+    const afterRevive = await authedRequest(ownerId, "/api/characters");
+    const revived = (await afterRevive.json()) as {
+      characters: { id: string }[];
+      tombstones: { id: string }[];
+    };
+    expect(revived.characters.map((c) => c.id)).toContain("tomb-1");
+    expect(revived.tombstones.map((t) => t.id)).not.toContain("tomb-1");
+  });
+
   it("rejects a stale write with 409 and returns the current document", async () => {
     await authedRequest(ownerId, "/api/characters/char-2", {
       method: "PUT",

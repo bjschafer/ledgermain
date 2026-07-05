@@ -25,13 +25,35 @@ import { errorJson, json } from "./http.js";
  */
 const MAX_DOC_BYTES = 2_000_000;
 
+/**
+ * Retention window for delete tombstones (90 days). A tombstone lets another
+ * device (or this one, on its next open-sync) distinguish "this character was
+ * deleted" from "this character was never synced here yet" — without one, a
+ * deleted doc resurfaces as a pull (issue #39). Implemented as a KV
+ * `expirationTtl` so old tombstones self-evict: a device offline longer than
+ * this window would re-push a deleted character, an acceptable bound for a
+ * single-user tool (nothing here is load-bearing for correctness, only for
+ * suppressing a stale resurrection).
+ */
+const TOMBSTONE_TTL_SECONDS = 90 * 24 * 60 * 60;
+
 interface StoredMeta {
   version: number;
   updatedAt: string;
 }
 
+interface TombstoneMeta {
+  deletedAt: string;
+}
+
 function keyFor(ownerId: string, id: string): string {
   return `${ownerId}::${id}`;
+}
+
+// Tombstones live under a distinct `tomb::`-prefixed namespace so they never
+// collide with, or show up in, the `<ownerId>::` document-list scan.
+function tombKeyFor(ownerId: string, id: string): string {
+  return `tomb::${ownerId}::${id}`;
 }
 
 class PayloadTooLargeError extends Error {}
@@ -65,16 +87,29 @@ async function readBodyWithCap(request: Request, maxBytes: number): Promise<stri
   return out;
 }
 
-/** `GET /api/characters` — list this owner's docs (envelope only: id/version/updatedAt). */
+/**
+ * `GET /api/characters` — list this owner's docs (envelope only:
+ * id/version/updatedAt) plus any live delete `tombstones` ({ id, deletedAt }),
+ * so an open-sync pass can drop locally-resurfaced deletions in the same round
+ * trip it already makes (issue #39).
+ */
 export async function listCharacters(ownerId: string, env: Env): Promise<Response> {
   const prefix = keyFor(ownerId, "");
-  const list = await env.CHARACTERS.list<StoredMeta>({ prefix });
+  const tombPrefix = tombKeyFor(ownerId, "");
+  const [list, tombList] = await Promise.all([
+    env.CHARACTERS.list<StoredMeta>({ prefix }),
+    env.CHARACTERS.list<TombstoneMeta>({ prefix: tombPrefix }),
+  ]);
   const characters = list.keys.map((k) => ({
     id: k.name.slice(prefix.length),
     version: k.metadata?.version ?? 0,
     updatedAt: k.metadata?.updatedAt ?? "",
   }));
-  return json({ characters });
+  const tombstones = tombList.keys.map((k) => ({
+    id: k.name.slice(tombPrefix.length),
+    deletedAt: k.metadata?.deletedAt ?? "",
+  }));
+  return json({ characters, tombstones });
 }
 
 /** `GET /api/characters/:id` — fetch the full opaque document. */
@@ -152,11 +187,25 @@ export async function putCharacter(
   const stored = JSON.stringify(body);
   const meta: StoredMeta = { version, updatedAt };
   await env.CHARACTERS.put(key, stored, { metadata: meta });
+  // A live document authoritatively cancels any earlier tombstone for the same
+  // id — e.g. a device that edited the character concurrently with another's
+  // delete re-pushes it here, and the write should win over the stale
+  // tombstone rather than the character flickering back out on next open-sync.
+  await env.CHARACTERS.delete(tombKeyFor(ownerId, id));
   return json({ id, version, updatedAt }, { status: 200 });
 }
 
-/** `DELETE /api/characters/:id` — idempotent; succeeds even if already absent. */
+/**
+ * `DELETE /api/characters/:id` — idempotent; succeeds even if already absent.
+ * Leaves a tombstone (see `TOMBSTONE_TTL_SECONDS`) so the deletion propagates
+ * to other devices via open-sync instead of the character resurfacing (#39).
+ */
 export async function deleteCharacter(ownerId: string, id: string, env: Env): Promise<Response> {
   await env.CHARACTERS.delete(keyFor(ownerId, id));
+  const meta: TombstoneMeta = { deletedAt: new Date().toISOString() };
+  await env.CHARACTERS.put(tombKeyFor(ownerId, id), "", {
+    metadata: meta,
+    expirationTtl: TOMBSTONE_TTL_SECONDS,
+  });
   return new Response(null, { status: 204 });
 }

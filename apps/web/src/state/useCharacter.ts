@@ -24,7 +24,7 @@ import { migrateDoc } from "../model/doc.js";
 import { reconcileGrantedCantrips } from "../model/preparedSpells.js";
 import { loadRefData } from "../refdata/loader.js";
 import { pushOnChange, runOpenSync } from "../sync/backgroundSync.js";
-import { fetchMe, logout as apiLogout } from "../sync/client.js";
+import { deleteRemoteCharacter, fetchMe, logout as apiLogout } from "../sync/client.js";
 import { apiBaseUrl } from "../sync/config.js";
 import { acceptRemoteDoc, forceOverwriteDoc } from "../sync/planSync.js";
 import {
@@ -189,11 +189,17 @@ export function useCharacter(): CharacterStore {
         // screen was just pulled in, refresh in-memory state immediately
         // rather than waiting for an unrelated re-render to notice.
         const activeId = docRef.current?.id;
-        if (activeId && result.pulled.includes(activeId) && refData) {
+        if (activeId && result.deleted.includes(activeId) && refData) {
+          // The character on screen was deleted on another device; adopt
+          // whatever remains (or a fresh blank doc) rather than keep showing a
+          // doc that no longer exists in the store (#39).
+          setDoc(reconcileGrantedCantrips(await loadOrCreateActive(), refData));
+        } else if (activeId && result.pulled.includes(activeId) && refData) {
           const refreshed = await db.characters.get(activeId);
           if (refreshed) setDoc(reconcileGrantedCantrips(refreshed, refData));
         }
-        if (result.pulled.length > 0 || result.pushed.length > 0) void refreshList();
+        if (result.pulled.length > 0 || result.pushed.length > 0 || result.deleted.length > 0)
+          void refreshList();
       } catch (e) {
         setSyncStatus({ kind: "error", message: e instanceof Error ? e.message : String(e) });
       }
@@ -376,6 +382,21 @@ export function useCharacter(): CharacterStore {
       runAction(async () => {
         if (doc?.id === id) cancelPendingSave();
         await adopt(await deleteCharacterDb(id));
+        // Best-effort remote delete so the deletion leaves a server tombstone
+        // and propagates to other devices instead of resurfacing (#39). Never
+        // fails the local delete — the character is gone from this device
+        // regardless of whether the server round-trip succeeds.
+        const apiBase = apiBaseUrl();
+        const token = getStoredToken();
+        if (apiBase && token) {
+          try {
+            await deleteRemoteCharacter(apiBase, token, id);
+          } catch {
+            // Offline / API error: the local delete stands. It may resurface
+            // on a later open-sync until a delete reaches the server —
+            // acceptable for a single-user tool.
+          }
+        }
       }),
     [adopt, cancelPendingSave, runAction, doc],
   );

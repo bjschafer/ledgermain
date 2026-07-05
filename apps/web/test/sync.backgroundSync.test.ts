@@ -35,6 +35,10 @@ function fakeStore(initial: CharacterDoc[] = []): SyncStore & { docs: Map<string
       docs.set(doc.id, doc);
       return Promise.resolve();
     },
+    delete: (id) => {
+      docs.delete(id);
+      return Promise.resolve();
+    },
   };
 }
 
@@ -50,7 +54,7 @@ describe("runOpenSync", () => {
     });
     const store = fakeStore();
     const result = await runOpenSync(API_BASE, TOKEN, store);
-    expect(result).toEqual({ pulled: ["only-remote"], pushed: [], errors: [] });
+    expect(result).toEqual({ pulled: ["only-remote"], pushed: [], deleted: [], errors: [] });
     expect(store.docs.get("only-remote")).toEqual(remoteDoc);
   });
 
@@ -67,7 +71,7 @@ describe("runOpenSync", () => {
     });
     const store = fakeStore([localDoc]);
     const result = await runOpenSync(API_BASE, TOKEN, store);
-    expect(result).toEqual({ pulled: [], pushed: ["only-local"], errors: [] });
+    expect(result).toEqual({ pulled: [], pushed: ["only-local"], deleted: [], errors: [] });
   });
 
   test("does nothing for a character already in sync", async () => {
@@ -80,7 +84,22 @@ describe("runOpenSync", () => {
     });
     const store = fakeStore([inSync]);
     const result = await runOpenSync(API_BASE, TOKEN, store);
-    expect(result).toEqual({ pulled: [], pushed: [], errors: [] });
+    expect(result).toEqual({ pulled: [], pushed: [], deleted: [], errors: [] });
+  });
+
+  test("drops a locally-present character the server has tombstoned", async () => {
+    const local = createEmptyDoc("tombstoned");
+    jsonHandler({
+      "/api/characters": () =>
+        Response.json({
+          characters: [],
+          tombstones: [{ id: "tombstoned", deletedAt: "2026-01-02T00:00:00.000Z" }],
+        }),
+    });
+    const store = fakeStore([local]);
+    const result = await runOpenSync(API_BASE, TOKEN, store);
+    expect(result).toEqual({ pulled: [], pushed: [], deleted: ["tombstoned"], errors: [] });
+    expect(store.docs.has("tombstoned")).toBe(false);
   });
 
   test("records an error instead of throwing when a fetch fails", async () => {
