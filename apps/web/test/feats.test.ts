@@ -28,6 +28,7 @@ function makeDoc(over: {
   feats?: string[];
   featChoices?: Record<string, string>;
   gmFeatSlots?: number;
+  archetypes?: string[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -44,6 +45,7 @@ function makeDoc(over: {
     build: {
       feats: over.feats ?? [],
       featChoices: over.featChoices,
+      archetypes: over.archetypes,
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
@@ -191,6 +193,42 @@ describe("expectedFeatCount: Ranger Combat Style bonus feats", () => {
   it("Ranger 1 Elf → 1 base, no combat style slot yet (feature grants at rL 2)", () => {
     const doc = makeDoc({ classes: [{ tag: "ranger", level: 1 }], race: "Elf" });
     expect(expectedFeatCount(doc, ref)).toBe(1);
+  });
+});
+
+describe("expectedFeatCount: archetype swaps of bonus-feat features (issue #40)", () => {
+  // Two ranger archetypes both swap out the base "Combat Style Feat" (which
+  // grants the bonus-feat slots counted above) at rL 2, but differ in what
+  // they hand back — exercising both halves of the archetype-aware budget:
+  //
+  //  * Sable Company Marine trades Combat Style Feat for a Hippogriff Companion
+  //    and grants NO bonus feats in return (no ARCHETYPE_FEATURE_EFFECTS entry).
+  //    Before #40 the swapped-out base feature's slots still inflated the
+  //    budget; now they're dropped, leaving just the base progression.
+  //  * Bow Nomad replaces it with an identical-schedule archery combat style
+  //    (an ARCHETYPE_FEATURE_EFFECTS `bonusFeats` reflavor), so the count nets
+  //    out unchanged — guarding against both double-counting (base + archetype)
+  //    and dropping the slots entirely.
+
+  it("Sable Company Marine ranger 6 Elf → 3 base, combat style swapped away = 3", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "ranger", level: 6 }],
+      race: "Elf",
+      archetypes: ["ranger:sable-company-marine"],
+    });
+    // base: ceil(6/2)=3; Combat Style Feat swapped out, no replacement slots.
+    expect(expectedFeatCount(doc, ref)).toBe(3);
+  });
+
+  it("Bow Nomad ranger 6 Elf → 3 base + 2 archetype combat style = 5 (unchanged)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "ranger", level: 6 }],
+      race: "Elf",
+      archetypes: ["ranger:bow-nomad"],
+    });
+    // base: ceil(6/2)=3; base Combat Style swapped out (−2) but re-granted by the
+    // archetype's identical floor((6+2)/4)=2 → net 5, same as the vanilla ranger.
+    expect(expectedFeatCount(doc, ref)).toBe(5);
   });
 });
 

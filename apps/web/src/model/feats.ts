@@ -32,7 +32,9 @@
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import {
+  ARCHETYPE_FEATURE_EFFECTS,
   FEAT_EFFECTS,
+  activeArchetypeSwaps,
   buildRollData,
   featNameSlug,
   tryEvaluateFormula,
@@ -98,6 +100,7 @@ export interface GrantedFeat {
  */
 export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[] {
   const byName = featIdByName(refData);
+  const archetypeSwaps = activeArchetypeSwaps(doc, refData);
   const out: GrantedFeat[] = [];
   const seen = new Set<string>();
   for (const cls of doc.identity.classes) {
@@ -105,6 +108,8 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
     if (!classDef) continue;
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;
+      // Swapped out by an active archetype — no longer granted (mirrors collect.ts).
+      if (archetypeSwaps.has(grant.uuid)) continue;
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
       if (!(feature.changes ?? []).some((ch) => ch.target === "bonusFeats")) continue;
@@ -126,10 +131,22 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
  * Mirrors the granted-feature walk in `collect.ts`: each class feature's
  * formula is evaluated with `@class.unlevel`/`@class.level` bound to *that*
  * class's level.
+ *
+ * Archetype-aware (issue #40), matching `collect.ts`'s two adjustments:
+ *   1. A base-class feature swapped out by an active archetype (e.g. a ranger
+ *      archetype that trades Combat Style Feat for a companion) no longer
+ *      contributes its `bonusFeats` slots — the swap is gated on the
+ *      character's current level in that class via `activeArchetypeSwaps`.
+ *   2. Archetype features carrying a hand-authored `bonusFeats` effect in
+ *      `ARCHETYPE_FEATURE_EFFECTS` (e.g. the six ranger combat-style reflavors
+ *      that re-grant an identical count) DO contribute — so an archetype that
+ *      replaces a slot-granting feature with an equivalent one nets zero, and
+ *      one that replaces it with nothing correctly loses the slots.
  */
 function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
   const rollData = buildRollData(doc, refData);
   const byName = featIdByName(refData);
+  const archetypeSwaps = activeArchetypeSwaps(doc, refData);
   let total = 0;
   for (const cls of doc.identity.classes) {
     const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
@@ -140,6 +157,8 @@ function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
     };
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;
+      // Swapped out by an active archetype — its slots no longer count.
+      if (archetypeSwaps.has(grant.uuid)) continue;
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
       // Fixed feat grant, not a slot — handled by grantedFeats().
@@ -157,6 +176,33 @@ function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
       }
     }
   }
+
+  // Archetype-granted bonus-feat slots (ARCHETYPE_FEATURE_EFFECTS, issue #40) —
+  // gated the same way as the base features above: the granting class's level
+  // must reach the archetype feature's `level`.
+  for (const archetypeId of doc.build.archetypes ?? []) {
+    const archetype = refData.archetypes[archetypeId];
+    if (!archetype) continue;
+    const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
+    const archRollData: RollData = { ...rollData, class: { level: clsLevel, unlevel: clsLevel } };
+    for (const f of Object.values(refData.archetypeFeatures)) {
+      if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
+      const entry = ARCHETYPE_FEATURE_EFFECTS[f.id];
+      if (!entry) continue;
+      for (const ch of entry.changes) {
+        if (ch.target !== "bonusFeats") continue;
+        let value: number | null;
+        try {
+          value = tryEvaluateFormula(ch.formula, archRollData);
+        } catch {
+          continue;
+        }
+        if (value === null || Number.isNaN(value)) continue;
+        total += Math.trunc(value);
+      }
+    }
+  }
+
   return Math.max(0, total);
 }
 
