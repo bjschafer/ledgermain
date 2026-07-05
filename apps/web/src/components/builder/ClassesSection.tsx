@@ -10,6 +10,7 @@ import {
 } from "../../model/doc.js";
 import { favoredClassBonusLevels, isMultitalented } from "../../model/race.js";
 import { ArcaneBondPicker } from "./ArcaneBondPicker.js";
+import { ArcanistExploitPicker } from "./ArcanistExploitPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
@@ -234,6 +235,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Arcane bond picker — wizard only (familiar or bonded object). */}
       {doc.identity.classes.some((c) => c.tag === "wizard") && (
         <ArcaneBondPicker doc={doc} update={update} />
+      )}
+
+      {/* Arcanist exploit picker — arcanist only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "arcanist") && (
+        <ArcanistExploitPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

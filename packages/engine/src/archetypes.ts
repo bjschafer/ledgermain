@@ -20,6 +20,7 @@ import type {
   RefData,
 } from "@pf1/schema";
 
+import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { ARCHETYPE_FEATURE_EFFECTS } from "./archetype-effects.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import {
@@ -42,8 +43,8 @@ export interface GrantedFeature {
   classTag: string;
   level: number;
   grant: ClassFeatureGrant;
-  /** Set when this grant came from a chosen domain/school/bloodline rather than the class itself. */
-  origin?: { kind: "domain" | "school" | "bloodline"; label: string };
+  /** Set when this grant came from a chosen domain/school/bloodline/exploit rather than the class itself. */
+  origin?: { kind: "domain" | "school" | "bloodline" | "exploit"; label: string };
   /**
    * Pre-computed display detail for grants with no vendored `RefData.classFeatures`
    * entry to look up (bloodline powers — see `bloodlines.ts`; hand-authored, not in
@@ -141,6 +142,40 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           resourcePool: power.resourcePool,
         });
       }
+    }
+  }
+
+  // Arcanist exploits (issue #42) — hand-authored (see arcanist-exploits.ts),
+  // gated on actual arcanist levels the same way domain/school/bloodline
+  // grants are gated above. A non-arcanist with a stale `arcanistExploits`
+  // field gets nothing. Unlike bloodline powers, base exploits carry no
+  // individual level gate of their own (the ACG picks-per-level budget lives
+  // in `model/arcanistExploits.ts`, not here) — every chosen, recognized
+  // exploit id is granted at a flat display level of 1 so it groups with the
+  // character's earliest features rather than inventing a fake per-exploit
+  // level.
+  const arcanistLevel = doc.identity.classes.find((c) => c.tag === "arcanist")?.level ?? 0;
+  if (arcanistLevel > 0) {
+    for (const exploitId of doc.build.arcanistExploits ?? []) {
+      const exploit = ARCANIST_EXPLOITS[exploitId];
+      if (!exploit) continue;
+      out.push({
+        classTag: "arcanist",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `exploit:${exploit.id}`,
+          featureId: `exploit:${exploit.id}`,
+          name: exploit.name,
+          resolved: true,
+        },
+        origin: { kind: "exploit", label: "Arcanist Exploit" },
+        // Exploits have no vendored RefData.classFeatures entry to derive a
+        // description from (unlike base class features), so `detail` carries
+        // the exploit's own rules summary rather than a terse dice/DC string
+        // — otherwise the row would show only a bare name.
+        detail: exploit.summary,
+      });
     }
   }
 

@@ -84,6 +84,11 @@ export {
   type BloodlineVariantOption,
 } from "./bloodlines.js";
 export {
+  ARCANIST_EXPLOITS,
+  ARCANIST_EXPLOIT_IDS,
+  type ArcanistExploitDef,
+} from "./arcanist-exploits.js";
+export {
   FEAT_EFFECTS,
   SITUATIONAL_FEAT_EFFECTS,
   featNameSlug,
