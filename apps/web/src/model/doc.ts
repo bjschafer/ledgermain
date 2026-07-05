@@ -656,13 +656,14 @@ export function updateGearItem(
 export function addCustomGearItem(
   doc: CharacterDoc,
   name: string,
-  opts?: { weight?: number; price?: number; quantity?: number },
+  opts?: { weight?: number; price?: number; quantity?: number; charges?: number },
 ): CharacterDoc {
   const label = name.trim();
   if (!label) return doc;
   const inst: ItemInstance = { equipped: true, name: label };
   if (opts?.weight != null && opts.weight > 0) inst.weight = opts.weight;
   if (opts?.price != null && opts.price > 0) inst.price = opts.price;
+  if (opts?.charges != null && opts.charges > 0) inst.charges = Math.trunc(opts.charges);
   if (opts?.quantity != null) {
     const q = clampInt(opts.quantity, 0, 99999);
     if (q !== 1) inst.quantity = q;

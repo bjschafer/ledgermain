@@ -543,6 +543,16 @@ describe("addCustomGearItem()", () => {
     expect(d.build.gear[0]!.price).toBeUndefined();
   });
 
+  it("stores charges for a self-contained consumable (a generated wand, #36)", () => {
+    const d = addCustomGearItem(doc(), "Wand of Cure Light Wounds", { price: 750, charges: 50 });
+    const inst = d.build.gear[0]!;
+    expect(inst.charges).toBe(50);
+    expect(inst.price).toBe(750);
+    // A potion carries no charges.
+    const p = addCustomGearItem(doc(), "Potion of Cure Light Wounds", { price: 50 });
+    expect(p.build.gear[0]!.charges).toBeUndefined();
+  });
+
   it("trims the name and is a no-op for a blank name", () => {
     const trimmed = addCustomGearItem(doc(), "  Rations  ");
     expect(trimmed.build.gear[0]!.name).toBe("Rations");

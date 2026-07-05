@@ -1750,6 +1750,14 @@ button:focus-visible,
   margin-bottom: 0;
 }
 
+/* Consumable-kind selector (Potions / Scrolls / Wands, issue #36) — a small
+   segmented row of toggle chips ahead of the spell search. */
+.kind-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .gear-picker .scroll {
   max-height: 300px;
   border: 0;

@@ -853,6 +853,17 @@ export interface ItemInstance {
    * only; never affects any derived stat. Omitted = no price shown.
    */
   price?: number;
+  /**
+   * Maximum charges for a self-contained limited-use consumable that has no
+   * `itemId` to look a `uses.maxFormula` up from — currently only a generated
+   * wand ("Wand of Cure Light Wounds", 50 charges; see
+   * `apps/web/src/model/consumables.ts`). The gear UI reads the charge cap from
+   * `RefData.items[itemId].uses.maxFormula` when `itemId` is present, else from
+   * this field, and tracks spent charges in `chargesUsed` (which is already
+   * stored on the instance regardless of `itemId`). Omitted = not a
+   * charge-tracked item. Display + live-tracking only; never a derived stat.
+   */
+  charges?: number;
 }
 
 /** Physical stats of a worn piece of body armor or a shield. */

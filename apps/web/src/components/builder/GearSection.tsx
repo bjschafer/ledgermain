@@ -29,6 +29,12 @@ import {
   toggleAbilitySelection,
   totalBonusEquivalent,
 } from "../../model/abilities.js";
+import {
+  CONSUMABLE_KINDS,
+  type ConsumableEntry,
+  type ConsumableKind,
+  generateConsumables,
+} from "../../model/consumables.js";
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
@@ -351,6 +357,13 @@ function itemMeta(item: Item): string {
   return parts.join(" · ");
 }
 
+/** One-line metadata for a generated {@link ConsumableEntry} in the picker. */
+function consumableMeta(entry: ConsumableEntry): string {
+  const parts = [`CL ${entry.casterLevel}`, `spell lvl ${entry.spellLevel}`, `${entry.price} gp`];
+  if (entry.charges != null) parts.push(`${entry.charges} charges`);
+  return parts.join(" · ");
+}
+
 /** A one-line summary of a {@link ArmorRef} for the picker preview. */
 function armorRefMeta(a: ArmorRef): string {
   const weight = a.weightClass ? `${WEIGHT_LABEL[a.weightClass] ?? "—"} ` : "";
@@ -390,6 +403,12 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   const [showCustomGear, setShowCustomGear] = useState(false);
   const [customGear, setCustomGear] = useState(BLANK_CUSTOM_GEAR);
 
+  // Consumables picker (issue #36) — potions/scrolls/wands generated from
+  // the vendored spell list rather than any static item pack.
+  const [showConsumablePicker, setShowConsumablePicker] = useState(false);
+  const [consumableKind, setConsumableKind] = useState<ConsumableKind>("potion");
+  const [consumableQuery, setConsumableQuery] = useState("");
+
   const gear = doc.build.gear;
   const money = doc.live.money ?? {};
   const encumbrance = sheet.encumbrance;
@@ -412,10 +431,25 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
       .slice(0, 80);
   }, [refData.armors, armorQuery]);
 
+  // Generated consumables for the chosen kind (issue #36), filtered by the
+  // spell-name search. Regenerated only when the kind changes; the query is
+  // applied cheaply on top.
+  const filteredConsumables = useMemo(() => {
+    const all = generateConsumables(refData.spells, consumableKind);
+    const q = consumableQuery.trim().toLowerCase();
+    return all.filter((c) => !q || c.spellName.toLowerCase().includes(q)).slice(0, 80);
+  }, [refData.spells, consumableKind, consumableQuery]);
+
   function handleAddItem(itemId: string) {
     update((d) => addGearItem(d, itemId));
     setShowItemPicker(false);
     setItemQuery("");
+  }
+
+  function handleAddConsumable(entry: ConsumableEntry) {
+    update((d) => addCustomGearItem(d, entry.name, { price: entry.price, charges: entry.charges }));
+    setShowConsumablePicker(false);
+    setConsumableQuery("");
   }
 
   function handleAddCustomGear() {
@@ -537,7 +571,10 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
             const unitWeight = gearUnitWeight(inst, refData);
             const unitPrice = itemDef?.price ?? inst.price;
             const qty = inst.quantity ?? 1;
-            const maxCharges = itemMaxCharges(itemDef);
+            // A vendored item reads its cap from `uses.maxFormula`; a
+            // self-contained consumable (a generated wand, issue #36) carries
+            // its max directly on the instance.
+            const maxCharges = itemMaxCharges(itemDef) ?? inst.charges ?? null;
             const chargesUsed = Math.min(inst.chargesUsed ?? 0, maxCharges ?? Infinity);
 
             if (editingGearIndex === i && inst.armor) {
@@ -727,6 +764,82 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                 })
               )}
               {Object.keys(refData.items).length > 80 && filteredItems.length === 80 ? (
+                <div className="empty">Showing first 80 — refine your search.</div>
+              ) : null}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Add consumable (issue #36) — potions/scrolls/wands derived from the
+          vendored spell list, since Foundry ships no static consumable items.
+          Picked entries become self-contained custom gear (name/price/charges
+          on the instance), so nothing hits the engine. */}
+      <div className="gear-add-row">
+        {!showConsumablePicker ? (
+          <button type="button" className="btn-ghost" onClick={() => setShowConsumablePicker(true)}>
+            + Add potion / scroll / wand
+          </button>
+        ) : (
+          <div className="gear-picker">
+            <div className="gear-picker-head">
+              <div className="kind-toggle" role="tablist" aria-label="Consumable type">
+                {CONSUMABLE_KINDS.map((k) => (
+                  <button
+                    key={k.kind}
+                    type="button"
+                    className="chip"
+                    role="tab"
+                    aria-selected={consumableKind === k.kind}
+                    aria-pressed={consumableKind === k.kind}
+                    onClick={() => setConsumableKind(k.kind)}
+                  >
+                    {k.label}
+                  </button>
+                ))}
+              </div>
+              <input
+                className="search"
+                type="text"
+                placeholder="Search spells…"
+                value={consumableQuery}
+                onChange={(e) => setConsumableQuery(e.target.value)}
+                autoFocus
+              />
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => {
+                  setShowConsumablePicker(false);
+                  setConsumableQuery("");
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+            <div className="scroll">
+              {filteredConsumables.length === 0 ? (
+                <div className="empty">No spells match.</div>
+              ) : (
+                filteredConsumables.map((entry) => (
+                  <div key={entry.id} className="pick-row">
+                    <div className="pmain">
+                      <div className="pname">{entry.name}</div>
+                      <div className="preq">
+                        <span>{consumableMeta(entry)}</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="pick-btn add"
+                      onClick={() => handleAddConsumable(entry)}
+                    >
+                      Add
+                    </button>
+                  </div>
+                ))
+              )}
+              {filteredConsumables.length === 80 ? (
                 <div className="empty">Showing first 80 — refine your search.</div>
               ) : null}
             </div>
