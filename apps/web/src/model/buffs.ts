@@ -8,13 +8,7 @@
 import { advanceRounds } from "@pf1/engine";
 import type { ActiveBuff, Buff, Change, CharacterDoc, ContextNote } from "@pf1/schema";
 
-let counter = 0;
-/** Stable-ish id without requiring crypto in every environment. */
-function newInstanceId(): string {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
-  counter += 1;
-  return `buff-${Date.now()}-${counter}`;
-}
+import { localId } from "./ids.js";
 
 export interface BuffOptions {
   instanceId?: string;
@@ -25,7 +19,7 @@ export interface BuffOptions {
 /** Build an {@link ActiveBuff} from a reference-data buff, snapshotting its changes. */
 export function makeActiveBuff(buff: Buff, opts: BuffOptions = {}): ActiveBuff {
   return {
-    instanceId: opts.instanceId ?? newInstanceId(),
+    instanceId: opts.instanceId ?? localId("buff-"),
     buffId: buff.id,
     name: buff.name,
     changes: buff.changes.map((c) => ({ ...c })),
@@ -42,7 +36,7 @@ export function makeCustomBuff(
   opts: BuffOptions & { contextNotes?: ContextNote[] } = {},
 ): ActiveBuff {
   return {
-    instanceId: opts.instanceId ?? newInstanceId(),
+    instanceId: opts.instanceId ?? localId("buff-"),
     name: name.trim() || "Custom buff",
     changes: changes.map((c) => ({ ...c })),
     contextNotes: opts.contextNotes,

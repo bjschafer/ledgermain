@@ -37,15 +37,8 @@ import type {
 } from "@pf1/schema";
 import { SITUATIONAL_FEAT_EFFECTS, featNameSlug, type SituationalFeatEntry } from "@pf1/engine";
 
+import { localId } from "./ids.js";
 import { SAVE_NAMES, signed, signedSequence } from "./names.js";
-
-let counter = 0;
-/** Stable-ish id without requiring crypto in every environment (mirrors model/buffs.ts). */
-function newSavedRollId(): string {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
-  counter += 1;
-  return `roll-${Date.now()}-${counter}`;
-}
 
 /** One pickable thing a saved roll can point at, for the "add" picker. */
 export interface SavedRollOption {
@@ -443,7 +436,7 @@ export function addSavedRoll(
   source: SavedRollSource,
   label: string,
 ): CharacterDoc {
-  const roll: SavedRoll = { id: newSavedRollId(), label, source };
+  const roll: SavedRoll = { id: localId("roll-"), label, source };
   return {
     ...doc,
     build: { ...doc.build, savedRolls: [...(doc.build.savedRolls ?? []), roll] },

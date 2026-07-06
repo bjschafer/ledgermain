@@ -37,6 +37,7 @@ import {
   setSkillRank,
   toggleFeat,
 } from "./doc.js";
+import { localId } from "./ids.js";
 import { ALIGNMENT_LABELS, SKILL_NAMES, slugifySkillLabel } from "./names.js";
 
 /** Which external tool an import came from — carried through to the UI report. */
@@ -88,14 +89,6 @@ export function emptyExternalData(): ExternalCharacterData {
     gear: [],
     money: {},
   };
-}
-
-let importIdCounter = 0;
-/** Fresh id for an imported document; doesn't need to be a real UUID everywhere (mirrors `model/buffs.ts`). */
-function newImportId(): string {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
-  importIdCounter += 1;
-  return `import-${Date.now()}-${importIdCounter}`;
 }
 
 /** Normalize a free-text name to the slug space used for RefData name lookups. */
@@ -223,7 +216,7 @@ export function buildDocFromExternalData(
   source: ExternalImportSource,
 ): { doc: CharacterDoc; report: ImportReport } {
   const report: ImportReport = { source, mapped: [], unmapped: [] };
-  let doc = createEmptyDoc(newImportId());
+  let doc = createEmptyDoc(localId("import-"));
 
   if (data.name?.trim()) doc = setName(doc, data.name.trim());
 
