@@ -11,7 +11,7 @@ import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
-import { activeArchetypeSwaps } from "./archetypes.js";
+import { activeArchetypeSwaps, weaponTrainingReplaced } from "./archetypes.js";
 import { BLOODLINES } from "./bloodlines.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
@@ -22,7 +22,8 @@ import { RACIAL_TRAITS } from "./racial-traits.js";
 import { TRAITS } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
-import { raceGrantsFlexibleAbility } from "./tables.js";
+import { raceGrantsFlexibleAbility, weaponTrainingBonus } from "./tables.js";
+import { normalizeWeaponGroup } from "./weapon-groups.js";
 
 /** A {@link TypedModifier} tagged with what it targets. */
 export interface CollectedModifier extends TypedModifier {
@@ -175,6 +176,44 @@ export function collectModifiers(
           ch.operator,
         );
       }
+    }
+
+    // --- Weapon Training group picks (issue #45) ---------------------------
+    // The vendored "Weapon Training" class feature carries `changes: []`
+    // upstream (see tables.ts `weaponTrainingBonus`'s doc comment), so its
+    // per-group attack/damage bonus is hand-authored here rather than driven
+    // by a vendored formula, gated on the player's own `build.weaponTrainingGroups`
+    // picks (one per tier) exactly like every other free-choice picker.
+    // Skipped entirely when an active archetype has replaced Weapon Training
+    // (`weaponTrainingReplaced`) — that archetype's own weapon-group-scoped
+    // bonus (if any) comes from `archetype-extracted/fighter.ts` instead, and
+    // applying both would double-count.
+    if (cls.tag === "fighter" && !weaponTrainingReplaced(doc)) {
+      (doc.build.weaponTrainingGroups ?? []).forEach((rawGroup, tierIndex) => {
+        if (!rawGroup) return;
+        const bonus = weaponTrainingBonus(cls.level, tierIndex);
+        if (bonus <= 0) return;
+        const group = normalizeWeaponGroup(rawGroup);
+        const sourceId = `weapon-training-${tierIndex}`;
+        evalChange(
+          String(bonus),
+          featureRollData,
+          `attack.weapon.${group}`,
+          "untyped",
+          "Weapon Training",
+          sourceId,
+          out,
+        );
+        evalChange(
+          String(bonus),
+          featureRollData,
+          `damage.weapon.${group}`,
+          "untyped",
+          "Weapon Training",
+          sourceId,
+          out,
+        );
+      });
     }
   }
 

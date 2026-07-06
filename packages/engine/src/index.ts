@@ -65,6 +65,8 @@ export {
   flurryOfBlowsLabel,
   barbarianDamageReduction,
   type BarbarianDrDetail,
+  WEAPON_TRAINING_LEVELS,
+  weaponTrainingBonus,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
@@ -168,6 +170,7 @@ export {
   archetypeModeledEffectTier,
   type ArchetypeEffectTier,
   barbarianDamageReductionReplaced,
+  weaponTrainingReplaced,
   collectGrantedFeatures,
   type ResolvedClassFeatures,
   type GrantedFeature,

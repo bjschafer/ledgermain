@@ -864,3 +864,33 @@ export function barbarianDamageReduction(barbarianLevel: number): BarbarianDrDet
   const amount = 1 + Math.floor((barbarianLevel - 7) / 3);
   return { amount, label: `${amount}/—` };
 }
+
+/**
+ * Fighter's Weapon Training, clean-room from the published PF1 rules (the
+ * class feature's `changes[]` is empty upstream, same posture as
+ * `barbarianDamageReduction` — see issue #45's "Fighter weapon training group
+ * choices" deferred-item entry in IMPLEMENTATION_PLAN.md, now built).
+ *
+ * "Starting at 5th level, a fighter can select one group of weapons... he
+ * gains a +1 bonus on attack and damage rolls. Every four levels thereafter
+ * (9th, 13th, and 17th), a fighter becomes further trained in another group
+ * of weapons... the bonuses granted by previous weapon groups increase by +1
+ * each." Each of the 4 tiers is 4 levels apart, so "the bonus granted by a
+ * group increases by +1 every time a LATER tier unlocks" collapses to the
+ * same `1 + floor((level - grantLevel) / 4)` shape as every other Weapon-
+ * Training-family formula in `archetype-extracted/fighter.ts` — this is the
+ * canonical, unmodified version those are reflavors of.
+ */
+export const WEAPON_TRAINING_LEVELS: readonly number[] = [5, 9, 13, 17];
+
+/**
+ * Weapon Training's current attack/damage bonus (both rolls get the same
+ * value) for the group picked at `tierIndex` (0-based index into
+ * {@link WEAPON_TRAINING_LEVELS}), given the fighter's current class level.
+ * 0 before that tier's own grant level, or for an out-of-range `tierIndex`.
+ */
+export function weaponTrainingBonus(fighterLevel: number, tierIndex: number): number {
+  const grantLevel = WEAPON_TRAINING_LEVELS[tierIndex];
+  if (grantLevel === undefined || fighterLevel < grantLevel) return 0;
+  return 1 + Math.floor((fighterLevel - grantLevel) / 4);
+}

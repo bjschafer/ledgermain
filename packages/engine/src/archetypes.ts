@@ -252,6 +252,60 @@ export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: Ref
 }
 
 /**
+ * Fighter archetype ids whose OWN feature meaningfully takes over some or all
+ * of the base Weapon Training mechanism — a fixed or restricted group, a
+ * different cadence, or an unmodeled condition — that `archetype-extracted/
+ * fighter.ts` already covers (fully or partially) with its own `Change`.
+ * `weaponTrainingReplaced` uses this hand-curated set, NOT the generic
+ * `pairedBaseFeatureUuid`/`activeArchetypeSwaps` swap-detection every other
+ * suppression check in this file uses (`barbarianDamageReductionReplaced`
+ * above): Foundry's vendored data pairs nearly EVERY fighter archetype's
+ * "Weapon Training"-slot feature to the base uuid, including ones that are
+ * byte-identical unmodified reflavors (Aerial Assaulter, Pack Mule, Rondelero
+ * Duelist, Two-Weapon Warrior) or purely additive (Warlord adds one more
+ * selectable group without restricting the normal free choice) — the generic
+ * swap mechanism is too broad for this specific feature (unlike Armor
+ * Training/Damage Reduction, where every real archetype pairing genuinely
+ * does replace the mechanic). Suppressing the picker for those non-replacing
+ * archetypes would incorrectly zero out an unrelated fighter's weapon
+ * training entirely. This set was hand-built from the same prose-reading
+ * pass that produced the extracted entries above — see each id's
+ * classification entry for the reasoning.
+ *
+ * `fighter:brawler` is here because its Close Combatant feature genuinely
+ * takes over the feature slot (see that entry's classification note for the
+ * vendored `pairedBaseFeatureUuid` mispairing this sidesteps), not because of
+ * the generic swap check.
+ */
+const WEAPON_TRAINING_REPLACEMENTS: ReadonlySet<string> = new Set([
+  "fighter:archer",
+  "fighter:brawler",
+  "fighter:crossbowman",
+  "fighter:dragoon",
+  "fighter:foehammer",
+  "fighter:polearm-master",
+  "fighter:spear-fighter",
+  "fighter:tribal-fighter",
+  "fighter:two-handed-fighter",
+  "fighter:unarmed-fighter",
+  "fighter:ustalavic-duelist",
+]);
+
+/**
+ * True when the character's base Weapon Training class feature — modeled via
+ * `doc.build.weaponTrainingGroups` + `collect.ts`'s per-group bonus
+ * derivation, not a vendored `Change` (the feature's `changes[]` is empty
+ * upstream) — has been replaced by an active archetype. `collect.ts` uses
+ * this to skip that derivation entirely so it never sits alongside (or
+ * double-counts against) the archetype's own weapon-group-scoped effect from
+ * `archetype-extracted/fighter.ts`. See {@link WEAPON_TRAINING_REPLACEMENTS}
+ * for why this doesn't use the generic paired-swap check.
+ */
+export function weaponTrainingReplaced(doc: CharacterDoc): boolean {
+  return (doc.build.archetypes ?? []).some((id) => WEAPON_TRAINING_REPLACEMENTS.has(id));
+}
+
+/**
  * "verified" when at least one of `archetypeId`'s features has a
  * hand-authored entry (issue #7) with a real `Change`; "extracted" when none
  * are hand-verified but at least one has a machine-extracted entry (issue

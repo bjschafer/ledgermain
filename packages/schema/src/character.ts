@@ -450,6 +450,26 @@ export interface CharacterDoc {
      * field are unaffected.
      */
     oracleCurse?: string;
+    /**
+     * Fighter's Weapon Training group picks, in grant order — index 0 = the
+     * group chosen at 5th level, index 1 = 9th, index 2 = 13th, index 3 =
+     * 17th (PF1 RAW: `["bows"]` alone means only the 5th-level pick has been
+     * made yet). Each entry should be one of `@pf1/engine`'s `WEAPON_GROUPS`
+     * slugs (free-choice — not hard-validated, same soft posture as
+     * `oracleMystery`/`oracleCurse`). Previously deferred (no schema field
+     * existed at all) because the engine had no semantic weapon-group
+     * targeting; issue #45 built `attack.weapon.<group>`/`damage.weapon.<group>`
+     * matching against a weapon's vendored `weaponGroups`, so this field plus
+     * `collect.ts`'s per-group bonus derivation (mirroring the RAW "+1 at the
+     * grant level, +1 more per 4 levels thereafter, including to earlier
+     * picks" progression) is the only remaining piece. Suppressed entirely —
+     * see `@pf1/engine` `weaponTrainingReplaced` — when an active archetype
+     * replaces the base Weapon Training feature (e.g. Archer's Expert
+     * Archer), so its own extracted per-archetype bonus is never doubled by
+     * also filling in this field. Empty/undefined for non-fighters or a
+     * fighter who hasn't made any picks yet.
+     */
+    weaponTrainingGroups?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
