@@ -18,6 +18,7 @@ function makeDoc(over: {
   abilities: CharacterDoc["abilities"];
   race?: string;
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
+  gear?: CharacterDoc["build"]["gear"];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -36,7 +37,7 @@ function makeDoc(over: {
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
-      gear: [],
+      gear: over.gear ?? [],
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -142,6 +143,106 @@ describe("compute: defenses (issue #21)", () => {
       },
     ]);
     expect(sheet.defenses!.sr).toBeUndefined();
+  });
+
+  it("a conditional dr Change that evaluates to 0 does NOT materialize a spurious Defenses line (issue #45 finding 2, the dr-at-0 wart)", () => {
+    // Reproduces the exact shape of Warlord's Sun-Bronzed Skin: DR 5/- gated
+    // on being unarmored (@armor.type == 0). An armored character with no
+    // other DR/resistance/SR source used to still get a "DR/— 0" seal,
+    // because the conditional Change is collected even when it evaluates to
+    // 0 (only ac/skill-shaped always-rendered totals safely absorb a zero
+    // component; defenses.ts only materializes the section at all when a
+    // dr/resistance/sr entry exists).
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 19 }],
+      abilities: ABILITIES,
+      activeBuffs: [
+        {
+          instanceId: "sun-bronzed-skin",
+          name: "Sun-Bronzed Skin",
+          changes: [{ formula: "if(eq(@armor.type,0),5,0)", target: "dr", type: "untyped" }],
+        },
+      ],
+      // Wearing armor -> @armor.type is 2 (medium) -> the condition is false -> 0.
+      gear: [{ equipped: true, name: "Chainmail", armor: { slot: "armor", ac: 6, type: 2 } }],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses).toBeUndefined();
+  });
+
+  it("the same conditional dr Change DOES show once its condition is met", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 19 }],
+      abilities: ABILITIES,
+      activeBuffs: [
+        {
+          instanceId: "sun-bronzed-skin",
+          name: "Sun-Bronzed Skin",
+          changes: [{ formula: "if(eq(@armor.type,0),5,0)", target: "dr", type: "untyped" }],
+        },
+      ],
+      // No gear at all -> @armor.type resolves to 0 (unarmored).
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses).toBeDefined();
+    expect(sheet.defenses!.dr).toEqual([
+      {
+        total: 5,
+        qualifier: "—",
+        components: [
+          {
+            source: "Sun-Bronzed Skin",
+            sourceId: "sun-bronzed-skin",
+            type: "untyped",
+            value: 5,
+            applied: true,
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("a conditional dr Change that evaluates to 0 doesn't suppress a real DR source on another qualifier", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "barbarian", level: 13 }],
+      abilities: ABILITIES,
+      activeBuffs: [
+        {
+          instanceId: "sun-bronzed-skin",
+          name: "Sun-Bronzed Skin",
+          changes: [{ formula: "if(eq(@armor.type,0),5,0)", target: "dr", type: "untyped" }],
+        },
+      ],
+      gear: [{ equipped: true, name: "Chainmail", armor: { slot: "armor", ac: 6, type: 2 } }],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses).toBeDefined();
+    // Barbarian DR (—) still wins the qualifier (3 > 0); Sun-Bronzed Skin's
+    // now-0 contribution stays visible as a losing, unapplied component (same
+    // strike-through convention as typed-bonus stacking) rather than either
+    // disappearing silently or spuriously creating its OWN "—" entry.
+    expect(sheet.defenses!.dr).toEqual([
+      {
+        total: 3,
+        qualifier: "—",
+        components: [
+          {
+            source: "Sun-Bronzed Skin",
+            sourceId: "sun-bronzed-skin",
+            type: "untyped",
+            value: 0,
+            applied: false,
+          },
+          {
+            source: "Damage Reduction",
+            sourceId: "barbarian-dr",
+            type: "untyped",
+            value: 3,
+            applied: true,
+          },
+        ],
+      },
+    ]);
   });
 
   it("a custom buff granting DR/magic combines with barbarian DR/— as separate qualifiers", () => {

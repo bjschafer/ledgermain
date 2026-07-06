@@ -25,6 +25,21 @@
  * reimplemented here rather than routed through `resolveStack` (whose
  * "untyped always sums" behavior is correct for ability/skill bonuses but
  * wrong for DR/resistance qualifiers).
+ *
+ * Zero-value entries (issue #45 finding 2, "the dr-at-0 wart"): unlike
+ * `ac`/`skill.*`, which are always-rendered running totals a zero-value
+ * component quietly disappears into, this module only materializes
+ * `DerivedSheet.defenses` (and the UI's whole "Defenses" stat-group) when at
+ * least one dr/resistance/sr entry exists AT ALL. A conditional `dr`-/`eres`-
+ * target `Change` (e.g. `if(eq(@armor.type,0),5,0)`) still produces a
+ * `CollectedModifier` even when its formula evaluates to 0 — so without this
+ * filtering, an armored character with no other DR source would show a
+ * spurious "DR/— 0" seal. `groupByQualifier` drops any qualifier whose
+ * winning (highest) value is not positive, and `computeSr` does the same for
+ * spell resistance — see each function for the exact rule. Found via
+ * Warlord's (fighter archetype) Sun-Bronzed Skin, `dr` gated on
+ * `@armor.type == 0`; see `archetype-classification.ts`'s entry for that
+ * feature and IMPLEMENTATION_PLAN.md's dated #45 pipeline section.
  */
 
 import type { CharacterDoc, Defenses, DefenseEntry, ModifierComponent, RefData } from "@pf1/schema";
@@ -68,6 +83,13 @@ interface QualifiedMod {
  * value applies (PF1 DR/energy-resistance from the same qualifier doesn't
  * stack). Losing entries stay in `components` with `applied: false`, the same
  * strike-through convention as typed-bonus stacking.
+ *
+ * A qualifier whose winning value is not positive is dropped entirely (issue
+ * #45 finding 2, "the dr-at-0 wart") — since it's the highest value in the
+ * group, every source for that qualifier evaluated to zero (or, in principle,
+ * negative), so there is nothing real to show; a conditional `dr`/`eres`
+ * `Change` that evaluates to 0 when its condition is unmet must not
+ * materialize a spurious "0" entry just because it was collected at all.
  */
 function groupByQualifier(mods: QualifiedMod[]): DefenseEntry[] {
   const byQualifier = new Map<string, QualifiedMod[]>();
@@ -83,6 +105,7 @@ function groupByQualifier(mods: QualifiedMod[]): DefenseEntry[] {
     for (let i = 1; i < list.length; i++) {
       if (list[i]!.value > list[bestIdx]!.value) bestIdx = i;
     }
+    if (list[bestIdx]!.value <= 0) continue;
     const components: ModifierComponent[] = list.map((m, i) => ({
       source: m.source,
       sourceId: m.sourceId,
@@ -106,6 +129,12 @@ function groupByQualifier(mods: QualifiedMod[]): DefenseEntry[] {
  * applies (losers kept, unapplied, for provenance). Any plain additive change
  * (none occur upstream today, but the target supports it) stacks on top via
  * the normal typed-bonus resolver.
+ *
+ * Returns `undefined` (not a zero-value entry) when the resulting total is
+ * not positive — same zero-value guard as `groupByQualifier`'s dr/eres
+ * qualifiers, applied here defensively too: no vendored `spellResist` change
+ * is conditional today, but a user-authored buff could be, and a spurious
+ * "SR 0" seal would be just as wrong as a "DR/— 0" one.
  */
 function computeSr(
   collected: CollectedModifier[],
@@ -125,7 +154,7 @@ function computeSr(
   }));
 
   if (setMods.length === 0) {
-    return { total: addStack.total, components: addComponents };
+    return addStack.total > 0 ? { total: addStack.total, components: addComponents } : undefined;
   }
 
   let bestIdx = 0;
@@ -140,8 +169,10 @@ function computeSr(
     applied: i === bestIdx,
   }));
 
+  const total = setMods[bestIdx]!.value + addStack.total;
+  if (total <= 0) return undefined;
   return {
-    total: setMods[bestIdx]!.value + addStack.total,
+    total,
     components: [...setComponents, ...addComponents],
   };
 }
