@@ -834,6 +834,8 @@ button:focus-visible,
 .class-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  row-gap: 6px;
   gap: 10px;
   padding: 8px 0;
   border-bottom: 1px solid var(--line-soft);
@@ -844,8 +846,15 @@ button:focus-visible,
 }
 
 .class-row .cname {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 auto;
+  /* Real min-content width, not 0 — a short class name (e.g. "Wizard") should
+     never shrink below its own text and overflow into the next sibling (a
+     genuine bug found in the phone pass: at ~340px the row's other controls
+     left less space than "Wizard" needed, and the name rendered on top of
+     the "Hit Die dN" label next to it). `flex-wrap` on `.class-row` above is
+     the other half of the fix — if a row still can't fit everything, the
+     trailing controls drop to a second line instead of forcing an overlap. */
+  min-width: max-content;
   font-weight: 600;
 }
 
@@ -3659,6 +3668,36 @@ input[type="text"].saved-roll-name:focus {
   .panel > header {
     flex-wrap: wrap;
     row-gap: 6px;
+  }
+
+  /* "Hit Die dN" is flavor, not a control — drop it so the class row's
+     actual controls (favorite star, level stepper, remove) have room. */
+  .class-row .cls-hd-label {
+    display: none;
+  }
+
+  /* A gear row (checkbox + name/meta + qty stepper + remove/edit button) has
+     too many side-by-side controls for a phone-width row once the qty
+     stepper and remove button grow to their tap-sized widths — `.gear-main`
+     (min-width: 0) was getting squeezed down to a handful of px, wrapping
+     "Cloak of Resistance +1" one word per line. Let it wrap onto its own
+     line instead. */
+  .gear-row {
+    flex-wrap: wrap;
+  }
+
+  .gear-main {
+    flex-basis: 100%;
+  }
+
+  /* Same fix for an active-buff row (name + duration value/unit + share
+     toggles + remove all competing for one line). */
+  .buff-row {
+    flex-wrap: wrap;
+  }
+
+  .buff-main {
+    flex-basis: 100%;
   }
 
   /* Small inline "remove" glyphs (attached-feat chip ✕, skill-instance ✕):
