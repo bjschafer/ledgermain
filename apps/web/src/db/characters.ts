@@ -11,6 +11,7 @@ import Dexie, { type Table } from "dexie";
 import type { CharacterDoc } from "@pf1/schema";
 import sampleCharacterJson from "../data/sample-character.json";
 import { createEmptyDoc, migrateDoc } from "../model/doc.js";
+import { localId } from "../model/ids.js";
 import { parseImportedDoc } from "../model/importCharacter.js";
 
 class CharacterDb extends Dexie {
@@ -146,10 +147,7 @@ export async function loadCharacter(id: string): Promise<CharacterDoc> {
 
 /** Create a brand-new blank character and make it active. */
 export async function createCharacter(): Promise<CharacterDoc> {
-  const id = typeof crypto !== "undefined" && "randomUUID" in crypto
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-  const fresh = createEmptyDoc(id);
+  const fresh = createEmptyDoc(localId());
   await db.characters.put(fresh);
   return rememberActive(fresh);
 }
