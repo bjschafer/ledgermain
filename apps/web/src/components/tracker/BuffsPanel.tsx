@@ -24,6 +24,7 @@ import {
   roundsToDisplay,
   toRounds,
 } from "../../model/buffs.js";
+import { isSharedWithCompanion, toggleSharedBuffCompanion } from "../../model/companion.js";
 import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js";
 import { signed } from "../../model/names.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -141,6 +142,8 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
               update={update}
               hasFamiliar={!!doc.build.familiar}
               sharedWithFamiliar={isSharedWithFamiliar(doc, b.instanceId)}
+              hasCompanion={!!doc.build.animalCompanion}
+              sharedWithCompanion={isSharedWithCompanion(doc, b.instanceId)}
             />
           ))}
         </div>
@@ -265,6 +268,8 @@ function BuffRow({
   update,
   hasFamiliar = false,
   sharedWithFamiliar = false,
+  hasCompanion = false,
+  sharedWithCompanion = false,
 }: {
   buff: ActiveBuff;
   rollData: RollData;
@@ -273,6 +278,10 @@ function BuffRow({
   hasFamiliar?: boolean;
   /** Whether this buff instance is currently shared onto the familiar's derived sheet. */
   sharedWithFamiliar?: boolean;
+  /** Whether the character has a tracked companion (`build.animalCompanion`) — hides the share toggle when false. */
+  hasCompanion?: boolean;
+  /** Whether this buff instance is currently shared onto the companion's derived sheet (Share Spells). */
+  sharedWithCompanion?: boolean;
 }) {
   const [unit, setUnit] = useState<DurationUnit>(
     () => roundsToDisplay(buff.remainingRounds)?.unit ?? "rds",
@@ -339,6 +348,19 @@ function BuffRow({
             onChange={() => update((d) => toggleSharedBuff(d, buff.instanceId))}
           />
           <span>Familiar</span>
+        </label>
+      ) : null}
+      {hasCompanion ? (
+        <label
+          className="buff-share-companion"
+          title="Also apply this buff's changes to the companion (Share Spells)"
+        >
+          <input
+            type="checkbox"
+            checked={sharedWithCompanion}
+            onChange={() => update((d) => toggleSharedBuffCompanion(d, buff.instanceId))}
+          />
+          <span>Companion</span>
         </label>
       ) : null}
       <button

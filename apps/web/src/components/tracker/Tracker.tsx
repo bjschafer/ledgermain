@@ -1,5 +1,6 @@
 import { AfflictionsPanel } from "./AfflictionsPanel.js";
 import { BuffsPanel } from "./BuffsPanel.js";
+import { CompanionPanel } from "./CompanionPanel.js";
 import { ConditionsPanel } from "./ConditionsPanel.js";
 import { FamiliarPanel } from "./FamiliarPanel.js";
 import { FeatsPanel } from "./FeatsPanel.js";
@@ -33,6 +34,7 @@ export function Tracker(props: BuilderProps) {
       <AfflictionsPanel {...props} />
       <BuffsPanel {...props} />
       <FamiliarPanel {...props} />
+      <CompanionPanel {...props} />
       <PreparedSpellsPanel {...props} />
       <ResourcesPanel {...props} />
       <FeatsPanel {...props} />

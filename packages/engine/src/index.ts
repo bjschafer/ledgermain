@@ -118,6 +118,34 @@ export {
   type DerivedFamiliarAttack,
   type DerivedFamiliarSkill,
 } from "./familiar.js";
+export {
+  BASE_COMPANIONS,
+  BASE_COMPANION_IDS,
+  ANIMAL_COMPANION_PROGRESSION,
+  COMPANION_SPECIAL_ABILITY_DETAIL,
+  COMPANION_ABILITY_INCREASE_LEVELS,
+  deriveCompanion,
+  companionEffectiveLevel,
+  companionProgressionRow,
+  companionSpecialAbilityNames,
+  companionAbilityIncreaseSlots,
+  type BaseCompanion,
+  type CompanionAttack,
+  type CompanionGrowthStep,
+  type CompanionProgressionRow,
+  type DerivedCompanion,
+  type DerivedCompanionAc,
+  type DerivedCompanionAttack,
+  type DerivedCompanionSkill,
+  type FlyManeuverability as CompanionFlyManeuverability,
+} from "./companion.js";
+export {
+  routeSharedBuffs,
+  applySharedAbilityBonuses,
+  applySharedSpeeds,
+  type AcCandidate,
+  type RoutedSharedBuffs,
+} from "./shared-creature-buffs.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";
 export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
 export {
