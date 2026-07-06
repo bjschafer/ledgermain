@@ -1059,6 +1059,19 @@ export interface WeaponInstance {
    * Has no effect on the computed values until that follow-up is implemented.
    */
   group?: string;
+  /**
+   * Semantic weapon-group tags (e.g. `["bows"]`, `["blades-heavy"]`),
+   * snapshotted from `WeaponRef.weaponGroups` at pick-time and normalized to
+   * `@pf1/engine`'s kebab-case slug convention (`normalizeWeaponGroup` in
+   * `weapon-groups.ts`). Unlike `group` (a free-text, one-weapon tag), this
+   * is Foundry's canonical weapon-category vocabulary — what
+   * `attack.weapon.<group>` / `damage.weapon.<group>` Changes match against
+   * for category-scoped bonuses (Weapon Training and its archetype
+   * reflavors), in addition to `group`. Omitted for hand-entered custom
+   * weapons, which have no vendored group data and keep working via `group`
+   * alone (issue #45).
+   */
+  weaponGroups?: string[];
   /** Melee or ranged; determines which attack modifier targets apply. Default "melee". */
   category?: "melee" | "ranged";
   /**

@@ -221,3 +221,9 @@ export {
   totalCarriedWeight,
   computeEncumbrance,
 } from "./encumbrance.js";
+export {
+  WEAPON_GROUPS,
+  isKnownWeaponGroup,
+  normalizeWeaponGroup,
+  type WeaponGroup,
+} from "./weapon-groups.js";

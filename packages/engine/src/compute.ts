@@ -30,6 +30,7 @@ import type {
   ResolvedStat,
   ResolvedWeaponAttack,
   SizeId,
+  WeaponInstance,
 } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
@@ -45,6 +46,7 @@ import {
 } from "./encumbrance.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
+import { normalizeWeaponGroup } from "./weapon-groups.js";
 import {
   babForLevels,
   isTrainedOnly,
@@ -659,23 +661,50 @@ export function iterativeSequence(bab: number, attackTotal: number): number[] | 
 /* --------------------------------------------------------------- weapons */
 
 /**
+ * Every `<group>` key a weapon's `attack.weapon.<group>` / `damage.weapon.<group>`
+ * bonuses should be gathered from (issue #45): the weapon's free-text,
+ * player-set `.group` tag (Weapon Focus/Specialization's exact-match
+ * mechanism, unchanged — kept unnormalized for backward compatibility with
+ * every `Change` already authored against it) UNIONED with its vendored
+ * `.weaponGroups` semantic tags (Weapon Training and its archetype
+ * reflavors), each normalized via `normalizeWeaponGroup` so an authored
+ * target like `attack.weapon.blades-heavy` matches the vendored
+ * `"bladesHeavy"` tag. Deduplicated so a weapon whose free-text tag happens
+ * to coincide with one of its own semantic groups doesn't query the same
+ * target twice (which would still resolve to the same single set of
+ * matching changes either way — `forTarget` is not additive per call — but
+ * dedup keeps the intent obvious). Hand-entered custom weapons have no
+ * `.weaponGroups` and keep matching via `.group` alone.
+ */
+function weaponGroupKeys(w: Pick<WeaponInstance, "group" | "weaponGroups">): string[] {
+  const keys = new Set<string>();
+  if (w.group) keys.add(w.group);
+  for (const g of w.weaponGroups ?? []) keys.add(normalizeWeaponGroup(g));
+  return [...keys];
+}
+
+/**
  * Builds a ResolvedWeaponAttack for each entry in build.weapons.
  *
  * Attack formula (PF1 CRB):
  *   attack = BAB + ability mod (STR or DEX per attackAbility) + size modifier
  *            + enhancement (or +1 masterwork if enhancement is 0)
  *            + general "attack" / "mattack" / "rattack" changes
- *            + per-group changes (e.g. `attack.weapon.longsword` from Weapon Focus)
+ *            + per-group changes (e.g. `attack.weapon.longsword` from Weapon Focus,
+ *              or `attack.weapon.bows` from a semantic weapon-group bonus)
  *
  * Damage bonus (numeric; dice displayed separately):
  *   damage = floor(STR × damageMultiplier) [melee, damageAbility="str" only]
  *            + enhancement
  *            + any "damage" target changes from the collected modifier set
- *            + per-group changes (e.g. `damage.weapon.longsword` from Weapon Specialization)
+ *            + per-group changes (e.g. `damage.weapon.longsword` from Weapon Specialization,
+ *              or `damage.weapon.bows` from a semantic weapon-group bonus)
  *
- * Per-weapon feat bonuses (Weapon Focus, Weapon Specialization) are routed via
+ * Per-weapon feat bonuses (Weapon Focus, Weapon Specialization) and semantic
+ * weapon-group bonuses (Weapon Training, issue #45) are both routed via
  * group-specific targets (`attack.weapon.<group>` / `damage.weapon.<group>`) so the
- * regular collect → stack pipeline handles them without special-casing here.
+ * regular collect → stack pipeline handles them without special-casing here —
+ * see {@link weaponGroupKeys} for how a weapon's matching `<group>` keys are gathered.
  */
 function computeWeaponAttacks(
   doc: CharacterDoc,
@@ -694,12 +723,14 @@ function computeWeaponAttacks(
     const masterworkBonus = enh === 0 && w.masterwork ? 1 : 0;
     const attackAbilityMod = w.attackAbility === "dex" ? dexMod : strMod;
     const attackAbilityLabel = w.attackAbility === "dex" ? "Dexterity" : "Strength";
+    const groupKeys = weaponGroupKeys(w);
 
-    // General attack changes + per-group feat bonuses (e.g. Weapon Focus via "attack.weapon.<group>").
+    // General attack changes + per-group feat bonuses (e.g. Weapon Focus via
+    // "attack.weapon.<group>", or a semantic weapon-group bonus via "attack.weapon.bows").
     const weaponAttackStack = resolveStack([
       ...forTarget(collected, "attack"),
       ...(category === "melee" ? forTarget(collected, "mattack") : forTarget(collected, "rattack")),
-      ...(w.group ? forTarget(collected, `attack.weapon.${w.group}`) : []),
+      ...groupKeys.flatMap((g) => forTarget(collected, `attack.weapon.${g}`)),
     ]);
     const attackTotal =
       bab + attackAbilityMod + sizeAttackMod + enh + masterworkBonus + weaponAttackStack.total;
@@ -720,18 +751,20 @@ function computeWeaponAttacks(
     const appliesAbilityDamage = damageAbility === "str" && category === "melee";
     const abilityDamage = appliesAbilityDamage ? Math.floor(strMod * mult) : 0;
 
-    // General "damage" target changes + per-group feat bonuses (e.g. Weapon Specialization via "damage.weapon.<group>").
-    // "wdamage" (all weapon damage), "mwdamage" (melee), "rwdamage" (ranged) come
-    // from vendored buffs/conditions (Divine Favor, Rage, sickened, etc.). We
-    // don't model thrown weapons as a distinct category, so "twdamage" (thrown)
-    // is approximated onto ranged lines alongside "rwdamage".
+    // General "damage" target changes + per-group feat bonuses (e.g. Weapon
+    // Specialization via "damage.weapon.<group>", or a semantic weapon-group
+    // bonus via "damage.weapon.bows"). "wdamage" (all weapon damage),
+    // "mwdamage" (melee), "rwdamage" (ranged) come from vendored buffs/
+    // conditions (Divine Favor, Rage, sickened, etc.). We don't model thrown
+    // weapons as a distinct category, so "twdamage" (thrown) is approximated
+    // onto ranged lines alongside "rwdamage".
     const weaponDamageStack = resolveStack([
       ...forTarget(collected, "damage"),
       ...forTarget(collected, "wdamage"),
       ...(category === "melee"
         ? forTarget(collected, "mwdamage")
         : [...forTarget(collected, "rwdamage"), ...forTarget(collected, "twdamage")]),
-      ...(w.group ? forTarget(collected, `damage.weapon.${w.group}`) : []),
+      ...groupKeys.flatMap((g) => forTarget(collected, `damage.weapon.${g}`)),
     ]);
     const damageTotal = abilityDamage + enh + weaponDamageStack.total;
 

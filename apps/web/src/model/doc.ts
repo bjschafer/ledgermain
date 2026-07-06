@@ -18,6 +18,8 @@ import type {
   WornArmor,
 } from "@pf1/schema";
 
+import { normalizeWeaponGroup } from "@pf1/engine";
+
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 import { slugifySkillLabel } from "./names.js";
@@ -1125,7 +1127,12 @@ export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterD
  * the doc stays minimal. Material is display-only for weapons. Keen (if
  * selected) doubles the crit range at pick-time; other abilities are
  * display-only. Abilities without `enhancement >= 1`, or beyond the +10
- * combined-bonus cap, are dropped by `normalizeWeaponInstance`.
+ * combined-bonus cap, are dropped by `normalizeWeaponInstance`. `ref.weaponGroups`
+ * (Foundry's semantic weapon-category tags, e.g. `["bladesHeavy"]`) is
+ * snapshotted normalized via `@pf1/engine`'s `normalizeWeaponGroup` (issue
+ * #45) so `attack.weapon.<group>`/`damage.weapon.<group>` Changes authored
+ * against the canonical `WEAPON_GROUPS` vocabulary match this weapon in
+ * addition to its free-text `group` tag.
  */
 export function addWeaponFromRef(
   doc: CharacterDoc,
@@ -1163,6 +1170,9 @@ export function addWeaponFromRef(
       ? { damageMultiplier: ref.damageMultiplier }
       : {}),
     ...(ref.group ? { group: ref.group } : {}),
+    ...(ref.weaponGroups && ref.weaponGroups.length > 0
+      ? { weaponGroups: ref.weaponGroups.map(normalizeWeaponGroup) }
+      : {}),
     ...(ref.weight ? { weight: ref.weight } : {}),
     weaponId: weapon.id,
   });

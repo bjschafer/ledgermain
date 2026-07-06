@@ -89,7 +89,11 @@ const APPLIED_TARGETS = new Set<string>([
  *
  * - `skill.<id>` — per-skill bonuses, grouped by base skill id in computeSkills.
  * - `attack.weapon.<group>` / `damage.weapon.<group>` — per-weapon-group feat
- *   bonuses (e.g. Weapon Focus / Weapon Specialization) in computeWeaponAttacks.
+ *   bonuses (e.g. Weapon Focus / Weapon Specialization, keyed by a weapon's
+ *   free-text `.group` tag) AND semantic weapon-group bonuses (Weapon
+ *   Training and its archetype reflavors, keyed by the weapon's vendored,
+ *   normalized `.weaponGroups` — see `weapon-groups.ts`'s
+ *   `normalizeWeaponGroup`/`WEAPON_GROUPS`, issue #45) in computeWeaponAttacks.
  * - `dr.<bypass>` / `eres.<energy>` — qualified DR / energy resistance
  *   (computeDefenses, issue #21). Not a vendored Foundry vocabulary (no
  *   `dr`/`eres`-shaped target occurs upstream today) — this engine's own
