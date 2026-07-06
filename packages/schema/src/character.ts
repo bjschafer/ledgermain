@@ -420,6 +420,15 @@ export interface CharacterDoc {
      * warning only on overspend — same posture as `traits`/`racialTraits`.
      */
     arcanistExploits?: string[];
+    /**
+     * A tracked animal companion (PF1 druid Nature Bond / ranger Hunter's
+     * Bond) — independent of, but closely mirroring, `familiar` above: this
+     * models the companion itself as a trackable creature with its own
+     * derived HD/BAB/saves/AC/attacks/skills — see `@pf1/engine`
+     * `deriveCompanion`. Optional/back-compat: documents without this field
+     * have no tracked companion.
+     */
+    animalCompanion?: AnimalCompanionBuild;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -578,6 +587,14 @@ export interface CharacterDoc {
      * acceptably rare edge case, not worth a cross-check against `build.feats`.
      */
     familiarInReach?: boolean;
+    /**
+     * Live session state for the tracked animal companion
+     * (`build.animalCompanion`) — damage bookkeeping plus which of the
+     * master's `activeBuffs` are shared onto it (Share Spells). Mirrors
+     * `familiar` above exactly; see {@link AnimalCompanionLiveState}.
+     * Absent/omitted while `build.animalCompanion` is unset.
+     */
+    animalCompanion?: AnimalCompanionLiveState;
   };
 }
 
@@ -590,6 +607,43 @@ export interface FamiliarBuild {
   speciesId: string;
   /** Player-given name (e.g. "Mortlach"). */
   name: string;
+  /** Free-text notes (e.g. personality, tricks, house-rule tweaks). */
+  notes?: string;
+}
+
+/**
+ * A tracked animal companion's build choices (`build.animalCompanion`) — see
+ * that field's doc comment. Mirrors `FamiliarBuild`'s shape, plus the extra
+ * fields a companion needs that a familiar doesn't (which class feature(s)
+ * grant it, and its player-assigned Ability Score Increases).
+ */
+export interface AnimalCompanionBuild {
+  /** Species id — key into `@pf1/engine` `BASE_COMPANIONS` (e.g. "wolf"). */
+  speciesId: string;
+  /** Player-given name. */
+  name: string;
+  /**
+   * Which class feature(s) grant this companion — a druid's Nature Bond
+   * (chosen instead of a domain) and/or a ranger's Hunter's Bond (chosen
+   * instead of the ally favored-enemy-sharing option). Both may be present on
+   * a multiclass druid/ranger; see `@pf1/engine` `companionEffectiveLevel`'s
+   * doc comment for why their contributions are summed (a documented v1
+   * simplification) rather than the game picking one. An empty array (or a
+   * document with `animalCompanion` set but neither source chosen yet) means
+   * effective level 0 — the companion doesn't show up on the sheet yet,
+   * matching the engine's soft-warning posture.
+   */
+  source: ("nature-bond" | "hunters-bond")[];
+  /**
+   * Player-assigned ability score for each Ability Score Increase milestone
+   * reached so far (CRB Table: Animal Companion Base Statistics — effective
+   * levels 4, 9, 14, 20). Index 0 = the level-4 increase, index 1 = level 9,
+   * etc. A missing/short entry for an already-reached milestone defaults to
+   * Strength (`@pf1/engine` `deriveCompanion`) — a sensible default, not a
+   * requirement to choose immediately. Entries beyond
+   * `companionAbilityIncreaseSlots(effectiveLevel)` are ignored.
+   */
+  abilityIncreases?: AbilityId[];
   /** Free-text notes (e.g. personality, tricks, house-rule tweaks). */
   notes?: string;
 }
@@ -611,6 +665,28 @@ export interface FamiliarLiveState {
    * `deriveFamiliar`, which evaluates each shared buff's `changes[]` against
    * the familiar the same way the master's own sheet does for `ac`/`aac`/
    * `sac`/`nac`, `fort`/`ref`/`will`/`allSavingThrows`, and `skill.*` targets.
+   * Omitted/empty = no shared buffs.
+   */
+  sharedBuffIds?: string[];
+}
+
+/**
+ * Live session state for a tracked animal companion (`live.animalCompanion`)
+ * — see that field's doc comment. Identical shape to {@link FamiliarLiveState};
+ * kept as a distinct type (rather than a shared alias) so the two can diverge
+ * later without a breaking rename.
+ */
+export interface AnimalCompanionLiveState {
+  /** Lethal damage taken so far (current HP = derived max − damage). Omitted/0 = undamaged. */
+  damage?: number;
+  /** Nonlethal damage taken so far. Omitted/0 = none. */
+  nonlethal?: number;
+  /**
+   * Instance ids from `live.activeBuffs` (the MASTER's buff list — a
+   * companion has no separate buff list of its own in v1) that also apply to
+   * the companion's derived sheet via Share Spells (e.g. a shared Barkskin).
+   * Toggled via `apps/web/src/model/companion.ts`; resolved by `@pf1/engine`
+   * `deriveCompanion` exactly like `FamiliarLiveState.sharedBuffIds`.
    * Omitted/empty = no shared buffs.
    */
   sharedBuffIds?: string[];

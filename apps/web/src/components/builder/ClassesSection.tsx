@@ -9,6 +9,7 @@ import {
   setFavoredClassBonus,
 } from "../../model/doc.js";
 import { favoredClassBonusLevels, isMultitalented } from "../../model/race.js";
+import { AnimalCompanionPicker } from "./AnimalCompanionPicker.js";
 import { ArcaneBondPicker } from "./ArcaneBondPicker.js";
 import { ArcanistExploitPicker } from "./ArcanistExploitPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
@@ -244,6 +245,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}
       <FamiliarPicker doc={doc} update={update} />
+
+      {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond. */}
+      <AnimalCompanionPicker doc={doc} update={update} />
 
       {/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}
       <RangerPicker doc={doc} update={update} />

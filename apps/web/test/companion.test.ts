@@ -1,0 +1,155 @@
+import { describe, expect, it } from "bun:test";
+
+import { loadRefData } from "@pf1/data-pipeline";
+import type { CharacterDoc } from "@pf1/schema";
+
+import { addClass, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
+import {
+  addCompanionNonlethal,
+  applyCompanionDamage,
+  clearCompanion,
+  deriveCompanionSheet,
+  hasBoonCompanionFeat,
+  healCompanion,
+  healCompanionNonlethal,
+  isSharedWithCompanion,
+  restCompanion,
+  setCompanion,
+  setCompanionAbilityIncrease,
+  setCompanionNotes,
+  toggleCompanionSource,
+  toggleSharedBuffCompanion,
+} from "../src/model/companion.js";
+
+const ref = loadRefData();
+
+function druid7(): CharacterDoc {
+  let d = createEmptyDoc("t");
+  d = addClass(d, "druid");
+  d = setClassLevel(d, "druid", 7);
+  return d;
+}
+
+describe("model/companion.ts transitions", () => {
+  it("setCompanion sets species + name, trimming a blank name, seeding an empty source list", () => {
+    const d = setCompanion(createEmptyDoc("t"), "wolf", "  Fang  ");
+    expect(d.build.animalCompanion).toEqual({ speciesId: "wolf", name: "Fang", source: [] });
+  });
+
+  it("setCompanion with a blank name falls back to 'Companion'", () => {
+    const d = setCompanion(createEmptyDoc("t"), "wolf", "   ");
+    expect(d.build.animalCompanion?.name).toBe("Companion");
+  });
+
+  it("setCompanionNotes no-ops without a companion", () => {
+    const d = createEmptyDoc("t");
+    expect(setCompanionNotes(d, "hi")).toBe(d);
+  });
+
+  it("clearCompanion removes both build and live state", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = applyCompanionDamage(d, 3);
+    d = clearCompanion(d);
+    expect(d.build.animalCompanion).toBeUndefined();
+    expect(d.live.animalCompanion).toBeUndefined();
+  });
+
+  it("applyCompanionDamage / healCompanion track a damage counter", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = applyCompanionDamage(d, 10);
+    expect(d.live.animalCompanion?.damage).toBe(10);
+    d = healCompanion(d, 4);
+    expect(d.live.animalCompanion?.damage).toBe(6);
+    d = healCompanion(d, 99);
+    expect(d.live.animalCompanion?.damage).toBe(0);
+  });
+
+  it("addCompanionNonlethal / healCompanionNonlethal track nonlethal separately", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = addCompanionNonlethal(d, 4);
+    expect(d.live.animalCompanion?.nonlethal).toBe(4);
+    d = healCompanionNonlethal(d, 10);
+    expect(d.live.animalCompanion?.nonlethal).toBe(0);
+  });
+
+  it("restCompanion clears damage and nonlethal", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = applyCompanionDamage(d, 5);
+    d = addCompanionNonlethal(d, 2);
+    d = restCompanion(d);
+    expect(d.live.animalCompanion?.damage).toBe(0);
+    expect(d.live.animalCompanion?.nonlethal).toBe(0);
+  });
+
+  it("toggleSharedBuffCompanion / isSharedWithCompanion", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    expect(isSharedWithCompanion(d, "buff-1")).toBe(false);
+    d = toggleSharedBuffCompanion(d, "buff-1");
+    expect(isSharedWithCompanion(d, "buff-1")).toBe(true);
+    d = toggleSharedBuffCompanion(d, "buff-1");
+    expect(isSharedWithCompanion(d, "buff-1")).toBe(false);
+  });
+
+  it("toggleCompanionSource seeds a default wolf companion when none exists yet", () => {
+    const d = toggleCompanionSource(createEmptyDoc("t"), "nature-bond");
+    expect(d.build.animalCompanion).toEqual({
+      speciesId: "wolf",
+      name: "Companion",
+      source: ["nature-bond"],
+    });
+  });
+
+  it("toggleCompanionSource toggles a source off again without losing species/name", () => {
+    let d = setCompanion(createEmptyDoc("t"), "dog", "Rex");
+    d = toggleCompanionSource(d, "hunters-bond");
+    expect(d.build.animalCompanion?.source).toEqual(["hunters-bond"]);
+    d = toggleCompanionSource(d, "hunters-bond");
+    expect(d.build.animalCompanion?.source).toEqual([]);
+    expect(d.build.animalCompanion?.speciesId).toBe("dog");
+    expect(d.build.animalCompanion?.name).toBe("Rex");
+  });
+
+  it("toggleCompanionSource supports both sources active at once (multiclass)", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = toggleCompanionSource(d, "nature-bond");
+    d = toggleCompanionSource(d, "hunters-bond");
+    expect(d.build.animalCompanion?.source).toEqual(["nature-bond", "hunters-bond"]);
+  });
+
+  it("setCompanionAbilityIncrease sets a slot, padding earlier unset slots with 'str'", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = setCompanionAbilityIncrease(d, 1, "dex");
+    expect(d.build.animalCompanion?.abilityIncreases).toEqual(["str", "dex"]);
+  });
+
+  it("hasBoonCompanionFeat is false when the feat isn't owned", () => {
+    const d = createEmptyDoc("t");
+    expect(hasBoonCompanionFeat(d, ref)).toBe(false);
+  });
+});
+
+describe("deriveCompanionSheet() — wired through the normal doc model", () => {
+  it("returns undefined without a companion", () => {
+    const d = druid7();
+    expect(deriveCompanionSheet(d, ref)).toBeUndefined();
+  });
+
+  it("returns undefined until a companion source is chosen", () => {
+    let d = druid7();
+    d = setCompanion(d, "wolf", "Fang");
+    expect(deriveCompanionSheet(d, ref)).toBeUndefined();
+  });
+
+  it("hand-computed fixture: druid-7 wolf, HD 6, BAB +4, grown Large", () => {
+    let d = druid7();
+    d = setCompanion(d, "wolf", "Fang");
+    d = toggleCompanionSource(d, "nature-bond");
+
+    const companion = deriveCompanionSheet(d, ref);
+    expect(companion).toBeDefined();
+    expect(companion!.level).toBe(7);
+    expect(companion!.hd).toBe(6);
+    expect(companion!.bab).toBe(4);
+    expect(companion!.size).toBe("lg");
+  });
+});

@@ -46,13 +46,18 @@
  *     {@link familiarNaturalArmorAdj} / {@link familiarIntScore}.
  */
 
-import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
-import { ABILITY_IDS } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 
 import { abilityMod, totalLevel } from "./rolldata.js";
-import { resolveStack, type TypedModifier } from "./stacking.js";
+import {
+  applySharedAbilityBonuses,
+  applySharedSpeeds,
+  routeSharedBuffs,
+  type AcCandidate,
+} from "./shared-creature-buffs.js";
+import { resolveStack } from "./stacking.js";
 import { SIZE_AC_MOD, SKILL_ABILITY, specialSizeMod } from "./tables.js";
-import { tryEvaluateFormula, type RollData } from "./formula.js";
+import type { RollData } from "./formula.js";
 
 /** How well a species flies — drives the Fly skill's maneuverability bonus below. */
 export type FlyManeuverability = "clumsy" | "poor" | "average" | "good" | "perfect";
@@ -464,57 +469,6 @@ export interface DerivedFamiliar {
   spellResistance?: number;
 }
 
-/** `@item.level`/`@cl` in a shared buff's formula = the buff's own caster/effect level. */
-function withBuffCasterLevel(buff: Pick<ActiveBuff, "casterLevel">, rollData: RollData): RollData {
-  return buff.casterLevel === undefined
-    ? rollData
-    : { ...rollData, cl: buff.casterLevel, item: { level: buff.casterLevel } };
-}
-
-/** Evaluate a shared buff's change formula; malformed/dice formulas contribute 0 rather than crashing. */
-function evalShared(formula: string, rollData: RollData): number {
-  try {
-    const value = tryEvaluateFormula(formula, rollData);
-    return value === null || Number.isNaN(value) ? 0 : value;
-  } catch {
-    return 0;
-  }
-}
-
-/**
- * Movement-speed change targets, mirroring `compute.ts`'s own
- * `applySpeedTarget` naming (duplicated locally — compute.ts's is private).
- * Maps a `Change.target` string to the `speeds` record key it feeds.
- */
-const SPEED_TARGET_MODE: Readonly<Record<string, string>> = {
-  landSpeed: "land",
-  flySpeed: "fly",
-  swimSpeed: "swim",
-  climbSpeed: "climb",
-  burrowSpeed: "burrow",
-};
-
-/**
- * Add shared-buff speed bonuses (issue #44) onto the species' base speeds,
- * one typed-stacking resolve per movement mode. Unlike `compute.ts`'s
- * `applySpeedTarget`, `operator: "set"` changes are NOT honored here — shared
- * buffs are player buffs, not conditions, so nothing shareable in the
- * vendored data ever sets an absolute speed (see module doc comment).
- */
-function applySharedSpeeds(
-  base: Readonly<Record<string, number>>,
-  sharedSpeed: ReadonlyMap<string, TypedModifier[]>,
-): Record<string, number> {
-  const speeds = { ...base };
-  for (const [mode, mods] of sharedSpeed) {
-    const bonus = resolveStack(mods).total;
-    if (bonus) speeds[mode] = (speeds[mode] ?? 0) + bonus;
-  }
-  return speeds;
-}
-
-type AcCandidate = TypedModifier & { category: string };
-
 /** AC bucket membership mirroring `compute.ts`'s (duplicated locally — compute.ts's are private). */
 const TOUCH_CATEGORIES: ReadonlySet<string> = new Set([
   "base",
@@ -594,7 +548,7 @@ export function deriveFamiliar(
 
   const level = Math.max(1, totalLevel(doc));
   const intScore = familiarIntScore(level);
-  const abilities: Record<AbilityId, { score: number; mod: number }> = {
+  let abilities: Record<AbilityId, { score: number; mod: number }> = {
     str: { score: species.abilities.str, mod: abilityMod(species.abilities.str) },
     dex: { score: species.abilities.dex, mod: abilityMod(species.abilities.dex) },
     con: { score: species.abilities.con, mod: abilityMod(species.abilities.con) },
@@ -609,96 +563,20 @@ export function deriveFamiliar(
   // --- shared buffs: evaluate + bucket by target (issue #44) ----------------
   const sharedIds = new Set(doc.live.familiar?.sharedBuffIds ?? []);
   const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
-
-  const sharedAc: AcCandidate[] = [];
-  const sharedFort: TypedModifier[] = [];
-  const sharedRef: TypedModifier[] = [];
-  const sharedWill: TypedModifier[] = [];
-  const sharedSkill = new Map<string, TypedModifier[]>();
-  const sharedAbility: Record<AbilityId, TypedModifier[]> = {
-    str: [],
-    dex: [],
-    con: [],
-    int: [],
-    wis: [],
-    cha: [],
-  };
-  const sharedAttack: TypedModifier[] = [];
-  const sharedDamage: TypedModifier[] = [];
-  const sharedSpeed = new Map<string, TypedModifier[]>();
-  const sharedInit: TypedModifier[] = [];
-
-  const abilityTargets = new Set<string>(ABILITY_IDS);
-
-  for (const buff of sharedBuffs) {
-    const buffRollData = withBuffCasterLevel(buff, rollData);
-    for (const ch of buff.changes) {
-      const value = evalShared(ch.formula, buffRollData);
-      if (!value) continue;
-      const mod: TypedModifier = {
-        type: ch.type || "untyped",
-        value,
-        source: buff.name,
-        sourceId: buff.instanceId,
-      };
-      const speedMode = SPEED_TARGET_MODE[ch.target];
-      if (ch.target === "ac" || ch.target === "aac" || ch.target === "sac" || ch.target === "nac") {
-        const category =
-          ch.target === "aac"
-            ? "armor"
-            : ch.target === "sac"
-              ? "shield"
-              : ch.target === "nac"
-                ? "natural"
-                : ch.type === "dodge"
-                  ? "dodge"
-                  : ch.type === "deflection"
-                    ? "deflection"
-                    : "generic";
-        sharedAc.push({ ...mod, category });
-      } else if (ch.target === "fort") {
-        sharedFort.push(mod);
-      } else if (ch.target === "ref") {
-        sharedRef.push(mod);
-      } else if (ch.target === "will") {
-        sharedWill.push(mod);
-      } else if (ch.target === "allSavingThrows") {
-        sharedFort.push(mod);
-        sharedRef.push(mod);
-        sharedWill.push(mod);
-      } else if (ch.target.startsWith("skill.")) {
-        const id = ch.target.slice("skill.".length);
-        const arr = sharedSkill.get(id);
-        if (arr) arr.push(mod);
-        else sharedSkill.set(id, [mod]);
-      } else if (abilityTargets.has(ch.target)) {
-        sharedAbility[ch.target as AbilityId].push(mod);
-      } else if (ch.target === "attack" || ch.target === "mattack") {
-        sharedAttack.push(mod);
-      } else if (ch.target === "damage") {
-        sharedDamage.push(mod);
-      } else if (ch.target === "init") {
-        sharedInit.push(mod);
-      } else if (speedMode) {
-        const arr = sharedSpeed.get(speedMode);
-        if (arr) arr.push(mod);
-        else sharedSpeed.set(speedMode, [mod]);
-      }
-    }
-  }
+  const routed = routeSharedBuffs(sharedBuffs, rollData);
+  const { ac: sharedAc, fort: sharedFort, ref: sharedRef, will: sharedWill } = routed;
+  const sharedSkill = routed.skill;
+  const {
+    attack: sharedAttack,
+    damage: sharedDamage,
+    speed: sharedSpeed,
+    init: sharedInit,
+  } = routed;
 
   // Apply shared ability-score buffs to the familiar's own base scores
-  // BEFORE deriving anything that depends on them — this is what makes them
-  // cascade into AC/saves/CMB/CMD/skills/attacks/init exactly like the
-  // familiar's own base scores do (issue #44), with no separate "shared
-  // bonus" pathway downstream of this point.
-  for (const id of ABILITY_IDS) {
-    const bonus = resolveStack(sharedAbility[id]).total;
-    if (bonus) {
-      const newScore = abilities[id].score + bonus;
-      abilities[id] = { score: newScore, mod: abilityMod(newScore) };
-    }
-  }
+  // BEFORE deriving anything that depends on them — see
+  // `applySharedAbilityBonuses`'s doc comment (issue #44).
+  abilities = applySharedAbilityBonuses(abilities, routed.ability, abilityMod);
   const strMod = abilities.str.mod;
   const dexMod = abilities.dex.mod;
   const conMod = abilities.con.mod;
