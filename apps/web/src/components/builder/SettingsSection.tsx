@@ -500,17 +500,17 @@ const SOURCE_LABEL: Record<ImportReport["source"], string> = {
  */
 function ImportReportPanel({ report }: { report: ImportReport }) {
   return (
-    <div className="import-report" style={{ marginTop: 12 }}>
-      <p className="hint" style={{ marginBottom: 6 }}>
+    <div className="import-report">
+      <p className="hint">
         Imported from {SOURCE_LABEL[report.source]}: {report.mapped.length} mapped,{" "}
         {report.unmapped.length} not recognized.
       </p>
       {report.unmapped.length > 0 && (
         <details open>
           <summary className="hint">Not recognized ({report.unmapped.length})</summary>
-          <ul style={{ margin: "6px 0 10px", paddingLeft: 20 }}>
+          <ul>
             {report.unmapped.map((line, i) => (
-              <li key={i} className="hint" style={{ fontSize: 12 }}>
+              <li key={i} className="hint">
                 {line}
               </li>
             ))}
@@ -520,9 +520,9 @@ function ImportReportPanel({ report }: { report: ImportReport }) {
       {report.mapped.length > 0 && (
         <details>
           <summary className="hint">Mapped ({report.mapped.length})</summary>
-          <ul style={{ margin: "6px 0 0", paddingLeft: 20 }}>
+          <ul>
             {report.mapped.map((line, i) => (
-              <li key={i} className="hint" style={{ fontSize: 12 }}>
+              <li key={i} className="hint">
                 {line}
               </li>
             ))}

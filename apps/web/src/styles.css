@@ -25,7 +25,35 @@
 
   --radius: 4px;
   --gap: 16px;
+
+  /* Spacing scale — used for new rules going forward; existing one-off values
+     are left alone during this pass rather than churned wholesale. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+
+  /* Minimum comfortable tap target (WCAG 2.5.5 / Apple HIG). Applied inside
+     the phone-width media query below to the controls used during at-the-
+     table play (chips, ghost/act buttons, stepper pills, mode tabs) —
+     desktop keeps its tighter mouse-oriented density. */
+  --tap-min: 44px;
 }
+
+/* --------------------------------------------------------------------------
+   Breakpoints used throughout this file (documented here since plain CSS has
+   no shared media-query variables):
+     max-width: 1100px  — dense 4-col stat grids drop to 2
+     max-width: 940px   — the build/sheet or tracker/sheet two-column layout
+                           collapses to one column (iPad portrait and below)
+     max-width: 700px   — small-tablet/large-phone: internal grids simplify
+     max-width: 640px   — phone: tap targets grow to --tap-min, chrome tightens
+     max-width: 520px / 420px — narrowest phones: grids drop to 2/1 columns
+   iPad landscape (1024×768) lands above the 940px break and gets the full
+   two-column layout; iPad portrait (768×1024) is below it and gets the
+   single-column layout with wider internal grids than phone.
+   -------------------------------------------------------------------------- */
 
 * {
   box-sizing: border-box;
@@ -727,6 +755,59 @@ button:focus-visible,
   font-size: 13px;
 }
 
+/* Shared "preview" box for the free-choice L1 subsection pickers (Mystery,
+   Curse, Bloodline, …) — a bordered readout of what the chosen option grants,
+   same bordered-box language as `.prov`/`.gear-armor-form` so it reads as a
+   sub-panel rather than bare running text after the select. Was previously
+   an unstyled div for each picker (issue-class bug: className with no rule). */
+.mystery-preview,
+.curse-preview,
+.bloodline-preview {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #181b21;
+}
+
+.mystery-preview > * + *,
+.curse-preview > * + *,
+.bloodline-preview > * + * {
+  margin-top: 8px;
+}
+
+.mystery-bonus-spells,
+.curse-bonus-spells,
+.bloodline-powers {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mystery-bonus-spells li,
+.curse-bonus-spells li,
+.bloodline-powers li {
+  font-size: 12px;
+}
+
+/* Archetype picker: breathing room between per-class chip groups (previously
+   ran edge-to-edge with no vertical rhythm). */
+.archetype-class-group {
+  margin-top: 14px;
+}
+
+.archetype-class-group:first-of-type {
+  margin-top: 10px;
+}
+
+.archetype-class-group > .hint {
+  display: block;
+  margin-bottom: 6px;
+}
+
 /* class rows */
 .class-row {
   display: flex;
@@ -998,6 +1079,17 @@ button:focus-visible,
   font-style: italic;
 }
 
+/* Wrapper around always-on class-granted feats (no feat slot used) — sits
+   above the searchable feat list, so it needs separation from the filter
+   controls above it. */
+.granted-feats {
+  margin-top: 4px;
+  margin-bottom: 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
 .pick-row.is-selected {
   background: #20231c;
 }
@@ -1091,6 +1183,13 @@ button:focus-visible,
 
 .saved-roll-add-hint {
   margin: 4px 0 12px;
+}
+
+/* One collapsible level section within a spellbook/known-list scroll —
+   previously unstyled, so adjacent groups (Cantrips, Level 1, granted
+   cantrips, domain spells, …) had no vertical separation. */
+.spell-level-group + .spell-level-group {
+  border-top: 1px solid var(--line-soft);
 }
 
 .spell-level-head {
@@ -1229,6 +1328,19 @@ button:focus-visible,
 
 .sheet .char-sub.char-caster {
   color: var(--gold);
+  margin-top: 2px;
+}
+
+/* Alignment/deity/gender/age/height-weight line + languages line — same quiet
+   register as .char-sub (was previously unstyled default body text, which
+   read louder than the race/class line above it). */
+.sheet .char-identity {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.sheet .char-identity.char-languages {
   margin-top: 2px;
 }
 
@@ -1794,6 +1906,16 @@ button:focus-visible,
   margin-bottom: 12px;
 }
 
+/* Button cluster on the right of a `.gear-armor-head` (e.g. "Back to list" +
+   "Cancel") — previously unstyled, so the two buttons ran together with only
+   incidental inline-block whitespace between them. */
+.head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .gear-armor-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -2149,6 +2271,20 @@ button:focus-visible,
   width: 48px;
   text-align: center;
   padding: 4px;
+}
+
+/* "Also apply to Familiar/Companion" checkboxes on an active-buff row —
+   previously an unstyled <label>, so the checkbox and text sat with default
+   inline spacing instead of reading as one compact toggle. */
+.buff-share-familiar,
+.buff-share-companion {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* Compact unit selector used next to duration NumberFields (buff rows + custom-buff form).
@@ -3290,6 +3426,37 @@ input[type="text"].saved-roll-name:focus {
 
 .preview-notice .btn-ghost {
   float: right;
+}
+
+/* External-import mapped/unmapped report (Settings). Previously styled
+   entirely with inline `style={{...}}` props scattered across the component —
+   moved here so it follows the same rules as every other block. */
+.import-report {
+  margin-top: 12px;
+}
+
+.import-report > p.hint {
+  margin-bottom: 6px;
+}
+
+.import-report ul {
+  list-style: none;
+  margin: 6px 0 10px;
+  padding: 0 0 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.import-report li.hint {
+  font-size: 12px;
+}
+
+/* "Add a language" row (Race section) — was an inline-styled flex row. */
+.lang-add-row {
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
 }
 
 /* --------------------------------------------------------- Familiar panel -- */

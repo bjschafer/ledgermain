@@ -238,7 +238,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
             </button>
           ))}
         </div>
-        <div className="lang-add-row" style={{ marginTop: 6, display: "flex", gap: 8 }}>
+        <div className="lang-add-row">
           <input
             type="text"
             placeholder="Add a language…"
