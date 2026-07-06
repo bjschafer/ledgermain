@@ -248,6 +248,45 @@ describe("Swarm Fighter (fighter): Athletic Prowess grants a general Acrobatics/
   });
 });
 
+describe("Warlord (fighter): Sun-Bronzed Skin grants conditional DR (issue #45 finding 2, promoted after the dr-at-0 fix)", () => {
+  const warlord = archetypeId("Warlord");
+
+  it("DR 5/— at L19 while unarmored", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "fighter", level: 19 }], archetypes: [warlord] }),
+      ref,
+    );
+    expect(sheet.defenses).toBeDefined();
+    expect(sheet.defenses!.dr).toEqual([
+      {
+        total: 5,
+        qualifier: "—",
+        components: [
+          {
+            source: "Sun-Bronzed Skin",
+            sourceId: expect.any(String),
+            type: "untyped",
+            value: 5,
+            applied: true,
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("no spurious Defenses line while armored (condition unmet, evaluates to 0)", () => {
+    const sheet = compute(
+      makeDoc({
+        classes: [{ tag: "fighter", level: 19 }],
+        archetypes: [warlord],
+        gear: [{ equipped: true, name: "Chainmail", armor: { slot: "armor", ac: 6, type: 2 } }],
+      }),
+      ref,
+    );
+    expect(sheet.defenses).toBeUndefined();
+  });
+});
+
 describe("resolveArchetypeFeatureEffect precedence (issue #45)", () => {
   it("hand-verified wins over extracted when the same id is present in both tables", () => {
     const id = "test:synthetic-overlap:feature:1";

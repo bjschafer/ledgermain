@@ -175,19 +175,19 @@ export {
 export { ARCHETYPE_FEATURE_EFFECTS, type ArchetypeFeatureEffect } from "./archetype-effects.js";
 export {
   ARCHETYPE_FEATURE_EFFECTS_EXTRACTED,
+  ARCHETYPE_FEATURE_CLASSIFICATION,
+  FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
+  FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
   type ExtractedArchetypeFeatureEffect,
   type ExtractionConfidence,
-} from "./archetype-effects-extracted.js";
+  type ArchetypeFeatureClassificationBucket,
+  type ArchetypeFeatureClassificationEntry,
+} from "./archetype-extracted/index.js";
 export {
   resolveArchetypeFeatureEffect,
   type ArchetypeEffectSource,
   type ResolvedArchetypeFeatureEffect,
 } from "./archetype-effects-resolve.js";
-export {
-  FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
-  type ArchetypeFeatureClassificationBucket,
-  type ArchetypeFeatureClassificationEntry,
-} from "./archetype-classification.js";
 export {
   isTargetApplied,
   unappliedChanges,

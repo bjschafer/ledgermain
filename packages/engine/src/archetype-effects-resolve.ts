@@ -1,19 +1,20 @@
 /**
  * Single point of precedence between the hand-verified archetype-effects
  * table (`archetype-effects.ts`, issue #7) and the machine-extracted one
- * (`archetype-effects-extracted.ts`, issue #45). Both `collect.ts` (applying
- * changes) and `archetypes.ts` (deriving the picker's badge + a feature's
- * `detail` summary) resolve through this module instead of touching either
- * table directly, so the precedence rule — hand-verified always wins when an
- * id appears in both — lives in exactly one place and can't drift between
- * the two call sites.
+ * (`archetype-extracted/index.ts`'s merged `ARCHETYPE_FEATURE_EFFECTS_EXTRACTED`,
+ * issue #45 — see that directory for the per-class file layout). Both
+ * `collect.ts` (applying changes) and `archetypes.ts` (deriving the picker's
+ * badge + a feature's `detail` summary) resolve through this module instead
+ * of touching either table directly, so the precedence rule — hand-verified
+ * always wins when an id appears in both — lives in exactly one place and
+ * can't drift between the two call sites.
  */
 
 import { ARCHETYPE_FEATURE_EFFECTS, type ArchetypeFeatureEffect } from "./archetype-effects.js";
 import {
   ARCHETYPE_FEATURE_EFFECTS_EXTRACTED,
   type ExtractedArchetypeFeatureEffect,
-} from "./archetype-effects-extracted.js";
+} from "./archetype-extracted/index.js";
 
 export type ArchetypeEffectSource = "verified" | "extracted";
 

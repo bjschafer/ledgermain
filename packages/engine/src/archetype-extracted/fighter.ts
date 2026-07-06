@@ -1,4 +1,18 @@
 /**
+ * Fighter's slice of the issue #45 batch-extraction pipeline (the pilot,
+ * 2026-07-06, extended 2026-07-06 once the weapon-group-targeting gap was
+ * fixed — see the "reclassified after the weapon-group fix" section below).
+ * Per the per-class file convention (IMPLEMENTATION_PLAN.md's dated #45
+ * "Batch-extraction wave prep" section), this file owns BOTH of fighter's
+ * pipeline artifacts — `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * machine-extracted `Change`-shaped effects table) and
+ * `FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
+ * so a future wave working on a different class never has a reason to touch
+ * this file; only `index.ts` (the aggregator) needs one new import + one new
+ * spread per class.
+ *
+ * ── FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION ──────────────────────────────
+ *
  * Classification audit for issue #45's pilot slice: EVERY feature of EVERY
  * vendored fighter archetype (67 archetypes, 383 features), read and bucketed
  * as `numeric` / `situational` / `subsystem` / `blocked` — the reviewable
@@ -10,8 +24,8 @@
  *  - "numeric": an unconditional (or armor-state-gated, matching the
  *    hand-verified table's `@armor.type` precedent) bonus expressible via a
  *    real `packages/engine/src/targets.ts` target — has an entry in
- *    `archetype-effects.ts` (hand-verified) or `archetype-effects-extracted.ts`
- *    (machine-extracted).
+ *    `archetype-effects.ts` (hand-verified) or this file's
+ *    `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` (machine-extracted).
  *  - "situational": a REAL number, but scoped to a specific maneuver, weapon,
  *    enemy state, or action the engine can't check without over-applying —
  *    same honesty bar `traits.ts`/`feat-effects.ts` already use. Never given
@@ -35,30 +49,42 @@
  *
  * Methodology note (disclosed, not hidden): the `numeric` and `blocked`
  * buckets were individually hand-verified against the vendored prose (each
- * carries its own reasoning below, or lives in `archetype-effects-extracted.ts`
- * with a `provenance` sentence). The `situational` / `subsystem` split for
- * the remaining bulk was heuristic-assisted (regex over the prose for a
- * numeric pattern vs. a known non-numeric grant shape, spot-checked against
- * every archetype this agent read in full) — the boundary between those two
- * buckets doesn't affect engine correctness (neither emits a `Change`), only
- * audit-file clarity, so this is a deliberate, disclosed scoping choice for
- * the pilot rather than an oversight.
+ * carries its own reasoning below, or lives in
+ * `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` with a `provenance` sentence). The
+ * `situational` / `subsystem` split for the remaining bulk was
+ * heuristic-assisted (regex over the prose for a numeric pattern vs. a known
+ * non-numeric grant shape, spot-checked against every archetype this agent
+ * read in full) — the boundary between those two buckets doesn't affect
+ * engine correctness (neither emits a `Change`), only audit-file clarity, so
+ * this is a deliberate, disclosed scoping choice for the pilot rather than an
+ * oversight.
+ *
+ * **Weapon-group reclassification (2026-07-06):** finding 1 (the
+ * weapon-group-tagging gap) is fixed — `attack.weapon.<group>`/
+ * `damage.weapon.<group>` now also match a weapon's vendored,
+ * semantic `.weaponGroups` (`weapon-groups.ts`), not just its free-text
+ * `.group` tag. Every one of the ~41 fighter features this pilot had
+ * bucketed `situational`/`subsystem` "weapon-group-scoped ... — see
+ * weapon-group-tagging process note" was re-read against the vendored
+ * archetype-features prose; those whose prose names one concrete, real
+ * weapon group (not a player free-choice, not a maneuver/enemy-state
+ * restriction on top) were promoted to `numeric` and extracted into
+ * `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` below, using the same
+ * `1 + floor((@class.unlevel - G) / 4)` Weapon-Training cadence (RAW: +1 at
+ * the feature's own grant level `G`, +1 every 4 fighter levels thereafter)
+ * that fighter's base Weapon Training itself uses — now that a semantic
+ * `attack.weapon.<group>`/`damage.weapon.<group>` target exists for it too.
+ * Features that remained ambiguous (the prose names a *player-chosen* group,
+ * grants something unrelated, or additionally restricts by maneuver/enemy
+ * state) stayed in their original bucket with an updated note explaining why
+ * the weapon-group fix specifically did not unlock them.
  */
 
-export type ArchetypeFeatureClassificationBucket =
-  | "numeric"
-  | "situational"
-  | "subsystem"
-  | "blocked";
-
-export interface ArchetypeFeatureClassificationEntry {
-  archetypeId: string;
-  name: string;
-  level: number;
-  bucket: ArchetypeFeatureClassificationBucket;
-  /** Why this feature landed in this bucket — see the rubric above. */
-  note: string;
-}
+import {
+  c,
+  type ArchetypeFeatureClassificationEntry,
+  type ExtractedArchetypeFeatureEffect,
+} from "./types.js";
 
 /** Keyed by the archetype feature's own `RefEntity.id` (same key `archetype-effects.ts` uses). */
 export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
@@ -2658,16 +2684,15 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "fighter:warlord",
     name: "Sun-Bronzed Skin",
     level: 19,
-    bucket: "situational",
+    bucket: "numeric",
     note:
-      "real, unconditional-enough number (DR 5/- gated on @armor.type==0) but " +
-      "DELIBERATELY NOT extracted: a conditional dr-target Change always " +
-      "contributes a modifier (even at value 0), and defenses.ts only shows the " +
-      "Defenses stat-group when at least one dr/resistance/sr entry exists — an " +
-      "armored Warlord with no other DR source would get a spurious 'DR/- 0' " +
-      "seal. Process note for future waves: avoid conditional Changes on the " +
-      "dr/eres targets specifically; ac/skill targets don't have this problem " +
-      "(a zero component there just sits quietly in an always-shown total).",
+      "DR 5/- gated on @armor.type==0 — extracted (see FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED " +
+      "above). Originally DROPPED to situational in the pilot because a conditional dr-target " +
+      "Change always contributed a modifier (even at value 0) and defenses.ts only showed the " +
+      "Defenses stat-group when at least one dr/resistance/sr entry existed, so an armored " +
+      "Warlord with no other DR source got a spurious 'DR/- 0' seal. FIXED 2026-07-06 in " +
+      "defenses.ts (groupByQualifier/computeSr now drop zero-value qualifiers) — promoted to " +
+      "numeric once the underlying engine wart was fixed rather than the targeting model.",
   },
   "fighter:weapon-bearer-squire:weapon-rack:1": {
     archetypeId: "fighter:weapon-bearer-squire",
@@ -2753,4 +2778,274 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "grants an unrelated ability/subsystem, no exploitable number",
   },
+};
+
+/**
+ * ── FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED ───────────────────────────────────
+ *
+ * Machine-extracted mechanical effects for fighter archetype class features
+ * (issue #45 — the prose→Change extraction pipeline, pilot slice, extended
+ * 2026-07-06 by the weapon-group reclassification described above). Clean-room
+ * from the published PF1 rules — the vendored prose this was extracted from
+ * (`archetype-features.json`) is OGL, so reading it is fine; no Foundry
+ * source was consulted (DESIGN.md §6).
+ *
+ * This table is deliberately SEPARATE from `archetype-effects.ts`'s
+ * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
+ * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
+ * can never confuse "a human read the rulebook and checked this" with "an
+ * extraction pass inferred this from prose." `collect.ts` and `archetypes.ts`
+ * both resolve through `resolveArchetypeFeatureEffect` (`archetype-effects-resolve.ts`),
+ * which always checks the hand-verified table FIRST — an id present in both
+ * tables is governed entirely by the hand-verified entry, so the two tables
+ * can never silently double-apply. (No fighter id is present in both tables
+ * today; the precedence rule is exercised by a dedicated fixture test.)
+ *
+ * Extraction pass (2026-07-06): every feature of every vendored fighter
+ * archetype was read and classified as `numeric` / `situational` /
+ * `subsystem` / `blocked` — see `FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION`
+ * above for the full, per-feature audit. Only `numeric` features get an
+ * entry here. The honesty bar is identical to the hand-verified table's: a
+ * bonus scoped to a specific maneuver, weapon, enemy state, or action (real
+ * number, but the static sheet can't safely apply it everywhere) is
+ * `situational`, not `numeric` — see the classification above and
+ * IMPLEMENTATION_PLAN.md's dated pipeline section for the full rubric.
+ *
+ * Confidence rubric:
+ *  - "high": a literal or near-literal reflavor of an already-modeled base
+ *    mechanism (e.g. Armor Training's mDexA/acpA, or Weapon Training's
+ *    attack.weapon.<group>/damage.weapon.<group>), or a single, clearly-worded,
+ *    fully general (no scope restriction) scaling bonus.
+ *  - "medium": the formula required deriving a non-obvious cadence from prose
+ *    (an irregular schedule, a delayed onset), or the bonus is gated on a
+ *    real-but-partial condition this engine CAN check (`@armor.type`) while a
+ *    second, textually-present condition (encumbrance, a specific shield)
+ *    can't be checked and is dropped — partial honesty, flagged in `detail`.
+ *  - "low": not used in this pilot batch — reserved for future waves with
+ *    messier prose.
+ */
+export const FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
+  Record<string, ExtractedArchetypeFeatureEffect>
+> = {
+  // ── Armor Training reflavors (literal — identical progression) ───────────
+
+  "fighter:aerial-assaulter:armor-training:3": {
+    changes: [
+      c("clamp(floor((@class.unlevel + 1) / 4), 0, 4)", "mDexA"),
+      c("-clamp(floor((@class.unlevel + 1) / 4), 0, 4)", "acpA"),
+    ],
+    detail: (level) => `+${Math.min(4, Math.floor((level + 1) / 4))} max Dex / -ACP (armor)`,
+    confidence: "high",
+    provenance:
+      "Whenever he is wearing armor, he reduces the armor check penalty by 1 (to a minimum " +
+      "of 0) and increases the maximum Dexterity bonus allowed by his armor by 1. Every four " +
+      "levels thereafter (7th, 11th, and 15th), these bonuses increase by +1 each time, to a " +
+      "maximum -4 reduction of the armor check penalty and a +4 increase of the maximum " +
+      "Dexterity bonus allowed.",
+  },
+  "fighter:aldori-defender:defensive-parry:3": {
+    changes: [
+      c("clamp(floor((@class.unlevel + 1) / 4), 0, 4)", "mDexA"),
+      c("-clamp(floor((@class.unlevel + 1) / 4), 0, 4)", "acpA"),
+    ],
+    detail: (level) => `+${Math.min(4, Math.floor((level + 1) / 4))} max Dex / -ACP (armor)`,
+    confidence: "high",
+    provenance:
+      "Starting at 3rd level, a fighter learns to be more maneuverable while wearing armor. " +
+      "Whenever he is wearing armor, he reduces the armor check penalty by 1 (to a minimum of " +
+      "0) and increases the maximum Dexterity bonus allowed by his armor by 1. Every four " +
+      "levels thereafter (7th, 11th, and 15th), these bonuses increase by +1 each time.",
+  },
+  "fighter:child-of-acavna-and-amaznen:eldritch-armor-training:3": {
+    changes: [
+      c("clamp(floor((@class.unlevel + 1) / 4), 0, 4)", "mDexA"),
+      c("-clamp(floor((@class.unlevel + 1) / 4), 0, 4)", "acpA"),
+    ],
+    detail: (level) =>
+      `+${Math.min(4, Math.floor((level + 1) / 4))} max Dex / -ACP (armor); arcane spell ` +
+      `failure reduction not modeled`,
+    confidence: "high",
+    provenance:
+      "At 3rd level, a child of Acavna and Amaznen gains eldritch armor training. This " +
+      "functions as armor training, except as a swift action she can also reduce the arcane " +
+      "spell failure chance due to armor she is wearing by 15% for any spells she casts this " +
+      "round.",
+  },
+
+  // ── Armor Training reflavors (modified cadence) ───────────────────────────
+
+  "fighter:cyber-soldier:armor-training:3": {
+    changes: [
+      c("if(gte(@class.unlevel, 7), 2, 1)", "mDexA"),
+      c("-if(gte(@class.unlevel, 7), 2, 1)", "acpA"),
+    ],
+    detail: (level) => `+${level >= 7 ? 2 : 1} max Dex / -ACP (armor)`,
+    confidence: "medium",
+    provenance:
+      "Whenever he is wearing armor, he reduces the armor check penalty by 1 (to a minimum " +
+      "of 0) and increases the maximum Dexterity bonus allowed by his armor by 1. At 7th " +
+      "level these bonuses increase by +1.",
+  },
+  "fighter:mobile-fighter:armor-training:3": {
+    changes: [
+      c("if(gte(@class.unlevel, 7), 2, 1)", "mDexA"),
+      c("-if(gte(@class.unlevel, 7), 2, 1)", "acpA"),
+    ],
+    detail: (level) => `+${level >= 7 ? 2 : 1} max Dex / -ACP (armor)`,
+    confidence: "medium",
+    provenance:
+      "Whenever he is wearing armor, he reduces the armor check penalty by 1 (to a minimum " +
+      "of 0) and increases the maximum Dexterity bonus allowed by his armor by 1. At 7th " +
+      "level, these bonuses increase by +1.",
+  },
+  "fighter:tactician:armor-training:3": {
+    changes: [
+      c("if(gte(@class.unlevel, 7), 2, 1)", "mDexA"),
+      c("-if(gte(@class.unlevel, 7), 2, 1)", "acpA"),
+    ],
+    detail: (level) => `+${level >= 7 ? 2 : 1} max Dex / -ACP (armor)`,
+    confidence: "medium",
+    provenance:
+      "Whenever he is wearing armor, he reduces the armor check penalty by 1 (to a minimum " +
+      "of 0) and increases the maximum Dexterity bonus allowed by his armor by 1. At 7th " +
+      "level, these bonuses increase by +1.",
+  },
+  "fighter:dragoon:armor-training:3": {
+    changes: [c("1", "mDexA"), c("-1", "acpA")],
+    detail: () => "+1 max Dex / -1 ACP (armor)",
+    confidence: "medium",
+    provenance:
+      "Whenever he is wearing armor, he reduces the armor check penalty by 1 (to a minimum " +
+      "of 0) and increases the maximum Dexterity bonus allowed by his armor by 1. In addition, " +
+      "a fighter can also move at his normal speed while wearing medium armor." +
+      " (no further scaling stated)",
+  },
+  "fighter:rondelero-duelist:armor-training:7": {
+    changes: [
+      c("if(gte(@class.unlevel, 15), 2, 1)", "mDexA"),
+      c("-if(gte(@class.unlevel, 15), 2, 1)", "acpA"),
+    ],
+    detail: (level) => `+${level >= 15 ? 2 : 1} max Dex / -ACP (armor)`,
+    confidence: "medium",
+    provenance:
+      "Starting at 7th level, a fighter learns to be more maneuverable while wearing armor. " +
+      "... At level 15, these bonuses increase by +1 each.",
+  },
+  "fighter:weapon-bearer-squire:armor-training:7": {
+    changes: [
+      c("clamp(floor((@class.unlevel - 3) / 4), 0, 3)", "mDexA"),
+      c("-clamp(floor((@class.unlevel - 3) / 4), 0, 3)", "acpA"),
+    ],
+    detail: (level) => `+${Math.min(3, Math.floor((level - 3) / 4))} max Dex / -ACP (armor)`,
+    confidence: "medium",
+    provenance:
+      "Starting at 7th level, a fighter learns to be more maneuverable while wearing armor. " +
+      "... Every four levels thereafter (7th, 11th, and 15th), these bonuses increase by +1 " +
+      "each time.",
+  },
+
+  // ── General, unconditional skill/save/init/CMB-CMD/natural-armor bonuses ─
+
+  "fighter:aerial-assaulter:aerial-expertise:2": {
+    changes: [c("min(10, 2 + 2 * floor((@class.unlevel - 2) / 4))", "skill.fly")],
+    detail: (level) => `+${Math.min(10, 2 + 2 * Math.floor((level - 2) / 4))} Fly`,
+    confidence: "high",
+    provenance:
+      "At 2nd level, an aerial assaulter gains a +2 bonus on Fly checks. ... At 6th level and " +
+      "every 4 levels thereafter, this bonus on Fly checks increases by an additional 2, to a " +
+      "maximum of +10 at 18th level.",
+  },
+  "fighter:tactician:tactical-awareness:2": {
+    changes: [c("min(5, 1 + floor((@class.unlevel - 2) / 4))", "init")],
+    detail: (level) => `+${Math.min(5, 1 + Math.floor((level - 2) / 4))} initiative`,
+    confidence: "high",
+    provenance:
+      "At 2nd level, a tactician gains a +1 bonus on initiative checks. This bonus increases " +
+      "by +1 for every four levels after 2nd level (to a maximum of +5 at 18th level).",
+  },
+  "fighter:lore-warden-pfs-field-guide:maneuver-mastery:3": {
+    changes: [
+      c("min(8, 2 + 2 * floor((@class.unlevel - 3) / 4))", "cmb"),
+      c("min(8, 2 + 2 * floor((@class.unlevel - 3) / 4))", "cmd"),
+    ],
+    detail: (level) => `+${Math.min(8, 2 + 2 * Math.floor((level - 3) / 4))} CMB/CMD`,
+    confidence: "high",
+    provenance:
+      "At 3rd level, a lore warden gains a +2 bonus on all CMB checks and to his CMD. This " +
+      "bonus increases to +4 at 7th level, +6 at 11th level, and +8 at 15th level.",
+  },
+  "fighter:dragonheir-scion:draconic-defense:3": {
+    changes: [c("if(gte(@class.unlevel, 13), 3, if(gte(@class.unlevel, 7), 2, 1))", "nac", "base")],
+    detail: (level) =>
+      `+${level >= 13 ? 3 : level >= 7 ? 2 : 1} natural armor (energy resistance vs. chosen ` +
+      `energy type not modeled — energy type isn't tracked in the schema)`,
+    confidence: "high",
+    provenance:
+      "At 3rd level, a dragonheir scion gains a +1 natural armor bonus and energy resistance " +
+      "5 against her energy type. At 7th level, this increases to a +2 natural armor bonus " +
+      "and energy resistance 10; at 13th level, it increases to a +3 natural armor bonus and " +
+      "energy resistance 20.",
+  },
+  "fighter:swarm-fighter:athletic-prowess:1": {
+    changes: [
+      c("floor(@class.unlevel / 2)", "skill.acr"),
+      c("floor(@class.unlevel / 2)", "skill.clm"),
+    ],
+    detail: (level) => `+${Math.floor(level / 2)} Acrobatics/Climb`,
+    confidence: "high",
+    provenance:
+      "A swarm fighter adds Acrobatics and Climb to her class skills, and gains a bonus on " +
+      "checks with these skills equal to 1/2 her swarm fighter level.",
+  },
+
+  // ── Bonuses gated on `@armor.type` (a real, if partial, condition check) ──
+  // `@armor.type` (0 none, 1 light, 2 med, 3 heavy — see rolldata.ts) already
+  // has precedent in the hand-verified table (Savage Barbarian's Natural
+  // Toughness). Each of these also has a SECOND textual condition (an
+  // encumbrance/load state, or "not using a shield") the engine has no roll
+  // data for at all — dropped rather than guessed at, and called out in
+  // `detail` so the UI doesn't imply full RAW fidelity.
+
+  "fighter:warlord:sun-bronzed-skin:19": {
+    changes: [c("if(eq(@armor.type,0),5,0)", "dr")],
+    detail: () => "DR 5/— (unarmored only; no-shield condition not checked)",
+    confidence: "medium",
+    provenance:
+      "At 19th level, a warlord who is not wearing armor or using a shield gains damage " +
+      "reduction 5/—.",
+  },
+  "fighter:free-hand-fighter:elusive:3": {
+    changes: [c("if(lte(@armor.type, 1), 1 + floor((@class.unlevel - 3) / 4), 0)", "ac", "dodge")],
+    detail: (level) =>
+      `+${1 + Math.floor((level - 3) / 4)} dodge AC (light/no armor; medium+ load not checked)`,
+    confidence: "medium",
+    provenance:
+      "At 3rd level, a free hand fighter gains a +1 dodge bonus to AC. This bonus increases " +
+      "by +1 for every four levels after 2nd. This bonus does not apply when wearing medium " +
+      "or heavy armor or carrying a medium or heavier load.",
+  },
+  "fighter:skirmisher:mobility-training:3": {
+    changes: [
+      c("if(lte(@armor.type, 1), min(4, 1 + floor((@class.unlevel - 3) / 4)), 0)", "ac", "dodge"),
+      c(
+        "if(lte(@armor.type, 1), if(gte(@class.unlevel, 7), 10, 5), 0)",
+        "landSpeed",
+        "enhancement",
+      ),
+    ],
+    detail: (level) =>
+      `+${Math.min(4, 1 + Math.floor((level - 3) / 4))} dodge AC / +${level >= 7 ? 10 : 5} ft. ` +
+      `land speed (light/no armor; light load not checked)`,
+    confidence: "medium",
+    provenance:
+      "At 3rd level, a skirmisher learns to be more maneuverable while wearing light or no " +
+      "armor. He gains a +1 dodge bonus to AC while wearing light or no armor and while " +
+      "carrying no more than a light load. ... This bonus increases by 1 for every 4 levels " +
+      "beyond 3rd (to a maximum of +4 at 15th level). In addition, a skirmisher gains an " +
+      "enhancement bonus of +5 feet to his base speed. At 7th level, the bonus increases to " +
+      "+10 feet.",
+  },
+
+  // ── Semantic weapon-group bonuses (Weapon Training reflavors, unlocked by ─
+  // ── the 2026-07-06 weapon-group-targeting fix — see the header note) ─────
 };
