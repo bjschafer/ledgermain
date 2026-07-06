@@ -300,15 +300,12 @@ describe("blocked composition trap: partial-tier Combat Style Feat swaps (issue 
 describe("suppression-composition case: Sable Company Marine's additive feature vs. Combat Style Feat's atomic pairing (issue #45)", () => {
   // Hippogriff Companion (L2) is purely ADDITIVE prose ("adds Monstrous
   // Mount to the list of bonus feats... regardless of the style chosen") but
-  // IS paired to Combat Style Feat's base-feature uuid in the vendored data.
-  // The generic paired-swap suppression keys off the pairing alone, so it
-  // suppresses the ENTIRE base bonusFeats formula with nothing backfilled —
-  // a real, pre-existing engine/vendored-data interaction bug (reported,
-  // not fixed in this wave — see ranger.ts's doc comment). This test
-  // documents the observed (buggy) behavior rather than the RAW-correct one.
+  // IS paired to Combat Style Feat's base-feature uuid in the vendored data —
+  // a vendored-data bug. `MISPAIRED_ADDITIVE_FEATURES` in `archetypes.ts`
+  // ignores that pairing, so the base bonus-feat progression stays applied.
   const sableCompanyMarine = archetypeId("Sable Company Marine", "ranger");
 
-  it("documents the bug: base Combat Style Feat bonus feats are fully suppressed, not just augmented", () => {
+  it("base Combat Style Feat bonus feats stay applied despite the mispaired vendored swap", () => {
     const withArchetype = compute(
       makeDoc({ classes: [{ tag: "ranger", level: 18 }], archetypes: [sableCompanyMarine] }),
       ref,
@@ -321,7 +318,7 @@ describe("suppression-composition case: Sable Company Marine's additive feature 
       (f) => f.name === "Combat Style Feat" && f.level === 2,
     );
     expect(featureWithout?.applied).toBe(true);
-    expect(featureWith?.applied).toBe(false); // incorrectly suppressed — RAW says this should stay applied
-    expect(featureWith?.replacedBy).toBe("Hippogriff Companion");
+    expect(featureWith?.applied).toBe(true);
+    expect(featureWith?.replacedBy).toBeUndefined();
   });
 });

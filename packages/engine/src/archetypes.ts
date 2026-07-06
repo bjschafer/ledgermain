@@ -205,11 +205,26 @@ export function activeArchetypeSwaps(doc: CharacterDoc, refData: RefData): Map<s
     const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
     for (const f of Object.values(refData.archetypeFeatures)) {
       if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
+      if (MISPAIRED_ADDITIVE_FEATURES.has(f.id)) continue;
       if (f.pairedBaseFeatureUuid) replacedByUuid.set(f.pairedBaseFeatureUuid, f.name);
     }
   }
   return replacedByUuid;
 }
+
+/**
+ * Archetype feature ids whose vendored `pairedBaseFeatureUuid` is a data bug:
+ * the feature's own rules text is purely ADDITIVE ("adds X to the list...
+ * regardless of the style chosen"), so honoring the pairing would suppress the
+ * entire base feature with nothing backfilled. Hand-verified against the
+ * published rules; the #45 extraction waves' classification audits cite each.
+ */
+const MISPAIRED_ADDITIVE_FEATURES: ReadonlySet<string> = new Set([
+  // Adds Monstrous Mount to the combat-style bonus-feat list; vendored data
+  // pairs it to Combat Style Feat's base uuid, which zeroed the ranger's
+  // whole bonus-feat progression.
+  "ranger:sable-company-marine:hippogriff-companion:2",
+]);
 
 /**
  * Barbarian archetype ids whose feature at `level` fully replaces the
