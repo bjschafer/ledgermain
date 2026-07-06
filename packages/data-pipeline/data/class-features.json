@@ -20,6 +20,16 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.01m5lHnOP2E2FS5B"
   },
+  "0AXAMXGLJIw7CGBd": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 13th level, a magus gains proficiency with heavy armor. A magus can cast magus spells while wearing heavy armor without incurring the normal arcane spell failure chance. Like any other arcane spellcaster, a magus using a shield incurs a chance of arcane spell failure if the spell in question has a somatic component.</p>",
+    "grantsBuffs": [],
+    "id": "0AXAMXGLJIw7CGBd",
+    "name": "Heavy Armor",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.0AXAMXGLJIw7CGBd"
+  },
   "0BFuaPpChxXneJwF": {
     "abilityType": "sp",
     "changes": [],
@@ -527,6 +537,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.6pjr8jMFSKqXkBKk"
   },
+  "72r8mMxzMNWpdt0D": {
+    "changes": [],
+    "description": "<p>An oracle casts divine spells drawn from the cleric spell lists. She can cast any spell she knows without preparing it ahead of time. To learn or cast a spell, an oracle must have a Charisma score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against an oracle's spell is 10 + the spell's level + the oracle's Charisma modifier.</p><p>Like other spellcasters, an oracle can cast only a certain number of spells per day of each spell level. Her base daily spell allotment is given on Table: Oracle. In addition, she receives bonus spells per day if she has a high Charisma score (see Table: Ability Modifiers and Bonus Spells).</p><p>Unlike other divine spellcasters, an oracle's selection of spells is extremely limited. An oracle begins play knowing four 0-level spells and two 1st-level spells of her choice. At each new oracle level, she gains one or more new spells, as indicated on Table: Spells Known. Unlike spells per day, the number of spells an oracle knows is not affected by her Charisma score; the numbers on Table: Spells Known are fixed.</p><p>In addition to the spells gained by oracles as they gain levels, each oracle also adds all of either the cure spells or the inflict spells to her list of spells known (cure spells include all spells with \"cure\" in the name, inflict spells include all spells with \"inflict\" in the name). These spells are added as soon as the oracle is capable of casting them. This choice is made when the oracle gains her first level and cannot be changed.</p><p>Unlike a cleric, an oracle need not prepare her spells in advance. She can cast any spell she knows at any time, assuming she has not yet used up her spells per day for that spell level. Oracles do not need to provide a divine focus to cast spells that list divine focus (DF) as part of the components.</p>",
+    "grantsBuffs": [],
+    "id": "72r8mMxzMNWpdt0D",
+    "name": "Oracle Spells",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "42"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D"
+  },
   "75Y2PY8Uha3o0fHE": {
     "abilityType": "su",
     "changes": [],
@@ -666,6 +691,15 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.8iWGEKKdoKTHsDy5"
+  },
+  "8vF0UoXribL1DOG2": {
+    "changes": [],
+    "description": "<p>At 20th level, an oracle learns the final revelation about her mystery, granting her amazing powers and abilities. The nature of these bonuses depends upon the oracle’s mystery.</p>",
+    "grantsBuffs": [],
+    "id": "8vF0UoXribL1DOG2",
+    "name": "Final Revelation",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.8vF0UoXribL1DOG2"
   },
   "90Z23Z4U7ujOcvco": {
     "abilityType": "sp",
@@ -902,6 +936,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.BS9WDbCy2Up3QHw9"
+  },
+  "Bd6X95yJfPz6zPkP": {
+    "changes": [],
+    "description": "<p>A magus casts arcane spells drawn from the magus spell list. A magus must choose and prepare his spells ahead of time.</p><p>To learn, prepare, or cast a spell, the magus must have an Intelligence score equal to at least 10 + the spell level. The Difficulty Class for a saving throw against a magus's spell is 10 + the spell level + the magus's Intelligence modifier.</p><p>A magus can cast only a certain number of spells of each spell level per day. His base daily spell allotment is given on the Table: Magus. In addition, he receives bonus spells per day if he has a high Intelligence score (see Table: Ability Modifiers and Bonus Spells Table).</p><p>A magus may know any number of spells. He must choose and prepare his spells ahead of time by getting 8 hours of sleep and spending 1 hour studying his spellbook. While studying, the magus decides which spells to prepare.</p>",
+    "grantsBuffs": [],
+    "id": "Bd6X95yJfPz6zPkP",
+    "name": "Magus Spells",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Bd6X95yJfPz6zPkP"
   },
   "BoEkMviJrW0PKmhj": {
     "abilityType": "ex",
@@ -1301,6 +1350,16 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.FnfX1SMG9uzBghnB"
   },
+  "G1z392b58wRybqjL": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 8th level, the magus's ability to cast spells and make melee attacks improves. When using the spell combat ability, the magus receives a +2 circumstance bonus on concentration checks, in addition to any bonus granted by taking an additional penalty on the attack roll.</p>",
+    "grantsBuffs": [],
+    "id": "G1z392b58wRybqjL",
+    "name": "Improved Spell Combat",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.G1z392b58wRybqjL"
+  },
   "GAHaeOGTBeR6LJ3K": {
     "abilityType": "ex",
     "changes": [],
@@ -1353,6 +1412,15 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.HAqAsb5H56C6cZm3"
+  },
+  "HJ2vLLDYkihPxFkD": {
+    "changes": [],
+    "description": "<p>As he gains levels, a magus learns arcane secrets tailored to his specific way of blending martial puissance and magical skill. Starting at 3rd level, a magus gains one magus arcana. He gains an additional magus arcana for every three levels of magus attained after 3rd level.</p>\n<p>Unless specifically noted in a magus arcana's description, a magus cannot select a particular magus arcana more than once.</p>\n<p>Magus arcana that affect spells can only be used to modify spells from the magus spell list unless otherwise noted.</p>",
+    "grantsBuffs": [],
+    "id": "HJ2vLLDYkihPxFkD",
+    "name": "Magus Arcana",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.HJ2vLLDYkihPxFkD"
   },
   "HL53FUqkS4PZCMIK": {
     "changes": [],
@@ -1485,6 +1553,16 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.Iu8gyBT93dRpGtgH"
   },
+  "IyfoUjtyaS8lakWc": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 4th level, the magus learns to use his arcane pool to recall spells he has already cast. With a swift action he can recall any single magus spell that he has already prepared and cast that day by expending a number of points from his arcane pool equal to the spell's level (minimum 1). The spell is prepared again, just as if it had not been cast.</p>",
+    "grantsBuffs": [],
+    "id": "IyfoUjtyaS8lakWc",
+    "name": "Spell Recall",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.IyfoUjtyaS8lakWc"
+  },
   "J4QibEdTUK559sGO": {
     "abilityType": "su",
     "changes": [],
@@ -1541,6 +1619,16 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.Jle1tYl0Fr251J97"
+  },
+  "Js83QWyHQQ4PjP0m": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 7th level, a magus gains proficiency with medium armor. A magus can cast magus spells while wearing medium armor without incurring the normal arcane spell failure chance. Like any other arcane spellcaster, a magus wearing heavy armor or using a shield incurs a chance of arcane spell failure if the spell in question has a somatic component.</p>",
+    "grantsBuffs": [],
+    "id": "Js83QWyHQQ4PjP0m",
+    "name": "Medium Armor",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.Js83QWyHQQ4PjP0m"
   },
   "Jsa2hTi4YCwLzFdf": {
     "abilityType": "sp",
@@ -1986,6 +2074,31 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.OZ1vgybloYDVfWff"
   },
+  "OsEuRDHP7jcJ2fIJ": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 2nd level, whenever a magus casts a spell with a range of \"touch\" from the magus spell list, he can deliver the spell through any weapon he is wielding as part of a melee attack. Instead of the free melee touch attack normally allowed to deliver the spell, a magus can make one free melee attack with his weapon (at his highest base attack bonus) as part of casting this spell. If successful, this melee attack deals its normal damage as well as the effects of the spell. If the magus makes this attack in concert with spell combat, this melee attack takes all the penalties accrued by spell combat melee attacks. This attack uses the weapon's critical range (20, 19–20, or 18–20 and modified by the keen weapon property or similar effects), but the spell effect only deals ×2 damage on a successful critical hit, while the weapon damage uses its own critical modifier.</p>",
+    "grantsBuffs": [],
+    "id": "OsEuRDHP7jcJ2fIJ",
+    "name": "Spellstrike",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.OsEuRDHP7jcJ2fIJ"
+  },
+  "P0EhxFOJJXWMBiZi": {
+    "changes": [],
+    "description": "<p>A magus must study his spellbook each day to prepare his spells. He cannot prepare any spell not recorded in his spellbook except for read magic, which all magi can prepare from memory.</p><p>A magus begins play with a spellbook containing all 0-level magus spells plus three 1st-level magus spells of his choice. The magus also selects a number of additional 1st-level magus spells equal to his Intelligence modifier to add to his spellbook. At each new magus level, he gains two new magus spells of any spell level or levels that he can cast (based on his new magus level) for his spellbook. At any time, a magus can also add spells found in other spellbooks to his own (see Arcane Spells).</p><p>A magus can learn spells from a wizard's spellbook, just as a wizard can from a magus's spellbook. The spells learned must be on the magus spell list, as normal. An alchemist can learn formulae from a magus's spellbook, if the spells are also on the alchemist spell list. A magus cannot learn spells from an alchemist.</p>",
+    "grantsBuffs": ["Compendium.pf1.items.Item.onurpjwtdogsedsg"],
+    "id": "P0EhxFOJJXWMBiZi",
+    "name": "Spellbooks (MAG)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "9"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.P0EhxFOJJXWMBiZi"
+  },
   "PXdTxpse6nHDdQyR": {
     "abilityType": "sp",
     "changes": [],
@@ -2069,6 +2182,16 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.QZJtfwamnWW0mHjJ"
+  },
+  "QhHS0Qr5FxH4LtaI": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 7th level, when a magus prepares his magus spells, he can decide to expend 1 or more points from his arcane pool, up to his Intelligence bonus. For each point he expends, he can treat any one spell from the magus spell list as if it were in his spellbook and can prepare that spell as normal that day. If he does not cast spells prepared in this way before the next time he prepares spells, he loses those spells. He can also cast spells added in this way using his spell recall ability, but only until he prepares spells again.</p>",
+    "grantsBuffs": [],
+    "id": "QhHS0Qr5FxH4LtaI",
+    "name": "Knowledge Pool",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.QhHS0Qr5FxH4LtaI"
   },
   "QkHDkpopJ7P8g14c": {
     "abilityType": "ex",
@@ -2627,6 +2750,16 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.X7gqbGkXTox6Ojhy"
   },
+  "XAMIufM24q2qAB7o": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 20th level, the magus becomes a master of spells and combat. Whenever he uses his spell combat ability, he does not need to make a concentration check to cast the spell defensively. Whenever the magus uses spell combat and his spell targets the same creature as his melee attacks, he can choose to either increase the DC to resist the spell by +2, grant himself a +2 circumstance bonus on any checks made to overcome spell resistance, or grant himself a +2 circumstance bonus on all attack rolls made against the target during his turn.</p>",
+    "grantsBuffs": [],
+    "id": "XAMIufM24q2qAB7o",
+    "name": "True Magus",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.XAMIufM24q2qAB7o"
+  },
   "XJtvco1XWggmr5LU": {
     "abilityType": "su",
     "changes": [],
@@ -2827,6 +2960,15 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
   },
+  "ZhQM4K4dqStS6qRn": {
+    "changes": [],
+    "description": "<p>Each oracle draws upon a divine mystery to grant her spells and powers. This mystery also grants additional class skills and other special abilities. This mystery can represent a devotion to one ideal, prayers to deities that support the concept, or a natural calling to champion a cause. For example, an oracle with the waves mystery might have been born at sea and found a natural calling to worship the gods of the oceans, rivers, and lakes, be they benign or malevolent. Regardless of its source, the mystery manifests in a number of ways as the oracle gains levels. An oracle must pick one mystery upon taking her first level of oracle. Once made, this choice cannot be changed.</p><p>At 2nd level, and every two levels thereafter, an oracle learns an additional spell derived from her mystery. These spells are in addition to the number of spells given on Table 2–6. They cannot be exchanged for different spells at higher levels.</p>",
+    "grantsBuffs": [],
+    "id": "ZhQM4K4dqStS6qRn",
+    "name": "Mystery",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
+  },
   "a4SPdPuOFdmfJdHN": {
     "changes": [
       {
@@ -2904,6 +3046,15 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh"
   },
+  "adu4NROFqgwv70sw": {
+    "changes": [],
+    "description": "<p>At 1st level, 3rd level, and every four levels thereafter (7th, 11th, and so on), an oracle uncovers a new secret about her mystery that grants her powers and abilities. The oracle must select a revelation from the list of revelations available to her mystery. If a revelation is chosen at a later level, the oracle gains all of the abilities and bonuses granted by that revelation based on her current level. Unless otherwise noted, activating the power of a revelation is a standard action.</p>",
+    "grantsBuffs": [],
+    "id": "adu4NROFqgwv70sw",
+    "name": "Revelation",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
+  },
   "bCdFkzKiVg52ufhu": {
     "abilityType": "su",
     "changes": [
@@ -2979,6 +3130,16 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.cdre9IojG8R7LJLC"
   },
+  "dakApiblq3ad7AZI": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 11th level, the magus's ability to recall spells using his arcane pool becomes more efficient. Whenever he recalls a spell with spell recall, he expends a number of points from his arcane pool equal to 1/2 the spell's level (minimum 1). Furthermore, instead of recalling a used spell, as a swift action the magus can prepare a spell of the same level that he has in his spellbook. He does so by expending a number of points from his arcane pool equal to the spell's level (minimum 1). The magus cannot apply metamagic feats to a spell prepared in this way.</p>\n<p>The magus does not need to reference his spellbook to prepare a spell in this way.</p>",
+    "grantsBuffs": [],
+    "id": "dakApiblq3ad7AZI",
+    "name": "Improved Spell Recall",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.dakApiblq3ad7AZI"
+  },
   "dopWa3n4mgTGpTYi": {
     "changes": [],
     "description": "<p>Upon reaching 4th level, and at every even-numbered class level after that (6th, 8th, and so on), the character can choose to learn a new spell in place of one she already knows. In effect, the character loses the old spell in exchange for the new one. The new spell's level must be the same as that of the spell being exchanged. A character may swap only a single spell at any given level, and must choose whether or not to swap the spell at the same time that she gains new spells known for the level.</p><h3>Class Specific Restrictions</h3><ul><li>Psychics exchanged spell must be at least 1 level lower than the highest-level spell from the psychic’s class list that the psychic can cast.</li><li>Sorcerers cannot swap any bloodline spells.</li><li>Oracles cannot swap any cure or inflict spells, nor can she swap any spells gained from her mystery.</li></ul>",
@@ -3030,6 +3191,16 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.eEuj2X72Q5jP6xAj"
+  },
+  "ePNt8fgtaAxmLnHs": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>Starting at 10th level, a magus counts 1/2 his total magus level as his fighter level for the purpose of qualifying for feats. If he has levels in fighter, these levels stack.</p>",
+    "grantsBuffs": [],
+    "id": "ePNt8fgtaAxmLnHs",
+    "name": "Fighter Training",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.ePNt8fgtaAxmLnHs"
   },
   "eYuNS8kf9Z3V6kjO": {
     "abilityType": "su",
@@ -3108,6 +3279,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.fkjS3pJidUdLWsFF"
+  },
+  "gzBR0qkMdu0KkLV0": {
+    "changes": [
+      {
+        "formula": "floor((@class.unlevel + 1) / 6)",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 5th level, and every six levels thereafter, a magus gains a bonus feat in addition to those gained from normal advancement. These bonus feats must be selected from those listed as combat, item creation, or metamagic feats. He must meet the prerequisites for these feats as normal.</p>",
+    "grantsBuffs": [],
+    "id": "gzBR0qkMdu0KkLV0",
+    "name": "Bonus Feats (MAG)",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.gzBR0qkMdu0KkLV0"
   },
   "h0Brxw6khcjlEf1T": {
     "abilityType": "ex",
@@ -3204,6 +3390,16 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.hslkjPA3AVl3hDWu"
+  },
+  "i64BU7HTfaRJEYFj": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 19th level, the magus gains access to an expanded spell list. He learns and places 14 spells from the wizard's spell list into his spellbook as magus spells of their wizard level. He gains two of each of the following wizard spells not on the magus spell list: 0-level, 1st-level, 2nd-level, 3rd-level, 4th-level, 5th-level, and 6th-level.</p>\n<p>He can ignore the somatic component of these spells, casting them without the normal chance of spell failure.</p>",
+    "grantsBuffs": [],
+    "id": "i64BU7HTfaRJEYFj",
+    "name": "Greater Spell Access",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.i64BU7HTfaRJEYFj"
   },
   "iBTrvPtn3jczInbn": {
     "changes": [],
@@ -3383,6 +3579,16 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.kXXz1lO4i7CibHJ9"
   },
+  "kkVnlOkjhww8MoHc": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>Each oracle is cursed, but this curse comes with a benefit as well as a hindrance. This choice is made at 1st level, and once made, it cannot be changed. The oracle’s curse cannot be removed or dispelled without the aid of a deity. An oracle’s curse is based on her oracle level plus one for every two levels or Hit Dice other than oracle. Each oracle must a single curse.</p>",
+    "grantsBuffs": [],
+    "id": "kkVnlOkjhww8MoHc",
+    "name": "Oracle's Curse",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc"
+  },
   "kx2ZfV2wjlAZgQ6E": {
     "changes": [],
     "description": "<p>A good cleric (or a neutral cleric of a good deity) can channel stored spell energy into healing spells that she did not prepare ahead of time. The cleric can \"lose\" any prepared spell that is not an orison or domain spell in order to cast any cure spell of the same spell level or lower (a cure spell is any spell with \"cure\" in its name).</p>\n<p>An evil cleric (or a neutral cleric of an evil deity) can’t convert prepared spells to cure spells but can convert them to inflict spells (an inflict spell is one with \"inflict\" in its name).</p>\n<p>A cleric who is neither good nor evil and whose deity is neither good nor evil can convert spells to either cure spells or inflict spells (player’s choice). Once the player makes this choice, it cannot be reversed. This choice also determines whether the cleric channels positive or negative energy (see channel energy).</p>",
@@ -3412,6 +3618,16 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.lY1ODOAMA7pi3hTS"
+  },
+  "lj4yLDvoxGFHiwSk": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 1st level, a magus learns to cast spells and wield his weapons at the same time. This functions much like two-weapon fighting, but the off-hand weapon is a spell that is being cast. To use this ability, the magus must have one hand free (even if the spell being cast does not have somatic components), while wielding a light or one-handed melee weapon in the other hand.</p>\n<p>As a full-round action, he can make all of his attacks with his melee weapon at a –2 penalty and can also cast any spell from the magus spell list with a casting time of 1 standard action (any attack roll made as part of this spell also takes this penalty). If he casts this spell defensively, he can decide to take an additional penalty on his attack rolls, up to his Intelligence bonus, and add the same amount as a circumstance bonus on his concentration check. If the check fails, the spell is wasted, but the attacks still take the penalty.</p>\n<p>A magus can choose to cast the spell first or make the weapon attacks first, but if he has more than one attack, he cannot cast the spell between weapon attacks.</p>",
+    "grantsBuffs": [],
+    "id": "lj4yLDvoxGFHiwSk",
+    "name": "Spell Combat",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.lj4yLDvoxGFHiwSk"
   },
   "mITkHIcXI1Sfax21": {
     "abilityType": "sp",
@@ -3454,6 +3670,21 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.mS7LSsQQkjVvKx9z"
+  },
+  "mpe3JHJMINddqLWr": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, the magus gains a reservoir of mystical arcane energy that he can draw upon to fuel his powers and enhance his weapon. This arcane pool has a number of points equal to 1/2 his magus level (minimum 1) + his Intelligence modifier. The pool refreshes once per day when the magus prepares his spells.</p><p>At 1st level, a magus can expend 1 point from his arcane pool as a swift action to grant any weapon he is holding a +1 enhancement bonus for 1 minute. For every four levels beyond 1st, the weapon gains another +1 enhancement bonus, to a maximum of +5 at 17th level. These bonuses can be added to the weapon, stacking with existing weapon enhancement to a maximum of +5. Multiple uses of this ability do not stack with themselves.</p><p>At 5th level, these bonuses can be used to add any of the following weapon properties: dancing, flaming, flaming burst, frost, icy burst, keen, shock, shocking burst, speed, or vorpal. Adding these properties consumes an amount of bonus equal to the property's base price modifier (see the Magic Weapon Special Ability Descriptions). These properties are added to any the weapon already has, but duplicates do not stack. If the weapon is not magical, at least a +1 enhancement bonus must be added before any other properties can be added. These bonuses and properties are decided when the arcane pool point is spent and cannot be changed until the next time the magus uses this ability. These bonuses do not function if the weapon is wielded by anyone other than the magus.</p><p>A magus can only enhance one weapon in this way at one time. If he uses this ability again, the first use immediately ends.</p>",
+    "grantsBuffs": [],
+    "id": "mpe3JHJMINddqLWr",
+    "name": "Arcane Pool",
+    "subType": "classFeat",
+    "tag": "arcanePool",
+    "uses": {
+      "maxFormula": "max(1, floor(@class.unlevel / 2)) + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.mpe3JHJMINddqLWr"
   },
   "msQWK7TW7mufzf8l": {
     "abilityType": "ex",
@@ -3549,6 +3780,16 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nRffrQSKTqjeBAO5"
+  },
+  "nWDMATASYzzAShr6": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 14th level, the magus gains the ability to seamlessly cast spells and make melee attacks. Whenever he uses the spell combat ability, his concentration check bonus equals double the amount of the attack penalty taken.</p>",
+    "grantsBuffs": [],
+    "id": "nWDMATASYzzAShr6",
+    "name": "Greater Spell Combat",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.nWDMATASYzzAShr6"
   },
   "nzqkSBc6tvAqG8o2": {
     "abilityType": "ex",
@@ -4301,6 +4542,16 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.z4NJaCcj9VZpBv7d"
+  },
+  "zLXBKnWXbZ2YKOBo": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 16th level, whenever an enemy within reach of the magus successfully casts a spell defensively, that enemy provokes an attack of opportunity from the magus after the spell is complete. This attack of opportunity cannot disrupt the spell.</p>",
+    "grantsBuffs": [],
+    "id": "zLXBKnWXbZ2YKOBo",
+    "name": "Counterstrike",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.zLXBKnWXbZ2YKOBo"
   },
   "zeLaBkwTp9wlzZJv": {
     "abilityType": "sp",

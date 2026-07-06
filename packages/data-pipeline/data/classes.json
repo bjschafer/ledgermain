@@ -208,6 +208,82 @@
     "uuid": "Compendium.pf1.classes.Item.24b0LaabeAlUx5gN",
     "weaponProf": ["simple", "Hand Crossbow", "Rapier", "Sap", "Shortbow", "Shortsword"]
   },
+  "5S0u8yFcP861wgd1": {
+    "armorProf": ["lgt", "med", "shl"],
+    "bab": "med",
+    "classSkills": ["art", "crf", "dip", "hea", "khi", "kpl", "kre", "lor", "pro", "sen", "spl"],
+    "description": "<p>Although the gods work through many agents, perhaps none is more mysterious than the oracle. These divine vessels are granted power without their choice, selected by providence to wield powers that even they do not fully understand. Unlike a cleric, who draws her magic through devotion to a deity, oracles garner strength and power from many sources, namely those patron deities who support their ideals. Instead of worshiping a single source, oracles tend to venerate all of the gods that share their beliefs. While some see the powers of the oracle as a gift, others view them as a curse, changing the life of the chosen in unforeseen ways.</p><p><strong>Role</strong>: Oracles do not usually associate with any one church or temple, instead preferring to strike out on their own, or with a small group of like-minded individuals. Oracles typically use their spells and revelations to further their understanding of their mystery, be it through fighting mighty battles or tending to the poor and sick.</p>",
+    "features": [
+      {
+        "featureId": "ZhQM4K4dqStS6qRn",
+        "level": 1,
+        "name": "Mystery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
+      },
+      {
+        "featureId": "72r8mMxzMNWpdt0D",
+        "level": 1,
+        "name": "Oracle Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.72r8mMxzMNWpdt0D"
+      },
+      {
+        "featureId": "kkVnlOkjhww8MoHc",
+        "level": 1,
+        "name": "Oracle's Curse",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc"
+      },
+      {
+        "featureId": "RaFl9SpbAlXqhsDk",
+        "level": 1,
+        "name": "Orisons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+      },
+      {
+        "featureId": "adu4NROFqgwv70sw",
+        "level": 1,
+        "name": "Revelation",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
+      },
+      {
+        "featureId": "dopWa3n4mgTGpTYi",
+        "level": 4,
+        "name": "Exchange Spell (High)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+      },
+      {
+        "featureId": "8vF0UoXribL1DOG2",
+        "level": 20,
+        "name": "Final Revelation",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.8vF0UoXribL1DOG2"
+      }
+    ],
+    "hd": 8,
+    "id": "5S0u8yFcP861wgd1",
+    "name": "Oracle",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "42-54"
+      }
+    ],
+    "subType": "base",
+    "tag": "oracle",
+    "uuid": "Compendium.pf1.classes.Item.5S0u8yFcP861wgd1",
+    "weaponProf": ["simple"]
+  },
   "6GjOjO6r3R06fLwE": {
     "armorProf": ["lgt", "shl"],
     "bab": "med",
@@ -1593,6 +1669,181 @@
     "subType": "base",
     "tag": "ranger",
     "uuid": "Compendium.pf1.classes.Item.w3wjj6s3N69BsMc3",
+    "weaponProf": ["simple", "martial"]
+  },
+  "xZLcyrEKYZoJPS2k": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "clm",
+      "crf",
+      "fly",
+      "int",
+      "kar",
+      "kdu",
+      "kpl",
+      "lor",
+      "pro",
+      "rid",
+      "spl",
+      "swm",
+      "umd"
+    ],
+    "description": "<p>There are those who spend their lives poring over ancient tomes and texts, unlocking the power of magic, and there are those who spend their time perfecting the use of individual weapons, becoming masters without equal. The magus is at once a student of both philosophies, blending magical ability and martial prowess into something entirely unique, a discipline in which both spell and steel are used to devastating effect. As he grows in power, the magus unlocks powerful forms of arcana that allow him to merge his talents further, and at the pinnacle of his art, the magus becomes a blur of steel and magic, a force that few foes would dare to stand against.</p><p><strong>Role</strong>: Magi spend much of their time traveling the world, learning whatever martial or arcane secrets they can find. They might spend months learning a new sword-fighting style from a master warrior, while simultaneously moonlighting in the local library, poring through tomes of ancient lore. Most who take this path dabble in all sorts of lore, picking up anything that might aid them in their search for perfection.</p>",
+    "features": [
+      {
+        "featureId": "mpe3JHJMINddqLWr",
+        "level": 1,
+        "name": "Arcane Pool",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mpe3JHJMINddqLWr"
+      },
+      {
+        "featureId": "IPy4aqFYbOppaqKC",
+        "level": 1,
+        "name": "Cantrips",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+      },
+      {
+        "featureId": "Bd6X95yJfPz6zPkP",
+        "level": 1,
+        "name": "Magus Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Bd6X95yJfPz6zPkP"
+      },
+      {
+        "featureId": "lj4yLDvoxGFHiwSk",
+        "level": 1,
+        "name": "Spell Combat",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.lj4yLDvoxGFHiwSk"
+      },
+      {
+        "featureId": "P0EhxFOJJXWMBiZi",
+        "level": 1,
+        "name": "Spellbooks (MAG)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.P0EhxFOJJXWMBiZi"
+      },
+      {
+        "featureId": "OsEuRDHP7jcJ2fIJ",
+        "level": 2,
+        "name": "Spellstrike",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.OsEuRDHP7jcJ2fIJ"
+      },
+      {
+        "featureId": "HJ2vLLDYkihPxFkD",
+        "level": 3,
+        "name": "Magus Arcana",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HJ2vLLDYkihPxFkD"
+      },
+      {
+        "featureId": "IyfoUjtyaS8lakWc",
+        "level": 4,
+        "name": "Spell Recall",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IyfoUjtyaS8lakWc"
+      },
+      {
+        "featureId": "gzBR0qkMdu0KkLV0",
+        "level": 5,
+        "name": "Bonus Feats (MAG)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.gzBR0qkMdu0KkLV0"
+      },
+      {
+        "featureId": "QhHS0Qr5FxH4LtaI",
+        "level": 7,
+        "name": "Knowledge Pool",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QhHS0Qr5FxH4LtaI"
+      },
+      {
+        "featureId": "Js83QWyHQQ4PjP0m",
+        "level": 7,
+        "name": "Medium Armor",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Js83QWyHQQ4PjP0m"
+      },
+      {
+        "featureId": "G1z392b58wRybqjL",
+        "level": 8,
+        "name": "Improved Spell Combat",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.G1z392b58wRybqjL"
+      },
+      {
+        "featureId": "ePNt8fgtaAxmLnHs",
+        "level": 10,
+        "name": "Fighter Training",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ePNt8fgtaAxmLnHs"
+      },
+      {
+        "featureId": "dakApiblq3ad7AZI",
+        "level": 11,
+        "name": "Improved Spell Recall",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dakApiblq3ad7AZI"
+      },
+      {
+        "featureId": "0AXAMXGLJIw7CGBd",
+        "level": 13,
+        "name": "Heavy Armor",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0AXAMXGLJIw7CGBd"
+      },
+      {
+        "featureId": "nWDMATASYzzAShr6",
+        "level": 14,
+        "name": "Greater Spell Combat",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nWDMATASYzzAShr6"
+      },
+      {
+        "featureId": "zLXBKnWXbZ2YKOBo",
+        "level": 16,
+        "name": "Counterstrike",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zLXBKnWXbZ2YKOBo"
+      },
+      {
+        "featureId": "i64BU7HTfaRJEYFj",
+        "level": 19,
+        "name": "Greater Spell Access",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.i64BU7HTfaRJEYFj"
+      },
+      {
+        "featureId": "XAMIufM24q2qAB7o",
+        "level": 20,
+        "name": "True Magus",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.XAMIufM24q2qAB7o"
+      }
+    ],
+    "hd": 8,
+    "id": "xZLcyrEKYZoJPS2k",
+    "name": "Magus",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "9-13"
+      }
+    ],
+    "subType": "base",
+    "tag": "magus",
+    "uuid": "Compendium.pf1.classes.Item.xZLcyrEKYZoJPS2k",
     "weaponProf": ["simple", "martial"]
   }
 }

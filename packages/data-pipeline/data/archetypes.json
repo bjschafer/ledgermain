@@ -2043,6 +2043,223 @@
     "name": "Weapon Master",
     "uuid": "archetype:fighter:weapon-master"
   },
+  "magus:armored-battlemage": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:armored-battlemage",
+    "name": "Armored Battlemage",
+    "uuid": "archetype:magus:armored-battlemage"
+  },
+  "magus:beastblade": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:beastblade",
+    "name": "Beastblade",
+    "uuid": "archetype:magus:beastblade"
+  },
+  "magus:bladebound": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:bladebound",
+    "name": "Bladebound",
+    "uuid": "archetype:magus:bladebound"
+  },
+  "magus:card-caster": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:card-caster",
+    "name": "Card Caster",
+    "uuid": "archetype:magus:card-caster"
+  },
+  "magus:deep-marshal": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:deep-marshal",
+    "name": "Deep Marshal",
+    "uuid": "archetype:magus:deep-marshal"
+  },
+  "magus:eldritch-archer": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:eldritch-archer",
+    "name": "Eldritch Archer",
+    "uuid": "archetype:magus:eldritch-archer"
+  },
+  "magus:eldritch-scion": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:eldritch-scion",
+    "name": "Eldritch Scion",
+    "uuid": "archetype:magus:eldritch-scion"
+  },
+  "magus:elemental-knight": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:elemental-knight",
+    "name": "Elemental Knight",
+    "uuid": "archetype:magus:elemental-knight"
+  },
+  "magus:esoteric": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:esoteric",
+    "name": "Esoteric",
+    "uuid": "archetype:magus:esoteric"
+  },
+  "magus:fiend-flayer": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:fiend-flayer",
+    "name": "Fiend Flayer",
+    "uuid": "archetype:magus:fiend-flayer"
+  },
+  "magus:greensting-slayer": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:greensting-slayer",
+    "name": "Greensting Slayer",
+    "uuid": "archetype:magus:greensting-slayer"
+  },
+  "magus:hexbreaker": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:hexbreaker",
+    "name": "Hexbreaker",
+    "uuid": "archetype:magus:hexbreaker"
+  },
+  "magus:hexcrafter": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:hexcrafter",
+    "name": "Hexcrafter",
+    "uuid": "archetype:magus:hexcrafter"
+  },
+  "magus:iron-ring-striker": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:iron-ring-striker",
+    "name": "Iron-Ring Striker",
+    "uuid": "archetype:magus:iron-ring-striker"
+  },
+  "magus:jistkan-artificer": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:jistkan-artificer",
+    "name": "Jistkan Artificer",
+    "uuid": "archetype:magus:jistkan-artificer"
+  },
+  "magus:kapenia-dancer": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:kapenia-dancer",
+    "name": "Kapenia Dancer",
+    "uuid": "archetype:magus:kapenia-dancer"
+  },
+  "magus:kensai": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:kensai",
+    "name": "Kensai",
+    "uuid": "archetype:magus:kensai"
+  },
+  "magus:magic-warrior": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:magic-warrior",
+    "name": "Magic Warrior",
+    "uuid": "archetype:magus:magic-warrior"
+  },
+  "magus:mindblade": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:mindblade",
+    "name": "Mindblade",
+    "uuid": "archetype:magus:mindblade"
+  },
+  "magus:myrmidarch": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:myrmidarch",
+    "name": "Myrmidarch",
+    "uuid": "archetype:magus:myrmidarch"
+  },
+  "magus:nature-bonded-magus": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:nature-bonded-magus",
+    "name": "Nature-Bonded Magus",
+    "uuid": "archetype:magus:nature-bonded-magus"
+  },
+  "magus:puppetmaster": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:puppetmaster",
+    "name": "Puppetmaster",
+    "uuid": "archetype:magus:puppetmaster"
+  },
+  "magus:sigilus": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:sigilus",
+    "name": "Sigilus",
+    "uuid": "archetype:magus:sigilus"
+  },
+  "magus:skirnir": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:skirnir",
+    "name": "Skirnir",
+    "uuid": "archetype:magus:skirnir"
+  },
+  "magus:sorrowblade": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:sorrowblade",
+    "name": "Sorrowblade",
+    "uuid": "archetype:magus:sorrowblade"
+  },
+  "magus:soul-forger": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:soul-forger",
+    "name": "Soul Forger",
+    "uuid": "archetype:magus:soul-forger"
+  },
+  "magus:spell-dancer": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:spell-dancer",
+    "name": "Spell Dancer",
+    "uuid": "archetype:magus:spell-dancer"
+  },
+  "magus:spell-trapper": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:spell-trapper",
+    "name": "Spell Trapper",
+    "uuid": "archetype:magus:spell-trapper"
+  },
+  "magus:spellblade": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:spellblade",
+    "name": "Spellblade",
+    "uuid": "archetype:magus:spellblade"
+  },
+  "magus:spire-defender": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:spire-defender",
+    "name": "Spire Defender",
+    "uuid": "archetype:magus:spire-defender"
+  },
+  "magus:staff-magus": {
+    "classTag": "magus",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "magus:staff-magus",
+    "name": "Staff Magus",
+    "uuid": "archetype:magus:staff-magus"
+  },
   "monk:brazen-disciple": {
     "classTag": "monk",
     "contributorModule": "baileymh/pf1e-archetypes",
@@ -2133,6 +2350,188 @@
     "id": "monk:soul-shepherd",
     "name": "Soul Shepherd",
     "uuid": "archetype:monk:soul-shepherd"
+  },
+  "oracle:ancient-lorekeeper": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:ancient-lorekeeper",
+    "name": "Ancient Lorekeeper",
+    "uuid": "archetype:oracle:ancient-lorekeeper"
+  },
+  "oracle:black-blooded-oracle": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:black-blooded-oracle",
+    "name": "Black-Blooded Oracle",
+    "uuid": "archetype:oracle:black-blooded-oracle"
+  },
+  "oracle:community-guardian": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:community-guardian",
+    "name": "Community Guardian",
+    "uuid": "archetype:oracle:community-guardian"
+  },
+  "oracle:cyclopean-seer": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:cyclopean-seer",
+    "name": "Cyclopean Seer",
+    "uuid": "archetype:oracle:cyclopean-seer"
+  },
+  "oracle:divine-numerologist": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:divine-numerologist",
+    "name": "Divine Numerologist",
+    "uuid": "archetype:oracle:divine-numerologist"
+  },
+  "oracle:dual-cursed-oracle": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:dual-cursed-oracle",
+    "name": "Dual-Cursed Oracle",
+    "uuid": "archetype:oracle:dual-cursed-oracle"
+  },
+  "oracle:elementalist-oracle": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:elementalist-oracle",
+    "name": "Elementalist Oracle",
+    "uuid": "archetype:oracle:elementalist-oracle"
+  },
+  "oracle:enlightened-philosopher": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:enlightened-philosopher",
+    "name": "Enlightened Philosopher",
+    "uuid": "archetype:oracle:enlightened-philosopher"
+  },
+  "oracle:hermit": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:hermit",
+    "name": "Hermit",
+    "uuid": "archetype:oracle:hermit"
+  },
+  "oracle:inerrant-voice": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:inerrant-voice",
+    "name": "Inerrant Voice",
+    "uuid": "archetype:oracle:inerrant-voice"
+  },
+  "oracle:keleshite-prophet": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:keleshite-prophet",
+    "name": "Keleshite Prophet",
+    "uuid": "archetype:oracle:keleshite-prophet"
+  },
+  "oracle:ocean-s-echo": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:ocean-s-echo",
+    "name": "Ocean's Echo",
+    "uuid": "archetype:oracle:ocean-s-echo"
+  },
+  "oracle:pei-zin-practitioner": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:pei-zin-practitioner",
+    "name": "Pei Zin Practitioner",
+    "uuid": "archetype:oracle:pei-zin-practitioner"
+  },
+  "oracle:planar-oracle": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:planar-oracle",
+    "name": "Planar Oracle",
+    "uuid": "archetype:oracle:planar-oracle"
+  },
+  "oracle:possessed-oracle": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:possessed-oracle",
+    "name": "Possessed Oracle",
+    "uuid": "archetype:oracle:possessed-oracle"
+  },
+  "oracle:psychic-searcher": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:psychic-searcher",
+    "name": "Psychic Searcher",
+    "uuid": "archetype:oracle:psychic-searcher"
+  },
+  "oracle:purifier": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:purifier",
+    "name": "Purifier",
+    "uuid": "archetype:oracle:purifier"
+  },
+  "oracle:reincarnated-oracle": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:reincarnated-oracle",
+    "name": "Reincarnated Oracle",
+    "uuid": "archetype:oracle:reincarnated-oracle"
+  },
+  "oracle:river-soul": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:river-soul",
+    "name": "River Soul",
+    "uuid": "archetype:oracle:river-soul"
+  },
+  "oracle:seeker": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:seeker",
+    "name": "Seeker",
+    "uuid": "archetype:oracle:seeker"
+  },
+  "oracle:seer": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:seer",
+    "name": "Seer",
+    "uuid": "archetype:oracle:seer"
+  },
+  "oracle:shigenjo": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:shigenjo",
+    "name": "Shigenjo",
+    "uuid": "archetype:oracle:shigenjo"
+  },
+  "oracle:spirit-guide": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:spirit-guide",
+    "name": "Spirit Guide",
+    "uuid": "archetype:oracle:spirit-guide"
+  },
+  "oracle:stargazer": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:stargazer",
+    "name": "Stargazer",
+    "uuid": "archetype:oracle:stargazer"
+  },
+  "oracle:tree-soul": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:tree-soul",
+    "name": "Tree Soul",
+    "uuid": "archetype:oracle:tree-soul"
+  },
+  "oracle:warsighted": {
+    "classTag": "oracle",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "oracle:warsighted",
+    "name": "Warsighted",
+    "uuid": "archetype:oracle:warsighted"
   },
   "paladin:banishing-warden": {
     "classTag": "paladin",
