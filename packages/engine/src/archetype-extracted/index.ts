@@ -28,6 +28,10 @@
  */
 
 import {
+  ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED,
+  ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION,
+} from "./arcanist.js";
+import {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
 } from "./fighter.js";
@@ -39,12 +43,14 @@ import type {
 export const ARCHETYPE_FEATURE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
 > = {
+  ...ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED,
   ...FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
 };
 
 export const ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   Record<string, ArchetypeFeatureClassificationEntry>
 > = {
+  ...ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION,
   ...FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
 };
 
@@ -57,6 +63,10 @@ export {
 // Re-exported for callers that want a specific class's slice directly (e.g.
 // fixture tests spot-checking one class) without importing the aggregator's
 // merged table.
+export {
+  ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED,
+  ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION,
+} from "./arcanist.js";
 export {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
