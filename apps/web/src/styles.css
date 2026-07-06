@@ -245,7 +245,12 @@ a {
 
 @media (max-width: 940px) {
   .layout {
-    grid-template-columns: 1fr;
+    /* `minmax(0, 1fr)`, not bare `1fr` — a bare `1fr` track's automatic
+       minimum is its content's min-content size, so a panel header that
+       refuses to wrap/shrink (e.g. a long `right`-slot hint) can force the
+       whole grid, and therefore the page, wider than the viewport. This was
+       a real horizontal-scroll bug on phone (Ability Scores' header hint). */
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -501,6 +506,23 @@ button:focus-visible,
 .seal:focus-visible {
   outline: 2px solid var(--gold-2);
   outline-offset: 2px;
+}
+
+/* `:active` press feedback on the shared tap targets — fires identically for
+   a mouse click and a touch tap (unlike `:hover`, which a touchscreen never
+   reliably sends), so every primary control gets a visible "this registered"
+   response instead of only a hover treatment that phone/iPad users never see. */
+.chip:active:not(:disabled),
+.btn-ghost:active:not(:disabled),
+.btn-act:active:not(:disabled),
+.pick-btn:active:not(:disabled),
+.mode-tab:active,
+.field-toggle:active,
+.filter-toggle:active,
+.fcb-chip:active,
+.stepper > button:active:not(:disabled),
+.seal[data-expandable="true"]:active {
+  transform: scale(0.96);
 }
 
 /* ability score grid */
@@ -823,6 +845,7 @@ button:focus-visible,
 
 .class-row .cname {
   flex: 1;
+  min-width: 0;
   font-weight: 600;
 }
 
@@ -3539,4 +3562,111 @@ input[type="text"].saved-roll-name:focus {
 
 .familiar-abilities {
   margin-bottom: 4px;
+}
+
+/* ============================================================ phone pass --
+   Below 640px (phone width — iPad's 768px portrait stays above this and keeps
+   the tighter tablet/desktop density) the controls used during at-the-table
+   play grow to a comfortable ~44px tap target. Desktop/iPad are untouched. */
+@media (max-width: 640px) {
+  .mode-tab {
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+
+  .btn-act {
+    min-height: var(--tap-min);
+    padding: 10px 16px;
+  }
+
+  .btn-ghost {
+    min-height: var(--tap-min);
+    padding: 10px 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Small square icon-only ghost buttons (saved-roll/resource remove "×",
+     prep-row cast/recover "✓") keep their compact width but still gain the
+     taller tap height. */
+  .res-btns .btn-ghost,
+  .prep-x {
+    min-height: var(--tap-min);
+  }
+
+  .chip,
+  .pick-btn,
+  .field-toggle,
+  .filter-toggle,
+  .fcb-chip {
+    min-height: var(--tap-min);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .field-toggle,
+  .field-toggle.compact {
+    justify-content: flex-start;
+  }
+
+  .stepper > button {
+    width: 40px;
+    min-height: var(--tap-min);
+  }
+
+  .stepper input[type="number"],
+  .stepper .stepper-val {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  /* Checkbox toggles: the whole label (not just the native box) is the tap
+     target, so give it the same comfortable height as a button. */
+  .hp-inline,
+  .hp-nl,
+  .hp-stable-toggle,
+  .familiar-in-reach,
+  .buff-share-familiar,
+  .buff-share-companion {
+    min-height: var(--tap-min);
+  }
+
+  .hp-inline,
+  .hp-stable-toggle,
+  .familiar-in-reach {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .gear-equip {
+    min-width: var(--tap-min);
+    justify-content: center;
+  }
+
+  .gear-equip input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Panel headers can carry a `right`-slot hint/control alongside the title
+     (e.g. Ability Scores' "base scores · racial mods shown below") — let it
+     wrap to its own line on phone instead of squeezing the title or forcing
+     the header (and with it the whole page) wider than the viewport. */
+  .panel > header {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  /* Small inline "remove" glyphs (attached-feat chip ✕, skill-instance ✕):
+     not primary play-loop controls, but still worth a slightly larger hit
+     area than the bare glyph on a touch screen. */
+  .chip-x,
+  .skill-remove {
+    padding: 8px;
+    margin: -8px;
+  }
 }
