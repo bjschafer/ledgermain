@@ -199,6 +199,41 @@ export function setOracleCurse(doc: CharacterDoc, tag: string | null): Character
 }
 
 /**
+ * Set (or clear) the fighter's Weapon Training group pick for tier
+ * `tierIndex` (0 = 5th level, 1 = 9th, 2 = 13th, 3 = 17th — see
+ * `build.weaponTrainingGroups`'s doc comment). Pass `null` (or a blank/
+ * whitespace string) to clear that tier. Free-choice, no hard validation
+ * that `group` is one of `@pf1/engine`'s `WEAPON_GROUPS` (same soft posture
+ * as `setOracleMystery`/`setOracleCurse`) — the picker UI is expected to only
+ * offer real options, but a stale/hand-edited value is left alone rather
+ * than silently dropped. Trailing cleared tiers are popped so the array
+ * stays minimal; an earlier tier left cleared while a later one is set is a
+ * soft-invalid state this function doesn't prevent (mirrors every other
+ * free-choice picker in this app — the picker UI only exposes tiers the
+ * fighter has actually reached, so this shouldn't normally arise).
+ * Out-of-range `tierIndex` (outside 0–3) is a no-op.
+ */
+export function setWeaponTrainingGroup(
+  doc: CharacterDoc,
+  tierIndex: number,
+  group: string | null,
+): CharacterDoc {
+  if (tierIndex < 0 || tierIndex > 3) return doc;
+  const current = [...(doc.build.weaponTrainingGroups ?? [])];
+  while (current.length <= tierIndex) current.push(""); // fill gaps, never leave sparse holes
+  const trimmed = typeof group === "string" ? group.trim() : "";
+  current[tierIndex] = trimmed;
+  while (current.length > 0 && !current[current.length - 1]) current.pop();
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      weaponTrainingGroups: current.length > 0 ? current : undefined,
+    },
+  };
+}
+
+/**
  * Set the wizard's specialization school (or `"uni"` for Universalist). Pass
  * `null` to clear the choice entirely (back-compat "unset" state, treated
  * identically to Universalist by the model layer). Setting `"uni"` clears

@@ -24,6 +24,7 @@ import { Panel } from "./Panel.js";
 import { RangerPicker } from "./RangerPicker.js";
 import { SchoolPicker } from "./SchoolPicker.js";
 import type { BuilderProps } from "./types.js";
+import { WeaponTrainingPicker } from "./WeaponTrainingPicker.js";
 
 export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   const [fcbOpen, setFcbOpen] = useState(true);
@@ -261,6 +262,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}
       <RangerPicker doc={doc} update={update} />
+
+      {/* Weapon Training group picks — fighter only, hidden once L5 or if an archetype replaced it. */}
+      <WeaponTrainingPicker doc={doc} update={update} />
 
       {/* Archetype picker — only classes covered by the vendored dataset show options. */}
       <ArchetypePicker doc={doc} refData={refData} update={update} />
