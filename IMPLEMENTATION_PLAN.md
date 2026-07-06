@@ -668,6 +668,39 @@ Composition finding, worth carrying into every future class that gets this treat
 
 ---
 
+### Batch-extraction waves complete — full archetype coverage (issue #45, 2026-07-06)
+
+Six parallel wave agents (rogue / druid+monk / bard+sorcerer / ranger+arcanist / paladin+oracle / barbarian+wizard+magus) finished the per-feature classification of **every vendored archetype feature across all 13 archetype-bearing classes** (fighter was the pilot). Final tallies from `ARCHETYPE_FEATURE_CLASSIFICATION` (2,460 features total):
+
+| class | features | numeric | situational | subsystem | blocked |
+| --- | --- | --- | --- | --- | --- |
+| barbarian | 149 | 12 | 37 | 92 | 8 |
+| bard | 347 | 17 | 35 | 286 | 9 |
+| druid | 360 | 25 | 47 | 288 | 0 |
+| fighter | 383 | 29 | 119 | 196 | 39 |
+| magus | 150 | 8 | 16 | 124 | 2 |
+| monk | 60 | 1 | 5 | 52 | 2 |
+| oracle | 79 | 4 | 7 | 67 | 1 |
+| paladin | 247 | 15 | 61 | 166 | 5 |
+| ranger | 266 | 16 | 78 | 169 | 3 |
+| rogue | 241 | 24 | 49 | 165 | 3 |
+| sorcerer | 36 | 2 | 2 | 30 | 2 |
+| wizard | 108 | 1 | 8 | 79 | 20 |
+| arcanist | 34 | 0 | 0 | 34 | 0 |
+| **all** | **2,460** | **154** | **464** | **1,748** | **94** |
+
+135 of the 154 numeric features are machine-extracted (`ARCHETYPE_FEATURE_EFFECTS_EXTRACTED`); the rest are hand-verified `archetype-effects.ts` entries, which always win via `archetype-effects-resolve.ts`.
+
+**Cross-wave process findings** (each wave's per-class file carries the per-feature details):
+
+- **Check base-feature pairing reality per class first.** Rogue/druid base features carry NO vendored changes (nothing to double-count → tiny/zero blocked buckets); wizard has NO `pairedBaseFeatureUuid` anywhere in the class (every swap of the atomic Bonus Feats formula → blocked; one cause, not 20 separate bugs). The fighter pilot's atomic-partial-tier trap is real but class-specific.
+- **Same-archetype evolving numbers**: when a later feature upgrades an earlier feature's own number (Aquatic Druid's Natural Swimmer 3rd → Seaborn 9th swim speed), fold both into ONE conditional formula — two untyped Changes would sum and over-grant.
+- **Mispaired-additive vendored swaps are a live-bug category**: a purely additive feature paired to a base uuid suppresses the whole base feature with nothing backfilled. `MISPAIRED_ADDITIVE_FEATURES` in `archetypes.ts` (Sable Company Marine's Hippogriff Companion — fixed 2026-07-06) is the exclusion list for that shape; `WEAPON_TRAINING_REPLACEMENTS` handles the inverse (over-eager pairing of unmodified reflavors). Brawler's wrong-uuid pairing remains issue #46.
+- **Engine gaps that cost otherwise-clean extractions** (future target/mechanism candidates): archetype-authored `bonusSkillRanks` is silently inert (`apps/web` skill budget only reads it off races); `chaSkills`-style group targets remain UNAPPLIED; no activated-performance-buff mechanism exists (bard — the Archaeologist's Luck precedent); weapon range increments, `critConfirm`, `reach`, and natural/unarmed-attack targets don't exist; `resources.ts` hardcodes `classTag === "cleric"` for `channelEnergyDetail`, so a paladin's Channel Positive Energy never gets a computed detail line.
+- **Choice-menu features can't be auto-applied even with clean numbers**: oracle "replaces your Nth-level revelation" features stay `subsystem` because revelations are an untracked player choice; only guaranteed capstones (Final Revelation) were extractable. A Magus Arcana picker and an Oracle Revelations picker (arcanist-exploits pattern) would each unlock a batch of currently-`subsystem` entries.
+
+---
+
 ## Verification posture (all stages)
 
 `bun run typecheck` is the gate that must stay green. Engine tests are hand-computed fixtures per the convention (`packages/engine/test/`). Each stage adds at least: (a) a model-layer test for the new transition/logic, (b) a regression test asserting a doc without the new field produces byte-identical engine output, and (c) for engine-touching stages, a stacking/compute fixture verifying the new bonuses route through the change-application path correctly. Pipeline changes (Stage 1) regen data via `bun run data:build` and review the diff before committing.
