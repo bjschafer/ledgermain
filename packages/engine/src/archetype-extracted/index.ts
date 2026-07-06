@@ -28,6 +28,10 @@
  */
 
 import {
+  DRUID_ARCHETYPE_EFFECTS_EXTRACTED,
+  DRUID_ARCHETYPE_FEATURE_CLASSIFICATION,
+} from "./druid.js";
+import {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
 } from "./fighter.js";
@@ -39,12 +43,14 @@ import type {
 export const ARCHETYPE_FEATURE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
 > = {
+  ...DRUID_ARCHETYPE_EFFECTS_EXTRACTED,
   ...FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
 };
 
 export const ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   Record<string, ArchetypeFeatureClassificationEntry>
 > = {
+  ...DRUID_ARCHETYPE_FEATURE_CLASSIFICATION,
   ...FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
 };
 
@@ -57,6 +63,10 @@ export {
 // Re-exported for callers that want a specific class's slice directly (e.g.
 // fixture tests spot-checking one class) without importing the aggregator's
 // merged table.
+export {
+  DRUID_ARCHETYPE_EFFECTS_EXTRACTED,
+  DRUID_ARCHETYPE_FEATURE_CLASSIFICATION,
+} from "./druid.js";
 export {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
