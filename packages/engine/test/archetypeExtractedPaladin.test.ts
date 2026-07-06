@@ -191,9 +191,7 @@ describe("Virtuoso Bravo (paladin): Nimble grants dodge AC while lightly armored
       makeDoc({ classes: [{ tag: "paladin", level: 19 }], archetypes: [virtuosoBravo] }),
       ref,
     );
-    const dodge = sheet.ac.components.find(
-      (c) => c.category === "dodge" && c.source === "Nimble",
-    );
+    const dodge = sheet.ac.components.find((c) => c.category === "dodge" && c.source === "Nimble");
     expect(dodge?.value).toBe(5);
   });
 
@@ -219,17 +217,23 @@ describe("Holy Champion 'DR increases to 10/evil' reflavors (issue #45 finding, 
     "Oath against the Wyrm",
     "Oath of the People's Council",
     "Tranquil Guardian",
-  ])("%s: DR 10/evil at L20, cleanly paired to Holy Champion (suppressed, no double-count)", (name) => {
-    const id = archetypeId(name, "paladin");
-    const sheet = compute(makeDoc({ classes: [{ tag: "paladin", level: 20 }], archetypes: [id] }), ref);
+  ])(
+    "%s: DR 10/evil at L20, cleanly paired to Holy Champion (suppressed, no double-count)",
+    (name) => {
+      const id = archetypeId(name, "paladin");
+      const sheet = compute(
+        makeDoc({ classes: [{ tag: "paladin", level: 20 }], archetypes: [id] }),
+        ref,
+      );
 
-    // Holy Champion itself carries no vendored `changes[]`, so suppression
-    // cleanliness doesn't affect this number either way — assert it directly.
-    expect(sheet.defenses?.dr.find((d) => d.qualifier === "evil")?.total).toBe(10);
+      // Holy Champion itself carries no vendored `changes[]`, so suppression
+      // cleanliness doesn't affect this number either way — assert it directly.
+      expect(sheet.defenses?.dr.find((d) => d.qualifier === "evil")?.total).toBe(10);
 
-    const holyChampion = sheet.classFeatures.find((f) => f.name === "Holy Champion");
-    expect(holyChampion?.applied).toBe(false); // cleanly paired 1:1
-  });
+      const holyChampion = sheet.classFeatures.find((f) => f.name === "Holy Champion");
+      expect(holyChampion?.applied).toBe(false); // cleanly paired 1:1
+    },
+  );
 });
 
 describe("blocked composition trap: ambiguous Divine Grace swaps (issue #45)", () => {
