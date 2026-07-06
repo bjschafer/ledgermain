@@ -22,8 +22,10 @@ function raceId(name: string): string {
   return entry[0];
 }
 
-function archetypeId(name: string): string {
-  const entry = Object.values(ref.archetypes).find((a) => a.name === name);
+function archetypeId(name: string, classTag?: string): string {
+  const entry = Object.values(ref.archetypes).find(
+    (a) => a.name === name && (classTag === undefined || a.classTag === classTag),
+  );
   if (!entry) throw new Error(`archetype not found: ${name}`);
   return entry.id;
 }
@@ -308,7 +310,7 @@ describe("Sorcerer of Sleep (sorcerer): Pesh Expert grants +1/2 level (min 1) on
 });
 
 describe("Seeker (sorcerer): Tinkering grants +1/2 level (min 1) on Disable Device", () => {
-  const seeker = archetypeId("Seeker");
+  const seeker = archetypeId("Seeker", "sorcerer");
 
   it("+3 at L6", () => {
     const sheet = compute(
