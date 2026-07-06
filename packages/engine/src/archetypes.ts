@@ -3,11 +3,13 @@
  * layered on top: which base feature is struck through, which archetype
  * feature replaced it (or, when the dataset couldn't pair a slot
  * unambiguously, a prose-only soft warning instead of a swap), and — for the
- * small hand-authored slice in `archetype-effects.ts` (issue #7) — the
- * archetype feature's own mechanical `detail` summary. The vendored archetype
- * dataset itself carries no numeric effects (see `packages/schema/src/
- * refdata.ts` `ArchetypeFeature` doc comment); any numbers shown here come
- * from `ARCHETYPE_FEATURE_EFFECTS`, not the dataset.
+ * hand-verified slice in `archetype-effects.ts` (issue #7) or the
+ * machine-extracted slice in `archetype-effects-extracted.ts` (issue #45) —
+ * the archetype feature's own mechanical `detail` summary. The vendored
+ * archetype dataset itself carries no numeric effects (see `packages/schema/
+ * src/refdata.ts` `ArchetypeFeature` doc comment); any numbers shown here
+ * come from `resolveArchetypeFeatureEffect` (`archetype-effects-resolve.ts`),
+ * never the dataset.
  */
 
 import type {
@@ -21,7 +23,7 @@ import type {
 } from "@pf1/schema";
 
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
-import { ARCHETYPE_FEATURE_EFFECTS } from "./archetype-effects.js";
+import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import {
   sneakAttackDice,
@@ -250,19 +252,41 @@ export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: Ref
 }
 
 /**
- * True when at least one of `archetypeId`'s features has a hand-authored
- * entry in `ARCHETYPE_FEATURE_EFFECTS` (issue #7) that actually carries a
- * real `Change` — used by `ArchetypePicker` to badge which archetypes carry
- * modeled numeric effects vs. structural/prose-only swaps. A notes-only entry
- * (`changes: []`, added to surface a `detail` summary — e.g. Scout's Charge,
- * Archaeologist's Luck) does NOT count: it has no numeric effect to badge.
+ * "verified" when at least one of `archetypeId`'s features has a
+ * hand-authored entry (issue #7) with a real `Change`; "extracted" when none
+ * are hand-verified but at least one has a machine-extracted entry (issue
+ * #45) with a real `Change`; "none" otherwise. Verified always wins at the
+ * archetype level even if only one of several modeled features is verified —
+ * matches `resolveArchetypeFeatureEffect`'s per-feature precedence. Used by
+ * `ArchetypePicker` to badge which archetypes carry modeled numeric effects,
+ * and to distinguish a hand-verified badge from a machine-extracted one so
+ * the two are never visually confused. A notes-only entry (`changes: []`,
+ * added to surface a `detail` summary — e.g. Scout's Charge, Archaeologist's
+ * Luck) does NOT count in either tier: it has no numeric effect to badge.
+ */
+export type ArchetypeEffectTier = "verified" | "extracted" | "none";
+
+export function archetypeModeledEffectTier(
+  refData: RefData,
+  archetypeId: string,
+): ArchetypeEffectTier {
+  let sawExtracted = false;
+  for (const f of Object.values(refData.archetypeFeatures)) {
+    if (f.archetypeId !== archetypeId) continue;
+    const resolved = resolveArchetypeFeatureEffect(f.id);
+    if (!resolved || resolved.effect.changes.length === 0) continue;
+    if (resolved.source === "verified") return "verified";
+    sawExtracted = true;
+  }
+  return sawExtracted ? "extracted" : "none";
+}
+
+/**
+ * Back-compat convenience: true for either tier. Prefer
+ * {@link archetypeModeledEffectTier} where the UI needs to distinguish them.
  */
 export function archetypeHasModeledEffects(refData: RefData, archetypeId: string): boolean {
-  for (const f of Object.values(refData.archetypeFeatures)) {
-    if (f.archetypeId === archetypeId && (ARCHETYPE_FEATURE_EFFECTS[f.id]?.changes.length ?? 0) > 0)
-      return true;
-  }
-  return false;
+  return archetypeModeledEffectTier(refData, archetypeId) !== "none";
 }
 
 /**
@@ -290,12 +314,14 @@ export function resolveClassFeatures(
       .sort((a, b) => a.level - b.level);
 
     for (const f of archetypeFeatures) {
+      const resolved = resolveArchetypeFeatureEffect(f.id);
       features.push({
         level: f.level,
         name: f.name,
         description: f.description,
         ambiguous: !f.pairedBaseFeatureUuid,
-        detail: ARCHETYPE_FEATURE_EFFECTS[f.id]?.detail?.(clsLevel),
+        detail: resolved?.effect.detail?.(clsLevel),
+        effectSource: resolved?.effect.detail ? resolved.source : undefined,
       });
       if (f.pairedBaseFeatureUuid) {
         swappedSlots[f.level] = f.pairedBaseFeatureUuid;

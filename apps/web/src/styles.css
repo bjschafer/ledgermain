@@ -3215,8 +3215,10 @@ input[type="text"].saved-roll-name:focus {
   color: var(--muted);
 }
 
-/* Marks an archetype with a hand-authored numeric effect (issue #7) — used
-   both inline in an ArchetypePicker chip and in its explanatory hint text. */
+/* Marks an archetype with a real numeric effect — hand-verified (issue #7,
+   solid fill) or machine-extracted (issue #45, hollow/outlined — see
+   `.badge-modeled--extracted` below) — used both inline in an
+   ArchetypePicker chip and in its explanatory hint text. */
 .badge-modeled {
   display: inline-block;
   font-size: 0.7em;
@@ -3227,6 +3229,25 @@ input[type="text"].saved-roll-name:focus {
   color: var(--bg);
   background: var(--gold-dim);
   vertical-align: middle;
+}
+
+/* Machine-extracted (issue #45): hollow/outlined so it reads as visibly
+   lower-confidence than the solid-fill hand-verified badge at a glance, not
+   just on hover — never rely on `title` alone to distinguish the two. */
+.badge-modeled--extracted {
+  color: var(--gold-dim);
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+}
+
+/* Used inline next to a `cf-detail` summary in ClassFeaturesList (a short
+   "extracted" text label, not a bare "M") rather than the picker chip's
+   single-letter form. */
+.badge-modeled--inline {
+  margin-left: 4px;
+  font-size: 0.65em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .cf-origin {

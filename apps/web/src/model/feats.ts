@@ -32,11 +32,11 @@
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import {
-  ARCHETYPE_FEATURE_EFFECTS,
   FEAT_EFFECTS,
   activeArchetypeSwaps,
   buildRollData,
   featNameSlug,
+  resolveArchetypeFeatureEffect,
   tryEvaluateFormula,
   type ChoiceFeatEntry,
   type RollData,
@@ -177,9 +177,10 @@ function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
     }
   }
 
-  // Archetype-granted bonus-feat slots (ARCHETYPE_FEATURE_EFFECTS, issue #40) —
-  // gated the same way as the base features above: the granting class's level
-  // must reach the archetype feature's `level`.
+  // Archetype-granted bonus-feat slots (issue #40, extended by issue #45's
+  // machine-extracted table via `resolveArchetypeFeatureEffect`) — gated the
+  // same way as the base features above: the granting class's level must
+  // reach the archetype feature's `level`.
   for (const archetypeId of doc.build.archetypes ?? []) {
     const archetype = refData.archetypes[archetypeId];
     if (!archetype) continue;
@@ -187,7 +188,7 @@ function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
     const archRollData: RollData = { ...rollData, class: { level: clsLevel, unlevel: clsLevel } };
     for (const f of Object.values(refData.archetypeFeatures)) {
       if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
-      const entry = ARCHETYPE_FEATURE_EFFECTS[f.id];
+      const entry = resolveArchetypeFeatureEffect(f.id)?.effect;
       if (!entry) continue;
       for (const ch of entry.changes) {
         if (ch.target !== "bonusFeats") continue;

@@ -165,12 +165,29 @@ export {
   archetypeSwappedUuids,
   activeArchetypeSwaps,
   archetypeHasModeledEffects,
+  archetypeModeledEffectTier,
+  type ArchetypeEffectTier,
   barbarianDamageReductionReplaced,
   collectGrantedFeatures,
   type ResolvedClassFeatures,
   type GrantedFeature,
 } from "./archetypes.js";
 export { ARCHETYPE_FEATURE_EFFECTS, type ArchetypeFeatureEffect } from "./archetype-effects.js";
+export {
+  ARCHETYPE_FEATURE_EFFECTS_EXTRACTED,
+  type ExtractedArchetypeFeatureEffect,
+  type ExtractionConfidence,
+} from "./archetype-effects-extracted.js";
+export {
+  resolveArchetypeFeatureEffect,
+  type ArchetypeEffectSource,
+  type ResolvedArchetypeFeatureEffect,
+} from "./archetype-effects-resolve.js";
+export {
+  FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
+  type ArchetypeFeatureClassificationBucket,
+  type ArchetypeFeatureClassificationEntry,
+} from "./archetype-classification.js";
 export {
   isTargetApplied,
   unappliedChanges,

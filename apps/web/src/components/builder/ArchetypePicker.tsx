@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { archetypeHasModeledEffects } from "@pf1/engine";
+import { archetypeModeledEffectTier, type ArchetypeEffectTier } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { archetypeConflictWarnings, checkArchetypeConflict } from "../../model/archetypes.js";
@@ -29,10 +29,10 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
   const chosen = doc.build.archetypes ?? [];
 
   const byClass = useMemo(() => {
-    const groups = new Map<string, { id: string; name: string; modeled: boolean }[]>();
+    const groups = new Map<string, { id: string; name: string; tier: ArchetypeEffectTier }[]>();
     for (const a of Object.values(refData.archetypes)) {
       const list = groups.get(a.classTag) ?? [];
-      list.push({ id: a.id, name: a.name, modeled: archetypeHasModeledEffects(refData, a.id) });
+      list.push({ id: a.id, name: a.name, tier: archetypeModeledEffectTier(refData, a.id) });
       groups.set(a.classTag, list);
     }
     for (const list of groups.values()) list.sort((a, b) => a.name.localeCompare(b.name));
@@ -73,10 +73,12 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
       {open && (
         <>
           <p className="hint">
-            Mostly structural swaps — a small hand-authored slice (marked{" "}
-            <span className="badge-modeled">M</span>) also carries a real numeric effect (see Class
-            Features below); the rest show prose only. Picking one that would replace an
-            already-swapped ability is blocked (it would silently do nothing).
+            Mostly structural swaps — a hand-verified slice (marked{" "}
+            <span className="badge-modeled">M</span>) or a machine-extracted slice (marked{" "}
+            <span className="badge-modeled badge-modeled--extracted">M</span>, lower confidence —
+            see Class Features below for its provenance sentence) carries a real numeric effect; the
+            rest show prose only. Picking one that would replace an already-swapped ability is
+            blocked (it would silently do nothing).
           </p>
           {archetypeConflictWarnings(doc, refData).map((w) => (
             <p key={w} className="hint affliction-warn">
@@ -119,10 +121,18 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
                         onClick={() => toggle(a.id, conflict.blocked)}
                       >
                         {a.name}
-                        {a.modeled ? (
+                        {a.tier === "verified" ? (
                           <span
                             className="badge-modeled"
-                            title="Carries a hand-authored numeric effect (see Class Features)"
+                            title="Carries a hand-verified numeric effect (see Class Features)"
+                          >
+                            {" "}
+                            M
+                          </span>
+                        ) : a.tier === "extracted" ? (
+                          <span
+                            className="badge-modeled badge-modeled--extracted"
+                            title="Carries a machine-extracted numeric effect, not yet hand-verified (see Class Features for its provenance sentence)"
                           >
                             {" "}
                             M

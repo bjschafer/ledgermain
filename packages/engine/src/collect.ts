@@ -10,7 +10,7 @@
 import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
-import { ARCHETYPE_FEATURE_EFFECTS } from "./archetype-effects.js";
+import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { activeArchetypeSwaps } from "./archetypes.js";
 import { BLOODLINES } from "./bloodlines.js";
 import { CONDITIONS } from "./conditions.js";
@@ -178,11 +178,15 @@ export function collectModifiers(
     }
   }
 
-  // --- archetype feature effects (issue #7) -------------------------------
+  // --- archetype feature effects (issue #7, extended by issue #45) --------
   // Hand-authored numeric effects for the small slice of archetype features
   // that grant an unconditional bonus (see `archetype-effects.ts`'s doc
-  // comment for the audit/scope rationale) — gated the same way base class
-  // features are: the granting class's level must reach the feature's level.
+  // comment for the audit/scope rationale), extended by the machine-extracted
+  // table (`archetype-effects-extracted.ts`, issue #45's fighter pilot) —
+  // `resolveArchetypeFeatureEffect` checks the hand-verified table first, so
+  // an id present in both is never double-applied. Gated the same way base
+  // class features are: the granting class's level must reach the feature's
+  // level.
   for (const archetypeId of doc.build.archetypes ?? []) {
     const archetype = refData.archetypes[archetypeId];
     if (!archetype) continue;
@@ -193,9 +197,9 @@ export function collectModifiers(
     };
     for (const f of Object.values(refData.archetypeFeatures)) {
       if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
-      const entry = ARCHETYPE_FEATURE_EFFECTS[f.id];
-      if (!entry) continue;
-      for (const ch of entry.changes) {
+      const resolved = resolveArchetypeFeatureEffect(f.id);
+      if (!resolved) continue;
+      for (const ch of resolved.effect.changes) {
         evalChange(
           ch.formula,
           archFeatureRollData,

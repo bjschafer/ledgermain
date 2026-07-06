@@ -1250,12 +1250,23 @@ export interface DerivedArchetypeFeature {
   /** True when this feature has no `pairedBaseFeatureUuid` — prose-only soft warning, not a swap. */
   ambiguous: boolean;
   /**
-   * One-line mechanical summary for the small hand-authored slice of
-   * archetype features with real numeric effects (issue #7) — e.g. "DR 5/—".
-   * Undefined for the vast majority of archetype features, which are
-   * structural/prose-only (see `@pf1/engine` `archetype-effects.ts`).
+   * One-line mechanical summary for the slice of archetype features with
+   * real numeric effects — hand-verified (issue #7) or machine-extracted
+   * (issue #45) — e.g. "DR 5/—". Undefined for the vast majority of
+   * archetype features, which are structural/prose-only (see `@pf1/engine`
+   * `archetype-effects.ts` / `archetype-effects-extracted.ts`).
    */
   detail?: string;
+  /**
+   * Which table `detail`/the underlying `Change`s came from — "verified"
+   * (issue #7, a human read the rulebook) or "extracted" (issue #45, a
+   * prose→Change extraction pass; carries lower confidence, see
+   * `@pf1/engine` `archetype-effects-extracted.ts`). Undefined when neither
+   * table has an entry for this feature (no `detail` either, in that case).
+   * Kept as a distinct field (not folded into `detail`'s string) so the UI
+   * can render a visibly different badge without string-sniffing.
+   */
+  effectSource?: "verified" | "extracted";
 }
 
 /** A resolved archetype the character has chosen, with its swap map + feature list. */
