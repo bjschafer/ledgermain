@@ -31,6 +31,10 @@ import {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
 } from "./fighter.js";
+import {
+  SORCERER_ARCHETYPE_EFFECTS_EXTRACTED,
+  SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION,
+} from "./sorcerer.js";
 import type {
   ArchetypeFeatureClassificationEntry,
   ExtractedArchetypeFeatureEffect,
@@ -40,12 +44,14 @@ export const ARCHETYPE_FEATURE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
 > = {
   ...FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
+  ...SORCERER_ARCHETYPE_EFFECTS_EXTRACTED,
 };
 
 export const ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   Record<string, ArchetypeFeatureClassificationEntry>
 > = {
   ...FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
+  ...SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION,
 };
 
 export {
@@ -61,3 +67,7 @@ export {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
 } from "./fighter.js";
+export {
+  SORCERER_ARCHETYPE_EFFECTS_EXTRACTED,
+  SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION,
+} from "./sorcerer.js";
