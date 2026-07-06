@@ -27,6 +27,7 @@
  * happen because every key is prefixed with its own class tag.
  */
 
+import { BARD_ARCHETYPE_EFFECTS_EXTRACTED, BARD_ARCHETYPE_FEATURE_CLASSIFICATION } from "./bard.js";
 import {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
@@ -43,6 +44,7 @@ import type {
 export const ARCHETYPE_FEATURE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
 > = {
+  ...BARD_ARCHETYPE_EFFECTS_EXTRACTED,
   ...FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   ...SORCERER_ARCHETYPE_EFFECTS_EXTRACTED,
 };
@@ -50,6 +52,7 @@ export const ARCHETYPE_FEATURE_EFFECTS_EXTRACTED: Readonly<
 export const ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   Record<string, ArchetypeFeatureClassificationEntry>
 > = {
+  ...BARD_ARCHETYPE_FEATURE_CLASSIFICATION,
   ...FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
   ...SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION,
 };
@@ -63,6 +66,7 @@ export {
 // Re-exported for callers that want a specific class's slice directly (e.g.
 // fixture tests spot-checking one class) without importing the aggregator's
 // merged table.
+export { BARD_ARCHETYPE_EFFECTS_EXTRACTED, BARD_ARCHETYPE_FEATURE_CLASSIFICATION } from "./bard.js";
 export {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
