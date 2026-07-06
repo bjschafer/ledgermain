@@ -31,6 +31,10 @@ import {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
 } from "./fighter.js";
+import {
+  PALADIN_ARCHETYPE_EFFECTS_EXTRACTED,
+  PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION,
+} from "./paladin.js";
 import type {
   ArchetypeFeatureClassificationEntry,
   ExtractedArchetypeFeatureEffect,
@@ -40,12 +44,14 @@ export const ARCHETYPE_FEATURE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
 > = {
   ...FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
+  ...PALADIN_ARCHETYPE_EFFECTS_EXTRACTED,
 };
 
 export const ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   Record<string, ArchetypeFeatureClassificationEntry>
 > = {
   ...FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
+  ...PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION,
 };
 
 export {
@@ -61,3 +67,7 @@ export {
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
 } from "./fighter.js";
+export {
+  PALADIN_ARCHETYPE_EFFECTS_EXTRACTED,
+  PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION,
+} from "./paladin.js";
