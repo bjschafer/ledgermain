@@ -23,8 +23,10 @@ import {
   bloodlineSpellsKnown,
   casterClassesOf,
   casterModelFor,
+  curseSpellsKnown,
   grantedCantrips,
   knownSpellsFor,
+  mysterySpellsKnown,
   preparedCapacityByLevel,
   SCHOOL_LABELS,
   spellSlotsByLevel,
@@ -886,6 +888,22 @@ function SpontaneousView({
   if (casterTag === "sorcerer") {
     const known = new Set(knownList);
     for (const sp of bloodlineSpellsKnown(refData, doc.build.sorcererBloodline, classLevel)) {
+      if (known.has(sp.id)) continue;
+      (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
+        id: sp.id,
+        name: sp.name,
+      });
+    }
+  }
+  // Oracle mystery + curse bonus spells known: same treatment as sorcerer
+  // bloodline spells above — castable at the table, only exempt from the cap.
+  if (casterTag === "oracle") {
+    const known = new Set(knownList);
+    const bonus = [
+      ...mysterySpellsKnown(refData, doc.build.oracleMystery, classLevel),
+      ...curseSpellsKnown(refData, doc.build.oracleCurse, classLevel),
+    ];
+    for (const sp of bonus) {
       if (known.has(sp.id)) continue;
       (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
         id: sp.id,

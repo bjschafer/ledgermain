@@ -8,8 +8,10 @@ import {
   bloodlineSpellsKnown,
   casterClassesOf,
   casterModelFor,
+  curseSpellsKnown,
   grantedCantrips,
   knownSpellsFor,
+  mysterySpellsKnown,
   schoolLabel,
   spellsKnownLimitsByLevel,
 } from "../../model/spellcasting.js";
@@ -106,6 +108,17 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     if (casterTag !== "sorcerer") return [];
     return bloodlineSpellsKnown(refData, doc.build.sorcererBloodline, classLevel);
   }, [casterTag, refData, doc.build.sorcererBloodline, classLevel]);
+
+  // Oracle mystery + curse bonus spells known: same "auto-granted, read-only,
+  // exempt from the cap" treatment as bloodlineEntries above. See
+  // model/spellcasting.mysterySpellsKnown / curseSpellsKnown.
+  const mysteryEntries = useMemo<SpellEntry[]>(() => {
+    if (casterTag !== "oracle") return [];
+    return [
+      ...mysterySpellsKnown(refData, doc.build.oracleMystery, classLevel),
+      ...curseSpellsKnown(refData, doc.build.oracleCurse, classLevel),
+    ];
+  }, [casterTag, refData, doc.build.oracleMystery, doc.build.oracleCurse, classLevel]);
 
   const preparesFromClassList = !!model?.preparesFromClassList;
 
@@ -361,6 +374,11 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             refData={refData}
             abilityMod={abilityMod}
           />
+        )}
+
+        {/* Oracle mystery + curse bonus spells: read-only, auto-granted, exempt from the known cap. */}
+        {mysteryEntries.length > 0 && (
+          <MysterySpellsBlock entries={mysteryEntries} refData={refData} abilityMod={abilityMod} />
         )}
 
         {preparesFromClassList ? (
@@ -743,6 +761,71 @@ function BloodlineSpellsBlock({
                   <div className="pmain">
                     <div className="pname">
                       {sp.name} <span className="tag-bloodline">bloodline</span>
+                    </div>
+                    {spellData && (
+                      <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+    </div>
+  );
+}
+
+/**
+ * Oracle mystery + curse bonus spells known: same "auto-granted, read-only,
+ * exempt from the cap" treatment as `BloodlineSpellsBlock` above, just merged
+ * across both sources (a mystery always grants some; only the Haunted curse
+ * grants any) into one block rather than two near-empty ones.
+ */
+function MysterySpellsBlock({
+  entries,
+  refData,
+  abilityMod,
+}: {
+  entries: SpellEntry[];
+  refData: RefData;
+  abilityMod: number;
+}) {
+  const [collapsed, toggle] = useCollapsed("mystery-spells", true);
+  const byLevel = new Map<number, SpellEntry[]>();
+  for (const e of entries) {
+    (byLevel.get(e.level) ?? byLevel.set(e.level, []).get(e.level)!).push(e);
+  }
+  const levels = [...byLevel.keys()].sort((a, b) => a - b);
+
+  return (
+    <div className="spell-level-group is-granted is-bloodline">
+      <div
+        className="spell-level-head is-collapsible is-granted"
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={!collapsed}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggle();
+        }}
+      >
+        <span className="spell-level-label">Mystery / Curse Bonus Spells</span>
+        <span className="spell-level-count">{entries.length}</span>
+        <span className="panel-caret" aria-hidden="true">
+          {collapsed ? "▸" : "▾"}
+        </span>
+      </div>
+      {!collapsed &&
+        levels.map((lvl) => (
+          <div key={lvl} className="spell-domain-level">
+            <div className="spell-domain-level-head">Level {lvl}</div>
+            {byLevel.get(lvl)!.map((sp) => {
+              const spellData = refData.spells[sp.id];
+              return (
+                <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
+                  <div className="pmain">
+                    <div className="pname">
+                      {sp.name} <span className="tag-mystery">mystery</span>
                     </div>
                     {spellData && (
                       <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />

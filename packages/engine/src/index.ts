@@ -89,6 +89,18 @@ export {
   type ArcanistExploitDef,
 } from "./arcanist-exploits.js";
 export {
+  ORACLE_MYSTERIES,
+  ORACLE_MYSTERY_TAGS,
+  type OracleMysteryDef,
+  type OracleMysteryBonusSpell,
+} from "./oracle-mysteries.js";
+export {
+  ORACLE_CURSES,
+  ORACLE_CURSE_TAGS,
+  type OracleCurseDef,
+  type OracleCurseBonusSpell,
+} from "./oracle-curses.js";
+export {
   FEAT_EFFECTS,
   SITUATIONAL_FEAT_EFFECTS,
   featNameSlug,

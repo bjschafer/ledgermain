@@ -17,6 +17,7 @@ import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
 import { FEAT_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
+import { ORACLE_CURSES } from "./oracle-curses.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
 import { TRAITS } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
@@ -309,6 +310,24 @@ export function collectModifiers(
       if (!exploit) continue;
       for (const ch of exploit.changes) {
         evalChange(ch.formula, rollData, ch.target, ch.type, exploit.name, exploit.id, out);
+      }
+    }
+  }
+
+  // --- oracle's curse (build choice) ---------------------------------------
+  // Curse ids are hand-authored clean-room content (not linked from the
+  // vendored Oracle class def — see `@pf1/engine` `oracle-curses.ts`), same
+  // posture as arcanist exploits above. Gated on the character actually
+  // having oracle levels (a non-oracle with a stale `oracleCurse` field gets
+  // nothing). Most base curses are `changes: []` (situational tiered
+  // benefits, contextNotes only); only Wasting (-4 Cha-based skills) and Lame
+  // (variable landSpeed penalty) carry a real unconditional Change today.
+  const oracleLevel = doc.identity.classes.find((c) => c.tag === "oracle")?.level ?? 0;
+  if (oracleLevel > 0 && doc.build.oracleCurse) {
+    const curse = ORACLE_CURSES[doc.build.oracleCurse];
+    if (curse) {
+      for (const ch of curse.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, curse.name, `curse:${curse.tag}`, out);
       }
     }
   }

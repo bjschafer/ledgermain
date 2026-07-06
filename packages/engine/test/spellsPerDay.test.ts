@@ -405,3 +405,18 @@ describe("baseSpellsPerDay() — magus (UM medium prepared-arcane, caps at 6th l
     expect(baseSpellsPerDay("magus", 5, -1)).toBeNull();
   });
 });
+
+describe("baseSpellsPerDay()/baseSpellsKnown() — oracle reuses the sorcerer tables", () => {
+  // Oracle's "Spells per Day" and "Spells Known" tables (APG) are numerically
+  // identical to the sorcerer's (verified against aonprd.com/d20pfsrd.com) —
+  // apps/web/src/model/spellcasting.ts's CASTER_MODELS.oracle sets
+  // progression/knownProgression to "sorcerer" rather than duplicating the
+  // table under an "oracle" key. This just locks that reuse in place.
+  it("level-5 oracle (via the sorcerer table): 6 orisons, 4 first-level, 2 second-level known", () => {
+    expect(baseSpellsKnown("sorcerer", 5, 0)).toBe(6);
+    expect(baseSpellsKnown("sorcerer", 5, 1)).toBe(4);
+    expect(baseSpellsKnown("sorcerer", 5, 2)).toBe(2);
+    expect(baseSpellsPerDay("sorcerer", 5, 1)).toBe(6);
+    expect(baseSpellsPerDay("sorcerer", 5, 2)).toBe(4);
+  });
+});

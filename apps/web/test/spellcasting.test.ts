@@ -8,7 +8,9 @@ import {
   bonusSpellsForLevel,
   casterModelFor,
   concentrationDC,
+  curseSpellsKnown,
   grantedCantrips,
+  mysterySpellsKnown,
   preparedCapacityByLevel,
   spellSaveDC,
   spellSlotsByLevel,
@@ -269,5 +271,59 @@ describe("casterModelFor() — magus", () => {
     expect(m!.knownLabel).toBe("Spellbook");
     expect(m!.grantsAllCantrips).toBe(true);
     expect(m!.preparesFromClassList).toBe(false);
+  });
+});
+
+describe("casterModelFor() — oracle", () => {
+  it("returns a spontaneous/cha model reusing the sorcerer progression tables", () => {
+    const m = casterModelFor("oracle");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("cha");
+    expect(m!.progression).toBe("sorcerer");
+    expect(m!.knownProgression).toBe("sorcerer");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+});
+
+describe("mysterySpellsKnown()", () => {
+  it("returns [] below oracle level 2 (a mystery's first bonus spell unlocks at 2)", () => {
+    expect(mysterySpellsKnown(ref, "life", 1)).toEqual([]);
+  });
+
+  it("L2 oracle unlocks exactly the mystery's first bonus spell", () => {
+    const spells = mysterySpellsKnown(ref, "life", 2);
+    expect(spells.length).toBe(1);
+    expect(spells[0]!.level).toBe(2);
+    expect(spells[0]!.name).toBe("Detect Undead");
+  });
+
+  it("L9 oracle unlocks bonus spells granted at levels 2, 4, 6, and 8", () => {
+    const spells = mysterySpellsKnown(ref, "life", 9);
+    expect(spells.map((s) => s.level).sort((a, b) => a - b)).toEqual([2, 4, 6, 8]);
+  });
+
+  it("returns [] for an unknown mystery tag (soft fail, no throw)", () => {
+    expect(mysterySpellsKnown(ref, "notARealMystery", 20)).toEqual([]);
+  });
+
+  it("returns [] when no mystery is chosen (undefined tag)", () => {
+    expect(mysterySpellsKnown(ref, undefined, 20)).toEqual([]);
+  });
+});
+
+describe("curseSpellsKnown()", () => {
+  it("Haunted grants Mage Hand + Ghost Sound at 1st level", () => {
+    const spells = curseSpellsKnown(ref, "haunted", 1);
+    expect(spells.map((s) => s.name).sort()).toEqual(["Ghost Sound", "Mage Hand"]);
+  });
+
+  it("a curse with no bonus spells (Lame) returns []", () => {
+    expect(curseSpellsKnown(ref, "lame", 20)).toEqual([]);
+  });
+
+  it("returns [] when no curse is chosen (undefined tag)", () => {
+    expect(curseSpellsKnown(ref, undefined, 20)).toEqual([]);
   });
 });
