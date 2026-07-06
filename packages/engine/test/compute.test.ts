@@ -1381,3 +1381,87 @@ describe("compute: arcanist L4 (human, no armor) — ACG hybrid caster (issue #1
     expect(consumeSpells?.per).toBe("day");
   });
 });
+
+describe("compute: magus L7 (human, no armor) — UM medium prepared-arcane caster", () => {
+  // Con 14 (mod +2) drives HP; Int 18 (mod +4) drives spell DC/Arcane Pool.
+  const doc = makeDoc({
+    classes: [{ tag: "magus", level: 7 }],
+    abilities: { str: 10, dex: 10, con: 14, int: 18, wis: 10, cha: 10 },
+    skillRanks: { spl: 7, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +5 (3/4 medium progression: floor(7*3/4))", () => {
+    expect(sheet.bab).toBe(5);
+  });
+
+  it("saves: Fort +7 and Will +5 (good bases, Fort also gets +2 Con), Ref +2 (poor)", () => {
+    expect(sheet.saves.fort.total).toBe(7); // base 5 (2 + floor(7/2)) + con mod 2
+    expect(sheet.saves.will.total).toBe(5); // base 5 (2 + floor(7/2)) + wis mod 0
+    expect(sheet.saves.ref.total).toBe(2); // base 2 (floor(7/3)) + dex mod 0
+  });
+
+  it("HP 52 (d8 HD: 8 max L1 + 5 avg * 6 more levels, +2 Con/level)", () => {
+    expect(sheet.hp.max).toBe(52);
+  });
+
+  it("2 + Int skill points/level, d8 HD, medium BAB, fort/will high + ref low (magus class def)", () => {
+    const magusEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "magus");
+    expect(magusEntry).toBeDefined();
+    expect(magusEntry![1].skillsPerLevel).toBe(2);
+    expect(magusEntry![1].hd).toBe(8);
+    expect(magusEntry![1].bab).toBe("med");
+    expect(magusEntry![1].saves).toEqual({ fort: "high", ref: "low", will: "high" });
+  });
+
+  it("spellcraft (class skill) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.spl!.total).toBe(14); // 7 ranks + int mod 4 + classSkill 3
+    expect(sheet.skills.spl!.classSkill).toBe(true);
+  });
+
+  it("Arcane Pool resource pool: 1/2 magus level (min 1) + Int mod, no daily-refill nuance modeled (rides the generic uses.maxFormula pipeline)", () => {
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const arcanePool = pools.find((p) => p.name === "Arcane Pool");
+    expect(arcanePool).toBeDefined();
+    expect(arcanePool?.max).toBe(7); // floor(7/2)=3 + int mod 4
+    expect(arcanePool?.per).toBe("day");
+  });
+});
+
+describe("compute: oracle L5 (human, no armor) — APG spontaneous divine caster", () => {
+  // Con 12 (mod +1) drives HP; Cha 16 (mod +3) drives spell DC/spells known.
+  const doc = makeDoc({
+    classes: [{ tag: "oracle", level: 5 }],
+    abilities: { str: 10, dex: 10, con: 12, int: 10, wis: 10, cha: 16 },
+    skillRanks: { hea: 5, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +3 (3/4 medium progression: floor(5*3/4))", () => {
+    expect(sheet.bab).toBe(3);
+  });
+
+  it("saves: Will +4 (good), Fort +2 (poor base + Con) and Ref +1 (poor)", () => {
+    expect(sheet.saves.will.total).toBe(4); // base 4 (2 + floor(5/2)) + wis mod 0
+    expect(sheet.saves.fort.total).toBe(2); // base 1 (floor(5/3)) + con mod 1
+    expect(sheet.saves.ref.total).toBe(1); // base 1 (floor(5/3)) + dex mod 0
+  });
+
+  it("HP 33 (d8 HD: 8 max L1 + 5 avg * 4 more levels, +1 Con/level)", () => {
+    expect(sheet.hp.max).toBe(33);
+  });
+
+  it("4 + Int skill points/level, d8 HD, medium BAB, will high + fort/ref low (oracle class def)", () => {
+    const oracleEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "oracle");
+    expect(oracleEntry).toBeDefined();
+    expect(oracleEntry![1].skillsPerLevel).toBe(4);
+    expect(oracleEntry![1].hd).toBe(8);
+    expect(oracleEntry![1].bab).toBe("med");
+    expect(oracleEntry![1].saves).toEqual({ fort: "low", ref: "low", will: "high" });
+  });
+
+  it("heal (class skill) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.hea!.total).toBe(8); // 5 ranks + wis0 + classSkill3
+    expect(sheet.skills.hea!.classSkill).toBe(true);
+  });
+});

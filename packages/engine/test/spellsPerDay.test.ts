@@ -362,3 +362,61 @@ describe("baseSpellsPrepared() — arcanist (hybrid: wizard-shaped spellbook rea
     expect(baseSpellsPrepared("arcanist", 5, 10)).toBeNull();
   });
 });
+
+describe("baseSpellsPerDay() — magus (UM medium prepared-arcane, caps at 6th level)", () => {
+  it("level-1 magus: 3 cantrips, 1 first-level, no 2nd-level access", () => {
+    expect(baseSpellsPerDay("magus", 1, 0)).toBe(3);
+    expect(baseSpellsPerDay("magus", 1, 1)).toBe(1);
+    expect(baseSpellsPerDay("magus", 1, 2)).toBeNull();
+  });
+
+  it("level-4 magus: 4/3/1 at levels 0-2, no 3rd-level access (aonprd.com Table: Magus)", () => {
+    expect(baseSpellsPerDay("magus", 4, 0)).toBe(4);
+    expect(baseSpellsPerDay("magus", 4, 1)).toBe(3);
+    expect(baseSpellsPerDay("magus", 4, 2)).toBe(1);
+    expect(baseSpellsPerDay("magus", 4, 3)).toBeNull();
+  });
+
+  it("level-7 magus: 5/4/3/1 at levels 0-3, no 4th-level access", () => {
+    expect(baseSpellsPerDay("magus", 7, 0)).toBe(5);
+    expect(baseSpellsPerDay("magus", 7, 1)).toBe(4);
+    expect(baseSpellsPerDay("magus", 7, 2)).toBe(3);
+    expect(baseSpellsPerDay("magus", 7, 3)).toBe(1);
+    expect(baseSpellsPerDay("magus", 7, 4)).toBeNull();
+  });
+
+  it("magus caps at 6th-level spells: levels 7-9 are never accessible", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      expect(baseSpellsPerDay("magus", cl, 7)).toBeNull();
+      expect(baseSpellsPerDay("magus", cl, 8)).toBeNull();
+      expect(baseSpellsPerDay("magus", cl, 9)).toBeNull();
+    }
+  });
+
+  it("level-20 magus: 5 slots at every level 0-6", () => {
+    for (let lvl = 0; lvl <= 6; lvl++) {
+      expect(baseSpellsPerDay("magus", 20, lvl)).toBe(5);
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("magus", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("magus", 21, 1)).toBeNull();
+    expect(baseSpellsPerDay("magus", 5, -1)).toBeNull();
+  });
+});
+
+describe("baseSpellsPerDay()/baseSpellsKnown() — oracle reuses the sorcerer tables", () => {
+  // Oracle's "Spells per Day" and "Spells Known" tables (APG) are numerically
+  // identical to the sorcerer's (verified against aonprd.com/d20pfsrd.com) —
+  // apps/web/src/model/spellcasting.ts's CASTER_MODELS.oracle sets
+  // progression/knownProgression to "sorcerer" rather than duplicating the
+  // table under an "oracle" key. This just locks that reuse in place.
+  it("level-5 oracle (via the sorcerer table): 6 orisons, 4 first-level, 2 second-level known", () => {
+    expect(baseSpellsKnown("sorcerer", 5, 0)).toBe(6);
+    expect(baseSpellsKnown("sorcerer", 5, 1)).toBe(4);
+    expect(baseSpellsKnown("sorcerer", 5, 2)).toBe(2);
+    expect(baseSpellsPerDay("sorcerer", 5, 1)).toBe(6);
+    expect(baseSpellsPerDay("sorcerer", 5, 2)).toBe(4);
+  });
+});

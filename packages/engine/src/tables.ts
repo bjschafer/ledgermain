@@ -212,7 +212,8 @@ export type SpellProgression =
   | "ranger"
   | "bard"
   | "druid"
-  | "arcanist";
+  | "arcanist"
+  | "magus";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -469,6 +470,39 @@ const ARCANIST_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
   /* L20 */ [null, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 ];
 
+/**
+ * Magus base spells per day, indexed `[classLevel - 1][spellLevel]`. Magus is
+ * a MEDIUM prepared-arcane caster (UM): int-based, caps at 6th-level spells
+ * (columns 7-9 always null), gains its first spell slot at 1st level (unlike
+ * a paladin/ranger quarter-caster). Bonus spells from a high Intelligence
+ * score are added on top by {@link bonusSpellsForLevel} and are NOT included
+ * here. (PF1 UM SRD — clean-room table from the published rules, open game
+ * content; cross-checked against aonprd.com and d20pfsrd.com, both matching:
+ * sanity anchors at L4 4/3/1, L7 5/4/3/1, L10 5/5/4/3/1, L20 all-5s.)
+ */
+const MAGUS_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [3, 1, null, null, null, null, null, null, null, null],
+  /* L2  */ [4, 2, null, null, null, null, null, null, null, null],
+  /* L3  */ [4, 3, null, null, null, null, null, null, null, null],
+  /* L4  */ [4, 3, 1, null, null, null, null, null, null, null],
+  /* L5  */ [4, 4, 2, null, null, null, null, null, null, null],
+  /* L6  */ [5, 4, 3, null, null, null, null, null, null, null],
+  /* L7  */ [5, 4, 3, 1, null, null, null, null, null, null],
+  /* L8  */ [5, 4, 4, 2, null, null, null, null, null, null],
+  /* L9  */ [5, 5, 4, 3, null, null, null, null, null, null],
+  /* L10 */ [5, 5, 4, 3, 1, null, null, null, null, null],
+  /* L11 */ [5, 5, 4, 4, 2, null, null, null, null, null],
+  /* L12 */ [5, 5, 5, 4, 3, null, null, null, null, null],
+  /* L13 */ [5, 5, 5, 4, 3, 1, null, null, null, null],
+  /* L14 */ [5, 5, 5, 4, 4, 2, null, null, null, null],
+  /* L15 */ [5, 5, 5, 5, 4, 3, null, null, null, null],
+  /* L16 */ [5, 5, 5, 5, 4, 3, 1, null, null, null],
+  /* L17 */ [5, 5, 5, 5, 4, 4, 2, null, null, null],
+  /* L18 */ [5, 5, 5, 5, 5, 4, 3, null, null, null],
+  /* L19 */ [5, 5, 5, 5, 5, 5, 4, null, null, null],
+  /* L20 */ [5, 5, 5, 5, 5, 5, 5, null, null, null],
+];
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
@@ -478,6 +512,7 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   bard: BARD_SPELLS_PER_DAY,
   druid: DRUID_SPELLS_PER_DAY,
   arcanist: ARCANIST_SPELLS_PER_DAY,
+  magus: MAGUS_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {

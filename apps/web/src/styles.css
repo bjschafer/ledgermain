@@ -907,6 +907,20 @@ button:focus-visible,
   vertical-align: middle;
 }
 
+/* mystery/curse-spell badge — marks auto-granted oracle mystery/curse bonus
+   spells (not part of the chosen known list, exempt from the known-spell cap). */
+.tag-mystery {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold-2);
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  padding: 1px 7px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
 /* skill total when the skill cannot be used (trained-only, 0 ranks) */
 .stotal.unusable {
   color: var(--faint);

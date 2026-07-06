@@ -169,6 +169,34 @@ export function setSorcererBloodlineVariant(
 }
 
 /**
+ * Set the oracle's chosen mystery tag (single tag, PF1 grants exactly one at
+ * L1, never changed thereafter). Pass `null` (or a blank/whitespace string)
+ * to clear. No validation that the tag exists in `@pf1/engine`
+ * `ORACLE_MYSTERIES` (soft-warning posture, same as `setSorcererBloodline`).
+ */
+export function setOracleMystery(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const trimmed = typeof tag === "string" ? tag.trim() : "";
+  return {
+    ...doc,
+    build: { ...doc.build, oracleMystery: trimmed.length > 0 ? trimmed : undefined },
+  };
+}
+
+/**
+ * Set the oracle's chosen curse tag (single tag, PF1 grants exactly one at
+ * L1, never changed thereafter). Pass `null` (or a blank/whitespace string)
+ * to clear. No validation that the tag exists in `@pf1/engine`
+ * `ORACLE_CURSES` (soft-warning posture, same as `setOracleMystery`).
+ */
+export function setOracleCurse(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const trimmed = typeof tag === "string" ? tag.trim() : "";
+  return {
+    ...doc,
+    build: { ...doc.build, oracleCurse: trimmed.length > 0 ? trimmed : undefined },
+  };
+}
+
+/**
  * Set the wizard's specialization school (or `"uni"` for Universalist). Pass
  * `null` to clear the choice entirely (back-compat "unset" state, treated
  * identically to Universalist by the model layer). Setting `"uni"` clears

@@ -429,6 +429,27 @@ export interface CharacterDoc {
      * have no tracked companion.
      */
     animalCompanion?: AnimalCompanionBuild;
+    /**
+     * Oracle mystery tag (key into `@pf1/engine` `ORACLE_MYSTERIES`), chosen at
+     * L1 and never changed thereafter (PF1 RAW). Free-choice — matches the
+     * project's hybrid soft-warning posture (see `clericDomains`/
+     * `sorcererBloodline` above). Grants one bonus spell known at oracle level
+     * 2 and every two levels thereafter (see `model/spellcasting.mysterySpellsKnown`)
+     * and (display-only) class skills — see `ORACLE_MYSTERIES` doc comment for
+     * why class-skill grants aren't wired into the derived skill list.
+     * Empty/undefined for non-oracles. Back-compat: documents without this
+     * field are unaffected.
+     */
+    oracleMystery?: string;
+    /**
+     * Oracle's curse tag (key into `@pf1/engine` `ORACLE_CURSES`), chosen at L1
+     * and never changed thereafter (PF1 RAW). Free-choice, same posture as
+     * `oracleMystery`. Most curses are display-only tiered prose; Wasting and
+     * Lame carry a real numeric `Change` (see `ORACLE_CURSES` doc comment).
+     * Empty/undefined for non-oracles. Back-compat: documents without this
+     * field are unaffected.
+     */
+    oracleCurse?: string;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };

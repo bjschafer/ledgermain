@@ -15,7 +15,9 @@ import { ArcanistExploitPicker } from "./ArcanistExploitPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
+import { CursePicker } from "./CursePicker.js";
 import { DomainPicker } from "./DomainPicker.js";
+import { MysteryPicker } from "./MysteryPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
@@ -241,6 +243,14 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Arcanist exploit picker — arcanist only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "arcanist") && (
         <ArcanistExploitPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Mystery + curse pickers — oracle only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "oracle") && (
+        <>
+          <MysteryPicker doc={doc} refData={refData} update={update} />
+          <CursePicker doc={doc} refData={refData} update={update} />
+        </>
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

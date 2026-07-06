@@ -19,13 +19,20 @@
  * shaped), then cast spontaneously by spending a slot of the matching level
  * from a SEPARATE per-day slot pool (`progression`, sorcerer-shaped) — casting
  * never expends the specific prepared spell. See `preparedCapacityByLevel`
- * below and the "hybrid" branch in `PreparedSpellsPanel.tsx`.
+ * below and the "hybrid" branch in `PreparedSpellsPanel.tsx`. Magus is a
+ * plain int-based prepared caster (own spells-per-day table, capped at
+ * 6th-level spells) — modeled identically to wizard. Oracle is a plain
+ * cha-based spontaneous caster casting from the cleric spell list, reusing
+ * the sorcerer's spells-per-day/known tables (numerically identical per the
+ * SRD) plus mystery-granted bonus spells known (`mysterySpellsKnown` below).
  */
 
 import {
   baseSpellsKnown,
   baseSpellsPerDay,
   baseSpellsPrepared,
+  ORACLE_CURSES,
+  ORACLE_MYSTERIES,
   type SpellKnownProgression,
   type SpellPreparedProgression,
   type SpellProgression,
@@ -215,6 +222,37 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     blurb:
       "Hybrid caster: each day, prepare a limited number of spells from your spellbook (wizard-style, capped by the Spells Prepared table) in the tracker's Spells panel, then cast any of them spontaneously by spending a slot of that level (sorcerer-style, capped by the Spells per Day table). Casting never expends the specific prepared spell — only a slot.",
     grantsAllCantrips: true,
+    preparesFromClassList: false,
+  },
+  magus: {
+    preparation: "prepared",
+    ability: "int",
+    progression: "magus",
+    knownLabel: "Spellbook",
+    learnGuidance:
+      "Magi begin play with their spellbook containing all 0-level magus spells plus 3 1st-level magus spells of choice, plus a number of additional 1st-level spells equal to their Intelligence modifier. At each new magus level, they add 2 more magus spells of any level they can cast to their spellbook, same as a wizard.",
+    blurb:
+      "Prepared caster: spells live in your spellbook (int-based, magus spell list, caps at 6th-level spells), then you prepare a subset each day, exactly like a wizard. Your spellbook is your “known” list here.",
+    grantsAllCantrips: true,
+    preparesFromClassList: false,
+  },
+  oracle: {
+    preparation: "spontaneous",
+    ability: "cha",
+    // Oracle's Spells per Day / Spells Known tables are numerically identical
+    // to the sorcerer's (PF1 SRD — verified against aonprd.com/d20pfsrd.com:
+    // both match at every spot-checked level, including L20's all-6s/all-3s-
+    // downshift shape), so the sorcerer progression tables are reused rather
+    // than duplicated — same posture as `druid: DRUID_SPELLS_PER_DAY =
+    // WIZARD_SPELLS_PER_DAY` in `@pf1/engine` `tables.ts`.
+    progression: "sorcerer",
+    knownProgression: "sorcerer",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Oracles learn a fixed set of spells known at each level from the cleric spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. An oracle also adds every “cure” spell OR every “inflict” spell she can cast to her known list for free (a permanent choice made at 1st level, not tracked as a separate field here — add the relevant spells to your known list manually). Her mystery (see the Mystery picker) also grants one bonus spell known at 2nd level and every two levels thereafter.",
+    blurb:
+      "Spontaneous divine caster: you know a limited set of spells drawn from the cleric list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; orisons (cantrips) are cast at will once known.",
+    grantsAllCantrips: false,
     preparesFromClassList: false,
   },
 };
@@ -412,6 +450,61 @@ export function bloodlineSpellsKnown(
     }
   }
   return out.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ---------------------------------------------------------------------------
+// Oracle mystery + curse bonus spells
+// ---------------------------------------------------------------------------
+
+/**
+ * Oracle mystery bonus spells known at `oracleLevel` for the given
+ * `mysteryTag`. Unlike {@link bloodlineSpellsKnown}'s `2L+1` formula, a
+ * mystery grants exactly one bonus spell at oracle level 2 and every two
+ * levels thereafter (PF1 RAW), so `OracleMysteryDef.bonusSpells` is already
+ * keyed by the ORACLE level that unlocks it (see `@pf1/engine`
+ * `oracle-mysteries.ts`'s doc comment) — this just filters by that level and
+ * resolves each entry's vendored spell id against `refData.spells` (falling
+ * back to the table's own `name` if a data drift ever drops the id).
+ *
+ * These are *bonus* spells known — the tracker/builder add them to the
+ * displayed known list automatically and they do NOT count against the
+ * spells-known cap.
+ *
+ * @example
+ *   mysterySpellsKnown(ref, "life", 5)  // → [Detect Undead, Lesser Restoration]
+ *   mysterySpellsKnown(ref, "life", 1)  // → []  (starts at oracle level 2)
+ */
+export function mysterySpellsKnown(
+  refData: RefData,
+  mysteryTag: string | undefined,
+  oracleLevel: number,
+): { id: string; name: string; level: number }[] {
+  if (!mysteryTag) return [];
+  const mystery = ORACLE_MYSTERIES[mysteryTag];
+  if (!mystery) return [];
+  return mystery.bonusSpells
+    .filter((sp) => sp.level <= oracleLevel)
+    .map((sp) => ({ id: sp.id, name: refData.spells[sp.id]?.name ?? sp.name, level: sp.level }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Oracle curse bonus spells known at `oracleLevel` for the given `curseTag`
+ * (only "haunted" grants any, at 1st/5th/10th/15th level). Same shape and
+ * "bonus, uncapped" posture as {@link mysterySpellsKnown}.
+ */
+export function curseSpellsKnown(
+  refData: RefData,
+  curseTag: string | undefined,
+  oracleLevel: number,
+): { id: string; name: string; level: number }[] {
+  if (!curseTag) return [];
+  const curse = ORACLE_CURSES[curseTag];
+  if (!curse?.bonusSpells) return [];
+  return curse.bonusSpells
+    .filter((sp) => sp.level <= oracleLevel)
+    .map((sp) => ({ id: sp.id, name: refData.spells[sp.id]?.name ?? sp.name, level: sp.level }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 // ---------------------------------------------------------------------------
