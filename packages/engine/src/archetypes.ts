@@ -251,13 +251,16 @@ export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: Ref
 
 /**
  * True when at least one of `archetypeId`'s features has a hand-authored
- * entry in `ARCHETYPE_FEATURE_EFFECTS` (issue #7) — used by `ArchetypePicker`
- * to badge which archetypes carry modeled numeric effects vs. structural/
- * prose-only swaps.
+ * entry in `ARCHETYPE_FEATURE_EFFECTS` (issue #7) that actually carries a
+ * real `Change` — used by `ArchetypePicker` to badge which archetypes carry
+ * modeled numeric effects vs. structural/prose-only swaps. A notes-only entry
+ * (`changes: []`, added to surface a `detail` summary — e.g. Scout's Charge,
+ * Archaeologist's Luck) does NOT count: it has no numeric effect to badge.
  */
 export function archetypeHasModeledEffects(refData: RefData, archetypeId: string): boolean {
   for (const f of Object.values(refData.archetypeFeatures)) {
-    if (f.archetypeId === archetypeId && ARCHETYPE_FEATURE_EFFECTS[f.id]) return true;
+    if (f.archetypeId === archetypeId && (ARCHETYPE_FEATURE_EFFECTS[f.id]?.changes.length ?? 0) > 0)
+      return true;
   }
   return false;
 }

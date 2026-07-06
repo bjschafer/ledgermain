@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute } from "../src/index.js";
+import { archetypeHasModeledEffects, compute } from "../src/index.js";
 
 /**
  * Issue #7 (archetype numeric effects): hand-computed against the real
@@ -241,6 +241,116 @@ describe("Cloistered Cleric (cleric): Breadth of Knowledge", () => {
     );
     const comp = sheet.skills["kre"]?.components.find((c) => c.source === "Breadth of Knowledge");
     expect(comp?.value).toBe(1);
+  });
+});
+
+describe("Archer (fighter): Hawkeye replaces Bravery with a scaling Perception bonus", () => {
+  const archer = archetypeId("Archer");
+
+  it("+1 Perception at L2, +1 every 4 levels beyond", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "fighter", level: 10 }], archetypes: [archer] }),
+      ref,
+    );
+    // 1 + floor((10-2)/4) = 3
+    const per = sheet.skills["per"];
+    const comp = per?.components.find((c) => c.source === "Hawkeye");
+    expect(comp?.value).toBe(3);
+  });
+
+  it("Bravery is struck through (swapped out) once Hawkeye takes over", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "fighter", level: 2 }], archetypes: [archer] }),
+      ref,
+    );
+    const bravery = sheet.classFeatures.find((f) => f.name === "Bravery" && f.level === 2);
+    expect(bravery?.applied).toBe(false);
+    expect(bravery?.replacedBy).toBe("Hawkeye");
+  });
+});
+
+describe("Crusader (cleric): restricted-list bonus feats, 1st/5th/+5 thereafter", () => {
+  const crusader = archetypeId("Crusader");
+
+  it("grants floor(level/5)+1 bonus feats (e.g. 3 at L11)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "cleric", level: 11 }], archetypes: [crusader] }),
+      ref,
+    );
+    const archEntry = sheet.activeArchetypes.find((a) => a.id === crusader);
+    const bonusFeat = archEntry?.features.find((f) => f.name === "Bonus Feat");
+    expect(bonusFeat?.detail).toBe("3 bonus feat(s) (restricted list)");
+  });
+});
+
+describe("Sorcerer of Sleep (sorcerer): Pesh Expert grants +1/2 level (min 1) on 4 skills", () => {
+  const sorcererOfSleep = archetypeId("Sorcerer of Sleep");
+
+  it("+4 at L8 on Appraise, Craft (alchemy), Heal, Knowledge (local)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "sorcerer", level: 8 }], archetypes: [sorcererOfSleep] }),
+      ref,
+    );
+    for (const skillId of ["apr", "crf.alchemy", "hea", "klo"]) {
+      const comp = sheet.skills[skillId]?.components.find((c) => c.source === "Pesh Expert");
+      expect(comp?.value).toBe(4);
+    }
+  });
+
+  it("minimum +1 even at L1", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "sorcerer", level: 1 }], archetypes: [sorcererOfSleep] }),
+      ref,
+    );
+    const comp = sheet.skills["hea"]?.components.find((c) => c.source === "Pesh Expert");
+    expect(comp?.value).toBe(1);
+  });
+});
+
+describe("Seeker (sorcerer): Tinkering grants +1/2 level (min 1) on Disable Device", () => {
+  const seeker = archetypeId("Seeker");
+
+  it("+3 at L6", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "sorcerer", level: 6 }], archetypes: [seeker] }),
+      ref,
+    );
+    const comp = sheet.skills["dev"]?.components.find((c) => c.source === "Tinkering");
+    expect(comp?.value).toBe(3);
+  });
+});
+
+describe("Nornkith (monk): Nimble Reflexes grants a flat +2 Reflex save", () => {
+  const nornkith = archetypeId("Nornkith");
+
+  it("+2 Reflex at L3 (an ambiguous/unpaired swap — Still Mind has no vendored number to suppress)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "monk", level: 3 }], archetypes: [nornkith] }),
+      ref,
+    );
+    const comp = sheet.saves.ref.components.find((c) => c.source === "Nimble Reflexes");
+    expect(comp?.value).toBe(2);
+    const archEntry = sheet.activeArchetypes.find((a) => a.id === nornkith);
+    const feature = archEntry?.features.find((f) => f.name === "Nimble Reflexes");
+    expect(feature?.ambiguous).toBe(true);
+  });
+});
+
+describe("Notes-only archetypes carry a detail summary but no numeric effect", () => {
+  it.each([
+    ["Scout", "rogue"],
+    ["Knife Master", "rogue"],
+    ["Oath of Vengeance", "paladin"],
+    ["Divine Hunter", "paladin"],
+    ["Archaeologist", "bard"],
+    ["Menhir Savant", "druid"],
+    ["Spell Sage", "wizard"],
+    ["School Savant", "arcanist"],
+    ["Urban Barbarian", "barbarian"],
+    ["Two-Handed Fighter", "fighter"],
+  ])("%s is not badged as modeled (archetypeHasModeledEffects is false)", (name) => {
+    const id = archetypeId(name);
+    expect(archetypeHasModeledEffects(ref, id)).toBe(false);
   });
 });
 
