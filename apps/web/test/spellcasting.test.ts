@@ -258,3 +258,16 @@ describe("bloodlineSpellsKnown()", () => {
     expect(bloodlineSpellsKnown(ref, undefined, 20)).toEqual([]);
   });
 });
+
+describe("casterModelFor() — magus", () => {
+  it("returns a prepared/int model, its own progression, capped display shape mirrors wizard", () => {
+    const m = casterModelFor("magus");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("prepared");
+    expect(m!.ability).toBe("int");
+    expect(m!.progression).toBe("magus");
+    expect(m!.knownLabel).toBe("Spellbook");
+    expect(m!.grantsAllCantrips).toBe(true);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+});

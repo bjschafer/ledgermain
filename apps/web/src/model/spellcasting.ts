@@ -19,7 +19,9 @@
  * shaped), then cast spontaneously by spending a slot of the matching level
  * from a SEPARATE per-day slot pool (`progression`, sorcerer-shaped) — casting
  * never expends the specific prepared spell. See `preparedCapacityByLevel`
- * below and the "hybrid" branch in `PreparedSpellsPanel.tsx`.
+ * below and the "hybrid" branch in `PreparedSpellsPanel.tsx`. Magus is a
+ * plain int-based prepared caster (own spells-per-day table, capped at
+ * 6th-level spells) — modeled identically to wizard.
  */
 
 import {
@@ -214,6 +216,18 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Arcanists add 2 spells to their spellbook at each new level (more can be scribed from scrolls), same as a wizard.",
     blurb:
       "Hybrid caster: each day, prepare a limited number of spells from your spellbook (wizard-style, capped by the Spells Prepared table) in the tracker's Spells panel, then cast any of them spontaneously by spending a slot of that level (sorcerer-style, capped by the Spells per Day table). Casting never expends the specific prepared spell — only a slot.",
+    grantsAllCantrips: true,
+    preparesFromClassList: false,
+  },
+  magus: {
+    preparation: "prepared",
+    ability: "int",
+    progression: "magus",
+    knownLabel: "Spellbook",
+    learnGuidance:
+      "Magi begin play with their spellbook containing all 0-level magus spells plus 3 1st-level magus spells of choice, plus a number of additional 1st-level spells equal to their Intelligence modifier. At each new magus level, they add 2 more magus spells of any level they can cast to their spellbook, same as a wizard.",
+    blurb:
+      "Prepared caster: spells live in your spellbook (int-based, magus spell list, caps at 6th-level spells), then you prepare a subset each day, exactly like a wizard. Your spellbook is your “known” list here.",
     grantsAllCantrips: true,
     preparesFromClassList: false,
   },
