@@ -146,7 +146,10 @@ export async function loadCharacter(id: string): Promise<CharacterDoc> {
 
 /** Create a brand-new blank character and make it active. */
 export async function createCharacter(): Promise<CharacterDoc> {
-  const fresh = createEmptyDoc(crypto.randomUUID());
+  const id = typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  const fresh = createEmptyDoc(id);
   await db.characters.put(fresh);
   return rememberActive(fresh);
 }

@@ -257,11 +257,17 @@ a {
 .sheet-col {
   position: sticky;
   top: 16px;
+  max-height: calc(100vh - 16px);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 
 @media (max-width: 940px) {
   .sheet-col {
     position: static;
+    max-height: none;
+    overflow-y: visible;
+    overscroll-behavior-y: auto;
   }
 }
 
