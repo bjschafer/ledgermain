@@ -491,7 +491,7 @@ export function SettingsSection({
             Import character…
             <input
               type="file"
-              accept=".json,.xml,application/json,text/xml"
+              accept=".json,.xml,.html,application/json,text/xml,text/html"
               disabled={actionPending}
               style={{ display: "none" }}
               onChange={(e) => void handleImportChange(e)}

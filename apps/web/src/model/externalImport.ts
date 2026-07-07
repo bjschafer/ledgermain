@@ -36,6 +36,7 @@ import {
   setRace,
   setSkillRank,
   toggleFeat,
+  toggleKnownSpell,
 } from "./doc.js";
 import { localId } from "./ids.js";
 import { normalizeAlignmentCode, SKILL_NAMES, slugifySkillLabel } from "./names.js";
@@ -76,6 +77,17 @@ export interface ExternalCharacterData {
   languages: string[];
   gear: { name: string; quantity?: number }[];
   money: Partial<Record<"pp" | "gp" | "sp" | "cp", number>>;
+  /**
+   * Known/prepared spells grouped by the class name that casts them (free
+   * text, matched against `RefData.classes` the same way `classes` above
+   * is). Currently only populated by `importPathbuilderHtml.ts` (a stat
+   * block's "<Class> spells prepared/known" sections); left empty by the
+   * other importers. Spells are only added to the doc when `className`
+   * matches a class already present in `classes` above — a caster's spells
+   * with no matching class on the sheet are reported as unmapped rather
+   * than added to some arbitrary/first class.
+   */
+  spellsByClass?: { className: string; spellNames: string[] }[];
 }
 
 /** An `ExternalCharacterData` with every field empty — a safe starting point for parsers to fill in. */
@@ -270,6 +282,34 @@ export function buildDocFromExternalData(
         report.mapped.push(`Feat: "${featName}" -> ${refData.feats[id]!.name}`);
       } else {
         report.unmapped.push(`Feat "${featName}" not found in reference data — not added.`);
+      }
+    }
+  }
+
+  if (data.spellsByClass && data.spellsByClass.length > 0) {
+    const classIdx = buildClassTagIndex(refData);
+    const spellIdx = buildNameIndex(refData.spells);
+    for (const entry of data.spellsByClass) {
+      if (entry.spellNames.length === 0) continue;
+      const tag = classIdx.get(nameSlug(entry.className));
+      if (tag == null || !doc.identity.classes.some((c) => c.tag === tag)) {
+        report.unmapped.push(
+          `Spells listed under "${entry.className}" not imported — that class wasn't added to this character: ${entry.spellNames.join(", ")}.`,
+        );
+        continue;
+      }
+      for (const spellName of entry.spellNames) {
+        const id = spellIdx.get(nameSlug(spellName));
+        if (id) {
+          doc = toggleKnownSpell(doc, refData, id, tag);
+          report.mapped.push(
+            `Spell: "${spellName}" -> ${refData.spells[id]!.name} (${entry.className})`,
+          );
+        } else {
+          report.unmapped.push(
+            `Spell "${spellName}" (${entry.className}) not found in reference data — not added.`,
+          );
+        }
       }
     }
   }
