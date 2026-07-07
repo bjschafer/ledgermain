@@ -355,11 +355,16 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     note:
       "fixed group (close), unconditional, explicit capped-scaling formula (max +5 attack/+7 " +
       "damage at 19th) — extracted after the weapon-group fix (see " +
-      "FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above). Composition note: this feature's vendored " +
-      "pairedBaseFeatureUuid resolves to ARMOR Training's uuid, not Weapon Training's, despite " +
-      "the prose saying 'replaces weapon training 1 and 2' — a vendored-data mispairing, hand- " +
-      "corrected via WEAPON_TRAINING_MISPAIRED_REPLACEMENTS in archetypes.ts so Brawler can't " +
-      "double-dip this bonus with a separately filled-in build.weaponTrainingGroups pick.",
+      "FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED above). Composition note (issue #46): this feature's " +
+      "vendored pairedBaseFeatureUuid resolves to ARMOR Training's uuid, not Weapon Training's, " +
+      "despite the prose saying 'replaces weapon training 1 and 2' — a vendored-data mispairing, " +
+      "hand-corrected two ways in archetypes.ts: MISPAIRED_TARGET_REMAP repoints the swap at " +
+      "Weapon Training's actual uuid (so the classFeatures panel shows the right feature struck " +
+      "through), and WEAPON_TRAINING_REPLACEMENTS separately skips the entire hand-authored " +
+      "per-tier weaponTrainingGroups derivation for any Brawler (Weapon Training's own vendored " +
+      "changes[] is empty, so the uuid remap alone doesn't suppress any number) — together they " +
+      "keep Brawler from double-dipping this bonus with a separately filled-in " +
+      "build.weaponTrainingGroups pick.",
   },
   "fighter:brawler:menacing-stance:7": {
     archetypeId: "fighter:brawler",
