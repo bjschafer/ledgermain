@@ -120,11 +120,24 @@ export function deriveResourcePools(
   const linkedFeatures: { feature: ClassFeature; featureRollData: RollData; linkedTag: string }[] =
     [];
 
+  const clericWisdomHouserule = doc.build.settings?.clericWisdomHouserule ?? false;
+
   for (const { classTag, grant, resourcePool } of collectGrantedFeatures(doc, refData)) {
     const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
     // `@class.unlevel` inside a feature formula refers to THIS (granting) class's
     // level — for a domain/school grant that's the cleric/wizard level.
-    const featureRollData = { ...rollData, class: { level: classLevel, unlevel: classLevel } };
+    let featureRollData = { ...rollData, class: { level: classLevel, unlevel: classLevel } };
+    // Cleric Wisdom house-rule (issue #56, default off): cleric-tagged grants
+    // (base-class features AND domain powers, both carry classTag "cleric" —
+    // see `collectGrantedFeatures`) evaluate their formulas with `@abilities.cha`
+    // aliased to Wisdom's values. Scoped to a per-grant COPY of `featureRollData`
+    // — the character's real ability scores/mods (used everywhere else: skills,
+    // saves, other classes' formulas) are untouched, and non-cleric classTags
+    // (paladin's Lay on Hands/Channel Positive Energy, bard's Bardic
+    // Performance, sorcerer/oracle Cha-based casting, ...) never see this.
+    if (clericWisdomHouserule && classTag === "cleric") {
+      featureRollData = withClericWisdomHouserule(featureRollData);
+    }
 
     // Bloodline powers (issue #34) carry a pre-computed formula (no vendored
     // `RefData.classFeatures` entry exists for them — see `bloodlines.ts`).
@@ -248,6 +261,27 @@ export function deriveResourcePools(
   pools.push(...deriveFeatResourcePools(doc, refData, rollData));
 
   return pools;
+}
+
+/**
+ * Cleric Wisdom house-rule (issue #56): returns a COPY of `data` with
+ * `abilities.cha` aliased to `abilities.wis`'s values, for evaluating a single
+ * cleric-tagged grant's formulas (Channel Energy's `uses.maxFormula` and its
+ * actions' `dcFormula`, both written against `@abilities.cha.mod` in the
+ * vendored data — see `class-features.json`'s `channelEnergy` entry). Does
+ * NOT touch `data.abilities.wis` itself or any other roll-data field, so
+ * anything ELSE evaluated against the (non-copied) base `rollData` — the
+ * character's actual ability scores, skills, saves, other classes' formulas —
+ * is unaffected. `data.abilities` is untyped (`RollData` is `Record<string,
+ * unknown>`), so this reads defensively and no-ops if the shape it expects
+ * (`buildRollData`'s `{ base, total, mod, baseMod }` per ability) isn't there.
+ */
+function withClericWisdomHouserule<T extends RollData>(data: T): T {
+  const abilities = data.abilities;
+  if (!abilities || typeof abilities !== "object") return data;
+  const wis = (abilities as Record<string, unknown>).wis;
+  if (!wis || typeof wis !== "object") return data;
+  return { ...data, abilities: { ...abilities, cha: { ...wis } } };
 }
 
 /**

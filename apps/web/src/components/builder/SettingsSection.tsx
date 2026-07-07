@@ -10,6 +10,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { characterExportFilename, characterExportJson } from "../../model/exportCharacter.js";
 import {
+  setClericWisdomHouserule,
   setEncumbranceEnabled,
   setFcbHouserule,
   setGmGrantFeatSlots,
@@ -80,6 +81,7 @@ export function SettingsSection({
   const hpMode = settings.hpMode ?? "average";
   const restMode = settings.restMode ?? "full";
   const fcbHouserule = settings.fcbHouserule ?? false;
+  const clericWisdomHouserule = settings.clericWisdomHouserule ?? false;
   const heroEnabled = settings.heroPointsEnabled ?? true;
   const heroCap = settings.heroPointsCap ?? HERO_POINT_CAP;
   const xpEnabled = settings.xpEnabled ?? false;
@@ -225,6 +227,34 @@ export function SettingsSection({
             onClick={() => update((d) => setFcbHouserule(d, true))}
           >
             House-rule (Both)
+          </button>
+        </div>
+      </Panel>
+
+      {/* Cleric Wisdom house-rule */}
+      <Panel title="Cleric Wisdom Rule" step="⚙">
+        <p className="hint" style={{ marginBottom: 12 }}>
+          Homebrew rule (issue #56): cleric class features — Channel Energy's uses/day and save DC —
+          key off <em>Wisdom</em> instead of Charisma. The cleric's actual Charisma score, skills,
+          and saves are unaffected; other Cha-driven classes (paladin, sorcerer, oracle, bard) are
+          untouched either way.
+        </p>
+        <div className="chips">
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={!clericWisdomHouserule}
+            onClick={() => update((d) => setClericWisdomHouserule(d, false))}
+          >
+            Standard PF1 (Cha)
+          </button>
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={clericWisdomHouserule}
+            onClick={() => update((d) => setClericWisdomHouserule(d, true))}
+          >
+            House-rule (Wis)
           </button>
         </div>
       </Panel>
