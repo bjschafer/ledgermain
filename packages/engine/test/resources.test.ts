@@ -153,6 +153,109 @@ describe("action-derived resource-pool detail", () => {
 });
 
 /**
+ * Fixture tests for the Cleric Wisdom house-rule (issue #56, default OFF —
+ * RAW). When `settings.clericWisdomHouserule` is true, cleric-tagged grants
+ * evaluate `@abilities.cha` as an alias for Wisdom — scoped to Channel
+ * Energy's `uses.maxFormula` (3 + Cha mod) and its actions' `dcFormula`
+ * (10 + 1/2 cleric level + Cha mod), the only Cha-keyed formula among the
+ * vendored cleric-tagged class/domain features. Paladin (Lay on Hands /
+ * Channel Positive Energy) must be completely unaffected either way — its
+ * grants carry classTag "paladin", never "cleric".
+ */
+describe("Cleric Wisdom house-rule (issue #56)", () => {
+  function clericDoc(clericWisdomHouserule: boolean): CharacterDoc {
+    return baseDoc({
+      identity: { name: "Wren", race: raceId("Human"), classes: [{ tag: "cleric", level: 7 }] },
+      abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 18, cha: 12 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        settings: { clericWisdomHouserule },
+      },
+    });
+  }
+
+  it("toggle OFF (default/RAW) — Channel Energy uses/day and DC key off Charisma", () => {
+    const doc = clericDoc(false);
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const channel = pools.find((p) => p.name === "Channel Energy");
+    expect(channel).toBeDefined();
+    // 3 + Cha mod(1) = 4 uses/day.
+    expect(channel?.max).toBe(4);
+    // dice = ceil(7/2) = 4d6; DC = 10 + floor(7/2) + Cha mod(1) = 14.
+    expect(channel?.detail).toBe("4d6 (DC 14 Will)");
+  });
+
+  it("toggle ON — Channel Energy uses/day and DC key off Wisdom instead", () => {
+    const doc = clericDoc(true);
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const channel = pools.find((p) => p.name === "Channel Energy");
+    expect(channel).toBeDefined();
+    // 3 + Wis mod(4) = 7 uses/day.
+    expect(channel?.max).toBe(7);
+    // dice = ceil(7/2) = 4d6; DC = 10 + floor(7/2) + Wis mod(4) = 17.
+    expect(channel?.detail).toBe("4d6 (DC 17 Will)");
+  });
+
+  it("does not change the character's actual Charisma modifier — only the cleric-feature formula context", () => {
+    const doc = clericDoc(true);
+    const sheet = compute(doc, ref);
+    // Cha 12 -> +1 mod, unaffected by the houserule everywhere outside the
+    // scoped cleric-feature formula evaluation.
+    expect(sheet.abilities.cha.mod).toBe(1);
+  });
+
+  it("paladin — Lay on Hands / Channel Positive Energy unaffected with the houserule ON", () => {
+    const doc = baseDoc({
+      identity: { name: "Aria", race: raceId("Human"), classes: [{ tag: "paladin", level: 6 }] },
+      abilities: { str: 14, dex: 10, con: 14, int: 10, wis: 12, cha: 16 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        settings: { clericWisdomHouserule: true },
+      },
+    });
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const loh = pools.find((p) => p.name === "Lay on Hands");
+    expect(loh).toBeDefined();
+    // Same numbers as the RAW paladin fixture above (settings.clericWisdomHouserule
+    // is a no-op for classTag "paladin"): floor(6/2) + Cha mod(3) = 6 uses/day,
+    // heal 3d6, and Channel Positive Energy's merged dice/DC still off Cha.
+    expect(loh?.max).toBe(6);
+    expect(loh?.detail).toBe("heal 3d6 · Channel Positive Energy: 3d6 (DC 16 Will)");
+  });
+
+  it("paladin — Lay on Hands / Channel Positive Energy unaffected with the houserule OFF", () => {
+    const doc = baseDoc({
+      identity: { name: "Aria", race: raceId("Human"), classes: [{ tag: "paladin", level: 6 }] },
+      abilities: { str: 14, dex: 10, con: 14, int: 10, wis: 12, cha: 16 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        settings: { clericWisdomHouserule: false },
+      },
+    });
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const loh = pools.find((p) => p.name === "Lay on Hands");
+    expect(loh?.max).toBe(6);
+    expect(loh?.detail).toBe("heal 3d6 · Channel Positive Energy: 3d6 (DC 16 Will)");
+  });
+});
+
+/**
  * Fixture tests for `DerivedResourcePool.linkedBuffIds` (issue: wire the
  * previously-dead `ClassFeature.grantsBuffs` field). Of the 12 vendored
  * features carrying `grantsBuffs`, only 3 resolve against the vendored buff

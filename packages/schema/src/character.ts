@@ -341,6 +341,15 @@ export interface CharacterDoc {
        */
       fcbHouserule?: boolean;
       /**
+       * House-rule (issue #56): cleric class features key off Wisdom instead of
+       * Charisma — e.g. Channel Energy's uses/day and save DC. Scoped strictly
+       * to cleric-tagged class-feature formulas; the character's actual Cha
+       * score/mod, skills, and saves are unchanged, and other Cha-driven
+       * classes (paladin, sorcerer, oracle, bard) are unaffected either way.
+       * Default false = Standard PF1 (RAW).
+       */
+      clericWisdomHouserule?: boolean;
+      /**
        * Whether this character uses the hero-points optional rule. When false,
        * the tracker hides the hero-points panel and `heroPointsCap` is ignored.
        * Absent (default) = true, preserving existing characters' behaviour.

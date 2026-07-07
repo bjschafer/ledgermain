@@ -899,6 +899,21 @@ export function setFcbHouserule(doc: CharacterDoc, enabled: boolean): CharacterD
 }
 
 /**
+ * Toggle the Cleric Wisdom house-rule (issue #56). When true, cleric-tagged
+ * class features (Channel Energy's uses/day and save DC) key off Wisdom
+ * instead of Charisma. Default false = Standard PF1 (RAW).
+ */
+export function setClericWisdomHouserule(doc: CharacterDoc, enabled: boolean): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, clericWisdomHouserule: enabled },
+    },
+  };
+}
+
+/**
  * Toggle whether the character uses hero points at all. When disabled, the
  * tracker hides the hero-points panel and the cap override is ignored. The
  * live pool is left untouched so re-enabling restores the previous count.
