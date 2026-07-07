@@ -600,6 +600,22 @@ A plain cha-based spontaneous caster casting from the cleric spell list. Its "Sp
 
 ---
 
+### Alchemist + investigator mechanical audit (issue #13 step 2, 2026-07-07)
+
+The class tags (`SLICE.classTags` + `spellListClassTags`) and their archetype CSV mappings landed as part of the "add remaining core/base/hybrid classes" data batch (31 classes total now) — both already carried `learnedAt.class` extract tags upstream, so their spell lists (levels 1-6, no 0-level entry) came for free the same way arcanist/magus/oracle's did.
+
+Both are int-based 6-level PREPARED "extract" casters (APG/ACG) with **no 0-level extracts at all** — unlike wizard/cleric cantrips (prepared once, then cast at will), there is no 0-level tier to grant in the first place; `CASTER_MODELS.alchemist`/`.investigator` set `grantsAllCantrips: false`, same posture as paladin/ranger (also no cantrips) rather than wizard/magus/arcanist.
+
+- `packages/engine/src/tables.ts`: `ALCHEMIST_EXTRACTS_PER_DAY` (own table, columns 1-6 populated, column 0 and columns 7-9 always `null`) + `"alchemist"`/`"investigator"` added to `SpellProgression`. Cross-checked against aonprd.com and d20pfsrd.com, both matching exactly at every level (L1 1, L4 3/1, L7 4/3/1, L10 5/4/3/1, L16 5/5/5/4/3/1, L20 all-5s). Investigator's extracts-per-day are numerically IDENTICAL to the alchemist's per both sources, so `INVESTIGATOR_EXTRACTS_PER_DAY = ALCHEMIST_EXTRACTS_PER_DAY` reuses the table rather than duplicating it byte-for-byte, same posture as `DRUID_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY`. (Aside, not acted on: the numbers also happen to exactly match `BARD_SPELLS_PER_DAY`'s columns 1-6 — a coincidence of the SRD math, not a modeled relationship.)
+- `apps/web/src/model/spellcasting.ts`'s `CASTER_MODELS.alchemist`/`.investigator` model extracts as ordinary prepared casters (`knownLabel: "Formula Book"`) — the self-targeting/infusion mechanic (an extract is a brewed, consumable, potion-like item rather than a spell cast directly, and can't normally be shared except via specific discoveries) is NOT modeled beyond the per-day preparation count; the `blurb` says so explicitly rather than promising fidelity it doesn't have.
+- **Not arcane casters**: extracts have no verbal/somatic components and are not spells for arcane-spell-failure purposes — `packages/engine/src/compute.ts`'s `ARCANE_CASTER_TAGS` (currently `wizard`/`sorcerer`/`bard` only — arcanist/magus are ALSO absent from that set, a pre-existing gap this audit did not touch) correctly excludes both; they were deliberately NOT added to it.
+- **Deferred, out of scope for this pass** (mirrors the "prose-only, choice-bearing, hand-curate later" posture Magus Arcana/Arcanist Exploits started with):
+  - **Discoveries** (alchemist, chosen at 2nd level and every even level thereafter) and **Investigator Talents** (investigator, 3rd level and every 2 levels thereafter) — no engine table, no schema field, no picker.
+  - **Mutagen** (alchemist) and **Studied Combat/Studied Strike, Inspiration** (investigator) class features are prose-displayed only via the existing `ClassFeaturesList`; their numeric effects (mutagen's AC/ability swings, inspiration's bonus-die pool) are not wired into `compute.ts` or `deriveResourcePools` in this pass — their `uses.maxFormula`/`changes[]` were not present in the vendored `class-features.json` slice at audit time, so there was nothing to ride the generic pipeline with yet.
+  - Cross-formula-book learning rules (alchemist can copy from a wizard's spellbook; investigator can additionally copy from another investigator's or an alchemist's formula book) are `learnGuidance` prose only, same posture as every other class's spell-acquisition text in this registry — no enforcement.
+
+---
+
 ### Archetype prose→Change extraction pipeline, pilot slice (issue #45, 2026-07-06)
 
 Issue #45's proposal (batch LLM extraction + classifier tier + confidence/provenance + UI badge) was piloted end-to-end against **fighter only** — all 67 vendored fighter archetypes, 383 features — measured against the 3 fighter entries the hand-authored table (`archetype-effects.ts`, issue #7) already covers as ground truth (Weapon Master, Archer, Two-Handed Fighter). This section is the conventions writeup the issue asked for, so the next wave (other classes) is mechanical rather than re-derived from scratch.

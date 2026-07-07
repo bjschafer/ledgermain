@@ -25,6 +25,14 @@
  * cha-based spontaneous caster casting from the cleric spell list, reusing
  * the sorcerer's spells-per-day/known tables (numerically identical per the
  * SRD) plus mystery-granted bonus spells known (`mysterySpellsKnown` below).
+ * Alchemist (APG) and investigator (ACG) are int-based prepared "extract"
+ * casters with NO 0-level extracts at all (unlike wizard/cleric cantrips,
+ * there is no 0-level tier to grant — `grantsAllCantrips: false`, same as
+ * paladin/ranger) and cap at 6th-level extracts; both are modeled here as
+ * ordinary prepared casters (`preparation: "prepared"`, own spellbook-
+ * equivalent "Formula Book") — the self-targeting/infusion/shareable-with-
+ * allies nuances of how an extract is actually consumed are display-only
+ * prose, not modeled as distinct mechanics.
  */
 
 import {
@@ -252,6 +260,36 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Oracles learn a fixed set of spells known at each level from the cleric spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. An oracle also adds every “cure” spell OR every “inflict” spell she can cast to her known list for free (a permanent choice made at 1st level, not tracked as a separate field here — add the relevant spells to your known list manually). Her mystery (see the Mystery picker) also grants one bonus spell known at 2nd level and every two levels thereafter.",
     blurb:
       "Spontaneous divine caster: you know a limited set of spells drawn from the cleric list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; orisons (cantrips) are cast at will once known.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  alchemist: {
+    preparation: "prepared",
+    ability: "int",
+    progression: "alchemist",
+    knownLabel: "Formula Book",
+    learnGuidance:
+      "Alchemists begin play with 2 first-level formulae of their choice, plus a number of additional formulae equal to their Intelligence modifier. At each new alchemist level, they gain one new formula of any level they can create; formulae can also be added by studying a wizard's spellbook (same costs/time as a wizard learning a new spell). Alchemists have no 0-level extracts at all.",
+    blurb:
+      "Prepared caster: your formula book holds every extract formula you know; prepare a subset each day like a wizard preparing spells. Modeled here as an ordinary prepared caster — extracts are physically brewed, self-targeting/shareable, and consumed as items rather than cast directly, none of which is modeled beyond the per-day preparation count.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  investigator: {
+    preparation: "prepared",
+    ability: "int",
+    // Investigator (ACG) extracts-per-day are numerically identical to the
+    // alchemist's own table (PF1 ACG SRD — cross-checked against aonprd.com
+    // and d20pfsrd.com, both matching exactly at every level), so the
+    // alchemist progression key is reused rather than duplicated (see
+    // `INVESTIGATOR_EXTRACTS_PER_DAY = ALCHEMIST_EXTRACTS_PER_DAY` in
+    // `@pf1/engine` `tables.ts`).
+    progression: "investigator",
+    knownLabel: "Formula Book",
+    learnGuidance:
+      "Investigators begin play with 2 first-level formulae of their choice, plus a number of additional formulae equal to their Intelligence modifier. At each new investigator level, they gain one new formula of any level they can create; formulae can also be added by studying a wizard's spellbook, or by studying another investigator's or an alchemist's formula book (and vice versa). Investigators have no 0-level extracts at all.",
+    blurb:
+      "Prepared caster: your formula book holds every extract formula you know; prepare a subset each day like a wizard preparing spells. Modeled here as an ordinary prepared caster — extracts are physically brewed, self-targeting/shareable, and consumed as items rather than cast directly, none of which is modeled beyond the per-day preparation count.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },

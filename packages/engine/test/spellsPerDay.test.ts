@@ -420,3 +420,67 @@ describe("baseSpellsPerDay()/baseSpellsKnown() — oracle reuses the sorcerer ta
     expect(baseSpellsPerDay("sorcerer", 5, 2)).toBe(4);
   });
 });
+
+describe("baseSpellsPerDay() — alchemist (APG, int-based extracts, NO 0-level tier)", () => {
+  it("level-1 alchemist: no 0-level extracts at all, 1 first-level, no 2nd-level access", () => {
+    expect(baseSpellsPerDay("alchemist", 1, 0)).toBeNull();
+    expect(baseSpellsPerDay("alchemist", 1, 1)).toBe(1);
+    expect(baseSpellsPerDay("alchemist", 1, 2)).toBeNull();
+  });
+
+  it("level-4 alchemist: 3/1 at extract levels 1-2, no 3rd-level access (aonprd.com/d20pfsrd.com Table: Alchemist)", () => {
+    expect(baseSpellsPerDay("alchemist", 4, 1)).toBe(3);
+    expect(baseSpellsPerDay("alchemist", 4, 2)).toBe(1);
+    expect(baseSpellsPerDay("alchemist", 4, 3)).toBeNull();
+  });
+
+  it("level-10 alchemist: 5/4/3/1 at extract levels 1-4, no 5th-level access", () => {
+    expect(baseSpellsPerDay("alchemist", 10, 1)).toBe(5);
+    expect(baseSpellsPerDay("alchemist", 10, 2)).toBe(4);
+    expect(baseSpellsPerDay("alchemist", 10, 3)).toBe(3);
+    expect(baseSpellsPerDay("alchemist", 10, 4)).toBe(1);
+    expect(baseSpellsPerDay("alchemist", 10, 5)).toBeNull();
+  });
+
+  it("alchemist caps at 6th-level extracts: levels 7-9 are never accessible", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      expect(baseSpellsPerDay("alchemist", cl, 7)).toBeNull();
+      expect(baseSpellsPerDay("alchemist", cl, 8)).toBeNull();
+      expect(baseSpellsPerDay("alchemist", cl, 9)).toBeNull();
+    }
+  });
+
+  it("level-20 alchemist: 5 slots at every extract level 1-6, still no 0-level tier", () => {
+    expect(baseSpellsPerDay("alchemist", 20, 0)).toBeNull();
+    for (let lvl = 1; lvl <= 6; lvl++) {
+      expect(baseSpellsPerDay("alchemist", 20, lvl)).toBe(5);
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("alchemist", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("alchemist", 21, 1)).toBeNull();
+    expect(baseSpellsPerDay("alchemist", 5, -1)).toBeNull();
+  });
+});
+
+describe("baseSpellsPerDay() — investigator reuses the alchemist extracts-per-day table", () => {
+  // Investigator (ACG) extracts per day are numerically identical to the
+  // alchemist's (verified against aonprd.com/d20pfsrd.com, both matching at
+  // every spot-checked level) — apps/web/src/model/spellcasting.ts's
+  // CASTER_MODELS.investigator sets progression to "investigator", which
+  // `@pf1/engine` `tables.ts` aliases to ALCHEMIST_EXTRACTS_PER_DAY rather
+  // than duplicating the table, same posture as oracle/sorcerer above.
+  it("matches the alchemist table exactly at spot-checked levels", () => {
+    expect(baseSpellsPerDay("investigator", 1, 0)).toBeNull();
+    expect(baseSpellsPerDay("investigator", 1, 1)).toBe(1);
+    expect(baseSpellsPerDay("investigator", 4, 1)).toBe(3);
+    expect(baseSpellsPerDay("investigator", 4, 2)).toBe(1);
+    expect(baseSpellsPerDay("investigator", 10, 4)).toBe(1);
+    expect(baseSpellsPerDay("investigator", 10, 5)).toBeNull();
+    for (let lvl = 1; lvl <= 6; lvl++) {
+      expect(baseSpellsPerDay("investigator", 20, lvl)).toBe(5);
+    }
+    expect(baseSpellsPerDay("investigator", 20, 7)).toBeNull();
+  });
+});

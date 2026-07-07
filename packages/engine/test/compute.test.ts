@@ -1428,6 +1428,82 @@ describe("compute: magus L7 (human, no armor) — UM medium prepared-arcane cast
   });
 });
 
+describe("compute: alchemist L7 (human, no armor) — APG int-based prepared extract caster", () => {
+  // Con 14 (mod +2) drives HP; Int 18 (mod +4) drives extract DC/formula book.
+  const doc = makeDoc({
+    classes: [{ tag: "alchemist", level: 7 }],
+    abilities: { str: 10, dex: 10, con: 14, int: 18, wis: 10, cha: 10 },
+    skillRanks: { spl: 7, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +5 (3/4 medium progression: floor(7*3/4))", () => {
+    expect(sheet.bab).toBe(5);
+  });
+
+  it("saves: Fort +7 and Ref +7 (good bases, both also get their +2 ability mod), Will +2 (poor)", () => {
+    expect(sheet.saves.fort.total).toBe(7); // base 5 (2 + floor(7/2)) + con mod 2
+    expect(sheet.saves.ref.total).toBe(5); // base 5 (2 + floor(7/2)) + dex mod 0
+    expect(sheet.saves.will.total).toBe(2); // base 2 (floor(7/3)) + wis mod 0
+  });
+
+  it("HP 52 (d8 HD: 8 max L1 + 5 avg * 6 more levels, +2 Con/level)", () => {
+    expect(sheet.hp.max).toBe(52);
+  });
+
+  it("4 + Int skill points/level, d8 HD, medium BAB, fort/ref high + will low (alchemist class def)", () => {
+    const alchemistEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "alchemist");
+    expect(alchemistEntry).toBeDefined();
+    expect(alchemistEntry![1].skillsPerLevel).toBe(4);
+    expect(alchemistEntry![1].hd).toBe(8);
+    expect(alchemistEntry![1].bab).toBe("med");
+    expect(alchemistEntry![1].saves).toEqual({ fort: "high", ref: "high", will: "low" });
+  });
+
+  it("spellcraft (class skill) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.spl!.total).toBe(14); // 7 ranks + int mod 4 + classSkill 3
+    expect(sheet.skills.spl!.classSkill).toBe(true);
+  });
+});
+
+describe("compute: investigator L7 (human, no armor) — ACG int-based prepared extract caster (reuses alchemist's extracts-per-day table)", () => {
+  // Con 14 (mod +2) drives HP; Int 18 (mod +4) drives extract DC/formula book.
+  const doc = makeDoc({
+    classes: [{ tag: "investigator", level: 7 }],
+    abilities: { str: 10, dex: 10, con: 14, int: 18, wis: 10, cha: 10 },
+    skillRanks: { spl: 7, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +5 (3/4 medium progression: floor(7*3/4))", () => {
+    expect(sheet.bab).toBe(5);
+  });
+
+  it("saves: Ref +7 and Will +7 (good bases, both also get their +2/+0 ability mod), Fort +4 (poor)", () => {
+    expect(sheet.saves.ref.total).toBe(5); // base 5 (2 + floor(7/2)) + dex mod 0
+    expect(sheet.saves.will.total).toBe(5); // base 5 (2 + floor(7/2)) + wis mod 0
+    expect(sheet.saves.fort.total).toBe(4); // base 2 (floor(7/3)) + con mod 2
+  });
+
+  it("HP 52 (d8 HD: 8 max L1 + 5 avg * 6 more levels, +2 Con/level)", () => {
+    expect(sheet.hp.max).toBe(52);
+  });
+
+  it("6 + Int skill points/level, d8 HD, medium BAB, ref/will high + fort low (investigator class def)", () => {
+    const investigatorEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "investigator");
+    expect(investigatorEntry).toBeDefined();
+    expect(investigatorEntry![1].skillsPerLevel).toBe(6);
+    expect(investigatorEntry![1].hd).toBe(8);
+    expect(investigatorEntry![1].bab).toBe("med");
+    expect(investigatorEntry![1].saves).toEqual({ fort: "low", ref: "high", will: "high" });
+  });
+
+  it("spellcraft (class skill) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.spl!.total).toBe(14); // 7 ranks + int mod 4 + classSkill 3
+    expect(sheet.skills.spl!.classSkill).toBe(true);
+  });
+});
+
 describe("compute: oracle L5 (human, no armor) — APG spontaneous divine caster", () => {
   // Con 12 (mod +1) drives HP; Cha 16 (mod +3) drives spell DC/spells known.
   const doc = makeDoc({

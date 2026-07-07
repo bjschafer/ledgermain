@@ -213,7 +213,9 @@ export type SpellProgression =
   | "bard"
   | "druid"
   | "arcanist"
-  | "magus";
+  | "magus"
+  | "alchemist"
+  | "investigator";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -503,6 +505,57 @@ const MAGUS_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
   /* L20 */ [5, 5, 5, 5, 5, 5, 5, null, null, null],
 ];
 
+/**
+ * Alchemist base extracts per day, indexed `[classLevel - 1][spellLevel]`.
+ * Alchemists (APG) are int-based prepared casters with NO 0-level extracts at
+ * all (column 0 always null — not merely "cast at will" like wizard/cleric
+ * cantrips, extracts simply have no 0-level tier) and cap at 6th-level
+ * extracts (columns 7-9 always null). Extracts are readied each morning like
+ * prepared spells but are physically brewed into consumable items ("Alchemy"
+ * class feature) rather than cast directly — this engine models the per-day
+ * count identically to a prepared caster's spell slots (see
+ * `CASTER_MODELS.alchemist` in `apps/web/src/model/spellcasting.ts`). Bonus
+ * extracts from a high Intelligence score are added on top by
+ * {@link bonusSpellsForLevel} and are NOT included here. (PF1 APG SRD —
+ * clean-room table from the published rules, open game content;
+ * cross-checked against aonprd.com and d20pfsrd.com, both matching exactly at
+ * every level: L1 1, L4 3/1, L7 4/3/1, L10 5/4/3/1, L16 5/5/5/4/3/1, L20
+ * all-5s.)
+ */
+const ALCHEMIST_EXTRACTS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, 2, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, 3, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 3, 1, null, null, null, null, null, null, null],
+  /* L5  */ [null, 4, 2, null, null, null, null, null, null, null],
+  /* L6  */ [null, 4, 3, null, null, null, null, null, null, null],
+  /* L7  */ [null, 4, 3, 1, null, null, null, null, null, null],
+  /* L8  */ [null, 4, 4, 2, null, null, null, null, null, null],
+  /* L9  */ [null, 5, 4, 3, null, null, null, null, null, null],
+  /* L10 */ [null, 5, 4, 3, 1, null, null, null, null, null],
+  /* L11 */ [null, 5, 4, 4, 2, null, null, null, null, null],
+  /* L12 */ [null, 5, 5, 4, 3, null, null, null, null, null],
+  /* L13 */ [null, 5, 5, 4, 3, 1, null, null, null, null],
+  /* L14 */ [null, 5, 5, 4, 4, 2, null, null, null, null],
+  /* L15 */ [null, 5, 5, 5, 4, 3, null, null, null, null],
+  /* L16 */ [null, 5, 5, 5, 4, 3, 1, null, null, null],
+  /* L17 */ [null, 5, 5, 5, 4, 4, 2, null, null, null],
+  /* L18 */ [null, 5, 5, 5, 5, 4, 3, null, null, null],
+  /* L19 */ [null, 5, 5, 5, 5, 5, 4, null, null, null],
+  /* L20 */ [null, 5, 5, 5, 5, 5, 5, null, null, null],
+];
+
+/**
+ * Investigator base extracts per day, indexed `[classLevel - 1][spellLevel]`.
+ * Investigators (ACG) use "the alchemist formula list" and an int-based
+ * extract progression numerically IDENTICAL to the alchemist's (PF1 ACG SRD
+ * — clean-room, cross-checked against aonprd.com and d20pfsrd.com, both
+ * matching {@link ALCHEMIST_EXTRACTS_PER_DAY} exactly at every level), so the
+ * alchemist table is reused rather than duplicated — same posture as
+ * `DRUID_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY` above.
+ */
+const INVESTIGATOR_EXTRACTS_PER_DAY = ALCHEMIST_EXTRACTS_PER_DAY;
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
@@ -513,6 +566,8 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   druid: DRUID_SPELLS_PER_DAY,
   arcanist: ARCANIST_SPELLS_PER_DAY,
   magus: MAGUS_SPELLS_PER_DAY,
+  alchemist: ALCHEMIST_EXTRACTS_PER_DAY,
+  investigator: INVESTIGATOR_EXTRACTS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {

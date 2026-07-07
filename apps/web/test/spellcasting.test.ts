@@ -327,3 +327,61 @@ describe("curseSpellsKnown()", () => {
     expect(curseSpellsKnown(ref, undefined, 20)).toEqual([]);
   });
 });
+
+describe("casterModelFor() — alchemist and investigator (extract casters)", () => {
+  it("alchemist: prepared/int model, own progression, no cantrips, own known list (Formula Book)", () => {
+    const m = casterModelFor("alchemist");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("prepared");
+    expect(m!.ability).toBe("int");
+    expect(m!.progression).toBe("alchemist");
+    expect(m!.knownLabel).toBe("Formula Book");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("investigator: prepared/int model, aliases the alchemist progression table, no cantrips", () => {
+    const m = casterModelFor("investigator");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("prepared");
+    expect(m!.ability).toBe("int");
+    expect(m!.progression).toBe("investigator");
+    expect(m!.knownLabel).toBe("Formula Book");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("neither class ever gains a 0-level (cantrip) extract at any level, unlike wizard/cleric", () => {
+    const alchemist = casterModelFor("alchemist")!;
+    const investigator = casterModelFor("investigator")!;
+    for (const level of [1, 4, 7, 10, 20]) {
+      expect(accessibleSpellLevels(alchemist, level)).not.toContain(0);
+      expect(accessibleSpellLevels(investigator, level)).not.toContain(0);
+    }
+  });
+
+  it("accessible extract levels start at 1st (unlike paladin/ranger's 4th-level start)", () => {
+    const alchemist = casterModelFor("alchemist")!;
+    expect(accessibleSpellLevels(alchemist, 1)).toEqual([1]);
+    expect(accessibleSpellLevels(alchemist, 4)).toEqual([1, 2]);
+  });
+
+  it("investigator's per-day slot counts match the alchemist's exactly (aliased progression)", () => {
+    const alchemist = casterModelFor("alchemist")!;
+    const investigator = casterModelFor("investigator")!;
+    for (const level of [1, 4, 7, 10, 16, 20]) {
+      expect(spellSlotsByLevel(investigator, level, 4)).toEqual(
+        spellSlotsByLevel(alchemist, level, 4),
+      );
+    }
+  });
+
+  it("L7 alchemist with Int mod +4: base 4/3/1 at extract levels 1-3, plus bonus spells from the ability score", () => {
+    const alchemist = casterModelFor("alchemist")!;
+    const slots = new Map(spellSlotsByLevel(alchemist, 7, 4).map((s) => [s.level, s]));
+    expect(slots.get(1)).toEqual({ level: 1, base: 4, bonus: 1, total: 5 }); // (4-1)/4+1 = 1
+    expect(slots.get(2)).toEqual({ level: 2, base: 3, bonus: 1, total: 4 }); // (4-2)/4+1 = 1
+    expect(slots.get(3)).toEqual({ level: 3, base: 1, bonus: 1, total: 2 }); // (4-3)/4+1 = 1
+    expect(slots.has(4)).toBe(false); // not accessible yet at class level 7
+  });
+});
