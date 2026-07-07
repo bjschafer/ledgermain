@@ -30,6 +30,13 @@ describe("hpState()", () => {
     expect(hpState(d, sheet)).toEqual({ status: "disabled", diesAt: -10 });
   });
 
+  it("a brand-new character with no class levels (max HP 0) is 'no-hp', not 'disabled'", () => {
+    const d = createEmptyDoc("t");
+    const sheet = compute(d, ref);
+    expect(sheet.hp.max).toBe(0);
+    expect(hpState(d, sheet).status).toBe("no-hp");
+  });
+
   it("current === -1 is dying (just past 0)", () => {
     const d = withHp(fighterWithCon(10), { current: -1 });
     const sheet = compute(d, ref);

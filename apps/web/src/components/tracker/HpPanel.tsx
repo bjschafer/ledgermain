@@ -20,6 +20,8 @@ function statusLabel(state: HpState): string {
   switch (state.status) {
     case "ok":
       return "";
+    case "no-hp":
+      return "No HP yet — add a class in the Build tab.";
     case "disabled":
       return "Disabled (0 HP) — staggered: one move or standard action per round; a strenuous act deals 1 more damage.";
     case "dying":
@@ -42,7 +44,7 @@ export function HpPanel({ doc, sheet, update }: BuilderProps) {
   const restMode = doc.build.settings?.restMode ?? "full";
   const { current, temp, nonlethal } = doc.live.hp;
   const effective = current - nonlethal;
-  const isLow = effective <= Math.floor(max / 4);
+  const isLow = max > 0 && effective <= Math.floor(max / 4);
   const fillPct = max > 0 ? Math.max(0, Math.min(1, effective / max)) : 1;
 
   const state = hpState(doc, sheet);
@@ -71,7 +73,10 @@ export function HpPanel({ doc, sheet, update }: BuilderProps) {
       </div>
 
       {state.status !== "ok" ? (
-        <div className="hp-status-line affliction-warn" data-status={state.status}>
+        <div
+          className={`hp-status-line${state.status === "no-hp" ? "" : " affliction-warn"}`}
+          data-status={state.status}
+        >
           {statusLabel(state)}
         </div>
       ) : null}
