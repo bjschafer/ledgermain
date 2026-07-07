@@ -406,6 +406,108 @@ describe("baseSpellsPerDay() — magus (UM medium prepared-arcane, caps at 6th l
   });
 });
 
+describe("baseSpellsPerDay() — witch (APG, aliases the wizard table)", () => {
+  // Witch's "Spells per Day" table (APG) is numerically identical to the
+  // wizard's (verified against aonprd.com's Table: Witch — exact match at
+  // every level). This locks that reuse in place with spot-checks at
+  // L1/L5/L10/L20, then a full level-by-level cross-check.
+  it("level-1 witch: 3 cantrips, 1 first-level, no access above", () => {
+    expect(baseSpellsPerDay("witch", 1, 0)).toBe(3);
+    expect(baseSpellsPerDay("witch", 1, 1)).toBe(1);
+    expect(baseSpellsPerDay("witch", 1, 2)).toBeNull();
+  });
+
+  it("level-5 witch: 4/3/2/1 at levels 0-3, no 4th-level access", () => {
+    expect(baseSpellsPerDay("witch", 5, 0)).toBe(4);
+    expect(baseSpellsPerDay("witch", 5, 1)).toBe(3);
+    expect(baseSpellsPerDay("witch", 5, 2)).toBe(2);
+    expect(baseSpellsPerDay("witch", 5, 3)).toBe(1);
+    expect(baseSpellsPerDay("witch", 5, 4)).toBeNull();
+  });
+
+  it("level-10 witch: 4/4/4/3/3/2 at levels 0-5, no 6th-level access", () => {
+    expect(baseSpellsPerDay("witch", 10, 0)).toBe(4);
+    expect(baseSpellsPerDay("witch", 10, 1)).toBe(4);
+    expect(baseSpellsPerDay("witch", 10, 2)).toBe(4);
+    expect(baseSpellsPerDay("witch", 10, 3)).toBe(3);
+    expect(baseSpellsPerDay("witch", 10, 4)).toBe(3);
+    expect(baseSpellsPerDay("witch", 10, 5)).toBe(2);
+    expect(baseSpellsPerDay("witch", 10, 6)).toBeNull();
+  });
+
+  it("level-20 witch: 4 slots at every level 0-9", () => {
+    for (let lvl = 0; lvl <= 9; lvl++) {
+      expect(baseSpellsPerDay("witch", 20, lvl)).toBe(4);
+    }
+  });
+
+  it("matches wizard progression at every level/spell-level pair", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      for (let spLvl = 0; spLvl <= 9; spLvl++) {
+        expect(baseSpellsPerDay("witch", cl, spLvl)).toBe(baseSpellsPerDay("wizard", cl, spLvl));
+      }
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("witch", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("witch", 21, 1)).toBeNull();
+    expect(baseSpellsPerDay("witch", 5, -1)).toBeNull();
+    expect(baseSpellsPerDay("witch", 5, 10)).toBeNull();
+  });
+});
+
+describe("baseSpellsPerDay() — shaman (ACG, aliases the cleric table)", () => {
+  // Shaman's "Spells per Day" table (ACG) is numerically identical to the
+  // cleric's/wizard's (verified against aonprd.com's Table: Shaman — exact
+  // match at every level). This locks that reuse in place with spot-checks at
+  // L1/L5/L10/L20, then a full level-by-level cross-check.
+  it("level-1 shaman: 3 orisons, 1 first-level, no access above", () => {
+    expect(baseSpellsPerDay("shaman", 1, 0)).toBe(3);
+    expect(baseSpellsPerDay("shaman", 1, 1)).toBe(1);
+    expect(baseSpellsPerDay("shaman", 1, 2)).toBeNull();
+  });
+
+  it("level-5 shaman: 4/3/2/1 at levels 0-3, no 4th-level access", () => {
+    expect(baseSpellsPerDay("shaman", 5, 0)).toBe(4);
+    expect(baseSpellsPerDay("shaman", 5, 1)).toBe(3);
+    expect(baseSpellsPerDay("shaman", 5, 2)).toBe(2);
+    expect(baseSpellsPerDay("shaman", 5, 3)).toBe(1);
+    expect(baseSpellsPerDay("shaman", 5, 4)).toBeNull();
+  });
+
+  it("level-10 shaman: 4/4/4/3/3/2 at levels 0-5, no 6th-level access", () => {
+    expect(baseSpellsPerDay("shaman", 10, 0)).toBe(4);
+    expect(baseSpellsPerDay("shaman", 10, 1)).toBe(4);
+    expect(baseSpellsPerDay("shaman", 10, 2)).toBe(4);
+    expect(baseSpellsPerDay("shaman", 10, 3)).toBe(3);
+    expect(baseSpellsPerDay("shaman", 10, 4)).toBe(3);
+    expect(baseSpellsPerDay("shaman", 10, 5)).toBe(2);
+    expect(baseSpellsPerDay("shaman", 10, 6)).toBeNull();
+  });
+
+  it("level-20 shaman: 4 slots at every level 0-9", () => {
+    for (let lvl = 0; lvl <= 9; lvl++) {
+      expect(baseSpellsPerDay("shaman", 20, lvl)).toBe(4);
+    }
+  });
+
+  it("matches cleric/wizard progression at every level/spell-level pair", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      for (let spLvl = 0; spLvl <= 9; spLvl++) {
+        expect(baseSpellsPerDay("shaman", cl, spLvl)).toBe(baseSpellsPerDay("cleric", cl, spLvl));
+      }
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("shaman", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("shaman", 21, 1)).toBeNull();
+    expect(baseSpellsPerDay("shaman", 5, -1)).toBeNull();
+    expect(baseSpellsPerDay("shaman", 5, 10)).toBeNull();
+  });
+});
+
 describe("baseSpellsPerDay()/baseSpellsKnown() — oracle reuses the sorcerer tables", () => {
   // Oracle's "Spells per Day" and "Spells Known" tables (APG) are numerically
   // identical to the sorcerer's (verified against aonprd.com/d20pfsrd.com) —

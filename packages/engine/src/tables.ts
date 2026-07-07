@@ -213,7 +213,9 @@ export type SpellProgression =
   | "bard"
   | "druid"
   | "arcanist"
-  | "magus";
+  | "magus"
+  | "witch"
+  | "shaman";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -503,6 +505,29 @@ const MAGUS_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
   /* L20 */ [5, 5, 5, 5, 5, 5, 5, null, null, null],
 ];
 
+/**
+ * Witch base spells per day, indexed `[classLevel - 1][spellLevel]`. Witch
+ * (APG) is a full prepared-arcane caster and uses the same base spells-per-day
+ * numbers as the wizard (3/1 at L1, scaling to 4/every-level at L20) — verified
+ * against aonprd.com's "Table: Witch", exact match at every level including the
+ * L20 all-4s row. Cantrips (level 0) are the witch's 0-level spells, stored by
+ * her familiar and prepared at will alongside everything else. (PF1 APG SRD —
+ * clean-room table from the published rules, open game content.)
+ */
+const WITCH_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY;
+
+/**
+ * Shaman base spells per day, indexed `[classLevel - 1][spellLevel]`. Shaman
+ * (ACG) is a full prepared-divine caster and uses the same base spells-per-day
+ * numbers as the wizard/cleric ("Table: Shaman" is numerically identical to
+ * "Table: Cleric") — verified against aonprd.com's "Table: Shaman", exact
+ * match at every level including the L20 all-4s row. The shaman's Spirit
+ * Magic bonus spontaneous-cast slots granted by her spirit are NOT included
+ * here (not modeled yet — see `CASTER_MODELS.shaman`'s blurb). (PF1 ACG SRD —
+ * clean-room table from the published rules, open game content.)
+ */
+const SHAMAN_SPELLS_PER_DAY = CLERIC_SPELLS_PER_DAY;
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
@@ -513,6 +538,8 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   druid: DRUID_SPELLS_PER_DAY,
   arcanist: ARCANIST_SPELLS_PER_DAY,
   magus: MAGUS_SPELLS_PER_DAY,
+  witch: WITCH_SPELLS_PER_DAY,
+  shaman: SHAMAN_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {

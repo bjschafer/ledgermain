@@ -384,10 +384,13 @@ function heaviestWornArmorType(doc: CharacterDoc): number {
  * display (issue #8) — clean-room from PF1 RAW, not derived from Foundry data
  * (the vendored `ClassRef` carries no arcane/divine flag). This is the arcane
  * subset of `tables.ts`'s `SpellProgression` tags: wizard and sorcerer are
- * full/spontaneous arcane casters, bard is a spontaneous arcane caster;
- * cleric/druid/paladin/ranger are divine and never incur ASF at all.
+ * full/spontaneous arcane casters, bard is a spontaneous arcane caster, witch
+ * (APG) is a full prepared-arcane caster; cleric/druid/paladin/ranger/shaman
+ * are divine and never incur ASF at all. (Note: arcanist and magus are also
+ * arcane casters but are not yet in this set — a pre-existing gap, not
+ * introduced here.)
  */
-const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set(["wizard", "sorcerer", "bard"]);
+const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set(["wizard", "sorcerer", "bard", "witch"]);
 
 /**
  * Total arcane spell failure chance (%) from equipped armor + shields (issue

@@ -25,6 +25,16 @@
  * cha-based spontaneous caster casting from the cleric spell list, reusing
  * the sorcerer's spells-per-day/known tables (numerically identical per the
  * SRD) plus mystery-granted bonus spells known (`mysterySpellsKnown` below).
+ * Witch (APG) is a plain int-based prepared-arcane caster modeled like
+ * wizard, reusing the wizard spells-per-day table (verified identical per the
+ * SRD) — her familiar stores her spells like a spellbook (starts with all
+ * 0-level witch spells plus 3 + Int-mod 1st-level spells, +2 per new level),
+ * so `knownLabel` reads "Familiar's Spells" rather than "Spellbook". Shaman
+ * (ACG) is a plain wis-based prepared-divine caster modeled like cleric/druid
+ * (reusing the cleric spells-per-day table, also verified identical), with a
+ * Spirit Magic bonus-spontaneous-cast mechanic tied to her chosen spirit that
+ * is NOT modeled here (same posture as druid's unmodeled spontaneous
+ * summoning note).
  */
 
 import {
@@ -254,6 +264,40 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Spontaneous divine caster: you know a limited set of spells drawn from the cleric list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; orisons (cantrips) are cast at will once known.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
+  },
+  witch: {
+    preparation: "prepared",
+    ability: "int",
+    // Witch's Spells per Day table is numerically identical to the wizard's
+    // (PF1 APG SRD — verified against aonprd.com's "Table: Witch": exact
+    // match at every level, including the L20 all-4s row), so the wizard
+    // progression table is reused rather than duplicated — same posture as
+    // `magus`/`druid` above.
+    progression: "witch",
+    knownLabel: "Familiar's Spells",
+    learnGuidance:
+      "A witch's familiar stores her spells like a spellbook: it begins play storing all 0-level witch spells plus 3 1st-level spells of her choice, plus a number of additional 1st-level spells equal to her Intelligence modifier. At each new witch level, she adds 2 more spells of any level she can cast to her familiar.",
+    blurb:
+      "Prepared caster: your familiar stores your spells like a spellbook (int-based, witch spell list), then you prepare a subset each day, exactly like a wizard. “Familiar's Spells” is your “known” list here — the familiar-link mechanics themselves (losing access if the familiar dies, etc.) aren't modeled.",
+    grantsAllCantrips: true,
+    preparesFromClassList: false,
+  },
+  shaman: {
+    preparation: "prepared",
+    ability: "wis",
+    // Shaman's Spells per Day table is numerically identical to the
+    // cleric's/wizard's (PF1 ACG SRD — verified against aonprd.com's "Table:
+    // Shaman": exact match at every level, including the L20 all-4s row), so
+    // the cleric progression table is reused rather than duplicated — same
+    // posture as `cleric`/`druid` above.
+    progression: "shaman",
+    knownLabel: "Shaman List",
+    learnGuidance:
+      "Shamans have no spellbook and nothing to learn — the entire shaman spell list below is always available to prepare from.",
+    blurb:
+      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full shaman list each day. (A shaman's chosen spirit also grants Spirit Magic — a limited number of bonus spontaneous casts per day drawn from her prepared spells — plus spirit-specific hexes; neither is modeled here, same posture as druid's unmodeled spontaneous summoning note.)",
+    grantsAllCantrips: true,
+    preparesFromClassList: true,
   },
 };
 
