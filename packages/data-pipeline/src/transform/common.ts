@@ -104,10 +104,20 @@ export function readWeight(value: unknown): number | undefined {
  * for the max ("5 + @abilities.wis.mod") and a recharge period ("day",
  * "charges", "single", ...). Foundry tracks a live `value` too, but that's
  * current-use state, not reference data, so it's intentionally dropped here.
+ *
+ * `source` (class features only, in practice) names another class feature's
+ * `tag` whose pool this one draws from instead of having its own daily cap
+ * (e.g. Channel Positive Energy's `source: "layOnHands"`) — captured
+ * whenever present, alongside or instead of `maxFormula`.
  */
-export function normalizeUses(value: unknown): { maxFormula?: string; per?: string } | undefined {
+export function normalizeUses(
+  value: unknown,
+): { maxFormula?: string; per?: string; source?: string } | undefined {
   if (!isDict(value)) return undefined;
   const maxFormula = str(value.maxFormula);
   const per = str(value.per);
-  return maxFormula !== undefined || per !== undefined ? { maxFormula, per } : undefined;
+  const source = str(value.source);
+  return maxFormula !== undefined || per !== undefined || source !== undefined
+    ? { maxFormula, per, source }
+    : undefined;
 }

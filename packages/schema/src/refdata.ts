@@ -167,11 +167,57 @@ export interface ClassFeature extends RefEntity {
   subType?: string;
   /** "ex" | "su" | "sp" — supernatural/extraordinary/spell-like. */
   abilityType?: string;
-  /** Limited-use resource pool, e.g. Rage rounds/day. */
-  uses?: { maxFormula?: string; per?: string };
+  /**
+   * Limited-use resource pool, e.g. Rage rounds/day. `source`, when present
+   * INSTEAD of `maxFormula` (e.g. Channel Positive Energy's `source:
+   * "layOnHands"`, Wholeness of Body's `source: "kiPool"`), means this
+   * feature has no independent daily cap of its own — using it spends uses
+   * from another granted feature's pool (matched by that feature's `tag`).
+   * Not resolved into a numeric max here (that would double-count the shared
+   * pool); the engine surfaces such a feature's `actions` as an addendum on
+   * the referenced pool's detail line instead (see `deriveResourcePools`).
+   */
+  uses?: { maxFormula?: string; per?: string; source?: string };
   changes: Change[];
   /** UUIDs of buffs this feature can activate (from `links.supplements`). */
   grantsBuffs: string[];
+  /**
+   * Structured attack/damage/save/heal actions from the feature's
+   * `system.actions` block (e.g. Acid Dart's ranged touch acid damage,
+   * Stunning Fist's Fortitude DC). Present on a minority of the sliced
+   * features (~39 of 254 as of schema v8) — most class features (Rage,
+   * Bravery, ...) carry no action data upstream, and `undefined`/absent here
+   * means exactly that, not a missing extraction. When multiple actions
+   * exist (e.g. Channel Energy's heal-living/harm-undead/heal-undead/
+   * harm-living quartet), they're kept in source order; only the first
+   * damage part of each action is captured (the vendored slice never needs
+   * more than one). Used by the engine to derive a resource-pool `detail`
+   * summary (see `deriveResourcePools` in `@pf1/engine`).
+   */
+  actions?: FeatureAction[];
+}
+
+/**
+ * One action entry off a class feature's `system.actions` block — lean by
+ * design (just enough to render an in-play summary line, not a full replica
+ * of Foundry's action schema; contrast `SpellAction`, which keeps more shape
+ * for the builder's spell detail view).
+ */
+export interface FeatureAction {
+  /** The action's own label, e.g. "Use", "Heal living" — rarely shown verbatim. */
+  name?: string;
+  /** Foundry action-type code, e.g. "rsak" (ranged spell attack), "heal", "save". */
+  actionType?: string;
+  /** First damage part's formula + damage types (e.g. `["acid"]`, `["positive"]`). */
+  damage?: { formula: string; types: string[] };
+  /** Saving throw, when the action calls for one. */
+  save?: { type: string; dcFormula?: string };
+  /** Activation type, e.g. "standard", "swift", "nonaction". */
+  activation?: string;
+  /** Whether this is a touch attack (ranged or melee). */
+  touch?: boolean;
+  /** Display-only range string, e.g. "30 ft", "touch" — not parsed further. */
+  range?: string;
 }
 
 /* ------------------------------------------------------------------- feats -- */

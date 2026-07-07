@@ -4,6 +4,7 @@ import type {
   ClassFeature,
   ClassFeatureGrant,
   Domain,
+  FeatureAction,
   SaveTier,
   WizardSchool,
   WizardSchoolTag,
@@ -40,6 +41,7 @@ export function transformClassFeature(doc: RawDoc, resolveUuid: UuidResolver): C
     uses: normalizeUses(sys.uses),
     changes: normalizeChanges(sys.changes),
     grantsBuffs,
+    actions: transformFeatureActions(sys.actions),
   };
 }
 
@@ -47,6 +49,68 @@ export function transformClassFeature(doc: RawDoc, resolveUuid: UuidResolver): C
 function supplementsOf(sys: Record<string, unknown>): Record<string, unknown>[] {
   const links = sys.links as Record<string, unknown> | undefined;
   return Array.isArray(links?.supplements) ? (links!.supplements as Record<string, unknown>[]) : [];
+}
+
+/**
+ * Extract a lean {@link FeatureAction}[] from a class feature's `system.actions`
+ * map (same "object keyed by random id" shape `transformSpell`'s actions
+ * block uses — see `transform/spells.ts`). Only the first damage part of each
+ * action is kept (the vendored slice never has a feature action with more
+ * than one), and actions carrying none of actionType/damage/save are dropped
+ * (activation-only entries have nothing useful to summarize). Returns
+ * `undefined` (not `[]`) when the feature has no usable actions, so
+ * `ClassFeature.actions` stays truly absent for the ~215 of 254 sliced
+ * features with none.
+ */
+function transformFeatureActions(value: unknown): FeatureAction[] | undefined {
+  if (!value || typeof value !== "object") return undefined;
+  const entries = Array.isArray(value) ? value : Object.values(value as Record<string, unknown>);
+  const out: FeatureAction[] = [];
+  for (const raw of entries) {
+    if (!raw || typeof raw !== "object") continue;
+    const a = raw as Record<string, unknown>;
+    const damage = a.damage as Record<string, unknown> | undefined;
+    const parts = Array.isArray(damage?.parts) ? (damage!.parts as Record<string, unknown>[]) : [];
+    const firstPart = parts[0];
+    const save = a.save as Record<string, unknown> | undefined;
+    const activation = a.activation as Record<string, unknown> | undefined;
+
+    const actionType = typeof a.actionType === "string" ? a.actionType : undefined;
+    const dmg = firstPart
+      ? { formula: String(firstPart.formula ?? ""), types: asStringArray(firstPart.types) }
+      : undefined;
+    const saveOut =
+      save &&
+      (typeof save.dc === "string" || typeof save.dc === "number" || typeof save.type === "string")
+        ? {
+            type: typeof save.type === "string" ? save.type : "",
+            dcFormula: save.dc == null ? undefined : String(save.dc),
+          }
+        : undefined;
+    if (!actionType && !dmg && !saveOut) continue; // activation-only — nothing to summarize
+
+    out.push({
+      name: typeof a.name === "string" ? a.name : undefined,
+      actionType,
+      damage: dmg,
+      save: saveOut,
+      activation: typeof activation?.type === "string" ? activation.type : undefined,
+      touch: a.touch === true ? true : undefined,
+      range: formatFeatureRange(a.range as Record<string, unknown> | undefined),
+    });
+  }
+  return out.length > 0 ? out : undefined;
+}
+
+/** Format a feature action's `range` block into a display string, e.g. "30 ft", "touch". */
+function formatFeatureRange(range: Record<string, unknown> | undefined): string | undefined {
+  if (!range) return undefined;
+  const units = typeof range.units === "string" ? range.units : undefined;
+  const value = range.value == null ? undefined : String(range.value);
+  if (!units) return value;
+  if (units === "ft" && value) return `${value} ft`;
+  if (value && !["seeText", "personal", "touch"].includes(units)) return `${value} ${units}`;
+  return units === "seeText" ? undefined : units;
 }
 
 /**

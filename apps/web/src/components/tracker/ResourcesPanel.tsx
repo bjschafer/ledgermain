@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { deriveResourcePools } from "@pf1/engine";
 
+import { FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import {
@@ -66,6 +67,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                 key={pool.id}
                 name={pool.name}
                 sub={pool.detail ?? (pool.per ? `per ${pool.per}` : "derived")}
+                description={refData.classFeatures[pool.id]?.description}
                 left={pool.max - used}
                 max={pool.max}
                 onDrain={() => drain(pool.id)}
@@ -123,6 +125,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
 function ResourceRow({
   name,
   sub,
+  description,
   left,
   max,
   onDrain,
@@ -131,6 +134,8 @@ function ResourceRow({
 }: {
   name: string;
   sub: string;
+  /** Class feature's vendored HTML prose, when this row is a derived pool with one (issue: bare counters). */
+  description?: string;
   left: number;
   max: number;
   onDrain: () => void;
@@ -142,6 +147,7 @@ function ResourceRow({
       <div className="res-main">
         <div className="res-name">{name}</div>
         <div className="res-sub">{sub}</div>
+        {description ? <FeatureDescription html={description} /> : null}
       </div>
       <div className="res-count num">
         {left}

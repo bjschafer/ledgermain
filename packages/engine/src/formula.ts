@@ -354,3 +354,79 @@ export function containsDice(node: FormulaNode): boolean {
       return false;
   }
 }
+
+/* ------------------------------------------------ symbolic dice display -- */
+
+interface DiceChainParts {
+  /** Symbolic dice terms in source order, e.g. ["1d6"], sign-prefixed if negative. */
+  diceTerms: string[];
+  /** Sum of every non-dice term in the chain. */
+  modifier: number;
+}
+
+/**
+ * Walk a formula's root-level `+`/`-` chain, evaluating everything EXCEPT
+ * dice terms numerically and summing it into `modifier`, while keeping each
+ * dice term as a symbolic `"NdF"` string (its own `count`/`faces`
+ * sub-expressions ARE evaluated numerically — they must not themselves
+ * contain nested dice, e.g. `(ceil(@class.unlevel / 2))d6`). Throws
+ * {@link DiceTermError} if a dice term (or nested dice) turns up somewhere
+ * this walk can't isolate (e.g. multiplied by a non-dice factor, such as
+ * `2 * (1d6)`) — the vendored data never shapes a formula that way, so
+ * `formatDiceFormula` treats that as "unsupported", not "no dice".
+ */
+function flattenDiceChain(
+  node: FormulaNode,
+  data: RollData,
+  sign: 1 | -1,
+  out: DiceChainParts,
+): void {
+  if (node.kind === "bin" && (node.op === "+" || node.op === "-")) {
+    flattenDiceChain(node.left, data, sign, out);
+    flattenDiceChain(node.right, data, node.op === "-" ? (-sign as 1 | -1) : sign, out);
+    return;
+  }
+  if (node.kind === "unary") {
+    flattenDiceChain(node.operand, data, node.op === "-" ? (-sign as 1 | -1) : sign, out);
+    return;
+  }
+  if (node.kind === "dice") {
+    const count = evaluateNode(node.count, data);
+    const faces = evaluateNode(node.faces, data);
+    const term = `${count}d${faces}`;
+    out.diceTerms.push(sign < 0 ? `-${term}` : term);
+    return;
+  }
+  out.modifier += sign * evaluateNode(node, data);
+}
+
+/**
+ * Format a formula that may contain dice terms for display — evaluating the
+ * numeric parts but keeping dice symbolic, e.g. `"1d6 + floor(@class.unlevel
+ * / 2)"` at `@class.unlevel = 4` becomes `"1d6+2"`, and `"(ceil(@class.unlevel
+ * / 2))d6"` at level 7 becomes `"4d6"`. Returns `null` when the formula has no
+ * dice term at all (callers should fall back to `tryEvaluateFormula` for a
+ * plain number) or when its dice appear in a shape this can't isolate (see
+ * {@link flattenDiceChain}) — never throws.
+ */
+export function formatDiceFormula(src: string, data: RollData = {}): string | null {
+  const node = parseFormula(src);
+  const parts: DiceChainParts = { diceTerms: [], modifier: 0 };
+  try {
+    flattenDiceChain(node, data, 1, parts);
+  } catch (err) {
+    if (err instanceof DiceTermError) return null;
+    throw err;
+  }
+  if (parts.diceTerms.length === 0) return null;
+
+  let result = parts.diceTerms[0]!;
+  for (let i = 1; i < parts.diceTerms.length; i++) {
+    const term = parts.diceTerms[i]!;
+    result += term.startsWith("-") ? ` - ${term.slice(1)}` : ` + ${term}`;
+  }
+  if (parts.modifier !== 0) {
+    result += parts.modifier > 0 ? `+${parts.modifier}` : `${parts.modifier}`;
+  }
+  return result;
+}

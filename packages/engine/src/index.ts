@@ -25,6 +25,7 @@ export {
   evaluateNode,
   tryEvaluateFormula,
   containsDice,
+  formatDiceFormula,
   DiceTermError,
   FormulaSyntaxError,
   type RollData,

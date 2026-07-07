@@ -4,6 +4,7 @@ import {
   containsDice,
   DiceTermError,
   evaluateFormula,
+  formatDiceFormula,
   FormulaSyntaxError,
   parseFormula,
   tryEvaluateFormula,
@@ -104,6 +105,34 @@ describe("formula: dice terms", () => {
 
   it("still evaluates non-dice formulas via tryEvaluateFormula", () => {
     expect(tryEvaluateFormula("2 + 2")).toBe(4);
+  });
+});
+
+describe("formula: symbolic dice display (formatDiceFormula)", () => {
+  it("evaluates the numeric part of a dice+modifier sum, keeping dice symbolic (Acid Dart at wizard L4)", () => {
+    expect(formatDiceFormula("1d6 + floor(@class.unlevel / 2)", { class: { unlevel: 4 } })).toBe(
+      "1d6+2",
+    );
+  });
+
+  it("evaluates a dice-count sub-expression (Channel Energy at cleric L7)", () => {
+    expect(formatDiceFormula("(ceil(@class.unlevel / 2))d6", { class: { unlevel: 7 } })).toBe(
+      "4d6",
+    );
+  });
+
+  it("handles a negative modifier", () => {
+    expect(formatDiceFormula("1d8 - 1", {})).toBe("1d8-1");
+  });
+
+  it("returns null for a formula with no dice term at all", () => {
+    expect(
+      formatDiceFormula("10 + floor(@class.unlevel / 2)", { class: { unlevel: 6 } }),
+    ).toBeNull();
+  });
+
+  it("returns null rather than throwing when a formula can't be isolated (dice multiplied by a factor)", () => {
+    expect(formatDiceFormula("2 * (1d6)", {})).toBeNull();
   });
 });
 
