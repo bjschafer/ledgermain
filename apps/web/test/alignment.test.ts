@@ -115,6 +115,37 @@ describe("classAlignmentWarnings()", () => {
     }
   });
 
+  it("warns for a chaotic evil Shifter (ACG: 'Any neutral', same restriction shape as Druid)", () => {
+    let doc = addClass(createEmptyDoc("t"), "shifter");
+    doc = setAlignment(doc, "CE");
+    const warnings = classAlignmentWarnings(doc, ref);
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0]!.classTag).toBe("shifter");
+    expect(warnings[0]!.message).toMatch(/supernatural abilities/i);
+  });
+
+  it("does not warn for a lawful-neutral Shifter", () => {
+    let doc = addClass(createEmptyDoc("t"), "shifter");
+    doc = setAlignment(doc, "LN");
+    expect(classAlignmentWarnings(doc, ref)).toEqual([]);
+  });
+
+  it("the other six non-caster classes added alongside Shifter are all 'Any' (unrestricted, verified against aonprd.com)", () => {
+    for (const tag of [
+      "cavalier",
+      "gunslinger",
+      "brawler",
+      "slayer",
+      "swashbuckler",
+      "vigilante",
+    ]) {
+      let doc = addClass(createEmptyDoc("t"), tag);
+      doc = setAlignment(doc, "CE");
+      expect(classAlignmentWarnings(doc, ref)).toEqual([]);
+      expect(CLASS_ALIGNMENT_RESTRICTIONS[tag]).toBeUndefined();
+    }
+  });
+
   it("multiclass: warns per offending class only", () => {
     let doc = addClass(createEmptyDoc("t"), "barbarian");
     doc = addClass(doc, "monk");
