@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import { raceGrantsFlexibleAbility } from "@pf1/engine";
@@ -16,9 +17,52 @@ import {
   hasRacialTrait,
   toggleRacialTrait,
 } from "../../model/racialTraits.js";
-import { groupRacesByRarity } from "../../model/rarity.js";
+import { groupRacesByRarity, type Rarity } from "../../model/rarity.js";
+import { useCollapsed } from "../../state/useCollapsed.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
+
+/**
+ * One collapsible rarity tier in the race picker. Rendered per group (a stable
+ * set of four), so `useCollapsed` inside a list is fine. Exotic defaults
+ * collapsed to declutter the picker; an active search force-opens every tier
+ * (via `forceOpen`) so a collapsed section never hides a match.
+ */
+function RaceGroupSection({
+  category,
+  label,
+  count,
+  forceOpen,
+  children,
+}: {
+  category: Rarity;
+  label: string;
+  count: number;
+  forceOpen: boolean;
+  children: ReactNode;
+}) {
+  const [collapsed, toggle] = useCollapsed(`race-rarity:${category}`, category === "exotic");
+  const open = forceOpen || !collapsed;
+  return (
+    <div className="race-group">
+      <div
+        className="race-group-header"
+        onClick={forceOpen ? undefined : toggle}
+        role="button"
+        tabIndex={forceOpen ? -1 : 0}
+        aria-expanded={open}
+        onKeyDown={(e) => {
+          if (!forceOpen && (e.key === "Enter" || e.key === " ")) toggle();
+        }}
+      >
+        <span className="section-label">{label}</span>
+        <span className="race-group-count">{count}</span>
+        {forceOpen ? null : <span className="panel-caret">{open ? "▾" : "▸"}</span>}
+      </div>
+      {open ? <div className="chips">{children}</div> : null}
+    </div>
+  );
+}
 
 export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   const [pendingRaceId, setPendingRaceId] = useState<string | null>(null);
@@ -36,6 +80,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
     return groupRacesByRarity(entries);
   }, [refData, query]);
   const hasMatches = raceGroups.some((g) => g.items.length > 0);
+  const searchActive = query.trim().length > 0;
   const selected = refData.races[doc.identity.race];
   const flexible = selected ? raceGrantsFlexibleAbility(selected) : false;
   const racialTraits = availableRacialTraits(doc, refData);
@@ -71,34 +116,37 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
         onChange={(e) => setQuery(e.target.value)}
       />
       {raceGroups.map((group) => (
-        <div key={group.category} className="race-group">
-          <span className="section-label">{group.label}</span>
-          <div className="chips">
-            {group.items.map(([id, race]) => (
-              <button
-                key={id}
-                type="button"
-                className="chip"
-                aria-pressed={doc.identity.race === id}
-                onClick={() => {
-                  const target = doc.identity.race === id ? "" : id;
-                  // Switching away from a race that's already applied resets its
-                  // modifiers, so require confirmation; picking an initial race
-                  // (nothing chosen yet) is free.
-                  if (doc.identity.race && doc.identity.race !== id) {
-                    setPendingRaceId(id);
-                  } else if (doc.identity.race === id) {
-                    setPendingRaceId("");
-                  } else {
-                    update((d) => setRace(d, target));
-                  }
-                }}
-              >
-                {race.name}
-              </button>
-            ))}
-          </div>
-        </div>
+        <RaceGroupSection
+          key={group.category}
+          category={group.category}
+          label={group.label}
+          count={group.items.length}
+          forceOpen={searchActive}
+        >
+          {group.items.map(([id, race]) => (
+            <button
+              key={id}
+              type="button"
+              className="chip"
+              aria-pressed={doc.identity.race === id}
+              onClick={() => {
+                const target = doc.identity.race === id ? "" : id;
+                // Switching away from a race that's already applied resets its
+                // modifiers, so require confirmation; picking an initial race
+                // (nothing chosen yet) is free.
+                if (doc.identity.race && doc.identity.race !== id) {
+                  setPendingRaceId(id);
+                } else if (doc.identity.race === id) {
+                  setPendingRaceId("");
+                } else {
+                  update((d) => setRace(d, target));
+                }
+              }}
+            >
+              {race.name}
+            </button>
+          ))}
+        </RaceGroupSection>
       ))}
       {!hasMatches ? <div className="empty">No races match.</div> : null}
       {pendingRaceId != null && (
