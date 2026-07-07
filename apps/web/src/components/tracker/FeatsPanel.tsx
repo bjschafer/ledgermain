@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { Feat } from "@pf1/schema";
 
-import { grantedFeats } from "../../model/feats.js";
+import { featDisplayName, grantedFeats } from "../../model/feats.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -83,7 +83,7 @@ export function FeatsPanel({ doc, refData }: BuilderProps) {
               <div key={feat.id} className="pick-row">
                 <div className="pmain">
                   <div className="pname">
-                    {feat.name}
+                    {featDisplayName(feat, doc, refData)}
                     {feat.tags.length > 0 && (
                       <span className="hint" style={{ marginLeft: 8 }}>
                         {feat.tags.join(", ")}

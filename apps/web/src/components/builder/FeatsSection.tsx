@@ -13,6 +13,7 @@ import {
   expectedFeatCount,
   featChoiceDescriptor,
   featChoiceOptions,
+  featDisplayName,
   grantedFeats,
   setFeatChoice,
 } from "../../model/feats.js";
@@ -128,14 +129,19 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
   // once per render cycle — the list is static (all skills, alphabetically).
   const skillOptions = useMemo(() => featChoiceOptions("skill", refData), [refData]);
 
-  // Weapon options for Weapon Focus / Specialization: distinct group labels from
-  // doc.build.weapons. Returns empty when no weapons have a group set — the UI
-  // shows a soft hint ("add a weapon with a type first") in that case.
+  // Weapon options for Weapon Focus / Specialization / Improved Critical:
+  // distinct group labels from doc.build.weapons. Returns empty when no
+  // weapons have a group set — the UI shows a soft hint ("add a weapon with
+  // a type first") in that case.
   const weaponOptions = useMemo(
     () => featChoiceOptions("weapon", refData, doc),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [doc.build.weapons, refData],
   );
+
+  // School options for Spell Focus / Greater Spell Focus (issue #55) — a
+  // fixed, static list.
+  const schoolOptions = useMemo(() => featChoiceOptions("school", refData), [refData]);
 
   const chosen = chosenFeatCountExcludingGranted(doc, refData);
   const expected = expectedFeatCount(doc, refData);
@@ -282,7 +288,9 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
               ? skillOptions
               : choiceDesc?.type === "weapon"
                 ? weaponOptions
-                : [];
+                : choiceDesc?.type === "school"
+                  ? schoolOptions
+                  : [];
           return (
             <div
               key={feat.id}
@@ -290,7 +298,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
             >
               <div className="pmain">
                 <div className="pname">
-                  {feat.name}
+                  {isSel ? featDisplayName(feat, doc, refData) : feat.name}
                   {isUnqualified ? (
                     <span
                       className="unqualified-badge"

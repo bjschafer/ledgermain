@@ -46,17 +46,61 @@ describe("feat prereq gating", () => {
     expect(res.checks.every((c) => c.met)).toBe(true);
   });
 
-  it("WARNS even when structured checks are all met, as long as prereqText exists", () => {
-    // Cleave has fully-structured prereqs (Str 13, Power Attack, BAB +1), all met
-    // here, but it also carries verbatim prereqText — the advisory should still
-    // surface (blocked, driven only by structured checks, stays false).
+  it("issue #49: suppresses the prose warning once every fragment is covered by a MET structured check", () => {
+    // Cleave's prereqText is "Str 13, Power Attack, base attack bonus +1." —
+    // every fragment maps 1:1 to a structured check (ability, feat, BAB).
+    // Once all three are met, the redundant prose warning should disappear
+    // entirely rather than sit next to three ✓ checks looking contradictory.
     const powerAttack = featByName("Power Attack");
     const cleave = featByName("Cleave");
     const res = evaluatePrereqs(cleave, ctx({ selectedFeats: new Set([powerAttack.id]) }));
     expect(res.blocked).toBe(false);
     expect(res.checks.length).toBeGreaterThan(0);
     expect(res.checks.every((c) => c.met)).toBe(true);
-    expect(res.softText).toBeTruthy();
+    expect(res.softText).toBeUndefined();
+    expect(res.warn).toBe(false);
+  });
+
+  it("issue #49: Dodge shows a ✓ Dex 13 check with NO redundant 'Dex 13' prose warning once met", () => {
+    // Reproduces the reported bug verbatim: Dodge's prereqText is "Dex 13."
+    // and its only structured prereq is the same Dex 13 ability minimum.
+    const dodge = featByName("Dodge");
+    const res = evaluatePrereqs(dodge, ctx()); // baseline ctx has dex 16
+    expect(res.checks).toEqual([{ label: "DEX 13", met: true }]);
+    expect(res.softText).toBeUndefined();
+    expect(res.warn).toBe(false);
+  });
+
+  it("issue #49: Dodge KEEPS the prose warning when Dex 13 is unmet (✗ and prose agree)", () => {
+    const dodge = featByName("Dodge");
+    const res = evaluatePrereqs(
+      dodge,
+      ctx({ abilityTotals: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 } }),
+    );
+    expect(res.checks).toEqual([{ label: "DEX 13", met: false }]);
+    expect(res.blocked).toBe(true);
+    // blocked=true already forces warn=false regardless of softText — the
+    // "Locked" button + ✗ check is the signal, not a soft warning.
+    expect(res.softText).toBe("Dex 13.");
+  });
+
+  it("issue #49: Mobility strips BOTH covered fragments (Dex 13 ability + Dodge feat) once met", () => {
+    const dodge = featByName("Dodge");
+    const mobility = featByName("Mobility");
+    const res = evaluatePrereqs(mobility, ctx({ selectedFeats: new Set([dodge.id]) }));
+    expect(res.checks.every((c) => c.met)).toBe(true);
+    expect(res.softText).toBeUndefined();
+    expect(res.warn).toBe(false);
+  });
+
+  it("issue #49: Improved Critical keeps the UNRECOGNIZED 'Proficient with weapon' fragment but drops the covered BAB +8 one", () => {
+    // prereqText is "Proficient with weapon, base attack bonus +8." — only the
+    // BAB fragment maps to a structured signal; "Proficient with weapon" has
+    // no structured equivalent anywhere and must never be silently dropped.
+    const improvedCritical = featByName("Improved Critical");
+    const res = evaluatePrereqs(improvedCritical, ctx({ bab: 8 }));
+    expect(res.checks).toEqual([{ label: "BAB +8", met: true }]);
+    expect(res.softText).toBe("Proficient with weapon.");
     expect(res.warn).toBe(true);
   });
 

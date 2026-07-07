@@ -9,6 +9,7 @@ import {
   expectedFeatCount,
   featChoiceDescriptor,
   featChoiceOptions,
+  featDisplayName,
   grantedFeats,
   setFeatChoice,
 } from "../src/model/feats.js";
@@ -511,5 +512,118 @@ describe("featChoiceOptions", () => {
   it("returns empty for type weapon (deferred)", () => {
     const opts = featChoiceOptions("weapon", ref);
     expect(opts).toHaveLength(0);
+  });
+
+  it('returns the 8 schools of magic for type "school"', () => {
+    const opts = featChoiceOptions("school", ref);
+    expect(opts.map((o) => o.name)).toEqual([
+      "Abjuration",
+      "Conjuration",
+      "Divination",
+      "Enchantment",
+      "Evocation",
+      "Illusion",
+      "Necromancy",
+      "Transmutation",
+    ]);
+  });
+});
+
+// ─── issue #55: choice-requiring feats without a picker ─────────────────────
+
+describe("featChoiceDescriptor: issue #55 additions", () => {
+  it('Spell Focus gets a "school" descriptor (display-only, no engine effect)', () => {
+    const desc = featChoiceDescriptor("Spell Focus");
+    expect(desc).toEqual({ type: "school", label: "School" });
+  });
+
+  it('Greater Spell Focus gets a "school" descriptor (display-only, no engine effect)', () => {
+    const desc = featChoiceDescriptor("Greater Spell Focus");
+    expect(desc).toEqual({ type: "school", label: "School" });
+  });
+
+  it('Improved Critical gets a "weapon" descriptor (display-only, no crit-range wiring)', () => {
+    const desc = featChoiceDescriptor("Improved Critical");
+    expect(desc).toEqual({ type: "weapon", label: "Weapon Type" });
+  });
+
+  it("engine-wired choice feats (Weapon Focus, Skill Focus) still resolve through resolveFeatEffect first", () => {
+    expect(featChoiceDescriptor("Weapon Focus")).toEqual({ type: "weapon", label: "Weapon Type" });
+    expect(featChoiceDescriptor("Skill Focus")?.type).toBe("skill");
+    // Greater Weapon Focus/Specialization (machine-extracted, issue #45) keep working.
+    expect(featChoiceDescriptor("Greater Weapon Focus")?.type).toBe("weapon");
+    expect(featChoiceDescriptor("Greater Weapon Specialization")?.type).toBe("weapon");
+  });
+});
+
+// ─── featDisplayName ─────────────────────────────────────────────────────────
+
+describe("featDisplayName", () => {
+  function featIdNamed(name: string): string {
+    const feat = Object.values(ref.feats).find((f) => f.name === name);
+    if (!feat) throw new Error(`feat not found: ${name}`);
+    return feat.id;
+  }
+
+  it("returns the bare feat name when no choice is stored", () => {
+    const weaponFocus = ref.feats[featIdNamed("Weapon Focus")]!;
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 1 }], feats: [weaponFocus.id] });
+    expect(featDisplayName(weaponFocus, doc, ref)).toBe("Weapon Focus");
+  });
+
+  it("appends the chosen weapon group to Weapon Focus", () => {
+    const weaponFocus = ref.feats[featIdNamed("Weapon Focus")]!;
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [weaponFocus.id],
+      featChoices: { [weaponFocus.id]: "Falchion" },
+    });
+    expect(featDisplayName(weaponFocus, doc, ref)).toBe("Weapon Focus: Falchion");
+  });
+
+  it("appends the chosen weapon group to Improved Critical (display-only)", () => {
+    const improvedCritical = ref.feats[featIdNamed("Improved Critical")]!;
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 8 }],
+      feats: [improvedCritical.id],
+      featChoices: { [improvedCritical.id]: "Falchion" },
+    });
+    expect(featDisplayName(improvedCritical, doc, ref)).toBe("Improved Critical: Falchion");
+  });
+
+  it("appends the chosen skill's display name to Skill Focus", () => {
+    const skillFocus = ref.feats[featIdNamed("Skill Focus")]!;
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [skillFocus.id],
+      featChoices: { [skillFocus.id]: "per" },
+    });
+    expect(featDisplayName(skillFocus, doc, ref)).toBe("Skill Focus: Perception");
+  });
+
+  it("appends the chosen school's display name to Spell Focus", () => {
+    const spellFocus = ref.feats[featIdNamed("Spell Focus")]!;
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [spellFocus.id],
+      featChoices: { [spellFocus.id]: "evocation" },
+    });
+    expect(featDisplayName(spellFocus, doc, ref)).toBe("Spell Focus: Evocation");
+  });
+
+  it("falls back to the raw choiceId when it doesn't match a known option", () => {
+    const skillFocus = ref.feats[featIdNamed("Skill Focus")]!;
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [skillFocus.id],
+      featChoices: { [skillFocus.id]: "not-a-real-skill-id" },
+    });
+    expect(featDisplayName(skillFocus, doc, ref)).toBe("Skill Focus: not-a-real-skill-id");
+  });
+
+  it("returns the bare feat name for a feat with no choice descriptor at all", () => {
+    const ironWill = ref.feats[featIdNamed("Iron Will")]!;
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 1 }], feats: [ironWill.id] });
+    expect(featDisplayName(ironWill, doc, ref)).toBe("Iron Will");
   });
 });

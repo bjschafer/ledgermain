@@ -30,7 +30,7 @@
  * selection, so they are not counted. Half-Orcs have no bonus feat trait.
  */
 
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import type { CharacterDoc, Feat, RefData } from "@pf1/schema";
 import {
   activeArchetypeSwaps,
   buildRollData,
@@ -38,7 +38,6 @@ import {
   resolveArchetypeFeatureEffect,
   resolveFeatEffect,
   tryEvaluateFormula,
-  type ChoiceFeatEntry,
   type RollData,
 } from "@pf1/engine";
 
@@ -403,18 +402,80 @@ export function setFeatChoice(
 }
 
 /**
- * Returns the choice descriptor for the feat with the given name slug, or `null`
- * if the feat has no player choice (i.e. it is static or has no entry in
- * either the hand-verified or machine-extracted feat-effects tables — see
- * `resolveFeatEffect`). The descriptor drives the UI picker rendered in
- * FeatsSection, so machine-extracted choice-numeric feats (e.g. Greater
- * Weapon Focus, Master Craftsman — issue #45) get the same picker as their
- * hand-verified counterparts.
+ * Choice-picker kinds the FeatsSection/FeatsPanel UI knows how to render.
+ * "skill"/"weapon" also drive a real engine effect for feats registered in
+ * FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED (Weapon Focus, Skill Focus, Greater
+ * Weapon Focus, ...); "school" only ever appears via `DISPLAY_ONLY_FEAT_CHOICES`
+ * below, since no engine target exists for a per-school spell save DC.
  */
-export function featChoiceDescriptor(featName: string): ChoiceFeatEntry["choice"] | null {
+export type FeatChoiceType = "skill" | "weapon" | "school";
+
+export interface FeatChoiceDescriptor {
+  type: FeatChoiceType;
+  label: string;
+}
+
+/**
+ * The 8 schools of magic (PF1 CRB) — clean-room list of standard rules
+ * category names, not vendored content. Used only as picker options for
+ * Spell Focus/Greater Spell Focus (`DISPLAY_ONLY_FEAT_CHOICES`).
+ */
+const SCHOOLS_OF_MAGIC: readonly { id: string; name: string }[] = [
+  { id: "abjuration", name: "Abjuration" },
+  { id: "conjuration", name: "Conjuration" },
+  { id: "divination", name: "Divination" },
+  { id: "enchantment", name: "Enchantment" },
+  { id: "evocation", name: "Evocation" },
+  { id: "illusion", name: "Illusion" },
+  { id: "necromancy", name: "Necromancy" },
+  { id: "transmutation", name: "Transmutation" },
+];
+
+/**
+ * Feats that need a player-chosen target for DISPLAY purposes only — no
+ * entry exists (or should ever be added) for these slugs in the engine's
+ * FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED tables, so `resolveFeatEffect` never
+ * resolves them and no Change is emitted (issue #55, following the "don't
+ * invent a target" guidance from feat-classification.ts):
+ *
+ *  - Spell Focus / Greater Spell Focus: a per-school spell save DC bonus has
+ *    no engine target anywhere in targets.ts (see feat-classification.ts's
+ *    "blocked" entries for both) — the school is recorded and shown, but
+ *    never flows into a DC.
+ *  - Improved Critical: doubling a weapon's threat range is stacking-suspect
+ *    against a player-entered `WeaponInstance.critRange` that may already
+ *    reflect Keen or another range-doubling source, and there's no "base"
+ *    range to double against (see feat-classification.ts's "subsystem" note)
+ *    — same posture as Improved Natural Armor's "blocked" classification.
+ *    The chosen weapon is recorded and shown, but the sheet's crit column
+ *    isn't touched.
+ *
+ * `setFeatChoice`/`doc.build.featChoices` (the storage) and the "one choice
+ * per feat id" limitation (see `toggleFeat` in doc.ts — `build.feats` is a
+ * de-duped array, so a feat legally takable multiple times, like Weapon
+ * Focus or Improved Critical, only ever tracks ONE choice) are unchanged by
+ * this map; it only widens what `featChoiceDescriptor` recognizes.
+ */
+const DISPLAY_ONLY_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = {
+  "spell-focus": { type: "school", label: "School" },
+  "greater-spell-focus": { type: "school", label: "School" },
+  "improved-critical": { type: "weapon", label: "Weapon Type" },
+};
+
+/**
+ * Returns the choice descriptor for the feat with the given name, or `null`
+ * if the feat has no player choice. Two sources, checked in order:
+ *  1. An engine-wired choice (Weapon Focus, Skill Focus, Greater Weapon
+ *     Focus, Master Craftsman, ...) via `resolveFeatEffect` — its `build()`
+ *     emits a real Change once a choice is stored.
+ *  2. `DISPLAY_ONLY_FEAT_CHOICES` — a choice with no engine effect at all
+ *     (Spell Focus's school, Improved Critical's weapon).
+ * The descriptor drives the UI picker rendered in FeatsSection/FeatsPanel.
+ */
+export function featChoiceDescriptor(featName: string): FeatChoiceDescriptor | null {
   const resolved = resolveFeatEffect(featNameSlug(featName));
-  if (!resolved || resolved.entry.type !== "choice") return null;
-  return resolved.entry.choice;
+  if (resolved && resolved.entry.type === "choice") return resolved.entry.choice;
+  return DISPLAY_ONLY_FEAT_CHOICES[featNameSlug(featName)] ?? null;
 }
 
 /**
@@ -425,6 +486,9 @@ export function featChoiceDescriptor(featName: string): ChoiceFeatEntry["choice"
  * - "weapon": the distinct non-empty `group` labels present on `doc.build.weapons`,
  *   sorted alphabetically. Returns empty when `doc` is not provided or the character
  *   has no weapons with a group set — the UI renders a soft hint in that case.
+ * - "school": the 8 schools of magic, in a fixed traditional order (not
+ *   alphabetical — matches how they're conventionally listed in the rules).
+ *   `refData` and `doc` are unused; the list is static.
  */
 export function featChoiceOptions(
   choiceType: string,
@@ -443,5 +507,27 @@ export function featChoiceOptions(
     }
     return [...seen].sort().map((g) => ({ id: g, name: g }));
   }
+  if (choiceType === "school") {
+    return SCHOOLS_OF_MAGIC.map((s) => ({ ...s }));
+  }
   return [];
+}
+
+/**
+ * The feat's display name, with its chosen target appended when one is set
+ * (e.g. "Weapon Focus: Longsword", "Improved Critical: Falchion", "Spell
+ * Focus: Evocation") — issue #55's rendering requirement, shared by the
+ * builder's FeatsSection and the Play-tab FeatsPanel so the two never drift.
+ * Falls back to the bare feat name when the feat has no choice descriptor or
+ * no choice has been stored yet.
+ */
+export function featDisplayName(feat: Feat, doc: CharacterDoc, refData: RefData): string {
+  const choiceId = doc.build.featChoices?.[feat.id];
+  if (!choiceId) return feat.name;
+  const descriptor = featChoiceDescriptor(feat.name);
+  if (!descriptor) return feat.name;
+  const label =
+    featChoiceOptions(descriptor.type, refData, doc).find((o) => o.id === choiceId)?.name ??
+    choiceId;
+  return `${feat.name}: ${label}`;
 }
