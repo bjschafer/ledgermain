@@ -95,6 +95,19 @@ export function migrateDoc(doc: CharacterDoc): CharacterDoc {
   // `PreparedSpell.kind` is optional and defaults to "normal" — existing
   // prepared entries need no rewrite; tracker code treats absent as normal.
 
+  // Alignment stored as a full label ("Neutral Good") instead of a code ("NG"):
+  // older imports and pre-normalization saves carry the label form, which the
+  // Identity select can't match (it silently showed "—"). `setAlignment` and
+  // the external importers normalize new writes; this backfills existing docs
+  // on load. Unknown strings are kept as-is (the sheet renders them raw).
+  if (next.identity.alignment) {
+    const code = normalizeAlignmentCode(next.identity.alignment);
+    if (code && code !== next.identity.alignment) {
+      next = { ...next, identity: { ...next.identity, alignment: code } };
+      changed = true;
+    }
+  }
+
   return changed ? next : doc;
 }
 

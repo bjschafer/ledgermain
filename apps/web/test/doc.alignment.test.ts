@@ -10,7 +10,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { createEmptyDoc, setAlignment } from "../src/model/doc.js";
+import { createEmptyDoc, migrateDoc, setAlignment } from "../src/model/doc.js";
 
 function doc() {
   return createEmptyDoc("t");
@@ -36,6 +36,28 @@ describe("setAlignment()", () => {
 
   it("stores an unrecognized string as-is", () => {
     expect(setAlignment(doc(), "True Neutral-ish").identity.alignment).toBe("True Neutral-ish");
+  });
+
+  it("backfills label-form alignment to a code via migrateDoc (native imports / stored docs)", () => {
+    // Native imports bypass setAlignment entirely — parseImportedDoc hands the
+    // blob to migrateDoc, so the backfill must live there too (real bug: the
+    // owner's lyle-ledgermain.json stores "Neutral Good" and the Identity
+    // select showed "—" after import).
+    const labelled = {
+      ...doc(),
+      identity: { ...doc().identity, alignment: "Neutral Good" },
+    };
+    expect(migrateDoc(labelled).identity.alignment).toBe("NG");
+  });
+
+  it("migrateDoc leaves code-form and unknown alignments alone", () => {
+    const coded = { ...doc(), identity: { ...doc().identity, alignment: "NG" } };
+    expect(migrateDoc(coded)).toBe(coded); // idempotent: no rewrite, same reference
+    const weird = {
+      ...doc(),
+      identity: { ...doc().identity, alignment: "True Neutral-ish" },
+    };
+    expect(migrateDoc(weird).identity.alignment).toBe("True Neutral-ish");
   });
 
   it("round-trips every alignment label to its code", () => {
