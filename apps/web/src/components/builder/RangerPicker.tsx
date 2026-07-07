@@ -6,9 +6,12 @@ import {
   FAVORED_TERRAIN_TYPES,
   addFavoredEnemy,
   addFavoredTerrain,
+  effectiveCombatStyleId,
   favoredEnemyBudget,
   favoredTerrainBudget,
   isRanger,
+  rangerSelectableStyles,
+  rangerStyleRestriction,
   removeFavoredEnemy,
   removeFavoredTerrain,
   setCombatStyle,
@@ -47,7 +50,9 @@ export function RangerPicker({ doc, update }: RangerPickerProps) {
   const enemyBudget = favoredEnemyBudget(doc);
   const terrainBudget = favoredTerrainBudget(doc);
   const combatStyle = doc.build.combatStyle ?? "";
-  const styleLabel = COMBAT_STYLES.find((s) => s.id === combatStyle)?.label;
+  const styleRestriction = rangerStyleRestriction(doc);
+  const selectableStyles = rangerSelectableStyles(doc);
+  const styleLabel = COMBAT_STYLES.find((s) => s.id === effectiveCombatStyleId(doc))?.label;
 
   return (
     <div className="subsection ranger-picker">
@@ -71,26 +76,42 @@ export function RangerPicker({ doc, update }: RangerPickerProps) {
         <>
           {/* ── Combat Style ─────────────────────────────────────────── */}
           <div className="ranger-block">
-            <label className="ranger-style-label">
-              Combat Style
-              <select
-                className="bloodline-select"
-                value={combatStyle}
-                onChange={(e) => update((d) => setCombatStyle(d, e.target.value || null))}
-              >
-                <option value="">— none chosen —</option>
-                {COMBAT_STYLES.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <p className="hint">
-              The chosen style's bonus feats can be taken without meeting their normal prerequisites
-              (they show as "combat style" in the feat list). The bonus-feat count is already
-              applied automatically.
-            </p>
+            {styleRestriction.kind === "suppressed" ? (
+              <p className="hint">
+                This archetype replaces the ranger's combat-style bonus feats with its own ability —
+                no combat style applies.
+              </p>
+            ) : (
+              <>
+                <label className="ranger-style-label">
+                  Combat Style
+                  <select
+                    className="bloodline-select"
+                    value={
+                      styleRestriction.kind === "locked" ? styleRestriction.styleId : combatStyle
+                    }
+                    disabled={styleRestriction.kind === "locked"}
+                    onChange={(e) => update((d) => setCombatStyle(d, e.target.value || null))}
+                  >
+                    <option value="">— none chosen —</option>
+                    {selectableStyles.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <p className="hint">
+                  {styleRestriction.kind === "locked"
+                    ? "Locked by the character's archetype."
+                    : styleRestriction.kind === "restricted"
+                      ? "Narrowed to the styles above by the character's archetype."
+                      : "The chosen style's bonus feats can be taken without meeting their normal " +
+                        'prerequisites (they show as "combat style" in the feat list). The bonus-feat ' +
+                        "count is already applied automatically."}
+                </p>
+              </>
+            )}
           </div>
 
           {/* ── Favored Enemy ────────────────────────────────────────── */}

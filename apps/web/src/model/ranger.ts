@@ -20,6 +20,7 @@ import {
   favoredTerrainSlots,
   featNameSlug,
   rangerLevel,
+  type CombatStyle,
 } from "@pf1/engine";
 
 export {
@@ -130,14 +131,149 @@ export function setCombatStyle(doc: CharacterDoc, id: string | null): CharacterD
 }
 
 /**
+ * How a ranger archetype constrains the normal free-choice combat style pick
+ * (issue #59): some archetypes lock the ranger into one specific style
+ * (Bow Nomad → Archery, Elemental Envoy → the archetype-exclusive Elemental
+ * style, ...), one narrows the choice to a short list (Toxophilite: Archery
+ * or Crossbow), and two replace the whole bonus-feat-tree mechanism with an
+ * unrelated subsystem (Trophy Hunter's gunslinger grit/deeds, Poison
+ * Darter's rogue talents/alchemist discoveries) that this project doesn't
+ * model as a `CombatStyle` feat list at all.
+ */
+export type RangerStyleRestriction =
+  | { kind: "free" }
+  | { kind: "locked"; styleId: string }
+  | { kind: "restricted"; styleIds: readonly string[] }
+  | { kind: "suppressed" };
+
+interface ArchetypeStyleRule {
+  /** Fully replaces the free choice — the picker shows this style only, disabled. */
+  lockedStyleId?: string;
+  /** Narrows the free choice to this subset — the picker still lets the player pick among these. */
+  allowedStyleIds?: readonly string[];
+  /** Replaces the combat-style bonus-feat mechanism with something this project doesn't model as a feat list. */
+  suppressed?: true;
+}
+
+/**
+ * Ranger archetype id (`RefData.archetypes` key) -> how it constrains the
+ * combat style pick. Hand-verified against each archetype's own vendored
+ * `description` prose (see `archetype-features.json`) and, for Elemental
+ * Envoy/Wave Warden, the two new archetype-exclusive `COMBAT_STYLES` entries
+ * authored for issue #59 (`@pf1/engine` `ranger.ts`). Only archetypes
+ * present in the vendored slice are listed — see the issue #59 audit for the
+ * full inventory of ranger archetypes that were checked but don't restrict
+ * the style pick (most archetypes leave Combat Style Feat untouched).
+ *
+ * Not covered here: Sword-Devil's "Second Combat Style" (11th level) adds a
+ * SECOND free style pick on top of the first rather than restricting the
+ * first — `CharacterDoc.build.combatStyle` is a single field, so modeling a
+ * second concurrent style is out of scope for this map (reported as a known
+ * limitation, issue #59).
+ */
+const RANGER_ARCHETYPE_STYLE_RULES: Readonly<Record<string, ArchetypeStyleRule>> = {
+  // Locked to a single CRB/UC style — the archetype's own prose names it outright.
+  "ranger:bow-nomad": { lockedStyleId: "archery" },
+  "ranger:hooded-champion": { lockedStyleId: "archery" },
+  "ranger:horse-lord": { lockedStyleId: "mounted-combat" },
+  "ranger:ilsurian-archer": { lockedStyleId: "archery" },
+  "ranger:shapeshifter": { lockedStyleId: "natural-weapon" },
+  "ranger:stormwalker": { lockedStyleId: "archery" },
+  // Locked to the archetype-exclusive style authored for this archetype.
+  "ranger:elemental-envoy": { lockedStyleId: "elemental" },
+  "ranger:wave-warden": { lockedStyleId: "aquatic-prowess" },
+  // Narrowed, not locked — the archetype's prose offers a choice of two.
+  "ranger:toxophilite": { allowedStyleIds: ["archery", "crossbow"] },
+  // Replaces the mechanism entirely with something not modeled as a feat list.
+  "ranger:trophy-hunter": { suppressed: true },
+  "ranger:poison-darter": { suppressed: true },
+};
+
+/**
+ * The active constraint (if any) a chosen ranger archetype places on the
+ * combat style pick. `"free"` (no archetype restriction) covers both a plain
+ * CRB ranger and a ranger whose archetype leaves Combat Style Feat
+ * untouched. Only the first recognized ranger archetype found in
+ * `doc.build.archetypes` is consulted — a character with two archetypes that
+ * both restrict style is a corner case no vendored ranger archetype pairing
+ * currently produces.
+ */
+export function rangerStyleRestriction(doc: CharacterDoc): RangerStyleRestriction {
+  for (const archetypeId of doc.build.archetypes ?? []) {
+    const rule = RANGER_ARCHETYPE_STYLE_RULES[archetypeId];
+    if (!rule) continue;
+    if (rule.suppressed) return { kind: "suppressed" };
+    if (rule.lockedStyleId) return { kind: "locked", styleId: rule.lockedStyleId };
+    if (rule.allowedStyleIds) return { kind: "restricted", styleIds: rule.allowedStyleIds };
+  }
+  return { kind: "free" };
+}
+
+/**
+ * The combat style id that actually governs the character's bonus-feat
+ * prereq waiver right now: an archetype lock overrides whatever
+ * `doc.build.combatStyle` holds (stale data from before the archetype was
+ * added, or simply never cleared), a suppressed archetype means no style
+ * applies regardless of stored value, and otherwise it's the player's free
+ * choice (still narrowed to the archetype's allowed subset by the picker UI,
+ * but that narrowing isn't re-validated here — same soft-warning posture as
+ * the rest of this module).
+ */
+export function effectiveCombatStyleId(doc: CharacterDoc): string | undefined {
+  const restriction = rangerStyleRestriction(doc);
+  if (restriction.kind === "suppressed") return undefined;
+  if (restriction.kind === "locked") return restriction.styleId;
+  return doc.build.combatStyle;
+}
+
+/**
+ * Style ids only reachable by locking into a granting archetype (issue #59's
+ * "elemental"/"aquatic-prowess" additions to `@pf1/engine`'s
+ * `COMBAT_STYLES`) — excluded from the free-choice picker so a plain ranger
+ * (or one with an unrelated archetype) can't select a style their character
+ * has no access to.
+ */
+const ARCHETYPE_EXCLUSIVE_STYLE_IDS: ReadonlySet<string> = new Set([
+  "elemental",
+  "aquatic-prowess",
+]);
+
+/**
+ * The combat styles selectable in the picker right now, given the character's
+ * archetype restriction: exactly one (disabled) for `"locked"`, the narrowed
+ * subset for `"restricted"`, none for `"suppressed"`, or every style except
+ * the archetype-exclusive ones for `"free"`. Drives `RangerPicker`'s
+ * dropdown so the UI never offers a choice the character's archetype
+ * forbids.
+ */
+export function rangerSelectableStyles(doc: CharacterDoc): readonly CombatStyle[] {
+  const restriction = rangerStyleRestriction(doc);
+  switch (restriction.kind) {
+    case "locked":
+      return COMBAT_STYLES.filter((s) => s.id === restriction.styleId);
+    case "restricted":
+      return COMBAT_STYLES.filter((s) => restriction.styleIds.includes(s.id));
+    case "suppressed":
+      return [];
+    case "free":
+      return COMBAT_STYLES.filter((s) => !ARCHETYPE_EXCLUSIVE_STYLE_IDS.has(s.id));
+  }
+}
+
+/**
  * The set of `featNameSlug`s whose prerequisites the feat picker should waive
  * because they belong to the ranger's chosen combat style tree (CRB: a ranger
  * selecting a combat-style bonus feat need not meet the normal prerequisites).
- * Empty when no style is chosen or the character isn't a ranger.
+ * Empty when no style applies (non-ranger, no style chosen, or a suppressed
+ * archetype) — uses {@link effectiveCombatStyleId}, not the raw stored field,
+ * so an archetype-locked style is honored even if `doc.build.combatStyle`
+ * disagrees.
  */
 export function combatStyleFeatSlugs(doc: CharacterDoc): ReadonlySet<string> {
-  if (!isRanger(doc) || !doc.build.combatStyle) return new Set();
-  const style = COMBAT_STYLES.find((s) => s.id === doc.build.combatStyle);
+  if (!isRanger(doc)) return new Set();
+  const styleId = effectiveCombatStyleId(doc);
+  if (!styleId) return new Set();
+  const style = COMBAT_STYLES.find((s) => s.id === styleId);
   return new Set(style?.featSlugs ?? []);
 }
 
