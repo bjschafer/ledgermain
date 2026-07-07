@@ -32,12 +32,14 @@ import {
   spellSlotsByLevel,
   storedClassTag,
 } from "../../model/spellcasting.js";
+import { newDaySummary } from "../../model/rest.js";
 import {
   castSpontaneousSlot,
   resetSpontaneousSlots,
   restoreSpontaneousSlot,
   spontaneousSlotStatus,
 } from "../../model/spontaneousSpells.js";
+import { showToast } from "../../state/toast.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 import { Explainer } from "../Explainer.js";
@@ -480,6 +482,7 @@ function PreparedView({
   sheet,
   refData,
   update,
+  undoLast,
   casterTag,
   model,
   classSwitcher,
@@ -574,8 +577,13 @@ function PreparedView({
           disabled={!anyExpended}
           title="Same as the global New day action, scoped to this class's spells"
           onClick={() => {
-            update((d) => restPreparedSpells(d, classTag));
+            const next = restPreparedSpells(doc, classTag);
+            update(() => next);
             setConfirmClear(false);
+            showToast({
+              message: newDaySummary(doc, next) || "Spells refreshed",
+              action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
+            });
           }}
         >
           New day
@@ -841,6 +849,7 @@ function SpontaneousView({
   sheet,
   refData,
   update,
+  undoLast,
   casterTag,
   model,
   classSwitcher,
@@ -932,7 +941,14 @@ function SpontaneousView({
           className="btn-ghost rest"
           disabled={!anyUsed}
           title="Same as the global New day action, scoped to this class's spells"
-          onClick={() => update((d) => resetSpontaneousSlots(d, classTag))}
+          onClick={() => {
+            const next = resetSpontaneousSlots(doc, classTag);
+            update(() => next);
+            showToast({
+              message: newDaySummary(doc, next) || "Spells refreshed",
+              action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
+            });
+          }}
         >
           New day
         </button>
@@ -1093,6 +1109,7 @@ function HybridView({
   sheet,
   refData,
   update,
+  undoLast,
   casterTag,
   model,
   classSwitcher,
@@ -1200,8 +1217,13 @@ function HybridView({
           disabled={!anyCastUsed}
           title="Same as the global New day action, scoped to this class's spells"
           onClick={() => {
-            update((d) => resetSpontaneousSlots(restPreparedSpells(d, classTag), classTag));
+            const next = resetSpontaneousSlots(restPreparedSpells(doc, classTag), classTag);
+            update(() => next);
             setConfirmClear(false);
+            showToast({
+              message: newDaySummary(doc, next) || "Spells refreshed",
+              action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
+            });
           }}
         >
           New day

@@ -13,7 +13,17 @@ import {
   setTempHp,
   type HpState,
 } from "../../model/hp.js";
+import { showToast } from "../../state/toast.js";
 import type { BuilderProps } from "../builder/types.js";
+
+/**
+ * Toast threshold for Damage/Heal (UX audit: "feedback: toasts + undo").
+ * Routine ±5 clicks at the table shouldn't interrupt play with a toast every
+ * time — but a big hit (>= this) or one that lands the character at 0 HP or
+ * below is exactly the kind of "wait, did I mean to do that?" moment an
+ * Undo action is worth surfacing for.
+ */
+const HP_TOAST_THRESHOLD = 10;
 
 /** Human-readable status line for each `hpState` result; empty for `ok` (no noise on a healthy character). */
 function statusLabel(state: HpState): string {
@@ -38,7 +48,7 @@ function statusLabel(state: HpState): string {
 }
 
 /** Current/temp/nonlethal HP with fast damage + healing controls. */
-export function HpPanel({ doc, sheet, update }: BuilderProps) {
+export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   const [amount, setAmount] = useState(5);
   const max = sheet.hp.max;
   const restMode = doc.build.settings?.restMode ?? "full";
@@ -104,14 +114,33 @@ export function HpPanel({ doc, sheet, update }: BuilderProps) {
         <button
           type="button"
           className="btn-act dmg"
-          onClick={() => update((d) => applyDamage(d, amt))}
+          onClick={() => {
+            const next = applyDamage(doc, amt);
+            update(() => next);
+            const droppedToZero = next.live.hp.current <= 0;
+            if (amt >= HP_TOAST_THRESHOLD || droppedToZero) {
+              showToast({
+                message: `Damage ${amt} · HP ${current}→${next.live.hp.current}`,
+                action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
+              });
+            }
+          }}
         >
           Damage
         </button>
         <button
           type="button"
           className="btn-act heal"
-          onClick={() => update((d) => applyHealing(d, amt, max))}
+          onClick={() => {
+            const next = applyHealing(doc, amt, max);
+            update(() => next);
+            if (amt >= HP_TOAST_THRESHOLD) {
+              showToast({
+                message: `Heal ${amt} · HP ${current}→${next.live.hp.current}`,
+                action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
+              });
+            }
+          }}
         >
           Heal
         </button>
