@@ -442,6 +442,14 @@ export interface CharacterDoc {
      */
     arcanistExploits?: string[];
     /**
+     * Magus arcana ids chosen (keys into `@pf1/engine` `MAGUS_ARCANA` —
+     * issue #61). Gained at 3rd level and every 3 levels thereafter (3rd,
+     * 6th, 9th, ...), plus one per "Extra Arcana" feat taken; see
+     * `model/magusArcana.ts` for the budget math. Free-choice, soft warning
+     * only on overspend — same posture as `arcanistExploits` above.
+     */
+    magusArcana?: string[];
+    /**
      * A tracked animal companion (PF1 druid Nature Bond / ranger Hunter's
      * Bond) — independent of, but closely mirroring, `familiar` above: this
      * models the companion itself as a trackable creature with its own
@@ -471,6 +479,17 @@ export interface CharacterDoc {
      * field are unaffected.
      */
     oracleCurse?: string;
+    /**
+     * Oracle revelation ids chosen (keys into `@pf1/engine`
+     * `ORACLE_REVELATIONS` — issue #61), scoped to the character's chosen
+     * `oracleMystery`. Gained at 1st, 3rd, 7th, 11th, 15th, and 19th level,
+     * plus one per "Extra Revelation" feat taken; see
+     * `model/oracleRevelations.ts` for the budget math. Free-choice, soft
+     * warning only on overspend — same posture as `arcanistExploits`. Does
+     * NOT include the mystery's automatic 20th-level Final Revelation (see
+     * `ORACLE_MYSTERY_FINAL_REVELATIONS`, informational only).
+     */
+    oracleRevelations?: string[];
     /**
      * Fighter's Weapon Training group picks, in grant order — index 0 = the
      * group chosen at 5th level, index 1 = 9th, index 2 = 13th, index 3 =
@@ -1285,15 +1304,20 @@ export interface DerivedClassFeature {
   detail?: string;
   /**
    * Set when this feature came from a chosen cleric domain, wizard arcane
-   * school, sorcerer bloodline (issue #34), or arcanist exploit (issue #42)
-   * rather than the class itself — all four share `classTag: "cleric"`/
-   * `"wizard"`/`"sorcerer"`/`"arcanist"` with the class's own intrinsic
-   * features, so this disambiguates e.g. "Fire Bolt" (Fire Domain) from
-   * Channel Energy (cleric itself), "Claws" (Draconic Bloodline) from a
-   * sorcerer's other features, or "Quick Study" (an exploit) from an
-   * arcanist's own Arcane Reservoir.
+   * school, sorcerer bloodline (issue #34), arcanist exploit (issue #42),
+   * magus arcana, or oracle revelation (both issue #61) rather than the
+   * class itself — all six share `classTag: "cleric"`/`"wizard"`/
+   * `"sorcerer"`/`"arcanist"`/`"magus"`/`"oracle"` with the class's own
+   * intrinsic features, so this disambiguates e.g. "Fire Bolt" (Fire
+   * Domain) from Channel Energy (cleric itself), "Claws" (Draconic
+   * Bloodline) from a sorcerer's other features, "Quick Study" (an
+   * exploit) from an arcanist's own Arcane Reservoir, or "Familiar" (a
+   * magus arcana) from a magus's own Spell Combat.
    */
-  origin?: { kind: "domain" | "school" | "bloodline" | "exploit"; label: string };
+  origin?: {
+    kind: "domain" | "school" | "bloodline" | "exploit" | "arcana" | "revelation";
+    label: string;
+  };
 }
 
 /** One feature granted by an active archetype (in addition to/instead of the base grant). */
