@@ -74,6 +74,10 @@ export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.j
 export {
   RACIAL_TRAITS,
   alternateRacialTraitsForRace,
+  hasSlowAndSteady,
+  raceHasSlowAndSteady,
+  slowAndSteadySuppressedBy,
+  SLOW_AND_STEADY_SUPPRESS_TARGET,
   type AlternateRacialTrait,
 } from "./racial-traits.js";
 export {

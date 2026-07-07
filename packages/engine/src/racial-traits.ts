@@ -62,7 +62,7 @@
  * the `build.racialTraits` entry and `RACIAL_TRAITS[id]` lookup.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { CharacterDoc, Change, ContextNote, Race } from "@pf1/schema";
 
 export interface AlternateRacialTrait {
   /** Stable slug, e.g. "human-focused-study". */
@@ -438,4 +438,63 @@ export const RACIAL_TRAITS: Readonly<Record<string, AlternateRacialTrait>> = Obj
  */
 export function alternateRacialTraitsForRace(raceName: string): AlternateRacialTrait[] {
   return TRAIT_LIST.filter((t) => t.race === raceName);
+}
+
+/* ---------------------------------------------------- slow and steady (#52) */
+
+/**
+ * Creature subtypes whose standard racial traits include "Slow and Steady"
+ * (d20pfsrd, core rule, clean-room): "base speed is never modified by armor
+ * or encumbrance." In the vendored 80-race slice this is exactly Dwarf and
+ * Duergar — both carry `dwarf` in `Race.creatureSubtypes`, and their
+ * `Race.description` prose confirms the trait (no other race in the slice
+ * has it). Keying off the subtype rather than a hardcoded race-name list
+ * means any future dwarf-subtype race added to the vendored data inherits
+ * this automatically, matching how the subtype grants the trait per RAW.
+ */
+const SLOW_AND_STEADY_SUBTYPES: ReadonlySet<string> = new Set(["dwarf"]);
+
+/**
+ * Virtual `suppressTargets` entry an alternate racial trait can use to swap
+ * away Slow and Steady, disabling the armor/encumbrance exemption below. Not
+ * a real `Change` target — Slow and Steady isn't modeled as a `Race.changes`
+ * entry (it's baked directly into `Race.speeds.land` reading 20 instead of
+ * 30), so `collectModifiers` never sees it; only {@link hasSlowAndSteady}
+ * reads it. No alternate in `TRAIT_LIST` swaps it away today (Dwarf's
+ * published alternates — Lorekeeper, Steel Soul, Rock Stepper, etc. — replace
+ * Greed/Hardy/Stonecunning instead, never Slow and Steady), but the hook
+ * exists so a future one can flip it off without new machinery.
+ */
+export const SLOW_AND_STEADY_SUPPRESS_TARGET = "slowAndSteady";
+
+/** True when `race` carries the Slow and Steady trait (armor/encumbrance-immune base speed). */
+export function raceHasSlowAndSteady(race: Race | undefined): boolean {
+  return !!race && race.creatureSubtypes.some((s) => SLOW_AND_STEADY_SUBTYPES.has(s));
+}
+
+/**
+ * True when any of `traits` (a character's currently-active alternate racial
+ * traits for their race) has swapped away Slow and Steady. Split out from
+ * {@link hasSlowAndSteady} as its own pure function so the suppression
+ * mechanism is unit-testable independent of `RACIAL_TRAITS` lookup — no
+ * published Dwarf alternate currently sets this (see the constant's doc
+ * comment above), so this is otherwise unexercised by real data today.
+ */
+export function slowAndSteadySuppressedBy(traits: readonly AlternateRacialTrait[]): boolean {
+  return traits.some((t) => t.suppressTargets?.includes(SLOW_AND_STEADY_SUPPRESS_TARGET));
+}
+
+/**
+ * True when `doc`'s race has Slow and Steady and no active alternate racial
+ * trait has swapped it away — i.e. `compute.ts`'s armor-weight-class and
+ * (optional) encumbrance land-speed reductions should both be skipped.
+ * `race` is the already-resolved `refData.races[doc.identity.race]` (may be
+ * `undefined` for a stale/unknown race id, same posture as `collectModifiers`).
+ */
+export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boolean {
+  if (!raceHasSlowAndSteady(race)) return false;
+  const activeRacialTraits = (doc.build.racialTraits ?? [])
+    .map((id) => RACIAL_TRAITS[id])
+    .filter((t): t is AlternateRacialTrait => t != null && t.race === race!.name);
+  return !slowAndSteadySuppressedBy(activeRacialTraits);
 }

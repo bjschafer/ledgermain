@@ -44,6 +44,7 @@ import {
   encumberedSpeed,
   loadTierLabel,
 } from "./encumbrance.js";
+import { hasSlowAndSteady } from "./racial-traits.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
 import { normalizeWeaponGroup } from "./weapon-groups.js";
@@ -967,8 +968,19 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // value and whatever the above targets already produced (e.g. a "set"
   // effect like Slow) — RAW load/armor speed penalties apply only to land
   // speed, not fly/swim/etc.
+  //
+  // Slow and Steady (issue #52, d20pfsrd core Dwarf/Duergar trait): "base
+  // speed is never modified by armor or encumbrance" — both reductions above
+  // are skipped entirely when the race has the trait (and hasn't swapped it
+  // away via an alternate racial trait), so a dwarf in full plate keeps her
+  // full 20 ft.
   const armorSpeedPenalty = heaviestWornArmorType(doc) >= 2;
-  if ((encumbrance?.speedPenalty || armorSpeedPenalty) && speeds.land !== undefined) {
+  const slowAndSteady = hasSlowAndSteady(doc, race);
+  if (
+    !slowAndSteady &&
+    (encumbrance?.speedPenalty || armorSpeedPenalty) &&
+    speeds.land !== undefined
+  ) {
     speeds.land = Math.min(speeds.land, encumberedSpeed(speeds.land));
   }
 
