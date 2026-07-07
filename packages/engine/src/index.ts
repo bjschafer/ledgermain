@@ -104,6 +104,7 @@ export {
 } from "./oracle-curses.js";
 export {
   FEAT_EFFECTS,
+  FEAT_POOL_EFFECTS,
   SITUATIONAL_FEAT_EFFECTS,
   featNameSlug,
   type FeatChange,
@@ -112,7 +113,24 @@ export {
   type SituationalFeatEffect,
   type SituationalFeatEntry,
   type FeatEntry,
+  type FeatPoolEffect,
 } from "./feat-effects.js";
+export {
+  FEAT_EFFECTS_EXTRACTED,
+  type ExtractedFeatEntry,
+  type ExtractedStaticFeatEntry,
+  type ExtractedChoiceFeatEntry,
+} from "./feat-effects-extracted.js";
+export {
+  resolveFeatEffect,
+  type FeatEffectSource,
+  type ResolvedFeatEffect,
+} from "./feat-effects-resolve.js";
+export {
+  FEAT_CLASSIFICATION,
+  type FeatClassificationBucket,
+  type FeatClassificationEntry,
+} from "./feat-classification.js";
 export { FAMILIARS, FAMILIAR_KINDS, type FamiliarDef } from "./familiars.js";
 export {
   BASE_FAMILIARS,

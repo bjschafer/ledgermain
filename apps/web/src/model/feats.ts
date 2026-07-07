@@ -32,11 +32,11 @@
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import {
-  FEAT_EFFECTS,
   activeArchetypeSwaps,
   buildRollData,
   featNameSlug,
   resolveArchetypeFeatureEffect,
+  resolveFeatEffect,
   tryEvaluateFormula,
   type ChoiceFeatEntry,
   type RollData,
@@ -275,13 +275,17 @@ export function setFeatChoice(
 
 /**
  * Returns the choice descriptor for the feat with the given name slug, or `null`
- * if the feat has no player choice (i.e. it is static or not in FEAT_EFFECTS).
- * The descriptor drives the UI picker rendered in FeatsSection.
+ * if the feat has no player choice (i.e. it is static or has no entry in
+ * either the hand-verified or machine-extracted feat-effects tables — see
+ * `resolveFeatEffect`). The descriptor drives the UI picker rendered in
+ * FeatsSection, so machine-extracted choice-numeric feats (e.g. Greater
+ * Weapon Focus, Master Craftsman — issue #45) get the same picker as their
+ * hand-verified counterparts.
  */
 export function featChoiceDescriptor(featName: string): ChoiceFeatEntry["choice"] | null {
-  const entry = FEAT_EFFECTS[featNameSlug(featName)];
-  if (!entry || entry.type !== "choice") return null;
-  return entry.choice;
+  const resolved = resolveFeatEffect(featNameSlug(featName));
+  if (!resolved || resolved.entry.type !== "choice") return null;
+  return resolved.entry.choice;
 }
 
 /**

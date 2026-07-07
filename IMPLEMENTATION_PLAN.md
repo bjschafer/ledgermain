@@ -701,6 +701,44 @@ Six parallel wave agents (rogue / druid+monk / bard+sorcerer / ranger+arcanist /
 
 ---
 
+### Feat classification + extraction pass (issue #45, 2026-07-06)
+
+Applied the same batch-extraction pipeline shape to **feats** — `packages/data-pipeline/data/feats.json` carries **zero** vendored `changes[]` (confirmed: 0/390), so every feat's mechanical effect (if any) is either hand-authored in `feat-effects.ts` (10 static/choice entries + 7 situational + 6 pool, pre-existing) or was previously unmodeled. All 390 feats — the entire upstream pack, no more exist — were classified; the extractable subset was extracted.
+
+**New files** (`packages/engine/src/`):
+
+- `feat-classification.ts` — `FEAT_CLASSIFICATION`, every feat keyed by name slug (`featNameSlug`, not RefEntity id — feat ids are opaque Foundry UUIDs; see feat-effects.ts's own rationale), with a bucket and one-line reason. Buckets adapted from the archetype rubric: `numeric` / `choice-numeric` (new, for feats parameterized by a player choice) / `situational` / `pool` (new, for Extra-X-style resource-pool-max feats) / `subsystem` / `blocked`.
+- `feat-effects-extracted.ts` — `FEAT_EFFECTS_EXTRACTED`, the machine-extracted sibling of `feat-effects.ts`'s hand-verified `FEAT_EFFECTS`, same `confidence`/`provenance` shape as `archetype-extracted/`.
+- `feat-effects-resolve.ts` — `resolveFeatEffect(slug)`, the single precedence point (hand wins over extracted), mirroring `archetype-effects-resolve.ts` exactly. `collect.ts` and `apps/web/src/model/feats.ts`'s `featChoiceDescriptor` both resolve through it now instead of reading `FEAT_EFFECTS` directly, so a machine-extracted choice-numeric feat (Greater Weapon Focus) gets the same `featChoices` picker UI as its hand-verified counterpart (Weapon Focus) for free.
+
+**Tallies:**
+
+| bucket         | count |
+| -------------- | ----- |
+| numeric        | 17    |
+| choice-numeric | 6     |
+| situational    | 148   |
+| pool           | 7     |
+| subsystem      | 204   |
+| blocked        | 8     |
+| **all**        | 390   |
+
+13 of the 17 numeric + 3 of the 6 choice-numeric + 1 of the 7 pool entries are newly machine-extracted this pass (the rest are the pre-existing hand-verified entries in `feat-effects.ts`, reclassified here for completeness):
+
+- **Skill-pair family** (numeric, high confidence): Acrobatic, Athletic, Deceitful, Animal Affinity, Deft Hands, Magical Aptitude, Persuasive, Self-Sufficient, Stealthy — all unconditional CRB "+2/+2 on a skill pair, +4 at 10+ ranks in either" feats, structurally identical to the already-hand-verified Alertness entry. Intimidating Prowess (add Str mod to Intimidate, unconditional) rounds out the numeric set.
+- **Choice-numeric** (reusing the existing `featChoices` "weapon"/"skill" picker, per the task's own constraint — extract only when the choice-UI shape already fits): Greater Weapon Focus / Greater Weapon Specialization (literal "+1/+2 more, stacks" extensions of Weapon Focus/Specialization, same `attack.weapon.<group>`/`damage.weapon.<group>` targets), and Master Craftsman (partial — only the flat +2 chosen-skill bonus is extracted; the caster-level-substitution-for-item-creation clause has no engine equivalent and is deliberately left unmodeled, hence `medium` confidence vs. the others' `high`).
+- **Pool**: Extra Arcane Pool (+2 to the magus's Arcane Pool max, stacks) — found by auditing every "Extra X" feat (34 total) against which `classFeatures` tags actually carry a `uses.maxFormula` pool; only `arcanePool` was previously unwired among them (the rest — grit, panache, bane, mercy, mental focus, martial flexibility, mesmerist tricks, ninja tricks, rogue/slayer talents, discoveries, rage powers, revelations, magus arcana, investigator talent, focus power, phrenic amplification, gnome spell-like uses, item slots, shapechange features, nanite surges — carry no `uses.maxFormula`-based pool in the vendored data at all, so raising their "max" has no engine hook without new resources.ts machinery; classified `subsystem`, not guessed at).
+
+**Deliberate downgrades to `blocked`** (real number, but stacking-suspect or no engine target exists at all — the task's own guidance to prefer downgrading over a wrong sheet number): Improved Natural Armor (RAW stacks per additional take, but the engine's `nac`→`"natural"` AC type is a non-stacking bucket — two same-type Changes wouldn't sum the way multiple takes require); Improved Natural Attack (no per-natural-attack damage-die field, and which attack was chosen isn't tracked); Ability Focus (choice of special attack + no DC target); Spell Focus / Greater Spell Focus (per-school spell save DC — no such target exists anywhere in `targets.ts`); Spell Penetration / Greater Spell Penetration (caster-level-vs-SR check bonus — same target gap); Breadth of Experience (applies to the entire Knowledge skill group + Profession — no group-level skill target, only per-skill `skill.<id>`).
+
+**Methodology** (disclosed, matching the archetype pilot's own posture): every `numeric`/`choice-numeric`/`pool`/`blocked` entry was individually read against the vendored feat description and cross-checked against the published rules. The bulk `situational`/`subsystem` split for the remaining ~332 feats (11 Monster-tag, 9 racial-tag, 7 Teamwork-tag, 26 Signature Skill / Skill Unlock-tag, ~27 non-pool "Extra X", the 22 maneuver-scoped Improved/Greater combat-maneuver feats, 12 Critical-tag, 10 Metamagic-tag, 25 Item Creation-tag, and a general regex-assisted pass for a "+N"/"-N" pattern in the remaining prose) was a heuristic-assisted pass, same disclosed trade-off as `archetype-extracted/fighter.ts`'s pilot — this boundary doesn't affect engine correctness since neither bucket ever emits a `Change`.
+
+**Notable judgment calls**: Combat Expertise (attack-for-AC tradeoff, same shape as Power Attack/Deadly Aim) was left `situational` rather than wired into `SITUATIONAL_FEAT_EFFECTS`, since that map's `SituationalFeatEffect` shape has no AC-delta field today — flagged as a small, cheap follow-up rather than built here. Critical Focus's `+4` confirm-roll bonus was classified `situational` alongside the rest of the Critical-tag family (matching traits.ts's Anatomist precedent: `critConfirm` is a real, unapplied target, but confirm rolls aren't a running sheet total) rather than given its own carve-out. A Magus Arcana picker and an Oracle Revelations picker would each unlock further "Extra X" pool feats in a future wave, same finding the archetype pass already surfaced.
+
+**Tests**: `packages/engine/test/feat-effects-extracted.test.ts` (hand-computed fixtures for the skill-pair family, Intimidating Prowess, Greater Weapon Focus/Specialization stacking, Master Craftsman, Extra Arcane Pool including multi-take stacking, and the hand-vs-extracted precedence rule) and `packages/engine/test/feat-classification.test.ts` (completeness — every vendored feat has exactly one classification entry — plus bucket-validity and spot-check assertions).
+
+---
+
 ## Verification posture (all stages)
 
 `bun run typecheck` is the gate that must stay green. Engine tests are hand-computed fixtures per the convention (`packages/engine/test/`). Each stage adds at least: (a) a model-layer test for the new transition/logic, (b) a regression test asserting a doc without the new field produces byte-identical engine output, and (c) for engine-touching stages, a stacking/compute fixture verifying the new bonuses route through the change-application path correctly. Pipeline changes (Stage 1) regen data via `bun run data:build` and review the diff before committing.
