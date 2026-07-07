@@ -4,15 +4,24 @@ import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
-import { addClass, addWeapon, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
+import {
+  addClass,
+  addWeapon,
+  createEmptyDoc,
+  setArchetypes,
+  setClassLevel,
+} from "../src/model/doc.js";
 import {
   addFavoredEnemy,
   addFavoredTerrain,
   combatStyleFeatSlugs,
+  effectiveCombatStyleId,
   favoredEnemyBudget,
   favoredTerrainBudget,
   isCombatStyleFeat,
   isRanger,
+  rangerSelectableStyles,
+  rangerStyleRestriction,
   removeFavoredEnemy,
   setCombatStyle,
   setFavoredEnemyBonus,
@@ -103,6 +112,90 @@ describe("combat-style prereq bypass", () => {
     const doc = setCombatStyle(ranger(), "archery");
     expect(isCombatStyleFeat(doc, ref, featId("Rapid Shot"))).toBe(true);
     expect(isCombatStyleFeat(doc, ref, featId("Power Attack"))).toBe(false);
+  });
+});
+
+describe("ranger archetype combat-style restrictions (issue #59)", () => {
+  it("a plain CRB ranger is unrestricted: free choice, no archetype-exclusive styles offered", () => {
+    const doc = ranger();
+    expect(rangerStyleRestriction(doc)).toEqual({ kind: "free" });
+    const ids = rangerSelectableStyles(doc).map((s) => s.id);
+    expect(ids).toContain("archery");
+    expect(ids).toContain("two-weapon");
+    expect(ids).not.toContain("elemental");
+    expect(ids).not.toContain("aquatic-prowess");
+    expect(effectiveCombatStyleId(doc)).toBeUndefined();
+    const withArchery = setCombatStyle(doc, "archery");
+    expect(effectiveCombatStyleId(withArchery)).toBe("archery");
+  });
+
+  it("Bow Nomad locks the style to archery regardless of the stored field", () => {
+    let doc = setArchetypes(ranger(), ["ranger:bow-nomad"]);
+    expect(rangerStyleRestriction(doc)).toEqual({ kind: "locked", styleId: "archery" });
+    expect(rangerSelectableStyles(doc).map((s) => s.id)).toEqual(["archery"]);
+    expect(effectiveCombatStyleId(doc)).toBe("archery");
+    // Even a stale/wrong stored value is overridden by the lock.
+    doc = setCombatStyle(doc, "two-weapon");
+    expect(effectiveCombatStyleId(doc)).toBe("archery");
+    expect(combatStyleFeatSlugs(doc).has("rapid-shot")).toBe(true);
+    expect(combatStyleFeatSlugs(doc).has("double-slice")).toBe(false);
+  });
+
+  it("Horse Lord locks to mounted-combat, Shapeshifter to natural-weapon", () => {
+    const horseLord = setArchetypes(ranger(), ["ranger:horse-lord"]);
+    expect(effectiveCombatStyleId(horseLord)).toBe("mounted-combat");
+    expect(combatStyleFeatSlugs(horseLord).has("mounted-combat")).toBe(true);
+
+    const shapeshifter = setArchetypes(ranger(), ["ranger:shapeshifter"]);
+    expect(effectiveCombatStyleId(shapeshifter)).toBe("natural-weapon");
+    expect(combatStyleFeatSlugs(shapeshifter).has("vital-strike")).toBe(true);
+  });
+
+  it("Elemental Envoy locks to the archetype-exclusive elemental style", () => {
+    const doc = setArchetypes(ranger(), ["ranger:elemental-envoy"]);
+    expect(rangerStyleRestriction(doc)).toEqual({ kind: "locked", styleId: "elemental" });
+    expect(effectiveCombatStyleId(doc)).toBe("elemental");
+    expect(combatStyleFeatSlugs(doc).has("wind-stance")).toBe(true);
+    expect(combatStyleFeatSlugs(doc).has("rapid-shot")).toBe(false);
+  });
+
+  it("Wave Warden locks to the archetype-exclusive aquatic-prowess style", () => {
+    const doc = setArchetypes(ranger(), ["ranger:wave-warden"]);
+    expect(effectiveCombatStyleId(doc)).toBe("aquatic-prowess");
+    expect(combatStyleFeatSlugs(doc).has("two-weapon-fighting")).toBe(true);
+    expect(combatStyleFeatSlugs(doc).has("manyshot")).toBe(false);
+  });
+
+  it("Toxophilite narrows (doesn't lock) the choice to archery or crossbow", () => {
+    const doc = setArchetypes(ranger(), ["ranger:toxophilite"]);
+    expect(rangerStyleRestriction(doc)).toEqual({
+      kind: "restricted",
+      styleIds: ["archery", "crossbow"],
+    });
+    const ids = rangerSelectableStyles(doc).map((s) => s.id);
+    expect(ids).toEqual(["archery", "crossbow"]);
+    // Nothing chosen yet -> no style applies.
+    expect(effectiveCombatStyleId(doc)).toBeUndefined();
+    const withCrossbow = setCombatStyle(doc, "crossbow");
+    expect(effectiveCombatStyleId(withCrossbow)).toBe("crossbow");
+    expect(combatStyleFeatSlugs(withCrossbow).has("crossbow-mastery")).toBe(true);
+    expect(combatStyleFeatSlugs(withCrossbow).has("manyshot")).toBe(false);
+  });
+
+  it("Trophy Hunter and Poison Darter suppress the combat style entirely", () => {
+    const trophyHunter = setArchetypes(ranger(), ["ranger:trophy-hunter"]);
+    expect(rangerStyleRestriction(trophyHunter)).toEqual({ kind: "suppressed" });
+    expect(rangerSelectableStyles(trophyHunter)).toEqual([]);
+    expect(effectiveCombatStyleId(trophyHunter)).toBeUndefined();
+    expect(combatStyleFeatSlugs(trophyHunter).size).toBe(0);
+
+    // Even a stored value from before the archetype was picked is ignored.
+    const poisonDarter = setCombatStyle(
+      setArchetypes(ranger(), ["ranger:poison-darter"]),
+      "archery",
+    );
+    expect(effectiveCombatStyleId(poisonDarter)).toBeUndefined();
+    expect(combatStyleFeatSlugs(poisonDarter).size).toBe(0);
   });
 });
 

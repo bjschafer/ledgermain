@@ -91,7 +91,10 @@ export interface CombatStyle {
 /**
  * Ranger combat styles: the two Core Rulebook styles (Archery, Two-Weapon
  * Combat — CRB p. 64) plus the five from Ultimate Combat (Crossbow, Mounted
- * Combat, Natural Weapon, Two-Handed Weapon, Weapon and Shield).
+ * Combat, Natural Weapon, Two-Handed Weapon, Weapon and Shield), plus two
+ * archetype-exclusive styles (Elemental, Aquatic Prowess — issue #59, see the
+ * "Archetype-granted styles" block below) that only a ranger with the
+ * granting archetype can select.
  *
  * `featSlugs` lists a style's bonus feats at every style level so the feat
  * picker can waive their prerequisites (and badge the tree). The trees are
@@ -191,6 +194,58 @@ export const COMBAT_STYLES: readonly CombatStyle[] = [
       "bashing-finish",
       "shield-master",
       "greater-shield-focus",
+    ],
+  },
+  // ── Archetype-granted styles (issue #59) ──────────────────────────────
+  // Not selectable by a plain CRB/UC ranger — only reachable via
+  // `RANGER_ARCHETYPE_STYLE_RULES` (apps/web/src/model/ranger.ts) locking a
+  // ranger with the granting archetype into it. See that file for how the
+  // lock is enforced; this table only carries each style's own feat tree.
+  {
+    // Ultimate Wilderness p. 126 / Ranger (Elemental Envoy) archetype
+    // (Pathfinder Player Companion: Disciple's Doctrine). Clean-room from
+    // d20pfsrd/AoN's "Ranger Combat Styles" elemental entry — the vendored
+    // dataset carries this archetype's "Combat Style Feat" reflavor as prose
+    // only, with no feat list of its own.
+    id: "elemental",
+    label: "Elemental (Elemental Envoy)",
+    featSlugs: [
+      "aquadynamic-focus",
+      "scorching-weapons",
+      "stony-step",
+      "wind-stance",
+      "inner-flame",
+      "lightning-stance",
+      "blazing-aura",
+      "whirlwind-attack",
+    ],
+  },
+  {
+    // Wave Warden (merfolk ranger archetype, Advanced Race Guide) "Aquatic
+    // Prowess Feat": replaces the standard combat-style bonus feats with this
+    // fixed list (clean-room, transcribed from the archetype's own vendored
+    // `description` prose in archetype-features.json, not copied from any
+    // GPL source). A handful of entries (Net Adept, Net and Trident, Net
+    // Maneuvering, Sea Hunter, Net Trickery) name feats absent from the
+    // vendored feat pack — inert per this table's usual posture (see file
+    // doc comment), not an error.
+    id: "aquatic-prowess",
+    label: "Aquatic Prowess (Wave Warden)",
+    featSlugs: [
+      "dodge",
+      "mobility",
+      "net-adept",
+      "net-and-trident",
+      "net-maneuvering",
+      "precise-shot",
+      "rapid-reload",
+      "sea-hunter",
+      "two-weapon-fighting",
+      "improved-two-weapon-fighting",
+      "net-trickery",
+      "spring-attack",
+      "greater-two-weapon-fighting",
+      "improved-precise-shot",
     ],
   },
 ];

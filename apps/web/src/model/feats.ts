@@ -42,6 +42,7 @@ import {
 } from "@pf1/engine";
 
 import { SKILL_NAMES } from "./names.js";
+import { effectiveCombatStyleId } from "./ranger.js";
 import { suppressedRaceTargets } from "./racialTraits.js";
 
 /** Total character level (sum of all class levels). */
@@ -177,7 +178,16 @@ function baseFeatureSlotType(
         : { type: GENERIC_SLOT, source: "Sorcerer bloodline (choose a bloodline to restrict)" };
     }
     case "combat style feat": {
-      const style = doc.build.combatStyle;
+      // `effectiveCombatStyleId` (not the raw `doc.build.combatStyle` field)
+      // so an archetype-locked style is honored even if the stored field is
+      // stale — see `rangerStyleRestriction` (issue #59). In practice this
+      // base-feature case is only reached for a ranger with NO style-locking
+      // archetype: every archetype in `RANGER_ARCHETYPE_STYLE_RULES` that
+      // locks or suppresses the style also reflavors this exact class
+      // feature, which suppresses its base grant via the normal
+      // paired-swap mechanism (`activeArchetypeSwaps`) before this function
+      // ever runs.
+      const style = effectiveCombatStyleId(doc);
       return style
         ? { type: { kind: "combatStyle", style }, source: "Ranger combat style" }
         : { type: GENERIC_SLOT, source: "Ranger combat style (choose a style to restrict)" };
@@ -191,18 +201,39 @@ function baseFeatureSlotType(
  * Hand-authored archetype-feature-id (`ArchetypeFeature.id`) -> slot type for
  * the archetype-granted `bonusFeats` reflavors in `ARCHETYPE_FEATURE_EFFECTS`
  * (`archetype-effects.ts`) that this module can type more precisely than
- * "generic". The six ranger combat-style archetypes reflavor a specific
- * style (best-effort where the archetype's prose names a broader category
- * than any single `COMBAT_STYLES` entry, e.g. Toxophilite's "ranged combat
- * style feats" — mapped to Archery, the closest single tree); Crusader's
- * restricted armor/shield/weapon list is approximated with the broad
- * `combat` type. Any archetype `bonusFeats` grant NOT listed here falls back
- * to `GENERIC_SLOT` in the walk below.
+ * "generic". Each ranger combat-style archetype here is locked to one exact
+ * style (issue #59 — see `RANGER_ARCHETYPE_STYLE_RULES` in `model/ranger.ts`
+ * for the authoritative rule each of these mirrors, and `@pf1/engine`
+ * `ranger.ts`'s `COMBAT_STYLES` for the "elemental"/"aquatic-prowess"
+ * archetype-exclusive style trees authored for Elemental Envoy/Wave Warden).
+ * Crusader's restricted armor/shield/weapon list is approximated with the
+ * broad `combat` type (unrelated to ranger styles).
+ *
+ * NOT listed here (by design, not oversight):
+ *  - `ranger:toxophilite:combat-style-feat:2` — Toxophilite offers a real
+ *    choice between two styles (archery or crossbow), so it can't be a
+ *    static entry; see `toxophiliteSlotType` below, consulted first in the
+ *    walk.
+ *  - Trophy Hunter / Poison Darter — both fully replace the combat-style
+ *    bonus-feat mechanism with an unrelated subsystem (gunslinger grit/deeds,
+ *    rogue talents/alchemist discoveries) this project doesn't model as a
+ *    feat list; their `bonusFeats` grant (if `archetype-effects.ts` models
+ *    one) correctly falls back to `GENERIC_SLOT`, matching
+ *    `RANGER_ARCHETYPE_STYLE_RULES`'s `suppressed` rule for them.
+ *  - Sword-Devil's "Second Combat Style" (11th level) — additive, not
+ *    restrictive (see `model/ranger.ts` doc comment); out of scope.
+ *
+ * Any archetype `bonusFeats` grant NOT listed here (and not resolved by
+ * `toxophiliteSlotType`) falls back to `GENERIC_SLOT` in the walk below.
  */
 const ARCHETYPE_SLOT_TYPES: Readonly<Record<string, { type: FeatSlotType; source: string }>> = {
   "ranger:bow-nomad:combat-style-feat:2": {
     type: { kind: "combatStyle", style: "archery" },
     source: "Bow Nomad (archery)",
+  },
+  "ranger:hooded-champion:combat-style-feat:2": {
+    type: { kind: "combatStyle", style: "archery" },
+    source: "Hooded Champion (archery)",
   },
   "ranger:horse-lord:combat-style-feat:2": {
     type: { kind: "combatStyle", style: "mounted-combat" },
@@ -220,15 +251,37 @@ const ARCHETYPE_SLOT_TYPES: Readonly<Record<string, { type: FeatSlotType; source
     type: { kind: "combatStyle", style: "archery" },
     source: "Stormwalker (archery)",
   },
-  "ranger:toxophilite:combat-style-feat:2": {
-    type: { kind: "combatStyle", style: "archery" },
-    source: "Toxophilite (ranged combat)",
+  "ranger:elemental-envoy:combat-style-feat:2": {
+    type: { kind: "combatStyle", style: "elemental" },
+    source: "Elemental Envoy (elemental)",
+  },
+  "ranger:wave-warden:aquatic-prowess-feat:2": {
+    type: { kind: "combatStyle", style: "aquatic-prowess" },
+    source: "Wave Warden (aquatic prowess)",
   },
   "cleric:crusader:bonus-feat:1": {
     type: { kind: "combat" },
     source: "Crusader (armor/shield/weapon list)",
   },
 };
+
+/**
+ * Toxophilite's slot type follows the player's own `doc.build.combatStyle`
+ * pick (narrowed to `archery`/`crossbow` by `RangerPicker` — issue #59)
+ * rather than a static constant, since the archetype offers a real choice
+ * between the two rather than locking to one. Returns `undefined` (falling
+ * back to `GENERIC_SLOT` in the walk below) for any other feature id, or
+ * when the stored style isn't one of the two allowed ids yet.
+ */
+function toxophiliteSlotType(
+  featureId: string,
+  doc: CharacterDoc,
+): { type: FeatSlotType; source: string } | undefined {
+  if (featureId !== "ranger:toxophilite:combat-style-feat:2") return undefined;
+  const styleId = doc.build.combatStyle;
+  if (styleId !== "archery" && styleId !== "crossbow") return undefined;
+  return { type: { kind: "combatStyle", style: styleId }, source: `Toxophilite (${styleId})` };
+}
 
 /**
  * Typed decomposition of every "bonusFeats"-targeting change from the
@@ -315,7 +368,7 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
         if (value === null || Number.isNaN(value)) continue;
         const count = Math.trunc(value);
         if (count === 0) continue;
-        const known = ARCHETYPE_SLOT_TYPES[f.id];
+        const known = ARCHETYPE_SLOT_TYPES[f.id] ?? toxophiliteSlotType(f.id, doc);
         out.push(known ? { ...known, count } : { type: GENERIC_SLOT, count, source: f.name });
       }
     }

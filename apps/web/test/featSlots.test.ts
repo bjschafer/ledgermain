@@ -6,6 +6,7 @@ import {
   addClass,
   addFeatInstance,
   createEmptyDoc,
+  setArchetypes,
   setClassLevel,
   setRace,
   toggleFeat,
@@ -165,6 +166,101 @@ describe("buildFeatSlotGroups: Ranger combat style (issue #57)", () => {
     const style = groups.find((g) => g.type.kind === "combatStyle")!;
     expect(style.filledFeatIds).toHaveLength(2);
     expect(unassignedFeatIds).toEqual([]);
+  });
+});
+
+describe("buildFeatSlotGroups: ranger archetype combat styles (issue #59)", () => {
+  function archetypeRanger(archetypeId: string, level = 6) {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "ranger");
+    doc = setClassLevel(doc, "ranger", level);
+    doc = setArchetypes(doc, [archetypeId]);
+    return doc;
+  }
+
+  it("Bow Nomad's slot is restricted to the archery tree, not the generic bucket", () => {
+    const doc = archetypeRanger("ranger:bow-nomad");
+    const groups = buildFeatSlotGroups(doc, ref);
+    const style = groups.find((g) => g.type.kind === "combatStyle")!;
+    expect(style).toBeDefined();
+    expect(style.type).toEqual({ kind: "combatStyle", style: "archery" });
+    expect(style.total).toBe(2); // floor((6+2)/4)
+    const pointBlank = ref.feats[featId("Point-Blank Shot")]!;
+    const doubleSlice = ref.feats[featId("Double Slice")]!;
+    expect(featEligibleForSlot(pointBlank, style.type)).toBe(true);
+    expect(featEligibleForSlot(doubleSlice, style.type)).toBe(false);
+  });
+
+  it("Horse Lord's slot is restricted to the mounted-combat tree", () => {
+    const doc = archetypeRanger("ranger:horse-lord");
+    const groups = buildFeatSlotGroups(doc, ref);
+    const style = groups.find((g) => g.type.kind === "combatStyle")!;
+    expect(style.type).toEqual({ kind: "combatStyle", style: "mounted-combat" });
+    const mountedCombat = ref.feats[featId("Mounted Combat")]!;
+    expect(featEligibleForSlot(mountedCombat, style.type)).toBe(true);
+  });
+
+  it("Elemental Envoy's slot uses the archetype-exclusive elemental tree, not the closest CRB style", () => {
+    const doc = archetypeRanger("ranger:elemental-envoy");
+    const groups = buildFeatSlotGroups(doc, ref);
+    const style = groups.find((g) => g.type.kind === "combatStyle")!;
+    expect(style.type).toEqual({ kind: "combatStyle", style: "elemental" });
+    expect(style.total).toBe(2);
+    const windStance = ref.feats[featId("Wind Stance")]!;
+    const rapidShot = ref.feats[featId("Rapid Shot")]!;
+    expect(featEligibleForSlot(windStance, style.type)).toBe(true);
+    expect(featEligibleForSlot(rapidShot, style.type)).toBe(false);
+  });
+
+  it("Wave Warden's slot uses the archetype-exclusive aquatic-prowess tree", () => {
+    const doc = archetypeRanger("ranger:wave-warden");
+    const groups = buildFeatSlotGroups(doc, ref);
+    const style = groups.find((g) => g.type.kind === "combatStyle")!;
+    expect(style.type).toEqual({ kind: "combatStyle", style: "aquatic-prowess" });
+    const dodge = ref.feats[featId("Dodge")]!;
+    const manyshot = ref.feats[featId("Manyshot")]!;
+    expect(featEligibleForSlot(dodge, style.type)).toBe(true);
+    expect(featEligibleForSlot(manyshot, style.type)).toBe(false);
+  });
+
+  it("Toxophilite follows the player's own archery-or-crossbow pick instead of a fixed style", () => {
+    let doc = archetypeRanger("ranger:toxophilite");
+    doc = setCombatStyle(doc, "crossbow");
+    const groups = buildFeatSlotGroups(doc, ref);
+    const style = groups.find((g) => g.type.kind === "combatStyle")!;
+    expect(style.type).toEqual({ kind: "combatStyle", style: "crossbow" });
+    const crossbowMastery = ref.feats[featId("Crossbow Mastery")]!;
+    const twoWeaponFighting = ref.feats[featId("Two-Weapon Fighting")]!;
+    expect(featEligibleForSlot(crossbowMastery, style.type)).toBe(true);
+    expect(featEligibleForSlot(twoWeaponFighting, style.type)).toBe(false);
+  });
+
+  it("Toxophilite with no style chosen yet falls back to the generic bucket, not a phantom combat style", () => {
+    const doc = archetypeRanger("ranger:toxophilite");
+    const groups = buildFeatSlotGroups(doc, ref);
+    expect(groups.find((g) => g.type.kind === "combatStyle")).toBeUndefined();
+    const generic = groups.find((g) => g.type.kind === "generic")!;
+    // base ceil(6/2)=3 + toxophilite's own floor((6+2)/4)=2 (folded into generic, unset style) = 5
+    expect(generic.total).toBe(5);
+  });
+
+  it("Trophy Hunter and Poison Darter grant no combat-style slot at all (replaced by an unmodeled subsystem)", () => {
+    for (const archetypeId of ["ranger:trophy-hunter", "ranger:poison-darter"]) {
+      const doc = archetypeRanger(archetypeId);
+      const groups = buildFeatSlotGroups(doc, ref);
+      expect(groups.find((g) => g.type.kind === "combatStyle")).toBeUndefined();
+    }
+  });
+
+  it("a plain CRB ranger (no archetype) is unaffected by the archetype-restriction machinery", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "ranger");
+    doc = setClassLevel(doc, "ranger", 6);
+    doc = setCombatStyle(doc, "archery");
+    const groups = buildFeatSlotGroups(doc, ref);
+    const style = groups.find((g) => g.type.kind === "combatStyle")!;
+    expect(style.type).toEqual({ kind: "combatStyle", style: "archery" });
+    expect(style.total).toBe(2);
   });
 });
 

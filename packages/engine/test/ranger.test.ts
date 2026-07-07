@@ -86,9 +86,12 @@ describe("favoredBonusBudget (4s − 2 total +2-increments)", () => {
 });
 
 describe("COMBAT_STYLES", () => {
-  it("has the CRB + Ultimate Combat styles, each with a non-empty feat tree", () => {
+  it("has the CRB + Ultimate Combat styles, then the two archetype-exclusive styles, each with a non-empty feat tree", () => {
     const ids = COMBAT_STYLES.map((s) => s.id);
-    // Two CRB styles first, then the five from Ultimate Combat.
+    // Two CRB styles, then the five from Ultimate Combat, then the two
+    // archetype-exclusive styles authored for issue #59 (Elemental Envoy,
+    // Wave Warden) — only selectable by locking into the granting archetype
+    // (see apps/web/src/model/ranger.ts `RANGER_ARCHETYPE_STYLE_RULES`).
     expect(ids).toEqual([
       "archery",
       "two-weapon",
@@ -97,6 +100,8 @@ describe("COMBAT_STYLES", () => {
       "natural-weapon",
       "two-handed-weapon",
       "weapon-and-shield",
+      "elemental",
+      "aquatic-prowess",
     ]);
     for (const style of COMBAT_STYLES) {
       expect(style.featSlugs.length).toBeGreaterThan(0);
@@ -119,6 +124,21 @@ describe("COMBAT_STYLES", () => {
     expect(archery.featSlugs).toContain("manyshot");
     const twoHanded = COMBAT_STYLES.find((s) => s.id === "two-handed-weapon")!;
     expect(twoHanded.featSlugs).toContain("power-attack");
+  });
+
+  it("elemental (Elemental Envoy) includes wind-stance and blazing-aura but no archery feats", () => {
+    const elemental = COMBAT_STYLES.find((s) => s.id === "elemental")!;
+    expect(elemental.featSlugs).toContain("wind-stance");
+    expect(elemental.featSlugs).toContain("blazing-aura");
+    expect(elemental.featSlugs).not.toContain("rapid-shot");
+  });
+
+  it("aquatic-prowess (Wave Warden) includes dodge and two-weapon-fighting but no archery-only feats", () => {
+    const aquaticProwess = COMBAT_STYLES.find((s) => s.id === "aquatic-prowess")!;
+    expect(aquaticProwess.featSlugs).toContain("dodge");
+    expect(aquaticProwess.featSlugs).toContain("two-weapon-fighting");
+    expect(aquaticProwess.featSlugs).toContain("improved-precise-shot");
+    expect(aquaticProwess.featSlugs).not.toContain("manyshot");
   });
 });
 
