@@ -195,6 +195,32 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
                   the starred primary.
                 </p>
               )}
+              {fcbLevel > 1 && (
+                <div className="fcb-row fcb-row-all">
+                  <span className="fcb-level">All levels</span>
+                  <div className="fcb-chips">
+                    {fcbOptions.map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        className="fcb-chip fcb-chip-all"
+                        title={`Set all ${fcbLevel} favored-class-bonus levels to "${opt.label}"`}
+                        onClick={() =>
+                          update((d) => {
+                            let next = d;
+                            for (let i = 0; i < fcbLevel; i++) {
+                              next = setFavoredClassBonus(next, i, opt.value);
+                            }
+                            return next;
+                          })
+                        }
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               {Array.from({ length: fcbLevel }, (_, i) => {
                 const chosen = fcbChoices[i];
                 return (
