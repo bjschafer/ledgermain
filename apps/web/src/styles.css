@@ -1758,6 +1758,9 @@ button:focus-visible,
 .sheet-skill .sk-total {
   font-family: var(--mono);
   color: var(--ink);
+  /* Anchors the recompute-shimmer overlay (`.seal-flash`, appended near the
+     end of this file) to just the number, not the whole row. */
+  position: relative;
 }
 
 /* states */
@@ -3493,6 +3496,15 @@ input[type="text"].saved-roll-name:focus {
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
+    animation: none !important;
+  }
+
+  /* The shimmer/pip-fill animations below rely on @keyframes rather than
+     transitions, so the broad `animation: none` above already neutralizes
+     them; this rule just makes sure the one-shot flash overlay never paints
+     at all (no flash of a static translucent layer left behind at 0%). */
+  .seal-flash {
+    display: none;
   }
 }
 
@@ -4031,4 +4043,94 @@ input[type="text"].saved-roll-name:focus {
   .build-col > [id^="section-"] {
     scroll-margin-top: 96px;
   }
+}
+
+/* ============================================================================
+   Living sheet: recompute shimmer + baseline tint (UX audit)
+   The engine recomputes the whole sheet on every doc change, but the sheet
+   never showed it — toggling Prone silently dropped AC from 13 to 9. These
+   two cues fix that:
+     1. A one-shot gold shimmer plays over a seal whenever its displayed value
+        changes (StatSeal.tsx re-mounts `.seal-flash` via a bumped React key).
+     2. A persistent sage/oxblood tint + arrow marks seals whose current total
+        differs from the character's unconditioned baseline (model/baseline.ts).
+   ========================================================================== */
+
+@keyframes seal-flash-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.seal-flash {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(232, 195, 74, 0.38), transparent 70%);
+  box-shadow: inset 0 0 0 1px rgba(232, 195, 74, 0.55);
+  /* `forwards` holds the animation's final (opacity: 0) state once it ends —
+     this element is never unmounted between flashes (only re-keyed), so
+     without it the browser would revert to the un-animated default
+     (opacity: 1, permanently visible) the instant the animation completes. */
+  animation: seal-flash-fade 600ms ease-out forwards;
+}
+
+/* Baseline tint — persistent, subtle: color the numeral + a tiny corner
+   arrow, never the whole seal (provenance already explains "why"). Every
+   stat wired to `baseline` is higher-is-better, so higher = sage, lower =
+   oxblood. Declared after the base `.seal-value`/`.seal--compact` rules so it
+   wins the (equal-specificity) cascade regardless of seal variant. */
+.seal .seal-value[data-tint="higher"] {
+  color: var(--sage);
+}
+
+.seal .seal-value[data-tint="lower"] {
+  color: var(--oxblood);
+}
+
+.seal .seal-tint-marker {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.seal .seal-tint-marker[data-tint="higher"] {
+  color: var(--sage);
+}
+
+.seal .seal-tint-marker[data-tint="lower"] {
+  color: var(--oxblood);
+}
+
+/* Micro-delight: hero-point pips and spontaneous-slot pips get a quick
+   fill transition + settle-in pulse when their state toggles, instead of
+   snapping instantly. Pure CSS added to the existing classes — no component
+   restructuring (HeroPointsPanel/PreparedSpellsPanel are out of scope). */
+.hero-pip {
+  display: inline-block;
+  transition:
+    color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.hero-pip.filled {
+  transform: scale(1.15);
+}
+
+.spontaneous-pip {
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.2s ease;
+}
+
+.spontaneous-pip.is-used {
+  transform: scale(1.1);
 }

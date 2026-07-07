@@ -1,7 +1,10 @@
 import type { CSSProperties } from "react";
+import { useMemo } from "react";
 
-import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
+import type { CharacterDoc, DerivedSheet, DerivedSkill, RefData } from "@pf1/schema";
 
+import { useFlashKey } from "../hooks/useFlashKey.js";
+import { baselineSheet } from "../model/baseline.js";
 import { ABILITY_IDS } from "../model/doc.js";
 import { casterLevelForClass, isCasterTag } from "../model/casterLevel.js";
 import { combinedLanguages } from "../model/languages.js";
@@ -16,6 +19,37 @@ import {
 import { StatSeal } from "./StatSeal.js";
 
 /**
+ * One skill row — split out from `Sheet` so it can own its own `useFlashKey`
+ * call (one hook instance per skill; the list length can change between
+ * renders, so the hook can't live in the `.map()` callback directly). Mirrors
+ * `StatSeal`'s recompute shimmer at a smaller scale — no baseline tint here
+ * (skills aren't in the audited tint set), just the "something changed" flash.
+ */
+function SkillRow({ s, resetKey }: { s: DerivedSkill; resetKey: string | number }) {
+  const total = signed(s.total);
+  const flashKey = useFlashKey(total, resetKey);
+  return (
+    <div
+      className={`sheet-skill${s.classSkill ? " is-class" : ""}${s.ranks === 0 ? " is-untrained" : ""}`}
+      title={s.ranks === 0 ? "Untrained" : undefined}
+    >
+      <span className="sk-name">
+        {skillName(s.id)}
+        {s.classSkill ? (
+          <span className="tag-cls" title="class skill">
+            class
+          </span>
+        ) : null}
+      </span>
+      <span className="sk-total num">
+        {total}
+        {flashKey > 0 ? <span key={flashKey} className="seal-flash" aria-hidden="true" /> : null}
+      </span>
+    </div>
+  );
+}
+
+/**
  * The live character sheet — a pure render of `compute()` output. It holds no
  * build logic; it updates because `useCharacter` recomputes on every doc change.
  */
@@ -28,6 +62,12 @@ export function Sheet({
   sheet: DerivedSheet;
   refData: RefData;
 }) {
+  // Unconditioned baseline (no conditions/buffs/ability damage/negative
+  // levels) — cheap, same "recompute rather than memoize cleverly" posture as
+  // compute() itself; memoized on [doc, refData] since it's a second full
+  // compute() pass, just not on every render for free.
+  const baseline = useMemo(() => baselineSheet(doc, refData), [doc, refData]);
+
   const race = refData.races[doc.identity.race];
   const classLine = doc.identity.classes
     .map((c) => {
@@ -115,6 +155,7 @@ export function Sheet({
           foot={`/ ${sheet.hp.max} max${doc.live.hp.temp > 0 ? ` · ${doc.live.hp.temp} temp` : ""}`}
           components={sheet.hp.components}
           provTitle="Hit Points breakdown"
+          resetKey={doc.id}
         />
       </div>
 
@@ -130,10 +171,22 @@ export function Sheet({
             value={sheet.ac.normal}
             components={sheet.ac.components}
             provTitle="AC components"
+            resetKey={doc.id}
+            baseline={baseline.ac.normal}
           />
-          <StatSeal label="Touch" value={sheet.ac.touch} />
-          <StatSeal label="Flat-Footed" value={sheet.ac.flatFooted} />
-          <StatSeal label="CMD" value={sheet.cmd} />
+          <StatSeal
+            label="Touch"
+            value={sheet.ac.touch}
+            resetKey={doc.id}
+            baseline={baseline.ac.touch}
+          />
+          <StatSeal
+            label="Flat-Footed"
+            value={sheet.ac.flatFooted}
+            resetKey={doc.id}
+            baseline={baseline.ac.flatFooted}
+          />
+          <StatSeal label="CMD" value={sheet.cmd} resetKey={doc.id} baseline={baseline.cmd} />
           {/* Arcane spell failure (issue #8) — display-only, shown only for
               arcane casters (wizard/sorcerer/bard). */}
           {sheet.arcaneSpellFailure ? (
@@ -146,6 +199,7 @@ export function Sheet({
                   : undefined
               }
               className="seal--compact"
+              resetKey={doc.id}
             />
           ) : null}
         </div>
@@ -167,6 +221,7 @@ export function Sheet({
                 components={entry.components}
                 provTitle={`DR/${entry.qualifier}`}
                 className="seal--compact"
+                resetKey={doc.id}
               />
             ))}
             {sheet.defenses.resistances.map((entry) => (
@@ -177,6 +232,7 @@ export function Sheet({
                 components={entry.components}
                 provTitle={`${entry.qualifier} resistance`}
                 className="seal--compact"
+                resetKey={doc.id}
               />
             ))}
             {sheet.defenses.sr ? (
@@ -186,6 +242,7 @@ export function Sheet({
                 components={sheet.defenses.sr.components}
                 provTitle="Spell resistance"
                 className="seal--compact"
+                resetKey={doc.id}
               />
             ) : null}
           </div>
@@ -204,15 +261,34 @@ export function Sheet({
             value={signedSequence(sheet.attack.melee.total, sheet.attack.melee.iteratives)}
             components={sheet.attack.melee.components}
             provTitle="Melee attack"
+            resetKey={doc.id}
+            baseline={baseline.attack.melee.total}
+            numericValue={sheet.attack.melee.total}
           />
           <StatSeal
             label="Ranged"
             value={signedSequence(sheet.attack.ranged.total, sheet.attack.ranged.iteratives)}
             components={sheet.attack.ranged.components}
             provTitle="Ranged attack"
+            resetKey={doc.id}
+            baseline={baseline.attack.ranged.total}
+            numericValue={sheet.attack.ranged.total}
           />
-          <StatSeal label="BAB" value={signed(sheet.bab)} className="seal--compact" />
-          <StatSeal label="CMB" value={signed(sheet.cmb)} />
+          <StatSeal
+            label="BAB"
+            value={signed(sheet.bab)}
+            className="seal--compact"
+            resetKey={doc.id}
+            baseline={baseline.bab}
+            numericValue={sheet.bab}
+          />
+          <StatSeal
+            label="CMB"
+            value={signed(sheet.cmb)}
+            resetKey={doc.id}
+            baseline={baseline.cmb}
+            numericValue={sheet.cmb}
+          />
         </div>
       </div>
 
@@ -230,6 +306,9 @@ export function Sheet({
               const dmgStr =
                 [atk.damageDice, bonusStr].filter(Boolean).join("") ||
                 signed(atk.damageBonus.total);
+              // build.weapons is untouched by baselineSheet's live-only strip, so
+              // the attacks array lines up index-for-index with `sheet.attacks`.
+              const baseAtk = baseline.attacks[i];
               return (
                 <div key={i} className="weapon-attack-row">
                   <span className="weapon-attack-name">{atk.name}</span>
@@ -240,6 +319,9 @@ export function Sheet({
                       components={atk.attack.components}
                       provTitle={`${atk.name} attack`}
                       className="seal--compact"
+                      resetKey={doc.id}
+                      baseline={baseAtk?.attack.total}
+                      numericValue={atk.attack.total}
                     />
                     <StatSeal
                       label="Dmg"
@@ -251,8 +333,16 @@ export function Sheet({
                       }
                       provTitle={`${atk.name} damage`}
                       className="seal--compact"
+                      resetKey={doc.id}
+                      baseline={baseAtk?.damageBonus.total}
+                      numericValue={atk.damageBonus.total}
                     />
-                    <StatSeal label="Crit" value={atk.crit} className="seal--compact" />
+                    <StatSeal
+                      label="Crit"
+                      value={atk.crit}
+                      className="seal--compact"
+                      resetKey={doc.id}
+                    />
                   </div>
                 </div>
               );
@@ -273,18 +363,27 @@ export function Sheet({
             value={signed(sheet.saves.fort.total)}
             components={sheet.saves.fort.components}
             provTitle={`${SAVE_NAMES.fort} save`}
+            resetKey={doc.id}
+            baseline={baseline.saves.fort.total}
+            numericValue={sheet.saves.fort.total}
           />
           <StatSeal
             label="Ref"
             value={signed(sheet.saves.ref.total)}
             components={sheet.saves.ref.components}
             provTitle={`${SAVE_NAMES.ref} save`}
+            resetKey={doc.id}
+            baseline={baseline.saves.ref.total}
+            numericValue={sheet.saves.ref.total}
           />
           <StatSeal
             label="Will"
             value={signed(sheet.saves.will.total)}
             components={sheet.saves.will.components}
             provTitle={`${SAVE_NAMES.will} save`}
+            resetKey={doc.id}
+            baseline={baseline.saves.will.total}
+            numericValue={sheet.saves.will.total}
           />
         </div>
       </div>
@@ -301,18 +400,37 @@ export function Sheet({
             value={signed(sheet.initiative.total)}
             components={sheet.initiative.components}
             className="seal--compact"
+            resetKey={doc.id}
+            baseline={baseline.initiative.total}
+            numericValue={sheet.initiative.total}
           />
           <StatSeal
             label="Speed"
             value={sheet.speeds.land ?? 30}
             foot="ft"
             className="seal--compact"
+            resetKey={doc.id}
+            baseline={baseline.speeds.land ?? 30}
           />
           {(sheet.speeds.fly ?? 0) > 0 && (
-            <StatSeal label="Fly" value={sheet.speeds.fly!} foot="ft" className="seal--compact" />
+            <StatSeal
+              label="Fly"
+              value={sheet.speeds.fly!}
+              foot="ft"
+              className="seal--compact"
+              resetKey={doc.id}
+              baseline={baseline.speeds.fly ?? 0}
+            />
           )}
           {(sheet.speeds.swim ?? 0) > 0 && (
-            <StatSeal label="Swim" value={sheet.speeds.swim!} foot="ft" className="seal--compact" />
+            <StatSeal
+              label="Swim"
+              value={sheet.speeds.swim!}
+              foot="ft"
+              className="seal--compact"
+              resetKey={doc.id}
+              baseline={baseline.speeds.swim ?? 0}
+            />
           )}
           {(sheet.speeds.climb ?? 0) > 0 && (
             <StatSeal
@@ -320,6 +438,8 @@ export function Sheet({
               value={sheet.speeds.climb!}
               foot="ft"
               className="seal--compact"
+              resetKey={doc.id}
+              baseline={baseline.speeds.climb ?? 0}
             />
           )}
           {(sheet.speeds.burrow ?? 0) > 0 && (
@@ -328,6 +448,8 @@ export function Sheet({
               value={sheet.speeds.burrow!}
               foot="ft"
               className="seal--compact"
+              resetKey={doc.id}
+              baseline={baseline.speeds.burrow ?? 0}
             />
           )}
         </div>
@@ -339,21 +461,7 @@ export function Sheet({
       ) : (
         <div className="sheet-skill-list">
           {rollableSkills.map((s) => (
-            <div
-              className={`sheet-skill${s.classSkill ? " is-class" : ""}${s.ranks === 0 ? " is-untrained" : ""}`}
-              key={s.id}
-              title={s.ranks === 0 ? "Untrained" : undefined}
-            >
-              <span className="sk-name">
-                {skillName(s.id)}
-                {s.classSkill ? (
-                  <span className="tag-cls" title="class skill">
-                    class
-                  </span>
-                ) : null}
-              </span>
-              <span className="sk-total num">{signed(s.total)}</span>
-            </div>
+            <SkillRow key={s.id} s={s} resetKey={doc.id} />
           ))}
         </div>
       )}
