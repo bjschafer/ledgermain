@@ -29,7 +29,7 @@
     "classes.json": "282b415fbaee522d52bc9595649d25b4899b3b76325e614d89f6c499d1634f6a",
     "domain-spell-lists.json": "442e3bd1a6330bfcdde1592d714db1769657149af8681940bb08278534cdeb66",
     "domains.json": "37eb39aea14b1fa9c4f1c67730ff57e00a9398c15d0609cfc8b3bcd4310edd64",
-    "feats.json": "44d4aab1104189248afec47d96b05d849f636cad5c541ce0ca1c46ee6b2c2c14",
+    "feats.json": "e1831cdc32c76742677403998c824e5ba7c17b2da2fec4b8cfcad00fc80f9c38",
     "items.json": "cb769ac81c8542d242d946bbc7dfbad41561259c1abdce3f29ef932f8a11af40",
     "races.json": "89cd6f323902674b99bd8771a4282b243aa01056ddc9336e6df5f21e2d6be64d",
     "spell-lists.json": "4c7dc301e833c5ede02b1419de89222df712aee9f111bf5adfbb44e3478a665f",
@@ -37,7 +37,7 @@
     "weapons.json": "286e9b97a5c1ca8b9b1126149b0abc4c3ddc968522d857d1d421e7abe06a0042",
     "wizard-schools.json": "2deb86825bb6722a9ab2b574e4bf16350296c4411131b5de9636a362dab5e95a"
   },
-  "schemaVersion": 8,
+  "schemaVersion": 9,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

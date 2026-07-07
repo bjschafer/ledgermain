@@ -228,6 +228,16 @@ export interface Feat extends RefEntity {
   /** Free-form tags, e.g. ["Combat", "Combat Trick"]. */
   tags: string[];
   prerequisites: FeatPrerequisites;
+  /**
+   * Limited-use resource, mirroring `ClassFeature.uses` (see its doc
+   * comment) — e.g. Combat Reflexes' `1 + max(0, @abilities.dex.mod)`
+   * AoOs/round, Alignment Channel's `3 + @abilities.cha.mod` uses/day.
+   * 12 feats in the current vendored slice carry this (schema v9). No
+   * `source` field here (unlike `ClassFeature.uses`) — no vendored feat
+   * currently draws from another feature's pool the way Channel Positive
+   * Energy draws from Lay on Hands.
+   */
+  uses?: { maxFormula?: string; per?: string };
 }
 
 /**

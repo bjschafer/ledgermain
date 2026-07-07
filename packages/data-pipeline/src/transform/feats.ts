@@ -2,7 +2,13 @@ import type { Feat } from "@pf1/schema";
 
 import type { RawDoc } from "../util/packs.js";
 import { makeUuid } from "../util/uuid.js";
-import { asStringArray, descriptionValue, normalizeSources, type UuidResolver } from "./common.js";
+import {
+  asStringArray,
+  descriptionValue,
+  normalizeSources,
+  normalizeUses,
+  type UuidResolver,
+} from "./common.js";
 import { parsePrerequisites } from "./prereqs.js";
 
 export function transformFeat(doc: RawDoc, resolveUuid: UuidResolver): Feat {
@@ -22,5 +28,10 @@ export function transformFeat(doc: RawDoc, resolveUuid: UuidResolver): Feat {
     subType: typeof sys.subType === "string" ? sys.subType : undefined,
     tags: asStringArray(sys.tags),
     prerequisites: parsePrerequisites(rawDescValue, resolveUuid),
+    // `normalizeUses` also captures a `source` field (class features only, in
+    // practice) — no vendored feat currently sets it, and `Feat.uses` doesn't
+    // declare the field, so it's structurally dropped here even if a future
+    // data update ever added one.
+    uses: normalizeUses(sys.uses),
   };
 }

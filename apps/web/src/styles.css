@@ -2709,6 +2709,38 @@ input[type="text"].saved-roll-name:focus {
   margin: 0 3px;
 }
 
+/* Activate/deactivate toggle for a pool's linked buff (Rage, Inspire
+   Courage, Aura of Protection domain power — see
+   `DerivedResourcePool.linkedBuffIds`). Same pill language as `.pick-btn`/
+   `.buff-already-active` in the Buffs panel, so an active linked buff reads
+   the same way whether it was toggled from here or added there. */
+.res-linked-buffs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.res-linked-buff {
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  padding: 3px 10px;
+  font-size: 11px;
+}
+
+.res-linked-buff:hover {
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+
+.res-linked-buff.active {
+  border-color: var(--sage);
+  color: var(--sage);
+}
+
 .res-btns {
   display: flex;
   gap: 4px;

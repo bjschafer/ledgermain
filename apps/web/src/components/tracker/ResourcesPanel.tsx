@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
 
 import { deriveResourcePools } from "@pf1/engine";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { addBuff, makeActiveBuff, removeBuff, suggestRounds } from "../../model/buffs.js";
 import {
   addManualPool,
   drainResource,
@@ -30,6 +32,10 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
   );
   const derivedIds = new Set(derived.map((p) => p.id));
   const manualEntries = Object.entries(doc.live.resources).filter(([id]) => !derivedIds.has(id));
+  // Same caster-level floor `BuffsPanel` uses for a newly-added buff's
+  // duration suggestion — a linked-buff toggle is just a shortcut into the
+  // same `addBuff`/`removeBuff` transitions that panel uses.
+  const casterLevel = Math.max(1, sheet.level);
 
   const [label, setLabel] = useState("");
   const [poolMax, setPoolMax] = useState(4);
@@ -72,6 +78,11 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                 max={pool.max}
                 onDrain={() => drain(pool.id)}
                 onRestore={() => restore(pool.id)}
+                linkedBuffIds={pool.linkedBuffIds}
+                refData={refData}
+                activeBuffs={doc.live.activeBuffs}
+                casterLevel={casterLevel}
+                update={update}
               />
             );
           })}
@@ -131,6 +142,11 @@ function ResourceRow({
   onDrain,
   onRestore,
   onRemove,
+  linkedBuffIds,
+  refData,
+  activeBuffs,
+  casterLevel,
+  update,
 }: {
   name: string;
   sub: string;
@@ -141,6 +157,12 @@ function ResourceRow({
   onDrain: () => void;
   onRestore: () => void;
   onRemove?: () => void;
+  /** Buff ids this pool's power can activate (see `DerivedResourcePool.linkedBuffIds`) — omitted for manual pools. */
+  linkedBuffIds?: string[];
+  refData?: RefData;
+  activeBuffs?: CharacterDoc["live"]["activeBuffs"];
+  casterLevel?: number;
+  update?: (fn: (d: CharacterDoc) => CharacterDoc) => void;
 }) {
   return (
     <div className="res-row">
@@ -148,6 +170,20 @@ function ResourceRow({
         <div className="res-name">{name}</div>
         <div className="res-sub">{sub}</div>
         {description ? <FeatureDescription html={description} /> : null}
+        {linkedBuffIds && linkedBuffIds.length > 0 && refData && activeBuffs && update ? (
+          <div className="res-linked-buffs">
+            {linkedBuffIds.map((buffId) => (
+              <LinkedBuffToggle
+                key={buffId}
+                buffId={buffId}
+                refData={refData}
+                activeBuffs={activeBuffs}
+                casterLevel={casterLevel ?? 1}
+                update={update}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
       <div className="res-count num">
         {left}
@@ -185,5 +221,70 @@ function ResourceRow({
         ) : null}
       </div>
     </div>
+  );
+}
+
+/**
+ * Activate/deactivate a buff linked to this pool's power (Rage → "Rage",
+ * Inspire Courage → "Inspire Courage", Aura of Protection domain power →
+ * "Aura of Protection" — see `DerivedResourcePool.linkedBuffIds`). This is a
+ * pure shortcut into the same `addBuff`/`removeBuff` transitions
+ * `BuffsPanel` uses — toggling here makes the buff show up (or disappear)
+ * there too, recomputed exactly as if the player had added it by hand.
+ * Deliberately does NOT touch the pool's `used` counter (see
+ * `deriveResourcePools`'s doc comment on `linkedBuffIds` for why a
+ * round-maintained buff and a per-day/per-use pool count aren't the same
+ * thing). Renders nothing for a buff id that isn't in `refData.buffs`
+ * (shouldn't happen — `linkedBuffIds` is already resolved against it — but
+ * keeps this defensive rather than crashing on a future data change).
+ */
+function LinkedBuffToggle({
+  buffId,
+  refData,
+  activeBuffs,
+  casterLevel,
+  update,
+}: {
+  buffId: string;
+  refData: RefData;
+  activeBuffs: CharacterDoc["live"]["activeBuffs"];
+  casterLevel: number;
+  update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
+}) {
+  const buff = refData.buffs[buffId];
+  if (!buff) return null;
+  const active = activeBuffs.find((b) => b.buffId === buffId);
+
+  if (active) {
+    return (
+      <button
+        type="button"
+        className="res-linked-buff active"
+        onClick={() => update((d) => removeBuff(d, active.instanceId))}
+        title={`Deactivate ${buff.name}`}
+      >
+        {buff.name} Active ✓
+      </button>
+    );
+  }
+  return (
+    <button
+      type="button"
+      className="res-linked-buff"
+      onClick={() =>
+        update((d) =>
+          addBuff(
+            d,
+            makeActiveBuff(buff, {
+              casterLevel,
+              remainingRounds: suggestRounds(buff, casterLevel),
+            }),
+          ),
+        )
+      }
+      title={`Activate ${buff.name}`}
+    >
+      Activate {buff.name}
+    </button>
   );
 }

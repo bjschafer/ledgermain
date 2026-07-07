@@ -376,6 +376,10 @@
     ],
     "subType": "feat",
     "tags": ["General", "Saving Throw"],
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
     "uuid": "Compendium.pf1.feats.Item.1hxjrJ68yWsiCCFD"
   },
   "26k1Gi7t5BoqxhIj": {
@@ -2414,6 +2418,10 @@
     ],
     "subType": "feat",
     "tags": ["General"],
+    "uses": {
+      "maxFormula": "3 + @abilities.cha.mod",
+      "per": "day"
+    },
     "uuid": "Compendium.pf1.feats.Item.CjLNTqNGz4zU4zpp"
   },
   "D10dGyw3V0n77Msl": {
@@ -3288,6 +3296,10 @@
     ],
     "subType": "feat",
     "tags": ["Combat", "Nagaji", "Combat Trick"],
+    "uses": {
+      "maxFormula": "1 + floor(@attributes.hd.total / 3)",
+      "per": "charges"
+    },
     "uuid": "Compendium.pf1.feats.Item.I34hZ82Wa8O0ibpX"
   },
   "IER2MzJrjSvxMlNS": {
@@ -3893,6 +3905,10 @@
     ],
     "subType": "feat",
     "tags": ["Combat"],
+    "uses": {
+      "maxFormula": "@abilities.con.baseMod",
+      "per": "day"
+    },
     "uuid": "Compendium.pf1.feats.Item.LVycOywOAhOFqp5A"
   },
   "MCHLkpm99e5wbTbB": {
@@ -4285,6 +4301,10 @@
     ],
     "subType": "feat",
     "tags": ["Monster"],
+    "uses": {
+      "maxFormula": "3",
+      "per": "day"
+    },
     "uuid": "Compendium.pf1.feats.Item.P4tmHYQVGowcstjO"
   },
   "PBqk2ZYEdehWcprC": {
@@ -4456,6 +4476,10 @@
     ],
     "subType": "feat",
     "tags": ["General", "Saving Throw"],
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
     "uuid": "Compendium.pf1.feats.Item.PrthT5jZl4t3znqR"
   },
   "PxwM4Uf4mcYs3Auq": {
@@ -5019,6 +5043,10 @@
     ],
     "subType": "feat",
     "tags": ["Combat", "Conduit"],
+    "uses": {
+      "maxFormula": "@skills.kpl.rank",
+      "per": "day"
+    },
     "uuid": "Compendium.pf1.feats.Item.SKStYsOqcnZPzytA"
   },
   "SMyexRzOm5PfjT5I": {
@@ -5535,6 +5563,10 @@
     ],
     "subType": "feat",
     "tags": ["General"],
+    "uses": {
+      "maxFormula": "1",
+      "per": "round"
+    },
     "uuid": "Compendium.pf1.feats.Item.V041fsvlhNcFhz5k"
   },
   "V2zY7BltkpSXwejy": {
@@ -6292,6 +6324,10 @@
     ],
     "subType": "feat",
     "tags": ["Combat"],
+    "uses": {
+      "maxFormula": "3",
+      "per": "day"
+    },
     "uuid": "Compendium.pf1.feats.Item.XhGkCdqvLjdyET0n"
   },
   "XxZgIRc2UMLXHtZh": {
@@ -6891,6 +6927,10 @@
     ],
     "subType": "feat",
     "tags": ["General", "Saving Throw"],
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
     "uuid": "Compendium.pf1.feats.Item.cKxfEL5XOWuzLhfO"
   },
   "dNmpRd9N0eyEJuUw": {
@@ -7669,6 +7709,10 @@
     ],
     "subType": "feat",
     "tags": ["Combat", "Combat Trick"],
+    "uses": {
+      "maxFormula": "1 + max(0, @abilities.dex.mod)",
+      "per": "round"
+    },
     "uuid": "Compendium.pf1.feats.Item.h9nHYLxXvIXBTmup"
   },
   "hc7CRKHvhmKRzNKb": {
@@ -7824,6 +7868,10 @@
     ],
     "subType": "feat",
     "tags": ["Channeling"],
+    "uses": {
+      "maxFormula": "3 + @abilities.cha.mod",
+      "per": "day"
+    },
     "uuid": "Compendium.pf1.feats.Item.ieww7CP6JK5pwtpg"
   },
   "j7eMQ1ExZORIO63I": {

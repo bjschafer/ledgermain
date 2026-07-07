@@ -252,14 +252,21 @@ describe("resources drain/restore/sync/rest", () => {
   it("syncs derived pools, preserving used and tracking max changes", () => {
     let d = doc();
     d = syncDerivedPools(d, [
-      { id: "rage", name: "Rage", max: 14, restValue: 14, classTag: "barbarian" },
+      {
+        id: "rage",
+        name: "Rage",
+        max: 14,
+        restValue: 14,
+        classTag: "barbarian",
+        linkedBuffIds: [],
+      },
     ]);
     expect(d.live.resources.rage).toEqual({ used: 0, max: 14 });
     d = drainResource(d, "rage", 3);
     expect(d.live.resources.rage!.used).toBe(3);
     // Max shrinks (e.g. Con drain) -> used clamps.
     d = syncDerivedPools(d, [
-      { id: "rage", name: "Rage", max: 2, restValue: 2, classTag: "barbarian" },
+      { id: "rage", name: "Rage", max: 2, restValue: 2, classTag: "barbarian", linkedBuffIds: [] },
     ]);
     expect(d.live.resources.rage).toEqual({ used: 2, max: 2 });
   });

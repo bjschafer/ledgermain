@@ -26,7 +26,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(8);
+    expect(ref.meta.schemaVersion).toBe(9);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -160,6 +160,26 @@ describe("feat prerequisites (hybrid parse)", () => {
     });
     expect(cleave.prerequisites.bab).toBe(1);
     expect(cleave.prerequisites.prereqText).toContain("base attack bonus +1");
+  });
+});
+
+describe("feat uses.maxFormula (schema v9 — feats-as-resource-pools)", () => {
+  it("Combat Reflexes carries a per-round maxFormula", () => {
+    const combatReflexes = byName(ref.feats, "Combat Reflexes");
+    expect(combatReflexes.uses).toEqual({
+      maxFormula: "1 + max(0, @abilities.dex.mod)",
+      per: "round",
+    });
+  });
+
+  it("Improved Iron Will carries a flat per-day maxFormula", () => {
+    const improvedIronWill = byName(ref.feats, "Improved Iron Will");
+    expect(improvedIronWill.uses).toEqual({ maxFormula: "1", per: "day" });
+  });
+
+  it("a feat with no vendored uses block (e.g. Cleave) has uses undefined", () => {
+    const cleave = byName(ref.feats, "Cleave");
+    expect(cleave.uses).toBeUndefined();
   });
 });
 

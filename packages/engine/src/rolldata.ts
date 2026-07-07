@@ -54,14 +54,24 @@ export function buildRollData(
 ): RollData {
   const level = totalLevel(doc);
 
-  const abilityData: Record<string, AbilityView> = {};
+  // `baseMod` mirrors Foundry's `@abilities.<id>.baseMod` — the modifier from
+  // the BASE score alone, unaffected by enhancement/buff bonuses folded into
+  // `mod`/`total`. Not part of `AbilityView` (nothing else in the engine
+  // reads it) — added only on this roll-data copy for the handful of feat
+  // formulas that reference it (e.g. Combat Vigor's `@abilities.con.baseMod`
+  // uses/day pool, see `resources.ts`'s `deriveFeatResourcePools`).
+  const rollAbilities: Record<string, AbilityView & { baseMod: number }> = {};
   for (const id of ABILITY_IDS) {
-    if (abilities) {
-      abilityData[id] = abilities[id];
-    } else {
-      const base = doc.abilities[id] ?? 10;
-      abilityData[id] = { base, total: base, mod: abilityMod(base) };
-    }
+    // `abilities` is sometimes a deliberately PARTIAL map in tests (only the
+    // ability a fixture cares about) — falling back to the document's base
+    // score for anything missing keeps that tolerant, same as `resolvePath`
+    // treating an absent `@abilities.<id>` path as 0 rather than throwing.
+    const resolved: AbilityView = abilities?.[id] ?? {
+      base: doc.abilities[id] ?? 10,
+      total: doc.abilities[id] ?? 10,
+      mod: abilityMod(doc.abilities[id] ?? 10),
+    };
+    rollAbilities[id] = { ...resolved, baseMod: abilityMod(resolved.base) };
   }
 
   const classes: Record<string, { level: number }> = {};
@@ -91,7 +101,7 @@ export function buildRollData(
   }
 
   return {
-    abilities: abilityData,
+    abilities: rollAbilities,
     classes,
     // `@class` is the "current class" context; defaults to the whole character
     // and is overridden per class-feature when its changes are evaluated.

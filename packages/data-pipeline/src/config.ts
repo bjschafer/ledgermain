@@ -35,9 +35,13 @@ export const SYSTEM_VERSION = "11.11";
  * Dart's ranged touch acid damage, Stunning Fist's Fortitude DC) and
  * `ClassFeature.uses.source` (e.g. Channel Positive Energy's `source:
  * "layOnHands"`) — see the in-play resource-pool detail work in `@pf1/engine`'s
- * `deriveResourcePools`.
+ * `deriveResourcePools`. v9 adds `Feat.uses` (feats.json) — the same
+ * `maxFormula`/`per` shape as `ClassFeature.uses`, minus `source` (no vendored
+ * feat draws from another feature's pool) — for feats like Combat Reflexes
+ * and Alignment Channel that are themselves a resource pool; see
+ * `deriveFeatResourcePools` in `@pf1/engine`'s `resources.ts`.
  */
-export const SCHEMA_VERSION = 8;
+export const SCHEMA_VERSION = 9;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none — see

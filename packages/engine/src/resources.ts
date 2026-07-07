@@ -9,6 +9,24 @@
  * the tracker UI. Spell slots are handled separately — the web app composes the
  * engine's hardcoded spells-per-day table (`baseSpellsPerDay` in `tables.ts`)
  * with ability bonus spells in its prepared-spells panel.
+ *
+ * Each pool also exposes `linkedBuffIds` (issue: wire the previously-dead
+ * `ClassFeature.grantsBuffs` field) — buffs the pool's power can activate,
+ * resolved against `refData.buffs`. Deliberately does NOT drain the pool's
+ * uses when a linked buff is toggled: a barbarian's player counts their own
+ * rage rounds, and coupling "buff active" to "1 use spent" would be wrong
+ * more often than right (a round of rage maintained ≠ a "use" in the pool's
+ * per-day accounting once uses are tracked in rounds already, and nothing
+ * here knows how many rounds a buff toggle will actually last). Toggling is
+ * purely a shortcut into `model/buffs.ts`'s normal buff add/remove — exactly
+ * as if the player had added the buff by hand from the Buffs panel.
+ *
+ * Feats can carry their own `uses.maxFormula` too (Combat Reflexes'
+ * AoOs/round, Alignment Channel's uses/day, ...) — `deriveFeatResourcePools`
+ * scans `doc.build.feats` for these after the class-feature loop above and
+ * folds them into the same returned list, evaluated against the
+ * character-level roll data rather than a granting class's contextual one
+ * (feats have no "granting class").
  */
 
 import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/schema";
@@ -62,6 +80,20 @@ export interface DerivedResourcePool {
    * resource row.
    */
   detail?: string;
+  /**
+   * Buff ids (`RefData.buffs` keys) this pool can activate — resolved from
+   * the granting `ClassFeature.grantsBuffs` UUIDs (or, for a linked feature
+   * with no independent pool of its own — e.g. Inspire Courage, see the
+   * "linked features" pass — from ITS `grantsBuffs`, merged onto the pool it
+   * draws uses from). Only 3 of the 12 vendored features carrying
+   * `grantsBuffs` point at a buff inside the vendored slice (Rage, Inspire
+   * Courage, Aura of Protection); the other 9 point outside it and resolve to
+   * nothing here — unresolvable UUIDs are silently skipped, never thrown.
+   * Empty when none resolve. The tracker uses this to render an
+   * activate/deactivate toggle; it deliberately does NOT drain the pool's
+   * uses on activation (see `deriveResourcePools`'s doc comment).
+   */
+  linkedBuffIds: string[];
 }
 
 /**
@@ -80,10 +112,13 @@ export function deriveResourcePools(
   const poolIdByTag = new Map<string, string>();
   // Features with no independent daily cap of their own (`uses.source` instead
   // of `uses.maxFormula`, e.g. Channel Positive Energy drawing on Lay on
-  // Hands) but with vendored `actions` worth surfacing — merged into the
-  // referenced pool's `detail` in a second pass below, once every pool's tag
-  // is known.
-  const linkedFeatures: { feature: ClassFeature; featureRollData: RollData }[] = [];
+  // Hands — or, for Inspire Courage, no `uses` block at all, resolved via
+  // FEATURE_BUFF_POOL_TAG below) but with vendored `actions` and/or
+  // `grantsBuffs` worth surfacing — merged into the referenced pool's
+  // `detail`/`linkedBuffIds` in a second pass below, once every pool's tag is
+  // known.
+  const linkedFeatures: { feature: ClassFeature; featureRollData: RollData; linkedTag: string }[] =
+    [];
 
   for (const { classTag, grant, resourcePool } of collectGrantedFeatures(doc, refData)) {
     const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
@@ -114,6 +149,9 @@ export function deriveResourcePools(
         per: resourcePool.per,
         classTag,
         detail: resourcePool.detail,
+        // Bloodline powers are hand-authored (bloodlines.ts), not vendored
+        // `ClassFeature`s, so there's no `grantsBuffs` to resolve here.
+        linkedBuffIds: [],
       });
       continue;
     }
@@ -125,9 +163,11 @@ export function deriveResourcePools(
       // No maxFormula — either nothing (most features) or a `uses.source`
       // pointer to another feature's pool. Either way it can't become its
       // own pool row (see `ClassFeature.uses` doc comment); stash it for the
-      // linked-feature merge pass if it has actions worth showing.
-      if (feature.uses?.source && feature.actions?.length) {
-        linkedFeatures.push({ feature, featureRollData: featureRollData as RollData });
+      // linked-feature merge pass if it has actions and/or grantsBuffs worth
+      // surfacing on the pool it draws from.
+      const linkedTag = feature.uses?.source ?? FEATURE_BUFF_POOL_TAG[feature.name];
+      if (linkedTag && (feature.actions?.length || feature.grantsBuffs.length > 0)) {
+        linkedFeatures.push({ feature, featureRollData: featureRollData as RollData, linkedTag });
       }
       continue;
     }
@@ -178,23 +218,77 @@ export function deriveResourcePools(
       per: feature.uses?.per,
       classTag,
       detail,
+      linkedBuffIds: resolveGrantsBuffs(feature.grantsBuffs, refData),
     });
   }
 
-  for (const { feature, featureRollData } of linkedFeatures) {
-    const poolId = poolIdByTag.get(feature.uses!.source!);
+  for (const { feature, featureRollData, linkedTag } of linkedFeatures) {
+    const poolId = poolIdByTag.get(linkedTag);
     if (!poolId) continue;
     const pool = pools.find((p) => p.id === poolId);
     if (!pool) continue;
+
     const linkedDetail = actionBasedDetail(feature, featureRollData);
-    if (!linkedDetail) continue;
-    pool.detail = pool.detail
-      ? `${pool.detail} · ${feature.name}: ${linkedDetail}`
-      : `${feature.name}: ${linkedDetail}`;
+    if (linkedDetail) {
+      pool.detail = pool.detail
+        ? `${pool.detail} · ${feature.name}: ${linkedDetail}`
+        : `${feature.name}: ${linkedDetail}`;
+    }
+
+    for (const buffId of resolveGrantsBuffs(feature.grantsBuffs, refData)) {
+      if (!pool.linkedBuffIds.includes(buffId)) pool.linkedBuffIds.push(buffId);
+    }
   }
+
+  // Feats whose vendored `uses.maxFormula` makes them their own resource pool
+  // (Combat Reflexes' AoOs/round, Alignment Channel's uses/day, ...) — see
+  // `deriveFeatResourcePools`'s doc comment for why this is a separate scan
+  // from the class-feature loop above (character-level roll data, not a
+  // granting class's contextual `@class.unlevel`).
+  pools.push(...deriveFeatResourcePools(doc, refData, rollData));
 
   return pools;
 }
+
+/**
+ * Foundry compendium UUID -> foundry `_id`, e.g.
+ * "Compendium.pf1.buffs.Item.abc123" -> "abc123". Local to this module (no
+ * runtime dependency on `@pf1/data-pipeline`, which only ships the pipeline
+ * itself) — mirrors `data-pipeline/src/util/uuid.ts`'s `parseUuid`.
+ */
+const COMPENDIUM_UUID_RE = /^Compendium\.pf1\.[^.]+\.Item\.([^.]+)$/;
+
+/**
+ * Resolve a `ClassFeature.grantsBuffs` UUID list against `refData.buffs`,
+ * dropping anything outside the vendored slice — never throwing. Of the 12
+ * vendored features carrying `grantsBuffs`, only 3 resolve (Rage, Inspire
+ * Courage, Aura of Protection); the rest point at buffs the data slice never
+ * pulled in.
+ */
+function resolveGrantsBuffs(uuids: readonly string[], refData: RefData): string[] {
+  const ids: string[] = [];
+  for (const uuid of uuids) {
+    const id = COMPENDIUM_UUID_RE.exec(uuid)?.[1];
+    if (id && refData.buffs[id] && !ids.includes(id)) ids.push(id);
+  }
+  return ids;
+}
+
+/**
+ * Hand-authored routing for sub-powers that grant a buff but carry no
+ * `uses` block of their own at all (unlike Channel Positive Energy's
+ * `uses.source: "layOnHands"`, Inspire Courage — and the rest of the bardic
+ * "performance types" — have no vendored pointer back to the pool of rounds
+ * they spend). Clean-room from the published rules (every bardic performance
+ * type draws from the SAME pool of rounds/day; a type itself has no
+ * independent cap) — keyed by feature name, used only to resolve
+ * `grantsBuffs` onto the right pool for the "linked features" merge pass
+ * above. Add future performance-type buffs (Inspire Greatness, …) here if
+ * they turn out to resolve against the vendored buff slice too.
+ */
+const FEATURE_BUFF_POOL_TAG: Readonly<Record<string, string>> = {
+  "Inspire Courage": "bardicPerformance",
+};
 
 /* ------------------------------------------------- action-derived detail -- */
 
@@ -341,4 +435,69 @@ function collectFeatPoolBonuses(doc: CharacterDoc, refData: RefData): Map<string
     bonuses.set(effect.featureTag, (bonuses.get(effect.featureTag) ?? 0) + effect.maxDelta);
   }
   return bonuses;
+}
+
+/**
+ * Feats whose vendored `uses.maxFormula` makes THEM a resource pool, exactly
+ * like a class feature — Combat Reflexes (`1 + max(0, @abilities.dex.mod)`
+ * AoOs/round), Alignment Channel / Command Undead (`3 + @abilities.cha.mod`
+ * uses/day), Improved Iron Will / Improved Great Fortitude / Improved
+ * Lightning Reflexes (flat `1`/day reroll), Quicken Spell-Like Ability
+ * (`3`/day), Caster's Champion (`3`/day), Wingover (`1`/round), Combat Vigor
+ * (`@abilities.con.baseMod`/day), Blazing Aura (`@skills.kpl.rank`/day), Spit
+ * Venom (`1 + floor(@attributes.hd.total / 3)` charges) — 12 feats in the
+ * current vendored slice.
+ *
+ * Evaluated against the CHARACTER-level `rollData` (built once by the
+ * caller), not a per-class `featureRollData` — feat formulas reference
+ * `@abilities.*` / `@attributes.hd.total` / `@skills.*.rank` directly; feats
+ * have no "granting class" for a `@class.unlevel`-style override to make
+ * sense of. Pool id = feat id, so a feat listed more than once in
+ * `doc.build.feats` (the "manually-added duplicates" budget door — see
+ * `model/feats.ts`) still produces exactly ONE pool, not one per copy — RAW
+ * none of these 12 are "you can take this feat multiple times, effects
+ * stack" feats (contrast `FEAT_POOL_EFFECTS`'s Extra Rage/Extra Ki/…), so
+ * there is no stacking behavior to preserve here.
+ *
+ * `classTag` is the synthetic marker `"feat"` (never a real class tag) — the
+ * tracker's resource row doesn't currently render `classTag` at all, but a
+ * fake class name would be actively wrong if that ever changes, so a feat
+ * gets an honest origin marker instead of borrowing the wrong class.
+ */
+function deriveFeatResourcePools(
+  doc: CharacterDoc,
+  refData: RefData,
+  rollData: RollData,
+): DerivedResourcePool[] {
+  const pools: DerivedResourcePool[] = [];
+  const seen = new Set<string>();
+
+  for (const featId of doc.build.feats ?? []) {
+    if (seen.has(featId)) continue;
+    const feat = refData.feats[featId];
+    const formula = feat?.uses?.maxFormula;
+    if (!feat || !formula) continue;
+    seen.add(featId);
+
+    let max: number | null;
+    try {
+      max = tryEvaluateFormula(formula, rollData);
+    } catch {
+      continue;
+    }
+    if (max === null || Number.isNaN(max) || max <= 0) continue;
+
+    const truncatedMax = Math.trunc(max);
+    pools.push({
+      id: feat.id,
+      name: feat.name,
+      max: truncatedMax,
+      restValue: truncatedMax,
+      per: feat.uses?.per,
+      classTag: "feat",
+      linkedBuffIds: [],
+    });
+  }
+
+  return pools;
 }
