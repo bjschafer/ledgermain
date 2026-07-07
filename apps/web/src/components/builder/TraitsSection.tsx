@@ -1,13 +1,8 @@
 import { useMemo, useState } from "react";
 
-import {
-  TRAITS,
-  TRAIT_IDS,
-  unappliedChanges,
-  unappliedTargetLabel,
-  type TraitCategory,
-} from "@pf1/engine";
+import { TRAITS, TRAIT_IDS, unappliedChanges, type TraitCategory } from "@pf1/engine";
 
+import { changeTargetLabel } from "../../model/names.js";
 import {
   chosenTraitCount,
   EXPECTED_TRAIT_COUNT,
@@ -119,7 +114,7 @@ export function TraitsSection({ doc, update }: BuilderProps) {
                   {missing.length > 0 ? (
                     <span
                       className="soft"
-                      title={`Not auto-applied: ${missing.map((c) => unappliedTargetLabel(c.target)).join(", ")}`}
+                      title={`Not auto-applied: ${missing.map((c) => changeTargetLabel(c.target)).join(", ")}`}
                     >
                       ⚠ partial
                     </span>
