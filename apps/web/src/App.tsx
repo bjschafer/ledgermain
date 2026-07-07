@@ -93,9 +93,6 @@ export function App() {
               ⚠ {store.actionError}
             </button>
           )}
-          <div className="tagline">
-            {store.refData ? `data ${store.refData.meta.dataVersion.slice(0, 10)}` : ""}
-          </div>
         </div>
       </header>
 
