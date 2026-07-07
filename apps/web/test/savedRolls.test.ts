@@ -416,6 +416,31 @@ describe("resolveSavedRoll() with attached feats", () => {
     expect(resolved.damage!.display).toBe(`${atk.damageDice}+${atk.damageBonus.total + 6}`);
   });
 
+  it("Combat Expertise (issue #62): -3 attack at BAB 8, +3 dodge AC surfaced as a note, never applied to damage", () => {
+    const sheet = compute(fresh(), ref);
+    const atk = sheet.attacks.find((a) => a.name === "Longsword")!;
+    let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "CE Longsword");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "combat-expertise", name: "Combat Expertise" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    const adjusted = atk.attack.iteratives!.map((n) => n - 3);
+    expect(resolved.display).toBe(adjusted.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
+    expect(resolved.components).toContainEqual({
+      source: "Combat Expertise",
+      type: "untyped",
+      value: -3,
+      applied: true,
+    });
+    // acDelta is display-only — no damage-side contribution at all.
+    const expectedDamage =
+      atk.damageBonus.total !== 0
+        ? `${atk.damageDice}+${atk.damageBonus.total}`
+        : `${atk.damageDice}`;
+    expect(resolved.damage!.display).toBe(expectedDamage);
+    expect(resolved.notes).toEqual(["+3 dodge AC"]);
+  });
+
   it("an un-owned feat contributes nothing but chips with applied: false", () => {
     const sheet = compute(fresh(), ref);
     let doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");

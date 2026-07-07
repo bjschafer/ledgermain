@@ -353,7 +353,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "combat-expertise",
     name: "Combat Expertise",
     bucket: "situational",
-    note: "real attack-for-AC tradeoff scaling with BAB, same shape as Power Attack/Deadly Aim, but not yet wired into SITUATIONAL_FEAT_EFFECTS (which has no AC-delta field today) — candidate for a follow-up wave, not built here",
+    note: "real attack-for-AC tradeoff scaling with BAB, same shape as Power Attack/Deadly Aim — wired into SITUATIONAL_FEAT_EFFECTS (issue #62) via SituationalFeatEffect's new display-only acDelta field, surfaced as a saved-roll note when attached; never folds into the sheet's AC itself (AC isn't a saved-roll source)",
   },
   "combat-reflexes": {
     slug: "combat-reflexes",

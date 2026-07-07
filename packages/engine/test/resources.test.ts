@@ -260,8 +260,10 @@ describe("Cleric Wisdom house-rule (issue #56)", () => {
  * previously-dead `ClassFeature.grantsBuffs` field). Of the 12 vendored
  * features carrying `grantsBuffs`, only 3 resolve against the vendored buff
  * slice — Rage, Inspire Courage, and Aura of Protection (Domain Power) — the
- * other 9 point at buffs outside the slice and must resolve to an empty
- * `linkedBuffIds`, never throw.
+ * other 9 occurrences must resolve to an empty `linkedBuffIds`, never throw.
+ * Issue #62 audited those 9: none are actually buffs (see `resolveGrantsBuffs`'s
+ * doc comment in resources.ts) — they resolve to feats or an item instead, so
+ * dropping them (this file's existing behavior) is correct as-is, not a gap.
  */
 describe("grantsBuffs -> linkedBuffIds", () => {
   it("barbarian 1 — Rage pool exposes the Rage buff link", () => {

@@ -415,8 +415,8 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "paladin:faithful-wanderer",
     name: "Wanderer's Lore",
     level: 1,
-    bucket: "subsystem",
-    note: "class-skill swap + doubles skill ranks/level to 4+Int — bonusSkillRanks is only ever read from refData.races[...].changes by apps/web's skillBudget, never from archetype features, so an archetype-authored bonusSkillRanks Change would be silently inert (process-doc finding, not fixed here)",
+    bucket: "numeric",
+    note: "doubles skill ranks/level to 4+Int — the ranks-doubling half is now extracted as a bonusSkillRanks Change (issue #62 wired apps/web's skillBudget to also read active-archetype bonusSkillRanks effects, gated on the archetype's class level); the class-skill-list swap half is still not modeled (no engine target for a per-archetype class-skill list)",
   },
   "paladin:faithful-wanderer:champion-s-bond:5": {
     archetypeId: "paladin:faithful-wanderer",
@@ -1542,8 +1542,8 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "paladin:tortured-crusader",
     name: "Self-Sufficient",
     level: 1,
-    bucket: "subsystem",
-    note: "class-skill swap + doubles skill ranks/level to 4+Int — same bonusSkillRanks-is-race-only limitation as Faithful Wanderer's Wanderer's Lore",
+    bucket: "numeric",
+    note: "doubles skill ranks/level to 4+Int — same issue #62 bonusSkillRanks wiring as Faithful Wanderer's Wanderer's Lore; the class-skill-list swap half is still not modeled",
   },
   "paladin:tortured-crusader:torment:1": {
     archetypeId: "paladin:tortured-crusader",
@@ -1981,5 +1981,35 @@ export const PALADIN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     detail: () => "DR 10/evil",
     confidence: "high",
     provenance: "a tranquil guardian's DR increases to 10/evil.",
+  },
+
+  // ── Skill-ranks-per-level doubling (issue #62) ────────────────────────────
+  // Both replace the base paladin's 2 + Int skill ranks/level with 4 + Int —
+  // a flat +2/level delta from 1st level onward, expressed the same way
+  // `apps/web/src/model/feats.ts`'s `classBonusFeatSlots` expresses a
+  // per-level `bonusFeats` count: `2 * @class.unlevel` (the archetype's own
+  // class level, bound by `model/skills.ts`'s archetype-aware
+  // `skillBudget` loop — see that file's doc comment). `bonusSkillRanks` is
+  // never read by `compute()` itself (targets.ts's `APPLIED_TARGETS`
+  // comment) — this Change only takes effect through that budget, exactly
+  // like `bonusFeats` entries elsewhere in this table only take effect
+  // through `classBonusFeatSlots`.
+
+  "paladin:faithful-wanderer:wanderer-s-lore:1": {
+    changes: [c("2 * @class.unlevel", "bonusSkillRanks")],
+    detail: () => "4 + Int skill ranks/level (class-skill list swap not modeled)",
+    confidence: "high",
+    provenance:
+      "A faithful wanderer gains a number of skill ranks equal to 4 + her Intelligence modifier " +
+      "at each level (instead of gaining a number of skill ranks equal to 2 + her Intelligence " +
+      "modifier).",
+  },
+  "paladin:tortured-crusader:self-sufficient:1": {
+    changes: [c("2 * @class.unlevel", "bonusSkillRanks")],
+    detail: () => "4 + Int skill ranks/level (class-skill list swap not modeled)",
+    confidence: "high",
+    provenance:
+      "She gains a number of skill ranks equal to 4 + her Intelligence modifier at each level, " +
+      "instead of gaining a number of skill ranks equal to 2 + her Intelligence modifier.",
   },
 };
