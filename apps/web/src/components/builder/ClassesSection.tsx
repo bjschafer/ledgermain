@@ -21,6 +21,7 @@ import { DomainPicker } from "./DomainPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
+import { TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import { RangerPicker } from "./RangerPicker.js";
@@ -112,20 +113,16 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
                 {isFav ? "★" : "☆"}
               </button>
               {multitalented && (
-                <button
-                  type="button"
+                <TipButton
                   className="favstar favstar2"
                   aria-pressed={isFav2}
                   disabled={isFav}
-                  title={
-                    isFav
-                      ? "Already your primary favored class"
-                      : "2nd favored class (Half-Elf Multitalented)"
-                  }
+                  disabledReason="Already your primary favored class"
+                  title="2nd favored class (Half-Elf Multitalented)"
                   onClick={() => update((d) => setFavoredClass2(d, isFav2 ? null : cls.tag))}
                 >
                   {isFav2 ? "✪" : "✩"}
-                </button>
+                </TipButton>
               )}
               <span className="cname">{def?.name ?? cls.tag}</span>
               <span className="cls-hd-label">Hit Die d{def?.hd ?? "?"}</span>

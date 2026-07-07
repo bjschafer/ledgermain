@@ -14,6 +14,7 @@ import {
   type HpState,
 } from "../../model/hp.js";
 import { showToast } from "../../state/toast.js";
+import { InfoTip } from "../InfoTip.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -175,18 +176,30 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
             −{amt}
           </button>
         </div>
-        <button
-          type="button"
-          className="btn-ghost rest"
-          title={
-            restMode === "natural"
-              ? `Natural rest: heal ${sheet.level} HP (1×level), clear nonlethal`
-              : "Full rest: heal to max, clear nonlethal"
-          }
-          onClick={() => update((d) => restHp(d, max, { mode: restMode, level: sheet.level }))}
-        >
-          Rest ⤿
-        </button>
+        <span className="chip-wrap">
+          <button
+            type="button"
+            className="btn-ghost rest"
+            title={
+              restMode === "natural"
+                ? `Natural rest: heal ${sheet.level} HP (1×level), clear nonlethal`
+                : "Full rest: heal to max, clear nonlethal"
+            }
+            onClick={() => update((d) => restHp(d, max, { mode: restMode, level: sheet.level }))}
+          >
+            Rest ⤿
+          </button>
+          <InfoTip
+            className="chip-info"
+            content={
+              restMode === "natural"
+                ? `Natural rest: heal ${sheet.level} HP (1×level), clear nonlethal`
+                : "Full rest: heal to max, clear nonlethal"
+            }
+          >
+            ⓘ
+          </InfoTip>
+        </span>
       </div>
     </Panel>
   );

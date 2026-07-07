@@ -6,6 +6,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { Explainer } from "../Explainer.js";
+import { TipButton } from "../InfoTip.js";
 import {
   abilityZeroWarnings,
   activeAbilityAfflictions,
@@ -182,11 +183,10 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
           onCommit={(n) => setAddPoints(n)}
           aria-label="Points"
         />
-        <button
-          type="button"
+        <TipButton
           className="pick-btn add"
           disabled={alreadyAdded}
-          title={alreadyAdded ? "Already tracked — adjust it in the list above" : undefined}
+          disabledReason="Already tracked — adjust it in the list above"
           onClick={() => {
             update((d) =>
               setAbilityAffliction(d, addKind, addAbility, Number.isNaN(addPoints) ? 1 : addPoints),
@@ -195,7 +195,7 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
           }}
         >
           Add
-        </button>
+        </TipButton>
       </div>
     </Panel>
   );

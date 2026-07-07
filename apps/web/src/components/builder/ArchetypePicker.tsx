@@ -5,6 +5,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { archetypeConflictWarnings, checkArchetypeConflict } from "../../model/archetypes.js";
 import { setArchetypes } from "../../model/doc.js";
+import { TipButton } from "../InfoTip.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -107,17 +108,12 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
                       ? { blocked: false }
                       : checkArchetypeConflict(refData, chosen, a.id);
                     return (
-                      <button
+                      <TipButton
                         key={a.id}
-                        type="button"
                         className="chip"
                         aria-pressed={isChosen}
                         disabled={conflict.blocked}
-                        title={
-                          conflict.blocked
-                            ? `Conflicts with ${conflict.conflictsWith} — both swap the same ability`
-                            : undefined
-                        }
+                        disabledReason={`Conflicts with ${conflict.conflictsWith} — both swap the same ability`}
                         onClick={() => toggle(a.id, conflict.blocked)}
                       >
                         {a.name}
@@ -138,7 +134,7 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
                             M
                           </span>
                         ) : null}
-                      </button>
+                      </TipButton>
                     );
                   })}
                 </div>

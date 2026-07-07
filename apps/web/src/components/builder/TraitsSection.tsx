@@ -9,6 +9,7 @@ import {
   toggleTrait,
   traitsNeedWarning,
 } from "../../model/traits.js";
+import { InfoTip } from "../InfoTip.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -112,12 +113,12 @@ export function TraitsSection({ doc, update }: BuilderProps) {
                     {tr.category}
                   </span>
                   {missing.length > 0 ? (
-                    <span
+                    <InfoTip
                       className="soft"
-                      title={`Not auto-applied: ${missing.map((c) => changeTargetLabel(c.target)).join(", ")}`}
+                      content={`Not auto-applied: ${missing.map((c) => changeTargetLabel(c.target)).join(", ")}`}
                     >
                       ⚠ partial
-                    </span>
+                    </InfoTip>
                   ) : null}
                 </div>
                 <div className="preq">

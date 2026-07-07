@@ -26,6 +26,7 @@ import {
   type PrereqResult,
 } from "../../model/prereqs.js";
 import { isRepeatableFeat } from "../../model/repeatableFeats.js";
+import { InfoTip } from "../InfoTip.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -178,13 +179,13 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
             {chosen} / {expected} feats
           </span>
           {unqualified.size > 0 && (
-            <span
+            <InfoTip
               className="hint warn-over"
-              title="These feats' prerequisites are no longer met (a required feat was likely removed) — they're kept per the hybrid prereq policy, but verify manually"
+              content="These feats' prerequisites are no longer met (a required feat was likely removed) — they're kept per the hybrid prereq policy, but verify manually"
             >
               {" "}
               · ⚠ {unqualified.size} no longer qualif{unqualified.size === 1 ? "ies" : "y"}
-            </span>
+            </InfoTip>
           )}
         </>
       }
@@ -236,10 +237,10 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
       {restrictedSlotGroups.length > 0 && (
         <div className="feat-slot-summary">
           {restrictedSlotGroups.map((g) => (
-            <span
+            <InfoTip
               key={g.key}
               className={`slot-chip${g.filledFeatIds.length < g.total ? " slot-chip-warn" : ""}`}
-              title={
+              content={
                 g.filledFeatIds.length < g.total
                   ? `${g.label}: ${g.total - g.filledFeatIds.length} unfilled — take a feat from this restricted list to fill it`
                   : `${g.label}: fully filled`
@@ -247,15 +248,15 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
             >
               {g.filledFeatIds.length < g.total ? "⚠ " : ""}
               {g.label}: {g.filledFeatIds.length}/{g.total}
-            </span>
+            </InfoTip>
           ))}
           {unassignedFeatNames.length > 0 && (
-            <span
+            <InfoTip
               className="slot-chip slot-chip-warn"
-              title="These feats don't match any open feat slot for your class(es) — you may be over your feat budget, or they don't satisfy a class's feat-type restriction"
+              content="These feats don't match any open feat slot for your class(es) — you may be over your feat budget, or they don't satisfy a class's feat-type restriction"
             >
               ⚠ doesn't fit an open slot: {unassignedFeatNames.join(", ")}
-            </span>
+            </InfoTip>
           )}
         </div>
       )}
@@ -326,12 +327,12 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                 </span>
               ))}
               {res.softText ? (
-                <span
+                <InfoTip
                   className="desc-text"
-                  title="Prerequisite text — verify manually (not auto-enforced)"
+                  content="Prerequisite text — verify manually (not auto-enforced)"
                 >
                   ⚠ {res.softText}
-                </span>
+                </InfoTip>
               ) : null}
             </div>
           );
@@ -371,41 +372,41 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                             </span>
                           ) : null}
                           {dupChoice ? (
-                            <span
+                            <InfoTip
                               className="unqualified-badge"
-                              title="Another instance already has this exact choice — RAW this instance has no additional effect"
+                              content="Another instance already has this exact choice — RAW this instance has no additional effect"
                             >
                               ⚠ duplicate choice
-                            </span>
+                            </InfoTip>
                           ) : null}
                           {idx === 0 && isUnqualified ? (
-                            <span
+                            <InfoTip
                               className="unqualified-badge"
-                              title="A prerequisite (usually another feat) was removed — this feat is kept, but no longer qualifies. Verify manually or remove it."
+                              content="A prerequisite (usually another feat) was removed — this feat is kept, but no longer qualifies. Verify manually or remove it."
                             >
                               ⚠ no longer qualifies
-                            </span>
+                            </InfoTip>
                           ) : null}
                           {idx === 0 && inStyle ? (
-                            <span
+                            <InfoTip
                               className="style-badge"
-                              title={
+                              content={
                                 res.bypassed
                                   ? "Ranger combat style — you may take this feat even though its prerequisites are unmet"
                                   : "In your ranger combat style's feat tree"
                               }
                             >
                               combat style{res.bypassed ? " · prereqs waived" : ""}
-                            </span>
+                            </InfoTip>
                           ) : null}
                           {idx === 0 && extractedEffect ? (
-                            <span
+                            <InfoTip
                               className="badge-modeled badge-modeled--extracted"
-                              title="Carries a machine-extracted numeric effect, not yet hand-verified"
+                              content="Carries a machine-extracted numeric effect, not yet hand-verified"
                             >
                               {" "}
                               M
-                            </span>
+                            </InfoTip>
                           ) : null}
                         </div>
                         {choiceDesc && choiceOpts.length > 0 && (
@@ -489,43 +490,43 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                     ? featInstanceDisplayName(feat, doc.build.featChoices?.[feat.id], doc, refData)
                     : feat.name}
                   {isUnqualified ? (
-                    <span
+                    <InfoTip
                       className="unqualified-badge"
-                      title="A prerequisite (usually another feat) was removed — this feat is kept, but no longer qualifies. Verify manually or remove it."
+                      content="A prerequisite (usually another feat) was removed — this feat is kept, but no longer qualifies. Verify manually or remove it."
                     >
                       ⚠ no longer qualifies
-                    </span>
+                    </InfoTip>
                   ) : null}
                   {inStyle ? (
-                    <span
+                    <InfoTip
                       className="style-badge"
-                      title={
+                      content={
                         res.bypassed
                           ? "Ranger combat style — you may take this feat even though its prerequisites are unmet"
                           : "In your ranger combat style's feat tree"
                       }
                     >
                       combat style{res.bypassed ? " · prereqs waived" : ""}
-                    </span>
+                    </InfoTip>
                   ) : null}
                   {!isSel &&
                     eligibleOpenGroups.map((g) => (
-                      <span
+                      <InfoTip
                         key={g.key}
                         className="style-badge"
-                        title={`Fills your open ${g.label} slot (${g.total - g.filledFeatIds.length} open)`}
+                        content={`Fills your open ${g.label} slot (${g.total - g.filledFeatIds.length} open)`}
                       >
                         {slotTypeBadge(g.type)} slot
-                      </span>
+                      </InfoTip>
                     ))}
                   {extractedEffect ? (
-                    <span
+                    <InfoTip
                       className="badge-modeled badge-modeled--extracted"
-                      title="Carries a machine-extracted numeric effect, not yet hand-verified"
+                      content="Carries a machine-extracted numeric effect, not yet hand-verified"
                     >
                       {" "}
                       M
-                    </span>
+                    </InfoTip>
                   ) : null}
                 </div>
                 {/* Inline choice picker for feats that require a selection */}

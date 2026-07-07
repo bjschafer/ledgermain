@@ -5,6 +5,7 @@ import { PARAMETERIZED_SKILL_PREFIXES } from "@pf1/engine";
 import { addSkillInstance, setSkillRank, totalLevel } from "../../model/doc.js";
 import { signed, skillName, SKILL_NAMES } from "../../model/names.js";
 import { skillBudget } from "../../model/skills.js";
+import { InfoTip } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -72,12 +73,12 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
                       </span>
                     ) : null}
                     {s.trainedOnly ? (
-                      <span
+                      <InfoTip
                         className="tag-trained"
-                        title="trained only — cannot be used without ranks"
+                        content="Trained only — cannot be used without ranks"
                       >
                         trained only
-                      </span>
+                      </InfoTip>
                     ) : null}
                     {s.id.includes(".") ? (
                       <button
@@ -105,12 +106,16 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
                   onCommit={(n) => update((d) => setSkillRank(d, s.id, n))}
                   aria-label={`${skillName(s.id)} ranks`}
                 />
-                <span
-                  className={`stotal num${s.usable ? "" : " unusable"}`}
-                  title={s.usable ? undefined : "trained only — no ranks invested"}
-                >
-                  {signed(s.total)}
-                </span>
+                {s.usable ? (
+                  <span className="stotal num">{signed(s.total)}</span>
+                ) : (
+                  <InfoTip
+                    className="stotal num unusable"
+                    content="Trained only — no ranks invested"
+                  >
+                    {signed(s.total)}
+                  </InfoTip>
+                )}
               </div>
             ))}
           </div>

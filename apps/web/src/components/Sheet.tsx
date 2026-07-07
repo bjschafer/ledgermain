@@ -16,6 +16,7 @@ import {
   signedSequence,
   skillName,
 } from "../model/names.js";
+import { InfoTip } from "./InfoTip.js";
 import { StatSeal } from "./StatSeal.js";
 
 /**
@@ -132,11 +133,15 @@ export function Sheet({
         {ABILITY_IDS.map((id) => {
           const a = sheet.abilities[id];
           return (
-            <div className="ability-pip" key={id} title={`${a.total} (base ${a.base})`}>
+            <InfoTip
+              className="ability-pip"
+              key={id}
+              content={`Total ${a.total} — base ${a.base} before racial/other modifiers`}
+            >
               <div className="ap-abbr">{ABILITY_ABBR[id]}</div>
               <div className="ap-mod num">{signed(a.mod)}</div>
               <div className="ap-score num">{a.total}</div>
-            </div>
+            </InfoTip>
           );
         })}
       </div>

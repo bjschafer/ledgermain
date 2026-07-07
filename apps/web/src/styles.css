@@ -701,12 +701,14 @@ button:focus-visible,
   color: var(--gold-2);
 }
 
-.chip:disabled {
+.chip:disabled,
+.chip[aria-disabled="true"] {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-.chip:disabled:hover {
+.chip:disabled:hover,
+.chip[aria-disabled="true"]:hover {
   border-color: var(--line);
 }
 
@@ -935,7 +937,8 @@ button:focus-visible,
   color: var(--gold-2);
 }
 
-.class-row .favstar2:disabled {
+.class-row .favstar2:disabled,
+.class-row .favstar2[aria-disabled="true"] {
   opacity: 0.35;
   cursor: not-allowed;
 }
@@ -1299,7 +1302,8 @@ button:focus-visible,
   color: var(--gold-2);
 }
 
-.pick-btn:disabled {
+.pick-btn:disabled,
+.pick-btn[aria-disabled="true"] {
   cursor: not-allowed;
   opacity: 0.5;
 }
@@ -4549,5 +4553,89 @@ input[type="text"].saved-roll-name:focus {
 
   .char-switcher-opt {
     min-height: var(--tap-min);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   InfoTip / TipButton (issue #60) — tap-friendly replacement for load-bearing
+   `title=` attributes, which are invisible on touch (no hover). `.info-tip`
+   wraps a passive badge/label as its own trigger; `.info-tip-wrap` wraps a
+   `TipButton` that stays disabled in effect (aria-disabled) but tappable so
+   the reason is reachable. Both open the same `.info-tip-bubble` popover,
+   positioned by the component (clamped to the viewport in JS) — the CSS here
+   only sets the resting look and a sane default before that runs. */
+
+/* Deliberately doesn't set `display` here: `.info-tip` is combined with
+   classes that define their own layout (e.g. `.ability-pip`'s stacked rows,
+   or a plain inline badge's default flow) — forcing flex here would fight
+   those. Trigger types that need centering (e.g. `.chip-info`) set their own
+   `display: inline-flex` alongside this. */
+.info-tip {
+  position: relative;
+  cursor: help;
+}
+
+.info-tip-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.info-tip:focus-visible,
+.info-tip-wrap > button:focus-visible {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 2px;
+}
+
+/* Chip + trailing info-tip icon, e.g. ConditionsPanel — the chip stays the
+   toggle; the icon is the tap target for the explanation, since a chip that's
+   itself a toggle button can't also host a nested tooltip trigger. */
+.chip-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.chip-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.chip-info:hover,
+.chip-info:focus-visible {
+  color: var(--gold-2);
+}
+
+.info-tip-bubble {
+  position: absolute;
+  z-index: 60;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: var(--space-1);
+  width: max-content;
+  max-width: min(280px, calc(100vw - 2 * var(--space-3)));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #181b21;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--body);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ink);
+  text-align: left;
+  white-space: normal;
+  cursor: auto;
+}
+
+@media (max-width: 420px) {
+  .info-tip-bubble {
+    max-width: calc(100vw - 2 * var(--space-3));
   }
 }

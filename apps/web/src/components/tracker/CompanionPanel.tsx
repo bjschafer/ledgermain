@@ -18,6 +18,7 @@ import {
   formatCompanionSummary,
 } from "../../model/companionDisplay.js";
 import { signed } from "../../model/names.js";
+import { InfoTip } from "../InfoTip.js";
 import { StatSeal } from "../StatSeal.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -194,9 +195,9 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
           <h4 className="tracker-sub">Special abilities</h4>
           <div className="chips familiar-abilities">
             {companion.specialAbilities.map((a) => (
-              <span key={a.name} className="chip display-only" title={a.detail}>
+              <InfoTip key={a.name} className="chip display-only" content={a.detail}>
                 {a.name}
-              </span>
+              </InfoTip>
             ))}
             {companion.specialNotes.map((note) => (
               <span key={note} className="chip display-only">

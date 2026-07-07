@@ -43,6 +43,7 @@ import { showToast } from "../../state/toast.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 import { Explainer } from "../Explainer.js";
+import { TipButton } from "../InfoTip.js";
 import { SpellDetail } from "../SpellDetail.js";
 
 interface PreparedRow {
@@ -234,20 +235,15 @@ function DomainSlotsSection({
                           )}
                         </div>
                         {count > 0 && <span className="prep-have">prepared</span>}
-                        <button
-                          type="button"
+                        <TipButton
                           className="pick-btn add"
                           aria-label={`prepare ${sp.name} in the domain slot`}
                           disabled={full}
-                          title={
-                            full
-                              ? "Domain slot is filled — unprepare the current spell first."
-                              : undefined
-                          }
+                          disabledReason="Domain slot is filled — unprepare the current spell first."
                           onClick={() => update((d) => prepareDomainSpell(d, sp.id, classTag))}
                         >
                           Prepare
-                        </button>
+                        </TipButton>
                       </div>
                     );
                   })}
@@ -437,20 +433,15 @@ function SchoolSlotsSection({
                           )}
                         </div>
                         {count > 0 && <span className="prep-have">prepared</span>}
-                        <button
-                          type="button"
+                        <TipButton
                           className="pick-btn add"
                           aria-label={`prepare ${sp.name} in the school slot`}
                           disabled={full}
-                          title={
-                            full
-                              ? "School slot is filled — unprepare the current spell first."
-                              : undefined
-                          }
+                          disabledReason="School slot is filled — unprepare the current spell first."
                           onClick={() => update((d) => prepareSchoolSpell(d, sp.id, classTag))}
                         >
                           Prepare
-                        </button>
+                        </TipButton>
                       </div>
                     );
                   })}
@@ -777,24 +768,21 @@ function PreparedView({
                               −
                             </button>
                           )}
-                          <button
-                            type="button"
+                          <TipButton
                             className="pick-btn add"
                             aria-label={`prepare ${sp.name}`}
                             disabled={wontFit || cantripPrepared}
-                            title={
+                            disabledReason={
                               cantripPrepared
                                 ? "Cantrips cast at will — no need to prepare more than one."
-                                : wontFit
-                                  ? cost === 2
-                                    ? `${sp.name} is an opposition-school spell and costs 2 slots — only ${remaining} remaining.`
-                                    : `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled — unprepare one first.`
-                                  : undefined
+                                : cost === 2
+                                  ? `${sp.name} is an opposition-school spell and costs 2 slots — only ${remaining} remaining.`
+                                  : `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled — unprepare one first.`
                             }
                             onClick={() => update((d) => prepareSpell(d, sp.id, classTag))}
                           >
                             Prepare
-                          </button>
+                          </TipButton>
                         </div>
                       );
                     })}
@@ -1044,15 +1032,11 @@ function SpontaneousView({
                             />
                           )}
                         </div>
-                        <button
-                          type="button"
+                        <TipButton
                           className="pick-btn remove prep-cast"
                           disabled={isExhausted}
-                          title={
-                            isExhausted
-                              ? `No level-${level} slots remaining`
-                              : `Cast ${sp.name} (spend 1 level-${level} slot)`
-                          }
+                          disabledReason={`No level-${level} slots remaining`}
+                          title={`Cast ${sp.name} (spend 1 level-${level} slot)`}
                           onClick={() =>
                             update((d) =>
                               castSpontaneousSlot(
@@ -1067,7 +1051,7 @@ function SpontaneousView({
                           }
                         >
                           Cast
-                        </button>
+                        </TipButton>
                       </div>
                     );
                   })}
@@ -1331,15 +1315,11 @@ function HybridView({
                             />
                           )}
                         </div>
-                        <button
-                          type="button"
+                        <TipButton
                           className="pick-btn remove prep-cast"
                           disabled={isExhausted}
-                          title={
-                            isExhausted
-                              ? `No level-${level} slots remaining`
-                              : `Cast ${sp.name} (spend 1 level-${level} slot)`
-                          }
+                          disabledReason={`No level-${level} slots remaining`}
+                          title={`Cast ${sp.name} (spend 1 level-${level} slot)`}
                           onClick={() =>
                             update((d) =>
                               castSpontaneousSlot(
@@ -1354,7 +1334,7 @@ function HybridView({
                           }
                         >
                           Cast
-                        </button>
+                        </TipButton>
                       </div>
                     );
                   })}
@@ -1472,22 +1452,19 @@ function HybridView({
                                 −
                               </button>
                             )}
-                            <button
-                              type="button"
+                            <TipButton
                               className="pick-btn add"
                               aria-label={`prepare ${sp.name}`}
                               disabled={wontFit || cantripPrepared}
-                              title={
+                              disabledReason={
                                 cantripPrepared
                                   ? "Cantrips cast at will — no need to prepare more than one."
-                                  : wontFit
-                                    ? `All ${limit} level-${level} prepare slot${limit === 1 ? "" : "s"} are filled — unprepare one first.`
-                                    : undefined
+                                  : `All ${limit} level-${level} prepare slot${limit === 1 ? "" : "s"} are filled — unprepare one first.`
                               }
                               onClick={() => update((d) => prepareSpell(d, sp.id, classTag))}
                             >
                               Prepare
-                            </button>
+                            </TipButton>
                           </div>
                         );
                       })}

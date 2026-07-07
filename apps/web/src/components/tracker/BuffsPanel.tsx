@@ -22,6 +22,7 @@ import {
 import { isSharedWithCompanion, toggleSharedBuffCompanion } from "../../model/companion.js";
 import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js";
 import { changeTargetLabel, signed } from "../../model/names.js";
+import { InfoTip } from "../InfoTip.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /** Common typed-modifier targets for the custom-buff door (not exhaustive). */
@@ -169,19 +170,19 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
                 </div>
                 <div className="preq">
                   {buff.changes.slice(0, 4).map((c, i) => (
-                    <span key={i} title={c.formula}>
+                    <InfoTip key={i} content={c.formula}>
                       {changeTargetLabel(c.target)} {formulaHint(c, { casterLevel }, rollData)}
-                    </span>
+                    </InfoTip>
                   ))}
                 </div>
               </div>
               {isActive ? (
-                <span
+                <InfoTip
                   className="buff-already-active"
-                  title="Already active — remove the active copy first to add another"
+                  content="Already active — remove the active copy first to add another"
                 >
                   Active ✓
-                </span>
+                </InfoTip>
               ) : (
                 <button type="button" className="pick-btn add" onClick={() => add(buff)}>
                   Add
@@ -235,9 +236,9 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
   if (missing.length === 0) return null;
   const labels = missing.map((c) => changeTargetLabel(c.target));
   return (
-    <span className="soft" title={`Not auto-applied: ${labels.join(", ")}`}>
+    <InfoTip className="soft" content={`Not auto-applied: ${labels.join(", ")}`}>
       ⚠ partial
-    </span>
+    </InfoTip>
   );
 }
 
@@ -258,12 +259,12 @@ function NoEffectHint({
 }) {
   if (!hasNoModeledEffect({ changes, contextNotes })) return null;
   return (
-    <span
+    <InfoTip
       className="soft"
-      title="This buff has no changes or reminders — it's a reminder only, with nothing for the sheet to apply."
+      content="This buff has no changes or reminders — it's a reminder only, with nothing for the sheet to apply."
     >
       reminder only — no modeled effect
-    </span>
+    </InfoTip>
   );
 }
 
@@ -317,10 +318,10 @@ function BuffRow({
         </div>
         <div className="buff-changes num">
           {buff.changes.map((c, i) => (
-            <span key={i} className="buff-change" title={c.formula}>
+            <InfoTip key={i} className="buff-change" content={c.formula}>
               {changeTargetLabel(c.target)} {c.type ? <em>[{c.type}]</em> : null}{" "}
               {formulaHint(c, buff, rollData)}
-            </span>
+            </InfoTip>
           ))}
         </div>
       </div>

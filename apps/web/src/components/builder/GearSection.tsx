@@ -32,6 +32,7 @@ import {
 } from "../../model/consumables.js";
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { changeTargetLabel } from "../../model/names.js";
+import { InfoTip, TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -272,17 +273,17 @@ function ArmorForm({
           </p>
           <div className="ability-chips">
             {ARMOR_ABILITIES.map((a) => (
-              <button
+              <TipButton
                 key={a.id}
-                type="button"
                 className="chip"
                 aria-pressed={abilities.includes(a.id)}
                 disabled={!abilitySelectable(abilities, a.id, enhForAbilities)}
+                disabledReason={armorAbilityChipTitle(a, abilities, enhForAbilities)}
                 title={armorAbilityChipTitle(a, abilities, enhForAbilities)}
                 onClick={() => toggleAbility(a.id)}
               >
                 {a.name}
-              </button>
+              </TipButton>
             ))}
           </div>
         </div>
@@ -312,9 +313,9 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
   if (missing.length === 0) return null;
   const labels = missing.map((c) => changeTargetLabel(c.target));
   return (
-    <span className="soft" title={`Not auto-applied: ${labels.join(", ")}`}>
+    <InfoTip className="soft" content={`Not auto-applied: ${labels.join(", ")}`}>
       ⚠ partial
-    </span>
+    </InfoTip>
   );
 }
 
@@ -939,17 +940,21 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                     </p>
                     <div className="ability-chips">
                       {ARMOR_ABILITIES.map((a) => (
-                        <button
+                        <TipButton
                           key={a.id}
-                          type="button"
                           className="chip"
                           aria-pressed={armorAbilities.includes(a.id)}
                           disabled={!abilitySelectable(armorAbilities, a.id, armorEnhancement)}
+                          disabledReason={armorAbilityChipTitle(
+                            a,
+                            armorAbilities,
+                            armorEnhancement,
+                          )}
                           title={armorAbilityChipTitle(a, armorAbilities, armorEnhancement)}
                           onClick={() => toggleArmorAbility(a.id)}
                         >
                           {a.name}
-                        </button>
+                        </TipButton>
                       ))}
                     </div>
                   </div>

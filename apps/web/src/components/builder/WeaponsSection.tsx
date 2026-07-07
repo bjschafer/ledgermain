@@ -13,6 +13,7 @@ import {
   WEAPON_ABILITIES,
 } from "../../model/abilities.js";
 import { WEAPON_MATERIALS } from "../../model/materials.js";
+import { TipButton } from "../InfoTip.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -285,17 +286,17 @@ function WeaponForm({
           </p>
           <div className="ability-chips">
             {WEAPON_ABILITIES.map((a) => (
-              <button
+              <TipButton
                 key={a.id}
-                type="button"
                 className="chip"
                 aria-pressed={abilities.includes(a.id)}
                 disabled={!abilitySelectable(abilities, a.id, enh)}
+                disabledReason={abilityChipTitle(a, abilities, enh)}
                 title={abilityChipTitle(a, abilities, enh)}
                 onClick={() => toggleAbility(a.id)}
               >
                 {a.name}
-              </button>
+              </TipButton>
             ))}
           </div>
         </div>
@@ -551,17 +552,17 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                     </p>
                     <div className="ability-chips">
                       {WEAPON_ABILITIES.map((a) => (
-                        <button
+                        <TipButton
                           key={a.id}
-                          type="button"
                           className="chip"
                           aria-pressed={abilities.includes(a.id)}
                           disabled={!abilitySelectable(abilities, a.id, enhancement)}
+                          disabledReason={abilityChipTitle(a, abilities, enhancement)}
                           title={abilityChipTitle(a, abilities, enhancement)}
                           onClick={() => toggleAbility(a.id)}
                         >
                           {a.name}
-                        </button>
+                        </TipButton>
                       ))}
                     </div>
                   </div>

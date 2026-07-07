@@ -20,6 +20,7 @@ import {
   PRIMARY_FAMILIAR_SKILLS,
 } from "../../model/familiarDisplay.js";
 import { signed } from "../../model/names.js";
+import { InfoTip } from "../InfoTip.js";
 import { StatSeal } from "../StatSeal.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -231,9 +232,9 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
           <h4 className="tracker-sub">Special abilities</h4>
           <div className="chips familiar-abilities">
             {familiar.specialAbilities.map((a) => (
-              <span key={a.name} className="chip display-only" title={a.detail}>
+              <InfoTip key={a.name} className="chip display-only" content={a.detail}>
                 {a.name}
-              </span>
+              </InfoTip>
             ))}
           </div>
         </>

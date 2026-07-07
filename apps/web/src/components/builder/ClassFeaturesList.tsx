@@ -1,5 +1,7 @@
 import type { DerivedSheet, RefData } from "@pf1/schema";
 
+import { InfoTip } from "../InfoTip.js";
+
 /**
  * Collapsible HTML description, same pattern as `SpellDetail` (reuses its CSS
  * classes — visually it's the same "prose reveal" element, just for an
@@ -94,22 +96,22 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
                   Lv {f.level} · {f.name}
                   {f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
                   {f.effectSource === "extracted" ? (
-                    <span
+                    <InfoTip
                       className="badge-modeled badge-modeled--extracted badge-modeled--inline"
-                      title="Machine-extracted from the vendored prose, not yet hand-verified"
+                      content="Machine-extracted from the vendored prose, not yet hand-verified"
                     >
                       {" "}
                       extracted
-                    </span>
+                    </InfoTip>
                   ) : null}
                   {f.ambiguous ? (
-                    <span
+                    <InfoTip
                       className="soft"
-                      title="No unambiguous base-feature match — verify manually"
+                      content="No unambiguous base-feature match — verify manually"
                     >
                       {" "}
                       ⚠ may replace an existing ability
-                    </span>
+                    </InfoTip>
                   ) : null}
                 </span>
                 {f.description ? <FeatureDescription html={f.description} /> : null}

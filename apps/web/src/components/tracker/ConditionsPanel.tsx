@@ -3,6 +3,7 @@ import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
 import { Panel } from "../builder/Panel.js";
 import { supersedingCondition, toggleCondition } from "../../model/conditions.js";
 import { Explainer } from "../Explainer.js";
+import { InfoTip } from "../InfoTip.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /** Toggle the core PF1 conditions; the sheet's numbers update live via compute(). */
@@ -23,33 +24,39 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
           const supersededBy = supersedingCondition(doc, id);
           const implied = supersededBy !== undefined;
           const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
+          // Full explanation of the chip's state — the only place this text
+          // lives, so it needs a tap-reachable form too (issue #60), not just
+          // the button's `title=` (invisible on touch).
+          const tipContent = implied
+            ? `Implied by ${impliedName} — that's the stricter condition on this ladder. Turn ${impliedName} off to control ${cond.name} directly.`
+            : cond.displayOnly
+              ? `${cond.summary} (reference only — no numeric modifier applied)`
+              : cond.summary;
           return (
-            <button
-              key={id}
-              type="button"
-              className={`chip cond${cond.displayOnly ? " display-only" : ""}${implied ? " implied" : ""}`}
-              aria-pressed={on}
-              disabled={implied}
-              title={
-                implied
-                  ? `Implied by ${impliedName} — that's the stricter condition on this ladder. Turn ${impliedName} off to control ${cond.name} directly.`
-                  : cond.displayOnly
-                    ? `${cond.summary} (reference only — no numeric modifier applied)`
-                    : cond.summary
-              }
-              onClick={() => update((d) => toggleCondition(d, id))}
-            >
-              {cond.name}
-              {implied ? (
-                <span className="dot" title={`Implied by ${impliedName}`}>
-                  ▲
-                </span>
-              ) : cond.displayOnly ? (
-                <span className="dot" title="Display-only (no flat modifier)">
-                  ·
-                </span>
-              ) : null}
-            </button>
+            <span key={id} className="chip-wrap">
+              <button
+                type="button"
+                className={`chip cond${cond.displayOnly ? " display-only" : ""}${implied ? " implied" : ""}`}
+                aria-pressed={on}
+                disabled={implied}
+                title={tipContent}
+                onClick={() => update((d) => toggleCondition(d, id))}
+              >
+                {cond.name}
+                {implied ? (
+                  <span className="dot" aria-hidden="true">
+                    ▲
+                  </span>
+                ) : cond.displayOnly ? (
+                  <span className="dot" aria-hidden="true">
+                    ·
+                  </span>
+                ) : null}
+              </button>
+              <InfoTip className="chip-info" content={tipContent}>
+                ⓘ
+              </InfoTip>
+            </span>
           );
         })}
       </div>
