@@ -35,7 +35,7 @@ export function ToastHost() {
   return (
     <div className="toast-host">
       <div
-        className="toast"
+        className={`toast${toast.tone ? ` toast--${toast.tone}` : ""}`}
         role="status"
         aria-live="polite"
         onClick={() => dismissToast()}

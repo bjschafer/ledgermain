@@ -86,6 +86,57 @@ function totalSlotsUsed(doc: CharacterDoc): number {
 }
 
 /**
+ * Same as {@link expendedPreparedCount}, scoped to one caster class's stored
+ * `classTag` (`model/spellcasting.ts` `storedClassTag` — `undefined` for the
+ * primary caster class).
+ */
+function expendedPreparedCountForClass(doc: CharacterDoc, classTag: string | undefined): number {
+  return (doc.live.spells?.prepared ?? []).filter(
+    (p) => p.expended && (p.classTag ?? undefined) === classTag,
+  ).length;
+}
+
+/** Same as {@link totalSlotsUsed}, scoped to one caster class's stored `classTag`. */
+function slotsUsedForClass(doc: CharacterDoc, classTag: string | undefined): number {
+  const spells = doc.live.spells;
+  if (!spells) return 0;
+  const used =
+    classTag === undefined ? (spells.slotsUsed ?? {}) : (spells.slotsUsedByClass?.[classTag] ?? {});
+  let n = 0;
+  for (const count of Object.values(used)) n += count;
+  return n;
+}
+
+/**
+ * One caster class's "New day" receipt segment for {@link newDaySummary}'s
+ * per-class breakdown — e.g. `"Wizard: 3 prepared spells reset"`,
+ * `"Sorcerer: 2 slots restored"`, or both comma-joined for a hybrid caster
+ * (e.g. arcanist, which has both a daily prepared loadout and a separate
+ * spontaneous slot pool — see `model/spellcasting.ts`'s `CasterModel` doc
+ * comment). `null` when neither changed for this class.
+ */
+function classSpellSegment(
+  before: CharacterDoc,
+  after: CharacterDoc,
+  name: string,
+  classTag: string | undefined,
+): string | null {
+  const preparedReset =
+    expendedPreparedCountForClass(before, classTag) -
+    expendedPreparedCountForClass(after, classTag);
+  const slotsRestored = slotsUsedForClass(before, classTag) - slotsUsedForClass(after, classTag);
+  const parts: string[] = [];
+  if (preparedReset > 0) {
+    parts.push(`${preparedReset} prepared spell${preparedReset === 1 ? "" : "s"} reset`);
+  }
+  if (slotsRestored > 0) {
+    parts.push(`${slotsRestored} slot${slotsRestored === 1 ? "" : "s"} restored`);
+  }
+  if (parts.length === 0) return null;
+  return `${name}: ${parts.join(", ")}`;
+}
+
+/**
  * Compact, dot-separated receipt of what actually changed between `before`
  * and `after`, for the "New day" toast (issue: feedback/toasts+undo audit
  * slice). Compares the two docs directly rather than re-deriving from
@@ -99,11 +150,23 @@ function totalSlotsUsed(doc: CharacterDoc): number {
  * of unchanged "0 -> 0"s). `pools` (from `deriveResourcePools`) supplies
  * display names for resource pools; omit it and changed pools still show,
  * keyed by their raw id.
+ *
+ * `casterClasses` (issue #63) breaks the spell segment out per caster class
+ * instead of a single combined count — e.g. `"Cleric: 1 prepared spell
+ * reset"` and `"Sorcerer: 1 slot restored"` as separate segments for a
+ * cleric/sorcerer multiclass, rather than one opaque "2 spell slots
+ * refreshed". Pass the document's caster classes (see
+ * `model/spellcasting.ts`'s `casterClassesOf`/`storedClassTag`) with a
+ * display `name` each; omit it (as the narrower per-class "New day" ghost
+ * buttons do — their before/after diff is already scoped to one class, so
+ * the combined count and a per-class breakdown would say the same thing) to
+ * fall back to the original single combined segment.
  */
 export function newDaySummary(
   before: CharacterDoc,
   after: CharacterDoc,
   pools?: readonly Pick<DerivedResourcePool, "id" | "name">[],
+  casterClasses?: readonly { classTag: string | undefined; name: string }[],
 ): string {
   const segments: string[] = [];
 
@@ -111,12 +174,19 @@ export function newDaySummary(
     segments.push(`HP ${before.live.hp.current}→${after.live.hp.current}`);
   }
 
-  const slotsRefreshed =
-    expendedPreparedCount(before) -
-    expendedPreparedCount(after) +
-    (totalSlotsUsed(before) - totalSlotsUsed(after));
-  if (slotsRefreshed > 0) {
-    segments.push(`${slotsRefreshed} spell slot${slotsRefreshed === 1 ? "" : "s"} refreshed`);
+  if (casterClasses && casterClasses.length > 0) {
+    for (const { classTag, name } of casterClasses) {
+      const segment = classSpellSegment(before, after, name, classTag);
+      if (segment) segments.push(segment);
+    }
+  } else {
+    const slotsRefreshed =
+      expendedPreparedCount(before) -
+      expendedPreparedCount(after) +
+      (totalSlotsUsed(before) - totalSlotsUsed(after));
+    if (slotsRefreshed > 0) {
+      segments.push(`${slotsRefreshed} spell slot${slotsRefreshed === 1 ? "" : "s"} refreshed`);
+    }
   }
 
   const poolNameById = new Map((pools ?? []).map((p) => [p.id, p.name]));
@@ -160,11 +230,18 @@ export function restNewDay(
   const pools = refData ? deriveResourcePools(next, refData, derived?.abilities) : undefined;
   next = restAllResources(next, pools);
 
+  let casterClasses: { classTag: string | undefined; name: string }[] | undefined;
   if (refData) {
+    const classDefs = Object.values(refData.classes);
+    casterClasses = [];
     for (const { tag } of casterClassesOf(next, refData)) {
       const classTag = storedClassTag(next, refData, tag);
       next = restPreparedSpells(next, classTag);
       next = resetSpontaneousSlots(next, classTag);
+      casterClasses.push({
+        classTag,
+        name: classDefs.find((c) => c.tag === tag)?.name ?? tag,
+      });
     }
   } else {
     next = restPreparedSpells(next);
@@ -174,6 +251,6 @@ export function restNewDay(
   return {
     doc: next,
     tempNegativeLevelReminder: getNegativeLevels(next).temporary > 0,
-    summary: newDaySummary(doc, next, pools),
+    summary: newDaySummary(doc, next, pools, casterClasses),
   };
 }
