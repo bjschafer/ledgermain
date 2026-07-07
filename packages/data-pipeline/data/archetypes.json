@@ -1,4 +1,424 @@
 {
+  "alchemist:aerochemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:aerochemist",
+    "name": "Aerochemist",
+    "uuid": "archetype:alchemist:aerochemist"
+  },
+  "alchemist:alchemical-sapper": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:alchemical-sapper",
+    "name": "Alchemical Sapper",
+    "uuid": "archetype:alchemist:alchemical-sapper"
+  },
+  "alchemist:alchemical-trapper": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:alchemical-trapper",
+    "name": "Alchemical Trapper",
+    "uuid": "archetype:alchemist:alchemical-trapper"
+  },
+  "alchemist:aquachymist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:aquachymist",
+    "name": "Aquachymist",
+    "uuid": "archetype:alchemist:aquachymist"
+  },
+  "alchemist:beastmorph": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:beastmorph",
+    "name": "Beastmorph",
+    "uuid": "archetype:alchemist:beastmorph"
+  },
+  "alchemist:blazing-torchbearer": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:blazing-torchbearer",
+    "name": "Blazing Torchbearer",
+    "uuid": "archetype:alchemist:blazing-torchbearer"
+  },
+  "alchemist:blightseeker": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:blightseeker",
+    "name": "Blightseeker",
+    "uuid": "archetype:alchemist:blightseeker"
+  },
+  "alchemist:bogborn-alchemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:bogborn-alchemist",
+    "name": "Bogborn Alchemist",
+    "uuid": "archetype:alchemist:bogborn-alchemist"
+  },
+  "alchemist:bramble-brewer": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:bramble-brewer",
+    "name": "Bramble Brewer",
+    "uuid": "archetype:alchemist:bramble-brewer"
+  },
+  "alchemist:chirurgeon": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:chirurgeon",
+    "name": "Chirurgeon",
+    "uuid": "archetype:alchemist:chirurgeon"
+  },
+  "alchemist:clone-master": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:clone-master",
+    "name": "Clone Master",
+    "uuid": "archetype:alchemist:clone-master"
+  },
+  "alchemist:concocter": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:concocter",
+    "name": "Concocter",
+    "uuid": "archetype:alchemist:concocter"
+  },
+  "alchemist:crimson-chymist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:crimson-chymist",
+    "name": "Crimson Chymist",
+    "uuid": "archetype:alchemist:crimson-chymist"
+  },
+  "alchemist:cruorchymist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:cruorchymist",
+    "name": "Cruorchymist",
+    "uuid": "archetype:alchemist:cruorchymist"
+  },
+  "alchemist:crypt-breaker": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:crypt-breaker",
+    "name": "Crypt Breaker",
+    "uuid": "archetype:alchemist:crypt-breaker"
+  },
+  "alchemist:deep-bomber": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:deep-bomber",
+    "name": "Deep Bomber",
+    "uuid": "archetype:alchemist:deep-bomber"
+  },
+  "alchemist:dimensional-excavator": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:dimensional-excavator",
+    "name": "Dimensional Excavator",
+    "uuid": "archetype:alchemist:dimensional-excavator"
+  },
+  "alchemist:dragonblood-chymist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:dragonblood-chymist",
+    "name": "Dragonblood Chymist",
+    "uuid": "archetype:alchemist:dragonblood-chymist"
+  },
+  "alchemist:ectochymist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:ectochymist",
+    "name": "Ectochymist",
+    "uuid": "archetype:alchemist:ectochymist"
+  },
+  "alchemist:ectoplasm-master": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:ectoplasm-master",
+    "name": "Ectoplasm Master",
+    "uuid": "archetype:alchemist:ectoplasm-master"
+  },
+  "alchemist:energist-negative": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:energist-negative",
+    "name": "Energist [Negative]",
+    "uuid": "archetype:alchemist:energist-negative"
+  },
+  "alchemist:energist-positive": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:energist-positive",
+    "name": "Energist [Positive]",
+    "uuid": "archetype:alchemist:energist-positive"
+  },
+  "alchemist:energy-scientist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:energy-scientist",
+    "name": "Energy Scientist",
+    "uuid": "archetype:alchemist:energy-scientist"
+  },
+  "alchemist:fermenter": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:fermenter",
+    "name": "Fermenter",
+    "uuid": "archetype:alchemist:fermenter"
+  },
+  "alchemist:fire-bomber": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:fire-bomber",
+    "name": "Fire Bomber",
+    "uuid": "archetype:alchemist:fire-bomber"
+  },
+  "alchemist:first-world-innovator": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:first-world-innovator",
+    "name": "First World Innovator",
+    "uuid": "archetype:alchemist:first-world-innovator"
+  },
+  "alchemist:gloom-chymist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:gloom-chymist",
+    "name": "Gloom Chymist",
+    "uuid": "archetype:alchemist:gloom-chymist"
+  },
+  "alchemist:grenadier": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:grenadier",
+    "name": "Grenadier",
+    "uuid": "archetype:alchemist:grenadier"
+  },
+  "alchemist:grenadier-mc": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:grenadier-mc",
+    "name": "Grenadier [MC]",
+    "uuid": "archetype:alchemist:grenadier-mc"
+  },
+  "alchemist:gun-chemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:gun-chemist",
+    "name": "Gun Chemist",
+    "uuid": "archetype:alchemist:gun-chemist"
+  },
+  "alchemist:herbalist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:herbalist",
+    "name": "Herbalist",
+    "uuid": "archetype:alchemist:herbalist"
+  },
+  "alchemist:homunculist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:homunculist",
+    "name": "Homunculist",
+    "uuid": "archetype:alchemist:homunculist"
+  },
+  "alchemist:horticulturist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:horticulturist",
+    "name": "Horticulturist",
+    "uuid": "archetype:alchemist:horticulturist"
+  },
+  "alchemist:ice-chemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:ice-chemist",
+    "name": "Ice Chemist",
+    "uuid": "archetype:alchemist:ice-chemist"
+  },
+  "alchemist:inspired-chemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:inspired-chemist",
+    "name": "Inspired Chemist",
+    "uuid": "archetype:alchemist:inspired-chemist"
+  },
+  "alchemist:internal-alchemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:internal-alchemist",
+    "name": "Internal Alchemist",
+    "uuid": "archetype:alchemist:internal-alchemist"
+  },
+  "alchemist:interrogator": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:interrogator",
+    "name": "Interrogator",
+    "uuid": "archetype:alchemist:interrogator"
+  },
+  "alchemist:mad-scientist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:mad-scientist",
+    "name": "Mad Scientist",
+    "uuid": "archetype:alchemist:mad-scientist"
+  },
+  "alchemist:metamorph": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:metamorph",
+    "name": "Metamorph",
+    "uuid": "archetype:alchemist:metamorph"
+  },
+  "alchemist:mindchemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:mindchemist",
+    "name": "Mindchemist",
+    "uuid": "archetype:alchemist:mindchemist"
+  },
+  "alchemist:mixologist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:mixologist",
+    "name": "Mixologist",
+    "uuid": "archetype:alchemist:mixologist"
+  },
+  "alchemist:mnemostiller": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:mnemostiller",
+    "name": "Mnemostiller",
+    "uuid": "archetype:alchemist:mnemostiller"
+  },
+  "alchemist:oenopion-researcher": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:oenopion-researcher",
+    "name": "Oenopion Researcher",
+    "uuid": "archetype:alchemist:oenopion-researcher"
+  },
+  "alchemist:oozemaster": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:oozemaster",
+    "name": "Oozemaster",
+    "uuid": "archetype:alchemist:oozemaster"
+  },
+  "alchemist:perfumer": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:perfumer",
+    "name": "Perfumer",
+    "uuid": "archetype:alchemist:perfumer"
+  },
+  "alchemist:plague-bringer": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:plague-bringer",
+    "name": "Plague Bringer",
+    "uuid": "archetype:alchemist:plague-bringer"
+  },
+  "alchemist:preservationist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:preservationist",
+    "name": "Preservationist",
+    "uuid": "archetype:alchemist:preservationist"
+  },
+  "alchemist:psychonaut": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:psychonaut",
+    "name": "Psychonaut",
+    "uuid": "archetype:alchemist:psychonaut"
+  },
+  "alchemist:ragechemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:ragechemist",
+    "name": "Ragechemist",
+    "uuid": "archetype:alchemist:ragechemist"
+  },
+  "alchemist:reanimator": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:reanimator",
+    "name": "Reanimator",
+    "uuid": "archetype:alchemist:reanimator"
+  },
+  "alchemist:royal-alchemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:royal-alchemist",
+    "name": "Royal Alchemist",
+    "uuid": "archetype:alchemist:royal-alchemist"
+  },
+  "alchemist:saboteur": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:saboteur",
+    "name": "Saboteur",
+    "uuid": "archetype:alchemist:saboteur"
+  },
+  "alchemist:sacrament-alchemist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:sacrament-alchemist",
+    "name": "Sacrament Alchemist",
+    "uuid": "archetype:alchemist:sacrament-alchemist"
+  },
+  "alchemist:tinkerer": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:tinkerer",
+    "name": "Tinkerer",
+    "uuid": "archetype:alchemist:tinkerer"
+  },
+  "alchemist:toxicant": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:toxicant",
+    "name": "Toxicant",
+    "uuid": "archetype:alchemist:toxicant"
+  },
+  "alchemist:trap-breaker": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:trap-breaker",
+    "name": "Trap Breaker",
+    "uuid": "archetype:alchemist:trap-breaker"
+  },
+  "alchemist:vaultbreaker": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:vaultbreaker",
+    "name": "Vaultbreaker",
+    "uuid": "archetype:alchemist:vaultbreaker"
+  },
+  "alchemist:vivisectionist": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:vivisectionist",
+    "name": "Vivisectionist",
+    "uuid": "archetype:alchemist:vivisectionist"
+  },
+  "alchemist:wasteland-blightbreaker": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:wasteland-blightbreaker",
+    "name": "Wasteland Blightbreaker",
+    "uuid": "archetype:alchemist:wasteland-blightbreaker"
+  },
+  "alchemist:winged-marauder": {
+    "classTag": "alchemist",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "alchemist:winged-marauder",
+    "name": "Winged Marauder",
+    "uuid": "archetype:alchemist:winged-marauder"
+  },
   "arcanist:arcane-tinkerer": {
     "classTag": "arcanist",
     "contributorModule": "baileymh/pf1e-archetypes",
@@ -845,6 +1265,517 @@
     "id": "bard:wit",
     "name": "Wit",
     "uuid": "archetype:bard:wit"
+  },
+  "bloodrager:ancestral-harbinger": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:ancestral-harbinger",
+    "name": "Ancestral Harbinger",
+    "uuid": "archetype:bloodrager:ancestral-harbinger"
+  },
+  "bloodrager:blood-conduit": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:blood-conduit",
+    "name": "Blood Conduit",
+    "uuid": "archetype:bloodrager:blood-conduit"
+  },
+  "bloodrager:bloodrider": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:bloodrider",
+    "name": "Bloodrider",
+    "uuid": "archetype:bloodrager:bloodrider"
+  },
+  "bloodrager:bloody-knuckled-rowdy": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:bloody-knuckled-rowdy",
+    "name": "Bloody-Knuckled Rowdy",
+    "uuid": "archetype:bloodrager:bloody-knuckled-rowdy"
+  },
+  "bloodrager:enlightened-bloodrager": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:enlightened-bloodrager",
+    "name": "Enlightened Bloodrager",
+    "uuid": "archetype:bloodrager:enlightened-bloodrager"
+  },
+  "bloodrager:greenrager": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:greenrager",
+    "name": "Greenrager",
+    "uuid": "archetype:bloodrager:greenrager"
+  },
+  "bloodrager:hag-riven": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:hag-riven",
+    "name": "Hag-Riven",
+    "uuid": "archetype:bloodrager:hag-riven"
+  },
+  "bloodrager:id-rager": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:id-rager",
+    "name": "Id Rager",
+    "uuid": "archetype:bloodrager:id-rager"
+  },
+  "bloodrager:metamagic-rager": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:metamagic-rager",
+    "name": "Metamagic Rager",
+    "uuid": "archetype:bloodrager:metamagic-rager"
+  },
+  "bloodrager:primalist": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:primalist",
+    "name": "Primalist",
+    "uuid": "archetype:bloodrager:primalist"
+  },
+  "bloodrager:prowler-at-world-s-end": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:prowler-at-world-s-end",
+    "name": "Prowler at World's End",
+    "uuid": "archetype:bloodrager:prowler-at-world-s-end"
+  },
+  "bloodrager:rageshaper": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:rageshaper",
+    "name": "Rageshaper",
+    "uuid": "archetype:bloodrager:rageshaper"
+  },
+  "bloodrager:spelleater": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:spelleater",
+    "name": "Spelleater",
+    "uuid": "archetype:bloodrager:spelleater"
+  },
+  "bloodrager:steelblood": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:steelblood",
+    "name": "Steelblood",
+    "uuid": "archetype:bloodrager:steelblood"
+  },
+  "bloodrager:symbol-striker": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:symbol-striker",
+    "name": "Symbol Striker",
+    "uuid": "archetype:bloodrager:symbol-striker"
+  },
+  "bloodrager:untouchable-rager": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:untouchable-rager",
+    "name": "Untouchable Rager",
+    "uuid": "archetype:bloodrager:untouchable-rager"
+  },
+  "bloodrager:urban-bloodrager": {
+    "classTag": "bloodrager",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "bloodrager:urban-bloodrager",
+    "name": "Urban Bloodrager",
+    "uuid": "archetype:bloodrager:urban-bloodrager"
+  },
+  "brawler:battle-dancer": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:battle-dancer",
+    "name": "Battle Dancer",
+    "uuid": "archetype:brawler:battle-dancer"
+  },
+  "brawler:bouncer": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:bouncer",
+    "name": "Bouncer",
+    "uuid": "archetype:brawler:bouncer"
+  },
+  "brawler:constructed-pugilist": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:constructed-pugilist",
+    "name": "Constructed Pugilist",
+    "uuid": "archetype:brawler:constructed-pugilist"
+  },
+  "brawler:exemplar": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:exemplar",
+    "name": "Exemplar",
+    "uuid": "archetype:brawler:exemplar"
+  },
+  "brawler:feral-striker": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:feral-striker",
+    "name": "Feral Striker",
+    "uuid": "archetype:brawler:feral-striker"
+  },
+  "brawler:hinyasi": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:hinyasi",
+    "name": "Hinyasi",
+    "uuid": "archetype:brawler:hinyasi"
+  },
+  "brawler:living-avalanche": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:living-avalanche",
+    "name": "Living Avalanche",
+    "uuid": "archetype:brawler:living-avalanche"
+  },
+  "brawler:mutagenic-mauler": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:mutagenic-mauler",
+    "name": "Mutagenic Mauler",
+    "uuid": "archetype:brawler:mutagenic-mauler"
+  },
+  "brawler:shield-champion": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:shield-champion",
+    "name": "Shield Champion",
+    "uuid": "archetype:brawler:shield-champion"
+  },
+  "brawler:snakebite-striker": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:snakebite-striker",
+    "name": "Snakebite Striker",
+    "uuid": "archetype:brawler:snakebite-striker"
+  },
+  "brawler:steel-breaker": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:steel-breaker",
+    "name": "Steel-Breaker",
+    "uuid": "archetype:brawler:steel-breaker"
+  },
+  "brawler:strangler": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:strangler",
+    "name": "Strangler",
+    "uuid": "archetype:brawler:strangler"
+  },
+  "brawler:strong-side-boxer": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:strong-side-boxer",
+    "name": "Strong-Side Boxer",
+    "uuid": "archetype:brawler:strong-side-boxer"
+  },
+  "brawler:turfer": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:turfer",
+    "name": "Turfer",
+    "uuid": "archetype:brawler:turfer"
+  },
+  "brawler:ulfen-beast-wrestler": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:ulfen-beast-wrestler",
+    "name": "Ulfen Beast-Wrestler",
+    "uuid": "archetype:brawler:ulfen-beast-wrestler"
+  },
+  "brawler:venomfist": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:venomfist",
+    "name": "Venomfist",
+    "uuid": "archetype:brawler:venomfist"
+  },
+  "brawler:verdant-grappler": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:verdant-grappler",
+    "name": "Verdant Grappler",
+    "uuid": "archetype:brawler:verdant-grappler"
+  },
+  "brawler:wild-child": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:wild-child",
+    "name": "Wild Child",
+    "uuid": "archetype:brawler:wild-child"
+  },
+  "brawler:winding-path-renegade": {
+    "classTag": "brawler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "brawler:winding-path-renegade",
+    "name": "Winding Path Renegade",
+    "uuid": "archetype:brawler:winding-path-renegade"
+  },
+  "cavalier:beast-rider": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:beast-rider",
+    "name": "Beast Rider",
+    "uuid": "archetype:cavalier:beast-rider"
+  },
+  "cavalier:castellan": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:castellan",
+    "name": "Castellan",
+    "uuid": "archetype:cavalier:castellan"
+  },
+  "cavalier:charger": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:charger",
+    "name": "Charger",
+    "uuid": "archetype:cavalier:charger"
+  },
+  "cavalier:circuit-judge": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:circuit-judge",
+    "name": "Circuit Judge",
+    "uuid": "archetype:cavalier:circuit-judge"
+  },
+  "cavalier:constable": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:constable",
+    "name": "Constable",
+    "uuid": "archetype:cavalier:constable"
+  },
+  "cavalier:courtly-knight": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:courtly-knight",
+    "name": "Courtly Knight",
+    "uuid": "archetype:cavalier:courtly-knight"
+  },
+  "cavalier:daring-champion": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:daring-champion",
+    "name": "Daring Champion",
+    "uuid": "archetype:cavalier:daring-champion"
+  },
+  "cavalier:daring-general": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:daring-general",
+    "name": "Daring General",
+    "uuid": "archetype:cavalier:daring-general"
+  },
+  "cavalier:disciple-of-the-pike": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:disciple-of-the-pike",
+    "name": "Disciple of the Pike",
+    "uuid": "archetype:cavalier:disciple-of-the-pike"
+  },
+  "cavalier:drakerider": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:drakerider",
+    "name": "Drakerider",
+    "uuid": "archetype:cavalier:drakerider"
+  },
+  "cavalier:emissary": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:emissary",
+    "name": "Emissary",
+    "uuid": "archetype:cavalier:emissary"
+  },
+  "cavalier:esquire": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:esquire",
+    "name": "Esquire",
+    "uuid": "archetype:cavalier:esquire"
+  },
+  "cavalier:fell-rider": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:fell-rider",
+    "name": "Fell Rider",
+    "uuid": "archetype:cavalier:fell-rider"
+  },
+  "cavalier:first-mother-s-fang": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:first-mother-s-fang",
+    "name": "First Mother's Fang",
+    "uuid": "archetype:cavalier:first-mother-s-fang"
+  },
+  "cavalier:gallant": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:gallant",
+    "name": "Gallant",
+    "uuid": "archetype:cavalier:gallant"
+  },
+  "cavalier:gendarme": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:gendarme",
+    "name": "Gendarme",
+    "uuid": "archetype:cavalier:gendarme"
+  },
+  "cavalier:ghost-rider": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:ghost-rider",
+    "name": "Ghost Rider",
+    "uuid": "archetype:cavalier:ghost-rider"
+  },
+  "cavalier:green-knight": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:green-knight",
+    "name": "Green Knight",
+    "uuid": "archetype:cavalier:green-knight"
+  },
+  "cavalier:herald-squire": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:herald-squire",
+    "name": "Herald Squire",
+    "uuid": "archetype:cavalier:herald-squire"
+  },
+  "cavalier:honor-guard": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:honor-guard",
+    "name": "Honor Guard",
+    "uuid": "archetype:cavalier:honor-guard"
+  },
+  "cavalier:hooded-knight": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:hooded-knight",
+    "name": "Hooded Knight",
+    "uuid": "archetype:cavalier:hooded-knight"
+  },
+  "cavalier:huntmaster": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:huntmaster",
+    "name": "Huntmaster",
+    "uuid": "archetype:cavalier:huntmaster"
+  },
+  "cavalier:hussar": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:hussar",
+    "name": "Hussar",
+    "uuid": "archetype:cavalier:hussar"
+  },
+  "cavalier:knight-of-arnisant": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:knight-of-arnisant",
+    "name": "Knight of Arnisant",
+    "uuid": "archetype:cavalier:knight-of-arnisant"
+  },
+  "cavalier:luring-cavalier": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:luring-cavalier",
+    "name": "Luring Cavalier",
+    "uuid": "archetype:cavalier:luring-cavalier"
+  },
+  "cavalier:musketeer": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:musketeer",
+    "name": "Musketeer",
+    "uuid": "archetype:cavalier:musketeer"
+  },
+  "cavalier:oceanrider": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:oceanrider",
+    "name": "Oceanrider",
+    "uuid": "archetype:cavalier:oceanrider"
+  },
+  "cavalier:qabarat-outrider": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:qabarat-outrider",
+    "name": "Qabarat Outrider",
+    "uuid": "archetype:cavalier:qabarat-outrider"
+  },
+  "cavalier:qadiran-horselord": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:qadiran-horselord",
+    "name": "Qadiran Horselord",
+    "uuid": "archetype:cavalier:qadiran-horselord"
+  },
+  "cavalier:saurian-champion": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:saurian-champion",
+    "name": "Saurian Champion",
+    "uuid": "archetype:cavalier:saurian-champion"
+  },
+  "cavalier:sister-in-arms": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:sister-in-arms",
+    "name": "Sister-in-Arms",
+    "uuid": "archetype:cavalier:sister-in-arms"
+  },
+  "cavalier:spellscar-drifter": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:spellscar-drifter",
+    "name": "Spellscar Drifter",
+    "uuid": "archetype:cavalier:spellscar-drifter"
+  },
+  "cavalier:standard-bearer": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:standard-bearer",
+    "name": "Standard Bearer",
+    "uuid": "archetype:cavalier:standard-bearer"
+  },
+  "cavalier:strategist": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:strategist",
+    "name": "Strategist",
+    "uuid": "archetype:cavalier:strategist"
+  },
+  "cavalier:verdivant": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:verdivant",
+    "name": "Verdivant",
+    "uuid": "archetype:cavalier:verdivant"
+  },
+  "cavalier:vermin-tamer": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:vermin-tamer",
+    "name": "Vermin Tamer",
+    "uuid": "archetype:cavalier:vermin-tamer"
+  },
+  "cavalier:wave-rider": {
+    "classTag": "cavalier",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "cavalier:wave-rider",
+    "name": "Wave Rider",
+    "uuid": "archetype:cavalier:wave-rider"
   },
   "cleric:angelfire-apostle": {
     "classTag": "cleric",
@@ -2042,6 +2973,839 @@
     "id": "fighter:weapon-master",
     "name": "Weapon Master",
     "uuid": "archetype:fighter:weapon-master"
+  },
+  "gunslinger:black-powder-vaulter": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:black-powder-vaulter",
+    "name": "Black Powder Vaulter",
+    "uuid": "archetype:gunslinger:black-powder-vaulter"
+  },
+  "gunslinger:blatherskite": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:blatherskite",
+    "name": "Blatherskite",
+    "uuid": "archetype:gunslinger:blatherskite"
+  },
+  "gunslinger:bolt-ace": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:bolt-ace",
+    "name": "Bolt Ace",
+    "uuid": "archetype:gunslinger:bolt-ace"
+  },
+  "gunslinger:buccaneer": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:buccaneer",
+    "name": "Buccaneer",
+    "uuid": "archetype:gunslinger:buccaneer"
+  },
+  "gunslinger:bushwhacker": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:bushwhacker",
+    "name": "Bushwhacker",
+    "uuid": "archetype:gunslinger:bushwhacker"
+  },
+  "gunslinger:commando": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:commando",
+    "name": "Commando",
+    "uuid": "archetype:gunslinger:commando"
+  },
+  "gunslinger:experimental-gunsmith": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:experimental-gunsmith",
+    "name": "Experimental Gunsmith",
+    "uuid": "archetype:gunslinger:experimental-gunsmith"
+  },
+  "gunslinger:firebrand": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:firebrand",
+    "name": "Firebrand",
+    "uuid": "archetype:gunslinger:firebrand"
+  },
+  "gunslinger:graveslinger": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:graveslinger",
+    "name": "Graveslinger",
+    "uuid": "archetype:gunslinger:graveslinger"
+  },
+  "gunslinger:gulch-gunner": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:gulch-gunner",
+    "name": "Gulch Gunner",
+    "uuid": "archetype:gunslinger:gulch-gunner"
+  },
+  "gunslinger:gun-scavenger": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:gun-scavenger",
+    "name": "Gun Scavenger",
+    "uuid": "archetype:gunslinger:gun-scavenger"
+  },
+  "gunslinger:gun-tank": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:gun-tank",
+    "name": "Gun Tank",
+    "uuid": "archetype:gunslinger:gun-tank"
+  },
+  "gunslinger:gunner-squire": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:gunner-squire",
+    "name": "Gunner Squire",
+    "uuid": "archetype:gunslinger:gunner-squire"
+  },
+  "gunslinger:gunslinger": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:gunslinger",
+    "name": "Gunslinger",
+    "uuid": "archetype:gunslinger:gunslinger"
+  },
+  "gunslinger:maverick": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:maverick",
+    "name": "Maverick",
+    "uuid": "archetype:gunslinger:maverick"
+  },
+  "gunslinger:musket-master": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:musket-master",
+    "name": "Musket Master",
+    "uuid": "archetype:gunslinger:musket-master"
+  },
+  "gunslinger:mysterious-stranger": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:mysterious-stranger",
+    "name": "Mysterious Stranger",
+    "uuid": "archetype:gunslinger:mysterious-stranger"
+  },
+  "gunslinger:pistolero": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:pistolero",
+    "name": "Pistolero",
+    "uuid": "archetype:gunslinger:pistolero"
+  },
+  "gunslinger:planar-rifter": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:planar-rifter",
+    "name": "Planar Rifter",
+    "uuid": "archetype:gunslinger:planar-rifter"
+  },
+  "gunslinger:scatter-gunner": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:scatter-gunner",
+    "name": "Scatter Gunner",
+    "uuid": "archetype:gunslinger:scatter-gunner"
+  },
+  "gunslinger:siege-gunner": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:siege-gunner",
+    "name": "Siege Gunner",
+    "uuid": "archetype:gunslinger:siege-gunner"
+  },
+  "gunslinger:techslinger": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:techslinger",
+    "name": "Techslinger",
+    "uuid": "archetype:gunslinger:techslinger"
+  },
+  "gunslinger:thronewarden": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:thronewarden",
+    "name": "Thronewarden",
+    "uuid": "archetype:gunslinger:thronewarden"
+  },
+  "gunslinger:wyrm-sniper": {
+    "classTag": "gunslinger",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "gunslinger:wyrm-sniper",
+    "name": "Wyrm Sniper",
+    "uuid": "archetype:gunslinger:wyrm-sniper"
+  },
+  "hunter:aquatic-beastmaster": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:aquatic-beastmaster",
+    "name": "Aquatic Beastmaster",
+    "uuid": "archetype:hunter:aquatic-beastmaster"
+  },
+  "hunter:chameleon-adept": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:chameleon-adept",
+    "name": "Chameleon Adept",
+    "uuid": "archetype:hunter:chameleon-adept"
+  },
+  "hunter:colluding-scoundrel": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:colluding-scoundrel",
+    "name": "Colluding Scoundrel",
+    "uuid": "archetype:hunter:colluding-scoundrel"
+  },
+  "hunter:courtly-hunter": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:courtly-hunter",
+    "name": "Courtly Hunter",
+    "uuid": "archetype:hunter:courtly-hunter"
+  },
+  "hunter:divine-hunter": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:divine-hunter",
+    "name": "Divine Hunter",
+    "uuid": "archetype:hunter:divine-hunter"
+  },
+  "hunter:feral-hunter": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:feral-hunter",
+    "name": "Feral Hunter",
+    "uuid": "archetype:hunter:feral-hunter"
+  },
+  "hunter:feykiller": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:feykiller",
+    "name": "Feykiller",
+    "uuid": "archetype:hunter:feykiller"
+  },
+  "hunter:flood-flourisher": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:flood-flourisher",
+    "name": "Flood Flourisher",
+    "uuid": "archetype:hunter:flood-flourisher"
+  },
+  "hunter:forester": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:forester",
+    "name": "Forester",
+    "uuid": "archetype:hunter:forester"
+  },
+  "hunter:packmaster": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:packmaster",
+    "name": "Packmaster",
+    "uuid": "archetype:hunter:packmaster"
+  },
+  "hunter:patient-ambusher": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:patient-ambusher",
+    "name": "Patient Ambusher",
+    "uuid": "archetype:hunter:patient-ambusher"
+  },
+  "hunter:pelagic-hunter": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:pelagic-hunter",
+    "name": "Pelagic Hunter",
+    "uuid": "archetype:hunter:pelagic-hunter"
+  },
+  "hunter:plant-master": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:plant-master",
+    "name": "Plant Master",
+    "uuid": "archetype:hunter:plant-master"
+  },
+  "hunter:primal-companion-hunter": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:primal-companion-hunter",
+    "name": "Primal Companion Hunter",
+    "uuid": "archetype:hunter:primal-companion-hunter"
+  },
+  "hunter:roof-runner": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:roof-runner",
+    "name": "Roof Runner",
+    "uuid": "archetype:hunter:roof-runner"
+  },
+  "hunter:scarab-stalker": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:scarab-stalker",
+    "name": "Scarab Stalker",
+    "uuid": "archetype:hunter:scarab-stalker"
+  },
+  "hunter:totem-bonded": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:totem-bonded",
+    "name": "Totem-Bonded",
+    "uuid": "archetype:hunter:totem-bonded"
+  },
+  "hunter:treestrider": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:treestrider",
+    "name": "Treestrider",
+    "uuid": "archetype:hunter:treestrider"
+  },
+  "hunter:uprooter-scout": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:uprooter-scout",
+    "name": "Uprooter Scout",
+    "uuid": "archetype:hunter:uprooter-scout"
+  },
+  "hunter:urban-hunter": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:urban-hunter",
+    "name": "Urban Hunter",
+    "uuid": "archetype:hunter:urban-hunter"
+  },
+  "hunter:verminous-hunter": {
+    "classTag": "hunter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "hunter:verminous-hunter",
+    "name": "Verminous Hunter",
+    "uuid": "archetype:hunter:verminous-hunter"
+  },
+  "inquisitor:abolisher": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:abolisher",
+    "name": "Abolisher",
+    "uuid": "archetype:inquisitor:abolisher"
+  },
+  "inquisitor:cloaked-wolf": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:cloaked-wolf",
+    "name": "Cloaked Wolf",
+    "uuid": "archetype:inquisitor:cloaked-wolf"
+  },
+  "inquisitor:cold-iron-warden": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:cold-iron-warden",
+    "name": "Cold Iron Warden",
+    "uuid": "archetype:inquisitor:cold-iron-warden"
+  },
+  "inquisitor:exarch": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:exarch",
+    "name": "Exarch",
+    "uuid": "archetype:inquisitor:exarch"
+  },
+  "inquisitor:exorcist": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:exorcist",
+    "name": "Exorcist",
+    "uuid": "archetype:inquisitor:exorcist"
+  },
+  "inquisitor:expulsionist": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:expulsionist",
+    "name": "Expulsionist",
+    "uuid": "archetype:inquisitor:expulsionist"
+  },
+  "inquisitor:faith-hunter": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:faith-hunter",
+    "name": "Faith Hunter",
+    "uuid": "archetype:inquisitor:faith-hunter"
+  },
+  "inquisitor:green-faith-marshal": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:green-faith-marshal",
+    "name": "Green Faith Marshal",
+    "uuid": "archetype:inquisitor:green-faith-marshal"
+  },
+  "inquisitor:heretic": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:heretic",
+    "name": "Heretic",
+    "uuid": "archetype:inquisitor:heretic"
+  },
+  "inquisitor:hexenhammer": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:hexenhammer",
+    "name": "Hexenhammer",
+    "uuid": "archetype:inquisitor:hexenhammer"
+  },
+  "inquisitor:iconoclast": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:iconoclast",
+    "name": "Iconoclast",
+    "uuid": "archetype:inquisitor:iconoclast"
+  },
+  "inquisitor:immolator": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:immolator",
+    "name": "Immolator",
+    "uuid": "archetype:inquisitor:immolator"
+  },
+  "inquisitor:infiltrator": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:infiltrator",
+    "name": "Infiltrator",
+    "uuid": "archetype:inquisitor:infiltrator"
+  },
+  "inquisitor:keeper-of-construct": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:keeper-of-construct",
+    "name": "Keeper of Construct",
+    "uuid": "archetype:inquisitor:keeper-of-construct"
+  },
+  "inquisitor:keeper-of-the-current": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:keeper-of-the-current",
+    "name": "Keeper of the Current",
+    "uuid": "archetype:inquisitor:keeper-of-the-current"
+  },
+  "inquisitor:kinslayer": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:kinslayer",
+    "name": "Kinslayer",
+    "uuid": "archetype:inquisitor:kinslayer"
+  },
+  "inquisitor:living-grimoire": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:living-grimoire",
+    "name": "Living Grimoire",
+    "uuid": "archetype:inquisitor:living-grimoire"
+  },
+  "inquisitor:monster-tactician": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:monster-tactician",
+    "name": "Monster Tactician",
+    "uuid": "archetype:inquisitor:monster-tactician"
+  },
+  "inquisitor:oathkeeper": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:oathkeeper",
+    "name": "Oathkeeper",
+    "uuid": "archetype:inquisitor:oathkeeper"
+  },
+  "inquisitor:preacher": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:preacher",
+    "name": "Preacher",
+    "uuid": "archetype:inquisitor:preacher"
+  },
+  "inquisitor:ravener-hunter": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:ravener-hunter",
+    "name": "Ravener Hunter",
+    "uuid": "archetype:inquisitor:ravener-hunter"
+  },
+  "inquisitor:reaper-of-secrets": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:reaper-of-secrets",
+    "name": "Reaper of Secrets",
+    "uuid": "archetype:inquisitor:reaper-of-secrets"
+  },
+  "inquisitor:relic-hunter": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:relic-hunter",
+    "name": "Relic Hunter",
+    "uuid": "archetype:inquisitor:relic-hunter"
+  },
+  "inquisitor:royal-accuser": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:royal-accuser",
+    "name": "Royal Accuser",
+    "uuid": "archetype:inquisitor:royal-accuser"
+  },
+  "inquisitor:sacred-huntsmaster": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:sacred-huntsmaster",
+    "name": "Sacred Huntsmaster",
+    "uuid": "archetype:inquisitor:sacred-huntsmaster"
+  },
+  "inquisitor:sanctified-slayer": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:sanctified-slayer",
+    "name": "Sanctified Slayer",
+    "uuid": "archetype:inquisitor:sanctified-slayer"
+  },
+  "inquisitor:secret-seeker": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:secret-seeker",
+    "name": "Secret Seeker",
+    "uuid": "archetype:inquisitor:secret-seeker"
+  },
+  "inquisitor:sin-eater": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:sin-eater",
+    "name": "Sin Eater",
+    "uuid": "archetype:inquisitor:sin-eater"
+  },
+  "inquisitor:spellbreaker": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:spellbreaker",
+    "name": "Spellbreaker",
+    "uuid": "archetype:inquisitor:spellbreaker"
+  },
+  "inquisitor:suit-seeker": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:suit-seeker",
+    "name": "Suit Seeker",
+    "uuid": "archetype:inquisitor:suit-seeker"
+  },
+  "inquisitor:sworn-of-the-eldest": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:sworn-of-the-eldest",
+    "name": "Sworn of the Eldest",
+    "uuid": "archetype:inquisitor:sworn-of-the-eldest"
+  },
+  "inquisitor:tactical-leader": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:tactical-leader",
+    "name": "Tactical Leader",
+    "uuid": "archetype:inquisitor:tactical-leader"
+  },
+  "inquisitor:traceless-operative": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:traceless-operative",
+    "name": "Traceless Operative",
+    "uuid": "archetype:inquisitor:traceless-operative"
+  },
+  "inquisitor:umbral-stalker": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:umbral-stalker",
+    "name": "Umbral Stalker",
+    "uuid": "archetype:inquisitor:umbral-stalker"
+  },
+  "inquisitor:urban-infiltrator": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:urban-infiltrator",
+    "name": "Urban Infiltrator",
+    "uuid": "archetype:inquisitor:urban-infiltrator"
+  },
+  "inquisitor:vampire-hunter": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:vampire-hunter",
+    "name": "Vampire Hunter",
+    "uuid": "archetype:inquisitor:vampire-hunter"
+  },
+  "inquisitor:vigilant-defender": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:vigilant-defender",
+    "name": "Vigilant Defender",
+    "uuid": "archetype:inquisitor:vigilant-defender"
+  },
+  "inquisitor:witch-hunter": {
+    "classTag": "inquisitor",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "inquisitor:witch-hunter",
+    "name": "Witch Hunter",
+    "uuid": "archetype:inquisitor:witch-hunter"
+  },
+  "investigator:antiquarian": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:antiquarian",
+    "name": "Antiquarian",
+    "uuid": "archetype:investigator:antiquarian"
+  },
+  "investigator:bonded-investigator": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:bonded-investigator",
+    "name": "Bonded Investigator",
+    "uuid": "archetype:investigator:bonded-investigator"
+  },
+  "investigator:cartographer": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:cartographer",
+    "name": "Cartographer",
+    "uuid": "archetype:investigator:cartographer"
+  },
+  "investigator:cipher": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:cipher",
+    "name": "Cipher",
+    "uuid": "archetype:investigator:cipher"
+  },
+  "investigator:conspirator": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:conspirator",
+    "name": "Conspirator",
+    "uuid": "archetype:investigator:conspirator"
+  },
+  "investigator:cryptid-scholar": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:cryptid-scholar",
+    "name": "Cryptid Scholar",
+    "uuid": "archetype:investigator:cryptid-scholar"
+  },
+  "investigator:cult-hunter": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:cult-hunter",
+    "name": "Cult Hunter",
+    "uuid": "archetype:investigator:cult-hunter"
+  },
+  "investigator:empiricist": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:empiricist",
+    "name": "Empiricist",
+    "uuid": "archetype:investigator:empiricist"
+  },
+  "investigator:engineer": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:engineer",
+    "name": "Engineer",
+    "uuid": "archetype:investigator:engineer"
+  },
+  "investigator:forensic-physician": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:forensic-physician",
+    "name": "Forensic Physician",
+    "uuid": "archetype:investigator:forensic-physician"
+  },
+  "investigator:gravedigger": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:gravedigger",
+    "name": "Gravedigger",
+    "uuid": "archetype:investigator:gravedigger"
+  },
+  "investigator:guardian-of-immortality": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:guardian-of-immortality",
+    "name": "Guardian of Immortality",
+    "uuid": "archetype:investigator:guardian-of-immortality"
+  },
+  "investigator:hallucinist": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:hallucinist",
+    "name": "Hallucinist",
+    "uuid": "archetype:investigator:hallucinist"
+  },
+  "investigator:holomog-demolitionist": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:holomog-demolitionist",
+    "name": "Holomog Demolitionist",
+    "uuid": "archetype:investigator:holomog-demolitionist"
+  },
+  "investigator:infiltrator": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:infiltrator",
+    "name": "Infiltrator",
+    "uuid": "archetype:investigator:infiltrator"
+  },
+  "investigator:jinyiwei": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:jinyiwei",
+    "name": "Jinyiwei",
+    "uuid": "archetype:investigator:jinyiwei"
+  },
+  "investigator:lamplighter": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:lamplighter",
+    "name": "Lamplighter",
+    "uuid": "archetype:investigator:lamplighter"
+  },
+  "investigator:lepidstadt-inspector": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:lepidstadt-inspector",
+    "name": "Lepidstadt Inspector",
+    "uuid": "archetype:investigator:lepidstadt-inspector"
+  },
+  "investigator:majordomo": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:majordomo",
+    "name": "Majordomo",
+    "uuid": "archetype:investigator:majordomo"
+  },
+  "investigator:malice-binder": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:malice-binder",
+    "name": "Malice Binder",
+    "uuid": "archetype:investigator:malice-binder"
+  },
+  "investigator:mastermind": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:mastermind",
+    "name": "Mastermind",
+    "uuid": "archetype:investigator:mastermind"
+  },
+  "investigator:natural-philosopher": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:natural-philosopher",
+    "name": "Natural Philosopher",
+    "uuid": "archetype:investigator:natural-philosopher"
+  },
+  "investigator:portal-seeker": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:portal-seeker",
+    "name": "Portal Seeker",
+    "uuid": "archetype:investigator:portal-seeker"
+  },
+  "investigator:profiler": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:profiler",
+    "name": "Profiler",
+    "uuid": "archetype:investigator:profiler"
+  },
+  "investigator:psychic-detective": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:psychic-detective",
+    "name": "Psychic Detective",
+    "uuid": "archetype:investigator:psychic-detective"
+  },
+  "investigator:questioner": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:questioner",
+    "name": "Questioner",
+    "uuid": "archetype:investigator:questioner"
+  },
+  "investigator:reckless-epicurean": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:reckless-epicurean",
+    "name": "Reckless Epicurean",
+    "uuid": "archetype:investigator:reckless-epicurean"
+  },
+  "investigator:ruthless-agent": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:ruthless-agent",
+    "name": "Ruthless Agent",
+    "uuid": "archetype:investigator:ruthless-agent"
+  },
+  "investigator:scavenger": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:scavenger",
+    "name": "Scavenger",
+    "uuid": "archetype:investigator:scavenger"
+  },
+  "investigator:skeptic": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:skeptic",
+    "name": "Skeptic",
+    "uuid": "archetype:investigator:skeptic"
+  },
+  "investigator:sleuth": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:sleuth",
+    "name": "Sleuth",
+    "uuid": "archetype:investigator:sleuth"
+  },
+  "investigator:spiritualist": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:spiritualist",
+    "name": "Spiritualist",
+    "uuid": "archetype:investigator:spiritualist"
+  },
+  "investigator:star-watcher": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:star-watcher",
+    "name": "Star Watcher",
+    "uuid": "archetype:investigator:star-watcher"
+  },
+  "investigator:steel-hound": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:steel-hound",
+    "name": "Steel Hound",
+    "uuid": "archetype:investigator:steel-hound"
+  },
+  "investigator:tekritanin-arbiter": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:tekritanin-arbiter",
+    "name": "Tekritanin Arbiter",
+    "uuid": "archetype:investigator:tekritanin-arbiter"
+  },
+  "investigator:toxin-codexer": {
+    "classTag": "investigator",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "investigator:toxin-codexer",
+    "name": "Toxin Codexer",
+    "uuid": "archetype:investigator:toxin-codexer"
   },
   "magus:armored-battlemage": {
     "classTag": "magus",
@@ -3926,6 +5690,580 @@
     "name": "Waylayer",
     "uuid": "archetype:rogue:waylayer"
   },
+  "shaman:animist": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:animist",
+    "name": "Animist",
+    "uuid": "archetype:shaman:animist"
+  },
+  "shaman:benefactor": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:benefactor",
+    "name": "Benefactor",
+    "uuid": "archetype:shaman:benefactor"
+  },
+  "shaman:crystal-tender": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:crystal-tender",
+    "name": "Crystal Tender",
+    "uuid": "archetype:shaman:crystal-tender"
+  },
+  "shaman:deep-shaman": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:deep-shaman",
+    "name": "Deep Shaman",
+    "uuid": "archetype:shaman:deep-shaman"
+  },
+  "shaman:draconic-shaman": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:draconic-shaman",
+    "name": "Draconic Shaman",
+    "uuid": "archetype:shaman:draconic-shaman"
+  },
+  "shaman:grasping-vine": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:grasping-vine",
+    "name": "Grasping Vine",
+    "uuid": "archetype:shaman:grasping-vine"
+  },
+  "shaman:name-keeper": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:name-keeper",
+    "name": "Name-Keeper",
+    "uuid": "archetype:shaman:name-keeper"
+  },
+  "shaman:overseer": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:overseer",
+    "name": "Overseer",
+    "uuid": "archetype:shaman:overseer"
+  },
+  "shaman:possessed-shaman": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:possessed-shaman",
+    "name": "Possessed Shaman",
+    "uuid": "archetype:shaman:possessed-shaman"
+  },
+  "shaman:primal-warden": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:primal-warden",
+    "name": "Primal Warden",
+    "uuid": "archetype:shaman:primal-warden"
+  },
+  "shaman:serendipity-shaman": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:serendipity-shaman",
+    "name": "Serendipity Shaman",
+    "uuid": "archetype:shaman:serendipity-shaman"
+  },
+  "shaman:speaker-for-the-past": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:speaker-for-the-past",
+    "name": "Speaker for the Past",
+    "uuid": "archetype:shaman:speaker-for-the-past"
+  },
+  "shaman:spirit-warden": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:spirit-warden",
+    "name": "Spirit Warden",
+    "uuid": "archetype:shaman:spirit-warden"
+  },
+  "shaman:true-silvered-throne": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:true-silvered-throne",
+    "name": "True Silvered Throne",
+    "uuid": "archetype:shaman:true-silvered-throne"
+  },
+  "shaman:unsworn-shaman": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:unsworn-shaman",
+    "name": "Unsworn Shaman",
+    "uuid": "archetype:shaman:unsworn-shaman"
+  },
+  "shaman:visionary": {
+    "classTag": "shaman",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shaman:visionary",
+    "name": "Visionary",
+    "uuid": "archetype:shaman:visionary"
+  },
+  "shifter:adaptive-shifter": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:adaptive-shifter",
+    "name": "Adaptive Shifter",
+    "uuid": "archetype:shifter:adaptive-shifter"
+  },
+  "shifter:dragonblood-shifter": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:dragonblood-shifter",
+    "name": "Dragonblood Shifter",
+    "uuid": "archetype:shifter:dragonblood-shifter"
+  },
+  "shifter:elementalist-shifter": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:elementalist-shifter",
+    "name": "Elementalist Shifter",
+    "uuid": "archetype:shifter:elementalist-shifter"
+  },
+  "shifter:feyform-shifter": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:feyform-shifter",
+    "name": "Feyform Shifter",
+    "uuid": "archetype:shifter:feyform-shifter"
+  },
+  "shifter:fiendflesh-shifter": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:fiendflesh-shifter",
+    "name": "Fiendflesh Shifter",
+    "uuid": "archetype:shifter:fiendflesh-shifter"
+  },
+  "shifter:holy-beast": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:holy-beast",
+    "name": "Holy Beast",
+    "uuid": "archetype:shifter:holy-beast"
+  },
+  "shifter:leafshifter": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:leafshifter",
+    "name": "Leafshifter",
+    "uuid": "archetype:shifter:leafshifter"
+  },
+  "shifter:oozemorph": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:oozemorph",
+    "name": "Oozemorph",
+    "uuid": "archetype:shifter:oozemorph"
+  },
+  "shifter:rageshaper": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:rageshaper",
+    "name": "Rageshaper",
+    "uuid": "archetype:shifter:rageshaper"
+  },
+  "shifter:style-shifter": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:style-shifter",
+    "name": "Style Shifter",
+    "uuid": "archetype:shifter:style-shifter"
+  },
+  "shifter:swarm-shifter": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:swarm-shifter",
+    "name": "Swarm Shifter",
+    "uuid": "archetype:shifter:swarm-shifter"
+  },
+  "shifter:verdant-shifter": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:verdant-shifter",
+    "name": "Verdant Shifter",
+    "uuid": "archetype:shifter:verdant-shifter"
+  },
+  "shifter:weretouched": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:weretouched",
+    "name": "Weretouched",
+    "uuid": "archetype:shifter:weretouched"
+  },
+  "shifter:wild-effigy": {
+    "classTag": "shifter",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "shifter:wild-effigy",
+    "name": "Wild Effigy",
+    "uuid": "archetype:shifter:wild-effigy"
+  },
+  "skald:augur": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:augur",
+    "name": "Augur",
+    "uuid": "archetype:skald:augur"
+  },
+  "skald:bacchanal": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:bacchanal",
+    "name": "Bacchanal",
+    "uuid": "archetype:skald:bacchanal"
+  },
+  "skald:battle-scion": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:battle-scion",
+    "name": "Battle Scion",
+    "uuid": "archetype:skald:battle-scion"
+  },
+  "skald:bekyar-demon-dancer": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:bekyar-demon-dancer",
+    "name": "Bekyar Demon Dancer",
+    "uuid": "archetype:skald:bekyar-demon-dancer"
+  },
+  "skald:belkzen-war-drummer": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:belkzen-war-drummer",
+    "name": "Belkzen War Drummer",
+    "uuid": "archetype:skald:belkzen-war-drummer"
+  },
+  "skald:boaster": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:boaster",
+    "name": "Boaster",
+    "uuid": "archetype:skald:boaster"
+  },
+  "skald:bold-schemer": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:bold-schemer",
+    "name": "Bold Schemer",
+    "uuid": "archetype:skald:bold-schemer"
+  },
+  "skald:court-poet": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:court-poet",
+    "name": "Court Poet",
+    "uuid": "archetype:skald:court-poet"
+  },
+  "skald:dragon-skald": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:dragon-skald",
+    "name": "Dragon Skald",
+    "uuid": "archetype:skald:dragon-skald"
+  },
+  "skald:elegist": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:elegist",
+    "name": "Elegist",
+    "uuid": "archetype:skald:elegist"
+  },
+  "skald:fated-champion": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:fated-champion",
+    "name": "Fated Champion",
+    "uuid": "archetype:skald:fated-champion"
+  },
+  "skald:herald-of-the-horn": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:herald-of-the-horn",
+    "name": "Herald of the Horn",
+    "uuid": "archetype:skald:herald-of-the-horn"
+  },
+  "skald:hunt-caller": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:hunt-caller",
+    "name": "Hunt Caller",
+    "uuid": "archetype:skald:hunt-caller"
+  },
+  "skald:instigator": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:instigator",
+    "name": "Instigator",
+    "uuid": "archetype:skald:instigator"
+  },
+  "skald:red-tongue": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:red-tongue",
+    "name": "Red Tongue",
+    "uuid": "archetype:skald:red-tongue"
+  },
+  "skald:serpent-herald": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:serpent-herald",
+    "name": "Serpent Herald",
+    "uuid": "archetype:skald:serpent-herald"
+  },
+  "skald:spell-warrior": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:spell-warrior",
+    "name": "Spell Warrior",
+    "uuid": "archetype:skald:spell-warrior"
+  },
+  "skald:sunsinger": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:sunsinger",
+    "name": "Sunsinger",
+    "uuid": "archetype:skald:sunsinger"
+  },
+  "skald:totem-channeler": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:totem-channeler",
+    "name": "Totem Channeler",
+    "uuid": "archetype:skald:totem-channeler"
+  },
+  "skald:totemic-skald": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:totemic-skald",
+    "name": "Totemic Skald",
+    "uuid": "archetype:skald:totemic-skald"
+  },
+  "skald:twilight-speaker": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:twilight-speaker",
+    "name": "Twilight Speaker",
+    "uuid": "archetype:skald:twilight-speaker"
+  },
+  "skald:undying-word": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:undying-word",
+    "name": "Undying Word",
+    "uuid": "archetype:skald:undying-word"
+  },
+  "skald:urban-skald": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:urban-skald",
+    "name": "Urban Skald",
+    "uuid": "archetype:skald:urban-skald"
+  },
+  "skald:war-painter": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:war-painter",
+    "name": "War Painter",
+    "uuid": "archetype:skald:war-painter"
+  },
+  "skald:warlord": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:warlord",
+    "name": "Warlord",
+    "uuid": "archetype:skald:warlord"
+  },
+  "skald:wyrm-singer": {
+    "classTag": "skald",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "skald:wyrm-singer",
+    "name": "Wyrm Singer",
+    "uuid": "archetype:skald:wyrm-singer"
+  },
+  "slayer:ankou-s-shadow": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:ankou-s-shadow",
+    "name": "Ankou's Shadow",
+    "uuid": "archetype:slayer:ankou-s-shadow"
+  },
+  "slayer:avalancher": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:avalancher",
+    "name": "Avalancher",
+    "uuid": "archetype:slayer:avalancher"
+  },
+  "slayer:bloody-jake": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:bloody-jake",
+    "name": "Bloody Jake",
+    "uuid": "archetype:slayer:bloody-jake"
+  },
+  "slayer:bounty-hunter": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:bounty-hunter",
+    "name": "Bounty Hunter",
+    "uuid": "archetype:slayer:bounty-hunter"
+  },
+  "slayer:butterfly-blade": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:butterfly-blade",
+    "name": "Butterfly Blade",
+    "uuid": "archetype:slayer:butterfly-blade"
+  },
+  "slayer:cleaner": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:cleaner",
+    "name": "Cleaner",
+    "uuid": "archetype:slayer:cleaner"
+  },
+  "slayer:covenbane": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:covenbane",
+    "name": "Covenbane",
+    "uuid": "archetype:slayer:covenbane"
+  },
+  "slayer:cutthroat": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:cutthroat",
+    "name": "Cutthroat",
+    "uuid": "archetype:slayer:cutthroat"
+  },
+  "slayer:deliverer": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:deliverer",
+    "name": "Deliverer",
+    "uuid": "archetype:slayer:deliverer"
+  },
+  "slayer:dune-rider": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:dune-rider",
+    "name": "Dune Rider",
+    "uuid": "archetype:slayer:dune-rider"
+  },
+  "slayer:family-hunter": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:family-hunter",
+    "name": "Family Hunter",
+    "uuid": "archetype:slayer:family-hunter"
+  },
+  "slayer:grave-warden": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:grave-warden",
+    "name": "Grave Warden",
+    "uuid": "archetype:slayer:grave-warden"
+  },
+  "slayer:guerrilla": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:guerrilla",
+    "name": "Guerrilla",
+    "uuid": "archetype:slayer:guerrilla"
+  },
+  "slayer:pureblade": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:pureblade",
+    "name": "Pureblade",
+    "uuid": "archetype:slayer:pureblade"
+  },
+  "slayer:sczarni-executioner": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:sczarni-executioner",
+    "name": "Sczarni Executioner",
+    "uuid": "archetype:slayer:sczarni-executioner"
+  },
+  "slayer:sniper": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:sniper",
+    "name": "Sniper",
+    "uuid": "archetype:slayer:sniper"
+  },
+  "slayer:spawn-slayer": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:spawn-slayer",
+    "name": "Spawn Slayer",
+    "uuid": "archetype:slayer:spawn-slayer"
+  },
+  "slayer:spire-diver": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:spire-diver",
+    "name": "Spire Diver",
+    "uuid": "archetype:slayer:spire-diver"
+  },
+  "slayer:spiritslayer": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:spiritslayer",
+    "name": "Spiritslayer",
+    "uuid": "archetype:slayer:spiritslayer"
+  },
+  "slayer:stygian-slayer": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:stygian-slayer",
+    "name": "Stygian Slayer",
+    "uuid": "archetype:slayer:stygian-slayer"
+  },
+  "slayer:toxic-sniper": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:toxic-sniper",
+    "name": "Toxic Sniper",
+    "uuid": "archetype:slayer:toxic-sniper"
+  },
+  "slayer:turncoat": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:turncoat",
+    "name": "Turncoat",
+    "uuid": "archetype:slayer:turncoat"
+  },
+  "slayer:vanguard": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:vanguard",
+    "name": "Vanguard",
+    "uuid": "archetype:slayer:vanguard"
+  },
+  "slayer:velvet-blade": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:velvet-blade",
+    "name": "Velvet Blade",
+    "uuid": "archetype:slayer:velvet-blade"
+  },
+  "slayer:witch-killer": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:witch-killer",
+    "name": "Witch Killer",
+    "uuid": "archetype:slayer:witch-killer"
+  },
+  "slayer:woodland-sniper": {
+    "classTag": "slayer",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "slayer:woodland-sniper",
+    "name": "Woodland Sniper",
+    "uuid": "archetype:slayer:woodland-sniper"
+  },
   "sorcerer:dragon-drinker": {
     "classTag": "sorcerer",
     "contributorModule": "baileymh/pf1e-archetypes",
@@ -4002,6 +6340,839 @@
     "id": "sorcerer:wishcrafter",
     "name": "Wishcrafter",
     "uuid": "archetype:sorcerer:wishcrafter"
+  },
+  "summoner:blood-god-disciple": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:blood-god-disciple",
+    "name": "Blood God Disciple",
+    "uuid": "archetype:summoner:blood-god-disciple"
+  },
+  "summoner:blood-summoner": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:blood-summoner",
+    "name": "Blood Summoner",
+    "uuid": "archetype:summoner:blood-summoner"
+  },
+  "summoner:evolutionist": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:evolutionist",
+    "name": "Evolutionist",
+    "uuid": "archetype:summoner:evolutionist"
+  },
+  "summoner:first-worlder": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:first-worlder",
+    "name": "First Worlder",
+    "uuid": "archetype:summoner:first-worlder"
+  },
+  "summoner:god-caller": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:god-caller",
+    "name": "God Caller",
+    "uuid": "archetype:summoner:god-caller"
+  },
+  "summoner:leshy-caller": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:leshy-caller",
+    "name": "Leshy Caller",
+    "uuid": "archetype:summoner:leshy-caller"
+  },
+  "summoner:master-summoner": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:master-summoner",
+    "name": "Master Summoner",
+    "uuid": "archetype:summoner:master-summoner"
+  },
+  "summoner:pyroclast": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:pyroclast",
+    "name": "Pyroclast",
+    "uuid": "archetype:summoner:pyroclast"
+  },
+  "summoner:spirit-summoner": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:spirit-summoner",
+    "name": "Spirit Summoner",
+    "uuid": "archetype:summoner:spirit-summoner"
+  },
+  "summoner:storm-caller": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:storm-caller",
+    "name": "Storm Caller",
+    "uuid": "archetype:summoner:storm-caller"
+  },
+  "summoner:twinned-summoner": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:twinned-summoner",
+    "name": "Twinned Summoner",
+    "uuid": "archetype:summoner:twinned-summoner"
+  },
+  "summoner:wild-caller": {
+    "classTag": "summoner",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "summoner:wild-caller",
+    "name": "Wild Caller",
+    "uuid": "archetype:summoner:wild-caller"
+  },
+  "swashbuckler:arrow-champion": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:arrow-champion",
+    "name": "Arrow Champion",
+    "uuid": "archetype:swashbuckler:arrow-champion"
+  },
+  "swashbuckler:azatariel": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:azatariel",
+    "name": "Azatariel",
+    "uuid": "archetype:swashbuckler:azatariel"
+  },
+  "swashbuckler:courser": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:courser",
+    "name": "Courser",
+    "uuid": "archetype:swashbuckler:courser"
+  },
+  "swashbuckler:daring-infiltrator": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:daring-infiltrator",
+    "name": "Daring Infiltrator",
+    "uuid": "archetype:swashbuckler:daring-infiltrator"
+  },
+  "swashbuckler:dashing-thief": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:dashing-thief",
+    "name": "Dashing Thief",
+    "uuid": "archetype:swashbuckler:dashing-thief"
+  },
+  "swashbuckler:flying-blade": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:flying-blade",
+    "name": "Flying Blade",
+    "uuid": "archetype:swashbuckler:flying-blade"
+  },
+  "swashbuckler:guiding-blade": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:guiding-blade",
+    "name": "Guiding Blade",
+    "uuid": "archetype:swashbuckler:guiding-blade"
+  },
+  "swashbuckler:inspired-blade": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:inspired-blade",
+    "name": "Inspired Blade",
+    "uuid": "archetype:swashbuckler:inspired-blade"
+  },
+  "swashbuckler:mouser": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:mouser",
+    "name": "Mouser",
+    "uuid": "archetype:swashbuckler:mouser"
+  },
+  "swashbuckler:musketeer": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:musketeer",
+    "name": "Musketeer",
+    "uuid": "archetype:swashbuckler:musketeer"
+  },
+  "swashbuckler:mysterious-avenger": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:mysterious-avenger",
+    "name": "Mysterious Avenger",
+    "uuid": "archetype:swashbuckler:mysterious-avenger"
+  },
+  "swashbuckler:noble-fencer": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:noble-fencer",
+    "name": "Noble Fencer",
+    "uuid": "archetype:swashbuckler:noble-fencer"
+  },
+  "swashbuckler:okayo-corsair": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:okayo-corsair",
+    "name": "Okayo Corsair",
+    "uuid": "archetype:swashbuckler:okayo-corsair"
+  },
+  "swashbuckler:picaroon": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:picaroon",
+    "name": "Picaroon",
+    "uuid": "archetype:swashbuckler:picaroon"
+  },
+  "swashbuckler:rondelero-swashbuckler": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:rondelero-swashbuckler",
+    "name": "Rondelero Swashbuckler",
+    "uuid": "archetype:swashbuckler:rondelero-swashbuckler"
+  },
+  "swashbuckler:rostland-bravo": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:rostland-bravo",
+    "name": "Rostland Bravo",
+    "uuid": "archetype:swashbuckler:rostland-bravo"
+  },
+  "swashbuckler:shackles-corsair": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:shackles-corsair",
+    "name": "Shackles Corsair",
+    "uuid": "archetype:swashbuckler:shackles-corsair"
+  },
+  "swashbuckler:veiled-blade": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:veiled-blade",
+    "name": "Veiled Blade",
+    "uuid": "archetype:swashbuckler:veiled-blade"
+  },
+  "swashbuckler:whirling-dervish": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:whirling-dervish",
+    "name": "Whirling Dervish",
+    "uuid": "archetype:swashbuckler:whirling-dervish"
+  },
+  "swashbuckler:wildstrider": {
+    "classTag": "swashbuckler",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "swashbuckler:wildstrider",
+    "name": "Wildstrider",
+    "uuid": "archetype:swashbuckler:wildstrider"
+  },
+  "vigilante:agathiel": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:agathiel",
+    "name": "Agathiel",
+    "uuid": "archetype:vigilante:agathiel"
+  },
+  "vigilante:anaphexia-thought-killer": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:anaphexia-thought-killer",
+    "name": "Anaphexia Thought-Killer",
+    "uuid": "archetype:vigilante:anaphexia-thought-killer"
+  },
+  "vigilante:avenging-beast": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:avenging-beast",
+    "name": "Avenging Beast",
+    "uuid": "archetype:vigilante:avenging-beast"
+  },
+  "vigilante:bellflower-harvester": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:bellflower-harvester",
+    "name": "Bellflower Harvester",
+    "uuid": "archetype:vigilante:bellflower-harvester"
+  },
+  "vigilante:brute": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:brute",
+    "name": "Brute",
+    "uuid": "archetype:vigilante:brute"
+  },
+  "vigilante:cabalist": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:cabalist",
+    "name": "Cabalist",
+    "uuid": "archetype:vigilante:cabalist"
+  },
+  "vigilante:chu-ye-enforcer": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:chu-ye-enforcer",
+    "name": "Chu Ye Enforcer",
+    "uuid": "archetype:vigilante:chu-ye-enforcer"
+  },
+  "vigilante:darklantern": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:darklantern",
+    "name": "Darklantern",
+    "uuid": "archetype:vigilante:darklantern"
+  },
+  "vigilante:dragonscale-loyalist": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:dragonscale-loyalist",
+    "name": "Dragonscale Loyalist",
+    "uuid": "archetype:vigilante:dragonscale-loyalist"
+  },
+  "vigilante:experimenter": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:experimenter",
+    "name": "Experimenter",
+    "uuid": "archetype:vigilante:experimenter"
+  },
+  "vigilante:faceless-enforcer": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:faceless-enforcer",
+    "name": "Faceless Enforcer",
+    "uuid": "archetype:vigilante:faceless-enforcer"
+  },
+  "vigilante:ferocious-hunter": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:ferocious-hunter",
+    "name": "Ferocious Hunter",
+    "uuid": "archetype:vigilante:ferocious-hunter"
+  },
+  "vigilante:gunmaster": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:gunmaster",
+    "name": "Gunmaster",
+    "uuid": "archetype:vigilante:gunmaster"
+  },
+  "vigilante:half-elf-double-scion": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:half-elf-double-scion",
+    "name": "Half-Elf Double Scion",
+    "uuid": "archetype:vigilante:half-elf-double-scion"
+  },
+  "vigilante:hangman": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:hangman",
+    "name": "Hangman",
+    "uuid": "archetype:vigilante:hangman"
+  },
+  "vigilante:hidden-current": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:hidden-current",
+    "name": "Hidden Current",
+    "uuid": "archetype:vigilante:hidden-current"
+  },
+  "vigilante:imperial-agent": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:imperial-agent",
+    "name": "Imperial Agent",
+    "uuid": "archetype:vigilante:imperial-agent"
+  },
+  "vigilante:magical-child": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:magical-child",
+    "name": "Magical Child",
+    "uuid": "archetype:vigilante:magical-child"
+  },
+  "vigilante:masked-maiden": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:masked-maiden",
+    "name": "Masked Maiden",
+    "uuid": "archetype:vigilante:masked-maiden"
+  },
+  "vigilante:mounted-fury": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:mounted-fury",
+    "name": "Mounted Fury",
+    "uuid": "archetype:vigilante:mounted-fury"
+  },
+  "vigilante:mutated-defender": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:mutated-defender",
+    "name": "Mutated Defender",
+    "uuid": "archetype:vigilante:mutated-defender"
+  },
+  "vigilante:psychometrist": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:psychometrist",
+    "name": "Psychometrist",
+    "uuid": "archetype:vigilante:psychometrist"
+  },
+  "vigilante:serial-killer": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:serial-killer",
+    "name": "Serial Killer",
+    "uuid": "archetype:vigilante:serial-killer"
+  },
+  "vigilante:splintersoul": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:splintersoul",
+    "name": "Splintersoul",
+    "uuid": "archetype:vigilante:splintersoul"
+  },
+  "vigilante:teisatsu": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:teisatsu",
+    "name": "Teisatsu",
+    "uuid": "archetype:vigilante:teisatsu"
+  },
+  "vigilante:warlock": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:warlock",
+    "name": "Warlock",
+    "uuid": "archetype:vigilante:warlock"
+  },
+  "vigilante:wildsoul": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:wildsoul",
+    "name": "Wildsoul",
+    "uuid": "archetype:vigilante:wildsoul"
+  },
+  "vigilante:zealot": {
+    "classTag": "vigilante",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "vigilante:zealot",
+    "name": "Zealot",
+    "uuid": "archetype:vigilante:zealot"
+  },
+  "warpriest:calamity-caller": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:calamity-caller",
+    "name": "Calamity Caller",
+    "uuid": "archetype:warpriest:calamity-caller"
+  },
+  "warpriest:champion-of-the-faith": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:champion-of-the-faith",
+    "name": "Champion of the Faith",
+    "uuid": "archetype:warpriest:champion-of-the-faith"
+  },
+  "warpriest:cult-leader": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:cult-leader",
+    "name": "Cult Leader",
+    "uuid": "archetype:warpriest:cult-leader"
+  },
+  "warpriest:disenchanter": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:disenchanter",
+    "name": "Disenchanter",
+    "uuid": "archetype:warpriest:disenchanter"
+  },
+  "warpriest:divine-champion": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:divine-champion",
+    "name": "Divine Champion",
+    "uuid": "archetype:warpriest:divine-champion"
+  },
+  "warpriest:divine-commander": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:divine-commander",
+    "name": "Divine Commander",
+    "uuid": "archetype:warpriest:divine-commander"
+  },
+  "warpriest:feral-champion": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:feral-champion",
+    "name": "Feral Champion",
+    "uuid": "archetype:warpriest:feral-champion"
+  },
+  "warpriest:fist-of-the-godclaw": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:fist-of-the-godclaw",
+    "name": "Fist of the Godclaw",
+    "uuid": "archetype:warpriest:fist-of-the-godclaw"
+  },
+  "warpriest:forgepriest": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:forgepriest",
+    "name": "Forgepriest",
+    "uuid": "archetype:warpriest:forgepriest"
+  },
+  "warpriest:jistkan-magistrate": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:jistkan-magistrate",
+    "name": "Jistkan Magistrate",
+    "uuid": "archetype:warpriest:jistkan-magistrate"
+  },
+  "warpriest:liberty-s-blade": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:liberty-s-blade",
+    "name": "Liberty's Blade",
+    "uuid": "archetype:warpriest:liberty-s-blade"
+  },
+  "warpriest:mantis-zealot": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:mantis-zealot",
+    "name": "Mantis Zealot",
+    "uuid": "archetype:warpriest:mantis-zealot"
+  },
+  "warpriest:molthuni-arsenal-chaplain": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:molthuni-arsenal-chaplain",
+    "name": "Molthuni Arsenal Chaplain",
+    "uuid": "archetype:warpriest:molthuni-arsenal-chaplain"
+  },
+  "warpriest:proclaimer": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:proclaimer",
+    "name": "Proclaimer",
+    "uuid": "archetype:warpriest:proclaimer"
+  },
+  "warpriest:proselytizer": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:proselytizer",
+    "name": "Proselytizer",
+    "uuid": "archetype:warpriest:proselytizer"
+  },
+  "warpriest:sacred-fist": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:sacred-fist",
+    "name": "Sacred Fist",
+    "uuid": "archetype:warpriest:sacred-fist"
+  },
+  "warpriest:shieldbearer": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:shieldbearer",
+    "name": "Shieldbearer",
+    "uuid": "archetype:warpriest:shieldbearer"
+  },
+  "warpriest:sixth-wing-bulwark": {
+    "classTag": "warpriest",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "warpriest:sixth-wing-bulwark",
+    "name": "Sixth Wing Bulwark",
+    "uuid": "archetype:warpriest:sixth-wing-bulwark"
+  },
+  "witch:alley-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:alley-witch",
+    "name": "Alley Witch",
+    "uuid": "archetype:witch:alley-witch"
+  },
+  "witch:ashiftah": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:ashiftah",
+    "name": "Ashiftah",
+    "uuid": "archetype:witch:ashiftah"
+  },
+  "witch:beast-bonded": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:beast-bonded",
+    "name": "Beast-Bonded",
+    "uuid": "archetype:witch:beast-bonded"
+  },
+  "witch:bonded-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:bonded-witch",
+    "name": "Bonded Witch",
+    "uuid": "archetype:witch:bonded-witch"
+  },
+  "witch:bouda": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:bouda",
+    "name": "Bouda",
+    "uuid": "archetype:witch:bouda"
+  },
+  "witch:coral-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:coral-witch",
+    "name": "Coral Witch",
+    "uuid": "archetype:witch:coral-witch"
+  },
+  "witch:demon-sworn": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:demon-sworn",
+    "name": "Demon-Sworn",
+    "uuid": "archetype:witch:demon-sworn"
+  },
+  "witch:dimensional-occultist": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:dimensional-occultist",
+    "name": "Dimensional Occultist",
+    "uuid": "archetype:witch:dimensional-occultist"
+  },
+  "witch:dreamweaver": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:dreamweaver",
+    "name": "Dreamweaver",
+    "uuid": "archetype:witch:dreamweaver"
+  },
+  "witch:flood-walker": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:flood-walker",
+    "name": "Flood Walker",
+    "uuid": "archetype:witch:flood-walker"
+  },
+  "witch:gingerbread-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:gingerbread-witch",
+    "name": "Gingerbread Witch",
+    "uuid": "archetype:witch:gingerbread-witch"
+  },
+  "witch:gravewalker": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:gravewalker",
+    "name": "Gravewalker",
+    "uuid": "archetype:witch:gravewalker"
+  },
+  "witch:hag-of-gyronna": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:hag-of-gyronna",
+    "name": "Hag of Gyronna",
+    "uuid": "archetype:witch:hag-of-gyronna"
+  },
+  "witch:hagbound": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:hagbound",
+    "name": "Hagbound",
+    "uuid": "archetype:witch:hagbound"
+  },
+  "witch:havocker": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:havocker",
+    "name": "Havocker",
+    "uuid": "archetype:witch:havocker"
+  },
+  "witch:hedge-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:hedge-witch",
+    "name": "Hedge Witch",
+    "uuid": "archetype:witch:hedge-witch"
+  },
+  "witch:herb-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:herb-witch",
+    "name": "Herb Witch",
+    "uuid": "archetype:witch:herb-witch"
+  },
+  "witch:hex-channeler": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:hex-channeler",
+    "name": "Hex Channeler",
+    "uuid": "archetype:witch:hex-channeler"
+  },
+  "witch:invoker": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:invoker",
+    "name": "Invoker",
+    "uuid": "archetype:witch:invoker"
+  },
+  "witch:jinx-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:jinx-witch",
+    "name": "Jinx Witch",
+    "uuid": "archetype:witch:jinx-witch"
+  },
+  "witch:ley-line-guardian": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:ley-line-guardian",
+    "name": "Ley Line Guardian",
+    "uuid": "archetype:witch:ley-line-guardian"
+  },
+  "witch:medium": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:medium",
+    "name": "Medium",
+    "uuid": "archetype:witch:medium"
+  },
+  "witch:mirror-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:mirror-witch",
+    "name": "Mirror Witch",
+    "uuid": "archetype:witch:mirror-witch"
+  },
+  "witch:mountain-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:mountain-witch",
+    "name": "Mountain Witch",
+    "uuid": "archetype:witch:mountain-witch"
+  },
+  "witch:nexian-spellspy": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:nexian-spellspy",
+    "name": "Nexian Spellspy",
+    "uuid": "archetype:witch:nexian-spellspy"
+  },
+  "witch:pact-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:pact-witch",
+    "name": "Pact Witch",
+    "uuid": "archetype:witch:pact-witch"
+  },
+  "witch:putrefactor": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:putrefactor",
+    "name": "Putrefactor",
+    "uuid": "archetype:witch:putrefactor"
+  },
+  "witch:rhetorician": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:rhetorician",
+    "name": "Rhetorician",
+    "uuid": "archetype:witch:rhetorician"
+  },
+  "witch:scarred-witch-doctor": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:scarred-witch-doctor",
+    "name": "Scarred Witch Doctor",
+    "uuid": "archetype:witch:scarred-witch-doctor"
+  },
+  "witch:sea-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:sea-witch",
+    "name": "Sea Witch",
+    "uuid": "archetype:witch:sea-witch"
+  },
+  "witch:season-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:season-witch",
+    "name": "Season Witch",
+    "uuid": "archetype:witch:season-witch"
+  },
+  "witch:seducer": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:seducer",
+    "name": "Seducer",
+    "uuid": "archetype:witch:seducer"
+  },
+  "witch:synergist": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:synergist",
+    "name": "Synergist",
+    "uuid": "archetype:witch:synergist"
+  },
+  "witch:tatterdemalion": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:tatterdemalion",
+    "name": "Tatterdemalion",
+    "uuid": "archetype:witch:tatterdemalion"
+  },
+  "witch:vellemancer": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:vellemancer",
+    "name": "Vellemancer",
+    "uuid": "archetype:witch:vellemancer"
+  },
+  "witch:veneficus-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:veneficus-witch",
+    "name": "Veneficus Witch",
+    "uuid": "archetype:witch:veneficus-witch"
+  },
+  "witch:venom-siphoner": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:venom-siphoner",
+    "name": "Venom Siphoner",
+    "uuid": "archetype:witch:venom-siphoner"
+  },
+  "witch:white-haired-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:white-haired-witch",
+    "name": "White-Haired Witch",
+    "uuid": "archetype:witch:white-haired-witch"
+  },
+  "witch:winter-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:winter-witch",
+    "name": "Winter Witch",
+    "uuid": "archetype:witch:winter-witch"
+  },
+  "witch:witch-watcher": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:witch-watcher",
+    "name": "Witch-Watcher",
+    "uuid": "archetype:witch:witch-watcher"
+  },
+  "witch:wyrm-witch": {
+    "classTag": "witch",
+    "contributorModule": "baileymh/pf1e-archetypes",
+    "id": "witch:wyrm-witch",
+    "name": "Wyrm Witch",
+    "uuid": "archetype:witch:wyrm-witch"
   },
   "wizard:arcane-bomber": {
     "classTag": "wizard",

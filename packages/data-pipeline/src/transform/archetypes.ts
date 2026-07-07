@@ -29,6 +29,23 @@ export const CLASS_ARCHETYPE_FILES: Record<string, string> = {
   arcanist: "Arcanist.csv",
   magus: "Magus.csv",
   oracle: "Oracle.csv",
+  alchemist: "Alchemist.csv",
+  bloodrager: "Bloodrager.csv",
+  brawler: "Brawler.csv",
+  cavalier: "Cavalier.csv",
+  gunslinger: "Gunslinger.csv",
+  hunter: "Hunter.csv",
+  inquisitor: "Inquisitor.csv",
+  investigator: "Investigator.csv",
+  shaman: "Shaman.csv",
+  shifter: "Shifter.csv",
+  skald: "Skald.csv",
+  slayer: "Slayer.csv",
+  summoner: "Summoner.csv",
+  swashbuckler: "Swashbuckler.csv",
+  vigilante: "Vigilante.csv",
+  warpriest: "Warpriest.csv",
+  witch: "Witch.csv",
 };
 
 /** A row from one of the per-class archetype CSVs (header-name-keyed). */

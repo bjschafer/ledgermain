@@ -145,17 +145,20 @@ describe("pathbuilderHtmlToIntermediate", () => {
 });
 
 describe("importPathbuilderHtml", () => {
-  it("builds a doc from the fixture, matching Fighter but not Alchemist", () => {
+  it("builds a doc from the fixture, matching both Fighter and Alchemist", () => {
     const { doc, report } = importPathbuilderHtml(fixtureHtml, ref);
 
     expect(doc.identity.name).toBe("C1-ORCALCHEMIST");
     expect(doc.identity.alignment).toBe("N");
     const raceId = Object.entries(ref.races).find(([, r]) => r.name === "Orc")![0];
     expect(doc.identity.race).toBe(raceId);
-    expect(doc.identity.classes).toEqual([{ tag: "fighter", level: 4 }]);
+    expect(doc.identity.classes).toEqual([
+      { tag: "fighter", level: 4 },
+      { tag: "alchemist", level: 8 },
+    ]);
 
-    expect(report.unmapped.some((l) => l.includes('Class "Alchemist" (level 8)'))).toBe(true);
     expect(report.mapped.some((l) => l.includes('Class: "Fighter"'))).toBe(true);
+    expect(report.mapped.some((l) => l.includes('Class: "Alchemist"'))).toBe(true);
 
     // 10 of the 11 feats are in the vendored slice; "Armor Focus" isn't.
     expect(doc.build.feats.length).toBe(10);

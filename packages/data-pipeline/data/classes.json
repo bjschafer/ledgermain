@@ -94,6 +94,164 @@
     "uuid": "Compendium.pf1.classes.Item.0c4lYDywj6bQ0i8r",
     "weaponProf": ["Club", "Dagger", "Heavy Crossbow", "Light Crossbow", "Quarterstaff"]
   },
+  "16mfrGi2UHTsME4W": {
+    "armorProf": ["lgt", "med", "shl", "No Metal Armor"],
+    "bab": "high",
+    "classSkills": [
+      "acr",
+      "art",
+      "clm",
+      "crf",
+      "fly",
+      "han",
+      "kna",
+      "lor",
+      "per",
+      "pro",
+      "rid",
+      "ste",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>Whether riding on the wind as a falcon or hiding in some fetid bog waiting to strike, the shifter is a true master of the wild. Both a devoted defender of druidic circles and a fierce predator, the shifter can take on the forms of nature and even fuse them together with devastating effect and unbridled savagery. By way of the druidic discipline of <em>wild shape</em>, they become living aspects of the wild. At first, they are able to assume only a minor aspect, but with time and practice they can fully transform into ever more powerful forms.</p><p>The shifter class offers players a way to experience a shapeshifting character that is more martially inclined than a spellcasting <em>druid</em>. With each new level, the shifter’s powers grow in new and surprising ways, creating a character that thrives in battle, exploration, and stealth.</p><p>Shifters are protectors of druidic circles and avengers of nature, yet a shifter’s magic is different from that of her druidic kin. Rather than invoking spells from the natural world or forging alliances with <em>animals</em>, shifters focus their supernatural powers inward to gain control over their own forms. Their ability to change their forms is as varied as the wonders of the wilds themselves but always remains at least partially rooted in the natural world. There are many paths to becoming a shifter; most are trained in that role by druidic circles and have their powers unlocked via rituals of initiation. Yet some stumble upon the gift naturally, as if their blood bore the secrets of shifter transformation.</p><p>For those leaning toward the causes of law and good, the path of the shifter is one of contemplation and understanding. They become one with nature through mental and physical mimicry and gain an ever deeper spiritual understanding of the ebb and flow of the natural world. Those leaning toward the chaotic and evil teachings of druidic philosophy find such enlightenment through more violent means. These are typically quicker transformations, both brutal and painful, imparting the dark lessons of nature through its most catastrophic forms. Shifters who lean toward true neutrality are the most diverse when it comes to their command of metamorphic secrets.</p><p><strong>Role</strong>: The shifter is so attuned to nature and the wild beasts of the world that she can call upon those powers to mystically fortify her being. Fluid in form and function, she can shape herself to overcome hardships and support those she befriends or serves.</p>",
+    "features": [
+      {
+        "featureId": "7fhS2HmIivLXQxlq",
+        "level": 1,
+        "name": "Bonus Languages (SHI)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7fhS2HmIivLXQxlq"
+      },
+      {
+        "featureId": "ph7qA9fJX3iPuqxa",
+        "level": 1,
+        "name": "Shifter Aspect",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ph7qA9fJX3iPuqxa"
+      },
+      {
+        "featureId": "fi5PsRq1XW7MStPM",
+        "level": 1,
+        "name": "Shifter Claws",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fi5PsRq1XW7MStPM"
+      },
+      {
+        "featureId": "Yr8dfM2d8JEWoYkr",
+        "level": 1,
+        "name": "Wild Empathy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+      },
+      {
+        "featureId": "l52geoeGQcQz84AE",
+        "level": 2,
+        "name": "Defensive Instinct",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.l52geoeGQcQz84AE"
+      },
+      {
+        "featureId": "r8wPs0bB3WhOLxbX",
+        "level": 2,
+        "name": "Track",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
+      },
+      {
+        "featureId": "5iXq1igb1Cq0qobT",
+        "level": 3,
+        "name": "Woodland Stride",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT"
+      },
+      {
+        "featureId": "qjpLIatoQIzmcehq",
+        "level": 4,
+        "name": "Wild Shape (SHI)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qjpLIatoQIzmcehq"
+      },
+      {
+        "featureId": "adslhIPLFgIaHBfh",
+        "level": 5,
+        "name": "Trackless Step",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.adslhIPLFgIaHBfh"
+      },
+      {
+        "featureId": "eM1RMYR1EUBuUVTv",
+        "level": 6,
+        "name": "Shifter's Fury",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eM1RMYR1EUBuUVTv"
+      },
+      {
+        "featureId": "jPNCx02S3ZlIPOmL",
+        "level": 9,
+        "name": "Chimeric Aspect",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jPNCx02S3ZlIPOmL"
+      },
+      {
+        "featureId": "bXxt8L2PITMstpka",
+        "level": 14,
+        "name": "Greater Chimeric Aspect",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.bXxt8L2PITMstpka"
+      },
+      {
+        "featureId": "MXj2WoyW7vLxiVYw",
+        "level": 18,
+        "name": "A Thousand Faces",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.MXj2WoyW7vLxiVYw"
+      },
+      {
+        "featureId": "5JlthJkVGEHPZypG",
+        "level": 18,
+        "name": "Timeless Body",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5JlthJkVGEHPZypG"
+      },
+      {
+        "featureId": "joNziZgJl9ZOJZlF",
+        "level": 20,
+        "name": "Final Aspect",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.joNziZgJl9ZOJZlF"
+      }
+    ],
+    "hd": 10,
+    "id": "16mfrGi2UHTsME4W",
+    "name": "Shifter",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1140",
+        "pages": "26-31"
+      }
+    ],
+    "subType": "base",
+    "tag": "shifter",
+    "uuid": "Compendium.pf1.classes.Item.16mfrGi2UHTsME4W",
+    "weaponProf": [
+      "Club",
+      "Dagger",
+      "Dart",
+      "Quarterstaff",
+      "Scimitar",
+      "Scythe",
+      "Sickle",
+      "Shortspear",
+      "Sling",
+      "Spear"
+    ]
+  },
   "24b0LaabeAlUx5gN": {
     "armorProf": ["lgt"],
     "bab": "med",
@@ -731,6 +889,730 @@
     "uuid": "Compendium.pf1.classes.Item.AoWSbnuTSGIxmv61",
     "weaponProf": ["simple"]
   },
+  "BrnHPJ2EVSQSyNQ8": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "crf",
+      "fly",
+      "han",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "pro",
+      "rid",
+      "spl",
+      "umd"
+    ],
+    "description": "<p>While many who dabble in the arcane become adept at beckoning monsters from the farthest reaches of the planes, none are more skilled at it than the summoner. This practitioner of the arcane arts forms a close bond with one particular outsider, known as an eidolon, who gains power as the summoner becomes more proficient at his summoning. Over time, the two become linked, eventually even sharing a shard of the same soul. But this power comes with a price: the summoner’s spells and abilities are limited due to his time spent enhancing the power and exploring the nature of his eidolon.</p><p><strong>Role</strong>: Summoners spend much of their time exploring the arcane arts alongside their eidolons. While their power comes from within, they rely heavily on their eidolon companions in dangerous situations. While a summoner and his eidolon function as individuals, their true power lies in what they can accomplish together.</p>",
+    "features": [
+      {
+        "featureId": "IPy4aqFYbOppaqKC",
+        "level": 1,
+        "name": "Cantrips",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+      },
+      {
+        "featureId": "YmWKyC6bPUqHf9iQ",
+        "level": 1,
+        "name": "Eidolon",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YmWKyC6bPUqHf9iQ"
+      },
+      {
+        "featureId": "xYuyemfGIFp0a97P",
+        "level": 1,
+        "name": "Life Link",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xYuyemfGIFp0a97P"
+      },
+      {
+        "featureId": "caNEmbCtoHA7NYtZ",
+        "level": 1,
+        "name": "Summon Monster",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.caNEmbCtoHA7NYtZ"
+      },
+      {
+        "featureId": "BBJV12ndKXeygKz3",
+        "level": 1,
+        "name": "Summoner Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BBJV12ndKXeygKz3"
+      },
+      {
+        "featureId": "Aj7SwIo94HfcpR9R",
+        "level": 2,
+        "name": "Bond Senses",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Aj7SwIo94HfcpR9R"
+      },
+      {
+        "featureId": "AaZ3OdpKFsMC6dFg",
+        "level": 4,
+        "name": "Shield Ally",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AaZ3OdpKFsMC6dFg"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "Jw6BEoNMBxfSN4cu",
+        "level": 6,
+        "name": "Maker's Call",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Jw6BEoNMBxfSN4cu"
+      },
+      {
+        "featureId": "NAso2tQYl5bBfL1O",
+        "level": 8,
+        "name": "Transposition",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NAso2tQYl5bBfL1O"
+      },
+      {
+        "featureId": "r5dE8fMdwjLVCHma",
+        "level": 10,
+        "name": "Aspect",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.r5dE8fMdwjLVCHma"
+      },
+      {
+        "featureId": "81XUmdEI8Yr0UXeG",
+        "level": 12,
+        "name": "Greater Shield Ally",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.81XUmdEI8Yr0UXeG"
+      },
+      {
+        "featureId": "ZF6FlGlFJRaiO4OH",
+        "level": 14,
+        "name": "Life Bond",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZF6FlGlFJRaiO4OH"
+      },
+      {
+        "featureId": "CW99G919xJkrIWAu",
+        "level": 16,
+        "name": "Merge Forms",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.CW99G919xJkrIWAu"
+      },
+      {
+        "featureId": "ew7BBQtX2HrVhxOu",
+        "level": 18,
+        "name": "Greater Aspect",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ew7BBQtX2HrVhxOu"
+      },
+      {
+        "featureId": "jXEgYhQCj2o1fAVZ",
+        "level": 20,
+        "name": "Twin Eidolon",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jXEgYhQCj2o1fAVZ"
+      }
+    ],
+    "hd": 8,
+    "id": "BrnHPJ2EVSQSyNQ8",
+    "name": "Summoner",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "54-64"
+      }
+    ],
+    "subType": "base",
+    "tag": "summoner",
+    "uuid": "Compendium.pf1.classes.Item.BrnHPJ2EVSQSyNQ8",
+    "weaponProf": ["simple"]
+  },
+  "E27lMw9YNOAjS009": {
+    "armorProf": ["lgt", "med", "shl"],
+    "bab": "high",
+    "classSkills": [
+      "acr",
+      "art",
+      "clm",
+      "crf",
+      "han",
+      "int",
+      "kar",
+      "lor",
+      "per",
+      "rid",
+      "spl",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>While many ferocious combatants can tap into a deep reservoir of buried rage, bloodragers have an intrinsic power that seethes within. Like sorcerers, bloodragers’ veins surge with arcane power. While sorcerers use this power for spellcasting, bloodragers enter an altered state in which their bloodline becomes manifest, where the echoes of their strange ancestry lash out with devastating power. In these states, bloodragers can cast some arcane spells instinctively. The bloodrager’s magic is as fast, violent, and seemingly unstoppable as their physical prowess.</p><p><strong>Role</strong>: Masters of the battlefield, bloodragers unleash fearful carnage on their enemies using their bloodlines and combat prowess. The bloodrager’s place is on the front lines, right in his enemies’ faces, supplying tremendous martial force bolstered by a trace of arcane magic.</p><p><strong>Parent Classes</strong>: <em>Barbarian</em> and <em>sorcerer</em>.</p>",
+    "features": [
+      {
+        "featureId": "5op6M5xchCJNsYRt",
+        "level": 1,
+        "name": "Bloodrage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5op6M5xchCJNsYRt"
+      },
+      {
+        "featureId": "Aq9rx7oWgv7A7kiV",
+        "level": 1,
+        "name": "Bloodrager Bloodline",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Aq9rx7oWgv7A7kiV"
+      },
+      {
+        "featureId": "9EX00obqhGHcrOdp",
+        "level": 1,
+        "name": "Fast Movement",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
+      },
+      {
+        "featureId": "7WaQxnVaaoL4AGr8",
+        "level": 2,
+        "name": "Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+      },
+      {
+        "featureId": "xvBGDYUbsE4Ozean",
+        "level": 3,
+        "name": "Blood Sanctuary",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xvBGDYUbsE4Ozean"
+      },
+      {
+        "featureId": "HFab4vfATqdqnlSJ",
+        "level": 4,
+        "name": "Blood Casting",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HFab4vfATqdqnlSJ"
+      },
+      {
+        "featureId": "uomEu0NuSl6Q43fP",
+        "level": 4,
+        "name": "Bloodrager Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.uomEu0NuSl6Q43fP"
+      },
+      {
+        "featureId": "vVkKDPniD09W5JgO",
+        "level": 4,
+        "name": "Eschew Materials",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vVkKDPniD09W5JgO"
+      },
+      {
+        "featureId": "ZfnHhhTFQVo0Lj4P",
+        "level": 5,
+        "name": "Improved Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+      },
+      {
+        "featureId": "xxD5AbgfJ5OuzVld",
+        "level": 6,
+        "name": "Bloodline Feat (BLO)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xxD5AbgfJ5OuzVld"
+      },
+      {
+        "featureId": "RJ66UHdnwJ7VuWFo",
+        "level": 7,
+        "name": "Bloodline Spells (BLO)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RJ66UHdnwJ7VuWFo"
+      },
+      {
+        "featureId": "RENIeTVjWB7Mq6Mw",
+        "level": 7,
+        "name": "Damage Reduction",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
+      },
+      {
+        "featureId": "XfN89DtlUrwHGNrp",
+        "level": 8,
+        "name": "Exchange Spell (Low)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.XfN89DtlUrwHGNrp"
+      },
+      {
+        "featureId": "FsOPunvM3kGqD32i",
+        "level": 11,
+        "name": "Greater Bloodrage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FsOPunvM3kGqD32i"
+      },
+      {
+        "featureId": "Q3x319WbNkCssApD",
+        "level": 14,
+        "name": "Indomitable Will",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Q3x319WbNkCssApD"
+      },
+      {
+        "featureId": "vETLfsVXQo1qG2PX",
+        "level": 17,
+        "name": "Tireless Bloodrage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vETLfsVXQo1qG2PX"
+      },
+      {
+        "featureId": "NoJMNxuXDTHzPMcm",
+        "level": 20,
+        "name": "Mighty Bloodrage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NoJMNxuXDTHzPMcm"
+      }
+    ],
+    "hd": 10,
+    "id": "E27lMw9YNOAjS009",
+    "name": "Bloodrager",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "15-22"
+      }
+    ],
+    "subType": "base",
+    "tag": "bloodrager",
+    "uuid": "Compendium.pf1.classes.Item.E27lMw9YNOAjS009",
+    "weaponProf": ["simple", "martial"]
+  },
+  "Fv3FbmXptuDRiL5y": {
+    "armorProf": ["lgt", "med", "shl"],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dip",
+      "dis",
+      "hea",
+      "int",
+      "kar",
+      "kdu",
+      "kna",
+      "kpl",
+      "kre",
+      "lor",
+      "per",
+      "pro",
+      "rid",
+      "sen",
+      "spl",
+      "ste",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>Grim and determined, the inquisitor roots out enemies of the faith, using trickery and guile when righteousness and purity is not enough. Although inquisitors are dedicated to a deity, they are above many of the normal rules and conventions of the church. They answer to their deity and their own sense of justice alone, and are willing to take extreme measures to meet their goals.</p><p><strong>Role</strong>: Inquisitors tend to move from place to place, chasing down enemies and researching emerging threats. As a result, they often travel with others, if for no other reason than to mask their presence. Inquisitors work with members of their faith whenever possible, but even such allies are not above suspicion.</p><p><strong>Alignment</strong>: An inquisitor’s alignment must be within one step of her deity’s, along either the law/chaos axis or the good/evil axis.</p>",
+    "features": [
+      {
+        "featureId": "dMtxCqoMLtD9nEjU",
+        "level": 1,
+        "name": "Domain (INQ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dMtxCqoMLtD9nEjU"
+      },
+      {
+        "featureId": "HnrnO6l02MdT9lf5",
+        "level": 1,
+        "name": "Inquisitor Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HnrnO6l02MdT9lf5"
+      },
+      {
+        "featureId": "qI4IouTn4uvDPSXv",
+        "level": 1,
+        "name": "Judgment",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qI4IouTn4uvDPSXv"
+      },
+      {
+        "featureId": "9Y9dpXEcjXGtH6Pe",
+        "level": 1,
+        "name": "Monster Lore",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9Y9dpXEcjXGtH6Pe"
+      },
+      {
+        "featureId": "RaFl9SpbAlXqhsDk",
+        "level": 1,
+        "name": "Orisons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+      },
+      {
+        "featureId": "CzEGD1Fv60Sa4UXe",
+        "level": 1,
+        "name": "Stern Gaze",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.CzEGD1Fv60Sa4UXe"
+      },
+      {
+        "featureId": "FkPoMSAx3FTGvnXy",
+        "level": 2,
+        "name": "Cunning Initiative",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FkPoMSAx3FTGvnXy"
+      },
+      {
+        "featureId": "KGjeQOeDKBMUt98q",
+        "level": 2,
+        "name": "Detect Alignment",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KGjeQOeDKBMUt98q"
+      },
+      {
+        "featureId": "r8wPs0bB3WhOLxbX",
+        "level": 2,
+        "name": "Track",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
+      },
+      {
+        "featureId": "10EysX8x5hvz48lr",
+        "level": 3,
+        "name": "Solo Tactics",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.10EysX8x5hvz48lr"
+      },
+      {
+        "featureId": "717fyDCcfLtD345B",
+        "level": 3,
+        "name": "Teamwork Feat",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.717fyDCcfLtD345B"
+      },
+      {
+        "featureId": "MpvhQz62qw68D2pd",
+        "level": 5,
+        "name": "Bane",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.MpvhQz62qw68D2pd"
+      },
+      {
+        "featureId": "S9lYCsz7oA7v3GzR",
+        "level": 5,
+        "name": "Discern Lies",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.S9lYCsz7oA7v3GzR"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "L9DSWVtX0siTfaXL",
+        "level": 8,
+        "name": "Second Judgment",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.L9DSWVtX0siTfaXL"
+      },
+      {
+        "featureId": "igyMWtX3cB2HZeSF",
+        "level": 11,
+        "name": "Stalwart",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.igyMWtX3cB2HZeSF"
+      },
+      {
+        "featureId": "TNYCH3v1Y9lUQDPT",
+        "level": 12,
+        "name": "Greater Bane",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.TNYCH3v1Y9lUQDPT"
+      },
+      {
+        "featureId": "UGtjpdIwNF8mAh4z",
+        "level": 14,
+        "name": "Exploit Weakness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UGtjpdIwNF8mAh4z"
+      },
+      {
+        "featureId": "QXskUuwbmQtFoFti",
+        "level": 16,
+        "name": "Third Judgment",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QXskUuwbmQtFoFti"
+      },
+      {
+        "featureId": "cbRqq4Zwspgr3681",
+        "level": 17,
+        "name": "Slayer",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.cbRqq4Zwspgr3681"
+      },
+      {
+        "featureId": "1SnLu7RJAq1hJzYg",
+        "level": 20,
+        "name": "True Judgment",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1SnLu7RJAq1hJzYg"
+      }
+    ],
+    "hd": 8,
+    "id": "Fv3FbmXptuDRiL5y",
+    "name": "Inquisitor",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 6,
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38-42"
+      }
+    ],
+    "subType": "base",
+    "tag": "inquisitor",
+    "uuid": "Compendium.pf1.classes.Item.Fv3FbmXptuDRiL5y",
+    "weaponProf": [
+      "simple",
+      "Hand Crossbow",
+      "Longbow",
+      "Repeating Hand Crossbow",
+      "Repeating Light Crossbow",
+      "Repeating Heavy Crossbow",
+      "Shortbow",
+      "Favored Weapon"
+    ]
+  },
+  "G2SqFdNKFxbujzbH": {
+    "armorProf": ["lgt", "med", "shl"],
+    "bab": "med",
+    "classSkills": [
+      "acr",
+      "apr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dip",
+      "esc",
+      "han",
+      "int",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "rid",
+      "sen",
+      "spl",
+      "swm",
+      "umd"
+    ],
+    "description": "<p>Skalds are poets, historians, and keepers of lore who use their gifts for oration and song to inspire allies into a frenzied rage. They balance a violent spirit with the veneer of civilization, recording events such as heroic battles and the deeds of great leaders, enhancing these stories in the retelling to earn bloodier victories in combat. A skald’s poetry is nuanced and often has multiple overlapping meanings, and he applies similar talents to emulate magic from other spellcasters.</p><p><strong>Role</strong>: A skald inspires his allies, and often presses forward to fight enemies in melee. Outside of combat, he’s useful as a healer and scholar, less versatile but more durable than a bard.</p><p><strong>Parent Classes</strong>: <em>Barbarian</em> and <em>bard</em>.</p>",
+    "features": [
+      {
+        "featureId": "Pb9pxYrx6tS87euP",
+        "level": 1,
+        "name": "Bardic Knowledge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
+      },
+      {
+        "featureId": "IPy4aqFYbOppaqKC",
+        "level": 1,
+        "name": "Cantrips",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+      },
+      {
+        "featureId": "1HQUUhQhowqKfmCA",
+        "level": 1,
+        "name": "Inspired Rage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1HQUUhQhowqKfmCA"
+      },
+      {
+        "featureId": "sPqP7QFldieWEADi",
+        "level": 1,
+        "name": "Raging Song",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sPqP7QFldieWEADi"
+      },
+      {
+        "featureId": "BS9WDbCy2Up3QHw9",
+        "level": 1,
+        "name": "Scribe Scroll",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BS9WDbCy2Up3QHw9"
+      },
+      {
+        "featureId": "sRC2DqMqSDtX7ISa",
+        "level": 1,
+        "name": "Skald Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sRC2DqMqSDtX7ISa"
+      },
+      {
+        "featureId": "KQeYLQvYh1QgS0XI",
+        "level": 2,
+        "name": "Versatile Performance (SKA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KQeYLQvYh1QgS0XI"
+      },
+      {
+        "featureId": "wew6ophJrcab24m6",
+        "level": 2,
+        "name": "Well-Versed",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wew6ophJrcab24m6"
+      },
+      {
+        "featureId": "i4GboHYSOofHEJ4i",
+        "level": 3,
+        "name": "Rage Powers (SKA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.i4GboHYSOofHEJ4i"
+      },
+      {
+        "featureId": "jR8RFYhHsjRzzmB0",
+        "level": 3,
+        "name": "Song of Marching",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jR8RFYhHsjRzzmB0"
+      },
+      {
+        "featureId": "7WaQxnVaaoL4AGr8",
+        "level": 4,
+        "name": "Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "tlvQVJUUFUVQ92EH",
+        "level": 5,
+        "name": "Spell Kenning",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tlvQVJUUFUVQ92EH"
+      },
+      {
+        "featureId": "xqWYyijR7PxZGI69",
+        "level": 6,
+        "name": "Song of Strength",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xqWYyijR7PxZGI69"
+      },
+      {
+        "featureId": "ptw7bHU3Z7HNj2qz",
+        "level": 7,
+        "name": "Lore Master (SKA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ptw7bHU3Z7HNj2qz"
+      },
+      {
+        "featureId": "ZfnHhhTFQVo0Lj4P",
+        "level": 8,
+        "name": "Improved Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+      },
+      {
+        "featureId": "kMjMAG6Gjs7unAz5",
+        "level": 9,
+        "name": "Damage Reduction (SKA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kMjMAG6Gjs7unAz5"
+      },
+      {
+        "featureId": "pmWnRksUzrKvNOvy",
+        "level": 10,
+        "name": "Dirge of Doom",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pmWnRksUzrKvNOvy"
+      },
+      {
+        "featureId": "CYOk7sUXkGbfRKPi",
+        "level": 14,
+        "name": "Song of the Fallen",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.CYOk7sUXkGbfRKPi"
+      },
+      {
+        "featureId": "q7aOR0jKvbkVHhyF",
+        "level": 20,
+        "name": "Master Skald",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.q7aOR0jKvbkVHhyF"
+      }
+    ],
+    "hd": 8,
+    "id": "G2SqFdNKFxbujzbH",
+    "name": "Skald",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "49-52"
+      }
+    ],
+    "subType": "base",
+    "tag": "skald",
+    "uuid": "Compendium.pf1.classes.Item.G2SqFdNKFxbujzbH",
+    "weaponProf": ["simple", "martial"]
+  },
   "GK6rAenFfgJNNJCX": {
     "armorProf": [],
     "bab": "low",
@@ -832,6 +1714,666 @@
     "subType": "base",
     "tag": "arcanist",
     "uuid": "Compendium.pf1.classes.Item.GK6rAenFfgJNNJCX",
+    "weaponProf": ["simple"]
+  },
+  "Immo2BuSe5WGdRW9": {
+    "armorProf": ["lgt", "med", "shl"],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "clm",
+      "crf",
+      "han",
+      "hea",
+      "int",
+      "kdu",
+      "kge",
+      "kna",
+      "lor",
+      "per",
+      "pro",
+      "rid",
+      "spl",
+      "ste",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>Hunters are warriors of the wilds that have forged close bonds with trusted animal companions. They focus their tactics on fighting alongside their companion animals as a formidable team of two. Able to cast a wide variety of nature spells and take on the abilities and attributes of beasts, hunters magically improve both themselves and their animal companions.</p><p><strong>Role</strong>: Hunters can adapt their tactics to many kinds of opponents, and cherish their highly trained animal companions. As a team, the hunter and her companion can react to danger with incredible speed, making them excellent scouts, explorers, and saboteurs.</p><p><strong>Parent Classes</strong>: <em>Druid</em> and <em>ranger</em>.</p>",
+    "features": [
+      {
+        "featureId": "V7cGG7vKN0BY2Bhb",
+        "level": 1,
+        "name": "Animal Companion (HUN)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.V7cGG7vKN0BY2Bhb"
+      },
+      {
+        "featureId": "4r83TfLHXrRmXtIn",
+        "level": 1,
+        "name": "Animal Focus",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4r83TfLHXrRmXtIn"
+      },
+      {
+        "featureId": "exdHrqciehozr5SD",
+        "level": 1,
+        "name": "Chaotic, Evil, Good, and Lawful Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+      },
+      {
+        "featureId": "bbOaTvY5Ip2aaG0i",
+        "level": 1,
+        "name": "Hunter Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.bbOaTvY5Ip2aaG0i"
+      },
+      {
+        "featureId": "qqfc9I2awuSdfCxf",
+        "level": 1,
+        "name": "Nature Training",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qqfc9I2awuSdfCxf"
+      },
+      {
+        "featureId": "Yr8dfM2d8JEWoYkr",
+        "level": 1,
+        "name": "Wild Empathy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+      },
+      {
+        "featureId": "sxpGOVklEiwzkRjM",
+        "level": 2,
+        "name": "Precise Companion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sxpGOVklEiwzkRjM"
+      },
+      {
+        "featureId": "r8wPs0bB3WhOLxbX",
+        "level": 2,
+        "name": "Track",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
+      },
+      {
+        "featureId": "nE79k9XBL67xrLCT",
+        "level": 3,
+        "name": "Hunter Tactics",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nE79k9XBL67xrLCT"
+      },
+      {
+        "featureId": "Rh0LztkmetWVC6jk",
+        "level": 3,
+        "name": "Teamwork Feat (HUN)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Rh0LztkmetWVC6jk"
+      },
+      {
+        "featureId": "pGDnMUhjGfphXiJB",
+        "level": 4,
+        "name": "Improved Empathic Link",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pGDnMUhjGfphXiJB"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "5iXq1igb1Cq0qobT",
+        "level": 5,
+        "name": "Woodland Stride",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5iXq1igb1Cq0qobT"
+      },
+      {
+        "featureId": "VNAsksfmUCMQsoZE",
+        "level": 7,
+        "name": "Bonus Tricks",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.VNAsksfmUCMQsoZE"
+      },
+      {
+        "featureId": "5BQFf6N973yHrGtk",
+        "level": 8,
+        "name": "Second Animal Focus",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5BQFf6N973yHrGtk"
+      },
+      {
+        "featureId": "sk0HNTe9lKBpHQpN",
+        "level": 8,
+        "name": "Swift Tracker",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sk0HNTe9lKBpHQpN"
+      },
+      {
+        "featureId": "h0hqYiLG7hkjPCin",
+        "level": 10,
+        "name": "Raise Animal Companion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.h0hqYiLG7hkjPCin"
+      },
+      {
+        "featureId": "DnQK1UZ09ufe1Jmn",
+        "level": 11,
+        "name": "Speak with Master",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.DnQK1UZ09ufe1Jmn"
+      },
+      {
+        "featureId": "fkZVfqo0SOHAfJhh",
+        "level": 14,
+        "name": "Greater Empathic Link",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fkZVfqo0SOHAfJhh"
+      },
+      {
+        "featureId": "o2NhcAoFTDL4QSMN",
+        "level": 17,
+        "name": "One with the wild",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.o2NhcAoFTDL4QSMN"
+      },
+      {
+        "featureId": "uOQAy8ijKtqOj14V",
+        "level": 20,
+        "name": "Master Hunter (HUN)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.uOQAy8ijKtqOj14V"
+      }
+    ],
+    "hd": 8,
+    "id": "Immo2BuSe5WGdRW9",
+    "name": "Hunter",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 6,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "26-29"
+      }
+    ],
+    "subType": "base",
+    "tag": "hunter",
+    "uuid": "Compendium.pf1.classes.Item.Immo2BuSe5WGdRW9",
+    "weaponProf": ["simple", "martial"]
+  },
+  "JcaqlAawhf14q1lq": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": [
+      "apr",
+      "art",
+      "crf",
+      "dev",
+      "fly",
+      "hea",
+      "kar",
+      "kna",
+      "lor",
+      "per",
+      "pro",
+      "slt",
+      "spl",
+      "sur",
+      "umd"
+    ],
+    "description": "<p>Whether secreted away in a smoky basement laboratory or gleefully experimenting in a well-respected school of magic, the alchemist is often regarded as being just as unstable, unpredictable, and dangerous as the concoctions he brews. While some creators of <em>alchemical items</em> content themselves with sedentary lives as merchants, providing <em>tindertwigs</em> and <em>smokesticks</em>, the true alchemist answers a deeper calling. Rather than cast magic like a spellcaster, the alchemist captures his own magic potential within liquids and extracts he creates, infusing his chemicals with virulent power to grant him impressive skill with poisons, explosives, and all manner of self-transformative magic.</p><p><strong>Role</strong>: The alchemist’s reputation is not softened by his exuberance (some would say dangerous recklessness) in perfecting his magical extracts and potion-like creations, infusing these substances with magic siphoned from his aura and using his own body as experimental stock. Nor is it mollified by the alchemist’s almost gleeful passion for building explosive bombs and discovering strange new poisons and methods for their use. These traits, while making him a liability and risk for most civilized organizations and institutions of higher learning, seem to fit quite well with most adventuring groups.</p>",
+    "features": [
+      {
+        "featureId": "7GNdI4zKfTcxNCk4",
+        "level": 1,
+        "name": "Alchemy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7GNdI4zKfTcxNCk4"
+      },
+      {
+        "featureId": "7gHiZBNHjwefbBLI",
+        "level": 1,
+        "name": "Bomb",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7gHiZBNHjwefbBLI"
+      },
+      {
+        "featureId": "afQ1oDc64797Cyq8",
+        "level": 1,
+        "name": "Brew Potion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.afQ1oDc64797Cyq8"
+      },
+      {
+        "featureId": "zrTVb83VhkFnEv6G",
+        "level": 1,
+        "name": "Mutagen",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zrTVb83VhkFnEv6G"
+      },
+      {
+        "featureId": "jlvZK3xsfsDC358a",
+        "level": 1,
+        "name": "Throw Anything",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jlvZK3xsfsDC358a"
+      },
+      {
+        "featureId": "Xcim6WFtAtxJxnmA",
+        "level": 2,
+        "name": "Discovery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Xcim6WFtAtxJxnmA"
+      },
+      {
+        "featureId": "2qcz39w9O2Qlms0Q",
+        "level": 2,
+        "name": "Poison Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2qcz39w9O2Qlms0Q"
+      },
+      {
+        "featureId": "A54sLfcyoR5HGNbP",
+        "level": 2,
+        "name": "Poison Use",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.A54sLfcyoR5HGNbP"
+      },
+      {
+        "featureId": "WIoNDjnbzdHBkLJr",
+        "level": 3,
+        "name": "Swift Alchemy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WIoNDjnbzdHBkLJr"
+      },
+      {
+        "featureId": "FXjdFZlT0xiDr034",
+        "level": 6,
+        "name": "Swift Poisoning",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FXjdFZlT0xiDr034"
+      },
+      {
+        "featureId": "tflIOhX6ukxtwXLx",
+        "level": 10,
+        "name": "Poison Immunity",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tflIOhX6ukxtwXLx"
+      },
+      {
+        "featureId": "TeQgG1uEaWsMXBXX",
+        "level": 14,
+        "name": "Persistent Mutagen",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.TeQgG1uEaWsMXBXX"
+      },
+      {
+        "featureId": "G7xqb0Ka8Bm9XAZz",
+        "level": 18,
+        "name": "Instant Alchemy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.G7xqb0Ka8Bm9XAZz"
+      },
+      {
+        "featureId": "1s0MIxdtmMD2403h",
+        "level": 20,
+        "name": "Grand Discovery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1s0MIxdtmMD2403h"
+      }
+    ],
+    "hd": 8,
+    "id": "JcaqlAawhf14q1lq",
+    "name": "Alchemist",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "26-32"
+      }
+    ],
+    "subType": "base",
+    "tag": "alchemist",
+    "uuid": "Compendium.pf1.classes.Item.JcaqlAawhf14q1lq",
+    "weaponProf": ["simple", "Bombs"]
+  },
+  "KgxFsHNv0g1GbvmS": {
+    "armorProf": ["lgt", "med", "hvy", "shl"],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "clm",
+      "crf",
+      "dip",
+      "han",
+      "hea",
+      "int",
+      "ken",
+      "kre",
+      "lor",
+      "pro",
+      "rid",
+      "sen",
+      "spl",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>Capable of calling upon the power of the gods in the form of blessings and spells, warpriests blend divine magic with martial skill. They are unflinching bastions of their faith, shouting gospel as they pummel foes into submission, and never shy away from a challenge to their beliefs. While clerics might be subtle and use diplomacy to accomplish their aims, warpriests aren’t above using violence whenever the situation warrants it. In many faiths, warpriests form the core of the church’s martial forces—reclaiming lost relics, rescuing captured clergy, and defending the church’s tenets from all challenges.</p><p><strong>Role</strong>: Warpriests can serve as capable healers or spellcasters, calling upon their divine powers from the center of the fight, where their armor and martial skills are put to the test.</p><p><strong>Alignment</strong>: A warpriest’s alignment must be within one step of his deity’s, along either the law/chaos axis or the good/evil axis.</p><p><strong>Parent Classes</strong>: <em>Cleric</em> and <em>fighter</em>.</p>",
+    "features": [
+      {
+        "featureId": "Wkv124hVPATT35bm",
+        "level": 1,
+        "name": "Aura",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Wkv124hVPATT35bm"
+      },
+      {
+        "featureId": "4QeavCZeba7ApFD2",
+        "level": 1,
+        "name": "Blessings",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4QeavCZeba7ApFD2"
+      },
+      {
+        "featureId": "Qb0XW6wNW1fcqwHS",
+        "level": 1,
+        "name": "Bonus Languages (WAR)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Qb0XW6wNW1fcqwHS"
+      },
+      {
+        "featureId": "exdHrqciehozr5SD",
+        "level": 1,
+        "name": "Chaotic, Evil, Good, and Lawful Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.exdHrqciehozr5SD"
+      },
+      {
+        "featureId": "bXznpN0piipekXTH",
+        "level": 1,
+        "name": "Focus Weapon",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.bXznpN0piipekXTH"
+      },
+      {
+        "featureId": "RaFl9SpbAlXqhsDk",
+        "level": 1,
+        "name": "Orisons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+      },
+      {
+        "featureId": "YGbFrqaGvnCbAKKV",
+        "level": 1,
+        "name": "Sacred Weapon",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YGbFrqaGvnCbAKKV"
+      },
+      {
+        "featureId": "tSIuECioWMY2o4Bi",
+        "level": 1,
+        "name": "Warpriest Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tSIuECioWMY2o4Bi"
+      },
+      {
+        "featureId": "Rzexvt4z8taA8dCu",
+        "level": 2,
+        "name": "Fervor",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Rzexvt4z8taA8dCu"
+      },
+      {
+        "featureId": "HL0mn3TDEKQWeF03",
+        "level": 3,
+        "name": "Bonus Feats (WAR)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HL0mn3TDEKQWeF03"
+      },
+      {
+        "featureId": "Ktda1hno3geFi4j8",
+        "level": 4,
+        "name": "Channel Energy (WAR)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Ktda1hno3geFi4j8"
+      },
+      {
+        "featureId": "UBv1y1h93jrnhWxO",
+        "level": 7,
+        "name": "Sacred Armor",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UBv1y1h93jrnhWxO"
+      },
+      {
+        "featureId": "Yjps5mzhrDe2gJMr",
+        "level": 20,
+        "name": "Aspect of War",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Yjps5mzhrDe2gJMr"
+      }
+    ],
+    "hd": 8,
+    "id": "KgxFsHNv0g1GbvmS",
+    "name": "Warpriest",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "60-68"
+      }
+    ],
+    "subType": "base",
+    "tag": "warpriest",
+    "uuid": "Compendium.pf1.classes.Item.KgxFsHNv0g1GbvmS",
+    "weaponProf": ["simple", "martial", "Favored Weapon"]
+  },
+  "Q3rbWILULpQfpjjZ": {
+    "armorProf": ["lgt", "Buckler"],
+    "bab": "high",
+    "classSkills": [
+      "acr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dip",
+      "esc",
+      "int",
+      "klo",
+      "kno",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "rid",
+      "sen",
+      "slt",
+      "swm"
+    ],
+    "description": "<p>Whereas many warriors brave battle encased in suits of armor and wielding large and powerful weapons, swashbucklers rely on speed, agility, and panache. Swashbucklers dart in and out of the fray, wearing down opponents with lunges and feints, all while foiling the powerful attacks against them with a flick of the wrist and a flash of the blade. Their deft parries and fatal ripostes are carnage elevated to an art form. Some may be arrogant and devil-may-care, but behind this veneer lie people deeply dedicated to their craft. Those of smaller races are particularly driven to prove that the right mix of discipline and daring is the perfect counter to size and strength, and enjoy nothing more than taking down lumbering brutes and bullies.</p><p><strong>Role</strong>: Combining fancy footwork with quick and precise lunges, swashbucklers dart in and out of battle, harassing and thwarting their opponents. These fast and agile combatants serve as protectors for spellcasters and flank mates for rogues and slayers, while waiting for the opportunity to show panache and score the killing blow on some lumbering hulk. Swashbucklers often face death with wry humor, mocking it with jabbing wit.</p><p><strong>Parent Classes</strong>: <em>Fighter</em> and <em>gunslinger</em>.</p>",
+    "features": [
+      {
+        "featureId": "LPAbzynGlOwYcGx7",
+        "level": 1,
+        "name": "Panache",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.LPAbzynGlOwYcGx7"
+      },
+      {
+        "featureId": "Drj7Yp0Ymke4lFZb",
+        "level": 1,
+        "name": "Swashbuckler Deeds",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Drj7Yp0Ymke4lFZb"
+      },
+      {
+        "featureId": "0gO5orp5nly2nFjy",
+        "level": 1,
+        "name": "Swashbuckler Finesse",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0gO5orp5nly2nFjy"
+      },
+      {
+        "featureId": "etOoJgoeaBRenCir",
+        "level": 2,
+        "name": "Charmed Life",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.etOoJgoeaBRenCir"
+      },
+      {
+        "featureId": "H9Rq9os7iM27l8Gt",
+        "level": 3,
+        "name": "Nimble (SWA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.H9Rq9os7iM27l8Gt"
+      },
+      {
+        "featureId": "qzrYai2tj5Ehg6Um",
+        "level": 4,
+        "name": "Bonus Feats (SWA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qzrYai2tj5Ehg6Um"
+      },
+      {
+        "featureId": "dfTaltqK6RlSaLVt",
+        "level": 5,
+        "name": "Swashbuckler Weapon Training",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dfTaltqK6RlSaLVt"
+      },
+      {
+        "featureId": "B3dtGKuSpRGfU96T",
+        "level": 20,
+        "name": "Swashbuckler Weapon Mastery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.B3dtGKuSpRGfU96T"
+      }
+    ],
+    "hd": 10,
+    "id": "Q3rbWILULpQfpjjZ",
+    "name": "Swashbuckler",
+    "saves": {
+      "fort": "low",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "56-59"
+      }
+    ],
+    "subType": "base",
+    "tag": "swashbuckler",
+    "uuid": "Compendium.pf1.classes.Item.Q3rbWILULpQfpjjZ",
+    "weaponProf": ["simple", "martial"]
+  },
+  "RC4D4WFT5kRKkdqp": {
+    "armorProf": [],
+    "bab": "low",
+    "classSkills": [
+      "art",
+      "crf",
+      "fly",
+      "hea",
+      "int",
+      "kar",
+      "khi",
+      "kna",
+      "kpl",
+      "lor",
+      "pro",
+      "spl",
+      "umd"
+    ],
+    "description": "<p>Some gain power through study, some through devotion, others through blood, but the witch gains power from her communion with the unknown. Generally feared and misunderstood, the witch draws her magic from a pact made with an otherworldly power. Communing with that source, using her familiar as a conduit, the witch gains not only a host of spells, but a number of strange abilities known as hexes. As a witch grows in power, she might learn about the source of her magic, but some remain blissfully unaware. Some are even afraid of that source, fearful of what it might be or where its true purposes lie.</p><p><strong>Role</strong>: While many witches are recluses, living on the edge of civilization, some live within society, openly or in hiding. The blend of witches’ spells makes them adept at filling a number of different roles, from seer to healer, and their hexes grant them a number of abilities that are useful in a fight. Some witches travel about, seeking greater knowledge and better understanding of the mysterious powers that guide them.</p>",
+    "features": [
+      {
+        "featureId": "IPy4aqFYbOppaqKC",
+        "level": 1,
+        "name": "Cantrips",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+      },
+      {
+        "featureId": "GBkIhC1Bpp2MAD4e",
+        "level": 1,
+        "name": "Hex",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.GBkIhC1Bpp2MAD4e"
+      },
+      {
+        "featureId": "4k6uFSPDhObXgLqu",
+        "level": 1,
+        "name": "Patron Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4k6uFSPDhObXgLqu"
+      },
+      {
+        "featureId": "K0Ls0j080ptiPvTC",
+        "level": 1,
+        "name": "Witch Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.K0Ls0j080ptiPvTC"
+      },
+      {
+        "featureId": "3d9Rgw40NV8ohRtf",
+        "level": 1,
+        "name": "Witch's Familiar",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.3d9Rgw40NV8ohRtf"
+      },
+      {
+        "featureId": "aZ5eCIRrsvax5CZZ",
+        "level": 10,
+        "name": "Major Hex",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.aZ5eCIRrsvax5CZZ"
+      },
+      {
+        "featureId": "IMhG1JjaWP6p9ORe",
+        "level": 18,
+        "name": "Grand Hex",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IMhG1JjaWP6p9ORe"
+      }
+    ],
+    "hd": 6,
+    "id": "RC4D4WFT5kRKkdqp",
+    "name": "Witch",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "65-71"
+      }
+    ],
+    "subType": "base",
+    "tag": "witch",
+    "uuid": "Compendium.pf1.classes.Item.RC4D4WFT5kRKkdqp",
     "weaponProf": ["simple"]
   },
   "SjFqQceVeVBzBwgn": {
@@ -1238,6 +2780,248 @@
     "uuid": "Compendium.pf1.classes.Item.WLqBCT5DqmGAx8Wd",
     "weaponProf": ["simple", "martial"]
   },
+  "Yf5Wv9X09SUHYCqM": {
+    "armorProf": ["lgt", "med", "shl"],
+    "bab": "med",
+    "classSkills": [
+      "acr",
+      "apr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dev",
+      "dip",
+      "dis",
+      "esc",
+      "int",
+      "kdu",
+      "ken",
+      "klo",
+      "kno",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "rid",
+      "sen",
+      "slt",
+      "ste",
+      "sur",
+      "swm",
+      "umd"
+    ],
+    "description": "<p>Being a renowned hero can be dangerous to your health and prosperity. Fighting against corruption and the evil that lurks within society makes you a target and, even worse, puts your friends and family in danger. For those who must maintain a social persona, being a part of the greater community while secretly fighting against powerful forces within it requires leading a double life.</p><p>By day, the vigilante maneuvers through society, dealing with other nobles or influential individuals. By night, he dons a disguise and an utterly different set of goals, taking the fight to his foes and solving problems with a blade when words will not suffice.</p><p>Game Masters should consider carefully whether or not a vigilante will make for a good fit with their campaign. The class is one that requires a degree of social aptitude and roleplaying to make full use of its potential.</p><p>Campaigns that focus more on wilderness exploration, travel, or dungeon delving and that are lighter on politics, negotiation, and manipulation might require a vigilante player to put in additional effort to make full use of his class features. Alternatively, a vigilante is uniquely suited to make for a powerful villain, hidden by day behind a mask of civility and a terror at night, free to commit terrible acts without risking discovery.</p><p>For players, the vigilante offers a unique opportunity to take on the role of a character with a hidden side, and whose life is committed to a secret agenda that he must struggle to advance in a complex world. Not every problem can be solved with a dagger in the dark, and even the most stubborn foe might be become an ally with the proper bribe. For the vigilante, these tasks are both within reach as long as you learn to properly use your dual nature and hidden skills to your fullest advantage.</p><p>Life can be unfair. Think of the starving peasants forced to toil for the local baron or the common laborers tasked with building the king’s newest palace for a mere handful of copper pieces each week. There are those who see these injustices and do nothing. There are those who are willing to reap the rewards obtained through the suffering of others.</p><p>Then there are those who see inequality and find themselves driven to take action, outside the law if necessary. These vigilantes operate in plain sight, hiding behind respectable personas by day, but donning alternate guises by night to right the wrongs they see all around them.</p><p>Not all vigilantes are out to make the world a better place. Some criminals hide behind the pretense of being ordinary folk, only to become terrors in the shadows, stealing and killing to fulfill some dark agenda. In either case, the vigilante is a character of two natures—the face that everyone knows and the mask that inspires fear.</p><p><strong>Role</strong>: A vigilante can take on many tasks within a group. Most are skilled at negotiating delicate social situations and courtly intrigue, but they can also serve as stealthy spies or even brutish warriors in dangerous environments.</p>",
+    "features": [
+      {
+        "featureId": "caHXpWVlJLxRKvOS",
+        "level": 1,
+        "name": "Dual Identity",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.caHXpWVlJLxRKvOS"
+      },
+      {
+        "featureId": "TMpfSlpC7To6uXGE",
+        "level": 1,
+        "name": "Seamless Guise",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.TMpfSlpC7To6uXGE"
+      },
+      {
+        "featureId": "2uDIHsepFL6PRyRj",
+        "level": 1,
+        "name": "Social Talent",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2uDIHsepFL6PRyRj"
+      },
+      {
+        "featureId": "vTE94sQboMmdAakT",
+        "level": 1,
+        "name": "Vigilante Specialization",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vTE94sQboMmdAakT"
+      },
+      {
+        "featureId": "o4FeJzhEdocIO4mY",
+        "level": 2,
+        "name": "Vigilante Talent",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.o4FeJzhEdocIO4mY"
+      },
+      {
+        "featureId": "4U69gg3altKZvFHD",
+        "level": 3,
+        "name": "Unshakable",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4U69gg3altKZvFHD"
+      },
+      {
+        "featureId": "qCl2cw0leReIXuRn",
+        "level": 5,
+        "name": "Startling Appearance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qCl2cw0leReIXuRn"
+      },
+      {
+        "featureId": "2tq8HQ4ZQpiL3njr",
+        "level": 11,
+        "name": "Frightening Appearance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2tq8HQ4ZQpiL3njr"
+      },
+      {
+        "featureId": "fCaw2ldaQlkktvsB",
+        "level": 17,
+        "name": "Stunning Appearance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fCaw2ldaQlkktvsB"
+      },
+      {
+        "featureId": "xrruZUG1zqIHe35h",
+        "level": 20,
+        "name": "Vengeance Strike",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xrruZUG1zqIHe35h"
+      }
+    ],
+    "hd": 8,
+    "id": "Yf5Wv9X09SUHYCqM",
+    "name": "Vigilante",
+    "saves": {
+      "fort": "low",
+      "ref": "high",
+      "will": "high"
+    },
+    "skillsPerLevel": 6,
+    "subType": "base",
+    "tag": "vigilante",
+    "uuid": "Compendium.pf1.classes.Item.Yf5Wv9X09SUHYCqM",
+    "weaponProf": ["simple", "martial"]
+  },
+  "cOY76lMUkupH534m": {
+    "armorProf": ["lgt", "med", "shl"],
+    "bab": "high",
+    "classSkills": [
+      "acr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dis",
+      "hea",
+      "int",
+      "kdu",
+      "kge",
+      "klo",
+      "lor",
+      "per",
+      "pro",
+      "rid",
+      "sen",
+      "ste",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>Skilled at tracking down targets, slayers are consummate hunters, living for the chase and the deadly stroke that brings it to a close. Slayers spend most of their time honing their weapon skills, studying the habits and anatomy of foes, and practicing combat maneuvers.</p><p><strong>Role</strong>: The slayer is elusive, and good at finding the opportune time and location to strike. Combining the deadliest talents of rangers and rogues, a slayer’s abilities are all about getting into combat, dealing with a target, and then getting back out again.</p><p><strong>Parent Classes</strong>: <em>Ranger</em> and <em>rogue</em>.</p>",
+    "features": [
+      {
+        "featureId": "JnXrphJlr1ULx1MK",
+        "level": 1,
+        "name": "Studied Target",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.JnXrphJlr1ULx1MK"
+      },
+      {
+        "featureId": "r8wPs0bB3WhOLxbX",
+        "level": 1,
+        "name": "Track",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.r8wPs0bB3WhOLxbX"
+      },
+      {
+        "featureId": "Zn9ecDCXShBK4vj8",
+        "level": 2,
+        "name": "Slayer Talents",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Zn9ecDCXShBK4vj8"
+      },
+      {
+        "featureId": "Wl3FUflcmvQP0PaQ",
+        "level": 3,
+        "name": "Sneak Attack (SLA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Wl3FUflcmvQP0PaQ"
+      },
+      {
+        "featureId": "0oO5lfLEq2ggvGHg",
+        "level": 7,
+        "name": "Stalker",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0oO5lfLEq2ggvGHg"
+      },
+      {
+        "featureId": "aNTZXUUBQlh5VDTv",
+        "level": 10,
+        "name": "Advanced Talents (SLA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.aNTZXUUBQlh5VDTv"
+      },
+      {
+        "featureId": "sk0HNTe9lKBpHQpN",
+        "level": 11,
+        "name": "Swift Tracker",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sk0HNTe9lKBpHQpN"
+      },
+      {
+        "featureId": "yotHT522pQoKDhID",
+        "level": 13,
+        "name": "Slayer's Advance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yotHT522pQoKDhID"
+      },
+      {
+        "featureId": "5NS7Ec3WhKIkhygg",
+        "level": 14,
+        "name": "Quarry",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5NS7Ec3WhKIkhygg"
+      },
+      {
+        "featureId": "oRac7XDHBN0JzuyY",
+        "level": 19,
+        "name": "Improved Quarry",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.oRac7XDHBN0JzuyY"
+      },
+      {
+        "featureId": "znkQ87s5WAKHaUVu",
+        "level": 20,
+        "name": "Master Slayer",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.znkQ87s5WAKHaUVu"
+      }
+    ],
+    "hd": 10,
+    "id": "cOY76lMUkupH534m",
+    "name": "Slayer",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 6,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "53-55"
+      }
+    ],
+    "subType": "base",
+    "tag": "slayer",
+    "uuid": "Compendium.pf1.classes.Item.cOY76lMUkupH534m",
+    "weaponProf": ["simple", "martial"]
+  },
   "g3pq7xWWdUVYw6ai": {
     "armorProf": ["lgt", "med", "shl"],
     "bab": "high",
@@ -1354,6 +3138,493 @@
     "tag": "barbarian",
     "uuid": "Compendium.pf1.classes.Item.g3pq7xWWdUVYw6ai",
     "weaponProf": ["simple", "martial"]
+  },
+  "iDlGMIezGuqqt8Us": {
+    "armorProf": ["lgt", "shl"],
+    "bab": "high",
+    "classSkills": [
+      "acr",
+      "art",
+      "clm",
+      "crf",
+      "esc",
+      "han",
+      "int",
+      "kdu",
+      "klo",
+      "lor",
+      "per",
+      "pro",
+      "rid",
+      "sen",
+      "swm"
+    ],
+    "description": "<p>Deadly even with nothing in her hands, a brawler eschews using the fighter’s heavy armor and the monk’s mysticism, focusing instead on perfecting many styles of brutal unarmed combat. Versatile, agile, and able to adapt to most enemy attacks, a brawler’s body is a powerful weapon.</p><p><strong>Role</strong>: Brawlers are maneuverable and well suited for creating flanking situations or dealing with lightly armored enemies, as well as quickly adapting to a rapidly changing battlefield.</p><p><strong>Parent Classes</strong>: <em>Fighter</em> and <em>monk</em>.</p>",
+    "features": [
+      {
+        "featureId": "6wtTc1PRWBKZuF9D",
+        "level": 1,
+        "name": "Brawler's Cunning",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.6wtTc1PRWBKZuF9D"
+      },
+      {
+        "featureId": "sOwXPOtI5IlEBKwr",
+        "level": 1,
+        "name": "Martial Flexibility",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sOwXPOtI5IlEBKwr"
+      },
+      {
+        "featureId": "agVFqf3mfxf0l8oT",
+        "level": 1,
+        "name": "Martial Training",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.agVFqf3mfxf0l8oT"
+      },
+      {
+        "featureId": "dlrAyDyBF8ldtpH8",
+        "level": 1,
+        "name": "Unarmed Strike (BRA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dlrAyDyBF8ldtpH8"
+      },
+      {
+        "featureId": "o8AEIzEXMjEZ2EX1",
+        "level": 2,
+        "name": "Bonus Combat Feats (BRA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.o8AEIzEXMjEZ2EX1"
+      },
+      {
+        "featureId": "UwcsrKHgN6mEo8Bd",
+        "level": 2,
+        "name": "Brawler's Flurry",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UwcsrKHgN6mEo8Bd"
+      },
+      {
+        "featureId": "n1PlbzPfZGklyUVV",
+        "level": 3,
+        "name": "Maneuver Training (BRA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.n1PlbzPfZGklyUVV"
+      },
+      {
+        "featureId": "Z53orCz6KeTS5LOb",
+        "level": 4,
+        "name": "AC Bonus (BRA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Z53orCz6KeTS5LOb"
+      },
+      {
+        "featureId": "SQXP7EIAIH22DM39",
+        "level": 4,
+        "name": "Knockout",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.SQXP7EIAIH22DM39"
+      },
+      {
+        "featureId": "7ORiNdGyLzGddgNK",
+        "level": 5,
+        "name": "Brawler's Strike",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7ORiNdGyLzGddgNK"
+      },
+      {
+        "featureId": "9iDmR626f7nfGE3k",
+        "level": 5,
+        "name": "Close Weapon Mastery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9iDmR626f7nfGE3k"
+      },
+      {
+        "featureId": "EnMgClQRxY1GXg4e",
+        "level": 16,
+        "name": "Awesome Blow",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.EnMgClQRxY1GXg4e"
+      },
+      {
+        "featureId": "W6lurGAdeDsAch3G",
+        "level": 20,
+        "name": "Improved Awesome Blow",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.W6lurGAdeDsAch3G"
+      }
+    ],
+    "hd": 10,
+    "id": "iDlGMIezGuqqt8Us",
+    "name": "Brawler",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "23-25"
+      }
+    ],
+    "subType": "base",
+    "tag": "brawler",
+    "uuid": "Compendium.pf1.classes.Item.iDlGMIezGuqqt8Us",
+    "weaponProf": ["simple", "Handaxe", "Shortsword", "Close Weapon Group"]
+  },
+  "jMi3GBtvdG0WhH8L": {
+    "armorProf": ["lgt", "med"],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "crf",
+      "dip",
+      "fly",
+      "han",
+      "hea",
+      "kna",
+      "kpl",
+      "kre",
+      "lor",
+      "pro",
+      "rid",
+      "spl",
+      "sur"
+    ],
+    "description": "<p>While some heroes speak to gods or consort with otherworldly muses, shamans commune with the spirits of the world and the energies that exist in every living thing. These divine adventurers draw upon their power to shape the world and expand the influence of their spiritual patrons. Shamans have strong ties to natural spirits. They form powerful bonds with particular spirits, and as their power grows they learn to call upon other spirits in times of need.</p><p><strong>Role</strong>: Shamans make for potent divine spellcasters, capable of using divine spells and the power of their spirits to aid their allies and destroy their foes. While they aren’t the healers that clerics are, they can still fill that role when needed.</p><p><strong>Parent Classes</strong>: <em>Oracle</em> and <em>witch</em>.</p>",
+    "features": [
+      {
+        "featureId": "RaFl9SpbAlXqhsDk",
+        "level": 1,
+        "name": "Orisons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RaFl9SpbAlXqhsDk"
+      },
+      {
+        "featureId": "poiguEXE0VZ4zyxS",
+        "level": 1,
+        "name": "Shaman Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.poiguEXE0VZ4zyxS"
+      },
+      {
+        "featureId": "ohVBtSayzMqWwHny",
+        "level": 1,
+        "name": "Spirit",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ohVBtSayzMqWwHny"
+      },
+      {
+        "featureId": "gxNLi0faH5Jg4EHw",
+        "level": 1,
+        "name": "Spirit Animal",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.gxNLi0faH5Jg4EHw"
+      },
+      {
+        "featureId": "nyS8BwyNSLYTaHLL",
+        "level": 1,
+        "name": "Spirit Magic",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nyS8BwyNSLYTaHLL"
+      },
+      {
+        "featureId": "PW7CGt2iZsQFeZUI",
+        "level": 2,
+        "name": "Hex (SHA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.PW7CGt2iZsQFeZUI"
+      },
+      {
+        "featureId": "hK3eV1W6GnifvoB8",
+        "level": 4,
+        "name": "Wandering Spirit",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hK3eV1W6GnifvoB8"
+      },
+      {
+        "featureId": "aAKLKhJV2DvKl1T8",
+        "level": 6,
+        "name": "Wandering Hex",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.aAKLKhJV2DvKl1T8"
+      },
+      {
+        "featureId": "3lbjP8Yvs1Jtbsqh",
+        "level": 8,
+        "name": "Spirit (greater)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.3lbjP8Yvs1Jtbsqh"
+      },
+      {
+        "featureId": "3wfFDagWXK5x1nQW",
+        "level": 12,
+        "name": "Spirit (true)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.3wfFDagWXK5x1nQW"
+      },
+      {
+        "featureId": "AxKECwPCNHbQeCxT",
+        "level": 12,
+        "name": "Wandering Spirit (greater)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AxKECwPCNHbQeCxT"
+      },
+      {
+        "featureId": "Z2sZPjplxeUu0KNh",
+        "level": 20,
+        "name": "Manifestation",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Z2sZPjplxeUu0KNh"
+      },
+      {
+        "featureId": "sJloSqanYqBAawgK",
+        "level": 20,
+        "name": "Wandering Spirit (true)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sJloSqanYqBAawgK"
+      }
+    ],
+    "hd": 8,
+    "id": "jMi3GBtvdG0WhH8L",
+    "name": "Shaman",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "35-48"
+      }
+    ],
+    "subType": "base",
+    "tag": "shaman",
+    "uuid": "Compendium.pf1.classes.Item.jMi3GBtvdG0WhH8L",
+    "weaponProf": ["simple"]
+  },
+  "jOUMbWoFZHQlAMpJ": {
+    "armorProf": ["lgt"],
+    "bab": "high",
+    "classSkills": [
+      "acr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "han",
+      "hea",
+      "int",
+      "ken",
+      "klo",
+      "lor",
+      "per",
+      "pro",
+      "rid",
+      "slt",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>For a renegade few, battle sounds different than it does for the typical fighter. The clash of steel and the sizzle of spell energy are drowned out by the thunderous rhythm of gunfire—the pounding beat of the gunslinger.</p><p>Gunslingers are a bold and mysterious lot. While many treat the secrets of black powder with the same care and reverence that a wizard typically reserves for his spellbook, most gunslingers know that firearms are a secret that cannot remain concealed forever. While current firearms are simple, often imprecise, and even dangerous devices, they are a technology on the move, and one that will become even more powerful when it is fully fused with magic.</p><p><strong>Role</strong>: Gunslingers are thunderous artillery, often found where the fighting is fiercest. Brave, clever, and frequently foolhardy, many gunslingers push to position themselves at close range, barrels blazing, to take down their foes and demoralize their enemies. Other gunslingers are masters of distant death, picking off enemies from afar with their strange and wondrous weapons.</p><p><strong>Starting Wealth</strong>: The gunslinger begins with her starting firearm.</p>",
+    "features": [
+      {
+        "featureId": "D13TR3rNmjwMPXuD",
+        "level": 1,
+        "name": "Deadeye",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.D13TR3rNmjwMPXuD"
+      },
+      {
+        "featureId": "KOfYE2fC3zYkrSPj",
+        "level": 1,
+        "name": "Deeds",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KOfYE2fC3zYkrSPj"
+      },
+      {
+        "featureId": "Rh4www7gtV7wvUzg",
+        "level": 1,
+        "name": "Grit",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Rh4www7gtV7wvUzg"
+      },
+      {
+        "featureId": "qXbFw1qEdelMGNH4",
+        "level": 1,
+        "name": "Gunslinger's Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qXbFw1qEdelMGNH4"
+      },
+      {
+        "featureId": "QTEANZz5ALZQcSIR",
+        "level": 1,
+        "name": "Gunsmith",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QTEANZz5ALZQcSIR"
+      },
+      {
+        "featureId": "d98FdUBXU4Gimizx",
+        "level": 1,
+        "name": "Quick Clear",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.d98FdUBXU4Gimizx"
+      },
+      {
+        "featureId": "BTkYdjVLcQMfFsv9",
+        "level": 2,
+        "name": "Nimble",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BTkYdjVLcQMfFsv9"
+      },
+      {
+        "featureId": "ZMk7lj8hea8clAxe",
+        "level": 3,
+        "name": "Gunslinger Initiative",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZMk7lj8hea8clAxe"
+      },
+      {
+        "featureId": "i495GvOqGUcml6yW",
+        "level": 3,
+        "name": "Pistol-Whip",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.i495GvOqGUcml6yW"
+      },
+      {
+        "featureId": "8wPhoiyqd0HQvMl5",
+        "level": 3,
+        "name": "Utility Shot",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.8wPhoiyqd0HQvMl5"
+      },
+      {
+        "featureId": "c1DXh24tF5vQFLaI",
+        "level": 4,
+        "name": "Bonus Feats (GUN)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.c1DXh24tF5vQFLaI"
+      },
+      {
+        "featureId": "KeqW25zOjSQAl3n2",
+        "level": 5,
+        "name": "Gun Training",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KeqW25zOjSQAl3n2"
+      },
+      {
+        "featureId": "W3RCSHE7qjDNKp7c",
+        "level": 7,
+        "name": "Dead Shot",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.W3RCSHE7qjDNKp7c"
+      },
+      {
+        "featureId": "MoYtXZ0fYDw7If8G",
+        "level": 7,
+        "name": "Startling Shot",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.MoYtXZ0fYDw7If8G"
+      },
+      {
+        "featureId": "HZ2oSGU7xXLjz8Rp",
+        "level": 7,
+        "name": "Targeting",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HZ2oSGU7xXLjz8Rp"
+      },
+      {
+        "featureId": "a0jWCaAunG7XDqaE",
+        "level": 11,
+        "name": "Bleeding Wound",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.a0jWCaAunG7XDqaE"
+      },
+      {
+        "featureId": "L7qwZSab2Ql99gha",
+        "level": 11,
+        "name": "Expert Loading",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.L7qwZSab2Ql99gha"
+      },
+      {
+        "featureId": "UcMtpUH9UqAn9429",
+        "level": 11,
+        "name": "Lightning Reload",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UcMtpUH9UqAn9429"
+      },
+      {
+        "featureId": "UXMvElITxkDl5HJW",
+        "level": 15,
+        "name": "Evasive",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UXMvElITxkDl5HJW"
+      },
+      {
+        "featureId": "C5Th67iHrKgKss6o",
+        "level": 15,
+        "name": "Menacing Shot",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.C5Th67iHrKgKss6o"
+      },
+      {
+        "featureId": "nhPZuu8E0QHjb9RK",
+        "level": 15,
+        "name": "Slinger's Luck",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nhPZuu8E0QHjb9RK"
+      },
+      {
+        "featureId": "SEqzaRbIn7ePwIOt",
+        "level": 19,
+        "name": "Cheat Death",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.SEqzaRbIn7ePwIOt"
+      },
+      {
+        "featureId": "KnnoxYDiEydW3vFo",
+        "level": 19,
+        "name": "Death's Shot",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KnnoxYDiEydW3vFo"
+      },
+      {
+        "featureId": "wO5J51vEaMyWpgWQ",
+        "level": 19,
+        "name": "Stunning Shot",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wO5J51vEaMyWpgWQ"
+      },
+      {
+        "featureId": "awBIJLvjcQIaPoCq",
+        "level": 20,
+        "name": "True Grit",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.awBIJLvjcQIaPoCq"
+      }
+    ],
+    "hd": 10,
+    "id": "jOUMbWoFZHQlAMpJ",
+    "name": "Gunslinger",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "9-12"
+      }
+    ],
+    "subType": "base",
+    "tag": "gunslinger",
+    "uuid": "Compendium.pf1.classes.Item.jOUMbWoFZHQlAMpJ",
+    "weaponProf": ["simple", "martial", "Firearms"]
   },
   "ohptcds1d5oG6Bjh": {
     "armorProf": ["lgt", "med", "hvy", "shl"],
@@ -1505,6 +3776,303 @@
     "subType": "base",
     "tag": "paladin",
     "uuid": "Compendium.pf1.classes.Item.ohptcds1d5oG6Bjh",
+    "weaponProf": ["simple", "martial"]
+  },
+  "s27zdYVFenYBVtfu": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": [
+      "acr",
+      "apr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dev",
+      "dip",
+      "dis",
+      "esc",
+      "hea",
+      "int",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "sen",
+      "slt",
+      "spl",
+      "ste",
+      "umd"
+    ],
+    "description": "<p>Whether on the trail of a fugitive, a long-lost treasure trove, or a criminal mastermind, investigators are motivated by an intense curiosity about the world and use knowledge of it as a weapon. Mixing gumption and learnedness into a personal alchemy of daring, investigators are full of surprises. Observing the world around them, they gain valuable knowledge about the situation they’re in, process that information using inspiration and deduction, and cut to the quick of the matter in unexpected ways. Investigators are always evaluating situations they encounter, sizing up potential foes, and looking out for secret dangers, all while using their vast knowledge and powers of perception to find solutions to the most perplexing problems.</p><p><strong>Role</strong>: Investigators live to solve mysteries and find inventive ways to get out of jams. They serve as advisors and support for their adventuring parties, but can take center stage when knowledge and cunning are needed. No slouches in battle, they know how to make surprise attacks and use inspiration to bring those attacks home.</p><p><strong>Parent Classes</strong>: <em>Alchemist</em> and <em>rogue</em>.</p>",
+    "features": [
+      {
+        "featureId": "gotW1ETzGrrwVtk2",
+        "level": 1,
+        "name": "Alchemy (INV)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.gotW1ETzGrrwVtk2"
+      },
+      {
+        "featureId": "nKbyztRQCU5XMbbs",
+        "level": 1,
+        "name": "Inspiration",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nKbyztRQCU5XMbbs"
+      },
+      {
+        "featureId": "pEODJDoTk7uhCZY7",
+        "level": 1,
+        "name": "Trapfinding",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pEODJDoTk7uhCZY7"
+      },
+      {
+        "featureId": "C7UgLJt7yRHnAqyG",
+        "level": 2,
+        "name": "Poison Lore",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.C7UgLJt7yRHnAqyG"
+      },
+      {
+        "featureId": "2qcz39w9O2Qlms0Q",
+        "level": 2,
+        "name": "Poison Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2qcz39w9O2Qlms0Q"
+      },
+      {
+        "featureId": "AOnFqb1h3gXbFUup",
+        "level": 3,
+        "name": "Investigator Talent",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AOnFqb1h3gXbFUup"
+      },
+      {
+        "featureId": "rJBdkI8mlJBNWcU2",
+        "level": 3,
+        "name": "Keen Recollection",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.rJBdkI8mlJBNWcU2"
+      },
+      {
+        "featureId": "BoEkMviJrW0PKmhj",
+        "level": 3,
+        "name": "Trap Sense",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BoEkMviJrW0PKmhj"
+      },
+      {
+        "featureId": "nVwveeNV71Bg7YnY",
+        "level": 4,
+        "name": "Studied Combat",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nVwveeNV71Bg7YnY"
+      },
+      {
+        "featureId": "3WsfpUeW7oe4GOuh",
+        "level": 4,
+        "name": "Studied Strike",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.3WsfpUeW7oe4GOuh"
+      },
+      {
+        "featureId": "kEVqxs23oyNDxbc1",
+        "level": 4,
+        "name": "Swift Alchemy (INV)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kEVqxs23oyNDxbc1"
+      },
+      {
+        "featureId": "tflIOhX6ukxtwXLx",
+        "level": 11,
+        "name": "Poison Immunity",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tflIOhX6ukxtwXLx"
+      },
+      {
+        "featureId": "H2Iac6ELVKBU6Ayu",
+        "level": 20,
+        "name": "True Inspiration",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.H2Iac6ELVKBU6Ayu"
+      }
+    ],
+    "hd": 8,
+    "id": "s27zdYVFenYBVtfu",
+    "name": "Investigator",
+    "saves": {
+      "fort": "low",
+      "ref": "high",
+      "will": "high"
+    },
+    "skillsPerLevel": 6,
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "30-34"
+      }
+    ],
+    "subType": "base",
+    "tag": "investigator",
+    "uuid": "Compendium.pf1.classes.Item.s27zdYVFenYBVtfu",
+    "weaponProf": [
+      "simple",
+      "Hand Crossbow",
+      "Rapier",
+      "Sap",
+      "Shortbow",
+      "Shortsword",
+      "Sword Cane"
+    ]
+  },
+  "u1ed3H9xtYQXTP5v": {
+    "armorProf": ["lgt", "med", "hvy", "shl"],
+    "bab": "high",
+    "classSkills": [
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dip",
+      "han",
+      "int",
+      "lor",
+      "pro",
+      "rid",
+      "sen",
+      "swm"
+    ],
+    "description": "<p>While many warriors strive to perfect their art, spending all of their time honing their skill at martial arms, others spend as much effort dedicating themselves to a cause. These warriors, known as cavaliers, swear themselves to a purpose, serving it above all else. Cavaliers are skilled at fighting from horseback, and are often found charging across a battlefield, with the symbol of their order trailing on a long, fluttering banner. The cavalier’s true power comes from the conviction of his ideals, the oaths that he swears, and the challenges he makes.</p><p><strong>Role</strong>: Cavaliers tend to marshal forces on the battlefield, using their mounted talents and challenges to control the flow of the fight. Outside of battle, cavaliers can be found advancing their cause through diplomacy and, if needed, subterfuge. The cavalier is no stranger to courtly intrigue and can hold his own in even the most delicate of social situations.</p>",
+    "features": [
+      {
+        "featureId": "WNi2SBF6Z2zhBMCl",
+        "level": 1,
+        "name": "Challenge (CAV)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WNi2SBF6Z2zhBMCl"
+      },
+      {
+        "featureId": "P2XyBCDEUGOFwRAF",
+        "level": 1,
+        "name": "Mount",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.P2XyBCDEUGOFwRAF"
+      },
+      {
+        "featureId": "c3MSLdplxdRZrSxL",
+        "level": 1,
+        "name": "Order",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.c3MSLdplxdRZrSxL"
+      },
+      {
+        "featureId": "YKyAQ2o5Yzox79B8",
+        "level": 1,
+        "name": "Tactician",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YKyAQ2o5Yzox79B8"
+      },
+      {
+        "featureId": "QGv2YjclwgkruFE6",
+        "level": 3,
+        "name": "Cavalier's Charge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QGv2YjclwgkruFE6"
+      },
+      {
+        "featureId": "nBpz562qzAntafUI",
+        "level": 4,
+        "name": "Expert Trainer",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nBpz562qzAntafUI"
+      },
+      {
+        "featureId": "pqu1Mvo46iRpVH3I",
+        "level": 5,
+        "name": "Banner",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pqu1Mvo46iRpVH3I"
+      },
+      {
+        "featureId": "vfu0FW2XYF7cBUQp",
+        "level": 6,
+        "name": "Bonus Feat (CAV)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vfu0FW2XYF7cBUQp"
+      },
+      {
+        "featureId": "ikVwT8b9zfj701k1",
+        "level": 9,
+        "name": "Greater Tactician",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ikVwT8b9zfj701k1"
+      },
+      {
+        "featureId": "fo3SQLOjFcQSmVMJ",
+        "level": 11,
+        "name": "Mighty Charge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fo3SQLOjFcQSmVMJ"
+      },
+      {
+        "featureId": "jqXRcfZYvBL50z0q",
+        "level": 12,
+        "name": "Demanding Challenge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jqXRcfZYvBL50z0q"
+      },
+      {
+        "featureId": "1Yy6Fn3UD82uviFg",
+        "level": 14,
+        "name": "Greater Banner",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1Yy6Fn3UD82uviFg"
+      },
+      {
+        "featureId": "mrJ61WiA6PuZgPTJ",
+        "level": 17,
+        "name": "Master Tacitician",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mrJ61WiA6PuZgPTJ"
+      },
+      {
+        "featureId": "pZaZcT8gMPQGX9Ur",
+        "level": 20,
+        "name": "Supreme Charge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pZaZcT8gMPQGX9Ur"
+      }
+    ],
+    "hd": 10,
+    "id": "u1ed3H9xtYQXTP5v",
+    "name": "Cavalier",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "32-37"
+      }
+    ],
+    "subType": "base",
+    "tag": "cavalier",
+    "uuid": "Compendium.pf1.classes.Item.u1ed3H9xtYQXTP5v",
     "weaponProf": ["simple", "martial"]
   },
   "w3wjj6s3N69BsMc3": {
