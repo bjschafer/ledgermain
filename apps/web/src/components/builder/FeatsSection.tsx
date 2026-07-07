@@ -291,7 +291,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                     ))}
                     {res.softText ? (
                       <span
-                        className="soft"
+                        className="desc-text"
                         title="Prerequisite text — verify manually (not auto-enforced)"
                       >
                         ⚠ {res.softText}
