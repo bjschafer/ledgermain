@@ -1195,6 +1195,35 @@ button:focus-visible,
   overflow: hidden;
 }
 
+/* Typed feat-slot budget summary (issue #54/#57) — one chip per restricted
+   slot group (Fighter combat feats, a ranger's chosen combat style, a
+   sorcerer's chosen bloodline, …), plus a chip for chosen feats that don't
+   fit any open slot. Only rendered when the character has at least one
+   restricted slot type, so unrestricted characters see no extra UI. */
+.feat-slot-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.slot-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.slot-chip-warn {
+  border-color: var(--danger, #d9534f);
+  color: var(--danger, #d9534f);
+}
+
 .pick-row.is-selected {
   background: #20231c;
 }

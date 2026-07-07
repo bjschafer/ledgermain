@@ -236,6 +236,7 @@ export {
   type RangerChoice,
   type CombatStyle,
 } from "./ranger.js";
+export { MONK_BONUS_FEAT_SLUGS } from "./monk.js";
 export { computeDefenses } from "./defenses.js";
 export {
   carryingCapacity,
