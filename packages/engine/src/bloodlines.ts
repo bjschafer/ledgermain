@@ -524,7 +524,7 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         contextNotes: [
           {
             target: "allChecks",
-            text: "Energy resistance (5, 10 at 9th) is to your chosen dragon type only — not tracked as a Change since the type is a free-text pick; add it manually.",
+            text: "Energy resistance (5, 10 at 9th) is to your chosen dragon type only — since that's a free-text pick, it isn't tracked as a number here; add it manually.",
           },
         ],
       },
@@ -569,7 +569,7 @@ const BLOODLINE_LIST: BloodlineDef[] = [
       contextNotes: [
         {
           target: "allChecks",
-          text: "Energy-type swap is a casting-time choice — not modeled numerically.",
+          text: "Energy-type swap is a casting-time choice — no number to track here.",
         },
       ],
     },
@@ -597,7 +597,7 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         contextNotes: [
           {
             target: "allChecks",
-            text: "Resistance is to your chosen element's energy type only — not tracked as a Change since the choice is free-text; add it manually.",
+            text: "Resistance is to your chosen element's energy type only — since that's a free-text pick, it isn't tracked as a number here; add it manually.",
           },
         ],
       },
@@ -618,7 +618,7 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         contextNotes: [
           {
             target: "allChecks",
-            text: "Movement mode depends on your chosen element — not tracked as a Change; add it manually.",
+            text: "Movement mode depends on your chosen element — not tracked as a number here; add it manually.",
           },
         ],
       },
@@ -802,7 +802,7 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         contextNotes: [
           {
             target: "allChecks",
-            text: "The DR (5, 10 at 9th) applies only to nonlethal damage — not modeled as a general DR Change.",
+            text: "The DR (5, 10 at 9th) applies only to nonlethal damage — not folded into your general DR total.",
           },
         ],
       },

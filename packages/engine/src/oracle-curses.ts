@@ -83,7 +83,7 @@ const CURSE_LIST: OracleCurseDef[] = [
     contextNotes: [
       {
         target: "allChecks",
-        text: "Vision capped at 30 ft. (60 ft. at 5th) but with darkvision; blindsense 30 ft. at 10th, blindsight 15 ft. at 15th — not modeled as discrete sheet stats.",
+        text: "Vision capped at 30 ft. (60 ft. at 5th) but with darkvision; blindsense 30 ft. at 10th, blindsight 15 ft. at 15th — these are situational senses, not numbers on the sheet.",
       },
     ],
   },
@@ -113,7 +113,7 @@ const CURSE_LIST: OracleCurseDef[] = [
     contextNotes: [
       {
         target: "allChecks",
-        text: "Retrieving stored gear takes a standard action; dropped items land 10 ft. away in a random direction — situational, not a sheet stat.",
+        text: "Retrieving stored gear takes a standard action; dropped items land 10 ft. away in a random direction — situational, doesn't change any numbers.",
       },
     ],
     bonusSpells: [
@@ -134,7 +134,7 @@ const CURSE_LIST: OracleCurseDef[] = [
     contextNotes: [
       {
         target: "landSpeed",
-        text: "Never reduced by encumbrance (starting immediately) or armor (starting 10th level) — this engine's armor/encumbrance speed penalty isn't conditioned on this curse; apply manually if relevant.",
+        text: "Never reduced by encumbrance (starting immediately) or armor (starting 10th level) — that exemption isn't auto-applied; back it out manually if relevant.",
       },
     ],
   },
@@ -147,7 +147,7 @@ const CURSE_LIST: OracleCurseDef[] = [
     contextNotes: [
       {
         target: "allChecks",
-        text: "Applies to language-dependent spells too — situational, not a sheet stat. The chosen language(s) are a free-text player choice this table doesn't record.",
+        text: "Applies to language-dependent spells too — situational, doesn't change any numbers. Note your chosen language(s) yourself; there's nowhere to record them here.",
       },
     ],
   },
@@ -160,7 +160,7 @@ const CURSE_LIST: OracleCurseDef[] = [
     contextNotes: [
       {
         target: "chaSkills",
-        text: "RAW exempts Intimidate from this -4 (this engine's chaSkills target — same one the vendored data uses — applies to all Cha-based skills; back out the penalty manually for Intimidate checks).",
+        text: "Intimidate is exempt from this -4, but the penalty above applies to all Charisma-based skills — back it out manually for Intimidate checks.",
       },
       {
         target: "allSavingThrows",
