@@ -59,7 +59,7 @@ function plural(n: number, word: string): string {
  * layer for each section's own header (never reimplements the math — see
  * task instructions). Only sections with something outstanding get an entry.
  */
-function useAttentionBadges({
+export function useAttentionBadges({
   doc,
   sheet,
   refData,

@@ -2070,6 +2070,22 @@ button:focus-visible,
   color: var(--gold-2);
 }
 
+/* Aggregate unfinished-business count on the Build tab (see App.tsx's
+   BuildTabBadge) — same whisper-not-shout treatment as .build-nav-badge. */
+.mode-tab-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 5px;
+  min-width: 14px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-dim);
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0;
+  color: var(--gold-2);
+  vertical-align: 1px;
+}
+
 .tracker-col h4.tracker-sub {
   font-family: var(--mono);
   font-size: 11px;

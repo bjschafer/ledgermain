@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { AbilitiesSection } from "./components/builder/AbilitiesSection.js";
-import { BuildNav } from "./components/builder/BuildNav.js";
+import { BuildNav, useAttentionBadges } from "./components/builder/BuildNav.js";
 import { ClassesSection } from "./components/builder/ClassesSection.js";
 import { FeatsSection } from "./components/builder/FeatsSection.js";
 import { GearSection } from "./components/builder/GearSection.js";
@@ -25,6 +25,27 @@ import { Tracker } from "./components/tracker/Tracker.js";
 import { useCharacter } from "./state/useCharacter.js";
 
 type Mode = "build" | "play" | "settings";
+
+/**
+ * Aggregate "unfinished business" cue on the Build mode tab — the sum of the
+ * section badges BuildNav shows (unassigned ability increases, open skill
+ * ranks/feat slots, unpicked exploits). Dim/informational badges (traits)
+ * don't count; the tab cue only fires for things the player almost certainly
+ * wants to spend. Rendered from Play/Settings too, so a level-up's new budget
+ * is visible without switching to Build first.
+ */
+function BuildTabBadge(props: Pick<BuilderProps, "doc" | "sheet" | "refData">) {
+  const badges = useAttentionBadges(props);
+  const count = Object.values(badges)
+    .filter((b) => b != null && b.tone !== "dim")
+    .reduce((sum, b) => sum + b!.count, 0);
+  if (count === 0) return null;
+  return (
+    <span className="mode-tab-badge" title={`${count} unspent build choices`}>
+      {count}
+    </span>
+  );
+}
 
 export function App() {
   const store = useCharacter();
@@ -50,6 +71,9 @@ export function App() {
             onClick={() => setMode("build")}
           >
             Build
+            {store.status === "ready" && store.doc && store.sheet && store.refData ? (
+              <BuildTabBadge doc={store.doc} sheet={store.sheet} refData={store.refData} />
+            ) : null}
           </button>
           <button
             type="button"
