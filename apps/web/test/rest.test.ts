@@ -283,4 +283,57 @@ describe("newDaySummary()", () => {
     const after = { ...before, live: { ...before.live, resources: { rage: { used: 0, max: 5 } } } };
     expect(newDaySummary(before, after)).toBe("rage 5/5");
   });
+
+  // Issue #63: the app-wide New Day action's toast previously reported a
+  // single opaque "N spell slots refreshed" combining every caster class —
+  // extended below to break that segment out per class, mirroring however
+  // `restNewDay` actually reset that class's spell state (prepared reset vs.
+  // spontaneous slots restored).
+  it("reports a single caster class's spell reset by name when refData is given (issue #63)", () => {
+    let doc = addClass(createEmptyDoc("t"), "wizard");
+    doc = setClassLevel(doc, "wizard", 1);
+    const fullSheet = compute(doc, ref);
+    doc = { ...doc, live: { ...doc.live, hp: { ...doc.live.hp, current: fullSheet.hp.max } } };
+    const spellId = ref.spellLists["wizard"]![1]![0]!;
+    doc = prepareSpell(doc, spellId);
+    doc = setExpendedAt(doc, 0, true);
+
+    const sheet = compute(doc, ref);
+    const result = restNewDay(doc, sheet, ref);
+    expect(result.summary).toBe("Wizard: 1 prepared spell reset");
+  });
+
+  it("breaks a multiclass rest's spell segment down per caster class instead of one combined count (issue #63)", () => {
+    let doc = clericSorcererDoc();
+    const fullSheet = compute(doc, ref);
+    doc = { ...doc, live: { ...doc.live, hp: { ...doc.live.hp, current: fullSheet.hp.max } } };
+
+    const clericSpellId = ref.spellLists["cleric"]![1]![0]!;
+    doc = prepareSpell(doc, clericSpellId, undefined);
+    doc = setExpendedAt(doc, 0, true);
+
+    const sorcTag = storedClassTag(doc, ref, "sorcerer");
+    const sorcModel = casterModelFor("sorcerer")!;
+    doc = castSpontaneousSlot(doc, sorcModel, 3, 0, 1, sorcTag);
+
+    const sheet = compute(doc, ref);
+    const result = restNewDay(doc, sheet, ref);
+    expect(result.summary).toBe("Cleric: 1 prepared spell reset · Sorcerer: 1 slot restored");
+  });
+
+  it("omits a caster class's segment entirely when nothing changed for it (issue #63)", () => {
+    let doc = clericSorcererDoc();
+    const fullSheet = compute(doc, ref);
+    doc = { ...doc, live: { ...doc.live, hp: { ...doc.live.hp, current: fullSheet.hp.max } } };
+
+    // Only the sorcerer half casts anything; the cleric's loadout stays
+    // fully un-expended, so its class segment should never appear.
+    const sorcTag = storedClassTag(doc, ref, "sorcerer");
+    const sorcModel = casterModelFor("sorcerer")!;
+    doc = castSpontaneousSlot(doc, sorcModel, 3, 0, 1, sorcTag);
+
+    const sheet = compute(doc, ref);
+    const result = restNewDay(doc, sheet, ref);
+    expect(result.summary).toBe("Sorcerer: 1 slot restored");
+  });
 });

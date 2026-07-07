@@ -35,6 +35,7 @@ import {
 } from "../sync/session.js";
 import { dexieSyncStore } from "../sync/store.js";
 import type { SyncStatus } from "../sync/status.js";
+import { showToast } from "./toast.js";
 import {
   consumeSnapshot,
   createUndoSnapshotState,
@@ -175,6 +176,29 @@ export function useCharacter(): CharacterStore {
   // renders, matching every other ref-based piece of bookkeeping in this hook.
   const undoStateRef = useRef(createUndoSnapshotState());
 
+  // Level-up celebratory toast bookkeeping (issue #63): the last total level
+  // (+ the max HP it came with) the level-up effect below has actually seen,
+  // so it can tell a genuine level-up (an increase) apart from every other
+  // reason `sheet` recomputes. `undefined` means "don't compare on the next
+  // run" — true on first mount, and forced back to that state by
+  // `invalidateCrossTransitionTracking` below whenever the active character
+  // is swapped out from under it, so switching to (or importing, or
+  // sync-pulling in) a character that merely happens to be higher-level than
+  // the one just left never misfires as a "level up".
+  const lastSeenLevelRef = useRef<{ level: number; maxHp: number } | undefined>(undefined);
+
+  // Shared invalidation for anything that swaps the active character's doc
+  // out from under per-character cross-transition tracking (switch/create/
+  // import/reset/delete, a remote pull/delete landing on the active doc,
+  // conflict resolution) — same trigger set as `invalidateSnapshot`
+  // (`state/undoSnapshot.ts`'s doc comment), extended to also reset the
+  // level-up tracker above so a character swap can never be misread as a
+  // level-up (or silently suppress a real one right after).
+  const invalidateCrossTransitionTracking = useCallback(() => {
+    invalidateSnapshot(undoStateRef.current);
+    lastSeenLevelRef.current = undefined;
+  }, []);
+
   // Stage 5 open-sync (DESIGN.md §2.1: "each device pulls the latest on
   // open"). Runs once, after the initial local load, and never blocks
   // rendering — the app is fully usable the moment `status` is "ready"
@@ -217,7 +241,7 @@ export function useCharacter(): CharacterStore {
           // The character on screen was deleted on another device; adopt
           // whatever remains (or a fresh blank doc) rather than keep showing a
           // doc that no longer exists in the store (#39).
-          invalidateSnapshot(undoStateRef.current);
+          invalidateCrossTransitionTracking();
           setDoc(reconcileGrantedCantrips(await loadOrCreateActive(), refData));
         } else if (activeId && result.pulled.includes(activeId) && refData) {
           const refreshed = await db.characters.get(activeId);
@@ -226,7 +250,7 @@ export function useCharacter(): CharacterStore {
             // copy — any local undo snapshot is now for a doc that no longer
             // exists in this lineage, so drop it rather than risk restoring
             // over the just-pulled remote state.
-            invalidateSnapshot(undoStateRef.current);
+            invalidateCrossTransitionTracking();
             setDoc(reconcileGrantedCantrips(refreshed, refData));
           }
         }
@@ -236,7 +260,7 @@ export function useCharacter(): CharacterStore {
         setSyncStatus({ kind: "error", message: e instanceof Error ? e.message : String(e) });
       }
     })();
-  }, [status, refData, refreshList]);
+  }, [status, refData, refreshList, invalidateCrossTransitionTracking]);
 
   // Autosave to IndexedDB (debounced). The pending timer is kept in a ref
   // (not just the effect's local closure) so character-switching actions
@@ -394,11 +418,13 @@ export function useCharacter(): CharacterStore {
       setCharacters(list);
       // The active character is about to change (switch/create/import/reset/
       // delete all funnel through here) — an undo snapshot from the OLD
-      // character must never be restorable onto the new one.
-      invalidateSnapshot(undoStateRef.current);
+      // character must never be restorable onto the new one, and the level-up
+      // toast below must never compare the new character's level against the
+      // old one's.
+      invalidateCrossTransitionTracking();
       setDoc(reconciled);
     },
-    [refData],
+    [refData, invalidateCrossTransitionTracking],
   );
 
   /** Runs a character-management action with pending/error tracking and re-entrancy guarding. */
@@ -502,6 +528,65 @@ export function useCharacter(): CharacterStore {
     }
   }, [sheet]);
 
+  // Level-up celebratory toast (issue #63): a "ding" beat to go with the
+  // attention badges, which only ever flag *outstanding* build work and
+  // never fire when something actually got better. `lastSeenLevelRef` is
+  // `undefined` on first mount and whenever `invalidateCrossTransitionTracking`
+  // resets it (character switch/create/import/reset/delete, a remote pull/
+  // delete landing on the active doc, or conflict resolution — the exact
+  // same trigger set the undo snapshot uses), so this only ever compares a
+  // character's own total level against its own immediately-prior total
+  // level: it can't misfire from switching to (or importing, or syncing in)
+  // a character that merely happens to be higher-level than the one just
+  // left. Only fires on an actual increase — leveling down (removing a
+  // class level) or a no-op edit are both silent. Also skips the very first
+  // 0 -> N transition (`last.level === 0`): picking a brand-new character's
+  // first class is character CREATION, not a level-up worth a "Level 1!"
+  // toast — the celebratory beat is for going up a level, which needs an
+  // existing level to go up from.
+  useEffect(() => {
+    if (!sheet || !doc) return;
+    const level = sheet.level;
+    const maxHp = sheet.hp.max;
+    const last = lastSeenLevelRef.current;
+    lastSeenLevelRef.current = { level, maxHp };
+    if (!last || last.level === 0 || level <= last.level) return;
+
+    const classSummary = doc.identity.classes
+      .map((c) => {
+        const name = refData
+          ? (Object.values(refData.classes).find((def) => def.tag === c.tag)?.name ?? c.tag)
+          : c.tag;
+        return `${name} ${c.level}`;
+      })
+      .join(" / ");
+
+    // "What changed" — only the cheaply-derivable bits (RAW's fixed
+    // level-4/8/12/16/20 ability-score-increase cadence and 1st + every-odd
+    // feat cadence), not a full re-derivation of every class feature gained;
+    // the attention badges (BuildNav.tsx) already surface anything that
+    // still needs the player's input.
+    const grants: string[] = [];
+    if (maxHp > last.maxHp) grants.push(`max HP ${last.maxHp}→${maxHp}`);
+    const newAbilityIncreases = Math.floor(level / 4) - Math.floor(last.level / 4);
+    if (newAbilityIncreases > 0) {
+      grants.push(
+        `${newAbilityIncreases} ability score increase${newAbilityIncreases === 1 ? "" : "s"}`,
+      );
+    }
+    const newFeatSlots = Math.ceil(level / 2) - Math.ceil(last.level / 2);
+    if (newFeatSlots > 0) {
+      grants.push(`${newFeatSlots} new feat${newFeatSlots === 1 ? "" : "s"}`);
+    }
+
+    showToast({
+      message: `Level ${level}!${classSummary ? ` — ${classSummary}` : ""}${
+        grants.length > 0 ? ` · ${grants.join(", ")}` : ""
+      }`,
+      tone: "level-up",
+    });
+  }, [sheet, doc, refData]);
+
   const signIn = useCallback(() => {
     const apiBase = apiBaseUrl();
     if (!apiBase) return; // sync disabled — nothing to sign in to
@@ -542,8 +627,8 @@ export function useCharacter(): CharacterStore {
       if (doc?.id === conflict.local.id && refData) {
         // The doc content is being replaced by whichever side won the
         // conflict — any pending undo snapshot predates that and would
-        // restore over it, so drop it.
-        invalidateSnapshot(undoStateRef.current);
+        // restore over it, so drop it (and the level-up tracker alongside it).
+        invalidateCrossTransitionTracking();
         setDoc(reconcileGrantedCantrips(resolved, refData));
       }
       void refreshList();
@@ -564,7 +649,7 @@ export function useCharacter(): CharacterStore {
         setSyncStatus({ kind: "conflict", conflict: outcome.conflict });
       else setSyncStatus({ kind: "error", message: outcome.message });
     },
-    [syncStatus, doc, refData, refreshList],
+    [syncStatus, doc, refData, refreshList, invalidateCrossTransitionTracking],
   );
 
   return {

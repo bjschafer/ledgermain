@@ -4366,3 +4366,171 @@ input[type="text"].saved-roll-name:focus {
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------- level-up toast
+   Issue #63: a celebratory "ding" for a genuine total-level increase —
+   `toast--level-up` (`ToastHost.tsx`, `state/toast.ts`'s `tone`). Same shape
+   as every other toast, just gold-accented (border + a one-shot glow that
+   echoes the seal recompute-flash above) instead of a new component or a
+   confetti dependency. --------------------------------------------------- */
+
+.toast--level-up {
+  position: relative;
+  overflow: hidden;
+  border-color: var(--gold-dim);
+  background: linear-gradient(180deg, #2c2718, var(--surface-2) 70%);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(232, 195, 74, 0.35) inset;
+}
+
+.toast--level-up .toast-message {
+  color: var(--gold-2);
+  font-weight: 600;
+}
+
+.toast--level-up::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(232, 195, 74, 0.3), transparent 70%);
+  animation: seal-flash-fade 900ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast--level-up::before {
+    animation: none;
+    display: none;
+  }
+}
+
+/* ------------------------------------------------- character switcher (v2)
+   Issue #63: the masthead character switcher (`CharacterSwitcher.tsx`) was a
+   bare native <select> — replaced with a small styled listbox dropdown. The
+   wrapper keeps the original `.char-switcher` pill styling declared earlier
+   in this file (background/border/radius/color/font-size, from when that
+   class named the <select> itself); these rules only ADD popover
+   positioning to that same selector and style the new trigger button +
+   listbox it now contains, so the two blocks combine rather than conflict. */
+
+.char-switcher {
+  position: relative;
+  display: inline-block;
+}
+
+.char-switcher-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 120px;
+  max-width: 220px;
+  background: none;
+  border: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.char-switcher-trigger:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.char-switcher-trigger:hover:not(:disabled) {
+  color: var(--gold-2);
+}
+
+.char-switcher-trigger:focus-visible {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+.char-switcher-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.char-switcher-caret {
+  flex: none;
+  color: var(--gold-dim);
+  font-size: 10px;
+}
+
+.char-switcher-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 40;
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--space-1) 0;
+  list-style: none;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.char-switcher-list:focus-visible {
+  outline: none;
+}
+
+.char-switcher-opt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px var(--space-3);
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.char-switcher-opt.is-highlighted {
+  background: var(--surface);
+  color: var(--gold-2);
+}
+
+.char-switcher-opt[aria-selected="true"] {
+  color: var(--gold-2);
+}
+
+.char-switcher-opt-check {
+  flex: none;
+  display: inline-block;
+  width: 1em;
+  color: var(--gold);
+}
+
+.char-switcher-opt.is-new {
+  border-top: 1px solid var(--line-soft);
+  margin-top: var(--space-1);
+  padding-top: 8px;
+  color: var(--muted);
+}
+
+.char-switcher-opt.is-new.is-highlighted {
+  color: var(--gold-2);
+}
+
+@media (max-width: 640px) {
+  .char-switcher-trigger {
+    min-height: var(--tap-min);
+  }
+
+  .char-switcher-opt {
+    min-height: var(--tap-min);
+  }
+}
