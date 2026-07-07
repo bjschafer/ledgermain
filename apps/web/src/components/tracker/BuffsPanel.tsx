@@ -95,6 +95,11 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
       .slice(0, 60);
   }, [refData.buffs, query]);
 
+  const activeBuffIds = useMemo(
+    () => new Set(doc.live.activeBuffs.map((b) => b.buffId).filter((id): id is string => !!id)),
+    [doc.live.activeBuffs],
+  );
+
   const add = (buff: Buff) =>
     update((d) =>
       addBuff(
@@ -158,26 +163,38 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
         onChange={(e) => setQuery(e.target.value)}
       />
       <div className="scroll short">
-        {matches.map((buff) => (
-          <div className="pick-row" key={buff.id}>
-            <div className="pmain">
-              <div className="pname">
-                {buff.name} <PartialBadge changes={buff.changes} />{" "}
-                <NoEffectHint changes={buff.changes} contextNotes={buff.contextNotes} />
+        {matches.map((buff) => {
+          const isActive = activeBuffIds.has(buff.id);
+          return (
+            <div className="pick-row" key={buff.id}>
+              <div className="pmain">
+                <div className="pname">
+                  {buff.name} <PartialBadge changes={buff.changes} />{" "}
+                  <NoEffectHint changes={buff.changes} contextNotes={buff.contextNotes} />
+                </div>
+                <div className="preq">
+                  {buff.changes.slice(0, 4).map((c, i) => (
+                    <span key={i} title={c.formula}>
+                      {c.target} {formulaHint(c, { casterLevel }, rollData)}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <div className="preq">
-                {buff.changes.slice(0, 4).map((c, i) => (
-                  <span key={i} title={c.formula}>
-                    {c.target} {formulaHint(c, { casterLevel }, rollData)}
-                  </span>
-                ))}
-              </div>
+              {isActive ? (
+                <span
+                  className="buff-already-active"
+                  title="Already active — remove the active copy first to add another"
+                >
+                  Active ✓
+                </span>
+              ) : (
+                <button type="button" className="pick-btn add" onClick={() => add(buff)}>
+                  Add
+                </button>
+              )}
             </div>
-            <button type="button" className="pick-btn add" onClick={() => add(buff)}>
-              Add
-            </button>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <CustomBuffForm
