@@ -965,6 +965,26 @@ export function setEncumbranceEnabled(doc: CharacterDoc, enabled: boolean): Char
   };
 }
 
+/**
+ * Toggle the homebrew "unrestricted alignments" house rule (issue #53). When
+ * true, `model/alignment.ts`'s `classAlignmentWarnings` returns no warnings
+ * regardless of the character's alignment/class combination. Off by default
+ * (absent = false) — PF1 RAW's class alignment restrictions are warned by
+ * default, same posture as `setFcbHouserule`.
+ */
+export function setIgnoreClassAlignmentRestrictions(
+  doc: CharacterDoc,
+  enabled: boolean,
+): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, ignoreClassAlignmentRestrictions: enabled },
+    },
+  };
+}
+
 /** Set the character's XP advancement track (slow/medium/fast). */
 export function setXpTrack(doc: CharacterDoc, track: "slow" | "medium" | "fast"): CharacterDoc {
   return {

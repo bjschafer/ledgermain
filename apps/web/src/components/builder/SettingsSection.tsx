@@ -17,6 +17,7 @@ import {
   setHeroPointsCap,
   setHeroPointsEnabled,
   setHpMode,
+  setIgnoreClassAlignmentRestrictions,
   setRestMode,
   setStatOverride,
   setXpEnabled,
@@ -85,6 +86,7 @@ export function SettingsSection({
   const xpEnabled = settings.xpEnabled ?? false;
   const xpTrack = settings.xpTrack ?? DEFAULT_XP_TRACK;
   const encumbranceEnabled = settings.encumbranceEnabled ?? false;
+  const ignoreAlignmentRestrictions = settings.ignoreClassAlignmentRestrictions ?? false;
   const overrides = settings.statOverrides ?? {};
   const gmSkillRanks = doc.build.gmGrants?.skillRanks;
   const gmFeatSlots = doc.build.gmGrants?.featSlots;
@@ -353,6 +355,33 @@ export function SettingsSection({
             weight, thresholds, and tier.
           </p>
         )}
+      </Panel>
+
+      {/* Class alignment restrictions (issue #53) */}
+      <Panel title="Class Alignment Restrictions" step="⚙">
+        <p className="hint" style={{ marginBottom: 12 }}>
+          PF1 RAW restricts a few classes (Barbarian, Monk, Paladin, Druid) to certain alignments.
+          Ledgermain only ever warns on a mismatch in the Classes panel, never blocks — enable this
+          for tables that don't use alignment restrictions at all.
+        </p>
+        <div className="chips">
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={!ignoreAlignmentRestrictions}
+            onClick={() => update((d) => setIgnoreClassAlignmentRestrictions(d, false))}
+          >
+            Warn on mismatch (default)
+          </button>
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={ignoreAlignmentRestrictions}
+            onClick={() => update((d) => setIgnoreClassAlignmentRestrictions(d, true))}
+          >
+            Unrestricted (house rule)
+          </button>
+        </div>
       </Panel>
 
       {/* GM grants */}

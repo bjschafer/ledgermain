@@ -384,6 +384,18 @@ export interface CharacterDoc {
        * `@pf1/engine/encumbrance.ts`).
        */
       encumbranceEnabled?: boolean;
+      /**
+       * Homebrew "unrestricted alignments" house rule (issue #53). PF1 CRB
+       * restricts a handful of base classes to a subset of alignments
+       * (Barbarian: any nonlawful; Monk: any lawful; Paladin: lawful good;
+       * Druid: any neutral) — see `apps/web/src/model/alignment.ts` for the
+       * full table. Ledgermain only ever soft-warns on a mismatch, never
+       * blocks; this flag, when true, suppresses that warning entirely for
+       * tables that don't use alignment restrictions. Default false
+       * (absent) = warnings shown, matching the RAW-default posture of
+       * `encumbranceEnabled`'s sibling toggles.
+       */
+      ignoreClassAlignmentRestrictions?: boolean;
     };
     /**
      * Player-curated bookmarks into already-computed sheet numbers (issue #2,

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { classAlignmentWarnings } from "../../model/alignment.js";
 import {
   addClass,
   removeClass,
@@ -61,6 +62,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
     { value: "alternate" as const, label: "Alternate" },
   ];
   const fcbOptions = fcbHouserule ? houseruleOptions : standardOptions;
+
+  // Alignment restriction warnings (issue #53) — soft-warning only, never
+  // blocks; suppressed entirely when the "unrestricted alignments" house
+  // rule is on (see model/alignment.ts).
+  const alignmentWarnings = classAlignmentWarnings(doc, refData);
 
   return (
     <Panel
@@ -170,6 +176,12 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
           );
         })
       )}
+
+      {alignmentWarnings.map((w) => (
+        <p key={w.classTag} className="hint affliction-warn">
+          ⚠ {w.message}
+        </p>
+      ))}
 
       {/* Favored-class bonus picker — only when a favored class is chosen */}
       {fcbLevel > 0 && (
