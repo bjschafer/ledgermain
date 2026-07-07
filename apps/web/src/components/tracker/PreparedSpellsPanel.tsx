@@ -32,12 +32,14 @@ import {
   spellSlotsByLevel,
   storedClassTag,
 } from "../../model/spellcasting.js";
+import { newDaySummary } from "../../model/rest.js";
 import {
   castSpontaneousSlot,
   resetSpontaneousSlots,
   restoreSpontaneousSlot,
   spontaneousSlotStatus,
 } from "../../model/spontaneousSpells.js";
+import { showToast } from "../../state/toast.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 import { SpellDetail } from "../SpellDetail.js";
@@ -479,6 +481,7 @@ function PreparedView({
   sheet,
   refData,
   update,
+  undoLast,
   casterTag,
   model,
   classSwitcher,
@@ -572,8 +575,13 @@ function PreparedView({
           className="btn-ghost rest"
           disabled={!anyExpended}
           onClick={() => {
-            update((d) => restPreparedSpells(d, classTag));
+            const next = restPreparedSpells(doc, classTag);
+            update(() => next);
             setConfirmClear(false);
+            showToast({
+              message: newDaySummary(doc, next) || "Spells refreshed",
+              action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
+            });
           }}
         >
           New day
@@ -839,6 +847,7 @@ function SpontaneousView({
   sheet,
   refData,
   update,
+  undoLast,
   casterTag,
   model,
   classSwitcher,
@@ -929,7 +938,14 @@ function SpontaneousView({
           type="button"
           className="btn-ghost rest"
           disabled={!anyUsed}
-          onClick={() => update((d) => resetSpontaneousSlots(d, classTag))}
+          onClick={() => {
+            const next = resetSpontaneousSlots(doc, classTag);
+            update(() => next);
+            showToast({
+              message: newDaySummary(doc, next) || "Spells refreshed",
+              action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
+            });
+          }}
         >
           New day
         </button>
@@ -1090,6 +1106,7 @@ function HybridView({
   sheet,
   refData,
   update,
+  undoLast,
   casterTag,
   model,
   classSwitcher,
@@ -1186,8 +1203,13 @@ function HybridView({
           className="btn-ghost rest"
           disabled={!anyCastUsed}
           onClick={() => {
-            update((d) => resetSpontaneousSlots(restPreparedSpells(d, classTag), classTag));
+            const next = resetSpontaneousSlots(restPreparedSpells(doc, classTag), classTag);
+            update(() => next);
             setConfirmClear(false);
+            showToast({
+              message: newDaySummary(doc, next) || "Spells refreshed",
+              action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
+            });
           }}
         >
           New day

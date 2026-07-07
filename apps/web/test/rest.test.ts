@@ -15,7 +15,7 @@ import { setAbilityAffliction, setNegativeLevels } from "../src/model/affliction
 import { addClass, createEmptyDoc, setClassLevel, toggleKnownSpell } from "../src/model/doc.js";
 import { addNonlethal, applyDamage, setTempHp } from "../src/model/hp.js";
 import { prepareSpell, preparedSpells, setExpendedAt } from "../src/model/preparedSpells.js";
-import { restNewDay } from "../src/model/rest.js";
+import { newDaySummary, restNewDay } from "../src/model/rest.js";
 import { drainResource, remaining, syncDerivedPools } from "../src/model/resources.js";
 import { casterModelFor, storedClassTag } from "../src/model/spellcasting.js";
 import { castSpontaneousSlot, slotsUsedAtLevel } from "../src/model/spontaneousSpells.js";
@@ -218,5 +218,69 @@ describe("restNewDay()", () => {
 
     const result = restNewDay(doc, sheet, ref);
     expect(remaining(result.doc.live.resources[rage.id]!)).toBe(rage.max);
+  });
+});
+
+describe("newDaySummary()", () => {
+  it("reports HP restored, resource pools refreshed (by name), and omits unchanged segments", () => {
+    let doc = addClass(createEmptyDoc("t"), "barbarian");
+    doc = setClassLevel(doc, "barbarian", 5);
+    const fullSheet = compute(doc, ref);
+    doc = { ...doc, live: { ...doc.live, hp: { ...doc.live.hp, current: fullSheet.hp.max } } };
+    doc = applyDamage(doc, 5);
+
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const rage = pools.find((p) => p.name === "Rage")!;
+    doc = syncDerivedPools(doc, pools);
+    doc = drainResource(doc, rage.id, rage.max);
+
+    const result = restNewDay(doc, sheet, ref);
+    expect(result.summary).toBe(
+      `HP ${sheet.hp.max - 5}→${sheet.hp.max} · Rage ${rage.max}/${rage.max}`,
+    );
+  });
+
+  it("is empty when nothing actually changed", () => {
+    const doc = addClass(createEmptyDoc("t"), "fighter");
+    expect(newDaySummary(doc, doc)).toBe("");
+  });
+
+  it("reports spell slots refreshed, temp HP cleared, and nonlethal healed together", () => {
+    let doc = addClass(createEmptyDoc("t"), "wizard");
+    doc = setClassLevel(doc, "wizard", 1);
+    const fullSheet = compute(doc, ref);
+    // Already at full HP so the HP segment doesn't fire — isolates this test
+    // to the spells/temp/nonlethal segments.
+    doc = { ...doc, live: { ...doc.live, hp: { ...doc.live.hp, current: fullSheet.hp.max } } };
+    const spellId = ref.spellLists["wizard"]![1]![0]!;
+    doc = prepareSpell(doc, spellId);
+    doc = setExpendedAt(doc, 0, true);
+    doc = addNonlethal(doc, 3);
+    doc = setTempHp(doc, 4);
+
+    const sheet = compute(doc, ref);
+    const result = restNewDay(doc, sheet);
+    expect(result.summary).toBe("1 spell slot refreshed · temp HP cleared · nonlethal healed");
+  });
+
+  it("pluralizes multiple refreshed spell slots", () => {
+    let doc = addClass(createEmptyDoc("t"), "wizard");
+    doc = setClassLevel(doc, "wizard", 1);
+    const spellId = ref.spellLists["wizard"]![1]![0]!;
+    doc = prepareSpell(doc, spellId);
+    doc = prepareSpell(doc, spellId);
+    doc = setExpendedAt(doc, 0, true);
+    doc = setExpendedAt(doc, 1, true);
+
+    const result = restNewDay(doc);
+    expect(result.summary).toBe("2 spell slots refreshed");
+  });
+
+  it("falls back to the raw pool id when no `pools` list is given", () => {
+    let before = addClass(createEmptyDoc("t"), "barbarian");
+    before = { ...before, live: { ...before.live, resources: { rage: { used: 3, max: 5 } } } };
+    const after = { ...before, live: { ...before.live, resources: { rage: { used: 0, max: 5 } } } };
+    expect(newDaySummary(before, after)).toBe("rage 5/5");
   });
 });

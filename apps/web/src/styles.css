@@ -3736,3 +3736,82 @@ input[type="text"].saved-roll-name:focus {
     margin: -8px;
   }
 }
+
+/* --------------------------------------------------------------------- toast
+   UX audit: "feedback: toasts + undo" — `ToastHost.tsx`, mounted once in
+   `App.tsx`. One transient toast at a time (last-wins); bottom-center,
+   dismiss on click/Escape/auto-timeout. The entrance animation is disabled
+   under reduced motion below, matching the existing `* { transition: none }`
+   rule near the top of this file. -------------------------------------- */
+
+.toast-host {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-5);
+  transform: translateX(-50%);
+  z-index: 200;
+  /* The host spans the full toast width but isn't itself clickable — only
+     the toast inside it should intercept clicks. */
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: min(90vw, 520px);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  animation: toast-in 180ms ease-out;
+}
+
+.toast-message {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.toast-action {
+  flex: none;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold-2);
+  cursor: pointer;
+  transition:
+    border-color 0.12s,
+    background 0.12s;
+}
+
+.toast-action:hover {
+  border-color: var(--gold);
+  background: linear-gradient(180deg, #2c2718, #211d12);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}

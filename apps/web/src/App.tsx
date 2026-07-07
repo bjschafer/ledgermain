@@ -19,6 +19,7 @@ import { CharacterSwitcher } from "./components/CharacterSwitcher.js";
 import { PreviewNotice } from "./components/PreviewNotice.js";
 import { Sheet } from "./components/Sheet.js";
 import { SyncStatus } from "./components/SyncStatus.js";
+import { ToastHost } from "./components/ToastHost.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { useCharacter } from "./state/useCharacter.js";
 
@@ -31,6 +32,7 @@ export function App() {
   return (
     <div className="app">
       <PreviewNotice />
+      <ToastHost />
       <header className="masthead">
         <div>
           <div className="wordmark">
@@ -125,6 +127,7 @@ export function App() {
           sheet={store.sheet}
           refData={store.refData}
           update={store.update}
+          undoLast={store.undoLast}
           onImportCharacter={(doc) => void store.importCharacter(doc)}
           onResetAll={() => void store.resetAll()}
           onDeleteCharacter={(id) => void store.deleteCharacter(id)}

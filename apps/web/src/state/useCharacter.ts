@@ -35,6 +35,12 @@ import {
 } from "../sync/session.js";
 import { dexieSyncStore } from "../sync/store.js";
 import type { SyncStatus } from "../sync/status.js";
+import {
+  consumeSnapshot,
+  createUndoSnapshotState,
+  invalidateSnapshot,
+  recordSnapshot,
+} from "./undoSnapshot.js";
 
 export type LoadStatus = "loading" | "ready" | "error";
 
@@ -54,6 +60,18 @@ export interface CharacterStore {
   clearActionError: () => void;
   /** Apply a pure transition (from model/doc) to the working document. */
   update: (fn: (doc: CharacterDoc) => CharacterDoc) => void;
+  /**
+   * One-step undo (feedback/toasts+undo audit slice): restores the doc as it
+   * was immediately before the last `update()` call that actually changed
+   * it, through the same `setDoc` path `update()` uses (so compute + the
+   * autosave/push effects below all fire normally). Single-step — the
+   * snapshot is a one-deep pointer (see `state/undoSnapshot.ts`), so calling
+   * this twice in a row does nothing the second time rather than redoing.
+   * No-op if there's nothing to undo, or if the active character changed
+   * since the snapshot was taken (switch/create/import/reset/delete, a
+   * remote pull/delete, or conflict resolution all invalidate it).
+   */
+  undoLast: () => void;
   /** Make a different saved character the active one. */
   switchCharacter: (id: string) => Promise<void>;
   /** Create a brand-new blank character and make it active. */
@@ -151,6 +169,12 @@ export function useCharacter(): CharacterStore {
     docRef.current = doc;
   }, [doc]);
 
+  // One-step undo bookkeeping (feedback/toasts+undo audit slice). The pure
+  // "what's the snapshot pointer" logic lives in `state/undoSnapshot.ts`
+  // (unit-tested there); this ref just gives it a stable home across
+  // renders, matching every other ref-based piece of bookkeeping in this hook.
+  const undoStateRef = useRef(createUndoSnapshotState());
+
   // Stage 5 open-sync (DESIGN.md §2.1: "each device pulls the latest on
   // open"). Runs once, after the initial local load, and never blocks
   // rendering — the app is fully usable the moment `status` is "ready"
@@ -193,10 +217,18 @@ export function useCharacter(): CharacterStore {
           // The character on screen was deleted on another device; adopt
           // whatever remains (or a fresh blank doc) rather than keep showing a
           // doc that no longer exists in the store (#39).
+          invalidateSnapshot(undoStateRef.current);
           setDoc(reconcileGrantedCantrips(await loadOrCreateActive(), refData));
         } else if (activeId && result.pulled.includes(activeId) && refData) {
           const refreshed = await db.characters.get(activeId);
-          if (refreshed) setDoc(reconcileGrantedCantrips(refreshed, refData));
+          if (refreshed) {
+            // The doc on screen was just overwritten by another device's
+            // copy — any local undo snapshot is now for a doc that no longer
+            // exists in this lineage, so drop it rather than risk restoring
+            // over the just-pulled remote state.
+            invalidateSnapshot(undoStateRef.current);
+            setDoc(reconcileGrantedCantrips(refreshed, refData));
+          }
         }
         if (result.pulled.length > 0 || result.pushed.length > 0 || result.deleted.length > 0)
           void refreshList();
@@ -307,8 +339,45 @@ export function useCharacter(): CharacterStore {
       // never called by a background effect, only by explicit user actions,
       // so bumping unconditionally on real transitions can't create a loop.
       if (next === prev) return prev;
+      // One-deep undo snapshot (feedback/toasts+undo audit slice): `prev` is
+      // exactly the doc a caller's `undoLast()` should restore. Recorded
+      // unconditionally on every real transition (not just the ones that
+      // surface an Undo toast) — cheap, and it's what makes `undoLast()`
+      // always undo whatever the player *actually* just did.
+      recordSnapshot(undoStateRef.current, prev);
       pendingUserEditRef.current = true;
       return { ...next, version: prev.version + 1 };
+    });
+  }, []);
+
+  const undoLast = useCallback(() => {
+    // `consumeSnapshot` mutates (clears the pointer) — that MUST happen
+    // exactly once, so it's called here in the plain callback body, not
+    // inside the `setDoc` updater below. React does not guarantee a
+    // functional setState updater is invoked exactly once (e.g. it can run
+    // an extra time while reconciling with another store update in the same
+    // tick — this app hit that in practice via ToastHost's
+    // `useSyncExternalStore`); a mutating side effect inside one is exactly
+    // the "updater functions must be pure" trap React's docs warn about; the
+    // first bug-fixed draft of this function had `consumeSnapshot` inside
+    // the updater and undo silently no-op'd every other click.
+    const activeId = docRef.current?.id;
+    if (activeId === undefined) return;
+    const snapshot = consumeSnapshot(undoStateRef.current, activeId);
+    if (!snapshot) return;
+    // Same flagging `update()` does — undo is a genuine local edit too, so
+    // it autosaves/pushes exactly like any other transition. Deliberately
+    // NOT routed through `update()` itself: that would `recordSnapshot` the
+    // pre-undo state, re-arming a second "undo" that would just redo the
+    // change — this is meant to be single-step, not a toggle.
+    pendingUserEditRef.current = true;
+    setDoc((prev) => {
+      // Pure: `snapshot` was already captured above, so this can safely run
+      // more than once with no observable difference. Re-checks `prev.id`
+      // as a last-moment guard in case the active character changed between
+      // reading `docRef` above and this commit.
+      if (!prev || prev.id !== snapshot.id) return prev;
+      return { ...snapshot, version: prev.version + 1 };
     });
   }, []);
 
@@ -323,6 +392,10 @@ export function useCharacter(): CharacterStore {
       // option (its list query resolves a tick after `doc` does).
       const list = await listCharacters();
       setCharacters(list);
+      // The active character is about to change (switch/create/import/reset/
+      // delete all funnel through here) — an undo snapshot from the OLD
+      // character must never be restorable onto the new one.
+      invalidateSnapshot(undoStateRef.current);
       setDoc(reconciled);
     },
     [refData],
@@ -467,6 +540,10 @@ export function useCharacter(): CharacterStore {
       // character currently on screen — the user may have switched
       // characters while this conflict was pending.
       if (doc?.id === conflict.local.id && refData) {
+        // The doc content is being replaced by whichever side won the
+        // conflict — any pending undo snapshot predates that and would
+        // restore over it, so drop it.
+        invalidateSnapshot(undoStateRef.current);
         setDoc(reconcileGrantedCantrips(resolved, refData));
       }
       void refreshList();
@@ -501,6 +578,7 @@ export function useCharacter(): CharacterStore {
     actionError,
     clearActionError,
     update,
+    undoLast,
     switchCharacter,
     createCharacter,
     importCharacter,

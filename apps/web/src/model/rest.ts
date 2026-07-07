@@ -40,13 +40,13 @@
  *     judgment (e.g. a paused encounter vs. genuinely resting 8 hours) that
  *     this app doesn't model — left alone by design, not an oversight.
  */
-import { deriveResourcePools } from "@pf1/engine";
+import { deriveResourcePools, type DerivedResourcePool } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { getNegativeLevels, restAbilityDamage } from "./afflictions.js";
 import { restHp } from "./hp.js";
 import { restPreparedSpells } from "./preparedSpells.js";
-import { restAllResources } from "./resources.js";
+import { remaining, restAllResources } from "./resources.js";
 import { casterClassesOf, storedClassTag } from "./spellcasting.js";
 import { resetSpontaneousSlots } from "./spontaneousSpells.js";
 
@@ -59,6 +59,81 @@ export interface RestNewDayResult {
    * them itself.
    */
   tempNegativeLevelReminder: boolean;
+  /**
+   * Compact, one-line, dot-separated receipt of what this rest actually
+   * changed (see {@link newDaySummary}) — empty string when nothing did
+   * (e.g. a character already at full HP with nothing expended). Buffs are
+   * never part of this: `restNewDay` deliberately leaves `activeBuffs`
+   * untouched (see the module doc comment above), so there is never a
+   * "buffs cleared" segment to report.
+   */
+  summary: string;
+}
+
+function expendedPreparedCount(doc: CharacterDoc): number {
+  return (doc.live.spells?.prepared ?? []).filter((p) => p.expended).length;
+}
+
+function totalSlotsUsed(doc: CharacterDoc): number {
+  const spells = doc.live.spells;
+  if (!spells) return 0;
+  let n = 0;
+  for (const used of Object.values(spells.slotsUsed ?? {})) n += used;
+  for (const byClass of Object.values(spells.slotsUsedByClass ?? {})) {
+    for (const used of Object.values(byClass)) n += used;
+  }
+  return n;
+}
+
+/**
+ * Compact, dot-separated receipt of what actually changed between `before`
+ * and `after`, for the "New day" toast (issue: feedback/toasts+undo audit
+ * slice). Compares the two docs directly rather than re-deriving from
+ * `restNewDay`'s internals, so it also works standalone for the narrower
+ * per-class "New day" ghost buttons in the Spells panel (which only call
+ * `restPreparedSpells`/`resetSpontaneousSlots`, not the full `restNewDay`) —
+ * those just won't have an HP/resource-pool segment since neither changed.
+ *
+ * Segments that didn't change are omitted entirely (an already-full
+ * character clicking "New day" with nothing expended gets `""`, not a wall
+ * of unchanged "0 -> 0"s). `pools` (from `deriveResourcePools`) supplies
+ * display names for resource pools; omit it and changed pools still show,
+ * keyed by their raw id.
+ */
+export function newDaySummary(
+  before: CharacterDoc,
+  after: CharacterDoc,
+  pools?: readonly Pick<DerivedResourcePool, "id" | "name">[],
+): string {
+  const segments: string[] = [];
+
+  if (before.live.hp.current !== after.live.hp.current) {
+    segments.push(`HP ${before.live.hp.current}→${after.live.hp.current}`);
+  }
+
+  const slotsRefreshed =
+    expendedPreparedCount(before) -
+    expendedPreparedCount(after) +
+    (totalSlotsUsed(before) - totalSlotsUsed(after));
+  if (slotsRefreshed > 0) {
+    segments.push(`${slotsRefreshed} spell slot${slotsRefreshed === 1 ? "" : "s"} refreshed`);
+  }
+
+  const poolNameById = new Map((pools ?? []).map((p) => [p.id, p.name]));
+  const refreshedPools: string[] = [];
+  for (const [id, pool] of Object.entries(after.live.resources)) {
+    const beforePool = before.live.resources[id];
+    if (!beforePool || beforePool.used === pool.used) continue;
+    refreshedPools.push(`${poolNameById.get(id) ?? id} ${remaining(pool)}/${pool.max}`);
+  }
+  if (refreshedPools.length > 0) segments.push(refreshedPools.join(", "));
+
+  if (before.live.hp.temp > 0 && after.live.hp.temp === 0) segments.push("temp HP cleared");
+  if (before.live.hp.nonlethal > 0 && after.live.hp.nonlethal === 0) {
+    segments.push("nonlethal healed");
+  }
+
+  return segments.join(" · ");
 }
 
 /**
@@ -82,10 +157,8 @@ export function restNewDay(
   }
 
   next = restAbilityDamage(next);
-  next = restAllResources(
-    next,
-    refData ? deriveResourcePools(next, refData, derived?.abilities) : undefined,
-  );
+  const pools = refData ? deriveResourcePools(next, refData, derived?.abilities) : undefined;
+  next = restAllResources(next, pools);
 
   if (refData) {
     for (const { tag } of casterClassesOf(next, refData)) {
@@ -101,5 +174,6 @@ export function restNewDay(
   return {
     doc: next,
     tempNegativeLevelReminder: getNegativeLevels(next).temporary > 0,
+    summary: newDaySummary(doc, next, pools),
   };
 }
