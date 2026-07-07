@@ -672,22 +672,22 @@ Composition finding, worth carrying into every future class that gets this treat
 
 Six parallel wave agents (rogue / druid+monk / bard+sorcerer / ranger+arcanist / paladin+oracle / barbarian+wizard+magus) finished the per-feature classification of **every vendored archetype feature across all 13 archetype-bearing classes** (fighter was the pilot). Final tallies from `ARCHETYPE_FEATURE_CLASSIFICATION` (2,460 features total):
 
-| class | features | numeric | situational | subsystem | blocked |
-| --- | --- | --- | --- | --- | --- |
-| barbarian | 149 | 12 | 37 | 92 | 8 |
-| bard | 347 | 17 | 35 | 286 | 9 |
-| druid | 360 | 25 | 47 | 288 | 0 |
-| fighter | 383 | 29 | 119 | 196 | 39 |
-| magus | 150 | 8 | 16 | 124 | 2 |
-| monk | 60 | 1 | 5 | 52 | 2 |
-| oracle | 79 | 4 | 7 | 67 | 1 |
-| paladin | 247 | 15 | 61 | 166 | 5 |
-| ranger | 266 | 16 | 78 | 169 | 3 |
-| rogue | 241 | 24 | 49 | 165 | 3 |
-| sorcerer | 36 | 2 | 2 | 30 | 2 |
-| wizard | 108 | 1 | 8 | 79 | 20 |
-| arcanist | 34 | 0 | 0 | 34 | 0 |
-| **all** | **2,460** | **154** | **464** | **1,748** | **94** |
+| class     | features  | numeric | situational | subsystem | blocked |
+| --------- | --------- | ------- | ----------- | --------- | ------- |
+| barbarian | 149       | 12      | 37          | 92        | 8       |
+| bard      | 347       | 17      | 35          | 286       | 9       |
+| druid     | 360       | 25      | 47          | 288       | 0       |
+| fighter   | 383       | 29      | 119         | 196       | 39      |
+| magus     | 150       | 8       | 16          | 124       | 2       |
+| monk      | 60        | 1       | 5           | 52        | 2       |
+| oracle    | 79        | 4       | 7           | 67        | 1       |
+| paladin   | 247       | 15      | 61          | 166       | 5       |
+| ranger    | 266       | 16      | 78          | 169       | 3       |
+| rogue     | 241       | 24      | 49          | 165       | 3       |
+| sorcerer  | 36        | 2       | 2           | 30        | 2       |
+| wizard    | 108       | 1       | 8           | 79        | 20      |
+| arcanist  | 34        | 0       | 0           | 34        | 0       |
+| **all**   | **2,460** | **154** | **464**     | **1,748** | **94**  |
 
 135 of the 154 numeric features are machine-extracted (`ARCHETYPE_FEATURE_EFFECTS_EXTRACTED`); the rest are hand-verified `archetype-effects.ts` entries, which always win via `archetype-effects-resolve.ts`.
 
