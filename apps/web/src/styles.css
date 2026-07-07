@@ -249,7 +249,9 @@ a {
    `.app` (max-width: 1280px) evaporates well before 1280px viewport width, so
    an overlay rail would have nowhere to go at e.g. 1100px. */
 .layout.layout--with-nav {
-  grid-template-columns: 120px minmax(0, 1.05fr) minmax(0, 0.95fr);
+  /* 142px: wide enough that no section label ("HIT POINTS", "ABILITIES" +
+     numeral + badge) ellipsizes at the 11px mono size. */
+  grid-template-columns: 142px minmax(0, 1.05fr) minmax(0, 0.95fr);
 }
 
 @media (max-width: 940px) {
@@ -3892,6 +3894,15 @@ input[type="text"].saved-roll-name:focus {
   .stat-strip-item[data-low="true"] .stat-strip-value {
     color: var(--oxblood);
   }
+
+  /* Baseline tint mirrors the sheet seals (see "Living sheet" section below). */
+  .stat-strip-value[data-tint="higher"] {
+    color: var(--sage);
+  }
+
+  .stat-strip-value[data-tint="lower"] {
+    color: var(--oxblood);
+  }
 }
 
 /* ============================================================================
@@ -3912,8 +3923,8 @@ input[type="text"].saved-roll-name:focus {
   top: 16px;
   max-height: calc(100vh - 16px);
   overflow-y: auto;
-  /* Grid item in a 120px track — without this, the flex column's intrinsic
-     content width (the longest label) can force the track wider than 120px. */
+  /* Grid item in a fixed 142px track — without this, the flex column's
+     intrinsic content width (the longest label) can force the track wider. */
   min-width: 0;
 }
 
