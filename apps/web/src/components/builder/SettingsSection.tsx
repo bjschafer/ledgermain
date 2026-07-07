@@ -473,7 +473,7 @@ export function SettingsSection({
       </Panel>
 
       {/* About & legal */}
-      <AboutAndLegalPanel />
+      <AboutAndLegalPanel dataVersion={refData.meta.dataVersion} />
 
       {/* Danger zone */}
       <DangerZonePanel
@@ -540,7 +540,7 @@ function ImportReportPanel({ report }: { report: ImportReport }) {
  * requires attribution). The linked files are copied into `public/` by
  * `scripts/copy-refdata.ts`.
  */
-function AboutAndLegalPanel() {
+function AboutAndLegalPanel({ dataVersion }: { dataVersion: string }) {
   return (
     <Panel title="About & Legal" step="ℹ">
       <p className="hint" style={{ marginBottom: 10 }}>
@@ -548,6 +548,9 @@ function AboutAndLegalPanel() {
         Open Game Content under the OGL v1.0a; Paizo Product Identity references are used under
         Paizo's Community Use Policy. Not affiliated with Paizo Inc., Foundry Gaming LLC, or Wizards
         of the Coast.
+      </p>
+      <p className="hint" style={{ fontFamily: "var(--mono)", fontSize: 11, marginBottom: 10 }}>
+        Compendium data {dataVersion.slice(0, 10)}
       </p>
       <p className="hint" style={{ marginBottom: 4 }}>
         <a href="/OGL.txt">Open Game License v1.0a</a>

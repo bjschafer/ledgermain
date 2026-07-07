@@ -17,6 +17,7 @@ import {
 } from "../../model/spellcasting.js";
 import { classSpellsByLevel, spellLevelMap } from "../../model/preparedSpells.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Explainer } from "../Explainer.js";
 import { SpellDetail } from "../SpellDetail.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -447,47 +448,34 @@ function SpellHints({
   isSpontaneous: boolean;
   preparesFromClassList: boolean;
 }) {
-  const [open, setOpen] = useState(false);
   return (
-    <details
-      className="spell-hints-details"
-      open={open}
-      onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
-    >
-      <summary className="spell-hints-summary">
-        How {casterTag} spellcasting works
-        <span className="panel-caret" aria-hidden="true">
-          {open ? " ▾" : " ▸"}
-        </span>
-      </summary>
-      <div className="spell-hints">
-        <p className="hint spell-hint-line">{model.blurb}</p>
-        <p className="hint spell-hint-line">{model.learnGuidance}</p>
-        {grantsCantrips && (
-          <p className="hint spell-hint-line">
-            You know <strong>all {cantrips.length} cantrips</strong> on the {casterTag} list —
-            they're listed below and cost no spellbook slot.
-          </p>
-        )}
-        {isSpontaneous ? (
-          <p className="hint spell-hint-line">
-            This is your <strong>{knownLabel}</strong> — the spells you can cast. Cast them on the
-            fly from the tracker's <strong>Spells</strong> panel by spending a slot of the
-            appropriate level.
-          </p>
-        ) : preparesFromClassList ? (
-          <p className="hint spell-hint-line">
-            Nothing to add or remove here — browse the full list below, then prepare from it each
-            day in the tracker's <strong>Spells</strong> panel.
-          </p>
-        ) : (
-          <p className="hint spell-hint-line">
-            This is your {knownLabel.toLowerCase()} — the spells you <em>could</em> prepare. Prepare
-            and cast for the day from the tracker's <strong>Spells</strong> panel.
-          </p>
-        )}
-      </div>
-    </details>
+    <Explainer title={`How ${casterTag} spellcasting works`}>
+      <p className="hint spell-hint-line">{model.blurb}</p>
+      <p className="hint spell-hint-line">{model.learnGuidance}</p>
+      {grantsCantrips && (
+        <p className="hint spell-hint-line">
+          You know <strong>all {cantrips.length} cantrips</strong> on the {casterTag} list — they're
+          listed below and cost no spellbook slot.
+        </p>
+      )}
+      {isSpontaneous ? (
+        <p className="hint spell-hint-line">
+          This is your <strong>{knownLabel}</strong> — the spells you can cast. Cast them on the fly
+          from the tracker's <strong>Spells</strong> panel by spending a slot of the appropriate
+          level.
+        </p>
+      ) : preparesFromClassList ? (
+        <p className="hint spell-hint-line">
+          Nothing to add or remove here — browse the full list below, then prepare from it each day
+          in the tracker's <strong>Spells</strong> panel.
+        </p>
+      ) : (
+        <p className="hint spell-hint-line">
+          This is your {knownLabel.toLowerCase()} — the spells you <em>could</em> prepare. Prepare
+          and cast for the day from the tracker's <strong>Spells</strong> panel.
+        </p>
+      )}
+    </Explainer>
   );
 }
 

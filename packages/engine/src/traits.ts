@@ -201,7 +201,7 @@ const TRAIT_LIST: TraitDef[] = [
     contextNotes: [
       {
         target: "skill.kre",
-        text: "Also makes a temple-related Profession skill a class skill (player choice) — not modeled by the engine's class-skill list.",
+        text: "Also makes a temple-related Profession skill a class skill (your choice) — the sheet's class-skill list doesn't reflect this.",
       },
     ],
   },
@@ -265,7 +265,7 @@ const TRAIT_LIST: TraitDef[] = [
     contextNotes: [
       {
         target: "skill.spl",
-        text: "Also makes Spellcraft a class skill even if your class list doesn't include it — not modeled by the engine's class-skill list.",
+        text: "Also makes Spellcraft a class skill even if your class doesn't include it — the sheet's class-skill list doesn't reflect this.",
       },
     ],
   },
@@ -279,7 +279,7 @@ const TRAIT_LIST: TraitDef[] = [
     contextNotes: [
       {
         target: "allChecks",
-        text: "Applies only to one chosen spell's metamagic cost — situational, not modeled numerically.",
+        text: "Applies only to one chosen spell's metamagic cost — situational, not tracked as a number here.",
       },
     ],
     displayOnly: true,
@@ -294,7 +294,7 @@ const TRAIT_LIST: TraitDef[] = [
     contextNotes: [
       {
         target: "skill.umd",
-        text: "Also makes Use Magic Device a class skill — not modeled by the engine's class-skill list.",
+        text: "Also makes Use Magic Device a class skill — the sheet's class-skill list doesn't reflect this.",
       },
     ],
   },
@@ -308,7 +308,7 @@ const TRAIT_LIST: TraitDef[] = [
     contextNotes: [
       {
         target: "skill.sen",
-        text: "Also makes Sense Motive a class skill — not modeled by the engine's class-skill list.",
+        text: "Also makes Sense Motive a class skill — the sheet's class-skill list doesn't reflect this.",
       },
     ],
   },
@@ -322,7 +322,7 @@ const TRAIT_LIST: TraitDef[] = [
     contextNotes: [
       {
         target: "skill.blf",
-        text: "The 'roll twice, take the better' defense only applies to non-outrageous lies — situational, not modeled.",
+        text: "The 'roll twice, take the better' defense only applies to non-outrageous lies — situational, not tracked here.",
       },
     ],
   },

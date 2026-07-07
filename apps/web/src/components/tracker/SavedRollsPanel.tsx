@@ -22,6 +22,7 @@ import { attachableRangerBonuses } from "../../model/ranger.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { Explainer } from "../Explainer.js";
 import { Provenance } from "../Provenance.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -103,11 +104,13 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
         </div>
         {!addCollapsed && (
           <>
-            <p className="hint saved-roll-add-hint">
-              Pick a source below, then expand the saved row to attach feats (Rapid Shot, Deadly
-              Aim, Power Attack fold in automatically) or layer a manual adjustment — for "Custom",
-              enter a value and damage note by hand.
-            </p>
+            <Explainer title="How adding a saved roll works">
+              <p className="hint">
+                Pick a source below, then expand the saved row to attach feats (Rapid Shot, Deadly
+                Aim, Power Attack fold in automatically) or layer a manual adjustment — for
+                "Custom", enter a value and damage note by hand.
+              </p>
+            </Explainer>
             <input
               className="search"
               type="text"

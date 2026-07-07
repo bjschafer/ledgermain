@@ -5,6 +5,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { Explainer } from "../Explainer.js";
 import {
   abilityZeroWarnings,
   activeAbilityAfflictions,
@@ -141,10 +142,12 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
           </span>
         ) : null}
       </div>
-      <div className="hint">
-        Temporary negative levels allow a Fortitude save to remove each one 24h after being gained
-        (display only — no timer is tracked here).
-      </div>
+      <Explainer title="How temporary negative levels clear">
+        <p className="hint">
+          Temporary negative levels allow a Fortitude save to remove each one 24h after being gained
+          (no timer is tracked here — remove them yourself once saved off).
+        </p>
+      </Explainer>
 
       <h4 className="tracker-sub">Add an ability affliction</h4>
       <div className="res-add">

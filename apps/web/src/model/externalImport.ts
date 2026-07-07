@@ -38,7 +38,7 @@ import {
   toggleFeat,
 } from "./doc.js";
 import { localId } from "./ids.js";
-import { ALIGNMENT_LABELS, SKILL_NAMES, slugifySkillLabel } from "./names.js";
+import { normalizeAlignmentCode, SKILL_NAMES, slugifySkillLabel } from "./names.js";
 
 /** Which external tool an import came from — carried through to the UI report. */
 export type ExternalImportSource = "pathbuilder" | "herolab";
@@ -181,25 +181,6 @@ const ABILITY_ALIASES: Record<string, AbilityId> = {
 /** Match a free-text ability name/abbreviation ("Strength", "STR", "str") to an `AbilityId`. */
 export function matchAbilityId(rawName: string): AbilityId | undefined {
   return ABILITY_ALIASES[rawName.trim().toLowerCase()];
-}
-
-const ALIGNMENT_NAME_TO_CODE: Map<string, string> = new Map(
-  Object.entries(ALIGNMENT_LABELS).map(([code, label]) => [label.toLowerCase(), code]),
-);
-const ALIGNMENT_CODES = new Set(Object.keys(ALIGNMENT_LABELS));
-
-/**
- * Normalize free-text alignment ("Chaotic Evil", "ce", "CE") to the two-
- * letter code the builder's Alignment dropdown expects. Returns undefined
- * when unrecognized — the caller still stores the raw text (schema allows any
- * string) but reports it, since it won't show up selected in the dropdown.
- */
-function normalizeAlignmentCode(raw: string): string | undefined {
-  const trimmed = raw.trim();
-  if (!trimmed) return undefined;
-  const upper = trimmed.toUpperCase();
-  if (ALIGNMENT_CODES.has(upper)) return upper;
-  return ALIGNMENT_NAME_TO_CODE.get(trimmed.toLowerCase());
 }
 
 /**

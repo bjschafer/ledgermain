@@ -121,6 +121,7 @@ export function setStable(doc: CharacterDoc, stable: boolean): CharacterDoc {
 /** Discriminated HP-total status (issue #20). See `hpState`'s doc comment for the state machine. */
 export type HpStatus =
   | "ok"
+  | "no-hp"
   | "disabled"
   | "dying"
   | "stable"
@@ -153,6 +154,13 @@ export interface HpState {
  *
  * State machine (checked in this order; lethal-HP states take priority over
  * nonlethal ones since nonlethal damage never causes dying/death):
+ *   - `derived.hp.max === 0`            → `no-hp` (a brand-new character with
+ *                                         no class levels yet — 0 current HP
+ *                                         out of 0 max is not the same thing
+ *                                         as being reduced to 0 HP, so it
+ *                                         shouldn't read as `disabled`;
+ *                                         checked first so it isn't masked by
+ *                                         the `current === 0` case below)
  *   - `conTotal <= 0`                   → `dead`, regardless of current HP
  *                                         (PF1 RAW: an ability score — here,
  *                                         Con — reduced to 0 or below by any
@@ -179,6 +187,9 @@ export function hpState(doc: CharacterDoc, derived: DerivedSheet): HpState {
   const conTotal = derived.abilities.con.total;
   const diesAt = -conTotal;
 
+  if (derived.hp.max === 0) {
+    return { status: "no-hp", diesAt };
+  }
   if (conTotal <= 0) {
     return { status: "dead", diesAt };
   }

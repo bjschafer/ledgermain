@@ -125,6 +125,153 @@ export const ALIGNMENT_LABELS: Record<string, string> = {
   CE: "Chaotic Evil",
 };
 
+const ALIGNMENT_NAME_TO_CODE: Map<string, string> = new Map(
+  Object.entries(ALIGNMENT_LABELS).map(([code, label]) => [label.toLowerCase(), code]),
+);
+const ALIGNMENT_CODES = new Set(Object.keys(ALIGNMENT_LABELS));
+
+/**
+ * Normalize free-text alignment ("Chaotic Evil", "ce", "CE") to the two-letter
+ * code the builder's Alignment dropdown expects (case-insensitive on both the
+ * code and the full label). Returns undefined when unrecognized — callers
+ * decide whether to still store the raw text (the schema allows any string).
+ */
+export function normalizeAlignmentCode(raw: string): string | undefined {
+  const trimmed = raw.trim();
+  if (!trimmed) return undefined;
+  const upper = trimmed.toUpperCase();
+  if (ALIGNMENT_CODES.has(upper)) return upper;
+  return ALIGNMENT_NAME_TO_CODE.get(trimmed.toLowerCase());
+}
+
+/**
+ * Human labels for the engine's flat (non-prefixed) `Change`/`ContextNote`
+ * targets — see `packages/engine/src/targets.ts` for the canonical
+ * vocabulary (`APPLIED_TARGETS` plus the unapplied-only ones formerly listed
+ * separately in `UNAPPLIED_TARGET_LABELS`). Covers both targets `compute()`
+ * consumes and ones it doesn't — a raw buff/gear row can show either.
+ */
+const CHANGE_TARGET_LABELS: Record<string, string> = {
+  // saves
+  fort: "Fortitude",
+  ref: "Reflex",
+  will: "Will",
+  allSavingThrows: "all saving throws",
+  // AC
+  ac: "AC",
+  aac: "AC (armor)",
+  sac: "AC (shield)",
+  nac: "AC (natural)",
+  // combat maneuver
+  cmb: "CMB",
+  cmd: "CMD",
+  // initiative / hp / skills
+  init: "Initiative",
+  hp: "HP",
+  skills: "all skills",
+  // attack + damage
+  attack: "attack rolls",
+  mattack: "melee attack rolls",
+  rattack: "ranged attack rolls",
+  tattack: "touch attack rolls",
+  nattack: "natural attack rolls",
+  damage: "damage",
+  wdamage: "weapon damage",
+  mwdamage: "melee weapon damage",
+  rwdamage: "ranged weapon damage",
+  twdamage: "thrown weapon damage",
+  ndamage: "natural attack damage",
+  critConfirm: "crit confirmation rolls",
+  // misc
+  concentration: "concentration checks",
+  cl: "caster level",
+  reach: "reach",
+  allChecks: "all ability checks",
+  // movement
+  landSpeed: "land speed",
+  flySpeed: "fly speed",
+  swimSpeed: "swim speed",
+  climbSpeed: "climb speed",
+  burrowSpeed: "burrow speed",
+  // size / armor interactions
+  size: "size",
+  mDexA: "max Dex bonus (armor)",
+  acpA: "armor check penalty",
+  // feats / skill ranks
+  bonusFeats: "bonus feats",
+  bonusSkillRanks: "bonus skill ranks",
+  // defenses
+  spellResist: "spell resistance",
+  dr: "damage reduction",
+  // per-ability checks/skills/penalties
+  strChecks: "Str-based ability checks",
+  dexChecks: "Dex-based ability checks",
+  conChecks: "Con-based ability checks",
+  intChecks: "Int-based ability checks",
+  wisChecks: "Wis-based ability checks",
+  chaChecks: "Cha-based ability checks",
+  strSkills: "Str-based skill checks",
+  dexSkills: "Dex-based skill checks",
+  conSkills: "Con-based skill checks",
+  intSkills: "Int-based skill checks",
+  wisSkills: "Wis-based skill checks",
+  chaSkills: "Cha-based skill checks",
+  strPen: "Strength penalties",
+  dexPen: "Dexterity penalties",
+  conPen: "Constitution penalties",
+  intPen: "Intelligence penalties",
+  wisPen: "Wisdom penalties",
+  chaPen: "Charisma penalties",
+  // carrying capacity / senses
+  carryStr: "carrying capacity",
+  carryMult: "carrying capacity",
+  sensedv: "senses",
+  sensebse: "senses",
+  sensetr: "senses",
+  senseall: "senses",
+};
+
+/** "coldIron" -> "cold iron", "adamantine" -> "adamantine". */
+function humanizeCamel(id: string): string {
+  return id.replace(/([a-z0-9])([A-Z])/g, "$1 $2").toLowerCase();
+}
+
+/** "blades-light" -> "Blades Light" (a `WEAPON_GROUPS` slug). */
+function weaponGroupLabel(slug: string): string {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+/**
+ * Human label for any raw `Change`/`ContextNote` target string, e.g.
+ * "tattack" -> "touch attack rolls", "skill.per" -> "Perception",
+ * "eres.fire" -> "fire resistance", "dr.coldIron" -> "DR (bypassed by cold iron)".
+ * Falls back to the raw target string for anything not recognized, so an
+ * unmapped target still renders (just not humanized) rather than disappearing.
+ */
+export function changeTargetLabel(target: string): string {
+  const direct = CHANGE_TARGET_LABELS[target];
+  if (direct) return direct;
+
+  const abilityId = target as AbilityId;
+  if (ABILITY_NAMES[abilityId]) return ABILITY_NAMES[abilityId];
+
+  if (target.startsWith("skill.")) return skillName(target.slice("skill.".length) as SkillId);
+  if (target.startsWith("attack.weapon.")) {
+    return `${weaponGroupLabel(target.slice("attack.weapon.".length))} weapon attack rolls`;
+  }
+  if (target.startsWith("damage.weapon.")) {
+    return `${weaponGroupLabel(target.slice("damage.weapon.".length))} weapon damage`;
+  }
+  if (target.startsWith("dr.")) return `DR (bypassed by ${humanizeCamel(target.slice(3))})`;
+  if (target.startsWith("eres.")) return `${humanizeCamel(target.slice(5))} resistance`;
+
+  return target;
+}
+
 /** Format a signed modifier, e.g. 3 -> "+3", -1 -> "-1", 0 -> "+0". */
 export function signed(n: number): string {
   return n >= 0 ? `+${n}` : `${n}`;

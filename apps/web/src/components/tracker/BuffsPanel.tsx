@@ -1,12 +1,7 @@
 import { useMemo, useState } from "react";
 
 import type { ActiveBuff, Buff, CharacterDoc, Change, ContextNote } from "@pf1/schema";
-import {
-  buildRollData,
-  evaluateBuffChange,
-  unappliedChanges,
-  unappliedTargetLabel,
-} from "@pf1/engine";
+import { buildRollData, evaluateBuffChange, unappliedChanges } from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
@@ -26,7 +21,7 @@ import {
 } from "../../model/buffs.js";
 import { isSharedWithCompanion, toggleSharedBuffCompanion } from "../../model/companion.js";
 import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js";
-import { signed } from "../../model/names.js";
+import { changeTargetLabel, signed } from "../../model/names.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /** Common typed-modifier targets for the custom-buff door (not exhaustive). */
@@ -168,7 +163,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
               <div className="preq">
                 {buff.changes.slice(0, 4).map((c, i) => (
                   <span key={i} title={c.formula}>
-                    {c.target} {formulaHint(c, { casterLevel }, rollData)}
+                    {changeTargetLabel(c.target)} {formulaHint(c, { casterLevel }, rollData)}
                   </span>
                 ))}
               </div>
@@ -221,7 +216,7 @@ function formulaHint(
 function PartialBadge({ changes }: { changes: readonly Change[] }) {
   const missing = unappliedChanges(changes);
   if (missing.length === 0) return null;
-  const labels = missing.map((c) => unappliedTargetLabel(c.target));
+  const labels = missing.map((c) => changeTargetLabel(c.target));
   return (
     <span className="soft" title={`Not auto-applied: ${labels.join(", ")}`}>
       ⚠ partial
@@ -306,7 +301,8 @@ function BuffRow({
         <div className="buff-changes num">
           {buff.changes.map((c, i) => (
             <span key={i} className="buff-change" title={c.formula}>
-              {c.target} {c.type ? <em>[{c.type}]</em> : null} {formulaHint(c, buff, rollData)}
+              {changeTargetLabel(c.target)} {c.type ? <em>[{c.type}]</em> : null}{" "}
+              {formulaHint(c, buff, rollData)}
             </span>
           ))}
         </div>

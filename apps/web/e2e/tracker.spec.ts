@@ -28,7 +28,8 @@ function sealValue(page: Page, label: string) {
 
 async function gotoPlay(page: Page) {
   await page.goto("/");
-  await expect(page.getByText(/data 11\.11/)).toBeVisible({ timeout: 15_000 });
+  // Wait for RefData to load and the sheet to compute off it (see smoke.spec.ts).
+  await expect(sealValue(page, "Armor Class")).toBeVisible({ timeout: 15_000 });
   await page.getByRole("tab", { name: "Play" }).click();
 }
 

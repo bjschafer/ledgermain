@@ -40,6 +40,7 @@ import {
 } from "../../model/spontaneousSpells.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
+import { Explainer } from "../Explainer.js";
 import { SpellDetail } from "../SpellDetail.js";
 
 interface PreparedRow {
@@ -1195,14 +1196,14 @@ function HybridView({
       }
     >
       {classSwitcher}
-      <div className="spell-hints">
-        <p className="hint spell-hint-line">
+      <Explainer title="How hybrid casting works">
+        <p className="hint">
           Hybrid caster: <strong>prepare</strong> spells from your {model.knownLabel.toLowerCase()}{" "}
           below, then <strong>cast</strong> any of them by spending a slot in the Cast section —
           casting never uses up the prepared spell itself, only a slot. <strong>New day</strong>{" "}
           refreshes every slot without changing what's prepared.
         </p>
-      </div>
+      </Explainer>
 
       <div className="prep-actions">
         {totalPrepared > 0 &&

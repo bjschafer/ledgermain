@@ -22,7 +22,7 @@ import { normalizeWeaponGroup } from "@pf1/engine";
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
-import { slugifySkillLabel } from "./names.js";
+import { normalizeAlignmentCode, slugifySkillLabel } from "./names.js";
 import { knownSpellsFor, setKnownSpellsFor, storedClassTag } from "./spellcasting.js";
 
 const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
@@ -104,8 +104,18 @@ export function setName(doc: CharacterDoc, name: string): CharacterDoc {
   return { ...doc, identity: { ...doc.identity, name } };
 }
 
+/**
+ * Set alignment, accepting either a code ("NG") or a full label ("Neutral
+ * Good", case-insensitive) and normalizing to the code the builder's
+ * Alignment dropdown expects — so a label-shaped value (e.g. from an
+ * external import, or a hand-authored fixture) doesn't silently show as "—"
+ * in the dropdown while the sheet still displays the raw text. An
+ * unrecognized string is stored as-is; the dropdown already falls back to
+ * showing the raw value in that case.
+ */
 export function setAlignment(doc: CharacterDoc, alignment: string): CharacterDoc {
-  return { ...doc, identity: { ...doc.identity, alignment } };
+  const code = normalizeAlignmentCode(alignment);
+  return { ...doc, identity: { ...doc.identity, alignment: code ?? alignment } };
 }
 
 export function setDeity(doc: CharacterDoc, deity: string): CharacterDoc {

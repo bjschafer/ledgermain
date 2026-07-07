@@ -1,12 +1,7 @@
 import { useMemo, useState } from "react";
 
 import type { ArmorRef, Change, Item, ItemInstance, WornArmor } from "@pf1/schema";
-import {
-  gearUnitWeight,
-  tryEvaluateFormula,
-  unappliedChanges,
-  unappliedTargetLabel,
-} from "@pf1/engine";
+import { gearUnitWeight, tryEvaluateFormula, unappliedChanges } from "@pf1/engine";
 
 import {
   addCustomGearItem,
@@ -36,6 +31,7 @@ import {
   generateConsumables,
 } from "../../model/consumables.js";
 import { ARMOR_MATERIALS } from "../../model/materials.js";
+import { changeTargetLabel } from "../../model/names.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -44,7 +40,7 @@ import type { BuilderProps } from "./types.js";
 function changeLabel(change: { formula: string; target: string; type: string }): string {
   const val = change.formula;
   const type = change.type && change.type !== "untyped" ? ` ${change.type}` : "";
-  const target = change.target ? ` to ${change.target}` : "";
+  const target = change.target ? ` to ${changeTargetLabel(change.target)}` : "";
   return `${val}${type}${target}`;
 }
 
@@ -314,7 +310,7 @@ function ArmorForm({
 function PartialBadge({ changes }: { changes: readonly Change[] }) {
   const missing = unappliedChanges(changes);
   if (missing.length === 0) return null;
-  const labels = missing.map((c) => unappliedTargetLabel(c.target));
+  const labels = missing.map((c) => changeTargetLabel(c.target));
   return (
     <span className="soft" title={`Not auto-applied: ${labels.join(", ")}`}>
       ⚠ partial

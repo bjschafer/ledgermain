@@ -235,7 +235,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
                       ) : null}
                     </div>
                     <div className="preq">
-                      <span className="soft">{tr.summary}</span>
+                      <span className="desc-text">{tr.summary}</span>
                     </div>
                     {isSel
                       ? tr.contextNotes?.map((note, i) => (
