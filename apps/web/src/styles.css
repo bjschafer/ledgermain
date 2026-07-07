@@ -1117,6 +1117,20 @@ button:focus-visible,
   font-style: italic;
 }
 
+/* Multi-sentence rules-text descriptions (racial-trait summaries, arcanist
+   exploit summaries, feat prereq prose) that regularly wrap to 2+ lines —
+   the default `.preq`/`.soft` italic gold mono reads fine for a one-line
+   effect summary but is fatiguing at paragraph length. Switch these to the
+   body face at a neutral muted color; one-line summaries/numbers/provenance
+   elsewhere (including sibling `.ck-met`/`.ck-unmet` prereq checks) keep the
+   mono treatment. */
+.desc-text {
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--muted);
+  font-style: normal;
+}
+
 /* Wrapper around always-on class-granted feats (no feat slot used) — sits
    above the searchable feat list, so it needs separation from the filter
    controls above it. */
@@ -1217,10 +1231,6 @@ button:focus-visible,
 
 .spell-hint-line {
   margin: 0;
-}
-
-.saved-roll-add-hint {
-  margin: 4px 0 12px;
 }
 
 /* One collapsible level section within a spellbook/known-list scroll —
@@ -2132,6 +2142,12 @@ button:focus-visible,
   margin-bottom: 10px;
 }
 
+/* Neutral variant for `no-hp` (no class levels yet) — not a warning. */
+.hp-status-line:not(.affliction-warn) {
+  color: var(--muted);
+  font-weight: 400;
+}
+
 .hp-stable-toggle {
   display: flex;
   align-items: center;
@@ -2938,13 +2954,18 @@ input[type="text"].saved-roll-name:focus {
   border-color: var(--oxblood);
 }
 
-/* --------------------------------- collapsible spell hints (Task 4) -- */
+/* --------------------------------- collapsible explainer blocks -----
+   Shared `<Explainer>` component (apps/web/src/components/Explainer.tsx):
+   a collapsed-by-default "HOW X WORKS ▸" summary that expands into guidance
+   prose. Originally the Spellbook panel's "How X spellcasting works" idiom,
+   now reused by ConditionsPanel, SavedRollsPanel, PreparedSpellsPanel, and
+   AfflictionsPanel. */
 
-.spell-hints-details {
+.explainer {
   margin-bottom: 10px;
 }
 
-.spell-hints-summary {
+.explainer-summary {
   font-size: 11px;
   font-family: var(--mono);
   letter-spacing: 0.08em;
@@ -2958,12 +2979,23 @@ input[type="text"].saved-roll-name:focus {
   padding: 2px 0;
 }
 
-.spell-hints-summary::-webkit-details-marker {
+.explainer-summary::-webkit-details-marker {
   display: none;
 }
 
-.spell-hints-summary:hover {
+.explainer-summary:hover {
   color: var(--gold);
+}
+
+.explainer-body {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.explainer-body > p {
+  margin: 0;
 }
 
 /* ----------------------------- known-count badge (Task 1e) -- */

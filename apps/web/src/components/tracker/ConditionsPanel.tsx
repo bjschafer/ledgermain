@@ -2,6 +2,7 @@ import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
 import { supersedingCondition, toggleCondition } from "../../model/conditions.js";
+import { Explainer } from "../Explainer.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /** Toggle the core PF1 conditions; the sheet's numbers update live via compute(). */
@@ -33,7 +34,7 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
                 implied
                   ? `Implied by ${impliedName} — that's the stricter condition on this ladder. Turn ${impliedName} off to control ${cond.name} directly.`
                   : cond.displayOnly
-                    ? `${cond.summary} (display-only — not wired to the engine, no flat modifier applied)`
+                    ? `${cond.summary} (reference only — no numeric modifier applied)`
                     : cond.summary
               }
               onClick={() => update((d) => toggleCondition(d, id))}
@@ -52,11 +53,13 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
           );
         })}
       </div>
-      <div className="hint cond-legend">
-        Dashed border = display-only, not wired to a numeric modifier yet. ▲ = implied by a stricter
-        condition on the same ladder (e.g. frightened implies shaken); turn the stricter one off to
-        toggle this directly.
-      </div>
+      <Explainer title="What the chip markers mean">
+        <p className="hint">
+          Dashed = reference only (doesn't change numbers yet). ▲ = implied by a stricter condition
+          on the same ladder (e.g. frightened implies shaken); turn the stricter one off to toggle
+          this directly.
+        </p>
+      </Explainer>
       {active.size > 0 ? (
         <ul className="cond-notes">
           {[...active].map((id) => {
