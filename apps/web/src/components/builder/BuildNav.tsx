@@ -6,6 +6,11 @@ import {
 } from "../../model/arcanistExploits.js";
 import { totalLevel } from "../../model/doc.js";
 import { chosenFeatCountExcludingGranted, expectedFeatCount } from "../../model/feats.js";
+import { chosenMagusArcanaCount, expectedMagusArcanaCount } from "../../model/magusArcana.js";
+import {
+  chosenOracleRevelationCount,
+  expectedOracleRevelationCount,
+} from "../../model/oracleRevelations.js";
 import { skillBudget } from "../../model/skills.js";
 import { chosenTraitCount, EXPECTED_TRAIT_COUNT } from "../../model/traits.js";
 import type { BuilderProps } from "./types.js";
@@ -113,18 +118,39 @@ export function useAttentionBadges({
       };
     }
 
-    // Classes: unpicked arcanist exploits. (Extend here for similarly cheap
-    // picker budgets — e.g. a future bloodline/mystery/domain "N of M" — this
-    // is the one flagged in the audit as already having a clean model fn.)
+    // Classes: unpicked arcanist exploits / magus arcana / oracle
+    // revelations — whichever cheap picker budget applies to this
+    // character's classes (each is 0 for a character without that class, so
+    // summing is safe; only one of the three is ever nonzero in practice).
     const openExploits = Math.max(
       0,
       expectedArcanistExploitCount(doc, refData) - chosenArcanistExploitCount(doc),
+    );
+    const openArcana = Math.max(
+      0,
+      expectedMagusArcanaCount(doc, refData) - chosenMagusArcanaCount(doc),
+    );
+    const openRevelations = Math.max(
+      0,
+      expectedOracleRevelationCount(doc, refData) - chosenOracleRevelationCount(doc),
     );
     if (openExploits > 0) {
       badges["section-classes"] = {
         count: openExploits,
         tone: "gold",
         title: `${plural(openExploits, "arcanist exploit")} unpicked`,
+      };
+    } else if (openArcana > 0) {
+      badges["section-classes"] = {
+        count: openArcana,
+        tone: "gold",
+        title: `${plural(openArcana, "magus arcana")} unpicked`,
+      };
+    } else if (openRevelations > 0) {
+      badges["section-classes"] = {
+        count: openRevelations,
+        tone: "gold",
+        title: `${plural(openRevelations, "revelation")} unpicked`,
       };
     }
 

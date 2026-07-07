@@ -97,6 +97,7 @@ export {
   ARCANIST_EXPLOIT_IDS,
   type ArcanistExploitDef,
 } from "./arcanist-exploits.js";
+export { MAGUS_ARCANA, MAGUS_ARCANA_IDS, type MagusArcanaDef } from "./magus-arcana.js";
 export {
   ORACLE_MYSTERIES,
   ORACLE_MYSTERY_TAGS,
@@ -109,6 +110,14 @@ export {
   type OracleCurseDef,
   type OracleCurseBonusSpell,
 } from "./oracle-curses.js";
+export {
+  ORACLE_REVELATIONS,
+  ORACLE_REVELATION_IDS,
+  revelationsForMystery,
+  ORACLE_MYSTERY_FINAL_REVELATIONS,
+  type OracleRevelationDef,
+  type OracleMysteryFinalRevelation,
+} from "./oracle-revelations.js";
 export {
   FEAT_EFFECTS,
   FEAT_POOL_EFFECTS,
@@ -204,12 +213,37 @@ export { ARCHETYPE_FEATURE_EFFECTS, type ArchetypeFeatureEffect } from "./archet
 export {
   ARCHETYPE_FEATURE_EFFECTS_EXTRACTED,
   ARCHETYPE_FEATURE_CLASSIFICATION,
+  // Per-class slices, re-exported directly for callers that want one class's
+  // table without importing the merged aggregator (e.g. fixture tests
+  // spot-checking a single class) — consistently exported for every class in
+  // `archetype-extracted/`, not just the wave that happened to add them
+  // first (cosmetic cleanup, issue #61).
+  ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED,
+  ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION,
+  BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED,
+  BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION,
   BARD_ARCHETYPE_EFFECTS_EXTRACTED,
   BARD_ARCHETYPE_FEATURE_CLASSIFICATION,
+  DRUID_ARCHETYPE_EFFECTS_EXTRACTED,
+  DRUID_ARCHETYPE_FEATURE_CLASSIFICATION,
   FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED,
   FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION,
+  MAGUS_ARCHETYPE_EFFECTS_EXTRACTED,
+  MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION,
+  MONK_ARCHETYPE_EFFECTS_EXTRACTED,
+  MONK_ARCHETYPE_FEATURE_CLASSIFICATION,
+  ORACLE_ARCHETYPE_EFFECTS_EXTRACTED,
+  ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION,
+  PALADIN_ARCHETYPE_EFFECTS_EXTRACTED,
+  PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION,
+  RANGER_ARCHETYPE_EFFECTS_EXTRACTED,
+  RANGER_ARCHETYPE_FEATURE_CLASSIFICATION,
+  ROGUE_ARCHETYPE_EFFECTS_EXTRACTED,
+  ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION,
   SORCERER_ARCHETYPE_EFFECTS_EXTRACTED,
   SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION,
+  WIZARD_ARCHETYPE_EFFECTS_EXTRACTED,
+  WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION,
   type ExtractedArchetypeFeatureEffect,
   type ExtractionConfidence,
   type ArchetypeFeatureClassificationBucket,

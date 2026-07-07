@@ -18,7 +18,9 @@ import { FAMILIARS } from "./familiars.js";
 import { featNameSlug } from "./feat-effects.js";
 import { resolveFeatEffect } from "./feat-effects-resolve.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
+import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { ORACLE_CURSES } from "./oracle-curses.js";
+import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
 import { TRAITS } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
@@ -354,6 +356,41 @@ export function collectModifiers(
       if (!exploit) continue;
       for (const ch of exploit.changes) {
         evalChange(ch.formula, rollData, ch.target, ch.type, exploit.name, exploit.id, out);
+      }
+    }
+  }
+
+  // --- magus arcana (build choice, issue #61) -------------------------------
+  // Arcana ids are hand-authored clean-room content (not in the vendored
+  // Foundry data pack — see `@pf1/engine` `magus-arcana.ts`), same posture as
+  // `traits.ts`/arcanist exploits above. Gated on the character actually
+  // having magus levels. Every base arcana is `displayOnly` with `changes: []`
+  // today (see that file's doc comment), so this loop currently contributes
+  // no numeric modifiers — wired the same way for a future arcana with a real
+  // unconditional Change to work for free.
+  const magusLevel = doc.identity.classes.find((c) => c.tag === "magus")?.level ?? 0;
+  if (magusLevel > 0) {
+    for (const arcanaId of doc.build.magusArcana ?? []) {
+      const arcana = MAGUS_ARCANA[arcanaId];
+      if (!arcana) continue;
+      for (const ch of arcana.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, arcana.name, arcana.id, out);
+      }
+    }
+  }
+
+  // --- oracle revelations (build choice, issue #61) -------------------------
+  // Same posture as magus arcana above — every base revelation is
+  // `displayOnly` with `changes: []` (see `oracle-revelations.ts`'s doc
+  // comment), scoped to the character's chosen mystery.
+  const oracleLevelForRevelations =
+    doc.identity.classes.find((c) => c.tag === "oracle")?.level ?? 0;
+  if (oracleLevelForRevelations > 0 && doc.build.oracleMystery) {
+    for (const revelationId of doc.build.oracleRevelations ?? []) {
+      const revelation = ORACLE_REVELATIONS[revelationId];
+      if (!revelation || revelation.mysteryTag !== doc.build.oracleMystery) continue;
+      for (const ch of revelation.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, revelation.name, revelation.id, out);
       }
     }
   }

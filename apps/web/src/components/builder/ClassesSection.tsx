@@ -18,11 +18,13 @@ import { BloodlinePicker } from "./BloodlinePicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { CursePicker } from "./CursePicker.js";
 import { DomainPicker } from "./DomainPicker.js";
+import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import { RangerPicker } from "./RangerPicker.js";
+import { RevelationPicker } from "./RevelationPicker.js";
 import { SchoolPicker } from "./SchoolPicker.js";
 import type { BuilderProps } from "./types.js";
 import { WeaponTrainingPicker } from "./WeaponTrainingPicker.js";
@@ -284,11 +286,17 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         <ArcanistExploitPicker doc={doc} refData={refData} update={update} />
       )}
 
-      {/* Mystery + curse pickers — oracle only (free-choice, soft warning only). */}
+      {/* Magus arcana picker — magus only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "magus") && (
+        <MagusArcanaPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Mystery + curse + revelation pickers — oracle only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "oracle") && (
         <>
           <MysteryPicker doc={doc} refData={refData} update={update} />
           <CursePicker doc={doc} refData={refData} update={update} />
+          <RevelationPicker doc={doc} refData={refData} update={update} />
         </>
       )}
 

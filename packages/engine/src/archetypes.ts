@@ -25,6 +25,8 @@ import type {
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
+import { MAGUS_ARCANA } from "./magus-arcana.js";
+import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import {
   sneakAttackDice,
   smiteEvilDetail,
@@ -45,8 +47,11 @@ export interface GrantedFeature {
   classTag: string;
   level: number;
   grant: ClassFeatureGrant;
-  /** Set when this grant came from a chosen domain/school/bloodline/exploit rather than the class itself. */
-  origin?: { kind: "domain" | "school" | "bloodline" | "exploit"; label: string };
+  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation rather than the class itself. */
+  origin?: {
+    kind: "domain" | "school" | "bloodline" | "exploit" | "arcana" | "revelation";
+    label: string;
+  };
   /**
    * Pre-computed display detail for grants with no vendored `RefData.classFeatures`
    * entry to look up (bloodline powers — see `bloodlines.ts`; hand-authored, not in
@@ -177,6 +182,67 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         // the exploit's own rules summary rather than a terse dice/DC string
         // — otherwise the row would show only a bare name.
         detail: exploit.summary,
+      });
+    }
+  }
+
+  // Magus arcana (issue #61) — hand-authored (see magus-arcana.ts), gated on
+  // actual magus levels the same way arcanist exploits are gated above. A
+  // non-magus with a stale `magusArcana` field gets nothing. Like exploits,
+  // base arcana carry no individual level gate HERE (the picker's own
+  // `minLevel` soft-filters what's offered — see `model/magusArcana.ts`);
+  // every chosen, recognized arcana id is granted at a flat display level of
+  // 3 (the earliest a magus has any arcana at all) so it groups sensibly
+  // rather than inventing a fake per-arcana level.
+  const magusLevel = doc.identity.classes.find((c) => c.tag === "magus")?.level ?? 0;
+  if (magusLevel > 0) {
+    for (const arcanaId of doc.build.magusArcana ?? []) {
+      const arcana = MAGUS_ARCANA[arcanaId];
+      if (!arcana) continue;
+      out.push({
+        classTag: "magus",
+        level: 3,
+        grant: {
+          level: 3,
+          uuid: `arcana:${arcana.id}`,
+          featureId: `arcana:${arcana.id}`,
+          name: arcana.name,
+          resolved: true,
+        },
+        origin: { kind: "arcana", label: "Magus Arcana" },
+        // Arcana have no vendored RefData.classFeatures entry to derive a
+        // description from (unlike base class features), so `detail` carries
+        // the arcana's own rules summary — otherwise the row would show only
+        // a bare name.
+        detail: arcana.summary,
+      });
+    }
+  }
+
+  // Oracle revelations (issue #61) — hand-authored (see
+  // oracle-revelations.ts), gated on actual oracle levels AND a chosen
+  // mystery (a revelation id from a DIFFERENT mystery than the one currently
+  // selected, or a non-oracle/stale field, is silently skipped — mirrors the
+  // "unresolvable id" tolerance every other hand-authored table here uses).
+  // Granted at a flat display level of 1, same rationale as exploits/arcana
+  // above.
+  const oracleLevel = doc.identity.classes.find((c) => c.tag === "oracle")?.level ?? 0;
+  if (oracleLevel > 0 && doc.build.oracleMystery) {
+    for (const revelationId of doc.build.oracleRevelations ?? []) {
+      const revelation = ORACLE_REVELATIONS[revelationId];
+      if (!revelation || revelation.mysteryTag !== doc.build.oracleMystery) continue;
+      out.push({
+        classTag: "oracle",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `revelation:${revelation.id}`,
+          featureId: `revelation:${revelation.id}`,
+          name: revelation.name,
+          resolved: true,
+        },
+        origin: { kind: "revelation", label: "Revelation" },
+        detail: revelation.summary,
       });
     }
   }
