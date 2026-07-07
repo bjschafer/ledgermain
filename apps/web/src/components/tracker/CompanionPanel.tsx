@@ -43,7 +43,12 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
   const skillRows = companionSkillRows(companion);
 
   return (
-    <Panel title={`Companion — ${companion.name}`} step="comp" storageKey="panel:Companion">
+    <Panel
+      title={`Companion — ${companion.name}`}
+      step="comp"
+      storageKey="panel:Companion"
+      defaultCollapsed
+    >
       <div className="familiar-summary hint">{formatCompanionSummary(companion)}</div>
 
       <div className="hp-display">

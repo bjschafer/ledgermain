@@ -63,6 +63,7 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
       title="Afflictions"
       step="af"
       storageKey="panel:Afflictions"
+      defaultCollapsed
       right={
         anyActive ? (
           <span className="hint">{active.length + (totalNeg > 0 ? 1 : 0)} active</span>

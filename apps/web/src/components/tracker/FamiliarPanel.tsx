@@ -55,7 +55,12 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
   );
 
   return (
-    <Panel title={`Familiar — ${familiar.name}`} step="fam" storageKey="panel:Familiar">
+    <Panel
+      title={`Familiar — ${familiar.name}`}
+      step="fam"
+      storageKey="panel:Familiar"
+      defaultCollapsed
+    >
       <div className="familiar-summary hint">{formatFamiliarSummary(familiar)}</div>
 
       <label className="hp-inline familiar-in-reach">

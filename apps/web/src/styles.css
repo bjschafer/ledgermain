@@ -3736,3 +3736,70 @@ input[type="text"].saved-roll-name:focus {
     margin: -8px;
   }
 }
+
+/* ============================================================================
+   Stat strip — sticky compact HP/AC/saves chrome (Play-tab cockpit fix,
+   UX audit). Below the 940px breakpoint (see the breakpoint list up top and
+   `.sheet-col` at line ~257) the sheet stops being sticky and drops below the
+   entire tracker column, so at the table "what's your AC?" means scrolling
+   thousands of pixels. This strip mirrors the same seal numbers (HP, AC,
+   Touch, Flat-Footed, Fort/Ref/Will, Init) pinned under the viewport top
+   while the Play tab scrolls. It reads as chrome, not another panel — a
+   hairline-bordered strip at seal micro scale, not a boxed panel. Hidden
+   entirely above 940px, where the sheet itself is already sticky alongside
+   the tracker.
+   ========================================================================== */
+
+.stat-strip {
+  display: none;
+}
+
+@media (max-width: 940px) {
+  .stat-strip {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    gap: 16px;
+    padding: 8px 14px;
+    margin: 0 0 var(--gap);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+    /* Scrollable, but reads as chrome — no visible scrollbar track/thumb. */
+    scrollbar-width: none;
+  }
+
+  .stat-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stat-strip-item {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    min-width: 40px;
+  }
+
+  .stat-strip-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .stat-strip-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gold-2);
+    line-height: 1.2;
+  }
+
+  /* Low-HP treatment mirrors `.stat-hero-band[data-hp-low="true"]` in Sheet.tsx. */
+  .stat-strip-item[data-low="true"] .stat-strip-value {
+    color: var(--oxblood);
+  }
+}
