@@ -201,23 +201,26 @@ describe("expectedFeatCount: archetype swaps of bonus-feat features (issue #40)"
   // grants the bonus-feat slots counted above) at rL 2, but differ in what
   // they hand back — exercising both halves of the archetype-aware budget:
   //
-  //  * Sable Company Marine trades Combat Style Feat for a Hippogriff Companion
-  //    and grants NO bonus feats in return (no ARCHETYPE_FEATURE_EFFECTS entry).
-  //    Before #40 the swapped-out base feature's slots still inflated the
-  //    budget; now they're dropped, leaving just the base progression.
+  //  * Sable Company Marine's Hippogriff Companion is vendored as paired to
+  //    Combat Style Feat, but that pairing is a data bug (the feature is
+  //    additive per RAW) — the engine ignores it via MISPAIRED_ADDITIVE_FEATURES
+  //    (f3b5255), so the budget keeps the full base style progression.
   //  * Bow Nomad replaces it with an identical-schedule archery combat style
   //    (an ARCHETYPE_FEATURE_EFFECTS `bonusFeats` reflavor), so the count nets
   //    out unchanged — guarding against both double-counting (base + archetype)
   //    and dropping the slots entirely.
 
-  it("Sable Company Marine ranger 6 Elf → 3 base, combat style swapped away = 3", () => {
+  it("Sable Company Marine ranger 6 Elf → 3 base + 2 combat style (mispaired swap ignored) = 5", () => {
     const doc = makeDoc({
       classes: [{ tag: "ranger", level: 6 }],
       race: "Elf",
       archetypes: ["ranger:sable-company-marine"],
     });
-    // base: ceil(6/2)=3; Combat Style Feat swapped out, no replacement slots.
-    expect(expectedFeatCount(doc, ref)).toBe(3);
+    // Hippogriff Companion is additive per RAW; the vendored pairing to Combat
+    // Style Feat is a data bug ignored via MISPAIRED_ADDITIVE_FEATURES
+    // (engine/archetypes.ts), so the style progression survives:
+    // base ceil(6/2)=3 + combat style feats at L2/L6 = 5.
+    expect(expectedFeatCount(doc, ref)).toBe(5);
   });
 
   it("Bow Nomad ranger 6 Elf → 3 base + 2 archetype combat style = 5 (unchanged)", () => {
