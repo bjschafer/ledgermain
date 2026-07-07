@@ -213,7 +213,10 @@ export type SpellProgression =
   | "bard"
   | "druid"
   | "arcanist"
-  | "magus";
+  | "magus"
+  | "inquisitor"
+  | "summoner"
+  | "skald";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -309,7 +312,7 @@ const SORCERER_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
  * per the known table), as distinct from prepared casters whose spellbook IS
  * their known list (unlimited within the rules for acquired spells).
  */
-export type SpellKnownProgression = "sorcerer" | "bard";
+export type SpellKnownProgression = "sorcerer" | "bard" | "inquisitor" | "summoner" | "skald";
 
 /**
  * Cleric base spells per day, indexed `[classLevel - 1][spellLevel]`. Clerics
@@ -431,6 +434,29 @@ const BARD_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
 ];
 
 /**
+ * Inquisitor (APG, Wis), Summoner (APG, Cha), and Skald (ACG, Cha) base spells
+ * per day / spells known, indexed `[classLevel - 1][spellLevel]`. All three are
+ * 6-level-max spontaneous casters (like bard: cantrips cast at will, column 0
+ * of the per-day table is always null, column 0 of the known table caps
+ * cantrips known) and — verified against aonprd.com's live class pages AND
+ * legacy.aonprd.com's static mirror (both matching exactly at every level,
+ * 1-20, for both tables) — their "Spells per Day" and "Spells Known" tables
+ * are numerically IDENTICAL to the bard's, not just similarly-shaped. (This
+ * is also documented directly: the skald casts "arcane spells drawn from the
+ * bard spell list.") So, same posture as `oracle: sorcerer` in
+ * `apps/web/src/model/spellcasting.ts` and `DRUID_SPELLS_PER_DAY =
+ * WIZARD_SPELLS_PER_DAY` above, all three reuse `BARD_SPELLS_PER_DAY` /
+ * `BARD_SPELLS_KNOWN` rather than duplicating an identical table under a new
+ * key. (PF1 APG/ACG SRD — clean-room, open game content.)
+ */
+const INQUISITOR_SPELLS_PER_DAY = BARD_SPELLS_PER_DAY;
+const SUMMONER_SPELLS_PER_DAY = BARD_SPELLS_PER_DAY;
+const SKALD_SPELLS_PER_DAY = BARD_SPELLS_PER_DAY;
+const INQUISITOR_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
+const SUMMONER_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
+const SKALD_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
+
+/**
  * Arcanist base spells PER DAY (the slot pool spent to cast — sorcerer-shaped),
  * indexed `[classLevel - 1][spellLevel]`. Column 0 (cantrips) is always null:
  * the arcanist's ACG "Spells per Day" table has no 0-level column at all —
@@ -513,11 +539,17 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   druid: DRUID_SPELLS_PER_DAY,
   arcanist: ARCANIST_SPELLS_PER_DAY,
   magus: MAGUS_SPELLS_PER_DAY,
+  inquisitor: INQUISITOR_SPELLS_PER_DAY,
+  summoner: SUMMONER_SPELLS_PER_DAY,
+  skald: SKALD_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {
   sorcerer: SORCERER_SPELLS_KNOWN,
   bard: BARD_SPELLS_KNOWN,
+  inquisitor: INQUISITOR_SPELLS_KNOWN,
+  summoner: SUMMONER_SPELLS_KNOWN,
+  skald: SKALD_SPELLS_KNOWN,
 };
 
 /**
