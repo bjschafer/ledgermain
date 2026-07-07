@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { AbilitiesSection } from "./components/builder/AbilitiesSection.js";
+import { BuildNav } from "./components/builder/BuildNav.js";
 import { ClassesSection } from "./components/builder/ClassesSection.js";
 import { FeatsSection } from "./components/builder/FeatsSection.js";
 import { GearSection } from "./components/builder/GearSection.js";
@@ -150,21 +151,44 @@ function Workbench({
   actionPending: boolean;
 }) {
   return (
-    <div className="layout">
+    <div className={`layout${mode === "build" ? " layout--with-nav" : ""}`}>
+      {mode === "build" && <BuildNav {...props} />}
       <div className="build-col">
         {mode === "build" ? (
           <>
-            <IdentitySection {...props} />
-            <AbilitiesSection {...props} />
-            <RaceSection {...props} />
-            <TraitsSection {...props} />
-            <ClassesSection {...props} />
-            <HitPointsSection {...props} />
-            <SkillsSection {...props} />
-            <FeatsSection {...props} />
-            <GearSection {...props} />
-            <WeaponsSection {...props} />
-            <SpellsSection {...props} />
+            <div id="section-identity">
+              <IdentitySection {...props} />
+            </div>
+            <div id="section-abilities">
+              <AbilitiesSection {...props} />
+            </div>
+            <div id="section-race">
+              <RaceSection {...props} />
+            </div>
+            <div id="section-traits">
+              <TraitsSection {...props} />
+            </div>
+            <div id="section-classes">
+              <ClassesSection {...props} />
+            </div>
+            <div id="section-hp">
+              <HitPointsSection {...props} />
+            </div>
+            <div id="section-skills">
+              <SkillsSection {...props} />
+            </div>
+            <div id="section-feats">
+              <FeatsSection {...props} />
+            </div>
+            <div id="section-gear">
+              <GearSection {...props} />
+            </div>
+            <div id="section-weapons">
+              <WeaponsSection {...props} />
+            </div>
+            <div id="section-spells">
+              <SpellsSection {...props} />
+            </div>
           </>
         ) : mode === "settings" ? (
           <SettingsSection

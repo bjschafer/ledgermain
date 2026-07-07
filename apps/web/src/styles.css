@@ -243,8 +243,18 @@ a {
   margin-top: 24px;
 }
 
+/* Build mode only: a third, narrow track for BuildNav's vertical rail (see
+   "Build nav" section below). Deliberately a real grid column rather than an
+   absolutely-positioned overlay into the page margin — the margin outside
+   `.app` (max-width: 1280px) evaporates well before 1280px viewport width, so
+   an overlay rail would have nowhere to go at e.g. 1100px. */
+.layout.layout--with-nav {
+  grid-template-columns: 120px minmax(0, 1.05fr) minmax(0, 0.95fr);
+}
+
 @media (max-width: 940px) {
-  .layout {
+  .layout,
+  .layout.layout--with-nav {
     /* `minmax(0, 1fr)`, not bare `1fr` — a bare `1fr` track's automatic
        minimum is its content's min-content size, so a panel header that
        refuses to wrap/shrink (e.g. a long `right`-slot hint) can force the
@@ -3734,5 +3744,156 @@ input[type="text"].saved-roll-name:focus {
   .skill-remove {
     padding: 8px;
     margin: -8px;
+  }
+}
+
+/* ============================================================================
+   Build nav — section-jump navigation for Build mode (UX audit: "Build-tab
+   navigation + attention badges"). One `<nav class="build-nav">` (see
+   components/builder/BuildNav.tsx) whose shape flips at the existing 940px
+   layout breakpoint: a slim sticky vertical rail on wide viewports (its own
+   grid column, `.layout--with-nav` above), a sticky horizontal chip row
+   under the masthead on narrow ones, once the layout has already collapsed
+   to a single column.
+   ========================================================================== */
+
+.build-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: sticky;
+  top: 16px;
+  max-height: calc(100vh - 16px);
+  overflow-y: auto;
+  /* Grid item in a 120px track — without this, the flex column's intrinsic
+     content width (the longest label) can force the track wider than 120px. */
+  min-width: 0;
+}
+
+.build-nav-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  border-radius: 0;
+  padding: 5px 8px;
+  text-align: left;
+  color: var(--faint);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.build-nav-item:hover {
+  color: var(--muted);
+  background: var(--surface-2);
+}
+
+.build-nav-item:focus-visible {
+  outline: 2px solid var(--gold-2);
+  outline-offset: -2px;
+}
+
+.build-nav-item.active {
+  border-left-color: var(--gold);
+  color: var(--ink);
+  background: var(--surface-2);
+}
+
+.build-nav-step {
+  font-family: var(--mono);
+  color: var(--gold-dim);
+  flex-shrink: 0;
+}
+
+.build-nav-item.active .build-nav-step {
+  color: var(--gold);
+}
+
+.build-nav-label {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Small gold count chip — "whispers" the way `.step` does, not a loud alert. */
+.build-nav-badge {
+  flex-shrink: 0;
+  min-width: 15px;
+  padding: 0 4px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  color: var(--gold-2);
+}
+
+.build-nav-badge--dim {
+  border-color: var(--line);
+  color: var(--faint);
+}
+
+.build-nav-badge--warn {
+  border-color: var(--oxblood);
+  color: var(--oxblood);
+}
+
+@media (max-width: 940px) {
+  .build-nav {
+    flex-direction: row;
+    align-items: stretch;
+    position: sticky;
+    top: 0;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: visible;
+    gap: 4px;
+    padding: 8px 4px;
+    margin: 0 0 4px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    z-index: 5;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .build-nav-item {
+    flex-direction: row;
+    flex-shrink: 0;
+    width: auto;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+
+  .build-nav-item.active {
+    border-bottom-color: var(--gold);
+  }
+
+  .build-nav-label {
+    white-space: nowrap;
+  }
+}
+
+/* Anchor targets for BuildNav's scrollIntoView — a little breathing room on
+   desktop, and on phone/tablet enough clearance to surface from under the
+   sticky chip row above. */
+.build-col > [id^="section-"] {
+  scroll-margin-top: 16px;
+}
+
+@media (max-width: 940px) {
+  .build-col > [id^="section-"] {
+    scroll-margin-top: 96px;
   }
 }
