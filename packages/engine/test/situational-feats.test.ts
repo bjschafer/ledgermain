@@ -52,6 +52,26 @@ describe("SITUATIONAL_FEAT_EFFECTS", () => {
     });
   });
 
+  describe("combat-expertise", () => {
+    const entry = SITUATIONAL_FEAT_EFFECTS["combat-expertise"]!;
+
+    it("BAB 1: p = 1 -> -1 attack / +1 dodge AC", () => {
+      expect(entry.effect({ bab: 1 })).toEqual({ attack: -1, acDelta: 1 });
+    });
+
+    it("BAB 4: p = 2 -> -2 attack / +2 dodge AC", () => {
+      expect(entry.effect({ bab: 4 })).toEqual({ attack: -2, acDelta: 2 });
+    });
+
+    it("BAB 16: p = 5 -> -5 attack / +5 dodge AC", () => {
+      expect(entry.effect({ bab: 16 })).toEqual({ attack: -5, acDelta: 5 });
+    });
+
+    it("is tagged melee", () => {
+      expect(entry.appliesTo).toBe("melee");
+    });
+  });
+
   describe("rapid-shot", () => {
     const entry = SITUATIONAL_FEAT_EFFECTS["rapid-shot"]!;
 

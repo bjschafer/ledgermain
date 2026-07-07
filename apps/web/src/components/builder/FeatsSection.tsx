@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { AbilityId } from "@pf1/schema";
 
-import { featNameSlug } from "@pf1/engine";
+import { featNameSlug, resolveFeatEffect } from "@pf1/engine";
 
 import { casterLevel } from "../../model/casterLevel.js";
 import { combatStyleFeatSlugs } from "../../model/ranger.js";
@@ -291,6 +291,16 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           // ever applies to not-yet-taken feats.
           const isUnqualified = isSel && unqualified.has(feat.id);
           const inStyle = styleSlugs.has(featNameSlug(feat.name));
+          // Issue #62: machine-extracted feats (issue #45's batch pass) get
+          // the same hollow "M" badge ArchetypePicker/ClassFeaturesList use
+          // for extracted-tier archetype effects — hand-authored entries in
+          // FEAT_EFFECTS take precedence via resolveFeatEffect, so this only
+          // fires when the feat's active effect resolves to the machine
+          // table. Situational (SITUATIONAL_FEAT_EFFECTS) and pool
+          // (FEAT_POOL_EFFECTS) feats are never covered by resolveFeatEffect,
+          // so this never mis-badges those.
+          const extractedEffect =
+            resolveFeatEffect(featNameSlug(feat.name))?.source === "extracted";
           // Other open restricted slots (combat, wizard bonus, bloodline,
           // monk list, …) this feat could fill — combat style already gets
           // its own dedicated badge above (tied to the prereq-waiver text).
@@ -386,6 +396,15 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                               }
                             >
                               combat style{res.bypassed ? " · prereqs waived" : ""}
+                            </span>
+                          ) : null}
+                          {idx === 0 && extractedEffect ? (
+                            <span
+                              className="badge-modeled badge-modeled--extracted"
+                              title="Carries a machine-extracted numeric effect, not yet hand-verified"
+                            >
+                              {" "}
+                              M
                             </span>
                           ) : null}
                         </div>
@@ -499,6 +518,15 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                         {slotTypeBadge(g.type)} slot
                       </span>
                     ))}
+                  {extractedEffect ? (
+                    <span
+                      className="badge-modeled badge-modeled--extracted"
+                      title="Carries a machine-extracted numeric effect, not yet hand-verified"
+                    >
+                      {" "}
+                      M
+                    </span>
+                  ) : null}
                 </div>
                 {/* Inline choice picker for feats that require a selection */}
                 {choiceDesc && choiceOpts.length > 0 && (

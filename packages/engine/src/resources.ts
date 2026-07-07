@@ -296,8 +296,23 @@ const COMPENDIUM_UUID_RE = /^Compendium\.pf1\.[^.]+\.Item\.([^.]+)$/;
  * Resolve a `ClassFeature.grantsBuffs` UUID list against `refData.buffs`,
  * dropping anything outside the vendored slice — never throwing. Of the 12
  * vendored features carrying `grantsBuffs`, only 3 resolve (Rage, Inspire
- * Courage, Aura of Protection); the rest point at buffs the data slice never
- * pulled in.
+ * Courage, Aura of Protection).
+ *
+ * Issue #62 audit of the other 9 occurrences (7 unique UUIDs, `Spellbooks
+ * (ARC/MAG/WIZ)` sharing one): the data pipeline's `grantsBuffs` field
+ * (`transform/classes.ts`) is populated from Foundry's generic
+ * `links.supplements` — NOT a buffs-only relation — so it also picks up
+ * linked feats and items. Checked each of the 7 against the raw pinned
+ * clone: Endurance, Eschew Materials, Leadership, Scribe Scroll, Stunning
+ * Fist, and Improved Unarmed Strike all resolve to entries in the `feats`
+ * pack (`Compendium.pf1.feats.Item.*`); Spellbooks resolves to an item
+ * (`Compendium.pf1.items.Item.*`, a spellbook, not a buff). None of the 9
+ * are buffs at all, so there is nothing to vendor — dropping the link (this
+ * function's existing behavior) is the correct, already-implemented
+ * disposition for every one of them. The feats among them are separately,
+ * correctly granted via `ClassFeatureGrant` / `apps/web/src/model/
+ * feats.ts`'s `grantedFeats()`, which is why this silent drop never loses
+ * any player-facing information.
  */
 function resolveGrantsBuffs(uuids: readonly string[], refData: RefData): string[] {
   const ids: string[] = [];

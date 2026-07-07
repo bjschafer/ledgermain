@@ -64,6 +64,15 @@ export interface SituationalFeatEffect {
   damage?: number;
   /** Extra attack entries at the (adjusted) highest bonus. */
   extraAttacks?: number;
+  /**
+   * Dodge-type AC delta (issue #62) — e.g. Combat Expertise's attack-for-AC
+   * trade. Display-only: unlike `attack`/`damage`, this never folds into a
+   * saved roll's number (AC isn't itself a saved-roll source), so
+   * `apps/web/src/model/savedRolls.ts` only ever surfaces it as a formatted
+   * note (`foldAttachments`), the same "player judges applicability, chip is
+   * a reminder" posture as `note` below.
+   */
+  acDelta?: number;
   /** At-table reminder, e.g. "within 30 ft". */
   note?: string;
 }
@@ -307,6 +316,22 @@ export const SITUATIONAL_FEAT_EFFECTS: Readonly<Record<string, SituationalFeatEn
       const p = 1 + Math.floor(ctx.bab / 4);
       const damage = option === "two-handed" ? 3 * p : 2 * p;
       return { attack: -p, damage };
+    },
+  },
+
+  // Combat Expertise: trade melee attack bonus for a dodge AC bonus, scaling
+  // with BAB (PF1 CRB p. 122) — same p = 1 + floor(BAB / 4) shape as Power
+  // Attack/Deadly Aim (RAW technically caps p at 5, reached at BAB 16;
+  // left uncapped here to match this file's existing Power Attack/Deadly Aim
+  // precedent, which also don't hard-cap at their BAB-16 max). `acDelta` is
+  // display-only (issue #62) — it never applies to the sheet's AC, only
+  // surfaces as a note when this feat is attached to a saved roll.
+  "combat-expertise": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: (ctx) => {
+      const p = 1 + Math.floor(ctx.bab / 4);
+      return { attack: -p, acDelta: p };
     },
   },
 

@@ -271,6 +271,12 @@ function foldAttachments(
         });
       }
       if (effect.extraAttacks) fold.extraAttacks += effect.extraAttacks;
+      // Display-only (issue #62): acDelta never folds into the roll's own
+      // number (AC isn't a saved-roll source at all) — just a formatted
+      // reminder alongside any note text, generic enough to cover future
+      // attack-for-AC feats (Combat Expertise today) without bespoke prose
+      // baked into each entry's `note`.
+      if (effect.acDelta) notes.push(`+${effect.acDelta} dodge AC`);
       if (effect.note) notes.push(effect.note);
     }
     featChips.push({ slug: ref.slug, name: ref.name, option: ref.option, applied, modeled, owned });

@@ -23,6 +23,7 @@ function makeDoc(over: {
   skillRanks?: Record<string, number>;
   gmSkillRanks?: number;
   int?: number;
+  archetypes?: string[];
 }): CharacterDoc {
   return {
     schemaVersion: 2,
@@ -51,6 +52,7 @@ function makeDoc(over: {
       spells: { known: [] },
       gear: [],
       gmGrants: over.gmSkillRanks != null ? { skillRanks: over.gmSkillRanks } : undefined,
+      archetypes: over.archetypes,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -166,5 +168,62 @@ describe("skillBudget: GM-grant skill-rank addend", () => {
       build: { ...doc.build, gmGrants: { featSlots: 1 } },
     };
     expect(skillBudget(withEmpty, ref, 0).total).toBe(2);
+  });
+});
+
+describe("skillBudget: archetype-authored bonusSkillRanks (issue #62)", () => {
+  // Both Faithful Wanderer's Wanderer's Lore and Tortured Crusader's
+  // Self-Sufficient double a paladin's 2 + Int skill ranks/level to 4 + Int
+  // — a flat +2/level delta, granted from 1st level. Elf (no racial
+  // bonusSkillRanks) isolates the archetype delta from the racial one.
+  it("Faithful Wanderer paladin 1, Int 10 -> base 2 + archetype delta 2 = 4", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "paladin", level: 1 }],
+      race: "Elf",
+      archetypes: ["paladin:faithful-wanderer"],
+    });
+    expect(skillBudget(doc, ref, 0).total).toBe(4);
+  });
+
+  it("Faithful Wanderer paladin 5, Int 10 -> base 10 + archetype delta 10 = 20", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "paladin", level: 5 }],
+      race: "Elf",
+      archetypes: ["paladin:faithful-wanderer"],
+    });
+    expect(skillBudget(doc, ref, 0).total).toBe(20);
+  });
+
+  it("Tortured Crusader paladin 1, Int 10 -> base 2 + archetype delta 2 = 4", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "paladin", level: 1 }],
+      race: "Elf",
+      archetypes: ["paladin:tortured-crusader"],
+    });
+    expect(skillBudget(doc, ref, 0).total).toBe(4);
+  });
+
+  it("same paladin without the archetype gets no delta", () => {
+    const doc = makeDoc({ classes: [{ tag: "paladin", level: 1 }], race: "Elf" });
+    expect(skillBudget(doc, ref, 0).total).toBe(2);
+  });
+
+  it("an unrelated archetype on the same class contributes nothing", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "paladin", level: 1 }],
+      race: "Elf",
+      archetypes: ["paladin:divine-guardian"],
+    });
+    expect(skillBudget(doc, ref, 0).total).toBe(2);
+  });
+
+  it("the archetype's class isn't in doc.identity.classes -> gated to 0 (no crash)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      race: "Elf",
+      archetypes: ["paladin:faithful-wanderer"],
+    });
+    // wizard 2 + Int 0, no paladin level to satisfy the level-1 gate.
+    expect(skillBudget(doc, ref, 0).total).toBe(2);
   });
 });
