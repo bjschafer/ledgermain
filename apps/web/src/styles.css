@@ -398,6 +398,11 @@ textarea {
   line-height: 1.4;
 }
 
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--gold);
+}
+
 /* Collapsible subsection for the optional "extra" identity fields. */
 .identity-more > summary {
   cursor: pointer;
@@ -1208,6 +1213,17 @@ button:focus-visible,
   opacity: 0.5;
 }
 
+/* Compendium row marker for a buff that's already active (issue: no double-add). */
+.buff-already-active {
+  flex-shrink: 0;
+  min-width: 74px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-family: var(--mono);
+  text-align: center;
+  color: var(--sage);
+}
+
 .spell-hints {
   margin-bottom: 12px;
   display: flex;
@@ -1853,7 +1869,6 @@ button:focus-visible,
 .gear-equip input[type="checkbox"] {
   width: auto;
   cursor: pointer;
-  accent-color: var(--gold);
 }
 
 .gear-main {
@@ -2654,6 +2669,33 @@ input[type="text"].saved-roll-name:focus {
   margin-top: 4px;
 }
 
+/* Prepare auto-collapses once every level is filled (issue: spells-panel
+   cast-first reorder) — the summary reuses .hybrid-section-title's mono-caps
+   look but needs its own cursor/marker treatment as a <summary>. */
+.hybrid-prepare {
+  margin-top: 4px;
+}
+
+.hybrid-prepare-summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.hybrid-prepare-summary::-webkit-details-marker {
+  display: none;
+}
+
+.hybrid-prepare-summary::before {
+  content: "▸";
+  display: inline-block;
+  width: 1em;
+  color: var(--gold-dim);
+}
+
+.hybrid-prepare[open] > .hybrid-prepare-summary::before {
+  content: "▾";
+}
+
 .prep-level {
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
@@ -3325,6 +3367,29 @@ input[type="text"].saved-roll-name:focus {
 
 .fcb-chip[aria-pressed="true"] {
   background: linear-gradient(180deg, #2c2718, #211d12);
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+
+/* "Apply to all levels" shortcut row (20 per-level rows at L20 is a lot of
+   clicking) — sits above the per-level list, visually set off since its
+   chips are one-shot actions rather than a persisted per-level selection. */
+.fcb-row-all {
+  padding-bottom: 8px;
+  margin-bottom: 2px;
+  border-bottom: 1px dashed var(--line-soft);
+}
+
+.fcb-row-all .fcb-level {
+  color: var(--gold-dim);
+  font-style: italic;
+}
+
+.fcb-chip-all {
+  border-style: dashed;
+}
+
+.fcb-chip-all:hover {
   border-color: var(--gold);
   color: var(--gold-2);
 }
