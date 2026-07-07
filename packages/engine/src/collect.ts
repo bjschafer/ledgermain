@@ -15,7 +15,8 @@ import { activeArchetypeSwaps, weaponTrainingReplaced } from "./archetypes.js";
 import { BLOODLINES } from "./bloodlines.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
-import { FEAT_EFFECTS, featNameSlug } from "./feat-effects.js";
+import { featNameSlug } from "./feat-effects.js";
+import { resolveFeatEffect } from "./feat-effects-resolve.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { ORACLE_CURSES } from "./oracle-curses.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
@@ -377,7 +378,11 @@ export function collectModifiers(
 
   // --- feats -----------------------------------------------------------------
   // doc.build.feats holds feat ids (keys into RefData.feats). We resolve each id
-  // to a name slug and look it up in FEAT_EFFECTS.
+  // to a name slug and look it up via resolveFeatEffect, which checks the
+  // hand-verified FEAT_EFFECTS table first and falls back to the
+  // machine-extracted FEAT_EFFECTS_EXTRACTED table (issue #45's feat
+  // batch-extraction pass — see feat-effects-resolve.ts for the precedence
+  // rule and feat-classification.ts for the full per-feat audit).
   //   Static entries: emit their changes unconditionally.
   //   Choice entries: read doc.build.featChoices[featId]; if a choice is set,
   //     call entry.build(choiceId) and emit the resulting changes. If no choice
@@ -386,8 +391,9 @@ export function collectModifiers(
     const feat = refData.feats[featId];
     if (!feat) continue;
     const slug = featNameSlug(feat.name);
-    const entry = FEAT_EFFECTS[slug];
-    if (!entry) continue;
+    const resolved = resolveFeatEffect(slug);
+    if (!resolved) continue;
+    const entry = resolved.entry;
 
     if (entry.type === "static") {
       for (const ch of entry.changes) {
@@ -401,9 +407,10 @@ export function collectModifiers(
         evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
       }
     }
-    // "situational" entries never live in FEAT_EFFECTS (see SITUATIONAL_FEAT_EFFECTS
-    // in feat-effects.ts) — this branch exists only so the type checker sees an
-    // exhaustive narrowing if FEAT_EFFECTS's value type ever widens.
+    // "situational" entries never live in FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED
+    // (see SITUATIONAL_FEAT_EFFECTS in feat-effects.ts) — this branch exists
+    // only so the type checker sees an exhaustive narrowing if FeatEntry's
+    // value type ever widens.
   }
 
   // --- arcane bond: familiar master bonus ----------------------------------

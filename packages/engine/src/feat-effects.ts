@@ -227,6 +227,14 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   // Extra Reservoir: +3 points to the arcane reservoir maximum (Advanced
   // Class Guide p. 12).
   "extra-reservoir": { featureTag: "arcaneReservoir", maxDelta: 3 },
+
+  // Extra Arcane Pool: +2 points to the magus's arcane pool maximum (PF1
+  // Ultimate Magic p. 10). Added by issue #45's feat batch-extraction pass
+  // (see feat-classification.ts) — the magus's Arcane Pool class feature
+  // already carries a vendored `uses.maxFormula` tagged `arcanePool`, so it
+  // derives generically via `deriveResourcePools` exactly like the five
+  // entries above; no resources.ts change was needed.
+  "extra-arcane-pool": { featureTag: "arcanePool", maxDelta: 2 },
 };
 
 /**
