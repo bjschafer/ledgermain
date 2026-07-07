@@ -12,7 +12,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute } from "../src/index.js";
+import { compute, raceContextNotesFor } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -165,5 +165,92 @@ describe("guards", () => {
 
   it("ignores an unknown trait id without throwing", () => {
     expect(() => compute(makeDoc("Elf", ["not-a-real-trait"]), ref)).not.toThrow();
+  });
+});
+
+describe("race contextNote suppression (issue #41)", () => {
+  // Dwarf's standard traits are all Race.contextNotes (Stability/Stonecunning/
+  // Defensive Training/Hardy/Greed/Hatred). An alternate that replaces one of
+  // them should hide only that trait's note, leaving the rest untouched.
+  const dwarfId = raceId("Dwarf");
+  const elfId = raceId("Elf");
+  const gnomeId = raceId("Gnome");
+
+  it("Dwarf with no alternate: Greed's contextNote is present", () => {
+    const notes = raceContextNotesFor(makeDoc("Dwarf"), ref.races[dwarfId]);
+    expect(notes.some((n) => n.text.includes("Appraise Items with Gems"))).toBe(true);
+  });
+
+  it("Dwarf with Lorekeeper: Greed's contextNote is dropped, unrelated notes remain", () => {
+    const notes = raceContextNotesFor(makeDoc("Dwarf", ["dwarf-lorekeeper"]), ref.races[dwarfId]);
+    expect(notes.some((n) => n.text.includes("Appraise Items with Gems"))).toBe(false);
+    // Hardy is a different standard trait, not replaced by Lorekeeper — still shows.
+    expect(notes.some((n) => n.text.includes("Poisons, Spells and Spell-likes"))).toBe(true);
+  });
+
+  it("Dwarf with Steel Soul: Hardy's contextNote is dropped, Greed's remains", () => {
+    const notes = raceContextNotesFor(makeDoc("Dwarf", ["dwarf-steel-soul"]), ref.races[dwarfId]);
+    expect(notes.some((n) => n.text.includes("Poisons, Spells and Spell-likes"))).toBe(false);
+    expect(notes.some((n) => n.text.includes("Appraise Items with Gems"))).toBe(true);
+  });
+
+  it("Dwarf with Rock Stepper: Stonecunning's contextNote is dropped", () => {
+    const notes = raceContextNotesFor(makeDoc("Dwarf", ["dwarf-rock-stepper"]), ref.races[dwarfId]);
+    expect(notes.some((n) => n.text.includes("Notice Unusual Stonework"))).toBe(false);
+  });
+
+  // Elf's ONLY contextNote-only standard trait is Elven Magic (Keen Senses is
+  // a structured Change, already covered by suppressTargets) — all three of
+  // its vendored contextNotes belong to it.
+  it("Elf with no alternate: Elven Magic's three contextNotes are all present", () => {
+    const notes = raceContextNotesFor(makeDoc("Elf"), ref.races[elfId]);
+    expect(notes.length).toBe(3);
+  });
+
+  it("Elf Fleet-Footed: Elven Magic's contextNotes are all dropped", () => {
+    const notes = raceContextNotesFor(makeDoc("Elf", ["elf-fleet-footed"]), ref.races[elfId]);
+    expect(notes.length).toBe(0);
+  });
+
+  it("Elf Dreamspeaker: Elven Magic's contextNotes are all dropped too", () => {
+    const notes = raceContextNotesFor(makeDoc("Elf", ["elf-dreamspeaker"]), ref.races[elfId]);
+    expect(notes.length).toBe(0);
+  });
+
+  // Gnome has a THIRD contextNote (Illusion Resistance) that no current
+  // alternate replaces — proves the substring match doesn't over-suppress
+  // just because it shares a `allSavingThrows`/`ac` target family.
+  it("Gnome with no alternate: all three contextNotes present", () => {
+    const notes = raceContextNotesFor(makeDoc("Gnome"), ref.races[gnomeId]);
+    expect(notes.length).toBe(3);
+  });
+
+  it("Gnome Gift of Tongues: Defensive Training + Hatred dropped, Illusion Resistance remains", () => {
+    const notes = raceContextNotesFor(
+      makeDoc("Gnome", ["gnome-gift-of-tongues"]),
+      ref.races[gnomeId],
+    );
+    expect(notes.some((n) => n.text.includes("Dodge vs Giants"))).toBe(false);
+    expect(notes.some((n) => n.text.includes("Humanoids (Reptillian, Goblinoid)"))).toBe(false);
+    expect(notes.some((n) => n.text.includes("Illusion Effects"))).toBe(true);
+  });
+
+  it("Gnome Eternal Hope: Defensive Training + Hatred dropped too", () => {
+    const notes = raceContextNotesFor(makeDoc("Gnome", ["gnome-eternal-hope"]), ref.races[gnomeId]);
+    expect(notes.some((n) => n.text.includes("Dodge vs Giants"))).toBe(false);
+    expect(notes.some((n) => n.text.includes("Humanoids (Reptillian, Goblinoid)"))).toBe(false);
+  });
+
+  it("a trait id that doesn't match the character's current race suppresses nothing (stale/mismatched id)", () => {
+    const notes = raceContextNotesFor(makeDoc("Dwarf", ["elf-fleet-footed"]), ref.races[dwarfId]);
+    expect(notes.some((n) => n.text.includes("Appraise Items with Gems"))).toBe(true);
+  });
+
+  it("numeric suppression is unchanged: Elf Fleet-Footed still suppresses Perception numerically", () => {
+    // Guards against suppressNotes accidentally feeding into the numeric
+    // pipeline — it's a separate, purely display-oriented mechanism.
+    const base = compute(makeDoc("Elf"), ref);
+    const withTrait = compute(makeDoc("Elf", ["elf-fleet-footed"]), ref);
+    expect(withTrait.skills.per!.total).toBe(base.skills.per!.total - 2);
   });
 });

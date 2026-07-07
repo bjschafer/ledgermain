@@ -1,9 +1,9 @@
 import { describe, expect, it } from "bun:test";
 
-import type { CharacterDoc } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, ItemInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { archetypeSwappedUuids, resolveClassFeatures } from "../src/index.js";
+import { archetypeSwappedUuids, compute, resolveClassFeatures } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -16,6 +16,8 @@ function raceId(name: string): string {
 function makeDoc(over: {
   classes: { tag: string; level: number }[];
   archetypes?: string[];
+  abilities?: Partial<Record<AbilityId, number>>;
+  gear?: ItemInstance[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -28,14 +30,22 @@ function makeDoc(over: {
       race: raceId("Human"),
       classes: over.classes,
     },
-    abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+    abilities: {
+      str: 10,
+      dex: 10,
+      con: 10,
+      int: 10,
+      wis: 10,
+      cha: 10,
+      ...over.abilities,
+    },
     build: {
       feats: [],
       skillRanks: {},
       archetypes: over.archetypes ?? [],
       classFeatureChoices: [],
       spells: { known: [] },
-      gear: [],
+      gear: over.gear ?? [],
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -293,5 +303,119 @@ describe("archetypeSwappedUuids", () => {
 
   it("unknown archetype id yields an empty set", () => {
     expect(archetypeSwappedUuids(ref, "not-a-real-id").size).toBe(0);
+  });
+});
+
+describe("Brawler (fighter archetype, issue #46: vendored pairedBaseFeatureUuid mispairing)", () => {
+  // Ground truth, verified against the published archetype text (d20pfsrd
+  // Brawler, matches the vendored `description` field verbatim):
+  //   Close Control (2nd) "replaces armor training 1"
+  //   Close Combatant (3rd) "replaces weapon training 1 and 2"
+  //   Menacing Stance (7th) "replaces armor training 2, 3, and 4 and armor mastery"
+  //   No Escape (9th) "replaces weapon training 3 and 4" (unpaired in vendored data)
+  // The vendored data instead paired all three by matching archetype-feature
+  // LEVEL to a same-level base fighter feature (Close Control -> Bravery,
+  // Close Combatant -> Armor Training, Menacing Stance -> Armor Training
+  // (Heavy Armor)) — none of which match what each feature's own prose says
+  // it replaces. See `MISPAIRED_TARGET_REMAP` in `archetypes.ts`.
+  const brawler = byName(ref.archetypes, "Brawler");
+  const fighterDef = Object.values(ref.classes).find((c) => c.tag === "fighter")!;
+  const armorTrainingUuid = fighterDef.features.find(
+    (f) => f.name === "Armor Training" && f.level === 3,
+  )!.uuid;
+  const weaponTrainingUuid = fighterDef.features.find((f) => f.name === "Weapon Training")!.uuid;
+  const braveryUuid = fighterDef.features.find((f) => f.name === "Bravery")!.uuid;
+
+  it("archetypeSwappedUuids no longer claims Bravery or Armor Training (Heavy Armor)", () => {
+    const swapped = archetypeSwappedUuids(ref, brawler.id);
+    expect(swapped.has(braveryUuid)).toBe(false);
+    expect(swapped.has(armorTrainingUuid)).toBe(true);
+    expect(swapped.has(weaponTrainingUuid)).toBe(true);
+  });
+
+  it("L2: Bravery stays applied (Close Control no longer wrongly suppresses it)", () => {
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 2 }], archetypes: [brawler.id] });
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const bravery = classFeatures.find((f) => f.name === "Bravery")!;
+    expect(bravery).toBeDefined();
+    expect(bravery.applied).toBe(true);
+    expect(bravery.replacedBy).toBeUndefined();
+  });
+
+  it("L4: Armor Training is struck through, replaced by Close Control", () => {
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 4 }], archetypes: [brawler.id] });
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const bravery = classFeatures.find((f) => f.name === "Bravery")!;
+    expect(bravery.applied).toBe(true); // Bravery is untouched at any level
+    const armorTraining = classFeatures.find((f) => f.name === "Armor Training")!;
+    expect(armorTraining.applied).toBe(false);
+    expect(armorTraining.replacedBy).toBe("Close Control");
+  });
+
+  it("L7+: Armor Training stays struck through (now via Menacing Stance) alongside Close Control", () => {
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 7 }], archetypes: [brawler.id] });
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const armorTraining = classFeatures.find((f) => f.name === "Armor Training")!;
+    expect(armorTraining.applied).toBe(false);
+    expect(armorTraining.replacedBy).toBe("Menacing Stance");
+  });
+
+  it("L5+: Weapon Training is struck through, replaced by Close Combatant (not Armor Training)", () => {
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 5 }], archetypes: [brawler.id] });
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const weaponTraining = classFeatures.find((f) => f.name === "Weapon Training")!;
+    expect(weaponTraining).toBeDefined();
+    expect(weaponTraining.applied).toBe(false);
+    expect(weaponTraining.replacedBy).toBe("Close Combatant");
+  });
+
+  it("activeArchetypes.swappedSlots reflects the corrected pairings, not the vendored ones", () => {
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 7 }], archetypes: [brawler.id] });
+    const { activeArchetypes } = resolveClassFeatures(doc, ref);
+    const entry = activeArchetypes.find((a) => a.id === brawler.id)!;
+    expect(entry.swappedSlots[2]).toBe(armorTrainingUuid); // Close Control (2nd)
+    expect(entry.swappedSlots[3]).toBe(weaponTrainingUuid); // Close Combatant (3rd)
+    expect(entry.swappedSlots[7]).toBe(armorTrainingUuid); // Menacing Stance (7th)
+  });
+
+  // Numeric check: Armor Training's mDexA/acpA Change (`clamp(floor((@class.unlevel+1)/4),0,4)`)
+  // is a single atomic formula covering all four tiers — at fighter L4 it's
+  // worth exactly +1 max-Dex / -1 ACP (tier 1, the only tier reached below L7).
+  // A Brawler (Close Control active since L2) should get NONE of it, unlike a
+  // plain fighter of the same level.
+  const dex18: Partial<Record<AbilityId, number>> = { dex: 18, str: 14 };
+  const mediumArmor: ItemInstance = {
+    equipped: true,
+    name: "Test Breastplate",
+    armor: { slot: "armor", ac: 6, maxDex: 1, acp: -3, type: 2 },
+  };
+
+  it("L4 plain fighter: Armor Training raises the Dex cap and reduces ACP", () => {
+    const plain = compute(
+      makeDoc({
+        classes: [{ tag: "fighter", level: 4 }],
+        abilities: dex18,
+        gear: [mediumArmor],
+      }),
+      ref,
+    );
+    const brawlerSheet = compute(
+      makeDoc({
+        classes: [{ tag: "fighter", level: 4 }],
+        archetypes: [brawler.id],
+        abilities: dex18,
+        gear: [mediumArmor],
+      }),
+      ref,
+    );
+    // Dex 18 (+4 mod) against a maxDex-1 breastplate: the plain fighter's
+    // Armor Training bumps the effective cap to 2, the Brawler's doesn't.
+    expect(plain.ac.normal - brawlerSheet.ac.normal).toBe(1);
+    const plainClimb = plain.skills.clm!;
+    const brawlerClimb = brawlerSheet.skills.clm!;
+    // -3 ACP reduced by 1 (Armor Training tier 1) for the plain fighter;
+    // untouched (-3) for the Brawler.
+    expect(plainClimb.acp).toBe(-2);
+    expect(brawlerClimb.acp).toBe(-3);
   });
 });

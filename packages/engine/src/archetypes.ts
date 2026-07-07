@@ -205,8 +205,8 @@ export function activeArchetypeSwaps(doc: CharacterDoc, refData: RefData): Map<s
     const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
     for (const f of Object.values(refData.archetypeFeatures)) {
       if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
-      if (MISPAIRED_ADDITIVE_FEATURES.has(f.id)) continue;
-      if (f.pairedBaseFeatureUuid) replacedByUuid.set(f.pairedBaseFeatureUuid, f.name);
+      const targetUuid = resolvedSwapTargetUuid(f);
+      if (targetUuid) replacedByUuid.set(targetUuid, f.name);
     }
   }
   return replacedByUuid;
@@ -225,6 +225,81 @@ const MISPAIRED_ADDITIVE_FEATURES: ReadonlySet<string> = new Set([
   // whole bonus-feat progression.
   "ranger:sable-company-marine:hippogriff-companion:2",
 ]);
+
+/**
+ * Archetype feature ids whose vendored `pairedBaseFeatureUuid` points at the
+ * WRONG base feature entirely (not merely "additive" like
+ * {@link MISPAIRED_ADDITIVE_FEATURES} above) -> the CORRECT base-feature uuid
+ * to suppress instead, or `null` when the feature's real replacement target
+ * has no numeric `Change` of its own to point at (handled by a separate
+ * hand-authored mechanism — see the entry's comment).
+ *
+ * Issue #46: Fighter's Brawler archetype. The vendored CSV-pairing script
+ * appears to have matched each Brawler feature to the base FIGHTER feature at
+ * the SAME class level, rather than by the feature's own "replaces ..."
+ * prose — all three mispairings below land on a same-level fighter feature
+ * that has nothing to do with what the Brawler feature actually replaces.
+ * Verified against the published archetype text (d20pfsrd Brawler, matches
+ * the vendored `description` field verbatim):
+ *   - Close Control (2nd): "This ability replaces armor training 1." Vendored
+ *     pairing points at Bravery (fighter's OWN level-2 feature) instead of
+ *     Armor Training.
+ *   - Close Combatant (3rd): "This ability replaces weapon training 1 and 2."
+ *     Vendored pairing points at Armor Training (fighter's level-3 feature)
+ *     instead of Weapon Training — the mispairing issue #46 was filed for.
+ *     Weapon Training's own `changes[]` is empty upstream (its per-group
+ *     bonus is hand-authored in `collect.ts`, gated on `weaponTrainingReplaced`
+ *     / `WEAPON_TRAINING_REPLACEMENTS` below — NOT on this pairing), so
+ *     there's no numeric double-suppression risk in remapping this to Weapon
+ *     Training's uuid; it only fixes the classFeatures display (Weapon
+ *     Training now shows struck through by Close Combatant instead of Armor
+ *     Training).
+ *   - Menacing Stance (7th): "This ability replaces armor training 2, 3, and
+ *     4 and armor mastery." Vendored pairing points at "Armor Training (Heavy
+ *     Armor)" (fighter's OWN level-7 feature, `changes: []`, purely a
+ *     move-at-full-speed-in-heavy-armor rider) instead of the base Armor
+ *     Training feature that actually carries the `mDexA`/`acpA` progression.
+ *     Remapped to Armor Training's uuid, joining Close Control (tier 1) to
+ *     suppress the rest of the atomic mDexA/acpA formula — together they
+ *     cover the entire progression with no partial-tier gap: Close Control
+ *     alone (levels 2–6) already suppresses the *whole* formula safely,
+ *     because the formula's value at those levels IS exactly tier 1's value
+ *     (`clamp(floor((unlevel+1)/4), 0, 4)` == 1 for levels 3–6, its only
+ *     nonzero value below level 7); Menacing Stance then keeps it suppressed
+ *     from level 7 on. "Armor Training (Heavy Armor)" itself is left alone
+ *     (not remapped to anything) since it isn't named in Menacing Stance's
+ *     replacement text and carries no numbers either way.
+ */
+const MISPAIRED_TARGET_REMAP: ReadonlyMap<string, string | null> = new Map([
+  [
+    "fighter:brawler:close-control:2",
+    "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa", // Armor Training
+  ],
+  [
+    "fighter:brawler:close-combatant:3",
+    "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF", // Weapon Training
+  ],
+  [
+    "fighter:brawler:menacing-stance:7",
+    "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa", // Armor Training
+  ],
+]);
+
+/**
+ * The base-class-feature uuid `f` actually swaps out, after applying the
+ * hand-curated corrections above — `undefined` when the vendored dataset
+ * couldn't pair it (prose-only soft warning) or when a correction removes the
+ * pairing outright. Shared by every swap-detection consumer in this file so
+ * they never disagree with each other about the same underlying data.
+ */
+function resolvedSwapTargetUuid(f: {
+  id: string;
+  pairedBaseFeatureUuid?: string;
+}): string | undefined {
+  if (MISPAIRED_ADDITIVE_FEATURES.has(f.id)) return undefined;
+  if (MISPAIRED_TARGET_REMAP.has(f.id)) return MISPAIRED_TARGET_REMAP.get(f.id) ?? undefined;
+  return f.pairedBaseFeatureUuid;
+}
 
 /**
  * Barbarian archetype ids whose feature at `level` fully replaces the
@@ -288,9 +363,12 @@ export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: Ref
  * classification entry for the reasoning.
  *
  * `fighter:brawler` is here because its Close Combatant feature genuinely
- * takes over the feature slot (see that entry's classification note for the
- * vendored `pairedBaseFeatureUuid` mispairing this sidesteps), not because of
- * the generic swap check.
+ * takes over the feature slot, not because of the generic swap check — even
+ * with `MISPAIRED_TARGET_REMAP` above correcting Close Combatant's vendored
+ * `pairedBaseFeatureUuid` to point at Weapon Training instead of Armor
+ * Training (issue #46), the swap check still can't backfill the per-tier
+ * `weaponTrainingGroups` picker with Close Combatant's fixed close-weapon-group
+ * bonus — that's what this set is for.
  */
 const WEAPON_TRAINING_REPLACEMENTS: ReadonlySet<string> = new Set([
   "fighter:archer",
@@ -392,8 +470,9 @@ export function resolveClassFeatures(
         detail: resolved?.effect.detail?.(clsLevel),
         effectSource: resolved?.effect.detail ? resolved.source : undefined,
       });
-      if (f.pairedBaseFeatureUuid) {
-        swappedSlots[f.level] = f.pairedBaseFeatureUuid;
+      const targetUuid = resolvedSwapTargetUuid(f);
+      if (targetUuid) {
+        swappedSlots[f.level] = targetUuid;
       }
     }
 
@@ -464,9 +543,9 @@ export function resolveClassFeatures(
 export function archetypeSwappedUuids(refData: RefData, archetypeId: string): Set<string> {
   const uuids = new Set<string>();
   for (const f of Object.values(refData.archetypeFeatures)) {
-    if (f.archetypeId === archetypeId && f.pairedBaseFeatureUuid) {
-      uuids.add(f.pairedBaseFeatureUuid);
-    }
+    if (f.archetypeId !== archetypeId) continue;
+    const targetUuid = resolvedSwapTargetUuid(f);
+    if (targetUuid) uuids.add(targetUuid);
   }
   return uuids;
 }

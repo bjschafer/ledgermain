@@ -74,6 +74,8 @@ export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.j
 export {
   RACIAL_TRAITS,
   alternateRacialTraitsForRace,
+  effectiveRaceContextNotes,
+  raceContextNotesFor,
   hasSlowAndSteady,
   raceHasSlowAndSteady,
   slowAndSteadySuppressedBy,
