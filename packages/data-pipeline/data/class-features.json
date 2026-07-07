@@ -1,6 +1,14 @@
 {
   "01m5lHnOP2E2FS5B": {
     "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "twak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "30 ft"
+      }
+    ],
     "changes": [],
     "description": "<p>You can cause your melee weapon to fly from your grasp and strike a foe before instantly returning. As a standard action, you can make a single attack using a melee weapon at a range of 30 feet. This attack is treated as a ranged attack with a thrown weapon, except that you add your Wisdom modifier to the attack roll instead of your Dexterity modifier (damage still relies on Strength). This ability cannot be used to perform a combat maneuver. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -85,6 +93,15 @@
   },
   "1XDvZLP9UPjr1glZ": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action, you can make a melee touch attack that causes a living creature to become <em>shaken</em> for a number of rounds equal to 1/2 your wizard level (minimum 1). If you touch a <em>shaken</em> creature with this ability, it becomes <em>frightened</em> for 1 round if it has fewer Hit Dice than your wizard level. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
     "grantsBuffs": [],
@@ -122,6 +139,16 @@
   },
   "1qz9sHHlXkyJDCxo": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "activation": "swift",
+        "name": "Use",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+          "type": "will"
+        }
+      }
+    ],
     "changes": [],
     "description": "<p>At 8th level, you can cast Charm Person as a swift action, with a DC of 10 + 1/2 your cleric level + your Wisdom modifier. You can only have one creature charmed in this way at a time. The total number of rounds of this effect per day is equal to your cleric level. The rounds do not need to be consecutive, and you can dismiss the charm at any time as a free action. Each attempt to use this ability consumes 1 round of its duration, whether or not the creature succeeds on its save to resist the effect.</p>",
     "grantsBuffs": [],
@@ -232,6 +259,17 @@
   },
   "2ausI8g6SsmbOpgF": {
     "abilityType": "ex",
+    "actions": [
+      {
+        "activation": "nonaction",
+        "name": "Use",
+        "range": "touch",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+          "type": "fort"
+        }
+      }
+    ],
     "changes": [
       {
         "formula": "1",
@@ -305,6 +343,19 @@
   },
   "4diLPqggIUsWxR0N": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "heal",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + @class.unlevel",
+          "types": ["nonlethal"]
+        },
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>You can touch a creature as a standard action to heal it of 1d6 points of nonlethal damage + 1 point per cleric level. This touch also removes the fatigued, shaken, and sickened conditions (but has no effect on more severe conditions). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -523,6 +574,16 @@
     "uuid": "Compendium.pf1.class-abilities.Item.6h8ESfQp4dwX4qhk"
   },
   "6pjr8jMFSKqXkBKk": {
+    "actions": [
+      {
+        "activation": "nonaction",
+        "damage": {
+          "formula": "(ceil(@class.unlevel / 2))d6",
+          "types": ["precision"]
+        },
+        "name": "Use"
+      }
+    ],
     "changes": [],
     "description": "<p>If a character can catch an opponent when he is unable to defend himself effectively from her attack, she can strike a vital spot for extra damage.</p><p>The character’s attack deals extra damage anytime her target would be denied a <em>Dexterity</em> bonus to <em>AC</em> (whether the target actually has a <em>Dexterity</em> bonus or not), or when the character flanks her target. This extra damage is 1d6 at 1st level, and increases by 1d6 every two class levels thereafter. Should the character score a <em>critical hit</em> with a sneak attack, this extra damage is not multiplied. Ranged attacks can count as sneak attacks only if the target is within 30 feet.</p><p>With a weapon that deals nonlethal damage (like a sap, whip, or an unarmed strike), a character can make a sneak attack that deals nonlethal damage instead of lethal damage. She cannot use a weapon that deals lethal damage to deal nonlethal damage in a sneak attack, not even with the usual –4 penalty.</p><p>The character must be able to see the target well enough to pick out a vital spot and must be able to reach such a spot. A character cannot sneak attack while striking a creature with concealment.</p>",
     "grantsBuffs": [],
@@ -673,6 +734,19 @@
   },
   "8iWGEKKdoKTHsDy5": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "heal",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d4 + floor(@class.unlevel / 2)",
+          "types": ["untyped"]
+        },
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>You can touch a living creature as a standard action, healing it for 1d4 points of damage plus 1 for every two cleric levels you possess. You can only use this ability on a creature that is below 0 hit points. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -703,6 +777,15 @@
   },
   "90Z23Z4U7ujOcvco": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>You can cause a creature to become sickened as a melee touch attack. Creatures sickened by your touch count as good for the purposes of spells with the evil descriptor. This ability lasts for a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -838,6 +921,18 @@
   },
   "Aw4xfA8YSYHGiUXV": {
     "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "save",
+        "activation": "standard",
+        "name": "Use",
+        "range": "30 ft",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+          "type": "will"
+        }
+      }
+    ],
     "changes": [],
     "description": "<p>At 8th level, you can emit a 30-foot aura of madness for a number of rounds per day equal to your cleric level. Enemies within this aura are affected by confusion unless they make a Will save with a DC equal to 10 + 1/2 your cleric level + your Wisdom modifier. The confusion effect ends immediately when the creature leaves the area or the aura expires. Creatures that succeed on their saving throw are immune to this aura for 24 hours. These rounds do not need to be consecutive.</p>",
     "grantsBuffs": [],
@@ -859,6 +954,15 @@
   },
   "AwMFhb8HETerKlVk": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>You can touch a willing creature as a standard action, infusing it with the power of divine order and allowing it to treat all attack rolls, skill checks, ability checks, and saving throws for 1 round as if the natural d20 roll resulted in an 11. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -986,6 +1090,15 @@
   },
   "Bw3GiobZvSJb8dGI": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action, you can touch an ally to grant him your resistance bonus for 1 minute. When you use this ability, you lose your resistance bonus granted by the Protection domain for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -1378,6 +1491,16 @@
   },
   "GidNLmDQBdokwgUn": {
     "abilityType": "su",
+    "actions": [
+      {
+        "activation": "nonaction",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["piercing"]
+        },
+        "name": "Apply damage to enemy"
+      }
+    ],
     "changes": [],
     "description": "<p>At 6th level, you can cause a host of wooden thorns to burst from your skin as a free action. While bramble armor is in effect, any foe striking you with an unarmed strike or a melee weapon without reach takes 1d6 points of piercing damage + 1 point per two cleric levels you possess. You can use this ability for a number of rounds per day equal to your cleric level. These rounds do not need to be consecutive.</p>",
     "grantsBuffs": [],
@@ -1586,6 +1709,18 @@
   },
   "JKJoHy5NveXGaZqv": {
     "abilityType": "ex",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "full",
+        "damage": {
+          "formula": "sizeRoll(ceil(@class.unlevel / 11), 6 + floor(@class.unlevel / 4) % 3 * 2, @size)",
+          "types": ["bludgeoning"]
+        },
+        "name": "Use",
+        "range": "melee"
+      }
+    ],
     "changes": [],
     "description": "<p>Starting at 1st level, a monk can make a flurry of blows as a full-attack action.</p>\n<p>When doing so, he may make one additional attack, taking a –2 penalty on all of his <em>attack rolls</em>, as if using the Two-Weapon Fighting feat. These attacks can be any combination of unarmed strikes and attacks with a <em>monk</em> special weapon (he does not need to use two weapons to utilize this ability).</p>\n<p>For the purpose of these attacks, the monk’s <em>base attack bonus</em> from his monk class levels is equal to his monk level. For all other purposes, such as qualifying for a feat or a prestige class, the monk uses his normal <em>base attack bonus</em>.</p>\n<p>At 8th level, the monk can make two additional attacks when he uses flurry of blows, as if using Improved Two-Weapon Fighting (even if the monk does not meet the prerequisites for the feat).</p>\n<p>At 15th level, the monk can make three additional attacks using flurry of blows, as if using Greater Two-Weapon Fighting (even if the monk does not meet the prerequisites for the feat).</p>\n<p>A monk applies his full <em>Strength</em> bonus to his damage rolls for all successful attacks made with flurry of blows, whether the attacks are made with an off-hand or with a weapon wielded in both hands. A monk may substitute <em>disarm</em>, <em>sunder</em>, and <em>trip combat maneuvers</em> for unarmed attacks as part of a flurry of blows. A monk cannot use any weapon other than an <em>unarmed strike</em> or a special monk weapon as part of a flurry of blows. A monk with <em>natural weapons</em> cannot use such weapons as part of a flurry of blows, nor can he make <em>natural attacks</em> in addition to his flurry of blows attacks.</p>",
     "grantsBuffs": [],
@@ -1632,6 +1767,17 @@
   },
   "Jsa2hTi4YCwLzFdf": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "activation": "standard",
+        "name": "Use",
+        "range": "30 ft",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+          "type": "will"
+        }
+      }
+    ],
     "changes": [],
     "description": "<p>At 8th level, you can create an illusion that hides the appearance of yourself and any number of allies within 30 feet for 1 round per cleric level. This ability otherwise functions like the spell veil. The save DC to disbelive this effect is equal to 10 + 1/2 your cleric level + your Wisdom modifier. The rounds do not need to be consecutive.</p>",
     "grantsBuffs": [],
@@ -1742,6 +1888,17 @@
   },
   "KXN1Y4DDcWd8ZraE": {
     "abilityType": "su",
+    "actions": [
+      {
+        "activation": "standard",
+        "name": "Use",
+        "range": "30 ft",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+          "type": "will"
+        }
+      }
+    ],
     "changes": [],
     "description": "<p>At 8th level, you can emit a 30-foot aura of divine presence for a number of rounds per day equal to your cleric level. All allies within this aura are treated as if under the effects of a sanctuary spell with a DC equal to 10 + 1/2 your cleric level + your Wisdom modifier. These rounds do not need to be consecutive. Activating this ability is a standard action. If an ally leaves the area or makes an attack, the effect ends for that ally. If you make an attack, the effect ends for you and your allies.</p>",
     "grantsBuffs": [],
@@ -1763,6 +1920,19 @@
   },
   "Kgcm3ye8CYGipsg3": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "rsak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["nonlethal"]
+        },
+        "name": "Use",
+        "range": "30 ft",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action, you can create a storm burst targeting any foe within 30 feet as a ranged touch attack. The storm burst deals 1d6 points of nonlethal damage + 1 point for every two cleric levels you possess. In addition, the target is buffeted by winds and rain, causing it to take a –2 penalty on attack rolls for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -1837,6 +2007,19 @@
   },
   "L5jrgNDA43dMH1wm": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "rsak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["acid"]
+        },
+        "name": "Use",
+        "range": "30 ft",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action, you can unleash an acid dart targeting any foe within 30 feet as a ranged touch attack. This acid dart deals 1d6 points of acid damage + 1 point for every two cleric levels you possess. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -1895,6 +2078,15 @@
   },
   "Le6qmKF8wkhVCPCz": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a melee touch attack, you can cause a creature's vision to be fraught with shadows and darkness. The creature touched treats all other creatures as if they had concealment, suffering a 20% miss chance on all attack rolls. This effect lasts for a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -2055,6 +2247,18 @@
   },
   "OZ1vgybloYDVfWff": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "rsak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d4 + (floor(@class.unlevel / 2))",
+          "types": ["force"]
+        },
+        "name": "Use",
+        "range": "medium"
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action you can unleash a force missile that automatically strikes a foe, as Magic Missile. The force missile deals 1d4 points of damage plus the damage from your intense spells evocation power. This is a force effect. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
     "grantsBuffs": [],
@@ -2164,6 +2368,17 @@
   },
   "QZJtfwamnWW0mHjJ": {
     "abilityType": "su",
+    "actions": [
+      {
+        "activation": "standard",
+        "damage": {
+          "formula": "@class.unlevel",
+          "types": ["untyped"]
+        },
+        "name": "Use",
+        "range": "30 ft"
+      }
+    ],
     "changes": [],
     "description": "<p>At 8th level, you can emit a 30-foot nimbus of light for a number of rounds per day equal to your cleric level. This acts as a Daylight spell. In addition, undead within this radius take an amount of damage equal to your cleric level each round that they remain inside the nimbus. Spells and spell-like abilities with the darkness descriptor are automatically dispelled if brought inside this nimbus. These rounds do not need to be consecutive.</p>",
     "grantsBuffs": [],
@@ -2465,6 +2680,19 @@
   },
   "V57hEfKt1MroRI91": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "rsak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + (floor(@class.unlevel / 2))",
+          "types": ["fire"]
+        },
+        "name": "Use",
+        "range": "30 ft",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action, you can unleash a scorching bolt of divine fire from your outstretched hand. You can target any single foe within 30 feet as a ranged touch attack with this bolt of fire. If you hit the foe, the fire bolt deals 1d6 points of fire damage + 1 point for every two cleric levels you possess. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -2617,6 +2845,9 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "source": "kiPool"
+    },
     "uuid": "Compendium.pf1.class-abilities.Item.WJEF9WHs27kaFYJL"
   },
   "WMtJbAlvzaLnzYVy": {
@@ -2663,6 +2894,19 @@
   },
   "WhE4j0Jc82npdMCP": {
     "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "heal",
+        "activation": "standard",
+        "damage": {
+          "formula": "(floor(@class.unlevel / 2))d6",
+          "types": ["positive"]
+        },
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>Beginning at 2nd level, a paladin can heal wounds (her own or those of others) by touch. Each day she can use this ability a number of times equal to 1/2 her paladin level plus her <em>Charisma</em> modifier. With one use of this ability, a paladin can heal 1d6 hit points of damage for every two paladin levels she possesses. Using this ability is a standard action, unless the paladin targets herself, in which case it is a swift action. Despite the name of this ability, a paladin only needs one free hand to use this ability.</p>\n<p>Alternatively, a paladin can use this healing power to deal damage to undead creatures, dealing 1d6 points of damage for every two levels the paladin possesses. Using lay on hands in this way requires a successful melee touch attack and doesn't provoke an <em>attack of opportunity</em>. Undead do not receive a <em>saving throw</em> against this damage.</p>",
     "grantsBuffs": [],
@@ -2774,6 +3018,9 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "source": "kiPool"
+    },
     "uuid": "Compendium.pf1.class-abilities.Item.XJtvco1XWggmr5LU"
   },
   "XhpyFMIbhL5ogMVe": {
@@ -2906,6 +3153,18 @@
   },
   "ZPrMO00Iz2SfrNMq": {
     "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "heal",
+        "activation": "standard",
+        "damage": {
+          "formula": "@class.unlevel",
+          "types": ["untyped"]
+        },
+        "name": "Use",
+        "range": "personal"
+      }
+    ],
     "changes": [],
     "description": "<p>At 7th level or higher, a monk can heal his own wounds as a <em>standard action</em>. He can heal a number of <em>hit points</em> of damage equal to his monk level by using 2 points from his ki pool.</p>",
     "grantsBuffs": [],
@@ -2918,6 +3177,9 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "source": "kiPool"
+    },
     "uuid": "Compendium.pf1.class-abilities.Item.ZPrMO00Iz2SfrNMq"
   },
   "ZfCUTi1MiLgR4T7I": {
@@ -2970,6 +3232,18 @@
     "uuid": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
   },
   "a4SPdPuOFdmfJdHN": {
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "attack",
+        "damage": {
+          "formula": "sizeRoll(ceil(@class.unlevel / 11), 6 + floor(@class.unlevel / 4) % 3 * 2, @size)",
+          "types": ["bludgeoning"]
+        },
+        "name": "Attack",
+        "range": "melee"
+      }
+    ],
     "changes": [
       {
         "formula": "1",
@@ -3079,6 +3353,18 @@
   },
   "biOw5dSbJGsGVFwN": {
     "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "rsak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["acid"]
+        },
+        "name": "Use",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action you can unleash an acid dart targeting any foe within 30 feet as a ranged touch attack. The acid dart deals 1d6 points of acid damage + 1 for every two wizard levels you possess. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier. This attack ignores spell resistance.</p>",
     "grantsBuffs": [],
@@ -3169,6 +3455,9 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "source": "kiPool"
+    },
     "uuid": "Compendium.pf1.class-abilities.Item.dtnkUkinLVIl1b2T"
   },
   "eEuj2X72Q5jP6xAj": {
@@ -3226,6 +3515,15 @@
   },
   "eZ569ZcO7BeZAqB6": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>You can imbue a target with chaos as a melee touch attack. For the next round, anytime the target rolls a d20, he must roll twice and take the less favorable result. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -3372,6 +3670,15 @@
   },
   "hslkjPA3AVl3hDWu": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>At 8th level, you can use a targeted dispel magic effect as a melee touch attack. You can use this ability once per day at 8th level and one additional time per day for every four cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
@@ -3466,6 +3773,15 @@
   },
   "iv3eNHISB84mHLox": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>You can touch a creature to learn about its abilities and weaknesses. With a successful touch attack, you gain information as if you made the appropriate Knowledge skill check with a result equal to 15 + your cleric level + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -3560,6 +3876,56 @@
   },
   "kXXz1lO4i7CibHJ9": {
     "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "heal",
+        "activation": "standard",
+        "damage": {
+          "formula": "(ceil(@class.unlevel / 2))d6",
+          "types": ["positive"]
+        },
+        "name": "Positive - Heal living",
+        "range": "30 ft"
+      },
+      {
+        "actionType": "save",
+        "activation": "standard",
+        "damage": {
+          "formula": "(ceil(@class.unlevel / 2))d6",
+          "types": ["negative"]
+        },
+        "name": "Negative - Harm living",
+        "range": "30 ft",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.cha.mod",
+          "type": "will"
+        }
+      },
+      {
+        "actionType": "heal",
+        "activation": "standard",
+        "damage": {
+          "formula": "(ceil(@class.unlevel / 2))d6",
+          "types": ["negative"]
+        },
+        "name": "Negative - Heal undead",
+        "range": "30 ft"
+      },
+      {
+        "actionType": "save",
+        "activation": "standard",
+        "damage": {
+          "formula": "(ceil(@class.unlevel / 2))d6",
+          "types": ["positive"]
+        },
+        "name": "Positive - Harm undead",
+        "range": "30 ft",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.cha.mod",
+          "type": "will"
+        }
+      }
+    ],
     "changes": [],
     "description": "<p>Regardless of alignment, any cleric can release a wave of energy by channeling the power of her faith through her holy (or unholy) symbol. This energy can be used to cause or heal damage, depending on the type of energy channeled and the creatures targeted.</p>\n<p>A good cleric (or a neutral cleric who worships a good deity) channels positive energy and can choose to deal damage to <em>undead</em> creatures or to heal living creatures. An evil cleric (or a neutral cleric who worships an evil deity) channels negative energy and can choose to deal damage to living creatures or to heal <em>undead</em> creatures. A neutral cleric of a neutral deity (or one who is not devoted to a particular deity) must choose whether she channels positive or negative energy. Once this choice is made, it cannot be reversed. This decision also determines whether the cleric can cast spontaneous cure or inflict spells (see spontaneous casting).</p>\n<p>Channeling energy causes a burst that affects all creatures of one type (either <em>undead</em> or living) in a 30-foot radius centered on the cleric. The amount of damage dealt or healed is equal to 1d6 points of damage plus 1d6 points of damage for every two cleric levels beyond 1st (2d6 at 3rd, 3d6 at 5th, and so on). Creatures that take damage from channeled energy receive a <em>Will</em> save to halve the damage. The DC of this save is equal to 10 + 1/2 the cleric’s level + the cleric’s <em>Charisma</em> modifier. Creatures healed by channel energy cannot exceed their maximum hit point total—all excess healing is lost. A cleric may channel energy a number of times per day equal to 3 + her <em>Charisma</em> modifier. This is a standard action that does not provoke an attack of opportunity. A cleric can choose whether or not to include herself in this effect.</p>\n<p>A cleric must be able to present her holy symbol to use this ability.</p>",
     "grantsBuffs": [],
@@ -3652,6 +4018,29 @@
   },
   "mS7LSsQQkjVvKx9z": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Staggered living target",
+        "range": "touch",
+        "touch": true
+      },
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Undead target",
+        "range": "touch",
+        "touch": true
+      },
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Living target",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>Your touch can fill a creature with lethargy, causing a living creature to become staggered for 1 round as a melee touch attack. If you touch a staggered living creature, that creature falls asleep for 1 round instead. Undead creatures touched are staggered for a number of rounds equal to your Wisdom modifier. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -3725,6 +4114,14 @@
   },
   "n11lJHH3cBKXdRdj": {
     "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "rwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "30 ft"
+      }
+    ],
     "changes": [],
     "description": "<p>You cause your melee weapon to fly from your grasp and strike a foe before instantly returning to you. As a standard action, you can make a single attack using a melee weapon at a range of 30 feet. This attack is treated as a ranged attack with a thrown weapon, except that you add your <em>Intelligence</em> modifier on the attack roll instead of your <em>Dexterity</em> modifier (damage still relies on <em>Strength</em>). This ability cannot be used to perform a combat maneuver. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
     "grantsBuffs": [],
@@ -3746,6 +4143,17 @@
   },
   "n4SWyKVcdmZK4t7d": {
     "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "save",
+        "activation": "free",
+        "name": "Use",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+          "type": "fort"
+        }
+      }
+    ],
     "changes": [],
     "description": "<p>Starting at 15th level, a monk can set up vibrations within the body of another creature that can thereafter be fatal if the monk so desires. He can use this quivering palm attack once per day, and he must announce his intent before making his <em>attack roll</em>. Creatures immune to critical hits cannot be affected. Otherwise, if the monk strikes successfully and the target takes damage from the blow, the quivering palm attack succeeds. Thereafter, the monk can try to slay the victim at any later time, as long as the attempt is made within a number of days equal to his monk level. To make such an attempt, the monk merely wills the target to die (a <em>free action</em>), and unless the target makes a <em>Fortitude saving throw</em> (DC 10 + 1/2 the monk’s level + the monk’s <em>Wis</em> modifier), it dies. If the <em>saving throw</em> is successful, the target is no longer in danger from that particular quivering palm attack, but it may still be affected by another one at a later time. A monk can have no more than 1 quivering palm in effect at one time. If a monk uses quivering palm while another is still in effect, the previous effect is negated.</p>",
     "grantsBuffs": [],
@@ -3809,6 +4217,19 @@
   },
   "o8rxNsQ7P7Yjlvvu": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "rsak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + (floor(@class.unlevel / 2))",
+          "types": ["electric"]
+        },
+        "name": "Use",
+        "range": "30 ft. spec",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action, you can unleash an arc of electricity targeting any foe within 30 feet as a ranged touch attack. This arc of electricity deals 1d6 points of electricity damage + 1 point for every two cleric levels you possess. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -4042,6 +4463,19 @@
   },
   "ructcpEg6rejcpYQ": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "rsak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["cold"]
+        },
+        "name": "Use",
+        "range": "30 ft",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action, you can fire an icicle from your finger, targeting any foe within 30 feet as a ranged touch attack. The icicle deals 1d6 points of cold damage + 1 point for every two cleric levels you possess. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -4141,6 +4575,32 @@
   },
   "tHObxrPeyhimmz9V": {
     "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "heal",
+        "activation": "standard",
+        "damage": {
+          "formula": "(ceil(@class.unlevel / 2))d6",
+          "types": ["positive"]
+        },
+        "name": "Heal living",
+        "range": "30 ft"
+      },
+      {
+        "actionType": "save",
+        "activation": "standard",
+        "damage": {
+          "formula": "(ceil(@class.unlevel / 2))d6",
+          "types": ["positive"]
+        },
+        "name": "Harm undead",
+        "range": "30 ft",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.cha.mod",
+          "type": "will"
+        }
+      }
+    ],
     "changes": [],
     "description": "<p>When a paladin reaches 4th level, she gains the supernatural ability to channel positive energy like a cleric. Using this ability consumes two uses of her lay on hands ability. A paladin uses her level as her effective cleric level when channeling positive energy. This is a <em>Charisma</em>-based ability.</p>",
     "grantsBuffs": [],
@@ -4153,6 +4613,9 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "source": "layOnHands"
+    },
     "uuid": "Compendium.pf1.class-abilities.Item.tHObxrPeyhimmz9V"
   },
   "tWE66WvFjS1o0S4y": {
@@ -4189,6 +4652,19 @@
   },
   "u5LefrXZxQgLqmyJ": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6",
+          "types": ["untyped"]
+        },
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a melee touch attack, you can cause a living creature to take 1d6 points of damage per round. This effect persists for a number of rounds equal to 1/2 your cleric level (minimum 1) or until stopped with a DC 15 Heal check or any spell or effect that heals damage. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -4225,6 +4701,15 @@
   },
   "v4wH3dsMLl1Bm542": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>You can give a creature a vision of madness as a melee touch attack. Choose one of the following: attack rolls, saving throws, or skill checks. The target receives a bonus to the chosen rolls equal to 1/2 your cleric level (minimum +1) and a penalty to the other two types of rolls equal to 1/2 your cleric level (minimum –1). This effect fades after 3 rounds. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
@@ -4246,6 +4731,21 @@
   },
   "vDsgDSlIerRm7ISE": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["nonlethal"]
+        },
+        "name": "Use",
+        "range": "30 ft",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+          "type": "will"
+        }
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action, you can activate a gaze attack with a 30-foot range (Pathfinder RPG Bestiary 300). This is an active gaze attack that can target a single creature within range. The target must make a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier). Those that fail take 1d6 points of nonlethal damage + 1 point for every two cleric levels you possess and are fascinated until the beginning of your next turn. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. This is a mind-affecting effect.</p>",
     "grantsBuffs": [],
@@ -4403,6 +4903,19 @@
   },
   "x48O0CAEs10yL68R": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "rsak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1 + floor(@class.unlevel / 2)",
+          "types": ["bludgeoning"]
+        },
+        "name": "Use",
+        "range": "30 spec",
+        "touch": true
+      }
+    ],
     "changes": [],
     "description": "<p>As a standard action you can strike with a telekinetic fist, targeting any foe within 30 feet as a ranged touch attack. The telekinetic fist deals 1d4 points of bludgeoning damage + 1 for every two wizard levels you possess. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
     "grantsBuffs": [],
@@ -4555,6 +5068,29 @@
   },
   "zeLaBkwTp9wlzZJv": {
     "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["untyped"]
+        },
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      },
+      {
+        "actionType": "spellsave",
+        "activation": "minute",
+        "name": "Mending",
+        "range": "10 ft",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+          "type": "will"
+        }
+      }
+    ],
     "changes": [],
     "description": "<p>You can cast mending at will, using your cleric level as the caster level to repair damaged objects. In addition, you can cause damage to objects and construct creatures by striking them with a melee touch attack. Objects and constructs take 1d6 points of damage +1 for every two cleric levels you possess. This attack bypasses an amount of damage reduction and hardness equal to your cleric level. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],

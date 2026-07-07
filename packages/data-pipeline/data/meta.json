@@ -25,7 +25,7 @@
     "armors.json": "ed7612e0cefb17fdacc8b8ed3f462cd43d1b5e4ebd90a53fcd1f7d37f58aca29",
     "bloodline-spell-lists.json": "a584d449a18811baf0a46c71156bb80b0d24fa68766e93352468aa199c7af3e8",
     "buffs.json": "07e59d90cfc4897c247bcba53a88305c2264fd36a5bac7a1906b16bb5f5b93d5",
-    "class-features.json": "229cf059ec0767e1a3efa74f0747ed900fbe3e4fdaa59f7be51c28e2e5b3b3bc",
+    "class-features.json": "ecbd41380d6c900b67aeca41f59cc7b34c6c2be55a0a7e15eafd03522a3f108f",
     "classes.json": "282b415fbaee522d52bc9595649d25b4899b3b76325e614d89f6c499d1634f6a",
     "domain-spell-lists.json": "442e3bd1a6330bfcdde1592d714db1769657149af8681940bb08278534cdeb66",
     "domains.json": "37eb39aea14b1fa9c4f1c67730ff57e00a9398c15d0609cfc8b3bcd4310edd64",
@@ -37,7 +37,7 @@
     "weapons.json": "286e9b97a5c1ca8b9b1126149b0abc4c3ddc968522d857d1d421e7abe06a0042",
     "wizard-schools.json": "2deb86825bb6722a9ab2b574e4bf16350296c4411131b5de9636a362dab5e95a"
   },
-  "schemaVersion": 7,
+  "schemaVersion": 8,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

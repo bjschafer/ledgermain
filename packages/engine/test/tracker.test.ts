@@ -192,7 +192,7 @@ describe("resource pools derived from class features", () => {
     expect(rage?.detail).toBeUndefined();
   });
 
-  it("derives Channel Energy uses/day + a 'Xd6 (DC Y)' detail for a cleric", () => {
+  it("derives Channel Energy uses/day + an action-derived 'Xd6 (DC Y Will)' detail for a cleric", () => {
     const doc: CharacterDoc = {
       ...makeDoc(),
       // Cha 14 (+2) → 3 + 2 = 5 uses/day. L5 → 3d6, DC = 10 + 2 + 2 = 14.
@@ -205,7 +205,10 @@ describe("resource pools derived from class features", () => {
     expect(channel).toBeDefined();
     expect(channel?.max).toBe(5);
     expect(channel?.per).toBe("day");
-    expect(channel?.detail).toBe("3d6 (DC 14)");
+    // Derived from the feature's vendored `actions[]` now (issue: bare
+    // resource-pool detail) rather than the old cleric-gated hand-authored
+    // `channelEnergyDetail` — see `resources.ts`'s `actionBasedDetail`.
+    expect(channel?.detail).toBe("3d6 (DC 14 Will)");
   });
 
   it("derives Smite Evil uses/day (uses.maxFormula, already vendored) + hand-authored attack/dmg/AC detail", () => {
@@ -224,7 +227,7 @@ describe("resource pools derived from class features", () => {
     expect(smite?.detail).toBe("+3 atk, +5 dmg, +3 AC vs. evil");
   });
 
-  it("derives Lay on Hands uses/day (uses.maxFormula, already vendored) + hand-authored healing-dice detail", () => {
+  it("derives Lay on Hands uses/day + an action-derived healing-dice detail, plus a merged Channel Positive Energy addendum", () => {
     const doc: CharacterDoc = {
       ...makeDoc(),
       // Cha 16 (+3). L5 → floor(5/2) + 3 = 5 uses/day; healing dice floor(5/2) = 2d6.
@@ -237,7 +240,13 @@ describe("resource pools derived from class features", () => {
     expect(loh).toBeDefined();
     expect(loh?.max).toBe(5);
     expect(loh?.per).toBe("day");
-    expect(loh?.detail).toBe("2d6");
+    // Lay on Hands' own action-derived heal dice ("heal 2d6"), plus a merged
+    // addendum for Channel Positive Energy (level 4+, `uses.source:
+    // "layOnHands"` — no cap of its own, so it can't be a separate pool row;
+    // see the "linked features" pass in `deriveResourcePools`). This is the
+    // paladin-side fix for the old cleric-only Channel Energy detail gate:
+    // DC = 10 + floor(5/2) + 3 = 15, dice = ceil(5/2) = 3d6.
+    expect(loh?.detail).toBe("heal 2d6 · Channel Positive Energy: 3d6 (DC 15 Will)");
   });
 
   it("derives Wild Shape uses/day from the druid's maxFormula (already vendored, no hand-authoring needed)", () => {

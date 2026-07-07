@@ -30,9 +30,14 @@ export const SYSTEM_VERSION = "11.11";
  * cleric domains and wizard arcane schools (top-level only, see `Domain`/
  * `WizardSchool` doc comments in `@pf1/schema`). v7 adds `ArmorRef.asf`
  * (armors.json) — arcane spell failure chance, from Foundry's
- * `system.spellFailure` (issue #8).
+ * `system.spellFailure` (issue #8). v8 adds `ClassFeature.actions`
+ * (structured attack/damage/save/heal data from `system.actions`, e.g. Acid
+ * Dart's ranged touch acid damage, Stunning Fist's Fortitude DC) and
+ * `ClassFeature.uses.source` (e.g. Channel Positive Energy's `source:
+ * "layOnHands"`) — see the in-play resource-pool detail work in `@pf1/engine`'s
+ * `deriveResourcePools`.
  */
-export const SCHEMA_VERSION = 7;
+export const SCHEMA_VERSION = 8;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none — see

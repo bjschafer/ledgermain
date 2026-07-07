@@ -26,7 +26,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(7);
+    expect(ref.meta.schemaVersion).toBe(8);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -55,6 +55,59 @@ describe("metadata + provenance", () => {
     expect(Object.keys(ref.classes)).toHaveLength(14); // fighter, barbarian, wizard, cleric, sorcerer, rogue, paladin, ranger, bard, monk, druid, arcanist, magus, oracle
     expect(Object.keys(ref.feats)).toHaveLength(390);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
+  });
+});
+
+describe("class feature actions (schema v8 — issue: bare resource-pool counters)", () => {
+  it("Acid Dart (WIZ) carries a ranged-touch acid damage action", () => {
+    const acidDart = byName(ref.classFeatures, "Acid Dart (WIZ)");
+    expect(acidDart.actions).toHaveLength(1);
+    const action = acidDart.actions![0]!;
+    expect(action.actionType).toBe("rsak");
+    expect(action.touch).toBe(true);
+    expect(action.damage).toEqual({
+      formula: "1d6 + floor(@class.unlevel / 2)",
+      types: ["acid"],
+    });
+  });
+
+  it("Stunning Fist carries a Fortitude-DC save action with no damage", () => {
+    const stunningFist = byName(ref.classFeatures, "Stunning Fist");
+    expect(stunningFist.actions).toHaveLength(1);
+    const action = stunningFist.actions![0]!;
+    expect(action.damage).toBeUndefined();
+    expect(action.save).toEqual({
+      type: "fort",
+      dcFormula: "10 + floor(@class.unlevel / 2) + @abilities.wis.mod",
+    });
+  });
+
+  it("Channel Energy carries all four heal/harm actions in source order", () => {
+    const channelEnergy = byName(ref.classFeatures, "Channel Energy");
+    const names = channelEnergy.actions!.map((a) => a.name);
+    expect(names).toEqual([
+      "Positive - Heal living",
+      "Negative - Harm living",
+      "Negative - Heal undead",
+      "Positive - Harm undead",
+    ]);
+  });
+
+  it("Channel Positive Energy has no uses.maxFormula — it shares Lay on Hands' pool instead", () => {
+    const channelPositiveEnergy = byName(ref.classFeatures, "Channel Positive Energy");
+    expect(channelPositiveEnergy.uses).toEqual({ source: "layOnHands" });
+    expect(channelPositiveEnergy.actions?.length).toBeGreaterThan(0);
+  });
+
+  it("Rage (no vendored action data) carries no actions field at all", () => {
+    const rage = byName(ref.classFeatures, "Rage");
+    expect(rage.actions).toBeUndefined();
+  });
+
+  it("actions is undefined, never an empty array, when a feature has no usable action", () => {
+    for (const feature of Object.values(ref.classFeatures)) {
+      if (feature.actions) expect(feature.actions.length).toBeGreaterThan(0);
+    }
   });
 });
 
