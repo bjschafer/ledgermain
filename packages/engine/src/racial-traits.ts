@@ -29,11 +29,16 @@
  *   - Standard traits that are `Race.contextNotes` rather than `changes`
  *     (all of Dwarf's swappable traits: Stonecunning, Hardy, Greed, Hatred,
  *     Defensive Training, Stability; Elf's Elven Magic; Gnome's Defensive
- *     Training/Hatred) carry no computed number, so there is nothing to
- *     suppress — those alternates are surfaced as options with their own
- *     `contextNotes`, and `replaces` records the swap for the UI. Race
- *     contextNotes aren't rendered on the sheet today, so no stale reminder
- *     lingers. (Auto-suppressing the replaced note is a documented follow-up.)
+ *     Training/Hatred) carry no computed number, so there is nothing for
+ *     `suppressTargets` to drop — those alternates are surfaced as options
+ *     with their own `contextNotes`, and `replaces` records the swap for the
+ *     UI. Race contextNotes aren't rendered on the sheet today (issue #41),
+ *     so no stale reminder actually shows yet, but the alternates that
+ *     replace a note-only standard trait still carry `suppressNotes` (see
+ *     {@link AlternateRacialTrait.suppressNotes} and
+ *     {@link effectiveRaceContextNotes} below) so a future consumer that
+ *     surfaces `Race.contextNotes` gets the correct filtered list for free
+ *     instead of re-discovering this gap.
  *   - Benefits that are a feat grant (Focused Study's Skill Focus chain,
  *     Ancestral Arms' weapon proficiency, Shaman's Apprentice's Endurance) or
  *     conditional on a situation the static sheet can't detect (Eternal Hope's
@@ -91,6 +96,21 @@ export interface AlternateRacialTrait {
    * standard trait is a contextNote (no computed number to suppress).
    */
   suppressTargets?: string[];
+  /**
+   * Substrings to match against `Race.contextNotes[].text` for the replaced
+   * standard trait(s) — dropped from {@link effectiveRaceContextNotes} while
+   * this alternate is active (issue #41). Race contextNotes carry no stable
+   * id in the vendored data, just `target` + free-text `text` (see
+   * `packages/schema/src/primitives.ts` `ContextNote`), and `target` alone
+   * isn't reliably 1:1 with a standard trait within a race (e.g. Gnome's
+   * Illusion Resistance and Defensive Training notes could plausibly collide
+   * on a shared target in a future data update) — a substring unique to the
+   * replaced trait's actual vendored wording is the more robust match.
+   * Omitted when the replaced standard trait is a structured `Change`
+   * (nothing in `Race.contextNotes` to suppress) or has no vendored
+   * contextNote at all.
+   */
+  suppressNotes?: string[];
   /** Non-mechanical reminders (situational scope, feat grants, class-skill grants). */
   contextNotes?: ContextNote[];
   /** True when the alternate has no flat modifier the static sheet applies. */
@@ -226,6 +246,11 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     replaces: ["Keen Senses", "Elven Magic"],
     changes: [c("2", "init")],
     suppressTargets: ["skill.per"],
+    // Elven Magic is the vendored Elf's only contextNote-only standard trait
+    // — all three of its Race.contextNotes entries (save vs enchantment/sleep
+    // immunity, Spellcraft to identify items, caster level vs SR) go away
+    // with it (issue #41).
+    suppressNotes: ["Enchantment Effects", "Identify Magic Items", "overcome Spell Resistance"],
     contextNotes: [{ target: "init", text: "Gain Run as a bonus feat." }],
   },
   {
@@ -254,6 +279,9 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     replaces: ["Elven Magic"],
     changes: [],
     displayOnly: true,
+    // See elf-fleet-footed above: Elven Magic's three vendored contextNotes,
+    // all dropped (issue #41).
+    suppressNotes: ["Enchantment Effects", "Identify Magic Items", "overcome Spell Resistance"],
     contextNotes: [
       {
         target: "cl",
@@ -271,6 +299,13 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
       "+1 racial bonus on Bluff and Diplomacy; learn one new language each time you gain a rank in Linguistics (in place of defensive training and hatred).",
     replaces: ["Defensive Training", "Hatred"],
     changes: [c("1", "skill.blf"), c("1", "skill.dip")],
+    // Defensive Training ("Dodge vs Giants") and Hatred ("vs Humanoids
+    // (Reptillian, Goblinoid)") are the two vendored Gnome contextNotes this
+    // replaces (issue #41). Gnome's third contextNote (Illusion Resistance,
+    // "vs Illusion Effects") is a DIFFERENT standard trait this alternate
+    // doesn't touch — matched by substring, not by the shared
+    // `allSavingThrows`/`ac` targets, so it's never accidentally dropped.
+    suppressNotes: ["Dodge vs Giants", "Humanoids (Reptillian, Goblinoid)"],
   },
   {
     id: "gnome-eternal-hope",
@@ -281,6 +316,8 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     replaces: ["Defensive Training", "Hatred"],
     changes: [],
     displayOnly: true,
+    // See gnome-gift-of-tongues above.
+    suppressNotes: ["Dodge vs Giants", "Humanoids (Reptillian, Goblinoid)"],
     contextNotes: [
       {
         target: "allSavingThrows",
@@ -319,7 +356,12 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
   // ── Dwarf ──────────────────────────────────────────────────────────────────
   // Dwarf's swappable standard traits are all Race.contextNotes (no computed
   // number), so these alternates carry no `suppressTargets` — they surface the
-  // choice and their own reminders; `replaces` records the swap.
+  // choice and their own reminders; `replaces` records the swap. Each DOES
+  // carry `suppressNotes` (issue #41): Dwarf's six vendored contextNotes are
+  // each a distinct standard trait with a unique target (Stability/cmd,
+  // Stonecunning/skill.per, Defensive Training/ac, Hardy/allSavingThrows,
+  // Greed/skill.apr, Hatred/attack), so a substring drawn from each note's
+  // own wording is enough to identify the one being replaced.
   {
     id: "dwarf-lorekeeper",
     race: "Dwarf",
@@ -329,6 +371,7 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     replaces: ["Greed"],
     changes: [],
     displayOnly: true,
+    suppressNotes: ["Appraise Items with Gems"], // Greed
     contextNotes: [
       {
         target: "skill.khi",
@@ -345,6 +388,7 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     replaces: ["Hardy"],
     changes: [],
     displayOnly: true,
+    suppressNotes: ["Poisons, Spells and Spell-likes"], // Hardy
     contextNotes: [
       {
         target: "allSavingThrows",
@@ -361,6 +405,7 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     replaces: ["Stonecunning"],
     changes: [],
     displayOnly: true,
+    suppressNotes: ["Notice Unusual Stonework"], // Stonecunning
     contextNotes: [
       {
         target: "landSpeed",
@@ -438,6 +483,47 @@ export const RACIAL_TRAITS: Readonly<Record<string, AlternateRacialTrait>> = Obj
  */
 export function alternateRacialTraitsForRace(raceName: string): AlternateRacialTrait[] {
   return TRAIT_LIST.filter((t) => t.race === raceName);
+}
+
+/* --------------------------------------------- race contextNotes (issue #41) */
+
+/**
+ * `race.contextNotes`, minus any dropped by an active alternate racial
+ * trait's `suppressNotes` — the contextNotes analogue of how `collectModifiers`
+ * drops a `Race.changes` entry whose target is in an active alternate's
+ * `suppressTargets`. Not wired into `collectModifiers`/`compute.ts` itself:
+ * race contextNotes aren't surfaced on the sheet anywhere today (see the
+ * module doc comment above), so there is no consumer to call this from yet —
+ * it exists so that whenever one is added, it reads through this function
+ * instead of `race.contextNotes` directly and gets the correct filtered list
+ * for free, rather than re-discovering the suppression gap issue #41 flagged.
+ */
+export function effectiveRaceContextNotes(
+  race: Race | undefined,
+  activeTraits: readonly AlternateRacialTrait[],
+): ContextNote[] {
+  if (!race) return [];
+  const suppressedFragments = activeTraits.flatMap((t) => t.suppressNotes ?? []);
+  if (suppressedFragments.length === 0) return race.contextNotes;
+  return race.contextNotes.filter(
+    (cn) => !suppressedFragments.some((fragment) => cn.text.includes(fragment)),
+  );
+}
+
+/**
+ * Convenience wrapper around {@link effectiveRaceContextNotes} that resolves
+ * "the character's currently-active alternate racial traits for their race"
+ * itself — same `doc.build.racialTraits` -> `RACIAL_TRAITS` -> filter-by-
+ * current-race lookup `collectModifiers` and {@link hasSlowAndSteady} each do
+ * inline, factored out here so a future UI consumer doesn't have to
+ * reimplement it a third time.
+ */
+export function raceContextNotesFor(doc: CharacterDoc, race: Race | undefined): ContextNote[] {
+  if (!race) return [];
+  const activeTraits = (doc.build.racialTraits ?? [])
+    .map((id) => RACIAL_TRAITS[id])
+    .filter((t): t is AlternateRacialTrait => t != null && t.race === race.name);
+  return effectiveRaceContextNotes(race, activeTraits);
 }
 
 /* ---------------------------------------------------- slow and steady (#52) */
