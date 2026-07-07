@@ -626,6 +626,20 @@ button:focus-visible,
   gap: 8px;
 }
 
+/* Rarity-tier section within the race picker (Core / Featured / …). */
+.race-group + .race-group {
+  margin-top: 14px;
+}
+
+.race-group .section-label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
 .chip {
   background: var(--surface-2);
   border: 1px solid var(--line);

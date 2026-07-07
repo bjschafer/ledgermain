@@ -16,6 +16,7 @@ import {
   hasRacialTrait,
   toggleRacialTrait,
 } from "../../model/racialTraits.js";
+import { groupRacesByRarity } from "../../model/rarity.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -24,16 +25,17 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   const [langInput, setLangInput] = useState("");
   const [query, setQuery] = useState("");
 
-  const races = useMemo(() => {
+  // Alphabetical within each rarity tier; the tier sections (below) carry the
+  // top-level ordering, and the selected race stays marked via aria-pressed
+  // wherever it lands, so no selected-first sort is needed.
+  const raceGroups = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return Object.entries(refData.races)
+    const entries = Object.entries(refData.races)
       .filter(([, race]) => !q || race.name.toLowerCase().includes(q))
-      .sort((a, b) => {
-        const isSel = doc.identity.race === a[0] ? 0 : 1;
-        const isSelB = doc.identity.race === b[0] ? 0 : 1;
-        return isSel - isSelB || a[1].name.localeCompare(b[1].name);
-      });
-  }, [refData, query, doc.identity.race]);
+      .sort((a, b) => a[1].name.localeCompare(b[1].name));
+    return groupRacesByRarity(entries);
+  }, [refData, query]);
+  const hasMatches = raceGroups.some((g) => g.items.length > 0);
   const selected = refData.races[doc.identity.race];
   const flexible = selected ? raceGrantsFlexibleAbility(selected) : false;
   const racialTraits = availableRacialTraits(doc, refData);
@@ -68,32 +70,37 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <div className="chips">
-        {races.map(([id, race]) => (
-          <button
-            key={id}
-            type="button"
-            className="chip"
-            aria-pressed={doc.identity.race === id}
-            onClick={() => {
-              const target = doc.identity.race === id ? "" : id;
-              // Switching away from a race that's already applied resets its
-              // modifiers, so require confirmation; picking an initial race
-              // (nothing chosen yet) is free.
-              if (doc.identity.race && doc.identity.race !== id) {
-                setPendingRaceId(id);
-              } else if (doc.identity.race === id) {
-                setPendingRaceId("");
-              } else {
-                update((d) => setRace(d, target));
-              }
-            }}
-          >
-            {race.name}
-          </button>
-        ))}
-        {races.length === 0 ? <div className="empty">No races match.</div> : null}
-      </div>
+      {raceGroups.map((group) => (
+        <div key={group.category} className="race-group">
+          <span className="section-label">{group.label}</span>
+          <div className="chips">
+            {group.items.map(([id, race]) => (
+              <button
+                key={id}
+                type="button"
+                className="chip"
+                aria-pressed={doc.identity.race === id}
+                onClick={() => {
+                  const target = doc.identity.race === id ? "" : id;
+                  // Switching away from a race that's already applied resets its
+                  // modifiers, so require confirmation; picking an initial race
+                  // (nothing chosen yet) is free.
+                  if (doc.identity.race && doc.identity.race !== id) {
+                    setPendingRaceId(id);
+                  } else if (doc.identity.race === id) {
+                    setPendingRaceId("");
+                  } else {
+                    update((d) => setRace(d, target));
+                  }
+                }}
+              >
+                {race.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+      {!hasMatches ? <div className="empty">No races match.</div> : null}
       {pendingRaceId != null && (
         <p className="hint" style={{ marginTop: 12 }}>
           <span className="prep-clear-confirm-label">
