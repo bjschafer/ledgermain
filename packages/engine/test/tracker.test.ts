@@ -356,6 +356,22 @@ describe("feats that raise a derived resource pool's max (feat-effects.ts FEAT_P
     expect(rage?.max).toBe(26);
   });
 
+  it("issue #58: a 2nd Extra Rage stored in build.extraFeats (the app's real repeatable-feat shape) stacks the same as a 2nd build.feats entry", () => {
+    const extraRageId = featId("Extra Rage");
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      identity: { name: "Grog", race: raceId("Human"), classes: [{ tag: "barbarian", level: 5 }] },
+      build: {
+        ...makeDoc().build,
+        feats: [extraRageId],
+        extraFeats: [{ instanceId: "feat-2", featId: extraRageId }],
+      },
+    };
+    const sheet = compute(doc, ref);
+    const rage = deriveResourcePools(doc, ref, sheet.abilities).find((p) => p.name === "Rage");
+    expect(rage?.max).toBe(26);
+  });
+
   it("a feat's pool bonus doesn't leak onto an unrelated pool of the same character", () => {
     // A cleric with Extra Rage (no rage class feature present) should show no
     // Rage pool at all, and Channel Energy should be unaffected.

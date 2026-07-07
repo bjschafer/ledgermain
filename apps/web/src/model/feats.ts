@@ -364,26 +364,65 @@ export function baseFeatSlotCount(doc: CharacterDoc, refData: RefData): number {
   return baseFeatCount + humanBonus + (doc.build.gmGrants?.featSlots ?? 0);
 }
 
-/** The number of feats the character has currently chosen. */
-export function chosenFeatCount(doc: CharacterDoc): number {
-  return doc.build.feats.length;
+/**
+ * One taken instance of a feat — the primary (`build.feats`) or a
+ * `build.extraFeats` entry (issue #58: RAW-repeatable feats). `instanceId`
+ * is the feat id itself for the primary instance (stable, one primary per
+ * `featId`) or the `extraFeats` entry's own id for an extra one.
+ */
+export interface FeatInstance {
+  instanceId: string;
+  featId: string;
+  choiceId?: string;
+  /** False for the primary instance (`build.feats`); true for `build.extraFeats` entries. */
+  isExtra: boolean;
 }
 
 /**
- * Chosen feats that count against the slot budget: manually-added duplicates
- * of class-granted feats (e.g. a wizard who added Scribe Scroll by hand before
- * auto-granting existed) are excluded, so they never eat a slot. Compare this
- * — not `chosenFeatCount` — against `expectedFeatCount`.
+ * Every feat instance the character has chosen — the primary instance of
+ * each `build.feats` entry, followed by every `build.extraFeats` entry
+ * (issue #58) — in stable order. Used wherever budget/slot logic or the UI
+ * needs to walk instances rather than distinct feat ids (a repeatable feat
+ * taken twice counts, and is assignable, as two separate instances).
+ */
+export function featInstances(doc: CharacterDoc): FeatInstance[] {
+  const primary: FeatInstance[] = doc.build.feats.map((featId) => ({
+    instanceId: featId,
+    featId,
+    choiceId: doc.build.featChoices?.[featId],
+    isExtra: false,
+  }));
+  const extra: FeatInstance[] = (doc.build.extraFeats ?? []).map((e) => ({
+    instanceId: e.instanceId,
+    featId: e.featId,
+    choiceId: e.choiceId,
+    isExtra: true,
+  }));
+  return [...primary, ...extra];
+}
+
+/** The number of feat instances the character has currently chosen (primary + extra, issue #58). */
+export function chosenFeatCount(doc: CharacterDoc): number {
+  return doc.build.feats.length + (doc.build.extraFeats?.length ?? 0);
+}
+
+/**
+ * Chosen feat INSTANCES that count against the slot budget (issue #58: every
+ * extra instance of a repeatable feat consumes a slot too): manually-added
+ * duplicates of class-granted feats (e.g. a wizard who added Scribe Scroll by
+ * hand before auto-granting existed) are excluded, so they never eat a slot.
+ * Compare this — not `chosenFeatCount` — against `expectedFeatCount`.
  */
 export function chosenFeatCountExcludingGranted(doc: CharacterDoc, refData: RefData): number {
   const granted = new Set(grantedFeats(doc, refData).map((g) => g.featId));
-  return doc.build.feats.filter((id) => !granted.has(id)).length;
+  return featInstances(doc).filter((inst) => !granted.has(inst.featId)).length;
 }
 
 /**
- * Set or clear the player's choice for a choice-based feat.
+ * Set or clear the player's choice for a choice-based feat's PRIMARY instance.
  * Pass `null` to clear the choice (e.g. resetting after a mistake).
- * Does not validate that `featId` is present in `doc.build.feats`.
+ * Does not validate that `featId` is present in `doc.build.feats`. For a 2nd+
+ * instance (issue #58), use `setExtraFeatChoice` instead.
  */
 export function setFeatChoice(
   doc: CharacterDoc,
@@ -399,6 +438,26 @@ export function setFeatChoice(
     next = { ...current, [featId]: choiceId };
   }
   return { ...doc, build: { ...doc.build, featChoices: next } };
+}
+
+/**
+ * Set or clear the player's choice for one `build.extraFeats` instance
+ * (issue #58 — a 2nd+ instance of a repeatable feat, e.g. the second Weapon
+ * Focus taken for a different weapon). Pass `null` to clear. A no-op if
+ * `instanceId` doesn't match any extra instance.
+ */
+export function setExtraFeatChoice(
+  doc: CharacterDoc,
+  instanceId: string,
+  choiceId: string | null,
+): CharacterDoc {
+  const extras = doc.build.extraFeats ?? [];
+  const next = extras.map((e) => {
+    if (e.instanceId !== instanceId) return e;
+    if (choiceId === null) return { instanceId: e.instanceId, featId: e.featId };
+    return { ...e, choiceId };
+  });
+  return { ...doc, build: { ...doc.build, extraFeats: next } };
 }
 
 /**
@@ -522,7 +581,25 @@ export function featChoiceOptions(
  * no choice has been stored yet.
  */
 export function featDisplayName(feat: Feat, doc: CharacterDoc, refData: RefData): string {
-  const choiceId = doc.build.featChoices?.[feat.id];
+  return featInstanceDisplayName(feat, doc.build.featChoices?.[feat.id], doc, refData);
+}
+
+/**
+ * Display name for ONE feat instance (issue #58), given that instance's own
+ * `choiceId` (the primary instance's `featChoices[featId]`, or a
+ * `build.extraFeats` entry's `choiceId`) — the same "<name>: <choice>"
+ * rendering as `featDisplayName`, generalized to per-instance choices so
+ * `FeatsSection`/`FeatsPanel` can render each of a repeatable feat's
+ * instances (e.g. "Weapon Focus: Falchion", "Weapon Focus: Longbow")
+ * distinctly. `featDisplayName` is a thin wrapper over this for the primary
+ * instance.
+ */
+export function featInstanceDisplayName(
+  feat: Feat,
+  choiceId: string | undefined,
+  doc: CharacterDoc,
+  refData: RefData,
+): string {
   if (!choiceId) return feat.name;
   const descriptor = featChoiceDescriptor(feat.name);
   if (!descriptor) return feat.name;

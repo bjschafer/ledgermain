@@ -6,15 +6,17 @@ import { featNameSlug } from "@pf1/engine";
 
 import { casterLevel } from "../../model/casterLevel.js";
 import { combatStyleFeatSlugs } from "../../model/ranger.js";
-import { ABILITY_IDS, toggleFeat } from "../../model/doc.js";
+import { ABILITY_IDS, addFeatInstance, removeFeatInstance } from "../../model/doc.js";
 import { assignFeatsToSlots, featEligibleForSlot, slotTypeBadge } from "../../model/featSlots.js";
 import {
   chosenFeatCountExcludingGranted,
   expectedFeatCount,
   featChoiceDescriptor,
   featChoiceOptions,
-  featDisplayName,
+  featInstanceDisplayName,
+  featInstances,
   grantedFeats,
+  setExtraFeatChoice,
   setFeatChoice,
 } from "../../model/feats.js";
 import {
@@ -23,6 +25,7 @@ import {
   type PrereqContext,
   type PrereqResult,
 } from "../../model/prereqs.js";
+import { isRepeatableFeat } from "../../model/repeatableFeats.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -45,6 +48,19 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
   // style): these feats can be taken with prereqs waived, and are badged so the
   // tree is identifiable even when the character already meets the prereqs.
   const styleSlugs = useMemo(() => combatStyleFeatSlugs(doc), [doc]);
+
+  // Every taken feat instance (issue #58: primary + `build.extraFeats`),
+  // grouped by feat id — a repeatable feat taken more than once renders one
+  // row per instance below instead of a single collapsed row.
+  const instancesByFeatId = useMemo(() => {
+    const map = new Map<string, ReturnType<typeof featInstances>>();
+    for (const inst of featInstances(doc)) {
+      const arr = map.get(inst.featId);
+      if (arr) arr.push(inst);
+      else map.set(inst.featId, [inst]);
+    }
+    return map;
+  }, [doc]);
 
   const ctx: PrereqContext = useMemo(() => {
     const abilityTotals = {} as Record<AbilityId, number>;
@@ -291,6 +307,158 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                 : choiceDesc?.type === "school"
                   ? schoolOptions
                   : [];
+
+          const prereqBlock = (res.checks.length > 0 || res.softText) && (
+            <div className="preq">
+              {res.checks.map((c, i) => (
+                <span key={i} className={c.met ? "ck-met" : "ck-unmet"}>
+                  {c.met ? "✓" : "✗"} {c.label}
+                </span>
+              ))}
+              {res.softText ? (
+                <span
+                  className="desc-text"
+                  title="Prerequisite text — verify manually (not auto-enforced)"
+                >
+                  ⚠ {res.softText}
+                </span>
+              ) : null}
+            </div>
+          );
+
+          // Issue #58: a RAW-repeatable feat that's already taken renders one
+          // row PER instance (its own choice picker + its own remove), plus a
+          // trailing "take again" row — see model/repeatableFeats.ts for the
+          // curated repeatable set and model/doc.ts's addFeatInstance/
+          // removeFeatInstance for the underlying transitions.
+          const repeatable = isRepeatableFeat(feat.name);
+          const instances = isSel ? (instancesByFeatId.get(feat.id) ?? []) : [];
+          if (isSel && repeatable) {
+            // Same non-empty choice picked on two instances is legal to store
+            // but has no additional RAW effect — flag it as a soft warning
+            // rather than blocking (matches the project's hybrid posture).
+            const choiceCounts = new Map<string, number>();
+            for (const inst of instances) {
+              if (inst.choiceId) {
+                choiceCounts.set(inst.choiceId, (choiceCounts.get(inst.choiceId) ?? 0) + 1);
+              }
+            }
+            return (
+              <div key={feat.id} className="feat-instance-group">
+                {instances.map((inst, idx) => {
+                  const dupChoice = !!inst.choiceId && (choiceCounts.get(inst.choiceId) ?? 0) > 1;
+                  return (
+                    <div
+                      key={inst.instanceId}
+                      className={`pick-row is-selected${idx === 0 && isUnqualified ? " is-unqualified" : ""}`}
+                    >
+                      <div className="pmain">
+                        <div className="pname">
+                          {featInstanceDisplayName(feat, inst.choiceId, doc, refData)}
+                          {instances.length > 1 ? (
+                            <span className="hint" style={{ marginLeft: 6 }}>
+                              #{idx + 1}
+                            </span>
+                          ) : null}
+                          {dupChoice ? (
+                            <span
+                              className="unqualified-badge"
+                              title="Another instance already has this exact choice — RAW this instance has no additional effect"
+                            >
+                              ⚠ duplicate choice
+                            </span>
+                          ) : null}
+                          {idx === 0 && isUnqualified ? (
+                            <span
+                              className="unqualified-badge"
+                              title="A prerequisite (usually another feat) was removed — this feat is kept, but no longer qualifies. Verify manually or remove it."
+                            >
+                              ⚠ no longer qualifies
+                            </span>
+                          ) : null}
+                          {idx === 0 && inStyle ? (
+                            <span
+                              className="style-badge"
+                              title={
+                                res.bypassed
+                                  ? "Ranger combat style — you may take this feat even though its prerequisites are unmet"
+                                  : "In your ranger combat style's feat tree"
+                              }
+                            >
+                              combat style{res.bypassed ? " · prereqs waived" : ""}
+                            </span>
+                          ) : null}
+                        </div>
+                        {choiceDesc && choiceOpts.length > 0 && (
+                          <div className="feat-choice">
+                            <label className="feat-choice-label">
+                              {choiceDesc.label}:
+                              <select
+                                className="feat-choice-select"
+                                value={inst.choiceId ?? ""}
+                                onChange={(e) => {
+                                  const choiceId = e.target.value || null;
+                                  update((d) =>
+                                    inst.isExtra
+                                      ? setExtraFeatChoice(d, inst.instanceId, choiceId)
+                                      : setFeatChoice(d, feat.id, choiceId),
+                                  );
+                                }}
+                              >
+                                <option value="">— choose a {choiceDesc.type} —</option>
+                                {choiceOpts.map((opt) => (
+                                  <option key={opt.id} value={opt.id}>
+                                    {opt.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          </div>
+                        )}
+                        {choiceDesc?.type === "weapon" && choiceOpts.length === 0 && (
+                          <div className="feat-choice">
+                            <span className="hint" style={{ fontSize: 11 }}>
+                              Add a weapon with a type (in the Weapons section) to enable this
+                              picker.
+                            </span>
+                          </div>
+                        )}
+                        {idx === 0 ? prereqBlock : null}
+                      </div>
+                      <button
+                        type="button"
+                        className="pick-btn remove"
+                        onClick={() =>
+                          update((d) =>
+                            removeFeatInstance(
+                              d,
+                              feat.id,
+                              inst.isExtra ? inst.instanceId : undefined,
+                            ),
+                          )
+                        }
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  );
+                })}
+                <div className="pick-row feat-take-again-row">
+                  <div className="pmain">
+                    <span className="hint">Take {feat.name} again?</span>
+                  </div>
+                  <button
+                    type="button"
+                    className="pick-btn add"
+                    onClick={() => update((d) => addFeatInstance(d, feat.id))}
+                  >
+                    + Take again
+                  </button>
+                </div>
+              </div>
+            );
+          }
+
           return (
             <div
               key={feat.id}
@@ -298,7 +466,9 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
             >
               <div className="pmain">
                 <div className="pname">
-                  {isSel ? featDisplayName(feat, doc, refData) : feat.name}
+                  {isSel
+                    ? featInstanceDisplayName(feat, doc.build.featChoices?.[feat.id], doc, refData)
+                    : feat.name}
                   {isUnqualified ? (
                     <span
                       className="unqualified-badge"
@@ -359,30 +529,18 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                     </span>
                   </div>
                 )}
-                {(res.checks.length > 0 || res.softText) && (
-                  <div className="preq">
-                    {res.checks.map((c, i) => (
-                      <span key={i} className={c.met ? "ck-met" : "ck-unmet"}>
-                        {c.met ? "✓" : "✗"} {c.label}
-                      </span>
-                    ))}
-                    {res.softText ? (
-                      <span
-                        className="desc-text"
-                        title="Prerequisite text — verify manually (not auto-enforced)"
-                      >
-                        ⚠ {res.softText}
-                      </span>
-                    ) : null}
-                  </div>
-                )}
+                {prereqBlock}
               </div>
               <button
                 type="button"
                 className={`pick-btn ${isSel ? "remove" : "add"}`}
                 disabled={blocked}
                 title={blocked ? "Prerequisites not met" : undefined}
-                onClick={() => update((d) => toggleFeat(d, feat.id))}
+                onClick={() =>
+                  update((d) =>
+                    isSel ? removeFeatInstance(d, feat.id) : addFeatInstance(d, feat.id),
+                  )
+                }
               >
                 {isSel ? "Remove" : blocked ? "Locked" : "Add"}
               </button>

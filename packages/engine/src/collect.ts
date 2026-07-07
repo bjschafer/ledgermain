@@ -413,6 +413,35 @@ export function collectModifiers(
     // value type ever widens.
   }
 
+  // --- extra feat instances (issue #58: RAW-repeatable feats) ---------------
+  // Second-and-later copies of a feat already in `doc.build.feats` (Weapon
+  // Focus taken again for a different weapon, Extra Rage taken again, ...) —
+  // see `apps/web/src/model/doc.ts` `addFeatInstance` and
+  // `apps/web/src/model/repeatableFeats.ts`'s curated repeatable set. Applies
+  // the identical static/choice resolution as the primary loop above, but
+  // keyed by the instance's OWN choice (`extraFeats[i].choiceId`, never
+  // `featChoices[featId]`) and stamped with the instance id as `sourceId` so
+  // two instances of the same feat never collapse into one provenance entry.
+  for (const instance of doc.build.extraFeats ?? []) {
+    const feat = refData.feats[instance.featId];
+    if (!feat) continue;
+    const slug = featNameSlug(feat.name);
+    const resolved = resolveFeatEffect(slug);
+    if (!resolved) continue;
+    const entry = resolved.entry;
+
+    if (entry.type === "static") {
+      for (const ch of entry.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, instance.instanceId, out);
+      }
+    } else if (entry.type === "choice") {
+      if (!instance.choiceId) continue;
+      for (const ch of entry.build(instance.choiceId)) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, instance.instanceId, out);
+      }
+    }
+  }
+
   // --- arcane bond: familiar master bonus ----------------------------------
   // A familiar grants its master a small always-on bonus (hand-authored table
   // in familiars.ts). Unknown kinds and bonded objects apply nothing — bonded

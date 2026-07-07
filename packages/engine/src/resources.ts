@@ -453,15 +453,22 @@ function arcaneReservoirRestValue(classLevel: number, featBonus: number, poolMax
 }
 
 /**
- * Sum, per class-feature tag, how much `doc.build.feats` raises that
- * feature's derived pool max (see `FEAT_POOL_EFFECTS`). A feat taken multiple
- * times (e.g. two copies of Extra Reservoir in `doc.build.feats` — see
- * `model/feats.ts`'s "manually-added duplicates" budget note) contributes its
- * `maxDelta` once per occurrence, matching the feats' own "stacks" wording.
+ * Sum, per class-feature tag, how much `doc.build.feats` PLUS
+ * `doc.build.extraFeats` raises that feature's derived pool max (see
+ * `FEAT_POOL_EFFECTS`). A feat taken multiple times (e.g. two copies of
+ * Extra Reservoir — the primary in `doc.build.feats`, a 2nd+ instance in
+ * `doc.build.extraFeats`; see issue #58's `apps/web/src/model/doc.ts`
+ * `addFeatInstance` and `model/repeatableFeats.ts`'s curated repeatable set)
+ * contributes its `maxDelta` once per occurrence, matching the feats' own
+ * "stacks" wording.
  */
 function collectFeatPoolBonuses(doc: CharacterDoc, refData: RefData): Map<string, number> {
   const bonuses = new Map<string, number>();
-  for (const featId of doc.build.feats ?? []) {
+  const featIds = [
+    ...(doc.build.feats ?? []),
+    ...(doc.build.extraFeats ?? []).map((e) => e.featId),
+  ];
+  for (const featId of featIds) {
     const feat = refData.feats[featId];
     if (!feat) continue;
     const effect = FEAT_POOL_EFFECTS[featNameSlug(feat.name)];

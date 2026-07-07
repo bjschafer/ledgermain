@@ -21,6 +21,7 @@ import type {
 import { normalizeWeaponGroup } from "@pf1/engine";
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
+import { localId } from "./ids.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 import { normalizeAlignmentCode, slugifySkillLabel } from "./names.js";
 import { knownSpellsFor, setKnownSpellsFor, storedClassTag } from "./spellcasting.js";
@@ -508,21 +509,103 @@ export function renameSkillInstance(
   return { ...doc, build: { ...doc.build, skillRanks: next } };
 }
 
+/**
+ * Add or remove the PRIMARY instance of `featId`. Adding always succeeds
+ * (no-op safety against duplicates via `.includes`); removing delegates to
+ * {@link removeFeatInstance} (no `instanceId`), which — for a RAW-repeatable
+ * feat (issue #58) with extra instances already taken — promotes the first
+ * extra instance into the primary slot instead of leaving `build.feats`
+ * without the feat while `build.extraFeats` still references it. For a
+ * non-repeatable feat (never has extra instances), this is unchanged from
+ * before issue #58: remove from `feats[]` and clear its `featChoices` entry.
+ */
 export function toggleFeat(doc: CharacterDoc, featId: string): CharacterDoc {
   const has = doc.build.feats.includes(featId);
-  const feats = has ? doc.build.feats.filter((f) => f !== featId) : [...doc.build.feats, featId];
+  if (has) return removeFeatInstance(doc, featId);
+  return { ...doc, build: { ...doc.build, feats: [...doc.build.feats, featId] } };
+}
 
-  let build = { ...doc.build, feats };
+/**
+ * Add another instance of `featId` (issue #58: RAW-repeatable feats — Weapon
+ * Focus, Skill Focus, Improved Critical, the "Extra X" pool feats, ... see
+ * `apps/web/src/model/repeatableFeats.ts` for the curated set). If the
+ * character doesn't have `featId` at all yet, this is identical to
+ * `toggleFeat`'s add branch (adds the PRIMARY instance to `build.feats`).
+ * Once a primary instance exists, every subsequent call appends a fresh
+ * `build.extraFeats` entry (its own instance id, no choice yet) — the UI's
+ * choice picker then targets that instance id via `setExtraFeatChoice`
+ * (`model/feats.ts`). Does NOT check whether `featId` is actually in the
+ * repeatable set — that's a UI-gating concern (only repeatable feats get a
+ * "take again" button); this transition trusts the caller, same posture as
+ * every other free-choice transition in this module.
+ */
+export function addFeatInstance(doc: CharacterDoc, featId: string): CharacterDoc {
+  if (!doc.build.feats.includes(featId)) {
+    return { ...doc, build: { ...doc.build, feats: [...doc.build.feats, featId] } };
+  }
+  const instanceId = localId("feat-");
+  const extraFeats = [...(doc.build.extraFeats ?? []), { instanceId, featId }];
+  return { ...doc, build: { ...doc.build, extraFeats } };
+}
 
-  // When removing a feat, also clear its choice so stale entries don't accumulate
-  // in featChoices (e.g. if the player later re-adds a different instance of the feat).
-  if (has && doc.build.featChoices?.[featId] !== undefined) {
-    const featChoices = { ...doc.build.featChoices };
-    delete featChoices[featId];
-    build = { ...build, featChoices };
+/**
+ * Remove one instance of `featId` (issue #58). `instanceId` selects WHICH:
+ *  - omitted (or `undefined`): the PRIMARY instance (`build.feats` +
+ *    `featChoices[featId]`). If no `build.extraFeats` entries for this feat
+ *    exist, this is `toggleFeat`'s pre-#58 remove behavior exactly — drop it
+ *    from `feats[]` and delete its `featChoices` entry. If extra instances
+ *    DO exist, the FIRST one is instead PROMOTED into the primary slot (its
+ *    choice, if any, moves into `featChoices[featId]`) rather than leaving
+ *    `build.feats` without the feat while `extraFeats` still references it —
+ *    every other module in this app (`grantedFeats`, prereq checks,
+ *    `featSlots.ts`, saved rolls) keys "does the character have this feat"
+ *    off `build.feats.includes(featId)`, so that invariant (primary present
+ *    iff any instance is) must hold.
+ *  - a `build.extraFeats[].instanceId`: removes just that instance, leaving
+ *    the primary (and any other extra instances) untouched.
+ * No-op if `featId` isn't owned at all, or `instanceId` matches nothing.
+ */
+export function removeFeatInstance(
+  doc: CharacterDoc,
+  featId: string,
+  instanceId?: string,
+): CharacterDoc {
+  if (instanceId !== undefined) {
+    const extraFeats = (doc.build.extraFeats ?? []).filter((e) => e.instanceId !== instanceId);
+    return {
+      ...doc,
+      build: { ...doc.build, extraFeats: extraFeats.length > 0 ? extraFeats : undefined },
+    };
+  }
+  if (!doc.build.feats.includes(featId)) return doc;
+
+  const extras = doc.build.extraFeats ?? [];
+  const promoteIdx = extras.findIndex((e) => e.featId === featId);
+
+  if (promoteIdx === -1) {
+    const feats = doc.build.feats.filter((f) => f !== featId);
+    let build = { ...doc.build, feats };
+    if (doc.build.featChoices?.[featId] !== undefined) {
+      const featChoices = { ...doc.build.featChoices };
+      delete featChoices[featId];
+      build = { ...build, featChoices };
+    }
+    return { ...doc, build };
   }
 
-  return { ...doc, build };
+  const promoted = extras[promoteIdx]!;
+  const remaining = extras.filter((_, i) => i !== promoteIdx);
+  const featChoices = { ...doc.build.featChoices };
+  if (promoted.choiceId !== undefined) featChoices[featId] = promoted.choiceId;
+  else delete featChoices[featId];
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      extraFeats: remaining.length > 0 ? remaining : undefined,
+      featChoices,
+    },
+  };
 }
 
 /**

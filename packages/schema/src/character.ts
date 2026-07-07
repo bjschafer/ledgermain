@@ -276,17 +276,32 @@ export interface CharacterDoc {
     /**
      * Player choices for feats that require a selection (e.g. "Skill Focus" →
      * a skill id; "Weapon Focus" → a weapon type string). Keyed by feat id
-     * (the same id stored in `feats[]`).
-     *
-     * One choice per feat id. Taking the same feat twice with different choices
-     * (e.g. Skill Focus (Perception) and Skill Focus (Stealth)) is a known future
-     * limitation — each feat id maps to exactly one choice here. When a feat is
-     * removed from `feats[]`, its entry here should also be deleted.
+     * (the same id stored in `feats[]`) — the FIRST instance of that feat
+     * only; a 2nd+ instance (issue #58) stores its own choice on its
+     * `extraFeats` entry instead.
      *
      * Optional for back-compat: existing documents without this field behave as if
      * no choices have been made (choice-feats emit no changes until a choice is set).
      */
     featChoices?: Record<string, string>;
+    /**
+     * Additional instances of a RAW-repeatable feat (issue #58) beyond the
+     * first — Weapon Focus, Skill Focus, Improved Critical, the "Extra X"
+     * pool feats, and the rest of `apps/web/src/model/repeatableFeats.ts`'s
+     * curated set. The FIRST instance of any feat always lives in `feats[]`
+     * (with its choice, if any, in `featChoices[featId]`) exactly as before
+     * this field existed; `extraFeats` only ever holds the 2nd, 3rd, ...
+     * copies, each with its own stable `instanceId` (since the same `featId`
+     * can appear more than once here) and its own optional `choiceId`. A
+     * feat's primary instance is removed from `feats[]` only once every
+     * `extraFeats` entry for it is gone too — see `model/doc.ts`
+     * `removeFeatInstance`'s promotion behavior, which keeps that invariant
+     * so every other module's `feats.includes(featId)` "do they have this
+     * feat" check stays correct without needing to know about this field.
+     * Optional/back-compat: absent = no extra instances, matching every
+     * document that predates this feature.
+     */
+    extraFeats?: { instanceId: string; featId: string; choiceId?: string }[];
     /**
      * Level-up ability score increases (one +1 per entry); the player chooses one
      * ability at each 4th character level. Capped at floor(level/4) when applied.

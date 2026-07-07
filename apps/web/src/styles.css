@@ -4366,3 +4366,20 @@ input[type="text"].saved-roll-name:focus {
     animation: none;
   }
 }
+
+/* Repeatable-feat instance group (issue #58: Weapon Focus taken twice, Extra
+   Rage taken twice, …) — a plain wrapper around one `.pick-row` per instance
+   plus a trailing "take again" row; no border/background of its own so the
+   nested rows read identically to any other feat row in the list. */
+.feat-instance-group {
+  display: contents;
+}
+
+.feat-take-again-row {
+  opacity: 0.85;
+}
+
+.feat-take-again-row .pmain {
+  display: flex;
+  align-items: center;
+}

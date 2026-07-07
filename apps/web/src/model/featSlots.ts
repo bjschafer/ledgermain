@@ -33,6 +33,7 @@ import { BLOODLINES, featNameSlug, MONK_BONUS_FEAT_SLUGS } from "@pf1/engine";
 import {
   baseFeatSlotCount,
   classBonusFeatSlots,
+  featInstances,
   GENERIC_SLOT,
   grantedFeats,
   type FeatSlotType,
@@ -52,7 +53,14 @@ export interface FeatSlotGroup {
   total: number;
   /** Class features / archetypes contributing to this group (display only). */
   sources: string[];
-  /** Feat ids (from `doc.build.feats`) assigned to this group. */
+  /**
+   * Feat ids assigned to this group, one entry per assigned INSTANCE (issue
+   * #58) — a repeatable feat taken twice and assigned to two slots of this
+   * group appears here twice. Only `.length` is used for slot-count
+   * comparisons; per-instance identity (which specific instance filled
+   * which slot) isn't tracked, matching this module's existing
+   * best-effort/soft-warning posture (see file doc comment).
+   */
   filledFeatIds: string[];
 }
 
@@ -248,26 +256,30 @@ export function buildFeatSlotGroups(doc: CharacterDoc, refData: RefData): FeatSl
 }
 
 /**
- * Greedily assigns the character's chosen, non-granted feats to slot groups
- * (most-restrictive group first — see file doc comment), then reports which
- * groups have unfilled slots and which chosen feats didn't fit anywhere.
+ * Greedily assigns the character's chosen, non-granted feat INSTANCES (issue
+ * #58: `featInstances` — the primary instance of each `build.feats` entry
+ * plus every `build.extraFeats` entry, so two instances of the same
+ * repeatable feat are assigned independently and can fill two different
+ * open slots) to slot groups (most-restrictive group first — see file doc
+ * comment), then reports which groups have unfilled slots and which
+ * instances didn't fit anywhere.
  */
 export function assignFeatsToSlots(doc: CharacterDoc, refData: RefData): FeatSlotAssignment {
   const groups = buildFeatSlotGroups(doc, refData);
   const grantedIds = new Set(grantedFeats(doc, refData).map((g) => g.featId));
   const unassignedFeatIds: string[] = [];
 
-  for (const featId of doc.build.feats) {
-    if (grantedIds.has(featId)) continue; // fixed grants never consume a slot
-    const feat = refData.feats[featId];
+  for (const instance of featInstances(doc)) {
+    if (grantedIds.has(instance.featId)) continue; // fixed grants never consume a slot
+    const feat = refData.feats[instance.featId];
     if (!feat) continue; // stale/unknown feat id — nothing to classify
     const target = groups.find(
       (g) => g.filledFeatIds.length < g.total && featEligibleForSlot(feat, g.type),
     );
     if (target) {
-      target.filledFeatIds.push(featId);
+      target.filledFeatIds.push(instance.featId);
     } else {
-      unassignedFeatIds.push(featId);
+      unassignedFeatIds.push(instance.featId);
     }
   }
 

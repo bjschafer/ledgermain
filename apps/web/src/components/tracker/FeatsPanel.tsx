@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { Feat } from "@pf1/schema";
 
-import { featDisplayName, grantedFeats } from "../../model/feats.js";
+import { featInstanceDisplayName, featInstances, grantedFeats } from "../../model/feats.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -38,31 +38,45 @@ function FeatDetail({ feat }: { feat: Feat }) {
   );
 }
 
+/** One rendered row: a feat plus the (optional) choice of the SPECIFIC instance it represents. */
+interface FeatRow {
+  key: string;
+  feat: Feat;
+  choiceId?: string;
+}
+
 /**
  * Feats-on-the-play-tab (issue #12): a read-only reference list of every feat
- * the character has — manually chosen (`build.feats`) plus class-granted
- * (Scribe Scroll, Eschew Materials, ...) — for "do you have Combat Casting"
- * lookups at the table. No add/remove/prereq-checking here; that's the
- * builder's `FeatsSection` job. Collapsed by default and placed at the
- * bottom of the Play tab per the issue's request.
+ * instance the character has — manually chosen (`build.feats` + `build.extraFeats`,
+ * issue #58: a repeatable feat taken more than once lists each instance with
+ * its own choice, e.g. "Weapon Focus: Falchion", "Weapon Focus: Longbow") plus
+ * class-granted (Scribe Scroll, Eschew Materials, ...) — for "do you have
+ * Combat Casting" lookups at the table. No add/remove/prereq-checking here;
+ * that's the builder's `FeatsSection` job. Collapsed by default and placed at
+ * the bottom of the Play tab per the issue's request.
  */
 export function FeatsPanel({ doc, refData }: BuilderProps) {
   const [query, setQuery] = useState("");
 
   const rows = useMemo(() => {
-    const ids = new Set(doc.build.feats);
-    for (const g of grantedFeats(doc, refData)) ids.add(g.featId);
-    const feats: Feat[] = [];
-    for (const id of ids) {
-      const feat = refData.feats[id];
-      if (feat) feats.push(feat);
+    const out: FeatRow[] = [];
+    for (const inst of featInstances(doc)) {
+      const feat = refData.feats[inst.featId];
+      if (feat) out.push({ key: inst.instanceId, feat, choiceId: inst.choiceId });
     }
-    return feats.sort((a, b) => a.name.localeCompare(b.name));
+    // Class-granted feats not already present via a manually-added instance
+    // (see `grantedFeats`'s "manually-added duplicate" note).
+    for (const g of grantedFeats(doc, refData)) {
+      if (out.some((r) => r.feat.id === g.featId)) continue;
+      const feat = refData.feats[g.featId];
+      if (feat) out.push({ key: `granted:${g.featId}`, feat });
+    }
+    return out.sort((a, b) => a.feat.name.localeCompare(b.feat.name) || a.key.localeCompare(b.key));
   }, [doc, refData]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return q ? rows.filter((f) => f.name.toLowerCase().includes(q)) : rows;
+    return q ? rows.filter((r) => r.feat.name.toLowerCase().includes(q)) : rows;
   }, [rows, query]);
 
   return (
@@ -79,18 +93,18 @@ export function FeatsPanel({ doc, refData }: BuilderProps) {
             onChange={(e) => setQuery(e.target.value)}
           />
           <div className="scroll">
-            {filtered.map((feat) => (
-              <div key={feat.id} className="pick-row">
+            {filtered.map((row) => (
+              <div key={row.key} className="pick-row">
                 <div className="pmain">
                   <div className="pname">
-                    {featDisplayName(feat, doc, refData)}
-                    {feat.tags.length > 0 && (
+                    {featInstanceDisplayName(row.feat, row.choiceId, doc, refData)}
+                    {row.feat.tags.length > 0 && (
                       <span className="hint" style={{ marginLeft: 8 }}>
-                        {feat.tags.join(", ")}
+                        {row.feat.tags.join(", ")}
                       </span>
                     )}
                   </div>
-                  <FeatDetail feat={feat} />
+                  <FeatDetail feat={row.feat} />
                 </div>
               </div>
             ))}

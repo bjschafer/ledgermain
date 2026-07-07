@@ -37,6 +37,7 @@ function makeDoc(over: {
   weapons?: WeaponInstance[];
   feats?: string[];
   featChoices?: Record<string, string>;
+  extraFeats?: { instanceId: string; featId: string; choiceId?: string }[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -54,6 +55,7 @@ function makeDoc(over: {
     build: {
       feats: over.feats ?? [],
       featChoices: over.featChoices,
+      extraFeats: over.extraFeats,
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
@@ -250,6 +252,63 @@ describe("Weapon Focus + Weapon Specialization together", () => {
     expect(featSheet.attacks[0]!.damageBonus.total - baseSheet.attacks[0]!.damageBonus.total).toBe(
       2,
     );
+  });
+});
+
+// ─── Two Weapon Focus instances, two different weapons (issue #58) ──────────
+
+describe("Weapon Focus taken twice for two different weapons (issue #58)", () => {
+  it("the primary instance (longsword) and an extraFeats instance (dagger) each buff only their own weapon", () => {
+    const wfId = featId("Weapon Focus");
+    const base = makeDoc({ weapons: [longsword, dagger] });
+    const withBoth = makeDoc({
+      weapons: [longsword, dagger],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+      extraFeats: [{ instanceId: "feat-2", featId: wfId, choiceId: "dagger" }],
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withBoth, ref);
+    // Longsword (primary instance's choice) gets +1...
+    expect(featSheet.attacks[0]!.attack.total - baseSheet.attacks[0]!.attack.total).toBe(1);
+    // ...and dagger (the extra instance's choice) ALSO gets +1, independently.
+    expect(featSheet.attacks[1]!.attack.total - baseSheet.attacks[1]!.attack.total).toBe(1);
+  });
+
+  it("provenance shows two distinct Weapon Focus components, one per instance", () => {
+    const wfId = featId("Weapon Focus");
+    const doc = makeDoc({
+      weapons: [longsword, dagger],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+      extraFeats: [{ instanceId: "feat-2", featId: wfId, choiceId: "dagger" }],
+    });
+    const sheet = compute(doc, ref);
+    const longswordComp = sheet.attacks[0]!.attack.components.find(
+      (c) => c.source === "Weapon Focus",
+    );
+    const daggerComp = sheet.attacks[1]!.attack.components.find((c) => c.source === "Weapon Focus");
+    expect(longswordComp?.value).toBe(1);
+    expect(daggerComp?.value).toBe(1);
+    // Different sourceId per instance — the primary's is the feat id, the
+    // extra instance's is its own instanceId (never collapsed together).
+    expect(longswordComp?.sourceId).toBe(wfId);
+    expect(daggerComp?.sourceId).toBe("feat-2");
+  });
+
+  it("an extra instance with NO choice stored yet contributes nothing (never crashes)", () => {
+    const wfId = featId("Weapon Focus");
+    const base = makeDoc({ weapons: [longsword] });
+    const withFeat = makeDoc({
+      weapons: [longsword],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+      extraFeats: [{ instanceId: "feat-2", featId: wfId }],
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    // Only the primary's +1 applies; the choiceless extra instance adds nothing.
+    expect(featSheet.attacks[0]!.attack.total - baseSheet.attacks[0]!.attack.total).toBe(1);
   });
 });
 

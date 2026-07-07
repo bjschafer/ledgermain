@@ -2,7 +2,14 @@ import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { addClass, createEmptyDoc, setClassLevel, setRace, toggleFeat } from "../src/model/doc.js";
+import {
+  addClass,
+  addFeatInstance,
+  createEmptyDoc,
+  setClassLevel,
+  setRace,
+  toggleFeat,
+} from "../src/model/doc.js";
 import {
   assignFeatsToSlots,
   buildFeatSlotGroups,
@@ -203,5 +210,43 @@ describe("buildFeatSlotGroups: Monk bonus feats (issue #57)", () => {
     expect(featEligibleForSlot(mobility, monkList.type)).toBe(true);
     expect(featEligibleForSlot(springAttack, monkList.type)).toBe(true);
     expect(featEligibleForSlot(cleave, monkList.type)).toBe(false);
+  });
+});
+
+describe("assignFeatsToSlots: repeatable feats assign each instance individually (issue #58)", () => {
+  it("two Improved Critical instances (a Combat feat) each fill one of Fighter's two open combat slots", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "fighter");
+    doc = setClassLevel(doc, "fighter", 2); // combat: 1+floor(2/2)=2; generic: ceil(2/2)=1
+    const icId = featId("Improved Critical");
+    doc = toggleFeat(doc, icId); // primary instance
+    doc = addFeatInstance(doc, icId); // extra instance (2nd copy)
+    const { groups, unassignedFeatIds } = assignFeatsToSlots(doc, ref);
+    const combat = groups.find((g) => g.type.kind === "combat")!;
+    expect(combat.total).toBe(2);
+    // Both instances fill the combat bucket, not the generic one.
+    expect(combat.filledFeatIds).toEqual([icId, icId]);
+    const generic = groups.find((g) => g.type.kind === "generic")!;
+    expect(generic.filledFeatIds).toEqual([]);
+    expect(unassignedFeatIds).toEqual([]);
+  });
+
+  it("chosenFeatCount-style budget: a 3rd instance beyond the combat slots' capacity is unassigned", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "fighter");
+    doc = setClassLevel(doc, "fighter", 2); // combat total=2, generic total=1
+    const icId = featId("Improved Critical");
+    doc = toggleFeat(doc, icId);
+    doc = addFeatInstance(doc, icId);
+    doc = addFeatInstance(doc, icId); // 3rd instance
+    const { groups, unassignedFeatIds } = assignFeatsToSlots(doc, ref);
+    const combat = groups.find((g) => g.type.kind === "combat")!;
+    const generic = groups.find((g) => g.type.kind === "generic")!;
+    // 2 combat slots absorb 2 instances; the generic slot absorbs the 3rd
+    // (Improved Critical is unrestricted-eligible too — "generic" always
+    // returns true from featEligibleForSlot) — nothing left unassigned.
+    expect(combat.filledFeatIds).toHaveLength(2);
+    expect(generic.filledFeatIds).toHaveLength(1);
+    expect(unassignedFeatIds).toEqual([]);
   });
 });

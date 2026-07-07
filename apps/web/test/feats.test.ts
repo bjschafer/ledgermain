@@ -10,10 +10,13 @@ import {
   featChoiceDescriptor,
   featChoiceOptions,
   featDisplayName,
+  featInstances,
   grantedFeats,
+  setExtraFeatChoice,
   setFeatChoice,
 } from "../src/model/feats.js";
-import { toggleFeat } from "../src/model/doc.js";
+import { addFeatInstance, removeFeatInstance, toggleFeat } from "../src/model/doc.js";
+import { isRepeatableFeat, REPEATABLE_FEAT_SLUGS } from "../src/model/repeatableFeats.js";
 
 const ref = loadRefData();
 
@@ -28,6 +31,7 @@ function makeDoc(over: {
   race?: string;
   feats?: string[];
   featChoices?: Record<string, string>;
+  extraFeats?: { instanceId: string; featId: string; choiceId?: string }[];
   gmFeatSlots?: number;
   archetypes?: string[];
 }): CharacterDoc {
@@ -46,6 +50,7 @@ function makeDoc(over: {
     build: {
       feats: over.feats ?? [],
       featChoices: over.featChoices,
+      extraFeats: over.extraFeats,
       archetypes: over.archetypes,
       skillRanks: {},
       classFeatureChoices: [],
@@ -625,5 +630,223 @@ describe("featDisplayName", () => {
     const ironWill = ref.feats[featIdNamed("Iron Will")]!;
     const doc = makeDoc({ classes: [{ tag: "fighter", level: 1 }], feats: [ironWill.id] });
     expect(featDisplayName(ironWill, doc, ref)).toBe("Iron Will");
+  });
+});
+
+// ─── issue #58: repeatable feats — instance model ────────────────────────────
+
+function featIdNamedTop(name: string): string {
+  const feat = Object.values(ref.feats).find((f) => f.name === name);
+  if (!feat) throw new Error(`feat not found: ${name}`);
+  return feat.id;
+}
+
+describe("REPEATABLE_FEAT_SLUGS: cross-checked against the vendored feats.json", () => {
+  it("every slug in the curated set names a real feat in the vendored data", () => {
+    const names = new Set(Object.values(ref.feats).map((f) => f.name));
+    const slugToName = new Map(
+      [...names].map((n) => [
+        n
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, ""),
+        n,
+      ]),
+    );
+    for (const slug of REPEATABLE_FEAT_SLUGS) {
+      expect(slugToName.has(slug)).toBe(true);
+    }
+  });
+
+  it("isRepeatableFeat recognizes Weapon Focus, Skill Focus, Extra Rage, Improved Critical", () => {
+    expect(isRepeatableFeat("Weapon Focus")).toBe(true);
+    expect(isRepeatableFeat("Skill Focus")).toBe(true);
+    expect(isRepeatableFeat("Extra Rage")).toBe(true);
+    expect(isRepeatableFeat("Improved Critical")).toBe(true);
+  });
+
+  it("isRepeatableFeat rejects a normally-single-take feat (Iron Will) and a near-miss false positive (Combat Reflexes)", () => {
+    expect(isRepeatableFeat("Iron Will")).toBe(false);
+    // "Combat Reflexes"'s vendored text contains "more than once per round"
+    // (limiting a rogue's opportunist ability), not a repeatability grant.
+    expect(isRepeatableFeat("Combat Reflexes")).toBe(false);
+  });
+});
+
+describe("addFeatInstance / removeFeatInstance (issue #58)", () => {
+  it("addFeatInstance on an unowned feat adds the primary instance (same as toggleFeat's add)", () => {
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 1 }] });
+    const wfId = featIdNamedTop("Weapon Focus");
+    const next = addFeatInstance(doc, wfId);
+    expect(next.build.feats).toEqual([wfId]);
+    expect(next.build.extraFeats).toBeUndefined();
+  });
+
+  it("addFeatInstance on an already-owned feat appends an extraFeats entry", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 1 }], feats: [wfId] });
+    const next = addFeatInstance(doc, wfId);
+    expect(next.build.feats).toEqual([wfId]);
+    expect(next.build.extraFeats).toHaveLength(1);
+    expect(next.build.extraFeats![0]!.featId).toBe(wfId);
+    expect(next.build.extraFeats![0]!.choiceId).toBeUndefined();
+    expect(next.build.extraFeats![0]!.instanceId).not.toBe(wfId);
+  });
+
+  it("a third addFeatInstance appends a second extraFeats entry with a distinct instance id", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    let doc = makeDoc({ classes: [{ tag: "fighter", level: 1 }], feats: [wfId] });
+    doc = addFeatInstance(doc, wfId);
+    doc = addFeatInstance(doc, wfId);
+    expect(doc.build.extraFeats).toHaveLength(2);
+    const [a, b] = doc.build.extraFeats!;
+    expect(a!.instanceId).not.toBe(b!.instanceId);
+  });
+
+  it("featInstances lists the primary then every extra instance, in order", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    let doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+    });
+    doc = addFeatInstance(doc, wfId);
+    doc = setExtraFeatChoice(doc, doc.build.extraFeats![0]!.instanceId, "dagger");
+    const instances = featInstances(doc);
+    expect(instances).toHaveLength(2);
+    expect(instances[0]).toEqual({
+      instanceId: wfId,
+      featId: wfId,
+      choiceId: "longsword",
+      isExtra: false,
+    });
+    expect(instances[1]!.choiceId).toBe("dagger");
+    expect(instances[1]!.isExtra).toBe(true);
+  });
+
+  it("chosenFeatCount counts primary + every extra instance", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    let doc = makeDoc({ classes: [{ tag: "fighter", level: 1 }], feats: [wfId] });
+    expect(chosenFeatCount(doc)).toBe(1);
+    doc = addFeatInstance(doc, wfId);
+    expect(chosenFeatCount(doc)).toBe(2);
+    doc = addFeatInstance(doc, wfId);
+    expect(chosenFeatCount(doc)).toBe(3);
+  });
+
+  it("removeFeatInstance with an instanceId removes only that extra instance", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    let doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+    });
+    doc = addFeatInstance(doc, wfId);
+    doc = setExtraFeatChoice(doc, doc.build.extraFeats![0]!.instanceId, "dagger");
+    doc = addFeatInstance(doc, wfId); // a second extra instance, no choice
+    const secondInstanceId = doc.build.extraFeats![0]!.instanceId;
+    doc = removeFeatInstance(doc, wfId, secondInstanceId);
+    // Primary + one remaining extra instance.
+    expect(doc.build.feats).toEqual([wfId]);
+    expect(doc.build.featChoices?.[wfId]).toBe("longsword");
+    expect(doc.build.extraFeats).toHaveLength(1);
+    expect(doc.build.extraFeats![0]!.choiceId).toBeUndefined();
+  });
+
+  it("removeFeatInstance without an instanceId, with no extras, behaves exactly like toggleFeat's remove (pre-#58 behavior)", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+    });
+    const next = removeFeatInstance(doc, wfId);
+    expect(next.build.feats).not.toContain(wfId);
+    expect(next.build.featChoices?.[wfId]).toBeUndefined();
+  });
+
+  it("removeFeatInstance without an instanceId, WITH extras, promotes the first extra instance into the primary slot", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    let doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+    });
+    doc = addFeatInstance(doc, wfId);
+    doc = setExtraFeatChoice(doc, doc.build.extraFeats![0]!.instanceId, "dagger");
+    doc = addFeatInstance(doc, wfId); // second extra, no choice
+    doc = removeFeatInstance(doc, wfId); // remove the primary
+    // The feat is still owned (invariant: primary present iff any instance is)...
+    expect(doc.build.feats).toEqual([wfId]);
+    // ...and the promoted choice is the FIRST extra instance's ("dagger").
+    expect(doc.build.featChoices?.[wfId]).toBe("dagger");
+    // Only the second (choiceless) extra instance remains.
+    expect(doc.build.extraFeats).toHaveLength(1);
+    expect(doc.build.extraFeats![0]!.choiceId).toBeUndefined();
+  });
+
+  it("toggleFeat's remove branch delegates to removeFeatInstance (promotes when extras exist)", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    let doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+    });
+    doc = addFeatInstance(doc, wfId);
+    doc = setExtraFeatChoice(doc, doc.build.extraFeats![0]!.instanceId, "dagger");
+    doc = toggleFeat(doc, wfId);
+    expect(doc.build.feats).toEqual([wfId]);
+    expect(doc.build.featChoices?.[wfId]).toBe("dagger");
+    expect(doc.build.extraFeats).toBeUndefined();
+  });
+
+  it("chosenFeatCountExcludingGranted counts extra instances too", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    let doc = makeDoc({ classes: [{ tag: "fighter", level: 1 }], feats: [wfId] });
+    doc = addFeatInstance(doc, wfId);
+    expect(chosenFeatCountExcludingGranted(doc, ref)).toBe(2);
+  });
+
+  it("legacy doc with no extraFeats field loads and behaves identically to before issue #58", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    const legacyDoc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+    });
+    // No extraFeats key at all on this doc (undefined, not []).
+    expect(legacyDoc.build.extraFeats).toBeUndefined();
+    expect(featInstances(legacyDoc)).toEqual([
+      { instanceId: wfId, featId: wfId, choiceId: "longsword", isExtra: false },
+    ]);
+    expect(chosenFeatCount(legacyDoc)).toBe(1);
+    // No `doc.build.weapons` set here, so the "weapon" choice picker has no
+    // options to resolve against and falls back to the raw stored choiceId
+    // (matches the pre-existing "falls back to the raw choiceId" behavior
+    // exercised above for Skill Focus).
+    expect(featDisplayName(ref.feats[wfId]!, legacyDoc, ref)).toBe("Weapon Focus: longsword");
+  });
+});
+
+describe("duplicate-choice warning data (issue #58)", () => {
+  it("two instances with the identical choice can be detected via featInstances (UI warns, never blocks)", () => {
+    const wfId = featIdNamedTop("Weapon Focus");
+    let doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      feats: [wfId],
+      featChoices: { [wfId]: "longsword" },
+    });
+    doc = addFeatInstance(doc, wfId);
+    doc = setExtraFeatChoice(doc, doc.build.extraFeats![0]!.instanceId, "longsword");
+    const instances = featInstances(doc);
+    const choiceCounts = new Map<string, number>();
+    for (const inst of instances) {
+      if (inst.choiceId)
+        choiceCounts.set(inst.choiceId, (choiceCounts.get(inst.choiceId) ?? 0) + 1);
+    }
+    expect(choiceCounts.get("longsword")).toBe(2);
+    // Both instances still store their (redundant) choice — never blocked or
+    // silently dropped, matching the project's hybrid soft-warning posture.
+    expect(instances.every((i) => i.choiceId === "longsword")).toBe(true);
   });
 });
