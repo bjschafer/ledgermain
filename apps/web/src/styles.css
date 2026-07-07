@@ -4384,7 +4384,6 @@ input[type="text"].saved-roll-name:focus {
   align-items: center;
 }
 
-
 /* ---------------------------------------------------------- level-up toast
    Issue #63: a celebratory "ding" for a genuine total-level increase —
    `toast--level-up` (`ToastHost.tsx`, `state/toast.ts`'s `tone`). Same shape
