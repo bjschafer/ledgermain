@@ -7,6 +7,7 @@ import { featNameSlug } from "@pf1/engine";
 import { casterLevel } from "../../model/casterLevel.js";
 import { combatStyleFeatSlugs } from "../../model/ranger.js";
 import { ABILITY_IDS, toggleFeat } from "../../model/doc.js";
+import { assignFeatsToSlots, featEligibleForSlot, slotTypeBadge } from "../../model/featSlots.js";
 import {
   chosenFeatCountExcludingGranted,
   expectedFeatCount,
@@ -97,6 +98,32 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
     [doc.build.feats, ctx],
   );
 
+  // Typed feat-slot budget (issue #54/#57): decomposes the feat count into
+  // restricted buckets (Fighter combat, Wizard metamagic/item creation, a
+  // ranger's chosen combat style, a sorcerer's chosen bloodline, monk's
+  // limited list, …) and greedily assigns the character's chosen feats to
+  // them, so the picker can flag unfilled restricted slots and feats that
+  // don't fit any remaining slot at all. Soft-warning only — never blocks a
+  // pick, matching the project's hybrid prereq posture.
+  const slotAssignment = useMemo(() => assignFeatsToSlots(doc, refData), [doc, refData]);
+  const restrictedSlotGroups = useMemo(
+    () => slotAssignment.groups.filter((g) => g.type.kind !== "generic"),
+    [slotAssignment],
+  );
+  const unassignedFeatNames = useMemo(
+    () =>
+      slotAssignment.unassignedFeatIds
+        .map((id) => refData.feats[id]?.name)
+        .filter((n): n is string => !!n),
+    [slotAssignment, refData],
+  );
+  // Restricted slot groups (excluding generic) with unfilled capacity, for
+  // per-row "fits your open X slot" badges.
+  const openRestrictedGroups = useMemo(
+    () => restrictedSlotGroups.filter((g) => g.filledFeatIds.length < g.total),
+    [restrictedSlotGroups],
+  );
+
   // Skill options for Skill Focus and any other "skill" choice feats. Computed
   // once per render cycle — the list is static (all skills, alphabetically).
   const skillOptions = useMemo(() => featChoiceOptions("skill", refData), [refData]);
@@ -184,6 +211,32 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           </button>
         </div>
       </div>
+      {restrictedSlotGroups.length > 0 && (
+        <div className="feat-slot-summary">
+          {restrictedSlotGroups.map((g) => (
+            <span
+              key={g.key}
+              className={`slot-chip${g.filledFeatIds.length < g.total ? " slot-chip-warn" : ""}`}
+              title={
+                g.filledFeatIds.length < g.total
+                  ? `${g.label}: ${g.total - g.filledFeatIds.length} unfilled — take a feat from this restricted list to fill it`
+                  : `${g.label}: fully filled`
+              }
+            >
+              {g.filledFeatIds.length < g.total ? "⚠ " : ""}
+              {g.label}: {g.filledFeatIds.length}/{g.total}
+            </span>
+          ))}
+          {unassignedFeatNames.length > 0 && (
+            <span
+              className="slot-chip slot-chip-warn"
+              title="These feats don't match any open feat slot for your class(es) — you may be over your feat budget, or they don't satisfy a class's feat-type restriction"
+            >
+              ⚠ doesn't fit an open slot: {unassignedFeatNames.join(", ")}
+            </span>
+          )}
+        </div>
+      )}
       {granted.length > 0 && (
         <div className="granted-feats">
           {granted.map((g) => (
@@ -216,6 +269,12 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           // ever applies to not-yet-taken feats.
           const isUnqualified = isSel && unqualified.has(feat.id);
           const inStyle = styleSlugs.has(featNameSlug(feat.name));
+          // Other open restricted slots (combat, wizard bonus, bloodline,
+          // monk list, …) this feat could fill — combat style already gets
+          // its own dedicated badge above (tied to the prereq-waiver text).
+          const eligibleOpenGroups = openRestrictedGroups.filter(
+            (g) => g.type.kind !== "combatStyle" && featEligibleForSlot(feat, g.type),
+          );
           // For selected feats: look up any player-choice descriptor and options.
           const choiceDesc = isSel ? featChoiceDescriptor(feat.name) : null;
           const choiceOpts =
@@ -252,6 +311,16 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                       combat style{res.bypassed ? " · prereqs waived" : ""}
                     </span>
                   ) : null}
+                  {!isSel &&
+                    eligibleOpenGroups.map((g) => (
+                      <span
+                        key={g.key}
+                        className="style-badge"
+                        title={`Fills your open ${g.label} slot (${g.total - g.filledFeatIds.length} open)`}
+                      >
+                        {slotTypeBadge(g.type)} slot
+                      </span>
+                    ))}
                 </div>
                 {/* Inline choice picker for feats that require a selection */}
                 {choiceDesc && choiceOpts.length > 0 && (

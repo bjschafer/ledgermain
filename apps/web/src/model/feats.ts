@@ -124,13 +124,121 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
 }
 
 /**
- * Sum of "bonusFeats"-targeting changes from every granted, resolved class
- * feature across all of the character's classes — free SLOTS only: features
- * that are fixed feat grants (name matches a feat; see `grantedFeats`) are
- * skipped, since the specific feat is auto-applied rather than budgeted.
- * Mirrors the granted-feature walk in `collect.ts`: each class feature's
- * formula is evaluated with `@class.unlevel`/`@class.level` bound to *that*
- * class's level.
+ * A typed restriction on which feats may fill a class-granted bonus-feat
+ * slot (issue #54: Fighter combat feats, Wizard metamagic/item creation/Spell
+ * Mastery, etc; issue #57: Ranger combat style / Sorcerer bloodline / Monk
+ * limited lists). `"generic"` means unrestricted — the pre-#54 behavior, and
+ * the fallback for any `bonusFeats`-granting feature this module doesn't yet
+ * recognize (never regresses an unrecognized feature to *zero* slots).
+ */
+export type FeatSlotType =
+  | { kind: "generic" }
+  | { kind: "combat" }
+  | { kind: "wizardBonus" }
+  | { kind: "magusBonus" }
+  | { kind: "combatStyle"; style: string }
+  | { kind: "bloodline"; bloodline: string }
+  | { kind: "monkList" };
+
+export const GENERIC_SLOT: FeatSlotType = { kind: "generic" };
+
+/** A typed, class-granted bonus-feat slot contribution — see `classBonusFeatSlots`. */
+export interface ClassFeatSlot {
+  type: FeatSlotType;
+  count: number;
+  /** Display source, e.g. "Fighter", "Ranger combat style". */
+  source: string;
+}
+
+/**
+ * Base-class `bonusFeats`-granting feature name (trimmed/lowercased) -> the
+ * slot type its free slots restrict to (issue #54), plus a display source
+ * label. Ranger's combat style and Sorcerer's bloodline resolve against the
+ * character's own choice (`doc.build.combatStyle` / `sorcererBloodline`);
+ * absent either choice, the slots stay generic (unrestricted) rather than
+ * inventing a restriction the player hasn't picked yet.
+ */
+function baseFeatureSlotType(
+  featureName: string,
+  doc: CharacterDoc,
+): { type: FeatSlotType; source: string } {
+  switch (featureName) {
+    case "bonus feats (fgt)":
+      return { type: { kind: "combat" }, source: "Fighter" };
+    case "bonus feats (wiz)":
+      return { type: { kind: "wizardBonus" }, source: "Wizard" };
+    case "bonus feats (mag)":
+      return { type: { kind: "magusBonus" }, source: "Magus" };
+    case "bonus feat (mnk)":
+      return { type: { kind: "monkList" }, source: "Monk" };
+    case "bloodline feat (sor)": {
+      const bloodline = doc.build.sorcererBloodline;
+      return bloodline
+        ? { type: { kind: "bloodline", bloodline }, source: "Sorcerer bloodline" }
+        : { type: GENERIC_SLOT, source: "Sorcerer bloodline (choose a bloodline to restrict)" };
+    }
+    case "combat style feat": {
+      const style = doc.build.combatStyle;
+      return style
+        ? { type: { kind: "combatStyle", style }, source: "Ranger combat style" }
+        : { type: GENERIC_SLOT, source: "Ranger combat style (choose a style to restrict)" };
+    }
+    default:
+      return { type: GENERIC_SLOT, source: "Class bonus feat" };
+  }
+}
+
+/**
+ * Hand-authored archetype-feature-id (`ArchetypeFeature.id`) -> slot type for
+ * the archetype-granted `bonusFeats` reflavors in `ARCHETYPE_FEATURE_EFFECTS`
+ * (`archetype-effects.ts`) that this module can type more precisely than
+ * "generic". The six ranger combat-style archetypes reflavor a specific
+ * style (best-effort where the archetype's prose names a broader category
+ * than any single `COMBAT_STYLES` entry, e.g. Toxophilite's "ranged combat
+ * style feats" — mapped to Archery, the closest single tree); Crusader's
+ * restricted armor/shield/weapon list is approximated with the broad
+ * `combat` type. Any archetype `bonusFeats` grant NOT listed here falls back
+ * to `GENERIC_SLOT` in the walk below.
+ */
+const ARCHETYPE_SLOT_TYPES: Readonly<Record<string, { type: FeatSlotType; source: string }>> = {
+  "ranger:bow-nomad:combat-style-feat:2": {
+    type: { kind: "combatStyle", style: "archery" },
+    source: "Bow Nomad (archery)",
+  },
+  "ranger:horse-lord:combat-style-feat:2": {
+    type: { kind: "combatStyle", style: "mounted-combat" },
+    source: "Horse Lord (mounted combat)",
+  },
+  "ranger:ilsurian-archer:combat-style-feat:2": {
+    type: { kind: "combatStyle", style: "archery" },
+    source: "Ilsurian Archer (archery)",
+  },
+  "ranger:shapeshifter:combat-style-feat:2": {
+    type: { kind: "combatStyle", style: "natural-weapon" },
+    source: "Shapeshifter (natural weapon)",
+  },
+  "ranger:stormwalker:combat-style-feat:2": {
+    type: { kind: "combatStyle", style: "archery" },
+    source: "Stormwalker (archery)",
+  },
+  "ranger:toxophilite:combat-style-feat:2": {
+    type: { kind: "combatStyle", style: "archery" },
+    source: "Toxophilite (ranged combat)",
+  },
+  "cleric:crusader:bonus-feat:1": {
+    type: { kind: "combat" },
+    source: "Crusader (armor/shield/weapon list)",
+  },
+};
+
+/**
+ * Typed decomposition of every "bonusFeats"-targeting change from the
+ * character's granted, resolved class features (and archetype reflavors) —
+ * the free SLOTS a class hands out (issue #54/#57). Fixed feat grants (name
+ * matches a feat; see `grantedFeats`) are skipped, since the specific feat is
+ * auto-applied rather than budgeted. Mirrors the granted-feature walk in
+ * `collect.ts`: each class feature's formula is evaluated with
+ * `@class.unlevel`/`@class.level` bound to *that* class's level.
  *
  * Archetype-aware (issue #40), matching `collect.ts`'s two adjustments:
  *   1. A base-class feature swapped out by an active archetype (e.g. a ranger
@@ -142,12 +250,16 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
  *      that re-grant an identical count) DO contribute — so an archetype that
  *      replaces a slot-granting feature with an equivalent one nets zero, and
  *      one that replaces it with nothing correctly loses the slots.
+ *
+ * `classBonusFeats` (the plain count used by `expectedFeatCount`) is just the
+ * sum of this list's `count`s, clamped to zero.
  */
-function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
+export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassFeatSlot[] {
   const rollData = buildRollData(doc, refData);
   const byName = featIdByName(refData);
   const archetypeSwaps = activeArchetypeSwaps(doc, refData);
-  let total = 0;
+  const out: ClassFeatSlot[] = [];
+
   for (const cls of doc.identity.classes) {
     const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
     if (!classDef) continue;
@@ -172,7 +284,10 @@ function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
           continue;
         }
         if (value === null || Number.isNaN(value)) continue;
-        total += Math.trunc(value);
+        const count = Math.trunc(value);
+        if (count === 0) continue;
+        const { type, source } = baseFeatureSlotType(feature.name.trim().toLowerCase(), doc);
+        out.push({ type, count, source });
       }
     }
   }
@@ -199,11 +314,19 @@ function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
           continue;
         }
         if (value === null || Number.isNaN(value)) continue;
-        total += Math.trunc(value);
+        const count = Math.trunc(value);
+        if (count === 0) continue;
+        const known = ARCHETYPE_SLOT_TYPES[f.id];
+        out.push(known ? { ...known, count } : { type: GENERIC_SLOT, count, source: f.name });
       }
     }
   }
 
+  return out;
+}
+
+function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
+  const total = classBonusFeatSlots(doc, refData).reduce((sum, slot) => sum + slot.count, 0);
   return Math.max(0, total);
 }
 
@@ -212,6 +335,16 @@ function classBonusFeats(doc: CharacterDoc, refData: RefData): number {
  * race, and class composition.
  */
 export function expectedFeatCount(doc: CharacterDoc, refData: RefData): number {
+  return baseFeatSlotCount(doc, refData) + classBonusFeats(doc, refData);
+}
+
+/**
+ * The unrestricted ("generic") portion of the feat budget: the base level
+ * progression, the Human racial bonus feat, and the GM/homebrew addend.
+ * Split out from `expectedFeatCount` for `model/featSlots.ts` (issue #54/#57),
+ * which needs this figure separately from the typed class-bonus slots.
+ */
+export function baseFeatSlotCount(doc: CharacterDoc, refData: RefData): number {
   const charLevel = totalLevel(doc);
   if (charLevel <= 0) return 0;
 
@@ -226,14 +359,10 @@ export function expectedFeatCount(doc: CharacterDoc, refData: RefData): number {
   const humanBonus =
     race?.name === "Human" && !suppressedRaceTargets(doc, refData).has("bonusFeats") ? 1 : 0;
 
-  // Class bonus feats (Fighter combat feats, Wizard Arcane School feats,
-  // Sorcerer bloodline feats, etc.) — see classBonusFeats() doc comment.
-  const classBonus = classBonusFeats(doc, refData);
-
   // GM/homebrew addend (see build.gmGrants). Omitted/absent = 0; may be
   // negative (a GM can claw back slots). Added after rules-derived totals so
   // the over-budget check in the builder sees the loosened budget.
-  return baseFeatCount + humanBonus + classBonus + (doc.build.gmGrants?.featSlots ?? 0);
+  return baseFeatCount + humanBonus + (doc.build.gmGrants?.featSlots ?? 0);
 }
 
 /** The number of feats the character has currently chosen. */

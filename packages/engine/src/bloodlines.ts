@@ -37,9 +37,21 @@
  *     natural armor, +1 HP/level, wings' fly speed) are modeled as `Change`s.
  *     Unknown/absent variant ids just fall back to generic text — never a
  *     crash (`variantLabel` returns `undefined` for them).
+ *   - `bonusFeatSlugs` (issue #57) is the bloodline's "Bonus Feats" list (CRB:
+ *     a sorcerer picks one of these — no prerequisites waived, unlike a
+ *     ranger's combat style — at 7th level and every six levels thereafter).
+ *     Hand-authored clean-room from published SRD text (d20pfsrd.com bloodline
+ *     pages), `featNameSlug`-normalized to match the vendored feat dataset by
+ *     name. Several list entries name a specific Skill Focus sub-choice (e.g.
+ *     Aberrant's "Skill Focus (Knowledge [dungeoneering])") — only the base
+ *     feat ("skill-focus") is tracked here; the sub-skill restriction isn't
+ *     modeled, matching the project's existing choice-feat granularity (Skill
+ *     Focus's own skill picker is unconstrained by class already).
  */
 
 import type { Change, ContextNote } from "@pf1/schema";
+
+import { featNameSlug } from "./feat-effects.js";
 
 /** Sorcerer bloodline power level gates (PF1 CRB: always 1st/3rd/9th/15th/20th). */
 export type BloodlinePowerLevel = 1 | 3 | 9 | 15 | 20;
@@ -87,6 +99,12 @@ export interface BloodlineDef {
   variantPrompt?: string;
   /** Energy type / dragon type choices, for bloodlines that need one. */
   variantOptions?: BloodlineVariantOption[];
+  /**
+   * `featNameSlug`s of this bloodline's "Bonus Feats" list (see file doc
+   * comment) — the feat picker restricts a sorcerer's bloodline-feat slots
+   * (issue #57) to this list.
+   */
+  bonusFeatSlugs: readonly string[];
 }
 
 const c = (formula: string, target: string, type: string, operator?: "add" | "set"): Change => ({
@@ -95,6 +113,9 @@ const c = (formula: string, target: string, type: string, operator?: "add" | "se
   type,
   ...(operator ? { operator } : {}),
 });
+
+/** `featNameSlug` every name in a bloodline's "Bonus Feats" list. */
+const feats = (...names: string[]): readonly string[] => names.map((n) => featNameSlug(n));
 
 const POOL_3_CHA: BloodlineResourcePool = {
   usesFormula: "3 + @abilities.cha.mod",
@@ -115,6 +136,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Aberrant",
     name: "Aberrant",
+    bonusFeatSlugs: feats(
+      "Combat Casting",
+      "Improved Disarm",
+      "Improved Grapple",
+      "Improved Initiative",
+      "Improved Unarmed Strike",
+      "Iron Will",
+      "Silent Spell",
+      "Skill Focus",
+    ),
     arcana: {
       summary:
         "Whenever you cast a spell of the polymorph subschool, its duration increases by 50% (minimum 1 round).",
@@ -188,6 +219,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Abyssal",
     name: "Abyssal",
+    bonusFeatSlugs: feats(
+      "Augment Summoning",
+      "Cleave",
+      "Empower Spell",
+      "Great Fortitude",
+      "Improved Bull Rush",
+      "Improved Sunder",
+      "Power Attack",
+      "Skill Focus",
+    ),
     arcana: {
       summary:
         "Whenever you cast a summon monster spell, the summoned creatures gain DR/good equal to 1/2 your sorcerer level (minimum 1).",
@@ -268,6 +309,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Arcane",
     name: "Arcane",
+    bonusFeatSlugs: feats(
+      "Combat Casting",
+      "Improved Counterspell",
+      "Improved Initiative",
+      "Iron Will",
+      "Scribe Scroll",
+      "Skill Focus",
+      "Spell Focus",
+      "Still Spell",
+    ),
     arcana: {
       summary:
         "Whenever you apply a metamagic feat that increases a spell's effective slot by at least one level, the spell's save DC increases by 1.",
@@ -336,6 +387,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Celestial",
     name: "Celestial",
+    bonusFeatSlugs: feats(
+      "Dodge",
+      "Extend Spell",
+      "Iron Will",
+      "Mobility",
+      "Mounted Combat",
+      "Ride-By Attack",
+      "Skill Focus",
+      "Weapon Finesse",
+    ),
     arcana: {
       summary:
         "Whenever you cast a summon monster spell, the summoned creatures gain DR/evil equal to 1/2 your sorcerer level (minimum 1).",
@@ -407,6 +468,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Destined",
     name: "Destined",
+    bonusFeatSlugs: feats(
+      "Arcane Strike",
+      "Diehard",
+      "Endurance",
+      "Leadership",
+      "Lightning Reflexes",
+      "Maximize Spell",
+      "Skill Focus",
+      "Weapon Focus",
+    ),
     arcana: {
       summary:
         "Whenever you cast a spell with a range of personal, you gain a luck bonus equal to the spell's level on saving throws for 1 round.",
@@ -475,6 +546,15 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Draconic",
     name: "Draconic",
+    bonusFeatSlugs: feats(
+      "Blind-Fight",
+      "Great Fortitude",
+      "Improved Initiative",
+      "Power Attack",
+      "Quicken Spell",
+      "Skill Focus",
+      "Toughness",
+    ),
     arcana: {
       summary:
         "+1 hit point per sorcerer level. Whenever you cast a spell that deals energy damage of your dragon type, it deals +1 damage per die rolled.",
@@ -562,6 +642,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Elemental",
     name: "Elemental",
+    bonusFeatSlugs: feats(
+      "Dodge",
+      "Empower Spell",
+      "Great Fortitude",
+      "Improved Initiative",
+      "Lightning Reflexes",
+      "Power Attack",
+      "Skill Focus",
+      "Weapon Finesse",
+    ),
     arcana: {
       summary:
         "Spells you cast that deal energy damage can have their damage type changed to match your chosen element.",
@@ -637,6 +727,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Fey",
     name: "Fey",
+    bonusFeatSlugs: feats(
+      "Dodge",
+      "Improved Initiative",
+      "Lightning Reflexes",
+      "Mobility",
+      "Point-Blank Shot",
+      "Precise Shot",
+      "Quicken Spell",
+      "Skill Focus",
+    ),
     arcana: {
       summary: "Whenever you cast a spell of the compulsion subschool, its save DC increases by 2.",
       changes: [],
@@ -708,6 +808,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Infernal",
     name: "Infernal",
+    bonusFeatSlugs: feats(
+      "Blind-Fight",
+      "Combat Expertise",
+      "Deceitful",
+      "Extend Spell",
+      "Improved Disarm",
+      "Iron Will",
+      "Skill Focus",
+      "Spell Penetration",
+    ),
     arcana: {
       summary: "Whenever you cast a spell of the charm subschool, its save DC increases by 2.",
       changes: [],
@@ -772,6 +882,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Undead",
     name: "Undead",
+    bonusFeatSlugs: feats(
+      "Combat Casting",
+      "Diehard",
+      "Endurance",
+      "Iron Will",
+      "Skill Focus",
+      "Spell Focus",
+      "Still Spell",
+      "Toughness",
+    ),
     arcana: {
       summary:
         "Corporeal undead that were once humanoid are treated as humanoid for your mind-affecting spells.",
