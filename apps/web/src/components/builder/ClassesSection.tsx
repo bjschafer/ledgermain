@@ -1,6 +1,9 @@
+import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import { classAlignmentWarnings } from "../../model/alignment.js";
+import { type ClassCategory, groupClassesByCategory } from "../../model/classCategory.js";
+import { useCollapsed } from "../../state/useCollapsed.js";
 import {
   addClass,
   removeClass,
@@ -30,6 +33,46 @@ import { SchoolPicker } from "./SchoolPicker.js";
 import type { BuilderProps } from "./types.js";
 import { WeaponTrainingPicker } from "./WeaponTrainingPicker.js";
 
+/**
+ * One collapsible category tier in the class picker (Core / Base / Hybrid) —
+ * the same shape as the race picker's `RaceGroupSection`. Rendered per group
+ * (a stable set), so `useCollapsed` inside a list is fine. All tiers default
+ * open: 31 chips across three sections is small enough not to declutter.
+ */
+function ClassGroupSection({
+  category,
+  label,
+  count,
+  children,
+}: {
+  category: ClassCategory;
+  label: string;
+  count: number;
+  children: ReactNode;
+}) {
+  const [collapsed, toggle] = useCollapsed(`class-category:${category}`, false);
+  const open = !collapsed;
+  return (
+    <div className="race-group">
+      <div
+        className="race-group-header"
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggle();
+        }}
+      >
+        <span className="section-label">{label}</span>
+        <span className="race-group-count">{count}</span>
+        <span className="panel-caret">{open ? "▾" : "▸"}</span>
+      </div>
+      {open ? <div className="chips">{children}</div> : null}
+    </div>
+  );
+}
+
 export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   const [fcbOpen, setFcbOpen] = useState(true);
   const [confirmRemoveTag, setConfirmRemoveTag] = useState<string | null>(null);
@@ -41,6 +84,10 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         .sort((a, b) => a.name.localeCompare(b.name)),
     [refData],
   );
+  // Core / Base / Hybrid sections (published Paizo categories, see
+  // model/classCategory.ts) — alphabetical within each, mirroring the race
+  // picker's rarity tiers.
+  const classGroups = useMemo(() => groupClassesByCategory(baseClasses), [baseClasses]);
 
   const chosen = new Set(doc.identity.classes.map((c) => c.tag));
   const totalLevel = doc.identity.classes.reduce((s, c) => s + c.level, 0);
@@ -78,19 +125,28 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       right={<span className="hint">multiclass-capable · total level {totalLevel}</span>}
       storageKey="panel:Classes"
     >
-      <div className="chips" style={{ marginBottom: 14 }}>
-        {baseClasses.map((c) => (
-          <button
-            key={c.tag}
-            type="button"
-            className="chip"
-            aria-pressed={chosen.has(c.tag)}
-            onClick={() =>
-              chosen.has(c.tag) ? setConfirmRemoveTag(c.tag) : update((d) => addClass(d, c.tag))
-            }
+      <div style={{ marginBottom: 14 }}>
+        {classGroups.map((group) => (
+          <ClassGroupSection
+            key={group.category}
+            category={group.category}
+            label={group.label}
+            count={group.items.length}
           >
-            {c.name}
-          </button>
+            {group.items.map((c) => (
+              <button
+                key={c.tag}
+                type="button"
+                className="chip"
+                aria-pressed={chosen.has(c.tag)}
+                onClick={() =>
+                  chosen.has(c.tag) ? setConfirmRemoveTag(c.tag) : update((d) => addClass(d, c.tag))
+                }
+              >
+                {c.name}
+              </button>
+            ))}
+          </ClassGroupSection>
         ))}
       </div>
 
