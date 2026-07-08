@@ -1,4 +1,131 @@
 {
+  "0ahLHNR2864mih3n": {
+    "armorProf": [],
+    "bab": "low",
+    "classSkills": [
+      "art",
+      "blf",
+      "crf",
+      "dip",
+      "fly",
+      "int",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "per",
+      "pro",
+      "sen",
+      "spl"
+    ],
+    "description": "<p>Within the mind of any sentient being lies power to rival that of the greatest magical artifact or holy site. By accessing these staggering vaults of mental energy, the psychic can shape the world around her, the minds of others, and pathways across the planes. No place or idea is too secret or remote for a psychic to access, and she can pull from every type of psychic magic. Many methods allow psychics to tap into their mental abilities, and the disciplines they follow affect their abilities.</p><p><strong>Role:</strong> With a large suite of spells, psychics can handle many situations, but they excel at moving and manipulating objects, as well as reading and influencing thoughts.</p>",
+    "features": [
+      {
+        "featureId": "Uqxp2wwsUpW42Ipj",
+        "level": 1,
+        "name": "Knacks",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Uqxp2wwsUpW42Ipj"
+      },
+      {
+        "featureId": "qUVgcfJUUPTeubNm",
+        "level": 1,
+        "name": "Phrenic Amplifications",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qUVgcfJUUPTeubNm"
+      },
+      {
+        "featureId": "tFy3rxyljSq56HSg",
+        "level": 1,
+        "name": "Phrenic Pool",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tFy3rxyljSq56HSg"
+      },
+      {
+        "featureId": "BOUqxGDega0y1JOX",
+        "level": 1,
+        "name": "Psychic Discipline",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BOUqxGDega0y1JOX"
+      },
+      {
+        "featureId": "PxqQg5DhZtwFLTUk",
+        "level": 1,
+        "name": "Psychic Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.PxqQg5DhZtwFLTUk"
+      },
+      {
+        "featureId": "H13C5vWmFxF6NRdZ",
+        "level": 2,
+        "name": "Detect Thoughts",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.H13C5vWmFxF6NRdZ"
+      },
+      {
+        "featureId": "dopWa3n4mgTGpTYi",
+        "level": 4,
+        "name": "Exchange Spell (High)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dopWa3n4mgTGpTYi"
+      },
+      {
+        "featureId": "pI96OyLrjc1EyhaE",
+        "level": 9,
+        "name": "Telepathic Bond",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pI96OyLrjc1EyhaE"
+      },
+      {
+        "featureId": "nO6cI6JoY2THQoxZ",
+        "level": 11,
+        "name": "Major Amplifications",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nO6cI6JoY2THQoxZ"
+      },
+      {
+        "featureId": "fVnL2yhENozMMZ8j",
+        "level": 17,
+        "name": "Telepathy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fVnL2yhENozMMZ8j"
+      },
+      {
+        "featureId": "64m65Z8ayGAHNDLT",
+        "level": 20,
+        "name": "Remade Self",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.64m65Z8ayGAHNDLT"
+      }
+    ],
+    "hd": 6,
+    "id": "0ahLHNR2864mih3n",
+    "name": "Psychic",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "60-71"
+      }
+    ],
+    "subType": "base",
+    "tag": "psychic",
+    "uuid": "Compendium.pf1.classes.Item.0ahLHNR2864mih3n",
+    "weaponProf": ["simple"]
+  },
   "0c4lYDywj6bQ0i8r": {
     "armorProf": [],
     "bab": "low",
@@ -441,6 +568,635 @@
     "tag": "oracle",
     "uuid": "Compendium.pf1.classes.Item.5S0u8yFcP861wgd1",
     "weaponProf": ["simple"]
+  },
+  "5iDrtRQMuIhLymUA": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "crf",
+      "fly",
+      "han",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "pro",
+      "rid",
+      "spl",
+      "umd"
+    ],
+    "description": "<p>There are those who take a different path when pursuing the arcane arts, reaching across the boundaries of the world to the far-flung planes to call forth all manner of creatures to do their bidding. Known as summoners, these arcane practitioners form close bonds with particular outsiders, known as eidolons, which increase in power along with their callers. In the end, summoners and their eidolons become linked, sharing shards of the same souls.</p><p><strong>Unchained:</strong> Most of the summoner’s class features are the same as those of the class’s original design—the biggest change comes to the eidolon. The unchained summoner selects a subtype for his eidolon (such as angel, demon, or protean), which determines a number of its evolutions and helps to shape the eidolon’s general attitude and appearance. In addition, some of the evolutions are now tied to one or more subtypes and base forms, to make eidolons that better match the expected appearances and abilities of such creatures. Finally, the summoner spell list has been greatly revised, removing a number of imbalances.</p>",
+    "features": [
+      {
+        "featureId": "IPy4aqFYbOppaqKC",
+        "level": 1,
+        "name": "Cantrips",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IPy4aqFYbOppaqKC"
+      },
+      {
+        "featureId": "Yr1ZNxgxDVsRwxtj",
+        "level": 1,
+        "name": "Eidolon (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Yr1ZNxgxDVsRwxtj"
+      },
+      {
+        "featureId": "EcplvDrXlpIkYfeg",
+        "level": 1,
+        "name": "Life Link (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.EcplvDrXlpIkYfeg"
+      },
+      {
+        "featureId": "pMpN2f4mTgLt2NaR",
+        "level": 1,
+        "name": "Summon Monster (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pMpN2f4mTgLt2NaR"
+      },
+      {
+        "featureId": "99xgyzySNVXWW87X",
+        "level": 1,
+        "name": "Summoner Spells (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.99xgyzySNVXWW87X"
+      },
+      {
+        "featureId": "fJuxnPlNDncuHuT5",
+        "level": 2,
+        "name": "Bond Senses (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fJuxnPlNDncuHuT5"
+      },
+      {
+        "featureId": "hPgtTh79AeIocmpt",
+        "level": 4,
+        "name": "Shield Ally (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hPgtTh79AeIocmpt"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "YOanbBgt7VuD5QDt",
+        "level": 6,
+        "name": "Maker's Call (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YOanbBgt7VuD5QDt"
+      },
+      {
+        "featureId": "uhfXFDZBrYHwQnZX",
+        "level": 8,
+        "name": "Transposition (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.uhfXFDZBrYHwQnZX"
+      },
+      {
+        "featureId": "Zy94TROPC7Es6yA7",
+        "level": 10,
+        "name": "Aspect (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Zy94TROPC7Es6yA7"
+      },
+      {
+        "featureId": "U6LZteLyMA4gLAFF",
+        "level": 12,
+        "name": "Greater Shield Ally (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.U6LZteLyMA4gLAFF"
+      },
+      {
+        "featureId": "UmMT57HYbdF3qJep",
+        "level": 14,
+        "name": "Life Bond (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UmMT57HYbdF3qJep"
+      },
+      {
+        "featureId": "k9ZGUwUB9yJiz4Ea",
+        "level": 16,
+        "name": "Merge Forms (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.k9ZGUwUB9yJiz4Ea"
+      },
+      {
+        "featureId": "5fTHyPmis1IyBmNF",
+        "level": 18,
+        "name": "Greater Aspect (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5fTHyPmis1IyBmNF"
+      },
+      {
+        "featureId": "uURWe8xOp8w7YBQY",
+        "level": 20,
+        "name": "Twin Eidolon (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.uURWe8xOp8w7YBQY"
+      }
+    ],
+    "hd": 8,
+    "id": "5iDrtRQMuIhLymUA",
+    "name": "Summoner (Unchained)",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "25-39"
+      }
+    ],
+    "subType": "base",
+    "tag": "summonerUnchained",
+    "uuid": "Compendium.pf1.classes.Item.5iDrtRQMuIhLymUA",
+    "weaponProf": ["simple"]
+  },
+  "5mQIOIw4hDhlREPo": {
+    "armorProf": [],
+    "bab": "high",
+    "classSkills": [
+      "acr",
+      "art",
+      "clm",
+      "crf",
+      "esc",
+      "int",
+      "khi",
+      "kre",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "rid",
+      "sen",
+      "ste",
+      "swm"
+    ],
+    "description": "<p>Physical and mental perfection — that is the life goal of every monk. For these skilled warriors, martial prowess and mental clarity are one and the same. Capable of pummeling foes with both fist and weapon, monks are among the more versatile combatants on the battlefield. Monks are also able to harness their ki, a spiritual life force that resides within, allowing them to perform amazing acts of acrobatics and mystical skill. All of this depends on incredible discipline and focus, and monks spend their entire lives perfecting these arts.</p><p><strong>Unchained:</strong> Much of the monk has been reworked, including its base attack bonus, Hit Die, saves, and many of its special abilities. The result is a version of the monk that not only is easier to play, but also possesses a great deal more versatility. Flurry of blows is now much simpler to use in play. Many of the higher-level abilities of the monk, such as abundant step and quivering palm, have been incorporated into the new system of ki powers. As a monk advances in level, he can select from a variety of ki powers, allowing the player to truly customize his character.</p>",
+    "features": [
+      {
+        "featureId": "4zVndIJ8NMWWzl1T",
+        "level": 1,
+        "name": "AC Bonus (MNK)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4zVndIJ8NMWWzl1T"
+      },
+      {
+        "featureId": "VjHjPja5QABBgRvR",
+        "level": 1,
+        "name": "Bonus Feat (MNK)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.VjHjPja5QABBgRvR"
+      },
+      {
+        "featureId": "TaBxJdJQp5SFDPyn",
+        "level": 1,
+        "name": "Flurry of Blows (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.TaBxJdJQp5SFDPyn"
+      },
+      {
+        "featureId": "2ausI8g6SsmbOpgF",
+        "level": 1,
+        "name": "Stunning Fist",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2ausI8g6SsmbOpgF"
+      },
+      {
+        "featureId": "a4SPdPuOFdmfJdHN",
+        "level": 1,
+        "name": "Unarmed Strike",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.a4SPdPuOFdmfJdHN"
+      },
+      {
+        "featureId": "KQYCRLEdD4bGA5ak",
+        "level": 2,
+        "name": "Evasion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KQYCRLEdD4bGA5ak"
+      },
+      {
+        "featureId": "CK5L0YJDENqBxLqv",
+        "level": 3,
+        "name": "Fast Movement (MNK)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.CK5L0YJDENqBxLqv"
+      },
+      {
+        "featureId": "7BfYNNkYjjBevun8",
+        "level": 3,
+        "name": "Ki Pool (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7BfYNNkYjjBevun8"
+      },
+      {
+        "featureId": "NsP31IshAuY4gv0s",
+        "level": 4,
+        "name": "Ki powers (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NsP31IshAuY4gv0s"
+      },
+      {
+        "featureId": "8VUae7CIgCidvSfg",
+        "level": 4,
+        "name": "Still Mind",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.8VUae7CIgCidvSfg"
+      },
+      {
+        "featureId": "82G7gl4C1AvtSHI4",
+        "level": 5,
+        "name": "Purity of Body",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.82G7gl4C1AvtSHI4"
+      },
+      {
+        "featureId": "0eJ9MA8iVuOG8VJi",
+        "level": 5,
+        "name": "Style Strikes",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0eJ9MA8iVuOG8VJi"
+      },
+      {
+        "featureId": "Cc2eFfhJYlClCGEH",
+        "level": 9,
+        "name": "Improved Evasion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Cc2eFfhJYlClCGEH"
+      },
+      {
+        "featureId": "TX1sNG0DXRxr9Tlx",
+        "level": 13,
+        "name": "Tongue of the Sun and Moon (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.TX1sNG0DXRxr9Tlx"
+      },
+      {
+        "featureId": "5JlthJkVGEHPZypG",
+        "level": 17,
+        "name": "Timeless Body",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5JlthJkVGEHPZypG"
+      },
+      {
+        "featureId": "TXGAg84E7T6MFA8v",
+        "level": 19,
+        "name": "Flawless Mind",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.TXGAg84E7T6MFA8v"
+      },
+      {
+        "featureId": "hp7tP0bRAj8eNqN9",
+        "level": 20,
+        "name": "Perfect Self",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hp7tP0bRAj8eNqN9"
+      }
+    ],
+    "hd": 10,
+    "id": "5mQIOIw4hDhlREPo",
+    "name": "Monk (Unchained)",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "14-19"
+      }
+    ],
+    "subType": "base",
+    "tag": "monkUnchained",
+    "uuid": "Compendium.pf1.classes.Item.5mQIOIw4hDhlREPo",
+    "weaponProf": [
+      "Club",
+      "Light Crossbow",
+      "Heavy Crossbow",
+      "Dagger",
+      "Handaxe",
+      "Javelin",
+      "Kama",
+      "Nunchaku",
+      "Quarterstaff",
+      "Sai",
+      "Shortsword",
+      "Shortspear",
+      "Shuriken",
+      "Siangham",
+      "Sling",
+      "Spear",
+      "Monk Quality"
+    ]
+  },
+  "5tsZI6zk29yX1ckA": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": [
+      "acr",
+      "apr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dev",
+      "dip",
+      "dis",
+      "esc",
+      "int",
+      "kdu",
+      "klo",
+      "lin",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "sen",
+      "slt",
+      "ste",
+      "swm",
+      "umd"
+    ],
+    "description": "<p>Thief, sneak, charmer, diplomat—all of these and more describe the rogue. When not skulking in the shadows, disarming traps, and stealing from the unaware, rogues may rub shoulders with powerful nobles or plot capers with fellow crooks. The rogue is the master of many faces, using her skills and talents to get herself both into and out of trouble with rakish aplomb. While others may call them charlatans and burglars, even the most larcenous rogues tend to consider themselves consummate professionals, willing to take on any job if the price is right.</p><p><strong>Unchained:</strong> While much of the unchained rogue will be familiar to those who have played the class from the Core Rulebook, there are a number of new class features that greatly enhance the power and flexibility of the rogue. Chief among these is the debilitating injury class feature. A rogue with this ability can severely hamper her foes, giving her a much-needed boost to her offense or defense, depending on the situation. In addition, with finesse training, the rogue now gains Weapon Finesse for free at 1st level. This ability also lets her add her Dexterity to damage rolls with one weapon starting at 3rd level. Finally, the rogue’s edge ability ties into a new system presented in Chapter 2 of this book called skill unlocks. With this feature, the rogue can master a small set of chosen skills, outperforming all those characters without access to such talents.</p>",
+    "features": [
+      {
+        "featureId": "HmNDcFTlaEqr60Vw",
+        "level": 1,
+        "name": "Finesse Training (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HmNDcFTlaEqr60Vw"
+      },
+      {
+        "featureId": "rg0FL5INDBUt2oSK",
+        "level": 1,
+        "name": "Sneak Attack (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.rg0FL5INDBUt2oSK"
+      },
+      {
+        "featureId": "pEODJDoTk7uhCZY7",
+        "level": 1,
+        "name": "Trapfinding",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pEODJDoTk7uhCZY7"
+      },
+      {
+        "featureId": "KQYCRLEdD4bGA5ak",
+        "level": 2,
+        "name": "Evasion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KQYCRLEdD4bGA5ak"
+      },
+      {
+        "featureId": "iBTrvPtn3jczInbn",
+        "level": 2,
+        "name": "Rogue Talents",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.iBTrvPtn3jczInbn"
+      },
+      {
+        "featureId": "sTlu3zgAEDdJnER5",
+        "level": 3,
+        "name": "Danger Sense",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sTlu3zgAEDdJnER5"
+      },
+      {
+        "featureId": "nL9Ds9nflmID84vo",
+        "level": 4,
+        "name": "Debilitating Injury",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nL9Ds9nflmID84vo"
+      },
+      {
+        "featureId": "7WaQxnVaaoL4AGr8",
+        "level": 4,
+        "name": "Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+      },
+      {
+        "featureId": "iyYyc3rKW0cBZ1cs",
+        "level": 5,
+        "name": "Rogue's Edge (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.iyYyc3rKW0cBZ1cs"
+      },
+      {
+        "featureId": "ZfnHhhTFQVo0Lj4P",
+        "level": 8,
+        "name": "Improved Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+      },
+      {
+        "featureId": "EQ7JGo4P1XirLO46",
+        "level": 10,
+        "name": "Advanced Talents (ROG)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.EQ7JGo4P1XirLO46"
+      },
+      {
+        "featureId": "9l1EOZ2l3wLudvJN",
+        "level": 20,
+        "name": "Master Strike (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9l1EOZ2l3wLudvJN"
+      }
+    ],
+    "hd": 8,
+    "id": "5tsZI6zk29yX1ckA",
+    "name": "Rogue (Unchained)",
+    "saves": {
+      "fort": "low",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 8,
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "20-24"
+      }
+    ],
+    "subType": "base",
+    "tag": "rogueUnchained",
+    "uuid": "Compendium.pf1.classes.Item.5tsZI6zk29yX1ckA",
+    "weaponProf": ["simple", "Hand Crossbow", "Rapier", "Sap", "Shortsword", "Shortbow"]
+  },
+  "5uUzVl0gLZ23vY96": {
+    "armorProf": ["lgt", "med", "shl"],
+    "bab": "med",
+    "classSkills": [
+      "apr",
+      "art",
+      "crf",
+      "dev",
+      "dip",
+      "dis",
+      "fly",
+      "kar",
+      "ken",
+      "khi",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "per",
+      "pro",
+      "sen",
+      "slt",
+      "spl",
+      "umd"
+    ],
+    "description": "<p>The occultist focuses on the world around him, grounded in the powers that flow throughout his environment. He studies the magic that infuses everything, from psychic resonances left in everyday items to powerful incantations that fuel the mightiest spells.</p><p>The occultist channels his psychic might through implements—items that allow him to focus his power and produce incredible effects. For him, implements are more than simple tools. They are a repository of history and a tie to the events of the past. The occultist uses these implements to influence and change the present, adding his legend to theirs. Though some of these implements might be magic items in their own right, most of them are merely of historical or personal significance to the occultist.</p><p><strong>Role:</strong> Occultists are always eager to travel in the company of adventurers, explorers, and archaeologists, as those three groups of people have a knack for finding items with rich histories and great significance.</p>",
+    "features": [
+      {
+        "featureId": "F7PCKVItCxiXoBi6",
+        "level": 1,
+        "name": "Focus Powers",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.F7PCKVItCxiXoBi6"
+      },
+      {
+        "featureId": "Zpd2gNTIy9U84n79",
+        "level": 1,
+        "name": "Implements",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Zpd2gNTIy9U84n79"
+      },
+      {
+        "featureId": "9gvFwUkOjHBEPxB7",
+        "level": 1,
+        "name": "Knacks (OCC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9gvFwUkOjHBEPxB7"
+      },
+      {
+        "featureId": "dv8TDGs9c7h4awY2",
+        "level": 1,
+        "name": "Mental Focus",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dv8TDGs9c7h4awY2"
+      },
+      {
+        "featureId": "C4J4sJry7lWk2UhF",
+        "level": 1,
+        "name": "Occultist Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.C4J4sJry7lWk2UhF"
+      },
+      {
+        "featureId": "mMVzwNJo1A7g7TO4",
+        "level": 2,
+        "name": "Magic Item Skill",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mMVzwNJo1A7g7TO4"
+      },
+      {
+        "featureId": "oI2zqavECPLFkIHv",
+        "level": 2,
+        "name": "Object Reading",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.oI2zqavECPLFkIHv"
+      },
+      {
+        "featureId": "lkVGkpsywFpdtoIs",
+        "level": 4,
+        "name": "Shift Focus",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.lkVGkpsywFpdtoIs"
+      },
+      {
+        "featureId": "kVqL3rw5mcAMhiEq",
+        "level": 5,
+        "name": "Aura Sight",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kVqL3rw5mcAMhiEq"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "GH57XmJVGC97z6hM",
+        "level": 8,
+        "name": "Magic Circles",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.GH57XmJVGC97z6hM"
+      },
+      {
+        "featureId": "FE7Ab3fEPntAwdNw",
+        "level": 8,
+        "name": "Outside Contact",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FE7Ab3fEPntAwdNw"
+      },
+      {
+        "featureId": "y5VEa0kjV1UKYnZW",
+        "level": 12,
+        "name": "Binding Circles",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.y5VEa0kjV1UKYnZW"
+      },
+      {
+        "featureId": "OpfGzOdY5kGrK3fA",
+        "level": 16,
+        "name": "Fast Circles",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.OpfGzOdY5kGrK3fA"
+      },
+      {
+        "featureId": "0R8c0js1gWlCtbCY",
+        "level": 20,
+        "name": "Implement Mastery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0R8c0js1gWlCtbCY"
+      }
+    ],
+    "hd": 8,
+    "id": "5uUzVl0gLZ23vY96",
+    "name": "Occultist",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "46-59"
+      }
+    ],
+    "subType": "base",
+    "tag": "occultist",
+    "uuid": "Compendium.pf1.classes.Item.5uUzVl0gLZ23vY96",
+    "weaponProf": ["simple", "martial"]
   },
   "6GjOjO6r3R06fLwE": {
     "armorProf": ["lgt", "shl"],
@@ -1048,6 +1804,139 @@
     "tag": "summoner",
     "uuid": "Compendium.pf1.classes.Item.BrnHPJ2EVSQSyNQ8",
     "weaponProf": ["simple"]
+  },
+  "DGDOm05afSJj454X": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": [
+      "acr",
+      "apr",
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dev",
+      "dip",
+      "dis",
+      "esc",
+      "int",
+      "klo",
+      "kno",
+      "lin",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "sen",
+      "slt",
+      "ste",
+      "swm",
+      "umd"
+    ],
+    "description": "<p>When the wealthy and the powerful need an enemy eliminated quietly and without fail, they call upon the ninja. When a general needs to sabotage the siege engines of his foes before they can reach the castle walls, he calls upon the ninja. And when fools dare to move against a ninja or her companions, they will find the ninja waiting for them while they sleep, ready to strike. These shadowy killers are masters of infiltration, sabotage, and assassination, using a wide variety of weapons, practiced skills, and mystical powers to achieve their goals.</p><p><strong>Role:</strong> The ninja spends almost all of her time honing her skills, practicing her art, or working on her next assignment. Even when not specifically working, the ninja is ever vigilant and ready for the situation to turn deadly. Her line of work earns her many enemies, but it is a list that she frequently reduces through assassination and misdirection.</p>",
+    "features": [
+      {
+        "featureId": "A54sLfcyoR5HGNbP",
+        "level": 1,
+        "name": "Poison Use",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.A54sLfcyoR5HGNbP"
+      },
+      {
+        "featureId": "6pjr8jMFSKqXkBKk",
+        "level": 1,
+        "name": "Sneak Attack",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.6pjr8jMFSKqXkBKk"
+      },
+      {
+        "featureId": "V4rFQp52p7nzcijL",
+        "level": 2,
+        "name": "Ki Pool (NIN)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.V4rFQp52p7nzcijL"
+      },
+      {
+        "featureId": "V6chaFSNuJvUc9DN",
+        "level": 2,
+        "name": "Ninja Tricks",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.V6chaFSNuJvUc9DN"
+      },
+      {
+        "featureId": "V3TQ2f5HeX4K6l4p",
+        "level": 3,
+        "name": "No Trace",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.V3TQ2f5HeX4K6l4p"
+      },
+      {
+        "featureId": "7WaQxnVaaoL4AGr8",
+        "level": 4,
+        "name": "Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+      },
+      {
+        "featureId": "uSq9FyjQp3MF1ZPc",
+        "level": 6,
+        "name": "Light Steps",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.uSq9FyjQp3MF1ZPc"
+      },
+      {
+        "featureId": "ZfnHhhTFQVo0Lj4P",
+        "level": 8,
+        "name": "Improved Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+      },
+      {
+        "featureId": "mZ4ZtYBkLpRWrQYY",
+        "level": 10,
+        "name": "Master Tricks",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mZ4ZtYBkLpRWrQYY"
+      },
+      {
+        "featureId": "Q6nL5pL41d7LzJWr",
+        "level": 20,
+        "name": "Hidden Master",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Q6nL5pL41d7LzJWr"
+      }
+    ],
+    "hd": 8,
+    "id": "DGDOm05afSJj454X",
+    "name": "Ninja",
+    "saves": {
+      "fort": "low",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 8,
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "13-17"
+      }
+    ],
+    "subType": "base",
+    "tag": "ninja",
+    "uuid": "Compendium.pf1.classes.Item.DGDOm05afSJj454X",
+    "weaponProf": [
+      "simple",
+      "Kama",
+      "Katana",
+      "Kusarigama",
+      "Nunchaku",
+      "Sai",
+      "Shortbow",
+      "Shortsword",
+      "Shuriken",
+      "Siangham",
+      "Wakizashi"
+    ]
   },
   "E27lMw9YNOAjS009": {
     "armorProf": ["lgt", "med", "shl"],
@@ -2473,6 +3362,123 @@
     "uuid": "Compendium.pf1.classes.Item.SjFqQceVeVBzBwgn",
     "weaponProf": ["simple", "Favored Weapon"]
   },
+  "W3EjUgYLJ1D9qDKw": {
+    "armorProf": ["lgt", "med", "shl"],
+    "bab": "high",
+    "classSkills": [
+      "acr",
+      "art",
+      "clm",
+      "crf",
+      "han",
+      "int",
+      "kna",
+      "lor",
+      "per",
+      "rid",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>For some heroes, the rage that lives within them can’t be contained. Whether this fury is a product of heritage or of nature, these adventurers have learned to harness it, turning its power against their foes. The primal warriors known as barbarians transform their rage into a potent weapon on a battlefield. Heedless of their wounds and possessed of unstoppable bloodlust, these savage brutes are the embodiment of war.</p><p><strong>Unchained:</strong> The unchained barbarian is similar in many regards to its counterpart in the Core Rulebook—she still goes into a rage and gains rage powers, but many of the details have been changed. Rage now grants temporary hit points and static bonuses on attack and damage rolls, rather than bonuses to ability scores that force players to recalculate a number of statistics. Additionally, many rage powers now function whenever the barbarian is raging, as opposed to just once per rage. Finally, the overall utility of many of the rage powers has been adjusted to make them more useful and interesting.</p>",
+    "features": [
+      {
+        "featureId": "9EX00obqhGHcrOdp",
+        "level": 1,
+        "name": "Fast Movement",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
+      },
+      {
+        "featureId": "2Az38ZPYwjYBKZd2",
+        "level": 1,
+        "name": "Rage (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2Az38ZPYwjYBKZd2"
+      },
+      {
+        "featureId": "JtCZXN41TLQG48bo",
+        "level": 2,
+        "name": "Rage Powers (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.JtCZXN41TLQG48bo"
+      },
+      {
+        "featureId": "7WaQxnVaaoL4AGr8",
+        "level": 2,
+        "name": "Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7WaQxnVaaoL4AGr8"
+      },
+      {
+        "featureId": "sTlu3zgAEDdJnER5",
+        "level": 3,
+        "name": "Danger Sense",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sTlu3zgAEDdJnER5"
+      },
+      {
+        "featureId": "ZfnHhhTFQVo0Lj4P",
+        "level": 5,
+        "name": "Improved Uncanny Dodge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+      },
+      {
+        "featureId": "RENIeTVjWB7Mq6Mw",
+        "level": 7,
+        "name": "Damage Reduction",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.RENIeTVjWB7Mq6Mw"
+      },
+      {
+        "featureId": "wQzDpnuEOloBB7ZH",
+        "level": 11,
+        "name": "Greater Rage (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wQzDpnuEOloBB7ZH"
+      },
+      {
+        "featureId": "Q3x319WbNkCssApD",
+        "level": 14,
+        "name": "Indomitable Will",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Q3x319WbNkCssApD"
+      },
+      {
+        "featureId": "jttL7NeMj1wGPkDO",
+        "level": 17,
+        "name": "Tireless Rage (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jttL7NeMj1wGPkDO"
+      },
+      {
+        "featureId": "rmzUjpMld0deM9Aa",
+        "level": 20,
+        "name": "Mighty Rage (UC)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.rmzUjpMld0deM9Aa"
+      }
+    ],
+    "hd": 12,
+    "id": "W3EjUgYLJ1D9qDKw",
+    "name": "Barbarian (Unchained)",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "8-13"
+      }
+    ],
+    "subType": "base",
+    "tag": "barbarianUnchained",
+    "uuid": "Compendium.pf1.classes.Item.W3EjUgYLJ1D9qDKw",
+    "weaponProf": ["simple", "martial"]
+  },
   "W8dxwZ1CZiwLKsqr": {
     "armorProf": [],
     "bab": "med",
@@ -3022,6 +4028,156 @@
     "uuid": "Compendium.pf1.classes.Item.cOY76lMUkupH534m",
     "weaponProf": ["simple", "martial"]
   },
+  "fLU25FvuRWMCSxPP": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": [
+      "apr",
+      "art",
+      "blf",
+      "crf",
+      "dip",
+      "dis",
+      "esc",
+      "int",
+      "kar",
+      "kdu",
+      "khi",
+      "klo",
+      "kno",
+      "kre",
+      "lin",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "sen",
+      "slt",
+      "spl",
+      "ste",
+      "umd"
+    ],
+    "description": "<p>Experts at charm and deceit, mesmerists compel others to heed their words and bend to their will. Psychic powers, primarily those of <em>enchantment</em> and <em>illusion</em>, give mesmerists the tools they need to manipulate others—usually for their own personal gain. The very gaze of a mesmerist can hypnotize someone into following his whims. Mesmerists frequently form cults of personality around themselves, and they develop skills and contingency plans in case their ploys are discovered.</p><p>They draw their magic from the <em>Astral Plane</em>, and many consider their minds to be conduits to enigmatic spaces others can’t comprehend.</p><p><strong>Role:</strong> Mesmerists wield power over lesser minds, suppressing foes’ wills to weaken them. Priding themselves on their trickery and inventiveness, they also support their allies—and often themselves—with magical tricks, most of which offer protection. Their limited healing ability primarily provides <em>temporary hit points</em>, so mesmerists aren’t the strongest primary healers, but they can easily remove conditions that typically affect the mind.</p>",
+    "features": [
+      {
+        "featureId": "ou85mTXBHWjreUYw",
+        "level": 1,
+        "name": "Consummate Liar",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ou85mTXBHWjreUYw"
+      },
+      {
+        "featureId": "40X1l46RRbJE02qU",
+        "level": 1,
+        "name": "Hypnotic Stare",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.40X1l46RRbJE02qU"
+      },
+      {
+        "featureId": "JfD0rLUPsqEOjQqT",
+        "level": 1,
+        "name": "Mesmerist Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.JfD0rLUPsqEOjQqT"
+      },
+      {
+        "featureId": "JZlCwRBCgOeFxIk7",
+        "level": 1,
+        "name": "Mesmerist Tricks",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.JZlCwRBCgOeFxIk7"
+      },
+      {
+        "featureId": "EbVLpbO2masMTMBC",
+        "level": 1,
+        "name": "Painful Stare",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.EbVLpbO2masMTMBC"
+      },
+      {
+        "featureId": "7bJF48eC3lZpL1LG",
+        "level": 2,
+        "name": "Towering Ego",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7bJF48eC3lZpL1LG"
+      },
+      {
+        "featureId": "m1uPDPwBd5mm6COj",
+        "level": 3,
+        "name": "Bold Stare",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.m1uPDPwBd5mm6COj"
+      },
+      {
+        "featureId": "4Tls63kS3Gq9MH7X",
+        "level": 3,
+        "name": "Touch Treatment",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4Tls63kS3Gq9MH7X"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "k5jZbHNa0BdrcSGn",
+        "level": 5,
+        "name": "Manifold Tricks",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.k5jZbHNa0BdrcSGn"
+      },
+      {
+        "featureId": "tX50itDqdNfe1qpj",
+        "level": 5,
+        "name": "Mental Potency",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tX50itDqdNfe1qpj"
+      },
+      {
+        "featureId": "ATsERP3UJdSOvi14",
+        "level": 11,
+        "name": "Glib Lie",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ATsERP3UJdSOvi14"
+      },
+      {
+        "featureId": "4IIOGeT5qafH4HRa",
+        "level": 12,
+        "name": "Masterful Tricks",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4IIOGeT5qafH4HRa"
+      },
+      {
+        "featureId": "BeXGJBlieLrwpJps",
+        "level": 20,
+        "name": "Rule Minds",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BeXGJBlieLrwpJps"
+      }
+    ],
+    "hd": 8,
+    "id": "fLU25FvuRWMCSxPP",
+    "name": "Mesmerist",
+    "saves": {
+      "fort": "low",
+      "ref": "high",
+      "will": "high"
+    },
+    "skillsPerLevel": 6,
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "38-45"
+      }
+    ],
+    "subType": "base",
+    "tag": "mesmerist",
+    "uuid": "Compendium.pf1.classes.Item.fLU25FvuRWMCSxPP",
+    "weaponProf": ["simple", "Hand Crossbow", "Sap", "Sword Cane", "Whip"]
+  },
   "g3pq7xWWdUVYw6ai": {
     "armorProf": ["lgt", "med", "shl"],
     "bab": "high",
@@ -3272,6 +4428,203 @@
     "tag": "brawler",
     "uuid": "Compendium.pf1.classes.Item.iDlGMIezGuqqt8Us",
     "weaponProf": ["simple", "Handaxe", "Shortsword", "Close Weapon Group"]
+  },
+  "iYAQs7zjFbgcmect": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "blf",
+      "crf",
+      "fly",
+      "hea",
+      "int",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "pro",
+      "sen",
+      "spl",
+      "umd"
+    ],
+    "description": "<p>Becoming a spiritualist is not a calling—it’s a phenomenon.</p><p>When a creature dies, its spirit flees its body and begins the next stage of its existence. Debilitating emotional attachments during life and other psychic corruptions cause some spirits to drift into the <em>Ethereal Plane</em> and descend toward the <em>Negative Energy Plane</em>. Some of these spirits are able to escape the pull of undeath and make their way back to the <em>Material Plane</em>, seeking refuge in a psychically attuned mind. Such a fusing of consciousnesses creates a spiritualist—the master of a single powerful phantom whom the spiritualist can manifest to do her bidding.</p><p><strong>Role:</strong> The spiritualist seeks the occult and esoteric truth about life, death, and the passage beyond, using her phantom as a guide and tool. The connection with her phantom allows her to harness the powers of life and death, thought and nightmare, shadow and revelation.</p>",
+    "features": [
+      {
+        "featureId": "d7ywi83kzYsEVlyy",
+        "level": 1,
+        "name": "Etheric Tether",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.d7ywi83kzYsEVlyy"
+      },
+      {
+        "featureId": "Uqxp2wwsUpW42Ipj",
+        "level": 1,
+        "name": "Knacks",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Uqxp2wwsUpW42Ipj"
+      },
+      {
+        "featureId": "ryQboCpsLfFBCzdL",
+        "level": 1,
+        "name": "Phantom",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ryQboCpsLfFBCzdL"
+      },
+      {
+        "featureId": "J2rIdwacRuGkgwVJ",
+        "level": 1,
+        "name": "Shared Consciousness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.J2rIdwacRuGkgwVJ"
+      },
+      {
+        "featureId": "OTUUgbHZBUU5jBLf",
+        "level": 1,
+        "name": "Spiritualist Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.OTUUgbHZBUU5jBLf"
+      },
+      {
+        "featureId": "xtSXGphDhzkMwbpW",
+        "level": 2,
+        "name": "Bonded Senses",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xtSXGphDhzkMwbpW"
+      },
+      {
+        "featureId": "aBXAFSi18n9Sndjf",
+        "level": 3,
+        "name": "Bonded Manifestation",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.aBXAFSi18n9Sndjf"
+      },
+      {
+        "featureId": "ik7YjF6IXgTNeqrq",
+        "level": 3,
+        "name": "Ectoplasmic Bonded Manifestation",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ik7YjF6IXgTNeqrq"
+      },
+      {
+        "featureId": "krNQXh76ArUBtdOW",
+        "level": 3,
+        "name": "Incorporeal Bonded Manifestation",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.krNQXh76ArUBtdOW"
+      },
+      {
+        "featureId": "Rao7jnaGBzSbltiw",
+        "level": 4,
+        "name": "Spiritual Interference",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Rao7jnaGBzSbltiw"
+      },
+      {
+        "featureId": "izFlIPdU4a9yHBDm",
+        "level": 5,
+        "name": "Detect Undead",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.izFlIPdU4a9yHBDm"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "NUsLshXpE3d8W3AI",
+        "level": 6,
+        "name": "Phantom Recall",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NUsLshXpE3d8W3AI"
+      },
+      {
+        "featureId": "bwPeas5tuLvKhuE4",
+        "level": 7,
+        "name": "Calm Spirit",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.bwPeas5tuLvKhuE4"
+      },
+      {
+        "featureId": "GRfwR4nZHTx7JifZ",
+        "level": 9,
+        "name": "See Invisibility",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.GRfwR4nZHTx7JifZ"
+      },
+      {
+        "featureId": "C7d96scKQaGqfOdL",
+        "level": 10,
+        "name": "Fused Consciousness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.C7d96scKQaGqfOdL"
+      },
+      {
+        "featureId": "nOLAYJpzuRmt1GdB",
+        "level": 12,
+        "name": "Greater Spiritual Interference",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nOLAYJpzuRmt1GdB"
+      },
+      {
+        "featureId": "5gI26LbbY4Rk93We",
+        "level": 14,
+        "name": "Spiritual Bond",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5gI26LbbY4Rk93We"
+      },
+      {
+        "featureId": "OsRZD888rDOpHqoZ",
+        "level": 16,
+        "name": "Call Spirit",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.OsRZD888rDOpHqoZ"
+      },
+      {
+        "featureId": "sO5cLMTyyJARtKto",
+        "level": 17,
+        "name": "Dual Bond",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.sO5cLMTyyJARtKto"
+      },
+      {
+        "featureId": "PuzIaPLe5w4eF72t",
+        "level": 20,
+        "name": "Empowered Consciousness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.PuzIaPLe5w4eF72t"
+      }
+    ],
+    "hd": 8,
+    "id": "iYAQs7zjFbgcmect",
+    "name": "Spiritualist",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "72-83"
+      }
+    ],
+    "subType": "base",
+    "tag": "spiritualist",
+    "uuid": "Compendium.pf1.classes.Item.iYAQs7zjFbgcmect",
+    "weaponProf": ["simple", "Kukri", "Sap", "Scythe"]
   },
   "jMi3GBtvdG0WhH8L": {
     "armorProf": ["lgt", "med"],
@@ -4075,6 +5428,305 @@
     "uuid": "Compendium.pf1.classes.Item.u1ed3H9xtYQXTP5v",
     "weaponProf": ["simple", "martial"]
   },
+  "uynVENa0deVdmf53": {
+    "armorProf": ["lgt", "med", "hvy", "shl"],
+    "bab": "high",
+    "classSkills": [
+      "art",
+      "blf",
+      "crf",
+      "dis",
+      "han",
+      "int",
+      "kre",
+      "lor",
+      "pro",
+      "rid",
+      "sen",
+      "spl",
+      "ste"
+    ],
+    "description": "<p>Although it is a rare occurrence, paladins do sometimes stray from the path of righteousness. Most of these wayward holy warriors seek out redemption and forgiveness for their misdeeds, regaining their powers through piety, charity, and powerful magic. Yet there are others, the dark and disturbed few, who turn actively to evil, courting the dark powers they once railed against in order to take vengeance on their former brothers. It’s said that those who climb the farthest have the farthest to fall, and antipaladins are living proof of this fact, their pride and hatred blinding them to the glory of their forsaken patrons.</p><p>Antipaladins become the antithesis of their former selves. They make pacts with fiends, take the lives of the innocent, and put nothing ahead of their personal power and wealth. Champions of evil, they often lead armies of evil creatures and work with other villains to bring ruin to the holy and tyranny to the weak. Not surprisingly, paladins stop at nothing to put an end to such nefarious antiheroes.</p><p><strong>Role</strong>: Antipaladins are villains at their most dangerous. They care nothing for the lives of others and actively seek to bring death and destruction to ordered society. They rarely travel with those that they do not subjugate, unless as part of a ruse to bring ruin from within.</p>",
+    "features": [
+      {
+        "featureId": "2YA3Ken4K90rB0EE",
+        "level": 1,
+        "name": "Aura of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2YA3Ken4K90rB0EE"
+      },
+      {
+        "featureId": "4RSsmGUZBhTiGmSj",
+        "level": 1,
+        "name": "Detect Good",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4RSsmGUZBhTiGmSj"
+      },
+      {
+        "featureId": "DbC7QZBYYIClw1m6",
+        "level": 1,
+        "name": "Smite Good",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.DbC7QZBYYIClw1m6"
+      },
+      {
+        "featureId": "aabyB4FV9OH7hcYZ",
+        "level": 2,
+        "name": "Touch of Corruption",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.aabyB4FV9OH7hcYZ"
+      },
+      {
+        "featureId": "J0CtwXcv94eGCSaW",
+        "level": 2,
+        "name": "Unholy Resilience",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.J0CtwXcv94eGCSaW"
+      },
+      {
+        "featureId": "dhBZs1g1QQNQM3vm",
+        "level": 3,
+        "name": "Aura of Cowardice",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dhBZs1g1QQNQM3vm"
+      },
+      {
+        "featureId": "zwZnq5WCBCijev6o",
+        "level": 3,
+        "name": "Cruelty",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zwZnq5WCBCijev6o"
+      },
+      {
+        "featureId": "jz0LkAoq9lgyZXGM",
+        "level": 3,
+        "name": "Plague Bringer",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jz0LkAoq9lgyZXGM"
+      },
+      {
+        "featureId": "4y0HhgmT2yPcdUoK",
+        "level": 4,
+        "name": "Antipaladin Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4y0HhgmT2yPcdUoK"
+      },
+      {
+        "featureId": "veyAa4qdI9lqSx6m",
+        "level": 4,
+        "name": "Channel Negative Energy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.veyAa4qdI9lqSx6m"
+      },
+      {
+        "featureId": "LYWqXODjRJjVJeQ1",
+        "level": 5,
+        "name": "Fiendish Boon",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.LYWqXODjRJjVJeQ1"
+      },
+      {
+        "featureId": "31CVgcirb74C3ieQ",
+        "level": 8,
+        "name": "Aura of Despair (APA)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.31CVgcirb74C3ieQ"
+      },
+      {
+        "featureId": "SqTaI2sHPIZpLDtQ",
+        "level": 11,
+        "name": "Aura of Vengeance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.SqTaI2sHPIZpLDtQ"
+      },
+      {
+        "featureId": "nyz3JgtYMrJZF6o5",
+        "level": 14,
+        "name": "Aura of Sin",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nyz3JgtYMrJZF6o5"
+      },
+      {
+        "featureId": "LkbGAZaa2KDrnS89",
+        "level": 17,
+        "name": "Aura of Depravity",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.LkbGAZaa2KDrnS89"
+      },
+      {
+        "featureId": "aqB7IymBc8kzJbzQ",
+        "level": 20,
+        "name": "Unholy Champion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.aqB7IymBc8kzJbzQ"
+      }
+    ],
+    "hd": 10,
+    "id": "uynVENa0deVdmf53",
+    "name": "Antipaladin",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "118-123"
+      }
+    ],
+    "subType": "base",
+    "tag": "antipaladin",
+    "uuid": "Compendium.pf1.classes.Item.uynVENa0deVdmf53",
+    "weaponProf": ["simple", "martial"]
+  },
+  "vh9TZBE6BRu9sCfE": {
+    "armorProf": ["lgt"],
+    "bab": "med",
+    "classSkills": ["acr", "art", "crf", "hea", "int", "lor", "per", "pro", "ste", "umd"],
+    "description": "<p>Kineticists are living channels for elemental matter and energy, manipulating the world around them by drawing upon inner reserves from their own bodies. Kineticists often awaken to their kinetic abilities during a violent or traumatic experience, releasing their power involuntarily. As kinetic power is seldom inherited, kineticists are rarely able to find mentors to guide them, so they must delve into these mysteries on their own to learn to control their gifts.</p><p><strong>Role:</strong> Kineticists generally use their powers to assail their foes from range, but based on the way their talents develop, they can channel their kinetic abilities for a variety of situations. Kineticists are usually quite different from their families and friends, so they often strike out on their own or alongside others with extraordinary talents.</p>",
+    "features": [
+      {
+        "featureId": "GJQ0VVH3rishb9X1",
+        "level": 1,
+        "name": "Burn",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.GJQ0VVH3rishb9X1"
+      },
+      {
+        "featureId": "x9TM9MHoUl4cv9Ht",
+        "level": 1,
+        "name": "Elemental Focus",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.x9TM9MHoUl4cv9Ht"
+      },
+      {
+        "featureId": "u6q3Zk8XL1AMPxY4",
+        "level": 1,
+        "name": "Energy Kinetic Blast",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.u6q3Zk8XL1AMPxY4"
+      },
+      {
+        "featureId": "1omEP6hrq86Bt46B",
+        "level": 1,
+        "name": "Gather Power",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1omEP6hrq86Bt46B"
+      },
+      {
+        "featureId": "xcb7tzWwmv6G0RLK",
+        "level": 1,
+        "name": "Infusion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xcb7tzWwmv6G0RLK"
+      },
+      {
+        "featureId": "3MqENnx0U6aWGZ4o",
+        "level": 1,
+        "name": "Physical Kinetic Blast",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.3MqENnx0U6aWGZ4o"
+      },
+      {
+        "featureId": "ecaBwckdxXf22eSg",
+        "level": 2,
+        "name": "Elemental Defense",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ecaBwckdxXf22eSg"
+      },
+      {
+        "featureId": "35iKiKfbpaHKdBmw",
+        "level": 2,
+        "name": "Wild Talents",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.35iKiKfbpaHKdBmw"
+      },
+      {
+        "featureId": "NOhmhKgboJ9qdGvg",
+        "level": 3,
+        "name": "Elemental Overflow",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NOhmhKgboJ9qdGvg"
+      },
+      {
+        "featureId": "3QJ79Cq3qXHRxJZq",
+        "level": 5,
+        "name": "Infusion Specialization",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.3QJ79Cq3qXHRxJZq"
+      },
+      {
+        "featureId": "2Od2zrFivfso93Iz",
+        "level": 5,
+        "name": "Metakinesis",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2Od2zrFivfso93Iz"
+      },
+      {
+        "featureId": "ZtvIQOXhB0yWYIIR",
+        "level": 6,
+        "name": "Internal Buffer",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZtvIQOXhB0yWYIIR"
+      },
+      {
+        "featureId": "Fjsv2wNC223ofCE8",
+        "level": 7,
+        "name": "Expanded Element",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Fjsv2wNC223ofCE8"
+      },
+      {
+        "featureId": "hArwE7SbM3qGvlMs",
+        "level": 11,
+        "name": "Supercharge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hArwE7SbM3qGvlMs"
+      },
+      {
+        "featureId": "w7TIla7F0RcPW0ga",
+        "level": 16,
+        "name": "Composite Specialization",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.w7TIla7F0RcPW0ga"
+      },
+      {
+        "featureId": "Deoj4aUYuCQzFwJo",
+        "level": 19,
+        "name": "Metakinetic Master",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Deoj4aUYuCQzFwJo"
+      },
+      {
+        "featureId": "xj7Dp0lzyv7IYHcz",
+        "level": 20,
+        "name": "Omnikinesis",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xj7Dp0lzyv7IYHcz"
+      }
+    ],
+    "hd": 8,
+    "id": "vh9TZBE6BRu9sCfE",
+    "name": "Kineticist",
+    "saves": {
+      "fort": "high",
+      "ref": "high",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "10-29"
+      }
+    ],
+    "subType": "base",
+    "tag": "kineticist",
+    "uuid": "Compendium.pf1.classes.Item.vh9TZBE6BRu9sCfE",
+    "weaponProf": ["simple"]
+  },
   "w3wjj6s3N69BsMc3": {
     "armorProf": ["lgt", "med", "shl"],
     "bab": "high",
@@ -4413,5 +6065,308 @@
     "tag": "magus",
     "uuid": "Compendium.pf1.classes.Item.xZLcyrEKYZoJPS2k",
     "weaponProf": ["simple", "martial"]
+  },
+  "xtRbNEKYYq4cRiwI": {
+    "armorProf": ["lgt", "med"],
+    "bab": "med",
+    "classSkills": [
+      "art",
+      "blf",
+      "crf",
+      "dip",
+      "fly",
+      "hea",
+      "int",
+      "kar",
+      "kpl",
+      "kre",
+      "lin",
+      "lor",
+      "per",
+      "prf",
+      "pro",
+      "sen",
+      "spl",
+      "umd"
+    ],
+    "description": "<p>Mediums channel spirits into themselves, using their own bodies as vessels for astral entities spawned from myths and legends. A medium balances his need for the spirits’ power with the danger of allowing such beings influence over his mind.</p><p><strong>Role:</strong> Mediums are very versatile, filling whatever role the party needs at the moment by channeling the right spirit.</p>",
+    "features": [
+      {
+        "featureId": "Uqxp2wwsUpW42Ipj",
+        "level": 1,
+        "name": "Knacks",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Uqxp2wwsUpW42Ipj"
+      },
+      {
+        "featureId": "qbSK19Ledw51GIJO",
+        "level": 1,
+        "name": "Medium Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qbSK19Ledw51GIJO"
+      },
+      {
+        "featureId": "FXSiQ0ppo3K6Xsrg",
+        "level": 1,
+        "name": "Spirit Bonus",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FXSiQ0ppo3K6Xsrg"
+      },
+      {
+        "featureId": "FSCREL7v6iMkIbAZ",
+        "level": 1,
+        "name": "Spirit Surge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FSCREL7v6iMkIbAZ"
+      },
+      {
+        "featureId": "0aMIOpu0ZbBvQpao",
+        "level": 2,
+        "name": "Shared Seance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0aMIOpu0ZbBvQpao"
+      },
+      {
+        "featureId": "wNCdfdUHynq6gigh",
+        "level": 2,
+        "name": "Taboo",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wNCdfdUHynq6gigh"
+      },
+      {
+        "featureId": "ik9VVXE4jfndGa7f",
+        "level": 3,
+        "name": "Haunt Channeler",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ik9VVXE4jfndGa7f"
+      },
+      {
+        "featureId": "5lDEyC6WejFyTEho",
+        "level": 5,
+        "name": "Exchange Spell (Medium)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
+      },
+      {
+        "featureId": "ijE8aHAZOvoFPFr4",
+        "level": 5,
+        "name": "Location Channel",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ijE8aHAZOvoFPFr4"
+      },
+      {
+        "featureId": "wxPsA25DTWBHcX9O",
+        "level": 7,
+        "name": "Connection Channel",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wxPsA25DTWBHcX9O"
+      },
+      {
+        "featureId": "YJ0NcsmHi9AIkwlX",
+        "level": 9,
+        "name": "Propitiation",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YJ0NcsmHi9AIkwlX"
+      },
+      {
+        "featureId": "fX0nacm4MAQCJ5fB",
+        "level": 13,
+        "name": "Ask the Spirits",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fX0nacm4MAQCJ5fB"
+      },
+      {
+        "featureId": "nlcLhyRFeHkJRwIy",
+        "level": 14,
+        "name": "Astral Journey",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nlcLhyRFeHkJRwIy"
+      },
+      {
+        "featureId": "NHMFpVAXvR6jBOio",
+        "level": 15,
+        "name": "Trance of Three",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NHMFpVAXvR6jBOio"
+      },
+      {
+        "featureId": "da7y3jU5mLVcBXsj",
+        "level": 18,
+        "name": "Spacious Soul",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.da7y3jU5mLVcBXsj"
+      },
+      {
+        "featureId": "8u2spZD9qVCOi7Lw",
+        "level": 19,
+        "name": "Spirit Mastery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.8u2spZD9qVCOi7Lw"
+      },
+      {
+        "featureId": "d6zcYlRQmpj9D5oy",
+        "level": 20,
+        "name": "Astral Beacon",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.d6zcYlRQmpj9D5oy"
+      }
+    ],
+    "hd": 8,
+    "id": "xtRbNEKYYq4cRiwI",
+    "name": "Medium",
+    "saves": {
+      "fort": "low",
+      "ref": "low",
+      "will": "high"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "30-38"
+      }
+    ],
+    "subType": "base",
+    "tag": "medium",
+    "uuid": "Compendium.pf1.classes.Item.xtRbNEKYYq4cRiwI",
+    "weaponProf": ["simple"]
+  },
+  "yM8xfml1Xrccfwux": {
+    "armorProf": ["lgt", "med", "hvy", "shl"],
+    "bab": "high",
+    "classSkills": [
+      "art",
+      "blf",
+      "clm",
+      "crf",
+      "dip",
+      "han",
+      "int",
+      "lor",
+      "pro",
+      "rid",
+      "sen",
+      "swm"
+    ],
+    "description": "<p>Few warriors are more dedicated to honor and the code of the warrior than the samurai. Trained from an early age in the art of war and sworn to the service of a lord, the samurai holds a position of power and respect in many lands, often serving as the voice and justice of the local noble. The samurai takes on his training with zeal, learning the way of the blade (typically a katana), the bow, and the horse. Some even learn how to effectively use firearms, if they are available. The samurai is often the most trusted soldier in his lord’s employ. In him, the common folk see honor and sacrifice. He is an honorable warrior, dedicated to the realm and the leaders that guide it.</p><p><strong>Role:</strong> While typically sworn to the service of a lord, a samurai is usually given free reign as to how he performs that service. As such, samurai can sometimes be found with other adventurers, taking the fight to the enemies of their masters. Other samurai become ronin, striving to serve an ideal without paying fealty to a lord. In either case, samurai make powerful allies, capable of withstanding nearly any harm while dispatching their foes with deadly precision.</p>",
+    "features": [
+      {
+        "featureId": "AOasku7u72NB0q3J",
+        "level": 1,
+        "name": "Challenge (SAM)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AOasku7u72NB0q3J"
+      },
+      {
+        "featureId": "EpDI0Qi5SDRmL4lK",
+        "level": 1,
+        "name": "Mount (SAM)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.EpDI0Qi5SDRmL4lK"
+      },
+      {
+        "featureId": "Uo3yrfkyguM5wkI2",
+        "level": 1,
+        "name": "Order (SAM)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Uo3yrfkyguM5wkI2"
+      },
+      {
+        "featureId": "fdEn4hZJkIhJEwrQ",
+        "level": 1,
+        "name": "Resolve",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fdEn4hZJkIhJEwrQ"
+      },
+      {
+        "featureId": "SDe1qkWV2217wSao",
+        "level": 3,
+        "name": "Weapon Expertise",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.SDe1qkWV2217wSao"
+      },
+      {
+        "featureId": "IA4Z4xwEeubcDqF4",
+        "level": 4,
+        "name": "Mounted Archer",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IA4Z4xwEeubcDqF4"
+      },
+      {
+        "featureId": "QyW6ly6dN84Ev6AY",
+        "level": 5,
+        "name": "Banner (SAM)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QyW6ly6dN84Ev6AY"
+      },
+      {
+        "featureId": "lKnfkRSOpPjT4qRy",
+        "level": 6,
+        "name": "Bonus Feat (SAM)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.lKnfkRSOpPjT4qRy"
+      },
+      {
+        "featureId": "5yPVt0Gip4Q1TTs4",
+        "level": 9,
+        "name": "Greater Resolve",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5yPVt0Gip4Q1TTs4"
+      },
+      {
+        "featureId": "t2XEI2AKkv1CY8to",
+        "level": 11,
+        "name": "Honorable Stand",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.t2XEI2AKkv1CY8to"
+      },
+      {
+        "featureId": "BDP3HgB0vmZ9vbQY",
+        "level": 12,
+        "name": "Demanding Challenge (SAM)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.BDP3HgB0vmZ9vbQY"
+      },
+      {
+        "featureId": "f2Xg4pkJelnVyTCH",
+        "level": 14,
+        "name": "Greater Banner (SAM)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.f2Xg4pkJelnVyTCH"
+      },
+      {
+        "featureId": "CZrFfvYMX3HK03lC",
+        "level": 17,
+        "name": "True Resolve",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.CZrFfvYMX3HK03lC"
+      },
+      {
+        "featureId": "k2CQRwlyblNHuius",
+        "level": 20,
+        "name": "Last Stand",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.k2CQRwlyblNHuius"
+      }
+    ],
+    "hd": 10,
+    "id": "yM8xfml1Xrccfwux",
+    "name": "Samurai",
+    "saves": {
+      "fort": "high",
+      "ref": "low",
+      "will": "low"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "18-22"
+      }
+    ],
+    "subType": "base",
+    "tag": "samurai",
+    "uuid": "Compendium.pf1.classes.Item.yM8xfml1Xrccfwux",
+    "weaponProf": ["simple", "martial", "Katana", "Naginata", "Wakizashi"]
   }
 }

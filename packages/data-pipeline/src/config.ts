@@ -109,6 +109,22 @@ export const SLICE = {
     "vigilante",
     "warpriest",
     "witch",
+    // Alternate classes (APG antipaladin, UC ninja/samurai).
+    "antipaladin",
+    "ninja",
+    "samurai",
+    // Pathfinder Unchained.
+    "barbarianUnchained",
+    "monkUnchained",
+    "rogueUnchained",
+    "summonerUnchained",
+    // Occult Adventures.
+    "kineticist",
+    "medium",
+    "mesmerist",
+    "occultist",
+    "psychic",
+    "spiritualist",
   ],
   /** Class tags whose spell lists we derive by inverting `learnedAt.class`. */
   spellListClassTags: [
@@ -132,6 +148,13 @@ export const SLICE = {
     "summoner",
     "warpriest",
     "witch",
+    "antipaladin",
+    "summonerUnchained",
+    "medium",
+    "mesmerist",
+    "occultist",
+    "psychic",
+    "spiritualist",
   ],
   /**
    * Race source folders under packs/races to include. The seven core races live
