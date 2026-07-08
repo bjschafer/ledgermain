@@ -446,6 +446,38 @@ describe("casterModelFor() — inquisitor, summoner, skald (spontaneous, bard-sh
   });
 });
 
+describe("casterModelFor() — summonerUnchained (Pathfinder Unchained rewrite, tables identical to base summoner)", () => {
+  it("summonerUnchained: spontaneous/cha, own progression tag (not a re-export of 'summoner'), cantrips not granted", () => {
+    const m = casterModelFor("summonerUnchained");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("cha");
+    expect(m!.progression).toBe("summonerUnchained");
+    expect(m!.knownProgression).toBe("summonerUnchained");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("L10 per-day slots + known limits match the base summoner's numbers exactly", () => {
+    const m = casterModelFor("summonerUnchained")!;
+    const slots = new Map(spellSlotsByLevel(m, 10, 0).map((s) => [s.level, s.base]));
+    expect(slots.get(1)).toBe(5);
+    expect(slots.get(2)).toBe(4);
+    expect(slots.get(3)).toBe(3);
+    expect(slots.get(4)).toBe(1);
+    const limits = new Map(spellsKnownLimitsByLevel(m, 10).map((l) => [l.level, l.limit]));
+    expect(limits.get(1)).toBe(5);
+    expect(limits.get(2)).toBe(5);
+    expect(limits.get(3)).toBe(4);
+    expect(limits.get(4)).toBe(2);
+  });
+
+  it("caps at 6th-level spells, same as base summoner", () => {
+    const m = casterModelFor("summonerUnchained")!;
+    expect(accessibleSpellLevels(m, 20)).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+});
+
 describe("curseSpellsKnown()", () => {
   it("Haunted grants Mage Hand + Ghost Sound at 1st level", () => {
     const spells = curseSpellsKnown(ref, "haunted", 1);

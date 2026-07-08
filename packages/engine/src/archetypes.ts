@@ -34,6 +34,7 @@ import {
   unarmedDamageDie,
   flurryOfBlowsLabel,
   barbarianDamageReduction,
+  flurryOfBlowsUnchainedLabel,
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 
@@ -381,6 +382,13 @@ function resolvedSwapTargetUuid(f: {
  */
 const AMBIGUOUS_DR_REPLACEMENTS: ReadonlyMap<string, number> = new Map([
   ["barbarian:invulnerable-rager", 2],
+  // barbarianUnchained has its own, separate archetype CSV/id namespace (its
+  // "Invulnerable Rager" is a distinct RefData.archetypes entry,
+  // "barbarianUnchained:invulnerable-rager", NOT the chained one above) —
+  // same ambiguous swap shape confirmed against the vendored
+  // archetype-features slice (its "Invulnerability" feature at level 2 also
+  // carries no `pairedBaseFeatureUuid`).
+  ["barbarianUnchained:invulnerable-rager", 2],
 ]);
 
 /**
@@ -391,9 +399,17 @@ const AMBIGUOUS_DR_REPLACEMENTS: ReadonlyMap<string, number> = new Map([
  * uses this to skip that hardcoded contribution so it doesn't sit alongside
  * (or silently outrank) the archetype's own `dr`/`nac`-target effect from
  * `archetype-effects.ts`.
+ *
+ * `barbLevel` sums chained ("barbarian") and Unchained ("barbarianUnchained")
+ * levels — a character would realistically only ever have one of the two,
+ * but summing (rather than picking one tag) keeps this correct regardless of
+ * which variant is actually on the sheet, same posture as `defenses.ts`'s own
+ * `barbarianLevel` helper.
  */
 export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: RefData): boolean {
-  const barbLevel = doc.identity.classes.find((c) => c.tag === "barbarian")?.level ?? 0;
+  const barbLevel = doc.identity.classes
+    .filter((c) => c.tag === "barbarian" || c.tag === "barbarianUnchained")
+    .reduce((sum, c) => sum + c.level, 0);
   if (barbLevel < 2) return false;
 
   const barbClass = Object.values(refData.classes).find((c) => c.tag === "barbarian");
@@ -581,6 +597,34 @@ export function resolveClassFeatures(
       grant.name === "Damage Reduction"
     ) {
       detail = barbarianDamageReduction(classLevel).label;
+    } else if (
+      detail === undefined &&
+      classTag === "barbarianUnchained" &&
+      grant.name === "Damage Reduction"
+    ) {
+      // Shared vendored featureId with chained barbarian's own Damage
+      // Reduction (`RENIeTVjWB7Mq6Mw`) — same clean-room progression table.
+      detail = barbarianDamageReduction(classLevel).label;
+    } else if (
+      detail === undefined &&
+      classTag === "monkUnchained" &&
+      grant.name === "Unarmed Strike"
+    ) {
+      // Shared vendored featureId with chained monk's own Unarmed Strike
+      // (`a4SPdPuOFdmfJdHN`) — same "Table: Monk Unarmed Damage" progression.
+      detail = unarmedDamageDie(classLevel).dieLabel;
+    } else if (
+      detail === undefined &&
+      classTag === "monkUnchained" &&
+      grant.name === "Flurry of Blows (UC)"
+    ) {
+      detail = flurryOfBlowsUnchainedLabel(classLevel);
+    } else if (
+      detail === undefined &&
+      classTag === "rogueUnchained" &&
+      grant.name === "Sneak Attack (UC)"
+    ) {
+      detail = sneakAttackDice(classLevel).diceLabel;
     }
     classFeatures.push({
       level: grant.level,

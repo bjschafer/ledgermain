@@ -407,6 +407,9 @@ const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set([
   "skald",
   "witch",
   "bloodrager",
+  // Summoner (Unchained) is the same Cha-based arcane spontaneous caster as
+  // the base summoner (see `CASTER_MODELS.summonerUnchained`'s doc comment).
+  "summonerUnchained",
 ]);
 
 /**

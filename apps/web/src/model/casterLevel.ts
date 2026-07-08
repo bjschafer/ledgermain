@@ -24,6 +24,7 @@ const FULL_CASTER_TAGS = new Set([
   "investigator",
   "inquisitor",
   "summoner",
+  "summonerUnchained",
   "skald",
   "witch",
   "shaman",
