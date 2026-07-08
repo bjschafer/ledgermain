@@ -420,3 +420,130 @@ describe("baseSpellsPerDay()/baseSpellsKnown() — oracle reuses the sorcerer ta
     expect(baseSpellsPerDay("sorcerer", 5, 2)).toBe(4);
   });
 });
+
+describe("baseSpellsPerDay() — warpriest (ACG wis prepared-divine, caps at 6th, has orisons)", () => {
+  it("level-1 warpriest: 3 orisons, 1 first-level, no 2nd-level access", () => {
+    expect(baseSpellsPerDay("warpriest", 1, 0)).toBe(3);
+    expect(baseSpellsPerDay("warpriest", 1, 1)).toBe(1);
+    expect(baseSpellsPerDay("warpriest", 1, 2)).toBeNull();
+  });
+
+  it("level-6 warpriest: 5/4/3 at levels 0-2, no 3rd-level access (Table: Warpriest)", () => {
+    expect(baseSpellsPerDay("warpriest", 6, 0)).toBe(5);
+    expect(baseSpellsPerDay("warpriest", 6, 1)).toBe(4);
+    expect(baseSpellsPerDay("warpriest", 6, 2)).toBe(3);
+    expect(baseSpellsPerDay("warpriest", 6, 3)).toBeNull();
+  });
+
+  it("level-10 warpriest: 5/5/4/3/1 at levels 0-4, no 5th-level access", () => {
+    expect(baseSpellsPerDay("warpriest", 10, 0)).toBe(5);
+    expect(baseSpellsPerDay("warpriest", 10, 1)).toBe(5);
+    expect(baseSpellsPerDay("warpriest", 10, 2)).toBe(4);
+    expect(baseSpellsPerDay("warpriest", 10, 3)).toBe(3);
+    expect(baseSpellsPerDay("warpriest", 10, 4)).toBe(1);
+    expect(baseSpellsPerDay("warpriest", 10, 5)).toBeNull();
+  });
+
+  it("warpriest caps at 6th-level spells: levels 7-9 are never accessible", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      expect(baseSpellsPerDay("warpriest", cl, 7)).toBeNull();
+      expect(baseSpellsPerDay("warpriest", cl, 8)).toBeNull();
+      expect(baseSpellsPerDay("warpriest", cl, 9)).toBeNull();
+    }
+  });
+
+  it("level-20 warpriest: 5 slots at every level 0-6", () => {
+    for (let lvl = 0; lvl <= 6; lvl++) {
+      expect(baseSpellsPerDay("warpriest", 20, lvl)).toBe(5);
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("warpriest", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("warpriest", 21, 1)).toBeNull();
+    expect(baseSpellsPerDay("warpriest", 5, -1)).toBeNull();
+  });
+});
+
+describe("baseSpellsPerDay()/baseSpellsKnown() — hunter reuses the bard tables", () => {
+  // Hunter's "Spells per Day" and "Spells Known" tables (ACG) are numerically
+  // identical to the bard's (verified against the raw "Table: Hunter" /
+  // "Table: Hunter Spells Known" HTML on legacy.aonprd.com — both cap at
+  // 6th-level spells and share the exact same per-level numbers) —
+  // apps/web/src/model/spellcasting.ts's CASTER_MODELS.hunter sets
+  // progression/knownProgression to "bard" rather than duplicating the table
+  // under a "hunter" key, same posture as oracle/sorcerer above.
+  it("level-4 hunter (via the bard table): 3/1 first/second-level slots and known", () => {
+    expect(baseSpellsPerDay("bard", 4, 1)).toBe(3);
+    expect(baseSpellsPerDay("bard", 4, 2)).toBe(1);
+    expect(baseSpellsKnown("bard", 4, 0)).toBe(6);
+    expect(baseSpellsKnown("bard", 4, 1)).toBe(4);
+    expect(baseSpellsKnown("bard", 4, 2)).toBe(2);
+  });
+
+  it("level-1 hunter (via the bard table): no 0-level slot column (orisons cast at will), 1 first-level slot", () => {
+    expect(baseSpellsPerDay("bard", 1, 0)).toBeNull();
+    expect(baseSpellsPerDay("bard", 1, 1)).toBe(1);
+    expect(baseSpellsKnown("bard", 1, 0)).toBe(4);
+    expect(baseSpellsKnown("bard", 1, 1)).toBe(2);
+  });
+});
+
+describe("baseSpellsPerDay()/baseSpellsKnown() — bloodrager (ACG cha spontaneous arcane, late start)", () => {
+  it("levels 1-3: no spellcasting yet at all", () => {
+    for (let cl = 1; cl <= 3; cl++) {
+      for (let spLvl = 0; spLvl <= 9; spLvl++) {
+        expect(baseSpellsPerDay("bloodrager", cl, spLvl)).toBeNull();
+        expect(baseSpellsKnown("bloodrager", cl, spLvl)).toBeNull();
+      }
+    }
+  });
+
+  it("level 4: first spells appear (1 per day, 2 known), no 2nd-level access", () => {
+    expect(baseSpellsPerDay("bloodrager", 4, 1)).toBe(1);
+    expect(baseSpellsKnown("bloodrager", 4, 1)).toBe(2);
+    expect(baseSpellsPerDay("bloodrager", 4, 2)).toBeNull();
+    expect(baseSpellsKnown("bloodrager", 4, 2)).toBeNull();
+  });
+
+  it("cantrips (level 0) are always null — bloodragers never gain orisons", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      expect(baseSpellsPerDay("bloodrager", cl, 0)).toBeNull();
+      expect(baseSpellsKnown("bloodrager", cl, 0)).toBeNull();
+    }
+  });
+
+  it("caps at 4th-level spells — levels 5-9 are always null", () => {
+    for (let cl = 1; cl <= 20; cl++) {
+      for (let spLvl = 5; spLvl <= 9; spLvl++) {
+        expect(baseSpellsPerDay("bloodrager", cl, spLvl)).toBeNull();
+        expect(baseSpellsKnown("bloodrager", cl, spLvl)).toBeNull();
+      }
+    }
+  });
+
+  it("level 10: 2/1/1 per day, 5/4/2 known at levels 1-3", () => {
+    expect(baseSpellsPerDay("bloodrager", 10, 1)).toBe(2);
+    expect(baseSpellsPerDay("bloodrager", 10, 2)).toBe(1);
+    expect(baseSpellsPerDay("bloodrager", 10, 3)).toBe(1);
+    expect(baseSpellsKnown("bloodrager", 10, 1)).toBe(5);
+    expect(baseSpellsKnown("bloodrager", 10, 2)).toBe(4);
+    expect(baseSpellsKnown("bloodrager", 10, 3)).toBe(2);
+  });
+
+  it("level 20 (max row): 4/4/3/2 per day, 6/6/6/5 known at levels 1-4", () => {
+    const expectedPerDay = [4, 4, 3, 2];
+    const expectedKnown = [6, 6, 6, 5];
+    for (let spLvl = 1; spLvl <= 4; spLvl++) {
+      expect(baseSpellsPerDay("bloodrager", 20, spLvl)).toBe(expectedPerDay[spLvl - 1]!);
+      expect(baseSpellsKnown("bloodrager", 20, spLvl)).toBe(expectedKnown[spLvl - 1]!);
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    expect(baseSpellsPerDay("bloodrager", 0, 1)).toBeNull();
+    expect(baseSpellsPerDay("bloodrager", 21, 1)).toBeNull();
+    expect(baseSpellsKnown("bloodrager", 0, 1)).toBeNull();
+    expect(baseSpellsKnown("bloodrager", 21, 1)).toBeNull();
+  });
+});

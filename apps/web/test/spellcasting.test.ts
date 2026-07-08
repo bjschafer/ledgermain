@@ -327,3 +327,79 @@ describe("curseSpellsKnown()", () => {
     expect(curseSpellsKnown(ref, undefined, 20)).toEqual([]);
   });
 });
+
+describe("casterModelFor() — warpriest", () => {
+  it("prepares from the full class list, wis-based, grants all orisons for free", () => {
+    const m = casterModelFor("warpriest");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("prepared");
+    expect(m!.ability).toBe("wis");
+    expect(m!.progression).toBe("warpriest");
+    expect(m!.grantsAllCantrips).toBe(true);
+    expect(m!.preparesFromClassList).toBe(true);
+  });
+
+  it("level-1 warpriest can access spell levels 0-1 only", () => {
+    const m = casterModelFor("warpriest")!;
+    expect(accessibleSpellLevels(m, 1)).toEqual([0, 1]);
+  });
+
+  it("level-1 warpriest orisons come from the class spell list", () => {
+    const list = grantedCantrips(ref, "warpriest");
+    expect(list.length).toBeGreaterThan(0);
+    const expected = ref.spellLists["warpriest"]![0]!;
+    expect(list.map((c) => c.id).sort()).toEqual([...expected].sort());
+  });
+});
+
+describe("casterModelFor() — hunter", () => {
+  it("returns a spontaneous/wis model reusing the bard progression tables", () => {
+    const m = casterModelFor("hunter");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("wis");
+    expect(m!.progression).toBe("bard");
+    expect(m!.knownProgression).toBe("bard");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("level-4 hunter spells-known limits: 6 orisons, 4 first-level, 2 second-level", () => {
+    const m = casterModelFor("hunter")!;
+    const limits = spellsKnownLimitsByLevel(m, 4);
+    expect(limits.find((l) => l.level === 0)!.limit).toBe(6);
+    expect(limits.find((l) => l.level === 1)!.limit).toBe(4);
+    expect(limits.find((l) => l.level === 2)!.limit).toBe(2);
+  });
+});
+
+describe("casterModelFor() — bloodrager", () => {
+  it("returns a spontaneous/cha model with its own 4-level progression, no cantrips", () => {
+    const m = casterModelFor("bloodrager");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("cha");
+    expect(m!.progression).toBe("bloodrager");
+    expect(m!.knownProgression).toBe("bloodrager");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("levels 1-3: no accessible spell levels at all (casting hasn't started)", () => {
+    const m = casterModelFor("bloodrager")!;
+    expect(accessibleSpellLevels(m, 1)).toEqual([]);
+    expect(accessibleSpellLevels(m, 3)).toEqual([]);
+  });
+
+  it("level 4: exactly spell level 1 becomes accessible (the late-start boundary)", () => {
+    const m = casterModelFor("bloodrager")!;
+    expect(accessibleSpellLevels(m, 4)).toEqual([1]);
+    const limits = spellsKnownLimitsByLevel(m, 4);
+    expect(limits).toEqual([{ level: 1, limit: 2 }]);
+  });
+
+  it("level 20: accessible spell levels cap at 4th", () => {
+    const m = casterModelFor("bloodrager")!;
+    expect(accessibleSpellLevels(m, 20)).toEqual([1, 2, 3, 4]);
+  });
+});

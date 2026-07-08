@@ -213,7 +213,9 @@ export type SpellProgression =
   | "bard"
   | "druid"
   | "arcanist"
-  | "magus";
+  | "magus"
+  | "warpriest"
+  | "bloodrager";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -309,7 +311,7 @@ const SORCERER_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
  * per the known table), as distinct from prepared casters whose spellbook IS
  * their known list (unlimited within the rules for acquired spells).
  */
-export type SpellKnownProgression = "sorcerer" | "bard";
+export type SpellKnownProgression = "sorcerer" | "bard" | "bloodrager";
 
 /**
  * Cleric base spells per day, indexed `[classLevel - 1][spellLevel]`. Clerics
@@ -503,6 +505,121 @@ const MAGUS_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
   /* L20 */ [5, 5, 5, 5, 5, 5, 5, null, null, null],
 ];
 
+/**
+ * Warpriest base spells per day, indexed `[classLevel - 1][spellLevel]`.
+ * Warpriest (ACG) is a MEDIUM prepared-divine caster, wis-based, caps at
+ * 6th-level spells (columns 7-9 always null), gains its first spell slot
+ * (plus 3 orisons) at 1st level. Column 0 (orisons) is a real per-day
+ * preparable count here, same shape as cleric/wizard's cantrip column — NOT
+ * null the way it is for bard/sorcerer, since warpriest is a *prepared*
+ * caster (see `CASTER_MODELS.warpriest`'s `grantsAllCantrips: true`). Bonus
+ * spells from a high Wisdom score are added on top by
+ * {@link bonusSpellsForLevel} and are NOT included here. (PF1 ACG SRD —
+ * clean-room table, hand-typed from the published rules, open game content;
+ * verified against the raw "Table: Warpriest" on legacy.aonprd.com and
+ * cross-checked against aonprd.com/d20pfsrd.com, all three matching exactly:
+ * sanity anchors at L1 3/1, L6 5/4/3, L10 5/5/4/3/1, L20 all-5s.)
+ */
+const WARPRIEST_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [3, 1, null, null, null, null, null, null, null, null],
+  /* L2  */ [4, 2, null, null, null, null, null, null, null, null],
+  /* L3  */ [4, 3, null, null, null, null, null, null, null, null],
+  /* L4  */ [4, 3, 1, null, null, null, null, null, null, null],
+  /* L5  */ [4, 4, 2, null, null, null, null, null, null, null],
+  /* L6  */ [5, 4, 3, null, null, null, null, null, null, null],
+  /* L7  */ [5, 4, 3, 1, null, null, null, null, null, null],
+  /* L8  */ [5, 4, 4, 2, null, null, null, null, null, null],
+  /* L9  */ [5, 5, 4, 3, null, null, null, null, null, null],
+  /* L10 */ [5, 5, 4, 3, 1, null, null, null, null, null],
+  /* L11 */ [5, 5, 4, 4, 2, null, null, null, null, null],
+  /* L12 */ [5, 5, 5, 4, 3, null, null, null, null, null],
+  /* L13 */ [5, 5, 5, 4, 3, 1, null, null, null, null],
+  /* L14 */ [5, 5, 5, 4, 4, 2, null, null, null, null],
+  /* L15 */ [5, 5, 5, 5, 4, 3, null, null, null, null],
+  /* L16 */ [5, 5, 5, 5, 4, 3, 1, null, null, null],
+  /* L17 */ [5, 5, 5, 5, 4, 4, 2, null, null, null],
+  /* L18 */ [5, 5, 5, 5, 5, 4, 3, null, null, null],
+  /* L19 */ [5, 5, 5, 5, 5, 5, 4, null, null, null],
+  /* L20 */ [5, 5, 5, 5, 5, 5, 5, null, null, null],
+];
+
+/**
+ * Bloodrager base spells per day, indexed `[classLevel - 1][spellLevel]`.
+ * Bloodrager (ACG) is a cha-based spontaneous arcane caster that gains NO
+ * spellcasting at all until 4th level and caps at 4th-level spells (columns
+ * 5-9 always null) — same "late start, low cap" shape as
+ * {@link PALADIN_RANGER_SPELLS_PER_DAY}, but unlike paladin/ranger a
+ * bloodrager's caster level is a straight `bloodragerLevel` with NO -3 (or
+ * similar) offset: per PF1 Core Rulebook ch.9's default caster-level rule
+ * ("equal to her class level in the class she's using to cast the spell")
+ * and confirmed by Paizo designers Owen K.C. Stephens / Mark Seifter on the
+ * official rules forums (a bloodrager's minimum caster level for 1st-level
+ * spells is 4, not 1) — see `model/casterLevel.ts`'s doc comment for how
+ * this is wired. Column 0 (cantrips) is always null: bloodragers get no
+ * orisons at all (no "Orisons" class feature; the vendored `spell-lists.json`
+ * bloodrager entry has no 0-level key). Bonus spells from a high Charisma
+ * score are added on top by {@link bonusSpellsForLevel} and are NOT included
+ * here. (PF1 ACG SRD — clean-room table, hand-typed from the published
+ * rules, open game content; verified against the raw "Table: Bloodrager" on
+ * legacy.aonprd.com and cross-checked against aonprd.com/d20pfsrd.com, all
+ * three matching exactly: sanity anchors at L4 1/-/-/-, L10 2/1/1/-, L20
+ * 4/4/3/2.)
+ */
+const BLOODRAGER_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L5  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L6  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L7  */ [null, 1, 1, null, null, null, null, null, null, null],
+  /* L8  */ [null, 1, 1, null, null, null, null, null, null, null],
+  /* L9  */ [null, 2, 1, null, null, null, null, null, null, null],
+  /* L10 */ [null, 2, 1, 1, null, null, null, null, null, null],
+  /* L11 */ [null, 2, 1, 1, null, null, null, null, null, null],
+  /* L12 */ [null, 2, 2, 1, null, null, null, null, null, null],
+  /* L13 */ [null, 3, 2, 1, 1, null, null, null, null, null],
+  /* L14 */ [null, 3, 2, 1, 1, null, null, null, null, null],
+  /* L15 */ [null, 3, 2, 2, 1, null, null, null, null, null],
+  /* L16 */ [null, 3, 3, 2, 1, null, null, null, null, null],
+  /* L17 */ [null, 4, 3, 2, 1, null, null, null, null, null],
+  /* L18 */ [null, 4, 3, 2, 2, null, null, null, null, null],
+  /* L19 */ [null, 4, 3, 3, 2, null, null, null, null, null],
+  /* L20 */ [null, 4, 4, 3, 2, null, null, null, null, null],
+];
+
+/**
+ * Bloodrager spells known per level, indexed `[classLevel - 1][spellLevel]`.
+ * Column 0 (cantrips) is always null — bloodragers know no orisons at all
+ * (see {@link BLOODRAGER_SPELLS_PER_DAY}'s doc comment). Starts at 4th level,
+ * same late-start shape as the per-day table above. (PF1 ACG SRD —
+ * clean-room, open game content; verified against the raw "Table: Bloodrager
+ * Spells Known" on legacy.aonprd.com and cross-checked against
+ * aonprd.com/d20pfsrd.com, all three matching exactly.)
+ */
+const BLOODRAGER_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 2, null, null, null, null, null, null, null, null],
+  /* L5  */ [null, 3, null, null, null, null, null, null, null, null],
+  /* L6  */ [null, 4, null, null, null, null, null, null, null, null],
+  /* L7  */ [null, 4, 2, null, null, null, null, null, null, null],
+  /* L8  */ [null, 4, 3, null, null, null, null, null, null, null],
+  /* L9  */ [null, 5, 4, null, null, null, null, null, null, null],
+  /* L10 */ [null, 5, 4, 2, null, null, null, null, null, null],
+  /* L11 */ [null, 5, 4, 3, null, null, null, null, null, null],
+  /* L12 */ [null, 6, 5, 4, null, null, null, null, null, null],
+  /* L13 */ [null, 6, 5, 4, 2, null, null, null, null, null],
+  /* L14 */ [null, 6, 5, 4, 3, null, null, null, null, null],
+  /* L15 */ [null, 6, 6, 5, 4, null, null, null, null, null],
+  /* L16 */ [null, 6, 6, 5, 4, null, null, null, null, null],
+  /* L17 */ [null, 6, 6, 5, 4, null, null, null, null, null],
+  /* L18 */ [null, 6, 6, 6, 5, null, null, null, null, null],
+  /* L19 */ [null, 6, 6, 6, 5, null, null, null, null, null],
+  /* L20 */ [null, 6, 6, 6, 5, null, null, null, null, null],
+];
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
@@ -513,11 +630,14 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   druid: DRUID_SPELLS_PER_DAY,
   arcanist: ARCANIST_SPELLS_PER_DAY,
   magus: MAGUS_SPELLS_PER_DAY,
+  warpriest: WARPRIEST_SPELLS_PER_DAY,
+  bloodrager: BLOODRAGER_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {
   sorcerer: SORCERER_SPELLS_KNOWN,
   bard: BARD_SPELLS_KNOWN,
+  bloodrager: BLOODRAGER_SPELLS_KNOWN,
 };
 
 /**

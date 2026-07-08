@@ -25,6 +25,20 @@
  * cha-based spontaneous caster casting from the cleric spell list, reusing
  * the sorcerer's spells-per-day/known tables (numerically identical per the
  * SRD) plus mystery-granted bonus spells known (`mysterySpellsKnown` below).
+ * Warpriest (ACG) is a plain wis-based prepared-divine caster with orisons —
+ * own spells-per-day table (with a 0-level column), modeled identically to
+ * cleric otherwise (`grantsAllCantrips: true`, `preparesFromClassList: true`)
+ * — sacred weapon, blessings, and fervor are separate class features not
+ * modeled as part of casting. Hunter (ACG) is a wis-based spontaneous divine
+ * caster with a genuine spells-known cap (NOT "knows every spell on her
+ * list" — the SRD is explicit that her selection is "extremely limited"),
+ * reusing the bard's spells-per-day/known tables (numerically identical per
+ * the SRD, verified against the raw "Table: Hunter"/"Table: Hunter Spells
+ * Known" — same reuse posture as oracle/sorcerer). Bloodrager (ACG) is a
+ * cha-based spontaneous arcane caster that gains no spellcasting at all
+ * until 4th level and caps at 4th-level spells (own spells-per-day/known
+ * tables, both null below level 4) — bloodline bonus spells and bloodrage
+ * are separate class features not modeled here.
  */
 
 import {
@@ -252,6 +266,50 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Oracles learn a fixed set of spells known at each level from the cleric spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. An oracle also adds every “cure” spell OR every “inflict” spell she can cast to her known list for free (a permanent choice made at 1st level, not tracked as a separate field here — add the relevant spells to your known list manually). Her mystery (see the Mystery picker) also grants one bonus spell known at 2nd level and every two levels thereafter.",
     blurb:
       "Spontaneous divine caster: you know a limited set of spells drawn from the cleric list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; orisons (cantrips) are cast at will once known.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  warpriest: {
+    preparation: "prepared",
+    ability: "wis",
+    progression: "warpriest",
+    knownLabel: "Warpriest List",
+    learnGuidance:
+      "Warpriests have no spellbook and nothing to learn — the entire warpriest list below is always available to prepare from, including orisons.",
+    blurb:
+      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full warpriest list each day, plus orisons at will. (Sacred weapon, blessings, and fervor are separate class features, not modeled as part of casting.)",
+    grantsAllCantrips: true,
+    preparesFromClassList: true,
+  },
+  hunter: {
+    preparation: "spontaneous",
+    ability: "wis",
+    // Hunter's Spells per Day / Spells Known tables (ACG) are numerically
+    // identical to the bard's (verified against the raw "Table: Hunter" /
+    // "Table: Hunter Spells Known" on legacy.aonprd.com, both capping at
+    // 6th-level spells with the same known-count progression), so the bard
+    // progression tables are reused rather than duplicated — same posture as
+    // `oracle: progression: "sorcerer"` above.
+    progression: "bard",
+    knownProgression: "bard",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Unlike druids and rangers, a hunter's spell selection is extremely limited: she learns a fixed set of spells known at each level (see spells-known table), including a limited number of orisons, drawn from the combined druid/ranger list. She begins play knowing four 0-level spells and two 1st-level spells of her choice.",
+    blurb:
+      "Spontaneous divine caster: you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; orisons (cantrips) are cast at will once known. (Animal Focus and the animal companion are separate class features, not modeled as part of casting.)",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  bloodrager: {
+    preparation: "spontaneous",
+    ability: "cha",
+    progression: "bloodrager",
+    knownProgression: "bloodrager",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Bloodragers gain no spellcasting at all until 4th level, learning a fixed set of spells known from the bloodrager list from then on (see spells-known table). Bloodragers never gain cantrips/orisons.",
+    blurb:
+      "Spontaneous arcane caster: you gain no spells until 4th level, then know a limited set of spells (up to 4th level) and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. (Bloodline bonus spells and bloodrage are separate class features, not modeled here.)",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },

@@ -20,12 +20,33 @@ const FULL_CASTER_TAGS = new Set([
   "oracle",
   "arcanist",
   "magus",
+  "warpriest",
+  "hunter",
 ]);
 
 /**
  * Per-class caster level. Defaults to class level for full casters and 0 for
  * non-casters. Classes whose CL diverges from class level (paladin, ranger,
  * ...) get an explicit override here when they're added to the vendored slice.
+ *
+ * Warpriest and hunter (ACG) both cast starting at 1st level with CL equal to
+ * class level throughout (verified on aonprd.com — neither has the "-3"-style
+ * divergence paladin/ranger do), so they're plain members of
+ * `FULL_CASTER_TAGS` like cleric/druid/oracle.
+ *
+ * Bloodrager is deliberately NOT added here despite ALSO having a
+ * numerically-correct-once-casting-starts CL of exactly `classLevel` (no -3
+ * offset) — confirmed via PF1 Core Rulebook ch.9's default caster-level rule
+ * plus an official Paizo designer ruling (Owen K.C. Stephens / Mark Seifter:
+ * a bloodrager's minimum caster level for 1st-level spells is 4, not 1,
+ * i.e. NOT `paladinLevel - 3`-style). But bloodragers cast NO spells at all
+ * before 4th level, and this module only has a binary "is this tag a caster"
+ * switch (flat `classLevel` or `0`) — no level-gating. Adding bloodrager here
+ * would wrongly report a nonzero caster level at levels 1-3 (e.g. CL 2 at
+ * class level 2, with zero actual spellcasting). Leaving it out (same
+ * posture as paladin/ranger, whose CL genuinely does diverge) is the
+ * conservative choice until this module grows a level-gated override shape;
+ * a future fix should NOT copy paladin/ranger's `-3` formula for bloodrager.
  */
 export function casterLevelForClass(tag: string, classLevel: number): number {
   if (!FULL_CASTER_TAGS.has(tag)) return 0;
