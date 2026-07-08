@@ -68,6 +68,10 @@ export {
   type BarbarianDrDetail,
   WEAPON_TRAINING_LEVELS,
   weaponTrainingBonus,
+  kineticBlastDetail,
+  type KineticBlastDetail,
+  burnPerRoundLimit,
+  burnDetailLabel,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
@@ -118,6 +122,12 @@ export {
   type OracleRevelationDef,
   type OracleMysteryFinalRevelation,
 } from "./oracle-revelations.js";
+export {
+  PSYCHIC_DISCIPLINES,
+  PSYCHIC_DISCIPLINE_TAGS,
+  type PsychicDisciplineDef,
+  type PsychicDisciplineBonusSpell,
+} from "./psychic-disciplines.js";
 export {
   FEAT_EFFECTS,
   FEAT_POOL_EFFECTS,

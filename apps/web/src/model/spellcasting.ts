@@ -74,6 +74,7 @@ import {
   baseSpellsPrepared,
   ORACLE_CURSES,
   ORACLE_MYSTERIES,
+  PSYCHIC_DISCIPLINES,
   type SpellKnownProgression,
   type SpellPreparedProgression,
   type SpellProgression,
@@ -460,6 +461,38 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
+  psychic: {
+    preparation: "spontaneous",
+    ability: "int",
+    // Psychic's Spells per Day AND Spells Known tables (Occult Adventures)
+    // are numerically identical to the sorcerer's — verified against the raw
+    // "Table: Psychic" / "Table: Psychic Spells Known" on legacy.aonprd.com,
+    // exact match at every one of the 20 levels for both tables — so the
+    // sorcerer progression tables are reused rather than duplicated, same
+    // posture as `oracle` above (which reuses both the same way).
+    progression: "psychic",
+    knownProgression: "sorcerer",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Psychics learn a fixed set of spells known at each level from the psychic spell list (see spells-known table), starting with 4 knacks (cantrips) and 2 1st-level spells at 1st level — the counts are fixed and not adjusted by Intelligence. Your discipline (see the Discipline picker) also grants one bonus spell known at 1st level, 4th level, and every 2 levels thereafter (final one at 18th).",
+    blurb:
+      "Spontaneous psychic caster (int-based): you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; knacks (cantrips) are cast at will once known. Psychic magic is neither arcane nor divine — no arcane spell failure from armor. (Phrenic pool is tracked as a resource; phrenic amplifications and discipline powers are separate subsystems, not modeled here.)",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  medium: {
+    preparation: "spontaneous",
+    ability: "cha",
+    progression: "medium",
+    knownProgression: "medium",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Mediums gain no spellcasting at all until 4th level (2 knacks at 1st level aside — knacks are known from 1st but the first real spell slot arrives at 4th), learning a fixed set of spells known from the medium list from then on (see spells-known table); the counts are fixed and not adjusted by Charisma. Mediums cap out at 4th-level spells.",
+    blurb:
+      "Spontaneous psychic caster (cha-based, 4-level): you know a limited set of spells (up to 4th level, starting at class level 4) and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; knacks (cantrips) are cast at will once known. (Spirits — the medium's channeled-legend subsystem, chosen at each day's seance — plus spirit surge, shared seance, and taboos are separate subsystems, not modeled here.)",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
 };
 
 /** Returns the CasterModel for `tag`, or `undefined` if it is not in the registry. */
@@ -708,6 +741,44 @@ export function curseSpellsKnown(
   if (!curse?.bonusSpells) return [];
   return curse.bonusSpells
     .filter((sp) => sp.level <= oracleLevel)
+    .map((sp) => ({ id: sp.id, name: refData.spells[sp.id]?.name ?? sp.name, level: sp.level }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ---------------------------------------------------------------------------
+// Psychic discipline bonus spells
+// ---------------------------------------------------------------------------
+
+/**
+ * Psychic discipline bonus spells known at `psychicLevel` for the given
+ * `disciplineTag`. A discipline grants one bonus spell at psychic level 1,
+ * another at 4th, and every 2 levels thereafter until 18th (PF1 Occult
+ * Adventures RAW — a different cadence from both bloodlines' `2L+1` and
+ * mysteries' flat every-2-from-2nd, hence its own helper), so
+ * `PsychicDisciplineDef.bonusSpells` is already keyed by the PSYCHIC level
+ * that unlocks it (see `@pf1/engine` `psychic-disciplines.ts`'s doc comment)
+ * — this just filters by that level and resolves each entry's vendored spell
+ * id against `refData.spells` (falling back to the table's own `name`).
+ *
+ * These are *bonus* spells known — the tracker/builder add them to the
+ * displayed known list automatically and they do NOT count against the
+ * spells-known cap ("These spells are in addition to the number of spells
+ * given on Table: Psychic Spells Known").
+ *
+ * @example
+ *   disciplineSpellsKnown(ref, "faith", 5)  // → [Bless, Spiritual Weapon]
+ *   disciplineSpellsKnown(ref, "faith", 0)  // → []  (no psychic levels)
+ */
+export function disciplineSpellsKnown(
+  refData: RefData,
+  disciplineTag: string | undefined,
+  psychicLevel: number,
+): { id: string; name: string; level: number }[] {
+  if (!disciplineTag) return [];
+  const discipline = PSYCHIC_DISCIPLINES[disciplineTag];
+  if (!discipline) return [];
+  return discipline.bonusSpells
+    .filter((sp) => sp.level <= psychicLevel)
     .map((sp) => ({ id: sp.id, name: refData.spells[sp.id]?.name ?? sp.name, level: sp.level }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }

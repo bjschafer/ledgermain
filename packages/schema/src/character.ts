@@ -525,6 +525,22 @@ export interface CharacterDoc {
      * fighter who hasn't made any picks yet.
      */
     weaponTrainingGroups?: string[];
+    /**
+     * Psychic discipline tag (key into `@pf1/engine` `PSYCHIC_DISCIPLINES` —
+     * Occult Adventures), chosen at L1 and never changed thereafter (PF1
+     * RAW). Free-choice, same soft posture as `oracleMystery`/
+     * `sorcererBloodline`. Determines the ability score (Wis or Cha) used for
+     * the psychic's Phrenic Pool/Phrenic Amplifications (see
+     * `PSYCHIC_DISCIPLINES` doc comment — the vendored `uses.maxFormula` for
+     * Phrenic Pool hardcodes `@abilities.cha.mod` regardless of discipline; a
+     * Wisdom-based discipline is corrected in `resources.ts`) and grants one
+     * bonus spell known at psychic level 1, then 4th and every 2 levels
+     * thereafter (see `model/spellcasting.disciplineSpellsKnown`). Each
+     * discipline's 1st/5th/13th-level discipline powers are prose-only and
+     * NOT modeled (same posture as oracle revelations). Empty/undefined for
+     * non-psychics. Back-compat: documents without this field are unaffected.
+     */
+    psychicDiscipline?: string;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };

@@ -24,6 +24,7 @@ import {
   casterClassesOf,
   casterModelFor,
   curseSpellsKnown,
+  disciplineSpellsKnown,
   grantedCantrips,
   knownSpellsFor,
   mysterySpellsKnown,
@@ -905,6 +906,24 @@ function SpontaneousView({
     for (const sp of bonus) {
       if (known.has(sp.id)) continue;
       (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
+        id: sp.id,
+        name: sp.name,
+      });
+    }
+  }
+  // Psychic discipline bonus spells known: same treatment as sorcerer
+  // bloodline spells above — castable at the table, only exempt from the
+  // known cap. Unlike the oracle branch, entries are filed under the spell's
+  // own castable spell level (via `levelMap`, falling back to the spell's
+  // nominal level) — `disciplineSpellsKnown`'s `level` field is the psychic
+  // CLASS level that unlocked the spell (1, 4, 6, ..., 18), not a slot level.
+  if (casterTag === "psychic") {
+    const known = new Set(knownList);
+    for (const sp of disciplineSpellsKnown(refData, doc.build.psychicDiscipline, classLevel)) {
+      if (known.has(sp.id)) continue;
+      const lvl = levelMap.get(sp.id) ?? refData.spells[sp.id]?.level;
+      if (lvl === undefined) continue;
+      (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({
         id: sp.id,
         name: sp.name,
       });
