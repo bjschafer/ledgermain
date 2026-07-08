@@ -70,6 +70,13 @@ export const CLASS_ALIGNMENT_RESTRICTIONS: Record<string, ClassAlignmentRestrict
     exFlavor:
       "A shifter who ceases to revere nature, changes to a prohibited alignment, or teaches Druidic to a non-druid/non-shifter loses all her supernatural abilities.",
   },
+  antipaladin: {
+    // APG: "Any evil" — excludes LG/NG/CG/LN/N/CN, the mirror-image
+    // restriction of paladin's "Lawful good" only.
+    allowed: ["LE", "NE", "CE"],
+    exFlavor:
+      "An antipaladin who ceases to be evil loses all antipaladin spells and abilities (except proficiencies) until she atones (see the atonement spell description).",
+  },
 };
 
 /**

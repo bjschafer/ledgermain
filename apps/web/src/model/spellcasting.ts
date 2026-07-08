@@ -461,6 +461,24 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
+  antipaladin: {
+    preparation: "prepared",
+    ability: "cha",
+    // Antipaladin (APG) is a mirror of paladin: "His base daily spell
+    // allotment is the same as that of a paladin" (vendored "Antipaladin
+    // Spells" class-feature description, verbatim) — reuses the paladin
+    // progression table (`antipaladin: PALADIN_RANGER_SPELLS_PER_DAY` in
+    // `@pf1/engine` `tables.ts`) rather than duplicating it, same posture as
+    // `oracle: sorcerer` above.
+    progression: "antipaladin",
+    knownLabel: "Antipaladin List",
+    learnGuidance:
+      "Antipaladins have no spellbook and nothing to learn — the entire antipaladin spell list below is always available to prepare from once you reach 4th level. Antipaladins never gain cantrips.",
+    blurb:
+      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full antipaladin list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
+    grantsAllCantrips: false,
+    preparesFromClassList: true,
+  },
   psychic: {
     preparation: "spontaneous",
     ability: "int",

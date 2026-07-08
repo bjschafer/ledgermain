@@ -36,7 +36,7 @@ import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
-import { burnDetailLabel, smiteEvilDetail, smiteEvilLabel } from "./tables.js";
+import { burnDetailLabel, smiteEvilDetail, smiteEvilLabel, smiteGoodLabel } from "./tables.js";
 
 export interface DerivedResourcePool {
   /** Stable pool id (the class-feature id). */
@@ -217,6 +217,9 @@ export function deriveResourcePools(
     // Energy's dice/DC, Lay on Hands' healing dice, Acid Dart's ranged-touch
     // acid damage, ...), which also lifts the old cleric-only gate that left
     // a paladin's own Channel Positive Energy without any dice line.
+    // Antipaladin's Smite Good (tag `smiteGood`) is the same "bare Use, no
+    // vendored action data" shape as Smite Evil — mirrored here rather than
+    // falling through to `actionBasedDetail` (which would return undefined).
     let detail: string | undefined;
     if (feature.tag === "smiteEvil" && classTag === "paladin") {
       const featureAbilities = (featureRollData as RollData).abilities as
@@ -224,6 +227,12 @@ export function deriveResourcePools(
         | undefined;
       const chaMod = featureAbilities?.cha?.mod ?? 0;
       detail = smiteEvilLabel(smiteEvilDetail(classLevel, chaMod));
+    } else if (feature.tag === "smiteGood" && classTag === "antipaladin") {
+      const featureAbilities = (featureRollData as RollData).abilities as
+        | { cha?: { mod?: number } }
+        | undefined;
+      const chaMod = featureAbilities?.cha?.mod ?? 0;
+      detail = smiteGoodLabel(smiteEvilDetail(classLevel, chaMod));
     } else if (feature.tag === "burn" && classTag === "kineticist") {
       // Burn's nonlethal-per-point rule has no vendored action data (only the
       // `3 + Con` `uses.maxFormula` that made this pool) — hand-authored,

@@ -594,3 +594,44 @@ describe("casterModelFor() — bloodrager", () => {
     expect(accessibleSpellLevels(m, 20)).toEqual([1, 2, 3, 4]);
   });
 });
+
+describe("casterModelFor() — antipaladin (mirrors paladin)", () => {
+  it("returns a prepared/cha model with the paladin-shaped quarter-caster progression, no cantrips", () => {
+    const m = casterModelFor("antipaladin");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("prepared");
+    expect(m!.ability).toBe("cha");
+    expect(m!.progression).toBe("antipaladin");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(true);
+  });
+
+  it("no accessible spell levels before 4th (same late start as paladin/ranger)", () => {
+    const m = casterModelFor("antipaladin")!;
+    expect(accessibleSpellLevels(m, 1)).toEqual([]);
+    expect(accessibleSpellLevels(m, 3)).toEqual([]);
+  });
+
+  it("accessible spell levels exactly match paladin's at every spot-checked level (reused table)", () => {
+    const antipaladin = casterModelFor("antipaladin")!;
+    const paladin = casterModelFor("paladin")!;
+    for (const level of [4, 9, 13, 20]) {
+      expect(accessibleSpellLevels(antipaladin, level)).toEqual(
+        accessibleSpellLevels(paladin, level),
+      );
+      expect(spellSlotsByLevel(antipaladin, level, 3)).toEqual(
+        spellSlotsByLevel(paladin, level, 3),
+      );
+    }
+  });
+
+  it("caps at 4th-level spells even at L20 (quarter-caster ceiling)", () => {
+    const m = casterModelFor("antipaladin")!;
+    expect(accessibleSpellLevels(m, 20)).toEqual([1, 2, 3, 4]);
+  });
+
+  it("has a vendored spell list (antipaladin) distinct from paladin's", () => {
+    expect(ref.spellLists["antipaladin"]).toBeDefined();
+    expect(ref.spellLists["antipaladin"]).not.toBe(ref.spellLists["paladin"]);
+  });
+});

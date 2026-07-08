@@ -223,6 +223,7 @@ export type SpellProgression =
   | "shaman"
   | "warpriest"
   | "bloodrager"
+  | "antipaladin"
   | "psychic"
   | "medium";
 
@@ -861,6 +862,13 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   shaman: SHAMAN_SPELLS_PER_DAY,
   warpriest: WARPRIEST_SPELLS_PER_DAY,
   bloodrager: BLOODRAGER_SPELLS_PER_DAY,
+  // Antipaladin (APG) is a quarter-caster mirror of paladin: "His base daily
+  // spell allotment is the same as that of a paladin and is given on Table:
+  // Antipaladin" (confirmed verbatim in the vendored `class-features.json`
+  // "Antipaladin Spells" feature description) — numerically identical to
+  // {@link PALADIN_RANGER_SPELLS_PER_DAY}, so reused rather than duplicated,
+  // same posture as `DRUID_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY` above.
+  antipaladin: PALADIN_RANGER_SPELLS_PER_DAY,
   psychic: PSYCHIC_SPELLS_PER_DAY,
   medium: MEDIUM_SPELLS_PER_DAY,
 };
@@ -1248,6 +1256,23 @@ export function weaponTrainingBonus(fighterLevel: number, tierIndex: number): nu
   const grantLevel = WEAPON_TRAINING_LEVELS[tierIndex];
   if (grantLevel === undefined || fighterLevel < grantLevel) return 0;
   return 1 + Math.floor((fighterLevel - grantLevel) / 4);
+}
+
+/* ------------------------------------------------------- smite good (APA) -- */
+
+/**
+ * One-line display string for antipaladin (APG) Smite Good, reusing
+ * {@link SmiteEvilDetail}/{@link smiteEvilDetail} wholesale — Smite Good is
+ * mechanically IDENTICAL to paladin's Smite Evil (confirmed against the
+ * vendored `class-features.json` entry: `uses.maxFormula: "1 +
+ * floor((@class.unlevel - 1) / 3)"`, byte-identical to Smite Evil's, and the
+ * same "adds Cha bonus (if any) to attack, class level to damage, Cha bonus
+ * (if any) as deflection AC" prose with target alignment mirrored evil ->
+ * good) — only the display suffix changes. Same reuse posture as
+ * `DRUID_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY` above.
+ */
+export function smiteGoodLabel(detail: SmiteEvilDetail): string {
+  return `+${detail.attackBonus} atk, +${detail.damageBonus} dmg, +${detail.acBonus} AC vs. good`;
 }
 
 /* -------------------------------------------------- kineticist (Occult) -- */

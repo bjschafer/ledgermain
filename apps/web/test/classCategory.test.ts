@@ -55,6 +55,14 @@ const HYBRID = [
   "Swashbuckler",
   "Warpriest",
 ];
+const UNCHAINED = [
+  "Barbarian (Unchained)",
+  "Monk (Unchained)",
+  "Rogue (Unchained)",
+  "Summoner (Unchained)",
+];
+const ALTERNATE = ["Antipaladin", "Ninja", "Samurai"];
+const OCCULT = ["Kineticist", "Medium", "Mesmerist", "Occultist", "Psychic", "Spiritualist"];
 
 describe("classCategory", () => {
   it("classifies every Core Rulebook class as core, and each exists in the vendored slice", () => {
@@ -78,23 +86,43 @@ describe("classCategory", () => {
     }
   });
 
+  it("classifies the Unchained / alternate / Occult Adventures classes, and each exists in the vendored slice", () => {
+    for (const [names, category] of [
+      [UNCHAINED, "unchained"],
+      [ALTERNATE, "alternate"],
+      [OCCULT, "occult"],
+    ] as const) {
+      for (const name of names) {
+        expect(CLASS_NAMES.has(name)).toBe(true);
+        expect(classCategory({ name })).toBe(category);
+      }
+    }
+  });
+
   it("no vendored class falls through to 'other' today (a rename or new vendoring trips this)", () => {
     for (const cls of Object.values(ref.classes)) {
       expect(classCategory(cls)).not.toBe("other");
     }
   });
 
-  it("defaults unlisted names (future occult/unchained/prestige vendoring) to other", () => {
-    expect(classCategory({ name: "Psychic" })).toBe("other");
-    expect(classCategory({ name: "Unchained Monk" })).toBe("other");
+  it("defaults unlisted names (future prestige/NPC-class vendoring) to other", () => {
+    expect(classCategory({ name: "Shadowdancer" })).toBe("other");
+    expect(classCategory({ name: "Adept" })).toBe("other");
   });
 });
 
 describe("groupClassesByCategory", () => {
-  it("splits the full vendored slice 11 / 10 / 10 into ordered sections with no 'other'", () => {
+  it("splits the full vendored slice 11 / 10 / 10 / 4 / 3 / 6 into ordered sections with no 'other'", () => {
     const groups = groupClassesByCategory(Object.values(ref.classes));
-    expect(groups.map((g) => g.category)).toEqual(["core", "base", "hybrid"]);
-    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10]);
+    expect(groups.map((g) => g.category)).toEqual([
+      "core",
+      "base",
+      "hybrid",
+      "unchained",
+      "alternate",
+      "occult",
+    ]);
+    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10, 4, 3, 6]);
   });
 
   it("orders sections per CLASS_CATEGORY_ORDER and drops empty ones", () => {

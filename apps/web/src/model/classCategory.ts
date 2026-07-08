@@ -10,7 +10,7 @@
  * `subType: "base"` upstream (Foundry's subType only distinguishes
  * base/prestige/npc-style kinds), so — exactly like race rarity — we map by
  * class NAME, clean-room from published facts. Anything unlisted (future
- * occult/unchained/prestige vendoring) falls through to `"other"`; the
+ * prestige/NPC-class vendoring) falls through to `"other"`; the
  * `classCategory.test.ts` "every named class resolves" guard catches a
  * data-pipeline rename silently dropping a class to that tier.
  *
@@ -22,15 +22,33 @@ import type { Class } from "@pf1/schema";
 
 import { type CategoryGroup, groupByCategory } from "./grouping.js";
 
-export type ClassCategory = "core" | "base" | "hybrid" | "other";
+export type ClassCategory =
+  | "core"
+  | "base"
+  | "hybrid"
+  | "unchained"
+  | "alternate"
+  | "occult"
+  | "other";
 
 /** Display order, most → least foundational (drives the picker's section order). */
-export const CLASS_CATEGORY_ORDER: readonly ClassCategory[] = ["core", "base", "hybrid", "other"];
+export const CLASS_CATEGORY_ORDER: readonly ClassCategory[] = [
+  "core",
+  "base",
+  "hybrid",
+  "unchained",
+  "alternate",
+  "occult",
+  "other",
+];
 
 export const CLASS_CATEGORY_LABEL: Record<ClassCategory, string> = {
   core: "Core",
   base: "Base",
   hybrid: "Hybrid",
+  unchained: "Unchained",
+  alternate: "Alternate",
+  occult: "Occult",
   other: "Other",
 };
 
@@ -76,6 +94,26 @@ const CLASS_CATEGORY: Readonly<Record<string, ClassCategory>> = {
   Slayer: "hybrid",
   Swashbuckler: "hybrid",
   Warpriest: "hybrid",
+
+  // Pathfinder Unchained (4).
+  "Barbarian (Unchained)": "unchained",
+  "Monk (Unchained)": "unchained",
+  "Rogue (Unchained)": "unchained",
+  "Summoner (Unchained)": "unchained",
+
+  // Alternate classes (APG antipaladin; UC ninja/samurai) — parent-class
+  // variants a character can't combine with their parent.
+  Antipaladin: "alternate",
+  Ninja: "alternate",
+  Samurai: "alternate",
+
+  // Occult Adventures (6).
+  Kineticist: "occult",
+  Medium: "occult",
+  Mesmerist: "occult",
+  Occultist: "occult",
+  Psychic: "occult",
+  Spiritualist: "occult",
 };
 
 /** Category for a class, defaulting to `"other"` for anything unlisted. */

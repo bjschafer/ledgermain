@@ -31,6 +31,7 @@ import {
   sneakAttackDice,
   smiteEvilDetail,
   smiteEvilLabel,
+  smiteGoodLabel,
   unarmedDamageDie,
   flurryOfBlowsLabel,
   barbarianDamageReduction,
@@ -566,12 +567,24 @@ export function resolveClassFeatures(
     // grants never match these class+name pairs, so `detail` stays undefined.
     // Bloodline grants (issue #34) carry a pre-computed `providedDetail`
     // instead (no vendored feature to derive it from) — takes priority.
+    // Ninja's Sneak Attack (UC) uses the IDENTICAL progression as rogue's (same
+    // `floor((level+1)/2)` d6 table per the SRD) — matched here alongside
+    // rogue rather than duplicating `sneakAttackDice`. Antipaladin's Smite Good
+    // (APG) is likewise a mirror of paladin's Smite Evil (same math, "vs. good"
+    // display suffix via `smiteGoodLabel`).
     let detail: string | undefined = providedDetail;
-    if (detail === undefined && classTag === "rogue" && grant.name === "Sneak Attack") {
+    if (
+      detail === undefined &&
+      (classTag === "rogue" || classTag === "ninja") &&
+      grant.name === "Sneak Attack"
+    ) {
       detail = sneakAttackDice(classLevel).diceLabel;
     } else if (detail === undefined && classTag === "paladin" && grant.name === "Smite Evil") {
       const chaMod = abilities?.cha?.mod ?? 0;
       detail = smiteEvilLabel(smiteEvilDetail(classLevel, chaMod));
+    } else if (detail === undefined && classTag === "antipaladin" && grant.name === "Smite Good") {
+      const chaMod = abilities?.cha?.mod ?? 0;
+      detail = smiteGoodLabel(smiteEvilDetail(classLevel, chaMod));
     } else if (detail === undefined && classTag === "monk" && grant.name === "Unarmed Strike") {
       detail = unarmedDamageDie(classLevel).dieLabel;
     } else if (detail === undefined && classTag === "monk" && grant.name === "Flurry of Blows") {

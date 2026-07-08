@@ -68,6 +68,7 @@ export {
   type BarbarianDrDetail,
   WEAPON_TRAINING_LEVELS,
   weaponTrainingBonus,
+  smiteGoodLabel,
   kineticBlastDetail,
   type KineticBlastDetail,
   burnPerRoundLimit,

@@ -46,6 +46,21 @@ export const CLASS_ARCHETYPE_FILES: Record<string, string> = {
   vigilante: "Vigilante.csv",
   warpriest: "Warpriest.csv",
   witch: "Witch.csv",
+  antipaladin: "Antipaladin.csv",
+  ninja: "Ninja.csv",
+  samurai: "Samurai.csv",
+  // The archetype module merged chained + unchained rogue into one CSV, so
+  // both rogue classes share it (`rogue` above already points at it too).
+  barbarianUnchained: "Barbarian (Unchained).csv",
+  monkUnchained: "Monk UC.csv",
+  rogueUnchained: "Rogue UC.csv",
+  summonerUnchained: "Summoner (UC).csv",
+  kineticist: "Kineticist.csv",
+  medium: "Medium.csv",
+  mesmerist: "Mesmerist.csv",
+  occultist: "Occultist.csv",
+  psychic: "Psychic.csv",
+  spiritualist: "Spiritualist.csv",
 };
 
 /** A row from one of the per-class archetype CSVs (header-name-keyed). */
