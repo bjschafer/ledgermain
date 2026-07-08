@@ -186,4 +186,31 @@ describe("classAlignmentWarnings()", () => {
     doc = { ...doc, identity: { ...doc.identity, alignment: "???" } };
     expect(classAlignmentWarnings(doc, ref)).toEqual([]);
   });
+
+  it("warns for any non-evil Antipaladin (APG: 'Any evil', the mirror-image restriction of Paladin's)", () => {
+    for (const code of ["LG", "NG", "CG", "LN", "N", "CN"]) {
+      let doc = addClass(createEmptyDoc("t"), "antipaladin");
+      doc = setAlignment(doc, code);
+      const warnings = classAlignmentWarnings(doc, ref);
+      expect(warnings).toHaveLength(1);
+      expect(warnings[0]!.classTag).toBe("antipaladin");
+    }
+  });
+
+  it("does not warn for any evil Antipaladin", () => {
+    for (const code of ["LE", "NE", "CE"]) {
+      let doc = addClass(createEmptyDoc("t"), "antipaladin");
+      doc = setAlignment(doc, code);
+      expect(classAlignmentWarnings(doc, ref)).toEqual([]);
+    }
+  });
+
+  it("Ninja and Samurai (UC) are both 'Any' (unrestricted, verified against aonprd.com)", () => {
+    for (const tag of ["ninja", "samurai"]) {
+      let doc = addClass(createEmptyDoc("t"), tag);
+      doc = setAlignment(doc, "CE");
+      expect(classAlignmentWarnings(doc, ref)).toEqual([]);
+      expect(CLASS_ALIGNMENT_RESTRICTIONS[tag]).toBeUndefined();
+    }
+  });
 });

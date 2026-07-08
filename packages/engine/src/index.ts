@@ -68,6 +68,7 @@ export {
   type BarbarianDrDetail,
   WEAPON_TRAINING_LEVELS,
   weaponTrainingBonus,
+  smiteGoodLabel,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";

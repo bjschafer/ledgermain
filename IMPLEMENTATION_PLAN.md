@@ -767,6 +767,35 @@ Applied the same batch-extraction pipeline shape to **feats** — `packages/data
 
 ---
 
+### Antipaladin, Ninja, Samurai mechanical audit (13-class expansion follow-through, 2026-07-07)
+
+Engine/model support for the three ALTERNATE classes (APG antipaladin, UC ninja, UC samurai) added alongside the 13-class data vendoring pass. All three needed almost no hand-authoring — a fixture-first audit (`packages/engine/test/antipaladin.test.ts`, `ninja.test.ts`, `samurai.test.ts`) confirmed most of each class's numeric features already ride the generic `changes[]`/`uses.maxFormula` pipelines:
+
+**Antipaladin** (mirror of paladin): high BAB, good Fort/Will, d10, prepared divine quarter-caster. `tables.ts`'s `PROGRESSIONS.antipaladin = PALADIN_RANGER_SPELLS_PER_DAY` (verbatim vendored confirmation: "His base daily spell allotment is the same as that of a paladin"); `CASTER_MODELS.antipaladin` in `apps/web/src/model/spellcasting.ts` copies paladin's shape (cha-based, `preparesFromClassList: true`, no cantrips). Left OUT of `casterLevel.ts`'s `FULL_CASTER_TAGS` and `compute.ts`'s `ARCANE_CASTER_TAGS`, mirroring paladin's own (pre-existing) exclusions exactly — same posture, not a new gap. Added a `CLASS_ALIGNMENT_RESTRICTIONS.antipaladin` entry ("Any evil", the mirror of paladin's "Lawful good") to `apps/web/src/model/alignment.ts`. Mechanically:
+
+- **Unholy Resilience** (Divine Grace's antipaladin twin) is a real vendored `Change` (`max(0, @abilities.cha.mod)` -> `allSavingThrows`) — fully generic, zero hand-authoring.
+- **Smite Good** carries `uses.maxFormula` byte-identical to Smite Evil's, but (like Smite Evil) no vendored `actions[]` for its attack/damage/AC line — hand-authored `smiteGoodLabel` in `tables.ts` (reuses `smiteEvilDetail`'s math, swaps the "vs. evil"/"vs. good" suffix), wired into `resources.ts`'s pool `detail` (`feature.tag === "smiteGood"`) and `archetypes.ts`'s classFeature `detail` (name+classTag), both mirroring the existing Smite Evil/paladin branches.
+- **Touch of Corruption** (Lay on Hands' twin) and **Channel Negative Energy** (`uses.source: "touchOfCorruption"`) both carry real vendored `actions[].damage.formula` dice — the existing generic `actionBasedDetail`/linked-features pass derives "melee touch · Nd6 negative · Channel Negative Energy: Nd6 (DC NN Will)" with zero hand-authoring, same pipeline that already serves paladin's Lay on Hands/Channel Positive Energy.
+- Spell-lists.json anomaly (issue #47 candidate): the vendored `antipaladin` spell list carries a stray `"6"` key holding one level-7 spell ("Plague Bearer") — antipaladin's own progression table only ever exposes levels 1–4, so `accessibleSpellLevels`-gated UI never reads that key; confirmed benign (no code fix needed), logged for the data audit.
+
+**Deferred** (prose-only, choice-bearing, no vendored numeric formula — same posture as Rogue Talents/Barbarian Rage Powers): Cruelty (mirrors paladin's Mercy), Fiendish Boon (mirrors Divine Bond), and the Aura family (Evil/Cowardice/Despair/Vengeance/Sin/Depravity) beyond their bare presence in the class-feature list.
+
+**Ninja** (rogue chassis): BAB medium, poor Fort/Will, good Ref, d8, no trapfinding/trap sense (confirmed absent from the vendored feature list). Sneak Attack uses the identical rogue progression — `archetypes.ts`'s name+classTag dispatch extended from `classTag === "rogue"` to `(classTag === "rogue" || classTag === "ninja")`, reusing `sneakAttackDice` wholesale (no new table). Ki Pool (NIN) is genuinely Cha-based per the vendored `uses.maxFormula` (`floor(@class.unlevel / 2) + @abilities.cha.mod`) — NOT Wis like the monk's — fully generic, confirmed by fixture rather than assumed.
+
+**Deferred**: Ninja Tricks / Master Tricks (the talent-menu subsystem, same posture as Rogue Talents — no schema field, no picker).
+
+**Samurai** (cavalier chassis): BAB high, good Fort, poor Ref/Will, d10. Resolve (`ceil(@class.unlevel / 2)`/day) and Honorable Stand (`1 + if(gte(@class.unlevel, 16), 1)`/day) both ride the generic `uses.maxFormula` pipeline with zero hand-authoring; Bonus Feat (SAM) carries the identical vendored `bonusFeats` Change as cavalier's Bonus Feat (CAV).
+
+**Vendored-data bug found (issue #47 candidate)**: **Challenge (SAM) carries NO `uses` block at all**, unlike cavalier's byte-identical Challenge (CAV) (`uses.maxFormula: "1 + floor((@class.unlevel - 1) / 3)"`, same SRD wording verbatim, including the "to a maximum of seven times per day at 19th level" clause). Per this project's established posture for a vendored gap on an otherwise-plain numeric feature (Shifter Aspect's precedent — left as-is, not synthesized), this is documented rather than hand-authored; `samurai.test.ts` asserts the current (missing) pool explicitly so a future data-pipeline fix is caught, not silently masked.
+
+Mount (SAM) / Order (SAM) are deferred exactly like cavalier's own Mount/Order (neither is modeled at all for cavalier either — no `build.cavalierOrder`/companion-source wiring exists for cavalier, so samurai gets the identical non-treatment, not a new gap).
+
+**Also found**: RAW, the "Extra Lay On Hands" feat additionally grants antipaladin's Touch of Corruption +2 uses/day ("For example, the Extra Lay On Hands feat grants an antipaladin 2 additional uses of the touch of corruption class feature" — vendored description, verbatim), but `feat-effects.ts`'s `FEAT_POOL_EFFECTS["extra-lay-on-hands"]` only targets featureTag `"layOnHands"` (paladin's), not `"touchOfCorruption"` — `FeatPoolEffect` has no multi-target shape today. Left unfixed (narrow edge case, would need a small type extension); noted here as a follow-up rather than built.
+
+**Files touched**: `packages/engine/src/tables.ts` (antipaladin spell progression alias, `smiteGoodLabel`), `packages/engine/src/index.ts` (export), `packages/engine/src/archetypes.ts` (ninja Sneak Attack + antipaladin Smite Good dispatch), `packages/engine/src/resources.ts` (antipaladin Smite Good pool detail), `apps/web/src/model/spellcasting.ts` (`CASTER_MODELS.antipaladin`), `apps/web/src/model/alignment.ts` (`CLASS_ALIGNMENT_RESTRICTIONS.antipaladin`). New tests: `packages/engine/test/{antipaladin,ninja,samurai}.test.ts`, plus antipaladin coverage appended to `apps/web/test/spellcasting.test.ts` and `apps/web/test/alignment.test.ts`. No `compute.ts`/`casterLevel.ts` changes needed (verified, not assumed) — none of the three classes is a full/arcane caster or diverges from paladin's existing (pre-existing-gap) CL exclusion.
+
+---
+
 ## Verification posture (all stages)
 
 `bun run typecheck` is the gate that must stay green. Engine tests are hand-computed fixtures per the convention (`packages/engine/test/`). Each stage adds at least: (a) a model-layer test for the new transition/logic, (b) a regression test asserting a doc without the new field produces byte-identical engine output, and (c) for engine-touching stages, a stacking/compute fixture verifying the new bonuses route through the change-application path correctly. Pipeline changes (Stage 1) regen data via `bun run data:build` and review the diff before committing.
