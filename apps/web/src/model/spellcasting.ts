@@ -478,6 +478,29 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     grantsAllCantrips: false,
     preparesFromClassList: true,
   },
+  summonerUnchained: {
+    preparation: "spontaneous",
+    ability: "cha",
+    // Summoner (Unchained)'s Spells per Day / Spells Known tables (PZO1128)
+    // are numerically identical to the base summoner's — see
+    // `SUMMONER_UNCHAINED_SPELLS_PER_DAY`/`_KNOWN`'s doc comment in
+    // `@pf1/engine` `tables.ts` — so its own `"summonerUnchained"`
+    // progression/knownProgression tags alias the summoner's tables under the
+    // hood, same posture as `oracle: sorcerer` above. Its SPELL LIST itself
+    // does differ (vendored separately as `refData.spellLists.summonerUnchained`
+    // — e.g. Haste/Slow moved from 2nd to 3rd level vs. the base summoner
+    // list), which `casterClassesOf`/`knownSpellsFor` already resolve
+    // correctly since both are keyed by classTag, not by progression.
+    progression: "summonerUnchained",
+    knownProgression: "summonerUnchained",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Summoners learn a fixed set of spells known at each level from the (very short) summoner spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. You can cast any spell you know by spending a slot of that level; orisons (cantrips) are cast at will once known. Summoners cap out at 6th-level spells. (The eidolon, life link, and the summoner's other companion-focused class features are a separate subsystem, not modeled here — same posture as the base summoner.)",
+    blurb:
+      "Spontaneous arcane caster: you know a limited set of spells drawn from the Unchained summoner list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
 };
 
 /** Returns the CasterModel for `tag`, or `undefined` if it is not in the registry. */

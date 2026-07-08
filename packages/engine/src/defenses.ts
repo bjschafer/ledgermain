@@ -177,9 +177,15 @@ function computeSr(
   };
 }
 
-/** Barbarian level, or 0 if the character has no barbarian levels. */
+/**
+ * Barbarian level (chained + Unchained summed — see
+ * `barbarianDamageReductionReplaced`'s doc comment for why summing rather
+ * than picking one tag), or 0 if the character has neither.
+ */
 function barbarianLevel(doc: CharacterDoc): number {
-  return doc.identity.classes.find((c) => c.tag === "barbarian")?.level ?? 0;
+  return doc.identity.classes
+    .filter((c) => c.tag === "barbarian" || c.tag === "barbarianUnchained")
+    .reduce((sum, c) => sum + c.level, 0);
 }
 
 /**

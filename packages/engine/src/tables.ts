@@ -223,7 +223,8 @@ export type SpellProgression =
   | "shaman"
   | "warpriest"
   | "bloodrager"
-  | "antipaladin";
+  | "antipaladin"
+  | "summonerUnchained";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -325,7 +326,8 @@ export type SpellKnownProgression =
   | "inquisitor"
   | "summoner"
   | "skald"
-  | "bloodrager";
+  | "bloodrager"
+  | "summonerUnchained";
 
 /**
  * Cleric base spells per day, indexed `[classLevel - 1][spellLevel]`. Clerics
@@ -468,6 +470,25 @@ const SKALD_SPELLS_PER_DAY = BARD_SPELLS_PER_DAY;
 const INQUISITOR_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
 const SUMMONER_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
 const SKALD_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
+
+/**
+ * Summoner (Unchained) base spells per day / spells known, indexed
+ * `[classLevel - 1][spellLevel]`. Pathfinder Unchained's summoner rewrite
+ * (PZO1128) replaces the eidolon's evolution-point system and several class
+ * features (Life Link, Bond Senses, Aspect, ...), but its "Spells per Day" /
+ * "Spells Known" tables are published numerically IDENTICAL to the base
+ * (chained) summoner's — verified against aonprd.com's "Summoner
+ * (Unchained)" class page, matching at every level 1-20 against
+ * `SUMMONER_SPELLS_PER_DAY`/`SUMMONER_SPELLS_KNOWN` (themselves an alias of
+ * the bard's tables, per the doc comment above). Reused rather than
+ * duplicated, same posture as `DRUID_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY`.
+ * What DOES differ between the two summoners is the SPELL LIST itself
+ * (vendored separately — `refData.spellLists.summonerUnchained` — e.g.
+ * Haste/Slow moved from 2nd to 3rd level); that's a data-level difference
+ * these shared per-day/known tables don't need to know about.
+ */
+const SUMMONER_UNCHAINED_SPELLS_PER_DAY = SUMMONER_SPELLS_PER_DAY;
+const SUMMONER_UNCHAINED_SPELLS_KNOWN = SUMMONER_SPELLS_KNOWN;
 
 /**
  * Arcanist base spells PER DAY (the slot pool spent to cast — sorcerer-shaped),
@@ -757,6 +778,7 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   // {@link PALADIN_RANGER_SPELLS_PER_DAY}, so reused rather than duplicated,
   // same posture as `DRUID_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY` above.
   antipaladin: PALADIN_RANGER_SPELLS_PER_DAY,
+  summonerUnchained: SUMMONER_UNCHAINED_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {
@@ -766,6 +788,7 @@ const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (numb
   summoner: SUMMONER_SPELLS_KNOWN,
   skald: SKALD_SPELLS_KNOWN,
   bloodrager: BLOODRAGER_SPELLS_KNOWN,
+  summonerUnchained: SUMMONER_UNCHAINED_SPELLS_KNOWN,
 };
 
 /**
@@ -1158,4 +1181,27 @@ export function weaponTrainingBonus(fighterLevel: number, tierIndex: number): nu
  */
 export function smiteGoodLabel(detail: SmiteEvilDetail): string {
   return `+${detail.attackBonus} atk, +${detail.damageBonus} dmg, +${detail.acBonus} AC vs. good`;
+}
+
+/* ---------------------------------------------- flurry of blows (unchained) */
+
+/**
+ * Monk (Unchained) Flurry of Blows display summary, clean-room from the
+ * published Pathfinder Unchained rules — a full rewrite of the chained
+ * monk's Flurry of Blows, NOT the same formula as {@link flurryOfBlowsLabel}:
+ * "the monk can make one additional attack at his highest base attack bonus"
+ * (1st level), stacking with haste-style bonus attacks, and "at 11th level, a
+ * monk can make an additional attack at his highest base attack bonus
+ * whenever he makes a flurry of blows" (a 2nd extra attack, also stacking).
+ * Both extra attacks are at the monk's TRUE base attack bonus — unlike the
+ * chained version, there is no -2 penalty and no "BAB = monk level" swap-in;
+ * this is mechanically closer to Haste's bonus attack than the chained
+ * Flurry. Display-only, same posture as {@link flurryOfBlowsLabel} — not
+ * wired into the live attacks/iteratives table.
+ */
+export function flurryOfBlowsUnchainedLabel(monkLevel: number): string {
+  if (monkLevel <= 0) return "";
+  const extraAttacks = monkLevel < 11 ? 1 : 2;
+  const plural = extraAttacks > 1 ? "s" : "";
+  return `${extraAttacks} extra attack${plural} at full BAB (no penalty)`;
 }

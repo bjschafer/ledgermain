@@ -69,6 +69,7 @@ export {
   WEAPON_TRAINING_LEVELS,
   weaponTrainingBonus,
   smiteGoodLabel,
+  flurryOfBlowsUnchainedLabel,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";

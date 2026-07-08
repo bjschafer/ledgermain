@@ -73,6 +73,12 @@ function featIdByName(refData: RefData): Map<string, string> {
  */
 const FEATURE_NAME_OVERRIDES: Record<string, string> = {
   "unarmed strike": "improved unarmed strike",
+  // Rogue (Unchained)'s "Finesse Training (UC)" grants Weapon Finesse as a
+  // bonus feat at 1st level (same `bonusFeats`-change-with-mismatched-name
+  // shape as Monk's Unarmed Strike above) — confirmed via the vendored
+  // feature's description text and its `grantsBuffs` UUID resolving to the
+  // "Weapon Finesse" feat.
+  "finesse training (uc)": "weapon finesse",
 };
 
 /** The feat name (lowercased, trimmed) a class feature name resolves to. */
@@ -327,6 +333,15 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
       if (!feature) continue;
       // Fixed feat grant, not a slot — handled by grantedFeats().
       if (byName.has(resolvedFeatureName(feature.name))) continue;
+      // Rogue (Unchained)'s "Rogue's Edge (UC)" — vendored-data bug (see
+      // IMPLEMENTATION_PLAN.md's Unchained-classes audit): its `changes[]`
+      // carries a `bonusFeats` formula (`floor(@class.unlevel / 5)`), but the
+      // published ability grants "skill unlock powers" for a chosen skill at
+      // 5th/10th/15th/20th level — nothing about bonus feats. Skill unlocks
+      // are a deferred, choice-bearing subsystem (not modeled elsewhere
+      // either), but this spurious count must not inflate the feat-slot
+      // budget. Excluded by name, same shape as the fixed-grant skip above.
+      if (feature.name.trim().toLowerCase() === "rogue's edge (uc)") continue;
       for (const ch of feature.changes ?? []) {
         if (ch.target !== "bonusFeats") continue;
         let value: number | null;

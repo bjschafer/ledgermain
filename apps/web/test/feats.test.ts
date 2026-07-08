@@ -280,6 +280,44 @@ describe("expectedFeatCount: Monk Bonus Feat (Unarmed Strike quirk fixed)", () =
   });
 });
 
+describe("expectedFeatCount: Rogue (Unchained) Finesse Training grant + Rogue's Edge (UC) bonusFeats bug excluded", () => {
+  // Finesse Training (UC) carries the same "bonusFeats change with a
+  // mismatched feature name" shape as Monk's Unarmed Strike above — its
+  // vendored `changes[]` entry (flat "1", target bonusFeats) represents the
+  // automatic Weapon Finesse grant every Unchained Rogue gets at 1st level.
+  // Fixed the same way, via `FEATURE_NAME_OVERRIDES`.
+  it("Rogue (Unchained) 1 is granted Weapon Finesse outright (via the Finesse Training (UC) -> Weapon Finesse override)", () => {
+    const doc = makeDoc({ classes: [{ tag: "rogueUnchained", level: 1 }], race: "Elf" });
+    const granted = grantedFeats(doc, ref);
+    expect(granted.map((g) => g.featName)).toEqual(["Weapon Finesse"]);
+    const finesseTraining = granted.find((g) => g.featureName === "Finesse Training (UC)");
+    expect(finesseTraining!.classTag).toBe("rogueUnchained");
+  });
+
+  it("Rogue (Unchained) 1 Elf → 1 base feat, no class bonus feats", () => {
+    const doc = makeDoc({ classes: [{ tag: "rogueUnchained", level: 1 }], race: "Elf" });
+    expect(expectedFeatCount(doc, ref)).toBe(1);
+  });
+
+  // Vendored-data bug (see IMPLEMENTATION_PLAN.md's Unchained-classes audit):
+  // "Rogue's Edge (UC)" (granted at 5th level) carries a `bonusFeats` change
+  // (`floor(@class.unlevel / 5)`), but the published ability grants "skill
+  // unlock powers" for a chosen skill — nothing about bonus feats. Before the
+  // fix, this would have inflated the budget by +1 at L5 (and further at
+  // L10/L15/L20). The un-inflated (SRD-correct) budget is asserted below.
+  it("Rogue (Unchained) 5 Elf → 3 base feats, Rogue's Edge (UC) contributes NO bonus-feat slots", () => {
+    const doc = makeDoc({ classes: [{ tag: "rogueUnchained", level: 5 }], race: "Elf" });
+    // base: ceil(5/2) = 3; class bonus feats: 0 (Rogue's Edge (UC) excluded).
+    expect(expectedFeatCount(doc, ref)).toBe(3);
+  });
+
+  it("Rogue (Unchained) 20 Elf → 10 base feats, still no class bonus feats at max level", () => {
+    const doc = makeDoc({ classes: [{ tag: "rogueUnchained", level: 20 }], race: "Elf" });
+    // base: ceil(20/2) = 10; without the fix this would be 10 + floor(20/5) = 14.
+    expect(expectedFeatCount(doc, ref)).toBe(10);
+  });
+});
+
 describe("expectedFeatCount: multiclass fighter + wizard bonus feats stack", () => {
   it("Fighter 2 / Wizard 5 Elf → base + fighter bonus + wizard slot bonus", () => {
     const doc = makeDoc({
