@@ -1617,3 +1617,118 @@ describe("compute: shaman L5 (human, no armor) — ACG full prepared-divine cast
     expect(sheet.skills.hea!.classSkill).toBe(true);
   });
 });
+
+describe("compute: warpriest L7 (human, no armor) — ACG wis prepared-divine caster with orisons", () => {
+  // Con 14 (mod +2) drives HP; Wis 16 (mod +3) drives spell DC.
+  const doc = makeDoc({
+    classes: [{ tag: "warpriest", level: 7 }],
+    abilities: { str: 10, dex: 10, con: 14, int: 10, wis: 16, cha: 10 },
+    skillRanks: { hea: 7, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +5 (3/4 medium progression: floor(7*3/4))", () => {
+    expect(sheet.bab).toBe(5);
+  });
+
+  it("saves: Fort +7 and Will +8 (good bases + ability mod), Ref +2 (poor)", () => {
+    expect(sheet.saves.fort.total).toBe(7); // base 5 (2 + floor(7/2)) + con mod 2
+    expect(sheet.saves.will.total).toBe(8); // base 5 (2 + floor(7/2)) + wis mod 3
+    expect(sheet.saves.ref.total).toBe(2); // base 2 (floor(7/3)) + dex mod 0
+  });
+
+  it("HP 52 (d8 HD: 8 max L1 + 5 avg * 6 more levels, +2 Con/level)", () => {
+    expect(sheet.hp.max).toBe(52);
+  });
+
+  it("2 + Int skill points/level, d8 HD, medium BAB, fort/will high + ref low (warpriest class def)", () => {
+    const warpriestEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "warpriest");
+    expect(warpriestEntry).toBeDefined();
+    expect(warpriestEntry![1].skillsPerLevel).toBe(2);
+    expect(warpriestEntry![1].hd).toBe(8);
+    expect(warpriestEntry![1].bab).toBe("med");
+    expect(warpriestEntry![1].saves).toEqual({ fort: "high", ref: "low", will: "high" });
+  });
+
+  it("heal (class skill) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.hea!.total).toBe(13); // 7 ranks + wis mod 3 + classSkill 3
+    expect(sheet.skills.hea!.classSkill).toBe(true);
+  });
+});
+
+describe("compute: hunter L7 (human, no armor) — ACG wis spontaneous divine caster", () => {
+  // Con 14 (mod +2) drives HP; Wis 16 (mod +3) drives spell DC/spells known.
+  const doc = makeDoc({
+    classes: [{ tag: "hunter", level: 7 }],
+    abilities: { str: 10, dex: 10, con: 14, int: 10, wis: 16, cha: 10 },
+    skillRanks: { sur: 7, han: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +5 (3/4 medium progression: floor(7*3/4))", () => {
+    expect(sheet.bab).toBe(5);
+  });
+
+  it("saves: Fort +7 and Ref +5 (good bases + ability mod), Will +5 (poor base + Wis)", () => {
+    expect(sheet.saves.fort.total).toBe(7); // base 5 (2 + floor(7/2)) + con mod 2
+    expect(sheet.saves.ref.total).toBe(5); // base 5 (2 + floor(7/2)) + dex mod 0
+    expect(sheet.saves.will.total).toBe(5); // base 2 (floor(7/3)) + wis mod 3
+  });
+
+  it("HP 52 (d8 HD: 8 max L1 + 5 avg * 6 more levels, +2 Con/level)", () => {
+    expect(sheet.hp.max).toBe(52);
+  });
+
+  it("6 + Int skill points/level, d8 HD, medium BAB, fort/ref high + will low (hunter class def)", () => {
+    const hunterEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "hunter");
+    expect(hunterEntry).toBeDefined();
+    expect(hunterEntry![1].skillsPerLevel).toBe(6);
+    expect(hunterEntry![1].hd).toBe(8);
+    expect(hunterEntry![1].bab).toBe("med");
+    expect(hunterEntry![1].saves).toEqual({ fort: "high", ref: "high", will: "low" });
+  });
+
+  it("survival (class skill) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.sur!.total).toBe(13); // 7 ranks + wis mod 3 + classSkill 3
+    expect(sheet.skills.sur!.classSkill).toBe(true);
+  });
+});
+
+describe("compute: bloodrager L4 (human, no armor) — ACG cha spontaneous arcane caster, casting starts here", () => {
+  // Con 14 (mod +2) drives HP; Cha 16 (mod +3) drives spell DC. Level 4 is
+  // the exact boundary at which bloodrager spellcasting first turns on.
+  const doc = makeDoc({
+    classes: [{ tag: "bloodrager", level: 4 }],
+    abilities: { str: 16, dex: 10, con: 14, int: 10, wis: 10, cha: 16 },
+    skillRanks: { int: 4, clm: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +4 (full progression: level)", () => {
+    expect(sheet.bab).toBe(4);
+  });
+
+  it("saves: Fort +6 (good base + Con), Ref +1 and Will +1 (poor)", () => {
+    expect(sheet.saves.fort.total).toBe(6); // base 4 (2 + floor(4/2)) + con mod 2
+    expect(sheet.saves.ref.total).toBe(1); // base 1 (floor(4/3)) + dex mod 0
+    expect(sheet.saves.will.total).toBe(1); // base 1 (floor(4/3)) + wis mod 0
+  });
+
+  it("HP 36 (d10 HD: 10 max L1 + 6 avg * 3 more levels, +2 Con/level)", () => {
+    expect(sheet.hp.max).toBe(36);
+  });
+
+  it("4 + Int skill points/level, d10 HD, high BAB, fort high + ref/will low (bloodrager class def)", () => {
+    const bloodragerEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "bloodrager");
+    expect(bloodragerEntry).toBeDefined();
+    expect(bloodragerEntry![1].skillsPerLevel).toBe(4);
+    expect(bloodragerEntry![1].hd).toBe(10);
+    expect(bloodragerEntry![1].bab).toBe("high");
+    expect(bloodragerEntry![1].saves).toEqual({ fort: "high", ref: "low", will: "low" });
+  });
+
+  it("intimidate (class skill) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.int!.total).toBe(10); // 4 ranks + cha mod 3 + classSkill 3
+    expect(sheet.skills.int!.classSkill).toBe(true);
+  });
+});

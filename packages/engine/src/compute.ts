@@ -385,8 +385,10 @@ function heaviestWornArmorType(doc: CharacterDoc): number {
  * (the vendored `ClassRef` carries no arcane/divine flag). This is the arcane
  * subset of `tables.ts`'s `SpellProgression` tags: wizard and sorcerer are
  * full/spontaneous arcane casters, bard is a spontaneous arcane caster, witch
- * (APG) is a full prepared-arcane caster; cleric/druid/paladin/ranger/shaman
- * are divine and never incur ASF at all. Summoner
+ * (APG) is a full prepared-arcane caster, and bloodrager (ACG) is a
+ * spontaneous arcane caster too (own spell list, cha-based);
+ * cleric/druid/paladin/ranger/shaman/warpriest/hunter are divine and never
+ * incur ASF at all. Summoner
  * and skald (both Cha-based spontaneous casters) are also arcane — inquisitor
  * (Wis-based) is divine and stays out of this set. Note: PF1 RAW actually
  * gives both summoner (light armor, no shield) and skald (light OR medium
@@ -404,6 +406,7 @@ const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set([
   "summoner",
   "skald",
   "witch",
+  "bloodrager",
 ]);
 
 /**
