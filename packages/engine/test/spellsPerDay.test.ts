@@ -484,3 +484,54 @@ describe("baseSpellsPerDay() — investigator reuses the alchemist extracts-per-
     expect(baseSpellsPerDay("investigator", 20, 7)).toBeNull();
   });
 });
+
+describe("baseSpellsPerDay()/baseSpellsKnown() — inquisitor, summoner, skald (bard-shaped)", () => {
+  // Inquisitor (APG, Wis), Summoner (APG, Cha), and Skald (ACG, Cha) are all
+  // 6-level-max spontaneous casters whose Spells per Day / Spells Known
+  // tables are numerically IDENTICAL to the bard's — verified against
+  // aonprd.com's live class pages and legacy.aonprd.com's static mirror, both
+  // matching exactly at every level 1-20 for all three classes and both
+  // tables (see tables.ts's INQUISITOR_SPELLS_PER_DAY/etc. comment). Spot
+  // checks at L1/L5/L10/L20 for each of the three "own" progression keys
+  // (which alias the bard tables under the hood, same posture as oracle
+  // reusing sorcerer above).
+  for (const tag of ["inquisitor", "summoner", "skald"] as const) {
+    it(`${tag}: L1 — 4 cantrips known, 2 first-level known, 1 first-level slot/day`, () => {
+      expect(baseSpellsKnown(tag, 1, 0)).toBe(4);
+      expect(baseSpellsKnown(tag, 1, 1)).toBe(2);
+      expect(baseSpellsPerDay(tag, 1, 0)).toBeNull(); // cantrips cast at will, no per-day slot
+      expect(baseSpellsPerDay(tag, 1, 1)).toBe(1);
+    });
+
+    it(`${tag}: L5 — 6 cantrips known, 4/3 known at 1st/2nd, 4/2 slots/day at 1st/2nd`, () => {
+      expect(baseSpellsKnown(tag, 5, 0)).toBe(6);
+      expect(baseSpellsKnown(tag, 5, 1)).toBe(4);
+      expect(baseSpellsKnown(tag, 5, 2)).toBe(3);
+      expect(baseSpellsPerDay(tag, 5, 1)).toBe(4);
+      expect(baseSpellsPerDay(tag, 5, 2)).toBe(2);
+    });
+
+    it(`${tag}: L10 — 5/5/4/2 known at 1st-4th, 5/4/3/1 slots/day at 1st-4th`, () => {
+      expect(baseSpellsKnown(tag, 10, 1)).toBe(5);
+      expect(baseSpellsKnown(tag, 10, 2)).toBe(5);
+      expect(baseSpellsKnown(tag, 10, 3)).toBe(4);
+      expect(baseSpellsKnown(tag, 10, 4)).toBe(2);
+      expect(baseSpellsPerDay(tag, 10, 1)).toBe(5);
+      expect(baseSpellsPerDay(tag, 10, 2)).toBe(4);
+      expect(baseSpellsPerDay(tag, 10, 3)).toBe(3);
+      expect(baseSpellsPerDay(tag, 10, 4)).toBe(1);
+    });
+
+    it(`${tag}: L20 — 6 known at every level up to 4th, 5 at 5th/6th; 5 slots/day at every level 1-6`, () => {
+      for (const lvl of [0, 1, 2, 3, 4]) {
+        expect(baseSpellsKnown(tag, 20, lvl)).toBe(6);
+      }
+      expect(baseSpellsKnown(tag, 20, 5)).toBe(5);
+      expect(baseSpellsKnown(tag, 20, 6)).toBe(5);
+      for (let lvl = 1; lvl <= 6; lvl++) {
+        expect(baseSpellsPerDay(tag, 20, lvl)).toBe(5);
+      }
+      expect(baseSpellsPerDay(tag, 20, 7)).toBeNull(); // caps at 6th-level spells
+    });
+  }
+});

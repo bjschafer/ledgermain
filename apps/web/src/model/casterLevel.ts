@@ -22,6 +22,9 @@ const FULL_CASTER_TAGS = new Set([
   "magus",
   "alchemist",
   "investigator",
+  "inquisitor",
+  "summoner",
+  "skald",
 ]);
 
 /**

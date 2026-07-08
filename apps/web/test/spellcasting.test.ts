@@ -313,6 +313,82 @@ describe("mysterySpellsKnown()", () => {
   });
 });
 
+describe("casterModelFor() — inquisitor, summoner, skald (spontaneous, bard-shaped tables)", () => {
+  it("inquisitor: spontaneous/wis, own progression tag, cantrips not granted", () => {
+    const m = casterModelFor("inquisitor");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("wis");
+    expect(m!.progression).toBe("inquisitor");
+    expect(m!.knownProgression).toBe("inquisitor");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("summoner: spontaneous/cha, own progression tag, cantrips not granted", () => {
+    const m = casterModelFor("summoner");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("cha");
+    expect(m!.progression).toBe("summoner");
+    expect(m!.knownProgression).toBe("summoner");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("skald: spontaneous/cha, own progression tag, cantrips not granted", () => {
+    const m = casterModelFor("skald");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("cha");
+    expect(m!.progression).toBe("skald");
+    expect(m!.knownProgression).toBe("skald");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("L1 known-spells limits match bard's shape for all three (4 cantrips, 2 first-level)", () => {
+    for (const tag of ["inquisitor", "summoner", "skald"]) {
+      const m = casterModelFor(tag)!;
+      const limits = spellsKnownLimitsByLevel(m, 1);
+      expect(limits.find((l) => l.level === 0)!.limit).toBe(4);
+      expect(limits.find((l) => l.level === 1)!.limit).toBe(2);
+      expect(limits.find((l) => l.level === 2)).toBeUndefined();
+    }
+  });
+
+  it("L10 per-day slots + known limits match bard's shape for all three", () => {
+    for (const tag of ["inquisitor", "summoner", "skald"]) {
+      const m = casterModelFor(tag)!;
+      const slots = new Map(spellSlotsByLevel(m, 10, 0).map((s) => [s.level, s.base]));
+      expect(slots.get(1)).toBe(5);
+      expect(slots.get(2)).toBe(4);
+      expect(slots.get(3)).toBe(3);
+      expect(slots.get(4)).toBe(1);
+      const limits = new Map(spellsKnownLimitsByLevel(m, 10).map((l) => [l.level, l.limit]));
+      expect(limits.get(1)).toBe(5);
+      expect(limits.get(2)).toBe(5);
+      expect(limits.get(3)).toBe(4);
+      expect(limits.get(4)).toBe(2);
+    }
+  });
+
+  it("a high casting-ability score adds bonus per-day slots on top of the base table (Wis +3, L4 inquisitor)", () => {
+    const m = casterModelFor("inquisitor")!;
+    const slots = new Map(spellSlotsByLevel(m, 4, 3).map((s) => [s.level, s]));
+    expect(slots.get(1)!.base).toBe(3);
+    expect(slots.get(1)!.bonus).toBe(1); // floor((3-1)/4)+1 = 1
+    expect(slots.get(1)!.total).toBe(4);
+  });
+
+  it("caps at 6th-level spells; level 0 is absent from accessibleSpellLevels (cantrips are known/cast-at-will, not a per-day slot, same as bard)", () => {
+    for (const tag of ["inquisitor", "summoner", "skald"]) {
+      const m = casterModelFor(tag)!;
+      expect(accessibleSpellLevels(m, 20)).toEqual([1, 2, 3, 4, 5, 6]);
+    }
+  });
+});
+
 describe("curseSpellsKnown()", () => {
   it("Haunted grants Mage Hand + Ghost Sound at 1st level", () => {
     const spells = curseSpellsKnown(ref, "haunted", 1);

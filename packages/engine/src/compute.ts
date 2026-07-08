@@ -385,9 +385,22 @@ function heaviestWornArmorType(doc: CharacterDoc): number {
  * (the vendored `ClassRef` carries no arcane/divine flag). This is the arcane
  * subset of `tables.ts`'s `SpellProgression` tags: wizard and sorcerer are
  * full/spontaneous arcane casters, bard is a spontaneous arcane caster;
- * cleric/druid/paladin/ranger are divine and never incur ASF at all.
+ * cleric/druid/paladin/ranger are divine and never incur ASF at all. Summoner
+ * and skald (both Cha-based spontaneous casters) are also arcane — inquisitor
+ * (Wis-based) is divine and stays out of this set. Note: PF1 RAW actually
+ * gives both summoner (light armor, no shield) and skald (light OR medium
+ * armor, even with a shield) a bard-shaped ASF exemption of their own — not
+ * modeled here; `computeArcaneSpellFailure`'s `bardExempt` check below is
+ * still bard-only, so a summoner/skald-only character will show ASF from
+ * light/medium armor that RAW says shouldn't apply (tracked as a follow-up).
  */
-const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set(["wizard", "sorcerer", "bard"]);
+const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set([
+  "wizard",
+  "sorcerer",
+  "bard",
+  "summoner",
+  "skald",
+]);
 
 /**
  * Total arcane spell failure chance (%) from equipped armor + shields (issue

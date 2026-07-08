@@ -33,6 +33,15 @@
  * equivalent "Formula Book") — the self-targeting/infusion/shareable-with-
  * allies nuances of how an extract is actually consumed are display-only
  * prose, not modeled as distinct mechanics.
+ * Inquisitor (APG, Wis), Summoner (APG, Cha), and Skald (ACG, Cha) are three
+ * more 6-level-max spontaneous casters, each with 0-level spells cast at will
+ * once known (`grantsAllCantrips: false`, same as sorcerer/bard/oracle). Their
+ * own `progression`/`knownProgression` tags (`"inquisitor"`/`"summoner"`/
+ * `"skald"`) resolve to the bard's tables under the hood (`@pf1/engine`
+ * `tables.ts` — verified numerically identical to bard's at every level, not
+ * just similarly-shaped). Judgments (inquisitor), eidolon (summoner), and
+ * raging song (skald) are separate subsystems, out of scope here — only the
+ * spellcasting model is built.
  */
 
 import {
@@ -290,6 +299,62 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Investigators begin play with 2 first-level formulae of their choice, plus a number of additional formulae equal to their Intelligence modifier. At each new investigator level, they gain one new formula of any level they can create; formulae can also be added by studying a wizard's spellbook, or by studying another investigator's or an alchemist's formula book (and vice versa). Investigators have no 0-level extracts at all.",
     blurb:
       "Prepared caster: your formula book holds every extract formula you know; prepare a subset each day like a wizard preparing spells. Modeled here as an ordinary prepared caster — extracts are physically brewed, self-targeting/shareable, and consumed as items rather than cast directly, none of which is modeled beyond the per-day preparation count.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  inquisitor: {
+    preparation: "spontaneous",
+    ability: "wis",
+    // Inquisitor's Spells per Day / Spells Known tables (APG) are numerically
+    // identical to the bard's (verified against aonprd.com and
+    // legacy.aonprd.com: both match at every spot-checked level, 1-20,
+    // including the all-5s/all-6s L20 shape), so the bard progression tables
+    // are reused rather than duplicated — same posture as `oracle: sorcerer`
+    // above.
+    progression: "inquisitor",
+    knownProgression: "inquisitor",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Inquisitors learn a fixed set of spells known at each level from the inquisitor spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. You can cast any spell you know by spending a slot of that level; orisons (cantrips) are cast at will once known. Inquisitors cap out at 6th-level spells. (Judgments, bane, and the other inquisitor class features are separate subsystems, not modeled here.)",
+    blurb:
+      "Spontaneous divine caster: you know a limited set of spells drawn from the inquisitor list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  summoner: {
+    preparation: "spontaneous",
+    ability: "cha",
+    // Summoner's Spells per Day / Spells Known tables (APG) are numerically
+    // identical to the bard's (verified against aonprd.com and
+    // legacy.aonprd.com, both matching exactly), so the bard progression
+    // tables are reused rather than duplicated — same posture as
+    // `oracle: sorcerer` above.
+    progression: "summoner",
+    knownProgression: "summoner",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Summoners learn a fixed set of spells known at each level from the (very short) summoner spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. You can cast any spell you know by spending a slot of that level; orisons (cantrips) are cast at will once known. Summoners cap out at 6th-level spells. (The eidolon, life link, and the summoner's other companion-focused class features are a separate subsystem, not modeled here.)",
+    blurb:
+      "Spontaneous arcane caster: you know a limited set of spells drawn from the summoner list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  skald: {
+    preparation: "spontaneous",
+    ability: "cha",
+    // Skald's Spells per Day / Spells Known tables (ACG) are numerically
+    // identical to the bard's — unsurprising, since a skald casts "arcane
+    // spells drawn from the bard spell list" (verified against aonprd.com and
+    // legacy.aonprd.com, both matching exactly) — so the bard progression
+    // tables are reused rather than duplicated, same posture as
+    // `oracle: sorcerer` above.
+    progression: "skald",
+    knownProgression: "skald",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Skalds learn a fixed set of spells known at each level from the bard spell list (see spells-known table), starting with 4 cantrips and 2 1st-level spells at 1st level. You can cast any spell you know by spending a slot of that level; cantrips are cast at will once known. Skalds cap out at 6th-level spells.",
+    blurb:
+      "Spontaneous arcane caster: you know a limited set of spells drawn from the bard list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. (Raging song — the skald's rage-powered bardic-performance-alike — is a separate subsystem and not part of this casting model.)",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
