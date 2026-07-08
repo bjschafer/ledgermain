@@ -66,6 +66,28 @@
  * until 4th level and caps at 4th-level spells (own spells-per-day/known
  * tables, both null below level 4) — bloodline bonus spells and bloodrage
  * are separate class features not modeled here.
+ * Mesmerist (Cha), Occultist (Int), and Spiritualist (Wis) (Occult
+ * Adventures) are three more 6-level-max spontaneous PSYCHIC casters (own
+ * spell lists; psychic magic is NOT arcane, so none of the three incur
+ * arcane spell failure and none are in `compute.ts`'s `ARCANE_CASTER_TAGS`).
+ * Mesmerist's and spiritualist's Spells per Day / Spells Known tables, and
+ * occultist's Spells per Day table, are numerically identical to the bard's
+ * (verified against aonprd.com's live class pages, all 20 rows) — reused via
+ * `tables.ts`'s `MESMERIST_SPELLS_PER_DAY = BARD_SPELLS_PER_DAY`-style
+ * aliases, same posture as `oracle: progression: "sorcerer"` above.
+ * Occultist is the one exception to every other spontaneous model here: it
+ * has NO `knownProgression` at all, because the SRD publishes no generic
+ * "Spells Known" table for it — an occultist's known spells are instead
+ * granted entirely by her chosen implement schools (one spell per accessible
+ * spell level per school), a subsystem that is NOT modeled (implements,
+ * resonant powers, and focus powers — see `CASTER_MODELS.occultist`'s own
+ * doc comment). Mesmerist Tricks (a resource pool) and Consummate Liar (a
+ * flat Bluff bonus) ride the generic vendored `uses.maxFormula`/`changes[]`
+ * pipeline for free; Painful Stare and Hypnotic Stare are hand-authored
+ * display details in `tables.ts` (`painfulStareLabel`/`hypnoticStareLabel`,
+ * wired into `resolveClassFeatures` in `packages/engine/src/archetypes.ts`).
+ * The spiritualist's Phantom (an eidolon-like companion) is NOT modeled —
+ * same deferred posture as the summoner's eidolon.
  */
 
 import {
@@ -498,6 +520,73 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
       "Summoners learn a fixed set of spells known at each level from the (very short) summoner spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. You can cast any spell you know by spending a slot of that level; orisons (cantrips) are cast at will once known. Summoners cap out at 6th-level spells. (The eidolon, life link, and the summoner's other companion-focused class features are a separate subsystem, not modeled here — same posture as the base summoner.)",
     blurb:
       "Spontaneous arcane caster: you know a limited set of spells drawn from the Unchained summoner list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  mesmerist: {
+    preparation: "spontaneous",
+    ability: "cha",
+    // Mesmerist's Spells per Day / Spells Known tables (Occult Adventures)
+    // are numerically identical to the bard's (verified against aonprd.com,
+    // all 20 rows for both tables), so the bard progression tables are
+    // reused rather than duplicated — same posture as
+    // inquisitor/summoner/skald/hunter above.
+    progression: "mesmerist",
+    knownProgression: "mesmerist",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Mesmerists learn a fixed set of spells known at each level from the mesmerist spell list (see spells-known table), starting with 4 knacks (0-level spells) and 2 first-level spells at 1st level. You can cast any spell you know by spending a slot of that level; knacks are cast at will once known. Mesmerists cap out at 6th-level spells. (Mesmerist Tricks — a resource pool — and Consummate Liar and Painful Stare — display-only bonuses — are separate class features; which specific tricks are implanted is not modeled, same posture as other prose-only, choice-bearing subsystems in this engine.)",
+    blurb:
+      "Spontaneous psychic caster: you know a limited set of spells drawn from the mesmerist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane — no arcane spell failure applies.",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  occultist: {
+    preparation: "spontaneous",
+    ability: "int",
+    // Occultist's Spells per Day table (Occult Adventures) is numerically
+    // identical to the bard's (verified against aonprd.com, all 20 rows) —
+    // same posture as hunter's direct bard-table reuse above. UNLIKE every
+    // other spontaneous model in this registry, occultist deliberately has
+    // NO `knownProgression`: the SRD publishes no generic "Spells Known"
+    // table for this class at all. An occultist's spells known are instead
+    // granted entirely by her implement schools (two chosen at 1st level,
+    // one more at 2nd level and every 4 levels thereafter, to a maximum of
+    // seven; each school grants one spell per accessible spell level) — a
+    // real, vendored-but-unlinked subsystem (8 "*-resonant-school"
+    // class-abilities entries exist in the pipeline's raw cache but are not
+    // referenced from the Occultist class's own feature grants, so wiring an
+    // implement-school picker + resonant/focus powers is nontrivial and is
+    // deliberately NOT built here, same posture as the summoner's eidolon).
+    // Leaving `knownProgression` unset makes the known-spell picker simply
+    // unbounded (no advisory cap enforced) rather than inventing a fake
+    // table — `spellsKnownLimitsByLevel` already handles a missing
+    // `knownProgression` gracefully (returns `[]`).
+    progression: "occultist",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "An occultist's spells known are governed by her implement schools (not modeled here, so no known-spell cap is enforced) — add spells to your known list according to your implement selections. She gains two implement schools at 1st level, a further school at 2nd level and every 4 levels thereafter (to a maximum of seven), each granting one spell of every spell level she can cast. Knacks (0-level spells) are likewise granted per implement school, not tracked separately. Mental Focus (a resource pool spent to activate focus powers) rides the generic per-day pool pipeline; implements, resonant powers, and focus powers themselves are a separate subsystem, not modeled here.",
+    blurb:
+      "Spontaneous psychic caster: casts spells known from her implement schools by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane — no arcane spell failure applies. (Implements, resonant powers, and focus powers are a separate subsystem, not modeled here.)",
+    grantsAllCantrips: false,
+    preparesFromClassList: false,
+  },
+  spiritualist: {
+    preparation: "spontaneous",
+    ability: "wis",
+    // Spiritualist's Spells per Day / Spells Known tables (Occult
+    // Adventures) are numerically identical to the bard's (verified against
+    // aonprd.com, all 20 rows for both tables) — same posture as
+    // inquisitor/summoner/skald/hunter/mesmerist above. Note the governing
+    // ability is Wisdom, not Charisma — unlike most other 6-level
+    // spontaneous casters in this registry.
+    progression: "spiritualist",
+    knownProgression: "spiritualist",
+    knownLabel: "Spells Known",
+    learnGuidance:
+      "Spiritualists learn a fixed set of spells known at each level from the spiritualist spell list (see spells-known table), starting with 4 knacks (0-level spells) and 2 first-level spells at 1st level. You can cast any spell you know by spending a slot of that level; knacks are cast at will once known. Spiritualists cap out at 6th-level spells. (The phantom — the spiritualist's eidolon-like companion — is a separate subsystem, not modeled here, same posture as the summoner's eidolon; the engine's familiar/animal-companion infrastructure — packages/engine/src/familiar.ts and companion.ts — is the likely future implementation path.)",
+    blurb:
+      "Spontaneous psychic caster: you know a limited set of spells drawn from the spiritualist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane — no arcane spell failure applies.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },

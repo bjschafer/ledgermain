@@ -36,6 +36,8 @@ import {
   flurryOfBlowsLabel,
   barbarianDamageReduction,
   flurryOfBlowsUnchainedLabel,
+  painfulStareLabel,
+  hypnoticStareLabel,
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 
@@ -638,6 +640,14 @@ export function resolveClassFeatures(
       grant.name === "Sneak Attack (UC)"
     ) {
       detail = sneakAttackDice(classLevel).diceLabel;
+    } else if (detail === undefined && classTag === "mesmerist" && grant.name === "Painful Stare") {
+      detail = painfulStareLabel(classLevel);
+    } else if (
+      detail === undefined &&
+      classTag === "mesmerist" &&
+      grant.name === "Hypnotic Stare"
+    ) {
+      detail = hypnoticStareLabel(classLevel);
     }
     classFeatures.push({
       level: grant.level,

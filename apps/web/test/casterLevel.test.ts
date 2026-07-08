@@ -49,4 +49,13 @@ describe("casterLevel", () => {
     ).toBe(1);
     expect(casterLevel(docWith([{ tag: "fighter", level: 20 }]) as CharacterDoc)).toBe(0);
   });
+
+  it("Occult Adventures psychic casters (mesmerist/occultist/spiritualist) cast starting at 1st level, CL = class level", () => {
+    expect(casterLevelForClass("mesmerist", 7)).toBe(7);
+    expect(casterLevelForClass("occultist", 7)).toBe(7);
+    expect(casterLevelForClass("spiritualist", 7)).toBe(7);
+    expect(isCasterTag("mesmerist")).toBe(true);
+    expect(isCasterTag("occultist")).toBe(true);
+    expect(isCasterTag("spiritualist")).toBe(true);
+  });
 });

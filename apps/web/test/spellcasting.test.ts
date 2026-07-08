@@ -6,6 +6,7 @@ import {
   accessibleSpellLevels,
   bloodlineSpellsKnown,
   bonusSpellsForLevel,
+  casterClassesOf,
   casterModelFor,
   concentrationDC,
   curseSpellsKnown,
@@ -665,5 +666,93 @@ describe("casterModelFor() — antipaladin (mirrors paladin)", () => {
   it("has a vendored spell list (antipaladin) distinct from paladin's", () => {
     expect(ref.spellLists["antipaladin"]).toBeDefined();
     expect(ref.spellLists["antipaladin"]).not.toBe(ref.spellLists["paladin"]);
+  });
+});
+
+describe("casterModelFor() — mesmerist, occultist, spiritualist (Occult Adventures, psychic, bard-shaped)", () => {
+  it("mesmerist: spontaneous/cha, own progression tag, cantrips (knacks) not granted for free", () => {
+    const m = casterModelFor("mesmerist");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("cha");
+    expect(m!.progression).toBe("mesmerist");
+    expect(m!.knownProgression).toBe("mesmerist");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("occultist: spontaneous/int, own progression tag, NO knownProgression (implement-gated known list)", () => {
+    const m = casterModelFor("occultist");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("int");
+    expect(m!.progression).toBe("occultist");
+    expect(m!.knownProgression).toBeUndefined();
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("spiritualist: spontaneous/wis (not cha, unlike most spontaneous casters here), own progression tag", () => {
+    const m = casterModelFor("spiritualist");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("spontaneous");
+    expect(m!.ability).toBe("wis");
+    expect(m!.progression).toBe("spiritualist");
+    expect(m!.knownProgression).toBe("spiritualist");
+    expect(m!.grantsAllCantrips).toBe(false);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("L1 known-spells limits match bard's shape for mesmerist/spiritualist (4 knacks, 2 first-level)", () => {
+    for (const tag of ["mesmerist", "spiritualist"]) {
+      const m = casterModelFor(tag)!;
+      const limits = spellsKnownLimitsByLevel(m, 1);
+      expect(limits.find((l) => l.level === 0)!.limit).toBe(4);
+      expect(limits.find((l) => l.level === 1)!.limit).toBe(2);
+      expect(limits.find((l) => l.level === 2)).toBeUndefined();
+    }
+  });
+
+  it("occultist has no known-spell limits at any level (no knownProgression set)", () => {
+    const m = casterModelFor("occultist")!;
+    expect(spellsKnownLimitsByLevel(m, 1)).toEqual([]);
+    expect(spellsKnownLimitsByLevel(m, 20)).toEqual([]);
+  });
+
+  it("L10 per-day slots + known limits match bard's shape for all three", () => {
+    for (const tag of ["mesmerist", "occultist", "spiritualist"]) {
+      const m = casterModelFor(tag)!;
+      const slots = new Map(spellSlotsByLevel(m, 10, 0).map((s) => [s.level, s.base]));
+      expect(slots.get(1)).toBe(5);
+      expect(slots.get(2)).toBe(4);
+      expect(slots.get(3)).toBe(3);
+      expect(slots.get(4)).toBe(1);
+    }
+    for (const tag of ["mesmerist", "spiritualist"]) {
+      const m = casterModelFor(tag)!;
+      const limits = new Map(spellsKnownLimitsByLevel(m, 10).map((l) => [l.level, l.limit]));
+      expect(limits.get(1)).toBe(5);
+      expect(limits.get(2)).toBe(5);
+      expect(limits.get(3)).toBe(4);
+      expect(limits.get(4)).toBe(2);
+    }
+  });
+
+  it("caps at 6th-level spells for all three; level 0 is absent from accessibleSpellLevels", () => {
+    for (const tag of ["mesmerist", "occultist", "spiritualist"]) {
+      const m = casterModelFor(tag)!;
+      expect(accessibleSpellLevels(m, 20)).toEqual([1, 2, 3, 4, 5, 6]);
+    }
+  });
+
+  it("each class appears in the builder's caster flow: casterClassesOf recognises it via its vendored spell list", () => {
+    for (const tag of ["mesmerist", "occultist", "spiritualist"]) {
+      const doc = {
+        identity: { name: "Test", race: "", classes: [{ tag, level: 5 }] },
+      } as unknown as Parameters<typeof casterClassesOf>[0];
+      expect(casterClassesOf(doc, ref)).toEqual([{ tag, level: 5 }]);
+      expect(ref.spellLists[tag]).toBeDefined();
+      expect(Object.keys(ref.spellLists[tag]!).length).toBeGreaterThan(0);
+    }
   });
 });

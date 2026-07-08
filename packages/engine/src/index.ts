@@ -70,6 +70,10 @@ export {
   weaponTrainingBonus,
   smiteGoodLabel,
   flurryOfBlowsUnchainedLabel,
+  painfulStareBonus,
+  painfulStareLabel,
+  hypnoticStarePenalty,
+  hypnoticStareLabel,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";

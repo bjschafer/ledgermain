@@ -30,6 +30,9 @@ const FULL_CASTER_TAGS = new Set([
   "shaman",
   "warpriest",
   "hunter",
+  "mesmerist",
+  "occultist",
+  "spiritualist",
 ]);
 
 /**
@@ -55,6 +58,11 @@ const FULL_CASTER_TAGS = new Set([
  * posture as paladin/ranger, whose CL genuinely does diverge) is the
  * conservative choice until this module grows a level-gated override shape;
  * a future fix should NOT copy paladin/ranger's `-3` formula for bloodrager.
+ *
+ * Mesmerist, occultist, and spiritualist (Occult Adventures) all cast psychic
+ * spells starting at 1st level with CL equal to class level throughout (no
+ * "-3"-style divergence — verified on aonprd.com, same as warpriest/hunter
+ * above), so they're plain members of `FULL_CASTER_TAGS` too.
  */
 export function casterLevelForClass(tag: string, classLevel: number): number {
   if (!FULL_CASTER_TAGS.has(tag)) return 0;
