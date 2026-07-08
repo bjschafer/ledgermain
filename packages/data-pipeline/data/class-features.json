@@ -3228,7 +3228,7 @@
     "subType": "classFeat",
     "tag": "panache",
     "uses": {
-      "maxFormula": "@abilities.cha.mod",
+      "maxFormula": "max(1, @abilities.cha.mod)",
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.LPAbzynGlOwYcGx7"
@@ -3865,7 +3865,7 @@
     "subType": "classFeat",
     "tag": "grit",
     "uses": {
-      "maxFormula": "@abilities.wis.mod",
+      "maxFormula": "max(1, @abilities.wis.mod)",
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.Rh4www7gtV7wvUzg"

@@ -38,7 +38,7 @@ import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
 import { transformRace } from "./transform/races.js";
 import { transformSpell } from "./transform/spells.js";
-import { resolveBloodlineSupplements } from "./supplements.js";
+import { applyClassFeatureUsesSupplements, resolveBloodlineSupplements } from "./supplements.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { readCsv } from "./util/csv.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
@@ -142,6 +142,7 @@ export function normalize(opts: NormalizeOptions): {
     const pf = classAbilitiesById.get(id);
     if (pf) classFeatures.push(transformClassFeature(pf.doc, resolveUuid));
   }
+  applyClassFeatureUsesSupplements(classFeatures);
   const classFeaturesById = byId(classFeatures);
 
   const classes: Class[] = selectedClassDocs.map((d) =>

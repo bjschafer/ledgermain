@@ -62,7 +62,24 @@ export const CLASS_ALIGNMENT_RESTRICTIONS: Record<string, ClassAlignmentRestrict
     allowed: ["LN", "NG", "N", "CN", "NE"],
     exFlavor: "A druid who ceases to be neutral loses all druid spells and abilities until atoned.",
   },
+  shifter: {
+    // ACG: "Any neutral", same restriction shape as druid (a shifter is a
+    // druid-derived class) — must have a neutral component; excludes the four
+    // extreme alignments LG/CG/LE/CE.
+    allowed: ["LN", "NG", "N", "CN", "NE"],
+    exFlavor:
+      "A shifter who ceases to revere nature, changes to a prohibited alignment, or teaches Druidic to a non-druid/non-shifter loses all her supernatural abilities.",
+  },
 };
+
+/**
+ * The seven non-caster classes added to the vendored data slice alongside
+ * shifter (cavalier, gunslinger, brawler, slayer, swashbuckler, vigilante)
+ * are all "Any" per their class descriptions (Advanced Class Guide /
+ * Ultimate Combat / Ultimate Intrigue) — verified against aonprd.com and
+ * intentionally absent from `CLASS_ALIGNMENT_RESTRICTIONS` above, same as
+ * fighter/rogue/wizard/etc.
+ */
 
 export interface ClassAlignmentWarning {
   classTag: string;

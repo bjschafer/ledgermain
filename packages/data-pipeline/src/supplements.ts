@@ -21,7 +21,7 @@
  * learnedAt.bloodline" invariants — see `packages/data-pipeline/test/refdata.test.ts`.
  */
 
-import type { SpellList } from "@pf1/schema";
+import type { ClassFeature, SpellList } from "@pf1/schema";
 
 /**
  * Supplemental bonus-spell lists keyed by bloodline tag, then by spell level
@@ -77,4 +77,39 @@ export function resolveBloodlineSupplements(
     out[tag] = list;
   }
   return out;
+}
+
+/**
+ * Hand-authored fixes for vendored `ClassFeature.uses.maxFormula` values that
+ * omit a RAW "minimum 1" floor, keyed by feature **name** (both are unique in
+ * the vendored slice). Grit (gunslinger, Ultimate Combat p. 9) and Panache
+ * (swashbuckler, Advanced Class Guide p. 16) are each RAW "equal to her
+ * Wisdom/Charisma modifier (minimum 1)", but the vendored formula is a bare
+ * `@abilities.wis.mod` / `@abilities.cha.mod` — for a character with a 0 or
+ * negative modifier this evaluates to <= 0, and `deriveResourcePools` drops
+ * any pool whose max evaluates to <= 0 entirely (no pool at all, instead of
+ * RAW's 1). Compare `Arcane Pool` / `Inspiration`, whose vendored formulas
+ * already bake in an equivalent `max(1, ...)` floor — this supplement brings
+ * Grit/Panache in line with that existing pattern. Applied unconditionally
+ * (unlike the bloodline-spell-list supplement above, this isn't a "fill only
+ * if missing" gap-fill — it corrects an existing-but-incomplete formula).
+ */
+export const SUPPLEMENTAL_CLASS_FEATURE_USES_MAX_FORMULA: Record<string, string> = {
+  Grit: "max(1, @abilities.wis.mod)",
+  Panache: "max(1, @abilities.cha.mod)",
+};
+
+/**
+ * Apply `SUPPLEMENTAL_CLASS_FEATURE_USES_MAX_FORMULA` in place to a list of
+ * normalized class features (mutates `uses.maxFormula` only, on the matching
+ * feature's own `uses` object — never invents a `uses` block where none
+ * exists).
+ */
+export function applyClassFeatureUsesSupplements(features: ClassFeature[]): void {
+  for (const feature of features) {
+    const formula = SUPPLEMENTAL_CLASS_FEATURE_USES_MAX_FORMULA[feature.name];
+    if (formula && feature.uses) {
+      feature.uses = { ...feature.uses, maxFormula: formula };
+    }
+  }
 }
