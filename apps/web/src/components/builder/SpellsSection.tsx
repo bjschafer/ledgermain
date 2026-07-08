@@ -9,6 +9,7 @@ import {
   casterClassesOf,
   casterModelFor,
   curseSpellsKnown,
+  disciplineSpellsKnown,
   grantedCantrips,
   knownSpellsFor,
   mysterySpellsKnown,
@@ -120,6 +121,14 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
       ...curseSpellsKnown(refData, doc.build.oracleCurse, classLevel),
     ];
   }, [casterTag, refData, doc.build.oracleMystery, doc.build.oracleCurse, classLevel]);
+
+  // Psychic discipline bonus spells known: same "auto-granted, read-only,
+  // exempt from the cap" treatment as bloodlineEntries/mysteryEntries above.
+  // See model/spellcasting.disciplineSpellsKnown.
+  const disciplineEntries = useMemo<SpellEntry[]>(() => {
+    if (casterTag !== "psychic") return [];
+    return disciplineSpellsKnown(refData, doc.build.psychicDiscipline, classLevel);
+  }, [casterTag, refData, doc.build.psychicDiscipline, classLevel]);
 
   const preparesFromClassList = !!model?.preparesFromClassList;
 
@@ -380,6 +389,15 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
         {/* Oracle mystery + curse bonus spells: read-only, auto-granted, exempt from the known cap. */}
         {mysteryEntries.length > 0 && (
           <MysterySpellsBlock entries={mysteryEntries} refData={refData} abilityMod={abilityMod} />
+        )}
+
+        {/* Psychic discipline bonus spells: read-only, auto-granted, exempt from the known cap. */}
+        {disciplineEntries.length > 0 && (
+          <DisciplineSpellsBlock
+            entries={disciplineEntries}
+            refData={refData}
+            abilityMod={abilityMod}
+          />
         )}
 
         {preparesFromClassList ? (
@@ -817,6 +835,77 @@ function MysterySpellsBlock({
                     </div>
                     {spellData && (
                       <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+    </div>
+  );
+}
+
+/**
+ * Psychic discipline bonus spells known: same "auto-granted, read-only,
+ * exempt from the cap" treatment as `MysterySpellsBlock` above — one block
+ * for the chosen discipline's 9 bonus spells (unlocked at psychic level 1,
+ * 4, 6, ..., 18). Reuses the mystery block's styling classes; the per-group
+ * heading shows the PSYCHIC level that unlocked the spell (the `SpellDetail`
+ * DC line uses the spell's own level).
+ */
+function DisciplineSpellsBlock({
+  entries,
+  refData,
+  abilityMod,
+}: {
+  entries: SpellEntry[];
+  refData: RefData;
+  abilityMod: number;
+}) {
+  const [collapsed, toggle] = useCollapsed("discipline-spells", true);
+  const byLevel = new Map<number, SpellEntry[]>();
+  for (const e of entries) {
+    (byLevel.get(e.level) ?? byLevel.set(e.level, []).get(e.level)!).push(e);
+  }
+  const levels = [...byLevel.keys()].sort((a, b) => a - b);
+
+  return (
+    <div className="spell-level-group is-granted is-bloodline">
+      <div
+        className="spell-level-head is-collapsible is-granted"
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={!collapsed}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggle();
+        }}
+      >
+        <span className="spell-level-label">Discipline Bonus Spells</span>
+        <span className="spell-level-count">{entries.length}</span>
+        <span className="panel-caret" aria-hidden="true">
+          {collapsed ? "▸" : "▾"}
+        </span>
+      </div>
+      {!collapsed &&
+        levels.map((lvl) => (
+          <div key={lvl} className="spell-domain-level">
+            <div className="spell-domain-level-head">Psychic Lv {lvl}</div>
+            {byLevel.get(lvl)!.map((sp) => {
+              const spellData = refData.spells[sp.id];
+              return (
+                <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
+                  <div className="pmain">
+                    <div className="pname">
+                      {sp.name} <span className="tag-mystery">discipline</span>
+                    </div>
+                    {spellData && (
+                      <SpellDetail
+                        spell={spellData}
+                        spellLevel={spellData.level}
+                        abilityMod={abilityMod}
+                      />
                     )}
                   </div>
                 </div>

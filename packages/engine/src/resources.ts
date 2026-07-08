@@ -34,8 +34,9 @@ import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/sc
 import { collectGrantedFeatures } from "./archetypes.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
+import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
-import { smiteEvilDetail, smiteEvilLabel, smiteGoodLabel } from "./tables.js";
+import { burnDetailLabel, smiteEvilDetail, smiteEvilLabel, smiteGoodLabel } from "./tables.js";
 
 export interface DerivedResourcePool {
   /** Stable pool id (the class-feature id). */
@@ -184,6 +185,23 @@ export function deriveResourcePools(
       }
       continue;
     }
+    // Psychic Phrenic Pool ability correction (Occult Adventures): the
+    // vendored feature's `uses.maxFormula` (`floor(@class.unlevel / 2) +
+    // @abilities.cha.mod`) hardcodes Charisma, but RAW the pool's ability is
+    // discipline-determined — Wisdom for 6 of the 12 core disciplines (see
+    // `PSYCHIC_DISCIPLINES`' doc comment). Reuses the cleric house-rule's
+    // scoped cha→wis alias, gated on THIS feature only (a per-feature copy;
+    // nothing else the psychic evaluates sees the alias). No discipline
+    // chosen, an unknown tag, or a Charisma-based discipline keeps the
+    // vendored formula untouched.
+    if (
+      feature.tag === "phrenicPool" &&
+      classTag === "psychic" &&
+      doc.build.psychicDiscipline &&
+      PSYCHIC_DISCIPLINES[doc.build.psychicDiscipline]?.phrenicPoolAbility === "wis"
+    ) {
+      featureRollData = withClericWisdomHouserule(featureRollData);
+    }
     let max: number | null;
     try {
       max = tryEvaluateFormula(formula, featureRollData);
@@ -215,6 +233,13 @@ export function deriveResourcePools(
         | undefined;
       const chaMod = featureAbilities?.cha?.mod ?? 0;
       detail = smiteGoodLabel(smiteEvilDetail(classLevel, chaMod));
+    } else if (feature.tag === "burn" && classTag === "kineticist") {
+      // Burn's nonlethal-per-point rule has no vendored action data (only the
+      // `3 + Con` `uses.maxFormula` that made this pool) — hand-authored,
+      // same posture as Smite Evil above. Deliberately does NOT auto-apply
+      // the nonlethal damage — see `burnDetailLabel`'s doc comment.
+      const characterLevel = doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
+      detail = burnDetailLabel(characterLevel, classLevel);
     } else {
       detail = actionBasedDetail(feature, featureRollData as RollData);
     }

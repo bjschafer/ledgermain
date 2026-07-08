@@ -20,6 +20,7 @@ import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { CursePicker } from "./CursePicker.js";
+import { DisciplinePicker } from "./DisciplinePicker.js";
 import { DomainPicker } from "./DomainPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
@@ -351,6 +352,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
           <CursePicker doc={doc} refData={refData} update={update} />
           <RevelationPicker doc={doc} refData={refData} update={update} />
         </>
+      )}
+
+      {/* Discipline picker — psychic only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "psychic") && (
+        <DisciplinePicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

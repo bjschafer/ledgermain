@@ -223,6 +223,20 @@ export function setOracleCurse(doc: CharacterDoc, tag: string | null): Character
 }
 
 /**
+ * Set the psychic's chosen discipline tag (single tag, PF1 grants exactly one
+ * at L1, never changed thereafter). Pass `null` (or a blank/whitespace
+ * string) to clear. No validation that the tag exists in `@pf1/engine`
+ * `PSYCHIC_DISCIPLINES` (soft-warning posture, same as `setOracleMystery`).
+ */
+export function setPsychicDiscipline(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const trimmed = typeof tag === "string" ? tag.trim() : "";
+  return {
+    ...doc,
+    build: { ...doc.build, psychicDiscipline: trimmed.length > 0 ? trimmed : undefined },
+  };
+}
+
+/**
  * Set (or clear) the fighter's Weapon Training group pick for tier
  * `tierIndex` (0 = 5th level, 1 = 9th, 2 = 13th, 3 = 17th — see
  * `build.weaponTrainingGroups`'s doc comment). Pass `null` (or a blank/

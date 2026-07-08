@@ -38,6 +38,7 @@ import {
   flurryOfBlowsUnchainedLabel,
   painfulStareLabel,
   hypnoticStareLabel,
+  kineticBlastDetail,
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 
@@ -648,6 +649,21 @@ export function resolveClassFeatures(
       grant.name === "Hypnotic Stare"
     ) {
       detail = hypnoticStareLabel(classLevel);
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Physical Kinetic Blast"
+    ) {
+      // Kinetic Blast dice (Occult Adventures) — display-only summary; the
+      // vendored feature's dice-bearing action formula isn't numerically
+      // evaluable per the formula-DSL convention. See `kineticBlastDetail`.
+      detail = kineticBlastDetail(classLevel, abilities?.con?.mod).physicalLabel;
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Energy Kinetic Blast"
+    ) {
+      detail = kineticBlastDetail(classLevel, abilities?.con?.mod).energyLabel;
     }
     classFeatures.push({
       level: grant.level,

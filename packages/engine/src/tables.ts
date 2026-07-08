@@ -227,7 +227,9 @@ export type SpellProgression =
   | "summonerUnchained"
   | "mesmerist"
   | "occultist"
-  | "spiritualist";
+  | "spiritualist"
+  | "psychic"
+  | "medium";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -332,7 +334,8 @@ export type SpellKnownProgression =
   | "bloodrager"
   | "summonerUnchained"
   | "mesmerist"
-  | "spiritualist";
+  | "spiritualist"
+  | "medium";
 
 /**
  * Cleric base spells per day, indexed `[classLevel - 1][spellLevel]`. Clerics
@@ -778,6 +781,115 @@ const SPIRITUALIST_SPELLS_PER_DAY = BARD_SPELLS_PER_DAY;
 const MESMERIST_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
 const SPIRITUALIST_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
 
+/**
+ * Psychic (Occult Adventures) base spells per day, indexed
+ * `[classLevel - 1][spellLevel]`. A psychic is an int-based, 9-level-max
+ * SPONTANEOUS full caster (cast any known spell without preparing it) —
+ * verified against the raw "Table: Psychic" on legacy.aonprd.com: numerically
+ * IDENTICAL to the sorcerer's own spells-per-day table at every level (both
+ * cap at 6 slots/level from L8 on and share the same L20 all-6s shape), so
+ * the sorcerer progression table is reused rather than duplicated — same
+ * posture as `oracle: progression: "sorcerer"` in `apps/web/src/model/
+ * spellcasting.ts`. Column 0 (cantrips) is always null: psychics cast
+ * cantrips ("knacks") at will, capped separately by the spells-known table's
+ * column 0. This is also the reason "psychic" MUST be added to
+ * `FULL_CASTER_TAGS` in `apps/web/src/model/casterLevel.ts` — unlike Medium
+ * (below) or Bloodrager, a psychic's caster level equals her class level
+ * starting at 1st level, with no late-start gate.
+ */
+const PSYCHIC_SPELLS_PER_DAY = SORCERER_SPELLS_PER_DAY;
+
+/**
+ * Psychic Spells Known — verified against the raw "Table: Psychic Spells
+ * Known" on legacy.aonprd.com (fetched directly, not summarized): numerically
+ * IDENTICAL to the sorcerer's own Spells Known table at every one of the 20
+ * levels, including the L1 4/2 anchor and the L20 9/5/5/4/4/4/3/3/3/3 row.
+ * (This contradicts a common assumption that "the psychic knows more spells
+ * than a sorcerer" — checked twice against the same source with the same
+ * result, so the sorcerer known table is reused here rather than inventing a
+ * bespoke one; see `CASTER_MODELS.psychic` in `apps/web/src/model/
+ * spellcasting.ts`, which sets `knownProgression: "sorcerer"` accordingly.)
+ * Psychic disciplines (`psychic-disciplines.ts`) grant additional bonus
+ * spells known on top of this table, same shape as an oracle mystery.
+ */
+// (No separate PSYCHIC_SPELLS_KNOWN constant — reuses `SORCERER_SPELLS_KNOWN`
+// via the `"sorcerer"` `SpellKnownProgression` key, see the doc comment above.)
+
+/**
+ * Medium (Occult Adventures) base spells per day, indexed
+ * `[classLevel - 1][spellLevel]` (spell levels 1-4 only — a medium never
+ * gains 5th-level-or-higher spells; column 0 is always null, same "cantrips
+ * cast at will, capped by the known table's column 0 instead" shape as
+ * sorcerer/bard). A medium is a CHA-based spontaneous caster (Medium Spells:
+ * "he can cast any spell he knows without preparing it ahead of time... the
+ * saving throw DC... equal to 10 + the spell level + the medium's Charisma
+ * modifier") who gains NO spellcasting at all until 4th level — same
+ * "late-start quarter-ish caster" shape as paladin/ranger/bloodrager, which
+ * is why "medium" is deliberately NOT added to `FULL_CASTER_TAGS` in
+ * `apps/web/src/model/casterLevel.ts` (that module's binary "classLevel or 0"
+ * switch can't represent a level-gated start; see bloodrager's own doc
+ * comment there for the precedent). Hand-typed from the raw "Table: Medium"
+ * on legacy.aonprd.com (fetched directly and quoted verbatim, not
+ * summarized); sanity anchors: L4 1/-/-/-, L9 2/1/-/-, L13 3/2/1/1, L20
+ * 4/4/3/2. (PF1 Occult Adventures — clean-room table from the published
+ * rules, open game content.)
+ */
+const MEDIUM_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L2  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L3  */ [null, null, null, null, null, null, null, null, null, null],
+  /* L4  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L5  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L6  */ [null, 1, null, null, null, null, null, null, null, null],
+  /* L7  */ [null, 1, 1, null, null, null, null, null, null, null],
+  /* L8  */ [null, 1, 1, null, null, null, null, null, null, null],
+  /* L9  */ [null, 2, 1, null, null, null, null, null, null, null],
+  /* L10 */ [null, 2, 1, 1, null, null, null, null, null, null],
+  /* L11 */ [null, 2, 1, 1, null, null, null, null, null, null],
+  /* L12 */ [null, 2, 2, 1, null, null, null, null, null, null],
+  /* L13 */ [null, 3, 2, 1, 1, null, null, null, null, null],
+  /* L14 */ [null, 3, 2, 1, 1, null, null, null, null, null],
+  /* L15 */ [null, 3, 2, 2, 1, null, null, null, null, null],
+  /* L16 */ [null, 3, 3, 2, 1, null, null, null, null, null],
+  /* L17 */ [null, 4, 3, 2, 1, null, null, null, null, null],
+  /* L18 */ [null, 4, 3, 2, 2, null, null, null, null, null],
+  /* L19 */ [null, 4, 3, 3, 2, null, null, null, null, null],
+  /* L20 */ [null, 4, 4, 3, 2, null, null, null, null, null],
+];
+
+/**
+ * Medium Spells Known, indexed `[classLevel - 1][spellLevel]`. Column 0
+ * (cantrips known) starts at 2 (1st level) and caps at 6; columns 1-4 cap the
+ * medium's known spells at that level (never gains 5th-level-or-higher
+ * spells). Hand-typed from the raw "Table: Medium Spells Known" on
+ * legacy.aonprd.com (fetched directly and quoted verbatim); per the Medium
+ * Spells class feature's own text, this count is fixed and NOT adjusted by
+ * Charisma (unlike the spells-per-day table above). (PF1 Occult Adventures —
+ * clean-room, open game content.)
+ */
+const MEDIUM_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
+  /* L1  */ [2, null, null, null, null, null, null, null, null, null],
+  /* L2  */ [3, null, null, null, null, null, null, null, null, null],
+  /* L3  */ [4, null, null, null, null, null, null, null, null, null],
+  /* L4  */ [4, 2, null, null, null, null, null, null, null, null],
+  /* L5  */ [5, 3, null, null, null, null, null, null, null, null],
+  /* L6  */ [5, 4, null, null, null, null, null, null, null, null],
+  /* L7  */ [6, 4, 2, null, null, null, null, null, null, null],
+  /* L8  */ [6, 4, 3, null, null, null, null, null, null, null],
+  /* L9  */ [6, 5, 4, null, null, null, null, null, null, null],
+  /* L10 */ [6, 5, 4, 2, null, null, null, null, null, null],
+  /* L11 */ [6, 5, 4, 3, null, null, null, null, null, null],
+  /* L12 */ [6, 6, 5, 4, null, null, null, null, null, null],
+  /* L13 */ [6, 6, 5, 4, 2, null, null, null, null, null],
+  /* L14 */ [6, 6, 5, 4, 3, null, null, null, null, null],
+  /* L15 */ [6, 6, 6, 5, 4, null, null, null, null, null],
+  /* L16 */ [6, 6, 6, 5, 4, null, null, null, null, null],
+  /* L17 */ [6, 6, 6, 5, 4, null, null, null, null, null],
+  /* L18 */ [6, 6, 6, 6, 5, null, null, null, null, null],
+  /* L19 */ [6, 6, 6, 6, 5, null, null, null, null, null],
+  /* L20 */ [6, 6, 6, 6, 5, null, null, null, null, null],
+];
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
@@ -808,6 +920,8 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   mesmerist: MESMERIST_SPELLS_PER_DAY,
   occultist: OCCULTIST_SPELLS_PER_DAY,
   spiritualist: SPIRITUALIST_SPELLS_PER_DAY,
+  psychic: PSYCHIC_SPELLS_PER_DAY,
+  medium: MEDIUM_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {
@@ -820,6 +934,7 @@ const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (numb
   summonerUnchained: SUMMONER_UNCHAINED_SPELLS_KNOWN,
   mesmerist: MESMERIST_SPELLS_KNOWN,
   spiritualist: SPIRITUALIST_SPELLS_KNOWN,
+  medium: MEDIUM_SPELLS_KNOWN,
 };
 
 /**
@@ -1287,4 +1402,93 @@ export function hypnoticStarePenalty(mesmeristLevel: number): number {
 /** One-line display string for {@link hypnoticStarePenalty}, e.g. "-2 Will save on stared target". */
 export function hypnoticStareLabel(mesmeristLevel: number): string {
   return `-${hypnoticStarePenalty(mesmeristLevel)} Will save on stared target`;
+}
+
+/* -------------------------------------------------- kineticist (Occult) -- */
+
+/**
+ * Kineticist Kinetic Blast damage summary, clean-room from the published PF1
+ * Occult Adventures rules (verified against legacy.aonprd.com's raw class
+ * text): a simple PHYSICAL blast deals "1d6+1 + the kineticist's Constitution
+ * modifier, increasing by 1d6+1 for every 2 kineticist levels beyond 1st"; a
+ * simple ENERGY blast deals "1d6 + 1/2 the kineticist's Constitution
+ * modifier, increasing by 1d6 for every 2 kineticist levels beyond 1st" —
+ * i.e. `ceil(level / 2)` dice for both. Display-only, same posture as
+ * `unarmedDamageDie`/`sneakAttackDice` — NOT an attack builder: the vendored
+ * "Physical/Energy Kinetic Blast" class features carry real dice-bearing
+ * action formulas (including the elemental-overflow
+ * `min(@resources.burn.value, ...)` rider), but per this project's
+ * formula-DSL convention (`formula.ts`: dice terms parse but throw on numeric
+ * eval) those aren't evaluated into the live attacks table; this summary is
+ * the static-sheet reference line instead. Elemental Overflow's burn-scaled
+ * attack/damage bonus is part of the deferred elements/wild-talents subsystem
+ * and is NOT folded in here.
+ */
+export interface KineticBlastDetail {
+  /** Number of d6s (both blast kinds), `ceil(level / 2)`. */
+  dice: number;
+  /** Simple physical blast, e.g. "3d6+3 + Con mod (physical)" or "3d6+7 (physical)". */
+  physicalLabel: string;
+  /** Simple energy blast (ranged touch), e.g. "3d6 + 1/2 Con mod (energy, touch)". */
+  energyLabel: string;
+}
+
+/**
+ * Kinetic Blast damage dice for a kineticist of `kineticistLevel`.
+ * Out-of-range (<=0) level is clamped to the L1 tier, since Kinetic Blast is
+ * granted at 1st level. When `conMod` is provided the labels show resolved
+ * numbers ("3d6+7"); otherwise symbolic ("+ Con mod").
+ */
+export function kineticBlastDetail(kineticistLevel: number, conMod?: number): KineticBlastDetail {
+  const level = Math.max(1, kineticistLevel);
+  const dice = Math.ceil(level / 2);
+  if (conMod === undefined) {
+    return {
+      dice,
+      physicalLabel: `${dice}d6+${dice} + Con mod (physical)`,
+      energyLabel: `${dice}d6 + 1/2 Con mod (energy, touch)`,
+    };
+  }
+  const fmt = (n: number) => (n === 0 ? "" : n > 0 ? `+${n}` : `${n}`);
+  return {
+    dice,
+    physicalLabel: `${dice}d6${fmt(dice + conMod)} (physical)`,
+    energyLabel: `${dice}d6${fmt(Math.floor(conMod / 2))} (energy, touch)`,
+  };
+}
+
+/**
+ * Kineticist Burn per-round acceptance cap, clean-room from the published PF1
+ * Occult Adventures rules: "A kineticist can accept only 1 point of burn per
+ * round. This limit rises to 2 points of burn at 6th level, and rises by 1
+ * additional point every 3 levels thereafter" — 1 (L1-5), 2 (L6-8), 3
+ * (L9-11), 4 (L12-14), 5 (L15-17), 6 (L18+). The burn POOL's daily cap
+ * (`3 + Con modifier`) is NOT here — it rides in free from the vendored Burn
+ * class feature's `uses.maxFormula` via `deriveResourcePools`; this helper
+ * plus {@link burnDetailLabel} only supply the display sub-line for that pool.
+ */
+export function burnPerRoundLimit(kineticistLevel: number): number {
+  if (kineticistLevel < 6) return 1;
+  return 2 + Math.floor((kineticistLevel - 6) / 3);
+}
+
+/**
+ * One-line Burn summary for the resource-pool row (see `resources.ts`),
+ * clean-room from the published rules: "For each point of burn she accepts, a
+ * kineticist takes 1 point of nonlethal damage per character level. This
+ * damage can't be healed by any means other than getting a full night's
+ * rest, which removes all burn and associated nonlethal damage." The
+ * nonlethal damage is deliberately NOT auto-applied to `live.hp.nonlethal`
+ * (accepting burn is a table-time choice with riders — gather power
+ * reductions, forced burn — this engine doesn't model); the label tells the
+ * player what to apply by hand. `characterLevel` is TOTAL character level
+ * (multiclass included), per the rules text — not kineticist class level.
+ */
+export function burnDetailLabel(characterLevel: number, kineticistLevel: number): string {
+  const perRound = burnPerRoundLimit(kineticistLevel);
+  return (
+    `each point held deals ${Math.max(1, characterLevel)} nonlethal ` +
+    `(1/character level; unhealable until a full night's rest — apply manually) · ` +
+    `max ${perRound} accepted/round`
+  );
 }

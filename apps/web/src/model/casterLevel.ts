@@ -33,6 +33,14 @@ const FULL_CASTER_TAGS = new Set([
   "mesmerist",
   "occultist",
   "spiritualist",
+  // Psychic (Occult Adventures): int-based spontaneous FULL 9-level caster,
+  // CL = class level from 1st level on with no late-start gate — a plain
+  // member of this set like sorcerer/oracle. (Medium, its Occult Adventures
+  // sibling, is deliberately NOT here: like bloodrager it casts nothing at
+  // all before 4th level, so this module's binary "classLevel or 0" switch
+  // would wrongly report CL 1-3 for a low-level medium — see the bloodrager
+  // note below for the precedent. Kineticist casts no spells at all.)
+  "psychic",
 ]);
 
 /**
