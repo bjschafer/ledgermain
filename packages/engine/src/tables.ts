@@ -223,7 +223,10 @@ export type SpellProgression =
   | "shaman"
   | "warpriest"
   | "bloodrager"
-  | "antipaladin";
+  | "antipaladin"
+  | "mesmerist"
+  | "occultist"
+  | "spiritualist";
 
 /**
  * Wizard base spells per day, indexed `[classLevel - 1][spellLevel]`.
@@ -325,7 +328,9 @@ export type SpellKnownProgression =
   | "inquisitor"
   | "summoner"
   | "skald"
-  | "bloodrager";
+  | "bloodrager"
+  | "mesmerist"
+  | "spiritualist";
 
 /**
  * Cleric base spells per day, indexed `[classLevel - 1][spellLevel]`. Clerics
@@ -731,6 +736,27 @@ const BLOODRAGER_SPELLS_KNOWN: readonly (readonly (number | null)[])[] = [
   /* L20 */ [null, 6, 6, 6, 5, null, null, null, null, null],
 ];
 
+/**
+ * Mesmerist, Occultist, and Spiritualist (Occult Adventures, PZO1132) are all
+ * 6-level-max spontaneous PSYCHIC casters (own spell lists, own governing
+ * ability — Cha/Int/Wis respectively) whose "Spells per Day" tables are
+ * numerically IDENTICAL to the bard's (verified directly against aonprd.com's
+ * live class pages, all 20 rows, spell levels 1-6 — mesmerist and spiritualist
+ * additionally have a published "Spells Known" table, ALSO numerically
+ * identical to the bard's at every level; occultist has no published "Spells
+ * Known" table at all — see `CASTER_MODELS.occultist`'s doc comment in
+ * `apps/web/src/model/spellcasting.ts`), so the bard progression tables are
+ * reused rather than duplicated — same posture as `inquisitor`/`summoner`/
+ * `skald`/`hunter` above. Psychic magic is NOT arcane (no arcane spell
+ * failure) — these three are deliberately absent from `compute.ts`'s
+ * `ARCANE_CASTER_TAGS`.
+ */
+const MESMERIST_SPELLS_PER_DAY = BARD_SPELLS_PER_DAY;
+const OCCULTIST_SPELLS_PER_DAY = BARD_SPELLS_PER_DAY;
+const SPIRITUALIST_SPELLS_PER_DAY = BARD_SPELLS_PER_DAY;
+const MESMERIST_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
+const SPIRITUALIST_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
+
 const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[])[]> = {
   wizard: WIZARD_SPELLS_PER_DAY,
   sorcerer: SORCERER_SPELLS_PER_DAY,
@@ -757,6 +783,9 @@ const PROGRESSIONS: Record<SpellProgression, readonly (readonly (number | null)[
   // {@link PALADIN_RANGER_SPELLS_PER_DAY}, so reused rather than duplicated,
   // same posture as `DRUID_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY` above.
   antipaladin: PALADIN_RANGER_SPELLS_PER_DAY,
+  mesmerist: MESMERIST_SPELLS_PER_DAY,
+  occultist: OCCULTIST_SPELLS_PER_DAY,
+  spiritualist: SPIRITUALIST_SPELLS_PER_DAY,
 };
 
 const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (number | null)[])[]> = {
@@ -766,6 +795,8 @@ const KNOWN_PROGRESSIONS: Record<SpellKnownProgression, readonly (readonly (numb
   summoner: SUMMONER_SPELLS_KNOWN,
   skald: SKALD_SPELLS_KNOWN,
   bloodrager: BLOODRAGER_SPELLS_KNOWN,
+  mesmerist: MESMERIST_SPELLS_KNOWN,
+  spiritualist: SPIRITUALIST_SPELLS_KNOWN,
 };
 
 /**
@@ -1158,4 +1189,56 @@ export function weaponTrainingBonus(fighterLevel: number, tierIndex: number): nu
  */
 export function smiteGoodLabel(detail: SmiteEvilDetail): string {
   return `+${detail.attackBonus} atk, +${detail.damageBonus} dmg, +${detail.acBonus} AC vs. good`;
+}
+
+/* --------------------------------------------------------- painful stare -- */
+
+/**
+ * Mesmerist Painful Stare bonus damage, clean-room from the published PF1 SRD
+ * (Occult Adventures, PZO1132) — the class feature's `changes[]` and `uses`
+ * are both empty upstream (it's a free-action rider triggered by an attack
+ * landing on the mesmerist's current Hypnotic Stare target, not a limited
+ * per-day resource), so the bonus-damage number is hand-authored here, same
+ * posture as `sneakAttackDice`/`smiteEvilDetail`.
+ *
+ * "the mesmerist can cause the target to take an amount of additional damage
+ * equal to 1/2 the mesmerist's class level (minimum 1)" => `max(1,
+ * floor(mesmeristLevel / 2))`. (The SRD's separate "+1d6 per 3 levels"
+ * escalation for the self-targeting case is a narrower rules branch, not
+ * modeled here — this covers the common "against the stared target" number.)
+ */
+export function painfulStareBonus(mesmeristLevel: number): number {
+  if (mesmeristLevel <= 0) return 0;
+  return Math.max(1, Math.floor(mesmeristLevel / 2));
+}
+
+/** One-line display string for {@link painfulStareBonus}, e.g. "+3 dmg vs. stared target". */
+export function painfulStareLabel(mesmeristLevel: number): string {
+  return `+${painfulStareBonus(mesmeristLevel)} dmg vs. stared target`;
+}
+
+/* -------------------------------------------------------- hypnotic stare -- */
+
+/**
+ * Mesmerist Hypnotic Stare Will-save penalty, clean-room from the published
+ * PF1 SRD (Occult Adventures, PZO1132) — the class feature's `changes[]` is
+ * empty upstream (there's no fixed "target" for a vendored Change to apply
+ * to; the mesmerist picks a new creature to stare at as a swift action, and
+ * this app doesn't model per-encounter live targeting). This is intentionally
+ * display-only — a contextNote-style summary surfaced via the class-features
+ * `detail` line, not a live modifier applied to any tracked creature's saving
+ * throw, same "vs. a chosen target" posture as `smiteEvilDetail`'s
+ * attack/AC/damage numbers.
+ *
+ * "That creature takes a –2 penalty on Will saving throws. This penalty
+ * changes to –3 at 8th level."
+ */
+export function hypnoticStarePenalty(mesmeristLevel: number): number {
+  if (mesmeristLevel <= 0) return 0;
+  return mesmeristLevel >= 8 ? 3 : 2;
+}
+
+/** One-line display string for {@link hypnoticStarePenalty}, e.g. "-2 Will save on stared target". */
+export function hypnoticStareLabel(mesmeristLevel: number): string {
+  return `-${hypnoticStarePenalty(mesmeristLevel)} Will save on stared target`;
 }

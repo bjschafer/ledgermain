@@ -35,6 +35,8 @@ import {
   unarmedDamageDie,
   flurryOfBlowsLabel,
   barbarianDamageReduction,
+  painfulStareLabel,
+  hypnoticStareLabel,
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 
@@ -594,6 +596,14 @@ export function resolveClassFeatures(
       grant.name === "Damage Reduction"
     ) {
       detail = barbarianDamageReduction(classLevel).label;
+    } else if (detail === undefined && classTag === "mesmerist" && grant.name === "Painful Stare") {
+      detail = painfulStareLabel(classLevel);
+    } else if (
+      detail === undefined &&
+      classTag === "mesmerist" &&
+      grant.name === "Hypnotic Stare"
+    ) {
+      detail = hypnoticStareLabel(classLevel);
     }
     classFeatures.push({
       level: grant.level,

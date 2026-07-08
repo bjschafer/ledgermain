@@ -1,6 +1,14 @@
 import { describe, expect, it } from "bun:test";
 
-import { baseSpellsKnown, baseSpellsPerDay, baseSpellsPrepared } from "../src/index.js";
+import {
+  baseSpellsKnown,
+  baseSpellsPerDay,
+  baseSpellsPrepared,
+  hypnoticStareLabel,
+  hypnoticStarePenalty,
+  painfulStareBonus,
+  painfulStareLabel,
+} from "../src/index.js";
 
 describe("baseSpellsPerDay() — wizard", () => {
   it("level-1 wizard: 3 cantrips, 1 first-level, no access above", () => {
@@ -762,5 +770,118 @@ describe("baseSpellsPerDay()/baseSpellsKnown() — bloodrager (ACG cha spontaneo
     expect(baseSpellsPerDay("bloodrager", 21, 1)).toBeNull();
     expect(baseSpellsKnown("bloodrager", 0, 1)).toBeNull();
     expect(baseSpellsKnown("bloodrager", 21, 1)).toBeNull();
+  });
+});
+
+describe("baseSpellsPerDay()/baseSpellsKnown() — mesmerist, occultist, spiritualist (Occult Adventures, bard-shaped)", () => {
+  // Mesmerist (Cha), Occultist (Int), and Spiritualist (Wis) are all
+  // 6-level-max spontaneous PSYCHIC casters whose Spells per Day tables are
+  // numerically IDENTICAL to the bard's — verified against aonprd.com's live
+  // class pages, all 20 rows, spell levels 1-6 (see tables.ts's
+  // MESMERIST_SPELLS_PER_DAY/etc. comment). Mesmerist and spiritualist
+  // additionally have a published Spells Known table, ALSO identical to the
+  // bard's; occultist has no published Spells Known table at all (her known
+  // spells are implement-gated instead — see CASTER_MODELS.occultist), so
+  // only its per-day table is exercised here.
+  for (const tag of ["mesmerist", "occultist", "spiritualist"] as const) {
+    it(`${tag}: L1 — 1 first-level slot/day, no 2nd-level access`, () => {
+      expect(baseSpellsPerDay(tag, 1, 0)).toBeNull(); // cantrips/knacks cast at will
+      expect(baseSpellsPerDay(tag, 1, 1)).toBe(1);
+      expect(baseSpellsPerDay(tag, 1, 2)).toBeNull();
+    });
+
+    it(`${tag}: L5 — 4/2 slots/day at 1st/2nd`, () => {
+      expect(baseSpellsPerDay(tag, 5, 1)).toBe(4);
+      expect(baseSpellsPerDay(tag, 5, 2)).toBe(2);
+    });
+
+    it(`${tag}: L10 — 5/4/3/1 slots/day at 1st-4th`, () => {
+      expect(baseSpellsPerDay(tag, 10, 1)).toBe(5);
+      expect(baseSpellsPerDay(tag, 10, 2)).toBe(4);
+      expect(baseSpellsPerDay(tag, 10, 3)).toBe(3);
+      expect(baseSpellsPerDay(tag, 10, 4)).toBe(1);
+    });
+
+    it(`${tag}: L20 — 5 slots/day at every level 1-6, caps at 6th-level spells`, () => {
+      for (let lvl = 1; lvl <= 6; lvl++) {
+        expect(baseSpellsPerDay(tag, 20, lvl)).toBe(5);
+      }
+      expect(baseSpellsPerDay(tag, 20, 7)).toBeNull();
+    });
+  }
+
+  for (const tag of ["mesmerist", "spiritualist"] as const) {
+    it(`${tag}: L1 known — 4 knacks, 2 first-level`, () => {
+      expect(baseSpellsKnown(tag, 1, 0)).toBe(4);
+      expect(baseSpellsKnown(tag, 1, 1)).toBe(2);
+      expect(baseSpellsKnown(tag, 1, 2)).toBeNull();
+    });
+
+    it(`${tag}: L20 known — 6 at every level up to 4th, 5 at 5th/6th`, () => {
+      for (const lvl of [0, 1, 2, 3, 4]) {
+        expect(baseSpellsKnown(tag, 20, lvl)).toBe(6);
+      }
+      expect(baseSpellsKnown(tag, 20, 5)).toBe(5);
+      expect(baseSpellsKnown(tag, 20, 6)).toBe(5);
+    });
+  }
+
+  it("all three match the bard table exactly at every level/spell-level pair (per-day)", () => {
+    for (const tag of ["mesmerist", "occultist", "spiritualist"] as const) {
+      for (let cl = 1; cl <= 20; cl++) {
+        for (let spLvl = 0; spLvl <= 9; spLvl++) {
+          expect(baseSpellsPerDay(tag, cl, spLvl)).toBe(baseSpellsPerDay("bard", cl, spLvl));
+        }
+      }
+    }
+  });
+
+  it("mesmerist and spiritualist match the bard table exactly at every level/spell-level pair (known)", () => {
+    for (const tag of ["mesmerist", "spiritualist"] as const) {
+      for (let cl = 1; cl <= 20; cl++) {
+        for (let spLvl = 0; spLvl <= 9; spLvl++) {
+          expect(baseSpellsKnown(tag, cl, spLvl)).toBe(baseSpellsKnown("bard", cl, spLvl));
+        }
+      }
+    }
+  });
+
+  it("out-of-range inputs return null", () => {
+    for (const tag of ["mesmerist", "occultist", "spiritualist"] as const) {
+      expect(baseSpellsPerDay(tag, 0, 1)).toBeNull();
+      expect(baseSpellsPerDay(tag, 21, 1)).toBeNull();
+    }
+    for (const tag of ["mesmerist", "spiritualist"] as const) {
+      expect(baseSpellsKnown(tag, 0, 1)).toBeNull();
+      expect(baseSpellsKnown(tag, 21, 1)).toBeNull();
+    }
+  });
+});
+
+describe("painfulStareBonus()/hypnoticStarePenalty() — mesmerist", () => {
+  it("mesmerist level 0 (no levels): both zero", () => {
+    expect(painfulStareBonus(0)).toBe(0);
+    expect(hypnoticStarePenalty(0)).toBe(0);
+  });
+
+  it("Painful Stare: 1/2 mesmerist level, minimum 1", () => {
+    expect(painfulStareBonus(1)).toBe(1);
+    expect(painfulStareBonus(2)).toBe(1);
+    expect(painfulStareBonus(3)).toBe(1);
+    expect(painfulStareBonus(4)).toBe(2);
+    expect(painfulStareBonus(10)).toBe(5);
+    expect(painfulStareBonus(20)).toBe(10);
+  });
+
+  it("Hypnotic Stare: -2 Will save below 8th level, -3 at 8th+", () => {
+    expect(hypnoticStarePenalty(1)).toBe(2);
+    expect(hypnoticStarePenalty(7)).toBe(2);
+    expect(hypnoticStarePenalty(8)).toBe(3);
+    expect(hypnoticStarePenalty(20)).toBe(3);
+  });
+
+  it("label helpers format the bonus/penalty", () => {
+    expect(painfulStareLabel(4)).toBe("+2 dmg vs. stared target");
+    expect(hypnoticStareLabel(8)).toBe("-3 Will save on stared target");
   });
 });
