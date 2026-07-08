@@ -287,6 +287,63 @@ describe("casterModelFor() — oracle", () => {
   });
 });
 
+describe("casterModelFor() — witch", () => {
+  it("returns a prepared/int model, own progression aliasing wizard's shape", () => {
+    const m = casterModelFor("witch");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("prepared");
+    expect(m!.ability).toBe("int");
+    expect(m!.progression).toBe("witch");
+    expect(m!.knownLabel).toBe("Familiar's Spells");
+    expect(m!.grantsAllCantrips).toBe(true);
+    expect(m!.preparesFromClassList).toBe(false);
+  });
+
+  it("witch spells-per-day matches the wizard's numbers exactly (L1/L5/L10/L20)", () => {
+    const m = casterModelFor("witch")!;
+    const wiz = casterModelFor("wizard")!;
+    for (const level of [1, 5, 10, 20]) {
+      const witchSlots = new Map(spellSlotsByLevel(m, level, 0).map((s) => [s.level, s.base]));
+      const wizSlots = new Map(spellSlotsByLevel(wiz, level, 0).map((s) => [s.level, s.base]));
+      expect(witchSlots).toEqual(wizSlots);
+    }
+  });
+
+  it("returns all witch cantrips from the class spell list", () => {
+    const list = grantedCantrips(ref, "witch");
+    expect(list.length).toBeGreaterThan(0);
+  });
+});
+
+describe("casterModelFor() — shaman", () => {
+  it("prepares from the full class list, not a curated known list", () => {
+    const m = casterModelFor("shaman");
+    expect(m).toBeDefined();
+    expect(m!.preparation).toBe("prepared");
+    expect(m!.ability).toBe("wis");
+    expect(m!.progression).toBe("shaman");
+    expect(m!.preparesFromClassList).toBe(true);
+    expect(m!.grantsAllCantrips).toBe(true);
+  });
+
+  it("shaman spells-per-day matches the cleric's numbers exactly (L1/L5/L10/L20)", () => {
+    const m = casterModelFor("shaman")!;
+    const cleric = casterModelFor("cleric")!;
+    for (const level of [1, 5, 10, 20]) {
+      const shamanSlots = new Map(spellSlotsByLevel(m, level, 0).map((s) => [s.level, s.base]));
+      const clericSlots = new Map(
+        spellSlotsByLevel(cleric, level, 0).map((s) => [s.level, s.base]),
+      );
+      expect(shamanSlots).toEqual(clericSlots);
+    }
+  });
+
+  it("returns all shaman cantrips from the class spell list", () => {
+    const list = grantedCantrips(ref, "shaman");
+    expect(list.length).toBeGreaterThan(0);
+  });
+});
+
 describe("mysterySpellsKnown()", () => {
   it("returns [] below oracle level 2 (a mystery's first bonus spell unlocks at 2)", () => {
     expect(mysterySpellsKnown(ref, "life", 1)).toEqual([]);

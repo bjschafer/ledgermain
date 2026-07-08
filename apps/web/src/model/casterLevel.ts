@@ -25,6 +25,8 @@ const FULL_CASTER_TAGS = new Set([
   "inquisitor",
   "summoner",
   "skald",
+  "witch",
+  "shaman",
 ]);
 
 /**

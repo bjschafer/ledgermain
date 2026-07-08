@@ -1541,3 +1541,79 @@ describe("compute: oracle L5 (human, no armor) — APG spontaneous divine caster
     expect(sheet.skills.hea!.classSkill).toBe(true);
   });
 });
+
+describe("compute: witch L7 (human, no armor) — APG full prepared-arcane caster", () => {
+  // Con 14 (mod +2) drives HP; Int 18 (mod +4) drives spell DC/bonus spells.
+  const doc = makeDoc({
+    classes: [{ tag: "witch", level: 7 }],
+    abilities: { str: 10, dex: 10, con: 14, int: 18, wis: 10, cha: 10 },
+    skillRanks: { spl: 7, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +3 (1/2 low progression: floor(7/2))", () => {
+    expect(sheet.bab).toBe(3);
+  });
+
+  it("saves: Will +5 (good base + no wis mod), Fort +4 (poor base + Con), Ref +2 (poor)", () => {
+    expect(sheet.saves.will.total).toBe(5); // base 5 (2 + floor(7/2)) + wis mod 0
+    expect(sheet.saves.fort.total).toBe(4); // base 2 (floor(7/3)) + con mod 2
+    expect(sheet.saves.ref.total).toBe(2); // base 2 (floor(7/3)) + dex mod 0
+  });
+
+  it("HP 44 (d6 HD: L1 max 6+2 Con, + 6 more levels at avg 4+2 Con each)", () => {
+    expect(sheet.hp.max).toBe(44);
+  });
+
+  it("2 + Int skill points/level, d6 HD, low BAB, will high + fort/ref low (witch class def)", () => {
+    const witchEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "witch");
+    expect(witchEntry).toBeDefined();
+    expect(witchEntry![1].skillsPerLevel).toBe(2);
+    expect(witchEntry![1].hd).toBe(6);
+    expect(witchEntry![1].bab).toBe("low");
+    expect(witchEntry![1].saves).toEqual({ fort: "low", ref: "low", will: "high" });
+  });
+
+  it("spellcraft (class skill) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.spl!.total).toBe(14); // 7 ranks + int mod 4 + classSkill 3
+    expect(sheet.skills.spl!.classSkill).toBe(true);
+  });
+});
+
+describe("compute: shaman L5 (human, no armor) — ACG full prepared-divine caster", () => {
+  // Con 12 (mod +1) drives HP; Wis 16 (mod +3) drives spell DC/bonus spells.
+  const doc = makeDoc({
+    classes: [{ tag: "shaman", level: 5 }],
+    abilities: { str: 10, dex: 10, con: 12, int: 10, wis: 16, cha: 10 },
+    skillRanks: { hea: 5, dip: 1 },
+  });
+  const sheet = compute(doc, ref);
+
+  it("BAB +3 (3/4 medium progression: floor(5*3/4))", () => {
+    expect(sheet.bab).toBe(3);
+  });
+
+  it("saves: Will +7 (good base + Wis), Fort +2 (poor base + Con), Ref +1 (poor)", () => {
+    expect(sheet.saves.will.total).toBe(7); // base 4 (2 + floor(5/2)) + wis mod 3
+    expect(sheet.saves.fort.total).toBe(2); // base 1 (floor(5/3)) + con mod 1
+    expect(sheet.saves.ref.total).toBe(1); // base 1 (floor(5/3)) + dex mod 0
+  });
+
+  it("HP 33 (d8 HD: L1 max 8+1 Con, + 4 more levels at avg 5+1 Con each)", () => {
+    expect(sheet.hp.max).toBe(33);
+  });
+
+  it("4 + Int skill points/level, d8 HD, medium BAB, will high + fort/ref low (shaman class def)", () => {
+    const shamanEntry = Object.entries(ref.classes).find(([, c]) => c.tag === "shaman");
+    expect(shamanEntry).toBeDefined();
+    expect(shamanEntry![1].skillsPerLevel).toBe(4);
+    expect(shamanEntry![1].hd).toBe(8);
+    expect(shamanEntry![1].bab).toBe("med");
+    expect(shamanEntry![1].saves).toEqual({ fort: "low", ref: "low", will: "high" });
+  });
+
+  it("heal (class skill) gets the +3 class-skill bonus", () => {
+    expect(sheet.skills.hea!.total).toBe(11); // 5 ranks + wis mod 3 + classSkill 3
+    expect(sheet.skills.hea!.classSkill).toBe(true);
+  });
+});
