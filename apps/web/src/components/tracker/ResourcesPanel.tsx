@@ -4,9 +4,12 @@ import {
   BLOODRAGE_BUFF,
   BLOODRAGE_BUFF_ID,
   deriveResourcePools,
+  OCCULTIST_PHYSICAL_ABILITIES,
+  OCCULTIST_SCHOOLS,
+  type DerivedResourcePool,
   type ToggleBuffOption,
 } from "@pf1/engine";
-import type { Buff, CharacterDoc, RefData } from "@pf1/schema";
+import type { AbilityId, Buff, CharacterDoc, RefData } from "@pf1/schema";
 
 import { FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { NumberField } from "../builder/NumberField.js";
@@ -14,6 +17,12 @@ import { Panel } from "../builder/Panel.js";
 import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
 import { setMartialFlexibilityFeat } from "../../model/doc.js";
 import { applyGrantedTempHp } from "../../model/hp.js";
+import {
+  knownOccultistSchoolTags,
+  setOccultistFocusInvested,
+  setOccultistPhysicalEnhancementAbility,
+  totalOccultistFocusInvested,
+} from "../../model/occultistImplements.js";
 import {
   addManualPool,
   drainResource,
@@ -94,6 +103,9 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                 />
                 {pool.name === "Martial Flexibility" && (
                   <MartialFlexibilityPicker doc={doc} refData={refData} update={update} />
+                )}
+                {pool.name === "Mental Focus" && (
+                  <MentalFocusInvestmentPanel doc={doc} pool={pool} update={update} />
                 )}
               </div>
             );
@@ -426,6 +438,91 @@ function MartialFlexibilityPicker({
         ))}
       </select>
       {borrowed?.description && <FeatureDescription html={borrowed.description} />}
+    </div>
+  );
+}
+
+/**
+ * Occultist Mental Focus investment (issue #65): once-per-day division of
+ * the Mental Focus pool among known implements (`live.occultistFocusInvested`
+ * — see that field's schema doc comment for why this is `live.*`, not a
+ * `build.*` pick, and why `model/rest.ts`'s `restNewDay` deliberately leaves
+ * it untouched). Sits right below the Mental Focus resource row; only
+ * schools currently known (`build.occultistImplements`) get a number input.
+ * Transmutation's Physical Enhancement resonant power additionally exposes
+ * an ability-score radio group (`live.occultistPhysicalEnhancementAbility`),
+ * shown once 3+ focus is invested there (below that, the power grants no
+ * bonus at all — see `@pf1/engine` `occultist-implements.ts`'s
+ * `cappedFocusBonus`). The total-invested-vs-pool-max comparison is a soft
+ * hint only, never blocking (same posture as every other budget in this
+ * app).
+ */
+function MentalFocusInvestmentPanel({
+  doc,
+  pool,
+  update,
+}: {
+  doc: CharacterDoc;
+  pool: DerivedResourcePool;
+  update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
+}) {
+  const knownTags = knownOccultistSchoolTags(doc);
+  if (knownTags.length === 0) return null;
+
+  const total = totalOccultistFocusInvested(doc);
+  const over = total > pool.max;
+  const transmutationInvested = doc.live.occultistFocusInvested?.["transmutation"] ?? 0;
+  const physicalAbility = doc.live.occultistPhysicalEnhancementAbility ?? "str";
+
+  return (
+    <div className="res-sub-row mental-focus-investment">
+      <label className="hint">
+        Focus invested per implement{" "}
+        <span className={over ? "hint warn-over" : "hint"}>
+          ({total} / {pool.max})
+        </span>
+      </label>
+      {knownTags.map((tag) => {
+        const school = OCCULTIST_SCHOOLS[tag];
+        if (!school) return null;
+        const invested = doc.live.occultistFocusInvested?.[tag] ?? 0;
+        return (
+          <div
+            key={tag}
+            className="mental-focus-row"
+            style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 2 }}
+          >
+            <span className="hint" style={{ minWidth: 90 }}>
+              {school.name}
+            </span>
+            <NumberField
+              value={invested}
+              min={0}
+              onCommit={(v) => update((d) => setOccultistFocusInvested(d, tag, v))}
+            />
+          </div>
+        );
+      })}
+      {knownTags.includes("transmutation") && transmutationInvested >= 3 && (
+        <div
+          className="mental-focus-row"
+          style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}
+        >
+          <span className="hint">Physical Enhancement targets</span>
+          <select
+            value={physicalAbility}
+            onChange={(e) =>
+              update((d) => setOccultistPhysicalEnhancementAbility(d, e.target.value as AbilityId))
+            }
+          >
+            {OCCULTIST_PHYSICAL_ABILITIES.map((a) => (
+              <option key={a} value={a}>
+                {a.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
     </div>
   );
 }

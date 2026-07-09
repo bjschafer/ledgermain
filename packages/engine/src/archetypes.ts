@@ -34,6 +34,7 @@ import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { NINJA_TRICKS } from "./ninja-tricks.js";
 import { MONK_KI_POWERS } from "./monk-ki-powers.js";
 import { MONK_STYLE_STRIKES } from "./monk-style-strikes.js";
+import { findOccultistFocusPower, OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { PHRENIC_AMPLIFICATIONS } from "./phrenic-amplifications.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
@@ -104,7 +105,9 @@ export interface GrantedFeature {
       | "investigatorTalent"
       | "vigilanteSocialTalent"
       | "vigilanteTalent"
-      | "shifterAspect";
+      | "shifterAspect"
+      | "implementSchool"
+      | "focusPower";
     label: string;
   };
   /**
@@ -786,6 +789,71 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "shifterAspect", label: "Aspect" },
         detail: aspect.summary,
+      });
+    }
+  }
+
+  // Occultist implements (issue #65) — hand-authored (see
+  // occultist-implements.ts), gated on actual occultist levels. Two grant
+  // shapes from one `build.occultistImplements` multiset field: each DISTINCT
+  // school tag (deduped — a repeated pick grants no *additional* base/
+  // resonant power, per RAW; see that field's schema doc comment) grants its
+  // school's base focus power AND resonant power automatically, both at a
+  // flat display level of 1 (the earliest an occultist has any implement at
+  // all). `build.occultistFocusPowers` is a SEPARATE budgeted pick from the
+  // school's full focus-power menu — scoped to a currently-known school the
+  // same "unresolvable id tolerated" way revelations/hexes tolerate a stale
+  // mystery/spirit — granted at a flat display level of 1 as well (the
+  // earliest an occultist selects a menu focus power, per RAW's "at 1st
+  // level ... can select one more focus power").
+  const occultistClassLevel = doc.identity.classes.find((c) => c.tag === "occultist")?.level ?? 0;
+  if (occultistClassLevel > 0) {
+    const knownSchoolTags = new Set(doc.build.occultistImplements ?? []);
+    for (const tag of knownSchoolTags) {
+      const school = OCCULTIST_SCHOOLS[tag];
+      if (!school) continue;
+      out.push({
+        classTag: "occultist",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `implementBase:${tag}`,
+          featureId: `implementBase:${tag}`,
+          name: `${school.basePower.name} (${school.name})`,
+          resolved: true,
+        },
+        origin: { kind: "implementSchool", label: "Implement — Base Focus Power" },
+        detail: school.basePower.summary,
+      });
+      out.push({
+        classTag: "occultist",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `implementResonant:${tag}`,
+          featureId: `implementResonant:${tag}`,
+          name: `${school.resonantPower.name} (${school.name})`,
+          resolved: true,
+        },
+        origin: { kind: "implementSchool", label: "Implement — Resonant Power" },
+        detail: school.resonantPower.summary,
+      });
+    }
+    for (const focusPowerId of doc.build.occultistFocusPowers ?? []) {
+      const found = findOccultistFocusPower(focusPowerId);
+      if (!found || !knownSchoolTags.has(found.school.tag)) continue;
+      out.push({
+        classTag: "occultist",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `focusPower:${focusPowerId}`,
+          featureId: `focusPower:${focusPowerId}`,
+          name: `${found.power.name} (${found.school.name})`,
+          resolved: true,
+        },
+        origin: { kind: "focusPower", label: "Focus Power" },
+        detail: found.power.summary,
       });
     }
   }
