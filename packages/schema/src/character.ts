@@ -703,6 +703,62 @@ export interface CharacterDoc {
      */
     occultistFocusPowers?: string[];
     /**
+     * Kineticist primary element tag chosen at 1st level (keys into
+     * `@pf1/engine` `KINETICIST_ELEMENTS` — issue #65, Occult Adventures
+     * "Elemental Focus"). One of "aether"|"air"|"earth"|"fire"|"water"
+     * (the 5 core elements this app models — see `kineticist-elements.ts`'s
+     * doc comment for the Void/Wood scoping cut). PF1 RAW: chosen once at
+     * 1st level and never changes; determines the kineticist's simple
+     * blast, 2 bonus class skills (display-only — same `classSkillSet`-
+     * wiring gap `cavalierOrder`'s doc comment documents), the Elemental
+     * Defense wild talent auto-granted at 2nd level, and an automatic bonus
+     * basic utility wild talent. Free-choice, soft posture — no validation
+     * that it's one of the 5 modeled tags. Empty/undefined for
+     * non-kineticists or a kineticist who hasn't picked yet. Back-compat:
+     * documents without this field are unaffected.
+     */
+    kineticistElement?: string;
+    /**
+     * Kineticist "Expanded Element" picks, in pick order (element tags into
+     * `@pf1/engine` `KINETICIST_ELEMENTS`) — issue #65. PF1 RAW: at 7th
+     * level, and again at 15th, a kineticist chooses ANY element (including
+     * her own primary, to "expand her understanding" of it further) and
+     * gains one of that element's simple blasts plus its basic utility wild
+     * talent (NOT its defense wild talent — RAW: "she doesn't gain the
+     * defense wild talent of the expanded element"). Index 0 = the
+     * 7th-level pick, index 1 = the 15th-level pick; either may equal
+     * `kineticistElement` (RAW's "expand an element you already have"
+     * case). RAW also says the 15th-level pick can't repeat the exact
+     * element chosen at 7th unless it's her primary — not hard-enforced,
+     * same soft posture as every other budgeted picker here. Composite
+     * blasts become available once BOTH their required elements are known
+     * (primary + this array) — see `eligibleCompositeBlasts`. Free-choice,
+     * soft posture. Empty/undefined for non-kineticists. Back-compat:
+     * documents without this field are unaffected.
+     */
+    kineticistExpandedElements?: string[];
+    /**
+     * Kineticist wild talent ids chosen from the infusion/utility menus
+     * (`"<elementTag>:<slug>"` for element-specific entries, or
+     * `"universal:<slug>"` for talents any element can take — keys into
+     * `@pf1/engine` `KINETICIST_WILD_TALENTS`) — issue #65. Covers BOTH
+     * infusions (gained 1st/3rd/5th/9th/11th/13th/17th/19th) and utility
+     * wild talents (gained 2nd/4th/6th/8th/10th/12th/14th/16th/18th/20th)
+     * in one array — the two cadences are budgeted independently by
+     * `model/kineticistWildTalents.ts` (which filters this array by each
+     * def's `category` before counting), the same "one field, a helper
+     * disambiguates" shape `occultistFocusPowers` uses rather than a
+     * two-field split. Menu is soft-scoped to the character's known
+     * elements (`kineticistElement` + `kineticistExpandedElements`) plus
+     * the always-available `universal:` entries; a stale pick from a
+     * since-unpicked element is tolerated, not deleted (same posture
+     * `chosenOccultistFocusPowerCount` documents). Free-choice, soft
+     * warning only on overspend/under-level. Empty/undefined for
+     * non-kineticists. Back-compat: documents without this field are
+     * unaffected.
+     */
+    kineticistWildTalents?: string[];
+    /**
      * Antipaladin cruelty ids chosen (keys into `@pf1/engine`
      * `ANTIPALADIN_CRUELTIES` — issue #65 wave B). Gained at 3rd level and
      * every three levels thereafter (3rd, 6th, 9th, 12th, 15th, 18th — 6
@@ -1953,8 +2009,9 @@ export interface DerivedClassFeature {
    * ki power, style strike, rogue talent, investigator talent, vigilante
    * social/vigilante talent, shifter aspect, psychic discipline power,
    * phrenic amplification, mesmerist trick, mesmerist bold stare, occultist
-   * implement school, occultist focus power) — same disambiguation need
-   * against each class's own intrinsic features.
+   * implement school, occultist focus power, kineticist composite blast,
+   * kineticist wild talent) — same disambiguation need against each class's
+   * own intrinsic features.
    */
   origin?: {
     kind:
@@ -1981,7 +2038,9 @@ export interface DerivedClassFeature {
       | "amplification"
       | "stare"
       | "implementSchool"
-      | "focusPower";
+      | "focusPower"
+      | "compositeBlast"
+      | "wildTalent";
     label: string;
   };
 }

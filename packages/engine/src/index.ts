@@ -78,6 +78,13 @@ export {
   type KineticBlastDetail,
   burnPerRoundLimit,
   burnDetailLabel,
+  kineticOverflowBonus,
+  kineticOverflowLabel,
+  type KineticOverflowBonus,
+  metakinesisLabel,
+  gatherPowerLabel,
+  infusionSpecializationReduction,
+  internalBufferMax,
   bombDamageDetail,
   type BombDamageDetail,
   fiendishBoonWeaponDetail,
@@ -227,6 +234,28 @@ export {
   type OccultistFocusPowerDef,
   type OccultistResonantPower,
 } from "./occultist-implements.js";
+export {
+  KINETICIST_ELEMENTS,
+  KINETICIST_ELEMENT_TAGS,
+  KINETICIST_COMPOSITE_BLASTS,
+  eligibleCompositeBlasts,
+  type KineticistElementDef,
+  type KineticistSimpleBlast,
+  type KineticistDefenseDef,
+  type KineticistBasicUtilityDef,
+  type KineticistCompositeBlastDef,
+  type KineticistDamageType,
+} from "./kineticist-elements.js";
+export {
+  KINETICIST_WILD_TALENTS,
+  KINETICIST_UNIVERSAL_TALENT_IDS,
+  findKineticistWildTalent,
+  wildTalentsForElement,
+  minKineticistLevelForTalent,
+  type KineticistWildTalentDef,
+  type KineticistWildTalentCategory,
+  type KineticistInfusionKind,
+} from "./kineticist-wild-talents.js";
 export {
   PSYCHIC_DISCIPLINES,
   PSYCHIC_DISCIPLINE_TAGS,

@@ -30,6 +30,7 @@ import { HexPicker } from "./HexPicker.js";
 import { ImplementPicker } from "./ImplementPicker.js";
 import { InvestigatorTalentPicker } from "./InvestigatorTalentPicker.js";
 import { KiPowerPicker } from "./KiPowerPicker.js";
+import { KineticistPicker } from "./KineticistPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
 import { MesmeristBoldStarePicker } from "./MesmeristBoldStarePicker.js";
 import { MesmeristTrickPicker } from "./MesmeristTrickPicker.js";
@@ -484,6 +485,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Implement school + focus power pickers — occultist only (issue #65, free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "occultist") && (
         <ImplementPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Elemental Focus + wild talent pickers — kineticist only (issue #65, free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "kineticist") && (
+        <KineticistPicker doc={doc} update={update} />
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

@@ -1493,6 +1493,96 @@ export function burnDetailLabel(characterLevel: number, kineticistLevel: number)
   );
 }
 
+/**
+ * Kineticist Elemental Overflow attack/damage bonus, clean-room from the
+ * published PF1 Occult Adventures rules: "she receives a bonus on her
+ * attack rolls with kinetic blasts equal to the total number of points of
+ * burn she currently has, to a maximum bonus of +1 for every 3 kineticist
+ * levels she possesses. She also receives a bonus on damage rolls with her
+ * kinetic blast equal to double the bonus on attack rolls." Unlike every
+ * other kineticist helper in this file, this one IS live-state-dependent —
+ * `currentBurn` is read from `doc.live.resources[burnFeatureId].used` by
+ * the caller (`archetypes.ts`'s Elemental Overflow detail branch), the same
+ * pool the Burn class feature already rides via `deriveResourcePools`.
+ * Returns `{ attackBonus: 0, damageBonus: 0, cap: 0 }` below 3rd level
+ * (Elemental Overflow isn't granted until 3rd).
+ */
+export interface KineticOverflowBonus {
+  /** `1 + floor(kineticistLevel / 3)`. */
+  cap: number;
+  attackBonus: number;
+  damageBonus: number;
+}
+
+export function kineticOverflowBonus(
+  kineticistLevel: number,
+  currentBurn: number,
+): KineticOverflowBonus {
+  if (kineticistLevel < 3) return { cap: 0, attackBonus: 0, damageBonus: 0 };
+  const cap = 1 + Math.floor(kineticistLevel / 3);
+  const attackBonus = Math.max(0, Math.min(currentBurn, cap));
+  return { cap, attackBonus, damageBonus: attackBonus * 2 };
+}
+
+/** One-line display string for {@link kineticOverflowBonus}. */
+export function kineticOverflowLabel(kineticistLevel: number, currentBurn: number): string {
+  const { attackBonus, damageBonus, cap } = kineticOverflowBonus(kineticistLevel, currentBurn);
+  return (
+    `+${attackBonus} atk / +${damageBonus} dmg with kinetic blasts ` +
+    `(currently holding ${currentBurn} burn; cap +${cap} atk at this level)`
+  );
+}
+
+/**
+ * Kineticist Metakinesis tiers unlocked so far, clean-room from the
+ * published rules: Empower at 5th (1 burn), Maximize at 9th (2 burn),
+ * Quicken at 13th (3 burn), and at 17th "the kineticist can use her kinetic
+ * blast twice with the same standard action" (4 burn — a double-blast
+ * rider, not a 4th metamagic tier).
+ */
+export function metakinesisLabel(kineticistLevel: number): string {
+  if (kineticistLevel < 5) return "Not yet available (5th level).";
+  const tiers: string[] = ["Empower (1 burn)"];
+  if (kineticistLevel >= 9) tiers.push("Maximize (2 burn)");
+  if (kineticistLevel >= 13) tiers.push("Quicken (3 burn)");
+  if (kineticistLevel >= 17) tiers.push("blast twice with one action (4 burn)");
+  return tiers.join(", ");
+}
+
+/**
+ * Kineticist Gather Power burn-reduction summary, clean-room from the
+ * published rules: move action reduces a blast's burn cost by 1 (2 for a
+ * full round); Supercharge (11th level) raises those to 2/3 respectively.
+ */
+export function gatherPowerLabel(kineticistLevel: number): string {
+  const supercharged = kineticistLevel >= 11;
+  return supercharged
+    ? "-2 burn (move action) / -3 burn (full round, then move action next turn) — Supercharge active"
+    : "-1 burn (move action) / -2 burn (full round, then move action next turn)";
+}
+
+/**
+ * Kineticist Infusion Specialization burn reduction on combined infusion
+ * costs, clean-room from the published rules: "reduces the combined burn
+ * cost of the infusions by 1" at 5th, +1 more at 8th/11th/14th/17th/20th —
+ * `1 + floor((level - 5) / 3)` for level >= 5 (capped at 6 by 20th).
+ */
+export function infusionSpecializationReduction(kineticistLevel: number): number {
+  if (kineticistLevel < 5) return 0;
+  return Math.min(6, 1 + Math.floor((kineticistLevel - 5) / 3));
+}
+
+/**
+ * Kineticist Internal Buffer max stored points, clean-room from the
+ * published rules: 1 point at 6th level, 2 at 11th, 3 at 16th.
+ */
+export function internalBufferMax(kineticistLevel: number): number {
+  if (kineticistLevel < 6) return 0;
+  if (kineticistLevel < 11) return 1;
+  if (kineticistLevel < 16) return 2;
+  return 3;
+}
+
 /* ----------------------------------------------------------- witch hexes -- */
 
 /**

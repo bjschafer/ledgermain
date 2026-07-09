@@ -35,6 +35,8 @@ import { NINJA_TRICKS } from "./ninja-tricks.js";
 import { MONK_KI_POWERS } from "./monk-ki-powers.js";
 import { MONK_STYLE_STRIKES } from "./monk-style-strikes.js";
 import { findOccultistFocusPower, OCCULTIST_SCHOOLS } from "./occultist-implements.js";
+import { eligibleCompositeBlasts, KINETICIST_ELEMENTS } from "./kineticist-elements.js";
+import { findKineticistWildTalent } from "./kineticist-wild-talents.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { PHRENIC_AMPLIFICATIONS } from "./phrenic-amplifications.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
@@ -57,6 +59,11 @@ import {
   painfulStareLabel,
   hypnoticStareLabel,
   kineticBlastDetail,
+  kineticOverflowLabel,
+  metakinesisLabel,
+  gatherPowerLabel,
+  infusionSpecializationReduction,
+  internalBufferMax,
   fiendishBoonLabel,
   studiedCombatLabel,
   studiedStrikeDice,
@@ -80,7 +87,8 @@ export interface GrantedFeature {
    * arcana/revelation/hex/discovery/spirit/discipline power/phrenic
    * amplification/mesmerist trick/mesmerist bold stare/cruelty/ninja trick/
    * ki power/style strike/rogue talent/investigator talent/vigilante talent/
-   * shifter aspect/rage power rather than the class itself.
+   * shifter aspect/rage power/occultist implement/focus power/kineticist
+   * composite blast/wild talent rather than the class itself.
    */
   origin?: {
     kind:
@@ -107,7 +115,9 @@ export interface GrantedFeature {
       | "vigilanteTalent"
       | "shifterAspect"
       | "implementSchool"
-      | "focusPower";
+      | "focusPower"
+      | "compositeBlast"
+      | "wildTalent";
     label: string;
   };
   /**
@@ -858,6 +868,62 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
+  // Kineticist composite blasts + wild talents (issue #65) — hand-authored
+  // (see kineticist-elements.ts / kineticist-wild-talents.ts), gated on
+  // actual kineticist levels. Composite blasts are NOT a budgeted pick (RAW:
+  // automatic once the required element(s) are known — see
+  // `eligibleCompositeBlasts`'s doc comment); granted at a flat display
+  // level of 7 (the earliest Expanded Element can make any composite's
+  // prerequisites met, since every entry needs at least one expanded
+  // element). `build.kineticistWildTalents` covers BOTH infusions and
+  // utility talents in one field (disambiguated by `findKineticistWildTalent`'s
+  // `.category`, same "one field, helper disambiguates" shape
+  // `occultistFocusPowers` uses) — granted at a flat display level of 1
+  // (infusions) or 2 (utility), the earliest each category's own cadence
+  // starts. A stale pick whose id no longer resolves (or a universal pick,
+  // always valid) is tolerated silently, matching every other budgeted
+  // picker's soft posture.
+  const kineticistLevel = doc.identity.classes.find((c) => c.tag === "kineticist")?.level ?? 0;
+  if (kineticistLevel > 0) {
+    const primaryElement = doc.build.kineticistElement;
+    const expandedElements = doc.build.kineticistExpandedElements ?? [];
+    for (const blast of eligibleCompositeBlasts(primaryElement, expandedElements)) {
+      out.push({
+        classTag: "kineticist",
+        level: 7,
+        grant: {
+          level: 7,
+          uuid: `compositeBlast:${blast.id}`,
+          featureId: `compositeBlast:${blast.id}`,
+          name: blast.name,
+          resolved: true,
+        },
+        origin: { kind: "compositeBlast", label: "Composite Blast" },
+        detail: `${blast.summary} (${blast.burn} burn)`,
+      });
+    }
+    for (const talentId of doc.build.kineticistWildTalents ?? []) {
+      const talent = findKineticistWildTalent(talentId);
+      if (!talent) continue;
+      out.push({
+        classTag: "kineticist",
+        level: talent.category === "infusion" ? 1 : 2,
+        grant: {
+          level: talent.category === "infusion" ? 1 : 2,
+          uuid: `wildTalent:${talentId}`,
+          featureId: `wildTalent:${talentId}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: {
+          kind: "wildTalent",
+          label: talent.category === "infusion" ? "Infusion" : "Utility Wild Talent",
+        },
+        detail: `${talent.summary} (${talent.burn} burn)`,
+      });
+    }
+  }
+
   return out;
 }
 
@@ -1397,6 +1463,105 @@ export function resolveClassFeatures(
       grant.name === "Energy Kinetic Blast"
     ) {
       detail = kineticBlastDetail(classLevel, abilities?.con?.mod).energyLabel;
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Elemental Focus"
+    ) {
+      // Issue #65: which element was chosen (`build.kineticistElement`) has
+      // no vendored per-element data (see `kineticist-elements.ts`'s doc
+      // comment) — hand-authored summary of the simple blast, bonus class
+      // skills (display-only, same `classSkillSet`-wiring gap
+      // `cavalierOrder` documents), and automatic basic utility talent.
+      const element = doc.build.kineticistElement
+        ? KINETICIST_ELEMENTS[doc.build.kineticistElement]
+        : undefined;
+      if (element) {
+        detail =
+          `${element.name} — simple blast: ${element.simpleBlast.name} ` +
+          `(${element.simpleBlast.damageType}, ${element.simpleBlast.descriptor}); ` +
+          `bonus wild talent: ${element.basicUtility.name}`;
+      }
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Elemental Defense"
+    ) {
+      // Issue #65: Elemental Defense always scales with burn ACCEPTED (a
+      // live, per-activation choice) — display-only, see
+      // `KineticistDefenseDef`'s doc comment.
+      const element = doc.build.kineticistElement
+        ? KINETICIST_ELEMENTS[doc.build.kineticistElement]
+        : undefined;
+      if (element) detail = `${element.defense.name}: ${element.defense.summary}`;
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Expanded Element"
+    ) {
+      // Issue #65: the vendored feature is a single row at 7th level, but
+      // RAW grants a SECOND pick at 15th ("At 15th level, the kineticist can
+      // either select a new element or expand her understanding of her
+      // original element") — both picks (`build.kineticistExpandedElements`
+      // indices 0/1) are summarized here rather than inventing a synthetic
+      // second grant row, since the vendored dataset has none to attach it to.
+      const picks = doc.build.kineticistExpandedElements ?? [];
+      const parts: string[] = [];
+      if (classLevel >= 7 && picks[0]) {
+        const el = KINETICIST_ELEMENTS[picks[0]];
+        if (el) parts.push(`7th: ${el.name} (+${el.simpleBlast.name}, ${el.basicUtility.name})`);
+      }
+      if (classLevel >= 15 && picks[1]) {
+        const el = KINETICIST_ELEMENTS[picks[1]];
+        if (el) parts.push(`15th: ${el.name} (+${el.simpleBlast.name}, ${el.basicUtility.name})`);
+      }
+      if (parts.length > 0) detail = parts.join(" · ");
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Elemental Overflow"
+    ) {
+      // Issue #65: the ONE kineticist rider that genuinely depends on live
+      // session state — see `kineticOverflowBonus`'s doc comment. Reads the
+      // Burn resource pool's current `used` value (same pool `resources.ts`
+      // derives from the Burn feature's vendored `uses.maxFormula`) rather
+      // than re-deriving burn tracking here.
+      const burnFeature = Object.values(refData.classFeatures).find((f) => f.tag === "burn");
+      const currentBurn = burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0;
+      detail = kineticOverflowLabel(classLevel, currentBurn);
+    } else if (detail === undefined && classTag === "kineticist" && grant.name === "Metakinesis") {
+      detail = metakinesisLabel(classLevel);
+    } else if (detail === undefined && classTag === "kineticist" && grant.name === "Gather Power") {
+      detail = gatherPowerLabel(classLevel);
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Infusion Specialization"
+    ) {
+      detail = `-${infusionSpecializationReduction(classLevel)} burn on combined infusion costs (min 0)`;
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Internal Buffer"
+    ) {
+      detail = `max ${internalBufferMax(classLevel)} point(s) stored (spend 1/talent to avoid accepting burn)`;
+    } else if (detail === undefined && classTag === "kineticist" && grant.name === "Supercharge") {
+      detail = "Gather Power reduces burn cost by 2 (move action) / 3 (full round) instead of 1/2";
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Composite Specialization"
+    ) {
+      detail = "-1 burn cost on composite blasts (min 0)";
+    } else if (
+      detail === undefined &&
+      classTag === "kineticist" &&
+      grant.name === "Metakinetic Master"
+    ) {
+      detail = "Choose one metakinesis type; its burn cost is reduced by 1 (min 0)";
+    } else if (detail === undefined && classTag === "kineticist" && grant.name === "Omnikinesis") {
+      detail =
+        "1 burn: use any blast wild talent you don't know · 1 burn as a standard action: swap any wild talent for another of the same category for 24 hours, ignoring elemental restrictions";
     } else if (
       detail === undefined &&
       classTag === "investigator" &&
