@@ -1015,7 +1015,18 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   let bab = 0;
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
-    if (def) bab += babForLevels(def.bab, cls.level);
+    if (!def) continue;
+    // Issue #65: Vigilante's Avenger specialization (Ultimate Intrigue, the
+    // "Vigilante Specialization" class feature) reads "gains a base attack
+    // bonus equal to his vigilante level instead of using those listed on
+    // Table 1-1" — a full-BAB override for vigilante levels specifically,
+    // not a global tier change (a multiclassed avenger's OTHER classes still
+    // use their own listed tier). `def.bab` is vigilante's normal "med" tier
+    // from the vendored data; swapped for "high" only when this class entry
+    // IS vigilante levels AND the build chose Avenger.
+    const tier =
+      cls.tag === "vigilante" && doc.build.vigilanteSpecialization === "avenger" ? "high" : def.bab;
+    bab += babForLevels(tier, cls.level);
   }
 
   const baseSize: SizeId = race?.size ?? "med";

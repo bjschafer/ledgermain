@@ -355,6 +355,24 @@ export function setAntipaladinBoon(
 }
 
 /**
+ * Set the vigilante's chosen specialization (single choice, PF1 grants
+ * exactly one at L1, never changed thereafter). Pass `null` to clear. No
+ * validation beyond the "avenger" | "stalker" union — the picker UI only
+ * offers those two values. See `character.ts`'s `vigilanteSpecialization`
+ * doc comment for what this drives (`compute.ts`'s BAB loop, and the
+ * Hidden Strike detail line in `archetypes.ts`).
+ */
+export function setVigilanteSpecialization(
+  doc: CharacterDoc,
+  spec: "avenger" | "stalker" | null,
+): CharacterDoc {
+  return {
+    ...doc,
+    build: { ...doc.build, vigilanteSpecialization: spec ?? undefined },
+  };
+}
+
+/**
  * Set (or clear) the fighter's Weapon Training group pick for tier
  * `tierIndex` (0 = 5th level, 1 = 9th, 2 = 13th, 3 = 17th — see
  * `build.weaponTrainingGroups`'s doc comment). Pass `null` (or a blank/
