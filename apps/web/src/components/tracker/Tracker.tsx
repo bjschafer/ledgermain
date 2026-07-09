@@ -7,6 +7,7 @@ import { FamiliarPanel } from "./FamiliarPanel.js";
 import { FeatsPanel } from "./FeatsPanel.js";
 import { HeroPointsPanel } from "./HeroPointsPanel.js";
 import { HpPanel } from "./HpPanel.js";
+import { MediumSpiritPanel } from "./MediumSpiritPanel.js";
 import { NewDayBar } from "./NewDayBar.js";
 import { PhantomPanel } from "./PhantomPanel.js";
 import { PreparedSpellsPanel } from "./PreparedSpellsPanel.js";
@@ -34,6 +35,7 @@ export function Tracker(props: BuilderProps) {
       <NewDayBar {...props} />
       <HpPanel {...props} />
       <VigilanteIdentityPanel {...props} />
+      <MediumSpiritPanel {...props} />
       <ConditionsPanel {...props} />
       <BuffsPanel {...props} />
       <ShifterAspectPanel {...props} />

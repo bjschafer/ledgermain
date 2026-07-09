@@ -22,6 +22,7 @@ import { featNameSlug } from "./feat-effects.js";
 import { resolveFeatEffect } from "./feat-effects-resolve.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
+import { mediumSpiritBonus, MEDIUM_SPIRITS } from "./medium-spirits.js";
 import { OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
@@ -733,6 +734,59 @@ export function collectModifiers(
       } else if (tag === "transmutation") {
         const ability = doc.live.occultistPhysicalEnhancementAbility ?? "str";
         out.push({ target: ability, type: "enhancement", value: bonus, source, sourceId });
+      }
+    }
+  }
+
+  // --- medium spirit bonus + séance boon (live state, issue #65) ----------
+  // `live.mediumSpirit` (set by `model/mediumSpirits.ts`'s séance picker)
+  // names which of the 6 legendary spirits (`MEDIUM_SPIRITS`) is currently
+  // channeled; while one is, the flat Spirit Bonus (scaling by medium level,
+  // `mediumSpiritBonus`) and any flat Séance Boon apply as real untyped
+  // `Change`s wherever the spirit's own `spiritBonusTargets`/
+  // `seanceBoonChange` name a target this engine actually consumes — see
+  // `medium-spirits.ts`'s file doc comment for the per-spirit audit of which
+  // targets are real vs. prose-only. `abilitySkills` targets fan out to one
+  // `skill.<id>` Change per skill keyed to that ability (same pattern as the
+  // occultist Enchantment resonant power just above), since no `chaSkills`-
+  // style group target is actually consumed by `compute.ts`.
+  const mediumLevel = doc.identity.classes.find((c) => c.tag === "medium")?.level ?? 0;
+  if (mediumLevel > 0 && doc.live.mediumSpirit) {
+    const spirit = MEDIUM_SPIRITS[doc.live.mediumSpirit];
+    if (spirit) {
+      const bonus = mediumSpiritBonus(mediumLevel);
+      const bonusSource = `Spirit Bonus (${spirit.name} Spirit)`;
+      const bonusSourceId = `mediumSpiritBonus:${spirit.tag}`;
+      for (const t of spirit.spiritBonusTargets) {
+        if (t.kind === "flat") {
+          out.push({
+            target: t.target,
+            type: "untyped",
+            value: bonus,
+            source: bonusSource,
+            sourceId: bonusSourceId,
+          });
+        } else {
+          for (const [skillId, ability] of Object.entries(SKILL_ABILITY)) {
+            if (ability !== t.ability) continue;
+            out.push({
+              target: `skill.${skillId}`,
+              type: "untyped",
+              value: bonus,
+              source: bonusSource,
+              sourceId: bonusSourceId,
+            });
+          }
+        }
+      }
+      if (spirit.seanceBoonChange) {
+        out.push({
+          target: spirit.seanceBoonChange.target,
+          type: "untyped",
+          value: spirit.seanceBoonChange.value,
+          source: `Séance Boon (${spirit.name} Spirit)`,
+          sourceId: `mediumSeanceBoon:${spirit.tag}`,
+        });
       }
     }
   }

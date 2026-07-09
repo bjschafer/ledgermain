@@ -34,6 +34,7 @@ import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { NINJA_TRICKS } from "./ninja-tricks.js";
 import { MONK_KI_POWERS } from "./monk-ki-powers.js";
 import { MONK_STYLE_STRIKES } from "./monk-style-strikes.js";
+import { MEDIUM_SPIRITS } from "./medium-spirits.js";
 import { findOccultistFocusPower, OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { PHRENIC_AMPLIFICATIONS } from "./phrenic-amplifications.js";
@@ -80,7 +81,8 @@ export interface GrantedFeature {
    * arcana/revelation/hex/discovery/spirit/discipline power/phrenic
    * amplification/mesmerist trick/mesmerist bold stare/cruelty/ninja trick/
    * ki power/style strike/rogue talent/investigator talent/vigilante talent/
-   * shifter aspect/rage power rather than the class itself.
+   * shifter aspect/rage power/medium spirit power rather than the class
+   * itself.
    */
   origin?: {
     kind:
@@ -107,7 +109,8 @@ export interface GrantedFeature {
       | "vigilanteTalent"
       | "shifterAspect"
       | "implementSchool"
-      | "focusPower";
+      | "focusPower"
+      | "spiritPower";
     label: string;
   };
   /**
@@ -855,6 +858,46 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         origin: { kind: "focusPower", label: "Focus Power" },
         detail: found.power.summary,
       });
+    }
+  }
+
+  // Medium spirit powers (issue #65) — hand-authored (see medium-spirits.ts),
+  // gated on actual medium levels AND the currently channeled spirit
+  // (`live.mediumSpirit` — a LIVE daily séance choice, not a build pick, per
+  // that field's schema doc comment). Unlike a shaman's spirit ability
+  // (auto-granted at a flat level) or an occultist's implements (a budgeted
+  // build-time pick), each of a spirit's 4 named powers (lesser/intermediate/
+  // greater/supreme) is auto-granted the moment BOTH the medium's level
+  // reaches that power's own gate AND that spirit is the one currently
+  // channeled — same "automatic once you qualify" shape as psychic
+  // discipline powers above, just re-evaluated against whichever spirit is
+  // live today instead of a permanent build choice. A medium who switches
+  // spirits between sessions simply sees a different 4 powers; nothing is
+  // "kept" from a previously channeled spirit (matches RAW: the powers are a
+  // property of the spirit, not the medium).
+  const mediumLevel = doc.identity.classes.find((c) => c.tag === "medium")?.level ?? 0;
+  if (mediumLevel > 0 && doc.live.mediumSpirit) {
+    const spirit = MEDIUM_SPIRITS[doc.live.mediumSpirit];
+    if (spirit) {
+      for (const power of spirit.powers) {
+        if (power.level > mediumLevel) continue;
+        out.push({
+          classTag: "medium",
+          level: power.level,
+          grant: {
+            level: power.level,
+            uuid: `spiritPower:${spirit.tag}:${power.tier}`,
+            featureId: `spiritPower:${spirit.tag}:${power.tier}`,
+            name: power.name,
+            resolved: true,
+          },
+          origin: {
+            kind: "spiritPower",
+            label: `${spirit.name} Spirit — ${power.tier[0]?.toUpperCase()}${power.tier.slice(1)} Power`,
+          },
+          detail: power.summary,
+        });
+      }
     }
   }
 
