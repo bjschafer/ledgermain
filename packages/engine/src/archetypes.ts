@@ -29,6 +29,9 @@ import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { WITCH_HEXES } from "./witch-hexes.js";
+import { INVESTIGATOR_TALENTS } from "./investigator-talents.js";
+import { VIGILANTE_SOCIAL_TALENTS, VIGILANTE_TALENTS } from "./vigilante-talents.js";
+import { SHIFTER_ASPECTS } from "./shifter-aspects.js";
 import {
   sneakAttackDice,
   smiteEvilDetail,
@@ -41,6 +44,10 @@ import {
   painfulStareLabel,
   hypnoticStareLabel,
   kineticBlastDetail,
+  studiedCombatLabel,
+  studiedStrikeDice,
+  hiddenStrikeDice,
+  shifterClawsLabel,
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 
@@ -64,7 +71,11 @@ export interface GrantedFeature {
       | "arcana"
       | "revelation"
       | "hex"
-      | "discovery";
+      | "discovery"
+      | "investigatorTalent"
+      | "vigilanteSocialTalent"
+      | "vigilanteTalent"
+      | "shifterAspect";
     label: string;
   };
   /**
@@ -311,6 +322,103 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "discovery", label: "Discovery" },
         detail: discovery.summary,
+      });
+    }
+  }
+
+  // Investigator talents (issue #65) — hand-authored (see
+  // investigator-talents.ts), gated on actual investigator levels the same
+  // way alchemist discoveries are gated above. Granted at a flat display
+  // level of 3 (the earliest an investigator has any talent at all), same
+  // rationale as exploits/arcana above.
+  const investigatorLevel = doc.identity.classes.find((c) => c.tag === "investigator")?.level ?? 0;
+  if (investigatorLevel > 0) {
+    for (const talentId of doc.build.investigatorTalents ?? []) {
+      const talent = INVESTIGATOR_TALENTS[talentId];
+      if (!talent) continue;
+      out.push({
+        classTag: "investigator",
+        level: 3,
+        grant: {
+          level: 3,
+          uuid: `investigatorTalent:${talent.id}`,
+          featureId: `investigatorTalent:${talent.id}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: { kind: "investigatorTalent", label: "Investigator Talent" },
+        detail: talent.summary,
+      });
+    }
+  }
+
+  // Vigilante social + vigilante talents (issue #65) — hand-authored (see
+  // vigilante-talents.ts), gated on actual vigilante levels. Two
+  // independent pools (PF1 RAW grants them from two different class
+  // features — see `build.vigilanteSocialTalents`/`vigilanteTalents`' doc
+  // comments), granted at flat display levels of 1 and 2 respectively (the
+  // earliest each pool has any pick at all).
+  const vigilanteLevel = doc.identity.classes.find((c) => c.tag === "vigilante")?.level ?? 0;
+  if (vigilanteLevel > 0) {
+    for (const talentId of doc.build.vigilanteSocialTalents ?? []) {
+      const talent = VIGILANTE_SOCIAL_TALENTS[talentId];
+      if (!talent) continue;
+      out.push({
+        classTag: "vigilante",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `vigilanteSocialTalent:${talent.id}`,
+          featureId: `vigilanteSocialTalent:${talent.id}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: { kind: "vigilanteSocialTalent", label: "Social Talent" },
+        detail: talent.summary,
+      });
+    }
+    for (const talentId of doc.build.vigilanteTalents ?? []) {
+      const talent = VIGILANTE_TALENTS[talentId];
+      if (!talent) continue;
+      out.push({
+        classTag: "vigilante",
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `vigilanteTalent:${talent.id}`,
+          featureId: `vigilanteTalent:${talent.id}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: { kind: "vigilanteTalent", label: "Vigilante Talent" },
+        detail: talent.summary,
+      });
+    }
+  }
+
+  // Shifter aspects (issue #65) — hand-authored (see shifter-aspects.ts),
+  // gated on actual shifter levels. Granted at a flat display level of 1
+  // (the earliest a shifter has any aspect at all), same rationale as
+  // exploits/arcana above. Whether the minor form is currently toggled ON
+  // (`live.activeBuffs`) is separate live-session state, not reflected here
+  // — this list is "aspects known", matching every other build-time pick.
+  const shifterLevel = doc.identity.classes.find((c) => c.tag === "shifter")?.level ?? 0;
+  if (shifterLevel > 0) {
+    for (const aspectId of doc.build.shifterAspects ?? []) {
+      const aspect = SHIFTER_ASPECTS[aspectId];
+      if (!aspect) continue;
+      out.push({
+        classTag: "shifter",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `shifterAspect:${aspect.id}`,
+          featureId: `shifterAspect:${aspect.id}`,
+          name: aspect.name,
+          resolved: true,
+        },
+        origin: { kind: "shifterAspect", label: "Aspect" },
+        detail: aspect.summary,
       });
     }
   }
@@ -800,6 +908,39 @@ export function resolveClassFeatures(
       grant.name === "Energy Kinetic Blast"
     ) {
       detail = kineticBlastDetail(classLevel, abilities?.con?.mod).energyLabel;
+    } else if (
+      detail === undefined &&
+      classTag === "investigator" &&
+      grant.name === "Studied Combat"
+    ) {
+      // Issue #65: insight bonus to atk/dmg vs. a studied target — see
+      // `studiedCombatLabel`'s doc comment (no vendored dice/changes upstream).
+      const label = studiedCombatLabel(classLevel);
+      if (label) detail = label;
+    } else if (
+      detail === undefined &&
+      classTag === "investigator" &&
+      grant.name === "Studied Strike"
+    ) {
+      detail = studiedStrikeDice(classLevel).diceLabel;
+    } else if (
+      detail === undefined &&
+      classTag === "vigilante" &&
+      grant.name === "Vigilante Specialization"
+    ) {
+      // Issue #65: Avenger gets full BAB (see compute.ts's BAB loop, which
+      // reads this same `doc.build.vigilanteSpecialization` field) — no
+      // class-feature detail line needed for that half. Stalker gets Hidden
+      // Strike, whose dice this surfaces (see `hiddenStrikeDice`'s doc
+      // comment — prose-only upstream, same posture as Sneak Attack).
+      const spec = doc.build.vigilanteSpecialization;
+      if (spec === "avenger") {
+        detail = "Avenger: full BAB (= vigilante level)";
+      } else if (spec === "stalker") {
+        detail = `Stalker: Hidden Strike ${hiddenStrikeDice(classLevel).diceLabel}`;
+      }
+    } else if (detail === undefined && classTag === "shifter" && grant.name === "Shifter Claws") {
+      detail = shifterClawsLabel(classLevel);
     }
     classFeatures.push({
       level: grant.level,

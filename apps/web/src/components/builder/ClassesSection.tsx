@@ -24,10 +24,12 @@ import { DisciplinePicker } from "./DisciplinePicker.js";
 import { DiscoveryPicker } from "./DiscoveryPicker.js";
 import { DomainPicker } from "./DomainPicker.js";
 import { HexPicker } from "./HexPicker.js";
+import { InvestigatorTalentPicker } from "./InvestigatorTalentPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
 import { PatronPicker } from "./PatronPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
+import { ShifterAspectPicker } from "./ShifterAspectPicker.js";
 import { TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
@@ -35,6 +37,8 @@ import { RangerPicker } from "./RangerPicker.js";
 import { RevelationPicker } from "./RevelationPicker.js";
 import { SchoolPicker } from "./SchoolPicker.js";
 import type { BuilderProps } from "./types.js";
+import { VigilanteSpecializationPicker } from "./VigilanteSpecializationPicker.js";
+import { VigilanteTalentPicker } from "./VigilanteTalentPicker.js";
 import { WeaponTrainingPicker } from "./WeaponTrainingPicker.js";
 
 /**
@@ -373,6 +377,24 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Discovery picker — alchemist only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "alchemist") && (
         <DiscoveryPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Investigator talent picker — investigator only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "investigator") && (
+        <InvestigatorTalentPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Specialization + talent pickers — vigilante only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "vigilante") && (
+        <>
+          <VigilanteSpecializationPicker doc={doc} update={update} />
+          <VigilanteTalentPicker doc={doc} update={update} />
+        </>
+      )}
+
+      {/* Aspect picker — shifter only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "shifter") && (
+        <ShifterAspectPicker doc={doc} update={update} />
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

@@ -577,6 +577,64 @@ export interface CharacterDoc {
      * unaffected.
      */
     alchemistDiscoveries?: string[];
+    /**
+     * Investigator talent ids chosen (keys into `@pf1/engine`
+     * `INVESTIGATOR_TALENTS` — issue #65). Gained at 3rd level and every 2
+     * levels thereafter (3rd, 5th, ..., 19th — 9 total by 20th); see
+     * `model/investigatorTalents.ts` for the budget math. Free-choice, soft
+     * warning only on overspend — same posture as `alchemistDiscoveries`.
+     * Empty/undefined for non-investigators. Back-compat: documents without
+     * this field are unaffected.
+     */
+    investigatorTalents?: string[];
+    /**
+     * Vigilante's chosen specialization (Ultimate Intrigue "Vigilante
+     * Specialization" class feature), picked at 1st level and never changed
+     * thereafter (PF1 RAW). "avenger" swaps the vigilante's own BAB tier for
+     * full BAB (= vigilante level) — see `compute.ts`'s BAB loop, which reads
+     * this field directly. "stalker" grants Hidden Strike (precision damage;
+     * see `@pf1/engine` `hiddenStrikeDice`, surfaced as a class-feature
+     * detail line). Free-choice, no hard validation. Empty/undefined for
+     * non-vigilantes or a vigilante who hasn't picked yet. Back-compat:
+     * documents without this field are unaffected.
+     */
+    vigilanteSpecialization?: "avenger" | "stalker";
+    /**
+     * Vigilante Social Talent ids chosen (keys into `@pf1/engine`
+     * `VIGILANTE_SOCIAL_TALENTS` — issue #65). Gained at 1st level and every
+     * 2 levels thereafter (1st, 3rd, ..., 19th — 10 total by 20th); see
+     * `model/vigilanteTalents.ts` for the budget math. A DIFFERENT pool from
+     * `vigilanteTalents` below — PF1 RAW grants these from two independent
+     * class features. Free-choice, soft warning only on overspend.
+     * Empty/undefined for non-vigilantes. Back-compat: documents without this
+     * field are unaffected.
+     */
+    vigilanteSocialTalents?: string[];
+    /**
+     * Vigilante Talent ids chosen (keys into `@pf1/engine`
+     * `VIGILANTE_TALENTS` — issue #65). Gained at 2nd level and every 2
+     * levels thereafter (2nd, 4th, ..., 20th — 10 total by 20th); see
+     * `model/vigilanteTalents.ts` for the budget math. Some entries are
+     * gated to `vigilanteSpecialization` (see `VigilanteTalentEntry.gate`) —
+     * soft-filtered only, same posture as `witchHexes`' tier gating; never
+     * blocks selection. Empty/undefined for non-vigilantes. Back-compat:
+     * documents without this field are unaffected.
+     */
+    vigilanteTalents?: string[];
+    /**
+     * Shifter aspect ids chosen (keys into `@pf1/engine` `SHIFTER_ASPECTS` —
+     * issue #65). Gained at 1st, 5th, 10th, and 15th level, plus a 5th aspect
+     * at 20th via the Final Aspect class feature; see
+     * `model/shifterAspects.ts` for the budget math. Free-choice, soft
+     * warning only on overspend. Each aspect's MINOR form is a real
+     * toggleable buff (see `live.activeBuffs`/`model/shifterAspects.ts`
+     * `toggleShifterAspectBuff`) built directly from `SHIFTER_ASPECTS`
+     * (there is no vendored buff to link — see that table's doc comment).
+     * The major form (Wild Shape transformation) is NOT modeled — deferred
+     * to issue #70 (polymorph). Empty/undefined for non-shifters.
+     * Back-compat: documents without this field are unaffected.
+     */
+    shifterAspects?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -743,6 +801,20 @@ export interface CharacterDoc {
      * Absent/omitted while `build.animalCompanion` is unset.
      */
     animalCompanion?: AnimalCompanionLiveState;
+    /**
+     * Vigilante's current identity (issue #65) — "social" (public persona) or
+     * "vigilante" (masked persona). Display-forward table state (an identity
+     * chip + a context-note reminder about renown/alignment scope on the
+     * relevant class features), not a numeric input to `compute()`: no
+     * vendored `Change` gates on identity, and several vigilante talents'
+     * identity-scoped bonuses (Renown's Intimidate bonus, Social Grace, ...)
+     * are intentionally left as manual-apply `contextNotes` on
+     * `VIGILANTE_SOCIAL_TALENTS`/`VIGILANTE_TALENTS` rather than wired to
+     * this flag — see those tables' doc comments. Omitted/undefined defaults
+     * to "social" (a vigilante typically starts and rests in their public
+     * identity). Back-compat: documents without this field are unaffected.
+     */
+    vigilanteIdentity?: "social" | "vigilante";
   };
 }
 
@@ -1389,7 +1461,9 @@ export interface DerivedClassFeature {
    * exploit) from an arcanist's own Arcane Reservoir, "Familiar" (a magus
    * arcana) from a magus's own Spell Combat, "Ward" (a hex) from a witch's
    * own Witch's Familiar, or "Cauldron" (a discovery) from an alchemist's
-   * own Bomb.
+   * own Bomb. Issue #65 adds four more: investigator talent, vigilante
+   * social talent, vigilante talent, and shifter aspect — same
+   * disambiguation need against each class's own intrinsic features.
    */
   origin?: {
     kind:
@@ -1400,7 +1474,11 @@ export interface DerivedClassFeature {
       | "arcana"
       | "revelation"
       | "hex"
-      | "discovery";
+      | "discovery"
+      | "investigatorTalent"
+      | "vigilanteSocialTalent"
+      | "vigilanteTalent"
+      | "shifterAspect";
     label: string;
   };
 }

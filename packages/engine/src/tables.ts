@@ -1543,3 +1543,108 @@ export function bombDamageDetail(alchemistLevel: number, intMod: number): BombDa
   const addend = intMod === 0 ? "" : intMod > 0 ? `+${intMod}` : `${intMod}`;
   return { dice, damageLabel: `${dice}d6${addend} fire` };
 }
+
+/* --------------------------------------------------------- studied combat -- */
+
+/**
+ * Investigator Studied Combat's insight bonus, clean-room from the published
+ * PF1 ACG SRD (the class feature's `changes[]` is empty upstream — only
+ * prose text — so the numbers are hand-authored here, same posture as
+ * `sneakAttackDice`): "he adds 1/2 his investigator level as an insight
+ * bonus on melee attack rolls and as a bonus on damage rolls" against a
+ * studied target. Both rolls use the SAME value.
+ */
+export function studiedCombatBonus(investigatorLevel: number): number {
+  if (investigatorLevel <= 0) return 0;
+  return Math.floor(investigatorLevel / 2);
+}
+
+/** One-line display string for `studiedCombatBonus`, e.g. "+2 atk/dmg vs. studied target". */
+export function studiedCombatLabel(investigatorLevel: number): string {
+  const bonus = studiedCombatBonus(investigatorLevel);
+  return bonus > 0 ? `+${bonus} atk/dmg vs. studied target` : "";
+}
+
+/**
+ * Investigator Studied Strike's precision damage dice, clean-room from the
+ * published PF1 ACG SRD (same "no vendored dice" situation as
+ * `studiedCombatBonus`): "The damage is 1d6 at 4th level, and increases by
+ * 1d6 for every 2 levels thereafter (to a maximum of 9d6 at 20th level)."
+ */
+export interface StudiedStrikeDetail {
+  /** Number of d6 rolled on a studied strike (0 below 4th level, 9 at L20). */
+  dice: number;
+  /** Display string, e.g. "3d6". */
+  diceLabel: string;
+}
+
+/** Studied strike dice count for an investigator of `investigatorLevel`. Out-of-range returns `dice: 0`. */
+export function studiedStrikeDice(investigatorLevel: number): StudiedStrikeDetail {
+  if (investigatorLevel < 4) {
+    return { dice: 0, diceLabel: "0d6" };
+  }
+  const dice = Math.min(9, Math.floor((investigatorLevel - 4) / 2) + 1);
+  return { dice, diceLabel: `${dice}d6` };
+}
+
+/* -------------------------------------------------------- hidden strike --- */
+
+/**
+ * Vigilante (Stalker) Hidden Strike precision damage dice, clean-room from
+ * the published PF1 Ultimate Intrigue SRD (the Vigilante Specialization
+ * class feature's `changes[]` is empty upstream — prose only): "an extra
+ * 1d8 points of precision damage ... This extra damage increases by 1d8 at
+ * 3rd level and every 2 vigilante levels thereafter."
+ */
+export interface HiddenStrikeDetail {
+  /** Number of d8 rolled on a hidden strike (0 for a non-stalker/level-0, 10 at L19+). */
+  dice: number;
+  /** Display string, e.g. "3d8". */
+  diceLabel: string;
+}
+
+/** Hidden strike dice count for a stalker vigilante of `vigilanteLevel`. Out-of-range returns `dice: 0`. */
+export function hiddenStrikeDice(vigilanteLevel: number): HiddenStrikeDetail {
+  if (vigilanteLevel < 1) {
+    return { dice: 0, diceLabel: "0d8" };
+  }
+  const dice = 1 + Math.max(0, Math.floor((vigilanteLevel - 1) / 2));
+  return { dice, diceLabel: `${dice}d8` };
+}
+
+/* -------------------------------------------------------- shifter claws --- */
+
+/**
+ * Shifter Claws damage die, clean-room from the published PF1 Blood of the
+ * Beast SRD (the class feature's `changes[]` is empty upstream — prose
+ * only): "dealing 1d4 points of piercing and slashing damage... At 7th
+ * level, her claw damage increases to 1d6... At 11th level ... 1d8. At 13th
+ * level ... 1d10." (Medium size only — same posture as `unarmedDamageDie`
+ * not modeling non-Medium sizes.) The die stops increasing after 13th; at
+ * 17th the critical multiplier becomes x3 instead. DR-bypass progression
+ * (cold iron/silver/magic at 3rd, adamantine/-- at 19th) is prose-only, not
+ * modeled as a Change here.
+ */
+export interface ShifterClawsDetail {
+  /** Display string for the claw damage die, e.g. "1d6". */
+  dieLabel: string;
+  /** Critical multiplier label, "x2" or "x3" (x3 from 17th level on). */
+  critLabel: string;
+}
+
+/** Shifter Claws damage die/crit for a shifter of `shifterLevel` (Medium size). Level is clamped to >= 1. */
+export function shifterClawsDamageDie(shifterLevel: number): ShifterClawsDetail {
+  const level = Math.max(1, shifterLevel);
+  let dieLabel = "1d4";
+  if (level >= 13) dieLabel = "1d10";
+  else if (level >= 11) dieLabel = "1d8";
+  else if (level >= 7) dieLabel = "1d6";
+  const critLabel = level >= 17 ? "x3" : "x2";
+  return { dieLabel, critLabel };
+}
+
+/** One-line display string for `shifterClawsDamageDie`, e.g. "1d6 (crit x2)". */
+export function shifterClawsLabel(shifterLevel: number): string {
+  const { dieLabel, critLabel } = shifterClawsDamageDie(shifterLevel);
+  return `${dieLabel} (crit ${critLabel})`;
+}

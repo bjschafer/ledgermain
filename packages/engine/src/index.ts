@@ -80,6 +80,15 @@ export {
   burnDetailLabel,
   bombDamageDetail,
   type BombDamageDetail,
+  studiedCombatBonus,
+  studiedCombatLabel,
+  studiedStrikeDice,
+  type StudiedStrikeDetail,
+  hiddenStrikeDice,
+  type HiddenStrikeDetail,
+  shifterClawsDamageDie,
+  shifterClawsLabel,
+  type ShifterClawsDetail,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
@@ -149,6 +158,24 @@ export {
   ALCHEMIST_DISCOVERY_IDS,
   type AlchemistDiscoveryDef,
 } from "./alchemist-discoveries.js";
+export {
+  INVESTIGATOR_TALENTS,
+  INVESTIGATOR_TALENT_IDS,
+  type InvestigatorTalentDef,
+  type InvestigatorTalentCategory,
+} from "./investigator-talents.js";
+export {
+  VIGILANTE_SOCIAL_TALENTS,
+  VIGILANTE_SOCIAL_TALENT_IDS,
+  VIGILANTE_TALENTS,
+  VIGILANTE_TALENT_IDS,
+  vigilanteTalentsForSpecialization,
+  type VigilanteTalentDef,
+  type VigilanteTalentEntry,
+  type VigilanteSpecialization,
+  type VigilanteTalentGate,
+} from "./vigilante-talents.js";
+export { SHIFTER_ASPECTS, SHIFTER_ASPECT_IDS, type ShifterAspectDef } from "./shifter-aspects.js";
 export {
   PSYCHIC_DISCIPLINES,
   PSYCHIC_DISCIPLINE_TAGS,
