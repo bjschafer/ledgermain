@@ -80,6 +80,11 @@ export {
   burnDetailLabel,
   bombDamageDetail,
   type BombDamageDetail,
+  fiendishBoonWeaponDetail,
+  fiendishBoonLabel,
+  type FiendishBoonWeaponDetail,
+  antipaladinDamageReduction,
+  type AntipaladinDrDetail,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
@@ -160,6 +165,21 @@ export {
   ALCHEMIST_DISCOVERY_IDS,
   type AlchemistDiscoveryDef,
 } from "./alchemist-discoveries.js";
+export {
+  ANTIPALADIN_CRUELTIES,
+  ANTIPALADIN_CRUELTY_IDS,
+  crueltiesForTier,
+  antipaladinCrueltyDC,
+  type AntipaladinCrueltyDef,
+  type AntipaladinCrueltyTier,
+} from "./antipaladin-cruelties.js";
+export {
+  NINJA_TRICKS,
+  NINJA_TRICK_IDS,
+  tricksForTier,
+  type NinjaTrickDef,
+  type NinjaTrickTier,
+} from "./ninja-tricks.js";
 export {
   PSYCHIC_DISCIPLINES,
   PSYCHIC_DISCIPLINE_TAGS,
@@ -288,6 +308,7 @@ export {
   archetypeModeledEffectTier,
   type ArchetypeEffectTier,
   barbarianDamageReductionReplaced,
+  antipaladinDamageReductionReplaced,
   weaponTrainingReplaced,
   collectGrantedFeatures,
   type ResolvedClassFeatures,

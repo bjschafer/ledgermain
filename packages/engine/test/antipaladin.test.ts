@@ -184,3 +184,138 @@ describe("antipaladin spells-per-day — reuses the paladin quarter-caster table
     expect(baseSpellsPerDay("antipaladin", 3, 1)).toBeNull();
   });
 });
+
+/**
+ * Issue #65 wave B additions: cruelties (Touch of Corruption riders),
+ * Fiendish Boon (weapon/servant choice), and Aura of Depravity/Unholy
+ * Champion's DR/good — see `antipaladin-cruelties.ts`/`tables.ts`'s doc
+ * comments for the clean-room sourcing (all three read straight from the
+ * vendored `class-features.json` prose, no external site needed).
+ */
+describe("antipaladin L6 — cruelty wiring", () => {
+  const doc = makeDoc("antipaladin", 6, {
+    str: 16,
+    dex: 12,
+    con: 14,
+    int: 10,
+    wis: 10,
+    cha: 18,
+  });
+  const withCruelties: CharacterDoc = {
+    ...doc,
+    build: { ...doc.build, antipaladinCruelties: ["fatigued", "dazed"] },
+  };
+  const sheet = compute(withCruelties, ref);
+
+  it("chosen cruelties (both tiers within budget at L6) appear in classFeatures with their summary as detail", () => {
+    const fatigued = sheet.classFeatures.find((f) => f.name === "Fatigued");
+    expect(fatigued?.detail).toBe("The target becomes fatigued.");
+    expect(fatigued?.origin).toEqual({ kind: "cruelty", label: "Cruelty" });
+
+    const dazed = sheet.classFeatures.find((f) => f.name === "Dazed");
+    expect(dazed?.origin).toEqual({ kind: "cruelty", label: "Cruelty" });
+  });
+
+  it("an unrecognized/stale cruelty id is silently skipped, not thrown", () => {
+    const staleDoc: CharacterDoc = {
+      ...doc,
+      build: { ...doc.build, antipaladinCruelties: ["fatigued", "not-a-real-cruelty"] },
+    };
+    const staleSheet = compute(staleDoc, ref);
+    expect(staleSheet.classFeatures.map((f) => f.name)).toContain("Fatigued");
+    expect(staleSheet.classFeatures.map((f) => f.name)).not.toContain("not-a-real-cruelty");
+  });
+});
+
+describe("antipaladin — Fiendish Boon detail line", () => {
+  it("no boon chosen yet: prompts the picker", () => {
+    const doc = makeDoc("antipaladin", 5, {
+      str: 16,
+      dex: 12,
+      con: 14,
+      int: 10,
+      wis: 10,
+      cha: 16,
+    });
+    const sheet = compute(doc, ref);
+    const boon = sheet.classFeatures.find((f) => f.name === "Fiendish Boon");
+    expect(boon?.detail).toBe("Choose weapon or servant below — fixed once chosen (PF1 RAW).");
+  });
+
+  it("weapon boon at L11: +3 enhancement-equivalent (1 + floor(6/3)), 2/day (1 + floor(6/4))", () => {
+    const doc = makeDoc("antipaladin", 11, {
+      str: 16,
+      dex: 12,
+      con: 14,
+      int: 10,
+      wis: 10,
+      cha: 16,
+    });
+    const withBoon: CharacterDoc = { ...doc, build: { ...doc.build, antipaladinBoon: "weapon" } };
+    const sheet = compute(withBoon, ref);
+    const boon = sheet.classFeatures.find((f) => f.name === "Fiendish Boon");
+    expect(boon?.detail).toBe(
+      "+3 enhancement-equivalent (max +5 enhancement, remainder into properties), 2/day, standard action, 1 min/level each — weapon math stays manual",
+    );
+  });
+
+  it("servant boon: defers to issue #68, no numbers claimed", () => {
+    const doc = makeDoc("antipaladin", 7, {
+      str: 16,
+      dex: 12,
+      con: 14,
+      int: 10,
+      wis: 10,
+      cha: 16,
+    });
+    const withBoon: CharacterDoc = { ...doc, build: { ...doc.build, antipaladinBoon: "servant" } };
+    const sheet = compute(withBoon, ref);
+    const boon = sheet.classFeatures.find((f) => f.name === "Fiendish Boon");
+    expect(boon?.detail).toContain("issue #68");
+  });
+});
+
+describe("antipaladin L17/L20 — Aura of Depravity / Unholy Champion DR", () => {
+  it("no DR below 17th level", () => {
+    const doc = makeDoc("antipaladin", 16, {
+      str: 16,
+      dex: 12,
+      con: 14,
+      int: 10,
+      wis: 10,
+      cha: 16,
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.dr.find((d) => d.qualifier === "good")).toBeUndefined();
+  });
+
+  it("DR 5/good at L17-19 (Aura of Depravity)", () => {
+    const doc = makeDoc("antipaladin", 19, {
+      str: 16,
+      dex: 12,
+      con: 14,
+      int: 10,
+      wis: 10,
+      cha: 16,
+    });
+    const sheet = compute(doc, ref);
+    const dr = sheet.defenses?.dr.find((d) => d.qualifier === "good");
+    expect(dr?.total).toBe(5);
+    expect(dr?.components[0]?.source).toBe("Aura of Depravity");
+  });
+
+  it("DR 10/good at L20 (Unholy Champion, replaces the 17th-level value)", () => {
+    const doc = makeDoc("antipaladin", 20, {
+      str: 16,
+      dex: 12,
+      con: 14,
+      int: 10,
+      wis: 10,
+      cha: 16,
+    });
+    const sheet = compute(doc, ref);
+    const dr = sheet.defenses?.dr.find((d) => d.qualifier === "good");
+    expect(dr?.total).toBe(10);
+    expect(dr?.components[0]?.source).toBe("Unholy Champion");
+  });
+});

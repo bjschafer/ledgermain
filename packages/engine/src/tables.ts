@@ -1543,3 +1543,109 @@ export function bombDamageDetail(alchemistLevel: number, intMod: number): BombDa
   const addend = intMod === 0 ? "" : intMod > 0 ? `+${intMod}` : `${intMod}`;
   return { dice, damageLabel: `${dice}d6${addend} fire` };
 }
+
+/* ------------------------------------------------- antipaladin cruelties -- */
+
+/**
+ * Antipaladin Cruelty save DC, clean-room from the published PF1 Advanced
+ * Player's Guide SRD (vendored `class-features.json` "Cruelty" description,
+ * stated once as a blanket rule, not repeated per-cruelty): "The DC of this
+ * save is equal to 10 + 1/2 the antipaladin's level + the antipaladin's
+ * Charisma modifier." Same `10 + 1/2 level + ability mod` shape as
+ * `witchHexDC`, hand-authored here because a cruelty's DC is not part of any
+ * vendored `ClassFeature.uses`/`actions` (cruelties have no vendored
+ * per-cruelty data at all — see `antipaladin-cruelties.ts`'s doc comment).
+ */
+export function antipaladinCrueltyDC(antipaladinLevel: number, chaMod: number): number {
+  if (antipaladinLevel <= 0) return 0;
+  return 10 + Math.floor(antipaladinLevel / 2) + chaMod;
+}
+
+/* ----------------------------------------------------- fiendish boon (APA) */
+
+/**
+ * Antipaladin Fiendish Boon (weapon form) display summary, clean-room from
+ * the published PF1 Advanced Player's Guide SRD (vendored `class-features.json`
+ * "Fiendish Boon" description — a prose-only stub with `changes: []`, no
+ * different from paladin's own Divine Bond, which today has NO hand-authored
+ * numeric modeling or `build.*` field at all: the actual weapon math is left
+ * entirely to the player). Unlike Divine Bond, this project DOES track WHICH
+ * form (`build.antipaladinBoon`) was chosen — see the schema doc comment —
+ * but still stops short of turning the weapon math into a `Change` or
+ * resource pool; this is purely an informational summary line for the
+ * Fiendish Boon classFeature row, same restraint Divine Bond gets.
+ *
+ * "At 5th level, this spirit grants the weapon a +1 enhancement bonus. For
+ * every three levels beyond 5th, the weapon gains another +1 enhancement
+ * bonus, to a maximum of +6 at 20th level... stacking with existing weapon
+ * bonuses to a maximum of +5, or... weapon properties... An antipaladin can
+ * use this ability once per day at 5th level, and one additional time per
+ * day for every four levels beyond 5th, to a total of four times per day at
+ * 17th level."
+ */
+export interface FiendishBoonWeaponDetail {
+  /** Total enhancement-equivalent bonus available to spend (1 at L5, capped at 6 at L20+). 0 below 5th level. */
+  enhancementBonus: number;
+  /** Uses/day (1 at L5, capped at 4 at L17+). 0 below 5th level. */
+  usesPerDay: number;
+}
+
+export function fiendishBoonWeaponDetail(antipaladinLevel: number): FiendishBoonWeaponDetail {
+  if (antipaladinLevel < 5) return { enhancementBonus: 0, usesPerDay: 0 };
+  const enhancementBonus = Math.min(6, 1 + Math.floor((antipaladinLevel - 5) / 3));
+  const usesPerDay = Math.min(4, 1 + Math.floor((antipaladinLevel - 5) / 4));
+  return { enhancementBonus, usesPerDay };
+}
+
+/**
+ * One-line classFeature `detail` for Fiendish Boon, branching on the chosen
+ * `build.antipaladinBoon` form. `undefined` boon (not yet chosen, or below
+ * 5th level with the field already set from a stale doc) prompts the picker
+ * instead of showing stale numbers.
+ */
+export function fiendishBoonLabel(
+  antipaladinLevel: number,
+  boon: "weapon" | "servant" | undefined,
+): string {
+  if (!boon) return "Choose weapon or servant below — fixed once chosen (PF1 RAW).";
+  if (boon === "servant") {
+    return "Fiendish servant (as summon monster III, permanent) — companion stat block tracking deferred (issue #68).";
+  }
+  const { enhancementBonus, usesPerDay } = fiendishBoonWeaponDetail(antipaladinLevel);
+  return (
+    `+${enhancementBonus} enhancement-equivalent (max +5 enhancement, remainder into properties), ` +
+    `${usesPerDay}/day, standard action, 1 min/level each — weapon math stays manual`
+  );
+}
+
+/* --------------------------------------------------- antipaladin DR (APA) -- */
+
+/**
+ * Antipaladin Damage Reduction, clean-room from the published PF1 Advanced
+ * Player's Guide SRD (both the Aura of Depravity and Unholy Champion class
+ * features' `changes[]` are empty upstream — same posture as
+ * `barbarianDamageReduction`): "At 17th level, an antipaladin gains DR
+ * 5/good" (Aura of Depravity); "At 20th level... His DR increases to
+ * 10/good" (Unholy Champion — replaces, not stacks with, the 17th-level
+ * value). Unlike the rest of the antipaladin's aura family (Cowardice,
+ * Despair, Vengeance, Sin — all enemies-within-10-ft debuffs with no
+ * self-facing number), this IS a genuine static bonus to the antipaladin's
+ * OWN sheet, so it rides `defenses.ts`'s `dr`-qualifier pipeline exactly like
+ * barbarian DR does.
+ */
+export interface AntipaladinDrDetail {
+  /** DR amount (0 below 17th level, 5 at L17-19, 10 at L20+). */
+  amount: number;
+  /** Display string, e.g. "5/good" (or "0/good" below 17th level, not normally shown). */
+  label: string;
+  /** Which class feature grants the current amount, for defense-line provenance. */
+  source: "Aura of Depravity" | "Unholy Champion";
+}
+
+export function antipaladinDamageReduction(antipaladinLevel: number): AntipaladinDrDetail {
+  if (antipaladinLevel < 17) return { amount: 0, label: "0/good", source: "Aura of Depravity" };
+  if (antipaladinLevel >= 20) {
+    return { amount: 10, label: "10/good", source: "Unholy Champion" };
+  }
+  return { amount: 5, label: "5/good", source: "Aura of Depravity" };
+}

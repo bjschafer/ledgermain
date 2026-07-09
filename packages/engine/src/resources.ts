@@ -578,6 +578,17 @@ function arcaneReservoirRestValue(classLevel: number, featBonus: number, poolMax
  * `addFeatInstance` and `model/repeatableFeats.ts`'s curated repeatable set)
  * contributes its `maxDelta` once per occurrence, matching the feats' own
  * "stacks" wording.
+ *
+ * `FeatPoolEffect.featureTag` may be a single tag or an array of tags
+ * (issue #65's multi-target follow-up — e.g. Extra Lay On Hands' bonus
+ * targets BOTH `layOnHands` and `touchOfCorruption`, since RAW it boosts
+ * whichever of the two class features the character actually has — a
+ * paladin's Lay on Hands, or an antipaladin's Touch of Corruption). The
+ * bonus is recorded under every listed tag; the caller below only ever
+ * looks up the ONE tag matching a real granted feature, so recording it
+ * under all candidate tags is harmless for the common case (a character has
+ * at most one of the mutually-exclusive class features) and only double
+ * counts in the unmodeled edge case of a character somehow having both.
  */
 function collectFeatPoolBonuses(doc: CharacterDoc, refData: RefData): Map<string, number> {
   const bonuses = new Map<string, number>();
@@ -590,7 +601,10 @@ function collectFeatPoolBonuses(doc: CharacterDoc, refData: RefData): Map<string
     if (!feat) continue;
     const effect = FEAT_POOL_EFFECTS[featNameSlug(feat.name)];
     if (!effect) continue;
-    bonuses.set(effect.featureTag, (bonuses.get(effect.featureTag) ?? 0) + effect.maxDelta);
+    const tags = Array.isArray(effect.featureTag) ? effect.featureTag : [effect.featureTag];
+    for (const tag of tags) {
+      bonuses.set(tag, (bonuses.get(tag) ?? 0) + effect.maxDelta);
+    }
   }
   return bonuses;
 }

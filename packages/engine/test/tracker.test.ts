@@ -386,4 +386,66 @@ describe("feats that raise a derived resource pool's max (feat-effects.ts FEAT_P
     expect(pools.find((p) => p.name === "Rage")).toBeUndefined();
     expect(pools.find((p) => p.name === "Channel Energy")?.max).toBe(5);
   });
+
+  // Issue #65's multi-target follow-up: `FeatPoolEffect.featureTag` can now
+  // be an array, so one feat can raise whichever of several class features
+  // the character actually has. Extra Lay On Hands is the first (and, per
+  // the vendored data audit, only unambiguous) case — see
+  // `feat-effects.ts`'s `extra-lay-on-hands` entry doc comment for the
+  // verbatim vendored Touch of Corruption text this is built from.
+  it("Extra Lay On Hands (multi-target): boosts a PALADIN's Lay on Hands pool", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      abilities: { str: 16, dex: 12, con: 14, int: 10, wis: 10, cha: 16 },
+      identity: { name: "Paladin", race: raceId("Human"), classes: [{ tag: "paladin", level: 6 }] },
+      build: { ...makeDoc().build, feats: [featId("Extra Lay On Hands")] },
+    };
+    const base: CharacterDoc = { ...doc, build: { ...doc.build, feats: [] } };
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(doc, ref);
+    const baseLoh = deriveResourcePools(base, ref, baseSheet.abilities).find(
+      (p) => p.name === "Lay on Hands",
+    );
+    const featLoh = deriveResourcePools(doc, ref, featSheet.abilities).find(
+      (p) => p.name === "Lay on Hands",
+    );
+    // floor(6/2) + Cha mod(3) = 6, +2 from the feat = 8.
+    expect(baseLoh?.max).toBe(6);
+    expect(featLoh?.max).toBe(8);
+    // The same feat must NOT invent a Touch of Corruption pool for a paladin.
+    expect(
+      deriveResourcePools(doc, ref, featSheet.abilities).find(
+        (p) => p.name === "Touch of Corruption",
+      ),
+    ).toBeUndefined();
+  });
+
+  it("Extra Lay On Hands (multi-target): boosts an ANTIPALADIN's Touch of Corruption pool instead, per the vendored RAW cross-reference", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      abilities: { str: 16, dex: 12, con: 14, int: 10, wis: 10, cha: 18 },
+      identity: {
+        name: "Antipaladin",
+        race: raceId("Human"),
+        classes: [{ tag: "antipaladin", level: 6 }],
+      },
+      build: { ...makeDoc().build, feats: [featId("Extra Lay On Hands")] },
+    };
+    const base: CharacterDoc = { ...doc, build: { ...doc.build, feats: [] } };
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(doc, ref);
+    const baseTouch = deriveResourcePools(base, ref, baseSheet.abilities).find(
+      (p) => p.name === "Touch of Corruption",
+    );
+    const featTouch = deriveResourcePools(doc, ref, featSheet.abilities).find(
+      (p) => p.name === "Touch of Corruption",
+    );
+    // floor(6/2) + Cha mod(4) = 7, +2 from the feat = 9.
+    expect(baseTouch?.max).toBe(7);
+    expect(featTouch?.max).toBe(9);
+    // The same feat must NOT invent a Lay on Hands pool for an antipaladin.
+    expect(
+      deriveResourcePools(doc, ref, featSheet.abilities).find((p) => p.name === "Lay on Hands"),
+    ).toBeUndefined();
+  });
 });
