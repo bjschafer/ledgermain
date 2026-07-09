@@ -419,3 +419,119 @@ describe("Brawler (fighter archetype, issue #46: vendored pairedBaseFeatureUuid 
     expect(brawlerClimb.acp).toBe(-3);
   });
 });
+
+describe("Myrmidarch (magus archetype, issue #47: Armor Training's second prose target)", () => {
+  // Prose: "This ability replaces improved spell combat and greater spell
+  // combat." Vendored data only pairs Armor Training to Improved Spell
+  // Combat's uuid — see `ADDITIONAL_SWAP_TARGETS` in `archetypes.ts`.
+  const myrmidarch = byName(ref.archetypes, "Myrmidarch");
+
+  it("L14: both Improved and Greater Spell Combat are struck through by Armor Training", () => {
+    const doc = makeDoc({ classes: [{ tag: "magus", level: 14 }], archetypes: [myrmidarch.id] });
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const improved = classFeatures.find((f) => f.name === "Improved Spell Combat")!;
+    const greater = classFeatures.find((f) => f.name === "Greater Spell Combat")!;
+    expect(improved.applied).toBe(false);
+    expect(improved.replacedBy).toBe("Armor Training");
+    expect(greater.applied).toBe(false);
+    expect(greater.replacedBy).toBe("Armor Training");
+  });
+
+  it("archetypeSwappedUuids includes both Spell Combat tiers' uuids", () => {
+    const fighterDef = Object.values(ref.classes).find((c) => c.tag === "magus")!;
+    const improvedUuid = fighterDef.features.find((f) => f.name === "Improved Spell Combat")!.uuid;
+    const greaterUuid = fighterDef.features.find((f) => f.name === "Greater Spell Combat")!.uuid;
+    const swapped = archetypeSwappedUuids(ref, myrmidarch.id);
+    expect(swapped.has(improvedUuid)).toBe(true);
+    expect(swapped.has(greaterUuid)).toBe(true);
+  });
+});
+
+describe("Maneuver Master / Nornkith (monk archetypes, issue #47: spurious Evasion:9 duplicate rows)", () => {
+  // Both archetypes replace base Evasion with their own ability at 2nd level
+  // (Resilience / Defensive Aid). Each ALSO carries a vendored-data-artifact
+  // level-9 row named "Evasion" whose text is a verbatim copy of vanilla
+  // base-monk Evasion — but the vendored pairing on that row points at the
+  // base class's level-9 SLOT, which for a monk is Improved Evasion. Before
+  // the fix, this incorrectly struck through Improved Evasion even though
+  // neither archetype's real abilities touch it. See
+  // `SPURIOUS_DUPLICATE_PAIRINGS` in `archetypes.ts`.
+  it("Maneuver Master L9: Improved Evasion stays applied (not struck through by the ghost Evasion:9 row)", () => {
+    const maneuverMaster = byName(ref.archetypes, "Maneuver Master");
+    const doc = makeDoc({
+      classes: [{ tag: "monk", level: 9 }],
+      archetypes: [maneuverMaster.id],
+    });
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const evasion = classFeatures.find((f) => f.name === "Evasion")!;
+    const improvedEvasion = classFeatures.find((f) => f.name === "Improved Evasion")!;
+    expect(evasion.applied).toBe(false);
+    expect(evasion.replacedBy).toBe("Resilience");
+    expect(improvedEvasion.applied).toBe(true);
+    expect(improvedEvasion.replacedBy).toBeUndefined();
+  });
+
+  it("Nornkith L9: Improved Evasion stays applied (not struck through by the ghost Evasion:9 row)", () => {
+    const nornkith = byName(ref.archetypes, "Nornkith");
+    const doc = makeDoc({ classes: [{ tag: "monk", level: 9 }], archetypes: [nornkith.id] });
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const evasion = classFeatures.find((f) => f.name === "Evasion")!;
+    const improvedEvasion = classFeatures.find((f) => f.name === "Improved Evasion")!;
+    expect(evasion.applied).toBe(false);
+    expect(evasion.replacedBy).toBe("Defensive Aid");
+    expect(improvedEvasion.applied).toBe(true);
+    expect(improvedEvasion.replacedBy).toBeUndefined();
+  });
+});
+
+describe("Archetype-feature level-field corrections (issue #47)", () => {
+  // Vendored `.level` corrected via `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL`
+  // (packages/data-pipeline/src/supplements.ts) to match each feature's own
+  // prose; `id`/`uuid` intentionally keep their original (now
+  // level-mismatched) suffix — see that map's doc comment.
+
+  // An archetype's OWN features (as opposed to base-class features it swaps
+  // out) surface under `activeArchetypes[].features`, gated by
+  // `f.level <= clsLevel` in `resolveClassFeatures` — that's the gate the
+  // corrected `.level` field feeds.
+  function archetypeOwnFeatureNames(doc: CharacterDoc): string[] {
+    const { activeArchetypes } = resolveClassFeatures(doc, ref);
+    return activeArchetypes.flatMap((a) => a.features.map((f) => f.name));
+  }
+
+  it("rogue:seeker-of-the-lost Arcana Breaker doesn't show until 3rd level (prose: 'At 3rd level')", () => {
+    const seeker = byName(ref.archetypes, "Seeker of the Lost");
+    const at2 = archetypeOwnFeatureNames(
+      makeDoc({ classes: [{ tag: "rogue", level: 2 }], archetypes: [seeker.id] }),
+    );
+    expect(at2.includes("Arcana Breaker")).toBe(false);
+    const at3 = archetypeOwnFeatureNames(
+      makeDoc({ classes: [{ tag: "rogue", level: 3 }], archetypes: [seeker.id] }),
+    );
+    expect(at3.includes("Arcana Breaker")).toBe(true);
+  });
+
+  it("druid:urban-druid A Thousand Faces doesn't show until 13th level (prose: 'At 13th level')", () => {
+    const urbanDruid = byName(ref.archetypes, "Urban Druid");
+    const at12 = archetypeOwnFeatureNames(
+      makeDoc({ classes: [{ tag: "druid", level: 12 }], archetypes: [urbanDruid.id] }),
+    );
+    expect(at12.includes("A thousand faces")).toBe(false);
+    const at13 = archetypeOwnFeatureNames(
+      makeDoc({ classes: [{ tag: "druid", level: 13 }], archetypes: [urbanDruid.id] }),
+    );
+    expect(at13.includes("A thousand faces")).toBe(true);
+  });
+
+  it("ranger:realm-wanderer Queen's Bond doesn't show until 4th level (prose: 'At 4th level')", () => {
+    const realmWanderer = byName(ref.archetypes, "Realm Wanderer");
+    const at3 = archetypeOwnFeatureNames(
+      makeDoc({ classes: [{ tag: "ranger", level: 3 }], archetypes: [realmWanderer.id] }),
+    );
+    expect(at3.includes("Queen's Bond")).toBe(false);
+    const at4 = archetypeOwnFeatureNames(
+      makeDoc({ classes: [{ tag: "ranger", level: 4 }], archetypes: [realmWanderer.id] }),
+    );
+    expect(at4.includes("Queen's Bond")).toBe(true);
+  });
+});

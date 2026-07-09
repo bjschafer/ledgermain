@@ -21,7 +21,7 @@
  * learnedAt.bloodline" invariants — see `packages/data-pipeline/test/refdata.test.ts`.
  */
 
-import type { ClassFeature, SpellList } from "@pf1/schema";
+import type { ArchetypeFeature, ClassFeature, SpellList } from "@pf1/schema";
 
 /**
  * Supplemental bonus-spell lists keyed by bloodline tag, then by spell level
@@ -111,5 +111,57 @@ export function applyClassFeatureUsesSupplements(features: ClassFeature[]): void
     if (formula && feature.uses) {
       feature.uses = { ...feature.uses, maxFormula: formula };
     }
+  }
+}
+
+/**
+ * Hand-authored corrections for vendored `ArchetypeFeature.level` values that
+ * contradict the feature's own description prose — issue #47 (consolidated
+ * #45-wave archetype-extraction bug list). The third-party archetype CSV
+ * dataset (`config.ts`'s `CLASS_ARCHETYPE_FILES`, read by
+ * `transform/archetypes.ts`) occasionally tags a row's level column with a
+ * value its own prose disagrees with, which shifts WHEN the (here, always
+ * non-numeric/subsystem) ability starts showing as granted in
+ * `resolveClassFeatures`'s `f.level <= <class level>` gate — sometimes by
+ * several levels.
+ *
+ * Keyed by the feature's **id** (NOT its level-suffixed form re-derived from
+ * the corrected level) — every consumer across `packages/engine/src/
+ * archetype-extracted/` and `archetypes.ts` keys off the original id string
+ * verbatim (e.g. `MISPAIRED_TARGET_REMAP`, the classification tables), so
+ * only the numeric `level` field actually used for gating is corrected here;
+ * the id/uuid intentionally keep their original (now level-mismatched)
+ * suffix, same posture as `barbarian:jungle-rager:damage-reduction:8` (left
+ * unfixed, per its own classification note) already tolerates.
+ *
+ * A mismatch that's numerically inert regardless (e.g.
+ * `druid:ancient-guardian:patience-of-nature:1`, whose extracted formula
+ * gates on `@class.unlevel` directly rather than this level field — see that
+ * entry's note in `archetype-extracted/druid.ts`) is deliberately left out.
+ */
+export const SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL: Record<string, number> = {
+  // Prose: "At 3rd level, a seeker of the lost gains a +1 competence bonus
+  // on Perception checks to notice magical traps..." — vendored level column
+  // reads 2.
+  "rogue:seeker-of-the-lost:arcana-breaker:2": 3,
+  // Prose: "At 13th level, a druid gains the ability to change her
+  // appearance at will, as if using the alter self spell..." — vendored
+  // level column reads 6.
+  "druid:urban-druid:a-thousand-faces:6": 13,
+  // Prose: "At 4th level, a realm wanderer must choose an animal companion
+  // for his hunter's bond..." — vendored level column reads 0, which (unlike
+  // a too-early level) shows the whole ability as granted from 1st level on.
+  "ranger:realm-wanderer:queen-s-bond:0": 4,
+};
+
+/**
+ * Apply `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL` in place to a list of
+ * normalized archetype features (mutates `.level` only; `id`/`uuid` are left
+ * untouched — see that map's doc comment for why).
+ */
+export function applyArchetypeFeatureLevelSupplements(features: ArchetypeFeature[]): void {
+  for (const feature of features) {
+    const level = SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL[feature.id];
+    if (level !== undefined) feature.level = level;
   }
 }

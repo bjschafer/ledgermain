@@ -314,7 +314,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Evasion",
     level: 9,
     bucket: "subsystem",
-    note: "vendored description is vanilla base-monk Evasion text, attached at level 9 for an archetype that already replaced Evasion with Resilience at 2nd level — suspected vendored-data artifact (the identical pattern also appears on Nornkith, below, suggesting a shared CSV-compilation quirk). Evasion carries no vendored Change regardless.",
+    note: "vendored description is vanilla base-monk Evasion text, attached at level 9 for an archetype that already replaced Evasion with Resilience at 2nd level — suspected vendored-data artifact (the identical pattern also appears on Nornkith, below, suggesting a shared CSV-compilation quirk). Evasion carries no vendored Change regardless. Issue #47: the vendored pairing on this row pointed at the base class's level-9 SLOT (Improved Evasion, not the already-replaced Evasion), incorrectly striking it through in classFeatures — fixed via `SPURIOUS_DUPLICATE_PAIRINGS` in `archetypes.ts` (display-only; Improved Evasion carries no vendored Change either).",
   },
   "monk:maneuver-master:ki-pool-lawful:10": {
     archetypeId: "monk:maneuver-master",
@@ -489,7 +489,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Evasion",
     level: 9,
     bucket: "subsystem",
-    note: "vendored description is vanilla base-monk Evasion text, attached at level 9 for an archetype that already replaced Evasion with Defensive Aid at 2nd level — suspected vendored-data artifact (the identical pattern also appears on Maneuver Master, above, suggesting a shared CSV-compilation quirk rather than two independent errors). Evasion carries no vendored Change regardless.",
+    note: "vendored description is vanilla base-monk Evasion text, attached at level 9 for an archetype that already replaced Evasion with Defensive Aid at 2nd level — suspected vendored-data artifact (the identical pattern also appears on Maneuver Master, above, suggesting a shared CSV-compilation quirk rather than two independent errors). Evasion carries no vendored Change regardless. Issue #47: the vendored pairing on this row pointed at the base class's level-9 SLOT (Improved Evasion, not the already-replaced Evasion), incorrectly striking it through in classFeatures — fixed via `SPURIOUS_DUPLICATE_PAIRINGS` in `archetypes.ts` (display-only; Improved Evasion carries no vendored Change either).",
   },
   "monk:sage-counselor:awaken-divinity:1": {
     archetypeId: "monk:sage-counselor",

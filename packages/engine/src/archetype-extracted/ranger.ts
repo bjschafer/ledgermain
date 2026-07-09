@@ -1204,7 +1204,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Queen's Bond",
     level: 0,
     bucket: "subsystem",
-    note: "modifies/replaces Hunter's Bond (or grants an animal companion/mount/familiar-like ally) — the companion system has no archetype hooks (per project notes). vendored level reads 0 but the prose says 'At 4th level' — a suspected vendored-data level-tag bug (see report), not fixed here",
+    note: "modifies/replaces Hunter's Bond (or grants an animal companion/mount/familiar-like ally) — the companion system has no archetype hooks (per project notes). vendored level read 0 but the prose says 'At 4th level' — issue #47 fixed the actual gating level to 4 via `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL` in `packages/data-pipeline/src/supplements.ts` (id/uuid intentionally left as-is)",
   },
   "ranger:realm-wanderer:deceptive-subtlety:1": {
     archetypeId: "ranger:realm-wanderer",
