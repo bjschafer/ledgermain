@@ -1,12 +1,18 @@
 import { useMemo, useState } from "react";
 
-import { deriveResourcePools, type ToggleBuffOption } from "@pf1/engine";
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import {
+  BLOODRAGE_BUFF,
+  BLOODRAGE_BUFF_ID,
+  deriveResourcePools,
+  type ToggleBuffOption,
+} from "@pf1/engine";
+import type { Buff, CharacterDoc, RefData } from "@pf1/schema";
 
 import { FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
+import { setMartialFlexibilityFeat } from "../../model/doc.js";
 import {
   addManualPool,
   drainResource,
@@ -69,22 +75,26 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
             const stored = doc.live.resources[pool.id];
             const used = stored?.used ?? 0;
             return (
-              <ResourceRow
-                key={pool.id}
-                name={pool.name}
-                sub={pool.detail ?? (pool.per ? `per ${pool.per}` : "derived")}
-                description={refData.classFeatures[pool.id]?.description}
-                left={pool.max - used}
-                max={pool.max}
-                onDrain={() => drain(pool.id)}
-                onRestore={() => restore(pool.id)}
-                linkedBuffIds={pool.linkedBuffIds}
-                tableOptions={pool.tableOptions}
-                refData={refData}
-                activeBuffs={doc.live.activeBuffs}
-                casterLevel={casterLevel}
-                update={update}
-              />
+              <div key={pool.id}>
+                <ResourceRow
+                  name={pool.name}
+                  sub={pool.detail ?? (pool.per ? `per ${pool.per}` : "derived")}
+                  description={refData.classFeatures[pool.id]?.description}
+                  left={pool.max - used}
+                  max={pool.max}
+                  onDrain={() => drain(pool.id)}
+                  onRestore={() => restore(pool.id)}
+                  linkedBuffIds={pool.linkedBuffIds}
+                  tableOptions={pool.tableOptions}
+                  refData={refData}
+                  activeBuffs={doc.live.activeBuffs}
+                  casterLevel={casterLevel}
+                  update={update}
+                />
+                {pool.name === "Martial Flexibility" && (
+                  <MartialFlexibilityPicker doc={doc} refData={refData} update={update} />
+                )}
+              </div>
             );
           })}
           {manualEntries.map(([id, pool]) => (
@@ -241,18 +251,29 @@ function ResourceRow({
 }
 
 /**
+ * Buffs linked from a resource pool that have no `refData.buffs` entry to
+ * resolve against (issue #65: Bloodrager's Bloodrage — see `@pf1/engine`
+ * `bloodrage.ts`'s doc comment for why it's hand-authored rather than
+ * vendored). Checked as a fallback in {@link LinkedBuffToggle} below.
+ */
+const SYNTHETIC_LINKED_BUFFS: Readonly<Record<string, Buff>> = {
+  [BLOODRAGE_BUFF_ID]: BLOODRAGE_BUFF,
+};
+
+/**
  * Activate/deactivate a buff linked to this pool's power (Rage → "Rage",
  * Inspire Courage → "Inspire Courage", Aura of Protection domain power →
- * "Aura of Protection" — see `DerivedResourcePool.linkedBuffIds`). This is a
- * pure shortcut into the same `addBuff`/`removeBuff` transitions
- * `BuffsPanel` uses — toggling here makes the buff show up (or disappear)
- * there too, recomputed exactly as if the player had added it by hand.
- * Deliberately does NOT touch the pool's `used` counter (see
- * `deriveResourcePools`'s doc comment on `linkedBuffIds` for why a
- * round-maintained buff and a per-day/per-use pool count aren't the same
- * thing). Renders nothing for a buff id that isn't in `refData.buffs`
- * (shouldn't happen — `linkedBuffIds` is already resolved against it — but
- * keeps this defensive rather than crashing on a future data change).
+ * "Aura of Protection", Bloodrage → "Bloodrage" — see
+ * `DerivedResourcePool.linkedBuffIds`). This is a pure shortcut into the
+ * same `addBuff`/`removeBuff` transitions `BuffsPanel` uses — toggling here
+ * makes the buff show up (or disappear) there too, recomputed exactly as if
+ * the player had added it by hand. Deliberately does NOT touch the pool's
+ * `used` counter (see `deriveResourcePools`'s doc comment on `linkedBuffIds`
+ * for why a round-maintained buff and a per-day/per-use pool count aren't
+ * the same thing). Renders nothing for a buff id that resolves against
+ * neither `refData.buffs` NOR `SYNTHETIC_LINKED_BUFFS` (shouldn't happen —
+ * `linkedBuffIds` only ever contains ids resolved against one or the other —
+ * but keeps this defensive rather than crashing on a future data change).
  */
 function LinkedBuffToggle({
   buffId,
@@ -267,7 +288,7 @@ function LinkedBuffToggle({
   casterLevel: number;
   update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
 }) {
-  const buff = refData.buffs[buffId];
+  const buff = refData.buffs[buffId] ?? SYNTHETIC_LINKED_BUFFS[buffId];
   if (!buff) return null;
   const active = activeBuffs.find((b) => b.buffId === buffId);
   const toggle = () => update((d) => toggleLinkedBuff(d, buff, casterLevel));
@@ -338,5 +359,60 @@ function TableBuffToggle({
     >
       Activate {option.name}
     </button>
+  );
+}
+
+/**
+ * Brawler's Martial Flexibility (issue #65): lets the player record which
+ * combat feat is currently "borrowed" (PF1 RAW: move/swift/free/immediate
+ * action depending on brawler level, lasts 1 minute — the action-type
+ * distinction isn't tracked separately, see `live.martialFlexibilityFeatId`'s
+ * doc comment). Sits right below the Martial Flexibility resource row.
+ * Restricted to feats tagged "Combat" (same tag `model/featSlots.ts`'s
+ * `combat` slot type checks) — RAW also requires meeting the feat's
+ * prerequisites, which this picker does NOT validate (soft posture, matching
+ * the rest of the app's feat pickers). A borrowed feat with a modeled STATIC
+ * effect in `@pf1/engine` `feat-effects.ts` applies for real (see
+ * `collect.ts`'s Martial Flexibility block); this chip is the always-honest
+ * display layer regardless of whether the numeric effect wired through.
+ */
+function MartialFlexibilityPicker({
+  doc,
+  refData,
+  update,
+}: {
+  doc: CharacterDoc;
+  refData: RefData;
+  update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
+}) {
+  const combatFeats = useMemo(
+    () =>
+      Object.entries(refData.feats)
+        .filter(([, f]) => f.tags.includes("Combat"))
+        .sort((a, b) => a[1].name.localeCompare(b[1].name)),
+    [refData],
+  );
+  const borrowedId = doc.live.martialFlexibilityFeatId ?? "";
+  const borrowed = borrowedId ? refData.feats[borrowedId] : undefined;
+
+  return (
+    <div className="res-sub-row martial-flexibility">
+      <label className="hint" htmlFor="martial-flexibility-select">
+        Borrowed feat (1 min, meet its prereqs)
+      </label>
+      <select
+        id="martial-flexibility-select"
+        value={borrowedId}
+        onChange={(e) => update((d) => setMartialFlexibilityFeat(d, e.target.value || null))}
+      >
+        <option value="">— none borrowed —</option>
+        {combatFeats.map(([id, feat]) => (
+          <option key={id} value={id}>
+            {feat.name}
+          </option>
+        ))}
+      </select>
+      {borrowed?.description && <FeatureDescription html={borrowed.description} />}
+    </div>
   );
 }

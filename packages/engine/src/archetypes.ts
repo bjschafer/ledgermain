@@ -26,6 +26,7 @@ import { ALCHEMIST_DISCOVERIES } from "./alchemist-discoveries.js";
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
+import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { WITCH_HEXES } from "./witch-hexes.js";
@@ -158,6 +159,36 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
             level: power.level,
             uuid: `bloodline:${bloodline.tag}:${power.id}`,
             featureId: `bloodline:${bloodline.tag}:${power.id}`,
+            name: power.name,
+            resolved: true,
+          },
+          origin: { kind: "bloodline", label: `${bloodline.name} Bloodline` },
+          detail: power.resourcePool?.detail,
+          resourcePool: power.resourcePool,
+        });
+      }
+    }
+  }
+
+  // Bloodrager bloodline powers (issue #65) — hand-authored (see
+  // bloodrager-bloodlines.ts), gated on actual bloodrager levels the same way
+  // sorcerer bloodline powers are gated above (each power at its own
+  // 1st/4th/8th/12th/16th/20th level gate). A non-bloodrager with a stale
+  // `bloodragerBloodline` field (or an unresolvable bloodline tag) gets
+  // nothing.
+  const bloodragerLevel = doc.identity.classes.find((c) => c.tag === "bloodrager")?.level ?? 0;
+  if (bloodragerLevel > 0 && doc.build.bloodragerBloodline) {
+    const bloodline = BLOODRAGER_BLOODLINES[doc.build.bloodragerBloodline];
+    if (bloodline) {
+      for (const power of bloodline.powers) {
+        if (power.level > bloodragerLevel) continue;
+        out.push({
+          classTag: "bloodrager",
+          level: power.level,
+          grant: {
+            level: power.level,
+            uuid: `bloodragerBloodline:${bloodline.tag}:${power.id}`,
+            featureId: `bloodragerBloodline:${bloodline.tag}:${power.id}`,
             name: power.name,
             resolved: true,
           },

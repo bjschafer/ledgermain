@@ -32,6 +32,7 @@
 import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/schema";
 
 import { collectGrantedFeatures } from "./archetypes.js";
+import { BLOODRAGE_BUFF_ID } from "./bloodrage.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
 import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
@@ -309,6 +310,20 @@ export function deriveResourcePools(
 
     if (feature.tag) poolIdByTag.set(feature.tag, feature.id);
 
+    // Bloodrager's "Bloodrage" (issue #65): the vendored feature's
+    // `grantsBuffs` is empty (unlike barbarian's Rage, which points at the
+    // vendored "Rage" buff) — see `bloodrage.ts`'s doc comment for why
+    // reusing that buff directly would also be numerically wrong (its
+    // formulas hardcode `@classes.barbarian.level`). `BLOODRAGE_BUFF_ID`
+    // isn't a `refData.buffs` key; `ResourcesPanel.tsx`'s linked-buff toggle
+    // resolves it against the hand-authored `BLOODRAGE_BUFF` constant
+    // instead (`toggleLinkedBuff` accepts any `Buff`-shaped object, not
+    // specifically one sourced from `refData.buffs`).
+    const linkedBuffIds =
+      feature.tag === "bloodrage" && classTag === "bloodrager"
+        ? [BLOODRAGE_BUFF_ID]
+        : resolveGrantsBuffs(feature.grantsBuffs, refData);
+
     pools.push({
       id: feature.id,
       name: feature.name,
@@ -317,7 +332,7 @@ export function deriveResourcePools(
       per: feature.uses?.per,
       classTag,
       detail,
-      linkedBuffIds: resolveGrantsBuffs(feature.grantsBuffs, refData),
+      linkedBuffIds,
       tableOptions,
     });
   }

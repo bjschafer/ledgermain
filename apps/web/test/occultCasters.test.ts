@@ -34,13 +34,19 @@ describe("psychic caster level (FULL_CASTER_TAGS regression)", () => {
     expect(isCasterTag("psychic")).toBe(true);
   });
 
-  it("medium and kineticist are NOT in the flat full-caster set", () => {
+  it("medium is level-gated (issue #65), NOT in the flat full-caster set; kineticist never casts at all", () => {
     // Medium casts nothing before 4th level — a flat classLevel would wrongly
-    // report CL 1-3 (the bloodrager posture, see casterLevel.ts). Kineticist
-    // never casts at all.
-    expect(casterLevelForClass("medium", 10)).toBe(0);
+    // report CL 1-3 pre-#65 (the bloodrager posture, see casterLevel.ts).
+    // Since #65, medium is a `LEVEL_GATED_CASTER_TAGS` entry: CL 0 below the
+    // gate, CL = classLevel from the gate on (still never a plain
+    // `FULL_CASTER_TAGS` member — the binary switch would still be wrong
+    // below 4th level). Kineticist never casts at all, at any level.
+    expect(casterLevelForClass("medium", 1)).toBe(0);
+    expect(casterLevelForClass("medium", 3)).toBe(0);
+    expect(casterLevelForClass("medium", 4)).toBe(4);
+    expect(casterLevelForClass("medium", 10)).toBe(10);
     expect(casterLevelForClass("kineticist", 10)).toBe(0);
-    expect(isCasterTag("medium")).toBe(false);
+    expect(isCasterTag("medium")).toBe(true);
     expect(isCasterTag("kineticist")).toBe(false);
   });
 });
