@@ -1640,6 +1640,36 @@ export interface PreparedSpell {
    * (or further) caster class's instances set this explicitly.
    */
   classTag?: string;
+  /**
+   * Metamagic feats applied to this prepared instance (issue #71). Each entry
+   * names a metamagic feat the character has (by `featNameSlug`, key into
+   * `@pf1/engine`'s `METAMAGIC_FEATS`); the sum of their slot-level increases
+   * bumps the slot this instance occupies (e.g. an Empowered Fireball — base
+   * 3rd — consumes a 5th-level slot). Absent/empty means an unmodified spell,
+   * so every pre-#71 prepared instance is unchanged. Only the SLOT accounting
+   * is modeled; the numeric effect on the spell is a display-only note (see
+   * `METAMAGIC_FEATS`'s honesty-bar doc comment). Save DC is unaffected by
+   * every metamagic EXCEPT Heighten (`raisesEffectiveLevel`).
+   */
+  metamagic?: AppliedMetamagic[];
+}
+
+/**
+ * One metamagic feat applied to a spell (a {@link PreparedSpell}, or a
+ * spontaneous/hybrid cast — issue #71). The slot-level increase is read live
+ * from `@pf1/engine`'s `METAMAGIC_FEATS[slug]` (following the same
+ * "store the slug, look up the number" posture as `SavedRollFeatRef`), so a
+ * data/registry bump never leaves a stale number baked into the doc.
+ */
+export interface AppliedMetamagic {
+  /** `featNameSlug` of the metamagic feat (key into `@pf1/engine` `METAMAGIC_FEATS`). */
+  slug: string;
+  /**
+   * Chosen level increase for a VARIABLE metamagic (Reach Spell 1–3, Heighten
+   * Spell 1–`9 − spellLevel`). Omitted for fixed-increase feats, whose
+   * increase is read straight from the registry (`MetamagicDef.slotIncrease`).
+   */
+  levels?: number;
 }
 
 /**

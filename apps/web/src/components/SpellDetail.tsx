@@ -1,5 +1,6 @@
 import type { Spell } from "@pf1/schema";
 
+import type { ResolvedMetamagic } from "../model/metamagic.js";
 import { concentrationDC, spellSaveDC } from "../model/spellcasting.js";
 
 /** Save info from the first action that has a save, or null. */
@@ -18,24 +19,57 @@ function spellSave(spell: Spell): { type: string; description: string } | null {
  * row appears — the tracker's prepared/spontaneous views and the builder's
  * spell-list references (searchable known list, granted cantrips, domain
  * spells, and the cleric's read-only class-list browser).
+ *
+ * `spellLevel` is the spell's EFFECTIVE level, which the save DC and
+ * concentration DC are computed from — callers applying Heighten Spell pass
+ * the heightened level here (issue #71). `slotLevel`, when it differs from
+ * `spellLevel`, is the higher slot the spell occupies after metamagic and is
+ * surfaced as its own line WITHOUT touching the DC (RAW: only Heighten changes
+ * the DC). `metamagic` lists the applied feats as display-only context notes.
  */
 export function SpellDetail({
   spell,
   spellLevel,
   abilityMod,
+  slotLevel,
+  metamagic,
 }: {
   spell: Spell;
   spellLevel: number;
   abilityMod: number;
+  slotLevel?: number;
+  metamagic?: ResolvedMetamagic[];
 }) {
   const save = spellSave(spell);
   const dc = save ? spellSaveDC(spellLevel, abilityMod) : null;
   const concDC = concentrationDC(spellLevel);
+  const showSlot = slotLevel !== undefined && slotLevel !== spellLevel;
 
   return (
     <details className="spell-detail">
       <summary className="spell-detail-summary">details</summary>
       <div className="spell-detail-body">
+        {showSlot && (
+          <div className="spell-detail-row">
+            <span className="spell-detail-label">Slot</span>
+            <span className="spell-detail-value">
+              Level {slotLevel} (base {spellLevel})
+            </span>
+          </div>
+        )}
+        {metamagic && metamagic.length > 0 && (
+          <div className="spell-detail-row">
+            <span className="spell-detail-label">Metamagic</span>
+            <span className="spell-detail-value">
+              {metamagic.map((m) => (
+                <span key={m.def.slug} className="spell-detail-metamagic" title={m.def.note}>
+                  {m.def.name}
+                  {m.def.variable ? ` +${m.increase}` : ""}
+                </span>
+              ))}
+            </span>
+          </div>
+        )}
         {dc !== null && (
           <div className="spell-detail-row">
             <span className="spell-detail-label">Save</span>

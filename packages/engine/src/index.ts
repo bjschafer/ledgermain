@@ -349,6 +349,13 @@ export {
   type FeatClassificationBucket,
   type FeatClassificationEntry,
 } from "./feat-classification.js";
+export {
+  METAMAGIC_FEATS,
+  metamagicDef,
+  metamagicDefByName,
+  isMetamagicFeat,
+  type MetamagicDef,
+} from "./metamagic.js";
 export { FAMILIARS, FAMILIAR_KINDS, type FamiliarDef } from "./familiars.js";
 export {
   BASE_FAMILIARS,

@@ -12,7 +12,8 @@
  * stable within one render of the prepared list.
  */
 
-import type { CharacterDoc, PreparedSpell, RefData, Spell } from "@pf1/schema";
+import { metamagicDef } from "@pf1/engine";
+import type { AppliedMetamagic, CharacterDoc, PreparedSpell, RefData, Spell } from "@pf1/schema";
 
 import {
   casterClassesOf,
@@ -158,6 +159,81 @@ export function setExpendedAt(doc: CharacterDoc, index: number, expended: boolea
     doc,
     list.map((p, i) => (i === index ? { ...p, expended } : p)),
   );
+}
+
+// ---------------------------------------------------------------------------
+// Metamagic (issue #71) — applied per prepared instance.
+// ---------------------------------------------------------------------------
+
+/** Replace the prepared instance at `index` with `next`, dropping an empty `metamagic` array. */
+function replacePreparedAt(
+  doc: CharacterDoc,
+  index: number,
+  next: (p: PreparedSpell) => PreparedSpell,
+): CharacterDoc {
+  const list = preparedSpells(doc);
+  if (index < 0 || index >= list.length) return doc;
+  return withPrepared(
+    doc,
+    list.map((p, i) => {
+      if (i !== index) return p;
+      const updated = next(p);
+      // Normalize: never persist an empty metamagic array (keeps pre-#71 shape).
+      if (updated.metamagic && updated.metamagic.length === 0) {
+        const { metamagic: _drop, ...rest } = updated;
+        return rest;
+      }
+      return updated;
+    }),
+  );
+}
+
+/**
+ * Toggle a metamagic feat on the prepared instance at `index`: adds it (with a
+ * variable feat's default `levels`) if absent, removes it if present. No-op if
+ * `slug` isn't a modeled metamagic feat. The caller is responsible for the
+ * "would the resulting slot level exceed the caster's max slot" gate (the
+ * model stays permissive; the UI enforces the cap).
+ */
+export function togglePreparedMetamagic(
+  doc: CharacterDoc,
+  index: number,
+  slug: string,
+): CharacterDoc {
+  const def = metamagicDef(slug);
+  if (!def) return doc;
+  return replacePreparedAt(doc, index, (p) => {
+    const current = p.metamagic ?? [];
+    if (current.some((m) => m.slug === slug)) {
+      return { ...p, metamagic: current.filter((m) => m.slug !== slug) };
+    }
+    const entry: AppliedMetamagic = def.variable ? { slug, levels: def.slotIncrease } : { slug };
+    return { ...p, metamagic: [...current, entry] };
+  });
+}
+
+/**
+ * Set the chosen level increase of an already-applied VARIABLE metamagic
+ * (Heighten/Reach) on the prepared instance at `index`. Clamped to at least 1.
+ * No-op if the feat isn't applied, isn't variable, or `slug` is unmodeled.
+ */
+export function setPreparedMetamagicLevels(
+  doc: CharacterDoc,
+  index: number,
+  slug: string,
+  levels: number,
+): CharacterDoc {
+  const def = metamagicDef(slug);
+  if (!def?.variable) return doc;
+  const clamped = Math.max(1, Math.round(levels));
+  return replacePreparedAt(doc, index, (p) => {
+    const current = p.metamagic ?? [];
+    if (!current.some((m) => m.slug === slug)) return p;
+    return {
+      ...p,
+      metamagic: current.map((m) => (m.slug === slug ? { ...m, levels: clamped } : m)),
+    };
+  });
 }
 
 /**

@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactNode } from "react";
 
-import type { RefData } from "@pf1/schema";
+import type { MetamagicDef } from "@pf1/engine";
+import type { AppliedMetamagic, RefData } from "@pf1/schema";
 
 import {
   classSpellsByLevel,
@@ -16,9 +17,20 @@ import {
   restPreparedSpells,
   schoolSlotCapacity,
   setExpendedAt,
+  setPreparedMetamagicLevels,
   spellLevelMap,
+  togglePreparedMetamagic,
   unprepareSpell,
 } from "../../model/preparedSpells.js";
+import {
+  appliedMetamagicIncrease,
+  metamagicEffectiveIncrease,
+  metamagicSlotIncrease,
+  ownedMetamagic,
+  resolveAppliedMetamagic,
+  setMetamagicLevels,
+  toggleMetamagic,
+} from "../../model/metamagic.js";
 import {
   bloodlineSpellsKnown,
   casterClassesOf,
@@ -61,6 +73,103 @@ interface PreparedRow {
    * non-wizard caster (no `wizardOppositionSchools` set).
    */
   cost: number;
+  /** The spell's own (base) level, before any metamagic slot bump. */
+  baseLevel: number;
+  /** Metamagic applied to this instance (issue #71); empty for an unmodified spell. */
+  metamagic: AppliedMetamagic[];
+}
+
+// ---------------------------------------------------------------------------
+// Metamagic attach control (issue #71).
+// ---------------------------------------------------------------------------
+
+/**
+ * The per-prepared-instance metamagic picker: a collapsible chip list of the
+ * owned metamagic feats, each toggling on/off for this instance. Variable
+ * feats (Reach/Heighten) expose a small level selector when active. A feat is
+ * disabled when applying it (or raising a variable feat's level) would push
+ * the spell's slot level past `maxSlotLevel` (the caster's highest slot). Only
+ * rendered when the character owns at least one metamagic feat.
+ */
+function MetamagicControl({
+  owned,
+  applied,
+  baseLevel,
+  maxSlotLevel,
+  onToggle,
+  onSetLevels,
+}: {
+  owned: MetamagicDef[];
+  applied: AppliedMetamagic[];
+  baseLevel: number;
+  maxSlotLevel: number;
+  onToggle: (slug: string) => void;
+  onSetLevels: (slug: string, levels: number) => void;
+}) {
+  if (owned.length === 0) return null;
+  const appliedBySlug = new Map(applied.map((a) => [a.slug, a]));
+  const currentIncrease = metamagicSlotIncrease(applied);
+  const activeCount = applied.length;
+
+  return (
+    <details className="prep-metamagic">
+      <summary className="prep-metamagic-summary">
+        Metamagic{activeCount > 0 ? ` (${activeCount})` : ""}
+      </summary>
+      <div className="prep-metamagic-list">
+        {owned.map((def) => {
+          const active = appliedBySlug.get(def.slug);
+          const isActive = active !== undefined;
+          const thisIncrease = isActive ? appliedMetamagicIncrease(active) : def.slotIncrease;
+          const otherIncrease = currentIncrease - (isActive ? thisIncrease : 0);
+          // Adding a (default) increment must keep the slot level within reach.
+          const wouldExceed =
+            !isActive && baseLevel + otherIncrease + def.slotIncrease > maxSlotLevel;
+          // For a variable feat, how high its own level may go before the slot
+          // would overflow (also capped by the feat's own `maxIncrease`).
+          const roomForVariable = maxSlotLevel - baseLevel - otherIncrease;
+          const variableMax = Math.min(def.maxIncrease ?? roomForVariable, roomForVariable);
+
+          return (
+            <div key={def.slug} className="prep-metamagic-item">
+              <button
+                type="button"
+                className={`mm-chip${isActive ? " is-active" : ""}`}
+                aria-pressed={isActive}
+                disabled={wouldExceed}
+                title={
+                  wouldExceed
+                    ? `Applying ${def.name} would need a level-${baseLevel + otherIncrease + def.slotIncrease} slot — beyond your highest (level ${maxSlotLevel}).`
+                    : def.note
+                }
+                onClick={() => onToggle(def.slug)}
+              >
+                {def.name}
+                {def.variable ? "" : ` +${def.slotIncrease}`}
+              </button>
+              {isActive && def.variable && variableMax >= 1 && (
+                <label className="mm-levels">
+                  <span className="mm-levels-label">+</span>
+                  <select
+                    className="mm-levels-select"
+                    value={appliedMetamagicIncrease(active)}
+                    aria-label={`${def.name} level increase`}
+                    onChange={(e) => onSetLevels(def.slug, Number(e.currentTarget.value))}
+                  >
+                    {Array.from({ length: variableMax }, (_, i) => i + 1).map((n) => (
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </details>
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -499,6 +608,10 @@ function PreparedView({
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
   const slots = spellSlotsByLevel(model, classLevel, abilityMod);
+  // Metamagic (issue #71): owned feats + the highest slot the caster can fill
+  // (metamagic can't push a spell past it).
+  const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
+  const maxSlotLevel = slots.length > 0 ? slots[slots.length - 1]!.level : 0;
 
   const cantripList = useMemo(
     () => (model.grantsAllCantrips ? grantedCantrips(refData, casterTag) : []),
@@ -561,18 +674,26 @@ function PreparedView({
     // separately to keep the class slots capacity check honest.
     const kind = p.kind ?? "normal";
     if (kind === "domain" || kind === "school") return;
-    const lvl = levelMap.get(p.spellId);
-    if (lvl === undefined) return;
+    const baseLevel = levelMap.get(p.spellId);
+    if (baseLevel === undefined) return;
     preparedCountBySpell.set(p.spellId, (preparedCountBySpell.get(p.spellId) ?? 0) + 1);
     const spellData = refData.spells[p.spellId];
+    // Metamagic (issue #71): a modified spell occupies — and is bucketed under
+    // — a higher slot (base + Σ slot increases), e.g. an Empowered Fireball
+    // (base 3rd) lands in the level-5 bucket and counts against its capacity.
+    const slotLevel = baseLevel + metamagicSlotIncrease(p.metamagic);
     const row: PreparedRow = {
       index,
       spellId: p.spellId,
       name: spellData?.name ?? p.spellId,
       expended: p.expended,
       cost: spellData ? oppositionCost(spellData, doc) : 1,
+      baseLevel,
+      metamagic: p.metamagic ?? [],
     };
-    (preparedByLevel.get(lvl) ?? preparedByLevel.set(lvl, []).get(lvl)!).push(row);
+    (preparedByLevel.get(slotLevel) ?? preparedByLevel.set(slotLevel, []).get(slotLevel)!).push(
+      row,
+    );
   });
   for (const arr of preparedByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -681,6 +802,9 @@ function PreparedView({
                 <div className="prep-rows">
                   {rows.map((r) => {
                     const spellData = refData.spells[r.spellId];
+                    // DC/concentration use the EFFECTIVE level (base + Heighten
+                    // only); `level` here is the metamagic-adjusted slot level.
+                    const effectiveLevel = r.baseLevel + metamagicEffectiveIncrease(r.metamagic);
                     return (
                       <div key={r.index} className={`prep-row${r.expended ? " is-expended" : ""}`}>
                         <div className="prep-row-main">
@@ -688,11 +812,32 @@ function PreparedView({
                           {r.cost === 2 && (
                             <span className="prep-opposition-badge">costs 2 slots</span>
                           )}
+                          {r.metamagic.length > 0 && (
+                            <span className="prep-mm-badge" title="Metamagic applied">
+                              base L{r.baseLevel}
+                            </span>
+                          )}
                           {spellData && (
                             <SpellDetail
                               spell={spellData}
-                              spellLevel={level}
+                              spellLevel={effectiveLevel}
+                              slotLevel={level}
                               abilityMod={abilityMod}
+                              metamagic={resolveAppliedMetamagic(r.metamagic)}
+                            />
+                          )}
+                          {!isCantrip && (
+                            <MetamagicControl
+                              owned={owned}
+                              applied={r.metamagic}
+                              baseLevel={r.baseLevel}
+                              maxSlotLevel={maxSlotLevel}
+                              onToggle={(slug) =>
+                                update((d) => togglePreparedMetamagic(d, r.index, slug))
+                              }
+                              onSetLevels={(slug, n) =>
+                                update((d) => setPreparedMetamagicLevels(d, r.index, slug, n))
+                              }
                             />
                           )}
                         </div>
@@ -889,6 +1034,24 @@ function SpontaneousView({
   const status = spontaneousSlotStatus(doc, model, classLevel, abilityMod, classTag);
   const anyUsed = status.some((s) => s.used > 0);
 
+  // Metamagic (issue #71): a spontaneous caster applies metamagic AT CAST time
+  // — the choice is transient (nothing is stored on the doc; casting just
+  // spends a higher slot), so it lives in component state keyed by spell id.
+  const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
+  const [castMetamagic, setCastMetamagic] = useState<Record<string, AppliedMetamagic[]>>({});
+  const maxSlotLevel = status.length > 0 ? status[status.length - 1]!.level : 0;
+  const remainingByLevel = new Map(status.map((s) => [s.level, s.remaining]));
+  const toggleCastMM = (spellId: string, slug: string) =>
+    setCastMetamagic((prev) => ({
+      ...prev,
+      [spellId]: toggleMetamagic(prev[spellId] ?? [], slug),
+    }));
+  const setCastMMLevels = (spellId: string, slug: string, n: number) =>
+    setCastMetamagic((prev) => ({
+      ...prev,
+      [spellId]: setMetamagicLevels(prev[spellId] ?? [], slug, n),
+    }));
+
   const knownList = useMemo(
     () => knownSpellsFor(doc, refData, casterTag),
     [doc, refData, casterTag],
@@ -1084,6 +1247,14 @@ function SpontaneousView({
                 <div className="prep-rows">
                   {knownHere.map((sp) => {
                     const spellData = refData.spells[sp.id];
+                    // Cast-time metamagic (issue #71): the chosen feats bump the
+                    // slot the Cast button spends; only Heighten also raises the
+                    // effective level (and thus DC).
+                    const applied = castMetamagic[sp.id] ?? [];
+                    const castLevel = level + metamagicSlotIncrease(applied);
+                    const effectiveLevel = level + metamagicEffectiveIncrease(applied);
+                    const castRemaining = remainingByLevel.get(castLevel) ?? 0;
+                    const castExhausted = castRemaining <= 0;
                     return (
                       <div key={sp.id} className="prep-row">
                         <div className="prep-row-main">
@@ -1091,16 +1262,30 @@ function SpontaneousView({
                           {spellData && (
                             <SpellDetail
                               spell={spellData}
-                              spellLevel={level}
+                              spellLevel={effectiveLevel}
+                              slotLevel={castLevel}
                               abilityMod={abilityMod}
+                              metamagic={resolveAppliedMetamagic(applied)}
                             />
                           )}
+                          <MetamagicControl
+                            owned={owned}
+                            applied={applied}
+                            baseLevel={level}
+                            maxSlotLevel={maxSlotLevel}
+                            onToggle={(slug) => toggleCastMM(sp.id, slug)}
+                            onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
+                          />
                         </div>
                         <TipButton
                           className="pick-btn remove prep-cast"
-                          disabled={isExhausted}
-                          disabledReason={`No level-${level} slots remaining`}
-                          title={`Cast ${sp.name} (spend 1 level-${level} slot)`}
+                          disabled={castExhausted}
+                          disabledReason={`No level-${castLevel} slots remaining`}
+                          title={
+                            castLevel === level
+                              ? `Cast ${sp.name} (spend 1 level-${level} slot)`
+                              : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot)`
+                          }
                           onClick={() =>
                             update((d) =>
                               castSpontaneousSlot(
@@ -1108,7 +1293,7 @@ function SpontaneousView({
                                 model,
                                 classLevel,
                                 abilityMod,
-                                level,
+                                castLevel,
                                 classTag,
                               ),
                             )
@@ -1188,6 +1373,23 @@ function HybridView({
   const castStatusByLevel = new Map(castStatus.map((s) => [s.level, s]));
   const castBonusByLevel = new Map(castSlots.map((s) => [s.level, s.bonus]));
   const anyCastUsed = castStatus.some((s) => s.used > 0);
+
+  // Cast-time metamagic (issue #71): like a spontaneous caster, an arcanist
+  // applies metamagic when casting, spending a higher slot — a transient,
+  // un-persisted choice kept in component state keyed by spell id.
+  const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
+  const [castMetamagic, setCastMetamagic] = useState<Record<string, AppliedMetamagic[]>>({});
+  const maxSlotLevel = castStatus.length > 0 ? castStatus[castStatus.length - 1]!.level : 0;
+  const toggleCastMM = (spellId: string, slug: string) =>
+    setCastMetamagic((prev) => ({
+      ...prev,
+      [spellId]: toggleMetamagic(prev[spellId] ?? [], slug),
+    }));
+  const setCastMMLevels = (spellId: string, slug: string, n: number) =>
+    setCastMetamagic((prev) => ({
+      ...prev,
+      [spellId]: setMetamagicLevels(prev[spellId] ?? [], slug, n),
+    }));
 
   const cantripList = useMemo(
     () => (model.grantsAllCantrips ? grantedCantrips(refData, casterTag) : []),
@@ -1367,6 +1569,11 @@ function HybridView({
                 <div className="prep-rows">
                   {preparedHere.map((sp) => {
                     const spellData = refData.spells[sp.id];
+                    const applied = castMetamagic[sp.id] ?? [];
+                    const castLevel = level + metamagicSlotIncrease(applied);
+                    const effectiveLevel = level + metamagicEffectiveIncrease(applied);
+                    const castRemaining = castStatusByLevel.get(castLevel)?.remaining ?? 0;
+                    const castExhausted = castRemaining <= 0;
                     return (
                       <div key={sp.id} className="prep-row">
                         <div className="prep-row-main">
@@ -1374,16 +1581,30 @@ function HybridView({
                           {spellData && (
                             <SpellDetail
                               spell={spellData}
-                              spellLevel={level}
+                              spellLevel={effectiveLevel}
+                              slotLevel={castLevel}
                               abilityMod={abilityMod}
+                              metamagic={resolveAppliedMetamagic(applied)}
                             />
                           )}
+                          <MetamagicControl
+                            owned={owned}
+                            applied={applied}
+                            baseLevel={level}
+                            maxSlotLevel={maxSlotLevel}
+                            onToggle={(slug) => toggleCastMM(sp.id, slug)}
+                            onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
+                          />
                         </div>
                         <TipButton
                           className="pick-btn remove prep-cast"
-                          disabled={isExhausted}
-                          disabledReason={`No level-${level} slots remaining`}
-                          title={`Cast ${sp.name} (spend 1 level-${level} slot)`}
+                          disabled={castExhausted}
+                          disabledReason={`No level-${castLevel} slots remaining`}
+                          title={
+                            castLevel === level
+                              ? `Cast ${sp.name} (spend 1 level-${level} slot)`
+                              : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot)`
+                          }
                           onClick={() =>
                             update((d) =>
                               castSpontaneousSlot(
@@ -1391,7 +1612,7 @@ function HybridView({
                                 model,
                                 classLevel,
                                 abilityMod,
-                                level,
+                                castLevel,
                                 classTag,
                               ),
                             )

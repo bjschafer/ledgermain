@@ -3039,6 +3039,100 @@ input[type="text"].saved-roll-name:focus {
   color: var(--danger, #d9534f);
 }
 
+/* ---------------------------------------------- metamagic (issue #71) -- */
+
+.prep-mm-badge {
+  font-size: 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-2, var(--muted));
+}
+
+.prep-metamagic {
+  margin-top: 4px;
+}
+
+.prep-metamagic-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--faint);
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  list-style: none;
+}
+
+.prep-metamagic-summary:hover {
+  color: var(--muted);
+}
+
+.prep-metamagic-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.prep-metamagic-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mm-chip {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    border-color 0.12s,
+    background 0.12s;
+}
+
+.mm-chip:hover:not(:disabled) {
+  border-color: var(--gold-dim);
+}
+
+.mm-chip.is-active {
+  background: linear-gradient(180deg, #2c2718, #211d12);
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+
+.mm-chip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mm-levels {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.mm-levels-select {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  font-size: 11px;
+  padding: 1px 4px;
+}
+
+.spell-detail-metamagic {
+  display: inline-block;
+  margin-right: 8px;
+}
+
 /* ------------------------------------------------- spell detail (Task 2) -- */
 
 .spell-detail {
