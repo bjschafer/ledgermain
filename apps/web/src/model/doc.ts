@@ -237,6 +237,23 @@ export function setPsychicDiscipline(doc: CharacterDoc, tag: string | null): Cha
 }
 
 /**
+ * Set the cavalier/samurai's chosen order tag (single tag, PF1 grants
+ * exactly one at L1, never changed thereafter). Pass `null` (or a blank/
+ * whitespace string) to clear. No validation that the tag exists in
+ * `@pf1/engine` `CAVALIER_ORDERS`/`SAMURAI_ORDERS`, or that it's one the
+ * character's class(es) can actually take — soft-warning posture, same as
+ * `setOracleMystery` (the picker UI is expected to only offer legal options
+ * for the classes present, e.g. hiding Warrior/Ronin from a pure cavalier).
+ */
+export function setCavalierOrder(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const trimmed = typeof tag === "string" ? tag.trim() : "";
+  return {
+    ...doc,
+    build: { ...doc.build, cavalierOrder: trimmed.length > 0 ? trimmed : undefined },
+  };
+}
+
+/**
  * Set (or clear) the fighter's Weapon Training group pick for tier
  * `tierIndex` (0 = 5th level, 1 = 9th, 2 = 13th, 3 = 17th — see
  * `build.weaponTrainingGroups`'s doc comment). Pass `null` (or a blank/
