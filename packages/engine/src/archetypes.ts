@@ -23,14 +23,23 @@ import type {
 } from "@pf1/schema";
 
 import { ALCHEMIST_DISCOVERIES } from "./alchemist-discoveries.js";
+import { ANTIPALADIN_CRUELTIES } from "./antipaladin-cruelties.js";
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
+import { NINJA_TRICKS } from "./ninja-tricks.js";
+import { MONK_KI_POWERS } from "./monk-ki-powers.js";
+import { MONK_STYLE_STRIKES } from "./monk-style-strikes.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
+import { RAGE_POWERS } from "./rage-powers.js";
+import { ROGUE_TALENTS } from "./rogue-talents.js";
 import { WITCH_HEXES } from "./witch-hexes.js";
 import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
+import { INVESTIGATOR_TALENTS } from "./investigator-talents.js";
+import { VIGILANTE_SOCIAL_TALENTS, VIGILANTE_TALENTS } from "./vigilante-talents.js";
+import { SHIFTER_ASPECTS } from "./shifter-aspects.js";
 import {
   sneakAttackDice,
   smiteEvilDetail,
@@ -43,6 +52,11 @@ import {
   painfulStareLabel,
   hypnoticStareLabel,
   kineticBlastDetail,
+  fiendishBoonLabel,
+  studiedCombatLabel,
+  studiedStrikeDice,
+  hiddenStrikeDice,
+  shifterClawsLabel,
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 
@@ -56,7 +70,7 @@ export interface GrantedFeature {
   classTag: string;
   level: number;
   grant: ClassFeatureGrant;
-  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation/hex/discovery/spirit rather than the class itself. */
+  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation/hex/discovery/spirit/cruelty/trick/ki power/style strike/rogue talent rather than the class itself. */
   origin?: {
     kind:
       | "domain"
@@ -67,7 +81,17 @@ export interface GrantedFeature {
       | "revelation"
       | "hex"
       | "discovery"
-      | "spirit";
+      | "spirit"
+      | "cruelty"
+      | "trick"
+      | "ragePower"
+      | "kiPower"
+      | "styleStrike"
+      | "rogueTalent"
+      | "investigatorTalent"
+      | "vigilanteSocialTalent"
+      | "vigilanteTalent"
+      | "shifterAspect";
     label: string;
   };
   /**
@@ -348,6 +372,113 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
+  // Barbarian rage powers (issue #65/#67) — hand-authored (see
+  // rage-powers.ts), gated on actual barbarian levels (either edition — see
+  // `RAGE_POWERS`'s doc comment for why chained/barbarianUnchained share one
+  // table). Granted at a flat display level of 2 (the earliest a barbarian
+  // has any rage power at all), same rationale as exploits/arcana above.
+  // `classTag` uses whichever of the two the character actually has (falling
+  // back to "barbarian" if — unusually — both are present, matching
+  // `defenses.ts`'s barbarianLevel() summing posture: display attribution to
+  // one tag is cosmetic only, the pick itself isn't scoped per edition).
+  const barbarianClassTag = doc.identity.classes.find(
+    (c) => c.tag === "barbarian" || c.tag === "barbarianUnchained",
+  )?.tag;
+  if (barbarianClassTag) {
+    for (const powerId of doc.build.ragePowers ?? []) {
+      const power = RAGE_POWERS[powerId];
+      if (!power) continue;
+      out.push({
+        classTag: barbarianClassTag,
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `ragePower:${power.id}`,
+          featureId: `ragePower:${power.id}`,
+          name: power.name,
+          resolved: true,
+        },
+        origin: { kind: "ragePower", label: "Rage Power" },
+        detail: power.summary,
+      });
+    }
+  }
+
+  // Monk (Unchained) ki powers + style strikes (issue #65) — hand-authored
+  // (see monk-ki-powers.ts/monk-style-strikes.ts), gated on actual
+  // monkUnchained levels the same way alchemist discoveries is gated above.
+  // Granted at a flat display level of 4 (ki powers)/5 (style strikes) — the
+  // earliest level each subsystem has any picks at all — same rationale as
+  // exploits/arcana above.
+  const monkUnchainedLevel =
+    doc.identity.classes.find((c) => c.tag === "monkUnchained")?.level ?? 0;
+  if (monkUnchainedLevel > 0) {
+    for (const powerId of doc.build.monkKiPowers ?? []) {
+      const power = MONK_KI_POWERS[powerId];
+      if (!power) continue;
+      out.push({
+        classTag: "monkUnchained",
+        level: 4,
+        grant: {
+          level: 4,
+          uuid: `kiPower:${power.id}`,
+          featureId: `kiPower:${power.id}`,
+          name: power.name,
+          resolved: true,
+        },
+        origin: { kind: "kiPower", label: "Ki Power" },
+        detail: power.summary,
+      });
+    }
+    for (const strikeId of doc.build.monkStyleStrikes ?? []) {
+      const strike = MONK_STYLE_STRIKES[strikeId];
+      if (!strike) continue;
+      out.push({
+        classTag: "monkUnchained",
+        level: 5,
+        grant: {
+          level: 5,
+          uuid: `styleStrike:${strike.id}`,
+          featureId: `styleStrike:${strike.id}`,
+          name: strike.name,
+          resolved: true,
+        },
+        origin: { kind: "styleStrike", label: "Style Strike" },
+        detail: strike.summary,
+      });
+    }
+  }
+
+  // Rogue talents (issue #65) — hand-authored (see rogue-talents.ts), SHARED
+  // between the chained rogue and Rogue (Unchained) (`build.rogueTalents`);
+  // gated on whichever of the two classes the character actually has,
+  // matching that class's own tag/level for display (a character with both,
+  // unusual but not illegal, is credited under "rogue"). Granted at a flat
+  // display level of 2, the earliest either class has any talent picks at
+  // all, same rationale as exploits/arcana above.
+  const rogueClass = doc.identity.classes.find(
+    (c) => c.tag === "rogue" || c.tag === "rogueUnchained",
+  );
+  if (rogueClass && rogueClass.level > 0) {
+    for (const talentId of doc.build.rogueTalents ?? []) {
+      const talent = ROGUE_TALENTS[talentId];
+      if (!talent) continue;
+      out.push({
+        classTag: rogueClass.tag,
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `rogueTalent:${talent.id}`,
+          featureId: `rogueTalent:${talent.id}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: { kind: "rogueTalent", label: "Rogue Talent" },
+        detail: talent.summary,
+      });
+    }
+  }
+
   // Shaman spirit ability + hexes (issue #65) — hand-authored (see
   // shaman-spirits.ts), gated on actual shaman levels AND a chosen spirit,
   // same shape as oracle revelations above. The spirit's own 1st-level
@@ -389,6 +520,155 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           detail: hexDef.summary,
         });
       }
+    }
+  }
+
+  // Antipaladin cruelties (issue #65 wave B) — hand-authored (see
+  // antipaladin-cruelties.ts), gated on actual antipaladin levels the same
+  // way alchemist discoveries are gated above. Granted at a flat display
+  // level of 3 (the earliest an antipaladin has any cruelty at all), same
+  // rationale as discoveries/exploits/arcana above.
+  const antipaladinLevel = doc.identity.classes.find((c) => c.tag === "antipaladin")?.level ?? 0;
+  if (antipaladinLevel > 0) {
+    for (const crueltyId of doc.build.antipaladinCruelties ?? []) {
+      const cruelty = ANTIPALADIN_CRUELTIES[crueltyId];
+      if (!cruelty) continue;
+      out.push({
+        classTag: "antipaladin",
+        level: 3,
+        grant: {
+          level: 3,
+          uuid: `cruelty:${cruelty.id}`,
+          featureId: `cruelty:${cruelty.id}`,
+          name: cruelty.name,
+          resolved: true,
+        },
+        origin: { kind: "cruelty", label: "Cruelty" },
+        detail: cruelty.summary,
+      });
+    }
+  }
+
+  // Ninja tricks (issue #65 wave B) — hand-authored (see ninja-tricks.ts),
+  // gated on actual ninja levels the same way alchemist discoveries are
+  // gated above. Granted at a flat display level of 2 (the earliest a ninja
+  // has any trick at all), same rationale as discoveries/exploits/arcana
+  // above.
+  const ninjaLevel = doc.identity.classes.find((c) => c.tag === "ninja")?.level ?? 0;
+  if (ninjaLevel > 0) {
+    for (const trickId of doc.build.ninjaTricks ?? []) {
+      const trick = NINJA_TRICKS[trickId];
+      if (!trick) continue;
+      out.push({
+        classTag: "ninja",
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `trick:${trick.id}`,
+          featureId: `trick:${trick.id}`,
+          name: trick.name,
+          resolved: true,
+        },
+        origin: { kind: "trick", label: "Ninja Trick" },
+        detail: trick.summary,
+      });
+    }
+  }
+
+  // Investigator talents (issue #65) — hand-authored (see
+  // investigator-talents.ts), gated on actual investigator levels the same
+  // way alchemist discoveries are gated above. Granted at a flat display
+  // level of 3 (the earliest an investigator has any talent at all), same
+  // rationale as exploits/arcana above.
+  const investigatorLevel = doc.identity.classes.find((c) => c.tag === "investigator")?.level ?? 0;
+  if (investigatorLevel > 0) {
+    for (const talentId of doc.build.investigatorTalents ?? []) {
+      const talent = INVESTIGATOR_TALENTS[talentId];
+      if (!talent) continue;
+      out.push({
+        classTag: "investigator",
+        level: 3,
+        grant: {
+          level: 3,
+          uuid: `investigatorTalent:${talent.id}`,
+          featureId: `investigatorTalent:${talent.id}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: { kind: "investigatorTalent", label: "Investigator Talent" },
+        detail: talent.summary,
+      });
+    }
+  }
+
+  // Vigilante social + vigilante talents (issue #65) — hand-authored (see
+  // vigilante-talents.ts), gated on actual vigilante levels. Two
+  // independent pools (PF1 RAW grants them from two different class
+  // features — see `build.vigilanteSocialTalents`/`vigilanteTalents`' doc
+  // comments), granted at flat display levels of 1 and 2 respectively (the
+  // earliest each pool has any pick at all).
+  const vigilanteLevel = doc.identity.classes.find((c) => c.tag === "vigilante")?.level ?? 0;
+  if (vigilanteLevel > 0) {
+    for (const talentId of doc.build.vigilanteSocialTalents ?? []) {
+      const talent = VIGILANTE_SOCIAL_TALENTS[talentId];
+      if (!talent) continue;
+      out.push({
+        classTag: "vigilante",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `vigilanteSocialTalent:${talent.id}`,
+          featureId: `vigilanteSocialTalent:${talent.id}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: { kind: "vigilanteSocialTalent", label: "Social Talent" },
+        detail: talent.summary,
+      });
+    }
+    for (const talentId of doc.build.vigilanteTalents ?? []) {
+      const talent = VIGILANTE_TALENTS[talentId];
+      if (!talent) continue;
+      out.push({
+        classTag: "vigilante",
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `vigilanteTalent:${talent.id}`,
+          featureId: `vigilanteTalent:${talent.id}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: { kind: "vigilanteTalent", label: "Vigilante Talent" },
+        detail: talent.summary,
+      });
+    }
+  }
+
+  // Shifter aspects (issue #65) — hand-authored (see shifter-aspects.ts),
+  // gated on actual shifter levels. Granted at a flat display level of 1
+  // (the earliest a shifter has any aspect at all), same rationale as
+  // exploits/arcana above. Whether the minor form is currently toggled ON
+  // (`live.activeBuffs`) is separate live-session state, not reflected here
+  // — this list is "aspects known", matching every other build-time pick.
+  const shifterLevel = doc.identity.classes.find((c) => c.tag === "shifter")?.level ?? 0;
+  if (shifterLevel > 0) {
+    for (const aspectId of doc.build.shifterAspects ?? []) {
+      const aspect = SHIFTER_ASPECTS[aspectId];
+      if (!aspect) continue;
+      out.push({
+        classTag: "shifter",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `shifterAspect:${aspect.id}`,
+          featureId: `shifterAspect:${aspect.id}`,
+          name: aspect.name,
+          resolved: true,
+        },
+        origin: { kind: "shifterAspect", label: "Aspect" },
+        detail: aspect.summary,
+      });
     }
   }
 
@@ -641,6 +921,30 @@ export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: Ref
 }
 
 /**
+ * True when the character's antipaladin Damage Reduction (Aura of Depravity,
+ * 17th level — `defenses.ts`'s hardcoded `antipaladinDamageReduction` table,
+ * not a vendored `Change`; see that function's doc comment) has been
+ * replaced by an active archetype at the character's current antipaladin
+ * level. Found via an audit of the vendored antipaladin archetype slice
+ * (issue #65 wave B): Insinuator's "Aura of Indomitability" (17th level)
+ * carries a `pairedBaseFeatureUuid` pointing at Aura of Depravity's uuid — a
+ * clean 1:1 swap, same shape as `barbarianDamageReductionReplaced`'s common
+ * case (no ambiguous unpaired antipaladin DR swap was found, so there's no
+ * antipaladin equivalent of `AMBIGUOUS_DR_REPLACEMENTS` needed here).
+ * Unlike Aura of Depravity, no vendored antipaladin archetype feature was
+ * found replacing Unholy Champion (20th level) — its DR bump is left
+ * unconditional.
+ */
+export function antipaladinDamageReductionReplaced(doc: CharacterDoc, refData: RefData): boolean {
+  const antipaladinLevel = doc.identity.classes.find((c) => c.tag === "antipaladin")?.level ?? 0;
+  if (antipaladinLevel < 17) return false;
+
+  const antipaladinClass = Object.values(refData.classes).find((c) => c.tag === "antipaladin");
+  const drGrantUuid = antipaladinClass?.features.find((f) => f.name === "Aura of Depravity")?.uuid;
+  return !!drGrantUuid && activeArchetypeSwaps(doc, refData).has(drGrantUuid);
+}
+
+/**
  * Fighter archetype ids whose OWN feature meaningfully takes over some or all
  * of the base Weapon Training mechanism — a fixed or restricted group, a
  * different cadence, or an unmodeled condition — that `archetype-extracted/
@@ -816,6 +1120,18 @@ export function resolveClassFeatures(
     } else if (detail === undefined && classTag === "antipaladin" && grant.name === "Smite Good") {
       const chaMod = abilities?.cha?.mod ?? 0;
       detail = smiteGoodLabel(smiteEvilDetail(classLevel, chaMod));
+    } else if (
+      detail === undefined &&
+      classTag === "antipaladin" &&
+      grant.name === "Fiendish Boon"
+    ) {
+      // Fiendish Boon's own vendored description is a prose-only stub with
+      // no numbers (`changes: []`) — same as paladin's own Divine Bond,
+      // which today has no hand-authored detail at all. Unlike Divine Bond,
+      // this project tracks WHICH form was chosen (`build.antipaladinBoon`)
+      // so a summary line is worth showing; see `fiendishBoonLabel`'s doc
+      // comment for why the weapon math itself still stays manual.
+      detail = fiendishBoonLabel(classLevel, doc.build.antipaladinBoon);
     } else if (detail === undefined && classTag === "monk" && grant.name === "Unarmed Strike") {
       detail = unarmedDamageDie(classLevel).dieLabel;
     } else if (detail === undefined && classTag === "monk" && grant.name === "Flurry of Blows") {
@@ -877,6 +1193,39 @@ export function resolveClassFeatures(
       grant.name === "Energy Kinetic Blast"
     ) {
       detail = kineticBlastDetail(classLevel, abilities?.con?.mod).energyLabel;
+    } else if (
+      detail === undefined &&
+      classTag === "investigator" &&
+      grant.name === "Studied Combat"
+    ) {
+      // Issue #65: insight bonus to atk/dmg vs. a studied target — see
+      // `studiedCombatLabel`'s doc comment (no vendored dice/changes upstream).
+      const label = studiedCombatLabel(classLevel);
+      if (label) detail = label;
+    } else if (
+      detail === undefined &&
+      classTag === "investigator" &&
+      grant.name === "Studied Strike"
+    ) {
+      detail = studiedStrikeDice(classLevel).diceLabel;
+    } else if (
+      detail === undefined &&
+      classTag === "vigilante" &&
+      grant.name === "Vigilante Specialization"
+    ) {
+      // Issue #65: Avenger gets full BAB (see compute.ts's BAB loop, which
+      // reads this same `doc.build.vigilanteSpecialization` field) — no
+      // class-feature detail line needed for that half. Stalker gets Hidden
+      // Strike, whose dice this surfaces (see `hiddenStrikeDice`'s doc
+      // comment — prose-only upstream, same posture as Sneak Attack).
+      const spec = doc.build.vigilanteSpecialization;
+      if (spec === "avenger") {
+        detail = "Avenger: full BAB (= vigilante level)";
+      } else if (spec === "stalker") {
+        detail = `Stalker: Hidden Strike ${hiddenStrikeDice(classLevel).diceLabel}`;
+      }
+    } else if (detail === undefined && classTag === "shifter" && grant.name === "Shifter Claws") {
+      detail = shifterClawsLabel(classLevel);
     }
     classFeatures.push({
       level: grant.level,

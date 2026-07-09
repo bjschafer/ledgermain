@@ -22,8 +22,11 @@ import { compute, deriveResourcePools } from "../src/index.js";
  *   `floor(@class.unlevel / 2) + @abilities.cha.mod`. This rides the fully
  *   generic `uses.maxFormula` pipeline with zero hand-authoring.
  *
- * Ninja Tricks / Master Tricks (the ninja's talent-menu subsystem, like Rogue
- * Talents) are deliberately NOT modeled — see IMPLEMENTATION_PLAN.md.
+ * Ninja Tricks / Master Tricks (issue #65 wave B): hand-authored clean-room
+ * menu table (`@pf1/engine` `ninja-tricks.ts`), same displayOnly posture as
+ * witch hexes/oracle revelations — see that file's doc comment for the
+ * honesty-bar audit. Wired into `collectGrantedFeatures`/`resolveClassFeatures`
+ * (`archetypes.ts`) exactly like witch hexes are; covered below.
  */
 const ref = loadRefData();
 
@@ -123,5 +126,60 @@ describe("ninja L20 — capstone", () => {
     expect(pools.find((p) => p.name === "Hidden Master")).toBeUndefined();
     // Ki Pool: floor(20/2) + Cha mod(2) = 12/day.
     expect(pools.find((p) => p.name === "Ki Pool (NIN)")?.max).toBe(12);
+  });
+});
+
+describe("ninja L12 — ninja tricks wiring (issue #65 wave B)", () => {
+  const doc: CharacterDoc = {
+    schemaVersion: 1,
+    id: "test",
+    ownerId: "owner",
+    version: 1,
+    updatedAt: "2026-01-01T00:00:00.000Z",
+    identity: { name: "Test", race: raceId("Human"), classes: [{ tag: "ninja", level: 12 }] },
+    abilities: { str: 14, dex: 18, con: 12, int: 10, wis: 10, cha: 14 },
+    build: {
+      feats: [],
+      skillRanks: {},
+      classFeatureChoices: [],
+      spells: { known: [] },
+      gear: [],
+      ninjaTricks: ["fastStealth", "unarmedCombatMastery"],
+    },
+    live: {
+      hp: { current: 0, temp: 0, nonlethal: 0 },
+      conditions: [],
+      activeBuffs: [],
+      resources: {},
+    },
+  };
+  const sheet = compute(doc, ref);
+
+  it("chosen tricks (regular + master, both within budget at L12) appear in classFeatures with their summary as detail", () => {
+    const fastStealth = sheet.classFeatures.find((f) => f.name === "Fast Stealth");
+    expect(fastStealth?.detail).toBe("Move at full speed while using Stealth with no penalty.");
+    expect(fastStealth?.origin).toEqual({ kind: "trick", label: "Ninja Trick" });
+
+    const mastery = sheet.classFeatures.find((f) => f.name === "Unarmed Combat Mastery");
+    expect(mastery?.origin).toEqual({ kind: "trick", label: "Ninja Trick" });
+  });
+
+  it("an unrecognized/stale trick id is silently skipped, not thrown", () => {
+    const staleDoc: CharacterDoc = {
+      ...doc,
+      build: { ...doc.build, ninjaTricks: ["fastStealth", "not-a-real-trick"] },
+    };
+    const staleSheet = compute(staleDoc, ref);
+    expect(staleSheet.classFeatures.map((f) => f.name)).toContain("Fast Stealth");
+    expect(staleSheet.classFeatures.map((f) => f.name)).not.toContain("not-a-real-trick");
+  });
+
+  it("a non-ninja with a stale ninjaTricks field gets no trick classFeatures", () => {
+    const fighterDoc: CharacterDoc = {
+      ...doc,
+      identity: { ...doc.identity, classes: [{ tag: "fighter", level: 12 }] },
+    };
+    const fighterSheet = compute(fighterDoc, ref);
+    expect(fighterSheet.classFeatures.find((f) => f.name === "Fast Stealth")).toBeUndefined();
   });
 });

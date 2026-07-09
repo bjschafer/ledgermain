@@ -702,6 +702,200 @@ export interface CharacterDoc {
      * field are unaffected.
      */
     occultistFocusPowers?: string[];
+    /**
+     * Antipaladin cruelty ids chosen (keys into `@pf1/engine`
+     * `ANTIPALADIN_CRUELTIES` — issue #65 wave B). Gained at 3rd level and
+     * every three levels thereafter (3rd, 6th, 9th, 12th, 15th, 18th — 6
+     * total by 18th); the MENU of selectable cruelties itself also expands
+     * at 3rd/6th/9th/12th — see `model/antipaladinCruelties.ts` for the
+     * budget math and `ANTIPALADIN_CRUELTIES`' doc comment for the tier
+     * gating. Unlike `witchHexes`/`oracleRevelations`, no "Extra Cruelty"
+     * feat exists in the vendored slice (confirmed) — this budget is never
+     * feat-boosted. Free-choice, soft warning only on overspend.
+     * Empty/undefined for non-antipaladins.
+     */
+    antipaladinCruelties?: string[];
+    /**
+     * Antipaladin's Fiendish Boon form, chosen at 5th level and never
+     * changed thereafter (PF1 APG RAW: "Once the form is chosen, it cannot
+     * be changed"). "weapon" grants a scaling weapon-enhancement boon whose
+     * numbers are summarized as a classFeature detail line only (see
+     * `tables.ts` `fiendishBoonLabel`) — the actual weapon math stays
+     * manual, the same restraint paladin's own Divine Bond gets today (which
+     * has no `build.*` field at all to record its choice, let alone modeled
+     * numbers). "servant" grants a permanent fiendish companion creature —
+     * deferred to issue #68 (companion stat blocks); surfaced as a note
+     * only. Empty/undefined for non-antipaladins or a boon not yet chosen.
+     */
+    antipaladinBoon?: "weapon" | "servant";
+    /**
+     * Ninja trick ids chosen (keys into `@pf1/engine` `NINJA_TRICKS` — issue
+     * #65 wave B, Ultimate Combat). Gained at 2nd level and every two levels
+     * thereafter (2nd, 4th, ..., 20th — 10 total by 20th), plus one per
+     * "Extra Ninja Trick" feat taken; see `model/ninjaTricks.ts` for the
+     * budget math. Master tricks (minLevel 10) are chosen IN PLACE OF a
+     * normal trick pick, not an extra budget slot — the same soft-gated,
+     * non-extra-budget posture `WITCH_HEXES`' major/grand tiers use. A ninja
+     * trick can ALSO be spent on "a rogue talent" per RAW (and, symmetrically,
+     * a rogue's advanced talent can be spent on a master trick) — see
+     * `NINJA_TRICKS`' doc comment for why that overlap is left note-tier
+     * rather than cross-wired: this project has no `build.rogueTalents`
+     * picker/budget field at all yet (a pre-existing gap, not a new one).
+     * Free-choice, soft warning only on overspend. Empty/undefined for
+     * non-ninjas.
+     */
+    ninjaTricks?: string[];
+    /**
+     * Barbarian rage power ids chosen (keys into `@pf1/engine` `RAGE_POWERS` —
+     * issue #65/#67), shared by both `barbarian` (chained) and
+     * `barbarianUnchained` — PF1 RAW grants a rage power at 2nd level and
+     * every two levels thereafter for both editions (verified against
+     * aonprd.com's class tables: the Unchained rewrite's own "Rage Powers"
+     * class feature restates the identical 2nd/4th/6th/... cadence rather
+     * than changing it), plus one per "Extra Rage Power" feat taken; see
+     * `apps/web/src/model/ragePowers.ts` for the budget math (sums both
+     * classes' levels, mirroring `@pf1/engine` `defenses.ts`'s
+     * `barbarianLevel()` — a character would only ever have one of the two,
+     * but summing is correct regardless). Level-gated entries (e.g. Renewed
+     * Vigor's "barbarian 4th") are soft-warned only, same posture as
+     * `oracleRevelations`/`witchHexes` — never blocks selection. Free-choice,
+     * soft warning only on overspend. Empty/undefined for non-barbarians.
+     * Back-compat: documents without this field are unaffected.
+     */
+    ragePowers?: string[];
+    /**
+     * Monk (Unchained) ki power ids chosen (keys into `@pf1/engine`
+     * `MONK_KI_POWERS` — issue #65). Gained at 4th level and every 2 levels
+     * thereafter (4th, 6th, ..., 20th — 9 total by 20th); see
+     * `model/monkKiPowers.ts` for the budget math. Every ki power here is
+     * `displayOnly` (a limited-use/activated ability with no unconditional
+     * numeric effect — see `MONK_KI_POWERS`' doc comment for why none of the
+     * 39 core Pathfinder Unchained ki powers cleared the bar for a real
+     * `Change`), same posture as `witchHexes`. Free-choice, soft warning only
+     * on overspend. Empty/undefined for non-monkUnchained characters.
+     * Back-compat: documents without this field are unaffected.
+     */
+    monkKiPowers?: string[];
+    /**
+     * Monk (Unchained) style strike ids chosen (keys into `@pf1/engine`
+     * `MONK_STYLE_STRIKES` — issue #65). Gained at 5th level and every 4
+     * levels thereafter (5th, 9th, 13th, 17th — 4 total by 17th; the 15th-
+     * level "designate two per round" bump is a usage upgrade to the SAME
+     * pool, not an extra pick — see `model/monkStyleStrikes.ts`). Every style
+     * strike here is `displayOnly` (a per-attack flurry rider, same posture
+     * as ki powers). Free-choice, soft warning only on overspend.
+     * Empty/undefined for non-monkUnchained characters. Back-compat:
+     * documents without this field are unaffected.
+     */
+    monkStyleStrikes?: string[];
+    /**
+     * Rogue talent ids chosen (keys into `@pf1/engine` `ROGUE_TALENTS` —
+     * issue #65), SHARED between the chained rogue and Rogue (Unchained) —
+     * both classes draw from the same curated ~28-entry core menu; entries
+     * flagged `unchainedOnly` in `ROGUE_TALENTS` (e.g. ones that reference
+     * Debilitating Injury) are soft-noted rather than hidden for a chained
+     * rogue. Gained at 2nd level and every 2 levels thereafter, plus one per
+     * "Extra Rogue Talent" feat taken; see `model/rogueTalents.ts` for the
+     * budget math. Most entries are `displayOnly`; "Combat Trick" contributes
+     * a real generic bonus-feat SLOT and "Finesse Rogue" grants Weapon
+     * Finesse as a fixed feat outright — both bridged into
+     * `apps/web/src/model/feats.ts` (`ROGUE_TALENTS[id].bonusFeatSlot` /
+     * `.grantsFeat`), same "talent grants a feat" shape as Rogue's Edge
+     * (UC)'s sibling `finesse training (uc)` override. Free-choice, soft
+     * warning only on overspend. Empty/undefined for non-rogues. Back-compat:
+     * documents without this field are unaffected.
+     */
+    rogueTalents?: string[];
+    /**
+     * Rogue (Unchained) Finesse Training weapon-type picks, in grant order —
+     * index 0 = the weapon type chosen at 3rd level, index 1 = 11th, index 2
+     * = 19th (PF1 RAW: "she can select any one type of weapon that can be
+     * used with Weapon Finesse ... whenever she makes a successful melee
+     * attack with the selected weapon, she adds her Dexterity modifier
+     * instead of her Strength modifier to the damage roll"). Free-text weapon
+     * TYPE name (e.g. "rapier"), matched case-insensitively against a
+     * `WeaponInstance`'s `name`/`group` in `compute.ts`'s weapon-attack path
+     * — not a `@pf1/engine` `WEAPON_GROUPS` slug (RAW scopes this to one
+     * weapon type, not a whole semantic group; see `computeWeaponAttacks`'s
+     * doc comment for the matching rule). Empty/undefined for non-
+     * rogueUnchained characters or a rogue who hasn't made any picks yet.
+     * Back-compat: documents without this field are unaffected.
+     */
+    rogueFinesseWeapons?: string[];
+    /**
+     * Rogue's Edge (UC) skill unlock picks, in grant order — index 0 = the
+     * skill chosen at 5th level, index 1 = 10th, index 2 = 15th, index 3 =
+     * 20th (PF1 Unchained RAW: "at 5th level, and every 5 levels thereafter,
+     * a rogue can choose a skill unlock power for one skill in which she has
+     * at least 5 ranks"). Values are `SkillId`s (see `model/names.ts`
+     * `SKILL_NAMES`). The unlock's actual tiered prose effects are NOT
+     * modeled (no numeric hook — same posture as `shamanHexes`); surfaced as
+     * a `displayOnly` chip on the ClassFeaturesList's "Rogue's Edge (UC)" row
+     * rather than the skill row itself, since the same picker also drives
+     * `expectedFeatCount`'s exclusion of Rogue's Edge (UC)'s spurious
+     * vendored `bonusFeats` change (see `feats.ts`'s existing exclusion) and
+     * both belong together. Empty/undefined for non-rogueUnchained
+     * characters. Back-compat: documents without this field are unaffected.
+     */
+    rogueSkillUnlocks?: string[];
+    /**
+     * Investigator talent ids chosen (keys into `@pf1/engine`
+     * `INVESTIGATOR_TALENTS` — issue #65). Gained at 3rd level and every 2
+     * levels thereafter (3rd, 5th, ..., 19th — 9 total by 20th); see
+     * `model/investigatorTalents.ts` for the budget math. Free-choice, soft
+     * warning only on overspend — same posture as `alchemistDiscoveries`.
+     * Empty/undefined for non-investigators. Back-compat: documents without
+     * this field are unaffected.
+     */
+    investigatorTalents?: string[];
+    /**
+     * Vigilante's chosen specialization (Ultimate Intrigue "Vigilante
+     * Specialization" class feature), picked at 1st level and never changed
+     * thereafter (PF1 RAW). "avenger" swaps the vigilante's own BAB tier for
+     * full BAB (= vigilante level) — see `compute.ts`'s BAB loop, which reads
+     * this field directly. "stalker" grants Hidden Strike (precision damage;
+     * see `@pf1/engine` `hiddenStrikeDice`, surfaced as a class-feature
+     * detail line). Free-choice, no hard validation. Empty/undefined for
+     * non-vigilantes or a vigilante who hasn't picked yet. Back-compat:
+     * documents without this field are unaffected.
+     */
+    vigilanteSpecialization?: "avenger" | "stalker";
+    /**
+     * Vigilante Social Talent ids chosen (keys into `@pf1/engine`
+     * `VIGILANTE_SOCIAL_TALENTS` — issue #65). Gained at 1st level and every
+     * 2 levels thereafter (1st, 3rd, ..., 19th — 10 total by 20th); see
+     * `model/vigilanteTalents.ts` for the budget math. A DIFFERENT pool from
+     * `vigilanteTalents` below — PF1 RAW grants these from two independent
+     * class features. Free-choice, soft warning only on overspend.
+     * Empty/undefined for non-vigilantes. Back-compat: documents without this
+     * field are unaffected.
+     */
+    vigilanteSocialTalents?: string[];
+    /**
+     * Vigilante Talent ids chosen (keys into `@pf1/engine`
+     * `VIGILANTE_TALENTS` — issue #65). Gained at 2nd level and every 2
+     * levels thereafter (2nd, 4th, ..., 20th — 10 total by 20th); see
+     * `model/vigilanteTalents.ts` for the budget math. Some entries are
+     * gated to `vigilanteSpecialization` (see `VigilanteTalentEntry.gate`) —
+     * soft-filtered only, same posture as `witchHexes`' tier gating; never
+     * blocks selection. Empty/undefined for non-vigilantes. Back-compat:
+     * documents without this field are unaffected.
+     */
+    vigilanteTalents?: string[];
+    /**
+     * Shifter aspect ids chosen (keys into `@pf1/engine` `SHIFTER_ASPECTS` —
+     * issue #65). Gained at 1st, 5th, 10th, and 15th level, plus a 5th aspect
+     * at 20th via the Final Aspect class feature; see
+     * `model/shifterAspects.ts` for the budget math. Free-choice, soft
+     * warning only on overspend. Each aspect's MINOR form is a real
+     * toggleable buff (see `live.activeBuffs`/`model/shifterAspects.ts`
+     * `toggleShifterAspectBuff`) built directly from `SHIFTER_ASPECTS`
+     * (there is no vendored buff to link — see that table's doc comment).
+     * The major form (Wild Shape transformation) is NOT modeled — deferred
+     * to issue #70 (polymorph). Empty/undefined for non-shifters.
+     * Back-compat: documents without this field are unaffected.
+     */
+    shifterAspects?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -925,52 +1119,19 @@ export interface CharacterDoc {
      */
     occultistPhysicalEnhancementAbility?: AbilityId;
     /**
-     * The medium's legendary spirit currently channeled for TODAY's séance
-     * (key into `@pf1/engine` `MEDIUM_SPIRITS` — issue #65, Occult
-     * Adventures). PF1 RAW ("Spirit"): a medium performs a séance once per
-     * day (usually during her morning preparations) and channels ONE
-     * legendary spirit for the next 24 hours, gaining that spirit's Spirit
-     * Bonus/Séance Boon/Spirit Powers/Taboo/influence for the duration — this
-     * is a genuinely LIVE, re-chosen-daily pick (not a `build.*` fixed
-     * choice), the first such "live-state picker" in this schema (see
-     * IMPLEMENTATION_PLAN.md's prior deferral note on why the oracle-mystery-
-     * style `build.*` picker pattern doesn't transplant to it). Modeled as a
-     * live buff-like toggle: `MEDIUM_SPIRITS[tag].spiritBonus` is injected as
-     * real sheet `Change`s the same way `live.activeBuffs` are (see
-     * `collect.ts`'s medium block) for every spirit whose bonus target is
-     * cleanly modelable (Champion/Guardian/Hierophant/Trickster; Archmage's
-     * concentration-check target and Marshal's "doubles on a surge" target
-     * have no home in this engine's derived stats — see `MEDIUM_SPIRITS`'
-     * doc comment — so those two are display-only computed previews instead,
-     * same posture as several occultist resonant powers). Cleared (along with
-     * `mediumInfluence`) on `model/rest.ts`'s `restNewDay` — PF1 RAW performs
-     * a fresh séance (and may channel a different spirit) each day, so
-     * carrying yesterday's spirit into a new day would be wrong; see
-     * `model/rest.ts`'s doc comment for the exact wiring. Undefined = no
-     * spirit currently channeled (e.g. before the day's séance, or for a
-     * non-medium). Back-compat: documents without this field are unaffected.
+     * Vigilante's current identity (issue #65) — "social" (public persona) or
+     * "vigilante" (masked persona). Display-forward table state (an identity
+     * chip + a context-note reminder about renown/alignment scope on the
+     * relevant class features), not a numeric input to `compute()`: no
+     * vendored `Change` gates on identity, and several vigilante talents'
+     * identity-scoped bonuses (Renown's Intimidate bonus, Social Grace, ...)
+     * are intentionally left as manual-apply `contextNotes` on
+     * `VIGILANTE_SOCIAL_TALENTS`/`VIGILANTE_TALENTS` rather than wired to
+     * this flag — see those tables' doc comments. Omitted/undefined defaults
+     * to "social" (a vigilante typically starts and rests in their public
+     * identity). Back-compat: documents without this field are unaffected.
      */
-    mediumSpirit?: string;
-    /**
-     * The medium's accumulated Influence with her currently-channeled spirit
-     * (`live.mediumSpirit`) — issue #65. PF1 RAW ("Influence"): a spirit
-     * gains influence over the medium in several ways (notably Spirit Surge,
-     * "allow his spirit to gain 1 additional point of influence... to add
-     * 1d6" to a failed roll); higher influence pulls the medium toward the
-     * spirit's alignment/personality and, if it ever reaches the medium's
-     * total level, the spirit can seize control. Modeled as a simple
-     * incrementing counter (no dice roller in this app — owner decision — so
-     * Spirit Surge's 1d6 is never rolled here, only the influence COST of
-     * choosing to surge is tracked) rather than the full compulsion-effect
-     * ladder, matching this engine's existing "counter, not full subsystem"
-     * posture for e.g. `heroPoints`. Reset to 0 on `model/rest.ts`'s
-     * `restNewDay` alongside `mediumSpirit` (a fresh séance resets the
-     * relationship for the day; RAW's longer-term consequences of sustained
-     * high influence across many days are out of scope, same posture as
-     * "Spirit Powers" being note-tier only). Omitted/0 = no influence
-     * accrued. Back-compat: documents without this field are unaffected.
-     */
-    mediumInfluence?: number;
+    vigilanteIdentity?: "social" | "vigilante";
   };
 }
 
@@ -1410,9 +1571,15 @@ export interface WeaponInstance {
   /**
    * Which ability modifier adds to the damage bonus.
    * - `"str"` (default): STR × damageMultiplier, melee only.
+   * - `"dex"`: DEX × damageMultiplier, melee only — a hand-set override for a
+   *   Dex-to-damage source the player wants to force on (e.g. Slashing
+   *   Grace). Rogue (Unchained)'s Finesse Training (`build.rogueFinesseWeapons`
+   *   — issue #65) applies this automatically for a matching weapon instead
+   *   of requiring it to be set by hand; see `computeWeaponAttacks` in
+   *   `compute.ts`.
    * - `"none"`: no ability modifier to damage (ranged, finesse, thrown without STR).
    */
-  damageAbility?: "str" | "none";
+  damageAbility?: "str" | "dex" | "none";
   /**
    * Multiplier applied to the damage ability modifier.
    * 1 = one-handed (default), 1.5 = two-handed, 0.5 = off-hand.
@@ -1636,27 +1803,23 @@ export interface DerivedClassFeature {
   /**
    * Set when this feature came from a chosen cleric domain, wizard arcane
    * school, sorcerer bloodline (issue #34), arcanist exploit (issue #42),
-   * magus arcana, oracle revelation (both issue #61), witch hex, or
-   * alchemist discovery (both issue #65) rather than the class itself — all
-   * eight share `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/
-   * `"magus"`/`"oracle"`/`"witch"`/`"alchemist"` with the class's own
-   * intrinsic features, so this disambiguates e.g. "Fire Bolt" (Fire
-   * Domain) from Channel Energy (cleric itself), "Claws" (Draconic
+   * magus arcana, oracle revelation (both issue #61), witch hex, alchemist
+   * discovery (both issue #65 wave 1), antipaladin cruelty, or ninja trick
+   * (both issue #65 wave B) rather than the class itself — all ten share
+   * `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/`"magus"`/
+   * `"oracle"`/`"witch"`/`"alchemist"`/`"antipaladin"`/`"ninja"` with the
+   * class's own intrinsic features, so this disambiguates e.g. "Fire Bolt"
+   * (Fire Domain) from Channel Energy (cleric itself), "Claws" (Draconic
    * Bloodline) from a sorcerer's other features, "Quick Study" (an
    * exploit) from an arcanist's own Arcane Reservoir, "Familiar" (a magus
    * arcana) from a magus's own Spell Combat, "Ward" (a hex) from a witch's
    * own Witch's Familiar, or "Cauldron" (a discovery) from an alchemist's
-   * own Bomb.
-   * magus arcana, oracle revelation (both issue #61), or shaman spirit/hex
-   * (issue #65) rather than the class itself — all eight share
-   * `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/`"magus"`/
-   * `"oracle"`/`"shaman"` with the class's own intrinsic features, so this
-   * disambiguates e.g. "Fire Bolt" (Fire Domain) from Channel Energy
-   * (cleric itself), "Claws" (Draconic Bloodline) from a sorcerer's other
-   * features, "Quick Study" (an exploit) from an arcanist's own Arcane
-   * Reservoir, "Familiar" (a magus arcana) from a magus's own Spell Combat,
-   * or "Battle Spirit"/"Battle Master" (a shaman's spirit ability/hex) from
-   * her own Hex class feature.
+   * own Bomb, "Fatigued" (a cruelty) from an antipaladin's own Touch of
+   * Corruption, or "Combat Trick" (a ninja trick) from a ninja's own
+   * Sneak Attack. Issue #65 adds more origin kinds (spirit, rage power,
+   * ki power, style strike, rogue talent, investigator talent, vigilante
+   * social/vigilante talent, shifter aspect) — same disambiguation need
+   * against each class's own intrinsic features.
    */
   origin?: {
     kind:
@@ -1668,7 +1831,17 @@ export interface DerivedClassFeature {
       | "revelation"
       | "hex"
       | "discovery"
-      | "spirit";
+      | "spirit"
+      | "cruelty"
+      | "trick"
+      | "ragePower"
+      | "kiPower"
+      | "styleStrike"
+      | "rogueTalent"
+      | "investigatorTalent"
+      | "vigilanteSocialTalent"
+      | "vigilanteTalent"
+      | "shifterAspect";
     label: string;
   };
 }
@@ -1805,6 +1978,32 @@ export interface HitPoints {
   nonlethal: number;
   /** Per-source breakdown of contributions to max HP (HD total, Con, FCB, etc.). */
   components: ModifierComponent[];
+  /**
+   * Temporary HP a currently-active buff/feature GRANTS (issue #67) — e.g.
+   * Unchained Rage's "2 temporary hit points per Hit Die" (scaling to 3 at
+   * 11th via Greater Rage, 4 at 20th via Mighty Rage). Collected from every
+   * `Change` targeting `"tempHp"`, the same generic collect → target pipeline
+   * as every other stat — see `@pf1/engine` `collect.ts`/`compute.ts`.
+   *
+   * This is DISTINCT from the manual `temp` field above, which is the tracker's
+   * single source of truth for the character's actual current temp-HP buffer
+   * (consumed by damage before real HP — see `apps/web/src/model/hp.ts`
+   * `applyDamage`). `grantedTemp` is a ceiling/suggestion the UI uses to know
+   * how much to set `live.hp.temp` to on activation — see
+   * `apps/web/src/model/hp.ts` `applyGrantedTempHp` for the sync logic and its
+   * documented edge cases (it cannot distinguish buff-granted temp HP already
+   * merged into `live.hp.temp` from unrelated manually-entered temp HP once
+   * they're in the same pool).
+   *
+   * PF1 RAW (Paizo FAQ, Core Rulebook p. 208 "Combining Magical Effects"):
+   * temporary HP from the SAME source do not stack (the higher application
+   * wins); temporary HP from DIFFERENT sources DO stack (sum). `total` already
+   * applies this rule — grouped by each modifier's `source` (display name),
+   * highest-per-group, then summed across groups; `components` lists every
+   * contributing modifier with `applied: false` on any same-source entry that
+   * lost to a higher one from the same source.
+   */
+  grantedTemp: { total: number; components: ModifierComponent[] };
 }
 
 export interface DerivedSkill {

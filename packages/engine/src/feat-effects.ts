@@ -209,10 +209,21 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
  * (all six of these are RAW "you can take this feat multiple times, effects
  * stack" — `deriveResourcePools` multiplies by the count it finds).
  * Clean-room from d20pfsrd/Archives of Nethys, not transcribed from Foundry.
+ *
+ * `featureTag` accepts either a single tag or an array of tags (issue #65's
+ * multi-target follow-up — see `resources.ts`'s `collectFeatPoolBonuses`
+ * doc comment). A multi-tag entry is for a feat whose RAW bonus applies to
+ * WHICHEVER of several class features the character actually has (a
+ * mutually-exclusive substitution across classes, e.g. antipaladin's Touch
+ * of Corruption explicitly substituting for paladin's Lay on Hands — see
+ * `extra-lay-on-hands` below), never "both at once": a character with both
+ * tags' pools present (an implausible paladin/antipaladin multiclass) would
+ * get the bonus applied to both, which is an accepted edge case, not a
+ * modeled RAW scenario.
  */
 export interface FeatPoolEffect {
-  /** `RefData.classFeatures[...].tag` of the pool this feat's bonus targets. */
-  featureTag: string;
+  /** `RefData.classFeatures[...].tag`(s) of the pool(s) this feat's bonus targets. */
+  featureTag: string | readonly string[];
   /** Amount added to the pool's max, per instance of the feat taken. */
   maxDelta: number;
 }
@@ -230,8 +241,17 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   // Extra Channel: +2 uses/day of channel energy (PF1 CRB p. 122).
   "extra-channel": { featureTag: "channelEnergy", maxDelta: 2 },
 
-  // Extra Lay On Hands: +2 uses/day of lay on hands (PF1 CRB p. 122).
-  "extra-lay-on-hands": { featureTag: "layOnHands", maxDelta: 2 },
+  // Extra Lay On Hands: +2 uses/day of lay on hands (PF1 CRB p. 122) — AND,
+  // per the antipaladin's own vendored Touch of Corruption description
+  // (`class-features.json`, verbatim): "This ability is modified by any
+  // feat, spell, or effect that specifically works with the lay on hands
+  // paladin class feature. For example, the Extra Lay On Hands feat grants
+  // an antipaladin 2 additional uses of the touch of corruption class
+  // feature." Issue #65's multi-target follow-up (previously a known gap —
+  // `FeatPoolEffect` only supported one `featureTag`): unambiguous RAW
+  // support confirmed directly in the vendored text above, not just an
+  // inference, so both tags are wired here rather than left as a note.
+  "extra-lay-on-hands": { featureTag: ["layOnHands", "touchOfCorruption"], maxDelta: 2 },
 
   // Extra Reservoir: +3 points to the arcane reservoir maximum (Advanced
   // Class Guide p. 12).

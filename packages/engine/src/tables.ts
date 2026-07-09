@@ -1543,3 +1543,239 @@ export function bombDamageDetail(alchemistLevel: number, intMod: number): BombDa
   const addend = intMod === 0 ? "" : intMod > 0 ? `+${intMod}` : `${intMod}`;
   return { dice, damageLabel: `${dice}d6${addend} fire` };
 }
+
+/* ------------------------------------------------- antipaladin cruelties -- */
+
+/**
+ * Antipaladin Cruelty save DC, clean-room from the published PF1 Advanced
+ * Player's Guide SRD (vendored `class-features.json` "Cruelty" description,
+ * stated once as a blanket rule, not repeated per-cruelty): "The DC of this
+ * save is equal to 10 + 1/2 the antipaladin's level + the antipaladin's
+ * Charisma modifier." Same `10 + 1/2 level + ability mod` shape as
+ * `witchHexDC`, hand-authored here because a cruelty's DC is not part of any
+ * vendored `ClassFeature.uses`/`actions` (cruelties have no vendored
+ * per-cruelty data at all — see `antipaladin-cruelties.ts`'s doc comment).
+ */
+export function antipaladinCrueltyDC(antipaladinLevel: number, chaMod: number): number {
+  if (antipaladinLevel <= 0) return 0;
+  return 10 + Math.floor(antipaladinLevel / 2) + chaMod;
+}
+
+/* ----------------------------------------------------- fiendish boon (APA) */
+
+/**
+ * Antipaladin Fiendish Boon (weapon form) display summary, clean-room from
+ * the published PF1 Advanced Player's Guide SRD (vendored `class-features.json`
+ * "Fiendish Boon" description — a prose-only stub with `changes: []`, no
+ * different from paladin's own Divine Bond, which today has NO hand-authored
+ * numeric modeling or `build.*` field at all: the actual weapon math is left
+ * entirely to the player). Unlike Divine Bond, this project DOES track WHICH
+ * form (`build.antipaladinBoon`) was chosen — see the schema doc comment —
+ * but still stops short of turning the weapon math into a `Change` or
+ * resource pool; this is purely an informational summary line for the
+ * Fiendish Boon classFeature row, same restraint Divine Bond gets.
+ *
+ * "At 5th level, this spirit grants the weapon a +1 enhancement bonus. For
+ * every three levels beyond 5th, the weapon gains another +1 enhancement
+ * bonus, to a maximum of +6 at 20th level... stacking with existing weapon
+ * bonuses to a maximum of +5, or... weapon properties... An antipaladin can
+ * use this ability once per day at 5th level, and one additional time per
+ * day for every four levels beyond 5th, to a total of four times per day at
+ * 17th level."
+ */
+export interface FiendishBoonWeaponDetail {
+  /** Total enhancement-equivalent bonus available to spend (1 at L5, capped at 6 at L20+). 0 below 5th level. */
+  enhancementBonus: number;
+  /** Uses/day (1 at L5, capped at 4 at L17+). 0 below 5th level. */
+  usesPerDay: number;
+}
+
+export function fiendishBoonWeaponDetail(antipaladinLevel: number): FiendishBoonWeaponDetail {
+  if (antipaladinLevel < 5) return { enhancementBonus: 0, usesPerDay: 0 };
+  const enhancementBonus = Math.min(6, 1 + Math.floor((antipaladinLevel - 5) / 3));
+  const usesPerDay = Math.min(4, 1 + Math.floor((antipaladinLevel - 5) / 4));
+  return { enhancementBonus, usesPerDay };
+}
+
+/**
+ * One-line classFeature `detail` for Fiendish Boon, branching on the chosen
+ * `build.antipaladinBoon` form. `undefined` boon (not yet chosen, or below
+ * 5th level with the field already set from a stale doc) prompts the picker
+ * instead of showing stale numbers.
+ */
+export function fiendishBoonLabel(
+  antipaladinLevel: number,
+  boon: "weapon" | "servant" | undefined,
+): string {
+  if (!boon) return "Choose weapon or servant below — fixed once chosen (PF1 RAW).";
+  if (boon === "servant") {
+    return "Fiendish servant (as summon monster III, permanent) — companion stat block tracking deferred (issue #68).";
+  }
+  const { enhancementBonus, usesPerDay } = fiendishBoonWeaponDetail(antipaladinLevel);
+  return (
+    `+${enhancementBonus} enhancement-equivalent (max +5 enhancement, remainder into properties), ` +
+    `${usesPerDay}/day, standard action, 1 min/level each — weapon math stays manual`
+  );
+}
+
+/* --------------------------------------------------- antipaladin DR (APA) -- */
+
+/**
+ * Antipaladin Damage Reduction, clean-room from the published PF1 Advanced
+ * Player's Guide SRD (both the Aura of Depravity and Unholy Champion class
+ * features' `changes[]` are empty upstream — same posture as
+ * `barbarianDamageReduction`): "At 17th level, an antipaladin gains DR
+ * 5/good" (Aura of Depravity); "At 20th level... His DR increases to
+ * 10/good" (Unholy Champion — replaces, not stacks with, the 17th-level
+ * value). Unlike the rest of the antipaladin's aura family (Cowardice,
+ * Despair, Vengeance, Sin — all enemies-within-10-ft debuffs with no
+ * self-facing number), this IS a genuine static bonus to the antipaladin's
+ * OWN sheet, so it rides `defenses.ts`'s `dr`-qualifier pipeline exactly like
+ * barbarian DR does.
+ */
+export interface AntipaladinDrDetail {
+  /** DR amount (0 below 17th level, 5 at L17-19, 10 at L20+). */
+  amount: number;
+  /** Display string, e.g. "5/good" (or "0/good" below 17th level, not normally shown). */
+  label: string;
+  /** Which class feature grants the current amount, for defense-line provenance. */
+  source: "Aura of Depravity" | "Unholy Champion";
+}
+
+export function antipaladinDamageReduction(antipaladinLevel: number): AntipaladinDrDetail {
+  if (antipaladinLevel < 17) return { amount: 0, label: "0/good", source: "Aura of Depravity" };
+  if (antipaladinLevel >= 20) {
+    return { amount: 10, label: "10/good", source: "Unholy Champion" };
+  }
+  return { amount: 5, label: "5/good", source: "Aura of Depravity" };
+}
+/* --------------------------------------------- rogue (uc) finesse training */
+
+/**
+ * Rogue (Unchained) Finesse Training weapon-type pick levels (issue #65,
+ * clean-room from the published rules, verified against aonprd.com/
+ * d20pfsrd.com's "Rogue (Unchained)" class page): "at 3rd level ... and every
+ * eight levels thereafter [11th, 19th] ... she can select any one type of
+ * weapon that can be used with Weapon Finesse ... she adds her Dexterity
+ * modifier, instead of her Strength modifier, to the damage roll" with that
+ * weapon. Three tiers total, mirroring `WEAPON_TRAINING_LEVELS`'s shape
+ * (index 0 = 3rd-level pick, index 1 = 11th, index 2 = 19th) but ADDITIVE
+ * rather than scaling — each pick just adds one more eligible weapon type,
+ * no growing bonus. See `computeWeaponAttacks` in `compute.ts` for how a
+ * pick is matched against an equipped `WeaponInstance`.
+ */
+export const ROGUE_FINESSE_TRAINING_LEVELS: readonly number[] = [3, 11, 19];
+
+/**
+ * Rogue's Edge (UC) skill unlock pick levels (issue #65, clean-room from the
+ * published rules): "at 5th level, and every five levels thereafter [10th,
+ * 15th, 20th], a rogue can choose a skill unlock power for one skill in
+ * which she has at least 5 ranks." Four tiers total (index 0 = 5th-level
+ * pick). The unlock's own tiered prose effects are not modeled — see
+ * `CharacterDoc.build.rogueSkillUnlocks`'s doc comment.
+ */
+export const ROGUE_SKILL_UNLOCK_LEVELS: readonly number[] = [5, 10, 15, 20];
+/* --------------------------------------------------------- studied combat -- */
+
+/**
+ * Investigator Studied Combat's insight bonus, clean-room from the published
+ * PF1 ACG SRD (the class feature's `changes[]` is empty upstream — only
+ * prose text — so the numbers are hand-authored here, same posture as
+ * `sneakAttackDice`): "he adds 1/2 his investigator level as an insight
+ * bonus on melee attack rolls and as a bonus on damage rolls" against a
+ * studied target. Both rolls use the SAME value.
+ */
+export function studiedCombatBonus(investigatorLevel: number): number {
+  if (investigatorLevel <= 0) return 0;
+  return Math.floor(investigatorLevel / 2);
+}
+
+/** One-line display string for `studiedCombatBonus`, e.g. "+2 atk/dmg vs. studied target". */
+export function studiedCombatLabel(investigatorLevel: number): string {
+  const bonus = studiedCombatBonus(investigatorLevel);
+  return bonus > 0 ? `+${bonus} atk/dmg vs. studied target` : "";
+}
+
+/**
+ * Investigator Studied Strike's precision damage dice, clean-room from the
+ * published PF1 ACG SRD (same "no vendored dice" situation as
+ * `studiedCombatBonus`): "The damage is 1d6 at 4th level, and increases by
+ * 1d6 for every 2 levels thereafter (to a maximum of 9d6 at 20th level)."
+ */
+export interface StudiedStrikeDetail {
+  /** Number of d6 rolled on a studied strike (0 below 4th level, 9 at L20). */
+  dice: number;
+  /** Display string, e.g. "3d6". */
+  diceLabel: string;
+}
+
+/** Studied strike dice count for an investigator of `investigatorLevel`. Out-of-range returns `dice: 0`. */
+export function studiedStrikeDice(investigatorLevel: number): StudiedStrikeDetail {
+  if (investigatorLevel < 4) {
+    return { dice: 0, diceLabel: "0d6" };
+  }
+  const dice = Math.min(9, Math.floor((investigatorLevel - 4) / 2) + 1);
+  return { dice, diceLabel: `${dice}d6` };
+}
+
+/* -------------------------------------------------------- hidden strike --- */
+
+/**
+ * Vigilante (Stalker) Hidden Strike precision damage dice, clean-room from
+ * the published PF1 Ultimate Intrigue SRD (the Vigilante Specialization
+ * class feature's `changes[]` is empty upstream — prose only): "an extra
+ * 1d8 points of precision damage ... This extra damage increases by 1d8 at
+ * 3rd level and every 2 vigilante levels thereafter."
+ */
+export interface HiddenStrikeDetail {
+  /** Number of d8 rolled on a hidden strike (0 for a non-stalker/level-0, 10 at L19+). */
+  dice: number;
+  /** Display string, e.g. "3d8". */
+  diceLabel: string;
+}
+
+/** Hidden strike dice count for a stalker vigilante of `vigilanteLevel`. Out-of-range returns `dice: 0`. */
+export function hiddenStrikeDice(vigilanteLevel: number): HiddenStrikeDetail {
+  if (vigilanteLevel < 1) {
+    return { dice: 0, diceLabel: "0d8" };
+  }
+  const dice = 1 + Math.max(0, Math.floor((vigilanteLevel - 1) / 2));
+  return { dice, diceLabel: `${dice}d8` };
+}
+
+/* -------------------------------------------------------- shifter claws --- */
+
+/**
+ * Shifter Claws damage die, clean-room from the published PF1 Blood of the
+ * Beast SRD (the class feature's `changes[]` is empty upstream — prose
+ * only): "dealing 1d4 points of piercing and slashing damage... At 7th
+ * level, her claw damage increases to 1d6... At 11th level ... 1d8. At 13th
+ * level ... 1d10." (Medium size only — same posture as `unarmedDamageDie`
+ * not modeling non-Medium sizes.) The die stops increasing after 13th; at
+ * 17th the critical multiplier becomes x3 instead. DR-bypass progression
+ * (cold iron/silver/magic at 3rd, adamantine/-- at 19th) is prose-only, not
+ * modeled as a Change here.
+ */
+export interface ShifterClawsDetail {
+  /** Display string for the claw damage die, e.g. "1d6". */
+  dieLabel: string;
+  /** Critical multiplier label, "x2" or "x3" (x3 from 17th level on). */
+  critLabel: string;
+}
+
+/** Shifter Claws damage die/crit for a shifter of `shifterLevel` (Medium size). Level is clamped to >= 1. */
+export function shifterClawsDamageDie(shifterLevel: number): ShifterClawsDetail {
+  const level = Math.max(1, shifterLevel);
+  let dieLabel = "1d4";
+  if (level >= 13) dieLabel = "1d10";
+  else if (level >= 11) dieLabel = "1d8";
+  else if (level >= 7) dieLabel = "1d6";
+  const critLabel = level >= 17 ? "x3" : "x2";
+  return { dieLabel, critLabel };
+}
+
+/** One-line display string for `shifterClawsDamageDie`, e.g. "1d6 (crit x2)". */
+export function shifterClawsLabel(shifterLevel: number): string {
+  const { dieLabel, critLabel } = shifterClawsDamageDie(shifterLevel);
+  return `${dieLabel} (crit ${critLabel})`;
+}
