@@ -364,7 +364,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Arcane bond picker — wizard only (familiar or bonded object). */}
       {doc.identity.classes.some((c) => c.tag === "wizard") && (
-        <ArcaneBondPicker doc={doc} update={update} />
+        <ArcaneBondPicker doc={doc} refData={refData} sheet={sheet} update={update} />
       )}
 
       {/* Arcanist exploit picker — arcanist only (free-choice, soft warning only). */}
@@ -508,8 +508,18 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         </p>
       )}
 
-      {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}
-      <FamiliarPicker doc={doc} update={update} />
+      {/*
+        Tracked familiar — class-agnostic (see FamiliarPicker's doc comment).
+        Hidden while a wizard's arcane bond is a bonded object and no familiar
+        exists yet: RAW, that choice means no familiar at all, so offering
+        "Add a familiar" right below "Bonded object" read as contradictory.
+        Once a familiar exists (e.g. from before switching bond types, or
+        granted by another class/feature) it stays visible so it can be
+        edited or removed.
+      */}
+      {(doc.build.arcaneBond?.type !== "object" || doc.build.familiar) && (
+        <FamiliarPicker doc={doc} update={update} />
+      )}
 
       {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond / ACG Hunter's own Animal Companion. */}
       <AnimalCompanionPicker doc={doc} update={update} />

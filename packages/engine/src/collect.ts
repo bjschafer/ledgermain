@@ -624,8 +624,13 @@ export function collectModifiers(
   // A familiar grants its master a small always-on bonus (hand-authored table
   // in familiars.ts). Unknown kinds and bonded objects apply nothing — bonded
   // objects have no numeric effect in v1 (display-only RAW notes in the UI).
+  // Skipped when a tracked familiar (`doc.build.familiar`) already exists: the
+  // block below applies the identical per-species bonus from the same table,
+  // and the builder UI now auto-creates the tracked familiar the moment
+  // `arcaneBond.type` is set to "familiar" — so both fields being populated is
+  // the normal case, not an edge case, and must not double-apply the bonus.
   const bond = doc.build.arcaneBond;
-  if (bond?.type === "familiar" && bond.familiarKind) {
+  if (bond?.type === "familiar" && bond.familiarKind && !doc.build.familiar) {
     const familiar = FAMILIARS[bond.familiarKind];
     if (familiar) {
       for (const ch of familiar.changes) {

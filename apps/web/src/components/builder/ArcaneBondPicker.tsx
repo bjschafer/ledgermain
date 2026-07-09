@@ -1,52 +1,50 @@
-import { FAMILIARS } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { setArcaneBond } from "../../model/doc.js";
+import { setFamiliar } from "../../model/familiar.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface ArcaneBondPickerProps {
   doc: CharacterDoc;
+  refData: RefData;
+  sheet: DerivedSheet;
   update: Updater;
 }
 
-/** Summarize a familiar's master bonus for display, e.g. "+3 Fly". */
-const FAMILIAR_BONUS_LABELS: Record<string, string> = {
-  bat: "+3 Fly",
-  cat: "+3 Stealth",
-  lizard: "+3 Climb",
-  monkey: "+3 Acrobatics",
-  rat: "+2 Fortitude saves",
-  raven: "+3 Appraise",
-  toad: "+3 hit points",
-  viper: "+3 Bluff",
-  weasel: "+2 Reflex saves",
-};
-
 /**
- * Wizard arcane bond (PF1 L1 choice): a familiar or a bonded object. A
- * familiar's master bonus is applied by the engine (hand-authored table in
- * `@pf1/engine` familiars.ts) and shows up with provenance in the sheet's
- * skill/save/HP breakdowns; conditional bonuses (hawk, owl) are display notes
- * only. A bonded object is recorded by name; its RAW mechanics (cast any
- * spellbook spell 1/day; concentration DC 20 + spell level when casting
- * without it) are surfaced as text, not modeled numerically.
+ * Wizard arcane bond (PF1 L1 choice): a familiar or a bonded object. Choosing
+ * "Familiar" here just sets the bond type and defers everything else (species,
+ * name, the tracked stat block) to `FamiliarPicker` below — auto-creating a
+ * default tracked familiar (`doc.build.familiar`) the first time so there's
+ * one species picker, not two disagreeing ones. The familiar's master bonus
+ * (hand-authored table in `@pf1/engine` familiars.ts) is applied from that
+ * same tracked-familiar field (see `collect.ts`'s "tracked familiar" block) —
+ * this picker no longer applies it a second time. A bonded object is recorded
+ * by name; its RAW mechanics (cast any spellbook spell 1/day; concentration DC
+ * 20 + spell level when casting without it) are surfaced as text, not modeled
+ * numerically.
  */
-export function ArcaneBondPicker({ doc, update }: ArcaneBondPickerProps) {
+export function ArcaneBondPicker({ doc, refData, sheet, update }: ArcaneBondPickerProps) {
   const isWizard = doc.identity.classes.some((c) => c.tag === "wizard");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:ArcaneBond", false);
   if (!isWizard) return null;
 
   const bond = doc.build.arcaneBond;
-  const familiar =
-    bond?.type === "familiar" && bond.familiarKind ? FAMILIARS[bond.familiarKind] : undefined;
   const bondSummary =
     bond?.type === "familiar"
-      ? `Familiar${familiar ? ` · ${familiar.name}` : ""}`
+      ? `Familiar${doc.build.familiar ? ` · ${doc.build.familiar.name}` : ""}`
       : bond?.type === "object"
         ? `Bonded object${bond.bondedItemName ? ` · ${bond.bondedItemName}` : ""}`
         : null;
+  const featureDescription = sheet.classFeatures.find(
+    (f) => f.classTag === "wizard" && f.name === "Arcane Bond",
+  );
+  const description = featureDescription
+    ? refData.classFeatures[featureDescription.featureId]?.description
+    : undefined;
 
   return (
     <div className="subsection arcane-bond-picker">
@@ -80,11 +78,14 @@ export function ArcaneBondPicker({ doc, update }: ArcaneBondPickerProps) {
               className="chip"
               aria-pressed={bond?.type === "familiar"}
               onClick={() =>
-                update((d) =>
-                  d.build.arcaneBond?.type === "familiar"
-                    ? setArcaneBond(d, null)
-                    : setArcaneBond(d, { type: "familiar", familiarKind: "bat" }),
-                )
+                update((d) => {
+                  if (d.build.arcaneBond?.type === "familiar") return setArcaneBond(d, null);
+                  const kind = d.build.familiar?.speciesId ?? "cat";
+                  const withBond = setArcaneBond(d, { type: "familiar", familiarKind: kind });
+                  return withBond.build.familiar
+                    ? withBond
+                    : setFamiliar(withBond, kind, "Familiar");
+                })
               }
             >
               Familiar
@@ -106,32 +107,10 @@ export function ArcaneBondPicker({ doc, update }: ArcaneBondPickerProps) {
           </div>
 
           {bond?.type === "familiar" && (
-            <>
-              <select
-                className="arcane-bond-select"
-                value={bond.familiarKind ?? ""}
-                onChange={(e) =>
-                  update((d) =>
-                    setArcaneBond(d, { type: "familiar", familiarKind: e.target.value }),
-                  )
-                }
-                aria-label="Familiar kind"
-              >
-                {Object.entries(FAMILIARS).map(([kind, def]) => (
-                  <option key={kind} value={kind}>
-                    {def.name}
-                  </option>
-                ))}
-              </select>
-              {familiar && (
-                <p className="hint arcane-bond-effect">
-                  {FAMILIAR_BONUS_LABELS[bond.familiarKind!]
-                    ? `Master bonus: ${FAMILIAR_BONUS_LABELS[bond.familiarKind!]} (applied to your sheet).`
-                    : null}
-                  {familiar.note ? ` ${familiar.name}: ${familiar.note}.` : null}
-                </p>
-              )}
-            </>
+            <p className="hint arcane-bond-effect">
+              Pick its species and name in the Familiar section below — its master bonus applies
+              from there.
+            </p>
           )}
 
           {bond?.type === "object" && (
@@ -146,6 +125,8 @@ export function ArcaneBondPicker({ doc, update }: ArcaneBondPickerProps) {
               aria-label="Bonded object name"
             />
           )}
+
+          {description && <FeatureDescription html={description} />}
         </>
       )}
     </div>

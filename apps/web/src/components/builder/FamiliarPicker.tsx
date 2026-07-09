@@ -1,4 +1,4 @@
-import { BASE_FAMILIARS } from "@pf1/engine";
+import { BASE_FAMILIARS, FAMILIARS } from "@pf1/engine";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { clearFamiliar, setFamiliar, setFamiliarNotes } from "../../model/familiar.js";
@@ -10,6 +10,19 @@ interface FamiliarPickerProps {
   doc: CharacterDoc;
   update: Updater;
 }
+
+/** Summarize a familiar's master bonus for display, e.g. "+3 Fly". */
+const FAMILIAR_BONUS_LABELS: Record<string, string> = {
+  bat: "+3 Fly",
+  cat: "+3 Stealth",
+  lizard: "+3 Climb",
+  monkey: "+3 Acrobatics",
+  rat: "+2 Fortitude saves",
+  raven: "+3 Appraise",
+  toad: "+3 hit points",
+  viper: "+3 Bluff",
+  weasel: "+2 Reflex saves",
+};
 
 /**
  * Tracked familiar (PF1 arcane familiar) — species + name. Class-agnostic:
@@ -101,6 +114,17 @@ export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
                   .
                 </p>
               )}
+              {(() => {
+                const bonus = FAMILIARS[familiar.speciesId];
+                if (!bonus) return null;
+                const label = FAMILIAR_BONUS_LABELS[familiar.speciesId];
+                return (
+                  <p className="hint familiar-effect">
+                    {label ? `Master bonus: ${label} (applied to your sheet).` : null}
+                    {bonus.note ? ` ${bonus.name}: ${bonus.note}.` : null}
+                  </p>
+                );
+              })()}
               <button
                 type="button"
                 className="btn-ghost"
