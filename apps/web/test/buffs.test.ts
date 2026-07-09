@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import type { Buff } from "@pf1/schema";
+import type { Buff, CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import {
@@ -7,6 +7,7 @@ import {
   hasNoModeledEffect,
   roundsToDisplay,
   suggestRounds,
+  toggleLinkedBuff,
   toRounds,
 } from "../src/model/buffs.js";
 
@@ -197,5 +198,81 @@ describe("hasNoModeledEffect", () => {
     expect(fom!.changes).toEqual([]);
     expect(fom!.contextNotes.length).toBeGreaterThan(0);
     expect(hasNoModeledEffect(fom!)).toBe(false);
+  });
+});
+
+function makeDoc(activeBuffs: CharacterDoc["live"]["activeBuffs"] = []): CharacterDoc {
+  return {
+    schemaVersion: 1,
+    id: "test",
+    ownerId: "owner",
+    version: 1,
+    updatedAt: "2026-01-01T00:00:00.000Z",
+    identity: { name: "Test", race: "", classes: [{ tag: "bard", level: 5 }] },
+    abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 14 },
+    build: { feats: [], skillRanks: {}, classFeatureChoices: [], spells: { known: [] }, gear: [] },
+    live: {
+      hp: { current: 0, temp: 0, nonlethal: 0 },
+      conditions: [],
+      activeBuffs,
+      resources: {},
+    },
+  };
+}
+
+// Issue #45 follow-up: the "activated performance/song buff" mechanism the
+// pipeline waves found missing (see `packages/engine/src/archetype-extracted/
+// bard.ts`'s wave-2 doc comment) turned out to already exist generically —
+// `deriveResourcePools`'s `linkedBuffIds` (Rage, Inspire Courage, Aura of
+// Protection) plus `ResourcesPanel`'s toggle button, built the same day in a
+// later commit than that wave's classification pass. `toggleLinkedBuff` is
+// the pure decision logic behind that toggle button, pulled out of the
+// component (per CLAUDE.md's "logic in model/, thin component wiring")
+// instead of living only in JSX where a DOM test would be the only way to
+// exercise it.
+describe("toggleLinkedBuff", () => {
+  const ref = loadRefData();
+  const inspireCourage = Object.values(ref.buffs).find((b) => b.name === "Inspire Courage")!;
+
+  it("activates a not-yet-active linked buff, seeding casterLevel + suggested duration", () => {
+    const doc = toggleLinkedBuff(makeDoc(), inspireCourage, 5);
+    expect(doc.live.activeBuffs).toHaveLength(1);
+    const active = doc.live.activeBuffs[0]!;
+    expect(active.buffId).toBe(inspireCourage.id);
+    expect(active.name).toBe("Inspire Courage");
+    expect(active.casterLevel).toBe(5);
+    // Snapshotted, not a live reference to the ref-data buff's changes.
+    expect(active.changes).toEqual(inspireCourage.changes);
+    expect(active.changes).not.toBe(inspireCourage.changes);
+  });
+
+  it("deactivates an already-active linked buff (matched by buffId, not instanceId)", () => {
+    const withActive = makeDoc([
+      {
+        instanceId: "some-instance",
+        buffId: inspireCourage.id,
+        name: inspireCourage.name,
+        changes: inspireCourage.changes,
+        casterLevel: 5,
+      },
+    ]);
+    const doc = toggleLinkedBuff(withActive, inspireCourage, 5);
+    expect(doc.live.activeBuffs).toHaveLength(0);
+  });
+
+  it("toggling twice is a round trip back to no active buffs", () => {
+    const on = toggleLinkedBuff(makeDoc(), inspireCourage, 11);
+    const off = toggleLinkedBuff(on, inspireCourage, 11);
+    expect(off.live.activeBuffs).toHaveLength(0);
+  });
+
+  it("never drains any resource pool — pool state is untouched by the toggle", () => {
+    const doc = makeDoc();
+    const withPool = {
+      ...doc,
+      live: { ...doc.live, resources: { bardicPerformance: { used: 0, max: 15 } } },
+    };
+    const toggled = toggleLinkedBuff(withPool, inspireCourage, 5);
+    expect(toggled.live.resources).toEqual(withPool.live.resources);
   });
 });

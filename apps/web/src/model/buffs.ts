@@ -74,6 +74,33 @@ export function removeBuff(doc: CharacterDoc, instanceId: string): CharacterDoc 
   };
 }
 
+/**
+ * Toggle a reference-data buff on/off — the activation shortcut for a
+ * resource pool's `linkedBuffIds` (barbarian Rage, bard Inspire Courage, a
+ * cleric domain power's Aura of Protection; see `DerivedResourcePool`'s doc
+ * comment in `packages/engine/src/resources.ts`). Pure equivalent of a
+ * player adding/removing the buff by hand from the Buffs panel — recomputes
+ * exactly the same way, and does NOT touch any resource pool's `used`
+ * counter (see that same doc comment for why a round-maintained buff and a
+ * per-day pool count are deliberately not coupled).
+ *
+ * "Active" is keyed by `buff.id` (an active instance whose `buffId` matches),
+ * not a caller-supplied instance id — a linked pool's power activates or
+ * deactivates ONE well-known reference buff, never more than one instance of
+ * it at a time. When activating, `remainingRounds` is seeded via
+ * {@link suggestRounds} at `casterLevel` (the same best-effort duration
+ * `BuffsPanel` suggests for a newly-added buff), and the caller can still
+ * adjust it afterward like any other active buff.
+ */
+export function toggleLinkedBuff(doc: CharacterDoc, buff: Buff, casterLevel: number): CharacterDoc {
+  const active = doc.live.activeBuffs.find((b) => b.buffId === buff.id);
+  if (active) return removeBuff(doc, active.instanceId);
+  return addBuff(
+    doc,
+    makeActiveBuff(buff, { casterLevel, remainingRounds: suggestRounds(buff, casterLevel) }),
+  );
+}
+
 /** Set (or clear, with `undefined`) the remaining rounds of an active buff. */
 export function setBuffRounds(
   doc: CharacterDoc,
