@@ -668,7 +668,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Channel Positive Energy",
     level: 4,
     bucket: "subsystem",
-    note: "Channel Energy reflavor with its own resource economy (no lay-on-hands cost) — channelEnergyDetail (tables.ts) is only wired for classTag==='cleric' in resources.ts, so a paladin's channel energy never gets a computed dice/DC detail today, archetype or not; a pre-existing base-class gap, not fixable from a table entry",
+    note: "Channel Energy reflavor with its own resource economy (no lay-on-hands cost, own 3+Cha uses/day pool) AND, per its own vendored prose ('channel positive energy as a cleric equal to her paladin level -3'), a genuine level-3 effective-level reduction the base paladin ability does NOT have (base Channel Positive Energy uses full paladin level as effective cleric level — verified against AoN/d20pfsrd; this table entry's OLD note incorrectly assumed the base ability had the same -3 reduction). The dice/DC line itself is no longer the gap: resources.ts's `actionBasedDetail` generic merge (added same day, after this note was written) now gives base Channel Positive Energy a correct dice/DC line via the Lay on Hands pool (see packages/engine/test/tracker.test.ts). What's still unmodeled is Hospitaler's OWN independent pool + level-3 reduction — a genuine bespoke resource-pool subsystem (issue #45 follow-up triage), out of scope for a table entry; still `subsystem`",
   },
   "paladin:hospitaler:aura-of-healing:11": {
     archetypeId: "paladin:hospitaler",

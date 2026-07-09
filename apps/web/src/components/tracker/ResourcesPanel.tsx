@@ -6,7 +6,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
-import { addBuff, makeActiveBuff, removeBuff, suggestRounds } from "../../model/buffs.js";
+import { toggleLinkedBuff } from "../../model/buffs.js";
 import {
   addManualPool,
   drainResource,
@@ -254,13 +254,14 @@ function LinkedBuffToggle({
   const buff = refData.buffs[buffId];
   if (!buff) return null;
   const active = activeBuffs.find((b) => b.buffId === buffId);
+  const toggle = () => update((d) => toggleLinkedBuff(d, buff, casterLevel));
 
   if (active) {
     return (
       <button
         type="button"
         className="res-linked-buff active"
-        onClick={() => update((d) => removeBuff(d, active.instanceId))}
+        onClick={toggle}
         title={`Deactivate ${buff.name}`}
       >
         {buff.name} Active ✓
@@ -271,17 +272,7 @@ function LinkedBuffToggle({
     <button
       type="button"
       className="res-linked-buff"
-      onClick={() =>
-        update((d) =>
-          addBuff(
-            d,
-            makeActiveBuff(buff, {
-              casterLevel,
-              remainingRounds: suggestRounds(buff, casterLevel),
-            }),
-          ),
-        )
-      }
+      onClick={toggle}
       title={`Activate ${buff.name}`}
     >
       Activate {buff.name}

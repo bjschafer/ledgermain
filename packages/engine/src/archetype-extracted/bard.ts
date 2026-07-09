@@ -15,14 +15,27 @@
  * specific rules this wave establishes (per the task's process notes, itself
  * derived from the round-2 hand-authored table's Archaeologist finding):
  *
- * 1. **Bardic Performance modifications are always `subsystem`.** The engine
- *    models bardic performance only as a rounds/day resource pool
- *    (`resources.ts`) — there is no generic "activated performance buff"
- *    mechanism (confirmed again here: base bard's own Inspire Courage,
+ * 1. **Bardic Performance modifications are always `subsystem`.** At the time
+ *    this wave was written, the engine modeled bardic performance only as a
+ *    rounds/day resource pool (`resources.ts`), with no generic "activated
+ *    performance buff" mechanism — base bard's own Inspire Courage,
  *    Countersong, Fascinate, Versatile Performance, Well-Versed, Lore
  *    Master, and Jack of All Trades class features all carry EMPTY vendored
- *    `changes` in `class-features.json` — none of them apply a number today
- *    either). Any archetype feature that grants a NEW performance, reflavors
+ *    `changes` in `class-features.json` (still true — that part never
+ *    changes). **Update (issue #45 follow-up triage):** a later same-day
+ *    commit (`d8dec4b`, after this wave) wired `ClassFeature.grantsBuffs` up
+ *    generically — `deriveResourcePools`'s `linkedBuffIds` + the tracker's
+ *    `LinkedBuffToggle` (`apps/web`) now DOES let a player toggle base bard's
+ *    Inspire Courage on/off (merged onto the Bardic Performance pool,
+ *    exactly like Rage; see `packages/engine/test/resources.test.ts` and
+ *    `apps/web/test/buffs.test.ts`'s `toggleLinkedBuff` coverage), applying
+ *    its real, level-scaled vendored buff. This does NOT change any bucket
+ *    below: the toggle only activates an EXISTING vendored `Buff` reached via
+ *    `grantsBuffs`, and none of these archetype features grant, reflavor, or
+ *    modify a performance via a vendored buff of their own — there is still
+ *    no mechanism to hang a NEW or MODIFIED performance on without hand-
+ *    authoring a bespoke buff per archetype (the "don't invent one" line).
+ *    Any archetype feature that grants a NEW performance, reflavors
  *    an existing one, or changes performance action economy/rounds-cost —
  *    whether or not it's structurally paired via `pairedBaseFeatureUuid` to
  *    one of the ten performance-type base features (Inspire Competence,
@@ -32,7 +45,8 @@
  *    own prose describes a clean, precisely-scaling number (e.g. Filidh's
  *    Echoes of Nature's Song, Busker's Quick Hands — both real numbers,
  *    both explicitly activated via "bardic performance"/"stunt" mechanics
- *    with no generic buff-toggle to hang them on). A handful of features
+ *    with no vendored buff of their own to hang the generic toggle on). A
+ *    handful of features
  *    happen to be PAIRED to one of those ten uuids purely for suppression
  *    bookkeeping while their own content is NOT a performance at all
  *    (Archaeologist's/Sandman's Trap Sense, Archaeologist's Evasion/Advanced
