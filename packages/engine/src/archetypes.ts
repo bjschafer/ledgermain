@@ -777,6 +777,21 @@ const MISPAIRED_TARGET_REMAP: ReadonlyMap<string, string | null> = new Map([
     "fighter:brawler:menacing-stance:7",
     "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa", // Armor Training
   ],
+  // Issue #72: druid:feral-child's Native Cunning (3rd) prose says "This
+  // ability replaces wild shape", but the vendored pairing links Trackless
+  // Step — the same level-matching CSV quirk as the brawler entries above
+  // (Native Cunning is a L3 row; Trackless Step is the druid's own L3
+  // feature). Trackless Step's suppression isn't lost by remapping: the
+  // sibling row `druid:feral-child:favored-terrain:3` ("replaces trackless
+  // step and a thousand faces") already correctly claims it. Wild Shape
+  // carries `changes: []` (prose + a `uses.maxFormula` pool only), so this is
+  // a classFeatures display fix; the pool still derives because
+  // `deriveResourcePools` doesn't consult archetype swaps for ANY feature —
+  // a pre-existing engine-wide posture, not per-entry harm introduced here.
+  [
+    "druid:feral-child:native-cunning:3",
+    "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi", // Wild Shape
+  ],
 ]);
 
 /**
