@@ -27,6 +27,7 @@ import { DiscoveryPicker } from "./DiscoveryPicker.js";
 import { DomainPicker } from "./DomainPicker.js";
 import { FiendishBoonPicker } from "./FiendishBoonPicker.js";
 import { HexPicker } from "./HexPicker.js";
+import { ImplementPicker } from "./ImplementPicker.js";
 import { InvestigatorTalentPicker } from "./InvestigatorTalentPicker.js";
 import { KiPowerPicker } from "./KiPowerPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
@@ -463,6 +464,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Aspect picker — shifter only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "shifter") && (
         <ShifterAspectPicker doc={doc} update={update} />
+      )}
+
+      {/* Implement school + focus power pickers — occultist only (issue #65, free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "occultist") && (
+        <ImplementPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

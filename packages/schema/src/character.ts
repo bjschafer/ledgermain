@@ -1818,8 +1818,9 @@ export interface DerivedClassFeature {
    * Corruption, or "Combat Trick" (a ninja trick) from a ninja's own
    * Sneak Attack. Issue #65 adds more origin kinds (spirit, rage power,
    * ki power, style strike, rogue talent, investigator talent, vigilante
-   * social/vigilante talent, shifter aspect) — same disambiguation need
-   * against each class's own intrinsic features.
+   * social/vigilante talent, shifter aspect, occultist implement school,
+   * occultist focus power) — same disambiguation need against each class's
+   * own intrinsic features.
    */
   origin?: {
     kind:
@@ -1841,7 +1842,9 @@ export interface DerivedClassFeature {
       | "investigatorTalent"
       | "vigilanteSocialTalent"
       | "vigilanteTalent"
-      | "shifterAspect";
+      | "shifterAspect"
+      | "implementSchool"
+      | "focusPower";
     label: string;
   };
 }

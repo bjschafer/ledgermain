@@ -190,7 +190,47 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: true,
       computeBonus: (invested, level) => cappedFocusBonus(invested, level, 2, 1, 4),
     },
-    focusPowers: [],
+    focusPowers: [
+      {
+        slug: "aegis",
+        name: "Aegis",
+        summary:
+          "Standard action, 1 focus: touch a suit of armor or a shield to grant it an enhancement bonus of 1 + 1 for every 6 occultist levels (max +4 at 18th), or an equivalent special ability instead. Lasts 1 minute.",
+      },
+      {
+        slug: "energy-shield",
+        name: "Energy Shield",
+        minLevel: 3,
+        summary:
+          "Swift action (or immediate for 2 focus), 1 focus: surround yourself with a shield absorbing up to 5 points per occultist level of one chosen energy type (acid/cold/electricity/fire). Lasts 1 minute or until exhausted.",
+      },
+      {
+        slug: "globe-of-negation",
+        name: "Globe of Negation",
+        minLevel: 11,
+        summary:
+          "Standard action, 3 focus: create a stationary 10-ft.-diameter globe that cancels spells cast into or through it, up to a total spell level equal to your occultist level; exceeding that grants affected creatures a +4 circumstance bonus on saves. Lasts occultist level in rounds.",
+      },
+      {
+        slug: "loci-sentry",
+        name: "Loci Sentry",
+        summary:
+          "Standard action, 1 focus: set a ward over an area (radius 10 ft. + 5 ft./occultist level) that dazes 1 round (Will negates) any creature entering it. Lasts up to 1 hour/level or until triggered.",
+      },
+      {
+        slug: "planar-ward",
+        name: "Planar Ward",
+        summary:
+          "Standard action, 2 focus: surround yourself with a ward against extraplanar/outsider creatures — they take a -4 penalty on attacks against you, and you gain a +4 circumstance bonus on saves against their spells and abilities. Lasts 1 minute.",
+      },
+      {
+        slug: "unraveling",
+        name: "Unraveling",
+        minLevel: 5,
+        summary:
+          "Standard action, 1 focus: functions as targeted dispel magic against an effect you're adjacent to; gain a +5 bonus on the caster level check when targeting a psychic-magic effect.",
+      },
+    ],
   },
   {
     tag: "conjuration",
@@ -208,7 +248,49 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: false,
       computeBonus: (invested, level) => cappedFocusBonus(invested, level, 2, 0, 1),
     },
-    focusPowers: [],
+    focusPowers: [
+      {
+        slug: "mind-steed",
+        name: "Mind Steed",
+        summary:
+          "Standard action, 1 focus (2 for a flying mount at 9th+): conjure a spectral mount functioning as the mount spell for 10 minutes/occultist level; gains flight at 9th level.",
+      },
+      {
+        slug: "conjure-implement",
+        name: "Conjure Implement",
+        minLevel: 3,
+        summary:
+          "Standard action, 1 focus: conjure any implement item you know how to use, as a masterwork version, for 10 minutes/occultist level.",
+      },
+      {
+        slug: "flesh-mend",
+        name: "Flesh Mend",
+        minLevel: 3,
+        summary:
+          "Standard action, 1 focus: heal a living creature by touch for 1d8 + occultist level, +1d8 for every 4 levels beyond 3rd (max 5d8+19 at 19th).",
+      },
+      {
+        slug: "psychic-fog",
+        name: "Psychic Fog",
+        minLevel: 3,
+        summary:
+          "Standard action, 1 focus (2 for solid fog at 7th+): create a fog bank (fog cloud, or solid fog at 7th+) lasting 1 minute/occultist level, unaffected by wind.",
+      },
+      {
+        slug: "purge-corruption",
+        name: "Purge Corruption",
+        minLevel: 5,
+        summary:
+          "Standard action, 1 focus: touch-range neutralize poison or remove disease, occultist level as caster level.",
+      },
+      {
+        slug: "side-step",
+        name: "Side Step",
+        minLevel: 7,
+        summary:
+          "Part of a move action, 1 focus: teleport up to 10 ft./occultist level, costing 5 ft. of your movement, without provoking attacks of opportunity.",
+      },
+    ],
   },
   {
     tag: "divination",
@@ -226,7 +308,47 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: true,
       computeBonus: (invested, level) => cappedFocusBonus(invested, level, 2, 0, 1),
     },
-    focusPowers: [],
+    focusPowers: [
+      {
+        slug: "future-gaze",
+        name: "Future Gaze",
+        summary:
+          "Standard action, 1 focus: functions as augury, using your occultist level as caster level.",
+      },
+      {
+        slug: "watchful-eye",
+        name: "Watchful Eye",
+        summary:
+          "Standard action, 1 focus: create an invisible 5-ft. sensor within 30 ft. that alerts you when creatures enter it, lasting 10 minutes/occultist level; each additional focus spent expands its coverage by 5 ft.",
+      },
+      {
+        slug: "powerful-connection",
+        name: "Powerful Connection",
+        summary:
+          "1 focus: double the saving-throw penalty on a divination spell that uses a physical connection to its target, or increase its DC by 2 for other target-connected divinations.",
+      },
+      {
+        slug: "danger-sight",
+        name: "Danger Sight",
+        minLevel: 3,
+        summary:
+          "Immediate action, 1 focus: gain an insight bonus equal to half your occultist level on your next AC or saving throw before the end of the round.",
+      },
+      {
+        slug: "mind-eye",
+        name: "Mind Eye",
+        minLevel: 5,
+        summary:
+          "Standard action, 1 focus: create an invisible Fine sensor (AC 18, fly 60 ft., perfect maneuverability) you can see through from up to 1 mile away, requiring concentration; lasts 1 minute/occultist level.",
+      },
+      {
+        slug: "object-seer",
+        name: "Object Seer",
+        minLevel: 7,
+        summary:
+          "Full-round action, 1 focus: ask one question about an object you hold regarding its nature, prior owner, or history, functioning as commune with cryptic answers possible.",
+      },
+    ],
   },
   {
     tag: "enchantment",
@@ -244,7 +366,47 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: true,
       computeBonus: (invested, level) => cappedFocusBonus(invested, level, 2, 1, 4),
     },
-    focusPowers: [],
+    focusPowers: [
+      {
+        slug: "inspired-assault",
+        name: "Inspired Assault",
+        summary:
+          "Standard action, 1 focus: touch a living creature to grant it a morale bonus on attack rolls and fear saves of 1 + 1 per 6 occultist levels (max +4), lasting 1 minute.",
+      },
+      {
+        slug: "mental-discord",
+        name: "Mental Discord",
+        summary:
+          "Standard action, 1 focus: a target within 30 ft. can't concentrate on spells effectively, taking a -4 penalty (-2 for thought-component casters) on concentration checks for 1 round/occultist level.",
+      },
+      {
+        slug: "obey",
+        name: "Obey",
+        summary:
+          "Standard action, 1 focus: functions as command against one living creature (a -2 penalty on the save if it shares your creature type).",
+      },
+      {
+        slug: "mind-slumber",
+        name: "Mind Slumber",
+        minLevel: 3,
+        summary:
+          "Standard action, 1 focus: lull a living creature into deep sleep for occultist level rounds or until damaged, with a fresh save each round it's disturbed.",
+      },
+      {
+        slug: "forced-alliance",
+        name: "Forced Alliance",
+        minLevel: 5,
+        summary:
+          "Standard action, 1 focus (2 for a different creature type): a living creature perceives you as a trusted ally for 1 round/occultist level.",
+      },
+      {
+        slug: "binding-pattern",
+        name: "Binding Pattern",
+        minLevel: 7,
+        summary:
+          "Standard action, 1 focus: paralyze a living creature for 1 round per 2 occultist levels; it may save at the end of its turn to become staggered instead of paralyzed.",
+      },
+    ],
   },
   {
     tag: "evocation",
@@ -262,7 +424,50 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: false,
       computeBonus: (invested, level) => cappedFocusBonus(invested, level, 2, 1, 2),
     },
-    focusPowers: [],
+    focusPowers: [
+      {
+        slug: "light-matrix",
+        name: "Light Matrix",
+        minLevel: 1,
+        summary:
+          "Standard action, 1 focus: create a glowing orb you can move up to 30 ft./round; at 5th level it can make a melee touch attack that blinds the target 1d4 rounds on a failed Fortitude save. Lasts 1 hour/occultist level.",
+      },
+      {
+        slug: "radiance",
+        name: "Radiance",
+        minLevel: 1,
+        summary:
+          "Standard action, 1 focus: touch a weapon to make it glow for 1 minute/occultist level; on a critical hit the wielder can end the glow to illuminate the foe (no concealment/invisibility/Stealth benefit, +2 circumstance bonus on attacks against it) for 1d4 rounds.",
+      },
+      {
+        slug: "shape-mastery",
+        name: "Shape Mastery",
+        minLevel: 1,
+        summary:
+          "As part of casting an area evocation spell, expend up to your Intelligence modifier in focus to exclude that many squares from the spell's area.",
+      },
+      {
+        slug: "energy-blast",
+        name: "Energy Blast",
+        minLevel: 5,
+        summary:
+          "Standard action (provokes), 2 focus: a 20-ft.-radius energy burst at 100 ft. dealing 5d6 damage +1d6 per 2 occultist levels beyond 5th (max 12d6 at 19th); Reflex halves.",
+      },
+      {
+        slug: "energy-ward",
+        name: "Energy Ward",
+        minLevel: 7,
+        summary:
+          "Standard action, 1 focus: gain resistance 10 (15 at 13th, 20 at 19th) to one chosen energy type, and creatures that hit you in melee take 1d6 of that energy damage. Lasts 1 round/occultist level.",
+      },
+      {
+        slug: "wall-of-power",
+        name: "Wall of Power",
+        minLevel: 9,
+        summary:
+          "Standard action, 1 focus: create a wall of energy up to 5 ft./occultist level long, 10 ft. high, dealing 2d6 + 1/occultist level damage to anything passing through it. Lasts 1 round/occultist level.",
+      },
+    ],
   },
   {
     tag: "illusion",
@@ -280,7 +485,50 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: false,
       computeBonus: (invested, level) => 5 * cappedFocusBonus(invested, level, 1, 1, 2),
     },
-    focusPowers: [],
+    focusPowers: [
+      {
+        slug: "cloak-image",
+        name: "Cloak Image",
+        minLevel: 1,
+        summary:
+          "Standard action, 1 focus: functions as disguise self for 1 minute/occultist level; at 5th level 2 focus lets you appear as a different creature type of the same size, and at 7th level 1 more focus extends the effect to a willing ally.",
+      },
+      {
+        slug: "color-beam",
+        name: "Color Beam",
+        minLevel: 1,
+        summary:
+          "Standard action, 1 focus: a ranged touch beam that blinds (HD ≤ your level) or dazzles (higher HD) a target for 1 round, Will negates; the target is immune for 1 day.",
+      },
+      {
+        slug: "unseen",
+        name: "Unseen",
+        minLevel: 3,
+        summary:
+          "Standard action, 1 focus (2 to include a willing adjacent ally): grants invisibility for 1 minute/occultist level; 1 additional focus extends it past an attack if the target stays within 30 ft.",
+      },
+      {
+        slug: "mirage",
+        name: "Mirage",
+        minLevel: 5,
+        summary:
+          "Standard action, 1 focus: cloaks up to one 5-ft. cube/occultist level in illusion, functioning as major image; physical interaction grants a Will save to disbelieve.",
+      },
+      {
+        slug: "masquerade",
+        name: "Masquerade",
+        minLevel: 7,
+        summary:
+          "Standard action, 1 focus: take on the appearance of a touched creature, gaining a circumstance bonus on Disguise checks equal to occultist level + 10, for 10 minutes/level (renewable for 1 more focus).",
+      },
+      {
+        slug: "shadow-beast",
+        name: "Shadow Beast",
+        minLevel: 9,
+        summary:
+          "Standard action, 1 focus: summons shadowy creatures duplicating a summon monster spell (up to level V, scaling with occultist level); they deal only 50% damage to creatures that disbelieve them. Lasts 1 round/occultist level.",
+      },
+    ],
   },
   {
     tag: "necromancy",
@@ -296,9 +544,50 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       summary:
         "Control 2 additional Hit Dice of undead for every point of mental focus invested in the implement, to a maximum number of Hit Dice equal to 4 × your occultist level. This engine has no undead-control-pool stat, so it's shown as a computed preview only, not applied to the sheet.",
       appliesAsChange: false,
-      computeBonus: (invested, level) => cappedFocusBonus(2 * invested, level, 1, 0, 1) * 0 + Math.min(2 * invested, 4 * level),
+      computeBonus: (invested, level) => Math.min(2 * invested, 4 * level),
     },
-    focusPowers: [],
+    focusPowers: [
+      {
+        slug: "necromantic-servant",
+        name: "Necromantic Servant",
+        summary:
+          "Standard action, 1 focus: raise a skeleton or zombie that serves you for 10 minutes/occultist level, with half your max HP and bonus damage equal to half your occultist level; gains new abilities at 5th/9th/13th/17th.",
+      },
+      {
+        slug: "soulbound-puppet",
+        name: "Soulbound Puppet",
+        summary:
+          "Full-round action, 1 focus: animate a construct-like familiar/homunculus companion lasting 10 minutes/occultist level; only one puppet active at a time.",
+      },
+      {
+        slug: "spirit-shroud",
+        name: "Spirit Shroud",
+        minLevel: 3,
+        summary:
+          "Standard action, 1 focus: grants 1d6 + occultist level temporary hit points for 1 minute/level; at 4th level also grants resistance against death effects and negative energy.",
+      },
+      {
+        slug: "flesh-rot",
+        name: "Flesh Rot",
+        minLevel: 3,
+        summary:
+          "Standard action, melee touch, 1 focus: rots a living creature's flesh for 1d8 + occultist level damage, scaling up to 5d8 at 19th level.",
+      },
+      {
+        slug: "psychic-curse",
+        name: "Psychic Curse",
+        minLevel: 5,
+        summary:
+          "Standard action, 1 focus: afflict a creature within 30 ft. with one of memory lapse, mental block, or pain confusion, lasting 1 day/occultist level.",
+      },
+      {
+        slug: "pain-wave",
+        name: "Pain Wave",
+        minLevel: 7,
+        summary:
+          "Standard action, 1 focus: a 20-ft.-radius burst within 100 ft. sickens living creatures for 1 round/occultist level (Will save reduces to 1 round).",
+      },
+    ],
   },
   {
     tag: "transmutation",
@@ -320,7 +609,47 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
         return Math.max(0, Math.min(2 * units, cap));
       },
     },
-    focusPowers: [],
+    focusPowers: [
+      {
+        slug: "philosophers-touch",
+        name: "Philosopher's Touch",
+        summary:
+          "Standard action, 1 focus: touch a weapon to let it overcome cold-iron or silver damage reduction for 1 minute/occultist level; touch an additional weapon at 4th level and every 4 levels thereafter for the same cost, and at 11th level the benefit upgrades to overcoming adamantine DR.",
+      },
+      {
+        slug: "size-alteration",
+        name: "Size Alteration",
+        summary:
+          "Standard action, 1 focus: touch a creature to increase or decrease its size by one step (as enlarge person/reduce person, not limited by creature type); a hostile target gets a melee-touch-triggered Fortitude save. Lasts 1 round/occultist level.",
+      },
+      {
+        slug: "sudden-speed",
+        name: "Sudden Speed",
+        summary:
+          "Swift action, 1 focus: increase your land speed by 30 ft. for 1 minute; doesn't stack with itself.",
+      },
+      {
+        slug: "quickness",
+        name: "Quickness",
+        minLevel: 5,
+        summary:
+          "Standard action, 1 focus: functions as haste on yourself or a touched willing creature, but the AC/Reflex bonus increases to +2. Lasts 1 round/occultist level.",
+      },
+      {
+        slug: "mind-over-gravity",
+        name: "Mind Over Gravity",
+        minLevel: 7,
+        summary:
+          "Standard action, 1 focus: gain a fly speed of 60 ft. with perfect maneuverability for 1 minute/occultist level.",
+      },
+      {
+        slug: "telekinetic-mastery",
+        name: "Telekinetic Mastery",
+        minLevel: 9,
+        summary:
+          "Standard action, 1 focus: functions as telekinesis without requiring concentration to maintain (using any of its effects is a standard action). Lasts 1 round/occultist level.",
+      },
+    ],
   },
 ];
 

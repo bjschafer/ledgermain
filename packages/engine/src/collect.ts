@@ -22,6 +22,7 @@ import { featNameSlug } from "./feat-effects.js";
 import { resolveFeatEffect } from "./feat-effects-resolve.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
+import { OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
@@ -29,7 +30,7 @@ import { RAGE_POWERS } from "./rage-powers.js";
 import { TRAITS } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
-import { raceGrantsFlexibleAbility, weaponTrainingBonus } from "./tables.js";
+import { raceGrantsFlexibleAbility, SKILL_ABILITY, weaponTrainingBonus } from "./tables.js";
 import { normalizeWeaponGroup } from "./weapon-groups.js";
 import { WITCH_HEXES } from "./witch-hexes.js";
 
@@ -688,6 +689,51 @@ export function collectModifiers(
           sourceId: "familiar-alertness",
         },
       );
+    }
+  }
+
+  // --- occultist implement resonant powers (live state, issue #65) --------
+  // `live.occultistFocusInvested[tag]` (set by `model/occultistImplements.ts`)
+  // records how many of the day's Mental Focus points are currently divided
+  // into each known implement (PF1 RAW "Mental Focus" — see that field's
+  // schema doc comment). Only the FOUR resonant powers flagged
+  // `appliesAsChange: true` in `OCCULTIST_SCHOOLS` (Abjuration/Divination/
+  // Enchantment/Transmutation — see `occultist-implements.ts`'s doc comment
+  // for exactly why the other four are situational/no-modelable-target and
+  // stay display-only) are injected as real sheet Changes here; a school not
+  // currently known (not in `build.occultistImplements`) or with 0 focus
+  // invested contributes nothing (`computeBonus` already returns 0 below each
+  // power's own investment threshold, e.g. Transmutation needs 3+).
+  const occultistLevel = doc.identity.classes.find((c) => c.tag === "occultist")?.level ?? 0;
+  if (occultistLevel > 0) {
+    const knownSchools = new Set(doc.build.occultistImplements ?? []);
+    for (const tag of knownSchools) {
+      const school = OCCULTIST_SCHOOLS[tag];
+      if (!school || !school.resonantPower.appliesAsChange) continue;
+      const invested = doc.live.occultistFocusInvested?.[tag] ?? 0;
+      const bonus = school.resonantPower.computeBonus(invested, occultistLevel);
+      if (bonus <= 0) continue;
+      const source = `${school.resonantPower.name} (${school.name} Resonant Power)`;
+      const sourceId = `occultistResonant:${tag}`;
+      if (tag === "abjuration") {
+        out.push({ target: "allSavingThrows", type: "resistance", value: bonus, source, sourceId });
+      } else if (tag === "divination") {
+        out.push({ target: "skill.per", type: "insight", value: bonus, source, sourceId });
+      } else if (tag === "enchantment") {
+        for (const [skillId, ability] of Object.entries(SKILL_ABILITY)) {
+          if (ability !== "cha") continue;
+          out.push({
+            target: `skill.${skillId}`,
+            type: "competence",
+            value: bonus,
+            source,
+            sourceId,
+          });
+        }
+      } else if (tag === "transmutation") {
+        const ability = doc.live.occultistPhysicalEnhancementAbility ?? "str";
+        out.push({ target: ability, type: "enhancement", value: bonus, source, sourceId });
+      }
     }
   }
 

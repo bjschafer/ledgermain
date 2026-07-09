@@ -217,6 +217,17 @@ export {
 } from "./vigilante-talents.js";
 export { SHIFTER_ASPECTS, SHIFTER_ASPECT_IDS, type ShifterAspectDef } from "./shifter-aspects.js";
 export {
+  OCCULTIST_SCHOOLS,
+  OCCULTIST_SCHOOL_TAGS,
+  OCCULTIST_APPLIED_RESONANT_SCHOOLS,
+  OCCULTIST_PHYSICAL_ABILITIES,
+  findOccultistFocusPower,
+  type OccultistSchoolDef,
+  type OccultistBaseFocusPower,
+  type OccultistFocusPowerDef,
+  type OccultistResonantPower,
+} from "./occultist-implements.js";
+export {
   PSYCHIC_DISCIPLINES,
   PSYCHIC_DISCIPLINE_TAGS,
   type PsychicDisciplineDef,
