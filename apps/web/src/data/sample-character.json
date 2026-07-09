@@ -32,9 +32,9 @@
     "feats": ["8snLqsJN4LLL00Nq", "WnWRcte0jppClLpz", "7zJTztNW7hdaqjKc"],
     "skillRanks": {
       "hea": 5,
-      "kre": 3,
-      "dip": 3,
-      "sen": 3
+      "kre": 2,
+      "dip": 2,
+      "sen": 1
     },
     "clericDomains": ["War", "Strength"],
     "archetypes": [],
@@ -50,7 +50,9 @@
           "ac": 6,
           "maxDex": 2,
           "acp": -5,
-          "type": 2
+          "type": 2,
+          "asf": 30,
+          "weight": 40
         },
         "armorId": "unY9jt1B8a5bbnzO",
         "name": "Chainmail"
@@ -60,7 +62,9 @@
         "armor": {
           "slot": "shield",
           "ac": 2,
-          "acp": -2
+          "acp": -2,
+          "asf": 15,
+          "weight": 15
         },
         "armorId": "2fK608aSYU9QDmzw",
         "name": "Heavy Steel Shield"
@@ -83,6 +87,8 @@
         "category": "melee",
         "damageDice": "1d8",
         "group": "heavy-mace",
+        "weaponGroups": ["hammers"],
+        "weight": 8,
         "weaponId": "AbmnL8ilLH6r95Oa"
       }
     ]
@@ -96,7 +102,7 @@
     "conditions": [],
     "activeBuffs": [
       {
-        "instanceId": "eea2d3b1-2d85-478f-8c1c-5bb47f5107b6",
+        "instanceId": "bb137d2a-123f-46a0-9227-4efda0492e34",
         "buffId": "ClOy4KHJFDdt0ALh",
         "name": "Bull's Strength",
         "changes": [
@@ -111,7 +117,7 @@
         "remainingRounds": 42
       },
       {
-        "instanceId": "566aae7d-4b2c-4b9a-b452-22c61ca4f217",
+        "instanceId": "74eecf98-395c-4520-b11d-58cdeb91c0a0",
         "buffId": "QYVZS8MfOKzjpCm1",
         "name": "Bless",
         "changes": [
@@ -135,6 +141,14 @@
       "kXXz1lO4i7CibHJ9": {
         "used": 2,
         "max": 4
+      },
+      "PXdTxpse6nHDdQyR": {
+        "used": 0,
+        "max": 7
+      },
+      "Iu8gyBT93dRpGtgH": {
+        "used": 0,
+        "max": 7
       }
     },
     "spells": {

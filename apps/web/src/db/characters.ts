@@ -101,10 +101,17 @@ export async function loadOrCreateActive(): Promise<CharacterDoc> {
   return activeLoadPromise;
 }
 
-/** Insert the bundled sample character if it isn't already present. */
+/**
+ * Insert the bundled sample character if it isn't already present, or
+ * re-seed it if the stored copy is still exactly as shipped (`version` starts
+ * at `1` and only real edits through `update()`/`undoLast()` bump it). This
+ * lets a fix to the bundled sample (new content having invalidated it, a
+ * corrected build script, etc.) reach sessions that seeded an earlier copy,
+ * without ever clobbering a player's own in-progress changes to their copy.
+ */
 async function ensureSampleCharacterSeeded(): Promise<void> {
   const existing = await db.characters.get(sampleCharacterJson.id);
-  if (existing) return;
+  if (existing && existing.version > 1) return;
   const sample = parseImportedDoc(sampleCharacterJson);
   await db.characters.put(sample);
 }

@@ -107,10 +107,12 @@ doc = addAbilityIncrease(doc, "wis"); // level-4 increase
 doc = setClericDomains(doc, ["War", "Strength"]);
 doc = setArchetypes(doc, []);
 
+// Cleric gets 2 + Int mod (= 2, Int 10) skill points/level * 5 levels = 10 total
+// — keep the four ranks below summed to that budget.
 doc = setSkillRank(doc, "hea", 5);
-doc = setSkillRank(doc, "kre", 3);
-doc = setSkillRank(doc, "dip", 3);
-doc = setSkillRank(doc, "sen", 3);
+doc = setSkillRank(doc, "kre", 2);
+doc = setSkillRank(doc, "dip", 2);
+doc = setSkillRank(doc, "sen", 1);
 
 doc = toggleFeat(doc, feat(ref, "Toughness"));
 doc = toggleFeat(doc, feat(ref, "Selective Channeling"));
