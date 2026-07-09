@@ -212,6 +212,15 @@ export {
 } from "./shared-creature-buffs.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";
 export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
+export type { ToggleBuffOption } from "./toggle-buffs.js";
+export {
+  INQUISITOR_JUDGMENTS,
+  maxSimultaneousJudgments,
+  judgmentPoolDetail,
+  judgmentToggleOptions,
+  type JudgmentDef,
+} from "./judgments.js";
+export { SKALD_INSPIRED_RAGE, RAGING_SONG_DETAIL } from "./raging-song.js";
 export {
   resolveClassFeatures,
   archetypeSwappedUuids,

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "bun:test";
+import type { ToggleBuffOption } from "@pf1/engine";
 import type { Buff, CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
@@ -8,6 +9,7 @@ import {
   roundsToDisplay,
   suggestRounds,
   toggleLinkedBuff,
+  toggleTableBuff,
   toRounds,
 } from "../src/model/buffs.js";
 
@@ -274,5 +276,61 @@ describe("toggleLinkedBuff", () => {
     };
     const toggled = toggleLinkedBuff(withPool, inspireCourage, 5);
     expect(toggled.live.resources).toEqual(withPool.live.resources);
+  });
+});
+
+// Issue #65: the "no vendored buff at all" counterpart to `toggleLinkedBuff`
+// above — inquisitor Judgments and skald Inspired Rage carry no
+// `RefData.buffs` entry to resolve, so `DerivedResourcePool.tableOptions`
+// (packages/engine/src/resources.ts) surfaces a hand-authored
+// `ToggleBuffOption` instead, and this is its toggle logic.
+describe("toggleTableBuff", () => {
+  const destruction: ToggleBuffOption = {
+    id: "judgment:destruction",
+    name: "Destruction",
+    changes: [{ formula: "1", target: "wdamage", type: "sacred" }],
+    contextNotes: [{ target: "allChecks", text: "some note" }],
+  };
+
+  it("activates a not-yet-active table buff, keyed by effectTag (not buffId)", () => {
+    const doc = toggleTableBuff(makeDoc(), destruction);
+    expect(doc.live.activeBuffs).toHaveLength(1);
+    const active = doc.live.activeBuffs[0]!;
+    expect(active.effectTag).toBe("judgment:destruction");
+    expect(active.buffId).toBeUndefined();
+    expect(active.name).toBe("Destruction");
+    expect(active.changes).toEqual(destruction.changes);
+    expect(active.changes).not.toBe(destruction.changes);
+    expect(active.contextNotes).toEqual(destruction.contextNotes);
+  });
+
+  it("deactivates an already-active table buff (matched by effectTag)", () => {
+    const withActive = makeDoc([
+      {
+        instanceId: "some-instance",
+        effectTag: "judgment:destruction",
+        name: "Destruction",
+        changes: destruction.changes,
+      },
+    ]);
+    const doc = toggleTableBuff(withActive, destruction);
+    expect(doc.live.activeBuffs).toHaveLength(0);
+  });
+
+  it("toggling twice is a round trip back to no active buffs", () => {
+    const on = toggleTableBuff(makeDoc(), destruction);
+    const off = toggleTableBuff(on, destruction);
+    expect(off.live.activeBuffs).toHaveLength(0);
+  });
+
+  it("two different table buffs (e.g. two judgments) can be active at once — no exclusivity enforced", () => {
+    const justice: ToggleBuffOption = {
+      id: "judgment:justice",
+      name: "Justice",
+      changes: [{ formula: "1", target: "attack", type: "sacred" }],
+    };
+    const withDestruction = toggleTableBuff(makeDoc(), destruction);
+    const withBoth = toggleTableBuff(withDestruction, justice);
+    expect(withBoth.live.activeBuffs).toHaveLength(2);
   });
 });

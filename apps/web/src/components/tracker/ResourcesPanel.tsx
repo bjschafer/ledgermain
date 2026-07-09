@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 
-import { deriveResourcePools } from "@pf1/engine";
+import { deriveResourcePools, type ToggleBuffOption } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
-import { toggleLinkedBuff } from "../../model/buffs.js";
+import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
 import {
   addManualPool,
   drainResource,
@@ -79,6 +79,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                 onDrain={() => drain(pool.id)}
                 onRestore={() => restore(pool.id)}
                 linkedBuffIds={pool.linkedBuffIds}
+                tableOptions={pool.tableOptions}
                 refData={refData}
                 activeBuffs={doc.live.activeBuffs}
                 casterLevel={casterLevel}
@@ -143,6 +144,7 @@ function ResourceRow({
   onRestore,
   onRemove,
   linkedBuffIds,
+  tableOptions,
   refData,
   activeBuffs,
   casterLevel,
@@ -159,6 +161,8 @@ function ResourceRow({
   onRemove?: () => void;
   /** Buff ids this pool's power can activate (see `DerivedResourcePool.linkedBuffIds`) — omitted for manual pools. */
   linkedBuffIds?: string[];
+  /** Hand-authored toggleable effects with no `RefData.buffs` entry (see `DerivedResourcePool.tableOptions`, issue #65). */
+  tableOptions?: ToggleBuffOption[];
   refData?: RefData;
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
   casterLevel?: number;
@@ -179,6 +183,18 @@ function ResourceRow({
                 refData={refData}
                 activeBuffs={activeBuffs}
                 casterLevel={casterLevel ?? 1}
+                update={update}
+              />
+            ))}
+          </div>
+        ) : null}
+        {tableOptions && tableOptions.length > 0 && activeBuffs && update ? (
+          <div className="res-linked-buffs">
+            {tableOptions.map((option) => (
+              <TableBuffToggle
+                key={option.id}
+                option={option}
+                activeBuffs={activeBuffs}
                 update={update}
               />
             ))}
@@ -276,6 +292,51 @@ function LinkedBuffToggle({
       title={`Activate ${buff.name}`}
     >
       Activate {buff.name}
+    </button>
+  );
+}
+
+/**
+ * Activate/deactivate a hand-authored `ToggleBuffOption` with no
+ * `RefData.buffs` entry (issue #65: inquisitor Judgments, skald Inspired
+ * Rage — see `DerivedResourcePool.tableOptions`). Same shape/styling as
+ * {@link LinkedBuffToggle}, but keyed by `ActiveBuff.effectTag` via
+ * `toggleTableBuff` instead of `buffId` via `toggleLinkedBuff` — these
+ * options carry their own `changes`/`contextNotes` directly rather than
+ * pointing at a vendored buff, so there's no `refData` lookup needed here.
+ */
+function TableBuffToggle({
+  option,
+  activeBuffs,
+  update,
+}: {
+  option: ToggleBuffOption;
+  activeBuffs: CharacterDoc["live"]["activeBuffs"];
+  update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
+}) {
+  const active = activeBuffs.find((b) => b.effectTag === option.id);
+  const toggle = () => update((d) => toggleTableBuff(d, option));
+
+  if (active) {
+    return (
+      <button
+        type="button"
+        className="res-linked-buff active"
+        onClick={toggle}
+        title={`Deactivate ${option.name}`}
+      >
+        {option.name} Active ✓
+      </button>
+    );
+  }
+  return (
+    <button
+      type="button"
+      className="res-linked-buff"
+      onClick={toggle}
+      title={`Activate ${option.name}`}
+    >
+      Activate {option.name}
     </button>
   );
 }

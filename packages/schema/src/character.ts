@@ -956,6 +956,15 @@ export interface ActiveBuff {
   instanceId: string;
   /** Source buff id from `RefData.buffs`; absent for user-authored buffs. */
   buffId?: string;
+  /**
+   * Stable id for a hand-authored engine-table effect this buff represents
+   * (e.g. an inquisitor judgment `"judgment:destruction"`, a skald's
+   * Inspired Rage `"ragingSong:inspiredRage"` — see `@pf1/engine`'s
+   * `ToggleBuffOption`) that has no backing `RefData.buffs` entry. Lets the
+   * tracker find/toggle its own active instance without borrowing `buffId`'s
+   * documented RefData-only contract. Absent for ordinary and user-authored buffs.
+   */
+  effectTag?: string;
   /** Display label. */
   name: string;
   /** Typed modifiers this buff applies (same shape as any `Change`). */
