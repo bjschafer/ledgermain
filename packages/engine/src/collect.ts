@@ -14,6 +14,7 @@ import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { activeArchetypeSwaps, weaponTrainingReplaced } from "./archetypes.js";
 import { BLOODLINES } from "./bloodlines.js";
+import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
 import { featNameSlug } from "./feat-effects.js";
@@ -23,6 +24,7 @@ import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
+import { RAGE_POWERS } from "./rage-powers.js";
 import { TRAITS } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
@@ -273,6 +275,14 @@ export function collectModifiers(
         ch.operator,
       );
     }
+    // Hand-authored patches for a vendored buff whose own `changes[]` are
+    // missing a real numeric effect its description text promises (issue
+    // #67) — see `buff-effects.ts`'s doc comment (e.g. Unchained Rage's
+    // temp-HP grant). Keyed by name so it applies regardless of activation
+    // path (linked-pool toggle, table-buff toggle, or a manual add).
+    for (const ch of BUFF_CHANGE_PATCHES[buff.name] ?? []) {
+      evalChange(ch.formula, buffRollData, ch.target, ch.type, buff.name, buff.instanceId, out);
+    }
   }
 
   // --- conditions (live state) --------------------------------------------
@@ -413,6 +423,27 @@ export function collectModifiers(
       if (!hex) continue;
       for (const ch of hex.changes) {
         evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out);
+      }
+    }
+  }
+
+  // --- barbarian rage powers (build choice, issue #65/#67) -----------------
+  // Power ids are hand-authored clean-room content (not in the vendored
+  // Foundry data pack — see `@pf1/engine` `rage-powers.ts`), same posture as
+  // magus arcana above. Gated on the character actually having barbarian
+  // (either edition) levels. Every power is `displayOnly` with `changes: []`
+  // today (see that file's doc comment), so this loop currently contributes
+  // no numeric modifiers — wired the same way for a future power with a real
+  // unconditional Change to work for free.
+  const barbarianAnyLevel = doc.identity.classes
+    .filter((c) => c.tag === "barbarian" || c.tag === "barbarianUnchained")
+    .reduce((sum, c) => sum + c.level, 0);
+  if (barbarianAnyLevel > 0) {
+    for (const powerId of doc.build.ragePowers ?? []) {
+      const power = RAGE_POWERS[powerId];
+      if (!power) continue;
+      for (const ch of power.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, power.name, power.id, out);
       }
     }
   }

@@ -126,6 +126,50 @@ function synthetic(source: string, type: string, value: number): ModifierCompone
   return { source, type, value, applied: true };
 }
 
+/* ------------------------------------------------------------- temp HP */
+
+/**
+ * Aggregates every `tempHp`-targeting `Change` into `HitPoints.grantedTemp`
+ * (issue #67). NOT `resolveStack` (typed-bonus stacking is per bonus TYPE —
+ * dodge/untyped/circumstance sum, others take the highest-within-type) —
+ * temporary HP stacking is per SOURCE (Paizo FAQ / CRB p. 208 "Combining
+ * Magical Effects": temp HP from the same source doesn't stack, temp HP from
+ * different sources does), so this groups by each modifier's `source`
+ * (display name — two active instances of the identical buff share the same
+ * `source` string even though their `sourceId`s/instanceIds differ, which is
+ * exactly "same source" in the FAQ's sense), takes the highest value within
+ * each group, then SUMS across groups.
+ */
+function computeGrantedTempHp(collected: CollectedModifier[]): {
+  total: number;
+  components: ModifierComponent[];
+} {
+  const mods = forTarget(collected, "tempHp");
+  if (mods.length === 0) return { total: 0, components: [] };
+  const bySource = new Map<string, CollectedModifier[]>();
+  for (const m of mods) {
+    const arr = bySource.get(m.source);
+    if (arr) arr.push(m);
+    else bySource.set(m.source, [m]);
+  }
+  const components: ModifierComponent[] = [];
+  let total = 0;
+  for (const [, group] of bySource) {
+    const best = group.reduce((a, b) => (b.value > a.value ? b : a));
+    if (best.value > 0) total += best.value;
+    for (const m of group) {
+      components.push({
+        source: m.source,
+        sourceId: m.sourceId,
+        type: m.type,
+        value: m.value,
+        applied: m === best && best.value > 0,
+      });
+    }
+  }
+  return { total, components };
+}
+
 /* ----------------------------------------------------------------- abilities */
 
 function computeAbilities(
@@ -620,6 +664,7 @@ function computeHp(
     temp: doc.live.hp.temp,
     nonlethal: doc.live.hp.nonlethal,
     components,
+    grantedTemp: computeGrantedTempHp(collected),
   };
 }
 
