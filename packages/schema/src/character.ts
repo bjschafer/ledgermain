@@ -694,6 +694,23 @@ export interface CharacterDoc {
      * non-ninjas.
      */
     ninjaTricks?: string[];
+    /**
+     * A tracked eidolon (PF1 Summoner's signature companion, APG/Pathfinder
+     * Unchained "Summoner (Unchained)") — models the eidolon itself as a
+     * trackable creature with its own derived HD/BAB/saves/AC/attacks/skills,
+     * mirroring `animalCompanion`/`familiar` above — see `@pf1/engine`
+     * `deriveEidolon` (issue #65, coordinates with issue #68's future
+     * per-creature feat picker). Optional/back-compat: documents without this
+     * field have no tracked eidolon.
+     */
+    eidolon?: EidolonBuild;
+    /**
+     * A tracked phantom (PF1 Occult Adventures Spiritualist's eidolon-like
+     * companion) — mirrors `eidolon` above closely; see `@pf1/engine`
+     * `derivePhantom` (issue #65). Optional/back-compat: documents without
+     * this field have no tracked phantom.
+     */
+    phantom?: PhantomBuild;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -874,6 +891,21 @@ export interface CharacterDoc {
      * this field are unaffected.
      */
     martialFlexibilityFeatId?: string;
+    /**
+     * Live session state for the tracked eidolon (`build.eidolon`) — damage
+     * bookkeeping, which of the master's `activeBuffs` are shared onto it
+     * (Share Spells), and the summoned/dismissed toggle. Mirrors
+     * `animalCompanion`/`familiar` above; see {@link EidolonLiveState}.
+     * Absent/omitted while `build.eidolon` is unset.
+     */
+    eidolon?: EidolonLiveState;
+    /**
+     * Live session state for the tracked phantom (`build.phantom`) — mirrors
+     * `eidolon` above, plus the manifestation-state toggle unique to
+     * phantoms; see {@link PhantomLiveState}. Absent/omitted while
+     * `build.phantom` is unset.
+     */
+    phantom?: PhantomLiveState;
   };
 }
 
@@ -989,6 +1021,129 @@ export interface AnimalCompanionLiveState {
    * focus applied to the companion.
    */
   focusBuffId?: string;
+}
+
+/**
+ * A tracked eidolon's build choices (`build.eidolon`) — see that field's doc
+ * comment. Mirrors `AnimalCompanionBuild`'s shape; the differences are the
+ * base-form/subtype selection (in place of a species) and the evolution
+ * shopping list (in place of ability-score increases).
+ */
+export interface EidolonBuild {
+  /** Base form id — key into `@pf1/engine` `EIDOLON_BASE_FORMS` (e.g. "biped", "quadruped", "serpentine"). */
+  baseForm: string;
+  /**
+   * True when this eidolon belongs to a `summonerUnchained` character (a
+   * separate base-statistics/evolution-pool table and a required
+   * `subtype`) — see `@pf1/engine` `eidolon.ts`'s module doc comment for the
+   * base/unchained divergences. Omitted/false = base (APG) summoner.
+   */
+  unchained?: boolean;
+  /**
+   * Unchained-only outsider subtype (e.g. "angel", "demon" — key into
+   * `@pf1/engine` `EIDOLON_SUBTYPES`) that flavors the eidolon, sets its
+   * alignment tendency, and grants a themed bonus evolution. Required by RAW
+   * once `unchained` is true; undefined/ignored for a base-summoner eidolon.
+   */
+  subtype?: string;
+  /** Player-given name (e.g. "Grix"). */
+  name: string;
+  /**
+   * Chosen evolution ids, in pick order — keys into `@pf1/engine`
+   * `EIDOLON_EVOLUTIONS`. May repeat an id for a repeatable evolution (e.g.
+   * two entries of `"claws"` is invalid since Claws isn't repeatable, but two
+   * entries of `"ability-increase"` is). Free-choice, soft warning only on
+   * evolution-pool overspend — same posture as `traits`/`racialTraits`; see
+   * `@pf1/engine` `deriveEidolon`'s doc comment.
+   */
+  evolutions: string[];
+  /** Free-text notes (e.g. personality, tactics, house-rule tweaks). */
+  notes?: string;
+}
+
+/**
+ * A tracked phantom's build choices (`build.phantom`) — see that field's doc
+ * comment. Mirrors `FamiliarBuild`'s shape; the difference is the emotional
+ * focus in place of a species.
+ */
+export interface PhantomBuild {
+  /** Emotional Focus id — key into `@pf1/engine` `EMOTIONAL_FOCI` (e.g. "anger"). */
+  focus: string;
+  /** Player-given name. */
+  name: string;
+  /** Free-text notes (e.g. personality, house-rule tweaks). */
+  notes?: string;
+}
+
+/**
+ * Live session state for a tracked eidolon (`live.eidolon`) — see that
+ * field's doc comment. Same damage/nonlethal/sharedBuffIds shape as
+ * {@link AnimalCompanionLiveState}, plus the summoned/dismissed toggle.
+ */
+export interface EidolonLiveState {
+  /** Lethal damage taken so far (current HP = derived max − damage). Omitted/0 = undamaged. */
+  damage?: number;
+  /** Nonlethal damage taken so far. Omitted/0 = none. */
+  nonlethal?: number;
+  /**
+   * Instance ids from `live.activeBuffs` (the MASTER's buff list) that also
+   * apply to the eidolon's derived sheet (Share Spells). Toggled via
+   * `apps/web/src/model/eidolon.ts`; resolved by `@pf1/engine`
+   * `deriveEidolon` exactly like `AnimalCompanionLiveState.sharedBuffIds`.
+   * Omitted/empty = no shared buffs.
+   */
+  sharedBuffIds?: string[];
+  /**
+   * Whether the eidolon is currently manifested on the material plane
+   * (PF1 RAW: a summoner can summon/dismiss her eidolon as a standard
+   * action; a dismissed eidolon is on "its home plane" and can't act).
+   * Display-only bookkeeping — a dismissed eidolon's stat block still
+   * renders (so the player can re-summon or reference it) but the panel
+   * flags the state. Omitted/undefined defaults to `true` (summoned).
+   */
+  summoned?: boolean;
+}
+
+/**
+ * Life Link (PF1 CRB "Eidolon" class feature) note: whenever the eidolon
+ * takes damage that would reduce it below 0 hit points, the summoner may
+ * transfer damage from the eidolon to herself (1 HP per point, as an
+ * immediate action, no daily limit). This is a manual player-triggered
+ * transfer, not an automatic recomputation, so it is deliberately NOT
+ * modeled numerically anywhere in the schema — same posture as
+ * `martialFlexibilityFeatId`'s manual-borrow bookkeeping. The eidolon
+ * tracker panel surfaces the rule as a reminder only.
+ */
+
+/**
+ * Live session state for a tracked phantom (`live.phantom`) — see that
+ * field's doc comment. Same damage/nonlethal/sharedBuffIds shape as
+ * {@link EidolonLiveState}, plus the manifestation-state toggle unique to
+ * phantoms.
+ */
+export interface PhantomLiveState {
+  /** Lethal damage taken so far (current HP = derived max − damage). Omitted/0 = undamaged. */
+  damage?: number;
+  /** Nonlethal damage taken so far. Omitted/0 = none. */
+  nonlethal?: number;
+  /**
+   * Instance ids from `live.activeBuffs` (the MASTER's buff list) that also
+   * apply to the phantom's derived sheet. Toggled via
+   * `apps/web/src/model/phantom.ts`; resolved by `@pf1/engine`
+   * `derivePhantom` exactly like `EidolonLiveState.sharedBuffIds`.
+   * Omitted/empty = no shared buffs.
+   */
+  sharedBuffIds?: string[];
+  /**
+   * Which of the phantom's three manifestation states it's currently in
+   * (PF1 Occult Adventures "Manifestation") — see `@pf1/engine`
+   * `phantom.ts`'s module doc comment for the full RAW summary of each
+   * state. Display-only chip; toggling doesn't change any derived number
+   * (the phantom's stat block is the same regardless of state — RAW
+   * changes its interaction rules, not its stats). Omitted/undefined
+   * defaults to `"ectoplasmic"` (the default manifested state).
+   */
+  manifestation?: "ectoplasmic" | "incorporeal" | "confined";
 }
 
 /**
