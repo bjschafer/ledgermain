@@ -577,6 +577,49 @@ export interface CharacterDoc {
      * unaffected.
      */
     alchemistDiscoveries?: string[];
+    /**
+     * Antipaladin cruelty ids chosen (keys into `@pf1/engine`
+     * `ANTIPALADIN_CRUELTIES` — issue #65 wave B). Gained at 3rd level and
+     * every three levels thereafter (3rd, 6th, 9th, 12th, 15th, 18th — 6
+     * total by 18th); the MENU of selectable cruelties itself also expands
+     * at 3rd/6th/9th/12th — see `model/antipaladinCruelties.ts` for the
+     * budget math and `ANTIPALADIN_CRUELTIES`' doc comment for the tier
+     * gating. Unlike `witchHexes`/`oracleRevelations`, no "Extra Cruelty"
+     * feat exists in the vendored slice (confirmed) — this budget is never
+     * feat-boosted. Free-choice, soft warning only on overspend.
+     * Empty/undefined for non-antipaladins.
+     */
+    antipaladinCruelties?: string[];
+    /**
+     * Antipaladin's Fiendish Boon form, chosen at 5th level and never
+     * changed thereafter (PF1 APG RAW: "Once the form is chosen, it cannot
+     * be changed"). "weapon" grants a scaling weapon-enhancement boon whose
+     * numbers are summarized as a classFeature detail line only (see
+     * `tables.ts` `fiendishBoonLabel`) — the actual weapon math stays
+     * manual, the same restraint paladin's own Divine Bond gets today (which
+     * has no `build.*` field at all to record its choice, let alone modeled
+     * numbers). "servant" grants a permanent fiendish companion creature —
+     * deferred to issue #68 (companion stat blocks); surfaced as a note
+     * only. Empty/undefined for non-antipaladins or a boon not yet chosen.
+     */
+    antipaladinBoon?: "weapon" | "servant";
+    /**
+     * Ninja trick ids chosen (keys into `@pf1/engine` `NINJA_TRICKS` — issue
+     * #65 wave B, Ultimate Combat). Gained at 2nd level and every two levels
+     * thereafter (2nd, 4th, ..., 20th — 10 total by 20th), plus one per
+     * "Extra Ninja Trick" feat taken; see `model/ninjaTricks.ts` for the
+     * budget math. Master tricks (minLevel 10) are chosen IN PLACE OF a
+     * normal trick pick, not an extra budget slot — the same soft-gated,
+     * non-extra-budget posture `WITCH_HEXES`' major/grand tiers use. A ninja
+     * trick can ALSO be spent on "a rogue talent" per RAW (and, symmetrically,
+     * a rogue's advanced talent can be spent on a master trick) — see
+     * `NINJA_TRICKS`' doc comment for why that overlap is left note-tier
+     * rather than cross-wired: this project has no `build.rogueTalents`
+     * picker/budget field at all yet (a pre-existing gap, not a new one).
+     * Free-choice, soft warning only on overspend. Empty/undefined for
+     * non-ninjas.
+     */
+    ninjaTricks?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -1379,17 +1422,20 @@ export interface DerivedClassFeature {
   /**
    * Set when this feature came from a chosen cleric domain, wizard arcane
    * school, sorcerer bloodline (issue #34), arcanist exploit (issue #42),
-   * magus arcana, oracle revelation (both issue #61), witch hex, or
-   * alchemist discovery (both issue #65) rather than the class itself — all
-   * eight share `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/
-   * `"magus"`/`"oracle"`/`"witch"`/`"alchemist"` with the class's own
-   * intrinsic features, so this disambiguates e.g. "Fire Bolt" (Fire
-   * Domain) from Channel Energy (cleric itself), "Claws" (Draconic
+   * magus arcana, oracle revelation (both issue #61), witch hex, alchemist
+   * discovery (both issue #65 wave 1), antipaladin cruelty, or ninja trick
+   * (both issue #65 wave B) rather than the class itself — all ten share
+   * `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/`"magus"`/
+   * `"oracle"`/`"witch"`/`"alchemist"`/`"antipaladin"`/`"ninja"` with the
+   * class's own intrinsic features, so this disambiguates e.g. "Fire Bolt"
+   * (Fire Domain) from Channel Energy (cleric itself), "Claws" (Draconic
    * Bloodline) from a sorcerer's other features, "Quick Study" (an
    * exploit) from an arcanist's own Arcane Reservoir, "Familiar" (a magus
    * arcana) from a magus's own Spell Combat, "Ward" (a hex) from a witch's
-   * own Witch's Familiar, or "Cauldron" (a discovery) from an alchemist's
-   * own Bomb.
+   * own Witch's Familiar, "Cauldron" (a discovery) from an alchemist's own
+   * Bomb, "Fatigued" (a cruelty) from an antipaladin's own Touch of
+   * Corruption, or "Combat Trick" (a ninja trick) from a ninja's own
+   * Sneak Attack.
    */
   origin?: {
     kind:
@@ -1400,7 +1446,9 @@ export interface DerivedClassFeature {
       | "arcana"
       | "revelation"
       | "hex"
-      | "discovery";
+      | "discovery"
+      | "cruelty"
+      | "trick";
     label: string;
   };
 }

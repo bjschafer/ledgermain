@@ -19,13 +19,16 @@ import { ArcanistExploitPicker } from "./ArcanistExploitPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
+import { CrueltyPicker } from "./CrueltyPicker.js";
 import { CursePicker } from "./CursePicker.js";
 import { DisciplinePicker } from "./DisciplinePicker.js";
 import { DiscoveryPicker } from "./DiscoveryPicker.js";
 import { DomainPicker } from "./DomainPicker.js";
+import { FiendishBoonPicker } from "./FiendishBoonPicker.js";
 import { HexPicker } from "./HexPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
+import { NinjaTrickPicker } from "./NinjaTrickPicker.js";
 import { PatronPicker } from "./PatronPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
 import { TipButton } from "../InfoTip.js";
@@ -373,6 +376,19 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Discovery picker — alchemist only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "alchemist") && (
         <DiscoveryPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Cruelty + Fiendish Boon pickers — antipaladin only (issue #65 wave B). */}
+      {doc.identity.classes.some((c) => c.tag === "antipaladin") && (
+        <>
+          <CrueltyPicker doc={doc} update={update} />
+          <FiendishBoonPicker doc={doc} update={update} />
+        </>
+      )}
+
+      {/* Ninja trick picker — ninja only (issue #65 wave B, free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "ninja") && (
+        <NinjaTrickPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

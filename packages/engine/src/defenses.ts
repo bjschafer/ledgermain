@@ -18,6 +18,13 @@
  *   - Barbarian Damage Reduction — hand-authored progression, clean-room from
  *     the SRD (the vendored class feature's `changes[]` is empty; see
  *     `tables.ts` `barbarianDamageReduction`).
+ *   - Antipaladin Damage Reduction (Aura of Depravity 17th / Unholy Champion
+ *     20th, issue #65 wave B) — same hand-authored posture, clean-room from
+ *     the SRD (both features' `changes[]` are empty upstream; see
+ *     `tables.ts` `antipaladinDamageReduction`). Unlike the rest of the
+ *     antipaladin's aura family (Cowardice/Despair/Vengeance/Sin — all
+ *     enemies-within-10-ft debuffs with no self-facing number), this one IS
+ *     a genuine static bonus to the antipaladin's own sheet.
  *
  * PF1 rule reused for grouping: DR/energy-resistance from multiple sources of
  * the *same* qualifier does not stack — only the single highest value applies.
@@ -44,11 +51,14 @@
 
 import type { CharacterDoc, Defenses, DefenseEntry, ModifierComponent, RefData } from "@pf1/schema";
 
-import { barbarianDamageReductionReplaced } from "./archetypes.js";
+import {
+  antipaladinDamageReductionReplaced,
+  barbarianDamageReductionReplaced,
+} from "./archetypes.js";
 import type { CollectedModifier } from "./collect.js";
 import { forTarget } from "./collect.js";
 import { resolveStack } from "./stacking.js";
-import { barbarianDamageReduction } from "./tables.js";
+import { antipaladinDamageReduction, barbarianDamageReduction } from "./tables.js";
 
 const DR_TARGET = "dr";
 const DR_PREFIX = "dr.";
@@ -224,6 +234,28 @@ export function computeDefenses(
         value: amount,
         source: "Damage Reduction",
         sourceId: "barbarian-dr",
+      });
+    }
+  }
+
+  const antipaladinLevel = doc.identity.classes.find((c) => c.tag === "antipaladin")?.level ?? 0;
+  // Issue #65 wave B: Aura of Depravity (17th)/Unholy Champion (20th) grant
+  // DR/good — see `antipaladinDamageReduction`'s doc comment. Insinuator's
+  // Aura of Indomitability replaces Aura of Depravity at 17th (a vendored
+  // 1:1 swap) — same suppression shape as the barbarian check above; see
+  // `antipaladinDamageReductionReplaced`'s doc comment for why this also
+  // withholds the 20th-level bump for that archetype combo rather than
+  // guessing whether Unholy Champion's "increases to 10/good" still applies
+  // with no base 5/good to increase from.
+  if (antipaladinLevel >= 17 && !antipaladinDamageReductionReplaced(doc, refData)) {
+    const { amount, source } = antipaladinDamageReduction(antipaladinLevel);
+    if (amount > 0) {
+      drMods.push({
+        qualifier: "good",
+        type: "untyped",
+        value: amount,
+        source,
+        sourceId: "antipaladin-dr",
       });
     }
   }

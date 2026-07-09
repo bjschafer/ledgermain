@@ -23,10 +23,12 @@ import type {
 } from "@pf1/schema";
 
 import { ALCHEMIST_DISCOVERIES } from "./alchemist-discoveries.js";
+import { ANTIPALADIN_CRUELTIES } from "./antipaladin-cruelties.js";
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
+import { NINJA_TRICKS } from "./ninja-tricks.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { WITCH_HEXES } from "./witch-hexes.js";
 import {
@@ -41,6 +43,7 @@ import {
   painfulStareLabel,
   hypnoticStareLabel,
   kineticBlastDetail,
+  fiendishBoonLabel,
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 
@@ -54,7 +57,7 @@ export interface GrantedFeature {
   classTag: string;
   level: number;
   grant: ClassFeatureGrant;
-  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation/hex/discovery rather than the class itself. */
+  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation/hex/discovery/cruelty/trick rather than the class itself. */
   origin?: {
     kind:
       | "domain"
@@ -64,7 +67,9 @@ export interface GrantedFeature {
       | "arcana"
       | "revelation"
       | "hex"
-      | "discovery";
+      | "discovery"
+      | "cruelty"
+      | "trick";
     label: string;
   };
   /**
@@ -311,6 +316,58 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "discovery", label: "Discovery" },
         detail: discovery.summary,
+      });
+    }
+  }
+
+  // Antipaladin cruelties (issue #65 wave B) — hand-authored (see
+  // antipaladin-cruelties.ts), gated on actual antipaladin levels the same
+  // way alchemist discoveries are gated above. Granted at a flat display
+  // level of 3 (the earliest an antipaladin has any cruelty at all), same
+  // rationale as discoveries/exploits/arcana above.
+  const antipaladinLevel = doc.identity.classes.find((c) => c.tag === "antipaladin")?.level ?? 0;
+  if (antipaladinLevel > 0) {
+    for (const crueltyId of doc.build.antipaladinCruelties ?? []) {
+      const cruelty = ANTIPALADIN_CRUELTIES[crueltyId];
+      if (!cruelty) continue;
+      out.push({
+        classTag: "antipaladin",
+        level: 3,
+        grant: {
+          level: 3,
+          uuid: `cruelty:${cruelty.id}`,
+          featureId: `cruelty:${cruelty.id}`,
+          name: cruelty.name,
+          resolved: true,
+        },
+        origin: { kind: "cruelty", label: "Cruelty" },
+        detail: cruelty.summary,
+      });
+    }
+  }
+
+  // Ninja tricks (issue #65 wave B) — hand-authored (see ninja-tricks.ts),
+  // gated on actual ninja levels the same way alchemist discoveries are
+  // gated above. Granted at a flat display level of 2 (the earliest a ninja
+  // has any trick at all), same rationale as discoveries/exploits/arcana
+  // above.
+  const ninjaLevel = doc.identity.classes.find((c) => c.tag === "ninja")?.level ?? 0;
+  if (ninjaLevel > 0) {
+    for (const trickId of doc.build.ninjaTricks ?? []) {
+      const trick = NINJA_TRICKS[trickId];
+      if (!trick) continue;
+      out.push({
+        classTag: "ninja",
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `trick:${trick.id}`,
+          featureId: `trick:${trick.id}`,
+          name: trick.name,
+          resolved: true,
+        },
+        origin: { kind: "trick", label: "Ninja Trick" },
+        detail: trick.summary,
       });
     }
   }
@@ -564,6 +621,30 @@ export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: Ref
 }
 
 /**
+ * True when the character's antipaladin Damage Reduction (Aura of Depravity,
+ * 17th level — `defenses.ts`'s hardcoded `antipaladinDamageReduction` table,
+ * not a vendored `Change`; see that function's doc comment) has been
+ * replaced by an active archetype at the character's current antipaladin
+ * level. Found via an audit of the vendored antipaladin archetype slice
+ * (issue #65 wave B): Insinuator's "Aura of Indomitability" (17th level)
+ * carries a `pairedBaseFeatureUuid` pointing at Aura of Depravity's uuid — a
+ * clean 1:1 swap, same shape as `barbarianDamageReductionReplaced`'s common
+ * case (no ambiguous unpaired antipaladin DR swap was found, so there's no
+ * antipaladin equivalent of `AMBIGUOUS_DR_REPLACEMENTS` needed here).
+ * Unlike Aura of Depravity, no vendored antipaladin archetype feature was
+ * found replacing Unholy Champion (20th level) — its DR bump is left
+ * unconditional.
+ */
+export function antipaladinDamageReductionReplaced(doc: CharacterDoc, refData: RefData): boolean {
+  const antipaladinLevel = doc.identity.classes.find((c) => c.tag === "antipaladin")?.level ?? 0;
+  if (antipaladinLevel < 17) return false;
+
+  const antipaladinClass = Object.values(refData.classes).find((c) => c.tag === "antipaladin");
+  const drGrantUuid = antipaladinClass?.features.find((f) => f.name === "Aura of Depravity")?.uuid;
+  return !!drGrantUuid && activeArchetypeSwaps(doc, refData).has(drGrantUuid);
+}
+
+/**
  * Fighter archetype ids whose OWN feature meaningfully takes over some or all
  * of the base Weapon Training mechanism — a fixed or restricted group, a
  * different cadence, or an unmodeled condition — that `archetype-extracted/
@@ -739,6 +820,18 @@ export function resolveClassFeatures(
     } else if (detail === undefined && classTag === "antipaladin" && grant.name === "Smite Good") {
       const chaMod = abilities?.cha?.mod ?? 0;
       detail = smiteGoodLabel(smiteEvilDetail(classLevel, chaMod));
+    } else if (
+      detail === undefined &&
+      classTag === "antipaladin" &&
+      grant.name === "Fiendish Boon"
+    ) {
+      // Fiendish Boon's own vendored description is a prose-only stub with
+      // no numbers (`changes: []`) — same as paladin's own Divine Bond,
+      // which today has no hand-authored detail at all. Unlike Divine Bond,
+      // this project tracks WHICH form was chosen (`build.antipaladinBoon`)
+      // so a summary line is worth showing; see `fiendishBoonLabel`'s doc
+      // comment for why the weapon math itself still stays manual.
+      detail = fiendishBoonLabel(classLevel, doc.build.antipaladinBoon);
     } else if (detail === undefined && classTag === "monk" && grant.name === "Unarmed Strike") {
       detail = unarmedDamageDie(classLevel).dieLabel;
     } else if (detail === undefined && classTag === "monk" && grant.name === "Flurry of Blows") {
