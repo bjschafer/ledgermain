@@ -492,6 +492,21 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         <KineticistPicker doc={doc} update={update} />
       )}
 
+      {/*
+        Medium (issue #65): no builder picker — which legendary spirit is
+        channeled is a LIVE daily séance choice, not a build-time pick (PF1
+        RAW: chosen fresh "each morning"), so it's modeled entirely by the
+        Séance tracker panel (live.mediumSpirit/live.mediumInfluence). This
+        is just a discoverability pointer so a medium player looking here
+        for a spirit picker isn't left wondering where it went.
+      */}
+      {doc.identity.classes.some((c) => c.tag === "medium") && (
+        <p className="hint">
+          A medium's legendary spirit is chosen fresh each day, not here — see the Séance panel in
+          the Tracker.
+        </p>
+      )}
+
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}
       <FamiliarPicker doc={doc} update={update} />
 

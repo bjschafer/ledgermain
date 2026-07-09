@@ -1252,6 +1252,57 @@ export interface CharacterDoc {
      * identity). Back-compat: documents without this field are unaffected.
      */
     vigilanteIdentity?: "social" | "vigilante";
+    /**
+     * Medium's currently channeled legendary spirit (issue #65) — a
+     * `@pf1/engine` `MEDIUM_SPIRITS` tag ("archmage" | "champion" | "guardian"
+     * | "hierophant" | "marshal" | "trickster"). PF1 RAW ("Séance"): "each
+     * morning ... a medium can perform a special ritual ... to determine
+     * which spirit ... the medium channels for that day" — a genuinely DAILY
+     * choice, like `occultistFocusInvested` above, but UNLIKE it this is
+     * modeled as a single tag rather than a record (a medium channels
+     * exactly one spirit at a time; the "Legendary Medium" archetype that
+     * channels two simultaneously is out of scope). Deliberately NOT reset by
+     * `model/rest.ts`'s `restNewDay` — same rationale as
+     * `occultistFocusInvested`'s doc comment: a player re-affirms their
+     * spirit by explicit action (the tracker panel's séance picker), not an
+     * implicit side effect of resting, and in practice a character channels
+     * the same spirit day after day far more often than not, so silently
+     * clearing it on every rest would be more friction than signal. Gates the
+     * Spirit Bonus `Change`s (`collect.ts`) and the spirit's own Spirit
+     * Powers (`archetypes.ts` `collectGrantedFeatures`, `origin.kind:
+     * "spiritPower"`) — see `@pf1/engine` `medium-spirits.ts` for the full
+     * table. Undefined = no séance performed yet today; a medium genuinely
+     * has none of a spirit's benefits until one is chosen (unlike
+     * `vigilanteIdentity`, there is no sensible non-undefined default). A tag
+     * not in `MEDIUM_SPIRITS` (e.g. a stale value after a house-rule table
+     * change) is tolerated the same way a stale `shamanSpirit`/
+     * `psychicDiscipline` is — treated as "none chosen". Back-compat:
+     * documents without this field are unaffected.
+     */
+    mediumSpirit?: string;
+    /**
+     * Medium's current Influence total (issue #65) — PF1 RAW ("Legendary
+     * Spirit"): a 0-5 point counter that rises when the medium leans on their
+     * channeled spirit (performing the séance itself grants 1; Spirit Surge
+     * and several Spirit Powers cost 1 more each use; breaking a Taboo grants
+     * 1). Genuinely numeric bookkeeping (unlike `vigilanteIdentity`'s display-
+     * only chip) — see `@pf1/engine` `medium-spirits.ts`'s file doc comment
+     * for exactly which consequences are modeled: NONE are auto-applied as
+     * `Change`s (every spirit's 3+ penalty references either an unmodeled
+     * stat or a behavioral restriction this app can't adjudicate, and 5 —
+     * "the spirit takes over" — is a full loss-of-control the GM adjudicates,
+     * not a sheet state this app can represent), so 3+ and 5 are surfaced
+     * ONLY as soft warning banners in the tracker's séance panel
+     * (`model/mediumSpirits.ts`). Clamped to 0-5 by that module's setters (a
+     * medium simply cannot accumulate influence beyond 5 — the spirit takes
+     * over first). Not reset by `restNewDay`, same rationale as
+     * `mediumSpirit` above — a fresh séance (and thus fresh influence
+     * bookkeeping) is a distinct, explicit player action in this app's model
+     * (the panel's own "New Séance" control), not an implicit side effect of
+     * the global rest button. Undefined/0 = no influence accrued. Back-compat:
+     * documents without this field are unaffected.
+     */
+    mediumInfluence?: number;
   };
 }
 
@@ -2010,8 +2061,8 @@ export interface DerivedClassFeature {
    * social/vigilante talent, shifter aspect, psychic discipline power,
    * phrenic amplification, mesmerist trick, mesmerist bold stare, occultist
    * implement school, occultist focus power, kineticist composite blast,
-   * kineticist wild talent) — same disambiguation need against each class's
-   * own intrinsic features.
+   * kineticist wild talent, medium spirit power) — same disambiguation need
+   * against each class's own intrinsic features.
    */
   origin?: {
     kind:
@@ -2040,7 +2091,8 @@ export interface DerivedClassFeature {
       | "implementSchool"
       | "focusPower"
       | "compositeBlast"
-      | "wildTalent";
+      | "wildTalent"
+      | "spiritPower";
     label: string;
   };
 }

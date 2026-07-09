@@ -294,6 +294,16 @@ export {
   type ShamanSpiritHex,
 } from "./shaman-spirits.js";
 export {
+  MEDIUM_SPIRITS,
+  MEDIUM_SPIRIT_TAGS,
+  MEDIUM_SPIRIT_POWER_LEVELS,
+  mediumSpiritBonus,
+  type MediumSpiritDef,
+  type MediumSpiritPower,
+  type MediumSpiritPowerTier,
+  type MediumSpiritBonusTarget,
+} from "./medium-spirits.js";
+export {
   GUNSLINGER_DEEDS,
   SWASHBUCKLER_DEEDS,
   deedsForClass,
