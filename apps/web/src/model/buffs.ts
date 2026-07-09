@@ -5,7 +5,7 @@
  * engine's pure `advanceRounds` so duration logic has one home.
  */
 
-import { advanceRounds } from "@pf1/engine";
+import { advanceRounds, type ToggleBuffOption } from "@pf1/engine";
 import type { ActiveBuff, Buff, Change, CharacterDoc, ContextNote } from "@pf1/schema";
 
 import { localId } from "./ids.js";
@@ -99,6 +99,31 @@ export function toggleLinkedBuff(doc: CharacterDoc, buff: Buff, casterLevel: num
     doc,
     makeActiveBuff(buff, { casterLevel, remainingRounds: suggestRounds(buff, casterLevel) }),
   );
+}
+
+/**
+ * Toggle a hand-authored, non-vendored `ToggleBuffOption` on/off — the
+ * `toggleLinkedBuff` counterpart for pools whose activated abilities have no
+ * `RefData.buffs` entry to link (issue #65: inquisitor Judgments, skald
+ * Inspired Rage — see `@pf1/engine`'s `resources.ts` `DerivedResourcePool.
+ * tableOptions` and `toggle-buffs.ts`). "Active" is keyed by
+ * `ActiveBuff.effectTag === option.id` rather than `buffId`, since these
+ * options carry no `RefData.buffs` id to point at. Formulas in
+ * `option.changes` reference `@classes.<tag>.level` directly (not
+ * `@item.level`), so no `casterLevel` is set here — the buff scales purely
+ * from the character's own class levels at compute time, same as it would
+ * un-toggled-and-retoggled at every level-up.
+ */
+export function toggleTableBuff(doc: CharacterDoc, option: ToggleBuffOption): CharacterDoc {
+  const active = doc.live.activeBuffs.find((b) => b.effectTag === option.id);
+  if (active) return removeBuff(doc, active.instanceId);
+  return addBuff(doc, {
+    instanceId: localId("buff-"),
+    effectTag: option.id,
+    name: option.name,
+    changes: option.changes.map((c) => ({ ...c })),
+    contextNotes: option.contextNotes?.map((n) => ({ ...n })),
+  });
 }
 
 /** Set (or clear, with `undefined`) the remaining rounds of an active buff. */

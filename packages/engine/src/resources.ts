@@ -34,7 +34,9 @@ import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/sc
 import { collectGrantedFeatures } from "./archetypes.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
+import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
+import { RAGING_SONG_DETAIL, SKALD_INSPIRED_RAGE } from "./raging-song.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
 import {
   bombDamageDetail,
@@ -43,6 +45,7 @@ import {
   smiteEvilLabel,
   smiteGoodLabel,
 } from "./tables.js";
+import type { ToggleBuffOption } from "./toggle-buffs.js";
 
 export interface DerivedResourcePool {
   /** Stable pool id (the class-feature id). */
@@ -101,6 +104,14 @@ export interface DerivedResourcePool {
    * uses on activation (see `deriveResourcePools`'s doc comment).
    */
   linkedBuffIds: string[];
+  /**
+   * Hand-authored, non-vendored toggleable effects this pool's power can
+   * activate (issue #65: inquisitor Judgments, skald Inspired Rage) — the
+   * `linkedBuffIds` counterpart for classes whose activated abilities carry
+   * no vendored `RefData.buffs` entry to resolve. See `toggle-buffs.ts`'s
+   * doc comment. Undefined for every other pool.
+   */
+  tableOptions?: ToggleBuffOption[];
 }
 
 /**
@@ -265,8 +276,24 @@ export function deriveResourcePools(
         ? formatSaveLabel(action.save, featureRollData as RollData)
         : null;
       detail = saveLabel ? `${damage.damageLabel} (${saveLabel})` : damage.damageLabel;
+    } else if (feature.tag === "judgment" && classTag === "inquisitor") {
+      // Issue #65: the seven judgment types have no vendored buff to resolve
+      // (see judgments.ts) — surfaced via `tableOptions` below instead of
+      // `linkedBuffIds`; this just annotates the simultaneous-count cap.
+      detail = judgmentPoolDetail(classLevel);
+    } else if (feature.tag === "ragingSong" && classTag === "skald") {
+      // Issue #65: same shape as Judgment above — Inspired Rage has no
+      // vendored buff (unlike bard's Inspire Courage), see raging-song.ts.
+      detail = RAGING_SONG_DETAIL;
     } else {
       detail = actionBasedDetail(feature, featureRollData as RollData);
+    }
+
+    let tableOptions: ToggleBuffOption[] | undefined;
+    if (feature.tag === "judgment" && classTag === "inquisitor") {
+      tableOptions = judgmentToggleOptions();
+    } else if (feature.tag === "ragingSong" && classTag === "skald") {
+      tableOptions = [SKALD_INSPIRED_RAGE];
     }
 
     // Feats that raise this pool's maximum (Extra Rage, Extra Reservoir, …
@@ -291,6 +318,7 @@ export function deriveResourcePools(
       classTag,
       detail,
       linkedBuffIds: resolveGrantsBuffs(feature.grantsBuffs, refData),
+      tableOptions,
     });
   }
 
