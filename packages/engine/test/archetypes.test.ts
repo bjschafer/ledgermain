@@ -447,6 +447,42 @@ describe("Myrmidarch (magus archetype, issue #47: Armor Training's second prose 
   });
 });
 
+describe("Feral Child (druid archetype, issue #72: Native Cunning mispaired to Trackless Step)", () => {
+  // Prose: "This ability replaces wild shape." Vendored data pairs Native
+  // Cunning (a L3 row) to Trackless Step (the druid's own L3 feature) via
+  // the same level-matching CSV quirk as the Brawler entries — see
+  // `MISPAIRED_TARGET_REMAP` in `archetypes.ts`. Trackless Step's
+  // suppression is legitimately owned by the sibling Favored Terrain row
+  // ("replaces trackless step and a thousand faces"), so it must STAY
+  // struck through after the remap.
+  const feralChild = byName(ref.archetypes, "Feral Child");
+  const druidDef = Object.values(ref.classes).find((c) => c.tag === "druid")!;
+  const wildShapeUuid = druidDef.features.find((f) => f.name === "Wild Shape")!.uuid;
+  const tracklessStepUuid = druidDef.features.find((f) => f.name === "Trackless Step")!.uuid;
+
+  it("L4: Wild Shape is struck through, replaced by Native Cunning", () => {
+    const doc = makeDoc({ classes: [{ tag: "druid", level: 4 }], archetypes: [feralChild.id] });
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const wildShape = classFeatures.find((f) => f.name === "Wild Shape")!;
+    expect(wildShape.applied).toBe(false);
+    expect(wildShape.replacedBy).toBe("Native Cunning");
+  });
+
+  it("L4: Trackless Step stays struck through via Favored Terrain, not Native Cunning", () => {
+    const doc = makeDoc({ classes: [{ tag: "druid", level: 4 }], archetypes: [feralChild.id] });
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const trackless = classFeatures.find((f) => f.name === "Trackless Step")!;
+    expect(trackless.applied).toBe(false);
+    expect(trackless.replacedBy).toBe("Favored Terrain");
+  });
+
+  it("archetypeSwappedUuids claims Wild Shape AND Trackless Step (via their own rows)", () => {
+    const swapped = archetypeSwappedUuids(ref, feralChild.id);
+    expect(swapped.has(wildShapeUuid)).toBe(true);
+    expect(swapped.has(tracklessStepUuid)).toBe(true);
+  });
+});
+
 describe("Maneuver Master / Nornkith (monk archetypes, issue #47: spurious Evasion:9 duplicate rows)", () => {
   // Both archetypes replace base Evasion with their own ability at 2nd level
   // (Resilience / Defensive Aid). Each ALSO carries a vendored-data-artifact
