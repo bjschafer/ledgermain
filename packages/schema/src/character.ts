@@ -1237,19 +1237,26 @@ export interface DerivedSheet {
   /**
    * Total arcane spell failure chance (%) from equipped armor/shields (issue
    * #8), shown only when the character has an arcane-casting class (wizard,
-   * sorcerer, or bard in the current vendored class slice — divine casters
-   * never incur ASF and this stays undefined for them). No component
-   * breakdown, same posture as `speeds` (see `DerivedEncumbrance` doc
-   * comment) — display-only, no cast-failure mechanics.
+   * sorcerer, arcanist, magus, bard, summoner, skald, witch, or bloodrager in
+   * the current vendored class slice — divine casters never incur ASF and
+   * this stays undefined for them). No component breakdown, same posture as
+   * `speeds` (see `DerivedEncumbrance` doc comment) — display-only, no
+   * cast-failure mechanics.
    *
-   * `bardExempt` is true when the character's ONLY arcane class is bard and
-   * they're wearing light armor (or none) with no shield — PF1 RAW exempts
-   * bards from ASF under those conditions; `total` reads 0 in that case. A
-   * bard who also has another arcane class (e.g. multiclass wizard/bard), or
-   * who's in medium/heavy armor or carrying a shield, does not get the
-   * exemption and `total` is the plain sum.
+   * `exempt` is true when the character's ONLY arcane class grants a PF1-RAW
+   * "Weapon and Armor Proficiency" ASF exemption (bard, summoner, skald,
+   * bloodrager, or magus — see `computeArcaneSpellFailure`'s
+   * `ARMOR_EXEMPTIONS` in the engine for the exact per-class armor tier /
+   * shield rules, issue #64) AND the worn armor/shield qualifies; `total`
+   * reads 0 in that case and `exemptNote` carries a human-readable
+   * explanation for the sheet footnote. A character with more than one
+   * arcane class (e.g. multiclass wizard/bard) never gets the exemption,
+   * even if every arcane class they have would individually qualify — this
+   * app tracks ASF as a single sheet-level number rather than per-spell, so
+   * the exemption is all-or-nothing and the conservative (non-exempt) total
+   * is shown whenever the classes could disagree.
    */
-  arcaneSpellFailure?: { total: number; bardExempt: boolean };
+  arcaneSpellFailure?: { total: number; exempt: boolean; exemptNote?: string };
 }
 
 /** Light/medium/heavy carrying-capacity tier (PF1 CRB "Carrying Capacity"). */
