@@ -85,6 +85,8 @@ export {
   type FiendishBoonWeaponDetail,
   antipaladinDamageReduction,
   type AntipaladinDrDetail,
+  ROGUE_FINESSE_TRAINING_LEVELS,
+  ROGUE_SKILL_UNLOCK_LEVELS,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
@@ -165,6 +167,13 @@ export {
   ALCHEMIST_DISCOVERY_IDS,
   type AlchemistDiscoveryDef,
 } from "./alchemist-discoveries.js";
+export { MONK_KI_POWERS, MONK_KI_POWER_IDS, type MonkKiPowerDef } from "./monk-ki-powers.js";
+export {
+  MONK_STYLE_STRIKES,
+  MONK_STYLE_STRIKE_IDS,
+  type MonkStyleStrikeDef,
+} from "./monk-style-strikes.js";
+export { ROGUE_TALENTS, ROGUE_TALENT_IDS, type RogueTalentDef } from "./rogue-talents.js";
 export {
   ANTIPALADIN_CRUELTIES,
   ANTIPALADIN_CRUELTY_IDS,

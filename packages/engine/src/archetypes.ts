@@ -30,8 +30,11 @@ import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { NINJA_TRICKS } from "./ninja-tricks.js";
+import { MONK_KI_POWERS } from "./monk-ki-powers.js";
+import { MONK_STYLE_STRIKES } from "./monk-style-strikes.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { RAGE_POWERS } from "./rage-powers.js";
+import { ROGUE_TALENTS } from "./rogue-talents.js";
 import { WITCH_HEXES } from "./witch-hexes.js";
 import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
 import {
@@ -60,7 +63,7 @@ export interface GrantedFeature {
   classTag: string;
   level: number;
   grant: ClassFeatureGrant;
-  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation/hex/discovery/spirit/cruelty/trick rather than the class itself. */
+  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation/hex/discovery/spirit/cruelty/trick/ki power/style strike/rogue talent rather than the class itself. */
   origin?: {
     kind:
       | "domain"
@@ -74,7 +77,10 @@ export interface GrantedFeature {
       | "spirit"
       | "cruelty"
       | "trick"
-      | "ragePower";
+      | "ragePower"
+      | "kiPower"
+      | "styleStrike"
+      | "rogueTalent";
     label: string;
   };
   /**
@@ -383,6 +389,81 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "ragePower", label: "Rage Power" },
         detail: power.summary,
+      });
+    }
+  }
+
+  // Monk (Unchained) ki powers + style strikes (issue #65) — hand-authored
+  // (see monk-ki-powers.ts/monk-style-strikes.ts), gated on actual
+  // monkUnchained levels the same way alchemist discoveries is gated above.
+  // Granted at a flat display level of 4 (ki powers)/5 (style strikes) — the
+  // earliest level each subsystem has any picks at all — same rationale as
+  // exploits/arcana above.
+  const monkUnchainedLevel =
+    doc.identity.classes.find((c) => c.tag === "monkUnchained")?.level ?? 0;
+  if (monkUnchainedLevel > 0) {
+    for (const powerId of doc.build.monkKiPowers ?? []) {
+      const power = MONK_KI_POWERS[powerId];
+      if (!power) continue;
+      out.push({
+        classTag: "monkUnchained",
+        level: 4,
+        grant: {
+          level: 4,
+          uuid: `kiPower:${power.id}`,
+          featureId: `kiPower:${power.id}`,
+          name: power.name,
+          resolved: true,
+        },
+        origin: { kind: "kiPower", label: "Ki Power" },
+        detail: power.summary,
+      });
+    }
+    for (const strikeId of doc.build.monkStyleStrikes ?? []) {
+      const strike = MONK_STYLE_STRIKES[strikeId];
+      if (!strike) continue;
+      out.push({
+        classTag: "monkUnchained",
+        level: 5,
+        grant: {
+          level: 5,
+          uuid: `styleStrike:${strike.id}`,
+          featureId: `styleStrike:${strike.id}`,
+          name: strike.name,
+          resolved: true,
+        },
+        origin: { kind: "styleStrike", label: "Style Strike" },
+        detail: strike.summary,
+      });
+    }
+  }
+
+  // Rogue talents (issue #65) — hand-authored (see rogue-talents.ts), SHARED
+  // between the chained rogue and Rogue (Unchained) (`build.rogueTalents`);
+  // gated on whichever of the two classes the character actually has,
+  // matching that class's own tag/level for display (a character with both,
+  // unusual but not illegal, is credited under "rogue"). Granted at a flat
+  // display level of 2, the earliest either class has any talent picks at
+  // all, same rationale as exploits/arcana above.
+  const rogueClass = doc.identity.classes.find(
+    (c) => c.tag === "rogue" || c.tag === "rogueUnchained",
+  );
+  if (rogueClass && rogueClass.level > 0) {
+    for (const talentId of doc.build.rogueTalents ?? []) {
+      const talent = ROGUE_TALENTS[talentId];
+      if (!talent) continue;
+      out.push({
+        classTag: rogueClass.tag,
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `rogueTalent:${talent.id}`,
+          featureId: `rogueTalent:${talent.id}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: { kind: "rogueTalent", label: "Rogue Talent" },
+        detail: talent.summary,
       });
     }
   }
