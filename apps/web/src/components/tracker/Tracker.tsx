@@ -8,6 +8,7 @@ import { FeatsPanel } from "./FeatsPanel.js";
 import { HeroPointsPanel } from "./HeroPointsPanel.js";
 import { HpPanel } from "./HpPanel.js";
 import { NewDayBar } from "./NewDayBar.js";
+import { PhantomPanel } from "./PhantomPanel.js";
 import { PreparedSpellsPanel } from "./PreparedSpellsPanel.js";
 import { ResourcesPanel } from "./ResourcesPanel.js";
 import { SavedRollsPanel } from "./SavedRollsPanel.js";
@@ -45,6 +46,7 @@ export function Tracker(props: BuilderProps) {
       <AfflictionsPanel {...props} />
       <FamiliarPanel {...props} />
       <CompanionPanel {...props} />
+      <PhantomPanel {...props} />
       <FeatsPanel {...props} />
     </div>
   );

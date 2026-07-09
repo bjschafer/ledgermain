@@ -37,6 +37,7 @@ import { NinjaTrickPicker } from "./NinjaTrickPicker.js";
 import { PatronPicker } from "./PatronPicker.js";
 import { PhrenicAmplificationPicker } from "./PhrenicAmplificationPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
+import { PhantomPicker } from "./PhantomPicker.js";
 import { ShifterAspectPicker } from "./ShifterAspectPicker.js";
 import { TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
@@ -484,6 +485,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond / ACG Hunter's own Animal Companion. */}
       <AnimalCompanionPicker doc={doc} update={update} />
+
+      {/* Tracked phantom — spiritualist's own Phantom class feature (issue #65). */}
+      <PhantomPicker doc={doc} update={update} />
 
       {/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}
       <RangerPicker doc={doc} update={update} />

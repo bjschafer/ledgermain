@@ -695,6 +695,13 @@ export interface CharacterDoc {
      */
     ninjaTricks?: string[];
     /**
+     * A tracked phantom (PF1 Occult Adventures Spiritualist's eidolon-like
+     * companion) — mirrors `animalCompanion`/`familiar` above closely; see
+     * `@pf1/engine` `derivePhantom` (issue #65). Optional/back-compat:
+     * documents without this field have no tracked phantom.
+     */
+    phantom?: PhantomBuild;
+    /**
      * Barbarian rage power ids chosen (keys into `@pf1/engine` `RAGE_POWERS` —
      * issue #65/#67), shared by both `barbarian` (chained) and
      * `barbarianUnchained` — PF1 RAW grants a rage power at 2nd level and
@@ -1075,6 +1082,14 @@ export interface CharacterDoc {
      */
     martialFlexibilityFeatId?: string;
     /**
+     * Live session state for the tracked phantom (`build.phantom`) — damage
+     * bookkeeping, which of the master's `activeBuffs` are shared onto it,
+     * plus the manifestation-state toggle unique to phantoms. Mirrors
+     * `animalCompanion`/`familiar` above; see {@link PhantomLiveState}.
+     * Absent/omitted while `build.phantom` is unset.
+     */
+    phantom?: PhantomLiveState;
+    /**
      * Vigilante's current identity (issue #65) — "social" (public persona) or
      * "vigilante" (masked persona). Display-forward table state (an identity
      * chip + a context-note reminder about renown/alignment scope on the
@@ -1203,6 +1218,75 @@ export interface AnimalCompanionLiveState {
    * focus applied to the companion.
    */
   focusBuffId?: string;
+}
+
+/**
+ * A tracked phantom's build choices (`build.phantom`) — see that field's doc
+ * comment. Mirrors `FamiliarBuild`'s shape; the difference is the emotional
+ * focus in place of a species.
+ */
+export interface PhantomBuild {
+  /** Emotional Focus id — key into `@pf1/engine` `EMOTIONAL_FOCI` (e.g. "anger"). */
+  focus: string;
+  /** Player-given name. */
+  name: string;
+  /**
+   * The phantom's size (PF1 Occult Adventures "Phantom": a spiritualist may
+   * manifest her phantom one size category smaller than herself, or — if she
+   * is Small or smaller — one size category larger; the common case is the
+   * same size as the spiritualist). Omitted/undefined defaults to `"med"`
+   * (`@pf1/engine` `derivePhantom`) — the overwhelmingly common choice for a
+   * Medium-sized spiritualist, and the size RAW's own slam-damage table
+   * anchors on. Only `"sm" | "med" | "lg"` are offered (the phantom's
+   * template doesn't support other sizes).
+   */
+  size?: "sm" | "med" | "lg";
+  /**
+   * Player-assigned ability score for each Ability Score Increase milestone
+   * reached so far (PF1 Occult Adventures "Manifested Phantom's Base
+   * Statistics" — spiritualist levels 5, 10, 15). Index 0 = the level-5
+   * increase, index 1 = level 10, index 2 = level 15. A missing/short entry
+   * for an already-reached milestone defaults to Charisma (`@pf1/engine`
+   * `derivePhantom` — Cha drives the phantom's incorporeal-form deflection
+   * bonus and several Emotional Focus abilities, so it's the more broadly
+   * useful default than `AnimalCompanionBuild`'s Strength). Entries beyond
+   * `phantomAbilityIncreaseSlots(level)` are ignored. Mirrors
+   * `AnimalCompanionBuild.abilityIncreases`'s shape exactly.
+   */
+  abilityIncreases?: AbilityId[];
+  /** Free-text notes (e.g. personality, house-rule tweaks). */
+  notes?: string;
+}
+
+/**
+ * Live session state for a tracked phantom (`live.phantom`) — see that
+ * field's doc comment. Same damage/nonlethal/sharedBuffIds shape as
+ * {@link AnimalCompanionLiveState}, plus the manifestation-state toggle
+ * unique to phantoms.
+ */
+export interface PhantomLiveState {
+  /** Lethal damage taken so far (current HP = derived max − damage). Omitted/0 = undamaged. */
+  damage?: number;
+  /** Nonlethal damage taken so far. Omitted/0 = none. */
+  nonlethal?: number;
+  /**
+   * Instance ids from `live.activeBuffs` (the MASTER's buff list) that also
+   * apply to the phantom's derived sheet. Toggled via
+   * `apps/web/src/model/phantom.ts`; resolved by `@pf1/engine`
+   * `derivePhantom` exactly like `AnimalCompanionLiveState.sharedBuffIds`.
+   * Omitted/empty = no shared buffs.
+   */
+  sharedBuffIds?: string[];
+  /**
+   * Which of the phantom's three manifestation states it's currently in
+   * (PF1 Occult Adventures "Manifestation") — see `@pf1/engine`
+   * `phantom.ts`'s module doc comment for the full RAW summary of each
+   * state. Display-only chip; toggling doesn't change any derived number
+   * (the phantom's stat block is the same regardless of state — RAW
+   * changes its interaction rules, not its stats). Omitted/undefined
+   * defaults to `"ectoplasmic"` (the default manifested state).
+   */
+  manifestation?: "ectoplasmic" | "incorporeal" | "confined";
 }
 
 /**

@@ -340,6 +340,25 @@ export {
   type FlyManeuverability as CompanionFlyManeuverability,
 } from "./companion.js";
 export {
+  PHANTOM_BASE_ABILITIES,
+  EMOTIONAL_FOCI,
+  EMOTIONAL_FOCUS_IDS,
+  PHANTOM_PROGRESSION,
+  PHANTOM_SPECIAL_ABILITY_DETAIL,
+  PHANTOM_ABILITY_INCREASE_LEVELS,
+  derivePhantom,
+  phantomProgressionRow,
+  phantomSpecialAbilityNames,
+  phantomAbilityIncreaseSlots,
+  phantomSlamDamage,
+  type EmotionalFocus,
+  type PhantomProgressionRow,
+  type DerivedPhantom,
+  type DerivedPhantomAc,
+  type DerivedPhantomAttack,
+  type DerivedPhantomSkill,
+} from "./phantom.js";
+export {
   routeSharedBuffs,
   applySharedAbilityBonuses,
   applySharedSpeeds,
