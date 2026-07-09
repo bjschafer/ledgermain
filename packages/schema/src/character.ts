@@ -651,6 +651,57 @@ export interface CharacterDoc {
      * Display-only. Back-compat: documents without this field are unaffected.
      */
     bloodragerBloodlineVariant?: string;
+    /**
+     * Occultist implement school tags chosen (keys into `@pf1/engine`
+     * `OCCULTIST_SCHOOLS` — issue #65, Occult Adventures). PF1 RAW
+     * ("Implements"): an occultist learns TWO implement schools at 1st level,
+     * then one more at 2nd level and every 4 occultist levels thereafter
+     * (2nd, 6th, 10th, 14th, 18th — six picks total, up to a maximum of
+     * SEVEN distinct schools at 18th; verified against aonprd.com's exact
+     * "Implements" class-feature text). "An occultist can select an implement
+     * school more than once in order to learn additional spells from the
+     * associated school" (verbatim) — so, unlike every other budgeted-picker
+     * field in this schema (`oracleRevelations`, `witchHexes`, ...), this
+     * array is a MULTISET: the same tag may legitimately appear more than
+     * once, and each occurrence counts toward the budget and grants its own
+     * additional spell-per-level (see
+     * `model/spellcasting.occultistImplementSpellsKnown` — surfaces the
+     * budget only, doesn't pick specific spells). Each DISTINCT tag chosen
+     * also grants that school's base Focus Power and Resonant Power
+     * automatically (not a budgeted pick — see
+     * `OCCULTIST_SCHOOLS[tag].basePower`/`.resonantPower`); a repeated pick of
+     * an already-known school grants no *additional* base/resonant power
+     * (RAW: those are per-school, not per-pick). `live.occultistFocusInvested`
+     * is nonetheless keyed by tag alone, not by pick-instance — RAW tracks
+     * focus per IMPLEMENT ITEM, and this v1 doesn't model owning multiple
+     * physical implements of the same school; a documented simplification.
+     * Free-choice, soft warning only on overspend — same posture as
+     * `oracleRevelations`; see `model/occultistImplements.ts` for the budget
+     * math. Empty/undefined for non-occultists. Back-compat: documents
+     * without this field are unaffected.
+     */
+    occultistImplements?: string[];
+    /**
+     * Occultist focus power ids chosen from the menu (keys into `@pf1/engine`
+     * `OCCULTIST_SCHOOLS[tag].focusPowers`, formatted `"<schoolTag>:<slug>"`
+     * — issue #65). PF1 RAW ("Focus Powers"): at 1st level an occultist
+     * selects ONE focus power (beyond the two automatic base powers from her
+     * starting schools), then one more at 3rd level and every 2 levels
+     * thereafter (3rd, 5th, 7th, ..., 19th — ten picks total by 19th,
+     * verified against aonprd.com's exact "Focus Powers" text). Scoped to
+     * powers offered by a currently-KNOWN school (`build.occultistImplements`)
+     * — a leftover pick from a since-abandoned school is tolerated the same
+     * "unresolvable id" way `oracleRevelations` tolerates a stale mystery.
+     * Every entry here is note-tier/display-only (name + one-line summary, no
+     * `Change[]`) — these are activated (mental-focus-spending) abilities,
+     * not passive bonuses; see `OCCULTIST_SCHOOLS`' doc comment for why only
+     * the SCHOOL-LEVEL resonant powers (automatic, not one of these picks)
+     * carry any numeric modeling. Free-choice, soft warning only on
+     * overspend — see `model/occultistImplements.ts` for the budget math.
+     * Empty/undefined for non-occultists. Back-compat: documents without this
+     * field are unaffected.
+     */
+    occultistFocusPowers?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -831,6 +882,95 @@ export interface CharacterDoc {
      * this field are unaffected.
      */
     martialFlexibilityFeatId?: string;
+    /**
+     * Occultist Mental Focus points currently invested per implement school
+     * tag (keys into `@pf1/engine` `OCCULTIST_SCHOOLS`, issue #65). PF1 RAW
+     * ("Mental Focus"): once per day (after 1 hour spent preparing
+     * implements), an occultist divides her Mental Focus pool (the
+     * `mentalFocus` resource pool — `@class.unlevel + @abilities.int.mod`,
+     * already generic/vendored) among her known implements; each implement
+     * with 1+ point invested gains its school's Resonant Power, scaled by the
+     * amount invested (see `OCCULTIST_SCHOOLS[tag].resonantPower` and
+     * `collect.ts`'s occultist block for which resonant powers are
+     * unconditional enough to apply as real sheet `Change`s vs. shown as a
+     * situational computed preview only). This is genuinely a DAILY choice
+     * (RAW: "mental focus that is not used before the next time the occultist
+     * refreshes his focus is lost") but — unlike the medium's spirit — it's
+     * modeled as `live.*` rather than reset by `model/rest.ts`'s `restNewDay`:
+     * a player re-dividing focus after a rest is expected to explicitly
+     * re-invest (the UI doesn't assume a default split), so `restNewDay`
+     * deliberately leaves this untouched, matching its own documented
+     * "active buffs... left alone by design" posture for other genuinely
+     * player-directed daily setup steps. Not validated against the actual
+     * Mental Focus pool max (soft posture — the UI shows remaining/overspent
+     * as a hint, never blocks). Keys not in `build.occultistImplements`, or a
+     * non-occultist's stale field, are ignored by the engine. Empty/undefined
+     * = no focus invested anywhere. Back-compat: documents without this field
+     * are unaffected.
+     */
+    occultistFocusInvested?: Record<string, number>;
+    /**
+     * Occultist Transmutation implement's Physical Enhancement resonant
+     * power (issue #65): which physical ability score (Strength, Dexterity,
+     * or Constitution) currently receives its scaling enhancement bonus. PF1
+     * RAW lets the occultist choose the target ability each time the power
+     * is invoked; modeled here as a single live choice (not per-invocation)
+     * for simplicity, matching this app's "one active choice, not a history"
+     * posture elsewhere (e.g. `martialFlexibilityFeatId`). Only meaningful
+     * while Transmutation has 3+ Mental Focus invested (see
+     * `occultistFocusInvested.transmutation`); ignored otherwise. Undefined
+     * defaults to `"str"` once Transmutation focus is invested (see
+     * `collect.ts`'s occultist block). Back-compat: documents without this
+     * field are unaffected.
+     */
+    occultistPhysicalEnhancementAbility?: AbilityId;
+    /**
+     * The medium's legendary spirit currently channeled for TODAY's séance
+     * (key into `@pf1/engine` `MEDIUM_SPIRITS` — issue #65, Occult
+     * Adventures). PF1 RAW ("Spirit"): a medium performs a séance once per
+     * day (usually during her morning preparations) and channels ONE
+     * legendary spirit for the next 24 hours, gaining that spirit's Spirit
+     * Bonus/Séance Boon/Spirit Powers/Taboo/influence for the duration — this
+     * is a genuinely LIVE, re-chosen-daily pick (not a `build.*` fixed
+     * choice), the first such "live-state picker" in this schema (see
+     * IMPLEMENTATION_PLAN.md's prior deferral note on why the oracle-mystery-
+     * style `build.*` picker pattern doesn't transplant to it). Modeled as a
+     * live buff-like toggle: `MEDIUM_SPIRITS[tag].spiritBonus` is injected as
+     * real sheet `Change`s the same way `live.activeBuffs` are (see
+     * `collect.ts`'s medium block) for every spirit whose bonus target is
+     * cleanly modelable (Champion/Guardian/Hierophant/Trickster; Archmage's
+     * concentration-check target and Marshal's "doubles on a surge" target
+     * have no home in this engine's derived stats — see `MEDIUM_SPIRITS`'
+     * doc comment — so those two are display-only computed previews instead,
+     * same posture as several occultist resonant powers). Cleared (along with
+     * `mediumInfluence`) on `model/rest.ts`'s `restNewDay` — PF1 RAW performs
+     * a fresh séance (and may channel a different spirit) each day, so
+     * carrying yesterday's spirit into a new day would be wrong; see
+     * `model/rest.ts`'s doc comment for the exact wiring. Undefined = no
+     * spirit currently channeled (e.g. before the day's séance, or for a
+     * non-medium). Back-compat: documents without this field are unaffected.
+     */
+    mediumSpirit?: string;
+    /**
+     * The medium's accumulated Influence with her currently-channeled spirit
+     * (`live.mediumSpirit`) — issue #65. PF1 RAW ("Influence"): a spirit
+     * gains influence over the medium in several ways (notably Spirit Surge,
+     * "allow his spirit to gain 1 additional point of influence... to add
+     * 1d6" to a failed roll); higher influence pulls the medium toward the
+     * spirit's alignment/personality and, if it ever reaches the medium's
+     * total level, the spirit can seize control. Modeled as a simple
+     * incrementing counter (no dice roller in this app — owner decision — so
+     * Spirit Surge's 1d6 is never rolled here, only the influence COST of
+     * choosing to surge is tracked) rather than the full compulsion-effect
+     * ladder, matching this engine's existing "counter, not full subsystem"
+     * posture for e.g. `heroPoints`. Reset to 0 on `model/rest.ts`'s
+     * `restNewDay` alongside `mediumSpirit` (a fresh séance resets the
+     * relationship for the day; RAW's longer-term consequences of sustained
+     * high influence across many days are out of scope, same posture as
+     * "Spirit Powers" being note-tier only). Omitted/0 = no influence
+     * accrued. Back-compat: documents without this field are unaffected.
+     */
+    mediumInfluence?: number;
   };
 }
 
