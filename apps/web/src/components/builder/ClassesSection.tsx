@@ -21,9 +21,12 @@ import { BloodlinePicker } from "./BloodlinePicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { CursePicker } from "./CursePicker.js";
 import { DisciplinePicker } from "./DisciplinePicker.js";
+import { DiscoveryPicker } from "./DiscoveryPicker.js";
 import { DomainPicker } from "./DomainPicker.js";
+import { HexPicker } from "./HexPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
+import { PatronPicker } from "./PatronPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
 import { TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
@@ -357,6 +360,19 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Discipline picker — psychic only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "psychic") && (
         <DisciplinePicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Patron + hex pickers — witch only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "witch") && (
+        <>
+          <PatronPicker doc={doc} refData={refData} update={update} />
+          <HexPicker doc={doc} refData={refData} update={update} />
+        </>
+      )}
+
+      {/* Discovery picker — alchemist only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "alchemist") && (
+        <DiscoveryPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

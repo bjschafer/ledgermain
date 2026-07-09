@@ -97,6 +97,7 @@ import {
   ORACLE_CURSES,
   ORACLE_MYSTERIES,
   PSYCHIC_DISCIPLINES,
+  WITCH_PATRONS,
   type SpellKnownProgression,
   type SpellPreparedProgression,
   type SpellProgression,
@@ -872,6 +873,79 @@ export function curseSpellsKnown(
   return curse.bonusSpells
     .filter((sp) => sp.level <= oracleLevel)
     .map((sp) => ({ id: sp.id, name: refData.spells[sp.id]?.name ?? sp.name, level: sp.level }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ---------------------------------------------------------------------------
+// Witch patron bonus spells
+// ---------------------------------------------------------------------------
+
+/**
+ * Case-insensitive spell-name -> id index over `refData.spells`, cached per
+ * `RefData` instance (a `WeakMap` so it never outlives — or gets confused
+ * across — a swapped-in test fixture's `refData`). Unlike
+ * `mysterySpellsKnown`'s bonus spells (real vendored Foundry `_id`s copied
+ * straight from the mystery's own prose — see `@pf1/engine`
+ * `oracle-mysteries.ts`'s doc comment), a witch patron's bonus spells carry
+ * ONLY a name (`@pf1/engine` `witch-patrons.ts`'s doc comment explains why —
+ * no vendored per-patron linkage exists to copy an id from), so
+ * {@link patronSpellsKnown} resolves them by name at runtime instead.
+ */
+const spellNameIndexCache = new WeakMap<RefData, Map<string, string>>();
+function spellIdByName(refData: RefData, name: string): string | undefined {
+  let index = spellNameIndexCache.get(refData);
+  if (!index) {
+    index = new Map();
+    for (const [id, sp] of Object.entries(refData.spells)) {
+      index.set(sp.name.toLowerCase(), id);
+    }
+    spellNameIndexCache.set(refData, index);
+  }
+  return index.get(name.toLowerCase());
+}
+
+/**
+ * Witch patron bonus spells known at `witchLevel` for the given `patronTag`.
+ * Same "bonus, uncapped, unlocked at a fixed even class level" shape as
+ * {@link mysterySpellsKnown} (PF1 RAW: "at 2nd level and every two levels
+ * thereafter, a witch learns an additional spell based on her patron... added
+ * to the list of spells she knows") — added to the familiar's known spells
+ * rather than an oracle's spontaneous list, but the mechanic is otherwise
+ * identical, so `WitchPatronDef.bonusSpells` is already keyed by the WITCH
+ * level that unlocks it (see `@pf1/engine` `witch-patrons.ts`'s doc comment).
+ *
+ * Unlike `mysterySpellsKnown`, this resolves each entry's spell by NAME (via
+ * {@link spellIdByName}) rather than a vendored id, since patrons carry no
+ * id to begin with — when a name doesn't resolve against the vendored spell
+ * slice (a few of the highest-level patron spells are outside the pipeline's
+ * current slice), a synthetic `patron:<slug>` id is used instead so the
+ * entry still displays by name (degrading gracefully, same posture
+ * `mysterySpellsKnown`'s own id-fallback documents — see that function's
+ * doc comment).
+ *
+ * @example
+ *   patronSpellsKnown(ref, "healing", 5)  // → 2 spells (unlocked at L2, L4)
+ *   patronSpellsKnown(ref, "healing", 1)  // → []  (starts at witch level 2)
+ */
+export function patronSpellsKnown(
+  refData: RefData,
+  patronTag: string | undefined,
+  witchLevel: number,
+): { id: string; name: string; level: number }[] {
+  if (!patronTag) return [];
+  const patron = WITCH_PATRONS[patronTag];
+  if (!patron) return [];
+  return patron.bonusSpells
+    .filter((sp) => sp.level <= witchLevel)
+    .map((sp) => {
+      const id = spellIdByName(refData, sp.name);
+      const name = id ? (refData.spells[id]?.name ?? sp.name) : sp.name;
+      return {
+        id: id ?? `patron:${sp.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        name,
+        level: sp.level,
+      };
+    })
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 

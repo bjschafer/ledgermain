@@ -1492,3 +1492,54 @@ export function burnDetailLabel(characterLevel: number, kineticistLevel: number)
     `max ${perRound} accepted/round`
   );
 }
+
+/* ----------------------------------------------------------- witch hexes -- */
+
+/**
+ * Witch hex save DC, clean-room from the published PF1 Advanced Player's
+ * Guide SRD: "the DC of a hex is equal to 10 + 1/2 the witch's level + the
+ * witch's Intelligence modifier" — same `10 + 1/2 level + ability mod` shape
+ * as Channel Energy/Bomb, hand-authored here because a hex's DC is not part
+ * of any vendored `ClassFeature.uses`/`actions` (hexes have no vendored
+ * per-hex data at all — see `witch-hexes.ts`'s doc comment).
+ */
+export function witchHexDC(witchLevel: number, intMod: number): number {
+  if (witchLevel <= 0) return 0;
+  return 10 + Math.floor(witchLevel / 2) + intMod;
+}
+
+/* ------------------------------------------------------- alchemist bombs -- */
+
+/**
+ * Alchemist bomb damage, clean-room from the published PF1 Advanced Player's
+ * Guide SRD: "an alchemist's bomb inflicts 1d6 points of fire damage +
+ * additional damage equal to the alchemist's Intelligence modifier. The
+ * damage of an alchemist's bomb increases by 1d6 points at every odd-numbered
+ * alchemist level." The vendored Bomb class feature's own `action.damage`
+ * formula is a flat, non-scaling `"1d6"` (confirmed against the pinned data
+ * slice — it does not encode the level progression or the Int-mod addend),
+ * so `deriveResourcePools` overrides it with this hand-authored detail, same
+ * posture as its existing Smite Evil/Burn overrides.
+ *
+ * Dice = `1 + floor((alchemistLevel - 1) / 2)` — 1d6 at L1, 2d6 at L3, 3d6 at
+ * L5, ..., 10d6 at L19+.
+ */
+export interface BombDamageDetail {
+  /** Number of d6 rolled on a direct hit (before the flat Int-mod addend). */
+  dice: number;
+  /** Display string for the damage, e.g. "3d6+2 fire". */
+  damageLabel: string;
+}
+
+/**
+ * Bomb damage for an alchemist of `alchemistLevel` with an Intelligence
+ * modifier of `intMod`. Out-of-range level returns `dice: 0`.
+ */
+export function bombDamageDetail(alchemistLevel: number, intMod: number): BombDamageDetail {
+  if (alchemistLevel <= 0) {
+    return { dice: 0, damageLabel: "0d6 fire" };
+  }
+  const dice = 1 + Math.floor((alchemistLevel - 1) / 2);
+  const addend = intMod === 0 ? "" : intMod > 0 ? `+${intMod}` : `${intMod}`;
+  return { dice, damageLabel: `${dice}d6${addend} fire` };
+}
