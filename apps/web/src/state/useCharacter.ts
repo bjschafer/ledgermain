@@ -502,20 +502,26 @@ export function useCharacter(): CharacterStore {
 
   const sheet = useMemo(() => (doc && refData ? compute(doc, refData) : undefined), [doc, refData]);
 
-  // A freshly created character starts at 0/0 HP (no class picked yet); once
-  // building gives it its first nonzero max, start at full instead of forcing
-  // a manual "Rest" click before play. Only fires on that first 0 -> nonzero
-  // transition (guarded by current/temp both still being untouched), so it
-  // never overrides HP the player has since tracked in Play mode.
+  // Keep current HP pinned to max while a character is still at full health,
+  // so build-time choices that raise max HP (picking a familiar with a "+N
+  // hit points" master bonus, leveling up, an ability score bump, ...) don't
+  // silently leave the character reading as damaged. This subsumes the
+  // original narrower fix (a freshly created character starting at 0/0 HP
+  // jumping to full on its first nonzero max, instead of forcing a manual
+  // "Rest" click before play) as the `prevMax === 0` case of the same rule.
+  // Guarded on `current === prevMax`: a character that has actually taken
+  // damage (current < prevMax) is never auto-healed by this effect, only by
+  // an explicit Heal/Rest action.
   const prevMaxHpRef = useRef<number | undefined>(undefined);
   useEffect(() => {
-    if (!sheet) return;
+    if (!sheet || !doc) return;
     const max = sheet.hp.max;
+    const current = doc.live.hp.current;
     const prevMax = prevMaxHpRef.current;
     prevMaxHpRef.current = max;
-    if (prevMax === 0 && max > 0) {
+    if (prevMax !== undefined && max > prevMax && current === prevMax) {
       setDoc((d) => {
-        if (!d || d.live.hp.current !== 0 || d.live.hp.temp !== 0) return d;
+        if (!d || d.live.hp.current !== current) return d;
         // A genuine local change to live state — bump + flag it the same way
         // `update()` does, so it eventually reaches the sync push too.
         pendingUserEditRef.current = true;
@@ -526,7 +532,7 @@ export function useCharacter(): CharacterStore {
         };
       });
     }
-  }, [sheet]);
+  }, [sheet, doc]);
 
   // Level-up celebratory toast (issue #63): a "ding" beat to go with the
   // attention badges, which only ever flag *outstanding* build work and
