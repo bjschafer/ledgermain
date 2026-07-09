@@ -18,6 +18,7 @@ import { ArcaneBondPicker } from "./ArcaneBondPicker.js";
 import { ArcanistExploitPicker } from "./ArcanistExploitPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
+import { BloodragerBloodlinePicker } from "./BloodragerBloodlinePicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { CursePicker } from "./CursePicker.js";
 import { DisciplinePicker } from "./DisciplinePicker.js";
@@ -323,6 +324,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Bloodline picker — sorcerer only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "sorcerer") && (
         <BloodlinePicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Bloodline picker — bloodrager only (issue #65; free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "bloodrager") && (
+        <BloodragerBloodlinePicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Arcane school picker — wizard only (free-choice, soft warning only). */}

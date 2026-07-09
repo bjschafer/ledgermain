@@ -144,6 +144,7 @@ export type FeatSlotType =
   | { kind: "magusBonus" }
   | { kind: "combatStyle"; style: string }
   | { kind: "bloodline"; bloodline: string }
+  | { kind: "bloodragerBloodline"; bloodline: string }
   | { kind: "monkList" };
 
 export const GENERIC_SLOT: FeatSlotType = { kind: "generic" };
@@ -182,6 +183,18 @@ function baseFeatureSlotType(
       return bloodline
         ? { type: { kind: "bloodline", bloodline }, source: "Sorcerer bloodline" }
         : { type: GENERIC_SLOT, source: "Sorcerer bloodline (choose a bloodline to restrict)" };
+    }
+    case "bloodline feat (blo)": {
+      // Bloodrager's own "Bloodline Feat (BLO)" class feature (issue #65) —
+      // same shape as sorcerer's above, but resolved against
+      // `doc.build.bloodragerBloodline` / `BLOODRAGER_BLOODLINES` (a
+      // distinct table — bloodrager bonus-feat lists differ from the
+      // same-named sorcerer bloodline's list; see `bloodrager-
+      // bloodlines.ts`'s doc comment).
+      const bloodline = doc.build.bloodragerBloodline;
+      return bloodline
+        ? { type: { kind: "bloodragerBloodline", bloodline }, source: "Bloodrager bloodline" }
+        : { type: GENERIC_SLOT, source: "Bloodrager bloodline (choose a bloodline to restrict)" };
     }
     case "combat style feat": {
       // `effectiveCombatStyleId` (not the raw `doc.build.combatStyle` field)

@@ -28,7 +28,12 @@
  */
 
 import type { CharacterDoc, Feat, RefData } from "@pf1/schema";
-import { BLOODLINES, featNameSlug, MONK_BONUS_FEAT_SLUGS } from "@pf1/engine";
+import {
+  BLOODLINES,
+  BLOODRAGER_BLOODLINES,
+  featNameSlug,
+  MONK_BONUS_FEAT_SLUGS,
+} from "@pf1/engine";
 
 import {
   baseFeatSlotCount,
@@ -92,6 +97,8 @@ function slotKey(type: FeatSlotType): string {
       return `combatStyle:${type.style}`;
     case "bloodline":
       return `bloodline:${type.bloodline}`;
+    case "bloodragerBloodline":
+      return `bloodragerBloodline:${type.bloodline}`;
   }
 }
 
@@ -114,6 +121,8 @@ export function slotTypeLabel(type: FeatSlotType): string {
     }
     case "bloodline":
       return `Bloodline feat (${type.bloodline})`;
+    case "bloodragerBloodline":
+      return `Bloodrager bloodline feat (${type.bloodline})`;
   }
 }
 
@@ -136,6 +145,8 @@ export function slotTypeBadge(type: FeatSlotType): string {
     }
     case "bloodline":
       return `${type.bloodline} bloodline`;
+    case "bloodragerBloodline":
+      return `${type.bloodline} bloodline (bloodrager)`;
   }
 }
 
@@ -143,6 +154,7 @@ export function slotTypeBadge(type: FeatSlotType): string {
 function restrictivenessRank(type: FeatSlotType): number {
   switch (type.kind) {
     case "bloodline":
+    case "bloodragerBloodline":
       return 0;
     case "combatStyle":
       return 1;
@@ -192,6 +204,10 @@ export function featEligibleForSlot(feat: Feat, type: FeatSlotType): boolean {
     }
     case "bloodline": {
       const bloodline = BLOODLINES[type.bloodline];
+      return bloodline ? bloodline.bonusFeatSlugs.includes(slug) : false;
+    }
+    case "bloodragerBloodline": {
+      const bloodline = BLOODRAGER_BLOODLINES[type.bloodline];
       return bloodline ? bloodline.bonusFeatSlugs.includes(slug) : false;
     }
   }

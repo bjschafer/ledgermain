@@ -541,6 +541,29 @@ export interface CharacterDoc {
      * non-psychics. Back-compat: documents without this field are unaffected.
      */
     psychicDiscipline?: string;
+    /**
+     * Bloodrager bloodline tag (key into `@pf1/engine` `BLOODRAGER_BLOODLINES`),
+     * chosen at L1 and never changed thereafter (PF1 RAW). Free-choice, same
+     * soft posture as `sorcererBloodline` — the ACG bloodrager bloodlines
+     * (Abyssal, Arcane, Celestial, Destined, Draconic, Elemental, Fey,
+     * Infernal, Undead) are a hand-authored engine table, NOT derived from
+     * `refData.bloodlineSpellLists` (that field is sorcerer-shaped: bonus
+     * spells known follow a `2*spellLevel+1` sorcerer-level cadence, whereas a
+     * bloodrager's bonus spells are a fixed 4-entry schedule at 7th/10th/13th/
+     * 16th level — see `BLOODRAGER_BLOODLINES[tag].bonusSpells` and
+     * `model/spellcasting.bloodragerBonusSpellsKnown`). Empty/undefined for
+     * non-bloodragers. Back-compat: documents without this field are
+     * unaffected.
+     */
+    bloodragerBloodline?: string;
+    /**
+     * Energy-type/subtype variant for bloodrager bloodlines whose powers name
+     * a player-chosen energy type (Draconic's dragon type, Elemental's
+     * element) — mirrors `sorcererBloodlineVariant` exactly. Free-form id into
+     * `@pf1/engine` `BLOODRAGER_BLOODLINES[bloodragerBloodline].variantOptions`.
+     * Display-only. Back-compat: documents without this field are unaffected.
+     */
+    bloodragerBloodlineVariant?: string;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -707,6 +730,20 @@ export interface CharacterDoc {
      * Absent/omitted while `build.animalCompanion` is unset.
      */
     animalCompanion?: AnimalCompanionLiveState;
+    /**
+     * Brawler's Martial Flexibility (issue #65): the combat feat id currently
+     * "borrowed" via a move/swift/free/immediate action (the action-type
+     * shortens with brawler level per RAW but isn't tracked separately here —
+     * display-only distinction). PF1 RAW: lasts 1 minute, drawn from the
+     * `martialFlexibility` resource pool (`uses.maxFormula` is vendored — see
+     * `@pf1/engine` `resources.ts` — `3 + floor(brawlerLevel / 2)`/day); the
+     * player must meet the borrowed feat's prerequisites, which this field
+     * does NOT validate (soft posture, matching the rest of the schema's
+     * free-choice fields). Set/cleared by `model/martialFlexibility.ts`.
+     * Undefined = no feat currently borrowed. Back-compat: documents without
+     * this field are unaffected.
+     */
+    martialFlexibilityFeatId?: string;
   };
 }
 

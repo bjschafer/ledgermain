@@ -94,6 +94,7 @@ import {
   baseSpellsKnown,
   baseSpellsPerDay,
   baseSpellsPrepared,
+  BLOODRAGER_BLOODLINES,
   ORACLE_CURSES,
   ORACLE_MYSTERIES,
   PSYCHIC_DISCIPLINES,
@@ -818,6 +819,67 @@ export function bloodlineSpellsKnown(
     }
   }
   return out.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ---------------------------------------------------------------------------
+// Bloodline bonus spells (bloodrager, issue #65)
+// ---------------------------------------------------------------------------
+
+/**
+ * Bloodrager bloodline bonus spells known at `bloodragerLevel` for the given
+ * `bloodlineTag`. Unlike {@link bloodlineSpellsKnown}'s `2*spellLevel+1`
+ * sorcerer cadence, a bloodrager bloodline grants exactly ONE bonus spell
+ * each at a fixed 7th/10th/13th/16th-level schedule (PF1 RAW) — see
+ * `@pf1/engine` `bloodrager-bloodlines.ts`'s doc comment for why this can't
+ * reuse `refData.bloodlineSpellLists`.
+ *
+ * `BLOODRAGER_BLOODLINES[tag].bonusSpells` carries spell NAMES only (hand-
+ * authored, not vendored-id-resolved) — resolved here against
+ * `refData.spells` by exact case-insensitive name match. A name with no
+ * match in the current vendored slice (a data-version drift, or none at all
+ * for a niche spell) still returns an entry, with `id` set to the bloodline-
+ * scoped synthetic id (`bloodline:<tag>:<grantedAtLevel>`) rather than a
+ * crash — matching the project's soft-degradation posture (e.g.
+ * `mysterySpellsKnown`'s "falls back to the table's own `name`" comment).
+ *
+ * These are *bonus* spells known — same "doesn't count against the cap"
+ * status as {@link bloodlineSpellsKnown} — though, unlike that function's
+ * caller, the current builder doesn't yet splice these into the known-spells
+ * list UI (display-only preview via `BloodragerBloodlinePicker` for now).
+ *
+ * @example
+ *   bloodragerBonusSpellsKnown(ref, "Abyssal", 10)
+ *   // → [{ grantedAtLevel: 7, name: "Ray of Enfeeblement", ... },
+ *   //    { grantedAtLevel: 10, name: "Bull's Strength", ... }]
+ *   bloodragerBonusSpellsKnown(ref, "Abyssal", 6)  // → []  (starts at 7th)
+ */
+export function bloodragerBonusSpellsKnown(
+  refData: RefData,
+  bloodlineTag: string | undefined,
+  bloodragerLevel: number,
+): { id: string; name: string; grantedAtLevel: 7 | 10 | 13 | 16; spellLevel?: number }[] {
+  if (!bloodlineTag) return [];
+  const bloodline = BLOODRAGER_BLOODLINES[bloodlineTag];
+  if (!bloodline) return [];
+  const byName = new Map(
+    Object.entries(refData.spells).map(([id, sp]) => [
+      sp.name.toLowerCase(),
+      { id, level: sp.level },
+    ]),
+  );
+  const out: { id: string; name: string; grantedAtLevel: 7 | 10 | 13 | 16; spellLevel?: number }[] =
+    [];
+  for (const entry of bloodline.bonusSpells) {
+    if (entry.grantedAtLevel > bloodragerLevel) continue;
+    const resolved = byName.get(entry.name.toLowerCase());
+    out.push({
+      id: resolved?.id ?? `bloodline:${bloodlineTag}:${entry.grantedAtLevel}`,
+      name: entry.name,
+      grantedAtLevel: entry.grantedAtLevel,
+      spellLevel: resolved?.level,
+    });
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------------

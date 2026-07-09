@@ -5,6 +5,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import {
   accessibleSpellLevels,
   bloodlineSpellsKnown,
+  bloodragerBonusSpellsKnown,
   bonusSpellsForLevel,
   casterClassesOf,
   casterModelFor,
@@ -259,6 +260,45 @@ describe("bloodlineSpellsKnown()", () => {
 
   it("returns [] when no bloodline is chosen (undefined tag)", () => {
     expect(bloodlineSpellsKnown(ref, undefined, 20)).toEqual([]);
+  });
+});
+
+describe("bloodragerBonusSpellsKnown() (issue #65)", () => {
+  it("returns [] below bloodrager level 7", () => {
+    expect(bloodragerBonusSpellsKnown(ref, "Abyssal", 1)).toEqual([]);
+    expect(bloodragerBonusSpellsKnown(ref, "Abyssal", 6)).toEqual([]);
+  });
+
+  it("L7 bloodrager unlocks exactly the bloodline's 7th-level bonus spell", () => {
+    const spells = bloodragerBonusSpellsKnown(ref, "Abyssal", 7);
+    expect(spells.length).toBe(1);
+    expect(spells[0]!.grantedAtLevel).toBe(7);
+    expect(spells[0]!.name).toBe("Ray of Enfeeblement");
+  });
+
+  it("L16 bloodrager unlocks all 4 bonus spells (7/10/13/16)", () => {
+    const spells = bloodragerBonusSpellsKnown(ref, "Abyssal", 16);
+    expect(spells.map((s) => s.grantedAtLevel)).toEqual([7, 10, 13, 16]);
+    expect(spells.map((s) => s.name)).toEqual([
+      "Ray of Enfeeblement",
+      "Bull's Strength",
+      "Rage",
+      "Stoneskin",
+    ]);
+  });
+
+  it("resolves a real vendored spell id/level when the name matches", () => {
+    const spells = bloodragerBonusSpellsKnown(ref, "Abyssal", 7);
+    expect(spells[0]!.id).not.toContain("bloodline:");
+    expect(spells[0]!.spellLevel).toBeGreaterThan(0);
+  });
+
+  it("returns [] for an unknown bloodline tag (soft fail, no throw)", () => {
+    expect(bloodragerBonusSpellsKnown(ref, "NotARealBloodline", 20)).toEqual([]);
+  });
+
+  it("returns [] when no bloodline is chosen (undefined tag)", () => {
+    expect(bloodragerBonusSpellsKnown(ref, undefined, 20)).toEqual([]);
   });
 });
 

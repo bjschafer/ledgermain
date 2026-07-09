@@ -58,4 +58,36 @@ describe("casterLevel", () => {
     expect(isCasterTag("occultist")).toBe(true);
     expect(isCasterTag("spiritualist")).toBe(true);
   });
+
+  it("bloodrager (issue #65) casts nothing before 4th level, CL = class level from 4th on (no -3 offset)", () => {
+    expect(casterLevelForClass("bloodrager", 1)).toBe(0);
+    expect(casterLevelForClass("bloodrager", 3)).toBe(0);
+    expect(casterLevelForClass("bloodrager", 4)).toBe(4);
+    expect(casterLevelForClass("bloodrager", 10)).toBe(10);
+    expect(casterLevelForClass("bloodrager", 20)).toBe(20);
+    expect(isCasterTag("bloodrager")).toBe(true);
+  });
+
+  it("medium (issue #65) casts nothing before 4th level, CL = class level from 4th on (no -3 offset)", () => {
+    expect(casterLevelForClass("medium", 1)).toBe(0);
+    expect(casterLevelForClass("medium", 3)).toBe(0);
+    expect(casterLevelForClass("medium", 4)).toBe(4);
+    expect(casterLevelForClass("medium", 20)).toBe(20);
+    expect(isCasterTag("medium")).toBe(true);
+  });
+
+  it("casterLevel() picks up a level-gated class only once its gate is reached", () => {
+    expect(casterLevel(docWith([{ tag: "bloodrager", level: 3 }]) as CharacterDoc)).toBe(0);
+    expect(casterLevel(docWith([{ tag: "bloodrager", level: 4 }]) as CharacterDoc)).toBe(4);
+    // A level-gated class below its gate doesn't shadow a real caster level
+    // from another class (mirrors the existing multiclass tests above).
+    expect(
+      casterLevel(
+        docWith([
+          { tag: "bloodrager", level: 3 },
+          { tag: "wizard", level: 2 },
+        ]) as CharacterDoc,
+      ),
+    ).toBe(2);
+  });
 });

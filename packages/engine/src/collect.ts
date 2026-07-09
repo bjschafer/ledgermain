@@ -13,6 +13,7 @@ import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { activeArchetypeSwaps, weaponTrainingReplaced } from "./archetypes.js";
 import { BLOODLINES } from "./bloodlines.js";
+import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
 import { featNameSlug } from "./feat-effects.js";
@@ -340,6 +341,36 @@ export function collectModifiers(
     }
   }
 
+  // --- bloodrager bloodline powers (build choice, issue #65) ---------------
+  // Hand-authored clean-room content (not in the vendored Foundry data pack —
+  // see `@pf1/engine` `bloodrager-bloodlines.ts`), gated on the character
+  // actually having bloodrager levels — same posture as the sorcerer
+  // bloodline loop above, but at the bloodrager's own 1st/4th/8th/12th/16th/
+  // 20th power gates. `rollData.classes.bloodrager.level` (built by
+  // `buildRollData`) already carries the right value for the
+  // `@classes.bloodrager.level` formulas these entries use.
+  const bloodragerLevel = doc.identity.classes.find((c) => c.tag === "bloodrager")?.level ?? 0;
+  if (bloodragerLevel > 0 && doc.build.bloodragerBloodline) {
+    const bloodline = BLOODRAGER_BLOODLINES[doc.build.bloodragerBloodline];
+    if (bloodline) {
+      for (const power of bloodline.powers) {
+        if (power.level > bloodragerLevel) continue;
+        for (const ch of power.changes ?? []) {
+          evalChange(
+            ch.formula,
+            rollData,
+            ch.target,
+            ch.type,
+            `${power.name} (${bloodline.name} Bloodline)`,
+            `bloodragerBloodline:${bloodline.tag}:${power.id}`,
+            out,
+            ch.operator,
+          );
+        }
+      }
+    }
+  }
+
   // --- arcanist exploits (build choice, issue #42) -------------------------
   // Exploit ids are hand-authored clean-room content (not in the vendored
   // Foundry data pack — see `@pf1/engine` `arcanist-exploits.ts`), same
@@ -475,6 +506,42 @@ export function collectModifiers(
       if (!instance.choiceId) continue;
       for (const ch of entry.build(instance.choiceId)) {
         evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, instance.instanceId, out);
+      }
+    }
+  }
+
+  // --- brawler Martial Flexibility (live state, issue #65) ------------------
+  // `doc.live.martialFlexibilityFeatId` (set by `model/martialFlexibility.ts`)
+  // records which combat feat the player is currently "borrowing" (PF1 RAW:
+  // move/swift/free/immediate action depending on brawler level, lasts 1
+  // minute — see `resources.ts`'s vendored `martialFlexibility` pool for the
+  // uses/day cap, not tracked here). Reuses the SAME `resolveFeatEffect`
+  // machinery as a normally-owned feat — cheap because the lookup is already
+  // keyed by feat id, not by "is this in doc.build.feats" — so any borrowed
+  // feat with a modeled STATIC effect (Weapon Focus, Dodge, Toughness, ...)
+  // applies for real. Choice-type feats (e.g. Weapon Focus's weapon pick)
+  // are deliberately skipped here: there is no separate "which weapon did
+  // you pick for the borrowed copy" field, and reusing `featChoices[featId]`
+  // could silently borrow the wrong stored choice from an unrelated owned
+  // copy of the same feat — display + note is the honest behavior for that
+  // subset (the UI still shows the borrowed feat's name/description).
+  const martialFlexibilityFeatId = doc.live.martialFlexibilityFeatId;
+  if (martialFlexibilityFeatId) {
+    const feat = refData.feats[martialFlexibilityFeatId];
+    if (feat) {
+      const resolved = resolveFeatEffect(featNameSlug(feat.name));
+      if (resolved?.entry.type === "static") {
+        for (const ch of resolved.entry.changes) {
+          evalChange(
+            ch.formula,
+            rollData,
+            ch.target,
+            ch.type,
+            `${feat.name} (Martial Flexibility)`,
+            `martialFlexibility:${martialFlexibilityFeatId}`,
+            out,
+          );
+        }
       }
     }
   }

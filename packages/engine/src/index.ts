@@ -103,6 +103,17 @@ export {
   type BloodlineVariantOption,
 } from "./bloodlines.js";
 export {
+  BLOODRAGER_BLOODLINES,
+  BLOODRAGER_BLOODLINE_TAGS,
+  bloodragerBloodlineVariantLabel,
+  type BloodragerBloodlineDef,
+  type BloodragerBloodlinePower,
+  type BloodragerBloodlinePowerLevel,
+  type BloodragerBloodlineVariantOption,
+  type BloodragerBonusSpell,
+} from "./bloodrager-bloodlines.js";
+export { BLOODRAGE_BUFF, BLOODRAGE_BUFF_ID } from "./bloodrage.js";
+export {
   ARCANIST_EXPLOITS,
   ARCANIST_EXPLOIT_IDS,
   type ArcanistExploitDef,

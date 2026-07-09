@@ -195,6 +195,63 @@ export function setSorcererBloodlineVariant(
 }
 
 /**
+ * Set the bloodrager's chosen bloodline tag (issue #65). Mirrors
+ * `setSorcererBloodline` exactly (single tag, `null`/blank clears, no
+ * validation against `@pf1/engine` `BLOODRAGER_BLOODLINES` — soft-warning
+ * posture). Clears any stored variant on change, same as
+ * `setSorcererBloodline`.
+ */
+export function setBloodragerBloodline(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const trimmed = typeof tag === "string" ? tag.trim() : "";
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      bloodragerBloodline: trimmed.length > 0 ? trimmed : undefined,
+      bloodragerBloodlineVariant: undefined,
+    },
+  };
+}
+
+/**
+ * Set the energy-type/subtype variant (Draconic dragon type, Elemental
+ * element) for a bloodrager bloodline that needs one — mirrors
+ * `setSorcererBloodlineVariant` exactly. Display-only.
+ */
+export function setBloodragerBloodlineVariant(
+  doc: CharacterDoc,
+  variant: string | null,
+): CharacterDoc {
+  const trimmed = typeof variant === "string" ? variant.trim() : "";
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      bloodragerBloodlineVariant: trimmed.length > 0 ? trimmed : undefined,
+    },
+  };
+}
+
+/**
+ * Set (or clear, with `null`) the brawler's currently-borrowed Martial
+ * Flexibility feat (issue #65) — `live.martialFlexibilityFeatId`. Pure
+ * record-keeping: does NOT validate the feat is a combat feat, doesn't check
+ * prerequisites, and doesn't drain the `martialFlexibility` resource pool
+ * (matching `toggleLinkedBuff`'s posture of never coupling a pool's uses/day
+ * count to a live toggle — see `@pf1/engine` `resources.ts`'s doc comment).
+ */
+export function setMartialFlexibilityFeat(doc: CharacterDoc, featId: string | null): CharacterDoc {
+  const trimmed = typeof featId === "string" ? featId.trim() : "";
+  return {
+    ...doc,
+    live: {
+      ...doc.live,
+      martialFlexibilityFeatId: trimmed.length > 0 ? trimmed : undefined,
+    },
+  };
+}
+
+/**
  * Set the oracle's chosen mystery tag (single tag, PF1 grants exactly one at
  * L1, never changed thereafter). Pass `null` (or a blank/whitespace string)
  * to clear. No validation that the tag exists in `@pf1/engine`
