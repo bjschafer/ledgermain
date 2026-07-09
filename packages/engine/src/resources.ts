@@ -36,7 +36,13 @@ import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
-import { burnDetailLabel, smiteEvilDetail, smiteEvilLabel, smiteGoodLabel } from "./tables.js";
+import {
+  bombDamageDetail,
+  burnDetailLabel,
+  smiteEvilDetail,
+  smiteEvilLabel,
+  smiteGoodLabel,
+} from "./tables.js";
 
 export interface DerivedResourcePool {
   /** Stable pool id (the class-feature id). */
@@ -240,6 +246,25 @@ export function deriveResourcePools(
       // the nonlethal damage — see `burnDetailLabel`'s doc comment.
       const characterLevel = doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
       detail = burnDetailLabel(characterLevel, classLevel);
+    } else if (feature.tag === "bomb" && classTag === "alchemist") {
+      // Bomb's vendored action damage formula is a flat, non-scaling "1d6"
+      // (confirmed against the pinned data slice — it neither scales with
+      // alchemist level nor adds the Intelligence-modifier addend RAW
+      // grants) — hand-authored damage override, same posture as Smite
+      // Evil/Burn above. The save DC (from the vendored action's
+      // `dcFormula`, `10 + 1/2 level + Int mod`) is already correct, so it's
+      // reused via the same `formatSaveLabel` helper `actionBasedDetail`
+      // relies on rather than re-deriving it.
+      const featureAbilities = (featureRollData as RollData).abilities as
+        | { int?: { mod?: number } }
+        | undefined;
+      const intMod = featureAbilities?.int?.mod ?? 0;
+      const damage = bombDamageDetail(classLevel, intMod);
+      const action = feature.actions?.[0];
+      const saveLabel = action?.save
+        ? formatSaveLabel(action.save, featureRollData as RollData)
+        : null;
+      detail = saveLabel ? `${damage.damageLabel} (${saveLabel})` : damage.damageLabel;
     } else {
       detail = actionBasedDetail(feature, featureRollData as RollData);
     }

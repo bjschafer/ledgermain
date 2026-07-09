@@ -326,6 +326,65 @@ describe("grantsBuffs -> linkedBuffIds", () => {
     const loh = pools.find((p) => p.name === "Lay on Hands");
     expect(loh?.linkedBuffIds).toEqual([]);
   });
+
+  it("alchemist 5 — Mutagen pool exposes all 3 vendored buff links (Str/Dex/Con), audited before hand-authoring alchemist-discoveries.ts (issue #65)", () => {
+    const doc = baseDoc({
+      identity: { name: "Vex", race: raceId("Human"), classes: [{ tag: "alchemist", level: 5 }] },
+    });
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const mutagen = pools.find((p) => p.name === "Mutagen");
+    expect(mutagen).toBeDefined();
+    expect(mutagen?.max).toBe(1);
+    expect(mutagen?.linkedBuffIds.sort()).toEqual(
+      [buffId("Mutagen, Str"), buffId("Mutagen, Dex"), buffId("Mutagen, Con")].sort(),
+    );
+  });
+});
+
+/**
+ * Fixture tests for the hand-authored Bomb damage detail override (issue
+ * #65) — the vendored Bomb `action.damage` formula is a flat, non-scaling
+ * "1d6" (confirmed against the pinned data slice), so `resources.ts`
+ * overrides it with `tables.ts`'s `bombDamageDetail`, clean-room from APG:
+ * "1d6 fire damage + additional damage equal to the alchemist's Intelligence
+ * modifier... increases by 1d6 points at every odd-numbered alchemist
+ * level."
+ */
+describe("Bomb damage detail override (issue #65)", () => {
+  it("alchemist 1, Int 16 (+3) — 1d6+3 fire", () => {
+    const doc = baseDoc({
+      identity: { name: "Vex", race: raceId("Human"), classes: [{ tag: "alchemist", level: 1 }] },
+      abilities: { str: 10, dex: 10, con: 10, int: 16, wis: 10, cha: 10 },
+    });
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const bomb = pools.find((p) => p.name === "Bomb");
+    expect(bomb?.detail).toContain("1d6+3 fire");
+  });
+
+  it("alchemist 5, Int 16 (+3) — 3d6+3 fire (odd-level scaling: 1 + floor((5-1)/2) = 3 dice)", () => {
+    const doc = baseDoc({
+      identity: { name: "Vex", race: raceId("Human"), classes: [{ tag: "alchemist", level: 5 }] },
+      abilities: { str: 10, dex: 10, con: 10, int: 16, wis: 10, cha: 10 },
+    });
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const bomb = pools.find((p) => p.name === "Bomb");
+    expect(bomb?.detail).toContain("3d6+3 fire");
+  });
+
+  it("alchemist 5 detail also carries the (correct, unchanged) vendored save DC", () => {
+    const doc = baseDoc({
+      identity: { name: "Vex", race: raceId("Human"), classes: [{ tag: "alchemist", level: 5 }] },
+      abilities: { str: 10, dex: 10, con: 10, int: 16, wis: 10, cha: 10 },
+    });
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const bomb = pools.find((p) => p.name === "Bomb");
+    // DC = 10 + floor(5/2) + 3 = 15
+    expect(bomb?.detail).toBe("3d6+3 fire (DC 15 Ref)");
+  });
 });
 
 /**

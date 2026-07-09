@@ -541,6 +541,42 @@ export interface CharacterDoc {
      * non-psychics. Back-compat: documents without this field are unaffected.
      */
     psychicDiscipline?: string;
+    /**
+     * Witch patron tag (key into `@pf1/engine` `WITCH_PATRONS` — issue #65),
+     * chosen at L1 and never changed thereafter (PF1 RAW). Free-choice, same
+     * soft posture as `oracleMystery`/`sorcererBloodline`. Grants one bonus
+     * spell known (added to the familiar's spells) at witch level 2 and every
+     * two levels thereafter (see `model/spellcasting.patronSpellsKnown`),
+     * mirroring `oracleMystery`'s bonus-spell shape exactly. Empty/undefined
+     * for non-witches. Back-compat: documents without this field are
+     * unaffected.
+     */
+    witchPatron?: string;
+    /**
+     * Witch hex ids chosen (keys into `@pf1/engine` `WITCH_HEXES` — issue
+     * #65). Gained at 1st level and every even level thereafter (1st, 2nd,
+     * 4th, 6th, ..., 20th — 11 total by 20th), plus one per "Extra Hex" feat
+     * taken; see `model/witchHexes.ts` for the budget math. Major hexes
+     * (minLevel 10) and Grand hexes (minLevel 18) are soft-gated the same way
+     * `ORACLE_REVELATIONS`/`MAGUS_ARCANA` gate their own higher-minimum
+     * entries — never blocks selection. Free-choice, soft warning only on
+     * overspend — same posture as `oracleRevelations`. Empty/undefined for
+     * non-witches. Back-compat: documents without this field are unaffected.
+     */
+    witchHexes?: string[];
+    /**
+     * Alchemist discovery ids chosen (keys into `@pf1/engine`
+     * `ALCHEMIST_DISCOVERIES` — issue #65). Gained at 2nd level and every
+     * even level thereafter (2nd, 4th, ..., 20th — 10 total by 20th), plus
+     * one per "Extra Discovery" feat taken; see
+     * `model/alchemistDiscoveries.ts` for the budget math. Does NOT include
+     * the automatic 20th-level Grand Discovery (informational only, not one
+     * of these picks — mirrors `oracleRevelations`' Final Revelation
+     * treatment). Free-choice, soft warning only on overspend. Empty/undefined
+     * for non-alchemists. Back-compat: documents without this field are
+     * unaffected.
+     */
+    alchemistDiscoveries?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -1343,17 +1379,28 @@ export interface DerivedClassFeature {
   /**
    * Set when this feature came from a chosen cleric domain, wizard arcane
    * school, sorcerer bloodline (issue #34), arcanist exploit (issue #42),
-   * magus arcana, or oracle revelation (both issue #61) rather than the
-   * class itself — all six share `classTag: "cleric"`/`"wizard"`/
-   * `"sorcerer"`/`"arcanist"`/`"magus"`/`"oracle"` with the class's own
+   * magus arcana, oracle revelation (both issue #61), witch hex, or
+   * alchemist discovery (both issue #65) rather than the class itself — all
+   * eight share `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/
+   * `"magus"`/`"oracle"`/`"witch"`/`"alchemist"` with the class's own
    * intrinsic features, so this disambiguates e.g. "Fire Bolt" (Fire
    * Domain) from Channel Energy (cleric itself), "Claws" (Draconic
    * Bloodline) from a sorcerer's other features, "Quick Study" (an
-   * exploit) from an arcanist's own Arcane Reservoir, or "Familiar" (a
-   * magus arcana) from a magus's own Spell Combat.
+   * exploit) from an arcanist's own Arcane Reservoir, "Familiar" (a magus
+   * arcana) from a magus's own Spell Combat, "Ward" (a hex) from a witch's
+   * own Witch's Familiar, or "Cauldron" (a discovery) from an alchemist's
+   * own Bomb.
    */
   origin?: {
-    kind: "domain" | "school" | "bloodline" | "exploit" | "arcana" | "revelation";
+    kind:
+      | "domain"
+      | "school"
+      | "bloodline"
+      | "exploit"
+      | "arcana"
+      | "revelation"
+      | "hex"
+      | "discovery";
     label: string;
   };
 }

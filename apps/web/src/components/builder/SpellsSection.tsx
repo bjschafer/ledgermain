@@ -13,6 +13,7 @@ import {
   grantedCantrips,
   knownSpellsFor,
   mysterySpellsKnown,
+  patronSpellsKnown,
   schoolLabel,
   spellsKnownLimitsByLevel,
 } from "../../model/spellcasting.js";
@@ -129,6 +130,14 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     if (casterTag !== "psychic") return [];
     return disciplineSpellsKnown(refData, doc.build.psychicDiscipline, classLevel);
   }, [casterTag, refData, doc.build.psychicDiscipline, classLevel]);
+
+  // Witch patron bonus spells known (added to the familiar's spells): same
+  // "auto-granted, read-only, exempt from the cap" treatment as
+  // bloodlineEntries/mysteryEntries above. See model/spellcasting.patronSpellsKnown.
+  const patronEntries = useMemo<SpellEntry[]>(() => {
+    if (casterTag !== "witch") return [];
+    return patronSpellsKnown(refData, doc.build.witchPatron, classLevel);
+  }, [casterTag, refData, doc.build.witchPatron, classLevel]);
 
   const preparesFromClassList = !!model?.preparesFromClassList;
 
@@ -398,6 +407,11 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             refData={refData}
             abilityMod={abilityMod}
           />
+        )}
+
+        {/* Witch patron bonus spells: read-only, auto-granted, exempt from the known cap. */}
+        {patronEntries.length > 0 && (
+          <PatronSpellsBlock entries={patronEntries} refData={refData} abilityMod={abilityMod} />
         )}
 
         {preparesFromClassList ? (
@@ -899,6 +913,77 @@ function DisciplineSpellsBlock({
                   <div className="pmain">
                     <div className="pname">
                       {sp.name} <span className="tag-mystery">discipline</span>
+                    </div>
+                    {spellData && (
+                      <SpellDetail
+                        spell={spellData}
+                        spellLevel={spellData.level}
+                        abilityMod={abilityMod}
+                      />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+    </div>
+  );
+}
+
+/**
+ * Witch patron bonus spells known (added to the familiar's spells): same
+ * "auto-granted, read-only, exempt from the cap" treatment as
+ * `MysterySpellsBlock` above — one block for the chosen patron's 9 bonus
+ * spells (unlocked at witch level 2, 4, 6, ..., 18). Reuses the mystery
+ * block's styling classes; the per-group heading shows the WITCH level that
+ * unlocked the spell (the `SpellDetail` DC line uses the spell's own level).
+ */
+function PatronSpellsBlock({
+  entries,
+  refData,
+  abilityMod,
+}: {
+  entries: SpellEntry[];
+  refData: RefData;
+  abilityMod: number;
+}) {
+  const [collapsed, toggle] = useCollapsed("patron-spells", true);
+  const byLevel = new Map<number, SpellEntry[]>();
+  for (const e of entries) {
+    (byLevel.get(e.level) ?? byLevel.set(e.level, []).get(e.level)!).push(e);
+  }
+  const levels = [...byLevel.keys()].sort((a, b) => a - b);
+
+  return (
+    <div className="spell-level-group is-granted is-bloodline">
+      <div
+        className="spell-level-head is-collapsible is-granted"
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={!collapsed}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggle();
+        }}
+      >
+        <span className="spell-level-label">Patron Bonus Spells</span>
+        <span className="spell-level-count">{entries.length}</span>
+        <span className="panel-caret" aria-hidden="true">
+          {collapsed ? "▸" : "▾"}
+        </span>
+      </div>
+      {!collapsed &&
+        levels.map((lvl) => (
+          <div key={lvl} className="spell-domain-level">
+            <div className="spell-domain-level-head">Witch Lv {lvl}</div>
+            {byLevel.get(lvl)!.map((sp) => {
+              const spellData = refData.spells[sp.id];
+              return (
+                <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
+                  <div className="pmain">
+                    <div className="pname">
+                      {sp.name} <span className="tag-mystery">patron</span>
                     </div>
                     {spellData && (
                       <SpellDetail

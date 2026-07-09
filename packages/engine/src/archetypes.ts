@@ -22,11 +22,13 @@ import type {
   RefData,
 } from "@pf1/schema";
 
+import { ALCHEMIST_DISCOVERIES } from "./alchemist-discoveries.js";
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
+import { WITCH_HEXES } from "./witch-hexes.js";
 import {
   sneakAttackDice,
   smiteEvilDetail,
@@ -52,9 +54,17 @@ export interface GrantedFeature {
   classTag: string;
   level: number;
   grant: ClassFeatureGrant;
-  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation rather than the class itself. */
+  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation/hex/discovery rather than the class itself. */
   origin?: {
-    kind: "domain" | "school" | "bloodline" | "exploit" | "arcana" | "revelation";
+    kind:
+      | "domain"
+      | "school"
+      | "bloodline"
+      | "exploit"
+      | "arcana"
+      | "revelation"
+      | "hex"
+      | "discovery";
     label: string;
   };
   /**
@@ -248,6 +258,59 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "revelation", label: "Revelation" },
         detail: revelation.summary,
+      });
+    }
+  }
+
+  // Witch hexes (issue #65) — hand-authored (see witch-hexes.ts), gated on
+  // actual witch levels the same way magus arcana is gated above. Unlike
+  // revelations, hexes are NOT patron-scoped (a witch's patron only grants
+  // bonus spells — see witch-patrons.ts) so every chosen, recognized hex id
+  // is granted regardless of `build.witchPatron`. Granted at a flat display
+  // level of 1, same rationale as exploits/arcana above.
+  const witchLevel = doc.identity.classes.find((c) => c.tag === "witch")?.level ?? 0;
+  if (witchLevel > 0) {
+    for (const hexId of doc.build.witchHexes ?? []) {
+      const hex = WITCH_HEXES[hexId];
+      if (!hex) continue;
+      out.push({
+        classTag: "witch",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `hex:${hex.id}`,
+          featureId: `hex:${hex.id}`,
+          name: hex.name,
+          resolved: true,
+        },
+        origin: { kind: "hex", label: "Hex" },
+        detail: hex.summary,
+      });
+    }
+  }
+
+  // Alchemist discoveries (issue #65) — hand-authored (see
+  // alchemist-discoveries.ts), gated on actual alchemist levels the same way
+  // magus arcana is gated above. Granted at a flat display level of 2 (the
+  // earliest an alchemist has any discovery at all), same rationale as
+  // exploits/arcana above.
+  const alchemistLevel = doc.identity.classes.find((c) => c.tag === "alchemist")?.level ?? 0;
+  if (alchemistLevel > 0) {
+    for (const discoveryId of doc.build.alchemistDiscoveries ?? []) {
+      const discovery = ALCHEMIST_DISCOVERIES[discoveryId];
+      if (!discovery) continue;
+      out.push({
+        classTag: "alchemist",
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `discovery:${discovery.id}`,
+          featureId: `discovery:${discovery.id}`,
+          name: discovery.name,
+          resolved: true,
+        },
+        origin: { kind: "discovery", label: "Discovery" },
+        detail: discovery.summary,
       });
     }
   }

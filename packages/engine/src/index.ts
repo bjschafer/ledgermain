@@ -78,6 +78,8 @@ export {
   type KineticBlastDetail,
   burnPerRoundLimit,
   burnDetailLabel,
+  bombDamageDetail,
+  type BombDamageDetail,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
@@ -128,6 +130,25 @@ export {
   type OracleRevelationDef,
   type OracleMysteryFinalRevelation,
 } from "./oracle-revelations.js";
+export {
+  WITCH_PATRONS,
+  WITCH_PATRON_TAGS,
+  type WitchPatronDef,
+  type WitchPatronBonusSpell,
+} from "./witch-patrons.js";
+export {
+  WITCH_HEXES,
+  WITCH_HEX_IDS,
+  hexesForTier,
+  witchHexDC,
+  type WitchHexDef,
+  type WitchHexTier,
+} from "./witch-hexes.js";
+export {
+  ALCHEMIST_DISCOVERIES,
+  ALCHEMIST_DISCOVERY_IDS,
+  type AlchemistDiscoveryDef,
+} from "./alchemist-discoveries.js";
 export {
   PSYCHIC_DISCIPLINES,
   PSYCHIC_DISCIPLINE_TAGS,

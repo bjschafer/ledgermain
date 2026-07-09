@@ -9,6 +9,7 @@
 
 import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 
+import { ALCHEMIST_DISCOVERIES } from "./alchemist-discoveries.js";
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { activeArchetypeSwaps, weaponTrainingReplaced } from "./archetypes.js";
@@ -27,6 +28,7 @@ import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
 import { raceGrantsFlexibleAbility, weaponTrainingBonus } from "./tables.js";
 import { normalizeWeaponGroup } from "./weapon-groups.js";
+import { WITCH_HEXES } from "./witch-hexes.js";
 
 /** A {@link TypedModifier} tagged with what it targets. */
 export interface CollectedModifier extends TypedModifier {
@@ -391,6 +393,45 @@ export function collectModifiers(
       if (!revelation || revelation.mysteryTag !== doc.build.oracleMystery) continue;
       for (const ch of revelation.changes) {
         evalChange(ch.formula, rollData, ch.target, ch.type, revelation.name, revelation.id, out);
+      }
+    }
+  }
+
+  // --- witch hexes (build choice, issue #65) --------------------------------
+  // Hex ids are hand-authored clean-room content (not in the vendored Foundry
+  // data pack — see `@pf1/engine` `witch-hexes.ts`), same posture as magus
+  // arcana above. Gated on the character actually having witch levels. Every
+  // hex is `displayOnly` with `changes: []` today (see that file's doc
+  // comment — a few grant a passive fly speed or a toggleable ally buff, both
+  // out of this loop's scope, see `witch-hexes.ts`), so this loop currently
+  // contributes no numeric modifiers — wired the same way for a future hex
+  // with a real unconditional Change to work for free.
+  const witchLevel = doc.identity.classes.find((c) => c.tag === "witch")?.level ?? 0;
+  if (witchLevel > 0) {
+    for (const hexId of doc.build.witchHexes ?? []) {
+      const hex = WITCH_HEXES[hexId];
+      if (!hex) continue;
+      for (const ch of hex.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out);
+      }
+    }
+  }
+
+  // --- alchemist discoveries (build choice, issue #65) ----------------------
+  // Discovery ids are hand-authored clean-room content (not in the vendored
+  // Foundry data pack — see `@pf1/engine` `alchemist-discoveries.ts`), same
+  // posture as magus arcana above. Gated on the character actually having
+  // alchemist levels. Every discovery is `displayOnly` with `changes: []`
+  // today (see that file's doc comment), so this loop currently contributes
+  // no numeric modifiers — wired the same way for a future discovery with a
+  // real unconditional Change to work for free.
+  const alchemistLevel = doc.identity.classes.find((c) => c.tag === "alchemist")?.level ?? 0;
+  if (alchemistLevel > 0) {
+    for (const discoveryId of doc.build.alchemistDiscoveries ?? []) {
+      const discovery = ALCHEMIST_DISCOVERIES[discoveryId];
+      if (!discovery) continue;
+      for (const ch of discovery.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, discovery.name, discovery.id, out);
       }
     }
   }

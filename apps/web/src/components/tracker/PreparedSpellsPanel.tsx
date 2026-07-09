@@ -28,6 +28,7 @@ import {
   grantedCantrips,
   knownSpellsFor,
   mysterySpellsKnown,
+  patronSpellsKnown,
   preparedCapacityByLevel,
   SCHOOL_LABELS,
   spellSlotsByLevel,
@@ -920,6 +921,29 @@ function SpontaneousView({
   if (casterTag === "psychic") {
     const known = new Set(knownList);
     for (const sp of disciplineSpellsKnown(refData, doc.build.psychicDiscipline, classLevel)) {
+      if (known.has(sp.id)) continue;
+      const lvl = levelMap.get(sp.id) ?? refData.spells[sp.id]?.level;
+      if (lvl === undefined) continue;
+      (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({
+        id: sp.id,
+        name: sp.name,
+      });
+    }
+  }
+  // Witch patron bonus spells known (added to the familiar's spells): same
+  // treatment as sorcerer bloodline spells above — castable at the table,
+  // only exempt from the known cap. Like the psychic branch above (and
+  // unlike the oracle branch), entries are filed under the spell's own
+  // castable spell level via `levelMap` — `patronSpellsKnown`'s `level`
+  // field is the WITCH class level that unlocked the spell (2, 4, ..., 18),
+  // not a slot level. A patron spell that doesn't resolve against the
+  // vendored spell slice at all (see `patronSpellsKnown`'s doc comment) has
+  // no `levelMap` entry either, so it's silently skipped here — same
+  // "unresolvable, never thrown" tolerance every other bonus-spell merge
+  // above uses.
+  if (casterTag === "witch") {
+    const known = new Set(knownList);
+    for (const sp of patronSpellsKnown(refData, doc.build.witchPatron, classLevel)) {
       if (known.has(sp.id)) continue;
       const lvl = levelMap.get(sp.id) ?? refData.spells[sp.id]?.level;
       if (lvl === undefined) continue;
