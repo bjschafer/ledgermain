@@ -1,0 +1,243 @@
+import { useState } from "react";
+
+import { NumberField } from "../builder/NumberField.js";
+import { Panel } from "../builder/Panel.js";
+import {
+  addEidolonNonlethal,
+  applyEidolonDamage,
+  deriveEidolonSheet,
+  healEidolon,
+  healEidolonNonlethal,
+  isEidolonSummoned,
+  restEidolon,
+  toggleEidolonSummoned,
+} from "../../model/eidolon.js";
+import {
+  eidolonSkillRows,
+  formatEidolonAttackDamage,
+  formatEidolonAttackName,
+  formatEidolonAttackRoll,
+  formatEidolonEvolutionBudget,
+  formatEidolonSummary,
+} from "../../model/eidolonDisplay.js";
+import { signed } from "../../model/names.js";
+import { InfoTip } from "../InfoTip.js";
+import { StatSeal } from "../StatSeal.js";
+import type { BuilderProps } from "../builder/types.js";
+
+/**
+ * Tracker panel for a tracked eidolon (`build.eidolon`) — HP tracker plus
+ * AC/saves/attacks/skills/special-abilities, derived live from the character
+ * document via `model/eidolon.ts`'s `deriveEidolonSheet`. Renders nothing
+ * when there's no eidolon yet (mirrors `PhantomPanel`/`CompanionPanel`'s
+ * collapsed-when-absent posture and StatSeal/stat-group vocabulary at
+ * compact scale).
+ */
+export function EidolonPanel({ doc, refData, update }: BuilderProps) {
+  const [amount, setAmount] = useState(3);
+  const eidolon = deriveEidolonSheet(doc, refData);
+  if (!eidolon) return null;
+
+  const summoned = isEidolonSummoned(doc);
+
+  const amt = Number.isNaN(amount) ? 0 : amount;
+  const { current, nonlethal } = eidolon.hp;
+  const effective = current - nonlethal;
+  const isLow = eidolon.hp.max > 0 && effective <= Math.floor(eidolon.hp.max / 4);
+
+  const skillRows = eidolonSkillRows(eidolon);
+
+  return (
+    <Panel
+      title={`Eidolon — ${eidolon.name}`}
+      step="edln"
+      storageKey="panel:Eidolon"
+      defaultCollapsed
+    >
+      <div className="familiar-summary hint">{formatEidolonSummary(eidolon)}</div>
+
+      <div className="hp-row">
+        <span className="hp-inline-label">Status</span>
+        <button
+          type="button"
+          className="chip"
+          onClick={() => update((d) => toggleEidolonSummoned(d))}
+          title="PF1 RAW: the summoner can summon/dismiss the eidolon as a standard action. Display-only — the stat block below is unaffected either way."
+        >
+          {summoned ? "Summoned" : "Dismissed"}
+        </button>
+      </div>
+
+      <div className="hp-display">
+        <div className="hp-big num" data-low={isLow}>
+          {current}
+          <span className="hp-slash">/</span>
+          {eidolon.hp.max}
+        </div>
+        {nonlethal > 0 ? <span className="hp-chip nl num">{nonlethal} nonlethal</span> : null}
+      </div>
+
+      <div className="hp-controls">
+        <NumberField
+          className="hp-amt num"
+          size={4}
+          value={amount}
+          min={0}
+          commitOnChange
+          onCommit={(n) => setAmount(n)}
+          aria-label="Amount"
+        />
+        <button
+          type="button"
+          className="btn-act dmg"
+          onClick={() => update((d) => applyEidolonDamage(d, amt))}
+        >
+          Damage
+        </button>
+        <button
+          type="button"
+          className="btn-act heal"
+          onClick={() => update((d) => healEidolon(d, amt))}
+        >
+          Heal
+        </button>
+      </div>
+
+      <div className="hp-row">
+        <div className="hp-nl">
+          <span className="hp-inline-label">Nonlethal</span>
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={() => update((d) => addEidolonNonlethal(d, amt))}
+          >
+            +{amt}
+          </button>
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={() => update((d) => healEidolonNonlethal(d, amt))}
+          >
+            −{amt}
+          </button>
+        </div>
+        <button
+          type="button"
+          className="btn-ghost rest"
+          onClick={() => update((d) => restEidolon(d))}
+        >
+          Rest ⤿
+        </button>
+      </div>
+
+      <p
+        className="hint"
+        title="If Life Link is available, damage can be manually transferred from the eidolon to the summoner (1 hp per point, immediate action) — not modeled numerically here."
+      >
+        Evolution points: {formatEidolonEvolutionBudget(eidolon)}
+      </p>
+
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Defense</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--3">
+          <StatSeal
+            label="AC"
+            value={eidolon.ac.normal}
+            components={eidolon.ac.components}
+            provTitle="Eidolon AC components"
+            className="seal--compact"
+          />
+          <StatSeal label="Touch" value={eidolon.ac.touch} className="seal--compact" />
+          <StatSeal label="Flat-Footed" value={eidolon.ac.flatFooted} className="seal--compact" />
+        </div>
+      </div>
+
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Offense</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--2">
+          <StatSeal label="BAB" value={signed(eidolon.bab)} className="seal--compact" />
+          <StatSeal
+            label="CMB / CMD"
+            value={`${signed(eidolon.cmb)} / ${eidolon.cmd}`}
+            className="seal--compact"
+          />
+        </div>
+        {eidolon.attacks.length > 0 ? (
+          <div className="weapon-attack-list familiar-attack-list">
+            {eidolon.attacks.map((a, i) => (
+              <div key={i} className="weapon-attack-row">
+                <span className="weapon-attack-name">{formatEidolonAttackName(a)}</span>
+                <div className="weapon-attack-stats familiar-attack-stats">
+                  <StatSeal
+                    label="Attack"
+                    value={formatEidolonAttackRoll(a)}
+                    className="seal--compact"
+                  />
+                  <StatSeal
+                    label="Damage"
+                    value={formatEidolonAttackDamage(a)}
+                    className="seal--compact"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
+
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Saves</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--3">
+          <StatSeal label="Fort" value={signed(eidolon.saves.fort)} className="seal--compact" />
+          <StatSeal label="Ref" value={signed(eidolon.saves.ref)} className="seal--compact" />
+          <StatSeal label="Will" value={signed(eidolon.saves.will)} className="seal--compact" />
+        </div>
+      </div>
+
+      <h4 className="tracker-sub">Skills</h4>
+      <div className="familiar-skill-grid">
+        {skillRows.map((s) => (
+          <div key={s.id} className="familiar-skill familiar-skill--primary">
+            <span className="fs-name">{s.name}</span>
+            <span className="fs-val num">{signed(s.total)}</span>
+          </div>
+        ))}
+      </div>
+
+      {eidolon.specialAbilities.length > 0 && (
+        <>
+          <h4 className="tracker-sub">Special abilities</h4>
+          <div className="chips familiar-abilities">
+            {eidolon.specialAbilities.map((a) => (
+              <InfoTip key={a.name} className="chip display-only" content={a.detail}>
+                {a.name}
+              </InfoTip>
+            ))}
+          </div>
+        </>
+      )}
+
+      {eidolon.freeEvolutionNames.length > 0 && (
+        <>
+          <h4 className="tracker-sub">Free evolutions ({eidolon.baseFormName})</h4>
+          <div className="chips familiar-abilities">
+            {eidolon.freeEvolutionNames.map((name) => (
+              <span key={name} className="chip display-only">
+                {name}
+              </span>
+            ))}
+          </div>
+        </>
+      )}
+    </Panel>
+  );
+}

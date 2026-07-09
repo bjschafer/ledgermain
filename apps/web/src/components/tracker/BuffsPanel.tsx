@@ -20,6 +20,7 @@ import {
   toRounds,
 } from "../../model/buffs.js";
 import { isSharedWithCompanion, toggleSharedBuffCompanion } from "../../model/companion.js";
+import { isSharedWithEidolon, toggleSharedBuffEidolon } from "../../model/eidolon.js";
 import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js";
 import { isSharedWithPhantom, toggleSharedBuffPhantom } from "../../model/phantom.js";
 import { changeTargetLabel, signed } from "../../model/names.js";
@@ -148,6 +149,8 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
               sharedWithCompanion={isSharedWithCompanion(doc, b.instanceId)}
               hasPhantom={!!doc.build.phantom}
               sharedWithPhantom={isSharedWithPhantom(doc, b.instanceId)}
+              hasEidolon={!!doc.build.eidolon}
+              sharedWithEidolon={isSharedWithEidolon(doc, b.instanceId)}
             />
           ))}
         </div>
@@ -288,6 +291,8 @@ function BuffRow({
   sharedWithCompanion = false,
   hasPhantom = false,
   sharedWithPhantom = false,
+  hasEidolon = false,
+  sharedWithEidolon = false,
 }: {
   buff: ActiveBuff;
   rollData: RollData;
@@ -304,6 +309,10 @@ function BuffRow({
   hasPhantom?: boolean;
   /** Whether this buff instance is currently shared onto the phantom's derived sheet (Share Spells). */
   sharedWithPhantom?: boolean;
+  /** Whether the character has a tracked eidolon (`build.eidolon`) — hides the share toggle when false. */
+  hasEidolon?: boolean;
+  /** Whether this buff instance is currently shared onto the eidolon's derived sheet (Share Spells). */
+  sharedWithEidolon?: boolean;
 }) {
   const [unit, setUnit] = useState<DurationUnit>(
     () => roundsToDisplay(buff.remainingRounds)?.unit ?? "rds",
@@ -397,6 +406,19 @@ function BuffRow({
             onChange={() => update((d) => toggleSharedBuffPhantom(d, buff.instanceId))}
           />
           <span>Phantom</span>
+        </label>
+      ) : null}
+      {hasEidolon ? (
+        <label
+          className="buff-share-companion"
+          title="Also apply this buff's changes to the eidolon (Share Spells)"
+        >
+          <input
+            type="checkbox"
+            checked={sharedWithEidolon}
+            onChange={() => update((d) => toggleSharedBuffEidolon(d, buff.instanceId))}
+          />
+          <span>Eidolon</span>
         </label>
       ) : null}
       <button
