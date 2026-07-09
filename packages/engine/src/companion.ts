@@ -575,13 +575,21 @@ export function companionAbilityIncreaseSlots(effectiveLevel: number): number {
 /**
  * The companion's effective druid level from its class source(s)
  * (`build.animalCompanion.source`) BEFORE Boon Companion — CRB "Nature Bond"
- * (druid's own class level) and/or "Hunter's Bond" (ranger level − 3, min 0,
- * i.e. nothing before 4th). A multiclass druid/ranger who has chosen the
- * companion option from BOTH sums them — a deliberate v1 simplification
- * (PF1 RAW doesn't clearly anticipate a character stacking both bonds on one
- * companion; treating them as additive contributions to one companion's
- * power is the simplest coherent behavior and is documented here rather than
- * silently guessed at).
+ * (druid's own class level), the ranger's "Hunter's Bond" (ranger level − 3,
+ * min 0, i.e. nothing before 4th), and/or the ACG Hunter class's OWN Animal
+ * Companion feature, `"hunter-companion"` (hunter level 1:1, NO −3 offset —
+ * "The hunter's effective druid level is equal to her hunter level," per the
+ * vendored `animal-companion-hun.V7cGG7vKN0BY2Bhb.yaml` — verified against
+ * aonprd.com's Hunter class page, issue #65). A multiclass character who has
+ * chosen the companion option from more than one of these sums them — a
+ * deliberate v1 simplification (PF1 RAW doesn't clearly anticipate a
+ * character stacking multiple bonds on one companion, though the Hunter's
+ * own vendored text explicitly endorses stacking with another source: "If a
+ * character receives an animal companion from more than one source, her
+ * effective druid levels stack for the purposes of determining the
+ * companion's statistics"); treating them as additive contributions to one
+ * companion's power is the simplest coherent behavior and is documented here
+ * rather than silently guessed at.
  */
 function baseCompanionEffectiveLevel(doc: CharacterDoc): number {
   const source = doc.build.animalCompanion?.source ?? [];
@@ -592,6 +600,9 @@ function baseCompanionEffectiveLevel(doc: CharacterDoc): number {
   if (source.includes("hunters-bond")) {
     const rangerLevel = doc.identity.classes.find((c) => c.tag === "ranger")?.level ?? 0;
     level += Math.max(0, rangerLevel - 3);
+  }
+  if (source.includes("hunter-companion")) {
+    level += doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
   }
   return level;
 }

@@ -310,6 +310,28 @@ describe("grantsBuffs -> linkedBuffIds", () => {
     expect(aura?.linkedBuffIds).toEqual([buffId("Aura of Protection")]);
   });
 
+  it("hunter 5 (issue #65) — Animal Focus pool exposes all 12 Animal Focus buff links for free, no hand-authoring needed", () => {
+    // Animal Focus is linked directly to the Hunter class def (unlike oracle
+    // mysteries/shaman spirits) and its vendored `links.supplements` already
+    // resolve to 12 real "Animal Focus (<Animal>)" buffs, each with a
+    // correctly scaling `changes[]` formula keyed on `@item.level` — the
+    // generic grantsBuffs pipeline picks the whole thing up with zero
+    // shaman/hunter-specific code, confirming the finding documented in
+    // IMPLEMENTATION_PLAN.md.
+    const doc = baseDoc({
+      identity: { name: "Kest", race: raceId("Human"), classes: [{ tag: "hunter", level: 5 }] },
+    });
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const focus = pools.find((p) => p.name === "Animal Focus");
+    expect(focus).toBeDefined();
+    // uses.maxFormula: "@class.unlevel" -> hunter level (minutes/day).
+    expect(focus?.max).toBe(5);
+    expect(focus?.linkedBuffIds).toHaveLength(12);
+    expect(focus?.linkedBuffIds).toContain(buffId("Animal Focus (Bear)"));
+    expect(focus?.linkedBuffIds).toContain(buffId("Animal Focus (Wolf)"));
+  });
+
   it("features with grantsBuffs pointing outside the vendored slice resolve to an empty linkedBuffIds", () => {
     // Scribe Scroll (a feat, not a class feature) never becomes a pool at
     // all, but e.g. Unarmed Strike (monk) DOES form no pool either (no

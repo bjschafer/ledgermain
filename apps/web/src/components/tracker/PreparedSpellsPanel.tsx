@@ -31,6 +31,7 @@ import {
   patronSpellsKnown,
   preparedCapacityByLevel,
   SCHOOL_LABELS,
+  shamanSpiritSpellsKnown,
   spellSlotsByLevel,
   storedClassTag,
 } from "../../model/spellcasting.js";
@@ -510,7 +511,27 @@ function PreparedView({
   // full class spell list; everyone else prepares from their known list.
   const knownByLevel = useMemo(() => {
     if (model.preparesFromClassList) {
-      return classSpellsByLevel(refData, casterTag, { excludeCantrips: model.grantsAllCantrips });
+      const base = classSpellsByLevel(refData, casterTag, {
+        excludeCantrips: model.grantsAllCantrips,
+      });
+      // Shaman spirit magic bonus spells (issue #65): merge in any that
+      // aren't already on the base shaman list, so the chosen spirit's
+      // spell list is preparable/castable here too, not just displayed in
+      // the builder's Spells section — see model/spellcasting.
+      // shamanSpiritSpellsKnown.
+      if (casterTag !== "shaman") return base;
+      const merged = new Map<number, { id: string; name: string }[]>();
+      for (const [lvl, arr] of base) merged.set(lvl, [...arr]);
+      const present = new Set([...merged.values()].flat().map((e) => e.id));
+      for (const sp of shamanSpiritSpellsKnown(refData, doc.build.shamanSpirit, classLevel)) {
+        if (present.has(sp.id)) continue;
+        (merged.get(sp.level) ?? merged.set(sp.level, []).get(sp.level)!).push({
+          id: sp.id,
+          name: sp.name,
+        });
+      }
+      for (const arr of merged.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
+      return merged;
     }
     const map = new Map<number, { id: string; name: string }[]>();
     for (const id of known) {
@@ -521,7 +542,7 @@ function PreparedView({
     }
     for (const arr of map.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
     return map;
-  }, [model, refData, casterTag, known, levelMap]);
+  }, [model, refData, casterTag, known, levelMap, doc.build.shamanSpirit, classLevel]);
 
   // Only this class's prepared instances (a multiclass character's other
   // caster class(es) are bucketed/rendered by their own PreparedView), kept

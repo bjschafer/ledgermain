@@ -34,6 +34,8 @@ import { Panel } from "./Panel.js";
 import { RangerPicker } from "./RangerPicker.js";
 import { RevelationPicker } from "./RevelationPicker.js";
 import { SchoolPicker } from "./SchoolPicker.js";
+import { ShamanHexPicker } from "./ShamanHexPicker.js";
+import { SpiritPicker } from "./SpiritPicker.js";
 import type { BuilderProps } from "./types.js";
 import { WeaponTrainingPicker } from "./WeaponTrainingPicker.js";
 
@@ -375,10 +377,18 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         <DiscoveryPicker doc={doc} refData={refData} update={update} />
       )}
 
+      {/* Spirit + hex pickers — shaman only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "shaman") && (
+        <>
+          <SpiritPicker doc={doc} refData={refData} update={update} />
+          <ShamanHexPicker doc={doc} refData={refData} update={update} />
+        </>
+      )}
+
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}
       <FamiliarPicker doc={doc} update={update} />
 
-      {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond. */}
+      {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond / ACG Hunter's own Animal Companion. */}
       <AnimalCompanionPicker doc={doc} update={update} />
 
       {/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}

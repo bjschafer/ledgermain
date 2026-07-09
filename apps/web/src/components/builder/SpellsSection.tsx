@@ -15,6 +15,7 @@ import {
   mysterySpellsKnown,
   patronSpellsKnown,
   schoolLabel,
+  shamanSpiritSpellsKnown,
   spellsKnownLimitsByLevel,
 } from "../../model/spellcasting.js";
 import { classSpellsByLevel, spellLevelMap } from "../../model/preparedSpells.js";
@@ -138,6 +139,13 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     if (casterTag !== "witch") return [];
     return patronSpellsKnown(refData, doc.build.witchPatron, classLevel);
   }, [casterTag, refData, doc.build.witchPatron, classLevel]);
+  // Shaman spirit magic bonus spells known: same "auto-granted, read-only,
+  // exempt from the cap" treatment as bloodlineEntries/mysteryEntries above.
+  // See model/spellcasting.shamanSpiritSpellsKnown.
+  const shamanEntries = useMemo<SpellEntry[]>(() => {
+    if (casterTag !== "shaman") return [];
+    return shamanSpiritSpellsKnown(refData, doc.build.shamanSpirit, classLevel);
+  }, [casterTag, refData, doc.build.shamanSpirit, classLevel]);
 
   const preparesFromClassList = !!model?.preparesFromClassList;
 
@@ -412,6 +420,15 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
         {/* Witch patron bonus spells: read-only, auto-granted, exempt from the known cap. */}
         {patronEntries.length > 0 && (
           <PatronSpellsBlock entries={patronEntries} refData={refData} abilityMod={abilityMod} />
+        )}
+
+        {/* Shaman spirit magic bonus spells: read-only, auto-granted, exempt from the known cap. */}
+        {shamanEntries.length > 0 && (
+          <ShamanSpiritSpellsBlock
+            entries={shamanEntries}
+            refData={refData}
+            abilityMod={abilityMod}
+          />
         )}
 
         {preparesFromClassList ? (
@@ -846,6 +863,75 @@ function MysterySpellsBlock({
                   <div className="pmain">
                     <div className="pname">
                       {sp.name} <span className="tag-mystery">mystery</span>
+                    </div>
+                    {spellData && (
+                      <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+    </div>
+  );
+}
+
+/**
+ * Shaman spirit magic bonus spells known: same "auto-granted, read-only,
+ * exempt from the cap" treatment as `MysterySpellsBlock` above — one block
+ * for the chosen spirit's up-to-9 spirit magic spells (one per spirit-magic
+ * spell level, shown once accessible — see `model/spellcasting.
+ * shamanSpiritSpellsKnown`). Reuses the mystery block's styling classes; the
+ * per-group heading here is the SPELL's own level (unlike
+ * `MysterySpellsBlock`'s oracle-level headings), since a
+ * `ShamanSpiritMagicSpell.level` already IS the spell's own level.
+ */
+function ShamanSpiritSpellsBlock({
+  entries,
+  refData,
+  abilityMod,
+}: {
+  entries: SpellEntry[];
+  refData: RefData;
+  abilityMod: number;
+}) {
+  const [collapsed, toggle] = useCollapsed("shaman-spirit-spells", true);
+  const byLevel = new Map<number, SpellEntry[]>();
+  for (const e of entries) {
+    (byLevel.get(e.level) ?? byLevel.set(e.level, []).get(e.level)!).push(e);
+  }
+  const levels = [...byLevel.keys()].sort((a, b) => a - b);
+
+  return (
+    <div className="spell-level-group is-granted is-bloodline">
+      <div
+        className="spell-level-head is-collapsible is-granted"
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={!collapsed}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggle();
+        }}
+      >
+        <span className="spell-level-label">Spirit Magic Spells</span>
+        <span className="spell-level-count">{entries.length}</span>
+        <span className="panel-caret" aria-hidden="true">
+          {collapsed ? "▸" : "▾"}
+        </span>
+      </div>
+      {!collapsed &&
+        levels.map((lvl) => (
+          <div key={lvl} className="spell-domain-level">
+            <div className="spell-domain-level-head">Level {lvl}</div>
+            {byLevel.get(lvl)!.map((sp) => {
+              const spellData = refData.spells[sp.id];
+              return (
+                <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
+                  <div className="pmain">
+                    <div className="pname">
+                      {sp.name} <span className="tag-mystery">spirit magic</span>
                     </div>
                     {spellData && (
                       <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />

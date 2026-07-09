@@ -577,6 +577,34 @@ export interface CharacterDoc {
      * unaffected.
      */
     alchemistDiscoveries?: string[];
+    /**
+     * Shaman spirit tag (key into `@pf1/engine` `SHAMAN_SPIRITS` — issue #65),
+     * chosen at L1 and never changed thereafter (PF1 RAW). Free-choice, same
+     * soft posture as `oracleMystery`/`psychicDiscipline`. Grants the spirit's
+     * Spirit Magic bonus-spell list (see `model/spellcasting.shamanSpiritSpellsKnown`),
+     * a note-tier 1st-level Spirit Ability (surfaced via the class-features
+     * list, no numeric effect modeled — see `SHAMAN_SPIRITS` doc comment),
+     * and access to the spirit's 5 exclusive hexes (`shamanHexes` below).
+     * Empty/undefined for non-shamans. Back-compat: documents without this
+     * field are unaffected.
+     */
+    shamanSpirit?: string;
+    /**
+     * Shaman hex ids chosen (`<spiritTag>:<camelCaseName>` — keys into
+     * `@pf1/engine` `SHAMAN_SPIRITS[tag].hexes`), scoped to the character's
+     * chosen `shamanSpirit`. Gained at 2nd, 4th, 8th, 10th, 12th, 16th, 18th,
+     * and 20th level (PF1 ACG RAW, verified against aonprd.com — NOT the
+     * "every 4 levels from 2nd" cadence a witch's Hex table uses); see
+     * `model/shamanHexes.ts` for the budget math. Free-choice, soft warning
+     * only on overspend — same posture as `oracleRevelations`. Every hex here
+     * is note-tier/`displayOnly` (prose summary, no `Change[]`) — a numeric
+     * witch/shaman hex-effects table is a separate, larger undertaking (see
+     * IMPLEMENTATION_PLAN.md). Wandering Spirit (4th) and Wandering Hex (6th)
+     * — both re-chosen DAILY, not fixed build picks — are deliberately NOT
+     * modeled here, same "live/daily choice, no build.* field" posture
+     * IMPLEMENTATION_PLAN.md already documents for the medium's spirits.
+     */
+    shamanHexes?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -779,9 +807,14 @@ export interface AnimalCompanionBuild {
    * simplification) rather than the game picking one. An empty array (or a
    * document with `animalCompanion` set but neither source chosen yet) means
    * effective level 0 — the companion doesn't show up on the sheet yet,
-   * matching the engine's soft-warning posture.
+   * matching the engine's soft-warning posture. `"hunter-companion"` (issue
+   * #65) is the ACG Hunter class's OWN Animal Companion class feature —
+   * distinct from the ranger's "Hunter's Bond" despite the similar name; a
+   * hunter's effective druid level equals her hunter level 1:1 (no −3 offset,
+   * unlike the ranger's `hunters-bond`) — see `@pf1/engine`
+   * `companionEffectiveLevel`'s doc comment.
    */
-  source: ("nature-bond" | "hunters-bond")[];
+  source: ("nature-bond" | "hunters-bond" | "hunter-companion")[];
   /**
    * Player-assigned ability score for each Ability Score Increase milestone
    * reached so far (CRB Table: Animal Companion Base Statistics — effective
@@ -838,6 +871,21 @@ export interface AnimalCompanionLiveState {
    * Omitted/empty = no shared buffs.
    */
   sharedBuffIds?: string[];
+  /**
+   * Hunter's Animal Focus (ACG) applied to the companion (issue #65) — a
+   * `RefData.buffs` id, e.g. one of the 12 vendored "Animal Focus (<Animal>)"
+   * buffs (`grantsBuffs` on the Hunter's own Animal Focus class feature,
+   * already resolved generically by `@pf1/engine` `deriveResourcePools`).
+   * PF1 RAW: the companion's aspect is independent of the hunter's own
+   * active focus (can differ, doesn't count against her daily minutes, and
+   * persists until changed) — so this is DISPLAY-ONLY bookkeeping (a chip
+   * naming which aspect is active), not wired into `deriveCompanion`'s
+   * numeric stat block, matching this field's existing display-only posture
+   * for anything beyond `sharedBuffIds`/damage. Toggled via
+   * `apps/web/src/model/companion.ts` `setCompanionFocus`. Omitted = no
+   * focus applied to the companion.
+   */
+  focusBuffId?: string;
 }
 
 /**
@@ -1390,6 +1438,16 @@ export interface DerivedClassFeature {
    * arcana) from a magus's own Spell Combat, "Ward" (a hex) from a witch's
    * own Witch's Familiar, or "Cauldron" (a discovery) from an alchemist's
    * own Bomb.
+   * magus arcana, oracle revelation (both issue #61), or shaman spirit/hex
+   * (issue #65) rather than the class itself — all eight share
+   * `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/`"magus"`/
+   * `"oracle"`/`"shaman"` with the class's own intrinsic features, so this
+   * disambiguates e.g. "Fire Bolt" (Fire Domain) from Channel Energy
+   * (cleric itself), "Claws" (Draconic Bloodline) from a sorcerer's other
+   * features, "Quick Study" (an exploit) from an arcanist's own Arcane
+   * Reservoir, "Familiar" (a magus arcana) from a magus's own Spell Combat,
+   * or "Battle Spirit"/"Battle Master" (a shaman's spirit ability/hex) from
+   * her own Hex class feature.
    */
   origin?: {
     kind:
@@ -1400,7 +1458,8 @@ export interface DerivedClassFeature {
       | "arcana"
       | "revelation"
       | "hex"
-      | "discovery";
+      | "discovery"
+      | "spirit";
     label: string;
   };
 }

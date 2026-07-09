@@ -98,6 +98,7 @@ import {
   ORACLE_MYSTERIES,
   PSYCHIC_DISCIPLINES,
   WITCH_PATRONS,
+  SHAMAN_SPIRITS,
   type SpellKnownProgression,
   type SpellPreparedProgression,
   type SpellProgression,
@@ -434,9 +435,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "shaman",
     knownLabel: "Shaman List",
     learnGuidance:
-      "Shamans have no spellbook and nothing to learn — the entire shaman spell list below is always available to prepare from.",
+      "Shamans have no spellbook and nothing to learn — the entire shaman spell list below is always available to prepare from. Her chosen spirit (see the Spirit picker) also grants a Spirit Magic spell list — one spell per spell level, 1st through 9th — shown as bonus known spells once she can cast that level (see model/spellcasting.shamanSpiritSpellsKnown). RAW she can additionally cast ONE of those spirit-magic spells per spell level per day SPONTANEOUSLY, without expending a normal prepared slot — that specific per-level daily-cast bookkeeping isn't tracked as its own resource pool here (a single fungible per-day counter would misrepresent 9 separate per-level uses), so treat the spirit-magic list as a reminder of which spells you can freely swap in.",
     blurb:
-      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full shaman list each day. (A shaman's chosen spirit also grants Spirit Magic — a limited number of bonus spontaneous casts per day drawn from her prepared spells — plus spirit-specific hexes; neither is modeled here, same posture as druid's unmodeled spontaneous summoning note.)",
+      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full shaman list each day, plus your spirit's Spirit Magic bonus spells (shown once accessible). Spirit-specific hexes (see the Hexes picker) are a separate class feature, not part of casting.",
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },
@@ -983,6 +984,46 @@ export function disciplineSpellsKnown(
   if (!discipline) return [];
   return discipline.bonusSpells
     .filter((sp) => sp.level <= psychicLevel)
+    .map((sp) => ({ id: sp.id, name: refData.spells[sp.id]?.name ?? sp.name, level: sp.level }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ---------------------------------------------------------------------------
+// Shaman spirit magic bonus spells
+// ---------------------------------------------------------------------------
+
+/**
+ * Shaman Spirit Magic bonus spells accessible at `shamanLevel` for the given
+ * `spiritTag` (issue #65). Unlike {@link mysterySpellsKnown}'s
+ * `OracleMysteryBonusSpell.level` (an ORACLE level threshold), a
+ * `ShamanSpiritMagicSpell.level` is the SPELL's own level (1st-9th, per the
+ * vendored per-spirit prose — see `@pf1/engine` `shaman-spirits.ts`'s doc
+ * comment) — a spirit's level-N spell becomes accessible the moment the
+ * shaman can cast spells of that level at all (PF1 RAW: "she has one spell
+ * slot per day of each shaman spell level she can cast"), so this filters
+ * against {@link accessibleSpellLevels} (the shaman caster model) rather than
+ * a fixed per-spell unlock level.
+ *
+ * These are *bonus* spells known — the tracker/builder add them to the
+ * displayed known list automatically (see `CASTER_MODELS.shaman`'s
+ * `learnGuidance` for the caveat on the daily-spontaneous-cast mechanic this
+ * does NOT track as a separate resource pool).
+ *
+ * @example
+ *   shamanSpiritSpellsKnown(ref, "life", 5)  // → [Detect Undead, Lesser Restoration, Neutralize Poison]
+ *   shamanSpiritSpellsKnown(ref, "life", 0)  // → []  (no shaman levels)
+ */
+export function shamanSpiritSpellsKnown(
+  refData: RefData,
+  spiritTag: string | undefined,
+  shamanLevel: number,
+): { id: string; name: string; level: number }[] {
+  if (!spiritTag) return [];
+  const spirit = SHAMAN_SPIRITS[spiritTag];
+  if (!spirit) return [];
+  const accessible = new Set(accessibleSpellLevels(CASTER_MODELS.shaman!, shamanLevel));
+  return spirit.spiritMagicSpells
+    .filter((sp) => accessible.has(sp.level))
     .map((sp) => ({ id: sp.id, name: refData.spells[sp.id]?.name ?? sp.name, level: sp.level }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
