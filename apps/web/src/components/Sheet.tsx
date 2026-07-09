@@ -192,17 +192,14 @@ export function Sheet({
             baseline={baseline.ac.flatFooted}
           />
           <StatSeal label="CMD" value={sheet.cmd} resetKey={doc.id} baseline={baseline.cmd} />
-          {/* Arcane spell failure (issue #8) — display-only, shown only for
-              arcane casters (wizard/sorcerer/bard). */}
+          {/* Arcane spell failure (issue #8, issue #64) — display-only, shown
+              only for arcane casters (wizard/sorcerer/arcanist/magus/bard/
+              summoner/skald/witch/bloodrager). */}
           {sheet.arcaneSpellFailure ? (
             <StatSeal
               label="Arcane Spell Failure"
               value={`${sheet.arcaneSpellFailure.total}%`}
-              foot={
-                sheet.arcaneSpellFailure.bardExempt
-                  ? "Bard: exempt in light armor, no shield"
-                  : undefined
-              }
+              foot={sheet.arcaneSpellFailure.exemptNote}
               className="seal--compact"
               resetKey={doc.id}
             />

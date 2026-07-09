@@ -381,27 +381,25 @@ function heaviestWornArmorType(doc: CharacterDoc): number {
 
 /**
  * Class tags recognised as arcane spellcasters for arcane-spell-failure (ASF)
- * display (issue #8) — clean-room from PF1 RAW, not derived from Foundry data
- * (the vendored `ClassRef` carries no arcane/divine flag). This is the arcane
- * subset of `tables.ts`'s `SpellProgression` tags: wizard and sorcerer are
- * full/spontaneous arcane casters, bard is a spontaneous arcane caster, witch
- * (APG) is a full prepared-arcane caster, and bloodrager (ACG) is a
- * spontaneous arcane caster too (own spell list, cha-based);
- * cleric/druid/paladin/ranger/shaman/warpriest/hunter are divine and never
- * incur ASF at all. Summoner
- * and skald (both Cha-based spontaneous casters) are also arcane — inquisitor
- * (Wis-based) is divine and stays out of this set. Note: PF1 RAW actually
- * gives both summoner (light armor, no shield) and skald (light OR medium
- * armor, even with a shield) a bard-shaped ASF exemption of their own — not
- * modeled here; `computeArcaneSpellFailure`'s `bardExempt` check below is
- * still bard-only, so a summoner/skald-only character will show ASF from
- * light/medium armor that RAW says shouldn't apply (tracked as a follow-up).
- * (Note: arcanist and magus are also arcane casters but are not yet in this
- * set — a pre-existing gap, not introduced here.)
+ * display (issue #8, issue #64) — clean-room from PF1 RAW, not derived from
+ * Foundry data (the vendored `ClassRef` carries no arcane/divine flag). This
+ * is the arcane subset of `tables.ts`'s `SpellProgression` tags: wizard,
+ * sorcerer, arcanist (ACG), and magus (UM) are int/cha-based arcane casters
+ * (arcanist has no armor proficiency at all — "not proficient with any type
+ * of armor or shield" per its own Weapon and Armor Proficiency feature —
+ * while magus gets a level-gated exemption, see `ARMOR_EXEMPTIONS`); bard is
+ * a spontaneous arcane caster, witch (APG) is a full prepared-arcane caster,
+ * and bloodrager (ACG) is a spontaneous arcane caster too (own spell list,
+ * cha-based); cleric/druid/paladin/ranger/shaman/warpriest/hunter are divine
+ * and never incur ASF at all. Summoner and skald (both Cha-based spontaneous
+ * casters) are also arcane — inquisitor (Wis-based) is divine and stays out
+ * of this set.
  */
 const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set([
   "wizard",
   "sorcerer",
+  "arcanist",
+  "magus",
   "bard",
   "summoner",
   "skald",
@@ -413,21 +411,94 @@ const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set([
 ]);
 
 /**
+ * One class's PF1-RAW "Weapon and Armor Proficiency" arcane-spell-failure
+ * exemption (issue #64) — clean-room from each class's own Archives of
+ * Nethys page (legacy.aonprd.com), not Foundry source:
+ *
+ * - Bard (CRB): "...cast bard spells while wearing light armor and using a
+ *   shield without incurring the normal arcane spell failure chance." —
+ *   light armor AND a shield, no ASF.
+ * - Summoner (APG) / Summoner Unchained: "...cast summoner spells while
+ *   wearing light armor without incurring the normal arcane spell failure
+ *   chance... wearing medium or heavy armor, or using a shield, incurs a
+ *   chance of arcane spell failure..." — light armor ONLY, a shield still
+ *   incurs ASF. (Unchained restates identical wording, not a different rule.)
+ * - Skald (ACG): "...cast skald spells while wearing light or medium armor
+ *   and even while using a shield without incurring the normal arcane spell
+ *   failure chance." — light OR medium armor, even with a shield (tower
+ *   shields aren't a skald proficiency, but the schema doesn't distinguish
+ *   shield sub-types, so any equipped shield is treated as covered).
+ * - Bloodrager (ACG): "...cast bloodrager spells while wearing light armor
+ *   or medium armor without incurring the normal arcane spell failure
+ *   chance... wearing heavy armor or wielding a shield incurs a chance of
+ *   arcane spell failure..." — light OR medium armor, a shield still incurs
+ *   ASF.
+ * - Magus (UM): light armor at 1st ("Weapon and Armor Proficiency"), medium
+ *   armor added at 7th ("Medium Armor" class feature), heavy armor added at
+ *   13th ("Heavy Armor" class feature); "a magus wearing [medium/heavy]
+ *   armor or using a shield incurs a chance of arcane spell failure" — a
+ *   shield always incurs ASF regardless of level.
+ *
+ * `maxArmorType` mirrors `heaviestWornArmorType`'s weight scale (0 none/1
+ * light/2 medium/3 heavy) and is a function of the class's own level so the
+ * magus's exemption widens as she levels.
+ */
+interface ArcaneArmorExemption {
+  /** Display label for the sheet's exemption footnote. */
+  label: string;
+  /** Heaviest armor type (0-3) exempted from ASF, given this class's level. */
+  maxArmorType: (classLevel: number) => number;
+  /** Whether the exemption still holds when a shield is equipped. */
+  shieldOk: boolean;
+}
+
+const ARMOR_EXEMPTIONS: Readonly<Record<string, ArcaneArmorExemption>> = {
+  bard: { label: "Bard", maxArmorType: () => 1, shieldOk: true },
+  summoner: { label: "Summoner", maxArmorType: () => 1, shieldOk: false },
+  summonerUnchained: {
+    label: "Summoner (Unchained)",
+    maxArmorType: () => 1,
+    shieldOk: false,
+  },
+  skald: { label: "Skald", maxArmorType: () => 2, shieldOk: true },
+  bloodrager: { label: "Bloodrager", maxArmorType: () => 2, shieldOk: false },
+  magus: {
+    label: "Magus",
+    maxArmorType: (classLevel) => (classLevel >= 13 ? 3 : classLevel >= 7 ? 2 : 1),
+    shieldOk: false,
+  },
+};
+
+/** "light armor" / "light or medium armor" / "light, medium, or heavy armor". */
+function armorTierLabel(maxArmorType: number): string {
+  if (maxArmorType >= 3) return "light, medium, or heavy armor";
+  if (maxArmorType >= 2) return "light or medium armor";
+  return "light armor";
+}
+
+/**
  * Total arcane spell failure chance (%) from equipped armor + shields (issue
  * #8), only for characters with at least one arcane-casting class — divine-
  * only characters get `undefined` back (ASF doesn't apply to them at all).
  *
- * Bard nuance (PF1 RAW): a bard ignores ASF while wearing light armor (or
- * none) and no shield. That exemption is applied here only when bard is the
- * character's ONLY arcane class — a multiclass wizard/bard still incurs ASF
- * for her wizard spells regardless of what she's wearing, so `total` stays
- * the plain sum in that case (this app doesn't track spells per casting
- * class, so the exemption is all-or-nothing rather than per-spell).
+ * Armor-proficiency exemption (PF1 RAW, issue #64, see `ARMOR_EXEMPTIONS`):
+ * several arcane classes ignore ASF while wearing armor within their own
+ * proficiency (and, for bard/skald, even with a shield). This is applied
+ * here only when the exempt class is the character's ONLY arcane class — a
+ * multiclass wizard/bard still incurs ASF for her wizard spells regardless
+ * of what she's wearing, so `total` stays the plain (conservative) sum in
+ * that case. This app models ASF as a single sheet-level number rather than
+ * per-spell/per-class, so the exemption is necessarily all-or-nothing: where
+ * a multiclass character's arcane classes disagree on armor proficiency
+ * (e.g. wizard + skald), the exemption is withheld entirely and the sheet
+ * shows the conservative (higher) total rather than guessing which spell
+ * the player is about to cast.
  */
 function computeArcaneSpellFailure(
   doc: CharacterDoc,
-): { total: number; bardExempt: boolean } | undefined {
-  const classTags = new Set(doc.identity.classes.filter((c) => c.level > 0).map((c) => c.tag));
+): { total: number; exempt: boolean; exemptNote?: string } | undefined {
+  const classes = doc.identity.classes.filter((c) => c.level > 0);
+  const classTags = new Set(classes.map((c) => c.tag));
   const arcaneTags = [...classTags].filter((t) => ARCANE_CASTER_TAGS.has(t));
   if (arcaneTags.length === 0) return undefined;
 
@@ -439,9 +510,21 @@ function computeArcaneSpellFailure(
     if (inst.armor.slot === "shield") hasShield = true;
   }
 
-  const bardOnly = arcaneTags.length === 1 && arcaneTags[0] === "bard";
-  const bardExempt = bardOnly && !hasShield && heaviestWornArmorType(doc) < 2;
-  return { total: bardExempt ? 0 : rawTotal, bardExempt };
+  const soleArcaneTag = arcaneTags.length === 1 ? arcaneTags[0] : undefined;
+  const rule = soleArcaneTag ? ARMOR_EXEMPTIONS[soleArcaneTag] : undefined;
+  let exempt = false;
+  let exemptNote: string | undefined;
+  if (rule) {
+    const classLevel = classes.find((c) => c.tag === soleArcaneTag)?.level ?? 0;
+    const maxArmorType = rule.maxArmorType(classLevel);
+    exempt = (rule.shieldOk || !hasShield) && heaviestWornArmorType(doc) <= maxArmorType;
+    if (exempt) {
+      exemptNote = `${rule.label}: exempt in ${armorTierLabel(maxArmorType)}${
+        rule.shieldOk ? " (shield included)" : ", no shield"
+      }`;
+    }
+  }
+  return { total: exempt ? 0 : rawTotal, exempt, exemptNote };
 }
 
 /* ----------------------------------------------------------------------- HP */
