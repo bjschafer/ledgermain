@@ -25,6 +25,7 @@ import { CursePicker } from "./CursePicker.js";
 import { DisciplinePicker } from "./DisciplinePicker.js";
 import { DiscoveryPicker } from "./DiscoveryPicker.js";
 import { DomainPicker } from "./DomainPicker.js";
+import { EidolonPicker } from "./EidolonPicker.js";
 import { FiendishBoonPicker } from "./FiendishBoonPicker.js";
 import { HexPicker } from "./HexPicker.js";
 import { ImplementPicker } from "./ImplementPicker.js";
@@ -515,6 +516,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Tracked phantom — spiritualist's own Phantom class feature (issue #65). */}
       <PhantomPicker doc={doc} update={update} />
+
+      {/* Tracked eidolon — summoner's own Eidolon class feature (issue #65). */}
+      <EidolonPicker doc={doc} update={update} />
 
       {/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}
       <RangerPicker doc={doc} update={update} />

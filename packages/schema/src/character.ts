@@ -809,6 +809,16 @@ export interface CharacterDoc {
      */
     phantom?: PhantomBuild;
     /**
+     * A tracked eidolon (PF1 APG Summoner's signature companion, "Eidolon"
+     * class feature) — models the eidolon itself as a trackable creature with
+     * its own derived HD/BAB/saves/AC/attacks/skills, mirroring
+     * `animalCompanion`/`phantom` above; see `@pf1/engine` `deriveEidolon`
+     * (issue #65, groundwork for issue #68's future full-stat-block companion
+     * work). Optional/back-compat: documents without this field have no
+     * tracked eidolon.
+     */
+    eidolon?: EidolonBuild;
+    /**
      * Barbarian rage power ids chosen (keys into `@pf1/engine` `RAGE_POWERS` —
      * issue #65/#67), shared by both `barbarian` (chained) and
      * `barbarianUnchained` — PF1 RAW grants a rage power at 2nd level and
@@ -1197,6 +1207,14 @@ export interface CharacterDoc {
      */
     phantom?: PhantomLiveState;
     /**
+     * Live session state for the tracked eidolon (`build.eidolon`) — damage
+     * bookkeeping, which of the master's `activeBuffs` are shared onto it
+     * (Share Spells), and the summoned/dismissed toggle. Mirrors
+     * `animalCompanion`/`phantom` above; see {@link EidolonLiveState}.
+     * Absent/omitted while `build.eidolon` is unset.
+     */
+    eidolon?: EidolonLiveState;
+    /**
      * Occultist Mental Focus points currently invested per implement school
      * tag (keys into `@pf1/engine` `OCCULTIST_SCHOOLS`, issue #65). PF1 RAW
      * ("Mental Focus"): once per day (after 1 hour spent preparing
@@ -1487,6 +1505,103 @@ export interface PhantomLiveState {
    * defaults to `"ectoplasmic"` (the default manifested state).
    */
   manifestation?: "ectoplasmic" | "incorporeal" | "confined";
+}
+
+/**
+ * One evolution pick spent from an eidolon's evolution pool
+ * (`EidolonBuild.evolutions`) — keys into `@pf1/engine` `EIDOLON_EVOLUTIONS`.
+ * Repeatable evolutions (e.g. `"ability-increase"`, `"improved-natural-armor"`,
+ * `"tentacle"`, `"climb"`, `"swim"`, `"limbs-legs"`) appear as multiple
+ * entries with the same `id`, mirroring `occultistImplements`'s multiset
+ * posture rather than a per-id count map (keeps pick ORDER, which matters
+ * for e.g. "Ability Increase... plus 1 additional time for every 6 levels"
+ * gating, though that gating itself is soft/unenforced — see
+ * `@pf1/engine` `eidolon.ts`'s module doc comment).
+ */
+export interface EidolonEvolutionPick {
+  /** Evolution id — key into `@pf1/engine` `EIDOLON_EVOLUTIONS`. */
+  id: string;
+  /**
+   * Per-pick target for evolutions that need one (currently only
+   * `"ability-increase"`, an {@link AbilityId}). Ignored by every other
+   * evolution id. Defaults to `"str"` when required but missing/invalid
+   * (`@pf1/engine` `deriveEidolon`) — Str is the overwhelmingly common
+   * choice for a melee-combat eidolon, mirroring `AnimalCompanionBuild`'s
+   * own Str default over `PhantomBuild`'s Cha default.
+   */
+  choice?: AbilityId | string;
+}
+
+/**
+ * A tracked eidolon's build choices (`build.eidolon`) — see that field's doc
+ * comment. Mirrors `AnimalCompanionBuild`'s shape; the differences are the
+ * base-form selection (in place of a species) and the evolution-pool spend
+ * (`evolutions`, in place of ability-score-increase slots — an eidolon's
+ * Ability Increase is itself just one more evolution pick, not a separate
+ * automatic table grant the way `PhantomBuild.abilityIncreases`/
+ * `AnimalCompanionBuild.abilityIncreases` are).
+ */
+export interface EidolonBuild {
+  /**
+   * Base form id — key into `@pf1/engine` `EIDOLON_BASE_FORMS`. Only
+   * `"biped" | "quadruped" | "serpentine"` are offered in v1 (the three
+   * forms every eidolon-optimization guide treats as core); APG's other
+   * three forms (Aquatic, Avian, Tauric) are a documented deferral — see
+   * `eidolon.ts`'s module doc comment.
+   */
+  baseForm: string;
+  /** Player-given name (e.g. "Grix"). */
+  name: string;
+  /**
+   * Chosen evolution picks, in pick order — see {@link EidolonEvolutionPick}.
+   * Free-choice; the evolution pool's budget (`@pf1/engine`
+   * `eidolonProgressionRow(level).evolutionPool`) is a SOFT warning only on
+   * overspend, same posture as `traits`/`racialTraits`/every other budgeted
+   * picker in this codebase — see `apps/web/src/model/eidolon.ts`'s
+   * `eidolonEvolutionPointsSpent`/`eidolonEvolutionPoolNeedsWarning`.
+   */
+  evolutions: EidolonEvolutionPick[];
+  /** Free-text notes (e.g. personality, tactics, house-rule tweaks). */
+  notes?: string;
+}
+
+/**
+ * Live session state for a tracked eidolon (`live.eidolon`) — see that
+ * field's doc comment. Same damage/nonlethal/sharedBuffIds shape as
+ * {@link AnimalCompanionLiveState}/{@link PhantomLiveState}, plus the
+ * summoned/dismissed toggle unique to eidolons.
+ */
+export interface EidolonLiveState {
+  /** Lethal damage taken so far (current HP = derived max − damage). Omitted/0 = undamaged. */
+  damage?: number;
+  /** Nonlethal damage taken so far. Omitted/0 = none. */
+  nonlethal?: number;
+  /**
+   * Instance ids from `live.activeBuffs` (the MASTER's buff list) that also
+   * apply to the eidolon's derived sheet (Share Spells). Toggled via
+   * `apps/web/src/model/eidolon.ts`; resolved by `@pf1/engine`
+   * `deriveEidolon` exactly like `AnimalCompanionLiveState.sharedBuffIds`.
+   * Omitted/empty = no shared buffs.
+   */
+  sharedBuffIds?: string[];
+  /**
+   * Whether the eidolon is currently manifested on the material plane (PF1
+   * RAW: a summoner can summon/dismiss her eidolon as a standard action; a
+   * dismissed eidolon returns to its home plane and can't act). Display-only
+   * bookkeeping — same posture as `PhantomLiveState.manifestation`: the
+   * eidolon's derived stat block renders identically either way (so the
+   * player can reference it while planning a re-summon), the panel just
+   * flags the state. Omitted/undefined defaults to `true` (summoned).
+   *
+   * Life Link (PF1 CRB "Eidolon": the summoner may transfer damage from the
+   * eidolon to herself, 1 hp per point, as an immediate action, no daily
+   * limit, whenever the eidolon would be reduced below 0 hp) is a manual
+   * player-triggered transfer with no automatic recomputation, so — like
+   * `martialFlexibilityFeatId`'s manual-borrow bookkeeping — it is
+   * deliberately NOT modeled numerically anywhere in this schema; the
+   * tracker panel surfaces the rule as a reminder only.
+   */
+  summoned?: boolean;
 }
 
 /**

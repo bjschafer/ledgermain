@@ -3,6 +3,7 @@ import { BuffsPanel } from "./BuffsPanel.js";
 import { CompanionPanel } from "./CompanionPanel.js";
 import { ConditionsPanel } from "./ConditionsPanel.js";
 import { DeedsPanel } from "./DeedsPanel.js";
+import { EidolonPanel } from "./EidolonPanel.js";
 import { FamiliarPanel } from "./FamiliarPanel.js";
 import { FeatsPanel } from "./FeatsPanel.js";
 import { HeroPointsPanel } from "./HeroPointsPanel.js";
@@ -49,6 +50,7 @@ export function Tracker(props: BuilderProps) {
       <FamiliarPanel {...props} />
       <CompanionPanel {...props} />
       <PhantomPanel {...props} />
+      <EidolonPanel {...props} />
       <FeatsPanel {...props} />
     </div>
   );

@@ -409,6 +409,28 @@ export {
   type DerivedPhantomSkill,
 } from "./phantom.js";
 export {
+  EIDOLON_BASE_FORMS,
+  EIDOLON_BASE_FORM_IDS,
+  EIDOLON_PROGRESSION,
+  EIDOLON_EVOLUTIONS,
+  EIDOLON_EVOLUTION_IDS,
+  EIDOLON_SPECIAL_ABILITY_DETAIL,
+  deriveEidolon,
+  eidolonProgressionRow,
+  eidolonSpecialAbilityNames,
+  eidolonSummonerLevel,
+  type EidolonBaseForm,
+  type EidolonAttackGrant,
+  type EidolonProgressionRow,
+  type EidolonEvolutionDef,
+  type EidolonEvolutionKind,
+  type EidolonSpeedGrant,
+  type DerivedEidolon,
+  type DerivedEidolonAc,
+  type DerivedEidolonAttack,
+  type DerivedEidolonSkill,
+} from "./eidolon.js";
+export {
   routeSharedBuffs,
   applySharedAbilityBonuses,
   applySharedSpeeds,
