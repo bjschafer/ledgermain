@@ -37,6 +37,7 @@ import {
   featNameSlug,
   resolveArchetypeFeatureEffect,
   resolveFeatEffect,
+  ROGUE_TALENTS,
   tryEvaluateFormula,
   type RollData,
 } from "@pf1/engine";
@@ -124,6 +125,32 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
       seen.add(featId);
       const featName = refData.feats[featId]?.name ?? feature.name;
       out.push({ featId, featName, classTag: cls.tag, featureName: feature.name });
+    }
+  }
+  // Rogue talents that grant a fixed feat outright (issue #65 — "Finesse
+  // Rogue" grants Weapon Finesse, no player-chosen target needed; see
+  // `ROGUE_TALENTS[id].grantsFeat` in `@pf1/engine` `rogue-talents.ts`), same
+  // "talent grants a feat" shape as Rogue (Unchained)'s vendored "Finesse
+  // Training (UC)" -> `FEATURE_NAME_OVERRIDES` entry above, but sourced from
+  // the player's own `build.rogueTalents` picks rather than a vendored
+  // class-feature grant.
+  const rogueClass = doc.identity.classes.find(
+    (c) => c.tag === "rogue" || c.tag === "rogueUnchained",
+  );
+  if (rogueClass) {
+    for (const talentId of doc.build.rogueTalents ?? []) {
+      const grantsFeat = ROGUE_TALENTS[talentId]?.grantsFeat;
+      if (!grantsFeat) continue;
+      const featId = byName.get(grantsFeat);
+      if (!featId || seen.has(featId)) continue;
+      seen.add(featId);
+      const featName = refData.feats[featId]?.name ?? grantsFeat;
+      out.push({
+        featId,
+        featName,
+        classTag: rogueClass.tag,
+        featureName: ROGUE_TALENTS[talentId]!.name,
+      });
     }
   }
   return out;
@@ -387,6 +414,18 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
         out.push(known ? { ...known, count } : { type: GENERIC_SLOT, count, source: f.name });
       }
     }
+  }
+
+  // Rogue talents that grant a generic bonus-feat SLOT (issue #65 — "Combat
+  // Trick"; see `ROGUE_TALENTS[id].bonusFeatSlot` in `@pf1/engine`
+  // `rogue-talents.ts`), one slot per instance taken. `build.rogueTalents` is
+  // a de-duped id list (same as `witchHexes`/`monkKiPowers`), so Combat Trick
+  // can only be taken once here — matches the RAW rule that a rogue talent
+  // may not be selected twice unless it specifically says otherwise.
+  for (const talentId of doc.build.rogueTalents ?? []) {
+    const talent = ROGUE_TALENTS[talentId];
+    if (!talent?.bonusFeatSlot) continue;
+    out.push({ type: GENERIC_SLOT, count: 1, source: `Rogue Talent: ${talent.name}` });
   }
 
   return out;

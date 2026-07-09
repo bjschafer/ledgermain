@@ -34,6 +34,7 @@ function makeDoc(over: {
   extraFeats?: { instanceId: string; featId: string; choiceId?: string }[];
   gmFeatSlots?: number;
   archetypes?: string[];
+  rogueTalents?: string[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -52,6 +53,7 @@ function makeDoc(over: {
       featChoices: over.featChoices,
       extraFeats: over.extraFeats,
       archetypes: over.archetypes,
+      rogueTalents: over.rogueTalents,
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
@@ -315,6 +317,51 @@ describe("expectedFeatCount: Rogue (Unchained) Finesse Training grant + Rogue's 
     const doc = makeDoc({ classes: [{ tag: "rogueUnchained", level: 20 }], race: "Elf" });
     // base: ceil(20/2) = 10; without the fix this would be 10 + floor(20/5) = 14.
     expect(expectedFeatCount(doc, ref)).toBe(10);
+  });
+});
+
+describe("issue #65: rogue talent -> feat bridges (Combat Trick / Finesse Rogue)", () => {
+  it("Combat Trick contributes a generic bonus-feat SLOT", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "rogue", level: 2 }],
+      race: "Elf",
+      rogueTalents: ["combatTrick"],
+    });
+    // base: ceil(2/2) = 1; +1 from Combat Trick's bonus-feat slot.
+    expect(expectedFeatCount(doc, ref)).toBe(2);
+  });
+
+  it("Finesse Rogue grants Weapon Finesse outright (no slot consumed)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "rogue", level: 2 }],
+      race: "Elf",
+      rogueTalents: ["finesseRogue"],
+    });
+    const granted = grantedFeats(doc, ref);
+    expect(granted.map((g) => g.featName)).toEqual(["Weapon Finesse"]);
+    expect(granted[0]!.classTag).toBe("rogue");
+    // base: ceil(2/2) = 1; no class bonus feats (Finesse Rogue is a fixed grant, not a slot).
+    expect(expectedFeatCount(doc, ref)).toBe(1);
+  });
+
+  it("a Rogue (Unchained) with the Finesse Rogue talent doesn't double-grant Weapon Finesse (already granted by vendored Finesse Training (UC))", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "rogueUnchained", level: 2 }],
+      race: "Elf",
+      rogueTalents: ["finesseRogue"],
+    });
+    const granted = grantedFeats(doc, ref);
+    expect(granted.filter((g) => g.featName === "Weapon Finesse")).toHaveLength(1);
+  });
+
+  it("a talent with no feat/slot bridge (e.g. Trap Spotter) contributes nothing", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "rogue", level: 2 }],
+      race: "Elf",
+      rogueTalents: ["trapSpotter"],
+    });
+    expect(grantedFeats(doc, ref)).toEqual([]);
+    expect(expectedFeatCount(doc, ref)).toBe(1);
   });
 });
 

@@ -1543,3 +1543,30 @@ export function bombDamageDetail(alchemistLevel: number, intMod: number): BombDa
   const addend = intMod === 0 ? "" : intMod > 0 ? `+${intMod}` : `${intMod}`;
   return { dice, damageLabel: `${dice}d6${addend} fire` };
 }
+
+/* --------------------------------------------- rogue (uc) finesse training */
+
+/**
+ * Rogue (Unchained) Finesse Training weapon-type pick levels (issue #65,
+ * clean-room from the published rules, verified against aonprd.com/
+ * d20pfsrd.com's "Rogue (Unchained)" class page): "at 3rd level ... and every
+ * eight levels thereafter [11th, 19th] ... she can select any one type of
+ * weapon that can be used with Weapon Finesse ... she adds her Dexterity
+ * modifier, instead of her Strength modifier, to the damage roll" with that
+ * weapon. Three tiers total, mirroring `WEAPON_TRAINING_LEVELS`'s shape
+ * (index 0 = 3rd-level pick, index 1 = 11th, index 2 = 19th) but ADDITIVE
+ * rather than scaling — each pick just adds one more eligible weapon type,
+ * no growing bonus. See `computeWeaponAttacks` in `compute.ts` for how a
+ * pick is matched against an equipped `WeaponInstance`.
+ */
+export const ROGUE_FINESSE_TRAINING_LEVELS: readonly number[] = [3, 11, 19];
+
+/**
+ * Rogue's Edge (UC) skill unlock pick levels (issue #65, clean-room from the
+ * published rules): "at 5th level, and every five levels thereafter [10th,
+ * 15th, 20th], a rogue can choose a skill unlock power for one skill in
+ * which she has at least 5 ranks." Four tiers total (index 0 = 5th-level
+ * pick). The unlock's own tiered prose effects are not modeled — see
+ * `CharacterDoc.build.rogueSkillUnlocks`'s doc comment.
+ */
+export const ROGUE_SKILL_UNLOCK_LEVELS: readonly number[] = [5, 10, 15, 20];

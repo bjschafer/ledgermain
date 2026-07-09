@@ -24,6 +24,7 @@ import { DisciplinePicker } from "./DisciplinePicker.js";
 import { DiscoveryPicker } from "./DiscoveryPicker.js";
 import { DomainPicker } from "./DomainPicker.js";
 import { HexPicker } from "./HexPicker.js";
+import { KiPowerPicker } from "./KiPowerPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
 import { PatronPicker } from "./PatronPicker.js";
@@ -34,9 +35,13 @@ import { OrderPicker } from "./OrderPicker.js";
 import { Panel } from "./Panel.js";
 import { RangerPicker } from "./RangerPicker.js";
 import { RevelationPicker } from "./RevelationPicker.js";
+import { RogueFinesseWeaponsPicker } from "./RogueFinesseWeaponsPicker.js";
+import { RogueSkillUnlocksPicker } from "./RogueSkillUnlocksPicker.js";
+import { RogueTalentPicker } from "./RogueTalentPicker.js";
 import { SchoolPicker } from "./SchoolPicker.js";
 import { ShamanHexPicker } from "./ShamanHexPicker.js";
 import { SpiritPicker } from "./SpiritPicker.js";
+import { StyleStrikePicker } from "./StyleStrikePicker.js";
 import type { BuilderProps } from "./types.js";
 import { WeaponTrainingPicker } from "./WeaponTrainingPicker.js";
 
@@ -389,6 +394,27 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Order picker — cavalier/samurai only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "cavalier" || c.tag === "samurai") && (
         <OrderPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Ki power + style strike pickers — Monk (Unchained) only (issue #65, free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "monkUnchained") && (
+        <>
+          <KiPowerPicker doc={doc} update={update} />
+          <StyleStrikePicker doc={doc} update={update} />
+        </>
+      )}
+
+      {/* Rogue talent picker — chained rogue AND Rogue (Unchained), shared field (issue #65, free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "rogue" || c.tag === "rogueUnchained") && (
+        <RogueTalentPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Finesse Training weapon-type picks + Rogue's Edge (UC) skill unlock picks — Rogue (Unchained) only (issue #65). */}
+      {doc.identity.classes.some((c) => c.tag === "rogueUnchained") && (
+        <>
+          <RogueFinesseWeaponsPicker doc={doc} update={update} />
+          <RogueSkillUnlocksPicker doc={doc} update={update} />
+        </>
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

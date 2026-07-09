@@ -52,6 +52,7 @@ import {
   babForLevels,
   isTrainedOnly,
   PARAMETERIZED_SKILL_PREFIXES,
+  ROGUE_FINESSE_TRAINING_LEVELS,
   SAVE_ABILITY,
   saveForLevels,
   SIZE_AC_MOD,
@@ -791,6 +792,35 @@ function weaponGroupKeys(w: Pick<WeaponInstance, "group" | "weaponGroups">): str
 }
 
 /**
+ * Rogue (Unchained) Finesse Training (issue #65): true when `w` is eligible
+ * for the character's Dex-to-damage substitution — one of `build.
+ * rogueFinesseWeapons`' picks that have actually been UNLOCKED by the
+ * character's current `rogueUnchained` class level (`ROGUE_FINESSE_TRAINING_LEVELS`
+ * — 3rd/11th/19th) matches this weapon. Matching is a free-text,
+ * case-insensitive substring check against the weapon's display `name` (so a
+ * "rapier" pick matches a `WeaponInstance` named "Rapier +1") OR an exact
+ * match against its free-text `group` tag — the same convention Weapon
+ * Focus/Specialization already use via `WeaponInstance.group` (not the
+ * semantic `WEAPON_GROUPS` vocabulary — RAW scopes this ability to one
+ * weapon TYPE, not a whole group). Never blocks selection; a character with
+ * no `rogueUnchained` levels or no picks simply never matches.
+ */
+function rogueFinesseTrainingMatches(doc: CharacterDoc, w: WeaponInstance): boolean {
+  const rogueLevel = doc.identity.classes.find((c) => c.tag === "rogueUnchained")?.level ?? 0;
+  if (rogueLevel <= 0) return false;
+  const unlockedTiers = ROGUE_FINESSE_TRAINING_LEVELS.filter((lvl) => rogueLevel >= lvl).length;
+  const picks = (doc.build.rogueFinesseWeapons ?? []).slice(0, unlockedTiers);
+  if (picks.length === 0) return false;
+  const wname = w.name.trim().toLowerCase();
+  const wgroup = (w.group ?? "").trim().toLowerCase();
+  return picks.some((p) => {
+    const needle = p?.trim().toLowerCase();
+    if (!needle) return false;
+    return wname.includes(needle) || wgroup === needle;
+  });
+}
+
+/**
  * Builds a ResolvedWeaponAttack for each entry in build.weapons.
  *
  * Attack formula (PF1 CRB):
@@ -801,7 +831,7 @@ function weaponGroupKeys(w: Pick<WeaponInstance, "group" | "weaponGroups">): str
  *              or `attack.weapon.bows` from a semantic weapon-group bonus)
  *
  * Damage bonus (numeric; dice displayed separately):
- *   damage = floor(STR × damageMultiplier) [melee, damageAbility="str" only]
+ *   damage = floor(ability mod × damageMultiplier) [melee, damageAbility="str"/"dex" only]
  *            + enhancement
  *            + any "damage" target changes from the collected modifier set
  *            + per-group changes (e.g. `damage.weapon.longsword` from Weapon Specialization,
@@ -812,6 +842,14 @@ function weaponGroupKeys(w: Pick<WeaponInstance, "group" | "weaponGroups">): str
  * group-specific targets (`attack.weapon.<group>` / `damage.weapon.<group>`) so the
  * regular collect → stack pipeline handles them without special-casing here —
  * see {@link weaponGroupKeys} for how a weapon's matching `<group>` keys are gathered.
+ *
+ * `damageAbility` is normally "str" (or the player's own explicit "dex"/"none"
+ * override — issue #65 extended the union to allow a hand-set Dex-to-damage
+ * source like Slashing Grace). When the stored value is unset or the default
+ * "str", Rogue (Unchained)'s Finesse Training substitutes Dex automatically
+ * for a matching weapon — see {@link rogueFinesseTrainingMatches} — so the
+ * player doesn't have to flip the per-weapon field by hand for the class
+ * feature that's supposed to grant it for free.
  */
 function computeWeaponAttacks(
   doc: CharacterDoc,
@@ -852,11 +890,20 @@ function computeWeaponAttacks(
       ...toComponents(weaponAttackStack.modifiers),
     ];
 
-    // Ability-to-damage: only STR, only melee, scaled by damageMultiplier.
-    const damageAbility = w.damageAbility ?? "str";
+    // Ability-to-damage: STR or DEX, only melee, scaled by damageMultiplier.
+    // An unset/default "str" value is auto-promoted to "dex" for a weapon
+    // matching Rogue (Unchained)'s Finesse Training (issue #65); an explicit
+    // player-set "dex"/"none" always wins over the auto-match.
+    const autoFinesseDex =
+      (w.damageAbility === undefined || w.damageAbility === "str") &&
+      category === "melee" &&
+      rogueFinesseTrainingMatches(doc, w);
+    const damageAbility = autoFinesseDex ? "dex" : (w.damageAbility ?? "str");
+    const damageAbilityMod = damageAbility === "dex" ? dexMod : strMod;
     const mult = w.damageMultiplier ?? 1;
-    const appliesAbilityDamage = damageAbility === "str" && category === "melee";
-    const abilityDamage = appliesAbilityDamage ? Math.floor(strMod * mult) : 0;
+    const appliesAbilityDamage =
+      (damageAbility === "str" || damageAbility === "dex") && category === "melee";
+    const abilityDamage = appliesAbilityDamage ? Math.floor(damageAbilityMod * mult) : 0;
 
     // General "damage" target changes + per-group feat bonuses (e.g. Weapon
     // Specialization via "damage.weapon.<group>", or a semantic weapon-group
@@ -878,7 +925,8 @@ function computeWeaponAttacks(
     const damageComponents: ModifierComponent[] = [];
     if (appliesAbilityDamage) {
       const multLabel = mult !== 1 ? ` ×${mult}` : "";
-      damageComponents.push(synthetic(`Strength${multLabel}`, "ability", abilityDamage));
+      const abilityLabel = damageAbility === "dex" ? "Dexterity" : "Strength";
+      damageComponents.push(synthetic(`${abilityLabel}${multLabel}`, "ability", abilityDamage));
     }
     if (enh !== 0) damageComponents.push(synthetic(`${w.name} (enhancement)`, "enh", enh));
     damageComponents.push(...toComponents(weaponDamageStack.modifiers));

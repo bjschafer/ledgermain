@@ -627,6 +627,81 @@ export interface CharacterDoc {
      * documents without this field are unaffected.
      */
     cavalierOrder?: string;
+    /**
+     * Monk (Unchained) ki power ids chosen (keys into `@pf1/engine`
+     * `MONK_KI_POWERS` — issue #65). Gained at 4th level and every 2 levels
+     * thereafter (4th, 6th, ..., 20th — 9 total by 20th); see
+     * `model/monkKiPowers.ts` for the budget math. Every ki power here is
+     * `displayOnly` (a limited-use/activated ability with no unconditional
+     * numeric effect — see `MONK_KI_POWERS`' doc comment for why none of the
+     * 39 core Pathfinder Unchained ki powers cleared the bar for a real
+     * `Change`), same posture as `witchHexes`. Free-choice, soft warning only
+     * on overspend. Empty/undefined for non-monkUnchained characters.
+     * Back-compat: documents without this field are unaffected.
+     */
+    monkKiPowers?: string[];
+    /**
+     * Monk (Unchained) style strike ids chosen (keys into `@pf1/engine`
+     * `MONK_STYLE_STRIKES` — issue #65). Gained at 5th level and every 4
+     * levels thereafter (5th, 9th, 13th, 17th — 4 total by 17th; the 15th-
+     * level "designate two per round" bump is a usage upgrade to the SAME
+     * pool, not an extra pick — see `model/monkStyleStrikes.ts`). Every style
+     * strike here is `displayOnly` (a per-attack flurry rider, same posture
+     * as ki powers). Free-choice, soft warning only on overspend.
+     * Empty/undefined for non-monkUnchained characters. Back-compat:
+     * documents without this field are unaffected.
+     */
+    monkStyleStrikes?: string[];
+    /**
+     * Rogue talent ids chosen (keys into `@pf1/engine` `ROGUE_TALENTS` —
+     * issue #65), SHARED between the chained rogue and Rogue (Unchained) —
+     * both classes draw from the same curated ~28-entry core menu; entries
+     * flagged `unchainedOnly` in `ROGUE_TALENTS` (e.g. ones that reference
+     * Debilitating Injury) are soft-noted rather than hidden for a chained
+     * rogue. Gained at 2nd level and every 2 levels thereafter, plus one per
+     * "Extra Rogue Talent" feat taken; see `model/rogueTalents.ts` for the
+     * budget math. Most entries are `displayOnly`; "Combat Trick" contributes
+     * a real generic bonus-feat SLOT and "Finesse Rogue" grants Weapon
+     * Finesse as a fixed feat outright — both bridged into
+     * `apps/web/src/model/feats.ts` (`ROGUE_TALENTS[id].bonusFeatSlot` /
+     * `.grantsFeat`), same "talent grants a feat" shape as Rogue's Edge
+     * (UC)'s sibling `finesse training (uc)` override. Free-choice, soft
+     * warning only on overspend. Empty/undefined for non-rogues. Back-compat:
+     * documents without this field are unaffected.
+     */
+    rogueTalents?: string[];
+    /**
+     * Rogue (Unchained) Finesse Training weapon-type picks, in grant order —
+     * index 0 = the weapon type chosen at 3rd level, index 1 = 11th, index 2
+     * = 19th (PF1 RAW: "she can select any one type of weapon that can be
+     * used with Weapon Finesse ... whenever she makes a successful melee
+     * attack with the selected weapon, she adds her Dexterity modifier
+     * instead of her Strength modifier to the damage roll"). Free-text weapon
+     * TYPE name (e.g. "rapier"), matched case-insensitively against a
+     * `WeaponInstance`'s `name`/`group` in `compute.ts`'s weapon-attack path
+     * — not a `@pf1/engine` `WEAPON_GROUPS` slug (RAW scopes this to one
+     * weapon type, not a whole semantic group; see `computeWeaponAttacks`'s
+     * doc comment for the matching rule). Empty/undefined for non-
+     * rogueUnchained characters or a rogue who hasn't made any picks yet.
+     * Back-compat: documents without this field are unaffected.
+     */
+    rogueFinesseWeapons?: string[];
+    /**
+     * Rogue's Edge (UC) skill unlock picks, in grant order — index 0 = the
+     * skill chosen at 5th level, index 1 = 10th, index 2 = 15th, index 3 =
+     * 20th (PF1 Unchained RAW: "at 5th level, and every 5 levels thereafter,
+     * a rogue can choose a skill unlock power for one skill in which she has
+     * at least 5 ranks"). Values are `SkillId`s (see `model/names.ts`
+     * `SKILL_NAMES`). The unlock's actual tiered prose effects are NOT
+     * modeled (no numeric hook — same posture as `shamanHexes`); surfaced as
+     * a `displayOnly` chip on the ClassFeaturesList's "Rogue's Edge (UC)" row
+     * rather than the skill row itself, since the same picker also drives
+     * `expectedFeatCount`'s exclusion of Rogue's Edge (UC)'s spurious
+     * vendored `bonusFeats` change (see `feats.ts`'s existing exclusion) and
+     * both belong together. Empty/undefined for non-rogueUnchained
+     * characters. Back-compat: documents without this field are unaffected.
+     */
+    rogueSkillUnlocks?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -1232,9 +1307,15 @@ export interface WeaponInstance {
   /**
    * Which ability modifier adds to the damage bonus.
    * - `"str"` (default): STR × damageMultiplier, melee only.
+   * - `"dex"`: DEX × damageMultiplier, melee only — a hand-set override for a
+   *   Dex-to-damage source the player wants to force on (e.g. Slashing
+   *   Grace). Rogue (Unchained)'s Finesse Training (`build.rogueFinesseWeapons`
+   *   — issue #65) applies this automatically for a matching weapon instead
+   *   of requiring it to be set by hand; see `computeWeaponAttacks` in
+   *   `compute.ts`.
    * - `"none"`: no ability modifier to damage (ranged, finesse, thrown without STR).
    */
-  damageAbility?: "str" | "none";
+  damageAbility?: "str" | "dex" | "none";
   /**
    * Multiplier applied to the damage ability modifier.
    * 1 = one-handed (default), 1.5 = two-handed, 0.5 = off-hand.
@@ -1490,7 +1571,10 @@ export interface DerivedClassFeature {
       | "revelation"
       | "hex"
       | "discovery"
-      | "spirit";
+      | "spirit"
+      | "kiPower"
+      | "styleStrike"
+      | "rogueTalent";
     label: string;
   };
 }
