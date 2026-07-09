@@ -38,7 +38,11 @@ import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
 import { transformRace } from "./transform/races.js";
 import { transformSpell } from "./transform/spells.js";
-import { applyClassFeatureUsesSupplements, resolveBloodlineSupplements } from "./supplements.js";
+import {
+  applyArchetypeFeatureLevelSupplements,
+  applyClassFeatureUsesSupplements,
+  resolveBloodlineSupplements,
+} from "./supplements.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { readCsv } from "./util/csv.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
@@ -304,6 +308,7 @@ export function normalize(opts: NormalizeOptions): {
     archetypes.push(...result.archetypes);
     archetypeFeatures.push(...result.archetypeFeatures);
   }
+  applyArchetypeFeatureLevelSupplements(archetypeFeatures);
 
   const counts = {
     races: races.length,

@@ -758,7 +758,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Armor Training",
     level: 8,
     bucket: "numeric",
-    note: "grants fighter Armor Training on a 2-tier cadence (8th/14th), replacing improved spell combat and greater spell combat (both prose-only, no vendored numbers to double-count) — only the Improved Spell Combat half of the claimed double replacement is actually paired in the vendored data (see report: possible incomplete pairing), which doesn't affect this extraction since neither replaced feature carries a vendored number",
+    note: "grants fighter Armor Training on a 2-tier cadence (8th/14th), replacing improved spell combat and greater spell combat (both prose-only, no vendored numbers to double-count) — the vendored pairing only linked the Improved Spell Combat half of the claimed double replacement; issue #47 fixed the classFeatures display by adding Greater Spell Combat's uuid to `ADDITIONAL_SWAP_TARGETS` in `archetypes.ts` (no numeric impact either way, since neither replaced feature carries a vendored number)",
   },
   "magus:myrmidarch:diminished-spellcasting:1": {
     archetypeId: "magus:myrmidarch",

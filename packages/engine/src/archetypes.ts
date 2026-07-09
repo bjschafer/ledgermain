@@ -278,6 +278,9 @@ export function activeArchetypeSwaps(doc: CharacterDoc, refData: RefData): Map<s
       if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
       const targetUuid = resolvedSwapTargetUuid(f);
       if (targetUuid) replacedByUuid.set(targetUuid, f.name);
+      for (const extraUuid of additionalSwapTargetUuids(f)) {
+        replacedByUuid.set(extraUuid, f.name);
+      }
     }
   }
   return replacedByUuid;
@@ -357,6 +360,66 @@ const MISPAIRED_TARGET_REMAP: ReadonlyMap<string, string | null> = new Map([
 ]);
 
 /**
+ * Archetype feature ids that are themselves data-quality artifacts — a
+ * vendored row whose description is a byte-identical, unmodified copy of
+ * some OTHER ability's text (never the archetype's own real ability at that
+ * level), yet still carries a `pairedBaseFeatureUuid` from the same
+ * level-matching CSV compilation quirk that produced `MISPAIRED_TARGET_REMAP`
+ * above. Unlike the additive case ({@link MISPAIRED_ADDITIVE_FEATURES}) or a
+ * wrong-but-real-target case ({@link MISPAIRED_TARGET_REMAP}), these rows
+ * shouldn't suppress ANY base feature at all — honoring the vendored pairing
+ * here strikes through a real, unrelated base feature the archetype never
+ * actually touches.
+ *
+ * Issue #47 (consolidated #45-wave bug list): `monk:maneuver-master:evasion:9`
+ * and `monk:nornkith:evasion:9`. Both archetypes already replace base Evasion
+ * with their own ability at 2nd level (Resilience / Defensive Aid — each
+ * correctly paired to base Evasion's own uuid), then EACH separately carries
+ * a level-9 row named "Evasion" whose description is verbatim vanilla
+ * base-monk Evasion text (see the classification notes in
+ * `archetype-extracted/monk.ts` — flagged there as a suspected shared
+ * CSV-compilation quirk). The vendored pairing on that L9 row points at the
+ * base class's OWN level-9 feature SLOT, which for a monk is Improved
+ * Evasion — not the (already-replaced) Evasion the row's text describes.
+ * Before this fix, a Maneuver Master / Nornkith monk at level 9+ incorrectly
+ * showed Improved Evasion as struck through ("replaced by Evasion") in the
+ * classFeatures list, even though neither archetype's real abilities ever
+ * touch it. Verified: Improved Evasion carries no vendored `Change` either
+ * way (`class-features.json` id `Cc2eFfhJYlClCGEH`), so this is a
+ * display-only fix, not a numeric one.
+ */
+const SPURIOUS_DUPLICATE_PAIRINGS: ReadonlySet<string> = new Set([
+  "monk:maneuver-master:evasion:9",
+  "monk:nornkith:evasion:9",
+]);
+
+/**
+ * Archetype feature ids whose vendored `pairedBaseFeatureUuid` correctly
+ * identifies ONE base feature they replace, but whose OWN prose says they
+ * replace an additional base feature too — the vendored CSV pairing script
+ * only ever links one uuid per row, so a genuinely-two-target replacement
+ * can't be captured there. Every consumer of a swap-target set
+ * (`activeArchetypeSwaps`, `archetypeSwappedUuids`) also consults this map
+ * via {@link additionalSwapTargetUuids}. Only ids with a CONFIRMED prose-only
+ * additional target (no vendored `Change` on the extra base feature —
+ * checked against `class-features.json` before adding) belong here, so
+ * there's no double-suppression numeric risk, matching the discipline
+ * `MISPAIRED_TARGET_REMAP` above already applies.
+ */
+const ADDITIONAL_SWAP_TARGETS: ReadonlyMap<string, readonly string[]> = new Map([
+  // Issue #47: magus:myrmidarch's Armor Training (8th) "replaces improved
+  // spell combat and greater spell combat" but the vendored pairing links
+  // only to Improved Spell Combat. Both base features carry `changes: []`
+  // (prose-only class-abilities entries), so this is purely a classFeatures
+  // display fix — Greater Spell Combat now correctly shows struck through
+  // too, instead of appearing (wrongly) still available to a myrmidarch.
+  [
+    "magus:myrmidarch:armor-training:8",
+    ["Compendium.pf1.class-abilities.Item.nWDMATASYzzAShr6"], // Greater Spell Combat
+  ],
+]);
+
+/**
  * The base-class-feature uuid `f` actually swaps out, after applying the
  * hand-curated corrections above — `undefined` when the vendored dataset
  * couldn't pair it (prose-only soft warning) or when a correction removes the
@@ -368,8 +431,18 @@ function resolvedSwapTargetUuid(f: {
   pairedBaseFeatureUuid?: string;
 }): string | undefined {
   if (MISPAIRED_ADDITIVE_FEATURES.has(f.id)) return undefined;
+  if (SPURIOUS_DUPLICATE_PAIRINGS.has(f.id)) return undefined;
   if (MISPAIRED_TARGET_REMAP.has(f.id)) return MISPAIRED_TARGET_REMAP.get(f.id) ?? undefined;
   return f.pairedBaseFeatureUuid;
+}
+
+/**
+ * Extra base-class-feature uuids `f` ALSO swaps out beyond
+ * {@link resolvedSwapTargetUuid}'s single primary target — see
+ * {@link ADDITIONAL_SWAP_TARGETS}. Empty array when `f` has none.
+ */
+function additionalSwapTargetUuids(f: { id: string }): readonly string[] {
+  return ADDITIONAL_SWAP_TARGETS.get(f.id) ?? [];
 }
 
 /**
@@ -695,6 +768,9 @@ export function archetypeSwappedUuids(refData: RefData, archetypeId: string): Se
     if (f.archetypeId !== archetypeId) continue;
     const targetUuid = resolvedSwapTargetUuid(f);
     if (targetUuid) uuids.add(targetUuid);
+    for (const extraUuid of additionalSwapTargetUuids(f)) {
+      uuids.add(extraUuid);
+    }
   }
   return uuids;
 }

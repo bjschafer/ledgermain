@@ -1397,8 +1397,8 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 2,
     bucket: "situational",
     note:
-      "+1/3-level Perception/Disable Device bonus scoped to MAGICAL traps specifically — narrower than the whole skill. Data note: the feature id's own level (2) doesn't match its prose " +
-      "('At 3rd level...') — flagged as a suspected vendored-data inconsistency, not fixed here.",
+      "+1/3-level Perception/Disable Device bonus scoped to MAGICAL traps specifically — narrower than the whole skill. Data note: the feature id's own level suffix (2) doesn't match its prose " +
+      "('At 3rd level...') — issue #47 fixed the actual gating level to 3 via `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL` in `packages/data-pipeline/src/supplements.ts` (id/uuid intentionally left as-is; see that map's doc comment). This bucket's classification is unaffected either way (no Change extracted).",
   },
   "rogue:seeker-of-the-lost:underwater-striker:4": {
     archetypeId: "rogue:seeker-of-the-lost",

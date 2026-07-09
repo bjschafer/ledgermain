@@ -100,7 +100,9 @@
  *    a DIFFERENT archetype's (Swamp Druid's) Wild Shape text, including a
  *    mismatched "6th level" clause on a feature keyed to level 4.
  *  - `druid:urban-druid:a-thousand-faces:6` — description says "At 13th
- *    level" but the feature's own `level` field is 6.
+ *    level" but the feature's own `level` field is 6. Issue #47 fixed the
+ *    gating level to 13 via `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL`
+ *    (`packages/data-pipeline/src/supplements.ts`).
  *  - `druid:jungle-druid:wild-shape:6` — description duplicates its own
  *    opening sentence verbatim (minor, cosmetic).
  *  - Two different archetypes (Storm Druid and Tempest Druid) each have a
@@ -2566,7 +2568,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "A thousand faces",
     level: 6,
     bucket: "subsystem",
-    note: "vendored description says 'At 13th level' but the feature's own level field is 6 — suspected vendored-data level mismatch; either way this is an alter-self-like transformation, no Change-shaped number",
+    note: "vendored description says 'At 13th level' but the feature's own level field is 6 — issue #47 fixed the actual gating level to 13 via `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL` in `packages/data-pipeline/src/supplements.ts` (id/uuid intentionally left as-is). Either way this is an alter-self-like transformation, no Change-shaped number.",
   },
   "druid:urban-druid:wild-shape:8": {
     archetypeId: "druid:urban-druid",
