@@ -605,6 +605,28 @@ export interface CharacterDoc {
      * IMPLEMENTATION_PLAN.md already documents for the medium's spirits.
      */
     shamanHexes?: string[];
+    /**
+     * Cavalier/samurai order tag (key into `@pf1/engine` `CAVALIER_ORDERS` /
+     * `SAMURAI_ORDERS` — issue #65), chosen at L1 and never changed
+     * thereafter (PF1 RAW). Free-choice, same soft posture as
+     * `oracleMystery`/`psychicDiscipline` — no hard validation that the tag
+     * is one the character's class(es) can actually take (a samurai may pick
+     * any of the six APG cavalier orders in addition to Warrior/Ronin; a
+     * cavalier may not pick Warrior/Ronin — the picker UI enforces that, this
+     * field doesn't). Shared by both classes rather than split into
+     * `cavalierOrder`/`samuraiOrder`: PF1 RAW lets a samurai freely choose a
+     * cavalier order instead of Warrior/Ronin, so a single tag space avoids a
+     * cross-field migration the day a samurai picks "sword" — a character
+     * with both classes (unusual but not illegal) is expected to have one
+     * order in play, matching the single swift-action Challenge each grants.
+     * Order skills/abilities are display-only (same documented
+     * `classSkillSet`-wiring gap as `oracleMystery`'s bonus class skills —
+     * see `CAVALIER_ORDERS`' doc comment); the challenge damage/AC/save rider
+     * is context-note tier (target-scoped — see `resources.ts`'s Challenge
+     * pool `detail`). Empty/undefined for non-cavalier/samurai. Back-compat:
+     * documents without this field are unaffected.
+     */
+    cavalierOrder?: string;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };

@@ -166,6 +166,23 @@ export {
   type ShamanSpiritHex,
 } from "./shaman-spirits.js";
 export {
+  GUNSLINGER_DEEDS,
+  SWASHBUCKLER_DEEDS,
+  deedsForClass,
+  preciseStrikeBonus,
+  type DeedDef,
+} from "./deeds.js";
+export {
+  CAVALIER_ORDERS,
+  SAMURAI_ORDERS,
+  orderByTag,
+  ordersForClass,
+  challengeRiderAt,
+  challengeRiderText,
+  type OrderDef,
+  type OrderAbility,
+} from "./cavalier-orders.js";
+export {
   FEAT_EFFECTS,
   FEAT_POOL_EFFECTS,
   SITUATIONAL_FEAT_EFFECTS,

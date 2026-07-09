@@ -30,6 +30,7 @@ import { PatronPicker } from "./PatronPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
 import { TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
+import { OrderPicker } from "./OrderPicker.js";
 import { Panel } from "./Panel.js";
 import { RangerPicker } from "./RangerPicker.js";
 import { RevelationPicker } from "./RevelationPicker.js";
@@ -383,6 +384,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
           <SpiritPicker doc={doc} refData={refData} update={update} />
           <ShamanHexPicker doc={doc} refData={refData} update={update} />
         </>
+      )}
+
+      {/* Order picker — cavalier/samurai only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "cavalier" || c.tag === "samurai") && (
+        <OrderPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

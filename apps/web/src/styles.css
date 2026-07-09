@@ -845,7 +845,8 @@ button:focus-visible,
    an unstyled div for each picker (issue-class bug: className with no rule). */
 .mystery-preview,
 .curse-preview,
-.bloodline-preview {
+.bloodline-preview,
+.order-preview {
   margin-top: 10px;
   padding: 10px 12px;
   border: 1px solid var(--line);
@@ -855,13 +856,15 @@ button:focus-visible,
 
 .mystery-preview > * + *,
 .curse-preview > * + *,
-.bloodline-preview > * + * {
+.bloodline-preview > * + *,
+.order-preview > * + * {
   margin-top: 8px;
 }
 
 .mystery-bonus-spells,
 .curse-bonus-spells,
-.bloodline-powers {
+.bloodline-powers,
+.order-abilities {
   list-style: none;
   margin: 4px 0 0;
   padding: 0;
@@ -872,8 +875,34 @@ button:focus-visible,
 
 .mystery-bonus-spells li,
 .curse-bonus-spells li,
-.bloodline-powers li {
+.bloodline-powers li,
+.order-abilities li {
   font-size: 12px;
+}
+
+.order-ability-summary {
+  margin: 2px 0 0;
+  color: var(--muted);
+}
+
+/* Deeds panel (tracker) — a level-gated reference list of gunslinger grit /
+   swashbuckler panache deeds, reusing ClassFeaturesList's `.cf-*` layout
+   classes. `.deed-summary` is the one-line paraphrase under each deed's
+   name/cost header; `.deed-live-number` (Precise Strike only) highlights the
+   character-specific computed bonus. */
+.deed-summary {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.deed-live-number {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.deeds-group + .deeds-group {
+  margin-top: 14px;
 }
 
 /* Archetype picker: breathing room between per-class chip groups (previously
