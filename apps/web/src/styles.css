@@ -2916,11 +2916,32 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .prep-row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
   border-top: 1px solid var(--line-soft);
+}
+
+/* One-shot gold shimmer when a prepared row re-buckets into a new slot level
+   after a metamagic change — echoes the `.seal-flash` recompute cue so the
+   row's jump between sections reads as a deliberate move (issue #71). The row
+   remounts on the move, so the overlay paints its animation on mount. */
+.prep-row-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(232, 195, 74, 0.32), transparent 72%);
+  box-shadow: inset 0 0 0 1px rgba(232, 195, 74, 0.5);
+  animation: seal-flash-fade 700ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prep-row-flash {
+    animation: none !important;
+    display: none;
+  }
 }
 
 .prep-row .prep-name {

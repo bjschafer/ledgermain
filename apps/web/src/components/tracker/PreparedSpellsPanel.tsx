@@ -596,6 +596,14 @@ function PreparedView({
 }) {
   const [confirmRecover, setConfirmRecover] = useState<number | null>(null);
   const [confirmClear, setConfirmClear] = useState(false);
+  // Applying/removing metamagic re-buckets a prepared row into a different
+  // slot level — it visibly jumps between sections. Flash the row on arrival
+  // so the move reads as a deliberate change, not a spell vanishing (mirrors
+  // the seal recompute-shimmer). The row remounts when it moves, so the cue is
+  // driven from here (by prepared-instance index) rather than a per-row hook.
+  const [flashInstance, setFlashInstance] = useState<{ index: number; token: number } | null>(null);
+  const flashRow = (index: number) =>
+    setFlashInstance((prev) => ({ index, token: (prev?.token ?? 0) + 1 }));
 
   // Stored class tag (see `model/spellcasting.ts` `storedClassTag`): undefined
   // for the primary caster class (the single-caster case, unchanged from
@@ -807,6 +815,13 @@ function PreparedView({
                     const effectiveLevel = r.baseLevel + metamagicEffectiveIncrease(r.metamagic);
                     return (
                       <div key={r.index} className={`prep-row${r.expended ? " is-expended" : ""}`}>
+                        {flashInstance?.index === r.index && (
+                          <span
+                            key={flashInstance.token}
+                            className="prep-row-flash"
+                            aria-hidden="true"
+                          />
+                        )}
                         <div className="prep-row-main">
                           <span className="prep-name">{r.name}</span>
                           {r.cost === 2 && (
@@ -832,12 +847,14 @@ function PreparedView({
                               applied={r.metamagic}
                               baseLevel={r.baseLevel}
                               maxSlotLevel={maxSlotLevel}
-                              onToggle={(slug) =>
-                                update((d) => togglePreparedMetamagic(d, r.index, slug))
-                              }
-                              onSetLevels={(slug, n) =>
-                                update((d) => setPreparedMetamagicLevels(d, r.index, slug, n))
-                              }
+                              onToggle={(slug) => {
+                                update((d) => togglePreparedMetamagic(d, r.index, slug));
+                                flashRow(r.index);
+                              }}
+                              onSetLevels={(slug, n) => {
+                                update((d) => setPreparedMetamagicLevels(d, r.index, slug, n));
+                                flashRow(r.index);
+                              }}
                             />
                           )}
                         </div>
