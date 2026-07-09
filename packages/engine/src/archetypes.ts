@@ -31,6 +31,7 @@ import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { NINJA_TRICKS } from "./ninja-tricks.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
+import { RAGE_POWERS } from "./rage-powers.js";
 import { WITCH_HEXES } from "./witch-hexes.js";
 import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
 import {
@@ -72,7 +73,8 @@ export interface GrantedFeature {
       | "discovery"
       | "spirit"
       | "cruelty"
-      | "trick";
+      | "trick"
+      | "ragePower";
     label: string;
   };
   /**
@@ -349,6 +351,38 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "discovery", label: "Discovery" },
         detail: discovery.summary,
+      });
+    }
+  }
+
+  // Barbarian rage powers (issue #65/#67) — hand-authored (see
+  // rage-powers.ts), gated on actual barbarian levels (either edition — see
+  // `RAGE_POWERS`'s doc comment for why chained/barbarianUnchained share one
+  // table). Granted at a flat display level of 2 (the earliest a barbarian
+  // has any rage power at all), same rationale as exploits/arcana above.
+  // `classTag` uses whichever of the two the character actually has (falling
+  // back to "barbarian" if — unusually — both are present, matching
+  // `defenses.ts`'s barbarianLevel() summing posture: display attribution to
+  // one tag is cosmetic only, the pick itself isn't scoped per edition).
+  const barbarianClassTag = doc.identity.classes.find(
+    (c) => c.tag === "barbarian" || c.tag === "barbarianUnchained",
+  )?.tag;
+  if (barbarianClassTag) {
+    for (const powerId of doc.build.ragePowers ?? []) {
+      const power = RAGE_POWERS[powerId];
+      if (!power) continue;
+      out.push({
+        classTag: barbarianClassTag,
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `ragePower:${power.id}`,
+          featureId: `ragePower:${power.id}`,
+          name: power.name,
+          resolved: true,
+        },
+        origin: { kind: "ragePower", label: "Rage Power" },
+        detail: power.summary,
       });
     }
   }

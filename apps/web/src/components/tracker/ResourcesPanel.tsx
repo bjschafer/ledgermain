@@ -13,6 +13,7 @@ import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
 import { setMartialFlexibilityFeat } from "../../model/doc.js";
+import { applyGrantedTempHp } from "../../model/hp.js";
 import {
   addManualPool,
   drainResource,
@@ -198,12 +199,13 @@ function ResourceRow({
             ))}
           </div>
         ) : null}
-        {tableOptions && tableOptions.length > 0 && activeBuffs && update ? (
+        {tableOptions && tableOptions.length > 0 && refData && activeBuffs && update ? (
           <div className="res-linked-buffs">
             {tableOptions.map((option) => (
               <TableBuffToggle
                 key={option.id}
                 option={option}
+                refData={refData}
                 activeBuffs={activeBuffs}
                 update={update}
               />
@@ -291,7 +293,12 @@ function LinkedBuffToggle({
   const buff = refData.buffs[buffId] ?? SYNTHETIC_LINKED_BUFFS[buffId];
   if (!buff) return null;
   const active = activeBuffs.find((b) => b.buffId === buffId);
-  const toggle = () => update((d) => toggleLinkedBuff(d, buff, casterLevel));
+  // `applyGrantedTempHp` (issue #67) syncs `live.hp.temp` to whatever this
+  // toggle just changed about `DerivedSheet.hp.grantedTemp` (e.g. entering/
+  // leaving Unchained Rage) — a no-op for every linked buff that doesn't
+  // grant temp HP, since its before/after granted totals are both 0.
+  const toggle = () =>
+    update((d) => applyGrantedTempHp(d, toggleLinkedBuff(d, buff, casterLevel), refData));
 
   if (active) {
     return (
@@ -324,19 +331,25 @@ function LinkedBuffToggle({
  * {@link LinkedBuffToggle}, but keyed by `ActiveBuff.effectTag` via
  * `toggleTableBuff` instead of `buffId` via `toggleLinkedBuff` — these
  * options carry their own `changes`/`contextNotes` directly rather than
- * pointing at a vendored buff, so there's no `refData` lookup needed here.
+ * pointing at a vendored buff, so there's no `RefData.buffs` LOOKUP needed
+ * here; `refData` is still threaded through to `applyGrantedTempHp` (issue
+ * #67), a no-op today (none of the current table-buff options grant tempHp)
+ * but wired the same way as `LinkedBuffToggle` for a future one to work for
+ * free.
  */
 function TableBuffToggle({
   option,
+  refData,
   activeBuffs,
   update,
 }: {
   option: ToggleBuffOption;
+  refData: RefData;
   activeBuffs: CharacterDoc["live"]["activeBuffs"];
   update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
 }) {
   const active = activeBuffs.find((b) => b.effectTag === option.id);
-  const toggle = () => update((d) => toggleTableBuff(d, option));
+  const toggle = () => update((d) => applyGrantedTempHp(d, toggleTableBuff(d, option), refData));
 
   if (active) {
     return (

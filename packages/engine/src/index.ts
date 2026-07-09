@@ -399,3 +399,11 @@ export {
   normalizeWeaponGroup,
   type WeaponGroup,
 } from "./weapon-groups.js";
+export { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
+export {
+  RAGE_POWERS,
+  RAGE_POWER_IDS,
+  ragePowersForEdition,
+  type RagePowerDef,
+  type RagePowerEdition,
+} from "./rage-powers.js";

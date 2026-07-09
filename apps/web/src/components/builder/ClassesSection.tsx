@@ -36,6 +36,7 @@ import { TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
 import { OrderPicker } from "./OrderPicker.js";
 import { Panel } from "./Panel.js";
+import { RagePowerPicker } from "./RagePowerPicker.js";
 import { RangerPicker } from "./RangerPicker.js";
 import { RevelationPicker } from "./RevelationPicker.js";
 import { SchoolPicker } from "./SchoolPicker.js";
@@ -412,6 +413,10 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {doc.identity.classes.some((c) => c.tag === "ninja") && (
         <NinjaTrickPicker doc={doc} refData={refData} update={update} />
       )}
+      {/* Rage power picker — barbarian (chained) OR barbarianUnchained; shared table (free-choice, soft warning only). */}
+      {doc.identity.classes.some(
+        (c) => c.tag === "barbarian" || c.tag === "barbarianUnchained",
+      ) && <RagePowerPicker doc={doc} refData={refData} update={update} />}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}
       <FamiliarPicker doc={doc} update={update} />

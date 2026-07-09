@@ -694,6 +694,24 @@ export interface CharacterDoc {
      * non-ninjas.
      */
     ninjaTricks?: string[];
+    /**
+     * Barbarian rage power ids chosen (keys into `@pf1/engine` `RAGE_POWERS` —
+     * issue #65/#67), shared by both `barbarian` (chained) and
+     * `barbarianUnchained` — PF1 RAW grants a rage power at 2nd level and
+     * every two levels thereafter for both editions (verified against
+     * aonprd.com's class tables: the Unchained rewrite's own "Rage Powers"
+     * class feature restates the identical 2nd/4th/6th/... cadence rather
+     * than changing it), plus one per "Extra Rage Power" feat taken; see
+     * `apps/web/src/model/ragePowers.ts` for the budget math (sums both
+     * classes' levels, mirroring `@pf1/engine` `defenses.ts`'s
+     * `barbarianLevel()` — a character would only ever have one of the two,
+     * but summing is correct regardless). Level-gated entries (e.g. Renewed
+     * Vigor's "barbarian 4th") are soft-warned only, same posture as
+     * `oracleRevelations`/`witchHexes` — never blocks selection. Free-choice,
+     * soft warning only on overspend. Empty/undefined for non-barbarians.
+     * Back-compat: documents without this field are unaffected.
+     */
+    ragePowers?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -1578,7 +1596,8 @@ export interface DerivedClassFeature {
       | "discovery"
       | "spirit"
       | "cruelty"
-      | "trick";
+      | "trick"
+      | "ragePower";
     label: string;
   };
 }
@@ -1715,6 +1734,32 @@ export interface HitPoints {
   nonlethal: number;
   /** Per-source breakdown of contributions to max HP (HD total, Con, FCB, etc.). */
   components: ModifierComponent[];
+  /**
+   * Temporary HP a currently-active buff/feature GRANTS (issue #67) — e.g.
+   * Unchained Rage's "2 temporary hit points per Hit Die" (scaling to 3 at
+   * 11th via Greater Rage, 4 at 20th via Mighty Rage). Collected from every
+   * `Change` targeting `"tempHp"`, the same generic collect → target pipeline
+   * as every other stat — see `@pf1/engine` `collect.ts`/`compute.ts`.
+   *
+   * This is DISTINCT from the manual `temp` field above, which is the tracker's
+   * single source of truth for the character's actual current temp-HP buffer
+   * (consumed by damage before real HP — see `apps/web/src/model/hp.ts`
+   * `applyDamage`). `grantedTemp` is a ceiling/suggestion the UI uses to know
+   * how much to set `live.hp.temp` to on activation — see
+   * `apps/web/src/model/hp.ts` `applyGrantedTempHp` for the sync logic and its
+   * documented edge cases (it cannot distinguish buff-granted temp HP already
+   * merged into `live.hp.temp` from unrelated manually-entered temp HP once
+   * they're in the same pool).
+   *
+   * PF1 RAW (Paizo FAQ, Core Rulebook p. 208 "Combining Magical Effects"):
+   * temporary HP from the SAME source do not stack (the higher application
+   * wins); temporary HP from DIFFERENT sources DO stack (sum). `total` already
+   * applies this rule — grouped by each modifier's `source` (display name),
+   * highest-per-group, then summed across groups; `components` lists every
+   * contributing modifier with `applied: false` on any same-source entry that
+   * lost to a higher one from the same source.
+   */
+  grantedTemp: { total: number; components: ModifierComponent[] };
 }
 
 export interface DerivedSkill {

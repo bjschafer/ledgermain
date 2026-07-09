@@ -5,8 +5,9 @@ import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { setAbilityAffliction } from "../src/model/afflictions.js";
+import { addBuff, makeActiveBuff } from "../src/model/buffs.js";
 import { addClass, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
-import { hpState, setStable } from "../src/model/hp.js";
+import { applyGrantedTempHp, hpState, setStable, setTempHp } from "../src/model/hp.js";
 
 const ref = loadRefData();
 
@@ -177,5 +178,71 @@ describe("setStable()", () => {
 
     const cleared = setStable(stabilized, false);
     expect(cleared.live.stable).toBe(false);
+  });
+});
+
+/** A level-5 Con-14 barbarianUnchained, for granted-temp-HP fixtures (issue #67). */
+function ragingBarbarianDoc(): CharacterDoc {
+  let d = createEmptyDoc("t");
+  d = addClass(d, "barbarianUnchained");
+  d = setClassLevel(d, "barbarianUnchained", 5);
+  d = { ...d, abilities: { ...d.abilities, con: 14 } };
+  return d;
+}
+
+function rageBuffName(): string {
+  const entry = Object.values(ref.buffs).find((b) => b.name === "Rage (Unchained)");
+  if (!entry) throw new Error("Rage (Unchained) buff not found");
+  return entry.name;
+}
+
+function rageBuffDef() {
+  const entry = Object.values(ref.buffs).find((b) => b.name === "Rage (Unchained)");
+  if (!entry) throw new Error("Rage (Unchained) buff not found");
+  return entry;
+}
+
+describe("applyGrantedTempHp() (issue #67)", () => {
+  it("activating Rage (Unchained) raises live.hp.temp to the granted total (10 at L5 Con14)", () => {
+    const before = ragingBarbarianDoc();
+    const after = addBuff(before, makeActiveBuff(rageBuffDef()));
+    const synced = applyGrantedTempHp(before, after, ref);
+    expect(synced.live.hp.temp).toBe(10);
+  });
+
+  it("deactivating the only tempHp-granting buff clears live.hp.temp to 0", () => {
+    const raging = addBuff(ragingBarbarianDoc(), makeActiveBuff(rageBuffDef()));
+    const withTemp = setTempHp(raging, 10);
+    // Damage already consumed some of the pool before rage ends.
+    const damaged = setTempHp(withTemp, 4);
+    const unraged = { ...damaged, live: { ...damaged.live, activeBuffs: [] } };
+    const synced = applyGrantedTempHp(damaged, unraged, ref);
+    expect(synced.live.hp.temp).toBe(0);
+  });
+
+  it("toggling an unrelated buff (no tempHp change) never touches unrelated manual temp HP", () => {
+    const before = withHp(ragingBarbarianDoc(), { temp: 5 });
+    const unrelatedBuff = {
+      id: "fake-bulls-strength",
+      uuid: "fake",
+      name: "Bull's Strength",
+      changes: [{ formula: "4", target: "str", type: "enh" }],
+      contextNotes: [],
+    };
+    const after = addBuff(before, makeActiveBuff(unrelatedBuff));
+    const synced = applyGrantedTempHp(before, after, ref);
+    expect(synced.live.hp.temp).toBe(5);
+  });
+
+  it("never lowers an already-higher pool (e.g. more manual temp HP than the buff grants)", () => {
+    const before = ragingBarbarianDoc();
+    const raging = addBuff(before, makeActiveBuff(rageBuffDef()));
+    const after = setTempHp(raging, 50);
+    const synced = applyGrantedTempHp(before, after, ref);
+    expect(synced.live.hp.temp).toBe(50);
+  });
+
+  it("re-affirms the buff name used elsewhere in this fixture is the real vendored 'Rage (Unchained)'", () => {
+    expect(rageBuffName()).toBe("Rage (Unchained)");
   });
 });
