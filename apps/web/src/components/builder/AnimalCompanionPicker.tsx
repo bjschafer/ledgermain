@@ -31,21 +31,27 @@ const ABILITY_OPTIONS: { id: AbilityId; label: string }[] = [
 ];
 
 /**
- * Tracked animal companion (PF1 druid Nature Bond / ranger Hunter's Bond) —
- * species + name + which class feature(s) grant it, mirroring `FamiliarPicker`
- * closely. Unlike a familiar (class-agnostic — any feature can grant one),
- * a companion is ALWAYS sourced from a specific bond choice, so this only
- * renders for characters with druid levels (Nature Bond) or ranger levels ≥ 4
- * (Hunter's Bond) — both a druid choosing the domain option instead, and a
- * ranger below 4th level, simply see no picker yet.
+ * Tracked animal companion (PF1 druid Nature Bond / ranger Hunter's Bond /
+ * ACG Hunter's own Animal Companion feature) — species + name + which class
+ * feature(s) grant it, mirroring `FamiliarPicker` closely. Unlike a familiar
+ * (class-agnostic — any feature can grant one), a companion is ALWAYS
+ * sourced from a specific bond choice, so this only renders for characters
+ * with druid levels (Nature Bond), ranger levels ≥ 4 (Hunter's Bond), or
+ * hunter levels (the ACG Hunter class's own Animal Companion feature, issue
+ * #65 — distinct from the ranger's similarly-named "Hunter's Bond", see
+ * `@pf1/engine` `companionEffectiveLevel`'s doc comment) — a druid choosing
+ * the domain option instead, and a ranger below 4th level, simply see no
+ * picker yet.
  */
 export function AnimalCompanionPicker({ doc, update }: AnimalCompanionPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:AnimalCompanion", false);
   const druidLevel = doc.identity.classes.find((c) => c.tag === "druid")?.level ?? 0;
   const rangerLevel = doc.identity.classes.find((c) => c.tag === "ranger")?.level ?? 0;
+  const hunterLevel = doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
   const canNatureBond = druidLevel >= 1;
   const canHuntersBond = rangerLevel >= 4;
-  if (!canNatureBond && !canHuntersBond) return null;
+  const canHunterCompanion = hunterLevel >= 1;
+  if (!canNatureBond && !canHuntersBond && !canHunterCompanion) return null;
 
   const companion = doc.build.animalCompanion;
   const species = companion ? BASE_COMPANIONS[companion.speciesId] : undefined;
@@ -98,6 +104,16 @@ export function AnimalCompanionPicker({ doc, update }: AnimalCompanionPickerProp
                 onClick={() => update((d) => toggleCompanionSource(d, "hunters-bond"))}
               >
                 Hunter's Bond (ranger {rangerLevel})
+              </button>
+            )}
+            {canHunterCompanion && (
+              <button
+                type="button"
+                className="chip"
+                aria-pressed={sources.includes("hunter-companion")}
+                onClick={() => update((d) => toggleCompanionSource(d, "hunter-companion"))}
+              >
+                Animal Companion (hunter {hunterLevel})
               </button>
             )}
           </div>

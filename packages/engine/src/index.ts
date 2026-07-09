@@ -135,6 +135,16 @@ export {
   type PsychicDisciplineBonusSpell,
 } from "./psychic-disciplines.js";
 export {
+  SHAMAN_SPIRITS,
+  SHAMAN_SPIRIT_TAGS,
+  hexesForSpirit,
+  findShamanHex,
+  type ShamanSpiritDef,
+  type ShamanSpiritMagicSpell,
+  type ShamanSpiritAbility,
+  type ShamanSpiritHex,
+} from "./shaman-spirits.js";
+export {
   FEAT_EFFECTS,
   FEAT_POOL_EFFECTS,
   SITUATIONAL_FEAT_EFFECTS,

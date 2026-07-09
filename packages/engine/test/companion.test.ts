@@ -235,6 +235,40 @@ describe("deriveCompanion edge cases", () => {
     expect(companionEffectiveLevel(doc)).toBe(6);
   });
 
+  it("ACG hunter's own Animal Companion feature (issue #65): effective level equals hunter level 1:1, no -3 offset", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "hunter", level: 5 }],
+      animalCompanion: { speciesId: "wolf", name: "Fang", source: ["hunter-companion"] },
+    });
+    expect(companionEffectiveLevel(doc)).toBe(5);
+    const rollData = buildRollData(doc, ref);
+    const wolf = deriveCompanion(doc, rollData);
+    expect(wolf?.level).toBe(5);
+  });
+
+  it("a 1st-level hunter already has a companion (unlike a ranger, which needs 4th)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "hunter", level: 1 }],
+      animalCompanion: { speciesId: "wolf", name: "Fang", source: ["hunter-companion"] },
+    });
+    expect(companionEffectiveLevel(doc)).toBe(1);
+  });
+
+  it("stacks with another source, per the Hunter's own vendored rules text", () => {
+    const doc = makeDoc({
+      classes: [
+        { tag: "druid", level: 2 },
+        { tag: "hunter", level: 3 },
+      ],
+      animalCompanion: {
+        speciesId: "wolf",
+        name: "Fang",
+        source: ["nature-bond", "hunter-companion"],
+      },
+    });
+    expect(companionEffectiveLevel(doc)).toBe(5);
+  });
+
   it("Boon Companion adds +4 effective level, capped at total character level", () => {
     const doc = makeDoc({
       classes: [

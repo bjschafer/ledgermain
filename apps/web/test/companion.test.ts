@@ -6,16 +6,19 @@ import type { CharacterDoc } from "@pf1/schema";
 import { addClass, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
 import {
   addCompanionNonlethal,
+  animalFocusBuffs,
   applyCompanionDamage,
   clearCompanion,
   deriveCompanionSheet,
   hasBoonCompanionFeat,
   healCompanion,
   healCompanionNonlethal,
+  hunterLevel,
   isSharedWithCompanion,
   restCompanion,
   setCompanion,
   setCompanionAbilityIncrease,
+  setCompanionFocus,
   setCompanionNotes,
   toggleCompanionSource,
   toggleSharedBuffCompanion,
@@ -27,6 +30,13 @@ function druid7(): CharacterDoc {
   let d = createEmptyDoc("t");
   d = addClass(d, "druid");
   d = setClassLevel(d, "druid", 7);
+  return d;
+}
+
+function hunter5(): CharacterDoc {
+  let d = createEmptyDoc("t");
+  d = addClass(d, "hunter");
+  d = setClassLevel(d, "hunter", 5);
   return d;
 }
 
@@ -151,5 +161,45 @@ describe("deriveCompanionSheet() — wired through the normal doc model", () => 
     expect(companion!.hd).toBe(6);
     expect(companion!.bab).toBe(4);
     expect(companion!.size).toBe("lg");
+  });
+});
+
+describe("hunter's own Animal Companion feature (issue #65, source 'hunter-companion')", () => {
+  it("toggleCompanionSource('hunter-companion') seeds a companion and wires end-to-end", () => {
+    let d = hunter5();
+    d = setCompanion(d, "wolf", "Fang");
+    d = toggleCompanionSource(d, "hunter-companion");
+    expect(d.build.animalCompanion?.source).toEqual(["hunter-companion"]);
+
+    const companion = deriveCompanionSheet(d, ref);
+    expect(companion).toBeDefined();
+    expect(companion!.level).toBe(5);
+  });
+
+  it("hunterLevel() reads the hunter class level, 0 for a non-hunter", () => {
+    expect(hunterLevel(hunter5())).toBe(5);
+    expect(hunterLevel(druid7())).toBe(0);
+  });
+});
+
+describe("companion Animal Focus display chip (issue #65)", () => {
+  it("setCompanionFocus no-ops without a companion", () => {
+    const d = createEmptyDoc("t");
+    expect(setCompanionFocus(d, "some-buff-id")).toBe(d);
+  });
+
+  it("setCompanionFocus sets and clears live.animalCompanion.focusBuffId", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = setCompanionFocus(d, "some-buff-id");
+    expect(d.live.animalCompanion?.focusBuffId).toBe("some-buff-id");
+    d = setCompanionFocus(d, undefined);
+    expect(d.live.animalCompanion?.focusBuffId).toBeUndefined();
+  });
+
+  it("animalFocusBuffs() returns all 12 vendored Animal Focus buffs, sorted by name", () => {
+    const foci = animalFocusBuffs(ref);
+    expect(foci).toHaveLength(12);
+    expect(foci.map((f) => f.name)).toEqual(foci.map((f) => f.name).sort());
+    expect(foci.map((f) => f.name)).toContain("Animal Focus (Bear)");
   });
 });

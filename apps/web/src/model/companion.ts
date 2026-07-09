@@ -59,13 +59,13 @@ export function clearCompanion(doc: CharacterDoc): CharacterDoc {
 
 /**
  * Toggle a companion-granting class-feature source (`"nature-bond"` |
- * `"hunters-bond"`) on/off. If the character has no `build.animalCompanion`
- * yet, turning a source on seeds one with a sensible default species
- * ("wolf") so the picker has something to show immediately.
+ * `"hunters-bond"` | `"hunter-companion"`) on/off. If the character has no
+ * `build.animalCompanion` yet, turning a source on seeds one with a sensible
+ * default species ("wolf") so the picker has something to show immediately.
  */
 export function toggleCompanionSource(
   doc: CharacterDoc,
-  source: "nature-bond" | "hunters-bond",
+  source: "nature-bond" | "hunters-bond" | "hunter-companion",
 ): CharacterDoc {
   const current = doc.build.animalCompanion;
   const currentSources = current?.source ?? [];
@@ -169,6 +169,47 @@ export function toggleSharedBuffCompanion(doc: CharacterDoc, instanceId: string)
     ? current.filter((id) => id !== instanceId)
     : [...current, instanceId];
   return withCompanionLive(doc, { sharedBuffIds });
+}
+
+/**
+ * Set (or clear, with `undefined`) which Animal Focus buff (a `RefData.buffs`
+ * id, e.g. one of the 12 vendored "Animal Focus (<Animal>)" buffs — issue
+ * #65) is applied to the companion. Display-only bookkeeping — see
+ * `AnimalCompanionLiveState.focusBuffId`'s doc comment for why this isn't
+ * wired into `deriveCompanion`'s numeric stat block. No-ops if there's no
+ * companion yet.
+ */
+export function setCompanionFocus(doc: CharacterDoc, buffId: string | undefined): CharacterDoc {
+  if (!doc.build.animalCompanion) return doc;
+  return withCompanionLive(doc, { focusBuffId: buffId });
+}
+
+/**
+ * Whether the character has hunter levels (the ACG Hunter class, which
+ * grants Animal Focus — `refData.buffs` carries the 12 vendored "Animal
+ * Focus (<Animal>)" entries, resolved generically as the Hunter's own
+ * `linkedBuffIds` pool by `@pf1/engine` `deriveResourcePools`). Used to gate
+ * the companion Focus picker in the tracker so a non-hunter's companion
+ * panel doesn't show an irrelevant control.
+ */
+export function hunterLevel(doc: CharacterDoc): number {
+  return doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
+}
+
+/**
+ * The 12 vendored "Animal Focus (<Animal>)" buffs (issue #65), sorted by
+ * name — every Hunter Animal Focus aspect, read directly off
+ * `refData.buffs` by name pattern rather than a hand-authored table (the
+ * numbers are already fully vendored with correct per-level scaling
+ * formulas; see IMPLEMENTATION_PLAN.md). Used by both the self-focus
+ * resource-pool toggle (`ResourcesPanel`'s generic `linkedBuffIds` handling)
+ * and the companion-focus picker below.
+ */
+export function animalFocusBuffs(refData: RefData): { id: string; name: string }[] {
+  return Object.values(refData.buffs)
+    .filter((b) => b.name.startsWith("Animal Focus ("))
+    .map((b) => ({ id: b.id, name: b.name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /**

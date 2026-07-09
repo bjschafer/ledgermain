@@ -27,6 +27,7 @@ import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
+import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
 import {
   sneakAttackDice,
   smiteEvilDetail,
@@ -52,9 +53,17 @@ export interface GrantedFeature {
   classTag: string;
   level: number;
   grant: ClassFeatureGrant;
-  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation rather than the class itself. */
+  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation/spirit/hex rather than the class itself. */
   origin?: {
-    kind: "domain" | "school" | "bloodline" | "exploit" | "arcana" | "revelation";
+    kind:
+      | "domain"
+      | "school"
+      | "bloodline"
+      | "exploit"
+      | "arcana"
+      | "revelation"
+      | "spirit"
+      | "hex";
     label: string;
   };
   /**
@@ -249,6 +258,50 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         origin: { kind: "revelation", label: "Revelation" },
         detail: revelation.summary,
       });
+    }
+  }
+
+  // Shaman spirit ability + hexes (issue #65) — hand-authored (see
+  // shaman-spirits.ts), gated on actual shaman levels AND a chosen spirit,
+  // same shape as oracle revelations above. The spirit's own 1st-level
+  // Spirit Ability is granted automatically (not a budgeted pick); hexes are
+  // filtered to the CURRENT spirit's own hex list, tolerating a leftover
+  // pick from a since-abandoned spirit the same way revelations tolerate a
+  // stale mystery.
+  const shamanLevel = doc.identity.classes.find((c) => c.tag === "shaman")?.level ?? 0;
+  if (shamanLevel > 0 && doc.build.shamanSpirit) {
+    const spirit = SHAMAN_SPIRITS[doc.build.shamanSpirit];
+    if (spirit) {
+      out.push({
+        classTag: "shaman",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `spirit:${spirit.tag}:ability`,
+          featureId: `spirit:${spirit.tag}:ability`,
+          name: spirit.ability.name,
+          resolved: true,
+        },
+        origin: { kind: "spirit", label: `${spirit.name} Spirit` },
+        detail: spirit.ability.summary,
+      });
+      for (const hexId of doc.build.shamanHexes ?? []) {
+        const hexDef = findShamanHex(hexId);
+        if (!hexDef || hexDef.id.split(":")[0] !== spirit.tag) continue;
+        out.push({
+          classTag: "shaman",
+          level: 1,
+          grant: {
+            level: 1,
+            uuid: `hex:${hexDef.id}`,
+            featureId: `hex:${hexDef.id}`,
+            name: hexDef.name,
+            resolved: true,
+          },
+          origin: { kind: "hex", label: "Hex" },
+          detail: hexDef.summary,
+        });
+      }
     }
   }
 

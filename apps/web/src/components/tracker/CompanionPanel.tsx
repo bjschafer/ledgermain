@@ -4,11 +4,14 @@ import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import {
   addCompanionNonlethal,
+  animalFocusBuffs,
   applyCompanionDamage,
   deriveCompanionSheet,
   healCompanion,
   healCompanionNonlethal,
+  hunterLevel,
   restCompanion,
+  setCompanionFocus,
 } from "../../model/companion.js";
 import {
   companionSkillRows,
@@ -35,6 +38,13 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
   const [amount, setAmount] = useState(3);
   const companion = deriveCompanionSheet(doc, refData);
   if (!companion) return null;
+
+  // Hunter's Animal Focus applied to the companion (issue #65) — display-only
+  // (see AnimalCompanionLiveState.focusBuffId's doc comment); only relevant
+  // once the character has hunter levels at all.
+  const isHunter = hunterLevel(doc) > 0;
+  const foci = isHunter ? animalFocusBuffs(refData) : [];
+  const focusBuffId = doc.live.animalCompanion?.focusBuffId ?? "";
 
   const amt = Number.isNaN(amount) ? 0 : amount;
   const { current, nonlethal } = companion.hp;
@@ -113,6 +123,29 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
           Rest ⤿
         </button>
       </div>
+
+      {isHunter && (
+        <div className="hp-row">
+          <span className="hp-inline-label">Animal Focus</span>
+          <select
+            className="familiar-select"
+            value={focusBuffId}
+            onChange={(e) =>
+              update((d) =>
+                setCompanionFocus(d, e.target.value.length > 0 ? e.target.value : undefined),
+              )
+            }
+            aria-label="Companion animal focus"
+          >
+            <option value="">— none —</option>
+            {foci.map((f) => (
+              <option key={f.id} value={f.id}>
+                {f.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="stat-group familiar-stat-group">
         <div className="stat-group-header">

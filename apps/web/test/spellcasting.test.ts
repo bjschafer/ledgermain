@@ -13,6 +13,7 @@ import {
   grantedCantrips,
   mysterySpellsKnown,
   preparedCapacityByLevel,
+  shamanSpiritSpellsKnown,
   spellSaveDC,
   spellSlotsByLevel,
   spellsKnownLimitsByLevel,
@@ -368,6 +369,37 @@ describe("mysterySpellsKnown()", () => {
 
   it("returns [] when no mystery is chosen (undefined tag)", () => {
     expect(mysterySpellsKnown(ref, undefined, 20)).toEqual([]);
+  });
+});
+
+describe("shamanSpiritSpellsKnown()", () => {
+  it("L1 shaman unlocks exactly the spirit's 1st-level spirit-magic spell", () => {
+    const spells = shamanSpiritSpellsKnown(ref, "life", 1);
+    expect(spells.length).toBe(1);
+    expect(spells[0]!.level).toBe(1);
+    expect(spells[0]!.name).toBe("Detect Undead");
+  });
+
+  it("returns [] at shaman level 0 (no shaman levels at all)", () => {
+    expect(shamanSpiritSpellsKnown(ref, "life", 0)).toEqual([]);
+  });
+
+  it("L9 shaman (5th-level spells accessible) unlocks spirit-magic spells of level 1-5", () => {
+    const spells = shamanSpiritSpellsKnown(ref, "life", 9);
+    expect(spells.map((s) => s.level).sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5]);
+  });
+
+  it("the Waves spirit's 1st spirit-magic spell differs from the Waves MYSTERY's (verified against the vendored per-spirit YAML, not reused from oracle-mysteries.ts)", () => {
+    const spells = shamanSpiritSpellsKnown(ref, "waves", 1);
+    expect(spells[0]!.name).toBe("Hydraulic Push");
+  });
+
+  it("returns [] for an unknown spirit tag (soft fail, no throw)", () => {
+    expect(shamanSpiritSpellsKnown(ref, "notARealSpirit", 20)).toEqual([]);
+  });
+
+  it("returns [] when no spirit is chosen (undefined tag)", () => {
+    expect(shamanSpiritSpellsKnown(ref, undefined, 20)).toEqual([]);
   });
 });
 
