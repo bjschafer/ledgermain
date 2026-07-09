@@ -27,8 +27,12 @@ import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
+import { boldStareRiderSummary, MESMERIST_BOLD_STARES } from "./mesmerist-bold-stares.js";
+import { MESMERIST_TRICKS } from "./mesmerist-tricks.js";
 import { MAGUS_ARCANA } from "./magus-arcana.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
+import { PHRENIC_AMPLIFICATIONS } from "./phrenic-amplifications.js";
+import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { WITCH_HEXES } from "./witch-hexes.js";
 import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
 import {
@@ -56,7 +60,12 @@ export interface GrantedFeature {
   classTag: string;
   level: number;
   grant: ClassFeatureGrant;
-  /** Set when this grant came from a chosen domain/school/bloodline/exploit/arcana/revelation/hex/discovery/spirit rather than the class itself. */
+  /**
+   * Set when this grant came from a chosen domain/school/bloodline/exploit/
+   * arcana/revelation/hex/discovery/spirit/discipline power/phrenic
+   * amplification/mesmerist trick/mesmerist bold stare rather than the class
+   * itself.
+   */
   origin?: {
     kind:
       | "domain"
@@ -67,7 +76,11 @@ export interface GrantedFeature {
       | "revelation"
       | "hex"
       | "discovery"
-      | "spirit";
+      | "spirit"
+      | "discipline"
+      | "amplification"
+      | "trick"
+      | "stare";
     label: string;
   };
   /**
@@ -389,6 +402,111 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           detail: hexDef.summary,
         });
       }
+    }
+  }
+
+  // Psychic discipline powers (issue #65 follow-through) — hand-authored
+  // (see psychic-disciplines.ts's `powers` field), gated on actual psychic
+  // levels AND a chosen discipline, same shape as shaman spirit ability
+  // above: automatically granted (not a budgeted pick) at each power's own
+  // 1st/5th/13th-level gate. A non-psychic or unresolvable discipline tag
+  // gets nothing.
+  const psychicLevel = doc.identity.classes.find((c) => c.tag === "psychic")?.level ?? 0;
+  if (psychicLevel > 0 && doc.build.psychicDiscipline) {
+    const discipline = PSYCHIC_DISCIPLINES[doc.build.psychicDiscipline];
+    if (discipline) {
+      for (const power of discipline.powers) {
+        if (power.level > psychicLevel) continue;
+        out.push({
+          classTag: "psychic",
+          level: power.level,
+          grant: {
+            level: power.level,
+            uuid: `discipline:${discipline.tag}:${power.name}`,
+            featureId: `discipline:${discipline.tag}:${power.name}`,
+            name: power.name,
+            resolved: true,
+          },
+          origin: { kind: "discipline", label: `${discipline.name} Discipline` },
+          detail: power.summary,
+        });
+      }
+    }
+  }
+
+  // Phrenic amplifications (issue #65 follow-through) — hand-authored (see
+  // phrenic-amplifications.ts), gated on actual psychic levels the same way
+  // magus arcana is gated above. Granted at a flat display level of 1, same
+  // rationale as exploits/arcana above.
+  if (psychicLevel > 0) {
+    for (const amplificationId of doc.build.psychicAmplifications ?? []) {
+      const amp = PHRENIC_AMPLIFICATIONS[amplificationId];
+      if (!amp) continue;
+      out.push({
+        classTag: "psychic",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `amplification:${amp.id}`,
+          featureId: `amplification:${amp.id}`,
+          name: amp.name,
+          resolved: true,
+        },
+        origin: { kind: "amplification", label: "Phrenic Amplification" },
+        detail: `${amp.costLabel} — ${amp.summary}`,
+      });
+    }
+  }
+
+  // Mesmerist tricks (issue #65 follow-through) — hand-authored (see
+  // mesmerist-tricks.ts), gated on actual mesmerist levels the same way magus
+  // arcana is gated above. Granted at a flat display level of 1, same
+  // rationale as exploits/arcana above. (Note: "trick" is also `witch`/
+  // `ninja`'s hex/trick-flavored kind terminology elsewhere in this app, but
+  // `classTag` disambiguates every origin.kind consumer the same way it
+  // already disambiguates "hex" between witch and shaman.)
+  const mesmeristLevel = doc.identity.classes.find((c) => c.tag === "mesmerist")?.level ?? 0;
+  if (mesmeristLevel > 0) {
+    for (const trickId of doc.build.mesmeristTricks ?? []) {
+      const trick = MESMERIST_TRICKS[trickId];
+      if (!trick) continue;
+      out.push({
+        classTag: "mesmerist",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `trick:${trick.id}`,
+          featureId: `trick:${trick.id}`,
+          name: trick.name,
+          resolved: true,
+        },
+        origin: { kind: "trick", label: "Trick" },
+        detail: `${trick.actionNote} — ${trick.summary}`,
+      });
+    }
+
+    // Bold stares (issue #65 follow-through) — hand-authored (see
+    // mesmerist-bold-stares.ts). Each pick also enriches the Hypnotic Stare
+    // class feature's own `detail` line — see the "Hypnotic Stare" dispatch
+    // in `resolveClassFeatures` below — but is ALSO surfaced here as its own
+    // class-feature row (informational), same discoverability posture picked
+    // hexes/revelations/tricks get.
+    for (const stareId of doc.build.mesmeristBoldStares ?? []) {
+      const stare = MESMERIST_BOLD_STARES[stareId];
+      if (!stare) continue;
+      out.push({
+        classTag: "mesmerist",
+        level: 3,
+        grant: {
+          level: 3,
+          uuid: `stare:${stare.id}`,
+          featureId: `stare:${stare.id}`,
+          name: stare.name,
+          resolved: true,
+        },
+        origin: { kind: "stare", label: "Bold Stare" },
+        detail: stare.summary,
+      });
     }
   }
 
