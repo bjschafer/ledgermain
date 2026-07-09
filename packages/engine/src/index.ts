@@ -221,7 +221,28 @@ export {
   PSYCHIC_DISCIPLINE_TAGS,
   type PsychicDisciplineDef,
   type PsychicDisciplineBonusSpell,
+  type PsychicDisciplinePower,
 } from "./psychic-disciplines.js";
+export {
+  PHRENIC_AMPLIFICATIONS,
+  PHRENIC_AMPLIFICATION_IDS,
+  amplificationsForTier as phrenicAmplificationsForTier,
+  type PhrenicAmplificationDef,
+  type PhrenicAmplificationTier,
+} from "./phrenic-amplifications.js";
+export {
+  MESMERIST_TRICKS,
+  MESMERIST_TRICK_IDS,
+  tricksForTier as mesmeristTricksForTier,
+  type MesmeristTrickDef,
+  type MesmeristTrickTier,
+} from "./mesmerist-tricks.js";
+export {
+  MESMERIST_BOLD_STARES,
+  MESMERIST_BOLD_STARE_IDS,
+  boldStareRiderSummary,
+  type MesmeristBoldStareDef,
+} from "./mesmerist-bold-stares.js";
 export {
   SHAMAN_SPIRITS,
   SHAMAN_SPIRIT_TAGS,

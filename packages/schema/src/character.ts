@@ -845,6 +845,55 @@ export interface CharacterDoc {
      * Back-compat: documents without this field are unaffected.
      */
     shifterAspects?: string[];
+    /**
+     * Mesmerist trick ids chosen (keys into `@pf1/engine` `MESMERIST_TRICKS`
+     * — issue #65). Gained at 1st level and every 2 levels thereafter (1st,
+     * 3rd, ..., 19th — 10 total by 19th), plus one per "Extra Trick" feat
+     * taken (mirrors `witchHexes`'/`ninjaTricks`' budget shape); see
+     * `apps/web/src/model/mesmeristTricks.ts` for the budget math. Masterful
+     * tricks (`tier: "masterful"`, minLevel 12) are chosen IN PLACE OF a
+     * normal trick pick, not an extra budget slot — same soft-gated,
+     * non-extra-budget posture `WITCH_HEXES`'/`NINJA_TRICKS`' higher tiers
+     * use. This is the trick MENU only — the separate Mesmerist Tricks
+     * resource pool (which trick can be implanted how many times/day) rides
+     * the generic `uses.maxFormula` resource-pool pipeline already (see
+     * `resources.ts`), unaffected by this field. Free-choice, soft warning
+     * only on overspend. Empty/undefined for non-mesmerists. Back-compat:
+     * documents without this field are unaffected.
+     */
+    mesmeristTricks?: string[];
+    /**
+     * Mesmerist Bold Stare ids chosen (keys into `@pf1/engine`
+     * `MESMERIST_BOLD_STARES` — issue #65). Gained at 3rd level and every 4
+     * levels thereafter (3rd, 7th, 11th, 15th, 19th — 5 total by 19th); see
+     * `apps/web/src/model/mesmeristBoldStares.ts` for the budget math. Each
+     * pick enriches the mesmerist's existing Hypnotic Stare class-feature
+     * `detail` line (see `@pf1/engine` `boldStareRiderSummary`, wired in
+     * `resolveClassFeatures`'s "Hypnotic Stare" dispatch) rather than adding
+     * its own standing `Change` — see `MESMERIST_BOLD_STARES`' doc comment
+     * for the target-scoped honesty-bar rationale. Free-choice, soft warning
+     * only on overspend. Empty/undefined for non-mesmerists. Back-compat:
+     * documents without this field are unaffected.
+     */
+    mesmeristBoldStares?: string[];
+    /**
+     * Phrenic Amplification ids chosen (keys into `@pf1/engine`
+     * `PHRENIC_AMPLIFICATIONS` — issue #65 follow-through). Gained at 1st,
+     * 3rd, 7th, 11th, 15th, 19th level (six total by 19th, the same
+     * six-threshold cadence `oracleRevelations` uses); see
+     * `apps/web/src/model/psychicAmplifications.ts` for the budget math.
+     * Major amplifications (`tier: "major"`, minLevel 11) are chosen IN
+     * PLACE OF a basic amplification, not an extra budget slot — same
+     * soft-gated, non-extra-budget posture `WITCH_HEXES`'/`NINJA_TRICKS`'
+     * higher tiers use. Every amplification is a cast-time rider on a linked
+     * spell (see `PHRENIC_AMPLIFICATIONS`' doc comment) — display-only, no
+     * standing `Change`; the Phrenic Pool itself (points spent) rides the
+     * vendored `uses.maxFormula` resource-pool pipeline already, unaffected
+     * by this field. Free-choice, soft warning only on overspend. Empty/
+     * undefined for non-psychics. Back-compat: documents without this field
+     * are unaffected.
+     */
+    psychicAmplifications?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -1725,8 +1774,9 @@ export interface DerivedClassFeature {
    * Corruption, or "Combat Trick" (a ninja trick) from a ninja's own
    * Sneak Attack. Issue #65 adds more origin kinds (spirit, rage power,
    * ki power, style strike, rogue talent, investigator talent, vigilante
-   * social/vigilante talent, shifter aspect) — same disambiguation need
-   * against each class's own intrinsic features.
+   * social/vigilante talent, shifter aspect, psychic discipline power,
+   * phrenic amplification, mesmerist trick, mesmerist bold stare) — same
+   * disambiguation need against each class's own intrinsic features.
    */
   origin?: {
     kind:
@@ -1748,7 +1798,10 @@ export interface DerivedClassFeature {
       | "investigatorTalent"
       | "vigilanteSocialTalent"
       | "vigilanteTalent"
-      | "shifterAspect";
+      | "shifterAspect"
+      | "discipline"
+      | "amplification"
+      | "stare";
     label: string;
   };
 }

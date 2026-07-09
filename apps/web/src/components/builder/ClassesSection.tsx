@@ -30,9 +30,12 @@ import { HexPicker } from "./HexPicker.js";
 import { InvestigatorTalentPicker } from "./InvestigatorTalentPicker.js";
 import { KiPowerPicker } from "./KiPowerPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
+import { MesmeristBoldStarePicker } from "./MesmeristBoldStarePicker.js";
+import { MesmeristTrickPicker } from "./MesmeristTrickPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
 import { NinjaTrickPicker } from "./NinjaTrickPicker.js";
 import { PatronPicker } from "./PatronPicker.js";
+import { PhrenicAmplificationPicker } from "./PhrenicAmplificationPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
 import { ShifterAspectPicker } from "./ShifterAspectPicker.js";
 import { TipButton } from "../InfoTip.js";
@@ -379,9 +382,12 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         </>
       )}
 
-      {/* Discipline picker — psychic only (free-choice, soft warning only). */}
+      {/* Discipline + Phrenic Amplification pickers — psychic only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "psychic") && (
-        <DisciplinePicker doc={doc} refData={refData} update={update} />
+        <>
+          <DisciplinePicker doc={doc} refData={refData} update={update} />
+          <PhrenicAmplificationPicker doc={doc} refData={refData} update={update} />
+        </>
       )}
 
       {/* Patron + hex pickers — witch only (free-choice, soft warning only). */}
@@ -463,6 +469,14 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Aspect picker — shifter only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "shifter") && (
         <ShifterAspectPicker doc={doc} update={update} />
+      )}
+
+      {/* Trick + Bold Stare pickers — mesmerist only (issue #65 follow-through, free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "mesmerist") && (
+        <>
+          <MesmeristTrickPicker doc={doc} refData={refData} update={update} />
+          <MesmeristBoldStarePicker doc={doc} update={update} />
+        </>
       )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}

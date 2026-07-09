@@ -51,7 +51,36 @@
  *     their own helper (`disciplineSpellsKnown` in `apps/web/src/model/
  *     spellcasting.ts`) rather than reusing `mysterySpellsKnown`'s. Unlike
  *     mysteries, disciplines grant no class skills.
+ *
+ * `powers` (issue #65 follow-through — previously deferred, see
+ * IMPLEMENTATION_PLAN.md's 2026-07-07 wave note): each discipline's
+ * "Discipline Powers" sub-feature, hand-authored from aonprd.com's individual
+ * discipline pages (`PsychicDisciplinesDisplay.aspx?ItemName=<Name>`,
+ * verified 2026-07-08) — NOT vendored anywhere (the cached
+ * `*-discipline.*.yaml` carries only the Phrenic Pool Ability/Bonus Spells
+ * prose already mined above, confirmed by direct inspection: no Discipline
+ * Powers text at all). PF1 RAW grants these automatically at 1st, 5th, and
+ * 13th psychic level to whichever discipline is chosen (not a budgeted pick —
+ * same "automatic once you qualify" shape as a sorcerer bloodline power);
+ * some disciplines name two powers at 1st level (both un-numbered on the same
+ * page, e.g. Dream's Dream Leech + Oneiromancy). Modelling posture mirrors
+ * `ORACLE_REVELATIONS`'/`WITCH_HEXES`' honesty bar: every power here is a
+ * swift-action/limited-use/passive-substitution ability with no flat
+ * always-on number this engine's `Change` pipeline could safely apply
+ * unconditionally (several scale with psychic level or a Wisdom/Charisma
+ * modifier in ways that would need per-power formula plumbing this table
+ * doesn't carry) — so these are surfaced as note-tier `GrantedFeature`s
+ * (`archetypes.ts`'s `collectGrantedFeatures`, new `origin.kind: "discipline"`)
+ * with a summary only, same posture as a shaman's spirit ability.
  */
+
+export interface PsychicDisciplinePower {
+  /** Psychic level this power is gained — 1, 5, or 13 (PF1 RAW: "Discipline Powers" gained at 1st, 5th, and 13th level). */
+  level: 1 | 5 | 13;
+  name: string;
+  /** Short rules summary shown in the UI (paraphrased, not verbatim SRD text). */
+  summary: string;
+}
 
 export interface PsychicDisciplineBonusSpell {
   /** Psychic class level at which this spell is added to the known list (1, 4, 6, ..., 18). */
@@ -75,6 +104,8 @@ export interface PsychicDisciplineDef {
   phrenicPoolAbility: "wis" | "cha";
   /** One bonus spell known at psychic level 1, 4, 6, ..., 18 (ascending). */
   bonusSpells: PsychicDisciplineBonusSpell[];
+  /** Discipline Powers gained automatically at 1st, 5th, and 13th psychic level (see file doc comment). */
+  powers: PsychicDisciplinePower[];
 }
 
 const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
@@ -93,6 +124,25 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 16, id: "003tu19dpyoaj0se", name: "Orb of the Void" },
       { level: 18, id: "egbw0mba2cpe3xe5", name: "Telekinetic Storm" },
     ],
+    powers: [
+      {
+        level: 1,
+        name: "Dark Half",
+        summary:
+          "Swift action: manifest a darker persona for 3 + 1/2 level + Cha mod rounds/day, gaining +1 DC on psychic spells, +2 morale bonus on Will saves, and immunity to fear; your damaging spells inflict 1 point of bleed (2 at 5th, 1d6 at 13th).",
+      },
+      {
+        level: 5,
+        name: "Morphic Form",
+        summary: "While manifesting your dark half, gain DR 5/— of a randomly determined type.",
+      },
+      {
+        level: 13,
+        name: "Psychic Safeguard",
+        summary:
+          "Constant spell resistance 8 + caster level, increasing to 16 + caster level while manifesting your dark half.",
+      },
+    ],
   },
   {
     tag: "dream",
@@ -108,6 +158,32 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 14, id: "btccs4sjo2nog1a0", name: "Ethereal Jaunt" },
       { level: 16, id: "759y8xzdg3unvt6s", name: "Dream Voyage" },
       { level: 18, id: "esugpfcs3zwbujt1", name: "Microcosm" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Dream Leech",
+        summary:
+          "Swift action while adjacent to a sleeping/unconscious creature: siphon its dreams for a +4 bonus on Bluff/Diplomacy/Intimidate against it within 24 hours and regain 1 phrenic pool point; uses/day = Cha mod (max once/hour, once per creature/day).",
+      },
+      {
+        level: 1,
+        name: "Oneiromancy",
+        summary:
+          "Standard action, uses/day = 3 + Cha mod: plant subconscious suggestions in a sleeping creature via a Diplomacy/Intimidate check, or enhance a dream/minor dream/nightmare spell.",
+      },
+      {
+        level: 5,
+        name: "Mind Heist",
+        summary:
+          "Spell-like ability, uses/day = Cha mod: cast detect thoughts on an adjacent sleeping creature (Will negates); also grants detect thoughts benefits when casting dream/minor dream/nightmare.",
+      },
+      {
+        level: 13,
+        name: "Waking Dream",
+        summary:
+          "Standard action, uses/day = Cha bonus: take control of a sleeping creature within 30 ft. for 1 hour/level, as magic jar without a receptacle.",
+      },
     ],
   },
   {
@@ -125,6 +201,32 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 16, id: "0kppkhsencd6tzvh", name: "Protection from Spells" },
       { level: 18, id: "xuuzj9lr2xbwaim4", name: "Overwhelming Presence" },
     ],
+    powers: [
+      {
+        level: 1,
+        name: "Expanded Awareness",
+        summary:
+          "Move action: gain blindsense 10 ft., darkvision 30 ft., low-light vision, or scent (your choice) until you switch to a different sense.",
+      },
+      {
+        level: 1,
+        name: "Patient Insight",
+        summary:
+          "Spend 1 phrenic pool point to roll a Heal, Knowledge, Sense Motive, or Survival check twice and take the higher result.",
+      },
+      {
+        level: 5,
+        name: "Focused Trance",
+        summary:
+          "Enter a 1d6-round trance (move actions only) granting a bonus equal to your psychic level on saves vs. sonic effects and gaze attacks; on exit, make one Appraise/Knowledge/Spellcraft check at +20 circumstance.",
+      },
+      {
+        level: 13,
+        name: "Empty Mind",
+        summary:
+          "Free action, spend 1 phrenic pool point on your turn: remove blinded, confused, dazed, deafened, staggered, or stunned from yourself.",
+      },
+    ],
   },
   {
     tag: "faith",
@@ -140,6 +242,31 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 14, id: "glt6uk3n6g6l2p6l", name: "Scrying, Greater" },
       { level: 16, id: "0wamdkl9gp19l55w", name: "Planar Ally, Greater" },
       { level: 18, id: "suel7sgnztenv551", name: "Miracle" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Deity",
+        summary:
+          "Choose a deity to worship at 1st level; your alignment must stay within one step of your deity's or you lose access to this discipline's bonus spells and powers.",
+      },
+      {
+        level: 1,
+        name: "Divine Energy",
+        summary:
+          "Convert a prepared spell into a cure or inflict spell (as a cleric's spontaneous casting); regain 1 phrenic pool point per conversion, up to your Wisdom modifier per day.",
+      },
+      {
+        level: 5,
+        name: "Resilience of the Faithful",
+        summary: "+2 resistance bonus on all saving throws, +1 more per 5 levels beyond 5th.",
+      },
+      {
+        level: 13,
+        name: "Prayer Aura",
+        summary:
+          "Free action, rounds/day = psychic level: grant allies +1 luck bonus on attacks/damage/saves/skills and impose -1 on enemy rolls (-2 vs. your opposed alignment).",
+      },
     ],
   },
   {
@@ -157,6 +284,27 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 16, id: "blvetbc929cfx4m8", name: "Mind Blank" },
       { level: 18, id: "vl7yer8k1leyuxld", name: "Foresight" },
     ],
+    powers: [
+      { level: 1, name: "Enhanced Senses", summary: "Gain scent, as the universal monster rule." },
+      {
+        level: 1,
+        name: "Survival Instinct",
+        summary:
+          "Add your Wisdom bonus (if any) to Constitution for the purpose of your negative-hp death threshold and stabilization checks.",
+      },
+      {
+        level: 5,
+        name: "Ferocity",
+        summary:
+          "Gain the ferocity monster ability (continue fighting below 0 hp); while at 0 or negative hp, gain +4 morale to Str/Dex and +2 morale on Fortitude saves.",
+      },
+      {
+        level: 13,
+        name: "Primal Fury",
+        summary:
+          "Free action, rounds/day = psychic level: enter a transformed state; afterward, fatigued for twice the number of rounds spent.",
+      },
+    ],
   },
   {
     tag: "haunted",
@@ -172,6 +320,26 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 14, id: "btccs4sjo2nog1a0", name: "Ethereal Jaunt" },
       { level: 16, id: "0j2cb0iv0695a45i", name: "Possession, Greater" },
       { level: 18, id: "gw9bes9othfqm7mi", name: "Etherealness" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Lingering Spirits",
+        summary:
+          "Swift action: manifest mage hand, ghost sound, grave words, or telekinetic projectile as a spell-like ability.",
+      },
+      {
+        level: 5,
+        name: "Spiritual Bulwark",
+        summary:
+          "Bonus equal to your Charisma modifier on saves against haunts, incorporeal undead, incorporeal outsiders, and possession.",
+      },
+      {
+        level: 13,
+        name: "Phantasmal Assault",
+        summary:
+          "Your damaging mind-affecting spells can affect haunts and undead (including mindless undead) normally immune to them, treated as positive energy damage.",
+      },
     ],
   },
   {
@@ -189,6 +357,32 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 16, id: "2vb5orfcy57lrfmc", name: "Moment of Prescience" },
       { level: 18, id: "q8nety5obvbbd5xs", name: "Divide Mind" },
     ],
+    powers: [
+      {
+        level: 1,
+        name: "Illuminating Answers",
+        summary:
+          "When a divination spell/ability that answers questions succeeds, regain 1 phrenic pool point (max/day = Wis mod).",
+      },
+      {
+        level: 1,
+        name: "Mnemonic Cache",
+        summary:
+          "Store roughly 10 pages of text or 30 minutes of speech/music (capacity +5/+5 per level beyond 1st); can sequester and disable written magical traps via Disable Device.",
+      },
+      {
+        level: 5,
+        name: "Superior Automatic Writing",
+        summary:
+          "Treat psychic level + Wis bonus as Linguistics ranks for automatic writing; at 8th level, DC 35 to gain commune-quality answers instead of augury-quality.",
+      },
+      {
+        level: 13,
+        name: "Memory Palace",
+        summary:
+          "Create an extradimensional library (as mage's magnificent mansion, 10-ft. cubes = psychic level) granting +4 circumstance on one chosen Knowledge skill (more at 14th+).",
+      },
+    ],
   },
   {
     tag: "pageantry",
@@ -204,6 +398,32 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 14, id: "kqftgm3bi2dqj92l", name: "Mage's Magnificent Mansion" },
       { level: 16, id: "zi1fpl4essgw5bbc", name: "Divine Vessel" },
       { level: 18, id: "ueuz3ymuz8pxpzr6", name: "Heroic Invocation" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Ritual Unity",
+        summary:
+          "+2 bonus on skill checks made as part of an occult ritual (+4 on aid another); regain 1 phrenic pool point when an aid-another check succeeds.",
+      },
+      {
+        level: 1,
+        name: "Power from Pageantry",
+        summary:
+          "Spend 1 phrenic pool point to extend a standard-action spell's casting time to 1 full round, raising its effective caster level and save DC by 2.",
+      },
+      {
+        level: 5,
+        name: "Force of Habit",
+        summary:
+          "Spend 1 phrenic pool point when casting a concentration psychic spell to maintain its concentration as a swift action while casting other psychic spells.",
+      },
+      {
+        level: 13,
+        name: "Unrivaled Focus",
+        summary:
+          "Spend 1 phrenic pool point before rolling a concentration check to treat the die result as a 20.",
+      },
     ],
   },
   {
@@ -221,6 +441,32 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 16, id: "e8zen5nzixnt7bde", name: "Horrid Wilting" },
       { level: 18, id: "6yeorbvt5ysym3nh", name: "Suffocation, Mass" },
     ],
+    powers: [
+      {
+        level: 1,
+        name: "Painful Reminder",
+        summary:
+          "Swift action, uses/day = 3 + Cha mod: an enemy you've damaged with a spell since your last turn takes 1d6 nonlethal damage (2d6 at 8th, 3d6 at 15th).",
+      },
+      {
+        level: 1,
+        name: "Power from Pain",
+        summary:
+          "When Painful Reminder deals at least 5 damage, regain 1 phrenic pool point (max/day = Wis mod).",
+      },
+      {
+        level: 5,
+        name: "Live On",
+        summary:
+          "Use lay on hands and mercies as a paladin 3 levels lower than your psychic level, usable only on yourself.",
+      },
+      {
+        level: 13,
+        name: "Agonizing Wound",
+        summary:
+          "Uses/day = 3 + Cha mod: a creature damaged by your spell becomes frightened or sickened for Cha-mod rounds (or, at 2 uses, dazed/nauseated/panicked for 1 round); Will negates.",
+      },
+    ],
   },
   {
     tag: "rebirth",
@@ -236,6 +482,32 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 14, id: "btccs4sjo2nog1a0", name: "Ethereal Jaunt" },
       { level: 16, id: "v39qnirlhgje2c0e", name: "Bilocation" },
       { level: 18, id: "au6p72aztjhtokwr", name: "Akashic Form" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Past-Life Memories",
+        summary:
+          "Add half your psychic level (min 1) to all Knowledge checks, and make every Knowledge check untrained.",
+      },
+      {
+        level: 1,
+        name: "Mnemonic Esoterica",
+        summary:
+          "Select an additional spellcasting class; once per day when preparing spells, add one of that class's spells to your spells known/class list for 24 hours.",
+      },
+      {
+        level: 5,
+        name: "Resurgence",
+        summary:
+          "Immediate action, spend 2 phrenic pool points: regain 1d8 + psychic level hp (3d8 + psychic level at 10th, with stabilization/group-healing benefits on excess).",
+      },
+      {
+        level: 13,
+        name: "Physical Regression",
+        summary:
+          "Once per day as a standard action, spend 2 phrenic pool points to take on the form of a previous incarnation.",
+      },
     ],
   },
   {
@@ -253,6 +525,27 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 16, id: "mkrjbrp57yfdqrx0", name: "Iron Body" },
       { level: 18, id: "au6p72aztjhtokwr", name: "Akashic Form" },
     ],
+    powers: [
+      {
+        level: 1,
+        name: "AC Bonus",
+        summary:
+          "When unarmored, unencumbered, and not immobilized/helpless, add your Wisdom bonus to AC and CMD, even against touch attacks or while flat-footed.",
+      },
+      {
+        level: 1,
+        name: "Physical Push",
+        summary:
+          "Uses/day = Wis mod: gain a bonus equal to your Wisdom bonus on a Str/Dex/Con-based check; regain 1 phrenic pool point if the check succeeds.",
+      },
+      {
+        level: 5,
+        name: "Bodily Purge",
+        summary:
+          "A pool of 3d8 healing dice/day, spent as a standard action to heal hit points or as lesser restoration.",
+      },
+      { level: 13, name: "Pure Body", summary: "Immunity to diseases and poisons." },
+    ],
   },
   {
     tag: "tranquility",
@@ -268,6 +561,24 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 14, id: "blvetbc929cfx4m8", name: "Mind Blank" },
       { level: 16, id: "xlzqpkl8fpm3sn4u", name: "Euphoric Tranquility" },
       { level: 18, id: "7mstq5c76h3e6zzx", name: "Time Stop" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Mental Placidity",
+        summary:
+          "Immediate action: +2 bonus on a Will save you're about to attempt (+4 instead against an enchantment spell or effect).",
+      },
+      {
+        level: 5,
+        name: "Calming Presence",
+        summary: "Use calm emotions as a spell-like ability, uses/day = Wisdom modifier.",
+      },
+      {
+        level: 13,
+        name: "Purge Disquiet",
+        summary: "Immunity to fear spells/effects and to the confused condition.",
+      },
     ],
   },
 ];
