@@ -26,7 +26,8 @@
  * module trying to merge them into one status.
  */
 
-import type { CharacterDoc, DerivedSheet } from "@pf1/schema";
+import { compute } from "@pf1/engine";
+import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 type Hp = CharacterDoc["live"]["hp"];
 
@@ -69,6 +70,57 @@ export function applyHealing(doc: CharacterDoc, amount: number, max: number): Ch
 /** Set the temporary HP pool (temp HP does not stack; the highest applies). */
 export function setTempHp(doc: CharacterDoc, value: number): CharacterDoc {
   return withHp(doc, { ...doc.live.hp, temp: nonNeg(value) });
+}
+
+/**
+ * Sync `live.hp.temp` to a buff/feature's granted temp-HP contribution (issue
+ * #67) after a doc transition that may have activated/deactivated a
+ * `tempHp`-granting buff (e.g. toggling Unchained Rage — see
+ * `@pf1/engine` `buff-effects.ts`). `before`/`after` are the doc states
+ * immediately before and after that transition; both get run through
+ * `compute()` here to read `DerivedSheet.hp.grantedTemp.total`.
+ *
+ * PF1 RAW backs the two rules this applies:
+ *   - Activation/level-up raises the ceiling: if the granted total is now
+ *     HIGHER than the current temp-HP pool, raise the pool to match (Unchained
+ *     Rage's own d20pfsrd wording: entering rage grants "2 temporary hit
+ *     points per Hit Die," i.e. the pool becomes (at least) that amount).
+ *   - Full deactivation clears it: if the granted total drops to exactly 0
+ *     and there WAS a nonzero granted total before (a real "the last
+ *     tempHp-granting buff just turned off" transition, not merely "nothing
+ *     was granting anyway"), clear the pool to 0 — matches Unchained Rage's
+ *     own RAW ("these temporary hit points ... disappear when rage ends").
+ *
+ * Deliberately punted edge cases (this tracker keeps ONE unified `live.hp.temp`
+ * pool, not a per-source ledger, so these can't be resolved more precisely
+ * without a larger data-model change):
+ *   - A pool that mixes buff-granted and unrelated MANUALLY-entered temp HP
+ *     (e.g. a potion) is treated as one blob: a full deactivation clears the
+ *     manual portion too, since there's no way to tell them apart once merged.
+ *   - Partial deactivation (one of several simultaneously-active tempHp
+ *     sources drops out while at least one other remains, so the granted
+ *     total stays > 0 but shrinks) does NOT reduce the pool — it's left at
+ *     its old (now stale-high) ceiling rather than guessing which source
+ *     contributed what. Rare in practice (this app has no rage power/spell
+ *     combo that stacks two simultaneous tempHp buffs yet).
+ *   - A granted total that scales DOWN while still active (e.g. a
+ *     level-dependent formula that could shrink, not a case any current
+ *     source exercises) never lowers an already-higher pool — matches "never
+ *     lowers" from the activation rule above, applied uniformly.
+ *   - The "not replenished within 1 minute of a prior rage ending" clause
+ *     (Unchained Rage's own RAW) isn't modeled — no cooldown timer exists in
+ *     this tracker.
+ */
+export function applyGrantedTempHp(
+  before: CharacterDoc,
+  after: CharacterDoc,
+  refData: RefData,
+): CharacterDoc {
+  const prevTotal = compute(before, refData).hp.grantedTemp.total;
+  const nextTotal = compute(after, refData).hp.grantedTemp.total;
+  if (nextTotal > after.live.hp.temp) return setTempHp(after, nextTotal);
+  if (nextTotal === 0 && prevTotal > 0) return setTempHp(after, 0);
+  return after;
 }
 
 /** Add nonlethal damage. */

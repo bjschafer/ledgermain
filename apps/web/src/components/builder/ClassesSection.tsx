@@ -27,21 +27,32 @@ import { DiscoveryPicker } from "./DiscoveryPicker.js";
 import { DomainPicker } from "./DomainPicker.js";
 import { FiendishBoonPicker } from "./FiendishBoonPicker.js";
 import { HexPicker } from "./HexPicker.js";
+import { InvestigatorTalentPicker } from "./InvestigatorTalentPicker.js";
+import { KiPowerPicker } from "./KiPowerPicker.js";
 import { MagusArcanaPicker } from "./MagusArcanaPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
 import { NinjaTrickPicker } from "./NinjaTrickPicker.js";
 import { PatronPicker } from "./PatronPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
+import { PhantomPicker } from "./PhantomPicker.js";
+import { ShifterAspectPicker } from "./ShifterAspectPicker.js";
 import { TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
 import { OrderPicker } from "./OrderPicker.js";
 import { Panel } from "./Panel.js";
+import { RagePowerPicker } from "./RagePowerPicker.js";
 import { RangerPicker } from "./RangerPicker.js";
 import { RevelationPicker } from "./RevelationPicker.js";
+import { RogueFinesseWeaponsPicker } from "./RogueFinesseWeaponsPicker.js";
+import { RogueSkillUnlocksPicker } from "./RogueSkillUnlocksPicker.js";
+import { RogueTalentPicker } from "./RogueTalentPicker.js";
 import { SchoolPicker } from "./SchoolPicker.js";
 import { ShamanHexPicker } from "./ShamanHexPicker.js";
 import { SpiritPicker } from "./SpiritPicker.js";
+import { StyleStrikePicker } from "./StyleStrikePicker.js";
 import type { BuilderProps } from "./types.js";
+import { VigilanteSpecializationPicker } from "./VigilanteSpecializationPicker.js";
+import { VigilanteTalentPicker } from "./VigilanteTalentPicker.js";
 import { WeaponTrainingPicker } from "./WeaponTrainingPicker.js";
 
 /**
@@ -412,12 +423,57 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {doc.identity.classes.some((c) => c.tag === "ninja") && (
         <NinjaTrickPicker doc={doc} refData={refData} update={update} />
       )}
+      {/* Rage power picker — barbarian (chained) OR barbarianUnchained; shared table (free-choice, soft warning only). */}
+      {doc.identity.classes.some(
+        (c) => c.tag === "barbarian" || c.tag === "barbarianUnchained",
+      ) && <RagePowerPicker doc={doc} refData={refData} update={update} />}
+      {/* Ki power + style strike pickers — Monk (Unchained) only (issue #65, free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "monkUnchained") && (
+        <>
+          <KiPowerPicker doc={doc} update={update} />
+          <StyleStrikePicker doc={doc} update={update} />
+        </>
+      )}
+
+      {/* Rogue talent picker — chained rogue AND Rogue (Unchained), shared field (issue #65, free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "rogue" || c.tag === "rogueUnchained") && (
+        <RogueTalentPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Finesse Training weapon-type picks + Rogue's Edge (UC) skill unlock picks — Rogue (Unchained) only (issue #65). */}
+      {doc.identity.classes.some((c) => c.tag === "rogueUnchained") && (
+        <>
+          <RogueFinesseWeaponsPicker doc={doc} update={update} />
+          <RogueSkillUnlocksPicker doc={doc} update={update} />
+        </>
+      )}
+
+      {/* Investigator talent picker — investigator only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "investigator") && (
+        <InvestigatorTalentPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Specialization + talent pickers — vigilante only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "vigilante") && (
+        <>
+          <VigilanteSpecializationPicker doc={doc} update={update} />
+          <VigilanteTalentPicker doc={doc} update={update} />
+        </>
+      )}
+
+      {/* Aspect picker — shifter only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "shifter") && (
+        <ShifterAspectPicker doc={doc} update={update} />
+      )}
 
       {/* Tracked familiar — class-agnostic (see FamiliarPicker's doc comment). */}
       <FamiliarPicker doc={doc} update={update} />
 
       {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond / ACG Hunter's own Animal Companion. */}
       <AnimalCompanionPicker doc={doc} update={update} />
+
+      {/* Tracked phantom — spiritualist's own Phantom class feature (issue #65). */}
+      <PhantomPicker doc={doc} update={update} />
 
       {/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}
       <RangerPicker doc={doc} update={update} />

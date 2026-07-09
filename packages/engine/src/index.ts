@@ -85,6 +85,17 @@ export {
   type FiendishBoonWeaponDetail,
   antipaladinDamageReduction,
   type AntipaladinDrDetail,
+  ROGUE_FINESSE_TRAINING_LEVELS,
+  ROGUE_SKILL_UNLOCK_LEVELS,
+  studiedCombatBonus,
+  studiedCombatLabel,
+  studiedStrikeDice,
+  type StudiedStrikeDetail,
+  hiddenStrikeDice,
+  type HiddenStrikeDetail,
+  shifterClawsDamageDie,
+  shifterClawsLabel,
+  type ShifterClawsDetail,
 } from "./tables.js";
 export { CONDITIONS, CONDITION_IDS, CONDITION_LADDERS, type ConditionDef } from "./conditions.js";
 export { TRAITS, TRAIT_IDS, type TraitDef, type TraitCategory } from "./traits.js";
@@ -165,6 +176,13 @@ export {
   ALCHEMIST_DISCOVERY_IDS,
   type AlchemistDiscoveryDef,
 } from "./alchemist-discoveries.js";
+export { MONK_KI_POWERS, MONK_KI_POWER_IDS, type MonkKiPowerDef } from "./monk-ki-powers.js";
+export {
+  MONK_STYLE_STRIKES,
+  MONK_STYLE_STRIKE_IDS,
+  type MonkStyleStrikeDef,
+} from "./monk-style-strikes.js";
+export { ROGUE_TALENTS, ROGUE_TALENT_IDS, type RogueTalentDef } from "./rogue-talents.js";
 export {
   ANTIPALADIN_CRUELTIES,
   ANTIPALADIN_CRUELTY_IDS,
@@ -180,6 +198,24 @@ export {
   type NinjaTrickDef,
   type NinjaTrickTier,
 } from "./ninja-tricks.js";
+export {
+  INVESTIGATOR_TALENTS,
+  INVESTIGATOR_TALENT_IDS,
+  type InvestigatorTalentDef,
+  type InvestigatorTalentCategory,
+} from "./investigator-talents.js";
+export {
+  VIGILANTE_SOCIAL_TALENTS,
+  VIGILANTE_SOCIAL_TALENT_IDS,
+  VIGILANTE_TALENTS,
+  VIGILANTE_TALENT_IDS,
+  vigilanteTalentsForSpecialization,
+  type VigilanteTalentDef,
+  type VigilanteTalentEntry,
+  type VigilanteSpecialization,
+  type VigilanteTalentGate,
+} from "./vigilante-talents.js";
+export { SHIFTER_ASPECTS, SHIFTER_ASPECT_IDS, type ShifterAspectDef } from "./shifter-aspects.js";
 export {
   PSYCHIC_DISCIPLINES,
   PSYCHIC_DISCIPLINE_TAGS,
@@ -282,6 +318,25 @@ export {
   type DerivedCompanionSkill,
   type FlyManeuverability as CompanionFlyManeuverability,
 } from "./companion.js";
+export {
+  PHANTOM_BASE_ABILITIES,
+  EMOTIONAL_FOCI,
+  EMOTIONAL_FOCUS_IDS,
+  PHANTOM_PROGRESSION,
+  PHANTOM_SPECIAL_ABILITY_DETAIL,
+  PHANTOM_ABILITY_INCREASE_LEVELS,
+  derivePhantom,
+  phantomProgressionRow,
+  phantomSpecialAbilityNames,
+  phantomAbilityIncreaseSlots,
+  phantomSlamDamage,
+  type EmotionalFocus,
+  type PhantomProgressionRow,
+  type DerivedPhantom,
+  type DerivedPhantomAc,
+  type DerivedPhantomAttack,
+  type DerivedPhantomSkill,
+} from "./phantom.js";
 export {
   routeSharedBuffs,
   applySharedAbilityBonuses,
@@ -399,3 +454,11 @@ export {
   normalizeWeaponGroup,
   type WeaponGroup,
 } from "./weapon-groups.js";
+export { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
+export {
+  RAGE_POWERS,
+  RAGE_POWER_IDS,
+  ragePowersForEdition,
+  type RagePowerDef,
+  type RagePowerEdition,
+} from "./rage-powers.js";

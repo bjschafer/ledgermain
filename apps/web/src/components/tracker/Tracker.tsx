@@ -8,10 +8,13 @@ import { FeatsPanel } from "./FeatsPanel.js";
 import { HeroPointsPanel } from "./HeroPointsPanel.js";
 import { HpPanel } from "./HpPanel.js";
 import { NewDayBar } from "./NewDayBar.js";
+import { PhantomPanel } from "./PhantomPanel.js";
 import { PreparedSpellsPanel } from "./PreparedSpellsPanel.js";
 import { ResourcesPanel } from "./ResourcesPanel.js";
 import { SavedRollsPanel } from "./SavedRollsPanel.js";
+import { ShifterAspectPanel } from "./ShifterAspectPanel.js";
 import { StatStrip } from "./StatStrip.js";
+import { VigilanteIdentityPanel } from "./VigilanteIdentityPanel.js";
 import { XpPanel } from "./XpPanel.js";
 import { heroPointsEnabled } from "../../model/heroPoints.js";
 import { xpEnabled } from "../../model/xp.js";
@@ -30,8 +33,10 @@ export function Tracker(props: BuilderProps) {
       <StatStrip {...props} />
       <NewDayBar {...props} />
       <HpPanel {...props} />
+      <VigilanteIdentityPanel {...props} />
       <ConditionsPanel {...props} />
       <BuffsPanel {...props} />
+      <ShifterAspectPanel {...props} />
       <PreparedSpellsPanel {...props} />
       <SavedRollsPanel {...props} />
       <ResourcesPanel {...props} />
@@ -41,6 +46,7 @@ export function Tracker(props: BuilderProps) {
       <AfflictionsPanel {...props} />
       <FamiliarPanel {...props} />
       <CompanionPanel {...props} />
+      <PhantomPanel {...props} />
       <FeatsPanel {...props} />
     </div>
   );

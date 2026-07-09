@@ -695,22 +695,163 @@ export interface CharacterDoc {
      */
     ninjaTricks?: string[];
     /**
-     * A tracked eidolon (PF1 Summoner's signature companion, APG/Pathfinder
-     * Unchained "Summoner (Unchained)") — models the eidolon itself as a
-     * trackable creature with its own derived HD/BAB/saves/AC/attacks/skills,
-     * mirroring `animalCompanion`/`familiar` above — see `@pf1/engine`
-     * `deriveEidolon` (issue #65, coordinates with issue #68's future
-     * per-creature feat picker). Optional/back-compat: documents without this
-     * field have no tracked eidolon.
-     */
-    eidolon?: EidolonBuild;
-    /**
      * A tracked phantom (PF1 Occult Adventures Spiritualist's eidolon-like
-     * companion) — mirrors `eidolon` above closely; see `@pf1/engine`
-     * `derivePhantom` (issue #65). Optional/back-compat: documents without
-     * this field have no tracked phantom.
+     * companion) — mirrors `animalCompanion`/`familiar` above closely; see
+     * `@pf1/engine` `derivePhantom` (issue #65). Optional/back-compat:
+     * documents without this field have no tracked phantom.
      */
     phantom?: PhantomBuild;
+    /**
+     * Barbarian rage power ids chosen (keys into `@pf1/engine` `RAGE_POWERS` —
+     * issue #65/#67), shared by both `barbarian` (chained) and
+     * `barbarianUnchained` — PF1 RAW grants a rage power at 2nd level and
+     * every two levels thereafter for both editions (verified against
+     * aonprd.com's class tables: the Unchained rewrite's own "Rage Powers"
+     * class feature restates the identical 2nd/4th/6th/... cadence rather
+     * than changing it), plus one per "Extra Rage Power" feat taken; see
+     * `apps/web/src/model/ragePowers.ts` for the budget math (sums both
+     * classes' levels, mirroring `@pf1/engine` `defenses.ts`'s
+     * `barbarianLevel()` — a character would only ever have one of the two,
+     * but summing is correct regardless). Level-gated entries (e.g. Renewed
+     * Vigor's "barbarian 4th") are soft-warned only, same posture as
+     * `oracleRevelations`/`witchHexes` — never blocks selection. Free-choice,
+     * soft warning only on overspend. Empty/undefined for non-barbarians.
+     * Back-compat: documents without this field are unaffected.
+     */
+    ragePowers?: string[];
+    /**
+     * Monk (Unchained) ki power ids chosen (keys into `@pf1/engine`
+     * `MONK_KI_POWERS` — issue #65). Gained at 4th level and every 2 levels
+     * thereafter (4th, 6th, ..., 20th — 9 total by 20th); see
+     * `model/monkKiPowers.ts` for the budget math. Every ki power here is
+     * `displayOnly` (a limited-use/activated ability with no unconditional
+     * numeric effect — see `MONK_KI_POWERS`' doc comment for why none of the
+     * 39 core Pathfinder Unchained ki powers cleared the bar for a real
+     * `Change`), same posture as `witchHexes`. Free-choice, soft warning only
+     * on overspend. Empty/undefined for non-monkUnchained characters.
+     * Back-compat: documents without this field are unaffected.
+     */
+    monkKiPowers?: string[];
+    /**
+     * Monk (Unchained) style strike ids chosen (keys into `@pf1/engine`
+     * `MONK_STYLE_STRIKES` — issue #65). Gained at 5th level and every 4
+     * levels thereafter (5th, 9th, 13th, 17th — 4 total by 17th; the 15th-
+     * level "designate two per round" bump is a usage upgrade to the SAME
+     * pool, not an extra pick — see `model/monkStyleStrikes.ts`). Every style
+     * strike here is `displayOnly` (a per-attack flurry rider, same posture
+     * as ki powers). Free-choice, soft warning only on overspend.
+     * Empty/undefined for non-monkUnchained characters. Back-compat:
+     * documents without this field are unaffected.
+     */
+    monkStyleStrikes?: string[];
+    /**
+     * Rogue talent ids chosen (keys into `@pf1/engine` `ROGUE_TALENTS` —
+     * issue #65), SHARED between the chained rogue and Rogue (Unchained) —
+     * both classes draw from the same curated ~28-entry core menu; entries
+     * flagged `unchainedOnly` in `ROGUE_TALENTS` (e.g. ones that reference
+     * Debilitating Injury) are soft-noted rather than hidden for a chained
+     * rogue. Gained at 2nd level and every 2 levels thereafter, plus one per
+     * "Extra Rogue Talent" feat taken; see `model/rogueTalents.ts` for the
+     * budget math. Most entries are `displayOnly`; "Combat Trick" contributes
+     * a real generic bonus-feat SLOT and "Finesse Rogue" grants Weapon
+     * Finesse as a fixed feat outright — both bridged into
+     * `apps/web/src/model/feats.ts` (`ROGUE_TALENTS[id].bonusFeatSlot` /
+     * `.grantsFeat`), same "talent grants a feat" shape as Rogue's Edge
+     * (UC)'s sibling `finesse training (uc)` override. Free-choice, soft
+     * warning only on overspend. Empty/undefined for non-rogues. Back-compat:
+     * documents without this field are unaffected.
+     */
+    rogueTalents?: string[];
+    /**
+     * Rogue (Unchained) Finesse Training weapon-type picks, in grant order —
+     * index 0 = the weapon type chosen at 3rd level, index 1 = 11th, index 2
+     * = 19th (PF1 RAW: "she can select any one type of weapon that can be
+     * used with Weapon Finesse ... whenever she makes a successful melee
+     * attack with the selected weapon, she adds her Dexterity modifier
+     * instead of her Strength modifier to the damage roll"). Free-text weapon
+     * TYPE name (e.g. "rapier"), matched case-insensitively against a
+     * `WeaponInstance`'s `name`/`group` in `compute.ts`'s weapon-attack path
+     * — not a `@pf1/engine` `WEAPON_GROUPS` slug (RAW scopes this to one
+     * weapon type, not a whole semantic group; see `computeWeaponAttacks`'s
+     * doc comment for the matching rule). Empty/undefined for non-
+     * rogueUnchained characters or a rogue who hasn't made any picks yet.
+     * Back-compat: documents without this field are unaffected.
+     */
+    rogueFinesseWeapons?: string[];
+    /**
+     * Rogue's Edge (UC) skill unlock picks, in grant order — index 0 = the
+     * skill chosen at 5th level, index 1 = 10th, index 2 = 15th, index 3 =
+     * 20th (PF1 Unchained RAW: "at 5th level, and every 5 levels thereafter,
+     * a rogue can choose a skill unlock power for one skill in which she has
+     * at least 5 ranks"). Values are `SkillId`s (see `model/names.ts`
+     * `SKILL_NAMES`). The unlock's actual tiered prose effects are NOT
+     * modeled (no numeric hook — same posture as `shamanHexes`); surfaced as
+     * a `displayOnly` chip on the ClassFeaturesList's "Rogue's Edge (UC)" row
+     * rather than the skill row itself, since the same picker also drives
+     * `expectedFeatCount`'s exclusion of Rogue's Edge (UC)'s spurious
+     * vendored `bonusFeats` change (see `feats.ts`'s existing exclusion) and
+     * both belong together. Empty/undefined for non-rogueUnchained
+     * characters. Back-compat: documents without this field are unaffected.
+     */
+    rogueSkillUnlocks?: string[];
+    /**
+     * Investigator talent ids chosen (keys into `@pf1/engine`
+     * `INVESTIGATOR_TALENTS` — issue #65). Gained at 3rd level and every 2
+     * levels thereafter (3rd, 5th, ..., 19th — 9 total by 20th); see
+     * `model/investigatorTalents.ts` for the budget math. Free-choice, soft
+     * warning only on overspend — same posture as `alchemistDiscoveries`.
+     * Empty/undefined for non-investigators. Back-compat: documents without
+     * this field are unaffected.
+     */
+    investigatorTalents?: string[];
+    /**
+     * Vigilante's chosen specialization (Ultimate Intrigue "Vigilante
+     * Specialization" class feature), picked at 1st level and never changed
+     * thereafter (PF1 RAW). "avenger" swaps the vigilante's own BAB tier for
+     * full BAB (= vigilante level) — see `compute.ts`'s BAB loop, which reads
+     * this field directly. "stalker" grants Hidden Strike (precision damage;
+     * see `@pf1/engine` `hiddenStrikeDice`, surfaced as a class-feature
+     * detail line). Free-choice, no hard validation. Empty/undefined for
+     * non-vigilantes or a vigilante who hasn't picked yet. Back-compat:
+     * documents without this field are unaffected.
+     */
+    vigilanteSpecialization?: "avenger" | "stalker";
+    /**
+     * Vigilante Social Talent ids chosen (keys into `@pf1/engine`
+     * `VIGILANTE_SOCIAL_TALENTS` — issue #65). Gained at 1st level and every
+     * 2 levels thereafter (1st, 3rd, ..., 19th — 10 total by 20th); see
+     * `model/vigilanteTalents.ts` for the budget math. A DIFFERENT pool from
+     * `vigilanteTalents` below — PF1 RAW grants these from two independent
+     * class features. Free-choice, soft warning only on overspend.
+     * Empty/undefined for non-vigilantes. Back-compat: documents without this
+     * field are unaffected.
+     */
+    vigilanteSocialTalents?: string[];
+    /**
+     * Vigilante Talent ids chosen (keys into `@pf1/engine`
+     * `VIGILANTE_TALENTS` — issue #65). Gained at 2nd level and every 2
+     * levels thereafter (2nd, 4th, ..., 20th — 10 total by 20th); see
+     * `model/vigilanteTalents.ts` for the budget math. Some entries are
+     * gated to `vigilanteSpecialization` (see `VigilanteTalentEntry.gate`) —
+     * soft-filtered only, same posture as `witchHexes`' tier gating; never
+     * blocks selection. Empty/undefined for non-vigilantes. Back-compat:
+     * documents without this field are unaffected.
+     */
+    vigilanteTalents?: string[];
+    /**
+     * Shifter aspect ids chosen (keys into `@pf1/engine` `SHIFTER_ASPECTS` —
+     * issue #65). Gained at 1st, 5th, 10th, and 15th level, plus a 5th aspect
+     * at 20th via the Final Aspect class feature; see
+     * `model/shifterAspects.ts` for the budget math. Free-choice, soft
+     * warning only on overspend. Each aspect's MINOR form is a real
+     * toggleable buff (see `live.activeBuffs`/`model/shifterAspects.ts`
+     * `toggleShifterAspectBuff`) built directly from `SHIFTER_ASPECTS`
+     * (there is no vendored buff to link — see that table's doc comment).
+     * The major form (Wild Shape transformation) is NOT modeled — deferred
+     * to issue #70 (polymorph). Empty/undefined for non-shifters.
+     * Back-compat: documents without this field are unaffected.
+     */
+    shifterAspects?: string[];
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
@@ -892,20 +1033,27 @@ export interface CharacterDoc {
      */
     martialFlexibilityFeatId?: string;
     /**
-     * Live session state for the tracked eidolon (`build.eidolon`) — damage
-     * bookkeeping, which of the master's `activeBuffs` are shared onto it
-     * (Share Spells), and the summoned/dismissed toggle. Mirrors
-     * `animalCompanion`/`familiar` above; see {@link EidolonLiveState}.
-     * Absent/omitted while `build.eidolon` is unset.
-     */
-    eidolon?: EidolonLiveState;
-    /**
-     * Live session state for the tracked phantom (`build.phantom`) — mirrors
-     * `eidolon` above, plus the manifestation-state toggle unique to
-     * phantoms; see {@link PhantomLiveState}. Absent/omitted while
-     * `build.phantom` is unset.
+     * Live session state for the tracked phantom (`build.phantom`) — damage
+     * bookkeeping, which of the master's `activeBuffs` are shared onto it,
+     * plus the manifestation-state toggle unique to phantoms. Mirrors
+     * `animalCompanion`/`familiar` above; see {@link PhantomLiveState}.
+     * Absent/omitted while `build.phantom` is unset.
      */
     phantom?: PhantomLiveState;
+    /**
+     * Vigilante's current identity (issue #65) — "social" (public persona) or
+     * "vigilante" (masked persona). Display-forward table state (an identity
+     * chip + a context-note reminder about renown/alignment scope on the
+     * relevant class features), not a numeric input to `compute()`: no
+     * vendored `Change` gates on identity, and several vigilante talents'
+     * identity-scoped bonuses (Renown's Intimidate bonus, Social Grace, ...)
+     * are intentionally left as manual-apply `contextNotes` on
+     * `VIGILANTE_SOCIAL_TALENTS`/`VIGILANTE_TALENTS` rather than wired to
+     * this flag — see those tables' doc comments. Omitted/undefined defaults
+     * to "social" (a vigilante typically starts and rests in their public
+     * identity). Back-compat: documents without this field are unaffected.
+     */
+    vigilanteIdentity?: "social" | "vigilante";
   };
 }
 
@@ -1024,44 +1172,6 @@ export interface AnimalCompanionLiveState {
 }
 
 /**
- * A tracked eidolon's build choices (`build.eidolon`) — see that field's doc
- * comment. Mirrors `AnimalCompanionBuild`'s shape; the differences are the
- * base-form/subtype selection (in place of a species) and the evolution
- * shopping list (in place of ability-score increases).
- */
-export interface EidolonBuild {
-  /** Base form id — key into `@pf1/engine` `EIDOLON_BASE_FORMS` (e.g. "biped", "quadruped", "serpentine"). */
-  baseForm: string;
-  /**
-   * True when this eidolon belongs to a `summonerUnchained` character (a
-   * separate base-statistics/evolution-pool table and a required
-   * `subtype`) — see `@pf1/engine` `eidolon.ts`'s module doc comment for the
-   * base/unchained divergences. Omitted/false = base (APG) summoner.
-   */
-  unchained?: boolean;
-  /**
-   * Unchained-only outsider subtype (e.g. "angel", "demon" — key into
-   * `@pf1/engine` `EIDOLON_SUBTYPES`) that flavors the eidolon, sets its
-   * alignment tendency, and grants a themed bonus evolution. Required by RAW
-   * once `unchained` is true; undefined/ignored for a base-summoner eidolon.
-   */
-  subtype?: string;
-  /** Player-given name (e.g. "Grix"). */
-  name: string;
-  /**
-   * Chosen evolution ids, in pick order — keys into `@pf1/engine`
-   * `EIDOLON_EVOLUTIONS`. May repeat an id for a repeatable evolution (e.g.
-   * two entries of `"claws"` is invalid since Claws isn't repeatable, but two
-   * entries of `"ability-increase"` is). Free-choice, soft warning only on
-   * evolution-pool overspend — same posture as `traits`/`racialTraits`; see
-   * `@pf1/engine` `deriveEidolon`'s doc comment.
-   */
-  evolutions: string[];
-  /** Free-text notes (e.g. personality, tactics, house-rule tweaks). */
-  notes?: string;
-}
-
-/**
  * A tracked phantom's build choices (`build.phantom`) — see that field's doc
  * comment. Mirrors `FamiliarBuild`'s shape; the difference is the emotional
  * focus in place of a species.
@@ -1071,55 +1181,39 @@ export interface PhantomBuild {
   focus: string;
   /** Player-given name. */
   name: string;
+  /**
+   * The phantom's size (PF1 Occult Adventures "Phantom": a spiritualist may
+   * manifest her phantom one size category smaller than herself, or — if she
+   * is Small or smaller — one size category larger; the common case is the
+   * same size as the spiritualist). Omitted/undefined defaults to `"med"`
+   * (`@pf1/engine` `derivePhantom`) — the overwhelmingly common choice for a
+   * Medium-sized spiritualist, and the size RAW's own slam-damage table
+   * anchors on. Only `"sm" | "med" | "lg"` are offered (the phantom's
+   * template doesn't support other sizes).
+   */
+  size?: "sm" | "med" | "lg";
+  /**
+   * Player-assigned ability score for each Ability Score Increase milestone
+   * reached so far (PF1 Occult Adventures "Manifested Phantom's Base
+   * Statistics" — spiritualist levels 5, 10, 15). Index 0 = the level-5
+   * increase, index 1 = level 10, index 2 = level 15. A missing/short entry
+   * for an already-reached milestone defaults to Charisma (`@pf1/engine`
+   * `derivePhantom` — Cha drives the phantom's incorporeal-form deflection
+   * bonus and several Emotional Focus abilities, so it's the more broadly
+   * useful default than `AnimalCompanionBuild`'s Strength). Entries beyond
+   * `phantomAbilityIncreaseSlots(level)` are ignored. Mirrors
+   * `AnimalCompanionBuild.abilityIncreases`'s shape exactly.
+   */
+  abilityIncreases?: AbilityId[];
   /** Free-text notes (e.g. personality, house-rule tweaks). */
   notes?: string;
 }
 
 /**
- * Live session state for a tracked eidolon (`live.eidolon`) — see that
- * field's doc comment. Same damage/nonlethal/sharedBuffIds shape as
- * {@link AnimalCompanionLiveState}, plus the summoned/dismissed toggle.
- */
-export interface EidolonLiveState {
-  /** Lethal damage taken so far (current HP = derived max − damage). Omitted/0 = undamaged. */
-  damage?: number;
-  /** Nonlethal damage taken so far. Omitted/0 = none. */
-  nonlethal?: number;
-  /**
-   * Instance ids from `live.activeBuffs` (the MASTER's buff list) that also
-   * apply to the eidolon's derived sheet (Share Spells). Toggled via
-   * `apps/web/src/model/eidolon.ts`; resolved by `@pf1/engine`
-   * `deriveEidolon` exactly like `AnimalCompanionLiveState.sharedBuffIds`.
-   * Omitted/empty = no shared buffs.
-   */
-  sharedBuffIds?: string[];
-  /**
-   * Whether the eidolon is currently manifested on the material plane
-   * (PF1 RAW: a summoner can summon/dismiss her eidolon as a standard
-   * action; a dismissed eidolon is on "its home plane" and can't act).
-   * Display-only bookkeeping — a dismissed eidolon's stat block still
-   * renders (so the player can re-summon or reference it) but the panel
-   * flags the state. Omitted/undefined defaults to `true` (summoned).
-   */
-  summoned?: boolean;
-}
-
-/**
- * Life Link (PF1 CRB "Eidolon" class feature) note: whenever the eidolon
- * takes damage that would reduce it below 0 hit points, the summoner may
- * transfer damage from the eidolon to herself (1 HP per point, as an
- * immediate action, no daily limit). This is a manual player-triggered
- * transfer, not an automatic recomputation, so it is deliberately NOT
- * modeled numerically anywhere in the schema — same posture as
- * `martialFlexibilityFeatId`'s manual-borrow bookkeeping. The eidolon
- * tracker panel surfaces the rule as a reminder only.
- */
-
-/**
  * Live session state for a tracked phantom (`live.phantom`) — see that
  * field's doc comment. Same damage/nonlethal/sharedBuffIds shape as
- * {@link EidolonLiveState}, plus the manifestation-state toggle unique to
- * phantoms.
+ * {@link AnimalCompanionLiveState}, plus the manifestation-state toggle
+ * unique to phantoms.
  */
 export interface PhantomLiveState {
   /** Lethal damage taken so far (current HP = derived max − damage). Omitted/0 = undamaged. */
@@ -1130,7 +1224,7 @@ export interface PhantomLiveState {
    * Instance ids from `live.activeBuffs` (the MASTER's buff list) that also
    * apply to the phantom's derived sheet. Toggled via
    * `apps/web/src/model/phantom.ts`; resolved by `@pf1/engine`
-   * `derivePhantom` exactly like `EidolonLiveState.sharedBuffIds`.
+   * `derivePhantom` exactly like `AnimalCompanionLiveState.sharedBuffIds`.
    * Omitted/empty = no shared buffs.
    */
   sharedBuffIds?: string[];
@@ -1468,9 +1562,15 @@ export interface WeaponInstance {
   /**
    * Which ability modifier adds to the damage bonus.
    * - `"str"` (default): STR × damageMultiplier, melee only.
+   * - `"dex"`: DEX × damageMultiplier, melee only — a hand-set override for a
+   *   Dex-to-damage source the player wants to force on (e.g. Slashing
+   *   Grace). Rogue (Unchained)'s Finesse Training (`build.rogueFinesseWeapons`
+   *   — issue #65) applies this automatically for a matching weapon instead
+   *   of requiring it to be set by hand; see `computeWeaponAttacks` in
+   *   `compute.ts`.
    * - `"none"`: no ability modifier to damage (ranged, finesse, thrown without STR).
    */
-  damageAbility?: "str" | "none";
+  damageAbility?: "str" | "dex" | "none";
   /**
    * Multiplier applied to the damage ability modifier.
    * 1 = one-handed (default), 1.5 = two-handed, 0.5 = off-hand.
@@ -1705,21 +1805,12 @@ export interface DerivedClassFeature {
    * exploit) from an arcanist's own Arcane Reservoir, "Familiar" (a magus
    * arcana) from a magus's own Spell Combat, "Ward" (a hex) from a witch's
    * own Witch's Familiar, or "Cauldron" (a discovery) from an alchemist's
-   * own Bomb.
-   * magus arcana, oracle revelation (both issue #61), or shaman spirit/hex
-   * (issue #65) rather than the class itself — all eight share
-   * `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/`"magus"`/
-   * `"oracle"`/`"shaman"` with the class's own intrinsic features, so this
-   * disambiguates e.g. "Fire Bolt" (Fire Domain) from Channel Energy
-   * (cleric itself), "Claws" (Draconic Bloodline) from a sorcerer's other
-   * features, "Quick Study" (an exploit) from an arcanist's own Arcane
-   * Reservoir, "Familiar" (a magus arcana) from a magus's own Spell Combat,
-   * or "Battle Spirit"/"Battle Master" (a shaman's spirit ability/hex) from
-   * her own Hex class feature.
-   * own Witch's Familiar, "Cauldron" (a discovery) from an alchemist's own
-   * Bomb, "Fatigued" (a cruelty) from an antipaladin's own Touch of
+   * own Bomb, "Fatigued" (a cruelty) from an antipaladin's own Touch of
    * Corruption, or "Combat Trick" (a ninja trick) from a ninja's own
-   * Sneak Attack.
+   * Sneak Attack. Issue #65 adds more origin kinds (spirit, rage power,
+   * ki power, style strike, rogue talent, investigator talent, vigilante
+   * social/vigilante talent, shifter aspect) — same disambiguation need
+   * against each class's own intrinsic features.
    */
   origin?: {
     kind:
@@ -1733,7 +1824,15 @@ export interface DerivedClassFeature {
       | "discovery"
       | "spirit"
       | "cruelty"
-      | "trick";
+      | "trick"
+      | "ragePower"
+      | "kiPower"
+      | "styleStrike"
+      | "rogueTalent"
+      | "investigatorTalent"
+      | "vigilanteSocialTalent"
+      | "vigilanteTalent"
+      | "shifterAspect";
     label: string;
   };
 }
@@ -1870,6 +1969,32 @@ export interface HitPoints {
   nonlethal: number;
   /** Per-source breakdown of contributions to max HP (HD total, Con, FCB, etc.). */
   components: ModifierComponent[];
+  /**
+   * Temporary HP a currently-active buff/feature GRANTS (issue #67) — e.g.
+   * Unchained Rage's "2 temporary hit points per Hit Die" (scaling to 3 at
+   * 11th via Greater Rage, 4 at 20th via Mighty Rage). Collected from every
+   * `Change` targeting `"tempHp"`, the same generic collect → target pipeline
+   * as every other stat — see `@pf1/engine` `collect.ts`/`compute.ts`.
+   *
+   * This is DISTINCT from the manual `temp` field above, which is the tracker's
+   * single source of truth for the character's actual current temp-HP buffer
+   * (consumed by damage before real HP — see `apps/web/src/model/hp.ts`
+   * `applyDamage`). `grantedTemp` is a ceiling/suggestion the UI uses to know
+   * how much to set `live.hp.temp` to on activation — see
+   * `apps/web/src/model/hp.ts` `applyGrantedTempHp` for the sync logic and its
+   * documented edge cases (it cannot distinguish buff-granted temp HP already
+   * merged into `live.hp.temp` from unrelated manually-entered temp HP once
+   * they're in the same pool).
+   *
+   * PF1 RAW (Paizo FAQ, Core Rulebook p. 208 "Combining Magical Effects"):
+   * temporary HP from the SAME source do not stack (the higher application
+   * wins); temporary HP from DIFFERENT sources DO stack (sum). `total` already
+   * applies this rule — grouped by each modifier's `source` (display name),
+   * highest-per-group, then summed across groups; `components` lists every
+   * contributing modifier with `applied: false` on any same-source entry that
+   * lost to a higher one from the same source.
+   */
+  grantedTemp: { total: number; components: ModifierComponent[] };
 }
 
 export interface DerivedSkill {

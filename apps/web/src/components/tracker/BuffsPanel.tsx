@@ -21,6 +21,7 @@ import {
 } from "../../model/buffs.js";
 import { isSharedWithCompanion, toggleSharedBuffCompanion } from "../../model/companion.js";
 import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js";
+import { isSharedWithPhantom, toggleSharedBuffPhantom } from "../../model/phantom.js";
 import { changeTargetLabel, signed } from "../../model/names.js";
 import { InfoTip } from "../InfoTip.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -145,6 +146,8 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
               sharedWithFamiliar={isSharedWithFamiliar(doc, b.instanceId)}
               hasCompanion={!!doc.build.animalCompanion}
               sharedWithCompanion={isSharedWithCompanion(doc, b.instanceId)}
+              hasPhantom={!!doc.build.phantom}
+              sharedWithPhantom={isSharedWithPhantom(doc, b.instanceId)}
             />
           ))}
         </div>
@@ -283,6 +286,8 @@ function BuffRow({
   sharedWithFamiliar = false,
   hasCompanion = false,
   sharedWithCompanion = false,
+  hasPhantom = false,
+  sharedWithPhantom = false,
 }: {
   buff: ActiveBuff;
   rollData: RollData;
@@ -295,6 +300,10 @@ function BuffRow({
   hasCompanion?: boolean;
   /** Whether this buff instance is currently shared onto the companion's derived sheet (Share Spells). */
   sharedWithCompanion?: boolean;
+  /** Whether the character has a tracked phantom (`build.phantom`) — hides the share toggle when false. */
+  hasPhantom?: boolean;
+  /** Whether this buff instance is currently shared onto the phantom's derived sheet (Share Spells). */
+  sharedWithPhantom?: boolean;
 }) {
   const [unit, setUnit] = useState<DurationUnit>(
     () => roundsToDisplay(buff.remainingRounds)?.unit ?? "rds",
@@ -375,6 +384,19 @@ function BuffRow({
             onChange={() => update((d) => toggleSharedBuffCompanion(d, buff.instanceId))}
           />
           <span>Companion</span>
+        </label>
+      ) : null}
+      {hasPhantom ? (
+        <label
+          className="buff-share-companion"
+          title="Also apply this buff's changes to the phantom"
+        >
+          <input
+            type="checkbox"
+            checked={sharedWithPhantom}
+            onChange={() => update((d) => toggleSharedBuffPhantom(d, buff.instanceId))}
+          />
+          <span>Phantom</span>
         </label>
       ) : null}
       <button
