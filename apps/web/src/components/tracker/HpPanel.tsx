@@ -158,6 +158,14 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
             onCommit={(n) => update((d) => setTempHp(d, n))}
             aria-label="Temporary HP"
           />
+          {sheet.hp.grantedTemp.total > 0 ? (
+            <InfoTip
+              className="chip-info"
+              content={`${sheet.hp.grantedTemp.total} granted by an active buff/feature (e.g. Rage) — set automatically on activation/deactivation; edit freely otherwise.`}
+            >
+              ⓘ
+            </InfoTip>
+          ) : null}
         </label>
         <div className="hp-nl">
           <span className="hp-inline-label">Nonlethal</span>

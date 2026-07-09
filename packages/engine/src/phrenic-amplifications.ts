@@ -126,8 +126,7 @@ const AMPLIFICATION_LIST: PhrenicAmplificationDef[] = [
       id: "focusedForce",
       name: "Focused Force",
       costLabel: "1 point",
-      summary:
-        "Increase a linked force-descriptor spell's damage die by one step (1d4→1d6, etc.).",
+      summary: "Increase a linked force-descriptor spell's damage die by one step (1d4→1d6, etc.).",
     },
     {
       id: "intenseFocus",

@@ -168,3 +168,40 @@ describe("psychic class vend + Phrenic Pool resource", () => {
     expect(ref.spellLists["kineticist"]).toBeUndefined();
   });
 });
+
+describe("Discipline Powers grant collection (issue #65 follow-through)", () => {
+  it("a psychic 13 with a chosen discipline gets all three power-tier grants (1st/5th/13th) surfaced in classFeatures", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 13 }], BASE_ABILITIES, "dream");
+    const sheet = compute(doc, ref);
+    const dreamLeech = sheet.classFeatures.find((f) => f.name === "Dream Leech");
+    const oneiromancy = sheet.classFeatures.find((f) => f.name === "Oneiromancy");
+    const mindHeist = sheet.classFeatures.find((f) => f.name === "Mind Heist");
+    const wakingDream = sheet.classFeatures.find((f) => f.name === "Waking Dream");
+    expect(dreamLeech).toBeDefined();
+    expect(oneiromancy).toBeDefined();
+    expect(mindHeist).toBeDefined();
+    expect(wakingDream).toBeDefined();
+    expect(dreamLeech!.classTag).toBe("psychic");
+    expect(dreamLeech!.origin).toEqual({ kind: "discipline", label: "Dream Discipline" });
+    expect(dreamLeech!.detail).toBe(PSYCHIC_DISCIPLINES.dream!.powers[0]!.summary);
+  });
+
+  it("a psychic 5 does NOT yet get the 13th-level power", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 5 }], BASE_ABILITIES, "dream");
+    const sheet = compute(doc, ref);
+    expect(sheet.classFeatures.some((f) => f.name === "Mind Heist")).toBe(true);
+    expect(sheet.classFeatures.some((f) => f.name === "Waking Dream")).toBe(false);
+  });
+
+  it("no discipline chosen: no power grants at all, even at high level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 13 }], BASE_ABILITIES);
+    const sheet = compute(doc, ref);
+    expect(sheet.classFeatures.some((f) => f.name === "Dream Leech")).toBe(false);
+  });
+
+  it("a non-psychic character with a stale psychicDiscipline field gets nothing granted", () => {
+    const doc = makeDoc([{ tag: "mesmerist", level: 13 }], BASE_ABILITIES, "dream");
+    const sheet = compute(doc, ref);
+    expect(sheet.classFeatures.some((f) => f.name === "Dream Leech")).toBe(false);
+  });
+});

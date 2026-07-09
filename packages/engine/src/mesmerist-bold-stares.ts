@@ -70,7 +70,8 @@ const STARE_LIST: MesmeristBoldStareDef[] = (
       id: "allure",
       name: "Allure",
       riderText: "also on initiative and Perception checks",
-      summary: "The hypnotic stare penalty also applies to the target's initiative and Perception checks.",
+      summary:
+        "The hypnotic stare penalty also applies to the target's initiative and Perception checks.",
     },
     {
       id: "disorientation",
@@ -81,7 +82,8 @@ const STARE_LIST: MesmeristBoldStareDef[] = (
     {
       id: "psychicInception",
       name: "Psychic Inception",
-      riderText: "also affects mindless/mind-immune creatures (they resist 50%/round, +2 on any save)",
+      riderText:
+        "also affects mindless/mind-immune creatures (they resist 50%/round, +2 on any save)",
       summary:
         "The hypnotic stare (and your mind-affecting spells/abilities on a stared target) can affect creatures that are mindless or normally immune to mind-affecting effects; such a creature gets a +2 bonus on its save (if any) and has a 50% chance each round to act normally despite the effect.",
     },

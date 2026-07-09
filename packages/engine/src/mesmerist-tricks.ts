@@ -112,16 +112,17 @@ const TRICK_LIST: MesmeristTrickDef[] = [
     {
       id: "giftOfWill",
       name: "Gift of Will",
-      actionNote: "implant: standard · trigger: free (Will save, Sense Motive, or Intimidate check)",
+      actionNote:
+        "implant: standard · trigger: free (Will save, Sense Motive, or Intimidate check)",
       summary:
         "The subject uses your Will save bonus in place of its own, or gains a Charisma-based morale bonus on the check.",
     },
     {
       id: "levitationBuffer",
       name: "Levitation Buffer",
-      actionNote: "implant: standard · trigger: free (enemy moves adjacent or starts turn adjacent)",
-      summary:
-        "Lift the enemy (half speed, -4 CMD) or push it away as a free bull rush.",
+      actionNote:
+        "implant: standard · trigger: free (enemy moves adjacent or starts turn adjacent)",
+      summary: "Lift the enemy (half speed, -4 CMD) or push it away as a free bull rush.",
     },
     {
       id: "linkedReaction",
@@ -147,7 +148,8 @@ const TRICK_LIST: MesmeristTrickDef[] = [
     {
       id: "mesmericMirror",
       name: "Mesmeric Mirror",
-      actionNote: "implant: standard · trigger: free (subject is attacked or targeted by an attack spell)",
+      actionNote:
+        "implant: standard · trigger: free (subject is attacked or targeted by an attack spell)",
       summary:
         "A duplicate of the subject appears (up to 5 at 20th level), lasting 1 minute per level.",
     },
@@ -174,7 +176,8 @@ const TRICK_LIST: MesmeristTrickDef[] = [
     {
       id: "reflectionOfWeakness",
       name: "Reflection of Weakness",
-      actionNote: "implant: standard · trigger: free (subject is dealt ability damage/drain/bleed/a condition)",
+      actionNote:
+        "implant: standard · trigger: free (subject is dealt ability damage/drain/bleed/a condition)",
       summary:
         "Reduce the effect on the subject by 2 and inflict 2 ability damage on the attacker (Will negates).",
     },
@@ -188,14 +191,16 @@ const TRICK_LIST: MesmeristTrickDef[] = [
     {
       id: "spectralSmoke",
       name: "Spectral Smoke",
-      actionNote: "implant: standard · trigger: free (subject is targeted by an attack or attack spell)",
+      actionNote:
+        "implant: standard · trigger: free (subject is targeted by an attack or attack spell)",
       summary:
         "A 10-ft.-radius smoke cloud (scaling +5 ft. per 5 levels) appears around the subject for 1 round per level.",
     },
     {
       id: "vanishArrow",
       name: "Vanish Arrow",
-      actionNote: "implant: standard · trigger: immediate (before a ranged attack roll against the subject)",
+      actionNote:
+        "implant: standard · trigger: immediate (before a ranged attack roll against the subject)",
       summary:
         "Opposed Sleight of Hand vs. the attacker's Perception; success negates the ranged attack entirely.",
     },
@@ -210,7 +215,8 @@ const TRICK_LIST: MesmeristTrickDef[] = [
     {
       id: "cursedSanction",
       name: "Cursed Sanction",
-      actionNote: "implant: standard (visible forehead symbol) · trigger: free (attacker hits/targets the subject)",
+      actionNote:
+        "implant: standard (visible forehead symbol) · trigger: free (attacker hits/targets the subject)",
       summary:
         "The attacker takes a -4 penalty on all rolls for 1 minute per level (Will negates).",
     },
@@ -244,22 +250,23 @@ const TRICK_LIST: MesmeristTrickDef[] = [
     {
       id: "spatialSwitch",
       name: "Spatial Switch",
-      actionNote: "implant: standard · trigger: immediate (an enemy is adjacent to you or the subject)",
-      summary:
-        "You and the subject swap positions, resolved before damage is calculated.",
+      actionNote:
+        "implant: standard · trigger: immediate (an enemy is adjacent to you or the subject)",
+      summary: "You and the subject swap positions, resolved before damage is calculated.",
     },
     {
       id: "spellAnticipation",
       name: "Spell Anticipation",
-      actionNote: "implant: standard (costs one spell slot) · trigger: free (subject is targeted by an enemy spell)",
+      actionNote:
+        "implant: standard (costs one spell slot) · trigger: free (subject is targeted by an enemy spell)",
       summary: "You cast the anticipated prepared spell at the spellcaster.",
     },
     {
       id: "visionOfBlood",
       name: "Vision of Blood",
-      actionNote: "implant: standard · trigger: free (subject hits with a weapon/natural/unarmed attack)",
-      summary:
-        "The target is stunned for 1 round (Will negates; no save on a critical hit).",
+      actionNote:
+        "implant: standard · trigger: free (subject hits with a weapon/natural/unarmed attack)",
+      summary: "The target is stunned for 1 round (Will negates; no save on a critical hit).",
     },
   ]),
 ];

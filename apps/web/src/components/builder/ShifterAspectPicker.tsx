@@ -1,0 +1,142 @@
+import { useMemo, useState } from "react";
+
+import { SHIFTER_ASPECTS, SHIFTER_ASPECT_IDS } from "@pf1/engine";
+import type { CharacterDoc } from "@pf1/schema";
+
+import {
+  chosenShifterAspectCount,
+  expectedShifterAspectCount,
+  shifterAspectsNeedWarning,
+  toggleShifterAspect,
+} from "../../model/shifterAspects.js";
+import { useCollapsed } from "../../state/useCollapsed.js";
+
+type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
+
+interface ShifterAspectPickerProps {
+  doc: CharacterDoc;
+  update: Updater;
+}
+
+/**
+ * Shifter aspect selection (issue #65), mirroring `HexPicker` — this is the
+ * build-time "which aspects do I know" pick; the live minor-form on/off
+ * toggle lives in the tracker's `ShifterAspectPanel` instead (see that
+ * component's doc comment). A shifter knows 1 aspect at 1st level, 2 at
+ * 5th, 3 at 10th, 4 at 15th, and 5 at 20th (Final Aspect) — see
+ * `model/shifterAspects.ts`'s budget math. Free-choice, never blocks past
+ * the expected count.
+ *
+ * Each row previews whether its minor form clears the honesty bar for a
+ * real toggleable buff (see `@pf1/engine` `shifter-aspects.ts`'s doc
+ * comment) via its `contextNotes`. Major form (Wild Shape) is out of scope
+ * here — deferred to issue #70.
+ */
+export function ShifterAspectPicker({ doc, update }: ShifterAspectPickerProps) {
+  const isShifter = doc.identity.classes.some((c) => c.tag === "shifter");
+  const [query, setQuery] = useState("");
+  const [collapsed, toggleCollapsed] = useCollapsed("subsection:Shifter Aspects", false);
+
+  const selected = useMemo(
+    () => new Set(doc.build.shifterAspects ?? []),
+    [doc.build.shifterAspects],
+  );
+
+  const aspects = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return SHIFTER_ASPECT_IDS.map((id) => SHIFTER_ASPECTS[id]!)
+      .filter((a) => !q || a.name.toLowerCase().includes(q))
+      .sort((a, b) => {
+        const sa = selected.has(a.id) ? 0 : 1;
+        const sb = selected.has(b.id) ? 0 : 1;
+        return sa - sb || a.name.localeCompare(b.name);
+      });
+  }, [query, selected]);
+
+  const chosen = chosenShifterAspectCount(doc);
+  const expected = expectedShifterAspectCount(doc);
+  const warn = shifterAspectsNeedWarning(doc);
+  const countClass = warn ? "hint warn-over" : "hint";
+
+  if (!isShifter) return null;
+
+  return (
+    <div className="subsection revelation-picker">
+      <div
+        className="subsection-header"
+        onClick={toggleCollapsed}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggleCollapsed();
+        }}
+        aria-expanded={!collapsed}
+      >
+        <h3>
+          Shifter Aspects
+          <span
+            className={countClass}
+            title={
+              warn
+                ? "More aspects chosen than the Blood of the Beast progression (1st, 5th, 10th, 15th, 20th) grants"
+                : undefined
+            }
+          >
+            {" "}
+            · {chosen} / {expected}
+          </span>
+        </h3>
+        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+      </div>
+      {!collapsed && (
+        <>
+          <p className="hint revelation-picker-hint">
+            Pick aspects as you level (1st, 5th, 10th, 15th, 20th). Once known, toggle each aspect's
+            minor form on/off in the tracker's Shifter Aspects panel. Major form (Wild Shape) isn't
+            modeled yet — see issue #70. Free-choice — never blocks past the expected count.
+          </p>
+          <input
+            className="search"
+            type="text"
+            placeholder="Search aspects…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <div className="scroll">
+            {aspects.map((a) => {
+              const isSel = selected.has(a.id);
+              return (
+                <div key={a.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                  <div className="pmain">
+                    <div className="pname">
+                      {a.name}
+                      {a.minorFormChanges.length > 0 ? (
+                        <span className="tag-mystery">toggleable</span>
+                      ) : null}
+                    </div>
+                    <div className="preq">
+                      <span className="desc-text">{a.summary}</span>
+                    </div>
+                    {a.contextNotes?.map((n, i) => (
+                      <div key={i} className="hint" style={{ marginTop: 2 }}>
+                        ⚠ {n.text}
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className={`pick-btn ${isSel ? "remove" : "add"}`}
+                    onClick={() => update((d) => toggleShifterAspect(d, a.id))}
+                  >
+                    {isSel ? "Remove" : "Add"}
+                  </button>
+                </div>
+              );
+            })}
+            {aspects.length === 0 ? <div className="empty">No aspects match.</div> : null}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
