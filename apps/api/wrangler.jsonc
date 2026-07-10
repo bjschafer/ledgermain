@@ -32,6 +32,12 @@
     { "binding": "CHARACTERS", "id": "c648b619c69240148cb8c5204769a3b6" },
   ],
 
+  // First-party usage/health telemetry (see src/analytics.ts): one PII-free
+  // data point per request. The dataset is created on first write, so no
+  // pre-provisioning step is needed. Local dev / vitest-pool-workers treat the
+  // binding as a Miniflare no-op.
+  "analytics_engine_datasets": [{ "binding": "ANALYTICS", "dataset": "ledgermain_api_requests" }],
+
   // Same zone as apps/web (ledgermain.whizkid.dev) — a sibling subdomain
   // keeps the two origins obviously related without sharing one origin
   // (which would reintroduce cookie/CORS complexity this design avoids).

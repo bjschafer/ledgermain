@@ -129,6 +129,52 @@ registering an app under their own Discord account:
    `VITE_API_URL=https://api.ledgermain.whizkid.dev bun run --filter @pf1/web build`
    then `wrangler deploy` from `apps/web/`.)
 
+## Observability
+
+Two separate Cloudflare Workers back this project, and only one of them runs
+code worth instrumenting:
+
+- **`ledgermain`** (`apps/web`) — a **static-assets Worker** (no `main`; serves
+  the built SPA from `./dist`). No server logic executes, so there is nothing to
+  log or trace beyond Cloudflare's free built-in HTTP metrics (requests, errors,
+  bandwidth, cache) in the dashboard. App-level errors happen in the browser and
+  never reach Cloudflare; seeing them would require shipping data off-device
+  (i.e. client tracking), deliberately not done. If page-level numbers are ever
+  wanted, **Cloudflare Web Analytics** (cookieless, first-party) is the
+  privacy-respecting option — it reports page views / Core Web Vitals, not app
+  errors.
+- **`ledgermain-api`** (this Worker) — where all the logic and all the
+  instrumentation live.
+
+For this Worker:
+
+- **Logs** — `observability.enabled` is on at 100% sampling in `wrangler.jsonc`,
+  so invocation logs and exceptions are captured with no extra work. Live-tail
+  with `wrangler tail` (from `apps/api/`), or browse/search them under
+  **Workers → ledgermain-api → Observability** in the dashboard. Unhandled
+  exceptions are logged as structured JSON (`{ level, event, route, method,
+message, stack }`, see `src/index.ts`) so they filter by `event`/`route`
+  instead of a free-text grep.
+- **Usage / health metrics** — every request writes one PII-free
+  [Analytics Engine](https://developers.cloudflare.com/analytics/analytics-engine/)
+  data point (`src/analytics.ts`): route label, method, status, and duration.
+  No `ownerId`, session token, document id, or body is ever recorded — the raw
+  pathname (which carries the opaque docId) is never written. Query it with SQL
+  via the [Analytics Engine SQL API](https://developers.cloudflare.com/analytics/analytics-engine/sql-api/),
+  e.g. request volume and error rate per route:
+
+  ```sql
+  SELECT blob1 AS route, blob3 AS status, count() AS n, avg(double1) AS avg_ms
+  FROM ledgermain_api_requests
+  WHERE timestamp > NOW() - INTERVAL '1' DAY
+  GROUP BY route, status
+  ORDER BY n DESC
+  ```
+
+  The dataset (`ledgermain_api_requests`) is created on first write after
+  deploy — no provisioning step. Sync-conflict rate falls out of this for free
+  (`route = 'characters.put' AND status = '409'`).
+
 ## Deliberately out of scope for v1 (see DESIGN §2.1)
 
 - **Live mirror (Level 2)** and **CRDT concurrent editing (Level 3)** — both

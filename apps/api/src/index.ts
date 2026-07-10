@@ -6,6 +6,7 @@
  * prefer bindings/small code over unnecessary layers).
  */
 import "./env.js";
+import { recordRequest } from "./analytics.js";
 import { deleteCharacter, getCharacter, listCharacters, putCharacter } from "./characters.js";
 import { handlePreflight, withCors } from "./cors.js";
 import { handleCallback, handleStart } from "./discord-oauth.js";
@@ -13,6 +14,28 @@ import { errorJson, json } from "./http.js";
 import { deleteSession, ownerIdFromRequest } from "./session.js";
 
 const CHARACTER_PATH = /^\/api\/characters(?:\/([^/]+))?$/;
+
+/**
+ * Coarse, fixed-enum label for a request — for telemetry (analytics.ts) and
+ * structured logs. Deliberately never the raw pathname: that carries the
+ * opaque docId, which must not land in metrics or logs.
+ */
+function routeLabel(method: string, pathname: string): string {
+  if (method === "OPTIONS") return "preflight";
+  if (pathname === "/auth/discord/start") return "auth.start";
+  if (pathname === "/auth/discord/callback") return "auth.callback";
+  if (pathname === "/auth/logout") return "auth.logout";
+  if (pathname === "/api/me") return "me";
+  const charMatch = CHARACTER_PATH.exec(pathname);
+  if (charMatch) {
+    const hasId = Boolean(charMatch[1]);
+    if (method === "GET") return hasId ? "characters.get" : "characters.list";
+    if (method === "PUT") return "characters.put";
+    if (method === "DELETE") return "characters.delete";
+    return "characters.other";
+  }
+  return "other";
+}
 
 function bearerToken(request: Request): string | undefined {
   const auth = request.headers.get("authorization");
@@ -72,15 +95,34 @@ export default {
   // arity here.
   async fetch(request, env, ctx): Promise<Response> {
     void ctx;
+    const startedAt = Date.now();
+    const label = routeLabel(request.method, new URL(request.url).pathname);
+    let response: Response;
     try {
-      const response = await route(request, env);
-      return withCors(response, request, env);
+      response = withCors(await route(request, env), request, env);
     } catch (err) {
-      // No `ctx.passThroughOnException()` — an explicit try/catch is the
-      // best-practices-recommended way to keep failures visible/debuggable
-      // rather than silently falling through.
-      console.error("Unhandled error in ledgermain-api", err);
-      return withCors(errorJson(500, "Internal error"), request, env);
+      // Structured (JSON) so Workers Logs filter by `event`/`route` instead of
+      // grepping free text. No `ctx.passThroughOnException()` — an explicit
+      // try/catch keeps failures visible and debuggable rather than silently
+      // falling through.
+      console.error(
+        JSON.stringify({
+          level: "error",
+          event: "unhandled_exception",
+          route: label,
+          method: request.method,
+          message: err instanceof Error ? err.message : String(err),
+          stack: err instanceof Error ? err.stack : undefined,
+        }),
+      );
+      response = withCors(errorJson(500, "Internal error"), request, env);
     }
+    recordRequest(env, {
+      route: label,
+      method: request.method,
+      status: response.status,
+      durationMs: Date.now() - startedAt,
+    });
+    return response;
   },
 } satisfies ExportedHandler<Env>;
