@@ -6,7 +6,13 @@ Live at **[ledgermain.whizkid.dev](https://ledgermain.whizkid.dev)** · Source u
 
 Every other PF1e tool — PCGen, HeroLab, Pathbuilder, Foundry's sheet — is a _builder_ that displays a character; what happens at the table is an afterthought. Ledgermain's center of gravity is **play**. It's a tracker that knows the rules well enough to **recompute the correct numbers as your session state changes**: take damage, fail a save, toggle a buff, spend a resource, gain a condition — every derived value (AC, attack lines, saves, skills, CMB/CMD, DCs) updates instantly and correctly.
 
-<!-- screenshot: builder + tracker side by side — add apps/web capture here before wider sharing -->
+![The live tracker: hit points, the full conditions grid, and typed buffs counting down by the round — every toggle recomputes the gilded sheet on the right.](docs/images/tracker.png)
+
+_The **live tracker** — toggle a condition, tick a buff down, or take damage, and every derived number on the sheet recomputes._
+
+![The builder: an identity/abilities/race form on the left with the recomputed character sheet on the right.](docs/images/builder.png)
+
+_The **builder** — every choice updates the same sheet the same engine drives at the table._
 
 ## Why it's different
 
