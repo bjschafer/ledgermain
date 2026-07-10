@@ -40,6 +40,18 @@ export function formatCompanionAttackName(attack: DerivedCompanionAttack): strin
   return attack.count > 1 ? `${attack.count} ${attack.name.toLowerCase()}s` : attack.name;
 }
 
+/**
+ * "(secondary)" suffix for a secondary natural attack (issue #68 — see
+ * `@pf1/engine` `natural-attacks.ts`), so the tracker panel can flag which
+ * attack(s) in a multi-attack-form companion take the −5/−2 penalty and half
+ * Strength on damage. Empty string for a primary attack (the common case,
+ * including every single-attack-form companion) — no clutter for the
+ * majority of rows.
+ */
+export function formatCompanionAttackTypeSuffix(attack: DerivedCompanionAttack): string {
+  return attack.attackType === "secondary" ? "(secondary)" : "";
+}
+
 /** "+6" — just the attack roll, for its own compact seal. */
 export function formatCompanionAttackRoll(attack: DerivedCompanionAttack): string {
   return signed(attack.attack);

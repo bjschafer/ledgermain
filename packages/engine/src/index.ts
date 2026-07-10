@@ -444,6 +444,13 @@ export {
   type AcCandidate,
   type RoutedSharedBuffs,
 } from "./shared-creature-buffs.js";
+export {
+  classifyNaturalAttacks,
+  secondaryAttackPenalty,
+  naturalAttackBonus,
+  naturalAttackDamageBonus,
+  type NaturalAttackType,
+} from "./natural-attacks.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";
 export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
 export type { ToggleBuffOption } from "./toggle-buffs.js";

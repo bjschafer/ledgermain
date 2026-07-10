@@ -35,12 +35,16 @@
  *     threshold level — never natural armor or ability scores, which come
  *     exclusively from the generic table above. Mixing both sources would
  *     double-count the same physical growth twice; splitting them this way
- *     is a deliberate, documented v1 simplification (mirrors familiar.ts's
- *     "no primary/secondary attack halving" posture).
+ *     is a deliberate, documented v1 simplification.
  *   - Multiattack (unlocked at HD milestone, {@link ANIMAL_COMPANION_PROGRESSION}):
- *     surfaced only as a special-ability chip, same simplification as above —
- *     this module never models primary/secondary natural-attack penalties at
- *     all, for any companion at any level (matching familiar.ts).
+ *     still surfaced as a special-ability chip (its narrative/skill-check
+ *     benefits beyond the attack math aren't modeled), but as of issue #68
+ *     it DOES soften the secondary-natural-attack penalty from −5 to −2 in
+ *     `deriveCompanion`'s attack math below — see `natural-attacks.ts`.
+ *     Primary/secondary natural-attack math (full BAB+Str vs. −5/−2 and half
+ *     Str) is modeled here via the shared `natural-attacks.ts` module
+ *     (issue #68); `familiar.ts`/`eidolon.ts`/`phantom.ts` still don't model
+ *     it (documented gap in THEIR own module doc comments, not this one).
  *   - Devotion (+4 morale bonus on Will saves against enchantment) is
  *     situational (only vs. one school of magic), so — matching this
  *     project's posture for Ranger Favored Enemy/Terrain — it is surfaced as
@@ -49,6 +53,12 @@
 
 import type { AbilityId, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 
+import {
+  classifyNaturalAttacks,
+  naturalAttackBonus,
+  naturalAttackDamageBonus,
+  type NaturalAttackType,
+} from "./natural-attacks.js";
 import { abilityMod, totalLevel } from "./rolldata.js";
 import {
   applySharedAbilityBonuses,
@@ -640,6 +650,8 @@ export interface DerivedCompanionAttack {
   damageDice: string;
   damageBonus: number;
   note?: string;
+  /** Primary (full BAB+Str) or secondary (−5/−2 with Multiattack, half Str) — see `natural-attacks.ts`, issue #68. */
+  attackType: NaturalAttackType;
 }
 
 export interface DerivedCompanionAc {
@@ -814,18 +826,23 @@ export function deriveCompanion(
   const cmb = companionBab + (TINY_OR_SMALLER.has(size) ? dexMod : strMod) + sizeSpecial;
   const cmd = 10 + companionBab + strMod + dexMod + sizeSpecial;
 
-  // --- attacks: companion's own BAB + better of Str/Dex + size, no primary/ --
-  // secondary halving modeled (see module doc comment), plus any shared bonus.
+  // --- attacks: companion's own BAB + better of Str/Dex + size + shared bonus,
+  // with primary/secondary natural-attack math (issue #68) — see
+  // `natural-attacks.ts`. Multiattack (unlocked at the HD milestone, see
+  // module doc comment) softens the secondary penalty from −5 to −2.
+  const hasMultiattack = companionSpecialAbilityNames(level).includes("Multiattack");
   const sharedAttackBonus = resolveStack(routed.attack).total;
   const sharedDamageBonus = resolveStack(routed.damage).total;
-  const attackBonus = companionBab + Math.max(strMod, dexMod) + sizeAcMod + sharedAttackBonus;
-  const attacks: DerivedCompanionAttack[] = speciesAttacks.map((a) => ({
+  const baseAttackBonus = companionBab + Math.max(strMod, dexMod) + sizeAcMod + sharedAttackBonus;
+  const classifiedAttacks = classifyNaturalAttacks(speciesAttacks);
+  const attacks: DerivedCompanionAttack[] = classifiedAttacks.map((a) => ({
     name: a.name,
     count: a.count,
-    attack: attackBonus,
+    attack: naturalAttackBonus(baseAttackBonus, a.attackType, hasMultiattack),
     damageDice: a.damageDice,
-    damageBonus: strMod + sharedDamageBonus,
+    damageBonus: naturalAttackDamageBonus(strMod, a.attackType) + sharedDamageBonus,
     note: a.note,
+    attackType: a.attackType,
   }));
 
   // --- skills: physical/perceptual only, no rank investment (see module doc) --

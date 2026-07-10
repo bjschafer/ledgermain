@@ -59,7 +59,10 @@
  *     down/up the standard PF1 natural-weapon damage-die ladder at each tier,
  *     which reproduces the published 1st-level values (Small 1d4, Large 1d8)
  *     exactly). No primary/secondary natural-attack halving is modeled here
- *     either (matches `companion.ts`/`familiar.ts`'s existing posture).
+ *     (matches `familiar.ts`'s existing posture) — moot in practice, since
+ *     both of a phantom's slams are the SAME attack form and would resolve
+ *     to both-primary under `natural-attacks.ts`'s own rule anyway (issue
+ *     #68, see `companion.ts`, which now uses that shared module).
  *   - Skills: the phantom's Emotional Focus grants exactly two class skills,
  *     with bonus ranks always equal to its Hit Dice (PF1 RAW) — modeled as
  *     the phantom's only two numerically-tracked skills (unlike

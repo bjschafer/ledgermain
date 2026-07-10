@@ -306,3 +306,53 @@ describe("deriveCompanion edge cases", () => {
     expect(wolf.abilities.dex).toEqual({ score: 17, mod: 3 });
   });
 });
+
+describe("deriveCompanion primary/secondary natural attacks (issue #68)", () => {
+  it("horse (2 hooves, single attack form): both hooves stay primary, no −5/half-Str reduction", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 1 }],
+      animalCompanion: { speciesId: "horse", name: "Silver", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const horse = deriveCompanion(doc, rollData)!;
+    // HD 2, BAB +1; Str 16 (mod +3); size Large (−1 attack); bab 1 + str 3 − 1 = 3.
+    expect(horse.bab).toBe(1);
+    expect(horse.abilities.str.mod).toBe(3);
+    const hoof = horse.attacks.find((a) => a.name === "Hoof")!;
+    expect(hoof).toMatchObject({ attackType: "primary", attack: 3, damageBonus: 3 });
+  });
+
+  it("badger (Bite + 2 Claws) below Multiattack: Bite primary, Claw secondary at −5/half Str", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 6 }],
+      animalCompanion: { speciesId: "badger", name: "Digger", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const badger = deriveCompanion(doc, rollData)!;
+    expect(badger.bab).toBe(4);
+    expect(badger.abilities.str.mod).toBe(1);
+    expect(badger.specialAbilities.map((a) => a.name)).not.toContain("Multiattack");
+    const bite = badger.attacks.find((a) => a.name === "Bite")!;
+    const claw = badger.attacks.find((a) => a.name === "Claw")!;
+    expect(bite).toMatchObject({ attackType: "primary", attack: 8, damageBonus: 1 });
+    // secondary: −5 attack penalty, half Str (floor(1/2) = 0).
+    expect(claw).toMatchObject({ attackType: "secondary", attack: 3, damageBonus: 0 });
+  });
+
+  it("badger at 9th (Multiattack unlocked): Claw's secondary penalty softens from −5 to −2", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 9 }],
+      animalCompanion: { speciesId: "badger", name: "Digger", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const badger = deriveCompanion(doc, rollData)!;
+    expect(badger.bab).toBe(6);
+    expect(badger.abilities.str.mod).toBe(2);
+    expect(badger.specialAbilities.map((a) => a.name)).toContain("Multiattack");
+    const bite = badger.attacks.find((a) => a.name === "Bite")!;
+    const claw = badger.attacks.find((a) => a.name === "Claw")!;
+    expect(bite).toMatchObject({ attackType: "primary", attack: 11, damageBonus: 2 });
+    // secondary: −2 attack penalty (Multiattack), half Str (floor(2/2) = 1).
+    expect(claw).toMatchObject({ attackType: "secondary", attack: 9, damageBonus: 1 });
+  });
+});

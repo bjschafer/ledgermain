@@ -7,11 +7,20 @@ import {
   formatCompanionAttackDamage,
   formatCompanionAttackName,
   formatCompanionAttackRoll,
+  formatCompanionAttackTypeSuffix,
   formatCompanionSummary,
 } from "../src/model/companionDisplay.js";
 
 function makeAttack(overrides: Partial<DerivedCompanionAttack> = {}): DerivedCompanionAttack {
-  return { name: "Bite", count: 1, attack: 6, damageDice: "1d8", damageBonus: 3, ...overrides };
+  return {
+    name: "Bite",
+    count: 1,
+    attack: 6,
+    damageDice: "1d8",
+    damageBonus: 3,
+    attackType: "primary",
+    ...overrides,
+  };
 }
 
 function makeCompanion(overrides: Partial<DerivedCompanion> = {}): DerivedCompanion {
@@ -74,6 +83,18 @@ describe("formatCompanionAttackName", () => {
 
   it("pluralizes and lowercases multi-attacks", () => {
     expect(formatCompanionAttackName(makeAttack({ name: "Talon", count: 2 }))).toBe("2 talons");
+  });
+});
+
+describe("formatCompanionAttackTypeSuffix", () => {
+  it("is blank for a primary attack", () => {
+    expect(formatCompanionAttackTypeSuffix(makeAttack({ attackType: "primary" }))).toBe("");
+  });
+
+  it("flags a secondary attack (issue #68)", () => {
+    expect(formatCompanionAttackTypeSuffix(makeAttack({ attackType: "secondary" }))).toBe(
+      "(secondary)",
+    );
   });
 });
 

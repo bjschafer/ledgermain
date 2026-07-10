@@ -18,6 +18,7 @@ import {
   formatCompanionAttackDamage,
   formatCompanionAttackName,
   formatCompanionAttackRoll,
+  formatCompanionAttackTypeSuffix,
   formatCompanionSummary,
 } from "../../model/companionDisplay.js";
 import { signed } from "../../model/names.js";
@@ -182,7 +183,12 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
           <div className="weapon-attack-list familiar-attack-list">
             {companion.attacks.map((a, i) => (
               <div key={i} className="weapon-attack-row">
-                <span className="weapon-attack-name">{formatCompanionAttackName(a)}</span>
+                <span className="weapon-attack-name">
+                  {formatCompanionAttackName(a)}
+                  {formatCompanionAttackTypeSuffix(a) ? (
+                    <span className="hint"> {formatCompanionAttackTypeSuffix(a)}</span>
+                  ) : null}
+                </span>
                 <div className="weapon-attack-stats familiar-attack-stats">
                   <StatSeal
                     label="Attack"
