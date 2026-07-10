@@ -46,19 +46,14 @@
  * "Gore"/"Slam"/"Sting" are primary-type natural weapons; "Hooves"/
  * "Pincers"/"Tail Slap"/"Tentacle"/"Wing Buffet" are secondary-type ones —
  * matching the Bestiary's own named examples of secondary weapons ("tails
- * and wings", quoted above). When a species has MORE THAN ONE primary-type
- * name (e.g. a bear's Bite + Claws, both individually primary-type
- * weapons), only the FIRST one in attack-list order keeps its primary
- * status and the rest are downgraded to secondary — a full attack routine
- * only ever has one true "primary" attack, and this project doesn't have a
- * verified per-species source for which of two primary-type weapons wins,
- * so list order is used as an explicit, deterministic, documented
- * convention (not silently guessed at) rather than re-verifying all
- * fourteen `BASE_COMPANIONS` species' real Bestiary stat blocks (which, per
- * the Cat familiar's real stat block — `2 claws +4 (1d2-4), bite +4
- * (1d3-4)`, both at the SAME bonus — often don't cleanly reflect this
- * player-facing formula anyway; Bestiary monster numbers are hand-tuned per
- * Monster Creation guidelines, not literally derived from this rule).
+ * and wings", quoted above). A creature may have SEVERAL primary-type
+ * attack forms at once (a bear's Bite + 2 Claws), and every one of them is
+ * made at full base attack bonus with full Strength — the classification is
+ * per KIND, never "one primary per routine" (verified against aonprd.com's
+ * grizzly bear stat block: `2 claws +7 (1d6+5 plus grab), bite +6 (1d6+5)`,
+ * bite and claws both at full BAB, the +1 gap being the bear's own Weapon
+ * Focus (claw); the Universal Monster Rules' Natural Attacks table likewise
+ * types each attack form independently).
  *
  * Strength-to-damage scaling for a secondary attack ("half your Strength
  * modifier"): only a POSITIVE modifier is halved; a Strength PENALTY applies
@@ -102,8 +97,8 @@ function isPrimaryTypeName(name: string): boolean {
  * Classify every attack in a species'/base-form's attack list into primary
  * vs secondary (see module doc comment): a single distinct attack form is
  * always primary regardless of name or count; with 2+ distinct forms, each
- * is classified by name, and if more than one qualifies as primary-type only
- * the FIRST keeps that status (documented tiebreak, see module doc comment).
+ * is classified independently by name — a creature with several
+ * primary-type forms (bear: Bite + Claws) keeps ALL of them primary.
  */
 export function classifyNaturalAttacks<T extends { name: string }>(
   attacks: readonly T[],
@@ -112,19 +107,10 @@ export function classifyNaturalAttacks<T extends { name: string }>(
   if (distinctNames.size <= 1) {
     return attacks.map((a) => ({ ...a, attackType: "primary" as const }));
   }
-  let primaryClaimed = false;
-  const seenNames = new Set<string>();
-  const attackTypeByName = new Map<string, NaturalAttackType>();
-  return attacks.map((a) => {
-    if (!seenNames.has(a.name)) {
-      seenNames.add(a.name);
-      const eligible = isPrimaryTypeName(a.name);
-      const attackType: NaturalAttackType = eligible && !primaryClaimed ? "primary" : "secondary";
-      if (attackType === "primary") primaryClaimed = true;
-      attackTypeByName.set(a.name, attackType);
-    }
-    return { ...a, attackType: attackTypeByName.get(a.name)! };
-  });
+  return attacks.map((a) => ({
+    ...a,
+    attackType: isPrimaryTypeName(a.name) ? ("primary" as const) : ("secondary" as const),
+  }));
 }
 
 /** Secondary attacks' base-attack-bonus penalty: −5 normally, −2 with Multiattack (see module doc comment). */

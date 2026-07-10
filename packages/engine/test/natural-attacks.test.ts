@@ -17,13 +17,13 @@ describe("classifyNaturalAttacks", () => {
     expect(hoof2!.attackType).toBe("primary");
   });
 
-  it("bite + claws: bite (first-listed, primary-type) stays primary, claw is downgraded to secondary", () => {
+  it("bite + claws: both are primary-type kinds, so ALL stay primary (bear/big-cat routine)", () => {
     const [bite, claw] = classifyNaturalAttacks([
       { name: "Bite", count: 1 },
       { name: "Claw", count: 2 },
     ]);
     expect(bite!.attackType).toBe("primary");
-    expect(claw!.attackType).toBe("secondary");
+    expect(claw!.attackType).toBe("primary");
   });
 
   it("bite + tail slap: tail slap is secondary-type by name, regardless of order", () => {
@@ -35,7 +35,7 @@ describe("classifyNaturalAttacks", () => {
     expect(tailSlap!.attackType).toBe("secondary");
   });
 
-  it("a secondary-type-only entry preceding a primary-type one still lets the primary-type one claim primary", () => {
+  it("classification is per kind, independent of list order", () => {
     const [tailSlap, bite] = classifyNaturalAttacks([
       { name: "Tail slap", count: 1 },
       { name: "Bite", count: 1 },

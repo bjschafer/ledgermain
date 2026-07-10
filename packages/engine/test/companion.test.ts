@@ -438,7 +438,7 @@ describe("deriveCompanion primary/secondary natural attacks (issue #68)", () => 
     expect(hoof).toMatchObject({ attackType: "primary", attack: 3, damageBonus: 3 });
   });
 
-  it("badger (Bite + 2 Claws) below Multiattack: Bite primary, Claw secondary at −5/half Str", () => {
+  it("badger (Bite + 2 Claws): both primary-type kinds stay primary at full bonus", () => {
     const doc = makeDoc({
       classes: [{ tag: "druid", level: 6 }],
       animalCompanion: { speciesId: "badger", name: "Digger", source: ["nature-bond"] },
@@ -447,28 +447,45 @@ describe("deriveCompanion primary/secondary natural attacks (issue #68)", () => 
     const badger = deriveCompanion(doc, rollData)!;
     expect(badger.bab).toBe(4);
     expect(badger.abilities.str.mod).toBe(1);
-    expect(badger.specialAbilities.map((a) => a.name)).not.toContain("Multiattack");
     const bite = badger.attacks.find((a) => a.name === "Bite")!;
     const claw = badger.attacks.find((a) => a.name === "Claw")!;
     expect(bite).toMatchObject({ attackType: "primary", attack: 8, damageBonus: 1 });
-    // secondary: −5 attack penalty, half Str (floor(1/2) = 0).
-    expect(claw).toMatchObject({ attackType: "secondary", attack: 3, damageBonus: 0 });
+    expect(claw).toMatchObject({ attackType: "primary", attack: 8, damageBonus: 1 });
   });
 
-  it("badger at 9th (Multiattack unlocked): Claw's secondary penalty softens from −5 to −2", () => {
+  it("crocodile (Bite + Tail slap) below Multiattack: tail slap secondary at −5/half Str", () => {
     const doc = makeDoc({
-      classes: [{ tag: "druid", level: 9 }],
-      animalCompanion: { speciesId: "badger", name: "Digger", source: ["nature-bond"] },
+      classes: [{ tag: "druid", level: 6 }],
+      animalCompanion: { speciesId: "crocodile", name: "Snapper", source: ["nature-bond"] },
     });
     const rollData = buildRollData(doc, ref);
-    const badger = deriveCompanion(doc, rollData)!;
-    expect(badger.bab).toBe(6);
-    expect(badger.abilities.str.mod).toBe(2);
-    expect(badger.specialAbilities.map((a) => a.name)).toContain("Multiattack");
-    const bite = badger.attacks.find((a) => a.name === "Bite")!;
-    const claw = badger.attacks.find((a) => a.name === "Claw")!;
-    expect(bite).toMatchObject({ attackType: "primary", attack: 11, damageBonus: 2 });
-    // secondary: −2 attack penalty (Multiattack), half Str (floor(2/2) = 1).
-    expect(claw).toMatchObject({ attackType: "secondary", attack: 9, damageBonus: 1 });
+    const croc = deriveCompanion(doc, rollData)!;
+    // HD 6 → BAB +4; Str 15+2 adj+1 default ASI=18 (+4), Dex 14+2=16 (+3); Medium after growth (+0).
+    expect(croc.bab).toBe(4);
+    expect(croc.abilities.str.mod).toBe(4);
+    expect(croc.specialAbilities.map((a) => a.name)).not.toContain("Multiattack");
+    const bite = croc.attacks.find((a) => a.name === "Bite")!;
+    const tailSlap = croc.attacks.find((a) => a.name === "Tail slap")!;
+    expect(bite).toMatchObject({ attackType: "primary", attack: 8, damageBonus: 4 });
+    // secondary: −5 attack penalty, half Str (floor(4/2) = 2).
+    expect(tailSlap).toMatchObject({ attackType: "secondary", attack: 3, damageBonus: 2 });
+  });
+
+  it("crocodile at 9th (Multiattack unlocked): tail slap's secondary penalty softens from −5 to −2", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 9 }],
+      animalCompanion: { speciesId: "crocodile", name: "Snapper", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const croc = deriveCompanion(doc, rollData)!;
+    // HD 8 → BAB +6; Str 15+3 adj+2 default ASIs=20 (+5), Dex 14+3=17 (+3); Medium (+0).
+    expect(croc.bab).toBe(6);
+    expect(croc.abilities.str.mod).toBe(5);
+    expect(croc.specialAbilities.map((a) => a.name)).toContain("Multiattack");
+    const bite = croc.attacks.find((a) => a.name === "Bite")!;
+    const tailSlap = croc.attacks.find((a) => a.name === "Tail slap")!;
+    expect(bite).toMatchObject({ attackType: "primary", attack: 11, damageBonus: 5 });
+    // secondary: −2 attack penalty (Multiattack), half Str (floor(5/2) = 2).
+    expect(tailSlap).toMatchObject({ attackType: "secondary", attack: 9, damageBonus: 2 });
   });
 });
