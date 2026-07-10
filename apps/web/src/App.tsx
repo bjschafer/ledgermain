@@ -18,6 +18,7 @@ import { TraitsSection } from "./components/builder/TraitsSection.js";
 import type { BuilderProps } from "./components/builder/types.js";
 import { CharacterSwitcher } from "./components/CharacterSwitcher.js";
 import { PreviewNotice } from "./components/PreviewNotice.js";
+import { PrintView } from "./components/PrintView.js";
 import { Sheet } from "./components/Sheet.js";
 import { SyncStatus } from "./components/SyncStatus.js";
 import { ToastHost } from "./components/ToastHost.js";
@@ -50,6 +51,18 @@ function BuildTabBadge(props: Pick<BuilderProps, "doc" | "sheet" | "refData">) {
 export function App() {
   const store = useCharacter();
   const [mode, setMode] = useState<Mode>("build");
+  const [printOpen, setPrintOpen] = useState(false);
+
+  if (printOpen && store.doc && store.sheet && store.refData) {
+    return (
+      <PrintView
+        doc={store.doc}
+        sheet={store.sheet}
+        refData={store.refData}
+        onClose={() => setPrintOpen(false)}
+      />
+    );
+  }
 
   return (
     <div className="app">
@@ -154,6 +167,7 @@ export function App() {
           onResetAll={() => void store.resetAll()}
           onDeleteCharacter={(id) => void store.deleteCharacter(id)}
           actionPending={store.actionPending}
+          onOpenPrint={() => setPrintOpen(true)}
         />
       )}
     </div>
@@ -166,6 +180,7 @@ function Workbench({
   onResetAll,
   onDeleteCharacter,
   actionPending,
+  onOpenPrint,
   ...props
 }: BuilderProps & {
   mode: Mode;
@@ -173,6 +188,7 @@ function Workbench({
   onResetAll: () => void;
   onDeleteCharacter: (id: string) => void;
   actionPending: boolean;
+  onOpenPrint: () => void;
 }) {
   return (
     <div className={`layout${mode === "build" ? " layout--with-nav" : ""}`}>
@@ -221,6 +237,7 @@ function Workbench({
             onResetAll={onResetAll}
             onDeleteCharacter={onDeleteCharacter}
             actionPending={actionPending}
+            onOpenPrint={onOpenPrint}
           />
         ) : (
           <Tracker {...props} />

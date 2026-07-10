@@ -4783,3 +4783,265 @@ input[type="text"].saved-roll-name:focus {
     max-width: calc(100vw - 2 * var(--space-3));
   }
 }
+
+/* ============================================================== print sheet -- (issue #69)
+   A read-only, dense reference layout over the computed `DerivedSheet`,
+   designed for Chromium's print-to-PDF: light "paper" background always (even
+   in on-screen preview, since this is meant to look like the printed page),
+   with `.no-print` chrome (the Back/Print toolbar) stripped out under
+   `@media print`. `PrintView` takes over the whole viewport in place of the
+   app shell (see `App.tsx`), so no other element needs a print override. */
+
+.print-view {
+  min-height: 100%;
+  background: #2a2a28;
+  padding: var(--space-5) 0 60px;
+}
+
+.print-toolbar {
+  max-width: 800px;
+  margin: 0 auto var(--space-4);
+  padding: 0 var(--space-4);
+  display: flex;
+  gap: var(--space-3);
+}
+
+.btn-gold {
+  background: var(--gold);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  color: #201a05;
+  font-weight: 600;
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.btn-gold:hover {
+  background: var(--gold-2);
+}
+
+.print-page {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #f7f4ea;
+  color: #1c1a14;
+  border: 1px solid #cfc7ab;
+  border-radius: 2px;
+  padding: 28px 32px 36px;
+  font-family: var(--body);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.print-page h3 {
+  font-family: var(--display);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid #cfc7ab;
+  padding-bottom: 3px;
+  margin-bottom: 6px;
+  color: #4a3f1e;
+}
+
+.print-header {
+  border-bottom: 2px solid #4a3f1e;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.print-name {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.print-sub {
+  font-size: 13px;
+  color: #4a3f1e;
+}
+
+.print-identity {
+  font-size: 11px;
+  color: #5c5540;
+}
+
+.print-grid--top {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: 10px;
+}
+
+.print-block {
+  break-inside: avoid;
+}
+
+.print-section {
+  margin-top: 12px;
+}
+
+.print-abilities {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.print-ability {
+  display: grid;
+  grid-template-columns: 2.5em 1fr 1fr;
+  gap: 6px;
+}
+
+.print-ability-abbr {
+  font-weight: 700;
+}
+
+.print-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.print-table td,
+.print-table th {
+  padding: 1px 4px 1px 0;
+  text-align: left;
+}
+
+.print-table .num {
+  text-align: right;
+  padding-right: 8px;
+}
+
+.print-offense {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  font-size: 12px;
+}
+
+.print-stat {
+  display: inline-flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.print-attacks {
+  margin-top: 6px;
+  width: auto;
+}
+
+.print-attacks th,
+.print-attacks td {
+  padding-right: 20px;
+}
+
+.print-attacks th {
+  border-bottom: 1px solid #cfc7ab;
+  font-weight: 600;
+  text-align: left;
+}
+
+.print-hint {
+  font-size: 11px;
+  color: #5c5540;
+  margin: 2px 0 0;
+}
+
+.print-skill-list {
+  columns: 3;
+  column-gap: var(--space-4);
+}
+
+.print-skill {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  break-inside: avoid;
+}
+
+.print-list {
+  margin: 0;
+  padding-left: 1.2em;
+  columns: 2;
+  column-gap: var(--space-4);
+}
+
+.print-list li {
+  break-inside: avoid;
+}
+
+.print-resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.print-resource {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.print-spells {
+  break-inside: avoid;
+}
+
+.print-spell-levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.print-spell-level {
+  break-inside: avoid;
+}
+
+.print-spell-level-head {
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #4a3f1e;
+}
+
+.print-spell-list {
+  columns: 1;
+}
+
+.print-spell-list li.is-expended {
+  text-decoration: line-through;
+  color: #8a8265;
+}
+
+@media (max-width: 700px) {
+  .print-grid--top {
+    grid-template-columns: 1fr;
+  }
+  .print-spell-levels {
+    grid-template-columns: 1fr 1fr;
+  }
+  .print-skill-list {
+    columns: 2;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-view {
+    background: none;
+    padding: 0;
+  }
+  .print-page {
+    max-width: none;
+    border: none;
+    padding: 0;
+  }
+  .print-block,
+  .print-spells,
+  .print-spell-level {
+    break-inside: avoid;
+  }
+}

@@ -72,11 +72,13 @@ export function SettingsSection({
   onResetAll,
   onDeleteCharacter,
   actionPending,
+  onOpenPrint,
 }: BuilderProps & {
   onImportCharacter: (doc: CharacterDoc) => void;
   onResetAll: () => void;
   onDeleteCharacter: (id: string) => void;
   actionPending: boolean;
+  onOpenPrint: () => void;
 }) {
   const settings = doc.build.settings ?? {};
   const hpMode = settings.hpMode ?? "average";
@@ -563,6 +565,20 @@ export function SettingsSection({
           </p>
         )}
         {importReport && <ImportReportPanel report={importReport} />}
+      </Panel>
+
+      {/* Print sheet (issue #69) */}
+      <Panel title="Print" step="⚙">
+        <p className="hint" style={{ marginBottom: 12 }}>
+          A dense, read-only reference layout of this character's current stats — abilities, saves,
+          AC, attacks, skills, feats, class features, spell slots/known, and resources — sized for
+          printing or saving to PDF from the browser's print dialog.
+        </p>
+        <div className="settings-row">
+          <button type="button" className="btn-ghost" onClick={onOpenPrint}>
+            Print character sheet…
+          </button>
+        </div>
       </Panel>
 
       {/* About & legal */}
