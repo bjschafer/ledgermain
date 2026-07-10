@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Ledgermain is a web-based **in-play character sheet, tracker, and builder for Pathfinder 1e**. The product's center of gravity is _play at the table_ — a rules-aware tracker that recomputes correct numbers as live session state (HP, conditions, buffs, resources) changes, not just a builder. Read `DESIGN.md` for architecture rationale and `IMPLEMENTATION_PLAN.md` for the staged build plan with detailed per-stage "as built" caveats — these two docs are the source of truth for _why_ things are shaped the way they are.
+Ledgermain is a web-based **in-play character sheet, tracker, and builder for Pathfinder 1e**. The product's center of gravity is _play at the table_ — a rules-aware tracker that recomputes correct numbers as live session state (HP, conditions, buffs, resources) changes, not just a builder. Read `DESIGN.md` for architecture rationale — the source of truth for _why_ things are shaped the way they are; `README.md` covers what the project is and how to run it.
 
 Stages 1–4 are complete. Stage 5 (Cloudflare Worker persistence + cross-device sync, DESIGN.md §2.1) has a first cut: `apps/api` (Discord OAuth + `CharacterDoc` CRUD with optimistic-concurrency conflict detection) and a client sync module in `apps/web/src/sync/` (background push/pull, wired thinly into `state/useCharacter.ts`). The KV namespaces and `api.ledgermain.whizkid.dev` custom domain exist; deploy is blocked only on registering a Discord Application (owner's own account) — see `apps/api/README.md` for the remaining steps. `VITE_API_URL` unset (the default) keeps the app in local-only mode, unchanged from before Stage 5.
 
@@ -90,6 +90,7 @@ The engine is a **clean-room reimplementation** from the published PF1 rules. Th
 - TypeScript strict everywhere. `bun run typecheck` is the gate that must stay green.
 - Lint must stay green: `bun run lint` (errors block; warnings tolerated). Run `bun run lint:fix` first to auto-fix. Don't add new lint warnings to existing code paths.
 - Run `bun run fmt` before committing; `bun run fmt:check` must be green. Don't commit hand-formatted code that fights oxfmt — if you disagree with a fmt result, change your code, don't fight the tool.
+- **Comments explain the unexpected, and are brief. Keep ephemeral context out of code and committed docs.** No pointers to dated audits, planning docs, "wave N", "as-built section", "round-2 notes", or "issue #NN's X pass" — that provenance belongs in the commit message, not the source. A comment should say _why_ the code is surprising and stand on its own, without an external working-doc to resolve it. (A bare issue reference for still-open tracked work is fine; a pointer into a narrative build log is not.)
 - When touching the engine, add hand-computed fixture tests (the pattern in `packages/engine/test/`); the engine tests run against the real vendored data slice via `loadRefData()`.
 - Feat prereqs are **hybrid**: hard-block only on _structured_ signals (ability min, BAB, caster level, required `@UUID` feats); prose-only prereqs (`prereqText`) show a soft warning and never block. Don't promise perfect prereq enforcement.
 - Always check for the dev server listening before killing and starting it.

@@ -24,8 +24,7 @@ interface MysteryPickerProps {
  * Scope: the 10 Advanced Player's Guide "core" mysteries (Battle, Bones,
  * Flame, Heavens, Life, Lore, Nature, Stone, Waves, Wind) — see
  * `@pf1/engine` `oracle-mysteries.ts`'s doc comment. Revelations (the
- * mystery's menu of choosable powers) are NOT modeled — see
- * IMPLEMENTATION_PLAN.md.
+ * mystery's menu of choosable powers) are NOT modeled.
  *
  * The chosen mystery grants one bonus spell known at oracle level 2 and
  * every two levels thereafter (see `model/spellcasting.mysterySpellsKnown`,

@@ -17,8 +17,7 @@ interface RogueFinesseWeaponsPickerProps {
 
 /**
  * Rogue (Unchained) Finesse Training weapon-type picks (issue #65 —
- * previously deferred, see IMPLEMENTATION_PLAN.md's Rogue (Unchained)
- * as-built section). PF1 RAW: at 3rd level, and every 8 levels thereafter
+ * previously deferred). PF1 RAW: at 3rd level, and every 8 levels thereafter
  * (11th, 19th), pick one weapon TYPE usable with Weapon Finesse (e.g.
  * "rapier") — melee attacks with a matching equipped weapon add Dexterity
  * instead of Strength to the damage roll. Free-text (not a `WEAPON_GROUPS`

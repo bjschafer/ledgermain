@@ -2,9 +2,8 @@
  * Full classification audit for issue #45's feat batch-extraction pass:
  * every one of the 390 vendored feats (packages/data-pipeline/data/feats.json —
  * the entire upstream pack, no more exist), bucketed and reasoned, mirroring the
- * archetype-extracted/ pipeline's convention (see IMPLEMENTATION_PLAN.md's
- * 2026-07-06 "Archetype prose→Change extraction pipeline" sections for the
- * rubric this was adapted from).
+ * archetype-extracted/ pipeline's convention (see
+ * `archetype-extracted/index.ts`).
  *
  * Keyed by the feat's name slug (see `featNameSlug` in feat-effects.ts) rather
  * than RefEntity id, matching feat-effects.ts's own stability rationale: feat

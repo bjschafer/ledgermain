@@ -35,8 +35,7 @@ interface ShamanHexPickerProps {
  * Wandering Hex (6th level — temporarily borrow a hex from the OTHER spirit
  * each day) and Wandering Spirit (4th level — temporarily bond with a
  * different spirit each day) are both deliberately NOT modeled: both are
- * re-chosen DAILY, not fixed build picks, same posture IMPLEMENTATION_PLAN.md
- * already documents for the medium's spirits.
+ * re-chosen DAILY, not fixed build picks — same posture as the medium's spirits.
  */
 export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) {
   const isShaman = doc.identity.classes.some((c) => c.tag === "shaman");
@@ -106,7 +105,7 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
               <p className="hint revelation-picker-hint">
                 Pick hexes as you level (2nd, 4th, 8th, 10th, 12th, 16th, 18th, 20th; +1 per Extra
                 Hex feat). Free-choice — never blocks past the expected count. Every hex here is
-                note-tier (no numeric effect modeled — see IMPLEMENTATION_PLAN.md).
+                note-tier (no numeric effect modeled).
               </p>
               <input
                 className="search"

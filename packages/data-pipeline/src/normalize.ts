@@ -114,7 +114,7 @@ export function normalize(opts: NormalizeOptions): {
   // folder-marker doc ("Druid Domains", "Subdomains", "Elemental Schools",
   // "Focused Schools") with no `system` at all, excluded by the `type === "feat"`
   // check. Nested subfolders (subdomains, druid-domains, elemental/focused
-  // schools) are excluded by the relPath depth check — see IMPLEMENTATION_PLAN.md.
+  // schools) are excluded by the relPath depth check.
   const classAbilitiesDocs = [...classAbilitiesById.values()];
   const domainDocs = classAbilitiesDocs
     .filter(

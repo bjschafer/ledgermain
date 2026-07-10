@@ -13,8 +13,7 @@ import {
 
 /**
  * Fixture coverage for Monk (Unchained) ki powers + style strikes (issue
- * #65) — the deferred choice-bearing subsystems noted in
- * IMPLEMENTATION_PLAN.md's Monk (Unchained) as-built section. Both tables
+ * #65) — the deferred choice-bearing subsystems. Both tables
  * are clean-room, hand-authored (see `monk-ki-powers.ts`/`monk-style-strikes.ts`),
  * `displayOnly` in their entirety (no unconditional numeric effect cleared
  * the honesty bar), so this file proves: (1) the data tables are internally

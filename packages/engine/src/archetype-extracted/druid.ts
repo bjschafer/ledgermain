@@ -1,7 +1,7 @@
 /**
  * Druid's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section), this file owns BOTH of
+ * 2026-07-06). Per the per-class file convention (documented in
+ * `index.ts`), this file owns BOTH of
  * druid's pipeline artifacts — `DRUID_ARCHETYPE_FEATURE_CLASSIFICATION` (the
  * full per-feature audit) and `DRUID_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) — so a future wave working
@@ -12,9 +12,8 @@
  *
  * Classification audit: EVERY feature of EVERY vendored druid archetype (71
  * archetypes, 360 features), read and bucketed as `numeric` / `situational` /
- * `subsystem` / `blocked` — see the fighter pilot's rubric
- * (IMPLEMENTATION_PLAN.md's dated pipeline section) for the full bucket
- * definitions this was applied against; summarized:
+ * `subsystem` / `blocked` — see the fighter pilot's rubric for the full
+ * bucket definitions this was applied against; summarized:
  *  - "numeric": an unconditional (or armor-state-gated, matching the
  *    hand-verified table's `@armor.type` precedent) bonus expressible via a
  *    real `packages/engine/src/targets.ts` target.

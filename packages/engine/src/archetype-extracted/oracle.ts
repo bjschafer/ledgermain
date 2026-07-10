@@ -1,7 +1,7 @@
 /**
  * Oracle's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section), this file owns BOTH of
+ * 2026-07-06). Per the per-class file convention (documented in
+ * `index.ts`), this file owns BOTH of
  * oracle's pipeline artifacts — `ORACLE_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
  * `ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
@@ -13,9 +13,8 @@
  *
  * Classification audit: EVERY feature of EVERY vendored oracle archetype (26
  * archetypes, 79 features), read individually and bucketed `numeric` /
- * `situational` / `subsystem` / `blocked` per the rubric in
- * IMPLEMENTATION_PLAN.md's dated #45 pipeline section (same bucket
- * definitions as `archetype-extracted/fighter.ts`'s doc comment). Oracle is a
+ * `situational` / `subsystem` / `blocked` per the same bucket definitions
+ * as `archetype-extracted/fighter.ts`'s doc comment. Oracle is a
  * brand-new class in this repo (2026-07-06) whose mystery/curse/revelation
  * machinery is ENTIRELY hand-authored (`oracle-mysteries.ts`/
  * `oracle-curses.ts`), unlike fighter's vendored `RefData.classFeatures`

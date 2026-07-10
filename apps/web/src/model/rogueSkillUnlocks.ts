@@ -5,8 +5,7 @@
  * `SkillId` chosen at each. The unlock's own tiered prose effects are NOT
  * modeled (see `CharacterDoc.build.rogueSkillUnlocks`'s doc comment) — this
  * module only tracks WHICH skill was picked at each tier, surfaced by
- * `RogueSkillUnlocksPicker` itself (no separate classFeatures-list wiring;
- * see IMPLEMENTATION_PLAN.md's as-built note on this choice).
+ * `RogueSkillUnlocksPicker` itself (no separate classFeatures-list wiring).
  */
 
 import { ROGUE_SKILL_UNLOCK_LEVELS } from "@pf1/engine";

@@ -1,6 +1,6 @@
 # Pathfinder 1e In-Play Tracker — Design
 
-> Status: **draft for review**. Architecture decisions captured below; staged build plan lives in `IMPLEMENTATION_PLAN.md`.
+> Architecture decisions and rationale — the source of truth for _why_ the code is shaped the way it is. For what the project is and how to run it, see [`README.md`](./README.md).
 
 ## 1. What this is (and isn't)
 

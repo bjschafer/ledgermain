@@ -1,70 +1,112 @@
 # Ledgermain
 
-A web-based **in-play character sheet, tracker, and builder** for Pathfinder 1e. The center of gravity is _play at the table_: a rules-aware tracker that recomputes correct numbers as session state (HP, conditions, buffs, resources) changes. Built to run on Cloudflare.
+**A rules-aware, in-play character sheet, tracker, and builder for Pathfinder 1e.**
 
-## Layout (bun workspaces)
+Live at **[ledgermain.whizkid.dev](https://ledgermain.whizkid.dev)** · Source under [AGPL-3.0-or-later](#license--attribution)
 
-```text
-packages/schema         shared types: CharacterDoc, DerivedSheet, RefData
-packages/data-pipeline  pinned Foundry fetch -> normalized JSON (vendored in data/)
-packages/engine         pure rules engine (clean-room; the crown jewel)
-apps/web                React + Vite builder + tracker ("illuminated ledger" UI)
-```
+Every other PF1e tool — PCGen, HeroLab, Pathbuilder, Foundry's sheet — is a _builder_ that displays a character; what happens at the table is an afterthought. Ledgermain's center of gravity is **play**. It's a tracker that knows the rules well enough to **recompute the correct numbers as your session state changes**: take damage, fail a save, toggle a buff, spend a resource, gain a condition — every derived value (AC, attack lines, saves, skills, CMB/CMD, DCs) updates instantly and correctly.
 
-## Run it
+<!-- screenshot: builder + tracker side by side — add apps/web capture here before wider sharing -->
+
+## Why it's different
+
+- **A tracker first, a builder second.** The live sheet is the product. Buffs have durations that tick down; conditions cascade into the numbers that depend on them; resources (spell slots, ki, rounds/day, charges) are first-class and recover on rest.
+- **It actually does the math.** A pure, exhaustively-tested rules engine handles the two genuinely hard parts of PF1e: **typed bonus stacking** (highest-within-type, dodge/untyped stack, penalties always stack, with per-source provenance so overridden bonuses show struck through) and a **formula evaluator** for the Foundry roll-formula dialect (`@data.paths`, `if`/`gte`/`min`/`max`, dice terms) — no `eval`, no server round-trip.
+- **Deliberately not a dice roller.** Ledgermain tells you what your modifiers _are_ and hands you clean, explained roll lines; it doesn't roll for you. It complements a physical table or a VTT rather than trying to replace them.
+- **Offline-capable and private.** Your character lives in your browser (IndexedDB). Optional account-scoped cloud sync (build on desktop, play on laptop) is opt-in, not required — the app never needs the network to compute anything.
+
+## Features
+
+**Builder**
+
+- Full from-scratch character creation: race, ability scores, class levels (multiclass supported), skills, feats, and gear.
+- **All 44 player classes** and their choice-bearing subsystems — bloodlines, arcane schools, domains, hexes, rage powers, alchemist discoveries, rogue talents, oracle revelations, kineticist elements/wild talents, summoner eidolons, spiritualist phantoms, occultist implements, medium spirits, and more.
+- Archetypes, with their numeric effects applied where the data supports it.
+- Hybrid prerequisite validation: hard-blocks only on _structured_ signals (ability minimums, BAB, caster level, required feats); prose-only prerequisites show a soft warning and never block.
+- **Import** existing characters from Pathbuilder and HeroLab.
+
+**Tracker (at the table)**
+
+- Live HP (including temp and nonlethal), conditions, and typed buffs with round-based durations.
+- Resource pools that spend and recover: spell slots (prepared and spontaneous), ki, rounds/day, uses/day, item charges, hero points.
+- Explained numbers: tap any derived value to see exactly which bonuses and penalties compose it.
+- Saved rolls and a printable character sheet.
+
+**Under the hood**
+
+- Reference data (spells, feats, classes, items, buffs, …) mined from the Foundry VTT PF1 system, **pinned to an exact commit** and vendored as normalized JSON. The app builds and runs entirely offline from the vendored data.
+- Optional cross-device sync via a thin Cloudflare Worker (Discord login); the server is dumb persistence and never computes game logic.
+
+## Try it
+
+The hosted instance is at **[ledgermain.whizkid.dev](https://ledgermain.whizkid.dev)**. No account needed — start building and your character autosaves locally in the browser.
+
+## Run it locally
+
+Toolchain is [**Bun**](https://bun.sh) (workspaces). No other runtime needed.
 
 ```bash
 bun install
-bun run dev          # -> http://localhost:5173  (copies RefData, then starts Vite)
+bun run dev          # → http://localhost:5173  (copies reference data, then starts Vite)
 ```
 
-## Test
+By default the app runs **local-only** (IndexedDB, no cloud sync) — leave `VITE_API_URL` unset. See [`apps/api/README.md`](./apps/api/README.md) to run the sync Worker.
 
-```bash
-bun run typecheck    # all packages
-bun run test         # all unit tests (engine + data-pipeline + web)
-bun run e2e          # Playwright in Chromium (boots the dev server itself)
+## How it's built
+
+Five Bun-workspace packages, one hard rule.
+
+```text
+packages/schema         shared types: CharacterDoc, DerivedSheet, RefData (the contracts everything imports)
+packages/data-pipeline  pinned Foundry YAML → normalized JSON (vendored, committed)
+packages/engine         pure rules engine — compute(doc, refData) → DerivedSheet (the crown jewel)
+apps/web                React + Vite builder + live tracker
+apps/api                Cloudflare Worker: opaque CharacterDoc persistence + cross-device sync
 ```
 
-## Reference data (pinned, no drift)
+> **The client is authoritative for all game logic. The server is dumb persistence.**
 
-SRD content is mined from the Foundry PF1 system, **pinned to an exact commit** and vendored as normalized JSON under `packages/data-pipeline/data/` (committed; the app builds offline). To update:
+Two objects drive everything: a serializable `CharacterDoc` (build choices + live session state, but _never_ derived values), and a pure `compute(doc, refData) → DerivedSheet` that returns every displayed number. Toggle anything in the doc → recompute. That single rule is why the builder and tracker share one brain, and why sync/offline are cheap.
 
-1. Edit `FOUNDRY_SHA` / `SYSTEM_VERSION` in `packages/data-pipeline/src/config.ts`.
-2. `bun run data:fetch && bun run data:build`
-3. Review the diff, commit.
+The design rationale — why AGPL, why clean-room, the data model, the two hard components — lives in **[`DESIGN.md`](./DESIGN.md)**.
 
-Game content is OGL/Paizo Community Use; the engine is **clean-room** (not derived from Foundry's GPL code). See `DESIGN.md` Sec.6.
+## Project status & scope
 
-## License
+Ledgermain is a **single-player** PF1e sheet, and that's the intended end state. It is used and actively developed, but it is a personal project, not a commercial product.
 
-Mixed license -- the thing distributed decides which terms apply, not the
-file location:
+**Deliberately out of scope** (so you know what _not_ to expect):
 
-- **GNU AGPL v3.0-or-later** -- all source code (engine, schema, data-pipeline
-  scripts, web app, build/config). The engine is a clean-room reimplementation
-  of the PF1 rules; the Foundry PF1 system's GPL-3.0 _code_ is never copied
-  into this repo (its `.cache/` clone is gitignored and used only as a
-  behavioral test oracle). We license under the AGPL -- compatible with
-  Foundry's GPL-3.0, and network-copyleft so hosted forks share their source.
-  See [`LICENSE`](./LICENSE) and [`NOTICE.md`](./NOTICE.md).
-- **Open Game License v1.0a** -- the vendored compendium JSON under
-  `packages/data-pipeline/data/` (Open Game Content mined from the pinned
-  Foundry PF1 system and the `bjschafer/pf1e-archetypes` dataset). See
-  [`OGL.txt`](./OGL.txt).
-- **Paizo Community Use Policy** -- some compendium entries reference Paizo
-  Product Identity (deity names, Golarion ethnonyms/places); we rely on
-  Paizo's Community Use Policy as the independent agreement contemplated
-  by OGL Sec.7.
+- **No dice roller** — it computes and explains modifiers; it doesn't roll.
+- **No party / GM / real-time multiplayer.** The architecture keeps this cheap to add later, but it is not on the roadmap.
+- A few rules subsystems aren't modeled yet (e.g. spell resistance, full encumbrance). The builder is honest about what it can't enforce rather than silently wrong.
 
-Full details, attribution, and the clean-room rationale live in
-[`NOTICE.md`](./NOTICE.md). Not affiliated with Paizo Inc., Foundry
-Gaming LLC, or Wizards of the Coast.
+Content breadth and known gaps are tracked in the [issue tracker](https://github.com/bjschafer/ledgermain/issues).
 
-## Where characters are stored
+## Contributing
 
-Currently **local only**: the working character autosaves to **IndexedDB** (database `pf1-tracker`) in your browser, and the app restores the most-recently-edited one on load. This means:
+Contributions are welcome — bug reports, rules corrections, and PRs alike.
 
-- It **survives dev-server and browser restarts**.
-- It is **per-browser and tied to the `http://localhost:5173` origin** -- a different browser, an incognito window, a different port, or clearing site data will not show it.
-- There is **one active character** (no character-picker UI yet).
+- **Prerequisites:** [Bun](https://bun.sh) (`1.3+`). Everything else installs with `bun install`.
+- **The gates** (all must stay green; CI shape):
+  ```bash
+  bun run typecheck    # tsc --noEmit across all packages — the primary gate
+  bun run lint         # oxlint (errors block; warnings tolerated)
+  bun run fmt:check    # oxfmt --check
+  bun run test         # unit tests (engine + data-pipeline + web)
+  bun run e2e          # Playwright (Chromium); boots its own dev server
+  ```
+- **Where logic goes:** game logic is **pure and tested** — in `packages/engine` or `apps/web/src/model/`, never in React components (which are thin views). Add a fixture/model test with any behavior change.
+- **Clean-room discipline (important):** the rules engine is a clean-room reimplementation from the published PF1 rules. Foundry's GPL-3.0 system _code_ may be used **only as a behavioral test oracle** — compare outputs, never copy, transcribe, or port. Do not paste upstream source into this repo. See [`NOTICE.md`](./NOTICE.md) §1.
+- **Reference data** is vendored and pinned; never update it implicitly. To bump it, edit `FOUNDRY_SHA` / `SYSTEM_VERSION` in `packages/data-pipeline/src/config.ts`, run `bun run data:fetch && bun run data:build`, then **`bun run fmt`**, review the diff, and commit.
+
+More architectural context is in [`DESIGN.md`](./DESIGN.md) and [`CLAUDE.md`](./CLAUDE.md).
+
+## License & attribution
+
+This repository ships under a **mixed license** — the thing distributed decides which terms apply, not the file location. Full details and attribution in [`NOTICE.md`](./NOTICE.md).
+
+- **Source code → [GNU AGPL v3.0-or-later](./LICENSE).** Engine, schema, pipeline scripts, web app, and config. The engine is a clean-room reimplementation of the PF1 rules; Foundry's GPL-3.0 system code is never copied in (its clone is gitignored and used only as a behavioral test oracle). AGPL is compatible with Foundry's GPL-3.0 and its network-copyleft ensures hosted forks share their source.
+- **Vendored compendium data → [Open Game License v1.0a](./OGL.txt).** The normalized JSON under `packages/data-pipeline/data/` is Open Game Content mined from the pinned Foundry PF1 system and the `bjschafer/pf1e-archetypes` dataset, with OGL §15 attribution intact.
+- **Paizo Community Use Policy** covers references to Paizo Product Identity (deity names, Golarion places, etc.).
+
+**Not affiliated with, endorsed by, or sponsored by Paizo Inc., Foundry Gaming LLC, or Wizards of the Coast.** "Pathfinder" is a trademark of Paizo Inc.

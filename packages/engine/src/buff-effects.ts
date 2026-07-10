@@ -36,8 +36,7 @@ import type { Change } from "@pf1/schema";
  * 0 when the buff deactivates, which matches "disappear when rage ends"
  * exactly).
  *
- * NOT vendored — see IMPLEMENTATION_PLAN.md's "Vendored-data bugs found" #2
- * (2026-07-07 barbarian-unchained audit): the buff's own `changes[]` never
+ * NOT vendored (a vendored-data bug): the buff's own `changes[]` never
  * got a corresponding `tempHp` Change, despite the description text and the
  * separate Greater/Mighty Rage class features agreeing this is real RAW.
  *

@@ -7,8 +7,7 @@ import { compute, ROGUE_TALENT_IDS, ROGUE_TALENTS } from "../src/index.js";
 
 /**
  * Fixture coverage for Rogue Talents (issue #65) — the deferred choice-
- * bearing subsystem noted in IMPLEMENTATION_PLAN.md's Rogue (Unchained)
- * as-built section, SHARED between the chained rogue and Rogue (Unchained).
+ * bearing subsystem, SHARED between the chained rogue and Rogue (Unchained).
  * Clean-room, hand-authored curated ~28-entry menu (see `rogue-talents.ts`),
  * mostly `displayOnly` with two feat-bridging exceptions (Combat Trick,
  * Finesse Rogue — covered by `apps/web/test/feats.test.ts` since the bridge

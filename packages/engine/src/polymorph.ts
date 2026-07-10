@@ -1,6 +1,6 @@
 /**
  * Clean-room PF1 polymorph-subschool tables (issue #70): Wild Shape's actual
- * transformation, previously unmodeled (IMPLEMENTATION_PLAN.md: "the use-count
+ * transformation, previously unmodeled ("the use-count
  * is trackable, the transformation itself is not modeled" — Wild Shape's
  * `uses.maxFormula` resource pool is untouched by this file, see
  * `resources.ts`). Covers Beast Shape I-IV (animal, plus the magical-beast

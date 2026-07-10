@@ -1,7 +1,7 @@
 /**
  * Bard's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section), this file owns BOTH of
+ * 2026-07-06). Per the per-class file convention (documented in
+ * `index.ts`), this file owns BOTH of
  * bard's pipeline artifacts — `BARD_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
  * `BARD_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so a
@@ -62,8 +62,8 @@
  *    own uuid turns up ZERO matches: every single "this replaces bardic
  *    knowledge" claim in the prose is an UNPAIRED swap. That means
  *    `activeArchetypeSwaps` never suppresses Bardic Knowledge for any of
- *    these archetypes today — the same composition trap IMPLEMENTATION_PLAN
- *    already documents for monk's Ironskin Monk (an ambiguous/unpaired swap
+ *    these archetypes today — the same composition trap as monk's Ironskin
+ *    Monk (an ambiguous/unpaired swap
  *    displacing a base feature with real vendored `Change`s). This wave's
  *    rule: a bardic-knowledge-replacement whose own bonus touches ANY
  *    Knowledge sub-skill (`skill.knowledge` fans out to every `k*` skill —
@@ -658,7 +658,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Heraldic Expertise",
     level: 1,
     bucket: "blocked",
-    note: "replaces bardic knowledge (unpaired — no pairedBaseFeatureUuid) with a clean, unconditional +1/2-level bonus on Diplomacy/Knowledge(history)/Knowledge(local)/Knowledge(nobility) — but the Knowledge sub-skills OVERLAP Bardic Knowledge's own skill.knowledge target, and the unpaired swap means Bardic Knowledge stays fully (and incorrectly) active; extracting would double-count on those three Knowledge subskills. Same composition trap as the Ironskin Monk case (IMPLEMENTATION_PLAN).",
+    note: "replaces bardic knowledge (unpaired — no pairedBaseFeatureUuid) with a clean, unconditional +1/2-level bonus on Diplomacy/Knowledge(history)/Knowledge(local)/Knowledge(nobility) — but the Knowledge sub-skills OVERLAP Bardic Knowledge's own skill.knowledge target, and the unpaired swap means Bardic Knowledge stays fully (and incorrectly) active; extracting would double-count on those three Knowledge subskills. Same composition trap as the Ironskin Monk case.",
   },
   "bard:court-bard:mockery:3": {
     archetypeId: "bard:court-bard",

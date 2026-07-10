@@ -80,8 +80,7 @@ This is derivative Open Game Content drawn from two pinned, upstream sources:
 
 - Repo: `https://github.com/bjschafer/pf1e-archetypes`
 - Pinned commit: `815ef073685faf215be442cc5035c8198a89432b` (a fork of
-  `baileymh/pf1e-archetypes` with upstream merge-conflict corruption fixed
-  -- see `IMPLEMENTATION_PLAN.md` Stage 11)
+  `baileymh/pf1e-archetypes` with upstream merge-conflict corruption fixed)
 - The upstream ships an extended `OGL.txt` Section 15 citing the relevant
   Paizo books (CRB, APG, ACG, ARG, BotD, UC, UM, UE, Horror Adventures,
   Occult Adventures, etc.). We carry forward that extended Section 15

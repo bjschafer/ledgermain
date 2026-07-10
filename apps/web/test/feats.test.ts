@@ -301,7 +301,7 @@ describe("expectedFeatCount: Rogue (Unchained) Finesse Training grant + Rogue's 
     expect(expectedFeatCount(doc, ref)).toBe(1);
   });
 
-  // Vendored-data bug (see IMPLEMENTATION_PLAN.md's Unchained-classes audit):
+  // Vendored-data bug:
   // "Rogue's Edge (UC)" (granted at 5th level) carries a `bonusFeats` change
   // (`floor(@class.unlevel / 5)`), but the published ability grants "skill
   // unlock powers" for a chosen skill — nothing about bonus feats. Before the

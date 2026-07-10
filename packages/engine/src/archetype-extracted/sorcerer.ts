@@ -1,7 +1,7 @@
 /**
  * Sorcerer's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section), this file owns BOTH of
+ * 2026-07-06). Per the per-class file convention (documented in
+ * `index.ts`), this file owns BOTH of
  * sorcerer's pipeline artifacts — `SORCERER_ARCHETYPE_EFFECTS_EXTRACTED` and
  * `SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on
  * a different class never has a reason to touch this file; only `index.ts`
@@ -20,8 +20,7 @@
  * **The bloodline-suppression composition gap (per the task's sorcerer-
  * specific instructions).** Sorcerer bloodline arcana/powers are hand-
  * authored in `bloodlines.ts` and applied by a dedicated loop in `collect.ts`
- * that has NO archetype-swap awareness at all (documented in
- * IMPLEMENTATION_PLAN's round-2 section via Sorcerer of Sleep's Pesh
+ * that has NO archetype-swap awareness at all (see Sorcerer of Sleep's Pesh
  * Expert). Every one of this file's `pairedBaseFeatureUuid` values (where
  * present) resolves to a "bloodline power"/"bloodline feat" slot rather than
  * a normal `RefData.classFeatures` entry, confirming this gap applies to

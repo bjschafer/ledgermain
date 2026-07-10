@@ -1,7 +1,7 @@
 /**
  * Ranger's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section), this file owns BOTH of
+ * 2026-07-06). Per the per-class file convention (documented in
+ * `index.ts`), this file owns BOTH of
  * ranger's pipeline artifacts — `RANGER_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
  * `RANGER_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so
@@ -14,9 +14,8 @@
  * Classification audit: EVERY feature of EVERY vendored ranger archetype (62
  * archetypes, 266 features), individually read against
  * `packages/data-pipeline/data/archetype-features.json` and bucketed
- * `numeric` / `situational` / `subsystem` / `blocked` — see
- * IMPLEMENTATION_PLAN.md's dated #45 pipeline sections for the full bucket
- * rubric (shared with fighter's pilot). Unlike fighter's pilot (67
+ * `numeric` / `situational` / `subsystem` / `blocked` using the same bucket
+ * rubric as fighter's pilot. Unlike fighter's pilot (67
  * archetypes, 383 features, which needed a heuristic-assisted pass for the
  * `situational`/`subsystem` split), ranger's 266 features were small enough
  * for this wave to individually read and reason about every single one —
@@ -81,7 +80,7 @@
  *   keys off the pairing alone, an active Sable Company Marine character
  *   would have the ENTIRE base Combat Style Feat formula suppressed with
  *   nothing backfilled — a real, pre-existing bug, same shape as fighter's
- *   Brawler/Armor-Training mispair (IMPLEMENTATION_PLAN.md). Flagged here,
+ *   Brawler/Armor-Training mispair. Flagged here,
  *   not fixed (would need a hand-curated exclusion mirroring
  *   `WEAPON_TRAINING_REPLACEMENTS`, out of this wave's file-scope).
  * - **Spell-less ranger variants** (Skirmisher's Hunter's Tricks, Trapper's
@@ -196,7 +195,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Improved Empathic Link",
     level: 6,
     bucket: "blocked",
-    note: "claims to replace only ONE tier of Combat Style Feat's atomic, single-formula bonus-feat schedule (2nd/6th/10th/14th/18th are ONE Change, not discrete per-tier grants) and is UNPAIRED (no pairedBaseFeatureUuid to the base feature) — same partial-tier-atomicity trap as fighter's Armor Training/Bonus Feats (IMPLEMENTATION_PLAN.md). The base bonus-feat formula keeps applying in full; recorded rather than guessed at.",
+    note: "claims to replace only ONE tier of Combat Style Feat's atomic, single-formula bonus-feat schedule (2nd/6th/10th/14th/18th are ONE Change, not discrete per-tier grants) and is UNPAIRED (no pairedBaseFeatureUuid to the base feature) — same partial-tier-atomicity trap as fighter's Armor Training/Bonus Feats. The base bonus-feat formula keeps applying in full; recorded rather than guessed at.",
   },
   "ranger:beast-master:strong-bond:12": {
     archetypeId: "ranger:beast-master",
@@ -616,7 +615,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Swoop for the Kill",
     level: 6,
     bucket: "blocked",
-    note: "claims to replace only ONE tier of Combat Style Feat's atomic, single-formula bonus-feat schedule (2nd/6th/10th/14th/18th are ONE Change, not discrete per-tier grants) and is UNPAIRED (no pairedBaseFeatureUuid to the base feature) — same partial-tier-atomicity trap as fighter's Armor Training/Bonus Feats (IMPLEMENTATION_PLAN.md). The base bonus-feat formula keeps applying in full; recorded rather than guessed at.",
+    note: "claims to replace only ONE tier of Combat Style Feat's atomic, single-formula bonus-feat schedule (2nd/6th/10th/14th/18th are ONE Change, not discrete per-tier grants) and is UNPAIRED (no pairedBaseFeatureUuid to the base feature) — same partial-tier-atomicity trap as fighter's Armor Training/Bonus Feats. The base bonus-feat formula keeps applying in full; recorded rather than guessed at.",
   },
   "ranger:flamewarden:touch-of-flame:4": {
     archetypeId: "ranger:flamewarden",
@@ -1232,7 +1231,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Hippogriff Companion",
     level: 2,
     bucket: "blocked",
-    note: "PAIRED to Combat Style Feat's base-feature uuid, but the archetype's own prose is purely ADDITIVE (adds one more selectable bonus-feat option, 'regardless of the style chosen') — it does not itself replace the bonus-feat count or schedule. Because the generic paired-swap suppression (activeArchetypeSwaps) keys off the pairing alone, an active character with this archetype would have the ENTIRE base Combat Style Feat formula suppressed with nothing backfilled, incorrectly zeroing their bonus feats. This is a real, pre-existing engine/vendored-data interaction bug (same shape as fighter's Brawler/Armor-Training mispair, IMPLEMENTATION_PLAN.md) — recorded here, not fixed (out of this wave's scope; would need a hand-curated exclusion mirroring WEAPON_TRAINING_REPLACEMENTS).",
+    note: "PAIRED to Combat Style Feat's base-feature uuid, but the archetype's own prose is purely ADDITIVE (adds one more selectable bonus-feat option, 'regardless of the style chosen') — it does not itself replace the bonus-feat count or schedule. Because the generic paired-swap suppression (activeArchetypeSwaps) keys off the pairing alone, an active character with this archetype would have the ENTIRE base Combat Style Feat formula suppressed with nothing backfilled, incorrectly zeroing their bonus feats. This is a real, pre-existing engine/vendored-data interaction bug (same shape as fighter's Brawler/Armor-Training mispair) — recorded here, not fixed (out of this wave's scope; would need a hand-curated exclusion mirroring WEAPON_TRAINING_REPLACEMENTS).",
   },
   "ranger:sentinel:mugshot:1": {
     archetypeId: "ranger:sentinel",
@@ -1855,14 +1854,14 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Rage of the Wild",
     level: 4,
     bucket: "subsystem",
-    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. borrows the barbarian rage class feature (itself deferred, IMPLEMENTATION_PLAN.md), replaces hunter's bond",
+    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. borrows the barbarian rage class feature (itself deferred), replaces hunter's bond",
   },
   "ranger:wild-stalker:rage-power:5": {
     archetypeId: "ranger:wild-stalker",
     name: "Rage Power",
     level: 5,
     bucket: "subsystem",
-    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. rage powers have no schema field (deferred, IMPLEMENTATION_PLAN.md)",
+    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. rage powers have no schema field (deferred)",
   },
   "ranger:wild-stalker:wild-talent:6": {
     archetypeId: "ranger:wild-stalker",

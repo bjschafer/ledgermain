@@ -1,7 +1,7 @@
 /**
  * Rogue's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06 — see IMPLEMENTATION_PLAN.md's dated "Batch-extraction wave
- * prep" section for the per-class file convention this follows). Covers all
+ * 2026-07-06; see `index.ts` for the per-class file convention this
+ * follows). Covers all
  * 77 vendored rogue archetypes, 241 features, read individually (rogue's
  * archetype count is small enough to afford the exhaustive per-feature pass
  * the fighter pilot's own recommendation flagged as optional for smaller
@@ -46,8 +46,7 @@
  *    three are "Sneak Attack" feature rows that turn out to be byte-
  *    identical reprints of the UNMODIFIED base Sneak Attack description
  *    (no stated change, no "this ability replaces/alters..." language) —
- *    a suspected vendored-data artifact (see IMPLEMENTATION_PLAN.md
- *    reference / this wave's report), not a real mechanical change. Left
+ *    a suspected vendored-data artifact, not a real mechanical change. Left
  *    unmodeled rather than risk anything touching the hardcoded formula.
  *  - Features that upsize/downsize sneak attack's die **type** (d8 vs d6,
  *    e.g. Knife Master's Sneak Stab, Skulking Slayer's Bold Strike,
@@ -89,8 +88,8 @@
  *
  * Knife Master and Scout already have entries in the hand-verified table
  * (`archetype-effects.ts`, issue #7 — Hidden Blade and Scout's Charge
- * respectively) and IMPLEMENTATION_PLAN.md's archetype round-2 audit already
- * covers the REST of both archetypes' features as notes-only. Per the
+ * respectively) and the REST of both archetypes' features are covered
+ * as notes-only. Per the
  * pipeline's precedence rule (hand-verified always wins, never duplicated),
  * this file's classification entries for those two ids reference the
  * existing coverage rather than re-adding a second entry to the extracted
@@ -948,14 +947,14 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sneak Stab",
     level: 1,
     bucket: "subsystem",
-    note: "upsizes sneak attack die TYPE for a named weapon list (and downsizes for all others) — no engine target for sneak attack die size; already audited in IMPLEMENTATION_PLAN.md's archetype round-2 notes",
+    note: "upsizes sneak attack die TYPE for a named weapon list (and downsizes for all others) — no engine target for sneak attack die size",
   },
   "rogue:knife-master:blade-sense:3": {
     archetypeId: "rogue:knife-master",
     name: "Blade Sense",
     level: 3,
     bucket: "situational",
-    note: "dodge AC bonus that only applies against attacks made WITH light blades — depends on the attacker's own weapon, which the static sheet can't know; already audited in IMPLEMENTATION_PLAN.md's archetype round-2 notes",
+    note: "dodge AC bonus that only applies against attacks made WITH light blades — depends on the attacker's own weapon, which the static sheet can't know",
   },
 
   // ── Makeshift Scrapper ─────────────────────────────────────────────────

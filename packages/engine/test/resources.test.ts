@@ -316,8 +316,7 @@ describe("grantsBuffs -> linkedBuffIds", () => {
     // resolve to 12 real "Animal Focus (<Animal>)" buffs, each with a
     // correctly scaling `changes[]` formula keyed on `@item.level` — the
     // generic grantsBuffs pipeline picks the whole thing up with zero
-    // shaman/hunter-specific code, confirming the finding documented in
-    // IMPLEMENTATION_PLAN.md.
+    // shaman/hunter-specific code, confirming the finding.
     const doc = baseDoc({
       identity: { name: "Kest", race: raceId("Human"), classes: [{ tag: "hunter", level: 5 }] },
     });

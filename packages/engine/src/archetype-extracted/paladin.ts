@@ -1,7 +1,7 @@
 /**
  * Paladin's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section), this file owns BOTH of
+ * 2026-07-06). Per the per-class file convention (documented in
+ * `index.ts`), this file owns BOTH of
  * paladin's pipeline artifacts — `PALADIN_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
  * `PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
@@ -13,10 +13,9 @@
  *
  * Classification audit: EVERY feature of EVERY vendored paladin archetype (60
  * archetypes, 247 features), read individually and bucketed `numeric` /
- * `situational` / `subsystem` / `blocked` per the rubric in
- * IMPLEMENTATION_PLAN.md's dated #45 pipeline section (same bucket
- * definitions as `archetype-extracted/fighter.ts`'s doc comment — not
- * repeated here). Two paladin-specific composition hazards drove a
+ * `situational` / `subsystem` / `blocked` per the same bucket definitions
+ * as `archetype-extracted/fighter.ts`'s doc comment (not repeated here). Two
+ * paladin-specific composition hazards drove a
  * disproportionate share of the `blocked`/`subsystem` calls this class
  * surfaced, neither of which existed for fighter:
  *

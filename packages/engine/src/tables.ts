@@ -1297,8 +1297,8 @@ export function barbarianDamageReduction(barbarianLevel: number): BarbarianDrDet
 /**
  * Fighter's Weapon Training, clean-room from the published PF1 rules (the
  * class feature's `changes[]` is empty upstream, same posture as
- * `barbarianDamageReduction` — see issue #45's "Fighter weapon training group
- * choices" deferred-item entry in IMPLEMENTATION_PLAN.md, now built).
+ * `barbarianDamageReduction` — issue #45's "Fighter weapon training group
+ * choices", now built).
  *
  * "Starting at 5th level, a fighter can select one group of weapons... he
  * gains a +1 bonus on attack and damage rolls. Every four levels thereafter

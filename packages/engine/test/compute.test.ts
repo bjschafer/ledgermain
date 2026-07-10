@@ -705,8 +705,7 @@ describe("compute: monk L5 (human, no armor)", () => {
   // Diamond Soul (L13, "10 + @class.unlevel" targeting "spellResist") is
   // correctly vendored but has nowhere to land: Spell Resistance isn't a
   // tracked stat anywhere in DerivedSheet or consumed as a compute.ts target
-  // (this app doesn't model SR at all yet) — documented as a gap in
-  // IMPLEMENTATION_PLAN.md rather than built here.
+  // (this app doesn't model SR at all yet) — a known gap, not built here.
   //
   // Still Mind (L3) carries a vendored `contextNotes` entry (+2 saves vs.
   // enchantment) rather than a `changes[]` entry — same shape as Ranger's
@@ -1365,7 +1364,7 @@ describe("compute: arcanist L4 (human, no armor) — ACG hybrid caster (issue #1
     expect(sheet.abilities.int.mod).toBe(5);
   });
 
-  it("Arcane Reservoir resource pool: 3 + arcanist level, no ability bonus (RAW cap; daily refill is a separate 3 + level/2 formula not modeled — see IMPLEMENTATION_PLAN.md)", () => {
+  it("Arcane Reservoir resource pool: 3 + arcanist level, no ability bonus (RAW cap; daily refill is a separate 3 + level/2 formula not modeled)", () => {
     const pools = deriveResourcePools(doc, ref, sheet.abilities);
     const reservoir = pools.find((p) => p.name === "Arcane Reservoir");
     expect(reservoir).toBeDefined();

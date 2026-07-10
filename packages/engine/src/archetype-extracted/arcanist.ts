@@ -1,7 +1,7 @@
 /**
  * Arcanist's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section), this file owns
+ * 2026-07-06). Per the per-class file convention (documented in
+ * `index.ts`), this file owns
  * `ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit —
  * every feature of every vendored arcanist archetype, individually read
  * against `packages/data-pipeline/data/archetype-features.json`) plus an

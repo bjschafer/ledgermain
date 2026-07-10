@@ -328,7 +328,7 @@ export function mountSpeciesHint(doc: CharacterDoc, refData: RefData): readonly 
  * name — every Hunter Animal Focus aspect, read directly off
  * `refData.buffs` by name pattern rather than a hand-authored table (the
  * numbers are already fully vendored with correct per-level scaling
- * formulas; see IMPLEMENTATION_PLAN.md). Used by both the self-focus
+ * formulas). Used by both the self-focus
  * resource-pool toggle (`ResourcesPanel`'s generic `linkedBuffIds` handling)
  * and the companion-focus picker below.
  */

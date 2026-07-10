@@ -176,7 +176,7 @@ export interface CharacterDoc {
     /**
      * Archetype ids chosen (keys into `RefData.archetypes`, e.g.
      * `"fighter:two-handed-fighter"`). No conflict validation — matches the
-     * project's hybrid soft-warning posture (see IMPLEMENTATION_PLAN.md Stage 11.3).
+     * project's hybrid soft-warning posture.
      */
     archetypes?: string[];
     /**
@@ -599,11 +599,11 @@ export interface CharacterDoc {
      * `model/shamanHexes.ts` for the budget math. Free-choice, soft warning
      * only on overspend — same posture as `oracleRevelations`. Every hex here
      * is note-tier/`displayOnly` (prose summary, no `Change[]`) — a numeric
-     * witch/shaman hex-effects table is a separate, larger undertaking (see
-     * IMPLEMENTATION_PLAN.md). Wandering Spirit (4th) and Wandering Hex (6th)
+     * witch/shaman hex-effects table is a separate, larger undertaking.
+     * Wandering Spirit (4th) and Wandering Hex (6th)
      * — both re-chosen DAILY, not fixed build picks — are deliberately NOT
-     * modeled here, same "live/daily choice, no build.* field" posture
-     * IMPLEMENTATION_PLAN.md already documents for the medium's spirits.
+     * modeled here, same "live/daily choice, no build.* field" posture as
+     * the medium's spirits.
      */
     shamanHexes?: string[];
     /**
@@ -1333,8 +1333,7 @@ export interface CharacterDoc {
     /**
      * A polymorph-family transformation currently affecting the character —
      * Wild Shape, or a Beast Shape/Elemental Body/Plant Shape spell (issue
-     * #70; see `IMPLEMENTATION_PLAN.md`'s Wild Shape entry and
-     * `@pf1/engine` `SHIFTER_ASPECTS`'s `majorFormNote`, both of which
+     * #70; see `@pf1/engine` `SHIFTER_ASPECTS`'s `majorFormNote`, which
      * pointed here). Purely a player CHOICE — which tier + creature
      * type/size/element the form takes, plus the natural-attack lines the
      * player copies off the assumed creature's stat block; the engine

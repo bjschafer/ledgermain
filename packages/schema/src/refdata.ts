@@ -491,7 +491,7 @@ export interface Archetype extends RefEntity {
  * No `changes` (mechanical effects) in v1: the dataset declares which features
  * exist and at what level, not how to compute them (its `Description` prose has
  * at least one verified copy-paste error, so it isn't trustworthy as a mechanics
- * source either — see IMPLEMENTATION_PLAN.md Stage 11). Any future numeric
+ * source either). Any future numeric
  * effect must be hand-authored from the published rules, same as
  * `feat-effects.ts`/`tables.ts`.
  */

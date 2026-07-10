@@ -7,8 +7,7 @@
  * AMPLIFICATIONS (the psychic's own menu of choosable spell-modifying
  * powers, picked at 1st, 3rd, and every 4 levels thereafter) are
  * prose-heavy, genuinely choice-bearing content — out of scope, same as
- * Oracle Revelations / Arcanist Exploits were at those classes' launches
- * (see IMPLEMENTATION_PLAN.md).
+ * Oracle Revelations / Arcanist Exploits were at those classes' launches.
  *
  * Scope: the 12 core Occult Adventures disciplines (Abomination, Dream,
  * Enlightenment, Faith, Ferocity, Haunted, Lore, Pageantry, Pain, Rebirth,
@@ -52,8 +51,8 @@
  *     spellcasting.ts`) rather than reusing `mysterySpellsKnown`'s. Unlike
  *     mysteries, disciplines grant no class skills.
  *
- * `powers` (issue #65 follow-through — previously deferred, see
- * IMPLEMENTATION_PLAN.md's 2026-07-07 wave note): each discipline's
+ * `powers` (issue #65 follow-through — previously deferred): each
+ * discipline's
  * "Discipline Powers" sub-feature, hand-authored from aonprd.com's individual
  * discipline pages (`PsychicDisciplinesDisplay.aspx?ItemName=<Name>`,
  * verified 2026-07-08) — NOT vendored anywhere (the cached

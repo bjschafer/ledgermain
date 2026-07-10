@@ -7,8 +7,7 @@ import { compute } from "../src/index.js";
 
 /**
  * Fixture coverage for Rogue (Unchained) Finesse Training's Dex-to-damage
- * substitution (issue #65 — previously deferred, see IMPLEMENTATION_PLAN.md's
- * Rogue (Unchained) as-built section). PF1 RAW: "at 3rd level ... she can
+ * substitution (issue #65 — previously deferred). PF1 RAW: "at 3rd level ... she can
  * select any one type of weapon that can be used with Weapon Finesse ...
  * whenever she makes a successful melee attack with the selected weapon, she
  * adds her Dexterity modifier instead of her Strength modifier to the damage

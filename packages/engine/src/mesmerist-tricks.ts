@@ -13,7 +13,7 @@
  * extra budget slot, the same soft-gated-within-the-same-budget shape
  * `WITCH_HEXES`' major/grand tiers use. Implanting a trick draws from the
  * separate Mesmerist Tricks resource pool (already vendored — a real
- * `uses.maxFormula`, see IMPLEMENTATION_PLAN.md's 2026-07-07 wave note and
+ * `uses.maxFormula`, see
  * `resources.ts`); this table is only the MENU of which trick a given
  * implant applies, not the pool itself.
  *

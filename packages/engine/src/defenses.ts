@@ -46,7 +46,7 @@
  * spell resistance — see each function for the exact rule. Found via
  * Warlord's (fighter archetype) Sun-Bronzed Skin, `dr` gated on
  * `@armor.type == 0`; see `archetype-classification.ts`'s entry for that
- * feature and IMPLEMENTATION_PLAN.md's dated #45 pipeline section.
+ * feature.
  */
 
 import type { CharacterDoc, Defenses, DefenseEntry, ModifierComponent, RefData } from "@pf1/schema";

@@ -2,8 +2,8 @@
  * Fighter's slice of the issue #45 batch-extraction pipeline (the pilot,
  * 2026-07-06, extended 2026-07-06 once the weapon-group-targeting gap was
  * fixed — see the "reclassified after the weapon-group fix" section below).
- * Per the per-class file convention (IMPLEMENTATION_PLAN.md's dated #45
- * "Batch-extraction wave prep" section), this file owns BOTH of fighter's
+ * Per the per-class file convention (documented in `index.ts`), this file
+ * owns BOTH of fighter's
  * pipeline artifacts — `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
  * `FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
@@ -19,8 +19,7 @@
  * artifact the pipeline produces alongside the extracted-effects table, and
  * the input a future wave (other classes) mechanically repeats.
  *
- * Bucket definitions (see IMPLEMENTATION_PLAN.md's dated pipeline section for
- * the full rubric this was applied against):
+ * Bucket definitions (the rubric this was applied against):
  *  - "numeric": an unconditional (or armor-state-gated, matching the
  *    hand-verified table's `@armor.type` precedent) bonus expressible via a
  *    real `packages/engine/src/targets.ts` target — has an entry in
@@ -41,8 +40,8 @@
  *    grants). Suppressing the whole grant would remove tiers RAW keeps;
  *    backfilling a number for the archetype's own replacement would double
  *    it on top of the base grant's still-unsuppressed formula. Recorded
- *    rather than guessed at — same shape of trap as the Ironskin Monk case
- *    already documented in IMPLEMENTATION_PLAN.md, just triggered by
+ *    rather than guessed at — same shape of trap as the Ironskin Monk case,
+ *    just triggered by
  *    partial-tier atomicity instead of an ambiguous multi-feature swap. Fixing
  *    this for real needs the base feature split into discrete per-tier/
  *    per-level grants (engine work, out of scope for a table entry).
@@ -2996,8 +2995,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * entry here. The honesty bar is identical to the hand-verified table's: a
  * bonus scoped to a specific maneuver, weapon, enemy state, or action (real
  * number, but the static sheet can't safely apply it everywhere) is
- * `situational`, not `numeric` — see the classification above and
- * IMPLEMENTATION_PLAN.md's dated pipeline section for the full rubric.
+ * `situational`, not `numeric` — see the classification above.
  *
  * Confidence rubric:
  *  - "high": a literal or near-literal reflavor of an already-modeled base

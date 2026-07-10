@@ -44,8 +44,8 @@ export const SYSTEM_VERSION = "11.11";
 export const SCHEMA_VERSION = 9;
 
 /**
- * Second pinned source: archetype data (Foundry's pf1 system ships none — see
- * IMPLEMENTATION_PLAN.md Stage 11). This is `bjschafer/pf1e-archetypes`, a fork
+ * Second pinned source: archetype data (Foundry's pf1 system ships none).
+ * This is `bjschafer/pf1e-archetypes`, a fork
  * of `baileymh/pf1e-archetypes` with the upstream merge-conflict corruption
  * (every CSV/XML file) resolved — both conflict halves were verified
  * byte-identical before stripping. Pin like FOUNDRY_SHA: exact commit, never a

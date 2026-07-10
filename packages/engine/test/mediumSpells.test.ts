@@ -132,8 +132,8 @@ describe("medium class vend (real vendored data slice)", () => {
     // power entries in `packs/class-abilities/`, but — exactly like the
     // per-mystery and per-discipline YAMLs before hand-authoring — they are
     // NOT linked from the medium class def and do not come through the
-    // pipeline into `RefData.classFeatures`. This pins the deferral posture
-    // (see IMPLEMENTATION_PLAN.md): a follow-up would hand-author them the
+    // pipeline into `RefData.classFeatures`. This pins the deferral posture:
+    // a follow-up would hand-author them the
     // way `psychic-disciplines.ts` did, with the choice stored in `live.*`.
     const names = new Set(Object.values(ref.classFeatures).map((f) => f.name));
     expect(names.has("Archmage Spirit")).toBe(false);

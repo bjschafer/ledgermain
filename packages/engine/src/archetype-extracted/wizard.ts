@@ -2,8 +2,8 @@
  * Wizard's slice of the issue #45 batch-extraction pipeline (prose→Change
  * extraction wave, 2026-07-06), mechanically repeating the Fighter pilot
  * (`fighter.ts`) for wizard's 31 vendored archetypes / 108 archetype
- * features. Per the per-class file convention (IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section), this file owns BOTH of
+ * features. Per the per-class file convention (documented in
+ * `index.ts`), this file owns BOTH of
  * wizard's pipeline artifacts — `WIZARD_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
  * `WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —

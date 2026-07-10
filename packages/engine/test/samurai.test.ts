@@ -37,7 +37,7 @@ import { compute, deriveResourcePools } from "../src/index.js";
  *
  * Mount (SAM) / Order (SAM) (companion + order-of-choice subsystems) are
  * deferred, mirroring cavalier's own Mount/Order (neither is modeled at all
- * for cavalier either — see IMPLEMENTATION_PLAN.md).
+ * for cavalier either).
  */
 const ref = loadRefData();
 

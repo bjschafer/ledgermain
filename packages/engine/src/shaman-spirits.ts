@@ -54,8 +54,8 @@
  *     shaman's Hex/Wandering Hex class features (see `model/shamanHexes.ts`
  *     for the pick-level budget). Verified against aonprd.com's per-spirit
  *     pages. Every entry is `displayOnly: true` (`changes: []`) — a numeric
- *     witch/shaman hex-effects table is out of scope here (see
- *     IMPLEMENTATION_PLAN.md; another agent may be building witch's hex
+ *     witch/shaman hex-effects table is out of scope here (another agent
+ *     may be building witch's hex
  *     table in parallel — this module intentionally does NOT share a hex
  *     table with witch, to avoid stepping on that work).
  *   - `spiritAnimalNote` is the spirit's "Spirit Animal" flavor bonus prose

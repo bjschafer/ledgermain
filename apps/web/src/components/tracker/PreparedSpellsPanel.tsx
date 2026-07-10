@@ -379,7 +379,7 @@ function DomainSlotsSection({
 /**
  * The bonus school-slot grid for a specialist wizard. PF1 grants ONE school
  * spell slot per accessible spell level 1–9 (never cantrips, never a
- * Universalist — see the RAW correction in IMPLEMENTATION_PLAN.md Stage 2);
+ * Universalist);
  * the picker is filtered to spells whose `Spell.school` matches the chosen
  * specialization. Each school-prepare instance stores `kind: "school"` on the
  * doc, keeping it out of the class-slot capacity check in {@link PreparedView}

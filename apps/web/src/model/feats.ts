@@ -373,8 +373,8 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
       if (!feature) continue;
       // Fixed feat grant, not a slot — handled by grantedFeats().
       if (byName.has(resolvedFeatureName(feature.name))) continue;
-      // Rogue (Unchained)'s "Rogue's Edge (UC)" — vendored-data bug (see
-      // IMPLEMENTATION_PLAN.md's Unchained-classes audit): its `changes[]`
+      // Rogue (Unchained)'s "Rogue's Edge (UC)" — vendored-data bug: its
+      // `changes[]`
       // carries a `bonusFeats` formula (`floor(@class.unlevel / 5)`), but the
       // published ability grants "skill unlock powers" for a chosen skill at
       // 5th/10th/15th/20th level — nothing about bonus feats. Skill unlocks

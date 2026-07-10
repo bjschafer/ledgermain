@@ -25,9 +25,8 @@ function groupLabel(slug: string): string {
 }
 
 /**
- * Fighter's Weapon Training group picks (issue #45 — previously deferred,
- * "Fighter weapon training group choices" in IMPLEMENTATION_PLAN.md; built
- * once the engine could express a semantic weapon-group target at all).
+ * Fighter's Weapon Training group picks (issue #45 — previously deferred;
+ * built once the engine could express a semantic weapon-group target at all).
  * PF1 RAW: at 5th level and every 4 levels thereafter (9th/13th/17th), a
  * fighter picks one more weapon group; each pick's own bonus grows every
  * time a later tier unlocks (`@pf1/engine` `weaponTrainingBonus`). Free-

@@ -6,9 +6,8 @@
  * reads it) already expect. This is the ONLY file a new wave agent's diff
  * should need to touch outside its own new per-class file.
  *
- * Per-class file convention (also documented in IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section — read that first if you're
- * adding a class): each class gets its own `./<class-tag>.ts` file exporting
+ * Per-class file convention (read this before adding a class): each class
+ * gets its own `./<class-tag>.ts` file exporting
  * two `Readonly<Record<string, ...>>` consts, both keyed by the archetype
  * feature's own `RefEntity.id` (`"<classTag>:<archetypeSlug>:<featureSlug>:<level>"`):
  *

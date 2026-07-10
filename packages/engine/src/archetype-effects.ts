@@ -337,7 +337,7 @@ export const ARCHETYPE_FEATURE_EFFECTS: Readonly<Record<string, ArchetypeFeature
   // else), so wiring one bespoke buff just for this archetype would be new
   // engine machinery, not a hand-authored effects-table entry. Notes only —
   // the scaling numbers are recorded here so a future generic
-  // performance-buff feature (see IMPLEMENTATION_PLAN.md) can pick them up.
+  // performance-buff feature can pick them up.
   "bard:archaeologist:archaeologist-s-luck:1": {
     changes: [],
     detail: (level) =>

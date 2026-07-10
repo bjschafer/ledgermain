@@ -18,7 +18,7 @@
  *
  * The Alertness-while-adjacent master benefit (familiar within arm's reach)
  * is situational table state and is deliberately NOT a Change; the UI notes it
- * on the familiar row (see IMPLEMENTATION_PLAN.md Stage 3 scope).
+ * on the familiar row.
  */
 
 import type { Change } from "@pf1/schema";

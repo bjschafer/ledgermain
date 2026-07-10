@@ -1,7 +1,7 @@
 /**
  * Monk's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (IMPLEMENTATION_PLAN.md's
- * dated #45 "Batch-extraction wave prep" section), this file owns BOTH of
+ * 2026-07-06). Per the per-class file convention (documented in
+ * `index.ts`), this file owns BOTH of
  * monk's pipeline artifacts — `MONK_ARCHETYPE_FEATURE_CLASSIFICATION` (the
  * full per-feature audit) and `MONK_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table, empty this wave — see
@@ -15,8 +15,7 @@
  * archetypes, 60 features), individually hand-read and bucketed as
  * `numeric` / `situational` / `subsystem` / `blocked` (no heuristic-assisted
  * bulk pass was needed at this class size — see the fighter pilot's rubric
- * in IMPLEMENTATION_PLAN.md's dated pipeline section for the full bucket
- * definitions).
+ * for the full bucket definitions).
  *
  * **Result: zero NEW numeric extractions.** The only `numeric` entry is
  * Nornkith's pre-existing hand-verified `nimble-reflexes:3` (issue #7). This
@@ -56,8 +55,7 @@
  *    character keeps Wis-to-AC AND gains natural armor); there is also no
  *    generic mechanism to suppress AC Bonus (MNK) only for THIS Ironskin
  *    Monk feature without also nuking it for any other monk feature that
- *    doesn't touch it. Recorded, not guessed at — exactly the case
- *    IMPLEMENTATION_PLAN.md's dated #45 sections call out by name.
+ *    doesn't touch it. Recorded, not guessed at.
  *  - `tough-as-nails:6` — "This ability replaces fast movement and slow
  *    fall." Fast Movement carries a REAL vendored `landSpeed` Change. Same
  *    shape of trap as `iron-skin-1` above: an unpaired swap of a real

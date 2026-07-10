@@ -24,7 +24,7 @@ interface DisciplinePickerProps {
  * Self-Perfection, Tranquility) — see `@pf1/engine`
  * `psychic-disciplines.ts`'s doc comment. Discipline powers (each
  * discipline's 1st/5th/13th-level abilities) and phrenic amplifications are
- * NOT modeled — see IMPLEMENTATION_PLAN.md.
+ * NOT modeled.
  *
  * The chosen discipline grants one bonus spell known at psychic level 1, 4th
  * level, and every 2 levels thereafter (see
