@@ -4,7 +4,7 @@
 
 Live at **[ledgermain.whizkid.dev](https://ledgermain.whizkid.dev)**
 
-Ledgermain's focuses on **play**. It's a tracker that knows the rules well enough to recompute the correct numbers as your session state changes: take damage, fail a save, toggle a buff, spend a resource, gain a condition: every derived value (AC, attack lines, saves, skills, CMB/CMD, DCs) updates instantly and correctly. See [Comparison to other tools](#comparison-to-other-tools) for how it stacks up against PCGen, HeroLab, Pathbuilder, and Foundry.
+Ledgermain focuses on **play**. It's a tracker that knows the rules well enough to recompute the correct numbers as your session state changes: take damage, fail a save, toggle a buff, spend a resource, gain a condition: every derived value (AC, attack lines, saves, skills, CMB/CMD, DCs) updates instantly and correctly. See [Comparison to other tools](#comparison-to-other-tools) for how it stacks up against PCGen, HeroLab, Pathbuilder, and Foundry.
 
 ![The live tracker: hit points, the full conditions grid, and typed buffs counting down by the round — every toggle recomputes the gilded sheet on the right.](docs/images/tracker.png)
 
@@ -24,7 +24,7 @@ _The builder — every choice updates the same sheet the same engine drives at t
 ## Comparison to other tools
 
 - **PCGen** — a desktop character builder in Java. It's a build-then-print tool: once you've generated the sheet, nothing recomputes as session state changes, because it isn't tracking session state at all.
-- **HeroLab** — the closest thing to a real competitor in intent: it does try to track live session state (conditions, buffs, HP) rather than just building and printing a sheet. But it's expensive, clunky, and has weird edge cases for simple things. 
+- **HeroLab** — the closest thing to a real competitor in intent: it does try to track live session state (conditions, buffs, HP) rather than just building and printing a sheet. But it's expensive, clunky, and has weird edge cases for simple things.
 - **Pathbuilder** — a fast, mobile-friendly builder popular for quick character creation and export. It doesn't track live session state: no condition toggles, no buff durations, no recompute once you leave the builder. And it's Android-exclusive.
 - **Foundry VTT (PF1 system)** — arguably the most capable in-play PF1e sheet that exists, and the source Ledgermain's reference data is mined from. But it requires running the entire Foundry VTT — a license, a hosted or self-hosted server, typically a full virtual-tabletop session — even if all you want is a sheet for a physical table. Plus, it doesn't wire up a lot of things and leaves them just as plain text.
 
@@ -79,6 +79,9 @@ apps/api                Cloudflare Worker: opaque CharacterDoc persistence + cro
 > **The client is authoritative for all game logic. The server is dumb persistence.**
 
 Two objects drive everything: a serializable `CharacterDoc` (build choices + live session state, but _never_ derived values), and a pure `compute(doc, refData) → DerivedSheet` that returns every displayed number. Toggle anything in the doc → recompute. That single rule is why the builder and tracker share one brain, and why sync/offline are cheap.
+
+Yes, this is built with heavy AI assistance. There's just too much data to munge otherwise. I've wanted to build
+something like this for a long time, but it's only with AI assistance that it's become possible.
 
 ## Project status & scope
 
