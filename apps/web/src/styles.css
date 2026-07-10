@@ -2603,6 +2603,20 @@ button:focus-visible,
   gap: 4px;
 }
 
+/* The duration NumberField is stepper-less, so its input isn't inside a
+   `.stepper` and misses that wrapper's content-box treatment — under the
+   global border-box + 8px/10px input padding, its inline `width: 3ch`
+   (~25px) leaves ~3px of visible content: an unreadable sliver. Inline
+   styles outrank any CSS `width`, but a definite flex-basis takes precedence
+   over `width` for a flex item's main size, so this reclaims a usable width
+   without fighting the inline style: three digits at rest, growing when the
+   grid cell has room to spare. */
+.dur-field input[type="number"] {
+  flex: 1 1 3rem;
+  min-width: 3rem;
+  text-align: center;
+}
+
 .scroll.short {
   max-height: 200px;
 }
