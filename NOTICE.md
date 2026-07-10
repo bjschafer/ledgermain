@@ -3,11 +3,13 @@
 This repository ships under a **mixed license**. The thing distributed decides
 which license applies, not the file location.
 
-## 1. Source code -- MIT
+## 1. Source code -- GNU AGPL v3.0-or-later
 
 All `*.ts`, `*.tsx`, `*.js`, `*.mjs`, `*.json` configuration files, build
-scripts, and the React application source are licensed under the **MIT
-License** -- see [`LICENSE`](./LICENSE). Copyright (c) 2026 Braxton Schafer.
+scripts, and the React application source are licensed under the **GNU Affero
+General Public License, version 3 or (at your option) any later version**
+(`AGPL-3.0-or-later`) -- see [`LICENSE`](./LICENSE). Copyright (c) 2026 Braxton
+Schafer.
 
 This covers, in particular:
 
@@ -22,8 +24,8 @@ This covers, in particular:
 ### Clean-room discipline
 
 The Pathfinder 1e rules engine (`packages/engine`) is a **clean-room
-reimplementation** written from the published Pathfinder 1e rules text. It is
-not derived from, transcribed, or ported from any third-party GPL source.
+reimplementation** written from the published Pathfinder 1e rules text, rather
+than by transcribing or porting any third-party GPL source.
 
 The Foundry VTT Pathfinder 1e system
 (`https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1`) ships
@@ -37,16 +39,31 @@ into `packages/data-pipeline/.cache/` -- that directory is `.gitignore`d and is
 2. a _behavioral correctness oracle_ for the engine unit tests (we compare
    _outputs_ -- given input X, both produce Y -- never code structure).
 
-Because no GPL-3.0 code is incorporated into this repository, the GPL's
-copyleft obligations do not attach. Algorithms and rules themselves are not
-copyrightable; only their specific expression is.
+We do not knowingly incorporate any GPL-3.0 code. Even so, this project is
+deliberately licensed under the **AGPL-3.0-or-later** (Sec.1) rather than a
+permissive license. Two reasons:
+
+1. **Conservative compatibility with the upstream we validate against.** The
+   AGPL-3.0 is fully compatible with Foundry's GPL-3.0 -- GPL-3.0 Sec.13
+   expressly permits combining GPL-3.0 code with AGPL-3.0 code. Copyleft
+   copies through to us either way, so our licensing is correct whether or not
+   any protected expression is ever found to have carried over. We chose the
+   license that is valid in both cases instead of the one that is valid only
+   if the clean-room held perfectly.
+2. **Network copyleft is the version that has teeth for a hosted web app.**
+   Plain GPL's copyleft triggers on distribution, which a SaaS deployment
+   never does; the AGPL's Sec.13 ensures that anyone who hosts a modified fork
+   of this app must offer their users the modified source in turn.
+
+Algorithms and rules themselves are not copyrightable; only their specific
+expression is.
 
 ## 2. Vendored reference data -- Open Game License v1.0a
 
 The normalized JSON under `packages/data-pipeline/data/*.json` (and the copies
 mirrored into `apps/web/public/data/` and the production `dist/` bundle) is
 **Open Game Content** licensed under the **Open Game License v1.0a** -- see
-[`OGL.txt`](./OGL.txt). That license, not MIT, governs those files.
+[`OGL.txt`](./OGL.txt). That license, not the AGPL, governs those files.
 
 This is derivative Open Game Content drawn from two pinned, upstream sources:
 
@@ -83,7 +100,7 @@ project is **all game-mechanical data** in the vendored JSON: feat names,
 spell names, item names, class abilities, descriptions, prerequisites (as
 prose), numeric statistics, and any other content that is Open Game Content
 under the upstream licenses. Field names, JSON shape, and code that processes
-the data are **not** Open Game Content and remain under MIT (Sec.1).
+the data are **not** Open Game Content and remain under the AGPL (Sec.1).
 
 ## 3. Product Identity & Paizo Community Use
 

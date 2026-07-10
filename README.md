@@ -41,11 +41,13 @@ Game content is OGL/Paizo Community Use; the engine is **clean-room** (not deriv
 Mixed license -- the thing distributed decides which terms apply, not the
 file location:
 
-- **MIT** -- all source code (engine, schema, data-pipeline scripts, web
-  app, build/config). The engine is a clean-room reimplementation of the
-  PF1 rules; the Foundry PF1 system's GPL-3.0 _code_ is never copied into
-  this repo (its `.cache/` clone is gitignored and used only as a
-  behavioral test oracle). See [`LICENSE`](./LICENSE).
+- **GNU AGPL v3.0-or-later** -- all source code (engine, schema, data-pipeline
+  scripts, web app, build/config). The engine is a clean-room reimplementation
+  of the PF1 rules; the Foundry PF1 system's GPL-3.0 _code_ is never copied
+  into this repo (its `.cache/` clone is gitignored and used only as a
+  behavioral test oracle). We license under the AGPL -- compatible with
+  Foundry's GPL-3.0, and network-copyleft so hosted forks share their source.
+  See [`LICENSE`](./LICENSE) and [`NOTICE.md`](./NOTICE.md).
 - **Open Game License v1.0a** -- the vendored compendium JSON under
   `packages/data-pipeline/data/` (Open Game Content mined from the pinned
   Foundry PF1 system and the `bjschafer/pf1e-archetypes` dataset). See

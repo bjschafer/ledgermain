@@ -653,10 +653,10 @@ function AboutAndLegalPanel({ dataVersion }: { dataVersion: string }) {
   return (
     <Panel title="About & Legal" step="ℹ">
       <p className="hint" style={{ marginBottom: 10 }}>
-        Ledgermain is a Pathfinder 1e character builder & tracker. Code is MIT; compendium data is
-        Open Game Content under the OGL v1.0a; Paizo Product Identity references are used under
-        Paizo's Community Use Policy. Not affiliated with Paizo Inc., Foundry Gaming LLC, or Wizards
-        of the Coast.
+        Ledgermain is a Pathfinder 1e character builder & tracker. Code is AGPL-3.0-or-later;
+        compendium data is Open Game Content under the OGL v1.0a; Paizo Product Identity references
+        are used under Paizo's Community Use Policy. Not affiliated with Paizo Inc., Foundry Gaming
+        LLC, or Wizards of the Coast.
       </p>
       <p className="hint" style={{ fontFamily: "var(--mono)", fontSize: 11, marginBottom: 10 }}>
         Compendium data {dataVersion.slice(0, 10)}
@@ -666,7 +666,7 @@ function AboutAndLegalPanel({ dataVersion }: { dataVersion: string }) {
         {" · "}
         <a href="/NOTICE.md">Full notice &amp; attribution</a>
         {" · "}
-        <a href="/LICENSE">MIT (code)</a>
+        <a href="/LICENSE">AGPL-3.0 (code)</a>
         {" · "}
         <a href="https://github.com/bjschafer/ledgermain">Source on GitHub</a>
       </p>

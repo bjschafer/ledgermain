@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5 cross-device sync, DESIGN.md §2.1). Never computes or interprets game data.",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",

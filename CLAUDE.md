@@ -83,7 +83,7 @@ All builder/tracker **logic is pure and in `apps/web/src/model/`** (`doc.ts` doc
 
 ## Licensing — clean-room discipline (important)
 
-The engine is a **clean-room reimplementation** from the published PF1 rules, kept license-free. Foundry's GPL-3.0 system code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied, transcribed, or ported**. When validating engine behavior, compare _outputs_ (given input X, both produce Y), not code structure. Compendium _data_ is used under OGL / Paizo Community Use with attribution intact. Do not paste upstream source into this repo. See `DESIGN.md` §6.
+The engine is a **clean-room reimplementation** from the published PF1 rules. The codebase is licensed **`AGPL-3.0-or-later`** (see `NOTICE.md` §1 / `DESIGN.md` §6 for why AGPL over a permissive license: provenance honesty + network-copyleft; it's compatible with Foundry's GPL-3.0). Foundry's GPL-3.0 system code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied, transcribed, or ported**. When validating engine behavior, compare _outputs_ (given input X, both produce Y), not code structure. Compendium _data_ is used under OGL / Paizo Community Use with attribution intact. Do not paste upstream source into this repo.
 
 ## Conventions
 

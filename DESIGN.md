@@ -168,9 +168,11 @@ There is no structured prereq field. Feat→feat dependencies are extractable fr
 
 Everything else (sheets, search, CRUD, level-up wizard UI) is conventional app work.
 
-## 6. Licensing — DECIDED: clean-room, license-free (Option B/C)
+## 6. Licensing — DECIDED: AGPL-3.0-or-later (clean-room engine, Option B → AGPL)
 
-> **Decision:** We reimplement the stacking + formula engine ourselves from the published PF1 rules. Their GPL-3.0 code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied or pasted**. This keeps our codebase free of GPL-3.0 obligations (license TBD by owner). Compendium _data_ remains usable under OGL/Paizo Community Use with attribution intact.
+> **Decision (2026-07-10):** Source code is licensed **`AGPL-3.0-or-later`**. We reimplement the stacking + formula engine ourselves from the published PF1 rules; their GPL-3.0 code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied or pasted**. Compendium _data_ remains usable under OGL/Paizo Community Use with attribution intact.
+>
+> **Why AGPL rather than the "license-free" outcome Option B nominally allows:** two reasons converged. (1) _Provenance honesty._ The engine was authored clean-room, but a chunk of it was written with an LLM assistant whose training corpus plausibly includes Foundry's public GPL-3.0 source, and the owner cannot personally certify line-by-line that no protected _expression_ carried over. A permissive license (MIT) is only correct in the world where the clean-room held perfectly; AGPL-3.0 is correct in _both_ worlds, because GPL-3.0 §13 expressly permits combining GPL-3.0 with AGPL-3.0 code — copyleft copies through either way. Under genuine uncertainty you pick the license valid regardless of which world is true. (2) _Network copyleft has teeth for a hosted app._ Plain GPL's copyleft triggers on distribution, which a SaaS deployment never does; AGPL §13 ensures a hosted fork of this web app must share its modified source. This also matches the spirit of building on shared OGL content. See `NOTICE.md` §1.
 >
 > **Clean-room discipline:** implement from the rules text and observed behavior; do not transcribe their source. When validating, compare _outputs_ (given input X, both produce Y), not code structure.
 
@@ -187,7 +189,7 @@ Three options:
 | **B. Clean-room reimplement** the engine from the published PF1 rules; use their code only as a _correctness oracle_ in tests, not copied | License-free (algorithms/rules aren't copyrightable; only their specific expression is) | Medium |
 | **C. Reimplement + only use OGL data**                                                                                                    | License-free                                                                            | Medium |
 
-**Recommendation: B/C.** The stacking and formula _algorithms_ are simple and rules-derived; reimplementing them keeps licensing freedom while still letting us validate against their behavior. **Open question for the owner: are you fine releasing under GPL-3.0 (then A is fastest), or do you want license freedom (then B/C)?**
+**Chosen: B (clean-room engine), released under AGPL-3.0-or-later.** The stacking and formula _algorithms_ are simple and rules-derived, so reimplementing them is cheap and lets us validate against Foundry's behavior. Option B nominally permits a "license-free"/permissive outcome, but we deliberately adopt AGPL-3.0 instead — see the Decision note above for the provenance-honesty and network-copyleft reasons. (Option A — porting their code — was never on the table; it would force GPL-3.0 anyway and violate clean-room discipline.)
 
 ## 7. Stack (decided)
 
