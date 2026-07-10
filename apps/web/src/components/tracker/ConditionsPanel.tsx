@@ -49,7 +49,7 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
                   </span>
                 ) : cond.displayOnly ? (
                   <span className="dot" aria-hidden="true">
-                    ·
+                    °
                   </span>
                 ) : null}
               </button>
@@ -62,9 +62,9 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
       </div>
       <Explainer title="What the chip markers mean">
         <p className="hint">
-          Dashed = reference only (doesn't change numbers yet). ▲ = implied by a stricter condition
-          on the same ladder (e.g. frightened implies shaken); turn the stricter one off to toggle
-          this directly.
+          Dashed + ° = reference only (doesn't change numbers yet). ▲ = implied by a stricter
+          condition on the same ladder (e.g. frightened implies shaken); turn the stricter one off
+          to toggle this directly.
         </p>
       </Explainer>
       {active.size > 0 ? (

@@ -1141,8 +1141,12 @@ button:focus-visible,
 }
 
 /* bloodline-spell badge — marks auto-granted sorcerer bloodline spells (not
-   part of the chosen known list, exempt from the known-spell cap). */
+   part of the chosen known list, exempt from the known-spell cap).
+   `inline-block` makes the pill wrap as a single unit (the title text before
+   it can still wrap normally) — as a plain `inline` element its rounded
+   border/background could split mid-badge across a line break. */
 .tag-bloodline {
+  display: inline-block;
   font-family: var(--mono);
   font-size: 10px;
   color: var(--gold-2);
@@ -1155,8 +1159,10 @@ button:focus-visible,
 }
 
 /* mystery/curse-spell badge — marks auto-granted oracle mystery/curse bonus
-   spells (not part of the chosen known list, exempt from the known-spell cap). */
+   spells (not part of the chosen known list, exempt from the known-spell cap).
+   See `.tag-bloodline` above re: `inline-block`. */
 .tag-mystery {
+  display: inline-block;
   font-family: var(--mono);
   font-size: 10px;
   color: var(--gold-2);
@@ -2447,9 +2453,15 @@ button:focus-visible,
   opacity: 0.55;
 }
 
+/* Superscript "°" marks a display-only chip (no numeric modifier applied) —
+   a plain "·" here read as a stray typo (issue: "Staggered ·"); the raised,
+   dimmer glyph reads as an intentional footnote mark instead. Kept small and
+   quiet since the dashed border already carries the same signal. */
 .chip.cond .dot {
-  color: var(--gold-dim);
-  margin-left: 3px;
+  color: var(--faint);
+  margin-left: 1px;
+  font-size: 0.7em;
+  vertical-align: super;
 }
 
 .cond-legend {
@@ -3723,7 +3735,7 @@ input[type="text"].saved-roll-name:focus {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 3px 0;
+  padding: 2px 0;
 }
 
 .cf-level {
@@ -3731,6 +3743,7 @@ input[type="text"].saved-roll-name:focus {
   font-size: 11px;
   color: var(--muted);
   min-width: 42px;
+  flex-shrink: 0;
   padding-top: 1px;
 }
 
@@ -3799,13 +3812,85 @@ input[type="text"].saved-roll-name:focus {
 .cf-archetype-features {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   margin-top: 4px;
 }
 
+/* Each feature is a row: name on the left, description toggle pinned to the
+   end — at 5+ features per level a separate "· DESCRIPTION" line under every
+   name read as noise. `flex-wrap` lets the (rare) very long name wrap on its
+   own without dragging the toggle down with it. */
+.cf-archetype-feature {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 8px;
+  padding: 1px 0;
+}
+
+.cf-archetype-feature .cf-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* FeatureDescription's markup/behavior is untouched (see its docstring) —
+   this only repositions the `<details>` as a flex item: collapsed, it's a
+   small trailing item next to the name; open, `flex-basis: 100%` drops the
+   whole toggle+prose onto its own full-width line rather than squeezing the
+   prose into a narrow column. */
 .cf-archetype-feature .spell-detail {
-  margin-top: 2px;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.cf-archetype-feature .spell-detail[open] {
+  flex-basis: 100%;
+  margin-top: 4px;
   margin-left: 12px;
+}
+
+/* Swap the "description" text label for a bare chevron here, matching the
+   subsection-caret idiom (`.panel-caret`) — the repeated label text was most
+   of the per-row noise. The text stays in the DOM (still in the accessible
+   name assistive tech announces for the toggle); this only hides it
+   visually. `.spell-detail-summary::before` (the ▸/▾ glyph) sets its own
+   font-size, so it's unaffected by the parent going to 0. */
+.cf-archetype-feature .spell-detail-summary {
+  font-size: 0;
+}
+
+/* Base rule sets this to 9px, sized to sit next to the "description" text it
+   accompanies elsewhere — legible on its own there, but reduced to near-
+   invisible specks at that size once it's the row's only visible marker
+   here. Bumped up (and to the caret's own gold-dim, matching `.panel-caret`)
+   so it actually reads as a chevron. */
+.cf-archetype-feature .spell-detail-summary::before {
+  font-size: 13px;
+  color: var(--gold-dim);
+}
+
+/* --------------------------------------------------- Arcane Bond picker -- */
+/* Vertical rhythm between the hint paragraph, the Familiar/Bonded-object
+   chip row, the bonded-object name input, and its description toggle —
+   previously all sat flush against each other since `.chips` and
+   `input[type=text]` carry no margin of their own (user-reported). Spacing
+   values match the ~12px rhythm used by adjacent subsections (e.g. the FCB
+   list below). */
+.arcane-bond-hint {
+  margin: 12px 0;
+}
+
+.arcane-bond-picker .chips.arcane-bond-type {
+  margin-bottom: 12px;
+}
+
+.arcane-bond-effect {
+  margin: 12px 0 0;
+}
+
+.arcane-bond-picker .spell-detail {
+  margin-top: 12px;
 }
 
 /* ------------------------------------------------------- FCB picker -- */
@@ -3819,7 +3904,10 @@ input[type="text"].saved-roll-name:focus {
 
 .fcb-row {
   display: grid;
-  grid-template-columns: 36px 1fr;
+  /* Wide enough for the italic "All levels" label (the widest value in this
+     column) to stay on one line, not just "Lv N" — it was wrapping into two
+     cramped lines against its chips. */
+  grid-template-columns: 78px 1fr;
   align-items: center;
   gap: 8px;
 }
@@ -3829,6 +3917,7 @@ input[type="text"].saved-roll-name:focus {
   font-size: 11px;
   color: var(--faint);
   text-align: right;
+  white-space: nowrap;
 }
 
 .fcb-chips {
@@ -4929,27 +5018,37 @@ input[type="text"].saved-roll-name:focus {
 
 /* Chip + trailing info-tip icon, e.g. ConditionsPanel — the chip stays the
    toggle; the icon is the tap target for the explanation, since a chip that's
-   itself a toggle button can't also host a nested tooltip trigger. */
+   itself a toggle button can't also host a nested tooltip trigger. Tight gap
+   so each chip+icon pair reads as one unit rather than two. */
 .chip-wrap {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 1px;
 }
 
+/* Dim at rest — a grid of ~24 of these (ConditionsPanel) read as visual
+   clutter at full opacity — and bring it to full strength on hover/focus so
+   the explanation (issue #60 accessibility) stays just as reachable, just
+   quieter until it's wanted. Slightly smaller than the old 18px/11px too. */
 .chip-info {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--faint);
+  opacity: 0.55;
+  transition:
+    opacity 0.12s,
+    color 0.12s;
 }
 
 .chip-info:hover,
 .chip-info:focus-visible {
   color: var(--gold-2);
+  opacity: 1;
 }
 
 .info-tip-bubble {
