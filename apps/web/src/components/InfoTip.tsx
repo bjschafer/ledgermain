@@ -6,6 +6,7 @@ import type {
   RefObject,
 } from "react";
 import { useEffect, useId, useLayoutEffect, useReducer, useRef } from "react";
+import { createPortal } from "react-dom";
 
 /**
  * Visibility is the OR of three independent sources, not one shared boolean —
@@ -49,13 +50,20 @@ function useTipState() {
   const [state, dispatch] = useReducer(tipReducer, { hover: false, click: false, focus: false });
   const open = state.hover || state.click || state.focus;
   const rootRef = useRef<HTMLElement>(null);
+  // Owned here (not by the component) because the outside-tap check below
+  // must consult it: the bubble is portaled to document.body (see TipBubble),
+  // so it is *not* a DOM descendant of rootRef — without the second contains()
+  // a tap inside the bubble (e.g. selecting its text) would read as "outside"
+  // and dismiss it.
+  const bubbleRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (!open) return;
     const onPointerDown = (e: globalThis.PointerEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
-        dispatch({ type: "closeAll" });
-      }
+      const target = e.target as Node;
+      const inTrigger = rootRef.current?.contains(target) ?? false;
+      const inBubble = bubbleRef.current?.contains(target) ?? false;
+      if (!inTrigger && !inBubble) dispatch({ type: "closeAll" });
     };
     const onKeyDown = (e: globalThis.KeyboardEvent) => {
       if (e.key === "Escape") dispatch({ type: "closeAll" });
@@ -99,23 +107,26 @@ function useTipState() {
     },
   };
 
-  return { open, rootRef, triggerProps };
+  return { open, rootRef, bubbleRef, triggerProps };
 }
 
 /**
  * Positions an open bubble in the viewport, clamped so it's never clipped.
  *
- * The bubble is `position: fixed` (not `absolute` inside the `position:
- * relative` trigger) specifically so ancestor `overflow: hidden` containers
- * — e.g. `.prestige-class-list`, `.granted-feats` (rounded-corner clipping) —
- * can't truncate it. `fixed` escapes every ancestor's clipping/scrolling
- * box, at the cost of needing to compute coordinates from the trigger's
- * `getBoundingClientRect()` in viewport space instead of relying on CSS
- * `top: 100%` percentages against the trigger. Measures after layout (so the
- * bubble's real rendered size is known) and nudges it horizontally off its
- * default trigger-centered position, or flips it above the trigger, rather
- * than letting it overflow the viewport edge. (See useTipState's `onScroll`
- * for why a fixed bubble is safe to leave un-tracked while open.)
+ * The bubble is `position: fixed` *and* portaled to `document.body` (see
+ * {@link TipBubble}) — both halves are needed to fully escape ancestors.
+ * `fixed` alone defeats ancestor `overflow: hidden` clipping (e.g.
+ * `.prestige-class-list`, `.granted-feats`, which clip for border-radius),
+ * but an ancestor with `opacity < 1` (e.g. `.pick-row.is-blocked`) still
+ * creates a stacking context that would trap the bubble under later sibling
+ * rows and tint it translucent; the portal moves the bubble's paint layer
+ * out of that subtree entirely. The cost is computing coordinates from the
+ * trigger's `getBoundingClientRect()` in viewport space instead of relying
+ * on CSS `top: 100%` percentages against the trigger. Measures after layout
+ * (so the bubble's real rendered size is known) and nudges it horizontally
+ * off its default trigger-centered position, or flips it above the trigger,
+ * rather than letting it overflow the viewport edge. (See useTipState's
+ * `onScroll` for why a fixed bubble is safe to leave un-tracked while open.)
  */
 function useClampedPosition(
   open: boolean,
@@ -149,6 +160,14 @@ function useClampedPosition(
   }, [open, bubbleRef, triggerRef]);
 }
 
+/**
+ * Portaled to `document.body` so no ancestor stacking context (opacity,
+ * transform, …) or overflow clip can affect how the bubble paints — see
+ * {@link useClampedPosition} for the positioning half of that escape.
+ * `aria-describedby` still resolves (it's an ID lookup, not a tree walk),
+ * and useTipState's outside-tap dismissal checks bubbleRef explicitly since
+ * the bubble is no longer inside rootRef's DOM subtree.
+ */
 function TipBubble({
   id,
   content,
@@ -158,10 +177,11 @@ function TipBubble({
   content: ReactNode;
   bubbleRef: RefObject<HTMLSpanElement>;
 }) {
-  return (
+  return createPortal(
     <span role="tooltip" id={id} ref={bubbleRef} className="info-tip-bubble">
       {content}
-    </span>
+    </span>,
+    document.body,
   );
 }
 
@@ -187,8 +207,7 @@ export function InfoTip({
   children: ReactNode;
   className?: string;
 }) {
-  const { open, rootRef, triggerProps } = useTipState();
-  const bubbleRef = useRef<HTMLSpanElement>(null);
+  const { open, rootRef, bubbleRef, triggerProps } = useTipState();
   useClampedPosition(open, bubbleRef, rootRef);
   const id = useId();
 
@@ -239,8 +258,7 @@ export function TipButton({
   ButtonHTMLAttributes<HTMLButtonElement>,
   "disabled" | "title" | "className" | "onClick" | "children" | "type"
 >) {
-  const { open, rootRef, triggerProps } = useTipState();
-  const bubbleRef = useRef<HTMLSpanElement>(null);
+  const { open, rootRef, bubbleRef, triggerProps } = useTipState();
   useClampedPosition(open, bubbleRef, rootRef);
   const id = useId();
 

@@ -2564,8 +2564,13 @@ button:focus-visible,
   color: var(--muted);
 }
 
+/* Same trick as `.dur-field input` below: the stepper-less NumberField
+   carries an inline `width: 3ch` that border-box padding eats down to a
+   ~15px sliver, and inline styles outrank any CSS `width` (a plain
+   `width: 48px` here was dead) — but a definite flex-basis beats `width`
+   for a flex item's main size, and `.buff-rounds` is already flex. */
 .buff-rounds input {
-  width: 48px;
+  flex: 0 0 48px;
   text-align: center;
   padding: 4px;
 }
@@ -5005,9 +5010,11 @@ input[type="text"].saved-roll-name:focus {
    positioned by the component (`position: fixed`, coordinates computed from
    the trigger's rect and clamped to the viewport in JS — see
    `useClampedPosition` in InfoTip.tsx — so ancestor `overflow: hidden`
-   containers like `.prestige-class-list`/`.granted-feats` can't clip it) —
-   the CSS here only sets the resting look and a sane default before that
-   runs. */
+   containers like `.prestige-class-list`/`.granted-feats` can't clip it)
+   and portaled to <body> (so an ancestor stacking context, e.g.
+   `.pick-row.is-blocked`'s opacity, can't paint later siblings over it or
+   tint it translucent) — the CSS here only sets the resting look and a sane
+   default before that runs. */
 
 /* Deliberately doesn't set `display` here: `.info-tip` is combined with
    classes that define their own layout (e.g. `.ability-pip`'s stacked rows,
