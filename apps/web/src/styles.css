@@ -1089,12 +1089,26 @@ button:focus-visible,
 /* "add a Craft/Profession/Perform instance" row, below the skill list */
 .skill-add-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-top: 8px;
 }
 
+/* The global `select { width: 100% }` (see ~line 395) makes the <select>'s
+   flex-basis resolve to 100% of the row instead of its content — without
+   this override it claims nearly the whole row (its flex-shrink competes
+   against the input's `flex: 1`, which starts from a 0% basis and only gets
+   whatever's left), squeezing the text input down to a few px. Same fix as
+   `.dur-unit` elsewhere: shrink the select back to its content width so the
+   input actually gets the room `flex: 1` promises it. */
+.skill-add-row select {
+  width: auto;
+  flex: 0 0 auto;
+}
+
 .skill-add-row input {
-  flex: 1;
+  flex: 1 1 160px;
+  min-width: 0;
 }
 
 /* bloodline-spell badge — marks auto-granted sorcerer bloodline spells (not
@@ -1287,6 +1301,17 @@ button:focus-visible,
 .slot-chip-warn {
   border-color: var(--danger, #d9534f);
   color: var(--danger, #d9534f);
+}
+
+/* The warn variant's text ("⚠ Wizard bonus feat (metamagic / item creation /
+   Spell Mastery)") can run longer than a narrow panel is wide — `nowrap`
+   keeps the pill look everywhere it fits, but on narrow viewports let it
+   wrap onto multiple lines rather than clip at the panel edge. */
+@media (max-width: 480px) {
+  .slot-chip {
+    white-space: normal;
+    max-width: 100%;
+  }
 }
 
 .pick-row.is-selected {
@@ -2925,12 +2950,28 @@ input[type="text"].saved-roll-name:focus {
   padding: 4px 0;
 }
 
+/* On narrow viewports the `1fr` text input used to lose the sizing fight to
+   the two `auto` columns (the `.stepper` max/min pill and the Add button,
+   both content-sized) — a grid's `1fr` track still respects the fixed-width
+   siblings first, so once they claimed their content width there wasn't
+   enough left for the placeholder to be legible. Flex + wrap instead: give
+   the input a real minimum width and let the row wrap the stepper/button
+   onto their own line when the container's too tight to fit everyone. */
 .res-add {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   margin-top: 8px;
   align-items: center;
+}
+
+.res-add input[type="text"] {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.res-add > button {
+  flex: 0 0 auto;
 }
 
 /* prepared spells */
@@ -4817,8 +4858,12 @@ input[type="text"].saved-roll-name:focus {
    wraps a passive badge/label as its own trigger; `.info-tip-wrap` wraps a
    `TipButton` that stays disabled in effect (aria-disabled) but tappable so
    the reason is reachable. Both open the same `.info-tip-bubble` popover,
-   positioned by the component (clamped to the viewport in JS) — the CSS here
-   only sets the resting look and a sane default before that runs. */
+   positioned by the component (`position: fixed`, coordinates computed from
+   the trigger's rect and clamped to the viewport in JS — see
+   `useClampedPosition` in InfoTip.tsx — so ancestor `overflow: hidden`
+   containers like `.prestige-class-list`/`.granted-feats` can't clip it) —
+   the CSS here only sets the resting look and a sane default before that
+   runs. */
 
 /* Deliberately doesn't set `display` here: `.info-tip` is combined with
    classes that define their own layout (e.g. `.ability-pip`'s stacked rows,
@@ -4867,7 +4912,10 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .info-tip-bubble {
-  position: absolute;
+  /* Overridden inline by useClampedPosition (fixed, positioned from the
+     trigger's getBoundingClientRect) once it measures after layout — this is
+     just the pre-layout-effect default so nothing flashes unpositioned. */
+  position: fixed;
   z-index: 60;
   top: 100%;
   left: 50%;

@@ -60,11 +60,21 @@ function useTipState() {
     const onKeyDown = (e: globalThis.KeyboardEvent) => {
       if (e.key === "Escape") dispatch({ type: "closeAll" });
     };
+    // The bubble is `position: fixed`, positioned once (on open) from the
+    // trigger's rect — see useClampedPosition. It doesn't track the trigger
+    // as the page scrolls, so leaving it open through a scroll would let it
+    // drift away from the thing it's annotating. Closing on scroll (capture:
+    // true so this also catches scroll on a nested scrollable container, not
+    // just the window) is simpler than re-measuring on every scroll tick and
+    // matches how transient tooltips normally behave.
+    const onScroll = () => dispatch({ type: "closeAll" });
     document.addEventListener("pointerdown", onPointerDown, true);
     document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("scroll", onScroll, true);
     return () => {
       document.removeEventListener("pointerdown", onPointerDown, true);
       document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("scroll", onScroll, true);
     };
   }, [open]);
 
@@ -93,30 +103,50 @@ function useTipState() {
 }
 
 /**
- * Keeps an open bubble inside the viewport on small screens: measures after
- * layout and nudges it horizontally off its default centered position, or
- * flips it above the trigger, rather than letting it overflow the edge.
+ * Positions an open bubble in the viewport, clamped so it's never clipped.
+ *
+ * The bubble is `position: fixed` (not `absolute` inside the `position:
+ * relative` trigger) specifically so ancestor `overflow: hidden` containers
+ * — e.g. `.prestige-class-list`, `.granted-feats` (rounded-corner clipping) —
+ * can't truncate it. `fixed` escapes every ancestor's clipping/scrolling
+ * box, at the cost of needing to compute coordinates from the trigger's
+ * `getBoundingClientRect()` in viewport space instead of relying on CSS
+ * `top: 100%` percentages against the trigger. Measures after layout (so the
+ * bubble's real rendered size is known) and nudges it horizontally off its
+ * default trigger-centered position, or flips it above the trigger, rather
+ * than letting it overflow the viewport edge. (See useTipState's `onScroll`
+ * for why a fixed bubble is safe to leave un-tracked while open.)
  */
-function useClampedPosition(open: boolean, bubbleRef: RefObject<HTMLElement | null>) {
+function useClampedPosition(
+  open: boolean,
+  bubbleRef: RefObject<HTMLElement | null>,
+  triggerRef: RefObject<HTMLElement | null>,
+) {
   useLayoutEffect(() => {
     const el = bubbleRef.current;
-    if (!open || !el) return;
+    const trigger = triggerRef.current;
+    if (!open || !el || !trigger) return;
     const margin = 8;
-    el.style.left = "50%";
-    el.style.transform = "translateX(-50%)";
-    el.style.top = "100%";
+    const triggerRect = trigger.getBoundingClientRect();
+    el.style.position = "fixed";
+    el.style.left = `${triggerRect.left + triggerRect.width / 2}px`;
+    el.style.top = `${triggerRect.bottom + margin}px`;
     el.style.bottom = "auto";
+    el.style.transform = "translateX(-50%)";
     const rect = el.getBoundingClientRect();
     let shiftX = 0;
     if (rect.left < margin) shiftX = margin - rect.left;
     else if (rect.right > window.innerWidth - margin)
       shiftX = window.innerWidth - margin - rect.right;
-    if (shiftX !== 0) el.style.transform = `translateX(calc(-50% + ${shiftX}px))`;
-    if (el.getBoundingClientRect().bottom > window.innerHeight - margin) {
-      el.style.top = "auto";
-      el.style.bottom = "100%";
+    let translate = `translateX(calc(-50% + ${shiftX}px))`;
+    if (rect.bottom > window.innerHeight - margin) {
+      // Flip above the trigger: anchor at its top edge and translate the
+      // bubble fully back over itself, mirroring the below-trigger case.
+      el.style.top = `${triggerRect.top - margin}px`;
+      translate += " translateY(-100%)";
     }
-  }, [open, bubbleRef]);
+    el.style.transform = translate;
+  }, [open, bubbleRef, triggerRef]);
 }
 
 function TipBubble({
@@ -159,7 +189,7 @@ export function InfoTip({
 }) {
   const { open, rootRef, triggerProps } = useTipState();
   const bubbleRef = useRef<HTMLSpanElement>(null);
-  useClampedPosition(open, bubbleRef);
+  useClampedPosition(open, bubbleRef, rootRef);
   const id = useId();
 
   return (
@@ -211,7 +241,7 @@ export function TipButton({
 >) {
   const { open, rootRef, triggerProps } = useTipState();
   const bubbleRef = useRef<HTMLSpanElement>(null);
-  useClampedPosition(open, bubbleRef);
+  useClampedPosition(open, bubbleRef, rootRef);
   const id = useId();
 
   if (disabled && disabledReason != null) {
