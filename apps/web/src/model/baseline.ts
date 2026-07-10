@@ -16,6 +16,10 @@
  *    `permanent` half: PF1 RAW lets these be removed by Restoration-type
  *    magic, but at the table they read as "something is happening to me
  *    right now," same as a condition.
+ *  - `activeForm` — a polymorph-family transformation (issue #70, Wild Shape
+ *    or a Beast Shape/Elemental Body/Plant Shape spell): exactly the kind of
+ *    moment-to-moment session state this cue exists for, same posture as
+ *    `activeBuffs`.
  *
  * Deliberately NOT stripped:
  *  - `abilityDrain` — unlike damage, drain permanently lowers the ability
@@ -45,6 +49,7 @@ export function baselineSheet(doc: CharacterDoc, refData: RefData): DerivedSheet
       abilityDamage: undefined,
       abilityPenalty: undefined,
       negativeLevels: undefined,
+      activeForm: undefined,
     },
   };
   return compute(stripped, refData);

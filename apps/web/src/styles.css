@@ -2808,6 +2808,84 @@ input[type="text"].saved-roll-name:focus {
   gap: 4px;
 }
 
+/* Polymorph / Wild Shape panel (issue #70) */
+.polymorph-start,
+.polymorph-active {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.polymorph-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.polymorph-picker select,
+.polymorph-picker input {
+  width: auto;
+  flex: 1 1 140px;
+}
+
+.polymorph-any-tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.polymorph-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.polymorph-summary .pname {
+  font-weight: 600;
+  font-size: 14px;
+  flex: 1 1 auto;
+}
+
+.polymorph-name,
+.polymorph-player-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.polymorph-attack-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.polymorph-attack-row input,
+.polymorph-attack-row select {
+  width: auto;
+  flex: 1 1 90px;
+}
+
+.polymorph-attack-total {
+  flex-shrink: 0;
+  color: var(--gold-dim);
+  font-size: 11px;
+}
+
+.polymorph-notes p {
+  margin: 2px 0;
+}
+
 .res-btns .btn-ghost {
   width: 30px;
   text-align: center;
