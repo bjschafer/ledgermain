@@ -1,4 +1,4 @@
-import type { AbilityId, Change, ContextNote, SkillId } from "./primitives.js";
+import type { AbilityId, Change, ContextNote, SizeId, SkillId } from "./primitives.js";
 
 /**
  * A PF1 wizard arcane school tag: one of the eight specialist schools, or
@@ -1321,7 +1321,86 @@ export interface CharacterDoc {
      * documents without this field are unaffected.
      */
     mediumInfluence?: number;
+    /**
+     * A polymorph-family transformation currently affecting the character —
+     * Wild Shape, or a Beast Shape/Elemental Body/Plant Shape spell (issue
+     * #70; see `IMPLEMENTATION_PLAN.md`'s Wild Shape entry and
+     * `@pf1/engine` `SHIFTER_ASPECTS`'s `majorFormNote`, both of which
+     * pointed here). Purely a player CHOICE — which tier + creature
+     * type/size/element the form takes, plus the natural-attack lines the
+     * player copies off the assumed creature's stat block; the engine
+     * (`@pf1/engine` `polymorphFormOption`/`computePolymorphAttacks`)
+     * derives the resulting ability-score/natural-armor/attack numbers, this
+     * field never stores them directly. `undefined` = not currently
+     * transformed. No separate `build.*` half (unlike `animalCompanion`/
+     * `familiar`): a form has no standing configuration to persist between
+     * activations, so — like `activeBuffs`/`conditions` — this is pure
+     * `live.*` state, entered fresh each time. Back-compat: documents
+     * without this field are unaffected.
+     */
+    activeForm?: ActiveForm;
   };
+}
+
+/**
+ * One polymorph-family transformation entry (`live.activeForm`) — see that
+ * field's doc comment. `tier`/`creatureType`/`element` are free-text keys
+ * into `@pf1/engine` `POLYMORPH_TIERS`/`PolymorphFormOption` (not a strict
+ * union here, matching this schema's usual "store the id, the engine table
+ * resolves it" posture — e.g. `shifterAspects: string[]`); a combination the
+ * engine doesn't recognize (stale after a house-rule change, or simply never
+ * valid) resolves to no ability/natural-armor adjustment, same soft
+ * tolerance as every other engine-table lookup in this schema. `size`,
+ * however, IS the real {@link SizeId} the character takes on — the engine
+ * uses it directly to override the size-ladder size for AC/attack/CMB/CMD
+ * (`@pf1/engine` `compute.ts`), independent of whether the
+ * tier/creatureType/element combination itself resolves.
+ */
+export interface ActiveForm {
+  /** Polymorph tier key — e.g. "beastShapeIII" (key into `@pf1/engine` `POLYMORPH_TIERS`). */
+  tier: string;
+  /** Creature type within the tier's menu — "animal" | "magicalBeast" | "elemental" | "plant". */
+  creatureType: string;
+  /** The character's size while in this form — overrides the normal size ladder outright. */
+  size: SizeId;
+  /** Elemental type, only meaningful when `creatureType === "elemental"` ("air" | "earth" | "fire" | "water"). */
+  element?: string;
+  /** Free-text label for the specific creature assumed, e.g. "Dire Wolf". */
+  formName: string;
+  /**
+   * Natural-attack lines copied by the player off the assumed creature's
+   * stat block (name + count + display-only damage dice); the engine
+   * computes each line's attack/damage bonus (BAB + Str mod + size modifier,
+   * secondary attacks at −5 to hit and half Str to damage) — see
+   * `@pf1/engine` `computePolymorphAttacks`. Empty/omitted = no attack lines
+   * entered yet.
+   */
+  naturalAttacks?: ActiveFormNaturalAttack[];
+  /**
+   * Free-text reminders for whatever this app doesn't model numerically —
+   * special abilities (grab, pounce, trip, breath weapons), movement modes,
+   * senses, tactics. Honesty-bar posture: this app never invents numbers for
+   * these (see `@pf1/engine` `polymorph.ts`'s per-tier `notes`, which cover
+   * the SRD-common riders already; this field is for anything beyond that).
+   */
+  notes?: string;
+}
+
+/** One natural-attack line on an {@link ActiveForm} — see that field's doc comment. */
+export interface ActiveFormNaturalAttack {
+  /** Display name, e.g. "Bite", "Claw". */
+  name: string;
+  /** How many of this attack the form has (e.g. 2 for "2 claws"). Omitted = 1. */
+  count?: number;
+  /** Damage dice string for display only, e.g. "1d8". The engine does not roll. */
+  damageDice?: string;
+  /**
+   * Primary attacks add the FULL Strength modifier to damage; secondary
+   * attacks take a −5 penalty to hit and add only HALF the Strength modifier
+   * (a Strength PENALTY still applies in full to both — PF1 RAW "Natural
+   * Attacks"). Omitted = "primary".
+   */
+  kind?: "primary" | "secondary";
 }
 
 /**
@@ -2043,6 +2122,16 @@ export interface DerivedSheet {
   ac: ArmorClass;
   cmb: number;
   cmd: number;
+  /**
+   * The character's current effective size category — race base size,
+   * shifted by any relative "size"-target Change (Enlarge/Reduce Person,
+   * ...), then replaced outright by an active polymorph form's size if one
+   * is active (issue #70, see `live.activeForm`). Feeds the size modifiers
+   * baked into `ac`/`attack`/`attacks`/`cmb`/`cmd` above; exposed directly
+   * here (previously computed only internally by `compute()`) so the UI can
+   * show it.
+   */
+  size: SizeId;
   initiative: ResolvedStat;
   /** Base melee/ranged attack bonus (single-attack, before weapon specifics). */
   attack: { melee: ResolvedStat; ranged: ResolvedStat };
@@ -2102,6 +2191,56 @@ export interface DerivedSheet {
    * is shown whenever the classes could disagree.
    */
   arcaneSpellFailure?: { total: number; exempt: boolean; exemptNote?: string };
+  /**
+   * The active polymorph-family transformation's resolved sheet (issue #70),
+   * present only while `live.activeForm` is set. The ability-score and
+   * natural-armor adjustments themselves are NOT duplicated here — they
+   * already flow through `abilities.*.components`/`ac.components` like any
+   * other typed modifier (see `live.activeForm`'s doc comment); this carries
+   * what those don't: the resolved natural-attack lines, the tier/option's
+   * honesty-bar context notes, and the player's own free-text notes.
+   */
+  activeForm?: DerivedActiveForm;
+}
+
+/** One resolved natural-attack line on `DerivedActiveForm.attacks` — see `@pf1/engine` `computePolymorphAttacks`. */
+export interface DerivedPolymorphAttack {
+  name: string;
+  count: number;
+  kind: "primary" | "secondary";
+  /** BAB + Str mod + size modifier, and −5 more when `kind === "secondary"`. */
+  attackBonus: number;
+  /** Str mod added to damage (full for primary, half — floored, full penalty if negative — for secondary). */
+  damageBonus: number;
+  damageDice?: string;
+}
+
+/**
+ * The active polymorph-family transformation's resolved sheet — see
+ * `DerivedSheet.activeForm`'s doc comment.
+ */
+export interface DerivedActiveForm {
+  /** Polymorph tier key, e.g. "beastShapeIII". */
+  tier: string;
+  /** Display name, e.g. "Beast Shape III". */
+  tierName: string;
+  creatureType: string;
+  size: SizeId;
+  element?: string;
+  formName: string;
+  /** Natural armor bonus this form grants (0 when the tier/creatureType/size/element combo didn't resolve). */
+  naturalArmor: number;
+  attacks: DerivedPolymorphAttack[];
+  /** Context-note reminders (tier/option riders + the gear-melding disclaimer) — display only. */
+  notes: string[];
+  /** The player's own free-text notes (`ActiveForm.notes`). */
+  playerNotes?: string;
+  /**
+   * True when `tier`/`creatureType`/`size`/`element` didn't resolve to a
+   * known `PolymorphFormOption` — the form still shows (name, attacks, size
+   * override), just with no ability/natural-armor adjustment applied.
+   */
+  unresolved: boolean;
 }
 
 /** Light/medium/heavy carrying-capacity tier (PF1 CRB "Carrying Capacity"). */

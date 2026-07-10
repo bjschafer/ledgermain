@@ -21,6 +21,7 @@ import type {
   AcComponent,
   ArmorClass,
   CharacterDoc,
+  DerivedActiveForm,
   DerivedEncumbrance,
   DerivedSheet,
   DerivedSkill,
@@ -44,6 +45,12 @@ import {
   encumberedSpeed,
   loadTierLabel,
 } from "./encumbrance.js";
+import {
+  computePolymorphAttacks,
+  polymorphFormOption,
+  POLYMORPH_TIERS,
+  type PolymorphTier,
+} from "./polymorph.js";
 import { hasSlowAndSteady } from "./racial-traits.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
@@ -1059,7 +1066,18 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // size ladder; round toward zero (a +1.5 or -0.5 step isn't a thing PF1
   // formulas produce, but be defensive) and clamp at the ladder's ends.
   const sizeShift = Math.trunc(forTarget(collected, "size").reduce((s, m) => s + m.value, 0));
-  const size: SizeId = shiftSize(baseSize, sizeShift);
+  let size: SizeId = shiftSize(baseSize, sizeShift);
+  // A polymorph-family transformation (issue #70 — `live.activeForm`)
+  // replaces the size ladder's result outright: the form's size is an
+  // unconditional, absolute replacement per PF1 RAW, not a relative shift
+  // like Enlarge Person's own "size" change above. Simultaneously combining
+  // a size-shifting spell with a polymorph effect is a rare table edge case
+  // this app doesn't try to adjudicate — the form's size simply wins while
+  // active. Applied even when the form's tier/creatureType/size/element
+  // combination itself doesn't resolve to a known `PolymorphFormOption`
+  // (`collect.ts` contributes no ability/NA changes in that case, but the
+  // player's chosen size is still meaningful on its own).
+  if (doc.live.activeForm) size = doc.live.activeForm.size;
   const sizeAttackMod = SIZE_AC_MOD[size];
 
   const strMod = abilities.str.mod;
@@ -1206,6 +1224,37 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // DR / energy resistance / spell resistance — display-only (issue #21).
   const defenses = computeDefenses(doc, refData, collected);
 
+  // Active polymorph-family transformation (issue #70) — resolved sheet for
+  // display: natural-attack lines (BAB/Str/size math done here, since `bab`/
+  // `strMod`/`sizeAttackMod` are only available at this point in `compute`)
+  // plus the tier/option's honesty-bar context notes and the gear-melding
+  // disclaimer. The ability-score/natural-armor adjustments themselves are
+  // NOT duplicated here — they already flow through `abilities.*.components`/
+  // `ac.components` via `collect.ts`.
+  let activeForm: DerivedActiveForm | undefined;
+  if (doc.live.activeForm) {
+    const af = doc.live.activeForm;
+    const option = polymorphFormOption(af.tier, af.creatureType, af.size, af.element);
+    const tierDef = POLYMORPH_TIERS[af.tier as PolymorphTier];
+    activeForm = {
+      tier: af.tier,
+      tierName: tierDef?.name ?? af.tier,
+      creatureType: af.creatureType,
+      size: af.size,
+      element: af.element,
+      formName: af.formName,
+      naturalArmor: option?.naturalArmor ?? 0,
+      attacks: computePolymorphAttacks(bab, strMod, sizeAttackMod, af.naturalAttacks ?? []),
+      notes: [
+        ...(tierDef?.notes ?? []),
+        ...(option?.notes ?? []),
+        "Polymorph melds some worn/carried gear into the new form (PF1 RAW) — this app does not auto-suppress armor/gear bonuses; adjust equipped gear by hand if needed.",
+      ],
+      playerNotes: af.notes,
+      unresolved: option === undefined,
+    };
+  }
+
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};
   const { classFeatures, activeArchetypes } = resolveClassFeatures(doc, refData, abilities);
@@ -1229,6 +1278,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     ranger: computeRanger(doc),
     defenses,
     encumbrance,
+    size,
+    activeForm,
     arcaneSpellFailure,
   };
 

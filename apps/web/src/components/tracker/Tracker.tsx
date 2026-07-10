@@ -1,3 +1,4 @@
+import { ActiveFormPanel } from "./ActiveFormPanel.js";
 import { AfflictionsPanel } from "./AfflictionsPanel.js";
 import { BuffsPanel } from "./BuffsPanel.js";
 import { CompanionPanel } from "./CompanionPanel.js";
@@ -40,6 +41,7 @@ export function Tracker(props: BuilderProps) {
       <ConditionsPanel {...props} />
       <BuffsPanel {...props} />
       <ShifterAspectPanel {...props} />
+      <ActiveFormPanel {...props} />
       <PreparedSpellsPanel {...props} />
       <SavedRollsPanel {...props} />
       <ResourcesPanel {...props} />

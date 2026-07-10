@@ -562,3 +562,18 @@ export {
   type RagePowerDef,
   type RagePowerEdition,
 } from "./rage-powers.js";
+export {
+  POLYMORPH_TIERS,
+  POLYMORPH_TIER_IDS,
+  polymorphFormOption,
+  wildShapeTiersForLevel,
+  computePolymorphAttacks,
+  type PolymorphCreatureType,
+  type PolymorphElement,
+  type PolymorphTier,
+  type PolymorphAbilityAdjustment,
+  type PolymorphFormOption,
+  type PolymorphTierDef,
+  type PolymorphNaturalAttackInput,
+  type ResolvedPolymorphAttack,
+} from "./polymorph.js";
