@@ -8,18 +8,28 @@ import {
   addCompanionNonlethal,
   animalFocusBuffs,
   applyCompanionDamage,
+  cavalierLevel,
   clearCompanion,
+  companionFeatPrereqContext,
+  companionSupersedingCondition,
   deriveCompanionSheet,
   hasBoonCompanionFeat,
+  hasCompanionCondition,
   healCompanion,
   healCompanionNonlethal,
   hunterLevel,
+  isCompanionConditionImplied,
   isSharedWithCompanion,
+  mountSpeciesHint,
   restCompanion,
+  samuraiLevel,
   setCompanion,
   setCompanionAbilityIncrease,
   setCompanionFocus,
   setCompanionNotes,
+  setCompanionSkillRank,
+  toggleCompanionCondition,
+  toggleCompanionFeat,
   toggleCompanionSource,
   toggleSharedBuffCompanion,
 } from "../src/model/companion.js";
@@ -179,6 +189,114 @@ describe("hunter's own Animal Companion feature (issue #65, source 'hunter-compa
   it("hunterLevel() reads the hunter class level, 0 for a non-hunter", () => {
     expect(hunterLevel(hunter5())).toBe(5);
     expect(hunterLevel(druid7())).toBe(0);
+  });
+});
+
+describe("cavalier/samurai Mount companion source (issue #68)", () => {
+  function cavalier3(): CharacterDoc {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "cavalier");
+    d = setClassLevel(d, "cavalier", 3);
+    return d;
+  }
+
+  it("cavalierLevel()/samuraiLevel() read the respective class level, 0 otherwise", () => {
+    expect(cavalierLevel(cavalier3())).toBe(3);
+    expect(samuraiLevel(cavalier3())).toBe(0);
+    expect(cavalierLevel(druid7())).toBe(0);
+  });
+
+  it("toggleCompanionSource('cavalier-mount') wires end-to-end at effective level = cavalier level", () => {
+    let d = cavalier3();
+    d = setCompanion(d, "horse", "Comet");
+    d = toggleCompanionSource(d, "cavalier-mount");
+    expect(d.build.animalCompanion?.source).toEqual(["cavalier-mount"]);
+
+    const companion = deriveCompanionSheet(d, ref);
+    expect(companion).toBeDefined();
+    expect(companion!.level).toBe(3);
+  });
+
+  it("mountSpeciesHint() defaults to the Medium rider list for an unresolved/Medium race", () => {
+    const d = createEmptyDoc("t");
+    expect(mountSpeciesHint(d, ref)).toEqual(["horse"]);
+  });
+});
+
+describe("companion feat + skill-rank investment (issue #68)", () => {
+  const powerAttackId = Object.values(ref.feats).find((f) => f.name === "Power Attack")!.id;
+
+  it("toggleCompanionFeat adds then removes a feat id, no-ops without a companion", () => {
+    const empty = createEmptyDoc("t");
+    expect(toggleCompanionFeat(empty, powerAttackId)).toBe(empty);
+
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = toggleCompanionFeat(d, powerAttackId);
+    expect(d.build.animalCompanion?.feats).toEqual([powerAttackId]);
+    d = toggleCompanionFeat(d, powerAttackId);
+    expect(d.build.animalCompanion?.feats).toEqual([]);
+  });
+
+  it("setCompanionSkillRank sets/clears ranks, sanitizing negative/NaN to 0 (which clears)", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = setCompanionSkillRank(d, "per", 2);
+    expect(d.build.animalCompanion?.skillRanks).toEqual({ per: 2 });
+    d = setCompanionSkillRank(d, "per", -5);
+    expect(d.build.animalCompanion?.skillRanks).toEqual({});
+    d = setCompanionSkillRank(d, "ste", Number.NaN);
+    expect(d.build.animalCompanion?.skillRanks).toEqual({});
+  });
+
+  it("setCompanionSkillRank no-ops without a companion", () => {
+    const d = createEmptyDoc("t");
+    expect(setCompanionSkillRank(d, "per", 2)).toBe(d);
+  });
+
+  it("companionFeatPrereqContext checks structured prereqs against the COMPANION's own BAB/abilities, not the master's", () => {
+    // A druid-1 wolf: companion BAB +1, Str 13 (species base) — meets Power
+    // Attack's "Str 13, base attack bonus +1" even though the low-level
+    // druid master herself might not.
+    let d = druid7();
+    d = setCompanion(d, "wolf", "Fang");
+    d = toggleCompanionSource(d, "nature-bond");
+    const companion = deriveCompanionSheet(d, ref)!;
+    const ctx = companionFeatPrereqContext(d, companion, ref);
+    expect(ctx.bab).toBe(companion.bab);
+    expect(ctx.abilityTotals.str).toBe(companion.abilities.str.score);
+    expect(ctx.casterLevel).toBe(0);
+    expect(ctx.selectedFeats.size).toBe(0);
+  });
+});
+
+describe("companion's own active conditions (issue #68)", () => {
+  it("toggleCompanionCondition no-ops without a companion", () => {
+    const d = createEmptyDoc("t");
+    expect(toggleCompanionCondition(d, "shaken")).toBe(d);
+  });
+
+  it("toggleCompanionCondition adds then removes a condition id", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    expect(hasCompanionCondition(d, "shaken")).toBe(false);
+    d = toggleCompanionCondition(d, "shaken");
+    expect(hasCompanionCondition(d, "shaken")).toBe(true);
+    d = toggleCompanionCondition(d, "shaken");
+    expect(hasCompanionCondition(d, "shaken")).toBe(false);
+  });
+
+  it("is independent of the master's own live.conditions", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = toggleCompanionCondition(d, "shaken");
+    expect(d.live.conditions).toEqual([]);
+    expect(hasCompanionCondition(d, "shaken")).toBe(true);
+  });
+
+  it("ladder auto-upgrade: activating 'frightened' (stricter) supersedes an active 'shaken' (milder)", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = toggleCompanionCondition(d, "shaken");
+    d = toggleCompanionCondition(d, "frightened");
+    expect(d.live.animalCompanion?.conditions).toEqual(["frightened"]);
+    expect(isCompanionConditionImplied(d, "shaken")).toBe(true);
+    expect(companionSupersedingCondition(d, "shaken")).toBe("frightened");
   });
 });
 

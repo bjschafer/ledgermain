@@ -35,20 +35,58 @@
  *     threshold level — never natural armor or ability scores, which come
  *     exclusively from the generic table above. Mixing both sources would
  *     double-count the same physical growth twice; splitting them this way
- *     is a deliberate, documented v1 simplification (mirrors familiar.ts's
- *     "no primary/secondary attack halving" posture).
+ *     is a deliberate, documented v1 simplification.
  *   - Multiattack (unlocked at HD milestone, {@link ANIMAL_COMPANION_PROGRESSION}):
- *     surfaced only as a special-ability chip, same simplification as above —
- *     this module never models primary/secondary natural-attack penalties at
- *     all, for any companion at any level (matching familiar.ts).
+ *     still surfaced as a special-ability chip (its narrative/skill-check
+ *     benefits beyond the attack math aren't modeled), but as of issue #68
+ *     it DOES soften the secondary-natural-attack penalty from −5 to −2 in
+ *     `deriveCompanion`'s attack math below — see `natural-attacks.ts`.
+ *     Primary/secondary natural-attack math (full BAB+Str vs. −5/−2 and half
+ *     Str) is modeled here via the shared `natural-attacks.ts` module
+ *     (issue #68); `familiar.ts`/`eidolon.ts`/`phantom.ts` still don't model
+ *     it (documented gap in THEIR own module doc comments, not this one).
  *   - Devotion (+4 morale bonus on Will saves against enchantment) is
  *     situational (only vs. one school of magic), so — matching this
  *     project's posture for Ranger Favored Enemy/Terrain — it is surfaced as
  *     a special-ability chip only, never baked into `saves.will`.
+ *   - Skills/feats (issue #68): the companion's six trackable skills
+ *     (`acr`/`clm`/`fly`/`per`/`ste`/`swm`) now take rank investment
+ *     (`build.animalCompanion.skillRanks`), hard-capped per skill at the
+ *     companion's own HD and totaled against {@link companionSkillPoints}
+ *     (Monster Creation's "2 + Int mod per HD" skill-point formula, verified
+ *     against aonprd.com), with the standard +3 class-skill bonus once a
+ *     skill has 1+ rank (every one of the six is always a class skill for an
+ *     Animal-type creature). Feat picks (`build.animalCompanion.feats`) are a
+ *     free choice from the full feat list (no "animal-eligible" filter — a
+ *     documented v1 scope call), soft-capped against `bonusFeats` and
+ *     prereq-checked against the COMPANION's OWN derived stats — both
+ *     resolved in `apps/web/src/model/companion.ts` (this pure module has no
+ *     `RefData` to look feats up by id, mirroring the split established for
+ *     Boon Companion above).
+ *   - Conditions (issue #68): the companion has its OWN active-conditions
+ *     list (`live.animalCompanion.conditions`), independent of the master's
+ *     `live.conditions` — it can be shaken while the master isn't, or vice
+ *     versa. Each active condition's `Change[]` (from `conditions.ts`'s
+ *     `CONDITIONS` table — the SAME clean-room table the master's own sheet
+ *     uses) is reshaped into a synthetic `ActiveBuff` and routed through the
+ *     exact same `routeSharedBuffs` pipeline as a shared buff, so it affects
+ *     AC/saves/skills/attacks/ability scores/speed/init identically. This
+ *     required two small additions to `shared-creature-buffs.ts` neither
+ *     shared buff previously exercised: a global `skills` target (shaken/
+ *     sickened/panicked's flat skill-check penalty) and folding `wdamage`
+ *     ["weapon damage"] into the same bucket as `damage` (natural attacks
+ *     count as weapon damage for effects like sickened's penalty).
  */
 
-import type { AbilityId, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
+import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 
+import { CONDITIONS } from "./conditions.js";
+import {
+  classifyNaturalAttacks,
+  naturalAttackBonus,
+  naturalAttackDamageBonus,
+  type NaturalAttackType,
+} from "./natural-attacks.js";
 import { abilityMod, totalLevel } from "./rolldata.js";
 import {
   applySharedAbilityBonuses,
@@ -425,6 +463,26 @@ export const BASE_COMPANIONS: Readonly<Record<string, BaseCompanion>> = {
 /** All base-companion species slugs, for the builder's picker. */
 export const BASE_COMPANION_IDS = Object.keys(BASE_COMPANIONS);
 
+/**
+ * RAW Cavalier/Samurai "Mount" species lists (Ultimate Combat, verified
+ * against aonprd.com during authoring, issue #68), intersected with this
+ * module's own {@link BASE_COMPANION_IDS} — the full published lists include
+ * several exotic animals (Camel, Elk, Giraffe, Zebra, Axe Beak, Seahorse
+ * (Giant), Tortoise (Giant) for Medium riders; Antelope, Capybara, Kangaroo,
+ * Lizard (Giant Gecko), Ram, Reindeer, Weasel (Giant), Wolfdog for Small
+ * riders) that this module doesn't model as a {@link BaseCompanion} — only
+ * the overlap is surfaced. Soft-note only: `AnimalCompanionPicker` shows this
+ * as a hint text, never a hard block on the species `<select>` (matches this
+ * project's hybrid prereq/soft-warning posture) — the source text itself
+ * says "The GM might approve other animals as suitable mounts." Keyed by the
+ * rider's size (a Small cavalier/samurai gets the alternate list; every
+ * other size uses the Medium list, the overwhelmingly common case).
+ */
+export const MOUNT_SPECIES_BY_RIDER_SIZE: Readonly<Record<"med" | "sm", readonly string[]>> = {
+  med: ["horse"],
+  sm: ["boar", "dog", "pony", "wolf"],
+};
+
 /** One row of the CRB/APG "Table: Animal Companion Base Statistics", by effective druid level. */
 export interface CompanionProgressionRow {
   level: number;
@@ -590,6 +648,12 @@ export function companionAbilityIncreaseSlots(effectiveLevel: number): number {
  * companion's statistics"); treating them as additive contributions to one
  * companion's power is the simplest coherent behavior and is documented here
  * rather than silently guessed at.
+ *
+ * `"cavalier-mount"`/`"samurai-mount"` (issue #68) are the Cavalier's/
+ * Samurai's own "Mount" class feature — 1:1, no −3 offset, same shape as
+ * `"hunter-companion"` (verified against aonprd.com: "This mount functions
+ * as a druid's animal companion, using the cavalier's/samurai's level as his
+ * effective druid level," identical wording for both classes).
  */
 function baseCompanionEffectiveLevel(doc: CharacterDoc): number {
   const source = doc.build.animalCompanion?.source ?? [];
@@ -603,6 +667,12 @@ function baseCompanionEffectiveLevel(doc: CharacterDoc): number {
   }
   if (source.includes("hunter-companion")) {
     level += doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
+  }
+  if (source.includes("cavalier-mount")) {
+    level += doc.identity.classes.find((c) => c.tag === "cavalier")?.level ?? 0;
+  }
+  if (source.includes("samurai-mount")) {
+    level += doc.identity.classes.find((c) => c.tag === "samurai")?.level ?? 0;
   }
   return level;
 }
@@ -631,6 +701,20 @@ export interface DerivedCompanionSkill {
   ability: AbilityId;
   total: number;
   components: ModifierComponent[];
+  /** Ranks invested (issue #68), already clamped to [0, hd] — see module doc comment. */
+  ranks: number;
+}
+
+/**
+ * A creature's total skill-point budget (Monster Creation's own formula,
+ * verified against aonprd.com during authoring for issue #68: "2 + Int mod
+ * per HD," minimum 1 per HD) — every one of {@link BASE_COMPANIONS}'
+ * Intelligence scores is low enough (2, occasionally 1) that this almost
+ * always resolves to exactly 1 per HD, but the formula is applied generically
+ * rather than hardcoding that.
+ */
+export function companionSkillPoints(hd: number, intMod: number): number {
+  return hd * Math.max(1, 2 + intMod);
 }
 
 export interface DerivedCompanionAttack {
@@ -640,6 +724,8 @@ export interface DerivedCompanionAttack {
   damageDice: string;
   damageBonus: number;
   note?: string;
+  /** Primary (full BAB+Str) or secondary (−5/−2 with Multiattack, half Str) — see `natural-attacks.ts`, issue #68. */
+  attackType: NaturalAttackType;
 }
 
 export interface DerivedCompanionAc {
@@ -678,8 +764,18 @@ export interface DerivedCompanion {
   specialNotes: string[];
   /** Bonus tricks (Handle Animal) earned so far — display only, CRB table. */
   bonusTricks: number;
-  /** Bonus feats earned so far — display only, no companion feat picker in v1. */
+  /**
+   * Bonus feats earned so far (CRB progression table) — also doubles as the
+   * companion's own feat-pick BUDGET as of issue #68 (`build.animalCompanion
+   * .feats`'s soft cap, resolved with feat names/prereqs in
+   * `apps/web/src/model/companion.ts` since this pure module has no
+   * `RefData`).
+   */
   bonusFeats: number;
+  /** Total skill-point budget (issue #68) — see {@link companionSkillPoints}. */
+  skillPointsAvailable: number;
+  /** Ranks actually invested so far (sum of `skills[*].ranks`, already clamped). */
+  skillPointsSpent: number;
 }
 
 /**
@@ -752,7 +848,17 @@ export function deriveCompanion(
   // --- shared buffs: evaluate + bucket by target (mirrors familiar.ts, issue #44) --
   const sharedIds = new Set(doc.live.animalCompanion?.sharedBuffIds ?? []);
   const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
-  const routed = routeSharedBuffs(sharedBuffs, rollData);
+
+  // --- the companion's OWN active conditions (issue #68): reshaped as
+  // synthetic ActiveBuffs so `routeSharedBuffs` applies their Change[] through
+  // the exact same typed-stacking pipeline as a shared buff — see
+  // `shared-creature-buffs.ts`'s doc comment.
+  const conditionBuffs: ActiveBuff[] = (doc.live.animalCompanion?.conditions ?? [])
+    .map((id) => CONDITIONS[id])
+    .filter((c): c is NonNullable<typeof c> => c != null && c.changes.length > 0)
+    .map((c) => ({ instanceId: `condition:${c.id}`, name: c.name, changes: c.changes }));
+
+  const routed = routeSharedBuffs([...sharedBuffs, ...conditionBuffs], rollData);
 
   abilities = applySharedAbilityBonuses(abilities, routed.ability, abilityMod);
   const strMod = abilities.str.mod;
@@ -814,23 +920,30 @@ export function deriveCompanion(
   const cmb = companionBab + (TINY_OR_SMALLER.has(size) ? dexMod : strMod) + sizeSpecial;
   const cmd = 10 + companionBab + strMod + dexMod + sizeSpecial;
 
-  // --- attacks: companion's own BAB + better of Str/Dex + size, no primary/ --
-  // secondary halving modeled (see module doc comment), plus any shared bonus.
+  // --- attacks: companion's own BAB + better of Str/Dex + size + shared bonus,
+  // with primary/secondary natural-attack math (issue #68) — see
+  // `natural-attacks.ts`. Multiattack (unlocked at the HD milestone, see
+  // module doc comment) softens the secondary penalty from −5 to −2.
+  const hasMultiattack = companionSpecialAbilityNames(level).includes("Multiattack");
   const sharedAttackBonus = resolveStack(routed.attack).total;
   const sharedDamageBonus = resolveStack(routed.damage).total;
-  const attackBonus = companionBab + Math.max(strMod, dexMod) + sizeAcMod + sharedAttackBonus;
-  const attacks: DerivedCompanionAttack[] = speciesAttacks.map((a) => ({
+  const baseAttackBonus = companionBab + Math.max(strMod, dexMod) + sizeAcMod + sharedAttackBonus;
+  const classifiedAttacks = classifyNaturalAttacks(speciesAttacks);
+  const attacks: DerivedCompanionAttack[] = classifiedAttacks.map((a) => ({
     name: a.name,
     count: a.count,
-    attack: attackBonus,
+    attack: naturalAttackBonus(baseAttackBonus, a.attackType, hasMultiattack),
     damageDice: a.damageDice,
-    damageBonus: strMod + sharedDamageBonus,
+    damageBonus: naturalAttackDamageBonus(strMod, a.attackType) + sharedDamageBonus,
     note: a.note,
+    attackType: a.attackType,
   }));
 
-  // --- skills: physical/perceptual only, no rank investment (see module doc) --
+  // --- skills: physical/perceptual six, with rank investment (issue #68) --
   const hasClimbSpeed = species.speeds.climb !== undefined;
   const hasSwimSpeed = species.speeds.swim !== undefined;
+  const skillPointsAvailable = companionSkillPoints(hd, abilities.int.mod);
+  let skillPointsSpent = 0;
   const skills: Record<string, DerivedCompanionSkill> = {};
   for (const id of COMPANION_SKILLS) {
     // Universal Monster Rules: a creature with a climb/swim speed uses Dex
@@ -853,8 +966,30 @@ export function deriveCompanion(
         (species.flyManeuverability ? FLY_MANEUVER_BONUS[species.flyManeuverability] : 0);
     }
 
-    const miscStack = resolveStack(routed.skill.get(id) ?? []);
+    // Ranks: hard-capped at [0, hd] (a monster's structural rank cap, not a
+    // soft budget — see module doc comment); the six skills here are ALWAYS
+    // class skills for an Animal-type creature (Universal Monster Rules,
+    // same convention `familiar.ts`'s `ANIMAL_CLASS_SKILLS` established),
+    // so 1+ rank grants the standard +3 class-skill bonus.
+    const ranksRaw = build.skillRanks?.[id] ?? 0;
+    const ranks = Math.max(0, Math.min(hd, Math.trunc(ranksRaw)));
+    skillPointsSpent += ranks;
+    const classSkillBonus = ranks >= 1 ? 3 : 0;
+
+    // Per-skill modifiers plus any global "skills" penalty (e.g. shaken/
+    // sickened's -2 on skill checks — issue #68), same combined-stack
+    // handling as `compute.ts`'s own `globalSkillMods`.
+    const miscStack = resolveStack([...(routed.skill.get(id) ?? []), ...routed.skillsGlobal]);
     const components: ModifierComponent[] = [];
+    if (ranks !== 0)
+      components.push({ source: "Ranks", type: "untyped", value: ranks, applied: true });
+    if (classSkillBonus !== 0)
+      components.push({
+        source: "Class skill",
+        type: "untyped",
+        value: classSkillBonus,
+        applied: true,
+      });
     if (racial !== 0)
       components.push({
         source: `${species.name} (racial)`,
@@ -877,8 +1012,9 @@ export function deriveCompanion(
     skills[id] = {
       id,
       ability,
-      total: abilityModVal + racial + sizeSkillMod + miscStack.total,
+      total: abilityModVal + ranks + classSkillBonus + racial + sizeSkillMod + miscStack.total,
       components,
+      ranks,
     };
   }
 
@@ -918,5 +1054,7 @@ export function deriveCompanion(
     specialNotes,
     bonusTricks: row.bonusTricks,
     bonusFeats: row.feats,
+    skillPointsAvailable,
+    skillPointsSpent,
   };
 }

@@ -67,9 +67,12 @@
  *     e.g. Biped's 2 claws) plus any attack-granting evolutions chosen
  *     (bite/claws/gore/hooves/pincers/slam/sting/tail slap/tentacle/wing
  *     buffet). No primary/secondary natural-attack halving is modeled here
- *     either (matches `companion.ts`/`phantom.ts`'s existing posture) —
- *     "Multiattack" (unlocked at 9th, {@link EIDOLON_PROGRESSION}) is
- *     surfaced only as a special-ability chip, same simplification.
+ *     (matches `phantom.ts`'s existing posture) — "Multiattack" (unlocked at
+ *     9th, {@link EIDOLON_PROGRESSION}) is surfaced only as a special-ability
+ *     chip, same simplification. `companion.ts` gained the primary/secondary
+ *     math (and a shared `natural-attacks.ts` module this module COULD reuse)
+ *     in issue #68; porting it here was scoped out of that issue to avoid
+ *     ballooning it — a documented gap, not a silent drop.
  *   - Special abilities table column (Darkvision/Link/Share Spells at 1st,
  *     Evasion at 2nd, Devotion at 6th, Multiattack at 9th, Improved Evasion
  *     at 14th) are display-only chips, same posture as

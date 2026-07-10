@@ -1441,9 +1441,23 @@ export interface AnimalCompanionBuild {
    * distinct from the ranger's "Hunter's Bond" despite the similar name; a
    * hunter's effective druid level equals her hunter level 1:1 (no −3 offset,
    * unlike the ranger's `hunters-bond`) — see `@pf1/engine`
-   * `companionEffectiveLevel`'s doc comment.
+   * `companionEffectiveLevel`'s doc comment. `"cavalier-mount"`/
+   * `"samurai-mount"` (issue #68) are the Cavalier's and Samurai's own
+   * "Mount" class feature (UC "This mount functions as a druid's animal
+   * companion, using the cavalier's/samurai's level as his effective druid
+   * level" — verified against aonprd.com during authoring; identical text
+   * for both classes) — 1:1, no −3 offset, granted at 1st level (unlike the
+   * ranger's 4th-level gate), and kept as two separate tags (rather than one
+   * shared "mount" tag) purely to match this field's existing one-tag-per-
+   * class-feature convention, even where the math is identical.
    */
-  source: ("nature-bond" | "hunters-bond" | "hunter-companion")[];
+  source: (
+    | "nature-bond"
+    | "hunters-bond"
+    | "hunter-companion"
+    | "cavalier-mount"
+    | "samurai-mount"
+  )[];
   /**
    * Player-assigned ability score for each Ability Score Increase milestone
    * reached so far (CRB Table: Animal Companion Base Statistics — effective
@@ -1454,6 +1468,37 @@ export interface AnimalCompanionBuild {
    * `companionAbilityIncreaseSlots(effectiveLevel)` are ignored.
    */
   abilityIncreases?: AbilityId[];
+  /**
+   * Feat ids chosen for the companion itself (issue #68) — keys into
+   * `RefData.feats`. Free pick from the full feat list (no "animal-eligible"
+   * filter — a documented v1 "first cut" scope, matching this project's
+   * hybrid-prereq honesty bar rather than promising perfect eligibility
+   * curation), soft-capped (never blocked) against the companion's own
+   * `DerivedCompanion.bonusFeats` budget by `apps/web/src/model/companion.ts`.
+   * Structured prereqs (ability score, BAB) are checked against the
+   * COMPANION's own derived stats, not the master's — see
+   * `model/companion.ts`'s `companionFeatPrereqContext`. Omitted/empty = no
+   * feats picked yet.
+   */
+  feats?: string[];
+  /**
+   * Per-skill rank allocation for the companion's six trackable skills
+   * (issue #68 — `acr`/`clm`/`fly`/`per`/`ste`/`swm`, the same set
+   * `@pf1/engine` `companion.ts`'s module doc comment names). `@pf1/engine`
+   * `deriveCompanion` hard-caps each skill's ranks at the companion's own Hit
+   * Dice (a monster's structural rank cap — RAW, not a house rule) and adds
+   * the standard +3 class-skill bonus once a skill has 1+ rank invested
+   * (every one of the six is always a class skill for an Animal-type
+   * creature, per Universal Monster Rules — same convention `familiar.ts`'s
+   * `ANIMAL_CLASS_SKILLS` already established). The TOTAL across all six is
+   * only soft-warned against `DerivedCompanion.skillPointsAvailable`
+   * (`hd * max(1, 2 + Int mod)`, Monster Creation's skill-point formula) —
+   * never blocked, same posture as every other budgeted picker in this
+   * codebase. Entries for a skill id outside that set of six are ignored.
+   * Omitted/empty = no ranks invested (the v1-through-#68 default: pure
+   * ability mod + racial/size, as before).
+   */
+  skillRanks?: Record<string, number>;
   /** Free-text notes (e.g. personality, tricks, house-rule tweaks). */
   notes?: string;
 }
@@ -1515,6 +1560,21 @@ export interface AnimalCompanionLiveState {
    * focus applied to the companion.
    */
   focusBuffId?: string;
+  /**
+   * The companion's OWN active conditions (issue #68) — condition ids, keys
+   * into `@pf1/engine` `CONDITIONS`, exactly like the master's own
+   * `live.conditions` but tracked independently: the companion can be
+   * shaken/entangled/etc. while the master isn't, and vice versa (e.g. an
+   * area fear effect that only catches one of them). Toggled via
+   * `apps/web/src/model/companion.ts` `toggleCompanionCondition`, which
+   * reuses `model/conditions.ts`'s `toggleConditionIn` for the same
+   * ladder-aware auto-upgrade/implied-condition behavior the master's own
+   * conditions get. Resolved by `@pf1/engine` `deriveCompanion`, which routes
+   * each active condition's `Change[]` through the exact same
+   * `routeSharedBuffs` pipeline as a shared buff (see that module's doc
+   * comment). Omitted/empty = no active conditions.
+   */
+  conditions?: string[];
 }
 
 /**

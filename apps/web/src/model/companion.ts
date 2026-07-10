@@ -4,8 +4,8 @@
  * doc comments on those fields, and `@pf1/engine` `companion.ts` for the
  * derivation rules). Mirrors `model/familiar.ts`'s shape closely; the
  * differences are the companion's `source` toggles (Nature Bond / Hunter's
- * Bond) and its player-assigned Ability Score Increases, neither of which a
- * familiar has.
+ * Bond / Mount), its player-assigned Ability Score Increases, and (issue #68)
+ * its own feat/skill-rank investment, none of which a familiar has.
  */
 
 import {
@@ -13,11 +13,17 @@ import {
   buildRollData,
   companionAbilityIncreaseSlots,
   companionEffectiveLevel,
+  CONDITION_LADDERS,
   deriveCompanion,
   featNameSlug,
+  MOUNT_SPECIES_BY_RIDER_SIZE,
   type DerivedCompanion,
 } from "@pf1/engine";
 import type { AbilityId, AnimalCompanionBuild, CharacterDoc, RefData } from "@pf1/schema";
+
+import { toggleConditionIn } from "./conditions.js";
+import { ABILITY_IDS } from "./doc.js";
+import type { PrereqContext } from "./prereqs.js";
 
 /** Set (or replace) the tracked companion's species + name. Trims blank names to "Companion". */
 export function setCompanion(doc: CharacterDoc, speciesId: string, name: string): CharacterDoc {
@@ -59,13 +65,14 @@ export function clearCompanion(doc: CharacterDoc): CharacterDoc {
 
 /**
  * Toggle a companion-granting class-feature source (`"nature-bond"` |
- * `"hunters-bond"` | `"hunter-companion"`) on/off. If the character has no
- * `build.animalCompanion` yet, turning a source on seeds one with a sensible
- * default species ("wolf") so the picker has something to show immediately.
+ * `"hunters-bond"` | `"hunter-companion"` | `"cavalier-mount"` |
+ * `"samurai-mount"`) on/off. If the character has no `build.animalCompanion`
+ * yet, turning a source on seeds one with a sensible default species
+ * ("wolf") so the picker has something to show immediately.
  */
 export function toggleCompanionSource(
   doc: CharacterDoc,
-  source: "nature-bond" | "hunters-bond" | "hunter-companion",
+  source: "nature-bond" | "hunters-bond" | "hunter-companion" | "cavalier-mount" | "samurai-mount",
 ): CharacterDoc {
   const current = doc.build.animalCompanion;
   const currentSources = current?.source ?? [];
@@ -102,6 +109,70 @@ export function setCompanionAbilityIncrease(
   return {
     ...doc,
     build: { ...doc.build, animalCompanion: { ...current, abilityIncreases: next } },
+  };
+}
+
+/**
+ * Toggle a feat pick for the companion itself (issue #68 —
+ * `build.animalCompanion.feats`). Free-choice, soft-capped against
+ * `DerivedCompanion.bonusFeats` by the UI (never blocked here). No-ops if
+ * there's no companion yet.
+ */
+export function toggleCompanionFeat(doc: CharacterDoc, featId: string): CharacterDoc {
+  const current = doc.build.animalCompanion;
+  if (!current) return doc;
+  const existing = current.feats ?? [];
+  const feats = existing.includes(featId)
+    ? existing.filter((id) => id !== featId)
+    : [...existing, featId];
+  return { ...doc, build: { ...doc.build, animalCompanion: { ...current, feats } } };
+}
+
+/**
+ * Set the companion's invested ranks in one of its six trackable skills
+ * (issue #68 — `build.animalCompanion.skillRanks`). Only clamps to a
+ * non-negative integer here; the per-skill hard cap at the companion's own
+ * Hit Dice, and the soft total-budget warning, are both enforced/surfaced
+ * downstream (`@pf1/engine` `deriveCompanion`'s clamp; the UI's own budget
+ * display) rather than duplicated in this transition. No-ops if there's no
+ * companion yet.
+ */
+export function setCompanionSkillRank(
+  doc: CharacterDoc,
+  skillId: string,
+  ranks: number,
+): CharacterDoc {
+  const current = doc.build.animalCompanion;
+  if (!current) return doc;
+  const r = Number.isNaN(ranks) ? 0 : Math.max(0, Math.trunc(ranks));
+  const next = { ...current.skillRanks };
+  if (r <= 0) delete next[skillId];
+  else next[skillId] = r;
+  return { ...doc, build: { ...doc.build, animalCompanion: { ...current, skillRanks: next } } };
+}
+
+/**
+ * The companion's own feat-prerequisite context (issue #68) — reuses
+ * `model/prereqs.ts`'s `evaluatePrereqs`/`PrereqContext`, but built from the
+ * COMPANION's own derived ability scores/BAB (not the master's), the
+ * companion's own chosen feats (`doc.build.animalCompanion.feats`, not the
+ * master's `build.feats`), and `casterLevel: 0` (no companion in
+ * `BASE_COMPANIONS` casts). Mirrors `FeatsSection`'s own `PrereqContext`
+ * construction for the master.
+ */
+export function companionFeatPrereqContext(
+  doc: CharacterDoc,
+  companion: DerivedCompanion,
+  refData: RefData,
+): PrereqContext {
+  const abilityTotals = {} as Record<AbilityId, number>;
+  for (const id of ABILITY_IDS) abilityTotals[id] = companion.abilities[id].score;
+  return {
+    abilityTotals,
+    bab: companion.bab,
+    casterLevel: 0,
+    selectedFeats: new Set(doc.build.animalCompanion?.feats ?? []),
+    refData,
   };
 }
 
@@ -157,6 +228,38 @@ export function restCompanion(doc: CharacterDoc): CharacterDoc {
   return withCompanionLive(doc, { damage: 0, nonlethal: 0 });
 }
 
+/** Whether the companion's OWN condition `id` is currently active (issue #68 — independent of the master's `live.conditions`). */
+export function hasCompanionCondition(doc: CharacterDoc, id: string): boolean {
+  return (doc.live.animalCompanion?.conditions ?? []).includes(id);
+}
+
+/** The companion's active condition id, if any, that supersedes `id` on its `CONDITION_LADDERS` ladder (mirrors `model/conditions.ts`'s `supersedingCondition`, scoped to the companion's own list). */
+export function companionSupersedingCondition(doc: CharacterDoc, id: string): string | undefined {
+  const pos = CONDITION_LADDERS.find((ladder) => ladder.includes(id));
+  if (!pos) return undefined;
+  const index = pos.indexOf(id);
+  const conditions = doc.live.animalCompanion?.conditions ?? [];
+  return pos.slice(index + 1).find((sibling) => conditions.includes(sibling));
+}
+
+/** True when the companion's condition `id` is implied by a stricter active sibling (see `companionSupersedingCondition`) — the UI shows it as covered rather than independently toggleable. */
+export function isCompanionConditionImplied(doc: CharacterDoc, id: string): boolean {
+  return companionSupersedingCondition(doc, id) !== undefined;
+}
+
+/**
+ * Toggle one of the companion's OWN active conditions (issue #68 —
+ * `live.animalCompanion.conditions`) — reuses `model/conditions.ts`'s
+ * `toggleConditionIn` for the same ladder-aware auto-upgrade/implied-
+ * condition behavior the master's own `live.conditions` gets, just scoped to
+ * the companion's separate array. No-ops if there's no companion yet.
+ */
+export function toggleCompanionCondition(doc: CharacterDoc, id: string): CharacterDoc {
+  if (!doc.build.animalCompanion) return doc;
+  const conditions = toggleConditionIn(doc.live.animalCompanion?.conditions ?? [], id);
+  return withCompanionLive(doc, { conditions });
+}
+
 /** Whether one of the master's active buffs (by instance id) is currently shared onto the companion. */
 export function isSharedWithCompanion(doc: CharacterDoc, instanceId: string): boolean {
   return (doc.live.animalCompanion?.sharedBuffIds ?? []).includes(instanceId);
@@ -194,6 +297,30 @@ export function setCompanionFocus(doc: CharacterDoc, buffId: string | undefined)
  */
 export function hunterLevel(doc: CharacterDoc): number {
   return doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
+}
+
+/** Cavalier class level, for gating the "Mount" companion-source chip (granted at 1st level, issue #68). */
+export function cavalierLevel(doc: CharacterDoc): number {
+  return doc.identity.classes.find((c) => c.tag === "cavalier")?.level ?? 0;
+}
+
+/** Samurai class level, for gating the "Mount" companion-source chip (granted at 1st level, issue #68). */
+export function samuraiLevel(doc: CharacterDoc): number {
+  return doc.identity.classes.find((c) => c.tag === "samurai")?.level ?? 0;
+}
+
+/**
+ * The RAW-eligible mount species list for the character's OWN size (issue
+ * #68) — `refData.races[doc.identity.race].size`, falling back to `"med"`
+ * for an unresolved race id (the overwhelmingly common case, and the same
+ * default {@link MOUNT_SPECIES_BY_RIDER_SIZE} keys off). Soft-note only, see
+ * `@pf1/engine` `MOUNT_SPECIES_BY_RIDER_SIZE`'s doc comment — the picker
+ * still allows any `BASE_COMPANIONS` species as a mount; this is surfaced as
+ * a hint, never a restriction on the `<select>`.
+ */
+export function mountSpeciesHint(doc: CharacterDoc, refData: RefData): readonly string[] {
+  const size = refData.races[doc.identity.race]?.size;
+  return MOUNT_SPECIES_BY_RIDER_SIZE[size === "sm" ? "sm" : "med"];
 }
 
 /**

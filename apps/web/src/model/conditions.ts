@@ -54,25 +54,39 @@ export function isImpliedCondition(doc: CharacterDoc, id: string): boolean {
   return supersedingCondition(doc, id) !== undefined;
 }
 
-export function toggleCondition(doc: CharacterDoc, id: string): CharacterDoc {
-  const has = doc.live.conditions.includes(id);
+/**
+ * The ladder-aware toggle transition on a plain conditions array — extracted
+ * (issue #68) so a second tracked creature (the animal companion's own
+ * `live.animalCompanion.conditions`, independent of the master's
+ * `live.conditions`) can reuse the exact same auto-upgrade/implied-condition
+ * behavior rather than a hand-copied duplicate. `toggleCondition` below is
+ * just this applied to the master's own array.
+ */
+export function toggleConditionIn(conditions: readonly string[], id: string): string[] {
+  const has = conditions.includes(id);
 
   if (has) {
     // Deactivation never cascades: only this id is removed.
-    const conditions = doc.live.conditions.filter((c) => c !== id);
-    return { ...doc, live: { ...doc.live, conditions } };
+    return conditions.filter((c) => c !== id);
   }
 
   const pos = ladderPositionOf(id);
   if (pos) {
     // A stricter sibling is already active: activating the milder `id` is a
     // no-op (it's implied by the stricter one; see `isImpliedCondition`).
-    if (supersedingCondition(doc, id)) return doc;
+    const supersedingActive = pos.ladder
+      .slice(pos.index + 1)
+      .some((sib) => conditions.includes(sib));
+    if (supersedingActive) return [...conditions];
     // Auto-upgrade: drop any milder siblings, then add id.
     const milder = new Set(pos.ladder.slice(0, pos.index));
-    const conditions = [...doc.live.conditions.filter((c) => !milder.has(c)), id];
-    return { ...doc, live: { ...doc.live, conditions } };
+    return [...conditions.filter((c) => !milder.has(c)), id];
   }
 
-  return { ...doc, live: { ...doc.live, conditions: [...doc.live.conditions, id] } };
+  return [...conditions, id];
+}
+
+export function toggleCondition(doc: CharacterDoc, id: string): CharacterDoc {
+  const conditions = toggleConditionIn(doc.live.conditions, id);
+  return { ...doc, live: { ...doc.live, conditions } };
 }

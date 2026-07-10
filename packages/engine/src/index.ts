@@ -378,6 +378,7 @@ export {
 export {
   BASE_COMPANIONS,
   BASE_COMPANION_IDS,
+  MOUNT_SPECIES_BY_RIDER_SIZE,
   ANIMAL_COMPANION_PROGRESSION,
   COMPANION_SPECIAL_ABILITY_DETAIL,
   COMPANION_ABILITY_INCREASE_LEVELS,
@@ -386,6 +387,7 @@ export {
   companionProgressionRow,
   companionSpecialAbilityNames,
   companionAbilityIncreaseSlots,
+  companionSkillPoints,
   type BaseCompanion,
   type CompanionAttack,
   type CompanionGrowthStep,
@@ -444,6 +446,13 @@ export {
   type AcCandidate,
   type RoutedSharedBuffs,
 } from "./shared-creature-buffs.js";
+export {
+  classifyNaturalAttacks,
+  secondaryAttackPenalty,
+  naturalAttackBonus,
+  naturalAttackDamageBonus,
+  type NaturalAttackType,
+} from "./natural-attacks.js";
 export { advanceRounds, type AdvanceResult } from "./duration.js";
 export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
 export type { ToggleBuffOption } from "./toggle-buffs.js";

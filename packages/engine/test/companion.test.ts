@@ -18,6 +18,8 @@ function makeDoc(overrides: {
   animalCompanion?: CharacterDoc["build"]["animalCompanion"];
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
   sharedBuffIds?: string[];
+  /** The companion's OWN active conditions (issue #68), independent of the master's `live.conditions`. */
+  companionConditions?: string[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -44,9 +46,13 @@ function makeDoc(overrides: {
       conditions: [],
       activeBuffs: overrides.activeBuffs ?? [],
       resources: {},
-      animalCompanion: overrides.sharedBuffIds
-        ? { sharedBuffIds: overrides.sharedBuffIds }
-        : undefined,
+      animalCompanion:
+        overrides.sharedBuffIds || overrides.companionConditions
+          ? {
+              sharedBuffIds: overrides.sharedBuffIds,
+              conditions: overrides.companionConditions,
+            }
+          : undefined,
     },
   } as CharacterDoc;
 }
@@ -254,6 +260,25 @@ describe("deriveCompanion edge cases", () => {
     expect(companionEffectiveLevel(doc)).toBe(1);
   });
 
+  it("cavalier's Mount (issue #68): effective level equals cavalier level 1:1, from 1st level", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "cavalier", level: 3 }],
+      animalCompanion: { speciesId: "horse", name: "Comet", source: ["cavalier-mount"] },
+    });
+    expect(companionEffectiveLevel(doc)).toBe(3);
+    const rollData = buildRollData(doc, ref);
+    const horse = deriveCompanion(doc, rollData);
+    expect(horse?.level).toBe(3);
+  });
+
+  it("samurai's Mount (issue #68): effective level equals samurai level 1:1, from 1st level", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "samurai", level: 1 }],
+      animalCompanion: { speciesId: "horse", name: "Comet", source: ["samurai-mount"] },
+    });
+    expect(companionEffectiveLevel(doc)).toBe(1);
+  });
+
   it("stacks with another source, per the Hunter's own vendored rules text", () => {
     const doc = makeDoc({
       classes: [
@@ -304,5 +329,146 @@ describe("deriveCompanion edge cases", () => {
     // level 4 row: abilityAdj +1 to both Str/Dex; the single ASI slot goes to Dex.
     expect(wolf.abilities.str).toEqual({ score: 14, mod: 2 });
     expect(wolf.abilities.dex).toEqual({ score: 17, mod: 3 });
+  });
+});
+
+describe("deriveCompanion skill-rank investment (issue #68)", () => {
+  it("badger at druid-6: skill points = hd * max(1, 2+intMod); ranks clamp to hd; class-skill +3 kicks in at 1+ rank", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 6 }],
+      animalCompanion: {
+        speciesId: "badger",
+        name: "Digger",
+        source: ["nature-bond"],
+        skillRanks: { per: 3, ste: 10 }, // ste over-invested past hd (6) — clamped, not blocked
+      },
+    });
+    const rollData = buildRollData(doc, ref);
+    const badger = deriveCompanion(doc, rollData)!;
+    expect(badger.hd).toBe(6);
+    expect(badger.abilities.int.mod).toBe(-4);
+    expect(badger.skillPointsAvailable).toBe(6); // hd(6) * max(1, 2-4)
+    expect(badger.skillPointsSpent).toBe(9); // 3 + clamp(10, 0, 6)
+
+    const per = badger.skills.per!;
+    expect(per.ranks).toBe(3);
+    expect(per.total).toBe(7); // Wis mod(+1) + ranks(3) + class skill(+3)
+
+    const ste = badger.skills.ste!;
+    expect(ste.ranks).toBe(6); // clamped from 10 to hd
+    expect(ste.total).toBe(13); // Dex mod(+4) + ranks(6) + class skill(+3) + size(0, Medium)
+  });
+
+  it("no skillRanks entry: unchanged pure ability-mod/racial/size total (0 ranks, no class-skill bonus)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 6 }],
+      animalCompanion: { speciesId: "badger", name: "Digger", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const badger = deriveCompanion(doc, rollData)!;
+    expect(badger.skills.per!.ranks).toBe(0);
+    expect(badger.skills.per!.total).toBe(1); // Wis mod(+1) only
+    expect(badger.skillPointsSpent).toBe(0);
+  });
+});
+
+describe("deriveCompanion own active conditions (issue #68)", () => {
+  // druid-1 wolf, ungrown (size stays "med"): bab +1, Str 13 (mod +1), Dex 15
+  // (mod +2), attack 3 (1d6+1), saves fort 5/ref 5/will 1, AC 13/touch 12/
+  // flat-footed 11, CMB 2/CMD 14, per total 1, ste total 2 — hand-verified
+  // baseline for the deltas below.
+  function wolf1(companionConditions?: string[]): CharacterDoc {
+    return makeDoc({
+      classes: [{ tag: "druid", level: 1 }],
+      animalCompanion: { speciesId: "wolf", name: "Fang", source: ["nature-bond"] },
+      companionConditions,
+    });
+  }
+
+  it("shaken (-2 attack, -2 all saves, -2 skills — global 'skills' target, issue #68)", () => {
+    const doc = wolf1(["shaken"]);
+    const rollData = buildRollData(doc, ref);
+    const wolf = deriveCompanion(doc, rollData)!;
+    expect(wolf.attacks[0]).toMatchObject({ attack: 1 });
+    expect(wolf.saves).toEqual({ fort: 3, ref: 3, will: -1 });
+    expect(wolf.skills.per!.total).toBe(-1);
+    expect(wolf.skills.ste!.total).toBe(0);
+  });
+
+  it("entangled (-2 attack, -4 Dex) cascades Dex into AC/CMD, on top of its own attack penalty", () => {
+    const doc = wolf1(["entangled"]);
+    const rollData = buildRollData(doc, ref);
+    const wolf = deriveCompanion(doc, rollData)!;
+    expect(wolf.attacks[0]).toMatchObject({ attack: 0 });
+    expect(wolf.ac.normal).toBe(11);
+    expect(wolf.ac.touch).toBe(10);
+    expect(wolf.cmd).toBe(12); // Dex contributes to CMD; CMB (Str-based) is unaffected
+    expect(wolf.cmb).toBe(2);
+  });
+
+  it("sickened's 'wdamage' target folds into the same damage bucket as natural-attack damage (issue #68)", () => {
+    const doc = wolf1(["sickened"]);
+    const rollData = buildRollData(doc, ref);
+    const wolf = deriveCompanion(doc, rollData)!;
+    expect(wolf.attacks[0]).toMatchObject({ damageBonus: -1 }); // base +1, wdamage -2
+    expect(wolf.skills.per!.total).toBe(-1); // sickened's global "skills" -2
+  });
+
+  it("no conditions: unaffected baseline", () => {
+    const doc = wolf1();
+    const rollData = buildRollData(doc, ref);
+    const wolf = deriveCompanion(doc, rollData)!;
+    expect(wolf.attacks[0]).toMatchObject({ attack: 3, damageBonus: 1 });
+    expect(wolf.saves).toEqual({ fort: 5, ref: 5, will: 1 });
+  });
+});
+
+describe("deriveCompanion primary/secondary natural attacks (issue #68)", () => {
+  it("horse (2 hooves, single attack form): both hooves stay primary, no −5/half-Str reduction", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 1 }],
+      animalCompanion: { speciesId: "horse", name: "Silver", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const horse = deriveCompanion(doc, rollData)!;
+    // HD 2, BAB +1; Str 16 (mod +3); size Large (−1 attack); bab 1 + str 3 − 1 = 3.
+    expect(horse.bab).toBe(1);
+    expect(horse.abilities.str.mod).toBe(3);
+    const hoof = horse.attacks.find((a) => a.name === "Hoof")!;
+    expect(hoof).toMatchObject({ attackType: "primary", attack: 3, damageBonus: 3 });
+  });
+
+  it("badger (Bite + 2 Claws) below Multiattack: Bite primary, Claw secondary at −5/half Str", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 6 }],
+      animalCompanion: { speciesId: "badger", name: "Digger", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const badger = deriveCompanion(doc, rollData)!;
+    expect(badger.bab).toBe(4);
+    expect(badger.abilities.str.mod).toBe(1);
+    expect(badger.specialAbilities.map((a) => a.name)).not.toContain("Multiattack");
+    const bite = badger.attacks.find((a) => a.name === "Bite")!;
+    const claw = badger.attacks.find((a) => a.name === "Claw")!;
+    expect(bite).toMatchObject({ attackType: "primary", attack: 8, damageBonus: 1 });
+    // secondary: −5 attack penalty, half Str (floor(1/2) = 0).
+    expect(claw).toMatchObject({ attackType: "secondary", attack: 3, damageBonus: 0 });
+  });
+
+  it("badger at 9th (Multiattack unlocked): Claw's secondary penalty softens from −5 to −2", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 9 }],
+      animalCompanion: { speciesId: "badger", name: "Digger", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const badger = deriveCompanion(doc, rollData)!;
+    expect(badger.bab).toBe(6);
+    expect(badger.abilities.str.mod).toBe(2);
+    expect(badger.specialAbilities.map((a) => a.name)).toContain("Multiattack");
+    const bite = badger.attacks.find((a) => a.name === "Bite")!;
+    const claw = badger.attacks.find((a) => a.name === "Claw")!;
+    expect(bite).toMatchObject({ attackType: "primary", attack: 11, damageBonus: 2 });
+    // secondary: −2 attack penalty (Multiattack), half Str (floor(2/2) = 1).
+    expect(claw).toMatchObject({ attackType: "secondary", attack: 9, damageBonus: 1 });
   });
 });

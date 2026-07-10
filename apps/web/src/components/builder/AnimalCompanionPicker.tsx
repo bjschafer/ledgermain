@@ -3,21 +3,33 @@ import {
   companionAbilityIncreaseSlots,
   companionEffectiveLevel,
 } from "@pf1/engine";
-import type { AbilityId, CharacterDoc } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, RefData } from "@pf1/schema";
 
 import {
+  cavalierLevel,
   clearCompanion,
+  companionFeatPrereqContext,
+  deriveCompanionSheet,
+  mountSpeciesHint,
+  samuraiLevel,
   setCompanion,
   setCompanionAbilityIncrease,
   setCompanionNotes,
+  setCompanionSkillRank,
+  toggleCompanionFeat,
   toggleCompanionSource,
 } from "../../model/companion.js";
+import { COMPANION_SKILL_IDS } from "../../model/companionDisplay.js";
+import { skillName } from "../../model/names.js";
+import { evaluatePrereqs } from "../../model/prereqs.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { NumberField } from "./NumberField.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface AnimalCompanionPickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
@@ -32,26 +44,39 @@ const ABILITY_OPTIONS: { id: AbilityId; label: string }[] = [
 
 /**
  * Tracked animal companion (PF1 druid Nature Bond / ranger Hunter's Bond /
- * ACG Hunter's own Animal Companion feature) — species + name + which class
- * feature(s) grant it, mirroring `FamiliarPicker` closely. Unlike a familiar
- * (class-agnostic — any feature can grant one), a companion is ALWAYS
- * sourced from a specific bond choice, so this only renders for characters
- * with druid levels (Nature Bond), ranger levels ≥ 4 (Hunter's Bond), or
- * hunter levels (the ACG Hunter class's own Animal Companion feature, issue
- * #65 — distinct from the ranger's similarly-named "Hunter's Bond", see
- * `@pf1/engine` `companionEffectiveLevel`'s doc comment) — a druid choosing
- * the domain option instead, and a ranger below 4th level, simply see no
- * picker yet.
+ * ACG Hunter's own Animal Companion feature / cavalier & samurai Mount,
+ * issue #68) — species + name + which class feature(s) grant it, mirroring
+ * `FamiliarPicker` closely. Unlike a familiar (class-agnostic — any feature
+ * can grant one), a companion is ALWAYS sourced from a specific bond choice,
+ * so this only renders for characters with druid levels (Nature Bond),
+ * ranger levels ≥ 4 (Hunter's Bond), hunter levels (the ACG Hunter class's
+ * own Animal Companion feature, issue #65 — distinct from the ranger's
+ * similarly-named "Hunter's Bond", see `@pf1/engine`
+ * `companionEffectiveLevel`'s doc comment), or cavalier/samurai levels (the
+ * "Mount" class feature, granted at 1st level unlike the ranger's 4th-level
+ * gate) — a druid choosing the domain option instead, and a ranger below
+ * 4th level, simply see no picker yet.
  */
-export function AnimalCompanionPicker({ doc, update }: AnimalCompanionPickerProps) {
+export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:AnimalCompanion", false);
   const druidLevel = doc.identity.classes.find((c) => c.tag === "druid")?.level ?? 0;
   const rangerLevel = doc.identity.classes.find((c) => c.tag === "ranger")?.level ?? 0;
   const hunterLevel = doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
+  const cavLevel = cavalierLevel(doc);
+  const samLevel = samuraiLevel(doc);
   const canNatureBond = druidLevel >= 1;
   const canHuntersBond = rangerLevel >= 4;
   const canHunterCompanion = hunterLevel >= 1;
-  if (!canNatureBond && !canHuntersBond && !canHunterCompanion) return null;
+  const canCavalierMount = cavLevel >= 1;
+  const canSamuraiMount = samLevel >= 1;
+  if (
+    !canNatureBond &&
+    !canHuntersBond &&
+    !canHunterCompanion &&
+    !canCavalierMount &&
+    !canSamuraiMount
+  )
+    return null;
 
   const companion = doc.build.animalCompanion;
   const species = companion ? BASE_COMPANIONS[companion.speciesId] : undefined;
@@ -59,6 +84,16 @@ export function AnimalCompanionPicker({ doc, update }: AnimalCompanionPickerProp
   const effectiveLevel = companionEffectiveLevel(doc);
   const increaseSlots = companionAbilityIncreaseSlots(effectiveLevel);
   const abilityIncreases = companion?.abilityIncreases ?? [];
+  const sizeIsSmall = refData.races[doc.identity.race]?.size === "sm";
+  const mountHint = mountSpeciesHint(doc, refData).map((id) => BASE_COMPANIONS[id]?.name ?? id);
+  // Full derived stat block (issue #68) — needed for the companion's OWN
+  // hd/bab/abilities/skill totals/feat budget, none of which the raw
+  // `AnimalCompanionBuild` alone carries.
+  const derivedCompanion = deriveCompanionSheet(doc, refData);
+  const chosenFeatIds = companion?.feats ?? [];
+  const featCtx = derivedCompanion
+    ? companionFeatPrereqContext(doc, derivedCompanion, refData)
+    : undefined;
 
   return (
     <div className="subsection animal-companion-picker">
@@ -116,7 +151,34 @@ export function AnimalCompanionPicker({ doc, update }: AnimalCompanionPickerProp
                 Animal Companion (hunter {hunterLevel})
               </button>
             )}
+            {canCavalierMount && (
+              <button
+                type="button"
+                className="chip"
+                aria-pressed={sources.includes("cavalier-mount")}
+                onClick={() => update((d) => toggleCompanionSource(d, "cavalier-mount"))}
+              >
+                Mount (cavalier {cavLevel})
+              </button>
+            )}
+            {canSamuraiMount && (
+              <button
+                type="button"
+                className="chip"
+                aria-pressed={sources.includes("samurai-mount")}
+                onClick={() => update((d) => toggleCompanionSource(d, "samurai-mount"))}
+              >
+                Mount (samurai {samLevel})
+              </button>
+            )}
           </div>
+          {(canCavalierMount || canSamuraiMount) &&
+            (sources.includes("cavalier-mount") || sources.includes("samurai-mount")) && (
+              <p className="hint animal-companion-mount-hint">
+                RAW mount list for your size: {mountHint.join(", ")} (a GM may approve others).
+                {sizeIsSmall ? " Boar and Dog additionally require 4th level." : ""}
+              </p>
+            )}
 
           {sources.length === 0 ? (
             <p className="hint">
@@ -195,6 +257,92 @@ export function AnimalCompanionPicker({ doc, update }: AnimalCompanionPickerProp
                       ))}
                     </select>
                   ))}
+                </div>
+              )}
+              {derivedCompanion && (
+                <div className="animal-companion-skills">
+                  <span
+                    className={`hint${
+                      derivedCompanion.skillPointsSpent > derivedCompanion.skillPointsAvailable
+                        ? " warn-over"
+                        : ""
+                    }`}
+                  >
+                    Skill ranks: {derivedCompanion.skillPointsSpent} /{" "}
+                    {derivedCompanion.skillPointsAvailable}
+                  </span>
+                  <div className="familiar-skill-grid">
+                    {COMPANION_SKILL_IDS.map((id) => {
+                      const skill = derivedCompanion.skills[id];
+                      if (!skill) return null;
+                      return (
+                        <div key={id} className="companion-skill-rank-row">
+                          <span className="fs-name">{skillName(id)}</span>
+                          <NumberField
+                            size={3}
+                            value={skill.ranks}
+                            min={0}
+                            max={derivedCompanion.hd}
+                            commitOnChange
+                            onCommit={(n) => update((d) => setCompanionSkillRank(d, id, n))}
+                            aria-label={`${skillName(id)} ranks`}
+                          />
+                          <span className="fs-val num">{skill.total}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {derivedCompanion && featCtx && (
+                <div className="animal-companion-feats">
+                  <span
+                    className={`hint${
+                      chosenFeatIds.length > derivedCompanion.bonusFeats ? " warn-over" : ""
+                    }`}
+                  >
+                    Feats: {chosenFeatIds.length} / {derivedCompanion.bonusFeats}
+                  </span>
+                  <div className="chips">
+                    {chosenFeatIds.map((id) => (
+                      <button
+                        key={id}
+                        type="button"
+                        className="chip"
+                        aria-pressed
+                        onClick={() => update((d) => toggleCompanionFeat(d, id))}
+                        title="Remove"
+                      >
+                        {refData.feats[id]?.name ?? id} ✕
+                      </button>
+                    ))}
+                  </div>
+                  <select
+                    className="familiar-select"
+                    value=""
+                    onChange={(e) => {
+                      if (e.target.value) update((d) => toggleCompanionFeat(d, e.target.value));
+                    }}
+                    aria-label="Add a companion feat"
+                  >
+                    <option value="">— add a feat —</option>
+                    {Object.values(refData.feats)
+                      .filter((f) => !chosenFeatIds.includes(f.id))
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map((f) => {
+                        const blocked = evaluatePrereqs(f, featCtx).blocked;
+                        return (
+                          <option key={f.id} value={f.id} disabled={blocked}>
+                            {f.name}
+                            {blocked ? " (prereqs unmet)" : ""}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  <p className="hint">
+                    Free pick from the full feat list (no animal-eligible filter in v1); prereqs
+                    checked against the companion's own stats.
+                  </p>
                 </div>
               )}
               <button

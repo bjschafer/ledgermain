@@ -1,23 +1,29 @@
 import { useState } from "react";
 
+import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
+
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import {
   addCompanionNonlethal,
   animalFocusBuffs,
   applyCompanionDamage,
+  companionSupersedingCondition,
   deriveCompanionSheet,
+  hasCompanionCondition,
   healCompanion,
   healCompanionNonlethal,
   hunterLevel,
   restCompanion,
   setCompanionFocus,
+  toggleCompanionCondition,
 } from "../../model/companion.js";
 import {
   companionSkillRows,
   formatCompanionAttackDamage,
   formatCompanionAttackName,
   formatCompanionAttackRoll,
+  formatCompanionAttackTypeSuffix,
   formatCompanionSummary,
 } from "../../model/companionDisplay.js";
 import { signed } from "../../model/names.js";
@@ -38,6 +44,7 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
   const [amount, setAmount] = useState(3);
   const companion = deriveCompanionSheet(doc, refData);
   if (!companion) return null;
+  const companionFeatIds = doc.build.animalCompanion?.feats ?? [];
 
   // Hunter's Animal Focus applied to the companion (issue #65) — display-only
   // (see AnimalCompanionLiveState.focusBuffId's doc comment); only relevant
@@ -147,6 +154,37 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
         </div>
       )}
 
+      <div className="animal-companion-conditions">
+        <h4 className="tracker-sub">Conditions</h4>
+        <div className="chips">
+          {CONDITION_IDS.map((id) => {
+            const cond = CONDITIONS[id]!;
+            const on = hasCompanionCondition(doc, id);
+            const supersededBy = companionSupersedingCondition(doc, id);
+            const implied = supersededBy !== undefined;
+            const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
+            const tipContent = implied
+              ? `Implied by ${impliedName} — turn ${impliedName} off to control ${cond.name} directly.`
+              : cond.displayOnly
+                ? `${cond.summary} (reference only — no numeric modifier applied)`
+                : cond.summary;
+            return (
+              <button
+                key={id}
+                type="button"
+                className={`chip cond${cond.displayOnly ? " display-only" : ""}${implied ? " implied" : ""}`}
+                aria-pressed={on}
+                disabled={implied}
+                title={tipContent}
+                onClick={() => update((d) => toggleCompanionCondition(d, id))}
+              >
+                {cond.name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="stat-group familiar-stat-group">
         <div className="stat-group-header">
           <span className="stat-group-legend">Defense</span>
@@ -182,7 +220,12 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
           <div className="weapon-attack-list familiar-attack-list">
             {companion.attacks.map((a, i) => (
               <div key={i} className="weapon-attack-row">
-                <span className="weapon-attack-name">{formatCompanionAttackName(a)}</span>
+                <span className="weapon-attack-name">
+                  {formatCompanionAttackName(a)}
+                  {formatCompanionAttackTypeSuffix(a) ? (
+                    <span className="hint"> {formatCompanionAttackTypeSuffix(a)}</span>
+                  ) : null}
+                </span>
                 <div className="weapon-attack-stats familiar-attack-stats">
                   <StatSeal
                     label="Attack"
@@ -241,10 +284,23 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
         </>
       )}
 
+      {companionFeatIds.length > 0 && (
+        <>
+          <h4 className="tracker-sub">Feats</h4>
+          <div className="chips">
+            {companionFeatIds.map((id) => (
+              <span key={id} className="chip display-only">
+                {refData.feats[id]?.name ?? id}
+              </span>
+            ))}
+          </div>
+        </>
+      )}
+
       <p className="hint companion-tricks-hint">
-        {companion.bonusTricks} bonus trick{companion.bonusTricks === 1 ? "" : "s"} ·{" "}
-        {companion.bonusFeats} bonus feat{companion.bonusFeats === 1 ? "" : "s"} (not separately
-        tracked)
+        {companion.bonusTricks} bonus trick{companion.bonusTricks === 1 ? "" : "s"} (Handle Animal,
+        not separately tracked) · {companionFeatIds.length} / {companion.bonusFeats} bonus feat
+        {companion.bonusFeats === 1 ? "" : "s"} picked
       </p>
     </Panel>
   );
