@@ -39,6 +39,7 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
   const [amount, setAmount] = useState(3);
   const companion = deriveCompanionSheet(doc, refData);
   if (!companion) return null;
+  const companionFeatIds = doc.build.animalCompanion?.feats ?? [];
 
   // Hunter's Animal Focus applied to the companion (issue #65) — display-only
   // (see AnimalCompanionLiveState.focusBuffId's doc comment); only relevant
@@ -247,10 +248,23 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
         </>
       )}
 
+      {companionFeatIds.length > 0 && (
+        <>
+          <h4 className="tracker-sub">Feats</h4>
+          <div className="chips">
+            {companionFeatIds.map((id) => (
+              <span key={id} className="chip display-only">
+                {refData.feats[id]?.name ?? id}
+              </span>
+            ))}
+          </div>
+        </>
+      )}
+
       <p className="hint companion-tricks-hint">
-        {companion.bonusTricks} bonus trick{companion.bonusTricks === 1 ? "" : "s"} ·{" "}
-        {companion.bonusFeats} bonus feat{companion.bonusFeats === 1 ? "" : "s"} (not separately
-        tracked)
+        {companion.bonusTricks} bonus trick{companion.bonusTricks === 1 ? "" : "s"} (Handle Animal,
+        not separately tracked) · {companionFeatIds.length} / {companion.bonusFeats} bonus feat
+        {companion.bonusFeats === 1 ? "" : "s"} picked
       </p>
     </Panel>
   );

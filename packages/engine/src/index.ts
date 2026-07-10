@@ -387,6 +387,7 @@ export {
   companionProgressionRow,
   companionSpecialAbilityNames,
   companionAbilityIncreaseSlots,
+  companionSkillPoints,
   type BaseCompanion,
   type CompanionAttack,
   type CompanionGrowthStep,

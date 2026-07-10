@@ -8,14 +8,22 @@ import type { AbilityId, CharacterDoc, RefData } from "@pf1/schema";
 import {
   cavalierLevel,
   clearCompanion,
+  companionFeatPrereqContext,
+  deriveCompanionSheet,
   mountSpeciesHint,
   samuraiLevel,
   setCompanion,
   setCompanionAbilityIncrease,
   setCompanionNotes,
+  setCompanionSkillRank,
+  toggleCompanionFeat,
   toggleCompanionSource,
 } from "../../model/companion.js";
+import { COMPANION_SKILL_IDS } from "../../model/companionDisplay.js";
+import { skillName } from "../../model/names.js";
+import { evaluatePrereqs } from "../../model/prereqs.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { NumberField } from "./NumberField.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -78,6 +86,14 @@ export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionP
   const abilityIncreases = companion?.abilityIncreases ?? [];
   const sizeIsSmall = refData.races[doc.identity.race]?.size === "sm";
   const mountHint = mountSpeciesHint(doc, refData).map((id) => BASE_COMPANIONS[id]?.name ?? id);
+  // Full derived stat block (issue #68) — needed for the companion's OWN
+  // hd/bab/abilities/skill totals/feat budget, none of which the raw
+  // `AnimalCompanionBuild` alone carries.
+  const derivedCompanion = deriveCompanionSheet(doc, refData);
+  const chosenFeatIds = companion?.feats ?? [];
+  const featCtx = derivedCompanion
+    ? companionFeatPrereqContext(doc, derivedCompanion, refData)
+    : undefined;
 
   return (
     <div className="subsection animal-companion-picker">
@@ -241,6 +257,92 @@ export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionP
                       ))}
                     </select>
                   ))}
+                </div>
+              )}
+              {derivedCompanion && (
+                <div className="animal-companion-skills">
+                  <span
+                    className={`hint${
+                      derivedCompanion.skillPointsSpent > derivedCompanion.skillPointsAvailable
+                        ? " warn-over"
+                        : ""
+                    }`}
+                  >
+                    Skill ranks: {derivedCompanion.skillPointsSpent} /{" "}
+                    {derivedCompanion.skillPointsAvailable}
+                  </span>
+                  <div className="familiar-skill-grid">
+                    {COMPANION_SKILL_IDS.map((id) => {
+                      const skill = derivedCompanion.skills[id];
+                      if (!skill) return null;
+                      return (
+                        <div key={id} className="companion-skill-rank-row">
+                          <span className="fs-name">{skillName(id)}</span>
+                          <NumberField
+                            size={3}
+                            value={skill.ranks}
+                            min={0}
+                            max={derivedCompanion.hd}
+                            commitOnChange
+                            onCommit={(n) => update((d) => setCompanionSkillRank(d, id, n))}
+                            aria-label={`${skillName(id)} ranks`}
+                          />
+                          <span className="fs-val num">{skill.total}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {derivedCompanion && featCtx && (
+                <div className="animal-companion-feats">
+                  <span
+                    className={`hint${
+                      chosenFeatIds.length > derivedCompanion.bonusFeats ? " warn-over" : ""
+                    }`}
+                  >
+                    Feats: {chosenFeatIds.length} / {derivedCompanion.bonusFeats}
+                  </span>
+                  <div className="chips">
+                    {chosenFeatIds.map((id) => (
+                      <button
+                        key={id}
+                        type="button"
+                        className="chip"
+                        aria-pressed
+                        onClick={() => update((d) => toggleCompanionFeat(d, id))}
+                        title="Remove"
+                      >
+                        {refData.feats[id]?.name ?? id} ✕
+                      </button>
+                    ))}
+                  </div>
+                  <select
+                    className="familiar-select"
+                    value=""
+                    onChange={(e) => {
+                      if (e.target.value) update((d) => toggleCompanionFeat(d, e.target.value));
+                    }}
+                    aria-label="Add a companion feat"
+                  >
+                    <option value="">— add a feat —</option>
+                    {Object.values(refData.feats)
+                      .filter((f) => !chosenFeatIds.includes(f.id))
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map((f) => {
+                        const blocked = evaluatePrereqs(f, featCtx).blocked;
+                        return (
+                          <option key={f.id} value={f.id} disabled={blocked}>
+                            {f.name}
+                            {blocked ? " (prereqs unmet)" : ""}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  <p className="hint">
+                    Free pick from the full feat list (no animal-eligible filter in v1); prereqs
+                    checked against the companion's own stats.
+                  </p>
                 </div>
               )}
               <button

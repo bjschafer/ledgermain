@@ -49,6 +49,20 @@
  *     situational (only vs. one school of magic), so — matching this
  *     project's posture for Ranger Favored Enemy/Terrain — it is surfaced as
  *     a special-ability chip only, never baked into `saves.will`.
+ *   - Skills/feats (issue #68): the companion's six trackable skills
+ *     (`acr`/`clm`/`fly`/`per`/`ste`/`swm`) now take rank investment
+ *     (`build.animalCompanion.skillRanks`), hard-capped per skill at the
+ *     companion's own HD and totaled against {@link companionSkillPoints}
+ *     (Monster Creation's "2 + Int mod per HD" skill-point formula, verified
+ *     against aonprd.com), with the standard +3 class-skill bonus once a
+ *     skill has 1+ rank (every one of the six is always a class skill for an
+ *     Animal-type creature). Feat picks (`build.animalCompanion.feats`) are a
+ *     free choice from the full feat list (no "animal-eligible" filter — a
+ *     documented v1 scope call), soft-capped against `bonusFeats` and
+ *     prereq-checked against the COMPANION's OWN derived stats — both
+ *     resolved in `apps/web/src/model/companion.ts` (this pure module has no
+ *     `RefData` to look feats up by id, mirroring the split established for
+ *     Boon Companion above).
  */
 
 import type { AbilityId, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
@@ -673,6 +687,20 @@ export interface DerivedCompanionSkill {
   ability: AbilityId;
   total: number;
   components: ModifierComponent[];
+  /** Ranks invested (issue #68), already clamped to [0, hd] — see module doc comment. */
+  ranks: number;
+}
+
+/**
+ * A creature's total skill-point budget (Monster Creation's own formula,
+ * verified against aonprd.com during authoring for issue #68: "2 + Int mod
+ * per HD," minimum 1 per HD) — every one of {@link BASE_COMPANIONS}'
+ * Intelligence scores is low enough (2, occasionally 1) that this almost
+ * always resolves to exactly 1 per HD, but the formula is applied generically
+ * rather than hardcoding that.
+ */
+export function companionSkillPoints(hd: number, intMod: number): number {
+  return hd * Math.max(1, 2 + intMod);
 }
 
 export interface DerivedCompanionAttack {
@@ -722,8 +750,18 @@ export interface DerivedCompanion {
   specialNotes: string[];
   /** Bonus tricks (Handle Animal) earned so far — display only, CRB table. */
   bonusTricks: number;
-  /** Bonus feats earned so far — display only, no companion feat picker in v1. */
+  /**
+   * Bonus feats earned so far (CRB progression table) — also doubles as the
+   * companion's own feat-pick BUDGET as of issue #68 (`build.animalCompanion
+   * .feats`'s soft cap, resolved with feat names/prereqs in
+   * `apps/web/src/model/companion.ts` since this pure module has no
+   * `RefData`).
+   */
   bonusFeats: number;
+  /** Total skill-point budget (issue #68) — see {@link companionSkillPoints}. */
+  skillPointsAvailable: number;
+  /** Ranks actually invested so far (sum of `skills[*].ranks`, already clamped). */
+  skillPointsSpent: number;
 }
 
 /**
@@ -877,9 +915,11 @@ export function deriveCompanion(
     attackType: a.attackType,
   }));
 
-  // --- skills: physical/perceptual only, no rank investment (see module doc) --
+  // --- skills: physical/perceptual six, with rank investment (issue #68) --
   const hasClimbSpeed = species.speeds.climb !== undefined;
   const hasSwimSpeed = species.speeds.swim !== undefined;
+  const skillPointsAvailable = companionSkillPoints(hd, abilities.int.mod);
+  let skillPointsSpent = 0;
   const skills: Record<string, DerivedCompanionSkill> = {};
   for (const id of COMPANION_SKILLS) {
     // Universal Monster Rules: a creature with a climb/swim speed uses Dex
@@ -902,8 +942,27 @@ export function deriveCompanion(
         (species.flyManeuverability ? FLY_MANEUVER_BONUS[species.flyManeuverability] : 0);
     }
 
+    // Ranks: hard-capped at [0, hd] (a monster's structural rank cap, not a
+    // soft budget — see module doc comment); the six skills here are ALWAYS
+    // class skills for an Animal-type creature (Universal Monster Rules,
+    // same convention `familiar.ts`'s `ANIMAL_CLASS_SKILLS` established),
+    // so 1+ rank grants the standard +3 class-skill bonus.
+    const ranksRaw = build.skillRanks?.[id] ?? 0;
+    const ranks = Math.max(0, Math.min(hd, Math.trunc(ranksRaw)));
+    skillPointsSpent += ranks;
+    const classSkillBonus = ranks >= 1 ? 3 : 0;
+
     const miscStack = resolveStack(routed.skill.get(id) ?? []);
     const components: ModifierComponent[] = [];
+    if (ranks !== 0)
+      components.push({ source: "Ranks", type: "untyped", value: ranks, applied: true });
+    if (classSkillBonus !== 0)
+      components.push({
+        source: "Class skill",
+        type: "untyped",
+        value: classSkillBonus,
+        applied: true,
+      });
     if (racial !== 0)
       components.push({
         source: `${species.name} (racial)`,
@@ -926,8 +985,9 @@ export function deriveCompanion(
     skills[id] = {
       id,
       ability,
-      total: abilityModVal + racial + sizeSkillMod + miscStack.total,
+      total: abilityModVal + ranks + classSkillBonus + racial + sizeSkillMod + miscStack.total,
       components,
+      ranks,
     };
   }
 
@@ -967,5 +1027,7 @@ export function deriveCompanion(
     specialNotes,
     bonusTricks: row.bonusTricks,
     bonusFeats: row.feats,
+    skillPointsAvailable,
+    skillPointsSpent,
   };
 }

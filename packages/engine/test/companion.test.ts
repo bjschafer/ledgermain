@@ -326,6 +326,46 @@ describe("deriveCompanion edge cases", () => {
   });
 });
 
+describe("deriveCompanion skill-rank investment (issue #68)", () => {
+  it("badger at druid-6: skill points = hd * max(1, 2+intMod); ranks clamp to hd; class-skill +3 kicks in at 1+ rank", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 6 }],
+      animalCompanion: {
+        speciesId: "badger",
+        name: "Digger",
+        source: ["nature-bond"],
+        skillRanks: { per: 3, ste: 10 }, // ste over-invested past hd (6) — clamped, not blocked
+      },
+    });
+    const rollData = buildRollData(doc, ref);
+    const badger = deriveCompanion(doc, rollData)!;
+    expect(badger.hd).toBe(6);
+    expect(badger.abilities.int.mod).toBe(-4);
+    expect(badger.skillPointsAvailable).toBe(6); // hd(6) * max(1, 2-4)
+    expect(badger.skillPointsSpent).toBe(9); // 3 + clamp(10, 0, 6)
+
+    const per = badger.skills.per!;
+    expect(per.ranks).toBe(3);
+    expect(per.total).toBe(7); // Wis mod(+1) + ranks(3) + class skill(+3)
+
+    const ste = badger.skills.ste!;
+    expect(ste.ranks).toBe(6); // clamped from 10 to hd
+    expect(ste.total).toBe(13); // Dex mod(+4) + ranks(6) + class skill(+3) + size(0, Medium)
+  });
+
+  it("no skillRanks entry: unchanged pure ability-mod/racial/size total (0 ranks, no class-skill bonus)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 6 }],
+      animalCompanion: { speciesId: "badger", name: "Digger", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const badger = deriveCompanion(doc, rollData)!;
+    expect(badger.skills.per!.ranks).toBe(0);
+    expect(badger.skills.per!.total).toBe(1); // Wis mod(+1) only
+    expect(badger.skillPointsSpent).toBe(0);
+  });
+});
+
 describe("deriveCompanion primary/secondary natural attacks (issue #68)", () => {
   it("horse (2 hooves, single attack form): both hooves stay primary, no −5/half-Str reduction", () => {
     const doc = makeDoc({

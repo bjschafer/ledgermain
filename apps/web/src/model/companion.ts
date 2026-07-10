@@ -4,8 +4,8 @@
  * doc comments on those fields, and `@pf1/engine` `companion.ts` for the
  * derivation rules). Mirrors `model/familiar.ts`'s shape closely; the
  * differences are the companion's `source` toggles (Nature Bond / Hunter's
- * Bond) and its player-assigned Ability Score Increases, neither of which a
- * familiar has.
+ * Bond / Mount), its player-assigned Ability Score Increases, and (issue #68)
+ * its own feat/skill-rank investment, none of which a familiar has.
  */
 
 import {
@@ -19,6 +19,9 @@ import {
   type DerivedCompanion,
 } from "@pf1/engine";
 import type { AbilityId, AnimalCompanionBuild, CharacterDoc, RefData } from "@pf1/schema";
+
+import { ABILITY_IDS } from "./doc.js";
+import type { PrereqContext } from "./prereqs.js";
 
 /** Set (or replace) the tracked companion's species + name. Trims blank names to "Companion". */
 export function setCompanion(doc: CharacterDoc, speciesId: string, name: string): CharacterDoc {
@@ -104,6 +107,70 @@ export function setCompanionAbilityIncrease(
   return {
     ...doc,
     build: { ...doc.build, animalCompanion: { ...current, abilityIncreases: next } },
+  };
+}
+
+/**
+ * Toggle a feat pick for the companion itself (issue #68 —
+ * `build.animalCompanion.feats`). Free-choice, soft-capped against
+ * `DerivedCompanion.bonusFeats` by the UI (never blocked here). No-ops if
+ * there's no companion yet.
+ */
+export function toggleCompanionFeat(doc: CharacterDoc, featId: string): CharacterDoc {
+  const current = doc.build.animalCompanion;
+  if (!current) return doc;
+  const existing = current.feats ?? [];
+  const feats = existing.includes(featId)
+    ? existing.filter((id) => id !== featId)
+    : [...existing, featId];
+  return { ...doc, build: { ...doc.build, animalCompanion: { ...current, feats } } };
+}
+
+/**
+ * Set the companion's invested ranks in one of its six trackable skills
+ * (issue #68 — `build.animalCompanion.skillRanks`). Only clamps to a
+ * non-negative integer here; the per-skill hard cap at the companion's own
+ * Hit Dice, and the soft total-budget warning, are both enforced/surfaced
+ * downstream (`@pf1/engine` `deriveCompanion`'s clamp; the UI's own budget
+ * display) rather than duplicated in this transition. No-ops if there's no
+ * companion yet.
+ */
+export function setCompanionSkillRank(
+  doc: CharacterDoc,
+  skillId: string,
+  ranks: number,
+): CharacterDoc {
+  const current = doc.build.animalCompanion;
+  if (!current) return doc;
+  const r = Number.isNaN(ranks) ? 0 : Math.max(0, Math.trunc(ranks));
+  const next = { ...current.skillRanks };
+  if (r <= 0) delete next[skillId];
+  else next[skillId] = r;
+  return { ...doc, build: { ...doc.build, animalCompanion: { ...current, skillRanks: next } } };
+}
+
+/**
+ * The companion's own feat-prerequisite context (issue #68) — reuses
+ * `model/prereqs.ts`'s `evaluatePrereqs`/`PrereqContext`, but built from the
+ * COMPANION's own derived ability scores/BAB (not the master's), the
+ * companion's own chosen feats (`doc.build.animalCompanion.feats`, not the
+ * master's `build.feats`), and `casterLevel: 0` (no companion in
+ * `BASE_COMPANIONS` casts). Mirrors `FeatsSection`'s own `PrereqContext`
+ * construction for the master.
+ */
+export function companionFeatPrereqContext(
+  doc: CharacterDoc,
+  companion: DerivedCompanion,
+  refData: RefData,
+): PrereqContext {
+  const abilityTotals = {} as Record<AbilityId, number>;
+  for (const id of ABILITY_IDS) abilityTotals[id] = companion.abilities[id].score;
+  return {
+    abilityTotals,
+    bab: companion.bab,
+    casterLevel: 0,
+    selectedFeats: new Set(doc.build.animalCompanion?.feats ?? []),
+    refData,
   };
 }
 

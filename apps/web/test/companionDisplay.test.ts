@@ -50,14 +50,16 @@ function makeCompanion(overrides: Partial<DerivedCompanion> = {}): DerivedCompan
     cmd: 21,
     attacks: [makeAttack()],
     skills: {
-      per: { id: "per", ability: "wis", total: 5, components: [] },
-      ste: { id: "ste", ability: "dex", total: -1, components: [] },
+      per: { id: "per", ability: "wis", total: 5, components: [], ranks: 0 },
+      ste: { id: "ste", ability: "dex", total: -1, components: [], ranks: 0 },
     },
     naturalArmor: 5,
     specialAbilities: [],
     specialNotes: [],
     bonusTricks: 3,
     bonusFeats: 3,
+    skillPointsAvailable: 6,
+    skillPointsSpent: 0,
     ...overrides,
   };
 }
