@@ -39,6 +39,8 @@ Deliberately deferred, and _cheap because of this model_ — they reuse the **sa
 - **Level 2 — live mirror:** changes appear on the other device in near-real-time (DO + WebSocket).
 - **Level 3 — conflict-free concurrent editing:** CRDT (Yjs/Automerge); only if simultaneous editing becomes a real need.
 
+> **DECIDED (2026-07-09): not pursuing Level 2, Level 3, or the offline PWA.** Level 1 sync shipped and is the end state for connectivity. The architectural rule above stays (it's what keeps the client fast and the server simple), but party sync / live mirror / CRDT / service-worker offline are off the roadmap entirely — the product stays a single-player sheet. Content breadth limits are inventoried in issue #74. Future work is driven by real at-the-table feedback, not this list.
+
 Identity stays boring: Discord OAuth, sessions in KV/D1. (GitHub OAuth and email magic-link were the alternatives considered; Discord fits the actual TTRPG-player audience better than a dev-tool login, and needs no email-sending infra. Cloudflare Access is org-oriented overkill — it assumes an IdP the project owner administers, the opposite of "a stranger can sign up.")
 
 ## 3. The backbone data model
