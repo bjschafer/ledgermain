@@ -8796,6 +8796,744 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.pqu1Mvo46iRpVH3I"
   },
+  "prestige:arcane-archer:arrow-of-death": {
+    "changes": [],
+    "description": "<p>At 10th level, an arcane archer can spend a day crafting a single slaying arrow. A target struck by it must succeed at a Fortitude save (DC 20 + the arcane archer's Charisma modifier) or die instantly.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-archer:arrow-of-death",
+    "name": "Arrow of Death",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "arrowOfDeath",
+    "uuid": "prestige-feature:arcane-archer:arrow-of-death"
+  },
+  "prestige:arcane-archer:enhance-arrows": {
+    "changes": [],
+    "description": "<p>Every nonmagical arrow an arcane archer nocks and looses becomes magical for that shot, gaining a +1 enhancement bonus; she need not pay any gp cost to do this, and the arrows only function as magical for her. At 3rd level she can add flaming, frost, or shock; at 5th level, distance; at 7th level, flaming burst, icy burst, or shocking burst; and at 9th level, anarchic, axiomatic, holy, or unholy (matching her own alignment).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-archer:enhance-arrows",
+    "name": "Enhance Arrows",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "enhanceArrows",
+    "uuid": "prestige-feature:arcane-archer:enhance-arrows"
+  },
+  "prestige:arcane-archer:hail-of-arrows": {
+    "changes": [],
+    "description": "<p>Once per day at 8th level, an arcane archer can fire a single arrow at each and every target within range, up to a maximum number of targets equal to her arcane archer level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-archer:hail-of-arrows",
+    "name": "Hail of Arrows",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "hailOfArrows",
+    "uuid": "prestige-feature:arcane-archer:hail-of-arrows"
+  },
+  "prestige:arcane-archer:imbue-arrow": {
+    "changes": [],
+    "description": "<p>At 2nd level, an arcane archer can cast an area-effect spell and center it where an arrow she fires lands, using the bow's range instead of the spell's own range.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-archer:imbue-arrow",
+    "name": "Imbue Arrow",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "imbueArrow",
+    "uuid": "prestige-feature:arcane-archer:imbue-arrow"
+  },
+  "prestige:arcane-archer:phase-arrow": {
+    "changes": [],
+    "description": "<p>At 6th level, once per day (and one additional time per day for every two levels beyond 6th, to a maximum of three times per day at 10th level), an arcane archer can fire an arrow that passes through any nonmagical barrier or wall on its way to the target.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-archer:phase-arrow",
+    "name": "Phase Arrow",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "phaseArrow",
+    "uuid": "prestige-feature:arcane-archer:phase-arrow"
+  },
+  "prestige:arcane-archer:seeker-arrow": {
+    "changes": [],
+    "description": "<p>At 4th level, once per day (and one additional time per day for every two levels beyond 4th, to a maximum of four times per day at 10th level), an arcane archer can fire an arrow at a known target within range that travels to strike it, even around corners or behind cover.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-archer:seeker-arrow",
+    "name": "Seeker Arrow",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "seekerArrow",
+    "uuid": "prestige-feature:arcane-archer:seeker-arrow"
+  },
+  "prestige:arcane-trickster:impromptu-sneak-attack": {
+    "changes": [],
+    "description": "<p>Starting at 3rd level, once per day an arcane trickster can declare one melee or ranged attack (target no more than 30 feet away, if ranged) to be a sneak attack — the target loses its Dexterity bonus to AC against that attack only. At 7th level she can do this twice per day.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-trickster:impromptu-sneak-attack",
+    "name": "Impromptu Sneak Attack",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "impromptuSneakAttack",
+    "uuid": "prestige-feature:arcane-trickster:impromptu-sneak-attack"
+  },
+  "prestige:arcane-trickster:invisible-thief": {
+    "changes": [],
+    "description": "<p>At 9th level, an arcane trickster can become invisible as a free action, as though under the effect of greater invisibility, for a number of rounds per day equal to her arcane trickster level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-trickster:invisible-thief",
+    "name": "Invisible Thief",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "invisibleThief",
+    "uuid": "prestige-feature:arcane-trickster:invisible-thief"
+  },
+  "prestige:arcane-trickster:ranged-legerdemain": {
+    "changes": [],
+    "description": "<p>An arcane trickster can use Disable Device and Sleight of Hand at a range of 30 feet. Working at a distance increases the check's DC by 5, and she cannot take 10 on the check; the targeted object must weigh 5 pounds or less.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-trickster:ranged-legerdemain",
+    "name": "Ranged Legerdemain",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "rangedLegerdemain",
+    "uuid": "prestige-feature:arcane-trickster:ranged-legerdemain"
+  },
+  "prestige:arcane-trickster:sneak-attack": {
+    "changes": [],
+    "description": "<p>Functions as the rogue ability of the same name, and stacks with sneak attack granted by another class. The extra damage is +1d6 at 2nd level, increasing by +1d6 every other level thereafter (4th, 6th, 8th, 10th) to a maximum of +5d6 at 10th level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-trickster:sneak-attack",
+    "name": "Sneak Attack (Arcane Trickster)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "sneakAttackArcaneTrickster",
+    "uuid": "prestige-feature:arcane-trickster:sneak-attack"
+  },
+  "prestige:arcane-trickster:surprise-spells": {
+    "changes": [],
+    "description": "<p>At 10th level, an arcane trickster can add her sneak attack damage to any damaging spell against a flat-footed target; the additional damage applies only to hit-point damage and is of the same type as the spell.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-trickster:surprise-spells",
+    "name": "Surprise Spells",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "surpriseSpells",
+    "uuid": "prestige-feature:arcane-trickster:surprise-spells"
+  },
+  "prestige:arcane-trickster:tricky-spells": {
+    "changes": [],
+    "description": "<p>Starting at 5th level, an arcane trickster can cast her spells without verbal or somatic components, as though under the effect of both Still Spell and Silent Spell, without a level or casting-time increase. Usable 3 times per day at 5th level, 4 times per day at 7th, and 5 times per day at 9th.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:arcane-trickster:tricky-spells",
+    "name": "Tricky Spells",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "trickySpells",
+    "uuid": "prestige-feature:arcane-trickster:tricky-spells"
+  },
+  "prestige:assassin:angel-of-death": {
+    "changes": [],
+    "description": "<p>At 10th level, once per day, an assassin can declare (before the attack roll) that a successful death attack crumbles the target's body to dust, preventing raise dead and resurrection (though not true resurrection). If the attack misses or the target saves, the ability is wasted.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:angel-of-death",
+    "name": "Angel of Death",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "angelOfDeath",
+    "uuid": "prestige-feature:assassin:angel-of-death"
+  },
+  "prestige:assassin:death-attack": {
+    "changes": [],
+    "description": "<p>If an assassin studies her victim for 3 consecutive rounds (a standard action each round) and then makes a sneak attack with a melee weapon that deals damage, the target must succeed at a Fortitude save (DC 10 + the assassin's class level + her Intelligence modifier) or die; on a failed save against a chosen paralysis effect instead, the target is helpless for 1d6 rounds plus 1 round per assassin level. The death attack fails if the target notices the assassin or recognizes her as an enemy first, and if not used within 3 rounds of completing the study, or if it fails, a fresh 3 rounds of study is required.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:death-attack",
+    "name": "Death Attack",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "deathAttack",
+    "uuid": "prestige-feature:assassin:death-attack"
+  },
+  "prestige:assassin:hidden-weapons": {
+    "changes": [],
+    "description": "<p>At 4th level, an assassin adds her assassin level as a bonus on Sleight of Hand checks made to conceal a weapon on her body.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:hidden-weapons",
+    "name": "Hidden Weapons",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "hiddenWeapons",
+    "uuid": "prestige-feature:assassin:hidden-weapons"
+  },
+  "prestige:assassin:hide-in-plain-sight": {
+    "changes": [],
+    "description": "<p>At 8th level, an assassin can use Stealth even while being observed, as long as she is within 10 feet of some sort of shadow (though not her own).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:hide-in-plain-sight",
+    "name": "Hide in Plain Sight (Assassin)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "hideInPlainSightAssassin",
+    "uuid": "prestige-feature:assassin:hide-in-plain-sight"
+  },
+  "prestige:assassin:improved-uncanny-dodge": {
+    "changes": [],
+    "description": "<p>At 5th level, an assassin can no longer be flanked, unless the attacker has at least four more rogue levels than she has assassin levels (levels from other uncanny-dodge-granting classes stack for this purpose).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:improved-uncanny-dodge",
+    "name": "Improved Uncanny Dodge (Assassin)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "improvedUncannyDodgeAssassin",
+    "uuid": "prestige-feature:assassin:improved-uncanny-dodge"
+  },
+  "prestige:assassin:poison-use": {
+    "changes": [],
+    "description": "<p>An assassin is trained in the use of poison and never risks accidentally poisoning herself when applying poison to a blade.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:poison-use",
+    "name": "Poison Use (Assassin)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "poisonUseAssassin",
+    "uuid": "prestige-feature:assassin:poison-use"
+  },
+  "prestige:assassin:quiet-death": {
+    "changes": [],
+    "description": "<p>At 6th level, whenever an assassin kills with a death attack during a surprise round, she can attempt a Stealth check opposed by nearby creatures' Perception checks to keep them from identifying her as the killer, or even noticing the death, for a few moments.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:quiet-death",
+    "name": "Quiet Death",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "quietDeath",
+    "uuid": "prestige-feature:assassin:quiet-death"
+  },
+  "prestige:assassin:save-bonus-against-poison": {
+    "changes": [],
+    "description": "<p>Starting at 2nd level, an assassin gains a +1 bonus on saving throws against poison; this bonus increases by +1 every two levels thereafter (4th, 6th, 8th, 10th), to a maximum of +5 at 10th level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:save-bonus-against-poison",
+    "name": "Save Bonus Against Poison",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "saveBonusAgainstPoison",
+    "uuid": "prestige-feature:assassin:save-bonus-against-poison"
+  },
+  "prestige:assassin:sneak-attack": {
+    "changes": [],
+    "description": "<p>Functions as the rogue ability of the same name, and stacks with sneak attack granted by another class. The extra damage is +1d6 at 1st level, increasing by +1d6 at 3rd, 5th, 7th, and 9th level, to a maximum of +5d6 at 9th level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:sneak-attack",
+    "name": "Sneak Attack (Assassin)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "sneakAttackAssassin",
+    "uuid": "prestige-feature:assassin:sneak-attack"
+  },
+  "prestige:assassin:swift-death": {
+    "changes": [],
+    "description": "<p>Once per day at 9th level, an assassin can attempt a death attack with a melee weapon against a foe she has not studied beforehand.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:swift-death",
+    "name": "Swift Death",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "swiftDeath",
+    "uuid": "prestige-feature:assassin:swift-death"
+  },
+  "prestige:assassin:true-death": {
+    "changes": [],
+    "description": "<p>Starting at 4th level, a creature slain by an assassin's death attack is harder to restore to life: any raise dead or similar spell requires a caster level check (DC 15 + the assassin's level) or the spell fails and its material component is wasted. Casting remove curse (DC 10 + the assassin's level) the round before negates this effect.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:true-death",
+    "name": "True Death",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "trueDeath",
+    "uuid": "prestige-feature:assassin:true-death"
+  },
+  "prestige:assassin:uncanny-dodge": {
+    "changes": [],
+    "description": "<p>At 2nd level, an assassin can't be caught flat-footed, even by an invisible attacker (though she still loses her Dexterity bonus to AC if immobilized, or if successfully feinted). If she already has uncanny dodge from another class, she gains improved uncanny dodge instead.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:assassin:uncanny-dodge",
+    "name": "Uncanny Dodge (Assassin)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "uncannyDodgeAssassin",
+    "uuid": "prestige-feature:assassin:uncanny-dodge"
+  },
+  "prestige:dragon-disciple:blindsense": {
+    "changes": [],
+    "description": "<p>At 5th level, a dragon disciple gains blindsense out to 30 feet; this range increases to 60 feet at 10th level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:blindsense",
+    "name": "Blindsense",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "blindsense",
+    "uuid": "prestige-feature:dragon-disciple:blindsense"
+  },
+  "prestige:dragon-disciple:blood-of-dragons": {
+    "changes": [],
+    "description": "<p>A dragon disciple's levels in this class stack with any sorcerer levels she has for the purpose of determining the powers of a draconic bloodline (though not spells per day). A dragon disciple with no sorcerer levels instead gains draconic bloodline powers as if her dragon disciple level were her sorcerer level; if she has sorcerer levels, they must be (and any future sorcerer levels must also be) of the draconic bloodline, and she must choose the same dragon type as that bloodline (or choose one, if she has no sorcerer levels).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:blood-of-dragons",
+    "name": "Blood of Dragons",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bloodOfDragons",
+    "uuid": "prestige-feature:dragon-disciple:blood-of-dragons"
+  },
+  "prestige:dragon-disciple:bloodline-feat": {
+    "changes": [],
+    "description": "<p>At 2nd level, and again at 5th and 8th level, a dragon disciple gains a bonus feat drawn from her draconic sorcerer bloodline's bonus feat list, in addition to any feats gained from advancing in level as normal.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:bloodline-feat",
+    "name": "Draconic Bloodline Feat",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bloodlineFeat",
+    "uuid": "prestige-feature:dragon-disciple:bloodline-feat"
+  },
+  "prestige:dragon-disciple:breath-weapon": {
+    "changes": [],
+    "description": "<p>Starting at 3rd level, a dragon disciple gains a breath weapon usable once per day, matching her draconic bloodline's breath weapon in shape, damage type, and save; she gains an additional daily use whenever her draconic bloodline power would grant one.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:breath-weapon",
+    "name": "Breath Weapon",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "breathWeapon",
+    "uuid": "prestige-feature:dragon-disciple:breath-weapon"
+  },
+  "prestige:dragon-disciple:constitution-increase": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>A dragon disciple's Constitution score permanently increases by 2 at 6th level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:constitution-increase",
+    "name": "Constitution Increase",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "constitutionIncrease",
+    "uuid": "prestige-feature:dragon-disciple:constitution-increase"
+  },
+  "prestige:dragon-disciple:dragon-bite": {
+    "changes": [],
+    "description": "<p>At 2nd level, a dragon disciple gains a bite attack, usable as a primary natural attack, dealing 1d6 points of damage (1d4 if Small) plus 1-1/2 times her Strength modifier. At 6th level, the bite deals an additional 1d6 points of energy damage matching her draconic bloodline's associated energy type.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:dragon-bite",
+    "name": "Dragon Bite",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "dragonBite",
+    "uuid": "prestige-feature:dragon-disciple:dragon-bite"
+  },
+  "prestige:dragon-disciple:dragon-form": {
+    "changes": [],
+    "description": "<p>At 7th level, once per day, a dragon disciple can assume dragon form as though using form of the dragon I. At 10th level she can do so twice per day, and it functions as form of the dragon II; both must match her draconic bloodline's dragon type.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:dragon-form",
+    "name": "Dragon Form",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "dragonForm",
+    "uuid": "prestige-feature:dragon-disciple:dragon-form"
+  },
+  "prestige:dragon-disciple:intelligence-increase": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>A dragon disciple's Intelligence score permanently increases by 2 at 8th level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:intelligence-increase",
+    "name": "Intelligence Increase",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "intelligenceIncrease",
+    "uuid": "prestige-feature:dragon-disciple:intelligence-increase"
+  },
+  "prestige:dragon-disciple:natural-armor": {
+    "changes": [],
+    "description": "<p>A dragon disciple's hide gradually toughens as she takes on draconic traits, granting a cumulative +1 natural armor bonus to AC at 1st, 4th, and 7th level (+3 total by 7th level).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:natural-armor",
+    "name": "Natural Armor",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "naturalArmor",
+    "uuid": "prestige-feature:dragon-disciple:natural-armor"
+  },
+  "prestige:dragon-disciple:strength-increase": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>A dragon disciple's Strength score permanently increases by 2 at 2nd level, and again at 4th level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:strength-increase",
+    "name": "Strength Increase",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "strengthIncrease",
+    "uuid": "prestige-feature:dragon-disciple:strength-increase"
+  },
+  "prestige:dragon-disciple:wings": {
+    "changes": [],
+    "description": "<p>At 9th level, a dragon disciple sprouts wings, granting a fly speed as her draconic bloodline's wings power (or the appropriate speed for her size if no sorcerer bloodline levels apply).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:dragon-disciple:wings",
+    "name": "Wings",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "wings",
+    "uuid": "prestige-feature:dragon-disciple:wings"
+  },
+  "prestige:duelist:acrobatic-charge": {
+    "changes": [],
+    "description": "<p>At 6th level, a duelist can charge through difficult terrain that would normally prevent a charge, though she may still need to make checks appropriate to the terrain.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:acrobatic-charge",
+    "name": "Acrobatic Charge",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "acrobaticCharge",
+    "uuid": "prestige-feature:duelist:acrobatic-charge"
+  },
+  "prestige:duelist:canny-defense": {
+    "changes": [],
+    "description": "<p>When wearing light or no armor and not using a shield, a duelist adds 1 point of Intelligence bonus (if any) per duelist level as a dodge bonus to AC while wielding a melee weapon; she loses this bonus whenever she loses her Dexterity bonus to AC.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:canny-defense",
+    "name": "Canny Defense",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "cannyDefense",
+    "uuid": "prestige-feature:duelist:canny-defense"
+  },
+  "prestige:duelist:combat-reflexes": {
+    "changes": [],
+    "description": "<p>At 4th level, a duelist gains the benefit of the Combat Reflexes feat when wielding a light or one-handed piercing weapon.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:combat-reflexes",
+    "name": "Combat Reflexes (Duelist)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "combatReflexesDuelist",
+    "uuid": "prestige-feature:duelist:combat-reflexes"
+  },
+  "prestige:duelist:crippling-critical": {
+    "changes": [],
+    "description": "<p>At 10th level, when a duelist confirms a critical hit with a light or one-handed piercing weapon, she can apply one additional effect on top of the damage dealt: reduce all the target's speeds by 10 feet (minimum 5 feet) for 1 minute, 1d4 points of Strength or Dexterity damage, a &minus;4 penalty on saves for 1 minute, a &minus;4 penalty to AC for 1 minute, or 2d6 points of bleed damage.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:crippling-critical",
+    "name": "Crippling Critical",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "cripplingCritical",
+    "uuid": "prestige-feature:duelist:crippling-critical"
+  },
+  "prestige:duelist:deflect-arrows": {
+    "changes": [],
+    "description": "<p>At 9th level, a duelist gains the benefit of the Deflect Arrows feat while wielding a light or one-handed piercing weapon, without needing a free hand.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:deflect-arrows",
+    "name": "Deflect Arrows (Duelist)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "deflectArrowsDuelist",
+    "uuid": "prestige-feature:duelist:deflect-arrows"
+  },
+  "prestige:duelist:elaborate-defense": {
+    "changes": [],
+    "description": "<p>At 7th level, when fighting defensively or using total defense in melee, a duelist gains an additional +1 dodge bonus to AC for every 3 duelist levels she has.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:elaborate-defense",
+    "name": "Elaborate Defense",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "elaborateDefense",
+    "uuid": "prestige-feature:duelist:elaborate-defense"
+  },
+  "prestige:duelist:enhanced-mobility": {
+    "changes": [],
+    "description": "<p>Starting at 3rd level, when wearing light or no armor and not using a shield, a duelist gains an additional +4 bonus to AC against attacks of opportunity provoked by moving out of a threatened square.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:enhanced-mobility",
+    "name": "Enhanced Mobility",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "enhancedMobility",
+    "uuid": "prestige-feature:duelist:enhanced-mobility"
+  },
+  "prestige:duelist:grace": {
+    "changes": [],
+    "description": "<p>At 4th level, a duelist gains a +2 competence bonus on Reflex saves while wearing light or no armor and not using a shield.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:grace",
+    "name": "Grace",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "grace",
+    "uuid": "prestige-feature:duelist:grace"
+  },
+  "prestige:duelist:improved-reaction": {
+    "changes": [],
+    "description": "<p>At 2nd level, a duelist gains a +2 bonus on initiative checks, increasing to +4 at 8th level; this stacks with the Improved Initiative feat.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:improved-reaction",
+    "name": "Improved Reaction",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "improvedReaction",
+    "uuid": "prestige-feature:duelist:improved-reaction"
+  },
+  "prestige:duelist:no-retreat": {
+    "changes": [],
+    "description": "<p>At 9th level, an adjacent enemy that takes a withdraw action provokes an attack of opportunity from the duelist.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:no-retreat",
+    "name": "No Retreat",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "noRetreat",
+    "uuid": "prestige-feature:duelist:no-retreat"
+  },
+  "prestige:duelist:parry": {
+    "changes": [],
+    "description": "<p>At 2nd level, a duelist who takes a full attack action with a light or one-handed piercing weapon can forgo one attack to instead attempt, as an immediate action before her next turn, to parry an attack against her or an adjacent ally: she makes an attack roll with the same bonus as the forgone attack, and if it exceeds the attacker's roll, the attack automatically misses. She takes a &minus;4 penalty per size category the attacker is larger than her, and a further &minus;4 penalty when parrying on an ally's behalf.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:parry",
+    "name": "Parry",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "parry",
+    "uuid": "prestige-feature:duelist:parry"
+  },
+  "prestige:duelist:precise-strike": {
+    "changes": [],
+    "description": "<p>A duelist adds her duelist level to the damage roll when striking with a light or one-handed piercing weapon, provided she attacks with no weapon in her other hand and no shield; this only works against living creatures with discernible anatomy.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:precise-strike",
+    "name": "Precise Strike",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "preciseStrike",
+    "uuid": "prestige-feature:duelist:precise-strike"
+  },
+  "prestige:duelist:riposte": {
+    "changes": [],
+    "description": "<p>Starting at 5th level, a duelist who successfully parries an attack can make an attack of opportunity against the attacker, if it is within reach.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:duelist:riposte",
+    "name": "Riposte",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "riposte",
+    "uuid": "prestige-feature:duelist:riposte"
+  },
   "prestige:eldritch-knight:bonus-combat-feat": {
     "changes": [],
     "description": "<p>At 1st level, and again at 5th and 9th level, an eldritch knight gains a bonus feat drawn from the list of combat feats available to a fighter, in addition to the feats she gains from advancing in level as normal. She must meet a chosen feat's prerequisites as usual.</p>",
@@ -8841,6 +9579,81 @@
     "tag": "spellCritical",
     "uuid": "prestige-feature:eldritch-knight:spell-critical"
   },
+  "prestige:loremaster:bonus-languages": {
+    "changes": [],
+    "description": "<p>At 4th level, and again at 8th level, a loremaster can learn any one new language.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:loremaster:bonus-languages",
+    "name": "Bonus Languages",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bonusLanguages",
+    "uuid": "prestige-feature:loremaster:bonus-languages"
+  },
+  "prestige:loremaster:greater-lore": {
+    "changes": [],
+    "description": "<p>At 6th level, a loremaster gains a +10 circumstance bonus on Spellcraft checks made to identify the properties of a magic item she examines.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:loremaster:greater-lore",
+    "name": "Greater Lore",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "greaterLore",
+    "uuid": "prestige-feature:loremaster:greater-lore"
+  },
+  "prestige:loremaster:lore": {
+    "changes": [],
+    "description": "<p>At 2nd level, a loremaster adds half her loremaster level to all Knowledge skill checks, and can make all Knowledge checks untrained.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:loremaster:lore",
+    "name": "Lore",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "lore",
+    "uuid": "prestige-feature:loremaster:lore"
+  },
+  "prestige:loremaster:secret": {
+    "changes": [],
+    "description": "<p>At 1st level, and every two levels thereafter (3rd, 5th, 7th, 9th), a loremaster chooses one secret from the Loremaster Secrets list, gaining its benefit.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:loremaster:secret",
+    "name": "Secret",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "secret",
+    "uuid": "prestige-feature:loremaster:secret"
+  },
+  "prestige:loremaster:true-lore": {
+    "changes": [],
+    "description": "<p>Once per day at 10th level, a loremaster can use her knowledge to duplicate the effect of legend lore or analyze dweomer.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:loremaster:true-lore",
+    "name": "True Lore",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "trueLore",
+    "uuid": "prestige-feature:loremaster:true-lore"
+  },
   "prestige:mystic-theurge:combined-spells": {
     "changes": [],
     "description": "<p>Starting at 1st level, a mystic theurge can prepare a spell from one of her two spellcasting classes into a spell slot one level higher belonging to her other spellcasting class. At 1st level, the highest-level spell she can prepare this way is a 1st-level spell; the maximum increases by one every two levels thereafter (2nd at 3rd level, 3rd at 5th level, 4th at 7th level, 5th at 9th level).</p>",
@@ -8870,6 +9683,426 @@
     "subType": "classFeat",
     "tag": "spellSynthesis",
     "uuid": "prestige-feature:mystic-theurge:spell-synthesis"
+  },
+  "prestige:pathfinder-chronicler:bardic-knowledge": {
+    "changes": [],
+    "description": "<p>Identical to the bard class feature of the same name; levels in this class stack with levels in any other class that grants a similar ability.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:bardic-knowledge",
+    "name": "Bardic Knowledge (Pathfinder Chronicler)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bardicKnowledgePathfinderChronicler",
+    "uuid": "prestige-feature:pathfinder-chronicler:bardic-knowledge"
+  },
+  "prestige:pathfinder-chronicler:bardic-performance": {
+    "changes": [],
+    "description": "<p>Functions as the bard class feature of the same name, except the Pathfinder chronicler's effective bard level for it is 2 lower than her class level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:bardic-performance",
+    "name": "Bardic Performance (Pathfinder Chronicler)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bardicPerformancePathfinderChronicler",
+    "uuid": "prestige-feature:pathfinder-chronicler:bardic-performance"
+  },
+  "prestige:pathfinder-chronicler:call-down-the-legends": {
+    "changes": [],
+    "description": "<p>Once per week as a full-round action at 7th level, a Pathfinder chronicler can summon 2d4 4th-level human barbarians with standard starting equipment, as though using a bronze horn of Valhalla.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:call-down-the-legends",
+    "name": "Call Down the Legends",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "callDownTheLegends",
+    "uuid": "prestige-feature:pathfinder-chronicler:call-down-the-legends"
+  },
+  "prestige:pathfinder-chronicler:deep-pockets": {
+    "changes": [],
+    "description": "<p>A Pathfinder chronicler can carry a stock of unspecified minor equipment worth up to 100 gp per class level; as a full-round action she can retrieve any specific item weighing 10 pounds or less, deducting its value from the allocated total. Spending an hour and the necessary gold restores the stock to full. With an hour spent packing daily, she also gains a +4 bonus to effective Strength for determining her light load, and a +4 bonus on Sleight of Hand checks to conceal small objects.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:deep-pockets",
+    "name": "Deep Pockets",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "deepPockets",
+    "uuid": "prestige-feature:pathfinder-chronicler:deep-pockets"
+  },
+  "prestige:pathfinder-chronicler:epic-tales": {
+    "changes": [],
+    "description": "<p>At 4th level, a Pathfinder chronicler can spend 1 hour inscribing an epic tale that conveys the effects of her bardic performance through the written word, expending a number of rounds of bardic performance equal to twice the tale's duration (maximum 10 rounds). Activating it is a full-round action; it lasts 1 day per class level and grants its reader bardic-music-like benefits for half the rounds expended.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:epic-tales",
+    "name": "Epic Tales",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "epicTales",
+    "uuid": "prestige-feature:pathfinder-chronicler:epic-tales"
+  },
+  "prestige:pathfinder-chronicler:greater-epic-tales": {
+    "changes": [],
+    "description": "<p>At 8th level, an epic tale read aloud by someone else takes effect as though the Pathfinder chronicler herself had used the bardic performance, but targets and uses the reader's Charisma score.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:greater-epic-tales",
+    "name": "Greater Epic Tales",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "greaterEpicTales",
+    "uuid": "prestige-feature:pathfinder-chronicler:greater-epic-tales"
+  },
+  "prestige:pathfinder-chronicler:improved-aid": {
+    "changes": [],
+    "description": "<p>At 3rd level, a successful aid another action grants a +4 bonus rather than the normal +2.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:improved-aid",
+    "name": "Improved Aid",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "improvedAid",
+    "uuid": "prestige-feature:pathfinder-chronicler:improved-aid"
+  },
+  "prestige:pathfinder-chronicler:inspire-action": {
+    "changes": [],
+    "description": "<p>At 6th level, a Pathfinder chronicler can exhort one ally within hearing to immediately take an extra move action; at 9th level she can instead grant an extra standard action.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:inspire-action",
+    "name": "Inspire Action",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "inspireAction",
+    "uuid": "prestige-feature:pathfinder-chronicler:inspire-action"
+  },
+  "prestige:pathfinder-chronicler:lay-of-the-exalted-dead": {
+    "changes": [],
+    "description": "<p>Once per week as a full-round action at 10th level, a Pathfinder chronicler can summon 1d4+1 5th-level incorporeal human barbarians equipped with +2 studded leather and +1 ghost touch greataxes, as though using an iron horn of Valhalla. Enemies who see them must succeed at a Will save (DC 15 + the chronicler's Charisma modifier) or be shaken for 1 round per summoned barbarian.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:lay-of-the-exalted-dead",
+    "name": "Lay of the Exalted Dead",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "layOfTheExaltedDead",
+    "uuid": "prestige-feature:pathfinder-chronicler:lay-of-the-exalted-dead"
+  },
+  "prestige:pathfinder-chronicler:live-to-tell-the-tale": {
+    "changes": [],
+    "description": "<p>Once per day per two class levels, a Pathfinder chronicler can attempt a new saving throw against any ongoing effect against which she failed a save in a previous round.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:live-to-tell-the-tale",
+    "name": "Live to Tell the Tale",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "liveToTellTheTale",
+    "uuid": "prestige-feature:pathfinder-chronicler:live-to-tell-the-tale"
+  },
+  "prestige:pathfinder-chronicler:master-scribe": {
+    "changes": [],
+    "description": "<p>A Pathfinder chronicler adds her class level as a bonus on Linguistics, Profession (scribe), and Use Magic Device checks involving scrolls or other written magic; she can decipher unfamiliar text as a full-round action, and can always take 10 on Linguistics and Profession (scribe) checks, even under duress.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:master-scribe",
+    "name": "Master Scribe",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "masterScribe",
+    "uuid": "prestige-feature:pathfinder-chronicler:master-scribe"
+  },
+  "prestige:pathfinder-chronicler:pathfinding": {
+    "changes": [],
+    "description": "<p>A Pathfinder chronicler gains a +5 bonus on Survival checks to avoid getting lost and on Intelligence checks to escape a maze spell, and always uses the road/trail overland movement rate even in trackless terrain. With a DC 15 Survival check, she can extend this benefit to one companion per class level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:pathfinding",
+    "name": "Pathfinding",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "pathfinding",
+    "uuid": "prestige-feature:pathfinder-chronicler:pathfinding"
+  },
+  "prestige:pathfinder-chronicler:whispering-campaign": {
+    "changes": [],
+    "description": "<p>At 5th level, a Pathfinder chronicler can spend a use of bardic performance to denounce a creature in person (as doom) or denounce it to others (as enthrall, shifting the listeners' attitude toward the target one step for 1 day per class level).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:pathfinder-chronicler:whispering-campaign",
+    "name": "Whispering Campaign",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "whisperingCampaign",
+    "uuid": "prestige-feature:pathfinder-chronicler:whispering-campaign"
+  },
+  "prestige:shadowdancer:darkvision": {
+    "changes": [],
+    "description": "<p>At 2nd level, a shadowdancer gains darkvision with a range of 60 feet, or increases her existing darkvision range by 30 feet.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:darkvision",
+    "name": "Darkvision",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "darkvision",
+    "uuid": "prestige-feature:shadowdancer:darkvision"
+  },
+  "prestige:shadowdancer:defensive-roll": {
+    "changes": [],
+    "description": "<p>Once per day at 5th level, when a shadowdancer would be reduced to 0 or fewer hit points by a blow that isn't an instant kill, she can attempt a Reflex save (DC = the damage dealt) to take only half damage.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:defensive-roll",
+    "name": "Defensive Roll",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "defensiveRoll",
+    "uuid": "prestige-feature:shadowdancer:defensive-roll"
+  },
+  "prestige:shadowdancer:evasion": {
+    "changes": [],
+    "description": "<p>At 2nd level, a shadowdancer takes no damage on a successful Reflex save against an effect that normally deals half damage on a successful save, as long as she is wearing light or no armor. A helpless shadowdancer does not gain the benefit of evasion.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:evasion",
+    "name": "Evasion (Shadowdancer)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "evasionShadowdancer",
+    "uuid": "prestige-feature:shadowdancer:evasion"
+  },
+  "prestige:shadowdancer:hide-in-plain-sight": {
+    "changes": [],
+    "description": "<p>A shadowdancer can use Stealth even while being observed, as long as she is within 10 feet of an area of dim light (though not her own shadow).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:hide-in-plain-sight",
+    "name": "Hide in Plain Sight (Shadowdancer)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "hideInPlainSightShadowdancer",
+    "uuid": "prestige-feature:shadowdancer:hide-in-plain-sight"
+  },
+  "prestige:shadowdancer:improved-evasion": {
+    "changes": [],
+    "description": "<p>At 10th level, a shadowdancer takes no damage on a successful Reflex save against an effect that normally deals half damage on a success, and only half damage even on a failed save, as long as she is wearing light or no armor.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:improved-evasion",
+    "name": "Improved Evasion (Shadowdancer)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "improvedEvasionShadowdancer",
+    "uuid": "prestige-feature:shadowdancer:improved-evasion"
+  },
+  "prestige:shadowdancer:improved-uncanny-dodge": {
+    "changes": [],
+    "description": "<p>At 5th level, a shadowdancer can no longer be flanked, unless the attacker has at least four more rogue levels than she has shadowdancer levels (levels from other uncanny-dodge-granting classes stack for this purpose).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:improved-uncanny-dodge",
+    "name": "Improved Uncanny Dodge (Shadowdancer)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "improvedUncannyDodgeShadowdancer",
+    "uuid": "prestige-feature:shadowdancer:improved-uncanny-dodge"
+  },
+  "prestige:shadowdancer:rogue-talent": {
+    "changes": [],
+    "description": "<p>At 3rd level, and every three levels thereafter (6th, 9th), a shadowdancer gains a rogue talent, functioning as the rogue class feature of the same name; she can't select the same talent twice.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:rogue-talent",
+    "name": "Rogue Talent",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "rogueTalent",
+    "uuid": "prestige-feature:shadowdancer:rogue-talent"
+  },
+  "prestige:shadowdancer:shadow-call": {
+    "changes": [],
+    "description": "<p>At 4th level, a shadowdancer can create quasi-real illusions of objects and creatures as shadow conjuration, using her shadowdancer level as caster level; at 10th level this instead functions as greater shadow conjuration.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:shadow-call",
+    "name": "Shadow Call",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "shadowCall",
+    "uuid": "prestige-feature:shadowdancer:shadow-call"
+  },
+  "prestige:shadowdancer:shadow-illusion": {
+    "changes": [],
+    "description": "<p>At 3rd level, a shadowdancer can create visual illusions as silent image, using her shadowdancer level as caster level, usable once per day for every two shadowdancer levels she has.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:shadow-illusion",
+    "name": "Shadow Illusion",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "shadowIllusion",
+    "uuid": "prestige-feature:shadowdancer:shadow-illusion"
+  },
+  "prestige:shadowdancer:shadow-jump": {
+    "changes": [],
+    "description": "<p>Starting at 4th level, a shadowdancer can travel between two shadows as though using dimension door, as long as both areas have at least dim light; the total distance she can travel this way per day is 40 feet at 4th level, 80 feet at 6th, 160 feet at 8th, and 320 feet at 10th.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:shadow-jump",
+    "name": "Shadow Jump",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "shadowJump",
+    "uuid": "prestige-feature:shadowdancer:shadow-jump"
+  },
+  "prestige:shadowdancer:shadow-master": {
+    "changes": [],
+    "description": "<p>At 10th level, while in an area of dim light, a shadowdancer gains DR 10/&mdash; and a +2 luck bonus on all saving throws; a critical hit she scores against a foe in dim light blinds that foe for 1d6 rounds.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:shadow-master",
+    "name": "Shadow Master",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "shadowMaster",
+    "uuid": "prestige-feature:shadowdancer:shadow-master"
+  },
+  "prestige:shadowdancer:shadow-power": {
+    "changes": [],
+    "description": "<p>Once per day at 8th level (twice per day at 10th level), a shadowdancer can create quasi-real illusions of energy or other effects as shadow evocation, using her shadowdancer level as caster level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:shadow-power",
+    "name": "Shadow Power",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "shadowPower",
+    "uuid": "prestige-feature:shadowdancer:shadow-power"
+  },
+  "prestige:shadowdancer:slippery-mind": {
+    "changes": [],
+    "description": "<p>At 7th level, if a shadowdancer fails a Will save against an enchantment spell or effect, she can attempt a second save one round later to negate its effect.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:slippery-mind",
+    "name": "Slippery Mind",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "slipperyMind",
+    "uuid": "prestige-feature:shadowdancer:slippery-mind"
+  },
+  "prestige:shadowdancer:summon-shadow": {
+    "changes": [],
+    "description": "<p>At 3rd level, a shadowdancer gains the service of an undead shadow companion matching her alignment, with hit points equal to half her own total; dismissing it prematurely requires a DC 15 Fortitude save or she takes a permanent negative level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:summon-shadow",
+    "name": "Summon Shadow",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "summonShadow",
+    "uuid": "prestige-feature:shadowdancer:summon-shadow"
+  },
+  "prestige:shadowdancer:uncanny-dodge": {
+    "changes": [],
+    "description": "<p>At 2nd level, a shadowdancer can't be caught flat-footed, even by an invisible attacker (though she still loses her Dexterity bonus to AC if immobilized, or if successfully feinted). If she already has uncanny dodge from another class, she gains improved uncanny dodge instead.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:shadowdancer:uncanny-dodge",
+    "name": "Uncanny Dodge (Shadowdancer)",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "uncannyDodgeShadowdancer",
+    "uuid": "prestige-feature:shadowdancer:uncanny-dodge"
   },
   "ptw7bHU3Z7HNj2qz": {
     "abilityType": "ex",

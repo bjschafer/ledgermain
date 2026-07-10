@@ -5131,6 +5131,631 @@
     "uuid": "Compendium.pf1.classes.Item.ohptcds1d5oG6Bjh",
     "weaponProf": ["simple", "martial"]
   },
+  "prestige:arcane-archer": {
+    "armorProf": [],
+    "bab": "high",
+    "castingAdvancement": [
+      {
+        "kind": "arcane",
+        "levels": [2, 3, 4, 6, 7, 8, 10]
+      }
+    ],
+    "classSkills": ["per", "rid", "ste", "sur"],
+    "description": "<p>The arcane archer weaves ancient elven magic into her bow, turning ordinary arrows into instruments of devastating, supernatural precision.</p>",
+    "features": [
+      {
+        "featureId": "prestige:arcane-archer:enhance-arrows",
+        "level": 1,
+        "name": "Enhance Arrows",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-archer:enhance-arrows"
+      },
+      {
+        "featureId": "prestige:arcane-archer:imbue-arrow",
+        "level": 2,
+        "name": "Imbue Arrow",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-archer:imbue-arrow"
+      },
+      {
+        "featureId": "prestige:arcane-archer:seeker-arrow",
+        "level": 4,
+        "name": "Seeker Arrow",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-archer:seeker-arrow"
+      },
+      {
+        "featureId": "prestige:arcane-archer:phase-arrow",
+        "level": 6,
+        "name": "Phase Arrow",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-archer:phase-arrow"
+      },
+      {
+        "featureId": "prestige:arcane-archer:hail-of-arrows",
+        "level": 8,
+        "name": "Hail of Arrows",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-archer:hail-of-arrows"
+      },
+      {
+        "featureId": "prestige:arcane-archer:arrow-of-death",
+        "level": 10,
+        "name": "Arrow of Death",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-archer:arrow-of-death"
+      }
+    ],
+    "hd": 10,
+    "id": "prestige:arcane-archer",
+    "name": "Arcane Archer",
+    "prereqs": {
+      "bab": 6,
+      "casting": [
+        {
+          "kind": "arcane",
+          "spellLevel": 1
+        }
+      ],
+      "feats": ["Point-Blank Shot", "Precise Shot"],
+      "prereqText": "Base Attack Bonus: +6. Feats: Point-Blank Shot, Precise Shot, Weapon Focus (longbow or shortbow). Spells: Ability to cast 1st-level arcane spells."
+    },
+    "saves": {
+      "fort": "highPrestige",
+      "ref": "highPrestige",
+      "will": "lowPrestige"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "arcaneArcher",
+    "uuid": "prestige-class:arcane-archer",
+    "weaponProf": []
+  },
+  "prestige:arcane-trickster": {
+    "armorProf": [],
+    "bab": "low",
+    "castingAdvancement": [
+      {
+        "kind": "arcane",
+        "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      }
+    ],
+    "classSkills": [
+      "acr",
+      "apr",
+      "blf",
+      "clm",
+      "dip",
+      "dev",
+      "dis",
+      "esc",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "per",
+      "sen",
+      "slt",
+      "spl",
+      "ste",
+      "swm"
+    ],
+    "description": "<p>The arcane trickster fuses arcane spellcasting with a rogue's guile, using magic to enhance her thievery, misdirection, and escapes.</p>",
+    "features": [
+      {
+        "featureId": "prestige:arcane-trickster:ranged-legerdemain",
+        "level": 1,
+        "name": "Ranged Legerdemain",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-trickster:ranged-legerdemain"
+      },
+      {
+        "featureId": "prestige:arcane-trickster:sneak-attack",
+        "level": 2,
+        "name": "Sneak Attack (Arcane Trickster)",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-trickster:sneak-attack"
+      },
+      {
+        "featureId": "prestige:arcane-trickster:impromptu-sneak-attack",
+        "level": 3,
+        "name": "Impromptu Sneak Attack",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-trickster:impromptu-sneak-attack"
+      },
+      {
+        "featureId": "prestige:arcane-trickster:tricky-spells",
+        "level": 5,
+        "name": "Tricky Spells",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-trickster:tricky-spells"
+      },
+      {
+        "featureId": "prestige:arcane-trickster:invisible-thief",
+        "level": 9,
+        "name": "Invisible Thief",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-trickster:invisible-thief"
+      },
+      {
+        "featureId": "prestige:arcane-trickster:surprise-spells",
+        "level": 10,
+        "name": "Surprise Spells",
+        "resolved": true,
+        "uuid": "prestige-feature:arcane-trickster:surprise-spells"
+      }
+    ],
+    "hd": 6,
+    "id": "prestige:arcane-trickster",
+    "name": "Arcane Trickster",
+    "prereqs": {
+      "casting": [
+        {
+          "kind": "arcane",
+          "spellLevel": 2
+        }
+      ],
+      "prereqText": "Alignment: Any nonlawful. Skills: Disable Device 4 ranks, Escape Artist 4 ranks, Knowledge (arcana) 4 ranks. Spells: Able to cast mage hand and at least one arcane spell of 2nd level or higher. Special: Sneak attack +2d6.",
+      "skillRanks": [
+        {
+          "ranks": 4,
+          "skill": "dev"
+        },
+        {
+          "ranks": 4,
+          "skill": "esc"
+        },
+        {
+          "ranks": 4,
+          "skill": "kar"
+        }
+      ]
+    },
+    "saves": {
+      "fort": "lowPrestige",
+      "ref": "highPrestige",
+      "will": "highPrestige"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "arcaneTrickster",
+    "uuid": "prestige-class:arcane-trickster",
+    "weaponProf": []
+  },
+  "prestige:assassin": {
+    "armorProf": [],
+    "bab": "med",
+    "classSkills": [
+      "acr",
+      "blf",
+      "clm",
+      "dip",
+      "dev",
+      "dis",
+      "esc",
+      "int",
+      "lin",
+      "per",
+      "sen",
+      "slt",
+      "ste",
+      "swm",
+      "umd"
+    ],
+    "description": "<p>The assassin turns murder into an art, blending stealth, poison, and a supernatural killing strike honed through cold-blooded training.</p>",
+    "features": [
+      {
+        "featureId": "prestige:assassin:sneak-attack",
+        "level": 1,
+        "name": "Sneak Attack (Assassin)",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:sneak-attack"
+      },
+      {
+        "featureId": "prestige:assassin:death-attack",
+        "level": 1,
+        "name": "Death Attack",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:death-attack"
+      },
+      {
+        "featureId": "prestige:assassin:poison-use",
+        "level": 1,
+        "name": "Poison Use (Assassin)",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:poison-use"
+      },
+      {
+        "featureId": "prestige:assassin:save-bonus-against-poison",
+        "level": 2,
+        "name": "Save Bonus Against Poison",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:save-bonus-against-poison"
+      },
+      {
+        "featureId": "prestige:assassin:uncanny-dodge",
+        "level": 2,
+        "name": "Uncanny Dodge (Assassin)",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:uncanny-dodge"
+      },
+      {
+        "featureId": "prestige:assassin:hidden-weapons",
+        "level": 4,
+        "name": "Hidden Weapons",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:hidden-weapons"
+      },
+      {
+        "featureId": "prestige:assassin:true-death",
+        "level": 4,
+        "name": "True Death",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:true-death"
+      },
+      {
+        "featureId": "prestige:assassin:improved-uncanny-dodge",
+        "level": 5,
+        "name": "Improved Uncanny Dodge (Assassin)",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:improved-uncanny-dodge"
+      },
+      {
+        "featureId": "prestige:assassin:quiet-death",
+        "level": 6,
+        "name": "Quiet Death",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:quiet-death"
+      },
+      {
+        "featureId": "prestige:assassin:hide-in-plain-sight",
+        "level": 8,
+        "name": "Hide in Plain Sight (Assassin)",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:hide-in-plain-sight"
+      },
+      {
+        "featureId": "prestige:assassin:swift-death",
+        "level": 9,
+        "name": "Swift Death",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:swift-death"
+      },
+      {
+        "featureId": "prestige:assassin:angel-of-death",
+        "level": 10,
+        "name": "Angel of Death",
+        "resolved": true,
+        "uuid": "prestige-feature:assassin:angel-of-death"
+      }
+    ],
+    "hd": 8,
+    "id": "prestige:assassin",
+    "name": "Assassin",
+    "prereqs": {
+      "prereqText": "Alignment: Any evil. Skills: Disguise 2 ranks, Stealth 5 ranks. Special: The character must kill someone for no other reason than to become an assassin.",
+      "skillRanks": [
+        {
+          "ranks": 2,
+          "skill": "dis"
+        },
+        {
+          "ranks": 5,
+          "skill": "ste"
+        }
+      ]
+    },
+    "saves": {
+      "fort": "lowPrestige",
+      "ref": "highPrestige",
+      "will": "lowPrestige"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "assassin",
+    "uuid": "prestige-class:assassin",
+    "weaponProf": []
+  },
+  "prestige:dragon-disciple": {
+    "armorProf": [],
+    "bab": "med",
+    "castingAdvancement": [
+      {
+        "kind": "arcane",
+        "levels": [2, 3, 4, 6, 7, 8, 10]
+      }
+    ],
+    "classSkills": [
+      "dip",
+      "esc",
+      "fly",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "per",
+      "spl"
+    ],
+    "description": "<p>The dragon disciple awakens the draconic blood within her, gradually taking on a dragon's toughness, strength, and elemental power.</p>",
+    "features": [
+      {
+        "featureId": "prestige:dragon-disciple:blood-of-dragons",
+        "level": 1,
+        "name": "Blood of Dragons",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:blood-of-dragons"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:natural-armor",
+        "level": 1,
+        "name": "Natural Armor",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:natural-armor"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:strength-increase",
+        "level": 2,
+        "name": "Strength Increase",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:strength-increase"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:bloodline-feat",
+        "level": 2,
+        "name": "Draconic Bloodline Feat",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:bloodline-feat"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:dragon-bite",
+        "level": 2,
+        "name": "Dragon Bite",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:dragon-bite"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:breath-weapon",
+        "level": 3,
+        "name": "Breath Weapon",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:breath-weapon"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:strength-increase",
+        "level": 4,
+        "name": "Strength Increase",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:strength-increase"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:blindsense",
+        "level": 5,
+        "name": "Blindsense",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:blindsense"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:constitution-increase",
+        "level": 6,
+        "name": "Constitution Increase",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:constitution-increase"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:dragon-form",
+        "level": 7,
+        "name": "Dragon Form",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:dragon-form"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:intelligence-increase",
+        "level": 8,
+        "name": "Intelligence Increase",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:intelligence-increase"
+      },
+      {
+        "featureId": "prestige:dragon-disciple:wings",
+        "level": 9,
+        "name": "Wings",
+        "resolved": true,
+        "uuid": "prestige-feature:dragon-disciple:wings"
+      }
+    ],
+    "hd": 12,
+    "id": "prestige:dragon-disciple",
+    "name": "Dragon Disciple",
+    "prereqs": {
+      "casting": [
+        {
+          "kind": "arcane",
+          "spellLevel": 1
+        }
+      ],
+      "prereqText": "Race: Any nondragon. Skills: Knowledge (arcana) 5 ranks. Languages: Draconic. Spells: Ability to cast 1st-level arcane spells without preparation. A character with sorcerer levels must have the draconic bloodline, and any sorcerer levels gained after taking this class must also be in the draconic bloodline.",
+      "skillRanks": [
+        {
+          "ranks": 5,
+          "skill": "kar"
+        }
+      ]
+    },
+    "saves": {
+      "fort": "highPrestige",
+      "ref": "lowPrestige",
+      "will": "highPrestige"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "dragonDisciple",
+    "uuid": "prestige-class:dragon-disciple",
+    "weaponProf": []
+  },
+  "prestige:duelist": {
+    "armorProf": [],
+    "bab": "high",
+    "classSkills": ["acr", "blf", "esc", "per", "prf", "sen"],
+    "description": "<p>The duelist is a master of finesse combat, turning speed, precision, and elegant swordplay into a deadly, mobile fighting style.</p>",
+    "features": [
+      {
+        "featureId": "prestige:duelist:canny-defense",
+        "level": 1,
+        "name": "Canny Defense",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:canny-defense"
+      },
+      {
+        "featureId": "prestige:duelist:precise-strike",
+        "level": 1,
+        "name": "Precise Strike",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:precise-strike"
+      },
+      {
+        "featureId": "prestige:duelist:improved-reaction",
+        "level": 2,
+        "name": "Improved Reaction",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:improved-reaction"
+      },
+      {
+        "featureId": "prestige:duelist:parry",
+        "level": 2,
+        "name": "Parry",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:parry"
+      },
+      {
+        "featureId": "prestige:duelist:enhanced-mobility",
+        "level": 3,
+        "name": "Enhanced Mobility",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:enhanced-mobility"
+      },
+      {
+        "featureId": "prestige:duelist:combat-reflexes",
+        "level": 4,
+        "name": "Combat Reflexes (Duelist)",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:combat-reflexes"
+      },
+      {
+        "featureId": "prestige:duelist:grace",
+        "level": 4,
+        "name": "Grace",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:grace"
+      },
+      {
+        "featureId": "prestige:duelist:riposte",
+        "level": 5,
+        "name": "Riposte",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:riposte"
+      },
+      {
+        "featureId": "prestige:duelist:acrobatic-charge",
+        "level": 6,
+        "name": "Acrobatic Charge",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:acrobatic-charge"
+      },
+      {
+        "featureId": "prestige:duelist:elaborate-defense",
+        "level": 7,
+        "name": "Elaborate Defense",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:elaborate-defense"
+      },
+      {
+        "featureId": "prestige:duelist:deflect-arrows",
+        "level": 9,
+        "name": "Deflect Arrows (Duelist)",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:deflect-arrows"
+      },
+      {
+        "featureId": "prestige:duelist:no-retreat",
+        "level": 9,
+        "name": "No Retreat",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:no-retreat"
+      },
+      {
+        "featureId": "prestige:duelist:crippling-critical",
+        "level": 10,
+        "name": "Crippling Critical",
+        "resolved": true,
+        "uuid": "prestige-feature:duelist:crippling-critical"
+      }
+    ],
+    "hd": 10,
+    "id": "prestige:duelist",
+    "name": "Duelist",
+    "prereqs": {
+      "bab": 6,
+      "feats": ["Dodge", "Mobility", "Weapon Finesse"],
+      "prereqText": "Base Attack Bonus: +6. Skills: Acrobatics 2 ranks, Perform 2 ranks. Feats: Dodge, Mobility, Weapon Finesse.",
+      "skillRanks": [
+        {
+          "ranks": 2,
+          "skill": "acr"
+        },
+        {
+          "ranks": 2,
+          "skill": "prf"
+        }
+      ]
+    },
+    "saves": {
+      "fort": "lowPrestige",
+      "ref": "highPrestige",
+      "will": "lowPrestige"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "duelist",
+    "uuid": "prestige-class:duelist",
+    "weaponProf": []
+  },
   "prestige:eldritch-knight": {
     "armorProf": [],
     "bab": "high",
@@ -5168,6 +5793,15 @@
     "hd": 10,
     "id": "prestige:eldritch-knight",
     "name": "Eldritch Knight",
+    "prereqs": {
+      "casting": [
+        {
+          "kind": "arcane",
+          "spellLevel": 3
+        }
+      ],
+      "prereqText": "Weapon Proficiency: Must be proficient with all martial weapons. Spells: Able to cast 3rd-level arcane spells."
+    },
     "saves": {
       "fort": "highPrestige",
       "ref": "lowPrestige",
@@ -5182,6 +5816,95 @@
     "subType": "prestige",
     "tag": "eldritchKnight",
     "uuid": "prestige-class:eldritch-knight",
+    "weaponProf": []
+  },
+  "prestige:loremaster": {
+    "armorProf": [],
+    "bab": "low",
+    "castingAdvancement": [
+      {
+        "kind": "any",
+        "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      }
+    ],
+    "classSkills": [
+      "apr",
+      "dip",
+      "han",
+      "hea",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "prf",
+      "spl",
+      "umd"
+    ],
+    "description": "<p>The loremaster pursues knowledge for its own sake, accumulating secrets and lore that grant subtle but far-reaching supernatural insight.</p>",
+    "features": [
+      {
+        "featureId": "prestige:loremaster:secret",
+        "level": 1,
+        "name": "Secret",
+        "resolved": true,
+        "uuid": "prestige-feature:loremaster:secret"
+      },
+      {
+        "featureId": "prestige:loremaster:lore",
+        "level": 2,
+        "name": "Lore",
+        "resolved": true,
+        "uuid": "prestige-feature:loremaster:lore"
+      },
+      {
+        "featureId": "prestige:loremaster:bonus-languages",
+        "level": 4,
+        "name": "Bonus Languages",
+        "resolved": true,
+        "uuid": "prestige-feature:loremaster:bonus-languages"
+      },
+      {
+        "featureId": "prestige:loremaster:greater-lore",
+        "level": 6,
+        "name": "Greater Lore",
+        "resolved": true,
+        "uuid": "prestige-feature:loremaster:greater-lore"
+      },
+      {
+        "featureId": "prestige:loremaster:true-lore",
+        "level": 10,
+        "name": "True Lore",
+        "resolved": true,
+        "uuid": "prestige-feature:loremaster:true-lore"
+      }
+    ],
+    "hd": 6,
+    "id": "prestige:loremaster",
+    "name": "Loremaster",
+    "prereqs": {
+      "prereqText": "Skills: Knowledge (any two) 7 ranks in each. Feats: Any three metamagic or item creation feats, plus Skill Focus (Knowledge [any individual Knowledge skill]). Spells: Able to cast seven different divination spells, one of which must be 3rd level or higher."
+    },
+    "saves": {
+      "fort": "lowPrestige",
+      "ref": "lowPrestige",
+      "will": "highPrestige"
+    },
+    "skillsPerLevel": 4,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "loremaster",
+    "uuid": "prestige-class:loremaster",
     "weaponProf": []
   },
   "prestige:mystic-theurge": {
@@ -5218,6 +5941,29 @@
     "hd": 6,
     "id": "prestige:mystic-theurge",
     "name": "Mystic Theurge",
+    "prereqs": {
+      "casting": [
+        {
+          "kind": "arcane",
+          "spellLevel": 2
+        },
+        {
+          "kind": "divine",
+          "spellLevel": 2
+        }
+      ],
+      "prereqText": "Skills: Knowledge (arcana) 3 ranks, Knowledge (religion) 3 ranks. Spells: Able to cast 2nd-level divine spells and 2nd-level arcane spells.",
+      "skillRanks": [
+        {
+          "ranks": 3,
+          "skill": "kar"
+        },
+        {
+          "ranks": 3,
+          "skill": "kre"
+        }
+      ]
+    },
     "saves": {
       "fort": "lowPrestige",
       "ref": "lowPrestige",
@@ -5232,6 +5978,298 @@
     "subType": "prestige",
     "tag": "mysticTheurge",
     "uuid": "prestige-class:mystic-theurge",
+    "weaponProf": []
+  },
+  "prestige:pathfinder-chronicler": {
+    "armorProf": [],
+    "bab": "med",
+    "classSkills": [
+      "apr",
+      "blf",
+      "dip",
+      "dis",
+      "esc",
+      "int",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "per",
+      "prf",
+      "rid",
+      "sen",
+      "slt",
+      "sur",
+      "umd"
+    ],
+    "description": "<p>The Pathfinder chronicler travels widely to record the deeds and discoveries of the Pathfinder Society, weaving bardic performance and scholarship together.</p>",
+    "features": [
+      {
+        "featureId": "prestige:pathfinder-chronicler:bardic-knowledge",
+        "level": 1,
+        "name": "Bardic Knowledge (Pathfinder Chronicler)",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:bardic-knowledge"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:deep-pockets",
+        "level": 1,
+        "name": "Deep Pockets",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:deep-pockets"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:master-scribe",
+        "level": 1,
+        "name": "Master Scribe",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:master-scribe"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:live-to-tell-the-tale",
+        "level": 2,
+        "name": "Live to Tell the Tale",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:live-to-tell-the-tale"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:pathfinding",
+        "level": 2,
+        "name": "Pathfinding",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:pathfinding"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:bardic-performance",
+        "level": 3,
+        "name": "Bardic Performance (Pathfinder Chronicler)",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:bardic-performance"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:improved-aid",
+        "level": 3,
+        "name": "Improved Aid",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:improved-aid"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:epic-tales",
+        "level": 4,
+        "name": "Epic Tales",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:epic-tales"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:whispering-campaign",
+        "level": 5,
+        "name": "Whispering Campaign",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:whispering-campaign"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:inspire-action",
+        "level": 6,
+        "name": "Inspire Action",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:inspire-action"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:call-down-the-legends",
+        "level": 7,
+        "name": "Call Down the Legends",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:call-down-the-legends"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:greater-epic-tales",
+        "level": 8,
+        "name": "Greater Epic Tales",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:greater-epic-tales"
+      },
+      {
+        "featureId": "prestige:pathfinder-chronicler:lay-of-the-exalted-dead",
+        "level": 10,
+        "name": "Lay of the Exalted Dead",
+        "resolved": true,
+        "uuid": "prestige-feature:pathfinder-chronicler:lay-of-the-exalted-dead"
+      }
+    ],
+    "hd": 8,
+    "id": "prestige:pathfinder-chronicler",
+    "name": "Pathfinder Chronicler",
+    "prereqs": {
+      "prereqText": "Skills: Linguistics 3 ranks, Perform (oratory) 5 ranks, Profession (scribe) 5 ranks. Special: Must have authored or scribed something (other than a magic scroll or similar device) for which another person (who is not a player character) paid at least 50 gp.",
+      "skillRanks": [
+        {
+          "ranks": 3,
+          "skill": "lin"
+        }
+      ]
+    },
+    "saves": {
+      "fort": "lowPrestige",
+      "ref": "highPrestige",
+      "will": "highPrestige"
+    },
+    "skillsPerLevel": 8,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "pathfinderChronicler",
+    "uuid": "prestige-class:pathfinder-chronicler",
+    "weaponProf": []
+  },
+  "prestige:shadowdancer": {
+    "armorProf": [],
+    "bab": "med",
+    "classSkills": ["acr", "blf", "dip", "dis", "esc", "per", "prf", "slt", "ste"],
+    "description": "<p>The shadowdancer forges a pact with the plane of shadow, gaining the ability to slip between shadows and command a shade of her own.</p>",
+    "features": [
+      {
+        "featureId": "prestige:shadowdancer:hide-in-plain-sight",
+        "level": 1,
+        "name": "Hide in Plain Sight (Shadowdancer)",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:hide-in-plain-sight"
+      },
+      {
+        "featureId": "prestige:shadowdancer:evasion",
+        "level": 2,
+        "name": "Evasion (Shadowdancer)",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:evasion"
+      },
+      {
+        "featureId": "prestige:shadowdancer:darkvision",
+        "level": 2,
+        "name": "Darkvision",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:darkvision"
+      },
+      {
+        "featureId": "prestige:shadowdancer:uncanny-dodge",
+        "level": 2,
+        "name": "Uncanny Dodge (Shadowdancer)",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:uncanny-dodge"
+      },
+      {
+        "featureId": "prestige:shadowdancer:rogue-talent",
+        "level": 3,
+        "name": "Rogue Talent",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:rogue-talent"
+      },
+      {
+        "featureId": "prestige:shadowdancer:shadow-illusion",
+        "level": 3,
+        "name": "Shadow Illusion",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:shadow-illusion"
+      },
+      {
+        "featureId": "prestige:shadowdancer:summon-shadow",
+        "level": 3,
+        "name": "Summon Shadow",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:summon-shadow"
+      },
+      {
+        "featureId": "prestige:shadowdancer:shadow-call",
+        "level": 4,
+        "name": "Shadow Call",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:shadow-call"
+      },
+      {
+        "featureId": "prestige:shadowdancer:shadow-jump",
+        "level": 4,
+        "name": "Shadow Jump",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:shadow-jump"
+      },
+      {
+        "featureId": "prestige:shadowdancer:defensive-roll",
+        "level": 5,
+        "name": "Defensive Roll",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:defensive-roll"
+      },
+      {
+        "featureId": "prestige:shadowdancer:improved-uncanny-dodge",
+        "level": 5,
+        "name": "Improved Uncanny Dodge (Shadowdancer)",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:improved-uncanny-dodge"
+      },
+      {
+        "featureId": "prestige:shadowdancer:slippery-mind",
+        "level": 7,
+        "name": "Slippery Mind",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:slippery-mind"
+      },
+      {
+        "featureId": "prestige:shadowdancer:shadow-power",
+        "level": 8,
+        "name": "Shadow Power",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:shadow-power"
+      },
+      {
+        "featureId": "prestige:shadowdancer:improved-evasion",
+        "level": 10,
+        "name": "Improved Evasion (Shadowdancer)",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:improved-evasion"
+      },
+      {
+        "featureId": "prestige:shadowdancer:shadow-master",
+        "level": 10,
+        "name": "Shadow Master",
+        "resolved": true,
+        "uuid": "prestige-feature:shadowdancer:shadow-master"
+      }
+    ],
+    "hd": 8,
+    "id": "prestige:shadowdancer",
+    "name": "Shadowdancer",
+    "prereqs": {
+      "feats": ["Combat Reflexes", "Dodge", "Mobility"],
+      "prereqText": "Skills: Stealth 5 ranks, Perform (dance) 2 ranks. Feats: Combat Reflexes, Dodge, Mobility.",
+      "skillRanks": [
+        {
+          "ranks": 5,
+          "skill": "ste"
+        }
+      ]
+    },
+    "saves": {
+      "fort": "lowPrestige",
+      "ref": "highPrestige",
+      "will": "lowPrestige"
+    },
+    "skillsPerLevel": 6,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "shadowdancer",
+    "uuid": "prestige-class:shadowdancer",
     "weaponProf": []
   },
   "s27zdYVFenYBVtfu": {
