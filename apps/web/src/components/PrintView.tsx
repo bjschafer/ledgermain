@@ -109,9 +109,6 @@ export function PrintView({
                 {data.sr !== undefined ? `SR ${data.sr}` : ""}
               </p>
             )}
-            {data.arcaneSpellFailure !== undefined && (
-              <p className="print-hint">Arcane Spell Failure {data.arcaneSpellFailure}%</p>
-            )}
           </div>
 
           <div className="print-block">
@@ -163,6 +160,9 @@ export function PrintView({
               CMB <span className="num">{data.cmb}</span>
             </span>
           </div>
+          {data.arcaneSpellFailure !== undefined && (
+            <p className="print-hint">Arcane Spell Failure {data.arcaneSpellFailure}%</p>
+          )}
           {data.attacks.length > 0 && (
             <table className="print-table print-attacks">
               <thead>

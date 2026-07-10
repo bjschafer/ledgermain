@@ -199,18 +199,6 @@ export function Sheet({
             baseline={baseline.ac.flatFooted}
           />
           <StatSeal label="CMD" value={sheet.cmd} resetKey={doc.id} baseline={baseline.cmd} />
-          {/* Arcane spell failure (issue #8, issue #64) — display-only, shown
-              only for arcane casters (wizard/sorcerer/arcanist/magus/bard/
-              summoner/skald/witch/bloodrager). */}
-          {sheet.arcaneSpellFailure ? (
-            <StatSeal
-              label="Arcane Spell Failure"
-              value={`${sheet.arcaneSpellFailure.total}%`}
-              foot={sheet.arcaneSpellFailure.exemptNote}
-              className="seal--compact"
-              resetKey={doc.id}
-            />
-          ) : null}
         </div>
       </div>
 
@@ -300,6 +288,29 @@ export function Sheet({
           />
         </div>
       </div>
+
+      {/* Casting — arcane spell failure (issue #8, issue #64) —
+          display-only, shown only for arcane casters (wizard/sorcerer/
+          arcanist/magus/bard/summoner/skald/witch/bloodrager). Not a
+          defense stat, so it gets its own group rather than living under
+          Defense. */}
+      {sheet.arcaneSpellFailure ? (
+        <div className="stat-group">
+          <div className="stat-group-header">
+            <span className="stat-group-legend">Casting</span>
+            <div className="stat-group-rule" />
+          </div>
+          <div className="stat-group-grid stat-group-grid--2">
+            <StatSeal
+              label="Spell Failure"
+              value={`${sheet.arcaneSpellFailure.total}%`}
+              foot={sheet.arcaneSpellFailure.exemptNote}
+              className="seal--compact"
+              resetKey={doc.id}
+            />
+          </div>
+        </div>
+      ) : null}
 
       {/* Per-weapon attacks ----------------------------------------- */}
       {sheet.attacks.length > 0 && (
