@@ -63,6 +63,7 @@ const UNCHAINED = [
 ];
 const ALTERNATE = ["Antipaladin", "Ninja", "Samurai"];
 const OCCULT = ["Kineticist", "Medium", "Mesmerist", "Occultist", "Psychic", "Spiritualist"];
+const PRESTIGE = ["Eldritch Knight", "Mystic Theurge"];
 
 describe("classCategory", () => {
   it("classifies every Core Rulebook class as core, and each exists in the vendored slice", () => {
@@ -99,6 +100,13 @@ describe("classCategory", () => {
     }
   });
 
+  it("classifies the hand-authored prestige classes as prestige, and each exists in the vendored slice (issue #66 chunk 1)", () => {
+    for (const name of PRESTIGE) {
+      expect(CLASS_NAMES.has(name)).toBe(true);
+      expect(classCategory({ name })).toBe("prestige");
+    }
+  });
+
   it("no vendored class falls through to 'other' today (a rename or new vendoring trips this)", () => {
     for (const cls of Object.values(ref.classes)) {
       expect(classCategory(cls)).not.toBe("other");
@@ -112,7 +120,7 @@ describe("classCategory", () => {
 });
 
 describe("groupClassesByCategory", () => {
-  it("splits the full vendored slice 11 / 10 / 10 / 4 / 3 / 6 into ordered sections with no 'other'", () => {
+  it("splits the full vendored slice 11 / 10 / 10 / 4 / 3 / 6 / 2 into ordered sections with no 'other'", () => {
     const groups = groupClassesByCategory(Object.values(ref.classes));
     expect(groups.map((g) => g.category)).toEqual([
       "core",
@@ -121,8 +129,9 @@ describe("groupClassesByCategory", () => {
       "unchained",
       "alternate",
       "occult",
+      "prestige",
     ]);
-    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10, 4, 3, 6]);
+    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10, 4, 3, 6, 2]);
   });
 
   it("orders sections per CLASS_CATEGORY_ORDER and drops empty ones", () => {

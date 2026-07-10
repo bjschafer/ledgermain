@@ -29,6 +29,7 @@ export type ClassCategory =
   | "unchained"
   | "alternate"
   | "occult"
+  | "prestige"
   | "other";
 
 /** Display order, most → least foundational (drives the picker's section order). */
@@ -39,6 +40,7 @@ export const CLASS_CATEGORY_ORDER: readonly ClassCategory[] = [
   "unchained",
   "alternate",
   "occult",
+  "prestige",
   "other",
 ];
 
@@ -49,6 +51,7 @@ export const CLASS_CATEGORY_LABEL: Record<ClassCategory, string> = {
   unchained: "Unchained",
   alternate: "Alternate",
   occult: "Occult",
+  prestige: "Prestige",
   other: "Other",
 };
 
@@ -114,6 +117,12 @@ const CLASS_CATEGORY: Readonly<Record<string, ClassCategory>> = {
   Occultist: "occult",
   Psychic: "occult",
   Spiritualist: "occult",
+
+  // Prestige classes (Core Rulebook; issue #66 chunk 1 — hand-authored, the
+  // pinned Foundry pack ships none. See `packages/data-pipeline/src/
+  // supplements.ts`'s `SUPPLEMENTAL_PRESTIGE_CLASSES`.)
+  "Eldritch Knight": "prestige",
+  "Mystic Theurge": "prestige",
 };
 
 /** Category for a class, defaulting to `"other"` for anything unlisted. */

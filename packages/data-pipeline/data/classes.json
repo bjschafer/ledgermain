@@ -5131,6 +5131,109 @@
     "uuid": "Compendium.pf1.classes.Item.ohptcds1d5oG6Bjh",
     "weaponProf": ["simple", "martial"]
   },
+  "prestige:eldritch-knight": {
+    "armorProf": [],
+    "bab": "high",
+    "castingAdvancement": [
+      {
+        "kind": "arcane",
+        "levels": [2, 3, 4, 5, 6, 7, 8, 9, 10]
+      }
+    ],
+    "classSkills": ["clm", "kar", "kno", "lin", "rid", "sen", "spl", "swm"],
+    "description": "<p>The eldritch knight combines martial training with arcane spellcasting, blending blade and spell into a single, versatile fighting style.</p>",
+    "features": [
+      {
+        "featureId": "prestige:eldritch-knight:diverse-training",
+        "level": 1,
+        "name": "Diverse Training",
+        "resolved": true,
+        "uuid": "prestige-feature:eldritch-knight:diverse-training"
+      },
+      {
+        "featureId": "prestige:eldritch-knight:bonus-combat-feat",
+        "level": 1,
+        "name": "Bonus Combat Feat",
+        "resolved": true,
+        "uuid": "prestige-feature:eldritch-knight:bonus-combat-feat"
+      },
+      {
+        "featureId": "prestige:eldritch-knight:spell-critical",
+        "level": 10,
+        "name": "Spell Critical",
+        "resolved": true,
+        "uuid": "prestige-feature:eldritch-knight:spell-critical"
+      }
+    ],
+    "hd": 10,
+    "id": "prestige:eldritch-knight",
+    "name": "Eldritch Knight",
+    "saves": {
+      "fort": "highPrestige",
+      "ref": "lowPrestige",
+      "will": "lowPrestige"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "eldritchKnight",
+    "uuid": "prestige-class:eldritch-knight",
+    "weaponProf": []
+  },
+  "prestige:mystic-theurge": {
+    "armorProf": [],
+    "bab": "low",
+    "castingAdvancement": [
+      {
+        "kind": "arcane",
+        "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      },
+      {
+        "kind": "divine",
+        "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      }
+    ],
+    "classSkills": ["kar", "kre", "sen", "spl"],
+    "description": "<p>The mystic theurge draws on both arcane and divine sources of magic, advancing two separate spellcasting traditions side by side.</p>",
+    "features": [
+      {
+        "featureId": "prestige:mystic-theurge:combined-spells",
+        "level": 1,
+        "name": "Combined Spells",
+        "resolved": true,
+        "uuid": "prestige-feature:mystic-theurge:combined-spells"
+      },
+      {
+        "featureId": "prestige:mystic-theurge:spell-synthesis",
+        "level": 10,
+        "name": "Spell Synthesis",
+        "resolved": true,
+        "uuid": "prestige-feature:mystic-theurge:spell-synthesis"
+      }
+    ],
+    "hd": 6,
+    "id": "prestige:mystic-theurge",
+    "name": "Mystic Theurge",
+    "saves": {
+      "fort": "lowPrestige",
+      "ref": "lowPrestige",
+      "will": "highPrestige"
+    },
+    "skillsPerLevel": 2,
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "mysticTheurge",
+    "uuid": "prestige-class:mystic-theurge",
+    "weaponProf": []
+  },
   "s27zdYVFenYBVtfu": {
     "armorProf": ["lgt"],
     "bab": "med",

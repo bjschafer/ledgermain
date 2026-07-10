@@ -122,6 +122,22 @@ export interface Class extends RefEntity {
   weaponProf: string[];
   /** Class features granted by level, resolved from `links.supplements`. */
   features: ClassFeatureGrant[];
+  /**
+   * Casting-advancement slots for prestige classes ("+1 level of existing
+   * spellcasting class"). Absent for classes that don't advance casting.
+   * Each slot advances ONE existing casting class the character already has
+   * (of the matching `kind`) by one effective level at the listed prestige
+   * levels — spells per day / spells known / caster level ONLY, never that
+   * target class's other features (bonus feats, domains, etc). A class with
+   * two slots (e.g. Mystic Theurge) can advance two different casting
+   * classes independently, one per slot.
+   */
+  castingAdvancement?: {
+    /** Which kind of existing casting class a slot may target. */
+    kind: "arcane" | "divine" | "any";
+    /** The prestige-class levels (1-based) at which this slot advances its target. */
+    levels: number[];
+  }[];
 }
 
 /** A class feature granted at a specific level (resolved UUID link). */

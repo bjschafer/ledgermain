@@ -8796,6 +8796,81 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.pqu1Mvo46iRpVH3I"
   },
+  "prestige:eldritch-knight:bonus-combat-feat": {
+    "changes": [],
+    "description": "<p>At 1st level, and again at 5th and 9th level, an eldritch knight gains a bonus feat drawn from the list of combat feats available to a fighter, in addition to the feats she gains from advancing in level as normal. She must meet a chosen feat's prerequisites as usual.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:eldritch-knight:bonus-combat-feat",
+    "name": "Bonus Combat Feat",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bonusCombatFeatEk",
+    "uuid": "prestige-feature:eldritch-knight:bonus-combat-feat"
+  },
+  "prestige:eldritch-knight:diverse-training": {
+    "changes": [],
+    "description": "<p>For the purpose of qualifying for feats, an eldritch knight treats her eldritch knight levels as fighter levels (adding them to any fighter levels she already has, or treating them as fighter levels outright if she has none), and separately treats her eldritch knight levels as levels of whatever arcane spellcasting class she used to qualify for the prestige class.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:eldritch-knight:diverse-training",
+    "name": "Diverse Training",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "diverseTraining",
+    "uuid": "prestige-feature:eldritch-knight:diverse-training"
+  },
+  "prestige:eldritch-knight:spell-critical": {
+    "changes": [],
+    "description": "<p>Starting at 10th level, whenever an eldritch knight confirms a critical hit with a weapon attack, she can cast a spell as a swift action. The spell must target the struck creature or include it within its area of effect.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:eldritch-knight:spell-critical",
+    "name": "Spell Critical",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "spellCritical",
+    "uuid": "prestige-feature:eldritch-knight:spell-critical"
+  },
+  "prestige:mystic-theurge:combined-spells": {
+    "changes": [],
+    "description": "<p>Starting at 1st level, a mystic theurge can prepare a spell from one of her two spellcasting classes into a spell slot one level higher belonging to her other spellcasting class. At 1st level, the highest-level spell she can prepare this way is a 1st-level spell; the maximum increases by one every two levels thereafter (2nd at 3rd level, 3rd at 5th level, 4th at 7th level, 5th at 9th level).</p>",
+    "grantsBuffs": [],
+    "id": "prestige:mystic-theurge:combined-spells",
+    "name": "Combined Spells",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "combinedSpells",
+    "uuid": "prestige-feature:mystic-theurge:combined-spells"
+  },
+  "prestige:mystic-theurge:spell-synthesis": {
+    "changes": [],
+    "description": "<p>Once per day at 10th level, a mystic theurge can spend a single action to cast two spells at once, one drawn from each of her spellcasting classes. A target struck by both spells takes a &minus;2 penalty on saving throws made against them, and the mystic theurge gains a +2 bonus on caster level checks made to overcome that target's spell resistance.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:mystic-theurge:spell-synthesis",
+    "name": "Spell Synthesis",
+    "sources": [
+      {
+        "id": "PZO1110"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "spellSynthesis",
+    "uuid": "prestige-feature:mystic-theurge:spell-synthesis"
+  },
   "ptw7bHU3Z7HNj2qz": {
     "abilityType": "ex",
     "changes": [],

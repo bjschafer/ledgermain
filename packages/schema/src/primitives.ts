@@ -16,8 +16,33 @@ export const ABILITY_IDS: readonly AbilityId[] = ["str", "dex", "con", "int", "w
  */
 export type BabTier = "high" | "med" | "low";
 
-/** Saving-throw progression tier. PF1 has exactly two ("good"/"poor"). */
-export type SaveTier = "high" | "low";
+/**
+ * Saving-throw progression tier. Base (20-level) classes use exactly two
+ * ("high"/"good", "low"/"poor"), computed as `2 + floor(level/2)` and
+ * `floor(level/3)` respectively (see `saveForLevels` in `@pf1/engine`
+ * `tables.ts`).
+ *
+ * Prestige classes (10-level max) use DIFFERENT formulas for both their good
+ * and poor saves — this isn't a simplification or a guess, it's directly
+ * verified against the Core Rulebook's own tables (Eldritch Knight, Mystic
+ * Theurge, Assassin all independently confirm both progressions below,
+ * fetched from legacy.aonprd.com's raw HTML, not summarized):
+ *
+ * - `highPrestige` ("good" prestige save): `floor((level+1)/2)` — progresses
+ *   1,1,2,2,3,3,4,4,5,5 across levels 1-10. No +2 at 1st level (unlike the
+ *   base "high" tier's `2 + floor(level/2)`), which is how PF1 prevents a
+ *   prestige class's good save from stacking an extra +2 on top of a
+ *   multiclassed character's existing good save in the same ability.
+ * - `lowPrestige` ("poor" prestige save): `floor((level+1)/3)` — progresses
+ *   0,1,1,1,2,2,2,3,3,3 across levels 1-10. This is NOT the same as the base
+ *   "low" tier's `floor(level/3)` (0,0,1,1,1,2,2,2,3,3) — the prestige poor
+ *   progression reaches each new plateau one level earlier. (Verified: e.g.
+ *   Eldritch Knight's Ref/Will and Mystic Theurge's Fort/Ref columns, and
+ *   Assassin's Fort/Will columns, all match `lowPrestige` exactly; Wizard's
+ *   Fort/Ref — a base-class poor save — matches base "low" exactly, ruling
+ *   out a source-transcription error.)
+ */
+export type SaveTier = "high" | "low" | "highPrestige" | "lowPrestige";
 
 /**
  * Skill identifiers are the Foundry abbreviations (e.g. "acr", "per", "kna").

@@ -22,12 +22,24 @@ export function babForLevels(tier: BabTier, level: number): number {
   }
 }
 
-/** Base save bonus contributed by `level` levels of a class at `tier`. */
+/**
+ * Base save bonus contributed by `level` levels of a class at `tier`. See
+ * `SaveTier`'s doc comment (`@pf1/schema` `primitives.ts`) for how the two
+ * prestige tiers (`highPrestige`/`lowPrestige`) were verified to differ from
+ * the base `high`/`low` tiers, not merely a renamed duplicate.
+ */
 export function saveForLevels(tier: SaveTier, level: number): number {
   if (level <= 0) return 0;
-  return tier === "high"
-    ? 2 + Math.floor(level / 2) // good save
-    : Math.floor(level / 3); // poor save
+  switch (tier) {
+    case "high":
+      return 2 + Math.floor(level / 2); // good save
+    case "low":
+      return Math.floor(level / 3); // poor save
+    case "highPrestige":
+      return Math.floor((level + 1) / 2); // prestige good save, no +2 at 1st level
+    case "lowPrestige":
+      return Math.floor((level + 1) / 3); // prestige poor save
+  }
 }
 
 /** Size modifier to AC and attack rolls (Foundry size id → modifier). */

@@ -21,7 +21,13 @@
  * learnedAt.bloodline" invariants — see `packages/data-pipeline/test/refdata.test.ts`.
  */
 
-import type { ArchetypeFeature, ClassFeature, SpellList } from "@pf1/schema";
+import type {
+  ArchetypeFeature,
+  Class,
+  ClassFeature,
+  ClassFeatureGrant,
+  SpellList,
+} from "@pf1/schema";
 
 /**
  * Supplemental bonus-spell lists keyed by bloodline tag, then by spell level
@@ -163,5 +169,231 @@ export function applyArchetypeFeatureLevelSupplements(features: ArchetypeFeature
   for (const feature of features) {
     const level = SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL[feature.id];
     if (level !== undefined) feature.level = level;
+  }
+}
+
+/* ---------------------------------------------------------- prestige classes -- */
+
+/**
+ * Hand-authored prestige-class chassis (issue #66 chunk 1) — the pinned
+ * Foundry pf1 pack ships NO prestige classes at all (confirmed: every doc
+ * under `packs/classes` carries `system.subType: "base"`), so unlike every
+ * other entity in this pipeline there is no upstream doc to transform. These
+ * two entries are authored clean-room from the published Core Rulebook class
+ * tables (PZO1110), fetched and verified directly against raw HTML from
+ * legacy.aonprd.com (not summarized) — cross-checked line-by-line against
+ * d20pfsrd.com and the live aonprd.com class pages, all three agreeing.
+ *
+ * A save-table surprise worth flagging: naive expectation was "good saves use
+ * the new `highPrestige` tier, poor saves reuse the existing `low` tier" —
+ * but the fetched tables show BOTH classes' poor-save columns following
+ * 0,1,1,1,2,2,2,3,3,3 (levels 1-10), which is NOT `low`'s `floor(level/3)`
+ * (0,0,1,1,1,2,2,2,3,3). Cross-checked against a third CRB prestige class
+ * (Assassin) to rule out a one-off transcription error — Assassin's poor
+ * columns (Fort/Will) match the same 0,1,1,1,2,2,2,3,3,3 sequence, and its
+ * good column (Ref) matches `highPrestige` exactly, while Wizard (a base
+ * class) matches base `low` exactly. So PF1's 10-level prestige classes
+ * genuinely use a DIFFERENT poor-save formula than 20-level base classes —
+ * see the new `lowPrestige` `SaveTier` and its doc comment in `@pf1/schema`
+ * `primitives.ts` for the formula. Both classes' good saves DO use the
+ * expected `highPrestige` tier (verified: Fort for Eldritch Knight, Will for
+ * Mystic Theurge, both 1,1,2,2,3,3,4,4,5,5).
+ *
+ * Synthetic ids follow the same non-Foundry-shaped posture as
+ * `Archetype`/`ArchetypeFeature` (also hand/third-party-authored, not
+ * Foundry docs): a `prestige:` id prefix and a distinct `prestige-class:` /
+ * `prestige-feature:` uuid scheme that can never collide with a real
+ * `Compendium.pf1.<pack>.Item.<foundryId>` uuid or a real class/feature's
+ * 16-character alphanumeric Foundry id.
+ *
+ * `applyPrestigeClassSupplements` (below) throws loudly on any id/uuid/tag
+ * collision against the already-normalized vendored classes/classFeatures,
+ * the same "fail the build, don't silently overwrite" posture as
+ * `resolveBloodlineSupplements`.
+ */
+function prestigeFeature(
+  classSlug: string,
+  slug: string,
+  name: string,
+  description: string,
+  tag: string,
+): ClassFeature {
+  const id = `prestige:${classSlug}:${slug}`;
+  return {
+    id,
+    name,
+    uuid: `prestige-feature:${classSlug}:${slug}`,
+    description,
+    sources: [{ id: "PZO1110" }],
+    tag,
+    subType: "classFeat",
+    changes: [],
+    grantsBuffs: [],
+  };
+}
+
+function prestigeGrant(
+  level: number,
+  classSlug: string,
+  slug: string,
+  name: string,
+): ClassFeatureGrant {
+  return {
+    level,
+    uuid: `prestige-feature:${classSlug}:${slug}`,
+    featureId: `prestige:${classSlug}:${slug}`,
+    name,
+    resolved: true,
+  };
+}
+
+const ELDRITCH_KNIGHT_FEATURES: ClassFeature[] = [
+  prestigeFeature(
+    "eldritch-knight",
+    "diverse-training",
+    "Diverse Training",
+    "<p>For the purpose of qualifying for feats, an eldritch knight treats her eldritch knight levels as fighter levels (adding them to any fighter levels she already has, or treating them as fighter levels outright if she has none), and separately treats her eldritch knight levels as levels of whatever arcane spellcasting class she used to qualify for the prestige class.</p>",
+    "diverseTraining",
+  ),
+  prestigeFeature(
+    "eldritch-knight",
+    "bonus-combat-feat",
+    "Bonus Combat Feat",
+    "<p>At 1st level, and again at 5th and 9th level, an eldritch knight gains a bonus feat drawn from the list of combat feats available to a fighter, in addition to the feats she gains from advancing in level as normal. She must meet a chosen feat's prerequisites as usual.</p>",
+    "bonusCombatFeatEk",
+  ),
+  prestigeFeature(
+    "eldritch-knight",
+    "spell-critical",
+    "Spell Critical",
+    "<p>Starting at 10th level, whenever an eldritch knight confirms a critical hit with a weapon attack, she can cast a spell as a swift action. The spell must target the struck creature or include it within its area of effect.</p>",
+    "spellCritical",
+  ),
+];
+
+const MYSTIC_THEURGE_FEATURES: ClassFeature[] = [
+  prestigeFeature(
+    "mystic-theurge",
+    "combined-spells",
+    "Combined Spells",
+    "<p>Starting at 1st level, a mystic theurge can prepare a spell from one of her two spellcasting classes into a spell slot one level higher belonging to her other spellcasting class. At 1st level, the highest-level spell she can prepare this way is a 1st-level spell; the maximum increases by one every two levels thereafter (2nd at 3rd level, 3rd at 5th level, 4th at 7th level, 5th at 9th level).</p>",
+    "combinedSpells",
+  ),
+  prestigeFeature(
+    "mystic-theurge",
+    "spell-synthesis",
+    "Spell Synthesis",
+    "<p>Once per day at 10th level, a mystic theurge can spend a single action to cast two spells at once, one drawn from each of her spellcasting classes. A target struck by both spells takes a &minus;2 penalty on saving throws made against them, and the mystic theurge gains a +2 bonus on caster level checks made to overcome that target's spell resistance.</p>",
+    "spellSynthesis",
+  ),
+];
+
+/** Hand-authored `ClassFeature`s granted by the two supplemental prestige classes. */
+export const SUPPLEMENTAL_PRESTIGE_CLASS_FEATURES: ClassFeature[] = [
+  ...ELDRITCH_KNIGHT_FEATURES,
+  ...MYSTIC_THEURGE_FEATURES,
+];
+
+/**
+ * Hand-authored prestige `Class` chassis. See the module doc comment above
+ * this section for sourcing/verification notes; chassis numbers verified
+ * against legacy.aonprd.com raw HTML (levels 1-10):
+ *
+ * Eldritch Knight — d10 HD, full (`"high"`) BAB, good Fort (`highPrestige`:
+ * 1,1,2,2,3,3,4,4,5,5), poor Ref/Will (`lowPrestige`: 0,1,1,1,2,2,2,3,3,3),
+ * 2 + Int skill ranks/level, no armor/weapon proficiencies, one arcane
+ * casting-advancement slot starting at 2nd level (the table's Spells per Day
+ * column reads "—" at 1st level, "+1 level of existing arcane spellcasting
+ * class" from 2nd on).
+ *
+ * Mystic Theurge — d6 HD, half (`"low"`) BAB, good Will (`highPrestige`),
+ * poor Fort/Ref (`lowPrestige`), 2 + Int skill ranks/level, no armor/weapon
+ * proficiencies, two casting-advancement slots (one arcane, one divine) BOTH
+ * starting at 1st level.
+ */
+export const SUPPLEMENTAL_PRESTIGE_CLASSES: Class[] = [
+  {
+    id: "prestige:eldritch-knight",
+    name: "Eldritch Knight",
+    uuid: "prestige-class:eldritch-knight",
+    description:
+      "<p>The eldritch knight combines martial training with arcane spellcasting, blending blade and spell into a single, versatile fighting style.</p>",
+    sources: [{ id: "PZO1110" }],
+    tag: "eldritchKnight",
+    subType: "prestige",
+    hd: 10,
+    bab: "high",
+    saves: { fort: "highPrestige", ref: "lowPrestige", will: "lowPrestige" },
+    skillsPerLevel: 2,
+    classSkills: ["clm", "kar", "kno", "lin", "rid", "sen", "spl", "swm"],
+    armorProf: [],
+    weaponProf: [],
+    features: [
+      prestigeGrant(1, "eldritch-knight", "diverse-training", "Diverse Training"),
+      prestigeGrant(1, "eldritch-knight", "bonus-combat-feat", "Bonus Combat Feat"),
+      prestigeGrant(10, "eldritch-knight", "spell-critical", "Spell Critical"),
+    ],
+    castingAdvancement: [{ kind: "arcane", levels: [2, 3, 4, 5, 6, 7, 8, 9, 10] }],
+  },
+  {
+    id: "prestige:mystic-theurge",
+    name: "Mystic Theurge",
+    uuid: "prestige-class:mystic-theurge",
+    description:
+      "<p>The mystic theurge draws on both arcane and divine sources of magic, advancing two separate spellcasting traditions side by side.</p>",
+    sources: [{ id: "PZO1110" }],
+    tag: "mysticTheurge",
+    subType: "prestige",
+    hd: 6,
+    bab: "low",
+    saves: { fort: "lowPrestige", ref: "lowPrestige", will: "highPrestige" },
+    skillsPerLevel: 2,
+    classSkills: ["kar", "kre", "sen", "spl"],
+    armorProf: [],
+    weaponProf: [],
+    features: [
+      prestigeGrant(1, "mystic-theurge", "combined-spells", "Combined Spells"),
+      prestigeGrant(10, "mystic-theurge", "spell-synthesis", "Spell Synthesis"),
+    ],
+    castingAdvancement: [
+      { kind: "arcane", levels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+      { kind: "divine", levels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+    ],
+  },
+];
+
+/**
+ * Append `SUPPLEMENTAL_PRESTIGE_CLASSES`/`SUPPLEMENTAL_PRESTIGE_CLASS_FEATURES`
+ * onto the already-normalized vendored lists, in place. Throws loudly (rather
+ * than silently overwriting or duplicating) if a future data bump ever
+ * introduces a real class/feature whose id, uuid, tag, or name collides with
+ * one of these synthetic entries — the same "fail the build" posture as
+ * `resolveBloodlineSupplements`.
+ */
+export function applyPrestigeClassSupplements(
+  classes: Class[],
+  classFeatures: ClassFeature[],
+): void {
+  for (const cls of SUPPLEMENTAL_PRESTIGE_CLASSES) {
+    const collision = classes.find(
+      (c) => c.id === cls.id || c.uuid === cls.uuid || c.tag === cls.tag || c.name === cls.name,
+    );
+    if (collision) {
+      throw new Error(
+        `[supplements] prestige class "${cls.name}" collides with vendored class "${collision.name}" (id=${collision.id})`,
+      );
+    }
+    classes.push(cls);
+  }
+  for (const feature of SUPPLEMENTAL_PRESTIGE_CLASS_FEATURES) {
+    const collision = classFeatures.find(
+      (f) => f.id === feature.id || f.uuid === feature.uuid || f.name === feature.name,
+    );
+    if (collision) {
+      throw new Error(
+        `[supplements] prestige class feature "${feature.name}" collides with vendored class feature "${collision.name}" (id=${collision.id})`,
+      );
+    }
+    classFeatures.push(feature);
   }
 }

@@ -41,6 +41,7 @@ import { transformSpell } from "./transform/spells.js";
 import {
   applyArchetypeFeatureLevelSupplements,
   applyClassFeatureUsesSupplements,
+  applyPrestigeClassSupplements,
   resolveBloodlineSupplements,
 } from "./supplements.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
@@ -152,6 +153,12 @@ export function normalize(opts: NormalizeOptions): {
   const classes: Class[] = selectedClassDocs.map((d) =>
     transformClass(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
   );
+
+  // --- prestige classes (hand-authored; the pinned Foundry pack ships none) --
+  // Mutates `classes`/`classFeatures` in place (pushes the two supplemental
+  // entries); throws loudly on any id/uuid/tag/name collision. See
+  // `supplements.ts`'s doc comment for sourcing/verification notes.
+  applyPrestigeClassSupplements(classes, classFeatures);
 
   const domains: Domain[] = domainDocs.map((d) =>
     transformDomain(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
@@ -344,7 +351,12 @@ export function normalize(opts: NormalizeOptions): {
     meta,
     races: byId(races),
     classes: byId(classes),
-    classFeatures: classFeaturesById,
+    // Recomputed (not the earlier `classFeaturesById`) so the prestige-class
+    // supplement pushed onto `classFeatures` above is included — the earlier
+    // dict was a snapshot taken before that push, deliberately kept for the
+    // domains/wizard-schools resolvers above (which must never see synthetic
+    // prestige features).
+    classFeatures: byId(classFeatures),
     feats: byId(feats),
     spells: byId(spells),
     buffs: byId(buffs),

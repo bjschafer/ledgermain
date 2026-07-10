@@ -53,8 +53,10 @@ describe("metadata + provenance", () => {
     // vendored per issue #26: aasimar, tiefling, goblin, kobold, drow, ...).
     expect(Object.keys(ref.races)).toHaveLength(80);
     // 11 core + 10 base + 10 hybrid + 3 alternate (antipaladin/ninja/samurai)
-    // + 4 unchained + 6 Occult Adventures.
-    expect(Object.keys(ref.classes)).toHaveLength(44);
+    // + 4 unchained + 6 Occult Adventures + 2 hand-authored prestige (Eldritch
+    // Knight, Mystic Theurge — issue #66 chunk 1, Foundry ships no prestige
+    // classes at all).
+    expect(Object.keys(ref.classes)).toHaveLength(46);
     expect(Object.keys(ref.feats)).toHaveLength(390);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
   });
