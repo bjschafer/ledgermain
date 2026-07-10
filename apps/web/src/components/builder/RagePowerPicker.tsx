@@ -30,12 +30,14 @@ interface RagePowerPickerProps {
  * `DiscoveryPicker`. Core Rulebook + a curated Advanced Player's Guide slice
  * only — see `@pf1/engine` `rage-powers.ts`'s scope note.
  *
- * Every entry is display-only (a `contextNotes` reminder spells out the exact
- * numbers/activation cost) — see that file's doc comment for why none of
- * these ride a live `Change` today. Picked powers also show up in the
- * sheet's Class Features list (tagged "— Rage Power"), via
- * `collectGrantedFeatures`/`resolveClassFeatures` in `@pf1/engine`
- * `archetypes.ts`.
+ * Most entries are display-only (a `contextNotes` reminder spells out the
+ * exact numbers/activation cost); a few (Raging Climber, Raging Swimmer,
+ * Swift Foot) carry a real buff-gated `Change` that applies only while the
+ * Rage buff is active (issue #75's `Change.activeWhenBuff` — see
+ * `@pf1/engine` `rage-powers.ts`'s doc comment for which and why). Picked
+ * powers also show up in the sheet's Class Features list (tagged "— Rage
+ * Power"), via `collectGrantedFeatures`/`resolveClassFeatures` in
+ * `@pf1/engine` `archetypes.ts`.
  */
 export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) {
   const [query, setQuery] = useState("");

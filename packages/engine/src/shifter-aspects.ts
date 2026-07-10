@@ -53,6 +53,14 @@
  * lowest-wins set-change resolution would handle backwards) are called out
  * in `contextNotes` instead, with `minorFormChanges: []` — same discipline
  * as `witch-hexes.ts`'s Cauldron/Flight/Ward carve-outs.
+ *
+ * Issue #75 audit: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
+ * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
+ * changes nothing here. A minor form already IS its own toggleable buff
+ * (`model/shifterAspects.ts` copies `minorFormChanges` onto an `ActiveBuff`,
+ * which naturally scopes them to while-toggled-on — no gate needed), and the
+ * carve-outs above are blocked by target/scope/set-resolution problems, not
+ * by the lack of a buff gate. Zero promotions; all stay as documented.
  */
 
 import type { Change, ContextNote } from "@pf1/schema";

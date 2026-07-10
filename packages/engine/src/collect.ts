@@ -95,12 +95,55 @@ function evalChange(
   out.push({ target, type: type || "untyped", value, source, sourceId, operator });
 }
 
+/**
+ * Buff-gated changes (issue #75): true when `ch` carries no
+ * `activeWhenBuff` (unconditional — every change source that predates this
+ * mechanism resolves here, unchanged) or when at least one currently active
+ * buff matches the gate by `buffId` and/or `effectTag` — never by display
+ * name (see `Change.activeWhenBuff`'s doc comment). A gate is satisfied by
+ * ANY match across either list.
+ *
+ * Gated-but-currently-inactive changes are simply OMITTED from the
+ * collected list rather than pushed through with a forced
+ * `applied: false` provenance flag. `stacking.ts`'s `resolveStack` computes
+ * `applied` purely from same-type-bonus comparison (highest wins); bolting
+ * on an externally-forced "inactive" entry would mean carrying a phantom
+ * modifier through the whole pipeline (and through `resolveStack`'s
+ * highest-wins logic, where it could wrongly suppress a genuinely-applied
+ * same-type bonus) for a struck-through-in-the-UI distinction the tracker
+ * doesn't currently render any differently from "this source contributed
+ * nothing" — the cheaper, correct-by-construction choice per this issue's
+ * design constraints.
+ */
+function buffGateSatisfied(
+  ch: Pick<Change, "activeWhenBuff">,
+  activeBuffs: readonly ActiveBuff[],
+): boolean {
+  const gate = ch.activeWhenBuff;
+  if (!gate) return true;
+  return activeBuffs.some(
+    (b) =>
+      (b.buffId !== undefined && (gate.buffIds?.includes(b.buffId) ?? false)) ||
+      (b.effectTag !== undefined && (gate.effectTags?.includes(b.effectTag) ?? false)),
+  );
+}
+
 export function collectModifiers(
   doc: CharacterDoc,
   refData: RefData,
   rollData: RollData,
 ): CollectedModifier[] {
   const out: CollectedModifier[] = [];
+
+  // Buff-gate check (issue #75) — see `buffGateSatisfied`. Consulted in
+  // every hand-authored build-choice loop below (traits, bloodline powers,
+  // exploits, arcana, revelations, hexes, rage powers, discoveries, curse)
+  // so a table entry carrying `activeWhenBuff` gates correctly no matter
+  // which table it lands in — not just the rage-power table that motivated
+  // the mechanism. Vendored-data loops (race, items, class features, buffs,
+  // conditions) deliberately skip the check: the data pipeline never emits
+  // the field, so it cannot occur there.
+  const gateOpen = (ch: Change): boolean => buffGateSatisfied(ch, doc.live.activeBuffs ?? []);
 
   // --- race ---------------------------------------------------------------
   const race = refData.races[doc.identity.race];
@@ -307,6 +350,7 @@ export function collectModifiers(
     const trait = TRAITS[traitId];
     if (!trait) continue;
     for (const ch of trait.changes) {
+      if (!gateOpen(ch)) continue;
       evalChange(ch.formula, rollData, ch.target, ch.type, trait.name, trait.id, out, ch.operator);
     }
   }
@@ -327,6 +371,7 @@ export function collectModifiers(
     const bloodline = BLOODLINES[doc.build.sorcererBloodline];
     if (bloodline) {
       for (const ch of bloodline.arcana.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(
           ch.formula,
           rollData,
@@ -341,6 +386,7 @@ export function collectModifiers(
       for (const power of bloodline.powers) {
         if (power.level > sorcererLevel) continue;
         for (const ch of power.changes ?? []) {
+          if (!gateOpen(ch)) continue;
           evalChange(
             ch.formula,
             rollData,
@@ -371,6 +417,7 @@ export function collectModifiers(
       for (const power of bloodline.powers) {
         if (power.level > bloodragerLevel) continue;
         for (const ch of power.changes ?? []) {
+          if (!gateOpen(ch)) continue;
           evalChange(
             ch.formula,
             rollData,
@@ -401,6 +448,7 @@ export function collectModifiers(
       const exploit = ARCANIST_EXPLOITS[exploitId];
       if (!exploit) continue;
       for (const ch of exploit.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, exploit.name, exploit.id, out);
       }
     }
@@ -420,6 +468,7 @@ export function collectModifiers(
       const arcana = MAGUS_ARCANA[arcanaId];
       if (!arcana) continue;
       for (const ch of arcana.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, arcana.name, arcana.id, out);
       }
     }
@@ -436,6 +485,7 @@ export function collectModifiers(
       const revelation = ORACLE_REVELATIONS[revelationId];
       if (!revelation || revelation.mysteryTag !== doc.build.oracleMystery) continue;
       for (const ch of revelation.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, revelation.name, revelation.id, out);
       }
     }
@@ -456,19 +506,23 @@ export function collectModifiers(
       const hex = WITCH_HEXES[hexId];
       if (!hex) continue;
       for (const ch of hex.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out);
       }
     }
   }
 
-  // --- barbarian rage powers (build choice, issue #65/#67) -----------------
+  // --- barbarian rage powers (build choice, issue #65/#67, gated #75) ------
   // Power ids are hand-authored clean-room content (not in the vendored
   // Foundry data pack — see `@pf1/engine` `rage-powers.ts`), same posture as
   // magus arcana above. Gated on the character actually having barbarian
-  // (either edition) levels. Every power is `displayOnly` with `changes: []`
-  // today (see that file's doc comment), so this loop currently contributes
-  // no numeric modifiers — wired the same way for a future power with a real
-  // unconditional Change to work for free.
+  // (either edition) levels. Most powers are still `displayOnly` with
+  // `changes: []` (activated/per-round abilities or conditional-target near
+  // misses — see that file's doc comment), but a handful (Raging Climber,
+  // Raging Swimmer, Swift Foot) now carry a real `Change` gated by
+  // `activeWhenBuff` (issue #75's "while raging" mechanism) —
+  // `buffGateSatisfied` skips those entirely unless the character currently
+  // has the (chained or Unchained) Rage buff active in `live.activeBuffs`.
   const barbarianAnyLevel = doc.identity.classes
     .filter((c) => c.tag === "barbarian" || c.tag === "barbarianUnchained")
     .reduce((sum, c) => sum + c.level, 0);
@@ -477,6 +531,7 @@ export function collectModifiers(
       const power = RAGE_POWERS[powerId];
       if (!power) continue;
       for (const ch of power.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, power.name, power.id, out);
       }
     }
@@ -496,6 +551,7 @@ export function collectModifiers(
       const discovery = ALCHEMIST_DISCOVERIES[discoveryId];
       if (!discovery) continue;
       for (const ch of discovery.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, discovery.name, discovery.id, out);
       }
     }
@@ -514,6 +570,7 @@ export function collectModifiers(
     const curse = ORACLE_CURSES[doc.build.oracleCurse];
     if (curse) {
       for (const ch of curse.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, curse.name, `curse:${curse.tag}`, out);
       }
     }

@@ -29,20 +29,68 @@
  * Renewed Vigor, Strength Surge, Surprise Accuracy, Guarded Stance, Rolling
  * Dodge, ...) or a bonus that only applies WHILE RAGING specifically
  * (Superstition's save bonus vs. spells, the Raging Climber/Leaper/Swimmer
- * skill bonuses, Low-Light Vision, Scent, ...). Both shapes need a
- * "gate this build choice's Change by whether a specific buff is currently
- * active" mechanism the engine doesn't have today (unlike a genuinely
+ * skill bonuses, Low-Light Vision, Scent, ...). The WHILE-RAGING shape used
+ * to need a "gate this build choice's Change by whether a specific buff is
+ * currently active" mechanism the engine didn't have (unlike a genuinely
  * always-on class feature or feat, or a buff's OWN `changes[]`, which
- * naturally only apply while that buff instance is active) — building one
- * for this single table is out of scope, same "near miss, not worth new
- * infra for one table" call `oracle-revelations.ts`/`witch-hexes.ts` already
- * made for their own conditional/activated near-misses. So EVERY entry here
- * is `displayOnly: true` with `changes: []`; `contextNotes` carries the exact
- * numbers/scaling/activation-cost instead, and `minLevel` gates soft-warn
- * (never block) the same way `WitchHexDef.minLevel`/`MagusArcanaDef.minLevel` do.
+ * naturally only apply while that buff instance is active) — issue #75 adds
+ * exactly that mechanism (`Change.activeWhenBuff`, gated at collect-time by
+ * `@pf1/engine` `collect.ts`'s `buffGateSatisfied`), so a clean subset of
+ * the while-raging entries below is now promoted off `displayOnly`:
+ *
+ *   - **Raging Climber** / **Raging Swimmer**: RAW is an ENHANCEMENT bonus
+ *     equal to barbarian level on Climb / Swim checks respectively — NOT the
+ *     flat "+4 competence" this file's `contextNotes` used to (incorrectly)
+ *     claim before this change (verified against d20pfsrd.com's Raging
+ *     Climber/Raging Swimmer entries, both stating "adds her level as an
+ *     enhancement bonus" verbatim). Promoted to a real gated `Change`
+ *     targeting the whole skill (Climb/Swim have no partial-use-case split
+ *     the way Acrobatics does), typed `enhancement` (so it correctly does
+ *     NOT stack with another enhancement source on the same skill, per RAW).
+ *   - **Swift Foot**: RAW is a flat +5 ft. ENHANCEMENT bonus to land speed
+ *     while raging (confirmed unscaled — d20pfsrd.com), takeable up to 3
+ *     times with stacking effect. The rage-power picker (`build.ragePowers`,
+ *     a plain string-id array via `toggleRagePower` in
+ *     `apps/web/src/model/ragePowers.ts`) has no duplicate-instance support
+ *     today (unlike the "Extra Rage Power"-style repeatable-FEAT mechanism
+ *     from issue #58's `build.extraFeats`) — this ships the single-instance
+ *     +5 ft. version only; taking Swift Foot a 2nd/3rd time has no
+ *     additional effect until a rage-power duplicate-instance mechanism
+ *     exists (same class of documented limitation, not a new one).
+ *
+ * Two while-raging entries are deliberately LEFT display-only despite the
+ * new mechanism existing — the honest call, not an oversight:
+ *
+ *   - **Superstition**: the morale bonus is scoped to saves "against spells,
+ *     supernatural abilities, and spell-like abilities" only (verified:
+ *     d20pfsrd.com/multiple SRD mirrors) — the engine has no "saves vs a
+ *     source-category" conditional target (only whole-save-type targets
+ *     like `will`/`allSavingThrows`), so an unconditional gated Change here
+ *     would apply the bonus to EVERY save (including ones with no spell/Su/
+ *     SLA origin), overstating it. `contextNotes` still carries the exact
+ *     numbers/scaling (already correct pre-#75: +2 at 1st, +1/4 levels).
+ *   - **Raging Leaper**: RAW is the identical enhancement-bonus-equal-to-
+ *     level shape as Climber/Swimmer above, but scoped to Acrobatics checks
+ *     "made to jump" only (verified: d20pfsrd.com) — Acrobatics also covers
+ *     balance/tumble/etc., so an unconditional gated Change on `skill.acr`
+ *     would overstate it the same way Superstition would. Same honest-call
+ *     rule; `contextNotes` corrected to state the enhancement (not
+ *     competence) bonus type and level-equal scaling.
+ *
+ * Sense grants (Low-Light Vision, Scent) are NOT promoted even though they
+ * ARE unconditional-while-raging — beneficial "set"-change grants are a
+ * documented engine hazard (`compute.ts` resolves competing "set" changes on
+ * a sense/speed target by LOWEST value, which is tuned for penalties like
+ * Slow, not beneficial grants — see `shifter-aspects.ts`'s Bat/Wolf entries
+ * for the identical carve-out) — these stay `displayOnly` regardless of the
+ * new gate mechanism.
+ *
+ * `contextNotes` carries the exact numbers/scaling/activation-cost for every
+ * still-display-only entry, and `minLevel` gates soft-warn (never block) the
+ * same way `WitchHexDef.minLevel`/`MagusArcanaDef.minLevel` do.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { BuffGate, Change, ContextNote } from "@pf1/schema";
 
 export type RagePowerEdition = "barbarian" | "barbarianUnchained";
 
@@ -55,16 +103,53 @@ export interface RagePowerDef {
   summary: string;
   /** Which barbarian edition(s) can select this power — see file doc comment on why every entry defaults to both. */
   editions: readonly RagePowerEdition[];
-  /** Typed modifiers granted unconditionally (empty for every entry — see file doc comment). */
+  /**
+   * Typed modifiers this power grants — empty for most entries (see file doc
+   * comment). The handful promoted by issue #75 carry a real `Change` gated
+   * by `activeWhenBuff` (see `WHILE_RAGING`), applied only while the
+   * character has the (chained or Unchained) Rage buff active.
+   */
   changes: Change[];
   /** Non-mechanical reminders (exact numbers, scaling, activation cost, prerequisites). */
   contextNotes?: ContextNote[];
-  /** Always true here — no power has a flat always-on, unconditional numeric effect. */
-  displayOnly: true;
+  /**
+   * True when this power has no live `Change` at all — a pure per-round
+   * activated ability, or one of the two conditional-target near-misses
+   * (Superstition, Raging Leaper) deliberately left note-only even though
+   * the while-raging gate mechanism exists (see file doc comment). False
+   * for the small set of unconditional-while-raging entries promoted to a
+   * real gated `Change`.
+   */
+  displayOnly: boolean;
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });
 const BOTH: readonly RagePowerEdition[] = ["barbarian", "barbarianUnchained"];
+
+/**
+ * The "while raging" buff gate (issue #75): matches EITHER vendored Rage
+ * buff — chained "Rage" (`RefData.buffs` id `UgjpRD8vtiSWRxuL`) or
+ * Unchained "Rage (Unchained)" (`ciAO4KwMonUzAGY0`) — since this table is
+ * shared by both barbarian editions (see file doc comment) and a rage power
+ * doesn't care which edition granted it, only whether the character is
+ * CURRENTLY raging. Both ids pinned against real vendored refdata by a
+ * fixture test in `ragePowers.test.ts` rather than hardcoded from memory —
+ * see that test for the `loadRefData()` lookup that confirms them.
+ *
+ * Deliberately does NOT include skald Inspired Rage's hand-authored
+ * `effectTag: "ragingSong:inspiredRage"` (`raging-song.ts`): RAW, an ally
+ * affected by Inspired Rage does not thereby gain the use of the
+ * BARBARIAN's rage powers — that requires the skald to separately have the
+ * Ultimate Combat "Master Skald" class feature, which this app doesn't model
+ * at all yet. Inspired Rage grants its own flat Str/Con/Will/AC changes
+ * (see `raging-song.ts`'s `INSPIRED_RAGE_CHANGES`) — it is not "morally
+ * Rage" for rage-power purposes, so including its `effectTag` here would let
+ * a skald's song silently unlock rage powers RAW never grants it.
+ */
+const WHILE_RAGING: BuffGate = { buffIds: ["UgjpRD8vtiSWRxuL", "ciAO4KwMonUzAGY0"] };
+
+/** `@classes.barbarian.level + @classes.barbarianUnchained.level` — see `apps/web/src/model/ragePowers.ts`'s `barbarianLevel` for why summing both is correct (a character only ever truly has one, but summing is safe regardless). Missing class paths resolve to 0 (Foundry roll-data convention). */
+const BARBARIAN_LEVEL_SUM = "@classes.barbarian.level + @classes.barbarianUnchained.level";
 
 interface RawPower {
   id: string;
@@ -72,19 +157,24 @@ interface RawPower {
   minLevel: number;
   summary: string;
   contextNotes?: ContextNote[];
+  /** Real gated (or, in principle, unconditional) Changes — empty/omitted for every non-promoted entry, see file doc comment. */
+  changes?: Change[];
 }
 
 function build(entries: RawPower[]): RagePowerDef[] {
-  return entries.map((e) => ({
-    id: e.id,
-    name: e.name,
-    minLevel: e.minLevel,
-    summary: e.summary,
-    editions: BOTH,
-    changes: [],
-    contextNotes: e.contextNotes,
-    displayOnly: true,
-  }));
+  return entries.map((e) => {
+    const changes = e.changes ?? [];
+    return {
+      id: e.id,
+      name: e.name,
+      minLevel: e.minLevel,
+      summary: e.summary,
+      editions: BOTH,
+      changes,
+      contextNotes: e.contextNotes,
+      displayOnly: changes.length === 0,
+    };
+  });
 }
 
 const RAGE_POWER_LIST: RagePowerDef[] = build([
@@ -181,17 +271,25 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     id: "ragingClimber",
     name: "Raging Climber",
     minLevel: 1,
-    summary: "+4 competence bonus on Climb checks while raging.",
-    contextNotes: [note("+4 competence bonus, only while the raging buff is active.", "skill.clm")],
+    summary: "Enhancement bonus equal to barbarian level on Climb checks while raging.",
+    changes: [
+      {
+        formula: BARBARIAN_LEVEL_SUM,
+        target: "skill.clm",
+        type: "enhancement",
+        activeWhenBuff: WHILE_RAGING,
+      },
+    ],
   },
   {
     id: "ragingLeaper",
     name: "Raging Leaper",
     minLevel: 1,
-    summary: "+4 competence bonus on Acrobatics checks made to jump while raging.",
+    summary:
+      "Enhancement bonus equal to barbarian level on Acrobatics checks made to jump while raging (always counts as a running start).",
     contextNotes: [
       note(
-        "+4 competence bonus on jump checks only, while the raging buff is active.",
+        "Enhancement bonus equal to barbarian level, on jump checks only (not general Acrobatics) — while the raging buff is active; also always counts as having a running start.",
         "skill.acr",
       ),
     ],
@@ -200,8 +298,15 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     id: "ragingSwimmer",
     name: "Raging Swimmer",
     minLevel: 1,
-    summary: "+4 competence bonus on Swim checks while raging.",
-    contextNotes: [note("+4 competence bonus, only while the raging buff is active.", "skill.swm")],
+    summary: "Enhancement bonus equal to barbarian level on Swim checks while raging.",
+    changes: [
+      {
+        formula: BARBARIAN_LEVEL_SUM,
+        target: "skill.swm",
+        type: "enhancement",
+        activeWhenBuff: WHILE_RAGING,
+      },
+    ],
   },
   {
     id: "recklessAbandon",
@@ -327,7 +432,15 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     name: "Swift Foot",
     minLevel: 1,
     summary: "+5 ft. enhancement bonus to land speed while raging.",
-    contextNotes: [note("+5 ft. land speed, only while raging.", "landSpeed")],
+    changes: [
+      { formula: "5", target: "landSpeed", type: "enhancement", activeWhenBuff: WHILE_RAGING },
+    ],
+    contextNotes: [
+      note(
+        "RAW: can be taken up to 3 times, stacking (+5/+10/+15 ft. total). This app's rage-power picker has no duplicate-instance support yet (see file doc comment) — only the single +5 ft. instance is modeled; a 2nd/3rd copy currently has no additional effect.",
+        "landSpeed",
+      ),
+    ],
   },
 ]);
 

@@ -51,6 +51,15 @@
  * with `changes: []`; a `contextNotes` reminder carries the DC/duration/
  * activation shape instead, and flags Cauldron/Flight/Ward specifically as
  * the ones worth a closer look by hand.
+ *
+ * Issue #75 audit: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
+ * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
+ * does NOT unlock anything here. None of the three near-misses above is
+ * "unconditional while a specific, id-identifiable buff is active": Cauldron
+ * is always-on but blocked by the parameterized-skill targeting problem,
+ * Flight's fly speed is a limited daily-use activation with no existing
+ * buffId/effectTag to gate on, and Ward lands on an ALLY's sheet, not the
+ * witch's. All three stay deliberately deferred.
  */
 
 import type { Change, ContextNote } from "@pf1/schema";
