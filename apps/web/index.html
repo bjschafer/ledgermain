@@ -14,5 +14,23 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!--
+      Cloudflare Web Analytics (cookieless, no PII). Injected only on the real
+      production host so local dev, workers.dev previews, and forks never send
+      beacons to this site's token. `spa: true` makes client-side route changes
+      count as page views — required, since Ledgermain is a single-page app.
+    -->
+    <script>
+      if (location.hostname === "ledgermain.whizkid.dev") {
+        const s = document.createElement("script");
+        s.defer = true;
+        s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+        s.setAttribute(
+          "data-cf-beacon",
+          JSON.stringify({ token: "2857eb7a121e40da93ef2740bef58720", spa: true }),
+        );
+        document.head.appendChild(s);
+      }
+    </script>
   </body>
 </html>
