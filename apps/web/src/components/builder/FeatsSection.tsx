@@ -27,6 +27,7 @@ import {
 } from "../../model/prereqs.js";
 import { isRepeatableFeat } from "../../model/repeatableFeats.js";
 import { InfoTip } from "../InfoTip.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -262,24 +263,28 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
       )}
       {granted.length > 0 && (
         <div className="granted-feats">
-          {granted.map((g) => (
-            <div key={g.featId} className="pick-row is-selected">
-              <div className="pmain">
-                <div className="pname">{g.featName}</div>
-                <div className="preq">
-                  <span className="soft">Granted by {g.classTag} — no feat slot used</span>
+          {granted.map((g) => {
+            const description = refData.feats[g.featId]?.description;
+            return (
+              <div key={g.featId} className="pick-row is-selected">
+                <div className="pmain">
+                  <div className="pname">{g.featName}</div>
+                  <div className="preq">
+                    <span className="soft">Granted by {g.classTag} — no feat slot used</span>
+                  </div>
+                  {description ? <FeatureDescription html={description} /> : null}
                 </div>
+                <button
+                  type="button"
+                  className="pick-btn"
+                  disabled
+                  title="Class feature grant — always on"
+                >
+                  Granted
+                </button>
               </div>
-              <button
-                type="button"
-                className="pick-btn"
-                disabled
-                title="Class feature grant — always on"
-              >
-                Granted
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
       <div className="scroll">
@@ -344,6 +349,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           // removeFeatInstance for the underlying transitions.
           const repeatable = isRepeatableFeat(feat.name);
           const instances = isSel ? (instancesByFeatId.get(feat.id) ?? []) : [];
+          const description = feat.description;
           if (isSel && repeatable) {
             // Same non-empty choice picked on two instances is legal to store
             // but has no additional RAW effect — flag it as a soft warning
@@ -444,6 +450,9 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                           </div>
                         )}
                         {idx === 0 ? prereqBlock : null}
+                        {idx === 0 && description ? (
+                          <FeatureDescription html={description} />
+                        ) : null}
                       </div>
                       <button
                         type="button"
@@ -559,6 +568,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                   </div>
                 )}
                 {prereqBlock}
+                {description ? <FeatureDescription html={description} /> : null}
               </div>
               <button
                 type="button"
