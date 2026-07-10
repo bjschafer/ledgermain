@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 
 import { classAlignmentWarnings } from "../../model/alignment.js";
 import { type ClassCategory, groupClassesByCategory } from "../../model/classCategory.js";
+import { evaluateClassPrereqs } from "../../model/classPrereqs.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import {
   addClass,
@@ -19,6 +20,7 @@ import { ArcanistExploitPicker } from "./ArcanistExploitPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
 import { BloodragerBloodlinePicker } from "./BloodragerBloodlinePicker.js";
+import { CastingAdvancementPicker } from "./CastingAdvancementPicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { CrueltyPicker } from "./CrueltyPicker.js";
 import { CursePicker } from "./CursePicker.js";
@@ -42,7 +44,7 @@ import { PhrenicAmplificationPicker } from "./PhrenicAmplificationPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
 import { PhantomPicker } from "./PhantomPicker.js";
 import { ShifterAspectPicker } from "./ShifterAspectPicker.js";
-import { TipButton } from "../InfoTip.js";
+import { InfoTip, TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
 import { OrderPicker } from "./OrderPicker.js";
 import { Panel } from "./Panel.js";
@@ -66,16 +68,24 @@ import { WeaponTrainingPicker } from "./WeaponTrainingPicker.js";
  * the same shape as the race picker's `RaceGroupSection`. Rendered per group
  * (a stable set), so `useCollapsed` inside a list is fine. All tiers default
  * open: 31 chips across three sections is small enough not to declutter.
+ *
+ * `plain` (issue #66 chunk 3): the Prestige tier needs a richer per-class row
+ * (entry-requirement checks, not just a name) that doesn't fit the compact
+ * flex-wrap `.chips` pill layout every other tier uses — `plain` renders
+ * `children` directly instead of wrapping them in `.chips`, so the caller can
+ * supply its own full-width list container for that one section.
  */
 function ClassGroupSection({
   category,
   label,
   count,
+  plain,
   children,
 }: {
   category: ClassCategory;
   label: string;
   count: number;
+  plain?: boolean;
   children: ReactNode;
 }) {
   const [collapsed, toggle] = useCollapsed(`class-category:${category}`, false);
@@ -96,7 +106,7 @@ function ClassGroupSection({
         <span className="race-group-count">{count}</span>
         <span className="panel-caret">{open ? "▾" : "▸"}</span>
       </div>
-      {open ? <div className="chips">{children}</div> : null}
+      {open ? plain ? children : <div className="chips">{children}</div> : null}
     </div>
   );
 }
@@ -105,17 +115,24 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   const [fcbOpen, setFcbOpen] = useState(true);
   const [confirmRemoveTag, setConfirmRemoveTag] = useState<string | null>(null);
 
-  const baseClasses = useMemo(
+  // "base" = every ordinary (non-prestige, non-NPC) playable class; "prestige"
+  // = the ten hand-authored CRB prestige classes (issue #66 chunks 1 + 4).
+  // Both render in the picker below (`groupClassesByCategory` already sorts
+  // prestige into its own "Prestige" tier by name, see model/classCategory.ts);
+  // npc/other Foundry subTypes stay excluded, same as before. Also doubles as
+  // the class-def lookup for the "already added" rows below, so a prestige
+  // class's name/HD/etc. resolve there too.
+  const pickerClasses = useMemo(
     () =>
       Object.values(refData.classes)
-        .filter((c) => c.subType === "base")
+        .filter((c) => c.subType === "base" || c.subType === "prestige")
         .sort((a, b) => a.name.localeCompare(b.name)),
     [refData],
   );
-  // Core / Base / Hybrid sections (published Paizo categories, see
-  // model/classCategory.ts) — alphabetical within each, mirroring the race
+  // Core / Base / Hybrid / … / Prestige sections (published Paizo categories,
+  // see model/classCategory.ts) — alphabetical within each, mirroring the race
   // picker's rarity tiers.
-  const classGroups = useMemo(() => groupClassesByCategory(baseClasses), [baseClasses]);
+  const classGroups = useMemo(() => groupClassesByCategory(pickerClasses), [pickerClasses]);
 
   const chosen = new Set(doc.identity.classes.map((c) => c.tag));
   const totalLevel = doc.identity.classes.reduce((s, c) => s + c.level, 0);
@@ -154,49 +171,122 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       storageKey="panel:Classes"
     >
       <div style={{ marginBottom: 14 }}>
-        {classGroups.map((group) => (
-          <ClassGroupSection
-            key={group.category}
-            category={group.category}
-            label={group.label}
-            count={group.items.length}
-          >
-            {group.items.map((c) => (
-              <button
-                key={c.tag}
-                type="button"
-                className="chip"
-                aria-pressed={chosen.has(c.tag)}
-                onClick={() =>
-                  chosen.has(c.tag) ? setConfirmRemoveTag(c.tag) : update((d) => addClass(d, c.tag))
-                }
-              >
-                {c.name}
-              </button>
-            ))}
-          </ClassGroupSection>
-        ))}
+        {classGroups.map((group) =>
+          group.category === "prestige" ? (
+            // Prestige classes carry structured entry requirements (issue #66
+            // chunk 4) — unlike the plain name-only chips every other tier
+            // uses, each not-yet-added entry here shows its own live
+            // ✓/✗ check list (same visual language as FeatsSection's
+            // `.pick-row`/`.preq`) and disables Add while a structured
+            // prerequisite is unmet. An already-added prestige class is never
+            // retroactively re-checked (evaluateClassPrereqs only gates
+            // adding) — it just renders as a plain selected row.
+            <ClassGroupSection
+              key={group.category}
+              category={group.category}
+              label={group.label}
+              count={group.items.length}
+              plain
+            >
+              <div className="prestige-class-list">
+                {group.items.map((c) => {
+                  const isChosen = chosen.has(c.tag);
+                  const res = isChosen ? null : evaluateClassPrereqs(c, doc, refData, sheet.bab);
+                  const blocked = res?.blocked ?? false;
+                  return (
+                    <div
+                      key={c.tag}
+                      className={`pick-row${isChosen ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
+                    >
+                      <div className="pmain">
+                        <div className="pname">{c.name}</div>
+                        {res && (res.checks.length > 0 || res.softText) && (
+                          <div className="preq">
+                            {res.checks.map((chk, i) => (
+                              <span key={i} className={chk.met ? "ck-met" : "ck-unmet"}>
+                                {chk.met ? "✓" : "✗"} {chk.label}
+                              </span>
+                            ))}
+                            {res.softText ? (
+                              <InfoTip
+                                className="desc-text"
+                                content="Prerequisite text — verify manually (not auto-enforced)"
+                              >
+                                ⚠ {res.softText}
+                              </InfoTip>
+                            ) : null}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        className={`pick-btn ${isChosen ? "remove" : "add"}`}
+                        disabled={!isChosen && blocked}
+                        title={!isChosen && blocked ? "Prerequisites not met" : undefined}
+                        onClick={() =>
+                          isChosen ? setConfirmRemoveTag(c.tag) : update((d) => addClass(d, c.tag))
+                        }
+                      >
+                        {isChosen ? "Remove" : blocked ? "Locked" : "Add"}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </ClassGroupSection>
+          ) : (
+            <ClassGroupSection
+              key={group.category}
+              category={group.category}
+              label={group.label}
+              count={group.items.length}
+            >
+              {group.items.map((c) => (
+                <button
+                  key={c.tag}
+                  type="button"
+                  className="chip"
+                  aria-pressed={chosen.has(c.tag)}
+                  onClick={() =>
+                    chosen.has(c.tag)
+                      ? setConfirmRemoveTag(c.tag)
+                      : update((d) => addClass(d, c.tag))
+                  }
+                >
+                  {c.name}
+                </button>
+              ))}
+            </ClassGroupSection>
+          ),
+        )}
       </div>
 
       {doc.identity.classes.length === 0 ? (
         <p className="empty">No class chosen. Pick one or more above.</p>
       ) : (
         doc.identity.classes.map((cls) => {
-          const def = baseClasses.find((c) => c.tag === cls.tag);
+          const def = pickerClasses.find((c) => c.tag === cls.tag);
+          const isPrestige = def?.subType === "prestige";
           const isFav = doc.identity.favoredClass === cls.tag;
           const isFav2 = doc.identity.favoredClass2 === cls.tag;
           return (
             <div className="class-row" key={cls.tag}>
-              <button
-                type="button"
-                className="favstar"
-                aria-pressed={isFav}
-                title="Favored class"
-                onClick={() => update((d) => setFavoredClass(d, cls.tag))}
-              >
-                {isFav ? "★" : "☆"}
-              </button>
-              {multitalented && (
+              {/* Prestige classes can never be a favored class (PF1 RAW — favored
+                  class is chosen from a character's base/racial class options at
+                  1st level; prestige classes are never eligible) — no star at all
+                  for a prestige row, rather than a disabled one. */}
+              {!isPrestige && (
+                <button
+                  type="button"
+                  className="favstar"
+                  aria-pressed={isFav}
+                  title="Favored class"
+                  onClick={() => update((d) => setFavoredClass(d, cls.tag))}
+                >
+                  {isFav ? "★" : "☆"}
+                </button>
+              )}
+              {!isPrestige && multitalented && (
                 <TipButton
                   className="favstar favstar2"
                   aria-pressed={isFav2}
@@ -208,7 +298,10 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
                   {isFav2 ? "✪" : "✩"}
                 </TipButton>
               )}
-              <span className="cname">{def?.name ?? cls.tag}</span>
+              <span className="cname">
+                {def?.name ?? cls.tag}
+                {isPrestige ? <span className="hint prestige-tag"> · prestige</span> : null}
+              </span>
               <span className="cls-hd-label">Hit Die d{def?.hd ?? "?"}</span>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <span className="cls-lv-label">Lv</span>
@@ -265,6 +358,10 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
           ⚠ {w.message}
         </p>
       ))}
+
+      {/* Casting-advancement target pickers — only classes with a
+          castingAdvancement slot show anything (issue #66 chunk 3). */}
+      <CastingAdvancementPicker doc={doc} refData={refData} update={update} />
 
       {/* Favored-class bonus picker — only when a favored class is chosen */}
       {fcbLevel > 0 && (

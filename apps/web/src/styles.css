@@ -1227,6 +1227,39 @@ button:focus-visible,
   overflow: hidden;
 }
 
+/* Prestige-class picker (issue #66 chunk 3) — a bordered `.pick-row` list,
+   same wrapper shape as `.granted-feats`, used for the "Prestige" category
+   tier in the Classes picker (richer than the plain `.chips` pill list every
+   other tier uses, since each entry needs its own live prereq check list). */
+.prestige-class-list {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* Small inline marker next to an added prestige class's name in the class
+   row list (distinguishes it from a base/hybrid/etc class at a glance). */
+.prestige-tag {
+  font-style: italic;
+}
+
+/* Casting-advancement target pickers (issue #66 chunk 3) — one block per
+   prestige class on the build that has castingAdvancement slots, each with
+   one labeled <select> per slot. */
+.casting-advancement-class + .casting-advancement-class {
+  margin-top: 10px;
+}
+
+.casting-advancement-class-name {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.casting-advancement-slot + .casting-advancement-slot {
+  margin-top: 4px;
+}
+
 /* Typed feat-slot budget summary (issue #54/#57) — one chip per restricted
    slot group (Fighter combat feats, a ranger's chosen combat style, a
    sorcerer's chosen bloodline, …), plus a chip for chosen feats that don't
