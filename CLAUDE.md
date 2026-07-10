@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Ledgermain is a web-based **in-play character sheet, tracker, and builder for Pathfinder 1e**. The product's center of gravity is _play at the table_ — a rules-aware tracker that recomputes correct numbers as live session state (HP, conditions, buffs, resources) changes, not just a builder. Read `DESIGN.md` for architecture rationale — the source of truth for _why_ things are shaped the way they are; `README.md` covers what the project is and how to run it.
+Ledgermain is a web-based **in-play character sheet, tracker, and builder for Pathfinder 1e**. The product's center of gravity is _play at the table_ — a rules-aware tracker that recomputes correct numbers as live session state (HP, conditions, buffs, resources) changes, not just a builder. Read `docs/design.md` for architecture rationale — the source of truth for _why_ things are shaped the way they are; `README.md` covers what the project is and how to run it.
 
-Stages 1–4 are complete. Stage 5 (Cloudflare Worker persistence + cross-device sync, DESIGN.md §2.1) has a first cut: `apps/api` (Discord OAuth + `CharacterDoc` CRUD with optimistic-concurrency conflict detection) and a client sync module in `apps/web/src/sync/` (background push/pull, wired thinly into `state/useCharacter.ts`). The KV namespaces and `api.ledgermain.whizkid.dev` custom domain exist; deploy is blocked only on registering a Discord Application (owner's own account) — see `apps/api/README.md` for the remaining steps. `VITE_API_URL` unset (the default) keeps the app in local-only mode, unchanged from before Stage 5.
+Stages 1–4 are complete. Stage 5 (Cloudflare Worker persistence + cross-device sync, docs/design.md.md §2.1) has a first cut: `apps/api` (Discord OAuth + `CharacterDoc` CRUD with optimistic-concurrency conflict detection) and a client sync module in `apps/web/src/sync/` (background push/pull, wired thinly into `state/useCharacter.ts`). The KV namespaces and `api.ledgermain.whizkid.dev` custom domain exist; deploy is blocked only on registering a Discord Application (owner's own account) — see `apps/api/README.md` for the remaining steps. `VITE_API_URL` unset (the default) keeps the app in local-only mode, unchanged from before Stage 5.
 
 ## Commands
 
@@ -54,7 +54,7 @@ packages/schema         shared types: CharacterDoc, DerivedSheet, RefData (the c
 packages/data-pipeline  pinned Foundry YAML → normalized JSON (vendored under data/, committed)
 packages/engine         pure rules engine — compute(doc, refData) -> DerivedSheet (the crown jewel)
 apps/web                React + Vite builder + live tracker
-apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5, DESIGN.md §2.1)
+apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5, docs/design.md.md §2.1)
 ```
 
 ### The one rule that governs everything
@@ -83,7 +83,7 @@ All builder/tracker **logic is pure and in `apps/web/src/model/`** (`doc.ts` doc
 
 ## Licensing — clean-room discipline (important)
 
-The engine is a **clean-room reimplementation** from the published PF1 rules. The codebase is licensed **`AGPL-3.0-or-later`** (see `NOTICE.md` §1 / `DESIGN.md` §6 for why AGPL over a permissive license: provenance honesty + network-copyleft; it's compatible with Foundry's GPL-3.0). Foundry's GPL-3.0 system code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied, transcribed, or ported**. When validating engine behavior, compare _outputs_ (given input X, both produce Y), not code structure. Compendium _data_ is used under OGL / Paizo Community Use with attribution intact. Do not paste upstream source into this repo.
+The engine is a **clean-room reimplementation** from the published PF1 rules. The codebase is licensed **`AGPL-3.0-or-later`** (see `NOTICE.md` §1 / `docs/design.md.md` §6 for why AGPL over a permissive license: provenance honesty + network-copyleft; it's compatible with Foundry's GPL-3.0). Foundry's GPL-3.0 system code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied, transcribed, or ported**. When validating engine behavior, compare _outputs_ (given input X, both produce Y), not code structure. Compendium _data_ is used under OGL / Paizo Community Use with attribution intact. Do not paste upstream source into this repo.
 
 ## Conventions
 
