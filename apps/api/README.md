@@ -8,11 +8,12 @@ ever reads are the three envelope fields `CharacterDoc` already carries for
 this purpose (`id`, `version`, `updatedAt`), plus writing a server-assigned
 `ownerId`.
 
-The two KV namespaces and the `api.ledgermain.whizkid.dev` custom-domain
-route have been created and wired into `wrangler.jsonc`. Not yet deployed —
-that's blocked on registering a Discord Application and setting its secret
-(see Deploy steps), since that's tied to the account owner's own Discord
-account and can't be done on their behalf.
+Deployed and live at `api.ledgermain.whizkid.dev` (two KV namespaces, the
+custom-domain route, the Discord Application, and the `DISCORD_CLIENT_SECRET`
+are all in place). The remaining opt-in step is client-side: the web app only
+talks to this API when built with `VITE_API_URL` set — unset (the default)
+keeps it in local-only mode. See Deploy steps for how the pieces fit and how to
+redeploy.
 
 ## Architecture
 
@@ -93,11 +94,13 @@ bun run typecheck            # tsc --noEmit; included automatically in the root'
 
 ## Deploy steps
 
-The KV namespaces, `ALLOWED_APP_ORIGINS`, and the custom-domain route
-(`api.ledgermain.whizkid.dev`, sibling to `apps/web`'s
-`ledgermain.whizkid.dev`) are already created and committed in
-`wrangler.jsonc`. What's left needs the account owner, since it means
-registering an app under their own Discord account:
+The Worker is already deployed and live. The KV namespaces,
+`ALLOWED_APP_ORIGINS`, custom-domain route (`api.ledgermain.whizkid.dev`,
+sibling to `apps/web`'s `ledgermain.whizkid.dev`), Discord Application, and
+`DISCORD_CLIENT_SECRET` are all in place. This section records how the pieces
+fit — for reference, a fresh redeploy, or a forker standing up their own copy.
+Steps 1–2 are the Cloudflare-account/Discord setup (done once); a routine
+redeploy is just `wrangler deploy`.
 
 1. **Register a Discord Application** (discord.com/developers/applications →
    New Application → OAuth2 tab):
