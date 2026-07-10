@@ -19,6 +19,7 @@
     "fmt": "oxfmt .",
     "fmt:check": "oxfmt . --check",
     "e2e": "bun run --filter @pf1/web e2e",
+    "screenshots": "bun run --filter @pf1/web screenshots",
     "data:fetch": "bun run --filter @pf1/data-pipeline fetch",
     "data:build": "bun run --filter @pf1/data-pipeline generate",
     "deploy": "bun run build && bun run --filter @pf1/web deploy"

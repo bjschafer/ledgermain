@@ -15,6 +15,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "bun test ./test",
     "e2e": "playwright test",
+    "screenshots": "playwright test --config screenshots/playwright.config.ts",
     "deploy": "wrangler deploy"
   },
   "dependencies": {
