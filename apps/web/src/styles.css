@@ -148,9 +148,8 @@ a {
 
 .masthead-right {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .char-switcher {
@@ -187,8 +186,8 @@ a {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink);
-  font-size: 11px;
-  padding: 3px 8px;
+  font-size: 12px;
+  padding: 6px 12px;
   cursor: pointer;
 }
 
@@ -233,6 +232,36 @@ a {
   font-size: 11px;
   padding: 3px 8px;
   cursor: pointer;
+}
+
+/* Phone pass: below 640px the masthead wraps and `.masthead-right` lands on
+   its own line — let it become a full-width row (switcher on the left, sync
+   control on the right, matching where the character switcher trigger's
+   dropdown now anchors — see `.char-switcher-list` below) instead of a
+   cluster floating at an arbitrary x-offset. Sync/error controls grow to
+   `--tap-min` alongside the switcher trigger's own phone-pass rule. */
+@media (max-width: 640px) {
+  .masthead-right {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .masthead-right .char-switcher {
+    order: -1;
+  }
+
+  .sync-signin,
+  .sync-signout,
+  .sync-status,
+  .action-error {
+    min-height: var(--tap-min);
+  }
+
+  .sync-conflict {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
 }
 
 .layout {
@@ -4808,6 +4837,18 @@ input[type="text"].saved-roll-name:focus {
 
   .char-switcher-opt {
     min-height: var(--tap-min);
+  }
+
+  /* Below this width `.masthead-right` (see its own phone-pass rule above)
+     puts the switcher trigger on the LEFT of a full-width row instead of
+     tucked under a right-aligned cluster. A right-anchored menu would then
+     open mostly off the left edge of the screen (issue: switcher dropdown
+     clipped on iPhone-width viewports) — anchor from the left instead, and
+     cap the width so it never runs past the right edge either. */
+  .char-switcher-list {
+    left: 0;
+    right: auto;
+    max-width: calc(100vw - 48px);
   }
 }
 
