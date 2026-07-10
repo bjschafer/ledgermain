@@ -63,7 +63,18 @@ const UNCHAINED = [
 ];
 const ALTERNATE = ["Antipaladin", "Ninja", "Samurai"];
 const OCCULT = ["Kineticist", "Medium", "Mesmerist", "Occultist", "Psychic", "Spiritualist"];
-const PRESTIGE = ["Eldritch Knight", "Mystic Theurge"];
+const PRESTIGE = [
+  "Arcane Archer",
+  "Arcane Trickster",
+  "Assassin",
+  "Dragon Disciple",
+  "Duelist",
+  "Eldritch Knight",
+  "Loremaster",
+  "Mystic Theurge",
+  "Pathfinder Chronicler",
+  "Shadowdancer",
+];
 
 describe("classCategory", () => {
   it("classifies every Core Rulebook class as core, and each exists in the vendored slice", () => {
@@ -100,7 +111,7 @@ describe("classCategory", () => {
     }
   });
 
-  it("classifies the hand-authored prestige classes as prestige, and each exists in the vendored slice (issue #66 chunk 1)", () => {
+  it("classifies the hand-authored prestige classes as prestige, and each exists in the vendored slice (issue #66 chunks 1 + 4)", () => {
     for (const name of PRESTIGE) {
       expect(CLASS_NAMES.has(name)).toBe(true);
       expect(classCategory({ name })).toBe("prestige");
@@ -114,13 +125,13 @@ describe("classCategory", () => {
   });
 
   it("defaults unlisted names (future prestige/NPC-class vendoring) to other", () => {
-    expect(classCategory({ name: "Shadowdancer" })).toBe("other");
+    expect(classCategory({ name: "Horizon Walker" })).toBe("other");
     expect(classCategory({ name: "Adept" })).toBe("other");
   });
 });
 
 describe("groupClassesByCategory", () => {
-  it("splits the full vendored slice 11 / 10 / 10 / 4 / 3 / 6 / 2 into ordered sections with no 'other'", () => {
+  it("splits the full vendored slice 11 / 10 / 10 / 4 / 3 / 6 / 10 into ordered sections with no 'other'", () => {
     const groups = groupClassesByCategory(Object.values(ref.classes));
     expect(groups.map((g) => g.category)).toEqual([
       "core",
@@ -131,7 +142,7 @@ describe("groupClassesByCategory", () => {
       "occult",
       "prestige",
     ]);
-    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10, 4, 3, 6, 2]);
+    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10, 4, 3, 6, 10]);
   });
 
   it("orders sections per CLASS_CATEGORY_ORDER and drops empty ones", () => {

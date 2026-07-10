@@ -138,6 +138,28 @@ export interface Class extends RefEntity {
     /** The prestige-class levels (1-based) at which this slot advances its target. */
     levels: number[];
   }[];
+  /**
+   * Structured entry requirements (prestige classes; issue #66 chunk 4).
+   * Hybrid prereq model (DESIGN.md §4, mirrors `FeatPrerequisites`): the
+   * builder hard-blocks only on these structured signals; `prereqText` (the
+   * verbatim published requirements line) is shown as a soft advisory for
+   * everything not structurally captured (alignment, race, sneak-attack-die
+   * minimums, parametrized/OR feats like "Weapon Focus (longbow or
+   * shortbow)", parametrized skills like "Perform (oratory)", etc).
+   */
+  prereqs?: {
+    bab?: number;
+    /** Feat NAMES as published (matched by name-slug like feat prereqs). */
+    feats?: string[];
+    skillRanks?: { skill: SkillId; ranks: number }[];
+    /**
+     * "Able to cast Nth-level (arcane|divine|any) spells" — one entry per
+     * requirement (Mystic Theurge has two: 2nd-level arcane AND divine).
+     */
+    casting?: { kind: "arcane" | "divine" | "any"; spellLevel: number }[];
+    /** Verbatim published requirements line (plain text), always present for display. */
+    prereqText: string;
+  };
 }
 
 /** A class feature granted at a specific level (resolved UUID link). */
