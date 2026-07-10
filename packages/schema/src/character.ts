@@ -1362,9 +1362,23 @@ export interface AnimalCompanionBuild {
    * distinct from the ranger's "Hunter's Bond" despite the similar name; a
    * hunter's effective druid level equals her hunter level 1:1 (no −3 offset,
    * unlike the ranger's `hunters-bond`) — see `@pf1/engine`
-   * `companionEffectiveLevel`'s doc comment.
+   * `companionEffectiveLevel`'s doc comment. `"cavalier-mount"`/
+   * `"samurai-mount"` (issue #68) are the Cavalier's and Samurai's own
+   * "Mount" class feature (UC "This mount functions as a druid's animal
+   * companion, using the cavalier's/samurai's level as his effective druid
+   * level" — verified against aonprd.com during authoring; identical text
+   * for both classes) — 1:1, no −3 offset, granted at 1st level (unlike the
+   * ranger's 4th-level gate), and kept as two separate tags (rather than one
+   * shared "mount" tag) purely to match this field's existing one-tag-per-
+   * class-feature convention, even where the math is identical.
    */
-  source: ("nature-bond" | "hunters-bond" | "hunter-companion")[];
+  source: (
+    | "nature-bond"
+    | "hunters-bond"
+    | "hunter-companion"
+    | "cavalier-mount"
+    | "samurai-mount"
+  )[];
   /**
    * Player-assigned ability score for each Ability Score Increase milestone
    * reached so far (CRB Table: Animal Companion Base Statistics — effective

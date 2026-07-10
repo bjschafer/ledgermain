@@ -3,10 +3,13 @@ import {
   companionAbilityIncreaseSlots,
   companionEffectiveLevel,
 } from "@pf1/engine";
-import type { AbilityId, CharacterDoc } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, RefData } from "@pf1/schema";
 
 import {
+  cavalierLevel,
   clearCompanion,
+  mountSpeciesHint,
+  samuraiLevel,
   setCompanion,
   setCompanionAbilityIncrease,
   setCompanionNotes,
@@ -18,6 +21,7 @@ type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface AnimalCompanionPickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
@@ -32,26 +36,39 @@ const ABILITY_OPTIONS: { id: AbilityId; label: string }[] = [
 
 /**
  * Tracked animal companion (PF1 druid Nature Bond / ranger Hunter's Bond /
- * ACG Hunter's own Animal Companion feature) — species + name + which class
- * feature(s) grant it, mirroring `FamiliarPicker` closely. Unlike a familiar
- * (class-agnostic — any feature can grant one), a companion is ALWAYS
- * sourced from a specific bond choice, so this only renders for characters
- * with druid levels (Nature Bond), ranger levels ≥ 4 (Hunter's Bond), or
- * hunter levels (the ACG Hunter class's own Animal Companion feature, issue
- * #65 — distinct from the ranger's similarly-named "Hunter's Bond", see
- * `@pf1/engine` `companionEffectiveLevel`'s doc comment) — a druid choosing
- * the domain option instead, and a ranger below 4th level, simply see no
- * picker yet.
+ * ACG Hunter's own Animal Companion feature / cavalier & samurai Mount,
+ * issue #68) — species + name + which class feature(s) grant it, mirroring
+ * `FamiliarPicker` closely. Unlike a familiar (class-agnostic — any feature
+ * can grant one), a companion is ALWAYS sourced from a specific bond choice,
+ * so this only renders for characters with druid levels (Nature Bond),
+ * ranger levels ≥ 4 (Hunter's Bond), hunter levels (the ACG Hunter class's
+ * own Animal Companion feature, issue #65 — distinct from the ranger's
+ * similarly-named "Hunter's Bond", see `@pf1/engine`
+ * `companionEffectiveLevel`'s doc comment), or cavalier/samurai levels (the
+ * "Mount" class feature, granted at 1st level unlike the ranger's 4th-level
+ * gate) — a druid choosing the domain option instead, and a ranger below
+ * 4th level, simply see no picker yet.
  */
-export function AnimalCompanionPicker({ doc, update }: AnimalCompanionPickerProps) {
+export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:AnimalCompanion", false);
   const druidLevel = doc.identity.classes.find((c) => c.tag === "druid")?.level ?? 0;
   const rangerLevel = doc.identity.classes.find((c) => c.tag === "ranger")?.level ?? 0;
   const hunterLevel = doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
+  const cavLevel = cavalierLevel(doc);
+  const samLevel = samuraiLevel(doc);
   const canNatureBond = druidLevel >= 1;
   const canHuntersBond = rangerLevel >= 4;
   const canHunterCompanion = hunterLevel >= 1;
-  if (!canNatureBond && !canHuntersBond && !canHunterCompanion) return null;
+  const canCavalierMount = cavLevel >= 1;
+  const canSamuraiMount = samLevel >= 1;
+  if (
+    !canNatureBond &&
+    !canHuntersBond &&
+    !canHunterCompanion &&
+    !canCavalierMount &&
+    !canSamuraiMount
+  )
+    return null;
 
   const companion = doc.build.animalCompanion;
   const species = companion ? BASE_COMPANIONS[companion.speciesId] : undefined;
@@ -59,6 +76,8 @@ export function AnimalCompanionPicker({ doc, update }: AnimalCompanionPickerProp
   const effectiveLevel = companionEffectiveLevel(doc);
   const increaseSlots = companionAbilityIncreaseSlots(effectiveLevel);
   const abilityIncreases = companion?.abilityIncreases ?? [];
+  const sizeIsSmall = refData.races[doc.identity.race]?.size === "sm";
+  const mountHint = mountSpeciesHint(doc, refData).map((id) => BASE_COMPANIONS[id]?.name ?? id);
 
   return (
     <div className="subsection animal-companion-picker">
@@ -116,7 +135,34 @@ export function AnimalCompanionPicker({ doc, update }: AnimalCompanionPickerProp
                 Animal Companion (hunter {hunterLevel})
               </button>
             )}
+            {canCavalierMount && (
+              <button
+                type="button"
+                className="chip"
+                aria-pressed={sources.includes("cavalier-mount")}
+                onClick={() => update((d) => toggleCompanionSource(d, "cavalier-mount"))}
+              >
+                Mount (cavalier {cavLevel})
+              </button>
+            )}
+            {canSamuraiMount && (
+              <button
+                type="button"
+                className="chip"
+                aria-pressed={sources.includes("samurai-mount")}
+                onClick={() => update((d) => toggleCompanionSource(d, "samurai-mount"))}
+              >
+                Mount (samurai {samLevel})
+              </button>
+            )}
           </div>
+          {(canCavalierMount || canSamuraiMount) &&
+            (sources.includes("cavalier-mount") || sources.includes("samurai-mount")) && (
+              <p className="hint animal-companion-mount-hint">
+                RAW mount list for your size: {mountHint.join(", ")} (a GM may approve others).
+                {sizeIsSmall ? " Boar and Dog additionally require 4th level." : ""}
+              </p>
+            )}
 
           {sources.length === 0 ? (
             <p className="hint">

@@ -254,6 +254,25 @@ describe("deriveCompanion edge cases", () => {
     expect(companionEffectiveLevel(doc)).toBe(1);
   });
 
+  it("cavalier's Mount (issue #68): effective level equals cavalier level 1:1, from 1st level", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "cavalier", level: 3 }],
+      animalCompanion: { speciesId: "horse", name: "Comet", source: ["cavalier-mount"] },
+    });
+    expect(companionEffectiveLevel(doc)).toBe(3);
+    const rollData = buildRollData(doc, ref);
+    const horse = deriveCompanion(doc, rollData);
+    expect(horse?.level).toBe(3);
+  });
+
+  it("samurai's Mount (issue #68): effective level equals samurai level 1:1, from 1st level", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "samurai", level: 1 }],
+      animalCompanion: { speciesId: "horse", name: "Comet", source: ["samurai-mount"] },
+    });
+    expect(companionEffectiveLevel(doc)).toBe(1);
+  });
+
   it("stacks with another source, per the Hunter's own vendored rules text", () => {
     const doc = makeDoc({
       classes: [

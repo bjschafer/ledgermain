@@ -435,6 +435,26 @@ export const BASE_COMPANIONS: Readonly<Record<string, BaseCompanion>> = {
 /** All base-companion species slugs, for the builder's picker. */
 export const BASE_COMPANION_IDS = Object.keys(BASE_COMPANIONS);
 
+/**
+ * RAW Cavalier/Samurai "Mount" species lists (Ultimate Combat, verified
+ * against aonprd.com during authoring, issue #68), intersected with this
+ * module's own {@link BASE_COMPANION_IDS} — the full published lists include
+ * several exotic animals (Camel, Elk, Giraffe, Zebra, Axe Beak, Seahorse
+ * (Giant), Tortoise (Giant) for Medium riders; Antelope, Capybara, Kangaroo,
+ * Lizard (Giant Gecko), Ram, Reindeer, Weasel (Giant), Wolfdog for Small
+ * riders) that this module doesn't model as a {@link BaseCompanion} — only
+ * the overlap is surfaced. Soft-note only: `AnimalCompanionPicker` shows this
+ * as a hint text, never a hard block on the species `<select>` (matches this
+ * project's hybrid prereq/soft-warning posture) — the source text itself
+ * says "The GM might approve other animals as suitable mounts." Keyed by the
+ * rider's size (a Small cavalier/samurai gets the alternate list; every
+ * other size uses the Medium list, the overwhelmingly common case).
+ */
+export const MOUNT_SPECIES_BY_RIDER_SIZE: Readonly<Record<"med" | "sm", readonly string[]>> = {
+  med: ["horse"],
+  sm: ["boar", "dog", "pony", "wolf"],
+};
+
 /** One row of the CRB/APG "Table: Animal Companion Base Statistics", by effective druid level. */
 export interface CompanionProgressionRow {
   level: number;
@@ -600,6 +620,12 @@ export function companionAbilityIncreaseSlots(effectiveLevel: number): number {
  * companion's statistics"); treating them as additive contributions to one
  * companion's power is the simplest coherent behavior and is documented here
  * rather than silently guessed at.
+ *
+ * `"cavalier-mount"`/`"samurai-mount"` (issue #68) are the Cavalier's/
+ * Samurai's own "Mount" class feature — 1:1, no −3 offset, same shape as
+ * `"hunter-companion"` (verified against aonprd.com: "This mount functions
+ * as a druid's animal companion, using the cavalier's/samurai's level as his
+ * effective druid level," identical wording for both classes).
  */
 function baseCompanionEffectiveLevel(doc: CharacterDoc): number {
   const source = doc.build.animalCompanion?.source ?? [];
@@ -613,6 +639,12 @@ function baseCompanionEffectiveLevel(doc: CharacterDoc): number {
   }
   if (source.includes("hunter-companion")) {
     level += doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
+  }
+  if (source.includes("cavalier-mount")) {
+    level += doc.identity.classes.find((c) => c.tag === "cavalier")?.level ?? 0;
+  }
+  if (source.includes("samurai-mount")) {
+    level += doc.identity.classes.find((c) => c.tag === "samurai")?.level ?? 0;
   }
   return level;
 }

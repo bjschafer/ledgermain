@@ -521,8 +521,8 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         <FamiliarPicker doc={doc} update={update} />
       )}
 
-      {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond / ACG Hunter's own Animal Companion. */}
-      <AnimalCompanionPicker doc={doc} update={update} />
+      {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond / ACG Hunter's own Animal Companion / cavalier & samurai Mount. */}
+      <AnimalCompanionPicker doc={doc} refData={refData} update={update} />
 
       {/* Tracked phantom — spiritualist's own Phantom class feature (issue #65). */}
       <PhantomPicker doc={doc} update={update} />

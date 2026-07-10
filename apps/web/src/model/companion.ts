@@ -15,6 +15,7 @@ import {
   companionEffectiveLevel,
   deriveCompanion,
   featNameSlug,
+  MOUNT_SPECIES_BY_RIDER_SIZE,
   type DerivedCompanion,
 } from "@pf1/engine";
 import type { AbilityId, AnimalCompanionBuild, CharacterDoc, RefData } from "@pf1/schema";
@@ -59,13 +60,14 @@ export function clearCompanion(doc: CharacterDoc): CharacterDoc {
 
 /**
  * Toggle a companion-granting class-feature source (`"nature-bond"` |
- * `"hunters-bond"` | `"hunter-companion"`) on/off. If the character has no
- * `build.animalCompanion` yet, turning a source on seeds one with a sensible
- * default species ("wolf") so the picker has something to show immediately.
+ * `"hunters-bond"` | `"hunter-companion"` | `"cavalier-mount"` |
+ * `"samurai-mount"`) on/off. If the character has no `build.animalCompanion`
+ * yet, turning a source on seeds one with a sensible default species
+ * ("wolf") so the picker has something to show immediately.
  */
 export function toggleCompanionSource(
   doc: CharacterDoc,
-  source: "nature-bond" | "hunters-bond" | "hunter-companion",
+  source: "nature-bond" | "hunters-bond" | "hunter-companion" | "cavalier-mount" | "samurai-mount",
 ): CharacterDoc {
   const current = doc.build.animalCompanion;
   const currentSources = current?.source ?? [];
@@ -194,6 +196,30 @@ export function setCompanionFocus(doc: CharacterDoc, buffId: string | undefined)
  */
 export function hunterLevel(doc: CharacterDoc): number {
   return doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
+}
+
+/** Cavalier class level, for gating the "Mount" companion-source chip (granted at 1st level, issue #68). */
+export function cavalierLevel(doc: CharacterDoc): number {
+  return doc.identity.classes.find((c) => c.tag === "cavalier")?.level ?? 0;
+}
+
+/** Samurai class level, for gating the "Mount" companion-source chip (granted at 1st level, issue #68). */
+export function samuraiLevel(doc: CharacterDoc): number {
+  return doc.identity.classes.find((c) => c.tag === "samurai")?.level ?? 0;
+}
+
+/**
+ * The RAW-eligible mount species list for the character's OWN size (issue
+ * #68) — `refData.races[doc.identity.race].size`, falling back to `"med"`
+ * for an unresolved race id (the overwhelmingly common case, and the same
+ * default {@link MOUNT_SPECIES_BY_RIDER_SIZE} keys off). Soft-note only, see
+ * `@pf1/engine` `MOUNT_SPECIES_BY_RIDER_SIZE`'s doc comment — the picker
+ * still allows any `BASE_COMPANIONS` species as a mount; this is surfaced as
+ * a hint, never a restriction on the `<select>`.
+ */
+export function mountSpeciesHint(doc: CharacterDoc, refData: RefData): readonly string[] {
+  const size = refData.races[doc.identity.race]?.size;
+  return MOUNT_SPECIES_BY_RIDER_SIZE[size === "sm" ? "sm" : "med"];
 }
 
 /**

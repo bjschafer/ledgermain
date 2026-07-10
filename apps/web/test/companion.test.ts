@@ -8,6 +8,7 @@ import {
   addCompanionNonlethal,
   animalFocusBuffs,
   applyCompanionDamage,
+  cavalierLevel,
   clearCompanion,
   deriveCompanionSheet,
   hasBoonCompanionFeat,
@@ -15,7 +16,9 @@ import {
   healCompanionNonlethal,
   hunterLevel,
   isSharedWithCompanion,
+  mountSpeciesHint,
   restCompanion,
+  samuraiLevel,
   setCompanion,
   setCompanionAbilityIncrease,
   setCompanionFocus,
@@ -179,6 +182,37 @@ describe("hunter's own Animal Companion feature (issue #65, source 'hunter-compa
   it("hunterLevel() reads the hunter class level, 0 for a non-hunter", () => {
     expect(hunterLevel(hunter5())).toBe(5);
     expect(hunterLevel(druid7())).toBe(0);
+  });
+});
+
+describe("cavalier/samurai Mount companion source (issue #68)", () => {
+  function cavalier3(): CharacterDoc {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "cavalier");
+    d = setClassLevel(d, "cavalier", 3);
+    return d;
+  }
+
+  it("cavalierLevel()/samuraiLevel() read the respective class level, 0 otherwise", () => {
+    expect(cavalierLevel(cavalier3())).toBe(3);
+    expect(samuraiLevel(cavalier3())).toBe(0);
+    expect(cavalierLevel(druid7())).toBe(0);
+  });
+
+  it("toggleCompanionSource('cavalier-mount') wires end-to-end at effective level = cavalier level", () => {
+    let d = cavalier3();
+    d = setCompanion(d, "horse", "Comet");
+    d = toggleCompanionSource(d, "cavalier-mount");
+    expect(d.build.animalCompanion?.source).toEqual(["cavalier-mount"]);
+
+    const companion = deriveCompanionSheet(d, ref);
+    expect(companion).toBeDefined();
+    expect(companion!.level).toBe(3);
+  });
+
+  it("mountSpeciesHint() defaults to the Medium rider list for an unresolved/Medium race", () => {
+    const d = createEmptyDoc("t");
+    expect(mountSpeciesHint(d, ref)).toEqual(["horse"]);
   });
 });
 
