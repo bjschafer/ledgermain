@@ -4421,6 +4421,37 @@ input[type="text"].saved-roll-name:focus {
    the tracker.
    ========================================================================== */
 
+/* Build mode reuses the strip too (App.tsx): on desktop the wrapper is
+   `display: contents`, so its children (the display:none strip + BuildNav)
+   fall through into the layout grid and BuildNav keeps its rail column. Below
+   940px the wrapper becomes one sticky block that stacks the strip over the
+   nav chips as a single unit — no per-child sticky-offset math, and the pair
+   pins together (chosen "strip above nav chips" layout). */
+.mobile-build-header {
+  display: contents;
+}
+
+@media (max-width: 940px) {
+  .mobile-build-header {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+  /* Inside the shared header the children are static (the wrapper does the
+     pinning) and flush (the strip drops its bottom margin so the two rows read
+     as one header). The Play-tab strip inside Tracker keeps its own sticky. */
+  .mobile-build-header .stat-strip,
+  .mobile-build-header .build-nav {
+    position: static;
+  }
+
+  .mobile-build-header .stat-strip {
+    margin-bottom: 0;
+  }
+}
+
 .stat-strip {
   display: none;
 }
@@ -4631,7 +4662,8 @@ input[type="text"].saved-roll-name:focus {
 
 @media (max-width: 940px) {
   .build-col > [id^="section-"] {
-    scroll-margin-top: 96px;
+    /* Clears the taller two-row sticky header (stat strip + nav chips, ~100px). */
+    scroll-margin-top: 112px;
   }
 }
 

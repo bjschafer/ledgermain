@@ -22,6 +22,7 @@ import { PrintView } from "./components/PrintView.js";
 import { Sheet } from "./components/Sheet.js";
 import { SyncStatus } from "./components/SyncStatus.js";
 import { ToastHost } from "./components/ToastHost.js";
+import { StatStrip } from "./components/tracker/StatStrip.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { useCharacter } from "./state/useCharacter.js";
 
@@ -192,7 +193,17 @@ function Workbench({
 }) {
   return (
     <div className={`layout${mode === "build" ? " layout--with-nav" : ""}`}>
-      {mode === "build" && <BuildNav {...props} />}
+      {mode === "build" && (
+        /* On mobile (<=940px) `.mobile-build-header` collapses to a single
+           sticky block stacking the compact stat strip over the section-jump
+           chips (styles.css); above 940px it's `display: contents`, so the
+           strip is hidden and BuildNav flows into the layout grid's rail column
+           exactly as before. */
+        <div className="mobile-build-header">
+          <StatStrip {...props} />
+          <BuildNav {...props} />
+        </div>
+      )}
       <div className="build-col">
         {mode === "build" ? (
           <>
