@@ -87,6 +87,43 @@ export interface Change {
    * relying on authored priority.
    */
   operator?: "add" | "set";
+  /**
+   * Buff gate (issue #75): when present, this Change applies ONLY while at
+   * least one buff in `CharacterDoc.live.activeBuffs` matches — for a
+   * hand-authored build choice whose bonus rides *someone else's* buff
+   * rather than being unconditionally granted (the motivating case: a
+   * barbarian rage power like Raging Climber only works "while raging",
+   * where "raging" is the separately-toggled Rage buff, not the rage power
+   * itself — see `@pf1/engine` `rage-powers.ts`). Absent (the default, and
+   * the only value every other `Change` source in this codebase uses today)
+   * means always-on and unconditional — fully backward compatible, no doc
+   * migration needed.
+   *
+   * Matched by `ActiveBuff.buffId` (a `RefData.buffs` id) and/or
+   * `ActiveBuff.effectTag` (a hand-authored toggle id) — **never** by
+   * display name; name-based reference-data lookups have caused real
+   * cross-branch bugs in this project (the Seeker/summoner-archetype
+   * lesson), and a buff can be renamed/reworded upstream without this gate
+   * silently breaking. A change is active if it matches ANY id in either
+   * list (an OR across both lists and within each). Evaluated at
+   * collect-time by `@pf1/engine` `collect.ts`'s `buffGateSatisfied`,
+   * reading only `doc.live.activeBuffs` — `compute()` stays pure.
+   */
+  activeWhenBuff?: BuffGate;
+}
+
+/**
+ * The match criteria for {@link Change.activeWhenBuff} — see that field's
+ * doc comment for semantics. At least one of `buffIds`/`effectTags` should
+ * be non-empty for the gate to ever be satisfiable; both may be set at once
+ * (e.g. a gate that should fire off of either a vendored buff OR a
+ * hand-authored toggle representing "morally the same" activated state).
+ */
+export interface BuffGate {
+  /** `RefData.buffs` ids — matches `ActiveBuff.buffId`. */
+  buffIds?: readonly string[];
+  /** Hand-authored toggle ids — matches `ActiveBuff.effectTag`. */
+  effectTags?: readonly string[];
 }
 
 /**

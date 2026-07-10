@@ -43,6 +43,13 @@
  * this table doesn't model (which weapon, which combat maneuver, ...) or
  * points at an existing tracked feature (a companion, a bonus feat).
  *
+ * Issue #75 audit: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
+ * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
+ * does NOT unlock anything here. The near-misses above are ability
+ * SUBSTITUTIONS (a structural compute change, not a typed modifier) or
+ * take-level-dependent scaling — neither is "unconditional while a specific,
+ * id-identifiable buff is active", so all stay deliberately deferred.
+ *
  * The Final Revelation (20th level, automatic — NOT one of the six budgeted
  * picks) is tracked separately in `ORACLE_MYSTERY_FINAL_REVELATIONS`,
  * informational only; it is never added to `doc.build.oracleRevelations`.

@@ -1,9 +1,11 @@
 /**
  * Pure rage-power transitions (issue #65/#67). Power ids are just entries in
  * `build.ragePowers`, mirroring `toggleWitchHex` in `model/witchHexes.ts` —
- * the engine's `RAGE_POWERS` table maps each to its (display-only)
- * `changes[]`/`contextNotes`, applied through the same change-collection
- * path as hexes/discoveries/arcana (see `@pf1/engine` `collect.ts`).
+ * the engine's `RAGE_POWERS` table maps each to its `changes[]`/
+ * `contextNotes` (mostly display-only; a few carry a real buff-gated Change
+ * that applies only while Rage is active — issue #75, see that table's doc
+ * comment), applied through the same change-collection path as
+ * hexes/discoveries/arcana (see `@pf1/engine` `collect.ts`).
  *
  * Shared by BOTH `barbarian` (chained) and `barbarianUnchained` — see
  * `RAGE_POWERS`'s doc comment for why the catalog is one shared table rather
