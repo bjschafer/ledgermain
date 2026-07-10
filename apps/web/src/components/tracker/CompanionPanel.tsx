@@ -1,17 +1,22 @@
 import { useState } from "react";
 
+import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
+
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import {
   addCompanionNonlethal,
   animalFocusBuffs,
   applyCompanionDamage,
+  companionSupersedingCondition,
   deriveCompanionSheet,
+  hasCompanionCondition,
   healCompanion,
   healCompanionNonlethal,
   hunterLevel,
   restCompanion,
   setCompanionFocus,
+  toggleCompanionCondition,
 } from "../../model/companion.js";
 import {
   companionSkillRows,
@@ -148,6 +153,37 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
           </select>
         </div>
       )}
+
+      <div className="animal-companion-conditions">
+        <h4 className="tracker-sub">Conditions</h4>
+        <div className="chips">
+          {CONDITION_IDS.map((id) => {
+            const cond = CONDITIONS[id]!;
+            const on = hasCompanionCondition(doc, id);
+            const supersededBy = companionSupersedingCondition(doc, id);
+            const implied = supersededBy !== undefined;
+            const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
+            const tipContent = implied
+              ? `Implied by ${impliedName} — turn ${impliedName} off to control ${cond.name} directly.`
+              : cond.displayOnly
+                ? `${cond.summary} (reference only — no numeric modifier applied)`
+                : cond.summary;
+            return (
+              <button
+                key={id}
+                type="button"
+                className={`chip cond${cond.displayOnly ? " display-only" : ""}${implied ? " implied" : ""}`}
+                aria-pressed={on}
+                disabled={implied}
+                title={tipContent}
+                onClick={() => update((d) => toggleCompanionCondition(d, id))}
+              >
+                {cond.name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       <div className="stat-group familiar-stat-group">
         <div className="stat-group-header">

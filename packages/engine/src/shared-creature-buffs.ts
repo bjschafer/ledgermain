@@ -61,6 +61,13 @@ export interface RoutedSharedBuffs {
   ref: TypedModifier[];
   will: TypedModifier[];
   skill: Map<string, TypedModifier[]>;
+  /**
+   * Global skill-check modifiers (`target: "skills"` — e.g. shaken/sickened's
+   * "-2 on skill checks") — applies to EVERY skill in addition to any
+   * per-skill `skill.*` modifiers above, mirroring `compute.ts`'s own
+   * `globalSkillMods` handling for the master (issue #68).
+   */
+  skillsGlobal: TypedModifier[];
   ability: Record<AbilityId, TypedModifier[]>;
   attack: TypedModifier[];
   damage: TypedModifier[];
@@ -72,16 +79,22 @@ export interface RoutedSharedBuffs {
  * Evaluate + bucket every shared buff's `changes[]` by target:
  *   - AC (`ac`/`aac`/`sac`/`nac` targets)
  *   - saves (`fort`/`ref`/`will`/`allSavingThrows`)
- *   - skills (`skill.*`)
+ *   - skills (`skill.*`, plus a global `skills` bucket — issue #68)
  *   - attack rolls (`attack`/`mattack` targets — applied to every attack line
  *     alike, matching the no-provenance-split posture of both callers)
- *   - damage rolls (`damage` target)
+ *   - damage rolls (`damage`/`wdamage` targets — issue #68 folds `wdamage`
+ *     ["weapon damage"] into the same bucket as `damage`, since every one of
+ *     these creatures attacks exclusively with natural weapons, which count
+ *     as "weapon damage" for effects like sickened's penalty)
  *   - ability scores (`str`/`dex`/`con`/`int`/`wis`/`cha` targets)
  *   - movement speed (`landSpeed`/`flySpeed`/`swimSpeed`/`climbSpeed`/`burrowSpeed`)
  *   - initiative (`init` target)
  * `operator: "set"` changes are NOT honored for speed — shared buffs are
  * player buffs, not conditions, so nothing shareable in the vendored data
- * ever sets an absolute speed.
+ * ever sets an absolute speed. (Issue #68 also feeds this function each
+ * creature's OWN active `CONDITIONS` entries, reshaped as synthetic
+ * `ActiveBuff`s — see `companion.ts`'s `conditionChangeSources` — so a
+ * condition's `Change[]` go through the exact same routing as a shared buff.)
  */
 export function routeSharedBuffs(
   buffs: readonly ActiveBuff[],
@@ -93,6 +106,7 @@ export function routeSharedBuffs(
     ref: [],
     will: [],
     skill: new Map(),
+    skillsGlobal: [],
     ability: { str: [], dex: [], con: [], int: [], wis: [], cha: [] },
     attack: [],
     damage: [],
@@ -137,6 +151,8 @@ export function routeSharedBuffs(
         routed.fort.push(mod);
         routed.ref.push(mod);
         routed.will.push(mod);
+      } else if (ch.target === "skills") {
+        routed.skillsGlobal.push(mod);
       } else if (ch.target.startsWith("skill.")) {
         const id = ch.target.slice("skill.".length);
         const arr = routed.skill.get(id);
@@ -146,7 +162,7 @@ export function routeSharedBuffs(
         routed.ability[ch.target as AbilityId].push(mod);
       } else if (ch.target === "attack" || ch.target === "mattack") {
         routed.attack.push(mod);
-      } else if (ch.target === "damage") {
+      } else if (ch.target === "damage" || ch.target === "wdamage") {
         routed.damage.push(mod);
       } else if (ch.target === "init") {
         routed.init.push(mod);

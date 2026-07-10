@@ -1481,6 +1481,21 @@ export interface AnimalCompanionLiveState {
    * focus applied to the companion.
    */
   focusBuffId?: string;
+  /**
+   * The companion's OWN active conditions (issue #68) — condition ids, keys
+   * into `@pf1/engine` `CONDITIONS`, exactly like the master's own
+   * `live.conditions` but tracked independently: the companion can be
+   * shaken/entangled/etc. while the master isn't, and vice versa (e.g. an
+   * area fear effect that only catches one of them). Toggled via
+   * `apps/web/src/model/companion.ts` `toggleCompanionCondition`, which
+   * reuses `model/conditions.ts`'s `toggleConditionIn` for the same
+   * ladder-aware auto-upgrade/implied-condition behavior the master's own
+   * conditions get. Resolved by `@pf1/engine` `deriveCompanion`, which routes
+   * each active condition's `Change[]` through the exact same
+   * `routeSharedBuffs` pipeline as a shared buff (see that module's doc
+   * comment). Omitted/empty = no active conditions.
+   */
+  conditions?: string[];
 }
 
 /**

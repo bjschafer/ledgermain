@@ -63,10 +63,24 @@
  *     resolved in `apps/web/src/model/companion.ts` (this pure module has no
  *     `RefData` to look feats up by id, mirroring the split established for
  *     Boon Companion above).
+ *   - Conditions (issue #68): the companion has its OWN active-conditions
+ *     list (`live.animalCompanion.conditions`), independent of the master's
+ *     `live.conditions` — it can be shaken while the master isn't, or vice
+ *     versa. Each active condition's `Change[]` (from `conditions.ts`'s
+ *     `CONDITIONS` table — the SAME clean-room table the master's own sheet
+ *     uses) is reshaped into a synthetic `ActiveBuff` and routed through the
+ *     exact same `routeSharedBuffs` pipeline as a shared buff, so it affects
+ *     AC/saves/skills/attacks/ability scores/speed/init identically. This
+ *     required two small additions to `shared-creature-buffs.ts` neither
+ *     shared buff previously exercised: a global `skills` target (shaken/
+ *     sickened/panicked's flat skill-check penalty) and folding `wdamage`
+ *     ["weapon damage"] into the same bucket as `damage` (natural attacks
+ *     count as weapon damage for effects like sickened's penalty).
  */
 
-import type { AbilityId, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
+import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 
+import { CONDITIONS } from "./conditions.js";
 import {
   classifyNaturalAttacks,
   naturalAttackBonus,
@@ -834,7 +848,17 @@ export function deriveCompanion(
   // --- shared buffs: evaluate + bucket by target (mirrors familiar.ts, issue #44) --
   const sharedIds = new Set(doc.live.animalCompanion?.sharedBuffIds ?? []);
   const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
-  const routed = routeSharedBuffs(sharedBuffs, rollData);
+
+  // --- the companion's OWN active conditions (issue #68): reshaped as
+  // synthetic ActiveBuffs so `routeSharedBuffs` applies their Change[] through
+  // the exact same typed-stacking pipeline as a shared buff — see
+  // `shared-creature-buffs.ts`'s doc comment.
+  const conditionBuffs: ActiveBuff[] = (doc.live.animalCompanion?.conditions ?? [])
+    .map((id) => CONDITIONS[id])
+    .filter((c): c is NonNullable<typeof c> => c != null && c.changes.length > 0)
+    .map((c) => ({ instanceId: `condition:${c.id}`, name: c.name, changes: c.changes }));
+
+  const routed = routeSharedBuffs([...sharedBuffs, ...conditionBuffs], rollData);
 
   abilities = applySharedAbilityBonuses(abilities, routed.ability, abilityMod);
   const strMod = abilities.str.mod;
@@ -952,7 +976,10 @@ export function deriveCompanion(
     skillPointsSpent += ranks;
     const classSkillBonus = ranks >= 1 ? 3 : 0;
 
-    const miscStack = resolveStack(routed.skill.get(id) ?? []);
+    // Per-skill modifiers plus any global "skills" penalty (e.g. shaken/
+    // sickened's -2 on skill checks — issue #68), same combined-stack
+    // handling as `compute.ts`'s own `globalSkillMods`.
+    const miscStack = resolveStack([...(routed.skill.get(id) ?? []), ...routed.skillsGlobal]);
     const components: ModifierComponent[] = [];
     if (ranks !== 0)
       components.push({ source: "Ranks", type: "untyped", value: ranks, applied: true });

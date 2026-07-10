@@ -13,6 +13,7 @@ import {
   buildRollData,
   companionAbilityIncreaseSlots,
   companionEffectiveLevel,
+  CONDITION_LADDERS,
   deriveCompanion,
   featNameSlug,
   MOUNT_SPECIES_BY_RIDER_SIZE,
@@ -20,6 +21,7 @@ import {
 } from "@pf1/engine";
 import type { AbilityId, AnimalCompanionBuild, CharacterDoc, RefData } from "@pf1/schema";
 
+import { toggleConditionIn } from "./conditions.js";
 import { ABILITY_IDS } from "./doc.js";
 import type { PrereqContext } from "./prereqs.js";
 
@@ -224,6 +226,38 @@ export function healCompanionNonlethal(doc: CharacterDoc, amount: number): Chara
 export function restCompanion(doc: CharacterDoc): CharacterDoc {
   if (!doc.live.animalCompanion && !doc.build.animalCompanion) return doc;
   return withCompanionLive(doc, { damage: 0, nonlethal: 0 });
+}
+
+/** Whether the companion's OWN condition `id` is currently active (issue #68 — independent of the master's `live.conditions`). */
+export function hasCompanionCondition(doc: CharacterDoc, id: string): boolean {
+  return (doc.live.animalCompanion?.conditions ?? []).includes(id);
+}
+
+/** The companion's active condition id, if any, that supersedes `id` on its `CONDITION_LADDERS` ladder (mirrors `model/conditions.ts`'s `supersedingCondition`, scoped to the companion's own list). */
+export function companionSupersedingCondition(doc: CharacterDoc, id: string): string | undefined {
+  const pos = CONDITION_LADDERS.find((ladder) => ladder.includes(id));
+  if (!pos) return undefined;
+  const index = pos.indexOf(id);
+  const conditions = doc.live.animalCompanion?.conditions ?? [];
+  return pos.slice(index + 1).find((sibling) => conditions.includes(sibling));
+}
+
+/** True when the companion's condition `id` is implied by a stricter active sibling (see `companionSupersedingCondition`) — the UI shows it as covered rather than independently toggleable. */
+export function isCompanionConditionImplied(doc: CharacterDoc, id: string): boolean {
+  return companionSupersedingCondition(doc, id) !== undefined;
+}
+
+/**
+ * Toggle one of the companion's OWN active conditions (issue #68 —
+ * `live.animalCompanion.conditions`) — reuses `model/conditions.ts`'s
+ * `toggleConditionIn` for the same ladder-aware auto-upgrade/implied-
+ * condition behavior the master's own `live.conditions` gets, just scoped to
+ * the companion's separate array. No-ops if there's no companion yet.
+ */
+export function toggleCompanionCondition(doc: CharacterDoc, id: string): CharacterDoc {
+  if (!doc.build.animalCompanion) return doc;
+  const conditions = toggleConditionIn(doc.live.animalCompanion?.conditions ?? [], id);
+  return withCompanionLive(doc, { conditions });
 }
 
 /** Whether one of the master's active buffs (by instance id) is currently shared onto the companion. */

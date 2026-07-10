@@ -18,6 +18,8 @@ function makeDoc(overrides: {
   animalCompanion?: CharacterDoc["build"]["animalCompanion"];
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
   sharedBuffIds?: string[];
+  /** The companion's OWN active conditions (issue #68), independent of the master's `live.conditions`. */
+  companionConditions?: string[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -44,9 +46,13 @@ function makeDoc(overrides: {
       conditions: [],
       activeBuffs: overrides.activeBuffs ?? [],
       resources: {},
-      animalCompanion: overrides.sharedBuffIds
-        ? { sharedBuffIds: overrides.sharedBuffIds }
-        : undefined,
+      animalCompanion:
+        overrides.sharedBuffIds || overrides.companionConditions
+          ? {
+              sharedBuffIds: overrides.sharedBuffIds,
+              conditions: overrides.companionConditions,
+            }
+          : undefined,
     },
   } as CharacterDoc;
 }
@@ -363,6 +369,57 @@ describe("deriveCompanion skill-rank investment (issue #68)", () => {
     expect(badger.skills.per!.ranks).toBe(0);
     expect(badger.skills.per!.total).toBe(1); // Wis mod(+1) only
     expect(badger.skillPointsSpent).toBe(0);
+  });
+});
+
+describe("deriveCompanion own active conditions (issue #68)", () => {
+  // druid-1 wolf, ungrown (size stays "med"): bab +1, Str 13 (mod +1), Dex 15
+  // (mod +2), attack 3 (1d6+1), saves fort 5/ref 5/will 1, AC 13/touch 12/
+  // flat-footed 11, CMB 2/CMD 14, per total 1, ste total 2 — hand-verified
+  // baseline for the deltas below.
+  function wolf1(companionConditions?: string[]): CharacterDoc {
+    return makeDoc({
+      classes: [{ tag: "druid", level: 1 }],
+      animalCompanion: { speciesId: "wolf", name: "Fang", source: ["nature-bond"] },
+      companionConditions,
+    });
+  }
+
+  it("shaken (-2 attack, -2 all saves, -2 skills — global 'skills' target, issue #68)", () => {
+    const doc = wolf1(["shaken"]);
+    const rollData = buildRollData(doc, ref);
+    const wolf = deriveCompanion(doc, rollData)!;
+    expect(wolf.attacks[0]).toMatchObject({ attack: 1 });
+    expect(wolf.saves).toEqual({ fort: 3, ref: 3, will: -1 });
+    expect(wolf.skills.per!.total).toBe(-1);
+    expect(wolf.skills.ste!.total).toBe(0);
+  });
+
+  it("entangled (-2 attack, -4 Dex) cascades Dex into AC/CMD, on top of its own attack penalty", () => {
+    const doc = wolf1(["entangled"]);
+    const rollData = buildRollData(doc, ref);
+    const wolf = deriveCompanion(doc, rollData)!;
+    expect(wolf.attacks[0]).toMatchObject({ attack: 0 });
+    expect(wolf.ac.normal).toBe(11);
+    expect(wolf.ac.touch).toBe(10);
+    expect(wolf.cmd).toBe(12); // Dex contributes to CMD; CMB (Str-based) is unaffected
+    expect(wolf.cmb).toBe(2);
+  });
+
+  it("sickened's 'wdamage' target folds into the same damage bucket as natural-attack damage (issue #68)", () => {
+    const doc = wolf1(["sickened"]);
+    const rollData = buildRollData(doc, ref);
+    const wolf = deriveCompanion(doc, rollData)!;
+    expect(wolf.attacks[0]).toMatchObject({ damageBonus: -1 }); // base +1, wdamage -2
+    expect(wolf.skills.per!.total).toBe(-1); // sickened's global "skills" -2
+  });
+
+  it("no conditions: unaffected baseline", () => {
+    const doc = wolf1();
+    const rollData = buildRollData(doc, ref);
+    const wolf = deriveCompanion(doc, rollData)!;
+    expect(wolf.attacks[0]).toMatchObject({ attack: 3, damageBonus: 1 });
+    expect(wolf.saves).toEqual({ fort: 5, ref: 5, will: 1 });
   });
 });
 

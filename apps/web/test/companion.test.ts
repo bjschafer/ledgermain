@@ -11,11 +11,14 @@ import {
   cavalierLevel,
   clearCompanion,
   companionFeatPrereqContext,
+  companionSupersedingCondition,
   deriveCompanionSheet,
   hasBoonCompanionFeat,
+  hasCompanionCondition,
   healCompanion,
   healCompanionNonlethal,
   hunterLevel,
+  isCompanionConditionImplied,
   isSharedWithCompanion,
   mountSpeciesHint,
   restCompanion,
@@ -25,6 +28,7 @@ import {
   setCompanionFocus,
   setCompanionNotes,
   setCompanionSkillRank,
+  toggleCompanionCondition,
   toggleCompanionFeat,
   toggleCompanionSource,
   toggleSharedBuffCompanion,
@@ -261,6 +265,38 @@ describe("companion feat + skill-rank investment (issue #68)", () => {
     expect(ctx.abilityTotals.str).toBe(companion.abilities.str.score);
     expect(ctx.casterLevel).toBe(0);
     expect(ctx.selectedFeats.size).toBe(0);
+  });
+});
+
+describe("companion's own active conditions (issue #68)", () => {
+  it("toggleCompanionCondition no-ops without a companion", () => {
+    const d = createEmptyDoc("t");
+    expect(toggleCompanionCondition(d, "shaken")).toBe(d);
+  });
+
+  it("toggleCompanionCondition adds then removes a condition id", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    expect(hasCompanionCondition(d, "shaken")).toBe(false);
+    d = toggleCompanionCondition(d, "shaken");
+    expect(hasCompanionCondition(d, "shaken")).toBe(true);
+    d = toggleCompanionCondition(d, "shaken");
+    expect(hasCompanionCondition(d, "shaken")).toBe(false);
+  });
+
+  it("is independent of the master's own live.conditions", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = toggleCompanionCondition(d, "shaken");
+    expect(d.live.conditions).toEqual([]);
+    expect(hasCompanionCondition(d, "shaken")).toBe(true);
+  });
+
+  it("ladder auto-upgrade: activating 'frightened' (stricter) supersedes an active 'shaken' (milder)", () => {
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    d = toggleCompanionCondition(d, "shaken");
+    d = toggleCompanionCondition(d, "frightened");
+    expect(d.live.animalCompanion?.conditions).toEqual(["frightened"]);
+    expect(isCompanionConditionImplied(d, "shaken")).toBe(true);
+    expect(companionSupersedingCondition(d, "shaken")).toBe("frightened");
   });
 });
 
