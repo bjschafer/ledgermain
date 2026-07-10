@@ -106,7 +106,20 @@ export function buildRollData(
     // `@class` is the "current class" context; defaults to the whole character
     // and is overridden per class-feature when its changes are evaluated.
     class: { level, unlevel: level },
-    cl: maxClassLevel, // caster level (single-class assumption for Stage 2)
+    // Caster level (single-class assumption for Stage 2). Issue #66 chunk 2
+    // (prestige casting advancement): `buildRollData` takes no `refData`
+    // parameter and can't cheaply gain one just for this, so `@cl` does NOT
+    // account for a prestige class's `castingAdvancement` bonus the way
+    // `apps/web/src/model/casterLevel.ts`'s `effectiveCasterClassLevel` does
+    // — a Wizard 5 / Eldritch Knight 1 with an EK slot targeting wizard reads
+    // `@cl` = 5 here, not the effective 6 that module and the UI display. In
+    // practice this doesn't yet miscompute any vendored formula: the
+    // builder's class picker doesn't expose prestige classes yet (chunk 2
+    // wires the math, not the UI — see
+    // `apps/web/src/components/builder/ClassesSection.tsx`), so no document
+    // can reach this divergence today. Revisit once chunk 3 makes prestige
+    // classes selectable.
+    cl: maxClassLevel,
     skills,
     attributes: {
       hd: { total: level },

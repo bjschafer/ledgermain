@@ -1018,6 +1018,15 @@ export interface CharacterDoc {
      * are unaffected.
      */
     psychicAmplifications?: string[];
+    /**
+     * Casting-advancement target choices for prestige classes, keyed by the
+     * prestige class's tag (e.g. "mysticTheurge"). The array is indexed by the
+     * refdata Class.castingAdvancement slot index; each entry is the chosen
+     * target caster class tag (must be another class in identity.classes), or
+     * null while unchosen. Advancement grants spells per day / spells known /
+     * caster level only — never the target class's other features.
+     */
+    castingAdvancement?: Record<string, (string | null)[]>;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };

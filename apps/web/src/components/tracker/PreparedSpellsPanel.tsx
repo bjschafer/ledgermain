@@ -3,6 +3,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import type { MetamagicDef } from "@pf1/engine";
 import type { AppliedMetamagic, RefData } from "@pf1/schema";
 
+import { effectiveCasterClassLevel } from "../../model/casterLevel.js";
 import {
   classSpellsByLevel,
   clearPrepared,
@@ -612,10 +613,17 @@ function PreparedView({
   const classTag = storedClassTag(doc, refData, casterTag);
 
   const levelMap = useMemo(() => spellLevelMap(refData, casterTag), [refData, casterTag]);
+  // RAW class level — feeds the class-FEATURE shaman spirit-magic merge below
+  // (issue #66 chunk 2: prestige casting advancement grants table numbers
+  // only, never accelerates a class feature — see model/casterLevel.ts's
+  // header comment).
   const classLevel = doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 0;
+  // Advancement-aware effective class level — feeds the slot-table lookup
+  // (spellSlotsByLevel) below.
+  const effectiveClassLevel = effectiveCasterClassLevel(doc, refData, casterTag);
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
-  const slots = spellSlotsByLevel(model, classLevel, abilityMod);
+  const slots = spellSlotsByLevel(model, effectiveClassLevel, abilityMod);
   // Metamagic (issue #71): owned feats + the highest slot the caster can fill
   // (metamagic can't push a spell past it).
   const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
@@ -990,7 +998,7 @@ function PreparedView({
           refData={refData}
           update={update}
           slots={slots}
-          classLevel={classLevel}
+          classLevel={effectiveClassLevel}
           abilityMod={abilityMod}
           classTag={classTag}
         />
@@ -1037,18 +1045,25 @@ function SpontaneousView({
   const classTag = storedClassTag(doc, refData, casterTag);
 
   const levelMap = useMemo(() => spellLevelMap(refData, casterTag), [refData, casterTag]);
+  // RAW class level — feeds the bloodline/mystery/discipline/patron bonus-
+  // spell-known merges below (issue #66 chunk 2: prestige casting advancement
+  // grants table numbers only, never accelerates a class feature — see
+  // model/casterLevel.ts's header comment).
   const classLevel = doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 0;
+  // Advancement-aware effective class level — feeds the slot-table lookups
+  // (spellSlotsByLevel/spontaneousSlotStatus/castSpontaneousSlot) below.
+  const effectiveClassLevel = effectiveCasterClassLevel(doc, refData, casterTag);
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
 
   // Full slot breakdown includes base + bonus per level; use for bonus display.
   const slotsPerLevel = useMemo(
-    () => spellSlotsByLevel(model, classLevel, abilityMod),
-    [model, classLevel, abilityMod],
+    () => spellSlotsByLevel(model, effectiveClassLevel, abilityMod),
+    [model, effectiveClassLevel, abilityMod],
   );
   const slotBonusByLevel = new Map(slotsPerLevel.map((s) => [s.level, s.bonus]));
 
-  const status = spontaneousSlotStatus(doc, model, classLevel, abilityMod, classTag);
+  const status = spontaneousSlotStatus(doc, model, effectiveClassLevel, abilityMod, classTag);
   const anyUsed = status.some((s) => s.used > 0);
 
   // Metamagic (issue #71): a spontaneous caster applies metamagic AT CAST time
@@ -1308,7 +1323,7 @@ function SpontaneousView({
                               castSpontaneousSlot(
                                 d,
                                 model,
-                                classLevel,
+                                effectiveClassLevel,
                                 abilityMod,
                                 castLevel,
                                 classTag,
@@ -1372,21 +1387,25 @@ function HybridView({
 
   const classTag = storedClassTag(doc, refData, casterTag);
   const levelMap = useMemo(() => spellLevelMap(refData, casterTag), [refData, casterTag]);
-  const classLevel = doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 0;
+  // Advancement-aware effective class level (issue #66 chunk 2) — arcanist
+  // (the only hybrid caster modeled) has no class-feature bonus-spell-known
+  // mechanic keyed off raw class level, so unlike PreparedView/SpontaneousView
+  // above, every classLevel use in this view can safely be the effective one.
+  const effectiveClassLevel = effectiveCasterClassLevel(doc, refData, casterTag);
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
 
   // Prepare: wizard-shaped daily readying cap (no ability bonus).
   const preparedCapacity = useMemo(
-    () => preparedCapacityByLevel(model, classLevel),
-    [model, classLevel],
+    () => preparedCapacityByLevel(model, effectiveClassLevel),
+    [model, effectiveClassLevel],
   );
   // Cast: sorcerer-shaped per-day slot pool (ability-bonus slots included).
   const castSlots = useMemo(
-    () => spellSlotsByLevel(model, classLevel, abilityMod),
-    [model, classLevel, abilityMod],
+    () => spellSlotsByLevel(model, effectiveClassLevel, abilityMod),
+    [model, effectiveClassLevel, abilityMod],
   );
-  const castStatus = spontaneousSlotStatus(doc, model, classLevel, abilityMod, classTag);
+  const castStatus = spontaneousSlotStatus(doc, model, effectiveClassLevel, abilityMod, classTag);
   const castStatusByLevel = new Map(castStatus.map((s) => [s.level, s]));
   const castBonusByLevel = new Map(castSlots.map((s) => [s.level, s.bonus]));
   const anyCastUsed = castStatus.some((s) => s.used > 0);
@@ -1627,7 +1646,7 @@ function HybridView({
                               castSpontaneousSlot(
                                 d,
                                 model,
-                                classLevel,
+                                effectiveClassLevel,
                                 abilityMod,
                                 castLevel,
                                 classTag,

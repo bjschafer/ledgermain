@@ -21,6 +21,7 @@ import type {
 import { normalizeWeaponGroup } from "@pf1/engine";
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
+import { eligibleAdvancementTargets } from "./casterLevel.js";
 import { localId } from "./ids.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 import { normalizeAlignmentCode, slugifySkillLabel } from "./names.js";
@@ -570,7 +571,71 @@ export function addClass(doc: CharacterDoc, tag: string): CharacterDoc {
 
 export function removeClass(doc: CharacterDoc, tag: string): CharacterDoc {
   const classes = doc.identity.classes.filter((c) => c.tag !== tag);
-  return { ...doc, identity: { ...doc.identity, classes } };
+  const identity = { ...doc.identity, classes };
+
+  // Casting-advancement cleanup (issue #66 chunk 2): the removed class can be
+  // on either side of `build.castingAdvancement` — (a) it WAS a prestige
+  // class with its own slots (drop its key outright), or (b) it was some
+  // OTHER prestige class's chosen TARGET (null out just that slot entry,
+  // leaving the prestige class's other slots/choices intact). Same "a stale
+  // reference never lingers" posture `setRace`'s racialTraits cleanup and
+  // `setFavoredClass`'s favoredClass2 cleanup use elsewhere in this file.
+  const advancement = doc.build.castingAdvancement;
+  if (!advancement) return { ...doc, identity };
+
+  let changed = tag in advancement;
+  const nextAdvancement: Record<string, (string | null)[]> = {};
+  for (const [prestigeTag, slots] of Object.entries(advancement)) {
+    if (prestigeTag === tag) continue; // (a)
+    const nextSlots = slots.map((t) => (t === tag ? null : t)); // (b)
+    if (nextSlots.some((t, i) => t !== slots[i])) changed = true;
+    nextAdvancement[prestigeTag] = nextSlots;
+  }
+  if (!changed) return { ...doc, identity };
+  return { ...doc, identity, build: { ...doc.build, castingAdvancement: nextAdvancement } };
+}
+
+/**
+ * Set (or clear, with `targetTag: null`) the chosen target class for a
+ * prestige class's casting-advancement slot (issue #66 chunk 2) — see
+ * `CharacterDoc.build.castingAdvancement`'s doc comment for the storage
+ * shape. Validated via `eligibleAdvancementTargets` — the same check
+ * `model/casterLevel.ts`'s `castingAdvancementBonus` enforces defensively at
+ * read time — so an ineligible target (not on `identity.classes`, not a real
+ * caster, or the wrong kind for this slot) is silently ignored rather than
+ * stored: the doc should never carry a choice `castingAdvancementBonus` would
+ * reject anyway. Also a no-op when `prestigeTag` has no `castingAdvancement`
+ * slots in `refData` at all, or `slotIndex` is out of range for it.
+ */
+export function setCastingAdvancementTarget(
+  doc: CharacterDoc,
+  refData: RefData,
+  prestigeTag: string,
+  slotIndex: number,
+  targetTag: string | null,
+): CharacterDoc {
+  const classDef = Object.values(refData.classes).find((c) => c.tag === prestigeTag);
+  const slotCount = classDef?.castingAdvancement?.length ?? 0;
+  if (slotIndex < 0 || slotIndex >= slotCount) return doc;
+  if (
+    targetTag !== null &&
+    !eligibleAdvancementTargets(doc, refData, prestigeTag, slotIndex).includes(targetTag)
+  ) {
+    return doc;
+  }
+
+  const existing = doc.build.castingAdvancement?.[prestigeTag] ?? [];
+  const nextSlots = [...existing];
+  while (nextSlots.length < slotCount) nextSlots.push(null);
+  nextSlots[slotIndex] = targetTag;
+
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      castingAdvancement: { ...doc.build.castingAdvancement, [prestigeTag]: nextSlots },
+    },
+  };
 }
 
 export function setClassLevel(doc: CharacterDoc, tag: string, level: number): CharacterDoc {

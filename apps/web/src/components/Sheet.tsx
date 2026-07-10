@@ -6,7 +6,11 @@ import type { CharacterDoc, DerivedSheet, DerivedSkill, RefData } from "@pf1/sch
 import { useFlashKey } from "../hooks/useFlashKey.js";
 import { baselineSheet } from "../model/baseline.js";
 import { ABILITY_IDS } from "../model/doc.js";
-import { casterLevelForClass, isCasterTag } from "../model/casterLevel.js";
+import {
+  casterLevelForClass,
+  effectiveCasterClassLevel,
+  isCasterTag,
+} from "../model/casterLevel.js";
 import { combinedLanguages } from "../model/languages.js";
 import {
   ABILITY_ABBR,
@@ -81,11 +85,14 @@ export function Sheet({
   // tags, but the sheet lists each so a multiclass caster can read them off.
   // `casterLevelForClass` is the seam where paladin/ranger-style divergences
   // (CL != class level) get wired in — don't read c.level directly here.
+  // `effectiveCasterClassLevel` (issue #66 chunk 2) folds in any prestige-
+  // class casting advancement before that seam runs, so e.g. a Wizard 5 /
+  // Eldritch Knight 1 reads CL 6, not CL 5.
   const casterLine = doc.identity.classes
     .filter((c) => isCasterTag(c.tag))
     .map((c) => {
       const def = Object.values(refData.classes).find((cl) => cl.tag === c.tag);
-      const cl = casterLevelForClass(c.tag, c.level);
+      const cl = casterLevelForClass(c.tag, effectiveCasterClassLevel(doc, refData, c.tag));
       return `CL ${def?.name ?? c.tag} ${cl}`;
     })
     .join(" / ");

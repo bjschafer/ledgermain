@@ -8,7 +8,7 @@
 import { deriveResourcePools } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
-import { casterLevelForClass } from "./casterLevel.js";
+import { casterLevelForClass, effectiveCasterClassLevel } from "./casterLevel.js";
 import { ABILITY_IDS } from "./doc.js";
 import { featInstanceDisplayName, featInstances, grantedFeats } from "./feats.js";
 import { combinedLanguages } from "./languages.js";
@@ -173,9 +173,13 @@ function buildHeader(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData): 
 /** One spell-slot/known section per caster class the character has. */
 function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData): PrintCaster[] {
   const out: PrintCaster[] = [];
-  for (const { tag, level: classLevel } of casterClassesOf(doc, refData)) {
+  for (const { tag } of casterClassesOf(doc, refData)) {
     const model = casterModelFor(tag);
     if (!model) continue;
+    // Advancement-aware (issue #66 chunk 2): a prestige class's casting-
+    // advancement slot bumps this class's effective level for slots/known-
+    // limits/CL display, same as everywhere else this seam is threaded.
+    const classLevel = effectiveCasterClassLevel(doc, refData, tag);
     const classDef = Object.values(refData.classes).find((cl) => cl.tag === tag);
     const abilityMod = sheet.abilities[model.ability].mod;
     const classTag = storedClassTag(doc, refData, tag);

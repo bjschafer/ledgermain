@@ -4,7 +4,7 @@ import type { AbilityId } from "@pf1/schema";
 
 import { featNameSlug, resolveFeatEffect } from "@pf1/engine";
 
-import { casterLevel } from "../../model/casterLevel.js";
+import { effectiveCasterLevel } from "../../model/casterLevel.js";
 import { combatStyleFeatSlugs } from "../../model/ranger.js";
 import { ABILITY_IDS, addFeatInstance, removeFeatInstance } from "../../model/doc.js";
 import { assignFeatsToSlots, featEligibleForSlot, slotTypeBadge } from "../../model/featSlots.js";
@@ -70,7 +70,9 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
     return {
       abilityTotals,
       bab: sheet.bab,
-      casterLevel: casterLevel(doc),
+      // Advancement-aware (issue #66 chunk 2): a Wizard 5 / Eldritch Knight 1
+      // with an EK slot targeting wizard qualifies for CL-6 feat prereqs.
+      casterLevel: effectiveCasterLevel(doc, refData),
       selectedFeats: new Set([...selected, ...grantedIds]),
       refData,
       bypassBlockedSlugs: styleSlugs,

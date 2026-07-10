@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { RefData } from "@pf1/schema";
 
+import { effectiveCasterClassLevel } from "../../model/casterLevel.js";
 import { toggleKnownSpell } from "../../model/doc.js";
 import {
   accessibleSpellLevels,
@@ -53,9 +54,22 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
 
   const model = useMemo(() => (casterTag ? casterModelFor(casterTag) : undefined), [casterTag]);
 
+  // RAW class level — feeds the class-FEATURE bonus-spell-known helpers below
+  // (bloodline/mystery/discipline/patron/shaman), which stay pinned to the
+  // character's actual class level (issue #66 chunk 2: prestige casting
+  // advancement grants table numbers only, never accelerates a class
+  // feature — see model/casterLevel.ts's header comment).
   const classLevel = useMemo(
     () => doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 1,
     [doc.identity.classes, casterTag],
+  );
+
+  // Advancement-aware effective class level (issue #66 chunk 2) — feeds the
+  // spells-per-day/known TABLE lookups below (accessibleLevels, knownLimits),
+  // which a prestige class's casting-advancement slot legitimately bumps.
+  const effectiveClassLevel = useMemo(
+    () => (casterTag ? effectiveCasterClassLevel(doc, refData, casterTag) : classLevel),
+    [doc, refData, casterTag, classLevel],
   );
 
   const grantsCantrips = !!model?.grantsAllCantrips;
@@ -65,8 +79,8 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // always shown once any caster level is reached; e.g. a level-3 cleric has
   // no business browsing level 5+ spells yet).
   const accessibleLevels = useMemo(
-    () => (model ? new Set(accessibleSpellLevels(model, classLevel)) : null),
-    [model, classLevel],
+    () => (model ? new Set(accessibleSpellLevels(model, effectiveClassLevel)) : null),
+    [model, effectiveClassLevel],
   );
 
   // Granted cantrips: derived from the class list, never stored in `known`.
@@ -190,9 +204,9 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // Spells-known limits for spontaneous casters (advisory only).
   const knownLimits = useMemo(() => {
     if (!model) return new Map<number, number>();
-    const limits = spellsKnownLimitsByLevel(model, classLevel);
+    const limits = spellsKnownLimitsByLevel(model, effectiveClassLevel);
     return new Map(limits.map((l) => [l.level, l.limit]));
-  }, [model, classLevel]);
+  }, [model, effectiveClassLevel]);
 
   // Count known spells per level (for the advisory).
   const levelMap = useMemo(
