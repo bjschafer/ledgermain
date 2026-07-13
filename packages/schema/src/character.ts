@@ -1998,10 +1998,10 @@ export interface ItemInstance {
   quantity?: number;
   /**
    * Charges spent so far on a limited-use item (issue #16), e.g. 3 of a Staff
-   * of Healing's 10. Only meaningful when the linked `RefData.items[itemId]`
-   * carries `uses.maxFormula` — the UI reads the max from there rather than
-   * storing it here, so the max always stays in sync if the vendored data
-   * changes. Absent means 0 (full charges). Deliberately NOT modeled as a
+   * of Healing's 10. Only meaningful when the instance has a charge cap — see
+   * `charges` below, which is the instance's own cap or, absent that, the
+   * linked `RefData.items[itemId].uses.maxFormula`. Absent means 0 (full
+   * charges). Deliberately NOT modeled as a
    * generic `live.resources` pool keyed by a derived id: `ItemInstance`s live
    * in an unordered array with no stable per-instance identity (the same item
    * name can appear more than once, and removing an earlier entry shifts
@@ -2013,29 +2013,31 @@ export interface ItemInstance {
    */
   chargesUsed?: number;
   /**
-   * Unit weight in pounds, for gear with no `itemId`/`armorId` (a free-text
-   * custom entry — see `model/doc.ts` `addCustomGearItem`). Ignored when
-   * `itemId` or `armor` is present; those look their weight up from
-   * `RefData.items[itemId].weight` / `armor.weight` instead, so the vendored
-   * data stays the single source of truth for anything it covers. Omitted =
-   * 0 lb (e.g. a Harrow deck-style item with no listed weight).
+   * Unit weight in pounds. The default source is the vendored data — an
+   * `itemId` entry reads `RefData.items[itemId].weight`, a worn suit reads
+   * `armor.weight` — but a value here *overrides* it, since it's what the
+   * player typed into the gear editor and a hand correction has to win over
+   * the reference. Absent = use the vendored weight, or 0 lb when there is
+   * none (a free-text custom entry, e.g. a Harrow deck with no listed weight).
    */
   weight?: number;
   /**
-   * Unit price in gp, for gear with no `itemId` (mirrors `weight` above —
-   * `itemId` entries read `RefData.items[itemId].price` instead). Display
-   * only; never affects any derived stat. Omitted = no price shown.
+   * Unit price in gp (mirrors `weight` above: overrides
+   * `RefData.items[itemId].price` when present, falls back to it when absent).
+   * Display only; never affects any derived stat. Absent with no ref price = no
+   * price shown.
    */
   price?: number;
   /**
-   * Maximum charges for a self-contained limited-use consumable that has no
-   * `itemId` to look a `uses.maxFormula` up from — currently only a generated
-   * wand ("Wand of Cure Light Wounds", 50 charges; see
-   * `apps/web/src/model/consumables.ts`). The gear UI reads the charge cap from
-   * `RefData.items[itemId].uses.maxFormula` when `itemId` is present, else from
-   * this field, and tracks spent charges in `chargesUsed` (which is already
-   * stored on the instance regardless of `itemId`). Omitted = not a
-   * charge-tracked item. Display + live-tracking only; never a derived stat.
+   * Maximum charges for a limited-use item. Mirrors `weight`/`price`: overrides
+   * `RefData.items[itemId].uses.maxFormula` when present, falls back to it when
+   * absent — so a player can correct a wand's cap by hand (a 50-charge wand at
+   * 47 remaining is `charges: 50`, `chargesUsed: 3`), and self-contained
+   * consumables with no `itemId` at all (a generated wand; see
+   * `apps/web/src/model/consumables.ts`) carry their cap here. Spent charges
+   * live in `chargesUsed` regardless of `itemId`. Absent with no ref formula =
+   * not a charge-tracked item. Display + live-tracking only; never a derived
+   * stat.
    */
   charges?: number;
 }

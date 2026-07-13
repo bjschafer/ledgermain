@@ -15,6 +15,7 @@ import {
   createEmptyDoc,
   removeGear,
   setGearCharges,
+  setGearDetails,
   setGearEquipped,
   setGearQuantity,
   setMoney,
@@ -625,6 +626,80 @@ describe("setGearCharges()", () => {
   it("is a no-op for out-of-range index", () => {
     const d = addGearItem(doc(), "staff-of-healing");
     expect(setGearCharges(d, 5, 3)).toBe(d);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setGearDetails — post-creation editing of any non-armor gear row
+// ---------------------------------------------------------------------------
+describe("setGearDetails()", () => {
+  const BASE = { name: "Wand", quantity: 1, weight: 0, price: 0, charges: 0, chargesUsed: 0 };
+
+  it("rewrites a hand-entered wand's cap and spent charges", () => {
+    // The import case: a wand that came in as "47 charges" is really a
+    // 50-charge wand with 3 used.
+    const d = addCustomGearItem(doc(), "Wand of Cure Light Wounds", { charges: 47 });
+    const edited = setGearDetails(d, 0, {
+      ...BASE,
+      name: "Wand of Cure Light Wounds",
+      charges: 50,
+      chargesUsed: 3,
+    });
+    expect(edited.build.gear[0]).toMatchObject({ charges: 50, chargesUsed: 3 });
+  });
+
+  it("clamps charges used to the cap", () => {
+    const d = addCustomGearItem(doc(), "Wand", { charges: 50 });
+    const edited = setGearDetails(d, 0, { ...BASE, charges: 50, chargesUsed: 99 });
+    expect(edited.build.gear[0]!.chargesUsed).toBe(50);
+  });
+
+  it("deletes zero/default keys so a RefData-linked item falls back to the reference", () => {
+    const d = setGearDetails(addGearItem(doc(), "staff-of-healing"), 0, {
+      ...BASE,
+      name: "Staff of Healing",
+    });
+    const inst = d.build.gear[0]!;
+    expect(inst.itemId).toBe("staff-of-healing");
+    expect(inst.quantity).toBeUndefined();
+    expect(inst.weight).toBeUndefined();
+    expect(inst.price).toBeUndefined();
+    expect(inst.charges).toBeUndefined();
+    expect(inst.chargesUsed).toBeUndefined();
+  });
+
+  it("overrides weight/price/name on a RefData-linked item", () => {
+    const d = setGearDetails(addGearItem(doc(), "arrow"), 0, {
+      ...BASE,
+      name: "Cold Iron Arrows",
+      quantity: 20,
+      weight: 0.15,
+      price: 0.2,
+    });
+    expect(d.build.gear[0]).toMatchObject({
+      itemId: "arrow",
+      name: "Cold Iron Arrows",
+      quantity: 20,
+      weight: 0.15,
+      price: 0.2,
+    });
+  });
+
+  it("drops a blank name rather than storing an empty string", () => {
+    const d = setGearDetails(addCustomGearItem(doc(), "Rope"), 0, { ...BASE, name: "   " });
+    expect(d.build.gear[0]!.name).toBeUndefined();
+  });
+
+  it("is a no-op for out-of-range index", () => {
+    const d = addCustomGearItem(doc(), "Rope");
+    expect(setGearDetails(d, 5, BASE)).toBe(d);
+    expect(setGearDetails(d, -1, BASE)).toBe(d);
+  });
+
+  it("does not mutate the original doc", () => {
+    const d = addCustomGearItem(doc(), "Rope");
+    setGearDetails(d, 0, { ...BASE, name: "Silk Rope", weight: 5 });
+    expect(d.build.gear[0]).toEqual({ equipped: true, name: "Rope" });
   });
 });
 

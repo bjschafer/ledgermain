@@ -239,4 +239,9 @@ describe("totalCarriedWeight()", () => {
     const d = doc([{ equipped: true, name: "Harrow Deck" }]);
     expect(totalCarriedWeight(d, refData)).toBe(0);
   });
+
+  it("an explicit instance weight overrides the linked item's (a hand-corrected row)", () => {
+    const d = doc([{ itemId: "potion", equipped: true, weight: 2, quantity: 3 }]);
+    expect(totalCarriedWeight(d, refData)).toBe(6); // 2 * 3, not 0.5 * 3
+  });
 });

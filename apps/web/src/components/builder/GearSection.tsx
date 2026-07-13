@@ -8,9 +8,11 @@ import {
   addGearItem,
   addWornArmor,
   addWornArmorFromRef,
+  type GearDetails,
   type MoneyField,
   removeGear,
   setGearCharges,
+  setGearDetails,
   setGearEquipped,
   setGearQuantity,
   setMoney,
@@ -301,6 +303,126 @@ function ArmorForm({
 }
 
 /**
+ * Inline editor for any gear row that isn't worn armor (which gets the richer
+ * {@link ArmorForm}) — vendored items, generated consumables, and free-text
+ * custom entries alike. Every field is an override: leaving weight / price /
+ * max charges at 0 means "whatever the vendored item says", so a RefData-linked
+ * row keeps tracking the reference until the player deliberately types over it.
+ * `refMeta` describes those inherited values so the 0s aren't read as "weighs
+ * nothing".
+ */
+function GearForm({
+  initial,
+  refMeta,
+  onSave,
+  onCancel,
+}: {
+  initial: GearDetails;
+  refMeta: { weight?: number; price?: number; charges?: number };
+  onSave: (details: GearDetails) => void;
+  onCancel: () => void;
+}) {
+  const [form, setForm] = useState<GearDetails>(initial);
+
+  function field<K extends keyof GearDetails>(key: K, val: GearDetails[K]) {
+    setForm((f) => ({ ...f, [key]: val }));
+  }
+
+  const inherited = (value: number | undefined, unit: string) =>
+    value ? `from item data: ${value}${unit}` : "0 = none";
+  const maxCharges = form.charges || refMeta.charges || 0;
+
+  return (
+    <div className="gear-armor-form">
+      <div className="gear-armor-head">
+        <span className="eyebrow">Edit Item</span>
+        <button type="button" className="btn-ghost" onClick={onCancel}>
+          Cancel
+        </button>
+      </div>
+      <div className="gear-armor-grid">
+        <label className="field">
+          <span>Name</span>
+          <input
+            type="text"
+            value={form.name}
+            autoFocus
+            onChange={(e) => field("name", e.target.value)}
+          />
+        </label>
+        <label className="field">
+          <span>Quantity</span>
+          <NumberField
+            value={form.quantity}
+            min={0}
+            max={99999}
+            commitOnChange
+            onCommit={(n) => field("quantity", n)}
+            aria-label="Quantity"
+          />
+        </label>
+        <label className="field">
+          <span>Unit weight (lb)</span>
+          <input
+            type="number"
+            value={form.weight}
+            min={0}
+            step={0.1}
+            title={inherited(refMeta.weight, " lb")}
+            onChange={(e) => field("weight", Number(e.target.value))}
+          />
+        </label>
+        <label className="field">
+          <span>Unit price (gp)</span>
+          <input
+            type="number"
+            value={form.price}
+            min={0}
+            step={0.01}
+            title={inherited(refMeta.price, " gp")}
+            onChange={(e) => field("price", Number(e.target.value))}
+          />
+        </label>
+        <label className="field">
+          <span>Max charges</span>
+          <input
+            type="number"
+            value={form.charges}
+            min={0}
+            max={99999}
+            title={inherited(refMeta.charges, " charges")}
+            onChange={(e) => field("charges", Number(e.target.value))}
+          />
+        </label>
+        <label className="field">
+          <span>Charges used</span>
+          <NumberField
+            value={form.chargesUsed}
+            min={0}
+            max={maxCharges || 99999}
+            commitOnChange
+            onCommit={(n) => field("chargesUsed", n)}
+            aria-label="Charges used"
+          />
+        </label>
+      </div>
+      <p className="hint">
+        Weight, price, and max charges fall back to the reference item when left at 0. A 50-charge
+        wand with 3 used reads “47 remaining”.
+      </p>
+      <button
+        type="button"
+        className="pick-btn add"
+        disabled={!form.name.trim()}
+        onClick={() => onSave(form)}
+      >
+        Save changes
+      </button>
+    </div>
+  );
+}
+
+/**
  * Compact "this item has effects the sheet can't apply" flag, shown when an
  * item's changes include a target `compute()` doesn't consume (see
  * `@pf1/engine`'s targets.ts) — e.g. Amulet of Mighty Fists' `nattack`/
@@ -501,6 +623,11 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     setEditingGearIndex(null);
   }
 
+  function handleEditGear(index: number, details: GearDetails) {
+    update((d) => setGearDetails(d, index, details));
+    setEditingGearIndex(null);
+  }
+
   return (
     <Panel title="Gear & Inventory" step="viii" storageKey="panel:Gear" defaultCollapsed={false}>
       {/* Wealth (issue #16) — always tracked, unlike encumbrance. */}
@@ -557,32 +684,56 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
           {gear.map((inst, i) => {
             const itemDef = inst.itemId ? refData.items[inst.itemId] : undefined;
             const armorRef = inst.armorId ? refData.armors[inst.armorId] : undefined;
+            // A player-typed `name` wins over the vendored one — renaming a
+            // RefData-linked item (e.g. "Wand of CLW (Sela's)") is part of the
+            // "edit anything after creation" contract.
             const displayName =
-              itemDef?.name ??
               inst.name ??
+              itemDef?.name ??
               armorRef?.name ??
               (inst.armor
                 ? `${inst.armor.slot === "shield" ? "Shield" : "Armor"} (${inst.armor.ac} AC)`
                 : "Unknown item");
             const changes = itemDef?.changes ?? [];
             const unitWeight = gearUnitWeight(inst, refData);
-            const unitPrice = itemDef?.price ?? inst.price;
+            const unitPrice = inst.price ?? itemDef?.price;
             const qty = inst.quantity ?? 1;
-            // A vendored item reads its cap from `uses.maxFormula`; a
-            // self-contained consumable (a generated wand, issue #36) carries
-            // its max directly on the instance.
-            const maxCharges = itemMaxCharges(itemDef) ?? inst.charges ?? null;
+            // The instance's own cap wins (a hand-corrected wand, or a
+            // self-contained generated consumable, issue #36); otherwise a
+            // vendored item reads its cap from `uses.maxFormula`.
+            const refMaxCharges = itemMaxCharges(itemDef);
+            const maxCharges = inst.charges ?? refMaxCharges;
             const chargesUsed = Math.min(inst.chargesUsed ?? 0, maxCharges ?? Infinity);
 
-            if (editingGearIndex === i && inst.armor) {
+            if (editingGearIndex === i) {
               return (
                 <div key={i} className="gear-row">
-                  <ArmorForm
-                    initial={{ armor: inst.armor, name: inst.name ?? "" }}
-                    onSave={(armor, name) => handleEditArmor(i, armor, name)}
-                    onCancel={() => setEditingGearIndex(null)}
-                    saveLabel="Save changes"
-                  />
+                  {inst.armor ? (
+                    <ArmorForm
+                      initial={{ armor: inst.armor, name: inst.name ?? "" }}
+                      onSave={(armor, name) => handleEditArmor(i, armor, name)}
+                      onCancel={() => setEditingGearIndex(null)}
+                      saveLabel="Save changes"
+                    />
+                  ) : (
+                    <GearForm
+                      initial={{
+                        name: displayName,
+                        quantity: qty,
+                        weight: inst.weight ?? 0,
+                        price: inst.price ?? 0,
+                        charges: inst.charges ?? 0,
+                        chargesUsed: inst.chargesUsed ?? 0,
+                      }}
+                      refMeta={{
+                        weight: itemDef?.weight,
+                        price: itemDef?.price,
+                        charges: refMaxCharges ?? undefined,
+                      }}
+                      onSave={(details) => handleEditGear(i, details)}
+                      onCancel={() => setEditingGearIndex(null)}
+                    />
+                  )}
                 </div>
               );
             }
@@ -664,18 +815,17 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                     aria-label={`${displayName} quantity`}
                   />
                 </label>
-                {inst.armor && (
-                  <button
-                    type="button"
-                    className="pick-btn add"
-                    onClick={() => {
-                      setShowArmorPicker(false);
-                      setEditingGearIndex(i);
-                    }}
-                  >
-                    Edit
-                  </button>
-                )}
+                <button
+                  type="button"
+                  className="pick-btn add"
+                  onClick={() => {
+                    setShowArmorPicker(false);
+                    setEditingGearIndex(i);
+                  }}
+                  title={`Edit ${displayName}`}
+                >
+                  Edit
+                </button>
                 <button
                   type="button"
                   className="pick-btn remove"

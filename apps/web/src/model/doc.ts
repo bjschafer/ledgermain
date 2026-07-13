@@ -1103,6 +1103,68 @@ export function setGearCharges(
   return { ...doc, build: { ...doc.build, gear } };
 }
 
+/** Editable fields of a gear entry, as the gear editor collects them. */
+export interface GearDetails {
+  name: string;
+  quantity: number;
+  /** Unit weight in lb; 0 falls back to the vendored weight (or none). */
+  weight: number;
+  /** Unit price in gp; 0 falls back to the vendored price (or none). */
+  price: number;
+  /** Charge cap; 0 falls back to the item's `uses.maxFormula` (or untracked). */
+  charges: number;
+  chargesUsed: number;
+}
+
+/**
+ * Rewrite the editable fields of the gear item at `index` — the "edit anything
+ * after creation" path for every gear row that isn't worn armor (which has its
+ * own richer editor via {@link updateGearItem}). Zero/blank values delete their
+ * key rather than storing a 0, both to keep the doc minimal and because on a
+ * RefData-linked entry an absent key means "use the vendored value" (see
+ * `ItemInstance.weight`/`price`/`charges`). `chargesUsed` is clamped to the cap
+ * when one is set. Out-of-range indices are silently ignored.
+ */
+export function setGearDetails(
+  doc: CharacterDoc,
+  index: number,
+  details: GearDetails,
+): CharacterDoc {
+  if (index < 0 || index >= doc.build.gear.length) return doc;
+  const int = (n: number, max: number) => clampInt(Number.isNaN(n) ? 0 : n, 0, max);
+  const charges = int(details.charges, 99999);
+  const gear = doc.build.gear.map((inst, i) => {
+    if (i !== index) return inst;
+    const next: ItemInstance = { ...inst };
+
+    const name = details.name.trim();
+    if (name) next.name = name;
+    else delete next.name;
+
+    const qty = int(details.quantity, 99999);
+    if (qty === 1) delete next.quantity;
+    else next.quantity = qty;
+
+    const weight = Math.max(0, Number.isNaN(details.weight) ? 0 : details.weight);
+    if (weight > 0) next.weight = weight;
+    else delete next.weight;
+
+    const price = Math.max(0, Number.isNaN(details.price) ? 0 : details.price);
+    if (price > 0) next.price = price;
+    else delete next.price;
+
+    if (charges > 0) next.charges = charges;
+    else delete next.charges;
+
+    const used = int(details.chargesUsed, charges > 0 ? charges : 99999);
+    if (used > 0) next.chargesUsed = used;
+    else delete next.chargesUsed;
+
+    return next;
+  });
+  return { ...doc, build: { ...doc.build, gear } };
+}
+
 /** Denomination keys for `live.money` (issue #16). */
 export type MoneyField = "pp" | "gp" | "sp" | "cp";
 

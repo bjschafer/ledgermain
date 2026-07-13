@@ -199,11 +199,17 @@ export function encumberedSpeed(base: number): number {
 
 /* -------------------------------------------------------- carried weight -- */
 
-/** Per-instance unit weight, in pounds, resolved the same way for gear rows and the engine total. */
+/**
+ * Per-instance unit weight, in pounds, resolved the same way for gear rows and
+ * the engine total. An explicit `weight` on the instance always wins: it's what
+ * the player typed into the gear editor, and a hand-corrected weight must beat
+ * whatever the vendored item or armor snapshot says.
+ */
 export function gearUnitWeight(inst: ItemInstance, refData: RefData): number {
+  if (inst.weight != null) return inst.weight;
   if (inst.itemId) return refData.items[inst.itemId]?.weight ?? 0;
   if (inst.armor) return inst.armor.weight ?? 0;
-  return inst.weight ?? 0;
+  return 0;
 }
 
 /**
