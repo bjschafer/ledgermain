@@ -802,38 +802,40 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                     </div>
                   )}
                 </div>
-                <label className="gear-qty" title="Quantity">
-                  <span className="hint">qty</span>
-                  <NumberField
-                    className="num"
-                    size={3}
-                    value={qty}
-                    min={0}
-                    max={99999}
-                    commitOnChange
-                    onCommit={(n) => update((d) => setGearQuantity(d, i, n))}
-                    aria-label={`${displayName} quantity`}
-                  />
-                </label>
-                <button
-                  type="button"
-                  className="pick-btn add"
-                  onClick={() => {
-                    setShowArmorPicker(false);
-                    setEditingGearIndex(i);
-                  }}
-                  title={`Edit ${displayName}`}
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  className="pick-btn remove"
-                  onClick={() => update((d) => removeGear(d, i))}
-                  title="Remove from gear"
-                >
-                  Remove
-                </button>
+                <div className="gear-actions">
+                  <label className="gear-qty" title="Quantity">
+                    <span className="hint">qty</span>
+                    <NumberField
+                      className="num"
+                      size={3}
+                      value={qty}
+                      min={0}
+                      max={99999}
+                      commitOnChange
+                      onCommit={(n) => update((d) => setGearQuantity(d, i, n))}
+                      aria-label={`${displayName} quantity`}
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    className="pick-btn add"
+                    onClick={() => {
+                      setShowArmorPicker(false);
+                      setEditingGearIndex(i);
+                    }}
+                    title={`Edit ${displayName}`}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="pick-btn remove"
+                    onClick={() => update((d) => removeGear(d, i))}
+                    title="Remove from gear"
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             );
           })}

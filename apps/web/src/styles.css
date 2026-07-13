@@ -2035,9 +2035,8 @@ button:focus-visible,
 /* Per-row quantity stepper + charge tracker, issue #16. */
 .gear-qty {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 5px;
   flex-shrink: 0;
 }
 
@@ -2059,12 +2058,29 @@ button:focus-visible,
   margin-bottom: 12px;
 }
 
+/* Name/meta and the trailing controls (qty stepper + Edit + Remove) share one
+   line only while the name still gets a readable column; below that the whole
+   control cluster drops to its own line rather than squeezing item names down
+   to one word per line. The builder column is narrow enough at desktop widths
+   for this to bite well before the phone breakpoint. */
 .gear-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
-  gap: 10px;
+  gap: 6px 10px;
   padding: 9px 12px;
   border-bottom: 1px solid var(--line-soft);
+}
+
+.gear-actions {
+  display: flex;
+  /* Wraps internally on phone, where the tap-sized stepper + two buttons are
+     wider than the row itself. */
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px 10px;
+  margin-left: auto;
 }
 
 .gear-row:last-child {
@@ -2088,7 +2104,7 @@ button:focus-visible,
 }
 
 .gear-main {
-  flex: 1;
+  flex: 1 1 15rem;
   min-width: 0;
 }
 
@@ -4374,18 +4390,21 @@ input[type="text"].saved-roll-name:focus {
     display: none;
   }
 
-  /* A gear row (checkbox + name/meta + qty stepper + remove/edit button) has
-     too many side-by-side controls for a phone-width row once the qty
-     stepper and remove button grow to their tap-sized widths — `.gear-main`
-     (min-width: 0) was getting squeezed down to a handful of px, wrapping
-     "Cloak of Resistance +1" one word per line. Let it wrap onto its own
-     line instead. */
-  .gear-row {
-    flex-wrap: wrap;
-  }
-
+  /* A gear row's controls grow to their tap-sized widths on phone, so the name
+     never gets its column back — force the wrap the base rule only takes when
+     it has to, and split the controls into a stepper line and a button line
+     rather than letting Remove strand on a line of its own. */
   .gear-main {
     flex-basis: 100%;
+  }
+
+  .gear-actions {
+    flex-basis: 100%;
+  }
+
+  .gear-qty {
+    flex-basis: 100%;
+    justify-content: flex-start;
   }
 
   /* Same fix for an active-buff row (name + duration value/unit + share
