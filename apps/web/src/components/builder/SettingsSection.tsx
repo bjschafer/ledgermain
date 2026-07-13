@@ -560,7 +560,7 @@ export function SettingsSection({
           </label>
         </div>
         {importError && (
-          <p className="hint" style={{ color: "var(--oxblood)", marginTop: 8 }}>
+          <p className="hint" style={{ color: "var(--oxblood-ink)", marginTop: 8 }}>
             {importError}
           </p>
         )}

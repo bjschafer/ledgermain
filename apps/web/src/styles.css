@@ -5,18 +5,28 @@
    ========================================================================== */
 
 :root {
+  /* Dark form controls + scrollbars from the browser; palette-matched thumb.
+     Text tokens (--ink/--muted/--faint and the *-ink variants) clear WCAG AA
+     4.5:1 on --surface-2, the lightest surface they sit on. --gold-dim and
+     --oxblood stay darker for borders/fills (3:1 UI-component bar) — use the
+     -ink variant when setting `color`. */
+  color-scheme: dark;
+  scrollbar-color: var(--line) transparent;
+
   --bg: #15171c;
   --surface: #1d2027;
   --surface-2: #23262f;
   --line: #33373f;
   --line-soft: #2a2e36;
   --ink: #e8e3d6;
-  --muted: #9a9488;
-  --faint: #6f6a60;
+  --muted: #a49e91;
+  --faint: #94907f;
   --gold: #c9a227;
   --gold-2: #e8c34a;
   --gold-dim: #8a7320;
+  --gold-dim-ink: #ad8e2e;
   --oxblood: #b04a37;
+  --oxblood-ink: #d4705a;
   --sage: #88a06a;
 
   --display: "Fraunces", Georgia, serif;
@@ -172,7 +182,7 @@ a {
   background: none;
   border: 1px solid var(--oxblood);
   border-radius: var(--radius);
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
   font-size: 12px;
   padding: 4px 8px;
   text-align: right;
@@ -201,7 +211,7 @@ a {
 }
 
 .sync-status.sync-error {
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 .sync-conflict {
@@ -213,7 +223,7 @@ a {
   background: none;
   border: 1px solid var(--oxblood);
   border-radius: var(--radius);
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
   font-size: 12px;
   padding: 6px 10px;
   text-align: right;
@@ -228,7 +238,7 @@ a {
   background: none;
   border: 1px solid var(--oxblood);
   border-radius: var(--radius);
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
   font-size: 11px;
   padding: 3px 8px;
   cursor: pointer;
@@ -341,7 +351,7 @@ a {
 .panel > header .step {
   font-family: var(--mono);
   font-size: 11px;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 .panel .body {
@@ -402,7 +412,7 @@ a {
 }
 
 .budge.over b {
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 /* --------------------------------------------------------------- controls -- */
@@ -448,7 +458,7 @@ input[type="radio"] {
 .identity-more > summary {
   cursor: pointer;
   font-size: 12px;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   font-family: var(--mono);
   letter-spacing: 0.06em;
   margin-bottom: 12px;
@@ -1084,7 +1094,7 @@ button:focus-visible,
 .tag-cls {
   font-family: var(--mono);
   font-size: 10px;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   margin-left: 4px;
   vertical-align: middle;
 }
@@ -1243,11 +1253,11 @@ button:focus-visible,
 }
 
 .preq .ck-unmet {
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 .preq .soft {
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   font-style: italic;
 }
 
@@ -1376,7 +1386,7 @@ button:focus-visible,
   font-size: 10px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
   vertical-align: middle;
   white-space: nowrap;
 }
@@ -1509,7 +1519,7 @@ button:focus-visible,
 }
 
 .spell-level-head.is-granted {
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 /* sub-level headers nested inside a granted block (e.g. domain spells grouped
@@ -1528,7 +1538,7 @@ button:focus-visible,
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   padding: 6px 12px 4px;
   background: var(--surface-2);
 }
@@ -1757,7 +1767,7 @@ button:focus-visible,
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -1947,7 +1957,7 @@ button:focus-visible,
 
 .state-screen .glyph {
   font-size: 40px;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 .empty {
@@ -2019,12 +2029,12 @@ button:focus-visible,
 
 .load-tier-badge.load-tier-medium {
   border-color: var(--gold-dim);
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 .load-tier-badge.load-tier-heavy {
   border-color: var(--oxblood);
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 .load-penalty-note {
@@ -2130,7 +2140,7 @@ button:focus-visible,
 .gear-change {
   font-size: 10px;
   font-family: var(--mono);
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 /* gear add-row buttons (below the list) */
@@ -2262,7 +2272,7 @@ button:focus-visible,
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   margin: 16px 0 8px;
   font-weight: 500;
 }
@@ -2279,7 +2289,7 @@ button:focus-visible,
 
 .btn-act.dmg:hover {
   border-color: var(--oxblood);
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 .btn-act.heal:hover {
@@ -2356,7 +2366,7 @@ button:focus-visible,
 }
 
 .hp-big[data-low="true"] {
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 .hp-big .hp-slash {
@@ -2568,7 +2578,7 @@ button:focus-visible,
 }
 
 .buff-changes em {
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   font-style: normal;
 }
 
@@ -2649,7 +2659,7 @@ button:focus-visible,
 .custom-buff summary {
   cursor: pointer;
   font-size: 12px;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   font-family: var(--mono);
   letter-spacing: 0.06em;
 }
@@ -3012,7 +3022,7 @@ input[type="text"].saved-roll-name:focus {
 
 .polymorph-attack-total {
   flex-shrink: 0;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   font-size: 11px;
 }
 
@@ -3094,7 +3104,7 @@ input[type="text"].saved-roll-name:focus {
   content: "▸";
   display: inline-block;
   width: 1em;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 .hybrid-prepare[open] > .hybrid-prepare-summary::before {
@@ -3135,7 +3145,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .prep-bonus {
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 .prep-rows {
@@ -3197,7 +3207,7 @@ input[type="text"].saved-roll-name:focus {
   font-family: var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 .prep-cast {
@@ -3220,7 +3230,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .prep-full {
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   font-style: italic;
 }
 
@@ -3250,7 +3260,7 @@ input[type="text"].saved-roll-name:focus {
   cursor: pointer;
   padding: 6px 12px;
   font-size: 12px;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   font-family: var(--mono);
   letter-spacing: 0.04em;
 }
@@ -3440,7 +3450,7 @@ input[type="text"].saved-roll-name:focus {
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   min-width: 96px;
   flex-shrink: 0;
 }
@@ -3516,7 +3526,7 @@ input[type="text"].saved-roll-name:focus {
   font-family: var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   cursor: pointer;
   list-style: none;
   display: flex;
@@ -3554,7 +3564,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .spell-known-count.is-full {
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 .spell-known-count.is-over {
@@ -3668,7 +3678,7 @@ input[type="text"].saved-roll-name:focus {
 
 .btn-danger {
   border-color: var(--oxblood);
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 .btn-danger:disabled {
@@ -3715,7 +3725,7 @@ input[type="text"].saved-roll-name:focus {
 .panel-caret {
   font-family: var(--mono);
   font-size: 14px;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   margin-left: auto;
   transition: transform 0.15s;
 }
@@ -3744,7 +3754,7 @@ input[type="text"].saved-roll-name:focus {
   font-family: var(--mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 .subsection-header .panel-caret {
@@ -3760,7 +3770,7 @@ input[type="text"].saved-roll-name:focus {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   margin: 0 0 8px;
   font-weight: 500;
 }
@@ -3793,7 +3803,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .cf-replaced {
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 .cf-detail {
@@ -3820,7 +3830,7 @@ input[type="text"].saved-roll-name:focus {
    lower-confidence than the solid-fill hand-verified badge at a glance, not
    just on hover — never rely on `title` alone to distinguish the two. */
 .badge-modeled--extracted {
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   background: transparent;
   border: 1px solid var(--gold-dim);
 }
@@ -3902,7 +3912,7 @@ input[type="text"].saved-roll-name:focus {
    so it actually reads as a chevron. */
 .cf-archetype-feature .spell-detail-summary::before {
   font-size: 13px;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
 }
 
 /* --------------------------------------------------- Arcane Bond picker -- */
@@ -3994,7 +4004,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .fcb-row-all .fcb-level {
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   font-style: italic;
 }
 
@@ -4521,7 +4531,7 @@ input[type="text"].saved-roll-name:focus {
 
   /* Low-HP treatment mirrors `.stat-hero-band[data-hp-low="true"]` in Sheet.tsx. */
   .stat-strip-item[data-low="true"] .stat-strip-value {
-    color: var(--oxblood);
+    color: var(--oxblood-ink);
   }
 
   /* Baseline tint mirrors the sheet seals (see "Living sheet" section below). */
@@ -4530,7 +4540,7 @@ input[type="text"].saved-roll-name:focus {
   }
 
   .stat-strip-value[data-tint="lower"] {
-    color: var(--oxblood);
+    color: var(--oxblood-ink);
   }
 }
 
@@ -4591,7 +4601,7 @@ input[type="text"].saved-roll-name:focus {
 
 .build-nav-step {
   font-family: var(--mono);
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   flex-shrink: 0;
 }
 
@@ -4631,7 +4641,7 @@ input[type="text"].saved-roll-name:focus {
 
 .build-nav-badge--warn {
   border-color: var(--oxblood);
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 @media (max-width: 940px) {
@@ -4730,7 +4740,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .seal .seal-value[data-tint="lower"] {
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 .seal .seal-tint-marker {
@@ -4746,7 +4756,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .seal .seal-tint-marker[data-tint="lower"] {
-  color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 /* Micro-delight: hero-point pips and spontaneous-slot pips get a quick
@@ -4965,7 +4975,7 @@ input[type="text"].saved-roll-name:focus {
 
 .char-switcher-caret {
   flex: none;
-  color: var(--gold-dim);
+  color: var(--gold-dim-ink);
   font-size: 10px;
 }
 
