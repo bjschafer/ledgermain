@@ -1724,12 +1724,19 @@ export interface EidolonEvolutionPick {
 
 /**
  * A tracked eidolon's build choices (`build.eidolon`) — see that field's doc
- * comment. Mirrors `AnimalCompanionBuild`'s shape; the differences are the
- * base-form selection (in place of a species) and the evolution-pool spend
- * (`evolutions`, in place of ability-score-increase slots — an eidolon's
- * Ability Increase is itself just one more evolution pick, not a separate
- * automatic table grant the way `PhantomBuild.abilityIncreases`/
- * `AnimalCompanionBuild.abilityIncreases` are).
+ * comment. Mirrors `AnimalCompanionBuild`'s shape; the core differences are
+ * the base-form selection (in place of a species) and the evolution-pool
+ * spend (`evolutions`, in place of ability-score-increase slots — a
+ * CHAINED eidolon's Ability Increase is itself just one more evolution
+ * pick, not a separate automatic table grant the way
+ * `PhantomBuild.abilityIncreases`/`AnimalCompanionBuild.abilityIncreases`
+ * are). An UNCHAINED eidolon (Pathfinder Unchained) is the one exception:
+ * it has BOTH mechanisms at once — the evolution pool still exists (just
+ * smaller, see `@pf1/engine` `EIDOLON_UNCHAINED_POOL`), but it ALSO gets
+ * genuine automatic ASI slots (`abilityIncreases` below, phantom-shaped)
+ * plus its subtype's own themed grants (`subtype`/`subtypeGrantChoices`
+ * below) — see `@pf1/engine` `eidolon-unchained.ts`'s module doc comment
+ * for the full unchained system.
  */
 export interface EidolonBuild {
   /**
@@ -1740,6 +1747,44 @@ export interface EidolonBuild {
    * `eidolon.ts`'s module doc comment.
    */
   baseForm: string;
+  /**
+   * Outsider subtype id — key into `@pf1/engine` `EIDOLON_SUBTYPES` (e.g.
+   * "angel", "elemental-fire"). Summoner (Unchained)-only: meaningful only
+   * when `@pf1/engine` `eidolonVariant(doc)` is `"unchained"` (see that
+   * function's doc comment for the exact chained/unchained determination);
+   * a chained eidolon ignores this field entirely, since the chained system
+   * has no subtype concept. Omitted/unrecognized = no subtype grants, and
+   * `deriveEidolon` falls back to the chained base form's attacks (soft
+   * posture, never an undefined stat block just because a subtype hasn't
+   * been picked yet).
+   */
+  subtype?: string;
+  /**
+   * Player-assigned ability score for each automatic Ability Score Increase
+   * milestone reached so far (Pathfinder Unchained "Eidolons (Unchained)" —
+   * unchained summoner levels 5, 10, 15; see `eidolon-unchained.ts`'s
+   * `EIDOLON_UNCHAINED_ABILITY_INCREASE_LEVELS`). Index 0 = the level-5
+   * increase, index 1 = level 10, index 2 = level 15 — mirrors
+   * `PhantomBuild.abilityIncreases`'s exact shape. A missing/short entry
+   * for an already-reached milestone defaults to Strength (`@pf1/engine`
+   * `deriveEidolon` — matching this module's existing Str-default
+   * convention for `EidolonEvolutionPick.choice`, over `PhantomBuild`'s Cha
+   * default). Entries beyond `eidolonUnchainedAbilityIncreaseSlots(level)`
+   * are ignored. Ignored entirely for a chained eidolon, which has no
+   * automatic ASI slots at all (its own "Ability Increase" is just one more
+   * evolution pick, `EidolonEvolutionPick`'s `"ability-increase"` id).
+   */
+  abilityIncreases?: AbilityId[];
+  /**
+   * Target ability for each subtype grant that hands over a free +2 Ability
+   * Increase (e.g. Archon 8th, Demon 12th — see `@pf1/engine`
+   * `EidolonSubtypeGrant.abilityIncrease`), keyed by the grant's milestone
+   * level AS A STRING (e.g. `{ "8": "cha" }`) since a subtype grants at most
+   * one such bonus per level. Missing/invalid entries for an unlocked grant
+   * default to Strength, same convention as `abilityIncreases` above.
+   * Unchained-only; ignored for a chained eidolon.
+   */
+  subtypeGrantChoices?: Record<string, AbilityId>;
   /** Player-given name (e.g. "Grix"). */
   name: string;
   /**

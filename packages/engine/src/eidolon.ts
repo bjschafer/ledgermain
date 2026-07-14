@@ -1,17 +1,24 @@
 /**
- * Tracked eidolons (`CharacterDoc.build.eidolon`) — the APG Summoner's
- * signature companion, modeled as its OWN trackable creature (HD/BAB/saves/
- * AC/attacks/skills), mirroring `companion.ts`'s shape and posture closely
- * (own HD/BAB/saves, NOT a familiar's borrow-the-master's-numbers approach).
- * Two genuine additions beyond `companion.ts`'s shape: a BASE FORM choice
+ * Tracked eidolons (`CharacterDoc.build.eidolon`) — the Summoner's signature
+ * companion, modeled as its OWN trackable creature (HD/BAB/saves/AC/attacks/
+ * skills), mirroring `companion.ts`'s shape and posture closely (own HD/BAB/
+ * saves, NOT a familiar's borrow-the-master's-numbers approach). Two genuine
+ * additions beyond `companion.ts`'s shape: a BASE FORM choice
  * (`EIDOLON_BASE_FORMS`, in place of a species) and an EVOLUTION POOL spend
- * (`EIDOLON_EVOLUTIONS`, in place of ability-score-increase slots). Clean-room
- * from the published PF1 rules (Advanced Player's Guide "Summoner"/"Eidolon"/
- * "Evolutions") — paraphrased from aonprd.com/d20pfsrd.com during authoring
- * (issue #65, groundwork for issue #68's future full-stat-block companion
- * work); no Foundry source was consulted (see DESIGN §6). Foundry's GPL
- * system code is never used as anything but a behavioral oracle in tests,
- * per the repo's clean-room discipline.
+ * (`EIDOLON_EVOLUTIONS`, in place of ability-score-increase slots). Models
+ * BOTH the chained (Advanced Player's Guide) and unchained (Pathfinder
+ * Unchained) eidolon: `eidolonVariant` picks the branch, and the unchained
+ * one additionally layers on a subtype (Angel/Demon/Devil/...) — see
+ * `eidolon-unchained.ts` for that half of the system, and this module's
+ * "Scope/deferrals" section below for exactly how the two branches share
+ * this file's data tables. Clean-room from the published PF1 rules (Advanced
+ * Player's Guide "Summoner"/"Eidolon"/"Evolutions", Pathfinder Unchained
+ * "Eidolons (Unchained)") — paraphrased from aonprd.com/d20pfsrd.com during
+ * authoring (issue #65, groundwork for issue #68's future full-stat-block
+ * companion work; unchained subtype system added issue #74); no Foundry
+ * source was consulted (see DESIGN §6). Foundry's GPL system code is never
+ * used as anything but a behavioral oracle in tests, per the repo's
+ * clean-room discipline.
  *
  * Eidolon Basics (PF1 APG "Eidolon"):
  *   - The eidolon has its OWN Hit Dice, BAB, and saves. Its BAB is FULL
@@ -94,17 +101,22 @@
  *     pipeline as a shared buff, same as `companion.ts`'s own conditions.
  *
  * Scope/deferrals (all documented here, none silently dropped):
- *   - **Chained (APG) summoner only.** `summonerLevel` below sums BOTH
- *     `summoner` (chained) and `summonerUnchained` class levels and applies
- *     the SAME base-statistics table and evolution list to either — Summoner
- *     (Unchained)'s eidolon actually uses a materially different table
- *     (a smaller evolution pool that trades off against the eidolon's own
- *     outsider SUBTYPE, e.g. Angel/Demon/Devil, each granting a themed bonus
- *     evolution) that this module does not implement. This is the SAME
- *     "one shared table, unchained variance deferred" posture this
- *     codebase already uses for chained/unchained Rogue sharing one talent
- *     list (`rogue-talents.ts`) and chained/unchained Monk sharing feat
- *     scaffolding — not a new kind of simplification.
+ *   - **Unchained subtype system: 12 core subtypes, Elemental split into 4**
+ *     (Agathion/Angel/Archon/Azata/Daemon/Demon/Devil/Div/Elemental ×4
+ *     elements/Inevitable/Protean/Psychopomp — see `eidolon-unchained.ts`).
+ *     `eidolonSummonerLevel` below still sums BOTH `summoner` (chained) and
+ *     `summonerUnchained` class levels for the LEVEL number itself (a
+ *     character genuinely multiclassed across both, though PF1 doesn't
+ *     really support that, keeps the existing summed-level CHAINED
+ *     derivation — see `eidolon-unchained.ts`'s `eidolonVariant` doc
+ *     comment for that narrow edge-case call); only which TABLE/subtype
+ *     system applies depends on the variant. Every subtype grant beyond a
+ *     small structured set (evolution pool bonuses, one free evolution,
+ *     land-speed bonuses, a free +2 ability increase) is a paraphrased
+ *     display-only chip, same honesty-bar discipline as this file's own
+ *     `displayOnly` evolutions — later-splatbook subtypes (e.g. Pathfinder
+ *     Campaign Setting: Heroes of the Wild's "Aberrant") are out of scope,
+ *     matching the base-form deferral immediately below.
  *   - **Three base forms only** (Biped, Quadruped, Serpentine) of APG's six
  *     — Aquatic, Avian, and Tauric are deferred (no `EIDOLON_BASE_FORMS`
  *     entry), matching the task brief's explicit scoping call.
@@ -131,6 +143,14 @@ import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } f
 import { ABILITY_IDS } from "@pf1/schema";
 
 import { CONDITIONS } from "./conditions.js";
+import {
+  eidolonSubtypeGrantedEvolutions,
+  eidolonUnchainedAbilityIncreaseSlots,
+  eidolonUnchainedProgressionRow,
+  eidolonUnchainedSpecialAbilityNames,
+  eidolonVariant,
+  EIDOLON_SUBTYPES,
+} from "./eidolon-unchained.js";
 import {
   classifyNaturalAttacks,
   naturalAttackBonus,
@@ -496,6 +516,14 @@ export const EIDOLON_SPECIAL_ABILITY_DETAIL: Readonly<Record<string, string>> = 
     "With 3+ natural attacks, the eidolon gains Multiattack as a bonus feat (not separately modeled numerically here).",
   "Improved Evasion":
     "The eidolon takes no damage on a successful Reflex save, half on a failed one.",
+  /**
+   * Unchained-only (5th/10th/15th, see `eidolon-unchained.ts`'s
+   * `EIDOLON_UNCHAINED_SPECIAL_BY_LEVEL`) — the chained eidolon has no
+   * automatic Ability Score Increase special at all (its "Ability Increase"
+   * is a plain evolution pick instead), so this entry is only ever looked
+   * up by the unchained branch.
+   */
+  "Ability Score Increase": "+1 to one ability score of the summoner's choice.",
 };
 
 /**
@@ -1202,9 +1230,9 @@ export interface DerivedEidolon {
   attacks: DerivedEidolonAttack[];
   skills: Record<string, DerivedEidolonSkill>;
   naturalArmor: number;
-  /** Evolution points spent so far (sum of chosen evolutions' `cost`). */
+  /** Evolution points spent so far (sum of chosen evolutions' `cost`) — free subtype/base-form grants never count here (see `eidolon-unchained.ts`). */
   evolutionPointsSpent: number;
-  /** Evolution points available at this level (`eidolonProgressionRow(level).evolutionPool`). */
+  /** Evolution points available at this level — variant-aware (chained: `eidolonProgressionRow(level).evolutionPool`; unchained: `eidolonUnchainedProgressionRow(level).evolutionPool` plus any unlocked subtype `poolBonus` grants). */
   evolutionPointsAvailable: number;
   /** Display-only skill-point aggregate (see module doc comment). */
   skillPoints: number;
@@ -1218,6 +1246,18 @@ export interface DerivedEidolon {
   freeEvolutionNames: readonly string[];
   /** Every chosen evolution, resolved to its definition (unresolved ids from `build.eidolon.evolutions` are skipped). */
   chosenEvolutions: { id: string; name: string; cost: number; choice?: string }[];
+  /** "chained" (APG) or "unchained" (Pathfinder Unchained) — see `eidolonVariant`. */
+  variant: "chained" | "unchained";
+  /** The chosen subtype id (key into `EIDOLON_SUBTYPES`), when recognized. Always `undefined` for a chained eidolon (subtype is unchained-only). */
+  subtypeId?: string;
+  /** The subtype's display name, when resolved. */
+  subtypeName?: string;
+  /** The subtype's alignment requirement, human-readable, for a soft warning (see `eidolon-unchained.ts` — never enforced here). */
+  subtypeAlignmentText?: string;
+  /** Every themed grant the subtype offers (1st/4th/8th/12th/16th/20th), each with an `unlocked` flag so the UI can show upcoming ones grayed out. Empty for a chained eidolon or when no subtype is set. */
+  grantedEvolutions: { level: number; note: string; unlocked: boolean }[];
+  /** Automatic Ability Score Increase slots earned so far (unchained 5th/10th/15th — see `eidolon-unchained.ts`). Always 0 for a chained eidolon, which has no automatic ASI slots at all. */
+  abilityIncreaseSlots: number;
 }
 
 /** A skeletal minimal skills set surfaced for an eidolon — the six physical/perceptual skills every companion-style creature in this codebase surfaces, plus any "Skilled" evolution chip note is left to the UI (see module doc comment). */
@@ -1241,6 +1281,77 @@ const FLAT_FOOTED_CATEGORIES: ReadonlySet<string> = new Set([
   "deflection",
   "generic",
 ]);
+
+/**
+ * Mutable accumulator for the numeric effect of one evolution — shared
+ * between a paid build pick (`EidolonEvolutionPick`) and a FREE subtype/
+ * base-form grant (unchained only, `eidolon-unchained.ts`), both processed
+ * through {@link applyEvolutionEffect}'s identical `EidolonEvolutionDef.kind`
+ * switch so the two paths can never numerically diverge.
+ */
+interface EvolutionAccumulator {
+  abilityBonus: Record<AbilityId, number>;
+  naturalArmorBonus: number;
+  isLarge: boolean;
+  attacks: EidolonAttackGrant[];
+  climbPicks: number;
+  swimPicks: number;
+  hasFlight: boolean;
+  hasBurrow: boolean;
+  legPairs: number;
+}
+
+function newEvolutionAccumulator(): EvolutionAccumulator {
+  return {
+    abilityBonus: { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 },
+    naturalArmorBonus: 0,
+    isLarge: false,
+    attacks: [],
+    climbPicks: 0,
+    swimPicks: 0,
+    hasFlight: false,
+    hasBurrow: false,
+    legPairs: 0,
+  };
+}
+
+/**
+ * Apply one evolution's numeric effect onto `acc` — `choice` (an
+ * `EidolonEvolutionPick.choice`) only matters for `kind: "ability"`; a free
+ * grant with no per-pick target (subtype grants target ability increases
+ * through their OWN `subtypeGrantChoices` mechanism, not this one) omits it.
+ */
+function applyEvolutionEffect(
+  acc: EvolutionAccumulator,
+  def: EidolonEvolutionDef,
+  choice?: string,
+): void {
+  switch (def.kind) {
+    case "ability": {
+      const ability = ABILITY_IDS.includes(choice as AbilityId) ? (choice as AbilityId) : "str";
+      acc.abilityBonus[ability] += def.abilityBonus ?? 0;
+      break;
+    }
+    case "armor":
+      acc.naturalArmorBonus += def.armorBonus ?? 0;
+      break;
+    case "size":
+      acc.isLarge = true;
+      break;
+    case "attack":
+      if (def.attack) acc.attacks.push(def.attack);
+      break;
+    case "speed":
+      if (def.id === "limbs-legs") acc.legPairs += 1;
+      else if (def.speed?.mode === "climb") acc.climbPicks += 1;
+      else if (def.speed?.mode === "swim") acc.swimPicks += 1;
+      else if (def.speed?.mode === "fly") acc.hasFlight = true;
+      else if (def.speed?.mode === "burrow") acc.hasBurrow = true;
+      break;
+    case "display":
+      break;
+  }
+}
 
 /**
  * Derive the tracked eidolon's full stat block, or `undefined` when the
@@ -1271,79 +1382,85 @@ export function deriveEidolon(
   const level = eidolonSummonerLevel(doc);
   if (level <= 0) return undefined;
 
-  const row = eidolonProgressionRow(level);
+  // --- variant + subtype resolution (see `eidolon-unchained.ts`'s module
+  // doc comment for the "unchained iff summonerUnchained-only" edge-case
+  // call) — `row` below carries the RIGHT evolutionPool/special columns for
+  // either variant; every other column is identical between the two tables --
+  const variant = eidolonVariant(doc);
+  const row =
+    variant === "unchained" ? eidolonUnchainedProgressionRow(level) : eidolonProgressionRow(level);
   const hd = row.hd;
   const bab = babForLevels("high", hd);
+
+  const subtypeId = variant === "unchained" ? build.subtype : undefined;
+  const subtype = subtypeId ? EIDOLON_SUBTYPES[subtypeId] : undefined;
+  const subtypeForm = subtype?.baseForms[build.baseForm];
 
   const picks = build.evolutions ?? [];
   const chosenEvolutions: { id: string; name: string; cost: number; choice?: string }[] = [];
   let evolutionPointsSpent = 0;
-  const abilityBonusFromEvolutions: Record<AbilityId, number> = {
-    str: 0,
-    dex: 0,
-    con: 0,
-    int: 0,
-    wis: 0,
-    cha: 0,
-  };
-  let improvedNaturalArmorBonus = 0;
-  let isLarge = false;
-  const evolutionAttacks: EidolonAttackGrant[] = [];
-  let climbPicks = 0;
-  let swimPicks = 0;
-  let hasFlight = false;
-  let hasBurrow = false;
-  let legPairs = 0;
+  const acc = newEvolutionAccumulator();
 
   for (const pick of picks) {
     const def = EIDOLON_EVOLUTIONS[pick.id];
     if (!def) continue;
     evolutionPointsSpent += def.cost;
     chosenEvolutions.push({ id: def.id, name: def.name, cost: def.cost, choice: pick.choice });
+    applyEvolutionEffect(acc, def, pick.choice);
+  }
 
-    switch (def.kind) {
-      case "ability": {
-        const ability = ABILITY_IDS.includes(pick.choice as AbilityId)
-          ? (pick.choice as AbilityId)
-          : "str";
-        abilityBonusFromEvolutions[ability] += def.abilityBonus ?? 0;
-        break;
+  // --- unchained only: the subtype's own themed grants (evolutionIds/
+  // poolBonus/abilityIncrease/landSpeedBonus) and the base form's structured
+  // free evolutions, applied at ZERO pool cost through the exact same
+  // `applyEvolutionEffect` switch as a paid pick above — free evolutions
+  // never touch `evolutionPointsSpent`/`chosenEvolutions` (see module doc
+  // comment's honesty-bar note) ------------------------------------------
+  let subtypePoolBonus = 0;
+  let subtypeLandSpeedBonus = 0;
+  if (subtype) {
+    for (const grant of subtype.grants) {
+      if (grant.level > level) continue;
+      subtypePoolBonus += grant.poolBonus ?? 0;
+      subtypeLandSpeedBonus += grant.landSpeedBonus ?? 0;
+      if (grant.abilityIncrease) {
+        const choice = build.subtypeGrantChoices?.[String(grant.level)] ?? "str";
+        acc.abilityBonus[choice] += 2;
       }
-      case "armor":
-        improvedNaturalArmorBonus += def.armorBonus ?? 0;
-        break;
-      case "size":
-        isLarge = true;
-        break;
-      case "attack":
-        if (def.attack) evolutionAttacks.push(def.attack);
-        break;
-      case "speed":
-        if (def.id === "limbs-legs") legPairs += 1;
-        else if (def.speed?.mode === "climb") climbPicks += 1;
-        else if (def.speed?.mode === "swim") swimPicks += 1;
-        else if (def.speed?.mode === "fly") hasFlight = true;
-        else if (def.speed?.mode === "burrow") hasBurrow = true;
-        break;
-      case "display":
-        break;
+      for (const id of grant.evolutionIds ?? []) {
+        const evoDef = EIDOLON_EVOLUTIONS[id];
+        if (evoDef) applyEvolutionEffect(acc, evoDef);
+      }
     }
+  }
+  for (const id of subtypeForm?.freeEvolutionIds ?? []) {
+    const evoDef = EIDOLON_EVOLUTIONS[id];
+    if (evoDef) applyEvolutionEffect(acc, evoDef);
+  }
+
+  // --- unchained only: automatic Ability Score Increase slots (5th/10th/
+  // 15th) — the chained eidolon has NO automatic ASI slots at all (its own
+  // "Ability Increase" is just one more evolution pick, see module doc
+  // comment), so this is always 0 for a chained derivation --------------
+  const abilityIncreaseSlots =
+    variant === "unchained" ? eidolonUnchainedAbilityIncreaseSlots(level) : 0;
+  const chosenAbilityIncreases = (build.abilityIncreases ?? []).slice(0, abilityIncreaseSlots);
+  for (let i = 0; i < abilityIncreaseSlots; i++) {
+    const ability = chosenAbilityIncreases[i] ?? "str";
+    acc.abilityBonus[ability] += 1;
   }
 
   // --- ability scores: universal Int/Wis/Cha + form's Str/Dex/Con + table
   // strDexBonus (both Str and Dex) + Large's fixed deltas + evolution picks --
-  const largeDelta: Record<AbilityId, number> = isLarge
+  const largeDelta: Record<AbilityId, number> = acc.isLarge
     ? { str: 8, dex: -2, con: 4, int: 0, wis: 0, cha: 0 }
     : { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
 
-  const baseStr =
-    form.abilities.str + row.strDexBonus + largeDelta.str + abilityBonusFromEvolutions.str;
-  const baseDex =
-    form.abilities.dex + row.strDexBonus + largeDelta.dex + abilityBonusFromEvolutions.dex;
-  const baseCon = form.abilities.con + largeDelta.con + abilityBonusFromEvolutions.con;
-  const baseInt = EIDOLON_UNIVERSAL_ABILITIES.int + abilityBonusFromEvolutions.int;
-  const baseWis = EIDOLON_UNIVERSAL_ABILITIES.wis + abilityBonusFromEvolutions.wis;
-  const baseCha = EIDOLON_UNIVERSAL_ABILITIES.cha + abilityBonusFromEvolutions.cha;
+  const baseStr = form.abilities.str + row.strDexBonus + largeDelta.str + acc.abilityBonus.str;
+  const baseDex = form.abilities.dex + row.strDexBonus + largeDelta.dex + acc.abilityBonus.dex;
+  const baseCon = form.abilities.con + largeDelta.con + acc.abilityBonus.con;
+  const baseInt = EIDOLON_UNIVERSAL_ABILITIES.int + acc.abilityBonus.int;
+  const baseWis = EIDOLON_UNIVERSAL_ABILITIES.wis + acc.abilityBonus.wis;
+  const baseCha = EIDOLON_UNIVERSAL_ABILITIES.cha + acc.abilityBonus.cha;
 
   let abilities: Record<AbilityId, { score: number; mod: number }> = {
     str: { score: baseStr, mod: abilityMod(baseStr) },
@@ -1354,7 +1471,7 @@ export function deriveEidolon(
     cha: { score: baseCha, mod: abilityMod(baseCha) },
   };
 
-  const size: SizeId = isLarge ? "lg" : "med";
+  const size: SizeId = acc.isLarge ? "lg" : "med";
   const sizeAcMod = SIZE_AC_MOD[size];
 
   // --- shared buffs: evaluate + bucket by target (mirrors companion.ts/phantom.ts) --
@@ -1380,17 +1497,22 @@ export function deriveEidolon(
   const avgHpBeforeCon = Math.floor(5.5 * hd);
   const hpMax = Math.max(hd, avgHpBeforeCon + conMod * hd);
 
-  // --- speeds: form base + limbs-legs land bonus + climb/swim/fly/burrow evolutions --
-  const landSpeed = (form.speeds.land ?? 0) + legPairs * 10;
+  // --- speeds: form base + limbs-legs land bonus + subtype land-speed bonus
+  // (e.g. Fire Elemental's +20 ft. at 8th, unchained only) + climb/swim/fly/
+  // burrow evolutions, all derived off the resulting land speed -----------
+  const landSpeed = (form.speeds.land ?? 0) + acc.legPairs * 10 + subtypeLandSpeedBonus;
   const speeds: Record<string, number> = { land: landSpeed };
   if (form.speeds.climb) speeds.climb = form.speeds.climb;
-  if (climbPicks > 0) speeds.climb = landSpeed + 20 * (climbPicks - 1);
-  if (swimPicks > 0) speeds.swim = landSpeed + 20 * (swimPicks - 1);
-  if (hasFlight) speeds.fly = landSpeed;
-  if (hasBurrow) speeds.burrow = Math.floor(landSpeed / 2);
+  if (acc.climbPicks > 0) speeds.climb = landSpeed + 20 * (acc.climbPicks - 1);
+  if (acc.swimPicks > 0) speeds.swim = landSpeed + 20 * (acc.swimPicks - 1);
+  if (acc.hasFlight) speeds.fly = landSpeed;
+  if (acc.hasBurrow) speeds.burrow = Math.floor(landSpeed / 2);
 
-  // --- AC ---------------------------------------------------------------------
-  const naturalArmor = row.armorBonus + improvedNaturalArmorBonus + (isLarge ? 2 : 0);
+  // --- AC: unchained base forms grant a flat +2 natural armor the chained
+  // forms don't (see `eidolon-unchained.ts`'s module doc comment) ---------
+  const unchainedFormArmorBonus = variant === "unchained" ? 2 : 0;
+  const naturalArmor =
+    unchainedFormArmorBonus + row.armorBonus + acc.naturalArmorBonus + (acc.isLarge ? 2 : 0);
   const acCandidates: AcCandidate[] = [
     { category: "base", type: "base", value: 10, source: "Base" },
     { category: "dex", type: "untyped", value: dexMod, source: "Dexterity" },
@@ -1451,17 +1573,29 @@ export function deriveEidolon(
   const cmb = bab + strMod + sizeSpecial;
   const cmd = 10 + bab + strMod + dexMod + sizeSpecial;
 
-  // --- attacks: base form's free attacks + evolution attacks, eidolon's own
-  // BAB + Str (or Dex with Weapon Finesse) + size + shared bonus, with
-  // primary/secondary natural-attack math — see `natural-attacks.ts`.
-  // Multiattack (unlocked at 9th, see module doc comment) softens the
-  // secondary penalty from −5 to −2.
-  const hasMultiattack = eidolonSpecialAbilityNames(level).includes("Multiattack");
+  // --- special abilities: variant-aware cumulative list (see
+  // `eidolon-unchained.ts`'s doc comment for why the unchained one, unlike
+  // chained/companion/phantom, deliberately KEEPS "Ability Score Increase") --
+  const specialAbilityNames =
+    variant === "unchained"
+      ? eidolonUnchainedSpecialAbilityNames(level)
+      : eidolonSpecialAbilityNames(level);
+
+  // --- attacks: the SUBTYPE's own attack list when one is set and models
+  // the chosen base form (unchained only); otherwise the chained form's
+  // free attacks — never undefined just because no subtype is picked (see
+  // `eidolon-unchained.ts`'s module doc comment) — plus evolution attacks,
+  // eidolon's own BAB + Str (or Dex with Weapon Finesse) + size + shared
+  // bonus, with primary/secondary natural-attack math — see
+  // `natural-attacks.ts`. Multiattack (unlocked at 9th, see module doc
+  // comment) softens the secondary penalty from −5 to −2.
+  const hasMultiattack = specialAbilityNames.includes("Multiattack");
   const sharedAttackBonus = resolveStack(routed.attack).total;
   const sharedDamageBonus = resolveStack(routed.damage).total;
   const attackAbilityMod = hasWeaponFinesse ? dexMod : strMod;
   const baseAttackBonus = bab + attackAbilityMod + sizeAcMod + sharedAttackBonus;
-  const allAttacks = [...form.baseAttacks, ...evolutionAttacks];
+  const baseAttacksForVariant = subtypeForm ? subtypeForm.attacks : form.baseAttacks;
+  const allAttacks = [...baseAttacksForVariant, ...acc.attacks];
   const classifiedAttacks = classifyNaturalAttacks(allAttacks);
   const attacks: DerivedEidolonAttack[] = classifiedAttacks.map((a) => ({
     name: a.name,
@@ -1534,15 +1668,21 @@ export function deriveEidolon(
     skills,
     naturalArmor,
     evolutionPointsSpent,
-    evolutionPointsAvailable: row.evolutionPool,
+    evolutionPointsAvailable: row.evolutionPool + subtypePoolBonus,
     skillPoints: row.skillPoints,
     bonusFeats: row.bonusFeats,
     maxAttacks: row.maxAttacks,
-    specialAbilities: eidolonSpecialAbilityNames(level).map((name) => ({
+    specialAbilities: specialAbilityNames.map((name) => ({
       name,
       detail: EIDOLON_SPECIAL_ABILITY_DETAIL[name] ?? "",
     })),
-    freeEvolutionNames: form.freeEvolutionNames,
+    freeEvolutionNames: subtypeForm?.freeNames ?? form.freeEvolutionNames,
     chosenEvolutions,
+    variant,
+    subtypeId,
+    subtypeName: subtype?.name,
+    subtypeAlignmentText: subtype?.alignmentText,
+    grantedEvolutions: eidolonSubtypeGrantedEvolutions(subtypeId, level),
+    abilityIncreaseSlots,
   };
 }

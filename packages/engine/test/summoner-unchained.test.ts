@@ -17,9 +17,11 @@ import { baseSpellsKnown, baseSpellsPerDay, compute } from "../src/index.js";
  * SPELL LIST itself: `refData.spellLists.summonerUnchained` is its own
  * 352-spell slice (not merely a re-export of `refData.spellLists.summoner`),
  * with several spells shifted up a level relative to the base summoner list
- * (e.g. Haste/Slow move from 2nd to 3rd) — verified below. Eidolon, Life
- * Link, Bond Senses, Aspect, etc. remain a separate, deferred subsystem, same
- * posture as the base summoner's own eidolon (not modeled here either).
+ * (e.g. Haste/Slow move from 2nd to 3rd) — verified below. The eidolon
+ * itself (including its unchained subtype system) is covered separately in
+ * `eidolon.test.ts`/`eidolon-unchained.test.ts`; Life Link, Bond Senses,
+ * Aspect, etc. remain out of scope here, same posture as the base
+ * summoner's class-feature-row-only treatment.
  */
 const ref = loadRefData();
 

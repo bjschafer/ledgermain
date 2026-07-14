@@ -440,6 +440,21 @@ export {
   type DerivedEidolonSkill,
 } from "./eidolon.js";
 export {
+  EIDOLON_UNCHAINED_POOL,
+  EIDOLON_UNCHAINED_ABILITY_INCREASE_LEVELS,
+  EIDOLON_SUBTYPES,
+  EIDOLON_SUBTYPE_IDS,
+  eidolonUnchainedProgressionRow,
+  eidolonUnchainedSpecialAbilityNames,
+  eidolonUnchainedAbilityIncreaseSlots,
+  eidolonVariant,
+  eidolonSubtypeGrantedEvolutions,
+  eidolonEvolutionPoolAvailable,
+  type EidolonSubtypeGrant,
+  type EidolonSubtypeForm,
+  type EidolonSubtypeDef,
+} from "./eidolon-unchained.js";
+export {
   routeSharedBuffs,
   applySharedAbilityBonuses,
   applySharedSpeeds,
