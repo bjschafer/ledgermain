@@ -1,6 +1,14 @@
 import { useMemo, useState } from "react";
 
-import { EIDOLON_BASE_FORMS, EIDOLON_EVOLUTION_IDS, EIDOLON_EVOLUTIONS } from "@pf1/engine";
+import {
+  EIDOLON_BASE_FORMS,
+  EIDOLON_EVOLUTION_IDS,
+  EIDOLON_EVOLUTIONS,
+  EIDOLON_SUBTYPE_IDS,
+  EIDOLON_SUBTYPES,
+  eidolonVariant,
+  type DerivedEidolon,
+} from "@pf1/engine";
 import type { AbilityId, CharacterDoc, RefData } from "@pf1/schema";
 
 import {
@@ -12,11 +20,16 @@ import {
   eidolonEvolutionPointsSpent,
   eidolonEvolutionPoolNeedsWarning,
   eidolonFeatPrereqContext,
+  eidolonSubtypeAlignmentWarning,
+  eidolonSubtypeFormWarning,
   eidolonSummonerLevel,
   removeLastEidolonEvolution,
   setEidolon,
+  setEidolonAbilityIncrease,
   setEidolonEvolutionChoice,
   setEidolonNotes,
+  setEidolonSubtype,
+  setEidolonSubtypeGrantChoice,
   toggleEidolonFeat,
 } from "../../model/eidolon.js";
 import { evaluatePrereqs } from "../../model/prereqs.js";
@@ -119,6 +132,9 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
                   aria-label="Eidolon name"
                 />
               </div>
+              {eidolonVariant(doc) === "unchained" && (
+                <SubtypeSection doc={doc} update={update} derivedEidolon={derivedEidolon} />
+              )}
               <textarea
                 className="familiar-notes"
                 placeholder="Notes (personality, tactics, house rules…)"
@@ -319,6 +335,128 @@ function EvolutionSection({ doc, update }: { doc: CharacterDoc; update: Updater 
         })}
         {filtered.length === 0 ? <div className="empty">No evolutions match.</div> : null}
       </div>
+    </div>
+  );
+}
+
+/** 1 -> "1st", everything else in this domain (4/8/12/16/20) -> "Nth" — the subtype grant table never lands on 2nd/3rd/22nd/etc, so this doesn't need the general ordinal-suffix logic `classPrereqs.ts`'s private `ordinal` has. */
+function grantOrdinal(level: number): string {
+  return level === 1 ? "1st" : `${level}th`;
+}
+
+/**
+ * Pathfinder Unchained-only subtype UI: subtype select, soft form/alignment
+ * warnings (never blocking — mirrors `alignment.ts`'s `classAlignmentWarnings`
+ * posture), automatic Ability Score Increase slot selects (5th/10th/15th,
+ * copying `PhantomPicker`'s ability-increase-slot pattern), a target-ability
+ * select for each unlocked subtype +2 ability-increase grant, and
+ * granted-evolution chips with locked/unlocked styling (`aria-disabled` reuses
+ * the existing `.chip[aria-disabled="true"]` dimming rather than new CSS).
+ */
+function SubtypeSection({
+  doc,
+  update,
+  derivedEidolon,
+}: {
+  doc: CharacterDoc;
+  update: Updater;
+  derivedEidolon: DerivedEidolon | undefined;
+}) {
+  const eidolon = doc.build.eidolon!;
+  const subtypeId = eidolon.subtype;
+  const subtype = subtypeId ? EIDOLON_SUBTYPES[subtypeId] : undefined;
+  const formWarning = eidolonSubtypeFormWarning(doc);
+  const alignmentWarning = eidolonSubtypeAlignmentWarning(doc);
+  const level = derivedEidolon?.level ?? 0;
+  const abilityIncreaseSlots = derivedEidolon?.abilityIncreaseSlots ?? 0;
+  const abilityIncreases = eidolon.abilityIncreases ?? [];
+  const grantedEvolutions = derivedEidolon?.grantedEvolutions ?? [];
+  const abilityIncreaseGrants = (subtype?.grants ?? []).filter(
+    (g) => g.abilityIncrease && g.level <= level,
+  );
+
+  return (
+    <div className="subsection">
+      <h4 className="tracker-sub">Subtype</h4>
+      <div className="familiar-fields">
+        <select
+          className="familiar-select"
+          value={subtypeId ?? ""}
+          onChange={(e) => update((d) => setEidolonSubtype(d, e.target.value || undefined))}
+          aria-label="Eidolon subtype"
+        >
+          <option value="">— none —</option>
+          {EIDOLON_SUBTYPE_IDS.map((id) => {
+            const def = EIDOLON_SUBTYPES[id]!;
+            return (
+              <option key={id} value={id}>
+                {def.name} ({def.alignmentText})
+              </option>
+            );
+          })}
+        </select>
+      </div>
+
+      {formWarning && <p className="hint warn-over">{formWarning}</p>}
+      {alignmentWarning && <p className="hint warn-over">{alignmentWarning}</p>}
+
+      {abilityIncreaseSlots > 0 && (
+        <div className="animal-companion-asi">
+          <span className="hint">Ability Score Increases:</span>
+          {Array.from({ length: abilityIncreaseSlots }, (_, i) => (
+            <select
+              key={i}
+              className="familiar-select"
+              value={abilityIncreases[i] ?? "str"}
+              onChange={(e) =>
+                update((d) => setEidolonAbilityIncrease(d, i, e.target.value as AbilityId))
+              }
+              aria-label={`Ability Score Increase ${i + 1}`}
+            >
+              {ABILITY_OPTIONS.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.label}
+                </option>
+              ))}
+            </select>
+          ))}
+        </div>
+      )}
+
+      {abilityIncreaseGrants.map((g) => (
+        <div key={g.level} className="animal-companion-asi">
+          <span className="hint">Subtype +2 ability ({grantOrdinal(g.level)}):</span>
+          <select
+            className="familiar-select"
+            value={eidolon.subtypeGrantChoices?.[String(g.level)] ?? "str"}
+            onChange={(e) =>
+              update((d) => setEidolonSubtypeGrantChoice(d, g.level, e.target.value as AbilityId))
+            }
+            aria-label={`Subtype ability increase target (${grantOrdinal(g.level)})`}
+          >
+            {ABILITY_OPTIONS.map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      ))}
+
+      {grantedEvolutions.length > 0 && (
+        <div className="chips" style={{ marginTop: 8 }}>
+          {grantedEvolutions.map((g) => (
+            <span
+              key={g.level}
+              className="chip display-only"
+              aria-disabled={g.unlocked ? undefined : "true"}
+              title={g.note}
+            >
+              {grantOrdinal(g.level)}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

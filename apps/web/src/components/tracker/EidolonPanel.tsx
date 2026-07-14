@@ -305,6 +305,21 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
         </>
       )}
 
+      {eidolon.subtypeName && (
+        <>
+          <h4 className="tracker-sub">Subtype — {eidolon.subtypeName}</h4>
+          <div className="chips familiar-abilities">
+            {eidolon.grantedEvolutions
+              .filter((g) => g.unlocked)
+              .map((g) => (
+                <InfoTip key={g.level} className="chip display-only" content={g.note}>
+                  {g.level === 1 ? "1st" : `${g.level}th`}
+                </InfoTip>
+              ))}
+          </div>
+        </>
+      )}
+
       {eidolonFeatIds.length > 0 && (
         <>
           <h4 className="tracker-sub">Feats</h4>

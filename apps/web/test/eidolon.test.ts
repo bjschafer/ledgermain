@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
-import { addClass, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
+import { addClass, createEmptyDoc, setAlignment, setClassLevel } from "../src/model/doc.js";
 import {
   addEidolonEvolution,
   applyEidolonDamage,
@@ -14,6 +14,8 @@ import {
   eidolonEvolutionPoolNeedsWarning,
   eidolonFeatPrereqContext,
   eidolonHasWeaponFinesse,
+  eidolonSubtypeAlignmentWarning,
+  eidolonSubtypeFormWarning,
   eidolonSupersedingCondition,
   hasEidolonCondition,
   healEidolon,
@@ -25,7 +27,10 @@ import {
   removeEidolonEvolution,
   restEidolon,
   setEidolon,
+  setEidolonAbilityIncrease,
   setEidolonNotes,
+  setEidolonSubtype,
+  setEidolonSubtypeGrantChoice,
   toggleEidolonCondition,
   toggleEidolonFeat,
   toggleEidolonSummoned,
@@ -291,5 +296,217 @@ describe("eidolon's own active conditions", () => {
     expect(d.live.eidolon?.conditions).toEqual(["frightened"]);
     expect(isEidolonConditionImplied(d, "shaken")).toBe(true);
     expect(eidolonSupersedingCondition(d, "shaken")).toBe("frightened");
+  });
+});
+
+function summonerUnchained(level: number): CharacterDoc {
+  let d = createEmptyDoc("t");
+  d = addClass(d, "summonerUnchained");
+  d = setClassLevel(d, "summonerUnchained", level);
+  return d;
+}
+
+describe("model/eidolon.ts unchained subtype transitions", () => {
+  it("setEidolonSubtype sets, then clears (undefined) the subtype field", () => {
+    let d = setEidolon(createEmptyDoc("t"), "biped", "Grix");
+    d = setEidolonSubtype(d, "angel");
+    expect(d.build.eidolon?.subtype).toBe("angel");
+    d = setEidolonSubtype(d, undefined);
+    expect(d.build.eidolon?.subtype).toBeUndefined();
+  });
+
+  it("setEidolonSubtype no-ops without an eidolon", () => {
+    const d = createEmptyDoc("t");
+    expect(setEidolonSubtype(d, "angel")).toBe(d);
+  });
+
+  it("setEidolonAbilityIncrease sets a slot positionally, defaulting earlier unset slots to str", () => {
+    let d = setEidolon(createEmptyDoc("t"), "biped", "Grix");
+    d = setEidolonAbilityIncrease(d, 1, "con");
+    expect(d.build.eidolon?.abilityIncreases).toEqual(["str", "con"]);
+    d = setEidolonAbilityIncrease(d, 0, "dex");
+    expect(d.build.eidolon?.abilityIncreases).toEqual(["dex", "con"]);
+  });
+
+  it("setEidolonAbilityIncrease no-ops without an eidolon", () => {
+    const d = createEmptyDoc("t");
+    expect(setEidolonAbilityIncrease(d, 0, "str")).toBe(d);
+  });
+
+  it("setEidolonSubtypeGrantChoice keys by grant level as a string, preserving other entries", () => {
+    let d = setEidolon(createEmptyDoc("t"), "biped", "Grix");
+    d = setEidolonSubtypeGrantChoice(d, 8, "cha");
+    expect(d.build.eidolon?.subtypeGrantChoices).toEqual({ "8": "cha" });
+    d = setEidolonSubtypeGrantChoice(d, 12, "con");
+    expect(d.build.eidolon?.subtypeGrantChoices).toEqual({ "8": "cha", "12": "con" });
+  });
+
+  it("setEidolonSubtypeGrantChoice no-ops without an eidolon", () => {
+    const d = createEmptyDoc("t");
+    expect(setEidolonSubtypeGrantChoice(d, 8, "str")).toBe(d);
+  });
+});
+
+describe("eidolonEvolutionPointsAvailable — variant-aware pool math", () => {
+  it("a chained summoner still reads the flat chained pool (regression guard)", () => {
+    let d = summoner7();
+    d = setEidolon(d, "biped", "Grix");
+    expect(eidolonEvolutionPointsAvailable(d)).toBe(10);
+  });
+
+  it("an unchained summoner with no subtype reads the smaller unchained pool", () => {
+    let d = summonerUnchained(7);
+    d = setEidolon(d, "biped", "Grix");
+    // Unchained pool row 7 (index 6): 6.
+    expect(eidolonEvolutionPointsAvailable(d)).toBe(6);
+  });
+
+  it("Archon 4th level adds its +1 pool grant on top of the unchained base pool", () => {
+    let d = summonerUnchained(4);
+    d = setEidolon(d, "biped", "Grix");
+    d = setEidolonSubtype(d, "archon");
+    // Unchained pool row 4 (index 3): 3, plus Archon's 4th-level +1 = 4.
+    expect(eidolonEvolutionPointsAvailable(d)).toBe(4);
+  });
+
+  it("a subtype's poolBonus is ignored on a CHAINED doc even if (unusually) set", () => {
+    let d = summoner7();
+    d = setEidolon(d, "biped", "Grix");
+    d = setEidolonSubtype(d, "archon");
+    // Chained pool row 7 is 10 regardless of the (meaningless, chained-side) subtype.
+    expect(eidolonEvolutionPointsAvailable(d)).toBe(10);
+  });
+});
+
+describe("eidolon subtype soft warnings", () => {
+  it("eidolonSubtypeFormWarning is undefined with no subtype set", () => {
+    const d = setEidolon(summonerUnchained(1), "biped", "Grix");
+    expect(eidolonSubtypeFormWarning(d)).toBeUndefined();
+  });
+
+  it("eidolonSubtypeFormWarning is undefined when the subtype models the chosen form", () => {
+    let d = setEidolon(summonerUnchained(1), "biped", "Grix");
+    d = setEidolonSubtype(d, "angel"); // Angel only models biped.
+    expect(eidolonSubtypeFormWarning(d)).toBeUndefined();
+  });
+
+  it("eidolonSubtypeFormWarning warns when the subtype doesn't model the chosen form", () => {
+    let d = setEidolon(summonerUnchained(1), "quadruped", "Grix");
+    d = setEidolonSubtype(d, "angel"); // Angel only models biped, not quadruped.
+    expect(eidolonSubtypeFormWarning(d)).toMatch(/Angel/);
+  });
+
+  it("eidolonSubtypeFormWarning never fires on a chained doc (subtype is meaningless there)", () => {
+    let d = setEidolon(summoner7(), "quadruped", "Grix");
+    d = setEidolonSubtype(d, "angel");
+    expect(eidolonSubtypeFormWarning(d)).toBeUndefined();
+  });
+
+  it("eidolonSubtypeAlignmentWarning is undefined with no alignment set", () => {
+    let d = setEidolon(summonerUnchained(1), "biped", "Grix");
+    d = setEidolonSubtype(d, "archon"); // Lawful good only.
+    expect(eidolonSubtypeAlignmentWarning(d)).toBeUndefined();
+  });
+
+  it("eidolonSubtypeAlignmentWarning warns on a mismatched alignment, silent on a match", () => {
+    let d = setEidolon(summonerUnchained(1), "biped", "Grix");
+    d = setEidolonSubtype(d, "archon"); // Lawful good only.
+    d = setAlignment(d, "Chaotic Evil");
+    expect(eidolonSubtypeAlignmentWarning(d)).toMatch(/Lawful good/);
+    d = setAlignment(d, "Lawful Good");
+    expect(eidolonSubtypeAlignmentWarning(d)).toBeUndefined();
+  });
+
+  it("eidolonSubtypeAlignmentWarning is silent on unrecognized alignment text (nothing to check against)", () => {
+    let d = setEidolon(summonerUnchained(1), "biped", "Grix");
+    d = setEidolonSubtype(d, "archon");
+    d = { ...d, identity: { ...d.identity, alignment: "???" } };
+    expect(eidolonSubtypeAlignmentWarning(d)).toBeUndefined();
+  });
+});
+
+describe("deriveEidolonSheet() — unchained variant/subtype fixtures", () => {
+  it("Angel L1 biped: variant unchained, slam attack (not claws), pool 1, natural armor 2", () => {
+    let d = setEidolon(summonerUnchained(1), "biped", "Angelic");
+    d = setEidolonSubtype(d, "angel");
+    const eidolon = deriveEidolonSheet(d, ref)!;
+    expect(eidolon.variant).toBe("unchained");
+    expect(eidolon.subtypeId).toBe("angel");
+    expect(eidolon.subtypeName).toBe("Angel");
+    expect(eidolon.evolutionPointsAvailable).toBe(1);
+    expect(eidolon.naturalArmor).toBe(2); // +2 unchained base form, +0 table at level 1.
+    expect(eidolon.attacks.map((a) => a.name)).toEqual(["Slam"]);
+  });
+
+  it("Elemental (Air) L8 quadruped: pool 6+1, fly speed = land speed, bite attack", () => {
+    let d = setEidolon(summonerUnchained(8), "quadruped", "Zephyr");
+    d = setEidolonSubtype(d, "elemental-air");
+    const eidolon = deriveEidolonSheet(d, ref)!;
+    // Unchained pool row 8 (index 7): 6, plus the 4th-level +1 grant = 7.
+    expect(eidolon.evolutionPointsAvailable).toBe(7);
+    expect(eidolon.attacks.map((a) => a.name)).toEqual(["Bite"]);
+    expect(eidolon.speeds.fly).toBe(eidolon.speeds.land);
+  });
+
+  it("Demon L12 serpentine: bite+tail slap attacks, pool 9+1, ability increases reflected in Str", () => {
+    let d = setEidolon(summonerUnchained(12), "serpentine", "Fiend");
+    d = setEidolonSubtype(d, "demon");
+    d = setEidolonAbilityIncrease(d, 0, "str");
+    d = setEidolonAbilityIncrease(d, 1, "str");
+    d = setEidolonSubtypeGrantChoice(d, 12, "str");
+    const eidolon = deriveEidolonSheet(d, ref)!;
+    expect(eidolon.attacks.map((a) => a.name)).toEqual(["Bite", "Tail slap"]);
+    // Unchained pool row 12 (index 11): 9, plus Demon's 8th-level +1 = 10.
+    expect(eidolon.evolutionPointsAvailable).toBe(10);
+    // Serpentine Str 12 + strDexBonus(row 12 = 5) + 2 automatic increases (+1
+    // each, 5th/10th) + subtype's free +2 (12th) = 12 + 5 + 1 + 1 + 2 = 21.
+    expect(eidolon.abilities.str.score).toBe(21);
+  });
+
+  it("Fire Elemental L8: land speed +20 ft. over the Biped form's base 30 ft.", () => {
+    let d = setEidolon(summonerUnchained(8), "biped", "Cinder");
+    d = setEidolonSubtype(d, "elemental-fire");
+    const eidolon = deriveEidolonSheet(d, ref)!;
+    expect(eidolon.speeds.land).toBe(50);
+  });
+
+  it("no subtype set: falls back to the chained form's attacks, still unchained pool", () => {
+    let d = setEidolon(summonerUnchained(1), "biped", "Grix");
+    const eidolon = deriveEidolonSheet(d, ref)!;
+    expect(eidolon.variant).toBe("unchained");
+    expect(eidolon.subtypeId).toBeUndefined();
+    expect(eidolon.grantedEvolutions).toEqual([]);
+    // Falls back to the chained Biped's own baseAttacks (2 claws), not undefined.
+    expect(eidolon.attacks.map((a) => a.name)).toEqual(["Claw"]);
+    expect(eidolon.evolutionPointsAvailable).toBe(1);
+  });
+
+  it("a chained summoner doc still gets the chained pool (regression guard both ways)", () => {
+    let d = setEidolon(summoner7(), "biped", "Grix");
+    const eidolon = deriveEidolonSheet(d, ref)!;
+    expect(eidolon.variant).toBe("chained");
+    expect(eidolon.evolutionPointsAvailable).toBe(10);
+  });
+
+  it("grant unlock gating: a grant above the current level shows unlocked: false and contributes nothing", () => {
+    let d = setEidolon(summonerUnchained(1), "biped", "Grix");
+    d = setEidolonSubtype(d, "archon"); // 4th-level +1 pool grant.
+    const eidolon = deriveEidolonSheet(d, ref)!;
+    const fourthLevelGrant = eidolon.grantedEvolutions.find((g) => g.level === 4);
+    expect(fourthLevelGrant?.unlocked).toBe(false);
+    // At level 1, the 4th-level pool bonus hasn't kicked in yet.
+    expect(eidolon.evolutionPointsAvailable).toBe(1);
+  });
+
+  it("ability-increase slots clamp: extra abilityIncreases entries beyond unlocked slots are ignored", () => {
+    let d = setEidolon(summonerUnchained(5), "biped", "Grix"); // only slot 0 (5th) unlocked
+    d = setEidolonAbilityIncrease(d, 0, "dex");
+    d = setEidolonAbilityIncrease(d, 1, "con"); // slot 1 (10th) not yet unlocked
+    const eidolon = deriveEidolonSheet(d, ref)!;
+    expect(eidolon.abilityIncreaseSlots).toBe(1);
+    // Biped Dex 12 + strDexBonus(row 5 = 2) + the one unlocked +1 Dex increase = 15;
+    // the ignored 2nd entry (Con) never applies.
+    expect(eidolon.abilities.dex.score).toBe(15);
+    expect(eidolon.abilities.con.score).toBe(13);
   });
 });

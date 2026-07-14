@@ -14,8 +14,10 @@ import {
   deriveEidolon,
   EIDOLON_BASE_FORMS,
   EIDOLON_EVOLUTIONS,
-  eidolonProgressionRow,
+  eidolonEvolutionPoolAvailable,
   eidolonSummonerLevel,
+  eidolonVariant,
+  EIDOLON_SUBTYPES,
   featNameSlug,
   type DerivedEidolon,
 } from "@pf1/engine";
@@ -23,6 +25,7 @@ import type { AbilityId, CharacterDoc, EidolonEvolutionPick, RefData } from "@pf
 
 import { toggleConditionIn } from "./conditions.js";
 import { ABILITY_IDS } from "./doc.js";
+import { normalizeAlignmentCode } from "./names.js";
 import type { PrereqContext } from "./prereqs.js";
 
 /** Set (or replace) the tracked eidolon's base form + name. Trims blank names to "Eidolon". */
@@ -31,6 +34,65 @@ export function setEidolon(doc: CharacterDoc, baseForm: string, name: string): C
   const current = doc.build.eidolon;
   const build = { ...current, baseForm, name: trimmedName, evolutions: current?.evolutions ?? [] };
   return { ...doc, build: { ...doc.build, eidolon: build } };
+}
+
+/**
+ * Set (or clear) the tracked eidolon's Pathfinder Unchained subtype (key
+ * into `EIDOLON_SUBTYPES`) — meaningful only once `eidolonVariant(doc)` is
+ * `"unchained"`; a chained eidolon just carries the field unused (see
+ * `EidolonBuild.subtype`'s doc comment). No-ops if there's no eidolon yet.
+ */
+export function setEidolonSubtype(doc: CharacterDoc, subtypeId: string | undefined): CharacterDoc {
+  const current = doc.build.eidolon;
+  if (!current) return doc;
+  if (subtypeId === undefined) {
+    const { subtype: _subtype, ...rest } = current;
+    return { ...doc, build: { ...doc.build, eidolon: rest } };
+  }
+  return { ...doc, build: { ...doc.build, eidolon: { ...current, subtype: subtypeId } } };
+}
+
+/**
+ * Set the ability the player has assigned to the automatic Ability Score
+ * Increase slot at `slotIndex` (0 = unchained summoner 5th, 1 = 10th, 2 =
+ * 15th — see `EidolonBuild.abilityIncreases`'s doc comment). Extends the
+ * array with `"str"` defaults for any earlier unset slot so indices stay
+ * stable, mirroring `model/phantom.ts`'s `setPhantomAbilityIncrease` exactly
+ * (just Str-defaulted instead of Cha, matching this module's existing
+ * Str-default convention). No-ops if there's no eidolon yet.
+ */
+export function setEidolonAbilityIncrease(
+  doc: CharacterDoc,
+  slotIndex: number,
+  ability: AbilityId,
+): CharacterDoc {
+  const current = doc.build.eidolon;
+  if (!current) return doc;
+  const existing = current.abilityIncreases ?? [];
+  const next = [...existing];
+  while (next.length <= slotIndex) next.push("str");
+  next[slotIndex] = ability;
+  return { ...doc, build: { ...doc.build, eidolon: { ...current, abilityIncreases: next } } };
+}
+
+/**
+ * Set the target ability for the subtype's free +2 Ability Increase grant at
+ * `level` (e.g. Archon 8th, Demon 12th — see `EidolonSubtypeGrant.abilityIncrease`),
+ * keyed by the grant's milestone level as a string. No-ops if there's no
+ * eidolon yet.
+ */
+export function setEidolonSubtypeGrantChoice(
+  doc: CharacterDoc,
+  level: number,
+  ability: AbilityId,
+): CharacterDoc {
+  const current = doc.build.eidolon;
+  if (!current) return doc;
+  const subtypeGrantChoices = {
+    ...current.subtypeGrantChoices,
+    [String(level)]: ability,
+  };
+  return { ...doc, build: { ...doc.build, eidolon: { ...current, subtypeGrantChoices } } };
 }
 
 /** Update the tracked eidolon's free-text notes. No-ops if there's no eidolon yet. */
@@ -246,16 +308,67 @@ export function eidolonEvolutionPointsSpent(doc: CharacterDoc): number {
   return picks.reduce((sum, p) => sum + (EIDOLON_EVOLUTIONS[p.id]?.cost ?? 0), 0);
 }
 
-/** The evolution pool available at the eidolon's current summoner level (0 if there's no eidolon/no summoner levels). */
+/**
+ * The evolution pool available at the eidolon's current summoner level,
+ * variant-aware (0 if there's no eidolon/no summoner levels — see `@pf1/engine`
+ * `eidolonEvolutionPoolAvailable`'s doc comment for the chained/unchained
+ * split and how an unchained subtype's `poolBonus` grants factor in).
+ */
 export function eidolonEvolutionPointsAvailable(doc: CharacterDoc): number {
-  const level = eidolonSummonerLevel(doc);
-  if (level <= 0) return 0;
-  return eidolonProgressionRow(level).evolutionPool;
+  return eidolonEvolutionPoolAvailable(doc);
 }
 
 /** True when spent evolution points exceed the available pool — soft warning only, never blocks a pick (same posture as `traits`/`racialTraits`). */
 export function eidolonEvolutionPoolNeedsWarning(doc: CharacterDoc): boolean {
   return eidolonEvolutionPointsSpent(doc) > eidolonEvolutionPointsAvailable(doc);
+}
+
+/**
+ * Soft warning when the eidolon's chosen Unchained subtype doesn't model its
+ * current base form (e.g. an Azata biped has no serpentine entry) —
+ * `deriveEidolon` still derives a full stat block either way, falling back
+ * to the chained form's own attacks (see `@pf1/engine` `eidolon-unchained.ts`'s
+ * module doc comment), so this is advisory only, never a block. Returns
+ * `undefined` when there's no eidolon, no subtype set, an unrecognized
+ * subtype id, the subtype DOES model the current form, or the eidolon isn't
+ * unchained (subtype is meaningless for a chained eidolon — see
+ * `EidolonBuild.subtype`'s doc comment).
+ */
+export function eidolonSubtypeFormWarning(doc: CharacterDoc): string | undefined {
+  if (eidolonVariant(doc) !== "unchained") return undefined;
+  const current = doc.build.eidolon;
+  const subtypeId = current?.subtype;
+  if (!current || !subtypeId) return undefined;
+  const subtype = EIDOLON_SUBTYPES[subtypeId];
+  if (!subtype) return undefined;
+  if (subtype.baseForms[current.baseForm]) return undefined;
+  const formName = EIDOLON_BASE_FORMS[current.baseForm]?.name ?? current.baseForm;
+  const allowedForms = Object.keys(subtype.baseForms)
+    .map((id) => EIDOLON_BASE_FORMS[id]?.name ?? id)
+    .join(", ");
+  return `${subtype.name} doesn't model a ${formName} base form (only ${allowedForms}) — falling back to the base form's own attacks.`;
+}
+
+/**
+ * Soft warning when the summoner's alignment doesn't match the chosen
+ * Unchained subtype's required alignment(s) — same never-block posture as
+ * `alignment.ts`'s `classAlignmentWarnings`. Returns `undefined` when
+ * there's no eidolon, no subtype set, no alignment recorded, the alignment
+ * text doesn't normalize to a recognized code (nothing structured to compare
+ * against — see `model/alignment.ts`'s `normalizeAlignmentCode`), or the
+ * eidolon isn't unchained (subtype is meaningless for a chained eidolon).
+ */
+export function eidolonSubtypeAlignmentWarning(doc: CharacterDoc): string | undefined {
+  if (eidolonVariant(doc) !== "unchained") return undefined;
+  const subtypeId = doc.build.eidolon?.subtype;
+  const subtype = subtypeId ? EIDOLON_SUBTYPES[subtypeId] : undefined;
+  if (!subtype) return undefined;
+  const raw = doc.identity.alignment;
+  if (!raw) return undefined;
+  const code = normalizeAlignmentCode(raw);
+  if (!code) return undefined;
+  if (subtype.alignments.includes(code)) return undefined;
+  return `${subtype.name} eidolons require ${subtype.alignmentText}; the summoner's alignment doesn't match.`;
 }
 
 /**
