@@ -1,4 +1,5 @@
 import type { AbilityId, Change, ContextNote, SizeId, SkillId } from "./primitives.js";
+import type { Feat, Race } from "./refdata.js";
 
 /**
  * A PF1 wizard arcane school tag: one of the eight specialist schools, or
@@ -1027,6 +1028,24 @@ export interface CharacterDoc {
      * caster level only — never the target class's other features.
      */
     castingAdvancement?: Record<string, (string | null)[]>;
+    /**
+     * User-authored homebrew reference entities, overlaid onto `RefData` at
+     * compute time (see `apps/web/src/model/homebrew.ts` `resolveRefData`) —
+     * the Stage 5 server is a dumb blob store, so homebrew content lives
+     * inside the doc itself rather than a separate store: it travels for
+     * free through sync/export/import with zero server changes, and an
+     * optional field needs no doc migration. v1 covers races and feats.
+     *
+     * Keys are homebrew ids (see `homebrew.ts` `homebrewId`, prefix `hb-`)
+     * so they can never collide with a vendored RefData id — the overlay
+     * simply spreads these entries on top of `refData.races`/`refData.feats`.
+     * Optional/absent = no homebrew, fully back-compat (same posture as
+     * `build.racialTraits`).
+     */
+    homebrew?: {
+      races?: Record<string, Race>;
+      feats?: Record<string, Feat>;
+    };
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };

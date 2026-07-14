@@ -21,6 +21,7 @@ import {
   resetAllCharacters,
 } from "../db/characters.js";
 import { migrateDoc } from "../model/doc.js";
+import { resolveRefData } from "../model/homebrew.js";
 import { reconcileGrantedCantrips } from "../model/preparedSpells.js";
 import { loadRefData } from "../refdata/loader.js";
 import { pushOnChange, runOpenSync } from "../sync/backgroundSync.js";
@@ -106,7 +107,10 @@ export interface CharacterStore {
 export function useCharacter(): CharacterStore {
   const [status, setStatus] = useState<LoadStatus>("loading");
   const [error, setError] = useState<string>();
-  const [refData, setRefData] = useState<RefData>();
+  // Raw vendored RefData, as loaded from `refdata/loader.ts` — never carries
+  // homebrew content. `refData` (below, computed) is the one everything
+  // downstream (compute(), components, model helpers) actually receives.
+  const [rawRefData, setRawRefData] = useState<RefData>();
   const [doc, setDoc] = useState<CharacterDoc>();
   const [characters, setCharacters] = useState<CharacterSummary[]>([]);
   const [actionPending, setActionPending] = useState(false);
@@ -143,11 +147,11 @@ export function useCharacter(): CharacterStore {
     Promise.all([loadRefData(), loadOrCreateActive()])
       .then(([ref, loaded]) => {
         if (!alive) return;
-        setRefData(ref);
+        setRawRefData(ref);
         // `loaded` is already migrateDoc'd by the loader; reconcile strips any
         // granted cantrips a pre-change doc may have stored in `known`/`prepared`
         // (cantrips are now derived from the class list, not stored).
-        setDoc(reconcileGrantedCantrips(loaded, ref));
+        setDoc(reconcileGrantedCantrips(loaded, resolveRefData(loaded, ref)));
         setStatus("ready");
         void refreshList();
       })
@@ -237,13 +241,14 @@ export function useCharacter(): CharacterStore {
         // screen was just pulled in, refresh in-memory state immediately
         // rather than waiting for an unrelated re-render to notice.
         const activeId = docRef.current?.id;
-        if (activeId && result.deleted.includes(activeId) && refData) {
+        if (activeId && result.deleted.includes(activeId) && rawRefData) {
           // The character on screen was deleted on another device; adopt
           // whatever remains (or a fresh blank doc) rather than keep showing a
           // doc that no longer exists in the store (#39).
           invalidateCrossTransitionTracking();
-          setDoc(reconcileGrantedCantrips(await loadOrCreateActive(), refData));
-        } else if (activeId && result.pulled.includes(activeId) && refData) {
+          const fresh = await loadOrCreateActive();
+          setDoc(reconcileGrantedCantrips(fresh, resolveRefData(fresh, rawRefData)));
+        } else if (activeId && result.pulled.includes(activeId) && rawRefData) {
           const refreshed = await db.characters.get(activeId);
           if (refreshed) {
             // The doc on screen was just overwritten by another device's
@@ -251,7 +256,7 @@ export function useCharacter(): CharacterStore {
             // exists in this lineage, so drop it rather than risk restoring
             // over the just-pulled remote state.
             invalidateCrossTransitionTracking();
-            setDoc(reconcileGrantedCantrips(refreshed, refData));
+            setDoc(reconcileGrantedCantrips(refreshed, resolveRefData(refreshed, rawRefData)));
           }
         }
         if (result.pulled.length > 0 || result.pushed.length > 0 || result.deleted.length > 0)
@@ -260,7 +265,7 @@ export function useCharacter(): CharacterStore {
         setSyncStatus({ kind: "error", message: e instanceof Error ? e.message : String(e) });
       }
     })();
-  }, [status, refData, refreshList, invalidateCrossTransitionTracking]);
+  }, [status, rawRefData, refreshList, invalidateCrossTransitionTracking]);
 
   // Autosave to IndexedDB (debounced). The pending timer is kept in a ref
   // (not just the effect's local closure) so character-switching actions
@@ -407,10 +412,10 @@ export function useCharacter(): CharacterStore {
 
   const adopt = useCallback(
     async (loaded: CharacterDoc) => {
-      if (!refData) {
+      if (!rawRefData) {
         throw new Error("Cannot switch characters before reference data has loaded");
       }
-      const reconciled = reconcileGrantedCantrips(loaded, refData);
+      const reconciled = reconcileGrantedCantrips(loaded, resolveRefData(loaded, rawRefData));
       // Refresh the list before flipping `doc`, so the two land in the same
       // render — otherwise the switcher briefly shows an id with no matching
       // option (its list query resolves a tick after `doc` does).
@@ -424,7 +429,7 @@ export function useCharacter(): CharacterStore {
       invalidateCrossTransitionTracking();
       setDoc(reconciled);
     },
-    [refData, invalidateCrossTransitionTracking],
+    [rawRefData, invalidateCrossTransitionTracking],
   );
 
   /** Runs a character-management action with pending/error tracking and re-entrancy guarding. */
@@ -498,6 +503,17 @@ export function useCharacter(): CharacterStore {
         }
       }),
     [adopt, cancelPendingSave, runAction, doc],
+  );
+
+  // The overlaid view of RefData — raw vendored data plus whatever homebrew
+  // races/feats `doc` carries (see model/homebrew.ts). This is what
+  // `compute()` runs against and what the store exposes as `refData`;
+  // everything downstream (components, model helpers) sees homebrew content
+  // merged in as if it were vendored. Reference-stable (same object as
+  // `rawRefData`) whenever the active doc has no homebrew entries.
+  const refData = useMemo(
+    () => (doc && rawRefData ? resolveRefData(doc, rawRefData) : rawRefData),
+    [doc, rawRefData],
   );
 
   const sheet = useMemo(() => (doc && refData ? compute(doc, refData) : undefined), [doc, refData]);
@@ -630,12 +646,12 @@ export function useCharacter(): CharacterStore {
       // Only replace the in-memory doc if the conflict was actually for the
       // character currently on screen — the user may have switched
       // characters while this conflict was pending.
-      if (doc?.id === conflict.local.id && refData) {
+      if (doc?.id === conflict.local.id && rawRefData) {
         // The doc content is being replaced by whichever side won the
         // conflict — any pending undo snapshot predates that and would
         // restore over it, so drop it (and the level-up tracker alongside it).
         invalidateCrossTransitionTracking();
-        setDoc(reconcileGrantedCantrips(resolved, refData));
+        setDoc(reconcileGrantedCantrips(resolved, resolveRefData(resolved, rawRefData)));
       }
       void refreshList();
 
@@ -655,7 +671,7 @@ export function useCharacter(): CharacterStore {
         setSyncStatus({ kind: "conflict", conflict: outcome.conflict });
       else setSyncStatus({ kind: "error", message: outcome.message });
     },
-    [syncStatus, doc, refData, refreshList, invalidateCrossTransitionTracking],
+    [syncStatus, doc, rawRefData, refreshList, invalidateCrossTransitionTracking],
   );
 
   return {
