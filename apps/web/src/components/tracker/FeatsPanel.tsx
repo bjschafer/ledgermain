@@ -2,7 +2,12 @@ import { useMemo, useState } from "react";
 
 import type { Feat } from "@pf1/schema";
 
-import { featInstanceDisplayName, featInstances, grantedFeats } from "../../model/feats.js";
+import {
+  featContextNotes,
+  featInstanceDisplayName,
+  featInstances,
+  grantedFeats,
+} from "../../model/feats.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -106,6 +111,11 @@ export function FeatsPanel({ doc, refData }: BuilderProps) {
                       </span>
                     )}
                   </div>
+                  {featContextNotes(row.feat.name).map((n, i) => (
+                    <div key={i} className="hint" style={{ marginTop: 2 }}>
+                      ⚠ {n.text}
+                    </div>
+                  ))}
                   <FeatDetail feat={row.feat} />
                 </div>
               </div>

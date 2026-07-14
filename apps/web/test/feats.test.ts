@@ -9,6 +9,7 @@ import {
   expectedFeatCount,
   featChoiceDescriptor,
   featChoiceOptions,
+  featContextNotes,
   featDisplayName,
   featInstances,
   grantedFeats,
@@ -580,6 +581,28 @@ describe("featChoiceDescriptor", () => {
 
   it("returns null for an unknown feat slug", () => {
     expect(featChoiceDescriptor("Nonexistent Feat XYZ")).toBeNull();
+  });
+});
+
+// ─── featContextNotes ────────────────────────────────────────────────────────
+
+describe("featContextNotes", () => {
+  it("surfaces Augment Summoning's off-sheet +4 Str/+4 Con reminder", () => {
+    const notes = featContextNotes("Augment Summoning");
+    expect(notes.length).toBeGreaterThan(0);
+    expect(notes[0]?.text).toMatch(/\+4 enhancement bonus to Strength and Constitution/);
+  });
+
+  it("returns empty for a feat with no hand-authored entry at all", () => {
+    expect(featContextNotes("Nonexistent Feat XYZ")).toEqual([]);
+  });
+
+  it("returns empty for a hand-authored feat with no contextNotes (Iron Will)", () => {
+    expect(featContextNotes("Iron Will")).toEqual([]);
+  });
+
+  it("returns empty for a choice-type feat (Skill Focus) — contextNotes only exist on static entries", () => {
+    expect(featContextNotes("Skill Focus")).toEqual([]);
   });
 });
 

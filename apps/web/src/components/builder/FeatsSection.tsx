@@ -13,6 +13,7 @@ import {
   expectedFeatCount,
   featChoiceDescriptor,
   featChoiceOptions,
+  featContextNotes,
   featInstanceDisplayName,
   featInstances,
   grantedFeats,
@@ -455,6 +456,12 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                           </div>
                         )}
                         {idx === 0 ? prereqBlock : null}
+                        {idx === 0 &&
+                          featContextNotes(feat.name).map((n, i) => (
+                            <div key={i} className="hint" style={{ marginTop: 2 }}>
+                              ⚠ {n.text}
+                            </div>
+                          ))}
                         {idx === 0 && description ? (
                           <FeatureDescription html={description} />
                         ) : null}
@@ -574,6 +581,11 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                   </div>
                 )}
                 {prereqBlock}
+                {featContextNotes(feat.name).map((n, i) => (
+                  <div key={i} className="hint" style={{ marginTop: 2 }}>
+                    ⚠ {n.text}
+                  </div>
+                ))}
                 {description ? <FeatureDescription html={description} /> : null}
               </div>
               <button

@@ -21,6 +21,8 @@
  *                      The UI renders a picker for these feats (FeatsSection.tsx).
  */
 
+import type { ContextNote } from "@pf1/schema";
+
 export interface FeatChange {
   target: string;
   type: string;
@@ -31,6 +33,21 @@ export interface FeatChange {
 export interface StaticFeatEntry {
   type: "static";
   changes: FeatChange[];
+  /**
+   * Non-mechanical reminders for a feat whose real benefit targets something
+   * this engine doesn't put on the PC's own derived sheet — most commonly a
+   * summoned creature, an eidolon/companion/familiar for a brief window, or a
+   * spell-casting-time/list change (e.g. Augment Summoning's +4 Str/+4 Con to
+   * summoned creatures, Sacred Summons' standard-action cast). Mirrors
+   * `AlchemistDiscoveryDef.contextNotes` (`alchemist-discoveries.ts`) exactly:
+   * these are read directly by the UI (see `apps/web/src/model/feats.ts`'s
+   * `featContextNotes`) and never flow through `collect.ts`/`compute()` — a
+   * feat with `changes: []` and only `contextNotes` contributes nothing to
+   * the derived sheet, by construction, so there's no risk of inventing a
+   * number for an off-sheet target. Absent for the overwhelming majority of
+   * entries (a real Change is preferred whenever one honestly applies).
+   */
+  contextNotes?: ContextNote[];
 }
 
 /**
@@ -87,6 +104,9 @@ export interface SituationalFeatEntry {
 }
 
 export type FeatEntry = StaticFeatEntry | ChoiceFeatEntry | SituationalFeatEntry;
+
+/** Build a `StaticFeatEntry.contextNotes` entry. Mirrors `alchemist-discoveries.ts`'s local `note` helper. */
+const note = (text: string): ContextNote => ({ target: "allChecks", text });
 
 /**
  * Normalize a feat name to a stable slug for use as a map key.
@@ -196,6 +216,564 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
       return [{ target: `damage.weapon.${choiceId}`, type: "untyped", formula: "2" }];
     },
   },
+
+  // ── Summoning feats (community pf1-content pack) ────────────────────────
+  //
+  // None of these carry vendored `changes[]` (confirmed for every name-matched
+  // "summon" feat against the vendored feats.json). Almost every one of them
+  // buffs a SUMMONED CREATURE, an eidolon for a brief window, or the
+  // summoning spell's casting time/available creature list — none of which is
+  // a PC-sheet stat this engine tracks (this engine only models the PC, its
+  // eidolon/companion/familiar, and its buffs — never an ad hoc summon-spell
+  // creature). So every entry below is `changes: []` with the concrete
+  // numbers spelled out in `contextNotes` — the same "no invented sheet
+  // number, an honest reminder instead" posture as `alchemist-discoveries.ts`'s
+  // Cognatogen/Wings/Feral Mutagen entries. `note()` mirrors that file's own
+  // local helper.
+  //
+  // "Extra Summons" is the one exception — see FEAT_POOL_EFFECTS below,
+  // since it raises an existing class-feature pool's max rather than
+  // needing a contextNote.
+
+  // Augment Summoning (PF1 CRB, prereq Spell Focus (conjuration)): every
+  // creature summoned by ANY summon spell gets +4 enhancement to Str and Con
+  // for the spell's duration.
+  "augment-summoning": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Every creature you conjure with a summon spell gains a +4 enhancement bonus to Strength and Constitution for the spell's duration.",
+      ),
+    ],
+  },
+
+  // Augment Summoning (Mythic) (prereq Augment Summoning): mythic tiers
+  // aren't modeled by this engine at all (no mythic-tier field anywhere on
+  // CharacterDoc/DerivedSheet) — display-only, flagged explicitly rather than
+  // silently doing nothing.
+  "augment-summoning-mythic": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Mythic tier isn't modeled by this engine — summoned creatures count as 1st-tier mythic for interacting with other mythic effects, and their DR (if any) becomes DR/epic. No PC-sheet number to apply.",
+      ),
+    ],
+  },
+
+  // Superior Summoning (prereq Augment Summoning, CL 3rd): +1 creature
+  // whenever a summoning spell conjures more than one.
+  "superior-summoning": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Each time a summoning spell you cast conjures more than one creature, add one more to the total number summoned.",
+      ),
+    ],
+  },
+
+  // Sacred Summons (prereq an Aura class feature + ability to cast summon
+  // monster): cast summon monster as a standard action instead of 1 round
+  // when the summoned creatures' alignment subtype matches your aura.
+  "sacred-summons": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Cast summon monster as a standard action (instead of 1 round) when every creature summoned has an alignment subtype matching your aura.",
+      ),
+    ],
+  },
+
+  // Blackfire Summoning (prereq Sacred Summons): a single summoned evil
+  // outsider arrives in a blast of blackfire — 2x its CR in damage to
+  // adjacent nonevil creatures (Will half, DC = the summon spell's DC); costs
+  // a spell slot 1 level higher (waived while using the blackfire pact class
+  // feature on a matching outsider type).
+  "blackfire-summoning": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Summoning a single evil outsider: it arrives in blackfire, dealing 2x its CR in damage to adjacent nonevil creatures (Will half, DC = the summon spell's save DC). Uses a spell slot 1 level higher (waived for a blackfire pact's chosen outsider type).",
+      ),
+    ],
+  },
+
+  // Summon Good Monster (prereq Good alignment): unlocks a good-aligned
+  // summon monster list; creatures summoned from it gain Diehard (standard
+  // list summons don't).
+  "summon-good-monster": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Adds a good-aligned creature list to summon monster; creatures summoned from that list gain the Diehard feat (standard-list summons don't).",
+      ),
+    ],
+  },
+
+  // Summon Evil Monster (prereq Evil alignment): unlocks an evil-aligned
+  // summon monster list, cast as a standard action; the summoned creature
+  // can't act until your next turn but isn't flat-footed and can still take
+  // AoOs.
+  "summon-evil-monster": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Adds an evil-aligned creature list to summon monster, cast as a standard action; the summoned creature can't act until your next turn (not flat-footed, can still make AoOs). Sacred Summons can apply to a creature from this list whose alignment matches your aura.",
+      ),
+    ],
+  },
+
+  // Summon Neutral Monster (prereq a Neutral alignment): unlocks a
+  // neutral-aligned summon monster list + a "counterpoised creature" template
+  // option for standard-list summons; either way, the summoned creature gets
+  // a +2 resistance bonus on Will saves.
+  "summon-neutral-monster": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Adds a neutral-aligned creature list to summon monster (or apply the counterpoised-creature template to a standard-list summon in place of celestial/fiendish); either way the summoned creature gains a +2 resistance bonus on Will saves.",
+      ),
+    ],
+  },
+
+  // Summon Plant Ally (prereq Knowledge (nature) 1 rank + summon nature's
+  // ally): unlocks a list of plant creatures summonable via summon nature's
+  // ally I-IX. Pure list-expansion, no numeric rider.
+  "summon-plant-ally": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Adds a list of plant creatures (leshys, assassin vine, treant, jinmenju, ...) summonable via summon nature's ally I-IX.",
+      ),
+    ],
+  },
+
+  // Expanded Summon Monster (prereq ability to cast a summon monster spell):
+  // permanently add 2 chosen creatures per spell level (1st-9th) to your
+  // summon monster tables; repeatable for +2 more each time.
+  "expanded-summon-monster": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Adds 2 chosen creatures per summon monster spell level (1st-9th) to your summon monster tables, permanently. Repeatable — each additional instance adds 2 more per level.",
+      ),
+    ],
+  },
+
+  // Evolved Summoned Monster (prereq Augment Summoning, Spell Focus
+  // (conjuration), ability to cast summon monster I): each summon monster
+  // casting grants the (one) summoned creature a 1-point eidolon evolution
+  // (not pounce/reach); repeatable, one additional evolution per instance,
+  // splittable across multiple summoned creatures.
+  "evolved-summoned-monster": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Each summon monster casting grants a 1-point eidolon evolution (not pounce/reach) to the creature summoned (attack/limb-count evolutions require Medium+). Repeatable — each instance adds one more evolution, splittable across multiple summoned creatures.",
+      ),
+    ],
+  },
+
+  // Ferocious Summons (prereq Augment Summoning, Spell Focus (conjuration),
+  // half-orc/orc): creatures you summon gain the ferocity universal monster
+  // ability (fight while below 0 hp/staggered).
+  "ferocious-summons": {
+    type: "static",
+    changes: [],
+    contextNotes: [note("Creatures you summon gain the ferocity universal monster ability.")],
+  },
+
+  // Putrid Summons (prereq Spell Focus (conjuration), ability to cast summon
+  // monster or summon nature's ally): summon a single creature with the
+  // stench universal monster ability instead — sickened for (spell level)
+  // rounds; the creature is drawn from the NEXT LOWER summon list.
+  "putrid-summons": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Summon a single creature with the stench universal monster ability (sickened for a number of rounds = the spell's level) — drawn from the next lower summon monster/summon nature's ally list than the spell cast.",
+      ),
+    ],
+  },
+
+  // Retributive Summoning (prereq Spell Focus (conjuration) or the
+  // counter-summons class feature): countering a summoning spell with dispel
+  // magic or your own summon monster immediately summons nonevil creatures
+  // as if from a summon monster spell 2 levels lower than the countered one.
+  "retributive-summoning": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "When you counter a summoning spell with dispel magic or your own summon monster, immediately summon nonevil creatures as if casting summon monster 2 levels lower than the countered spell.",
+      ),
+    ],
+  },
+
+  // Harrowed Summoning (prereq the Harrowed trait/feat): draw 2 harrow cards
+  // for a summoning spell — summoned creatures gain +4 enhancement to the
+  // ability score(s) matching the drawn suits (+6 if both cards share a
+  // suit); the spell's duration doubles/halves on an alignment match/mismatch
+  // (unchanged if both occur).
+  "harrowed-summoning": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Draw 2 harrow cards when casting a summoning spell: summoned creatures gain +4 enhancement to the ability score(s) of the drawn suits (+6 if both cards share a suit). Duration doubles on an alignment match, halves on a mismatch (unchanged if both occur).",
+      ),
+    ],
+  },
+
+  // Sunlight Summons (prereq Spell Focus (conjuration), summon nature's
+  // ally): summoned creatures shed light as light, are immune to
+  // blinding/dazzling, and their natural weapons count as magic for DR.
+  "sunlight-summons": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Creatures you summon shed light as the light spell, are immune to blinding/dazzling effects, and their natural weapons count as magic for overcoming DR.",
+      ),
+    ],
+  },
+
+  // Moonlight Summons (prereq Spell Focus (conjuration), summon nature's
+  // ally): summoned creatures shed light as light, are immune to
+  // confusion/sleep, and their natural weapons count as silver for DR.
+  "moonlight-summons": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Creatures you summon shed light as the light spell, are immune to confusion/sleep effects, and their natural weapons count as silver for overcoming DR.",
+      ),
+    ],
+  },
+
+  // Starlight Summons (prereq Spell Focus (conjuration), summon nature's
+  // ally): summoned creatures gain Blind-Fight, +5 Perception/Stealth in dim
+  // light or darkness, and their natural weapons count as cold iron for DR.
+  "starlight-summons": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Creatures you summon gain the Blind-Fight feat, a +5 bonus on Perception/Stealth checks in dim light or darkness, and their natural weapons count as cold iron for overcoming DR.",
+      ),
+    ],
+  },
+
+  // Scouting Summons (prereq Spell Focus (conjuration), ability to cast
+  // magic jar): possess a single summoned creature as magic jar (no
+  // receptacle needed); taking damage while possessing it forces a
+  // concentration check (DC = damage taken) or ejection; reduced to <=0 hp
+  // ejects you and deals 2x the summon spell's level in damage. Uses a spell
+  // slot 2 levels higher.
+  "scouting-summons": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Possess a single summoned creature as magic jar (no receptacle). Damage to it forces a concentration check (DC = damage taken) or you're ejected; dropping it to 0 hp or lower ejects you and deals damage equal to 2x the summon spell's level. Uses a spell slot 2 levels higher.",
+      ),
+    ],
+  },
+
+  // Proxy Summoning (prereq ability to cast conjuration (summoning) spells,
+  // CL 5th): while adjacent to a summoned creature (including an eidolon), a
+  // touch spell you cast can be delivered through it, and you + the creature
+  // gain the share spells ability for that purpose (doesn't itself qualify
+  // you for companion/familiar-only feats).
+  "proxy-summoning": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "While adjacent to a creature you summoned (or your eidolon), a touch spell you cast can be carried and delivered by it; you and it gain the share spells ability for this purpose only (doesn't qualify you for feats requiring an animal companion/familiar).",
+      ),
+    ],
+  },
+
+  // Summoner's Call (prereq the Eidolon class feature): summoning your
+  // eidolon grants it a +2 enhancement bonus to Str, Dex, or Con for 10
+  // minutes after the summoning ritual completes.
+  "summoner-s-call": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Whenever you summon your eidolon, it may gain a +2 enhancement bonus to Strength, Dexterity, or Constitution for 10 minutes after the summoning ritual completes.",
+      ),
+    ],
+  },
+
+  // Summon Guardian Spirit (prereq ability to cast summon monster III or
+  // summon nature's ally III): a chosen improved-familiar-eligible creature
+  // becomes a persistent, nameable summon on your SM III/SNA III list (1
+  // min/level duration, unkillable-permanently — a 24h cooldown after it
+  // dies while summoned). Subsystem-shaped; no flat number beyond the
+  // duration.
+  "summon-guardian-spirit": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Apply the guardian spirit template to one improved-familiar-eligible creature; it joins your summon monster III/summon nature's ally III list with a 1 minute/level duration when summoned. It's always the same creature (retains memory); if it dies while summoned it can't be summoned again for 24 hours.",
+      ),
+    ],
+  },
+
+  // Skeleton Summoner (prereq Spell Focus (necromancy), ability to cast
+  // summon monster): adds 'human skeleton' to your summon monster I list and
+  // 'human skeletal champion' to summon monster III; once/day you may instead
+  // summon a skeleton-template version of any creature already on the list
+  // for the summon monster spell you're casting.
+  "skeleton-summoner": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Adds 'human skeleton' to your summon monster I list and 'human skeletal champion' to summon monster III. Once per day, casting summon monster may instead summon a skeleton-template version of any creature already on that spell's list.",
+      ),
+    ],
+  },
+
+  // Spider Summoner (prereq drow, ability to cast summon monster or summon
+  // nature's ally): adds specific spiders by spell level to both summon
+  // lists; summoned spiders' poison/web save DCs increase by +2.
+  "spider-summoner": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Adds specific spiders (giant crab spider, giant black widow, ogre spider, giant tarantula, by level) to your summon monster and summon nature's ally lists; summoned spiders' poison and web save DCs increase by +2.",
+      ),
+    ],
+  },
+
+  // Nimble Natural Summons (prereq Augment Summoning, Spell Focus
+  // (conjuration), summon nature's ally CL 6th, worshiper of Erastil):
+  // creatures you summon with summon nature's ally move through natural
+  // undergrowth at full speed, unimpeded.
+  "nimble-natural-summons": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Creatures you summon with summon nature's ally move through natural undergrowth (thorns, briars, and similar terrain) at their normal speed, unimpeded (magically-manipulated undergrowth still affects them).",
+      ),
+    ],
+  },
+
+  // Versatile Summon Monster (prereq Knowledge (arcana)/Knowledge (planes) 1
+  // rank each): pick 2 templates (Aerial/Aqueous/Chthonic/Dark/Fiery/
+  // Primordial); apply one per creature in place of celestial/entropic/
+  // fiendish/resolute when casting summon monster. Repeatable, +2 templates
+  // each time. Already classified `subsystem` in feat-classification.ts's
+  // frozen audit (no numeric target) — this contextNote is the "spell out the
+  // mechanic" companion to that classification.
+  "versatile-summon-monster": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Choose 2 templates (Aerial, Aqueous, Chthonic, Dark, Fiery, or Primordial); when summon monster would apply celestial/entropic/fiendish/resolute, apply one of your chosen templates instead (a different one per creature, if summoning several). Repeatable — each instance adds 2 more templates to choose from.",
+      ),
+    ],
+  },
+
+  // Versatile Summon Nature's Ally (prereq Augment Summoning, Spell Focus
+  // (conjuration), Knowledge (nature)/Knowledge (planes) 1 rank each): when
+  // summoning animals/humanoids/vermin via summon nature's ally, apply one of
+  // 5 templates instead of Augment Summoning's +4 Str/Con (same template for
+  // every creature in one casting). Already classified `subsystem` in
+  // feat-classification.ts's frozen audit; same companion-note posture as
+  // Versatile Summon Monster above.
+  "versatile-summon-nature-s-ally": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "When summon nature's ally would summon an animal, humanoid, or vermin, you may apply one template (Aerial, Aqueous, Chthonic, Fiery, or Primordial) instead of Augment Summoning's bonus. Every creature summoned by the same casting gets the same template.",
+      ),
+    ],
+  },
+
+  // ── Sweep: feats found via a description scan for "summon(ed/ing)" that
+  // don't have "summon" in their own name, but genuinely modify the
+  // caster's own summon-monster/summon-nature's-ally mechanic (or, for the
+  // Dimensional Awareness/Banishing Critical/Dimensional Disruption chain and
+  // Painful Anchor, an opponent's) with a concrete rider. Excluded from this
+  // sweep: feats whose description only mentions a summoned creature in
+  // passing as an example (Cunning Caster/Subtle Devices's "obvious effect"
+  // concealment checks), or that touch an unrelated mechanic entirely
+  // (Tattoo Attunement/Conversion/Transformation, Damned, Ancient Tradition,
+  // Blood Drinker, Blood Vengeance, Expanded Studies, Companion Figurine,
+  // Beast Rider, Planar Infusion, Esoteric Conjuration, Enemy Cult,
+  // Atheist Abjurations, Improved Planar Mentor, Spirit Symbiosis,
+  // Spontaneous Nature's Ally, Planar Preservationist, Planar Sensitivity,
+  // Triton Portal) — none of those change what summon monster/summon
+  // nature's ally itself does.
+
+  // Spiritualist's Call (prereq the Phantom class feature): the spiritualist
+  // analog of Summoner's Call above — same +2/10-minutes shape, targeting
+  // the phantom's Str, Dex, or Cha instead of the eidolon's Str, Dex, or Con.
+  "spiritualist-s-call": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Whenever you summon your phantom, it may gain a +2 enhancement bonus to Strength, Dexterity, or Charisma for 10 minutes after the summoning ritual completes.",
+      ),
+    ],
+  },
+
+  // Fire Music (prereq Spellcraft 5 ranks, bard spells + an arcane fire
+  // spell from another class): casting summon monster as a bard spell can
+  // give the summoned creature a fiery appearance — fire resistance 5 and
+  // +1 fire damage on its natural attacks (no effect if it already has the
+  // fire subtype).
+  "fire-music": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Casting summon monster as a bard spell, you may give the summoned creature a fiery appearance: fire resistance 5 and +1 fire damage on its natural attacks (no effect if it already has the fire subtype).",
+      ),
+    ],
+  },
+
+  // Fire Music (Mythic) (prereq Fire Music): the fiery-summon rider's fire
+  // resistance improves to +5 more (10 total) and its natural-attack bonus
+  // becomes 1d4 fire instead of +1. Mythic tier itself isn't modeled (see
+  // Augment Summoning (Mythic) above), but this rider's own numbers are
+  // plain and worth surfacing regardless.
+  "fire-music-mythic": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Fire Music's fiery summoned creature instead gains fire resistance 10 total and 1d4 fire damage (instead of +1) on its natural attacks; the fire damage it deals also ignores resistance up to your mythic tier (mythic tier itself isn't tracked by this engine).",
+      ),
+    ],
+  },
+
+  // Profane Studies (prereq Int 13, Knowledge (planes) 4 ranks, ability to
+  // cast a summon monster spell): summoning an evil outsider with summon
+  // monster treats your caster level as 2 higher for the spell's DURATION
+  // only (not other CL-dependent effects of the spell).
+  "profane-studies": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Casting summon monster to summon an evil outsider: treat your caster level as 2 higher for determining the spell's duration only.",
+      ),
+    ],
+  },
+
+  // Ally Caller (prereq Triton, summon nature's ally II spell-like ability,
+  // character level 3rd): +2 uses/day of the Triton's racial summon nature's
+  // ally II SLA. No engine-modeled pool exists for a racial SLA like this
+  // (deriveResourcePools only reads granted CLASS features' uses.maxFormula)
+  // — display-only, same posture as several alchemist discoveries with no
+  // pool to hook into.
+  "ally-caller": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "+2 uses/day of the Triton racial summon nature's ally II spell-like ability. Repeatable — each instance adds 2 more. Not wired as a tracked resource pool here (no racial-SLA pool exists in this engine); track manually.",
+      ),
+    ],
+  },
+
+  // Aquatic Squires (prereq Triton, summon nature's ally II spell-like
+  // ability, character level 5th): the Triton's racial SNA II SLA duration
+  // becomes 1 minute/level (normally 1 round/level). Same "no racial-SLA pool
+  // to hook into" posture as Ally Caller above.
+  "aquatic-squires": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "The Triton racial summon nature's ally II spell-like ability's duration becomes 1 minute/level (normally 1 round/level).",
+      ),
+    ],
+  },
+
+  // Dimensional Awareness (prereq Arcane Strike or Disruptive, Combat
+  // Reflexes, Spellcraft 8 ranks, an arcane pool class feature): an attack of
+  // opportunity against a creature materializing (via summon/calling) in a
+  // square you threaten — normally impossible — with a +2 circumstance bonus
+  // if you identified the summoning spell via Spellcraft.
+  "dimensional-awareness": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "You may make an attack of opportunity against a creature summoned or called into a square you threaten (normally impossible), gaining a +2 circumstance bonus on that attack if you identified the summoning spell via Spellcraft.",
+      ),
+    ],
+  },
+
+  // Banishing Critical (prereq Arcane Strike or Disruptive, Spellcraft 8
+  // ranks, an arcane pool class feature): confirming a crit (via Arcane
+  // Strike or an arcane-pool-enhanced weapon) against a summoned creature you
+  // identified forces a Will save (DC = 10 + 1/2 character level + Int mod)
+  // or the target is banished home as dismissal.
+  "banishing-critical": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Confirming a critical hit (using Arcane Strike or a weapon enhanced by your arcane pool) against a summoned creature you identified via Spellcraft: it must succeed at a Will save (DC = 10 + 1/2 character level + Int modifier) or be sent home as dismissal.",
+      ),
+    ],
+  },
+
+  // Dimensional Disruption (prereq Arcane Strike or Disruptive, Banishing
+  // Critical, Combat Reflexes, Dimensional Awareness, Spellcraft 8 ranks, an
+  // arcane pool class feature): using Dimensional Awareness's AoO, spend an
+  // immediate action + a Spellcraft check (DC = 15 + creature's CR [min 1] +
+  // the summoning spell's level) to banish the creature before it acts.
+  "dimensional-disruption": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "Using Dimensional Awareness's attack of opportunity against a materializing creature, spend an immediate action and succeed at a Spellcraft check (DC = 15 + the creature's CR [minimum 1] + the summoning spell's level) to send it home before it acts.",
+      ),
+    ],
+  },
+
+  // Painful Anchor (prereq the Anchoring Aura class feature): an evil
+  // outsider that's summoned, called, or planar-teleports within your aura
+  // takes 4d8 + Cha mod damage (unresisted by DR/energy immunity/resistance
+  // — it's holy power), Will half (DC = your aura's/anchoring class
+  // feature's normal save DC — see that class feature for the exact DC
+  // formula, not duplicated here).
+  "painful-anchor": {
+    type: "static",
+    changes: [],
+    contextNotes: [
+      note(
+        "An evil outsider that summons, calls, or plane-shifts within your anchoring aura takes 4d8 + your Charisma modifier damage (holy power — bypasses DR, energy immunity, and energy resistance); Will half.",
+      ),
+    ],
+  },
 };
 
 /**
@@ -264,6 +842,19 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   // derives generically via `deriveResourcePools` exactly like the five
   // entries above; no resources.ts change was needed.
   "extra-arcane-pool": { featureTag: "arcanePool", maxDelta: 2 },
+
+  // Extra Summons (community pf1-content pack; Advanced Class Guide): "You
+  // gain 1 additional use of your summon monster spell-like ability per
+  // day" (verbatim, this repo's vendored feat description — NOT the +2/day
+  // this entry might be misremembered as). Repeatable "once for every five
+  // summoner levels you possess", same "stacks per instance" shape as the
+  // rest of this table. Both the summoner's "Summon Monster" class feature
+  // and the unchained summoner's "Summon Monster (UC)" share the vendored
+  // tag `summonMonster` (confirmed in class-features.json — both carry
+  // `uses.maxFormula: "3 + @abilities.cha.mod"`), so a single tag covers
+  // both variants without needing the multi-tag array Extra Lay On Hands
+  // uses above.
+  "extra-summons": { featureTag: "summonMonster", maxDelta: 1 },
 };
 
 /**

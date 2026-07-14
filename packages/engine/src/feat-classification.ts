@@ -212,7 +212,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "augment-summoning",
     name: "Augment Summoning",
     bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    note: "real +4 Str/+4 Con, but the target is a summoned creature this engine doesn't model on the PC sheet at all — surfaced via a hand-authored FEAT_EFFECTS contextNote instead of a Change",
   },
   "awesome-blow": {
     slug: "awesome-blow",
@@ -2342,13 +2342,13 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "versatile-summon-monster",
     name: "Versatile Summon Monster",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "template-substitution choice for summon monster's summoned creatures, no Change-shaped number — hand-authored FEAT_EFFECTS contextNote spells out the mechanic",
   },
   "versatile-summon-nature-s-ally": {
     slug: "versatile-summon-nature-s-ally",
     name: "Versatile Summon Nature's Ally",
     bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    note: "template-substitution choice for summon nature's ally's summoned creatures, no Change-shaped number — hand-authored FEAT_EFFECTS contextNote spells out the mechanic",
   },
   "vicious-stomp": {
     slug: "vicious-stomp",

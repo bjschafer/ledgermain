@@ -30,7 +30,7 @@
  * selection, so they are not counted. Half-Orcs have no bonus feat trait.
  */
 
-import type { CharacterDoc, Feat, RefData } from "@pf1/schema";
+import type { CharacterDoc, ContextNote, Feat, RefData } from "@pf1/schema";
 import {
   activeArchetypeSwaps,
   buildRollData,
@@ -655,6 +655,26 @@ export function featChoiceDescriptor(featName: string): FeatChoiceDescriptor | n
   const resolved = resolveFeatEffect(featNameSlug(featName));
   if (resolved && resolved.entry.type === "choice") return resolved.entry.choice;
   return DISPLAY_ONLY_FEAT_CHOICES[featNameSlug(featName)] ?? null;
+}
+
+/**
+ * Non-mechanical reminders attached to a feat's hand-authored effect entry
+ * (`FEAT_EFFECTS`/`FEAT_EFFECTS_EXTRACTED`'s `StaticFeatEntry.contextNotes` in
+ * `@pf1/engine` — e.g. Augment Summoning's "+4 Str/+4 Con to summoned
+ * creatures"): numbers that live on a summoned creature, an eidolon, or
+ * another off-sheet target this engine doesn't track, surfaced as a reminder
+ * rather than invented as a PC-sheet Change. Mirrors
+ * `AlchemistDiscoveryDef.contextNotes` (`@pf1/engine`'s
+ * `alchemist-discoveries.ts`, read directly by `DiscoveryPicker.tsx`) — same
+ * "definition-level field, read straight by the UI" shape, since contextNotes
+ * never flow through `collect.ts`/`compute()` (they're display-only by
+ * construction). Empty for the overwhelming majority of feats (no entry, or
+ * an entry with no notes) — never throws on an unresolved feat name.
+ */
+export function featContextNotes(featName: string): ContextNote[] {
+  const resolved = resolveFeatEffect(featNameSlug(featName));
+  if (resolved?.entry.type === "static") return resolved.entry.contextNotes ?? [];
+  return [];
 }
 
 /**
