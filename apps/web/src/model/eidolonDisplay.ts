@@ -16,10 +16,22 @@ const SIZE_LABEL: Record<"sm" | "med" | "lg", string> = {
   lg: "Large",
 };
 
-/** One clean summary line: base form/size — same "·"-separated convention as `formatPhantomSummary`. */
+/**
+ * One clean summary line: base form/size, speeds — same "·"-separated
+ * convention as `formatCompanionSummary`.
+ */
 export function formatEidolonSummary(eidolon: DerivedEidolon): string {
   const sizeLabel = SIZE_LABEL[eidolon.size as "sm" | "med" | "lg"] ?? eidolon.size;
-  return `${eidolon.baseFormName}, ${sizeLabel}`;
+  const speedParts = Object.entries(eidolon.speeds).map(([mode, ft]) =>
+    mode === "land" ? `${ft} ft.` : `${mode} ${ft} ft.`,
+  );
+
+  return [
+    `${eidolon.baseFormName}, ${sizeLabel}`,
+    speedParts.length > 0 ? `Speed ${speedParts.join(", ")}` : null,
+  ]
+    .filter((part): part is string => part != null)
+    .join(" · ");
 }
 
 /** "2 claws" — the attack name, pluralized when there's more than one. */
@@ -55,4 +67,15 @@ export function eidolonSkillRows(eidolon: DerivedEidolon): EidolonSkillRow[] {
 /** "3 / 10" — evolution points spent vs. available, for a budget hint. */
 export function formatEidolonEvolutionBudget(eidolon: DerivedEidolon): string {
   return `${eidolon.evolutionPointsSpent} / ${eidolon.evolutionPointsAvailable}`;
+}
+
+/**
+ * Total natural-attack instances the eidolon currently rolls (sum of each
+ * attack row's `count` — e.g. "2 claws" contributes 2), for comparing
+ * against `maxAttacks` in the bookkeeping hint. The table's cap isn't
+ * enforced by the engine (see `DerivedEidolon.maxAttacks` doc comment), so
+ * the panel surfaces it as a soft warning only.
+ */
+export function eidolonAttackInstanceCount(eidolon: DerivedEidolon): number {
+  return eidolon.attacks.reduce((sum, a) => sum + a.count, 0);
 }

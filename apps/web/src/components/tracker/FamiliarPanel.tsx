@@ -11,6 +11,7 @@ import {
   restFamiliar,
   setFamiliarInReach,
 } from "../../model/familiar.js";
+import { creatureAbilityRows } from "../../model/creatureDisplay.js";
 import {
   formatFamiliarAttackDamage,
   formatFamiliarAttackName,
@@ -137,6 +138,23 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
 
       <div className="stat-group familiar-stat-group">
         <div className="stat-group-header">
+          <span className="stat-group-legend">Abilities</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--3">
+          {creatureAbilityRows(familiar.abilities).map((a) => (
+            <StatSeal
+              key={a.id}
+              label={a.label}
+              value={`${a.score} (${a.mod})`}
+              className="seal--compact"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
           <span className="stat-group-legend">Defense</span>
           <div className="stat-group-rule" />
         </div>
@@ -151,6 +169,7 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
           <StatSeal label="Touch" value={familiar.ac.touch} className="seal--compact" />
           <StatSeal label="Flat-Footed" value={familiar.ac.flatFooted} className="seal--compact" />
           <StatSeal label="CMD" value={familiar.cmd} className="seal--compact" />
+          <StatSeal label="Init" value={signed(familiar.init)} className="seal--compact" />
           {familiar.spellResistance !== undefined ? (
             <StatSeal label="SR" value={familiar.spellResistance} className="seal--compact" />
           ) : null}

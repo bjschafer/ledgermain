@@ -26,6 +26,7 @@ import {
   formatCompanionAttackTypeSuffix,
   formatCompanionSummary,
 } from "../../model/companionDisplay.js";
+import { creatureAbilityRows } from "../../model/creatureDisplay.js";
 import { signed } from "../../model/names.js";
 import { InfoTip } from "../InfoTip.js";
 import { StatSeal } from "../StatSeal.js";
@@ -187,10 +188,27 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
 
       <div className="stat-group familiar-stat-group">
         <div className="stat-group-header">
-          <span className="stat-group-legend">Defense</span>
+          <span className="stat-group-legend">Abilities</span>
           <div className="stat-group-rule" />
         </div>
         <div className="stat-group-grid stat-group-grid--3">
+          {creatureAbilityRows(companion.abilities).map((a) => (
+            <StatSeal
+              key={a.id}
+              label={a.label}
+              value={`${a.score} (${a.mod})`}
+              className="seal--compact"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Defense</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--4">
           <StatSeal
             label="AC"
             value={companion.ac.normal}
@@ -200,6 +218,7 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
           />
           <StatSeal label="Touch" value={companion.ac.touch} className="seal--compact" />
           <StatSeal label="Flat-Footed" value={companion.ac.flatFooted} className="seal--compact" />
+          <StatSeal label="Init" value={signed(companion.init)} className="seal--compact" />
         </div>
       </div>
 

@@ -12,7 +12,9 @@ import {
   restEidolon,
   toggleEidolonSummoned,
 } from "../../model/eidolon.js";
+import { creatureAbilityRows } from "../../model/creatureDisplay.js";
 import {
+  eidolonAttackInstanceCount,
   eidolonSkillRows,
   formatEidolonAttackDamage,
   formatEidolonAttackName,
@@ -46,6 +48,8 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
   const isLow = eidolon.hp.max > 0 && effective <= Math.floor(eidolon.hp.max / 4);
 
   const skillRows = eidolonSkillRows(eidolon);
+  const attackInstanceCount = eidolonAttackInstanceCount(eidolon);
+  const overAttackCap = attackInstanceCount > eidolon.maxAttacks;
 
   return (
     <Panel
@@ -137,12 +141,40 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
         Evolution points: {formatEidolonEvolutionBudget(eidolon)}
       </p>
 
+      <p className="hint eidolon-bookkeeping-hint">
+        <span
+          className={overAttackCap ? "warn-over" : undefined}
+          title="The base-form progression table caps total natural-attack instances at each level (display-only — not enforced on the evolutions you pick)."
+        >
+          Natural attacks: {attackInstanceCount} / max {eidolon.maxAttacks}
+        </span>
+        {" · "}
+        Skill points: {eidolon.skillPoints} (4 × HD; not itemized)
+      </p>
+
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Abilities</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--3">
+          {creatureAbilityRows(eidolon.abilities).map((a) => (
+            <StatSeal
+              key={a.id}
+              label={a.label}
+              value={`${a.score} (${a.mod})`}
+              className="seal--compact"
+            />
+          ))}
+        </div>
+      </div>
+
       <div className="stat-group familiar-stat-group">
         <div className="stat-group-header">
           <span className="stat-group-legend">Defense</span>
           <div className="stat-group-rule" />
         </div>
-        <div className="stat-group-grid stat-group-grid--3">
+        <div className="stat-group-grid stat-group-grid--4">
           <StatSeal
             label="AC"
             value={eidolon.ac.normal}
@@ -152,6 +184,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
           />
           <StatSeal label="Touch" value={eidolon.ac.touch} className="seal--compact" />
           <StatSeal label="Flat-Footed" value={eidolon.ac.flatFooted} className="seal--compact" />
+          <StatSeal label="Init" value={signed(eidolon.init)} className="seal--compact" />
         </div>
       </div>
 

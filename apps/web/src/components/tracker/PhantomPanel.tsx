@@ -11,6 +11,8 @@ import {
   restPhantom,
   setPhantomManifestation,
 } from "../../model/phantom.js";
+import { creatureAbilityRows } from "../../model/creatureDisplay.js";
+import { signed } from "../../model/names.js";
 import {
   formatPhantomAttackDamage,
   formatPhantomAttackName,
@@ -18,7 +20,6 @@ import {
   formatPhantomSummary,
   phantomSkillRows,
 } from "../../model/phantomDisplay.js";
-import { signed } from "../../model/names.js";
 import { InfoTip } from "../InfoTip.js";
 import { StatSeal } from "../StatSeal.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -146,10 +147,27 @@ export function PhantomPanel({ doc, refData, update }: BuilderProps) {
 
       <div className="stat-group familiar-stat-group">
         <div className="stat-group-header">
-          <span className="stat-group-legend">Defense</span>
+          <span className="stat-group-legend">Abilities</span>
           <div className="stat-group-rule" />
         </div>
         <div className="stat-group-grid stat-group-grid--3">
+          {creatureAbilityRows(phantom.abilities).map((a) => (
+            <StatSeal
+              key={a.id}
+              label={a.label}
+              value={`${a.score} (${a.mod})`}
+              className="seal--compact"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="stat-group familiar-stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Defense</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--4">
           <StatSeal
             label="AC"
             value={phantom.ac.normal}
@@ -159,6 +177,7 @@ export function PhantomPanel({ doc, refData, update }: BuilderProps) {
           />
           <StatSeal label="Touch" value={phantom.ac.touch} className="seal--compact" />
           <StatSeal label="Flat-Footed" value={phantom.ac.flatFooted} className="seal--compact" />
+          <StatSeal label="Init" value={signed(phantom.init)} className="seal--compact" />
         </div>
       </div>
 
