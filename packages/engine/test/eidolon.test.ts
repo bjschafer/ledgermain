@@ -18,6 +18,8 @@ function makeDoc(overrides: {
   eidolon?: CharacterDoc["build"]["eidolon"];
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
   sharedBuffIds?: string[];
+  /** The eidolon's OWN active conditions, independent of the summoner's `live.conditions`. */
+  eidolonConditions?: string[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -44,7 +46,10 @@ function makeDoc(overrides: {
       conditions: [],
       activeBuffs: overrides.activeBuffs ?? [],
       resources: {},
-      eidolon: overrides.sharedBuffIds ? { sharedBuffIds: overrides.sharedBuffIds } : undefined,
+      eidolon:
+        overrides.sharedBuffIds || overrides.eidolonConditions
+          ? { sharedBuffIds: overrides.sharedBuffIds, conditions: overrides.eidolonConditions }
+          : undefined,
     },
   } as CharacterDoc;
 }
@@ -352,5 +357,39 @@ describe("deriveEidolon edge cases", () => {
     expect(eidolon.evolutionPointsAvailable).toBe(3);
     // Biped's free 2-claw attack row + 4 evolution-granted attack rows (bite/claws/slam/gore).
     expect(eidolon.attacks).toHaveLength(5);
+  });
+});
+
+describe("deriveEidolon own active conditions", () => {
+  // summoner-1 biped, no evolutions: hd 1, bab +1, Str 16 (mod +3), Dex 12
+  // (mod +1), Con 13 (mod +1), Wis 10 (mod +0); claw attack = bab(1) +
+  // strMod(3) + size(0) = 4, saves fort 2(base)+1(con)=3 / ref 0(base)+1(dex)=1
+  // / will 2(base)+0(wis)=2, per total = wisMod(0) = 0 — hand-verified
+  // baseline for the deltas below.
+  function biped1(eidolonConditions?: string[]): CharacterDoc {
+    return makeDoc({
+      classes: [{ tag: "summoner", level: 1 }],
+      eidolon: { baseForm: "biped", name: "Grix", evolutions: [] },
+      eidolonConditions,
+    });
+  }
+
+  it("shaken (-2 attack, -2 all saves, -2 skills — global 'skills' target)", () => {
+    const doc = biped1(["shaken"]);
+    const rollData = buildRollData(doc, ref);
+    const eidolon = deriveEidolon(doc, rollData)!;
+    // baseline claw attack 4 (see biped1's comment above) - 2 (shaken) = 2.
+    expect(eidolon.attacks[0]).toMatchObject({ attack: 2 });
+    expect(eidolon.saves).toEqual({ fort: 1, ref: -1, will: 0 });
+    expect(eidolon.skills.per!.total).toBe(-2);
+  });
+
+  it("is independent of the summoner's own live.conditions (no active conditions -> unaffected baseline)", () => {
+    const doc = biped1();
+    const rollData = buildRollData(doc, ref);
+    const eidolon = deriveEidolon(doc, rollData)!;
+    expect(eidolon.attacks[0]).toMatchObject({ attack: 4 });
+    expect(eidolon.saves).toEqual({ fort: 3, ref: 1, will: 2 });
+    expect(eidolon.skills.per!.total).toBe(0);
   });
 });

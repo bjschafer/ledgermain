@@ -32,6 +32,10 @@
  *     place of Str for CMB only (PF1 universal combat-maneuver rule); CMD
  *     uses the standard 10 + BAB + Str + Dex + special-size formula
  *     unmodified (both abilities already contribute there).
+ *   - Conditions: the familiar has its OWN active-conditions list
+ *     (`live.familiar.conditions`), independent of the master's
+ *     `live.conditions` — routed through the exact same `routeSharedBuffs`
+ *     pipeline as a shared buff, same as `companion.ts`'s own conditions.
  *
  * Familiar progression table (by master's total character level):
  *   ML 1–2: +1 natural armor, Int 6, Alertness/Improved Evasion/Share
@@ -46,8 +50,9 @@
  *     {@link familiarNaturalArmorAdj} / {@link familiarIntScore}.
  */
 
-import type { AbilityId, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
+import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 
+import { CONDITIONS } from "./conditions.js";
 import { abilityMod, totalLevel } from "./rolldata.js";
 import {
   applySharedAbilityBonuses,
@@ -563,7 +568,17 @@ export function deriveFamiliar(
   // --- shared buffs: evaluate + bucket by target (issue #44) ----------------
   const sharedIds = new Set(doc.live.familiar?.sharedBuffIds ?? []);
   const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
-  const routed = routeSharedBuffs(sharedBuffs, rollData);
+
+  // --- the familiar's OWN active conditions: reshaped as synthetic
+  // ActiveBuffs so `routeSharedBuffs` applies their Change[] through the
+  // exact same typed-stacking pipeline as a shared buff — see
+  // `companion.ts`'s doc comment.
+  const conditionBuffs: ActiveBuff[] = (doc.live.familiar?.conditions ?? [])
+    .map((id) => CONDITIONS[id])
+    .filter((c): c is NonNullable<typeof c> => c != null && c.changes.length > 0)
+    .map((c) => ({ instanceId: `condition:${c.id}`, name: c.name, changes: c.changes }));
+
+  const routed = routeSharedBuffs([...sharedBuffs, ...conditionBuffs], rollData);
   const { ac: sharedAc, fort: sharedFort, ref: sharedRef, will: sharedWill } = routed;
   const sharedSkill = routed.skill;
   const {
@@ -693,7 +708,7 @@ export function deriveFamiliar(
         (species.flyManeuverability ? FLY_MANEUVER_BONUS[species.flyManeuverability] : 0);
     }
 
-    const miscStack = resolveStack(sharedSkill.get(id) ?? []);
+    const miscStack = resolveStack([...(sharedSkill.get(id) ?? []), ...routed.skillsGlobal]);
     const components: ModifierComponent[] = [];
     if (racial !== 0)
       components.push({

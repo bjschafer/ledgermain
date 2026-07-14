@@ -88,6 +88,10 @@
  *     Evasion at 2nd, Devotion at 6th, Multiattack at 9th, Improved Evasion
  *     at 14th) are display-only chips, same posture as
  *     `COMPANION_SPECIAL_ABILITY_DETAIL`/`PHANTOM_SPECIAL_ABILITY_DETAIL`.
+ *   - Conditions: the eidolon has its OWN active-conditions list
+ *     (`live.eidolon.conditions`), independent of the summoner's
+ *     `live.conditions` — routed through the exact same `routeSharedBuffs`
+ *     pipeline as a shared buff, same as `companion.ts`'s own conditions.
  *
  * Scope/deferrals (all documented here, none silently dropped):
  *   - **Chained (APG) summoner only.** `summonerLevel` below sums BOTH
@@ -123,9 +127,10 @@
  *     in `packages/schema/src/character.ts`).
  */
 
-import type { AbilityId, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
+import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import { CONDITIONS } from "./conditions.js";
 import {
   classifyNaturalAttacks,
   naturalAttackBonus,
@@ -1355,7 +1360,16 @@ export function deriveEidolon(
   // --- shared buffs: evaluate + bucket by target (mirrors companion.ts/phantom.ts) --
   const sharedIds = new Set(doc.live.eidolon?.sharedBuffIds ?? []);
   const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
-  const routed = routeSharedBuffs(sharedBuffs, rollData);
+
+  // --- the eidolon's OWN active conditions: reshaped as synthetic ActiveBuffs
+  // so `routeSharedBuffs` applies their Change[] through the exact same
+  // typed-stacking pipeline as a shared buff — see `companion.ts`'s doc comment.
+  const conditionBuffs: ActiveBuff[] = (doc.live.eidolon?.conditions ?? [])
+    .map((id) => CONDITIONS[id])
+    .filter((c): c is NonNullable<typeof c> => c != null && c.changes.length > 0)
+    .map((c) => ({ instanceId: `condition:${c.id}`, name: c.name, changes: c.changes }));
+
+  const routed = routeSharedBuffs([...sharedBuffs, ...conditionBuffs], rollData);
 
   abilities = applySharedAbilityBonuses(abilities, routed.ability, abilityMod);
   const strMod = abilities.str.mod;
@@ -1474,7 +1488,7 @@ export function deriveEidolon(
     if (id === "clm" && hasClimbSpeed) racial += 8;
     if (id === "swm" && hasSwimSpeed) racial += 8;
 
-    const miscStack = resolveStack(routed.skill.get(id) ?? []);
+    const miscStack = resolveStack([...(routed.skill.get(id) ?? []), ...routed.skillsGlobal]);
     const components: ModifierComponent[] = [];
     if (racial !== 0)
       components.push({ source: "Racial", type: "racial", value: racial, applied: true });

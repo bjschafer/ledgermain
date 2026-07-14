@@ -365,3 +365,46 @@ describe("tracked familiar (build.familiar): master-side bonuses", () => {
     expect(sheet.skills.sen!.total).toBe(2 + 1 + 2);
   });
 });
+
+describe("deriveFamiliar own active conditions", () => {
+  // Same Mortlach-the-cat / arcanist-4 stand-in fixture as the hand-computed
+  // fixture above: bite +6 (1d3-4), Fort +1/Ref +4/Will +5, Perception +7 —
+  // hand-verified baseline reused for the deltas below.
+  function catWithConditions(conditions?: string[]): CharacterDoc {
+    const base = makeMasterDoc({ familiar: { speciesId: "cat", name: "Mortlach" } });
+    return conditions ? { ...base, live: { ...base.live, familiar: { conditions } } } : base;
+  }
+
+  function deriveWithConditions(conditions?: string[]) {
+    const doc = catWithConditions(conditions);
+    const sheet = compute(doc, ref);
+    const master: FamiliarMasterInputs = {
+      maxHp: sheet.hp.max,
+      bab: sheet.bab,
+      baseSaves: { fort: 1, ref: 1, will: 4 },
+    };
+    const rollData = buildRollData(doc, ref, sheet.abilities, sheet.speeds, sheet.bab);
+    return deriveFamiliar(doc, master, rollData)!;
+  }
+
+  it("shaken (-2 attack, -2 all saves, -2 skills — global 'skills' target)", () => {
+    const familiar = deriveWithConditions(["shaken"]);
+    // baseline bite attack 6 (see catWithConditions's comment above) - 2 (shaken) = 4.
+    expect(familiar.attacks.find((a) => a.name === "Bite")).toMatchObject({
+      attack: 4,
+      damageBonus: -4,
+    });
+    expect(familiar.saves).toEqual({ fort: -1, ref: 2, will: 3 });
+    expect(familiar.skills.per!.total).toBe(5);
+  });
+
+  it("is independent of the master's own live.conditions (no active conditions -> unaffected baseline)", () => {
+    const familiar = deriveWithConditions();
+    expect(familiar.attacks.find((a) => a.name === "Bite")).toMatchObject({
+      attack: 6,
+      damageBonus: -4,
+    });
+    expect(familiar.saves).toEqual({ fort: 1, ref: 4, will: 5 });
+    expect(familiar.skills.per!.total).toBe(7);
+  });
+});

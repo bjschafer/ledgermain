@@ -75,10 +75,15 @@
  *     module has no DR/resistance block, fly-speed movement mode wiring, or
  *     touch-spell-delivery mechanic of its own (matches `familiar.ts`'s
  *     explicit "no DR/resistance block ... at all yet" scope note).
+ *   - Conditions: the phantom has its OWN active-conditions list
+ *     (`live.phantom.conditions`), independent of the spiritualist's
+ *     `live.conditions` — routed through the exact same `routeSharedBuffs`
+ *     pipeline as a shared buff, same as `companion.ts`'s own conditions.
  */
 
-import type { AbilityId, CharacterDoc, ModifierComponent } from "@pf1/schema";
+import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent } from "@pf1/schema";
 
+import { CONDITIONS } from "./conditions.js";
 import { abilityMod, totalLevel } from "./rolldata.js";
 import {
   applySharedAbilityBonuses,
@@ -481,7 +486,17 @@ export function derivePhantom(doc: CharacterDoc, rollData: RollData): DerivedPha
   // --- shared buffs: evaluate + bucket by target (mirrors companion.ts) ------
   const sharedIds = new Set(doc.live.phantom?.sharedBuffIds ?? []);
   const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
-  const routed = routeSharedBuffs(sharedBuffs, rollData);
+
+  // --- the phantom's OWN active conditions: reshaped as synthetic
+  // ActiveBuffs so `routeSharedBuffs` applies their Change[] through the
+  // exact same typed-stacking pipeline as a shared buff — see
+  // `companion.ts`'s doc comment.
+  const conditionBuffs: ActiveBuff[] = (doc.live.phantom?.conditions ?? [])
+    .map((id) => CONDITIONS[id])
+    .filter((c): c is NonNullable<typeof c> => c != null && c.changes.length > 0)
+    .map((c) => ({ instanceId: `condition:${c.id}`, name: c.name, changes: c.changes }));
+
+  const routed = routeSharedBuffs([...sharedBuffs, ...conditionBuffs], rollData);
 
   abilities = applySharedAbilityBonuses(abilities, routed.ability, abilityMod);
   const strMod = abilities.str.mod;
@@ -585,7 +600,7 @@ export function derivePhantom(doc: CharacterDoc, rollData: RollData): DerivedPha
   for (const id of focus.skills) {
     const ability = SKILL_ABILITY[id] ?? "int";
     const abilityModVal = abilities[ability].mod;
-    const miscStack = resolveStack(routed.skill.get(id) ?? []);
+    const miscStack = resolveStack([...(routed.skill.get(id) ?? []), ...routed.skillsGlobal]);
     const components: ModifierComponent[] = [
       { source: "Hit Dice", type: "untyped", value: hd, applied: true },
       { source: "Class skill", type: "untyped", value: 3, applied: true },

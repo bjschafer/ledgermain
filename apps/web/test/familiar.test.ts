@@ -10,13 +10,17 @@ import {
   applyFamiliarDamage,
   clearFamiliar,
   deriveFamiliarSheet,
+  familiarSupersedingCondition,
+  hasFamiliarCondition,
   healFamiliar,
   healFamiliarNonlethal,
+  isFamiliarConditionImplied,
   isSharedWithFamiliar,
   restFamiliar,
   setFamiliar,
   setFamiliarInReach,
   setFamiliarNotes,
+  toggleFamiliarCondition,
   toggleSharedBuff,
 } from "../src/model/familiar.js";
 
@@ -142,5 +146,37 @@ describe("deriveFamiliarSheet() — Mortlach the cat wired through the normal do
 
     // Master's own sheet picks up the cat's published +3 Stealth master bonus.
     expect(sheet.skills.ste!.total).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe("familiar's own active conditions", () => {
+  it("toggleFamiliarCondition no-ops without a familiar", () => {
+    const d = createEmptyDoc("t");
+    expect(toggleFamiliarCondition(d, "shaken")).toBe(d);
+  });
+
+  it("toggleFamiliarCondition adds then removes a condition id", () => {
+    let d = setFamiliar(createEmptyDoc("t"), "cat", "Mortlach");
+    expect(hasFamiliarCondition(d, "shaken")).toBe(false);
+    d = toggleFamiliarCondition(d, "shaken");
+    expect(hasFamiliarCondition(d, "shaken")).toBe(true);
+    d = toggleFamiliarCondition(d, "shaken");
+    expect(hasFamiliarCondition(d, "shaken")).toBe(false);
+  });
+
+  it("is independent of the master's own live.conditions", () => {
+    let d = setFamiliar(createEmptyDoc("t"), "cat", "Mortlach");
+    d = toggleFamiliarCondition(d, "shaken");
+    expect(d.live.conditions).toEqual([]);
+    expect(hasFamiliarCondition(d, "shaken")).toBe(true);
+  });
+
+  it("ladder auto-upgrade: activating 'frightened' (stricter) supersedes an active 'shaken' (milder)", () => {
+    let d = setFamiliar(createEmptyDoc("t"), "cat", "Mortlach");
+    d = toggleFamiliarCondition(d, "shaken");
+    d = toggleFamiliarCondition(d, "frightened");
+    expect(d.live.familiar?.conditions).toEqual(["frightened"]);
+    expect(isFamiliarConditionImplied(d, "shaken")).toBe(true);
+    expect(familiarSupersedingCondition(d, "shaken")).toBe("frightened");
   });
 });

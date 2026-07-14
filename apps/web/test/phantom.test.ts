@@ -9,15 +9,19 @@ import {
   applyPhantomDamage,
   clearPhantom,
   derivePhantomSheet,
+  hasPhantomCondition,
   healPhantom,
   healPhantomNonlethal,
+  isPhantomConditionImplied,
   isSharedWithPhantom,
+  phantomSupersedingCondition,
   restPhantom,
   setPhantom,
   setPhantomAbilityIncrease,
   setPhantomManifestation,
   setPhantomNotes,
   setPhantomSize,
+  togglePhantomCondition,
   toggleSharedBuffPhantom,
 } from "../src/model/phantom.js";
 
@@ -137,5 +141,37 @@ describe("derivePhantomSheet() — wired through the normal doc model", () => {
     let d = spiritualist7();
     d = setPhantom(d, "not-a-focus", "Ghost");
     expect(derivePhantomSheet(d, ref)).toBeUndefined();
+  });
+});
+
+describe("phantom's own active conditions", () => {
+  it("togglePhantomCondition no-ops without a phantom", () => {
+    const d = createEmptyDoc("t");
+    expect(togglePhantomCondition(d, "shaken")).toBe(d);
+  });
+
+  it("togglePhantomCondition adds then removes a condition id", () => {
+    let d = setPhantom(createEmptyDoc("t"), "anger", "Grief");
+    expect(hasPhantomCondition(d, "shaken")).toBe(false);
+    d = togglePhantomCondition(d, "shaken");
+    expect(hasPhantomCondition(d, "shaken")).toBe(true);
+    d = togglePhantomCondition(d, "shaken");
+    expect(hasPhantomCondition(d, "shaken")).toBe(false);
+  });
+
+  it("is independent of the spiritualist's own live.conditions", () => {
+    let d = setPhantom(createEmptyDoc("t"), "anger", "Grief");
+    d = togglePhantomCondition(d, "shaken");
+    expect(d.live.conditions).toEqual([]);
+    expect(hasPhantomCondition(d, "shaken")).toBe(true);
+  });
+
+  it("ladder auto-upgrade: activating 'frightened' (stricter) supersedes an active 'shaken' (milder)", () => {
+    let d = setPhantom(createEmptyDoc("t"), "anger", "Grief");
+    d = togglePhantomCondition(d, "shaken");
+    d = togglePhantomCondition(d, "frightened");
+    expect(d.live.phantom?.conditions).toEqual(["frightened"]);
+    expect(isPhantomConditionImplied(d, "shaken")).toBe(true);
+    expect(phantomSupersedingCondition(d, "shaken")).toBe("frightened");
   });
 });

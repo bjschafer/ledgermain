@@ -14,15 +14,19 @@ import {
   eidolonEvolutionPoolNeedsWarning,
   eidolonFeatPrereqContext,
   eidolonHasWeaponFinesse,
+  eidolonSupersedingCondition,
+  hasEidolonCondition,
   healEidolon,
   healEidolonNonlethal,
   addEidolonNonlethal,
+  isEidolonConditionImplied,
   isEidolonSummoned,
   isSharedWithEidolon,
   removeEidolonEvolution,
   restEidolon,
   setEidolon,
   setEidolonNotes,
+  toggleEidolonCondition,
   toggleEidolonFeat,
   toggleEidolonSummoned,
   toggleSharedBuffEidolon,
@@ -255,5 +259,37 @@ describe("eidolon feat investment", () => {
     const biteWith = withFinesse.attacks.find((a) => a.name === "Bite")!;
     // bab(1) + dexMod(3) + size(0) = 4; damage stays Str-based (strMod 1).
     expect(biteWith).toMatchObject({ attack: 4, damageBonus: 1 });
+  });
+});
+
+describe("eidolon's own active conditions", () => {
+  it("toggleEidolonCondition no-ops without an eidolon", () => {
+    const d = createEmptyDoc("t");
+    expect(toggleEidolonCondition(d, "shaken")).toBe(d);
+  });
+
+  it("toggleEidolonCondition adds then removes a condition id", () => {
+    let d = setEidolon(createEmptyDoc("t"), "biped", "Grix");
+    expect(hasEidolonCondition(d, "shaken")).toBe(false);
+    d = toggleEidolonCondition(d, "shaken");
+    expect(hasEidolonCondition(d, "shaken")).toBe(true);
+    d = toggleEidolonCondition(d, "shaken");
+    expect(hasEidolonCondition(d, "shaken")).toBe(false);
+  });
+
+  it("is independent of the summoner's own live.conditions", () => {
+    let d = setEidolon(createEmptyDoc("t"), "biped", "Grix");
+    d = toggleEidolonCondition(d, "shaken");
+    expect(d.live.conditions).toEqual([]);
+    expect(hasEidolonCondition(d, "shaken")).toBe(true);
+  });
+
+  it("ladder auto-upgrade: activating 'frightened' (stricter) supersedes an active 'shaken' (milder)", () => {
+    let d = setEidolon(createEmptyDoc("t"), "biped", "Grix");
+    d = toggleEidolonCondition(d, "shaken");
+    d = toggleEidolonCondition(d, "frightened");
+    expect(d.live.eidolon?.conditions).toEqual(["frightened"]);
+    expect(isEidolonConditionImplied(d, "shaken")).toBe(true);
+    expect(eidolonSupersedingCondition(d, "shaken")).toBe("frightened");
   });
 });

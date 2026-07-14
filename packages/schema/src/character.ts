@@ -1550,6 +1550,18 @@ export interface FamiliarLiveState {
    * Omitted/empty = no shared buffs.
    */
   sharedBuffIds?: string[];
+  /**
+   * The familiar's OWN active conditions — condition ids, keys into
+   * `@pf1/engine` `CONDITIONS`, tracked independently of the master's own
+   * `live.conditions` (it can be shaken/entangled/etc. while the master
+   * isn't). Same ladder-aware auto-upgrade/implied-condition posture as
+   * {@link AnimalCompanionLiveState.conditions} (the established pattern) —
+   * toggled via `apps/web/src/model/familiar.ts` `toggleFamiliarCondition`,
+   * resolved by `@pf1/engine` `deriveFamiliar` through the same
+   * `routeSharedBuffs` pipeline as a shared buff. Omitted/empty = no active
+   * conditions.
+   */
+  conditions?: string[];
 }
 
 /**
@@ -1671,6 +1683,18 @@ export interface PhantomLiveState {
    * defaults to `"ectoplasmic"` (the default manifested state).
    */
   manifestation?: "ectoplasmic" | "incorporeal" | "confined";
+  /**
+   * The phantom's OWN active conditions — condition ids, keys into
+   * `@pf1/engine` `CONDITIONS`, tracked independently of the master's own
+   * `live.conditions` (it can be shaken/entangled/etc. while the master
+   * isn't). Same ladder-aware auto-upgrade/implied-condition posture as
+   * {@link AnimalCompanionLiveState.conditions} (the established pattern) —
+   * toggled via `apps/web/src/model/phantom.ts` `togglePhantomCondition`,
+   * resolved by `@pf1/engine` `derivePhantom` through the same
+   * `routeSharedBuffs` pipeline as a shared buff. Omitted/empty = no active
+   * conditions.
+   */
+  conditions?: string[];
 }
 
 /**
@@ -1781,6 +1805,18 @@ export interface EidolonLiveState {
    * tracker panel surfaces the rule as a reminder only.
    */
   summoned?: boolean;
+  /**
+   * The eidolon's OWN active conditions — condition ids, keys into
+   * `@pf1/engine` `CONDITIONS`, tracked independently of the summoner's own
+   * `live.conditions` (it can be shaken/entangled/etc. while the summoner
+   * isn't). Same ladder-aware auto-upgrade/implied-condition posture as
+   * {@link AnimalCompanionLiveState.conditions} (the established pattern) —
+   * toggled via `apps/web/src/model/eidolon.ts` `toggleEidolonCondition`,
+   * resolved by `@pf1/engine` `deriveEidolon` through the same
+   * `routeSharedBuffs` pipeline as a shared buff. Omitted/empty = no active
+   * conditions.
+   */
+  conditions?: string[];
 }
 
 /**

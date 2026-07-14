@@ -10,6 +10,7 @@
 
 import {
   buildRollData,
+  CONDITION_LADDERS,
   deriveEidolon,
   EIDOLON_BASE_FORMS,
   EIDOLON_EVOLUTIONS,
@@ -20,6 +21,7 @@ import {
 } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, EidolonEvolutionPick, RefData } from "@pf1/schema";
 
+import { toggleConditionIn } from "./conditions.js";
 import { ABILITY_IDS } from "./doc.js";
 import type { PrereqContext } from "./prereqs.js";
 
@@ -175,6 +177,38 @@ export function healEidolonNonlethal(doc: CharacterDoc, amount: number): Charact
 export function restEidolon(doc: CharacterDoc): CharacterDoc {
   if (!doc.live.eidolon && !doc.build.eidolon) return doc;
   return withEidolonLive(doc, { damage: 0, nonlethal: 0 });
+}
+
+/** Whether the eidolon's OWN condition `id` is currently active (independent of the summoner's `live.conditions`). */
+export function hasEidolonCondition(doc: CharacterDoc, id: string): boolean {
+  return (doc.live.eidolon?.conditions ?? []).includes(id);
+}
+
+/** The eidolon's active condition id, if any, that supersedes `id` on its `CONDITION_LADDERS` ladder (mirrors `model/conditions.ts`'s `supersedingCondition`, scoped to the eidolon's own list). */
+export function eidolonSupersedingCondition(doc: CharacterDoc, id: string): string | undefined {
+  const pos = CONDITION_LADDERS.find((ladder) => ladder.includes(id));
+  if (!pos) return undefined;
+  const index = pos.indexOf(id);
+  const conditions = doc.live.eidolon?.conditions ?? [];
+  return pos.slice(index + 1).find((sibling) => conditions.includes(sibling));
+}
+
+/** True when the eidolon's condition `id` is implied by a stricter active sibling (see `eidolonSupersedingCondition`) — the UI shows it as covered rather than independently toggleable. */
+export function isEidolonConditionImplied(doc: CharacterDoc, id: string): boolean {
+  return eidolonSupersedingCondition(doc, id) !== undefined;
+}
+
+/**
+ * Toggle one of the eidolon's OWN active conditions (`live.eidolon.conditions`)
+ * — reuses `model/conditions.ts`'s `toggleConditionIn` for the same
+ * ladder-aware auto-upgrade/implied-condition behavior the summoner's own
+ * `live.conditions` gets, just scoped to the eidolon's separate array.
+ * No-ops if there's no eidolon yet.
+ */
+export function toggleEidolonCondition(doc: CharacterDoc, id: string): CharacterDoc {
+  if (!doc.build.eidolon) return doc;
+  const conditions = toggleConditionIn(doc.live.eidolon?.conditions ?? [], id);
+  return withEidolonLive(doc, { conditions });
 }
 
 /** Whether one of the master's active buffs (by instance id) is currently shared onto the eidolon. */

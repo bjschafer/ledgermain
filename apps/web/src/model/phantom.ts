@@ -9,12 +9,15 @@
 
 import {
   buildRollData,
+  CONDITION_LADDERS,
   derivePhantom,
   EMOTIONAL_FOCI,
   phantomAbilityIncreaseSlots,
   type DerivedPhantom,
 } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, PhantomBuild, RefData } from "@pf1/schema";
+
+import { toggleConditionIn } from "./conditions.js";
 
 /** Set (or replace) the tracked phantom's Emotional Focus + name. Trims blank names to "Phantom". */
 export function setPhantom(doc: CharacterDoc, focus: string, name: string): CharacterDoc {
@@ -123,6 +126,38 @@ export function healPhantomNonlethal(doc: CharacterDoc, amount: number): Charact
 export function restPhantom(doc: CharacterDoc): CharacterDoc {
   if (!doc.live.phantom && !doc.build.phantom) return doc;
   return withPhantomLive(doc, { damage: 0, nonlethal: 0 });
+}
+
+/** Whether the phantom's OWN condition `id` is currently active (independent of the spiritualist's `live.conditions`). */
+export function hasPhantomCondition(doc: CharacterDoc, id: string): boolean {
+  return (doc.live.phantom?.conditions ?? []).includes(id);
+}
+
+/** The phantom's active condition id, if any, that supersedes `id` on its `CONDITION_LADDERS` ladder (mirrors `model/conditions.ts`'s `supersedingCondition`, scoped to the phantom's own list). */
+export function phantomSupersedingCondition(doc: CharacterDoc, id: string): string | undefined {
+  const pos = CONDITION_LADDERS.find((ladder) => ladder.includes(id));
+  if (!pos) return undefined;
+  const index = pos.indexOf(id);
+  const conditions = doc.live.phantom?.conditions ?? [];
+  return pos.slice(index + 1).find((sibling) => conditions.includes(sibling));
+}
+
+/** True when the phantom's condition `id` is implied by a stricter active sibling (see `phantomSupersedingCondition`) — the UI shows it as covered rather than independently toggleable. */
+export function isPhantomConditionImplied(doc: CharacterDoc, id: string): boolean {
+  return phantomSupersedingCondition(doc, id) !== undefined;
+}
+
+/**
+ * Toggle one of the phantom's OWN active conditions (`live.phantom.conditions`)
+ * — reuses `model/conditions.ts`'s `toggleConditionIn` for the same
+ * ladder-aware auto-upgrade/implied-condition behavior the spiritualist's own
+ * `live.conditions` gets, just scoped to the phantom's separate array.
+ * No-ops if there's no phantom yet.
+ */
+export function togglePhantomCondition(doc: CharacterDoc, id: string): CharacterDoc {
+  if (!doc.build.phantom) return doc;
+  const conditions = toggleConditionIn(doc.live.phantom?.conditions ?? [], id);
+  return withPhantomLive(doc, { conditions });
 }
 
 /** Whether one of the master's active buffs (by instance id) is currently shared onto the phantom. */

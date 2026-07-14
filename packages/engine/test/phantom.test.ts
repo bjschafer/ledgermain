@@ -18,6 +18,8 @@ function makeDoc(overrides: {
   phantom?: CharacterDoc["build"]["phantom"];
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
   sharedBuffIds?: string[];
+  /** The phantom's OWN active conditions, independent of the spiritualist's `live.conditions`. */
+  phantomConditions?: string[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -44,7 +46,10 @@ function makeDoc(overrides: {
       conditions: [],
       activeBuffs: overrides.activeBuffs ?? [],
       resources: {},
-      phantom: overrides.sharedBuffIds ? { sharedBuffIds: overrides.sharedBuffIds } : undefined,
+      phantom:
+        overrides.sharedBuffIds || overrides.phantomConditions
+          ? { sharedBuffIds: overrides.sharedBuffIds, conditions: overrides.phantomConditions }
+          : undefined,
     },
   } as CharacterDoc;
 }
@@ -208,5 +213,39 @@ describe("derivePhantom edge cases", () => {
     // level 5 row: abilityBonus +2 to Dex/Cha automatically; the single ASI slot goes to Str.
     expect(phantom.abilities.str).toEqual({ score: 13, mod: 1 });
     expect(phantom.abilities.cha).toEqual({ score: 15, mod: 2 });
+  });
+});
+
+describe("derivePhantom own active conditions", () => {
+  // spiritualist-1 anger-focus medium phantom: hd 1, bab +1, Str 12 (mod +1),
+  // Dex 14 (mod +2), Con 13 (mod +1), Cha 13 (mod +1); slam attack = bab(1) +
+  // strMod(1) + size(0) = 2, saves fort 2(base)+1(con)=3 / ref 0(base)+2(dex)=2
+  // / will 2(base)+0(wis)=2, Intimidate total = hd(1)+chaMod(1)+3(class
+  // skill) = 5 — hand-verified baseline for the deltas below.
+  function anger1(phantomConditions?: string[]): CharacterDoc {
+    return makeDoc({
+      classes: [{ tag: "spiritualist", level: 1 }],
+      phantom: { focus: "anger", name: "Grief" },
+      phantomConditions,
+    });
+  }
+
+  it("shaken (-2 attack, -2 all saves, -2 skills — global 'skills' target)", () => {
+    const doc = anger1(["shaken"]);
+    const rollData = buildRollData(doc, ref);
+    const phantom = derivePhantom(doc, rollData)!;
+    // baseline slam attack 2 (see anger1's comment above) - 2 (shaken) = 0.
+    expect(phantom.attacks[0]).toMatchObject({ attack: 0 });
+    expect(phantom.saves).toEqual({ fort: 1, ref: 0, will: 0 });
+    expect(phantom.skills.int!.total).toBe(3);
+  });
+
+  it("is independent of the spiritualist's own live.conditions (no active conditions -> unaffected baseline)", () => {
+    const doc = anger1();
+    const rollData = buildRollData(doc, ref);
+    const phantom = derivePhantom(doc, rollData)!;
+    expect(phantom.attacks[0]).toMatchObject({ attack: 2 });
+    expect(phantom.saves).toEqual({ fort: 3, ref: 2, will: 2 });
+    expect(phantom.skills.int!.total).toBe(5);
   });
 });
