@@ -1,16 +1,10 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## What this is
 
 Ledgermain is a web-based **in-play character sheet, tracker, and builder for Pathfinder 1e**. The product's center of gravity is _play at the table_ — a rules-aware tracker that recomputes correct numbers as live session state (HP, conditions, buffs, resources) changes, not just a builder. Read `docs/design.md` for architecture rationale — the source of truth for _why_ things are shaped the way they are; `README.md` covers what the project is and how to run it.
 
-Stages 1–4 are complete. Stage 5 (Cloudflare Worker persistence + cross-device sync, docs/design.md.md §2.1) has a first cut: `apps/api` (Discord OAuth + `CharacterDoc` CRUD with optimistic-concurrency conflict detection) and a client sync module in `apps/web/src/sync/` (background push/pull, wired thinly into `state/useCharacter.ts`). The Worker is deployed and live at `api.ledgermain.whizkid.dev` (KV namespaces, custom domain, Discord Application, and `DISCORD_CLIENT_SECRET` all in place) — see `apps/api/README.md`. `VITE_API_URL` unset (the default) keeps the app in local-only mode, unchanged from before Stage 5; the client only talks to the API when built with it set.
-
 ## Commands
 
-Toolchain is **bun** with workspaces (despite `pnpm` references in some doc prose — the actual scripts and lockfile are bun). Tests run on **`bun test`**, not vitest (ignore README's vitest mention) — **except** `apps/api`, whose Worker routes need a real Workers runtime to test against (`@cloudflare/vitest-pool-workers`); its `test` script shells out to `vitest run`, and `bun run test` (root) picks it up automatically via the existing `--filter '*'` mechanism, no special-casing needed.
+Toolchain is **bun** with workspaces. Tests run on **`bun test`** — **except** `apps/api`, whose Worker routes need a real Workers runtime to test against (`@cloudflare/vitest-pool-workers`); its `test` script shells out to `vitest run`, and `bun run test` (root) picks it up automatically via the existing `--filter '*'` mechanism, no special-casing needed.
 
 ```bash
 bun install
@@ -61,7 +55,7 @@ apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blo
 
 > **The client is authoritative for all game logic. The server is dumb persistence.**
 
-Derived stats are **never** computed or stored server-side — the server (Stage 5) only stores an opaque JSON `CharacterDoc` blob. The corner to never cut: nothing that toggles a buff, applies damage, or computes a modifier may require a server round-trip. This is what makes the deferred features (party sync, offline PWA) cheap later.
+Derived stats are **never** computed or stored server-side — the server only stores an opaque JSON `CharacterDoc` blob. The corner to never cut: nothing that toggles a buff, applies damage, or computes a modifier may require a server round-trip.
 
 ### Two objects, one engine
 
