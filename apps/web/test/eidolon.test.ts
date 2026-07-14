@@ -12,6 +12,7 @@ import {
   eidolonEvolutionPointsAvailable,
   eidolonEvolutionPointsSpent,
   eidolonEvolutionPoolNeedsWarning,
+  eidolonFeatPrereqContext,
   healEidolon,
   healEidolonNonlethal,
   addEidolonNonlethal,
@@ -21,6 +22,7 @@ import {
   restEidolon,
   setEidolon,
   setEidolonNotes,
+  toggleEidolonFeat,
   toggleEidolonSummoned,
   toggleSharedBuffEidolon,
 } from "../src/model/eidolon.js";
@@ -196,5 +198,32 @@ describe("derivEidolonSheet() — wired through the normal doc model", () => {
     let d = summoner7();
     d = setEidolon(d, "not-a-form", "Ghost");
     expect(deriveEidolonSheet(d, ref)).toBeUndefined();
+  });
+});
+
+describe("eidolon feat investment", () => {
+  const powerAttackId = Object.values(ref.feats).find((f) => f.name === "Power Attack")!.id;
+
+  it("toggleEidolonFeat adds then removes a feat id, no-ops without an eidolon", () => {
+    const empty = createEmptyDoc("t");
+    expect(toggleEidolonFeat(empty, powerAttackId)).toBe(empty);
+
+    let d = setEidolon(createEmptyDoc("t"), "biped", "Grix");
+    d = toggleEidolonFeat(d, powerAttackId);
+    expect(d.build.eidolon?.feats).toEqual([powerAttackId]);
+    d = toggleEidolonFeat(d, powerAttackId);
+    expect(d.build.eidolon?.feats).toEqual([]);
+  });
+
+  it("eidolonFeatPrereqContext checks structured prereqs against the EIDOLON's own BAB/abilities, not the summoner's", () => {
+    let d = summoner7();
+    d = setEidolon(d, "biped", "Grix");
+    const eidolon = deriveEidolonSheet(d, ref)!;
+    d = toggleEidolonFeat(d, powerAttackId);
+    const ctx = eidolonFeatPrereqContext(d, eidolon, ref);
+    expect(ctx.bab).toBe(eidolon.bab);
+    expect(ctx.abilityTotals.str).toBe(eidolon.abilities.str.score);
+    expect(ctx.casterLevel).toBe(0);
+    expect(ctx.selectedFeats).toEqual(new Set([powerAttackId]));
   });
 });

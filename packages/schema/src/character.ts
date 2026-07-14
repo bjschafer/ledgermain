@@ -1727,6 +1727,19 @@ export interface EidolonBuild {
    * `eidolonEvolutionPointsSpent`/`eidolonEvolutionPoolNeedsWarning`.
    */
   evolutions: EidolonEvolutionPick[];
+  /**
+   * Feat ids chosen for the eidolon itself — keys into `RefData.feats`. Free
+   * pick from the full feat list (no "eidolon-eligible" filter — a
+   * documented v1 "first cut" scope, matching this project's hybrid-prereq
+   * honesty bar rather than promising perfect eligibility curation),
+   * soft-capped (never blocked) against the eidolon's own
+   * `DerivedEidolon.bonusFeats` budget (APG Table: Eidolon Base Statistics
+   * "Feats" column) by `apps/web/src/model/eidolon.ts`. Structured prereqs
+   * (ability score, BAB) are checked against the EIDOLON's own derived
+   * stats, not the summoner's — see `model/eidolon.ts`'s
+   * `eidolonFeatPrereqContext`. Omitted/empty = no feats picked yet.
+   */
+  feats?: string[];
   /** Free-text notes (e.g. personality, tactics, house-rule tweaks). */
   notes?: string;
 }

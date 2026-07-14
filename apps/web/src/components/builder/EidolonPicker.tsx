@@ -1,27 +1,32 @@
 import { useMemo, useState } from "react";
 
 import { EIDOLON_BASE_FORMS, EIDOLON_EVOLUTION_IDS, EIDOLON_EVOLUTIONS } from "@pf1/engine";
-import type { AbilityId, CharacterDoc } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, RefData } from "@pf1/schema";
 
 import {
   addEidolonEvolution,
   clearEidolon,
+  deriveEidolonSheet,
   eidolonEvolutionCount,
   eidolonEvolutionPointsAvailable,
   eidolonEvolutionPointsSpent,
   eidolonEvolutionPoolNeedsWarning,
+  eidolonFeatPrereqContext,
   eidolonSummonerLevel,
   removeLastEidolonEvolution,
   setEidolon,
   setEidolonEvolutionChoice,
   setEidolonNotes,
+  toggleEidolonFeat,
 } from "../../model/eidolon.js";
+import { evaluatePrereqs } from "../../model/prereqs.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface EidolonPickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
@@ -43,12 +48,20 @@ const ABILITY_OPTIONS: { id: AbilityId; label: string }[] = [
  * is class-agnostic) since only the Summoner's own "Eidolon" class feature
  * grants one.
  */
-export function EidolonPicker({ doc, update }: EidolonPickerProps) {
+export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Eidolon", false);
   const summonerLevel = eidolonSummonerLevel(doc);
   if (summonerLevel < 1) return null;
 
   const eidolon = doc.build.eidolon;
+  // Full derived stat block — needed for the eidolon's OWN
+  // hd/bab/abilities/feat budget, none of which the raw `EidolonBuild` alone
+  // carries.
+  const derivedEidolon = deriveEidolonSheet(doc, refData);
+  const chosenFeatIds = eidolon?.feats ?? [];
+  const featCtx = derivedEidolon
+    ? eidolonFeatPrereqContext(doc, derivedEidolon, refData)
+    : undefined;
 
   return (
     <div className="subsection phantom-picker">
@@ -114,6 +127,57 @@ export function EidolonPicker({ doc, update }: EidolonPickerProps) {
                 aria-label="Eidolon notes"
               />
               <EvolutionSection doc={doc} update={update} />
+              {derivedEidolon && featCtx && (
+                <div className="animal-companion-feats">
+                  <span
+                    className={`hint${
+                      chosenFeatIds.length > derivedEidolon.bonusFeats ? " warn-over" : ""
+                    }`}
+                  >
+                    Feats: {chosenFeatIds.length} / {derivedEidolon.bonusFeats}
+                  </span>
+                  <div className="chips">
+                    {chosenFeatIds.map((id) => (
+                      <button
+                        key={id}
+                        type="button"
+                        className="chip"
+                        aria-pressed
+                        onClick={() => update((d) => toggleEidolonFeat(d, id))}
+                        title="Remove"
+                      >
+                        {refData.feats[id]?.name ?? id} ✕
+                      </button>
+                    ))}
+                  </div>
+                  <select
+                    className="familiar-select"
+                    value=""
+                    onChange={(e) => {
+                      if (e.target.value) update((d) => toggleEidolonFeat(d, e.target.value));
+                    }}
+                    aria-label="Add an eidolon feat"
+                  >
+                    <option value="">— add a feat —</option>
+                    {Object.values(refData.feats)
+                      .filter((f) => !chosenFeatIds.includes(f.id))
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map((f) => {
+                        const blocked = evaluatePrereqs(f, featCtx).blocked;
+                        return (
+                          <option key={f.id} value={f.id} disabled={blocked}>
+                            {f.name}
+                            {blocked ? " (prereqs unmet)" : ""}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  <p className="hint">
+                    Free pick from the full feat list; prereqs checked against the eidolon's own
+                    stats.
+                  </p>
+                </div>
+              )}
               <button
                 type="button"
                 className="btn-ghost"

@@ -17,7 +17,10 @@ import {
   eidolonSummonerLevel,
   type DerivedEidolon,
 } from "@pf1/engine";
-import type { CharacterDoc, EidolonEvolutionPick, RefData } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, EidolonEvolutionPick, RefData } from "@pf1/schema";
+
+import { ABILITY_IDS } from "./doc.js";
+import type { PrereqContext } from "./prereqs.js";
 
 /** Set (or replace) the tracked eidolon's base form + name. Trims blank names to "Eidolon". */
 export function setEidolon(doc: CharacterDoc, baseForm: string, name: string): CharacterDoc {
@@ -107,6 +110,21 @@ export function removeLastEidolonEvolution(doc: CharacterDoc, id: string): Chara
 /** How many times evolution `id` currently appears in the eidolon's pick list. */
 export function eidolonEvolutionCount(doc: CharacterDoc, id: string): number {
   return (doc.build.eidolon?.evolutions ?? []).filter((p) => p.id === id).length;
+}
+
+/**
+ * Toggle a feat pick for the eidolon itself (`build.eidolon.feats`).
+ * Free-choice, soft-capped against `DerivedEidolon.bonusFeats` by the UI
+ * (never blocked here). No-ops if there's no eidolon yet.
+ */
+export function toggleEidolonFeat(doc: CharacterDoc, featId: string): CharacterDoc {
+  const current = doc.build.eidolon;
+  if (!current) return doc;
+  const existing = current.feats ?? [];
+  const feats = existing.includes(featId)
+    ? existing.filter((id) => id !== featId)
+    : [...existing, featId];
+  return { ...doc, build: { ...doc.build, eidolon: { ...current, feats } } };
 }
 
 function withEidolonLive(
@@ -203,6 +221,30 @@ export function eidolonEvolutionPointsAvailable(doc: CharacterDoc): number {
 /** True when spent evolution points exceed the available pool — soft warning only, never blocks a pick (same posture as `traits`/`racialTraits`). */
 export function eidolonEvolutionPoolNeedsWarning(doc: CharacterDoc): boolean {
   return eidolonEvolutionPointsSpent(doc) > eidolonEvolutionPointsAvailable(doc);
+}
+
+/**
+ * The eidolon's own feat-prerequisite context — reuses `model/prereqs.ts`'s
+ * `evaluatePrereqs`/`PrereqContext`, but built from the EIDOLON's own derived
+ * ability scores/BAB (not the summoner's), the eidolon's own chosen feats
+ * (`doc.build.eidolon.feats`, not the summoner's `build.feats`), and
+ * `casterLevel: 0` (no eidolon casts). Mirrors `model/companion.ts`'s
+ * `companionFeatPrereqContext`.
+ */
+export function eidolonFeatPrereqContext(
+  doc: CharacterDoc,
+  eidolon: DerivedEidolon,
+  refData: RefData,
+): PrereqContext {
+  const abilityTotals = {} as Record<AbilityId, number>;
+  for (const id of ABILITY_IDS) abilityTotals[id] = eidolon.abilities[id].score;
+  return {
+    abilityTotals,
+    bab: eidolon.bab,
+    casterLevel: 0,
+    selectedFeats: new Set(doc.build.eidolon?.feats ?? []),
+    refData,
+  };
 }
 
 /**

@@ -625,7 +625,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       <PhantomPicker doc={doc} update={update} />
 
       {/* Tracked eidolon — summoner's own Eidolon class feature (issue #65). */}
-      <EidolonPicker doc={doc} update={update} />
+      <EidolonPicker doc={doc} refData={refData} update={update} />
 
       {/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}
       <RangerPicker doc={doc} update={update} />

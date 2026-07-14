@@ -39,6 +39,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
   const [amount, setAmount] = useState(3);
   const eidolon = deriveEidolonSheet(doc, refData);
   if (!eidolon) return null;
+  const eidolonFeatIds = doc.build.eidolon?.feats ?? [];
 
   const summoned = isEidolonSummoned(doc);
 
@@ -150,6 +151,9 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
         </span>
         {" · "}
         Skill points: {eidolon.skillPoints} (4 × HD; not itemized)
+        {" · "}
+        {eidolonFeatIds.length} / {eidolon.bonusFeats} bonus feat
+        {eidolon.bonusFeats === 1 ? "" : "s"} picked
       </p>
 
       <div className="stat-group familiar-stat-group">
@@ -254,6 +258,19 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
               <InfoTip key={a.name} className="chip display-only" content={a.detail}>
                 {a.name}
               </InfoTip>
+            ))}
+          </div>
+        </>
+      )}
+
+      {eidolonFeatIds.length > 0 && (
+        <>
+          <h4 className="tracker-sub">Feats</h4>
+          <div className="chips">
+            {eidolonFeatIds.map((id) => (
+              <span key={id} className="chip display-only">
+                {refData.feats[id]?.name ?? id}
+              </span>
             ))}
           </div>
         </>
