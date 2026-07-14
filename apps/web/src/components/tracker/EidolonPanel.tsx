@@ -308,13 +308,14 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
       {eidolon.subtypeName && (
         <>
           <h4 className="tracker-sub">Subtype — {eidolon.subtypeName}</h4>
-          <div className="chips familiar-abilities">
+          <div className="familiar-abilities">
             {eidolon.grantedEvolutions
               .filter((g) => g.unlocked)
               .map((g) => (
-                <InfoTip key={g.level} className="chip display-only" content={g.note}>
-                  {g.level === 1 ? "1st" : `${g.level}th`}
-                </InfoTip>
+                <p key={g.level} className="hint" style={{ margin: "2px 0" }}>
+                  {g.level === 1 ? "1st" : `${g.level}th`} ·{" "}
+                  <span className="desc-text">{g.note}</span>
+                </p>
               ))}
           </div>
         </>

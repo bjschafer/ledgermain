@@ -126,13 +126,17 @@ export function eidolonUnchainedProgressionRow(level: number): EidolonProgressio
  * it — the unchained ability increase has its own detail string in
  * `EIDOLON_SPECIAL_ABILITY_DETAIL` so the chip is still informative, and
  * `abilityIncreaseSlots` on `DerivedEidolon` is additive display, not a
- * replacement for the chip.
+ * replacement for the chip. It appears ONCE even though the table grants it
+ * at 5th/10th/15th — the UIs key chips by name, and the slot COUNT is
+ * carried by `abilityIncreaseSlots`, not by chip repetition.
  */
 export function eidolonUnchainedSpecialAbilityNames(level: number): string[] {
   const clamped = Math.min(20, Math.max(1, Math.floor(level)));
   const names: string[] = [];
   for (let i = 0; i < clamped; i++) {
-    names.push(...EIDOLON_UNCHAINED_SPECIAL_BY_LEVEL[i]!);
+    for (const name of EIDOLON_UNCHAINED_SPECIAL_BY_LEVEL[i]!) {
+      if (!names.includes(name)) names.push(name);
+    }
   }
   return names;
 }

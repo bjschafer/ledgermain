@@ -349,9 +349,10 @@ function grantOrdinal(level: number): string {
  * warnings (never blocking — mirrors `alignment.ts`'s `classAlignmentWarnings`
  * posture), automatic Ability Score Increase slot selects (5th/10th/15th,
  * copying `PhantomPicker`'s ability-increase-slot pattern), a target-ability
- * select for each unlocked subtype +2 ability-increase grant, and
- * granted-evolution chips with locked/unlocked styling (`aria-disabled` reuses
- * the existing `.chip[aria-disabled="true"]` dimming rather than new CSS).
+ * select for each unlocked subtype +2 ability-increase grant, and a leveled
+ * list of the subtype's granted evolutions with the full grant text visible
+ * (not tooltip-hidden — these are the rules the player references at the
+ * table), not-yet-unlocked rows dimmed.
  */
 function SubtypeSection({
   doc,
@@ -444,16 +445,16 @@ function SubtypeSection({
       ))}
 
       {grantedEvolutions.length > 0 && (
-        <div className="chips" style={{ marginTop: 8 }}>
+        <div style={{ marginTop: 8 }}>
+          <span className="hint">Granted evolutions (free, from the subtype):</span>
           {grantedEvolutions.map((g) => (
-            <span
+            <p
               key={g.level}
-              className="chip display-only"
-              aria-disabled={g.unlocked ? undefined : "true"}
-              title={g.note}
+              className="hint"
+              style={{ margin: "2px 0", ...(g.unlocked ? {} : { opacity: 0.45 }) }}
             >
-              {grantOrdinal(g.level)}
-            </span>
+              {grantOrdinal(g.level)} · <span className="desc-text">{g.note}</span>
+            </p>
           ))}
         </div>
       )}
