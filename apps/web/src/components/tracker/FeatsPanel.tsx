@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import type { Feat } from "@pf1/schema";
 
 import { featInstanceDisplayName, featInstances, grantedFeats } from "../../model/feats.js";
+import { HomebrewBadge } from "../HomebrewBadge.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -98,6 +99,7 @@ export function FeatsPanel({ doc, refData }: BuilderProps) {
                 <div className="pmain">
                   <div className="pname">
                     {featInstanceDisplayName(row.feat, row.choiceId, doc, refData)}
+                    <HomebrewBadge id={row.feat.id} />
                     {row.feat.tags.length > 0 && (
                       <span className="hint" style={{ marginLeft: 8 }}>
                         {row.feat.tags.join(", ")}

@@ -26,8 +26,10 @@ import {
   type PrereqResult,
 } from "../../model/prereqs.js";
 import { isRepeatableFeat } from "../../model/repeatableFeats.js";
+import { HomebrewBadge } from "../HomebrewBadge.js";
 import { InfoTip } from "../InfoTip.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { HomebrewFeatEditor } from "./HomebrewFeatEditor.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -374,6 +376,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                       <div className="pmain">
                         <div className="pname">
                           {featInstanceDisplayName(feat, inst.choiceId, doc, refData)}
+                          {idx === 0 ? <HomebrewBadge id={feat.id} /> : null}
                           {instances.length > 1 ? (
                             <span className="hint" style={{ marginLeft: 6 }}>
                               #{idx + 1}
@@ -500,6 +503,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                   {isSel
                     ? featInstanceDisplayName(feat, doc.build.featChoices?.[feat.id], doc, refData)
                     : feat.name}
+                  <HomebrewBadge id={feat.id} />
                   {isUnqualified ? (
                     <InfoTip
                       className="unqualified-badge"
@@ -592,6 +596,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           <div className="empty">Showing first 150 — refine your search.</div>
         ) : null}
       </div>
+      <HomebrewFeatEditor doc={doc} sheet={sheet} refData={refData} update={update} />
     </Panel>
   );
 }

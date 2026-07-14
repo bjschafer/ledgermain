@@ -592,25 +592,30 @@ export function collectModifiers(
     if (!feat) continue;
     const slug = featNameSlug(feat.name);
     const resolved = resolveFeatEffect(slug);
-    if (!resolved) continue;
-    const entry = resolved.entry;
+    const entry = resolved?.entry;
 
-    if (entry.type === "static") {
+    if (entry?.type === "static") {
       for (const ch of entry.changes) {
         evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
       }
-    } else if (entry.type === "choice") {
+    } else if (entry?.type === "choice") {
       // Choice-based feat: only emit changes when a choice has been stored.
       const choiceId = doc.build.featChoices?.[featId];
-      if (!choiceId) continue;
-      for (const ch of entry.build(choiceId)) {
-        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
+      if (choiceId) {
+        for (const ch of entry.build(choiceId)) {
+          evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
+        }
       }
     }
     // "situational" entries never live in FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED
-    // (see SITUATIONAL_FEAT_EFFECTS in feat-effects.ts) — this branch exists
-    // only so the type checker sees an exhaustive narrowing if FeatEntry's
-    // value type ever widens.
+    // (see SITUATIONAL_FEAT_EFFECTS in feat-effects.ts) — nothing to emit here.
+
+    // Directly-authored changes (homebrew only — see `Feat.changes`'s doc
+    // comment): applied unconditionally, alongside any table-resolved effect
+    // above, never in place of it.
+    for (const ch of feat.changes ?? []) {
+      evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out, ch.operator);
+    }
   }
 
   // --- extra feat instances (issue #58: RAW-repeatable feats) ---------------
@@ -627,18 +632,31 @@ export function collectModifiers(
     if (!feat) continue;
     const slug = featNameSlug(feat.name);
     const resolved = resolveFeatEffect(slug);
-    if (!resolved) continue;
-    const entry = resolved.entry;
+    const entry = resolved?.entry;
 
-    if (entry.type === "static") {
+    if (entry?.type === "static") {
       for (const ch of entry.changes) {
         evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, instance.instanceId, out);
       }
-    } else if (entry.type === "choice") {
-      if (!instance.choiceId) continue;
+    } else if (entry?.type === "choice" && instance.choiceId) {
       for (const ch of entry.build(instance.choiceId)) {
         evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, instance.instanceId, out);
       }
+    }
+
+    // Directly-authored changes (homebrew only — see `Feat.changes`'s doc
+    // comment); same posture as the primary loop above.
+    for (const ch of feat.changes ?? []) {
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        feat.name,
+        instance.instanceId,
+        out,
+        ch.operator,
+      );
     }
   }
 

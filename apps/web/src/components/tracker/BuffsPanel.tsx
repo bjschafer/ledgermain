@@ -19,6 +19,7 @@ import {
   roundsToDisplay,
   toRounds,
 } from "../../model/buffs.js";
+import { CHANGE_TARGETS, CHANGE_TYPES } from "../../model/changeEditor.js";
 import { isSharedWithCompanion, toggleSharedBuffCompanion } from "../../model/companion.js";
 import { isSharedWithEidolon, toggleSharedBuffEidolon } from "../../model/eidolon.js";
 import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js";
@@ -26,51 +27,6 @@ import { isSharedWithPhantom, toggleSharedBuffPhantom } from "../../model/phanto
 import { changeTargetLabel, signed } from "../../model/names.js";
 import { InfoTip } from "../InfoTip.js";
 import type { BuilderProps } from "../builder/types.js";
-
-/** Common typed-modifier targets for the custom-buff door (not exhaustive). */
-const TARGETS = [
-  "attack",
-  "mattack",
-  "rattack",
-  "ac",
-  "allSavingThrows",
-  "fort",
-  "ref",
-  "will",
-  "str",
-  "dex",
-  "con",
-  "int",
-  "wis",
-  "cha",
-  "init",
-  "cmb",
-  "cmd",
-  "skills",
-  "spellResist",
-  "dr",
-  "dr.magic",
-  "dr.silver",
-  "dr.coldIron",
-  "dr.adamantine",
-  "eres.fire",
-  "eres.cold",
-  "eres.electricity",
-  "eres.acid",
-  "eres.sonic",
-];
-const TYPES = [
-  "untyped",
-  "enh",
-  "morale",
-  "luck",
-  "sacred",
-  "competence",
-  "dodge",
-  "deflection",
-  "resistance",
-  "circumstance",
-];
 
 export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
@@ -461,14 +417,14 @@ function CustomBuffForm({
           onChange={(e) => setName(e.target.value)}
         />
         <select value={target} onChange={(e) => setTarget(e.target.value)} aria-label="Target">
-          {TARGETS.map((t) => (
+          {CHANGE_TARGETS.map((t) => (
             <option key={t} value={t}>
               {t}
             </option>
           ))}
         </select>
         <select value={type} onChange={(e) => setType(e.target.value)} aria-label="Bonus type">
-          {TYPES.map((t) => (
+          {CHANGE_TYPES.map((t) => (
             <option key={t} value={t}>
               {t}
             </option>

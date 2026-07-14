@@ -1220,6 +1220,26 @@ button:focus-visible,
   font-size: 14px;
 }
 
+/* Marks a race/feat name authored on this character (`isHomebrewId`) rather
+   than vendored — deliberately duller than `.style-badge`/`.unqualified-badge`
+   (neutral `--muted`, not gold/oxblood) so it reads as provenance, not a
+   warning or a call to action. */
+.homebrew-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
 /* Marks a feat that belongs to the ranger's chosen combat-style tree (prereqs
    waived). Gold pill so it reads as a granted allowance, not a warning. */
 .style-badge {
@@ -2676,6 +2696,81 @@ button:focus-visible,
   .cb-grid {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* Homebrew race/feat authoring (`HomebrewRaceEditor`/`HomebrewFeatEditor`) —
+   same collapsed-`<details>` "expert door" idiom as `.custom-buff`, but a
+   taller form (name/size/speeds/languages/…) needs a stacked layout rather
+   than `.cb-grid`'s single row. */
+.hb-editor {
+  margin-top: 12px;
+}
+
+.hb-editor summary {
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--gold-dim-ink);
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+}
+
+.hb-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hb-form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+}
+
+.hb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hb-field label,
+.hb-field-label {
+  font-size: 11px;
+  font-family: var(--mono);
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+.hb-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hb-row > .hb-field {
+  flex: 1 1 140px;
+}
+
+.hb-change-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 80px auto;
+  gap: 6px;
+  align-items: center;
+}
+
+@media (max-width: 620px) {
+  .hb-change-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.hb-error {
+  color: var(--oxblood-ink);
+  font-size: 12px;
 }
 
 /* resources */

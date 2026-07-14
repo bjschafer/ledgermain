@@ -276,6 +276,19 @@ export interface Feat extends RefEntity {
    * Energy draws from Lay on Hands.
    */
   uses?: { maxFormula?: string; per?: string };
+  /**
+   * Directly-authored typed modifiers (homebrew only — see
+   * `apps/web/src/model/homebrew.ts`). Every VENDORED feat's mechanical
+   * effect instead comes from the hand-curated `FEAT_EFFECTS`/
+   * `FEAT_EFFECTS_EXTRACTED` tables in `@pf1/engine` keyed by name-slug
+   * (clean-room discipline: Foundry's own per-feat script logic is never
+   * ported), so the data pipeline never emits this field. A homebrew feat
+   * has no name-slug table entry to resolve, so it needs its effect encoded
+   * directly on the entity, the same way `Race.changes`/`Item.changes`
+   * already work. `collectModifiers` applies these unconditionally
+   * alongside (never instead of) any table-resolved effect.
+   */
+  changes?: Change[];
 }
 
 /**

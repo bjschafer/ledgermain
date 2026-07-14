@@ -20,6 +20,7 @@ import {
   signedSequence,
   skillName,
 } from "../model/names.js";
+import { HomebrewBadge } from "./HomebrewBadge.js";
 import { InfoTip } from "./InfoTip.js";
 import { StatSeal } from "./StatSeal.js";
 
@@ -111,7 +112,15 @@ export function Sheet({
     <section className="sheet" aria-label="Live character sheet">
       <div className="char-name">{doc.identity.name || "Unnamed"}</div>
       <div className="char-sub">
-        {[race?.name, classLine].filter(Boolean).join(" · ") || "No race or class chosen"}
+        {race ? (
+          <>
+            {race.name}
+            <HomebrewBadge id={doc.identity.race} />
+            {classLine ? ` · ${classLine}` : ""}
+          </>
+        ) : (
+          classLine || "No race or class chosen"
+        )}
         {sheet.level > 0 ? ` · Lvl ${sheet.level}` : ""}
       </div>
       {casterLine ? <div className="char-sub char-caster">{casterLine}</div> : null}

@@ -19,6 +19,8 @@ import {
 } from "../../model/racialTraits.js";
 import { groupRacesByRarity, type Rarity } from "../../model/rarity.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { HomebrewBadge } from "../HomebrewBadge.js";
+import { HomebrewRaceEditor } from "./HomebrewRaceEditor.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -106,6 +108,20 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
     );
   }
 
+  // Shared by the rarity-grouped chip grid AND the homebrew management
+  // list's "Select" buttons, so both paths go through the same "switching
+  // race resets modifiers" confirmation (below) rather than one silently
+  // bypassing it.
+  function selectRace(id: string) {
+    if (doc.identity.race && doc.identity.race !== id) {
+      setPendingRaceId(id);
+    } else if (doc.identity.race === id) {
+      setPendingRaceId("");
+    } else {
+      update((d) => setRace(d, id));
+    }
+  }
+
   return (
     <Panel title="Race" step="iii" storageKey="panel:Race">
       <input
@@ -129,21 +145,10 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
               type="button"
               className="chip"
               aria-pressed={doc.identity.race === id}
-              onClick={() => {
-                const target = doc.identity.race === id ? "" : id;
-                // Switching away from a race that's already applied resets its
-                // modifiers, so require confirmation; picking an initial race
-                // (nothing chosen yet) is free.
-                if (doc.identity.race && doc.identity.race !== id) {
-                  setPendingRaceId(id);
-                } else if (doc.identity.race === id) {
-                  setPendingRaceId("");
-                } else {
-                  update((d) => setRace(d, target));
-                }
-              }}
+              onClick={() => selectRace(id)}
             >
               {race.name}
+              <HomebrewBadge id={id} interactive={false} />
             </button>
           ))}
         </RaceGroupSection>
@@ -173,8 +178,9 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
       )}
       {selected ? (
         <p className="hint" style={{ marginTop: 12 }}>
-          {selected.name} · size {selected.size} · speed {selected.speeds.land ?? 30} ft. Racial
-          ability and skill bonuses flow into the sheet automatically.
+          {selected.name} <HomebrewBadge id={doc.identity.race} /> · size {selected.size} · speed{" "}
+          {selected.speeds.land ?? 30} ft. Racial ability and skill bonuses flow into the sheet
+          automatically.
         </p>
       ) : (
         <p className="hint" style={{ marginTop: 12 }}>
@@ -316,6 +322,13 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
           </button>
         </div>
       </div>
+      <HomebrewRaceEditor
+        doc={doc}
+        sheet={sheet}
+        refData={refData}
+        update={update}
+        selectRace={selectRace}
+      />
     </Panel>
   );
 }
