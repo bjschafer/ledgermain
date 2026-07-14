@@ -179,6 +179,7 @@ describe("deriveEidolon base-form variants", () => {
         attack: expect.any(Number),
         damageDice: "1d6",
         damageBonus: expect.any(Number),
+        attackType: "primary",
       },
     ]);
     // HD 1, saveForLevels: high=2, low=0.
@@ -186,7 +187,7 @@ describe("deriveEidolon base-form variants", () => {
     expect(eidolon.saves.ref).toBeGreaterThan(eidolon.saves.will);
   });
 
-  it("Serpentine: Ref/Will good, Fort poor; climb speed from the free Climb evolution", () => {
+  it("Serpentine: Ref/Will good, Fort poor; climb speed from the free Climb evolution; primary bite + secondary tail slap (hand-computed, issue #68)", () => {
     const doc = makeDoc({
       classes: [{ tag: "summoner", level: 1 }],
       eidolon: { baseForm: "serpentine", name: "Coil", evolutions: [] },
@@ -195,6 +196,33 @@ describe("deriveEidolon base-form variants", () => {
     const eidolon = deriveEidolon(doc, rollData)!;
     expect(eidolon.speeds).toEqual({ land: 20, climb: 20 });
     expect(eidolon.attacks.map((a) => a.name)).toEqual(["Bite", "Tail slap"]);
+
+    // level 1 row: hd 1, strDexBonus 0. Serpentine base Str 12/Dex 16/Con 13.
+    // Str 12 + 0 -> mod +1. Dex 16 + 0 -> mod +3. bab = babForLevels("high", 1) = 1.
+    expect(eidolon.hd).toBe(1);
+    expect(eidolon.bab).toBe(1);
+    expect(eidolon.abilities.str).toEqual({ score: 12, mod: 1 });
+    expect(eidolon.abilities.dex).toEqual({ score: 16, mod: 3 });
+
+    // Bite/Tail slap are two distinct attack forms -> classified individually:
+    // "Bite" is primary-type, "Tail slap" is secondary-type (natural-attacks.ts).
+    // No Multiattack yet (unlocked at 9th), so the secondary penalty is -5.
+    const bite = eidolon.attacks.find((a) => a.name === "Bite")!;
+    const tailSlap = eidolon.attacks.find((a) => a.name === "Tail slap")!;
+    // bite (primary): bab(1) + strMod(1) + size(med, 0) = 2; damage strMod(1) -> 1d6+1.
+    expect(bite).toMatchObject({
+      attackType: "primary",
+      attack: 2,
+      damageDice: "1d6",
+      damageBonus: 1,
+    });
+    // tail slap (secondary, no Multiattack): 2 - 5 = -3; damage half of +1 floors to 0 -> 1d6+0.
+    expect(tailSlap).toMatchObject({
+      attackType: "secondary",
+      attack: -3,
+      damageDice: "1d6",
+      damageBonus: 0,
+    });
   });
 
   it("Large evolution: +8 Str/+4 Con/-2 Dex, +2 natural armor, Large size", () => {
@@ -213,6 +241,31 @@ describe("deriveEidolon base-form variants", () => {
     expect(eidolon.abilities.dex).toEqual({ score: 13, mod: 1 });
     expect(eidolon.abilities.con).toEqual({ score: 17, mod: 3 });
     expect(eidolon.naturalArmor).toBe(8); // 6 (table) + 2 (large)
+  });
+
+  it("Multiattack (9th+): a secondary attack's penalty softens from -5 to -2 (hand-computed, issue #68)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "summoner", level: 9 }],
+      eidolon: { baseForm: "biped", name: "Grothul", evolutions: [{ id: "hooves" }] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const eidolon = deriveEidolon(doc, rollData)!;
+    expect(eidolon.specialAbilities.map((a) => a.name)).toContain("Multiattack");
+
+    // level 9 row: hd 7, strDexBonus 3. Biped base Str 16/Dex 12.
+    // Str 16 + 3 -> mod +4. bab = babForLevels("high", 7) = 7.
+    expect(eidolon.hd).toBe(7);
+    expect(eidolon.bab).toBe(7);
+    expect(eidolon.abilities.str).toEqual({ score: 19, mod: 4 });
+
+    // Biped's free "Claw" (primary-type) + the "Hooves" evolution's "Hoof"
+    // (secondary-type) are two distinct attack forms.
+    const claw = eidolon.attacks.find((a) => a.name === "Claw")!;
+    const hoof = eidolon.attacks.find((a) => a.name === "Hoof")!;
+    // claw (primary): bab(7) + strMod(4) + size(med, 0) = 11; damage strMod(4) -> 1d4+4.
+    expect(claw).toMatchObject({ attackType: "primary", attack: 11, damageBonus: 4 });
+    // hoof (secondary, Multiattack): 11 - 2 = 9; damage half of +4 floors to 2 -> 1d4+2.
+    expect(hoof).toMatchObject({ attackType: "secondary", attack: 9, damageBonus: 2 });
   });
 
   it("Flight/Climb/Swim/Burrow evolutions grant the expected speeds", () => {

@@ -11,6 +11,7 @@ import {
   cavalierLevel,
   clearCompanion,
   companionFeatPrereqContext,
+  companionHasWeaponFinesse,
   companionSupersedingCondition,
   deriveCompanionSheet,
   hasBoonCompanionFeat,
@@ -146,6 +147,14 @@ describe("model/companion.ts transitions", () => {
     const d = createEmptyDoc("t");
     expect(hasBoonCompanionFeat(d, ref)).toBe(false);
   });
+
+  it("companionHasWeaponFinesse reads the COMPANION's own feats (build.animalCompanion.feats), not the master's", () => {
+    const weaponFinesseId = Object.values(ref.feats).find((f) => f.name === "Weapon Finesse")!.id;
+    let d = setCompanion(createEmptyDoc("t"), "wolf", "Fang");
+    expect(companionHasWeaponFinesse(d, ref)).toBe(false);
+    d = toggleCompanionFeat(d, weaponFinesseId);
+    expect(companionHasWeaponFinesse(d, ref)).toBe(true);
+  });
 });
 
 describe("deriveCompanionSheet() — wired through the normal doc model", () => {
@@ -171,6 +180,27 @@ describe("deriveCompanionSheet() — wired through the normal doc model", () => 
     expect(companion!.hd).toBe(6);
     expect(companion!.bab).toBe(4);
     expect(companion!.size).toBe("lg");
+  });
+
+  it("Weapon Finesse (picked from the companion's own feats) switches the attack roll to Dex; damage stays Str-based (issue #68)", () => {
+    // druid-1 (ungrown) wolf: Str 13 (mod +1), Dex 15 (mod +2) — Dex ahead of
+    // Str, so this fixture can actually show the swap (a druid-7 wolf grows
+    // to Large with Str/Dex mods equal, which wouldn't).
+    const weaponFinesseId = Object.values(ref.feats).find((f) => f.name === "Weapon Finesse")!.id;
+    let d = createEmptyDoc("t");
+    d = addClass(d, "druid");
+    d = setClassLevel(d, "druid", 1);
+    d = setCompanion(d, "wolf", "Fang");
+    d = toggleCompanionSource(d, "nature-bond");
+
+    const withoutFinesse = deriveCompanionSheet(d, ref)!;
+    // HD 2, BAB +1; Medium (size mod 0). bab(1) + strMod(1) + size(0) = 2.
+    expect(withoutFinesse.attacks[0]).toMatchObject({ attack: 2, damageBonus: 1 });
+
+    d = toggleCompanionFeat(d, weaponFinesseId);
+    const withFinesse = deriveCompanionSheet(d, ref)!;
+    // bab(1) + dexMod(2) + size(0) = 3; damage stays Str-based (strMod 1).
+    expect(withFinesse.attacks[0]).toMatchObject({ attack: 3, damageBonus: 1 });
   });
 });
 

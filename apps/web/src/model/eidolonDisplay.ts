@@ -39,6 +39,17 @@ export function formatEidolonAttackName(attack: DerivedEidolonAttack): string {
   return attack.count > 1 ? `${attack.count} ${attack.name.toLowerCase()}s` : attack.name;
 }
 
+/**
+ * "(secondary)" suffix for a secondary natural attack (see `@pf1/engine`
+ * `natural-attacks.ts`), so the tracker panel can flag which attack(s) in a
+ * multi-attack-form eidolon take the −5/−2 penalty and half Strength on
+ * damage. Empty string for a primary attack (the common case) — mirrors
+ * `companionDisplay.ts`'s `formatCompanionAttackTypeSuffix`.
+ */
+export function formatEidolonAttackTypeSuffix(attack: DerivedEidolonAttack): string {
+  return attack.attackType === "secondary" ? "(secondary)" : "";
+}
+
 /** "+11" — just the attack roll, for its own compact seal. */
 export function formatEidolonAttackRoll(attack: DerivedEidolonAttack): string {
   return signed(attack.attack);

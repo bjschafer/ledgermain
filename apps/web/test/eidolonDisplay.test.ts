@@ -8,6 +8,7 @@ import {
   formatEidolonAttackDamage,
   formatEidolonAttackName,
   formatEidolonAttackRoll,
+  formatEidolonAttackTypeSuffix,
   formatEidolonEvolutionBudget,
   formatEidolonSummary,
 } from "../src/model/eidolonDisplay.js";
@@ -19,6 +20,7 @@ function makeAttack(overrides: Partial<DerivedEidolonAttack> = {}): DerivedEidol
     attack: 8,
     damageDice: "1d6",
     damageBonus: 4,
+    attackType: "primary",
     ...overrides,
   };
 }
@@ -88,6 +90,18 @@ describe("formatEidolonAttackName", () => {
 
   it("pluralizes and lowercases multi-attacks", () => {
     expect(formatEidolonAttackName(makeAttack({ name: "Claw", count: 2 }))).toBe("2 claws");
+  });
+});
+
+describe("formatEidolonAttackTypeSuffix", () => {
+  it("is blank for a primary attack", () => {
+    expect(formatEidolonAttackTypeSuffix(makeAttack({ attackType: "primary" }))).toBe("");
+  });
+
+  it("flags a secondary attack", () => {
+    expect(formatEidolonAttackTypeSuffix(makeAttack({ attackType: "secondary" }))).toBe(
+      "(secondary)",
+    );
   });
 });
 

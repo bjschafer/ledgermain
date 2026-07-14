@@ -563,10 +563,13 @@ export function derivePhantom(doc: CharacterDoc, rollData: RollData): DerivedPha
   const cmb = phantomBab + strMod + sizeSpecial;
   const cmd = 10 + phantomBab + strMod + dexMod + sizeSpecial;
 
-  // --- attacks: two slams, phantom's own BAB + better of Str/Dex + size -----
+  // --- attacks: two slams, phantom's own BAB + Str + size -------------------
+  // (natural attacks use Str, per PF1's natural-attack rules; unlike
+  // `companion.ts`/`eidolon.ts`, a phantom has no feat picks of its own, so
+  // there's no Weapon Finesse to opt into Dex here — see module doc comment).
   const sharedAttackBonus = resolveStack(routed.attack).total;
   const sharedDamageBonus = resolveStack(routed.damage).total;
-  const attackBonus = phantomBab + Math.max(strMod, dexMod) + sizeAcMod + sharedAttackBonus;
+  const attackBonus = phantomBab + strMod + sizeAcMod + sharedAttackBonus;
   const attacks: DerivedPhantomAttack[] = [
     {
       name: "Slam",

@@ -13,6 +13,7 @@ import {
   eidolonEvolutionPointsSpent,
   eidolonEvolutionPoolNeedsWarning,
   eidolonFeatPrereqContext,
+  eidolonHasWeaponFinesse,
   healEidolon,
   healEidolonNonlethal,
   addEidolonNonlethal,
@@ -225,5 +226,34 @@ describe("eidolon feat investment", () => {
     expect(ctx.abilityTotals.str).toBe(eidolon.abilities.str.score);
     expect(ctx.casterLevel).toBe(0);
     expect(ctx.selectedFeats).toEqual(new Set([powerAttackId]));
+  });
+
+  it("eidolonHasWeaponFinesse reads the EIDOLON's own feats (build.eidolon.feats), not the summoner's", () => {
+    const weaponFinesseId = Object.values(ref.feats).find((f) => f.name === "Weapon Finesse")!.id;
+    let d = setEidolon(createEmptyDoc("t"), "biped", "Grix");
+    expect(eidolonHasWeaponFinesse(d, ref)).toBe(false);
+    d = toggleEidolonFeat(d, weaponFinesseId);
+    expect(eidolonHasWeaponFinesse(d, ref)).toBe(true);
+  });
+
+  it("Weapon Finesse switches the attack roll to Dex; damage stays Str-based (issue #68)", () => {
+    // summoner-1 serpentine eidolon: Str 12 (mod +1), Dex 16 (mod +3) — Dex
+    // ahead of Str, so this fixture can show the swap.
+    const weaponFinesseId = Object.values(ref.feats).find((f) => f.name === "Weapon Finesse")!.id;
+    let d = createEmptyDoc("t");
+    d = addClass(d, "summoner");
+    d = setClassLevel(d, "summoner", 1);
+    d = setEidolon(d, "serpentine", "Coil");
+
+    const withoutFinesse = deriveEidolonSheet(d, ref)!;
+    const biteWithout = withoutFinesse.attacks.find((a) => a.name === "Bite")!;
+    // HD 1, BAB +1; Medium (size mod 0). bab(1) + strMod(1) + size(0) = 2.
+    expect(biteWithout).toMatchObject({ attack: 2, damageBonus: 1 });
+
+    d = toggleEidolonFeat(d, weaponFinesseId);
+    const withFinesse = deriveEidolonSheet(d, ref)!;
+    const biteWith = withFinesse.attacks.find((a) => a.name === "Bite")!;
+    // bab(1) + dexMod(3) + size(0) = 4; damage stays Str-based (strMod 1).
+    expect(biteWith).toMatchObject({ attack: 4, damageBonus: 1 });
   });
 });

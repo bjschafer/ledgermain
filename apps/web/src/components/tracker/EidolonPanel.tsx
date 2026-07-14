@@ -19,6 +19,7 @@ import {
   formatEidolonAttackDamage,
   formatEidolonAttackName,
   formatEidolonAttackRoll,
+  formatEidolonAttackTypeSuffix,
   formatEidolonEvolutionBudget,
   formatEidolonSummary,
 } from "../../model/eidolonDisplay.js";
@@ -209,7 +210,12 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
           <div className="weapon-attack-list familiar-attack-list">
             {eidolon.attacks.map((a, i) => (
               <div key={i} className="weapon-attack-row">
-                <span className="weapon-attack-name">{formatEidolonAttackName(a)}</span>
+                <span className="weapon-attack-name">
+                  {formatEidolonAttackName(a)}
+                  {formatEidolonAttackTypeSuffix(a) ? (
+                    <span className="hint"> {formatEidolonAttackTypeSuffix(a)}</span>
+                  ) : null}
+                </span>
                 <div className="weapon-attack-stats familiar-attack-stats">
                   <StatSeal
                     label="Attack"

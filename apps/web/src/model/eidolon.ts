@@ -15,6 +15,7 @@ import {
   EIDOLON_EVOLUTIONS,
   eidolonProgressionRow,
   eidolonSummonerLevel,
+  featNameSlug,
   type DerivedEidolon,
 } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, EidolonEvolutionPick, RefData } from "@pf1/schema";
@@ -248,6 +249,21 @@ export function eidolonFeatPrereqContext(
 }
 
 /**
+ * Whether the EIDOLON itself (not the summoner) has picked Weapon Finesse
+ * from its own feat list (`build.eidolon.feats`) — the RAW way an eidolon's
+ * natural-attack roll uses Dex instead of Str (natural weapons are light
+ * weapons for this purpose; see `@pf1/engine` `eidolon.ts`'s module doc
+ * comment). Same slug-matching technique as `model/companion.ts`'s
+ * `companionHasWeaponFinesse`.
+ */
+export function eidolonHasWeaponFinesse(doc: CharacterDoc, refData: RefData): boolean {
+  return (doc.build.eidolon?.feats ?? []).some((id) => {
+    const feat = refData.feats[id];
+    return feat != null && featNameSlug(feat.name) === "weapon-finesse";
+  });
+}
+
+/**
  * Derive the tracked eidolon's full stat block from the character document,
  * or `undefined` if there's no eidolon (no `build.eidolon`, an unknown base
  * form id, or 0 summoner levels — see `@pf1/engine` `deriveEidolon`'s doc
@@ -261,7 +277,7 @@ export function deriveEidolonSheet(
 ): DerivedEidolon | undefined {
   if (!doc.build.eidolon) return undefined;
   const rollData = buildRollData(doc, refData);
-  return deriveEidolon(doc, rollData);
+  return deriveEidolon(doc, rollData, eidolonHasWeaponFinesse(doc, refData));
 }
 
 export { EIDOLON_BASE_FORMS, EIDOLON_EVOLUTIONS, eidolonSummonerLevel };

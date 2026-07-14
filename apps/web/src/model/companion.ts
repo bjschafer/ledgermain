@@ -354,6 +354,22 @@ export function hasBoonCompanionFeat(doc: CharacterDoc, refData: RefData): boole
 }
 
 /**
+ * Whether the COMPANION itself (not the master) has picked Weapon Finesse
+ * from its own feat list (`build.animalCompanion.feats`) — the RAW way a
+ * companion's natural-attack roll uses Dex instead of Str (natural weapons
+ * are light weapons for this purpose; see `@pf1/engine` `companion.ts`'s
+ * module doc comment). Same slug-matching technique as
+ * {@link hasBoonCompanionFeat}, just resolved over the companion's own picks
+ * rather than the master's.
+ */
+export function companionHasWeaponFinesse(doc: CharacterDoc, refData: RefData): boolean {
+  return (doc.build.animalCompanion?.feats ?? []).some((id) => {
+    const feat = refData.feats[id];
+    return feat != null && featNameSlug(feat.name) === "weapon-finesse";
+  });
+}
+
+/**
  * Derive the tracked companion's full stat block from the character document,
  * or `undefined` if there's no companion (no `build.animalCompanion`, an
  * unknown species, or no companion-granting source chosen yet — see
@@ -368,7 +384,12 @@ export function deriveCompanionSheet(
 ): DerivedCompanion | undefined {
   if (!doc.build.animalCompanion) return undefined;
   const rollData = buildRollData(doc, refData);
-  return deriveCompanion(doc, rollData, hasBoonCompanionFeat(doc, refData));
+  return deriveCompanion(
+    doc,
+    rollData,
+    hasBoonCompanionFeat(doc, refData),
+    companionHasWeaponFinesse(doc, refData),
+  );
 }
 
 export { BASE_COMPANIONS, companionAbilityIncreaseSlots, companionEffectiveLevel };

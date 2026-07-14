@@ -43,8 +43,20 @@
  *     `deriveCompanion`'s attack math below — see `natural-attacks.ts`.
  *     Primary/secondary natural-attack math (full BAB+Str vs. −5/−2 and half
  *     Str) is modeled here via the shared `natural-attacks.ts` module
- *     (issue #68); `familiar.ts`/`eidolon.ts`/`phantom.ts` still don't model
- *     it (documented gap in THEIR own module doc comments, not this one).
+ *     (issue #68); `eidolon.ts` now shares the same module too. `familiar.ts`
+ *     (borrows the master's own attack routine, out of scope) and
+ *     `phantom.ts` (two slams of the same attack form, so the math is moot —
+ *     see its own doc comment) still don't model it.
+ *   - Attack rolls use Strength, per PF1's natural-attack rules — NOT the
+ *     "better of Str/Dex" rule that governs a familiar (CRB Familiar Basics
+ *     is an explicit, narrow exception; see `familiar.ts`). A companion can
+ *     still get a Dex-based attack roll the RAW way: by picking Weapon
+ *     Finesse (natural weapons are light weapons for this purpose) from its
+ *     own feat list (`build.animalCompanion.feats`). `hasWeaponFinesse` is
+ *     resolved by the CALLER the same way `hasBoonCompanion` is (this pure
+ *     module has no `RefData`) and only ever changes the ATTACK roll —
+ *     damage stays Str-based (`naturalAttackDamageBonus`) either way, since
+ *     Weapon Finesse never touches damage.
  *   - Devotion (+4 morale bonus on Will saves against enchantment) is
  *     situational (only vs. one school of magic), so — matching this
  *     project's posture for Ranger Favored Enemy/Terrain — it is surfaced as
@@ -684,7 +696,9 @@ function baseCompanionEffectiveLevel(doc: CharacterDoc): number {
  * level." `hasBoonCompanion` is resolved by the CALLER (which has `RefData`
  * to turn a feat id into its name/slug — this pure module never takes
  * `RefData`), defaulting to `false` so a caller that hasn't wired the feat
- * check yet degrades to the plain sum above rather than crashing.
+ * check yet degrades to the plain sum above rather than crashing. Same
+ * caller-resolves-the-feat posture governs `deriveCompanion`'s
+ * `hasWeaponFinesse` parameter below.
  *
  * Returns 0 (no companion) when the document has no companion source at all
  * — Boon Companion's own prerequisite is already having an animal companion,
@@ -790,11 +804,16 @@ export interface DerivedCompanion {
  * doc comment) — `rollData` is needed only to evaluate shared buffs'
  * formulas (`live.animalCompanion.sharedBuffIds`), exactly like
  * `deriveFamiliar`'s buff-sharing routing (see `shared-creature-buffs.ts`).
+ *
+ * `hasWeaponFinesse` switches the attack roll (never damage) from Str to Dex
+ * — see module doc comment's attack bullet — and is resolved by the CALLER
+ * the same way `hasBoonCompanion` is, defaulting to `false`.
  */
 export function deriveCompanion(
   doc: CharacterDoc,
   rollData: RollData,
   hasBoonCompanion = false,
+  hasWeaponFinesse = false,
 ): DerivedCompanion | undefined {
   const build = doc.build.animalCompanion;
   if (!build) return undefined;
@@ -920,14 +939,16 @@ export function deriveCompanion(
   const cmb = companionBab + (TINY_OR_SMALLER.has(size) ? dexMod : strMod) + sizeSpecial;
   const cmd = 10 + companionBab + strMod + dexMod + sizeSpecial;
 
-  // --- attacks: companion's own BAB + better of Str/Dex + size + shared bonus,
-  // with primary/secondary natural-attack math (issue #68) — see
-  // `natural-attacks.ts`. Multiattack (unlocked at the HD milestone, see
-  // module doc comment) softens the secondary penalty from −5 to −2.
+  // --- attacks: companion's own BAB + Str (or Dex with Weapon Finesse) +
+  // size + shared bonus, with primary/secondary natural-attack math
+  // (issue #68) — see `natural-attacks.ts`. Multiattack (unlocked at the HD
+  // milestone, see module doc comment) softens the secondary penalty from
+  // −5 to −2.
   const hasMultiattack = companionSpecialAbilityNames(level).includes("Multiattack");
   const sharedAttackBonus = resolveStack(routed.attack).total;
   const sharedDamageBonus = resolveStack(routed.damage).total;
-  const baseAttackBonus = companionBab + Math.max(strMod, dexMod) + sizeAcMod + sharedAttackBonus;
+  const attackAbilityMod = hasWeaponFinesse ? dexMod : strMod;
+  const baseAttackBonus = companionBab + attackAbilityMod + sizeAcMod + sharedAttackBonus;
   const classifiedAttacks = classifyNaturalAttacks(speciesAttacks);
   const attacks: DerivedCompanionAttack[] = classifiedAttacks.map((a) => ({
     name: a.name,

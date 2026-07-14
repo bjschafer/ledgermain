@@ -91,12 +91,13 @@ describe("derivePhantom (spiritualist-7 anger-focus medium phantom, hand-compute
     expect(phantom!.cmd).toBe(20);
   });
 
-  it("Attacks: 2 slams +9 (1d8+1)", () => {
+  it("Attacks: 2 slams +7 (1d8+1) — Str-based (Str mod +1), not the higher Dex mod +3 (no Weapon Finesse pick for phantoms)", () => {
+    // bab(6) + strMod(1) + size(med, 0) = 7 (was 9 under the old max(str,dex) rule).
     expect(phantom!.attacks).toHaveLength(1);
     expect(phantom!.attacks[0]).toMatchObject({
       name: "Slam",
       count: 2,
-      attack: 9,
+      attack: 7,
       damageDice: "1d8",
       damageBonus: 1,
     });

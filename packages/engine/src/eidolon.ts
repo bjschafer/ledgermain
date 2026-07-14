@@ -66,13 +66,24 @@
  *   - Attacks: the base form's own free natural attacks (`baseAttacks`,
  *     e.g. Biped's 2 claws) plus any attack-granting evolutions chosen
  *     (bite/claws/gore/hooves/pincers/slam/sting/tail slap/tentacle/wing
- *     buffet). No primary/secondary natural-attack halving is modeled here
- *     (matches `phantom.ts`'s existing posture) — "Multiattack" (unlocked at
- *     9th, {@link EIDOLON_PROGRESSION}) is surfaced only as a special-ability
- *     chip, same simplification. `companion.ts` gained the primary/secondary
- *     math (and a shared `natural-attacks.ts` module this module COULD reuse)
- *     in issue #68; porting it here was scoped out of that issue to avoid
- *     ballooning it — a documented gap, not a silent drop.
+ *     buffet). Primary/secondary natural-attack math (full BAB+Str vs. −5/−2
+ *     and half Str) is shared with `companion.ts` via `natural-attacks.ts`
+ *     (issue #68's classification: bite/claws/gore/slam/sting are
+ *     primary-type; hooves/pincers/tail slap/tentacle/wing buffet are
+ *     secondary-type — the same names this module's own evolution flavor
+ *     text above already uses). "Multiattack" (unlocked at 9th,
+ *     {@link EIDOLON_PROGRESSION}) softens the secondary penalty from −5 to
+ *     −2, same as a companion's.
+ *   - Attack rolls use Strength, per PF1's natural-attack rules — NOT the
+ *     "better of Str/Dex" rule that governs a familiar (CRB Familiar Basics
+ *     is an explicit, narrow exception; see `familiar.ts`). An eidolon can
+ *     still get a Dex-based attack roll the RAW way: by picking Weapon
+ *     Finesse (natural weapons are light weapons for this purpose) from its
+ *     own feat list (`build.eidolon.feats`). `hasWeaponFinesse` is resolved
+ *     by the CALLER (this pure module has no `RefData`), same posture as
+ *     `companion.ts`'s `hasBoonCompanion`/`hasWeaponFinesse`, and only ever
+ *     changes the ATTACK roll — damage stays Str-based
+ *     (`naturalAttackDamageBonus`) either way.
  *   - Special abilities table column (Darkvision/Link/Share Spells at 1st,
  *     Evasion at 2nd, Devotion at 6th, Multiattack at 9th, Improved Evasion
  *     at 14th) are display-only chips, same posture as
@@ -115,6 +126,12 @@
 import type { AbilityId, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import {
+  classifyNaturalAttacks,
+  naturalAttackBonus,
+  naturalAttackDamageBonus,
+  type NaturalAttackType,
+} from "./natural-attacks.js";
 import { abilityMod } from "./rolldata.js";
 import {
   applySharedAbilityBonuses,
@@ -1148,6 +1165,8 @@ export interface DerivedEidolonAttack {
   attack: number;
   damageDice: string;
   damageBonus: number;
+  /** Primary (full BAB+Str) or secondary (−5/−2 with Multiattack, half Str) — see `natural-attacks.ts`. */
+  attackType: NaturalAttackType;
 }
 
 export interface DerivedEidolonAc {
@@ -1229,8 +1248,16 @@ const FLAT_FOOTED_CATEGORIES: ReadonlySet<string> = new Set([
  * `rollData` is needed only to evaluate any shared buffs' formulas
  * (`live.eidolon.sharedBuffIds`), exactly like `deriveCompanion`/
  * `derivePhantom`'s buff-sharing routing (see `shared-creature-buffs.ts`).
+ *
+ * `hasWeaponFinesse` switches the attack roll (never damage) from Str to Dex
+ * — see module doc comment's attack bullet — and is resolved by the CALLER
+ * the same way `deriveCompanion`'s is, defaulting to `false`.
  */
-export function deriveEidolon(doc: CharacterDoc, rollData: RollData): DerivedEidolon | undefined {
+export function deriveEidolon(
+  doc: CharacterDoc,
+  rollData: RollData,
+  hasWeaponFinesse = false,
+): DerivedEidolon | undefined {
   const build = doc.build.eidolon;
   if (!build) return undefined;
   const form = EIDOLON_BASE_FORMS[build.baseForm];
@@ -1410,17 +1437,25 @@ export function deriveEidolon(doc: CharacterDoc, rollData: RollData): DerivedEid
   const cmb = bab + strMod + sizeSpecial;
   const cmd = 10 + bab + strMod + dexMod + sizeSpecial;
 
-  // --- attacks: base form's free attacks + evolution attacks, eidolon's own BAB --
+  // --- attacks: base form's free attacks + evolution attacks, eidolon's own
+  // BAB + Str (or Dex with Weapon Finesse) + size + shared bonus, with
+  // primary/secondary natural-attack math — see `natural-attacks.ts`.
+  // Multiattack (unlocked at 9th, see module doc comment) softens the
+  // secondary penalty from −5 to −2.
+  const hasMultiattack = eidolonSpecialAbilityNames(level).includes("Multiattack");
   const sharedAttackBonus = resolveStack(routed.attack).total;
   const sharedDamageBonus = resolveStack(routed.damage).total;
-  const attackBonus = bab + Math.max(strMod, dexMod) + sizeAcMod + sharedAttackBonus;
+  const attackAbilityMod = hasWeaponFinesse ? dexMod : strMod;
+  const baseAttackBonus = bab + attackAbilityMod + sizeAcMod + sharedAttackBonus;
   const allAttacks = [...form.baseAttacks, ...evolutionAttacks];
-  const attacks: DerivedEidolonAttack[] = allAttacks.map((a) => ({
+  const classifiedAttacks = classifyNaturalAttacks(allAttacks);
+  const attacks: DerivedEidolonAttack[] = classifiedAttacks.map((a) => ({
     name: a.name,
     count: a.count,
-    attack: attackBonus,
+    attack: naturalAttackBonus(baseAttackBonus, a.attackType, hasMultiattack),
     damageDice: a.damageDice,
-    damageBonus: strMod + sharedDamageBonus,
+    damageBonus: naturalAttackDamageBonus(strMod, a.attackType) + sharedDamageBonus,
+    attackType: a.attackType,
   }));
 
   // --- skills: six physical/perceptual skills, no rank investment modeled -----

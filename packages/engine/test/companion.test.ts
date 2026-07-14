@@ -180,9 +180,10 @@ describe("deriveCompanion (ranger-7 dog, effective level 4)", () => {
     expect(dog!.cmd).toBe(19);
   });
 
-  it("Attack: bite +7 (1d6+2)", () => {
+  it("Attack: bite +5 (1d6+2) — Str-based, not Dex (Str mod +2, Dex mod +4, no Weapon Finesse)", () => {
+    // bab(3) + strMod(2) + size(med, 0) = 5. Damage is always Str: strMod(2).
     const bite = dog!.attacks.find((a) => a.name === "Bite");
-    expect(bite).toMatchObject({ attack: 7, damageDice: "1d6", damageBonus: 2 });
+    expect(bite).toMatchObject({ attack: 5, damageDice: "1d6", damageBonus: 2 });
   });
 
   it("HP max 26", () => {
@@ -374,7 +375,8 @@ describe("deriveCompanion skill-rank investment (issue #68)", () => {
 
 describe("deriveCompanion own active conditions (issue #68)", () => {
   // druid-1 wolf, ungrown (size stays "med"): bab +1, Str 13 (mod +1), Dex 15
-  // (mod +2), attack 3 (1d6+1), saves fort 5/ref 5/will 1, AC 13/touch 12/
+  // (mod +2), attack = bab(1) + strMod(1) + size(0) = 2 (Str-based, not the
+  // higher Dex mod), damage 1d6+1, saves fort 5/ref 5/will 1, AC 13/touch 12/
   // flat-footed 11, CMB 2/CMD 14, per total 1, ste total 2 — hand-verified
   // baseline for the deltas below.
   function wolf1(companionConditions?: string[]): CharacterDoc {
@@ -389,7 +391,8 @@ describe("deriveCompanion own active conditions (issue #68)", () => {
     const doc = wolf1(["shaken"]);
     const rollData = buildRollData(doc, ref);
     const wolf = deriveCompanion(doc, rollData)!;
-    expect(wolf.attacks[0]).toMatchObject({ attack: 1 });
+    // baseline attack 2 (see wolf1's comment above) - 2 (shaken) = 0.
+    expect(wolf.attacks[0]).toMatchObject({ attack: 0 });
     expect(wolf.saves).toEqual({ fort: 3, ref: 3, will: -1 });
     expect(wolf.skills.per!.total).toBe(-1);
     expect(wolf.skills.ste!.total).toBe(0);
@@ -418,7 +421,7 @@ describe("deriveCompanion own active conditions (issue #68)", () => {
     const doc = wolf1();
     const rollData = buildRollData(doc, ref);
     const wolf = deriveCompanion(doc, rollData)!;
-    expect(wolf.attacks[0]).toMatchObject({ attack: 3, damageBonus: 1 });
+    expect(wolf.attacks[0]).toMatchObject({ attack: 2, damageBonus: 1 });
     expect(wolf.saves).toEqual({ fort: 5, ref: 5, will: 1 });
   });
 });
@@ -438,7 +441,7 @@ describe("deriveCompanion primary/secondary natural attacks (issue #68)", () => 
     expect(hoof).toMatchObject({ attackType: "primary", attack: 3, damageBonus: 3 });
   });
 
-  it("badger (Bite + 2 Claws): both primary-type kinds stay primary at full bonus", () => {
+  it("badger (Bite + 2 Claws): both primary-type kinds stay primary at full bonus, Str-based (badger's Dex mod +4 is higher but unused without Weapon Finesse)", () => {
     const doc = makeDoc({
       classes: [{ tag: "druid", level: 6 }],
       animalCompanion: { speciesId: "badger", name: "Digger", source: ["nature-bond"] },
@@ -447,10 +450,11 @@ describe("deriveCompanion primary/secondary natural attacks (issue #68)", () => 
     const badger = deriveCompanion(doc, rollData)!;
     expect(badger.bab).toBe(4);
     expect(badger.abilities.str.mod).toBe(1);
+    // bab(4) + strMod(1) + size(med, 0) = 5 (was 8 under the old max(str,dex) rule).
     const bite = badger.attacks.find((a) => a.name === "Bite")!;
     const claw = badger.attacks.find((a) => a.name === "Claw")!;
-    expect(bite).toMatchObject({ attackType: "primary", attack: 8, damageBonus: 1 });
-    expect(claw).toMatchObject({ attackType: "primary", attack: 8, damageBonus: 1 });
+    expect(bite).toMatchObject({ attackType: "primary", attack: 5, damageBonus: 1 });
+    expect(claw).toMatchObject({ attackType: "primary", attack: 5, damageBonus: 1 });
   });
 
   it("crocodile (Bite + Tail slap) below Multiattack: tail slap secondary at −5/half Str", () => {
@@ -487,5 +491,23 @@ describe("deriveCompanion primary/secondary natural attacks (issue #68)", () => 
     expect(bite).toMatchObject({ attackType: "primary", attack: 11, damageBonus: 5 });
     // secondary: −2 attack penalty (Multiattack), half Str (floor(5/2) = 2).
     expect(tailSlap).toMatchObject({ attackType: "secondary", attack: 9, damageBonus: 2 });
+  });
+});
+
+describe("deriveCompanion Weapon Finesse (attack roll only, never damage)", () => {
+  it("druid-1 wolf: bite is Str-based (+2) by default; Weapon Finesse switches the attack roll to Dex (+3), damage unchanged", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 1 }],
+      animalCompanion: { speciesId: "wolf", name: "Fang", source: ["nature-bond"] },
+    });
+    const rollData = buildRollData(doc, ref);
+    // HD 2, BAB +1; Str 13 (mod +1), Dex 15 (mod +2); Medium (size mod 0).
+    const withoutFinesse = deriveCompanion(doc, rollData, false, false)!;
+    // bab(1) + strMod(1) + size(0) = 2.
+    expect(withoutFinesse.attacks[0]).toMatchObject({ attack: 2, damageBonus: 1 });
+
+    const withFinesse = deriveCompanion(doc, rollData, false, true)!;
+    // bab(1) + dexMod(2) + size(0) = 3; damage still Str-based (strMod 1).
+    expect(withFinesse.attacks[0]).toMatchObject({ attack: 3, damageBonus: 1 });
   });
 });
