@@ -65,7 +65,7 @@ mirrored into `apps/web/public/data/` and the production `dist/` bundle) is
 **Open Game Content** licensed under the **Open Game License v1.0a** -- see
 [`OGL.txt`](./OGL.txt). That license, not the AGPL, governs those files.
 
-This is derivative Open Game Content drawn from two pinned, upstream sources:
+This is derivative Open Game Content drawn from three pinned, upstream sources:
 
 ### a. Foundry VTT Pathfinder 1e system
 
@@ -85,6 +85,16 @@ This is derivative Open Game Content drawn from two pinned, upstream sources:
   Paizo books (CRB, APG, ACG, ARG, BotD, UC, UM, UE, Horror Adventures,
   Occult Adventures, etc.). We carry forward that extended Section 15
   verbatim and add our own derivative-work entry per OGL Sec.6.
+
+### c. PF1 Content module (community feats pack)
+
+- Repo: `https://gitlab.com/foundryvtt_pathfinder1e/pf1-content`
+- Pinned commit: `c66bf333cafc451d817ead660473dd01d9846fb3`
+- Same GitLab org as the pinned system repo (Sec.2a). Ships under GPL-3.0 for
+  its module _code_ (never copied in, per Sec.1's clean-room discipline) and
+  OGL-covered compendium _data_ under `src/pf-feats/`, from which we vendor
+  only the feats not already present in the system pack (name collisions keep
+  the system pack's richer record).
 
 Our `OGL.txt` is therefore the upstream Archetypes `OGL.txt` with the
 following appended to its COPYRIGHT NOTICE:

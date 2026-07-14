@@ -1,10 +1,16 @@
 /**
  * Completeness + sanity tests for issue #45's feat classification audit
- * (feat-classification.ts). Mirrors the archetype-extracted pipeline's own
- * completeness posture: every feat in the vendored pack must have exactly one
- * classification entry, keyed by name slug (feat ids are opaque Foundry
+ * (feat-classification.ts), keyed by name slug (feat ids are opaque Foundry
  * UUIDs — see feat-effects.ts's featNameSlug doc comment for why slugs, not
  * ids, are the stable key here).
+ *
+ * The audit's scope is frozen at the 390 feats the Foundry system pack shipped
+ * when it ran — it predates the `pf1-content` community-pack merge (see
+ * feat-classification.ts's file header), which added ~3,150 more feats to
+ * `ref.feats` that this file makes no claim about. So "completeness" here
+ * means the audited set is self-consistent (no orphaned entries pointing at
+ * feats that no longer exist, no drift in its own entry count), not that it
+ * covers every feat currently in the vendored pack.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -26,17 +32,14 @@ const VALID_BUCKETS: ReadonlySet<FeatClassificationBucket> = new Set([
 ]);
 
 describe("FEAT_CLASSIFICATION completeness (issue #45)", () => {
-  it("has an entry for every feat in the vendored RefData pack", () => {
-    const missing: string[] = [];
-    for (const feat of Object.values(ref.feats)) {
-      const slug = featNameSlug(feat.name);
-      if (!FEAT_CLASSIFICATION[slug]) missing.push(feat.name);
-    }
-    expect(missing).toEqual([]);
+  it("every entry still resolves to a real feat in the vendored pack (no orphaned entries)", () => {
+    const featSlugs = new Set(Object.values(ref.feats).map((f) => featNameSlug(f.name)));
+    const orphaned = Object.keys(FEAT_CLASSIFICATION).filter((slug) => !featSlugs.has(slug));
+    expect(orphaned).toEqual([]);
   });
 
-  it("covers exactly the number of feats in the vendored pack (no stale/orphaned entries)", () => {
-    expect(Object.keys(FEAT_CLASSIFICATION).length).toBe(Object.keys(ref.feats).length);
+  it("covers exactly the 390 system-pack feats audited for issue #45 (no silent growth/shrinkage)", () => {
+    expect(Object.keys(FEAT_CLASSIFICATION).length).toBe(390);
   });
 
   it("every entry's bucket is one of the documented buckets", () => {

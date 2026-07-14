@@ -13,10 +13,12 @@ import {
   FOUNDRY_SHA,
   OUTPUT_DIR,
   PACKS_DIR,
+  PF_CONTENT_CLONE_DIR,
   SYSTEM_VERSION,
 } from "../config.js";
 
 const ARCHETYPE_SOURCE_DIR = join(ARCHETYPE_CLONE_DIR, "source files", "Archetypes");
+const PF_CONTENT_FEATS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-feats");
 
 /** Committer date of the pinned commit (ISO 8601) — deterministic per SHA. */
 function sourceCommitDate(): string {
@@ -41,6 +43,7 @@ function main(): void {
   const { refData } = normalize({
     packsDir: PACKS_DIR,
     archetypeSourceDir: ARCHETYPE_SOURCE_DIR,
+    pfContentFeatsDir: PF_CONTENT_FEATS_DIR,
     sourceRepo: FOUNDRY_REPO,
     sourceSha: FOUNDRY_SHA,
     systemVersion: SYSTEM_VERSION,

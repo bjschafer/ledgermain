@@ -56,6 +56,18 @@ export const ARCHETYPE_REPO = "https://github.com/bjschafer/pf1e-archetypes.git"
 /** Pinned commit on the cleaned fork (see comment above). */
 export const ARCHETYPE_SHA = "815ef073685faf215be442cc5035c8198a89432b";
 
+/**
+ * Third pinned source: the community "PF1 Content" module, same GitLab org as
+ * the pinned system repo. It ships a much larger feats pack (~3,250 files vs.
+ * the system's 390) in the same per-entity YAML shape our `readPack` already
+ * consumes, so it merges into `feats.json` rather than adding a new RefData
+ * collection. Pin like FOUNDRY_SHA: exact commit, never a branch.
+ */
+export const PF_CONTENT_REPO = "https://gitlab.com/foundryvtt_pathfinder1e/pf1-content.git";
+
+/** Pinned commit (latest `main` as of 2025-11-24). */
+export const PF_CONTENT_SHA = "c66bf333cafc451d817ead660473dd01d9846fb3";
+
 const here = dirname(fileURLToPath(import.meta.url));
 const packageRoot = resolve(here, "..");
 
@@ -66,6 +78,9 @@ export const PACKS_DIR = resolve(CLONE_DIR, "packs");
 
 /** Where the archetype dataset clone lives (gitignored, fetched on demand). */
 export const ARCHETYPE_CLONE_DIR = resolve(CACHE_DIR, "pf1e-archetypes");
+
+/** Where the PF1 Content module clone lives (gitignored, fetched on demand). */
+export const PF_CONTENT_CLONE_DIR = resolve(CACHE_DIR, "pf1-content");
 
 /** Where the normalized JSON is vendored (committed to the repo). */
 export const OUTPUT_DIR = resolve(packageRoot, "data");

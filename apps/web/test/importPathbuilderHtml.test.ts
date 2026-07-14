@@ -160,9 +160,10 @@ describe("importPathbuilderHtml", () => {
     expect(report.mapped.some((l) => l.includes('Class: "Fighter"'))).toBe(true);
     expect(report.mapped.some((l) => l.includes('Class: "Alchemist"'))).toBe(true);
 
-    // 10 of the 11 feats are in the vendored slice; "Armor Focus" isn't.
-    expect(doc.build.feats.length).toBe(10);
-    expect(report.unmapped.some((l) => l.includes('Feat "Armor Focus"'))).toBe(true);
+    // All 11 feats are in the vendored slice — "Armor Focus" used to be
+    // missing before the pf1-content community pack merged ~3,150 more feats
+    // into feats.json (390 -> ~3,560), which now includes it.
+    expect(doc.build.feats.length).toBe(11);
     expect(
       report.unmapped.some(
         (l) => l.includes('Feat choice "Falchion"') && l.includes("Weapon Focus"),

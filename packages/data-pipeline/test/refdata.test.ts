@@ -59,7 +59,10 @@ describe("metadata + provenance", () => {
     // Chronicler, Shadowdancer — issue #66 chunks 1 + 4, Foundry ships no
     // prestige classes at all).
     expect(Object.keys(ref.classes)).toHaveLength(54);
-    expect(Object.keys(ref.feats)).toHaveLength(390);
+    // 390 system-pack feats + ~3,150 merged in from the community pf1-content
+    // module (390 + 3,251 - 77 name collisions - 1 internal dupe; see
+    // config.ts's PF_CONTENT_REPO and normalize.ts's feats merge).
+    expect(Object.keys(ref.feats)).toHaveLength(3563);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
   });
 });

@@ -53,6 +53,8 @@ export interface NormalizeOptions {
   packsDir: string;
   /** Directory containing the per-class archetype CSVs (`<Class>.csv`). */
   archetypeSourceDir: string;
+  /** `src/pf-feats` directory from the pinned PF1 Content module clone. */
+  pfContentFeatsDir: string;
   sourceRepo: string;
   sourceSha: string;
   systemVersion: string;
@@ -175,10 +177,31 @@ export function normalize(opts: NormalizeOptions): {
     )
     .map((pf) => transformRace(pf.doc, resolveUuid));
 
-  // --- feats (all of them; prereq refs point within this set) ----------------
-  const feats: Feat[] = readPack(join(packsDir, "feats"))
+  // --- feats: system pack (all of them; prereq refs point within this set) --
+  const systemFeats: Feat[] = readPack(join(packsDir, "feats"))
     .filter((pf) => pf.doc.type === "feat")
     .map((pf) => transformFeat(pf.doc, resolveUuid));
+
+  // --- feats: pf1-content community pack (adds ~3,250 splatbook feats the
+  // system pack doesn't ship). Dedup by normalized name against the system
+  // pack — on a collision the system record wins, since it's richer (`uses`,
+  // `@UUID` prereq links, structured `sources`) — and within the community
+  // pack itself (first-wins), in case it has internal near-dupes. The
+  // community pack has no `@UUID` resolver index of its own, so any feat cross
+  // -refs in its prose fall back to prose-only soft warnings (see prereqs.ts).
+  const normalizeFeatName = (name: string): string => name.toLowerCase().replace(/[^a-z0-9]+/g, "");
+  const systemFeatNames = new Set(systemFeats.map((f) => normalizeFeatName(f.name)));
+  const seenPfContentNames = new Set<string>();
+  const pfContentFeats: Feat[] = [];
+  for (const pf of readPack(opts.pfContentFeatsDir)) {
+    if (pf.doc.type !== "feat") continue;
+    const key = normalizeFeatName(pf.doc.name);
+    if (systemFeatNames.has(key) || seenPfContentNames.has(key)) continue;
+    seenPfContentNames.add(key);
+    pfContentFeats.push(transformFeat(pf.doc, resolveUuid));
+  }
+
+  const feats: Feat[] = [...systemFeats, ...pfContentFeats];
 
   // --- spells (those any sliced spell-list class can learn, OR a domain) -----
   // Domain-only spells (e.g. Control Winds — druid class, but Air domain L5)

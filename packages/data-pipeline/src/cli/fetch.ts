@@ -1,6 +1,7 @@
 /**
- * Fetches both pinned upstream repos (Foundry PF1 system + the archetype
- * dataset fork) at their EXACT pinned SHAs into the gitignored cache.
+ * Fetches all three pinned upstream repos (Foundry PF1 system + the archetype
+ * dataset fork + the PF1 Content community feats module) at their EXACT
+ * pinned SHAs into the gitignored cache.
  *
  * Uses a shallow fetch of a single commit (no branch checkout), which is fast and
  * deterministic. Safe to re-run: a clone already sitting at its pinned SHA is a
@@ -17,6 +18,9 @@ import {
   CLONE_DIR,
   FOUNDRY_REPO,
   FOUNDRY_SHA,
+  PF_CONTENT_CLONE_DIR,
+  PF_CONTENT_REPO,
+  PF_CONTENT_SHA,
 } from "../config.js";
 
 function git(args: string[], cwd?: string): string {
@@ -68,6 +72,7 @@ function fetchPinned(label: string, repo: string, sha: string, dir: string): voi
 function main(): void {
   fetchPinned("foundry-pf1", FOUNDRY_REPO, FOUNDRY_SHA, CLONE_DIR);
   fetchPinned("pf1e-archetypes", ARCHETYPE_REPO, ARCHETYPE_SHA, ARCHETYPE_CLONE_DIR);
+  fetchPinned("pf1-content", PF_CONTENT_REPO, PF_CONTENT_SHA, PF_CONTENT_CLONE_DIR);
 }
 
 main();
