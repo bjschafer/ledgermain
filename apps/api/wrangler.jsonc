@@ -19,6 +19,17 @@
     // in this list.
     "ALLOWED_APP_ORIGINS": "http://localhost:5173,https://ledgermain.whizkid.dev",
     "DISCORD_CLIENT_ID": "1523090357108346941",
+
+    // Feedback -> GitHub-issue path (src/feedback.ts). Non-secret App
+    // coordinates; the App private key (GITHUB_APP_PRIVATE_KEY) and Turnstile
+    // secret (TURNSTILE_SECRET) are `wrangler secret put` values, never here.
+    // GITHUB_APP_ID / GITHUB_APP_INSTALLATION_ID are filled in during the
+    // one-time owner setup (see README); the App must be installed on the repo
+    // below with Issues: write. Empty until then — the endpoint 500s rather
+    // than opening issues, which is the correct closed-until-configured state.
+    "GITHUB_APP_ID": "",
+    "GITHUB_APP_INSTALLATION_ID": "",
+    "GITHUB_FEEDBACK_REPO": "bjschafer/ledgermain",
   },
 
   // Two KV namespaces:

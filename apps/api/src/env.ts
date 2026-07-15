@@ -10,6 +10,12 @@
 declare global {
   interface Env {
     readonly DISCORD_CLIENT_SECRET: string;
+    // Feedback -> GitHub-issue path (feedback.ts / githubApp.ts / turnstile.ts).
+    // The App private key (PKCS#8 PEM) and the Turnstile secret are Worker
+    // secrets; the App id, installation id, and target repo are non-secret
+    // `vars` in wrangler.jsonc and stay generated in worker-configuration.d.ts.
+    readonly GITHUB_APP_PRIVATE_KEY: string;
+    readonly TURNSTILE_SECRET: string;
   }
 }
 
@@ -21,6 +27,8 @@ declare global {
   namespace Cloudflare {
     interface Env {
       readonly DISCORD_CLIENT_SECRET: string;
+      readonly GITHUB_APP_PRIVATE_KEY: string;
+      readonly TURNSTILE_SECRET: string;
     }
   }
 }

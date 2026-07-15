@@ -1,1 +1,7 @@
 DISCORD_CLIENT_SECRET=paste-a-real-discord-oauth-app-client-secret-here
+
+# Feedback -> GitHub-issue path (src/feedback.ts). See README "In-app feedback"
+# for the one-time GitHub App + Turnstile setup. The key must be PKCS#8
+# (`openssl pkcs8 -topk8`); paste the whole PEM including the BEGIN/END lines.
+TURNSTILE_SECRET=paste-your-cloudflare-turnstile-secret-key-here
+GITHUB_APP_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...paste-pkcs8-key...\n-----END PRIVATE KEY-----"

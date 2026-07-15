@@ -5502,6 +5502,122 @@ input[type="text"].saved-roll-name:focus {
   }
 }
 
+/* ---------------------------------------------------------- feedback modal -- */
+/* Mirrors the preview-notice modal's backdrop/surface vocabulary so the
+   feedback dialog reads as a sibling of the app's other overlays. */
+.feedback-open {
+  white-space: nowrap;
+}
+
+.feedback-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  background: rgba(10, 11, 14, 0.72);
+  padding: 16px;
+}
+
+.feedback-modal {
+  width: 100%;
+  max-width: 460px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.feedback-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.feedback-title {
+  font-family: var(--display);
+  font-size: 18px;
+  color: var(--gold);
+}
+
+.feedback-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 15px;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.feedback-close:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.feedback-intro {
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.feedback-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.feedback-field > span {
+  font-size: 12px;
+}
+
+.feedback-field select,
+.feedback-field input,
+.feedback-field textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+}
+
+.feedback-field textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.feedback-turnstile {
+  margin: 4px 0 12px;
+  min-height: 65px;
+}
+
+.feedback-disclosure {
+  font-size: 11px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.feedback-error {
+  color: var(--oxblood-ink);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.feedback-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.feedback-done p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
 @media print {
   .no-print {
     display: none !important;

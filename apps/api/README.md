@@ -55,6 +55,7 @@ redeploy.
 | `GET /api/characters/:id`                       | bearer | Full document JSON, or 404.                                                                                                              |
 | `PUT /api/characters/:id`                       | bearer | Body = full `CharacterDoc`. 400 on bad JSON/shape, 413 over 2 MB, 409 on a stale `version`, 200 `{ id, version, updatedAt }` on success. |
 | `DELETE /api/characters/:id`                    | bearer | 204, idempotent.                                                                                                                         |
+| `POST /api/feedback`                            | none   | In-app feedback → opens a GitHub issue as the App bot. Turnstile-gated + per-IP rate-limited. 201 `{ ok, url, number }`. See below.     |
 
 CORS: `ALLOWED_APP_ORIGINS` (comma-separated, exact origin match — never
 `*`) gates both the OAuth `redirect_uri` and the `Access-Control-Allow-Origin`
@@ -131,6 +132,63 @@ redeploy is just `wrangler deploy`.
    (For a one-off _manual_ deploy from a laptop, instead run
    `VITE_API_URL=https://api.ledgermain.whizkid.dev bun run --filter @pf1/web build`
    then `wrangler deploy` from `apps/web/`.)
+
+## In-app feedback (`POST /api/feedback`)
+
+Lets anyone using the app — no GitHub account, no exposed email — send feedback
+(a missing feat, a wrong number, a bug) straight from the UI. The Worker opens a
+GitHub issue **as a GitHub App bot**, so reports never appear authored by the
+owner's account, and the only durable credential is the App's private key.
+
+Defense in depth for the one public, unauthenticated write:
+
+- **Cloudflare Turnstile** — the primary gate. The client mints a token from the
+  widget; the Worker verifies it server-side (`src/turnstile.ts`) and asserts the
+  solving `hostname` is one of `ALLOWED_APP_ORIGINS`. This is the strongest
+  practical "came from our app" signal — a public browser endpoint can't _prove_
+  its caller (anything the client holds is visible in devtools), but this makes
+  scripted abuse defeat a CAPTCHA per submit rather than curl a URL.
+- **Per-IP rate limit** (KV, coarse) — a burst backstop, not the main defense.
+- **Envelope validation** — category enum, message length — before any of the
+  above runs. Free text is mention-neutralized before it lands in the issue.
+
+Until configured the endpoint fails closed (verification/issue creation error,
+never a silent open), and the web app hides the feedback button entirely unless
+both `VITE_API_URL` **and** `VITE_TURNSTILE_SITEKEY` are set at build time.
+
+### One-time owner setup
+
+1. **Create a Turnstile widget** (Cloudflare dashboard → Turnstile → Add):
+   - Add the app's hostnames (`ledgermain.whizkid.dev`, and `localhost` for dev).
+   - Copy the **Site Key** → set it as the web build var `VITE_TURNSTILE_SITEKEY`
+     (same place as `VITE_API_URL`: Workers Builds → the `ledgermain` Worker →
+     Settings → Build → Build variables). The site key is public.
+   - Copy the **Secret Key** → `wrangler secret put TURNSTILE_SECRET` (from
+     `apps/api/`), interactively, from a terminal you trust.
+2. **Register a GitHub App** (github.com/settings/apps → New GitHub App):
+   - Permissions: **Repository → Issues: Read & write** (nothing else).
+   - Uncheck "Active" under Webhook (this App is pull-only; no events needed).
+   - Note the **App ID** → `wrangler.jsonc` `vars.GITHUB_APP_ID`.
+   - **Generate a private key** (downloads a PKCS#1 `.pem`). WebCrypto needs
+     PKCS#8, so convert once:
+     ```bash
+     openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt \
+       -in app-private-key.pem -out app-private-key-pkcs8.pem
+     ```
+     Then `wrangler secret put GITHUB_APP_PRIVATE_KEY` and paste the whole PKCS#8
+     PEM (BEGIN/END lines included).
+   - **Install the App** on `bjschafer/ledgermain` (App → Install App → pick the
+     repo). Open the installation and copy the **installation id** from its URL
+     (`.../installations/<id>`) → `wrangler.jsonc` `vars.GITHUB_APP_INSTALLATION_ID`.
+3. _(Optional)_ Create a `feedback` label on the repo — the Worker tags issues
+   with it best-effort; unknown labels are silently dropped on issue creation, so
+   nothing breaks if it's absent, the label just won't stick until it exists.
+4. **Deploy**: `wrangler deploy` (from `apps/api/`), then rebuild the web app so
+   the new `VITE_TURNSTILE_SITEKEY` is inlined.
+
+After `wrangler.jsonc` changes, regenerate the binding types with
+`bun run cf-typegen` (from `apps/api/`) and commit the updated
+`worker-configuration.d.ts`.
 
 ## Observability
 
