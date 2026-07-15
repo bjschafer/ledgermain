@@ -6,13 +6,31 @@
  * reflect `*`, so a legitimate caller can be named exactly) plus the
  * headers/methods this API actually uses.
  */
-const ALLOWED_METHODS = "GET,PUT,DELETE,OPTIONS";
+const ALLOWED_METHODS = "GET,POST,PUT,DELETE,OPTIONS";
 const ALLOWED_HEADERS = "authorization,content-type";
 
 export function allowedOrigins(env: Env): string[] {
   return env.ALLOWED_APP_ORIGINS.split(",")
     .map((o) => o.trim())
     .filter(Boolean);
+}
+
+/**
+ * The bare hostnames of the allowed origins (`http://localhost:5173` ->
+ * `localhost`). Used by the feedback endpoint to assert the hostname a
+ * Turnstile token was solved on is one of ours — a stronger "from our app"
+ * signal than the (forgeable) `Origin` header. Malformed entries are skipped.
+ */
+export function allowedHostnames(env: Env): string[] {
+  const hosts: string[] = [];
+  for (const origin of allowedOrigins(env)) {
+    try {
+      hosts.push(new URL(origin).hostname);
+    } catch {
+      // A non-URL entry in the allow-list contributes no hostname.
+    }
+  }
+  return hosts;
 }
 
 function corsHeaders(request: Request, env: Env): Headers {

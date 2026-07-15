@@ -7,6 +7,9 @@ interface __BaseEnv_Env {
   ANALYTICS: AnalyticsEngineDataset;
   ALLOWED_APP_ORIGINS: "http://localhost:5173,https://ledgermain.whizkid.dev";
   DISCORD_CLIENT_ID: "1523090357108346941";
+  GITHUB_APP_ID: "";
+  GITHUB_APP_INSTALLATION_ID: "";
+  GITHUB_FEEDBACK_REPO: "bjschafer/ledgermain";
 }
 declare namespace Cloudflare {
   interface GlobalProps {

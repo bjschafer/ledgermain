@@ -17,6 +17,7 @@ import { SpellsSection } from "./components/builder/SpellsSection.js";
 import { TraitsSection } from "./components/builder/TraitsSection.js";
 import type { BuilderProps } from "./components/builder/types.js";
 import { CharacterSwitcher } from "./components/CharacterSwitcher.js";
+import { FeedbackButton } from "./components/FeedbackButton.js";
 import { PreviewNotice } from "./components/PreviewNotice.js";
 import { PrintView } from "./components/PrintView.js";
 import { Sheet } from "./components/Sheet.js";
@@ -109,6 +110,7 @@ export function App() {
           </button>
         </div>
         <div className="masthead-right">
+          <FeedbackButton mode={mode} />
           <SyncStatus
             status={store.syncStatus}
             onSignIn={store.signIn}

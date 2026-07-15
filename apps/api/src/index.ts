@@ -10,6 +10,7 @@ import { recordRequest } from "./analytics.js";
 import { deleteCharacter, getCharacter, listCharacters, putCharacter } from "./characters.js";
 import { handlePreflight, withCors } from "./cors.js";
 import { handleCallback, handleStart } from "./discord-oauth.js";
+import { handleFeedback } from "./feedback.js";
 import { errorJson, json } from "./http.js";
 import { deleteSession, ownerIdFromRequest } from "./session.js";
 
@@ -26,6 +27,7 @@ function routeLabel(method: string, pathname: string): string {
   if (pathname === "/auth/discord/callback") return "auth.callback";
   if (pathname === "/auth/logout") return "auth.logout";
   if (pathname === "/api/me") return "me";
+  if (pathname === "/api/feedback") return "feedback.submit";
   const charMatch = CHARACTER_PATH.exec(pathname);
   if (charMatch) {
     const hasId = Boolean(charMatch[1]);
@@ -67,6 +69,13 @@ async function route(request: Request, env: Env): Promise<Response> {
     const ownerId = await ownerIdFromRequest(request, env.KV);
     if (!ownerId) return errorJson(401, "Not authenticated");
     return json({ ownerId });
+  }
+
+  // Public (unauthenticated) — anyone using the app can send feedback. Guarded
+  // by Turnstile + a per-IP rate limit inside the handler (see feedback.ts).
+  if (pathname === "/api/feedback") {
+    if (method !== "POST") return errorJson(405, "Method not allowed");
+    return handleFeedback(request, env);
   }
 
   const charMatch = CHARACTER_PATH.exec(pathname);
