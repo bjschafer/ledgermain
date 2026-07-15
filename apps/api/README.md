@@ -55,7 +55,7 @@ redeploy.
 | `GET /api/characters/:id`                       | bearer | Full document JSON, or 404.                                                                                                              |
 | `PUT /api/characters/:id`                       | bearer | Body = full `CharacterDoc`. 400 on bad JSON/shape, 413 over 2 MB, 409 on a stale `version`, 200 `{ id, version, updatedAt }` on success. |
 | `DELETE /api/characters/:id`                    | bearer | 204, idempotent.                                                                                                                         |
-| `POST /api/feedback`                            | none   | In-app feedback → opens a GitHub issue as the App bot. Turnstile-gated + per-IP rate-limited. 201 `{ ok, url, number }`. See below.     |
+| `POST /api/feedback`                            | none   | In-app feedback → opens a GitHub issue as the App bot. Turnstile-gated + per-IP rate-limited. 201 `{ ok, url, number }`. See below.      |
 
 CORS: `ALLOWED_APP_ORIGINS` (comma-separated, exact origin match — never
 `*`) gates both the OAuth `redirect_uri` and the `Access-Control-Allow-Origin`

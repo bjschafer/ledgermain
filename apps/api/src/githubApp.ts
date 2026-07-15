@@ -148,11 +148,7 @@ export interface CreatedIssue {
 }
 
 /** Create an issue in `env.GITHUB_FEEDBACK_REPO` (`owner/repo`) as the App. */
-export async function createIssue(
-  env: Env,
-  token: string,
-  issue: NewIssue,
-): Promise<CreatedIssue> {
+export async function createIssue(env: Env, token: string, issue: NewIssue): Promise<CreatedIssue> {
   const res = await fetch(`${GITHUB_API}/repos/${env.GITHUB_FEEDBACK_REPO}/issues`, {
     method: "POST",
     headers: {

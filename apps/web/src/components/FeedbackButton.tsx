@@ -98,8 +98,10 @@ function FeedbackModal({ mode, onClose }: { mode: string; onClose: () => void })
     <div
       className="feedback-backdrop"
       role="presentation"
-      onClick={() => {
-        if (!submitting) onClose();
+      onClick={(e) => {
+        // Only a click on the backdrop itself closes; clicks inside the modal
+        // bubble up with a different target.
+        if (e.target === e.currentTarget && !submitting) onClose();
       }}
     >
       <div
@@ -107,7 +109,6 @@ function FeedbackModal({ mode, onClose }: { mode: string; onClose: () => void })
         role="dialog"
         aria-modal="true"
         aria-labelledby="feedback-title"
-        onClick={(e) => e.stopPropagation()}
       >
         <div className="feedback-header">
           <div id="feedback-title" className="feedback-title">
