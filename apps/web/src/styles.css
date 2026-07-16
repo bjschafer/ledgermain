@@ -5588,6 +5588,21 @@ input[type="text"].saved-roll-name:focus {
   min-height: 96px;
 }
 
+.feedback-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.feedback-check input {
+  flex: none;
+  margin: 0;
+}
+
 .feedback-turnstile {
   margin: 4px 0 12px;
   min-height: 65px;

@@ -1,7 +1,25 @@
+import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+
+/**
+ * Short SHA of the build, baked in as `__APP_VERSION__` and attached to in-app
+ * feedback submissions — it's the one field that says whether a report is
+ * against current code or a stale cached bundle. Workers Builds sets
+ * `WORKERS_CI_COMMIT_SHA`; locally we ask git; if neither answers (a tarball
+ * build, say) "unknown" is honest and harmless.
+ */
+function appVersion(): string {
+  const ci = process.env.WORKERS_CI_COMMIT_SHA;
+  if (ci) return ci.slice(0, 7);
+  try {
+    return execFileSync("git", ["rev-parse", "--short", "HEAD"], { encoding: "utf8" }).trim();
+  } catch {
+    return "unknown";
+  }
+}
 
 /**
  * Vite/workspace-TS gotcha: `@pf1/engine` and `@pf1/schema` publish raw `.ts`
@@ -15,6 +33,7 @@ const pkg = (rel: string) => fileURLToPath(new URL(rel, import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
+  define: { __APP_VERSION__: JSON.stringify(appVersion()) },
   // Pin the port so the origin (and thus the IndexedDB store) is stable across
   // restarts. strictPort fails loudly if 5173 is taken instead of silently
   // moving to 5174 (which would look like an empty app — different origin).

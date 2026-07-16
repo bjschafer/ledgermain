@@ -110,7 +110,7 @@ export function App() {
           </button>
         </div>
         <div className="masthead-right">
-          <FeedbackButton mode={mode} />
+          <FeedbackButton mode={mode} doc={store.doc} />
           <SyncStatus
             status={store.syncStatus}
             onSignIn={store.signIn}

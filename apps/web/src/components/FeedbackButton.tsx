@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import type { CharacterDoc } from "@pf1/schema";
+
 import { feedbackEnabled, turnstileSitekey } from "../feedback/config.js";
 import { FeedbackError, submitFeedback } from "../feedback/client.js";
 import { useTurnstile } from "../hooks/useTurnstile.js";
@@ -26,7 +28,7 @@ type SubmitState =
  * lifting — validation, payload shape — lives in `model/feedback.ts`; this is a
  * thin view over it, matching the app's model/view split.
  */
-export function FeedbackButton({ mode }: { mode: string }) {
+export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc }) {
   const [open, setOpen] = useState(false);
 
   if (!feedbackEnabled()) return null;
@@ -41,12 +43,20 @@ export function FeedbackButton({ mode }: { mode: string }) {
       >
         Feedback
       </button>
-      {open && <FeedbackModal mode={mode} onClose={() => setOpen(false)} />}
+      {open && <FeedbackModal mode={mode} doc={doc} onClose={() => setOpen(false)} />}
     </>
   );
 }
 
-function FeedbackModal({ mode, onClose }: { mode: string; onClose: () => void }) {
+function FeedbackModal({
+  mode,
+  doc,
+  onClose,
+}: {
+  mode: string;
+  doc?: CharacterDoc;
+  onClose: () => void;
+}) {
   const [draft, setDraft] = useState<FeedbackDraft>(emptyDraft);
   const [state, setState] = useState<SubmitState>({ kind: "editing" });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -80,7 +90,17 @@ function FeedbackModal({ mode, onClose }: { mode: string; onClose: () => void })
     }
     setState({ kind: "submitting" });
     try {
-      const request = buildRequest(draft, { mode, userAgent: navigator.userAgent }, token);
+      const request = buildRequest(
+        draft,
+        {
+          mode,
+          userAgent: navigator.userAgent,
+          appVersion: typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : "unknown",
+          viewport: `${window.innerWidth}x${window.innerHeight}`,
+        },
+        token,
+        doc,
+      );
       const res = await submitFeedback(apiBaseUrl()!, request);
       setState({ kind: "done", url: res.url });
     } catch (err) {
@@ -191,6 +211,20 @@ function FeedbackModal({ mode, onClose }: { mode: string; onClose: () => void })
               />
             </label>
 
+            {doc && (
+              <label className="feedback-check">
+                <input
+                  type="checkbox"
+                  checked={draft.includeBuild}
+                  disabled={submitting}
+                  onChange={(e) => setDraft({ ...draft, includeBuild: e.target.checked })}
+                />
+                <span>
+                  Attach my character <span className="hint">(helps me reproduce the numbers)</span>
+                </span>
+              </label>
+            )}
+
             <div className="feedback-turnstile" ref={turnstile.containerRef} />
             {turnstile.status === "error" && (
               <p className="hint feedback-error">
@@ -205,8 +239,11 @@ function FeedbackModal({ mode, onClose }: { mode: string; onClose: () => void })
             )}
 
             <p className="hint feedback-disclosure">
-              Your report is posted to a public issue tracker. Your browser version is included to
-              help with bugs; your character data is not sent.
+              Your report is posted to a public issue tracker. Your browser and app version are
+              included to help with bugs.{" "}
+              {draft.includeBuild
+                ? "Your character sheet will be attached to it — including its name and anything you've typed into it."
+                : "Your character data is not sent."}
             </p>
 
             <div className="feedback-actions">

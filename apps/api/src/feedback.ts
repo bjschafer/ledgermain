@@ -27,9 +27,14 @@ import { verifyTurnstile } from "./turnstile.js";
 const MAX_MESSAGE_CHARS = 4000;
 const MAX_CONTACT_CHARS = 200;
 const MAX_CONTEXT_CHARS = 500;
+const MAX_USER_AGENT_CHARS = 500;
+// The opt-in character attachment. A CharacterDoc is normally a few KB; this
+// leaves room for a maximal one while staying clear of GitHub's 65536-char
+// issue-body limit once the rest of the body is added.
+const MAX_BUILD_CHARS = 48_000;
 // Overall request-body ceiling — well above the field caps, so an oversized
 // body is rejected before we parse rather than buffering unbounded input.
-const MAX_BODY_BYTES = 16_000;
+const MAX_BODY_BYTES = 64_000;
 
 // Coarse per-IP limit: submissions per window. Turnstile is the real gate;
 // this only blunts a burst from one address that has (somehow) automated the
@@ -56,6 +61,10 @@ interface FeedbackBody {
   message: string;
   contact?: string;
   context?: string;
+  /** Raw user-agent; rendered in a collapsed block, out of the way. */
+  userAgent?: string;
+  /** Opt-in CharacterDoc JSON, attached only when the user ticked the box. */
+  build?: string;
   turnstileToken: string;
 }
 
@@ -82,6 +91,14 @@ function parseBody(raw: unknown): ParseResult {
   const context = asTrimmedString(body.context);
   if (context.length > MAX_CONTEXT_CHARS) return { ok: false, error: "Context is too long" };
 
+  const userAgent = asTrimmedString(body.userAgent);
+  if (userAgent.length > MAX_USER_AGENT_CHARS) return { ok: false, error: "Context is too long" };
+
+  // Dropped rather than rejected when oversized: the attachment is a bonus, and
+  // bouncing the whole submission would lose the user's actual words.
+  const rawBuild = asTrimmedString(body.build);
+  const build = rawBuild.length > MAX_BUILD_CHARS ? "" : rawBuild;
+
   // Not in the allow-list -> "other"; never trust the raw value into the issue.
   const rawCategory = asTrimmedString(body.category);
   const category = rawCategory in CATEGORY_LABELS ? rawCategory : "other";
@@ -93,6 +110,8 @@ function parseBody(raw: unknown): ParseResult {
       message,
       contact: contact || undefined,
       context: context || undefined,
+      userAgent: userAgent || undefined,
+      build: build || undefined,
       turnstileToken,
     },
   };
@@ -108,31 +127,78 @@ function neutralizeMentions(text: string): string {
   return text.replace(/@(?=[A-Za-z0-9])/g, "@\u200B");
 }
 
-/** A concise, single-line issue title: category prefix + first line of the message. */
-function issueTitle(category: string, message: string): string {
-  const firstLine = message.split("\n", 1)[0]!.trim();
-  const summary = firstLine.length > 80 ? `${firstLine.slice(0, 77)}…` : firstLine;
-  const prefix = category === "missing-content" ? "Missing" : "Feedback";
-  return neutralizeMentions(`[${prefix}] ${summary || "(no summary)"}`);
+/**
+ * Short per-category title tags. These carry the signal the `feedback` label
+ * can't: every submission is feedback, so tagging them all "[Feedback]" says
+ * nothing. Only the fallthrough keeps the generic tag.
+ */
+const CATEGORY_TAGS: Record<string, string> = {
+  "missing-content": "Missing",
+  "wrong-numbers": "Rules",
+  bug: "Bug",
+  idea: "Idea",
+  other: "Feedback",
+};
+
+const TITLE_MAX_CHARS = 100;
+
+/**
+ * A concise, single-line issue title: category tag + first line of the message.
+ * Truncation is word-boundary, not mid-word — the full text is quoted verbatim
+ * in the body anyway, so a title that stops cleanly at a word costs nothing and
+ * reads like a sentence instead of a crash.
+ */
+export function issueTitle(category: string, message: string): string {
+  const firstLine = message.split("\n", 1)[0]!.replace(/\s+/g, " ").trim().replace(/\.$/, "");
+  let summary = firstLine;
+  if (summary.length > TITLE_MAX_CHARS) {
+    const clipped = summary.slice(0, TITLE_MAX_CHARS - 1);
+    const lastSpace = clipped.lastIndexOf(" ");
+    // Guard the degenerate case (one very long "word"): fall back to the hard
+    // cut rather than emitting a bare ellipsis.
+    summary = `${lastSpace > 40 ? clipped.slice(0, lastSpace) : clipped}…`;
+  }
+  const tag = CATEGORY_TAGS[category] ?? "Feedback";
+  return neutralizeMentions(`[${tag}] ${summary || "(no summary)"}`);
 }
 
-function issueBody(value: FeedbackBody): string {
+/** Wrap untrusted text in a collapsed block so it never dominates the issue. */
+function details(summary: string, lang: string, text: string): string {
+  // A fence long enough that fenced content inside `text` can't break out.
+  const fence = "``````";
+  return [
+    `<details><summary>${summary}</summary>`,
+    "",
+    `${fence}${lang}`,
+    text,
+    fence,
+    "",
+    "</details>",
+  ].join("\n");
+}
+
+export function issueBody(value: FeedbackBody): string {
   const parts = [
-    `**Category:** ${CATEGORY_LABELS[value.category]}`,
-    "",
-    "**Message:**",
-    "",
     // Blockquote the free text; mentions already neutralized.
     neutralizeMentions(value.message)
       .split("\n")
       .map((line) => `> ${line}`)
       .join("\n"),
+    "",
+    `**Category:** ${CATEGORY_LABELS[value.category]}`,
   ];
-  if (value.contact) {
-    parts.push("", `**Contact (opt-in):** ${neutralizeMentions(value.contact)}`);
-  }
   if (value.context) {
-    parts.push("", `**Context:** ${neutralizeMentions(value.context)}`);
+    parts.push(`**Context:** ${neutralizeMentions(value.context)}`);
+  }
+  if (value.contact) {
+    parts.push(`**Contact (opt-in):** ${neutralizeMentions(value.contact)}`);
+  }
+  if (value.userAgent) {
+    // Inside a code fence, so no mention-neutralizing needed.
+    parts.push("", details("User agent", "", value.userAgent));
+  }
+  if (value.build) {
+    parts.push("", details("Attached character (opt-in)", "json", value.build));
   }
   parts.push("", "---", "_Submitted via the in-app feedback form._");
   return parts.join("\n");
