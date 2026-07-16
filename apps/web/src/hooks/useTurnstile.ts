@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 
 interface TurnstileRenderParams {
   sitekey: string;
+  action?: string;
   callback?: (token: string) => void;
   "expired-callback"?: () => void;
   "error-callback"?: () => void;
@@ -83,6 +84,10 @@ export function useTurnstile(sitekey: string): UseTurnstile {
         if (widgetIdRef.current) return; // already rendered (StrictMode re-run)
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey,
+          // Explicit-render equivalent of a `data-action` attribute on a
+          // declarative `cf-turnstile` div — this app renders the widget via
+          // JS rather than a data-sitekey div, so `action` is set here.
+          action: "turnstile-spin-v2",
           theme: "auto",
           callback: (t) => setToken(t),
           "expired-callback": () => setToken(null),
