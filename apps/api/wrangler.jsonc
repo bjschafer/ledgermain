@@ -23,12 +23,10 @@
     // Feedback -> GitHub-issue path (src/feedback.ts). Non-secret App
     // coordinates; the App private key (GITHUB_APP_PRIVATE_KEY) and Turnstile
     // secret (TURNSTILE_SECRET) are `wrangler secret put` values, never here.
-    // GITHUB_APP_ID / GITHUB_APP_INSTALLATION_ID are filled in during the
-    // one-time owner setup (see README); the App must be installed on the repo
-    // below with Issues: write. Empty until then — the endpoint 500s rather
-    // than opening issues, which is the correct closed-until-configured state.
-    "GITHUB_APP_ID": "",
-    "GITHUB_APP_INSTALLATION_ID": "",
+    // The `ledgermain-feedback` App is installed on the repo below with
+    // Issues: write.
+    "GITHUB_APP_ID": "4310904",
+    "GITHUB_APP_INSTALLATION_ID": "146878087",
     "GITHUB_FEEDBACK_REPO": "bjschafer/ledgermain",
   },
 
