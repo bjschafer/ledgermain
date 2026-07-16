@@ -1785,6 +1785,22 @@ export interface EidolonBuild {
    * Unchained-only; ignored for a chained eidolon.
    */
   subtypeGrantChoices?: Record<string, AbilityId>;
+  /**
+   * Player-set STARTING ability scores, overriding the defaults `@pf1/engine`
+   * `deriveEidolon` would otherwise use (the base form's own Str/Dex/Con plus
+   * the universal Int 7/Wis 10/Cha 11 every eidolon shares). Partial — only
+   * the abilities present are overridden; the rest keep their default. Purely
+   * a STARTING-score override: the level table's Str/Dex bonus, Large's fixed
+   * deltas, evolutions, ASI slots, subtype grants, and shared buffs all still
+   * apply on top, exactly as they do to the defaults.
+   *
+   * Exists because base-form scores are a common house-rule/GM-variant knob
+   * (and cover the APG base forms this v1 doesn't model — see `eidolon.ts`'s
+   * module doc comment). No validation: any integer is accepted, matching this
+   * codebase's soft-posture convention for player-entered numbers.
+   * Omitted/empty = pure RAW defaults.
+   */
+  baseAbilities?: Partial<Record<AbilityId, number>>;
   /** Player-given name (e.g. "Grix"). */
   name: string;
   /**

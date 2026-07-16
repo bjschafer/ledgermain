@@ -15,6 +15,7 @@ import {
   EIDOLON_BASE_FORMS,
   EIDOLON_EVOLUTIONS,
   eidolonEvolutionPoolAvailable,
+  eidolonStartingAbilities,
   eidolonSummonerLevel,
   eidolonVariant,
   EIDOLON_SUBTYPES,
@@ -93,6 +94,57 @@ export function setEidolonSubtypeGrantChoice(
     [String(level)]: ability,
   };
   return { ...doc, build: { ...doc.build, eidolon: { ...current, subtypeGrantChoices } } };
+}
+
+/**
+ * Set (or clear) one of the eidolon's STARTING ability scores — the
+ * house-rule/GM-variant override over the base form's own defaults (see
+ * `EidolonBuild.baseAbilities`'s doc comment). Passing `undefined` (or a
+ * value equal to the form's default) drops the entry so the build stays on
+ * pure RAW defaults rather than pinning a redundant copy of them; dropping
+ * the last entry removes the field entirely. No-ops if there's no eidolon
+ * yet.
+ */
+export function setEidolonBaseAbility(
+  doc: CharacterDoc,
+  ability: AbilityId,
+  score: number | undefined,
+): CharacterDoc {
+  const current = doc.build.eidolon;
+  if (!current) return doc;
+  const defaults = eidolonStartingAbilities(current.baseForm);
+  const next = { ...current.baseAbilities };
+  if (score === undefined || Number.isNaN(score) || score === defaults[ability]) {
+    delete next[ability];
+  } else {
+    next[ability] = Math.trunc(score);
+  }
+  const baseAbilities = Object.keys(next).length > 0 ? next : undefined;
+  return { ...doc, build: { ...doc.build, eidolon: { ...current, baseAbilities } } };
+}
+
+/** Drop every starting-ability override, returning the eidolon to its base form's RAW defaults. No-ops if there's no eidolon yet. */
+export function resetEidolonBaseAbilities(doc: CharacterDoc): CharacterDoc {
+  const current = doc.build.eidolon;
+  if (!current) return doc;
+  return { ...doc, build: { ...doc.build, eidolon: { ...current, baseAbilities: undefined } } };
+}
+
+/**
+ * The eidolon's current STARTING ability scores (its base form's defaults
+ * with any player override applied) — what the builder's editor shows, and
+ * the inputs `deriveEidolon` scales from. Falls back to the biped's defaults
+ * when there's no eidolon, matching `eidolonStartingAbilities`'s own soft
+ * posture for an unrecognized form.
+ */
+export function eidolonBaseAbilityScores(doc: CharacterDoc): Record<AbilityId, number> {
+  const current = doc.build.eidolon;
+  return eidolonStartingAbilities(current?.baseForm ?? "biped", current?.baseAbilities);
+}
+
+/** True when the eidolon's starting scores have been hand-set away from its base form's RAW defaults (the builder shows a "customized" hint + reset). */
+export function eidolonHasCustomBaseAbilities(doc: CharacterDoc): boolean {
+  return Object.keys(doc.build.eidolon?.baseAbilities ?? {}).length > 0;
 }
 
 /** Update the tracked eidolon's free-text notes. No-ops if there's no eidolon yet. */

@@ -15,25 +15,31 @@ import {
   addEidolonEvolution,
   clearEidolon,
   deriveEidolonSheet,
+  eidolonBaseAbilityScores,
   eidolonEvolutionCount,
   eidolonEvolutionPointsAvailable,
   eidolonEvolutionPointsSpent,
   eidolonEvolutionPoolNeedsWarning,
   eidolonFeatPrereqContext,
+  eidolonHasCustomBaseAbilities,
   eidolonSubtypeAlignmentWarning,
   eidolonSubtypeFormWarning,
   eidolonSummonerLevel,
   removeLastEidolonEvolution,
+  resetEidolonBaseAbilities,
   setEidolon,
   setEidolonAbilityIncrease,
+  setEidolonBaseAbility,
   setEidolonEvolutionChoice,
   setEidolonNotes,
   setEidolonSubtype,
   setEidolonSubtypeGrantChoice,
   toggleEidolonFeat,
 } from "../../model/eidolon.js";
+import { signed } from "../../model/names.js";
 import { evaluatePrereqs } from "../../model/prereqs.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { NumberField } from "./NumberField.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -132,6 +138,7 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
                   aria-label="Eidolon name"
                 />
               </div>
+              <BaseAbilitiesSection doc={doc} update={update} derivedEidolon={derivedEidolon} />
               {eidolonVariant(doc) === "unchained" && (
                 <SubtypeSection doc={doc} update={update} derivedEidolon={derivedEidolon} />
               )}
@@ -204,6 +211,73 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
             </>
           )}
         </>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Starting ability scores — the base form's RAW defaults, hand-editable for
+ * house rules / GM variants / the APG base forms this v1 doesn't model (see
+ * `EidolonBuild.baseAbilities`'s schema doc comment). Shows each ability's
+ * starting score next to the eidolon's CURRENT derived total, since
+ * everything level-scaled (the table's Str/Dex bonus, Large, evolutions,
+ * subtype grants, buffs) stacks on top of what's typed here — without the
+ * total, a typed 16 reading as a 24 at the table looks like a bug.
+ */
+function BaseAbilitiesSection({
+  doc,
+  update,
+  derivedEidolon,
+}: {
+  doc: CharacterDoc;
+  update: Updater;
+  derivedEidolon: DerivedEidolon | undefined;
+}) {
+  const scores = eidolonBaseAbilityScores(doc);
+  const customized = eidolonHasCustomBaseAbilities(doc);
+
+  return (
+    <div className="subsection">
+      <h4 className="tracker-sub">
+        Starting Ability Scores
+        {customized && <span className="hint"> · customized</span>}
+      </h4>
+      <p className="hint revelation-picker-hint">
+        Defaults to the base form's own scores. Evolutions, size, level bonuses, and buffs all still
+        apply on top — the number under each box is the eidolon's current total.
+      </p>
+      <div className="abilities-grid">
+        {ABILITY_OPTIONS.map((a) => (
+          <div className="ability-cell" key={a.id}>
+            <div className="abbr">{a.label}</div>
+            <NumberField
+              value={scores[a.id]}
+              min={1}
+              max={50}
+              block
+              onCommit={(n) => update((d) => setEidolonBaseAbility(d, a.id, n))}
+              aria-label={`${a.label} starting score`}
+            />
+            <div className="mod">
+              {derivedEidolon && (
+                <>
+                  <b className="num">{derivedEidolon.abilities[a.id].score}</b>
+                  {` · ${signed(derivedEidolon.abilities[a.id].mod)}`}
+                </>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+      {customized && (
+        <button
+          type="button"
+          className="btn-ghost"
+          onClick={() => update((d) => resetEidolonBaseAbilities(d))}
+        >
+          Reset to base form defaults
+        </button>
       )}
     </div>
   );

@@ -3,7 +3,12 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { buildRollData, deriveEidolon, eidolonSummonerLevel } from "../src/index.js";
+import {
+  buildRollData,
+  deriveEidolon,
+  eidolonStartingAbilities,
+  eidolonSummonerLevel,
+} from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -391,5 +396,63 @@ describe("deriveEidolon own active conditions", () => {
     expect(eidolon.attacks[0]).toMatchObject({ attack: 4 });
     expect(eidolon.saves).toEqual({ fort: 3, ref: 1, will: 2 });
     expect(eidolon.skills.per!.total).toBe(0);
+  });
+});
+
+describe("baseAbilities override (player-set starting scores)", () => {
+  it("eidolonStartingAbilities: base form defaults + universal Int/Wis/Cha, overrides applied on top", () => {
+    expect(eidolonStartingAbilities("serpentine")).toEqual({
+      str: 12,
+      dex: 16,
+      con: 13,
+      int: 7,
+      wis: 10,
+      cha: 11,
+    });
+    expect(eidolonStartingAbilities("serpentine", { str: 18, cha: 14 })).toEqual({
+      str: 18,
+      dex: 16,
+      con: 13,
+      int: 7,
+      wis: 10,
+      cha: 14,
+    });
+  });
+
+  it("falls back to the biped's scores for an unrecognized base form", () => {
+    expect(eidolonStartingAbilities("aquatic")).toEqual(eidolonStartingAbilities("biped"));
+  });
+
+  // Same summoner-7 biped fixture as above (Str 16 base + 3 table + 2 evolution
+  // = 21), with the starting Str hand-set to 14: every level-scaled addend
+  // still applies on top, so Str lands at 14 + 3 + 2 = 19.
+  it("everything level-scaled still stacks on top of an overridden starting score", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "summoner", level: 7 }],
+      eidolon: {
+        baseForm: "biped",
+        name: "Grix",
+        baseAbilities: { str: 14, int: 12 },
+        evolutions: [{ id: "ability-increase", choice: "str" }],
+      },
+    });
+    const eidolon = deriveEidolon(doc, buildRollData(doc, ref))!;
+    expect(eidolon.abilities.str).toEqual({ score: 19, mod: 4 });
+    expect(eidolon.abilities.int).toEqual({ score: 12, mod: 1 });
+    // untouched abilities keep their RAW defaults
+    expect(eidolon.abilities.dex).toEqual({ score: 15, mod: 2 });
+    expect(eidolon.abilities.cha).toEqual({ score: 11, mod: 0 });
+  });
+
+  it("an empty/absent override derives identically to RAW defaults", () => {
+    const build = { baseForm: "quadruped", name: "Grix", evolutions: [] };
+    const raw = makeDoc({ classes: [{ tag: "summoner", level: 5 }], eidolon: build });
+    const empty = makeDoc({
+      classes: [{ tag: "summoner", level: 5 }],
+      eidolon: { ...build, baseAbilities: {} },
+    });
+    expect(deriveEidolon(empty, buildRollData(empty, ref))!.abilities).toEqual(
+      deriveEidolon(raw, buildRollData(raw, ref))!.abilities,
+    );
   });
 });

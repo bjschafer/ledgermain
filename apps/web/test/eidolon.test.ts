@@ -9,10 +9,12 @@ import {
   applyEidolonDamage,
   clearEidolon,
   deriveEidolonSheet,
+  eidolonBaseAbilityScores,
   eidolonEvolutionPointsAvailable,
   eidolonEvolutionPointsSpent,
   eidolonEvolutionPoolNeedsWarning,
   eidolonFeatPrereqContext,
+  eidolonHasCustomBaseAbilities,
   eidolonHasWeaponFinesse,
   eidolonSubtypeAlignmentWarning,
   eidolonSubtypeFormWarning,
@@ -25,9 +27,11 @@ import {
   isEidolonSummoned,
   isSharedWithEidolon,
   removeEidolonEvolution,
+  resetEidolonBaseAbilities,
   restEidolon,
   setEidolon,
   setEidolonAbilityIncrease,
+  setEidolonBaseAbility,
   setEidolonNotes,
   setEidolonSubtype,
   setEidolonSubtypeGrantChoice,
@@ -508,5 +512,60 @@ describe("deriveEidolonSheet() — unchained variant/subtype fixtures", () => {
     // the ignored 2nd entry (Con) never applies.
     expect(eidolon.abilities.dex.score).toBe(15);
     expect(eidolon.abilities.con.score).toBe(13);
+  });
+});
+
+describe("starting ability scores (build.eidolon.baseAbilities)", () => {
+  it("defaults to the base form's own scores, with no override stored", () => {
+    const d = setEidolon(summoner7(), "serpentine", "Grix");
+    expect(eidolonBaseAbilityScores(d)).toEqual({
+      str: 12,
+      dex: 16,
+      con: 13,
+      int: 7,
+      wis: 10,
+      cha: 11,
+    });
+    expect(eidolonHasCustomBaseAbilities(d)).toBe(false);
+  });
+
+  it("setEidolonBaseAbility stores the override and reports it back", () => {
+    let d = setEidolon(summoner7(), "biped", "Grix");
+    d = setEidolonBaseAbility(d, "cha", 18);
+    expect(d.build.eidolon?.baseAbilities).toEqual({ cha: 18 });
+    expect(eidolonBaseAbilityScores(d).cha).toBe(18);
+    expect(eidolonHasCustomBaseAbilities(d)).toBe(true);
+    // the eidolon's derived sheet picks it up
+    expect(deriveEidolonSheet(d, ref)!.abilities.cha).toEqual({ score: 18, mod: 4 });
+  });
+
+  it("setting a score back to the base form's default drops the override rather than pinning it", () => {
+    let d = setEidolon(summoner7(), "biped", "Grix");
+    d = setEidolonBaseAbility(d, "str", 18);
+    d = setEidolonBaseAbility(d, "str", 16);
+    expect(d.build.eidolon?.baseAbilities).toBeUndefined();
+    expect(eidolonHasCustomBaseAbilities(d)).toBe(false);
+  });
+
+  it("clearing one of several overrides keeps the rest", () => {
+    let d = setEidolon(summoner7(), "biped", "Grix");
+    d = setEidolonBaseAbility(d, "str", 18);
+    d = setEidolonBaseAbility(d, "int", 12);
+    d = setEidolonBaseAbility(d, "str", undefined);
+    expect(d.build.eidolon?.baseAbilities).toEqual({ int: 12 });
+  });
+
+  it("resetEidolonBaseAbilities returns the eidolon to RAW defaults", () => {
+    let d = setEidolon(summoner7(), "biped", "Grix");
+    d = setEidolonBaseAbility(d, "str", 20);
+    d = resetEidolonBaseAbilities(d);
+    expect(d.build.eidolon?.baseAbilities).toBeUndefined();
+    expect(eidolonBaseAbilityScores(d).str).toBe(16);
+  });
+
+  it("both transitions no-op without an eidolon", () => {
+    const d = createEmptyDoc("t");
+    expect(setEidolonBaseAbility(d, "str", 18)).toBe(d);
+    expect(resetEidolonBaseAbilities(d)).toBe(d);
   });
 });

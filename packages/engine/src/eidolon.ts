@@ -175,7 +175,39 @@ import {
 import type { RollData } from "./formula.js";
 
 /** Universal base ability scores every eidolon starts with for Int/Wis/Cha (APG "Base Forms"), before any base-form Str/Dex/Con override. */
-const EIDOLON_UNIVERSAL_ABILITIES = { int: 7, wis: 10, cha: 11 } as const;
+export const EIDOLON_UNIVERSAL_ABILITIES = { int: 7, wis: 10, cha: 11 } as const;
+
+/**
+ * An eidolon's STARTING ability scores for `baseForm` — the form's own
+ * Str/Dex/Con plus the universal Int/Wis/Cha — with any player-set
+ * `EidolonBuild.baseAbilities` override applied on top. The single source of
+ * truth for those defaults, shared by `deriveEidolon` and the builder's
+ * ability-score editor so both agree on what "default" means. Falls back to
+ * the biped's scores for an unrecognized form id (soft posture: never an
+ * undefined stat block just because the form id is stale).
+ *
+ * Everything level-scaled (the table's Str/Dex bonus, Large's deltas,
+ * evolutions, ASI slots, subtype grants, buffs) applies ON TOP of this and
+ * is deliberately NOT included here.
+ */
+export function eidolonStartingAbilities(
+  baseForm: string,
+  overrides?: Partial<Record<AbilityId, number>>,
+): Record<AbilityId, number> {
+  const form = EIDOLON_BASE_FORMS[baseForm] ?? EIDOLON_BASE_FORMS.biped!;
+  const defaults: Record<AbilityId, number> = {
+    str: form.abilities.str,
+    dex: form.abilities.dex,
+    con: form.abilities.con,
+    ...EIDOLON_UNIVERSAL_ABILITIES,
+  };
+  if (!overrides) return defaults;
+  for (const id of ABILITY_IDS) {
+    const value = overrides[id];
+    if (typeof value === "number" && Number.isFinite(value)) defaults[id] = Math.trunc(value);
+  }
+  return defaults;
+}
 
 /** One natural weapon a base form (or an attack-granting evolution) contributes. */
 export interface EidolonAttackGrant {
@@ -1449,18 +1481,21 @@ export function deriveEidolon(
     acc.abilityBonus[ability] += 1;
   }
 
-  // --- ability scores: universal Int/Wis/Cha + form's Str/Dex/Con + table
-  // strDexBonus (both Str and Dex) + Large's fixed deltas + evolution picks --
+  // --- ability scores: starting scores (form + universal, or the player's own
+  // `baseAbilities` override) + table strDexBonus (both Str and Dex) + Large's
+  // fixed deltas + evolution picks --------------------------------------
   const largeDelta: Record<AbilityId, number> = acc.isLarge
     ? { str: 8, dex: -2, con: 4, int: 0, wis: 0, cha: 0 }
     : { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
 
-  const baseStr = form.abilities.str + row.strDexBonus + largeDelta.str + acc.abilityBonus.str;
-  const baseDex = form.abilities.dex + row.strDexBonus + largeDelta.dex + acc.abilityBonus.dex;
-  const baseCon = form.abilities.con + largeDelta.con + acc.abilityBonus.con;
-  const baseInt = EIDOLON_UNIVERSAL_ABILITIES.int + acc.abilityBonus.int;
-  const baseWis = EIDOLON_UNIVERSAL_ABILITIES.wis + acc.abilityBonus.wis;
-  const baseCha = EIDOLON_UNIVERSAL_ABILITIES.cha + acc.abilityBonus.cha;
+  const start = eidolonStartingAbilities(build.baseForm, build.baseAbilities);
+
+  const baseStr = start.str + row.strDexBonus + largeDelta.str + acc.abilityBonus.str;
+  const baseDex = start.dex + row.strDexBonus + largeDelta.dex + acc.abilityBonus.dex;
+  const baseCon = start.con + largeDelta.con + acc.abilityBonus.con;
+  const baseInt = start.int + acc.abilityBonus.int;
+  const baseWis = start.wis + acc.abilityBonus.wis;
+  const baseCha = start.cha + acc.abilityBonus.cha;
 
   let abilities: Record<AbilityId, { score: number; mod: number }> = {
     str: { score: baseStr, mod: abilityMod(baseStr) },
