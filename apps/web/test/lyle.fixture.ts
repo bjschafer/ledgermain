@@ -139,7 +139,7 @@ export function buildLyleDoc(ref: RefData): CharacterDoc {
   for (const traitId of [
     "sylph-like-the-wind", // +5 base speed (30 -> 35), replaces Energy Resistance
     "sylph-whispering-wind", // +4 racial Stealth, replaces the feather fall SLA
-    "sylph-storm-in-the-blood", // fast healing 2/round on electricity dmg, 8 hp/day at L4 — display-only
+    "sylph-storm-in-the-blood", // fast healing 2/round on electricity dmg — an 8 hp/day tracker pool at L4
     "sylph-mostly-human", // counts as humanoid (human) + outsider (native) — display-only
   ]) {
     doc = toggleRacialTrait(doc, traitId);

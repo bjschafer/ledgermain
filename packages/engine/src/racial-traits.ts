@@ -115,6 +115,28 @@ export interface AlternateRacialTrait {
   contextNotes?: ContextNote[];
   /** True when the alternate has no flat modifier the static sheet applies. */
   displayOnly?: boolean;
+  /**
+   * A limited-use pool the alternate grants (Sylph's Storm in the Blood: 2 hp
+   * of fast healing per level per day). `resources.ts`'s `deriveResourcePools`
+   * turns this into a tracker row, the same way a class feature's
+   * `uses.maxFormula` or a feat's becomes one. Omitted for every alternate
+   * whose benefit is always-on or unmetered.
+   */
+  resourcePool?: RacialTraitResourcePool;
+}
+
+/**
+ * A per-day (or per-whatever) pool granted by an alternate racial trait —
+ * hand-authored alongside the trait, since alternates aren't vendored and so
+ * carry no `uses.maxFormula` to read (see the module doc comment).
+ */
+export interface RacialTraitResourcePool {
+  /** Max uses, evaluated against character-level roll data (`@attributes.hd.total`, `@abilities.*`). */
+  usesFormula: string;
+  /** Recharge period, e.g. "day". */
+  per?: string;
+  /** One-line sub-label for the tracker row: what a use buys, and what a "use" counts. */
+  detail?: string;
 }
 
 const c = (formula: string, target: string, type = "racial"): Change => ({
@@ -453,6 +475,14 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
         text: "Fast healing 2 for 1 round when taking electricity damage (whether or not resistance absorbs it), up to 2 hp/level/day (situational — not auto-applied).",
       },
     ],
+    // The daily cap is measured in hit points healed, not activations (ARG:
+    // "up to a maximum number of hit points equal to twice your character
+    // level"), so a use here is 1 hp — a typical trigger heals 2 and spends 2.
+    resourcePool: {
+      usesFormula: "2 * @attributes.hd.total",
+      per: "day",
+      detail: "Fast healing 2 for 1 round when you take electricity damage · 1 use = 1 hp healed",
+    },
   },
   {
     id: "sylph-mostly-human",
