@@ -1481,6 +1481,9 @@ function HybridView({
     (p) => (p.classTag ?? undefined) === classTag && (p.kind ?? "normal") === "normal",
   ).length;
 
+  const cantripCapacity = preparedCapacity.find((c) => c.level === 0)?.limit;
+  const preparedCantrips = preparedByLevel.get(0) ?? [];
+
   // "Prepare" auto-collapses once every level's daily prepare capacity is
   // filled, since at-the-table play mostly lives in "Cast" below; it reopens
   // automatically the moment a level has room again, but a manual toggle
@@ -1557,6 +1560,46 @@ function HybridView({
           Nothing prepared yet — open a level below and prepare from your{" "}
           {model.knownLabel.toLowerCase()}.
         </p>
+      )}
+
+      {/* Cantrips are readied in Prepare below but never cast from a slot (the
+          spells-per-day table has no level-0 column), so they'd otherwise only
+          exist inside a section that auto-collapses once prepping is done. */}
+      {cantripCapacity !== undefined && (
+        <section className="prep-level">
+          <header className="prep-head">
+            <span className="prep-head-label">Cantrips</span>
+            <span
+              className={`prep-count${preparedCantrips.length > cantripCapacity ? " is-over" : ""}`}
+            >
+              {preparedCantrips.length}/{cantripCapacity} prepared · at will
+            </span>
+          </header>
+          {preparedCantrips.length > 0 ? (
+            <div className="prep-rows">
+              {preparedCantrips.map((r) => (
+                <div key={r.index} className="prep-row">
+                  <div className="prep-row-main">
+                    <span className="prep-name">{r.name}</span>
+                    {refData.spells[r.spellId] && (
+                      <SpellDetail
+                        spell={refData.spells[r.spellId]!}
+                        spellLevel={0}
+                        abilityMod={abilityMod}
+                      />
+                    )}
+                  </div>
+                  <span className="prep-atwill">at will</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="prep-none prep-nobook">
+              No cantrips prepared — ready up to {cantripCapacity} in <strong>Prepare</strong>{" "}
+              below; they then cast at will.
+            </p>
+          )}
+        </section>
       )}
 
       <h4 className="hybrid-section-title">Cast (spend a slot)</h4>

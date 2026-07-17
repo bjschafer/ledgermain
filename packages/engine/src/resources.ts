@@ -27,6 +27,12 @@
  * folds them into the same returned list, evaluated against the
  * character-level roll data rather than a granting class's contextual one
  * (feats have no "granting class").
+ *
+ * Alternate racial traits can meter a benefit the same way (Sylph's Storm in
+ * the Blood: 2 hp of fast healing per level per day) —
+ * `deriveRacialTraitResourcePools` folds those in too, off the hand-authored
+ * `AlternateRacialTrait.resourcePool` (alternates aren't vendored, so there is
+ * no `uses.maxFormula` to read).
  */
 
 import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/schema";
@@ -37,6 +43,7 @@ import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
 import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
+import { RACIAL_TRAITS } from "./racial-traits.js";
 import { RAGING_SONG_DETAIL, SKALD_INSPIRED_RAGE } from "./raging-song.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
 import {
@@ -362,6 +369,10 @@ export function deriveResourcePools(
   // granting class's contextual `@class.unlevel`).
   pools.push(...deriveFeatResourcePools(doc, refData, rollData));
 
+  // Alternate racial traits carrying a hand-authored pool (Sylph's Storm in
+  // the Blood) — same character-level roll data as the feat scan above.
+  pools.push(...deriveRacialTraitResourcePools(doc, refData, rollData));
+
   return pools;
 }
 
@@ -667,6 +678,62 @@ function deriveFeatResourcePools(
       restValue: truncatedMax,
       per: feat.uses?.per,
       classTag: "feat",
+      linkedBuffIds: [],
+    });
+  }
+
+  return pools;
+}
+
+/**
+ * Alternate racial traits whose benefit is metered rather than always-on
+ * (Sylph's Storm in the Blood: 2 hp of fast healing per level per day) — the
+ * `AlternateRacialTrait.resourcePool` counterpart to a class feature's
+ * `uses.maxFormula`. Alternates aren't vendored (see `racial-traits.ts`), so
+ * the formula is hand-authored on the trait itself and evaluated against the
+ * CHARACTER-level `rollData`, like the feat scan above: racial pools scale
+ * with character level, not any one class's.
+ *
+ * Gated on the trait's `race` matching the character's current race — a stale
+ * id left behind by a race change grants nothing, matching `collect.ts` and
+ * `model/racialTraits.ts`. Pool id = the trait's slug; `classTag` is the
+ * synthetic marker `"racial"` (never a real class tag), same honest-origin
+ * posture as the feat pools' `"feat"`.
+ */
+function deriveRacialTraitResourcePools(
+  doc: CharacterDoc,
+  refData: RefData,
+  rollData: RollData,
+): DerivedResourcePool[] {
+  const raceName = refData.races[doc.identity.race]?.name;
+  if (!raceName) return [];
+
+  const pools: DerivedResourcePool[] = [];
+  const seen = new Set<string>();
+
+  for (const id of doc.build.racialTraits ?? []) {
+    if (seen.has(id)) continue;
+    const trait = RACIAL_TRAITS[id];
+    if (!trait || trait.race !== raceName || !trait.resourcePool) continue;
+    seen.add(id);
+
+    let max: number | null;
+    try {
+      max = tryEvaluateFormula(trait.resourcePool.usesFormula, rollData);
+    } catch {
+      continue;
+    }
+    if (max === null || Number.isNaN(max) || max <= 0) continue;
+
+    const truncatedMax = Math.trunc(max);
+    pools.push({
+      id: trait.id,
+      name: trait.name,
+      max: truncatedMax,
+      restValue: truncatedMax,
+      per: trait.resourcePool.per,
+      classTag: "racial",
+      detail: trait.resourcePool.detail,
       linkedBuffIds: [],
     });
   }

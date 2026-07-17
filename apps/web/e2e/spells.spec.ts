@@ -139,3 +139,55 @@ test("the school and level filters narrow the browse pane", async ({ page }) => 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
+
+/**
+ * The arcanist's cast slots start at level 1 (no level-0 column in her
+ * spells-per-day table), so her at-will cantrips have no slot section to live
+ * in — they get their own section in the Play view rather than hiding inside
+ * "Prepare", which auto-collapses once the day's prepping is done.
+ */
+test("an arcanist's prepared cantrips show as at-will without opening Prepare", async ({
+  page,
+}) => {
+  const { consoleErrors, pageErrors } = guard(page);
+
+  await page.goto("/");
+  await expect(page.locator(".wordmark")).toContainText("Ledgermain");
+  await page.getByRole("tab", { name: "Build" }).click();
+  await page
+    .locator(".panel", { hasText: "Classes" })
+    .first()
+    .getByRole("button", { name: "Arcanist", exact: true })
+    .click();
+
+  await page.getByRole("tab", { name: "Play" }).click();
+  const spells = page.locator(".panel").filter({
+    has: page.getByRole("heading", { name: "Spells" }),
+  });
+
+  // The panel's own Cantrips section, not the one inside the Prepare details:
+  // this one is rendered first, ahead of "Cast (spend a slot)".
+  const cantrips = spells
+    .locator("section.prep-level")
+    .filter({ has: page.locator(".prep-head-label", { hasText: /^Cantrips$/ }) })
+    .first();
+  await expect(cantrips.locator(".prep-count")).toContainText("at will");
+
+  // Prepare one, then confirm it lands in that section with the Prepare
+  // details closed — the state a player is actually in at the table.
+  const prepare = spells.locator("details.hybrid-prepare");
+  await prepare
+    .locator("section.prep-level")
+    .filter({ has: page.locator(".prep-head-label", { hasText: /^Cantrips$/ }) })
+    .getByRole("group")
+    .click();
+  await spells.getByRole("button", { name: "prepare Acid Splash" }).click();
+  await prepare.locator("summary.hybrid-prepare-summary").click();
+  await expect(prepare).not.toHaveAttribute("open", /.*/);
+
+  await expect(cantrips.locator(".prep-name", { hasText: "Acid Splash" })).toBeVisible();
+  await expect(cantrips.locator(".prep-atwill").first()).toHaveText("at will");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
