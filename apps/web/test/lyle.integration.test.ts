@@ -330,6 +330,14 @@ describe("Lyle — resource pools (Arcane Reservoir / Consume Spells / wand / po
     expect(reservoir.max).toBe(10);
   });
 
+  it("Storm in the Blood derives to 8 hp/day — twice character level (ARG), tracked in hp healed", () => {
+    const sheet = compute(baseDoc, ref);
+    const pools = deriveResourcePools(baseDoc, ref, sheet.abilities);
+    const storm = pools.find((p) => p.name === "Storm in the Blood")!;
+    expect(storm.max).toBe(8);
+    expect(storm.per).toBe("day");
+  });
+
   it("wand charges and potion count are seeded as manual pools (no vendored wand items — issue #36)", () => {
     expect(baseDoc.live.resources["Wand of mage armor"]).toEqual({ used: 0, max: 47 });
     expect(baseDoc.live.resources["Potion of cure light wounds"]).toEqual({ used: 0, max: 4 });

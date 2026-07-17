@@ -116,6 +116,7 @@ export {
   slowAndSteadySuppressedBy,
   SLOW_AND_STEADY_SUPPRESS_TARGET,
   type AlternateRacialTrait,
+  type RacialTraitResourcePool,
 } from "./racial-traits.js";
 export {
   BLOODLINES,
