@@ -860,13 +860,19 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
       "Heroism",
       "Blessing of Fervor",
     ),
+    variantPrompt:
+      "Ancestral damage type (good if you're good, evil if you're evil; neutral picks one and can't change it)",
+    variantOptions: [
+      { id: "good", label: "Good-aligned" },
+      { id: "evil", label: "Evil-aligned" },
+    ],
     powers: [
       {
         id: "ancestralStrikes",
         level: 1,
         name: "Ancestral Strikes",
         summary:
-          "Swift action, 3/day (5/day at 8th): for 1 round, melee attacks deal +1d6 aligned damage (good if you're good, evil if you're evil). At 20th this becomes constant — no activation needed.",
+          "Swift action, 3/day (5/day at 8th): for 1 round, melee attacks deal +1d6 aligned damage — good if you're good, evil if you're evil, or your chosen type (above) if neutral. At 20th this becomes constant — no activation needed.",
         resourcePool: {
           usesFormula: "if(gte(@classes.bloodrager.level, 8), 5, 3)",
           per: "day",

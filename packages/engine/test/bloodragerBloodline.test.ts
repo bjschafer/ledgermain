@@ -3,6 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
+import { bloodragerBloodlineVariantLabel } from "../src/bloodrager-bloodlines.js";
 import { collectModifiers } from "../src/collect.js";
 import { deriveResourcePools, resolveClassFeatures } from "../src/index.js";
 import { BLOODRAGE_BUFF_ID } from "../src/bloodrage.js";
@@ -173,6 +174,12 @@ describe("bloodrager bloodline powers (collectGrantedFeatures / resolveClassFeat
     const doc8 = makeBloodrager(8, "Martyred");
     const at8 = collectModifiers(doc8, ref, buildRollData(doc8, ref));
     expect(at8.find((m) => m.target === "eres.fire")!.value).toBe(10);
+  });
+
+  it("Martyred offers a good/evil variant so neutral bloodragers can lock in an aligned damage type", () => {
+    expect(bloodragerBloodlineVariantLabel("Martyred", "good")).toBe("Good-aligned");
+    expect(bloodragerBloodlineVariantLabel("Martyred", "evil")).toBe("Evil-aligned");
+    expect(bloodragerBloodlineVariantLabel("Martyred", undefined)).toBeUndefined();
   });
 
   it("a level-20 Martyred bloodrager gets all 6 powers, tagged with the bloodline origin", () => {
