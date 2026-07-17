@@ -228,6 +228,20 @@ const TRAIT_LIST: TraitDef[] = [
     changes: [],
     displayOnly: true,
   },
+  {
+    id: "honest",
+    name: "Honest",
+    category: "Faith",
+    summary:
+      "+1 trait bonus on Diplomacy checks, increasing to +2 when influencing creatures already friendly or helpful toward you.",
+    changes: [t("1", "skill.dip")],
+    contextNotes: [
+      {
+        target: "skill.dip",
+        text: "The bonus is +2 instead of +1 against targets whose attitude is already friendly or helpful — attitude isn't tracked, so only the base +1 is applied.",
+      },
+    ],
+  },
   // ---- magic --------------------------------------------------------------
   {
     id: "magicalKnack",
@@ -380,6 +394,21 @@ const TRAIT_LIST: TraitDef[] = [
       {
         target: "allChecks",
         text: "Only applies when the target is attracted to your gender — situational, not auto-applied.",
+      },
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "naturalBornLeader",
+    name: "Natural-Born Leader",
+    category: "Social",
+    summary:
+      "Cohorts, followers, and summoned creatures under your leadership gain a +1 morale bonus on Will saves against mind-affecting effects; if you take the Leadership feat, you gain a +1 trait bonus to your Leadership score.",
+    changes: [],
+    contextNotes: [
+      {
+        target: "will",
+        text: "The Will bonus applies to your cohorts/followers/summons, not to you. Leadership score isn't tracked on the sheet.",
       },
     ],
     displayOnly: true,

@@ -96,4 +96,20 @@ describe("traits (hand-computed)", () => {
     const sheet = compute(makeDoc(["dangerouslyCurious"]), ref);
     expect(sheet.skills.umd!.total).toBe(baseline.skills.umd!.total + 1);
   });
+
+  it("Honest grants +1 Diplomacy (the friendly/helpful +2 is not auto-applied)", () => {
+    const sheet = compute(makeDoc(["honest"]), ref);
+    expect(sheet.skills.dip!.total).toBe(baseline.skills.dip!.total + 1);
+    const comp = sheet.skills.dip!.components.find((c) => c.source === "Honest");
+    expect(comp).toBeDefined();
+    expect(comp!.value).toBe(1);
+  });
+
+  it("Natural-Born Leader applies no flat modifier to its own sheet", () => {
+    // The +1 morale bonus goes to cohorts/followers/summons, and the
+    // Leadership-score bonus has no sheet target — nothing lands on the PC.
+    const sheet = compute(makeDoc(["naturalBornLeader"]), ref);
+    expect(sheet.saves.will.total).toBe(baseline.saves.will.total);
+    expect(sheet.skills.dip!.total).toBe(baseline.skills.dip!.total);
+  });
 });
