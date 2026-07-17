@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import type { RefData } from "@pf1/schema";
 
 import { schoolLabel } from "../../model/spellcasting.js";
+import { useCollapsed } from "../../state/useCollapsed.js";
 import type { SpellEntry, SpellFilter } from "../../model/spellSearch.js";
 import {
   EMPTY_SPELL_FILTER,
@@ -144,11 +146,12 @@ export function SpellManager({
                 <div className="empty">No spells match.</div>
               ) : (
                 browseGroups.map((g) => (
-                  <div key={g.level} className="spell-level-group">
-                    <div className="spell-level-head is-static">
-                      <span className="spell-level-label">{levelName(g.level)}</span>
-                      <span className="spell-level-count">{g.entries.length}</span>
-                    </div>
+                  <ManagerLevelGroup
+                    key={g.level}
+                    storageKey={`spell-manager:browse:${casterTag}:${g.level}`}
+                    label={levelName(g.level)}
+                    count={g.entries.length}
+                  >
                     {g.entries.map((sp) => (
                       <SpellRow
                         key={sp.id}
@@ -170,7 +173,7 @@ export function SpellManager({
                         )}
                       />
                     ))}
-                  </div>
+                  </ManagerLevelGroup>
                 ))
               )}
             </div>
@@ -192,10 +195,13 @@ export function SpellManager({
                     const limit = knownLimits.get(g.level);
                     const count = knownCountByLevel.get(g.level) ?? g.entries.length;
                     return (
-                      <div key={g.level} className="spell-level-group">
-                        <div className="spell-level-head is-static">
-                          <span className="spell-level-label">{levelName(g.level)}</span>
-                          {isSpontaneous && limit !== undefined && (
+                      <ManagerLevelGroup
+                        key={g.level}
+                        storageKey={`spell-manager:known:${casterTag}:${g.level}`}
+                        label={levelName(g.level)}
+                        count={g.entries.length}
+                        badge={
+                          isSpontaneous && limit !== undefined ? (
                             <span
                               className={`spell-known-count${
                                 count > limit ? " is-over" : count >= limit ? " is-full" : ""
@@ -203,9 +209,9 @@ export function SpellManager({
                             >
                               {count}/{limit} known
                             </span>
-                          )}
-                          <span className="spell-level-count">{g.entries.length}</span>
-                        </div>
+                          ) : null
+                        }
+                      >
                         {g.entries.map((sp) => (
                           <SpellRow
                             key={sp.id}
@@ -216,7 +222,7 @@ export function SpellManager({
                             onToggle={onToggle}
                           />
                         ))}
-                      </div>
+                      </ManagerLevelGroup>
                     );
                   })
                 )}
@@ -226,6 +232,53 @@ export function SpellManager({
         </div>
       </div>
     </Dialog>
+  );
+}
+
+/**
+ * A collapsible spell level within a manager pane, matching the builder
+ * panel's level groups. Collapse is persisted per pane and caster, so the two
+ * panes collapse independently — they're different lists.
+ *
+ * A collapsed group keeps its count in the heading, so a search whose only
+ * matches land in a collapsed level still reads as "LEVEL 3 · 1" rather than
+ * looking like no results.
+ */
+function ManagerLevelGroup({
+  storageKey,
+  label,
+  count,
+  badge,
+  children,
+}: {
+  storageKey: string;
+  label: string;
+  count: number;
+  badge?: ReactNode;
+  children: ReactNode;
+}) {
+  const [collapsed, toggle] = useCollapsed(storageKey, false);
+  return (
+    <div className="spell-level-group">
+      <div
+        className={`spell-level-head is-collapsible${collapsed ? " is-collapsed" : ""}`}
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={!collapsed}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") toggle();
+        }}
+      >
+        <span className="spell-level-label">{label}</span>
+        {badge}
+        <span className="spell-level-count">{count}</span>
+        <span className="panel-caret" aria-hidden="true">
+          {collapsed ? "▸" : "▾"}
+        </span>
+      </div>
+      {!collapsed && children}
+    </div>
   );
 }
 

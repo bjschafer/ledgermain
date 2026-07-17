@@ -5690,15 +5690,6 @@ input[type="text"].saved-roll-name:focus {
   overflow-y: auto;
 }
 
-/* Level headings inside the manager's panes don't collapse — the filters are
-   the way to narrow the list here, so the caret would be a second, redundant
-   control. */
-.spell-level-head.is-static {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
 /* School/level and the details toggle share a line. The meta is floated rather
    than made a flex item so that only the summary's line box is pushed aside:
    as a flex item the `<details>` becomes a narrow column and its open

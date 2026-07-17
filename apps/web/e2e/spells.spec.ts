@@ -77,6 +77,45 @@ test("a spell added in the manager lands in the panel's known list", async ({ pa
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
 
+test("spell levels collapse, and the state survives reopening", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  const panel = await gotoWizardSpells(page);
+  await panel.getByRole("button", { name: "Edit spellbook" }).click();
+
+  const dialog = page.getByRole("dialog");
+  const browse = dialog.locator(".spell-pane").first();
+  const level1 = browse.getByRole("button", { name: /^Level 1/ });
+
+  await expect(spellRow(browse, page, "Alarm")).toBeVisible();
+  await expect(level1).toHaveAttribute("aria-expanded", "true");
+
+  await level1.click();
+  await expect(level1).toHaveAttribute("aria-expanded", "false");
+  await expect(spellRow(browse, page, "Alarm")).toHaveCount(0);
+  // The heading keeps its count, so a collapsed level still shows it has spells.
+  await expect(level1).toContainText("245");
+
+  // Collapse is per pane: the known pane's own Level 2 is unaffected.
+  await dialog.getByLabel("Search spells").fill("mirror image");
+  await spellRow(browse, page, "Mirror Image").getByRole("button", { name: "Add" }).click();
+  const knownPane = dialog.locator(".spell-pane--known");
+  await expect(knownPane.getByRole("button", { name: /^Level 2/ })).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
+
+  // Reopening the manager restores the collapsed level.
+  await page.keyboard.press("Escape");
+  await panel.getByRole("button", { name: "Edit spellbook" }).click();
+  await expect(browse.getByRole("button", { name: /^Level 1/ })).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
 test("the school and level filters narrow the browse pane", async ({ page }) => {
   const { consoleErrors, pageErrors } = guard(page);
   const panel = await gotoWizardSpells(page);
