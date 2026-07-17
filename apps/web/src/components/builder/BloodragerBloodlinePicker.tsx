@@ -24,7 +24,7 @@ interface BloodragerBloodlinePickerProps {
  * can't reuse `refData.bloodlineSpellLists` the way sorcerer's picker does).
  *
  * Scope: the 9 ACG bloodrager bloodlines (Abyssal, Arcane, Celestial,
- * Destined, Draconic, Elemental, Fey, Infernal, Undead).
+ * Destined, Draconic, Elemental, Fey, Infernal, Undead) plus Martyred.
  *
  * The chosen bloodline:
  *  - grants bloodline POWERS at 1st/4th/8th/12th/16th/20th level — shown in

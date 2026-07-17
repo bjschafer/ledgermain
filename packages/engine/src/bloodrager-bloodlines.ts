@@ -9,12 +9,14 @@
  * features.json`; the per-bloodline content itself is NOT).
  *
  * Scope: the 9 ACG bloodrager bloodlines (Abyssal, Arcane, Celestial,
- * Destined, Draconic, Elemental, Fey, Infernal, Undead) — verified against
- * AoN's `BloodragerBloodlineDisplay.aspx` list, which also carries 15 later-
- * splatbook bloodlines (Aberrant, Aquatic, Black Blood, Hag, Kyton, Martyred,
+ * Destined, Draconic, Elemental, Fey, Infernal, Undead) plus Martyred (a
+ * later Paizo-splatbook bloodline, added by player request) — all verified
+ * against AoN's `BloodragerBloodlineDisplay.aspx`, which carries 14 further
+ * later-splatbook bloodlines (Aberrant, Aquatic, Black Blood, Hag, Kyton,
  * Medusa, Naga, Phoenix, Salamander, Shadow, Shapechanger, Sphinx, Verdant,
- * Vestige) deliberately out of scope, same "Core-book-first" posture
- * `bloodlines.ts` takes for the 10 CRB sorcerer bloodlines.
+ * Vestige) still out of scope — same "Core-book-first" posture `bloodlines.ts`
+ * takes for the 10 CRB sorcerer bloodlines, relaxed only where a request
+ * names a specific non-third-party bloodline.
  *
  * Differences from a sorcerer bloodline (`BloodlineDef`), all RAW:
  *   - Bloodrager bloodline POWER gates are 1st/4th/8th/12th/16th/20th level
@@ -833,6 +835,91 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         name: "One Foot in the Grave",
         summary:
           "Immune to cold, nonlethal damage, paralysis, and sleep — constantly, even while not bloodraging.",
+        contextNotes: [
+          { target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." },
+        ],
+      },
+    ],
+  },
+  // ---- Martyred (Paizo splatbook, not ACG core) ------------------------------
+  {
+    tag: "Martyred",
+    name: "Martyred",
+    bonusFeatSlugs: feats(
+      "Diehard",
+      "Endurance",
+      "Heroic Defiance",
+      "Heroic Recovery",
+      "Leadership",
+      "Persuasive",
+      "Toughness",
+    ),
+    bonusSpells: bonusSpells(
+      "Endure Elements",
+      "Surmount Affliction",
+      "Heroism",
+      "Blessing of Fervor",
+    ),
+    powers: [
+      {
+        id: "ancestralStrikes",
+        level: 1,
+        name: "Ancestral Strikes",
+        summary:
+          "Swift action, 3/day (5/day at 8th): for 1 round, melee attacks deal +1d6 aligned damage (good if you're good, evil if you're evil). At 20th this becomes constant — no activation needed.",
+        resourcePool: {
+          usesFormula: "if(gte(@classes.bloodrager.level, 8), 5, 3)",
+          per: "day",
+          detail: "+1d6 aligned damage on melee, 1 round",
+        },
+      },
+      {
+        id: "martyrsResistances",
+        level: 4,
+        name: "Martyr's Resistances",
+        summary: "Resist fire 5 (10 at 8th); +2 on saves vs. fear and pain effects (+4 at 8th).",
+        changes: [c("if(gte(@classes.bloodrager.level, 8), 10, 5)", "eres.fire", "untyped")],
+        contextNotes: [
+          {
+            target: "allSavingThrows",
+            text: "+2 (+4 at 8th) vs. fear and pain only — not a general save bonus.",
+          },
+        ],
+      },
+      {
+        id: "forebearsReserves",
+        level: 8,
+        name: "Forebear's Reserves",
+        summary:
+          "Once per bloodrage, reroll a saving throw (decide after the roll, before the result is revealed).",
+        contextNotes: [{ target: "allChecks", text: "Once per bloodrage, not a per-day pool." }],
+      },
+      {
+        id: "ancestralChampion",
+        level: 12,
+        name: "Ancestral Champion",
+        summary:
+          "Ancestral Strikes deal +2d6 (instead of +1d6) against creatures of opposed alignment.",
+        contextNotes: [{ target: "allChecks", text: "Modifies Ancestral Strikes only." }],
+      },
+      {
+        id: "sacrificialExchange",
+        level: 16,
+        name: "Sacrificial Exchange",
+        summary:
+          "Swift action, once per day while bloodraging: take a –2 AC penalty (–4 at 20th) to grant one ally within 30 ft. a +4 morale bonus (+6 at 20th) to one ability score for the bloodrage's duration.",
+        resourcePool: {
+          usesFormula: "1",
+          per: "day",
+          detail: "–2 AC (–4 at 20th) → an ally's +4/+6 ability boost",
+        },
+      },
+      {
+        id: "eternalMartyr",
+        level: 20,
+        name: "Eternal Martyr",
+        summary:
+          "Immune to death effects; can't be raised as undead (constant hallow); resurrection material components cost half — constantly, even while not bloodraging.",
         contextNotes: [
           { target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." },
         ],

@@ -165,6 +165,27 @@ describe("bloodrager bloodline powers (collectGrantedFeatures / resolveClassFeat
     expect(at8.find((m) => m.target === "eres.cold")!.value).toBe(10);
   });
 
+  it("Martyred's Martyr's Resistances scales fire resistance from 5 to 10 at 8th level", () => {
+    const doc4 = makeBloodrager(4, "Martyred");
+    const at4 = collectModifiers(doc4, ref, buildRollData(doc4, ref));
+    expect(at4.find((m) => m.target === "eres.fire")!.value).toBe(5);
+
+    const doc8 = makeBloodrager(8, "Martyred");
+    const at8 = collectModifiers(doc8, ref, buildRollData(doc8, ref));
+    expect(at8.find((m) => m.target === "eres.fire")!.value).toBe(10);
+  });
+
+  it("a level-20 Martyred bloodrager gets all 6 powers, tagged with the bloodline origin", () => {
+    expect(bloodlineFeatureNames(makeBloodrager(20, "Martyred"))).toEqual([
+      "Ancestral Champion",
+      "Ancestral Strikes",
+      "Eternal Martyr",
+      "Forebear's Reserves",
+      "Martyr's Resistances",
+      "Sacrificial Exchange",
+    ]);
+  });
+
   it("Arcane has no unconditional numeric Changes at any level (all powers are activated/situational)", () => {
     const doc = makeBloodrager(20, "Arcane");
     const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
@@ -189,6 +210,16 @@ describe("bloodrager bloodline resource pools (Destined Strike, Hellfire Strike,
     const doc12 = makeBloodrager(12, "Infernal");
     const at12 = deriveResourcePools(doc12, ref).find((p) => p.name === "Hellfire Strike");
     expect(at12!.max).toBe(5);
+  });
+
+  it("a Martyred bloodrager's Ancestral Strikes pool grows from 3/day to 5/day at 8th", () => {
+    const doc4 = makeBloodrager(4, "Martyred");
+    const at4 = deriveResourcePools(doc4, ref).find((p) => p.name === "Ancestral Strikes");
+    expect(at4!.max).toBe(3);
+
+    const doc8 = makeBloodrager(8, "Martyred");
+    const at8 = deriveResourcePools(doc8, ref).find((p) => p.name === "Ancestral Strikes");
+    expect(at8!.max).toBe(5);
   });
 });
 
