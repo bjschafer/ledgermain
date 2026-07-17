@@ -165,6 +165,36 @@ export function restHp(
   return withHp(doc, { current, temp: 0, nonlethal: 0 });
 }
 
+/**
+ * Reconcile `current` HP against a max that just changed from `prevMax` to
+ * `max` because of a BUILD-time edit (leveling, a Con bump, editing a rolled
+ * HP value, picking a familiar with a "+N hit points" master bonus, ...).
+ * Returns the new current HP, or `null` when it should be left alone.
+ *
+ * Two independent rules, both about build edits never leaving live HP in a
+ * state the table can't reach by playing:
+ *   - `current > max` → clamp to `max`. Current HP above max is never a legal
+ *     PF1 state (an overheal caps at max; temp HP is a separate pool), so a
+ *     max that drops below it — lowering a rolled HP entry, removing a class
+ *     level, a Con-lowering rebuild — has to drag it down. Applies whether or
+ *     not the character was at full health, and regardless of `prevMax`, so a
+ *     document that somehow got saved over max is repaired on load.
+ *   - max ROSE while at full health (`current === prevMax`) → pin to the new
+ *     `max`, so raising it doesn't silently read as damage. Guarded on
+ *     `prevMax` being known and `current === prevMax`: a character that has
+ *     actually taken damage is never auto-healed here, only by an explicit
+ *     Heal/Rest.
+ */
+export function reconcileCurrentHp(
+  current: number,
+  max: number,
+  prevMax: number | undefined,
+): number | null {
+  if (current > max) return max;
+  if (prevMax !== undefined && max > prevMax && current === prevMax) return max;
+  return null;
+}
+
 /** Manually set the "stabilized" flag (issue #20) — see the schema doc comment on `live.stable`. */
 export function setStable(doc: CharacterDoc, stable: boolean): CharacterDoc {
   return { ...doc, live: { ...doc.live, stable } };

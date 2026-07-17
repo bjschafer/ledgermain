@@ -7,7 +7,13 @@ import type { CharacterDoc } from "@pf1/schema";
 import { setAbilityAffliction } from "../src/model/afflictions.js";
 import { addBuff, makeActiveBuff } from "../src/model/buffs.js";
 import { addClass, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
-import { applyGrantedTempHp, hpState, setStable, setTempHp } from "../src/model/hp.js";
+import {
+  applyGrantedTempHp,
+  hpState,
+  reconcileCurrentHp,
+  setStable,
+  setTempHp,
+} from "../src/model/hp.js";
 
 const ref = loadRefData();
 
@@ -244,5 +250,44 @@ describe("applyGrantedTempHp() (issue #67)", () => {
 
   it("re-affirms the buff name used elsewhere in this fixture is the real vendored 'Rage (Unchained)'", () => {
     expect(rageBuffName()).toBe("Rage (Unchained)");
+  });
+});
+
+describe("reconcileCurrentHp()", () => {
+  it("clamps current down to a max that dropped below it (lowering a rolled HP value)", () => {
+    // The reported bug: max HP falls (rolled 8 -> 3) but current stayed at 20.
+    expect(reconcileCurrentHp(20, 15, 20)).toBe(15);
+  });
+
+  it("clamps a damaged character whose current still ends up over the new max", () => {
+    expect(reconcileCurrentHp(18, 12, 20)).toBe(12);
+  });
+
+  it("does not raise a damaged character when max drops but stays above current", () => {
+    expect(reconcileCurrentHp(9, 15, 20)).toBeNull();
+  });
+
+  it("repairs a saved-over-max document on load, with no prevMax known", () => {
+    expect(reconcileCurrentHp(20, 15, undefined)).toBe(15);
+  });
+
+  it("pins current to a raised max while at full health", () => {
+    expect(reconcileCurrentHp(20, 24, 20)).toBe(24);
+  });
+
+  it("fills in a brand-new character's first nonzero max", () => {
+    expect(reconcileCurrentHp(0, 11, 0)).toBe(11);
+  });
+
+  it("never auto-heals a damaged character when max rises", () => {
+    expect(reconcileCurrentHp(9, 24, 20)).toBeNull();
+  });
+
+  it("leaves an unchanged max alone", () => {
+    expect(reconcileCurrentHp(9, 20, 20)).toBeNull();
+  });
+
+  it("leaves a negative (dying) current alone", () => {
+    expect(reconcileCurrentHp(-4, 20, 20)).toBeNull();
   });
 });

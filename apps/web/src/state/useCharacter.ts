@@ -21,6 +21,7 @@ import {
   resetAllCharacters,
 } from "../db/characters.js";
 import { migrateDoc } from "../model/doc.js";
+import { reconcileCurrentHp } from "../model/hp.js";
 import { resolveRefData } from "../model/homebrew.js";
 import { reconcileGrantedCantrips } from "../model/preparedSpells.js";
 import { loadRefData } from "../refdata/loader.js";
@@ -518,16 +519,9 @@ export function useCharacter(): CharacterStore {
 
   const sheet = useMemo(() => (doc && refData ? compute(doc, refData) : undefined), [doc, refData]);
 
-  // Keep current HP pinned to max while a character is still at full health,
-  // so build-time choices that raise max HP (picking a familiar with a "+N
-  // hit points" master bonus, leveling up, an ability score bump, ...) don't
-  // silently leave the character reading as damaged. This subsumes the
-  // original narrower fix (a freshly created character starting at 0/0 HP
-  // jumping to full on its first nonzero max, instead of forcing a manual
-  // "Rest" click before play) as the `prevMax === 0` case of the same rule.
-  // Guarded on `current === prevMax`: a character that has actually taken
-  // damage (current < prevMax) is never auto-healed by this effect, only by
-  // an explicit Heal/Rest action.
+  // Keep live current HP consistent with a max that build-time edits moved —
+  // see `reconcileCurrentHp` for the two rules (clamp down over max, pin up
+  // while at full health) and why each one holds.
   const prevMaxHpRef = useRef<number | undefined>(undefined);
   useEffect(() => {
     if (!sheet || !doc) return;
@@ -535,7 +529,8 @@ export function useCharacter(): CharacterStore {
     const current = doc.live.hp.current;
     const prevMax = prevMaxHpRef.current;
     prevMaxHpRef.current = max;
-    if (prevMax !== undefined && max > prevMax && current === prevMax) {
+    const next = reconcileCurrentHp(current, max, prevMax);
+    if (next !== null) {
       setDoc((d) => {
         if (!d || d.live.hp.current !== current) return d;
         // A genuine local change to live state — bump + flag it the same way
@@ -544,7 +539,7 @@ export function useCharacter(): CharacterStore {
         return {
           ...d,
           version: d.version + 1,
-          live: { ...d.live, hp: { ...d.live.hp, current: max } },
+          live: { ...d.live, hp: { ...d.live.hp, current: next } },
         };
       });
     }
