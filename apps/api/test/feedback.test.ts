@@ -79,7 +79,10 @@ describe("issueTitle", () => {
     expect(title.length).toBeLessThanOrEqual(106);
     expect(title.endsWith("…")).toBe(true);
     // Every token that survived is a whole word — no "alph" / "brav" stubs.
-    const words = title.replace(/^\[Bug\] /, "").replace(/…$/, "").split(" ");
+    const words = title
+      .replace(/^\[Bug\] /, "")
+      .replace(/…$/, "")
+      .split(" ");
     expect(words.every((w) => w === "alpha" || w === "bravo")).toBe(true);
   });
 
