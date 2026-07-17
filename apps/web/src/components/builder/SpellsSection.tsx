@@ -15,32 +15,24 @@ import {
   knownSpellsFor,
   mysterySpellsKnown,
   patronSpellsKnown,
-  schoolLabel,
   shamanSpiritSpellsKnown,
   spellsKnownLimitsByLevel,
 } from "../../model/spellcasting.js";
 import { classSpellsByLevel, spellLevelMap } from "../../model/preparedSpells.js";
+import type { SpellEntry } from "../../model/spellSearch.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Explainer } from "../Explainer.js";
 import { SpellDetail } from "../SpellDetail.js";
 import { Panel } from "./Panel.js";
+import { SpellManager } from "./SpellManager.js";
 import type { BuilderProps } from "./types.js";
 
-interface SpellEntry {
-  id: string;
-  name: string;
-  level: number;
-  school?: string;
-}
-
 export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
-  const [query, setQuery] = useState("");
-  const [school, setSchool] = useState<string>("All");
-  // Explicit view mode, rather than deriving "browsing" from query/school being
-  // non-default: that made "All schools" a no-op once it was already the
-  // default, so there was no way to browse the unfiltered class list, and the
-  // known-vs-browse view switched implicitly with no visible indicator.
-  const [mode, setMode] = useState<"known" | "browsing">("known");
+  // Searching and adding happens in the full-screen SpellManager, not here:
+  // this panel sits in one half of the builder's two-column grid, which is the
+  // right size to *read* a known list and the wrong size to pick from several
+  // hundred class spells.
+  const [managerOpen, setManagerOpen] = useState(false);
 
   // Every caster class on the document (issue #22 multiclass support). With
   // exactly one, this section behaves exactly as before — no switcher chrome
@@ -179,21 +171,13 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     return out.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
   }, [casterTag, refData, grantsCantrips]);
 
-  // Grouped-by-level view of `entries`, restricted to accessible levels. Only
-  // consumed by the read-only class-list reference below (preparesFromClassList) —
-  // the search/known-list branch below uses `entries` unfiltered, since
+  // `entries` restricted to the levels this caster can actually reach. Only
+  // consumed by the prepares-from-class-list branch, whose whole class list IS
+  // its spell selection; the known-list branch uses `entries` unfiltered, since
   // planning ahead (spellbook scribing, future levels) is intentional there.
-  const entriesByLevel = useMemo(() => {
-    const map = new Map<number, SpellEntry[]>();
-    for (const e of entries) {
-      if (accessibleLevels && !accessibleLevels.has(e.level)) continue;
-      (map.get(e.level) ?? map.set(e.level, []).get(e.level)!).push(e);
-    }
-    return map;
-  }, [entries, accessibleLevels]);
-  const entriesLevels = useMemo(
-    () => [...entriesByLevel.keys()].sort((a, b) => a - b),
-    [entriesByLevel],
+  const accessibleEntries = useMemo(
+    () => entries.filter((e) => !accessibleLevels || accessibleLevels.has(e.level)),
+    [entries, accessibleLevels],
   );
 
   const known = useMemo(
@@ -222,13 +206,6 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     return counts;
   }, [known, levelMap]);
 
-  // Schools actually present on this class's list, for the browse filter chips.
-  const schools = useMemo(() => {
-    const set = new Set<string>();
-    for (const e of entries) if (e.school) set.add(e.school);
-    return [...set].sort((a, b) => schoolLabel(a).localeCompare(schoolLabel(b)));
-  }, [entries]);
-
   if (!casterTag) {
     return (
       <Panel title="Spells" step="vii" storageKey="panel:Spells">
@@ -243,42 +220,33 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const knownLabel = model?.knownLabel ?? "Spells Known";
   const knownCount = known.size;
 
-  const q = query.trim().toLowerCase();
-  const browsing = mode === "browsing";
-  const shown = browsing
-    ? entries
-        .filter(
-          (e) =>
-            (!q || e.name.toLowerCase().includes(q)) && (school === "All" || e.school === school),
-        )
-        .slice(0, 200)
-    : entries.filter((e) => known.has(e.id));
-
-  // Group by spell level for display.
+  // Group the known list by spell level for display.
   const byLevel = new Map<number, SpellEntry[]>();
-  for (const e of shown) {
+  for (const e of entries) {
+    if (!known.has(e.id)) continue;
     const arr = byLevel.get(e.level) ?? [];
     arr.push(e);
     byLevel.set(e.level, arr);
   }
-  // While showing the known list (not actively searching/browsing), always
-  // show a heading for every accessible level — even at 0 known — so you can
-  // see at a glance how many spells you still need to add at each level.
-  // Cantrips (level 0) live in knownLimits, not accessibleLevels, since
-  // they're at-will and never consume a per-day slot. While actively
-  // searching or browsing by school, only show levels with matches.
-  const levels = browsing
-    ? [...byLevel.keys()].sort((a, b) => a - b)
-    : [...new Set([...(accessibleLevels ?? []), ...knownLimits.keys(), ...byLevel.keys()])].sort(
-        (a, b) => a - b,
-      );
+  // Always show a heading for every accessible level — even at 0 known — so you
+  // can see at a glance how many spells you still need to add at each level.
+  // Cantrips (level 0) live in knownLimits, not accessibleLevels, since they're
+  // at-will and never consume a per-day slot; when the class grants them all,
+  // level 0 is dropped entirely — `known` can never hold a cantrip, so the
+  // heading would be a permanently-empty row next to the granted block.
+  const levels = [
+    ...new Set([...(accessibleLevels ?? []), ...knownLimits.keys(), ...byLevel.keys()]),
+  ]
+    .filter((lvl) => !(grantsCantrips && lvl === 0))
+    .sort((a, b) => a - b);
 
   // Header badge: "sorcerer · spontaneous (Cha)" etc.
   const headerBadge = model
     ? `${casterTag} · ${model.preparation} (${abilityLabel})`
     : `${casterTag} list`;
 
-  const emptyState = browsing ? "No spells match." : null;
+  const casterName = refData.classes[casterTag]?.name ?? casterTag;
+  const accessibleCount = accessibleEntries.length;
 
   return (
     <Panel
@@ -288,7 +256,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
       right={
         <span className="hint">
           {preparesFromClassList
-            ? `${headerBadge} · ${entriesLevels.reduce((n, lvl) => n + entriesByLevel.get(lvl)!.length, 0)} accessible on the ${casterTag} list`
+            ? `${headerBadge} · ${accessibleCount} accessible on the ${casterTag} list`
             : `${headerBadge} · ${knownCount} known`}
         </span>
       }
@@ -326,71 +294,38 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
         />
       )}
 
-      {!preparesFromClassList && (
-        <>
-          {/* Explicit view toggle: which list below is showing. This is the
-              *only* thing that changes the view — the search box and school
-              chips below are plain filters, scoped to browse mode, and never
-              flip the tab themselves (surprising the user by hijacking their
-              typing/clicking into a different view would violate POLA). */}
-          <div className="chips spell-mode-toggle" role="tablist" aria-label="Spell list view">
-            <button
-              type="button"
-              className="chip"
-              role="tab"
-              aria-selected={!browsing}
-              aria-pressed={!browsing}
-              onClick={() => setMode("known")}
-            >
-              {knownLabel} ({knownCount})
-            </button>
-            <button
-              type="button"
-              className="chip"
-              role="tab"
-              aria-selected={browsing}
-              aria-pressed={browsing}
-              onClick={() => setMode("browsing")}
-            >
-              Browse spell list
-            </button>
-          </div>
-          {browsing && (
-            <>
-              <input
-                className="search"
-                type="text"
-                placeholder={`Search the ${casterTag} spell list to add…`}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                autoFocus
-              />
-              {/* Browse by school when you don't already know a spell's name. */}
-              <div className="chips spell-school-filters">
-                <button
-                  type="button"
-                  className="chip"
-                  aria-pressed={school === "All"}
-                  onClick={() => setSchool("All")}
-                >
-                  All schools
-                </button>
-                {schools.map((sc) => (
-                  <button
-                    key={sc}
-                    type="button"
-                    className="chip"
-                    aria-pressed={school === sc}
-                    onClick={() => setSchool(school === sc ? "All" : sc)}
-                  >
-                    {schoolLabel(sc)}
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
-        </>
+      <div className="spell-manager-launch">
+        <button type="button" className="btn-gold" onClick={() => setManagerOpen(true)}>
+          {preparesFromClassList ? `Browse the ${casterName} spell list` : "Edit spellbook"}
+        </button>
+        <span className="hint">
+          {preparesFromClassList
+            ? `${accessibleCount} spells you can prepare from`
+            : `search and add from ${entries.length} ${casterName} spells`}
+        </span>
+      </div>
+
+      {managerOpen && (
+        <SpellManager
+          casterTag={casterTag}
+          casterName={casterName}
+          knownLabel={knownLabel}
+          entries={preparesFromClassList ? accessibleEntries : entries}
+          known={known}
+          onToggle={
+            preparesFromClassList
+              ? undefined
+              : (id) => update((d) => toggleKnownSpell(d, refData, id, casterTag))
+          }
+          knownLimits={knownLimits}
+          knownCountByLevel={knownCountByLevel}
+          isSpontaneous={model?.preparation === "spontaneous"}
+          refData={refData}
+          abilityMod={abilityMod}
+          onClose={() => setManagerOpen(false)}
+        />
       )}
+
       <div className="scroll">
         {/* Granted cantrips: read-only, always present, collapsed by default. */}
         {cantrips.length > 0 && (
@@ -445,25 +380,12 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
           />
         )}
 
-        {preparesFromClassList ? (
-          entriesLevels.length === 0 ? (
-            <div className="empty">No spells on the {casterTag} list yet.</div>
-          ) : (
-            entriesLevels.map((lvl) => (
-              <SpellLevelGroup
-                key={lvl}
-                level={lvl}
-                entries={entriesByLevel.get(lvl)!}
-                refData={refData}
-                abilityMod={abilityMod}
-                readOnly
-              />
-            ))
-          )
-        ) : levels.length === 0 ? (
+        {/* A prepares-from-class-list caster (cleric, druid) has no known list
+            to show here — the whole class list is theirs, and it's browsable in
+            the manager rather than inlined into this column. */}
+        {preparesFromClassList ? null : levels.length === 0 ? (
           <div className="empty">
-            {emptyState ??
-              `No spells in your ${knownLabel.toLowerCase()} yet — search to add some.`}
+            No spells in your {knownLabel.toLowerCase()} yet — “Edit spellbook” to add some.
           </div>
         ) : (
           levels.map((lvl) => (
@@ -473,8 +395,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
               entries={byLevel.get(lvl) ?? []}
               refData={refData}
               abilityMod={abilityMod}
-              known={known}
-              onToggle={(id) => update((d) => toggleKnownSpell(d, refData, id, casterTag))}
+              onRemove={(id) => update((d) => toggleKnownSpell(d, refData, id, casterTag))}
               knownLimit={knownLimits.get(lvl)}
               knownCount={knownCountByLevel.get(lvl) ?? 0}
               isSpontaneous={model?.preparation === "spontaneous"}
@@ -547,43 +468,41 @@ function SpellHints({
 // ---------------------------------------------------------------------------
 
 /**
- * A collapsible group of spells at one spell level. For spontaneous casters,
- * shows a known-limit advisory when the count approaches or exceeds the cap.
+ * One spell level of the known list: collapsible, with a Remove button per row
+ * and — for spontaneous casters — the known-limit advisory. Adding happens in
+ * the SpellManager, so this group only ever renders spells already known; an
+ * accessible level with none yet still gets a heading, so the gap is visible.
  */
 function SpellLevelGroup({
   level,
   entries,
   refData,
   abilityMod,
-  known = EMPTY_KNOWN,
-  onToggle,
+  onRemove,
   knownLimit,
-  knownCount = 0,
-  isSpontaneous = false,
-  readOnly = false,
+  knownCount,
+  isSpontaneous,
 }: {
   level: number;
   entries: SpellEntry[];
   refData: RefData;
   abilityMod: number;
-  known?: Set<string>;
-  onToggle?: (id: string) => void;
+  onRemove: (id: string) => void;
   knownLimit?: number;
-  knownCount?: number;
-  isSpontaneous?: boolean;
-  /** No Add/Remove button — used for the browsable full class-list reference. */
-  readOnly?: boolean;
+  knownCount: number;
+  isSpontaneous: boolean;
 }) {
-  const [collapsed, toggle] = useCollapsed(`spell-level:${level}`, readOnly);
+  const [collapsed, toggle] = useCollapsed(`spell-level:${level}`, false);
   const label = level === 0 ? "Cantrips" : `Level ${level}`;
 
-  const isAtLimit = isSpontaneous && knownLimit !== undefined && knownCount >= knownLimit;
-  const isOver = isSpontaneous && knownLimit !== undefined && knownCount > knownLimit;
+  const showLimit = isSpontaneous && knownLimit !== undefined;
+  const isOver = showLimit && knownCount > knownLimit!;
+  const isAtLimit = showLimit && knownCount >= knownLimit!;
 
   return (
     <div className="spell-level-group">
       <div
-        className={`spell-level-head is-collapsible${collapsed ? " is-collapsed" : ""}${readOnly ? " is-granted" : ""}`}
+        className={`spell-level-head is-collapsible${collapsed ? " is-collapsed" : ""}`}
         onClick={toggle}
         role="button"
         tabIndex={0}
@@ -593,7 +512,7 @@ function SpellLevelGroup({
         }}
       >
         <span className="spell-level-label">{label}</span>
-        {isSpontaneous && knownLimit !== undefined && (
+        {showLimit && (
           <span className={`spell-known-count${isOver ? " is-over" : isAtLimit ? " is-full" : ""}`}>
             {knownCount}/{knownLimit} known
           </span>
@@ -603,45 +522,29 @@ function SpellLevelGroup({
           {collapsed ? "▸" : "▾"}
         </span>
       </div>
+      {!collapsed && entries.length === 0 && (
+        <div className="empty spell-level-empty">none yet</div>
+      )}
       {!collapsed &&
         entries.map((sp) => {
-          const isKnown = known.has(sp.id);
-          const wouldExceed =
-            isSpontaneous && knownLimit !== undefined && !isKnown && knownCount >= knownLimit;
           const spellData = refData.spells[sp.id];
           return (
-            <div
-              key={sp.id}
-              className={`pick-row${isKnown ? " is-selected" : ""}${readOnly ? " is-granted" : ""}`}
-            >
+            <div key={sp.id} className="pick-row is-selected">
               <div className="pmain">
                 <div className="pname">{sp.name}</div>
                 {spellData && (
                   <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
                 )}
               </div>
-              {!readOnly && (
-                <button
-                  type="button"
-                  className={`pick-btn ${isKnown ? "remove" : "add"}`}
-                  onClick={() => onToggle?.(sp.id)}
-                  title={
-                    wouldExceed
-                      ? `You already know ${knownCount}/${knownLimit} level-${level} spells — adding more exceeds your known limit.`
-                      : undefined
-                  }
-                >
-                  {isKnown ? "Remove" : wouldExceed ? "Add (over limit)" : "Add"}
-                </button>
-              )}
+              <button type="button" className="pick-btn remove" onClick={() => onRemove(sp.id)}>
+                Remove
+              </button>
             </div>
           );
         })}
     </div>
   );
 }
-
-const EMPTY_KNOWN: Set<string> = new Set();
 
 /**
  * The read-only granted-cantrips block: listed for reference, not selectable.

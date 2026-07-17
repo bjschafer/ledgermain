@@ -1040,16 +1040,23 @@ button:focus-visible,
   margin-bottom: 12px;
 }
 
-/* Known-vs-browse tab bar above the spellbook search box — a mode switch,
-   not a multi-select filter, so it's visually set off from .spell-school-filters. */
-.spell-mode-toggle {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+/* The row that opens the full-screen SpellManager. Searching/adding doesn't
+   happen in this panel — it's half a grid column wide, which is enough to read
+   a known list and not enough to pick from a class list. */
+.spell-manager-launch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--line-soft);
 }
 
-.spell-school-filters {
-  margin-bottom: 12px;
+.spell-level-empty {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-style: italic;
 }
 
 /* feat category + legality filter controls */
@@ -5517,6 +5524,229 @@ input[type="text"].saved-roll-name:focus {
   place-items: center;
   background: rgba(10, 11, 14, 0.72);
   padding: 16px;
+}
+
+/* ------------------------------------------------------------------ dialog --
+   Full-screen modal surface (`Dialog.tsx`), used by the spell manager. Sized
+   to the viewport rather than to its content: the things that open in it are
+   list-picking tasks that want every pixel they can get. --------------- */
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  background: rgba(10, 11, 14, 0.72);
+  padding: var(--space-4);
+}
+
+.dialog-surface {
+  display: flex;
+  flex-direction: column;
+  width: min(1400px, 100%);
+  height: min(900px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+
+.dialog-title {
+  font-family: var(--display);
+  font-size: 18px;
+  color: var(--gold);
+  text-transform: capitalize;
+}
+
+.dialog-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.dialog-header-right {
+  margin-left: auto;
+}
+
+.dialog-esc-hint {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.dialog-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 15px;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.dialog-close:hover {
+  color: var(--ink);
+}
+
+.dialog-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+/* ----------------------------------------------------------- spell manager --
+   Filters across the top, then two independently-scrolling panes: the class
+   list on the left, your known list on the right. Two panes rather than one
+   toggled view so an add lands somewhere visible without scrolling the source
+   list away — the reason this exists instead of living in the builder panel. */
+
+.spell-manager {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.spell-manager-filters {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line-soft);
+  flex: none;
+}
+
+/* The search box owns the leftover width; `.search`'s list-context bottom
+   margin would break alignment on this single-row toolbar. */
+.spell-manager-filters .search {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+/* `width: auto` overrides the global `select { width: 100% }` — left at 100%
+   each facet's flex base size is the whole toolbar, so the two of them eat the
+   row and the search input collapses to its padding. */
+.spell-facet {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 7px 10px;
+  font-size: 13px;
+}
+
+.spell-manager-panes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  flex: 1;
+  min-height: 0;
+}
+
+.spell-manager-panes.is-single {
+  grid-template-columns: 1fr;
+}
+
+.spell-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  background: var(--surface);
+}
+
+.spell-pane-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--line-soft);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  flex: none;
+}
+
+.spell-pane-count {
+  margin-left: auto;
+  color: var(--faint);
+}
+
+.spell-pane-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Level headings inside the manager's panes don't collapse — the filters are
+   the way to narrow the list here, so the caret would be a second, redundant
+   control. */
+.spell-level-head.is-static {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* School/level and the details toggle share a line. The meta is floated rather
+   than made a flex item so that only the summary's line box is pushed aside:
+   as a flex item the `<details>` becomes a narrow column and its open
+   description body inherits that width instead of spanning the row. */
+.spell-row-sub {
+  margin-top: 2px;
+  /* Shared by the float and the summary's line box so the two sit on the same
+     baseline — they're both 10px mono, but a floated box and a line box next to
+     it don't align on their own. */
+  line-height: 18px;
+}
+
+.spell-row-sub::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.spell-row-meta {
+  float: left;
+  margin-right: 10px;
+  line-height: inherit;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--faint);
+}
+
+.spell-row-sub .spell-detail-summary {
+  line-height: inherit;
+}
+
+/* Below the two-column breakpoint the panes stack; each keeps its own scroll
+   so the known list stays reachable without scrolling past the whole class
+   list. */
+@media (max-width: 940px) {
+  .spell-manager-panes {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .spell-manager-filters {
+    flex-wrap: wrap;
+  }
+
+  .spell-manager-filters .search {
+    flex-basis: 100%;
+  }
 }
 
 .feedback-modal {
