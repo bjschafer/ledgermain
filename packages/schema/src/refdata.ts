@@ -391,6 +391,47 @@ export interface Item extends RefEntity {
    */
   uses?: { maxFormula?: string; per?: string };
   aura?: { school?: string };
+  /**
+   * What's inside a container item — the class kits ("Kit, Wizard's") and a
+   * handful of pre-packed bundles (Mess Kit, Grooming Kit). Absent for the
+   * ~97% of items that aren't containers.
+   *
+   * Contents are a flat, one-level list: a kit that packs another container
+   * keeps that container as a single entry and does *not* recurse into it (a
+   * Wizard's Kit yields one "Mess Kit" row, not six pieces of cutlery). The
+   * doc-side `build.gear` is a flat `ItemInstance[]` with no nesting to
+   * represent the tree anyway, and a player thinks of a mess kit as one thing
+   * they're carrying.
+   */
+  contents?: ItemContent[];
+}
+
+/**
+ * One entry in a container item's `contents`. Quantities and prices are the
+ * container's own snapshot of the entry (a Wizard's Kit packs 10 torches at
+ * its own listed price), which is why they're captured here rather than being
+ * read back off the referenced item.
+ */
+export interface ItemContent {
+  /** Display name, always present (the fallback when `itemId` is absent). */
+  name: string;
+  /**
+   * Reference into `RefData.items`. Absent when the entry resolves to a
+   * different pack — the Vampire Slayer's Kit's Wooden Stake is a weapon, and
+   * `RefData.items` can't represent it — in which case `weight`/`price` below
+   * carry the snapshot instead and consumers treat it as mundane gear.
+   */
+  itemId?: string;
+  /** How many the container packs. Absent means 1. */
+  quantity?: number;
+  /**
+   * Unit weight in pounds / unit price in gp, snapshotted from the container's
+   * own copy of the entry. Only emitted when `itemId` is absent: a linked entry
+   * has no need of them, since `ItemInstance` already falls back to
+   * `RefData.items[itemId]` for both.
+   */
+  weight?: number;
+  price?: number;
 }
 
 /* -------------------------------------------------------- armor & shields -- */

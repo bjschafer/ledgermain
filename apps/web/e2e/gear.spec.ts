@@ -31,3 +31,24 @@ test("a wand's charge cap and spent charges are editable after creation", async 
 
   await expect(row.locator(".gear-charges")).toContainText("charges: 47/50");
 });
+
+test("adding a class kit expands it into the gear it packs", async ({ page }) => {
+  const panel = await gotoGear(page);
+
+  await panel.getByRole("button", { name: "+ Add kit" }).click();
+  await panel.getByPlaceholder("Search kits…").fill("wizard");
+
+  const pick = panel.locator(".pick-row", { hasText: "Kit, Wizard's" });
+  // The picker previews the contents before you commit to adding them.
+  await expect(pick).toContainText("13 items");
+  await pick.getByRole("button", { name: "Add" }).click();
+
+  // Packed gear lands as real rows, quantities intact.
+  await expect(panel.locator(".gear-row", { hasText: "Bedroll" })).toBeVisible();
+  await expect(panel.locator(".gear-row", { hasText: "Torch" })).toContainText("10");
+  // A packed container stays a single row — no cutlery.
+  await expect(panel.locator(".gear-row", { hasText: "Mess Kit" })).toBeVisible();
+  await expect(panel.locator(".gear-row", { hasText: "Fork" })).toHaveCount(0);
+  // The kit itself is never carried alongside its contents (double-counting).
+  await expect(panel.locator(".gear-row", { hasText: "Kit, Wizard's" })).toHaveCount(0);
+});

@@ -26,6 +26,7 @@ import {
   toggleAbilitySelection,
   totalBonusEquivalent,
 } from "../../model/abilities.js";
+import { addKit, type Kit, listKits } from "../../model/kits.js";
 import {
   CONSUMABLE_KINDS,
   type ConsumableEntry,
@@ -476,6 +477,21 @@ function itemMeta(item: Item): string {
   return parts.join(" · ");
 }
 
+/**
+ * One-line preview of what a kit expands into, so the picker shows what you're
+ * about to get without opening anything: "13 items · Torch ×10, Trail Rations
+ * ×5, Ink +10 more".
+ */
+function kitSummary(kit: Kit): string {
+  const count = kit.contents.length;
+  const shown = kit.contents
+    .slice(0, 3)
+    .map((c) => (c.quantity != null && c.quantity !== 1 ? `${c.name} ×${c.quantity}` : c.name))
+    .join(", ");
+  const rest = count > 3 ? ` +${count - 3} more` : "";
+  return `${count} item${count === 1 ? "" : "s"} · ${shown}${rest}`;
+}
+
 /** One-line metadata for a generated {@link ConsumableEntry} in the picker. */
 function consumableMeta(entry: ConsumableEntry): string {
   const parts = [`CL ${entry.casterLevel}`, `spell lvl ${entry.spellLevel}`, `${entry.price} gp`];
@@ -528,6 +544,10 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   const [consumableKind, setConsumableKind] = useState<ConsumableKind>("potion");
   const [consumableQuery, setConsumableQuery] = useState("");
 
+  // Kit picker (issue #80) — class kits expand to their packed gear.
+  const [showKitPicker, setShowKitPicker] = useState(false);
+  const [kitQuery, setKitQuery] = useState("");
+
   const gear = doc.build.gear;
   const money = doc.live.money ?? {};
   const encumbrance = sheet.encumbrance;
@@ -559,10 +579,23 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     return all.filter((c) => !q || c.spellName.toLowerCase().includes(q)).slice(0, 80);
   }, [refData.spells, consumableKind, consumableQuery]);
 
+  // Kits are a small, fixed set (~40), so the whole list renders unfiltered
+  // and there's no result cap to explain like the item/armor pickers have.
+  const filteredKits = useMemo(() => {
+    const q = kitQuery.trim().toLowerCase();
+    return listKits(refData).filter((k) => !q || k.name.toLowerCase().includes(q));
+  }, [refData, kitQuery]);
+
   function handleAddItem(itemId: string) {
     update((d) => addGearItem(d, itemId));
     setShowItemPicker(false);
     setItemQuery("");
+  }
+
+  function handleAddKit(kitId: string) {
+    update((d) => addKit(d, kitId, refData));
+    setShowKitPicker(false);
+    setKitQuery("");
   }
 
   function handleAddConsumable(entry: ConsumableEntry) {
@@ -915,6 +948,63 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
               {Object.keys(refData.items).length > 80 && filteredItems.length === 80 ? (
                 <div className="empty">Showing first 80 — refine your search.</div>
               ) : null}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Add kit (issue #80) — a class kit expands into the gear it packs;
+          the kit row itself is never added, since a container's weight and
+          price already account for its contents. */}
+      <div className="gear-add-row">
+        {!showKitPicker ? (
+          <button type="button" className="btn-ghost" onClick={() => setShowKitPicker(true)}>
+            + Add kit
+          </button>
+        ) : (
+          <div className="gear-picker">
+            <div className="gear-picker-head">
+              <input
+                className="search"
+                type="text"
+                placeholder="Search kits…"
+                value={kitQuery}
+                onChange={(e) => setKitQuery(e.target.value)}
+                autoFocus
+              />
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => {
+                  setShowKitPicker(false);
+                  setKitQuery("");
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+            <div className="scroll">
+              {filteredKits.length === 0 ? (
+                <div className="empty">No kits match.</div>
+              ) : (
+                filteredKits.map((kit) => (
+                  <div key={kit.id} className="pick-row">
+                    <div className="pmain">
+                      <div className="pname">{kit.name}</div>
+                      <div className="preq">
+                        <span>{kitSummary(kit)}</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="pick-btn add"
+                      onClick={() => handleAddKit(kit.id)}
+                    >
+                      Add
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}

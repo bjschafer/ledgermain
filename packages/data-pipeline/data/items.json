@@ -1,6 +1,42 @@
 {
   "0A67B0qcuGhlLnPK": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "tPIf3G5a6QZAnM4F",
+        "name": "Prismatic Crystal"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      }
+    ],
     "contextNotes": [],
     "id": "0A67B0qcuGhlLnPK",
     "name": "Kit, Psychic's",
@@ -444,6 +480,64 @@
   },
   "3QoyxChtFEAw4TUj": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "nbbqukzwghrixhyl",
+        "name": "Chalk",
+        "quantity": 10
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "40dCFYP3DRYLZK2q",
+        "name": "Occultist's Implement",
+        "quantity": 2
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "hdK27WBFJFUNODbx",
+        "name": "Journal, blank"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      }
+    ],
     "contextNotes": [],
     "id": "3QoyxChtFEAw4TUj",
     "name": "Kit, Occultist's",
@@ -1229,6 +1323,44 @@
   },
   "6yfwD4QhSsmXaCUX": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "NgwFMX44jn9pD5k2",
+        "name": "Sponge"
+      },
+      {
+        "itemId": "DGFs2jVxtanZnxQB",
+        "name": "Comb"
+      },
+      {
+        "itemId": "qtVn6uvpmPlc30AX",
+        "name": "Mirror, Miniature"
+      },
+      {
+        "itemId": "JFt3CfOysONkqB6X",
+        "name": "Chewing Stick"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "7aCkyFhei7ZRweuQ",
+        "name": "Hairbrush"
+      },
+      {
+        "itemId": "TlhTyr56K905zx6Q",
+        "name": "Tooth Powder"
+      },
+      {
+        "itemId": "VWirsdZNCFFB9WDN",
+        "name": "Nail File"
+      },
+      {
+        "itemId": "MyTszOhmpMPGkDO8",
+        "name": "Scissors"
+      }
+    ],
     "contextNotes": [],
     "id": "6yfwD4QhSsmXaCUX",
     "name": "Grooming Kit",
@@ -1715,6 +1847,72 @@
   },
   "8gOHyRFOj2K0F0Qj": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "nbbqukzwghrixhyl",
+        "name": "Chalk",
+        "quantity": 10
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "jewqhqesccxrvivd",
+        "name": "Candle",
+        "quantity": 10
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      }
+    ],
     "contextNotes": [],
     "id": "8gOHyRFOj2K0F0Qj",
     "name": "Kit, Witch's",
@@ -1777,6 +1975,62 @@
   },
   "9IQU7ZRO4KhglOV0": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "etmrlhlbyoahuunz",
+        "name": "Gunsmith's Kit"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "PtMcbl9zBVnwn0mA",
+        "name": "Powder horn"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      }
+    ],
     "contextNotes": [],
     "id": "9IQU7ZRO4KhglOV0",
     "name": "Kit, Gunslinger's",
@@ -1821,6 +2075,75 @@
   },
   "9NkBjZfztOP8qgsY": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "jewqhqesccxrvivd",
+        "name": "Candle",
+        "quantity": 10
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "zompehbhvegvncwu",
+        "name": "Manacles, common"
+      },
+      {
+        "itemId": "fdfdwpuaqjjudyeo",
+        "name": "Holy text, cheap"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      }
+    ],
     "contextNotes": [],
     "id": "9NkBjZfztOP8qgsY",
     "name": "Kit, Inquisitor's",
@@ -2352,6 +2675,62 @@
   },
   "CDQCyfYfW9aneX9e": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>The kit does not contain a spellbook because a wizard begins play with a spellbook and does not need to purchase one.</p>",
     "id": "CDQCyfYfW9aneX9e",
@@ -2508,6 +2887,59 @@
   },
   "CUhcL6yCE9VW0AXv": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "jewqhqesccxrvivd",
+        "name": "Candle",
+        "quantity": 10
+      }
+    ],
     "contextNotes": [],
     "id": "CUhcL6yCE9VW0AXv",
     "name": "Kit, Oracle's",
@@ -2801,6 +3233,62 @@
   },
   "E13qnAa0Fdu7mvcZ": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "fdfdwpuaqjjudyeo",
+        "name": "Holy text, cheap"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      }
+    ],
     "contextNotes": [],
     "id": "E13qnAa0Fdu7mvcZ",
     "name": "Kit, Paladin's",
@@ -3614,6 +4102,46 @@
   },
   "InAHKpiWiATsMJNe": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      }
+    ],
     "contextNotes": [],
     "id": "InAHKpiWiATsMJNe",
     "name": "Kit, Shifter's",
@@ -3627,6 +4155,58 @@
   },
   "IvvqBUI4UMiY5XVQ": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "zompehbhvegvncwu",
+        "name": "Manacles, common"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      }
+    ],
     "contextNotes": [],
     "id": "IvvqBUI4UMiY5XVQ",
     "name": "Kit, Slayer's",
@@ -3665,6 +4245,54 @@
   },
   "J5sXKSqZLcTwqGJi": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      }
+    ],
     "contextNotes": [],
     "id": "J5sXKSqZLcTwqGJi",
     "name": "Kit, Swashbuckler's",
@@ -4349,6 +4977,62 @@
   },
   "MpOdZs55Qg4Vg64a": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "6kZGQ2chmr3jpS1t",
+        "name": "Entertainer's outfit"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
+        "itemId": "JKd53uSpcNZkvrvk",
+        "name": "Hypnotist’s locket (locket)"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "dpakeysfhdqijytc",
+        "name": "Stationery"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      }
+    ],
     "contextNotes": [],
     "id": "MpOdZs55Qg4Vg64a",
     "name": "Kit, Mesmerist's",
@@ -4553,6 +5237,38 @@
   },
   "NKiPR96W8na5kPqG": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      }
+    ],
     "contextNotes": [],
     "id": "NKiPR96W8na5kPqG",
     "name": "Kit, Vigilante's",
@@ -4610,6 +5326,50 @@
   },
   "NSMSSJ0Gd82OdHtd": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      }
+    ],
     "contextNotes": [],
     "id": "NSMSSJ0Gd82OdHtd",
     "name": "Kit, Summoner's",
@@ -4858,6 +5618,66 @@
   },
   "OfoCzk8jZTsoqUO6": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "fdfdwpuaqjjudyeo",
+        "name": "Holy text, cheap"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      }
+    ],
     "contextNotes": [],
     "id": "OfoCzk8jZTsoqUO6",
     "name": "Kit, Warpriest's",
@@ -5024,6 +5844,36 @@
   },
   "PI7uxv6NWE1RX7B8": {
     "changes": [],
+    "contents": [
+      {
+        "name": "Wooden Stake",
+        "weight": 1
+      },
+      {
+        "itemId": "gjtuklwkrbqykmdk",
+        "name": "Mirror"
+      },
+      {
+        "itemId": "ieedspgjoepqnfqj",
+        "name": "Hammer"
+      },
+      {
+        "itemId": "CmjSKOVJuQnV8o3S",
+        "name": "Holy water"
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "pzoofblizyixlcoc",
+        "name": "Silversheen"
+      },
+      {
+        "itemId": "vqwyugaticvrbzhn",
+        "name": "Garlic"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>This small, latched wooden case contains numerous tools and devices used in hunting and slaying <em>vampires</em>. It contains 10 cloves of garlic, four masterwork wooden stakes, a hammer, a silvered mirror, 4 vials of holy water, 1 application of silversheen, and a masterwork holy symbol. It also contains numerous regents and powders used for treating wounds and making wards, salves, and other concoctions. In addition to its general usefulness, when displayed, a vampire slayer's kit grants its owner a +2 bonus on all <em>Charisma</em>-based skill checks made to investigate or seek out vampires.</p>",
     "id": "PI7uxv6NWE1RX7B8",
@@ -5229,6 +6079,50 @@
   },
   "QLENWzTGoaS1Vzxa": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      }
+    ],
     "contextNotes": [],
     "id": "QLENWzTGoaS1Vzxa",
     "name": "Kit, Barbarian's",
@@ -5753,6 +6647,62 @@
   },
   "T3gaWSK4oJ5vD7Ff": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "xkunfssqoyoupryi",
+        "name": "Kit, Alchemy Crafting"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>The kit does not contain a formula book because an alchemist begins play with a formula book and does not need to purchase one.</p>",
     "id": "T3gaWSK4oJ5vD7Ff",
@@ -5803,6 +6753,50 @@
   },
   "TS9gdYSdnKENTTzu": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      }
+    ],
     "contextNotes": [],
     "id": "TS9gdYSdnKENTTzu",
     "name": "Kit, Sorcerer's",
@@ -5879,6 +6873,63 @@
   },
   "ThmwfGsUmtXOL36b": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "jjitxdnizmpbthys",
+        "name": "Holly and Mistletoe"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "hwrgbauvnnirgqdy",
+        "name": "Feed",
+        "quantity": 5
+      }
+    ],
     "contextNotes": [],
     "id": "ThmwfGsUmtXOL36b",
     "name": "Kit, Druid's",
@@ -6128,6 +7179,32 @@
   },
   "Ueae6c2qqJJGpncA": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "jzu5QqK20bW9gkN1",
+        "name": "Fork"
+      },
+      {
+        "itemId": "fASUzJozDXZldwNT",
+        "name": "Bowl"
+      },
+      {
+        "itemId": "GZtAdQ7gJlCe9z64",
+        "name": "Knife"
+      },
+      {
+        "itemId": "tVkpdPfIJomoFjUl",
+        "name": "Plate"
+      },
+      {
+        "itemId": "QqdYeaj0M8e5FWWK",
+        "name": "Cup"
+      },
+      {
+        "itemId": "Asg5Ek4CFqb80P7C",
+        "name": "Spoon"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>This kit includes a plate, bowl, cup, fork, knife, and spoon, made of wood, horn, or tin. Each item has a handle or small hole, and can be tied together using the included leather cord.</p>",
     "id": "Ueae6c2qqJJGpncA",
@@ -6474,6 +7551,59 @@
   },
   "Vs4WiNGamVNMEEZI": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "e97Z2wv4Z2DI9jHa",
+        "name": "Ectoplasmic Residue"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "iclfnaawjjxuvupa",
+        "name": "Incense",
+        "quantity": 10
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "HR0dO8pNmZLlQwaD",
+        "name": "Censer"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "OiVZjOl24GBYj70c",
+        "name": "Magnetized Paper"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      }
+    ],
     "contextNotes": [],
     "id": "Vs4WiNGamVNMEEZI",
     "name": "Kit, Spiritualist's",
@@ -6565,6 +7695,62 @@
   },
   "WCOgvNJk5nn7gZwd": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "xkunfssqoyoupryi",
+        "name": "Kit, Alchemy Crafting"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      }
+    ],
     "contextNotes": [],
     "id": "WCOgvNJk5nn7gZwd",
     "name": "Kit, Investigator's",
@@ -6640,6 +7826,67 @@
   },
   "WWKhzslqDsrmw4ka": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "jewqhqesccxrvivd",
+        "name": "Candle",
+        "quantity": 10
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      }
+    ],
     "contextNotes": [],
     "id": "WWKhzslqDsrmw4ka",
     "name": "Kit, Shaman's",
@@ -6883,6 +8130,50 @@
   },
   "Xb8d1z9x8uWXCTBM": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      }
+    ],
     "contextNotes": [],
     "id": "Xb8d1z9x8uWXCTBM",
     "name": "Kit, Bloodrager's",
@@ -7216,6 +8507,43 @@
   },
   "ZscTIwRwTi7EW0oW": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "jjitxdnizmpbthys",
+        "name": "Holly and Mistletoe"
+      },
+      {
+        "itemId": "51x0lv7ZfztqvTs2",
+        "name": "Automatic writing planchette"
+      },
+      {
+        "itemId": "iclfnaawjjxuvupa",
+        "name": "Incense",
+        "quantity": 10
+      },
+      {
+        "itemId": "TtDnjdwDQAlfWGQ6",
+        "name": "Scholar's outfit"
+      },
+      {
+        "itemId": "jewqhqesccxrvivd",
+        "name": "Candle",
+        "quantity": 10
+      },
+      {
+        "itemId": "iiQX34d6zVtN6DLX",
+        "name": "Candlestick",
+        "quantity": 10
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>This kit includes tools that aid in contacting supernatural beings.</p>",
     "id": "ZscTIwRwTi7EW0oW",
@@ -9593,6 +10921,62 @@
   },
   "eRkG1d4hKYEgxuRa": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "pjbwjzojocninnhz",
+        "name": "Musical instrument, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "hdK27WBFJFUNODbx",
+        "name": "Journal, blank"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "gjtuklwkrbqykmdk",
+        "name": "Mirror"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      }
+    ],
     "contextNotes": [],
     "id": "eRkG1d4hKYEgxuRa",
     "name": "Kit, Bard's",
@@ -9917,6 +11301,42 @@
   },
   "ergfTqkBYmNCaOKx": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      }
+    ],
     "contextNotes": [],
     "id": "ergfTqkBYmNCaOKx",
     "name": "Kit, Monk's",
@@ -10620,6 +12040,66 @@
   },
   "gUpHbLavbKf0niXy": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "gjtuklwkrbqykmdk",
+        "name": "Mirror"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "pjbwjzojocninnhz",
+        "name": "Musical instrument, common"
+      }
+    ],
     "contextNotes": [],
     "id": "gUpHbLavbKf0niXy",
     "name": "Kit, Skald's",
@@ -10998,6 +12478,46 @@
   },
   "gsNpMbSOoLgSHSIl": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      }
+    ],
     "contextNotes": [],
     "id": "gsNpMbSOoLgSHSIl",
     "name": "Kit, Brawler's",
@@ -11043,6 +12563,71 @@
   },
   "gui1XLiivTOxvLSN": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "zkfnrahkeufabend",
+        "name": "Bit And Bridle"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "gW1bPqOvVfpmqEqd",
+        "name": "Saddlebags"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "hwrgbauvnnirgqdy",
+        "name": "Feed",
+        "quantity": 5
+      },
+      {
+        "itemId": "dn6yBOrH8vUpXahk",
+        "name": "Saddle (riding)"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      }
+    ],
     "contextNotes": [],
     "id": "gui1XLiivTOxvLSN",
     "name": "Kit, Cavalier's",
@@ -14438,6 +16023,80 @@
   },
   "nGuE4jwuo379IcNX": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "jwVHSbHYArXOtGKv",
+        "name": "Piton",
+        "quantity": 10
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "yGrLgCtNMMV9cUvt",
+        "name": "Caltrops"
+      },
+      {
+        "itemId": "nbbqukzwghrixhyl",
+        "name": "Chalk",
+        "quantity": 10
+      },
+      {
+        "itemId": "urnyegqxtbxjyokm",
+        "name": "Thieves' Tools, common"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "gjtuklwkrbqykmdk",
+        "name": "Mirror"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "gnynrdudvahpbxkz",
+        "name": "Grappling hook, common"
+      }
+    ],
     "contextNotes": [],
     "id": "nGuE4jwuo379IcNX",
     "name": "Kit, Rogue's",
@@ -15648,6 +17307,62 @@
   },
   "pfhsNOG9sb4ViJ4A": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      }
+    ],
     "contextNotes": [],
     "id": "pfhsNOG9sb4ViJ4A",
     "name": "Kit, Arcanist's",
@@ -15827,6 +17542,67 @@
   },
   "pxaHUL6GnMFzBHKE": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "jewqhqesccxrvivd",
+        "name": "Candle",
+        "quantity": 10
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "fdfdwpuaqjjudyeo",
+        "name": "Holy text, cheap"
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      }
+    ],
     "contextNotes": [],
     "id": "pxaHUL6GnMFzBHKE",
     "name": "Kit, Cleric's",
@@ -16020,6 +17796,66 @@
   },
   "qYM1rGPtKbKo5Yqw": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>The kit does not contain a spellbook because a magus begins play with a spellbook.</p>",
     "id": "qYM1rGPtKbKo5Yqw",
@@ -16168,6 +18004,54 @@
   },
   "qltDGFNjwMPljQmH": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      }
+    ],
     "contextNotes": [],
     "id": "qltDGFNjwMPljQmH",
     "name": "Kit, Ranger's",
@@ -17795,6 +19679,34 @@
   },
   "th9yV3T4EYlW4IyP": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      }
+    ],
     "contextNotes": [],
     "id": "th9yV3T4EYlW4IyP",
     "name": "Kit, Kineticist's",
@@ -19785,6 +21697,54 @@
   },
   "xHQnf15yV6edm5lz": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      }
+    ],
     "contextNotes": [],
     "id": "xHQnf15yV6edm5lz",
     "name": "Kit, Fighter's",
@@ -21391,6 +23351,62 @@
   },
   "zwNOw4PH8gpi29p9": {
     "changes": [],
+    "contents": [
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      }
+    ],
     "contextNotes": [],
     "id": "zwNOw4PH8gpi29p9",
     "name": "Kit, Hunter's",
