@@ -18,6 +18,7 @@ import {
   spellSaveDC,
   spellSlotsByLevel,
   spellsKnownLimitsByLevel,
+  spellsPanelVisible,
 } from "../src/model/spellcasting.js";
 
 const ref = loadRefData();
@@ -826,5 +827,62 @@ describe("casterModelFor() — mesmerist, occultist, spiritualist (Occult Advent
       expect(ref.spellLists[tag]).toBeDefined();
       expect(Object.keys(ref.spellLists[tag]!).length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("spellsPanelVisible()", () => {
+  function doc(over: {
+    classes?: { tag: string; level: number }[];
+    known?: string[];
+    byClass?: Record<string, { known: string[] }>;
+    prepared?: unknown[];
+  }): Parameters<typeof spellsPanelVisible>[0] {
+    return {
+      identity: { name: "Test", race: "", classes: over.classes ?? [] },
+      build: { spells: { known: over.known ?? [], byClass: over.byClass } },
+      live: over.prepared ? { spells: { prepared: over.prepared } } : {},
+    } as unknown as Parameters<typeof spellsPanelVisible>[0];
+  }
+
+  it("hidden for a fighter — no caster class, no spell state", () => {
+    expect(spellsPanelVisible(doc({ classes: [{ tag: "fighter", level: 5 }] }), ref)).toBe(false);
+  });
+
+  it("hidden for a classless blank document", () => {
+    expect(spellsPanelVisible(doc({}), ref)).toBe(false);
+  });
+
+  it("visible for any class with a spell list", () => {
+    expect(spellsPanelVisible(doc({ classes: [{ tag: "wizard", level: 1 }] }), ref)).toBe(true);
+  });
+
+  it("visible for a fighter/wizard multiclass", () => {
+    const d = doc({
+      classes: [
+        { tag: "fighter", level: 5 },
+        { tag: "wizard", level: 1 },
+      ],
+    });
+    expect(spellsPanelVisible(d, ref)).toBe(true);
+  });
+
+  it("stays visible when the caster class is gone but known spells linger", () => {
+    const d = doc({ classes: [{ tag: "fighter", level: 5 }], known: ["spell-id"] });
+    expect(spellsPanelVisible(d, ref)).toBe(true);
+  });
+
+  it("stays visible for stranded per-class known spells", () => {
+    const d = doc({ classes: [], byClass: { wizard: { known: ["spell-id"] } } });
+    expect(spellsPanelVisible(d, ref)).toBe(true);
+  });
+
+  it("an empty byClass record doesn't keep the panel alive", () => {
+    const d = doc({ classes: [{ tag: "fighter", level: 5 }], byClass: { wizard: { known: [] } } });
+    expect(spellsPanelVisible(d, ref)).toBe(false);
+  });
+
+  it("stays visible for stranded prepared spells", () => {
+    const d = doc({ classes: [], prepared: [{ spellId: "x", level: 1 }] });
+    expect(spellsPanelVisible(d, ref)).toBe(true);
   });
 });

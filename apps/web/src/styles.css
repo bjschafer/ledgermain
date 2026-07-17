@@ -360,27 +360,50 @@ a {
   position: relative;
 }
 
-/* Drag grip in the bottom-right corner of every panel body — a small corner
-   bracket (crop-mark style) rather than a native textarea-style grip, to sit
-   quietly against the panel's thin borders until hovered. Height-only resize
+/* Drag grip in the bottom-right corner of every panel body. Height-only resize
    (the grid layout owns column widths), persisted per panel via
-   useResizableHeight; the header's "reset size" button clears the override. */
+   useResizableHeight; the header's "reset size" button clears the override.
+   Deliberately loud: a dim crop-mark bracket read as a native textarea grip and
+   sent users clicking around the panel edges hunting for the real one. The
+   stacked double bracket is a shape the browser never draws on its own. */
 .panel-resize-handle {
   position: absolute;
-  right: 5px;
-  bottom: 5px;
-  width: 9px;
-  height: 9px;
+  right: 4px;
+  bottom: 4px;
+  width: 14px;
+  height: 14px;
   cursor: ns-resize;
-  border-right: 2px solid var(--gold-dim);
-  border-bottom: 2px solid var(--gold-dim);
+  border-right: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
   border-bottom-right-radius: 2px;
-  opacity: 0.3;
+  opacity: 0.85;
 }
 
-.panel-resize-handle:hover {
+/* Inner bracket — the second crop mark that makes this read as a grip. */
+.panel-resize-handle::before {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
+  border-bottom-right-radius: 1px;
+}
+
+/* Invisible padding around the grip: the visual is 14px, the grab target ~26px,
+   so an imprecise drag still lands on the handle. */
+.panel-resize-handle::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+}
+
+.panel-resize-handle:hover,
+.panel-resize-handle:hover::before {
   opacity: 1;
-  border-color: var(--oxblood);
+  border-color: var(--gold-2);
 }
 
 .hint {

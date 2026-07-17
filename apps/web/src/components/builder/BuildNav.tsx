@@ -12,6 +12,7 @@ import {
   expectedOracleRevelationCount,
 } from "../../model/oracleRevelations.js";
 import { skillBudget } from "../../model/skills.js";
+import { spellsPanelVisible } from "../../model/spellcasting.js";
 import { chosenTraitCount, EXPECTED_TRAIT_COUNT } from "../../model/traits.js";
 import type { BuilderProps } from "./types.js";
 
@@ -181,7 +182,15 @@ function prefersReducedMotion(): boolean {
 export function BuildNav({ doc, sheet, refData }: BuilderProps) {
   const badges = useAttentionBadges({ doc, sheet, refData });
   const [active, setActive] = useState<string>(SECTIONS[0]!.id);
-  const orderRef = useRef(SECTIONS.map((s) => s.id));
+
+  // The Spells panel hides itself for a non-caster, so its jump target would
+  // lead nowhere — drop the nav entry with it.
+  const sections = useMemo(
+    () => SECTIONS.filter((s) => s.id !== "section-spells" || spellsPanelVisible(doc, refData)),
+    [doc, refData],
+  );
+  const orderRef = useRef(sections.map((s) => s.id));
+  orderRef.current = sections.map((s) => s.id);
 
   useEffect(() => {
     const visible = new Set<string>();
@@ -203,12 +212,12 @@ export function BuildNav({ doc, sheet, refData }: BuilderProps) {
       { rootMargin: "-96px 0px -70% 0px", threshold: 0 },
     );
 
-    for (const section of SECTIONS) {
+    for (const section of sections) {
       const el = document.getElementById(section.id);
       if (el) observer.observe(el);
     }
     return () => observer.disconnect();
-  }, []);
+  }, [sections]);
 
   const onJump = (id: string) => {
     const el = document.getElementById(id);
@@ -218,7 +227,7 @@ export function BuildNav({ doc, sheet, refData }: BuilderProps) {
 
   return (
     <nav className="build-nav" aria-label="Jump to build section">
-      {SECTIONS.map((section) => {
+      {sections.map((section) => {
         const badge = badges[section.id];
         return (
           <button

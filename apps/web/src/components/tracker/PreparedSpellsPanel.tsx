@@ -46,6 +46,7 @@ import {
   SCHOOL_LABELS,
   shamanSpiritSpellsKnown,
   spellSlotsByLevel,
+  spellsPanelVisible,
   storedClassTag,
 } from "../../model/spellcasting.js";
 import { newDaySummary } from "../../model/rest.js";
@@ -1872,6 +1873,10 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
   const model = casterTag ? casterModelFor(casterTag) : undefined;
 
   if (!casterTag || !model) {
+    // No caster class and no spell state to strand: show nothing rather than an
+    // empty panel. An actual caster whose class isn't modelled yet keeps the
+    // message — that's a gap worth surfacing, not an absent feature.
+    if (!casterTag && !spellsPanelVisible(doc, refData)) return null;
     return (
       <Panel title="Spells" step="ps" storageKey="panel:Prepared">
         <p className="empty">

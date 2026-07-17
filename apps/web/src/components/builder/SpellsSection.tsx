@@ -17,6 +17,7 @@ import {
   patronSpellsKnown,
   shamanSpiritSpellsKnown,
   spellsKnownLimitsByLevel,
+  spellsPanelVisible,
 } from "../../model/spellcasting.js";
 import { classSpellsByLevel, spellLevelMap } from "../../model/preparedSpells.js";
 import type { SpellEntry } from "../../model/spellSearch.js";
@@ -206,7 +207,10 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     return counts;
   }, [known, levelMap]);
 
+  // A non-caster gets no panel at all rather than an empty one. The stranded
+  // -state case (spells present, caster class gone) still renders the message.
   if (!casterTag) {
+    if (!spellsPanelVisible(doc, refData)) return null;
     return (
       <Panel title="Spells" step="vii" storageKey="panel:Spells">
         <p className="empty">No spellcasting class selected.</p>

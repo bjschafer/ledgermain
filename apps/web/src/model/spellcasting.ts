@@ -1156,6 +1156,22 @@ export function casterClassesOf(
 }
 
 /**
+ * Whether to show the Spells panels (builder + tracker) at all. A fighter has
+ * no use for a permanently-empty "Spells" panel in either column.
+ *
+ * Hidden only when the character both has no caster class AND holds no spell
+ * state — a document that somehow carries known/prepared spells without a
+ * caster class (a class removed after spells were picked) keeps the panel, so
+ * that state never becomes unreachable.
+ */
+export function spellsPanelVisible(doc: CharacterDoc, refData: RefData): boolean {
+  if (casterClassesOf(doc, refData).length > 0) return true;
+  if (doc.build.spells.known.length > 0) return true;
+  if (Object.values(doc.build.spells.byClass ?? {}).some((b) => b.known.length > 0)) return true;
+  return (doc.live.spells?.prepared.length ?? 0) > 0;
+}
+
+/**
  * The document's *primary* caster class: the first (in `identity.classes`
  * order) class with a spell list, or `undefined` if the character casts no
  * spells at all. Legacy per-class spell state — the flat `build.spells.known`
