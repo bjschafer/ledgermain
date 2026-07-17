@@ -5763,6 +5763,82 @@ input[type="text"].saved-roll-name:focus {
   }
 }
 
+/* ------------------------------------------------------------- feat manager --
+   The feat picker reuses the spell-manager two-pane shell; its filter toolbar
+   carries category chips + the hide-ineligible toggle instead of the spell
+   facets, so let those controls wrap on a narrow surface. */
+.feat-manager-filters {
+  flex-wrap: wrap;
+}
+
+.feat-manager-filters .chips {
+  flex: 0 1 auto;
+}
+
+/* ------------------------------------------------------------ skill manager --
+   One roomy pane: a scrolling skill table with the rank-budget in the dialog
+   header and the Craft/Profession/Perform add-row pinned at the bottom. */
+.skill-manager {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.skill-manager-filters {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line-soft);
+  flex: none;
+}
+
+.skill-manager-filters .search {
+  margin-bottom: 0;
+}
+
+.skill-manager-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--space-4);
+}
+
+/* Sticky column header for the scrolling table. */
+.skill-table-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.skill-table-head .skill-col-num {
+  text-align: center;
+}
+
+.skill-manager-add {
+  padding: var(--space-3) var(--space-4);
+  margin-top: 0;
+  border-top: 1px solid var(--line-soft);
+  flex: none;
+}
+
+/* Panel summary: skills the character has ranks in. Adds a middle rank column
+   to the shared `.skill-row` grid (name / ranks / total). */
+.skill-summary-row {
+  grid-template-columns: 1fr auto auto;
+}
+
+.skill-summary-ranks {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
 .feedback-modal {
   width: 100%;
   max-width: 460px;
