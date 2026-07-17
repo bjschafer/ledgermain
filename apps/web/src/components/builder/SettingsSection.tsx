@@ -19,6 +19,7 @@ import {
   setHeroPointsEnabled,
   setHpMode,
   setIgnoreClassAlignmentRestrictions,
+  setPolymorphEnabled,
   setRestMode,
   setStatOverride,
   setXpEnabled,
@@ -90,6 +91,7 @@ export function SettingsSection({
   const xpEnabled = settings.xpEnabled ?? false;
   const xpTrack = settings.xpTrack ?? DEFAULT_XP_TRACK;
   const encumbranceEnabled = settings.encumbranceEnabled ?? false;
+  const polymorphEnabled = settings.polymorphEnabled;
   const ignoreAlignmentRestrictions = settings.ignoreClassAlignmentRestrictions ?? false;
   const overrides = settings.statOverrides ?? {};
   const gmSkillRanks = doc.build.gmGrants?.skillRanks;
@@ -387,6 +389,47 @@ export function SettingsSection({
             weight, thresholds, and tier.
           </p>
         )}
+      </Panel>
+
+      {/* Polymorph / Wild Shape panel visibility */}
+      <Panel title="Polymorph / Wild Shape" step="⚙">
+        <p className="hint" style={{ marginBottom: 12 }}>
+          By default the tracker only offers the Polymorph / Wild Shape panel when this character
+          has a source for it — druid Wild Shape levels, the shifter class, or a known Beast Shape /
+          Elemental Body / Plant Shape spell. Force it on if your access is off-sheet (a scroll, a
+          potion, a GM handout).
+        </p>
+        <div className="chips">
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={polymorphEnabled === undefined}
+            onClick={() => update((d) => setPolymorphEnabled(d, null))}
+          >
+            Auto (default)
+          </button>
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={polymorphEnabled === true}
+            onClick={() => update((d) => setPolymorphEnabled(d, true))}
+          >
+            Always show
+          </button>
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={polymorphEnabled === false}
+            onClick={() => update((d) => setPolymorphEnabled(d, false))}
+          >
+            Never show
+          </button>
+        </div>
+        {polymorphEnabled === false && doc.live.activeForm ? (
+          <p className="hint" style={{ marginTop: 10, fontSize: 12 }}>
+            This character is currently transformed, so the panel stays visible until the form ends.
+          </p>
+        ) : null}
       </Panel>
 
       {/* Class alignment restrictions (issue #53) */}

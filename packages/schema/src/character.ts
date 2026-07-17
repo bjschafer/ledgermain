@@ -410,6 +410,16 @@ export interface CharacterDoc {
        */
       encumbranceEnabled?: boolean;
       /**
+       * Whether the tracker offers the Polymorph / Wild Shape panel.
+       * Tri-state: absent = auto — shown only when the character has a
+       * polymorph source (druid Wild Shape levels, shifter, or a known
+       * Beast Shape / Elemental Body / Plant Shape spell) or is already
+       * transformed. `true` forces it on for a character whose only access
+       * is off-sheet (a scroll, a potion, a GM handout); `false` hides it
+       * even for a druid.
+       */
+      polymorphEnabled?: boolean;
+      /**
        * Homebrew "unrestricted alignments" house rule (issue #53). PF1 CRB
        * restricts a handful of base classes to a subset of alignments
        * (Barbarian: any nonlawful; Monk: any lawful; Paladin: lawful good;

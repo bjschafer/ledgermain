@@ -19,7 +19,13 @@ import {
   type PolymorphFormOption,
   type PolymorphTier,
 } from "@pf1/engine";
-import type { ActiveForm, ActiveFormNaturalAttack, CharacterDoc, SizeId } from "@pf1/schema";
+import type {
+  ActiveForm,
+  ActiveFormNaturalAttack,
+  CharacterDoc,
+  RefData,
+  SizeId,
+} from "@pf1/schema";
 
 const SIZE_LABELS: Record<SizeId, string> = {
   fine: "Fine",
@@ -46,6 +52,46 @@ export function druidLevel(doc: CharacterDoc): number {
 /** Wild Shape's currently-available polymorph tiers for a druid (empty for a non-druid or below 4th level). */
 export function wildShapeTiers(doc: CharacterDoc): PolymorphTier[] {
   return wildShapeTiersForLevel(druidLevel(doc));
+}
+
+/**
+ * A known spell counts as a polymorph source when its name starts with one of
+ * these — matching the tier families in `@pf1/engine`'s polymorph table
+ * (Beast Shape I-IV, Elemental Body I-IV, Plant Shape I-III). Matched on the
+ * spell's NAME rather than its compendium id because the id is opaque.
+ */
+const POLYMORPH_SPELL_PREFIXES = ["beast shape", "elemental body", "plant shape"];
+
+/** Every spell id the document knows, across the primary list and every per-class list. */
+function allKnownSpellIds(doc: CharacterDoc): string[] {
+  const byClass = Object.values(doc.build.spells.byClass ?? {}).flatMap((b) => b.known);
+  return [...doc.build.spells.known, ...byClass];
+}
+
+/** Whether the character knows/has prepared any polymorph-family spell. */
+export function hasPolymorphSpell(doc: CharacterDoc, refData: RefData): boolean {
+  return allKnownSpellIds(doc).some((id) => {
+    const name = refData.spells[id]?.name.toLowerCase();
+    return name !== undefined && POLYMORPH_SPELL_PREFIXES.some((p) => name.startsWith(p));
+  });
+}
+
+/**
+ * Whether to offer the tracker's Polymorph / Wild Shape panel at all. Most
+ * characters never transform, so the panel is hidden unless the character has
+ * a source for it — or is transformed right now, which must never become
+ * unreachable (e.g. the setting is flipped off mid-form).
+ *
+ * `settings.polymorphEnabled` overrides the detection in both directions; see
+ * its schema doc comment.
+ */
+export function polymorphPanelVisible(doc: CharacterDoc, refData: RefData): boolean {
+  if (doc.live.activeForm) return true;
+  const setting = doc.build.settings?.polymorphEnabled;
+  if (setting !== undefined) return setting;
+  if (wildShapeTiers(doc).length > 0) return true;
+  if (doc.identity.classes.some((c) => c.tag === "shifter")) return true;
+  return hasPolymorphSpell(doc, refData);
 }
 
 /** Every polymorph tier id — for a non-druid source (a spell) that picks a tier directly. */

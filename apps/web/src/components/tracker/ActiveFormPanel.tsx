@@ -12,6 +12,7 @@ import {
   endActiveForm,
   formOptionKey,
   polymorphFormOptions,
+  polymorphPanelVisible,
   polymorphTierName,
   removeNaturalAttack,
   setActiveFormName,
@@ -31,11 +32,14 @@ import type { BuilderProps } from "../builder/types.js";
  * the resulting ability-score/AC/attack/CMB/CMD numbers flow through
  * `compute()` automatically (see `sheet.abilities`/`sheet.ac`/etc. — no
  * duplicate math here). Mirrors `ShifterAspectPanel`'s "live toggle, no
- * standing build.* half" shape.
+ * standing build.* half" shape — including hiding itself entirely for a
+ * character with no polymorph source (see `polymorphPanelVisible`).
  */
-export function ActiveFormPanel({ doc, sheet, update }: BuilderProps) {
+export function ActiveFormPanel({ doc, sheet, refData, update }: BuilderProps) {
   const active = currentActiveForm(doc);
   const derived = sheet.activeForm;
+
+  if (!polymorphPanelVisible(doc, refData)) return null;
 
   return (
     <Panel title="Polymorph / Wild Shape" step="wsh" storageKey="panel:Polymorph" defaultCollapsed>

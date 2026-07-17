@@ -1341,6 +1341,26 @@ export function setEncumbranceEnabled(doc: CharacterDoc, enabled: boolean): Char
 }
 
 /**
+ * Force the Polymorph / Wild Shape panel on (`true`) or off (`false`), or pass
+ * `null` to restore auto-detection from the character's own polymorph sources
+ * (see `model/polymorph.ts`'s `polymorphPanelVisible`).
+ */
+export function setPolymorphEnabled(doc: CharacterDoc, enabled: boolean | null): CharacterDoc {
+  if (enabled === null) {
+    const settings = { ...doc.build.settings };
+    delete settings.polymorphEnabled;
+    return { ...doc, build: { ...doc.build, settings } };
+  }
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, polymorphEnabled: enabled },
+    },
+  };
+}
+
+/**
  * Toggle the homebrew "unrestricted alignments" house rule (issue #53). When
  * true, `model/alignment.ts`'s `classAlignmentWarnings` returns no warnings
  * regardless of the character's alignment/class combination. Off by default

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "bun:test";
 
-import type { CharacterDoc } from "@pf1/schema";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
+import { setPolymorphEnabled } from "../src/model/doc.js";
 import {
   addNaturalAttack,
   allPolymorphTiers,
@@ -10,6 +11,7 @@ import {
   endActiveForm,
   formOptionKey,
   polymorphFormOptions,
+  polymorphPanelVisible,
   polymorphTierName,
   removeNaturalAttack,
   setActiveFormName,
@@ -218,5 +220,77 @@ describe("model/polymorph: natural-attack line editing", () => {
     doc = removeNaturalAttack(doc, 0);
     expect(doc.live.activeForm?.naturalAttacks).toEqual([{ name: "Claw" }]);
     expect(removeNaturalAttack(doc, 9)).toBe(doc);
+  });
+});
+
+describe("polymorphPanelVisible", () => {
+  const refData = {
+    spells: {
+      "beast-shape-ii": { name: "Beast Shape II" },
+      fireball: { name: "Fireball" },
+    },
+  } as unknown as RefData;
+
+  const withSpells = (doc: CharacterDoc, known: string[]): CharacterDoc => ({
+    ...doc,
+    build: { ...doc.build, spells: { known } },
+  });
+
+  it("hides for a character with no polymorph source", () => {
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 12 }] });
+    expect(polymorphPanelVisible(doc, refData)).toBe(false);
+  });
+
+  it("hides for a druid below the Wild Shape level", () => {
+    const doc = makeDoc({ classes: [{ tag: "druid", level: 3 }] });
+    expect(polymorphPanelVisible(doc, refData)).toBe(false);
+  });
+
+  it("shows for a druid with Wild Shape levels, and for a shifter", () => {
+    expect(polymorphPanelVisible(makeDoc({ classes: [{ tag: "druid", level: 4 }] }), refData)).toBe(
+      true,
+    );
+    expect(
+      polymorphPanelVisible(makeDoc({ classes: [{ tag: "shifter", level: 1 }] }), refData),
+    ).toBe(true);
+  });
+
+  it("shows for a caster who knows a polymorph-family spell, not an unrelated one", () => {
+    const wizard = makeDoc({ classes: [{ tag: "wizard", level: 7 }] });
+    expect(polymorphPanelVisible(withSpells(wizard, ["fireball"]), refData)).toBe(false);
+    expect(polymorphPanelVisible(withSpells(wizard, ["beast-shape-ii"]), refData)).toBe(true);
+  });
+
+  it("finds a polymorph spell in a secondary class's spell list", () => {
+    const doc = makeDoc({ classes: [{ tag: "fighter", level: 3 }] });
+    const multi: CharacterDoc = {
+      ...doc,
+      build: {
+        ...doc.build,
+        spells: { known: [], byClass: { wizard: { known: ["beast-shape-ii"] } } },
+      },
+    };
+    expect(polymorphPanelVisible(multi, refData)).toBe(true);
+  });
+
+  it("the setting overrides detection in both directions", () => {
+    const fighter = makeDoc({ classes: [{ tag: "fighter", level: 12 }] });
+    expect(polymorphPanelVisible(setPolymorphEnabled(fighter, true), refData)).toBe(true);
+
+    const druid = makeDoc({ classes: [{ tag: "druid", level: 8 }] });
+    expect(polymorphPanelVisible(setPolymorphEnabled(druid, false), refData)).toBe(false);
+    expect(
+      polymorphPanelVisible(setPolymorphEnabled(setPolymorphEnabled(druid, false), null), refData),
+    ).toBe(true);
+  });
+
+  it("stays visible while transformed, even with the setting off", () => {
+    const doc = startActiveForm(makeDoc({ classes: [{ tag: "fighter", level: 5 }] }), {
+      tier: "beastShapeI",
+      creatureType: "animal",
+      size: "sm",
+      formName: "Wolf",
+    });
+    expect(polymorphPanelVisible(setPolymorphEnabled(doc, false), refData)).toBe(true);
   });
 });
