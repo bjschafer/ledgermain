@@ -14,6 +14,7 @@ import {
   validateDraft,
   type FeedbackDraft,
 } from "../model/feedback.js";
+import { clearFeedbackPrefill, useFeedbackPrefillSubscription } from "../state/feedbackPrefill.js";
 import { apiBaseUrl } from "../sync/config.js";
 
 type SubmitState =
@@ -30,6 +31,19 @@ type SubmitState =
  */
 export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc }) {
   const [open, setOpen] = useState(false);
+  const [initialDraft, setInitialDraft] = useState<FeedbackDraft>();
+  // A picker's "Report this gap" (SearchMiss, issue #88) asks this instance
+  // to open pre-filled — there's no other line from deep inside a picker
+  // dialog to the one FeedbackButton in the masthead. See state/feedbackPrefill.ts.
+  const pendingPrefill = useFeedbackPrefillSubscription();
+
+  useEffect(() => {
+    if (pendingPrefill) {
+      setInitialDraft(pendingPrefill);
+      setOpen(true);
+      clearFeedbackPrefill();
+    }
+  }, [pendingPrefill]);
 
   if (!feedbackEnabled()) return null;
 
@@ -38,12 +52,22 @@ export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc
       <button
         type="button"
         className="btn-ghost feedback-open"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setInitialDraft(undefined);
+          setOpen(true);
+        }}
         title="Send feedback"
       >
         Feedback
       </button>
-      {open && <FeedbackModal mode={mode} doc={doc} onClose={() => setOpen(false)} />}
+      {open && (
+        <FeedbackModal
+          mode={mode}
+          doc={doc}
+          initialDraft={initialDraft}
+          onClose={() => setOpen(false)}
+        />
+      )}
     </>
   );
 }
@@ -51,13 +75,15 @@ export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc
 function FeedbackModal({
   mode,
   doc,
+  initialDraft,
   onClose,
 }: {
   mode: string;
   doc?: CharacterDoc;
+  initialDraft?: FeedbackDraft;
   onClose: () => void;
 }) {
-  const [draft, setDraft] = useState<FeedbackDraft>(emptyDraft);
+  const [draft, setDraft] = useState<FeedbackDraft>(() => initialDraft ?? emptyDraft());
   const [state, setState] = useState<SubmitState>({ kind: "editing" });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const sitekey = turnstileSitekey()!;

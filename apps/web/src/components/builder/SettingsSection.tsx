@@ -8,6 +8,7 @@ import { useState, type ChangeEvent } from "react";
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
+import { COVERAGE_NOTES } from "../../model/coverageNotes.js";
 import { characterExportFilename, characterExportJson } from "../../model/exportCharacter.js";
 import {
   setClericWisdomHouserule,
@@ -32,6 +33,7 @@ import { HERO_POINT_CAP } from "../../model/heroPoints.js";
 import { importCharacterFile } from "../../model/importExternalFile.js";
 import { DEFAULT_XP_TRACK, type XpTrack } from "../../model/xp.js";
 import { showToast } from "../../state/toast.js";
+import { Explainer } from "../Explainer.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -624,6 +626,9 @@ export function SettingsSection({
         </div>
       </Panel>
 
+      {/* What's not covered (issue #88) */}
+      <CoverageNotesPanel />
+
       {/* About & legal */}
       <AboutAndLegalPanel dataVersion={refData.meta.dataVersion} />
 
@@ -692,6 +697,47 @@ function ImportReportPanel({ report }: { report: ImportReport }) {
  * requires attribution). The linked files are copied into `public/` by
  * `scripts/copy-refdata.ts`.
  */
+/**
+ * A short, honest, player-language rundown of content that's deliberately
+ * not covered yet (issue #88) — the Settings-tab counterpart to `SearchMiss`
+ * (which flags a gap right where a player hits one, mid-search). Collapsed
+ * by default via `Explainer`, matching the house convention that reference
+ * prose stays out of the way until asked for. Content lives in
+ * `model/coverageNotes.ts`, maintained by hand.
+ */
+function CoverageNotesPanel() {
+  return (
+    <Panel title="What's Not Covered" step="⚙">
+      <Explainer title="A few things aren't built in yet">
+        <p className="hint" style={{ marginBottom: 10 }}>
+          Ledgermain covers the core rulebooks well, with a lot of later material besides — but some
+          corners are still deliberately thin. If you hit one of these at the table, it's a known
+          gap, not a bug.
+        </p>
+        <ul className="cond-notes">
+          {COVERAGE_NOTES.map((n) => (
+            <li key={n.category}>
+              <b>{n.category}.</b> {n.note}
+            </li>
+          ))}
+        </ul>
+        <p className="hint" style={{ marginTop: 10 }}>
+          Missing something else, or think one of these should move up the list? Use the Feedback
+          button above, or see the project's{" "}
+          <a
+            href="https://github.com/bjschafer/ledgermain"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            GitHub
+          </a>{" "}
+          for details.
+        </p>
+      </Explainer>
+    </Panel>
+  );
+}
+
 function AboutAndLegalPanel({ dataVersion }: { dataVersion: string }) {
   return (
     <Panel title="About & Legal" step="ℹ">

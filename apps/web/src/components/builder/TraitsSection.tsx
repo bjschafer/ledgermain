@@ -17,6 +17,7 @@ import { HomebrewBadge } from "../HomebrewBadge.js";
 import { InfoTip } from "../InfoTip.js";
 import { HomebrewTraitEditor } from "./HomebrewTraitEditor.js";
 import { Panel } from "./Panel.js";
+import { SearchMiss } from "./SearchMiss.js";
 import type { BuilderProps } from "./types.js";
 
 /**
@@ -149,7 +150,13 @@ export function TraitsSection(props: BuilderProps) {
             </div>
           );
         })}
-        {traits.length === 0 ? <div className="empty">No traits match.</div> : null}
+        {traits.length === 0 ? (
+          query.trim() ? (
+            <SearchMiss query={query.trim()} picker="traits" />
+          ) : (
+            <div className="empty">No traits match.</div>
+          )
+        ) : null}
       </div>
       {chosenTraits.length > 0 ? (
         <ul className="cond-notes">

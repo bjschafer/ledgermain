@@ -38,6 +38,7 @@ import { changeTargetLabel } from "../../model/names.js";
 import { InfoTip, TipButton } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
+import { SearchMiss } from "./SearchMiss.js";
 import type { BuilderProps } from "./types.js";
 
 /** Render a concise human-readable summary of a Change (e.g. "+2 deflection to AC"). */
@@ -936,7 +937,11 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
             </div>
             <div className="scroll">
               {filteredItems.length === 0 ? (
-                <div className="empty">No items match.</div>
+                itemQuery.trim() ? (
+                  <SearchMiss query={itemQuery.trim()} picker="gear" />
+                ) : (
+                  <div className="empty">No items match.</div>
+                )
               ) : (
                 filteredItems.map((item) => {
                   const meta = itemMeta(item);

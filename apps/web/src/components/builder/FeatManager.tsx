@@ -4,6 +4,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { Dialog } from "../Dialog.js";
 import { FeatEntry, type FeatRenderContext } from "./FeatEntry.js";
+import { SearchMiss } from "./SearchMiss.js";
 
 const FEAT_CATEGORIES = ["Combat", "General", "Metamagic", "Item Creation", "Teamwork"] as const;
 type FeatCategory = (typeof FEAT_CATEGORIES)[number];
@@ -117,7 +118,11 @@ export function FeatManager({
             </div>
             <div className="spell-pane-body">
               {matches.length === 0 ? (
-                <div className="empty">No feats match.</div>
+                query.trim() ? (
+                  <SearchMiss query={query.trim()} picker="feats" />
+                ) : (
+                  <div className="empty">No feats match.</div>
+                )
               ) : (
                 matches
                   .slice(0, 200)
