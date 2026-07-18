@@ -216,6 +216,45 @@ describe("wizard spell list (inverted learnedAt.class)", () => {
   });
 });
 
+describe("spell casting time (activation, issue #85)", () => {
+  it("Magic Missile is a standard action", () => {
+    expect(byName(ref.spells, "Magic Missile").actions[0]?.activation).toEqual({
+      type: "standard",
+      cost: undefined,
+    });
+  });
+
+  it("Feather Fall is an immediate action", () => {
+    expect(byName(ref.spells, "Feather Fall").actions[0]?.activation).toEqual({
+      type: "immediate",
+      cost: undefined,
+    });
+  });
+
+  it("Summon Monster I takes 1 round (cost undefined -> 1)", () => {
+    expect(byName(ref.spells, "Summon Monster I").actions[0]?.activation).toEqual({
+      type: "round",
+      cost: undefined,
+    });
+  });
+
+  it("Alpha Instinct carries an explicit cost multiplier (10 minutes)", () => {
+    expect(byName(ref.spells, "Alpha Instinct").actions[0]?.activation).toEqual({
+      type: "minute",
+      cost: 10,
+    });
+  });
+
+  it("every spell has activation data on at least one action", () => {
+    for (const spell of Object.values(ref.spells)) {
+      expect(
+        spell.actions.some((a) => a.activation?.type),
+        spell.name,
+      ).toBe(true);
+    }
+  });
+});
+
 describe("multi-projectile count supplement (hand-authored @cl formulas)", () => {
   it("attaches projectileCount to the multi-projectile spells", () => {
     // The `damage.parts` formula stays the flat per-hit dice; the count rides

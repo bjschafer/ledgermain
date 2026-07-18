@@ -3,6 +3,7 @@ import type { Spell } from "@pf1/schema";
 import type { ResolvedMetamagic } from "../model/metamagic.js";
 import { concentrationDC, spellSaveDC } from "../model/spellcasting.js";
 import {
+  formatCastingTime,
   formatSpellArea,
   formatSpellComponents,
   formatSpellDuration,
@@ -42,7 +43,8 @@ function damageLabel(part: { text: string; types: string[]; count?: number }): s
  * cleric's read-only class-list browser).
  *
  * Renders in two parts: an always-visible compact **stat strip** with the
- * at-the-table facts a caster reaches for mid-turn (range · save DC · damage),
+ * at-the-table facts a caster reaches for mid-turn (casting time · range ·
+ * save DC · damage),
  * and a collapsible **details** disclosure with the full breakdown (area,
  * duration, components, SR, concentration) plus the HTML description.
  *
@@ -78,18 +80,20 @@ export function SpellDetail({
   const concDC = concentrationDC(spellLevel);
   const showSlot = slotLevel !== undefined && slotLevel !== spellLevel;
 
+  const castingTime = formatCastingTime(spell);
   const range = formatSpellRange(spell, casterLevel);
   const area = formatSpellArea(spell);
   const duration = formatSpellDuration(spell, casterLevel);
   const components = formatSpellComponents(spell);
   const damage = spellDamageParts(spell, casterLevel);
 
-  const hasStrip = range !== null || dc !== null || damage.length > 0;
+  const hasStrip = castingTime !== null || range !== null || dc !== null || damage.length > 0;
 
   return (
     <>
       {hasStrip && (
         <div className="spell-strip">
+          {castingTime && <span className="spell-chip">{castingTime}</span>}
           {range && <span className="spell-chip">{range}</span>}
           {dc !== null && (
             <span className="spell-chip is-save" title={save!.description}>
@@ -107,6 +111,12 @@ export function SpellDetail({
       <details className="spell-detail">
         <summary className="spell-detail-summary">details</summary>
         <div className="spell-detail-body">
+          {castingTime && (
+            <div className="spell-detail-row">
+              <span className="spell-detail-label">Casting Time</span>
+              <span className="spell-detail-value">{castingTime}</span>
+            </div>
+          )}
           {range && (
             <div className="spell-detail-row">
               <span className="spell-detail-label">Range</span>

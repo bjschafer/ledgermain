@@ -32,6 +32,7 @@ function transformActions(value: unknown): SpellAction[] {
     const range = a.range as Record<string, unknown> | undefined;
     const duration = a.duration as Record<string, unknown> | undefined;
     const damage = a.damage as Record<string, unknown> | undefined;
+    const activation = a.activation as Record<string, unknown> | undefined;
     const parts = Array.isArray(damage?.parts)
       ? (damage!.parts as Record<string, unknown>[]).map((p) => ({
           formula: String(p.formula ?? ""),
@@ -63,6 +64,13 @@ function transformActions(value: unknown): SpellAction[] {
           }
         : undefined,
       damage: parts.length > 0 ? { parts } : undefined,
+      activation:
+        typeof activation?.type === "string" || asNumber(activation?.cost) !== undefined
+          ? {
+              type: typeof activation?.type === "string" ? activation.type : undefined,
+              cost: asNumber(activation?.cost),
+            }
+          : undefined,
     });
   }
   return out;

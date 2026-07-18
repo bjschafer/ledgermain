@@ -156,6 +156,51 @@ export function formatSpellDuration(spell: Spell, cl: number): string | null {
   return `${n} ${n === 1 ? labels[0] : labels[1]}`;
 }
 
+/** Fixed-cost action types — `cost` never multiplies these (SRD wording). */
+const ACTIVATION_LABEL: Record<string, string> = {
+  standard: "Standard action",
+  move: "Move action",
+  swift: "Swift action",
+  immediate: "Immediate action",
+  free: "Free action",
+  attack: "Attack action",
+  nonaction: "Not an action",
+  special: "Special",
+};
+
+/**
+ * Multi-round/long casting times, where `cost` (default 1) counts units, e.g.
+ * SRD "Casting Time 3 full rounds" (Regenerate) or "10 minutes" (many rituals).
+ * Distinct from {@link DURATION_UNIT} — that map's `day`/`week`/`month` never
+ * apply to a cast time, and "full" (full-round action) isn't a duration unit
+ * at all, so the two shapes only coincidentally overlap on round/minute/hour.
+ */
+const ACTIVATION_UNIT: Record<string, [singular: string, plural: string]> = {
+  round: ["round", "rounds"],
+  minute: ["minute", "minutes"],
+  hour: ["hour", "hours"],
+  full: ["full round", "full rounds"],
+};
+
+/**
+ * Human casting time for the spell's primary action, e.g. `"Standard action"`,
+ * `"3 full rounds"`, `"10 minutes"`. `null` when the data carries no
+ * activation (shouldn't happen for a vendored spell, but every action here
+ * tolerates missing fields).
+ */
+export function formatCastingTime(spell: Spell): string | null {
+  const activation = firstActionWith(spell, (a) => a.activation);
+  if (!activation?.type) return null;
+  const { type, cost } = activation;
+
+  const labels = ACTIVATION_UNIT[type];
+  if (labels) {
+    const n = cost ?? 1;
+    return `${n} ${n === 1 ? labels[0] : labels[1]}`;
+  }
+  return ACTIVATION_LABEL[type] ?? type;
+}
+
 /** Component shorthand, e.g. `"V, S, M"`. `null` when the spell lists none. */
 export function formatSpellComponents(spell: Spell): string | null {
   const c = spell.components;
