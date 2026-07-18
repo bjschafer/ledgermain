@@ -2651,18 +2651,34 @@ button:focus-visible,
   padding: 4px;
 }
 
-/* "Also apply to Familiar/Companion" checkboxes on an active-buff row —
-   previously an unstyled <label>, so the checkbox and text sat with default
-   inline spacing instead of reading as one compact toggle. */
-.buff-share-familiar,
-.buff-share-companion {
+/* The "apply to Self / Familiar / Companion / …" toggles on an active-buff
+   row, grouped so they read as one cluster of targets set off from the
+   duration controls to their left (the divider) rather than crowding the
+   unit <select>. */
+.buff-share-group {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 10px;
+  flex-shrink: 0;
+  padding-left: 12px;
+  border-left: 1px solid var(--line-soft);
+}
+
+/* Each target toggle: a native checkbox + its label reading as one compact
+   control. `margin: 0` on the box drops the default UA margin that otherwise
+   made the spacing between toggles look uneven. */
+.buff-share-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: 11px;
   color: var(--muted);
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.buff-share-toggle input[type="checkbox"] {
+  margin: 0;
 }
 
 /* Compact unit selector used next to duration NumberFields (buff rows + custom-buff form).
@@ -4550,8 +4566,7 @@ input[type="text"].saved-roll-name:focus {
   .hp-nl,
   .hp-stable-toggle,
   .familiar-in-reach,
-  .buff-share-familiar,
-  .buff-share-companion {
+  .buff-share-toggle {
     min-height: var(--tap-min);
   }
 

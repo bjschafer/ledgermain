@@ -142,6 +142,30 @@ describe("deriveFamiliar (Mortlach the cat, hand-computed fixture)", () => {
     expect(buffedFamiliar!.ac.flatFooted).toBe(18);
   });
 
+  it("excludeMaster Mage Armor lands on the familiar but NOT the master (Share Spells)", () => {
+    const withBuff: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "mage-armor-1",
+            name: "Mage Armor",
+            changes: [{ target: "aac", type: "untyped", formula: "4" }],
+            excludeMaster: true,
+          },
+        ],
+        familiar: { sharedBuffIds: ["mage-armor-1"] },
+      },
+    };
+    // Master's own sheet ignores the excluded buff (unarmored wizard stays AC 10)...
+    const masterSheet = compute(withBuff, ref);
+    expect(masterSheet.ac.normal).toBe(10);
+    // ...while the familiar still gets the shared +4 armor.
+    const buffedFamiliar = deriveFamiliar(withBuff, master, rollData);
+    expect(buffedFamiliar!.ac.normal).toBe(20);
+  });
+
   it("issue #44: shared Bless (+1 morale attack) raises bite/claw attack, not damage", () => {
     const withBuff: CharacterDoc = {
       ...doc,

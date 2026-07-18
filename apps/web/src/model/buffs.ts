@@ -126,6 +126,30 @@ export function toggleTableBuff(doc: CharacterDoc, option: ToggleBuffOption): Ch
   });
 }
 
+/** Whether an active buff currently applies to the master's own sheet (the default). */
+export function isBuffOnMaster(doc: CharacterDoc, instanceId: string): boolean {
+  const buff = doc.live.activeBuffs.find((b) => b.instanceId === instanceId);
+  return buff ? !buff.excludeMaster : false;
+}
+
+/**
+ * Toggle whether an active buff applies to the master. Flipping it off (RAW
+ * Share Spells: cast the personal spell on a companion *instead of* yourself)
+ * leaves the buff in `activeBuffs` — it keeps ticking and stays shareable —
+ * but the engine skips it for the master's derived sheet.
+ */
+export function toggleBuffMaster(doc: CharacterDoc, instanceId: string): CharacterDoc {
+  return {
+    ...doc,
+    live: {
+      ...doc.live,
+      activeBuffs: doc.live.activeBuffs.map((b) =>
+        b.instanceId === instanceId ? { ...b, excludeMaster: !b.excludeMaster } : b,
+      ),
+    },
+  };
+}
+
 /** Set (or clear, with `undefined`) the remaining rounds of an active buff. */
 export function setBuffRounds(
   doc: CharacterDoc,

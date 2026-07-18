@@ -10,11 +10,13 @@ import {
   addBuff,
   advanceRound,
   hasNoModeledEffect,
+  isBuffOnMaster,
   makeActiveBuff,
   makeCustomBuff,
   removeBuff,
   setBuffRounds,
   suggestRounds,
+  toggleBuffMaster,
   type DurationUnit,
   roundsToDisplay,
   toRounds,
@@ -99,6 +101,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
               buff={b}
               rollData={rollData}
               update={update}
+              onMaster={isBuffOnMaster(doc, b.instanceId)}
               hasFamiliar={!!doc.build.familiar}
               sharedWithFamiliar={isSharedWithFamiliar(doc, b.instanceId)}
               hasCompanion={!!doc.build.animalCompanion}
@@ -241,6 +244,7 @@ function BuffRow({
   buff,
   rollData,
   update,
+  onMaster = true,
   hasFamiliar = false,
   sharedWithFamiliar = false,
   hasCompanion = false,
@@ -253,6 +257,8 @@ function BuffRow({
   buff: ActiveBuff;
   rollData: RollData;
   update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
+  /** Whether this buff applies to the master's own sheet (false = shared onto companions only). */
+  onMaster?: boolean;
   /** Whether the character has a tracked familiar (`build.familiar`) — hides the share toggle when false. */
   hasFamiliar?: boolean;
   /** Whether this buff instance is currently shared onto the familiar's derived sheet. */
@@ -325,57 +331,75 @@ function BuffRow({
           <option value="hr">hr</option>
         </select>
       </label>
-      {hasFamiliar ? (
-        <label
-          className="buff-share-familiar"
-          title="Also apply this buff's changes to the familiar"
-        >
-          <input
-            type="checkbox"
-            checked={sharedWithFamiliar}
-            onChange={() => update((d) => toggleSharedBuff(d, buff.instanceId))}
-          />
-          <span>Familiar</span>
-        </label>
-      ) : null}
-      {hasCompanion ? (
-        <label
-          className="buff-share-companion"
-          title="Also apply this buff's changes to the companion (Share Spells)"
-        >
-          <input
-            type="checkbox"
-            checked={sharedWithCompanion}
-            onChange={() => update((d) => toggleSharedBuffCompanion(d, buff.instanceId))}
-          />
-          <span>Companion</span>
-        </label>
-      ) : null}
-      {hasPhantom ? (
-        <label
-          className="buff-share-companion"
-          title="Also apply this buff's changes to the phantom"
-        >
-          <input
-            type="checkbox"
-            checked={sharedWithPhantom}
-            onChange={() => update((d) => toggleSharedBuffPhantom(d, buff.instanceId))}
-          />
-          <span>Phantom</span>
-        </label>
-      ) : null}
-      {hasEidolon ? (
-        <label
-          className="buff-share-companion"
-          title="Also apply this buff's changes to the eidolon (Share Spells)"
-        >
-          <input
-            type="checkbox"
-            checked={sharedWithEidolon}
-            onChange={() => update((d) => toggleSharedBuffEidolon(d, buff.instanceId))}
-          />
-          <span>Eidolon</span>
-        </label>
+      {hasFamiliar || hasCompanion || hasPhantom || hasEidolon ? (
+        <div className="buff-share-group">
+          {/* "Self" is only meaningful alongside a shareable creature: it lets
+              a Share Spells personal spell land on the companion *instead of*
+              the caster (RAW you pick one target per casting). */}
+          <label
+            className="buff-share-toggle buff-share-self"
+            title="Apply this buff to yourself (uncheck to put it only on a companion)"
+          >
+            <input
+              type="checkbox"
+              checked={onMaster}
+              onChange={() => update((d) => toggleBuffMaster(d, buff.instanceId))}
+            />
+            <span>Self</span>
+          </label>
+          {hasFamiliar ? (
+            <label
+              className="buff-share-toggle"
+              title="Also apply this buff's changes to the familiar"
+            >
+              <input
+                type="checkbox"
+                checked={sharedWithFamiliar}
+                onChange={() => update((d) => toggleSharedBuff(d, buff.instanceId))}
+              />
+              <span>Familiar</span>
+            </label>
+          ) : null}
+          {hasCompanion ? (
+            <label
+              className="buff-share-toggle"
+              title="Also apply this buff's changes to the companion (Share Spells)"
+            >
+              <input
+                type="checkbox"
+                checked={sharedWithCompanion}
+                onChange={() => update((d) => toggleSharedBuffCompanion(d, buff.instanceId))}
+              />
+              <span>Companion</span>
+            </label>
+          ) : null}
+          {hasPhantom ? (
+            <label
+              className="buff-share-toggle"
+              title="Also apply this buff's changes to the phantom"
+            >
+              <input
+                type="checkbox"
+                checked={sharedWithPhantom}
+                onChange={() => update((d) => toggleSharedBuffPhantom(d, buff.instanceId))}
+              />
+              <span>Phantom</span>
+            </label>
+          ) : null}
+          {hasEidolon ? (
+            <label
+              className="buff-share-toggle"
+              title="Also apply this buff's changes to the eidolon (Share Spells)"
+            >
+              <input
+                type="checkbox"
+                checked={sharedWithEidolon}
+                onChange={() => update((d) => toggleSharedBuffEidolon(d, buff.instanceId))}
+              />
+              <span>Eidolon</span>
+            </label>
+          ) : null}
+        </div>
       ) : null}
       <button
         type="button"

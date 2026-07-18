@@ -2097,6 +2097,16 @@ export interface ActiveBuff {
    * (stays until manually removed; e.g. a worn-item or stance buff).
    */
   remainingRounds?: number;
+  /**
+   * When true, this buff is NOT applied to the master's own derived sheet —
+   * only to whichever companion creatures it's shared with (`FamiliarLive
+   * State.sharedBuffIds` et al.). Models the RAW Share Spells choice of
+   * casting a personal spell (e.g. Mage Armor) on the familiar *instead of*
+   * yourself: the buff still lives in `activeBuffs` (so it ticks duration and
+   * can be shared), but `collect.ts` skips it for the master. Absent/false →
+   * the default, applies to the master as usual.
+   */
+  excludeMaster?: boolean;
 }
 
 /**

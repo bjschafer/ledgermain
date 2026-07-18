@@ -6,8 +6,10 @@ import { loadRefData } from "@pf1/data-pipeline";
 import {
   formatDuration,
   hasNoModeledEffect,
+  isBuffOnMaster,
   roundsToDisplay,
   suggestRounds,
+  toggleBuffMaster,
   toggleLinkedBuff,
   toggleTableBuff,
   toRounds,
@@ -332,5 +334,41 @@ describe("toggleTableBuff", () => {
     const withDestruction = toggleTableBuff(makeDoc(), destruction);
     const withBoth = toggleTableBuff(withDestruction, justice);
     expect(withBoth.live.activeBuffs).toHaveLength(2);
+  });
+});
+
+describe("toggleBuffMaster / isBuffOnMaster (Share Spells: cast on companion instead of self)", () => {
+  const mageArmor = {
+    instanceId: "mage-armor-1",
+    name: "Mage Armor",
+    changes: [{ target: "aac", type: "untyped", formula: "4" }],
+  };
+
+  it("a fresh buff applies to the master by default", () => {
+    expect(isBuffOnMaster(makeDoc([mageArmor]), "mage-armor-1")).toBe(true);
+  });
+
+  it("toggling off flags excludeMaster without removing the buff", () => {
+    const doc = toggleBuffMaster(makeDoc([mageArmor]), "mage-armor-1");
+    expect(doc.live.activeBuffs).toHaveLength(1);
+    expect(doc.live.activeBuffs[0]!.excludeMaster).toBe(true);
+    expect(isBuffOnMaster(doc, "mage-armor-1")).toBe(false);
+  });
+
+  it("toggling twice is a round trip back to applying to the master", () => {
+    const off = toggleBuffMaster(makeDoc([mageArmor]), "mage-armor-1");
+    const on = toggleBuffMaster(off, "mage-armor-1");
+    expect(on.live.activeBuffs[0]!.excludeMaster).toBe(false);
+    expect(isBuffOnMaster(on, "mage-armor-1")).toBe(true);
+  });
+
+  it("leaves other buffs untouched", () => {
+    const other = { instanceId: "bless-1", name: "Bless", changes: [] };
+    const doc = toggleBuffMaster(makeDoc([mageArmor, other]), "mage-armor-1");
+    expect(isBuffOnMaster(doc, "bless-1")).toBe(true);
+  });
+
+  it("isBuffOnMaster returns false for an unknown instance id", () => {
+    expect(isBuffOnMaster(makeDoc([mageArmor]), "nope")).toBe(false);
   });
 });

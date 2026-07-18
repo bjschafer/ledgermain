@@ -143,7 +143,12 @@ export function collectModifiers(
   // the mechanism. Vendored-data loops (race, items, class features, buffs,
   // conditions) deliberately skip the check: the data pipeline never emits
   // the field, so it cannot occur there.
-  const gateOpen = (ch: Change): boolean => buffGateSatisfied(ch, doc.live.activeBuffs ?? []);
+  // Buffs the master actually carries: a buff flagged `excludeMaster` (a
+  // Share Spells personal spell cast on a companion *instead of* the caster)
+  // applies only to its shared creatures, so the master neither collects its
+  // modifiers nor gates its own changes on it.
+  const masterBuffs = (doc.live.activeBuffs ?? []).filter((b) => !b.excludeMaster);
+  const gateOpen = (ch: Change): boolean => buffGateSatisfied(ch, masterBuffs);
 
   // --- race ---------------------------------------------------------------
   const race = refData.races[doc.identity.race];
@@ -308,7 +313,7 @@ export function collectModifiers(
   }
 
   // --- active buffs (live state) ------------------------------------------
-  for (const buff of doc.live.activeBuffs ?? []) {
+  for (const buff of masterBuffs) {
     const buffRollData = withBuffCasterLevel(buff, rollData);
     for (const ch of buff.changes) {
       evalChange(
