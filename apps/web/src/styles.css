@@ -1813,12 +1813,28 @@ button:focus-visible,
 }
 
 .stat-group-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold-dim-ink);
+  /* Neutral ink, not gold: the dim-gold heading blended into the saturated
+     gold seal numerals beside it. A separate hue reads as a heading; the gold
+     tick below keeps the accent intentional. */
+  color: var(--ink);
   white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.stat-group-legend::before {
+  content: "";
+  width: 3px;
+  height: 13px;
+  border-radius: 2px;
+  background: var(--gold);
   flex-shrink: 0;
 }
 
