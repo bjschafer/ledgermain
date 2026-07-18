@@ -8,7 +8,7 @@ import { describe, expect, it } from "bun:test";
 
 import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
-import type { CharacterDoc, Feat, Race } from "@pf1/schema";
+import type { CharacterDoc, Feat, Race, TraitDef } from "@pf1/schema";
 
 import { createEmptyDoc, setFlexibleAbility, setRace } from "../src/model/doc.js";
 import {
@@ -16,10 +16,13 @@ import {
   isHomebrewId,
   removeHomebrewFeat,
   removeHomebrewRace,
+  removeHomebrewTrait,
   resolveRefData,
   upsertHomebrewFeat,
   upsertHomebrewRace,
+  upsertHomebrewTrait,
 } from "../src/model/homebrew.js";
+import { hasTrait, toggleTrait } from "../src/model/traits.js";
 
 const ref = loadRefData();
 
@@ -57,6 +60,17 @@ function makeFeat(over: Partial<Feat> = {}): Feat {
     uuid: "hb-feat-fixture",
     tags: [],
     prerequisites: { abilities: [], feats: [], skills: [] },
+    ...over,
+  };
+}
+
+function makeTrait(over: Partial<TraitDef> = {}): TraitDef {
+  return {
+    id: "hb-trait-fixture",
+    name: "Homebrew Grit (Trait)",
+    category: "Combat",
+    summary: "+1 trait bonus on Fortitude saves.",
+    changes: [{ formula: "1", target: "fort", type: "trait" }],
     ...over,
   };
 }
@@ -253,6 +267,64 @@ describe("upsertHomebrewFeat() / removeHomebrewFeat()", () => {
   });
 });
 
+describe("upsertHomebrewTrait() / removeHomebrewTrait()", () => {
+  it("upsert adds the trait under build.homebrew.traits", () => {
+    const id = homebrewId();
+    const trait = makeTrait();
+    const doc = upsertHomebrewTrait(createEmptyDoc("t"), id, trait);
+    expect(doc.build.homebrew?.traits?.[id]).toEqual(trait);
+  });
+
+  it("upsert overwrites an existing entry under the same id", () => {
+    const id = homebrewId();
+    let doc = upsertHomebrewTrait(createEmptyDoc("t"), id, makeTrait({ name: "First" }));
+    doc = upsertHomebrewTrait(doc, id, makeTrait({ name: "Second" }));
+    expect(doc.build.homebrew?.traits?.[id]?.name).toBe("Second");
+  });
+
+  it("remove drops the entry and prunes homebrew back to undefined when empty", () => {
+    const id = homebrewId();
+    let doc = upsertHomebrewTrait(createEmptyDoc("t"), id, makeTrait());
+    doc = removeHomebrewTrait(doc, id);
+    expect(doc.build.homebrew).toBeUndefined();
+  });
+
+  it("remove leaves sibling homebrew races/feats intact", () => {
+    const traitIdKey = homebrewId();
+    const raceIdKey = homebrewId();
+    let doc = createEmptyDoc("t");
+    doc = upsertHomebrewTrait(doc, traitIdKey, makeTrait());
+    doc = upsertHomebrewRace(doc, raceIdKey, makeRace());
+    doc = removeHomebrewTrait(doc, traitIdKey);
+    expect(doc.build.homebrew?.traits).toBeUndefined();
+    expect(doc.build.homebrew?.races?.[raceIdKey]).toBeDefined();
+  });
+
+  it("remove of an unknown id is a no-op", () => {
+    const doc = createEmptyDoc("t");
+    expect(removeHomebrewTrait(doc, "hb-nope")).toBe(doc);
+  });
+
+  it("removing a selected homebrew trait deselects it from build.traits", () => {
+    const id = homebrewId();
+    let doc = upsertHomebrewTrait(createEmptyDoc("t"), id, makeTrait());
+    doc = toggleTrait(doc, id);
+    expect(hasTrait(doc, id)).toBe(true);
+
+    const removed = removeHomebrewTrait(doc, id);
+    expect(hasTrait(removed, id)).toBe(false);
+    expect(removed.build.homebrew?.traits).toBeUndefined();
+  });
+
+  it("removing a homebrew trait that is NOT selected leaves build.traits untouched", () => {
+    const id = homebrewId();
+    let doc = upsertHomebrewTrait(createEmptyDoc("t"), id, makeTrait());
+    doc = toggleTrait(doc, "reactionary");
+    const removed = removeHomebrewTrait(doc, id);
+    expect(removed.build.traits).toEqual(doc.build.traits);
+  });
+});
+
 describe("integration: a homebrew race drives compute()", () => {
   it("produces the race's size, speed, and ability changes in the DerivedSheet", () => {
     const id = homebrewId();
@@ -286,5 +358,17 @@ describe("integration: a homebrew race drives compute()", () => {
     const overlaid = resolveRefData(doc, ref);
     expect(overlaid).toBe(ref);
     expect(() => compute(doc, overlaid)).not.toThrow();
+  });
+});
+
+describe("integration: a homebrew trait drives compute()", () => {
+  it("applies the trait's own changes without any RefData overlay (traits aren't RefData)", () => {
+    const id = homebrewId();
+    let doc = upsertHomebrewTrait(createEmptyDoc("t"), id, makeTrait());
+    doc = toggleTrait(doc, id);
+
+    const baseline = compute(createEmptyDoc("t"), ref);
+    const sheet = compute(doc, ref);
+    expect(sheet.saves.fort.total).toBe(baseline.saves.fort.total + 1);
   });
 });

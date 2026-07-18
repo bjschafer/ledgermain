@@ -1,19 +1,23 @@
 import { useMemo, useState } from "react";
 
-import { TRAITS, TRAIT_IDS, unappliedChanges, type TraitCategory } from "@pf1/engine";
+import { unappliedChanges } from "@pf1/engine";
+import type { TraitCategory } from "@pf1/schema";
 
 import { changeTargetLabel } from "../../model/names.js";
 import {
+  allTraitIds,
   chosenTraitCount,
   EXPECTED_TRAIT_COUNT,
+  resolveTrait,
+  TRAIT_CATEGORIES,
   toggleTrait,
   traitsNeedWarning,
 } from "../../model/traits.js";
+import { HomebrewBadge } from "../HomebrewBadge.js";
 import { InfoTip } from "../InfoTip.js";
+import { HomebrewTraitEditor } from "./HomebrewTraitEditor.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
-
-const TRAIT_CATEGORIES: TraitCategory[] = ["Combat", "Faith", "Magic", "Social"];
 
 /**
  * Character traits (issue #23): two picked at creation, from (conventionally)
@@ -21,15 +25,22 @@ const TRAIT_CATEGORIES: TraitCategory[] = ["Combat", "Faith", "Magic", "Social"]
  * filter + a chosen list with remove — but simpler, since traits have no
  * prereqs or in-line choices. Never blocks past two; the count badge just
  * turns to a soft warning color (see `traitsNeedWarning`).
+ *
+ * Homebrew traits (issue #87) resolve through `allTraitIds`/`resolveTrait`
+ * (`model/traits.ts`) so they appear in the same picker as vendored ones,
+ * badged with `HomebrewBadge`, and count against the same slot budget —
+ * `chosenTraitCount`/`traitsNeedWarning` are id-source-agnostic already.
  */
-export function TraitsSection({ doc, update }: BuilderProps) {
+export function TraitsSection(props: BuilderProps) {
+  const { doc, update } = props;
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<TraitCategory | "All">("All");
   const selected = useMemo(() => new Set(doc.build.traits ?? []), [doc.build.traits]);
 
   const traits = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return TRAIT_IDS.map((id) => TRAITS[id]!)
+    return allTraitIds(doc)
+      .map((id) => resolveTrait(doc, id)!)
       .filter((tr) => {
         if (q && !tr.name.toLowerCase().includes(q)) return false;
         if (category !== "All" && tr.category !== category) return false;
@@ -40,7 +51,7 @@ export function TraitsSection({ doc, update }: BuilderProps) {
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.name.localeCompare(b.name);
       });
-  }, [query, category, selected]);
+  }, [doc, query, category, selected]);
 
   const chosen = chosenTraitCount(doc);
   const warn = traitsNeedWarning(doc);
@@ -50,8 +61,11 @@ export function TraitsSection({ doc, update }: BuilderProps) {
   // active-condition notes list, so a trait's situational scope/class-skill
   // grant/HD cap is never silently lost once picked.
   const chosenTraits = useMemo(
-    () => [...selected].map((id) => TRAITS[id]).filter((tr): tr is NonNullable<typeof tr> => !!tr),
-    [selected],
+    () =>
+      [...selected]
+        .map((id) => resolveTrait(doc, id))
+        .filter((tr): tr is NonNullable<typeof tr> => !!tr),
+    [doc, selected],
   );
 
   return (
@@ -108,7 +122,7 @@ export function TraitsSection({ doc, update }: BuilderProps) {
             <div key={tr.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
               <div className="pmain">
                 <div className="pname">
-                  {tr.name}
+                  {tr.name} <HomebrewBadge id={tr.id} />
                   <span className="tag-bloodline" title={`${tr.category} trait`}>
                     {tr.category}
                   </span>
@@ -151,6 +165,7 @@ export function TraitsSection({ doc, update }: BuilderProps) {
           ))}
         </ul>
       ) : null}
+      <HomebrewTraitEditor {...props} />
     </Panel>
   );
 }

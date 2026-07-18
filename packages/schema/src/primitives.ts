@@ -135,6 +135,34 @@ export interface ContextNote {
   text: string;
 }
 
+/**
+ * A PF1 character-trait category (Advanced Player's Guide / Ultimate
+ * Campaign). Lives here (rather than beside the engine's hand-authored
+ * `TRAITS` table) so `CharacterDoc.build.homebrew.traits` — a schema-level
+ * field — can reference the same shape a homebrew trait must conform to.
+ */
+export type TraitCategory = "Combat" | "Faith" | "Magic" | "Social";
+
+/**
+ * Shape shared by every entry in the engine's hand-authored `TRAITS` table
+ * (`@pf1/engine` `traits.ts`, which re-exports this type) and by
+ * user-authored entries in `CharacterDoc.build.homebrew.traits` — both flow
+ * through the same lookup in `collect.ts`, so one definition covers both.
+ */
+export interface TraitDef {
+  id: string;
+  name: string;
+  category: TraitCategory;
+  /** Short rules summary shown in the UI. */
+  summary: string;
+  /** Typed modifiers granted by the trait (empty when purely situational/prose). */
+  changes: Change[];
+  /** Non-mechanical reminders (situational scope, class-skill grants, etc.). */
+  contextNotes?: ContextNote[];
+  /** True when the trait has no flat modifier the static sheet applies. */
+  displayOnly?: boolean;
+}
+
 /** Base fields shared by every reference-data entity. */
 export interface RefEntity {
   /** Foundry document id (the `_id` field / filename suffix). */

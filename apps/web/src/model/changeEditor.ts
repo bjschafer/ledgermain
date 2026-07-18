@@ -55,6 +55,7 @@ export const CHANGE_TYPES: readonly string[] = [
   "resistance",
   "circumstance",
   "racial",
+  "trait",
   "natural armor",
   "size",
 ];

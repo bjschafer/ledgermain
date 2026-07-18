@@ -38,23 +38,12 @@
  *     "not auto-applied" badge machinery) plus a clarifying `contextNotes`.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { Change, TraitCategory, TraitDef } from "@pf1/schema";
 
-export type TraitCategory = "Combat" | "Faith" | "Magic" | "Social";
-
-export interface TraitDef {
-  id: string;
-  name: string;
-  category: TraitCategory;
-  /** Short rules summary shown in the UI. */
-  summary: string;
-  /** Typed modifiers granted by the trait (empty when purely situational/prose). */
-  changes: Change[];
-  /** Non-mechanical reminders (situational scope, class-skill grants, etc.). */
-  contextNotes?: ContextNote[];
-  /** True when the trait has no flat modifier the static sheet applies. */
-  displayOnly?: boolean;
-}
+// TraitCategory/TraitDef live in @pf1/schema (not here) so a homebrew trait
+// stored in `CharacterDoc.build.homebrew.traits` can share the exact same
+// shape as this table's entries — see that type's doc comment.
+export type { TraitCategory, TraitDef };
 
 const t = (formula: string, target: string): Change => ({
   formula,
