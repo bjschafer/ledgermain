@@ -1,14 +1,19 @@
 /**
- * Homebrew races/feats (v1): user-authored entries stored inside the doc
- * (`CharacterDoc.build.homebrew`, see its doc comment for why) and overlaid
- * onto vendored `RefData` at compute time. Every homebrew entity is keyed by
- * a `hb-`-prefixed id (see {@link homebrewId}) so it can never collide with a
- * vendored RefData id — the overlay is then just a shallow spread.
+ * Homebrew races/feats/traits: user-authored entries stored inside the doc
+ * (`CharacterDoc.build.homebrew`, see its doc comment for why). Every
+ * homebrew entity is keyed by a `hb-`-prefixed id (see {@link homebrewId}) so
+ * it can never collide with a vendored id. Races/feats are overlaid onto
+ * vendored `RefData` at compute time by {@link resolveRefData} below; traits
+ * aren't RefData (the engine's `TRAITS` table is hand-authored, not
+ * vendored), so they have no RefData overlay — a homebrew trait definition
+ * is instead read straight from `doc.build.homebrew.traits` wherever `TRAITS`
+ * is consulted (`@pf1/engine` `collect.ts`, this app's `model/traits.ts`).
  */
-import type { CharacterDoc, Feat, Race, RefData } from "@pf1/schema";
+import type { CharacterDoc, Feat, Race, RefData, TraitDef } from "@pf1/schema";
 
 import { removeFeatInstance, setRace } from "./doc.js";
 import { localId } from "./ids.js";
+import { toggleTrait } from "./traits.js";
 
 /** A fresh, session-unique homebrew id (`hb-...`) — never collides with a vendored id. */
 export function homebrewId(): string {
@@ -38,11 +43,11 @@ export function resolveRefData(doc: CharacterDoc, refData: RefData): RefData {
   };
 }
 
-/** Drops `build.homebrew` entirely once both its `races`/`feats` maps are empty, matching the schema's back-compat "optional/absent = none" posture. */
+/** Drops `build.homebrew` entirely once its `races`/`feats`/`traits` maps are all empty, matching the schema's back-compat "optional/absent = none" posture. */
 function pruneHomebrew(
   homebrew: NonNullable<CharacterDoc["build"]["homebrew"]>,
 ): CharacterDoc["build"]["homebrew"] {
-  if (!homebrew.races && !homebrew.feats) return undefined;
+  if (!homebrew.races && !homebrew.feats && !homebrew.traits) return undefined;
   return homebrew;
 }
 
@@ -127,5 +132,42 @@ export function removeHomebrewFeat(doc: CharacterDoc, id: string): CharacterDoc 
     if (extra.featId === id) next = removeFeatInstance(next, id, extra.instanceId);
   }
   if (next.build.feats.includes(id)) next = removeFeatInstance(next, id);
+  return next;
+}
+
+/** Add or overwrite a homebrew trait definition under `id` (use {@link homebrewId} for new entries). */
+export function upsertHomebrewTrait(doc: CharacterDoc, id: string, trait: TraitDef): CharacterDoc {
+  const homebrew = doc.build.homebrew ?? {};
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      homebrew: { ...homebrew, traits: { ...homebrew.traits, [id]: trait } },
+    },
+  };
+}
+
+/**
+ * Remove a homebrew trait definition. If it's currently selected in
+ * `build.traits`, deselects it through {@link toggleTrait} — a deleted trait
+ * definition can't be left selected any more than a deleted homebrew race
+ * can be left as `identity.race` (see {@link removeHomebrewRace}).
+ */
+export function removeHomebrewTrait(doc: CharacterDoc, id: string): CharacterDoc {
+  const homebrew = doc.build.homebrew;
+  if (!homebrew?.traits?.[id]) return doc;
+  const traits = { ...homebrew.traits };
+  delete traits[id];
+  let next: CharacterDoc = {
+    ...doc,
+    build: {
+      ...doc.build,
+      homebrew: pruneHomebrew({
+        ...homebrew,
+        traits: Object.keys(traits).length > 0 ? traits : undefined,
+      }),
+    },
+  };
+  if ((doc.build.traits ?? []).includes(id)) next = toggleTrait(next, id);
   return next;
 }

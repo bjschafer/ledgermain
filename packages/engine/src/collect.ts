@@ -348,11 +348,13 @@ export function collectModifiers(
 
   // --- traits (build choices) ----------------------------------------------
   // doc.build.traits holds trait ids (keys into the engine's hand-authored
-  // TRAITS table — traits aren't in the vendored Foundry pack). Unknown ids
-  // are skipped, matching the conditions/feats posture: never crash on an
-  // unrecognized id.
+  // TRAITS table — traits aren't in the vendored Foundry pack, so unlike
+  // races/feats they can't be overlaid onto RefData; a homebrew trait's own
+  // definition instead rides in doc.build.homebrew.traits and is checked as
+  // a fallback here). Unknown ids are skipped, matching the conditions/feats
+  // posture: never crash on an unrecognized id.
   for (const traitId of doc.build.traits ?? []) {
-    const trait = TRAITS[traitId];
+    const trait = TRAITS[traitId] ?? doc.build.homebrew?.traits?.[traitId];
     if (!trait) continue;
     for (const ch of trait.changes) {
       if (!gateOpen(ch)) continue;

@@ -10,13 +10,22 @@
  * two from the same category) is a soft warning only, matching the project's
  * hybrid posture on feat/skill budgets (`model/feats.ts` `expectedFeatCount`
  * vs. `chosenFeatCount` — over/under is surfaced, never enforced).
+ *
+ * Homebrew traits (issue #87) are id-compatible with vendored ones: a
+ * `hb-`-prefixed id in `build.traits` resolves through {@link resolveTrait}
+ * to `doc.build.homebrew.traits` instead of the engine's `TRAITS` table, but
+ * every function below (selection, counting, category-warning) is otherwise
+ * unaware of the distinction — same posture as homebrew feats/races.
  */
 
 import type { CharacterDoc } from "@pf1/schema";
-import { TRAITS, type TraitCategory } from "@pf1/engine";
+import { TRAITS, TRAIT_IDS, type TraitCategory, type TraitDef } from "@pf1/engine";
 
 /** The conventional number of traits a PF1 character takes at creation. */
 export const EXPECTED_TRAIT_COUNT = 2;
+
+/** Every category a trait (vendored or homebrew) can belong to. */
+export const TRAIT_CATEGORIES: readonly TraitCategory[] = ["Combat", "Faith", "Magic", "Social"];
 
 export function hasTrait(doc: CharacterDoc, id: string): boolean {
   return (doc.build.traits ?? []).includes(id);
@@ -36,13 +45,29 @@ export function chosenTraitCount(doc: CharacterDoc): number {
 }
 
 /**
+ * Resolve a trait id to its definition, checking the engine's vendored
+ * `TRAITS` table first and falling back to `doc.build.homebrew.traits` —
+ * mirrors `TRAITS[traitId] ?? doc.build.homebrew?.traits?.[traitId]` in
+ * `@pf1/engine` `collect.ts`, the same fallback the static sheet applies.
+ */
+export function resolveTrait(doc: CharacterDoc, id: string): TraitDef | undefined {
+  return TRAITS[id] ?? doc.build.homebrew?.traits?.[id];
+}
+
+/** Every pickable trait id: vendored (`TRAIT_IDS`) plus this doc's homebrew traits. */
+export function allTraitIds(doc: CharacterDoc): string[] {
+  return [...TRAIT_IDS, ...Object.keys(doc.build.homebrew?.traits ?? {})];
+}
+
+/**
  * The set of trait categories represented among the chosen traits (for the
- * soft "different categories" reminder — unknown ids are skipped).
+ * soft "different categories" reminder — unknown ids, and ids whose
+ * homebrew definition was since deleted, are skipped).
  */
 export function chosenTraitCategories(doc: CharacterDoc): TraitCategory[] {
   const cats: TraitCategory[] = [];
   for (const id of doc.build.traits ?? []) {
-    const trait = TRAITS[id];
+    const trait = resolveTrait(doc, id);
     if (trait) cats.push(trait.category);
   }
   return cats;

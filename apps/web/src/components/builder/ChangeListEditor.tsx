@@ -8,17 +8,24 @@ import { NumberField } from "./NumberField.js";
 
 /**
  * Editable list of typed-modifier rows (target/type/value), shared by the
- * homebrew race and feat editors for their "additional typed bonuses"
+ * homebrew race/feat/trait editors for their "additional typed bonuses"
  * section. One row per {@link ChangeDraft}; `onChange` receives the whole
  * updated array (the caller owns the draft state, same pattern every other
  * builder form in this app uses).
+ *
+ * `newDraft` (default {@link emptyChangeDraft}) is what "+ Add modifier"
+ * appends — the homebrew trait editor overrides it to default the type to
+ * "trait" (every real PF1 trait bonus uses that stacking type; see
+ * `@pf1/engine` `traits.ts`'s doc comment) instead of "untyped".
  */
 export function ChangeListEditor({
   drafts,
   onChange,
+  newDraft = emptyChangeDraft,
 }: {
   drafts: readonly ChangeDraft[];
   onChange: (next: ChangeDraft[]) => void;
+  newDraft?: () => ChangeDraft;
 }) {
   function update(index: number, patch: Partial<ChangeDraft>) {
     onChange(drafts.map((d, i) => (i === index ? { ...d, ...patch } : d)));
@@ -65,11 +72,7 @@ export function ChangeListEditor({
           </button>
         </div>
       ))}
-      <button
-        type="button"
-        className="btn-ghost"
-        onClick={() => onChange([...drafts, emptyChangeDraft()])}
-      >
+      <button type="button" className="btn-ghost" onClick={() => onChange([...drafts, newDraft()])}>
         + Add modifier
       </button>
     </div>

@@ -1,9 +1,9 @@
 /**
- * Homebrew race/feat editor form-state mapping (`model/homebrewEditor.ts`,
- * phase 2 of homebrew content support). Covers validation, the ability-
- * modifier encoding (must match vendored fixed-mod races bit-for-bit — see
- * `buildHomebrewRace`'s doc comment and the Elf fixture below), and the
- * draft <-> entity round-trip used by the edit form.
+ * Homebrew race/feat/trait editor form-state mapping (`model/
+ * homebrewEditor.ts`, phase 2 of homebrew content support). Covers
+ * validation, the ability-modifier encoding (must match vendored fixed-mod
+ * races bit-for-bit — see `buildHomebrewRace`'s doc comment and the Elf
+ * fixture below), and the draft <-> entity round-trip used by the edit form.
  */
 import { describe, expect, it } from "bun:test";
 
@@ -13,12 +13,15 @@ import { raceGrantsFlexibleAbility } from "@pf1/engine";
 import {
   buildHomebrewFeat,
   buildHomebrewRace,
+  buildHomebrewTrait,
   descriptionHtmlToText,
   emptyHomebrewFeatDraft,
   emptyHomebrewRaceDraft,
+  emptyHomebrewTraitDraft,
   featToDraft,
   raceToDraft,
   textToDescriptionHtml,
+  traitToDraft,
 } from "../src/model/homebrewEditor.js";
 
 const ref = loadRefData();
@@ -246,6 +249,66 @@ describe("featToDraft()", () => {
     expect(draft.prereqText).toBe("GM approval");
     expect(draft.category).toBe("Combat");
     expect(draft.changes).toEqual([{ target: "skill.per", type: "untyped", value: 2 }]);
+  });
+});
+
+describe("buildHomebrewTrait()", () => {
+  it("rejects a blank name", () => {
+    const result = buildHomebrewTrait("hb-1", { ...emptyHomebrewTraitDraft(), name: "  " });
+    expect(result.ok).toBe(false);
+  });
+
+  it("builds a trait with the chosen category and trimmed summary", () => {
+    const result = buildHomebrewTrait("hb-1", {
+      ...emptyHomebrewTraitDraft(),
+      name: "River Rat",
+      category: "Social",
+      summary: "  +1 trait bonus on Swim checks.  ",
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.id).toBe("hb-1");
+    expect(result.value.category).toBe("Social");
+    expect(result.value.summary).toBe("+1 trait bonus on Swim checks.");
+  });
+
+  it("converts typed-bonus drafts into trait.changes", () => {
+    const result = buildHomebrewTrait("hb-1", {
+      ...emptyHomebrewTraitDraft(),
+      name: "Stalwart",
+      changes: [{ target: "fort", type: "trait", value: 1 }],
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.changes).toEqual([{ formula: "1", target: "fort", type: "trait" }]);
+  });
+
+  it("defaults to an empty changes array when none are given", () => {
+    const result = buildHomebrewTrait("hb-1", {
+      ...emptyHomebrewTraitDraft(),
+      name: "Display Only",
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.changes).toEqual([]);
+  });
+});
+
+describe("traitToDraft()", () => {
+  it("round-trips name/category/summary/changes", () => {
+    const built = buildHomebrewTrait("hb-1", {
+      ...emptyHomebrewTraitDraft(),
+      name: "Stalwart",
+      category: "Faith",
+      summary: "+1 trait bonus on Will saves.",
+      changes: [{ target: "will", type: "trait", value: 1 }],
+    });
+    if (!built.ok) throw new Error("build failed");
+    const draft = traitToDraft(built.value);
+    expect(draft.name).toBe("Stalwart");
+    expect(draft.category).toBe("Faith");
+    expect(draft.summary).toBe("+1 trait bonus on Will saves.");
+    expect(draft.changes).toEqual([{ target: "will", type: "trait", value: 1 }]);
   });
 });
 

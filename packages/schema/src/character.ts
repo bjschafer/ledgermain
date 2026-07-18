@@ -1,4 +1,4 @@
-import type { AbilityId, Change, ContextNote, SizeId, SkillId } from "./primitives.js";
+import type { AbilityId, Change, ContextNote, SizeId, SkillId, TraitDef } from "./primitives.js";
 import type { Feat, Race } from "./refdata.js";
 
 /**
@@ -1039,22 +1039,28 @@ export interface CharacterDoc {
      */
     castingAdvancement?: Record<string, (string | null)[]>;
     /**
-     * User-authored homebrew reference entities, overlaid onto `RefData` at
-     * compute time (see `apps/web/src/model/homebrew.ts` `resolveRefData`) —
-     * the Stage 5 server is a dumb blob store, so homebrew content lives
-     * inside the doc itself rather than a separate store: it travels for
-     * free through sync/export/import with zero server changes, and an
-     * optional field needs no doc migration. v1 covers races and feats.
+     * User-authored homebrew reference entities. The Stage 5 server is a
+     * dumb blob store, so homebrew content lives inside the doc itself
+     * rather than a separate store: it travels for free through
+     * sync/export/import with zero server changes, and an optional field
+     * needs no doc migration. Covers races, feats, and traits.
      *
      * Keys are homebrew ids (see `homebrew.ts` `homebrewId`, prefix `hb-`)
-     * so they can never collide with a vendored RefData id — the overlay
-     * simply spreads these entries on top of `refData.races`/`refData.feats`.
-     * Optional/absent = no homebrew, fully back-compat (same posture as
-     * `build.racialTraits`).
+     * so they can never collide with a vendored id. `races`/`feats` are
+     * overlaid onto `RefData` at compute time (see `apps/web/src/model/
+     * homebrew.ts` `resolveRefData`) — simple spreads on top of
+     * `refData.races`/`refData.feats`. `traits` overlays differently:
+     * traits aren't RefData at all (the engine's `TRAITS` table is
+     * hand-authored, not vendored), so a homebrew trait's definition is
+     * looked up straight from here as a fallback wherever `TRAITS` is
+     * consulted (`@pf1/engine` `collect.ts`, and this app's `model/
+     * traits.ts`). Optional/absent = no homebrew, fully back-compat (same
+     * posture as `build.racialTraits`).
      */
     homebrew?: {
       races?: Record<string, Race>;
       feats?: Record<string, Feat>;
+      traits?: Record<string, TraitDef>;
     };
     /**
      * Point-buy budget for the builder's optional point-buy readout (issue
