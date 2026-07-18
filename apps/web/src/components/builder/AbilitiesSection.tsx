@@ -1,6 +1,14 @@
-import { ABILITY_IDS, setAbility, setAbilityIncreaseCount, totalLevel } from "../../model/doc.js";
+import {
+  ABILITY_IDS,
+  setAbility,
+  setAbilityIncreaseCount,
+  setAbilityPointBuyBudget,
+  totalLevel,
+} from "../../model/doc.js";
 import { ABILITY_ABBR, signed } from "../../model/names.js";
+import { POINT_BUY_BUDGETS, totalPointBuyCost } from "../../model/pointBuy.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Explainer } from "../Explainer.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -11,6 +19,16 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
   const assigned = increases.length;
   // Ability-score-increases subsection: default collapsed (only relevant every 4 levels)
   const [incCollapsed, toggleIncCollapsed] = useCollapsed("subsection:AbilityIncreases", true);
+
+  // Point buy (issue #86): off/absent = no readout at all. Reads doc.abilities
+  // directly — the pre-racial base scores the six NumberFields below edit —
+  // never the racial-adjusted `sheet.abilities`.
+  const budget = doc.build.abilityPointBuyBudget;
+  const isStandardBudget = budget != null && POINT_BUY_BUDGETS.some((b) => b.points === budget);
+  const budgetSelectValue = budget == null ? "off" : isStandardBudget ? String(budget) : "custom";
+  const pointBuy = totalPointBuyCost(doc.abilities);
+  const overBudget = budget != null && pointBuy.spent > budget;
+  const outOfRangeNames = pointBuy.outOfRange.map((id) => ABILITY_ABBR[id]).join(", ");
 
   return (
     <Panel
@@ -47,6 +65,66 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
           );
         })}
       </div>
+
+      <div className="point-buy-row">
+        <label className="hint" htmlFor="point-buy-budget">
+          Point buy
+        </label>
+        <select
+          id="point-buy-budget"
+          className="point-buy-select"
+          value={budgetSelectValue}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v === "off") update((d) => setAbilityPointBuyBudget(d, null));
+            else if (v === "custom") update((d) => setAbilityPointBuyBudget(d, budget ?? 15));
+            else update((d) => setAbilityPointBuyBudget(d, Number(v)));
+          }}
+        >
+          <option value="off">Off</option>
+          {POINT_BUY_BUDGETS.map((b) => (
+            <option key={b.points} value={b.points}>
+              {b.label} ({b.points})
+            </option>
+          ))}
+          <option value="custom">Custom</option>
+        </select>
+        {budgetSelectValue === "custom" && (
+          <NumberField
+            className="num"
+            size={3}
+            value={budget ?? 15}
+            min={0}
+            max={99}
+            onCommit={(n) => update((d) => setAbilityPointBuyBudget(d, n))}
+            aria-label="Custom point-buy budget"
+          />
+        )}
+        {budget != null && (
+          <span
+            className={`hint point-buy-readout${overBudget || outOfRangeNames ? " warn-over" : ""}`}
+            title={
+              outOfRangeNames
+                ? `${outOfRangeNames} outside the 7–18 purchase range — not priced`
+                : overBudget
+                  ? "Over budget — free-choice, GMs house-rule freely"
+                  : undefined
+            }
+          >
+            {pointBuy.spent} of {budget} points
+            {outOfRangeNames ? " · some scores outside 7–18" : ""}
+          </span>
+        )}
+      </div>
+
+      <Explainer title="What is point buy?">
+        <p className="hint">
+          The Core Rulebook's purchase-cost system for the six base ability scores (before racial
+          modifiers): each score from 7 to 18 costs a fixed number of points, and a table budget
+          (Low 10 / Standard 15 / High 20 / Epic 25, or a custom house-ruled total) caps the sum.
+          This is a running total only — nothing here blocks input.
+        </p>
+      </Explainer>
 
       {allowed >= 1 && (
         <div className="subsection">
