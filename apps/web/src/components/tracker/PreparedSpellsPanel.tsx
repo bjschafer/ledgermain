@@ -1787,7 +1787,6 @@ function HybridView({
                         <div key={r.index} className="prep-row">
                           <div className="prep-row-main">
                             <span className="prep-name">{r.name}</span>
-                            {isCantrip && <span className="prep-atwill">at will</span>}
                             {refData.spells[r.spellId] && (
                               <SpellDetail
                                 spell={refData.spells[r.spellId]!}
@@ -1797,6 +1796,7 @@ function HybridView({
                               />
                             )}
                           </div>
+                          {isCantrip && <span className="prep-atwill">at will</span>}
                           <button
                             type="button"
                             className="btn-ghost prep-x"
