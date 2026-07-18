@@ -642,19 +642,39 @@ const DISPLAY_ONLY_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> 
 };
 
 /**
+ * Martial/Exotic Weapon Proficiency's weapon pick (issue #81) — unlike
+ * `DISPLAY_ONLY_FEAT_CHOICES` above, this choice IS mechanically consumed:
+ * `@pf1/engine`'s `deriveProficiencies` (`proficiency.ts`) reads it straight
+ * off `doc.build.featChoices`/`extraFeats[].choiceId` to grant proficiency
+ * with the chosen weapon, which feeds the real -4 non-proficient attack
+ * penalty. It's just never routed through `resolveFeatEffect`'s Change
+ * pipeline — "am I proficient with this weapon" is a set-membership fact,
+ * not a stacking bonus, so there's no `Change` for it to `build()`. Kept in
+ * its own map (rather than folded into `DISPLAY_ONLY_FEAT_CHOICES`) so that
+ * map's own "no engine effect at all" claim stays true.
+ */
+const MECHANICAL_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = {
+  "martial-weapon-proficiency": { type: "weapon", label: "Weapon" },
+  "exotic-weapon-proficiency": { type: "weapon", label: "Weapon" },
+};
+
+/**
  * Returns the choice descriptor for the feat with the given name, or `null`
- * if the feat has no player choice. Two sources, checked in order:
+ * if the feat has no player choice. Three sources, checked in order:
  *  1. An engine-wired choice (Weapon Focus, Skill Focus, Greater Weapon
  *     Focus, Master Craftsman, ...) via `resolveFeatEffect` — its `build()`
  *     emits a real Change once a choice is stored.
- *  2. `DISPLAY_ONLY_FEAT_CHOICES` — a choice with no engine effect at all
+ *  2. `MECHANICAL_FEAT_CHOICES` — a choice consumed outside the Change
+ *     pipeline (Martial/Exotic Weapon Proficiency's weapon pick).
+ *  3. `DISPLAY_ONLY_FEAT_CHOICES` — a choice with no engine effect at all
  *     (Spell Focus's school, Improved Critical's weapon).
  * The descriptor drives the UI picker rendered in FeatsSection/FeatsPanel.
  */
 export function featChoiceDescriptor(featName: string): FeatChoiceDescriptor | null {
   const resolved = resolveFeatEffect(featNameSlug(featName));
   if (resolved && resolved.entry.type === "choice") return resolved.entry.choice;
-  return DISPLAY_ONLY_FEAT_CHOICES[featNameSlug(featName)] ?? null;
+  const slug = featNameSlug(featName);
+  return MECHANICAL_FEAT_CHOICES[slug] ?? DISPLAY_ONLY_FEAT_CHOICES[slug] ?? null;
 }
 
 /**

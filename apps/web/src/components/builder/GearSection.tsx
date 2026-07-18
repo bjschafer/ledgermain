@@ -71,6 +71,11 @@ const ARMOR_TYPES = [
 ] as const;
 
 const WEIGHT_LABEL: Record<number, string> = { 0: "None", 1: "Light", 2: "Medium", 3: "Heavy" };
+const SHIELD_TIERS = [
+  { value: "light" as const, label: "Light (incl. buckler)" },
+  { value: "heavy" as const, label: "Heavy" },
+  { value: "tower" as const, label: "Tower" },
+];
 
 const ENHANCEMENT_OPTIONS = [0, 1, 2, 3, 4, 5] as const;
 
@@ -126,6 +131,7 @@ function ArmorForm({
     // Masterwork is only meaningful at +0 — a magic enhancement bonus
     // already implies it (mirrors the weapon masterwork invariant).
     if (armor.masterwork && !armor.enhancement) clean.masterwork = true;
+    if (armor.slot === "shield" && armor.shieldTier) clean.shieldTier = armor.shieldTier;
     onSave(clean, name.trim());
   }
 
@@ -200,7 +206,18 @@ function ArmorForm({
           <span>Slot</span>
           <select
             value={form.slot}
-            onChange={(e) => field("slot", e.target.value as "armor" | "shield")}
+            onChange={(e) => {
+              const slot = e.target.value as "armor" | "shield";
+              setForm((f) => ({
+                ...f,
+                slot,
+                // Default a fresh switch into the shield slot to "light" so a
+                // shield saved without ever touching the shield-type dropdown
+                // still carries a real proficiency tier (issue #81) instead
+                // of silently staying "unknown."
+                ...(slot === "shield" && !f.shieldTier ? { shieldTier: "light" as const } : {}),
+              }));
+            }}
           >
             {ARMOR_SLOTS.map((s) => (
               <option key={s} value={s}>
@@ -228,7 +245,15 @@ function ArmorForm({
             onChange={(e) => field("asf", Number(e.target.value))}
           />
         </label>
-        {isArmorSlot && (
+        <label className="field">
+          <span>Armor Check Penalty (negative)</span>
+          <input
+            type="number"
+            value={form.acp ?? 0}
+            onChange={(e) => field("acp", Number(e.target.value))}
+          />
+        </label>
+        {isArmorSlot ? (
           <>
             <label className="field">
               <span>Max Dex (blank = no cap)</span>
@@ -240,14 +265,6 @@ function ArmorForm({
                   const v = e.target.value;
                   field("maxDex", v === "" ? undefined : Number(v));
                 }}
-              />
-            </label>
-            <label className="field">
-              <span>Armor Check Penalty (negative)</span>
-              <input
-                type="number"
-                value={form.acp ?? 0}
-                onChange={(e) => field("acp", Number(e.target.value))}
               />
             </label>
             <label className="field">
@@ -264,6 +281,20 @@ function ArmorForm({
               </select>
             </label>
           </>
+        ) : (
+          <label className="field">
+            <span>Shield type</span>
+            <select
+              value={form.shieldTier ?? "light"}
+              onChange={(e) => field("shieldTier", e.target.value as "light" | "heavy" | "tower")}
+            >
+              {SHIELD_TIERS.map(({ value, label }) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
         )}
       </div>
       {ARMOR_ABILITIES.length > 0 && (

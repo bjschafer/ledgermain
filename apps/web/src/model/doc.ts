@@ -907,6 +907,8 @@ export function addGearItem(doc: CharacterDoc, itemId: string): CharacterDoc {
  *  - `abilities` truncated (keeping earliest-selected first) so `enhancement`
  *    plus their combined bonus-equivalent never exceeds +10 — PF1 RAW caps
  *    armor/shield special abilities by the same total-bonus rule as weapons.
+ *  - `shieldTier` (issue #81) only meaningful on `slot === "shield"` —
+ *    dropped on body armor (e.g. after a slot switch in the edit form).
  */
 function normalizeWornArmor(armor: WornArmor): WornArmor {
   const next = { ...armor };
@@ -922,6 +924,7 @@ function normalizeWornArmor(armor: WornArmor): WornArmor {
     if (kept.length > 0) next.abilities = kept;
     else delete next.abilities;
   }
+  if (next.slot !== "shield") delete next.shieldTier;
   return next;
 }
 
@@ -952,6 +955,29 @@ export function addWornArmor(doc: CharacterDoc, armor: WornArmor, name: string):
  * name prefix is shown only when explicitly set at +0, since it's implied
  * (and not called out) once enhancement is positive. No deduplication.
  */
+/**
+ * Maps `ArmorRef.proficiency` (Foundry's raw shield tag — see refdata.ts's
+ * doc comment for the full vocabulary) to `WornArmor.shieldTier` (issue #81).
+ * "other" covers the Buckler and Dwarven War-Shield, both of which need the
+ * standard Shield Proficiency feat, not Tower Shield Proficiency — same
+ * bucket as light/heavy shields. `undefined` for anything else (body armor
+ * tags, or a missing/unrecognized proficiency), read downstream as "unknown,
+ * don't penalize."
+ */
+function shieldTierFromProficiencyTag(tag: string | undefined): WornArmor["shieldTier"] {
+  switch (tag) {
+    case "lightShield":
+    case "other":
+      return "light";
+    case "heavyShield":
+      return "heavy";
+    case "towerShield":
+      return "tower";
+    default:
+      return undefined;
+  }
+}
+
 export function addWornArmorFromRef(
   doc: CharacterDoc,
   armor: ArmorRef,
@@ -972,6 +998,8 @@ export function addWornArmorFromRef(
   // bonus) reduces the armor check penalty by 1, floored at 0 magnitude so
   // it can never flip into a positive (bonus) ACP.
   const acpMagnitude = masterwork || enh >= 1 ? Math.max(0, (ref.acp ?? 0) - 1) : ref.acp;
+  const shieldTier =
+    ref.slot === "shield" ? shieldTierFromProficiencyTag(ref.proficiency) : undefined;
 
   const worn: WornArmor = normalizeWornArmor({
     slot: ref.slot,
@@ -990,6 +1018,7 @@ export function addWornArmorFromRef(
     // `applyMaterialToArmor`'s output — mithral's real-world weight halving
     // isn't modeled by that helper yet (documented gap in materials.ts).
     ...(armor.weight ? { weight: armor.weight } : {}),
+    ...(shieldTier ? { shieldTier } : {}),
   });
   const inst: ItemInstance = {
     equipped: true,
@@ -1663,6 +1692,10 @@ export function addWeaponFromRef(
       ? { weaponGroups: ref.weaponGroups.map(normalizeWeaponGroup) }
       : {}),
     ...(ref.weight ? { weight: ref.weight } : {}),
+    // The vendored proficiency tag is always one of the three RAW categories
+    // (see data-pipeline's weapons.json) — WeaponRef types it as a plain
+    // `string` only because Foundry's own field isn't a closed enum.
+    proficiency: weapon.proficiency as WeaponInstance["proficiency"],
     weaponId: weapon.id,
   });
   const weapons = [...(doc.build.weapons ?? []), instance];

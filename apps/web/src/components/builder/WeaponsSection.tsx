@@ -31,6 +31,11 @@ const DAMAGE_MULTIPLIERS = [
   { value: 1.5, label: "×1.5 — two-handed" },
   { value: 0.5, label: "×0.5 — off-hand" },
 ];
+const PROFICIENCIES = [
+  { value: "simple" as const, label: "Simple" },
+  { value: "martial" as const, label: "Martial" },
+  { value: "exotic" as const, label: "Exotic" },
+];
 
 const BLANK_WEAPON: WeaponInstance = {
   name: "",
@@ -44,6 +49,10 @@ const BLANK_WEAPON: WeaponInstance = {
   group: "",
   category: "melee",
   weight: 0,
+  // Most custom entries end up being martial weapons — an editable default,
+  // not a guess the engine trusts blindly (issue #81: this drives the -4
+  // non-proficient attack penalty, so it's always set, never left blank).
+  proficiency: "martial",
 };
 
 /** Tooltip for an ability chip, explaining why it's disabled when relevant. */
@@ -189,6 +198,21 @@ function WeaponForm({
           </select>
         </label>
         <label className="field">
+          <span>Proficiency</span>
+          <select
+            value={form.proficiency ?? "martial"}
+            onChange={(e) =>
+              field("proficiency", e.target.value as "simple" | "martial" | "exotic")
+            }
+          >
+            {PROFICIENCIES.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="field">
           <span>Attack ability</span>
           <select
             value={form.attackAbility}
@@ -316,6 +340,7 @@ function WeaponForm({
 /** Render a concise one-line summary for a weapon in the list. */
 function weaponMeta(w: WeaponInstance): string {
   const parts: string[] = [];
+  if (w.proficiency) parts.push(w.proficiency);
   parts.push(w.category ?? "melee");
   parts.push(`${w.attackAbility.toUpperCase()} to hit`);
   if (w.masterwork && (w.enhancement ?? 0) === 0) parts.push("masterwork");

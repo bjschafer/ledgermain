@@ -6258,3 +6258,35 @@ input[type="text"].saved-roll-name:focus {
 .point-buy-readout {
   font-family: var(--mono);
 }
+
+/* Proficiencies stat-group (issue #81) — a compact wrapped strip of
+   read-only chips (Simple Weapons, Light Armor, Longsword, ...); each opens
+   an InfoTip on hover/tap showing which class/feat/race granted it. Same
+   resting look as `.chip.display-only` (dashed border, no press affordance)
+   since there's nothing to toggle here. */
+.prof-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.prof-chip {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface-2);
+  border: 1px dashed var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: var(--ink);
+  opacity: 0.85;
+  transition:
+    border-color 0.12s,
+    opacity 0.12s;
+}
+
+.prof-chip:hover,
+.prof-chip:focus-visible {
+  border-color: var(--gold-dim);
+  opacity: 1;
+}

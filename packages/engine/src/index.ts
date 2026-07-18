@@ -581,6 +581,12 @@ export {
   normalizeWeaponGroup,
   type WeaponGroup,
 } from "./weapon-groups.js";
+export {
+  deriveProficiencies,
+  isWeaponProficient,
+  isArmorTypeProficient,
+  isShieldTierProficient,
+} from "./proficiency.js";
 export { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
 export {
   RAGE_POWERS,
