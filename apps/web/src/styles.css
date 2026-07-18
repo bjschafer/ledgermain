@@ -2658,9 +2658,10 @@ button:focus-visible,
 .buff-share-group {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-shrink: 0;
-  padding-left: 12px;
+  margin-left: 6px;
+  padding-left: 16px;
   border-left: 1px solid var(--line-soft);
 }
 
@@ -2682,15 +2683,24 @@ button:focus-visible,
 }
 
 /* Compact unit selector used next to duration NumberFields (buff rows + custom-buff form).
-   Overrides the global `select { width: 100% }` so it shrinks to content. */
+   Overrides the global `select { width: 100% }` so it shrinks to content, and
+   replaces the native dropdown arrow (which renders inconsistently across
+   browsers and crowds the text at this size) with a custom chevron that has
+   dedicated right padding so it never overlaps "rds/min/hr". */
 .dur-unit {
   width: auto;
-  padding: 3px 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 3px 22px 3px 8px;
   font-size: 11px;
   font-family: var(--mono);
   color: var(--muted);
-  background: transparent;
+  background-color: var(--surface-2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5 5 6.5 8 3.5' fill='none' stroke='%23a49e91' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
   border-color: var(--line-soft);
+  cursor: pointer;
 }
 
 /* Flex container for the duration value + unit select in the custom-buff form. */
