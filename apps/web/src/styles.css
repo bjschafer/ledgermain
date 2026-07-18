@@ -6235,3 +6235,26 @@ input[type="text"].saved-roll-name:focus {
     break-inside: avoid;
   }
 }
+
+/* Point-buy readout row (issue #86) — sits below the ability-score grid.
+   Off/no-budget-set renders just the label + select, so the row stays
+   unobtrusive until a table opts in. */
+.point-buy-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+/* Overrides the global `select { width: 100% }` so it shrinks to its
+   content, matching `.dur-unit`'s compact-select treatment elsewhere. */
+.point-buy-select {
+  width: auto;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+
+.point-buy-readout {
+  font-family: var(--mono);
+}

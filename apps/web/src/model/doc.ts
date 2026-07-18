@@ -530,6 +530,22 @@ export function setAbility(doc: CharacterDoc, ability: AbilityId, value: number)
   return { ...doc, abilities: { ...doc.abilities, [ability]: clamped } };
 }
 
+/**
+ * Set (or clear) the builder's point-buy budget (issue #86). Pass `null` to
+ * turn point buy off, hiding the readout entirely (back-compat default). No
+ * validation against the standard 10/15/20/25 budgets — a table can house-rule
+ * a custom number, same free-choice posture as the rest of the builder.
+ */
+export function setAbilityPointBuyBudget(doc: CharacterDoc, budget: number | null): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      abilityPointBuyBudget: budget == null ? undefined : budget,
+    },
+  };
+}
+
 export function setRace(doc: CharacterDoc, raceId: string): CharacterDoc {
   const identity = { ...doc.identity, race: raceId };
   delete identity.flexibleAbility;

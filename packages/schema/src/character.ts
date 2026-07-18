@@ -1056,6 +1056,15 @@ export interface CharacterDoc {
       races?: Record<string, Race>;
       feats?: Record<string, Feat>;
     };
+    /**
+     * Point-buy budget for the builder's optional point-buy readout (issue
+     * #86) — one of the PF1 Core Rulebook standard budgets (10/15/20/25) or
+     * a table-custom number; `undefined` means point buy is off and the
+     * readout is hidden entirely (back-compat default). Display-only: the
+     * budget is never enforced, only compared against the point-buy cost of
+     * `abilities` (see `apps/web/src/model/pointBuy.ts`) for a soft warning.
+     */
+    abilityPointBuyBudget?: number;
   };
   live: {
     hp: { current: number; temp: number; nonlethal: number };
