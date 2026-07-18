@@ -1,8 +1,9 @@
 import { useMemo, useState, type ReactNode } from "react";
 
 import type { MetamagicDef } from "@pf1/engine";
-import type { AppliedMetamagic, RefData } from "@pf1/schema";
+import type { AppliedMetamagic, Buff, CharacterDoc, RefData, Spell } from "@pf1/schema";
 
+import { addBuff, makeActiveBuff, removeBuff, suggestRounds } from "../../model/buffs.js";
 import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
 import {
   classSpellsByLevel,
@@ -50,6 +51,7 @@ import {
   storedClassTag,
 } from "../../model/spellcasting.js";
 import { newDaySummary } from "../../model/rest.js";
+import { buffsForSpell } from "../../model/spellBuffs.js";
 import {
   castSpontaneousSlot,
   resetSpontaneousSlots,
@@ -167,6 +169,111 @@ function MetamagicControl({
                 </label>
               )}
             </div>
+          );
+        })}
+      </div>
+    </details>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Apply-as-buff — one-click activation of a buff-spell's mechanical effect.
+// ---------------------------------------------------------------------------
+
+/**
+ * The "＋ Buff" control on a castable spell row: it means *cast this on myself*.
+ * A single click spends a slot (via the row's own `onCast`, the same transform
+ * its Cast button runs) AND applies the buff — the Cast button stays for casting
+ * on someone else (slot only, no self-buff). Dropping the buff (✓ Buff → click)
+ * removes it but never refunds the slot: the spell was still cast.
+ *
+ * Only rendered when the spell maps to a compendium buff (see
+ * `model/spellBuffs.ts`); a spell with several variants (Resist Energy's energy
+ * types, Prayer) opens a small chooser. Active state mirrors `live.activeBuffs`.
+ */
+function ApplyBuffButton({
+  spell,
+  refData,
+  doc,
+  update,
+  casterLevel,
+  onCast,
+  castExhausted = false,
+}: {
+  spell: Spell;
+  refData: RefData;
+  doc: BuilderProps["doc"];
+  update: BuilderProps["update"];
+  casterLevel: number;
+  /** Spend a slot for this row — the exact transform its Cast button runs. */
+  onCast: (d: CharacterDoc) => CharacterDoc;
+  /** No slot left to cast: applying (but not dropping) is blocked. */
+  castExhausted?: boolean;
+}) {
+  const buffs = useMemo(() => buffsForSpell(spell, refData), [spell, refData]);
+  if (buffs.length === 0) return null;
+
+  const activeByBuffId = new Map(
+    doc.live.activeBuffs
+      .filter((b) => b.buffId !== undefined)
+      .map((b) => [b.buffId as string, b] as const),
+  );
+
+  // Apply = cast on self: spend a slot, then add the buff. Drop = remove only
+  // (the spell was still cast, so the slot stays spent).
+  const apply = (buff: Buff) =>
+    update((d) =>
+      addBuff(
+        onCast(d),
+        makeActiveBuff(buff, { casterLevel, remainingRounds: suggestRounds(buff, casterLevel) }),
+      ),
+    );
+  const drop = (instanceId: string) => update((d) => removeBuff(d, instanceId));
+
+  if (buffs.length === 1) {
+    const buff = buffs[0]!;
+    const active = activeByBuffId.get(buff.id);
+    return (
+      <TipButton
+        className={`pick-btn buff-apply${active ? " is-active" : ""}`}
+        aria-pressed={active !== undefined}
+        disabled={active === undefined && castExhausted}
+        disabledReason="No slot left to cast this."
+        title={
+          active
+            ? `${buff.name} is active — click to drop it (you still cast the spell)`
+            : `Cast ${buff.name} on yourself — spends a slot and applies the buff`
+        }
+        onClick={() => (active ? drop(active.instanceId) : apply(buff))}
+      >
+        {active ? "✓ Buff" : "+ Buff"}
+      </TipButton>
+    );
+  }
+
+  const activeCount = buffs.filter((b) => activeByBuffId.has(b.id)).length;
+  return (
+    <details className="buff-apply-menu">
+      <summary
+        className={`pick-btn buff-apply${activeCount > 0 ? " is-active" : ""}`}
+        title={`Cast ${spell.name} on yourself — choose a variant`}
+      >
+        {activeCount > 0 ? `✓ Buff (${activeCount})` : "+ Buff"}
+      </summary>
+      <div className="buff-apply-list">
+        {buffs.map((buff) => {
+          const active = activeByBuffId.get(buff.id);
+          return (
+            <button
+              key={buff.id}
+              type="button"
+              className={`buff-apply-item${active ? " is-active" : ""}`}
+              aria-pressed={active !== undefined}
+              disabled={active === undefined && castExhausted}
+              onClick={() => (active ? drop(active.instanceId) : apply(buff))}
+            >
+              {buff.name}
+            </button>
           );
         })}
       </div>
@@ -296,6 +403,16 @@ function DomainSlotsSection({
                           />
                         )}
                       </div>
+                      {spellData && (
+                        <ApplyBuffButton
+                          spell={spellData}
+                          refData={refData}
+                          doc={doc}
+                          update={update}
+                          casterLevel={casterLevel}
+                          onCast={(d) => setExpendedAt(d, r.index, true)}
+                        />
+                      )}
                       {r.expended ? (
                         <button
                           type="button"
@@ -498,6 +615,16 @@ function SchoolSlotsSection({
                           />
                         )}
                       </div>
+                      {spellData && (
+                        <ApplyBuffButton
+                          spell={spellData}
+                          refData={refData}
+                          doc={doc}
+                          update={update}
+                          casterLevel={casterLevel}
+                          onCast={(d) => setExpendedAt(d, r.index, true)}
+                        />
+                      )}
                       {r.expended ? (
                         <button
                           type="button"
@@ -877,6 +1004,16 @@ function PreparedView({
                             />
                           )}
                         </div>
+                        {spellData && (
+                          <ApplyBuffButton
+                            spell={spellData}
+                            refData={refData}
+                            doc={doc}
+                            update={update}
+                            casterLevel={casterLevel}
+                            onCast={(d) => (isCantrip ? d : setExpendedAt(d, r.index, true))}
+                          />
+                        )}
                         {isCantrip ? (
                           <span className="prep-atwill">at will</span>
                         ) : r.expended ? (
@@ -1330,6 +1467,26 @@ function SpontaneousView({
                             onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
                           />
                         </div>
+                        {spellData && (
+                          <ApplyBuffButton
+                            spell={spellData}
+                            refData={refData}
+                            doc={doc}
+                            update={update}
+                            casterLevel={casterLevel}
+                            castExhausted={castExhausted}
+                            onCast={(d) =>
+                              castSpontaneousSlot(
+                                d,
+                                model,
+                                effectiveClassLevel,
+                                abilityMod,
+                                castLevel,
+                                classTag,
+                              )
+                            }
+                          />
+                        )}
                         <TipButton
                           className="pick-btn remove prep-cast"
                           disabled={castExhausted}
@@ -1682,6 +1839,26 @@ function HybridView({
                                 onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
                               />
                             </div>
+                            {spellData && (
+                              <ApplyBuffButton
+                                spell={spellData}
+                                refData={refData}
+                                doc={doc}
+                                update={update}
+                                casterLevel={casterLevel}
+                                castExhausted={castExhausted}
+                                onCast={(d) =>
+                                  castSpontaneousSlot(
+                                    d,
+                                    model,
+                                    effectiveClassLevel,
+                                    abilityMod,
+                                    castLevel,
+                                    classTag,
+                                  )
+                                }
+                              />
+                            )}
                             <TipButton
                               className="pick-btn remove prep-cast"
                               disabled={castExhausted}

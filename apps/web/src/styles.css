@@ -1501,6 +1501,87 @@ button:focus-visible,
   color: var(--sage);
 }
 
+/* Apply-as-buff control on a castable spell row. Compact and sage-tinted so it
+   sits quietly beside the gold Cast button (a spell can have a dense row of
+   detail chips) yet reads as a distinct, opt-in action — casting a buff-spell
+   doesn't imply you targeted yourself. Active state = the buff is live. */
+.buff-apply {
+  flex-shrink: 0;
+  min-width: 0;
+  padding: 5px 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  color: var(--sage);
+}
+
+.buff-apply:hover:not(:disabled) {
+  border-color: var(--sage);
+}
+
+.buff-apply.is-active {
+  border-color: var(--sage);
+  background: rgba(136, 160, 106, 0.16);
+  color: var(--sage);
+}
+
+/* Variant chooser for a spell mapping to several buffs (Resist Energy's energy
+   types, Prayer). The summary IS the .buff-apply chip; the list drops below. */
+.buff-apply-menu {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.buff-apply-menu > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.buff-apply-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.buff-apply-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 168px;
+  padding: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.buff-apply-item {
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 12px;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.buff-apply-item:hover {
+  border-color: var(--sage);
+  color: var(--sage);
+}
+
+.buff-apply-item.is-active {
+  color: var(--sage);
+  border-color: var(--sage);
+  background: rgba(136, 160, 106, 0.16);
+}
+
+.buff-apply-item.is-active::before {
+  content: "✓ ";
+}
+
 .spell-hints {
   margin-bottom: 12px;
   display: flex;
