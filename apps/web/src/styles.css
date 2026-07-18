@@ -6290,3 +6290,19 @@ input[type="text"].saved-roll-name:focus {
   border-color: var(--gold-dim);
   opacity: 1;
 }
+
+/* Empty-search affordance (issue #88) — sits inside the existing `.empty`
+   idiom (muted, italic) rather than introducing a new tone; only the action
+   row below the message needs its own layout. */
+.search-miss p {
+  margin: 0;
+}
+
+.search-miss-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  font-style: normal;
+}

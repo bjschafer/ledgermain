@@ -16,6 +16,7 @@ import {
 } from "../../model/spellSearch.js";
 import { Dialog } from "../Dialog.js";
 import { SpellDetail } from "../SpellDetail.js";
+import { SearchMiss } from "./SearchMiss.js";
 
 const levelName = (level: number) => (level === 0 ? "Cantrips" : `Level ${level}`);
 
@@ -145,7 +146,11 @@ export function SpellManager({
             </div>
             <div className="spell-pane-body">
               {browseGroups.length === 0 ? (
-                <div className="empty">No spells match.</div>
+                filter.query.trim() ? (
+                  <SearchMiss query={filter.query.trim()} picker="spells" />
+                ) : (
+                  <div className="empty">No spells match.</div>
+                )
               ) : (
                 browseGroups.map((g) => (
                   <ManagerLevelGroup

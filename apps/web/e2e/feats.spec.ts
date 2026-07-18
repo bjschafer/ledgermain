@@ -74,6 +74,30 @@ test("a feat added in the manager lands in the panel's chosen list", async ({ pa
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
 
+test("a gibberish search shows the empty-search affordance instead of nothing (#88)", async ({
+  page,
+}) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  const panel = await gotoFighterFeats(page);
+  await panel.getByRole("button", { name: "Choose feats" }).click();
+
+  const dialog = page.getByRole("dialog");
+  const catalog = dialog.locator(".spell-pane").first();
+
+  await dialog.getByLabel("Search feats").fill("Zzznotarealfeatxyz");
+  const miss = catalog.locator(".search-miss");
+  await expect(miss).toBeVisible();
+  await expect(miss).toContainText("No matches for");
+  await expect(miss).toContainText("Zzznotarealfeatxyz");
+  // The homebrew-feat escape hatch is always shown; the "Report this gap"
+  // button only appears when the feedback form is actually configured
+  // (VITE_TURNSTILE_SITEKEY/VITE_API_URL), which local dev/e2e leaves unset.
+  await expect(miss).toContainText("homebrew feat");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
 test("the category chips and hide-ineligible toggle narrow the catalog", async ({ page }) => {
   const { consoleErrors, pageErrors } = guard(page);
   const panel = await gotoFighterFeats(page);

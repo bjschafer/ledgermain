@@ -109,8 +109,10 @@ test("creating a homebrew feat adds it to the character, badged as homebrew", as
   // Play tab's read-only feat reference list picks it up through the same
   // doc-overlaid RefData, badged the same way.
   await page.getByRole("tab", { name: "Play" }).click();
-  await page.getByRole("button", { name: "Feats", exact: true }).click(); // expand (defaultCollapsed)
   const playFeatsPanel = panelByTitle(page, "Feats");
+  // Scoped to the panel itself: an unscoped "Feats" button match is now
+  // ambiguous with the PlayNav jump-rail button of the same name.
+  await playFeatsPanel.getByRole("button", { name: "Feats", exact: true }).click(); // expand (defaultCollapsed)
   await expect(playFeatsPanel.getByText("Keen Nose")).toBeVisible();
   await expect(playFeatsPanel.getByText("homebrew")).toBeVisible();
 

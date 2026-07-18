@@ -78,6 +78,21 @@ export function emptyDraft(): FeedbackDraft {
 }
 
 /**
+ * Seed a feedback draft from a picker's empty search (issue #88, `SearchMiss`)
+ * — pre-filed under "missing content" with the query and which picker it came
+ * from folded into the message, so the report is actionable without the
+ * player re-typing what they already searched.
+ */
+export function buildSearchMissDraft(query: string, pickerLabel: string): FeedbackDraft {
+  return {
+    category: DEFAULT_CATEGORY,
+    message: `Can't find a ${pickerLabel} for "${query}".`,
+    contact: "",
+    includeBuild: false,
+  };
+}
+
+/**
  * Validate a draft for submission. Returns an error string to show the user,
  * or `null` when the draft is submittable. The Turnstile token is checked
  * separately by the component (it gates the submit button on the widget).

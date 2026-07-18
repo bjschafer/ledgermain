@@ -6,6 +6,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { archetypeConflictWarnings, checkArchetypeConflict } from "../../model/archetypes.js";
 import { setArchetypes } from "../../model/doc.js";
 import { TipButton } from "../InfoTip.js";
+import { SearchMiss } from "./SearchMiss.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -44,6 +45,10 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
   if (classTags.length === 0) return null;
 
   const q = query.trim().toLowerCase();
+  const hasMatches = classTags.some((tag) => {
+    const options = byClass.get(tag)!;
+    return q ? options.some((o) => o.name.toLowerCase().includes(q)) : options.length > 0;
+  });
 
   function toggle(id: string, blocked: boolean) {
     if (blocked) return;
@@ -141,6 +146,7 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
               </div>
             );
           })}
+          {!hasMatches && q ? <SearchMiss query={query.trim()} picker="archetypes" /> : null}
         </>
       )}
     </div>

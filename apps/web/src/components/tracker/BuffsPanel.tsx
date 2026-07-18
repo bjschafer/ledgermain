@@ -6,6 +6,7 @@ import type { RollData } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
 import { NumberField } from "../builder/NumberField.js";
+import { SearchMiss } from "../builder/SearchMiss.js";
 import {
   addBuff,
   advanceRound,
@@ -124,6 +125,9 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
         onChange={(e) => setQuery(e.target.value)}
       />
       <div className="scroll short">
+        {matches.length === 0 && query.trim() ? (
+          <SearchMiss query={query.trim()} picker="buffs" />
+        ) : null}
         {matches.map((buff) => {
           const isActive = activeBuffIds.has(buff.id);
           return (

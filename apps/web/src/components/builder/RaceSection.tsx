@@ -22,6 +22,7 @@ import { useCollapsed } from "../../state/useCollapsed.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { HomebrewRaceEditor } from "./HomebrewRaceEditor.js";
 import { Panel } from "./Panel.js";
+import { SearchMiss } from "./SearchMiss.js";
 import type { BuilderProps } from "./types.js";
 
 /**
@@ -153,7 +154,13 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
           ))}
         </RaceGroupSection>
       ))}
-      {!hasMatches ? <div className="empty">No races match.</div> : null}
+      {!hasMatches ? (
+        searchActive ? (
+          <SearchMiss query={query.trim()} picker="races" />
+        ) : (
+          <div className="empty">No races match.</div>
+        )
+      ) : null}
       {pendingRaceId != null && (
         <p className="hint" style={{ marginTop: 12 }}>
           <span className="prep-clear-confirm-label">

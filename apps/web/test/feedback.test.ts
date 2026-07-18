@@ -4,6 +4,7 @@ import type { CharacterDoc } from "@pf1/schema";
 
 import {
   buildRequest,
+  buildSearchMissDraft,
   DEFAULT_CATEGORY,
   describeUserAgent,
   emptyDraft,
@@ -137,5 +138,20 @@ describe("formatContext", () => {
     expect(formatContext(context)).toBe(
       "Build mode · TestBrowser/1.0 · viewport 1440x900 · app abc1234",
     );
+  });
+});
+
+describe("buildSearchMissDraft", () => {
+  it("folds the query and picker noun into the message, filed as missing content", () => {
+    const draft = buildSearchMissDraft("Fey Foundling", "feat");
+    expect(draft.category).toBe(DEFAULT_CATEGORY);
+    expect(draft.message).toBe(`Can't find a feat for "Fey Foundling".`);
+    expect(draft.contact).toBe("");
+    expect(draft.includeBuild).toBe(false);
+  });
+
+  it("produces a draft that passes validation as-is", () => {
+    const draft = buildSearchMissDraft("Zzznotarealthing", "spell");
+    expect(validateDraft(draft)).toBeNull();
   });
 });
