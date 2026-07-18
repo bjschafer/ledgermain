@@ -314,6 +314,7 @@ describe("addWeaponFromRef()", () => {
       weaponGroups: ["blades-heavy"], // normalized from vendored "bladesHeavy" (issue #45)
       weaponId: longswordRef.id,
       weight: longswordRef.weight,
+      proficiency: "martial",
     } satisfies WeaponInstance);
     // crit ×2 is the default → omitted for doc minimalism.
     expect(w.critMult).toBeUndefined();

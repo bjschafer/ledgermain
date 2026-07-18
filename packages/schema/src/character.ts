@@ -2232,6 +2232,18 @@ export interface WornArmor {
    * the character has an arcane-casting class. Omitted = 0%.
    */
   asf?: number;
+  /**
+   * Shield proficiency tier (issue #81) — meaningful only when `slot ===
+   * "shield"`; `undefined` for body armor. Snapshotted from `ArmorRef.proficiency`
+   * at pick-time ("lightShield"/"other" (bucklers) → "light", "heavyShield" →
+   * "heavy", "towerShield" → "tower"), or chosen directly for a hand-entered
+   * custom shield. Body armor doesn't need an equivalent field — `type` above
+   * (already snapshotted, and already correctly one-stepped-lighter for
+   * mithral) is the light/medium/heavy signal proficiency checks use.
+   * Undefined means "unknown, don't penalize" rather than a guess — matches
+   * `WeaponInstance.proficiency`'s omitted-field posture.
+   */
+  shieldTier?: "light" | "heavy" | "tower";
 }
 
 /**
@@ -2323,6 +2335,17 @@ export interface WeaponInstance {
    * `settings.encumbranceEnabled` is off. Omitted = 0 lb.
    */
   weight?: number;
+  /**
+   * Proficiency category (issue #81), snapshotted from `WeaponRef.proficiency`
+   * at pick-time, or chosen directly for a hand-authored custom weapon (the
+   * builder defaults a new custom entry to "martial" — always present, never
+   * left for the player to accidentally skip). Compared against the
+   * character's derived proficiency set (`@pf1/engine`'s `isWeaponProficient`,
+   * `proficiency.ts`) to apply PF1's flat -4 non-proficient attack penalty.
+   * Omitted only on a document that predates this field (import, or an old
+   * autosave) — treated as "unknown, don't penalize" rather than guessing.
+   */
+  proficiency?: "simple" | "martial" | "exotic";
 }
 
 /* ----------------------------------------------------------- derived sheet -- */
@@ -2420,6 +2443,59 @@ export interface DerivedSheet {
    * honesty-bar context notes, and the player's own free-text notes.
    */
   activeForm?: DerivedActiveForm;
+  /**
+   * Weapon/armor/shield proficiency (issue #81) — the character's derived
+   * proficiency set with provenance, read-only display plus the source data
+   * `@pf1/engine`'s `computeWeaponAttacks`/attack lines check against to apply
+   * PF1's non-proficient penalties. See `@pf1/engine`'s `proficiency.ts` for
+   * how class grants, proficiency feats, and the five racial grants (elf,
+   * dwarf, gnome, half-orc, orc) are combined. Archetype proficiency swaps
+   * (many archetypes trade one armor proficiency for another) are NOT
+   * modeled yet — class-granted proficiency here is always the BASE class's,
+   * a known gap tracked for follow-up.
+   */
+  proficiencies: DerivedProficiencies;
+}
+
+/** One granted proficiency's provenance (issue #81) — which class/feat/race granted it. */
+export interface ProficiencyGrant {
+  /** Human-readable source, e.g. "Fighter", "Martial Weapon Proficiency", "Elf". */
+  source: string;
+  sourceType: "class" | "feat" | "race";
+}
+
+/**
+ * One weapon-proficiency line (issue #81) — either a whole category
+ * ("Simple Weapons"/"Martial Weapons"; `category` set) or a single named
+ * weapon ("Longsword"; `weaponSlug` set, matching `WeaponInstance.group`/
+ * `weaponGroups`, the same kebab-case vocabulary `normalizeWeaponGroup`
+ * produces). Exotic weapons only ever appear as named lines — PF1 has no
+ * "all exotic weapons" grant.
+ */
+export interface WeaponProficiencyLine {
+  label: string;
+  category?: "simple" | "martial";
+  weaponSlug?: string;
+  grants: ProficiencyGrant[];
+}
+
+/**
+ * One armor/shield-proficiency line (issue #81). `tier` drives the actual
+ * proficiency check: "light"/"medium"/"heavy" against a worn suit's `type`,
+ * "shield" against any equipped light/heavy/buckler shield's `shieldTier`,
+ * "tower-shield" against a tower shield specifically (independent — RAW
+ * doesn't imply one from the other).
+ */
+export interface ArmorProficiencyLine {
+  label: string;
+  tier: "light" | "medium" | "heavy" | "shield" | "tower-shield";
+  grants: ProficiencyGrant[];
+}
+
+/** The character's full derived proficiency set (issue #81) — see `DerivedSheet.proficiencies`. */
+export interface DerivedProficiencies {
+  weapons: WeaponProficiencyLine[];
+  armor: ArmorProficiencyLine[];
 }
 
 /** One resolved natural-attack line on `DerivedActiveForm.attacks` — see `@pf1/engine` `computePolymorphAttacks`. */

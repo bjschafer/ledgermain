@@ -380,6 +380,27 @@ export function Sheet({
         </div>
       )}
 
+      {/* Proficiencies (issue #81) — read-only, provenance on hover/tap. */}
+      {(sheet.proficiencies.weapons.length > 0 || sheet.proficiencies.armor.length > 0) && (
+        <div className="stat-group">
+          <div className="stat-group-header">
+            <span className="stat-group-legend">Proficiencies</span>
+            <div className="stat-group-rule" />
+          </div>
+          <div className="prof-strip">
+            {[...sheet.proficiencies.weapons, ...sheet.proficiencies.armor].map((line, i) => (
+              <InfoTip
+                key={`${line.label}-${i}`}
+                className="prof-chip"
+                content={`Granted by ${line.grants.map((g) => g.source).join(", ")}`}
+              >
+                {line.label}
+              </InfoTip>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Saving Throws ---------------------------------------------- */}
       <div className="stat-group">
         <div className="stat-group-header">

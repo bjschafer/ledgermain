@@ -23,6 +23,7 @@ import type {
   CharacterDoc,
   DerivedActiveForm,
   DerivedEncumbrance,
+  DerivedProficiencies,
   DerivedSheet,
   DerivedSkill,
   HitPoints,
@@ -51,6 +52,12 @@ import {
   POLYMORPH_TIERS,
   type PolymorphTier,
 } from "./polymorph.js";
+import {
+  deriveProficiencies,
+  isArmorTypeProficient,
+  isShieldTierProficient,
+  isWeaponProficient,
+} from "./proficiency.js";
 import { hasSlowAndSteady } from "./racial-traits.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
@@ -873,6 +880,38 @@ function rogueFinesseTrainingMatches(doc: CharacterDoc, w: WeaponInstance): bool
 }
 
 /**
+ * Non-proficient-ARMOR attack penalty (issue #81, PF1 CRB "Armor Proficiency"):
+ * a character wearing armor or wielding a shield outside their proficiency
+ * suffers that piece's armor check penalty on ATTACK rolls too, in addition
+ * to the Str/Dex skill checks it already always applies to (unconditionally,
+ * proficient or not — see `computeSkills`'s `wornAcp`; this is deliberately
+ * NOT threaded through there, to avoid double-applying). One component per
+ * non-proficient equipped piece, so multiple non-proficient items (a
+ * non-proficient suit AND a non-proficient shield) stack, matching how their
+ * ACP already stacks going into `wornAcp`.
+ */
+function nonProficientArmorAttackComponents(
+  doc: CharacterDoc,
+  proficiencies: DerivedProficiencies,
+): ModifierComponent[] {
+  const components: ModifierComponent[] = [];
+  for (const inst of doc.build.gear ?? []) {
+    const a = inst.armor;
+    if (!inst.equipped || !a || !a.acp) continue;
+    const proficient =
+      a.slot === "armor"
+        ? isArmorTypeProficient(proficiencies, a.type)
+        : a.shieldTier
+          ? isShieldTierProficient(proficiencies, a.shieldTier)
+          : true;
+    if (proficient) continue;
+    const label = inst.name ?? (a.slot === "armor" ? "Armor" : "Shield");
+    components.push(synthetic(`${label} (non-proficient)`, "penalty", a.acp));
+  }
+  return components;
+}
+
+/**
  * Builds a ResolvedWeaponAttack for each entry in build.weapons.
  *
  * Attack formula (PF1 CRB):
@@ -881,6 +920,8 @@ function rogueFinesseTrainingMatches(doc: CharacterDoc, w: WeaponInstance): bool
  *            + general "attack" / "mattack" / "rattack" changes
  *            + per-group changes (e.g. `attack.weapon.longsword` from Weapon Focus,
  *              or `attack.weapon.bows` from a semantic weapon-group bonus)
+ *            + -4 if non-proficient with the weapon, + non-proficient worn
+ *              armor/shield's ACP (issue #81, see {@link nonProficientArmorAttackComponents})
  *
  * Damage bonus (numeric; dice displayed separately):
  *   damage = floor(ability mod × damageMultiplier) [melee, damageAbility="str"/"dex" only]
@@ -910,7 +951,10 @@ function computeWeaponAttacks(
   dexMod: number,
   sizeAttackMod: number,
   collected: CollectedModifier[],
+  proficiencies: DerivedProficiencies,
+  armorProfComponents: ModifierComponent[],
 ): ResolvedWeaponAttack[] {
+  const armorProfPenalty = armorProfComponents.reduce((s, c) => s + c.value, 0);
   const weapons = doc.build.weapons ?? [];
   return weapons.map((w) => {
     const category = w.category ?? "melee";
@@ -921,6 +965,11 @@ function computeWeaponAttacks(
     const attackAbilityMod = w.attackAbility === "dex" ? dexMod : strMod;
     const attackAbilityLabel = w.attackAbility === "dex" ? "Dexterity" : "Strength";
     const groupKeys = weaponGroupKeys(w);
+    const weaponProficient = isWeaponProficient(proficiencies, w);
+    const weaponProfPenalty = weaponProficient ? 0 : -4;
+    const weaponProfComponents: ModifierComponent[] = weaponProficient
+      ? []
+      : [synthetic(`${w.name} (non-proficient)`, "penalty", -4)];
 
     // General attack changes + per-group feat bonuses (e.g. Weapon Focus via
     // "attack.weapon.<group>", or a semantic weapon-group bonus via "attack.weapon.bows").
@@ -930,7 +979,14 @@ function computeWeaponAttacks(
       ...groupKeys.flatMap((g) => forTarget(collected, `attack.weapon.${g}`)),
     ]);
     const attackTotal =
-      bab + attackAbilityMod + sizeAttackMod + enh + masterworkBonus + weaponAttackStack.total;
+      bab +
+      attackAbilityMod +
+      sizeAttackMod +
+      enh +
+      masterworkBonus +
+      weaponAttackStack.total +
+      weaponProfPenalty +
+      armorProfPenalty;
     const attackComponents: ModifierComponent[] = [
       synthetic("BAB", "base", bab),
       synthetic(attackAbilityLabel, "ability", attackAbilityMod),
@@ -940,6 +996,8 @@ function computeWeaponAttacks(
         ? [synthetic(`${w.name} (masterwork)`, "enh", masterworkBonus)]
         : []),
       ...toComponents(weaponAttackStack.modifiers),
+      ...weaponProfComponents,
+      ...armorProfComponents,
     ];
 
     // Ability-to-damage: STR or DEX, only melee, scaled by damageMultiplier.
@@ -1090,6 +1148,15 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     will: computeSave("will", doc.identity.classes, refData, abilities.wis.mod, collected),
   };
 
+  // Proficiency (issue #81) — class/feat/race grants, and the non-proficient
+  // worn armor/shield attack penalty derived from them. Weapon non-proficiency
+  // (-4) is necessarily per-weapon (see computeWeaponAttacks below); the
+  // armor/shield ACP-on-attack penalty isn't weapon-specific, so it applies
+  // here too, on the base melee/ranged lines.
+  const proficiencies = deriveProficiencies(doc, refData);
+  const armorProfComponents = nonProficientArmorAttackComponents(doc, proficiencies);
+  const armorProfPenalty = armorProfComponents.reduce((s, c) => s + c.value, 0);
+
   // Attack. `attack` applies to both lines; `mattack`/`rattack` are melee/ranged
   // specific (e.g. prone's -4 is melee only).
   const meleeStack = resolveStack([
@@ -1105,15 +1172,17 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     synthetic("Strength", "ability", strMod),
     ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
     ...toComponents(meleeStack.modifiers),
+    ...armorProfComponents,
   ];
   const rangedComponents: ModifierComponent[] = [
     synthetic("BAB", "base", bab),
     synthetic("Dexterity", "ability", dexMod),
     ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
     ...toComponents(rangedStack.modifiers),
+    ...armorProfComponents,
   ];
-  const meleeTotal = bab + strMod + sizeAttackMod + meleeStack.total;
-  const rangedTotal = bab + dexMod + sizeAttackMod + rangedStack.total;
+  const meleeTotal = bab + strMod + sizeAttackMod + meleeStack.total + armorProfPenalty;
+  const rangedTotal = bab + dexMod + sizeAttackMod + rangedStack.total + armorProfPenalty;
   const meleeIteratives = iterativeSequence(bab, meleeTotal);
   const rangedIteratives = iterativeSequence(bab, rangedTotal);
   const attack = {
@@ -1219,7 +1288,16 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const skills = computeSkills(doc, refData, abilities, collected, encumbrance);
 
   // Per-weapon attack lines
-  const attacks = computeWeaponAttacks(doc, bab, strMod, dexMod, sizeAttackMod, collected);
+  const attacks = computeWeaponAttacks(
+    doc,
+    bab,
+    strMod,
+    dexMod,
+    sizeAttackMod,
+    collected,
+    proficiencies,
+    armorProfComponents,
+  );
 
   // DR / energy resistance / spell resistance — display-only (issue #21).
   const defenses = computeDefenses(doc, refData, collected);
@@ -1281,6 +1359,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     size,
     activeForm,
     arcaneSpellFailure,
+    proficiencies,
   };
 
   for (const [key, val] of Object.entries(overrides)) {
