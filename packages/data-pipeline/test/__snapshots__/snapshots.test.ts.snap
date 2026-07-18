@@ -177,6 +177,9 @@ exports[`normalized-output snapshots spell: Fireball 1`] = `
   "actions": [
     {
       "actionType": "spellsave",
+      "activation": {
+        "type": "standard",
+      },
       "area": "20-ft.-radius spread",
       "damage": {
         "parts": [

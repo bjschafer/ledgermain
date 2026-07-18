@@ -11,6 +11,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import type { RefData, Spell } from "@pf1/schema";
 
 import {
+  formatCastingTime,
   formatSpellComponents,
   formatSpellDuration,
   formatSpellRange,
@@ -56,6 +57,34 @@ describe("formatSpellDuration", () => {
   it("labels an instantaneous spell", () => {
     expect(formatSpellDuration(spellByName("Fireball"), 5)).toBe("Instantaneous");
     expect(formatSpellDuration(spellByName("Magic Missile"), 5)).toBe("Instantaneous");
+  });
+});
+
+describe("formatCastingTime", () => {
+  it("labels a standard-action cast (Magic Missile)", () => {
+    expect(formatCastingTime(spellByName("Magic Missile"))).toBe("Standard action");
+  });
+
+  it("labels an immediate-action cast (Feather Fall)", () => {
+    expect(formatCastingTime(spellByName("Feather Fall"))).toBe("Immediate action");
+  });
+
+  it("defaults an unspecified round cost to 1 round (Summon Monster I)", () => {
+    expect(formatCastingTime(spellByName("Summon Monster I"))).toBe("1 round");
+  });
+
+  it("applies a minute-type cost multiplier (Alpha Instinct: 10 minutes)", () => {
+    expect(formatCastingTime(spellByName("Alpha Instinct"))).toBe("10 minutes");
+  });
+
+  it("applies a full-round-type cost multiplier (Regenerate: 3 full rounds)", () => {
+    expect(formatCastingTime(spellByName("Regenerate"))).toBe("3 full rounds");
+  });
+
+  it("never throws formatting any vendored spell's casting time", () => {
+    for (const spell of Object.values(refData.spells)) {
+      expect(() => formatCastingTime(spell)).not.toThrow();
+    }
   });
 });
 

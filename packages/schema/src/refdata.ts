@@ -365,6 +365,15 @@ export interface SpellAction {
   area?: string;
   duration?: { units?: string; value?: string };
   damage?: { parts: { formula: string; types: string[] }[] };
+  /**
+   * Casting time — Foundry action-economy code (e.g. "standard", "swift",
+   * "round", "minute", "hour", "full", "immediate", "free") plus an optional
+   * multiplier for the unit types that support one ("round" -> "3 rounds",
+   * "minute" -> "10 minutes"). `cost` absent means 1. See
+   * `apps/web/src/model/spellStats.ts`'s `formatCastingTime` for the
+   * player-facing formatter.
+   */
+  activation?: { type?: string; cost?: number };
 }
 
 /* ------------------------------------------------------------------- buffs -- */
