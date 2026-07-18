@@ -23,6 +23,7 @@ import { PrintView } from "./components/PrintView.js";
 import { Sheet } from "./components/Sheet.js";
 import { SyncStatus } from "./components/SyncStatus.js";
 import { ToastHost } from "./components/ToastHost.js";
+import { PlayNav } from "./components/tracker/PlayNav.js";
 import { StatStrip } from "./components/tracker/StatStrip.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { useCharacter } from "./state/useCharacter.js";
@@ -194,7 +195,7 @@ function Workbench({
   onOpenPrint: () => void;
 }) {
   return (
-    <div className={`layout${mode === "build" ? " layout--with-nav" : ""}`}>
+    <div className={`layout${mode === "build" || mode === "play" ? " layout--with-nav" : ""}`}>
       {mode === "build" && (
         /* On mobile (<=940px) `.mobile-build-header` collapses to a single
            sticky block stacking the compact stat strip over the section-jump
@@ -204,6 +205,14 @@ function Workbench({
         <div className="mobile-build-header">
           <StatStrip {...props} />
           <BuildNav {...props} />
+        </div>
+      )}
+      {mode === "play" && (
+        /* Same header machinery for Play — StatStrip over the PlayNav jump rail
+           (see components/tracker/PlayNav). */
+        <div className="mobile-build-header">
+          <StatStrip {...props} />
+          <PlayNav {...props} />
         </div>
       )}
       <div className="build-col">

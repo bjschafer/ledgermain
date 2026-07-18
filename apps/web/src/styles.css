@@ -4884,6 +4884,79 @@ input[type="text"].saved-roll-name:focus {
 }
 
 /* ============================================================================
+   Play nav — section-jump navigation for the Play tab (components/tracker/
+   PlayNav). Reuses the `build-nav*` item/badge classes (same sticky rail on
+   desktop, horizontal chip row on mobile); the additions here are the group
+   labels ("Combat", "Encounter", "Companions", "Reference") that split the
+   rail into a map. Group blocks are `display: contents` so their child buttons
+   flow as direct nav children in both the vertical and horizontal layouts.
+   ========================================================================== */
+
+.play-nav-group-block {
+  display: contents;
+}
+
+.play-nav-group {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--gold-dim-ink);
+  padding: 6px 8px 2px;
+  margin-top: 8px;
+}
+
+.play-nav-group-block:first-child .play-nav-group {
+  margin-top: 0;
+}
+
+/* Group dividers between the panel clusters in the tracker column itself. */
+.play-group {
+  display: block;
+}
+
+.play-group-head {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-dim-ink);
+  font-weight: 500;
+  margin: 20px 0 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.tracker-col > .play-group:first-of-type .play-group-head {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* Collapse a whole group (label included) when none of its panels rendered —
+   every conditional panel self-hides to `null`, so a group with no `.panel`
+   inside is empty. */
+.play-group:not(:has(.panel)) {
+  display: none;
+}
+
+.play-section {
+  scroll-margin-top: 16px;
+}
+
+@media (max-width: 940px) {
+  /* Chip row has no room for group labels; the ordering still groups visually. */
+  .play-nav .play-nav-group {
+    display: none;
+  }
+
+  .play-section {
+    /* Clears the taller two-row sticky header (stat strip + nav chips). */
+    scroll-margin-top: 112px;
+  }
+}
+
+/* ============================================================================
    Living sheet: recompute shimmer + baseline tint (UX audit)
    The engine recomputes the whole sheet on every doc change, but the sheet
    never showed it — toggling Prone silently dropped AC from 13 to 9. These
