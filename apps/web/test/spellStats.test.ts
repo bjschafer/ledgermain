@@ -82,12 +82,27 @@ describe("spellDamageParts", () => {
     expect(spellDamageParts(clw, 9)).toEqual([{ text: "1d8+5", types: ["positive"] }]); // capped
   });
 
-  it("shows per-hit damage for a spell whose count scales only in prose (Magic Missile)", () => {
-    // The vendored formula is 1d4+1 — the missile count lives in prose, not the
-    // formula, so only the per-missile damage resolves here.
-    expect(spellDamageParts(spellByName("Magic Missile"), 4)).toEqual([
-      { text: "1d4+1", types: ["force"] },
-    ]);
+  it("resolves the multi-projectile count from the hand-authored supplement (Magic Missile)", () => {
+    // The vendored formula is a flat 1d4+1 — the missile count (1 + 1/2 levels
+    // beyond 1st, max 5) lives in prose, supplied via Spell.projectileCount.
+    // Per-hit dice stay honest; the count rides alongside as `count`.
+    const missile = spellByName("Magic Missile");
+    // CL 1–2: one missile — no ×N note (count omitted).
+    expect(spellDamageParts(missile, 1)).toEqual([{ text: "1d4+1", types: ["force"] }]);
+    expect(spellDamageParts(missile, 2)).toEqual([{ text: "1d4+1", types: ["force"] }]);
+    // CL 3 → 2, CL 7 → 4, CL 9+ → capped at 5.
+    expect(spellDamageParts(missile, 3)).toEqual([{ text: "1d4+1", types: ["force"], count: 2 }]);
+    expect(spellDamageParts(missile, 7)).toEqual([{ text: "1d4+1", types: ["force"], count: 4 }]);
+    expect(spellDamageParts(missile, 20)).toEqual([{ text: "1d4+1", types: ["force"], count: 5 }]);
+  });
+
+  it("resolves the ray count for Scorching Ray (4d6 per ray, not folded together)", () => {
+    const ray = spellByName("Scorching Ray"); // 1 ray + 1/4 levels beyond 3rd, max 3
+    // CL 3–6: one ray — dice unchanged, no count.
+    expect(spellDamageParts(ray, 5)).toEqual([{ text: "4d6", types: ["fire"] }]);
+    // CL 7 → 2 rays, CL 11+ → capped at 3.
+    expect(spellDamageParts(ray, 7)).toEqual([{ text: "4d6", types: ["fire"], count: 2 }]);
+    expect(spellDamageParts(ray, 20)).toEqual([{ text: "4d6", types: ["fire"], count: 3 }]);
   });
 
   it("returns no parts for a spell that deals no rolled damage", () => {

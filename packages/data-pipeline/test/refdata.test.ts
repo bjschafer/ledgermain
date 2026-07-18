@@ -216,6 +216,25 @@ describe("wizard spell list (inverted learnedAt.class)", () => {
   });
 });
 
+describe("multi-projectile count supplement (hand-authored @cl formulas)", () => {
+  it("attaches projectileCount to the multi-projectile spells", () => {
+    // The `damage.parts` formula stays the flat per-hit dice; the count rides
+    // in `projectileCount` (a @cl-keyed formula, resolved at display time).
+    expect(byName(ref.spells, "Magic Missile").projectileCount).toBe(
+      "min(5, max(1, 1 + floor((@cl - 1) / 2)))",
+    );
+    expect(byName(ref.spells, "Scorching Ray").projectileCount).toBe(
+      "min(3, max(1, 1 + floor((@cl - 3) / 4)))",
+    );
+    // The vendored per-hit formula is untouched.
+    expect(byName(ref.spells, "Magic Missile").actions[0]?.damage?.parts[0]?.formula).toBe("1d4+1");
+  });
+
+  it("leaves single-instance spells without a projectileCount", () => {
+    expect(byName(ref.spells, "Fireball").projectileCount).toBeUndefined();
+  });
+});
+
 describe("cleric domain spell lists (inverted learnedAt.domain)", () => {
   it("emits a non-empty domainSpellLists collection", () => {
     expect(Object.keys(ref.domainSpellLists).length).toBeGreaterThan(0);

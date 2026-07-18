@@ -42,6 +42,7 @@ import {
   applyArchetypeFeatureLevelSupplements,
   applyClassFeatureUsesSupplements,
   applyPrestigeClassSupplements,
+  applySpellProjectileSupplements,
   resolveBloodlineSupplements,
 } from "./supplements.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
@@ -220,6 +221,10 @@ export function normalize(opts: NormalizeOptions): {
     const hasBloodline = Object.keys(spell.learnedAt.bloodline ?? {}).length > 0;
     if (hasClass || hasDomain || hasBloodline) spells.push(spell);
   }
+  // Attach `@cl`-keyed projectile counts to the multi-projectile spells whose
+  // count scales in prose, not their damage formula (Magic Missile, Scorching
+  // Ray). Throws if a named spell is absent — a data-drift guard.
+  applySpellProjectileSupplements(spells);
 
   // --- per-class spell lists (invert learnedAt.class) ------------------------
   const spellLists: Record<string, SpellList> = {};

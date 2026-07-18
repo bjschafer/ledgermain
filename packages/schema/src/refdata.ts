@@ -345,6 +345,15 @@ export interface Spell extends RefEntity {
     subdomain?: Record<string, number>;
   };
   actions: SpellAction[];
+  /**
+   * `@cl`-keyed formula for the number of projectiles a multi-projectile spell
+   * fires (Magic Missile's missiles, Scorching Ray's rays) — the count scales
+   * with caster level in the spell's prose, not in `damage.parts[].formula`, so
+   * it can't be derived from vendored data. Hand-authored by name in
+   * `data-pipeline`'s `SPELL_PROJECTILE_COUNTS` supplement and applied in
+   * `normalize.ts`; absent for the ~all spells whose effect count is fixed.
+   */
+  projectileCount?: string;
 }
 
 export interface SpellAction {

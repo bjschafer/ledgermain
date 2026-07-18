@@ -173,6 +173,14 @@ export interface SpellDamage {
   text: string;
   /** Damage types on this part, e.g. `["fire"]`, `["positive"]`. */
   types: string[];
+  /**
+   * Number of projectiles this per-hit damage is dealt by, for a spell whose
+   * effect count scales with caster level (Magic Missile → 4 missiles at CL 7,
+   * Scorching Ray → 3 rays at CL 11). Resolved from `Spell.projectileCount`.
+   * Absent (or 1) for the ~all spells that deal a single instance of damage —
+   * the display shows a `×N` note only when this is > 1.
+   */
+  count?: number;
 }
 
 /**
@@ -183,16 +191,21 @@ export interface SpellDamage {
  * to its plain number; anything we can't resolve falls back to the raw
  * formula. `[]` when the spell deals no rolled damage.
  *
- * Only the damage FORMULA scales here — a spell whose effect multiplies
- * (Magic Missile's missile count, Scorching Ray's ray count) has that scaling
- * only in its prose, not the vendored formula, so its per-hit damage shows
- * (`"1d4+1"`) but not the multiplied total.
+ * The damage FORMULA scales here; a spell whose effect COUNT scales instead
+ * (Magic Missile's missiles, Scorching Ray's rays) carries a hand-authored
+ * `@cl`-keyed `projectileCount` (the count is prose-only, not in the vendored
+ * formula) — resolved to `count` here so the per-hit dice stay honest and the
+ * display appends a `×N` note rather than folding the count into the dice.
  */
 export function spellDamageParts(spell: Spell, cl: number): SpellDamage[] {
   const parts = firstActionWith(spell, (a) =>
     a.damage?.parts.length ? a.damage.parts : undefined,
   );
   if (!parts) return [];
+  // A count > 1 applies to the whole volley of per-hit parts; `undefined`
+  // (unresolvable) and 1 both leave the ×N note off.
+  const rawCount = spell.projectileCount ? safeEvaluate(spell.projectileCount, cl) : null;
+  const count = rawCount !== null && rawCount > 1 ? rawCount : undefined;
   const out: SpellDamage[] = [];
   for (const part of parts) {
     const formula = part.formula?.trim();
@@ -202,7 +215,7 @@ export function spellDamageParts(spell: Spell, cl: number): SpellDamage[] {
       const n = safeEvaluate(formula, cl);
       text = n !== null ? String(n) : formula;
     }
-    out.push({ text, types: part.types });
+    out.push({ text, types: part.types, count });
   }
   return out;
 }

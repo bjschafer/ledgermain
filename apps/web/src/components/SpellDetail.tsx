@@ -26,9 +26,13 @@ const SAVE_LABEL: Record<string, string> = {
   fort: "Fortitude",
 };
 
-/** Join a damage part's dice and types for display, e.g. `"4d6 fire"`. */
-function damageLabel(part: { text: string; types: string[] }): string {
-  return part.types.length > 0 ? `${part.text} ${part.types.join("/")}` : part.text;
+/**
+ * Join a damage part's dice, types, and (for a multi-projectile spell) its
+ * per-hit count for display, e.g. `"4d6 fire"`, `"1d4+1 force ×4"`.
+ */
+function damageLabel(part: { text: string; types: string[]; count?: number }): string {
+  const dice = part.types.length > 0 ? `${part.text} ${part.types.join("/")}` : part.text;
+  return part.count !== undefined ? `${dice} ×${part.count}` : dice;
 }
 
 /**

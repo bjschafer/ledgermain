@@ -27,6 +27,7 @@ import type {
   Class,
   ClassFeature,
   ClassFeatureGrant,
+  Spell,
   SpellList,
 } from "@pf1/schema";
 
@@ -170,6 +171,47 @@ export function applyArchetypeFeatureLevelSupplements(features: ArchetypeFeature
   for (const feature of features) {
     const level = SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL[feature.id];
     if (level !== undefined) feature.level = level;
+  }
+}
+
+/**
+ * `@cl`-keyed projectile-count formulas for the handful of spells whose EFFECT
+ * COUNT scales with caster level (rather than their `damage.parts[].formula`).
+ * The vendored `damage.parts` carries only the flat per-hit damage — Magic
+ * Missile's `1d4+1`, Scorching Ray's `4d6` — because the "N per M levels" rule
+ * lives in the spell's prose, so `Spell.projectileCount` can't be derived and
+ * is hand-authored here from the published CRB, keyed by spell **name** and
+ * applied in `normalize.ts`. The tracker's spell strip renders it as
+ * `<per-hit dice> ×N` (see `spellDamageParts`), keeping each ray/missile an
+ * honest separate roll rather than folding the count into one dice total.
+ *
+ * Formulas floor RAW's "one, plus one per M levels beyond L, max K":
+ *   - Magic Missile   — 1 + 1/2 levels beyond 1st, max 5 (5 at CL 9).
+ *   - Scorching Ray   — 1 + 1/4 levels beyond 3rd, max 3 (3 at CL 11).
+ * The `max(1, …)` floor guards a below-minimum caster level from yielding 0.
+ */
+export const SPELL_PROJECTILE_COUNTS: Record<string, string> = {
+  "Magic Missile": "min(5, max(1, 1 + floor((@cl - 1) / 2)))",
+  "Scorching Ray": "min(3, max(1, 1 + floor((@cl - 3) / 4)))",
+};
+
+/**
+ * Apply `SPELL_PROJECTILE_COUNTS` in place, setting `projectileCount` on each
+ * named spell. Throws if a named spell is absent from the vendored set — a
+ * data-version drift guard, mirroring `resolveBloodlineSupplements`: a bump
+ * that renames or drops one of these fails the build loudly rather than
+ * silently dropping the ×N count.
+ */
+export function applySpellProjectileSupplements(spells: Spell[]): void {
+  const byName = new Map(spells.map((s) => [s.name, s]));
+  for (const [name, formula] of Object.entries(SPELL_PROJECTILE_COUNTS)) {
+    const spell = byName.get(name);
+    if (spell === undefined) {
+      throw new Error(
+        `[supplements] projectile-count spell "${name}" not found in vendored spells`,
+      );
+    }
+    spell.projectileCount = formula;
   }
 }
 
