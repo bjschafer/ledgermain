@@ -42,6 +42,7 @@ export function SpellManager({
   isSpontaneous,
   refData,
   abilityMod,
+  casterLevel,
   onClose,
 }: {
   casterTag: string;
@@ -57,6 +58,7 @@ export function SpellManager({
   isSpontaneous: boolean;
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
   onClose: () => void;
 }) {
   const [filter, setFilter] = useState<SpellFilter>(EMPTY_SPELL_FILTER);
@@ -158,6 +160,7 @@ export function SpellManager({
                         spell={sp}
                         refData={refData}
                         abilityMod={abilityMod}
+                        casterLevel={casterLevel}
                         isKnown={known.has(sp.id)}
                         onToggle={onToggle}
                         overLimit={
@@ -218,6 +221,7 @@ export function SpellManager({
                             spell={sp}
                             refData={refData}
                             abilityMod={abilityMod}
+                            casterLevel={casterLevel}
                             isKnown
                             onToggle={onToggle}
                           />
@@ -291,6 +295,7 @@ function SpellRow({
   spell,
   refData,
   abilityMod,
+  casterLevel,
   isKnown,
   onToggle,
   overLimit = false,
@@ -299,6 +304,7 @@ function SpellRow({
   spell: SpellEntry;
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
   isKnown: boolean;
   onToggle?: (id: string) => void;
   overLimit?: boolean;
@@ -318,7 +324,14 @@ function SpellRow({
               {schoolLabel(spell.school)} · {levelName(spell.level).toLowerCase()}
             </span>
           )}
-          {data && <SpellDetail spell={data} spellLevel={spell.level} abilityMod={abilityMod} />}
+          {data && (
+            <SpellDetail
+              spell={data}
+              spellLevel={spell.level}
+              abilityMod={abilityMod}
+              casterLevel={casterLevel}
+            />
+          )}
         </div>
       </div>
       {onToggle && (

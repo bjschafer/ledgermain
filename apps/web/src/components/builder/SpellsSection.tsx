@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { RefData } from "@pf1/schema";
 
-import { effectiveCasterClassLevel } from "../../model/casterLevel.js";
+import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
 import { toggleKnownSpell } from "../../model/doc.js";
 import {
   accessibleSpellLevels,
@@ -64,6 +64,12 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     () => (casterTag ? effectiveCasterClassLevel(doc, refData, casterTag) : classLevel),
     [doc, refData, casterTag, classLevel],
   );
+
+  // Caster level for this class, used to resolve @cl-scaled spell stats (range
+  // bands, durations, damage) in the browsed spell details.
+  const casterLevel = casterTag
+    ? casterLevelForClass(casterTag, effectiveClassLevel)
+    : effectiveClassLevel;
 
   const grantsCantrips = !!model?.grantsAllCantrips;
 
@@ -326,6 +332,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
           isSpontaneous={model?.preparation === "spontaneous"}
           refData={refData}
           abilityMod={abilityMod}
+          casterLevel={casterLevel}
           onClose={() => setManagerOpen(false)}
         />
       )}
@@ -333,7 +340,12 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
       <div className="scroll">
         {/* Granted cantrips: read-only, always present, collapsed by default. */}
         {cantrips.length > 0 && (
-          <GrantedCantripsBlock cantrips={cantrips} refData={refData} abilityMod={abilityMod} />
+          <GrantedCantripsBlock
+            cantrips={cantrips}
+            refData={refData}
+            abilityMod={abilityMod}
+            casterLevel={casterLevel}
+          />
         )}
 
         {/* Domain spells: read-only reference list for the chosen domains. */}
@@ -343,6 +355,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             entries={domainEntries}
             refData={refData}
             abilityMod={abilityMod}
+            casterLevel={casterLevel}
           />
         )}
 
@@ -353,12 +366,18 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             entries={bloodlineEntries}
             refData={refData}
             abilityMod={abilityMod}
+            casterLevel={casterLevel}
           />
         )}
 
         {/* Oracle mystery + curse bonus spells: read-only, auto-granted, exempt from the known cap. */}
         {mysteryEntries.length > 0 && (
-          <MysterySpellsBlock entries={mysteryEntries} refData={refData} abilityMod={abilityMod} />
+          <MysterySpellsBlock
+            entries={mysteryEntries}
+            refData={refData}
+            abilityMod={abilityMod}
+            casterLevel={casterLevel}
+          />
         )}
 
         {/* Psychic discipline bonus spells: read-only, auto-granted, exempt from the known cap. */}
@@ -367,12 +386,18 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             entries={disciplineEntries}
             refData={refData}
             abilityMod={abilityMod}
+            casterLevel={casterLevel}
           />
         )}
 
         {/* Witch patron bonus spells: read-only, auto-granted, exempt from the known cap. */}
         {patronEntries.length > 0 && (
-          <PatronSpellsBlock entries={patronEntries} refData={refData} abilityMod={abilityMod} />
+          <PatronSpellsBlock
+            entries={patronEntries}
+            refData={refData}
+            abilityMod={abilityMod}
+            casterLevel={casterLevel}
+          />
         )}
 
         {/* Shaman spirit magic bonus spells: read-only, auto-granted, exempt from the known cap. */}
@@ -381,6 +406,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             entries={shamanEntries}
             refData={refData}
             abilityMod={abilityMod}
+            casterLevel={casterLevel}
           />
         )}
 
@@ -399,6 +425,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
               entries={byLevel.get(lvl) ?? []}
               refData={refData}
               abilityMod={abilityMod}
+              casterLevel={casterLevel}
               onRemove={(id) => update((d) => toggleKnownSpell(d, refData, id, casterTag))}
               knownLimit={knownLimits.get(lvl)}
               knownCount={knownCountByLevel.get(lvl) ?? 0}
@@ -482,6 +509,7 @@ function SpellLevelGroup({
   entries,
   refData,
   abilityMod,
+  casterLevel,
   onRemove,
   knownLimit,
   knownCount,
@@ -491,6 +519,7 @@ function SpellLevelGroup({
   entries: SpellEntry[];
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
   onRemove: (id: string) => void;
   knownLimit?: number;
   knownCount: number;
@@ -537,7 +566,12 @@ function SpellLevelGroup({
               <div className="pmain">
                 <div className="pname">{sp.name}</div>
                 {spellData && (
-                  <SpellDetail spell={spellData} spellLevel={level} abilityMod={abilityMod} />
+                  <SpellDetail
+                    spell={spellData}
+                    spellLevel={level}
+                    abilityMod={abilityMod}
+                    casterLevel={casterLevel}
+                  />
                 )}
               </div>
               <button type="button" className="pick-btn remove" onClick={() => onRemove(sp.id)}>
@@ -558,10 +592,12 @@ function GrantedCantripsBlock({
   cantrips,
   refData,
   abilityMod,
+  casterLevel,
 }: {
   cantrips: SpellEntry[];
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
 }) {
   const [collapsed, toggle] = useCollapsed("spell-granted-cantrips", true);
   return (
@@ -590,7 +626,12 @@ function GrantedCantripsBlock({
               <div className="pmain">
                 <div className="pname">{sp.name}</div>
                 {spellData && (
-                  <SpellDetail spell={spellData} spellLevel={0} abilityMod={abilityMod} />
+                  <SpellDetail
+                    spell={spellData}
+                    spellLevel={0}
+                    abilityMod={abilityMod}
+                    casterLevel={casterLevel}
+                  />
                 )}
               </div>
             </div>
@@ -611,11 +652,13 @@ function DomainSpellsBlock({
   entries,
   refData,
   abilityMod,
+  casterLevel,
 }: {
   domains: string[];
   entries: SpellEntry[];
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
 }) {
   const [collapsed, toggle] = useCollapsed(`domain-spells:${domains.sort().join(",")}`, true);
   const byLevel = new Map<number, SpellEntry[]>();
@@ -653,7 +696,12 @@ function DomainSpellsBlock({
                   <div className="pmain">
                     <div className="pname">{sp.name}</div>
                     {spellData && (
-                      <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
+                      <SpellDetail
+                        spell={spellData}
+                        spellLevel={lvl}
+                        abilityMod={abilityMod}
+                        casterLevel={casterLevel}
+                      />
                     )}
                   </div>
                 </div>
@@ -677,11 +725,13 @@ function BloodlineSpellsBlock({
   entries,
   refData,
   abilityMod,
+  casterLevel,
 }: {
   bloodline: string;
   entries: SpellEntry[];
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
 }) {
   const [collapsed, toggle] = useCollapsed(`bloodline-spells:${bloodline}`, true);
   const byLevel = new Map<number, SpellEntry[]>();
@@ -721,7 +771,12 @@ function BloodlineSpellsBlock({
                       {sp.name} <span className="tag-bloodline">bloodline</span>
                     </div>
                     {spellData && (
-                      <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
+                      <SpellDetail
+                        spell={spellData}
+                        spellLevel={lvl}
+                        abilityMod={abilityMod}
+                        casterLevel={casterLevel}
+                      />
                     )}
                   </div>
                 </div>
@@ -743,10 +798,12 @@ function MysterySpellsBlock({
   entries,
   refData,
   abilityMod,
+  casterLevel,
 }: {
   entries: SpellEntry[];
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
 }) {
   const [collapsed, toggle] = useCollapsed("mystery-spells", true);
   const byLevel = new Map<number, SpellEntry[]>();
@@ -786,7 +843,12 @@ function MysterySpellsBlock({
                       {sp.name} <span className="tag-mystery">mystery</span>
                     </div>
                     {spellData && (
-                      <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
+                      <SpellDetail
+                        spell={spellData}
+                        spellLevel={lvl}
+                        abilityMod={abilityMod}
+                        casterLevel={casterLevel}
+                      />
                     )}
                   </div>
                 </div>
@@ -812,10 +874,12 @@ function ShamanSpiritSpellsBlock({
   entries,
   refData,
   abilityMod,
+  casterLevel,
 }: {
   entries: SpellEntry[];
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
 }) {
   const [collapsed, toggle] = useCollapsed("shaman-spirit-spells", true);
   const byLevel = new Map<number, SpellEntry[]>();
@@ -855,7 +919,12 @@ function ShamanSpiritSpellsBlock({
                       {sp.name} <span className="tag-mystery">spirit magic</span>
                     </div>
                     {spellData && (
-                      <SpellDetail spell={spellData} spellLevel={lvl} abilityMod={abilityMod} />
+                      <SpellDetail
+                        spell={spellData}
+                        spellLevel={lvl}
+                        abilityMod={abilityMod}
+                        casterLevel={casterLevel}
+                      />
                     )}
                   </div>
                 </div>
@@ -879,10 +948,12 @@ function DisciplineSpellsBlock({
   entries,
   refData,
   abilityMod,
+  casterLevel,
 }: {
   entries: SpellEntry[];
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
 }) {
   const [collapsed, toggle] = useCollapsed("discipline-spells", true);
   const byLevel = new Map<number, SpellEntry[]>();
@@ -926,6 +997,7 @@ function DisciplineSpellsBlock({
                         spell={spellData}
                         spellLevel={spellData.level}
                         abilityMod={abilityMod}
+                        casterLevel={casterLevel}
                       />
                     )}
                   </div>
@@ -950,10 +1022,12 @@ function PatronSpellsBlock({
   entries,
   refData,
   abilityMod,
+  casterLevel,
 }: {
   entries: SpellEntry[];
   refData: RefData;
   abilityMod: number;
+  casterLevel: number;
 }) {
   const [collapsed, toggle] = useCollapsed("patron-spells", true);
   const byLevel = new Map<number, SpellEntry[]>();
@@ -997,6 +1071,7 @@ function PatronSpellsBlock({
                         spell={spellData}
                         spellLevel={spellData.level}
                         abilityMod={abilityMod}
+                        casterLevel={casterLevel}
                       />
                     )}
                   </div>

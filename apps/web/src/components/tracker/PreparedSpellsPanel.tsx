@@ -3,7 +3,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import type { MetamagicDef } from "@pf1/engine";
 import type { AppliedMetamagic, RefData } from "@pf1/schema";
 
-import { effectiveCasterClassLevel } from "../../model/casterLevel.js";
+import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
 import {
   classSpellsByLevel,
   clearPrepared,
@@ -192,6 +192,7 @@ function DomainSlotsSection({
   update,
   slots,
   abilityMod,
+  casterLevel,
   classTag,
 }: {
   doc: BuilderProps["doc"];
@@ -200,6 +201,7 @@ function DomainSlotsSection({
   slots: ReturnType<typeof spellSlotsByLevel>;
   classLevel: number;
   abilityMod: number;
+  casterLevel: number;
   /** Stored class tag (see `model/spellcasting.ts` `storedClassTag`) — cleric's domain slots are always its own, but this scopes the bucketing correctly for a cleric that isn't the document's primary caster class. */
   classTag?: string;
 }) {
@@ -290,6 +292,7 @@ function DomainSlotsSection({
                             spell={spellData}
                             spellLevel={level}
                             abilityMod={abilityMod}
+                            casterLevel={casterLevel}
                           />
                         )}
                       </div>
@@ -345,6 +348,7 @@ function DomainSlotsSection({
                               spell={spellData}
                               spellLevel={level}
                               abilityMod={abilityMod}
+                              casterLevel={casterLevel}
                             />
                           )}
                         </div>
@@ -392,6 +396,7 @@ function SchoolSlotsSection({
   update,
   slots,
   abilityMod,
+  casterLevel,
   classTag,
 }: {
   doc: BuilderProps["doc"];
@@ -399,6 +404,7 @@ function SchoolSlotsSection({
   update: BuilderProps["update"];
   slots: ReturnType<typeof spellSlotsByLevel>;
   abilityMod: number;
+  casterLevel: number;
   /** Stored class tag (see `model/spellcasting.ts` `storedClassTag`) — wizard school slots are always the wizard's own, but this scopes the bucketing correctly for a wizard that isn't the document's primary caster class. */
   classTag?: string;
 }) {
@@ -488,6 +494,7 @@ function SchoolSlotsSection({
                             spell={spellData}
                             spellLevel={level}
                             abilityMod={abilityMod}
+                            casterLevel={casterLevel}
                           />
                         )}
                       </div>
@@ -543,6 +550,7 @@ function SchoolSlotsSection({
                               spell={spellData}
                               spellLevel={level}
                               abilityMod={abilityMod}
+                              casterLevel={casterLevel}
                             />
                           )}
                         </div>
@@ -622,6 +630,7 @@ function PreparedView({
   // Advancement-aware effective class level — feeds the slot-table lookup
   // (spellSlotsByLevel) below.
   const effectiveClassLevel = effectiveCasterClassLevel(doc, refData, casterTag);
+  const casterLevel = casterLevelForClass(casterTag, effectiveClassLevel);
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
   const slots = spellSlotsByLevel(model, effectiveClassLevel, abilityMod);
@@ -847,6 +856,7 @@ function PreparedView({
                               spellLevel={effectiveLevel}
                               slotLevel={level}
                               abilityMod={abilityMod}
+                              casterLevel={casterLevel}
                               metamagic={resolveAppliedMetamagic(r.metamagic)}
                             />
                           )}
@@ -942,6 +952,7 @@ function PreparedView({
                                 spell={spellData}
                                 spellLevel={level}
                                 abilityMod={abilityMod}
+                                casterLevel={casterLevel}
                               />
                             )}
                           </div>
@@ -1001,6 +1012,7 @@ function PreparedView({
           slots={slots}
           classLevel={effectiveClassLevel}
           abilityMod={abilityMod}
+          casterLevel={casterLevel}
           classTag={classTag}
         />
       )}
@@ -1013,6 +1025,7 @@ function PreparedView({
           update={update}
           slots={slots}
           abilityMod={abilityMod}
+          casterLevel={casterLevel}
           classTag={classTag}
         />
       )}
@@ -1054,6 +1067,7 @@ function SpontaneousView({
   // Advancement-aware effective class level — feeds the slot-table lookups
   // (spellSlotsByLevel/spontaneousSlotStatus/castSpontaneousSlot) below.
   const effectiveClassLevel = effectiveCasterClassLevel(doc, refData, casterTag);
+  const casterLevel = casterLevelForClass(casterTag, effectiveClassLevel);
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
 
@@ -1225,7 +1239,12 @@ function SpontaneousView({
                   <div className="prep-row-main">
                     <span className="prep-name">{c.name}</span>
                     {spellData && (
-                      <SpellDetail spell={spellData} spellLevel={0} abilityMod={abilityMod} />
+                      <SpellDetail
+                        spell={spellData}
+                        spellLevel={0}
+                        abilityMod={abilityMod}
+                        casterLevel={casterLevel}
+                      />
                     )}
                   </div>
                   <span className="prep-atwill">at will</span>
@@ -1298,6 +1317,7 @@ function SpontaneousView({
                               spellLevel={effectiveLevel}
                               slotLevel={castLevel}
                               abilityMod={abilityMod}
+                              casterLevel={casterLevel}
                               metamagic={resolveAppliedMetamagic(applied)}
                             />
                           )}
@@ -1393,6 +1413,7 @@ function HybridView({
   // mechanic keyed off raw class level, so unlike PreparedView/SpontaneousView
   // above, every classLevel use in this view can safely be the effective one.
   const effectiveClassLevel = effectiveCasterClassLevel(doc, refData, casterTag);
+  const casterLevel = casterLevelForClass(casterTag, effectiveClassLevel);
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
 
@@ -1482,18 +1503,15 @@ function HybridView({
     (p) => (p.classTag ?? undefined) === classTag && (p.kind ?? "normal") === "normal",
   ).length;
 
-  const cantripCapacity = preparedCapacity.find((c) => c.level === 0)?.limit;
   const preparedCantrips = preparedByLevel.get(0) ?? [];
 
-  // "Prepare" auto-collapses once every level's daily prepare capacity is
-  // filled, since at-the-table play mostly lives in "Cast" below; it reopens
-  // automatically the moment a level has room again, but a manual toggle
-  // (tracked here once the player uses it) always wins over that default.
-  const allLevelsFull = preparedCapacity.every(
-    ({ level, limit }) => (preparedByLevel.get(level)?.length ?? 0) >= limit,
-  );
-  const [prepareManualOpen, setPrepareManualOpen] = useState<boolean | null>(null);
-  const prepareOpen = prepareManualOpen ?? !allLevelsFull;
+  // Cast vs. Prepare are two distinct MODES, not stacked sections: play at the
+  // table lives in Cast (spend a slot on anything readied), daily readying in
+  // Prepare (fill the spellbook slots). Only one shows at a time — this is what
+  // kills the old double-nested "Prepare (from spellbook) › Prepare from
+  // spellbook…" disclosure and most of the panel's scrolling. Default to
+  // Prepare when nothing is readied yet (a fresh loadout), else Cast.
+  const [mode, setMode] = useState<"cast" | "prepare">(totalPrepared === 0 ? "prepare" : "cast");
 
   return (
     <Panel
@@ -1523,328 +1541,348 @@ function HybridView({
       {classSwitcher}
       <Explainer title="How hybrid casting works">
         <p className="hint">
-          Hybrid caster: <strong>prepare</strong> spells from your {model.knownLabel.toLowerCase()}{" "}
-          below, then <strong>cast</strong> any of them by spending a slot in the Cast section —
-          casting never uses up the prepared spell itself, only a slot. <strong>New day</strong>{" "}
-          refreshes every slot without changing what's prepared.
+          Hybrid caster: in the <strong>Prepare</strong> tab, ready spells from your{" "}
+          {model.knownLabel.toLowerCase()}; in the <strong>Cast</strong> tab, cast any of them by
+          spending a slot — casting never uses up the prepared spell itself, only a slot.{" "}
+          <strong>New day</strong> refreshes every slot without changing what's prepared.
         </p>
       </Explainer>
 
-      <div className="prep-actions">
-        {totalPrepared > 0 &&
-          (confirmClear ? (
-            <>
-              <span className="prep-clear-confirm-label">Clear all prepared spells?</span>
-              <button
-                type="button"
-                className="pick-btn remove"
-                onClick={() => {
-                  update((d) => clearPrepared(d, classTag));
-                  setConfirmClear(false);
-                }}
-              >
-                Clear all
-              </button>
-              <button type="button" className="btn-ghost" onClick={() => setConfirmClear(false)}>
-                Cancel
-              </button>
-            </>
-          ) : (
-            <button type="button" className="btn-ghost" onClick={() => setConfirmClear(true)}>
-              Re-prepare from scratch
-            </button>
-          ))}
+      {/* Cast vs. Prepare: two modes, one visible at a time (see the `mode`
+          state's comment above). */}
+      <div className="spell-mode-toggle" role="tablist" aria-label="Spell mode">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === "cast"}
+          className={`spell-mode-btn${mode === "cast" ? " is-active" : ""}`}
+          onClick={() => setMode("cast")}
+        >
+          Cast
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === "prepare"}
+          className={`spell-mode-btn${mode === "prepare" ? " is-active" : ""}`}
+          onClick={() => setMode("prepare")}
+        >
+          Prepare
+          {totalPrepared > 0 && <span className="spell-mode-count">{totalPrepared}</span>}
+        </button>
       </div>
 
-      {totalPrepared === 0 && (
-        <p className="hint spell-hint-line prep-empty">
-          Nothing prepared yet — open a level below and prepare from your{" "}
-          {model.knownLabel.toLowerCase()}.
-        </p>
-      )}
-
-      {/* Cantrips are readied in Prepare below but never cast from a slot (the
-          spells-per-day table has no level-0 column), so they'd otherwise only
-          exist inside a section that auto-collapses once prepping is done. */}
-      {cantripCapacity !== undefined && (
-        <section className="prep-level">
-          <header className="prep-head">
-            <span className="prep-head-label">Cantrips</span>
-            <span
-              className={`prep-count${preparedCantrips.length > cantripCapacity ? " is-over" : ""}`}
-            >
-              {preparedCantrips.length}/{cantripCapacity} prepared · at will
-            </span>
-          </header>
-          {preparedCantrips.length > 0 ? (
-            <div className="prep-rows">
-              {preparedCantrips.map((r) => (
-                <div key={r.index} className="prep-row">
-                  <div className="prep-row-main">
-                    <span className="prep-name">{r.name}</span>
-                    {refData.spells[r.spellId] && (
-                      <SpellDetail
-                        spell={refData.spells[r.spellId]!}
-                        spellLevel={0}
-                        abilityMod={abilityMod}
-                      />
-                    )}
-                  </div>
-                  <span className="prep-atwill">at will</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="prep-none prep-nobook">
-              No cantrips prepared — ready up to {cantripCapacity} in <strong>Prepare</strong>{" "}
-              below; they then cast at will.
+      {mode === "cast" ? (
+        <div className="spell-mode-panel is-cast">
+          {totalPrepared === 0 && (
+            <p className="hint spell-hint-line prep-empty">
+              Nothing prepared yet — switch to <strong>Prepare</strong> to ready spells from your{" "}
+              {model.knownLabel.toLowerCase()}.
             </p>
           )}
-        </section>
-      )}
 
-      <h4 className="hybrid-section-title">Cast (spend a slot)</h4>
-      <div className="prep-levels">
-        {castSlots.map(({ level, total }) => {
-          const status = castStatusByLevel.get(level);
-          const used = status?.used ?? 0;
-          const remaining = status?.remaining ?? total;
-          const bonus = castBonusByLevel.get(level) ?? 0;
-          const isExhausted = remaining === 0;
-          const preparedHere = preparedIdsByLevel.get(level) ?? [];
-
-          return (
-            <section key={level} className="prep-level">
+          {/* Prepared cantrips cast at will (no slot); readied over in Prepare. */}
+          {preparedCantrips.length > 0 && (
+            <section className="prep-level">
               <header className="prep-head">
-                <span className="prep-head-label">Level {level}</span>
-                <span className={`prep-count${isExhausted ? " is-over" : ""}`}>
-                  {remaining}/{total} remaining
-                  {bonus > 0 && (
-                    <span className="prep-bonus">
-                      {" "}
-                      (+{bonus} {abilityLabel})
-                    </span>
-                  )}
-                </span>
+                <span className="prep-head-label">Cantrips</span>
+                <span className="prep-count">at will</span>
               </header>
-
-              <div className="spontaneous-pips">
-                {Array.from({ length: total }, (_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    className={`spontaneous-pip${i < used ? " is-used" : ""}`}
-                    aria-label={i < used ? `restore slot ${i + 1}` : `slot ${i + 1} available`}
-                    title={i < used ? "Click to restore slot (undo cast)" : "Slot available"}
-                    onClick={() => {
-                      if (i < used) {
-                        update((d) => restoreSpontaneousSlot(d, level, classTag));
-                      }
-                    }}
-                  />
+              <div className="prep-rows">
+                {preparedCantrips.map((r) => (
+                  <div key={r.index} className="prep-row">
+                    <div className="prep-row-main">
+                      <span className="prep-name">{r.name}</span>
+                      {refData.spells[r.spellId] && (
+                        <SpellDetail
+                          spell={refData.spells[r.spellId]!}
+                          spellLevel={0}
+                          abilityMod={abilityMod}
+                          casterLevel={casterLevel}
+                        />
+                      )}
+                    </div>
+                    <span className="prep-atwill">at will</span>
+                  </div>
                 ))}
               </div>
-
-              {preparedHere.length > 0 ? (
-                <div className="prep-rows">
-                  {preparedHere.map((sp) => {
-                    const spellData = refData.spells[sp.id];
-                    const applied = castMetamagic[sp.id] ?? [];
-                    const castLevel = level + metamagicSlotIncrease(applied);
-                    const effectiveLevel = level + metamagicEffectiveIncrease(applied);
-                    const castRemaining = castStatusByLevel.get(castLevel)?.remaining ?? 0;
-                    const castExhausted = castRemaining <= 0;
-                    return (
-                      <div key={sp.id} className="prep-row">
-                        <div className="prep-row-main">
-                          <span className="prep-name">{sp.name}</span>
-                          {spellData && (
-                            <SpellDetail
-                              spell={spellData}
-                              spellLevel={effectiveLevel}
-                              slotLevel={castLevel}
-                              abilityMod={abilityMod}
-                              metamagic={resolveAppliedMetamagic(applied)}
-                            />
-                          )}
-                          <MetamagicControl
-                            owned={owned}
-                            applied={applied}
-                            baseLevel={level}
-                            maxSlotLevel={maxSlotLevel}
-                            onToggle={(slug) => toggleCastMM(sp.id, slug)}
-                            onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
-                          />
-                        </div>
-                        <TipButton
-                          className="pick-btn remove prep-cast"
-                          disabled={castExhausted}
-                          disabledReason={`No level-${castLevel} slots remaining`}
-                          title={
-                            castLevel === level
-                              ? `Cast ${sp.name} (spend 1 level-${level} slot)`
-                              : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot)`
-                          }
-                          onClick={() =>
-                            update((d) =>
-                              castSpontaneousSlot(
-                                d,
-                                model,
-                                effectiveClassLevel,
-                                abilityMod,
-                                castLevel,
-                                classTag,
-                              ),
-                            )
-                          }
-                        >
-                          Cast
-                        </TipButton>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="prep-none prep-nobook">
-                  Nothing prepared at level {level} yet — prepare a spell above.
-                </p>
-              )}
             </section>
-          );
-        })}
-      </div>
+          )}
 
-      <details
-        className="hybrid-prepare"
-        open={prepareOpen}
-        onToggle={(e) => setPrepareManualOpen(e.currentTarget.open)}
-      >
-        <summary className="hybrid-section-title hybrid-prepare-summary">
-          Prepare (from {model.knownLabel.toLowerCase()})
-        </summary>
-        <div className="prep-levels">
-          {preparedCapacity.map(({ level, limit }) => {
-            const isCantrip = level === 0;
-            const rows = preparedByLevel.get(level) ?? [];
-            const usedCapacity = rows.length;
-            const remaining = limit - usedCapacity;
-            const over = usedCapacity > limit;
-            const full = remaining <= 0;
-            const knownHere =
-              isCantrip && model.grantsAllCantrips ? cantripList : (knownByLevel.get(level) ?? []);
+          <div className="prep-levels">
+            {castSlots.map(({ level, total }) => {
+              const status = castStatusByLevel.get(level);
+              const used = status?.used ?? 0;
+              const remaining = status?.remaining ?? total;
+              const bonus = castBonusByLevel.get(level) ?? 0;
+              const isExhausted = remaining === 0;
+              const preparedHere = preparedIdsByLevel.get(level) ?? [];
 
-            return (
-              <section key={level} className="prep-level">
-                <header className="prep-head">
-                  <span className="prep-head-label">
-                    {isCantrip ? "Cantrips" : `Level ${level}`}
-                  </span>
-                  <span className={`prep-count${over ? " is-over" : ""}`}>
-                    {usedCapacity}/{limit} prepared
-                  </span>
-                </header>
+              return (
+                <section key={level} className="prep-level">
+                  <header className="prep-head">
+                    <span className="prep-head-label">Level {level}</span>
+                    <span className={`prep-count${isExhausted ? " is-over" : ""}`}>
+                      {remaining}/{total} remaining
+                      {bonus > 0 && (
+                        <span className="prep-bonus">
+                          {" "}
+                          (+{bonus} {abilityLabel})
+                        </span>
+                      )}
+                    </span>
+                  </header>
 
-                {rows.length > 0 ? (
-                  <div className="prep-rows">
-                    {rows.map((r) => (
-                      <div key={r.index} className="prep-row">
-                        <div className="prep-row-main">
-                          <span className="prep-name">{r.name}</span>
-                          {isCantrip && <span className="prep-atwill">at will</span>}
-                          {refData.spells[r.spellId] && (
-                            <SpellDetail
-                              spell={refData.spells[r.spellId]!}
-                              spellLevel={level}
-                              abilityMod={abilityMod}
-                            />
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          className="btn-ghost prep-x"
-                          aria-label={`unprepare ${r.name}`}
-                          onClick={() => update((d) => removePreparedAt(d, r.index))}
-                        >
-                          ✕
-                        </button>
-                      </div>
+                  <div className="spontaneous-pips">
+                    {Array.from({ length: total }, (_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        className={`spontaneous-pip${i < used ? " is-used" : ""}`}
+                        aria-label={i < used ? `restore slot ${i + 1}` : `slot ${i + 1} available`}
+                        title={i < used ? "Click to restore slot (undo cast)" : "Slot available"}
+                        onClick={() => {
+                          if (i < used) {
+                            update((d) => restoreSpontaneousSlot(d, level, classTag));
+                          }
+                        }}
+                      />
                     ))}
                   </div>
-                ) : (
-                  <p className="prep-none">— none prepared —</p>
-                )}
 
-                {knownHere.length > 0 ? (
-                  <details className="prep-add">
-                    <summary>
-                      {isCantrip && model.grantsAllCantrips
-                        ? "Prepare from granted cantrips…"
-                        : `Prepare from ${model.knownLabel.toLowerCase()}…`}
-                      {full && <span className="prep-full"> all slots filled</span>}
-                    </summary>
-                    <div className="prep-add-list">
-                      {knownHere.map((sp) => {
-                        const count = preparedCountBySpell.get(sp.id) ?? 0;
-                        const cantripPrepared = isCantrip && count > 0;
+                  {preparedHere.length > 0 ? (
+                    <div className="prep-rows">
+                      {preparedHere.map((sp) => {
                         const spellData = refData.spells[sp.id];
-                        const wontFit = remaining < 1;
+                        const applied = castMetamagic[sp.id] ?? [];
+                        const castLevel = level + metamagicSlotIncrease(applied);
+                        const effectiveLevel = level + metamagicEffectiveIncrease(applied);
+                        const castRemaining = castStatusByLevel.get(castLevel)?.remaining ?? 0;
+                        const castExhausted = castRemaining <= 0;
                         return (
-                          <div key={sp.id} className="prep-add-row">
+                          <div key={sp.id} className="prep-row">
                             <div className="prep-row-main">
                               <span className="prep-name">{sp.name}</span>
                               {spellData && (
                                 <SpellDetail
                                   spell={spellData}
-                                  spellLevel={level}
+                                  spellLevel={effectiveLevel}
+                                  slotLevel={castLevel}
                                   abilityMod={abilityMod}
+                                  casterLevel={casterLevel}
+                                  metamagic={resolveAppliedMetamagic(applied)}
                                 />
                               )}
+                              <MetamagicControl
+                                owned={owned}
+                                applied={applied}
+                                baseLevel={level}
+                                maxSlotLevel={maxSlotLevel}
+                                onToggle={(slug) => toggleCastMM(sp.id, slug)}
+                                onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
+                              />
                             </div>
-                            {count > 0 && (
-                              <span className="prep-have">
-                                {isCantrip ? "prepared" : `×${count}`}
-                              </span>
-                            )}
-                            {count > 0 && (
-                              <button
-                                type="button"
-                                className="pick-btn remove"
-                                aria-label={`unprepare one ${sp.name}`}
-                                onClick={() =>
-                                  update((d) => unprepareSpell(d, sp.id, undefined, classTag))
-                                }
-                              >
-                                −
-                              </button>
-                            )}
                             <TipButton
-                              className="pick-btn add"
-                              aria-label={`prepare ${sp.name}`}
-                              disabled={wontFit || cantripPrepared}
-                              disabledReason={
-                                cantripPrepared
-                                  ? "Cantrips cast at will — no need to prepare more than one."
-                                  : `All ${limit} level-${level} prepare slot${limit === 1 ? "" : "s"} are filled — unprepare one first.`
+                              className="pick-btn remove prep-cast"
+                              disabled={castExhausted}
+                              disabledReason={`No level-${castLevel} slots remaining`}
+                              title={
+                                castLevel === level
+                                  ? `Cast ${sp.name} (spend 1 level-${level} slot)`
+                                  : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot)`
                               }
-                              onClick={() => update((d) => prepareSpell(d, sp.id, classTag))}
+                              onClick={() =>
+                                update((d) =>
+                                  castSpontaneousSlot(
+                                    d,
+                                    model,
+                                    effectiveClassLevel,
+                                    abilityMod,
+                                    castLevel,
+                                    classTag,
+                                  ),
+                                )
+                              }
                             >
-                              Prepare
+                              Cast
                             </TipButton>
                           </div>
                         );
                       })}
                     </div>
-                  </details>
-                ) : (
-                  <p className="prep-none prep-nobook">
-                    No level-{level} spells in your {model.knownLabel.toLowerCase()}.
-                  </p>
-                )}
-              </section>
-            );
-          })}
+                  ) : (
+                    <p className="prep-none prep-nobook">
+                      Nothing prepared at level {level} yet — switch to <strong>Prepare</strong>.
+                    </p>
+                  )}
+                </section>
+              );
+            })}
+          </div>
         </div>
-      </details>
+      ) : (
+        <div className="spell-mode-panel is-prepare">
+          <p className="hint spell-hint-line">
+            Ready spells from your {model.knownLabel.toLowerCase()} into the day's slots. What you
+            prepare here is castable from the <strong>Cast</strong> tab.
+          </p>
+
+          <div className="prep-actions">
+            {totalPrepared > 0 &&
+              (confirmClear ? (
+                <>
+                  <span className="prep-clear-confirm-label">Clear all prepared spells?</span>
+                  <button
+                    type="button"
+                    className="pick-btn remove"
+                    onClick={() => {
+                      update((d) => clearPrepared(d, classTag));
+                      setConfirmClear(false);
+                    }}
+                  >
+                    Clear all
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={() => setConfirmClear(false)}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <button type="button" className="btn-ghost" onClick={() => setConfirmClear(true)}>
+                  Re-prepare from scratch
+                </button>
+              ))}
+          </div>
+
+          <div className="prep-levels">
+            {preparedCapacity.map(({ level, limit }) => {
+              const isCantrip = level === 0;
+              const rows = preparedByLevel.get(level) ?? [];
+              const usedCapacity = rows.length;
+              const remaining = limit - usedCapacity;
+              const over = usedCapacity > limit;
+              const full = remaining <= 0;
+              const knownHere =
+                isCantrip && model.grantsAllCantrips
+                  ? cantripList
+                  : (knownByLevel.get(level) ?? []);
+
+              return (
+                <section key={level} className="prep-level">
+                  <header className="prep-head">
+                    <span className="prep-head-label">
+                      {isCantrip ? "Cantrips" : `Level ${level}`}
+                    </span>
+                    <span className={`prep-count${over ? " is-over" : ""}`}>
+                      {usedCapacity}/{limit} prepared
+                    </span>
+                  </header>
+
+                  {rows.length > 0 ? (
+                    <div className="prep-rows">
+                      {rows.map((r) => (
+                        <div key={r.index} className="prep-row">
+                          <div className="prep-row-main">
+                            <span className="prep-name">{r.name}</span>
+                            {isCantrip && <span className="prep-atwill">at will</span>}
+                            {refData.spells[r.spellId] && (
+                              <SpellDetail
+                                spell={refData.spells[r.spellId]!}
+                                spellLevel={level}
+                                abilityMod={abilityMod}
+                                casterLevel={casterLevel}
+                              />
+                            )}
+                          </div>
+                          <button
+                            type="button"
+                            className="btn-ghost prep-x"
+                            aria-label={`unprepare ${r.name}`}
+                            onClick={() => update((d) => removePreparedAt(d, r.index))}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="prep-none">— none prepared —</p>
+                  )}
+
+                  {knownHere.length > 0 ? (
+                    <details className="prep-add">
+                      <summary>
+                        {isCantrip ? "Add a cantrip…" : "Add a spell…"}
+                        {full && <span className="prep-full"> all slots filled</span>}
+                      </summary>
+                      <div className="prep-add-list">
+                        {knownHere.map((sp) => {
+                          const count = preparedCountBySpell.get(sp.id) ?? 0;
+                          const cantripPrepared = isCantrip && count > 0;
+                          const spellData = refData.spells[sp.id];
+                          const wontFit = remaining < 1;
+                          return (
+                            <div key={sp.id} className="prep-add-row">
+                              <div className="prep-row-main">
+                                <span className="prep-name">{sp.name}</span>
+                                {spellData && (
+                                  <SpellDetail
+                                    spell={spellData}
+                                    spellLevel={level}
+                                    abilityMod={abilityMod}
+                                    casterLevel={casterLevel}
+                                  />
+                                )}
+                              </div>
+                              {count > 0 && (
+                                <span className="prep-have">
+                                  {isCantrip ? "prepared" : `×${count}`}
+                                </span>
+                              )}
+                              {count > 0 && (
+                                <button
+                                  type="button"
+                                  className="pick-btn remove"
+                                  aria-label={`unprepare one ${sp.name}`}
+                                  onClick={() =>
+                                    update((d) => unprepareSpell(d, sp.id, undefined, classTag))
+                                  }
+                                >
+                                  −
+                                </button>
+                              )}
+                              <TipButton
+                                className="pick-btn add"
+                                aria-label={`prepare ${sp.name}`}
+                                disabled={wontFit || cantripPrepared}
+                                disabledReason={
+                                  cantripPrepared
+                                    ? "Cantrips cast at will — no need to prepare more than one."
+                                    : `All ${limit} level-${level} prepare slot${limit === 1 ? "" : "s"} are filled — unprepare one first.`
+                                }
+                                onClick={() => update((d) => prepareSpell(d, sp.id, classTag))}
+                              >
+                                Prepare
+                              </TipButton>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </details>
+                  ) : (
+                    <p className="prep-none prep-nobook">
+                      No level-{level} spells in your {model.knownLabel.toLowerCase()}.
+                    </p>
+                  )}
+                </section>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </Panel>
   );
 }

@@ -3196,44 +3196,69 @@ input[type="text"].saved-roll-name:focus {
   gap: 10px;
 }
 
-.hybrid-section-title {
-  margin: 14px 0 6px;
+/* Cast / Prepare mode switch (hybrid caster) — a segmented control that swaps
+   the panel body between the in-play Cast view and the daily Prepare view, so
+   only one is on screen at a time. */
+.spell-mode-toggle {
+  display: flex;
+  gap: 4px;
+  margin: 8px 0 12px;
+  padding: 3px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.spell-mode-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) - 2px);
+  background: transparent;
+  cursor: pointer;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: var(--muted);
 }
 
-.hybrid-section-title:first-of-type {
-  margin-top: 4px;
+.spell-mode-btn:hover {
+  color: var(--ink);
 }
 
-/* Prepare auto-collapses once every level is filled (issue: spells-panel
-   cast-first reorder) — the summary reuses .hybrid-section-title's mono-caps
-   look but needs its own cursor/marker treatment as a <summary>. */
-.hybrid-prepare {
-  margin-top: 4px;
+.spell-mode-btn.is-active {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+  color: var(--ink);
 }
 
-.hybrid-prepare-summary {
-  cursor: pointer;
-  list-style: none;
-}
-
-.hybrid-prepare-summary::-webkit-details-marker {
-  display: none;
-}
-
-.hybrid-prepare-summary::before {
-  content: "▸";
-  display: inline-block;
-  width: 1em;
+.spell-mode-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: 10px;
   color: var(--gold-dim-ink);
 }
 
-.hybrid-prepare[open] > .hybrid-prepare-summary::before {
-  content: "▾";
+.spell-mode-btn.is-active .spell-mode-count {
+  background: var(--surface);
+  color: var(--gold-2);
+}
+
+.spell-mode-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .prep-level {
@@ -3518,6 +3543,41 @@ input[type="text"].saved-roll-name:focus {
 }
 
 /* ------------------------------------------------- spell detail (Task 2) -- */
+
+/* Always-visible stat strip: the at-the-table facts (range · save DC · damage)
+   shown under the spell name without opening `details`. A wrapping row of
+   compact pills. */
+.spell-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin-top: 2px;
+}
+
+.spell-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.spell-chip.is-save {
+  border-color: var(--gold-dim);
+  color: var(--gold-2);
+}
+
+.spell-chip.is-damage {
+  border-color: var(--oxblood);
+  color: var(--oxblood);
+}
 
 .spell-detail {
   margin-top: 6px;
