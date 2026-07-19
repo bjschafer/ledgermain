@@ -2,7 +2,10 @@
   "name": "ledgermain",
   "account_id": "5b51f634ca1cf16a0c47a4fcd00a5cf3",
   "compatibility_date": "2026-06-30",
-  "workers_dev": true,
+  // Off so the app is only reachable at the custom domain below. A live
+  // workers.dev subdomain bypasses zone-level WAF, bot management, and rate
+  // limiting entirely, which would undercut the protections on whizkid.dev.
+  "workers_dev": false,
   "routes": [{ "pattern": "ledgermain.whizkid.dev", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
