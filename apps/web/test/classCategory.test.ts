@@ -131,7 +131,7 @@ describe("classCategory", () => {
 });
 
 describe("groupClassesByCategory", () => {
-  it("splits the full vendored slice 11 / 10 / 10 / 4 / 3 / 6 / 10 into ordered sections with no 'other'", () => {
+  it("splits the full vendored slice 11 / 10 / 10 / 4 / 3 / 6 / 11 into ordered sections with no 'other'", () => {
     const groups = groupClassesByCategory(Object.values(ref.classes));
     expect(groups.map((g) => g.category)).toEqual([
       "core",
@@ -142,7 +142,7 @@ describe("groupClassesByCategory", () => {
       "occult",
       "prestige",
     ]);
-    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10, 4, 3, 6, 10]);
+    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10, 4, 3, 6, 11]);
   });
 
   it("orders sections per CLASS_CATEGORY_ORDER and drops empty ones", () => {

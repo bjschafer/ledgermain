@@ -10104,6 +10104,140 @@
     "tag": "uncannyDodgeShadowdancer",
     "uuid": "prestige-feature:shadowdancer:uncanny-dodge"
   },
+  "prestige:student-of-war:additional-skill": {
+    "changes": [],
+    "description": "<p>At 1st level and every 2 levels thereafter (3rd, 5th, 7th, and 9th), a student of war gains a new class skill of her choice.</p><p><em>Not yet applied automatically — pick the skill with your GM and treat it as a class skill by hand.</em></p>",
+    "grantsBuffs": [],
+    "id": "prestige:student-of-war:additional-skill",
+    "name": "Additional Skill",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "additionalSkill",
+    "uuid": "prestige-feature:student-of-war:additional-skill"
+  },
+  "prestige:student-of-war:anticipate": {
+    "changes": [],
+    "description": "<p>At 3rd level, once per day as an immediate action, a student of war can ignore any damage and effects of a spell or ability she successfully saved against. She can use this ability one additional time per day at 6th level and again at 9th level.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:student-of-war:anticipate",
+    "name": "Anticipate",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "anticipate",
+    "uuid": "prestige-feature:student-of-war:anticipate"
+  },
+  "prestige:student-of-war:bonus-combat-feat": {
+    "changes": [
+      {
+        "formula": "floor((@class.unlevel + 1) / 3)",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>At 2nd, 5th, and 8th level, a student of war gains a bonus Combat feat. She must meet the prerequisites for the chosen feat.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:student-of-war:bonus-combat-feat",
+    "name": "Bonus Combat Feat (SOW)",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "bonusCombatFeatStudentOfWar",
+    "uuid": "prestige-feature:student-of-war:bonus-combat-feat"
+  },
+  "prestige:student-of-war:deadly-blow": {
+    "changes": [],
+    "description": "<p>At 10th level, a student of war can find weak spots where none should exist. When she uses her know your enemy ability and exceeds the Knowledge check DC by 10 or more, she ignores the target's natural damage reduction and its immunity to critical hits.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:student-of-war:deadly-blow",
+    "name": "Deadly Blow",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "deadlyBlow",
+    "uuid": "prestige-feature:student-of-war:deadly-blow"
+  },
+  "prestige:student-of-war:know-your-enemy": {
+    "changes": [],
+    "description": "<p>As a move action, a student of war can study a foe she can see and attempt a Knowledge check appropriate to the creature's type (DC = 10 + the target's HD). Success grants a +1 insight bonus against that enemy, applied through one of three stances chosen when the check is attempted: defensive (AC), martial (attack rolls), or tactical (CMB and CMD). The bonus increases to +2 at 4th level and +3 at 7th level, and at 7th level studying a foe becomes a swift action.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:student-of-war:know-your-enemy",
+    "name": "Know Your Enemy",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "knowYourEnemy",
+    "uuid": "prestige-feature:student-of-war:know-your-enemy"
+  },
+  "prestige:student-of-war:mind-over-metal": {
+    "changes": [],
+    "description": "<p>At 2nd level, when a student of war is using armor or a shield, she can use her Intelligence modifier in place of her Dexterity modifier for determining her Armor Class.</p><p><em>Applied automatically while armor or a shield is equipped, and only when Intelligence is the better modifier. The armor's maximum Dexterity bonus still caps the substituted value — see the note on this ability in the sheet.</em></p>",
+    "grantsBuffs": [],
+    "id": "prestige:student-of-war:mind-over-metal",
+    "name": "Mind Over Metal",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "mindOverMetal",
+    "uuid": "prestige-feature:student-of-war:mind-over-metal"
+  },
+  "prestige:student-of-war:nemesis": {
+    "changes": [],
+    "description": "<p>At 9th level, once per day as a swift action, a student of war can focus on a weapon she holds and render it anathema to her studied foe for 1 minute.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:student-of-war:nemesis",
+    "name": "Nemesis",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "nemesis",
+    "uuid": "prestige-feature:student-of-war:nemesis"
+  },
+  "prestige:student-of-war:telling-blow": {
+    "changes": [],
+    "description": "<p>At 6th level, a student of war can aim her blows at the weakest point in a studied foe's defense, ignoring up to 5 points of damage reduction. She is also treated as having the Mobility feat when provoking attacks of opportunity from a studied foe.</p>",
+    "grantsBuffs": [],
+    "id": "prestige:student-of-war:telling-blow",
+    "name": "Telling Blow",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "tellingBlow",
+    "uuid": "prestige-feature:student-of-war:telling-blow"
+  },
   "ptw7bHU3Z7HNj2qz": {
     "abilityType": "ex",
     "changes": [],

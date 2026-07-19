@@ -6272,6 +6272,116 @@
     "uuid": "prestige-class:shadowdancer",
     "weaponProf": []
   },
+  "prestige:student-of-war": {
+    "armorProf": [],
+    "bab": "high",
+    "classSkills": [
+      "clm",
+      "crf",
+      "dev",
+      "han",
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "lin",
+      "per",
+      "pro",
+      "sen",
+      "spl",
+      "sur",
+      "swm"
+    ],
+    "description": "<p>The student of war treats battle as a subject to be studied rather than a craft to be drilled, reading her enemies as readily as she reads a manual and turning what she knows into openings no one else can see.</p>",
+    "features": [
+      {
+        "featureId": "prestige:student-of-war:additional-skill",
+        "level": 1,
+        "name": "Additional Skill",
+        "resolved": true,
+        "uuid": "prestige-feature:student-of-war:additional-skill"
+      },
+      {
+        "featureId": "prestige:student-of-war:know-your-enemy",
+        "level": 1,
+        "name": "Know Your Enemy",
+        "resolved": true,
+        "uuid": "prestige-feature:student-of-war:know-your-enemy"
+      },
+      {
+        "featureId": "prestige:student-of-war:bonus-combat-feat",
+        "level": 2,
+        "name": "Bonus Combat Feat (SOW)",
+        "resolved": true,
+        "uuid": "prestige-feature:student-of-war:bonus-combat-feat"
+      },
+      {
+        "featureId": "prestige:student-of-war:mind-over-metal",
+        "level": 2,
+        "name": "Mind Over Metal",
+        "resolved": true,
+        "uuid": "prestige-feature:student-of-war:mind-over-metal"
+      },
+      {
+        "featureId": "prestige:student-of-war:anticipate",
+        "level": 3,
+        "name": "Anticipate",
+        "resolved": true,
+        "uuid": "prestige-feature:student-of-war:anticipate"
+      },
+      {
+        "featureId": "prestige:student-of-war:telling-blow",
+        "level": 6,
+        "name": "Telling Blow",
+        "resolved": true,
+        "uuid": "prestige-feature:student-of-war:telling-blow"
+      },
+      {
+        "featureId": "prestige:student-of-war:nemesis",
+        "level": 9,
+        "name": "Nemesis",
+        "resolved": true,
+        "uuid": "prestige-feature:student-of-war:nemesis"
+      },
+      {
+        "featureId": "prestige:student-of-war:deadly-blow",
+        "level": 10,
+        "name": "Deadly Blow",
+        "resolved": true,
+        "uuid": "prestige-feature:student-of-war:deadly-blow"
+      }
+    ],
+    "hd": 10,
+    "id": "prestige:student-of-war",
+    "name": "Student of War",
+    "prereqs": {
+      "bab": 5,
+      "feats": ["Combat Expertise", "Dodge"],
+      "prereqText": "Base Attack Bonus: +5. Feats: Combat Expertise, Dodge, Skill Focus (any one Knowledge skill). Proficiency: Must be proficient with two martial weapons. Skills: Knowledge (any two) 4 ranks in each. Special: Must have succeeded at Knowledge checks against five distinct creatures prior to defeating them."
+    },
+    "saves": {
+      "fort": "lowPrestige",
+      "ref": "lowPrestige",
+      "will": "highPrestige"
+    },
+    "skillsPerLevel": 6,
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "142"
+      }
+    ],
+    "subType": "prestige",
+    "tag": "studentOfWar",
+    "uuid": "prestige-class:student-of-war",
+    "weaponProf": []
+  },
   "s27zdYVFenYBVtfu": {
     "armorProf": ["lgt"],
     "bab": "med",
