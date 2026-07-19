@@ -306,14 +306,10 @@ const CMD_AC_TYPES: ReadonlySet<string> = new Set([
  * an ability substitution (Student of War's Mind Over Metal) can replace it;
  * see `ability-substitution.ts`.
  *
- * The armor/load max-Dex cap still binds the substituted modifier. RAW is
- * genuinely ambiguous here — "maximum Dexterity bonus" arguably does not
- * describe an Intelligence bonus at all — but the cap is a property of the AC
- * term rather than of the ability feeding it, and reading it that way keeps
- * heavy armor's tradeoff intact instead of making a substitution strictly
- * better than the Dex it replaces. The class is still worth taking under this
- * reading: its whole point is an armored character whose Dex is dumped, who
- * gains the full capped value from Int rather than nothing from Dex.
+ * The armor/load max-Dex cap still binds the substituted modifier. Mind Over
+ * Metal says so explicitly — the armor's normal maximum Dexterity bonus still
+ * applies, limiting how much of the Intelligence bonus reaches AC — so the cap
+ * is a property of the AC term rather than of the ability feeding it.
  */
 function computeAc(
   doc: CharacterDoc,

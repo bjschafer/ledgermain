@@ -34,12 +34,14 @@
  *
  * ## When two substitutions target the same slot
  *
- * PF1 has no general rule here, because in published content they essentially
- * never co-occur. This engine takes the highest resulting modifier (ties keep
- * the base ability). That is an engine convention, not RAW — it is documented
- * as such because it is the reading that can never make a character worse off
- * than the rules text they read, and every published substitution is written
- * as a benefit rather than a drawback.
+ * PF1 has no rule covering this specific collision, because in published
+ * content two substitutions on one slot essentially never co-occur. This
+ * engine takes the highest resulting modifier (ties keep the base ability).
+ * That remains an engine convention rather than RAW, but it is the reading
+ * that can never make a character worse off than the rules text they read,
+ * every published substitution is written as a benefit rather than a
+ * drawback, and it matches how the CRB resolves non-stacking bonuses
+ * generally: the highest one applies.
  */
 
 import type { AbilityId, CharacterDoc, RefData } from "@pf1/schema";
@@ -51,10 +53,11 @@ import { tryEvaluateFormula, type RollData } from "./formula.js";
 /**
  * A derived term whose ability modifier can be substituted.
  *
- * `ac` covers the single Dexterity line in `computeAc` — which is also the
- * Dex term of CMD, since PF1 defines CMD's Dex contribution as the same
- * bonus AC uses. `init` is initiative's Dex term. The attack/damage slots are
- * per-weapon and apply to every weapon the character carries.
+ * `ac` covers the single Dexterity line in `computeAc`, and only that — CMD's
+ * Dex term is deliberately left alone, because Mind Over Metal reads "for
+ * determining her Armor Class" and CMD is a separate defense. `init` is
+ * initiative's Dex term. The attack/damage slots are per-weapon and apply to
+ * every weapon the character carries.
  *
  * Known boundary: weapon-restricted substitutions (Zen Archer's Wis-to-hit
  * with bows only, the Guided property on one specific weapon) would need a

@@ -1054,7 +1054,7 @@ const STUDENT_OF_WAR_FEATURES: ClassFeature[] = [
     "student-of-war",
     "mind-over-metal",
     "Mind Over Metal",
-    "<p>At 2nd level, when a student of war is using armor or a shield, she can use her Intelligence modifier in place of her Dexterity modifier for determining her Armor Class.</p><p><em>Applied automatically while armor or a shield is equipped, and only when Intelligence is the better modifier. The armor's maximum Dexterity bonus still caps the substituted value — see the note on this ability in the sheet.</em></p>",
+    "<p>At 2nd level, when a student of war is using armor or a shield, she can use her Intelligence modifier in place of her Dexterity modifier for determining her Armor Class.</p><p><em>Applied automatically while armor or a shield is equipped, and only when Intelligence is the better modifier. The armor's maximum Dexterity bonus still caps the substituted value.</em></p>",
     "mindOverMetal",
     [],
     AG,
