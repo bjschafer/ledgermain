@@ -392,18 +392,26 @@ a {
   overflow: hidden;
 }
 
-/* Solid gold band, not the dark surface — a deliberate break in the page's
-   wall-of-text (issue: user-reported). --bg on --gold is ~7.5:1, comfortably
-   past WCAG AA, so every child below gets an explicit dark-ink override
-   rather than inheriting the page's light-on-dark palette. */
+/* Gold-tinted band rather than solid gold. Headers need to break up the page's
+   wall-of-text, but a full-chroma band is the brightest thing on a --bg page
+   and it repeats once per panel — stacked, they all compete and the eye never
+   settles. Tinting keeps the section break while spending the accent budget on
+   small areas instead: the bottom rule, the icon, the title.
+   Solid `linear-gradient(--gold-2, --gold)` is also .floating-btn's fill, i.e.
+   the primary-action signature; headers aren't actions and shouldn't wear it.
+
+   The band (#38352e) is lighter than --surface-2, so it — not surface-2 — is
+   now the lightest surface text sits on. --ink (9.6:1) and --muted (4.6:1)
+   still clear AA on it; --faint and --oxblood-ink don't, and get lighter
+   header-scoped variants below. */
 .panel > header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 12px 16px;
-  background: linear-gradient(180deg, var(--gold-2), var(--gold));
-  border-bottom: 1px solid var(--gold-dim);
+  background: color-mix(in oklab, var(--gold) 18%, var(--surface));
+  border-bottom: 2px solid var(--gold);
 }
 
 .panel > header h2 {
@@ -411,17 +419,13 @@ a {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  color: var(--bg);
+  color: var(--gold-2);
 }
 
 .panel > header .step {
   font-family: var(--mono);
   font-size: 0.6875rem;
-  color: var(--bg);
-  /* 0.75, not the 0.65 it'd take to read as more understated than .hint below
-     — any lower drops under 4.5:1 against the band's darker (bottom) gold
-     stop. */
-  opacity: 0.75;
+  color: var(--muted);
 }
 
 .panel-icon {
@@ -432,46 +436,26 @@ a {
 .panel-icon svg {
   width: 1.125rem;
   height: 1.125rem;
-  color: var(--bg);
+  color: var(--gold-2);
 }
 
-.panel > header .hint,
-.panel > header .budge,
+/* --faint drops to 3.8:1 on the band; --muted is the next step up that holds
+   AA while still reading quieter than the title. */
 .panel > header .warn-under {
-  color: var(--bg);
-  /* 0.82: 0.7 (the initial pick) blends to under 4.5:1 against the band's
-     darker (bottom) gold stop. */
-  opacity: 0.82;
+  color: var(--muted);
 }
 
-.panel > header .budge b {
-  color: var(--bg);
-  opacity: 1;
-}
-
-/* --danger/--oxblood-ink read fine on the dark surface but drop under 2:1 on
-   gold — swap to ink-dark variants that keep the same "this is a warning"
-   hue while staying legible on the band. */
+/* --oxblood-ink is 3.6:1 on the band. Same hue, lightened until it clears AA
+   (5.2:1) so the warning stays legible without going dark-on-light. */
 .panel > header .warn-over,
 .panel > header .budge.over b {
-  color: #6b1a10;
-  opacity: 1;
+  color: #e59484;
 }
 
+/* --line all but vanishes on the band (1.02:1); --gold-dim-ink clears the 3:1
+   UI-component bar and ties the button to the band's warmth. */
 .panel > header .btn-ghost {
-  border-color: var(--bg);
-  color: var(--bg);
-  background: rgba(21, 23, 28, 0.1);
-}
-
-.panel > header .btn-ghost:hover {
-  background: rgba(21, 23, 28, 0.22);
-  border-color: var(--bg);
-  color: var(--bg);
-}
-
-.panel > header .panel-caret {
-  color: var(--bg);
+  border-color: var(--gold-dim-ink);
 }
 
 .panel .body {
@@ -4165,11 +4149,12 @@ input[type="text"].saved-roll-name:focus {
   user-select: none;
 }
 
-/* Brighten the gold band itself on hover rather than swapping in the dark
-   surface color — that would erase the band on the very affordance cue
-   telling you it's clickable. */
+/* Deepen the band's own tint on hover rather than swapping in a surface color
+   — that would erase the band on the very affordance cue telling you it's
+   clickable. The tinted band is dark enough that brightness() alone reads as
+   almost nothing, so step the gold mix up instead. */
 .panel.collapsible > header:hover {
-  filter: brightness(1.06);
+  background: color-mix(in oklab, var(--gold) 26%, var(--surface));
 }
 
 .panel-caret {
