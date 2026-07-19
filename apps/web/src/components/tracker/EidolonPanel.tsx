@@ -4,6 +4,7 @@ import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { EyeIcon } from "../icons.js";
 import {
   addEidolonNonlethal,
   applyEidolonDamage,
@@ -62,6 +63,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
     <Panel
       title={`Eidolon — ${eidolon.name}`}
       step="edln"
+      icon={<EyeIcon />}
       storageKey="panel:Eidolon"
       defaultCollapsed
     >

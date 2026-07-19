@@ -1,5 +1,6 @@
 import { currentVigilanteIdentity, setVigilanteIdentity } from "../../model/vigilanteIdentity.js";
 import { Panel } from "../builder/Panel.js";
+import { MaskIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -19,7 +20,7 @@ export function VigilanteIdentityPanel({ doc, update }: BuilderProps) {
   const identity = currentVigilanteIdentity(doc);
 
   return (
-    <Panel title="Identity" storageKey="panel:Vigilante Identity">
+    <Panel title="Identity" icon={<MaskIcon />} storageKey="panel:Vigilante Identity">
       <div className="chips">
         <button
           type="button"

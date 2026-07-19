@@ -4,6 +4,7 @@ import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { BirdIcon } from "../icons.js";
 import {
   addFamiliarNonlethal,
   applyFamiliarDamage,
@@ -65,6 +66,7 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title={`Familiar — ${familiar.name}`}
       step="fam"
+      icon={<BirdIcon />}
       storageKey="panel:Familiar"
       defaultCollapsed
     >

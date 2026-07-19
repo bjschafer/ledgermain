@@ -4,6 +4,7 @@ import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { PawIcon } from "../icons.js";
 import {
   addCompanionNonlethal,
   animalFocusBuffs,
@@ -65,6 +66,7 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
     <Panel
       title={`Companion — ${companion.name}`}
       step="comp"
+      icon={<PawIcon />}
       storageKey="panel:Companion"
       defaultCollapsed
     >

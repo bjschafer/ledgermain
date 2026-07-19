@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { deedsForClass, preciseStrikeBonus, type DeedDef } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
+import { RibbonIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -46,7 +47,7 @@ export function DeedsPanel({ doc }: BuilderProps) {
   if (gunslingerLevel === 0 && swashbucklerLevel === 0) return null;
 
   return (
-    <Panel title="Deeds" step="dd" storageKey="panel:Deeds">
+    <Panel title="Deeds" step="dd" icon={<RibbonIcon />} storageKey="panel:Deeds">
       {gunslingerLevel > 0 && <DeedGroup title="Gunslinger Deeds (grit)" deeds={gunslingerDeeds} />}
       {swashbucklerLevel > 0 && (
         <DeedGroup

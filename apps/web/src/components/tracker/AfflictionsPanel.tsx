@@ -7,6 +7,7 @@ import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { Explainer } from "../Explainer.js";
 import { TipButton } from "../InfoTip.js";
+import { DropletIcon } from "../icons.js";
 import {
   abilityZeroWarnings,
   activeAbilityAfflictions,
@@ -64,6 +65,7 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
     <Panel
       title="Afflictions"
       step="af"
+      icon={<DropletIcon />}
       storageKey="panel:Afflictions"
       defaultCollapsed
       right={

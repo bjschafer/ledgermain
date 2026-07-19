@@ -1,4 +1,5 @@
 import { Panel } from "../builder/Panel.js";
+import { LaurelIcon } from "../icons.js";
 import {
   HERO_POINT_CAP,
   gainHeroPoint,
@@ -16,7 +17,7 @@ export function HeroPointsPanel({ doc, update }: BuilderProps) {
   const pips = Array.from({ length: cap }, (_, i) => i < current);
 
   return (
-    <Panel title="Hero Points" step="✦" storageKey="panel:HeroPoints">
+    <Panel title="Hero Points" step="✦" icon={<LaurelIcon />} storageKey="panel:HeroPoints">
       <div className="hero-display">
         <div className="hero-pips" aria-label={`${current} of ${cap} hero points`}>
           {pips.map((filled, i) => (

@@ -22,6 +22,7 @@ import { attachableRangerBonuses } from "../../model/ranger.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { BookmarkIcon } from "../icons.js";
 import { Explainer } from "../Explainer.js";
 import { Provenance } from "../Provenance.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -61,7 +62,7 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
   }, [options, query]);
 
   return (
-    <Panel title="Saved Rolls" step="sr" storageKey="panel:SavedRolls">
+    <Panel title="Saved Rolls" step="sr" icon={<BookmarkIcon />} storageKey="panel:SavedRolls">
       {saved.length === 0 ? (
         <div className="empty">No saved rolls yet — pin one below.</div>
       ) : (

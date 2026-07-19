@@ -314,12 +314,72 @@ a {
 }
 
 @media (max-width: 940px) {
+  /* Below the two-column breakpoint the derived sheet is no longer part of
+     the stacked document flow (it used to land at the very bottom of an
+     extremely long page, effectively unreachable) — it's reachable instead
+     via the floating "Sheet" button (FloatingControls.tsx), which opens it
+     full-screen in a Dialog. */
   .sheet-col {
-    position: static;
-    max-height: none;
-    overflow-y: visible;
-    overscroll-behavior-y: auto;
+    display: none;
   }
+}
+
+/* ------------------------------------------------------- floating controls --
+   Mobile-only action cluster, bottom-right: scroll-to-top + the "Sheet"
+   opener that stands in for `.sheet-col` once it leaves the document flow
+   above. Hidden completely at desktop widths. */
+.floating-controls {
+  display: none;
+}
+
+@media (max-width: 940px) {
+  .floating-controls {
+    position: fixed;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+}
+
+.floating-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gold-dim);
+  background: linear-gradient(180deg, var(--gold-2), var(--gold));
+  color: var(--bg);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.floating-btn:hover {
+  background: linear-gradient(180deg, var(--gold-2), var(--gold-2));
+}
+
+.floating-top {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.floating-top svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.floating-sheet {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 22px;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 /* ----------------------------------------------------------------- panel -- */
@@ -4832,11 +4892,12 @@ input[type="text"].saved-roll-name:focus {
 /* ============================================================================
    Stat strip — sticky compact HP/AC/saves chrome (Play-tab cockpit fix,
    UX audit). Below the 940px breakpoint (see the breakpoint list up top and
-   `.sheet-col` at line ~257) the sheet stops being sticky and drops below the
-   entire tracker column, so at the table "what's your AC?" means scrolling
-   thousands of pixels. This strip mirrors the same seal numbers (HP, AC,
-   Touch, Flat-Footed, Fort/Ref/Will, Init) pinned under the viewport top
-   while the Play tab scrolls. It reads as chrome, not another panel — a
+   `.sheet-col` at line ~316) the full sheet isn't in the document flow at all
+   — it opens on demand from the floating "Sheet" button (FloatingControls)
+   — so at the table "what's your AC?" needs an always-visible answer that
+   doesn't require opening anything. This strip mirrors the same seal numbers
+   (HP, AC, Touch, Flat-Footed, Fort/Ref/Will, Init) pinned under the viewport
+   top while the Play tab scrolls. It reads as chrome, not another panel — a
    hairline-bordered strip at seal micro scale, not a boxed panel. Hidden
    entirely above 940px, where the sheet itself is already sticky alongside
    the tracker.

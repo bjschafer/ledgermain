@@ -3,6 +3,7 @@ import { useState } from "react";
 import { addXp, xpProgress } from "../../model/xp.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { TrendingUpIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -16,7 +17,7 @@ export function XpPanel({ doc, update }: BuilderProps) {
   const [amount, setAmount] = useState(0);
 
   return (
-    <Panel title="Experience" step="✦" storageKey="panel:Xp">
+    <Panel title="Experience" step="✦" icon={<TrendingUpIcon />} storageKey="panel:Xp">
       <div className="xp-display">
         <span className="xp-count num">{progress.current.toLocaleString()} XP</span>
         <span className="hint">

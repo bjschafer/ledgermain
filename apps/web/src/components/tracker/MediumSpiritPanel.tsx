@@ -2,6 +2,7 @@ import { MEDIUM_SPIRIT_TAGS, MEDIUM_SPIRITS, mediumSpiritBonus } from "@pf1/engi
 
 import { Panel } from "../builder/Panel.js";
 import { Explainer } from "../Explainer.js";
+import { CandleIcon } from "../icons.js";
 import {
   currentMediumSpirit,
   endSeance,
@@ -44,6 +45,7 @@ export function MediumSpiritPanel({ doc, update }: BuilderProps) {
   return (
     <Panel
       title="Séance"
+      icon={<CandleIcon />}
       storageKey="panel:Medium Séance"
       right={
         spirit ? (

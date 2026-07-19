@@ -24,7 +24,7 @@ import type { SpellEntry } from "../../model/spellSearch.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { Explainer } from "../Explainer.js";
-import { WandIcon } from "../icons.js";
+import { SparklesIcon } from "../icons.js";
 import { SpellDetail } from "../SpellDetail.js";
 import { Panel } from "./Panel.js";
 import { SpellManager } from "./SpellManager.js";
@@ -220,7 +220,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   if (!casterTag) {
     if (!spellsPanelVisible(doc, refData)) return null;
     return (
-      <Panel title="Spells" step="vii" icon={<WandIcon />} storageKey="panel:Spells">
+      <Panel title="Spells" step="vii" icon={<SparklesIcon />} storageKey="panel:Spells">
         <p className="empty">No spellcasting class selected.</p>
       </Panel>
     );
@@ -264,7 +264,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title={model ? knownLabel : "Spells"}
       step="x"
-      icon={<WandIcon />}
+      icon={<SparklesIcon />}
       storageKey="panel:Spells"
       right={
         <span className="hint">

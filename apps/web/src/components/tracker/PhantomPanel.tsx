@@ -4,6 +4,7 @@ import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { GhostIcon } from "../icons.js";
 import {
   addPhantomNonlethal,
   applyPhantomDamage,
@@ -60,6 +61,7 @@ export function PhantomPanel({ doc, refData, update }: BuilderProps) {
     <Panel
       title={`Phantom — ${phantom.name}`}
       step="phtm"
+      icon={<GhostIcon />}
       storageKey="panel:Phantom"
       defaultCollapsed
     >

@@ -1,6 +1,7 @@
 import { SHIFTER_ASPECTS } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
+import { ClawIcon } from "../icons.js";
 import { isAspectMinorFormActive, toggleAspectMinorForm } from "../../model/shifterAspects.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -23,7 +24,7 @@ export function ShifterAspectPanel({ doc, update }: BuilderProps) {
   if (!isShifter || known.length === 0) return null;
 
   return (
-    <Panel title="Shifter Aspects" storageKey="panel:Shifter Aspects">
+    <Panel title="Shifter Aspects" icon={<ClawIcon />} storageKey="panel:Shifter Aspects">
       <p className="hint">
         Toggle a known aspect's minor form on/off. Major form (Wild Shape) isn't modeled yet — see
         issue #70.

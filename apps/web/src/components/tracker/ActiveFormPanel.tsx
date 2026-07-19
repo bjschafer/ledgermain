@@ -4,6 +4,7 @@ import type { ActiveForm, ActiveFormNaturalAttack, DerivedActiveForm } from "@pf
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { SwapIcon } from "../icons.js";
 import {
   addNaturalAttack,
   allPolymorphTiers,
@@ -42,7 +43,13 @@ export function ActiveFormPanel({ doc, sheet, refData, update }: BuilderProps) {
   if (!polymorphPanelVisible(doc, refData)) return null;
 
   return (
-    <Panel title="Polymorph / Wild Shape" step="wsh" storageKey="panel:Polymorph" defaultCollapsed>
+    <Panel
+      title="Polymorph / Wild Shape"
+      step="wsh"
+      icon={<SwapIcon />}
+      storageKey="panel:Polymorph"
+      defaultCollapsed
+    >
       {active && derived ? (
         <ActiveFormEditor active={active} derived={derived} update={update} />
       ) : (
