@@ -17,6 +17,10 @@
  * one `onKeyDown` on the list, and mouse/touch just click straight through
  * (`onClick` doesn't care whether the element is focusable).
  */
+/* oxlint-disable jsx-a11y/no-noninteractive-element-to-interactive-role, jsx-a11y/click-events-have-key-events --
+   False positives on the APG listbox pattern described above: ul/li carry the
+   listbox/option roles by design, and keyboard events are handled once on the
+   list container (aria-activedescendant), not per option. */
 import { useEffect, useRef, useState } from "react";
 
 import type { CharacterSummary } from "../db/characters.js";
