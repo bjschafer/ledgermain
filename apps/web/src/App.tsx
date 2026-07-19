@@ -27,6 +27,7 @@ import { PlayNav } from "./components/tracker/PlayNav.js";
 import { StatStrip } from "./components/tracker/StatStrip.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { useCharacter } from "./state/useCharacter.js";
+import { useTextSize, type TextSize } from "./state/useTextSize.js";
 
 type Mode = "build" | "play" | "settings";
 
@@ -55,6 +56,7 @@ export function App() {
   const store = useCharacter();
   const [mode, setMode] = useState<Mode>("build");
   const [printOpen, setPrintOpen] = useState(false);
+  const [textSize, setTextSize] = useTextSize();
 
   if (printOpen && store.doc && store.sheet && store.refData) {
     return (
@@ -172,6 +174,8 @@ export function App() {
           onDeleteCharacter={(id) => void store.deleteCharacter(id)}
           actionPending={store.actionPending}
           onOpenPrint={() => setPrintOpen(true)}
+          textSize={textSize}
+          onTextSizeChange={setTextSize}
         />
       )}
     </div>
@@ -185,6 +189,8 @@ function Workbench({
   onDeleteCharacter,
   actionPending,
   onOpenPrint,
+  textSize,
+  onTextSizeChange,
   ...props
 }: BuilderProps & {
   mode: Mode;
@@ -193,6 +199,8 @@ function Workbench({
   onDeleteCharacter: (id: string) => void;
   actionPending: boolean;
   onOpenPrint: () => void;
+  textSize: TextSize;
+  onTextSizeChange: (size: TextSize) => void;
 }) {
   return (
     <div className={`layout${mode === "build" || mode === "play" ? " layout--with-nav" : ""}`}>
@@ -260,6 +268,8 @@ function Workbench({
             onDeleteCharacter={onDeleteCharacter}
             actionPending={actionPending}
             onOpenPrint={onOpenPrint}
+            textSize={textSize}
+            onTextSizeChange={onTextSizeChange}
           />
         ) : (
           <Tracker {...props} />

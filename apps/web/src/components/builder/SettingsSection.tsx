@@ -33,6 +33,7 @@ import { HERO_POINT_CAP } from "../../model/heroPoints.js";
 import { importCharacterFile } from "../../model/importExternalFile.js";
 import { DEFAULT_XP_TRACK, type XpTrack } from "../../model/xp.js";
 import { showToast } from "../../state/toast.js";
+import { TEXT_SIZE_LABEL, TEXT_SIZES, type TextSize } from "../../state/useTextSize.js";
 import { Explainer } from "../Explainer.js";
 import { GearIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
@@ -77,12 +78,16 @@ export function SettingsSection({
   onDeleteCharacter,
   actionPending,
   onOpenPrint,
+  textSize,
+  onTextSizeChange,
 }: BuilderProps & {
   onImportCharacter: (doc: CharacterDoc) => void;
   onResetAll: () => void;
   onDeleteCharacter: (id: string) => void;
   actionPending: boolean;
   onOpenPrint: () => void;
+  textSize: TextSize;
+  onTextSizeChange: (size: TextSize) => void;
 }) {
   const settings = doc.build.settings ?? {};
   const hpMode = settings.hpMode ?? "average";
@@ -157,6 +162,27 @@ export function SettingsSection({
 
   return (
     <>
+      {/* Display (device preference — not part of the character) */}
+      <Panel title="Display" step="⚙" icon={<GearIcon />}>
+        <p className="hint" style={{ marginBottom: 12 }}>
+          Text size for this browser/device. Not saved with the character — every character on this
+          device uses the same setting.
+        </p>
+        <div className="chips">
+          {TEXT_SIZES.map((s) => (
+            <button
+              key={s}
+              type="button"
+              className="chip"
+              aria-pressed={textSize === s}
+              onClick={() => onTextSizeChange(s)}
+            >
+              {TEXT_SIZE_LABEL[s]}
+            </button>
+          ))}
+        </div>
+      </Panel>
+
       {/* HP mode */}
       <Panel title="HP Mode" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
@@ -175,7 +201,7 @@ export function SettingsSection({
             </button>
           ))}
         </div>
-        <p className="hint" style={{ marginTop: 10, fontSize: 12 }}>
+        <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
           {hpMode === "average" && "L1 = max HD; each subsequent level = ⌊HD/2⌋ + 1."}
           {hpMode === "max" && "Every level equals the full die value."}
           {hpMode === "rolled" &&
@@ -206,7 +232,7 @@ export function SettingsSection({
             Natural (1×level per night, RAW)
           </button>
         </div>
-        <p className="hint" style={{ marginTop: 10, fontSize: 12 }}>
+        <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
           {restMode === "full"
             ? "Heals current HP straight to max — a common table simplification."
             : "Heals 1 HP per character level per night, capped at max (PF1 RAW). Full bed rest (2×level/day) isn't modelled yet."}{" "}
@@ -387,7 +413,7 @@ export function SettingsSection({
           </button>
         </div>
         {encumbranceEnabled && (
-          <p className="hint" style={{ marginTop: 10, fontSize: 12 }}>
+          <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
             See the Load readout on the Gear &amp; Inventory panel (Build tab) for your current
             weight, thresholds, and tier.
           </p>
@@ -429,7 +455,7 @@ export function SettingsSection({
           </button>
         </div>
         {polymorphEnabled === false && doc.live.activeForm ? (
-          <p className="hint" style={{ marginTop: 10, fontSize: 12 }}>
+          <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
             This character is currently transformed, so the panel stays visible until the form ends.
           </p>
         ) : null}
@@ -748,7 +774,10 @@ function AboutAndLegalPanel({ dataVersion }: { dataVersion: string }) {
         are used under Paizo's Community Use Policy. Not affiliated with Paizo Inc., Foundry Gaming
         LLC, or Wizards of the Coast.
       </p>
-      <p className="hint" style={{ fontFamily: "var(--mono)", fontSize: 11, marginBottom: 10 }}>
+      <p
+        className="hint"
+        style={{ fontFamily: "var(--mono)", fontSize: "0.6875rem", marginBottom: 10 }}
+      >
         Compendium data {dataVersion.slice(0, 10)}
       </p>
       <p className="hint" style={{ marginBottom: 4 }}>
@@ -760,7 +789,7 @@ function AboutAndLegalPanel({ dataVersion }: { dataVersion: string }) {
         {" · "}
         <a href="https://github.com/bjschafer/ledgermain">Source on GitHub</a>
       </p>
-      <p className="hint" style={{ fontSize: 11, marginTop: 10 }}>
+      <p className="hint" style={{ fontSize: "0.6875rem", marginTop: 10 }}>
         This product uses trademarks and/or copyrights owned by Paizo Inc., used under Paizo's
         Community Use Policy. We are expressly prohibited from charging you to use or access this
         product.

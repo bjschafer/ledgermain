@@ -332,7 +332,7 @@ export function FeatEntry({
                 )}
                 {choiceDesc?.type === "weapon" && choiceOpts.length === 0 && (
                   <div className="feat-choice">
-                    <span className="hint" style={{ fontSize: 11 }}>
+                    <span className="hint" style={{ fontSize: "0.6875rem" }}>
                       Add a weapon with a type (in the Weapons section) to enable this picker.
                     </span>
                   </div>
@@ -448,7 +448,7 @@ export function FeatEntry({
         )}
         {choiceDesc?.type === "weapon" && choiceOpts.length === 0 && (
           <div className="feat-choice">
-            <span className="hint" style={{ fontSize: 11 }}>
+            <span className="hint" style={{ fontSize: "0.6875rem" }}>
               Add a weapon with a type (in the Weapons section) to enable this picker.
             </span>
           </div>

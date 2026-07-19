@@ -81,7 +81,7 @@ body {
   background-repeat: no-repeat;
   color: var(--ink);
   font-family: var(--body);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
@@ -114,7 +114,7 @@ a {
 /* utility: eyebrow label */
 .eyebrow {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--gold);
@@ -140,7 +140,7 @@ a {
 
 .masthead .wordmark {
   font-family: var(--display);
-  font-size: 26px;
+  font-size: 1.625rem;
   font-weight: 600;
 }
 
@@ -150,7 +150,7 @@ a {
 
 .masthead .tagline {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
@@ -168,7 +168,7 @@ a {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink);
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 4px 8px;
 }
 
@@ -183,7 +183,7 @@ a {
   border: 1px solid var(--oxblood);
   border-radius: var(--radius);
   color: var(--oxblood-ink);
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 4px 8px;
   text-align: right;
   cursor: pointer;
@@ -196,7 +196,7 @@ a {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink);
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 6px 12px;
   cursor: pointer;
 }
@@ -206,7 +206,7 @@ a {
   align-items: center;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
 }
 
@@ -224,7 +224,7 @@ a {
   border: 1px solid var(--oxblood);
   border-radius: var(--radius);
   color: var(--oxblood-ink);
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 6px 10px;
   text-align: right;
 }
@@ -239,7 +239,7 @@ a {
   border: 1px solid var(--oxblood);
   border-radius: var(--radius);
   color: var(--oxblood-ink);
-  font-size: 11px;
+  font-size: 0.6875rem;
   padding: 3px 8px;
   cursor: pointer;
 }
@@ -347,7 +347,7 @@ a {
 }
 
 .panel > header h2 {
-  font-size: 17px;
+  font-size: 1.0625rem;
   display: flex;
   align-items: baseline;
   gap: 10px;
@@ -356,9 +356,12 @@ a {
 
 .panel > header .step {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--bg);
-  opacity: 0.65;
+  /* 0.75, not the 0.65 it'd take to read as more understated than .hint below
+     — any lower drops under 4.5:1 against the band's darker (bottom) gold
+     stop. */
+  opacity: 0.75;
 }
 
 .panel-icon {
@@ -367,8 +370,8 @@ a {
 }
 
 .panel-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 1.125rem;
+  height: 1.125rem;
   color: var(--bg);
 }
 
@@ -376,7 +379,9 @@ a {
 .panel > header .budge,
 .panel > header .warn-under {
   color: var(--bg);
-  opacity: 0.7;
+  /* 0.82: 0.7 (the initial pick) blends to under 4.5:1 against the band's
+     darker (bottom) gold stop. */
+  opacity: 0.82;
 }
 
 .panel > header .budge b {
@@ -463,7 +468,7 @@ a {
 
 .hint {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 /* -------------------------------------------------------- warn-over / warn-under --
@@ -471,7 +476,7 @@ a {
    picked count is over/under its expected value — used by FeatsSection and
    TraitsSection. Previously unstyled (issue #29). */
 .warn-over {
-  color: var(--danger, #d9534f);
+  color: var(--danger, var(--oxblood-ink));
 }
 
 .warn-under {
@@ -481,7 +486,7 @@ a {
 
 .budge {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -502,7 +507,7 @@ label.field {
 
 label.field > span {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   margin-bottom: 4px;
 }
@@ -518,7 +523,7 @@ textarea {
   color: var(--ink);
   padding: 8px 10px;
   font-family: var(--body);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 textarea {
@@ -535,7 +540,7 @@ input[type="radio"] {
 /* Collapsible subsection for the optional "extra" identity fields. */
 .identity-more > summary {
   cursor: pointer;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gold-dim-ink);
   font-family: var(--mono);
   letter-spacing: 0.06em;
@@ -579,7 +584,7 @@ input[type="number"] {
   background: var(--surface-2);
   border: 0;
   width: 30px;
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--ink);
   cursor: pointer;
   line-height: 1;
@@ -610,7 +615,7 @@ input[type="number"] {
   border-right: 1px solid var(--line);
   border-radius: 0;
   padding: 4px 6px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
 }
@@ -643,7 +648,8 @@ input[type="number"] {
 input:focus-visible,
 select:focus-visible,
 button:focus-visible,
-.seal:focus-visible {
+.seal:focus-visible,
+[role="button"]:focus-visible {
   outline: 2px solid var(--gold-2);
   outline-offset: 2px;
 }
@@ -688,7 +694,7 @@ button:focus-visible,
 
 .ability-cell .abbr {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.12em;
   color: var(--gold);
 }
@@ -696,7 +702,7 @@ button:focus-visible,
 .ability-cell input {
   text-align: center;
   margin-top: 6px;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 /* Ability scores fill their cell as a full-width `− value +` bar. */
@@ -705,14 +711,14 @@ button:focus-visible,
 }
 
 .ability-cell .stepper input[type="number"] {
-  font-size: 18px;
+  font-size: 1.125rem;
   padding: 6px 4px;
 }
 
 .ability-cell .mod {
   margin-top: 6px;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -743,7 +749,7 @@ button:focus-visible,
 
 .ability-inc-cell .abbr {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.12em;
   color: var(--gold);
   margin-bottom: 4px;
@@ -776,7 +782,7 @@ button:focus-visible,
 }
 
 .race-group-header .section-label {
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
@@ -788,13 +794,13 @@ button:focus-visible,
 
 .race-group-count {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--faint);
 }
 
 .race-group-header .panel-caret {
-  width: 14px;
-  height: 14px;
+  width: 0.875rem;
+  height: 0.875rem;
   margin-left: auto;
 }
 
@@ -803,7 +809,7 @@ button:focus-visible,
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 6px 14px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--ink);
   transition:
     border-color 0.12s,
@@ -852,7 +858,7 @@ button:focus-visible,
 
 .ability-chips-section .section-label {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   margin-bottom: 4px;
 }
@@ -869,11 +875,11 @@ button:focus-visible,
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .enh-field > span {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--ink-dim);
   white-space: nowrap;
 }
@@ -898,7 +904,7 @@ button:focus-visible,
   border-radius: var(--radius);
   color: var(--muted);
   padding: 8px 10px;
-  font-size: 14px;
+  font-size: 0.875rem;
   text-align: left;
   cursor: pointer;
   transition:
@@ -923,7 +929,7 @@ button:focus-visible,
   width: auto;
   min-width: 60px;
   padding: 5px 10px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 /*
@@ -941,20 +947,20 @@ button:focus-visible,
   border-radius: var(--radius);
   color: var(--muted);
   padding: 8px 10px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-style: italic;
 }
 
 .field-implied.compact {
   width: auto;
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 0.75rem;
   white-space: nowrap;
 }
 
 .armor-custom-link {
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 /* Shared "preview" box for the free-choice L1 subsection pickers (Mystery,
@@ -996,7 +1002,7 @@ button:focus-visible,
 .curse-bonus-spells li,
 .bloodline-powers li,
 .order-abilities li {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .order-ability-summary {
@@ -1011,7 +1017,7 @@ button:focus-visible,
    character-specific computed bonus. */
 .deed-summary {
   margin: 2px 0 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -1071,7 +1077,7 @@ button:focus-visible,
   background: none;
   border: 0;
   color: var(--faint);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1;
 }
 
@@ -1100,7 +1106,7 @@ button:focus-visible,
   border-radius: var(--radius);
   color: var(--muted);
   padding: 4px 10px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .btn-ghost:disabled,
@@ -1135,7 +1141,7 @@ button:focus-visible,
 
 .spell-level-empty {
   padding: 6px 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-style: italic;
 }
 
@@ -1168,19 +1174,19 @@ button:focus-visible,
 }
 
 .skill-row .sname {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .skill-row .smeta {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--faint);
 }
 
 /* shared class-skill badge — used in both the builder list and the live sheet */
 .tag-cls {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--gold-dim-ink);
   margin-left: 4px;
   vertical-align: middle;
@@ -1189,7 +1195,7 @@ button:focus-visible,
 /* trained-only badge — muted, distinct from the gold class badge */
 .tag-trained {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--faint);
   margin-left: 4px;
   vertical-align: middle;
@@ -1200,7 +1206,7 @@ button:focus-visible,
   background: none;
   border: none;
   color: var(--faint);
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1;
   margin-left: 6px;
   padding: 0 2px;
@@ -1245,7 +1251,7 @@ button:focus-visible,
 .tag-bloodline {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--gold-2);
   background: rgba(201, 162, 39, 0.12);
   border: 1px solid var(--gold-dim);
@@ -1261,7 +1267,7 @@ button:focus-visible,
 .tag-mystery {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--gold-2);
   background: rgba(201, 162, 39, 0.12);
   border: 1px solid var(--gold-dim);
@@ -1304,7 +1310,7 @@ button:focus-visible,
 
 .pick-row .pname {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 /* Marks a race/feat name authored on this character (`isHomebrewId`) rather
@@ -1319,7 +1325,7 @@ button:focus-visible,
   border-radius: 999px;
   font-family: var(--mono);
   font-weight: 500;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
@@ -1337,7 +1343,7 @@ button:focus-visible,
   border-radius: 999px;
   font-family: var(--mono);
   font-weight: 500;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--gold-2);
@@ -1347,7 +1353,7 @@ button:focus-visible,
 
 .pick-row .preq {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   margin-top: 3px;
   display: flex;
@@ -1377,7 +1383,7 @@ button:focus-visible,
    mono treatment. */
 .desc-text {
   font-family: var(--body);
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--muted);
   font-style: normal;
 }
@@ -1418,7 +1424,7 @@ button:focus-visible,
 
 .casting-advancement-class-name {
   font-weight: 600;
-  font-size: 13px;
+  font-size: 0.8125rem;
   margin-bottom: 4px;
 }
 
@@ -1445,14 +1451,14 @@ button:focus-visible,
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   white-space: nowrap;
 }
 
 .slot-chip-warn {
-  border-color: var(--danger, #d9534f);
-  color: var(--danger, #d9534f);
+  border-color: var(--danger, var(--oxblood-ink));
+  color: var(--danger, var(--oxblood-ink));
 }
 
 /* The warn variant's text ("⚠ Wizard bonus feat (metamagic / item creation /
@@ -1490,7 +1496,7 @@ button:focus-visible,
   border-radius: 999px;
   font-family: var(--mono);
   font-weight: 500;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--oxblood-ink);
@@ -1504,7 +1510,7 @@ button:focus-visible,
 }
 
 .feat-choice-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   display: flex;
   align-items: center;
@@ -1516,7 +1522,7 @@ button:focus-visible,
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink);
-  font-size: 11px;
+  font-size: 0.6875rem;
   padding: 2px 6px;
 }
 
@@ -1527,7 +1533,7 @@ button:focus-visible,
   background: var(--surface-2);
   color: var(--ink);
   padding: 5px 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   min-width: 74px;
 }
 
@@ -1552,7 +1558,7 @@ button:focus-visible,
   flex-shrink: 0;
   min-width: 74px;
   padding: 5px 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-family: var(--mono);
   text-align: center;
   color: var(--sage);
@@ -1616,7 +1622,7 @@ button:focus-visible,
 .buff-apply-item {
   padding: 6px 8px;
   text-align: left;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--ink);
   background: transparent;
   border: 1px solid transparent;
@@ -1659,7 +1665,7 @@ button:focus-visible,
 
 .spell-level-head {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold);
@@ -1684,14 +1690,14 @@ button:focus-visible,
 
 .spell-level-head .spell-level-count {
   margin-left: auto;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--faint);
   letter-spacing: 0.05em;
 }
 
 .spell-level-head .panel-caret {
-  width: 14px;
-  height: 14px;
+  width: 0.875rem;
+  height: 0.875rem;
   margin-left: 0;
 }
 
@@ -1725,7 +1731,7 @@ button:focus-visible,
 
 .spell-domain-level-head {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gold-dim-ink);
@@ -1746,14 +1752,14 @@ button:focus-visible,
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   min-width: 60px;
 }
 
 .hp-override-badge {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.08em;
   color: var(--gold-2);
   background: rgba(201, 162, 39, 0.12);
@@ -1780,14 +1786,14 @@ button:focus-visible,
 
 .sheet .char-name {
   font-family: var(--display);
-  font-size: 30px;
+  font-size: 1.875rem;
   font-weight: 600;
   line-height: 1.05;
 }
 
 .sheet .char-sub {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   margin-top: 4px;
   letter-spacing: 0.04em;
@@ -1802,7 +1808,7 @@ button:focus-visible,
    register as .char-sub (was previously unstyled default body text, which
    read louder than the race/class line above it). */
 .sheet .char-identity {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   margin-top: 4px;
 }
@@ -1858,7 +1864,7 @@ button:focus-visible,
 
 .seal .seal-label {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
@@ -1867,7 +1873,7 @@ button:focus-visible,
 .seal .seal-value {
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
-  font-size: 30px;
+  font-size: 1.875rem;
   font-weight: 600;
   color: var(--gold-2);
   line-height: 1.1;
@@ -1876,7 +1882,7 @@ button:focus-visible,
 
 .seal .seal-foot {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--faint);
   margin-top: 2px;
 }
@@ -1886,7 +1892,7 @@ button:focus-visible,
   top: 6px;
   right: 8px;
   color: var(--faint);
-  font-size: 9px;
+  font-size: 0.5625rem;
 }
 
 /* compact (de-emphasised) seal variant — used for BAB, Init, Speed */
@@ -1895,7 +1901,7 @@ button:focus-visible,
 }
 
 .seal.seal--compact .seal-value {
-  font-size: 18px;
+  font-size: 1.125rem;
   color: var(--muted);
 }
 
@@ -1930,13 +1936,13 @@ button:focus-visible,
 }
 
 .stat-hero-band .seal .seal-value {
-  font-size: 44px;
+  font-size: 2.75rem;
 }
 
 /* The HP box sits on a gold fill, so the dim default foot color is unreadable. */
 .stat-hero-band .seal .seal-foot {
   color: var(--ink);
-  font-size: 11px;
+  font-size: 0.6875rem;
   opacity: 0.8;
 }
 
@@ -1957,7 +1963,7 @@ button:focus-visible,
   align-items: center;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -2027,7 +2033,7 @@ button:focus-visible,
 
 .prov .prov-title {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
@@ -2038,7 +2044,7 @@ button:focus-visible,
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 2px 0;
 }
 
@@ -2049,7 +2055,7 @@ button:focus-visible,
 .prov .prov-row .type {
   color: var(--faint);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 
 .prov .prov-row .val {
@@ -2087,26 +2093,26 @@ button:focus-visible,
 
 .ability-pip .ap-abbr {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.1em;
   color: var(--gold);
 }
 
 .ability-pip .ap-mod {
   font-family: var(--mono);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
 }
 
 .ability-pip .ap-score {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--faint);
 }
 
 /* saves + AC line block */
 .sheet h3 {
-  font-size: 13px;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--muted);
@@ -2127,7 +2133,7 @@ button:focus-visible,
   grid-template-columns: 1fr auto;
   padding: 4px 10px;
   border-bottom: 1px solid var(--line-soft);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .sheet-skill:last-child {
@@ -2162,14 +2168,14 @@ button:focus-visible,
 }
 
 .state-screen .glyph {
-  font-size: 40px;
+  font-size: 2.5rem;
   color: var(--gold-dim-ink);
 }
 
 .empty {
   color: var(--faint);
   font-style: italic;
-  font-size: 13px;
+  font-size: 0.8125rem;
   padding: 8px 2px;
 }
 
@@ -2199,7 +2205,7 @@ button:focus-visible,
 
 .wealth-field > span {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   text-transform: uppercase;
 }
@@ -2222,11 +2228,11 @@ button:focus-visible,
 
 .load-weight {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .load-thresholds {
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .load-tier-badge {
@@ -2245,7 +2251,7 @@ button:focus-visible,
 
 .load-penalty-note {
   margin-top: 4px;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 /* Per-row quantity stepper + charge tracker, issue #16. */
@@ -2257,7 +2263,7 @@ button:focus-visible,
 }
 
 .gear-qty > span {
-  font-size: 10px;
+  font-size: 0.625rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -2326,12 +2332,12 @@ button:focus-visible,
 
 .gear-name {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .gear-meta {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   margin-top: 2px;
 }
@@ -2344,7 +2350,7 @@ button:focus-visible,
 }
 
 .gear-change {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-family: var(--mono);
   color: var(--gold-dim-ink);
 }
@@ -2445,7 +2451,7 @@ button:focus-visible,
   background: none;
   border: 0;
   padding: 6px 18px;
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-family: var(--mono);
@@ -2466,7 +2472,7 @@ button:focus-visible,
   min-width: 14px;
   border-radius: 999px;
   border: 1px solid var(--gold-dim);
-  font-size: 10px;
+  font-size: 0.625rem;
   line-height: 14px;
   letter-spacing: 0;
   color: var(--gold-2);
@@ -2475,7 +2481,7 @@ button:focus-visible,
 
 .tracker-col h4.tracker-sub {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold-dim-ink);
@@ -2490,7 +2496,7 @@ button:focus-visible,
   background: var(--surface-2);
   color: var(--ink);
   padding: 8px 14px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .btn-act.dmg:hover {
@@ -2506,7 +2512,7 @@ button:focus-visible,
 .btn-act.round {
   border-color: var(--gold-dim);
   color: var(--gold-2);
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 6px 12px;
 }
 
@@ -2532,7 +2538,7 @@ button:focus-visible,
 }
 
 .new-day-reminder {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 /* HP panel */
@@ -2566,7 +2572,7 @@ button:focus-visible,
 }
 
 .hp-big {
-  font-size: 34px;
+  font-size: 2.125rem;
   font-weight: 600;
   color: var(--gold-2);
 }
@@ -2577,7 +2583,7 @@ button:focus-visible,
 
 .hp-big .hp-slash {
   color: var(--faint);
-  font-size: 22px;
+  font-size: 1.375rem;
   margin: 0 4px;
 }
 
@@ -2588,7 +2594,7 @@ button:focus-visible,
 }
 
 .hp-chip {
-  font-size: 11px;
+  font-size: 0.6875rem;
   padding: 3px 8px;
   border-radius: 999px;
   border: 1px solid var(--line);
@@ -2606,7 +2612,7 @@ button:focus-visible,
 /* HP dying/disabled/staggered status (issue #20) — reuses the .affliction-warn
    color introduced for the Afflictions panel so the two read as one system. */
 .hp-status-line {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   margin-bottom: 10px;
 }
@@ -2622,7 +2628,7 @@ button:focus-visible,
   align-items: center;
   gap: 6px;
   margin-bottom: 10px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -2644,7 +2650,7 @@ button:focus-visible,
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -2655,7 +2661,7 @@ button:focus-visible,
 }
 
 .hp-inline-label {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -2704,7 +2710,7 @@ button:focus-visible,
   list-style: none;
   padding: 0;
   margin: 12px 0 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -2723,11 +2729,11 @@ button:focus-visible,
 }
 
 .affliction-warn {
-  color: var(--danger, #d9534f);
+  color: var(--danger, var(--oxblood-ink));
 }
 
 .affliction-warn b {
-  color: var(--danger, #d9534f);
+  color: var(--danger, var(--oxblood-ink));
 }
 
 .affliction-neglevels {
@@ -2771,11 +2777,11 @@ button:focus-visible,
 
 .buff-name {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .buff-changes {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--faint);
   display: flex;
   flex-wrap: wrap;
@@ -2792,7 +2798,7 @@ button:focus-visible,
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
 }
 
@@ -2809,7 +2815,7 @@ button:focus-visible,
      without this the input inherits the global 14px and towers over the
      11px select beside it. */
   padding: 4px 6px;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 /* The "apply to Self / Familiar / Companion / …" toggles on an active-buff
@@ -2833,7 +2839,7 @@ button:focus-visible,
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   white-space: nowrap;
   flex-shrink: 0;
@@ -2853,7 +2859,7 @@ button:focus-visible,
   appearance: none;
   -webkit-appearance: none;
   padding: 4px 18px 4px 8px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-family: var(--mono);
   color: var(--muted);
   background-color: var(--surface-2);
@@ -2896,7 +2902,7 @@ button:focus-visible,
 
 .custom-buff summary {
   cursor: pointer;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gold-dim-ink);
   font-family: var(--mono);
   letter-spacing: 0.06em;
@@ -2926,7 +2932,7 @@ button:focus-visible,
 
 .hb-editor summary {
   cursor: pointer;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gold-dim-ink);
   font-family: var(--mono);
   letter-spacing: 0.06em;
@@ -2957,7 +2963,7 @@ button:focus-visible,
 
 .hb-field label,
 .hb-field-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-family: var(--mono);
   letter-spacing: 0.03em;
   color: var(--muted);
@@ -2988,7 +2994,7 @@ button:focus-visible,
 
 .hb-error {
   color: var(--oxblood-ink);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 /* resources */
@@ -3038,12 +3044,12 @@ button:focus-visible,
 }
 
 .saved-roll-value-btn .caret {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--faint);
 }
 
 .saved-roll-damage {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-family: var(--mono);
   color: var(--muted);
   white-space: nowrap;
@@ -3060,7 +3066,7 @@ button:focus-visible,
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -3085,7 +3091,7 @@ button:focus-visible,
   align-items: center;
   gap: 5px;
   padding: 2px 8px;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 /* A feat the character no longer owns: struck through + dimmed (same visual
@@ -3099,7 +3105,7 @@ button:focus-visible,
   background: none;
   border: none;
   padding: 0;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
   cursor: pointer;
   line-height: 1;
@@ -3131,7 +3137,7 @@ button:focus-visible,
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .ranger-rows {
@@ -3158,13 +3164,13 @@ button:focus-visible,
 }
 
 .ranger-budget.warn {
-  color: var(--danger, #b4331f);
+  color: var(--danger, var(--oxblood-ink));
 }
 
 /* At-table reminders from applied feat effects ("within 30 ft · full attack
    only") — one muted line under the roll's value row. */
 .saved-roll-notes {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   padding: 0 2px 2px;
 }
@@ -3186,11 +3192,11 @@ button:focus-visible,
 
 .res-name {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .res-sub {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--faint);
   font-family: var(--mono);
   letter-spacing: 0.08em;
@@ -3219,7 +3225,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .res-count {
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--gold-2);
 }
 
@@ -3247,7 +3253,7 @@ input[type="text"].saved-roll-name:focus {
   background: var(--surface-2);
   color: var(--ink);
   padding: 3px 10px;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .res-linked-buff:hover {
@@ -3290,7 +3296,7 @@ input[type="text"].saved-roll-name:focus {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
 }
 
@@ -3305,7 +3311,7 @@ input[type="text"].saved-roll-name:focus {
 
 .polymorph-summary .pname {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
   flex: 1 1 auto;
 }
 
@@ -3314,7 +3320,7 @@ input[type="text"].saved-roll-name:focus {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
 }
 
@@ -3336,7 +3342,7 @@ input[type="text"].saved-roll-name:focus {
 .polymorph-attack-total {
   flex-shrink: 0;
   color: var(--gold-dim-ink);
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .polymorph-notes p {
@@ -3409,7 +3415,7 @@ input[type="text"].saved-roll-name:focus {
   background: transparent;
   cursor: pointer;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
@@ -3434,7 +3440,7 @@ input[type="text"].saved-roll-name:focus {
   padding: 0 4px;
   border-radius: 8px;
   background: var(--surface-2);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--gold-dim-ink);
 }
 
@@ -3466,20 +3472,20 @@ input[type="text"].saved-roll-name:focus {
 
 .prep-head-label {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold);
 }
 
 .prep-count {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-family: var(--mono);
   color: var(--faint);
 }
 
 .prep-count.is-over {
-  color: var(--danger, #d9534f);
+  color: var(--danger, var(--oxblood-ink));
 }
 
 .prep-bonus {
@@ -3523,7 +3529,7 @@ input[type="text"].saved-roll-name:focus {
 .prep-row .prep-name {
   flex: 1;
   min-width: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 /* prep-row-main: wraps name + inline spell detail expander */
@@ -3541,7 +3547,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .prep-atwill {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-family: var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -3581,7 +3587,7 @@ input[type="text"].saved-roll-name:focus {
 .prep-none {
   margin: 0;
   padding: 6px 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--faint);
   border-top: 1px solid var(--line-soft);
 }
@@ -3597,7 +3603,7 @@ input[type="text"].saved-roll-name:focus {
 .prep-add > summary {
   cursor: pointer;
   padding: 6px 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--gold-dim-ink);
   font-family: var(--mono);
   letter-spacing: 0.04em;
@@ -3619,27 +3625,27 @@ input[type="text"].saved-roll-name:focus {
 .prep-add-row .prep-name {
   flex: 1;
   min-width: 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .prep-have {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-family: var(--mono);
   color: var(--gold-2);
 }
 
 .prep-opposition-badge {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-family: var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--danger, #d9534f);
+  color: var(--danger, var(--oxblood-ink));
 }
 
 /* ---------------------------------------------- metamagic (issue #71) -- */
 
 .prep-mm-badge {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-family: var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -3654,7 +3660,7 @@ input[type="text"].saved-roll-name:focus {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-family: var(--mono);
   color: var(--faint);
   cursor: pointer;
@@ -3685,7 +3691,7 @@ input[type="text"].saved-roll-name:focus {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 3px 10px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--ink);
   cursor: pointer;
   transition:
@@ -3712,7 +3718,7 @@ input[type="text"].saved-roll-name:focus {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
 }
 
@@ -3721,7 +3727,7 @@ input[type="text"].saved-roll-name:focus {
   border: 1px solid var(--line);
   border-radius: 6px;
   color: var(--ink);
-  font-size: 11px;
+  font-size: 0.6875rem;
   padding: 1px 4px;
 }
 
@@ -3751,7 +3757,7 @@ input[type="text"].saved-roll-name:focus {
   border-radius: 10px;
   background: var(--surface-2);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.03em;
   color: var(--ink);
   white-space: nowrap;
@@ -3777,7 +3783,7 @@ input[type="text"].saved-roll-name:focus {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-family: var(--mono);
   color: var(--faint);
   cursor: pointer;
@@ -3797,7 +3803,7 @@ input[type="text"].saved-roll-name:focus {
 .spell-detail-summary::before {
   content: "▸";
   display: inline-block;
-  font-size: 9px;
+  font-size: 0.5625rem;
   transition: transform 0.15s ease;
 }
 
@@ -3817,12 +3823,12 @@ input[type="text"].saved-roll-name:focus {
 .spell-detail-row {
   display: flex;
   gap: 8px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .spell-detail-label {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold-dim-ink);
@@ -3836,7 +3842,7 @@ input[type="text"].saved-roll-name:focus {
 
 .spell-detail-desc {
   margin-top: 6px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   line-height: 1.5;
   max-height: 200px;
@@ -3897,7 +3903,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .explainer-summary {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-family: var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -3919,8 +3925,8 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .explainer-summary .panel-caret {
-  width: 12px;
-  height: 12px;
+  width: 0.75rem;
+  height: 0.75rem;
   margin-left: 0;
 }
 
@@ -3938,7 +3944,7 @@ input[type="text"].saved-roll-name:focus {
 /* ----------------------------- known-count badge (Task 1e) -- */
 
 .spell-known-count {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-family: var(--mono);
   color: var(--faint);
   letter-spacing: 0.05em;
@@ -3949,7 +3955,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .spell-known-count.is-over {
-  color: var(--danger, #d9534f);
+  color: var(--danger, var(--oxblood-ink));
 }
 
 /* ----------------------------- re-prepare row (Task 3) -- */
@@ -3965,7 +3971,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .prep-clear-confirm-label {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   flex: 1;
 }
@@ -3984,7 +3990,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .hero-pip {
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1;
 }
 
@@ -3997,7 +4003,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .hero-count {
-  font-size: 18px;
+  font-size: 1.125rem;
   color: var(--muted);
 }
 
@@ -4021,7 +4027,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .xp-count {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .xp-ready {
@@ -4083,13 +4089,13 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .stat-override-label {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .stat-override-computed {
   text-align: right;
   color: var(--faint);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 /* -------------------------------------------------------- collapsible panel -- */
@@ -4107,8 +4113,8 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .panel-caret {
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
   color: var(--gold-dim-ink);
   margin-left: auto;
   flex-shrink: 0;
@@ -4135,7 +4141,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .subsection-header h3 {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-family: var(--mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -4143,8 +4149,8 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .subsection-header .panel-caret {
-  width: 14px;
-  height: 14px;
+  width: 0.875rem;
+  height: 0.875rem;
   margin-left: 0;
 }
 
@@ -4154,7 +4160,7 @@ input[type="text"].saved-roll-name:focus {
 
 .subsection h4.tracker-sub {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold-dim-ink);
@@ -4172,7 +4178,7 @@ input[type="text"].saved-roll-name:focus {
 
 .cf-level {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   min-width: 42px;
   flex-shrink: 0;
@@ -4180,7 +4186,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .cf-name {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--ink);
 }
 
@@ -4298,7 +4304,7 @@ input[type="text"].saved-roll-name:focus {
    here. Bumped up (and to the caret's own gold-dim, matching `.panel-caret`)
    so it actually reads as a chevron. */
 .cf-archetype-feature .spell-detail-summary::before {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--gold-dim-ink);
 }
 
@@ -4346,7 +4352,7 @@ input[type="text"].saved-roll-name:focus {
 
 .fcb-level {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--faint);
   text-align: right;
   white-space: nowrap;
@@ -4363,7 +4369,7 @@ input[type="text"].saved-roll-name:focus {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 3px 10px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--ink);
   cursor: pointer;
   transition:
@@ -4422,12 +4428,12 @@ input[type="text"].saved-roll-name:focus {
 
 .hp-roll-level {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--faint);
 }
 
 .hp-roll-info {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -4444,7 +4450,7 @@ input[type="text"].saved-roll-name:focus {
   border: 1px solid var(--gold-dim);
   border-radius: var(--radius);
   padding: 5px 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   font-family: var(--mono);
   letter-spacing: 0.04em;
@@ -4468,19 +4474,19 @@ input[type="text"].saved-roll-name:focus {
 /* class row metadata */
 .class-row .smeta {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--faint);
 }
 
 .class-row .cls-hd-label {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--faint);
   white-space: nowrap;
 }
 
 .class-row .cls-lv-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--faint);
   font-family: var(--mono);
   letter-spacing: 0.06em;
@@ -4519,7 +4525,7 @@ input[type="text"].saved-roll-name:focus {
 
 /* Weapon display name above the stat row. */
 .weapon-attack-name {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--text-main);
   padding-left: 2px;
@@ -4555,14 +4561,14 @@ input[type="text"].saved-roll-name:focus {
 
 .preview-notice-title {
   font-family: var(--display);
-  font-size: 18px;
+  font-size: 1.125rem;
   color: var(--gold);
   margin-bottom: 10px;
 }
 
 .preview-notice p {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.5;
   margin-bottom: 12px;
 }
@@ -4592,7 +4598,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .import-report li.hint {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 /* "Add a language" row (Race section) — was an inline-styled flex row. */
@@ -4644,7 +4650,7 @@ input[type="text"].saved-roll-name:focus {
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 /* The relevant-at-the-table skills (physical checks + anything with a
@@ -4691,7 +4697,7 @@ input[type="text"].saved-roll-name:focus {
 @media (max-width: 640px) {
   .mode-tab {
     padding: 12px 16px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   .btn-act {
@@ -4902,14 +4908,14 @@ input[type="text"].saved-roll-name:focus {
 
   .stat-strip-label {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 0.5625rem;
     letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--muted);
   }
 
   .stat-strip-value {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--gold-2);
     line-height: 1.2;
@@ -4965,7 +4971,7 @@ input[type="text"].saved-roll-name:focus {
   padding: 5px 8px;
   text-align: left;
   color: var(--faint);
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.3;
 }
 
@@ -5013,7 +5019,7 @@ input[type="text"].saved-roll-name:focus {
   padding: 0 4px;
   border-radius: 999px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   text-align: center;
   background: var(--surface);
   border: 1px solid var(--gold-dim);
@@ -5097,7 +5103,7 @@ input[type="text"].saved-roll-name:focus {
 
 .play-nav-group {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 0.5625rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--gold-dim-ink);
@@ -5116,7 +5122,7 @@ input[type="text"].saved-roll-name:focus {
 
 .play-group-head {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold-dim-ink);
@@ -5206,7 +5212,7 @@ input[type="text"].saved-roll-name:focus {
   position: absolute;
   top: 6px;
   left: 8px;
-  font-size: 9px;
+  font-size: 0.5625rem;
   line-height: 1;
 }
 
@@ -5275,7 +5281,7 @@ input[type="text"].saved-roll-name:focus {
   padding: var(--space-3) var(--space-4);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--ink);
   cursor: pointer;
   animation: toast-in 180ms ease-out;
@@ -5293,7 +5299,7 @@ input[type="text"].saved-roll-name:focus {
   border-radius: var(--radius);
   padding: 6px 12px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--gold-2);
   cursor: pointer;
@@ -5404,7 +5410,7 @@ input[type="text"].saved-roll-name:focus {
   border: none;
   color: var(--ink);
   font-family: inherit;
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 4px 8px;
   cursor: pointer;
 }
@@ -5435,7 +5441,7 @@ input[type="text"].saved-roll-name:focus {
 .char-switcher-caret {
   flex: none;
   color: var(--gold-dim-ink);
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 
 .char-switcher-list {
@@ -5464,7 +5470,7 @@ input[type="text"].saved-roll-name:focus {
   align-items: center;
   gap: var(--space-2);
   padding: 6px var(--space-3);
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--ink);
   cursor: pointer;
   white-space: nowrap;
@@ -5578,7 +5584,7 @@ input[type="text"].saved-roll-name:focus {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--faint);
   opacity: 0.55;
   transition:
@@ -5610,7 +5616,7 @@ input[type="text"].saved-roll-name:focus {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
   padding: var(--space-2) var(--space-3);
   font-family: var(--body);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.4;
   color: var(--ink);
   text-align: left;
@@ -5653,7 +5659,7 @@ input[type="text"].saved-roll-name:focus {
   color: #201a05;
   font-weight: 600;
   padding: 6px 14px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .btn-gold:hover {
@@ -5669,13 +5675,13 @@ input[type="text"].saved-roll-name:focus {
   border-radius: 2px;
   padding: 28px 32px 36px;
   font-family: var(--body);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.35;
 }
 
 .print-page h3 {
   font-family: var(--display);
-  font-size: 13px;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border-bottom: 1px solid #cfc7ab;
@@ -5692,17 +5698,17 @@ input[type="text"].saved-roll-name:focus {
 
 .print-name {
   font-family: var(--display);
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: 700;
 }
 
 .print-sub {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #4a3f1e;
 }
 
 .print-identity {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #5c5540;
 }
 
@@ -5757,7 +5763,7 @@ input[type="text"].saved-roll-name:focus {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-4);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .print-stat {
@@ -5783,7 +5789,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .print-hint {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #5c5540;
   margin: 2px 0 0;
 }
@@ -5839,7 +5845,7 @@ input[type="text"].saved-roll-name:focus {
 
 .print-spell-level-head {
   font-weight: 600;
-  font-size: 11px;
+  font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: #4a3f1e;
@@ -5851,7 +5857,9 @@ input[type="text"].saved-roll-name:focus {
 
 .print-spell-list li.is-expended {
   text-decoration: line-through;
-  color: #8a8265;
+  /* Darkened from an earlier #8a8265, which read under 4.5:1 on the
+     print page's #f7f4ea background. */
+  color: #6d664f;
 }
 
 @media (max-width: 700px) {
@@ -5928,13 +5936,13 @@ input[type="text"].saved-roll-name:focus {
 
 .dialog-title {
   font-family: var(--display);
-  font-size: 18px;
+  font-size: 1.125rem;
   color: var(--gold);
   text-transform: capitalize;
 }
 
 .dialog-subtitle {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -5944,7 +5952,7 @@ input[type="text"].saved-roll-name:focus {
 
 .dialog-esc-hint {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--faint);
 }
 
@@ -5952,7 +5960,7 @@ input[type="text"].saved-roll-name:focus {
   background: none;
   border: none;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 0.9375rem;
   padding: 2px 6px;
   cursor: pointer;
 }
@@ -6021,7 +6029,7 @@ input[type="text"].saved-roll-name:focus {
   flex: 0 0 auto;
   width: auto;
   padding: 7px 10px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .spell-manager-panes {
@@ -6052,7 +6060,7 @@ input[type="text"].saved-roll-name:focus {
   padding: var(--space-2) var(--space-4);
   border-bottom: 1px solid var(--line-soft);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold);
@@ -6093,7 +6101,7 @@ input[type="text"].saved-roll-name:focus {
   margin-right: 10px;
   line-height: inherit;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.05em;
   color: var(--faint);
 }
@@ -6166,7 +6174,7 @@ input[type="text"].saved-roll-name:focus {
   z-index: 1;
   background: var(--surface);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold);
@@ -6191,7 +6199,7 @@ input[type="text"].saved-roll-name:focus {
 
 .skill-summary-ranks {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--faint);
   white-space: nowrap;
 }
@@ -6217,7 +6225,7 @@ input[type="text"].saved-roll-name:focus {
 
 .feedback-title {
   font-family: var(--display);
-  font-size: 18px;
+  font-size: 1.125rem;
   color: var(--gold);
 }
 
@@ -6225,7 +6233,7 @@ input[type="text"].saved-roll-name:focus {
   background: none;
   border: none;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 0.9375rem;
   padding: 2px 6px;
   cursor: pointer;
 }
@@ -6244,12 +6252,12 @@ input[type="text"].saved-roll-name:focus {
   flex-direction: column;
   gap: 4px;
   margin-bottom: 12px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
 .feedback-field > span {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .feedback-field select,
@@ -6257,7 +6265,7 @@ input[type="text"].saved-roll-name:focus {
 .feedback-field textarea {
   width: 100%;
   font: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .feedback-field textarea {
@@ -6270,7 +6278,7 @@ input[type="text"].saved-roll-name:focus {
   align-items: center;
   gap: 8px;
   margin-bottom: 12px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--muted);
   cursor: pointer;
 }
@@ -6286,14 +6294,14 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .feedback-disclosure {
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.5;
   margin-bottom: 14px;
 }
 
 .feedback-error {
   color: var(--oxblood-ink);
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-bottom: 12px;
 }
 
@@ -6305,7 +6313,7 @@ input[type="text"].saved-roll-name:focus {
 
 .feedback-done p {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.5;
   margin-bottom: 10px;
 }
@@ -6346,7 +6354,7 @@ input[type="text"].saved-roll-name:focus {
 .point-buy-select {
   width: auto;
   padding: 4px 8px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .point-buy-readout {
@@ -6371,7 +6379,7 @@ input[type="text"].saved-roll-name:focus {
   border: 1px dashed var(--line);
   border-radius: 999px;
   padding: 4px 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--ink);
   opacity: 0.85;
   transition:
