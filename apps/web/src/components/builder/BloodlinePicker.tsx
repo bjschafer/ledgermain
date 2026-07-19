@@ -5,6 +5,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setSorcererBloodline, setSorcererBloodlineVariant } from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -66,7 +67,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
           Bloodline
           {chosen ? <span className="hint"> · {chosen}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

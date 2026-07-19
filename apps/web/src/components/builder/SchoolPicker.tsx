@@ -7,6 +7,7 @@ import { SCHOOL_LABELS, SCHOOL_TAGS } from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { OppositionPicker } from "./OppositionPicker.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -57,7 +58,7 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
             <span className="hint"> · {SCHOOL_LABELS[chosen as WizardSchoolTag]}</span>
           ) : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

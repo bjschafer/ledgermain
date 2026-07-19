@@ -63,6 +63,7 @@ import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 import { Explainer } from "../Explainer.js";
 import { TipButton } from "../InfoTip.js";
+import { WandIcon } from "../icons.js";
 import { SpellDetail } from "../SpellDetail.js";
 
 interface PreparedRow {
@@ -857,6 +858,7 @@ function PreparedView({
     <Panel
       title="Spells"
       step="ps"
+      icon={<WandIcon />}
       storageKey="panel:Prepared"
       right={
         <button
@@ -1333,6 +1335,7 @@ function SpontaneousView({
     <Panel
       title="Spells"
       step="ps"
+      icon={<WandIcon />}
       storageKey="panel:Prepared"
       right={
         <button
@@ -1674,6 +1677,7 @@ function HybridView({
     <Panel
       title="Spells"
       step="ps"
+      icon={<WandIcon />}
       storageKey="panel:Prepared"
       right={
         <button
@@ -2093,7 +2097,7 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
     // message — that's a gap worth surfacing, not an absent feature.
     if (!casterTag && !spellsPanelVisible(doc, refData)) return null;
     return (
-      <Panel title="Spells" step="ps" storageKey="panel:Prepared">
+      <Panel title="Spells" step="ps" icon={<WandIcon />} storageKey="panel:Prepared">
         <p className="empty">
           {casterTag
             ? "Spell tracking isn't modelled for this class yet."

@@ -45,6 +45,7 @@ import { FamiliarPicker } from "./FamiliarPicker.js";
 import { PhantomPicker } from "./PhantomPicker.js";
 import { ShifterAspectPicker } from "./ShifterAspectPicker.js";
 import { InfoTip, TipButton } from "../InfoTip.js";
+import { ShieldIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
 import { OrderPicker } from "./OrderPicker.js";
 import { Panel } from "./Panel.js";
@@ -62,6 +63,7 @@ import type { BuilderProps } from "./types.js";
 import { VigilanteSpecializationPicker } from "./VigilanteSpecializationPicker.js";
 import { VigilanteTalentPicker } from "./VigilanteTalentPicker.js";
 import { WeaponTrainingPicker } from "./WeaponTrainingPicker.js";
+import { Caret } from "../Caret.js";
 
 /**
  * One collapsible category tier in the class picker (Core / Base / Hybrid) —
@@ -104,7 +106,7 @@ function ClassGroupSection({
       >
         <span className="section-label">{label}</span>
         <span className="race-group-count">{count}</span>
-        <span className="panel-caret">{open ? "▾" : "▸"}</span>
+        <Caret open={open} />
       </div>
       {open ? plain ? children : <div className="chips">{children}</div> : null}
     </div>
@@ -167,6 +169,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title="Classes"
       step="iv"
+      icon={<ShieldIcon />}
       right={<span className="hint">multiclass-capable · total level {totalLevel}</span>}
       storageKey="panel:Classes"
     >
@@ -377,7 +380,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
             aria-expanded={fcbOpen}
           >
             <h3>Favored Class Bonus</h3>
-            <span className="panel-caret">{fcbOpen ? "▾" : "▸"}</span>
+            <Caret open={fcbOpen} />
           </div>
           {fcbOpen && (
             <div className="fcb-list">

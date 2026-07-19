@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { FeatEntry, useFeatRenderContext } from "./FeatEntry.js";
 import { FeatManager } from "./FeatManager.js";
 import { InfoTip } from "../InfoTip.js";
+import { StarIcon } from "../icons.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { HomebrewFeatEditor } from "./HomebrewFeatEditor.js";
 import { Panel } from "./Panel.js";
@@ -34,6 +35,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title="Feats"
       step="vii"
+      icon={<StarIcon />}
       storageKey="panel:Feats"
       right={
         <>

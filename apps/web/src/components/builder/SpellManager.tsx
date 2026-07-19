@@ -17,6 +17,7 @@ import {
 import { Dialog } from "../Dialog.js";
 import { SpellDetail } from "../SpellDetail.js";
 import { SearchMiss } from "./SearchMiss.js";
+import { Caret } from "../Caret.js";
 
 const levelName = (level: number) => (level === 0 ? "Cantrips" : `Level ${level}`);
 
@@ -282,9 +283,7 @@ function ManagerLevelGroup({
         <span className="spell-level-label">{label}</span>
         {badge}
         <span className="spell-level-count">{count}</span>
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && children}
     </div>

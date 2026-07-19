@@ -9,6 +9,7 @@ import {
   setPhantomSize,
 } from "../../model/phantom.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -66,7 +67,7 @@ export function PhantomPicker({ doc, update }: PhantomPickerProps) {
           Phantom
           {phantom ? <span className="hint"> · {phantom.name}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

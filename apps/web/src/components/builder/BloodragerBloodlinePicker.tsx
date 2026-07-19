@@ -6,6 +6,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { setBloodragerBloodline, setBloodragerBloodlineVariant } from "../../model/doc.js";
 import { bloodragerBonusSpellsKnown } from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -83,7 +84,7 @@ export function BloodragerBloodlinePicker({
           Bloodline
           {chosen ? <span className="hint"> · {chosen}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

@@ -36,6 +36,7 @@ import {
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { changeTargetLabel } from "../../model/names.js";
 import { InfoTip, TipButton } from "../InfoTip.js";
+import { BagIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import { SearchMiss } from "./SearchMiss.js";
@@ -694,7 +695,13 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   }
 
   return (
-    <Panel title="Gear & Inventory" step="viii" storageKey="panel:Gear" defaultCollapsed={false}>
+    <Panel
+      title="Gear & Inventory"
+      step="viii"
+      icon={<BagIcon />}
+      storageKey="panel:Gear"
+      defaultCollapsed={false}
+    >
       {/* Wealth (issue #16) — always tracked, unlike encumbrance. */}
       <div className="wealth-row">
         <span className="eyebrow">Wealth</span>

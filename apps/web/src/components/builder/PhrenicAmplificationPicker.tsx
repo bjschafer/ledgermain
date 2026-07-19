@@ -11,6 +11,7 @@ import {
   togglePsychicAmplification,
 } from "../../model/psychicAmplifications.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -100,7 +101,7 @@ export function PhrenicAmplificationPicker({
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

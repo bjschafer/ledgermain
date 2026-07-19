@@ -15,6 +15,7 @@ import {
   toggleOracleRevelation,
 } from "../../model/oracleRevelations.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -106,7 +107,7 @@ export function RevelationPicker({ doc, refData, update }: RevelationPickerProps
             </span>
           ) : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

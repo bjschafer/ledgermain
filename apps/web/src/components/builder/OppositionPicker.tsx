@@ -3,6 +3,7 @@ import type { CharacterDoc, WizardSchoolTag } from "@pf1/schema";
 import { setWizardOppositionSchools } from "../../model/doc.js";
 import { SCHOOL_LABELS, SCHOOL_TAGS } from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -50,7 +51,7 @@ export function OppositionPicker({ doc, update }: OppositionPickerProps) {
           Opposition Schools
           {chosen.length > 0 ? <span className="hint"> · {chosen.length} chosen</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

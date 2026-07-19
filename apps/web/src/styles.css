@@ -332,13 +332,18 @@ a {
   overflow: hidden;
 }
 
+/* Solid gold band, not the dark surface — a deliberate break in the page's
+   wall-of-text (issue: user-reported). --bg on --gold is ~7.5:1, comfortably
+   past WCAG AA, so every child below gets an explicit dark-ink override
+   rather than inheriting the page's light-on-dark palette. */
 .panel > header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 12px 16px;
-  border-bottom: 1px solid var(--line-soft);
+  background: linear-gradient(180deg, var(--gold-2), var(--gold));
+  border-bottom: 1px solid var(--gold-dim);
 }
 
 .panel > header h2 {
@@ -346,12 +351,62 @@ a {
   display: flex;
   align-items: baseline;
   gap: 10px;
+  color: var(--bg);
 }
 
 .panel > header .step {
   font-family: var(--mono);
   font-size: 11px;
-  color: var(--gold-dim-ink);
+  color: var(--bg);
+  opacity: 0.65;
+}
+
+.panel-icon {
+  display: inline-flex;
+  align-self: center;
+}
+
+.panel-icon svg {
+  width: 18px;
+  height: 18px;
+  color: var(--bg);
+}
+
+.panel > header .hint,
+.panel > header .budge,
+.panel > header .warn-under {
+  color: var(--bg);
+  opacity: 0.7;
+}
+
+.panel > header .budge b {
+  color: var(--bg);
+  opacity: 1;
+}
+
+/* --danger/--oxblood-ink read fine on the dark surface but drop under 2:1 on
+   gold — swap to ink-dark variants that keep the same "this is a warning"
+   hue while staying legible on the band. */
+.panel > header .warn-over,
+.panel > header .budge.over b {
+  color: #6b1a10;
+  opacity: 1;
+}
+
+.panel > header .btn-ghost {
+  border-color: var(--bg);
+  color: var(--bg);
+  background: rgba(21, 23, 28, 0.1);
+}
+
+.panel > header .btn-ghost:hover {
+  background: rgba(21, 23, 28, 0.22);
+  border-color: var(--bg);
+  color: var(--bg);
+}
+
+.panel > header .panel-caret {
+  color: var(--bg);
 }
 
 .panel .body {
@@ -738,6 +793,8 @@ button:focus-visible,
 }
 
 .race-group-header .panel-caret {
+  width: 14px;
+  height: 14px;
   margin-left: auto;
 }
 
@@ -1633,6 +1690,8 @@ button:focus-visible,
 }
 
 .spell-level-head .panel-caret {
+  width: 14px;
+  height: 14px;
   margin-left: 0;
 }
 
@@ -3859,6 +3918,12 @@ input[type="text"].saved-roll-name:focus {
   color: var(--gold);
 }
 
+.explainer-summary .panel-caret {
+  width: 12px;
+  height: 12px;
+  margin-left: 0;
+}
+
 .explainer-body {
   margin-bottom: 12px;
   display: flex;
@@ -4034,19 +4099,23 @@ input[type="text"].saved-roll-name:focus {
   user-select: none;
 }
 
+/* Brighten the gold band itself on hover rather than swapping in the dark
+   surface color — that would erase the band on the very affordance cue
+   telling you it's clickable. */
 .panel.collapsible > header:hover {
-  background: var(--surface-2);
+  filter: brightness(1.06);
 }
 
 .panel-caret {
-  font-family: var(--mono);
-  font-size: 14px;
+  width: 20px;
+  height: 20px;
   color: var(--gold-dim-ink);
   margin-left: auto;
+  flex-shrink: 0;
   transition: transform 0.15s;
 }
 
-.panel.collapsible.is-collapsed > header .panel-caret {
+.panel-caret.is-collapsed {
   transform: rotate(-90deg);
 }
 
@@ -4074,6 +4143,8 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .subsection-header .panel-caret {
+  width: 14px;
+  height: 14px;
   margin-left: 0;
 }
 

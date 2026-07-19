@@ -5,6 +5,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { eligibleAdvancementTargets } from "../../model/casterLevel.js";
 import { setCastingAdvancementTarget } from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -75,7 +76,7 @@ export function CastingAdvancementPicker({ doc, refData, update }: CastingAdvanc
         aria-expanded={!collapsed}
       >
         <h3>Casting Advancement</h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

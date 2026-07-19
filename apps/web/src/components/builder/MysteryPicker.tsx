@@ -6,6 +6,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { setOracleMystery } from "../../model/doc.js";
 import { SKILL_NAMES } from "../../model/names.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -59,7 +60,7 @@ export function MysteryPicker({ doc, refData, update }: MysteryPickerProps) {
           Mystery
           {mysteryDef ? <span className="hint"> · {mysteryDef.name}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

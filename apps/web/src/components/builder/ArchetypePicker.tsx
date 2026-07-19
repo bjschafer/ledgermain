@@ -7,6 +7,7 @@ import { archetypeConflictWarnings, checkArchetypeConflict } from "../../model/a
 import { setArchetypes } from "../../model/doc.js";
 import { TipButton } from "../InfoTip.js";
 import { SearchMiss } from "./SearchMiss.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -74,7 +75,7 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
           Archetypes
           {chosen.length > 0 ? <span className="hint"> · {chosen.length} chosen</span> : null}
         </h3>
-        <span className="panel-caret">{open ? "▾" : "▸"}</span>
+        <Caret open={open} />
       </div>
       {open && (
         <>

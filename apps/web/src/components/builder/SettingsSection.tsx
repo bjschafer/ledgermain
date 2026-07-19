@@ -34,6 +34,7 @@ import { importCharacterFile } from "../../model/importExternalFile.js";
 import { DEFAULT_XP_TRACK, type XpTrack } from "../../model/xp.js";
 import { showToast } from "../../state/toast.js";
 import { Explainer } from "../Explainer.js";
+import { GearIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -157,7 +158,7 @@ export function SettingsSection({
   return (
     <>
       {/* HP mode */}
-      <Panel title="HP Mode" step="⚙">
+      <Panel title="HP Mode" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Controls how maximum HP is computed when levelling up.
         </p>
@@ -183,7 +184,7 @@ export function SettingsSection({
       </Panel>
 
       {/* Rest healing mode */}
-      <Panel title="Rest Healing" step="⚙">
+      <Panel title="Rest Healing" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Controls how much HP the "Rest" button and "New Day" action restore overnight.
         </p>
@@ -214,7 +215,7 @@ export function SettingsSection({
       </Panel>
 
       {/* FCB rule toggle */}
-      <Panel title="Favored Class Bonus Rule" step="⚙">
+      <Panel title="Favored Class Bonus Rule" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Standard PF1: each favored-class level grants <em>one</em> of +1 HP, +1 skill rank, or
           alternate. House-rule: a "Both" option adds +1 HP AND +1 skill rank simultaneously.
@@ -240,7 +241,7 @@ export function SettingsSection({
       </Panel>
 
       {/* Cleric Wisdom house-rule */}
-      <Panel title="Cleric Wisdom Rule" step="⚙">
+      <Panel title="Cleric Wisdom Rule" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Homebrew rule (issue #56): cleric class features — Channel Energy's uses/day and save DC —
           key off <em>Wisdom</em> instead of Charisma. The cleric's actual Charisma score, skills,
@@ -268,7 +269,7 @@ export function SettingsSection({
       </Panel>
 
       {/* Hero points */}
-      <Panel title="Hero Points" step="⚙">
+      <Panel title="Hero Points" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Hero points are a PF1 optional rule — a small pool spent at the table for mechanical
           benefits. Disable if your table doesn't use them.
@@ -319,7 +320,7 @@ export function SettingsSection({
       </Panel>
 
       {/* XP tracking */}
-      <Panel title="Experience Points" step="⚙">
+      <Panel title="Experience Points" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Some tables level up at milestones instead. Enable to log XP and see how far you are from
           the next level.
@@ -361,7 +362,7 @@ export function SettingsSection({
       </Panel>
 
       {/* Encumbrance (issue #16) */}
-      <Panel title="Encumbrance" step="⚙">
+      <Panel title="Encumbrance" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Carrying capacity is a PF1 OPTIONAL rule — many tables skip it. Enable to compute a
           Strength-based load tier (light/medium/heavy) from your total gear weight and apply its
@@ -394,7 +395,7 @@ export function SettingsSection({
       </Panel>
 
       {/* Polymorph / Wild Shape panel visibility */}
-      <Panel title="Polymorph / Wild Shape" step="⚙">
+      <Panel title="Polymorph / Wild Shape" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           By default the tracker only offers the Polymorph / Wild Shape panel when this character
           has a source for it — druid Wild Shape levels, the shifter class, or a known Beast Shape /
@@ -435,7 +436,7 @@ export function SettingsSection({
       </Panel>
 
       {/* Class alignment restrictions (issue #53) */}
-      <Panel title="Class Alignment Restrictions" step="⚙">
+      <Panel title="Class Alignment Restrictions" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           PF1 RAW restricts a few classes (Barbarian, Monk, Paladin, Druid) to certain alignments.
           Ledgermain only ever warns on a mismatch in the Classes panel, never blocks — enable this
@@ -462,7 +463,7 @@ export function SettingsSection({
       </Panel>
 
       {/* GM grants */}
-      <Panel title="GM Grants" step="⚙">
+      <Panel title="GM Grants" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Homebrew adjustments to how many skill ranks and feats this character may spend. Additive
           to the rules-derived budget — negative values claw back. Leave blank to use the rules
@@ -527,7 +528,7 @@ export function SettingsSection({
       </Panel>
 
       {/* Stat overrides */}
-      <Panel title="Manual Stat Overrides" step="⚙">
+      <Panel title="Manual Stat Overrides" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Force a derived stat to a specific value. Leave blank to use the computed value. The
           breakdown shows the override as a separate component.
@@ -572,7 +573,7 @@ export function SettingsSection({
       </Panel>
 
       {/* Export / import */}
-      <Panel title="Export / Import" step="⚙">
+      <Panel title="Export / Import" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           Export this character to a JSON file you can back up or move to another device. The
           importer auto-detects the file: a Ledgermain export (.json) makes the character active in
@@ -613,7 +614,7 @@ export function SettingsSection({
       </Panel>
 
       {/* Print sheet (issue #69) */}
-      <Panel title="Print" step="⚙">
+      <Panel title="Print" step="⚙" icon={<GearIcon />}>
         <p className="hint" style={{ marginBottom: 12 }}>
           A dense, read-only reference layout of this character's current stats — abilities, saves,
           AC, attacks, skills, feats, class features, spell slots/known, and resources — sized for
@@ -707,7 +708,7 @@ function ImportReportPanel({ report }: { report: ImportReport }) {
  */
 function CoverageNotesPanel() {
   return (
-    <Panel title="What's Not Covered" step="⚙">
+    <Panel title="What's Not Covered" step="⚙" icon={<GearIcon />}>
       <Explainer title="A few things aren't built in yet">
         <p className="hint" style={{ marginBottom: 10 }}>
           Ledgermain covers the core rulebooks well, with a lot of later material besides — but some
@@ -740,7 +741,7 @@ function CoverageNotesPanel() {
 
 function AboutAndLegalPanel({ dataVersion }: { dataVersion: string }) {
   return (
-    <Panel title="About & Legal" step="ℹ">
+    <Panel title="About & Legal" step="ℹ" icon={<GearIcon />}>
       <p className="hint" style={{ marginBottom: 10 }}>
         Ledgermain is a Pathfinder 1e character builder & tracker. Code is AGPL-3.0-or-later;
         compendium data is Open Game Content under the OGL v1.0a; Paizo Product Identity references
@@ -836,7 +837,7 @@ function DangerZonePanel({
   onResetAll: () => void;
 }) {
   return (
-    <Panel title="Danger Zone" step="⚙">
+    <Panel title="Danger Zone" step="⚙" icon={<GearIcon />}>
       <ConfirmAction
         description={`Permanently deletes this character ("${characterName || "Unnamed"}"). This cannot be undone.`}
         confirmWord="DELETE"

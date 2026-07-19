@@ -5,6 +5,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setPsychicDiscipline } from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -59,7 +60,7 @@ export function DisciplinePicker({ doc, refData, update }: DisciplinePickerProps
           Discipline
           {disciplineDef ? <span className="hint"> · {disciplineDef.name}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

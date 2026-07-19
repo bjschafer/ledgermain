@@ -29,6 +29,7 @@ import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js"
 import { isSharedWithPhantom, toggleSharedBuffPhantom } from "../../model/phantom.js";
 import { changeTargetLabel, signed } from "../../model/names.js";
 import { InfoTip } from "../InfoTip.js";
+import { SparkleIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
@@ -74,6 +75,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title="Buffs"
       step="bf"
+      icon={<SparkleIcon />}
       storageKey="panel:Buffs"
       right={
         <div className="round-ctl">

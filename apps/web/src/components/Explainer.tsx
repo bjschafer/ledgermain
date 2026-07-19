@@ -1,8 +1,9 @@
 import { useState, type ReactNode } from "react";
+import { Caret } from "./Caret.js";
 
 /**
  * Collapsed-by-default explainer block: a clickable `<summary>` line (with
- * the shared `▸`/`▾` panel caret) that expands into a body of guidance
+ * the shared panel caret) that expands into a body of guidance
  * prose. Extracted from the Spellbook panel's original "How X spellcasting
  * works" idiom (`SpellsSection.tsx`'s prior `SpellHints`) so any panel with a
  * standing explainer paragraph can fold it away by default instead of always
@@ -29,9 +30,7 @@ export function Explainer({
     >
       <summary className="explainer-summary">
         {title}
-        <span className="panel-caret" aria-hidden="true">
-          {open ? " ▾" : " ▸"}
-        </span>
+        <Caret open={open} />
       </summary>
       <div className="explainer-body">{children}</div>
     </details>

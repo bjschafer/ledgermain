@@ -8,7 +8,9 @@ import {
 import { ABILITY_ABBR, signed } from "../../model/names.js";
 import { POINT_BUY_BUDGETS, totalPointBuyCost } from "../../model/pointBuy.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 import { Explainer } from "../Explainer.js";
+import { DumbbellIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -34,6 +36,7 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
     <Panel
       title="Ability Scores"
       step="ii"
+      icon={<DumbbellIcon />}
       storageKey="panel:AbilityScores"
       right={<span className="hint">base scores · racial mods shown below</span>}
     >
@@ -141,7 +144,7 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
             <h3>
               Ability Score Increases · {assigned} / {allowed} assigned
             </h3>
-            <span className="panel-caret">{incCollapsed ? "▸" : "▾"}</span>
+            <Caret open={!incCollapsed} />
           </div>
           {!incCollapsed && (
             <>

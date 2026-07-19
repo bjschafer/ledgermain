@@ -4,6 +4,7 @@ import { setArcaneBond } from "../../model/doc.js";
 import { setFamiliar } from "../../model/familiar.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -62,7 +63,7 @@ export function ArcaneBondPicker({ doc, refData, sheet, update }: ArcaneBondPick
           Arcane Bond
           {bondSummary ? <span className="hint"> · {bondSummary}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

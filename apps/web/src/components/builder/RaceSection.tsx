@@ -19,7 +19,9 @@ import {
 } from "../../model/racialTraits.js";
 import { groupRacesByRarity, type Rarity } from "../../model/rarity.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
+import { LeafIcon } from "../icons.js";
 import { HomebrewRaceEditor } from "./HomebrewRaceEditor.js";
 import { Panel } from "./Panel.js";
 import { SearchMiss } from "./SearchMiss.js";
@@ -60,7 +62,7 @@ function RaceGroupSection({
       >
         <span className="section-label">{label}</span>
         <span className="race-group-count">{count}</span>
-        {forceOpen ? null : <span className="panel-caret">{open ? "▾" : "▸"}</span>}
+        {forceOpen ? null : <Caret open={open} />}
       </div>
       {open ? <div className="chips">{children}</div> : null}
     </div>
@@ -124,7 +126,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   }
 
   return (
-    <Panel title="Race" step="iii" storageKey="panel:Race">
+    <Panel title="Race" step="iii" icon={<LeafIcon />} storageKey="panel:Race">
       <input
         className="search"
         type="text"

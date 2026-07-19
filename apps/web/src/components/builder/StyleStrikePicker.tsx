@@ -10,6 +10,7 @@ import {
   toggleMonkStyleStrike,
 } from "../../model/monkStyleStrikes.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -83,7 +84,7 @@ export function StyleStrikePicker({ doc, update }: StyleStrikePickerProps) {
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

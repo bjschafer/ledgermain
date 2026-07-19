@@ -3,6 +3,7 @@ import { useCallback, useRef } from "react";
 
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { useResizableHeight } from "../../state/useResizableHeight.js";
+import { Caret } from "../Caret.js";
 
 /**
  * A titled builder panel. `step` is a short ledger-style marker (e.g. "i", "ii").
@@ -19,6 +20,7 @@ import { useResizableHeight } from "../../state/useResizableHeight.js";
 export function Panel({
   title,
   step,
+  icon,
   right,
   children,
   storageKey,
@@ -26,6 +28,8 @@ export function Panel({
 }: {
   title: string;
   step?: string;
+  /** Small decorative glyph shown before the title, e.g. from `../icons.js`. */
+  icon?: ReactNode;
   right?: ReactNode;
   children: ReactNode;
   /** When present, makes the panel collapsible and persists state under this key. */
@@ -88,6 +92,11 @@ export function Panel({
       }
     >
       <h2>
+        {icon ? (
+          <span className="panel-icon" aria-hidden="true">
+            {icon}
+          </span>
+        ) : null}
         {title}
         {step ? <span className="step">{step}</span> : null}
       </h2>
@@ -97,11 +106,7 @@ export function Panel({
           reset size
         </button>
       ) : null}
-      {isCollapsible ? (
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
-      ) : null}
+      {isCollapsible ? <Caret open={!collapsed} /> : null}
     </header>
   );
 

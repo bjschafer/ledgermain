@@ -11,6 +11,7 @@ import {
   toggleRogueTalent,
 } from "../../model/rogueTalents.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -82,7 +83,7 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

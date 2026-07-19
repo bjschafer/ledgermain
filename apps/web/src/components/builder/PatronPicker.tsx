@@ -6,6 +6,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { setWitchPatron } from "../../model/doc.js";
 import { patronSpellsKnown } from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -64,7 +65,7 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
           Patron
           {patronDef ? <span className="hint"> · {patronDef.name}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

@@ -25,6 +25,7 @@ import { Panel } from "../builder/Panel.js";
 import { Explainer } from "../Explainer.js";
 import { Provenance } from "../Provenance.js";
 import type { BuilderProps } from "../builder/types.js";
+import { Caret } from "../Caret.js";
 
 /**
  * Saved rolls (issue #2) — the owner-decided "no dice roller" answer: pin a
@@ -100,7 +101,7 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
           aria-expanded={!addCollapsed}
         >
           <h4 className="tracker-sub">Add a saved roll</h4>
-          <span className="panel-caret">{addCollapsed ? "▸" : "▾"}</span>
+          <Caret open={!addCollapsed} />
         </div>
         {!addCollapsed && (
           <>

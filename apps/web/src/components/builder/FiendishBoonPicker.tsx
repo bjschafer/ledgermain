@@ -3,6 +3,7 @@ import type { CharacterDoc } from "@pf1/schema";
 
 import { setAntipaladinBoon } from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -49,7 +50,7 @@ export function FiendishBoonPicker({ doc, update }: FiendishBoonPickerProps) {
             <span className="hint"> · {boon === "weapon" ? "Weapon" : "Servant"}</span>
           ) : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

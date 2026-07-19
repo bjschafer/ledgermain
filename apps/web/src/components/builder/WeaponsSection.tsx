@@ -14,6 +14,7 @@ import {
 } from "../../model/abilities.js";
 import { WEAPON_MATERIALS } from "../../model/materials.js";
 import { TipButton } from "../InfoTip.js";
+import { SwordIcon } from "../icons.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -452,7 +453,13 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
   }
 
   return (
-    <Panel title="Weapons" step="ix" storageKey="panel:Weapons" defaultCollapsed={false}>
+    <Panel
+      title="Weapons"
+      step="ix"
+      icon={<SwordIcon />}
+      storageKey="panel:Weapons"
+      defaultCollapsed={false}
+    >
       {weapons.length === 0 ? (
         <p className="empty">No weapons added yet.</p>
       ) : (

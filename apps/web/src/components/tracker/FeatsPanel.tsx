@@ -9,6 +9,7 @@ import {
   grantedFeats,
 } from "../../model/feats.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
+import { StarIcon } from "../icons.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -86,7 +87,13 @@ export function FeatsPanel({ doc, refData }: BuilderProps) {
   }, [rows, query]);
 
   return (
-    <Panel title="Feats" step="ft" storageKey="panel:PlayFeats" defaultCollapsed>
+    <Panel
+      title="Feats"
+      step="ft"
+      icon={<StarIcon />}
+      storageKey="panel:PlayFeats"
+      defaultCollapsed
+    >
       {rows.length === 0 ? (
         <div className="empty">No feats yet.</div>
       ) : (

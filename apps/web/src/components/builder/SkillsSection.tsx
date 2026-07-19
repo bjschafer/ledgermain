@@ -4,6 +4,7 @@ import { totalLevel } from "../../model/doc.js";
 import { signed, skillName } from "../../model/names.js";
 import { skillBudget } from "../../model/skills.js";
 import { InfoTip } from "../InfoTip.js";
+import { BookIcon } from "../icons.js";
 import { Panel } from "./Panel.js";
 import { SkillManager } from "./SkillManager.js";
 import type { BuilderProps } from "./types.js";
@@ -33,6 +34,7 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title="Skills"
       step="vi"
+      icon={<BookIcon />}
       storageKey="panel:Skills"
       right={
         <span className={`budge${over ? " over" : ""}`}>

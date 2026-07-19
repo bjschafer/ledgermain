@@ -15,6 +15,7 @@ import {
 } from "../../model/traits.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { InfoTip } from "../InfoTip.js";
+import { GemIcon } from "../icons.js";
 import { HomebrewTraitEditor } from "./HomebrewTraitEditor.js";
 import { Panel } from "./Panel.js";
 import { SearchMiss } from "./SearchMiss.js";
@@ -73,6 +74,7 @@ export function TraitsSection(props: BuilderProps) {
     <Panel
       title="Traits"
       step="iii½"
+      icon={<GemIcon />}
       storageKey="panel:Traits"
       right={
         <span

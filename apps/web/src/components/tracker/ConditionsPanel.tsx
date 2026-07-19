@@ -4,6 +4,7 @@ import { Panel } from "../builder/Panel.js";
 import { supersedingCondition, toggleCondition } from "../../model/conditions.js";
 import { Explainer } from "../Explainer.js";
 import { InfoTip } from "../InfoTip.js";
+import { AlertTriangleIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /** Toggle the core PF1 conditions; the sheet's numbers update live via compute(). */
@@ -14,6 +15,7 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
     <Panel
       title="Conditions"
       step="cd"
+      icon={<AlertTriangleIcon />}
       storageKey="panel:Conditions"
       right={<span className="hint">{active.size} active</span>}
     >

@@ -11,6 +11,7 @@ import {
   witchLevel as getWitchLevel,
 } from "../../model/witchHexes.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -95,7 +96,7 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

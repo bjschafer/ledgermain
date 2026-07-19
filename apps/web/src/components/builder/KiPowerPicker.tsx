@@ -11,6 +11,7 @@ import {
   toggleMonkKiPower,
 } from "../../model/monkKiPowers.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -80,7 +81,7 @@ export function KiPowerPicker({ doc, update }: KiPowerPickerProps) {
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

@@ -23,6 +23,7 @@ import {
 } from "../../model/kineticistBuild.js";
 import { SKILL_NAMES } from "../../model/names.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -94,7 +95,7 @@ function ElementalFocusSection({ doc, update }: { doc: CharacterDoc; update: Upd
           Elemental Focus
           {primaryDef ? <span className="hint"> · {primaryDef.name}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>
@@ -269,7 +270,7 @@ function WildTalentSection({
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

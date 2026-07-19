@@ -6,6 +6,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { setCavalierOrder } from "../../model/doc.js";
 import { SKILL_NAMES } from "../../model/names.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -70,7 +71,7 @@ export function OrderPicker({ doc, update }: OrderPickerProps) {
           Order
           {orderDef ? <span className="hint"> · {orderDef.name}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

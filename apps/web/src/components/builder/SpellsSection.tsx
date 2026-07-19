@@ -22,7 +22,9 @@ import {
 import { classSpellsByLevel, spellLevelMap } from "../../model/preparedSpells.js";
 import type { SpellEntry } from "../../model/spellSearch.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 import { Explainer } from "../Explainer.js";
+import { WandIcon } from "../icons.js";
 import { SpellDetail } from "../SpellDetail.js";
 import { Panel } from "./Panel.js";
 import { SpellManager } from "./SpellManager.js";
@@ -218,7 +220,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   if (!casterTag) {
     if (!spellsPanelVisible(doc, refData)) return null;
     return (
-      <Panel title="Spells" step="vii" storageKey="panel:Spells">
+      <Panel title="Spells" step="vii" icon={<WandIcon />} storageKey="panel:Spells">
         <p className="empty">No spellcasting class selected.</p>
       </Panel>
     );
@@ -262,6 +264,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title={model ? knownLabel : "Spells"}
       step="x"
+      icon={<WandIcon />}
       storageKey="panel:Spells"
       right={
         <span className="hint">
@@ -551,9 +554,7 @@ function SpellLevelGroup({
           </span>
         )}
         <span className="spell-level-count">{entries.length}</span>
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && entries.length === 0 && (
         <div className="empty spell-level-empty">none yet</div>
@@ -614,9 +615,7 @@ function GrantedCantripsBlock({
       >
         <span className="spell-level-label">Granted Cantrips</span>
         <span className="spell-level-count">{cantrips.length}</span>
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed &&
         cantrips.map((sp) => {
@@ -681,9 +680,7 @@ function DomainSpellsBlock({
       >
         <span className="spell-level-label">Domain Spells ({domains.join(", ")})</span>
         <span className="spell-level-count">{entries.length}</span>
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed &&
         levels.map((lvl) => (
@@ -754,9 +751,7 @@ function BloodlineSpellsBlock({
       >
         <span className="spell-level-label">Bloodline Spells ({bloodline})</span>
         <span className="spell-level-count">{entries.length}</span>
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed &&
         levels.map((lvl) => (
@@ -826,9 +821,7 @@ function MysterySpellsBlock({
       >
         <span className="spell-level-label">Mystery / Curse Bonus Spells</span>
         <span className="spell-level-count">{entries.length}</span>
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed &&
         levels.map((lvl) => (
@@ -902,9 +895,7 @@ function ShamanSpiritSpellsBlock({
       >
         <span className="spell-level-label">Spirit Magic Spells</span>
         <span className="spell-level-count">{entries.length}</span>
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed &&
         levels.map((lvl) => (
@@ -976,9 +967,7 @@ function DisciplineSpellsBlock({
       >
         <span className="spell-level-label">Discipline Bonus Spells</span>
         <span className="spell-level-count">{entries.length}</span>
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed &&
         levels.map((lvl) => (
@@ -1050,9 +1039,7 @@ function PatronSpellsBlock({
       >
         <span className="spell-level-label">Patron Bonus Spells</span>
         <span className="spell-level-count">{entries.length}</span>
-        <span className="panel-caret" aria-hidden="true">
-          {collapsed ? "▸" : "▾"}
-        </span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed &&
         levels.map((lvl) => (

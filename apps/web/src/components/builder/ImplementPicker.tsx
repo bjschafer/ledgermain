@@ -20,6 +20,7 @@ import {
 } from "../../model/occultistImplements.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import type { BuilderProps } from "./types.js";
+import { Caret } from "../Caret.js";
 
 type Updater = BuilderProps["update"];
 
@@ -102,7 +103,7 @@ function ImplementSchoolSection({ doc, update }: { doc: CharacterDoc; update: Up
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>
@@ -245,7 +246,7 @@ function FocusPowerSection({
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

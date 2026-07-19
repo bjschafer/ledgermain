@@ -3,6 +3,7 @@ import type { CharacterDoc } from "@pf1/schema";
 
 import { clearFamiliar, setFamiliar, setFamiliarNotes } from "../../model/familiar.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -54,7 +55,7 @@ export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
           Familiar
           {familiar ? <span className="hint"> · {familiar.name}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

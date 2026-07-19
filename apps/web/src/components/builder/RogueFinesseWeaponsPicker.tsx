@@ -7,6 +7,7 @@ import {
   unlockedRogueFinesseTiers,
 } from "../../model/rogueFinesseWeapons.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -50,7 +51,7 @@ export function RogueFinesseWeaponsPicker({ doc, update }: RogueFinesseWeaponsPi
         aria-expanded={!collapsed}
       >
         <h3>Finesse Training</h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

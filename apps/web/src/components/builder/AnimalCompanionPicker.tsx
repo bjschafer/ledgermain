@@ -24,6 +24,7 @@ import { skillName } from "../../model/names.js";
 import { evaluatePrereqs } from "../../model/prereqs.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "./NumberField.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -111,7 +112,7 @@ export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionP
           Animal Companion
           {companion ? <span className="hint"> · {companion.name}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

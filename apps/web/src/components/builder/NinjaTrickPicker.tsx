@@ -11,6 +11,7 @@ import {
   toggleNinjaTrick,
 } from "../../model/ninjaTricks.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -92,7 +93,7 @@ export function NinjaTrickPicker({ doc, refData, update }: NinjaTrickPickerProps
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

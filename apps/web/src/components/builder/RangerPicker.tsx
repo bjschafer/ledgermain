@@ -23,6 +23,7 @@ import {
 } from "../../model/ranger.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "./NumberField.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -70,7 +71,7 @@ export function RangerPicker({ doc, update }: RangerPickerProps) {
           Ranger
           {styleLabel ? <span className="hint"> · {styleLabel}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

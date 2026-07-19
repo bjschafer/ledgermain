@@ -4,6 +4,7 @@
  * - rolled: shows a per-level roll entry list (L1 read-only / always maxed).
  */
 import { setHpRoll, setMaxHpOverride, totalLevel } from "../../model/doc.js";
+import { HeartIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -23,6 +24,7 @@ export function HitPointsSection({ doc, sheet, refData, update }: BuilderProps) 
     <Panel
       title="Hit Points"
       step="v"
+      icon={<HeartIcon />}
       storageKey="panel:HitPoints"
       right={
         <span className="hint">

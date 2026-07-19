@@ -9,6 +9,7 @@ import {
   setWeight,
 } from "../../model/doc.js";
 import { ALIGNMENT_LABELS } from "../../model/names.js";
+import { PersonIcon } from "../icons.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -16,7 +17,7 @@ const ALIGNMENTS = ["LG", "NG", "CG", "LN", "N", "CN", "LE", "NE", "CE"];
 
 export function IdentitySection({ doc, update }: BuilderProps) {
   return (
-    <Panel title="Identity" step="i" storageKey="panel:Identity">
+    <Panel title="Identity" step="i" icon={<PersonIcon />} storageKey="panel:Identity">
       <label className="field">
         <span>Character name</span>
         <input

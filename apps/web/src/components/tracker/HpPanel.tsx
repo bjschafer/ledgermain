@@ -15,6 +15,7 @@ import {
 } from "../../model/hp.js";
 import { showToast } from "../../state/toast.js";
 import { InfoTip } from "../InfoTip.js";
+import { HeartIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -67,7 +68,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   const amt = Number.isNaN(amount) ? 0 : amount;
 
   return (
-    <Panel title="Hit Points" step="hp" storageKey="panel:PlayHP">
+    <Panel title="Hit Points" step="hp" icon={<HeartIcon />} storageKey="panel:PlayHP">
       <div className="hp-display">
         <div className="hp-big num" data-low={isLow}>
           {current}

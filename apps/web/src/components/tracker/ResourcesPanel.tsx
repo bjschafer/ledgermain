@@ -14,6 +14,7 @@ import type { AbilityId, Buff, CharacterDoc, RefData } from "@pf1/schema";
 import { FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { FlaskIcon } from "../icons.js";
 import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
 import { setMartialFlexibilityFeat } from "../../model/doc.js";
 import { applyGrantedTempHp } from "../../model/hp.js";
@@ -66,6 +67,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
     <Panel
       title="Resources"
       step="rs"
+      icon={<FlaskIcon />}
       storageKey="panel:Resources"
       right={
         <button

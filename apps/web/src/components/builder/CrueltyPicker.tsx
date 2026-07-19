@@ -11,6 +11,7 @@ import {
   toggleAntipaladinCruelty,
 } from "../../model/antipaladinCruelties.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -99,7 +100,7 @@ export function CrueltyPicker({ doc, update }: CrueltyPickerProps) {
             · {chosen} / {expected}
           </span>
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

@@ -8,6 +8,7 @@ import {
   unlockedRogueSkillUnlockTiers,
 } from "../../model/rogueSkillUnlocks.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -50,7 +51,7 @@ export function RogueSkillUnlocksPicker({ doc, update }: RogueSkillUnlocksPicker
         aria-expanded={!collapsed}
       >
         <h3>Rogue's Edge (UC)</h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>

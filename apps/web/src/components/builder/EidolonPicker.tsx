@@ -40,6 +40,7 @@ import { signed } from "../../model/names.js";
 import { evaluatePrereqs } from "../../model/prereqs.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "./NumberField.js";
+import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -98,7 +99,7 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
           Eidolon
           {eidolon ? <span className="hint"> · {eidolon.name}</span> : null}
         </h3>
-        <span className="panel-caret">{collapsed ? "▸" : "▾"}</span>
+        <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>
