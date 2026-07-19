@@ -5910,6 +5910,13 @@ input[type="text"].saved-roll-name:focus {
   overflow: hidden;
 }
 
+/* Short confirms (ConfirmDialog) shrink-to-fit instead of claiming the whole
+   viewport like the list-picking dialogs above. */
+.dialog-surface.compact {
+  width: min(420px, 100%);
+  height: auto;
+}
+
 .dialog-header {
   display: flex;
   align-items: baseline;
@@ -5958,6 +5965,22 @@ input[type="text"].saved-roll-name:focus {
   flex: 1;
   min-height: 0;
   display: flex;
+}
+
+/* ConfirmDialog's body: a message plus two actions, stacked and padded
+   rather than the edge-to-edge two-pane layout the picker dialogs use. */
+.confirm-dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  width: 100%;
+}
+
+.confirm-dialog-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
 }
 
 /* ----------------------------------------------------------- spell manager --

@@ -44,6 +44,7 @@ import { PhrenicAmplificationPicker } from "./PhrenicAmplificationPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
 import { PhantomPicker } from "./PhantomPicker.js";
 import { ShifterAspectPicker } from "./ShifterAspectPicker.js";
+import { ConfirmDialog } from "../ConfirmDialog.js";
 import { InfoTip, TipButton } from "../InfoTip.js";
 import { ShieldIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
@@ -319,42 +320,35 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
                   aria-label={`${def?.name ?? cls.tag} level`}
                 />
               </div>
-              {confirmRemoveTag === cls.tag ? (
-                <>
-                  <span className="prep-clear-confirm-label">
-                    Remove {def?.name ?? cls.tag} (lv {cls.level})?
-                  </span>
-                  <button
-                    type="button"
-                    className="pick-btn remove"
-                    onClick={() => {
-                      update((d) => removeClass(d, cls.tag));
-                      setConfirmRemoveTag(null);
-                    }}
-                  >
-                    Remove
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-ghost"
-                    onClick={() => setConfirmRemoveTag(null)}
-                  >
-                    Cancel
-                  </button>
-                </>
-              ) : (
-                <button
-                  type="button"
-                  className="btn-ghost"
-                  onClick={() => setConfirmRemoveTag(cls.tag)}
-                >
-                  remove
-                </button>
-              )}
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => setConfirmRemoveTag(cls.tag)}
+              >
+                remove
+              </button>
             </div>
           );
         })
       )}
+
+      {confirmRemoveTag != null &&
+        (() => {
+          const removingCls = doc.identity.classes.find((c) => c.tag === confirmRemoveTag);
+          const removingDef = pickerClasses.find((c) => c.tag === confirmRemoveTag);
+          return (
+            <ConfirmDialog
+              title="Remove class?"
+              message={`Remove ${removingDef?.name ?? confirmRemoveTag} (lv ${removingCls?.level ?? "?"})?`}
+              confirmLabel="Remove"
+              onConfirm={() => {
+                update((d) => removeClass(d, confirmRemoveTag));
+                setConfirmRemoveTag(null);
+              }}
+              onCancel={() => setConfirmRemoveTag(null)}
+            />
+          );
+        })()}
 
       {alignmentWarnings.map((w) => (
         <p key={w.classTag} className="hint affliction-warn">

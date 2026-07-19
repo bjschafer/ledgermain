@@ -20,6 +20,7 @@ import {
 import { groupRacesByRarity, type Rarity } from "../../model/rarity.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { ConfirmDialog } from "../ConfirmDialog.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { LeafIcon } from "../icons.js";
 import { HomebrewRaceEditor } from "./HomebrewRaceEditor.js";
@@ -164,26 +165,19 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
         )
       ) : null}
       {pendingRaceId != null && (
-        <p className="hint" style={{ marginTop: 12 }}>
-          <span className="prep-clear-confirm-label">
-            {pendingRaceId
+        <ConfirmDialog
+          title={pendingRaceId ? "Switch race?" : "Clear race?"}
+          message={
+            pendingRaceId
               ? `Switch race to ${pendingRace?.name ?? pendingRaceId}? This resets racial modifiers.`
-              : "Clear race? This removes racial modifiers."}
-          </span>{" "}
-          <button
-            type="button"
-            className="pick-btn remove"
-            onClick={() => {
-              update((d) => setRace(d, pendingRaceId));
-              setPendingRaceId(null);
-            }}
-          >
-            Confirm
-          </button>{" "}
-          <button type="button" className="btn-ghost" onClick={() => setPendingRaceId(null)}>
-            Cancel
-          </button>
-        </p>
+              : "Clear race? This removes racial modifiers."
+          }
+          onConfirm={() => {
+            update((d) => setRace(d, pendingRaceId));
+            setPendingRaceId(null);
+          }}
+          onCancel={() => setPendingRaceId(null)}
+        />
       )}
       {selected ? (
         <p className="hint" style={{ marginTop: 12 }}>

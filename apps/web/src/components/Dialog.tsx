@@ -19,6 +19,7 @@ export function Dialog({
   right,
   onClose,
   children,
+  compact,
 }: {
   title: string;
   subtitle?: ReactNode;
@@ -26,6 +27,10 @@ export function Dialog({
   right?: ReactNode;
   onClose: () => void;
   children: ReactNode;
+  /** Shrink the surface to fit its content instead of filling the viewport
+   *  (see `.dialog-surface.compact` in styles.css) — for short confirms
+   *  rather than full-screen pickers. */
+  compact?: boolean;
 }) {
   const surfaceRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +65,7 @@ export function Dialog({
       }}
     >
       <div
-        className="dialog-surface"
+        className={compact ? "dialog-surface compact" : "dialog-surface"}
         role="dialog"
         aria-modal="true"
         aria-label={title}
