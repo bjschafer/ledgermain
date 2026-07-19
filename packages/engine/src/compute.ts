@@ -43,6 +43,7 @@ import {
   type ActiveAbilitySubstitution,
   type ResolvedAbility,
 } from "./ability-substitution.js";
+import { chosenBonusClassSkills } from "./bonus-class-skills.js";
 import { resolveClassFeatures } from "./archetypes.js";
 import { computeRanger } from "./ranger.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
@@ -743,6 +744,9 @@ function computeSkills(
   }
   const race = refData.races[doc.identity.race];
   for (const s of race?.classSkills ?? []) classSkillSet.add(s);
+  // Player-chosen bonus class skills (e.g. Student of War's Additional
+  // Skill), already truncated to the character's current entitlement.
+  for (const s of chosenBonusClassSkills(doc, refData)) classSkillSet.add(s);
 
   // Effective armor check penalty (negative), reduced by armor-training acpA.
   const wornAcp = (doc.build.gear ?? []).reduce(

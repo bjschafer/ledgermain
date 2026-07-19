@@ -2,10 +2,12 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 
 /**
  * Student of War end-to-end: the prestige entry-requirement gate in the class
- * picker, and Mind Over Metal's ability substitution reaching the live sheet.
+ * picker, Additional Skill's player-chosen class skill, and Mind Over Metal's
+ * ability substitution reaching the live sheet.
  *
  * The engine's own fixtures pin the arithmetic (see
- * `packages/engine/test/abilitySubstitution.test.ts`); what this adds is that
+ * `packages/engine/test/abilitySubstitution.test.ts` and
+ * `bonusClassSkills.test.ts`); what this adds is that
  * the class is reachable through the real builder, that its hybrid gate
  * behaves per-requirement rather than all-or-nothing, and that the substituted
  * AC lands on the sheet a player actually reads.
@@ -45,7 +47,7 @@ async function levelUp(page: Page, scope: Locator, className: string, times: num
   }
 }
 
-test("Student of War gates on its entry requirements, then substitutes Int for Dex in AC", async ({
+test("Student of War gates on entry, grants a chosen class skill, and substitutes Int for Dex in AC", async ({
   page,
 }) => {
   const { consoleErrors, pageErrors } = guard(page);
@@ -109,6 +111,16 @@ test("Student of War gates on its entry requirements, then substitutes Int for D
   await expect(pick).toHaveText("Add");
   await pick.click();
   await levelUp(page, classes, "Student of War", 1); // 2nd level grants Mind Over Metal
+
+  // Additional Skill (issue #93): SoW 2 entitles her to one player-chosen
+  // class skill. Stealth is on neither the fighter nor the Student of War
+  // list, so the "class" tag on the sheet can only come from the pick.
+  const stealthRow = page.locator(".sheet-skill", { hasText: "Stealth" });
+  await expect(stealthRow.locator(".tag-cls")).toHaveCount(0);
+  const bonusSkills = classes.locator(".bonus-class-skills-picker");
+  await bonusSkills.scrollIntoViewIfNeeded();
+  await bonusSkills.getByLabel("Pick 1").selectOption({ label: "Stealth" });
+  await expect(stealthRow.locator(".tag-cls")).toHaveCount(1);
 
   const ac = sealValue(page, "Armor Class");
   await expect(ac).toHaveText("13"); // 10 base + Dex 2 + Dodge 1 — unarmored, no substitution

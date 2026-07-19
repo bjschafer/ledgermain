@@ -923,6 +923,26 @@ export interface CharacterDoc {
      */
     rogueSkillUnlocks?: string[];
     /**
+     * Player-chosen bonus class skills, keyed by the granting feature's name
+     * slug (`@pf1/engine` `featNameSlug`, e.g. `"additional-skill"` for
+     * Student of War's Additional Skill) → the skill ids chosen in grant
+     * order. Values are `SkillId`s (see `model/names.ts` `SKILL_NAMES`); a
+     * parameterized instance ("crf.alchemy") resolves through `skillBaseId`
+     * the same way a vendored class-skill list does.
+     *
+     * The COUNT of picks is level-driven, so this array is not authoritative
+     * on its own: `@pf1/engine`'s `chosenBonusClassSkills` truncates each
+     * key's picks to the entitlement the character currently has
+     * (`BONUS_CLASS_SKILL_GRANTS`), which is what makes a level-down stop
+     * granting skills without destroying picks that levelling back up would
+     * restore. `compute.ts` unions the survivors into its `classSkillSet`, so
+     * the +3 trained bonus falls out of the existing skill logic.
+     *
+     * Empty/undefined for characters with no such feature. Back-compat:
+     * documents without this field are unaffected.
+     */
+    bonusClassSkills?: Record<string, string[]>;
+    /**
      * Investigator talent ids chosen (keys into `@pf1/engine`
      * `INVESTIGATOR_TALENTS` — issue #65). Gained at 3rd level and every 2
      * levels thereafter (3rd, 5th, ..., 19th — 9 total by 20th); see

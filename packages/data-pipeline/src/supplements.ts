@@ -1004,7 +1004,7 @@ const SHADOWDANCER_FEATURES: ClassFeature[] = [
  * published table exactly under the existing formulas, so this class needed no
  * new tier.
  *
- * Two features are more than prose:
+ * Three features are more than prose:
  *   - **Mind Over Metal** is an ability *substitution* (Int in place of Dex for
  *     AC), not a bonus, so it can't be a `Change` — it is registered in the
  *     engine's `ability-substitution.ts` by name slug. Renaming this feature
@@ -1014,11 +1014,9 @@ const SHADOWDANCER_FEATURES: ClassFeature[] = [
  *     prose-only posture the CRB batch took for Eldritch Knight's bonus combat
  *     feats — the progression is a plain function of level, so wiring it is
  *     trivially correct rather than a guess.
- *
- * Known gap, deliberately prose: **Additional Skill** ("a new class skill of
- * her choice" at 1st and every 2 levels after) is a player choice with no
- * bonus-class-skill slot anywhere in the doc today. Wiring it means a generic
- * player-chosen class-skill mechanism, not a Student-of-War special case.
+ *   - **Additional Skill** grants player-chosen class skills through the
+ *     generic mechanism in the engine's `bonus-class-skills.ts`, also keyed by
+ *     name slug — same renaming caveat as Mind Over Metal.
  */
 const AG: SourceRef[] = [{ id: "PZO1138", pages: "142" }];
 
@@ -1027,7 +1025,7 @@ const STUDENT_OF_WAR_FEATURES: ClassFeature[] = [
     "student-of-war",
     "additional-skill",
     "Additional Skill",
-    "<p>At 1st level and every 2 levels thereafter (3rd, 5th, 7th, and 9th), a student of war gains a new class skill of her choice.</p><p><em>Not yet applied automatically — pick the skill with your GM and treat it as a class skill by hand.</em></p>",
+    "<p>At 1st level and every 2 levels thereafter (3rd, 5th, 7th, and 9th), a student of war gains a new class skill of her choice.</p><p><em>Choose the skills under Bonus Class Skills in the class builder; they count as class skills automatically.</em></p>",
     "additionalSkill",
     [],
     AG,

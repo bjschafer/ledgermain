@@ -17,6 +17,13 @@ export {
   type SubstitutionSlot,
 } from "./ability-substitution.js";
 export {
+  BONUS_CLASS_SKILL_GRANTS,
+  chosenBonusClassSkills,
+  collectBonusClassSkillGrants,
+  type ActiveBonusClassSkillGrant,
+  type BonusClassSkillGrantDef,
+} from "./bonus-class-skills.js";
+export {
   collectModifiers,
   forTarget,
   evaluateBuffChange,

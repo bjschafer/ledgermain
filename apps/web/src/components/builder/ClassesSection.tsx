@@ -19,6 +19,7 @@ import { ArcaneBondPicker } from "./ArcaneBondPicker.js";
 import { ArcanistExploitPicker } from "./ArcanistExploitPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
+import { BonusClassSkillsPicker } from "./BonusClassSkillsPicker.js";
 import { BloodragerBloodlinePicker } from "./BloodragerBloodlinePicker.js";
 import { CastingAdvancementPicker } from "./CastingAdvancementPicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
@@ -521,6 +522,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
           <FiendishBoonPicker doc={doc} update={update} />
         </>
       )}
+
+      {/* Player-chosen bonus class skills — renders only when some feature grants them (issue #93). */}
+      <BonusClassSkillsPicker doc={doc} refData={refData} update={update} />
 
       {/* Ninja trick picker — ninja only (issue #65 wave B, free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "ninja") && (

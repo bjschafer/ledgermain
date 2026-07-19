@@ -10106,7 +10106,7 @@
   },
   "prestige:student-of-war:additional-skill": {
     "changes": [],
-    "description": "<p>At 1st level and every 2 levels thereafter (3rd, 5th, 7th, and 9th), a student of war gains a new class skill of her choice.</p><p><em>Not yet applied automatically — pick the skill with your GM and treat it as a class skill by hand.</em></p>",
+    "description": "<p>At 1st level and every 2 levels thereafter (3rd, 5th, 7th, and 9th), a student of war gains a new class skill of her choice.</p><p><em>Choose the skills under Bonus Class Skills in the class builder; they count as class skills automatically.</em></p>",
     "grantsBuffs": [],
     "id": "prestige:student-of-war:additional-skill",
     "name": "Additional Skill",
