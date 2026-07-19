@@ -63,10 +63,13 @@ export function Sheet({
   doc,
   sheet,
   refData,
+  hideName = false,
 }: {
   doc: CharacterDoc;
   sheet: DerivedSheet;
   refData: RefData;
+  /** Set when an enclosing chrome (the mobile drawer's title bar) already shows the name. */
+  hideName?: boolean;
 }) {
   // Unconditioned baseline (no conditions/buffs/ability damage/negative
   // levels) — cheap, same "recompute rather than memoize cleverly" posture as
@@ -110,7 +113,7 @@ export function Sheet({
 
   return (
     <section className="sheet" aria-label="Live character sheet">
-      <div className="char-name">{doc.identity.name || "Unnamed"}</div>
+      {hideName ? null : <div className="char-name">{doc.identity.name || "Unnamed"}</div>}
       <div className="char-sub">
         {race ? (
           <>

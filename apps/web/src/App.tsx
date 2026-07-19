@@ -290,7 +290,7 @@ function Workbench({
           title={props.doc.identity.name || "Character Sheet"}
           onClose={() => setSheetOpen(false)}
         >
-          <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} />
+          <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} hideName />
         </Dialog>
       )}
     </>
