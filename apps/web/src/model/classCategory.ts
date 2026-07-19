@@ -118,10 +118,10 @@ const CLASS_CATEGORY: Readonly<Record<string, ClassCategory>> = {
   Psychic: "occult",
   Spiritualist: "occult",
 
-  // Prestige classes (Core Rulebook; issue #66 chunks 1 + 4 — hand-authored,
-  // the pinned Foundry pack ships none. See `packages/data-pipeline/src/
-  // supplements.ts`'s `SUPPLEMENTAL_PRESTIGE_CLASSES`. All ten CRB prestige
-  // classes.)
+  // Prestige classes — hand-authored, the pinned Foundry pack ships none. See
+  // `packages/data-pipeline/src/supplements.ts`'s
+  // `SUPPLEMENTAL_PRESTIGE_CLASSES`. The ten Core Rulebook classes, plus
+  // Student of War (Adventurer's Guide) as the first non-CRB entry.
   "Arcane Archer": "prestige",
   "Arcane Trickster": "prestige",
   Assassin: "prestige",
@@ -132,6 +132,7 @@ const CLASS_CATEGORY: Readonly<Record<string, ClassCategory>> = {
   "Mystic Theurge": "prestige",
   "Pathfinder Chronicler": "prestige",
   Shadowdancer: "prestige",
+  "Student of War": "prestige",
 };
 
 /** Category for a class, defaulting to `"other"` for anything unlisted. */

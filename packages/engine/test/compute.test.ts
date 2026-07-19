@@ -758,6 +758,27 @@ describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
     expect(sheet.cmd).toBe(18); // 10 + bab3 + str2 + dex3 + size0 + 0 + 0
   });
 
+  it("shield-using monk does NOT get the AC/CMD bonus (the shield half of the gate)", () => {
+    // `@shield.type` used to be absent from roll data entirely, and a missing
+    // path resolves to 0 — so `lt(@shield.type, 1)` silently passed and a monk
+    // kept the Wis-to-AC bonus while carrying a shield. `buildRollData` now
+    // populates it from equipped shield-slot gear.
+    const doc = makeDoc({
+      classes: [{ tag: "monk", level: 5 }],
+      abilities,
+      gear: [
+        {
+          equipped: true,
+          name: "Heavy Steel Shield",
+          armor: { slot: "shield", ac: 2, acp: -2, type: 1 },
+        },
+      ],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(15); // 10 base + shield2 + dex3 + wisToAc0
+    expect(sheet.cmd).toBe(18); // 10 + bab3 + str2 + dex3 + size0 + 0
+  });
+
   it("encumbered monk (medium load, encumbranceEnabled) does NOT get the AC/CMD bonus (issue #16)", () => {
     const doc = makeDoc({
       classes: [{ tag: "monk", level: 5 }],

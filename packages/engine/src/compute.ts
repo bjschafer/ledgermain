@@ -36,6 +36,13 @@ import type {
 } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import {
+  ABILITY_LABEL,
+  collectAbilitySubstitutions,
+  resolveSubstitution,
+  type ActiveAbilitySubstitution,
+  type ResolvedAbility,
+} from "./ability-substitution.js";
 import { resolveClassFeatures } from "./archetypes.js";
 import { computeRanger } from "./ranger.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
@@ -139,6 +146,16 @@ function toComponents(mods: ResolvedModifier[]): ModifierComponent[] {
 
 function synthetic(source: string, type: string, value: number): ModifierComponent {
   return { source, type, value, applied: true };
+}
+
+/**
+ * Provenance label for an ability line that may have been substituted — plain
+ * ability name normally, ability plus the granting feature when a substitution
+ * won, so the sheet explains why AC is reading Intelligence.
+ */
+function abilityLabelFor(resolved: ResolvedAbility): string {
+  const base = ABILITY_LABEL[resolved.ability];
+  return resolved.substitution ? `${base} (${resolved.substitution.source})` : base;
 }
 
 /* ------------------------------------------------------------- temp HP */
@@ -284,13 +301,24 @@ const CMD_AC_TYPES: ReadonlySet<string> = new Set([
   "sacred",
 ]);
 
+/**
+ * `acAbility` is the ability feeding AC's Dexterity line — normally Dex, but
+ * an ability substitution (Student of War's Mind Over Metal) can replace it;
+ * see `ability-substitution.ts`.
+ *
+ * The armor/load max-Dex cap still binds the substituted modifier. Mind Over
+ * Metal says so explicitly — the armor's normal maximum Dexterity bonus still
+ * applies, limiting how much of the Intelligence bonus reaches AC — so the cap
+ * is a property of the AC term rather than of the ability feeding it.
+ */
 function computeAc(
   doc: CharacterDoc,
   size: SizeId,
-  dexMod: number,
+  acAbility: ResolvedAbility,
   collected: CollectedModifier[],
   encumbrance?: DerivedEncumbrance,
 ): ArmorClass {
+  const dexMod = acAbility.mod;
   // Gather candidates as {category, type, value, source}, then stack within each
   // (category|type) group so e.g. armor base + armor enhancement stack but two
   // luck bonuses to AC do not.
@@ -367,11 +395,21 @@ function computeAc(
     loadCap !== undefined &&
     cappedDex < dexMod &&
     (maxDexCap === undefined || loadCap <= maxDexCap);
+  // Qualifiers stack in one parenthetical: the granting feature when the
+  // ability was substituted, and the load tier when the load's cap is the one
+  // actually binding.
+  const dexQualifiers = [
+    ...(acAbility.substitution ? [acAbility.substitution.source] : []),
+    ...(dexBoundByLoad ? [loadTierLabel(encumbrance!.tier)] : []),
+  ];
   cands.push({
     category: "dex",
     type: "untyped",
     value: cappedDex,
-    source: dexBoundByLoad ? `Dexterity (${loadTierLabel(encumbrance!.tier)})` : "Dexterity",
+    source:
+      dexQualifiers.length > 0
+        ? `${ABILITY_LABEL[acAbility.ability]} (${dexQualifiers.join(", ")})`
+        : ABILITY_LABEL[acAbility.ability],
   });
 
   const sizeMod = SIZE_AC_MOD[size];
@@ -947,12 +985,12 @@ function nonProficientArmorAttackComponents(
 function computeWeaponAttacks(
   doc: CharacterDoc,
   bab: number,
-  strMod: number,
-  dexMod: number,
   sizeAttackMod: number,
   collected: CollectedModifier[],
   proficiencies: DerivedProficiencies,
   armorProfComponents: ModifierComponent[],
+  abilityMods: Readonly<Record<AbilityId, number>>,
+  substitutions: readonly ActiveAbilitySubstitution[],
 ): ResolvedWeaponAttack[] {
   const armorProfPenalty = armorProfComponents.reduce((s, c) => s + c.value, 0);
   const weapons = doc.build.weapons ?? [];
@@ -962,8 +1000,18 @@ function computeWeaponAttacks(
     // Masterwork's +1 attack bonus is implied (and superseded) by any magic
     // enhancement bonus, so it only applies to a non-magical (+0) weapon.
     const masterworkBonus = enh === 0 && w.masterwork ? 1 : 0;
-    const attackAbilityMod = w.attackAbility === "dex" ? dexMod : strMod;
-    const attackAbilityLabel = w.attackAbility === "dex" ? "Dexterity" : "Strength";
+    // An ability substitution applies on top of whichever ability the weapon
+    // is already using, so a Str weapon and a Weapon Finesse'd Dex weapon each
+    // get the substitution written for their own base ability, and neither
+    // gets one written for the other's.
+    const attackAbility = resolveSubstitution(
+      category === "melee" ? "attack.melee" : "attack.ranged",
+      w.attackAbility,
+      abilityMods,
+      substitutions,
+    );
+    const attackAbilityMod = attackAbility.mod;
+    const attackAbilityLabel = abilityLabelFor(attackAbility);
     const groupKeys = weaponGroupKeys(w);
     const weaponProficient = isWeaponProficient(proficiencies, w);
     const weaponProfPenalty = weaponProficient ? 0 : -4;
@@ -1009,7 +1057,12 @@ function computeWeaponAttacks(
       category === "melee" &&
       rogueFinesseTrainingMatches(doc, w);
     const damageAbility = autoFinesseDex ? "dex" : (w.damageAbility ?? "str");
-    const damageAbilityMod = damageAbility === "dex" ? dexMod : strMod;
+    // "none" carries no ability at all, so there is nothing to substitute for.
+    const resolvedDamageAbility =
+      damageAbility === "none"
+        ? undefined
+        : resolveSubstitution("damage.melee", damageAbility, abilityMods, substitutions);
+    const damageAbilityMod = resolvedDamageAbility?.mod ?? 0;
     const mult = w.damageMultiplier ?? 1;
     const appliesAbilityDamage =
       (damageAbility === "str" || damageAbility === "dex") && category === "melee";
@@ -1141,6 +1194,24 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const strMod = abilities.str.mod;
   const dexMod = abilities.dex.mod;
 
+  // Ability substitutions ("use Int in place of Dex for AC") — see
+  // `ability-substitution.ts`. Resolved once here and threaded into each term
+  // that can be substituted; a term with no matching substitution keeps the
+  // ability the rules give it, so this is a no-op for the overwhelming
+  // majority of characters.
+  const abilityMods = Object.fromEntries(
+    ABILITY_IDS.map((id) => [id, abilities[id].mod]),
+  ) as Record<AbilityId, number>;
+  const substitutions = collectAbilitySubstitutions(doc, refData, rollData);
+  const meleeAttackAbility = resolveSubstitution("attack.melee", "str", abilityMods, substitutions);
+  const rangedAttackAbility = resolveSubstitution(
+    "attack.ranged",
+    "dex",
+    abilityMods,
+    substitutions,
+  );
+  const initAbility = resolveSubstitution("init", "dex", abilityMods, substitutions);
+
   // Saves
   const saves = {
     fort: computeSave("fort", doc.identity.classes, refData, abilities.con.mod, collected),
@@ -1169,20 +1240,22 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   ]);
   const meleeComponents: ModifierComponent[] = [
     synthetic("BAB", "base", bab),
-    synthetic("Strength", "ability", strMod),
+    synthetic(abilityLabelFor(meleeAttackAbility), "ability", meleeAttackAbility.mod),
     ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
     ...toComponents(meleeStack.modifiers),
     ...armorProfComponents,
   ];
   const rangedComponents: ModifierComponent[] = [
     synthetic("BAB", "base", bab),
-    synthetic("Dexterity", "ability", dexMod),
+    synthetic(abilityLabelFor(rangedAttackAbility), "ability", rangedAttackAbility.mod),
     ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
     ...toComponents(rangedStack.modifiers),
     ...armorProfComponents,
   ];
-  const meleeTotal = bab + strMod + sizeAttackMod + meleeStack.total + armorProfPenalty;
-  const rangedTotal = bab + dexMod + sizeAttackMod + rangedStack.total + armorProfPenalty;
+  const meleeTotal =
+    bab + meleeAttackAbility.mod + sizeAttackMod + meleeStack.total + armorProfPenalty;
+  const rangedTotal =
+    bab + rangedAttackAbility.mod + sizeAttackMod + rangedStack.total + armorProfPenalty;
   const meleeIteratives = iterativeSequence(bab, meleeTotal);
   const rangedIteratives = iterativeSequence(bab, rangedTotal);
   const attack = {
@@ -1198,8 +1271,11 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     },
   };
 
-  // AC
-  const ac = computeAc(doc, size, dexMod, collected, encumbrance);
+  // AC. The Dexterity line is substitutable; CMD's Dex term below deliberately
+  // is not — Mind Over Metal (the only substitution registered today) reads
+  // "for determining her Armor Class", and CMD is a separate defense.
+  const acAbility = resolveSubstitution("ac", "dex", abilityMods, substitutions);
+  const ac = computeAc(doc, size, acAbility, collected, encumbrance);
 
   // CMB / CMD
   const sizeSpecial = specialSizeMod(size);
@@ -1239,8 +1315,11 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // Initiative
   const initStack = resolveStack(forTarget(collected, "init"));
   const initiative: ResolvedStat = {
-    total: dexMod + initStack.total,
-    components: [synthetic("Dexterity", "ability", dexMod), ...toComponents(initStack.modifiers)],
+    total: initAbility.mod + initStack.total,
+    components: [
+      synthetic(abilityLabelFor(initAbility), "ability", initAbility.mod),
+      ...toComponents(initStack.modifiers),
+    ],
   };
 
   // HP
@@ -1291,12 +1370,12 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const attacks = computeWeaponAttacks(
     doc,
     bab,
-    strMod,
-    dexMod,
     sizeAttackMod,
     collected,
     proficiencies,
     armorProfComponents,
+    abilityMods,
+    substitutions,
   );
 
   // DR / energy resistance / spell resistance — display-only (issue #21).

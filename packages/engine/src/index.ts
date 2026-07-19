@@ -8,6 +8,15 @@
 
 export { compute } from "./compute.js";
 export {
+  ABILITY_SUBSTITUTIONS,
+  collectAbilitySubstitutions,
+  resolveSubstitution,
+  type AbilitySubstitutionDef,
+  type ActiveAbilitySubstitution,
+  type ResolvedAbility,
+  type SubstitutionSlot,
+} from "./ability-substitution.js";
+export {
   collectModifiers,
   forTarget,
   evaluateBuffChange,

@@ -27,6 +27,7 @@ import type {
   Class,
   ClassFeature,
   ClassFeatureGrant,
+  SourceRef,
   Spell,
   SpellList,
 } from "@pf1/schema";
@@ -267,6 +268,11 @@ function prestigeFeature(
    * honesty bar as chunk 1 — see the chunk-4 module doc comment above.
    */
   changes: Change[] = [],
+  /**
+   * Publication the feature comes from. Defaults to the CRB because every
+   * prestige class authored here until Student of War was one of the CRB ten.
+   */
+  sources: SourceRef[] = [{ id: "PZO1110" }],
 ): ClassFeature {
   const id = `prestige:${classSlug}:${slug}`;
   return {
@@ -274,7 +280,7 @@ function prestigeFeature(
     name,
     uuid: `prestige-feature:${classSlug}:${slug}`,
     description,
-    sources: [{ id: "PZO1110" }],
+    sources,
     tag,
     subType: "classFeat",
     changes,
@@ -986,6 +992,111 @@ const SHADOWDANCER_FEATURES: ClassFeature[] = [
   ),
 ];
 
+/**
+ * Student of War — the first prestige class here that isn't one of the CRB
+ * ten. Adventurer's Guide (PZO1138) p. 142, originally Seekers of Secrets
+ * (PZO9410) p. 62; the two printings are mechanically identical and the table
+ * below was cross-checked line-for-line against both d20pfsrd and aonprd, the
+ * same two-independent-sources method as the CRB batch.
+ *
+ * Tiers: full BAB, one good save (Will, `highPrestige` — 1,1,2,2,3,3,4,4,5,5)
+ * and two poor (Fort/Ref, `lowPrestige` — 0,1,1,1,2,2,2,3,3,3). Both match the
+ * published table exactly under the existing formulas, so this class needed no
+ * new tier.
+ *
+ * Two features are more than prose:
+ *   - **Mind Over Metal** is an ability *substitution* (Int in place of Dex for
+ *     AC), not a bonus, so it can't be a `Change` — it is registered in the
+ *     engine's `ability-substitution.ts` by name slug. Renaming this feature
+ *     breaks that link; the engine test asserts the wiring end-to-end.
+ *   - **Bonus Combat Feat** grants real feat slots via `bonusFeats`
+ *     (1/2/3 at levels 2/5/8 = `floor((level + 1) / 3)`), rather than the
+ *     prose-only posture the CRB batch took for Eldritch Knight's bonus combat
+ *     feats — the progression is a plain function of level, so wiring it is
+ *     trivially correct rather than a guess.
+ *
+ * Known gap, deliberately prose: **Additional Skill** ("a new class skill of
+ * her choice" at 1st and every 2 levels after) is a player choice with no
+ * bonus-class-skill slot anywhere in the doc today. Wiring it means a generic
+ * player-chosen class-skill mechanism, not a Student-of-War special case.
+ */
+const AG: SourceRef[] = [{ id: "PZO1138", pages: "142" }];
+
+const STUDENT_OF_WAR_FEATURES: ClassFeature[] = [
+  prestigeFeature(
+    "student-of-war",
+    "additional-skill",
+    "Additional Skill",
+    "<p>At 1st level and every 2 levels thereafter (3rd, 5th, 7th, and 9th), a student of war gains a new class skill of her choice.</p><p><em>Not yet applied automatically — pick the skill with your GM and treat it as a class skill by hand.</em></p>",
+    "additionalSkill",
+    [],
+    AG,
+  ),
+  prestigeFeature(
+    "student-of-war",
+    "know-your-enemy",
+    "Know Your Enemy",
+    "<p>As a move action, a student of war can study a foe she can see and attempt a Knowledge check appropriate to the creature's type (DC = 10 + the target's HD). Success grants a +1 insight bonus against that enemy, applied through one of three stances chosen when the check is attempted: defensive (AC), martial (attack rolls), or tactical (CMB and CMD). The bonus increases to +2 at 4th level and +3 at 7th level, and at 7th level studying a foe becomes a swift action.</p>",
+    "knowYourEnemy",
+    [],
+    AG,
+  ),
+  prestigeFeature(
+    "student-of-war",
+    "bonus-combat-feat",
+    "Bonus Combat Feat (SOW)",
+    "<p>At 2nd, 5th, and 8th level, a student of war gains a bonus Combat feat. She must meet the prerequisites for the chosen feat.</p>",
+    "bonusCombatFeatStudentOfWar",
+    [{ formula: "floor((@class.unlevel + 1) / 3)", target: "bonusFeats", type: "untyped" }],
+    AG,
+  ),
+  prestigeFeature(
+    "student-of-war",
+    "mind-over-metal",
+    "Mind Over Metal",
+    "<p>At 2nd level, when a student of war is using armor or a shield, she can use her Intelligence modifier in place of her Dexterity modifier for determining her Armor Class.</p><p><em>Applied automatically while armor or a shield is equipped, and only when Intelligence is the better modifier. The armor's maximum Dexterity bonus still caps the substituted value.</em></p>",
+    "mindOverMetal",
+    [],
+    AG,
+  ),
+  prestigeFeature(
+    "student-of-war",
+    "anticipate",
+    "Anticipate",
+    "<p>At 3rd level, once per day as an immediate action, a student of war can ignore any damage and effects of a spell or ability she successfully saved against. She can use this ability one additional time per day at 6th level and again at 9th level.</p>",
+    "anticipate",
+    [],
+    AG,
+  ),
+  prestigeFeature(
+    "student-of-war",
+    "telling-blow",
+    "Telling Blow",
+    "<p>At 6th level, a student of war can aim her blows at the weakest point in a studied foe's defense, ignoring up to 5 points of damage reduction. She is also treated as having the Mobility feat when provoking attacks of opportunity from a studied foe.</p>",
+    "tellingBlow",
+    [],
+    AG,
+  ),
+  prestigeFeature(
+    "student-of-war",
+    "nemesis",
+    "Nemesis",
+    "<p>At 9th level, once per day as a swift action, a student of war can focus on a weapon she holds and render it anathema to her studied foe for 1 minute.</p>",
+    "nemesis",
+    [],
+    AG,
+  ),
+  prestigeFeature(
+    "student-of-war",
+    "deadly-blow",
+    "Deadly Blow",
+    "<p>At 10th level, a student of war can find weak spots where none should exist. When she uses her know your enemy ability and exceeds the Knowledge check DC by 10 or more, she ignores the target's natural damage reduction and its immunity to critical hits.</p>",
+    "deadlyBlow",
+    [],
+    AG,
+  ),
+];
+
 /** Hand-authored `ClassFeature`s granted by the two chunk-1 prestige classes. */
 export const SUPPLEMENTAL_PRESTIGE_CLASS_FEATURES: ClassFeature[] = [
   ...ELDRITCH_KNIGHT_FEATURES,
@@ -998,6 +1109,7 @@ export const SUPPLEMENTAL_PRESTIGE_CLASS_FEATURES: ClassFeature[] = [
   ...LOREMASTER_FEATURES,
   ...PATHFINDER_CHRONICLER_FEATURES,
   ...SHADOWDANCER_FEATURES,
+  ...STUDENT_OF_WAR_FEATURES,
 ];
 
 /**
@@ -1478,6 +1590,58 @@ export const SUPPLEMENTAL_PRESTIGE_CLASSES: Class[] = [
     },
   },
   ...CHUNK4_PRESTIGE_CLASSES,
+  {
+    id: "prestige:student-of-war",
+    name: "Student of War",
+    uuid: "prestige-class:student-of-war",
+    description:
+      "<p>The student of war treats battle as a subject to be studied rather than a craft to be drilled, reading her enemies as readily as she reads a manual and turning what she knows into openings no one else can see.</p>",
+    sources: AG,
+    tag: "studentOfWar",
+    subType: "prestige",
+    hd: 10,
+    bab: "high",
+    saves: { fort: "lowPrestige", ref: "lowPrestige", will: "highPrestige" },
+    skillsPerLevel: 6,
+    classSkills: [
+      "clm",
+      "crf",
+      "dev",
+      "han",
+      ...KNOWLEDGE_ALL,
+      "lin",
+      "per",
+      "pro",
+      "sen",
+      "spl",
+      "sur",
+      "swm",
+    ],
+    armorProf: [],
+    weaponProf: [],
+    features: [
+      prestigeGrant(1, "student-of-war", "additional-skill", "Additional Skill"),
+      prestigeGrant(1, "student-of-war", "know-your-enemy", "Know Your Enemy"),
+      prestigeGrant(2, "student-of-war", "bonus-combat-feat", "Bonus Combat Feat (SOW)"),
+      prestigeGrant(2, "student-of-war", "mind-over-metal", "Mind Over Metal"),
+      prestigeGrant(3, "student-of-war", "anticipate", "Anticipate"),
+      prestigeGrant(6, "student-of-war", "telling-blow", "Telling Blow"),
+      prestigeGrant(9, "student-of-war", "nemesis", "Nemesis"),
+      prestigeGrant(10, "student-of-war", "deadly-blow", "Deadly Blow"),
+    ],
+    prereqs: {
+      // Combat Expertise and Dodge are plain named feats, so they hard-block.
+      // The rest stay advisory for the reasons the hybrid model already
+      // enumerates: Skill Focus (any Knowledge) and Knowledge (any two) are
+      // parametrized/OR requirements, martial-weapon proficiency counts
+      // *any two* of a category rather than a named grant, and the
+      // five-creatures requirement is pure table history.
+      bab: 5,
+      feats: ["Combat Expertise", "Dodge"],
+      prereqText:
+        "Base Attack Bonus: +5. Feats: Combat Expertise, Dodge, Skill Focus (any one Knowledge skill). Proficiency: Must be proficient with two martial weapons. Skills: Knowledge (any two) 4 ranks in each. Special: Must have succeeded at Knowledge checks against five distinct creatures prior to defeating them.",
+    },
+  },
 ];
 
 /**

@@ -43,7 +43,7 @@ function saveForLevel(tier: SaveTier, level: number): number {
   }
 }
 
-const ALL_TEN = [
+const ALL_PRESTIGE = [
   "Arcane Archer",
   "Arcane Trickster",
   "Assassin",
@@ -54,6 +54,7 @@ const ALL_TEN = [
   "Mystic Theurge",
   "Pathfinder Chronicler",
   "Shadowdancer",
+  "Student of War",
 ];
 
 describe("Eldritch Knight (CRB, PZO1110)", () => {
@@ -434,9 +435,81 @@ describe("Shadowdancer (CRB, PZO1110)", () => {
   });
 });
 
-describe("prestige class feature resolution (all ten)", () => {
-  it("every ClassFeatureGrant on all ten prestige classes resolves to an existing classFeature id", () => {
-    for (const name of ALL_TEN) {
+describe("Student of War (Adventurer's Guide, PZO1138)", () => {
+  const sow = classByName("Student of War");
+
+  it("has the published chassis: d10 HD, full BAB, no proficiencies, 6+Int skills", () => {
+    expect(sow.hd).toBe(10);
+    expect(sow.bab).toBe("high");
+    expect(sow.armorProf).toEqual([]);
+    expect(sow.weaponProf).toEqual([]);
+    expect(sow.skillsPerLevel).toBe(6);
+  });
+
+  it("has a good (highPrestige) Will save and poor (lowPrestige) Fort/Ref", () => {
+    expect(sow.saves).toEqual({ fort: "lowPrestige", ref: "lowPrestige", will: "highPrestige" });
+    // The published table, level by level: Fort/Ref 0,1,1,1,2,2,2,3,3,3 and
+    // Will 1,1,2,2,3,3,4,4,5,5.
+    const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    expect(levels.map((l) => saveForLevel(sow.saves.fort, l))).toEqual([
+      0, 1, 1, 1, 2, 2, 2, 3, 3, 3,
+    ]);
+    expect(levels.map((l) => saveForLevel(sow.saves.will, l))).toEqual([
+      1, 1, 2, 2, 3, 3, 4, 4, 5, 5,
+    ]);
+  });
+
+  it("has no casting advancement", () => {
+    expect(sow.castingAdvancement).toBeUndefined();
+  });
+
+  it("treats all ten Knowledge skills as class skills", () => {
+    for (const k of ["kar", "kdu", "ken", "kge", "khi", "klo", "kna", "kno", "kpl", "kre"]) {
+      expect(sow.classSkills, k).toContain(k);
+    }
+  });
+
+  it("grants its features at the published levels", () => {
+    const byLevel = new Map(sow.features.map((f) => [f.name, f.level]));
+    expect(byLevel.get("Additional Skill")).toBe(1);
+    expect(byLevel.get("Know Your Enemy")).toBe(1);
+    expect(byLevel.get("Mind Over Metal")).toBe(2);
+    expect(byLevel.get("Bonus Combat Feat (SOW)")).toBe(2);
+    expect(byLevel.get("Anticipate")).toBe(3);
+    expect(byLevel.get("Telling Blow")).toBe(6);
+    expect(byLevel.get("Nemesis")).toBe(9);
+    expect(byLevel.get("Deadly Blow")).toBe(10);
+  });
+
+  it("grants real bonus feat slots: 1/2/3 at levels 2/5/8", () => {
+    const feature = ref.classFeatures["prestige:student-of-war:bonus-combat-feat"];
+    const change = feature?.changes?.find((c) => c.target === "bonusFeats");
+    expect(change?.formula).toBe("floor((@class.unlevel + 1) / 3)");
+    const at = (level: number) => Math.floor((level + 1) / 3);
+    expect([1, 2, 4, 5, 7, 8, 10].map(at)).toEqual([0, 1, 1, 2, 2, 3, 3]);
+  });
+
+  it("has structured prereqs: BAB +5 and two named feats (the rest stay prose-only)", () => {
+    expect(sow.prereqs?.bab).toBe(5);
+    expect(sow.prereqs?.feats).toEqual(["Combat Expertise", "Dodge"]);
+    // Parametrized/OR requirements are advisory per the hybrid prereq model.
+    expect(sow.prereqs?.skillRanks).toBeUndefined();
+    expect(sow.prereqs?.prereqText).toContain("Skill Focus (any one Knowledge skill)");
+    expect(sow.prereqs?.prereqText).toContain("Knowledge (any two) 4 ranks in each");
+    expect(sow.prereqs?.prereqText).toContain("proficient with two martial weapons");
+  });
+
+  it("is sourced to the Adventurer's Guide, not the CRB", () => {
+    expect(sow.sources?.[0]?.id).toBe("PZO1138");
+    expect(ref.classFeatures["prestige:student-of-war:mind-over-metal"]?.sources?.[0]?.id).toBe(
+      "PZO1138",
+    );
+  });
+});
+
+describe("prestige class feature resolution (all eleven)", () => {
+  it("every ClassFeatureGrant on every prestige class resolves to an existing classFeature id", () => {
+    for (const name of ALL_PRESTIGE) {
       const cls = classByName(name);
       for (const grant of cls.features) {
         expect(grant.resolved, `${name}: ${grant.name}`).toBe(true);
@@ -445,8 +518,8 @@ describe("prestige class feature resolution (all ten)", () => {
     }
   });
 
-  it("none of the ten prestige classes collides with a vendored (or sibling) class id/uuid/tag/name", () => {
-    const prestige = ALL_TEN.map(classByName);
+  it("no prestige class collides with a vendored (or sibling) class id/uuid/tag/name", () => {
+    const prestige = ALL_PRESTIGE.map(classByName);
     for (const cls of prestige) {
       const others = Object.values(ref.classes).filter((c) => c !== cls);
       for (const other of others) {
@@ -459,7 +532,7 @@ describe("prestige class feature resolution (all ten)", () => {
   });
 
   it("every prestige class has a subType of 'prestige' and a non-empty prereqText", () => {
-    for (const name of ALL_TEN) {
+    for (const name of ALL_PRESTIGE) {
       const cls = classByName(name);
       expect(cls.subType, name).toBe("prestige");
       expect(cls.prereqs?.prereqText, name).toBeTruthy();

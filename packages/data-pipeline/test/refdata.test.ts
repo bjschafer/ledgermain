@@ -53,12 +53,12 @@ describe("metadata + provenance", () => {
     // vendored per issue #26: aasimar, tiefling, goblin, kobold, drow, ...).
     expect(Object.keys(ref.races)).toHaveLength(80);
     // 11 core + 10 base + 10 hybrid + 3 alternate (antipaladin/ninja/samurai)
-    // + 4 unchained + 6 Occult Adventures + 10 hand-authored CRB prestige
-    // classes (Arcane Archer, Arcane Trickster, Assassin, Dragon Disciple,
-    // Duelist, Eldritch Knight, Loremaster, Mystic Theurge, Pathfinder
-    // Chronicler, Shadowdancer — issue #66 chunks 1 + 4, Foundry ships no
-    // prestige classes at all).
-    expect(Object.keys(ref.classes)).toHaveLength(54);
+    // + 4 unchained + 6 Occult Adventures + 11 hand-authored prestige classes
+    // (the CRB ten — Arcane Archer, Arcane Trickster, Assassin, Dragon
+    // Disciple, Duelist, Eldritch Knight, Loremaster, Mystic Theurge,
+    // Pathfinder Chronicler, Shadowdancer — plus Student of War from the
+    // Adventurer's Guide. Foundry ships no prestige classes at all).
+    expect(Object.keys(ref.classes)).toHaveLength(55);
     // 390 system-pack feats + ~3,150 merged in from the community pf1-content
     // module (390 + 3,251 - 77 name collisions - 1 internal dupe; see
     // config.ts's PF_CONTENT_REPO and normalize.ts's feats merge).

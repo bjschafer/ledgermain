@@ -86,12 +86,20 @@ export function buildRollData(
     skills[id] = { rank };
   }
 
-  // Worn-armor weight class for `@armor.type` (0 none, 1 light, 2 med, 3 heavy).
+  // Worn-armor weight class for `@armor.type` (0 none, 1 light, 2 med, 3 heavy),
+  // and the equivalent for `@shield.type`.
+  //
+  // `@shield.type` was previously absent from roll data entirely. Missing paths
+  // resolve to 0 (Foundry behavior, see `formula.ts`), so every vendored
+  // formula gated on `lt(@shield.type, 1)` — monk's AC Bonus and its Wis-to-AC
+  // among them — silently passed while a shield was equipped, granting a bonus
+  // the rules withhold from a shield-using monk.
   let armorType = 0;
+  let shieldType = 0;
   for (const item of doc.build.gear ?? []) {
-    if (item.equipped && item.armor?.slot === "armor" && item.armor.type) {
-      armorType = Math.max(armorType, item.armor.type);
-    }
+    if (!item.equipped || !item.armor?.type) continue;
+    if (item.armor.slot === "armor") armorType = Math.max(armorType, item.armor.type);
+    else if (item.armor.slot === "shield") shieldType = Math.max(shieldType, item.armor.type);
   }
 
   const baseSpeeds = speeds ?? refData.races[doc.identity.race]?.speeds ?? { land: 30 };
@@ -131,6 +139,7 @@ export function buildRollData(
       speed: speedAttr,
     },
     armor: { type: armorType },
+    shield: { type: shieldType },
     item: { level: 0 },
     level,
   };
