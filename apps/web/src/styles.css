@@ -396,7 +396,9 @@ a {
    wall-of-text, but a full-chroma band is the brightest thing on a --bg page
    and it repeats once per panel — stacked, they all compete and the eye never
    settles. Tinting keeps the section break while spending the accent budget on
-   small areas instead: the bottom rule, the icon, the title.
+   small areas instead: the bottom rule and the icon. The title itself is --ink,
+   which separates from the gold-tinted band by lightness rather than restating
+   its hue.
    Solid `linear-gradient(--gold-2, --gold)` is also .floating-btn's fill, i.e.
    the primary-action signature; headers aren't actions and shouldn't wear it.
 
@@ -419,7 +421,7 @@ a {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  color: var(--gold-2);
+  color: var(--ink);
 }
 
 .panel > header .step {
