@@ -46,13 +46,22 @@ test("regenerate README screenshots", async ({ page }) => {
 
   await page.waitForTimeout(600); // let webfonts settle
 
-  // Play view (the live tracker) — the lead image.
+  // Play view (the live tracker) — the lead image. Taller than the builder:
+  // HP + the conditions grid + both timed buffs have to fit, because the
+  // README caption promises buffs counting down by the round. The asserts
+  // below fail the run rather than silently committing a cropped image if a
+  // new panel ever pushes the buffs past the fold again.
   await page.getByRole("tab", { name: "Play" }).click();
+  await page.setViewportSize({ width: 1440, height: 1180 });
+  const buffNames = page.locator(".buff-row .buff-name");
+  await expect(buffNames.filter({ hasText: "Bull's Strength" })).toBeInViewport();
+  await expect(buffNames.filter({ hasText: "Bless" })).toBeInViewport();
   await page.waitForTimeout(400);
   await page.screenshot({ path: path.join(OUT, "tracker.png") });
 
   // Build view.
   await page.getByRole("tab", { name: "Build" }).click();
+  await page.setViewportSize({ width: 1440, height: 960 });
   await page.waitForTimeout(400);
   await page.screenshot({ path: path.join(OUT, "builder.png") });
 });

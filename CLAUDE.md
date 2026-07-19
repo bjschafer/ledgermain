@@ -17,6 +17,7 @@ bun run fmt          # oxfmt across the workspace
 bun run fmt:check    # oxfmt --check (CI-shaped gate)
 bun run test         # all unit tests (engine + data-pipeline + web)
 bun run e2e          # Playwright (Chromium); boots its own dev server
+bun run screenshots  # regenerate docs/images/{tracker,builder}.png from the sample character
 ```
 
 Run one package's tests / a single test:
