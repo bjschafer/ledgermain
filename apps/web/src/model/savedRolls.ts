@@ -143,6 +143,9 @@ interface FeatFold {
   attackDelta: number;
   extraAttacks: number;
   attackComponents: ModifierComponent[];
+  /** Extra delta applied to the FIRST attack only (Furious Focus negating Power Attack). */
+  firstAttackDelta: number;
+  firstAttackComponents: ModifierComponent[];
   damageDelta: number;
   damageComponents: ModifierComponent[];
 }
@@ -151,6 +154,8 @@ const NO_FEAT_FOLD: FeatFold = {
   attackDelta: 0,
   extraAttacks: 0,
   attackComponents: [],
+  firstAttackDelta: 0,
+  firstAttackComponents: [],
   damageDelta: 0,
   damageComponents: [],
 };
@@ -176,12 +181,18 @@ function signedResult(
     featFold.extraAttacks > 0
       ? [...(Array(featFold.extraAttacks).fill(adjusted[0]) as number[]), ...adjusted]
       : adjusted;
+  // Furious Focus negates Power Attack's penalty on the first attack only, so a
+  // first-attack delta lands on the highest entry after any extra attacks are
+  // prepended (Furious Focus is melee-only and extra-attack feats are ranged-only,
+  // so the two never co-occur — seq[0] is unambiguously "the first attack").
+  if (featFold.firstAttackDelta && seq.length > 0) seq[0] = seq[0]! + featFold.firstAttackDelta;
   const adjustedComponents = withManualAdjustment(baseComponents, modifier);
+  const attackComponents = [...featFold.attackComponents, ...featFold.firstAttackComponents];
   return {
     display: signedSequence(seq[0]!, seq.length > 1 ? seq : undefined),
     components:
-      featFold.attackComponents.length > 0
-        ? [...adjustedComponents, ...featFold.attackComponents]
+      attackComponents.length > 0
+        ? [...adjustedComponents, ...attackComponents]
         : adjustedComponents,
   };
 }
@@ -238,12 +249,23 @@ function foldAttachments(
     attackDelta: 0,
     extraAttacks: 0,
     attackComponents: [],
+    firstAttackDelta: 0,
+    firstAttackComponents: [],
     damageDelta: 0,
     damageComponents: [],
   };
   const notes: string[] = [];
   const featChips: SavedRollFeatChip[] = [];
   const rangerChips: SavedRollRangerChip[] = [];
+
+  // Furious Focus is a modifier ON Power Attack: it ignores that feat's attack
+  // penalty on the first attack of the turn. Track the applied Power Attack
+  // penalty and whether Furious Focus is also applied, then fold the first-attack
+  // negation once both are known (order-independent — either feat may be listed
+  // first). Nothing happens when Power Attack isn't attached, so Furious Focus
+  // alone never conjures a phantom bonus.
+  let powerAttackPenalty = 0;
+  let furiousFocusName: string | null = null;
 
   for (const ref of featRefs) {
     const owned = ownedFeatSlugs === undefined || ownedFeatSlugs.has(ref.slug);
@@ -252,6 +274,8 @@ function foldAttachments(
     const applied = isAttackLike && owned && modeled;
     if (applied) {
       const effect = entry.effect({ bab: sheet.bab }, ref.option);
+      if (ref.slug === "power-attack" && effect.attack) powerAttackPenalty = effect.attack;
+      if (ref.slug === "furious-focus") furiousFocusName = ref.name;
       if (effect.attack) {
         fold.attackDelta += effect.attack;
         fold.attackComponents.push({
@@ -280,6 +304,18 @@ function foldAttachments(
       if (effect.note) notes.push(effect.note);
     }
     featChips.push({ slug: ref.slug, name: ref.name, option: ref.option, applied, modeled, owned });
+  }
+
+  // Furious Focus cancels the (negative) Power Attack penalty on the first
+  // attack: +p on the top entry, leaving the rest of the sequence penalized.
+  if (furiousFocusName !== null && powerAttackPenalty < 0) {
+    fold.firstAttackDelta -= powerAttackPenalty;
+    fold.firstAttackComponents.push({
+      source: `${furiousFocusName} (first attack)`,
+      type: "untyped",
+      value: -powerAttackPenalty,
+      applied: true,
+    });
   }
 
   for (const ref of rangerRefs) {

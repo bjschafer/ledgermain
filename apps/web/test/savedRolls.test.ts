@@ -416,6 +416,80 @@ describe("resolveSavedRoll() with attached feats", () => {
     expect(resolved.damage!.display).toBe(`${atk.damageDice}+${atk.damageBonus.total + 6}`);
   });
 
+  it("Furious Focus + Power Attack (issue #94): negates the PA penalty on the first attack only", () => {
+    const sheet = compute(fresh(), ref);
+    const atk = sheet.attacks.find((a) => a.name === "Longsword")!;
+    let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "PA + FF");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "power-attack",
+      name: "Power Attack",
+      option: "two-handed",
+    });
+    doc = addSavedRollFeat(doc, id, { slug: "furious-focus", name: "Furious Focus" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    // PA -3 to every entry, then Furious Focus +3 back on the first only.
+    const adjusted = atk.attack.iteratives!.map((n) => n - 3);
+    adjusted[0] = atk.attack.iteratives![0]!; // first attack: penalty negated
+    expect(resolved.display).toBe(adjusted.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
+
+    expect(resolved.components).toContainEqual({
+      source: "Power Attack",
+      type: "untyped",
+      value: -3,
+      applied: true,
+    });
+    expect(resolved.components).toContainEqual({
+      source: "Furious Focus (first attack)",
+      type: "untyped",
+      value: 3,
+      applied: true,
+    });
+
+    // Damage is untouched by Furious Focus — still the full Power Attack bonus.
+    expect(resolved.damage!.display).toBe(`${atk.damageDice}+${atk.damageBonus.total + 9}`);
+    expect(resolved.damage!.components).not.toContainEqual(
+      expect.objectContaining({ source: "Furious Focus (first attack)" }),
+    );
+  });
+
+  it("Furious Focus negation is order-independent (listed before Power Attack)", () => {
+    const sheet = compute(fresh(), ref);
+    const atk = sheet.attacks.find((a) => a.name === "Longsword")!;
+    let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "FF + PA");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "furious-focus", name: "Furious Focus" });
+    doc = addSavedRollFeat(doc, id, {
+      slug: "power-attack",
+      name: "Power Attack",
+      option: "two-handed",
+    });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    const adjusted = atk.attack.iteratives!.map((n) => n - 3);
+    adjusted[0] = atk.attack.iteratives![0]!;
+    expect(resolved.display).toBe(adjusted.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
+  });
+
+  it("Furious Focus alone conjures no phantom first-attack bonus (needs Power Attack)", () => {
+    const sheet = compute(fresh(), ref);
+    const atk = sheet.attacks.find((a) => a.name === "Longsword")!;
+    let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "FF only");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "furious-focus", name: "Furious Focus" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    // No Power Attack attached -> sequence unchanged; only the reminder note.
+    expect(resolved.display).toBe(
+      atk.attack.iteratives!.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"),
+    );
+    expect(resolved.components).not.toContainEqual(
+      expect.objectContaining({ source: "Furious Focus (first attack)" }),
+    );
+    expect(resolved.notes).toEqual(["ignore Power Attack penalty on first attack each turn"]);
+  });
+
   it("Combat Expertise (issue #62): -3 attack at BAB 8, +3 dodge AC surfaced as a note, never applied to damage", () => {
     const sheet = compute(fresh(), ref);
     const atk = sheet.attacks.find((a) => a.name === "Longsword")!;

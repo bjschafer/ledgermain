@@ -948,8 +948,11 @@ export const SITUATIONAL_FEAT_EFFECTS: Readonly<Record<string, SituationalFeatEn
 
   // Furious Focus: ignore the Power Attack penalty on the first attack of a
   // full-attack action, or on a single attack made as a standard action
-  // (PF1 CRB p. 124, Advanced Player's Guide). Reminder only — the saved-roll
-  // model doesn't split "first attack" from the rest of the sequence.
+  // (PF1 CRB p. 124, Advanced Player's Guide). No standalone number here — it's
+  // a modifier ON Power Attack, so the negation is folded in only when both
+  // feats are attached to the same saved roll (see `foldAttachments` in
+  // apps/web/src/model/savedRolls.ts). The note is the at-table reminder that
+  // the cancellation is first-attack-only.
   "furious-focus": {
     type: "situational",
     appliesTo: "melee",
