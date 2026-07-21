@@ -194,94 +194,44 @@ function SavedRollRow({
 
   return (
     <div className="res-row saved-roll-row">
-      <div className="saved-roll-row-line">
-        <div className="res-main">
+      <div className="saved-roll-head">
+        <div className="saved-roll-title">
           <RenameField value={roll.label} onCommit={(label) => onUpdate({ label })} />
           {resolved.missing ? <div className="res-sub">source no longer available</div> : null}
-          {resolved.featChips.length > 0 || resolved.rangerChips.length > 0 ? (
-            <div className="chips saved-roll-chips">
-              {resolved.rangerChips.map((chip) => (
-                <span
-                  key={`${chip.kind}:${chip.type}`}
-                  className={`chip feat-chip ranger-chip${!chip.applied ? " unowned" : ""}`}
-                  title={
-                    chip.applied
-                      ? `${chip.name} — ${chip.kind === "favored-enemy" ? "favored enemy" : "favored terrain"} +${chip.bonus}`
-                      : `${chip.name} — no longer a favored pick; not applied`
-                  }
-                >
-                  {chip.name}
-                  {chip.applied ? ` +${chip.bonus}` : ""}
-                  {open ? (
-                    <button
-                      type="button"
-                      className="chip-x"
-                      onClick={() => onRemoveRanger(chip.kind, chip.type)}
-                      aria-label={`detach ${chip.name}`}
-                    >
-                      ✕
-                    </button>
-                  ) : null}
-                </span>
-              ))}
-              {resolved.featChips.map((chip) => (
-                <span
-                  key={chip.slug}
-                  className={`chip feat-chip${!chip.owned ? " unowned" : ""}`}
-                  title={
-                    !chip.owned
-                      ? `${chip.name} — not currently owned; not applied`
-                      : chip.modeled
-                        ? undefined
-                        : `${chip.name} — reminder only (no automatic numbers)`
-                  }
-                >
-                  {chip.name}
-                  {open && optionsFor(chip.slug) ? (
-                    <select
-                      className="dur-unit"
-                      value={chip.option ?? ""}
-                      aria-label={`${chip.name} variant`}
-                      onChange={(e) => onSetFeatOption(chip.slug, e.target.value || undefined)}
-                    >
-                      {optionsFor(chip.slug)!.map((o) => (
-                        <option key={o.id} value={o.id}>
-                          {o.label}
-                        </option>
-                      ))}
-                    </select>
-                  ) : null}
-                  {open ? (
-                    <button
-                      type="button"
-                      className="chip-x"
-                      onClick={() => onRemoveFeat(chip.slug)}
-                      aria-label={`detach ${chip.name}`}
-                    >
-                      ✕
-                    </button>
-                  ) : null}
-                </span>
-              ))}
+        </div>
+        <div className="saved-roll-values">
+          <div className="saved-roll-value-line">
+            <button
+              type="button"
+              className="res-count saved-roll-value-btn"
+              aria-expanded={open}
+              aria-controls={panelId}
+              onClick={() => setOpen((o) => !o)}
+            >
+              <span className="caret">{open ? "▲" : "▼"}</span>
+              {resolved.offHand ? <span className="saved-roll-hand-label">Main-hand</span> : null}
+              <span className="saved-roll-value-num">{resolved.display}</span>
+            </button>
+            {resolved.damage ? (
+              <span className="saved-roll-damage" title="Damage">
+                {resolved.damage.display}
+                {resolved.damage.crit ? ` (${resolved.damage.crit})` : ""}
+              </span>
+            ) : null}
+          </div>
+          {resolved.offHand ? (
+            <div
+              className="saved-roll-value-line saved-roll-value-line--off"
+              title="Off-hand attack sequence (two-weapon fighting)"
+            >
+              <span className="caret caret-ghost" aria-hidden="true">
+                ▼
+              </span>
+              <span className="saved-roll-hand-label">Off-hand</span>
+              <span className="saved-roll-value-num">{resolved.offHand}</span>
             </div>
           ) : null}
         </div>
-        <button
-          type="button"
-          className="res-count saved-roll-value-btn"
-          aria-expanded={open}
-          aria-controls={panelId}
-          onClick={() => setOpen((o) => !o)}
-        >
-          <span className="caret">{open ? "▲" : "▼"}</span>
-          {resolved.display}
-        </button>
-        {resolved.damage ? (
-          <span className="saved-roll-damage" title="Damage">
-            {resolved.damage.display}
-            {resolved.damage.crit ? ` (${resolved.damage.crit})` : ""}
-          </span>
-        ) : null}
         <div className="res-btns">
           <button
             type="button"
@@ -293,10 +243,71 @@ function SavedRollRow({
           </button>
         </div>
       </div>
-      {resolved.offHand ? (
-        <div className="saved-roll-offhand" title="Off-hand attack sequence (two-weapon fighting)">
-          <span className="saved-roll-offhand-label">Off-hand</span>
-          <span className="saved-roll-offhand-value">{resolved.offHand}</span>
+      {resolved.featChips.length > 0 || resolved.rangerChips.length > 0 ? (
+        <div className="chips saved-roll-chips">
+          {resolved.rangerChips.map((chip) => (
+            <span
+              key={`${chip.kind}:${chip.type}`}
+              className={`chip feat-chip ranger-chip${!chip.applied ? " unowned" : ""}`}
+              title={
+                chip.applied
+                  ? `${chip.name} — ${chip.kind === "favored-enemy" ? "favored enemy" : "favored terrain"} +${chip.bonus}`
+                  : `${chip.name} — no longer a favored pick; not applied`
+              }
+            >
+              {chip.name}
+              {chip.applied ? ` +${chip.bonus}` : ""}
+              {open ? (
+                <button
+                  type="button"
+                  className="chip-x"
+                  onClick={() => onRemoveRanger(chip.kind, chip.type)}
+                  aria-label={`detach ${chip.name}`}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </span>
+          ))}
+          {resolved.featChips.map((chip) => (
+            <span
+              key={chip.slug}
+              className={`chip feat-chip${!chip.owned ? " unowned" : ""}`}
+              title={
+                !chip.owned
+                  ? `${chip.name} — not currently owned; not applied`
+                  : chip.modeled
+                    ? undefined
+                    : `${chip.name} — reminder only (no automatic numbers)`
+              }
+            >
+              {chip.name}
+              {open && optionsFor(chip.slug) ? (
+                <select
+                  className="dur-unit"
+                  value={chip.option ?? ""}
+                  aria-label={`${chip.name} variant`}
+                  onChange={(e) => onSetFeatOption(chip.slug, e.target.value || undefined)}
+                >
+                  {optionsFor(chip.slug)!.map((o) => (
+                    <option key={o.id} value={o.id}>
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+              ) : null}
+              {open ? (
+                <button
+                  type="button"
+                  className="chip-x"
+                  onClick={() => onRemoveFeat(chip.slug)}
+                  aria-label={`detach ${chip.name}`}
+                >
+                  ✕
+                </button>
+              ) : null}
+            </span>
+          ))}
         </div>
       ) : null}
       {resolved.notes.length > 0 ? (

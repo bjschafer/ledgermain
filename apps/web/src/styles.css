@@ -3066,10 +3066,59 @@ button:focus-visible,
   gap: 6px;
 }
 
-.saved-roll-row-line {
+/* Head: the roll's name (left, flexes + truncates) and its value block
+   (right), with the remove button trailing. Aligned to the top so the remove
+   button and the first value line sit level even when a two-line (main/off-
+   hand) value block makes the right column taller than the name. */
+.saved-roll-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
+}
+
+.saved-roll-title {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The value block: one line for a normal roll, two labelled lines (Main / Off)
+   for a two-weapon roll so both hands of the full attack read as one unit. */
+.saved-roll-values {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.saved-roll-value-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.saved-roll-value-num {
+  font-family: var(--mono);
+}
+
+/* "Main" / "Off" tag before each hand's sequence. A fixed min-width lines the
+   two sequences up in a column. Only rendered on two-weapon rolls. */
+.saved-roll-hand-label {
+  min-width: 5em;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Off-hand line: a hair dimmer than the main sequence, and an invisible caret
+   placeholder keeps its number aligned under the main-hand number. */
+.saved-roll-value-line--off {
+  color: var(--gold-dim);
+  font-size: 0.9375rem;
+}
+
+.caret-ghost {
+  visibility: hidden;
 }
 
 /* Reset native <button> chrome — .res-count previously only styled a <div>,
@@ -3128,7 +3177,6 @@ button:focus-visible,
 /* Attached-feat chips under a saved roll's label. Reuses the base .chip pill;
    compact so a few fit on one line inside the row. */
 .saved-roll-chips {
-  margin-top: 4px;
   gap: 4px;
 }
 
@@ -3211,29 +3259,6 @@ button:focus-visible,
 
 .ranger-budget.warn {
   color: var(--danger, var(--oxblood-ink));
-}
-
-/* Off-hand attack sequence (two-weapon fighting) — a second value line under
-   the primary attack, since the off-hand is its own sequence, not part of the
-   primary iterative progression. */
-.saved-roll-offhand {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 0 2px 2px;
-  font-size: 0.8125rem;
-}
-
-.saved-roll-offhand-label {
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  font-size: 0.6875rem;
-}
-
-.saved-roll-offhand-value {
-  font-family: var(--mono);
-  color: var(--ink);
 }
 
 /* At-table reminders from applied feat effects ("within 30 ft · full attack
