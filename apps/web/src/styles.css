@@ -3213,6 +3213,29 @@ button:focus-visible,
   color: var(--danger, var(--oxblood-ink));
 }
 
+/* Off-hand attack sequence (two-weapon fighting) — a second value line under
+   the primary attack, since the off-hand is its own sequence, not part of the
+   primary iterative progression. */
+.saved-roll-offhand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 0 2px 2px;
+  font-size: 0.8125rem;
+}
+
+.saved-roll-offhand-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.6875rem;
+}
+
+.saved-roll-offhand-value {
+  font-family: var(--mono);
+  color: var(--ink);
+}
+
 /* At-table reminders from applied feat effects ("within 30 ft · full attack
    only") — one muted line under the roll's value row. */
 .saved-roll-notes {

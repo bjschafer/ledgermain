@@ -114,6 +114,12 @@ export interface ResolvedSavedRoll {
   label: string;
   /** e.g. "+11/+6" for an iterative attack, "+8" for a flat stat. */
   display: string;
+  /**
+   * The off-hand attack sequence, when the two-weapon-fighting chain is
+   * attached (e.g. "+6/+1/−4"). Rendered as a separate line — the off-hand is
+   * its own sequence, not part of the primary `display`. Absent otherwise.
+   */
+  offHand?: string;
   components: ModifierComponent[];
   /** True when the source no longer resolves (e.g. the referenced weapon was removed). */
   missing: boolean;
@@ -148,6 +154,12 @@ interface FeatFold {
   firstAttackComponents: ModifierComponent[];
   damageDelta: number;
   damageComponents: ModifierComponent[];
+  /**
+   * Off-hand attack offsets (two-weapon-fighting chain), relative to the
+   * primary top attack and before deltas, sorted highest-first. Empty when no
+   * off-hand line applies.
+   */
+  offHandOffsets: number[];
 }
 
 const NO_FEAT_FOLD: FeatFold = {
@@ -158,6 +170,7 @@ const NO_FEAT_FOLD: FeatFold = {
   firstAttackComponents: [],
   damageDelta: 0,
   damageComponents: [],
+  offHandOffsets: [],
 };
 
 /**
@@ -173,7 +186,7 @@ function signedResult(
   modifier: number,
   baseComponents: ModifierComponent[],
   featFold: FeatFold = NO_FEAT_FOLD,
-): { display: string; components: ModifierComponent[] } {
+): { display: string; offHand?: string; components: ModifierComponent[] } {
   const totalDelta = modifier + featFold.attackDelta;
   const base = iteratives ?? [total];
   const adjusted = base.map((n) => n + totalDelta);
@@ -188,8 +201,22 @@ function signedResult(
   if (featFold.firstAttackDelta && seq.length > 0) seq[0] = seq[0]! + featFold.firstAttackDelta;
   const adjustedComponents = withManualAdjustment(baseComponents, modifier);
   const attackComponents = [...featFold.attackComponents, ...featFold.firstAttackComponents];
+  // Off-hand attack line (two-weapon fighting): each offset is relative to the
+  // primary's top attack and shares the same total attack delta (the TWF
+  // penalty, Power Attack, a manual adjustment, …). Read from `adjusted[0]` —
+  // the primary top BEFORE Furious Focus's first-attack tweak — so a rare
+  // TWF+PA+Furious Focus stack leaves the negation on the primary's first
+  // attack only, not the off-hand line.
+  const offHand =
+    featFold.offHandOffsets.length > 0
+      ? (() => {
+          const offSeq = featFold.offHandOffsets.map((off) => adjusted[0]! + off);
+          return signedSequence(offSeq[0]!, offSeq.length > 1 ? offSeq : undefined);
+        })()
+      : undefined;
   return {
     display: signedSequence(seq[0]!, seq.length > 1 ? seq : undefined),
+    offHand,
     components:
       attackComponents.length > 0
         ? [...adjustedComponents, ...attackComponents]
@@ -253,6 +280,7 @@ function foldAttachments(
     firstAttackComponents: [],
     damageDelta: 0,
     damageComponents: [],
+    offHandOffsets: [],
   };
   const notes: string[] = [];
   const featChips: SavedRollFeatChip[] = [];
@@ -267,6 +295,15 @@ function foldAttachments(
   let powerAttackPenalty = 0;
   let furiousFocusName: string | null = null;
 
+  // Two-weapon fighting: TWF establishes the off-hand attack line; Improved/
+  // Greater TWF each append one more off-hand attack. Collect every applied
+  // chain feat's offsets, but assemble the line only when TWF itself is
+  // attached (a lone Improved/Greater TWF grants no attacks on its own) —
+  // same "modifier feat conjures nothing without its base" gating as Furious
+  // Focus / Power Attack above.
+  let twfAttached = false;
+  const offHandOffsets: number[] = [];
+
   for (const ref of featRefs) {
     const owned = ownedFeatSlugs === undefined || ownedFeatSlugs.has(ref.slug);
     const entry = SITUATIONAL_FEAT_EFFECTS[ref.slug];
@@ -276,6 +313,8 @@ function foldAttachments(
       const effect = entry.effect({ bab: sheet.bab }, ref.option);
       if (ref.slug === "power-attack" && effect.attack) powerAttackPenalty = effect.attack;
       if (ref.slug === "furious-focus") furiousFocusName = ref.name;
+      if (ref.slug === "two-weapon-fighting") twfAttached = true;
+      if (effect.offHandOffsets) offHandOffsets.push(...effect.offHandOffsets);
       if (effect.attack) {
         fold.attackDelta += effect.attack;
         fold.attackComponents.push({
@@ -316,6 +355,12 @@ function foldAttachments(
       value: -powerAttackPenalty,
       applied: true,
     });
+  }
+
+  // Assemble the off-hand line only with the base Two-Weapon Fighting feat
+  // present; sort descending so the sequence reads highest-first (0, −5, −10).
+  if (twfAttached && offHandOffsets.length > 0) {
+    fold.offHandOffsets = [...offHandOffsets].sort((a, b) => b - a);
   }
 
   for (const ref of rangerRefs) {
@@ -392,6 +437,7 @@ export function resolveSavedRoll(
     id: roll.id,
     label: roll.label,
     display: resolved.display,
+    offHand: resolved.offHand,
     components: resolved.components,
     missing: false,
     damage,
@@ -407,7 +453,12 @@ function resolveSource(
   attackModifier: number,
   damageModifier: number,
   featFold: FeatFold,
-): { display: string; components: ModifierComponent[]; damage?: ResolvedSavedRollDamage } | null {
+): {
+  display: string;
+  offHand?: string;
+  components: ModifierComponent[];
+  damage?: ResolvedSavedRollDamage;
+} | null {
   switch (source.kind) {
     case "melee":
       return signedResult(

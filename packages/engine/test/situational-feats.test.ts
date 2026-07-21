@@ -119,6 +119,77 @@ describe("SITUATIONAL_FEAT_EFFECTS", () => {
     });
   });
 
+  describe("two-weapon-fighting chain", () => {
+    it("TWF light off-hand: -2 to all attacks, one off-hand attack at offset 0", () => {
+      const entry = SITUATIONAL_FEAT_EFFECTS["two-weapon-fighting"]!;
+      expect(entry.effect({ bab: 6 }, "light")).toEqual({
+        attack: -2,
+        offHandOffsets: [0],
+        note: "off-hand attack deals ½ Str to damage (Double Slice: full)",
+      });
+    });
+
+    it("TWF one-handed off-hand: -4 to all attacks", () => {
+      const entry = SITUATIONAL_FEAT_EFFECTS["two-weapon-fighting"]!;
+      expect(entry.effect({ bab: 6 }, "one-handed")).toEqual({
+        attack: -4,
+        offHandOffsets: [0],
+        note: "off-hand attack deals ½ Str to damage (Double Slice: full)",
+      });
+    });
+
+    it("TWF defaults to the light off-hand penalty (-2)", () => {
+      const entry = SITUATIONAL_FEAT_EFFECTS["two-weapon-fighting"]!;
+      expect(entry.effect({ bab: 6 }).attack).toBe(-2);
+    });
+
+    it("TWF declares the two off-hand grip options", () => {
+      const entry = SITUATIONAL_FEAT_EFFECTS["two-weapon-fighting"]!;
+      expect(entry.options).toEqual([
+        { id: "light", label: "Light off-hand" },
+        { id: "one-handed", label: "One-handed off-hand" },
+      ]);
+    });
+
+    it("Improved TWF adds an off-hand attack at -5 (no penalty of its own)", () => {
+      const entry = SITUATIONAL_FEAT_EFFECTS["improved-two-weapon-fighting"]!;
+      const result = entry.effect({ bab: 6 });
+      expect(result.offHandOffsets).toEqual([-5]);
+      expect(result.attack).toBeUndefined();
+    });
+
+    it("Greater TWF adds an off-hand attack at -10 (no penalty of its own)", () => {
+      const entry = SITUATIONAL_FEAT_EFFECTS["greater-two-weapon-fighting"]!;
+      const result = entry.effect({ bab: 11 });
+      expect(result.offHandOffsets).toEqual([-10]);
+      expect(result.attack).toBeUndefined();
+    });
+
+    it("Double Slice / Two-Weapon Rend / Two-Weapon Defense are note-only", () => {
+      for (const slug of ["double-slice", "two-weapon-rend", "two-weapon-defense"]) {
+        const result = SITUATIONAL_FEAT_EFFECTS[slug]!.effect({ bab: 11 });
+        expect(result.attack).toBeUndefined();
+        expect(result.damage).toBeUndefined();
+        expect(result.offHandOffsets).toBeUndefined();
+        expect(result.extraAttacks).toBeUndefined();
+        expect(result.note).toBeTruthy();
+      }
+    });
+
+    it("every chain feat is tagged melee", () => {
+      for (const slug of [
+        "two-weapon-fighting",
+        "improved-two-weapon-fighting",
+        "greater-two-weapon-fighting",
+        "double-slice",
+        "two-weapon-rend",
+        "two-weapon-defense",
+      ]) {
+        expect(SITUATIONAL_FEAT_EFFECTS[slug]!.appliesTo).toBe("melee");
+      }
+    });
+  });
+
   describe("note-only melee reminders (Power Attack tree + single-attack feats)", () => {
     const cases: Array<[string, string]> = [
       ["cleave", "1 foe + 1 adjacent foe (both at full BAB); −2 AC until next turn"],

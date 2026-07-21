@@ -293,6 +293,12 @@ function SavedRollRow({
           </button>
         </div>
       </div>
+      {resolved.offHand ? (
+        <div className="saved-roll-offhand" title="Off-hand attack sequence (two-weapon fighting)">
+          <span className="saved-roll-offhand-label">Off-hand</span>
+          <span className="saved-roll-offhand-value">{resolved.offHand}</span>
+        </div>
+      ) : null}
       {resolved.notes.length > 0 ? (
         <div className="saved-roll-notes">{resolved.notes.join(" · ")}</div>
       ) : null}

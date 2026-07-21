@@ -82,6 +82,22 @@ export interface SituationalFeatEffect {
   /** Extra attack entries at the (adjusted) highest bonus. */
   extraAttacks?: number;
   /**
+   * Off-hand attack offsets contributed by the two-weapon-fighting chain, each
+   * relative to the primary sequence's top attack bonus and BEFORE any attack
+   * delta (TWF's own two-weapon penalty, Power Attack, a manual adjustment, …)
+   * is applied. Two-Weapon Fighting grants `[0]` (one off-hand attack at full
+   * base attack bonus); Improved TWF adds `[-5]`; Greater TWF adds `[-10]`.
+   * `apps/web/src/model/savedRolls.ts` concatenates these across the attached
+   * chain and renders them as a SEPARATE off-hand line — the off-hand is its
+   * own attack sequence, not part of the primary iterative progression, which
+   * is exactly why the chain was left out of the flat-delta model until this
+   * field existed. The off-hand line is assembled only when Two-Weapon
+   * Fighting itself is attached: a lone Improved/Greater TWF grants nothing on
+   * its own (you need the base feat to fight with two weapons), mirroring the
+   * Furious Focus / Power Attack gating.
+   */
+  offHandOffsets?: number[];
+  /**
    * Dodge-type AC delta (issue #62) — e.g. Combat Expertise's attack-for-AC
    * trade. Display-only: unlike `attack`/`damage`, this never folds into a
    * saved roll's number (AC isn't itself a saved-roll source), so
@@ -970,6 +986,97 @@ export const SITUATIONAL_FEAT_EFFECTS: Readonly<Record<string, SituationalFeatEn
       const p = 1 + Math.floor(ctx.bab / 4);
       return { attack: -p, damage: 2 * p, note: "light weapons only" };
     },
+  },
+
+  // ── Two-weapon fighting chain ───────────────────────────────────────────
+  //
+  // Two-Weapon Fighting produces two things the single-sequence flat-delta
+  // model can't express alone: a penalty to EVERY attack (primary and
+  // off-hand) AND a separate off-hand attack sequence. The penalty rides the
+  // ordinary `attack` field (so it folds onto the primary sequence and its
+  // provenance like any other delta); the off-hand sequence rides the new
+  // `offHandOffsets` field, assembled and rendered as its own line by
+  // `foldAttachments` (see that file for the cross-feat assembly, gated on TWF
+  // being attached — a lone Improved/Greater TWF is inert).
+  //
+  // Penalties WITH the feat (PF1 CRB p. 202, "Two-Weapon Fighting"): a light
+  // (or one-handed with the feat's own text) off-hand weapon is −2 to all
+  // attacks; a one-handed off-hand weapon is −4. The off-hand weapon attacks
+  // at the wielder's full base attack bonus (offset 0); Improved/Greater TWF
+  // add second/third off-hand attacks at −5/−10 from it. Clean-room from the
+  // published rules.
+
+  "two-weapon-fighting": {
+    type: "situational",
+    appliesTo: "melee",
+    options: [
+      { id: "light", label: "Light off-hand" },
+      { id: "one-handed", label: "One-handed off-hand" },
+    ],
+    effect: (_ctx, option) => {
+      const penalty = option === "one-handed" ? -4 : -2;
+      return {
+        attack: penalty,
+        offHandOffsets: [0],
+        note: "off-hand attack deals ½ Str to damage (Double Slice: full)",
+      };
+    },
+  },
+
+  // Improved Two-Weapon Fighting: a second off-hand attack at −5 (PF1 CRB
+  // p. 128, prereq Two-Weapon Fighting, Dex 17, BAB 6). Contributes only the
+  // off-hand offset — the two-weapon penalty comes from Two-Weapon Fighting
+  // itself, so this is inert unless that base feat is also attached.
+  "improved-two-weapon-fighting": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({
+      offHandOffsets: [-5],
+      note: "adds an off-hand attack (needs Two-Weapon Fighting)",
+    }),
+  },
+
+  // Greater Two-Weapon Fighting: a third off-hand attack at −10 (PF1 CRB
+  // p. 125, prereq Improved Two-Weapon Fighting, Dex 19, BAB 11).
+  "greater-two-weapon-fighting": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({
+      offHandOffsets: [-10],
+      note: "adds an off-hand attack (needs Two-Weapon Fighting)",
+    }),
+  },
+
+  // Double Slice: add your full Strength bonus to off-hand weapon damage
+  // instead of ½ (PF1 CRB p. 122, prereq Two-Weapon Fighting, Str 13). This
+  // engine doesn't compute a separate off-hand damage line (the off-hand may
+  // be a different weapon entirely) — surfaced as a note, the honest posture
+  // for a benefit the model doesn't fold.
+  "double-slice": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({ note: "add full Str bonus to off-hand damage (instead of ½)" }),
+  },
+
+  // Two-Weapon Rend: if you hit the same foe with both weapons in a round,
+  // deal an extra 1d10 + 1½ Str damage once that round (PF1 CRB p. 136, prereq
+  // Double Slice, Improved Two-Weapon Fighting, BAB 11). Reminder only — a
+  // conditional once/round rider, not a per-attack delta.
+  "two-weapon-rend": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({ note: "both weapons hit one foe → +1d10 + 1½ Str once/round" }),
+  },
+
+  // Two-Weapon Defense: +1 shield bonus to AC while wielding two weapons (+2
+  // when fighting defensively or with a full attack) (PF1 CRB p. 136, prereq
+  // Two-Weapon Fighting, Dex 15). AC isn't a saved-roll source — reminder only.
+  "two-weapon-defense": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({
+      note: "+1 shield AC wielding two weapons (+2 fighting defensively / full attack)",
+    }),
   },
 
   // ── Note-only melee reminders (Power Attack tree + common single-attack /

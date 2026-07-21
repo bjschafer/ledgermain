@@ -614,6 +614,134 @@ describe("resolveSavedRoll() with attached feats", () => {
     ]);
   });
 
+  it("Two-Weapon Fighting alone: -2 to the primary sequence + a single off-hand attack", () => {
+    const sheet = compute(fresh(), ref);
+    const base = sheet.attack.melee.iteratives!; // [+8, +3] at BAB 8
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "TWF");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "two-weapon-fighting",
+      name: "Two-Weapon Fighting",
+      option: "light",
+    });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    // Primary: every entry -2.
+    const primary = base.map((n) => n - 2);
+    expect(resolved.display).toBe(primary.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
+    // Off-hand: one attack at the primary's top (offset 0), i.e. base[0] - 2 = +6.
+    expect(resolved.offHand).toBe("+6");
+    expect(resolved.components).toContainEqual({
+      source: "Two-Weapon Fighting",
+      type: "untyped",
+      value: -2,
+      applied: true,
+    });
+  });
+
+  it("one-handed off-hand grip applies the -4 penalty instead", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "TWF");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "two-weapon-fighting",
+      name: "Two-Weapon Fighting",
+      option: "one-handed",
+    });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    // base [+8,+3] - 4 -> primary +4/-1, off-hand top +4.
+    expect(resolved.display).toBe("+4/-1");
+    expect(resolved.offHand).toBe("+4");
+  });
+
+  it("full chain (TWF + Improved + Greater): three off-hand attacks at 0 / -5 / -10", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "Two-weapon full");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "two-weapon-fighting",
+      name: "Two-Weapon Fighting",
+      option: "light",
+    });
+    doc = addSavedRollFeat(doc, id, {
+      slug: "improved-two-weapon-fighting",
+      name: "Improved Two-Weapon Fighting",
+    });
+    doc = addSavedRollFeat(doc, id, {
+      slug: "greater-two-weapon-fighting",
+      name: "Greater Two-Weapon Fighting",
+    });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    // Primary top is +6 (base +8 - 2 TWF); off-hand sequence +6 / +1 / -4.
+    expect(resolved.offHand).toBe("+6/+1/-4");
+  });
+
+  it("chain order is irrelevant — Greater attached first still sorts highest-first", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "TWF");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "greater-two-weapon-fighting",
+      name: "Greater Two-Weapon Fighting",
+    });
+    doc = addSavedRollFeat(doc, id, {
+      slug: "two-weapon-fighting",
+      name: "Two-Weapon Fighting",
+      option: "light",
+    });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    // TWF (0) + Greater (-10) -> +6 / -4 (no Improved, so no -5 middle entry).
+    expect(resolved.offHand).toBe("+6/-4");
+  });
+
+  it("Improved TWF alone (no base TWF) conjures no off-hand line", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "Improved only");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "improved-two-weapon-fighting",
+      name: "Improved Two-Weapon Fighting",
+    });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    expect(resolved.offHand).toBeUndefined();
+    // Primary sequence untouched (Improved TWF carries no primary-hand penalty).
+    expect(resolved.display).toBe(
+      sheet.attack.melee.iteratives!.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"),
+    );
+  });
+
+  it("Power Attack stacks onto the off-hand line (same total delta as the primary)", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "PA + TWF");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "two-weapon-fighting",
+      name: "Two-Weapon Fighting",
+      option: "light",
+    });
+    doc = addSavedRollFeat(doc, id, { slug: "power-attack", name: "Power Attack" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    // BAB 8 -> Power Attack p = 3. Total attack delta -2 (TWF) - 3 (PA) = -5.
+    // base top +8 - 5 = +3 -> off-hand +3.
+    expect(resolved.offHand).toBe("+3");
+    expect(resolved.display).toBe("+3/-2");
+  });
+
+  it("a non-attack source never grows an off-hand line even with TWF attached", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "save", save: "fort" }, "Fort");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "two-weapon-fighting",
+      name: "Two-Weapon Fighting",
+      option: "light",
+    });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    expect(resolved.offHand).toBeUndefined();
+    expect(resolved.components).toBe(sheet.saves.fort.components);
+  });
+
   it("feats on a non-attack source (save) render as chips only, never numbers", () => {
     const sheet = compute(fresh(), ref);
     let doc = addSavedRoll(fresh(), { kind: "save", save: "fort" }, "Fort");
