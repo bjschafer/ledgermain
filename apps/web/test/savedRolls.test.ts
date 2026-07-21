@@ -490,6 +490,60 @@ describe("resolveSavedRoll() with attached feats", () => {
     expect(resolved.notes).toEqual(["ignore Power Attack penalty on first attack each turn"]);
   });
 
+  it("Piranha Strike (light-weapon Power Attack cousin): -3 attack, +6 damage at BAB 8", () => {
+    const sheet = compute(fresh(), ref);
+    const atk = sheet.attacks.find((a) => a.name === "Longsword")!;
+    let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "Piranha");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "piranha-strike", name: "Piranha Strike" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    const adjusted = atk.attack.iteratives!.map((n) => n - 3);
+    expect(resolved.display).toBe(adjusted.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
+    expect(resolved.components).toContainEqual({
+      source: "Piranha Strike",
+      type: "untyped",
+      value: -3,
+      applied: true,
+    });
+    expect(resolved.damage!.display).toBe(`${atk.damageDice}+${atk.damageBonus.total + 6}`);
+    expect(resolved.notes).toEqual(["light weapons only"]);
+  });
+
+  it("Furious Focus negates ONLY Power Attack, not Piranha Strike", () => {
+    const sheet = compute(fresh(), ref);
+    const atk = sheet.attacks.find((a) => a.name === "Longsword")!;
+    let doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "Piranha + FF");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "piranha-strike", name: "Piranha Strike" });
+    doc = addSavedRollFeat(doc, id, { slug: "furious-focus", name: "Furious Focus" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    // Piranha Strike's -3 stays on every entry, including the first — Furious
+    // Focus only cancels Power Attack's penalty.
+    const adjusted = atk.attack.iteratives!.map((n) => n - 3);
+    expect(resolved.display).toBe(adjusted.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"));
+    expect(resolved.components).not.toContainEqual(
+      expect.objectContaining({ source: "Furious Focus (first attack)" }),
+    );
+  });
+
+  it("note-only melee feats (Cleave / Vital Strike) surface reminders without touching numbers", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, { slug: "cleave", name: "Cleave" });
+    doc = addSavedRollFeat(doc, id, { slug: "vital-strike", name: "Vital Strike" });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+
+    expect(resolved.display).toBe(
+      sheet.attack.melee.iteratives!.map((n) => (n >= 0 ? `+${n}` : `${n}`)).join("/"),
+    );
+    expect(resolved.components).toBe(sheet.attack.melee.components); // untouched, reference-equal
+    expect(resolved.notes).toHaveLength(2);
+    expect(resolved.featChips.every((c) => c.applied)).toBe(true);
+  });
+
   it("Combat Expertise (issue #62): -3 attack at BAB 8, +3 dodge AC surfaced as a note, never applied to damage", () => {
     const sheet = compute(fresh(), ref);
     const atk = sheet.attacks.find((a) => a.name === "Longsword")!;

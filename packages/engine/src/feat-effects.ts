@@ -958,4 +958,102 @@ export const SITUATIONAL_FEAT_EFFECTS: Readonly<Record<string, SituationalFeatEn
     appliesTo: "melee",
     effect: () => ({ note: "ignore Power Attack penalty on first attack each turn" }),
   },
+
+  // Piranha Strike: the light-weapon analog of Power Attack (Advanced Player's
+  // Guide, prereq Weapon Finesse + BAB 1). Same p = 1 + floor(BAB / 4) scaling
+  // for the attack penalty, but the damage bonus is always +2p — there's no
+  // two-handed variant (light weapons only), so no `options` unlike Power Attack.
+  "piranha-strike": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: (ctx) => {
+      const p = 1 + Math.floor(ctx.bab / 4);
+      return { attack: -p, damage: 2 * p, note: "light weapons only" };
+    },
+  },
+
+  // ── Note-only melee reminders (Power Attack tree + common single-attack /
+  // full-attack combat feats). Same "player judges applicability, chip is a
+  // reminder" posture as precise-shot / manyshot on the ranged side — no number
+  // folds into the saved roll. Furious Focus's numeric negation is Power-Attack-
+  // specific and lives in savedRolls.ts's foldAttachments; none of these hook it.
+
+  // Cleave: one standard-action attack, plus a second against a foe adjacent to
+  // the first if it hits (both at full BAB); -2 AC until your next turn (PF1 CRB
+  // p. 119, prereq Power Attack). Not a full-attack sequence — reminder only (the
+  // -2 AC is described in the note rather than via `acDelta`, which is a positive
+  // dodge-bonus channel for Combat Expertise, not an AC penalty).
+  cleave: {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({ note: "1 foe + 1 adjacent foe (both at full BAB); −2 AC until next turn" }),
+  },
+
+  // Great Cleave: Cleave with no cap — keep striking adjacent foes as long as
+  // each attack connects; -2 AC until your next turn (PF1 CRB p. 124, prereq
+  // Cleave + BAB 4).
+  "great-cleave": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({
+      note: "chain to each adjacent foe while you keep hitting; −2 AC until next turn",
+    }),
+  },
+
+  // Cornugon Smash: when you damage a foe with Power Attack, make a free
+  // Intimidate check to demoralize them (prereq Power Attack, Intimidate 6
+  // ranks, BAB 1).
+  "cornugon-smash": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({ note: "free Intimidate to demoralize when you damage with Power Attack" }),
+  },
+
+  // Dreadful Carnage: drop a foe to 0 or fewer hp with a melee attack → free
+  // Intimidate to demoralize all foes within 30 ft (Ultimate Combat, prereq
+  // Power Attack + BAB 11).
+  "dreadful-carnage": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({ note: "drop a foe in melee → free Intimidate vs all foes within 30 ft" }),
+  },
+
+  // Furious Finish: while using Power Attack, deal maximum weapon damage on one
+  // attack instead of rolling — but forgo Strength and other bonuses on that
+  // attack roll; usable again only after 8 hours' rest (Ultimate Combat, prereq
+  // Power Attack + BAB 6). The damage effect is a dice-maximize, not a flat
+  // delta, so reminder only.
+  "furious-finish": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({
+      note: "Power Attack: max weapon damage on one attack (no Str/other attack bonus; 1/rest)",
+    }),
+  },
+
+  // Vital Strike line: a single standard-action attack that rolls the weapon's
+  // damage DICE extra times (2x / 3x / 4x) — other bonuses (Str, magic, …) are
+  // added once, not multiplied (PF1 CRB p. 136, BAB 6/11/16). Dice-multiplication
+  // isn't a flat damage delta this model can fold, so reminder only.
+  "vital-strike": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({
+      note: "single attack: roll weapon damage dice 2× (other bonuses added once)",
+    }),
+  },
+  "improved-vital-strike": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({
+      note: "single attack: roll weapon damage dice 3× (other bonuses added once)",
+    }),
+  },
+  "greater-vital-strike": {
+    type: "situational",
+    appliesTo: "melee",
+    effect: () => ({
+      note: "single attack: roll weapon damage dice 4× (other bonuses added once)",
+    }),
+  },
 };

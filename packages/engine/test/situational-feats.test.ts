@@ -91,6 +91,69 @@ describe("SITUATIONAL_FEAT_EFFECTS", () => {
     });
   });
 
+  describe("piranha-strike", () => {
+    const entry = SITUATIONAL_FEAT_EFFECTS["piranha-strike"]!;
+
+    it("BAB 1: p = 1 -> -1/+2 (always 2p damage, light weapons)", () => {
+      expect(entry.effect({ bab: 1 })).toEqual({
+        attack: -1,
+        damage: 2,
+        note: "light weapons only",
+      });
+    });
+
+    it("BAB 8: p = 3 -> -3/+6", () => {
+      expect(entry.effect({ bab: 8 })).toEqual({
+        attack: -3,
+        damage: 6,
+        note: "light weapons only",
+      });
+    });
+
+    it("has no grip options (no two-handed variant)", () => {
+      expect(entry.options).toBeUndefined();
+    });
+
+    it("is tagged melee", () => {
+      expect(entry.appliesTo).toBe("melee");
+    });
+  });
+
+  describe("note-only melee reminders (Power Attack tree + single-attack feats)", () => {
+    const cases: Array<[string, string]> = [
+      ["cleave", "1 foe + 1 adjacent foe (both at full BAB); −2 AC until next turn"],
+      ["great-cleave", "chain to each adjacent foe while you keep hitting; −2 AC until next turn"],
+      ["cornugon-smash", "free Intimidate to demoralize when you damage with Power Attack"],
+      ["dreadful-carnage", "drop a foe in melee → free Intimidate vs all foes within 30 ft"],
+      [
+        "furious-finish",
+        "Power Attack: max weapon damage on one attack (no Str/other attack bonus; 1/rest)",
+      ],
+      ["vital-strike", "single attack: roll weapon damage dice 2× (other bonuses added once)"],
+      [
+        "improved-vital-strike",
+        "single attack: roll weapon damage dice 3× (other bonuses added once)",
+      ],
+      [
+        "greater-vital-strike",
+        "single attack: roll weapon damage dice 4× (other bonuses added once)",
+      ],
+    ];
+
+    for (const [slug, note] of cases) {
+      it(`${slug} is a melee note with no numeric fields`, () => {
+        const entry = SITUATIONAL_FEAT_EFFECTS[slug]!;
+        expect(entry.appliesTo).toBe("melee");
+        const result = entry.effect({ bab: 12 });
+        expect(result.attack).toBeUndefined();
+        expect(result.damage).toBeUndefined();
+        expect(result.extraAttacks).toBeUndefined();
+        expect(result.acDelta).toBeUndefined();
+        expect(result.note).toBe(note);
+      });
+    }
+  });
+
   describe("note-only entries", () => {
     it("precise-shot has no numeric fields", () => {
       const entry = SITUATIONAL_FEAT_EFFECTS["precise-shot"]!;
