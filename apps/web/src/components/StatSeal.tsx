@@ -3,7 +3,7 @@ import { useId, useState } from "react";
 import type { ModifierComponent } from "@pf1/schema";
 
 import { useFlashKey } from "../hooks/useFlashKey.js";
-import { Provenance } from "./Provenance.js";
+import { Provenance, type ProvenanceCopy } from "./Provenance.js";
 
 /**
  * A gilded stat "seal" — the big tabular total for one derived value. When given
@@ -38,6 +38,7 @@ export function StatSeal({
   resetKey,
   baseline,
   numericValue,
+  copy,
 }: {
   label: string;
   value: string | number;
@@ -45,6 +46,8 @@ export function StatSeal({
   components?: ModifierComponent[];
   provTitle?: string;
   className?: string;
+  /** Roll formula offered from the expanded breakdown's header (issue #96); omit for stats that aren't rolled. */
+  copy?: ProvenanceCopy;
   /** Identity key (e.g. `doc.id`) — changing it resyncs the shimmer tracker without flashing. */
   resetKey?: string | number;
   /** Unconditioned baseline total for this stat (see `model/baseline.ts`); omit to skip the tint. */
@@ -98,7 +101,11 @@ export function StatSeal({
       </button>
       {open ? (
         <div id={panelId}>
-          <Provenance title={provTitle ?? `${label} breakdown`} components={components} />
+          <Provenance
+            title={provTitle ?? `${label} breakdown`}
+            components={components}
+            copy={copy}
+          />
         </div>
       ) : null}
     </div>

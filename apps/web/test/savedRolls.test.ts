@@ -249,7 +249,11 @@ describe("resolveSavedRoll() for a fully custom roll", () => {
     doc = updateSavedRoll(doc, id, { customDamage: "1d4 fire, splash 1" });
     const sheet = compute(fresh(), ref);
     const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
-    expect(resolved.damage).toEqual({ display: "1d4 fire, splash 1", components: [] });
+    expect(resolved.damage).toEqual({
+      display: "1d4 fire, splash 1",
+      formula: "1d4 fire, splash 1",
+      components: [],
+    });
   });
 
   it("customDamage is ignored for non-custom sources", () => {
@@ -834,5 +838,63 @@ describe("ownedFeatSlugs() / attachableFeats()", () => {
     const doc = withFeats("Iron Will", "Power Attack", "Deadly Aim");
     const list = attachableFeats(doc, ref, { kind: "custom" });
     expect(list.map((f) => f.slug)).toEqual(["deadly-aim", "power-attack", "iron-will"]);
+  });
+});
+
+describe("resolveSavedRoll — copyable roll formulas (issue #96)", () => {
+  it("emits a pasteable d20 formula for a flat stat", () => {
+    const sheet = compute(fresh(), ref);
+    const doc = addSavedRoll(fresh(), { kind: "save", save: "fort" }, "Fort Save");
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    expect(resolved.formula).toBe(`1d20 + ${sheet.saves.fort.total}`);
+  });
+
+  it("emits one line per attack in an iterative sequence", () => {
+    const sheet = compute(fresh(), ref);
+    const doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    // Fighter 8 -> +8/+3.
+    expect(resolved.display).toBe("+8/+3");
+    expect(resolved.formula).toBe("1d20 + 8\n1d20 + 3");
+  });
+
+  it("gives the off-hand line its own formula", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "TWF");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "two-weapon-fighting",
+      name: "Two-Weapon Fighting",
+      option: "light",
+    });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    expect(resolved.formula).toBe("1d20 + 6\n1d20 + 1");
+    expect(resolved.offHandFormula).toBe("1d20 + 6");
+  });
+
+  it("formats weapon damage as dice + bonus", () => {
+    const sheet = compute(fresh(), ref);
+    const doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Longsword" }, "Longsword");
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    expect(resolved.damage!.formula).toBe(
+      sheet.attacks[0]!.damageBonus.total === 0
+        ? "1d8"
+        : `1d8 + ${sheet.attacks[0]!.damageBonus.total}`,
+    );
+  });
+
+  it("has no formula for CMD — a static defense, never rolled", () => {
+    const sheet = compute(fresh(), ref);
+    const doc = addSavedRoll(fresh(), { kind: "cmd" }, "CMD");
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    expect(resolved.formula).toBeUndefined();
+  });
+
+  it("has no formula when the source no longer resolves", () => {
+    const sheet = compute(fresh(), ref);
+    const doc = addSavedRoll(fresh(), { kind: "weapon", weaponName: "Gone" }, "Gone");
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    expect(resolved.missing).toBe(true);
+    expect(resolved.formula).toBeUndefined();
   });
 });

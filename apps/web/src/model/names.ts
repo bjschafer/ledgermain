@@ -28,6 +28,13 @@ export const SAVE_NAMES: Record<"fort" | "ref" | "will", string> = {
   will: "Will",
 };
 
+/** Short save labels, for the seals and strips where the full name doesn't fit. */
+export const SAVE_ABBR: Record<"fort" | "ref" | "will", string> = {
+  fort: "Fort",
+  ref: "Ref",
+  will: "Will",
+};
+
 /** Skill id -> display name (mirrors the comments in engine/src/tables.ts). */
 export const SKILL_NAMES: Record<SkillId, string> = {
   acr: "Acrobatics",

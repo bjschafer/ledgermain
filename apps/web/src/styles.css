@@ -2078,12 +2078,71 @@ button:focus-visible,
 }
 
 .prov .prov-title {
+  display: flex;
+  /* Pin the copy button to the corner; the title itself can wrap to two lines
+     inside a narrow seal cell. */
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
   font-family: var(--mono);
   font-size: 0.625rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 4px;
+}
+
+/* copy-to-clipboard (issue #96) — lift a computed roll out as a VTT-pasteable
+   formula. Sits in the corner of an expanded breakdown, or inline on rows that
+   don't expand (skills, saved rolls). */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 3px;
+  color: var(--faint);
+  cursor: pointer;
+}
+
+.copy-btn svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.copy-btn:hover,
+.copy-btn:focus-visible {
+  color: var(--gold-2);
+  border-color: var(--gold-dim);
+}
+
+.copy-btn[data-copied="true"] {
+  color: var(--sage);
+  border-color: transparent;
+}
+
+/* Inline variant: invisible until the row is hovered or the button itself is
+   focused, so a long skill list doesn't turn into a wall of icons. Always
+   visible on touch, where there is no hover to reveal it. */
+.copy-btn--row {
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.sheet-skill:hover .copy-btn--row,
+.saved-roll-row:hover .copy-btn--row,
+.copy-btn--row:focus-visible,
+.copy-btn--row[data-copied="true"] {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .copy-btn--row {
+    opacity: 1;
+  }
 }
 
 .prov .prov-row {
@@ -2176,7 +2235,9 @@ button:focus-visible,
 
 .sheet-skill {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 6px;
   padding: 4px 10px;
   border-bottom: 1px solid var(--line-soft);
   font-size: 0.8125rem;

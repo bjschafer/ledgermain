@@ -15,11 +15,14 @@ import { combinedLanguages } from "../model/languages.js";
 import {
   ABILITY_ABBR,
   ALIGNMENT_LABELS,
+  SAVE_ABBR,
   SAVE_NAMES,
   signed,
   signedSequence,
   skillName,
 } from "../model/names.js";
+import { d20Formula, d20FormulaFor, damageFormula } from "../model/rollFormula.js";
+import { CopyButton } from "./CopyButton.js";
 import { HomebrewBadge } from "./HomebrewBadge.js";
 import { InfoTip } from "./InfoTip.js";
 import { StatSeal } from "./StatSeal.js";
@@ -51,6 +54,11 @@ function SkillRow({ s, resetKey }: { s: DerivedSkill; resetKey: string | number 
         {total}
         {flashKey > 0 ? <span key={flashKey} className="seal-flash" aria-hidden="true" /> : null}
       </span>
+      <CopyButton
+        className="copy-btn--row"
+        text={d20Formula([s.total])}
+        label={`${skillName(s.id)} check`}
+      />
     </div>
   );
 }
@@ -273,6 +281,10 @@ export function Sheet({
             resetKey={doc.id}
             baseline={baseline.attack.melee.total}
             numericValue={sheet.attack.melee.total}
+            copy={{
+              formula: d20FormulaFor(sheet.attack.melee.total, sheet.attack.melee.iteratives),
+              label: "melee attack",
+            }}
           />
           <StatSeal
             label="Ranged"
@@ -282,6 +294,10 @@ export function Sheet({
             resetKey={doc.id}
             baseline={baseline.attack.ranged.total}
             numericValue={sheet.attack.ranged.total}
+            copy={{
+              formula: d20FormulaFor(sheet.attack.ranged.total, sheet.attack.ranged.iteratives),
+              label: "ranged attack",
+            }}
           />
           <StatSeal
             label="BAB"
@@ -354,6 +370,10 @@ export function Sheet({
                       resetKey={doc.id}
                       baseline={baseAtk?.attack.total}
                       numericValue={atk.attack.total}
+                      copy={{
+                        formula: d20FormulaFor(atk.attack.total, atk.attack.iteratives),
+                        label: `${atk.name} attack`,
+                      }}
                     />
                     <StatSeal
                       label="Dmg"
@@ -368,6 +388,10 @@ export function Sheet({
                       resetKey={doc.id}
                       baseline={baseAtk?.damageBonus.total}
                       numericValue={atk.damageBonus.total}
+                      copy={{
+                        formula: damageFormula(atk.damageDice, atk.damageBonus.total),
+                        label: `${atk.name} damage`,
+                      }}
                     />
                     <StatSeal
                       label="Crit"
@@ -411,33 +435,22 @@ export function Sheet({
           <div className="stat-group-rule" />
         </div>
         <div className="stat-group-grid stat-group-grid--3">
-          <StatSeal
-            label="Fort"
-            value={signed(sheet.saves.fort.total)}
-            components={sheet.saves.fort.components}
-            provTitle={`${SAVE_NAMES.fort} save`}
-            resetKey={doc.id}
-            baseline={baseline.saves.fort.total}
-            numericValue={sheet.saves.fort.total}
-          />
-          <StatSeal
-            label="Ref"
-            value={signed(sheet.saves.ref.total)}
-            components={sheet.saves.ref.components}
-            provTitle={`${SAVE_NAMES.ref} save`}
-            resetKey={doc.id}
-            baseline={baseline.saves.ref.total}
-            numericValue={sheet.saves.ref.total}
-          />
-          <StatSeal
-            label="Will"
-            value={signed(sheet.saves.will.total)}
-            components={sheet.saves.will.components}
-            provTitle={`${SAVE_NAMES.will} save`}
-            resetKey={doc.id}
-            baseline={baseline.saves.will.total}
-            numericValue={sheet.saves.will.total}
-          />
+          {(["fort", "ref", "will"] as const).map((save) => (
+            <StatSeal
+              key={save}
+              label={SAVE_ABBR[save]}
+              value={signed(sheet.saves[save].total)}
+              components={sheet.saves[save].components}
+              provTitle={`${SAVE_NAMES[save]} save`}
+              resetKey={doc.id}
+              baseline={baseline.saves[save].total}
+              numericValue={sheet.saves[save].total}
+              copy={{
+                formula: d20Formula([sheet.saves[save].total]),
+                label: `${SAVE_NAMES[save]} save`,
+              }}
+            />
+          ))}
         </div>
       </div>
 
@@ -456,6 +469,7 @@ export function Sheet({
             resetKey={doc.id}
             baseline={baseline.initiative.total}
             numericValue={sheet.initiative.total}
+            copy={{ formula: d20Formula([sheet.initiative.total]), label: "initiative" }}
           />
           <StatSeal
             label="Speed"

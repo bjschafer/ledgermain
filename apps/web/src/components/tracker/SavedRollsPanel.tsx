@@ -23,6 +23,7 @@ import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { BookmarkIcon } from "../icons.js";
+import { CopyButton } from "../CopyButton.js";
 import { Explainer } from "../Explainer.js";
 import { Provenance } from "../Provenance.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -212,11 +213,25 @@ function SavedRollRow({
               {resolved.offHand ? <span className="saved-roll-hand-label">Main-hand</span> : null}
               <span className="saved-roll-value-num">{resolved.display}</span>
             </button>
+            {resolved.formula ? (
+              <CopyButton
+                className="copy-btn--row"
+                text={resolved.formula}
+                label={resolved.offHand ? `${roll.label} (main-hand)` : roll.label}
+              />
+            ) : null}
             {resolved.damage ? (
               <span className="saved-roll-damage" title="Damage">
                 {resolved.damage.display}
                 {resolved.damage.crit ? ` (${resolved.damage.crit})` : ""}
               </span>
+            ) : null}
+            {resolved.damage ? (
+              <CopyButton
+                className="copy-btn--row"
+                text={resolved.damage.formula}
+                label={`${roll.label} damage`}
+              />
             ) : null}
           </div>
           {resolved.offHand ? (
@@ -229,6 +244,13 @@ function SavedRollRow({
               </span>
               <span className="saved-roll-hand-label">Off-hand</span>
               <span className="saved-roll-value-num">{resolved.offHand}</span>
+              {resolved.offHandFormula ? (
+                <CopyButton
+                  className="copy-btn--row"
+                  text={resolved.offHandFormula}
+                  label={`${roll.label} (off-hand)`}
+                />
+              ) : null}
             </div>
           ) : null}
         </div>

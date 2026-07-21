@@ -39,6 +39,7 @@ import { SITUATIONAL_FEAT_EFFECTS, featNameSlug, type SituationalFeatEntry } fro
 
 import { localId } from "./ids.js";
 import { SAVE_NAMES, signed, signedSequence } from "./names.js";
+import { d20Formula, damageFormula } from "./rollFormula.js";
 
 /** One pickable thing a saved roll can point at, for the "add" picker. */
 export interface SavedRollOption {
@@ -91,6 +92,8 @@ export interface SavedRollRangerChip {
 export interface ResolvedSavedRollDamage {
   /** e.g. "1d8+6" (dice + signed bonus), or a freeform note for a custom roll. */
   display: string;
+  /** The same damage as a VTT-pasteable formula, e.g. "1d8 + 6" (issue #96). */
+  formula: string;
   components: ModifierComponent[];
   crit?: string;
 }
@@ -115,11 +118,19 @@ export interface ResolvedSavedRoll {
   /** e.g. "+11/+6" for an iterative attack, "+8" for a flat stat. */
   display: string;
   /**
+   * The same roll as VTT-pasteable formulas, one line per attack (issue #96).
+   * Absent for a CMD bookmark (a static defense, never rolled) and for a roll
+   * whose source no longer resolves.
+   */
+  formula?: string;
+  /**
    * The off-hand attack sequence, when the two-weapon-fighting chain is
    * attached (e.g. "+6/+1/−4"). Rendered as a separate line — the off-hand is
    * its own sequence, not part of the primary `display`. Absent otherwise.
    */
   offHand?: string;
+  /** The off-hand sequence as pasteable formulas; present exactly when `offHand` is. */
+  offHandFormula?: string;
   components: ModifierComponent[];
   /** True when the source no longer resolves (e.g. the referenced weapon was removed). */
   missing: boolean;
@@ -186,7 +197,13 @@ function signedResult(
   modifier: number,
   baseComponents: ModifierComponent[],
   featFold: FeatFold = NO_FEAT_FOLD,
-): { display: string; offHand?: string; components: ModifierComponent[] } {
+): {
+  display: string;
+  formula: string;
+  offHand?: string;
+  offHandFormula?: string;
+  components: ModifierComponent[];
+} {
   const totalDelta = modifier + featFold.attackDelta;
   const base = iteratives ?? [total];
   const adjusted = base.map((n) => n + totalDelta);
@@ -207,16 +224,17 @@ function signedResult(
   // the primary top BEFORE Furious Focus's first-attack tweak — so a rare
   // TWF+PA+Furious Focus stack leaves the negation on the primary's first
   // attack only, not the off-hand line.
-  const offHand =
+  const offSeq =
     featFold.offHandOffsets.length > 0
-      ? (() => {
-          const offSeq = featFold.offHandOffsets.map((off) => adjusted[0]! + off);
-          return signedSequence(offSeq[0]!, offSeq.length > 1 ? offSeq : undefined);
-        })()
+      ? featFold.offHandOffsets.map((off) => adjusted[0]! + off)
       : undefined;
   return {
     display: signedSequence(seq[0]!, seq.length > 1 ? seq : undefined),
-    offHand,
+    formula: d20Formula(seq),
+    offHand: offSeq
+      ? signedSequence(offSeq[0]!, offSeq.length > 1 ? offSeq : undefined)
+      : undefined,
+    offHandFormula: offSeq ? d20Formula(offSeq) : undefined,
     components:
       attackComponents.length > 0
         ? [...adjustedComponents, ...attackComponents]
@@ -236,6 +254,7 @@ function weaponDamage(
   const adjustedComponents = withManualAdjustment(atk.damageBonus.components, damageModifier);
   return {
     display,
+    formula: damageFormula(atk.damageDice, bonusTotal),
     components:
       featDamageComponents.length > 0
         ? [...adjustedComponents, ...featDamageComponents]
@@ -434,13 +453,18 @@ export function resolveSavedRoll(
   const damage =
     resolved.damage ??
     (roll.source.kind === "custom" && roll.customDamage
-      ? { display: roll.customDamage, components: [] }
+      ? // A custom roll's damage is freeform text the player typed ("2d6+4, x3
+        // crit") — copied verbatim rather than reformatted, since only they
+        // know which part of it is a formula.
+        { display: roll.customDamage, formula: roll.customDamage, components: [] }
       : undefined);
   return {
     id: roll.id,
     label: roll.label,
     display: resolved.display,
+    formula: resolved.formula,
     offHand: resolved.offHand,
+    offHandFormula: resolved.offHandFormula,
     components: resolved.components,
     missing: false,
     damage,
@@ -458,7 +482,9 @@ function resolveSource(
   featFold: FeatFold,
 ): {
   display: string;
+  formula?: string;
   offHand?: string;
+  offHandFormula?: string;
   components: ModifierComponent[];
   damage?: ResolvedSavedRollDamage;
 } | null {
