@@ -92,4 +92,7 @@ The engine is a **clean-room reimplementation** from the published PF1 rules. Th
 
 ## Git
 
-This is a personal project: **commit directly to `main` by default** — no feature branch or PR needed unless explicitly asked. **Commit working changes by default** once they typecheck (don't leave the tree dirty waiting to be asked). This applies to subagents too. Do not add `Co-Authored-By` trailers.
+- This is a personal project: **commit directly to `main` by default** — no feature branch or PR needed unless explicitly asked. **Commit working changes by default** once they typecheck (don't leave the tree dirty waiting to be asked). This applies to subagents too. Do not add `Co-Authored-By` trailers.
+- Issues are tracked and viewable on GitHub via the `gh` CLI tool.
+- Do not respond directly to issues or PRs without user confirmation.
+
