@@ -728,6 +728,28 @@ describe("resolveSavedRoll() with attached feats", () => {
     expect(resolved.display).toBe("+3/-2");
   });
 
+  it("collapses the duplicate Improved/Greater TWF off-hand reminder to one note", () => {
+    const sheet = compute(fresh(), ref);
+    let doc = addSavedRoll(fresh(), { kind: "melee" }, "Full chain");
+    const id = doc.build.savedRolls![0]!.id;
+    doc = addSavedRollFeat(doc, id, {
+      slug: "two-weapon-fighting",
+      name: "Two-Weapon Fighting",
+      option: "light",
+    });
+    doc = addSavedRollFeat(doc, id, {
+      slug: "improved-two-weapon-fighting",
+      name: "Improved Two-Weapon Fighting",
+    });
+    doc = addSavedRollFeat(doc, id, {
+      slug: "greater-two-weapon-fighting",
+      name: "Greater Two-Weapon Fighting",
+    });
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    const offHandNotes = resolved.notes.filter((n) => n.includes("adds an off-hand attack"));
+    expect(offHandNotes).toHaveLength(1);
+  });
+
   it("a non-attack source never grows an off-hand line even with TWF attached", () => {
     const sheet = compute(fresh(), ref);
     let doc = addSavedRoll(fresh(), { kind: "save", save: "fort" }, "Fort");

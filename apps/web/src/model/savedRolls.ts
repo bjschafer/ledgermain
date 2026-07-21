@@ -390,7 +390,10 @@ function foldAttachments(
     rangerChips.push({ kind: ref.kind, type: ref.type, name: ref.name, bonus, applied });
   }
 
-  return { fold, notes, featChips, rangerChips };
+  // Collapse identical reminders (Improved + Greater TWF share one "adds an
+  // off-hand attack" note) — the same reminder twice reads as noise. Insertion
+  // order is preserved.
+  return { fold, notes: [...new Set(notes)], featChips, rangerChips };
 }
 
 /**
