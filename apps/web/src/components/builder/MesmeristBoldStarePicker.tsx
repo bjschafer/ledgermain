@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
-import { MESMERIST_BOLD_STARE_IDS, MESMERIST_BOLD_STARES } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import { mergedMesmeristBoldStareCatalog } from "@pf1/engine";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
   chosenMesmeristBoldStareCount,
@@ -11,11 +11,13 @@ import {
 } from "../../model/mesmeristBoldStares.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface MesmeristBoldStarePickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
@@ -33,7 +35,7 @@ interface MesmeristBoldStarePickerProps {
  * honesty-bar rationale. Picked stares also show up in the sheet's Class
  * Features list (tagged "— Bold Stare"), via `collectGrantedFeatures`.
  */
-export function MesmeristBoldStarePicker({ doc, update }: MesmeristBoldStarePickerProps) {
+export function MesmeristBoldStarePicker({ doc, refData, update }: MesmeristBoldStarePickerProps) {
   const isMesmerist = doc.identity.classes.some((c) => c.tag === "mesmerist");
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:MesmeristBoldStares", false);
@@ -43,16 +45,18 @@ export function MesmeristBoldStarePicker({ doc, update }: MesmeristBoldStarePick
     [doc.build.mesmeristBoldStares],
   );
 
+  const catalog = useMemo(() => mergedMesmeristBoldStareCatalog(refData), [refData]);
+
   const stares = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return MESMERIST_BOLD_STARE_IDS.map((id) => MESMERIST_BOLD_STARES[id]!)
+    return catalog
       .filter((s) => !q || s.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenMesmeristBoldStareCount(doc);
   const expected = expectedMesmeristBoldStareCount(doc);
@@ -94,8 +98,9 @@ export function MesmeristBoldStarePicker({ doc, update }: MesmeristBoldStarePick
           <p className="hint revelation-picker-hint">
             Each pick extends the hypnotic stare penalty to a new roll category (or, for Psychic
             Inception, extends who it can affect) — see the Hypnotic Stare class feature for the
-            combined effect. Occult Adventures core options only. Free-choice — never blocks past
-            the expected count.
+            combined effect (a vendored-only pick, marked prose-only below, doesn't enrich that
+            summary line — see Class Features for its own entry instead). Browses the full published
+            catalog. Free-choice — never blocks past the expected count.
           </p>
           <input
             className="search"
@@ -110,10 +115,19 @@ export function MesmeristBoldStarePicker({ doc, update }: MesmeristBoldStarePick
               return (
                 <div key={s.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
-                    <div className="pname">{s.name}</div>
+                    <div className="pname">
+                      {s.name}
+                      {!s.riderText && (
+                        <span className="hint" title="No hand-verified rider text — prose-only">
+                          {" "}
+                          (prose-only)
+                        </span>
+                      )}
+                    </div>
                     <div className="preq">
                       <span className="desc-text">{s.summary}</span>
                     </div>
+                    {s.description ? <FeatureDescription html={s.description} /> : null}
                   </div>
                   <button
                     type="button"

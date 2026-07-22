@@ -28,8 +28,8 @@ import { resolveArcanistExploit } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
-import { boldStareRiderSummary, MESMERIST_BOLD_STARES } from "./mesmerist-bold-stares.js";
-import { MESMERIST_TRICKS } from "./mesmerist-tricks.js";
+import { boldStareRiderSummary, resolveMesmeristBoldStare } from "./mesmerist-bold-stares.js";
+import { resolveMesmeristTrick } from "./mesmerist-tricks.js";
 import { resolveMagusArcanum } from "./magus-arcana.js";
 import { resolveNinjaTrick } from "./ninja-tricks.js";
 import { MONK_KI_POWERS } from "./monk-ki-powers.js";
@@ -43,7 +43,7 @@ import {
 } from "./kineticist-elements.js";
 import { resolveKineticistWildTalent } from "./kineticist-wild-talents.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
-import { PHRENIC_AMPLIFICATIONS } from "./phrenic-amplifications.js";
+import { resolvePhrenicAmplification } from "./phrenic-amplifications.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { resolveRagePower } from "./rage-powers.js";
 import { resolveRogueTalent } from "./rogue-talents.js";
@@ -629,7 +629,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   // rationale as exploits/arcana above.
   if (psychicLevel > 0) {
     for (const amplificationId of doc.build.psychicAmplifications ?? []) {
-      const amp = PHRENIC_AMPLIFICATIONS[amplificationId];
+      const amp = resolvePhrenicAmplification(amplificationId, refData);
       if (!amp) continue;
       out.push({
         classTag: "psychic",
@@ -657,7 +657,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   const mesmeristLevel = doc.identity.classes.find((c) => c.tag === "mesmerist")?.level ?? 0;
   if (mesmeristLevel > 0) {
     for (const trickId of doc.build.mesmeristTricks ?? []) {
-      const trick = MESMERIST_TRICKS[trickId];
+      const trick = resolveMesmeristTrick(trickId, refData);
       if (!trick) continue;
       out.push({
         classTag: "mesmerist",
@@ -670,7 +670,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           resolved: true,
         },
         origin: { kind: "trick", label: "Trick" },
-        detail: `${trick.actionNote} — ${trick.summary}`,
+        detail: trick.actionNote ? `${trick.actionNote} — ${trick.summary}` : trick.summary,
       });
     }
 
@@ -681,7 +681,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     // class-feature row (informational), same discoverability posture picked
     // hexes/revelations/tricks get.
     for (const stareId of doc.build.mesmeristBoldStares ?? []) {
-      const stare = MESMERIST_BOLD_STARES[stareId];
+      const stare = resolveMesmeristBoldStare(stareId, refData);
       if (!stare) continue;
       out.push({
         classTag: "mesmerist",

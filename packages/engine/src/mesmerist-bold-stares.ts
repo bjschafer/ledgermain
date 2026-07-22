@@ -38,7 +38,7 @@
  * category.
  */
 
-import type { Change } from "@pf1/schema";
+import type { Change, MesmeristBoldStare, RefData, SourceRef } from "@pf1/schema";
 
 export interface MesmeristBoldStareDef {
   id: string;
@@ -137,4 +137,105 @@ export function boldStareRiderSummary(baseLabel: string, boldStareIds: readonly 
     .map((s) => `${s.riderText} (${s.name})`);
   if (riders.length === 0) return baseLabel;
   return `${baseLabel}; ${riders.join("; ")}`;
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.mesmeristBoldStares` (see that type's doc
+ * comment) is the FULL published catalog (24 entries after junk filtering),
+ * prose only. The hand-verified table above stays authoritative for
+ * MECHANICS — this section only merges the two for BROWSING (the picker)
+ * and for resolving a picked id, mirroring `rage-powers.ts`'s
+ * `mergedRagePowerCatalog`/`resolveRagePower` exactly.
+ *
+ * Collision audit: all 7 hand-authored entries matched a vendored entry by
+ * normalized name — zero misses, zero aliases needed. NOTE: a vendored-only
+ * bold stare (picked straight from the full-catalog picker) resolves to a
+ * definition with an EMPTY `riderText` — `boldStareRiderSummary` above
+ * doesn't take a `RefData` and can't look one up, so a vendored-only pick
+ * contributes no clause to the Hypnotic Stare class-feature's summary line
+ * (same "unresolvable id silently skipped" tolerance that function already
+ * documents) — it still surfaces as its own Class Features row via
+ * `resolveMesmeristBoldStare`, just without enriching that OTHER row.
+ */
+
+const MESMERIST_BOLD_STARE_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeBoldStareName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with the vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedMesmeristBoldStareEntry extends MesmeristBoldStareDef {
+  description?: string;
+  sources?: SourceRef[];
+}
+
+function vendoredToDef(entry: MesmeristBoldStare): MergedMesmeristBoldStareEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    riderText: "",
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/** Resolve a picked bold-stare id to its definition — hand-authored table first, falling back to the vendored catalog. Mirrors `resolveRagePower`. */
+export function resolveMesmeristBoldStare(
+  id: string,
+  refData: RefData,
+): MesmeristBoldStareDef | undefined {
+  const hand = MESMERIST_BOLD_STARES[id];
+  if (hand) return hand;
+  const vendored = refData.mesmeristBoldStares?.[id];
+  return vendored ? vendoredToDef(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog — mirrors `mergedRagePowerCatalog`. */
+export function mergedMesmeristBoldStareCatalog(refData: RefData): MergedMesmeristBoldStareEntry[] {
+  const handByNormName = new Map<string, MesmeristBoldStareDef>();
+  for (const s of STARE_LIST) {
+    handByNormName.set(
+      normalizeBoldStareName(MESMERIST_BOLD_STARE_NAME_ALIASES[s.id] ?? s.name),
+      s,
+    );
+  }
+
+  const vendored = Object.values(refData.mesmeristBoldStares ?? {});
+  const usedHandIds = new Set<string>();
+  const seenNormNames = new Set<string>();
+  const merged: MergedMesmeristBoldStareEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeBoldStareName(v.name);
+    const handMatch = seenNormNames.has(norm) ? undefined : handByNormName.get(norm);
+    if (handMatch) {
+      seenNormNames.add(norm);
+      usedHandIds.add(handMatch.id);
+      merged.push({ ...handMatch, description: v.description, sources: v.sources });
+    } else {
+      merged.push(vendoredToDef(v));
+    }
+  }
+  for (const s of STARE_LIST) {
+    if (!usedHandIds.has(s.id)) merged.push(s);
+  }
+  return merged;
 }

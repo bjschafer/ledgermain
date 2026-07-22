@@ -113,7 +113,7 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   entries are skipped, since the system pack's own race docs already carry
   them).
 
-### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent catalogs)
+### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent / occult-class subsystem catalogs)
 
 - Repo: `https://github.com/jasontankapps/pathfinder-data-1-e`
 - Pinned commit: `33f1b75b8f62b43c59b96eab6bebb45e37c29229`
@@ -138,7 +138,16 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     catalogs, issue #74 Phase 3b);
   - `json/class_ability_exploits.json`, `json/class_ability_investigator_talents.json`,
     and `json/class_ability_kinetic_talents.json` (issue #74 Phase 3b) into
-    `RefData.arcanistExploits`/`investigatorTalents`/`kineticWildTalents` —
+    `RefData.arcanistExploits`/`investigatorTalents`/`kineticWildTalents`;
+  - `json/class_ability_tricks.json` into `RefData.mesmeristTricks`,
+    `json/class_ability_stares.json` into `RefData.mesmeristBoldStares`,
+    `json/class_ability_phrenic_amplifications.json` into
+    `RefData.phrenicAmplifications`, `json/class_ability_disciplines.json`
+    into `RefData.psychicDisciplines`, `json/class_ability_implements.json`
+    into `RefData.occultistImplements`, and `json/class_ability_spirits.json`
+    (the Medium's legendary-spirit catalog — distinct from the sibling
+    `json/class_ability_shaman_spirits.json`, not vendored under this
+    collection) into `RefData.mediumSpirits` (issue #74 Phase 3c) —
 
   see each type's doc comment (`@pf1/schema`). Code is GPL-3.0-or-later
   (never copied in, same clean-room posture as Sec.2a/2c); its

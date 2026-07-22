@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { PHRENIC_AMPLIFICATION_IDS, PHRENIC_AMPLIFICATIONS } from "@pf1/engine";
+import { mergedPhrenicAmplificationCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "../../model/psychicAmplifications.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -57,16 +58,18 @@ export function PhrenicAmplificationPicker({
   );
   const level = getPsychicLevel(doc);
 
+  const catalog = useMemo(() => mergedPhrenicAmplificationCatalog(refData), [refData]);
+
   const amplifications = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return PHRENIC_AMPLIFICATION_IDS.map((id) => PHRENIC_AMPLIFICATIONS[id]!)
+    return catalog
       .filter((a) => !q || a.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.minLevel - b.minLevel || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenPsychicAmplificationCount(doc);
   const expected = expectedPsychicAmplificationCount(doc, refData);
@@ -138,6 +141,7 @@ export function PhrenicAmplificationPicker({
                         ⚠ Requires psychic {a.minLevel}th (currently {level})
                       </div>
                     )}
+                    {a.description ? <FeatureDescription html={a.description} /> : null}
                   </div>
                   <button
                     type="button"

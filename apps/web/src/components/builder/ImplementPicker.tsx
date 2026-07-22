@@ -1,6 +1,10 @@
 import { useMemo, useState } from "react";
 
-import { OCCULTIST_SCHOOL_TAGS, OCCULTIST_SCHOOLS } from "@pf1/engine";
+import {
+  mergedOccultistImplementCatalog,
+  OCCULTIST_SCHOOL_TAGS,
+  OCCULTIST_SCHOOLS,
+} from "@pf1/engine";
 import type { CharacterDoc } from "@pf1/schema";
 
 import {
@@ -21,6 +25,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import type { BuilderProps } from "./types.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = BuilderProps["update"];
 
@@ -63,19 +68,28 @@ export function ImplementPicker({ doc, refData, update }: ImplementPickerProps) 
 
   return (
     <>
-      <ImplementSchoolSection doc={doc} update={update} />
+      <ImplementSchoolSection doc={doc} refData={refData} update={update} />
       <FocusPowerSection doc={doc} refData={refData} update={update} />
     </>
   );
 }
 
-function ImplementSchoolSection({ doc, update }: { doc: CharacterDoc; update: Updater }) {
+function ImplementSchoolSection({
+  doc,
+  refData,
+  update,
+}: {
+  doc: CharacterDoc;
+  refData: BuilderProps["refData"];
+  update: Updater;
+}) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Implement Schools", false);
   const level = occultistLevel(doc);
   const chosen = chosenOccultistImplementCount(doc);
   const expected = expectedOccultistImplementCount(doc);
   const warn = occultistImplementsNeedWarning(doc);
   const countClass = warn ? "hint warn-over" : "hint";
+  const catalog = useMemo(() => mergedOccultistImplementCatalog(refData), [refData]);
 
   return (
     <div className="subsection revelation-picker">
@@ -110,34 +124,44 @@ function ImplementSchoolSection({ doc, update }: { doc: CharacterDoc; update: Up
           <p className="hint revelation-picker-hint">
             2 schools at 1st level, +1 at 2nd and every 4 levels thereafter. A school can be picked
             more than once to learn an extra spell from it — each copy counts toward the budget
-            above, but only the FIRST copy of a distinct school grants its base + resonant power
-            (shown below). Free-choice — never blocks past the expected count.
+            above, but only the FIRST copy of a distinct HAND-VERIFIED school grants its base +
+            resonant power (shown below); a vendored-only school (marked below) grants no
+            base/resonant/focus powers at all. Free-choice — never blocks past the expected count.
           </p>
           <div className="scroll">
-            {OCCULTIST_SCHOOL_TAGS.map((tag) => {
-              const school = OCCULTIST_SCHOOLS[tag]!;
+            {catalog.map((entry) => {
+              const tag = entry.tag;
               const count = occultistImplementCount(doc, tag);
               const known = count > 0;
               return (
                 <div key={tag} className={`pick-row${known ? " is-selected" : ""}`}>
                   <div className="pmain">
                     <div className="pname">
-                      {school.name}
+                      {entry.name}
+                      {entry.vendoredOnly && (
+                        <span className="hint" title="No base/resonant/focus powers modeled">
+                          {" "}
+                          (not modeled)
+                        </span>
+                      )}
                       {count > 0 && <span className="hint"> · ×{count}</span>}
                     </div>
-                    <div className="preq">
-                      <span className="desc-text">Implements: {school.implements}</span>
-                    </div>
-                    {known && (
+                    {!entry.vendoredOnly && (
+                      <div className="preq">
+                        <span className="desc-text">Implements: {entry.implements}</span>
+                      </div>
+                    )}
+                    {known && !entry.vendoredOnly && (
                       <>
                         <div className="hint" style={{ marginTop: 2 }}>
-                          Base — {school.basePower.name}: {school.basePower.summary}
+                          Base — {entry.basePower.name}: {entry.basePower.summary}
                         </div>
                         <div className="hint" style={{ marginTop: 2 }}>
-                          Resonant — {school.resonantPower.name}: {school.resonantPower.summary}
+                          Resonant — {entry.resonantPower.name}: {entry.resonantPower.summary}
                         </div>
                       </>
                     )}
+                    {entry.description ? <FeatureDescription html={entry.description} /> : null}
                   </div>
                   <div style={{ display: "flex", gap: 4 }}>
                     <button

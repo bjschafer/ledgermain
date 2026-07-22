@@ -37,7 +37,7 @@
  * brief calls for, and `summary` carries the effect.
  */
 
-import type { Change } from "@pf1/schema";
+import type { Change, MesmeristTrick, RefData, SourceRef } from "@pf1/schema";
 
 export type MesmeristTrickTier = "trick" | "masterful";
 
@@ -280,4 +280,100 @@ export const MESMERIST_TRICK_IDS: readonly string[] = TRICK_LIST.map((t) => t.id
 /** All trick defs of a given tier, in table order. */
 export function tricksForTier(tier: MesmeristTrickTier): MesmeristTrickDef[] {
   return TRICK_LIST.filter((t) => t.tier === tier);
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.mesmeristTricks` (see that type's doc comment)
+ * is the FULL published catalog (44 entries after junk filtering), prose
+ * only. The hand-verified table above stays authoritative for MECHANICS —
+ * this section only merges the two for BROWSING (the picker) and for
+ * resolving a picked id back to a definition, mirroring
+ * `rage-powers.ts`'s `mergedRagePowerCatalog`/`resolveRagePower` exactly.
+ *
+ * Collision audit: all 26 hand-authored entries matched a vendored entry by
+ * normalized name — zero misses, zero aliases needed (every hand-authored
+ * name's spelling matched the source's own, case-insensitively).
+ */
+
+const MESMERIST_TRICK_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeMesmeristTrickName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with the vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedMesmeristTrickEntry extends MesmeristTrickDef {
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id. */
+  description?: string;
+  /** Vendored source-book attribution, when known. */
+  sources?: SourceRef[];
+}
+
+function vendoredToDef(entry: MesmeristTrick): MergedMesmeristTrickEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    tier: entry.tier,
+    minLevel: entry.tier === "masterful" ? 12 : 1,
+    actionNote: "",
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/** Resolve a picked trick id (`doc.build.mesmeristTricks` entries) to its definition — hand-authored table first, falling back to the vendored catalog. Mirrors `resolveRagePower`. */
+export function resolveMesmeristTrick(id: string, refData: RefData): MesmeristTrickDef | undefined {
+  const hand = MESMERIST_TRICKS[id];
+  if (hand) return hand;
+  const vendored = refData.mesmeristTricks?.[id];
+  return vendored ? vendoredToDef(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog — mirrors `mergedRagePowerCatalog` exactly. `!entry.displayOnly` marks which rows carry a real, live mechanical effect (none in this table — see file doc comment — so this is always false here, kept for the shared picker convention). */
+export function mergedMesmeristTrickCatalog(refData: RefData): MergedMesmeristTrickEntry[] {
+  const handByNormName = new Map<string, MesmeristTrickDef>();
+  for (const t of TRICK_LIST) {
+    handByNormName.set(
+      normalizeMesmeristTrickName(MESMERIST_TRICK_NAME_ALIASES[t.id] ?? t.name),
+      t,
+    );
+  }
+
+  const vendored = Object.values(refData.mesmeristTricks ?? {});
+  const usedHandIds = new Set<string>();
+  const seenNormNames = new Set<string>();
+  const merged: MergedMesmeristTrickEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeMesmeristTrickName(v.name);
+    const handMatch = seenNormNames.has(norm) ? undefined : handByNormName.get(norm);
+    if (handMatch) {
+      seenNormNames.add(norm);
+      usedHandIds.add(handMatch.id);
+      merged.push({ ...handMatch, description: v.description, sources: v.sources });
+    } else {
+      merged.push(vendoredToDef(v));
+    }
+  }
+  for (const t of TRICK_LIST) {
+    if (!usedHandIds.has(t.id)) merged.push(t);
+  }
+  return merged;
 }

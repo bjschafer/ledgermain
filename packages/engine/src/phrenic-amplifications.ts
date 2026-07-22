@@ -43,7 +43,7 @@
  * honesty line" posture the issue #65 task brief calls for.
  */
 
-import type { Change } from "@pf1/schema";
+import type { Change, PhrenicAmplification, RefData, SourceRef } from "@pf1/schema";
 
 export type PhrenicAmplificationTier = "basic" | "major";
 
@@ -312,4 +312,107 @@ export const PHRENIC_AMPLIFICATION_IDS: readonly string[] = AMPLIFICATION_LIST.m
 /** All amplification defs of a given tier, in table order. */
 export function amplificationsForTier(tier: PhrenicAmplificationTier): PhrenicAmplificationDef[] {
   return AMPLIFICATION_LIST.filter((a) => a.tier === tier);
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.phrenicAmplifications` (see that type's doc
+ * comment) is the FULL published catalog (31 entries after junk filtering),
+ * prose only. The hand-verified table above stays authoritative for
+ * MECHANICS — this section only merges the two for BROWSING (the picker)
+ * and for resolving a picked id, mirroring `rage-powers.ts`'s
+ * `mergedRagePowerCatalog`/`resolveRagePower` exactly.
+ *
+ * Collision audit: ALL 31 hand-authored entries matched a vendored entry by
+ * normalized name — a clean 1:1 match (including "Space-Rending Spell" vs.
+ * the source's "Space-rending Spell", a case-only difference the normalizer
+ * already ignores) — zero orphans, zero vendored-only entries, zero aliases
+ * needed. The only subsystem in this wave where that's true.
+ */
+
+const PHRENIC_AMPLIFICATION_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeAmplificationName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with the vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedPhrenicAmplificationEntry extends PhrenicAmplificationDef {
+  nameSuffix?: string;
+  description?: string;
+  sources?: SourceRef[];
+}
+
+function vendoredToDef(entry: PhrenicAmplification): MergedPhrenicAmplificationEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    nameSuffix: entry.nameSuffix,
+    tier: entry.tier,
+    minLevel: entry.tier === "major" ? 11 : 1,
+    costLabel: "see description",
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/** Resolve a picked amplification id to its definition — hand-authored table first, falling back to the vendored catalog. Mirrors `resolveRagePower`. */
+export function resolvePhrenicAmplification(
+  id: string,
+  refData: RefData,
+): PhrenicAmplificationDef | undefined {
+  const hand = PHRENIC_AMPLIFICATIONS[id];
+  if (hand) return hand;
+  const vendored = refData.phrenicAmplifications?.[id];
+  return vendored ? vendoredToDef(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog — mirrors `mergedRagePowerCatalog`. Never actually produces a vendored-only row today (see file doc comment's collision audit) — kept for the shared picker convention and future-proofing against a later vendored-source update. */
+export function mergedPhrenicAmplificationCatalog(
+  refData: RefData,
+): MergedPhrenicAmplificationEntry[] {
+  const handByNormName = new Map<string, PhrenicAmplificationDef>();
+  for (const a of AMPLIFICATION_LIST) {
+    handByNormName.set(
+      normalizeAmplificationName(PHRENIC_AMPLIFICATION_NAME_ALIASES[a.id] ?? a.name),
+      a,
+    );
+  }
+
+  const vendored = Object.values(refData.phrenicAmplifications ?? {});
+  const usedHandIds = new Set<string>();
+  const seenNormNames = new Set<string>();
+  const merged: MergedPhrenicAmplificationEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeAmplificationName(v.name);
+    const handMatch = seenNormNames.has(norm) ? undefined : handByNormName.get(norm);
+    if (handMatch) {
+      seenNormNames.add(norm);
+      usedHandIds.add(handMatch.id);
+      merged.push({ ...handMatch, description: v.description, sources: v.sources });
+    } else {
+      merged.push(vendoredToDef(v));
+    }
+  }
+  for (const a of AMPLIFICATION_LIST) {
+    if (!usedHandIds.has(a.id)) merged.push(a);
+  }
+  return merged;
 }

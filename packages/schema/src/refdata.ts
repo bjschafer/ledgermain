@@ -127,6 +127,18 @@ export interface RefData {
   investigatorTalents: Record<string, InvestigatorTalent>;
   /** The full published kineticist wild-talent catalog, every kind (fourth-source dataset; see `KineticWildTalent` doc comment). */
   kineticWildTalents: Record<string, KineticWildTalent>;
+  /** The full published mesmerist trick catalog, tricks + masterful tricks (fourth-source dataset, issue #74 Phase 3c; see `MesmeristTrick` doc comment). */
+  mesmeristTricks: Record<string, MesmeristTrick>;
+  /** The full published mesmerist bold-stare catalog (fourth-source dataset, issue #74 Phase 3c; see `MesmeristBoldStare` doc comment). */
+  mesmeristBoldStares: Record<string, MesmeristBoldStare>;
+  /** The full published psychic phrenic-amplification catalog, basic + major (fourth-source dataset, issue #74 Phase 3c; see `PhrenicAmplification` doc comment). */
+  phrenicAmplifications: Record<string, PhrenicAmplification>;
+  /** The full published psychic discipline catalog (fourth-source dataset, issue #74 Phase 3c; see `PsychicDiscipline` doc comment). */
+  psychicDisciplines: Record<string, PsychicDiscipline>;
+  /** The full published occultist implement-school catalog (fourth-source dataset, issue #74 Phase 3c; see `OccultistImplement` doc comment). */
+  occultistImplements: Record<string, OccultistImplement>;
+  /** The full published medium legendary-spirit catalog (fourth-source dataset, issue #74 Phase 3c; see `MediumSpirit` doc comment). */
+  mediumSpirits: Record<string, MediumSpirit>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -1186,5 +1198,154 @@ export interface KineticWildTalent extends RefEntity {
   /** Burn cost, 0 or more (always a clean integer in the source for this file — no "variable"/"0 or 1" text to simplify, unlike a few other subsystems' prose). */
   burn: number;
 }
+
+/* --------------------------------------------------------- mesmerist tricks -- */
+
+/**
+ * A published mesmerist trick (issue #74 Phase 3c, same "catalog from data,
+ * mechanics as overlay" pattern `RagePower` established). Sourced from the
+ * "Pf Data 1e" dataset's `json/class_ability_tricks.json` (44 real entries
+ * after dropping the source's `not_found` sentinel — VERIFIED empirically:
+ * every entry's own prose refers to "the mesmerist"/"implant"/a stared
+ * subject, matching the class's Tricks class feature, not another
+ * subsystem) rather than the Foundry pf1 system — the Mesmerist class def
+ * only links a generic "Trick" stub `ClassFeature`, no per-trick breakdown.
+ *
+ * The FULL published catalog with prose only — no `changes`. Live mechanics
+ * for the hand-verified OA-core subset remain in `@pf1/engine`
+ * `mesmerist-tricks.ts`'s `MESMERIST_TRICKS` table (26 entries: 17 tricks +
+ * 9 masterful tricks), authoritative on any name collision — see that file's
+ * `mergedMesmeristTrickCatalog`. All 26 hand-authored entries matched a
+ * vendored entry by normalized name with zero aliases needed.
+ */
+export interface MesmeristTrick extends RefEntity {
+  /**
+   * Trick tier, taken directly from the source's own `category` field
+   * (`"trick" | "masterfultrick"`, renamed here to this project's
+   * `"trick" | "masterful"` convention — matching `@pf1/engine`
+   * `MesmeristTrickTier`). Absent for a handful of entries the source
+   * doesn't tag (treated as `"trick"` by the transform).
+   */
+  tier: "trick" | "masterful";
+}
+
+/* ----------------------------------------------------- mesmerist bold stares -- */
+
+/**
+ * A published mesmerist bold stare (issue #74 Phase 3c), same posture as
+ * `MesmeristTrick`. Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_stares.json` (24 real entries after dropping the
+ * source's `not_found` sentinel). Unlike tricks, this source carries NO
+ * tier-like `category` field at all — PF1 RAW has only one Bold Stare tier
+ * (matching `@pf1/engine` `MesmeristBoldStareDef`, which also has no `tier`
+ * field). `@pf1/engine` `mesmerist-bold-stares.ts`'s hand-authored
+ * `MESMERIST_BOLD_STARES` table (7 OA-core entries) is authoritative for
+ * mechanics on any name collision — see that file's
+ * `mergedMesmeristBoldStareCatalog`. All 7 hand-authored entries matched a
+ * vendored entry by normalized name with zero aliases needed; 6 of the 17
+ * vendored-only entries are a themed "Devilbane" sub-chain (Occult Origins)
+ * carried through with no special handling — the source's own `addenda`
+ * grouping tag isn't surfaced on this type, same "flavor grouping, not a
+ * structural field this app needs" call as other subsystems' unused tags.
+ */
+export type MesmeristBoldStare = RefEntity;
+
+/* ------------------------------------------------- phrenic amplifications -- */
+
+/**
+ * A published psychic phrenic amplification (issue #74 Phase 3c), same
+ * posture as `RagePower`. Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_phrenic_amplifications.json` (31 real entries after
+ * dropping the source's `not_found` sentinel). `@pf1/engine`
+ * `phrenic-amplifications.ts`'s hand-authored `PHRENIC_AMPLIFICATIONS` table
+ * (31 entries: 22 basic + 9 major) is authoritative for mechanics on any
+ * name collision — see that file's `mergedPhrenicAmplificationCatalog`. ALL
+ * 31 hand-authored entries matched a vendored entry by normalized name
+ * (including "Space-Rending Spell" vs. the source's "Space-rending Spell" —
+ * a case-only difference the normalizer already ignores) — a clean 1:1
+ * match with zero vendored-only entries and zero aliases needed, the only
+ * subsystem in this wave where that's true.
+ */
+export interface PhrenicAmplification extends RefEntity {
+  /** Ability-type suffix as published, e.g. "(Su)", "(Ex)" — absent for a minority of entries. */
+  nameSuffix?: string;
+  /**
+   * Tier, taken directly from the source's own `category` field (`"MajorAmp"`
+   * present = major, absent = basic) — renamed here to this project's
+   * `"basic" | "major"` convention, matching `@pf1/engine`
+   * `PhrenicAmplificationTier`.
+   */
+  tier: "basic" | "major";
+}
+
+/* -------------------------------------------------------- psychic disciplines -- */
+
+/**
+ * A published psychic discipline (issue #74 Phase 3c). Sourced from the
+ * "Pf Data 1e" dataset's `json/class_ability_disciplines.json` (23 real
+ * entries after dropping the source's `not_found` sentinel). Unlike the
+ * other subsystems in this wave, a discipline is a CHASSIS — a single
+ * character-defining pick (`doc.build.psychicDiscipline`) that grants a
+ * whole bonus-spell progression and Discipline Powers, not a menu of many
+ * small effects — so this catalog is prose-only ROW DATA for the picker,
+ * never a source of derived mechanics. `@pf1/engine`
+ * `psychic-disciplines.ts`'s hand-authored `PSYCHIC_DISCIPLINES` table (the
+ * 12 core Occult Adventures disciplines) remains the ONLY source of bonus
+ * spells/Discipline Powers/phrenic pool ability — all 12 matched a vendored
+ * entry by normalized name with zero aliases needed; the 11 vendored-only
+ * disciplines (splatbook additions: Bleaching, Hag-Called, Mindtech,
+ * Psychedelia, Rapport, Rivethun, Shadow, Sorrow, Superiority, Symbiosis,
+ * Warp) are selectable in the picker for completeness but grant NO bonus
+ * spells/powers/pool-ability resolution — see `mergedPsychicDisciplineCatalog`'s
+ * doc comment for how the picker keeps that honest.
+ */
+export type PsychicDiscipline = RefEntity;
+
+/* -------------------------------------------------------- occultist implements -- */
+
+/**
+ * A published occultist implement school (issue #74 Phase 3c). Sourced from
+ * the "Pf Data 1e" dataset's `json/class_ability_implements.json` (12 real
+ * entries after dropping the source's `not_found` sentinel). Same chassis
+ * caveat as `PsychicDiscipline`: an implement school grants a base focus
+ * power + resonant power + its own focus-power menu, all hand-authored in
+ * `@pf1/engine` `occultist-implements.ts`'s `OCCULTIST_SCHOOLS` table (the 8
+ * core Occult Adventures schools) — this catalog is prose-only row data,
+ * never a source of derived mechanics. All 8 hand-authored schools matched a
+ * vendored entry by normalized name with zero aliases needed; the 4
+ * vendored-only entries are the "Psychic Anthology" Panoply variant schools
+ * (Mage's Paraphernalia, Performer's Accoutrements, Saint's Holy Regalia,
+ * Trappings of the Warrior) — selectable in the implement-school stepper for
+ * completeness but grant no base/resonant/focus powers (see
+ * `mergedOccultistImplementCatalog`'s doc comment).
+ */
+export type OccultistImplement = RefEntity;
+
+/* -------------------------------------------------------------- medium spirits -- */
+
+/**
+ * A published Medium legendary spirit (issue #74 Phase 3c). Sourced from the
+ * "Pf Data 1e" dataset's `json/class_ability_spirits.json` (40 real entries
+ * after dropping the source's `not_found` sentinel — VERIFIED empirically
+ * against the sibling `json/class_ability_shaman_spirits.json` file, which
+ * is the DIFFERENT shaman-spirit catalog (Battle/Bones/Flame/Heavens/...,
+ * already vendored as `RefData.shamanHexes`'s neighbor — see
+ * `@pf1/engine` `shaman-spirits.ts`); this file's first six entries are
+ * exactly the Medium's Archmage/Champion/Guardian/Hierophant/Marshal/
+ * Trickster). Same chassis caveat as `PsychicDiscipline`/
+ * `OccultistImplement`: a legendary spirit grants a Spirit Bonus target set,
+ * a Séance Boon, an influence penalty, and 4 tiered Spirit Powers, all
+ * hand-authored in `@pf1/engine` `medium-spirits.ts`'s `MEDIUM_SPIRITS`
+ * table (the 6 core spirits) — this catalog is prose-only row data. All 6
+ * hand-authored spirits matched a vendored entry by normalized name with
+ * zero aliases needed; the 34 vendored-only entries are a mix of 12
+ * outsider-type spirits (Psychic Anthology: Aeon/Agathion/Angel/Archon/
+ * Azata/Daemon/Demon/Devil/Psychopomp/...) and 22 named historical/NPC
+ * legendary spirits from later splatbooks (e.g. Abrogail Thrune I, a
+ * Hierophant-flavored unique spirit per Occult Realms) — selectable in the
+ * séance panel for completeness but grant no Spirit Bonus targets/Séance
+ * Boon/Spirit Powers (see `mergedMediumSpiritCatalog`'s doc comment).
+ */
+export type MediumSpirit = RefEntity;
 
 export type { SourceRef };

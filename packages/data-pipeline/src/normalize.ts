@@ -14,6 +14,12 @@ import type {
   Item,
   KineticWildTalent,
   MagusArcana,
+  MediumSpirit,
+  MesmeristBoldStare,
+  MesmeristTrick,
+  OccultistImplement,
+  PhrenicAmplification,
+  PsychicDiscipline,
   Race,
   RacialTrait,
   NinjaTrick,
@@ -75,7 +81,13 @@ import { transformArcanistExploits } from "./transform/arcanistExploits.js";
 import { transformInvestigatorTalents } from "./transform/investigatorTalents.js";
 import { transformKineticWildTalents } from "./transform/kineticWildTalents.js";
 import { transformMagusArcana } from "./transform/magusArcana.js";
+import { transformMediumSpirits } from "./transform/mediumSpirits.js";
+import { transformMesmeristBoldStares } from "./transform/mesmeristBoldStares.js";
+import { transformMesmeristTricks } from "./transform/mesmeristTricks.js";
 import { transformNinjaTricks } from "./transform/ninjaTricks.js";
+import { transformOccultistImplements } from "./transform/occultistImplements.js";
+import { transformPhrenicAmplifications } from "./transform/phrenicAmplifications.js";
+import { transformPsychicDisciplines } from "./transform/psychicDisciplines.js";
 import { transformRagePowers } from "./transform/ragePowers.js";
 import { transformRogueTalents } from "./transform/rogueTalents.js";
 import { transformShamanHexes } from "./transform/shamanHexes.js";
@@ -630,6 +642,45 @@ export function normalize(opts: NormalizeOptions): {
   );
   const kineticWildTalents: KineticWildTalent[] = transformKineticWildTalents(kineticTalentDict);
 
+  // --- mesmerist tricks/bold stares, phrenic amplifications, psychic
+  // disciplines, occultist implements, Medium legendary spirits (fourth-party
+  // dataset, issue #74 Phase 3c) — same posture as rage powers above.
+  const mesmeristTrickDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_tricks.json"),
+  );
+  const mesmeristTricks: MesmeristTrick[] = transformMesmeristTricks(mesmeristTrickDict);
+
+  const mesmeristBoldStareDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_stares.json"),
+  );
+  const mesmeristBoldStares: MesmeristBoldStare[] =
+    transformMesmeristBoldStares(mesmeristBoldStareDict);
+
+  const phrenicAmplificationDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_phrenic_amplifications.json"),
+  );
+  const phrenicAmplifications: PhrenicAmplification[] =
+    transformPhrenicAmplifications(phrenicAmplificationDict);
+
+  const psychicDisciplineDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_disciplines.json"),
+  );
+  const psychicDisciplines: PsychicDiscipline[] =
+    transformPsychicDisciplines(psychicDisciplineDict);
+
+  const occultistImplementDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_implements.json"),
+  );
+  const occultistImplements: OccultistImplement[] =
+    transformOccultistImplements(occultistImplementDict);
+
+  // NOT `class_ability_shaman_spirits.json` — that's the sibling shaman-spirit
+  // file (already vendored elsewhere); see `MediumSpirit`'s doc comment.
+  const mediumSpiritDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_spirits.json"),
+  );
+  const mediumSpirits: MediumSpirit[] = transformMediumSpirits(mediumSpiritDict);
+
   const counts = {
     races: races.length,
     racialTraits: racialTraits.length,
@@ -663,6 +714,12 @@ export function normalize(opts: NormalizeOptions): {
     arcanistExploits: arcanistExploits.length,
     investigatorTalents: investigatorTalents.length,
     kineticWildTalents: kineticWildTalents.length,
+    mesmeristTricks: mesmeristTricks.length,
+    mesmeristBoldStares: mesmeristBoldStares.length,
+    phrenicAmplifications: phrenicAmplifications.length,
+    psychicDisciplines: psychicDisciplines.length,
+    occultistImplements: occultistImplements.length,
+    mediumSpirits: mediumSpirits.length,
   };
 
   const meta: RefDataMeta = {
@@ -717,6 +774,12 @@ export function normalize(opts: NormalizeOptions): {
     arcanistExploits: byId(arcanistExploits),
     investigatorTalents: byId(investigatorTalents),
     kineticWildTalents: byId(kineticWildTalents),
+    mesmeristTricks: byId(mesmeristTricks),
+    mesmeristBoldStares: byId(mesmeristBoldStares),
+    phrenicAmplifications: byId(phrenicAmplifications),
+    psychicDisciplines: byId(psychicDisciplines),
+    occultistImplements: byId(occultistImplements),
+    mediumSpirits: byId(mediumSpirits),
   };
 
   return { refData, contentVersion };

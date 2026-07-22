@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { MESMERIST_TRICKS, MESMERIST_TRICK_IDS } from "@pf1/engine";
+import { mergedMesmeristTrickCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "../../model/mesmeristTricks.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -40,6 +41,13 @@ const TIER_LABEL: Record<string, string> = { trick: "Trick", masterful: "Masterf
  * Picked tricks also show up in the sheet's Class Features list (tagged
  * "— Trick"), via `collectGrantedFeatures`/`resolveClassFeatures` in
  * `@pf1/engine` `archetypes.ts`.
+ *
+ * Browses the FULL published trick catalog (`mergedMesmeristTrickCatalog` —
+ * every vendored entry, overlaid with the 26-entry hand-verified table on a
+ * name match), not just the hand-verified slice — mirrors
+ * `RagePowerPicker`'s "M" badge convention (though every entry here is
+ * prose-only, see `mesmerist-tricks.ts`'s doc comment, so the badge never
+ * actually appears for this subsystem — kept for the shared convention).
  */
 export function MesmeristTrickPicker({ doc, refData, update }: MesmeristTrickPickerProps) {
   const isMesmerist = doc.identity.classes.some((c) => c.tag === "mesmerist");
@@ -52,16 +60,18 @@ export function MesmeristTrickPicker({ doc, refData, update }: MesmeristTrickPic
   );
   const level = getMesmeristLevel(doc);
 
+  const catalog = useMemo(() => mergedMesmeristTrickCatalog(refData), [refData]);
+
   const tricks = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return MESMERIST_TRICK_IDS.map((id) => MESMERIST_TRICKS[id]!)
+    return catalog
       .filter((t) => !q || t.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.minLevel - b.minLevel || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenMesmeristTrickCount(doc);
   const expected = expectedMesmeristTrickCount(doc, refData);
@@ -102,8 +112,10 @@ export function MesmeristTrickPicker({ doc, refData, update }: MesmeristTrickPic
         <>
           <p className="hint revelation-picker-hint">
             Pick tricks as you level (1st, 3rd, 5th, …; +1 per Extra Mesmerist Tricks feat).
-            Masterful tricks unlock at 12th, chosen in place of a normal trick — Occult Adventures
-            core tricks only. Free-choice — never blocks past the expected count.
+            Masterful tricks unlock at 12th, chosen in place of a normal trick. Browses the full
+            published catalog; entries marked <span className="badge-modeled">M</span> carry a real,
+            live mechanical effect — the rest are prose-only. Free-choice — never blocks past the
+            expected count.
           </p>
           <input
             className="search"
@@ -121,10 +133,19 @@ export function MesmeristTrickPicker({ doc, refData, update }: MesmeristTrickPic
                   <div className="pmain">
                     <div className="pname">
                       {t.name} <span className="tag-mystery">{TIER_LABEL[t.tier] ?? t.tier}</span>
+                      {!t.displayOnly && (
+                        <span
+                          className="badge-modeled"
+                          title="Carries a real, live mechanical effect"
+                        >
+                          {" "}
+                          M
+                        </span>
+                      )}
                     </div>
                     <div className="preq">
                       <span className="desc-text">
-                        {t.actionNote} — {t.summary}
+                        {t.actionNote ? `${t.actionNote} — ${t.summary}` : t.summary}
                       </span>
                     </div>
                     {belowLevel && (
@@ -133,6 +154,7 @@ export function MesmeristTrickPicker({ doc, refData, update }: MesmeristTrickPic
                         {t.minLevel === 12 ? "th" : "st"} (currently {level})
                       </div>
                     )}
+                    {t.description ? <FeatureDescription html={t.description} /> : null}
                   </div>
                   <button
                     type="button"
