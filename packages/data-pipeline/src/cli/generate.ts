@@ -14,6 +14,7 @@ import {
   OUTPUT_DIR,
   PACKS_DIR,
   PF_CONTENT_CLONE_DIR,
+  PFDATA_CLONE_DIR,
   SYSTEM_VERSION,
 } from "../config.js";
 
@@ -24,6 +25,7 @@ const PRESTIGE_FEATURES_DIR = join(ARCHETYPE_CLONE_DIR, "src", "pf-prestige-feat
 const PF_CONTENT_FEATS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-feats");
 const PF_CONTENT_TRAITS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-traits");
 const PF_CONTENT_RACIAL_TRAITS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-racial-traits");
+const PFDATA_JSON_DIR = join(PFDATA_CLONE_DIR, "json");
 
 /** Committer date of the pinned commit (ISO 8601) — deterministic per SHA. */
 function sourceCommitDate(): string {
@@ -55,6 +57,7 @@ function main(): void {
     pfContentFeatsDir: PF_CONTENT_FEATS_DIR,
     pfContentTraitsDir: PF_CONTENT_TRAITS_DIR,
     pfContentRacialTraitsDir: PF_CONTENT_RACIAL_TRAITS_DIR,
+    pfDataJsonDir: PFDATA_JSON_DIR,
     sourceRepo: FOUNDRY_REPO,
     sourceSha: FOUNDRY_SHA,
     systemVersion: SYSTEM_VERSION,

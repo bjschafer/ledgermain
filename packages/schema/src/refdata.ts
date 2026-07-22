@@ -103,6 +103,8 @@ export interface RefData {
    * how the two catalogs relate.
    */
   racialTraits: Record<string, RacialTrait>;
+  /** The full published barbarian rage-power catalog (fourth-source dataset; see `RagePower` doc comment). */
+  ragePowers: Record<string, RagePower>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -773,6 +775,49 @@ export interface ArchetypeFeature extends RefEntity {
    * warning instead of a paired swap.
    */
   pairedBaseFeatureUuid?: string;
+}
+
+/* ---------------------------------------------------------- rage powers -- */
+
+/**
+ * A published barbarian rage power (issue #74 Phase 3a: the "catalog from
+ * data, mechanics as overlay" pattern later subsystems — hexes, arcana,
+ * talents, exploits, wild talents — replicate). Unlike the rest of RefData,
+ * rage powers are NOT sourced from the Foundry pf1 system — its Barbarian /
+ * Barbarian Unchained class defs only link a generic "Rage Powers" stub
+ * `ClassFeature`, no per-power breakdown. Sourced instead from the "Pf Data
+ * 1e" third-party dataset (see `PFDATA_REPO`/`PFDATA_SHA` in
+ * data-pipeline); `id` is that dataset's own slug key, `uuid` a synthetic
+ * pointer (same posture as `Archetype`/`ArchetypeFeature`).
+ *
+ * This is the FULL published catalog (~244 entries after the source's own
+ * redirect/disambiguation aliases are filtered out) with prose only — no
+ * `changes` (mechanical effects). It exists to make the rage-power PICKER
+ * browsable against the complete catalog; live mechanics for the
+ * hand-verified subset remain in `@pf1/engine` `rage-powers.ts`'s
+ * hand-authored `RAGE_POWERS` table, which is authoritative on any name
+ * collision with an entry here (see that file's `mergedRagePowerCatalog`).
+ */
+export interface RagePower extends RefEntity {
+  /** Ability-type suffix as published, e.g. "(Ex)", "(Su)", "(Sp)" — absent for a minority of entries the source doesn't tag. */
+  nameSuffix?: string;
+  /** Grouping tag from the source, e.g. "Totem", "Blood", "Stance", "Elemental" — absent for most (ungrouped) entries. */
+  category?: string;
+  /**
+   * A small integer (observed range 1-3) the source attaches to some
+   * entries — empirically NOT a barbarian-level requirement (e.g. the
+   * Beast Totem chain has `lesser_beast_totem` with no `level` at all,
+   * `beast_totem` at `1`, `greater_beast_totem` at `2`, while
+   * `terrifying_howl` — an actual 8th-level-minimum rage power per the
+   * published rules — carries `level: 1`). Reads more like a within-chain
+   * tier depth than a character-level gate, but the source doesn't document
+   * the field, so this is carried through UNINTERPRETED rather than
+   * asserted as either. Do NOT use this as a level-gate minimum — every
+   * actual "requires Nth level" prerequisite the published rules state is
+   * already present as prose inside `description` (do not attempt to parse
+   * it out structurally — see the data-pipeline transform's doc comment).
+   */
+  level?: number;
 }
 
 export type { SourceRef };

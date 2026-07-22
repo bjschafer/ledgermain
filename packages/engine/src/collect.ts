@@ -28,7 +28,7 @@ import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
-import { RAGE_POWERS } from "./rage-powers.js";
+import { resolveRagePower } from "./rage-powers.js";
 import { resolveTraitDef } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
@@ -552,7 +552,7 @@ export function collectModifiers(
     .reduce((sum, c) => sum + c.level, 0);
   if (barbarianAnyLevel > 0) {
     for (const powerId of doc.build.ragePowers ?? []) {
-      const power = RAGE_POWERS[powerId];
+      const power = resolveRagePower(powerId, refData);
       if (!power) continue;
       for (const ch of power.changes) {
         if (!gateOpen(ch)) continue;

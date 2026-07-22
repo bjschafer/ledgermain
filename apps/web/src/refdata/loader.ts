@@ -47,6 +47,7 @@ async function fetchAll(): Promise<RefData> {
     subdomainSpellLists,
     druidDomains,
     wizardSchools,
+    ragePowers,
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
@@ -70,6 +71,7 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["subdomainSpellLists"]>("subdomain-spell-lists.json"),
     getJson<RefData["druidDomains"]>("druid-domains.json"),
     getJson<RefData["wizardSchools"]>("wizard-schools.json"),
+    getJson<RefData["ragePowers"]>("rage-powers.json"),
   ]);
   return {
     meta,
@@ -94,5 +96,6 @@ async function fetchAll(): Promise<RefData> {
     subdomainSpellLists,
     druidDomains,
     wizardSchools,
+    ragePowers,
   };
 }

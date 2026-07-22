@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { RAGE_POWERS, RAGE_POWER_IDS, type RagePowerEdition } from "@pf1/engine";
+import { mergedRagePowerCatalog, type RagePowerEdition } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "../../model/ragePowers.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -22,23 +23,26 @@ interface RagePowerPickerProps {
 }
 
 /**
- * Barbarian rage power selection (issue #65/#67), mirroring `DiscoveryPicker`
- * exactly. A barbarian (chained OR Unchained — both share this one picker,
- * see `@pf1/engine` `rage-powers.ts`'s doc comment) gains a new rage power at
- * 2nd level and every even level thereafter, plus one more per "Extra Rage
- * Power" feat taken (see `model/ragePowers.ts`'s budget math). Free-choice,
- * never blocks past the expected count — same hybrid-prereqs posture as
- * `DiscoveryPicker`. Core Rulebook + a curated Advanced Player's Guide slice
- * only — see `@pf1/engine` `rage-powers.ts`'s scope note.
+ * Barbarian rage power selection (issue #65/#67, full-catalog issue #74
+ * Phase 3a), mirroring `DiscoveryPicker`'s layout and `ArchetypePicker`'s
+ * "M" badge convention. A barbarian (chained OR Unchained — both share this
+ * one picker, see `@pf1/engine` `rage-powers.ts`'s doc comment) gains a new
+ * rage power at 2nd level and every even level thereafter, plus one more per
+ * "Extra Rage Power" feat taken (see `model/ragePowers.ts`'s budget math).
+ * Free-choice, never blocks past the expected count — same hybrid-prereqs
+ * posture as `DiscoveryPicker`.
  *
- * Most entries are display-only (a `contextNotes` reminder spells out the
- * exact numbers/activation cost); a few (Raging Climber, Raging Swimmer,
- * Swift Foot) carry a real buff-gated `Change` that applies only while the
- * Rage buff is active (issue #75's `Change.activeWhenBuff` — see
- * `@pf1/engine` `rage-powers.ts`'s doc comment for which and why). Picked
- * powers also show up in the sheet's Class Features list (tagged "— Rage
- * Power"), via `collectGrantedFeatures`/`resolveClassFeatures` in
- * `@pf1/engine` `archetypes.ts`.
+ * Browses the FULL published rage-power catalog (`mergedRagePowerCatalog` —
+ * every vendored entry, overlaid with the 30-entry hand-verified table on a
+ * name match), not just the hand-verified slice. A `badge-modeled` "M" marks
+ * which entries carry real, live mechanics (a `changes`/`contextNotes` a few
+ * of which are buff-gated to "while raging" — issue #75's
+ * `Change.activeWhenBuff`); everything else is prose-only, shown via the
+ * same collapsible `FeatureDescription` the Class Features list uses.
+ * Picked powers also show up in the sheet's Class Features list (tagged "—
+ * Rage Power"), via `collectGrantedFeatures`/`resolveClassFeatures` in
+ * `@pf1/engine` `archetypes.ts` (through `resolveRagePower`, which resolves
+ * BOTH a hand-authored and a vendored-only pick).
  */
 export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) {
   const [query, setQuery] = useState("");
@@ -54,9 +58,11 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
   const selected = useMemo(() => new Set(doc.build.ragePowers ?? []), [doc.build.ragePowers]);
   const level = barbarianLevel(doc);
 
+  const catalog = useMemo(() => mergedRagePowerCatalog(refData), [refData]);
+
   const powers = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return RAGE_POWER_IDS.map((id) => RAGE_POWERS[id]!)
+    return catalog
       .filter((p) => p.editions.some((e) => editionSet.has(e)))
       .filter((p) => !q || p.name.toLowerCase().includes(q))
       .sort((a, b) => {
@@ -64,7 +70,7 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.minLevel - b.minLevel || a.name.localeCompare(b.name);
       });
-  }, [query, selected, editionSet]);
+  }, [catalog, query, selected, editionSet]);
 
   const chosen = chosenRagePowerCount(doc);
   const expected = expectedRagePowerCount(doc, refData);
@@ -104,9 +110,11 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
       {!collapsed && (
         <>
           <p className="hint magus-arcana-picker-hint">
-            Pick rage powers as you level (2nd, 4th, 6th, …; +1 per Extra Rage Power feat). Core
-            Rulebook plus a curated Advanced Player's Guide slice. Free-choice — never blocks past
-            the expected count; a "Requires barbarian Nth" note is a soft reminder, not a hard gate.
+            Pick rage powers as you level (2nd, 4th, 6th, …; +1 per Extra Rage Power feat). Browses
+            the full published catalog; entries marked <span className="badge-modeled">M</span>{" "}
+            carry a real, live mechanical effect (see Class Features) — the rest are prose-only.
+            Free-choice — never blocks past the expected count; a "Requires barbarian Nth" note is a
+            soft reminder, not a hard gate.
           </p>
           <input
             className="search"
@@ -122,7 +130,19 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
               return (
                 <div key={p.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
-                    <div className="pname">{p.name}</div>
+                    <div className="pname">
+                      {p.name}
+                      {p.nameSuffix ? ` ${p.nameSuffix}` : ""}
+                      {!p.displayOnly && (
+                        <span
+                          className="badge-modeled"
+                          title="Carries a real, live mechanical effect (see Class Features)"
+                        >
+                          {" "}
+                          M
+                        </span>
+                      )}
+                    </div>
                     <div className="preq">
                       <span className="desc-text">{p.summary}</span>
                     </div>
@@ -136,6 +156,7 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
                         ⚠ {noteEntry.text}
                       </div>
                     ))}
+                    {p.description ? <FeatureDescription html={p.description} /> : null}
                   </div>
                   <button
                     type="button"

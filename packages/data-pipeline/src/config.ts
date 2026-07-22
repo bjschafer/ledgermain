@@ -81,6 +81,19 @@ export const PF_CONTENT_REPO = "https://gitlab.com/foundryvtt_pathfinder1e/pf1-c
 /** Pinned commit (latest `main` as of 2025-11-24). */
 export const PF_CONTENT_SHA = "c66bf333cafc451d817ead660473dd01d9846fb3";
 
+/**
+ * Fourth pinned source: "Pf Data 1e", a flat-JSON dictionary dataset (one file
+ * per subsystem under `json/`, each a slug-keyed dictionary of entries) that
+ * fills gaps neither the Foundry system nor PF1 Content ship as structured
+ * data — starting with the full rage-power catalog (issue #74 Phase 3a).
+ * Single-maintainer repo, so pin like the others: exact commit, never a
+ * branch.
+ */
+export const PFDATA_REPO = "https://github.com/jasontankapps/pathfinder-data-1-e.git";
+
+/** Pinned commit (verified 2026-07-21). */
+export const PFDATA_SHA = "33f1b75b8f62b43c59b96eab6bebb45e37c29229";
+
 const here = dirname(fileURLToPath(import.meta.url));
 const packageRoot = resolve(here, "..");
 
@@ -94,6 +107,9 @@ export const ARCHETYPE_CLONE_DIR = resolve(CACHE_DIR, "pf1e-archetypes");
 
 /** Where the PF1 Content module clone lives (gitignored, fetched on demand). */
 export const PF_CONTENT_CLONE_DIR = resolve(CACHE_DIR, "pf1-content");
+
+/** Where the Pf Data 1e clone lives (gitignored, fetched on demand). */
+export const PFDATA_CLONE_DIR = resolve(CACHE_DIR, "pfdata");
 
 /** Where the normalized JSON is vendored (committed to the repo). */
 export const OUTPUT_DIR = resolve(packageRoot, "data");

@@ -119,7 +119,7 @@ Contributions are welcome — bug reports, rules corrections, and PRs alike.
 This repository ships under a **mixed license** — the thing distributed decides which terms apply, not the file location. Full details and attribution in [`NOTICE.md`](./NOTICE.md).
 
 - **Source code → [GNU AGPL v3.0-or-later](./LICENSE).** Engine, schema, pipeline scripts, web app, and config. The engine is a clean-room reimplementation of the PF1 rules; Foundry's GPL-3.0 system code is never copied in (its clone is gitignored and used only as a behavioral test oracle). AGPL is compatible with Foundry's GPL-3.0 and its network-copyleft ensures hosted forks share their source.
-- **Vendored compendium data → [Open Game License v1.0a](./OGL.txt).** The normalized JSON under `packages/data-pipeline/data/` is Open Game Content mined from the pinned Foundry PF1 system, the `Tryss_Farron/pf1e-archetypes` dataset, and the community `pf1-content` module's feats pack, with OGL §15 attribution intact.
+- **Vendored compendium data → [Open Game License v1.0a](./OGL.txt).** The normalized JSON under `packages/data-pipeline/data/` is Open Game Content mined from the pinned Foundry PF1 system, the `Tryss_Farron/pf1e-archetypes` dataset, the community `pf1-content` module's feats pack, and the `jasontankapps/pathfinder-data-1-e` dataset (the full rage-power catalog), with OGL §15 attribution intact.
 - **Paizo Community Use Policy** covers references to Paizo Product Identity (deity names, Golarion places, etc.).
 
 **Not affiliated with, endorsed by, or sponsored by Paizo Inc., Foundry Gaming LLC, or Wizards of the Coast.** "Pathfinder" is a trademark of Paizo Inc.

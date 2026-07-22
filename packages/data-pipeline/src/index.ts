@@ -42,5 +42,6 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     subdomainSpellLists: readJson(dir, "subdomain-spell-lists.json"),
     druidDomains: readJson(dir, "druid-domains.json"),
     wizardSchools: readJson(dir, "wizard-schools.json"),
+    ragePowers: readJson(dir, "rage-powers.json"),
   };
 }
