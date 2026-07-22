@@ -33,15 +33,27 @@ describe("SITUATIONAL_FEAT_EFFECTS", () => {
     const entry = SITUATIONAL_FEAT_EFFECTS["power-attack"]!;
 
     it("BAB 4 two-handed: p = 2 -> -2/+6", () => {
-      expect(entry.effect({ bab: 4 }, "two-handed")).toEqual({ attack: -2, damage: 6 });
+      expect(entry.effect({ bab: 4 }, "two-handed")).toEqual({
+        attack: -2,
+        damage: 6,
+        damageHalvedOffHand: true,
+      });
     });
 
     it("BAB 4 one-handed: p = 2 -> -2/+4", () => {
-      expect(entry.effect({ bab: 4 }, "one-handed")).toEqual({ attack: -2, damage: 4 });
+      expect(entry.effect({ bab: 4 }, "one-handed")).toEqual({
+        attack: -2,
+        damage: 4,
+        damageHalvedOffHand: true,
+      });
     });
 
     it("no option defaults to one-handed", () => {
-      expect(entry.effect({ bab: 4 })).toEqual({ attack: -2, damage: 4 });
+      expect(entry.effect({ bab: 4 })).toEqual({
+        attack: -2,
+        damage: 4,
+        damageHalvedOffHand: true,
+      });
     });
 
     it("declares the two grip options", () => {
@@ -98,6 +110,7 @@ describe("SITUATIONAL_FEAT_EFFECTS", () => {
       expect(entry.effect({ bab: 1 })).toEqual({
         attack: -1,
         damage: 2,
+        damageHalvedOffHand: true,
         note: "light weapons only",
       });
     });
@@ -106,6 +119,7 @@ describe("SITUATIONAL_FEAT_EFFECTS", () => {
       expect(entry.effect({ bab: 8 })).toEqual({
         attack: -3,
         damage: 6,
+        damageHalvedOffHand: true,
         note: "light weapons only",
       });
     });
@@ -120,63 +134,7 @@ describe("SITUATIONAL_FEAT_EFFECTS", () => {
   });
 
   describe("two-weapon-fighting chain", () => {
-    it("TWF light off-hand: -2 to all attacks, one off-hand attack at offset 0", () => {
-      const entry = SITUATIONAL_FEAT_EFFECTS["two-weapon-fighting"]!;
-      expect(entry.effect({ bab: 6 }, "light")).toEqual({
-        attack: -2,
-        offHandOffsets: [0],
-        note: "off-hand attack deals ½ Str to damage (Double Slice: full)",
-      });
-    });
-
-    it("TWF one-handed off-hand: -4 to all attacks", () => {
-      const entry = SITUATIONAL_FEAT_EFFECTS["two-weapon-fighting"]!;
-      expect(entry.effect({ bab: 6 }, "one-handed")).toEqual({
-        attack: -4,
-        offHandOffsets: [0],
-        note: "off-hand attack deals ½ Str to damage (Double Slice: full)",
-      });
-    });
-
-    it("TWF defaults to the light off-hand penalty (-2)", () => {
-      const entry = SITUATIONAL_FEAT_EFFECTS["two-weapon-fighting"]!;
-      expect(entry.effect({ bab: 6 }).attack).toBe(-2);
-    });
-
-    it("TWF declares the two off-hand grip options", () => {
-      const entry = SITUATIONAL_FEAT_EFFECTS["two-weapon-fighting"]!;
-      expect(entry.options).toEqual([
-        { id: "light", label: "Light off-hand" },
-        { id: "one-handed", label: "One-handed off-hand" },
-      ]);
-    });
-
-    it("Improved TWF adds an off-hand attack at -5 (no penalty of its own)", () => {
-      const entry = SITUATIONAL_FEAT_EFFECTS["improved-two-weapon-fighting"]!;
-      const result = entry.effect({ bab: 6 });
-      expect(result.offHandOffsets).toEqual([-5]);
-      expect(result.attack).toBeUndefined();
-    });
-
-    it("Greater TWF adds an off-hand attack at -10 (no penalty of its own)", () => {
-      const entry = SITUATIONAL_FEAT_EFFECTS["greater-two-weapon-fighting"]!;
-      const result = entry.effect({ bab: 11 });
-      expect(result.offHandOffsets).toEqual([-10]);
-      expect(result.attack).toBeUndefined();
-    });
-
-    it("Double Slice / Two-Weapon Rend / Two-Weapon Defense are note-only", () => {
-      for (const slug of ["double-slice", "two-weapon-rend", "two-weapon-defense"]) {
-        const result = SITUATIONAL_FEAT_EFFECTS[slug]!.effect({ bab: 11 });
-        expect(result.attack).toBeUndefined();
-        expect(result.damage).toBeUndefined();
-        expect(result.offHandOffsets).toBeUndefined();
-        expect(result.extraAttacks).toBeUndefined();
-        expect(result.note).toBeTruthy();
-      }
-    });
-
-    it("every chain feat is tagged melee", () => {
+    it("is not in the situational registry — two-weapon fighting is a mode, not an attachment", () => {
       for (const slug of [
         "two-weapon-fighting",
         "improved-two-weapon-fighting",
@@ -185,7 +143,7 @@ describe("SITUATIONAL_FEAT_EFFECTS", () => {
         "two-weapon-rend",
         "two-weapon-defense",
       ]) {
-        expect(SITUATIONAL_FEAT_EFFECTS[slug]!.appliesTo).toBe("melee");
+        expect(SITUATIONAL_FEAT_EFFECTS[slug]).toBeUndefined();
       }
     });
   });

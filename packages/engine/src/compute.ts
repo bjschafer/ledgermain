@@ -1115,6 +1115,10 @@ function computeWeaponAttacks(
       damageBonus: { total: damageTotal, components: damageComponents },
       crit,
     };
+    if (appliesAbilityDamage) {
+      result.damageAbilityMod = damageAbilityMod;
+      result.damageMultiplier = mult;
+    }
     if (w.damageDice !== undefined) result.damageDice = w.damageDice;
     return result;
   });

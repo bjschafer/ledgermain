@@ -22,6 +22,10 @@
  * initiative/CMB/CMD show attached feats as chips but never apply their
  * numbers, since "situational" feats here are specifically attack/damage
  * tweaks.
+ *
+ * Two-weapon fighting is the one combat mode that is NOT a feat attachment —
+ * it needs no feats at all, so it rides a `twf` flag on the roll and applies
+ * every owned chain feat automatically. See `model/twf.ts`.
  */
 
 import type {
@@ -34,12 +38,19 @@ import type {
   SavedRollFeatRef,
   SavedRollRangerRef,
   SavedRollSource,
+  SavedRollTwf,
 } from "@pf1/schema";
-import { SITUATIONAL_FEAT_EFFECTS, featNameSlug, type SituationalFeatEntry } from "@pf1/engine";
+import {
+  SITUATIONAL_FEAT_EFFECTS,
+  TWF_CHAIN_SLUGS,
+  featNameSlug,
+  type SituationalFeatEntry,
+} from "@pf1/engine";
 
 import { localId } from "./ids.js";
 import { SAVE_NAMES, signed, signedSequence } from "./names.js";
 import { d20Formula, damageFormula } from "./rollFormula.js";
+import { offHandAbilityDelta, resolveTwf, twfConfig, type TwfFold } from "./twf.js";
 
 /** One pickable thing a saved roll can point at, for the "add" picker. */
 export interface SavedRollOption {
@@ -109,6 +120,14 @@ export interface SavedRollFeatChip {
   modeled: boolean;
   /** True when the character currently owns this feat (per `ownedFeatSlugs`). */
   owned: boolean;
+  /**
+   * True for a chip the roll's two-weapon mode supplies on its own (the owned
+   * feats of the TWF chain). Not detachable — the player turns the mode off,
+   * not the feat.
+   */
+  auto?: boolean;
+  /** At-table reminder for an `auto` chip (the chain feat's own note). */
+  note?: string;
 }
 
 /** A saved roll resolved against the current sheet, ready to display. */
@@ -124,13 +143,17 @@ export interface ResolvedSavedRoll {
    */
   formula?: string;
   /**
-   * The off-hand attack sequence, when the two-weapon-fighting chain is
-   * attached (e.g. "+6/+1/−4"). Rendered as a separate line — the off-hand is
+   * The off-hand attack sequence, when this roll is flagged as two-weapon
+   * fighting (e.g. "+6/+1/−4"). Rendered as a separate line — the off-hand is
    * its own sequence, not part of the primary `display`. Absent otherwise.
    */
   offHand?: string;
   /** The off-hand sequence as pasteable formulas; present exactly when `offHand` is. */
   offHandFormula?: string;
+  /** Provenance for the off-hand line; present exactly when `offHand` is. */
+  offHandComponents?: ModifierComponent[];
+  /** The off-hand weapon's damage, when one is chosen (½ ability damage, or full with Double Slice). */
+  offHandDamage?: ResolvedSavedRollDamage;
   components: ModifierComponent[];
   /** True when the source no longer resolves (e.g. the referenced weapon was removed). */
   missing: boolean;
@@ -145,6 +168,11 @@ export interface ResolvedSavedRoll {
 
 /** Source kinds attack-like enough for feat effects to apply their numbers. */
 const ATTACK_LIKE_KINDS = new Set<SavedRollSource["kind"]>(["melee", "ranged", "weapon", "custom"]);
+
+/** True when `source` is an attack the situational feats / two-weapon mode can act on. */
+export function isAttackLikeSource(source: SavedRollSource): boolean {
+  return ATTACK_LIKE_KINDS.has(source.kind);
+}
 
 /** Append a synthetic "Manual adjustment" component when `modifier` is nonzero. */
 function withManualAdjustment(base: ModifierComponent[], modifier: number): ModifierComponent[] {
@@ -166,11 +194,12 @@ interface FeatFold {
   damageDelta: number;
   damageComponents: ModifierComponent[];
   /**
-   * Off-hand attack offsets (two-weapon-fighting chain), relative to the
-   * primary top attack and before deltas, sorted highest-first. Empty when no
-   * off-hand line applies.
+   * The same damage contributions as they land on an OFF-HAND attack: Power
+   * Attack and Piranha Strike halve their damage bonus off-hand, everything
+   * else applies in full (PF1 CRB p. 131).
    */
-  offHandOffsets: number[];
+  offHandDamageDelta: number;
+  offHandDamageComponents: ModifierComponent[];
 }
 
 const NO_FEAT_FOLD: FeatFold = {
@@ -181,7 +210,8 @@ const NO_FEAT_FOLD: FeatFold = {
   firstAttackComponents: [],
   damageDelta: 0,
   damageComponents: [],
-  offHandOffsets: [],
+  offHandDamageDelta: 0,
+  offHandDamageComponents: [],
 };
 
 /**
@@ -197,14 +227,18 @@ function signedResult(
   modifier: number,
   baseComponents: ModifierComponent[],
   featFold: FeatFold = NO_FEAT_FOLD,
+  twf?: TwfFold,
 ): {
   display: string;
   formula: string;
   offHand?: string;
   offHandFormula?: string;
+  offHandComponents?: ModifierComponent[];
+  offHandDamage?: ResolvedSavedRollDamage;
   components: ModifierComponent[];
 } {
-  const totalDelta = modifier + featFold.attackDelta;
+  const primaryPenalty = twf?.profile.primaryPenalty ?? 0;
+  const totalDelta = modifier + featFold.attackDelta + primaryPenalty;
   const base = iteratives ?? [total];
   const adjusted = base.map((n) => n + totalDelta);
   const seq =
@@ -218,27 +252,102 @@ function signedResult(
   if (featFold.firstAttackDelta && seq.length > 0) seq[0] = seq[0]! + featFold.firstAttackDelta;
   const adjustedComponents = withManualAdjustment(baseComponents, modifier);
   const attackComponents = [...featFold.attackComponents, ...featFold.firstAttackComponents];
-  // Off-hand attack line (two-weapon fighting): each offset is relative to the
-  // primary's top attack and shares the same total attack delta (the TWF
-  // penalty, Power Attack, a manual adjustment, …). Read from `adjusted[0]` —
-  // the primary top BEFORE Furious Focus's first-attack tweak — so a rare
-  // TWF+PA+Furious Focus stack leaves the negation on the primary's first
-  // attack only, not the off-hand line.
-  const offSeq =
-    featFold.offHandOffsets.length > 0
-      ? featFold.offHandOffsets.map((off) => adjusted[0]! + off)
-      : undefined;
+  const twoWeapon = twf
+    ? offHandResult(base[0]!, baseComponents, modifier, featFold, twf)
+    : undefined;
+  const extraComponents = [
+    ...attackComponents,
+    ...(twf ? [twoWeaponComponent("main hand", primaryPenalty)] : []),
+  ];
   return {
     display: signedSequence(seq[0]!, seq.length > 1 ? seq : undefined),
     formula: d20Formula(seq),
-    offHand: offSeq
-      ? signedSequence(offSeq[0]!, offSeq.length > 1 ? offSeq : undefined)
-      : undefined,
-    offHandFormula: offSeq ? d20Formula(offSeq) : undefined,
+    ...twoWeapon,
+    // Kept reference-equal to the source's own components when nothing was
+    // folded in, so an untouched roll shares the sheet's array.
     components:
-      attackComponents.length > 0
-        ? [...adjustedComponents, ...attackComponents]
-        : adjustedComponents,
+      extraComponents.length > 0 ? [...adjustedComponents, ...extraComponents] : adjustedComponents,
+  };
+}
+
+/** Provenance entry for the two-weapon penalty on one hand. */
+function twoWeaponComponent(hand: string, penalty: number): ModifierComponent {
+  return {
+    source: `Two-weapon fighting (${hand})`,
+    type: "untyped",
+    value: penalty,
+    applied: true,
+  };
+}
+
+/**
+ * The off-hand attack line: its own sequence, not part of the primary's
+ * iterative progression. Each off-hand attack is made at the wielder's full
+ * attack bonus (the CHOSEN off-hand weapon's, when one is set — it may have a
+ * different enhancement bonus than the primary), less the off-hand two-weapon
+ * penalty, with Improved/Greater adding attacks at −5/−10.
+ *
+ * Everything else the roll folds in (Power Attack, a favored enemy, a manual
+ * adjustment) applies to both hands — only the two-weapon penalty differs,
+ * which is why it's read off `base` here rather than off the primary's already
+ * adjusted top attack.
+ */
+function offHandResult(
+  primaryBase: number,
+  primaryComponents: ModifierComponent[],
+  modifier: number,
+  featFold: FeatFold,
+  twf: TwfFold,
+): {
+  offHand: string;
+  offHandFormula: string;
+  offHandComponents: ModifierComponent[];
+  offHandDamage?: ResolvedSavedRollDamage;
+} {
+  const { profile, offHandAttack } = twf;
+  const baseTotal = offHandAttack?.attack.total ?? primaryBase;
+  const baseComponents = offHandAttack?.attack.components ?? primaryComponents;
+  const top = baseTotal + modifier + featFold.attackDelta + profile.offHandPenalty;
+  const seq = profile.offHandOffsets.map((off) => top + off);
+  return {
+    offHand: signedSequence(seq[0]!, seq.length > 1 ? seq : undefined),
+    offHandFormula: d20Formula(seq),
+    offHandComponents: [
+      ...withManualAdjustment(baseComponents, modifier),
+      ...featFold.attackComponents,
+      twoWeaponComponent("off hand", profile.offHandPenalty),
+    ],
+    ...(offHandAttack ? { offHandDamage: offHandDamageLine(offHandAttack, featFold, twf) } : {}),
+  };
+}
+
+/**
+ * The off-hand weapon's damage, with its ability contribution restated for the
+ * off hand — half (or full, with Double Slice) regardless of how the weapon
+ * instance is configured, since the same weapon may be a primary elsewhere.
+ */
+function offHandDamageLine(
+  atk: ResolvedWeaponAttack,
+  featFold: FeatFold,
+  twf: TwfFold,
+): ResolvedSavedRollDamage {
+  const abilityDelta = offHandAbilityDelta(atk, twf.profile.offHandDamageMultiplier);
+  const bonusTotal = atk.damageBonus.total + abilityDelta + featFold.offHandDamageDelta;
+  const bonusStr = bonusTotal !== 0 ? signed(bonusTotal) : null;
+  const components = [...atk.damageBonus.components, ...featFold.offHandDamageComponents];
+  if (abilityDelta !== 0) {
+    components.push({
+      source: `Off-hand (×${twf.profile.offHandDamageMultiplier} ability)`,
+      type: "untyped",
+      value: abilityDelta,
+      applied: true,
+    });
+  }
+  return {
+    display: [atk.damageDice, bonusStr].filter(Boolean).join("") || signed(bonusTotal),
+    formula: damageFormula(atk.damageDice, bonusTotal),
+    components,
+    crit: atk.crit,
   };
 }
 
@@ -299,7 +408,8 @@ function foldAttachments(
     firstAttackComponents: [],
     damageDelta: 0,
     damageComponents: [],
-    offHandOffsets: [],
+    offHandDamageDelta: 0,
+    offHandDamageComponents: [],
   };
   const notes: string[] = [];
   const featChips: SavedRollFeatChip[] = [];
@@ -314,15 +424,6 @@ function foldAttachments(
   let powerAttackPenalty = 0;
   let furiousFocusName: string | null = null;
 
-  // Two-weapon fighting: TWF establishes the off-hand attack line; Improved/
-  // Greater TWF each append one more off-hand attack. Collect every applied
-  // chain feat's offsets, but assemble the line only when TWF itself is
-  // attached (a lone Improved/Greater TWF grants no attacks on its own) —
-  // same "modifier feat conjures nothing without its base" gating as Furious
-  // Focus / Power Attack above.
-  let twfAttached = false;
-  const offHandOffsets: number[] = [];
-
   for (const ref of featRefs) {
     const owned = ownedFeatSlugs === undefined || ownedFeatSlugs.has(ref.slug);
     const entry = SITUATIONAL_FEAT_EFFECTS[ref.slug];
@@ -332,8 +433,6 @@ function foldAttachments(
       const effect = entry.effect({ bab: sheet.bab }, ref.option);
       if (ref.slug === "power-attack" && effect.attack) powerAttackPenalty = effect.attack;
       if (ref.slug === "furious-focus") furiousFocusName = ref.name;
-      if (ref.slug === "two-weapon-fighting") twfAttached = true;
-      if (effect.offHandOffsets) offHandOffsets.push(...effect.offHandOffsets);
       if (effect.attack) {
         fold.attackDelta += effect.attack;
         fold.attackComponents.push({
@@ -349,6 +448,16 @@ function foldAttachments(
           source: ref.name,
           type: "untyped",
           value: effect.damage,
+          applied: true,
+        });
+        // Power Attack / Piranha Strike give only half their damage bonus on an
+        // off-hand attack; every other damage feat applies in full.
+        const offHand = effect.damageHalvedOffHand ? Math.floor(effect.damage / 2) : effect.damage;
+        fold.offHandDamageDelta += offHand;
+        fold.offHandDamageComponents.push({
+          source: effect.damageHalvedOffHand ? `${ref.name} (off-hand ½)` : ref.name,
+          type: "untyped",
+          value: offHand,
           applied: true,
         });
       }
@@ -376,12 +485,6 @@ function foldAttachments(
     });
   }
 
-  // Assemble the off-hand line only with the base Two-Weapon Fighting feat
-  // present; sort descending so the sequence reads highest-first (0, −5, −10).
-  if (twfAttached && offHandOffsets.length > 0) {
-    fold.offHandOffsets = [...offHandOffsets].sort((a, b) => b - a);
-  }
-
   for (const ref of rangerRefs) {
     const list =
       ref.kind === "favored-enemy" ? sheet.ranger?.favoredEnemies : sheet.ranger?.favoredTerrains;
@@ -397,21 +500,25 @@ function foldAttachments(
       });
       // Favored Enemy also boosts damage vs. that creature type; Favored Terrain does not.
       if (ref.kind === "favored-enemy") {
-        fold.damageDelta += bonus;
-        fold.damageComponents.push({
+        const component: ModifierComponent = {
           source: ref.name,
           type: "untyped",
           value: bonus,
           applied: true,
-        });
+        };
+        fold.damageDelta += bonus;
+        fold.damageComponents.push(component);
+        // Not one of the halved-off-hand bonuses — a favored enemy is just as
+        // vulnerable to the off-hand weapon.
+        fold.offHandDamageDelta += bonus;
+        fold.offHandDamageComponents.push(component);
       }
     }
     rangerChips.push({ kind: ref.kind, type: ref.type, name: ref.name, bonus, applied });
   }
 
-  // Collapse identical reminders (Improved + Greater TWF share one "adds an
-  // off-hand attack" note) — the same reminder twice reads as noise. Insertion
-  // order is preserved.
+  // Collapse identical reminders — the same at-table note twice reads as
+  // noise. Insertion order is preserved.
   return { fold, notes: [...new Set(notes)], featChips, rangerChips };
 }
 
@@ -430,14 +537,36 @@ export function resolveSavedRoll(
   const damageModifier = roll.damageModifier ?? 0;
   const isAttackLike = ATTACK_LIKE_KINDS.has(roll.source.kind);
   const { fold, notes, featChips, rangerChips } = foldAttachments(
-    roll.feats ?? [],
+    // The two-weapon chain is applied by the roll's two-weapon mode, not as an
+    // attachment, so a legacy roll's chain refs never fold twice — they're
+    // re-surfaced below as auto chips.
+    (roll.feats ?? []).filter((f) => !TWF_CHAIN_SLUGS.has(f.slug)),
     roll.rangerBonuses ?? [],
     isAttackLike,
     sheet,
     ownedFeatSlugs,
   );
 
-  const resolved = resolveSource(roll.source, sheet, attackModifier, damageModifier, fold);
+  const cfg = isAttackLike ? twfConfig(roll) : undefined;
+  const twf = cfg ? resolveTwf(roll, cfg, sheet, ownedFeatSlugs) : undefined;
+  if (twf) {
+    for (const feat of twf.profile.chain) {
+      if (!feat.owned) continue;
+      featChips.push({
+        slug: feat.slug,
+        name: feat.name,
+        applied: feat.numeric,
+        modeled: true,
+        owned: true,
+        auto: true,
+        note: feat.note,
+      });
+      if (!feat.numeric) notes.push(feat.note);
+    }
+    if (twf.offHandWeaponMissing) notes.push(`off-hand weapon "${cfg!.offHandWeapon}" not found`);
+  }
+
+  const resolved = resolveSource(roll.source, sheet, attackModifier, damageModifier, fold, twf);
   if (!resolved) {
     return {
       id: roll.id,
@@ -465,6 +594,8 @@ export function resolveSavedRoll(
     formula: resolved.formula,
     offHand: resolved.offHand,
     offHandFormula: resolved.offHandFormula,
+    offHandComponents: resolved.offHandComponents,
+    offHandDamage: resolved.offHandDamage,
     components: resolved.components,
     missing: false,
     damage,
@@ -480,11 +611,14 @@ function resolveSource(
   attackModifier: number,
   damageModifier: number,
   featFold: FeatFold,
+  twf: TwfFold | undefined,
 ): {
   display: string;
   formula?: string;
   offHand?: string;
   offHandFormula?: string;
+  offHandComponents?: ModifierComponent[];
+  offHandDamage?: ResolvedSavedRollDamage;
   components: ModifierComponent[];
   damage?: ResolvedSavedRollDamage;
 } | null {
@@ -496,6 +630,7 @@ function resolveSource(
         attackModifier,
         sheet.attack.melee.components,
         featFold,
+        twf,
       );
     case "ranged":
       return signedResult(
@@ -504,6 +639,7 @@ function resolveSource(
         attackModifier,
         sheet.attack.ranged.components,
         featFold,
+        twf,
       );
     case "weapon": {
       const atk = sheet.attacks.find((a) => a.name === source.weaponName);
@@ -515,6 +651,7 @@ function resolveSource(
           attackModifier,
           atk.attack.components,
           featFold,
+          twf,
         ),
         damage: weaponDamage(atk, damageModifier, featFold.damageDelta, featFold.damageComponents),
       };
@@ -548,7 +685,7 @@ function resolveSource(
       return signedResult(s.total, undefined, attackModifier, s.components, featFold);
     }
     case "custom":
-      return signedResult(0, undefined, attackModifier, [], featFold);
+      return signedResult(0, undefined, attackModifier, [], featFold, twf);
   }
 }
 
@@ -656,6 +793,26 @@ export function addSavedRollRanger(
   }));
 }
 
+/**
+ * Turn a saved roll's two-weapon mode on (with a grip + optional off-hand
+ * weapon) or off (`undefined`). Also drops any two-weapon chain feats a
+ * pre-#97 roll had attached: the mode applies them from the character's feat
+ * list now, so leaving the refs behind would only be dead weight.
+ */
+export function setSavedRollTwf(
+  doc: CharacterDoc,
+  rollId: string,
+  twf: SavedRollTwf | undefined,
+): CharacterDoc {
+  return mapSavedRoll(doc, rollId, (r) => {
+    const feats = (r.feats ?? []).filter((f) => !TWF_CHAIN_SLUGS.has(f.slug));
+    const next: SavedRoll = { ...r, feats };
+    if (twf) next.twf = twf;
+    else delete next.twf;
+    return next;
+  });
+}
+
 /** Detach a ranger bonus (by kind+type) from a saved roll. */
 export function removeSavedRollRanger(
   doc: CharacterDoc,
@@ -731,18 +888,22 @@ export function attachableFeats(
   source: SavedRollSource,
 ): AttachableFeat[] {
   const compatible = compatibleAppliesTo(doc, source);
-  const all: AttachableFeat[] = doc.build.feats.map((featId) => {
-    const name = refData.feats[featId]?.name ?? featId;
-    const slug = featNameSlug(name);
-    const entry = SITUATIONAL_FEAT_EFFECTS[slug];
-    return {
-      slug,
-      name,
-      modeled: entry !== undefined,
-      options: entry?.options,
-      appliesTo: entry?.appliesTo,
-    };
-  });
+  const all: AttachableFeat[] = doc.build.feats
+    .map((featId) => {
+      const name = refData.feats[featId]?.name ?? featId;
+      const slug = featNameSlug(name);
+      const entry = SITUATIONAL_FEAT_EFFECTS[slug];
+      return {
+        slug,
+        name,
+        modeled: entry !== undefined,
+        options: entry?.options,
+        appliesTo: entry?.appliesTo,
+      };
+    })
+    // The two-weapon chain isn't attachable: it comes with the roll's
+    // two-weapon toggle, which applies every owned chain feat at once.
+    .filter((f) => !TWF_CHAIN_SLUGS.has(f.slug));
 
   const isPrioritized = (f: AttachableFeat): boolean =>
     f.modeled && (compatible === null || compatible.has(f.appliesTo!));

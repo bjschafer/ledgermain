@@ -472,6 +472,14 @@ export {
   type FeatPoolEffect,
 } from "./feat-effects.js";
 export {
+  TWF_CHAIN,
+  TWF_CHAIN_SLUGS,
+  twoWeaponProfile,
+  type OffHandGrip,
+  type TwfChainFeat,
+  type TwoWeaponProfile,
+} from "./two-weapon-fighting.js";
+export {
   FEAT_EFFECTS_EXTRACTED,
   type ExtractedFeatEntry,
   type ExtractedStaticFeatEntry,

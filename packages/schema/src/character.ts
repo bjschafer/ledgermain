@@ -2079,7 +2079,7 @@ export interface SavedRoll {
    * Flat adjustment layered on top of the source's attack bonus (or, for
    * `source.kind === "custom"`, the roll's entire value) — for situational
    * feats the engine doesn't model as a toggle (Rapid Shot -2, Deadly Aim -1,
-   * Two-Weapon Fighting -2, ...). Applied to every entry of an iterative
+   * a flanking +2, ...). Applied to every entry of an iterative
    * full-attack sequence equally. Not rescaled automatically as level/BAB
    * changes (e.g. Power Attack/Deadly Aim's BAB-tiered damage) — a flat
    * number the player sets and updates by hand. Zero/undefined = no adjustment.
@@ -2114,6 +2114,39 @@ export interface SavedRoll {
    * reminder chip but contributes no numbers (mirrors an un-owned feat).
    */
   rangerBonuses?: SavedRollRangerRef[];
+  /**
+   * Present when this roll is made fighting with two weapons — a per-round
+   * MODE, not a feat (anyone can two-weapon fight; the feats only soften the
+   * penalties). Absent = single weapon, the default. The penalties, the
+   * off-hand sequence and the applicable feats are all resolved live from the
+   * character's owned feats (`@pf1/engine`'s `twoWeaponProfile`), so nothing
+   * about the feat chain is stored here.
+   */
+  twf?: SavedRollTwf;
+}
+
+/**
+ * The two-weapon-fighting configuration of a {@link SavedRoll}: the two
+ * things the rules need that the character sheet can't infer — how the
+ * off-hand weapon is held, and (optionally) which weapon it is.
+ */
+export interface SavedRollTwf {
+  /**
+   * Off-hand grip. `"light"` (a light weapon, a double weapon's second end, or
+   * an unarmed/natural off-hand) softens both hands' penalties by 2;
+   * `"one-handed"` covers everything else, including a two-handed weapon held
+   * in one hand (Titan Mauler's Jotungrip).
+   */
+  offHand: "light" | "one-handed";
+  /**
+   * The off-hand weapon, by `WeaponInstance.name` (same by-name reference as
+   * `SavedRollSource.kind === "weapon"`). When set and still present, the
+   * off-hand line is computed from THAT weapon's attack and damage — with its
+   * ability damage restated at ½ (or full, with Double Slice) regardless of
+   * how the weapon instance itself is configured. Omitted = off-hand attacks
+   * mirror the primary's bonus and show no damage line.
+   */
+  offHandWeapon?: string;
 }
 
 /**
@@ -2878,6 +2911,17 @@ export interface ResolvedWeaponAttack {
    * = floor(abilityMod × damageMultiplier) + enhancement + damage-target changes.
    */
   damageBonus: ResolvedStat;
+  /**
+   * The ability modifier feeding `damageBonus`, BEFORE `damageMultiplier`
+   * scaling — absent when the weapon adds no ability damage at all (ranged, or
+   * `damageAbility: "none"`). Exposed so a caller can restate the ability
+   * portion at a different multiplier without re-deriving the whole damage
+   * stack: the two-weapon off-hand line does exactly that (½ ability damage,
+   * or full with Double Slice).
+   */
+  damageAbilityMod?: number;
+  /** The multiplier already applied to {@link damageAbilityMod} in `damageBonus`. */
+  damageMultiplier?: number;
   /** Damage dice string for display (e.g. "1d8"), if the weapon entry includes it. */
   damageDice?: string;
   /** Critical hit string, e.g. "19–20/×2" or "×2". */

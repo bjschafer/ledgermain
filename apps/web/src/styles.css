@@ -3256,6 +3256,33 @@ button:focus-visible,
   opacity: 0.55;
 }
 
+/* A chip the two-weapon mode supplies from the character's own feats. Outlined
+   rather than filled to read as "applied for you", and it carries no ✕ — the
+   mode toggle is what removes it. */
+.chip.feat-chip.auto {
+  border-style: dashed;
+}
+
+/* Two-weapon toggle + its grip / off-hand weapon selects: wraps rather than
+   squeezing the selects on a narrow panel, and the selects shrink back to
+   their content width (the global `select { width: 100% }` would otherwise
+   give each one its own full-width line). */
+.saved-roll-twf {
+  flex-wrap: wrap;
+}
+
+.saved-roll-twf select {
+  width: auto;
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+
+.saved-roll-twf-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .chip.feat-chip .chip-x {
   background: none;
   border: none;
@@ -3360,9 +3387,14 @@ button:focus-visible,
 
 /* Saved-rolls' rename field: reads as plain text until focused. Selector
    needs the `input[type="text"]` element+attribute specificity to actually
-   override the global input styling above, not just a bare class. */
+   override the global input styling above, not just a bare class.
+   `width: 100%` (not `auto`) is load-bearing: an input's intrinsic width comes
+   from its `size` attribute and does NOT shrink with its container, so on a
+   narrow panel the name would spill over the attack numbers to its right —
+   visibly so in Firefox, whose default input is wider than Chrome's. */
 input[type="text"].saved-roll-name {
-  width: auto;
+  width: 100%;
+  box-sizing: border-box;
   background: transparent;
   border: 1px solid transparent;
   padding: 2px 4px;

@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useState } from "react";
 
-import type { SavedRoll, SavedRollFeatRef, SavedRollRangerRef } from "@pf1/schema";
+import type { SavedRoll, SavedRollFeatRef, SavedRollRangerRef, SavedRollTwf } from "@pf1/schema";
 
 import {
   addSavedRoll,
@@ -8,16 +8,19 @@ import {
   addSavedRollRanger,
   attachableFeats,
   availableSavedRollSources,
+  isAttackLikeSource,
   ownedFeatSlugs,
   removeSavedRoll,
   removeSavedRollFeat,
   removeSavedRollRanger,
   resolveSavedRoll,
   setSavedRollFeatOption,
+  setSavedRollTwf,
   updateSavedRoll,
   type AttachableFeat,
   type ResolvedSavedRoll,
 } from "../../model/savedRolls.js";
+import { twfConfig } from "../../model/twf.js";
 import { attachableRangerBonuses } from "../../model/ranger.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "../builder/NumberField.js";
@@ -55,6 +58,12 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
     [saved, doc, refData],
   );
   const rangerAttachable = useMemo(() => attachableRangerBonuses(sheet), [sheet]);
+  // Any melee weapon can be the off hand — including the one being swung in the
+  // main hand (a matched pair of shortswords is one weapon entry, not two).
+  const offHandWeapons = useMemo(
+    () => sheet.attacks.filter((a) => a.category === "melee").map((a) => a.name),
+    [sheet],
+  );
 
   const options = useMemo(() => availableSavedRollSources(sheet), [sheet]);
   const matches = useMemo(() => {
@@ -75,7 +84,9 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
               resolved={resolved[i]!}
               attachable={attachable[i]!}
               rangerAttachable={rangerAttachable}
+              offHandWeapons={offHandWeapons}
               onUpdate={(patch) => update((d) => updateSavedRoll(d, roll.id, patch))}
+              onSetTwf={(twf) => update((d) => setSavedRollTwf(d, roll.id, twf))}
               onRemove={() => update((d) => removeSavedRoll(d, roll.id))}
               onAddFeat={(ref) => update((d) => addSavedRollFeat(d, roll.id, ref))}
               onRemoveFeat={(slug) => update((d) => removeSavedRollFeat(d, roll.id, slug))}
@@ -110,8 +121,8 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
             <Explainer title="How adding a saved roll works">
               <p className="hint">
                 Pick a source below, then expand the saved row to attach feats (Rapid Shot, Deadly
-                Aim, Power Attack fold in automatically) or layer a manual adjustment — for
-                "Custom", enter a value and damage note by hand.
+                Aim, Power Attack fold in automatically), flag it as two-weapon fighting, or layer a
+                manual adjustment — for "Custom", enter a value and damage note by hand.
               </p>
             </Explainer>
             <input
@@ -156,7 +167,9 @@ function SavedRollRow({
   resolved,
   attachable,
   rangerAttachable,
+  offHandWeapons,
   onUpdate,
+  onSetTwf,
   onRemove,
   onAddFeat,
   onRemoveFeat,
@@ -168,9 +181,11 @@ function SavedRollRow({
   resolved: ResolvedSavedRoll;
   attachable: AttachableFeat[];
   rangerAttachable: SavedRollRangerRef[];
+  offHandWeapons: string[];
   onUpdate: (
     patch: Partial<Pick<SavedRoll, "label" | "attackModifier" | "damageModifier" | "customDamage">>,
   ) => void;
+  onSetTwf: (twf: SavedRollTwf | undefined) => void;
   onRemove: () => void;
   onAddFeat: (ref: SavedRollFeatRef) => void;
   onRemoveFeat: (slug: string) => void;
@@ -182,6 +197,7 @@ function SavedRollRow({
   const panelId = useId();
   const isCustom = roll.source.kind === "custom";
   const isWeapon = roll.source.kind === "weapon";
+  const twf = twfConfig(roll);
 
   const attached = new Set((roll.feats ?? []).map((f) => f.slug));
   const addChoices = attachable.filter((f) => !attached.has(f.slug));
@@ -251,6 +267,19 @@ function SavedRollRow({
                   label={`${roll.label} (off-hand)`}
                 />
               ) : null}
+              {resolved.offHandDamage ? (
+                <span className="saved-roll-damage" title="Off-hand damage">
+                  {resolved.offHandDamage.display}
+                  {resolved.offHandDamage.crit ? ` (${resolved.offHandDamage.crit})` : ""}
+                </span>
+              ) : null}
+              {resolved.offHandDamage ? (
+                <CopyButton
+                  className="copy-btn--row"
+                  text={resolved.offHandDamage.formula}
+                  label={`${roll.label} off-hand damage`}
+                />
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -294,17 +323,19 @@ function SavedRollRow({
           {resolved.featChips.map((chip) => (
             <span
               key={chip.slug}
-              className={`chip feat-chip${!chip.owned ? " unowned" : ""}`}
+              className={`chip feat-chip${!chip.owned ? " unowned" : ""}${chip.auto ? " auto" : ""}`}
               title={
                 !chip.owned
                   ? `${chip.name} — not currently owned; not applied`
-                  : chip.modeled
-                    ? undefined
-                    : `${chip.name} — reminder only (no automatic numbers)`
+                  : chip.auto
+                    ? `${chip.name} — ${chip.note}${chip.applied ? "" : " (prerequisite missing)"}`
+                    : chip.modeled
+                      ? undefined
+                      : `${chip.name} — reminder only (no automatic numbers)`
               }
             >
               {chip.name}
-              {open && optionsFor(chip.slug) ? (
+              {open && !chip.auto && optionsFor(chip.slug) ? (
                 <select
                   className="dur-unit"
                   value={chip.option ?? ""}
@@ -318,7 +349,7 @@ function SavedRollRow({
                   ))}
                 </select>
               ) : null}
-              {open ? (
+              {open && !chip.auto ? (
                 <button
                   type="button"
                   className="chip-x"
@@ -339,9 +370,56 @@ function SavedRollRow({
         <div id={panelId} className="saved-roll-detail">
           {resolved.components.length > 0 ? (
             <Provenance
-              title={isCustom ? "Value breakdown" : `${roll.label} breakdown`}
+              title={
+                isCustom ? "Value breakdown" : `${roll.label} breakdown${twf ? " (main hand)" : ""}`
+              }
               components={resolved.components}
             />
+          ) : null}
+
+          {resolved.offHandComponents && resolved.offHandComponents.length > 0 ? (
+            <Provenance title="Off-hand breakdown" components={resolved.offHandComponents} />
+          ) : null}
+
+          {isAttackLikeSource(roll.source) ? (
+            <div className="saved-roll-adjust saved-roll-twf">
+              <label className="saved-roll-twf-toggle">
+                <input
+                  type="checkbox"
+                  checked={twf !== undefined}
+                  onChange={(e) => onSetTwf(e.target.checked ? { offHand: "light" } : undefined)}
+                />
+                Two-weapon fighting
+              </label>
+              {twf ? (
+                <>
+                  <select
+                    value={twf.offHand}
+                    aria-label="Off-hand grip"
+                    onChange={(e) =>
+                      onSetTwf({ ...twf, offHand: e.target.value as SavedRollTwf["offHand"] })
+                    }
+                  >
+                    <option value="light">Light off-hand</option>
+                    <option value="one-handed">One-handed off-hand</option>
+                  </select>
+                  <select
+                    value={twf.offHandWeapon ?? ""}
+                    aria-label="Off-hand weapon"
+                    onChange={(e) =>
+                      onSetTwf({ ...twf, offHandWeapon: e.target.value || undefined })
+                    }
+                  >
+                    <option value="">Off-hand weapon…</option>
+                    {offHandWeapons.map((name) => (
+                      <option key={name} value={name}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              ) : null}
+            </div>
           ) : null}
 
           {addChoices.length > 0 ? (
