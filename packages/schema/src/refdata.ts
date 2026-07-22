@@ -57,6 +57,16 @@ export interface RefData {
   domains: Record<string, Domain>;
   /** Wizard arcane schools (top-level only, see `WizardSchool` doc comment). */
   wizardSchools: Record<string, WizardSchool>;
+  /**
+   * Alternate racial traits from the pinned `pf1-content` module's
+   * `pf-racial-traits` pack (issue #74 fill plan phase 1), covering all 80
+   * vendored races. Distinct from the 7-core-races-plus-Sylph hand-authored
+   * `RACIAL_TRAITS` table in `@pf1/engine` `racial-traits.ts`, which remains
+   * authoritative (mechanically-enforced replacement) for those races — see
+   * that module's doc comment and `RacialTrait.replacedTraitNames` below for
+   * how the two catalogs relate.
+   */
+  racialTraits: Record<string, RacialTrait>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -103,6 +113,55 @@ export interface Race extends RefEntity {
    * no such grant.
    */
   classSkills?: SkillId[];
+}
+
+/**
+ * An alternate racial trait vendored from `pf1-content`'s `pf-racial-traits`
+ * pack (1,872 entries, ~750 of which are alternates — see
+ * data-pipeline `transformRacialTrait`'s doc comment for how alternates are
+ * told apart from the pack's standard-trait entries, which are dropped
+ * before emission since `Race.changes`/`contextNotes` already carry them).
+ *
+ * Honesty posture (mirrors the hybrid feat-prereq model): `changes` apply
+ * exactly like any other change source when present, but nothing here
+ * SUPPRESSES a race's standard `Change`s the way the hand-authored
+ * `@pf1/engine` `RACIAL_TRAITS` table does for its 8 races — this pack gives
+ * only the replaced trait's NAME (`replacedTraitNames`), not a verified
+ * mapping to the specific `Race.changes`/`contextNotes` entries it swaps
+ * out, so mechanically suppressing them would risk silently dropping the
+ * wrong thing (or the right thing for the wrong reason) on an unaudited
+ * entry. The player is expected to manually retire the replaced standard
+ * trait; the UI surfaces `replacedTraitNames` as a reminder, never a block.
+ */
+export interface RacialTrait extends RefEntity {
+  /**
+   * Race/heritage tag(s) this entry is filed under (`system.tags` verbatim) —
+   * usually one race name matching `Race.name` (e.g. "Goblin"), but a
+   * heritage-specific entry carries both its base race and heritage tags
+   * (e.g. `["Aasimar", "Plumekith"]`). Match against `Race.name` to scope a
+   * picker to the character's current race.
+   */
+  race: string[];
+  /**
+   * The pack's own grouping tag: "featSkills" | "defense" | "offense" |
+   * "senses" | "magical" | "movement" | "other" | "weakness". Absent on a
+   * minority of entries.
+   */
+  traitCategory?: string;
+  changes: Change[];
+  contextNotes: ContextNote[];
+  /**
+   * Standard trait name(s) this entry replaces, parsed from the source
+   * description's structured "Replaced Trait(s)" header — see this
+   * interface's doc comment. Always non-empty: entries without the header
+   * are the pack's STANDARD racial traits (already baked into `Race.changes`
+   * elsewhere) and never reach this collection at all.
+   */
+  replacedTraitNames: string[];
+  /** The published point cost in the Race Builder point-buy system, when tagged. */
+  racePoints?: number;
+  /** Limited-use resource, mirroring `Feat.uses` (e.g. a 3/day spell-like ability). */
+  uses?: { maxFormula?: string; per?: string };
 }
 
 /* ----------------------------------------------------------------- classes -- */

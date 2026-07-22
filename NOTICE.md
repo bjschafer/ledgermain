@@ -86,7 +86,7 @@ This is derivative Open Game Content drawn from three pinned, upstream sources:
   Occult Adventures, etc.). We carry forward that extended Section 15
   verbatim and add our own derivative-work entry per OGL Sec.6.
 
-### c. PF1 Content module (community feats pack)
+### c. PF1 Content module (community feats + racial traits packs)
 
 - Repo: `https://gitlab.com/foundryvtt_pathfinder1e/pf1-content`
 - Pinned commit: `c66bf333cafc451d817ead660473dd01d9846fb3`
@@ -94,7 +94,10 @@ This is derivative Open Game Content drawn from three pinned, upstream sources:
   its module _code_ (never copied in, per Sec.1's clean-room discipline) and
   OGL-covered compendium _data_ under `src/pf-feats/`, from which we vendor
   only the feats not already present in the system pack (name collisions keep
-  the system pack's richer record).
+  the system pack's richer record), and `src/pf-racial-traits/`, from which we
+  vendor the alternate racial traits -- entries carrying a structured
+  "Replaced Trait(s)" description header (the pack's standard-trait entries
+  are skipped, since the system pack's own race docs already carry them).
 
 Our `OGL.txt` is therefore the upstream Archetypes `OGL.txt` with the
 following appended to its COPYRIGHT NOTICE:

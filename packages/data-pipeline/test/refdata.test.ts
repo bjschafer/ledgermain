@@ -67,6 +67,49 @@ describe("metadata + provenance", () => {
   });
 });
 
+describe("alternate racial traits (issue #74 fill plan — pf1-content pf-racial-traits pack)", () => {
+  it("emits only alternates (the pack's ~892 standard-trait entries are dropped)", () => {
+    expect(Object.keys(ref.racialTraits).length).toBe(750);
+    expect(ref.meta.counts.racialTraits).toBe(750);
+  });
+
+  it("Goblin's own 'Skilled' standard trait is NOT vendored here (already in races.json)", () => {
+    // Regression guard for the standard-vs-alternate classifier: this entry
+    // has no "Replaced Trait(s)" header, and its +4 Ride/Stealth bonus is
+    // already baked into the Goblin race doc's own `changes`.
+    expect(
+      Object.values(ref.racialTraits).find((t) => t.name === "Skilled (Goblin)"),
+    ).toBeUndefined();
+    const goblin = byName(ref.races, "Goblin");
+    expect(goblin.changes.find((c) => c.target === "skill.rid")).toMatchObject({ formula: "4" });
+  });
+
+  it("Granite Skin (Oread) is an alternate: structured change + replaced-trait name", () => {
+    const graniteSkin = byName(ref.racialTraits, "Granite Skin");
+    expect(graniteSkin.race).toEqual(["Oread"]);
+    expect(graniteSkin.replacedTraitNames).toEqual(["Energy Resistance"]);
+    expect(graniteSkin.changes).toEqual([{ formula: "1", target: "nac", type: "racial" }]);
+  });
+
+  it("a heritage-specific entry carries both its base race and heritage tags", () => {
+    const drowHeritage = byName(ref.racialTraits, "Drow Heritage");
+    expect(drowHeritage.race).toEqual(["Half-Elf", "Darkborn"]);
+  });
+
+  it("every entry has a non-empty replacedTraitNames (that's what makes it an alternate)", () => {
+    for (const t of Object.values(ref.racialTraits)) {
+      expect(t.replacedTraitNames.length, t.name).toBeGreaterThan(0);
+    }
+  });
+
+  it("covers races well beyond the 8 hand-authored in @pf1/engine's RACIAL_TRAITS", () => {
+    const raceTags = new Set(Object.values(ref.racialTraits).flatMap((t) => t.race));
+    for (const race of ["Oread", "Tiefling", "Aasimar", "Hobgoblin", "Kobold"]) {
+      expect(raceTags.has(race)).toBe(true);
+    }
+  });
+});
+
 describe("class feature actions (schema v8 — issue: bare resource-pool counters)", () => {
   it("Acid Dart (WIZ) carries a ranged-touch acid damage action", () => {
     const acidDart = byName(ref.classFeatures, "Acid Dart (WIZ)");

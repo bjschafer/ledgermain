@@ -557,9 +557,10 @@ export function setRace(doc: CharacterDoc, raceId: string): CharacterDoc {
   // Alternate racial traits (issue #35) belong to a specific race; drop them on
   // any race change so a stale swap can't apply (the engine also ignores ids
   // whose race doesn't match, but clearing here keeps the doc tidy and the
-  // picker in sync).
+  // picker in sync). Same for the vendored catalog (issue #74 fill plan).
   const build = { ...doc.build };
   delete build.racialTraits;
+  delete build.vendoredRacialTraits;
   return { ...doc, identity, build };
 }
 

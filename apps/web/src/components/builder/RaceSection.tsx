@@ -27,6 +27,7 @@ import { HomebrewRaceEditor } from "./HomebrewRaceEditor.js";
 import { Panel } from "./Panel.js";
 import { SearchMiss } from "./SearchMiss.js";
 import type { BuilderProps } from "./types.js";
+import { VendoredRacialTraitPicker } from "./VendoredRacialTraitPicker.js";
 
 /**
  * One collapsible rarity tier in the race picker. Rendered per group (a stable
@@ -267,6 +268,9 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
           </div>
         </div>
       )}
+      <div style={{ marginTop: 12 }}>
+        <VendoredRacialTraitPicker doc={doc} refData={refData} update={update} />
+      </div>
       <div style={{ marginTop: 12 }}>
         <p className="hint">Racial languages</p>
         <div className="chips" style={{ marginTop: 6 }}>

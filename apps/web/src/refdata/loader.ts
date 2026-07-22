@@ -27,6 +27,7 @@ async function fetchAll(): Promise<RefData> {
   const [
     meta,
     races,
+    racialTraits,
     classes,
     classFeature,
     feats,
@@ -45,6 +46,7 @@ async function fetchAll(): Promise<RefData> {
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
+    getJson<RefData["racialTraits"]>("racial-traits.json"),
     getJson<RefData["classes"]>("classes.json"),
     getJson<RefData["classFeatures"]>("class-features.json"),
     getJson<RefData["feats"]>("feats.json"),
@@ -64,6 +66,7 @@ async function fetchAll(): Promise<RefData> {
   return {
     meta,
     races,
+    racialTraits,
     classes,
     classFeatures: classFeature,
     feats,

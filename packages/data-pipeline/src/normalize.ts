@@ -12,6 +12,7 @@ import type {
   Feat,
   Item,
   Race,
+  RacialTrait,
   RefData,
   RefDataMeta,
   Spell,
@@ -37,6 +38,7 @@ import {
 import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
 import { transformRace } from "./transform/races.js";
+import { transformRacialTrait } from "./transform/racialTraits.js";
 import { transformSpell } from "./transform/spells.js";
 import {
   applyArchetypeFeatureLevelSupplements,
@@ -56,6 +58,8 @@ export interface NormalizeOptions {
   archetypeSourceDir: string;
   /** `src/pf-feats` directory from the pinned PF1 Content module clone. */
   pfContentFeatsDir: string;
+  /** `src/pf-racial-traits` directory from the pinned PF1 Content module clone. */
+  pfContentRacialTraitsDir: string;
   sourceRepo: string;
   sourceSha: string;
   systemVersion: string;
@@ -177,6 +181,16 @@ export function normalize(opts: NormalizeOptions): {
         pf.doc.type === "race" && SLICE.raceFolders.some((f) => pf.relPath.startsWith(`${f}/`)),
     )
     .map((pf) => transformRace(pf.doc, resolveUuid));
+
+  // --- racial traits: pf1-content pf-racial-traits pack (alternate racial
+  // traits only — the pack's standard-trait entries are dropped by
+  // `transformRacialTrait`, see its doc comment) ------------------------------
+  const racialTraits: RacialTrait[] = [];
+  for (const pf of readPack(opts.pfContentRacialTraitsDir)) {
+    if (pf.doc.type !== "feat") continue;
+    const rt = transformRacialTrait(pf.doc, resolveUuid);
+    if (rt) racialTraits.push(rt);
+  }
 
   // --- feats: system pack (all of them; prereq refs point within this set) --
   const systemFeats: Feat[] = readPack(join(packsDir, "feats"))
@@ -347,6 +361,7 @@ export function normalize(opts: NormalizeOptions): {
 
   const counts = {
     races: races.length,
+    racialTraits: racialTraits.length,
     classes: classes.length,
     classFeatures: classFeatures.length,
     feats: feats.length,
@@ -378,6 +393,7 @@ export function normalize(opts: NormalizeOptions): {
   const refData: RefData = {
     meta,
     races: byId(races),
+    racialTraits: byId(racialTraits),
     classes: byId(classes),
     // Recomputed (not the earlier `classFeaturesById`) so the prestige-class
     // supplement pushed onto `classFeatures` above is included — the earlier

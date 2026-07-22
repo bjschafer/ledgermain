@@ -11,7 +11,7 @@
  * warnings for issue #5) — that is surfaced as a warning, never enforced.
  */
 
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import type { CharacterDoc, RacialTrait, RefData } from "@pf1/schema";
 import { alternateRacialTraitsForRace, RACIAL_TRAITS } from "@pf1/engine";
 
 export function hasRacialTrait(doc: CharacterDoc, id: string): boolean {
@@ -81,4 +81,56 @@ export function conflictingRacialTraitIds(doc: CharacterDoc, refData: RefData): 
     if (ids.length > 1) for (const id of ids) conflicts.add(id);
   }
   return conflicts;
+}
+
+/* ------------------------------------------ vendored racial traits (#74) -- */
+
+/**
+ * Everything below scopes `RefData.racialTraits` — the ~80-race vendored
+ * catalog from the `pf1-content` fill plan — which is deliberately kept
+ * separate from the hand-authored table above rather than merged into one
+ * list. See `RacialTrait`'s doc comment in `@pf1/schema` for why a vendored
+ * pick never suppresses a standard trait the way a hand-authored one does.
+ */
+
+/** Loose match for de-duping a vendored entry against a hand-authored one by name. */
+function normalizeTraitName(name: string): string {
+  return name
+    .replace(/\s*\([^)]*\)\s*$/, "") // strip a trailing "(Sylph)"/"(Human)" disambiguator
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+/**
+ * The vendored alternate racial traits available for the character's current
+ * race, minus any whose name already matches a hand-authored `RACIAL_TRAITS`
+ * entry for that race — the hand-authored version is the one to pick for
+ * those (it enforces the swap; see `availableRacialTraits`), so surfacing
+ * both would just be a confusing duplicate with different guarantees.
+ * Alphabetical by name (unlike the hand-authored list, this can run to
+ * dozens of entries per race — Elf alone vendors 63).
+ */
+export function availableVendoredRacialTraits(doc: CharacterDoc, refData: RefData): RacialTrait[] {
+  const race = refData.races[doc.identity.race];
+  if (!race) return [];
+  const handAuthoredNames = new Set(
+    alternateRacialTraitsForRace(race.name).map((t) => normalizeTraitName(t.name)),
+  );
+  return Object.values(refData.racialTraits)
+    .filter(
+      (rt) => rt.race.includes(race.name) && !handAuthoredNames.has(normalizeTraitName(rt.name)),
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export function hasVendoredRacialTrait(doc: CharacterDoc, id: string): boolean {
+  return (doc.build.vendoredRacialTraits ?? []).includes(id);
+}
+
+/** Add or remove a vendored alternate racial trait id. No-op add if already present. */
+export function toggleVendoredRacialTrait(doc: CharacterDoc, id: string): CharacterDoc {
+  const current = doc.build.vendoredRacialTraits ?? [];
+  const has = current.includes(id);
+  const vendoredRacialTraits = has ? current.filter((t) => t !== id) : [...current, id];
+  return { ...doc, build: { ...doc.build, vendoredRacialTraits } };
 }

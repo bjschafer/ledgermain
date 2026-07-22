@@ -22,6 +22,7 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
   return {
     meta,
     races: readJson(dir, "races.json"),
+    racialTraits: readJson(dir, "racial-traits.json"),
     classes: readJson(dir, "classes.json"),
     classFeatures: readJson(dir, "class-features.json"),
     feats: readJson(dir, "feats.json"),
