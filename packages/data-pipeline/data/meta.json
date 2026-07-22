@@ -71,7 +71,7 @@
     "weapons.json": "286e9b97a5c1ca8b9b1126149b0abc4c3ddc968522d857d1d421e7abe06a0042",
     "wizard-schools.json": "b6078da2c6e8837e7b12845869d7ee605ec27844619a4ce2257da8ba6665d315"
   },
-  "schemaVersion": 11,
+  "schemaVersion": 12,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

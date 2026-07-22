@@ -57,9 +57,19 @@ export const SYSTEM_VERSION = "11.11";
  * time (see `mergedRagePowerCatalog`), not baked into RefData itself. (v10
  * retroactively also documents `Class.castingAdvancement` and `Class.prereqs`
  * — structured prestige casting-advancement slots and entry requirements,
- * shipped under v9 with issue #66.)
+ * shipped under v9 with issue #66.) v12 (issue #74 Phase 3b) adds eleven more
+ * "Pf Data 1e" subsystem catalogs, same prose-only/merged-at-read-time
+ * posture as `ragePowers`: `hexes`/`hexes.json` (witch hexes),
+ * `shamanHexes`/`shaman-hexes.json` (general shaman hexes),
+ * `magusArcana`/`magus-arcana.json`, `rogueTalents`/`rogue-talents.json`,
+ * `ninjaTricks`/`ninja-tricks.json`, `slayerTalents`/`slayer-talents.json`,
+ * `vigilanteTalents`/`vigilante-talents.json`,
+ * `vigilanteSocialTalents`/`vigilante-social-talents.json`,
+ * `arcanistExploits`/`arcanist-exploits.json`,
+ * `investigatorTalents`/`investigator-talents.json`, and
+ * `kineticWildTalents`/`kinetic-wild-talents.json`.
  */
-export const SCHEMA_VERSION = 11;
+export const SCHEMA_VERSION = 12;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).
