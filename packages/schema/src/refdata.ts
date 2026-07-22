@@ -105,6 +105,12 @@ export interface RefData {
   racialTraits: Record<string, RacialTrait>;
   /** The full published barbarian rage-power catalog (fourth-source dataset; see `RagePower` doc comment). */
   ragePowers: Record<string, RagePower>;
+  /** The full published witch hex catalog (fourth-source dataset, issue #74 Phase 3b; see `WitchHex` doc comment). */
+  hexes: Record<string, WitchHex>;
+  /** The full published GENERAL shaman hex catalog (fourth-source dataset, issue #74 Phase 3b; see `ShamanHex` doc comment) — spirit-specific hexes stay hand-authored only, see that type's doc comment. */
+  shamanHexes: Record<string, ShamanHex>;
+  /** The full published magus arcana catalog (fourth-source dataset, issue #74 Phase 3b; see `MagusArcana` doc comment). */
+  magusArcana: Record<string, MagusArcana>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -818,6 +824,99 @@ export interface RagePower extends RefEntity {
    * it out structurally — see the data-pipeline transform's doc comment).
    */
   level?: number;
+}
+
+/* --------------------------------------------------------- witch hexes -- */
+
+/**
+ * A published witch hex (issue #74 Phase 3b, same "catalog from data,
+ * mechanics as overlay" pattern `RagePower` established). Sourced from the
+ * "Pf Data 1e" dataset's `json/class_ability_hexes.json` (~105 raw entries;
+ * see `PFDATA_REPO`/`PFDATA_SHA` in data-pipeline) rather than the Foundry
+ * pf1 system — the Witch class def only links generic "Hex"/"Major Hex"/
+ * "Grand Hex" stub `ClassFeature`s, no per-hex breakdown.
+ *
+ * The FULL published catalog (~104 entries after dropping the source's
+ * `not_found` sentinel) with prose only — no `changes`. Live mechanics for
+ * the hand-verified subset remain in `@pf1/engine` `witch-hexes.ts`'s
+ * `WITCH_HEXES` table, authoritative on any name collision with an entry
+ * here (see that file's `mergedWitchHexCatalog`).
+ */
+export interface WitchHex extends RefEntity {
+  /** Ability-type suffix as published, e.g. "(Su)" — absent for a minority of entries the source doesn't tag. */
+  nameSuffix?: string;
+  /**
+   * Hex tier, taken directly from the source's own `category` field
+   * (`"hex" | "majorhex" | "grandhex"`, renamed here to this project's
+   * `"hex" | "major" | "grand"` convention — matching `@pf1/engine`
+   * `WitchHexTier`). Empirically validated against all 27 hand-authored
+   * entries plus the published tier thresholds (10th-level Major Hexes,
+   * 18th-level Grand Hexes): every vendored entry's `category` matched the
+   * expected tier with zero exceptions. The source ALSO carries a `level`
+   * field on a handful of entries, but it's always `1` regardless of tier
+   * (never a real level gate) — deliberately NOT carried onto this type; see
+   * `RagePower.level`'s doc comment for the identical trap in that sibling
+   * catalog.
+   */
+  tier: "hex" | "major" | "grand";
+}
+
+/* -------------------------------------------------- general shaman hexes -- */
+
+/**
+ * A published GENERAL shaman hex (issue #74 Phase 3b) — the Advanced Class
+ * Guide's own "Shaman Hexes" table, available to any shaman regardless of
+ * spirit. Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_shaman_hexes.json` (18 raw entries, 16 after dropping
+ * the source's `not_found` sentinel AND its `witch_hex` entry — the latter
+ * isn't a hex at all, just the ACG rule text stating a shaman may instead
+ * pick any non-major/non-grand WITCH hex, treating shaman level as witch
+ * level; see the data-pipeline transform's doc comment).
+ *
+ * Distinct from `@pf1/engine` `shaman-spirits.ts`'s `ShamanSpiritHex` —
+ * those are the 5 hexes each of the 8 spirits individually grants (hand-
+ * authored, not vendored anywhere in this source), while this catalog is the
+ * spirit-agnostic general list. The two are presented as separate sections
+ * in `ShamanHexPicker` but share the same `doc.build.shamanHexes` id array.
+ * No hand-authored mechanical table exists for this catalog (every entry
+ * here is prose-only, browsable via `@pf1/engine` `shaman-hexes.ts`'s
+ * `mergedShamanHexCatalog`) — unlike `RagePower`/`WitchHex`, there is no
+ * "authoritative hand-verified subset" to overlay.
+ */
+export interface ShamanHex extends RefEntity {
+  /** Ability-type suffix as published, e.g. "(Su)" — absent for a minority of entries the source doesn't tag. */
+  nameSuffix?: string;
+}
+
+/* -------------------------------------------------------- magus arcana -- */
+
+/**
+ * A published magus arcanum (issue #74 Phase 3b, same pattern as
+ * `RagePower`/`WitchHex`). Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_magus_arcana.json` (66 raw entries, 64 after dropping
+ * the source's `not_found` sentinel and one `redirect` alias — Greater
+ * Arcane Redoubt -> Arcane Redoubt, Greater) rather than the Foundry pf1
+ * system — the Magus class def only links a generic "Magus Arcana" stub
+ * `ClassFeature`, no per-arcana breakdown.
+ *
+ * Unlike `RagePower`/`WitchHex`, this source has NO structured `level` or
+ * `category` field at all — every stated level minimum (base 3rd, or a
+ * higher stated minimum for a handful of arcana) is prose-only, embedded in
+ * `description`'s own text (do not attempt to parse it out structurally).
+ * `nameSuffix` is similarly not a top-level source field here — every
+ * entry's description instead OPENS with a `**Name (Ex/Su/Sp):**` bold
+ * header restating the name; the data-pipeline transform parses that header
+ * out into `nameSuffix` and strips it from the rendered `description` (which
+ * would otherwise duplicate the name already shown by the picker).
+ *
+ * The FULL published catalog with prose only — no `changes`. Live mechanics
+ * for the hand-verified subset remain in `@pf1/engine` `magus-arcana.ts`'s
+ * `MAGUS_ARCANA` table, authoritative on any name collision with an entry
+ * here (see that file's `mergedMagusArcanaCatalog`).
+ */
+export interface MagusArcana extends RefEntity {
+  /** Ability-type suffix, parsed from the description's own leading `**Name (Ex/Su/Sp):**` header — see the interface doc comment. */
+  nameSuffix?: string;
 }
 
 export type { SourceRef };

@@ -1,0 +1,767 @@
+{
+  "accurate_strike": {
+    "description": "<p>The magus can expend 2 points from his arcane pool as a swift action to resolve all of his melee weapon attacks until the end of his turn as melee touch attacks. The magus must be at least 9th level before selecting this arcana. — Ultimate Combat pg. 54</p>",
+    "id": "accurate_strike",
+    "name": "Accurate Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:accurate_strike"
+  },
+  "aquatic_agility": {
+    "description": "<p>As an immediate action, the magus can spend 1 point from his arcane pool to gain the benefits of water breathing for 1 round per level. During this time, he can ignore the effects of rough water and underwater combat on his attacks and movement. The magus must be at least 6th level before selecting this magus arcana. — Blood of the Moon pg. 21</p>",
+    "id": "aquatic_agility",
+    "name": "Aquatic Agility",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "blood-of-the-moon"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:aquatic_agility"
+  },
+  "arcane_accuracy": {
+    "description": "<p>The magus can expend 1 point from his arcane pool as a swift action to grant himself an insight bonus equal to his Intelligence bonus on all attack rolls until the end of his turn. — Ultimate Magic pg. 11</p>",
+    "id": "arcane_accuracy",
+    "name": "Arcane Accuracy",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:arcane_accuracy"
+  },
+  "arcane_cloak": {
+    "description": "<p>The magus can expend 1 point from his arcane pool to add his Intelligence bonus to Stealth checks and Bluff checks to create a diversion in order to hide. This bonus lasts for 1 minute. — Ultimate Combat pg. 54</p>",
+    "id": "arcane_cloak",
+    "name": "Arcane Cloak",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:arcane_cloak"
+  },
+  "arcane_dealer": {
+    "description": "<p>The magus gains the Deadly Dealer feat, even if he does not meet the prerequisites. He can use his arcane pool to grant a deck of cards an enhancement bonus as though it were a ranged weapon with 54 pieces of ammunition. The magus must use either Arcane Strike or his arcane pool to enhance the cards in order to use them as weapons. The magus must be at least 6th level before selecting this arcana. — The Harrow Handbook pg. 24</p>",
+    "id": "arcane_dealer",
+    "name": "Arcane Dealer",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "the-harrow-handbook"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:arcane_dealer"
+  },
+  "arcane_deed": {
+    "description": "<p>When a magus takes this arcana, he can pick any one swashbuckler_&gt;deed from the swashbuckler class feature as long as that deed can be used by a swashbuckler of his magus level. The magus can use that deed by using points from his arcane pool as the panache points required for that deed. Even if he gains a panache pool through another means, the magus is not considered to have at least 1 point in his panache pool for the purpose of deeds selected with arcane deed, and his effective swashbuckler level for determining such a deed's effect is 0. A magus can take this arcana multiple times, each time gaining a new deed. The magus must have the flamboyant arcana to select this arcana. — Advanced Class Guide pg. 104</p>",
+    "id": "arcane_deed",
+    "name": "Arcane Deed",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:arcane_deed"
+  },
+  "arcane_edge": {
+    "description": "<p>The magus can expend 1 point from his arcane pool as an immediate action after hitting a target with a slashing or piercing weapon in order to deal an amount of bleed damage equal to his Intelligence modifier (minimum 0). The magus must be at least 9th level before he selects this arcana. — Ultimate Combat pg. 54</p>",
+    "id": "arcane_edge",
+    "name": "Arcane Edge",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:arcane_edge"
+  },
+  "arcane_redoubt": {
+    "description": "<p>As a swift action, the magus can expend 1 point from his arcane pool to treat his shield bonus to AC (including any enhancement bonus) as a bonus to touch AC until the beginning of his next turn. — Ultimate Combat pg. 54</p>",
+    "id": "arcane_redoubt",
+    "name": "Arcane Redoubt",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:arcane_redoubt"
+  },
+  "arcane_redoubt_greater": {
+    "description": "<p>Whenever the magus uses his arcane redoubt magus arcana, he may spend an additional point from his arcane pool in order to apply his shield bonus to AC (including any enhancement bonus) as a bonus on Reflex saves until the beginning of his next turn. If he is targeted with an effect requiring a Reflex save while using this power, he may spend 2 points from his arcane pool as an immediate action to grant himself evasion, or 4 points to grant himself improved evasion. The magus must have the arcane redoubt magus arcana and be at least 12th level to select this magus arcana. — Ultimate Combat pg. 54</p>",
+    "id": "arcane_redoubt_greater",
+    "name": "Greater Arcane Redoubt",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:arcane_redoubt_greater"
+  },
+  "arcane_scent": {
+    "description": "<p>The magus can sniff out other spellcasters. By spending 1 point from his arcane pool, the magus gains the scent special quality for 1 hour per magus level. This scent can only detect creatures capable of casting spells or using spell-like abilities. Additionally, while this effect persists, the magus can attempt a Spellcraft check as a move action to determine the highest level spell a detected creature is capable of casting (DC = 10 + the creature's caster level). The magus can only attempt this Spellcraft check once per creature per 24 hours. — Blood of the Moon pg. 21</p>",
+    "id": "arcane_scent",
+    "name": "Arcane Scent",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "blood-of-the-moon"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:arcane_scent"
+  },
+  "bane_blade": {
+    "description": "<p>Whenever the magus enhances his weapon using his arcane pool, he may spend 1 additional point from his arcane pool to add the bane special ability to the weapon. The magus must be at least 15th level before selecting this arcana. — Ultimate Combat pg. 54</p>",
+    "id": "bane_blade",
+    "name": "Bane Blade",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:bane_blade"
+  },
+  "book_bound": {
+    "description": "<p>As long as he wields his spellbook in his off hand, the magus can take an immediate action to gain a +4 bonus on a concentration check he attempts within the next round. This bonus stacks with other bonuses, including the bonus from the concentrate arcana. The magus can use this ability three times per day. — Disciple's Doctrine pg. 9</p>",
+    "id": "book_bound",
+    "name": "Book-Bound",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "disciple-s-doctrine"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:book_bound"
+  },
+  "broad_study": {
+    "description": "<p>The magus selects another one of his spellcasting classes. The magus can use his spellstrike and spell combat abilities while casting or using spells from the spell list of that class. This does not allow him to cast arcane spells from that class's spell list without suffering the normal chances of arcane spell failure, unless the spell lacks somatic components. The magus must be at least 6th level and must possess levels in at least one other spellcasting class before selecting this arcana. — Ultimate Magic pg. 11</p>",
+    "id": "broad_study",
+    "name": "Broad Study",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:broad_study"
+  },
+  "circle_of_order": {
+    "description": "<p>As a swift action, the magus can spend 1 point from his arcane pool to fortify his defenses against chaotic attacks. This grants him a dodge bonus to his AC equal to half his magus level (maximum +10 at 20th level) against chaotic-aligned attacks and effects and outsiders with the chaotic subtype until the beginning of his next turn. (For example, the magus would gain the dodge bonus against attacks from an anarchic weapon or a glabrezu's pincers.) The magus must be at least 9th level to select this arcana. — Disciple's Doctrine pg. 9</p>",
+    "id": "circle_of_order",
+    "name": "Circle of Order",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "disciple-s-doctrine"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:circle_of_order"
+  },
+  "close_range": {
+    "description": "<p>The magus can deliver ray spells that feature a ranged touch attack as melee touch spells. He can use a ranged touch attack spell that targets more than one creature (such as scorching ray), but he makes only one melee touch attack to deliver one of these ranged touch effects; additional ranged touch attacks from that spell are wasted and have no effect. These spells can be used with the spellstrike class feature. — Ultimate Magic pg. 11</p>",
+    "id": "close_range",
+    "name": "Close Range",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:close_range"
+  },
+  "concentrate": {
+    "description": "<p>The magus can reroll any concentration check he has just made with a +4 bonus. He must use this ability after the roll is made, but before the roll's outcome is determined. The magus must take the second roll, even if it is worse. The magus can use this ability once per day. — Ultimate Magic pg. 11</p>",
+    "id": "concentrate",
+    "name": "Concentrate",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:concentrate"
+  },
+  "critical_strike": {
+    "description": "<p>Whenever the magus scores a critical hit with a melee weapon, he may cast a spell with a range of touch as a swift action, then make a touch attack with that spell against the target of the critical hit as a free action. The magus can use this ability once per day. The magus must be at least 12th level before selecting this arcana. — Ultimate Magic pg. 11</p>",
+    "id": "critical_strike",
+    "name": "Critical Strike",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:critical_strike"
+  },
+  "dark_shifter": {
+    "description": "<p>The magus can expend 1 point from his arcane pool as a move action to change the target of an ongoing spell effect with the darkness descriptor. The new target must be within the spell's original range, and uses the magus's level as the effective caster level for the purpose of determining the maximum distance the effect can be moved from the magus. If the spell effect the magus is moving originated from another creature, the magus must succeed at a caster level check to reposition the effect (DC = 11 + the effect's caster level). Failure wastes the magus's move action, but doesn't expend the point from his arcane pool. The magus must be at least 6th level before selecting this arcana. — Ranged Tactics Toolbox pg. 13, Bastards of Golarion pg. 9</p>",
+    "id": "dark_shifter",
+    "name": "Dark Shifter",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ranged-tactics-toolbox"
+      },
+      {
+        "id": "bastards-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:dark_shifter"
+  },
+  "devoted_blade": {
+    "description": "<p>Whenever the magus enhances his weapon using his arcane pool, he may spend 1 additional point from his arcane pool to add either the anarchic, axiomatic, holy, or unholy special ability to the list of available options. A magus may only add one of these abilities if it matches his own alignment. The magus must be at least 12th level before selecting this arcana. — Ultimate Combat pg. 54</p>",
+    "id": "devoted_blade",
+    "name": "Devoted Blade",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:devoted_blade"
+  },
+  "dispelling_strike": {
+    "description": "<p>The magus can spend 1 or more points from his arcane pool as a swift action to imbue his weapon with a special power. If the weapon strikes a creature within the next minute, that creature is the subject of a targeted dispel magic using the magus's level as the caster level, except that this effect cannot dispel a spell of a level higher than the number of arcane pool points expended to activate this ability (treat higher-level spells as if they do not exist and apply the dispel attempt to the remaining spells with the highest caster level). Once the strike is made, the power dissipates, even if the dispel attempt is unsuccessful. The magus must be at least 9th level before selecting — Ultimate Magic pg. 11</p>",
+    "id": "dispelling_strike",
+    "name": "Dispelling Strike",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:dispelling_strike"
+  },
+  "disruptive": {
+    "description": "<p>The magus gains Disruptive as a bonus feat. The magus must be at least 6th level before selecting this arcana. — Ultimate Combat pg. 54</p>",
+    "id": "disruptive",
+    "name": "Disruptive",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:disruptive"
+  },
+  "distant_spellstrike": {
+    "description": "<p>The range of any spell the magus delivers through a ranged weapon attack increases to the maximum range of the weapon if that is greater than the spell's range. The magus must be at least 12th level and must have ranged spellstrike (Eldritch Archer or Myrmidarch) to select this arcana. — Heroes of the Streets pg. 11</p>",
+    "id": "distant_spellstrike",
+    "name": "Distant Spellstrike",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:distant_spellstrike"
+  },
+  "divinatory_strike": {
+    "description": "<p>Whenever the magus scores a critical hit against an opponent with a melee attack, he can gain preternatural insight into his foe's strengths and weaknesses as though he had rolled a natural 20 on a Knowledge check to identify the creature struck. Any bonuses or penalties the magus normally applies to such a Knowledge check are applied to this ability, including his Intelligence modifier, ranks in the requisite Knowledge skill, and other applicable modifiers. Depending on the final calculated outcome of this ability and the CR of the creature struck, the magus may still be unable to glean information about his enemy. This ability works even if the magus has already attempted a Knowledge check to identify the creature. — Magical Marketplace pg. 4</p>",
+    "id": "divinatory_strike",
+    "name": "Divinatory Strike",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:divinatory_strike"
+  },
+  "empowered_magic": {
+    "description": "<p>The magus can cast one spell per day as if it were modified by the Empower Spell feat. This does not increase the casting time or the level of the spell. The magus must be at least 6th level before selecting this magus arcana. — Ultimate Magic pg. 11</p>",
+    "id": "empowered_magic",
+    "name": "Empowered Magic",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:empowered_magic"
+  },
+  "enduring_blade": {
+    "description": "<p>Whenever the magus enchants his weapon using his arcane pool, he may spend 1 additional point from his arcane pool to increase the duration to 1 minute per magus level. The magus must be at least 6th level before selecting this arcana. — Ultimate Combat pg. 54</p>",
+    "id": "enduring_blade",
+    "name": "Enduring Blade",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:enduring_blade"
+  },
+  "familiar": {
+    "description": "<p>The magus gains a familiar, using his magus level as his effective wizard level. This familiar follows the rules for familiars presented in the arcane bond wizard class feature. — Ultimate Magic pg. 12</p>",
+    "id": "familiar",
+    "name": "Familiar",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:familiar"
+  },
+  "flamboyant_arcana": {
+    "description": "<p>A magus gains the derring-do and opportune parry and riposte deeds from the swashbuckler's list of deeds. The magus can spend only points from his arcane pool (not panache points) to use these deeds and any other deeds he gains from the arcane deed arcana. He can't use points from his arcane pool to use deeds from other classes or those gained by feats, nor can he regain points to his arcane pool as a swashbuckler would regain panache points. Effects that add to, reduce the cost of, or otherwise affect panache or grit don't affect the arcane pool of a magus with this arcana. — Advanced Class Guide pg. 104</p>",
+    "id": "flamboyant_arcana",
+    "name": "Flamboyant Arcana",
+    "sources": [
+      {
+        "id": "advanced-class-guide"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:flamboyant_arcana"
+  },
+  "ghost_blade": {
+    "description": "<p>Whenever the magus enchants his weapon using his arcane pool, he may spend 1 additional point from his arcane pool to add the brilliant energy and ghost touch special abilities to the list of available options. The magus must be at least 9th level before selecting this arcana. — Ultimate Combat pg. 54</p>",
+    "id": "ghost_blade",
+    "name": "Ghost Blade",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:ghost_blade"
+  },
+  "hasted_assault": {
+    "description": "<p>The magus can expend 1 point from his arcane pool as a swift action to move more quickly. This functions as haste, but only targets the magus and lasts for a number of rounds equal to the magus's Intelligence bonus. The magus must be at least 9th level before selecting this magus arcana. — Ultimate Magic pg. 12</p>",
+    "id": "hasted_assault",
+    "name": "Hasted Assault",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:hasted_assault"
+  },
+  "intuitive_protection": {
+    "description": "<p>When a conjuration (summoning) spell is cast by an opponent and the magus successfully identifies the spell with a Spellcraft check, he can spend 1 point form his arcane pool as an immediate action to cast protection from chaos, evil, good, or law (chosen when using this ability) on himself; this lasts a number of rounds equal to his magus level. At 7th level, he can instead cast magic circle against chaos, evil, good, or law when using this ability. The magus must be at least 3rd level before selecting this arcana. — Monster Summoner's Handbook pg. 9</p>",
+    "id": "intuitive_protection",
+    "name": "Intuitive Protection",
+    "nameSuffix": "(Sp)",
+    "sources": [
+      {
+        "id": "monster-summoner-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:intuitive_protection"
+  },
+  "ki_arcana": {
+    "description": "<p>The magus may use points from his arcana pool and ki points from a ki pool granted by another class interchangeably. The magus must be at least 6th level and must have levels in a class that grants him a ki pool before selecting this arcana. — Magical Marketplace pg. 4</p>",
+    "id": "ki_arcana",
+    "name": "Ki Arcana",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:ki_arcana"
+  },
+  "lingering_pain": {
+    "description": "<p>The magus can expend 1 point from his arcane pool as an immediate action after hitting a target with a weapon attack. All damage from that attack (including damage from a spell cast using the spellstrike ability) is considered continuous damage for the purposes of any concentration checks made by the target prior to the beginning of the magus's next turn. — Ultimate Combat pg. 54</p>",
+    "id": "lingering_pain",
+    "name": "Lingering Pain",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:lingering_pain"
+  },
+  "maneuver_mastery": {
+    "description": "<p>The magus has mastered one combat maneuver. He selects one maneuver when selecting this arcana. Whenever he is attempting the selected maneuver, he uses his magus level in place of his base attack bonus (in addition to any base attack bonus gained from other classes). A magus can select this magus arcana more than once. Its effects do not stack. Each time he selects this arcana, he selects another combat maneuver. — Ultimate Magic pg. 12</p>",
+    "id": "maneuver_mastery",
+    "name": "Maneuver Mastery",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:maneuver_mastery"
+  },
+  "maximized_magic": {
+    "description": "<p>The magus can cast one spell per day as if it were modified by the Maximize Spell feat. This does not increase the casting time or the level of the spell. The magus must be at least 12th level before selecting this magus arcana. — Ultimate Magic pg. 12</p>",
+    "id": "maximized_magic",
+    "name": "Maximized Magic",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:maximized_magic"
+  },
+  "natural_spell_combat": {
+    "description": "<p>The magus can use his spell combat class feature with a natural attack of his choice. If he does, he gains a +2 bonus on concentration checks. If the natural attack is made with an appendage that would normally hold a weapon (such as a claw attack), the magus cannot wield a weapon in that appendage while making natural attacks with it. If the natural attack is a bite or other attack that does not require a free appendage to make, the magus can use the natural attack in addition to all of the attacks he could make with his melee weapon, if he has one. A magus can select this arcana more than once. The bonus on concentration checks does not stack. Each time he selects this arcana, he selects another natural weapon. For example, a magus could select this arcana twice, choosing claw attacks and bite attacks. This would allow him to use a full-round action to make all of his claw attacks with his free hand and all of his bite attacks in addition to casting a spell. This arcana otherwise functions exactly like the spell combat class feature. — Blood of the Moon pg. 21</p>",
+    "id": "natural_spell_combat",
+    "name": "Natural Spell Combat",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "blood-of-the-moon"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:natural_spell_combat"
+  },
+  "planar_hunter": {
+    "description": "<p>Whenever the magus enhances his weapon using his arcane pool, he can spend 1 additional point from his arcane pool to add the planar special ability to his weapon, or 2 additional points to add the phase locking special ability. The magus must be at least 9th level before selecting this arcana. — Monster Summoner's Handbook pg. 9</p>",
+    "id": "planar_hunter",
+    "name": "Planar Hunter",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "monster-summoner-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:planar_hunter"
+  },
+  "pool_ray": {
+    "description": "<p>The magus can expend 1 point from his arcane pool as a standard action to infuse a ranged weapon with elemental power. As a free action while making an attack roll with the infused ranged weapon, after the attack roll has been made but before the results are revealed by the GM, the magus can release the charge and cause his attack to deal 1d6 points of energy damage (acid, cold, electricity, or fire, chosen when he spends the arcane pool point to activate this ability). If he misses with this attack, the charge is lost and the effect is wasted. If the magus has the ranged spellstrike class feature (such as through the Myrmidarch archetype), he can use this ability with ranged spellstrike to treat it as its own ranged touch attack. At 6th level and every 3 levels thereafter, the amount of damage dealt by this attack increases by 1d6. — Ranged Tactics Toolbox pg. 13</p>",
+    "id": "pool_ray",
+    "name": "Pool Ray",
+    "sources": [
+      {
+        "id": "ranged-tactics-toolbox"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:pool_ray"
+  },
+  "pool_strike": {
+    "description": "<p>The magus can expend 1 point from his arcane pool as a standard action to charge his free hand with energy. He can make a melee touch attack with that hand as a free action as part of activating this ability. If the touch attack hits, it releases the charge and deals 2d6 points of energy damage (acid, cold, electricity, or fire, chosen when he spends the arcane pool point to activate this ability). He can use this ability with the spellstrike class feature. If he misses with this attack, he can hold the charge for up to 1 minute before it dissipates. At 6th level, and every three levels thereafter, the amount of damage dealt by this attack increases by 1d6. — Ultimate Magic pg. 12</p>",
+    "id": "pool_strike",
+    "name": "Pool Strike",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:pool_strike"
+  },
+  "pool_strike_arcing": {
+    "description": "<p>The magus can expend 1 additional point from his arcane pool when using the pool strike arcana. If his attack hits, the magus can target a number of enemies within 15 feet equal to his Intelligence modifier (minimum 0) with a ranged touch attack as a free action. Those struck take the same energy damage as the primary target of the pool strike, including increased damage on a critical hit. The magus must be at least 12th level and must have the pool strike magus arcana before selecting this magus arcana. — Ultimate Combat pg. 54</p>",
+    "id": "pool_strike_arcing",
+    "name": "Arcing Pool Strike",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:pool_strike_arcing"
+  },
+  "pool_strike_clinging": {
+    "description": "<p>The magus can expend 1 additional point from his arcane pool when making a pool strike. A single target of his pool strike takes energy damage as normal from the pool strike and also takes half this amount of damage at the beginning of its turn on the following round. The magus must be at least 9th level and must have the pool strike magus arcana before selecting this magus arcana. — Ultimate Combat pg. 54</p>",
+    "id": "pool_strike_clinging",
+    "name": "Clinging Pool Strike",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:pool_strike_clinging"
+  },
+  "pool_strike_thunderous": {
+    "description": "<p>The magus can expend 1 additional point from his arcane pool when making a pool strike. His pool strike deals sonic damage and deafens a single target for 1 round (DC 10 + 1/2 magus level + Intelligence modifier). The magus must be at least 6th level and must have the pool strike magus arcana before selecting this magus arcana. — Ultimate Combat pg. 55</p>",
+    "id": "pool_strike_thunderous",
+    "name": "Thunderous Pool Strike",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:pool_strike_thunderous"
+  },
+  "prescient_attack": {
+    "description": "<p>The magus can expend 1 point from his arcane pool as an immediate action after hitting a target with a weapon attack, allowing him to anticipate his opponent's defenses. The target is denied its Dexterity bonus against the magus's attacks until the end of the magus's next turn. The magus must be at least 6th level before selecting this arcana. — Ultimate Combat pg. 55</p>",
+    "id": "prescient_attack",
+    "name": "Prescient Attack",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:prescient_attack"
+  },
+  "prescient_defense": {
+    "description": "<p>The magus can expend 1 point from his arcane pool as an immediate action after hitting a target with a weapon attack, granting him a premonition of his enemy's intentions. The magus gains a bonus to his AC and on Reflex saves equal to his Intelligence modifier (minimum 0) against attacks by that opponent until the beginning of his next turn. The magus must be at least 9th level before selecting this arcana. — Ultimate Combat pg. 55</p>",
+    "id": "prescient_defense",
+    "name": "Prescient Defense",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:prescient_defense"
+  },
+  "quickened_magic": {
+    "description": "<p>The magus can cast one spell per day as if it were modified by the Quicken Spell feat. This does not increase the level of the spell. The magus must be at least 15th level before selecting this magus arcana. — Ultimate Magic pg. 12</p>",
+    "id": "quickened_magic",
+    "name": "Quickened Magic",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:quickened_magic"
+  },
+  "rakshasas_fortune": {
+    "description": "<p>Whenever the magus casts a spell of the polymorph subschool on himself, he can draw a card from a complete harrow deck he owns as a free action. If the card's alignment and the magus's alignment are a true match, the spell's duration is doubled and the magus can select two additional monster abilities granted by the polymorph spell (such as scent or grab for beast shape II), even if the form assumed by the magus doesn't normally grant that ability. On a partial match, the magus can select an additional ability granted by the polymorph spell, even if the form assumed by the magus doesn't normally grant that ability. On an opposite match, the duration of the spell is halved and the magus must forgo one of the abilities granted by his form. The magus must be at least 9th level before selecting this arcana. — The Harrow Handbook pg. 25</p>",
+    "id": "rakshasas_fortune",
+    "name": "Rakshasa's Fortune",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "the-harrow-handbook"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:rakshasas_fortune"
+  },
+  "ranger_trap": {
+    "description": "<p>The magus learns a ranger trap. The magus must be at least 10th level before selecting this arcana. — Ranged Tactics Toolbox pg. 13</p>",
+    "id": "ranger_trap",
+    "name": "Ranger Trap",
+    "sources": [
+      {
+        "id": "ranged-tactics-toolbox"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:ranger_trap"
+  },
+  "reach_magic": {
+    "description": "<p>The magus can cast one spell per day as if it were modified by the Reach Spell feat. This doesn't increase the spell's casting time or level. — Ranged Tactics Toolbox pg. 13</p>",
+    "id": "reach_magic",
+    "name": "Reach Magic",
+    "sources": [
+      {
+        "id": "ranged-tactics-toolbox"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:reach_magic"
+  },
+  "reach_spellstrike": {
+    "description": "<p>The magus can deliver spells with a range of touch with ranged spellstrike up to a maximum range of close (25 feet + 5 feet per 2 caster levels). The magus must be at least 9th level and must have ranged spellstrike (Eldritch Archer or Myrmidarch) to select this arcana. — Heroes of the Streets pg. 11</p>",
+    "id": "reach_spellstrike",
+    "name": "Reach Spellstrike",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:reach_spellstrike"
+  },
+  "reflection": {
+    "description": "<p>The magus can sacrifice 1 or more points from his arcane pool as an immediate action to reflect a spell back at its caster. This functions as spell turning, but only if the targeted spell is of a level equal to or lower than the number of points expended. If insufficient points are expended, they instead grant an insight bonus on any saving throws allowed by the spell, equal to the number of points spent. The magus must be at least 15th level before selecting this magus arcana. — Ultimate Magic pg. 12</p>",
+    "id": "reflection",
+    "name": "Reflection",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:reflection"
+  },
+  "rod_mastery": {
+    "description": "<p>Whenever the magus uses a rod, he calculates the DC for any spell it contains using his Intelligence modifier (minimum 0) instead of the minimum modifier needed to cast a spell of that level. — Ultimate Combat pg. 55</p>",
+    "id": "rod_mastery",
+    "name": "Rod Mastery",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:rod_mastery"
+  },
+  "rod_wielder": {
+    "description": "<p>The magus adds his Intelligence bonus (minimum 0) on caster level checks made to overcome spell resistance when using a spell contained within a rod or when making a spellstrike attack channeled through a rod. — Ultimate Combat pg. 55</p>",
+    "id": "rod_wielder",
+    "name": "Rod Wielder",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:rod_wielder"
+  },
+  "scroll_mastery": {
+    "description": "<p>Whenever the magus uses a scroll, he may expend 1 point from his arcane pool to allow him to calculate the DC for any spell contained on the scroll using his Intelligence modifier, instead of the minimum modifier needed cast a spell of that level. The magus must be at least 6th level before selecting this arcana. — Magical Marketplace pg. 4</p>",
+    "id": "scroll_mastery",
+    "name": "Scroll Mastery",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:scroll_mastery"
+  },
+  "silent_magic": {
+    "description": "<p>The magus can cast one spell per day as if it were modified by the Silent Spell feat. This does not increase the casting time or the level of the spell. — Ultimate Magic pg. 12</p>",
+    "id": "silent_magic",
+    "name": "Silent Magic",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:silent_magic"
+  },
+  "spell_blending": {
+    "description": "<p>When a magus selects this arcana, he must select one spell from the wizard spell list that is of a magus spell level he can cast. He adds this spell to his spellbook and list of magus spells known as a magus spell of its wizard spell level. He can instead select two spells to add in this way, but both must be at least one level lower than the highest-level magus spell he can cast. A magus can select this magus arcana more than once. — Ultimate Magic pg. 12</p>",
+    "id": "spell_blending",
+    "name": "Spell Blending",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:spell_blending"
+  },
+  "spell_scars": {
+    "description": "<p>The magus can use special scar-based tattoos called spell-scars on his skin to cast or prepare spells, much like scrolls. He can cast a spell from a spell-scar exactly like casting from a scroll; the ink and scars vanish when the spell is cast. The magus can also prepare spells from his spell-scars without expending them, similar to a wizard using the Spell Mastery feat. The magus does not need to be able to see his spell-scar to use it. A magus has room on his skin for 18 total spell levels of spell-scars, which he can create using the rules for creating&gt;scribing scrolls (although they do not require the Scribe Scroll feat). — Blood of the Moon pg. 21</p>",
+    "id": "spell_scars",
+    "name": "Spell-Scars",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "blood-of-the-moon"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:spell_scars"
+  },
+  "spell_shield": {
+    "description": "<p>The magus can expend a point from his arcane pool as an immediate action to grant himself a shield bonus to AC equal to his Intelligence bonus until the end of his next turn. — Ultimate Magic pg. 12</p>",
+    "id": "spell_shield",
+    "name": "Spell Shield",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:spell_shield"
+  },
+  "spell_trickery": {
+    "description": "<p>When the magus successfully performs a dirty trick combat maneuver, he can cast an illusion or enchantment spell he has prepared with a casting time of 1 standard action or less as a swift action. The magus can use this ability once per day. The magus must be at least 12th level before selecting this magus arcana. — Blood of the Moon pg. 21</p>",
+    "id": "spell_trickery",
+    "name": "Spell Trickery",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "blood-of-the-moon"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:spell_trickery"
+  },
+  "spellbreaker": {
+    "description": "<p>The magus gains Spellbreaker as a bonus feat. The magus must be at least 9th level before selecting this arcana. — Ultimate Combat pg. 55</p>",
+    "id": "spellbreaker",
+    "name": "Spellbreaker",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:spellbreaker"
+  },
+  "still_magic": {
+    "description": "<p>The magus can cast one spell per day as if it were modified by the Still Spell feat. This does not increase the casting time or the level of the spell. — Ultimate Magic pg. 12</p>",
+    "id": "still_magic",
+    "name": "Still Magic",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:still_magic"
+  },
+  "tabriss_step": {
+    "description": "<p>As a swift action, a magus can spend 1 point from his arcane pool and gain the effects of a water walk spell for 10 minutes per magus level. If he expends 2 points from his arcane pool, he can affect a total number of touched creatures equal to his magus level. The magus must be at least 6th level to select this arcana. — Disciple's Doctrine pg. 9</p>",
+    "id": "tabriss_step",
+    "name": "Tabris's Step",
+    "nameSuffix": "(Sp)",
+    "sources": [
+      {
+        "id": "disciple-s-doctrine"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:tabriss_step"
+  },
+  "throwing_magus": {
+    "description": "<p>Whenever the magus enhances his weapon using his arcane pool, he can spend 1 additional point from his arcane pool to add the returning and throwing abilities to the list of available weapon special abilities. When the magus throws a weapon enhanced by his arcane pool and hits a foe, he regains 1 arcane pool point. The magus can regain a number of arcane pool points per day equal to his Intelligence modifier in this way. If he throws his held weapon and draws another in the same round, he can enhance the newly drawn weapon with his arcane pool as a free action instead of a swift action. — Ranged Tactics Toolbox pg. 13</p>",
+    "id": "throwing_magus",
+    "name": "Throwing Magus",
+    "sources": [
+      {
+        "id": "ranged-tactics-toolbox"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:throwing_magus"
+  },
+  "vision_clouding_strike": {
+    "description": "<p>The magus can expend 1 or more points from his arcane pool as a swift action to empower his weapon with shadowy energy that dissipates within 1 minute. A creature struck with the weapon must succeed at a Will save (DC = 1/2 the magus's level + his Intelligence modifier) or treat the magus as being in an area of dim light for 1d4 rounds, plus 1 additional round for each arcane pool point expended. True seeing penetrates this effect, but darkvision and similar darkness-penetrating effects do not. The magus must be at least 9th level before selecting this arcana. — Agents of Evil pg. 25</p>",
+    "id": "vision_clouding_strike",
+    "name": "Vision-Clouding Strike",
+    "sources": [
+      {
+        "id": "agents-of-evil"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:vision_clouding_strike"
+  },
+  "wand_mastery": {
+    "description": "<p>Whenever the magus uses a wand, he calculates the DC for any spell it contains using his Intelligence modifier, instead of the minimum modifier needed to cast a spell of that level. — Ultimate Magic pg. 12</p>",
+    "id": "wand_mastery",
+    "name": "Wand Mastery",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:wand_mastery"
+  },
+  "wand_wielder": {
+    "description": "<p>The magus can activate a wand or staff in place of casting a spell when using spell combat. — Ultimate Magic pg. 12</p>",
+    "id": "wand_wielder",
+    "name": "Wand Wielder",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:magus-arcana:wand_wielder"
+  }
+}

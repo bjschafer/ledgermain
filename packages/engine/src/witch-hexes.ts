@@ -62,7 +62,7 @@
  * witch's. All three stay deliberately deferred.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { Change, ContextNote, RefData, SourceRef, WitchHex } from "@pf1/schema";
 
 export type WitchHexTier = "hex" | "major" | "grand";
 
@@ -328,3 +328,139 @@ export function hexesForTier(tier: WitchHexTier): WitchHexDef[] {
  * already import from `witch-hexes.ts` don't need a second import.
  */
 export { witchHexDC } from "./tables.js";
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3b: `RefData.hexes` (see that type's doc comment) is the
+ * FULL published witch-hex catalog (~104 entries after junk filtering),
+ * prose only. The hand-verified table above stays authoritative for
+ * MECHANICS — this section only merges the two for BROWSING (the picker) and
+ * for resolving a picked id back to a definition (`collect.ts`/
+ * `archetypes.ts`), mirroring `rage-powers.ts`'s `mergedRagePowerCatalog`
+ * exactly.
+ *
+ * Matching is by NORMALIZED NAME, never id — same rationale as rage powers:
+ * this file's camelCase ids vs. the vendored dataset's snake_case slugs are
+ * disjoint by construction.
+ *
+ * Collision audit (all 27 hand-authored entries, run against the pinned Pf
+ * Data 1e slice): all 27 matched a vendored entry by normalized name, with NO
+ * naming drift — the source's own spelling matched ours exactly
+ * (case-insensitively) for every entry, so `HEX_NAME_ALIASES` is empty (kept
+ * for the same reason `rage-powers.ts`'s alias map is: a FUTURE
+ * hand-authored addition that drifts from the vendored spelling has
+ * somewhere to record it). No vendored-catalog-internal name collisions
+ * either (unlike rage powers' Guarded Stance/Stance-variant case) — every one
+ * of the 104 vendored hexes has a unique normalized name.
+ *
+ * Tier: every matched hex's vendored `tier` field agrees with this table's
+ * own `tier` for that entry (8 of the 27 are `major`, 5 are `grand`, the rest
+ * `hex`) — verified during the audit, not merely assumed.
+ */
+
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see the collision-audit comment above. Empty today (no drift found); kept for a future addition. */
+const HEX_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeHexName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Cheap HTML->text preview for a vendored-only entry's picker row (the hand-authored table's `summary` field is a curated paraphrase this app doesn't have for vendored-only prose). */
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def (matched) with the vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedWitchHexEntry extends WitchHexDef {
+  /** Ability-type suffix as published, e.g. "(Su)" — undefined when no vendored counterpart backs this id. */
+  nameSuffix?: string;
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id. */
+  description?: string;
+  /** Vendored source-book attribution, when known. */
+  sources?: SourceRef[];
+}
+
+function vendoredHexToDef(entry: WitchHex): MergedWitchHexEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    nameSuffix: entry.nameSuffix,
+    tier: entry.tier,
+    // A regular hex is available from 1st level; major/grand hexes are
+    // available once a witch reaches the level that tier unlocks — same
+    // 1/10/18 mapping the hand-authored table uses (APG RAW, not a fabricated
+    // gate — this source carries no per-entry level field at all).
+    minLevel: entry.tier === "major" ? 10 : entry.tier === "grand" ? 18 : 1,
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/**
+ * Resolve a picked witch-hex id (`doc.build.witchHexes` entries) to its
+ * definition — hand-authored table first (mechanics-authoritative), falling
+ * back to the vendored catalog for an id that only exists there. Used by
+ * `collect.ts` (modifier collection) and `archetypes.ts` (the Class Features
+ * list) instead of indexing `WITCH_HEXES` directly, so a vendored-only pick
+ * resolves to a real (display-only) definition rather than being silently
+ * dropped.
+ */
+export function resolveWitchHex(id: string, refData: RefData): WitchHexDef | undefined {
+  const hand = WITCH_HEXES[id];
+  if (hand) return hand;
+  const vendored = refData.hexes?.[id];
+  return vendored ? vendoredHexToDef(vendored) : undefined;
+}
+
+/**
+ * The full picker-browsable catalog: every vendored entry, with any that
+ * collides (by normalized name, alias-mapped) against a hand-authored entry
+ * REPLACED by that hand-authored def (keeping its id and tier, but carrying
+ * the vendored entry's prose/sources along for display), plus any
+ * hand-authored entry with no vendored counterpart appended (none today —
+ * see the collision-audit comment above; the fallback exists for a future
+ * addition). `!entry.displayOnly` would mark a live-mechanics row for the
+ * picker's "M" badge, same convention as `mergedRagePowerCatalog` — every hex
+ * here is `displayOnly` today (see the file's top doc comment), so the badge
+ * never actually appears yet.
+ */
+export function mergedWitchHexCatalog(refData: RefData): MergedWitchHexEntry[] {
+  const handByNormName = new Map<string, WitchHexDef>();
+  for (const h of HEX_LIST) {
+    handByNormName.set(normalizeHexName(HEX_NAME_ALIASES[h.id] ?? h.name), h);
+  }
+
+  const usedHandIds = new Set<string>();
+  const merged: MergedWitchHexEntry[] = [];
+  for (const v of Object.values(refData.hexes ?? {})) {
+    const handMatch = handByNormName.get(normalizeHexName(v.name));
+    if (handMatch) {
+      usedHandIds.add(handMatch.id);
+      merged.push({
+        ...handMatch,
+        nameSuffix: v.nameSuffix,
+        description: v.description,
+        sources: v.sources,
+      });
+    } else {
+      merged.push(vendoredHexToDef(v));
+    }
+  }
+  for (const h of HEX_LIST) {
+    if (!usedHandIds.has(h.id)) merged.push(h);
+  }
+  return merged;
+}

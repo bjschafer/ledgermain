@@ -4,6 +4,7 @@ import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import {
+  chosenGeneralShamanHexCount,
   chosenShamanHexCount,
   expectedShamanHexCount,
   hasShamanHex,
@@ -195,5 +196,29 @@ describe("model/shamanHexes: soft budget warning", () => {
 
   it("empty selection needs no warning", () => {
     expect(shamanHexesNeedWarning(makeDoc({}), ref)).toBe(false);
+  });
+});
+
+describe("model/shamanHexes: chosenGeneralShamanHexCount (issue #74 Phase 3b vendored catalog)", () => {
+  it("counts a picked id from the vendored general-hex catalog, regardless of spirit", () => {
+    const doc = makeDoc({ shamanSpirit: "life", shamanHexes: ["fury"] });
+    expect(chosenGeneralShamanHexCount(doc, ref)).toBe(1);
+    // Not counted by the spirit-scoped counter (it isn't a spirit hex id).
+    expect(chosenShamanHexCount(doc)).toBe(0);
+  });
+
+  it("does not double-count a spirit-scoped id", () => {
+    const doc = makeDoc({ shamanSpirit: "life", shamanHexes: ["life:lifeSight"] });
+    expect(chosenGeneralShamanHexCount(doc, ref)).toBe(0);
+    expect(chosenShamanHexCount(doc)).toBe(1);
+  });
+
+  it("a general-hex pick counts toward the total budget warning, same as a spirit hex", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "shaman", level: 2 }],
+      shamanSpirit: "life",
+      shamanHexes: ["life:lifeSight", "fury"],
+    });
+    expect(shamanHexesNeedWarning(doc, ref)).toBe(true);
   });
 });

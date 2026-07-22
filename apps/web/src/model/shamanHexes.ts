@@ -34,6 +34,11 @@
 import { findShamanHex } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
+/** True when `id` is a GENERAL shaman hex (the vendored, spirit-agnostic ACG "Shaman Hexes" table — issue #74 Phase 3b), not one of the current spirit's own 5 hexes. */
+function isGeneralShamanHex(id: string, refData: RefData): boolean {
+  return !findShamanHex(id) && refData.shamanHexes?.[id] !== undefined;
+}
+
 /** The shaman's class level (0 for a non-shaman, or a stale/multiclassed doc). */
 export function shamanLevel(doc: CharacterDoc): number {
   return doc.identity.classes.find((c) => c.tag === "shaman")?.level ?? 0;
@@ -62,6 +67,18 @@ export function chosenShamanHexCount(doc: CharacterDoc): number {
   return (doc.build.shamanHexes ?? []).filter((id) =>
     findShamanHex(id)?.id.startsWith(`${spirit}:`),
   ).length;
+}
+
+/**
+ * The number of chosen hexes that resolve against the vendored GENERAL
+ * shaman-hex catalog (issue #74 Phase 3b) instead of the current spirit's
+ * own list — counted separately from `chosenShamanHexCount` (which only
+ * covers spirit-scoped ids) so the two can be summed for a total budget
+ * count without double-counting or needing to change that function's
+ * existing signature.
+ */
+export function chosenGeneralShamanHexCount(doc: CharacterDoc, refData: RefData): number {
+  return (doc.build.shamanHexes ?? []).filter((id) => isGeneralShamanHex(id, refData)).length;
 }
 
 /** ACG progression thresholds: 2nd, 4th, 8th, 10th, 12th, 16th, 18th, 20th. */
@@ -105,9 +122,12 @@ export function expectedShamanHexCount(doc: CharacterDoc, refData: RefData): num
 
 /**
  * True when the chosen hexes should prompt a soft warning: more than the
- * expected count. Never used to block — only to color the count badge (see
+ * expected count, counting BOTH spirit-scoped and general-catalog picks (see
+ * `chosenGeneralShamanHexCount`) — both draw from the same ACG "Hex" budget.
+ * Never used to block — only to color the count badge (see
  * `oracleRevelationsNeedWarning` for the identical pattern).
  */
 export function shamanHexesNeedWarning(doc: CharacterDoc, refData: RefData): boolean {
-  return chosenShamanHexCount(doc) > expectedShamanHexCount(doc, refData);
+  const chosen = chosenShamanHexCount(doc) + chosenGeneralShamanHexCount(doc, refData);
+  return chosen > expectedShamanHexCount(doc, refData);
 }

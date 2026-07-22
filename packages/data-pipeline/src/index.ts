@@ -43,5 +43,8 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     druidDomains: readJson(dir, "druid-domains.json"),
     wizardSchools: readJson(dir, "wizard-schools.json"),
     ragePowers: readJson(dir, "rage-powers.json"),
+    hexes: readJson(dir, "hexes.json"),
+    shamanHexes: readJson(dir, "shaman-hexes.json"),
+    magusArcana: readJson(dir, "magus-arcana.json"),
   };
 }
