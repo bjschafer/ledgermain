@@ -155,10 +155,10 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     `json/class_ability_shaman_spirits.json` (NOT the dataset's
     `class_ability_spirits.json`, the unrelated medium-spirit catalog) into
     `RefData.shamanSpirits`, and `json/class_ability_sorcerer_bloodlines.json`
-    + `json/class_ability_bloodrager_bloodlines.json` into
-    `RefData.sorcererBloodlines`/`bloodragerBloodlines` (the full published
-    oracle/witch/shaman/sorcerer/bloodrager subsystem catalogs, issue #74
-    Phase 3c);
+    - `json/class_ability_bloodrager_bloodlines.json` into
+      `RefData.sorcererBloodlines`/`bloodragerBloodlines` (the full published
+      oracle/witch/shaman/sorcerer/bloodrager subsystem catalogs, issue #74
+      Phase 3c);
   - `json/class_ability_discoveries.json` (the full published alchemist-
     discovery catalog, issue #74 Phase 3c — NOT `class_ability_arcane_discoveries.json`,
     the wizard's separate Arcane Discoveries subsystem, unvendored) into
