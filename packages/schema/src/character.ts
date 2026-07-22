@@ -940,6 +940,29 @@ export interface CharacterDoc {
      */
     rogueTalents?: string[];
     /**
+     * Slayer talent ids chosen (keys into `RefData.slayerTalents` via
+     * `@pf1/engine` `resolveSlayerTalent` — issue #74 Phase 3b). UNLIKE
+     * `rogueTalents`/`ninjaTricks`/`vigilanteTalents`, there is no
+     * hand-authored mechanics table backing this field yet — every entry is
+     * display-only (see `@pf1/engine` `slayer-talents.ts`'s doc comment).
+     * Gained at 2nd level and every 2 levels thereafter (10 total by 20th,
+     * same cadence as rogue talents — verified against the vendored Foundry
+     * "Slayer Talents" `ClassFeature` description), plus one per "Extra
+     * Slayer Talent" feat taken. "Advanced Slayer Talents" (10th level and
+     * every 2 levels thereafter, verified against the vendored "Advanced
+     * Talents (SLA)" `ClassFeature` description) are chosen IN PLACE OF a
+     * normal talent pick, not an extra budget slot — same shape as ninja
+     * master tricks. PF1 RAW also lets a slayer spend a pick on "a rogue
+     * talent" instead (and, at the advanced tier, on a rogue/ninja advanced
+     * talent) — represented as its own vendored catalog entries
+     * (`rogue_talent`/`rogue_and_ninja_advanced_talents`) rather than a
+     * cross-wired budget transfer with `rogueTalents`, matching this
+     * project's existing `ninjaTricks`/rogue-talent overlap posture. Empty/
+     * undefined for non-slayers. Back-compat: documents without this field
+     * are unaffected.
+     */
+    slayerTalents?: string[];
+    /**
      * Rogue (Unchained) Finesse Training weapon-type picks, in grant order —
      * index 0 = the weapon type chosen at 3rd level, index 1 = 11th, index 2
      * = 19th (PF1 RAW: "she can select any one type of weapon that can be
@@ -2724,8 +2747,8 @@ export interface DerivedClassFeature {
    * social/vigilante talent, shifter aspect, psychic discipline power,
    * phrenic amplification, mesmerist trick, mesmerist bold stare, occultist
    * implement school, occultist focus power, kineticist composite blast,
-   * kineticist wild talent, medium spirit power) — same disambiguation need
-   * against each class's own intrinsic features.
+   * kineticist wild talent, medium spirit power, slayer talent) — same
+   * disambiguation need against each class's own intrinsic features.
    */
   origin?: {
     kind:
@@ -2755,7 +2778,8 @@ export interface DerivedClassFeature {
       | "focusPower"
       | "compositeBlast"
       | "wildTalent"
-      | "spiritPower";
+      | "spiritPower"
+      | "slayerTalent";
     label: string;
   };
 }

@@ -43,7 +43,7 @@
  * surface as a reminder than to guess.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { Change, ContextNote, RefData, RogueTalent, SourceRef } from "@pf1/schema";
 
 export interface RogueTalentDef {
   id: string;
@@ -294,3 +294,124 @@ export const ROGUE_TALENTS: Record<string, RogueTalentDef> = Object.fromEntries(
 );
 
 export const ROGUE_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) => t.id);
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3b: `RefData.rogueTalents` (see that type's doc comment) is
+ * the FULL published catalog (234 entries after junk filtering), prose only.
+ * The hand-authored table above stays authoritative for MECHANICS — this
+ * section only merges the two for BROWSING (the picker) and for resolving a
+ * picked id back to a definition, mirroring `rage-powers.ts`'s identical
+ * "vendored catalog overlay" section exactly (matching by NORMALIZED NAME,
+ * hand-authored wins the collision, vendored-only entries are display-only).
+ *
+ * Collision audit (all 27 hand-authored entries, run against the pinned Pf
+ * Data 1e slice): all 27 matched a vendored entry by normalized name — no
+ * `NAME_ALIASES` entries needed, unlike rage powers' Sixth Sense gap. The
+ * source tags some entries' `category` with an `R_`/`UR_` prefix
+ * (chained-Rogue-specific vs. Rogue (Unchained)-specific wording — see
+ * `RogueTalent`'s doc comment) for a handful of talents that also have a
+ * SEPARATELY-KEYED, differently-named "(Unchained Rogue)" variant (e.g.
+ * `powerful_sneak` vs. `powerful_sneak_unchained_rogue`) — since the base
+ * entry's `name` has no such suffix, it matches the hand-authored entry by
+ * normalized name exactly as any other entry would, while the suffixed
+ * variant remains its own vendored-only row (same shape as rage powers'
+ * Guarded Stance CRB/Unchained-variant collision).
+ */
+
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see `rage-powers.ts`'s identical map. Empty: the full 27-entry audit found no drift. */
+const ROGUE_TALENT_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeTalentName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Cheap HTML->text preview for a vendored-only entry's picker row — see `rage-powers.ts`'s identical helper. */
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with the vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedRogueTalentEntry extends RogueTalentDef {
+  nameSuffix?: string;
+  /** Vendored grouping tag (see `RogueTalent`'s doc comment for the `R_`/`UR_`/`Advanced ` prefix conventions), when present. */
+  category?: string;
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id. */
+  description?: string;
+  sources?: SourceRef[];
+}
+
+function vendoredToDef(entry: RogueTalent): MergedRogueTalentEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    nameSuffix: entry.nameSuffix,
+    category: entry.category,
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/**
+ * Resolve a picked rogue-talent id (`doc.build.rogueTalents` entries) to its
+ * definition — hand-authored table first, falling back to the vendored
+ * catalog for an id that only exists there. Used by `archetypes.ts` (the
+ * Class Features list) instead of indexing `ROGUE_TALENTS` directly, so a
+ * vendored-only pick resolves to a real (display-only) definition rather than
+ * being silently dropped — mirrors `resolveRagePower`.
+ */
+export function resolveRogueTalent(id: string, refData: RefData): RogueTalentDef | undefined {
+  const hand = ROGUE_TALENTS[id];
+  if (hand) return hand;
+  const vendored = refData.rogueTalents?.[id];
+  return vendored ? vendoredToDef(vendored) : undefined;
+}
+
+/**
+ * The full picker-browsable catalog: every vendored entry, with any that
+ * collides (by normalized name, alias-mapped) against a hand-authored entry
+ * REPLACED by that hand-authored def (keeping its id, but carrying the
+ * vendored entry's prose/sources along for display) — mirrors
+ * `mergedRagePowerCatalog` exactly. `!entry.displayOnly` marks which rows
+ * have live mechanics for the picker's "M" badge (only "Combat Trick" and
+ * "Finesse Rogue" ever set it — see file doc comment).
+ */
+export function mergedRogueTalentCatalog(refData: RefData): MergedRogueTalentEntry[] {
+  const handByNormName = new Map<string, RogueTalentDef>();
+  for (const t of TALENT_LIST) {
+    handByNormName.set(normalizeTalentName(ROGUE_TALENT_NAME_ALIASES[t.id] ?? t.name), t);
+  }
+
+  const vendored = Object.values(refData.rogueTalents ?? {});
+  const usedHandIds = new Set<string>();
+  const seenNormNames = new Set<string>();
+  const merged: MergedRogueTalentEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeTalentName(v.name);
+    const handMatch = seenNormNames.has(norm) ? undefined : handByNormName.get(norm);
+    if (handMatch) {
+      seenNormNames.add(norm);
+      usedHandIds.add(handMatch.id);
+      merged.push({ ...handMatch, description: v.description, sources: v.sources });
+    } else {
+      merged.push(vendoredToDef(v));
+    }
+  }
+  for (const t of TALENT_LIST) {
+    if (!usedHandIds.has(t.id)) merged.push(t);
+  }
+  return merged;
+}

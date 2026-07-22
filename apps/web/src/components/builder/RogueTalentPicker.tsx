@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { ROGUE_TALENTS, ROGUE_TALENT_IDS } from "@pf1/engine";
+import { mergedRogueTalentCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "../../model/rogueTalents.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -31,6 +32,11 @@ interface RogueTalentPickerProps {
  * showing a "no automatic effect" note. Entries flagged `unchainedOnly`
  * (reference Debilitating Injury) are soft-noted, never hidden, for a
  * chained-rogue picker. Free-choice, never blocks past the expected count.
+ *
+ * Browses the FULL published catalog (`mergedRogueTalentCatalog` — issue #74
+ * Phase 3b), not just the 27-entry hand-verified slice — a vendored-only
+ * pick is display-only, same "no automatic effect" posture as most
+ * hand-authored rows.
  */
 export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerProps) {
   const isRogue = doc.identity.classes.some((c) => c.tag === "rogue" || c.tag === "rogueUnchained");
@@ -38,17 +44,18 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Rogue Talents", false);
 
   const selected = useMemo(() => new Set(doc.build.rogueTalents ?? []), [doc.build.rogueTalents]);
+  const catalog = useMemo(() => mergedRogueTalentCatalog(refData), [refData]);
 
   const talents = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return ROGUE_TALENT_IDS.map((id) => ROGUE_TALENTS[id]!)
+    return catalog
       .filter((t) => !q || t.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenRogueTalentCount(doc);
   const expected = expectedRogueTalentCount(doc, refData);
@@ -108,6 +115,7 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
                   <div className="pmain">
                     <div className="pname">
                       {t.name}
+                      {t.nameSuffix ? ` ${t.nameSuffix}` : ""}
                       {t.unchainedOnly ? <span className="tag-mystery">Unchained</span> : null}
                       {t.bonusFeatSlot || t.grantsFeat ? (
                         <span className="tag-mystery">Grants a feat</span>
@@ -121,6 +129,7 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
                         ⚠ {n.text}
                       </div>
                     ))}
+                    {t.description ? <FeatureDescription html={t.description} /> : null}
                   </div>
                   <button
                     type="button"

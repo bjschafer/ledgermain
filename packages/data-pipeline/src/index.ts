@@ -43,5 +43,10 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     druidDomains: readJson(dir, "druid-domains.json"),
     wizardSchools: readJson(dir, "wizard-schools.json"),
     ragePowers: readJson(dir, "rage-powers.json"),
+    rogueTalents: readJson(dir, "rogue-talents.json"),
+    ninjaTricks: readJson(dir, "ninja-tricks.json"),
+    slayerTalents: readJson(dir, "slayer-talents.json"),
+    vigilanteTalents: readJson(dir, "vigilante-talents.json"),
+    vigilanteSocialTalents: readJson(dir, "vigilante-social-talents.json"),
   };
 }

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { NINJA_TRICKS, NINJA_TRICK_IDS } from "@pf1/engine";
+import { mergedNinjaTrickCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "../../model/ninjaTricks.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -40,6 +41,12 @@ const TIER_LABEL: Record<string, string> = { trick: "Trick", master: "Master Tri
  * Picked tricks also show up in the sheet's Class Features list (tagged
  * "— Ninja Trick"), via `collectGrantedFeatures`/`resolveClassFeatures` in
  * `@pf1/engine` `archetypes.ts`.
+ *
+ * Browses the FULL published catalog (`mergedNinjaTrickCatalog` — issue #74
+ * Phase 3b), not just the 44-entry hand-verified slice — every ninja trick
+ * (hand-authored or vendored-only) is `displayOnly` (no flat always-on
+ * number, see `ninja-tricks.ts`'s doc comment), so unlike `RagePowerPicker`
+ * there is no "M" (modeled) badge to show here.
  */
 export function NinjaTrickPicker({ doc, refData, update }: NinjaTrickPickerProps) {
   const isNinja = doc.identity.classes.some((c) => c.tag === "ninja");
@@ -48,17 +55,18 @@ export function NinjaTrickPicker({ doc, refData, update }: NinjaTrickPickerProps
 
   const selected = useMemo(() => new Set(doc.build.ninjaTricks ?? []), [doc.build.ninjaTricks]);
   const level = getNinjaLevel(doc);
+  const catalog = useMemo(() => mergedNinjaTrickCatalog(refData), [refData]);
 
   const tricks = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return NINJA_TRICK_IDS.map((id) => NINJA_TRICKS[id]!)
+    return catalog
       .filter((t) => !q || t.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.minLevel - b.minLevel || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenNinjaTrickCount(doc);
   const expected = expectedNinjaTrickCount(doc, refData);
@@ -117,7 +125,9 @@ export function NinjaTrickPicker({ doc, refData, update }: NinjaTrickPickerProps
                 <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
                     <div className="pname">
-                      {t.name} <span className="tag-mystery">{TIER_LABEL[t.tier] ?? t.tier}</span>
+                      {t.name}
+                      {t.nameSuffix ? ` ${t.nameSuffix}` : ""}{" "}
+                      <span className="tag-mystery">{TIER_LABEL[t.tier] ?? t.tier}</span>
                     </div>
                     <div className="preq">
                       <span className="desc-text">{t.summary}</span>
@@ -133,6 +143,7 @@ export function NinjaTrickPicker({ doc, refData, update }: NinjaTrickPickerProps
                         ⚠ {n.text}
                       </div>
                     ))}
+                    {t.description ? <FeatureDescription html={t.description} /> : null}
                   </div>
                   <button
                     type="button"

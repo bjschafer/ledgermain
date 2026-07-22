@@ -113,26 +113,35 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   entries are skipped, since the system pack's own race docs already carry
   them).
 
-### d. Pf Data 1e dataset (rage-power catalog)
+### d. Pf Data 1e dataset (rage-power + rogue-family talent catalogs)
 
 - Repo: `https://github.com/jasontankapps/pathfinder-data-1-e`
 - Pinned commit: `33f1b75b8f62b43c59b96eab6bebb45e37c29229`
 - Single-maintainer repo (Jason Tamez); pinned to an exact commit like the
   other three sources, never a branch. A flat-JSON dictionary dataset (one
-  file per subsystem under `json/`); we currently vendor only
-  `json/class_ability_rage_powers.json` (the full published rage-power
-  catalog, issue #74 Phase 3a) into `RefData.ragePowers` — see that type's
-  doc comment (`@pf1/schema`). Code is GPL-3.0-or-later (never copied in,
-  same clean-room posture as Sec.2a/2c); its `OPENGAMECONTENT.md` carries an
-  OGL 1.0a Section 15 (with its own Paizo Community Use notice, folded into
-  Sec.3 below) that we carry forward into our `OGL.txt` in full rather than
-  hand-trimming to only the sourcebooks our vendored rage-power slice
-  actually cites — the source dataset spans far more subsystems than rage
-  powers, but carrying its complete attribution list is the simpler and
-  strictly safer call (over-inclusive credit has no downside; under-inclusive
-  credit is a real one), and it directly sets up the next subsystem imports
-  (hexes, arcana, talents, exploits, wild talents) this same pinned source
-  will eventually supply, at which point their citations are already present.
+  file per subsystem under `json/`); we vendor:
+  - `json/class_ability_rage_powers.json` (the full published rage-power
+    catalog, issue #74 Phase 3a) into `RefData.ragePowers`;
+  - `json/class_ability_rogue_talents.json` into `RefData.rogueTalents`,
+    `json/class_ability_ninja_tricks.json` into `RefData.ninjaTricks`,
+    `json/class_ability_slayer_talents.json` into `RefData.slayerTalents`,
+    and `json/class_ability_vigilante_talents.json` +
+    `json/class_ability_social_talents.json` into `RefData.vigilanteTalents`/
+    `RefData.vigilanteSocialTalents` (the full published rogue-family talent
+    catalogs, issue #74 Phase 3b) —
+
+  see each type's doc comment (`@pf1/schema`). Code is GPL-3.0-or-later
+  (never copied in, same clean-room posture as Sec.2a/2c); its
+  `OPENGAMECONTENT.md` carries an OGL 1.0a Section 15 (with its own Paizo
+  Community Use notice, folded into Sec.3 below) that we carry forward into
+  our `OGL.txt` in full rather than hand-trimming to only the sourcebooks our
+  vendored slices actually cite — the source dataset spans far more
+  subsystems than what's vendored so far, but carrying its complete
+  attribution list is the simpler and strictly safer call (over-inclusive
+  credit has no downside; under-inclusive credit is a real one), and it
+  directly sets up the remaining subsystem imports (hexes, arcana, exploits,
+  wild talents, …) this same pinned source will eventually supply, at which
+  point their citations are already present.
 
 Our `OGL.txt` is therefore the upstream Archetypes `OGL.txt`, with Pf Data
 1e's full Section 15 copyright-notice list appended (deduplicated against

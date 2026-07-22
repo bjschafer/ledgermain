@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react";
 
 import {
-  VIGILANTE_SOCIAL_TALENTS,
-  VIGILANTE_SOCIAL_TALENT_IDS,
-  vigilanteTalentsForSpecialization,
-  type VigilanteTalentDef,
+  mergedVigilanteSocialTalentCatalog,
+  mergedVigilanteTalentCatalog,
+  type MergedVigilanteSocialTalentEntry,
+  type MergedVigilanteTalentEntry,
+  type VigilanteSpecialization,
 } from "@pf1/engine";
-import type { CharacterDoc, ContextNote } from "@pf1/schema";
+import type { CharacterDoc, ContextNote, RefData } from "@pf1/schema";
 
 import {
   chosenVigilanteSocialTalentCount,
@@ -23,33 +24,51 @@ import {
 } from "../../model/vigilanteTalents.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface VigilanteTalentPickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
+/** A vendored-only entry's `gate` always reads "either" (see `mergedVigilanteTalentCatalog`'s doc comment) — never hides an option the specialization filter can't actually verify. */
+function matchesSpecialization(
+  gate: MergedVigilanteTalentEntry["gate"],
+  spec: VigilanteSpecialization | undefined,
+): boolean {
+  return gate === "either" || gate === spec;
+}
+
 /**
- * Vigilante talent selection (issue #65) — renders BOTH independent talent
- * pools PF1 RAW grants (Social Talent at 1st + every 2, Vigilante Talent at
- * 2nd + every 2; see `model/vigilanteTalents.ts`'s budget math for each),
- * mirroring `HexPicker`'s tier-grouped shape but with two separately-budgeted
+ * Vigilante talent selection (issue #65, full-catalog issue #74 Phase 3b) —
+ * renders BOTH independent talent pools PF1 RAW grants (Social Talent at 1st
+ * + every 2, Vigilante Talent at 2nd + every 2; see
+ * `model/vigilanteTalents.ts`'s budget math for each), mirroring
+ * `HexPicker`'s tier-grouped shape but with two separately-budgeted
  * subsections instead of one soft-gated list. The shared Vigilante Talent
  * pool is further filtered by the chosen `vigilanteSpecialization` (Avenger/
- * Stalker/either) via `vigilanteTalentsForSpecialization` — soft-filtered
- * only, same non-blocking posture as every other menu table in this project.
+ * Stalker/either) — soft-filtered only, same non-blocking posture as every
+ * other menu table in this project. Browses the FULL published catalogs
+ * (`mergedVigilanteSocialTalentCatalog`/`mergedVigilanteTalentCatalog`), not
+ * just the hand-verified slice — a "M" badge marks which rows carry a real,
+ * live mechanical effect, same convention as `RagePowerPicker`.
  */
-export function VigilanteTalentPicker({ doc, update }: VigilanteTalentPickerProps) {
+export function VigilanteTalentPicker({ doc, refData, update }: VigilanteTalentPickerProps) {
   const isVigilante = doc.identity.classes.some((c) => c.tag === "vigilante");
-  if (!isVigilante) return null;
 
   const level = getVigilanteLevel(doc);
   const spec = doc.build.vigilanteSpecialization;
 
-  const socialList = VIGILANTE_SOCIAL_TALENT_IDS.map((id) => VIGILANTE_SOCIAL_TALENTS[id]!);
-  const talentList = useMemo(() => vigilanteTalentsForSpecialization(spec), [spec]);
+  const socialList = useMemo(() => mergedVigilanteSocialTalentCatalog(refData), [refData]);
+  const talentList = useMemo(
+    () => mergedVigilanteTalentCatalog(refData).filter((t) => matchesSpecialization(t.gate, spec)),
+    [refData, spec],
+  );
+
+  if (!isVigilante) return null;
 
   return (
     <>
@@ -81,6 +100,8 @@ export function VigilanteTalentPicker({ doc, update }: VigilanteTalentPickerProp
   );
 }
 
+type SectionEntry = MergedVigilanteSocialTalentEntry | MergedVigilanteTalentEntry;
+
 function TalentSection({
   title,
   storageKey,
@@ -97,7 +118,7 @@ function TalentSection({
   storageKey: string;
   hint: string;
   level: number;
-  list: VigilanteTalentDef[];
+  list: SectionEntry[];
   chosen: number;
   expected: number;
   warn: boolean;
@@ -158,7 +179,19 @@ function TalentSection({
               return (
                 <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
-                    <div className="pname">{t.name}</div>
+                    <div className="pname">
+                      {t.name}
+                      {t.nameSuffix ? ` ${t.nameSuffix}` : ""}
+                      {t.changes.length > 0 && (
+                        <span
+                          className="badge-modeled"
+                          title="Carries a real, live mechanical effect"
+                        >
+                          {" "}
+                          M
+                        </span>
+                      )}
+                    </div>
                     <div className="preq">
                       <span className="desc-text">{t.summary}</span>
                     </div>
@@ -172,6 +205,7 @@ function TalentSection({
                         ⚠ {n.text}
                       </div>
                     ))}
+                    {t.description ? <FeatureDescription html={t.description} /> : null}
                   </div>
                   <button
                     type="button"

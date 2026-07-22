@@ -49,7 +49,14 @@
  * in this project.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type {
+  Change,
+  ContextNote,
+  RefData,
+  SourceRef,
+  VigilanteSocialTalent,
+  VigilanteTalent,
+} from "@pf1/schema";
 
 export type VigilanteSpecialization = "avenger" | "stalker";
 /** Which specialization(s) can pick this talent — "either" for shared-pool talents. */
@@ -609,4 +616,179 @@ export function vigilanteTalentsForSpecialization(
   spec: VigilanteSpecialization | undefined,
 ): VigilanteTalentEntry[] {
   return TALENT_LIST.filter((t) => t.gate === "either" || t.gate === spec);
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3b: `RefData.vigilanteSocialTalents`/`vigilanteTalents` (see
+ * those types' doc comments) are the FULL published catalogs (46 social + 81
+ * vigilante entries after junk filtering), prose only. The hand-authored
+ * tables above stay authoritative for MECHANICS — this section only merges
+ * for BROWSING/resolving, mirroring `rage-powers.ts`'s "vendored catalog
+ * overlay" section exactly, for BOTH pools.
+ *
+ * Collision audit: all 30 hand-authored social talents matched a vendored
+ * entry by normalized name (no aliases needed). Of the 32 hand-authored
+ * vigilante talents, 31 matched; the lone exception is `evasion` ("Evasion")
+ * — the vendored catalog spells the same talent "Evasive" (key `evasive`,
+ * confirmed by matching description text: "gains the evasion ability..."),
+ * recorded in `VIGILANTE_TALENT_NAME_ALIASES` below.
+ *
+ * A vendored-only vigilante-talent entry's `gate` is NOT derived from its
+ * `category` (e.g. "Avenger Talents"/"Stalker Talents") — see
+ * `VigilanteTalent`'s doc comment — it defaults to `"either"` so the
+ * specialization filter never hides a vendored-only option a character might
+ * actually qualify for.
+ */
+
+const VIGILANTE_TALENT_NAME_ALIASES: Record<string, string> = {
+  evasion: "Evasive",
+};
+
+function normalizeVigilanteTalentName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Cheap HTML->text preview for a vendored-only entry's picker row — see `rage-powers.ts`'s identical helper. */
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A social-talent catalog entry the picker can browse — hand-authored def (with vendored prose attached) or a vendored-only display-only row. */
+export interface MergedVigilanteSocialTalentEntry extends VigilanteTalentDef {
+  nameSuffix?: string;
+  category?: string;
+  description?: string;
+  sources?: SourceRef[];
+}
+
+/** A vigilante-talent catalog entry the picker can browse — same shape, plus the specialization `gate`. */
+export interface MergedVigilanteTalentEntry extends VigilanteTalentEntry {
+  nameSuffix?: string;
+  category?: string;
+  description?: string;
+  sources?: SourceRef[];
+}
+
+function vendoredSocialToDef(entry: VigilanteSocialTalent): MergedVigilanteSocialTalentEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    nameSuffix: entry.nameSuffix,
+    category: entry.category,
+    // NOT `entry.level` — uninterpreted source field, see `VigilanteSocialTalent.level`'s doc comment.
+    minLevel: 1,
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+function vendoredTalentToDef(entry: VigilanteTalent): MergedVigilanteTalentEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    nameSuffix: entry.nameSuffix,
+    category: entry.category,
+    minLevel: 2,
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    gate: "either",
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/** Resolve a picked social-talent id (`doc.build.vigilanteSocialTalents` entries) — hand-authored table first, vendored fallback. Mirrors `resolveRagePower`. */
+export function resolveVigilanteSocialTalent(
+  id: string,
+  refData: RefData,
+): VigilanteTalentDef | undefined {
+  const hand = VIGILANTE_SOCIAL_TALENTS[id];
+  if (hand) return hand;
+  const vendored = refData.vigilanteSocialTalents?.[id];
+  return vendored ? vendoredSocialToDef(vendored) : undefined;
+}
+
+/** Resolve a picked vigilante-talent id (`doc.build.vigilanteTalents` entries) — hand-authored table first, vendored fallback. Mirrors `resolveRagePower`. */
+export function resolveVigilanteTalent(
+  id: string,
+  refData: RefData,
+): VigilanteTalentEntry | undefined {
+  const hand = VIGILANTE_TALENTS[id];
+  if (hand) return hand;
+  const vendored = refData.vigilanteTalents?.[id];
+  return vendored ? vendoredTalentToDef(vendored) : undefined;
+}
+
+/** The full picker-browsable social-talent catalog — mirrors `mergedRagePowerCatalog` exactly (no aliases needed for this pool — see file doc comment). */
+export function mergedVigilanteSocialTalentCatalog(
+  refData: RefData,
+): MergedVigilanteSocialTalentEntry[] {
+  const handByNormName = new Map<string, VigilanteTalentDef>();
+  for (const t of SOCIAL_TALENT_LIST) {
+    handByNormName.set(normalizeVigilanteTalentName(t.name), t);
+  }
+
+  const vendored = Object.values(refData.vigilanteSocialTalents ?? {});
+  const usedHandIds = new Set<string>();
+  const seenNormNames = new Set<string>();
+  const merged: MergedVigilanteSocialTalentEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeVigilanteTalentName(v.name);
+    const handMatch = seenNormNames.has(norm) ? undefined : handByNormName.get(norm);
+    if (handMatch) {
+      seenNormNames.add(norm);
+      usedHandIds.add(handMatch.id);
+      merged.push({ ...handMatch, description: v.description, sources: v.sources });
+    } else {
+      merged.push(vendoredSocialToDef(v));
+    }
+  }
+  for (const t of SOCIAL_TALENT_LIST) {
+    if (!usedHandIds.has(t.id)) merged.push(t);
+  }
+  return merged;
+}
+
+/** The full picker-browsable vigilante-talent catalog — mirrors `mergedRagePowerCatalog` exactly. */
+export function mergedVigilanteTalentCatalog(refData: RefData): MergedVigilanteTalentEntry[] {
+  const handByNormName = new Map<string, VigilanteTalentEntry>();
+  for (const t of TALENT_LIST) {
+    handByNormName.set(
+      normalizeVigilanteTalentName(VIGILANTE_TALENT_NAME_ALIASES[t.id] ?? t.name),
+      t,
+    );
+  }
+
+  const vendored = Object.values(refData.vigilanteTalents ?? {});
+  const usedHandIds = new Set<string>();
+  const seenNormNames = new Set<string>();
+  const merged: MergedVigilanteTalentEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeVigilanteTalentName(v.name);
+    const handMatch = seenNormNames.has(norm) ? undefined : handByNormName.get(norm);
+    if (handMatch) {
+      seenNormNames.add(norm);
+      usedHandIds.add(handMatch.id);
+      merged.push({ ...handMatch, description: v.description, sources: v.sources });
+    } else {
+      merged.push(vendoredTalentToDef(v));
+    }
+  }
+  for (const t of TALENT_LIST) {
+    if (!usedHandIds.has(t.id)) merged.push(t);
+  }
+  return merged;
 }

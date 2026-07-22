@@ -1,0 +1,847 @@
+{
+  "acceleration_of_form": {
+    "category": "Master Ki Tricks",
+    "description": "<p>A ninja with this trick can spend 1 ki point as a standard action to gain the benefits of displacement and haste for 1 round per 2 ninja levels.</p>",
+    "id": "acceleration_of_form",
+    "name": "Acceleration of Form",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:acceleration_of_form"
+  },
+  "acrobatic_master": {
+    "category": "Ki Tricks",
+    "description": "<p>As a swift action, a ninja with this trick can focus her ki to grant her a +20 bonus on one Acrobatics check of her choice made before the start of her next turn. Using this ability expends 1 ki point from her ki pool.</p>",
+    "id": "acrobatic_master",
+    "name": "Acrobatic Master",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:acrobatic_master"
+  },
+  "advanced_talent": {
+    "category": "Master Other Tricks",
+    "description": "<p>The ninja can select a advanced_&gt;rogue talent from the list of Advanced Talents in place of a ninja trick. The ninja cannot select a rogue talent that has the same name as a ninja trick. The ninja cannot select improved evasion unless she has evasion (either as a class feature or as a [ninja master trick](ninjatrick/evasion)).</p>",
+    "id": "advanced_talent",
+    "name": "Advanced Talent",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:advanced_talent"
+  },
+  "all_the_stars_in_the_sky": {
+    "category": "Master Other Tricks",
+    "description": "<p>Certain master ninjas possess a seemingly limitless supply of their trusted weapons. Whenever a ninja with this trick buys a set of 50 identical magic shuriken, she thereafter replenishes them at no cost and never runs out. This stock of magical shuriken can be upgraded as though it were a normal magic weapon, and shuriken upgraded this way likewise never run out.</p>",
+    "id": "all_the_stars_in_the_sky",
+    "name": "All the Stars in the Sky",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:all_the_stars_in_the_sky"
+  },
+  "arcane_backfire": {
+    "category": "Other Tricks",
+    "description": "<p>When a ninja with this trick successfully attacks a creature that is holding a magic item that has a number of charges or uses per day, she can attempt a Use Magic Device check (DC = 20 + the item's CL) to cause the item to lose either one daily use or a number of charges equal to the number of the ninja's sneak attack dice.</p>",
+    "id": "arcane_backfire",
+    "name": "Arcane Backfire",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "heroes-from-the-fringe"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:arcane_backfire"
+  },
+  "assassinate": {
+    "category": "Master Sneak Attack Trick",
+    "description": "<p>A ninja with this master trick can kill foes that are unable to defend themselves. To attempt to assassinate a target, the ninja must first study her target for 1 round as a standard action. On the following round, if the ninja makes a sneak attack against the target and the target is denied its Dexterity bonus to AC, the sneak attack has the additional effect of possibly killing the target. This attempt automatically fails if the target recognizes the ninja as an enemy. If the sneak attack is successful and the target of this attack fails a Fortitude save, it dies. The DC of this save is equal to 10 + 1/2 the ninja's level + the ninja's Charisma modifier. If the save is successful, the target still takes the sneak attack damage as normal, but it is immune to that ninja's assassinate ability for 1 day.</p>\n<p>You can only apply this trick to an individual attack if you do not apply any other similarly-limited sneak attack tricks to it, such as bleeding attack or ki block. This decision must be made before the attack is made.</p>",
+    "id": "assassinate",
+    "name": "Assassinate",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:assassinate"
+  },
+  "bleeding_attack": {
+    "category": "Primary Sneak Attack Tricks",
+    "description": "<p>A ninja with this trick can cause living opponents to bleed by hitting them with a sneak attack. This attack causes the target to take 1 additional point of damage each round for each die of the ninja's sneak attack. Bleeding creatures take that amount of damage every round at the start of each of their turns. The bleeding can be stopped by a DC 15 Heal check or the application of any effect that heals hit point damage. Bleed damage from this ability does not stack with itself. Bleed damage bypasses any DR the creature might possess.</p>",
+    "id": "bleeding_attack",
+    "name": "Bleeding Attack",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:bleeding_attack"
+  },
+  "blinding_bomb": {
+    "category": "Master Improved Tricks",
+    "description": "<p>Whenever the ninja throws a smoke bomb, all living creatures in the cloud must make a Fortitude save or be blinded by the black smoke for 1d4 rounds. The DC of this saving throw is equal to 10 + 1/2 the ninja's level + the ninja's Charisma modifier. This trick cannot be combined with a choking bomb, but the ninja can combine a blinding bomb with a poison bomb. The ninja must have the choking bomb ninja trick before selecting this trick.</p>",
+    "id": "blinding_bomb",
+    "name": "Blinding Bomb",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:blinding_bomb"
+  },
+  "blood_debt": {
+    "category": "Ki Tricks",
+    "description": "<p>A ninja with this ability gains In Harm's Way as a bonus feat, even if she doesn't meet the prerequisites. When the ninja intercepts an attack using this feat, she can spend 1 ki point to impose a blood debt on the aided ally. The ninja's ki pool is reduced by 1 until she ends this effect, which she may do as an immediate action. If the ninja ends the blood debt in response to a successful attack against her by a creature the indebted ally threatens, the ally (who must be willing) takes full damage from that attack and any associated effects instead of the ninja.</p>",
+    "id": "blood_debt",
+    "name": "Blood Debt",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "champions-of-balance"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:blood_debt"
+  },
+  "breath_of_the_ancestors": {
+    "category": "Ki Tricks",
+    "description": "<p>The ninja chooses one imperial dragon type (forest, sea, sky, sovereign, or underworld) when she gains this trick, and the choice can't be changed. She can use supplies similar to those used for ninja smoke bombs to produce an alchemical breath weapon that deals the same kind of damage as the selected dragon (piercing damage for forest dragons, fire for sea dragons, and so on). The breath weapon deals the same amount of damage as the ninja's sneak attack, with a Reflex save allowed for half damage. The breath weapon is a 15-foot cone (or a 30-foot line if the underworld dragon is selected). The save DC is equal to 10 + 1/2 the ninja's class level + the ninja's Intelligence modifier. Using this ability is a standard action that expends up 2 ki points, and once used it cannot be used again for 1d4 rounds.</p>",
+    "id": "breath_of_the_ancestors",
+    "name": "Breath of the Ancestors",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "legacy-of-dragons"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:breath_of_the_ancestors"
+  },
+  "choking_bomb": {
+    "category": "Ki Tricks",
+    "description": "<p>Whenever a ninja throws a smoke bomb, all living creatures in the resulting cloud must make a Fortitude save or become staggered by the choking black smoke for 1d4 rounds. The DC of this saving throw is equal to 10 + 1/2 the ninja's level + the ninja's Charisma modifier. The ninja can decide to create an ordinary smoke bomb or add poison to this smoke bomb as normal. The ninja must have the poison bomb ninja trick before selecting this trick.</p>",
+    "id": "choking_bomb",
+    "level": 2,
+    "name": "Choking Bomb",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:choking_bomb"
+  },
+  "combat_trick": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja who selects this trick gains a bonus combat feat.</p>",
+    "id": "combat_trick",
+    "name": "Combat Trick",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:combat_trick"
+  },
+  "darkvision": {
+    "category": "Ki Tricks",
+    "description": "<p>This trick allows the ninja to use her ki to enhance her sight, granting darkvision out to a range of 60 feet. Using this trick is a standard action that costs 1 ki point. The enhanced senses last for 1 hour.</p>",
+    "id": "darkvision",
+    "name": "Darkvision",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:darkvision"
+  },
+  "deadly_range": {
+    "category": "Other Sneak Attack Tricks",
+    "description": "<p>A ninja with this ninja trick increases the range at which she can deal sneak attack damage by 10 feet. A ninja can take this trick more than once. Its effects stack.</p>",
+    "id": "deadly_range",
+    "name": "Deadly Range",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:deadly_range"
+  },
+  "deadly_shuriken": {
+    "category": "Master Other Tricks",
+    "description": "<p>As a full-round action, a ninja with this master trick can take careful aim and pool all of her attack potential into a single, deadly shuriken throw. When she does this, she throws a single shuriken at a single target, but makes as many attack rolls as she can, based on her base attack bonus. She makes the attack rolls in order from highest bonus to lowest, as if she were making a full attack. If any of the attack rolls hit the target, the attack hits. For each additional successful attack roll beyond the first, the ninja increases the damage by 1d6. Precision damage and extra damage from weapon special abilities (such as flaming) are added with damage modifiers and are not increased by this advanced talent. If one or more rolls are critical threats, she confirms the critical once using her highest base attack bonus -5. For each critical threat beyond the first, she reduces this penalty by 1 (to a maximum of 0).</p>",
+    "id": "deadly_shuriken",
+    "name": "Deadly Shuriken",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:deadly_shuriken"
+  },
+  "deep_cover": {
+    "category": "Master Ki Tricks",
+    "description": "<p>A ninja with this trick gains the <em>dual identity</em> and <em>seamless guise</em> class feature as a vigilante, except that the ninja can spend 1 ki point to change identities as a move action. The ninja's identities are referred to as social and ninja, rather than social and vigilante.</p>",
+    "id": "deep_cover",
+    "name": "Deep Cover",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:deep_cover"
+  },
+  "deflect_arrows": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja who selects this ninja trick gains the Deflect Arrows feat as a bonus feat. The ninja must have the Improved Unarmed Strike combat feat before taking this trick.</p>",
+    "id": "deflect_arrows",
+    "level": 1,
+    "name": "Deflect Arrows",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:deflect_arrows"
+  },
+  "evasion": {
+    "category": "Master Other Tricks",
+    "description": "<p>A ninja can avoid even magical and unusual attacks with great agility. If she makes a successful Reflex saving throw against an attack that normally deals half damage on a successful save, she instead takes no damage. Evasion can be used only if the ninja is wearing light armor or no armor. A helpless ninja does not gain the benefit of evasion.</p>",
+    "id": "evasion",
+    "name": "Evasion",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:evasion"
+  },
+  "false_face": {
+    "category": "Master Ki Tricks",
+    "description": "<p>Like oni who take mortal shapes to infiltrate society, some ninjas can mold their flesh to pass unsuspected. A ninja with this trick gains the change shape (any Small or Medium humanoid, alter self) universal monster rule as long as she has at least 1 ki point.</p>",
+    "id": "false_face",
+    "name": "False Face",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:false_face"
+  },
+  "fast_stealth": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja with this trick can move at full speed using the Stealth skill without penalty.</p>",
+    "id": "fast_stealth",
+    "name": "Fast Stealth",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:fast_stealth"
+  },
+  "feat": {
+    "category": "Master Other Tricks",
+    "description": "<p>A ninja may gain any feat that she qualifies for in place of a ninja trick.</p>",
+    "id": "feat",
+    "name": "Feat",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:feat"
+  },
+  "feather_fall": {
+    "category": "Ki Tricks",
+    "description": "<p>As an immediate action, the ninja can slow her descent as if using feather fall. This ability uses her ninja level as the caster level. Each use of this ability uses up 1 ki point.</p>",
+    "id": "feather_fall",
+    "name": "Feather Fall",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:feather_fall"
+  },
+  "flurry_of_stars": {
+    "category": "Ki Tricks",
+    "description": "<p>A ninja with this ability can expend 1 ki point from her ki pool as a swift action before she makes a full-attack attack with shuriken. During that attack, she can throw two additional shuriken at her highest attack bonus, but all of her shuriken attacks are made at a -2 penalty, including the two extra attacks.</p>",
+    "id": "flurry_of_stars",
+    "name": "Flurry of Stars",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:flurry_of_stars"
+  },
+  "forgotten_trick": {
+    "category": "Ki Tricks",
+    "description": "<p>A ninja with this ability can recall one trick taught to her by her ancient masters. When she uses this ability, she selects one ninja trick (not a master trick or rogue talent) that she does not know and can use that ninja trick for a number of rounds equal to her level. She must pay any ki costs associated with the trick as normal. Using this ability expends 2 ki point from her ki pool, plus the ki cost of the trick she chooses.</p>",
+    "id": "forgotten_trick",
+    "name": "Forgotten Trick",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:forgotten_trick"
+  },
+  "fractured_mirror": {
+    "category": "Master Improved Tricks",
+    "description": "<p>By sending phantom selves across the battlefield, one may fight as many. When a ninja with this trick uses the shadow clone ninja trick, she gains an additional clone for every 3 ninja levels she has, to a maximum of eight clones. In addition, while she has shadow clones deployed, the ninja can cause any number of her clones to split from herself as part of a move action. The shadow clones move up to the ninja's speed at her will each time she uses a move action to move. Shadow clones separated in this way are not considered part of the shadow clone trick until they return to the ninja's square, though they can still be destroyed while separated. Shadow clones separated from the ninja have an AC equal to the ninja's AC - 5 and cannot take any actions, though they can provide flanking. Shadow clones do not occupy any space and a creature can freely enter a shadow clone's square. The ninja must have the shadow clone ninja trick to select this trick.</p>",
+    "id": "fractured_mirror",
+    "name": "Fractured Mirror",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:fractured_mirror"
+  },
+  "ghost_step": {
+    "category": "Master Ki Tricks",
+    "description": "<p>As a swift action, a ninja with this trick can pass through walls as if she were a ghost. Until the end of her turn, she can pass through a wall or other surface that is up to 5 feet thick per level as if she were incorporeal. She must exit the solid material by the end of her turn. Each use of this ability uses up 1 ki point.</p>",
+    "id": "ghost_step",
+    "name": "Ghost Step",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:ghost_step"
+  },
+  "greater_ki_venom": {
+    "category": "Master Improved Tricks",
+    "description": "<p>A ninja with this trick can further improve her ki venom. The ninja can spend 2 ki points to increase the damage die to a d8 or spend 2 ki points to change the ability damage dealt to Constitution damage. The ninja must have the ki venom ninja trick before selecting this trick.</p>",
+    "id": "greater_ki_venom",
+    "name": "Greater Ki Venom",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:greater_ki_venom"
+  },
+  "herbal_compound": {
+    "category": "Ki Tricks",
+    "description": "<p>A ninja with this trick can consume specially prepared herbs to strengthen her mind. The ninja can spend 1 ki point and smoke, eat, or inject an herbal compound as a move action. The ninja takes a -2 penalty to AC and on Reflex saves but gains a +4 alchemical bonus on Will saves for 10 minutes per ninja level.</p>",
+    "id": "herbal_compound",
+    "name": "Herbal Compound",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:herbal_compound"
+  },
+  "hidden_weapons": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja with this ability can easily conceal weapons on her body. The ninja adds her level on opposed Sleight of Hand checks made to conceal a weapon. In addition, she can draw hidden weapons as a move action, instead of as a standard action.</p>",
+    "id": "hidden_weapons",
+    "name": "Hidden Weapons",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:hidden_weapons"
+  },
+  "high_jumper": {
+    "category": "Ki Tricks",
+    "description": "<p>When a ninja with this trick makes a [high jump](skill/acrobatics), the DC for that jump is half the normal DC. The ninja must have the acrobatic master trick before taking this talent.</p>",
+    "id": "high_jumper",
+    "level": 1,
+    "name": "High Jumper",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:high_jumper"
+  },
+  "invisible_blade": {
+    "category": "Master Improved Tricks",
+    "description": "<p>Whenever a ninja uses the vanishing trick ninja trick, she is treated as if she were under the effects of greater invisibility. The ninja must have the vanishing trick ninja trick before selecting this ninja trick.</p>",
+    "id": "invisible_blade",
+    "name": "Invisible Blade",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:invisible_blade"
+  },
+  "kami_warden": {
+    "category": "Master Ki Tricks",
+    "description": "<p>Ninjas can act as bodyguards as well as assassins or spies; some mystically emulate the relationship between kami and their wards when protecting their charges. A ninja with this trick gains Bodyguard and In Harm's Way as bonus feats, ignoring their prerequisites. When using In Harm's Way to intercept an attack, the ninja can spend 1 ki point to gains DR 10/cold iron and resistance 10 to acid, electricity, and fire for that attack.</p>",
+    "id": "kami_warden",
+    "name": "Kami Warden",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:kami_warden"
+  },
+  "kamikaze": {
+    "category": "Ki Tricks",
+    "description": "<p>A ninja with this ability strikes without concern for her own well-being. The ninja can spend 1 point from her ki pool to give her unarmed strikes and any weapons she wields the vicious weapon special ability for 1 round per level. The ninja can spend 1 ki point to dismiss this effect.</p>",
+    "id": "kamikaze",
+    "name": "Kamikaze",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "champions-of-balance"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:kamikaze"
+  },
+  "kawarimi": {
+    "category": "Master Ki Tricks",
+    "description": "<p>Once per day when a successful attack is made against a ninja with this ability, as an immediate action she can spend 1 ki point to attempt a Stealth check opposed by the attacker's Perception check. The ninja can attempt this check while being observed as long as she has cover or concealment (or an ability that allows her to attempt Stealth checks without cover or concealment). If she's successful, the opponent's attack hits an inanimate object that the attacker mistook for the ninja, and the ninja may move into an adjacent square and is hidden from the attacker.</p>",
+    "id": "kawarimi",
+    "name": "Kawarimi",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "champions-of-balance"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:kawarimi"
+  },
+  "ki_block": {
+    "category": "Primary Sneak Attack Tricks",
+    "description": "<p>A ninja with this trick can prevent a creature from using its ki pool. Whenever the ninja deals sneak attack damage, the target must make a Will save or be unable to spend any points from its ki pool for a number of rounds equal to the ninja's Charisma modifier. The DC of this save is 10 + 1/2 the ninja's level + the ninja's Charisma modifier. The number of points in the target's ki pool is unaffected, and abilities that do not require the subject to spend ki still function.</p>",
+    "id": "ki_block",
+    "name": "Ki Block",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:ki_block"
+  },
+  "ki_charge": {
+    "category": "Ki Tricks",
+    "description": "<p>A ninja with this trick can invest a portion of her ki into a single thrown weapon, such as a shuriken, and throw it as a standard action. The thrown weapon explodes on impact in a 5-foot burst, dealing 1d6 points of fire damage plus 1d6 points of fire damage for every four levels of the ninja above 2nd, to a maximum 4d6 at 18th level. Creatures caught in the blast receive a Reflex save to halve the damage. The DC of this save is 10 + 1/2 the ninja's level + the ninja's Charisma modifier. If the thrown weapon hits a creature, that creature takes a -2 penalty on the saving throw. If the thrown weapon misses, treat it as a thrown splash weapon. Using this ability expends 1 ki point from her ki pool.</p>",
+    "id": "ki_charge",
+    "name": "Ki Charge",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:ki_charge"
+  },
+  "ki_venom": {
+    "category": "Ki Tricks",
+    "description": "<p>A ninja with this trick knows how to make poisons from innocuous herbs or minerals. Creating ki venom is a full-round action that costs 1 ki point. The poison lasts for 24 hours before becoming inert. The poison deals either Strength or Dexterity damage, chosen when the venom is created. The ninja can spend additional ki as part of the process of creating the ki venom to improve the venom in one or more of the following ways: spend 1 ki point to increase the damage die to a d6, spend 1 ki point to change the ability damage dealt to Intelligence, Wisdom, or Charisma damage, or spend 1 ki point to increase the number of saves required to cure the poison by 1.</p>\n<p>&gt;::aff[Ki Venom]{iconP poison type=injury dcF dcLev=ninja dcIt=her dcMod=Cha freq=\"1/round for a number of rounds equal to the ninja's Charisma modifier\" effStr=\"1d4\" effDex=\"1d4\" effOr cure1}</p>",
+    "id": "ki_venom",
+    "name": "Ki Venom",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:ki_venom"
+  },
+  "many_guises": {
+    "category": "Master Ki Tricks",
+    "description": "<p>A ninja with this trick gains the vigilante social talent of the same name. The ninja must have the deep cover ninja trick before selecting this trick.</p>",
+    "id": "many_guises",
+    "level": 1,
+    "name": "Many Guises",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:many_guises"
+  },
+  "master_disguise": {
+    "category": "Master Improved Tricks",
+    "description": "<p>A ninja with this trick can take on the appearance of other creatures and individuals. Whenever the ninja uses the sudden disguise ninja trick, the duration increases to 10 minutes per level. Alternatively, the ninja can use the sudden disguise ninja trick to take on the appearance of a specific individual that the ninja has seen before for 1 minute per level. Creatures that are familiar with the individual receive a Will saving throw to see through the illusion. The DC of this saving throw is 10 + 1/2 the ninja's level + the ninja's Charisma modifier. This illusion also changes the ninja's speech, if she has heard the individual talk and can speak his language. The ninja must have the sudden disguise ninja trick before selecting this trick.</p>",
+    "id": "master_disguise",
+    "name": "Master Disguise",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:master_disguise"
+  },
+  "occulted_soul": {
+    "category": "Master Ki Tricks",
+    "description": "<p>A ninja with this trick can still her mind to bypass magical detection. The ninja can spend 1 ki point to cast nondetection on herself as a spell-like ability, with a caster level equal to her ninja level.</p>",
+    "id": "occulted_soul",
+    "name": "Occulted Soul",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:occulted_soul"
+  },
+  "poison_bomb": {
+    "category": "Ki Tricks",
+    "description": "<p>Whenever the ninja throws a smoke bomb, she can decide to include 1 dose of any inhaled poison she possesses. This poison affects all creatures in the smoke and lasts as long as the smoke lasts. She must pay for the poison normally. The ninja must have the smoke bomb ninja trick before selecting this trick.</p>",
+    "id": "poison_bomb",
+    "level": 1,
+    "name": "Poison Bomb",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:poison_bomb"
+  },
+  "pressure_points": {
+    "category": "Primary Sneak Attack Tricks",
+    "description": "<p>A ninja with this trick can strike at an opponent's vital pressure points, causing weakness and intense pain. Whenever the ninja deals sneak attack damage, she also deals 1 point of Strength or Dexterity damage, decided by the ninja. Unlike normal ability damage, this damage can be healed by a DC 15 Heal check. Each successful check heals 1 point of damage caused by this trick. A ninja with this trick receives a +10 insight bonus on this Heal check.</p>",
+    "id": "pressure_points",
+    "name": "Pressure Points",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:pressure_points"
+  },
+  "redirect_force": {
+    "category": "Other Tricks",
+    "description": "<p>If the ninja has a feat that allows her to attempt a combat maneuver without provoking attacks of opportunity, she can choose to provoke them anyway when she performs that maneuver. If she does so and takes damage from the attack of opportunity, the ninja adds the damage as a bonus on her attack roll instead of as a penalty.</p>",
+    "id": "redirect_force",
+    "name": "Redirect Force",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "champions-of-balance"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:redirect_force"
+  },
+  "rogue_talent": {
+    "category": "Other Tricks",
+    "description": "<p>The ninja can select a rogue talent in place of a ninja trick. The ninja cannot select a rogue talent that has the same name as a ninja trick. The ninja can select this talent multiple times.</p>",
+    "id": "rogue_talent",
+    "name": "Rogue Talent",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:rogue_talent"
+  },
+  "see_the_unseen": {
+    "category": "Master Ki Tricks",
+    "description": "<p>A ninja with this trick learns how to see that which cannot be seen. As a swift action, the ninja can cast see invisibility, using her level as the caster level. Each use of this ability uses up 1 ki point.</p>",
+    "id": "see_the_unseen",
+    "name": "See the Unseen",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:see_the_unseen"
+  },
+  "shadow_clone": {
+    "category": "Ki Tricks",
+    "description": "<p>The ninja can create 1d4 shadowy duplicates of herself that conceal her true location. This ability functions as mirror image, using the ninja's level as her caster level. Using this ability is a standard action that uses up 1 ki point.</p>",
+    "id": "shadow_clone",
+    "name": "Shadow Clone",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:shadow_clone"
+  },
+  "shadow_split": {
+    "category": "Master Improved Tricks",
+    "description": "<p>This trick allows the ninja to create an illusory double of herself that moves away from her, allowing the ninja to create a distraction. When she uses this ability, an illusory double appears and moves away from the ninja, heading in one direction. The double climbs walls, jumps pits, or simply passes through obstacles, moving at twice the ninja's speed in the direction indicated by the ninja when the ability is used. Its course cannot be changed. The double persists for 1 round per level of the ninja. Those who interact with the double receive a Will saving throw to recognize that it is fake. The DC of this save is 10 + 1/2 the ninja's level + the ninja's Charisma modifier. Each use of this ability uses up 1 ki point. The ninja must possess the shadow clone ninja trick before selecting this trick.</p>",
+    "id": "shadow_split",
+    "name": "Shadow Split",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:shadow_split"
+  },
+  "slow_metabolism": {
+    "category": "Other Tricks",
+    "description": "<p>The ninja has a slower-than-normal metabolism. She can hold her breath for twice as long as normal before needing to make Constitution checks (four times her Constitution score). In addition, whenever the ninja is poisoned, the time between saving throws (the poison's frequency) is doubled. Thus, a poison that has a frequency of <em>1/round for 6 rounds</em> would instead be <em>1/2 rounds for 12 rounds.</em></p>",
+    "id": "slow_metabolism",
+    "name": "Slow Metabolism",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:slow_metabolism"
+  },
+  "slow_reactions": {
+    "category": "Primary Sneak Attack Tricks",
+    "description": "<p>Opponents that are damaged by the ninja's sneak attack can't make attacks of opportunity for 1 round.</p>",
+    "id": "slow_reactions",
+    "name": "Slow Reactions",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:slow_reactions"
+  },
+  "smoke_bomb": {
+    "category": "Ki Tricks",
+    "description": "<p>This ability allows a ninja to throw a smoke bomb that creates a cloud of smoke with a 15-foot radius. This acts like the smoke from a smokestick. The ninja can center this smoke on herself, or throw the bomb as a ranged touch attack with a range of 20 feet. Using this ability is a standard action. Each use of this ability uses up 1 ki point.</p>",
+    "id": "smoke_bomb",
+    "name": "Smoke Bomb",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:smoke_bomb"
+  },
+  "snatch_arrows": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja who selects this ninja trick gains the Snatch Arrows feat as a bonus feat. The ninja must have the Improved Unarmed Strike feat and the Deflect Arrows feat before taking this trick.</p>",
+    "id": "snatch_arrows",
+    "level": 2,
+    "name": "Snatch Arrows",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:snatch_arrows"
+  },
+  "spiritual_companion": {
+    "category": "Master Other Tricks",
+    "description": "<p>While ninjas are accustomed to solitude, some form pacts with magical beings to seek aid and advice. A ninja with this trick gains an improved familiar, treating her ninja level as her wizard level. The ninja can select any of the following as her familiar: calligraphy wyrm, pipefox, shikigami kami, or spirit oni. The ninja must have an alignment compatible with the chosen familiar.</p>",
+    "id": "spiritual_companion",
+    "name": "Spiritual Companion",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:spiritual_companion"
+  },
+  "strangler": {
+    "category": "Ki Tricks",
+    "description": "<p>A ninja with this trick knows how to use a scarf, usually with a coin or large knot, as a lethal garrote. The ninja takes no penalties when using a scarf as an improvised garrote. In addition, as a free action when attempting a grapple combat maneuver check, the ninja can spend 1 ki point to gain the constrict special attack on that maneuver with damage equal to half the ninja's sneak attack dice (minimum 1d6).</p>",
+    "id": "strangler",
+    "name": "Strangler",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:strangler"
+  },
+  "style_master": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja who selects this ninja trick gains a style feat that she qualifies for as a bonus feat.</p>",
+    "id": "style_master",
+    "name": "Style Master",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:style_master"
+  },
+  "sudden_disguise": {
+    "category": "Ki Tricks",
+    "description": "<p>As a swift action, a ninja can change her appearance for 1 minute per level. This ability functions as disguise self. Each use of this ability uses up 1 ki point.</p>",
+    "id": "sudden_disguise",
+    "name": "Sudden Disguise",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:sudden_disguise"
+  },
+  "swarming_attack": {
+    "category": "Other Tricks",
+    "description": "<p>Ratfolk ninjas use their large numbers to overwhelm their enemies with countless attacks. While using the swarming racial trait to share a space with an ally, a ninja with this talent gains a bonus on damage roles equal to the number of sneak attack dice her ally has. For example, a ninja would gain +3 damage if her ally has sneak attack 3d6.</p>",
+    "id": "swarming_attack",
+    "name": "Swarming Attack",
+    "sources": [
+      {
+        "id": "heroes-from-the-fringe"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:swarming_attack"
+  },
+  "swift_poisoner": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja with this trick can apply a dose of poison to a weapon as a swift action.</p>",
+    "id": "swift_poisoner",
+    "name": "Swift Poisoner",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:swift_poisoner"
+  },
+  "unarmed_combat_mastery": {
+    "category": "Master Other Tricks",
+    "description": "<p>A ninja who selects this trick deals damage with her unarmed strikes as if she were a monk of her ninja level - 4. If the ninja has levels in monk, this ability stacks with monk levels to determine how much damage she can do with her unarmed strikes. A ninja must have the Improved Unarmed Strike feat (which can come from the unarmed combat training trick) before taking this trick.</p>",
+    "id": "unarmed_combat_mastery",
+    "name": "Unarmed Combat Mastery",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:unarmed_combat_mastery"
+  },
+  "unarmed_combat_training": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja who selects this ninja trick gains Improved Unarmed Strike as a bonus feat.</p>",
+    "id": "unarmed_combat_training",
+    "name": "Unarmed Combat Training",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:unarmed_combat_training"
+  },
+  "unbound_steps": {
+    "category": "Master Ki Tricks",
+    "description": "<p>This trick allows a ninja to use her ki to walk through the air. Whenever the ninja uses the <em>light steps</em> class feature, she can walk on air, rising or descending as she desires. She must end her move on a solid surface. Each use of this ability uses up 1 ki point.</p>",
+    "id": "unbound_steps",
+    "name": "Unbound Steps",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:unbound_steps"
+  },
+  "undetected_sabotage": {
+    "category": "Other Tricks",
+    "description": "<p>Whenever a ninja with this trick uses Disable Device to sabotage or disable a device, she can make a Stealth check with a bonus equal to her level. Anyone who inspects the device does not notice the sabotage and assumes the object works unless he beats the ninja's check with an opposed Perception skill check.</p>",
+    "id": "undetected_sabotage",
+    "name": "Undetected Sabotage",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:undetected_sabotage"
+  },
+  "vanishing_trick": {
+    "category": "Ki Tricks",
+    "description": "<p>As a swift action, the ninja can disappear for 1 round per level. This ability functions as invisibility. Using this ability uses up 1 ki point.</p>",
+    "id": "vanishing_trick",
+    "name": "Vanishing Trick",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:vanishing_trick"
+  },
+  "ventriloquism": {
+    "category": "Ki Tricks",
+    "description": "<p>As a swift action, the ninja can throw her voice as if using the spell ventriloquism. She can use this ability for 1 minute per ninja level. Each use of this ability uses up 1 ki point.</p>",
+    "id": "ventriloquism",
+    "name": "Ventriloquism",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:ventriloquism"
+  },
+  "wall_climber": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja with this ability gains a climb speed of 20 feet, but only on vertical surfaces. This ability cannot be used to scale perfectly smooth surfaces or to climb on the underside of horizontal surfaces.</p>",
+    "id": "wall_climber",
+    "name": "Wall Climber",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:wall_climber"
+  },
+  "weapon_training": {
+    "category": "Other Tricks",
+    "description": "<p>A ninja who selects this ninja trick gains Weapon Focus as a bonus feat.</p>",
+    "id": "weapon_training",
+    "name": "Weapon Training",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:ninja-trick:weapon_training"
+  }
+}

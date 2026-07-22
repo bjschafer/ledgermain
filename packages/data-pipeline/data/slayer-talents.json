@@ -1,0 +1,601 @@
+{
+  "aligned_sneak_attack": {
+    "category": "Other Sneak Attack Talents",
+    "description": "<p>When making a sneak attack against a creature that has damage reduction that can be overcome by weapons of a particular alignment (such as DR 5/good), the slayer's attack reduces that damage reduction by an amount equal to the number of sneak attack dice rolled until the end of the slayer's turn.</p>",
+    "id": "aligned_sneak_attack",
+    "name": "Aligned Sneak Attack",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "distant-realms",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:aligned_sneak_attack"
+  },
+  "armored_marauder": {
+    "category": "Advanced Slayer Talents",
+    "description": "<p>Some elite slayers exchange leather and chain for plate when stalking prey. A slayer with this talent gains proficiency with heavy armor. In addition, the armor check penalty of any heavy armor the slayer wears is reduced by 1 for every 6 class levels he has.</p>",
+    "id": "armored_marauder",
+    "name": "Armored Marauder",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends",
+        "pages": "6"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:armored_marauder"
+  },
+  "armored_swiftness": {
+    "category": "Advanced Slayer Talents",
+    "description": "<p>In time, the heaviest armor can become like a second skin. A slayer with this talent can move at full speed in heavy armor. In addition, the maximum Dexterity bonus of heavy armor the slayer wears increases by 1 for every 6 class levels he has. A slayer must have the armored marauder slayer talent to select this talent.</p>",
+    "id": "armored_swiftness",
+    "name": "Armored Swiftness",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends",
+        "pages": "6"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:armored_swiftness"
+  },
+  "assassinate": {
+    "category": "Advanced Slayer Talents",
+    "description": "<p>A slayer with this advanced talent can kill foes that are unable to defend themselves. To attempt to assassinate a target, the slayer must first study his target for 1 round as a standard action. On the following round, if the slayer makes a sneak attack against the target and that target is denied its Dexterity bonus to AC, the sneak attack has the additional effect of possibly killing the target. This attempt automatically fails if the target recognizes the slayer as an enemy. If the sneak attack is successful, the target must attempt a Fortitude saving throw with a DC equal to 10 + 1/2 the slayer's level + the slayer's Intelligence modifier. If the target fails this save, it dies; otherwise, the target takes the sneak attack damage as normal and is then immune to that slayer's assassinate ability for 24 hours.</p>",
+    "id": "assassinate",
+    "name": "Assassinate",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "54"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:assassinate"
+  },
+  "blood_reader": {
+    "category": "Studied Target Talents",
+    "description": "<p>While able to see a studied target, a slayer with this talent knows exactly how many hit points his opponent has remaining. This only works against living targets.</p>",
+    "id": "blood_reader",
+    "name": "Blood Reader",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-origins",
+        "pages": "21"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:blood_reader"
+  },
+  "castling": {
+    "category": "Other Talents",
+    "description": "<p>The slayer treats soft cover granted by creatures of her size or larger as though it were cover instead. Cover the slayer gains from this talent does not allow her to attempt Stealth checks.</p>",
+    "id": "castling",
+    "name": "Castling",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:castling"
+  },
+  "catfolk_rogue_talent": {
+    "category": "Other Talents",
+    "description": "<p>(Catfolk only.) A catfolk slayer can select one of the following catfolk rogue talents in place of a slayer talent: deadly scratch, graceful faller, nimble climber, or vicious claws. Any talent effects based on rogue level use the slayer's class level. The slayer must fulfill any prerequisites.</p>",
+    "id": "catfolk_rogue_talent",
+    "name": "Catfolk Rogue Talent",
+    "sources": [
+      {
+        "id": "dirty-tactics-toolbox",
+        "pages": "22"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:catfolk_rogue_talent"
+  },
+  "deadly_range": {
+    "category": "Other Sneak Attack Talents",
+    "description": "<p>A slayer with this talent increases the range at which he can deal sneak attack damage by 10 feet. A slayer can select this talent more than once; its effects stack. A slayer must be at least 4th level before selecting this talent.</p>",
+    "id": "deadly_range",
+    "name": "Deadly Range",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "53"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:deadly_range"
+  },
+  "eternal_opposition": {
+    "category": "Studied Target Talents",
+    "description": "<p>(Samsaran only.) While most imperial dragons, undead, and other long-enduring foes can count on outlasting their mortal adversaries, the samsaran slayer has pledged to oppose their machinations across all his lifetimes. When his studied target is of the dragon, fey, outsider, or undead type, the slayer gains a +2 insight bonus to his AC against its attacks and on saving throws against its abilities.</p>",
+    "id": "eternal_opposition",
+    "name": "Eternal Opposition",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook",
+        "pages": "18"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:eternal_opposition"
+  },
+  "experience_across_ages": {
+    "category": "Other Talents",
+    "description": "<p>(Samsaran only.) Once per day, a samsaran slayer can draw upon insights from his previous lifetimes to help identify a foe or recall a key piece of information. As a swift action, the slayer can attempt a Knowledge check as if he had a number of ranks in the appropriate Knowledge skill equal to his slayer level. A slayer can use this talent one additional time per day for every 5 slayer levels he has.</p>",
+    "id": "experience_across_ages",
+    "name": "Experience Across Ages",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook",
+        "pages": "18"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:experience_across_ages"
+  },
+  "extra_earthcraft": {
+    "category": "Other Talents",
+    "description": "<p>The slayer gains 2 additional earthcraft points each day. The slayer must have the earthcraft ability to select this talent.</p>",
+    "id": "extra_earthcraft",
+    "name": "Extra Earthcraft",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:extra_earthcraft"
+  },
+  "focused_poison": {
+    "category": "Other Talents",
+    "description": "<p>The slayer can focus his poison delivery to be especially deadly to his studied target. When the slayer studies a target, he can immediately reduce the number of additional studied targets he can maintain. Reducing this number does not require an action. For each target reduced in this way, the DC of poisons used against his studied target increases by 1. The slayer must be at least 6th level and have the poison use talent to select this talent.</p>",
+    "id": "focused_poison",
+    "level": 1,
+    "name": "Focused Poison",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "potions-and-poisons",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:focused_poison"
+  },
+  "foil_scrutiny": {
+    "category": "Other Talents",
+    "description": "<p>A slayer with this talent is able to obscure his thoughts and intentions. He gains a +2 bonus on all Bluff and Disguise checks, as well as on Will saving throws to resist mind-reading spells and effects (such as detect thoughts and discern lies).</p>",
+    "id": "foil_scrutiny",
+    "name": "Foil Scrutiny",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "53"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:foil_scrutiny"
+  },
+  "fortified_position": {
+    "category": "Other Talents",
+    "description": "<p>Whenever the slayer gains a bonus on Reflex saves due to cover, she gains an equal bonus on Fortitude saves.</p>",
+    "id": "fortified_position",
+    "name": "Fortified Position",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:fortified_position"
+  },
+  "graceful_athlete": {
+    "category": "Other Talents",
+    "description": "<p>Gain Graceful Athlete as a bonus feat. You must meet the prerequisites for the feat.</p>",
+    "id": "graceful_athlete",
+    "name": "Graceful Athlete",
+    "sources": [
+      {
+        "id": "blood-of-the-beast",
+        "pages": "6"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:graceful_athlete"
+  },
+  "inured_to_terror": {
+    "category": "Other Talents",
+    "description": "<p>(Samsaran only.) With their knowledge of the cyclical nature of existence, there are few experiences that can daunt samsaran slayers for long. As an immediate action when a slayer fails a saving throw against a fear effect, he can attempt the saving throw a second time to reduce the severity of the effect from panicked to frightened, frightened to shaken, or shaken to unaffected. Additionally, the DC of Intimidate checks to demoralize him increases by 2.</p>",
+    "id": "inured_to_terror",
+    "name": "Inured to Terror",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook",
+        "pages": "18"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:inured_to_terror"
+  },
+  "jaguars_grace": {
+    "category": "Other Sneak Attack Talents",
+    "description": "<p>A slayer with this talent does not take the normal -4 penalty when dealing nonlethal damage using a weapon that normally deals lethal damage. Attacks made this way can apply nonlethal sneak attack damage. The slayer must be at least 4th level to select this talent.</p>",
+    "id": "jaguars_grace",
+    "name": "Jaguar's Grace",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "heroes-of-golarion",
+        "pages": "4"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:jaguars_grace"
+  },
+  "jaguars_pounce": {
+    "category": "Studied Target Talents",
+    "description": "<p>When a slayer with this talent deals sneak attack damage, he can attempt a disarm or trip combat maneuver as an immediate action as if the target were flat-footed (losing its Dexterity bonus to CMD). This combat maneuver does not provoke attacks of opportunity. The slayer must have the jaguar's grace talent to select this talent.</p>",
+    "id": "jaguars_pounce",
+    "level": 1,
+    "name": "Jaguar's Pounce",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "heroes-of-golarion",
+        "pages": "4"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:jaguars_pounce"
+  },
+  "jaguars_protection": {
+    "category": "Studied Target Talents",
+    "description": "<p>When a slayer with this talent deals sneak attack damage, he draws the target's attention away from his allies. The affected enemy takes a -2 penalty on attack rolls made against anyone other than the slayer for 1 minute. The slayer must have the jaguar's pounce talent to select this talent.</p>",
+    "id": "jaguars_protection",
+    "level": 2,
+    "name": "Jaguar's Protection",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "heroes-of-golarion",
+        "pages": "4"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:jaguars_protection"
+  },
+  "marksmans_shot": {
+    "category": "Advanced Slayer Talents",
+    "description": "<p>Those who seek to slay with a single shot must have keen eyes and perfect poise. As an attack action, the slayer makes a single ranged attack at his highest attack bonus with a ranged weapon he wields. The target of the attack must be the slayer's studied target. On a successful hit, the slayer doubles the number of sneak attack dice applied to the attack; if the attack was not a sneak attack, this benefit does not apply.</p>",
+    "id": "marksmans_shot",
+    "name": "Marksman's Shot",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends",
+        "pages": "6"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:marksmans_shot"
+  },
+  "mountainside_ambush": {
+    "category": "Studied Target Talents",
+    "description": "<p>(Samsaran only). Fighting in the mountains of Zi Ha has trained samsaran slayers to strike the unwary with deadly attacks from above. If a slayer deals sneak attack damage to a creature that is unaware of his presence while he is standing on higher ground than his target, he does not have to roll sneak attack damage; instead, the sneak attack deals maximum damage. The samsaran must be standing on solid ground to use this ability.</p>",
+    "id": "mountainside_ambush",
+    "name": "Mountainside Ambush",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook",
+        "pages": "18"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:mountainside_ambush"
+  },
+  "mystic_veil": {
+    "category": "Other Talents",
+    "description": "<p>(Samsaran only.) Samsaran slayers are adept at obscuring the passes of their mountain homes from intruders. The slayer can cast silent image as a spell-like ability once per day for every 2 slayer levels he has, using his slayer level as his caster level. The slayer uses his Intelligence modifier on concentration checks when using this ability, and the DC to disbelieve the illusion is equal to 11 + the slayer's Intelligence modifier. The slayer must have an Intelligence score of at least 11 to select this talent.</p>",
+    "id": "mystic_veil",
+    "name": "Mystic Veil",
+    "nameSuffix": "(Sp)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook",
+        "pages": "18"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:mystic_veil"
+  },
+  "one_of_those_faces": {
+    "category": "Other Talents",
+    "description": "<p>Each day, you can use disguise self as a spell-like ability for up to 10 minutes per character level. This duration need not be continuous, but it must be used in 10-minute increments. Additionally, once you have used this ability, whenever you use it for the next 24 hours you must take the same alternate appearance.</p>",
+    "id": "one_of_those_faces",
+    "name": "One of Those Faces",
+    "nameSuffix": "(Sp)",
+    "sources": [
+      {
+        "id": "spymaster-s-handbook",
+        "pages": "21"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:one_of_those_faces"
+  },
+  "poison_use": {
+    "category": "Other Talents",
+    "description": "<p>The slayer is trained in the use of poison, and can't accidentally poison herself when applying poison to a weapon.</p>",
+    "id": "poison_use",
+    "name": "Poison Use",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "blood-of-shadows",
+        "pages": "8"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:poison_use"
+  },
+  "ranger_combat_style": {
+    "category": "Other Talents",
+    "description": "<p>The slayer selects a ranger combat style (such as archery or two-weapon combat) and gains a combat feat from the first feat list of that style. He can choose feats from his selected combat style, even if he does not have the normal prerequisites. At 6th level, he may select this talent again and add the 6th-level ranger combat feats from his chosen style to the list. At 10th level, he may select this talent again and add the 10th-level ranger combat feats from his chosen style to the list.</p>",
+    "id": "ranger_combat_style",
+    "name": "Ranger Combat Style",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "53"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:ranger_combat_style"
+  },
+  "reaping_stalker": {
+    "category": "Advanced Slayer Talents",
+    "description": "<p>Some slayers prefer weapons with grim symbolism of lives cut short and can wield such weapons with unparalleled lethality. A slayer with this talent treats any sickle or scythe he wields as though it were one size category larger for the purpose of determining its damage dice. In addition, the slayer increases the critical threat range of any sickle or scythe he wields by 1; this does not stack with other effects that alter a weapon's threat range.</p>",
+    "id": "reaping_stalker",
+    "name": "Reaping Stalker",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends",
+        "pages": "7"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:reaping_stalker"
+  },
+  "recall_training": {
+    "category": "Other Talents",
+    "description": "<p>(Samsaran only.) By calling on the memories of previous incarnations, a samsaran slayer can use martial techniques that transcend his usual capabilities. Once per day, the slayer can take a move action to gain the benefit of a combat feat he doesn't have. This effect lasts for 1 minute per slayer level he has. The slayer must meet all the feat's prerequisites.</p>",
+    "id": "recall_training",
+    "name": "Recall Training",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "martial-arts-handbook",
+        "pages": "18"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:recall_training"
+  },
+  "redirect_poison": {
+    "category": "Other Talents",
+    "description": "<p>The slayer can divert poisoned attacks against him. When a creature unsuccessfully attacks the slayer with a poisoned weapon or a natural weapon that would poison him, the slayer can attempt to redirect the attack to a creature within his reach (including, possibly, the creature that unsuccessfully attacked the slayer). As an immediate action, the slayer can make an attack roll against the creature to which he would redirect the poison. On a success, the poison is redirected to the target, and the target must attempt a saving throw against the poison as normal. This attack only redirects the poison and does not otherwise damage the targeted creature. This ability cannot affect a creature that attacked the slayer with a poisoned natural weapon, but it can affect a creature that attacked him with a poisoned manufactured weapon.</p>",
+    "id": "redirect_poison",
+    "name": "Redirect Poison",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "potions-and-poisons",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:redirect_poison"
+  },
+  "rogue_and_ninja_advanced_talents": {
+    "category": "Advanced Slayer Talents",
+    "description": "<p>A slayer can select one of the following rogue advanced talents or ninja master tricks in place of a slayer advanced talent.</p>\n<p>&gt;Advanced rogue talents: aligned disguise, blinding strike, dance of disorienting shadows, deadly sneak, feat, hunter's surprise, improved shadow's chill, knock-out blow, master of disguise, opportunist, reflexive shadow shield, see in darkness, stealthy sniper. &gt; &gt;Master Ninja Tricks: evasion, feat.</p>\n<p>A slayer can select multiple rogue advanced talents or ninja master tricks by taking this slayer advanced talent multiple times, but can't select the same one more than once.</p>",
+    "id": "rogue_and_ninja_advanced_talents",
+    "name": "Rogue and Ninja Advanced Talents",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "53"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:rogue_and_ninja_advanced_talents"
+  },
+  "rogue_talent": {
+    "category": "Other Talents",
+    "description": "<p>A slayer can select one of the following rogue talents in place of a slayer talent: bleeding attack\\<em>, camouflage, cloying shades, combat trick, demand attention, emboldening strike, extinguishing strike, fast stealth, feint from shadows, finesse rogue, firearm training, focusing attack, gloom magic, greater gloom magic, grit, hard to fool, lasting poison, mien of despair, obscuring blow, poison use, powerful sneak, rogue crawl, shadow duplicate, shadow's chill, slow reactions\\</em>, snap shot, sniper's eye, surprise attack, swift poison, terrain mastery, trap spotter, umbral gear, underhanded trick, unwitting ally, or weapon training. Any talent effects based on rogue level use the slayer's class level. If the rogue talent has a prerequisite, the slayer must meet the prerequisite before taking that rogue talent. If the talent is marked with an asterisk (\\*), the talent is considered a Primary Sneak Attack Talent (only one Primary Sneak Attack Talent can be applied to an individual attack, and the decision must be made before the attack roll is made). This talent can be selected multiple times; each time, it grants the slayer a new rogue talent.</p>",
+    "id": "rogue_talent",
+    "name": "Rogue Talent",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "53"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:rogue_talent"
+  },
+  "scrying_familiarity": {
+    "category": "Other Talents",
+    "description": "<p>You are well acquainted with scrying sensors. You can roll twice and take the better result on saving throws against divination (scrying) spells and effects, on Perception checks to notice scrying sensors, and on caster level checks to overcome spell resistance when you use a scrying spell or effect. If you notice a magical sensor, you can attempt a Stealth check opposed by the caster's caster level check to avoid being detected by the sensor.</p>",
+    "id": "scrying_familiarity",
+    "name": "Scrying Familiarity",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "spymaster-s-handbook",
+        "pages": "23"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:scrying_familiarity"
+  },
+  "sever_alignment": {
+    "category": "Primary Sneak Attack Talents",
+    "description": "<p>When making a sneak attack against an opponent with an alignment subtype, a slayer with this talent can forgo her sneak attack damage to scramble the creature's metaphysical nature. If the attack succeeds, the slayer deals weapon damage as normal, and the target must succeed at a Fortitude save (DC = 10 + half the slayer's level + the slayer's Intelligence modifier) or lose all damage reduction overcome by aligned weapons (such as DR 10/good), lose all regeneration overcome by aligned sources (such as regeneration 10 [good]). The slayer must have the aligned sneak attack talent to select this talent.</p>",
+    "id": "sever_alignment",
+    "name": "Sever Alignment",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "distant-realms",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:sever_alignment"
+  },
+  "slayer_camouflage": {
+    "category": "Advanced Slayer Talents",
+    "description": "<p>A slayer can use the Stealth skill to hide in any of his favored terrains, even if the terrain doesn't grant cover or concealment. A slayer must have the terrain mastery rogue talent to select this talent.</p>",
+    "id": "slayer_camouflage",
+    "name": "Slayer Camouflage",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "55"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:slayer_camouflage"
+  },
+  "slowing_strike": {
+    "category": "Primary Sneak Attack Talents",
+    "description": "<p>An opponent damaged by the slayer's sneak attack has its speed halved for 1d4 rounds. A successful Fortitude saving throw negates this effect (DC = 10 + 1/2 of the slayer's level + the slayer's Intelligence modifier). Against creatures with multiple types of movement, the slayer must choose which movement type to affect. If the slayer affects a creature's flight movement, its maneuverability is reduced by one step; if it's airborne at the time, it falls unless it succeeds at a DC 10 Fly check. If the slayer targets a creature already affected by this ability, its speed and maneuverability are not further reduced; the slayer may either extend the duration of that effect by 1d4 rounds or choose another movement type to affect (keeping track of the duration of each affected movement separately).</p>",
+    "id": "slowing_strike",
+    "name": "Slowing Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "53"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:slowing_strike"
+  },
+  "sticks_and_stones": {
+    "category": "Other Talents",
+    "description": "<p>The slayer gains Catch Off-Guard as a bonus feat.</p>",
+    "id": "sticks_and_stones",
+    "name": "Sticks and Stones",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-wilderness",
+        "pages": "86"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:sticks_and_stones"
+  },
+  "studied_ally": {
+    "category": "Studied Target Talents",
+    "description": "<p>The slayer can study an ally or friendly creature he can see as a move action. The slayer gains a +1 bonus on checks and attack rolls to use the aid another action to help with that ally's skill checks, attacks, or AC. This bonus increases at the same rate as a slayer's studied target bonus. At 7th level, a slayer can study an ally as a move or swift action. A slayer's studied ally counts against the number of studied targets he can have active at once.</p>",
+    "id": "studied_ally",
+    "name": "Studied Ally",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-origins",
+        "pages": "21"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:studied_ally"
+  },
+  "sunlight_strike": {
+    "category": "Other Talents",
+    "description": "<p>The slayer can reflect sunlight (or other sources of bright light) into the eyes of an adjacent target as a swift action, causing it to gain the dazzled condition for 1 round.</p>",
+    "id": "sunlight_strike",
+    "name": "Sunlight Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-wilderness",
+        "pages": "86"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:sunlight_strike"
+  },
+  "sure_footing": {
+    "category": "Other Talents",
+    "description": "<p>The slayer gains a +5 bonus on Acrobatics checks to move on narrow surfaces and loose or uneven ground.</p>",
+    "id": "sure_footing",
+    "name": "Sure Footing",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-wilderness",
+        "pages": "86"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:sure_footing"
+  },
+  "swallow_reversal": {
+    "category": "Advanced Slayer Talents",
+    "description": "<p>This technique, a creation of a legendary Minkaian duelist, mimics the movement of a bird in flight to pierce an opponent's defenses. As an attack action, the slayer can make a single melee attack against his studied target at his highest base attack bonus. When attempting a swallow reversal, the slayer rolls two attack rolls and uses the highest result. If the attack is a critical threat, the slayer attempts to confirm the critical hit as normal. The slayer can use swallow reversal at will, but it can only be used against a given target once per day.</p>",
+    "id": "swallow_reversal",
+    "name": "Swallow Reversal",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "chronicle-of-legends",
+        "pages": "7"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:swallow_reversal"
+  },
+  "toxin_training": {
+    "category": "Other Talents",
+    "description": "<p>The slayer builds resistance to certain poisons over time. Each time he chooses this talent, he chooses one ability score. He gains a +4 bonus on saving throws against poisons that deal damage to the chosen ability score. The slayer can choose this talent multiple times. Each time he does, he chooses a new ability score and gains the bonus on saves against poisons that target that ability. The slayer must be at least 4th level and have the poison use talent to select this talent.</p>",
+    "id": "toxin_training",
+    "level": 1,
+    "name": "Toxin Training",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "ultimate-wilderness",
+        "pages": "86"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:toxin_training"
+  },
+  "trapfinding": {
+    "category": "Other Talents",
+    "description": "<p>The slayer gains Disable Device as a class skill. The slayer also gains the trapfinding and trap sense rogue abilities, using his slayer level as his effective rogue level.</p>",
+    "id": "trapfinding",
+    "name": "Trapfinding",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "54"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:trapfinding"
+  },
+  "unbalancing_trick": {
+    "category": "Other Talents",
+    "description": "<p>The slayer gains Improved Trip as a bonus feat, even if she does not meet the prerequisites. At 6th level, she is treated as if she meets all the prerequisites of Greater Trip (although she must take the feat as normal to gain its benefits).</p>",
+    "id": "unbalancing_trick",
+    "name": "Unbalancing Trick",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:unbalancing_trick"
+  },
+  "woodland_stride": {
+    "category": "Advanced Slayer Talents",
+    "description": "<p>A slayer with this talent may move through any sort of undergrowth (such as natural thorns, briars, overgrown areas, and similar terrain) at his normal speed and without taking damage or suffering any other impairment. Terrain that is enchanted or magically manipulated to impede motion still affects the slayer as normal.</p>",
+    "id": "woodland_stride",
+    "name": "Woodland Stride",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "55"
+      }
+    ],
+    "uuid": "pfdata:slayer-talent:woodland_stride"
+  }
+}

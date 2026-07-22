@@ -105,6 +105,16 @@ export interface RefData {
   racialTraits: Record<string, RacialTrait>;
   /** The full published barbarian rage-power catalog (fourth-source dataset; see `RagePower` doc comment). */
   ragePowers: Record<string, RagePower>;
+  /** The full published rogue talent catalog, SHARED by chained rogue/Rogue (Unchained)/slayer's "Rogue Talent" option — see `RogueTalent` doc comment. */
+  rogueTalents: Record<string, RogueTalent>;
+  /** The full published ninja trick catalog (tricks + master tricks) — see `NinjaTrick` doc comment. */
+  ninjaTricks: Record<string, NinjaTrick>;
+  /** The full published slayer talent catalog (talents + advanced talents) — see `SlayerTalent` doc comment. No hand-authored overlay exists yet (`@pf1/engine` has no `slayer-talents.ts`); every entry is display-only. */
+  slayerTalents: Record<string, SlayerTalent>;
+  /** The full published vigilante talent catalog (Avenger/Stalker/shared) — see `VigilanteTalent` doc comment. */
+  vigilanteTalents: Record<string, VigilanteTalent>;
+  /** The full published vigilante SOCIAL talent catalog — a separate pool from `vigilanteTalents`, see `VigilanteSocialTalent` doc comment. */
+  vigilanteSocialTalents: Record<string, VigilanteSocialTalent>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -817,6 +827,116 @@ export interface RagePower extends RefEntity {
    * already present as prose inside `description` (do not attempt to parse
    * it out structurally — see the data-pipeline transform's doc comment).
    */
+  level?: number;
+}
+
+/* ------------------------------------------------------- rogue-family talents -- */
+
+/**
+ * A published rogue talent (issue #74 Phase 3b), same "Pf Data 1e" source and
+ * catalog-from-data posture as `RagePower` — prose only, no `changes`. SHARED
+ * by the chained rogue, Rogue (Unchained), and (via that class's own "Rogue
+ * Talent" menu option) slayer. `@pf1/engine` `rogue-talents.ts`'s
+ * hand-authored `ROGUE_TALENTS` table (27 entries) is authoritative for
+ * mechanics on any name collision — see that file's `mergedRogueTalentCatalog`.
+ *
+ * The source dictionary tags some entries with a `category` prefix of `R_`
+ * (chained-Rogue-specific wording) or `UR_` (Rogue (Unchained)-specific
+ * wording) — e.g. `powerful_sneak` ("R_Primary Sneak Attack Talents") vs. the
+ * separately-keyed `powerful_sneak_unchained_rogue` ("UR_Primary Sneak Attack
+ * Talents", a distinct entry with its own "(Unchained Rogue)"-suffixed
+ * `name`). Carried through UNINTERPRETED (same posture as `RagePower.level`)
+ * — this app doesn't gate the picker by edition on `category`, it only
+ * affects display grouping. A `category` prefixed `Advanced ` is the
+ * "Advanced Talents" tier (rogue/slayer 10th level, in place of a normal
+ * pick) — also carried uninterpreted; no vendored entry states a `level`
+ * that means anything other than a within-chain tier depth (verified: the
+ * handful of entries carrying `level` are chain steps like Gloom Magic ->
+ * Greater Gloom Magic, not a rogue-level requirement).
+ */
+export interface RogueTalent extends RefEntity {
+  nameSuffix?: string;
+  /** Grouping tag from the source (see doc comment above for the `R_`/`UR_`/`Advanced ` prefix conventions). */
+  category?: string;
+  /** Uninterpreted source field — NOT a rogue-level requirement, see doc comment. */
+  level?: number;
+}
+
+/**
+ * A published ninja trick (issue #74 Phase 3b), same posture as `RagePower`.
+ * `@pf1/engine` `ninja-tricks.ts`'s hand-authored `NINJA_TRICKS` table (44
+ * entries: 31 tricks + 13 master tricks) is authoritative for mechanics on
+ * any name collision — see that file's `mergedNinjaTrickCatalog`. The
+ * source's `category` is prefixed `Master ` for the 10th-level master-trick
+ * tier (e.g. "Master Ki Tricks"), which lines up with the hand-authored
+ * table's own `tier: "trick" | "master"` split, but is carried through as a
+ * plain string rather than parsed into that union — a vendored-only entry
+ * has no hand-authored `tier` to fall back to.
+ */
+export interface NinjaTrick extends RefEntity {
+  nameSuffix?: string;
+  category?: string;
+  /** Uninterpreted source field — NOT a ninja-level requirement, same trap as `RagePower.level`. */
+  level?: number;
+}
+
+/**
+ * A published slayer talent (issue #74 Phase 3b), same posture as
+ * `RagePower`. UNLIKE the other rogue-family subsystems, `@pf1/engine` has
+ * NO hand-authored slayer-talent table today — the slayer class previously
+ * had zero talent-picker support beyond the "Extra Slayer Talent" feat's
+ * repeatable-feat audit note (`feat-classification.ts`). Every entry here is
+ * therefore necessarily display-only; there is nothing to overlay onto. The
+ * source's own `rogue_talent` entry (category "Other Talents") documents PF1
+ * RAW's "or select a rogue talent instead" option structurally, as its own
+ * catalog row, rather than needing a cross-wired mechanic — see
+ * `@pf1/engine` `slayer-talents.ts`'s doc comment. `category` is prefixed
+ * `Advanced ` for the 10th-level "Advanced Slayer Talents" tier (in place of
+ * a normal pick, confirmed against the vendored Foundry `ClassFeature`
+ * description for "Advanced Talents (SLA)": "At 10th level and every 2
+ * levels thereafter" — same in-place-of shape as ninja master tricks, NOT an
+ * extra budget slot).
+ */
+export interface SlayerTalent extends RefEntity {
+  nameSuffix?: string;
+  category?: string;
+  /** Uninterpreted source field — NOT a slayer-level requirement, same trap as `RagePower.level`. */
+  level?: number;
+}
+
+/**
+ * A published vigilante talent — the "Vigilante Talent" pool (issue #74
+ * Phase 3b), same posture as `RagePower`. `@pf1/engine`
+ * `vigilante-talents.ts`'s hand-authored `VIGILANTE_TALENTS` table (32
+ * entries) is authoritative for mechanics on any name collision — see that
+ * file's `mergedVigilanteTalentCatalog`. `category` distinguishes "Avenger
+ * Talents"/"Stalker Talents" (specialization-gated, matching the
+ * hand-authored table's own `gate` field) from "Hidden Strike Talents"/
+ * "Other Talents" (shared) — carried through as a plain string rather than
+ * parsed into `VigilanteTalentGate`; a vendored-only entry's specialization
+ * gating is a display fact only (the picker's specialization filter only
+ * applies to the hand-authored `gate` field, see that file's doc comment).
+ */
+export interface VigilanteTalent extends RefEntity {
+  nameSuffix?: string;
+  category?: string;
+  /** Uninterpreted source field — NOT a vigilante-level requirement, same trap as `RagePower.level`. */
+  level?: number;
+}
+
+/**
+ * A published vigilante SOCIAL talent — a separate pool from
+ * `VigilanteTalent` (PF1 RAW grants Social Talents and Vigilante Talents from
+ * two independent class features, see `CharacterDoc.build.vigilanteSocialTalents`'s
+ * doc comment), same posture as `RagePower`. `@pf1/engine`
+ * `vigilante-talents.ts`'s hand-authored `VIGILANTE_SOCIAL_TALENTS` table (30
+ * entries) is authoritative for mechanics on any name collision — see that
+ * file's `mergedVigilanteSocialTalentCatalog`.
+ */
+export interface VigilanteSocialTalent extends RefEntity {
+  nameSuffix?: string;
+  category?: string;
+  /** Uninterpreted source field — NOT a vigilante-level requirement, same trap as `RagePower.level`. */
   level?: number;
 }
 
