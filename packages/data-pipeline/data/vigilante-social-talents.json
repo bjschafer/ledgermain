@@ -229,7 +229,7 @@
     "uuid": "pfdata:vigilante-social-talent:feign_innocence"
   },
   "gossip_collector": {
-    "description": "<p>The vigilante sits at the center of a web of gossip, granting him access to the latest scuttlebutt with baffling speed. Whenever the vigilante is presented with a topic about which he would normally need to spend 1d4 hours to gather information, he must spend only 1d2 hours instead. If he has the renown social talent and gathers the information in his area of renown, he must instead spend only 1d4 &amp;times; 10 minutes, and if he beats the DC to gather a piece of information by 20 or more, he knows that piece of information without spending any time at all; he has simply already heard that gossip. This ability doesn't allow him to gather information that isn't available in the locale he is canvassing, even if that locale is his area of renown.</p>",
+    "description": "<p>The vigilante sits at the center of a web of gossip, granting him access to the latest scuttlebutt with baffling speed. Whenever the vigilante is presented with a topic about which he would normally need to spend 1d4 hours to gather information, he must spend only 1d2 hours instead. If he has the renown social talent and gathers the information in his area of renown, he must instead spend only 1d4 × 10 minutes, and if he beats the DC to gather a piece of information by 20 or more, he knows that piece of information without spending any time at all; he has simply already heard that gossip. This ability doesn't allow him to gather information that isn't available in the locale he is canvassing, even if that locale is his area of renown.</p>",
     "id": "gossip_collector",
     "name": "Gossip Collector",
     "nameSuffix": "(Ex)",
@@ -417,7 +417,7 @@
     "uuid": "pfdata:vigilante-social-talent:mockingbird"
   },
   "morphic_mask": {
-    "description": "<p>The vigilante's physical form in his vigilante identity can differ significantly from that of his social identity, within the norms for his race &amp;mdash; this can include changes to the vigilante's proportions, coloration, gender characteristics, and other physical characteristics. This increases the vigilante's bonus from seamless guise by 2 for every significant change, as per the Disguise skill. The vigilante always assumes the same form when using this ability. A vigilante with multiple natural forms, such as a kitsune, can alter each of his forms using this talent.</p>",
+    "description": "<p>The vigilante's physical form in his vigilante identity can differ significantly from that of his social identity, within the norms for his race — this can include changes to the vigilante's proportions, coloration, gender characteristics, and other physical characteristics. This increases the vigilante's bonus from seamless guise by 2 for every significant change, as per the Disguise skill. The vigilante always assumes the same form when using this ability. A vigilante with multiple natural forms, such as a kitsune, can alter each of his forms using this talent.</p>",
     "id": "morphic_mask",
     "name": "Morphic Mask",
     "nameSuffix": "(Su)",

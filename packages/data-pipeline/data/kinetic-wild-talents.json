@@ -627,7 +627,7 @@
   },
   "cold_snap": {
     "burn": 1,
-    "description": "<p><strong>Prerequisite</strong> cold adaptation, shroud of water</p>\n<p>You chill your shroud of water and send the cold around you, creating an aura of numbing cold around yourself. Until the next time your burn is removed, you can begin or end the cold aura at will as a swift action. The temperature in the area 30 feet around you lowers by 5&amp;deg; F per kineticist level you possess, to a minimum modified temperature of -10&amp;deg; F. If this brings the temperature in the area below 40&amp;deg; F, all creatures within 5 feet of you take a -4 penalty to Dexterity. You are immune to these effects, as are creatures that are immune to cold or that benefit from effects that protect against temperature, such as endure elements.</p>",
+    "description": "<p><strong>Prerequisite</strong> cold adaptation, shroud of water</p>\n<p>You chill your shroud of water and send the cold around you, creating an aura of numbing cold around yourself. Until the next time your burn is removed, you can begin or end the cold aura at will as a swift action. The temperature in the area 30 feet around you lowers by 5° F per kineticist level you possess, to a minimum modified temperature of -10° F. If this brings the temperature in the area below 40° F, all creatures within 5 feet of you take a -4 penalty to Dexterity. You are immune to these effects, as are creatures that are immune to cold or that benefit from effects that protect against temperature, such as endure elements.</p>",
     "elements": ["water"],
     "id": "cold_snap",
     "kind": "utility",
@@ -1912,7 +1912,7 @@
   },
   "greater_toxic_infusion": {
     "burn": 4,
-    "description": "<p><strong>Prerequisite</strong> toxic infusion   <strong>Associated Blasts</strong> Autumn Blast, Spring Blast, Summer Blast, Verdant Blast, Winter Blast, Wood Blast   <strong>Saving Throw</strong> Fortitude negates</p>\n<p>Your plant toxin is more virulent. Each time you use this infusion, choose a physical ability score. Creatures that take piercing or slashing damage from your blast are exposed to your poison.</p>\n<p>::aff{iconP type=Blast-injury save=\"Fortitude negates\" freqR=6 eff=\"1d2 ability damage to the chosen ability score\" cure2c}</p>",
+    "description": "<p><strong>Prerequisite</strong> toxic infusion   <strong>Associated Blasts</strong> Autumn Blast, Spring Blast, Summer Blast, Verdant Blast, Winter Blast, Wood Blast   <strong>Saving Throw</strong> Fortitude negates</p>\n<p>Your plant toxin is more virulent. Each time you use this infusion, choose a physical ability score. Creatures that take piercing or slashing damage from your blast are exposed to your poison.</p>\n<p>1d2 ability damage to the chosen ability score</p>",
     "elements": ["wood"],
     "id": "greater_toxic_infusion",
     "infusionKind": "substance",
@@ -2135,7 +2135,7 @@
   },
   "heat_wave": {
     "burn": 1,
-    "description": "<p><strong>Prerequisite</strong> heat adaptation, searing flesh</p>\n<p>You create an aura of shimmering heat that distorts the area around you. Until the next time your burn is removed, you can begin or end the heat aura as a swift action. The temperature in the area 30 feet around you rises by 5&amp;deg; F per kineticist level you possess, to a maximum modified temperature of 120&amp;deg; F. If this brings the temperature to at least 90&amp;deg; F, all attacks made by creatures within 5 feet of you suffer a 20% miss chance due to concealment. You are immune to these effects, as are those immune to fire or benefiting from endure elements.</p>",
+    "description": "<p><strong>Prerequisite</strong> heat adaptation, searing flesh</p>\n<p>You create an aura of shimmering heat that distorts the area around you. Until the next time your burn is removed, you can begin or end the heat aura as a swift action. The temperature in the area 30 feet around you rises by 5° F per kineticist level you possess, to a maximum modified temperature of 120° F. If this brings the temperature to at least 90° F, all attacks made by creatures within 5 feet of you suffer a 20% miss chance due to concealment. You are immune to these effects, as are those immune to fire or benefiting from endure elements.</p>",
     "elements": ["fire"],
     "id": "heat_wave",
     "kind": "utility",
@@ -3527,7 +3527,7 @@
   },
   "stylish_infusion": {
     "burn": 2,
-    "description": "<p><strong>Prerequisite</strong> brawler's flurry or flurry of blows class feature, kinetic fist   <strong>Associated Blasts</strong> any   <strong>Saving Throw</strong> none</p>\n<p>When you learn this infusion, select an unchained monk style strike. You can use that style strike during a flurry of blows with your infused blast, though you must still follow the limitation of one style strike per flurry of blows (or two if you are a 15th-level unchained monk). If you select flying kick, the distance is equal to your elemental overflow bonus on attack rolls &amp;times; 10 feet. You can use this infusion only while also using the kinetic fist form infusion.</p>\n<p><strong>Special:</strong> You can select this infusion multiple times. Each time, you must select a different style strike.</p>",
+    "description": "<p><strong>Prerequisite</strong> brawler's flurry or flurry of blows class feature, kinetic fist   <strong>Associated Blasts</strong> any   <strong>Saving Throw</strong> none</p>\n<p>When you learn this infusion, select an unchained monk style strike. You can use that style strike during a flurry of blows with your infused blast, though you must still follow the limitation of one style strike per flurry of blows (or two if you are a 15th-level unchained monk). If you select flying kick, the distance is equal to your elemental overflow bonus on attack rolls × 10 feet. You can use this infusion only while also using the kinetic fist form infusion.</p>\n<p><strong>Special:</strong> You can select this infusion multiple times. Each time, you must select a different style strike.</p>",
     "elements": ["universal"],
     "id": "stylish_infusion",
     "infusionKind": "substance",

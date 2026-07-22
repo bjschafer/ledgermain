@@ -209,7 +209,7 @@
   },
   "expose_weaknesses": {
     "category": "Other Talents",
-    "description": "<p>The vigilante is able to use sneaky tricks to make it easier to damage a foe, whether it is throwing a bit of fine dust of cold iron over a fey creature or melting a glob of silver onto a lycanthrope's hide. The vigilante can add the ability to reduce a creature's damage reduction or hardness by 10 to the list of options when attempting a dirty trick combat maneuver check. This does not stack with itself, and it does not work against creatures with DR/&amp;mdash;.</p>",
+    "description": "<p>The vigilante is able to use sneaky tricks to make it easier to damage a foe, whether it is throwing a bit of fine dust of cold iron over a fey creature or melting a glob of silver onto a lycanthrope's hide. The vigilante can add the ability to reduce a creature's damage reduction or hardness by 10 to the list of options when attempting a dirty trick combat maneuver check. This does not stack with itself, and it does not work against creatures with DR/—.</p>",
     "id": "expose_weaknesses",
     "name": "Expose Weaknesses",
     "nameSuffix": "(Ex)",
