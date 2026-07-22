@@ -51,5 +51,8 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     slayerTalents: readJson(dir, "slayer-talents.json"),
     vigilanteTalents: readJson(dir, "vigilante-talents.json"),
     vigilanteSocialTalents: readJson(dir, "vigilante-social-talents.json"),
+    arcanistExploits: readJson(dir, "arcanist-exploits.json"),
+    investigatorTalents: readJson(dir, "investigator-talents.json"),
+    kineticWildTalents: readJson(dir, "kinetic-wild-talents.json"),
   };
 }

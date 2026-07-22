@@ -1,0 +1,943 @@
+{
+  "alchemist_discovery": {
+    "category": "Alchemist and Poison Talents",
+    "description": "<p>The investigator can select one of the following alchemist discoveries as an investigator talent: combine extracts, concentrate poison, dilution, elixir of life, enhance potion, eternal potion, extend potion, infusion, mutagen, and poison conversion. He can also choose to learn an annointing, instead. When selecting an alchemist discovery or annointing, he must be high enough level to qualify for it, using his investigator level as his alchemist level to determine if he qualifies. This talent can be selected multiple times; each time grants a new alchemist discovery.</p>",
+    "id": "alchemist_discovery",
+    "name": "Alchemist Discovery",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:alchemist_discovery"
+  },
+  "amazing_inspiration": {
+    "category": "Inspiration Talents",
+    "description": "<p>When using inspiration, the investigator rolls a d8 instead of a d6. At 20th level, the investigator rolls 2d8 and adds both dice to the result. An investigator must be at least 7th level to select this talent.</p>",
+    "id": "amazing_inspiration",
+    "name": "Amazing Inspiration",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:amazing_inspiration"
+  },
+  "anathema": {
+    "category": "Alchemist and Poison Talents",
+    "description": "<p>When an investigator creates or prepares a poison, including poisons derived from racial or class abilities, he can spend one use of inspiration to create an anathema instead. Anathemas count as poisons, but they can affect creatures that are normally immune to poison, as they exploit vulnerabilities in their very nature rather than their biology. When an anathema is created, select a creature type (and subtype, if applicable) from the ranger favored enemy list; the anathema functions only against this chosen type. The investigator also chooses one of the following special abilities for the anathema to affect: damage reduction (except DR/-), energy resistance (one type chosen by the investigator), fast healing, movement speed, or spell resistance.</p>\n<p>The method of delivery (contact, ingested, inhaled, or injury) and the DC of the anathema's save are identical to those of the poison used to make the anathema. If the target fails its save against the anathema (even if the enemy is normally immune to effects that require a specific save, such as undead's immunity to effects that require a Fortitude save), the value of the chosen ability is lowered by 5 (minimum 0) for 1 round per investigator level.</p>",
+    "id": "anathema",
+    "name": "Anathema",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "potions-and-poisons",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:anathema"
+  },
+  "applied_engineering": {
+    "category": "Inspiration Talents",
+    "description": "<p>The investigator can leverage his knowledge of engineering to solve tasks that normally require brute strength or keen eyes. He can expend one use of inspiration as a full-round action to study an object or area and attempt a Knowledge (engineering) check. On his next turn, he can use the result of that Knowledge (engineering) check in place of a Strength check to break the object or in place of a Perception check to locate hidden doors or compartments in that area.</p>",
+    "id": "applied_engineering",
+    "name": "Applied Engineering",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-origins",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:applied_engineering"
+  },
+  "atheist_inspiration": {
+    "category": "Inspiration Talents",
+    "description": "<p>The investigator can use her inspiration on saving throws against divine spells without expending uses of inspiration. This talent counts as the Divine Defiance feat for the purpose of meeting the prerequisites of other feats.</p>",
+    "id": "atheist_inspiration",
+    "name": "Atheist Inspiration",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue",
+        "pages": "31"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:atheist_inspiration"
+  },
+  "blinding_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator deals damage with studied strike, the opponent must succeed at a Fortitude saving throw or be permanently blinded. A successful saving throw reduces this to dazzled for 1d4 rounds. The DC for this Fortitude save is equal to 10 + 1/2 the investigator's level + his Intelligence modifier. This talent has no effect on creatures that do not rely on eyes for sight or creatures with more than two eyes (although multiple critical hits might cause blindness, at the GM's discretion). Blindness can be cured by heal, regeneration, remove blindness, or similar abilities. An investigator must be at least 17th level to select this talent.</p>",
+    "id": "blinding_strike",
+    "name": "Blinding Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:blinding_strike"
+  },
+  "castling": {
+    "category": "Other Talents",
+    "description": "<p>The investigator treats soft cover granted by creatures of her size or larger as though it were cover instead. Cover the investigator gains from this talent does not allow her to attempt Stealth checks.</p>",
+    "id": "castling",
+    "name": "Castling",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:castling"
+  },
+  "chroniclers_insight": {
+    "category": "Inspiration Talents",
+    "description": "<p>The investigator can peruse a Pathfinder Chronicle as a standard action, applying its benefits as though he had studied it for the full 1d4 rounds. Upon studying a Pathfinder Chronicle, the investigator can expend one use of inspiration to apply the volume's benefits for a number of hours equal to his Intelligence modifier and gain an additional benefit based on the volume's associated Knowledge skill during that time. The investigator can have only one such ongoing benefit at a time, and activating a new benefit ends the first one.</p>\n<p>&gt;<strong>Arcana, Nature, Planes, or Religion:</strong> When performing a studied strike, the investigator's attack overcomes damage reduction as if it were a weapon with the following property based on the associated Knowledge check: adamantine (arcana), chaotic (planes), cold iron (nature), evil (planes), good (planes), lawful (planes), silver (religion). He also gains a +1 insight bonus on saving throws against creatures identifiable by the associated Knowledge check (for example, outsiders for Knowledge [planes]). &gt; &gt;<strong>Dungeoneering:</strong> The investigator can deal half his studied strike damage to creatures immune to sneak attacks. &gt; &gt;<strong>Engineering:</strong> Whenever he uses his inspiration on Disable Device checks to open locks or on Perception checks to find hidden compartments, the investigator gains a circumstance bonus on the check equal to one-third his level. &gt; &gt;<strong>Geography:</strong> The investigator increases any bonuses to AC and on Reflex saving throws he gains from partial cover, total cover, and improved cover by 1. &gt; &gt;<strong>History:</strong> The investigator can study a foe using studied combat a second time in 24 hours as a full-round action without expending inspiration. Subsequent uses of studied combat require inspiration as normal. &gt; &gt;<strong>Local:</strong> Whenever he uses his inspiration on Bluff checks to feint, Diplomacy checks to gather information, or Intimidate checks to improve a creature's attitude, the investigator gains a circumstance bonus on the check equal to one-third his level. &gt; &gt;<strong>Nobility:</strong> Whenever he uses his inspiration on Bluff checks to lie, Diplomacy checks to request favors, or Intimidate checks to demoralize, the investigator gains a circumstance bonus on the check equal to one-third his level.</p>",
+    "id": "chroniclers_insight",
+    "name": "Chronicler's Insight",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "adventurer-s-guide",
+        "pages": "146"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:chroniclers_insight"
+  },
+  "combat_inspiration": {
+    "category": "Inspiration Talents",
+    "description": "<p>When an investigator uses inspiration on an attack roll or saving throw, he expends one use of inspiration instead of two. An investigator must be at least 9th level to select this talent.</p>",
+    "id": "combat_inspiration",
+    "name": "Combat Inspiration",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:combat_inspiration"
+  },
+  "confusing_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator deals damage with studied strike, the opponent must succeed at a Fortitude saving throw or become confused for 1d4+1 rounds. A successful saving throw reduces the duration to 1 round. The DC for this Fortitude save is equal to 10 + 1/2 the investigator's level + his Intelligence modifier. Constructs, mindless creatures, oozes, plants, undead, incorporeal creatures, and creatures immune to critical hits are not affected by this ability. An investigator must be at least 19th level to select this talent.</p>",
+    "id": "confusing_strike",
+    "name": "Confusing Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:confusing_strike"
+  },
+  "deafening_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When an investigator deals damage with studied strike, the opponent must succeed at a Fortitude saving throw or be permanently deafened. A successful Fortitude saving throw reduces the duration of this effect to 1 round. The DC for this save is equal to 10 + 1/2 the investigator's level + his Intelligence modifier. This talent has no effect on deaf creatures. Deafness can be cured by heal, regeneration, remove blindness, or similar effects. An investigator must be at least 15th level to select this talent.</p>",
+    "id": "deafening_strike",
+    "name": "Deafening Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:deafening_strike"
+  },
+  "device_talent": {
+    "category": "Other Talents",
+    "description": "<p>The investigator can use the Use Magic Device skill even if not trained in that skill. If the investigator is trained in Use Magic Device, he can use the inspiration ability with that skill without expending uses of inspiration.</p>",
+    "id": "device_talent",
+    "name": "Device Talent",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:device_talent"
+  },
+  "didactic_strike": {
+    "category": "Other Studied Strike Talents",
+    "description": "<p>When the investigator activates his studied strike, he can end his studied combat and choose not to deal his studied strike damage. He is instead able to show any allies within 30 feet who can see him a weak spot on the target. Until the beginning of the investigator's next turn, each affected ally's first attack that hits the target deals additional damage equal to one-third the investigator's level. He can end this effect as an immediate action to instead cause an affected ally's first successful attack to deal the investigator's studied strike damage. This additional damage is precision damage and does not affect creatures that are immune to sneak attacks.</p>",
+    "id": "didactic_strike",
+    "name": "Didactic Strike",
+    "sources": [
+      {
+        "id": "adventurer-s-guide",
+        "pages": "147"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:didactic_strike"
+  },
+  "domino_effect": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator uses studied strike, he uses his opponents against each other and sets himself up for his next move. Whenever he successfully deals damage to an opponent with studied strike, as a free action the investigator can apply the effects of studied combat to an opponent adjacent to the first. An investigator must be at least 5th level to select this talent.</p>",
+    "id": "domino_effect",
+    "name": "Domino Effect",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-origins",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:domino_effect"
+  },
+  "effortless_aid": {
+    "category": "Other Talents",
+    "description": "<p>The investigator can use an aid another action as a move action instead of as a standard action. An investigator can expend one use of inspiration to instead perform an aid another action as a swift action.</p>",
+    "id": "effortless_aid",
+    "name": "Effortless Aid",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:effortless_aid"
+  },
+  "eidetic_recollection": {
+    "category": "Inspiration Talents",
+    "description": "<p>An investigator can always choose to take 10 on any of his Knowledge checks, even if he's in immediate danger or distracted. An investigator may expend one use of inspiration to take 20 on a Knowledge skill check even if he's in immediate danger or distracted. An investigator must be at least 11th level to select this talent.</p>",
+    "id": "eidetic_recollection",
+    "name": "Eidetic Recollection",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:eidetic_recollection"
+  },
+  "eldritch_conduit": {
+    "category": "Other Talents",
+    "description": "<p>Survival in the Mana Wastes between the nations of Nex and Geb can depend heavily on locating sufficient magical equipment, which sometimes involves stealing power from a wand or scroll to power a more necessary one. As a full-round action, an investigator with this talent can use two potions, two wands, or two scrolls. Each item is expended or loses a charge as if used normally. The investigator chooses to gain the magical effect of one, but calculates its effects using the caster level of the other. The investigator must still succeed at a Use Magic Device check to operate scrolls or wands unless some other ability allows him to do so, but makes only one skill check to operate both items.</p>",
+    "id": "eldritch_conduit",
+    "name": "Eldritch Conduit",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "magic-tactics-toolbox",
+        "pages": "7"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:eldritch_conduit"
+  },
+  "empathy": {
+    "category": "Inspiration Talents",
+    "description": "<p>When attempting a Sense Motive check, the investigator makes two d20 rolls and takes the higher result. If an investigator uses inspiration on a Sense Motive check, he rolls the inspiration dice twice and takes the higher result. Once per day, the investigator can expend one use of inspiration to target a single creature that he can see and hear within 30 feet. Upon doing so, the investigator detects the surface thoughts of the target's mind, as if he concentrated for 3 rounds while using the detect thoughts spell, unless the creature succeeds a Will saving throw. The DC of this save is 10 + 1/2 the investigator's level + his Intelligence modifier. If the target fails, the investigator can continue to detect the surface thoughts of the target creature for a number of rounds equal to 1/2 his investigator level. An investigator must be at least 5th level to select this talent.</p>",
+    "id": "empathy",
+    "name": "Empathy",
+    "nameSuffix": "(Ex, Su)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:empathy"
+  },
+  "expanded_inspiration": {
+    "category": "Inspiration Talents",
+    "description": "<p>An investigator can use his inspiration ability when attempting Diplomacy, Heal, Perception, Profession, and Sense Motive checks without expending uses of inspiration, provided he's trained in the skill.</p>",
+    "id": "expanded_inspiration",
+    "name": "Expanded Inspiration",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:expanded_inspiration"
+  },
+  "extra_earthcraft": {
+    "category": "Other Talents",
+    "description": "<p>The investigator gains 2 additional earthcraft points each day. The investigator must have the earthcraft ability to select this talent.</p>",
+    "id": "extra_earthcraft",
+    "name": "Extra Earthcraft",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:extra_earthcraft"
+  },
+  "false_spellcaster": {
+    "category": "Alchemist and Poison Talents",
+    "description": "<p>The investigator can modify her extracts to be delivered as oils she can apply covertly to her skin. She can fake verbal or somatic components as she uses an extract this way to trick observers into thinking she cast a spell to produce the extract's effect. She attempts a Bluff check to determine how convincing the ruse is. If observers attempt to determine the spell she is casting, those who succeed at a Spellcraft check opposed by her Bluff check realize the truth. Whether or not an observer recognizes what is going on, the DC to identify the effect of the extract is equal to 20 + the extract's spell level. If the investigator has the infusion alchemist discovery, she can deliver her infusions with a range of touch, but the hint of residue grants targets a +2 bonus on the opposed Spellcraft check to realize she is not truly casting spells.</p>",
+    "id": "false_spellcaster",
+    "name": "False Spellcaster",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue",
+        "pages": "31"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:false_spellcaster"
+  },
+  "favored_beat": {
+    "category": "Other Talents",
+    "description": "<p>The investigator is familiar with a specific community in which she gains the benefits of renown. She gains the renown vigilante social talent. This community can be an entire settlement or portions of a settlement (such as a particular district or neighborhood) depending on the population, as allowed by the renown social talent. Anytime she could select another investigator talent, the investigator can also select from the following list of vigilante social talents, using her investigator level as her vigilante level for the purposes of meeting prerequisites: celebrity discount, celebrity perks, gossip collector, great renown, incredible renown, and loyal aid. For the purpose of vigilante social talents, the investigator does not have a vigilante identity and is always considered to be in her social identity.</p>",
+    "id": "favored_beat",
+    "name": "Favored Beat",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue",
+        "pages": "31"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:favored_beat"
+  },
+  "fortified_position": {
+    "category": "Other Talents",
+    "description": "<p>Whenever the investigator gains a bonus on Reflex saves due to cover, she gains an equal bonus on Fortitude saves.</p>",
+    "id": "fortified_position",
+    "name": "Fortified Position",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:fortified_position"
+  },
+  "graceful_athlete": {
+    "category": "Other Talents",
+    "description": "<p>Gain Graceful Athlete as a bonus feat. You must meet the prerequisites for the feat.</p>",
+    "id": "graceful_athlete",
+    "name": "Graceful Athlete",
+    "sources": [
+      {
+        "id": "blood-of-the-beast",
+        "pages": "6"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:graceful_athlete"
+  },
+  "greater_anathema": {
+    "category": "Alchemist and Poison Talents",
+    "description": "<p>The ability reduction of the investigator's anathemas increases to 10, and he adds DR/- and regeneration to the list of abilities he can lower with an anathema. In addition, when an investigator creates an anathema, he can designate a specific kind of creature (such as vampires) in addition to the creature type. When used against this specific foe, the DC of the save against the anathema is 2 higher than the component poison. An investigator must have the anathema investigator talent to select this talent.</p>",
+    "id": "greater_anathema",
+    "level": 1,
+    "name": "Greater Anathema",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "potions-and-poisons",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:greater_anathema"
+  },
+  "greater_combat_inspiration": {
+    "category": "Inspiration Talents",
+    "description": "<p>Choose a single weapon type (such as sword cane or short sword). As long as the investigator has at least 1 inspiration point in his inspiration pool, he no longer has to expend a use of inspiration to use that ability with attacks made with this weapon. An investigator must have the combat inspiration investigator talent and be at least 19th level to select this talent.</p>",
+    "id": "greater_combat_inspiration",
+    "level": 1,
+    "name": "Greater Combat Inspiration",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:greater_combat_inspiration"
+  },
+  "greater_numerical_alchemy": {
+    "category": "Alchemist and Poison Talents",
+    "description": "<p>The investigator can calculate his movements and account for his reactions to danger or unexpected situations with lightning speed. He can expend a use of inspiration to mix an extract as a standard action. The investigator must have the numerical alchemy talent and be at least 11th level to select this talent.</p>",
+    "id": "greater_numerical_alchemy",
+    "level": 1,
+    "name": "Greater Numerical Alchemy",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "disciple-s-doctrine",
+        "pages": "17"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:greater_numerical_alchemy"
+  },
+  "greater_numerical_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>Once per day, when the investigator has confirmed a critical hit with a studied strike, he can deal the strike's maximum damage instead of rolling damage as normal. This includes the damage dealt by the successful attack as well as the additional damage from the studied strike. He can expend a use of inspiration to use this ability a second time per day. Using this ability doesn't require an action. The investigator must have the numerical strike talent and be at least 13th level to select this talent.</p>",
+    "id": "greater_numerical_strike",
+    "name": "Greater Numerical Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "disciple-s-doctrine",
+        "pages": "17"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:greater_numerical_strike"
+  },
+  "hidden_agendas": {
+    "category": "Inspiration Talents",
+    "description": "<p>An investigator learns to obscure his thoughts and endeavors from prying eyes and even intrusive magic. When an investigator uses inspiration while attempting a Bluff check to pass secret messages or attempting a Linguistics check to create forgeries, he can roll his inspiration dice twice and take the higher result. In addition, the investigator can use inspiration when attempting a saving throw against a divination spell or effect without expending a use of inspiration. An investigator must be at least 11th level to select this talent.</p>",
+    "id": "hidden_agendas",
+    "name": "Hidden Agendas",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:hidden_agendas"
+  },
+  "iconclastic_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator deals damage with a studied strike, she can perform a sunder combat maneuver as a free action against the creature the studied strike damaged. If the object targeted is a holy symbol or divine scroll, this sunder does not provoke attacks of opportunity and deals maximum damage on a successful check. An investigator must be at least 13th level to select this talent.</p>",
+    "id": "iconclastic_strike",
+    "name": "Iconclastic Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue",
+        "pages": "31"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:iconclastic_strike"
+  },
+  "innocent_facade": {
+    "category": "Inspiration Talents",
+    "description": "<p>Once per day, an investigator with this talent can use innocence as a spell-like ability, using her investigator level as the spell's caster level. An investigator must have the underworld inspiration investigator talent before selecting this talent.</p>",
+    "id": "innocent_facade",
+    "level": 1,
+    "name": "Innocent Facade",
+    "nameSuffix": "(Sp)",
+    "sources": [
+      {
+        "id": "magic-tactics-toolbox",
+        "pages": "27"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:innocent_facade"
+  },
+  "inspirational_expertise": {
+    "category": "Inspiration Talents",
+    "description": "<p>When an investigator succeeds at a Knowledge check to identify a monster's special powers or vulnerabilities, he can expend one use of inspiration as a swift action to grant allies within 30 feet that can hear him a +4 insight bonus on attack rolls against that monster or type of monster for 1 round. An investigator must be at least 7th level to take this talent.</p>",
+    "id": "inspirational_expertise",
+    "name": "Inspirational Expertise",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:inspirational_expertise"
+  },
+  "inspired_alertness": {
+    "category": "Inspiration Talents",
+    "description": "<p>Whenever the investigator becomes flat-footed, he can expend one use of inspiration to ignore that condition. He must be conscious to do so, and must decide to do so when he becomes flat-footed. Using this ability doesn't require an action.</p>",
+    "id": "inspired_alertness",
+    "name": "Inspired Alertness",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:inspired_alertness"
+  },
+  "inspired_intelligence": {
+    "category": "Inspiration Talents",
+    "description": "<p>An investigator can add his inspiration die to all Knowledge, Linguistics, or Spellcraft checks without expending a use of inspiration, even those he's not trained in.</p>",
+    "id": "inspired_intelligence",
+    "name": "Inspired Intelligence",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:inspired_intelligence"
+  },
+  "inspired_intimidator": {
+    "category": "Inspiration Talents",
+    "description": "<p>When the investigator succeeds at an Intimidate check to demoralize an opponent, he can expend one use of inspiration to automatically increase the result of the check by 5 for the purpose of determining the duration of the demoralize effect. He can choose to spend multiple uses to inspiration in this manner to further increase the duration of the demoralize effect. He must be trained in Intimidate to take this talent. The underworld inspiration investigator talent has no effect on this talent.</p>",
+    "id": "inspired_intimidator",
+    "name": "Inspired Intimidator",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:inspired_intimidator"
+  },
+  "item_lore": {
+    "category": "Other Talents",
+    "description": "<p>An investigator can use Spellcraft to identify the properties and command words of magic items without the use of detect magic or similar spells. An investigator must be at least 7th level to take this talent.</p>",
+    "id": "item_lore",
+    "name": "Item Lore",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:item_lore"
+  },
+  "just_a_face_in_the_crowd": {
+    "category": "Other Talents",
+    "description": "<p>The rabble-rousers of Galt can blend into a crowd and are able to hide and spot others who appear to be hiding. The investigator gains a bonus equal to half his class level on Disguise and Perception checks when 10 or more creatures of his size are within 30 feet of him.</p>",
+    "id": "just_a_face_in_the_crowd",
+    "name": "Just a Face in the Crowd",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "magic-tactics-toolbox",
+        "pages": "7"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:just_a_face_in_the_crowd"
+  },
+  "lingering_venom": {
+    "category": "Alchemist and Poison Talents",
+    "description": "<p>Poisons that the investigator personally applies to weapons and traps, or otherwise inflicts upon foes, require one additional successful save to cure. An investigator must be at least 5th level to select this talent.</p>",
+    "id": "lingering_venom",
+    "name": "Lingering Venom",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "potions-and-poisons",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:lingering_venom"
+  },
+  "masterful_numerical_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>The investigator can use both numerical strike and greater numerical strike three times per day. The investigator doesn't need to expend uses of inspiration to use either ability, but he can never use either more than three times per day each. The investigator must have the numerical strike and greater numerical strike talents and be at least 17th level to select this talent.</p>",
+    "id": "masterful_numerical_strike",
+    "name": "Masterful Numerical Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "disciple-s-doctrine",
+        "pages": "17"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:masterful_numerical_strike"
+  },
+  "numerical_alchemy": {
+    "category": "Alchemist and Poison Talents",
+    "description": "<p>The investigator's skill with mental mathematics allows him to know exactly which muscle movements are necessary to mix an extract in the quickest, most efficient way. The investigator can expend one use of inspiration to mix an extract in 1 round (as opposed to 1 minute).</p>",
+    "id": "numerical_alchemy",
+    "name": "Numerical Alchemy",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "disciple-s-doctrine",
+        "pages": "17"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:numerical_alchemy"
+  },
+  "numerical_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>Once per day when the investigator has confirmed a critical hit with a studied strike, he can deal average damage instead of rolling damage as normal. This includes the damage dealt by the successful attack as well as the additional damage from the studied strike. He can expend a use of inspiration to use this ability a second time per day. Using this ability doesn't require an action. The investigator must be at least 5th level to select this talent.</p>",
+    "id": "numerical_strike",
+    "name": "Numerical Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "disciple-s-doctrine",
+        "pages": "17"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:numerical_strike"
+  },
+  "occult_dungeoneer": {
+    "category": "Other Talents",
+    "description": "<p>Street thieves in Absalom expect wares to be securely locked, and sometimes it takes high-quality tools and magic training to ensure there's a meal at the end of the day. An investigator with this ability can use spell trigger and spell completion items as if the following spells were on a spell list to which he has access: detect secret doors, find traps, knock, locate object, and obscure object. If the spell-trigger device allows a wielder to apply his own caster level (such as with a staff), the investigator may use his class level as his caster level. The investigator may also use <em>knock</em> as a supernatural ability once per day, using his investigator level as his caster level.</p>",
+    "id": "occult_dungeoneer",
+    "name": "Occult Dungeoneer",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "magic-tactics-toolbox",
+        "pages": "7"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:occult_dungeoneer"
+  },
+  "one_of_those_faces": {
+    "category": "Other Talents",
+    "description": "<p>Each day, you can use disguise self as a spell-like ability for up to 10 minutes per character level. This duration need not be continuous, but it must be used in 10-minute increments. Additionally, once you have used this ability, whenever you use it for the next 24 hours you must take the same alternate appearance.</p>",
+    "id": "one_of_those_faces",
+    "name": "One of Those Faces",
+    "nameSuffix": "(Sp)",
+    "sources": [
+      {
+        "id": "spymaster-s-handbook",
+        "pages": "21"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:one_of_those_faces"
+  },
+  "perceptive_tracking": {
+    "category": "Other Talents",
+    "description": "<p>The investigator can use Perception instead of Survival to both find and follow tracks, using the same DCs listed under the Survival skill. An investigator must be trained in Perception to select this talent.</p>",
+    "id": "perceptive_tracking",
+    "name": "Perceptive Tracking",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:perceptive_tracking"
+  },
+  "prolonged_study": {
+    "category": "Studied Strike Talents",
+    "description": "<p>The investigator can study his opponents for long periods of time. The effects of his studied combat ability last for a number of rounds equal to twice his Intelligence modifier (minimum 2) or until he deals damage with a studied strike, whichever comes first. The investigator must be at least 13th level to select this talent.</p>",
+    "id": "prolonged_study",
+    "name": "Prolonged Study",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-origins",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:prolonged_study"
+  },
+  "quick_study": {
+    "category": "Other Studied Strike Talents",
+    "description": "<p>An investigator can use his studied combat ability as swift action instead of a move action.</p>",
+    "id": "quick_study",
+    "name": "Quick Study",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:quick_study"
+  },
+  "rapid_perception": {
+    "category": "Inspiration Talents",
+    "description": "<p>An investigator with this talent can attempt a Perception check to intentionally search for a specific item or creature as a swift action instead of a move action. If she is intentionally searching for an invisible creature, the creature's bonus on its Stealth check from its invisibility is halved. An investigator must have the expanded inspiration investigator talent before selecting this talent.</p>",
+    "id": "rapid_perception",
+    "level": 1,
+    "name": "Rapid Perception",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "magic-tactics-toolbox",
+        "pages": "27"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:rapid_perception"
+  },
+  "repositioning_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator deals damage with studied strike, he can perform a reposition combat maneuver as a free action against the creature damaged by studied strike. This reposition does not provoke attacks of opportunity. An investigator must be at least 13th level to select this talent.</p>",
+    "id": "repositioning_strike",
+    "name": "Repositioning Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:repositioning_strike"
+  },
+  "rogue_talent": {
+    "category": "Other Talents",
+    "description": "<p>An investigator can select one of the following rogue talents in place of an investigator talent: acrobatic assist, assault leader, black market connections, camouflage, canny observer, charmer, coax information, combat swipe, convincing lie, cunning trigger, deft palm, demand attention, expert leaper, fast fingers, fast getaway, fast picks, fast stealth, firearm training, got your back, guileful polyglot, grit, hard to fool, hold breath, honeyed words, iron guts, lasting poison, ledge walker, major magic, minor magic, nimble climber, peerless maneuver, quick disable, quick disguise, quick trapsmith, resiliency, rogue crawl, rope master, stand up, strong stroke, terrain mastery, trap spotter, or wall scramble. Any talent effects based on rogue level use the investigator's class level. If the rogue talent has a prerequisite (such as the <em>major magic</em> rogue talent requiring the <em>minor magic</em> talent), the investigator must fulfill the prerequisite before selecting that rogue talent. This talent can be selected multiple times; each time, it grants the investigator a new rogue talent.</p>",
+    "id": "rogue_talent",
+    "name": "Rogue Talent",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:rogue_talent"
+  },
+  "sapping_offensive": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator damages a studied target, that creature cannot make attacks of opportunity for 1 round. An investigator must be at least 5th level to select this talent.</p>",
+    "id": "sapping_offensive",
+    "name": "Sapping Offensive",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:sapping_offensive"
+  },
+  "scry_slip": {
+    "category": "Other Talents",
+    "description": "<p>Whenever an investigator with this talent is targeted by a scrying effect that allows a Will save, the caster of the divination must succeed at a caster level check (DC = 15 + the investigator's class level). This talent wards the investigator and any objects she is holding or carrying.</p>",
+    "id": "scry_slip",
+    "name": "Scry Slip",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "magic-tactics-toolbox",
+        "pages": "27"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:scry_slip"
+  },
+  "scrying_familiarity": {
+    "category": "Other Talents",
+    "description": "<p>You are well acquainted with scrying sensors. You can roll twice and take the better result on saving throws against divination (scrying) spells and effects, on Perception checks to notice scrying sensors, and on caster level checks to overcome spell resistance when you use a scrying spell or effect. If you notice a magical sensor, you can attempt a Stealth check opposed by the caster's caster level check to avoid being detected by the sensor.</p>",
+    "id": "scrying_familiarity",
+    "name": "Scrying Familiarity",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "spymaster-s-handbook",
+        "pages": "2"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:scrying_familiarity"
+  },
+  "sickening_offensive": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator damages a studied target, that creature is also sickened for 1 round. An investigator must be at least 7th level to select this talent.</p>",
+    "id": "sickening_offensive",
+    "name": "Sickening Offensive",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:sickening_offensive"
+  },
+  "silencing_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator deals damage with a studied strike, the target must succeed at a Fortitude save (DC = 10 + 1/2 the investigator's class level + her Intelligence modifier) or be unable to speak (even for verbal components) for 1d4+1 rounds. A successful save reduces the duration to 1 round. This talent has no effect on creatures immune to critical hits. An investigator must be at least 15th level to select this talent.</p>",
+    "id": "silencing_strike",
+    "name": "Silencing Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue",
+        "pages": "31"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:silencing_strike"
+  },
+  "slowing_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator deals damage with studied strike, the opponent must succeed at a Fortitude save (DC = 10 + 1/2 the investigator's class level + his Intelligence modifier) or be slowed by the crippling blow. A slowed opponent's movement speeds are each reduced by 5 feet (to a minimum of 5 feet) until the creature is healed through the application of any spell that cures hit point damage or with a successful DC 15 Heal check. Multiple slowing strikes stack, to a minimum of 5 feet. An investigator must be at least 7th level to select this talent.</p>",
+    "id": "slowing_strike",
+    "name": "Slowing Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-origins",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:slowing_strike"
+  },
+  "spell_storing": {
+    "category": "Other Talents",
+    "description": "<p>The investigator can store within himself a single targeted harmless spell of up to 2nd level. The spell must have a casting time of 1 standard action. Anytime a spell that meets these conditions is cast on the investigator, and he does not already have a spell stored, he can choose to store it rather than have it take effect immediately. Anytime afterward, as a standard action, the investigator can have the spell take effect (acting in all ways as if it had just been cast on him). An investigator must have 1 rank of Use Magic Device to select this talent.</p>",
+    "id": "spell_storing",
+    "name": "Spell Storing",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "magic-tactics-toolbox",
+        "pages": "7"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:spell_storing"
+  },
+  "stealing_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator deals damage with studied strike, he can perform a steal combat maneuver as a free action against the creature damaged by studied strike. This steal does not provoke attacks of opportunity. An investigator must be at least 13th level to select this talent.</p>",
+    "id": "stealing_strike",
+    "name": "Stealing Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:stealing_strike"
+  },
+  "studied_defense": {
+    "category": "Other Studied Strike Talents",
+    "description": "<p>When an investigator with this talent uses his studied combat ability, he can chose to apply that ability's insight bonus to his AC against attacks made by the target of his studied combat instead of to attack rolls against the target of his studied combat. (The insight bonus on damage rolls remains.) He must choose which type of bonus he gains when using studied combat, and it cannot be changed until he uses studied combat again. An investigator must be at least 9th level to select this talent.</p>",
+    "id": "studied_defense",
+    "name": "Studied Defense",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:studied_defense"
+  },
+  "sustained_inspirational_expertise": {
+    "category": "Inspiration Talents",
+    "description": "<p>When granting a bonus to allies via the inspirational expertise investigator talent, the investigator can spend one use of inspiration as a swift action the following round to extend the duration of the granted bonus for 1 additional round. The insight bonus granted decreases by 1 each round this ability is used. The investigator must be at least 11th level and have the inspirational expertise talent to select this talent.</p>",
+    "id": "sustained_inspirational_expertise",
+    "level": 1,
+    "name": "Sustained Inspirational Expertise",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue",
+        "pages": "31"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:sustained_inspirational_expertise"
+  },
+  "tenacious_inspiration": {
+    "category": "Inspiration Talents",
+    "description": "<p>When an investigator rolls his inspiration die, he can roll an additional inspiration die and take the higher result. The investigator must at least 13th level to select this talent.</p>",
+    "id": "tenacious_inspiration",
+    "name": "Tenacious Inspiration",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:tenacious_inspiration"
+  },
+  "the_whole_time": {
+    "category": "Other Talents",
+    "description": "<p>Mercenaries in the employ of the Aspis Consortium often use wands of invisibility to attack protected targets, then blend into the crowd to escape or disguise the source of the next attack. An investigator with this ability is practiced at attacking from magical concealment. He can use spell trigger and spell completion items as if the following spells were on a spell list to which he has access: greater invisibility, <em>invisibility,</em> and vanish</p>\n<p>Additionally, if the investigator becomes visible as a result of a weapon or spell attack, he can sheathe his weapon as a free action and instantly adopt a neutral posture. With a successful Bluff or Disguise check (opposed by witnesses' Sense Motive or Perception checks, whichever is higher), there is no obvious sign that the investigator is the source of the attack (though a lack of any other reasonable candidate can still lead observers to draw the correct conclusion).</p>",
+    "id": "the_whole_time",
+    "name": "The Whole Time",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "magic-tactics-toolbox",
+        "pages": "7"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:the_whole_time"
+  },
+  "timed_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>The longer the investigator studies his opponent, the greater the damage he ultimately deals with his studied strike. When the investigator makes a studied strike, he deal a number of points of additional damage equal to the number of consecutive rounds he studied the target with studied combat.</p>",
+    "id": "timed_strike",
+    "name": "Timed Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-origins",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:timed_strike"
+  },
+  "toppling_strike": {
+    "category": "Studied Strike Talents",
+    "description": "<p>When the investigator deals damage with studied strike, he can perform a trip combat maneuver as a free action against the creature damaged by studied strike. This trip does not provoke attacks of opportunity. An investigator must be at least 9th level to select this talent.</p>",
+    "id": "toppling_strike",
+    "name": "Toppling Strike",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:toppling_strike"
+  },
+  "twilight_talon_improvisation": {
+    "category": "Studied Strike Talents",
+    "description": "<p>Whenever the investigator deals studied strike damage with an improvised weapon, she can perform a dirty trick combat maneuver targeting that foe as a free action. This combat maneuver provokes attacks of opportunity as normal unless the investigator has a feat or other ability to prevent it.</p>",
+    "id": "twilight_talon_improvisation",
+    "name": "Twilight Talon Improvisation",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue",
+        "pages": "31"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:twilight_talon_improvisation"
+  },
+  "unbalancing_trick": {
+    "category": "Other Talents",
+    "description": "<p>The investigator gains Improved Trip as a bonus feat, even if she does not meet the prerequisites. At 6th level, she is treated as if she meets all the prerequisites of Greater Trip (although she must take the feat as normal to gain its benefits).</p>",
+    "id": "unbalancing_trick",
+    "name": "Unbalancing Trick",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:unbalancing_trick"
+  },
+  "unconventional_inspiration": {
+    "category": "Inspiration Talents",
+    "description": "<p>An investigator with this talent can pick any one skill. He can add his inspiration die to checks attempted with that skill without expending a use of inspiration.</p>",
+    "id": "unconventional_inspiration",
+    "name": "Unconventional Inspiration",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:unconventional_inspiration"
+  },
+  "underworld_inspiration": {
+    "category": "Inspiration Talents",
+    "description": "<p>An investigator can use his inspiration on Bluff, Disable Device, Disguise, Intimidate, or Sleight of Hand checks without expending uses of inspiration, provided he's trained in the skill.</p>",
+    "id": "underworld_inspiration",
+    "name": "Underworld Inspiration",
+    "nameSuffix": "(Ex)",
+    "sources": [
+      {
+        "id": "advanced-class-guide",
+        "pages": "32"
+      }
+    ],
+    "uuid": "pfdata:investigator-talent:underworld_inspiration"
+  }
+}

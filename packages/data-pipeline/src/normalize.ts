@@ -2,6 +2,7 @@ import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 import type {
+  ArcanistExploit,
   ArmorRef,
   Buff,
   Class,
@@ -9,7 +10,9 @@ import type {
   Domain,
   DruidDomain,
   Feat,
+  InvestigatorTalent,
   Item,
+  KineticWildTalent,
   MagusArcana,
   Race,
   RacialTrait,
@@ -68,6 +71,9 @@ import {
   resolveBloodlineSupplements,
   SUPPLEMENTAL_PRESTIGE_CLASSES,
 } from "./supplements.js";
+import { transformArcanistExploits } from "./transform/arcanistExploits.js";
+import { transformInvestigatorTalents } from "./transform/investigatorTalents.js";
+import { transformKineticWildTalents } from "./transform/kineticWildTalents.js";
 import { transformMagusArcana } from "./transform/magusArcana.js";
 import { transformNinjaTricks } from "./transform/ninjaTricks.js";
 import { transformRagePowers } from "./transform/ragePowers.js";
@@ -606,6 +612,24 @@ export function normalize(opts: NormalizeOptions): {
   const vigilanteSocialTalents: VigilanteSocialTalent[] =
     transformVigilanteSocialTalents(vigilanteSocialTalentDict);
 
+  // --- arcanist exploits / investigator talents / kineticist wild talents
+  // (fourth-party dataset, Phase 3b) — same posture as rage powers above.
+  const arcanistExploitDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_exploits.json"),
+  );
+  const arcanistExploits: ArcanistExploit[] = transformArcanistExploits(arcanistExploitDict);
+
+  const investigatorTalentDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_investigator_talents.json"),
+  );
+  const investigatorTalents: InvestigatorTalent[] =
+    transformInvestigatorTalents(investigatorTalentDict);
+
+  const kineticTalentDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_kinetic_talents.json"),
+  );
+  const kineticWildTalents: KineticWildTalent[] = transformKineticWildTalents(kineticTalentDict);
+
   const counts = {
     races: races.length,
     racialTraits: racialTraits.length,
@@ -636,6 +660,9 @@ export function normalize(opts: NormalizeOptions): {
     slayerTalents: slayerTalents.length,
     vigilanteTalents: vigilanteTalents.length,
     vigilanteSocialTalents: vigilanteSocialTalents.length,
+    arcanistExploits: arcanistExploits.length,
+    investigatorTalents: investigatorTalents.length,
+    kineticWildTalents: kineticWildTalents.length,
   };
 
   const meta: RefDataMeta = {
@@ -687,6 +714,9 @@ export function normalize(opts: NormalizeOptions): {
     slayerTalents: byId(slayerTalents),
     vigilanteTalents: byId(vigilanteTalents),
     vigilanteSocialTalents: byId(vigilanteSocialTalents),
+    arcanistExploits: byId(arcanistExploits),
+    investigatorTalents: byId(investigatorTalents),
+    kineticWildTalents: byId(kineticWildTalents),
   };
 
   return { refData, contentVersion };

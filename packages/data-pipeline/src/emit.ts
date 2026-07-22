@@ -57,6 +57,9 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "slayerTalents", file: "slayer-talents.json" },
   { key: "vigilanteTalents", file: "vigilante-talents.json" },
   { key: "vigilanteSocialTalents", file: "vigilante-social-talents.json" },
+  { key: "arcanistExploits", file: "arcanist-exploits.json" },
+  { key: "investigatorTalents", file: "investigator-talents.json" },
+  { key: "kineticWildTalents", file: "kinetic-wild-talents.json" },
 ];
 
 /**

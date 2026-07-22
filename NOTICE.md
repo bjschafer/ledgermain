@@ -113,7 +113,7 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   entries are skipped, since the system pack's own race docs already carry
   them).
 
-### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent catalogs)
+### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent catalogs)
 
 - Repo: `https://github.com/jasontankapps/pathfinder-data-1-e`
 - Pinned commit: `33f1b75b8f62b43c59b96eab6bebb45e37c29229`
@@ -135,7 +135,10 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     and `json/class_ability_vigilante_talents.json` +
     `json/class_ability_social_talents.json` into `RefData.vigilanteTalents`/
     `RefData.vigilanteSocialTalents` (the full published rogue-family talent
-    catalogs, issue #74 Phase 3b) —
+    catalogs, issue #74 Phase 3b);
+  - `json/class_ability_exploits.json`, `json/class_ability_investigator_talents.json`,
+    and `json/class_ability_kinetic_talents.json` (issue #74 Phase 3b) into
+    `RefData.arcanistExploits`/`investigatorTalents`/`kineticWildTalents` —
 
   see each type's doc comment (`@pf1/schema`). Code is GPL-3.0-or-later
   (never copied in, same clean-room posture as Sec.2a/2c); its
@@ -146,9 +149,8 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   subsystems than what's vendored so far, but carrying its complete
   attribution list is the simpler and strictly safer call (over-inclusive
   credit has no downside; under-inclusive credit is a real one), and it
-  directly sets up the remaining subsystem imports (exploits, wild
-  talents, …) this same pinned source will eventually supply, at which
-  point their citations are already present.
+  directly sets up any remaining subsystem imports this same pinned source
+  may eventually supply, at which point their citations are already present.
 
 Our `OGL.txt` is therefore the upstream Archetypes `OGL.txt`, with Pf Data
 1e's full Section 15 copyright-notice list appended (deduplicated against

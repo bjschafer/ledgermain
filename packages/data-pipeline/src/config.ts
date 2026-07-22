@@ -93,9 +93,10 @@ export const PF_CONTENT_SHA = "c66bf333cafc451d817ead660473dd01d9846fb3";
  * per subsystem under `json/`, each a slug-keyed dictionary of entries) that
  * fills gaps neither the Foundry system nor PF1 Content ship as structured
  * data — starting with the full rage-power catalog (issue #74 Phase 3a), then
- * the witch-hex, general shaman-hex, and magus-arcana catalogs (Phase 3b).
- * Single-maintainer repo, so pin like the others: exact commit, never a
- * branch.
+ * the witch-hex, general shaman-hex, magus-arcana, rogue-family talent,
+ * arcanist-exploit, investigator-talent, and kineticist-wild-talent catalogs
+ * (Phase 3b). Single-maintainer repo, so pin like the others: exact commit,
+ * never a branch.
  */
 export const PFDATA_REPO = "https://github.com/jasontankapps/pathfinder-data-1-e.git";
 

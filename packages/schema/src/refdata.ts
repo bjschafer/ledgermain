@@ -121,6 +121,12 @@ export interface RefData {
   vigilanteTalents: Record<string, VigilanteTalent>;
   /** The full published vigilante SOCIAL talent catalog — a separate pool from `vigilanteTalents`, see `VigilanteSocialTalent` doc comment. */
   vigilanteSocialTalents: Record<string, VigilanteSocialTalent>;
+  /** The full published arcanist exploit catalog, base + greater tiers (fourth-source dataset; see `ArcanistExploit` doc comment). */
+  arcanistExploits: Record<string, ArcanistExploit>;
+  /** The full published investigator talent catalog (fourth-source dataset; see `InvestigatorTalent` doc comment). */
+  investigatorTalents: Record<string, InvestigatorTalent>;
+  /** The full published kineticist wild-talent catalog, every kind (fourth-source dataset; see `KineticWildTalent` doc comment). */
+  kineticWildTalents: Record<string, KineticWildTalent>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -1037,6 +1043,148 @@ export interface VigilanteSocialTalent extends RefEntity {
   category?: string;
   /** Uninterpreted source field — NOT a vigilante-level requirement, same trap as `RagePower.level`. */
   level?: number;
+}
+
+/* ------------------------------------------------- arcanist exploits -- */
+
+/**
+ * A published arcanist exploit (issue #74 Phase 3b), same "catalog from
+ * data, mechanics as overlay" pattern `RagePower` documents. Sourced from
+ * the "Pf Data 1e" dataset's `json/class_ability_exploits.json` (see
+ * `PFDATA_REPO`/`PFDATA_SHA` in data-pipeline).
+ *
+ * This is the FULL published catalog — both the ~20 BASE Advanced Class
+ * Guide exploits and the 11th-level+ "greater exploits" tier (see
+ * `category`) — with prose only; live mechanics for the hand-verified base
+ * subset remain in `@pf1/engine` `arcanist-exploits.ts`'s
+ * `ARCANIST_EXPLOITS` table, authoritative on any name collision (see that
+ * file's `mergedArcanistExploitCatalog`).
+ */
+export interface ArcanistExploit extends RefEntity {
+  /**
+   * Ability-type suffix as published, e.g. "(Su)", "(Ex)" — this subsystem
+   * file doesn't carry it as its own dictionary field (unlike `RagePower`/
+   * `InvestigatorTalent`); parsed from the source's own markdown header line
+   * instead (see the data-pipeline transform). Absent for a handful of
+   * entries the source states with no activation type at all (e.g. Item
+   * Crafting, Metamagic Knowledge).
+   */
+  nameSuffix?: string;
+  /**
+   * `"Greater Exploits"` for the ACG 11th-level+ tier — the source's own
+   * `topLink` field (a parent-page pointer, `["Greater Exploits",
+   * "ability/greater_exploits"]`) is present on EXACTLY the 22 greater
+   * exploits and absent from every base exploit, verified against the full
+   * 73-entry catalog — so this field doubles as a reliable greater-exploit
+   * flag; undefined for a base exploit.
+   */
+  category?: string;
+}
+
+/* --------------------------------------------- investigator talents -- */
+
+/**
+ * A published investigator talent (issue #74 Phase 3b), same pattern as
+ * `RagePower`. Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_investigator_talents.json`.
+ *
+ * The full published catalog (68 entries after junk filtering) with prose
+ * only; live mechanics for the hand-verified core subset remain in
+ * `@pf1/engine` `investigator-talents.ts`'s `INVESTIGATOR_TALENTS` table,
+ * authoritative on any name collision (see that file's
+ * `mergedInvestigatorTalentCatalog`).
+ */
+export interface InvestigatorTalent extends RefEntity {
+  /** Ability-type suffix as published, e.g. "(Ex)", "(Su)" — absent for a minority of entries. */
+  nameSuffix?: string;
+  /** Grouping tag from the source, e.g. "Studied Strike Talents", "Inspiration Talents", "Alchemist and Poison Talents". */
+  category?: string;
+  /**
+   * Same "small integer the source attaches to some entries, NOT a
+   * character-level requirement" shape as `RagePower.level` — see that
+   * field's doc comment. Every entry that carries this field carries `1`
+   * (verified across the full catalog), consistent with a within-chain tier
+   * marker rather than a level gate. Carried through uninterpreted; any
+   * real "requires Nth investigator level" prerequisite is prose inside
+   * `description`.
+   */
+  level?: number;
+}
+
+/* ---------------------------------------- kineticist wild talents -- */
+
+export type KineticWildTalentKind =
+  | "infusion"
+  | "utility"
+  | "simpleBlast"
+  | "compositeBlast"
+  | "defense"
+  | "unclassified";
+
+export type KineticInfusionKind = "form" | "substance";
+
+/**
+ * A published kineticist wild talent — infusion, utility talent, simple
+ * blast, composite blast, or defense talent (issue #74 Phase 3b). Sourced
+ * from the "Pf Data 1e" dataset's `json/class_ability_kinetic_talents.json`,
+ * the trickiest of the Phase 3b imports: unlike `RagePower`/
+ * `InvestigatorTalent`, this subsystem file carries NO per-entry
+ * `category`/`level`/`compilationSources` dictionary fields at all — every
+ * one of `kind`/`infusionKind`/`elements`/`level`/`burn` below is instead
+ * parsed out of the entry's own `description` text, which embeds a
+ * consistent stat-line the source's own renderer displays as a header
+ * (`**Element** fire; **Type** utility (Su); **Level** 3; **Burn** 1`) —
+ * see the data-pipeline transform's doc comment for the parse and the
+ * empirical validation against `@pf1/engine`'s hand-authored table.
+ *
+ * The full published catalog (278 entries after junk filtering) with prose
+ * only; live mechanics for the hand-verified infusion/utility subset remain
+ * in `@pf1/engine` `kineticist-wild-talents.ts`'s `KINETICIST_WILD_TALENTS`
+ * table, authoritative on any name collision (see that file's
+ * `mergedKineticistWildTalentCatalog`). Composite blasts additionally merge
+ * through `kineticist-elements.ts`'s `mergedCompositeBlastCatalog`. Simple
+ * blasts and defense talents are carried here for data completeness but are
+ * NOT merged into new picker machinery — this app only offers the 5 core
+ * elements as a selectable primary/expanded element (see
+ * `KINETICIST_ELEMENT_TAGS`), and every one of those 5 elements' simple
+ * blast/defense talent is already hand-authored in `kineticist-elements.ts`;
+ * a vendored-only simple blast/defense talent exists only for a later-
+ * splatbook element (`void`, `wood`) this app has no selectable tag for, so
+ * it could never actually apply.
+ */
+export interface KineticWildTalent extends RefEntity {
+  /** Ability-type suffix as published, e.g. "(Su)", "(Sp)" — parsed from the stat-line's `**Type**` field (or, for a form/substance infusion the source doesn't tag, the description header) when present. */
+  nameSuffix?: string;
+  kind: KineticWildTalentKind;
+  /** Only set for `kind: "infusion"` — "form" or "substance" per the source's own `**Type**` field. */
+  infusionKind?: KineticInfusionKind;
+  /**
+   * Element tag(s) this talent needs/is associated with — lowercase,
+   * matching `@pf1/engine` `KINETICIST_ELEMENT_TAGS` values for the 5 core
+   * elements this app models (`aether`/`air`/`earth`/`fire`/`water`), plus
+   * `"universal"` for an infusion/utility talent usable with any element,
+   * or a later-splatbook element (`"void"`, `"wood"`) this app has no
+   * selectable tag for but carries through as-is rather than dropping.
+   * Length 2 for a composite blast requiring two distinct elements; length
+   * 1 (same element) for one requiring the SAME element twice (primary +
+   * Expanded Element) — same convention as
+   * `KineticistCompositeBlastDef.requiredElements`.
+   */
+  elements: string[];
+  /**
+   * Effective spell level 1-9 — a REAL character-level gate via
+   * `minKineticistLevelForTalent`, UNLIKE `RagePower.level`/
+   * `InvestigatorTalent.level` (empirically verified: matches
+   * `@pf1/engine`'s hand-authored `level` on every checked entry, e.g.
+   * Extended Range 1/Extreme Range 3/Aerial Evasion 3 — see the
+   * data-pipeline transform's doc comment for the full check). Undefined
+   * for a `simpleBlast`/`compositeBlast`/`defense` entry — the source marks
+   * these entries' level field `"-"` (no spell level; they aren't gated by
+   * this formula at all).
+   */
+  level?: number;
+  /** Burn cost, 0 or more (always a clean integer in the source for this file — no "variable"/"0 or 1" text to simplify, unlike a few other subsystems' prose). */
+  burn: number;
 }
 
 export type { SourceRef };

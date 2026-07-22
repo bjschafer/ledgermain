@@ -14,9 +14,10 @@
  * entries pointing at those tables via `contextNotes` rather than expanded
  * inline — same posture as `oracleRevelations.ts`'s "Bonded Mount" pointing
  * at the Animal Companion section. Later-splatbook investigator talents
- * (Pathfinder Unchained, Pathfinder Society boons, ...) are OUT OF SCOPE —
- * add them in a follow-up, same posture as `witch-hexes.ts`/
- * `alchemist-discoveries.ts` scoping to their core sourcebook.
+ * (Pathfinder Unchained, Pathfinder Society boons, ...) have no hand-verified
+ * mechanics HERE but ARE now browsable, display-only, via the vendored
+ * catalog overlay at the bottom of this file (issue #74 Phase 3b) — see
+ * `mergedInvestigatorTalentCatalog`.
  *
  * Budget (PF1 Advanced Class Guide, verified against the class table): an
  * investigator gains a talent at 3rd level and every 2 levels thereafter
@@ -36,7 +37,7 @@
  * reminder carries the mechanic's numbers/prerequisite instead.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { Change, ContextNote, InvestigatorTalent, RefData, SourceRef } from "@pf1/schema";
 
 export type InvestigatorTalentCategory = "studiedStrike" | "other";
 
@@ -285,3 +286,134 @@ export const INVESTIGATOR_TALENTS: Record<string, InvestigatorTalentDef> = Objec
 );
 
 export const INVESTIGATOR_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) => t.id);
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3b: `RefData.investigatorTalents` (see that type's doc
+ * comment) is the FULL published catalog — the 28 core talents above plus
+ * every later-splatbook talent this table has never modeled — prose only.
+ * Same pattern as `rage-powers.ts`'s `mergedRagePowerCatalog` (see that
+ * file's doc comment for the general shape).
+ *
+ * Collision audit (all 28 hand-authored entries, run against the pinned Pf
+ * Data 1e slice): every one matched a vendored entry by normalized name —
+ * no drift, no alias needed. No name collides within the vendored catalog
+ * itself either.
+ */
+
+/** Empty — see the collision-audit comment above. */
+const INVESTIGATOR_TALENT_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeTalentName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Cheap HTML->text preview for a vendored-only entry's picker row — see `rage-powers.ts`'s identical helper. */
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/**
+ * This file's own `category` is a narrow "does the picker show a Studied
+ * Strike badge" enum, not the source's richer grouping (5 category labels —
+ * "Inspiration Talents", "Studied Strike Talents", "Other Studied Strike
+ * Talents", "Alchemist and Poison Talents", "Other Talents"). A vendored-only
+ * entry is bucketed `studiedStrike` when the source's own category label
+ * says so (both "...Studied Strike..." labels), `other` otherwise — a
+ * faithful narrowing of what the source already states, not a guess.
+ */
+function categoryFromVendored(category: string | undefined): InvestigatorTalentCategory {
+  return category?.includes("Studied Strike") ? "studiedStrike" : "other";
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def (matched) with vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedInvestigatorTalentEntry extends InvestigatorTalentDef {
+  /** Ability-type suffix as published, e.g. "(Ex)" — undefined for the (currently none) hand-authored-only case. */
+  nameSuffix?: string;
+  /** The source's own grouping label (richer than this file's `category` enum), e.g. "Alchemist and Poison Talents", when known. */
+  vendorCategory?: string;
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id. */
+  description?: string;
+  /** Vendored source-book attribution, when known. */
+  sources?: SourceRef[];
+}
+
+function vendoredToDef(entry: InvestigatorTalent): MergedInvestigatorTalentEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    nameSuffix: entry.nameSuffix,
+    category: categoryFromVendored(entry.category),
+    vendorCategory: entry.category,
+    // NOT `entry.level` — same within-chain-tier-marker caveat as
+    // `RagePower.level` (see `InvestigatorTalent.level`'s doc comment); any
+    // real "requires Nth level" prerequisite is already prose in `description`.
+    minLevel: 3,
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/**
+ * Resolve a picked talent id (`doc.build.investigatorTalents` entries) to
+ * its definition — hand-authored table first (mechanics-authoritative),
+ * falling back to the vendored catalog for an id that only exists there.
+ * Used by `collect.ts`/`archetypes.ts` instead of indexing
+ * `INVESTIGATOR_TALENTS` directly, so a vendored-only pick resolves to a
+ * real (display-only) definition rather than being silently dropped.
+ */
+export function resolveInvestigatorTalent(
+  id: string,
+  refData: RefData,
+): InvestigatorTalentDef | undefined {
+  const hand = INVESTIGATOR_TALENTS[id];
+  if (hand) return hand;
+  const vendored = refData.investigatorTalents?.[id];
+  return vendored ? vendoredToDef(vendored) : undefined;
+}
+
+/**
+ * The full picker-browsable catalog: every vendored entry, with any that
+ * collides (by normalized name, alias-mapped) against a hand-authored entry
+ * REPLACED by that hand-authored def (keeping its id and real mechanics, but
+ * carrying the vendored entry's prose/sources along for display); no
+ * hand-authored-only entries exist to append per the collision audit above.
+ * `!entry.displayOnly` marks which rows carry real mechanics.
+ */
+export function mergedInvestigatorTalentCatalog(refData: RefData): MergedInvestigatorTalentEntry[] {
+  const handByNormName = new Map<string, InvestigatorTalentDef>();
+  for (const t of TALENT_LIST) {
+    handByNormName.set(normalizeTalentName(INVESTIGATOR_TALENT_NAME_ALIASES[t.id] ?? t.name), t);
+  }
+
+  const vendored = Object.values(refData.investigatorTalents ?? {});
+  const merged: MergedInvestigatorTalentEntry[] = [];
+  for (const v of vendored) {
+    const handMatch = handByNormName.get(normalizeTalentName(v.name));
+    merged.push(
+      handMatch
+        ? {
+            ...handMatch,
+            nameSuffix: v.nameSuffix,
+            vendorCategory: v.category,
+            description: v.description,
+            sources: v.sources,
+          }
+        : vendoredToDef(v),
+    );
+  }
+  return merged;
+}

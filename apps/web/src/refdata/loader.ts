@@ -56,6 +56,9 @@ async function fetchAll(): Promise<RefData> {
     slayerTalents,
     vigilanteTalents,
     vigilanteSocialTalents,
+    arcanistExploits,
+    investigatorTalents,
+    kineticWildTalents,
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
@@ -88,6 +91,9 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["slayerTalents"]>("slayer-talents.json"),
     getJson<RefData["vigilanteTalents"]>("vigilante-talents.json"),
     getJson<RefData["vigilanteSocialTalents"]>("vigilante-social-talents.json"),
+    getJson<RefData["arcanistExploits"]>("arcanist-exploits.json"),
+    getJson<RefData["investigatorTalents"]>("investigator-talents.json"),
+    getJson<RefData["kineticWildTalents"]>("kinetic-wild-talents.json"),
   ]);
   return {
     meta,
@@ -121,5 +127,8 @@ async function fetchAll(): Promise<RefData> {
     slayerTalents,
     vigilanteTalents,
     vigilanteSocialTalents,
+    arcanistExploits,
+    investigatorTalents,
+    kineticWildTalents,
   };
 }

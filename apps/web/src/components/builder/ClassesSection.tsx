@@ -632,7 +632,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Elemental Focus + wild talent pickers — kineticist only (issue #65, free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "kineticist") && (
-        <KineticistPicker doc={doc} update={update} />
+        <KineticistPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/*

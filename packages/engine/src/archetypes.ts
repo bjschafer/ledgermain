@@ -24,7 +24,7 @@ import type {
 
 import { ALCHEMIST_DISCOVERIES } from "./alchemist-discoveries.js";
 import { ANTIPALADIN_CRUELTIES } from "./antipaladin-cruelties.js";
-import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
+import { resolveArcanistExploit } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
@@ -36,8 +36,12 @@ import { MONK_KI_POWERS } from "./monk-ki-powers.js";
 import { MONK_STYLE_STRIKES } from "./monk-style-strikes.js";
 import { MEDIUM_SPIRITS } from "./medium-spirits.js";
 import { findOccultistFocusPower, OCCULTIST_SCHOOLS } from "./occultist-implements.js";
-import { eligibleCompositeBlasts, KINETICIST_ELEMENTS } from "./kineticist-elements.js";
-import { findKineticistWildTalent } from "./kineticist-wild-talents.js";
+import {
+  eligibleCompositeBlasts,
+  KINETICIST_ELEMENTS,
+  mergedCompositeBlastCatalog,
+} from "./kineticist-elements.js";
+import { resolveKineticistWildTalent } from "./kineticist-wild-talents.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { PHRENIC_AMPLIFICATIONS } from "./phrenic-amplifications.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
@@ -47,7 +51,7 @@ import { resolveWitchHex } from "./witch-hexes.js";
 import { resolveGeneralShamanHex } from "./shaman-hexes.js";
 import { resolveSlayerTalent } from "./slayer-talents.js";
 import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
-import { INVESTIGATOR_TALENTS } from "./investigator-talents.js";
+import { resolveInvestigatorTalent } from "./investigator-talents.js";
 import { resolveVigilanteSocialTalent, resolveVigilanteTalent } from "./vigilante-talents.js";
 import { SHIFTER_ASPECTS } from "./shifter-aspects.js";
 import {
@@ -278,19 +282,21 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
-  // Arcanist exploits (issue #42) — hand-authored (see arcanist-exploits.ts),
-  // gated on actual arcanist levels the same way domain/school/bloodline
-  // grants are gated above. A non-arcanist with a stale `arcanistExploits`
-  // field gets nothing. Unlike bloodline powers, base exploits carry no
-  // individual level gate of their own (the ACG picks-per-level budget lives
-  // in `model/arcanistExploits.ts`, not here) — every chosen, recognized
+  // Arcanist exploits (issue #42, vendored catalog overlay issue #74 Phase
+  // 3b) — hand-authored table first, falling back to the vendored catalog
+  // via `resolveArcanistExploit` (see arcanist-exploits.ts), gated on actual
+  // arcanist levels the same way domain/school/bloodline grants are gated
+  // above. A non-arcanist with a stale `arcanistExploits` field gets
+  // nothing. Unlike bloodline powers, base exploits carry no individual
+  // level gate of their own (the ACG picks-per-level budget lives in
+  // `model/arcanistExploits.ts`, not here) — every chosen, recognized
   // exploit id is granted at a flat display level of 1 so it groups with the
   // character's earliest features rather than inventing a fake per-exploit
   // level.
   const arcanistLevel = doc.identity.classes.find((c) => c.tag === "arcanist")?.level ?? 0;
   if (arcanistLevel > 0) {
     for (const exploitId of doc.build.arcanistExploits ?? []) {
-      const exploit = ARCANIST_EXPLOITS[exploitId];
+      const exploit = resolveArcanistExploit(exploitId, refData);
       if (!exploit) continue;
       out.push({
         classTag: "arcanist",
@@ -745,15 +751,17 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
-  // Investigator talents (issue #65) — hand-authored (see
-  // investigator-talents.ts), gated on actual investigator levels the same
-  // way alchemist discoveries are gated above. Granted at a flat display
-  // level of 3 (the earliest an investigator has any talent at all), same
-  // rationale as exploits/arcana above.
+  // Investigator talents (issue #65, vendored catalog overlay issue #74
+  // Phase 3b) — hand-authored table first, falling back to the vendored
+  // catalog via `resolveInvestigatorTalent` (see investigator-talents.ts),
+  // gated on actual investigator levels the same way alchemist discoveries
+  // are gated above. Granted at a flat display level of 3 (the earliest an
+  // investigator has any talent at all), same rationale as exploits/arcana
+  // above.
   const investigatorLevel = doc.identity.classes.find((c) => c.tag === "investigator")?.level ?? 0;
   if (investigatorLevel > 0) {
     for (const talentId of doc.build.investigatorTalents ?? []) {
-      const talent = INVESTIGATOR_TALENTS[talentId];
+      const talent = resolveInvestigatorTalent(talentId, refData);
       if (!talent) continue;
       out.push({
         classTag: "investigator",
@@ -941,18 +949,26 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   // level of 7 (the earliest Expanded Element can make any composite's
   // prerequisites met, since every entry needs at least one expanded
   // element). `build.kineticistWildTalents` covers BOTH infusions and
-  // utility talents in one field (disambiguated by `findKineticistWildTalent`'s
+  // utility talents in one field (disambiguated by `resolveKineticistWildTalent`'s
   // `.category`, same "one field, helper disambiguates" shape
   // `occultistFocusPowers` uses) — granted at a flat display level of 1
   // (infusions) or 2 (utility), the earliest each category's own cadence
   // starts. A stale pick whose id no longer resolves (or a universal pick,
   // always valid) is tolerated silently, matching every other budgeted
-  // picker's soft posture.
+  // picker's soft posture. Both `eligibleCompositeBlasts` and
+  // `resolveKineticistWildTalent` resolve against the vendored catalog
+  // overlay too (issue #74 Phase 3b), so a vendored-only pick shows up here
+  // exactly like a hand-authored one.
   const kineticistLevel = doc.identity.classes.find((c) => c.tag === "kineticist")?.level ?? 0;
   if (kineticistLevel > 0) {
     const primaryElement = doc.build.kineticistElement;
     const expandedElements = doc.build.kineticistExpandedElements ?? [];
-    for (const blast of eligibleCompositeBlasts(primaryElement, expandedElements)) {
+    const compositeCatalog = mergedCompositeBlastCatalog(refData);
+    for (const blast of eligibleCompositeBlasts(
+      primaryElement,
+      expandedElements,
+      compositeCatalog,
+    )) {
       out.push({
         classTag: "kineticist",
         level: 7,
@@ -968,7 +984,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
       });
     }
     for (const talentId of doc.build.kineticistWildTalents ?? []) {
-      const talent = findKineticistWildTalent(talentId);
+      const talent = resolveKineticistWildTalent(talentId, refData);
       if (!talent) continue;
       out.push({
         classTag: "kineticist",
