@@ -59,6 +59,11 @@ async function fetchAll(): Promise<RefData> {
     arcanistExploits,
     investigatorTalents,
     kineticWildTalents,
+    alchemistDiscoveries,
+    monkKiPowers,
+    monkStyleStrikes,
+    cavalierOrders,
+    shifterAspects,
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
@@ -94,6 +99,11 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["arcanistExploits"]>("arcanist-exploits.json"),
     getJson<RefData["investigatorTalents"]>("investigator-talents.json"),
     getJson<RefData["kineticWildTalents"]>("kinetic-wild-talents.json"),
+    getJson<RefData["alchemistDiscoveries"]>("alchemist-discoveries.json"),
+    getJson<RefData["monkKiPowers"]>("monk-ki-powers.json"),
+    getJson<RefData["monkStyleStrikes"]>("monk-style-strikes.json"),
+    getJson<RefData["cavalierOrders"]>("cavalier-orders.json"),
+    getJson<RefData["shifterAspects"]>("shifter-aspects.json"),
   ]);
   return {
     meta,
@@ -130,5 +140,10 @@ async function fetchAll(): Promise<RefData> {
     arcanistExploits,
     investigatorTalents,
     kineticWildTalents,
+    alchemistDiscoveries,
+    monkKiPowers,
+    monkStyleStrikes,
+    cavalierOrders,
+    shifterAspects,
   };
 }

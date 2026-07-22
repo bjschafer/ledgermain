@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { ALCHEMIST_DISCOVERIES, ALCHEMIST_DISCOVERY_IDS } from "@pf1/engine";
+import { mergedAlchemistDiscoveryCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "../../model/alchemistDiscoveries.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -40,7 +41,15 @@ interface DiscoveryPickerProps {
  *
  * Picked discoveries also show up in the sheet's Class Features list (tagged
  * "— Discovery"), via `collectGrantedFeatures`/`resolveClassFeatures` in
- * `@pf1/engine` `archetypes.ts`.
+ * `@pf1/engine` `archetypes.ts` (through `resolveAlchemistDiscovery`, which
+ * resolves BOTH a hand-authored and a vendored-only pick).
+ *
+ * Browses the FULL published discovery catalog (`mergedAlchemistDiscoveryCatalog`
+ * — every vendored entry, overlaid with the 41-entry hand-authored table on
+ * a name match), not just the hand-verified slice. A `badge-modeled` "M"
+ * marks which entries carry real, live mechanics; everything else is
+ * prose-only, shown via the same collapsible `FeatureDescription` the Class
+ * Features list uses.
  */
 export function DiscoveryPicker({ doc, refData, update }: DiscoveryPickerProps) {
   const isAlchemist = doc.identity.classes.some((c) => c.tag === "alchemist");
@@ -53,16 +62,18 @@ export function DiscoveryPicker({ doc, refData, update }: DiscoveryPickerProps) 
   );
   const level = alchemistLevel(doc);
 
+  const catalog = useMemo(() => mergedAlchemistDiscoveryCatalog(refData), [refData]);
+
   const discoveries = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return ALCHEMIST_DISCOVERY_IDS.map((id) => ALCHEMIST_DISCOVERIES[id]!)
+    return catalog
       .filter((d) => !q || d.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.minLevel - b.minLevel || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenAlchemistDiscoveryCount(doc);
   const expected = expectedAlchemistDiscoveryCount(doc, refData);
@@ -121,7 +132,19 @@ export function DiscoveryPicker({ doc, refData, update }: DiscoveryPickerProps) 
               return (
                 <div key={d.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
-                    <div className="pname">{d.name}</div>
+                    <div className="pname">
+                      {d.name}
+                      {d.nameSuffix ? ` ${d.nameSuffix}` : ""}
+                      {!d.displayOnly && (
+                        <span
+                          className="badge-modeled"
+                          title="Carries a real, live mechanical effect (see Class Features)"
+                        >
+                          {" "}
+                          M
+                        </span>
+                      )}
+                    </div>
                     <div className="preq">
                       <span className="desc-text">{d.summary}</span>
                     </div>
@@ -135,6 +158,7 @@ export function DiscoveryPicker({ doc, refData, update }: DiscoveryPickerProps) 
                         ⚠ {note.text}
                       </div>
                     ))}
+                    {d.description ? <FeatureDescription html={d.description} /> : null}
                   </div>
                   <button
                     type="button"

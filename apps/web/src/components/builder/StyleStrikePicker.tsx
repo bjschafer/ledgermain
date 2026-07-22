@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
-import { MONK_STYLE_STRIKES, MONK_STYLE_STRIKE_IDS } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import { mergedMonkStyleStrikeCatalog } from "@pf1/engine";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
   chosenMonkStyleStrikeCount,
@@ -11,26 +11,33 @@ import {
 } from "../../model/monkStyleStrikes.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface StyleStrikePickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
 /**
- * Monk (Unchained) style strike selection (issue #65), mirroring
- * `KiPowerPicker` — every style strike is a per-attack flurry rider,
- * entirely `displayOnly` (see `@pf1/engine` `monk-style-strikes.ts`'s doc
- * comment). Flat list, no level tiering per entry (unlike ki powers) — only
- * the COUNT known grows with level (5th, then 9th/13th/17th). Free-choice,
- * never blocks past the expected count. The Style Strikes per-round resource
- * POOL (how many strikes can be designated per round) already derives
+ * Monk (Unchained) style strike selection (issue #65, full-catalog issue
+ * #74 Phase 3c), mirroring `KiPowerPicker` — every style strike is a
+ * per-attack flurry rider, entirely `displayOnly` in the hand-authored
+ * table (see `@pf1/engine` `monk-style-strikes.ts`'s doc comment). Flat
+ * list, no level tiering per entry (unlike ki powers) — only the COUNT
+ * known grows with level (5th, then 9th/13th/17th). Free-choice, never
+ * blocks past the expected count. The Style Strikes per-round resource POOL
+ * (how many strikes can be designated per round) already derives
  * generically from vendored data — see `monk-unchained.test.ts` — this
  * picker only records WHICH strikes are known.
+ *
+ * Browses the full vendored catalog (`mergedMonkStyleStrikeCatalog`) — an
+ * exact 1:1 match with the 15 hand-authored entries (see that function's
+ * doc comment), so this only ever attaches vendored prose today.
  */
-export function StyleStrikePicker({ doc, update }: StyleStrikePickerProps) {
+export function StyleStrikePicker({ doc, refData, update }: StyleStrikePickerProps) {
   const isMonkUnchained = doc.identity.classes.some((c) => c.tag === "monkUnchained");
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Style Strikes", false);
@@ -40,16 +47,18 @@ export function StyleStrikePicker({ doc, update }: StyleStrikePickerProps) {
     [doc.build.monkStyleStrikes],
   );
 
+  const catalog = useMemo(() => mergedMonkStyleStrikeCatalog(refData), [refData]);
+
   const strikes = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return MONK_STYLE_STRIKE_IDS.map((id) => MONK_STYLE_STRIKES[id]!)
+    return catalog
       .filter((s) => !q || s.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenMonkStyleStrikeCount(doc);
   const expected = expectedMonkStyleStrikeCount(doc);
@@ -119,6 +128,7 @@ export function StyleStrikePicker({ doc, update }: StyleStrikePickerProps) {
                         ⚠ {n.text}
                       </div>
                     ))}
+                    {s.description ? <FeatureDescription html={s.description} /> : null}
                   </div>
                   <button
                     type="button"

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
-import { MONK_KI_POWERS, MONK_KI_POWER_IDS } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import { mergedMonkKiPowerCatalog } from "@pf1/engine";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
   chosenMonkKiPowerCount,
@@ -12,24 +12,31 @@ import {
 } from "../../model/monkKiPowers.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface KiPowerPickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
 /**
- * Monk (Unchained) ki power selection (issue #65), mirroring `HexPicker` —
- * ki powers are entirely `displayOnly` (see `@pf1/engine` `monk-ki-powers.ts`'s
- * doc comment for why none of the 39 core powers clear the bar for a real
- * `Change`), so this picker is purely a record of choices surfaced on the
- * sheet's Class Features list. Flat list, soft-filtered by `minLevel` (below-
- * level powers stay pickable, just annotated) — free-choice, never blocks
- * past the expected count, same hybrid-prereqs posture as `HexPicker`.
+ * Monk (Unchained) ki power selection (issue #65, full-catalog issue #74
+ * Phase 3c), mirroring `HexPicker`/`RagePowerPicker`'s "M" badge convention —
+ * ki powers are entirely `displayOnly` in the hand-authored table (see
+ * `@pf1/engine` `monk-ki-powers.ts`'s doc comment for why none of the 39
+ * core powers clear the bar for a real `Change`), so today every row shows
+ * prose only. Flat list, soft-filtered by `minLevel` (below-level powers
+ * stay pickable, just annotated) — free-choice, never blocks past the
+ * expected count, same hybrid-prereqs posture as `HexPicker`.
+ *
+ * Browses the FULL published ki-power catalog (`mergedMonkKiPowerCatalog` —
+ * every vendored entry, overlaid with the 39-entry hand-authored table on a
+ * name match), not just the hand-verified slice.
  */
-export function KiPowerPicker({ doc, update }: KiPowerPickerProps) {
+export function KiPowerPicker({ doc, refData, update }: KiPowerPickerProps) {
   const isMonkUnchained = doc.identity.classes.some((c) => c.tag === "monkUnchained");
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Ki Powers", false);
@@ -37,16 +44,18 @@ export function KiPowerPicker({ doc, update }: KiPowerPickerProps) {
   const selected = useMemo(() => new Set(doc.build.monkKiPowers ?? []), [doc.build.monkKiPowers]);
   const level = monkUnchainedLevel(doc);
 
+  const catalog = useMemo(() => mergedMonkKiPowerCatalog(refData), [refData]);
+
   const powers = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return MONK_KI_POWER_IDS.map((id) => MONK_KI_POWERS[id]!)
+    return catalog
       .filter((p) => !q || p.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.minLevel - b.minLevel || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenMonkKiPowerCount(doc);
   const expected = expectedMonkKiPowerCount(doc);
@@ -104,7 +113,19 @@ export function KiPowerPicker({ doc, update }: KiPowerPickerProps) {
               return (
                 <div key={p.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
-                    <div className="pname">{p.name}</div>
+                    <div className="pname">
+                      {p.name}
+                      {p.nameSuffix ? ` ${p.nameSuffix}` : ""}
+                      {!p.displayOnly && (
+                        <span
+                          className="badge-modeled"
+                          title="Carries a real, live mechanical effect (see Class Features)"
+                        >
+                          {" "}
+                          M
+                        </span>
+                      )}
+                    </div>
                     <div className="preq">
                       <span className="desc-text">{p.summary}</span>
                     </div>
@@ -118,6 +139,7 @@ export function KiPowerPicker({ doc, update }: KiPowerPickerProps) {
                         ⚠ {n.text}
                       </div>
                     ))}
+                    {p.description ? <FeatureDescription html={p.description} /> : null}
                   </div>
                   <button
                     type="button"

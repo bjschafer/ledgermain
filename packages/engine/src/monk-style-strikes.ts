@@ -31,7 +31,7 @@
  * `displayOnly: true` with `changes: []`, task brief confirmed.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { Change, ContextNote, MonkStyleStrike, RefData, SourceRef } from "@pf1/schema";
 
 export interface MonkStyleStrikeDef {
   id: string;
@@ -185,3 +185,100 @@ export const MONK_STYLE_STRIKES: Record<string, MonkStyleStrikeDef> = Object.fro
 );
 
 export const MONK_STYLE_STRIKE_IDS: readonly string[] = STYLE_STRIKE_LIST.map((s) => s.id);
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.monkStyleStrikes` (see that type's doc
+ * comment) is the full published style-strike catalog — 15 entries, an
+ * EXACT 1:1 match with this file's 15 hand-authored entries (verified by
+ * normalized name; no drift, no alias, no orphan on either side — unlike
+ * every other catalog imported so far, there is no vendored-only "extra"
+ * entry here at all). Kept for the same "picker browses the merged catalog,
+ * hand-authored wins on a name collision" shape `rage-powers.ts` documents,
+ * even though today it only ever attaches vendored prose to an existing
+ * hand-authored row.
+ */
+
+function normalizeStyleStrikeName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Cheap HTML->text preview for a vendored-only entry's picker row — see `rage-powers.ts`'s identical helper. Unused today (no vendored-only entry exists — see file doc comment) but kept for parity if a future splatbook style strike is vendored without an initial hand-authored counterpart. */
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def (matched) with vendored prose attached, or a vendored-only entry rendered display-only (see file doc comment — none exist today). */
+export interface MergedMonkStyleStrikeEntry extends MonkStyleStrikeDef {
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id. */
+  description?: string;
+  /** Vendored source-book attribution, when known. */
+  sources?: SourceRef[];
+}
+
+function vendoredToDef(entry: MonkStyleStrike): MergedMonkStyleStrikeEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/**
+ * Resolve a picked style-strike id (`doc.build.monkStyleStrikes` entries) to
+ * its definition — hand-authored table first (mechanics-authoritative),
+ * falling back to the vendored catalog for an id that only exists there
+ * (none today — see file doc comment). Used by `collect.ts`/`archetypes.ts`
+ * instead of indexing `MONK_STYLE_STRIKES` directly.
+ */
+export function resolveMonkStyleStrike(
+  id: string,
+  refData: RefData,
+): MonkStyleStrikeDef | undefined {
+  const hand = MONK_STYLE_STRIKES[id];
+  if (hand) return hand;
+  const vendored = refData.monkStyleStrikes?.[id];
+  return vendored ? vendoredToDef(vendored) : undefined;
+}
+
+/**
+ * The full picker-browsable catalog: every vendored entry, with any that
+ * collides (by normalized name) against a hand-authored entry REPLACED by
+ * that hand-authored def (keeping its id and real mechanics, but carrying
+ * the vendored entry's prose/sources along for display). Per the file doc
+ * comment, this is every one of the 15 vendored entries today — there is no
+ * vendored-only row to append. `!entry.displayOnly` marks which rows carry
+ * real mechanics, for the picker's "M" badge.
+ */
+export function mergedMonkStyleStrikeCatalog(refData: RefData): MergedMonkStyleStrikeEntry[] {
+  const handByNormName = new Map<string, MonkStyleStrikeDef>();
+  for (const s of STYLE_STRIKE_LIST) {
+    handByNormName.set(normalizeStyleStrikeName(s.name), s);
+  }
+
+  const vendored = Object.values(refData.monkStyleStrikes ?? {});
+  const merged: MergedMonkStyleStrikeEntry[] = [];
+  for (const v of vendored) {
+    const handMatch = handByNormName.get(normalizeStyleStrikeName(v.name));
+    merged.push(
+      handMatch
+        ? { ...handMatch, description: v.description, sources: v.sources }
+        : vendoredToDef(v),
+    );
+  }
+  return merged;
+}

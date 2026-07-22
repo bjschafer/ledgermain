@@ -55,7 +55,7 @@
  * free-choice/soft-warning posture as `setOracleMystery`.
  */
 
-import type { ContextNote, SkillId } from "@pf1/schema";
+import type { CavalierOrder, ContextNote, RefData, SkillId, SourceRef } from "@pf1/schema";
 
 export interface OrderAbility {
   level: 2 | 8 | 15;
@@ -388,8 +388,148 @@ export function challengeRiderAt(classLevel: number): number {
   return 1 + Math.floor((classLevel - 1) / 4);
 }
 
-/** Substitutes the live `challengeRiderAt` value into an order's `challengeTemplate` (replaces every `{n}`). */
-export function challengeRiderText(order: OrderDef, classLevel: number): string {
+/**
+ * Substitutes the live `challengeRiderAt` value into an order's
+ * `challengeTemplate` (replaces every `{n}`). Takes just the template field
+ * (not the full `OrderDef`) so it also works for a `MergedOrderEntry`, whose
+ * `challengeTemplate` is optional (undefined for a vendored-only order with
+ * no hand-authored chassis).
+ */
+export function challengeRiderText(
+  order: { challengeTemplate: string },
+  classLevel: number,
+): string {
   const n = challengeRiderAt(classLevel);
   return order.challengeTemplate.replaceAll("{n}", String(n));
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.cavalierOrders` (see that type's doc comment)
+ * is the full published order catalog — 38 entries, far beyond this file's
+ * 8 hand-authored orders (the 6 Advanced Player's Guide cavalier orders plus
+ * the Ultimate Combat samurai-specific Warrior/Ronin orders). Unlike every
+ * other catalog imported so far, this ISN'T a flat "prose ability" list —
+ * each hand-authored order is a small CHASSIS (two bonus skills, a
+ * Challenge rider template, three leveled abilities), and the vendored
+ * source carries none of that structure: an order's 2nd/8th/15th-level
+ * abilities live entirely inside its free-text `description` (headed
+ * "### Order Abilities"), not as a parseable `OrderAbility[]`. So a
+ * vendored-only order (30 of the 38) resolves to PROSE display only — the
+ * picker shows its raw description instead of the structured
+ * skills/Challenge/abilities breakdown `OrderPicker` renders for a chassis
+ * match.
+ *
+ * Collision audit (all 8 hand-authored entries, run against the pinned Pf
+ * Data 1e slice): 7 of 8 matched a vendored entry by normalized name
+ * directly; the samurai's Ronin order is the one exception — the vendored
+ * source names it plainly "Ronin" (its own page even notes "cavaliers can
+ * select this order, but they are typically called knights errant instead
+ * of ronin"), NOT "Order of the Ronin" like literally every other entry in
+ * the file (Warrior included) — a wording-drift alias, not a missing entry.
+ * No name collides within the vendored catalog itself.
+ */
+
+const ORDER_NAME_ALIASES: Record<string, string> = {
+  ronin: "Ronin",
+};
+
+function normalizeOrderName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/**
+ * A catalog entry the picker can browse — either a hand-authored order
+ * chassis (matched, with vendored prose attached for the "full text" view)
+ * or a vendored-only order rendered prose-only. `displayOnly: true` marks
+ * the latter — no `orderSkills`/`challengeTemplate`/`abilities` exist to
+ * show a structured breakdown for it, only `description`.
+ */
+export interface MergedOrderEntry {
+  id: string;
+  name: string;
+  forClasses: readonly ("cavalier" | "samurai")[];
+  /** Present only for a hand-authored chassis match — see `OrderDef.orderSkills`. */
+  orderSkills?: readonly SkillId[];
+  edicts?: string;
+  challengeTemplate?: string;
+  abilities?: readonly OrderAbility[];
+  contextNotes?: ContextNote[];
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id — every entry today (see file doc comment). */
+  description?: string;
+  /** Vendored source-book attribution, when known. */
+  sources?: SourceRef[];
+  /** True for a vendored-only order with no hand-authored chassis (see file doc comment). */
+  displayOnly: boolean;
+}
+
+function vendoredToEntry(entry: CavalierOrder): MergedOrderEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    // Not tagged by class in the source — every vendored-only order is
+    // offered to both, matching this picker's existing free-choice, no-
+    // edict-validation posture (see `OrderPicker`'s doc comment).
+    forClasses: CAVALIER_SAMURAI,
+    description: entry.description,
+    sources: entry.sources,
+    displayOnly: true,
+  };
+}
+
+/**
+ * The full picker-browsable catalog: every vendored entry, with any that
+ * collides (by normalized name, alias-mapped) against a hand-authored order
+ * REPLACED by that hand-authored chassis (keeping its id, skills, Challenge
+ * template, and ability tiers, but carrying the vendored entry's full prose/
+ * sources along); every other vendored entry (30 of 38) is prose-only. No
+ * hand-authored-only entries exist to append — all 8 matched (see the
+ * collision audit above).
+ */
+export function mergedOrderCatalog(refData: RefData): MergedOrderEntry[] {
+  const all = { ...CAVALIER_ORDERS, ...SAMURAI_ORDERS };
+  const handByNormName = new Map<string, OrderDef>();
+  for (const o of Object.values(all)) {
+    handByNormName.set(normalizeOrderName(ORDER_NAME_ALIASES[o.id] ?? o.name), o);
+  }
+
+  const vendored = Object.values(refData.cavalierOrders ?? {});
+  const merged: MergedOrderEntry[] = [];
+  for (const v of vendored) {
+    const handMatch = handByNormName.get(normalizeOrderName(v.name));
+    merged.push(
+      handMatch
+        ? {
+            id: handMatch.id,
+            name: handMatch.name,
+            forClasses: handMatch.forClasses,
+            orderSkills: handMatch.orderSkills,
+            edicts: handMatch.edicts,
+            challengeTemplate: handMatch.challengeTemplate,
+            abilities: handMatch.abilities,
+            contextNotes: handMatch.contextNotes,
+            description: v.description,
+            sources: v.sources,
+            displayOnly: false,
+          }
+        : vendoredToEntry(v),
+    );
+  }
+  return merged;
+}
+
+/** Every merged catalog entry a given class may select — mirrors `ordersForClass`, but over the full vendored-backed catalog. */
+export function mergedOrdersForClass(
+  refData: RefData,
+  classTag: "cavalier" | "samurai",
+): MergedOrderEntry[] {
+  return mergedOrderCatalog(refData).filter((o) => o.forClasses.includes(classTag));
+}
+
+/** Look up a merged catalog entry by tag — mirrors `orderByTag`, but resolves a vendored-only id too. */
+export function resolveMergedOrder(id: string, refData: RefData): MergedOrderEntry | undefined {
+  return mergedOrderCatalog(refData).find((o) => o.id === id);
 }

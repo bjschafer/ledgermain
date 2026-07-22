@@ -22,7 +22,7 @@ import type {
   RefData,
 } from "@pf1/schema";
 
-import { ALCHEMIST_DISCOVERIES } from "./alchemist-discoveries.js";
+import { resolveAlchemistDiscovery } from "./alchemist-discoveries.js";
 import { ANTIPALADIN_CRUELTIES } from "./antipaladin-cruelties.js";
 import { resolveArcanistExploit } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
@@ -32,8 +32,8 @@ import { boldStareRiderSummary, MESMERIST_BOLD_STARES } from "./mesmerist-bold-s
 import { MESMERIST_TRICKS } from "./mesmerist-tricks.js";
 import { resolveMagusArcanum } from "./magus-arcana.js";
 import { resolveNinjaTrick } from "./ninja-tricks.js";
-import { MONK_KI_POWERS } from "./monk-ki-powers.js";
-import { MONK_STYLE_STRIKES } from "./monk-style-strikes.js";
+import { resolveMonkKiPower } from "./monk-ki-powers.js";
+import { resolveMonkStyleStrike } from "./monk-style-strikes.js";
 import { MEDIUM_SPIRITS } from "./medium-spirits.js";
 import { findOccultistFocusPower, OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import {
@@ -53,7 +53,7 @@ import { resolveSlayerTalent } from "./slayer-talents.js";
 import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
 import { resolveInvestigatorTalent } from "./investigator-talents.js";
 import { resolveVigilanteSocialTalent, resolveVigilanteTalent } from "./vigilante-talents.js";
-import { SHIFTER_ASPECTS } from "./shifter-aspects.js";
+import { resolveShifterAspect } from "./shifter-aspects.js";
 import {
   sneakAttackDice,
   smiteEvilDetail,
@@ -418,7 +418,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   const alchemistLevel = doc.identity.classes.find((c) => c.tag === "alchemist")?.level ?? 0;
   if (alchemistLevel > 0) {
     for (const discoveryId of doc.build.alchemistDiscoveries ?? []) {
-      const discovery = ALCHEMIST_DISCOVERIES[discoveryId];
+      const discovery = resolveAlchemistDiscovery(discoveryId, refData);
       if (!discovery) continue;
       out.push({
         classTag: "alchemist",
@@ -478,7 +478,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     doc.identity.classes.find((c) => c.tag === "monkUnchained")?.level ?? 0;
   if (monkUnchainedLevel > 0) {
     for (const powerId of doc.build.monkKiPowers ?? []) {
-      const power = MONK_KI_POWERS[powerId];
+      const power = resolveMonkKiPower(powerId, refData);
       if (!power) continue;
       out.push({
         classTag: "monkUnchained",
@@ -495,7 +495,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
       });
     }
     for (const strikeId of doc.build.monkStyleStrikes ?? []) {
-      const strike = MONK_STYLE_STRIKES[strikeId];
+      const strike = resolveMonkStyleStrike(strikeId, refData);
       if (!strike) continue;
       out.push({
         classTag: "monkUnchained",
@@ -858,7 +858,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   const shifterLevel = doc.identity.classes.find((c) => c.tag === "shifter")?.level ?? 0;
   if (shifterLevel > 0) {
     for (const aspectId of doc.build.shifterAspects ?? []) {
-      const aspect = SHIFTER_ASPECTS[aspectId];
+      const aspect = resolveShifterAspect(aspectId, refData);
       if (!aspect) continue;
       out.push({
         classTag: "shifter",

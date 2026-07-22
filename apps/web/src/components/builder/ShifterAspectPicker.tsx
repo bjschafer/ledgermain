@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
-import { SHIFTER_ASPECTS, SHIFTER_ASPECT_IDS } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import { mergedShifterAspectCatalog } from "@pf1/engine";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
   chosenShifterAspectCount,
@@ -11,29 +11,34 @@ import {
 } from "../../model/shifterAspects.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface ShifterAspectPickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
 /**
- * Shifter aspect selection (issue #65), mirroring `HexPicker` — this is the
- * build-time "which aspects do I know" pick; the live minor-form on/off
- * toggle lives in the tracker's `ShifterAspectPanel` instead (see that
- * component's doc comment). A shifter knows 1 aspect at 1st level, 2 at
- * 5th, 3 at 10th, 4 at 15th, and 5 at 20th (Final Aspect) — see
- * `model/shifterAspects.ts`'s budget math. Free-choice, never blocks past
- * the expected count.
+ * Shifter aspect selection (issue #65, full-catalog issue #74 Phase 3c),
+ * mirroring `HexPicker` — this is the build-time "which aspects do I know"
+ * pick; the live minor-form on/off toggle lives in the tracker's
+ * `ShifterAspectPanel` instead (see that component's doc comment). A
+ * shifter knows 1 aspect at 1st level, 2 at 5th, 3 at 10th, 4 at 15th, and 5
+ * at 20th (Final Aspect) — see `model/shifterAspects.ts`'s budget math.
+ * Free-choice, never blocks past the expected count.
  *
  * Each row previews whether its minor form clears the honesty bar for a
  * real toggleable buff (see `@pf1/engine` `shifter-aspects.ts`'s doc
  * comment) via its `contextNotes`. Major form (Wild Shape) is out of scope
- * here — deferred to issue #70.
+ * here — deferred to issue #70. Browses the full vendored catalog
+ * (`mergedShifterAspectCatalog`) — an exact 1:1 match with the 30
+ * hand-authored entries (see that function's doc comment), so this only
+ * ever attaches vendored prose (including the Major Form paragraph) today.
  */
-export function ShifterAspectPicker({ doc, update }: ShifterAspectPickerProps) {
+export function ShifterAspectPicker({ doc, refData, update }: ShifterAspectPickerProps) {
   const isShifter = doc.identity.classes.some((c) => c.tag === "shifter");
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Shifter Aspects", false);
@@ -43,16 +48,18 @@ export function ShifterAspectPicker({ doc, update }: ShifterAspectPickerProps) {
     [doc.build.shifterAspects],
   );
 
+  const catalog = useMemo(() => mergedShifterAspectCatalog(refData), [refData]);
+
   const aspects = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return SHIFTER_ASPECT_IDS.map((id) => SHIFTER_ASPECTS[id]!)
+    return catalog
       .filter((a) => !q || a.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenShifterAspectCount(doc);
   const expected = expectedShifterAspectCount(doc);
@@ -123,6 +130,7 @@ export function ShifterAspectPicker({ doc, update }: ShifterAspectPickerProps) {
                         ⚠ {n.text}
                       </div>
                     ))}
+                    {a.description ? <FeatureDescription html={a.description} /> : null}
                   </div>
                   <button
                     type="button"

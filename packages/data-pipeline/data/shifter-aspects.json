@@ -1,0 +1,332 @@
+{
+  "bat": {
+    "description": "<p>The aspect of the bat imparts mastery over darkness and the night. Though not as powerful in battle as some other aspects, those who take this aspect become adept at skirmishing and spying.</p>\n<p><strong>Minor Form:</strong> You gain darkvision with a range of 60 feet. If you already have darkvision with this range or greater, the range of your darkvision increases by 30 feet. At 8th level, you gain darkvision with a range of 90 feet instead. If you already have darkvision with this range or greater, your darkvision increases by 30 feet. At 15th level, you gain the 8th-level benefit and gain blindsense with a range of 15 feet or, if you already have blindsense with a range of 15 feet or more, you increase its range by 10 feet.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a dire bat. While in this form, you gain a base speed of 30 feet, a fly speed of 40 feet (clumsy), blindsense with a range of 10 feet, and a bite attack (1d8 damage). At 8th level, the fly speed increases to 60 feet (good), the range of your blindsense increases to 20 feet, and you gain the Flyby Attack feat. At 15th level, your fly speed increases to 80 feet (good) and you gain the Hover feat.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), wing (B)</p>",
+    "id": "bat",
+    "name": "Bat",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:bat"
+  },
+  "bear": {
+    "description": "<p>The aspect of the bear invokes a juggernaut of tireless endurance and furious power. Those who take this aspect are known for surviving severe wounds and delivering punishing blows in return.</p>\n<p><strong>Minor Form:</strong> You gain a +2 enhancement bonus to your Constitution score. At 8th level, the bonus increases to +4, and at 15th level it increases to +6.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a dire bear. While in this form, you gain a base speed of 40 feet, low-light vision, scent (30 feet), a bite attack (1d8 damage), and two claw attacks (1d6 damage) with the grab ability. At 8th level, you gain Improved Natural Attack with your claws. At 15th level, the critical multiplier of your claw attack increases by 1 (×2 becomes ×3) to a maximum of ×4, and you gain the Awesome Blow feat.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "bear",
+    "name": "Bear",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:bear"
+  },
+  "boar": {
+    "description": "<p>Those with the aspect of the boar are famously stubborn.</p>\n<p><strong>Minor Form:</strong> You gain Diehard as a bonus feat. At 8th level, you add your Hit Dice to your Constitution when determining the negative number of hit points at which you die.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a dire boar. While in this form, you gain low-light vision, the scent ability, a gore attack (1d8), and a base speed of 40 feet. At 8th level you gain Improved Natural Attack with your gore attack, and you gain powerful charge (+1d8 on your gore attack). At 15th level, you gain 1 additional hit point per Hit Die you have, and you gain Awesome Blow as a bonus feat.</p>\n<p><strong>Alternate Natural Attacks:</strong> Gore (P), hoof (B)</p>",
+    "id": "boar",
+    "name": "Boar",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:boar"
+  },
+  "bull": {
+    "description": "<p>The bull is a fierce charger and is adept at trampling its foes, pounding them to a bloody pulp.</p>\n<p><strong>Minor Form:</strong> You gain a +2 enhancement bonus to your Strength score. At 8th level, the bonus increases to +4, and at 15th level it increases to +6.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Large bull (use aurochs stats). While in this form, you gain a base speed of 40 feet, low-light vision, scent, and a gore attack (1d8 damage) with powerful charge (+1d8 on your gore attack). At 8th level, you gain the trample as per the universal monster rule (dealing gore damage plus 1-1/2 times your Strength modifier). At 15th level, your gore damage increases to 2d8 and you gain the Awesome Blow feat.</p>\n<p><strong>Alternate Natural Attacks:</strong> Gore (P), hoof (B), slam (B)</p>",
+    "id": "bull",
+    "name": "Bull",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:bull"
+  },
+  "crocodile": {
+    "description": "<p>The crocodile lurks in the water, unseen until it lunges forth with its powerful jaws.</p>\n<p><strong>Minor Form:</strong> You gain a +2 competence bonus on Swim checks and grapple combat maneuver checks. This bonus increases to +4 at 8th level and +6 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a crocodile. While in this form, you gain a swim speed of 30 feet, low-light vision, a bite attack (1d8) with the grab ability, and a tail slap attack (a secondary natural attack that deals 1d12 points of damage). At 8th level, once per minute as a free action, you can increase your land speed by 20 feet for 1 round. At 15th level, you gain Improved Natural Attack with your bite attack, and when you successfully grapple a foe, you can knock your grappled foe prone.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), tail slap (B)</p>",
+    "id": "crocodile",
+    "name": "Crocodile",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:crocodile"
+  },
+  "deinonychus": {
+    "description": "<p>The deinonychus is adept at racing from ambush to deliver grievous wounds with its talons. This aspect infuses the shifter with an enhanced ability to surprise foes and strike first in battle.</p>\n<p><strong>Minor Form:</strong> You gain a +2 bonus on Initiative checks. This bonus increases to +4 at 8th level and +6 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a deinonychus. While in this form, you gain a base speed of 60 feet, low-light vision, scent (30 feet), a bite attack (1d8 damage), and two talon attacks (1d8 damage; your talon attacks can use your shifter claws damage), and pounce. At 8th level, you gain two foreclaw attacks (1d4 damage; these attacks cannot use your shifter claws damage) and a +4 racial bonus on Acrobatics checks. At 15th level, you gain a +1 dodge bonus to AC and Spring Attack as a bonus feat.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), talon (S)</p>",
+    "id": "deinonychus",
+    "name": "Deinonychus",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:deinonychus"
+  },
+  "dolphin": {
+    "description": "<p>The aspect of the dolphin imparts clever mastery of the seas. Shifters with this aspect also embody the size and ferociousness of large dolphins, such as orcas.</p>\n<p><strong>Minor Form:</strong> You gain a +4 competence bonus on Knowledge checks to identify creatures' abilities and weaknesses. This bonus increases to +6 at 8th level and +8 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Large dolphin, but your space is 10 feet instead of 5 feet. While in this form, you gain a swim speed of 60 feet, blindsense with a range of 10 feet, low-light vision, a bite attack (1d8), and the ability to hold your breath for a number of minutes equal to 6 times your Constitution score before you risk drowning. At 8th level, the range of your blindsense increases to 20 feet. At 15th level, the range of your blindsense increases to 60 feet and your swim speed increases to 80 feet.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), Slam (B)</p>",
+    "id": "dolphin",
+    "name": "Dolphin",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:dolphin"
+  },
+  "dragonfly": {
+    "description": "<p>The aspect of the dragonfly offers the ability to make quick, darting attacks at foes.</p>\n<p><strong>Minor Form:</strong> You gain an enhancement bonus of +10 feet to your base speed when charging. This bonus increases to +20 feet at 8th level and +30 feet at 15th level.</p>\n<p><strong>Major Form (Vermin Shape II):</strong> Your shape changes to that of a giant dragonfly. While in this form, you gain a fly speed of 60 feet (average), darkvision with a range of 60 feet, and a bite attack (2d6) with the grab ability. At 8th level, you gain Flyby Attack as a bonus feat, and your fly speed improves to 60 feet (good). At 15th level, your fly speed increases to 80 feet (perfect), and if you charge while flying, you gain a +4 bonus on grapple combat maneuver checks for 1 round.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), wing (B)</p>",
+    "id": "dragonfly",
+    "name": "Dragonfly",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:dragonfly"
+  },
+  "electric_eel": {
+    "description": "<p>The aspect of the electric eel imparts the ability to charge attacks with electricity and to slip effortlessly out of danger.</p>\n<p><strong>Minor Form:</strong> Your attacks deal 1 point of electricity damage in addition to their normal damage. This additional electricity damage increases to 1d3 at 8th level and 1d6 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of an electric eel. While in this form, you gain a swim speed of 30 feet, low-light vision, electricity resistance 5, a bite attack (1d6), and a tail attack (a secondary natural touch attack that deals 1d6 points of electricity damage). At 8th level, your electricity resistance increases to 10 and you gain a +4 racial bonus on Escape Artist checks. At 15th level, on a critical hit with your tail attack, the creature struck must succeed at a Fortitude save (DC = 10 + half your shifter level + your Constitution modifier) or be stunned for 1d4 rounds.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), tail slap (B)</p>",
+    "id": "electric_eel",
+    "name": "Electric Eel",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:electric_eel"
+  },
+  "elephant": {
+    "description": "<p>The elephant is a symbol of both power and wisdom in Garund and Vudra. Shifters who take this aspect learn the value of applying their strength with precision. An elephant's alternate attacks are gore (P) and slam (B).</p>\n<p><strong>Minor Form:</strong> You gain a +4 enhancement bonus on bull rush and overrun combat maneuver checks. At 8th level, this bonus increases to +6, and at 15th level it increases to +8.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Large adolescent elephant (as an elephant, but with a space of 10 feet). While in this form, you gain low-light vision, scent, a gore attack (1d6 damage), and a slam attack (1d8 damage) with a 5-foot reach. You also gain a +2 racial bonus to Strength and to natural armor. While in this form, you can carry a Medium bipedal creature on your back, allowing you to act as the creature's mount. At 8th level, you gain trample, as the universal monster rule, dealing your shifter claw damage. At 15th level, you gain Improved Bull Rush as a bonus feat, and your racial bonus to Strength and natural armor increases to +4.</p>\n<p><strong>Alternate Natural Attacks:</strong> Gore (P), slam (B)</p>",
+    "id": "elephant",
+    "name": "Elephant",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:elephant"
+  },
+  "falcon": {
+    "description": "<p>The falcon senses all and has the speed to hunt down even the most elusive prey. Those who take this aspect gain enhanced abilities to perceive and reconnoiter the wilderness - little escapes this shifter's attention.</p>\n<p><strong>Minor Form:</strong> You gain a +4 competence bonus on Perception checks. This bonus increases to +6 at 8th level and +8 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Small falcon. While in this form, you gain a base speed of 30 feet, a bite attack (1d4 damage), two claw attacks (1d3 damage), a fly speed of 60 feet (good), low-light vision, and a +4 racial bonus on vision-based Perception checks. At 8th level, you gain darkvision with a range of 120 feet, and your racial bonus on Perception checks increases to +6. At 15th level, you gain blindsense with a range of 60 feet and your fly speed increases to 90 feet (perfect).</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), talon (S)</p>",
+    "id": "falcon",
+    "name": "Falcon",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:falcon"
+  },
+  "frog": {
+    "description": "<p>The aspect of the frog grants great mobility in leaping through the air and swimming in water, as well surprising tactics in combat.</p>\n<p><strong>Minor Form:</strong> You gain a +4 competence bonus on Acrobatics checks when jumping and on Swim checks. These bonuses increase to +6 at 8th level and +8 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Large frog (as per the giant frog but with a space of 10 feet). While in this form, you gain a base speed of 30 feet, a swim speed of 30 feet, low-light vision, scent (30 feet), a bite attack (1d6 damage) with the grab ability, and the ability to treat all [jumps](skill/acrobatics) as if you had a running start. At 8th level, you gain a tongue attack (see below). At 15th level, your swim speed increases to 60 feet. In addition, the reach of your tongue attack increases to 30 feet, and your tongue attack deals bludgeoning damage equal to the damage dealt by your shifter claws.</p>\n<p>&gt;<em>Tongue (Ex):</em> Your tongue is a primary natural attack with a reach of 15 feet. Your tongue deals no damage on a hit, but can be used to grab. You do not gain the grappled condition while using your tongue in this manner.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "frog",
+    "name": "Frog",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:frog"
+  },
+  "giant_wasp": {
+    "description": "<p>The aspect of the wasp grants flight and a venomous sting, as well as great mental resistance. A giant wasp's alternate attack is sting (P).</p>\n<p><strong>Minor Form:</strong> You gain a +4 bonus on Will saves against mind-affecting affects. This bonus increases to +6 at 8th level and +8 at 15th level.</p>\n<p><strong>Major Form (Vermin Shape II):</strong> Your shape changes to that of a giant wasp. This ability uses the vermin shape spell, rather than beast shape, for the purposes of wild shape. While in this form, you gain a fly speed of 40 feet (clumsy), and swarms and vermin do not attack you unless magically commanded to do so. At 8th level, this fly speed increases to 60 feet (average), and you gain a sting attack usable a number of times per day equal to 3 + your Wisdom modifier, which applies the following poison.</p>\n<p><strong>Wasp Venom</strong></p>\n<p>At 15th level, your fly speed increases to 80 feet (good), and you can attempt to gain control of a mindless swarm as a full-round action. To gain control of the swarm, you must succeed at a Charisma check against a DC of 10 + the swarm's CR. You can direct the swarm to disperse, remain in a designated location, or attack an opponent. This control lasts for a number of rounds equal to half your shifter level.</p>\n<p><strong>Alternate Natural Attacks:</strong> Sting (P)</p>",
+    "id": "giant_wasp",
+    "name": "Giant Wasp",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:giant_wasp"
+  },
+  "horse": {
+    "description": "<p>The aspect of the horse grants speed and maneuverability. A horse's alternate attack is hoof (B).</p>\n<p><strong>Minor Form:</strong> You gain the Endurance feat as well as an enhancement bonus of +5 feet to your base speed. At 8th level, you gain the Run feat. If you already have the Run feat, you instead can run at 6 times your base speed when using the Run feat. At 15th level, your enhancement bonus to your base speed increases to +15.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a horse. While in this form, you gain a base speed of 50 feet, low-light vision, scent (30 feet), and the ability to move before and after an attack, as if you had the Ride-By Attack feat. At 8th level, you can move through threatened squares without provoking attacks of opportunity, and you gain trample, as the universal monster rule, dealing your shifter claw damage. At 15th level, you gain Improved Overrun as a bonus feat, even if you do not meet the prerequisites.</p>\n<p><strong>Alternate Natural Attacks:</strong> Hoof (B)</p>",
+    "id": "horse",
+    "name": "Horse",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:horse"
+  },
+  "lion": {
+    "description": "<p>Lions hunt in prides, cooperating to bring down large opponents and defend their territory. A lion's alternate attack is bite (B, P, S).</p>\n<p><strong>Minor Form:</strong> You gain a +4 competence bonus on Intimidate checks. This bonus increases to +6 at 8th level and +8 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a dire lion. While in this form, you gain a base speed of 40 feet, low-light vision, and scent (30 feet). Once per day for every 2 shifter levels you have, you can utter a mighty roar, allowing you to attempt an Intimidate check with a +5 circumstance bonus to demoralize enemies within 30 feet. Allies gain a +1 morale bonus on attack and damage rolls against creatures affected by this ability. At 8th level, you gain one of the following teamwork feats as a bonus feat: Outflank, Pack Attack, Paired Opportunists, or Shake It Off. You can grant allies within 30 feet the benefits of this feat as a swift action for a number of rounds equal to 3 + your Wisdom modifier. At 15th level, you provide a flanking bonus to any ally who threatens the same opponent as you do, and you can change places with an adjacent ally as a move action that does not provoke an attack of opportunity, as if using the Swap Places feat.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "lion",
+    "name": "Lion",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:lion"
+  },
+  "lizard": {
+    "description": "<p>The aspect of the lizard is one of swift, graceful movement, granting the ability to dart and scurry with an astounding agility and balance.</p>\n<p><strong>Minor Form:</strong> You gain a +4 competence bonus on Acrobatics checks. This bonus increases to +6 at 8th level and +8 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of an agile and brightly colored giant lizard (as per the giant frilled lizard, but with the following changes). While in this form, you gain a base speed of 40 feet, low-light vision, scent (30 feet), a natural&gt;primary bite attack (1d8 damage) with the grab ability and a secondary tail attack (1d6 damage) with the trip ability. At 8th level, your base speed increases to 60 feet and you gain a climb speed of 30 feet. At 15th level, you gain Improved Natural Attack with your bite and your tail attacks, and the reach of your tail attack becomes 10 feet.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), tail slap (B)</p>",
+    "id": "lizard",
+    "name": "Lizard",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:lizard"
+  },
+  "mantis": {
+    "description": "<p>The aspect of the mantis imparts uncanny patience and unsettling speed.</p>\n<p><strong>Minor Form:</strong> You gain Lunge as a bonus feat. At 12th level, your reach increases by 5 feet.</p>\n<p><strong>Major Form (Vermin Shape II):</strong> Your shape changes to that of a giant mantis. While in this form, you gain darkvision with a range of 60 feet, a +2 racial bonus on initiative checks, and two primary claw attacks (1d6) with the grab ability. At 8th level, you can always act in the surprise round, but if you fail to notice your foes, you act last, regardless of your initiative result (you act in the normal order in subsequent rounds). At 15th level, whenever you roll for initiative, you can roll three times and use any one of the results.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "mantis",
+    "name": "Mantis",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:mantis"
+  },
+  "monkey": {
+    "description": "<p>The monkey is a climbing trickster who specializes in mobility and manual agility.</p>\n<p><strong>Minor Form:</strong> You gain a +4 competence bonus on Climb checks. This bonus increases to +6 at 8th level and +8 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Large monkey (as per the dire ape). While in this form, you gain a base speed of 30 feet, a climb speed of 30 feet, low-light vision, scent (30 feet), a bite attack (1d6 damage), and two claw attacks (1d6 damage), and you can still use your hands to wield weapons, hold objects, and manipulate objects normally. At 8th level, your climb speed increases to 50 feet, and you can use your tail to hold and manipulate objects as if you had a third hand, but you cannot use it to wield weapons or shields. At 15th level, you gain a rend attack that deals extra damage equal to that of your shifter claws attack plus 1-1/2 times your Strength bonus when you hit with two of your normal shifter claws attacks.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "monkey",
+    "name": "Monkey",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:monkey"
+  },
+  "mouse": {
+    "description": "<p>The aspect of the mouse offers the ability to gain access to hard-to-reach places while avoiding many attacks and effects.</p>\n<p><strong>Minor Form:</strong> You gain evasion, as per the rogue class feature. At 12th level, this benefit becomes improved evasion, as per the rogue advanced talent.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Tiny mouse (as per the dire rat, but with a space of 2-1/2 feet and a reach of 0 feet). While in this form, you gain a base speed of 30 feet, a climb speed of 20 feet, a swim speed of 20 feet, low-light vision, scent (30 feet), and a bite attack (1d4 damage), and you use your Dexterity modifier instead of your Strength modifier on Climb and Swim checks. At 8th level, your climb and swim speeds both increase to 40 feet. At 15th level, you do not provoke attacks of opportunity while moving through or out of a creature's threatened area or moving into its space, but you do when you leave its space.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "mouse",
+    "name": "Mouse",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:mouse"
+  },
+  "octopus": {
+    "description": "<p>The octopus is a cunning hunter, able to contort its malleable body with ease.</p>\n<p><strong>Minor Form:</strong> You gain a +4 competence bonus on Escape Artist checks. It increases to +6 at 8th level and +8 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of an octopus. While in this form, you gain the aquatic subtype, a swim speed of 30 feet, low-light vision, a bite attack (1d3), a tentacles attack (no damage) with the grab ability, and Multiattack as a bonus feat. At 8th level, you gain the jet ability (200 feet). At 15th level, you gain the ability to produce an ink cloud (see below) and deal an amount of bludgeoning damage with your tentacles attack equal to the damage dealt by your shifter claws.</p>\n<p>&gt;<em>Ink Cloud (Ex):</em> While within water, you can emit a 10-foot-radius sphere of ink once per minute as a swift action. This ink provides total concealment and persists for 1 minute.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), tentacle (B)</p>",
+    "id": "octopus",
+    "name": "Octopus",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:octopus"
+  },
+  "owl": {
+    "description": "<p>The aspect of the owl is one of silence. This predator glides through the night unheard, a master of stealthy attacks.</p>\n<p><strong>Minor Form:</strong> You gain a +4 competence bonus on Stealth checks. This bonus increases to +6 at 8th level and +8 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Medium owl. While in this form, you gain a base speed of 30 feet, a fly speed of 60 feet (average), two talon attacks (1d6 damage), darkvision with a range of 60 feet, and a +2 racial bonus on Stealth checks. At 8th level, you gain Flyby Attack as a bonus feat, and the range of your darkvision increases to 120 feet. At 15th level, you can take the form of a Large owl and gain the benefits of the Snatch feat, but you can use it only to grab a creature at least one size category smaller than yourself, and you can squeeze a creature grappled with this ability no matter what size it is.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), talons (S)</p>",
+    "id": "owl",
+    "name": "Owl",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:owl"
+  },
+  "peafowl": {
+    "description": "<p>Peafowl are popular ornamental birds due to their spectacular colors, and they are often symbols of royalty or the divine.</p>\n<p><strong>Minor Form:</strong> You gain a +2 enhancement bonus to your Charisma score. At 8th level the bonus increases to +4, and at 15th level it increases to +6.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Small peafowl. While in this form you gain low-light vision, a fly speed of 40 feet (clumsy), two talon attacks (1d3 damage), and a +4 racial bonus on Stealth checks. A peafowl can't use its fly speed to hover and must end any flying move action by landing or perching on a solid surface. A peafowl can perform a captivating dance targeting all creatures within a 15-foot cone. Each creature in the cone that can see your dance must succeed at a Will save (DC = 10 + half your shifter level + your Charisma modifier) or be stunned for 1 round. At 8th level, the stunned effect lasts for 2 rounds, and at 15th level the duration increases to 4 rounds. Whether or not it succeeds at the initial save, a creature cannot be affected by this ability again for 24 hours.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), tail slap (B)</p>",
+    "id": "peafowl",
+    "name": "Peafowl",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:peafowl"
+  },
+  "scorpion": {
+    "description": "<p>The aspect of the scorpion invokes a hidden menace with a poisonous sting.</p>\n<p><strong>Minor Form:</strong> You gain a +2 competence bonus on Stealth checks and grapple combat maneuver checks. This bonus increases to +4 at 8th level and +6 at 15th level.</p>\n<p><strong>Major Form (Vermin Shape II):</strong> Your shape changes to that of a giant scorpion. While in this form, you gain darkvision with a range of 60 feet, tremorsense with a range of 10 feet, two natural&gt;primary claw attacks (1d6) with the grab ability, and a secondary sting attack (1d6). At 8th level, the range of your tremorsense increases to 20 feet, and you gain a +4 racial bonus on Climb and Perception checks. At 15th level, when you make an attack of opportunity with your sting attack or maintain a grapple and deal damage with your sting attack, that attack also applies the following poison.</p>\n<p><strong>Poison:</strong> 1d3</p>\n<p><strong>Alternate Natural Attacks:</strong> Pincers (B), sting (P)</p>",
+    "id": "scorpion",
+    "name": "Scorpion",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:scorpion"
+  },
+  "snake": {
+    "description": "<p>The snake is a sneaky and lethal foe who strikes unexpectedly with deadly effect, while avoiding opportune strikes made in return.</p>\n<p><strong>Minor Form:</strong> You gain a +2 bonus on attack rolls when making attacks of opportunity and a +2 dodge bonus to your AC against attacks of opportunity. These bonuses increase to +4 at 8th level and +6 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of an emperor cobra. While in this form, you gain a base speed of 30 feet, a climb speed of 30 feet, a swim speed of 30 feet, low-light vision, scent (30 feet), a bite attack (2d6 damage), and the Combat Reflexes feat. If you already have Combat Reflexes or your Dexterity score is not high enough to gain more attacks of opportunity from Combat Reflexes, you can instead make one additional attack of opportunity each round. At 8th level, you gain a +4 racial bonus on Acrobatics and Stealth checks. At 15th level, when you make an attack of opportunity with your bite attack, that attack also applies the following poison.</p>\n<p><strong>Poison</strong></p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S), tail slap (B)</p>",
+    "id": "snake",
+    "name": "Snake",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:snake"
+  },
+  "snapping_turtle": {
+    "description": "<p>Long-lived and resilient, turtles embody wisdom and endurance in many cultures. Those who take this aspect gain profound insight as well as remarkable resilience. A snapping turtle's alternate attack is bite (B, P, S).</p>\n<p><strong>Minor Form:</strong> You gain a +2 enhancement bonus to Wisdom. At 8th level, this bonus increases to +4, and at 15th level, it increases to +6.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Large giant snapping turtle. While in this form, you gain low-light vision, scent (30 feet), a swim speed of 20 feet, and a bite attack (1d8 + 1-1/2 your Strength modifier damage). At 8th level, you gain an insight bonus equal to your Wisdom modifier to your CMD against bull rush, drag, overrun, reposition, and trip attempts. At 15th level, you gain DR 5/silver.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "snapping_turtle",
+    "name": "Snapping Turtle",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:snapping_turtle"
+  },
+  "spider": {
+    "description": "<p>The spider is a patient hunter, sensing foes that struggle in its webs.</p>\n<p><strong>Minor Form:</strong> You gain a +2 competence bonus on Climb checks, Stealth checks, saving throws against web effects (magical or otherwise), and checks to break free of webs. This bonus increases to +4 at 8th level and +6 at 15th level.</p>\n<p><strong>Major Form (Vermin Shape II):</strong> Your shape changes to that of a giant spider. While in this form, you gain darkvision with a range of 60 feet, tremorsense with a range of 10 feet, a climb speed of 30 feet, the web special attack, and a bite attack (1d6). At 8th level, you gain a +4 racial bonus on Perception checks, and the range of your tremorsense increases to 20 feet. At 15th level, you gain Improved Natural Attack (bite), and the range of your tremorsense increases to 30 feet.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "spider",
+    "name": "Spider",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:spider"
+  },
+  "stag": {
+    "description": "<p>The stag can outrun or stand its ground against almost any foe. This aspect offers majestic grace and swift speed.</p>\n<p><strong>Minor Form:</strong> You gain an enhancement bonus of +5 feet to your base speed. This bonus increases to +10 feet at 8th level and +20 feet at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a Large stag, but its space changes to 10 feet. While in this form, you gain a base speed of 50 feet, low-light vision, scent (30 feet), a gore attack (1d6 damage), and two hoove attacks (1d4 damage). At 8th level, you gain a +4 racial bonus on Acrobatics checks when jumping. At 15th level, you gain the Awesome Blow and Improved Natural Attack feats for gore attacks, and you can use Awesome Blow against a creature of your size or smaller.</p>\n<p><strong>Alternate Natural Attacks:</strong> Gore (P), hoof (B)</p>",
+    "id": "stag",
+    "name": "Stag",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:stag"
+  },
+  "tiger": {
+    "description": "<p>The tiger is a powerful but graceful hunter of the wild, quietly stalking its prey and then taking it down with ruthless efficiency.</p>\n<p><strong>Minor Form:</strong> You gain a +2 enhancement bonus to your Dexterity score. This bonus increases to +4 at 8th level and +6 at 15th level.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a dire tiger. While in this form, you gain a base speed of 40 feet, low-light vision, scent (30 feet), a bite attack (2d6 damage), two claw attacks (2d4 damage), the grab ability with both your bite and claw attacks, and pounce. At 8th level, you gain a +4 racial bonus on Stealth checks. At 15th level, you gain the rake attack with your back claw attacks (dealing additional damage equal to that of your claw attack).</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "tiger",
+    "name": "Tiger",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:tiger"
+  },
+  "wolf": {
+    "description": "<p>The aspect of the wolf provides the senses and the attacks of the mighty wolf, whose instincts are honed to track and take down its prey.</p>\n<p><strong>Minor Form:</strong> You gain the scent ability with a range of 10 feet, or, if you have the scent ability, the range increases by 10 feet. The range of this scent or the increase to your scent increases to 20 feet at 8th level and 30 feet at 15th level. The range doubles if the opponent is upwind and is halved if the opponent is downwind.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a dire wolf. While in this form, you gain a base speed of 50 feet, low-light vision, scent (30 feet), a bite attack (1d8 damage), and you can make a trip attempt with your bite attack. At 8th level, the range of your scent ability increases to 40 feet and you gain a +4 racial bonus on Survival checks when tracking with scent. At 15th level, you gain Improved Natural Attack (bite).</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "wolf",
+    "name": "Wolf",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:wolf"
+  },
+  "wolverine": {
+    "description": "<p>This aspect unlocks the brutal ferocity and tenacious fury of the wolverine. The wolverine's lust for battle invigorates its will to live, and it can press on in battle longer than its enemies expect.</p>\n<p><strong>Minor Form:</strong> You gain 1 additional hit point per Hit Die you have, and treat your Constitution score as 4 points higher than it is for the purpose of determining when you die at negative hit points. At 8th level, you gain Diehard as a bonus feat. At 15th level, you treat your Constitution as being 8 points higher for the purpose of determining when you die at negative hit points.</p>\n<p><strong>Major Form (Beast Shape II):</strong> Your shape changes to that of a dire wolverine. While in this form, you gain a base speed of 30 feet, a climb speed of 10 feet, low-light vision, scent (30 feet), a bite attack (1d6 damage), and two claw attacks (1d8 damage). While in dire wolverine form, you gain the barbarian's rage power, but can activate this rage only in a round after you've taken damage. You can rage for a number of rounds each day equal to your shifter level. This ability otherwise functions the same as the barbarian rage ability (unlike a dire wolverine, you can choose to end this rage voluntarily). At 8th level, you can choose two barbarian rage powers, treating your shifter level as your effective barbarian level for the purposes of meeting prerequisites. At 15th level, you are no longer fatigued at the end of your rage.</p>\n<p><strong>Alternate Natural Attacks:</strong> Bite (B, P, S)</p>",
+    "id": "wolverine",
+    "name": "Wolverine",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:shifter-aspect:wolverine"
+  }
+}

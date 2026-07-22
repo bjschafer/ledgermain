@@ -60,6 +60,11 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "arcanistExploits", file: "arcanist-exploits.json" },
   { key: "investigatorTalents", file: "investigator-talents.json" },
   { key: "kineticWildTalents", file: "kinetic-wild-talents.json" },
+  { key: "alchemistDiscoveries", file: "alchemist-discoveries.json" },
+  { key: "monkKiPowers", file: "monk-ki-powers.json" },
+  { key: "monkStyleStrikes", file: "monk-style-strikes.json" },
+  { key: "cavalierOrders", file: "cavalier-orders.json" },
+  { key: "shifterAspects", file: "shifter-aspects.json" },
 ];
 
 /**

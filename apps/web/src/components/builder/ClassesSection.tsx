@@ -576,8 +576,8 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Ki power + style strike pickers — Monk (Unchained) only (issue #65, free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "monkUnchained") && (
         <>
-          <KiPowerPicker doc={doc} update={update} />
-          <StyleStrikePicker doc={doc} update={update} />
+          <KiPowerPicker doc={doc} refData={refData} update={update} />
+          <StyleStrikePicker doc={doc} refData={refData} update={update} />
         </>
       )}
 
@@ -614,7 +614,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Aspect picker — shifter only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "shifter") && (
-        <ShifterAspectPicker doc={doc} update={update} />
+        <ShifterAspectPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Trick + Bold Stare pickers — mesmerist only (issue #65 follow-through, free-choice, soft warning only). */}

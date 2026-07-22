@@ -2,9 +2,11 @@ import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 import type {
+  AlchemistDiscovery,
   ArcanistExploit,
   ArmorRef,
   Buff,
+  CavalierOrder,
   Class,
   ClassFeature,
   Domain,
@@ -14,6 +16,8 @@ import type {
   Item,
   KineticWildTalent,
   MagusArcana,
+  MonkKiPower,
+  MonkStyleStrike,
   Race,
   RacialTrait,
   NinjaTrick,
@@ -22,6 +26,7 @@ import type {
   RefDataMeta,
   RogueTalent,
   ShamanHex,
+  ShifterAspect,
   SlayerTalent,
   Spell,
   SpellList,
@@ -71,14 +76,19 @@ import {
   resolveBloodlineSupplements,
   SUPPLEMENTAL_PRESTIGE_CLASSES,
 } from "./supplements.js";
+import { transformAlchemistDiscoveries } from "./transform/alchemistDiscoveries.js";
 import { transformArcanistExploits } from "./transform/arcanistExploits.js";
+import { transformCavalierOrders } from "./transform/cavalierOrders.js";
 import { transformInvestigatorTalents } from "./transform/investigatorTalents.js";
 import { transformKineticWildTalents } from "./transform/kineticWildTalents.js";
 import { transformMagusArcana } from "./transform/magusArcana.js";
+import { transformMonkKiPowers } from "./transform/monkKiPowers.js";
+import { transformMonkStyleStrikes } from "./transform/monkStyleStrikes.js";
 import { transformNinjaTricks } from "./transform/ninjaTricks.js";
 import { transformRagePowers } from "./transform/ragePowers.js";
 import { transformRogueTalents } from "./transform/rogueTalents.js";
 import { transformShamanHexes } from "./transform/shamanHexes.js";
+import { transformShifterAspects } from "./transform/shifterAspects.js";
 import { transformSlayerTalents } from "./transform/slayerTalents.js";
 import {
   transformVigilanteSocialTalents,
@@ -630,6 +640,35 @@ export function normalize(opts: NormalizeOptions): {
   );
   const kineticWildTalents: KineticWildTalent[] = transformKineticWildTalents(kineticTalentDict);
 
+  // --- alchemist discoveries / monk (unchained) ki powers + style strikes /
+  // cavalier orders / shifter aspects (fourth-party dataset, issue #74 Phase
+  // 3c) — same posture as rage powers above.
+  const alchemistDiscoveryDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_discoveries.json"),
+  );
+  const alchemistDiscoveries: AlchemistDiscovery[] =
+    transformAlchemistDiscoveries(alchemistDiscoveryDict);
+
+  const monkKiPowerDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_ki_powers.json"),
+  );
+  const monkKiPowers: MonkKiPower[] = transformMonkKiPowers(monkKiPowerDict);
+
+  const monkStyleStrikeDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_style_strikes.json"),
+  );
+  const monkStyleStrikes: MonkStyleStrike[] = transformMonkStyleStrikes(monkStyleStrikeDict);
+
+  const cavalierOrderDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_orders.json"),
+  );
+  const cavalierOrders: CavalierOrder[] = transformCavalierOrders(cavalierOrderDict);
+
+  const shifterAspectDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_aspects.json"),
+  );
+  const shifterAspects: ShifterAspect[] = transformShifterAspects(shifterAspectDict);
+
   const counts = {
     races: races.length,
     racialTraits: racialTraits.length,
@@ -663,6 +702,11 @@ export function normalize(opts: NormalizeOptions): {
     arcanistExploits: arcanistExploits.length,
     investigatorTalents: investigatorTalents.length,
     kineticWildTalents: kineticWildTalents.length,
+    alchemistDiscoveries: alchemistDiscoveries.length,
+    monkKiPowers: monkKiPowers.length,
+    monkStyleStrikes: monkStyleStrikes.length,
+    cavalierOrders: cavalierOrders.length,
+    shifterAspects: shifterAspects.length,
   };
 
   const meta: RefDataMeta = {
@@ -717,6 +761,11 @@ export function normalize(opts: NormalizeOptions): {
     arcanistExploits: byId(arcanistExploits),
     investigatorTalents: byId(investigatorTalents),
     kineticWildTalents: byId(kineticWildTalents),
+    alchemistDiscoveries: byId(alchemistDiscoveries),
+    monkKiPowers: byId(monkKiPowers),
+    monkStyleStrikes: byId(monkStyleStrikes),
+    cavalierOrders: byId(cavalierOrders),
+    shifterAspects: byId(shifterAspects),
   };
 
   return { refData, contentVersion };

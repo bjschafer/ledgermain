@@ -113,7 +113,7 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   entries are skipped, since the system pack's own race docs already carry
   them).
 
-### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent catalogs)
+### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent / alchemist-discovery / monk-ki-power / monk-style-strike / cavalier-order / shifter-aspect catalogs)
 
 - Repo: `https://github.com/jasontankapps/pathfinder-data-1-e`
 - Pinned commit: `33f1b75b8f62b43c59b96eab6bebb45e37c29229`
@@ -138,7 +138,19 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     catalogs, issue #74 Phase 3b);
   - `json/class_ability_exploits.json`, `json/class_ability_investigator_talents.json`,
     and `json/class_ability_kinetic_talents.json` (issue #74 Phase 3b) into
-    `RefData.arcanistExploits`/`investigatorTalents`/`kineticWildTalents` —
+    `RefData.arcanistExploits`/`investigatorTalents`/`kineticWildTalents`;
+  - `json/class_ability_discoveries.json` (the full published alchemist-
+    discovery catalog, issue #74 Phase 3c — NOT `class_ability_arcane_discoveries.json`,
+    the wizard's separate Arcane Discoveries subsystem, unvendored) into
+    `RefData.alchemistDiscoveries`, `json/class_ability_ki_powers.json` and
+    `json/class_ability_style_strikes.json` (the Monk (Unchained) ki-power
+    and style-strike catalogs, issue #74 Phase 3c) into
+    `RefData.monkKiPowers`/`monkStyleStrikes`, `json/class_ability_orders.json`
+    (the cavalier/samurai order catalog, issue #74 Phase 3c — NOT
+    `class_ability_hellknight_orders.json`, the unrelated Hellknight order
+    chassis, unvendored) into `RefData.cavalierOrders`, and
+    `json/class_ability_aspects.json` (the full published shifter-aspect
+    catalog, issue #74 Phase 3c) into `RefData.shifterAspects` —
 
   see each type's doc comment (`@pf1/schema`). Code is GPL-3.0-or-later
   (never copied in, same clean-room posture as Sec.2a/2c); its

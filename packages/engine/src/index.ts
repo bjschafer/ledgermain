@@ -223,13 +223,26 @@ export {
 export {
   ALCHEMIST_DISCOVERIES,
   ALCHEMIST_DISCOVERY_IDS,
+  mergedAlchemistDiscoveryCatalog,
+  resolveAlchemistDiscovery,
   type AlchemistDiscoveryDef,
+  type MergedAlchemistDiscoveryEntry,
 } from "./alchemist-discoveries.js";
-export { MONK_KI_POWERS, MONK_KI_POWER_IDS, type MonkKiPowerDef } from "./monk-ki-powers.js";
+export {
+  MONK_KI_POWERS,
+  MONK_KI_POWER_IDS,
+  mergedMonkKiPowerCatalog,
+  resolveMonkKiPower,
+  type MonkKiPowerDef,
+  type MergedMonkKiPowerEntry,
+} from "./monk-ki-powers.js";
 export {
   MONK_STYLE_STRIKES,
   MONK_STYLE_STRIKE_IDS,
+  mergedMonkStyleStrikeCatalog,
+  resolveMonkStyleStrike,
   type MonkStyleStrikeDef,
+  type MergedMonkStyleStrikeEntry,
 } from "./monk-style-strikes.js";
 export {
   ROGUE_TALENTS,
@@ -289,7 +302,14 @@ export {
   type MergedVigilanteSocialTalentEntry,
   type MergedVigilanteTalentEntry,
 } from "./vigilante-talents.js";
-export { SHIFTER_ASPECTS, SHIFTER_ASPECT_IDS, type ShifterAspectDef } from "./shifter-aspects.js";
+export {
+  SHIFTER_ASPECTS,
+  SHIFTER_ASPECT_IDS,
+  mergedShifterAspectCatalog,
+  resolveShifterAspect,
+  type ShifterAspectDef,
+  type MergedShifterAspectEntry,
+} from "./shifter-aspects.js";
 export {
   OCCULTIST_SCHOOLS,
   OCCULTIST_SCHOOL_TAGS,
@@ -389,8 +409,12 @@ export {
   ordersForClass,
   challengeRiderAt,
   challengeRiderText,
+  mergedOrderCatalog,
+  mergedOrdersForClass,
+  resolveMergedOrder,
   type OrderDef,
   type OrderAbility,
+  type MergedOrderEntry,
 } from "./cavalier-orders.js";
 export {
   FEAT_EFFECTS,

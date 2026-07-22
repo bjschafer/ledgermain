@@ -54,5 +54,10 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     arcanistExploits: readJson(dir, "arcanist-exploits.json"),
     investigatorTalents: readJson(dir, "investigator-talents.json"),
     kineticWildTalents: readJson(dir, "kinetic-wild-talents.json"),
+    alchemistDiscoveries: readJson(dir, "alchemist-discoveries.json"),
+    monkKiPowers: readJson(dir, "monk-ki-powers.json"),
+    monkStyleStrikes: readJson(dir, "monk-style-strikes.json"),
+    cavalierOrders: readJson(dir, "cavalier-orders.json"),
+    shifterAspects: readJson(dir, "shifter-aspects.json"),
   };
 }

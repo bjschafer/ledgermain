@@ -9,7 +9,7 @@
 
 import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 
-import { ALCHEMIST_DISCOVERIES } from "./alchemist-discoveries.js";
+import { resolveAlchemistDiscovery } from "./alchemist-discoveries.js";
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { activeArchetypeSwaps, weaponTrainingReplaced } from "./archetypes.js";
@@ -574,7 +574,7 @@ export function collectModifiers(
   const alchemistLevel = doc.identity.classes.find((c) => c.tag === "alchemist")?.level ?? 0;
   if (alchemistLevel > 0) {
     for (const discoveryId of doc.build.alchemistDiscoveries ?? []) {
-      const discovery = ALCHEMIST_DISCOVERIES[discoveryId];
+      const discovery = resolveAlchemistDiscovery(discoveryId, refData);
       if (!discovery) continue;
       for (const ch of discovery.changes) {
         if (!gateOpen(ch)) continue;
