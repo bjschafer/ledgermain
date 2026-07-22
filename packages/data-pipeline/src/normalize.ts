@@ -3,8 +3,6 @@ import { join } from "node:path";
 
 import type {
   ArmorRef,
-  Archetype,
-  ArchetypeFeature,
   Buff,
   Class,
   ClassFeature,
@@ -23,9 +21,8 @@ import type {
 import { SCHEMA_VERSION, SLICE } from "./config.js";
 import { transformArmor, isMundaneArmor } from "./transform/armor.js";
 import {
-  CLASS_ARCHETYPE_FILES,
-  pairableBaseFeatureLevels,
-  transformArchetypeRows,
+  loadLegacyArchetypeFeatureLevels,
+  transformArchetypePack,
 } from "./transform/archetypes.js";
 import { transformBuff } from "./transform/buffs.js";
 import {
@@ -46,14 +43,23 @@ import {
   resolveBloodlineSupplements,
 } from "./supplements.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
-import { readCsv } from "./util/csv.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { makeUuid, parseUuid } from "./util/uuid.js";
 
 export interface NormalizeOptions {
   packsDir: string;
-  /** Directory containing the per-class archetype CSVs (`<Class>.csv`). */
-  archetypeSourceDir: string;
+  /** `src/pf-archetypes` directory from the pinned archetype module clone. */
+  archetypesDir: string;
+  /** `src/pf-arch-features` directory from the pinned archetype module clone. */
+  archFeaturesDir: string;
+  /**
+   * Path to the previously-vendored `archetype-features.json` (typically
+   * `OUTPUT_DIR`'s own copy, read before this run's `emit()` overwrites it) —
+   * see `loadLegacyArchetypeFeatureLevels`'s doc comment. Optional: a
+   * from-scratch build (no prior output) passes a nonexistent path and gets an
+   * empty fallback map.
+   */
+  legacyArchetypeFeaturesJsonPath: string;
   /** `src/pf-feats` directory from the pinned PF1 Content module clone. */
   pfContentFeatsDir: string;
   sourceRepo: string;
@@ -331,18 +337,16 @@ export function normalize(opts: NormalizeOptions): {
 
   // --- archetypes (third-party dataset; Foundry ships none — see config.ts) --
   const classesByTag = new Map(classes.map((c) => [c.tag, c]));
-  const archetypes: Archetype[] = [];
-  const archetypeFeatures: ArchetypeFeature[] = [];
-  for (const [classTag, fileName] of Object.entries(CLASS_ARCHETYPE_FILES)) {
-    const classDef = classesByTag.get(classTag);
-    if (!classDef) continue; // class not in this slice yet
-
-    const rows = readCsv(join(opts.archetypeSourceDir, fileName));
-    const pairable = pairableBaseFeatureLevels(classDef);
-    const result = transformArchetypeRows(classTag, rows, pairable);
-    archetypes.push(...result.archetypes);
-    archetypeFeatures.push(...result.archetypeFeatures);
-  }
+  const legacyArchetypeFeatureLevels = loadLegacyArchetypeFeatureLevels(
+    opts.legacyArchetypeFeaturesJsonPath,
+  );
+  const { archetypes, archetypeFeatures } = transformArchetypePack(
+    opts.archetypesDir,
+    opts.archFeaturesDir,
+    classesByTag,
+    legacyArchetypeFeatureLevels,
+    resolveUuid,
+  );
   applyArchetypeFeatureLevelSupplements(archetypeFeatures);
 
   const counts = {

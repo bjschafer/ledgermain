@@ -187,8 +187,11 @@ describe("Savage Barbarian (barbarian): Natural Toughness (no armor only)", () =
       ref,
     );
     // 1 + floor((10-7)/3) = 2
+    // Feature name dropped its "(+1)" tier suffix with the archetype data
+    // source repoint (was baked into the CSV-era name; the current source's
+    // plain "Natural Toughness" already describes the whole scaling ability).
     const natural = sheet.ac.components.find(
-      (c) => c.category === "natural" && c.source === "Natural Toughness (+1)",
+      (c) => c.category === "natural" && c.source === "Natural Toughness",
     );
     expect(natural?.value).toBe(2);
     expect(natural?.applied).toBe(true);

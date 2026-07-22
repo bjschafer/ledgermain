@@ -784,7 +784,7 @@
     "uuid": "Compendium.pf1.class-abilities.Item.mtDcvNtXAwM66T9v"
   },
   "nO0zMK4hEqV4QHwz": {
-    "description": "<p><strong>Granted Powers:</strong> Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Subdomains:</strong> Defense, Fortifications, Purity, Solitude</p><h3>Domain Powers</h3><p></p><p>{Aura of Protection (Su)}</p><h3>Domain Spells</h3><ul><li>1st—Sanctuary</li><li>2nd—Shield Other</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Spell Resistance</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Prismatic Sphere</li></ul>",
+    "description": "<p><strong>Granted Powers:</strong> Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Subdomains:</strong> Defense, Fortifications, Purity, Solitude</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Sanctuary</li><li>2nd—Shield Other</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Spell Resistance</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Prismatic Sphere</li></ul>",
     "features": [
       {
         "featureId": "Bw3GiobZvSJb8dGI",

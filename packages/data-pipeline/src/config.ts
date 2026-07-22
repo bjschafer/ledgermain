@@ -45,16 +45,18 @@ export const SCHEMA_VERSION = 9;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).
- * This is `bjschafer/pf1e-archetypes`, a fork
- * of `baileymh/pf1e-archetypes` with the upstream merge-conflict corruption
- * (every CSV/XML file) resolved — both conflict halves were verified
- * byte-identical before stripping. Pin like FOUNDRY_SHA: exact commit, never a
- * branch.
+ * This is `Tryss_Farron/pf1e-archetypes` on GitLab, the maintained successor to
+ * the (now-abandoned) `baileymh/pf1e-archetypes` GitHub module we vendored
+ * from previously — same maintainer as the pinned `PF_CONTENT_REPO` below, and
+ * registered on foundryvtt.com as that module's continuation. Ships per-entity
+ * YAML packs under `src/` (the same shape `PF_CONTENT_REPO` uses, read via
+ * `util/packs.ts` `readPack`) rather than the old fork's per-class CSVs. Pin
+ * like FOUNDRY_SHA: exact commit, never a branch.
  */
-export const ARCHETYPE_REPO = "https://github.com/bjschafer/pf1e-archetypes.git";
+export const ARCHETYPE_REPO = "https://gitlab.com/Tryss_Farron/pf1e-archetypes.git";
 
-/** Pinned commit on the cleaned fork (see comment above). */
-export const ARCHETYPE_SHA = "815ef073685faf215be442cc5035c8198a89432b";
+/** Pinned commit (latest `main` as of 2026-07-21). */
+export const ARCHETYPE_SHA = "92ddcb60027e3088e5afd0645183c031ec3e9bb4";
 
 /**
  * Third pinned source: the community "PF1 Content" module, same GitLab org as

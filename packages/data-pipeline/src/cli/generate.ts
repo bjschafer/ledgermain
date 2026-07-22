@@ -17,7 +17,8 @@ import {
   SYSTEM_VERSION,
 } from "../config.js";
 
-const ARCHETYPE_SOURCE_DIR = join(ARCHETYPE_CLONE_DIR, "source files", "Archetypes");
+const ARCHETYPES_DIR = join(ARCHETYPE_CLONE_DIR, "src", "pf-archetypes");
+const ARCH_FEATURES_DIR = join(ARCHETYPE_CLONE_DIR, "src", "pf-arch-features");
 const PF_CONTENT_FEATS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-feats");
 
 /** Committer date of the pinned commit (ISO 8601) — deterministic per SHA. */
@@ -42,7 +43,9 @@ function main(): void {
   console.log(`[generate] normalizing from ${PACKS_DIR}`);
   const { refData } = normalize({
     packsDir: PACKS_DIR,
-    archetypeSourceDir: ARCHETYPE_SOURCE_DIR,
+    archetypesDir: ARCHETYPES_DIR,
+    archFeaturesDir: ARCH_FEATURES_DIR,
+    legacyArchetypeFeaturesJsonPath: join(OUTPUT_DIR, "archetype-features.json"),
     pfContentFeatsDir: PF_CONTENT_FEATS_DIR,
     sourceRepo: FOUNDRY_REPO,
     sourceSha: FOUNDRY_SHA,

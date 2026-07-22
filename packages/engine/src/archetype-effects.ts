@@ -131,12 +131,15 @@ export const ARCHETYPE_FEATURE_EFFECTS: Readonly<Record<string, ArchetypeFeature
 
   // Invulnerable Rager's "Invulnerability (Ex)" (Advanced Player's Guide p.
   // 18) replaces uncanny dodge, improved uncanny dodge, AND damage reduction
-  // in one feature — the CSV pairing script can't link a single feature to
-  // three base-feature slots, so this is an "ambiguous" (unpaired) swap in
+  // in one feature — the vendored data can't link a single feature to three
+  // base-feature slots, so this is an "ambiguous" (unpaired) swap in
   // `RefData.archetypeFeatures`. DR/— equal to half barbarian level (doubled
   // vs. nonlethal — not modeled, see the omitted contextNote below). Always
-  // on once granted (2nd level), so a flat Change is safe.
-  "barbarian:invulnerable-rager:invulnerability-ex:2": {
+  // on once granted (2nd level), so a flat Change is safe. (id was
+  // `invulnerability-ex:2` under the CSV-era archetype source, which baked an
+  // "(Ex)" ability-type tag into the slug that the current YAML-pack source's
+  // plain "Invulnerability" name doesn't carry.)
+  "barbarian:invulnerable-rager:invulnerability:2": {
     changes: [c("floor(@class.unlevel / 2)", "dr")],
     detail: (level) => `DR ${Math.floor(level / 2)}/— (×2 vs. nonlethal)`,
   },
@@ -146,8 +149,10 @@ export const ARCHETYPE_FEATURE_EFFECTS: Readonly<Record<string, ArchetypeFeature
   // armor (shields still allowed) — +1 at 7th, +1 every 3 levels thereafter.
   // `nac`/type "base" matches the vendored natural-armor convention (see
   // races.json's `nac` changes) so it correctly doesn't stack with another
-  // natural-armor source.
-  "barbarian:savage-barbarian:natural-toughness-1:7": {
+  // natural-armor source. (id was `natural-toughness-1:7` under the CSV-era
+  // archetype source, which baked the starting "(+1)" bonus into the slug;
+  // the current YAML-pack source names the whole scaling feature plainly.)
+  "barbarian:savage-barbarian:natural-toughness:7": {
     changes: [c("if(lt(@armor.type, 1), 1 + floor((@class.unlevel - 7) / 3), 0)", "nac", "base")],
     detail: (level) => `+${1 + Math.floor((level - 7) / 3)} natural armor (no armor worn)`,
   },
