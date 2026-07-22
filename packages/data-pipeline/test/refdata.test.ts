@@ -63,7 +63,51 @@ describe("metadata + provenance", () => {
     // module (390 + 3,251 - 77 name collisions - 1 internal dupe; see
     // config.ts's PF_CONTENT_REPO and normalize.ts's feats merge).
     expect(Object.keys(ref.feats)).toHaveLength(3563);
+    // 1,998 pf-traits YAML files, deduped by normalized name within the pack
+    // itself (issue #74 Phase 1; no system-pack traits exist to prefer).
+    expect(Object.keys(ref.traits)).toHaveLength(1981);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
+  });
+});
+
+describe("trait catalog (pf1-content pf-traits pack, issue #74 Phase 1)", () => {
+  function traitByName(name: string) {
+    const found = Object.values(ref.traits).find((t) => t.name === name);
+    if (!found) throw new Error(`trait not found: ${name}`);
+    return found;
+  }
+
+  it("records a content hash for the new traits file", () => {
+    expect(ref.meta.hashes["traits.json"]).toBeDefined();
+  });
+
+  it("Reactionary carries the same structured Change as the hand-authored engine table", () => {
+    const trait = traitByName("Reactionary");
+    expect(trait.traitType).toBe("combat");
+    expect(trait.changes).toEqual([{ formula: "2", target: "init", type: "trait" }]);
+  });
+
+  it("Anxious (a drawback) carries an untyped penalty, not a trait bonus", () => {
+    const trait = traitByName("Anxious");
+    expect(trait.traitType).toBe("drawback");
+    expect(trait.changes).toEqual([{ formula: "-2", target: "skill.dip", type: "untyped" }]);
+  });
+
+  it("a limited-use trait (A Sure Thing (Silver Crusade)) carries uses.maxFormula/per", () => {
+    const trait = traitByName("A Sure Thing (Silver Crusade)");
+    expect(trait.uses).toEqual({ maxFormula: "1", per: "day" });
+  });
+
+  it("a trait's description resolves @UUID enrichers the same way a feat's does", () => {
+    const trait = traitByName("Reactionary");
+    expect(trait.description).not.toContain("@UUID");
+  });
+
+  it("every traitType observed in the source data survives normalization", () => {
+    const types = new Set(Object.values(ref.traits).map((t) => t.traitType));
+    for (const expected of ["combat", "faith", "magic", "social", "drawback", "region", "race"]) {
+      expect(types.has(expected)).toBe(true);
+    }
   });
 });
 

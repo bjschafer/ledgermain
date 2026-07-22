@@ -31,6 +31,7 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "classes", file: "classes.json" },
   { key: "classFeatures", file: "class-features.json" },
   { key: "feats", file: "feats.json" },
+  { key: "traits", file: "traits.json" },
   { key: "spells", file: "spells.json" },
   { key: "buffs", file: "buffs.json" },
   { key: "items", file: "items.json" },

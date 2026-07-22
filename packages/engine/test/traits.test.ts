@@ -6,11 +6,15 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute } from "../src/index.js";
 
 /**
- * Issue #23 (character traits): traits are hand-authored clean-room content
- * (not in the vendored Foundry pack — see `src/traits.ts`), so these
- * expectations are hand-computed straight from the published PF1 rules, not
- * derived from any oracle data. All deltas are compared against the same doc
- * with no traits chosen.
+ * Issue #23 (character traits): the 28 entries this file originally covered
+ * are hand-authored clean-room content (not in the vendored Foundry pack —
+ * see `src/traits.ts`), so those expectations are hand-computed straight
+ * from the published PF1 rules, not derived from any oracle data. All deltas
+ * are compared against the same doc with no traits chosen.
+ *
+ * Issue #74 Phase 1 added the full vendored trait catalog (`RefData.traits`)
+ * as a second source `collect.ts` resolves against — the "vendored trait"
+ * block at the bottom exercises THAT path with a real catalog entry.
  */
 const ref = loadRefData();
 
@@ -18,6 +22,12 @@ function raceId(name: string): string {
   const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
   if (!entry) throw new Error(`race not found: ${name}`);
   return entry[0];
+}
+
+function traitIdByName(name: string): string {
+  const entry = Object.values(ref.traits).find((t) => t.name === name);
+  if (!entry) throw new Error(`vendored trait not found: ${name}`);
+  return entry.id;
 }
 
 function makeDoc(traits: string[]): CharacterDoc {
@@ -111,5 +121,32 @@ describe("traits (hand-computed)", () => {
     const sheet = compute(makeDoc(["naturalBornLeader"]), ref);
     expect(sheet.saves.will.total).toBe(baseline.saves.will.total);
     expect(sheet.skills.dip!.total).toBe(baseline.skills.dip!.total);
+  });
+});
+
+describe("traits: vendored catalog (issue #74 Phase 1, RefData.traits)", () => {
+  it("a vendored-only trait's structured Change applies through the same collect.ts path as the hand-authored table", () => {
+    // Ambush Training (Pathfinder Society): "+1 trait bonus on initiative
+    // checks" (PZO9435 p.15) — a real published trait not among the 28
+    // hand-authored entries, resolved purely from RefData.traits.
+    const id = traitIdByName("Ambush Training (Pathfinder Society)");
+    const sheet = compute(makeDoc([id]), ref);
+    expect(sheet.initiative.total).toBe(baseline.initiative.total + 1);
+    const comp = sheet.initiative.components.find(
+      (c) => c.source === "Ambush Training (Pathfinder Society)",
+    );
+    expect(comp).toBeDefined();
+    expect(comp!.type).toBe("trait");
+    expect(comp!.value).toBe(1);
+    expect(comp!.applied).toBe(true);
+  });
+
+  it("a vendored trait's own duplicate of a hand-authored trait's id namespace never collides — the hand-authored entry still wins for the legacy id", () => {
+    // Reactionary exists in BOTH tables under different ids: "reactionary"
+    // (hand-authored, +2 init) and a distinct Foundry id (vendored, same
+    // rules text). An existing CharacterDoc referencing "reactionary" must
+    // keep getting exactly +2, not a re-resolution through the vendored copy.
+    const sheet = compute(makeDoc(["reactionary"]), ref);
+    expect(sheet.initiative.total).toBe(baseline.initiative.total + 2);
   });
 });

@@ -458,3 +458,35 @@ exports[`normalized-output snapshots archetype feature: Two-Handed Fighter's Sha
   "uuid": "archetype-feature:fighter:two-handed-fighter:shattering-strike:2",
 }
 `;
+
+exports[`normalized-output snapshots trait: Reactionary (issue #74 Phase 1 — vendored trait catalog) 1`] = `
+{
+  "changes": [
+    {
+      "formula": "2",
+      "target": "init",
+      "type": "trait",
+    },
+  ],
+  "contextNotes": [],
+  "id": "qxxGzzh6bRTc8KFo",
+  "name": "Reactionary",
+  "sources": [
+    {
+      "id": "PZO1125",
+      "pages": "53",
+    },
+    {
+      "id": "PZO9401",
+      "pages": "11",
+    },
+    {
+      "id": "PZO1115",
+      "pages": "328",
+    },
+  ],
+  "tags": [],
+  "traitType": "combat",
+  "uuid": "Compendium.pf1.traits.Item.qxxGzzh6bRTc8KFo",
+}
+`;

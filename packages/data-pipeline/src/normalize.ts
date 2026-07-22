@@ -18,6 +18,7 @@ import type {
   Spell,
   SpellList,
   Subdomain,
+  Trait,
   WeaponRef,
   WizardSchool,
 } from "@pf1/schema";
@@ -41,6 +42,7 @@ import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
 import { transformRace } from "./transform/races.js";
 import { transformSpell } from "./transform/spells.js";
+import { transformTrait } from "./transform/traits.js";
 import {
   isFullDomainSpellList,
   normalizeEntityName,
@@ -67,6 +69,8 @@ export interface NormalizeOptions {
   archetypeSourceDir: string;
   /** `src/pf-feats` directory from the pinned PF1 Content module clone. */
   pfContentFeatsDir: string;
+  /** `src/pf-traits` directory from the pinned PF1 Content module clone. */
+  pfContentTraitsDir: string;
   sourceRepo: string;
   sourceSha: string;
   systemVersion: string;
@@ -308,6 +312,24 @@ export function normalize(opts: NormalizeOptions): {
 
   const feats: Feat[] = [...systemFeats, ...pfContentFeats];
 
+  // --- traits: pf1-content community pack (Foundry's own system pack ships
+  // none — traits aren't part of the base game data, see `@pf1/engine`
+  // `traits.ts`'s hand-authored 28-entry table for the pre-existing
+  // clean-room content this catalog now sits alongside). Dedup within the
+  // pack only (first-wins on an internal near-dupe by normalized name) —
+  // there is no system pack to prefer, unlike feats. The hand-authored/
+  // vendored reconciliation happens downstream in `@pf1/engine`'s
+  // `mergedTraits`, not here, so every vendored trait is normalized and kept.
+  const seenTraitNames = new Set<string>();
+  const traits: Trait[] = [];
+  for (const pf of readPack(opts.pfContentTraitsDir)) {
+    if (pf.doc.type !== "feat") continue;
+    const key = normalizeFeatName(pf.doc.name);
+    if (seenTraitNames.has(key)) continue;
+    seenTraitNames.add(key);
+    traits.push(transformTrait(pf.doc, resolveUuid));
+  }
+
   // --- spells (those any sliced spell-list class can learn, OR a domain) -----
   // Domain-only spells (e.g. Control Winds — druid class, but Air domain L5)
   // would otherwise be dropped, taking their `learnedAt.domain` data with them.
@@ -477,6 +499,7 @@ export function normalize(opts: NormalizeOptions): {
     classes: classes.length,
     classFeatures: classFeatures.length,
     feats: feats.length,
+    traits: traits.length,
     spells: spells.length,
     buffs: buffs.length,
     items: items.length,
@@ -516,6 +539,7 @@ export function normalize(opts: NormalizeOptions): {
     // prestige features).
     classFeatures: byId(classFeatures),
     feats: byId(feats),
+    traits: byId(traits),
     spells: byId(spells),
     buffs: byId(buffs),
     items: byId(items),
