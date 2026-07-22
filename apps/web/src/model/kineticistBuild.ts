@@ -20,8 +20,8 @@
  * project's hybrid posture on feat/trait/skill budgets.
  */
 
-import { findKineticistWildTalent, minKineticistLevelForTalent } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import { minKineticistLevelForTalent, resolveKineticistWildTalent } from "@pf1/engine";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
 /** The kineticist's class level (0 for a non-kineticist, or a stale/multiclassed doc). */
 export function kineticistLevel(doc: CharacterDoc): number {
@@ -81,13 +81,19 @@ export function toggleKineticistWildTalent(doc: CharacterDoc, talentId: string):
   return { ...doc, build: { ...doc.build, kineticistWildTalents } };
 }
 
-/** How many CHOSEN talent ids resolve to the given category (unresolvable/stale ids don't count). */
+/**
+ * How many CHOSEN talent ids resolve to the given category (unresolvable/
+ * stale ids don't count) — resolves against BOTH the hand-authored table AND
+ * the vendored catalog's infusion/utility subset (issue #74 Phase 3b), so a
+ * vendored-only pick counts towards its own budget too.
+ */
 export function chosenKineticistTalentCount(
   doc: CharacterDoc,
+  refData: RefData,
   category: "infusion" | "utility",
 ): number {
   return (doc.build.kineticistWildTalents ?? []).filter(
-    (id) => findKineticistWildTalent(id)?.category === category,
+    (id) => resolveKineticistWildTalent(id, refData)?.category === category,
   ).length;
 }
 
@@ -106,18 +112,30 @@ export function expectedKineticistTalentCount(
 
 export function kineticistTalentsNeedWarning(
   doc: CharacterDoc,
+  refData: RefData,
   category: "infusion" | "utility",
 ): boolean {
-  return chosenKineticistTalentCount(doc, category) > expectedKineticistTalentCount(doc, category);
+  return (
+    chosenKineticistTalentCount(doc, refData, category) >
+    expectedKineticistTalentCount(doc, category)
+  );
 }
 
 /**
  * True when `talentId` is above the effective-level gate for the
  * character's current kineticist level (soft warning only — see file doc
- * comment). False (never "below level") for an unresolvable id.
+ * comment). False (never "below level") for an unresolvable id. Resolves
+ * against both the hand-authored table and the vendored catalog (issue #74
+ * Phase 3b) — the vendored `level` field IS a real level gate for this
+ * subsystem, unlike rage powers' (see `KineticWildTalent.level`'s doc
+ * comment).
  */
-export function kineticistTalentBelowLevel(doc: CharacterDoc, talentId: string): boolean {
-  const talent = findKineticistWildTalent(talentId);
+export function kineticistTalentBelowLevel(
+  doc: CharacterDoc,
+  refData: RefData,
+  talentId: string,
+): boolean {
+  const talent = resolveKineticistWildTalent(talentId, refData);
   if (!talent) return false;
   const level = kineticistLevel(doc);
   if (level <= 0) return false;

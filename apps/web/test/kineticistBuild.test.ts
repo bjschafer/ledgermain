@@ -5,6 +5,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
+import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { createEmptyDoc } from "../src/model/doc.js";
@@ -20,6 +21,8 @@ import {
   setKineticistExpandedElement,
   toggleKineticistWildTalent,
 } from "../src/model/kineticistBuild.js";
+
+const ref = loadRefData();
 
 function withClass(tag: string, level: number): CharacterDoc {
   const d = createEmptyDoc("t");
@@ -117,24 +120,31 @@ describe("wild talent toggle + budget math", () => {
     d = toggleKineticistWildTalent(d, "fire:burningInfusion"); // infusion
     d = toggleKineticistWildTalent(d, "universal:skilledKineticist"); // utility
     d = toggleKineticistWildTalent(d, "bogus:notReal"); // unresolvable, counts as neither
-    expect(chosenKineticistTalentCount(d, "infusion")).toBe(1);
-    expect(chosenKineticistTalentCount(d, "utility")).toBe(1);
+    expect(chosenKineticistTalentCount(d, ref, "infusion")).toBe(1);
+    expect(chosenKineticistTalentCount(d, ref, "utility")).toBe(1);
+  });
+
+  it("chosenKineticistTalentCount also counts a vendored-only pick (issue #74 Phase 3b)", () => {
+    // air_cushion: vendored-only utility talent (air), no hand-authored counterpart.
+    let d = withClass("kineticist", 5);
+    d = toggleKineticistWildTalent(d, "air_cushion");
+    expect(chosenKineticistTalentCount(d, ref, "utility")).toBe(1);
   });
 
   it("needs-warning flips true only once the chosen count exceeds the expected count", () => {
     let d = withClass("kineticist", 1); // expects 1 infusion
-    expect(kineticistTalentsNeedWarning(d, "infusion")).toBe(false);
+    expect(kineticistTalentsNeedWarning(d, ref, "infusion")).toBe(false);
     d = toggleKineticistWildTalent(d, "fire:burningInfusion");
-    expect(kineticistTalentsNeedWarning(d, "infusion")).toBe(false);
+    expect(kineticistTalentsNeedWarning(d, ref, "infusion")).toBe(false);
     d = toggleKineticistWildTalent(d, "air:gustingInfusion");
-    expect(kineticistTalentsNeedWarning(d, "infusion")).toBe(true);
+    expect(kineticistTalentsNeedWarning(d, ref, "infusion")).toBe(true);
   });
 
   it("kineticistTalentBelowLevel soft-flags a talent above the effective-level gate", () => {
     // Chain is air, level 5 -> min kineticist level 2*5=10.
     const d = withClass("kineticist", 3);
-    expect(kineticistTalentBelowLevel(d, "air:chain")).toBe(true);
-    expect(kineticistTalentBelowLevel(d, "fire:burningInfusion")).toBe(false);
-    expect(kineticistTalentBelowLevel(d, "bogus:notReal")).toBe(false);
+    expect(kineticistTalentBelowLevel(d, ref, "air:chain")).toBe(true);
+    expect(kineticistTalentBelowLevel(d, ref, "fire:burningInfusion")).toBe(false);
+    expect(kineticistTalentBelowLevel(d, ref, "bogus:notReal")).toBe(false);
   });
 });

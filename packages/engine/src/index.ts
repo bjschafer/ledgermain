@@ -165,7 +165,10 @@ export { BLOODRAGE_BUFF, BLOODRAGE_BUFF_ID } from "./bloodrage.js";
 export {
   ARCANIST_EXPLOITS,
   ARCANIST_EXPLOIT_IDS,
+  resolveArcanistExploit,
+  mergedArcanistExploitCatalog,
   type ArcanistExploitDef,
+  type MergedArcanistExploitEntry,
 } from "./arcanist-exploits.js";
 export { MAGUS_ARCANA, MAGUS_ARCANA_IDS, type MagusArcanaDef } from "./magus-arcana.js";
 export {
@@ -232,8 +235,11 @@ export {
 export {
   INVESTIGATOR_TALENTS,
   INVESTIGATOR_TALENT_IDS,
+  resolveInvestigatorTalent,
+  mergedInvestigatorTalentCatalog,
   type InvestigatorTalentDef,
   type InvestigatorTalentCategory,
+  type MergedInvestigatorTalentEntry,
 } from "./investigator-talents.js";
 export {
   VIGILANTE_SOCIAL_TALENTS,
@@ -263,22 +269,27 @@ export {
   KINETICIST_ELEMENT_TAGS,
   KINETICIST_COMPOSITE_BLASTS,
   eligibleCompositeBlasts,
+  mergedCompositeBlastCatalog,
   type KineticistElementDef,
   type KineticistSimpleBlast,
   type KineticistDefenseDef,
   type KineticistBasicUtilityDef,
   type KineticistCompositeBlastDef,
   type KineticistDamageType,
+  type MergedCompositeBlastEntry,
 } from "./kineticist-elements.js";
 export {
   KINETICIST_WILD_TALENTS,
   KINETICIST_UNIVERSAL_TALENT_IDS,
   findKineticistWildTalent,
+  resolveKineticistWildTalent,
+  mergedKineticistWildTalentCatalog,
   wildTalentsForElement,
   minKineticistLevelForTalent,
   type KineticistWildTalentDef,
   type KineticistWildTalentCategory,
   type KineticistInfusionKind,
+  type MergedKineticistWildTalentEntry,
 } from "./kineticist-wild-talents.js";
 export {
   PSYCHIC_DISCIPLINES,

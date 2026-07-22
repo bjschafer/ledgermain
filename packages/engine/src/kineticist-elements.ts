@@ -63,6 +63,8 @@
  * auto-grant their base/resonant powers.
  */
 
+import type { RefData, SourceRef } from "@pf1/schema";
+
 export type KineticistDamageType = "physical" | "energy";
 
 export interface KineticistSimpleBlast {
@@ -196,7 +198,13 @@ export interface KineticistCompositeBlastDef {
    * element she already has") — see {@link eligibleCompositeBlasts}.
    */
   requiredElements: string[];
-  damageType: KineticistDamageType;
+  /**
+   * Undefined for a vendored-only entry (see `mergedCompositeBlastCatalog`'s
+   * doc comment for why it isn't reliably recoverable from the source for
+   * every entry) — never read anywhere in this engine (only
+   * `KineticistSimpleBlast.damageType` is), so optional costs nothing.
+   */
+  damageType?: KineticistDamageType;
   /** Flat per Occult Adventures ("using a composite blast costs 2 points of burn"). */
   burn: 2;
   summary: string;
@@ -320,18 +328,106 @@ export const KINETICIST_COMPOSITE_BLASTS: readonly KineticistCompositeBlastDef[]
  * primary AND a separately-chosen expanded pick (RAW's "expand her
  * understanding of an element she already has"); a cross-element composite
  * needs both required tags anywhere in {primary, ...expanded}.
+ *
+ * `catalog` defaults to the 13 hand-authored entries but accepts
+ * `mergedCompositeBlastCatalog`'s broader vendored-overlay list (issue #74
+ * Phase 3b) so a vendored-only composite blast becomes eligible the same way
+ * a hand-authored one does, once its required element(s) are known.
  */
 export function eligibleCompositeBlasts(
   primaryElement: string | undefined,
   expandedElements: readonly string[],
+  catalog: readonly KineticistCompositeBlastDef[] = COMPOSITE_BLAST_LIST,
 ): KineticistCompositeBlastDef[] {
   if (!primaryElement) return [];
   const known = new Set<string>([primaryElement, ...expandedElements]);
-  return COMPOSITE_BLAST_LIST.filter((cb) => {
+  return catalog.filter((cb) => {
     if (cb.requiredElements.length === 1) {
       const el = cb.requiredElements[0]!;
       return primaryElement === el && expandedElements.includes(el);
     }
     return cb.requiredElements.every((el) => known.has(el));
   });
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3b: `RefData.kineticWildTalents` also carries every
+ * published COMPOSITE BLAST (`kind: "compositeBlast"`, see that type's doc
+ * comment) — 22 entries, vs. this file's 13 hand-authored core-element ones
+ * — with a reliable `elements`/`burn` (always 2) parse, same stat-line
+ * source `kineticist-wild-talents.ts` documents in full. No `damageType`
+ * (physical/energy) is recoverable from the source without parsing free
+ * prose ("half bludgeoning/half fire damage" etc. — inconsistent phrasing,
+ * not worth the guesswork), so a vendored-only composite blast's
+ * `damageType` is left undefined rather than fabricated — safe because nothing
+ * downstream (the picker's preview, `eligibleCompositeBlasts`) reads it.
+ *
+ * Collision audit (all 13 hand-authored entries): every one matched a
+ * vendored entry by normalized name — no drift, no alias needed. No name
+ * collides within the vendored catalog's composite-blast subset either.
+ */
+
+/** A composite-blast catalog row the picker/preview can browse — either the hand-authored def (matched) with vendored prose attached, or a vendored-only entry (no `damageType` — see file doc comment). */
+export interface MergedCompositeBlastEntry extends KineticistCompositeBlastDef {
+  description?: string;
+  sources?: SourceRef[];
+}
+
+function normalizeCompositeBlastName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/**
+ * The full picker-browsable composite-blast catalog: every vendored
+ * `kind: "compositeBlast"` entry, with any that collides (by normalized
+ * name) against a hand-authored entry REPLACED by that hand-authored def
+ * (keeping its own id/`damageType`, carrying the vendored entry's prose
+ * along for display); every vendored-only entry appended with its own
+ * parsed `requiredElements`/`burn`. Feed this to {@link eligibleCompositeBlasts}
+ * in place of the default hand-only list to include vendored-only composites
+ * in eligibility once their required element(s) are known.
+ */
+export function mergedCompositeBlastCatalog(refData: RefData): MergedCompositeBlastEntry[] {
+  const handByNormName = new Map<string, KineticistCompositeBlastDef>();
+  for (const cb of COMPOSITE_BLAST_LIST) {
+    handByNormName.set(normalizeCompositeBlastName(cb.name), cb);
+  }
+
+  const vendored = Object.values(refData.kineticWildTalents ?? {}).filter(
+    (t) => t.kind === "compositeBlast",
+  );
+  const merged: MergedCompositeBlastEntry[] = [];
+  for (const v of vendored) {
+    const handMatch = handByNormName.get(normalizeCompositeBlastName(v.name));
+    merged.push(
+      handMatch
+        ? { ...handMatch, description: v.description, sources: v.sources }
+        : {
+            id: v.id,
+            name: v.name,
+            requiredElements: v.elements,
+            burn: 2,
+            summary: plainTextPreview(v.description ?? ""),
+            description: v.description,
+            sources: v.sources,
+          },
+    );
+  }
+  return merged;
+}
+
+/** Cheap HTML->text preview for a vendored-only entry's picker row — see `rage-powers.ts`'s identical helper. */
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
 }

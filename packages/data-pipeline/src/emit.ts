@@ -49,6 +49,9 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "druidDomains", file: "druid-domains.json" },
   { key: "wizardSchools", file: "wizard-schools.json" },
   { key: "ragePowers", file: "rage-powers.json" },
+  { key: "arcanistExploits", file: "arcanist-exploits.json" },
+  { key: "investigatorTalents", file: "investigator-talents.json" },
+  { key: "kineticWildTalents", file: "kinetic-wild-talents.json" },
 ];
 
 /**

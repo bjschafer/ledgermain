@@ -46,6 +46,16 @@ export interface PfDataEntry {
   alternateOf?: string;
   /** True on a disambiguation index page (e.g. a name shared by several real entries). Never a catalog entry. */
   disambiguation?: boolean;
+  /**
+   * `[parent page title, parent page link]` — a "this entry belongs under
+   * this table-of-contents page" pointer (e.g. an arcanist greater exploit's
+   * `["Greater Exploits", "ability/greater_exploits"]`, or a kineticist wild
+   * talent's `["Infusions", "ability/infusion_wild_talents"]`). Absent from
+   * the rage-power file (Phase 3a didn't need it); present and useful as a
+   * grouping/tier signal on later subsystem files (Phase 3b) — see those
+   * transforms' doc comments for how each one interprets it.
+   */
+  topLink?: [string, string];
 }
 
 export type PfDataDictionary = Record<string, PfDataEntry>;
@@ -265,4 +275,53 @@ export function pfDataDescriptionToHtml(lines: string[]): string {
     .map(renderBlock)
     .filter((html) => html !== "")
     .join("\n");
+}
+
+const HEADER_SUFFIX_RE = /^##\s*.+?\(([A-Za-z][A-Za-z, /]*)\)\s*$/;
+
+/**
+ * Some subsystem files (arcanist exploits, kineticist wild talents) don't
+ * carry an ability-type suffix ("(Ex)"/"(Su)"/"(Sp)") as its own dictionary
+ * field the way rage powers/investigator talents do — instead it's baked
+ * into the entry's own markdown header, the FIRST line of `description`
+ * (`## Acid Jet (Su)`). Returns the parenthesized suffix INCLUDING its
+ * parens (matching the `RagePower.nameSuffix` convention), or `undefined`
+ * when the header has no trailing parenthetical (a real, legitimate case —
+ * e.g. several exploits state no activation type at all).
+ */
+export function pfDataHeaderNameSuffix(description: string[] | undefined): string | undefined {
+  const header = description?.[0];
+  if (!header) return undefined;
+  const m = HEADER_SUFFIX_RE.exec(header.trim());
+  return m ? `(${m[1]})` : undefined;
+}
+
+const HEADER_LINE_RE = /^##\s+.*$/;
+const SOURCE_LINE_RE = /^‹SOURCE\b[^›]*›\s*$/;
+
+/**
+ * Some subsystem files' rendered page includes the entry's own markdown
+ * header (`## Acid Jet (Su)`) and a `‹SOURCE Book[/page]›` citation line as
+ * lines OF `description` itself (arcanist exploits, kineticist wild
+ * talents) — both fully redundant with fields this reader already surfaces
+ * structurally (`name`+`pfDataHeaderNameSuffix`, `pfDataSourceRefs`), so
+ * rendering them verbatim would show a stray "## Acid Jet (Su)" / raw
+ * "SOURCE Advanced Class Guide" paragraph atop the actual prose. Other
+ * subsystem files (rage powers, investigator talents) never carry these
+ * lines at all — verified against the full 315/68-entry catalogs — so this
+ * is a no-op for them; call unconditionally rather than gating per-file.
+ * Strips at most one header line and, independently, at most one source
+ * line (either order, with an optional intervening blank line each side).
+ */
+export function pfDataBodyLines(description: string[]): string[] {
+  let lines = description;
+  if (lines[0] !== undefined && HEADER_LINE_RE.test(lines[0].trim())) {
+    lines = lines.slice(1);
+    if (lines[0]?.trim() === "") lines = lines.slice(1);
+  }
+  if (lines[0] !== undefined && SOURCE_LINE_RE.test(lines[0].trim())) {
+    lines = lines.slice(1);
+    if (lines[0]?.trim() === "") lines = lines.slice(1);
+  }
+  return lines;
 }

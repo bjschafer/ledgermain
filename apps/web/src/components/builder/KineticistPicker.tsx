@@ -5,8 +5,10 @@ import {
   KINETICIST_ELEMENTS,
   KINETICIST_ELEMENT_TAGS,
   KINETICIST_WILD_TALENTS,
+  mergedCompositeBlastCatalog,
+  mergedKineticistWildTalentCatalog,
 } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
   chosenKineticistTalentCount,
@@ -24,11 +26,13 @@ import {
 import { SKILL_NAMES } from "../../model/names.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface KineticistPickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
@@ -48,16 +52,23 @@ interface KineticistPickerProps {
  *   scoped to the character's known elements (primary + expanded) plus the
  *   always-available `universal:` entries.
  */
-export function KineticistPicker({ doc, update }: KineticistPickerProps) {
+export function KineticistPicker({ doc, refData, update }: KineticistPickerProps) {
   const isKineticist = doc.identity.classes.some((c) => c.tag === "kineticist");
   if (!isKineticist) return null;
 
   return (
     <>
-      <ElementalFocusSection doc={doc} update={update} />
-      <WildTalentSection doc={doc} update={update} category="infusion" title="Infusions" />
+      <ElementalFocusSection doc={doc} refData={refData} update={update} />
       <WildTalentSection
         doc={doc}
+        refData={refData}
+        update={update}
+        category="infusion"
+        title="Infusions"
+      />
+      <WildTalentSection
+        doc={doc}
+        refData={refData}
         update={update}
         category="utility"
         title="Utility Wild Talents"
@@ -66,17 +77,26 @@ export function KineticistPicker({ doc, update }: KineticistPickerProps) {
   );
 }
 
-function ElementalFocusSection({ doc, update }: { doc: CharacterDoc; update: Updater }) {
+function ElementalFocusSection({
+  doc,
+  refData,
+  update,
+}: {
+  doc: CharacterDoc;
+  refData: RefData;
+  update: Updater;
+}) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Elemental Focus", false);
   const level = kineticistLevel(doc);
   const primary = doc.build.kineticistElement;
   const expanded = doc.build.kineticistExpandedElements ?? [];
   const primaryDef = primary ? KINETICIST_ELEMENTS[primary] : undefined;
 
+  const compositeCatalog = useMemo(() => mergedCompositeBlastCatalog(refData), [refData]);
   const composites = useMemo(
-    () => eligibleCompositeBlasts(primary, expanded),
+    () => eligibleCompositeBlasts(primary, expanded, compositeCatalog),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [primary, expanded.join(",")],
+    [primary, expanded.join(","), compositeCatalog],
   );
 
   return (
@@ -201,11 +221,13 @@ function ElementalFocusSection({ doc, update }: { doc: CharacterDoc; update: Upd
 
 function WildTalentSection({
   doc,
+  refData,
   update,
   category,
   title,
 }: {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
   category: "infusion" | "utility";
   title: string;
@@ -213,32 +235,53 @@ function WildTalentSection({
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed(`subsection:${title}`, false);
   const knownTags = useMemo(() => new Set(knownKineticistElements(doc)), [doc]);
-  const chosen = chosenKineticistTalentCount(doc, category);
+  const chosen = chosenKineticistTalentCount(doc, refData, category);
   const expected = expectedKineticistTalentCount(doc, category);
-  const warn = kineticistTalentsNeedWarning(doc, category);
+  const warn = kineticistTalentsNeedWarning(doc, refData, category);
   const countClass = warn ? "hint warn-over" : "hint";
   const level = kineticistLevel(doc);
+
+  const catalog = useMemo(() => mergedKineticistWildTalentCatalog(refData), [refData]);
+
+  const elementLabel = (tags: readonly string[]): string =>
+    tags
+      .map((tag) => (tag === "universal" ? "Universal" : (KINETICIST_ELEMENTS[tag]?.name ?? tag)))
+      .join(", ");
 
   const talents = useMemo(() => {
     const q = query.trim().toLowerCase();
     const rows: {
       id: string;
+      isModeled: boolean;
       elementName: string;
       name: string;
+      nameSuffix?: string;
       burn: number;
       summary: string;
+      description?: string;
     }[] = [];
-    for (const [id, talent] of Object.entries(KINETICIST_WILD_TALENTS)) {
+    for (const talent of catalog) {
       if (talent.category !== category) continue;
-      if (talent.element !== "universal" && !knownTags.has(talent.element)) continue;
-      const elementName =
-        talent.element === "universal"
-          ? "Universal"
-          : (KINETICIST_ELEMENTS[talent.element]?.name ?? talent.element);
+      if (
+        !talent.elements.includes("universal") &&
+        !talent.elements.some((e) => knownTags.has(e))
+      ) {
+        continue;
+      }
+      const elementName = elementLabel(talent.elements);
       if (q && !talent.name.toLowerCase().includes(q) && !elementName.toLowerCase().includes(q)) {
         continue;
       }
-      rows.push({ id, elementName, name: talent.name, burn: talent.burn, summary: talent.summary });
+      rows.push({
+        id: talent.id,
+        isModeled: !!KINETICIST_WILD_TALENTS[talent.id],
+        elementName,
+        name: talent.name,
+        nameSuffix: talent.nameSuffix,
+        burn: talent.burn,
+        summary: talent.summary,
+        description: talent.description,
+      });
     }
     return rows.sort((a, b) => {
       const sa = hasKineticistWildTalent(doc, a.id) ? 0 : 1;
@@ -246,7 +289,7 @@ function WildTalentSection({
       return sa - sb || a.elementName.localeCompare(b.elementName) || a.name.localeCompare(b.name);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, knownTags, chosen, category]);
+  }, [catalog, query, knownTags, chosen, category]);
 
   return (
     <div className="subsection revelation-picker">
@@ -278,7 +321,9 @@ function WildTalentSection({
             {category === "infusion"
               ? "Gained at 1st, 3rd, 5th, 9th, 11th, 13th, 17th, and 19th level."
               : "Gained at 2nd, 4th, 6th, 8th, 10th, 12th, 14th, 16th, 18th, and 20th level."}{" "}
-            Menu scoped to known elements + universal talents. Free-choice — never blocks.
+            Browses the full published catalog, scoped to known elements + universal talents;
+            entries marked <span className="badge-modeled">M</span> carry a real, live mechanical
+            effect — the rest are prose-only. Free-choice — never blocks.
           </p>
           {knownTags.size === 0 && (
             <div className="empty">
@@ -295,12 +340,23 @@ function WildTalentSection({
           <div className="scroll">
             {talents.map((t) => {
               const isSel = hasKineticistWildTalent(doc, t.id);
-              const belowLevel = level > 0 && kineticistTalentBelowLevel(doc, t.id);
+              const belowLevel = level > 0 && kineticistTalentBelowLevel(doc, refData, t.id);
               return (
                 <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
                     <div className="pname">
-                      {t.name} <span className="hint">({t.elementName})</span>
+                      {t.name}
+                      {t.nameSuffix ? ` ${t.nameSuffix}` : ""}{" "}
+                      <span className="hint">({t.elementName})</span>
+                      {t.isModeled && (
+                        <span
+                          className="badge-modeled"
+                          title="Carries a real, live mechanical effect"
+                        >
+                          {" "}
+                          M
+                        </span>
+                      )}
                     </div>
                     <div className="preq">
                       <span className="desc-text">
@@ -312,6 +368,7 @@ function WildTalentSection({
                         ⚠ Above your current effective-level gate
                       </div>
                     )}
+                    {t.description ? <FeatureDescription html={t.description} /> : null}
                   </div>
                   <button
                     type="button"
