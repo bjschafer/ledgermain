@@ -60,7 +60,7 @@
  * to be wrong, the fix is narrowly scoped to this file's `changes` arrays.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { BloodragerBloodline, Change, ContextNote, RefData, SourceRef } from "@pf1/schema";
 
 import type { BloodlineResourcePool } from "./bloodlines.js";
 import { featNameSlug } from "./feat-effects.js";
@@ -950,4 +950,100 @@ export function bloodragerBloodlineVariantLabel(
   if (!variantId) return undefined;
   const bloodline = BLOODRAGER_BLOODLINES[tag];
   return bloodline?.variantOptions?.find((v) => v.id === variantId)?.label;
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.bloodragerBloodlines` is the FULL published
+ * catalog (24 entries after junk filtering), prose only — same "catalog
+ * from data, mechanics as overlay" pattern as `rage-powers.ts`'s
+ * `mergedRagePowerCatalog`. The hand-verified 10-ACG-bloodline table above
+ * stays authoritative for powers/bonus feats/bonus spells; this section
+ * merges the two for browsing.
+ *
+ * Matching is by NORMALIZED NAME (this table's `tag` doubles as its display
+ * `name`). Collision audit (all 10 hand-authored bloodlines): all 10
+ * matched a vendored entry by normalized name — no aliasing needed.
+ * "Aberrant" has NO hand-authored bloodrager counterpart (see this table's
+ * scope note) despite existing for sorcerer — it resolves display-only here
+ * like any other vendored-only bloodline, not an error.
+ */
+
+const BLOODRAGER_BLOODLINE_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeBloodragerBloodlineName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedBloodragerBloodlineEntry extends BloodragerBloodlineDef {
+  description?: string;
+  sources?: SourceRef[];
+  /** True for a vendored-only bloodline with no hand-authored powers/bonus feats — the picker's "M" (modeled) badge convention. */
+  displayOnly: boolean;
+}
+
+function vendoredBloodragerBloodlineToDef(
+  entry: BloodragerBloodline,
+): MergedBloodragerBloodlineEntry {
+  return {
+    tag: entry.name,
+    name: entry.name,
+    powers: [],
+    bonusFeatSlugs: [],
+    bonusSpells: [],
+    description: entry.description,
+    sources: entry.sources,
+    displayOnly: true,
+  };
+}
+
+/** Resolve a picked bloodline tag (`doc.build.bloodragerBloodline`) to its definition — hand-authored table first, falling back to the vendored catalog for a tag that only exists there. */
+export function resolveBloodragerBloodline(
+  tag: string,
+  refData: RefData,
+): MergedBloodragerBloodlineEntry | undefined {
+  const hand = BLOODRAGER_BLOODLINES[tag];
+  if (hand) return { ...hand, displayOnly: false };
+  const vendored = Object.values(refData.bloodragerBloodlines ?? {}).find(
+    (v) => normalizeBloodragerBloodlineName(v.name) === normalizeBloodragerBloodlineName(tag),
+  );
+  return vendored ? vendoredBloodragerBloodlineToDef(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog: every vendored bloodline, with any that collides (by normalized name) against a hand-authored entry replaced by that def, plus any hand-authored entry with no vendored counterpart appended. */
+export function mergedBloodragerBloodlineCatalog(
+  refData: RefData,
+): MergedBloodragerBloodlineEntry[] {
+  const handByNormName = new Map<string, BloodragerBloodlineDef>();
+  for (const b of BLOODRAGER_BLOODLINE_LIST) {
+    handByNormName.set(
+      normalizeBloodragerBloodlineName(BLOODRAGER_BLOODLINE_NAME_ALIASES[b.tag] ?? b.name),
+      b,
+    );
+  }
+
+  const usedHandTags = new Set<string>();
+  const merged: MergedBloodragerBloodlineEntry[] = [];
+  for (const v of Object.values(refData.bloodragerBloodlines ?? {})) {
+    const handMatch = handByNormName.get(normalizeBloodragerBloodlineName(v.name));
+    if (handMatch) {
+      usedHandTags.add(handMatch.tag);
+      merged.push({
+        ...handMatch,
+        description: v.description,
+        sources: v.sources,
+        displayOnly: false,
+      });
+    } else {
+      merged.push(vendoredBloodragerBloodlineToDef(v));
+    }
+  }
+  for (const b of BLOODRAGER_BLOODLINE_LIST) {
+    if (!usedHandTags.has(b.tag)) merged.push({ ...b, displayOnly: false });
+  }
+  return merged;
 }

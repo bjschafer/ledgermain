@@ -119,4 +119,61 @@ describe("pfDataDescriptionToHtml", () => {
     const html = pfDataDescriptionToHtml(["Deals 1 < 2 & 3 > 0 damage."]);
     expect(html).toBe("<p>Deals 1 &lt; 2 &amp; 3 &gt; 0 damage.</p>");
   });
+
+  it("strips blockquote '>' markers, treating a bare '>' line as a paragraph break (issue #74 Phase 3c)", () => {
+    const html = pfDataDescriptionToHtml([
+      ">**First Power (Su):** Does a thing.",
+      ">",
+      ">**Second Power (Ex):** Does another thing.",
+    ]);
+    expect(html).toBe(
+      "<p><strong>First Power (Su):</strong> Does a thing.</p>\n<p><strong>Second Power (Ex):</strong> Does another thing.</p>",
+    );
+  });
+
+  it("drops a ':::label' ... ':::' fenced note block's delimiter lines, keeping its content as plain prose", () => {
+    const html = pfDataDescriptionToHtml([
+      "Before.",
+      "",
+      ":::elephant",
+      "Extra errata text.",
+      ":::",
+      "",
+      "After.",
+    ]);
+    expect(html).toBe("<p>Before.</p>\n<p>Extra errata text.</p>\n<p>After.</p>");
+  });
+
+  it("renders an inline '### Section' markdown header as a bold paragraph, not literal '###' text", () => {
+    const html = pfDataDescriptionToHtml(["### Bloodline Powers"]);
+    expect(html).toBe("<p><strong>Bloodline Powers</strong></p>");
+  });
+
+  it("renders a '::h3[Text]{...}' sub-heading directive as a bold paragraph", () => {
+    const html = pfDataDescriptionToHtml(["::h3[Warped (Wildblooded Mutation)]{jl}"]);
+    expect(html).toBe("<p><strong>Warped (Wildblooded Mutation)</strong></p>");
+  });
+
+  it("renders a '::list[Label]{all=\"A~B~C\"}' directive as a labeled comma-joined list", () => {
+    const html = pfDataDescriptionToHtml(['::list[Bonus Feats]{link=feat all="Dodge~Toughness"}']);
+    expect(html).toBe("<p><strong>Bonus Feats:</strong> Dodge, Toughness</p>");
+  });
+
+  it('renders a \'::ab[Name]{l=N passive="..." impNN="..."}\' ability directive with its level and improvement folded in', () => {
+    const html = pfDataDescriptionToHtml([
+      '::ab[Aberrant Fortitude (Su)]{l=8 icon=def passive="You become immune to sickened." imp16="Also immune to nauseated."}',
+    ]);
+    expect(html).toBe(
+      "<p><strong>Aberrant Fortitude (Su) (Level 8):</strong> You become immune to sickened. At 16th level: Also immune to nauseated.</p>",
+    );
+  });
+
+  it("renders a '::ab[...]' directive with only level-keyed spell values as a level list", () => {
+    const html = pfDataDescriptionToHtml([
+      '::ab[Bonus Spells by Bloodrager Level]{icon=learn s7="Bless" s10="Resist energy"}',
+    ]);
+    expect(html).toBe(
+      "<p><strong>Bonus Spells by Bloodrager Level:</strong> Level 7: Bless; Level 10: Resist energy</p>",
+    );
+  });
 });

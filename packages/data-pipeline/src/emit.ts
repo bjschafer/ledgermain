@@ -66,6 +66,12 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "psychicDisciplines", file: "psychic-disciplines.json" },
   { key: "occultistImplements", file: "occultist-implements.json" },
   { key: "mediumSpirits", file: "medium-spirits.json" },
+  { key: "oracleMysteries", file: "oracle-mysteries.json" },
+  { key: "oracleCurses", file: "oracle-curses.json" },
+  { key: "witchPatrons", file: "witch-patrons.json" },
+  { key: "shamanSpirits", file: "shaman-spirits.json" },
+  { key: "sorcererBloodlines", file: "sorcerer-bloodlines.json" },
+  { key: "bloodragerBloodlines", file: "bloodrager-bloodlines.json" },
 ];
 
 /**

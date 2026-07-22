@@ -113,7 +113,7 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   entries are skipped, since the system pack's own race docs already carry
   them).
 
-### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent / occult-class subsystem catalogs)
+### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent / occult-class / caster-class subsystem catalogs)
 
 - Repo: `https://github.com/jasontankapps/pathfinder-data-1-e`
 - Pinned commit: `33f1b75b8f62b43c59b96eab6bebb45e37c29229`
@@ -147,7 +147,18 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     into `RefData.occultistImplements`, and `json/class_ability_spirits.json`
     (the Medium's legendary-spirit catalog — distinct from the sibling
     `json/class_ability_shaman_spirits.json`, not vendored under this
-    collection) into `RefData.mediumSpirits` (issue #74 Phase 3c) —
+    collection) into `RefData.mediumSpirits` (issue #74 Phase 3c);
+  - `json/class_ability_mysteries.json` into `RefData.oracleMysteries`,
+    `json/class_ability_curses.json` (the Oracle's Curse catalog -- NOT the
+    dataset's unrelated top-level `curses.json`) into `RefData.oracleCurses`,
+    `json/class_ability_patrons.json` into `RefData.witchPatrons`,
+    `json/class_ability_shaman_spirits.json` (NOT the dataset's
+    `class_ability_spirits.json`, the unrelated medium-spirit catalog) into
+    `RefData.shamanSpirits`, and `json/class_ability_sorcerer_bloodlines.json`
+    + `json/class_ability_bloodrager_bloodlines.json` into
+    `RefData.sorcererBloodlines`/`bloodragerBloodlines` (the full published
+    oracle/witch/shaman/sorcerer/bloodrager subsystem catalogs, issue #74
+    Phase 3c) —
 
   see each type's doc comment (`@pf1/schema`). Code is GPL-3.0-or-later
   (never copied in, same clean-room posture as Sec.2a/2c); its

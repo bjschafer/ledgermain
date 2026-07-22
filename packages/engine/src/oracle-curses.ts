@@ -45,7 +45,7 @@
  *     mechanic, just gated by curse choice instead of mystery choice.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { Change, ContextNote, OracleCurse, RefData, SourceRef } from "@pf1/schema";
 
 /** A spell granted free (added to the known list) at a given oracle level. */
 export interface OracleCurseBonusSpell {
@@ -175,3 +175,86 @@ export const ORACLE_CURSES: Record<string, OracleCurseDef> = Object.fromEntries(
 );
 
 export const ORACLE_CURSE_TAGS: readonly string[] = CURSE_LIST.map((cu) => cu.tag);
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.oracleCurses` is the FULL published catalog
+ * (41 entries after junk filtering), prose only — same "catalog from data,
+ * mechanics as overlay" pattern as `rage-powers.ts`'s
+ * `mergedRagePowerCatalog`. The hand-verified 6-base-curse table above stays
+ * authoritative for mechanics; this section merges the two for browsing.
+ *
+ * Matching is by NORMALIZED NAME. Collision audit (all 6 hand-authored
+ * curses): all 6 matched a vendored entry by normalized name (`Clouded
+ * Vision`, `Deaf`, `Haunted`, `Lame`, `Tongues`, `Wasting` all present
+ * verbatim in the vendored dictionary) — no aliasing needed.
+ */
+
+const ORACLE_CURSE_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeCurseName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedOracleCurseEntry extends OracleCurseDef {
+  description?: string;
+  sources?: SourceRef[];
+  /** True for a vendored-only curse with no hand-authored mechanics — the picker's "M" (modeled) badge convention. */
+  displayOnly: boolean;
+}
+
+function vendoredCurseToDef(entry: OracleCurse): MergedOracleCurseEntry {
+  return {
+    tag: entry.id,
+    name: entry.name,
+    summary: "",
+    changes: [],
+    description: entry.description,
+    sources: entry.sources,
+    displayOnly: true,
+  };
+}
+
+/** Resolve a picked curse tag (`doc.build.oracleCurse`) to its definition — hand-authored table first, falling back to the vendored catalog for a tag that only exists there. */
+export function resolveOracleCurse(
+  tag: string,
+  refData: RefData,
+): MergedOracleCurseEntry | undefined {
+  const hand = ORACLE_CURSES[tag];
+  if (hand) return { ...hand, displayOnly: false };
+  const vendored = refData.oracleCurses?.[tag];
+  return vendored ? vendoredCurseToDef(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog: every vendored curse, with any that collides (by normalized name) against a hand-authored entry replaced by that def, plus any hand-authored entry with no vendored counterpart appended. */
+export function mergedOracleCurseCatalog(refData: RefData): MergedOracleCurseEntry[] {
+  const handByNormName = new Map<string, OracleCurseDef>();
+  for (const cu of CURSE_LIST) {
+    handByNormName.set(normalizeCurseName(ORACLE_CURSE_NAME_ALIASES[cu.tag] ?? cu.name), cu);
+  }
+
+  const usedHandTags = new Set<string>();
+  const merged: MergedOracleCurseEntry[] = [];
+  for (const v of Object.values(refData.oracleCurses ?? {})) {
+    const handMatch = handByNormName.get(normalizeCurseName(v.name));
+    if (handMatch) {
+      usedHandTags.add(handMatch.tag);
+      merged.push({
+        ...handMatch,
+        description: v.description,
+        sources: v.sources,
+        displayOnly: false,
+      });
+    } else {
+      merged.push(vendoredCurseToDef(v));
+    }
+  }
+  for (const cu of CURSE_LIST) {
+    if (!usedHandTags.has(cu.tag)) merged.push({ ...cu, displayOnly: false });
+  }
+  return merged;
+}

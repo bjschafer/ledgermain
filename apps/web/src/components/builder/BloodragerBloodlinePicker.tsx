@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 
-import { BLOODRAGER_BLOODLINES, BLOODRAGER_BLOODLINE_TAGS, featNameSlug } from "@pf1/engine";
+import { featNameSlug, mergedBloodragerBloodlineCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setBloodragerBloodline, setBloodragerBloodlineVariant } from "../../model/doc.js";
 import { bloodragerBonusSpellsKnown } from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -24,10 +25,16 @@ interface BloodragerBloodlinePickerProps {
  * as `@pf1/engine` `BLOODRAGER_BLOODLINES`'s doc comment explains for why it
  * can't reuse `refData.bloodlineSpellLists` the way sorcerer's picker does).
  *
- * Scope: the 9 ACG bloodrager bloodlines (Abyssal, Arcane, Celestial,
- * Destined, Draconic, Elemental, Fey, Infernal, Undead) plus Martyred.
+ * Browses the FULL published bloodline catalog
+ * (`mergedBloodragerBloodlineCatalog`, issue #74 Phase 3c) — the 10 ACG
+ * bloodlines (Abyssal, Arcane, Celestial, Destined, Draconic, Elemental,
+ * Fey, Infernal, Undead, Martyred) keep their hand-verified mechanics
+ * (marked `badge-modeled` "M"); the ~14 other vendored-only bloodlines
+ * (including "Aberrant" — vendored for bloodrager too, but never
+ * hand-authored the way it is for sorcerer) show their full vendored prose
+ * instead.
  *
- * The chosen bloodline:
+ * The chosen (hand-verified) bloodline:
  *  - grants bloodline POWERS at 1st/4th/8th/12th/16th/20th level — shown in
  *    `ClassFeaturesList` elsewhere in the builder (tagged "— <Name>
  *    Bloodline"), previewed here;
@@ -48,10 +55,13 @@ export function BloodragerBloodlinePicker({
   const isBloodrager = doc.identity.classes.some((c) => c.tag === "bloodrager");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:BloodragerBloodline", false);
 
-  const bloodlines = useMemo(() => [...BLOODRAGER_BLOODLINE_TAGS], []);
+  const catalog = useMemo(
+    () => [...mergedBloodragerBloodlineCatalog(refData)].sort((a, b) => a.tag.localeCompare(b.tag)),
+    [refData],
+  );
 
   const chosen = doc.build.bloodragerBloodline ?? "";
-  const bloodlineDef = BLOODRAGER_BLOODLINES[chosen];
+  const bloodlineDef = catalog.find((b) => b.tag === chosen);
   const variant = doc.build.bloodragerBloodlineVariant ?? "";
   const bloodragerLevel = doc.identity.classes.find((c) => c.tag === "bloodrager")?.level ?? 0;
 
@@ -82,17 +92,27 @@ export function BloodragerBloodlinePicker({
       >
         <h3>
           Bloodline
-          {chosen ? <span className="hint"> · {chosen}</span> : null}
+          {chosen ? (
+            <span className="hint">
+              {" "}
+              · {chosen}
+              {bloodlineDef && !bloodlineDef.displayOnly && (
+                <span className="badge-modeled"> M</span>
+              )}
+            </span>
+          ) : null}
         </h3>
         <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>
           <p className="hint bloodline-picker-hint">
-            Pick one bloodline (PF1 grants one at level 1, never changed thereafter). It grants
-            bloodline powers at 1st/4th/8th/12th/16th/20th level, restricts your Bloodline Feat
-            picks (6th level and every 3 thereafter), and grants one bonus spell known at
-            7th/10th/13th/16th level. Free-choice — no heritage validation.
+            Pick one bloodline (PF1 grants one at level 1, never changed thereafter). Browses the
+            full published catalog; entries marked <span className="badge-modeled">M</span> grant
+            bloodline powers at 1st/4th/8th/12th/16th/20th level, restrict your Bloodline Feat picks
+            (6th level and every 3 thereafter), and grant one bonus spell known at
+            7th/10th/13th/16th level — the rest show their full published prose instead. Free-choice
+            — no heritage validation.
           </p>
           <select
             className="bloodline-select"
@@ -100,9 +120,10 @@ export function BloodragerBloodlinePicker({
             onChange={(e) => update((d) => setBloodragerBloodline(d, e.target.value || null))}
           >
             <option value="">— none chosen —</option>
-            {bloodlines.map((tag) => (
-              <option key={tag} value={tag}>
-                {tag}
+            {catalog.map((b) => (
+              <option key={b.tag} value={b.tag}>
+                {b.tag}
+                {b.displayOnly ? "" : " (M)"}
               </option>
             ))}
           </select>
@@ -130,36 +151,41 @@ export function BloodragerBloodlinePicker({
             </div>
           )}
 
-          {bloodlineDef && (
-            <div className="bloodline-preview">
-              <ul className="bloodline-powers">
-                {bloodlineDef.powers.map((p) => (
-                  <li key={p.id} className={p.level > bloodragerLevel ? "not-yet" : undefined}>
-                    <span className="cf-level">Lv {p.level}</span>{" "}
-                    <span className="cf-name">{p.name}</span>
-                    <p className="hint">{p.summary}</p>
-                  </li>
-                ))}
-              </ul>
+          {bloodlineDef &&
+            (bloodlineDef.displayOnly ? (
+              bloodlineDef.description ? (
+                <FeatureDescription html={bloodlineDef.description} />
+              ) : null
+            ) : (
+              <div className="bloodline-preview">
+                <ul className="bloodline-powers">
+                  {bloodlineDef.powers.map((p) => (
+                    <li key={p.id} className={p.level > bloodragerLevel ? "not-yet" : undefined}>
+                      <span className="cf-level">Lv {p.level}</span>{" "}
+                      <span className="cf-name">{p.name}</span>
+                      <p className="hint">{p.summary}</p>
+                    </li>
+                  ))}
+                </ul>
 
-              <div className="bloodline-bonus-feats">
-                <span className="hint">Bonus Feats (Bloodline Feat, 6th+)</span>
-                <p className="hint">{bonusFeatNames.join(", ")}</p>
+                <div className="bloodline-bonus-feats">
+                  <span className="hint">Bonus Feats (Bloodline Feat, 6th+)</span>
+                  <p className="hint">{bonusFeatNames.join(", ")}</p>
+                </div>
+
+                <ul className="bloodline-bonus-spells">
+                  {bonusSpells.map((sp) => (
+                    <li
+                      key={`${sp.grantedAtLevel}:${sp.name}`}
+                      className={sp.grantedAtLevel > bloodragerLevel ? "not-yet" : undefined}
+                    >
+                      <span className="cf-level">Lv {sp.grantedAtLevel}</span>{" "}
+                      <span className="cf-name">{sp.name}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-
-              <ul className="bloodline-bonus-spells">
-                {bonusSpells.map((sp) => (
-                  <li
-                    key={`${sp.grantedAtLevel}:${sp.name}`}
-                    className={sp.grantedAtLevel > bloodragerLevel ? "not-yet" : undefined}
-                  >
-                    <span className="cf-level">Lv {sp.grantedAtLevel}</span>{" "}
-                    <span className="cf-name">{sp.name}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+            ))}
         </>
       )}
     </div>

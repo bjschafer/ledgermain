@@ -145,21 +145,27 @@ export {
   BLOODLINES,
   BLOODLINE_TAGS,
   bloodlineVariantLabel,
+  mergedSorcererBloodlineCatalog,
+  resolveSorcererBloodline,
   type BloodlineDef,
   type BloodlinePower,
   type BloodlinePowerLevel,
   type BloodlineResourcePool,
   type BloodlineVariantOption,
+  type MergedSorcererBloodlineEntry,
 } from "./bloodlines.js";
 export {
   BLOODRAGER_BLOODLINES,
   BLOODRAGER_BLOODLINE_TAGS,
   bloodragerBloodlineVariantLabel,
+  mergedBloodragerBloodlineCatalog,
+  resolveBloodragerBloodline,
   type BloodragerBloodlineDef,
   type BloodragerBloodlinePower,
   type BloodragerBloodlinePowerLevel,
   type BloodragerBloodlineVariantOption,
   type BloodragerBonusSpell,
+  type MergedBloodragerBloodlineEntry,
 } from "./bloodrager-bloodlines.js";
 export { BLOODRAGE_BUFF, BLOODRAGE_BUFF_ID } from "./bloodrage.js";
 export {
@@ -181,14 +187,20 @@ export {
 export {
   ORACLE_MYSTERIES,
   ORACLE_MYSTERY_TAGS,
+  mergedOracleMysteryCatalog,
+  resolveOracleMystery,
   type OracleMysteryDef,
   type OracleMysteryBonusSpell,
+  type MergedOracleMysteryEntry,
 } from "./oracle-mysteries.js";
 export {
   ORACLE_CURSES,
   ORACLE_CURSE_TAGS,
+  mergedOracleCurseCatalog,
+  resolveOracleCurse,
   type OracleCurseDef,
   type OracleCurseBonusSpell,
+  type MergedOracleCurseEntry,
 } from "./oracle-curses.js";
 export {
   ORACLE_REVELATIONS,
@@ -201,8 +213,11 @@ export {
 export {
   WITCH_PATRONS,
   WITCH_PATRON_TAGS,
+  mergedWitchPatronCatalog,
+  resolveWitchPatron,
   type WitchPatronDef,
   type WitchPatronBonusSpell,
+  type MergedWitchPatronEntry,
 } from "./witch-patrons.js";
 export {
   WITCH_HEXES,
@@ -379,10 +394,13 @@ export {
   SHAMAN_SPIRIT_TAGS,
   hexesForSpirit,
   findShamanHex,
+  mergedShamanSpiritCatalog,
+  resolveShamanSpirit,
   type ShamanSpiritDef,
   type ShamanSpiritMagicSpell,
   type ShamanSpiritAbility,
   type ShamanSpiritHex,
+  type MergedShamanSpiritEntry,
 } from "./shaman-spirits.js";
 export {
   MEDIUM_SPIRITS,

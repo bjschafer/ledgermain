@@ -4,6 +4,7 @@ import { join } from "node:path";
 import type {
   ArcanistExploit,
   ArmorRef,
+  BloodragerBloodline,
   Buff,
   Class,
   ClassFeature,
@@ -18,6 +19,8 @@ import type {
   MesmeristBoldStare,
   MesmeristTrick,
   OccultistImplement,
+  OracleCurse,
+  OracleMystery,
   PhrenicAmplification,
   PsychicDiscipline,
   Race,
@@ -28,7 +31,9 @@ import type {
   RefDataMeta,
   RogueTalent,
   ShamanHex,
+  ShamanSpirit,
   SlayerTalent,
+  SorcererBloodline,
   Spell,
   SpellList,
   Subdomain,
@@ -37,6 +42,7 @@ import type {
   VigilanteTalent,
   WeaponRef,
   WitchHex,
+  WitchPatron,
   WizardSchool,
 } from "@pf1/schema";
 
@@ -78,6 +84,7 @@ import {
   SUPPLEMENTAL_PRESTIGE_CLASSES,
 } from "./supplements.js";
 import { transformArcanistExploits } from "./transform/arcanistExploits.js";
+import { transformBloodragerBloodlines } from "./transform/bloodragerBloodlines.js";
 import { transformInvestigatorTalents } from "./transform/investigatorTalents.js";
 import { transformKineticWildTalents } from "./transform/kineticWildTalents.js";
 import { transformMagusArcana } from "./transform/magusArcana.js";
@@ -86,18 +93,23 @@ import { transformMesmeristBoldStares } from "./transform/mesmeristBoldStares.js
 import { transformMesmeristTricks } from "./transform/mesmeristTricks.js";
 import { transformNinjaTricks } from "./transform/ninjaTricks.js";
 import { transformOccultistImplements } from "./transform/occultistImplements.js";
+import { transformOracleCurses } from "./transform/oracleCurses.js";
+import { transformOracleMysteries } from "./transform/oracleMysteries.js";
 import { transformPhrenicAmplifications } from "./transform/phrenicAmplifications.js";
 import { transformPsychicDisciplines } from "./transform/psychicDisciplines.js";
 import { transformRagePowers } from "./transform/ragePowers.js";
 import { transformRogueTalents } from "./transform/rogueTalents.js";
 import { transformShamanHexes } from "./transform/shamanHexes.js";
+import { transformShamanSpirits } from "./transform/shamanSpirits.js";
 import { transformSlayerTalents } from "./transform/slayerTalents.js";
+import { transformSorcererBloodlines } from "./transform/sorcererBloodlines.js";
 import {
   transformVigilanteSocialTalents,
   transformVigilanteTalents,
 } from "./transform/vigilanteTalents.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { transformWitchHexes } from "./transform/witchHexes.js";
+import { transformWitchPatrons } from "./transform/witchPatrons.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { readPfDataDictionary } from "./util/pfdata.js";
 import { makeUuid, parseUuid } from "./util/uuid.js";
@@ -681,6 +693,41 @@ export function normalize(opts: NormalizeOptions): {
   );
   const mediumSpirits: MediumSpirit[] = transformMediumSpirits(mediumSpiritDict);
 
+  // --- oracle mysteries/curses, witch patrons, shaman spirits, sorcerer/
+  // bloodrager bloodlines (fourth-party dataset, issue #74 Phase 3c) — same
+  // posture as rage powers above.
+  const oracleMysteryDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_mysteries.json"),
+  );
+  const oracleMysteries: OracleMystery[] = transformOracleMysteries(oracleMysteryDict);
+
+  const oracleCurseDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_curses.json"),
+  );
+  const oracleCurses: OracleCurse[] = transformOracleCurses(oracleCurseDict);
+
+  const witchPatronDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_patrons.json"),
+  );
+  const witchPatrons: WitchPatron[] = transformWitchPatrons(witchPatronDict);
+
+  const shamanSpiritDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_shaman_spirits.json"),
+  );
+  const shamanSpirits: ShamanSpirit[] = transformShamanSpirits(shamanSpiritDict);
+
+  const sorcererBloodlineDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_sorcerer_bloodlines.json"),
+  );
+  const sorcererBloodlines: SorcererBloodline[] =
+    transformSorcererBloodlines(sorcererBloodlineDict);
+
+  const bloodragerBloodlineDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_bloodrager_bloodlines.json"),
+  );
+  const bloodragerBloodlines: BloodragerBloodline[] =
+    transformBloodragerBloodlines(bloodragerBloodlineDict);
+
   const counts = {
     races: races.length,
     racialTraits: racialTraits.length,
@@ -720,6 +767,12 @@ export function normalize(opts: NormalizeOptions): {
     psychicDisciplines: psychicDisciplines.length,
     occultistImplements: occultistImplements.length,
     mediumSpirits: mediumSpirits.length,
+    oracleMysteries: oracleMysteries.length,
+    oracleCurses: oracleCurses.length,
+    witchPatrons: witchPatrons.length,
+    shamanSpirits: shamanSpirits.length,
+    sorcererBloodlines: sorcererBloodlines.length,
+    bloodragerBloodlines: bloodragerBloodlines.length,
   };
 
   const meta: RefDataMeta = {
@@ -780,6 +833,12 @@ export function normalize(opts: NormalizeOptions): {
     psychicDisciplines: byId(psychicDisciplines),
     occultistImplements: byId(occultistImplements),
     mediumSpirits: byId(mediumSpirits),
+    oracleMysteries: byId(oracleMysteries),
+    oracleCurses: byId(oracleCurses),
+    witchPatrons: byId(witchPatrons),
+    shamanSpirits: byId(shamanSpirits),
+    sorcererBloodlines: byId(sorcererBloodlines),
+    bloodragerBloodlines: byId(bloodragerBloodlines),
   };
 
   return { refData, contentVersion };

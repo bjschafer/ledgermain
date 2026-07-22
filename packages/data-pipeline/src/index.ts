@@ -60,5 +60,11 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     psychicDisciplines: readJson(dir, "psychic-disciplines.json"),
     occultistImplements: readJson(dir, "occultist-implements.json"),
     mediumSpirits: readJson(dir, "medium-spirits.json"),
+    oracleMysteries: readJson(dir, "oracle-mysteries.json"),
+    oracleCurses: readJson(dir, "oracle-curses.json"),
+    witchPatrons: readJson(dir, "witch-patrons.json"),
+    shamanSpirits: readJson(dir, "shaman-spirits.json"),
+    sorcererBloodlines: readJson(dir, "sorcerer-bloodlines.json"),
+    bloodragerBloodlines: readJson(dir, "bloodrager-bloodlines.json"),
   };
 }

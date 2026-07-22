@@ -48,6 +48,8 @@
  *     than reusing `bloodlineSpellsKnown`'s formula.
  */
 
+import type { OracleMystery, RefData, SourceRef } from "@pf1/schema";
+
 export interface OracleMysteryBonusSpell {
   /** Oracle class level at which this spell is added to the known list (2, 4, ..., 18). */
   level: number;
@@ -235,3 +237,96 @@ export const ORACLE_MYSTERIES: Record<string, OracleMysteryDef> = Object.fromEnt
 );
 
 export const ORACLE_MYSTERY_TAGS: readonly string[] = MYSTERY_LIST.map((m) => m.tag);
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.oracleMysteries` (see that type's doc
+ * comment) is the FULL published catalog (34 entries after junk filtering),
+ * prose only. The hand-verified 10-core-mystery table above stays
+ * authoritative for MECHANICS (class skills + bonus spells) — this section
+ * only merges the two for BROWSING (the picker) and for resolving a picked
+ * tag back to a definition, mirroring `rage-powers.ts`'s
+ * `mergedRagePowerCatalog`/`resolveRagePower`: hand-authored first, vendored
+ * catalog as the fallback source of DISPLAY prose for the ~24 mysteries this
+ * table doesn't cover.
+ *
+ * Matching is by NORMALIZED NAME. Collision audit (all 10 hand-authored
+ * mysteries against the pinned Pf Data 1e slice): all 10 matched a vendored
+ * entry by normalized name (the vendored dictionary keys ARE this table's
+ * own `tag`s, verified — e.g. `battle`, `bones`, ...) — no aliasing needed.
+ *
+ * A vendored-only mystery's REVELATIONS stay embedded in its `description`
+ * prose (see `RefData.OracleMystery`'s doc comment for why they aren't
+ * split into discrete records) — `oracle-revelations.ts`/`RevelationPicker`
+ * deliberately stay scoped to the 10 core mysteries this table covers.
+ */
+
+const ORACLE_MYSTERY_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeMysteryName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedOracleMysteryEntry extends OracleMysteryDef {
+  /** Full vendored HTML prose (includes the mystery's Revelations/Final Revelation section), when a vendored entry backs this tag. */
+  description?: string;
+  sources?: SourceRef[];
+  /** True for a vendored-only mystery with no hand-authored class-skill/bonus-spell data — the picker's "M" (modeled) badge convention. */
+  displayOnly: boolean;
+}
+
+function vendoredMysteryToDef(entry: OracleMystery): MergedOracleMysteryEntry {
+  return {
+    tag: entry.id,
+    name: entry.name,
+    classSkills: [],
+    bonusSpells: [],
+    description: entry.description,
+    sources: entry.sources,
+    displayOnly: true,
+  };
+}
+
+/** Resolve a picked mystery tag (`doc.build.oracleMystery`) to its definition — hand-authored table first, falling back to the vendored catalog for a tag that only exists there. */
+export function resolveOracleMystery(
+  tag: string,
+  refData: RefData,
+): MergedOracleMysteryEntry | undefined {
+  const hand = ORACLE_MYSTERIES[tag];
+  if (hand) return { ...hand, displayOnly: false };
+  const vendored = refData.oracleMysteries?.[tag];
+  return vendored ? vendoredMysteryToDef(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog: every vendored mystery, with any that collides (by normalized name) against a hand-authored entry replaced by that def (keeping its `tag`, but carrying the vendored prose along for display), plus any hand-authored entry with no vendored counterpart appended. */
+export function mergedOracleMysteryCatalog(refData: RefData): MergedOracleMysteryEntry[] {
+  const handByNormName = new Map<string, OracleMysteryDef>();
+  for (const m of MYSTERY_LIST) {
+    handByNormName.set(normalizeMysteryName(ORACLE_MYSTERY_NAME_ALIASES[m.tag] ?? m.name), m);
+  }
+
+  const usedHandTags = new Set<string>();
+  const merged: MergedOracleMysteryEntry[] = [];
+  for (const v of Object.values(refData.oracleMysteries ?? {})) {
+    const handMatch = handByNormName.get(normalizeMysteryName(v.name));
+    if (handMatch) {
+      usedHandTags.add(handMatch.tag);
+      merged.push({
+        ...handMatch,
+        description: v.description,
+        sources: v.sources,
+        displayOnly: false,
+      });
+    } else {
+      merged.push(vendoredMysteryToDef(v));
+    }
+  }
+  for (const m of MYSTERY_LIST) {
+    if (!usedHandTags.has(m.tag)) merged.push({ ...m, displayOnly: false });
+  }
+  return merged;
+}

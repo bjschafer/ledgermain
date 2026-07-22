@@ -1,0 +1,786 @@
+{
+  "agility": {
+    "category": "basic",
+    "description": "<p>2nd - jump, 4th - cat's grace, 6th - haste, 8th - freedom of movement, 10th - polymorph, 12th - mass cat's grace, 14th - ethereal jaunt, 16th - animal shapes, 18th - shapechange.</p>",
+    "id": "agility",
+    "name": "Agility",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:agility"
+  },
+  "ancestors": {
+    "category": "basic",
+    "description": "<p>2nd - bless, 4th - aid, 6th - prayer, 8th - blessing of fervor, 10th - commune, 12th - greater heroism, 14th - refuge, 16th - euphoric tranquility, 18th - weird.</p>",
+    "id": "ancestors",
+    "name": "Ancestors",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:ancestors"
+  },
+  "animals": {
+    "category": "basic",
+    "description": "<p>2nd - charm animal, 4th - speak with animals, 6th - dominate animal, 8th - summon nature's ally IV, 10th - animal growth, 12th - antilife shell, 14th - beast shape IV, 16th - animal shapes, 18th - summon nature's ally IX.</p>",
+    "id": "animals",
+    "name": "Animals",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:animals"
+  },
+  "aurora": {
+    "category": "basic",
+    "description": "<p>2nd - color spray, 4th - hypnotic pattern, 6th - wall of nausea, 8th - rainbow pattern, 10th - blazing rainbow, 12th - programmed image, 14th - prismatic spray, 16th - prismatic wall, 18th - polar midnight.</p>",
+    "id": "aurora",
+    "name": "Aurora",
+    "sources": [
+      {
+        "id": "paths-of-the-righteous",
+        "pages": "31"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:aurora"
+  },
+  "autumn": {
+    "category": "basic",
+    "description": "<p>2nd - ray of enfeeblement, 4th - create pit, 6th - gentle repose, 8th - vitriolic mist, 10th - major creation, 12th - acid fog, 14th - caustic eruption, 16th - horrid wilting, 18th - wail of the banshee.</p>",
+    "id": "autumn",
+    "name": "Autumn",
+    "sources": [
+      {
+        "id": "ultimate-wilderness",
+        "pages": "88"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:autumn"
+  },
+  "boundaries": {
+    "category": "basic",
+    "description": "<p>2nd - protection from evil, 4th - see invisibility, 6th - magic circle against evil, 8th - dimensional anchor, 10th - control summoned creature, 12th - banishment, 14th - ethereal jaunt, 16th - dimensional lock, 18th - gate.</p>",
+    "id": "boundaries",
+    "name": "Boundaries",
+    "sources": [
+      {
+        "id": "champions-of-purity",
+        "pages": "27"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:boundaries"
+  },
+  "celestial_agenda": {
+    "category": "unique",
+    "description": "<p>While good deities and empyreal lords have organized faiths to carry out their wills, powerfully ranked agathions, angels, and archons - and occasional intersectional councils of good outsiders - sometimes invest white witches with celestial might to defend the weak and heal the sick. You gain the ward hex at 1st level, but your patron holds you to a higher standard: you must be of good alignment, and you take a -2 penalty on Bluff, Intimidate, Sleight of Hand, and other skill checks to deceive or threaten others.</p>\n<p><strong>Available Patron Themes:</strong> Endurance, Healing, Light, Portents</p>\n<p><strong>Spell Changes:</strong> 4th-castigate, 10th-rebuke, 16th-greater planar ally (good outsiders only).</p>",
+    "id": "celestial_agenda",
+    "name": "Celestial Agenda",
+    "sources": [
+      {
+        "id": "blood-of-the-coven"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:celestial_agenda"
+  },
+  "conspiracies": {
+    "category": "basic",
+    "description": "<p>2nd - lock gaze, 4th - disguise other, 6th - tongues, 8th - hypercognition, 10th - dominate person, 12th - symbol of persuasion, 14th - vision, 16th - frightful aspect, 18th - overwhelming presence.</p>",
+    "id": "conspiracies",
+    "name": "Conspiracies",
+    "sources": [
+      {
+        "id": "horror-adventures",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:conspiracies"
+  },
+  "death": {
+    "category": "basic",
+    "description": "<p>2nd - deathwatch, 4th - blessing of courage and life, 6th - speak with dead, 8th - rest eternal, 10th - suffocation, 12th - circle of death, 14th - finger of death, 16th - symbol of death, 18th - power word kill.</p>",
+    "id": "death",
+    "name": "Death",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:death"
+  },
+  "decadence": {
+    "category": "basic",
+    "description": "<p>2nd - negative reaction, 4th - demand offering, 6th - sepia snake sigil, 8th - charm monster, 10th - dream, 12th - envious urge, 14th - waves of ecstasy, 16th - euphoric tranquility, 18th - symbol of strife.</p>",
+    "id": "decadence",
+    "name": "Decadence",
+    "sources": [
+      {
+        "id": "horror-adventures",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:decadence"
+  },
+  "deception": {
+    "category": "basic",
+    "description": "<p>2nd - ventriloquism, 4th - invisibility, 6th - blink, 8th - confusion, 10th - passwall, 12th - programmed image, 14th - mass invisibility, 16th - scintillating pattern, 18th - time stop.</p>",
+    "id": "deception",
+    "name": "Deception",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:deception"
+  },
+  "devotion": {
+    "category": "basic",
+    "description": "<p>2nd - divine favor, 4th - martyr's bargain, 6th - magic vestment, 8th - greater magic weapon, 10th - flame strike, 12th - mass bull's strength, 14th - bestow grace of the champion, 16th - holy aura, 18th - mass heal.</p>",
+    "id": "devotion",
+    "name": "Devotion",
+    "sources": [
+      {
+        "id": "champions-of-purity",
+        "pages": "27"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:devotion"
+  },
+  "elements": {
+    "category": "basic",
+    "description": "<p>2nd - shocking grasp, 4th - flaming sphere, 6th - fireball, 8th - wall of ice, 10th - flame strike, 12th - freezing sphere, 14th - vortex, 16th - fire storm, 18th - meteor swarm.</p>",
+    "id": "elements",
+    "name": "Elements",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:elements"
+  },
+  "empath": {
+    "category": "unique",
+    "description": "<p>Your patron is a manifestation of the collective living experience - mortal desire and purpose given direction by the beliefs of countless minds and hearts. You gain the tongues hex at 1st level, but you cannot help but feel the despair, pain, and other negative emotions in those around you, taking a -5 penalty on saving throws against emotion effects.</p>\n<p><strong>Available Patron Themes:</strong> Ancestors, Mind, Spirits, Wisdom</p>\n<p><strong>Spell Changes:</strong> 2nd-burst of insight, 6th-analyze aura, 10th-retrocognition.</p>",
+    "id": "empath",
+    "name": "Empath",
+    "sources": [
+      {
+        "id": "blood-of-the-coven"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:empath"
+  },
+  "enchantment": {
+    "category": "basic",
+    "description": "<p>2nd - unnatural lust, 4th - calm emotions, 6th - unadulterated loathing, 8th - overwhelming grief, 10th - dominate person, 12th - geas, 14th - euphoric tranquility, 16th - demand, 18th - dominate monster.</p>",
+    "id": "enchantment",
+    "name": "Enchantment",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:enchantment"
+  },
+  "endurance": {
+    "category": "basic",
+    "description": "<p>2nd - endure elements, 4th - bear's endurance, 6th - protection from energy, 8th - spell immunity, 10th - spell resistance, 12th - mass bear's endurance, 14th - greater restoration, 16th - iron body, 18th - miracle.</p>",
+    "id": "endurance",
+    "name": "Endurance",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:endurance"
+  },
+  "entropy": {
+    "category": "basic",
+    "description": "<p>2nd - lesser confusion, 4th - plague carrier, 6th - babble, 8th - wandering star motes, 10th - feeblemind, 12th - antimagic field, 14th - insanity, 16th - symbol of insanity, 18th - interplanetary teleport.</p>",
+    "id": "entropy",
+    "name": "Entropy",
+    "sources": [
+      {
+        "id": "horror-adventures",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:entropy"
+  },
+  "ethereal": {
+    "category": "basic",
+    "description": "<p>2nd - detect undead, 4th - see invisibility, 6th - ectoplasmic snare, 8th - condensed ether, 10th - ethereal envelope, 12th - ethereal jaunt, 14th - ectoplasmic eruption, 16th - ethereal envelopment, 18th - etherealness.</p>",
+    "id": "ethereal",
+    "name": "Ethereal",
+    "sources": [
+      {
+        "id": "occult-adventures",
+        "pages": "125"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:ethereal"
+  },
+  "fate": {
+    "category": "basic",
+    "description": "<p>2nd - doom, 4th - anticipate peril, 6th - helping hand, 8th - blessing of fervor, 10th - greater forbid action, 12th - contingency, 14th - jolting portent, 16th - maze, 18th - wish.</p>",
+    "id": "fate",
+    "name": "Fate",
+    "sources": [
+      {
+        "id": "pathfinder-72-the-witch-queen-s-revenge",
+        "pages": "75"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:fate"
+  },
+  "fey_gifts": {
+    "category": "unique",
+    "description": "<p>A powerful fey or other entity from the First World has offered you magic. You serve as an anchor and scrying focus in the Material Plane for your patron, but you also provide frequent amusement. You gain the charm hex at 1st level, but your fey patron delights in your failure and injury and frequently jinxes you; once each day, the GM can demand you reroll a single ability check, attack roll, saving throw, or skill check and use the worse result.</p>\n<p><strong>Available Patron Themes:</strong> Agility, Enchantment, Trickery, Winter</p>\n<p><strong>Spell Changes:</strong> 2nd-disguise self, 4th-hideous laughter, 16th-irresistible dance.</p>",
+    "id": "fey_gifts",
+    "name": "Fey Gifts",
+    "sources": [
+      {
+        "id": "blood-of-the-coven"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:fey_gifts"
+  },
+  "green_whispers": {
+    "category": "unique",
+    "description": "<p>Your witch powers are a manifestation of the Green Faith or bestowed by a representative of natural forces, such as an ancient treant or nature spirit, who expects you to wield such gifts on its behalf. You gain the feral speech hex at 1st level, but you cannot abide the touch of iron or steel; contact with either metal deals 1d3 points of damage each round, and wearing metal armor prevents you from casting spells until it is removed.</p>\n<p><strong>Available Patron Themes:</strong> Animals, Endurance, Moon, Transformation</p>\n<p><strong>Spell Changes:</strong> 2nd-entangle, 6th-plant growth, 10th-tree stride.</p>",
+    "id": "green_whispers",
+    "name": "Green Whispers",
+    "sources": [
+      {
+        "id": "blood-of-the-coven"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:green_whispers"
+  },
+  "hags_calling": {
+    "category": "unique",
+    "description": "<p>Hags of exceptional power - most often mute hags and dreamthief hags - sometimes invest mortal agents with the same well of ancient power they have mastered. Hags most often invest their changeling daughters with such power, either once they have proven loyal or else to tempt them into wickedness. You gain the coven hex at 1st level, but you can neither use the aid another action nor receive benefits from others' aid another actions.</p>\n<p><strong>Available Patron Themes:</strong> Moon, Plague, Shadow, Vengeance</p>\n<p><strong>Spell Changes:</strong> 2nd-disguise self, 8th-sending, 10th-commune (hag/patron rather than deity).</p>",
+    "id": "hags_calling",
+    "name": "Hag's Calling",
+    "sources": [
+      {
+        "id": "blood-of-the-coven"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:hags_calling"
+  },
+  "healing": {
+    "category": "basic",
+    "description": "<p>2nd - remove fear, 4th - lesser restoration, 6th - remove disease, 8th - restoration, 10th - cleanse, 12th - pillar of life, 14th - greater restoration, 16th - mass cure critical wounds, 18th - true resurrection.</p>",
+    "id": "healing",
+    "name": "Healing",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:healing"
+  },
+  "infernal_contract": {
+    "category": "unique",
+    "description": "<p>Your power was brokered from a powerful daemon, demon, or devil to speed the corruption and moral decay of mortals. When you die, your soul goes to Abaddon, the Abyss, or Hell, and you can't be raised or resurrected except by extraordinary means - though bold service may earn you a favored position in damnation. You gain the misfortune hex at 1st level, but your magic requires sacrifice; each day when you prepare spells, you must deal 1d6 points of damage to yourself as part of your infernal ritual, feeding the lost blood to your familiar. At 5th level and every 5 levels thereafter, this damage increases by 1d6.</p>\n<p><strong>Available Patron Themes:</strong> Enchantment, Strength, Trickery, Vengeance</p>\n<p><strong>Spell Changes:</strong> 8th-lesser planar ally, 12th-planar ally, 16th-greater planar ally (your bonus spells can be used to summon only the type of outsider your patron represents).</p>",
+    "id": "infernal_contract",
+    "name": "Infernal Contract",
+    "sources": [
+      {
+        "id": "blood-of-the-coven"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:infernal_contract"
+  },
+  "insanity": {
+    "category": "basic",
+    "description": "<p>2nd - memory lapse, 4th - hideous laughter, 6th - distracting cacophony, 8th - confusion, 10th - mind fog, 12th - envious urge, 14th - insanity, 16th - symbol of insanity, 18th - overwhelming presence.</p>",
+    "id": "insanity",
+    "name": "Insanity",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:insanity"
+  },
+  "jynx": {
+    "category": "basic",
+    "description": "<p>2nd - ill omen, 4th - shatter, 6th - bestow curse, 8th - retribution, 10th - mark of justice, 12th - eyebite, 14th - spell turning, 16th - antipathy, 18th - energy drain.</p>",
+    "id": "jynx",
+    "name": "Jynx",
+    "sources": [
+      {
+        "id": "blood-of-the-coven",
+        "pages": "17"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:jynx"
+  },
+  "light": {
+    "category": "basic",
+    "description": "<p>2nd - dancing lantern, 4th - continual flame, 6th - daylight, 8th - rainbow pattern, 10th - fire snake, 12th - sirocco, 14th - sunbeam, 16th - sunburst, 18th - fiery body.</p>",
+    "id": "light",
+    "name": "Light",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:light"
+  },
+  "mercy": {
+    "category": "basic",
+    "description": "<p>2nd - cure light wounds, 4th - eagle's splendor, 6th - remove curse, 8th - restoration, 10th - cleanse, 12th - heroes' feast, 14th - foe to friend, 16th - euphoric tranquility, 18th - true resurrection.</p>",
+    "id": "mercy",
+    "name": "Mercy",
+    "sources": [
+      {
+        "id": "blood-of-the-coven",
+        "pages": "17"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:mercy"
+  },
+  "mind": {
+    "category": "basic",
+    "description": "<p>2nd - mindlink, 4th - mental block, 6th - mindscape door, 8th - create mindscape, 10th - psychic asylum, 12th - greater create mindscape, 14th - psychic surgery, 16th - moment of prescience, 18th - microcosm.</p>",
+    "id": "mind",
+    "name": "Mind",
+    "sources": [
+      {
+        "id": "occult-adventures",
+        "pages": "125"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:mind"
+  },
+  "moon": {
+    "category": "basic",
+    "description": "<p>2nd - darkness, 4th - darkvision, 6th - owl's wisdom, 8th - moonstruck, 10th - aspect of the wolf, 12th - control water, 14th - lunar veil, 16th - horrid wilting, 18th - meteor swarm.</p>",
+    "id": "moon",
+    "name": "Moon",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:moon"
+  },
+  "mountain": {
+    "category": "basic",
+    "description": "<p>2nd - stone fist, 4th - stone call, 6th - stone shape, 8th - spike stones, 10th - wall of stone, 12th - flesh to stone, 14th - stone tell, 16th - repel metal or stone, 18th - clashing rocks.</p>",
+    "id": "mountain",
+    "name": "Mountain",
+    "sources": [
+      {
+        "id": "heroes-of-the-wild",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:mountain"
+  },
+  "nightmares": {
+    "category": "basic",
+    "description": "<p>2nd - sleep, 4th - detect thoughts, 6th - oneiric horror, 8th - phantasmal killer, 10th - nightmare, 12th - dream travel, 14th - symbol of weakness, 16th - demand, 18th - polar midnight.</p>",
+    "id": "nightmares",
+    "name": "Nightmares",
+    "sources": [
+      {
+        "id": "horror-adventures",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:nightmares"
+  },
+  "occult": {
+    "category": "basic",
+    "description": "<p>2nd - detect undead, 4th - command undead, 6th - twilight knife, 8th - black tentacles, 10th - snake staff, 12th - create undead, 14th - waves of exhaustion, 16th - trap the soul, 18th - gate.</p>",
+    "id": "occult",
+    "name": "Occult",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:occult"
+  },
+  "peace": {
+    "category": "basic",
+    "description": "<p>2nd - sanctuary, 4th - calm emotions, 6th - wind wall, 8th - dismissal, 10th - serenity, 12th - word of recall, 14th - forcecage, 16th - euphoric tranquility, 18th - antipathy.</p>",
+    "id": "peace",
+    "name": "Peace",
+    "sources": [
+      {
+        "id": "champions-of-purity",
+        "pages": "27"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:peace"
+  },
+  "plague": {
+    "category": "basic",
+    "description": "<p>2nd - detect undead, 4th - command undead, 6th - contagion, 8th - animate dead, 10th - giant vermin, 12th - create undead, 14th - control undead, 16th - create greater undead, 18th - energy drain.</p>",
+    "id": "plague",
+    "name": "Plague",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:plague"
+  },
+  "plant": {
+    "category": "basic",
+    "description": "<p>2nd - entangle, 4th - accelerate poison, 6th - lily pad stride, 8th - grove of respite, 10th - tree stride, 12th - repel wood, 14th - animate plants, 16th - control plants, 18th - shambler.</p>",
+    "id": "plant",
+    "name": "Plant",
+    "sources": [
+      {
+        "id": "heroes-of-the-wild",
+        "pages": "11"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:plant"
+  },
+  "portents": {
+    "category": "basic",
+    "description": "<p>2nd - ill omen, 4th - locate object, 6th - blood biography, 8th - divination, 10th - contact other plane, 12th - legend lore, 14th - vision, 16th - moment of prescience, 18th - foresight.</p>",
+    "id": "portents",
+    "name": "Portents",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:portents"
+  },
+  "protection": {
+    "category": "basic",
+    "description": "<p>2nd - sanctuary, 4th - resist energy, 6th - wrathful mantle, 8th - stoneskin, 10th - interposing hand, 12th - forbiddance, 14th - greater spell immunity, 16th - prismatic wall, 18th - freedom.</p>",
+    "id": "protection",
+    "name": "Protection",
+    "sources": [
+      {
+        "id": "heroes-of-the-high-court",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:protection"
+  },
+  "recovery": {
+    "category": "basic",
+    "description": "<p>2nd - liberating command, 4th - remove paralysis, 6th - sacred bond, 8th - freedom of movement, 10th - cleanse, 12th - heroes' feast, 14th - joyful rapture, 16th - protection from spells, 18th - mass heal.</p>",
+    "id": "recovery",
+    "name": "Recovery",
+    "sources": [
+      {
+        "id": "healer-s-handbook",
+        "pages": "16"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:recovery"
+  },
+  "revenge": {
+    "category": "basic",
+    "description": "<p>2nd - magic fang, 4th - slipstream, 6th - rage, 8th - moonstruck, 10th - beast shape III, 12th - vengeful outrage, 14th - phantasmal revenge, 16th - seamantle, 18th - storm of vengeance.</p>",
+    "id": "revenge",
+    "name": "Revenge",
+    "sources": [
+      {
+        "id": "horror-adventures",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:revenge"
+  },
+  "rot": {
+    "category": "basic",
+    "description": "<p>2nd - decompose corpse, 4th - warp wood, 6th - fungal infestation, 8th - fleshworm infestation, 10th - plague carrier, 12th - epidemic, 14th - creeping doom, 16th - horrid wilting, 18th - cursed earth.</p>",
+    "id": "rot",
+    "name": "Rot",
+    "sources": [
+      {
+        "id": "blood-of-the-coven",
+        "pages": "17"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:rot"
+  },
+  "shadow": {
+    "category": "basic",
+    "description": "<p>2nd - silent image, 4th - darkness, 6th - deeper darkness, 8th - shadow conjuration, 10th - shadow evocation, 12th - shadow walk, 14th - greater shadow conjuration, 16th - greater shadow evocation, 18th - shades.</p>",
+    "id": "shadow",
+    "name": "Shadow",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:shadow"
+  },
+  "shadowbound": {
+    "category": "unique",
+    "description": "<p>Deep exposure to entities from the Plane of Shadow - kytons, nightshades, owbs, and similar ethereal forces - has infused you with shadow. You gain the disguise hex at 1st level, but you also gain light blindness.</p>\n<p><strong>Available Patron Themes:</strong> Death, Deception, Ethereal, Shadow</p>\n<p><strong>Spell Changes:</strong> 8th-shadow conjuration, 12th-shadow walk, 16th-greater shadow evocation.</p>",
+    "id": "shadowbound",
+    "name": "Shadowbound",
+    "sources": [
+      {
+        "id": "blood-of-the-coven"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:shadowbound"
+  },
+  "space": {
+    "category": "basic",
+    "description": "<p>2nd - mirror strike, 4th - twisted space, 6th - blink, 8th - dimension door, 10th - hostile juxtaposition, 12th - repulsion, 14th - walk through space, 16th - bilocation, 18th - teleportation circle.</p>",
+    "id": "space",
+    "name": "Space",
+    "sources": [
+      {
+        "id": "horror-adventures",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:space"
+  },
+  "spirits": {
+    "category": "basic",
+    "description": "<p>2nd - ghostbane dirge, 4th - invisibility, 6th - speak with dead, 8th - spiritual ally, 10th - mass ghostbane dirge, 12th - shadow walk, 14th - ethereal jaunt, 16th - planar ally, 18th - etherealness.</p>",
+    "id": "spirits",
+    "name": "Spirits",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:spirits"
+  },
+  "spring": {
+    "category": "basic",
+    "description": "<p>2nd - feather fall, 4th - alter self, 6th - pup shape, 8th - true form, 10th - lightning arc, 12th - chain lightning, 14th - control weather, 16th - stormbolts, 18th - time stop.</p>",
+    "id": "spring",
+    "name": "Spring",
+    "sources": [
+      {
+        "id": "ultimate-wilderness",
+        "pages": "88"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:spring"
+  },
+  "stars": {
+    "category": "basic",
+    "description": "<p>2nd - faerie fire, 4th - dust of twilight, 6th - guiding star, 8th - wandering star motes, 10th - dream, 12th - cloak of dreams, 14th - circle of clarity, 16th - euphoric tranquility, 18th - astral projection.</p>",
+    "id": "stars",
+    "name": "Stars",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:stars"
+  },
+  "storms": {
+    "category": "basic",
+    "description": "<p>2nd - obscuring mist, 4th - fog cloud, 6th - call lightning, 8th - ice storm, 10th - call lightning storm, 12th - wind walk, 14th - control weather, 16th - whirlwind, 18th - storm of vengeance.</p>",
+    "id": "storms",
+    "name": "Storms",
+    "sources": [
+      {
+        "id": "heroes-of-the-wild",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:storms"
+  },
+  "strength": {
+    "category": "basic",
+    "description": "<p>2nd - divine favor, 4th - bull's strength, 6th - greater magic weapon, 8th - divine power, 10th - righteous might, 12th - mass bull's strength, 14th - giant form I, 16th - giant form II, 18th - shapechange.</p>",
+    "id": "strength",
+    "name": "Strength",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:strength"
+  },
+  "summer": {
+    "category": "basic",
+    "description": "<p>2nd - goodberry, 4th - flaming sphere, 6th - daylight, 8th - greater flaming sphere, 10th - wall of fire, 12th - sirocco, 14th - sunbeam, 16th - sunburst, 18th - fiery body.[^D]</p>",
+    "id": "summer",
+    "name": "Summer",
+    "sources": [
+      {
+        "id": "heroes-of-the-wild",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:summer"
+  },
+  "the_condition_of_all": {
+    "category": "unique",
+    "description": "<p>Aeons are often patrons to witches, seeking out mortals who share their vested interest in some agenda that helps them promote the cosmic balance. You gain the scar hex at 1st level, but such service requires unwavering commitment to their cause, and you lose your spellcasting and hexes (but not your familiar) if your alignment changes after taking your first witch level; you regain your spellcasting and hexes once you revert to your original alignment.</p>\n<p><strong>Available Patron Themes:</strong> Elements, Time, Transformation, Wisdom</p>\n<p><strong>Spell Changes:</strong> 2nd-forbid action, 8th-dismissal, 12th-geas/quest.</p>",
+    "id": "the_condition_of_all",
+    "name": "The Condition of All",
+    "sources": [
+      {
+        "id": "blood-of-the-coven"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:the_condition_of_all"
+  },
+  "thorns": {
+    "category": "basic",
+    "description": "<p>2nd - thorn javelin, 4th - wrath, 6th - thorny entanglement, 8th - thorn body, 10th - wall of thorns, 12th - blade barrier, 14th - repulsion, 16th - mage's sword, 18th - wooden phalanx.[^D]</p>",
+    "id": "thorns",
+    "name": "Thorns",
+    "sources": [
+      {
+        "id": "heroes-of-the-wild",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:thorns"
+  },
+  "time": {
+    "category": "basic",
+    "description": "<p>2nd - ventriloquism, 4th - silence, 6th - haste, 8th - threefold aspect, 10th - teleport, 12th - disintegrate, 14th - expend, 16th - temporal stasis, 18th - time stop.</p>",
+    "id": "time",
+    "name": "Time",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:time"
+  },
+  "touched_by_the_outer_gods": {
+    "category": "unique",
+    "description": "<p>Your powers hail from an incomprehensible being from beyond the stars, whose motivations and needs erode your psyche. You gain the unnerve beasts hex at 1st level, but you take a -2 penalty on saving throws against confusion and emotion effects and are affected by such effects for at least 1 round even on a successful saving throw.</p>\n<p><strong>Available Patron Themes:</strong> Insanity, Occult, Stars, Transformation</p>\n<p><strong>Spell Changes:</strong> 2nd-lesser confusion, 8th-dreadscape, 10th-compelling rant.</p>",
+    "id": "touched_by_the_outer_gods",
+    "name": "Touched by the Outer Gods",
+    "sources": [
+      {
+        "id": "blood-of-the-coven"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:touched_by_the_outer_gods"
+  },
+  "transformation": {
+    "category": "basic",
+    "description": "<p>2nd - jump, 4th - bear's endurance, 6th - beast shape I, 8th - beast shape II, 10th - beast shape III, 12th - form of the dragon I, 14th - form of the dragon II, 16th - form of the dragon III, 18th - shapechange.</p>\n<p>;;;aside</p>\n<p>When a witch with a Transformation patron gains the ability to choose a major hex, they may learn an annointing in place of a new hex.</p>\n<p>;;;</p>",
+    "id": "transformation",
+    "name": "Transformation",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:transformation"
+  },
+  "trickery": {
+    "category": "basic",
+    "description": "<p>2nd - animate rope, 4th - mirror image, 6th - major image, 8th - hallucinatory terrain, 10th - mirage arcana, 12th - mislead, 14th - reverse gravity, 16th - screen, 18th - time stop.</p>",
+    "id": "trickery",
+    "name": "Trickery",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:trickery"
+  },
+  "vengeance": {
+    "category": "basic",
+    "description": "<p>2nd - burning hands, 4th - burning gaze, 6th - pain strike, 8th - shout, 10th - symbol of pain, 12th - mass pain strike, 14th - phantasmal revenge, 16th - incendiary cloud, 18th - winds of vengeance.</p>",
+    "id": "vengeance",
+    "name": "Vengeance",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:vengeance"
+  },
+  "water": {
+    "category": "basic",
+    "description": "<p>2nd - bless water/curse water, 4th - slipstream, 6th - water breathing, 8th - control water, 10th - geyser, 12th - elemental body III (water only), 14th - elemental body IV (water only), 16th - seamantle, 18th - tsunami.</p>",
+    "id": "water",
+    "name": "Water",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:water"
+  },
+  "winter": {
+    "category": "basic",
+    "description": "<p>2nd - unshakable chill, 4th - resist energy (cold only), 6th - ice storm, 8th - wall of ice, 10th - cone of cold, 12th - freezing sphere, 14th - control weather, 16th - polar ray, 18th - polar midnight.[^D]</p>",
+    "id": "winter",
+    "name": "Winter",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "83"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:winter"
+  },
+  "wisdom": {
+    "category": "basic",
+    "description": "<p>2nd - shield of faith, 4th - owl's wisdom, 6th - magic vestment, 8th - lesser globe of invulnerability, 10th - dream, 12th - globe of invulnerability, 14th - spell turning, 16th - protection from spells, 18th - mage's disjunction.</p>",
+    "id": "wisdom",
+    "name": "Wisdom",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:wisdom"
+  },
+  "woodlands": {
+    "category": "basic",
+    "description": "<p>2nd - entangle, 4th - accelerate poison, 6th - lily pad stride, 8th - grove of respite, 10th - tree stride, 12th - repel wood, 14th - animate plants, 16th - control plants, 18th - shambler.</p>",
+    "id": "woodlands",
+    "name": "Woodlands",
+    "sources": [
+      {
+        "id": "ultimate-wilderness",
+        "pages": "89"
+      }
+    ],
+    "uuid": "pfdata:witch-patron:woodlands"
+  }
+}

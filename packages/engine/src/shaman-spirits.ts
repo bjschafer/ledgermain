@@ -65,6 +65,8 @@
  *     companion).
  */
 
+import type { RefData, ShamanSpirit, SourceRef } from "@pf1/schema";
+
 export interface ShamanSpiritMagicSpell {
   /** The spell's own level, 1-9 (see file doc comment — NOT a shaman class-level threshold). */
   level: number;
@@ -555,4 +557,90 @@ export function findShamanHex(hexId: string): ShamanSpiritHex | undefined {
   const spiritTag = hexId.split(":")[0];
   if (!spiritTag) return undefined;
   return SHAMAN_SPIRITS[spiritTag]?.hexes.find((h) => h.id === hexId);
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.shamanSpirits` is the FULL published catalog
+ * (18 entries after junk filtering), prose only — same "catalog from data,
+ * mechanics as overlay" pattern as `rage-powers.ts`'s
+ * `mergedRagePowerCatalog`. The hand-verified 8-core-spirit table above
+ * stays authoritative for spirit magic spells/ability/hexes; this section
+ * merges the two for browsing.
+ *
+ * Matching is by NORMALIZED NAME. Collision audit (all 8 hand-authored
+ * spirits): all 8 matched a vendored entry by normalized name (the vendored
+ * dictionary keys ARE this table's own `tag`s, verified) — no aliasing
+ * needed.
+ */
+
+const SHAMAN_SPIRIT_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeSpiritName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedShamanSpiritEntry extends ShamanSpiritDef {
+  description?: string;
+  sources?: SourceRef[];
+  /** True for a vendored-only spirit with no hand-authored spirit magic/ability/hex data — the picker's "M" (modeled) badge convention. */
+  displayOnly: boolean;
+}
+
+function vendoredSpiritToDef(entry: ShamanSpirit): MergedShamanSpiritEntry {
+  return {
+    tag: entry.id,
+    name: entry.name,
+    spiritMagicSpells: [],
+    ability: { name: "", summary: "" },
+    hexes: [],
+    spiritAnimalNote: "",
+    description: entry.description,
+    sources: entry.sources,
+    displayOnly: true,
+  };
+}
+
+/** Resolve a picked spirit tag (`doc.build.shamanSpirit`) to its definition — hand-authored table first, falling back to the vendored catalog for a tag that only exists there. */
+export function resolveShamanSpirit(
+  tag: string,
+  refData: RefData,
+): MergedShamanSpiritEntry | undefined {
+  const hand = SHAMAN_SPIRITS[tag];
+  if (hand) return { ...hand, displayOnly: false };
+  const vendored = refData.shamanSpirits?.[tag];
+  return vendored ? vendoredSpiritToDef(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog: every vendored spirit, with any that collides (by normalized name) against a hand-authored entry replaced by that def, plus any hand-authored entry with no vendored counterpart appended. */
+export function mergedShamanSpiritCatalog(refData: RefData): MergedShamanSpiritEntry[] {
+  const handByNormName = new Map<string, ShamanSpiritDef>();
+  for (const s of SPIRIT_LIST) {
+    handByNormName.set(normalizeSpiritName(SHAMAN_SPIRIT_NAME_ALIASES[s.tag] ?? s.name), s);
+  }
+
+  const usedHandTags = new Set<string>();
+  const merged: MergedShamanSpiritEntry[] = [];
+  for (const v of Object.values(refData.shamanSpirits ?? {})) {
+    const handMatch = handByNormName.get(normalizeSpiritName(v.name));
+    if (handMatch) {
+      usedHandTags.add(handMatch.tag);
+      merged.push({
+        ...handMatch,
+        description: v.description,
+        sources: v.sources,
+        displayOnly: false,
+      });
+    } else {
+      merged.push(vendoredSpiritToDef(v));
+    }
+  }
+  for (const s of SPIRIT_LIST) {
+    if (!usedHandTags.has(s.tag)) merged.push({ ...s, displayOnly: false });
+  }
+  return merged;
 }

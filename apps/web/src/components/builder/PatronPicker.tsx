@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 
-import { WITCH_PATRONS, WITCH_PATRON_TAGS } from "@pf1/engine";
+import { mergedWitchPatronCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setWitchPatron } from "../../model/doc.js";
 import { patronSpellsKnown } from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -23,24 +24,27 @@ interface PatronPickerProps {
  * validation is "soft warning only" per the project's hybrid-prereqs
  * philosophy — same posture as `MysteryPicker`/`BloodlinePicker`.
  *
- * Scope: the 17 Advanced Player's Guide / Ultimate Magic "core" patrons — see
- * `@pf1/engine` `witch-patrons.ts`'s doc comment for the exact list and the
- * explicit exclusions (Protection is a later-splatbook patron; "Wards" and
- * "Portals" aren't real PF1 patrons at all).
- *
- * The chosen patron grants one bonus spell known (added to the familiar's
- * spells) at witch level 2 and every two levels thereafter — see
- * `model/spellcasting.patronSpellsKnown`, surfaced in the Spells section.
- * Unlike a mystery, a patron grants no bonus class skills.
+ * Browses the FULL published patron catalog (`mergedWitchPatronCatalog`,
+ * issue #74 Phase 3c) — the 17 Advanced Player's Guide/Ultimate Magic "core"
+ * patrons keep their hand-verified bonus-spell progression (marked
+ * `badge-modeled` "M", surfaced via `model/spellcasting.patronSpellsKnown` at
+ * witch level 2 and every two levels thereafter); the ~44 other vendored-only
+ * patrons (including the "unique" themed patrons) show their full vendored
+ * prose instead — no bonus spells known for those (this app has no vendored
+ * spell-id mapping for them, see `@pf1/engine` `witch-patrons.ts`'s doc
+ * comment).
  */
 export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
   const isWitch = doc.identity.classes.some((c) => c.tag === "witch");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Patron", false);
 
-  const patrons = useMemo(() => [...WITCH_PATRON_TAGS].sort(), []);
+  const catalog = useMemo(
+    () => [...mergedWitchPatronCatalog(refData)].sort((a, b) => a.name.localeCompare(b.name)),
+    [refData],
+  );
 
   const chosen = doc.build.witchPatron ?? "";
-  const patronDef = WITCH_PATRONS[chosen];
+  const patronDef = catalog.find((p) => p.tag === chosen);
   const witchLevel = doc.identity.classes.find((c) => c.tag === "witch")?.level ?? 0;
   const bonusSpells = useMemo(
     () => (patronDef ? patronSpellsKnown(refData, chosen, 18) : []),
@@ -63,16 +67,24 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
       >
         <h3>
           Patron
-          {patronDef ? <span className="hint"> · {patronDef.name}</span> : null}
+          {patronDef ? (
+            <span className="hint">
+              {" "}
+              · {patronDef.name}
+              {!patronDef.displayOnly && <span className="badge-modeled"> M</span>}
+            </span>
+          ) : null}
         </h3>
         <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>
           <p className="hint mystery-picker-hint">
-            Pick one patron (PF1 grants one at level 1, never changed thereafter). It grants one
+            Pick one patron (PF1 grants one at level 1, never changed thereafter). Browses the full
+            published catalog; entries marked <span className="badge-modeled">M</span> grant one
             bonus spell known (added to your familiar's spells) at witch level 2 and every two
-            levels thereafter. Free-choice — no soft/hard validation.
+            levels thereafter — the rest show their full published prose instead. Free-choice — no
+            soft/hard validation.
           </p>
           <select
             className="mystery-select"
@@ -80,28 +92,34 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
             onChange={(e) => update((d) => setWitchPatron(d, e.target.value || null))}
           >
             <option value="">— none chosen —</option>
-            {patrons.map((tag) => (
-              <option key={tag} value={tag}>
-                {WITCH_PATRONS[tag]?.name ?? tag}
+            {catalog.map((p) => (
+              <option key={p.tag} value={p.tag}>
+                {p.name}
+                {p.displayOnly ? "" : " (M)"}
               </option>
             ))}
           </select>
 
-          {patronDef && (
-            <div className="mystery-preview">
-              <ul className="mystery-bonus-spells">
-                {bonusSpells.map((sp) => (
-                  <li key={`${sp.level}-${sp.id}`}>
-                    <span className="cf-level">Witch Lv {sp.level}</span>{" "}
-                    <span className="cf-name">
-                      {sp.name}
-                      {sp.level > witchLevel && witchLevel > 0 ? " (not yet unlocked)" : ""}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {patronDef &&
+            (patronDef.displayOnly ? (
+              patronDef.description ? (
+                <FeatureDescription html={patronDef.description} />
+              ) : null
+            ) : (
+              <div className="mystery-preview">
+                <ul className="mystery-bonus-spells">
+                  {bonusSpells.map((sp) => (
+                    <li key={`${sp.level}-${sp.id}`}>
+                      <span className="cf-level">Witch Lv {sp.level}</span>{" "}
+                      <span className="cf-name">
+                        {sp.name}
+                        {sp.level > witchLevel && witchLevel > 0 ? " (not yet unlocked)" : ""}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
         </>
       )}
     </div>
