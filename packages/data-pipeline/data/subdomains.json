@@ -476,7 +476,7 @@
         "type": "resist"
       }
     ],
-    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p>{Aura of Protection (Su)}</p><h3>Domain Spells</h3><ul><li>1st—Hold Person</li><li>2nd—Shield Other</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Wall of Stone</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Prismatic Wall</li></ul>",
+    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Hold Person</li><li>2nd—Shield Other</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Wall of Stone</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Prismatic Wall</li></ul>",
     "features": [
       {
         "featureId": "jlGCqPjmgNH3lUXS",
@@ -824,7 +824,7 @@
         "type": "resist"
       }
     ],
-    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p>{Aura of Protection (Su)}</p><h3>Domain Spells</h3><ul><li>1st—Shield</li><li>2nd—Barkskin</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Spell Resistance</li><li>6th—Antimagic Field</li><li>7th—Deflection</li><li>8th—Mind Blank</li><li>9th—Prismatic Sphere</li></ul>",
+    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Shield</li><li>2nd—Barkskin</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Spell Resistance</li><li>6th—Antimagic Field</li><li>7th—Deflection</li><li>8th—Mind Blank</li><li>9th—Prismatic Sphere</li></ul>",
     "features": [
       {
         "featureId": "yDG7xVuH7oqWS4Mt",
@@ -1424,7 +1424,7 @@
         "type": "resist"
       }
     ],
-    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p>{Taboo (Su)}</p><p>{Aura of Protection (Su)}</p><h3>Domain Spells</h3><ul><li>1st—Sanctuary</li><li>2nd—Silence</li><li>3rd—Protection from Energy</li><li>4th—Detect Scrying</li><li>5th—Mirage Arcana</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Create Demiplane, Greater</li></ul>",
+    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Sanctuary</li><li>2nd—Silence</li><li>3rd—Protection from Energy</li><li>4th—Detect Scrying</li><li>5th—Mirage Arcana</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Create Demiplane, Greater</li></ul>",
     "features": [
       {
         "featureId": "zx0lJIxpj8ZCDh97",
