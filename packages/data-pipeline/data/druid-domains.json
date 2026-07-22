@@ -1,0 +1,381 @@
+{
+  "4Z5iuLDuGOUL1b6g": {
+    "description": "<p><strong>Granted Powers</strong>: You venerate the elder amphibians that first brought life to land.</p><p><strong>Familiar</strong>: You may gain a toad familiar. Your effective wizard level for this ability is equal to your druid level. Your druid level stacks with levels from other classes that grant familiars when determining the powers of your familiar.</p><h3>Domain Powers</h3><p>Sticky Strike (Su): As a standard action, you can attempt a ranged touch attack with a sticky tendril against a target up to 15 feet away, then use the pull universal monster ability to pull the target 5 feet toward you. You gain a bonus on the pull's combat maneuver check equal to 1/2 your druid level. If the target is larger than you, you may pull yourself 5 feet toward the target without making a check. The target can remove the tendril by making an opposed Strength check as a standard action, or by dealing enough slashing damage to the tendril (hit points equal to your druid level, Armor Class equal to your touch Armor Class). You can dissolve the tendril as a free action. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Webfoot (Ex): At 6th level, you gain the amphibious special quality and a swim speed equal to your land speed. At 12th level, you gain a climb speed equal to your land speed.</p><h3>Domain Spells</h3><ul><li><p>1st—Jump</p></li><li><p>2nd—Delay Poison</p></li><li><p>3rd—Lily Pad Stride</p></li><li><p>4th—Shout</p></li><li><p>5th—Blessing of the Salamander</p></li><li><p>6th—Confusion</p></li><li><p>7th—Animal shapes (amphibians only)</p></li><li><p>8th— Greater Shout</p></li><li><p>9th—Summon Froghemoth</p></li></ul>",
+    "features": [],
+    "id": "4Z5iuLDuGOUL1b6g",
+    "kind": "animal",
+    "name": "Frog Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "34"
+      }
+    ],
+    "tag": "Frog",
+    "uuid": "Compendium.pf1.class-abilities.Item.4Z5iuLDuGOUL1b6g"
+  },
+  "8TdYosKQ5tPgUHjq": {
+    "description": "<p><strong>Granted Powers</strong>: You embrace the destructive flames and ever-roaring volcanoes of the Plane of Fire, having proven yourself impervious to its heat. In addition, you can use wild empathy to influence a creature with the fire subtype if its Intelligence score is 1 or 2.</p><h3>Domain Powers</h3><p>Fire Hardened (Ex): You ignore fire damage from the fire-dominant planar trait, and you gain fire resistance 5. If you have natural fire resistance, it increases by 5 instead, and if you are naturally immune to fire, you heal hit points and ability damage at twice the normal rate when resting on a fire-dominant plane. You can touch a willing creature to grant these benefits for 1 hour. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>All-Consuming Flames (Su): At 8th level, you can channel the extraplanar heat into your allies’ weapons within 30 feet as a standard action. For 1 minute, the affected weapons gain the cold-outsider-bane, fire-outsider-bane, or flaming weapon special abilities. You must grant each weapon the same ability, and this ability affects no more than two of any ally’s weapons. You can use this ability once per day, plus an additional time per day for every four levels beyond 8th.</p><p>Alternatively, you can choose to gain a Small fire elemental as a familiar, as if you possessed the Improved Familiar feat. Your effective wizard level for this ability is equal to your druid level and stacks with other classes that grant a familiar.</p><h3>Domain Spells</h3><ul><li><p>1st—Obscuring Mist (creates smoke)</p></li><li><p>2nd—Elemental Speech</p></li><li><p>3rd—Ash Storm</p></li><li><p>4th—Planar Adaptation</p></li><li><p>5th—Scorching Ash Form</p></li><li><p>6th—Planar Adaptation, Mass</p></li><li><p>7th—Delayed Blast Fireball</p></li><li><p>8th—Destruction</p></li><li><p>9th—Fiery Body</p></li></ul>",
+    "features": [],
+    "id": "8TdYosKQ5tPgUHjq",
+    "kind": "terrain",
+    "name": "Plane of Fire Domain",
+    "sources": [
+      {
+        "id": "PZO9295",
+        "pages": "7"
+      }
+    ],
+    "tag": "Plane of Fire",
+    "uuid": "Compendium.pf1.class-abilities.Item.8TdYosKQ5tPgUHjq"
+  },
+  "97S4GpMuSc32AlkX": {
+    "description": "<p><strong>Granted Powers</strong>: You master the deeps of the sea, raging rivers, flowing falls, and relentless tides.</p><h3>Domain Powers</h3><p>Sealord (Su): You can channel energy (as a cleric of your druid level) a number of times per day equal to 3 + your Charisma modifier, but only to heal creatures with the aquatic or water subtype or to command them (similar to using the Command Undead feat against undead). You can take other feats to add to this ability, such as Extra Channel and Improved Channel, but not feats that alter this ability, such as Elemental Channel and Alignment Channel. The DC to save against this ability is equal to 10 + 1/2 your druid level + your Charisma modifier.</p><p>Seastrike (Su): At 6th level, as a free action, you may use natural and manufactured weapons in water as if you had continuous freedom of movement. As a standard action, you can throw a weapon underwater without the normal penalties for throwing weapons; if your target is in or under the water, the weapon also acts as a returning weapon for that attack.</p><h3>Domain Spells</h3><ul><li><p>1st—hydraulic push</p></li><li><p>2nd—slipstream</p></li><li><p>3rd—water breathing</p></li><li><p>4th—freedom of movement</p></li><li><p>5th—black tentacles</p></li><li><p>6th—freezing sphere</p></li><li><p>7th—animal shapes (aquatic creatures only)</p></li><li><p>8th—Seamantle</p></li><li><p>9th—Tsunami</p></li></ul>",
+    "features": [],
+    "id": "97S4GpMuSc32AlkX",
+    "kind": "terrain",
+    "name": "Aquatic Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "33"
+      }
+    ],
+    "tag": "Aquatic",
+    "uuid": "Compendium.pf1.class-abilities.Item.97S4GpMuSc32AlkX"
+  },
+  "A1PmOhAhNXdRKBb9": {
+    "description": "<p><strong>Granted Powers</strong>: The sour-sweet depths of bogs, marshes, and swamps are your places of power.</p><h3>Domain Powers</h3><p>Natural Healing (Su): You can channel energy (as a cleric of your druid level) a number of times per day equal to 3 + your Charisma modifier, but only to heal animals, plants, and vermin. You may reduce the number of dice healed to cure ability damage (your choice) to all affected creatures, curing 1 point of ability damage for each d6 that the channel energy is reduced. You can take other feats to add to this ability, such as Extra Channel, but not feats that alter this ability, such as Elemental Channel and Alignment Channel.</p><p>Reed Hunter (Ex): At 6th level, you gain blindsense 30 feet with respect to concealment and cover from fog, vegetation, or water. At 12th level, this improves to blindsight 30 feet with respect to these conditions.</p><h3>Domain Spells</h3><ul><li><p>1st—Hydraulic Push</p></li><li><p>2nd—Burst of Nettles</p></li><li><p>3rd—Lily Pad Stride</p></li><li><p>4th—Cape of Wasps</p></li><li><p>5th—Insect Plague</p></li><li><p>6th—Mass Fester</p></li><li><p>7th—Animate Plants</p></li><li><p>8th—Blood Mist</p></li><li><p>9th—Shambler</p></li></ul>",
+    "features": [],
+    "id": "A1PmOhAhNXdRKBb9",
+    "kind": "terrain",
+    "name": "Swamp Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "35"
+      }
+    ],
+    "tag": "Swamp",
+    "uuid": "Compendium.pf1.class-abilities.Item.A1PmOhAhNXdRKBb9"
+  },
+  "CO9fhRbqFf3FElkS": {
+    "description": "<p><strong>Granted Powers</strong>: The spirits of the jungle, both of natural guardians and lost civilizations, whisper in your heart.</p><h3>Domain Powers</h3><p>Brachiation (Ex): As a free action for a number of rounds per day equal to your druid level, you may climb with a climb speed equal to your land speed, and gain a bonus on Acrobatics checks equal to your druid level. These rounds do not have to be consecutive.</p><p>Trap Sense (Ex): At 3rd level, you gain the trap sense ability. This is identical to the rogue class ability. Your effective rogue level is equal to your druid level for the purpose of determining your trap sense bonus. Trap sense bonuses gained from multiple classes stack.</p><h3>Domain Spells</h3><ul><li><p>1st—Glide</p></li><li><p>2nd—Tar Ball</p></li><li><p>3rd—Venomous Bolt</p></li><li><p>4th—Arboreal Hammer</p></li><li><p>5th—Blessing of the Salamander</p></li><li><p>6th—Swarm Skin</p></li><li><p>7th—Creeping Doom</p></li><li><p>8th—Wall of Lava</p></li><li><p>9th—shambler</p></li></ul>",
+    "features": [],
+    "id": "CO9fhRbqFf3FElkS",
+    "kind": "terrain",
+    "name": "Jungle Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "34"
+      }
+    ],
+    "tag": "Jungle",
+    "uuid": "Compendium.pf1.class-abilities.Item.CO9fhRbqFf3FElkS"
+  },
+  "EaEChcxSrf891q0P": {
+    "description": "<p><strong>Granted Powers</strong>: The wide open spaces of the prairie, savanna, and steppe are yours to master.</p><h3>Domain Powers</h3><p>Migrating Herd (Su): When you summon an aurochs, bison, elephant, horse, mastodon, pony, or similar quadruped herbivore with a summoning spell, the duration of the spell is increased by 100% (this does not stack with Extend Spell). The creature's land speed is increased by 10 feet.</p><p>Pounce (Ex): At 6th level, you may use the pounce special attack once per day. You may pounce one additional time per day for every 3 levels after 6th.</p><h3>Domain Spells</h3><ul><li><p>1st—Mount</p></li><li><p>2nd—Chameleon Stride</p></li><li><p>3rd—Haste</p></li><li><p>4th—Aspect of the Stag</p></li><li><p>5th—Control Winds</p></li><li><p>6th—Find the Path</p></li><li><p>7th—Whirlwind</p></li><li><p>8th—Animal Shapes</p></li><li><p>9th—World Wave</p></li></ul>",
+    "features": [],
+    "id": "EaEChcxSrf891q0P",
+    "kind": "terrain",
+    "name": "Plains Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "35"
+      }
+    ],
+    "tag": "Plains",
+    "uuid": "Compendium.pf1.class-abilities.Item.EaEChcxSrf891q0P"
+  },
+  "HehPaYVwFagnzjt4": {
+    "description": "<p><strong>Granted Powers</strong>: You are connected with the primal forces of creation and destruction and with the crocodile spirit’s ancient wisdom.</p><h3>Domain Powers</h3><p>Familiar: You gain a dwarf caiman familiar (Pathfinder Player Companion: Animal Archive, Pathfinder Adventure Path #55). Your effective wizard level for this ability is equal to your druid level. Your druid level stacks with levels from other classes that grant familiars when determining the powers of your familiar.</p><p>Death Roll (Ex): While grappling an enemy up to one size category larger than you, you may make a grapple check to roll wildly, knocking your enemy prone and dealing 1d8 points of damage. When using this ability, you gain a bonus to your CMB equal to one half your druid level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Ambush (Ex): At 6th level, you gain sneak attack +1d6. This increase to sneak attack damage stacks with sneak attack damage you may have from other sources. This sneak attack damage increases by +1d6 for every 5 druid levels you possess beyond 6th, to a maximum of +3d6 at 16th level.</p><h3>Domain Spells</h3><ul><li><p>1st—Touch of the Sea</p></li><li><p>2nd—Savage Maw</p></li><li><p>3rd—Water Walk</p></li><li><p>4th—Strong Jaw</p></li><li><p>5th—Legend Lore</p></li><li><p>6th—Owl's Wisdom, Mass</p></li><li><p>7th—True Seeing</p></li><li><p>8th—Heal, Mass</p></li><li><p>9th—Regenerate</p></li></ul>",
+    "features": [],
+    "id": "HehPaYVwFagnzjt4",
+    "kind": "animal",
+    "name": "Crocodile Domain",
+    "sources": [
+      {
+        "id": "PZO9436",
+        "pages": "24"
+      }
+    ],
+    "tag": "Crocodile",
+    "uuid": "Compendium.pf1.class-abilities.Item.HehPaYVwFagnzjt4"
+  },
+  "LElK7eIVKokOUnyL": {
+    "description": "<p><strong>Granted Powers</strong>: You serve ancient serpentine mysteries whose coils still encircle the world.</p><p><strong>Familiar</strong>: You gain a viper familiar. Your effective wizard level for this ability is equal to your druid level. Your druid level stacks with levels from other classes that grant familiars when determining the powers of your familiar.</p><h3>Domain Powers</h3><p>Slither (Ex): As a free action, you can distend and stretch your body to fit easily through narrow spaces for 1 round. You can move freely through a tight space that would normally require a creature of your size to squeeze through. While slithering, you gain a +2 dodge bonus to Armor Class against attacks of opportunity provoked by your movement and a +2 bonus on CMB and on Escape Artist checks made to escape from a grapple. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Venom Immunity (Ex): At 6th level, you gain immunity to poisons from snakes, reptiles, and creatures with the reptilian subtype. At 12th level, you gain immunity to all poisons. This replaces venom immunity.</p><h3>Domain Spells</h3><ul><li><p>1st—Charm Animal</p></li><li><p>2nd—Animal Trance</p></li><li><p>3rd—Poison</p></li><li><p>4th—Srong Jaw</p></li><li><p>5th—Snake Staff</p></li><li><p>6th—Charm Monster</p></li><li><p>7th—Animal Shapes (reptiles and snakes only)</p></li><li><p>8th—Scintillating Pattern</p></li><li><p>9th—Crushing Hand</p></li></ul>",
+    "features": [],
+    "id": "LElK7eIVKokOUnyL",
+    "kind": "animal",
+    "name": "Serpent Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "35"
+      }
+    ],
+    "tag": "Serpent",
+    "uuid": "Compendium.pf1.class-abilities.Item.LElK7eIVKokOUnyL"
+  },
+  "SGKVIh5tN5UVfww1": {
+    "description": "<p><strong>Granted Powers</strong>: You are at one with the Plane of Water, able to navigate it and weaponize it at will. In addition, you can use wild empathy to influence a creature with the water subtype if its Intelligence score is 1 or 2.</p><h3>Domain Powers</h3><p>Aquatic Veil (Su): As a standard action, you can sheathe your body in a thin layer of water for a number of rounds equal to your Wisdom modifier. This grants you a bonus on Swim checks equal to 1/2 your druid level and allows you to breathe normally underwater. You can end the effect when delivering a touch spell to create a pseudopod of water that extends your effective reach by 5 feet for that attack. When used underwater, the pseudopod instead increases your reach by 10 feet. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Hydraulic Crush (Sp): At 8th level, you can strike an area with a pressurized blast of water in a 5-foot-radius column 30 feet tall with a range of 60 feet. Creatures in the area take 1d6 bludgeoning damage per druid level and are knocked prone. When used underwater, the radius and height double, and the effect instead creates a powerful eddy that causes affected creatures to lose their Dexterity bonus to Armor Class for 1 round instead of knocking them prone. A successful Reflex save halves the damage and prevents the secondary effect. You can use this ability once per day, plus an additional time for every 6 levels beyond 8th.</p><p>Alternatively, you can choose to gain a Small water elemental as a familiar, as if you possessed the Improved Familiar feat. Your effective wizard level for this ability is equal to your druid level and stacks with other classes that grant a familiar.</p><h3>Domain Spells</h3><ul><li><p>1st—Touch of the Sea</p></li><li><p>2nd—Elemental Speech</p></li><li><p>3rd—Water Breathing</p></li><li><p>4th—Planar Adaptation</p></li><li><p>5th—Solid Fog (functions underwater)</p></li><li><p>6th—Planar Adaptation</p></li><li><p>7th—Fluid Form</p></li><li><p>8th—Seamantle</p></li><li><p>9th—Tsunami</p></li></ul>",
+    "features": [],
+    "id": "SGKVIh5tN5UVfww1",
+    "kind": "terrain",
+    "name": "Plane of Water Domain",
+    "sources": [
+      {
+        "id": "PZO9295",
+        "pages": "7"
+      }
+    ],
+    "tag": "Plane of Water",
+    "uuid": "Compendium.pf1.class-abilities.Item.SGKVIh5tN5UVfww1"
+  },
+  "TfdjnYY4w4Ny4pzi": {
+    "description": "<p><strong>Granted Powers</strong>: The spirits and secrets of the endless wastes are yours to command.</p><h3>Domain Powers</h3><p>Heat Shimmer (Su): As a free action, you can surround yourself with heat distortion that acts as the blur spell. Creatures that strike you in melee while you're using this ability are dazzled for 1 round (Fortitude negates). You may use this ability for a number of rounds per day equal to 3 + your Wisdom modifier. These rounds need not be consecutive.</p><p>Servant of the Sands (Sp): At 8th level, once per day, you may call upon the aid of a janni as if using lesser planar ally. At 12th level, you may call upon the aid of any type of common (non-noble) genie as if using planar ally. At 16th level, you may call upon the aid of a noble genie as if using greater planar ally. If you use this power while in desert terrain, you need not make an offering to call the creature(s), and the cost of any service is halved.</p><h3>Domain Spells</h3><ul><li><p>1st—Cloak of Shade</p></li><li><p>2nd—Shifting Sand</p></li><li><p>3rd—Cup of Dust</p></li><li><p>4th—Hallucinatory Terrain</p></li><li><p>5th—Transmute Rock to Mud (creates loose sand instead of mud)</p></li><li><p>6th—Sirocco</p></li><li><p>7th—Sunbeam</p></li><li><p>8th—Sunburst</p></li><li><p>9th—Horrid Wilting.</p></li></ul>",
+    "features": [],
+    "id": "TfdjnYY4w4Ny4pzi",
+    "kind": "terrain",
+    "name": "Desert Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "34"
+      }
+    ],
+    "tag": "Desert",
+    "uuid": "Compendium.pf1.class-abilities.Item.TfdjnYY4w4Ny4pzi"
+  },
+  "TssxVJevWD9m81Bq": {
+    "description": "<p><strong>Granted Powers</strong>: You see the perfection of nature in the spindly limbs and strange forms of all vermin, great and small alike.</p><h3>Domain Powers</h3><p>Vermin Whisperer (Su): You can use your wild empathy ability on vermin. When you do so, you impart a modicum of implanted intelligence on the vermin, allowing you to interact with vermin as if they were animals. Vermin whisperer functions only on vermin that are mindless or have an Intelligence score of 2 or lower.</p><p>Sudden Sting (Su): At 8th level, you can inflict a lingering, painful sting as a swift action that requires a successful melee touch attack. This sting deals 1d4 points of piercing damage plus 1 point for every 2 druid levels you have, and the target must succeed at a Fortitude save (DC = 10 + half your druid level + your Constitution modifier) or become staggered for 1 round. This is a pain effect. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><h3>Domain Spells</h3><ul><li><p>1st—Ant Haul</p></li><li><p>2nd—Summon Swarm</p></li><li><p>3rd— Vermin Shape I</p></li><li><p>4th—Vermin Shape II</p></li><li><p>5th—Insect Plague</p></li><li><p>6th—Swarm Skin</p></li><li><p>7th—Creeping Doom8th—Verminous Transformation</p></li><li><p>9th—Summon Nature's Ally IX (1d3 purple worms only).</p></li></ul>",
+    "features": [],
+    "id": "TssxVJevWD9m81Bq",
+    "kind": "animal",
+    "name": "Vermin Domain",
+    "sources": [
+      {
+        "id": "PZO1140",
+        "pages": "46"
+      },
+      {
+        "id": "PZO9283",
+        "pages": "35"
+      }
+    ],
+    "tag": "Vermin",
+    "uuid": "Compendium.pf1.class-abilities.Item.TssxVJevWD9m81Bq"
+  },
+  "U6juLxTOdOZC725T": {
+    "description": "<p><strong>Granted Powers</strong>: Your spirit knows both the harshness of the drying wind and the raw beauty of painted canyons.</p><h3>Domain Powers</h3><p>Subsistence (Ex): You can survive on very little food or water while helping others survive in harsh climates. When determining how long you can withstand starvation and thirst, including checks to avoid nonlethal damage, treat your Constitution score as though it were 10 points higher. Additionally, you gain a bonus equal to one half your druid level (minimum 1) on Survival checks in dry hills or desert terrain.</p><p>Wasteland Stride (Ex): At 2nd level, you may move through light or dense rubble, as well as up or down steep slopes, at your normal speed without suffering any impairment. Areas that have been magically manipulated to impede motion still affect you, however. This replaces woodland stride.</p><p>Badlands Spirit (Su): At 8th level, whenever you use wild shape to take on the form of an earth elemental, you also gain the following spell-like abilities, depending on your druid class level: geyser (8th); sirocco (12th), scouring winds (15th). Each spell-like ability is usable once per day.</p><h3>Domain Spells</h3><ul><li><p>1st—Cloak of Shade</p></li><li><p>2nd—Feast of Ashes</p></li><li><p>3rd—Cloak of Winds</p></li><li><p>4th—Spike Stones</p></li><li><p>5th—Wind Blades</p></li><li><p>6th—Find the Path</p></li><li><p>7th—Fire Storm</p></li><li><p>8th—Earthquake</p></li><li><p>9th—Storm of Vengeance</p></li></ul>",
+    "features": [],
+    "id": "U6juLxTOdOZC725T",
+    "kind": "terrain",
+    "name": "Badlands Domain",
+    "sources": [
+      {
+        "id": "PZO9436",
+        "pages": "24"
+      }
+    ],
+    "tag": "Badlands",
+    "uuid": "Compendium.pf1.class-abilities.Item.U6juLxTOdOZC725T"
+  },
+  "YmfCfB6ptDAvcJaF": {
+    "description": "<p><strong>Granted Powers</strong>: The Uskbond functions as a unique domain with the granted powers and domain spells below. A druid who takes the Uskbond must be neutral evil and worship Zon- Kuthon. A druid who has taken an archetype that alters or replaces nature bond cannot take the Uskbond.</p><h3>Domain Powers</h3><p>Absorb Pain (Su): Whenever you take lethal damage, you can choose as an immediate action to convert a number of points of this damage equal to 1d6 + your Wisdom modifier into nonlethal damage. When you use this ability, you gain a +4 profane bonus on all saving throws versus pain effects during the following round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Gruesome Display (Ex): At 8th level, as a standard action you can alter your appearance in such intense, horrific ways that onlookers become nauseated. One creature you select within 30 feet who can see you must succeed at a Will save (DC = 10 + 1/2 your druid level + your Wisdom modifier) or be nauseated for a number of rounds equal to 1/2 your druid level. Every 2 levels beyond 8th, you can affect one additional creature, to a maximum of seven targets within 30 feet at 20th level. Each time you activate your gruesome display, you must affect at least one target, but you can choose to affect fewer targets than your maximum. Once you’ve targeted the maximum number of creatures granted by level (regardless of whether they successfully save to resist the effect or not), you cannot use gruesome display again for the remainder of the day. This is a mind-affecting fear effect.</p><h3>Domain Spells</h3><ul><li><p>1st—Delay Pain</p></li><li><p>2nd—Curse Terrain, Lesser</p></li><li><p>3rd—Excruciating Deformation</p></li><li><p>4th—Curse Terrain</p></li><li><p>5th—Symbol of Pain</p></li><li><p>6th—Curse Terrain, Greater</p></li><li><p>7th—Verminous Transformation</p></li><li><p>8th—Curse Terrain, Supreme</p></li><li><p>9th—Maze of Madness and Suffering (haunted forest only).</p></li></ul>",
+    "features": [],
+    "id": "YmfCfB6ptDAvcJaF",
+    "kind": "terrain",
+    "name": "The Uskbond Domain",
+    "sources": [
+      {
+        "id": "PZO9297",
+        "pages": "45"
+      }
+    ],
+    "tag": "The Uskbond",
+    "uuid": "Compendium.pf1.class-abilities.Item.YmfCfB6ptDAvcJaF"
+  },
+  "YroKQqcFQ0y4058a": {
+    "description": "<p><strong>Granted Powers</strong>: The wonders and dark secrets of the deepest caves give you strength.</p><h3>Domain Powers</h3><p>Cavesight (Sp): You can grant darkvision 60 feet to a willing creature you touch. This effect lasts 1 minute, or 1 hour if used on yourself. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Tremorsense (Ex): At 6th level, you gain tremorsense 30 feet. At 12th level, you gain tremorsense 60 feet.</p><h3>Domain Spells</h3><ul><li><p>1st—Detect Aberration</p></li><li><p>2nd—Stone Call</p></li><li><p>3rd—Deeper Darkness</p></li><li><p>4th—Echolocation</p></li><li><p>5th—Wall of Stone</p></li><li><p>6th—Conjure Black Pudding</p></li><li><p>7th—Statue (looking like a stalagmite or stalactite)</p></li><li><p>8th—Earthquake</p></li><li><p>9th—Imprisonment</p></li></ul>",
+    "features": [],
+    "id": "YroKQqcFQ0y4058a",
+    "kind": "terrain",
+    "name": "Cave Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "33"
+      }
+    ],
+    "tag": "Cave",
+    "uuid": "Compendium.pf1.class-abilities.Item.YroKQqcFQ0y4058a"
+  },
+  "ZMcAXnOl4v2IiA0A": {
+    "description": "<p><strong>Granted Powers</strong>: You sense nature’s creeping reclamation of what once belonged to the civilized world and understand how to ensure ruins that hold power or significance will persist.</p><h3>Domain Powers</h3><p>Ruin Touch (Su): You can strengthen or weaken objects with your touch. With a melee touch attack, you can increase or decrease the hardness of an object (up to a 10-foot cube) or construct by an amount equal to half your druid level (minimum 1) for 1 minute. You cannot reduce an object’s hardness below 0, and the same target cannot be affected by this ability more than once. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Remembrance (Sp): At 4th level, when within a ruin or other structure that is no longer claimed by civilization, you can call upon the wisdom of the land and its long-dead residents. Once per day for every 4 druid levels you possess, you can cast divination as a spell-like ability. Additionally, if you are within ruins when you cast commune with nature, you gain information about the crumbling structures around you as though they were part of nature.</p><p>Surefooted (Ex): At 8th level, your speed is not reduced by difficult terrain unless the terrain has been magically manipulated to impede motion.</p><h3>Domain Spells</h3><ul><li><p>1st—Magic Stone</p></li><li><p>2nd—Stone Call</p></li><li><p>3rd—Meld into Stone</p></li><li><p>4th—Rusting Grasp</p></li><li><p>5th—Commune with Nature</p></li><li><p>6th—Stone Tell</p></li><li><p>7th—Statue</p></li><li><p>8th—Earthquake</p></li><li><p>9th—Clashing Rocks</p></li></ul>",
+    "features": [],
+    "id": "ZMcAXnOl4v2IiA0A",
+    "kind": "terrain",
+    "name": "Ruins Domain",
+    "sources": [
+      {
+        "id": "PZO9283",
+        "pages": "35"
+      }
+    ],
+    "tag": "Ruins",
+    "uuid": "Compendium.pf1.class-abilities.Item.ZMcAXnOl4v2IiA0A"
+  },
+  "cQn8VLB50wVYafug": {
+    "description": "<p><strong>Granted Powers</strong>: You command the crumbling of stone and revel in rust; the decay and destruction of metal and stone over time appeals to and delights you.</p><h3>Domain Powers</h3><p>Rusting Touch (Su): You can cause an opponent’s metal armor or weapon to become dry and brittle as it magically corrodes and rusts. You make a melee touch attack against a creature wearing metal armor or wielding a metal weapon. If you hit, choose a metal weapon, suit of metal armor, or metal shield carried or worn by that creature. The object takes an amount of hit point damage equal to 1d6 + half your druid level. If the item is not magical, or if your caster level is greater than the item’s caster level, this damage bypasses the item’s hardness. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Erosion Aura (Su): At 8th level, you can project an aura of magically enhanced erosion as a standard action. Objects made primarily of metal or stone within this aura lose 10 points of hardness. Magic items retain a minimum hardness equal to twice their enhancement bonus and can attempt a Fortitude saving throw (DC = 10 + half your druid level + your Wisdom modifier) to negate this effect. A construct made primarily of metal or stone must succeed at a Fortitude save or lose all damage reduction and hardness for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><h3>Domain Spells</h3><ul><li><p>1st—Expeditious Excavation</p></li><li><p>2nd— Soften Earth and Stone</p></li><li><p>3rd—Disable Construct</p></li><li><p>4th—Rusting Grasp</p></li><li><p>5th—Transmute Rock to Mud</p></li><li><p>6th—Sympathetic Vibration</p></li><li><p>7th—Disintegrate</p></li><li><p>8th—Earthquake</p></li><li><p>9th—Implosion</p></li></ul>",
+    "features": [],
+    "id": "cQn8VLB50wVYafug",
+    "kind": "terrain",
+    "name": "Erosion Domain",
+    "sources": [
+      {
+        "id": "PZO1140",
+        "pages": "46"
+      }
+    ],
+    "tag": "Erosion",
+    "uuid": "Compendium.pf1.class-abilities.Item.cQn8VLB50wVYafug"
+  },
+  "cX881MeEaoPQyxqY": {
+    "description": "<p><strong>Granted Powers</strong>: You master the might of the endless, snow-covered wastes beneath the midnight sun, where icy polar winds blow.</p><h3>Domain Powers</h3><p>Call Cold (Su): You can channel energy (as a cleric of your druid level) a number of times per day equal to 3 + your Charisma modifier, but only to heal creatures with the cold subtype or to command them (similar to using the Command Undead feat against undead). You can take other feats that add to this ability, such as Extra Channel and Improved Channel, but not feats that alter this ability, such as Elemental Channel and Alignment Channel. The DC to save against this ability is equal to 10 + 1/2 your druid level + your Charisma modifier.</p><p>Banish Flame (Su): At 6th level, you may use your call cold ability to damage creatures with the fire subtype (as a cleric channeling negative energy) or to cause them to flee from you (as the Turn Undead feat). Alternatively, you may use this ability to negate magical fire effects as if using a targeted dispel magic; at 12th level, this functions as targeted or area greater dispel magic instead of dispel magic.</p><h3>Domain Spells</h3><ul><li><p>1st—Frostbite</p></li><li><p>2nd—Aspect of the bear</p></li><li><p>3rd—Sleet storm</p></li><li><p>4th—Wall of Ice</p></li><li><p>5th—Aspect of the Wolf</p></li><li><p>6th—Freezing Sphere</p></li><li><p>7th—Wind Walk</p></li><li><p>8th—polar ray</p></li><li><p>9th—polar midnight</p></li></ul>",
+    "features": [],
+    "id": "cX881MeEaoPQyxqY",
+    "kind": "terrain",
+    "name": "Arctic Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "33"
+      }
+    ],
+    "tag": "Arctic",
+    "uuid": "Compendium.pf1.class-abilities.Item.cX881MeEaoPQyxqY"
+  },
+  "f0yMNM9da9ttqEpG": {
+    "description": "<p><strong>Granted Powers</strong>: You draw your power from the boundless expanse of air and clouds. In addition, Fly is a class skill for you, and you can take ranks in the skill even without first having a reliable means to fly or glide. In addition, you can use wild empathy to influence a creature with the air subtype if its Intelligence score is 1 or 2.</p><h3>Domain Powers</h3><p>Aerial Agility (Ex): You can navigate the air unhindered. As a free action, you automatically succeed at your Wisdom check to change your direction in an area of subjective gravity, and you can increase or decrease your falling speed by 10 feet per druid level during the first round after you change the direction of gravity. When you are in areas of light, normal, or heavy gravity, activating this ability instead grants you a bonus equal to your druid level on Fly checks and Acrobatics checks to jump for a number of rounds equal to your Wisdom modifier. You can use this ability a number of times equal to 3 + your Wisdom modifier.</p><p>Wind Savant (Su): At 8th level, you treat the penalties from natural or magical wind effects as two steps less severe. In addition, you are surrounded by a cushion of air that grants you a bonus equal to 1/2 your druid level on saving throws against gases, gaseous breath weapons, inhaled poisons, and similar effects.</p><p>Alternatively, you can choose to gain a Small air elemental as a familiar, as if you possessed the Improved Familiar feat. Your effective wizard level for this ability is equal to your druid level and stacks with other classes that grant a familiar.</p><h3>Domain Spells</h3><ul><li><p>1st—Feather Fall</p></li><li><p>2nd—Elemental Speech</p></li><li><p>3rd—Fly</p></li><li><p>4th—Planar Adaptation</p></li><li><p>5th—Overland Flight</p></li><li><p>6th—Planar Adaptation, Mass</p></li><li><p>7th—Fly, Mass</p></li><li><p>8th— Invisibility, Mass</p></li><li><p>9th—Winds of Vengeance</p></li></ul>",
+    "features": [],
+    "id": "f0yMNM9da9ttqEpG",
+    "kind": "terrain",
+    "name": "Plane of Air Domain",
+    "sources": [
+      {
+        "id": "PZO9295",
+        "pages": "6"
+      }
+    ],
+    "tag": "Plane of Air",
+    "uuid": "Compendium.pf1.class-abilities.Item.f0yMNM9da9ttqEpG"
+  },
+  "fwiu3QLkp2ouop5u": {
+    "description": "<p><strong>Granted Powers</strong>: Yours is the power of death and rebirth. Your spirit soars above all and moves with the flow of unseen currents.</p><h3>Domain Powers</h3><p>Death's Companion (Ex): Your totem grants you protection from the harbingers of death. As an immediate action, you gain a +2 bonus on saving throws against disease, death spells, and death effects that lasts a number of rounds equal to your druid level. This bonus increases by 2 at 6th level and every 5 levels thereafter, to a maximum of +8 at 16th level. You may use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Agent of Rebirth (Sp): At 8th level, you may expend a quantity of special oils worth 1,000 gp to cast reincarnate as a spell-like ability usable once per day. Additionally, when using this ability or casting reincarnate as a prepared spell, you have some influence over the physical form that the reincarnated spirit will take. When rolling against the spell’s incarnation table, you may roll twice and choose between the two results.</p><h3>Domain Spells</h3><ul><li><p>1st—Deathwatch</p></li><li><p>2nd—Glide</p></li><li><p>3rd— Death Knell</p></li><li><p>4th—Death Ward</p></li><li><p>5th—Breath of Life</p></li><li><p>6th—Circle of Death</p></li><li><p>7th—Resurrection</p></li><li><p>8th—Finger of Death</p></li><li><p>9th—Winds of Vengeance</p></li></ul>",
+    "features": [],
+    "id": "fwiu3QLkp2ouop5u",
+    "kind": "animal",
+    "name": "Vulture Domain",
+    "sources": [
+      {
+        "id": "PZO9436",
+        "pages": "25"
+      }
+    ],
+    "tag": "Vulture",
+    "uuid": "Compendium.pf1.class-abilities.Item.fwiu3QLkp2ouop5u"
+  },
+  "mCD8YuafzpxkQ2Ul": {
+    "description": "<p><strong>Granted Powers</strong>: You run with the pack and are the master of the cold hunt of your spirit totem.</p><h3>Domain Powers</h3><p>Improved Trip: You gain Improved Trip as a bonus feat.</p><p>Pack Tactics (Ex): At 8th level, as a free action on your turn, you can designate an adjacent square; your attacks are treated as coming from that square for the purposes of determining whether or not you are flanking (this applies even if that square is occupied by an object or creature). This ends at the start of your next turn or if you move. If you are flanking a creature without using this ability, you may add your Wisdom bonus to your attack roll rather than the normal +2 flanking bonus. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><h3>Domain Spells</h3><ul><li><p>1st—Hunter's Howl</p></li><li><p>2nd—Bloodhound</p></li><li><p>3rd—Aspect of the Wolf</p></li><li><p>4th—Strong Jaw</p></li><li><p>5th—Tireless Pursuers</p></li><li><p>6th—Find the Path</p></li><li><p>7th—Animal Shapes (canines only)</p></li><li><p>8th—Phantasmal Revenge</p></li><li><p>9th—Freedom</p></li></ul>",
+    "features": [],
+    "id": "mCD8YuafzpxkQ2Ul",
+    "kind": "animal",
+    "name": "Wolf Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "36"
+      }
+    ],
+    "tag": "Wolf",
+    "uuid": "Compendium.pf1.class-abilities.Item.mCD8YuafzpxkQ2Ul"
+  },
+  "qVinyvx453yeu7O6": {
+    "description": "<p><strong>Granted Powers</strong>: Your spirit soars with the mightiest and noblest of all winged creatures.</p><p><strong>Familiar</strong>: You gain a hawk familiar. Your effective wizard level for this ability is equal to your druid level. Your druid level stacks with levels from other classes that grant familiars when determining the powers of your familiar.</p><h3>Domain Powers</h3><p>Hawkeye (Su): As a swift action, you may add a bonus equal to half your druid level (minimum +1) on one ranged attack or on one Perception check. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Aerial evasion (Ex): At 6th level, you gain the evasion ability (as a rogue) when you are flying. At 12th level, you gain improved evasion while flying.</p><h3>Domain Spells</h3><ul><li><p>1st—Aspect of the Falcon</p></li><li><p>2nd—Eagle's Splendor</p></li><li><p>3rd— Fly</p></li><li><p>4th—River of Wind</p></li><li><p>5th—Overland Flight</p></li><li><p>6th—Eagle Aerie</p></li><li><p>7th—Animal Shapes (birds only)</p></li><li><p>8th—Sunburst</p></li><li><p>9th—Winds of Vengeance</p></li></ul>",
+    "features": [],
+    "id": "qVinyvx453yeu7O6",
+    "kind": "animal",
+    "name": "Eagle Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "34"
+      }
+    ],
+    "tag": "Eagle",
+    "uuid": "Compendium.pf1.class-abilities.Item.qVinyvx453yeu7O6"
+  },
+  "uXGXPzJN3oyYZfwz": {
+    "description": "<p><strong>Granted Powers</strong>: The balanced wisdom, skill, agility, and playfulness of the monkey are the model for your spiritual discipline.</p><p><strong>Familiar</strong>: You gain a monkey familiar. Your effective wizard level for this ability is equal to your druid level. Your druid level stacks with levels from other classes that grant familiars when determining the powers of your familiar.</p><h3>Domain Powers</h3><p>Monkey Athletics (Su): As a free action, you may add a competence bonus equal to half your druid level (minimum of +1) on one Acrobatics, Climb, Disable Device, or Sleight of Hand check. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Ranged Legerdemain (Su): At 6th level, you can use the Disable Device and Sleight of Hand skills at a range of 30 feet. Working at a distance increases the normal skill check DC by 5, and you cannot take 10 on this check. Any object to be manipulated must weigh 5 pounds or less. You can only use this ability if you have at least 1 rank in the skill being used.</p><h3>Domain Spells</h3><ul><li><p>1st—Beguiling Gift</p></li><li><p>2nd—Spider Climb</p></li><li><p>3rd—Cacophonous Call</p></li><li><p>4th—Freedom of Movement</p></li><li><p>5th—Summon Nature's Ally V (dire ape or girallon only)</p></li><li><p>6th—Confusion</p></li><li><p>7th—Animal Shapes (apes and monkeys only)</p></li><li><p>8th—Clenched Fist</p></li><li><p>9th—Foresight</p></li></ul>",
+    "features": [],
+    "id": "uXGXPzJN3oyYZfwz",
+    "kind": "animal",
+    "name": "Monkey Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "34"
+      }
+    ],
+    "tag": "Monkey",
+    "uuid": "Compendium.pf1.class-abilities.Item.uXGXPzJN3oyYZfwz"
+  },
+  "va9Ijz5Otq53tITb": {
+    "description": "<p><strong>Granted Powers</strong>: You share the power of the Hunter in Darkness. The potent magic of an ancient predator spirit f lows through you.</p><h3>Domain Powers</h3><p>Hunter's Senses (Ex): You gain the ability to augment your senses on command. As a standard action, you grant yourself the scent special ability and improved vision. If you have normal vision, you gain low-light vision. If you have low-light vision, you gain darkvision out to a range of 30 feet. If you have darkvision, the range of your darkvision increases by 30 feet. You may use this ability a number of minutes per day equal to your druid level, in 1 minute increments. Dismissing these augmented senses is a free action.</p><p>Move in Darkness (Ex): At 8th level, in areas of normal or magical darkness, you gain a +2 bonus on Stealth skill checks and initiative checks for every 4 druid levels you possess, to a maximum bonus of +10 at 20th level.</p><h3>Domain Spells</h3><ul><li><p>1st—True Strike</p></li><li><p>2nd—Darkness</p></li><li><p>3rd—Deeper Darkness</p></li><li><p>4th—Moonstruck</p></li><li><p>5th—Commune with Nature</p></li><li><p>6th—Mislead</p></li><li><p>7th—True Seeing</p></li><li><p>8th—Nine Lives</p></li><li><p>9th—Spell Immunity, Greater</p></li></ul>",
+    "features": [],
+    "id": "va9Ijz5Otq53tITb",
+    "kind": "animal",
+    "name": "Panther Domain",
+    "sources": [
+      {
+        "id": "PZO9436",
+        "pages": "25"
+      }
+    ],
+    "tag": "Panther",
+    "uuid": "Compendium.pf1.class-abilities.Item.va9Ijz5Otq53tITb"
+  },
+  "x8Li6TcjmOtGtrcB": {
+    "description": "<p><strong>Granted Powers</strong>: You have mastered the mighty powers of the great mountains that pierce the sky and stand aloof above the lowlands.</p><h3>Domain Powers</h3><p>Foothold (Su): As a standard action, you can cause an adjacent stone surface up to 10 feet square to mold itself into ridges and creases. A foothold that is created on a horizontal surface is treated as difficult terrain, and a Medium or smaller creature standing in the area or moving through it takes a –2 penalty on Acrobatics checks and to CMD due to poor footing. A foothold that is created on a vertical surface grants a +10 bonus on Climb checks to climb it. The stone remains altered for 1 hour. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>Thin Air (Su): At 8th level, as a free action, you can surround yourself with a 5-foot aura of supernaturally thin air that draws the breath from creatures adjacent to you. Creatures beginning their turn in the aura are fatigued (Fortitude negates). A fatigued creature that begins its turn in the aura must save or suffer from altitude sickness, taking 1 point of ability damage to all ability scores. At 16th level, the aura increases to 10 feet. Creatures that do not breathe are immune to this aura. You can use this ability for a number of rounds per day equal to your druid level; the rounds need not be consecutive.</p><h3>Domain Spells</h3><ul><li><p>1st—Stone Fist</p></li><li><p>2nd—Stone Call</p></li><li><p>3rd—Cloak of Winds</p></li><li><p>4th—Stoneskin</p></li><li><p>5th—Geyser</p></li><li><p>6th—Suffocation</p></li><li><p>7th—Flesh to Stone</p></li><li><p>8th—Reverse Gravity</p></li><li><p>9th—Clashing Rocks</p></li></ul>",
+    "features": [],
+    "id": "x8Li6TcjmOtGtrcB",
+    "kind": "terrain",
+    "name": "Mountain Domain",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "34"
+      }
+    ],
+    "tag": "Mountain",
+    "uuid": "Compendium.pf1.class-abilities.Item.x8Li6TcjmOtGtrcB"
+  },
+  "zBDp0TK9QPPMFocv": {
+    "description": "<p><strong>Granted Powers</strong>: You can navigate the untold wonders of the Plane of Earth with ease. In addition, you can use wild empathy to influence a creature with the earth subtype if its Intelligence score is 1 or 2.</p><h3>Domain Powers</h3><p>Spelunker (Su): You ably clamber through underground areas. As a free action, you can ignore difficult terrain from stony surfaces, you take no penalties for squeezing through rocky areas, and you gain damage reduction 5/— against rocky hazards such as spike growth. This effect lasts for 1 round, and you can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>One with the Stone (Su): At 8th level as a swift action, you gain the earth glide universal monster ability (Bestiary 2 296) with a speed equal to your base speed. You can breathe normally while using this ability. You can use this ability for a number of rounds per day equal to your druid level, and these rounds don’t need to be consecutive.</p><p>Alternatively, you can choose to gain a Small earth elemental as a familiar, as if you possessed the Improved Familiar feat. Your effective wizard level for this ability is equal to your druid level and stacks with other classes that grant a familiar.</p><h3>Domain Spells</h3><ul><li><p>1st—Stone Fist</p></li><li><p>2nd—Elemental Speech</p></li><li><p>3rd—Burrow</p></li><li><p>4th—Planar Adaptation</p></li><li><p>5th— Passwall</p></li><li><p>6th—Planar Adaptation, Mass</p></li><li><p>7th—Stone to Flesh</p></li><li><p>8th—Repel Metal or Stone</p></li><li><p>9th—Clashing Rocks</p></li></ul>",
+    "features": [],
+    "id": "zBDp0TK9QPPMFocv",
+    "kind": "terrain",
+    "name": "Plane of Earth Domain",
+    "sources": [
+      {
+        "id": "PZO9295",
+        "pages": "6"
+      }
+    ],
+    "tag": "Plane of Earth",
+    "uuid": "Compendium.pf1.class-abilities.Item.zBDp0TK9QPPMFocv"
+  }
+}

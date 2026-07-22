@@ -1,4 +1,4 @@
-import type { WizardSchoolTag } from "./character.js";
+import type { ElementalSchoolTag, WizardSchoolTag } from "./character.js";
 import type {
   AbilityId,
   BabTier,
@@ -53,9 +53,38 @@ export interface RefData {
   archetypes: Record<string, Archetype>;
   /** Archetype class features; each points back to its parent via `archetypeId`. */
   archetypeFeatures: Record<string, ArchetypeFeature>;
-  /** Cleric domains (top-level only, see `Domain` doc comment). */
+  /** Top-level cleric domains (see `Domain` doc comment; subdomains are `subdomains` below). */
   domains: Record<string, Domain>;
-  /** Wizard arcane schools (top-level only, see `WizardSchool` doc comment). */
+  /** Cleric subdomains, each swapping in place of a parent `Domain` — see `Subdomain` doc comment. */
+  subdomains: Record<string, Subdomain>;
+  /**
+   * Per-subdomain spell lists, keyed by subdomain tag (e.g. "Cloud") → spell
+   * level → spell ids. Derived at build time (not inverted from any
+   * `Spell.learnedAt` field the way `domainSpellLists` is — the vendored
+   * spell pack never tags individual spells by subdomain) by merging the
+   * subdomain's own replacement/override list (parsed from its description
+   * prose) onto its parent domain's `domainSpellLists[parentDomainTags[0]]`
+   * entry for any level it doesn't override. Empty for subdomains with no
+   * vendored spell-list section (rare — see `Subdomain` doc comment).
+   */
+  subdomainSpellLists: Record<string, SpellList>;
+  /**
+   * Druid nature-bond domains (`class-abilities/domains/druid-domains/**`,
+   * animal-companion-alternative and terrain domains) — see `DruidDomain` doc
+   * comment. Vendored for completeness; nothing in the builder/engine
+   * consumes this yet (no nature-bond domain-choice field exists to wire it
+   * into).
+   */
+  druidDomains: Record<string, DruidDomain>;
+  /**
+   * Wizard arcane schools: the nine standard/Universalist schools (top-level
+   * `wizard-schools/*.yaml`) plus the elemental schools (`wizard-schools/
+   * elemental-schools/*.yaml`) in the same collection, distinguished only by
+   * `tag`'s type (`WizardSchoolTag` vs `ElementalSchoolTag`) — both are
+   * selected and granted identically via `build.wizardSchool` /
+   * `collectGrantedFeatures`. See `WizardSchool` doc comment for what's NOT
+   * derived for the elemental entries (bonus-slot spell list, opposition).
+   */
   wizardSchools: Record<string, WizardSchool>;
 }
 
@@ -175,10 +204,9 @@ export interface ClassFeatureGrant {
 }
 
 /**
- * A cleric domain (top-level `class-abilities/domains/*.yaml` only — subdomains
- * and druid-specific terrain/plane domains are excluded, see data-pipeline
- * `normalize.ts`: subdomains carry no structural link back to their parent
- * domain in the source data, so their granted powers can't be resolved).
+ * A top-level cleric domain (`class-abilities/domains/*.yaml`, one directory
+ * level deep — excludes subdomains and druid-specific domains, each vendored
+ * separately as `Subdomain` / `DruidDomain`, see their doc comments).
  */
 export interface Domain extends RefEntity {
   /** Matches `Spell.learnedAt.domain` / `RefData.domainSpellLists` keys (e.g. "Fire"). */
@@ -188,12 +216,84 @@ export interface Domain extends RefEntity {
 }
 
 /**
- * A wizard arcane school (top-level `class-abilities/wizard-schools/*.yaml`
- * only, including Universalist — the elemental/focused-school variant rules
- * are excluded).
+ * A cleric subdomain (`class-abilities/domains/subdomains/*.yaml`) — a domain
+ * variant a cleric may pick in place of one of its parent domain(s)
+ * (`parentDomainTags`), entirely replacing that domain choice. Its parent
+ * association and replacement spell list are parsed from the parent domain's
+ * own description prose (a "Subdomains: ..." list) and the subdomain's own
+ * "(Replacement) Domain Spells" list — neither is a structured link in the
+ * source, so this is best-effort text parsing, not a `links.supplements`
+ * resolution (see data-pipeline `transform/subdomains.ts`).
+ */
+export interface Subdomain extends RefEntity {
+  /** Matches `RefData.subdomainSpellLists` keys (e.g. "Cloud"). Not a `Spell.learnedAt` key — see `subdomainSpellLists` doc comment. */
+  tag: string;
+  /**
+   * `Domain.tag`(s) this subdomain can replace. Almost always one entry; a
+   * handful (e.g. Alchemy: Artifice or Magic) attach to two parent domains —
+   * `subdomainSpellLists` merges against `parentDomainTags[0]` only in that
+   * case (a documented simplification, not derived per chosen parent).
+   */
+  parentDomainTags: string[];
+  /**
+   * Structured granted-power override, resolved from `links.supplements`
+   * exactly like `Domain.features` — present for only ~11 of 137 subdomains
+   * whose source doc models a full override (e.g. Cloud replaces Air's
+   * 8th-level power with Thundercloud alongside Air's unchanged 1st power).
+   * Empty for the rest: the source only documents a spell-list replacement
+   * for those, so treat this subdomain's granted powers as identical to its
+   * parent's — use `RefData.domains[parentDomainTags[0]].features` when this
+   * array is empty, not an empty grant list.
+   */
+  features: ClassFeatureGrant[];
+  /**
+   * A numeric bonus carried directly on the subdomain doc itself (e.g.
+   * Purity's +1-per-5-levels resistance bonus to all saves), rather than
+   * proxied through a `links.supplements`-linked `ClassFeature.changes` the
+   * way `features` above works. Vendored for the ~4 subdomains that have one
+   * (the source's richest `system.changes` slice in the ecosystem — worth
+   * capturing even though nothing consumes it yet: **not yet applied by the
+   * engine** — `collectGrantedFeatures`/`compute()` don't read this field, the
+   * same pre-existing gap top-level `Domain` has for its own handful of
+   * directly-`changes`-bearing entries (Darkness, Protection, Rune, Travel).
+   * Empty for the rest.
+   */
+  changes: Change[];
+}
+
+/**
+ * A druid nature-bond domain (`class-abilities/domains/druid-domains/**`) —
+ * an alternate to an animal companion; PF1 grants powers scaling off druid
+ * level instead of a cleric's channel-energy-adjacent kit. `kind` mirrors the
+ * source's own split: `"animal"` domains (Wolf, Eagle, ...) key off an animal
+ * totem, `"terrain"` domains (Desert, Jungle, ...) off a landscape. `features`
+ * is always `[]` — the source models every druid domain power as free-text
+ * prose under its own description, never a `links.supplements`-linked
+ * `class-abilities` entry, so there is nothing structured to resolve.
+ */
+export interface DruidDomain extends RefEntity {
+  tag: string;
+  kind: "animal" | "terrain";
+  features: ClassFeatureGrant[];
+}
+
+/**
+ * A wizard arcane school — the nine standard/Universalist schools
+ * (`class-abilities/wizard-schools/*.yaml`) or one of the eight elemental
+ * schools (`wizard-schools/elemental-schools/*.yaml`; the elemental/focused
+ * variant-rule subfolder within THAT folder is excluded — too niche a
+ * combination to vendor). Elemental entries have real `features` (resolved
+ * from `links.supplements` exactly like the standard schools) but no derived
+ * bonus-slot spell list: the source lists each elemental school's spells as
+ * free-text names, not `@UUID`-linked entries, which isn't reliably
+ * parseable (comma-separated names, some containing commas themselves, e.g.
+ * "protection from energy, communal") — so `spell.school === build.
+ * wizardSchool` (the mechanic standard schools use) simply matches nothing
+ * for an elemental pick. Their opposition-school mechanic (one of four
+ * elements, not two of the eight standard schools) also isn't modeled.
  */
 export interface WizardSchool extends RefEntity {
-  tag: WizardSchoolTag;
+  tag: WizardSchoolTag | ElementalSchoolTag;
   /** Granted powers by level, resolved from `links.supplements`. */
   features: ClassFeatureGrant[];
 }

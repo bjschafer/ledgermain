@@ -7,6 +7,7 @@ import {
   addClass,
   createEmptyDoc,
   migrateDoc,
+  parentDomainTagOf,
   setClericDomains,
   setWizardOppositionSchools,
   setWizardSchool,
@@ -281,6 +282,30 @@ describe("domain spell slots (cleric)", () => {
     expect(domainSpellLevelMap(ref, []).size).toBe(0);
     // Unknown tag yields nothing.
     expect(domainSpellLevelMap(ref, ["NotARealDomain"]).size).toBe(0);
+  });
+
+  it("domainSpellLevelMap falls back to subdomainSpellLists for a subdomain tag", () => {
+    const cloudIds = ref.subdomainSpellLists["Cloud"];
+    expect(cloudIds).toBeDefined();
+    const map = domainSpellLevelMap(ref, ["Cloud"]);
+    const l1id = cloudIds![1]![0]!;
+    expect(map.get(l1id)).toBe(1);
+    // A domain tag and a subdomain tag both resolve when chosen together.
+    const combined = domainSpellLevelMap(ref, ["Fire", "Cloud"]);
+    const fireIds = ref.domainSpellLists["Fire"];
+    expect(combined.get(fireIds![1]![0]!)).toBe(1);
+    expect(combined.get(l1id)).toBe(1);
+  });
+
+  it("parentDomainTagOf resolves a subdomain tag to its parent, a domain tag to itself", () => {
+    expect(parentDomainTagOf(ref, "Cloud")).toBe("Air");
+    expect(parentDomainTagOf(ref, "Fire")).toBe("Fire");
+    expect(parentDomainTagOf(ref, "NotARealTag")).toBe("NotARealTag");
+  });
+
+  it("setClericDomains stores a subdomain tag directly (swap-in-place)", () => {
+    const doc = setClericDomains(fresh(), ["Cloud", "Fire"]);
+    expect(doc.build.clericDomains).toEqual(["Cloud", "Fire"]);
   });
 
   it("setClericDomains caps at two domains and ignores blanks", () => {

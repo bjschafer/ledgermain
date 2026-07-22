@@ -9,6 +9,7 @@ import type {
   AbilityId,
   ArmorRef,
   CharacterDoc,
+  ElementalSchoolTag,
   ItemInstance,
   RefData,
   SkillId,
@@ -139,9 +140,10 @@ export function setDeity(doc: CharacterDoc, deity: string): CharacterDoc {
 
 /**
  * Set the cleric's chosen domain tags (PF1 normally two; UI caps at two here).
- * Pass `[]` to clear. Tags must match keys in `refData.domainSpellLists`; no
- * validation here (pure model layer — the builder picker gates the choices).
- * Replaces the whole list (not add-remove) to keep domain swapping simple.
+ * Pass `[]` to clear. A tag may name either a `Domain` (`refData.domainSpellLists`
+ * key) or a `Subdomain` (`refData.subdomainSpellLists` key) — no validation here
+ * (pure model layer — the builder picker gates the choices). Replaces the whole
+ * list (not add-remove) to keep domain swapping simple.
  */
 export function setClericDomains(doc: CharacterDoc, domains: string[]): CharacterDoc {
   const trimmed = domains.filter((d) => typeof d === "string" && d.length > 0);
@@ -149,6 +151,18 @@ export function setClericDomains(doc: CharacterDoc, domains: string[]): Characte
     ...doc,
     build: { ...doc.build, clericDomains: trimmed.slice(0, 2) },
   };
+}
+
+/**
+ * The top-level `Domain.tag` a `clericDomains` entry displays under: itself
+ * for a domain tag, its `parentDomainTags[0]` for a subdomain tag (used by
+ * `DomainPicker` to keep a swapped-in subdomain's slot highlighted under its
+ * parent domain in the picker grid). Returns `tag` unchanged for a tag that
+ * matches neither collection (soft-warning posture — never throws).
+ */
+export function parentDomainTagOf(refData: RefData, tag: string): string {
+  const subdomain = Object.values(refData.subdomains).find((s) => s.tag === tag);
+  return subdomain?.parentDomainTags[0] ?? tag;
 }
 
 /**
@@ -409,15 +423,22 @@ export function setWeaponTrainingGroup(
 }
 
 /**
- * Set the wizard's specialization school (or `"uni"` for Universalist). Pass
- * `null` to clear the choice entirely (back-compat "unset" state, treated
- * identically to Universalist by the model layer). Setting `"uni"` clears
- * `wizardOppositionSchools` — a Universalist has none. Setting any other tag
- * leaves opposition alone; the player must set it via
+ * Set the wizard's specialization school (or `"uni"` for Universalist), or an
+ * `ElementalSchoolTag`. Pass `null` to clear the choice entirely (back-compat
+ * "unset" state, treated identically to Universalist by the model layer).
+ * Setting `"uni"` clears `wizardOppositionSchools` — a Universalist has none.
+ * Setting any other tag leaves opposition alone; the player must set it via
  * `setWizardOppositionSchools` (no auto-suggestion — free-choice, same
- * soft-warning posture as `setClericDomains`).
+ * soft-warning posture as `setClericDomains`). An elemental tag leaves
+ * opposition alone too, though the builder doesn't render the opposition
+ * picker for one (see `SchoolPicker`) — elemental schools use a different,
+ * unmodeled one-of-four-elements opposition mechanic (see `WizardSchool` doc
+ * comment in `@pf1/schema`).
  */
-export function setWizardSchool(doc: CharacterDoc, tag: WizardSchoolTag | null): CharacterDoc {
+export function setWizardSchool(
+  doc: CharacterDoc,
+  tag: WizardSchoolTag | ElementalSchoolTag | null,
+): CharacterDoc {
   const build = { ...doc.build, wizardSchool: tag ?? undefined };
   if (tag === "uni") {
     build.wizardOppositionSchools = [];

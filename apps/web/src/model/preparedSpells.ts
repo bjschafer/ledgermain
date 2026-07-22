@@ -281,12 +281,13 @@ export function spellLevelMap(refData: RefData, casterTag: string): Map<string, 
 }
 
 /**
- * spellId -> spell level for the given domain tags, inverted from
- * `refData.domainSpellLists`. Used to bucket domain-slot prepared spells by
- * level and to validate that a spell prepared in a domain slot belongs to one
- * of the cleric's chosen domains. Empty if none of `domainTags` are vendored.
- * When a spell appears in more than one chosen domain at differing levels,
- * the lowest level wins (rare; canonical domains agree on level-by-level).
+ * spellId -> spell level for the given domain (or subdomain) tags, inverted
+ * from `refData.domainSpellLists` / `refData.subdomainSpellLists`. Used to
+ * bucket domain-slot prepared spells by level and to validate that a spell
+ * prepared in a domain slot belongs to one of the cleric's chosen domains.
+ * Empty if none of `domainTags` are vendored. When a spell appears in more
+ * than one chosen domain at differing levels, the lowest level wins (rare;
+ * canonical domains agree on level-by-level).
  */
 export function domainSpellLevelMap(
   refData: RefData,
@@ -294,7 +295,7 @@ export function domainSpellLevelMap(
 ): Map<string, number> {
   const map = new Map<string, number>();
   for (const tag of domainTags) {
-    const list = refData.domainSpellLists[tag];
+    const list = refData.domainSpellLists[tag] ?? refData.subdomainSpellLists[tag];
     if (!list) continue;
     for (const [lvl, ids] of Object.entries(list)) {
       const n = Number(lvl);

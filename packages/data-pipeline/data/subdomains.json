@@ -1,0 +1,1617 @@
+{
+  "0K8W2ltmbiO71iXY": {
+    "changes": [],
+    "description": "<p><strong>Granted Powers:</strong> You can manipulate lightning, mist, and wind, traffic with air creatures, and are resistant to electricity damage.</p><p><strong>Associated Domain:</strong> Air</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st— Shocking Grasp</li><li>2nd—Flame Blade (deals electricity damage and gains the electricity descriptor instead of fire)</li><li>3rd— Lightning Bolt</li><li>4th—Air Walk</li><li>5th—Control Winds</li><li>6th—Chain Lightning</li><li>7th—Elemental Body IV (air only)</li><li>8th— Whirlwind</li><li>9th— Elemental Swarm (air spell only)</li></ul>",
+    "features": [
+      {
+        "featureId": "o8rxNsQ7P7Yjlvvu",
+        "level": 0,
+        "name": "Lightning Arc",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.o8rxNsQ7P7Yjlvvu"
+      },
+      {
+        "featureId": "rRgDV4GMJf7BosAE",
+        "level": 6,
+        "name": "Lightning Rod",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.rRgDV4GMJf7BosAE"
+      }
+    ],
+    "id": "0K8W2ltmbiO71iXY",
+    "name": "Lightning Subdomain",
+    "parentDomainTags": ["Air"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "24"
+      }
+    ],
+    "tag": "Lightning",
+    "uuid": "Compendium.pf1.class-abilities.Item.0K8W2ltmbiO71iXY"
+  },
+  "0iu50uQrFKQrR0pj": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Suggestion</li>\n<li>6th—Bestow Curse, Greater</li>\n</ul>",
+    "features": [],
+    "id": "0iu50uQrFKQrR0pj",
+    "name": "Corruption Subdomain",
+    "parentDomainTags": ["Evil"],
+    "tag": "Corruption",
+    "uuid": "Compendium.pf1.class-abilities.Item.0iu50uQrFKQrR0pj"
+  },
+  "0mXAs4PZgXIKUbl4": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd— Haunting Mists</li>\n<li>4th—They Know</li>\n<li>6th— Phobia</li>\n</ul>",
+    "features": [],
+    "id": "0mXAs4PZgXIKUbl4",
+    "name": "Sahkil Subdomain",
+    "parentDomainTags": ["Evil"],
+    "tag": "Sahkil",
+    "uuid": "Compendium.pf1.class-abilities.Item.0mXAs4PZgXIKUbl4"
+  },
+  "2na2nqI5wxvd86kg": {
+    "changes": [
+      {
+        "formula": "1 + floor(@class.unlevel / 5)",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Protection from Chaos / Evil / Good / Law</li><li>2nd—Shield Other</li><li>3rd—Remove Blindness/Deafness</li><li>4th—Spell Immunity</li><li>5th—Atonement</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Prismatic Sphere</li></ul>",
+    "features": [
+      {
+        "featureId": "Bw3GiobZvSJb8dGI",
+        "level": 0,
+        "name": "Resistant Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Bw3GiobZvSJb8dGI"
+      },
+      {
+        "featureId": "xjMP6IXHO1JbmaXN",
+        "level": 8,
+        "name": "Purifying Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xjMP6IXHO1JbmaXN"
+      }
+    ],
+    "id": "2na2nqI5wxvd86kg",
+    "name": "Purity Subdomain",
+    "parentDomainTags": ["Protection"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "94-95"
+      }
+    ],
+    "tag": "Purity",
+    "uuid": "Compendium.pf1.class-abilities.Item.2na2nqI5wxvd86kg"
+  },
+  "3CgcWBGI6vtz7vZx": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Command</li>\n<li>3rd—Suggestion</li>\n<li>6th—Planar Binding (devils only)</li>\n</ul>",
+    "features": [],
+    "id": "3CgcWBGI6vtz7vZx",
+    "name": "Devil Subdomain",
+    "parentDomainTags": ["Evil", "Law"],
+    "tag": "Devil",
+    "uuid": "Compendium.pf1.class-abilities.Item.3CgcWBGI6vtz7vZx"
+  },
+  "3FkaGJVcOYKsA7Lg": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Keen Edge</li>\n<li>5th—Suffocation</li>\n<li>9th—Suffocation, Mass</li>\n</ul>",
+    "features": [],
+    "id": "3FkaGJVcOYKsA7Lg",
+    "name": "Murder Subdomain",
+    "parentDomainTags": ["Death"],
+    "tag": "Murder",
+    "uuid": "Compendium.pf1.class-abilities.Item.3FkaGJVcOYKsA7Lg"
+  },
+  "4eIRlzM1ODGr9aDq": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Seek Thoughts</li>\n<li>5th—Telepathic Bond</li>\n<li>8th—Mind Blank</li>\n</ul>",
+    "features": [],
+    "id": "4eIRlzM1ODGr9aDq",
+    "name": "Thought Subdomain",
+    "parentDomainTags": ["Knowledge"],
+    "tag": "Thought",
+    "uuid": "Compendium.pf1.class-abilities.Item.4eIRlzM1ODGr9aDq"
+  },
+  "4r1t3LvBKkw2RCq6": {
+    "changes": [],
+    "description": "<p>Replacement Domain Spells:</p>\n<ul>\n<li>1st—Expeditious Retreat</li>\n<li>3rd—Fly</li>\n<li>6th—Planar Ally (azata only)</li>\n</ul>",
+    "features": [],
+    "id": "4r1t3LvBKkw2RCq6",
+    "name": "Azata Subdomain",
+    "parentDomainTags": ["Chaos", "Good"],
+    "tag": "Azata",
+    "uuid": "Compendium.pf1.class-abilities.Item.4r1t3LvBKkw2RCq6"
+  },
+  "51FDels17DGl7Yq9": {
+    "changes": [],
+    "description": "<p><b>Replacement Power:</b> In campaigns that use the optional hero point system (Pathfinder RPG Advanced Player’s Guide 322), you gain Hero’s Fortune (Advanced Player’s Guide 324) as a bonus feat. Otherwise, you gain Marked for Glory (Pathfinder RPG Mythic Adventures 69) as a bonus feat, even if you do not meet its prerequisites.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Aid, 3rd—Contagious Zeal</li>\n<li>4th— Righteous Vigor</li>\n<li>6th— Unshakable Zeal</li>\n<li>If you are evil, replace the domain spells Holy Smite, Holy Sword, and Holy Aura with Unholy Blight, Unholy Sword, and Unholy Aura respectively.</li>\n</ul>",
+    "features": [],
+    "id": "51FDels17DGl7Yq9",
+    "name": "Legend Subdomain",
+    "parentDomainTags": ["Glory"],
+    "tag": "Legend",
+    "uuid": "Compendium.pf1.class-abilities.Item.51FDels17DGl7Yq9"
+  },
+  "52sdtdkBoRICEFaU": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd — Memory Lapse</li>\n<li>6th — Modify Memory</li>\n<li>8th — Moment of Prescience</li>\n</ul>",
+    "features": [],
+    "id": "52sdtdkBoRICEFaU",
+    "name": "Memory Subdomain",
+    "parentDomainTags": ["Knowledge"],
+    "tag": "Memory",
+    "uuid": "Compendium.pf1.class-abilities.Item.52sdtdkBoRICEFaU"
+  },
+  "63vMiCfBi4PWsZQo": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Arcane Lock</li>\n<li>4th—Dimensional Anchor</li>\n<li>6th—Guards and Wards</li>\n</ul>",
+    "features": [],
+    "id": "63vMiCfBi4PWsZQo",
+    "name": "Wards Subdomain",
+    "parentDomainTags": ["Rune"],
+    "tag": "Wards",
+    "uuid": "Compendium.pf1.class-abilities.Item.63vMiCfBi4PWsZQo"
+  },
+  "6aiPH3iI5bqykMOC": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Expeditious Retreat</li>\n<li>4th—Locate Creature</li>\n<li>9th—World Wave</li>\n</ul>",
+    "features": [],
+    "id": "6aiPH3iI5bqykMOC",
+    "name": "Exploration Subdomain",
+    "parentDomainTags": ["Travel"],
+    "tag": "Exploration",
+    "uuid": "Compendium.pf1.class-abilities.Item.6aiPH3iI5bqykMOC"
+  },
+  "6n8L6nbXyfRXoTCF": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Call Lightning Storm</li>\n<li>6th—Sirocco</li>\n</ul>",
+    "features": [],
+    "id": "6n8L6nbXyfRXoTCF",
+    "name": "Storms Subdomain",
+    "parentDomainTags": ["Weather"],
+    "tag": "Storms",
+    "uuid": "Compendium.pf1.class-abilities.Item.6n8L6nbXyfRXoTCF"
+  },
+  "6rqIMKpnCiimDyLo": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Command</li>\n<li>5th—Waves of Fatigue</li>\n<li>7th—Waves of Exhaustion</li>\n</ul>",
+    "features": [],
+    "id": "6rqIMKpnCiimDyLo",
+    "name": "Toil Subdomain",
+    "parentDomainTags": ["Artifice"],
+    "tag": "Toil",
+    "uuid": "Compendium.pf1.class-abilities.Item.6rqIMKpnCiimDyLo"
+  },
+  "7HBmv5FWqBF1bJ4D": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Continual Flame</li>\n<li>3rd—Daylight</li>\n</ul>",
+    "features": [],
+    "id": "7HBmv5FWqBF1bJ4D",
+    "name": "Day Subdomain",
+    "parentDomainTags": ["Sun"],
+    "tag": "Day",
+    "uuid": "Compendium.pf1.class-abilities.Item.7HBmv5FWqBF1bJ4D"
+  },
+  "7RxmCyoga9W3WADT": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Confusion</li>\n<li>7th—Song of Discord</li>\n<li>9th—Symbol of Strife</li>\n</ul>",
+    "features": [],
+    "id": "7RxmCyoga9W3WADT",
+    "name": "Riot Subdomain",
+    "parentDomainTags": ["Chaos"],
+    "tag": "Riot",
+    "uuid": "Compendium.pf1.class-abilities.Item.7RxmCyoga9W3WADT"
+  },
+  "8GVwxb8WviIeUq0L": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Entropic Shield</li>\n<li>3rd— Dispel Magic</li>\n<li>5th—Confusion</li>\n<li>7th—Destruction</li>\n</ul>",
+    "features": [],
+    "id": "8GVwxb8WviIeUq0L",
+    "name": "Entropy Subdomain",
+    "parentDomainTags": ["Chaos"],
+    "tag": "Entropy",
+    "uuid": "Compendium.pf1.class-abilities.Item.8GVwxb8WviIeUq0L"
+  },
+  "8aFTPx0YF8gKMOYN": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Bull's Strength</li>\n<li>6th—Moonstruck</li>\n</ul>",
+    "features": [],
+    "id": "8aFTPx0YF8gKMOYN",
+    "name": "Rage Subdomain",
+    "parentDomainTags": ["Destruction"],
+    "tag": "Rage",
+    "uuid": "Compendium.pf1.class-abilities.Item.8aFTPx0YF8gKMOYN"
+  },
+  "95GjZ4XzJdKJJTWY": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Rest Eternal</li>\n<li>6th—Geas/Quest</li>\n</ul>",
+    "features": [],
+    "id": "95GjZ4XzJdKJJTWY",
+    "name": "Ancestors Subdomain",
+    "parentDomainTags": ["Repose"],
+    "tag": "Ancestors",
+    "uuid": "Compendium.pf1.class-abilities.Item.95GjZ4XzJdKJJTWY"
+  },
+  "9CCh20rnR8xpYiEn": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Augury</li>\n<li>3rd—Borrow Fortune</li>\n</ul>",
+    "features": [],
+    "id": "9CCh20rnR8xpYiEn",
+    "name": "Fate Subdomain",
+    "parentDomainTags": ["Luck"],
+    "tag": "Fate",
+    "uuid": "Compendium.pf1.class-abilities.Item.9CCh20rnR8xpYiEn"
+  },
+  "9EGisgvR26lfHRbq": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Tree Shape</li>\n<li>5th—Commune with Nature</li>\n</ul>",
+    "features": [],
+    "id": "9EGisgvR26lfHRbq",
+    "name": "Leshy Subdomain",
+    "parentDomainTags": ["Plant"],
+    "tag": "Leshy",
+    "uuid": "Compendium.pf1.class-abilities.Item.9EGisgvR26lfHRbq"
+  },
+  "9L6D7WcLuGX58Wc6": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Hydraulic Push</li>\n<li>2nd—Slipstream</li>\n<li>5th—Elemental Body II</li>\n<li>6th—Fluid Form</li>\n</ul>",
+    "features": [],
+    "id": "9L6D7WcLuGX58Wc6",
+    "name": "Rivers Subdomain",
+    "parentDomainTags": ["Water"],
+    "tag": "Rivers",
+    "uuid": "Compendium.pf1.class-abilities.Item.9L6D7WcLuGX58Wc6"
+  },
+  "9lMpmvKhps8DBPG5": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd— Touch Injection</li>\n<li>4th— Amplify Elixir</li>\n<li>6th—Delayed Consumption</li>\n</ul>",
+    "features": [],
+    "id": "9lMpmvKhps8DBPG5",
+    "name": "Alchemy Subdomain",
+    "parentDomainTags": ["Artifice", "Magic"],
+    "tag": "Alchemy",
+    "uuid": "Compendium.pf1.class-abilities.Item.9lMpmvKhps8DBPG5"
+  },
+  "9lg0RmVr8Qw2kkI9": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Hideous Laughter</li>\n<li>4th—Confusion</li>\n<li>6th—Cloak of Dreams</li>\n</ul>",
+    "features": [],
+    "id": "9lg0RmVr8Qw2kkI9",
+    "name": "Whimsy Subdomain",
+    "parentDomainTags": ["Chaos"],
+    "tag": "Whimsy",
+    "uuid": "Compendium.pf1.class-abilities.Item.9lg0RmVr8Qw2kkI9"
+  },
+  "AF8sKDTWPV3HVNGu": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Goodberry</li>\n<li>4th—Blight</li>\n<li>8th—Sunburst</li>\n</ul>",
+    "features": [],
+    "id": "AF8sKDTWPV3HVNGu",
+    "name": "Seasons Subdomain",
+    "parentDomainTags": ["Weather"],
+    "tag": "Seasons",
+    "uuid": "Compendium.pf1.class-abilities.Item.AF8sKDTWPV3HVNGu"
+  },
+  "AG9FTuIWE2J2mJ7o": {
+    "changes": [],
+    "description": "<p><strong>Granted Powers:</strong> You are a spirit of freedom and a staunch foe against all who would enslave and oppress.</p><p><strong>Associated Domain:</strong> Liberation</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Remove Fear</li><li>2nd—Enthrall</li><li>3rd—Remove Curse</li><li>4th—Freedom of Movement</li><li>5th—Break Enchantment</li><li>6th—Symbol of Persuasion</li><li>7th—Refuge</li><li>8th—Mind Blank</li><li>9th—Freedom</li></ul>",
+    "features": [
+      {
+        "featureId": "2mnWAoFKqKKxWCt4",
+        "level": 0,
+        "name": "Liberation (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2mnWAoFKqKKxWCt4"
+      },
+      {
+        "featureId": "05dlMQ4G1bTM74xp",
+        "level": 8,
+        "name": "Powerful Persuader",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.05dlMQ4G1bTM74xp"
+      }
+    ],
+    "id": "AG9FTuIWE2J2mJ7o",
+    "name": "Revolution Subdomain",
+    "parentDomainTags": ["Liberation"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "96"
+      }
+    ],
+    "tag": "Revolution",
+    "uuid": "Compendium.pf1.class-abilities.Item.AG9FTuIWE2J2mJ7o"
+  },
+  "AW8RWHDiMKhwglcQ": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Pain Strike</li>\n<li>5th— Symbol of Pain</li>\n<li>8th—Demand</li>\n</ul>",
+    "features": [],
+    "id": "AW8RWHDiMKhwglcQ",
+    "name": "Torture Subdomain",
+    "parentDomainTags": ["Destruction"],
+    "tag": "Torture",
+    "uuid": "Compendium.pf1.class-abilities.Item.AW8RWHDiMKhwglcQ"
+  },
+  "BnDWyEkl77V3FjCw": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Hypnotism</li>\n<li>2nd—Hypnotic Pattern</li>\n<li>4th—Rainbow Pattern</li>\n</ul>",
+    "features": [],
+    "id": "BnDWyEkl77V3FjCw",
+    "name": "Captivation Subdomain",
+    "parentDomainTags": ["Charm"],
+    "tag": "Captivation",
+    "uuid": "Compendium.pf1.class-abilities.Item.BnDWyEkl77V3FjCw"
+  },
+  "BwDN5DEhxdzLrPLZ": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Zone of Truth</li>\n<li>6th—Geas/Quest</li>\n</ul>",
+    "features": [],
+    "id": "BwDN5DEhxdzLrPLZ",
+    "name": "Honor Subdomain",
+    "parentDomainTags": ["Glory"],
+    "tag": "Honor",
+    "uuid": "Compendium.pf1.class-abilities.Item.BwDN5DEhxdzLrPLZ"
+  },
+  "C2DvBVzMotvjAP3S": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Doom</li>\n<li>3rd—Rage</li>\n<li>6th—Planar Binding (demons only).</li>\n</ul>",
+    "features": [],
+    "id": "C2DvBVzMotvjAP3S",
+    "name": "Demon Subdomain",
+    "parentDomainTags": ["Chaos", "Evil"],
+    "tag": "Demon",
+    "uuid": "Compendium.pf1.class-abilities.Item.C2DvBVzMotvjAP3S"
+  },
+  "CgDxKisDe3MCRPg5": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Align Weapon (chaos or evil only)</li>\n<li>6th—Corrosive Consumption</li>\n</ul>",
+    "features": [],
+    "id": "CgDxKisDe3MCRPg5",
+    "name": "Demodand Subdomain",
+    "parentDomainTags": ["Chaos", "Evil"],
+    "tag": "Demodand",
+    "uuid": "Compendium.pf1.class-abilities.Item.CgDxKisDe3MCRPg5"
+  },
+  "DJu9WtuvbR1UkcvZ": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Ray of Sickening</li>\n<li>3rd—Contagion</li>\n<li>6th—Plague Storm</li>\n<li>8th—Horrid Wilting</li>\n</ul>",
+    "features": [],
+    "id": "DJu9WtuvbR1UkcvZ",
+    "name": "Plague Subdomain",
+    "parentDomainTags": ["Death", "Evil"],
+    "tag": "Plague",
+    "uuid": "Compendium.pf1.class-abilities.Item.DJu9WtuvbR1UkcvZ"
+  },
+  "DPaGRvfkKANynD7M": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Shield Other</li>\n<li>5th—Telepathic Bond</li>\n</ul>",
+    "features": [],
+    "id": "DPaGRvfkKANynD7M",
+    "name": "Friendship Subdomain",
+    "parentDomainTags": ["Good"],
+    "tag": "Friendship",
+    "uuid": "Compendium.pf1.class-abilities.Item.DPaGRvfkKANynD7M"
+  },
+  "ER2tTsoeC0AWtRYn": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Open And Shut</li>\n<li>2nd—Knock</li>\n<li>3rd—Urban Step</li>\n<li>9th—Teleportation Circle</li>\n</ul>",
+    "features": [],
+    "id": "ER2tTsoeC0AWtRYn",
+    "name": "Portal Subdomain",
+    "parentDomainTags": ["Travel"],
+    "tag": "Portal",
+    "uuid": "Compendium.pf1.class-abilities.Item.ER2tTsoeC0AWtRYn"
+  },
+  "EZXEjeRFfHbfCvub": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells</b>:</p>\n<ul>\n<li>1st—Magic Fang</li>\n<li>3rd—Beast Shape I (animals only)</li>\n</ul>",
+    "features": [],
+    "id": "EZXEjeRFfHbfCvub",
+    "name": "Fur Subdomain",
+    "parentDomainTags": ["Animal"],
+    "tag": "Fur",
+    "uuid": "Compendium.pf1.class-abilities.Item.EZXEjeRFfHbfCvub"
+  },
+  "FX18F44BI61SEuP9": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Command Undead</li>\n<li>5th—Command, Greater</li>\n<li>6th—Planar Binding (inevitables only)</li>\n</ul>",
+    "features": [],
+    "id": "FX18F44BI61SEuP9",
+    "name": "Inevitable Subdomain",
+    "parentDomainTags": ["Law"],
+    "tag": "Inevitable",
+    "uuid": "Compendium.pf1.class-abilities.Item.FX18F44BI61SEuP9"
+  },
+  "GoOZGKSbOmodZHqF": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Remove Fear</li>\n<li>3rd—Heroism</li>\n<li>6th—Heroism, Greater</li>\n</ul>",
+    "features": [],
+    "id": "GoOZGKSbOmodZHqF",
+    "name": "Chivalry Subdomain",
+    "parentDomainTags": ["Glory"],
+    "tag": "Chivalry",
+    "uuid": "Compendium.pf1.class-abilities.Item.GoOZGKSbOmodZHqF"
+  },
+  "GsblgyzYht907slf": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Animate Dead</li>\n<li>6th—Antilife Shell</li>\n<li>9th—Trap the Soul</li>\n</ul>",
+    "features": [],
+    "id": "GsblgyzYht907slf",
+    "name": "Souls Subdomain",
+    "parentDomainTags": ["Repose"],
+    "tag": "Souls",
+    "uuid": "Compendium.pf1.class-abilities.Item.GsblgyzYht907slf"
+  },
+  "H5BScdULGUCOEt5L": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Ray Of Enfeeblement</li>\n<li>4th—Phantasmal Killer</li>\n<li>8th—Orb Of The Void</li>\n</ul>",
+    "features": [],
+    "id": "H5BScdULGUCOEt5L",
+    "name": "Shadow Subdomain",
+    "parentDomainTags": ["Darkness", "Death"],
+    "tag": "Shadow",
+    "uuid": "Compendium.pf1.class-abilities.Item.H5BScdULGUCOEt5L"
+  },
+  "HeeQpOyLQXsOtIJG": {
+    "changes": [],
+    "description": "<p><b>Replacement Power:</b> The domain spells provided by the Insect domain affect vermin rather than animals, treating them as if they were not immune to spells with the mindaffecting descriptor. Any such spell that allows a Will save can instead be negated by the target vermin with a successful Fortitude save at the same DC.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Giant Vermin</li>\n<li>5th—Vermin Shape II</li>\n<li>8th—Summon Nature's Ally VIII (1d3 goliath stag beetles; Pathfinder RPG Bestiary 2 44)</li>\n</ul>",
+    "features": [],
+    "id": "HeeQpOyLQXsOtIJG",
+    "name": "Insect Subdomain",
+    "parentDomainTags": ["Animal"],
+    "tag": "Insect",
+    "uuid": "Compendium.pf1.class-abilities.Item.HeeQpOyLQXsOtIJG"
+  },
+  "IdmbX3dusso7BYbO": {
+    "changes": [
+      {
+        "formula": "1 + floor(@class.unlevel / 5)",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p>{Aura of Protection (Su)}</p><h3>Domain Spells</h3><ul><li>1st—Hold Person</li><li>2nd—Shield Other</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Wall of Stone</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Prismatic Wall</li></ul>",
+    "features": [
+      {
+        "featureId": "jlGCqPjmgNH3lUXS",
+        "level": 0,
+        "name": "Sheltering Walls",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jlGCqPjmgNH3lUXS"
+      },
+      {
+        "featureId": "kHXw5V06TkymXxF3",
+        "level": 8,
+        "name": "Aura of Protection (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kHXw5V06TkymXxF3"
+      }
+    ],
+    "id": "IdmbX3dusso7BYbO",
+    "name": "Fortification Subdomain",
+    "parentDomainTags": ["Protection"],
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "18"
+      }
+    ],
+    "tag": "Fortification",
+    "uuid": "Compendium.pf1.class-abilities.Item.IdmbX3dusso7BYbO"
+  },
+  "IlHsGNP2P7U035Hk": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Locate Object</li>\n<li>7th—Ethereal Jaunt</li>\n</ul>",
+    "features": [],
+    "id": "IlHsGNP2P7U035Hk",
+    "name": "Thievery Subdomain",
+    "parentDomainTags": ["Trickery"],
+    "tag": "Thievery",
+    "uuid": "Compendium.pf1.class-abilities.Item.IlHsGNP2P7U035Hk"
+  },
+  "J1v8s4Ao05VehDTq": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Crafter's Fortune</li>\n<li>7th—Mage's Magnificent Mansion</li>\n<li>9th—Wooden Phalanx</li>\n</ul>",
+    "features": [],
+    "id": "J1v8s4Ao05VehDTq",
+    "name": "Industry Subdomain",
+    "parentDomainTags": ["Artifice"],
+    "tag": "Industry",
+    "uuid": "Compendium.pf1.class-abilities.Item.J1v8s4Ao05VehDTq"
+  },
+  "Jjo1BND4tvEJnO1I": {
+    "changes": [],
+    "description": "<p><strong>Granted Powers:</strong> You can manipulate lightning, mist, and wind, traffic with air creatures, and are resistant to electricity damage.</p><p><strong>Associated Domain:</strong> Air</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Whispering Wind</li><li>2nd—Wind Wall</li><li>3rd—Gaseous Form</li><li>4th—Air Walk</li><li>5th—Control Winds</li><li>6th—Wind Walk</li><li>7th—Elemental Body IV (air only)</li><li>8th— Whirlwind</li><li>9th—Winds of Vengeance</li></ul>",
+    "features": [
+      {
+        "featureId": "4KrSL8mgSPLF7f9c",
+        "level": 0,
+        "name": "Wind Blast",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4KrSL8mgSPLF7f9c"
+      },
+      {
+        "featureId": "tap9LNVtXblKh0sv",
+        "level": 6,
+        "name": "Electricity Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tap9LNVtXblKh0sv"
+      }
+    ],
+    "id": "Jjo1BND4tvEJnO1I",
+    "name": "Wind Subdomain",
+    "parentDomainTags": ["Air"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "97"
+      }
+    ],
+    "tag": "Wind",
+    "uuid": "Compendium.pf1.class-abilities.Item.Jjo1BND4tvEJnO1I"
+  },
+  "JtHGFUJPUL1lJUOA": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Enervation</li>\n<li>6th—Modify Memory</li>\n<li>9th—Energy Drain</li>\n</ul>",
+    "features": [],
+    "id": "JtHGFUJPUL1lJUOA",
+    "name": "Loss Subdomain",
+    "parentDomainTags": ["Darkness"],
+    "tag": "Loss",
+    "uuid": "Compendium.pf1.class-abilities.Item.JtHGFUJPUL1lJUOA"
+  },
+  "KWGUqoIm1WTcohBG": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Sanctuary</li>\n<li>5th—Telepathic Bond</li>\n<li>6th—Planar Binding (aeons only)</li>\n</ul>",
+    "features": [],
+    "id": "KWGUqoIm1WTcohBG",
+    "name": "Aeon Subdomain",
+    "parentDomainTags": ["Knowledge"],
+    "tag": "Aeon",
+    "uuid": "Compendium.pf1.class-abilities.Item.KWGUqoIm1WTcohBG"
+  },
+  "KXnHUgJXQvUAwJSP": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Make Whole</li>\n<li>5th— Major Creation</li>\n<li>6th—Animate Objects</li>\n</ul>",
+    "features": [],
+    "id": "KXnHUgJXQvUAwJSP",
+    "name": "Flotsam Subdomain",
+    "parentDomainTags": ["Water"],
+    "tag": "Flotsam",
+    "uuid": "Compendium.pf1.class-abilities.Item.KXnHUgJXQvUAwJSP"
+  },
+  "KZ4dIav1Qcto78xO": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li><b></b> 2nd - Hypnotic Pattern</li>\n<li>7th - Sunbeam</li>\n<li>9th - Meteor Swarm</li>\n</ul>",
+    "features": [],
+    "id": "KZ4dIav1Qcto78xO",
+    "name": "Stars Subdomain",
+    "parentDomainTags": ["Void"],
+    "tag": "Stars",
+    "uuid": "Compendium.pf1.class-abilities.Item.KZ4dIav1Qcto78xO"
+  },
+  "KcRbd3s76GwqyJi1": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Qualm</li>\n<li>4th—Forced Repentance</li>\n<li>5th—Atonement</li>\n</ul>",
+    "features": [],
+    "id": "KcRbd3s76GwqyJi1",
+    "name": "Redemption Subdomain",
+    "parentDomainTags": ["Good"],
+    "tag": "Redemption",
+    "uuid": "Compendium.pf1.class-abilities.Item.KcRbd3s76GwqyJi1"
+  },
+  "LDI7nsgF5UL75dLv": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Cat's Grace</li>\n<li>4th—Freedom of Movement</li>\n<li>6th—Fluid Form</li>\n<li>8th—Mind Blank</li>\n</ul>",
+    "features": [],
+    "id": "LDI7nsgF5UL75dLv",
+    "name": "Flowing Subdomain",
+    "parentDomainTags": ["Water"],
+    "tag": "Flowing",
+    "uuid": "Compendium.pf1.class-abilities.Item.LDI7nsgF5UL75dLv"
+  },
+  "LIb8sgvAtUL7r11Q": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Cup Of Dust</li>\n<li>9th—Horrid Wilting</li>\n</ul>",
+    "features": [],
+    "id": "LIb8sgvAtUL7r11Q",
+    "name": "Thirst Subdomain",
+    "parentDomainTags": ["Sun"],
+    "tag": "Thirst",
+    "uuid": "Compendium.pf1.class-abilities.Item.LIb8sgvAtUL7r11Q"
+  },
+  "Lb3YISPq7wexIalZ": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Comprehend Languages</li>\n<li>2nd—Share Language</li>\n<li>3rd—Tongues</li>\n<li>5th—Telepathic Bond</li>\n</ul>",
+    "features": [],
+    "id": "Lb3YISPq7wexIalZ",
+    "name": "Language Subdomain",
+    "parentDomainTags": ["Rune"],
+    "tag": "Language",
+    "uuid": "Compendium.pf1.class-abilities.Item.Lb3YISPq7wexIalZ"
+  },
+  "LdTgQd53LA9JUQaj": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Hideous Laughter</li>\n<li>3rd—Good Hope</li>\n<li>6th—Heroes' Feast</li>\n<li>8th—Irresistible Dance</li>\n</ul>",
+    "features": [],
+    "id": "LdTgQd53LA9JUQaj",
+    "name": "Revelry Subdomain",
+    "parentDomainTags": ["Chaos"],
+    "tag": "Revelry",
+    "uuid": "Compendium.pf1.class-abilities.Item.LdTgQd53LA9JUQaj"
+  },
+  "LwwjHf6ORZKi0tTa": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Defoliate</li>\n<li>4th—Blight</li>\n<li>8th—Horrid Wilting</li>\n</ul>",
+    "features": [],
+    "id": "LwwjHf6ORZKi0tTa",
+    "name": "Radiation Subdomain",
+    "parentDomainTags": ["Earth"],
+    "tag": "Radiation",
+    "uuid": "Compendium.pf1.class-abilities.Item.LwwjHf6ORZKi0tTa"
+  },
+  "M18QnM8Xd0mUvSuR": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Touch of Idiocy</li>\n<li>4th—Confusion</li>\n</ul>",
+    "features": [],
+    "id": "M18QnM8Xd0mUvSuR",
+    "name": "Lust Subdomain",
+    "parentDomainTags": ["Charm"],
+    "tag": "Lust",
+    "uuid": "Compendium.pf1.class-abilities.Item.M18QnM8Xd0mUvSuR"
+  },
+  "MMzblKaO4G5vayvK": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Murderous Command</li>\n<li>2nd—Wrathful Mantle</li>\n</ul>",
+    "features": [],
+    "id": "MMzblKaO4G5vayvK",
+    "name": "Hatred Subdomain",
+    "parentDomainTags": ["Destruction"],
+    "tag": "Hatred",
+    "uuid": "Compendium.pf1.class-abilities.Item.MMzblKaO4G5vayvK"
+  },
+  "MOfNOb76twm8Rhse": {
+    "changes": [],
+    "description": "<p><strong>Replacement Power: Note:</strong> Only creatures with the <em>Kobold Faith</em> trait can take this subdomain.</p><p><strong>Replacement Domain Spells:</strong></p><ul><li>2nd—Snare</li><li>3rd—Improve Trap</li><li>7th—Teleport Trap</li></ul>",
+    "features": [],
+    "id": "MOfNOb76twm8Rhse",
+    "name": "Trap Subdomain",
+    "parentDomainTags": ["Artifice"],
+    "tag": "Trap",
+    "uuid": "Compendium.pf1.class-abilities.Item.MOfNOb76twm8Rhse"
+  },
+  "N1TVJ8y9XF9PzEht": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Wall Of Nausea</li>\n<li>5th—Contact Other Plane</li>\n<li>6th—Litany Of Madness</li>\n</ul>",
+    "features": [],
+    "id": "N1TVJ8y9XF9PzEht",
+    "name": "Truth Subdomain",
+    "parentDomainTags": ["Madness"],
+    "tag": "Truth",
+    "uuid": "Compendium.pf1.class-abilities.Item.N1TVJ8y9XF9PzEht"
+  },
+  "Nc629yyeBE0UeG2n": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Bless</li>\n<li>3rd—Prayer</li>\n<li>6th—Brilliant Inspiration</li>\n</ul>",
+    "features": [],
+    "id": "Nc629yyeBE0UeG2n",
+    "name": "Leadership Subdomain",
+    "parentDomainTags": ["Nobility"],
+    "tag": "Leadership",
+    "uuid": "Compendium.pf1.class-abilities.Item.Nc629yyeBE0UeG2n"
+  },
+  "O2TI9qvCdf45jvBX": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells</b>: </p>\n<ul>\n<li>1st—Thorn Javelin</li>\n<li>3rd— Thorny Entanglement</li>\n<li>4th—Thorn Body</li>\n</ul>",
+    "features": [],
+    "id": "O2TI9qvCdf45jvBX",
+    "name": "Thorns Subdomain",
+    "parentDomainTags": ["Plant"],
+    "tag": "Thorns",
+    "uuid": "Compendium.pf1.class-abilities.Item.O2TI9qvCdf45jvBX"
+  },
+  "OIC39qE2PPdjPuNk": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>3rd—Heroism</li>\n<li>6th—Heroism, Greater</li>\n</ul>",
+    "features": [],
+    "id": "OIC39qE2PPdjPuNk",
+    "name": "Heroism Subdomain",
+    "parentDomainTags": ["Glory"],
+    "tag": "Heroism",
+    "uuid": "Compendium.pf1.class-abilities.Item.OIC39qE2PPdjPuNk"
+  },
+  "OdjyOoQ39ZHogGUH": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Enthrall</li>\n<li>8th—Euphoric Tranquility</li>\n</ul>",
+    "features": [],
+    "id": "OdjyOoQ39ZHogGUH",
+    "name": "Love Subdomain",
+    "parentDomainTags": ["Charm"],
+    "tag": "Love",
+    "uuid": "Compendium.pf1.class-abilities.Item.OdjyOoQ39ZHogGUH"
+  },
+  "OxLSX3yUpgcf1J5O": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Calm Emotions</li>\n<li>3rd—Create Food and Water</li>\n</ul>",
+    "features": [],
+    "id": "OxLSX3yUpgcf1J5O",
+    "name": "Family Subdomain",
+    "parentDomainTags": ["Community"],
+    "tag": "Family",
+    "uuid": "Compendium.pf1.class-abilities.Item.OxLSX3yUpgcf1J5O"
+  },
+  "Q29rN7LtWcTWgtuZ": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Summon Nature's Ally IV (deinonychus or pteranodon only),</li>\n<li>5th—Beast Shape III</li>\n<li>7th—Summon Nature's Ally VII (brachiosaurus or tyrannosaurus only).</li>\n</ul>",
+    "features": [],
+    "id": "Q29rN7LtWcTWgtuZ",
+    "name": "Saurian Subdomain",
+    "parentDomainTags": ["Scalykind"],
+    "tag": "Saurian",
+    "uuid": "Compendium.pf1.class-abilities.Item.Q29rN7LtWcTWgtuZ"
+  },
+  "QJi75fvhCPwa2e5U": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd -Summon Monster II</li>\n<li>5th - Summon Monster V</li>\n<li>7th - Insanity</li>\n</ul>",
+    "features": [],
+    "id": "QJi75fvhCPwa2e5U",
+    "name": "Dark Tapestry Subdomain",
+    "parentDomainTags": ["Void"],
+    "tag": "Dark Tapestry",
+    "uuid": "Compendium.pf1.class-abilities.Item.QJi75fvhCPwa2e5U"
+  },
+  "QKE50owA3SkjjESt": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Flaming Sphere</li>\n<li>5th—Flame Strike</li>\n<li>7th—Delayed Blast Fireball</li>\n</ul>",
+    "features": [],
+    "id": "QKE50owA3SkjjESt",
+    "name": "Arson Subdomain",
+    "parentDomainTags": ["Fire"],
+    "tag": "Arson",
+    "uuid": "Compendium.pf1.class-abilities.Item.QKE50owA3SkjjESt"
+  },
+  "QO6oW3l5Oio6fyDP": {
+    "changes": [],
+    "description": "<p>Replacement Domain Spells:</p>\n<ul>\n<li>1st—Cause Fear</li>\n<li>3rd— Scare</li>\n<li>4th—Fear.</li>\n</ul>",
+    "features": [],
+    "id": "QO6oW3l5Oio6fyDP",
+    "name": "Fear Subdomain",
+    "parentDomainTags": ["Evil"],
+    "tag": "Fear",
+    "uuid": "Compendium.pf1.class-abilities.Item.QO6oW3l5Oio6fyDP"
+  },
+  "QzNDIUZajHu8pdxg": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Pyrotechnics</li>\n<li>3rd—Stinking Cloud</li>\n</ul>",
+    "features": [],
+    "id": "QzNDIUZajHu8pdxg",
+    "name": "Smoke Subdomain",
+    "parentDomainTags": ["Fire"],
+    "tag": "Smoke",
+    "uuid": "Compendium.pf1.class-abilities.Item.QzNDIUZajHu8pdxg"
+  },
+  "Rfib6GcSF86xCZZu": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Shield Other</li>\n<li>6th—Sacrificial Oath</li>\n</ul>",
+    "features": [],
+    "id": "Rfib6GcSF86xCZZu",
+    "name": "Martyr Subdomain",
+    "parentDomainTags": ["Nobility"],
+    "tag": "Martyr",
+    "uuid": "Compendium.pf1.class-abilities.Item.Rfib6GcSF86xCZZu"
+  },
+  "S3e7NaopczIYCfO8": {
+    "changes": [],
+    "description": "<p><b>Replacement Power:</b> You gain Intimidate as a class skill; this replaces the Glory domain’s increased save DC to resist channel positive energy.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Hollow Heroism</li>\n<li>7th—Hollow Heroism, Greater</li>\n<li>9th—Overwhelming Presence.</li>\n<li>If you are evil, replace the domain spells Bless Weapon and Holy Aura with Aid and Unholy Aura respectively.</li>\n</ul>",
+    "features": [],
+    "id": "S3e7NaopczIYCfO8",
+    "name": "Hubris Subdomain",
+    "parentDomainTags": ["Glory", "Nobility"],
+    "tag": "Hubris",
+    "uuid": "Compendium.pf1.class-abilities.Item.S3e7NaopczIYCfO8"
+  },
+  "S7UVH8q3s6SNETrU": {
+    "changes": [
+      {
+        "formula": "1 + floor(@class.unlevel / 5)",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p>{Aura of Protection (Su)}</p><h3>Domain Spells</h3><ul><li>1st—Shield</li><li>2nd—Barkskin</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Spell Resistance</li><li>6th—Antimagic Field</li><li>7th—Deflection</li><li>8th—Mind Blank</li><li>9th—Prismatic Sphere</li></ul>",
+    "features": [
+      {
+        "featureId": "yDG7xVuH7oqWS4Mt",
+        "level": 0,
+        "name": "Deflection Aura",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yDG7xVuH7oqWS4Mt"
+      },
+      {
+        "featureId": "kHXw5V06TkymXxF3",
+        "level": 8,
+        "name": "Aura of Protection (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kHXw5V06TkymXxF3"
+      }
+    ],
+    "id": "S7UVH8q3s6SNETrU",
+    "name": "Defense Subdomain",
+    "parentDomainTags": ["Protection"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "89"
+      }
+    ],
+    "tag": "Defense",
+    "uuid": "Compendium.pf1.class-abilities.Item.S7UVH8q3s6SNETrU"
+  },
+  "TsVqYiOKJyrLT9pF": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Vampiric Touch</li>\n<li>5th—Wall Of Thorns</li>\n<li>7th—Inflict Serious Wounds, Mass</li>\n</ul>",
+    "features": [],
+    "id": "TsVqYiOKJyrLT9pF",
+    "name": "Blood Subdomain",
+    "parentDomainTags": ["War"],
+    "tag": "Blood",
+    "uuid": "Compendium.pf1.class-abilities.Item.TsVqYiOKJyrLT9pF"
+  },
+  "U0EqUtAbofuADisW": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Faerie Fire</li>\n<li>3rd—Daylight</li>\n</ul>",
+    "features": [],
+    "id": "U0EqUtAbofuADisW",
+    "name": "Light Subdomain",
+    "parentDomainTags": ["Sun"],
+    "tag": "Light",
+    "uuid": "Compendium.pf1.class-abilities.Item.U0EqUtAbofuADisW"
+  },
+  "U14SmZ4MKr2UksTu": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Enlarge Person</li>\n<li>5th—Righteous Might</li>\n</ul>",
+    "features": [],
+    "id": "U14SmZ4MKr2UksTu",
+    "name": "Growth Subdomain",
+    "parentDomainTags": ["Plant"],
+    "tag": "Growth",
+    "uuid": "Compendium.pf1.class-abilities.Item.U14SmZ4MKr2UksTu"
+  },
+  "VQmmgl4iZJosmmIk": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Raise Dead</li>\n<li>7th—Resurrection</li>\n<li>9th—True Resurrection</li>\n</ul>",
+    "features": [],
+    "id": "VQmmgl4iZJosmmIk",
+    "name": "Resurrection Subdomain",
+    "parentDomainTags": ["Healing"],
+    "tag": "Resurrection",
+    "uuid": "Compendium.pf1.class-abilities.Item.VQmmgl4iZJosmmIk"
+  },
+  "VciWXEALxtJwwIYk": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Bless</li>\n<li>6th—Heroes' Feast</li>\n</ul>",
+    "features": [],
+    "id": "VciWXEALxtJwwIYk",
+    "name": "Resolve Subdomain",
+    "parentDomainTags": ["Strength"],
+    "tag": "Resolve",
+    "uuid": "Compendium.pf1.class-abilities.Item.VciWXEALxtJwwIYk"
+  },
+  "WZhZcT4KPDcgQ6ON": {
+    "changes": [],
+    "description": "<p><strong>Requirements</strong>: This subdomain requires the Acolyte of Apocrypha trait to access.</p><p><strong>Granted Powers:</strong> You are a spirit of freedom and a staunch foe against all who would enslave and oppress.</p><p><strong>Associated Domain:</strong> Liberation</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Remove Fear</li><li>2nd—Remove Paralysis</li><li>3rd—Remove Curse</li><li>4th—Paragon Surge (always matches your actual race)</li><li>5th—Break Enchantment</li><li>6th—Primal Scream</li><li>7th—Transformation</li><li>8th—Mind Blank</li><li>9th—Freedom</li></ul>",
+    "features": [
+      {
+        "featureId": "3zggJMxuipE68IkT",
+        "level": 0,
+        "name": "Perfected Form",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.3zggJMxuipE68IkT"
+      },
+      {
+        "featureId": "F6D6MV5q8BOjiCTU",
+        "level": 8,
+        "name": "Freedom's Call",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.F6D6MV5q8BOjiCTU"
+      }
+    ],
+    "id": "WZhZcT4KPDcgQ6ON",
+    "name": "Self-Realization Subdomain (Liberation)",
+    "parentDomainTags": ["Liberation"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "26"
+      }
+    ],
+    "tag": "Self-Realization (Liberation)",
+    "uuid": "Compendium.pf1.class-abilities.Item.WZhZcT4KPDcgQ6ON"
+  },
+  "WsTeyXwNCOSvvcoU": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>3rd—Hydraulic Torrent</li>\n<li>4th—Control Water</li>\n<li>5th—Fickle Winds</li>\n<li>9th—Tsunami</li>\n</ul>",
+    "features": [],
+    "id": "WsTeyXwNCOSvvcoU",
+    "name": "Monsoon Subdomain",
+    "parentDomainTags": ["Weather"],
+    "tag": "Monsoon",
+    "uuid": "Compendium.pf1.class-abilities.Item.WsTeyXwNCOSvvcoU"
+  },
+  "X8hwy7iMWx9yjJeM": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Chain of Perdition</li>\n<li>6th—Planar Ally (psychopomps only)</li>\n<li>8th—Trap the Soul</li>\n</ul>",
+    "features": [],
+    "id": "X8hwy7iMWx9yjJeM",
+    "name": "Psychopomp Subdomain",
+    "parentDomainTags": ["Death", "Repose"],
+    "tag": "Psychopomp",
+    "uuid": "Compendium.pf1.class-abilities.Item.X8hwy7iMWx9yjJeM"
+  },
+  "YvkymTmb5YLbqsjK": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—True Strike</li>\n<li>3rd—Magic Fang, Greater</li>\n<li>4th—Force Punch</li>\n</ul>",
+    "features": [],
+    "id": "YvkymTmb5YLbqsjK",
+    "name": "Fist Subdomain",
+    "parentDomainTags": ["Strength"],
+    "tag": "Fist",
+    "uuid": "Compendium.pf1.class-abilities.Item.YvkymTmb5YLbqsjK"
+  },
+  "auclZiO7Vh7F2vbx": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Moonstruck</li>\n<li>6th—Phantasmal Web</li>\n</ul>",
+    "features": [],
+    "id": "auclZiO7Vh7F2vbx",
+    "name": "Insanity Subdomain",
+    "parentDomainTags": ["Madness"],
+    "tag": "Insanity",
+    "uuid": "Compendium.pf1.class-abilities.Item.auclZiO7Vh7F2vbx"
+  },
+  "bCyOJTqkHjOCgPzx": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Bane</li>\n<li>3rd—Bestow Curse</li>\n<li>6th—Eyebite</li>\n</ul>",
+    "features": [],
+    "id": "bCyOJTqkHjOCgPzx",
+    "name": "Curse Subdomain",
+    "parentDomainTags": ["Luck"],
+    "tag": "Curse",
+    "uuid": "Compendium.pf1.class-abilities.Item.bCyOJTqkHjOCgPzx"
+  },
+  "bFQflm8KUQZ8qPMv": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Sleep</li>\n<li>6th—Nightmare</li>\n</ul>",
+    "features": [],
+    "id": "bFQflm8KUQZ8qPMv",
+    "name": "Night Subdomain",
+    "parentDomainTags": ["Darkness"],
+    "tag": "Night",
+    "uuid": "Compendium.pf1.class-abilities.Item.bFQflm8KUQZ8qPMv"
+  },
+  "bqJOJF5OXJlOxjf3": {
+    "changes": [],
+    "description": "<p><b>Replacement Power:</b> <em>Note:</em> Only creatures with the <a href=\"https://aonprd.com/TraitDisplay.aspx?ItemName=Kobold%20Faith\">Kobold Faith</a> trait can take this subdomain.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Alarm</li>\n<li>5th—Illusory Wall</li>\n<li>6th—Veil</li>\n</ul>",
+    "features": [],
+    "id": "bqJOJF5OXJlOxjf3",
+    "name": "Ambush Subdomain",
+    "parentDomainTags": ["Trickery"],
+    "tag": "Ambush",
+    "uuid": "Compendium.pf1.class-abilities.Item.bqJOJF5OXJlOxjf3"
+  },
+  "btjzccR1YDUNW1td": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Faerie Fire</li>\n<li>4th—Moonstruck</li>\n<li>6th—Dream</li>\n</ul>",
+    "features": [],
+    "id": "btjzccR1YDUNW1td",
+    "name": "Moon Subdomain",
+    "parentDomainTags": ["Darkness"],
+    "tag": "Moon",
+    "uuid": "Compendium.pf1.class-abilities.Item.btjzccR1YDUNW1td"
+  },
+  "cILuW33UDhe2DYsk": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Know The Enemy</li>\n<li>2nd—Fox's Cunning</li>\n<li>6th—Battlemind Link</li>\n<li>8th—Circle Of Clarity</li>\n</ul>",
+    "features": [],
+    "id": "cILuW33UDhe2DYsk",
+    "name": "Education Subdomain",
+    "parentDomainTags": ["Community", "Knowledge"],
+    "tag": "Education",
+    "uuid": "Compendium.pf1.class-abilities.Item.cILuW33UDhe2DYsk"
+  },
+  "cJ0PUlm41aroXQa8": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Create Pit</li>\n<li>3rd—Spiked Pit</li>\n<li>6th—Hungry Pit</li>\n</ul>",
+    "features": [],
+    "id": "cJ0PUlm41aroXQa8",
+    "name": "Caves Subdomain",
+    "parentDomainTags": ["Earth"],
+    "tag": "Caves",
+    "uuid": "Compendium.pf1.class-abilities.Item.cJ0PUlm41aroXQa8"
+  },
+  "cN8MjvuVuNGfBDJL": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>7th—Limited Wish</li>\n<li>8th—Polymorph Any Object</li>\n</ul>",
+    "features": [],
+    "id": "cN8MjvuVuNGfBDJL",
+    "name": "Construct Subdomain",
+    "parentDomainTags": ["Artifice"],
+    "tag": "Construct",
+    "uuid": "Compendium.pf1.class-abilities.Item.cN8MjvuVuNGfBDJL"
+  },
+  "cwenReAVnI9Dtp4R": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Magic Aura</li>\n<li>4th—Arcane Eye</li>\n<li>6th—Analyze Dweomer</li>\n</ul>",
+    "features": [],
+    "id": "cwenReAVnI9Dtp4R",
+    "name": "Arcane Subdomain",
+    "parentDomainTags": ["Magic"],
+    "tag": "Arcane",
+    "uuid": "Compendium.pf1.class-abilities.Item.cwenReAVnI9Dtp4R"
+  },
+  "dSieXFuoMusIuMN8": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>7th—Disintegrate</li>\n<li>9th—Fiery Body</li>\n</ul>",
+    "features": [],
+    "id": "dSieXFuoMusIuMN8",
+    "name": "Ash Subdomain",
+    "parentDomainTags": ["Fire"],
+    "tag": "Ash",
+    "uuid": "Compendium.pf1.class-abilities.Item.dSieXFuoMusIuMN8"
+  },
+  "dkcWJ80XYWvnM1h7": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Pernicious Poison</li>\n<li>6th—Cloudkill</li>\n</ul>",
+    "features": [],
+    "id": "dkcWJ80XYWvnM1h7",
+    "name": "Venom Subdomain",
+    "parentDomainTags": ["Scalykind"],
+    "tag": "Venom",
+    "uuid": "Compendium.pf1.class-abilities.Item.dkcWJ80XYWvnM1h7"
+  },
+  "eUqLGyU8jR5vIhgE": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Alarm</li>\n<li>3rd—Glyph Of Warding</li>\n<li>7th—Guards and Wards</li>\n</ul>",
+    "features": [],
+    "id": "eUqLGyU8jR5vIhgE",
+    "name": "Home Subdomain",
+    "parentDomainTags": ["Community"],
+    "tag": "Home",
+    "uuid": "Compendium.pf1.class-abilities.Item.eUqLGyU8jR5vIhgE"
+  },
+  "f6Cu0YDPK0oYJ7jw": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>4th—Phantasmal Killer</li>\n<li>6th—Cloak of Dreams</li>\n<li>9th—Weird</li>\n</ul>",
+    "features": [],
+    "id": "f6Cu0YDPK0oYJ7jw",
+    "name": "Nightmare Subdomain",
+    "parentDomainTags": ["Madness"],
+    "tag": "Nightmare",
+    "uuid": "Compendium.pf1.class-abilities.Item.f6Cu0YDPK0oYJ7jw"
+  },
+  "fOrSCrSzq2R79Xne": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Warding Weapon</li>\n<li>5th—Dance of a Hundred Cuts</li>\n<li>8th—Dance of a Thousand Cuts</li>\n</ul>",
+    "features": [],
+    "id": "fOrSCrSzq2R79Xne",
+    "name": "Duels Subdomain",
+    "parentDomainTags": ["War"],
+    "tag": "Duels",
+    "uuid": "Compendium.pf1.class-abilities.Item.fOrSCrSzq2R79Xne"
+  },
+  "fsDZNtCRYiKuPETc": {
+    "changes": [],
+    "description": "<p><strong>Granted Powers:</strong> You can manipulate lightning, mist, and wind, traffic with air creatures, and are resistant to electricity damage.</p><p><strong>Associated Domain:</strong> Air</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Obscuring Mist</li><li>2nd—Wind Wall</li><li>3rd—Gaseous Form</li><li>4th—Solid Fog</li><li>5th—Control Winds</li><li>6th—Chain Lightning</li><li>7th—Elemental Body IV (air only)</li><li>8th— Whirlwind</li><li>9th—Storm Of Vengeance</li></ul>",
+    "features": [
+      {
+        "featureId": "o8rxNsQ7P7Yjlvvu",
+        "level": 0,
+        "name": "Lightning Arc",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.o8rxNsQ7P7Yjlvvu"
+      },
+      {
+        "featureId": "YvEe9B32X53ZCuWs",
+        "level": 8,
+        "name": "Thundercloud",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YvEe9B32X53ZCuWs"
+      }
+    ],
+    "id": "fsDZNtCRYiKuPETc",
+    "name": "Cloud Subdomain",
+    "parentDomainTags": ["Air"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "88"
+      }
+    ],
+    "tag": "Cloud",
+    "uuid": "Compendium.pf1.class-abilities.Item.fsDZNtCRYiKuPETc"
+  },
+  "gOMQuX8vUnNclNXT": {
+    "changes": [],
+    "description": "<p><b>Replacement Power:</b> When casting a Rites domain spell with a costly material component—or casting permanency on any domain spell—reduce the cost of the necessary components by 20%.</p>\n<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Sanctify Corpse</li>\n<li>5th—Permanency</li>\n<li>8th—Binding</li>\n</ul>",
+    "features": [],
+    "id": "gOMQuX8vUnNclNXT",
+    "name": "Rites Subdomain",
+    "parentDomainTags": ["Magic"],
+    "tag": "Rites",
+    "uuid": "Compendium.pf1.class-abilities.Item.gOMQuX8vUnNclNXT"
+  },
+  "gcbkOtnZ09HTsFzb": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Contagion</li>\n<li>4th—Poison</li>\n<li>6th—Harm</li>\n</ul>",
+    "features": [],
+    "id": "gcbkOtnZ09HTsFzb",
+    "name": "Decay Subdomain",
+    "parentDomainTags": ["Plant"],
+    "tag": "Decay",
+    "uuid": "Compendium.pf1.class-abilities.Item.gcbkOtnZ09HTsFzb"
+  },
+  "hFHJ4B9hwrGll8o4": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Heat Metal</li>\n<li>6th—Wall of Iron</li>\n<li>8th—Iron Body</li>\n</ul>",
+    "features": [],
+    "id": "hFHJ4B9hwrGll8o4",
+    "name": "Metal Subdomain",
+    "parentDomainTags": ["Earth"],
+    "tag": "Metal",
+    "uuid": "Compendium.pf1.class-abilities.Item.hFHJ4B9hwrGll8o4"
+  },
+  "hJV8YVdSn0NnTxww": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Castigate</li>\n<li>4th—Rebuke</li>\n<li>5th—Mark of Justice</li>\n</ul>",
+    "features": [],
+    "id": "hJV8YVdSn0NnTxww",
+    "name": "Judgment Subdomain",
+    "parentDomainTags": ["Law"],
+    "tag": "Judgment",
+    "uuid": "Compendium.pf1.class-abilities.Item.hJV8YVdSn0NnTxww"
+  },
+  "hLrCEEh06Nsfrhe9": {
+    "changes": [],
+    "description": "<p><b>Replacement Power:</b> Add Fly to your list of class skills. In addition, whenever you cast a spell that grants you a fly speed, your maneuverability increases by one step (up to perfect).</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Feather Fall</li>\n<li>3rd—Fly</li>\n<li>6th—Fly, Mass</li>\n</ul>",
+    "features": [],
+    "id": "hLrCEEh06Nsfrhe9",
+    "name": "Feather Subdomain",
+    "parentDomainTags": ["Animal"],
+    "tag": "Feather",
+    "uuid": "Compendium.pf1.class-abilities.Item.hLrCEEh06Nsfrhe9"
+  },
+  "hZlhs7dfhWOfR2P6": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Cause Fear</li>\n<li>3rd—Vampiric Touch</li>\n<li>6th—Planar Binding (daemons only)</li>\n</ul>",
+    "features": [],
+    "id": "hZlhs7dfhWOfR2P6",
+    "name": "Daemon Subdomain",
+    "parentDomainTags": ["Evil"],
+    "tag": "Daemon",
+    "uuid": "Compendium.pf1.class-abilities.Item.hZlhs7dfhWOfR2P6"
+  },
+  "ht94hVn9U6FmkEMz": {
+    "changes": [],
+    "description": "<p><strong>Granted Powers:</strong> You are a spirit of freedom and a staunch foe against all who would enslave and oppress.</p><p><strong>Associated Domain:</strong> Liberation</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Sanctuary</li><li>2nd—Remove Paralysis</li><li>3rd—Remove Curse</li><li>4th—Freedom of Movement</li><li>5th—Plane Shift</li><li>6th—Dispel Magic, Greater</li><li>7th—Refuge</li><li>8th—Mind Blank</li><li>9th—Freedom</li></ul>",
+    "features": [
+      {
+        "featureId": "9QBWuc6VMnX9nUgC",
+        "level": 0,
+        "name": "Liberty’s Blessing",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9QBWuc6VMnX9nUgC"
+      },
+      {
+        "featureId": "F6D6MV5q8BOjiCTU",
+        "level": 8,
+        "name": "Freedom's Call",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.F6D6MV5q8BOjiCTU"
+      }
+    ],
+    "id": "ht94hVn9U6FmkEMz",
+    "name": "Freedom Subdomain",
+    "parentDomainTags": ["Liberation"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "91"
+      }
+    ],
+    "tag": "Freedom",
+    "uuid": "Compendium.pf1.class-abilities.Item.ht94hVn9U6FmkEMz"
+  },
+  "j4uzXCLo91dJszhU": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Enter Image</li>\n<li>9th—Overwhelming Presence</li>\n</ul>",
+    "features": [],
+    "id": "j4uzXCLo91dJszhU",
+    "name": "Aristocracy Subdomain",
+    "parentDomainTags": ["Nobility"],
+    "tag": "Aristocracy",
+    "uuid": "Compendium.pf1.class-abilities.Item.j4uzXCLo91dJszhU"
+  },
+  "jYOMxBxMHT6MXajA": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Draconic Reservoir</li>\n<li>4th—Dragon's Breath</li>\n<li>6th—Form of the Dragon I</li>\n</ul>",
+    "features": [],
+    "id": "jYOMxBxMHT6MXajA",
+    "name": "Dragon Subdomain",
+    "parentDomainTags": ["Scalykind"],
+    "tag": "Dragon",
+    "uuid": "Compendium.pf1.class-abilities.Item.jYOMxBxMHT6MXajA"
+  },
+  "kCDtKTsnJekhb4lL": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Sow Thought</li>\n<li>3rd—Suggestion</li>\n<li>6th—Suggestion, Mass</li>\n</ul>",
+    "features": [],
+    "id": "kCDtKTsnJekhb4lL",
+    "name": "Innuendo Subdomain",
+    "parentDomainTags": ["Trickery"],
+    "tag": "Innuendo",
+    "uuid": "Compendium.pf1.class-abilities.Item.kCDtKTsnJekhb4lL"
+  },
+  "kgFOpFrVPIw9vfWf": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Masterwork Transformation</li>\n<li>6th—Guards and Wards</li>\n<li>8th—Create Demiplane</li>\n</ul>",
+    "features": [],
+    "id": "kgFOpFrVPIw9vfWf",
+    "name": "Greed Subdomain",
+    "parentDomainTags": ["Trickery"],
+    "tag": "Greed",
+    "uuid": "Compendium.pf1.class-abilities.Item.kgFOpFrVPIw9vfWf"
+  },
+  "khH8Lg8cYd7GW6ZI": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Castigate</li>\n<li>5th—Castigate, Mass</li>\n<li>9th—Overwhelming Presence</li>\n</ul>",
+    "features": [],
+    "id": "khH8Lg8cYd7GW6ZI",
+    "name": "Sovereignty Subdomain",
+    "parentDomainTags": ["Law"],
+    "tag": "Sovereignty",
+    "uuid": "Compendium.pf1.class-abilities.Item.khH8Lg8cYd7GW6ZI"
+  },
+  "kmA5EX7k3Ol2rfPu": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Borrow Skill</li>\n<li>2nd—Share Language</li>\n<li>3rd—Coordinated Effort</li>\n</ul>",
+    "features": [],
+    "id": "kmA5EX7k3Ol2rfPu",
+    "name": "Cooperation Subdomain",
+    "parentDomainTags": ["Community"],
+    "tag": "Cooperation",
+    "uuid": "Compendium.pf1.class-abilities.Item.kmA5EX7k3Ol2rfPu"
+  },
+  "lSQOZL8w9pzbDMj0": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Crushing Despair</li>\n<li>6th—Wall Of Force</li>\n<li>8th—Prismatic Wall</li>\n</ul>",
+    "features": [],
+    "id": "lSQOZL8w9pzbDMj0",
+    "name": "Isolation Subdomain",
+    "parentDomainTags": ["Void"],
+    "tag": "Isolation",
+    "uuid": "Compendium.pf1.class-abilities.Item.lSQOZL8w9pzbDMj0"
+  },
+  "ldjn3XcCkF7CqmNH": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Bless Water</li>\n<li>5th—Cleanse</li>\n<li>7th—Resurrection</li>\n<li>9th—Miracle</li>\n</ul>",
+    "features": [],
+    "id": "ldjn3XcCkF7CqmNH",
+    "name": "Divine Subdomain",
+    "parentDomainTags": ["Magic"],
+    "tag": "Divine",
+    "uuid": "Compendium.pf1.class-abilities.Item.ldjn3XcCkF7CqmNH"
+  },
+  "mHGqr3eA8cupQ2BW": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Jump</li>\n<li>3rd—Animal Aspect, Greater</li>\n<li>6th—Heroism, Greater</li>\n</ul>",
+    "features": [],
+    "id": "mHGqr3eA8cupQ2BW",
+    "name": "Competition Subdomain",
+    "parentDomainTags": ["Strength"],
+    "tag": "Competition",
+    "uuid": "Compendium.pf1.class-abilities.Item.mHGqr3eA8cupQ2BW"
+  },
+  "mKu7cXOlntB043QS": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Silent Image</li>\n<li>2nd—Minor Image</li>\n<li>3rd—Major Image</li>\n<li>5th—Dream</li>\n</ul>",
+    "features": [],
+    "id": "mKu7cXOlntB043QS",
+    "name": "Imagination Subdomain",
+    "parentDomainTags": ["Luck"],
+    "tag": "Imagination",
+    "uuid": "Compendium.pf1.class-abilities.Item.mKu7cXOlntB043QS"
+  },
+  "mO0pMgYsKx98oiHg": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Forbid Action</li>\n<li>5th—Forbid Action, Greater</li>\n<li>9th—Hold Monster, Mass</li>\n</ul>",
+    "features": [],
+    "id": "mO0pMgYsKx98oiHg",
+    "name": "Legislation Subdomain",
+    "parentDomainTags": ["Law", "Rune"],
+    "tag": "Legislation",
+    "uuid": "Compendium.pf1.class-abilities.Item.mO0pMgYsKx98oiHg"
+  },
+  "nKiYWIhQdZuRzkU7": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Remove Disease</li>\n<li>4th—Neutralize Poison</li>\n<li>5th—Break Enchantment</li>\n</ul>",
+    "features": [],
+    "id": "nKiYWIhQdZuRzkU7",
+    "name": "Restoration Subdomain",
+    "parentDomainTags": ["Healing"],
+    "tag": "Restoration",
+    "uuid": "Compendium.pf1.class-abilities.Item.nKiYWIhQdZuRzkU7"
+  },
+  "og1N9lhODpNDQqEu": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Ghoul Touch</li>\n<li>4th—Enervation</li>\n<li>9th—Energy Drain</li>\n</ul>",
+    "features": [],
+    "id": "og1N9lhODpNDQqEu",
+    "name": "Undead Subdomain",
+    "parentDomainTags": ["Death"],
+    "tag": "Undead",
+    "uuid": "Compendium.pf1.class-abilities.Item.og1N9lhODpNDQqEu"
+  },
+  "p9yDKj9mQz1bBiJp": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Calcific Touch</li>\n<li>5th—Stoneskin</li>\n<li>6th—Flesh to Stone</li>\n<li>8th—Statue</li>\n</ul>",
+    "features": [],
+    "id": "p9yDKj9mQz1bBiJp",
+    "name": "Petrification Subdomain",
+    "parentDomainTags": ["Earth"],
+    "tag": "Petrification",
+    "uuid": "Compendium.pf1.class-abilities.Item.p9yDKj9mQz1bBiJp"
+  },
+  "q059IbvYqYLncBTM": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Floating Disk</li>\n<li>5th—Overland Flight</li>\n<li>9th—Gate</li>\n</ul>",
+    "features": [],
+    "id": "q059IbvYqYLncBTM",
+    "name": "Trade Subdomain",
+    "parentDomainTags": ["Travel"],
+    "tag": "Trade",
+    "uuid": "Compendium.pf1.class-abilities.Item.q059IbvYqYLncBTM"
+  },
+  "qztav66jccDyasWd": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Confusion (lesser)</li>\n<li>3rd—Displacement</li>\n<li>6th—Planar Binding (proteans only)</li>\n</ul>",
+    "features": [],
+    "id": "qztav66jccDyasWd",
+    "name": "Protean Subdomain",
+    "parentDomainTags": ["Chaos"],
+    "tag": "Protean",
+    "uuid": "Compendium.pf1.class-abilities.Item.qztav66jccDyasWd"
+  },
+  "rBKNzyyJDrM6rhVq": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Rage</li>\n<li>6th—Bull's Strength, Mass</li>\n</ul>",
+    "features": [],
+    "id": "rBKNzyyJDrM6rhVq",
+    "name": "Ferocity Subdomain",
+    "parentDomainTags": ["Strength"],
+    "tag": "Ferocity",
+    "uuid": "Compendium.pf1.class-abilities.Item.rBKNzyyJDrM6rhVq"
+  },
+  "rOSQZD57Jz4eNLt3": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Anonymous Interaction</li>\n<li>4th—Zone of Silence</li>\n<li>8th—Mind Blank</li>\n</ul>",
+    "features": [],
+    "id": "rOSQZD57Jz4eNLt3",
+    "name": "Espionage Subdomain",
+    "parentDomainTags": ["Knowledge", "Trickery"],
+    "tag": "Espionage",
+    "uuid": "Compendium.pf1.class-abilities.Item.rOSQZD57Jz4eNLt3"
+  },
+  "rPSf6FDCJOS2pkql": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Mirror Image</li>\n<li>7th—Project Image</li>\n</ul>",
+    "features": [],
+    "id": "rPSf6FDCJOS2pkql",
+    "name": "Deception Subdomain",
+    "parentDomainTags": ["Trickery"],
+    "tag": "Deception",
+    "uuid": "Compendium.pf1.class-abilities.Item.rPSf6FDCJOS2pkql"
+  },
+  "rUtu6rTWk3yMAsB0": {
+    "changes": [
+      {
+        "formula": "1 + floor(@class.unlevel / 5)",
+        "target": "allSavingThrows",
+        "type": "resist"
+      }
+    ],
+    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p>{Taboo (Su)}</p><p>{Aura of Protection (Su)}</p><h3>Domain Spells</h3><ul><li>1st—Sanctuary</li><li>2nd—Silence</li><li>3rd—Protection from Energy</li><li>4th—Detect Scrying</li><li>5th—Mirage Arcana</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Create Demiplane, Greater</li></ul>",
+    "features": [
+      {
+        "featureId": "zx0lJIxpj8ZCDh97",
+        "level": 0,
+        "name": "Taboo (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zx0lJIxpj8ZCDh97"
+      },
+      {
+        "featureId": "kHXw5V06TkymXxF3",
+        "level": 8,
+        "name": "Aura of Protection (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kHXw5V06TkymXxF3"
+      }
+    ],
+    "id": "rUtu6rTWk3yMAsB0",
+    "name": "Solitude Subdomain",
+    "parentDomainTags": ["Protection"],
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "17"
+      }
+    ],
+    "tag": "Solitude",
+    "uuid": "Compendium.pf1.class-abilities.Item.rUtu6rTWk3yMAsB0"
+  },
+  "s8IfMD55rv71JTur": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Magic Fang</li>\n<li>2nd— Enemy's Heart</li>\n<li>3rd—Magic Fang, Greater</li>\n</ul>",
+    "features": [],
+    "id": "s8IfMD55rv71JTur",
+    "name": "Cannibalism Subdomain",
+    "parentDomainTags": ["Evil"],
+    "tag": "Cannibalism",
+    "uuid": "Compendium.pf1.class-abilities.Item.s8IfMD55rv71JTur"
+  },
+  "s9LwNl1ZzPJvRjIs": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Diagnose Disease</li>\n<li>2nd—Placebo Effect</li>\n</ul>",
+    "features": [],
+    "id": "s9LwNl1ZzPJvRjIs",
+    "name": "Medicine Subdomain",
+    "parentDomainTags": ["Healing"],
+    "tag": "Medicine",
+    "uuid": "Compendium.pf1.class-abilities.Item.s9LwNl1ZzPJvRjIs"
+  },
+  "saF6hO5sv9oy1LyN": {
+    "changes": [],
+    "description": "<p><strong>Requirements</strong>: This subdomain requires the Acolyte of Apocrypha trait to access.</p><p><strong>Granted Powers:</strong> In strength and brawn there is truth—your faith gives you incredible might and power.</p><p><strong>Associated Domain:</strong> Strength</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Enlarge Person</li><li>2nd—Bull's Strength</li><li>3rd—Magic Vestment</li><li>4th—Paragon Surge (always matches your actual race)</li><li>5th—Righteous Might</li><li>6th—Primal Scream</li><li>7th—Transformation</li><li>8th—Clenched Fist</li><li>9th—Crushing Hand</li></ul>",
+    "features": [
+      {
+        "featureId": "3zggJMxuipE68IkT",
+        "level": 0,
+        "name": "Perfected Form",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.3zggJMxuipE68IkT"
+      },
+      {
+        "featureId": "WMtJbAlvzaLnzYVy",
+        "level": 8,
+        "name": "Might of the Gods",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WMtJbAlvzaLnzYVy"
+      }
+    ],
+    "id": "saF6hO5sv9oy1LyN",
+    "name": "Self-Realization Subdomain (Strength)",
+    "parentDomainTags": ["Strength"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "26"
+      }
+    ],
+    "tag": "Self-Realization (Strength)",
+    "uuid": "Compendium.pf1.class-abilities.Item.saF6hO5sv9oy1LyN"
+  },
+  "tPYmbs5ChEojyPSe": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>7th—Freezing Sphere</li>\n<li>9th—Polar Ray</li>\n</ul>",
+    "features": [],
+    "id": "tPYmbs5ChEojyPSe",
+    "name": "Ice Subdomain",
+    "parentDomainTags": ["Water"],
+    "tag": "Ice",
+    "uuid": "Compendium.pf1.class-abilities.Item.tPYmbs5ChEojyPSe"
+  },
+  "tifxrlrlPH6xIb17": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Divine Favor</li>\n<li>3rd—Prayer</li>\n<li>6th—Planar Ally (archon only)</li>\n</ul>",
+    "features": [],
+    "id": "tifxrlrlPH6xIb17",
+    "name": "Archon Subdomain",
+    "parentDomainTags": ["Good", "Law"],
+    "tag": "Archon",
+    "uuid": "Compendium.pf1.class-abilities.Item.tifxrlrlPH6xIb17"
+  },
+  "uFSLnLZkYJycxB6b": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Slipstream</li>\n<li>3rd—Water Walk</li>\n<li>9th—Tsunami</li>\n</ul>",
+    "features": [],
+    "id": "uFSLnLZkYJycxB6b",
+    "name": "Oceans Subdomain",
+    "parentDomainTags": ["Water"],
+    "tag": "Oceans",
+    "uuid": "Compendium.pf1.class-abilities.Item.uFSLnLZkYJycxB6b"
+  },
+  "vrBRbL0zpUVLqBjF": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Remove Fear</li>\n<li>5th—Command, Greater</li>\n</ul>",
+    "features": [],
+    "id": "vrBRbL0zpUVLqBjF",
+    "name": "Loyalty Subdomain",
+    "parentDomainTags": ["Law"],
+    "tag": "Loyalty",
+    "uuid": "Compendium.pf1.class-abilities.Item.vrBRbL0zpUVLqBjF"
+  },
+  "xDLxqe463zMv22QC": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Delay Pain</li>\n<li>2nd—Instrument of Agony</li>\n<li>3rd—Agonize</li>\n<li>5th—Symbol of Pain</li>\n</ul>",
+    "features": [],
+    "id": "xDLxqe463zMv22QC",
+    "name": "Kyton Subdomain",
+    "parentDomainTags": ["Evil", "Law"],
+    "tag": "Kyton",
+    "uuid": "Compendium.pf1.class-abilities.Item.xDLxqe463zMv22QC"
+  },
+  "xSNDqJG0Bt9J6ZOY": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Charm Person</li>\n<li>5th— Dominate Person</li>\n<li>8th—Binding</li>\n</ul>",
+    "features": [],
+    "id": "xSNDqJG0Bt9J6ZOY",
+    "name": "Slavery Subdomain",
+    "parentDomainTags": ["Law"],
+    "tag": "Slavery",
+    "uuid": "Compendium.pf1.class-abilities.Item.xSNDqJG0Bt9J6ZOY"
+  },
+  "yAz6IHIN1xd9vZjR": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Command</li>\n<li>3rd— Bestow Curse</li>\n<li>7th—Symbol of Persuasion</li>\n</ul>",
+    "features": [],
+    "id": "yAz6IHIN1xd9vZjR",
+    "name": "Tyranny Subdomain",
+    "parentDomainTags": ["Law"],
+    "tag": "Tyranny",
+    "uuid": "Compendium.pf1.class-abilities.Item.yAz6IHIN1xd9vZjR"
+  },
+  "yJr2uciQYegfwwcv": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Aid</li>\n<li>5th—Command, Greater</li>\n<li>8th—Planar Ally, Greater</li>\n</ul>",
+    "features": [],
+    "id": "yJr2uciQYegfwwcv",
+    "name": "Tactics Subdomain",
+    "parentDomainTags": ["War"],
+    "tag": "Tactics",
+    "uuid": "Compendium.pf1.class-abilities.Item.yJr2uciQYegfwwcv"
+  },
+  "yPoebbIxW5vyKOZN": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Detect Secret Doors</li>\n<li>2nd—See Invisibility</li>\n<li>3rd—Banish Seeming</li>\n<li>5th—True Seeing</li>\n</ul>",
+    "features": [],
+    "id": "yPoebbIxW5vyKOZN",
+    "name": "Revelation Subdomain",
+    "parentDomainTags": ["Sun"],
+    "tag": "Revelation",
+    "uuid": "Compendium.pf1.class-abilities.Item.yPoebbIxW5vyKOZN"
+  },
+  "yeH8WXsYDMJw23K6": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Gust Of Wind</li>\n<li>3rd—Call Lightning</li>\n<li>7th—Control Weather</li>\n</ul>",
+    "features": [],
+    "id": "yeH8WXsYDMJw23K6",
+    "name": "Catastrophe Subdomain",
+    "parentDomainTags": ["Destruction"],
+    "tag": "Catastrophe",
+    "uuid": "Compendium.pf1.class-abilities.Item.yeH8WXsYDMJw23K6"
+  },
+  "zinh3m68xSNlhHZ8": {
+    "changes": [],
+    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Shield Of Faith</li>\n<li>3rd—Tongues</li>\n<li>6th—Planar Ally (agathions only)</li>\n</ul>",
+    "features": [],
+    "id": "zinh3m68xSNlhHZ8",
+    "name": "Agathion Subdomain",
+    "parentDomainTags": ["Good"],
+    "tag": "Agathion",
+    "uuid": "Compendium.pf1.class-abilities.Item.zinh3m68xSNlhHZ8"
+  }
+}

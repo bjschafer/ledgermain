@@ -42,6 +42,9 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "archetypes", file: "archetypes.json" },
   { key: "archetypeFeatures", file: "archetype-features.json" },
   { key: "domains", file: "domains.json" },
+  { key: "subdomains", file: "subdomains.json" },
+  { key: "subdomainSpellLists", file: "subdomain-spell-lists.json" },
+  { key: "druidDomains", file: "druid-domains.json" },
   { key: "wizardSchools", file: "wizard-schools.json" },
 ];
 

@@ -43,6 +43,14 @@ describe("setWizardSchool()", () => {
   it("a fresh document has no school set (Universalist by omission)", () => {
     expect(doc().build.wizardSchool).toBeUndefined();
   });
+
+  it("sets an elemental school tag, leaving opposition schools alone", () => {
+    let d = setWizardSchool(doc(), "evo");
+    d = setWizardOppositionSchools(d, ["enc", "nec"]);
+    d = setWizardSchool(d, "air-elemental");
+    expect(d.build.wizardSchool).toBe("air-elemental");
+    expect(d.build.wizardOppositionSchools).toEqual(["enc", "nec"]);
+  });
 });
 
 describe("setWizardOppositionSchools()", () => {

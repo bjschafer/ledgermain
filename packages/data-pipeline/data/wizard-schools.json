@@ -71,6 +71,85 @@
     "tag": "abj",
     "uuid": "Compendium.pf1.class-abilities.Item.3j7RxplJSeXVt0X1"
   },
+  "9lXaxRP47Ju9xjPr": {
+    "description": "<p><em>The air elementalist uses the forces of the wind, sky, clouds, and lightning to confuse and destroy his foes, all while flying through the air with ease.</em></p><p><strong>Opposing element / school:</strong> Earth</p><p><strong>Subschools:</strong> Ice, Smoke</p><h3>School Powers</h3><p></p><p></p><p></p><h3>Spells</h3><ul><li><strong>0</strong> - message</li><li><strong>1st</strong> - air bubble, alter winds, feather fall, gentle breeze, shocking grasp, windy escape</li><li><strong>2nd</strong> - aggressive thundercloud, elemental speech, elemental touch, glide, gust of wind, gusting sphere, levitate, resist energy, summon monster 2, whispering wind</li><li><strong>3rd</strong> - air geyser, carrying wind, cloak of winds, draconic reservoir, elemental aura, fly, gaseous form, hostile levitation, lightning bolt, lightning conductor, protection from energy, resist energy, communal, second wind, wall of mist, wind wall</li><li><strong>4th</strong> - absorbing inhalation, aggressive thundercloud, greater, ball lightning, blast of wind, cloud shape, detonate, dragon's breath, elemental body i, miasmatic form, protection from energy, communal, river of wind, shout, summon monster 4</li><li><strong>5th</strong> - elemental body ii, fickle winds, lightning arc, overland flight, planar adaptation, planar binding, lesser, suffocation, summon monster 5, wind blades</li><li><strong>6th</strong> - chain lightning, elemental body iii, path of the winds, planar binding, sirocco, summon monster 6</li><li><strong>7th</strong> - control weather, elemental body iv, fly, mass, planar adaptation, mass, scouring winds, summon monster 7</li><li><strong>8th</strong> - planar binding, greater, shout, greater, stormbolts, summon monster 8</li><li><strong>9th</strong> - gate, ride the lightning, suffocation, mass, winds of vengeance</li></ul>",
+    "features": [
+      {
+        "featureId": "fo0imMQ0szmaA6WB",
+        "level": 0,
+        "name": "Air Supremacy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fo0imMQ0szmaA6WB"
+      },
+      {
+        "featureId": "SDMF55h3qjABNUhQ",
+        "level": 0,
+        "name": "Lightning Flash",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.SDMF55h3qjABNUhQ"
+      },
+      {
+        "featureId": "nys5AYQTTDq8c0OS",
+        "level": 8,
+        "name": "Cyclone",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nys5AYQTTDq8c0OS"
+      }
+    ],
+    "id": "9lXaxRP47Ju9xjPr",
+    "name": "Air Elemental School",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "tag": "air-elemental",
+    "uuid": "Compendium.pf1.class-abilities.Item.9lXaxRP47Ju9xjPr"
+  },
+  "Diiwu2JPIRFZvY4o": {
+    "description": "<p><em>Aether is a strange and complex substance that occurs where the Elemental Planes touch the Ethereal Plane. Wizards who study aether use it to manipulate objects on the Material Plane. The aether elemental school is an elemental arcane school a wizard can specialize in instead of one of the standard schools of magic.</em></p><p>Like a normal arcane school, the aether elemental school grants a number of school powers, as well as one bonus spell slot of each level the wizard can cast, from 1st on up. This bonus spell slot must be used to prepare a spell from the aether elemental school’s spell list (see below). Unlike a normal arcane school, the aether elemental school requires the wizard to select a single element as his opposition school (air, earth, fire, or water, from @Source[APG;pages=142-143] for example). The wizard does not need to select a second opposition school. He must expend two spell slots to prepare a spell from his opposed elemental school as normal.</p><p><strong>Opposing school:</strong> Air, Earth, Fire or Water</p><h3>School Powers</h3><p></p><p></p><p></p><p></p><h3>Spells</h3><ul><li><strong>0</strong> - telekinetic projectile</li><li><strong>1st</strong> - floating disk, magic missile, unseen servant</li><li><strong>2nd</strong> - ablative barrier, blur, pilfering hand, spiritual weaponlife pact, protection from arrows, squeeze, web, whispering wind</li><li><strong>3rd</strong> - blink, ectoplasmic snare, force punch, tiny hut</li><li><strong>4th</strong> - resilient sphere, spiritual ally, telekinetic charge, telekinetic maneuver</li><li><strong>5th </strong>- condensed ether, ethereal envelope, interposing hand, mage's faithful hound, secret chest, telekinesis, wall of ectoplasm</li><li><strong>6th</strong> - animate objects, enemy hammer, forceful hand, leashed shackles</li><li><strong>7th</strong> - ectoplasmic eruption, ethereal jaunt, grasping hand, phase door</li><li><strong>8th</strong> - clenched fist, telekinetic sphere</li><li><strong>9th</strong> - etherealness, telekinetic storm</li></ul>",
+    "features": [
+      {
+        "featureId": "gRnnwz48Oz0ohI6s",
+        "level": 0,
+        "name": "Aether Magic",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.gRnnwz48Oz0ohI6s"
+      },
+      {
+        "featureId": "qnSivemzKLBEKfn3",
+        "level": 0,
+        "name": "Aether Supremacy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qnSivemzKLBEKfn3"
+      },
+      {
+        "featureId": "emYKpbvyPXpLx1kw",
+        "level": 0,
+        "name": "Telekinetic Protection",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.emYKpbvyPXpLx1kw"
+      },
+      {
+        "featureId": "khGQDuyL6TKASqYb",
+        "level": 8,
+        "name": "Receptive Vibrations",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.khGQDuyL6TKASqYb"
+      }
+    ],
+    "id": "Diiwu2JPIRFZvY4o",
+    "name": "Aether Elemental School",
+    "sources": [
+      {
+        "id": "PZO9483",
+        "pages": "20"
+      }
+    ],
+    "tag": "aether-elemental",
+    "uuid": "Compendium.pf1.class-abilities.Item.Diiwu2JPIRFZvY4o"
+  },
   "DtpcqOC89tTG3QkO": {
     "description": "<p><em>The enchanter uses magic to control and manipulate the minds of his victims.</em></p><p><strong>Focused Arcane Schools</strong>: Controller Subschool, Manipulator Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
     "features": [
@@ -107,6 +186,42 @@
     "tag": "enc",
     "uuid": "Compendium.pf1.class-abilities.Item.DtpcqOC89tTG3QkO"
   },
+  "N5ef6fOS7iXg0X3T": {
+    "description": "<p><em>The water elementalist draws magic from the ocean depths. His power is fluid as well, crushing foes in mighty waves or wearing them down through timeless erosion.</em></p><p><strong>Opposing element / school:</strong> Fire<sup>(@Source[APG])</sup> or Earth<sup>(@Source[UM])</sup></p><p><strong>Subschools:</strong> Ice, Mud</p><h3>School Powers</h3><p></p><p>{Cold Blast}</p><p></p><h3>Spells</h3><ul><li><strong>0</strong> - ray of frost</li><li><strong>1st</strong> - damp powder, hydraulic push, icicle dagger, marid's mastery, obscuring mist, touch of the sea, waterproof, wave shield</li><li><strong>2nd</strong> - accelerate poison, elemental speech, elemental touch, fog cloud, frigid touch, frost fall, resist energy, river whip, slipstream, spindrift spritz, summon monster 2, unshakable chill</li><li><strong>3rd</strong> - aqueous orb, draconic reservoir, elemental aura, hydraulic torrent, protection from energy, resist energy, communal, sleet storm, water breathing</li><li><strong>4th</strong> - detonate, dragon's breath, elemental body i, ice storm, protection from energy, communal, ride the waves, rising water, solid fog, spindrift spritz, mass, summon monster 4, wall of ice</li><li><strong>5th</strong> - cloudkill, cone of cold, elemental body ii, geyser, icy prison, planar adaptation, planar binding, lesser, summon monster 5</li><li><strong>6th</strong> - cold ice strike, elemental body iii, fluid form, freezing sphere, ice crystal teleport, planar binding, speak with waves, summon monster 6</li><li><strong>7th</strong> - control weather, elemental body iv, expel blood, ice body, planar adaptation, mass, summon monster 7, vortex</li><li><strong>8th</strong> - horrid wilting, planar binding, greater, polar ray, seamantle, summon monster 8</li><li><strong>9th</strong> - gate, icy prison, mass, tsunami, world wave</li></ul>",
+    "features": [
+      {
+        "featureId": "nCYMi6znklN57vCz",
+        "level": 0,
+        "name": "Cold Blast (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nCYMi6znklN57vCz"
+      },
+      {
+        "featureId": "YXHy6atHdR2fH6aE",
+        "level": 0,
+        "name": "Water Supremacy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YXHy6atHdR2fH6aE"
+      },
+      {
+        "featureId": "JR0T67kfvoS5RQ9w",
+        "level": 8,
+        "name": "Wave",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.JR0T67kfvoS5RQ9w"
+      }
+    ],
+    "id": "N5ef6fOS7iXg0X3T",
+    "name": "Water Elemental School",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "tag": "water-elemental",
+    "uuid": "Compendium.pf1.class-abilities.Item.N5ef6fOS7iXg0X3T"
+  },
   "Sy1M5VOCitnDDNKw": {
     "description": "<p><em>Evokers revel in the raw power of magic, and can use it to create and destroy with shocking ease.</em></p><p><strong>Focused Arcane Schools</strong>: Admixture Subschool, Generation Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
     "features": [
@@ -142,6 +257,92 @@
     ],
     "tag": "evo",
     "uuid": "Compendium.pf1.class-abilities.Item.Sy1M5VOCitnDDNKw"
+  },
+  "WFEu5bJhKcgnq0h6": {
+    "description": "<p><em>Metal represents firmness, rigidity, persistence, strength, determination, and electricity. It is commonly represented by gold and silver as its purest forms, though lower magic relating to iron and steel is part of the metal school.</em></p><p><strong>Opposing school:</strong> Fire</p><h3>School Powers</h3><p></p><p></p><p></p><p></p><h3>Spells</h3><ul><li><strong>0</strong> - mending</li><li><strong>1st</strong> - body capacitance, gravity bow, magic weapon, mirror polish, reinforce armaments, shock shield, shocking grasp</li><li><strong>2nd</strong> - aggressive thundercloud, bullet shield, bullet ward, defensive shock, glitterdust, make whole, shatter, silk to steel, warding weapon</li><li><strong>3rd</strong> - chill metal, heat metal, keen edge, lightning bolt, magic weapon, greater, pellet blast, silver darts, versatile weapon</li><li><strong>4th</strong> - aggressive thundercloud, greater, malfunction, named bullet, shout, stoneskin</li><li><strong>5th</strong>- lightning arc, major creation, rapid repair, rusting grasp, soothe construct, unbreakable construct, wreath of blades</li><li><strong>6th</strong> - chain lightning, disintegrate, named bullet, greater, wall of iron</li><li><strong>7th</strong> - arcane cannon, awaken construct, control construct, statue</li><li><strong>8th</strong> - call construct, iron body, shout, greater, stormbolts</li><li><strong>9th</strong> - meteor swarm, repel metal or stone, ride the lightning</li></ul>",
+    "features": [
+      {
+        "featureId": "XRmCVkk55FNn4hml",
+        "level": 0,
+        "name": "Iron Skin",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.XRmCVkk55FNn4hml"
+      },
+      {
+        "featureId": "AAenkn51lUvD9cld",
+        "level": 0,
+        "name": "Metal Rending",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AAenkn51lUvD9cld"
+      },
+      {
+        "featureId": "JdoL8b96paiDkn7y",
+        "level": 1,
+        "name": "Metal Magic",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.JdoL8b96paiDkn7y"
+      },
+      {
+        "featureId": "a4Dm2SgIwTOfHyVx",
+        "level": 8,
+        "name": "Shrapnel Burst",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.a4Dm2SgIwTOfHyVx"
+      }
+    ],
+    "id": "WFEu5bJhKcgnq0h6",
+    "name": "Metal Elemental School",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "87"
+      }
+    ],
+    "tag": "metal-elemental",
+    "uuid": "Compendium.pf1.class-abilities.Item.WFEu5bJhKcgnq0h6"
+  },
+  "YUXlZIHwVXvdm2Su": {
+    "description": "<p><em>Wood represents flexibility, warmth, wind, generosity, cooperation, and idealism. Practitioners of this elemental magic often resemble druids in character and in the use of their magic.</em></p><p><strong>Opposing school:</strong> Metal</p><h3>School Powers</h3><p></p><p></p><p></p><p></p><h3>Spells</h3><ul><li><strong>0</strong> - light</li><li><strong>1st</strong> - alter winds, animate rope, charm person, cultural adaptation, handy grapnel, illusion of calm, liberating command, quintessence</li><li><strong>2nd</strong> - cat's grace, companion life link, entangle, extreme flexibility, life pact, protection from arrows, squeeze, web, whispering wind</li><li><strong>3rd</strong> - air geyser, anchored step, cloak of winds, pack empathy, tongues, tree shape, wind wall</li><li><strong>4th</strong> - age resistance, lesser, charm monster, hallucinatory terrain, minor creation, plant growth, river of wind, secure shelter, sirocco</li><li><strong>5th </strong>- charm person, mass, command plants, fabricate, fickle winds, mirage arcana, plant shape i, sending, telepathic bond</li><li><strong>6th</strong> - age resistance, battlemind link, cat's grace, mass, plant shape ii, serenity, tree stride</li><li><strong>7th</strong> - age resistance, greater, control weather, liveoak, plant shape iii, scouring winds</li><li><strong>8th</strong> - charm monster, mass, euphoric tranquility, transmute metal to wood</li><li><strong>9th</strong> - control plants, refuge, winds of vengeance, wooden phalanx</li></ul>",
+    "features": [
+      {
+        "featureId": "5awkon2RsvmNHcwb",
+        "level": 0,
+        "name": "Flexible Enhancement",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5awkon2RsvmNHcwb"
+      },
+      {
+        "featureId": "raSRxU51tCnX2oMy",
+        "level": 0,
+        "name": "Splintered Spear",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.raSRxU51tCnX2oMy"
+      },
+      {
+        "featureId": "eP9PGRZ326RcCKhN",
+        "level": 1,
+        "name": "Wood Magic",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eP9PGRZ326RcCKhN"
+      },
+      {
+        "featureId": "DHeLMeoN4XioMupk",
+        "level": 8,
+        "name": "Cooperative Defense",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.DHeLMeoN4XioMupk"
+      }
+    ],
+    "id": "YUXlZIHwVXvdm2Su",
+    "name": "Wood Elemental School",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "87"
+      }
+    ],
+    "tag": "wood-elemental",
+    "uuid": "Compendium.pf1.class-abilities.Item.YUXlZIHwVXvdm2Su"
   },
   "ZuFI7iaKeWv3n5pA": {
     "description": "<p><em>The dread and feared necromancer commands undead and uses the foul power of unlife against his enemies.</em></p><p><strong>Focused Arcane Schools</strong>: Life Subschool, Undead Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",
@@ -215,6 +416,78 @@
     "tag": "div",
     "uuid": "Compendium.pf1.class-abilities.Item.ctFPHquS2GydVoZV"
   },
+  "i4tmM39vbDNCeLph": {
+    "description": "<p><em>The fire elementalist sees a world around him that is made to burn, and he can bring that fire to consume his foes. He has also learned that fire can purify and protect, if properly controlled.</em></p><p><strong>Opposing element / school:</strong> Water</p><p><strong>Subschools:</strong> Magma, Smoke</p><h3>School Powers</h3><p></p><p></p><p></p><h3>Spells</h3><ul><li><strong>0</strong> - spark</li><li><strong>1st</strong> - burning hands, dancing lantern, touch of combustion</li><li><strong>2nd</strong> - burning gaze, elemental speech, elemental touch, fiery shuriken, fire breath, flaming sphere, molten orb, pyrotechnics, resist energy, scorching ray, summon monster 2</li><li><strong>3rd</strong> - ash storm, campfire wall, draconic reservoir, elemental aura, fire trail, fireball, firestream, flame arrow, flash fire, protection from energy, resist energy, communal</li><li><strong>4th</strong> - controlled fireball, detonate, dragon's breath, elemental body i, fire shield, fire trap, firefall, flaming sphere, greater, obsidian flow, protection from energy, communal, scorching ash form, summon monster 4, volcanic storm, wall of fire</li><li><strong>5th</strong> - damnation stride, elemental body ii, fire snake, geyser, planar adaptation, planar binding, lesser, summon monster 5</li><li><strong>6th</strong> - chains of fire, contagious flame, elemental body iii, planar binding, sirocco, summon monster 6, tar pool</li><li><strong>7th</strong> - delayed blast fireball, elemental body iv, firebrand, planar adaptation, mass, summon monster 7</li><li><strong>8th</strong> - incendiary cloud, planar binding, greater, summon monster 8, wall of lava</li><li><strong>9th</strong> - firey body, gate, meteor swarm</li></ul>",
+    "features": [
+      {
+        "featureId": "1mwNVTch2j88G8h3",
+        "level": 0,
+        "name": "Fire Jet",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1mwNVTch2j88G8h3"
+      },
+      {
+        "featureId": "PmO50ReytvNYsuFW",
+        "level": 0,
+        "name": "Fire Supremacy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.PmO50ReytvNYsuFW"
+      },
+      {
+        "featureId": "0nRLmRBWwS7NI7E4",
+        "level": 8,
+        "name": "Dancing Flame",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0nRLmRBWwS7NI7E4"
+      }
+    ],
+    "id": "i4tmM39vbDNCeLph",
+    "name": "Fire Elemental School",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "tag": "fire-elemental",
+    "uuid": "Compendium.pf1.class-abilities.Item.i4tmM39vbDNCeLph"
+  },
+  "sMg9DfGz9NDMFA3r": {
+    "description": "<p><em>The earth elementalist draws power from the stone around him, shaping it, shattering it, and bending it to his will. He can use it to defend himself or cause it to rise up and crush his foes.</em></p><p><strong>Opposing element / school:</strong> Air<sup>(@Source[APG])</sup> or Wood<sup>@Source[UM])</sup></p><p><strong>Subschools:</strong> Magma, Mud</p><h3>School Powers</h3><p></p><p></p><p>{Earth Glide}</p><h3>Spells</h3><ul><li><strong>0</strong> - acid splash</li><li><strong>1st</strong> - corrosive touch, expeditious excavation, grease, mudball, stone fist, stone shield, thunderstomp</li><li><strong>2nd</strong> - acid arrow, create pit, elemental speech, elemental touch, glitterdust, molten orb, resist energy, shatter, stone call, stone discus, summon monster ii</li><li><strong>3rd</strong> - burrow, draconic reservoir, elemental aura, heart of the metal, protection from energy, raging rubble, resist energy, communal, shifting sand, spiked pit, stinking cloud, thunderstomp, greater</li><li><strong>4th</strong> - acid pit, calcific touch, detonate, dragon's breath, earth glide, elemental body i, obsidian flow, protection from energy, communal, stone shape, stoneskin, summon monster iv, vitriolic mist</li><li><strong>5th</strong> - acidic spray, corrosive consumption, elemental body ii, hungry pit, passwall, planar adaptation, planar binding, lesser, stoneskin, communal, summon monster v, transmute mud to rock, transmute rock to mud, wall of stone</li><li><strong>6th</strong> - acid fog, elemental body iii, flesh to stone, move earth, planar binding, stone to flesh, summon monster vi, tar pool, wall of iron</li><li><strong>7th</strong> - caustic eruption, elemental body iv, planar adaptation, mass, rampart, reverse gravity, statue, summon monster vii</li><li><strong>8th</strong> - iron body, planar binding, greater, summon monster viii, wall of lava</li><li><strong>9th</strong> - clashing rocks, gate, world wave</li></ul>",
+    "features": [
+      {
+        "featureId": "pTJyyNp28f2Yd42u",
+        "level": 0,
+        "name": "Acid Cloud",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pTJyyNp28f2Yd42u"
+      },
+      {
+        "featureId": "YPqkXzcxHtggndAY",
+        "level": 0,
+        "name": "Earth Supremacy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YPqkXzcxHtggndAY"
+      },
+      {
+        "featureId": "0BZYhHw4PbbWJuhP",
+        "level": 8,
+        "name": "Earth Glide (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0BZYhHw4PbbWJuhP"
+      }
+    ],
+    "id": "sMg9DfGz9NDMFA3r",
+    "name": "Earth Elemental School",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "tag": "earth-elemental",
+    "uuid": "Compendium.pf1.class-abilities.Item.sMg9DfGz9NDMFA3r"
+  },
   "tSmRmVuqYPDTyVZY": {
     "description": "<p><em>Wizards who do not specialize (known as as universalists) have the most diversity of all arcane spellcasters.</em></p><p><strong>Focused Arcane Schools</strong>: Arcanamirium Crafter Subschool</p><h3>School Powers</h3><p></p><p></p>",
     "features": [
@@ -243,6 +516,49 @@
     ],
     "tag": "uni",
     "uuid": "Compendium.pf1.class-abilities.Item.tSmRmVuqYPDTyVZY"
+  },
+  "uIRGIwWd0Eo2u1q6": {
+    "description": "<p><em>The void is a complex idea considered by some to be a fifth element—one that comprises thought, space, spiritualism, and insight. Wizards who tap into its mysterious powers gain control over energies that bind the earth to the heavens and the planes to their mysterious and eternal alignments, as well as the powers that stitch living beings to their spirits. The void elemental school presented here is an additional arcane school for the wizard class.</em></p><p>A wizard who specializes in the void element gains a number of school powers and one bonus spell slot of each level that the wizard can cast, from 1st on up. This bonus spell slot must be used to prepare a spell from the void elemental school’s spell list. Unlike a normal arcane school, the void elemental school requires the wizard to select a single element (air, earth, fire, or water) as his opposition school. A wizard must expend two spell slots to prepare a spell from his opposed elemental school as normal. He does not need to select a second opposition school.</p><p><strong>Opposing school:</strong> Air, Earth, Fire or Water</p><h3>School Powers</h3><p></p><p></p><p></p><p></p><h3>Spells</h3><ul><li><strong>0</strong> - guidance</li><li><strong>1st</strong> - gravity bow, keen senses, shield, true strike</li><li><strong>2nd</strong> - continual flame, haunting mists, invisibility, masterwork transformation, see invisibility, share memorypact, protection from arrows, squeeze, web, whispering wind</li><li><strong>3rd</strong> - arcane sight, clairaudience/clairvoyance, dispel magic, nondetection, seek thoughts, tapestry's embrace, twilight knife</li><li><strong>4th</strong> - minor creation, moonstruck, wandering star motes</li><li><strong>5th </strong>- fabricate, major creation, mind fog, telepathic bond, teleport</li><li><strong>6th</strong> - dispel magic, greater, legend lore, mage's lucubration, true seeing</li><li><strong>7th</strong> - simulacrum, teleport, greater, vision</li><li><strong>8th</strong> - mind blank, moment of prescience, orb of the void, whirlwind</li><li><strong>9th</strong> - foresight, mage's disjunction, time stop</li></ul>",
+    "features": [
+      {
+        "featureId": "uLPfDpPNzuyiKHKU",
+        "level": 0,
+        "name": "Reveal Weakness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.uLPfDpPNzuyiKHKU"
+      },
+      {
+        "featureId": "hsPaehLs8BaMEmcj",
+        "level": 0,
+        "name": "Void Awareness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hsPaehLs8BaMEmcj"
+      },
+      {
+        "featureId": "oE3CX55WPFERgMBF",
+        "level": 0,
+        "name": "Void Magic",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.oE3CX55WPFERgMBF"
+      },
+      {
+        "featureId": "ROJkE2g2kWfhy6TI",
+        "level": 8,
+        "name": "Aura of Prescience",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ROJkE2g2kWfhy6TI"
+      }
+    ],
+    "id": "uIRGIwWd0Eo2u1q6",
+    "name": "Void Elemental School",
+    "sources": [
+      {
+        "id": "PZO9421",
+        "pages": "29"
+      }
+    ],
+    "tag": "void-elemental",
+    "uuid": "Compendium.pf1.class-abilities.Item.uIRGIwWd0Eo2u1q6"
   },
   "vDbEHvI9kgPiz4Za": {
     "description": "<p><em>Transmuters use magic to change the world around them.</em></p><p><strong>Focused Arcane Schools</strong>: Enhancement Subschool, Shapechange Subschool</p><h3>School Powers</h3><p></p><p></p><p></p>",

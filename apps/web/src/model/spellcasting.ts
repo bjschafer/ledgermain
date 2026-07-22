@@ -104,7 +104,13 @@ import {
   type SpellPreparedProgression,
   type SpellProgression,
 } from "@pf1/engine";
-import type { AbilityId, CharacterDoc, RefData, WizardSchoolTag } from "@pf1/schema";
+import type {
+  AbilityId,
+  CharacterDoc,
+  ElementalSchoolTag,
+  RefData,
+  WizardSchoolTag,
+} from "@pf1/schema";
 
 // ---------------------------------------------------------------------------
 // Bonus spells per day
@@ -1124,6 +1130,37 @@ export const SCHOOL_TAGS: WizardSchoolTag[] = [
   "nec",
   "trs",
   "uni",
+];
+
+/**
+ * Elemental arcane school tag -> display label (see `ElementalSchoolTag` /
+ * `WizardSchool` doc comments in `@pf1/schema`). Kept separate from
+ * `SCHOOL_LABELS`/`SCHOOL_TAGS` rather than merged in: `OppositionPicker`
+ * iterates `SCHOOL_TAGS` to offer the two-of-eight standard opposition
+ * schools, which doesn't apply to an elemental pick (a different,
+ * one-of-four-elements mechanic — not modeled).
+ */
+export const ELEMENTAL_SCHOOL_LABELS: Record<ElementalSchoolTag, string> = {
+  "air-elemental": "Air (Elemental)",
+  "earth-elemental": "Earth (Elemental)",
+  "fire-elemental": "Fire (Elemental)",
+  "water-elemental": "Water (Elemental)",
+  "wood-elemental": "Wood (Elemental)",
+  "metal-elemental": "Metal (Elemental)",
+  "void-elemental": "Void (Elemental)",
+  "aether-elemental": "Aether (Elemental)",
+};
+
+/** All elemental school tags. */
+export const ELEMENTAL_SCHOOL_TAGS: ElementalSchoolTag[] = [
+  "air-elemental",
+  "earth-elemental",
+  "fire-elemental",
+  "water-elemental",
+  "wood-elemental",
+  "metal-elemental",
+  "void-elemental",
+  "aether-elemental",
 ];
 
 /**

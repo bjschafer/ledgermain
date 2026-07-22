@@ -4296,6 +4296,18 @@ input[type="text"].saved-roll-name:focus {
   user-select: none;
 }
 
+.domain-slot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.subdomain-select {
+  width: auto;
+}
+
 .subsection-header h3 {
   font-size: 0.8125rem;
   font-family: var(--mono);

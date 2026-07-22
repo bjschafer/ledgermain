@@ -9,6 +9,26 @@ import type { Feat, Race } from "./refdata.js";
 export type WizardSchoolTag = "abj" | "con" | "div" | "enc" | "evo" | "ill" | "nec" | "trs" | "uni";
 
 /**
+ * An elemental arcane school tag (APG's elemental-school variant rule, `WizardSchool`
+ * doc comment): a wizard may specialize in one of these instead of a standard
+ * `WizardSchoolTag`. These are NOT `Spell.school` values — the source models each
+ * elemental school's bonus-slot spell list as free-text spell names, not
+ * `@UUID`-linked entries, so unlike the standard schools it can't be derived into a
+ * `Spell.school`-matchable set (see `WizardSchool` doc comment); the bonus slot
+ * mechanic (`spell.school === build.wizardSchool`) simply finds nothing for an
+ * elemental pick today.
+ */
+export type ElementalSchoolTag =
+  | "air-elemental"
+  | "earth-elemental"
+  | "fire-elemental"
+  | "water-elemental"
+  | "wood-elemental"
+  | "metal-elemental"
+  | "void-elemental"
+  | "aether-elemental";
+
+/**
  * The character document is the single source of truth: it holds build choices
  * and live session state, but NEVER derived values. Fleshed out in Stage 2 to
  * the extent the rules engine needs as input; the builder (Stage 3) will add the
@@ -100,6 +120,14 @@ export interface CharacterDoc {
      * hybrid-prereqs "soft warning only" policy). Empty for non-clerics. Each
      * chosen domain grants one bonus prepared slot per accessible spell level,
      * drawable from `refData.domainSpellLists[<tag>]`.
+     *
+     * A tag may name a `Domain` OR a `Subdomain` (`refData.subdomains[tag]`) —
+     * a subdomain replaces its parent domain choice entirely, not an addition
+     * alongside it. When it's a subdomain tag, the bonus slot instead draws
+     * from `refData.subdomainSpellLists[<tag>]`, and `@pf1/engine`'s
+     * `collectGrantedFeatures` grants the subdomain's own `features` when
+     * present, else falls back to its parent domain's (see `Subdomain` doc
+     * comment).
      */
     clericDomains?: string[];
     /**
@@ -126,23 +154,29 @@ export interface CharacterDoc {
     sorcererBloodlineVariant?: string;
     /**
      * Wizard specialization school tag. One of the eight PF1 schools
-     * ("abj","con","div","enc","evo","ill","nec","trs") or "uni" (Universalist —
-     * no opposition schools, no bonus slot). Free-choice; the vendored Foundry
-     * data has no per-school mapping of *spell-slot* effects (that part is
-     * still hand-authored). Default undefined = Universalist (back-compat:
-     * existing wizard docs load as Universalist).
+     * ("abj","con","div","enc","evo","ill","nec","trs"), "uni" (Universalist —
+     * no opposition schools, no bonus slot), or an `ElementalSchoolTag` (an
+     * elemental school in place of a standard one — see its doc comment for
+     * why the bonus-slot mechanic doesn't resolve any spells for those yet).
+     * Free-choice; the vendored Foundry data has no per-school mapping of
+     * *spell-slot* effects (that part is still hand-authored). Default
+     * undefined = Universalist (back-compat: existing wizard docs load as
+     * Universalist).
      *
      * A specialist (any non-"uni" tag) gains one bonus prepared slot per
      * accessible spell level 1–9 (rendered with `PreparedSpell.kind ===
      * "school"`), exclusive to spells of that school, plus two opposition
-     * schools (see `wizardOppositionSchools`). A Universalist gains NO bonus
-     * slot (PF1 RAW — their compensation is school powers). School powers
-     * (Hand of the Apprentice, Intense Spells, etc., for every school
-     * including Universalist) ARE vendored and granted via
-     * `refData.wizardSchools` / `collectGrantedFeatures` in `@pf1/engine` —
-     * `undefined` here resolves to Universalist for power-granting too.
+     * schools (see `wizardOppositionSchools`) — elemental schools instead
+     * pick a single elemental opposition, not modeled here (builder skips
+     * rendering the opposition picker for an elemental choice). A
+     * Universalist gains NO bonus slot (PF1 RAW — their compensation is
+     * school powers). School powers (Hand of the Apprentice, Intense Spells,
+     * etc., for every school including Universalist and the elemental
+     * schools) ARE vendored and granted via `refData.wizardSchools` /
+     * `collectGrantedFeatures` in `@pf1/engine` — `undefined` here resolves
+     * to Universalist for power-granting too.
      */
-    wizardSchool?: WizardSchoolTag;
+    wizardSchool?: WizardSchoolTag | ElementalSchoolTag;
     /**
      * Two opposition school tags for a specialist wizard; empty/omitted for
      * Universalist. Opposition-school spells cost two normal slots to prepare

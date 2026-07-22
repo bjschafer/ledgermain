@@ -362,10 +362,10 @@ describe("cleric domain powers (top-level domains/*.yaml)", () => {
   });
 });
 
-describe("wizard arcane school powers (top-level wizard-schools/*.yaml)", () => {
-  it("emits exactly 9 schools (8 specialist + Universalist)", () => {
-    expect(Object.keys(ref.wizardSchools).length).toBe(9);
-    expect(ref.meta.counts.wizardSchools).toBe(9);
+describe("wizard arcane school powers (wizard-schools/*.yaml + elemental-schools/*.yaml)", () => {
+  it("emits exactly 17 schools (8 specialist + Universalist + 8 elemental)", () => {
+    expect(Object.keys(ref.wizardSchools).length).toBe(17);
+    expect(ref.meta.counts.wizardSchools).toBe(17);
   });
 
   it("Evocation School grants Force Missile + Intense Spells (level 1) and Elemental Wall (level 8)", () => {
@@ -391,6 +391,135 @@ describe("wizard arcane school powers (top-level wizard-schools/*.yaml)", () => 
         expect(ref.classFeatures[grant.featureId]).toBeDefined();
       }
     }
+  });
+
+  it("the 8 elemental schools carry an ElementalSchoolTag and their own granted powers", () => {
+    const elementalTags = [
+      "air-elemental",
+      "earth-elemental",
+      "fire-elemental",
+      "water-elemental",
+      "wood-elemental",
+      "metal-elemental",
+      "void-elemental",
+      "aether-elemental",
+    ];
+    for (const tag of elementalTags) {
+      const school = Object.values(ref.wizardSchools).find((s) => s.tag === tag);
+      expect(school, tag).toBeDefined();
+      expect(school!.features.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("cleric subdomains (domains/subdomains/*.yaml)", () => {
+  it("emits 136 subdomains, every one resolved to at least one parent domain", () => {
+    expect(Object.keys(ref.subdomains).length).toBe(136);
+    expect(ref.meta.counts.subdomains).toBe(136);
+    for (const sub of Object.values(ref.subdomains)) {
+      expect(sub.parentDomainTags.length, sub.name).toBeGreaterThan(0);
+      for (const parentTag of sub.parentDomainTags) {
+        expect(ref.domainSpellLists[parentTag], `${sub.name} -> ${parentTag}`).toBeDefined();
+      }
+    }
+  });
+
+  it("Cloud Subdomain (Air) overrides the 8th-level power with Thundercloud, keeps Lightning Arc", () => {
+    const cloud = byName(ref.subdomains, "Cloud Subdomain");
+    expect(cloud.tag).toBe("Cloud");
+    expect(cloud.parentDomainTags).toEqual(["Air"]);
+    const byLevel = Object.fromEntries(cloud.features.map((f) => [f.name, f.level]));
+    expect(byLevel["Thundercloud"]).toBe(8);
+    expect(byLevel["Lightning Arc"]).toBeLessThanOrEqual(1);
+  });
+
+  it("Aeon Subdomain (Knowledge) has no structured granted-power override (source models spells only)", () => {
+    const aeon = byName(ref.subdomains, "Aeon Subdomain");
+    expect(aeon.parentDomainTags).toEqual(["Knowledge"]);
+    expect(aeon.features).toEqual([]);
+  });
+
+  it("Purity Subdomain (Protection) carries its own direct resistance-save bonus in `changes`", () => {
+    const purity = byName(ref.subdomains, "Purity Subdomain");
+    expect(purity.parentDomainTags).toEqual(["Protection"]);
+    expect(purity.changes).toEqual([
+      { formula: "1 + floor(@class.unlevel / 5)", target: "allSavingThrows", type: "resist" },
+    ]);
+  });
+
+  it("a subdomain shared by two parent domains resolves both (Alchemy: Artifice + Magic)", () => {
+    const alchemy = byName(ref.subdomains, "Alchemy Subdomain");
+    expect([...alchemy.parentDomainTags].sort()).toEqual(["Artifice", "Magic"]);
+  });
+
+  it("every resolved granted power maps into classFeatures", () => {
+    for (const sub of Object.values(ref.subdomains)) {
+      for (const grant of sub.features) {
+        if (!grant.resolved) continue;
+        expect(ref.classFeatures[grant.featureId], `${sub.name}: ${grant.name}`).toBeDefined();
+      }
+    }
+  });
+});
+
+describe("subdomain spell lists (subdomainSpellLists, merged onto the parent domain's list)", () => {
+  it("emits one list per subdomain", () => {
+    expect(Object.keys(ref.subdomainSpellLists).length).toBe(136);
+    expect(ref.meta.counts.subdomainSpellLists).toBe(136);
+  });
+
+  it("Aeon overrides only levels 1/5/6 of Knowledge's list, keeps the rest", () => {
+    const aeon = ref.subdomainSpellLists["Aeon"];
+    const knowledge = ref.domainSpellLists["Knowledge"];
+    expect(aeon).toBeDefined();
+    expect(aeon![1]).not.toEqual(knowledge![1]);
+    expect(aeon![5]).not.toEqual(knowledge![5]);
+    expect(aeon![6]).not.toEqual(knowledge![6]);
+    expect(aeon![2]).toEqual(knowledge![2]);
+    expect(aeon![7]).toEqual(knowledge![7]);
+  });
+
+  it("Cloud (a full-list subdomain) has its own complete 1-9 list", () => {
+    const cloud = ref.subdomainSpellLists["Cloud"];
+    expect(cloud).toBeDefined();
+    for (let lvl = 1; lvl <= 9; lvl++) {
+      expect(cloud![lvl], `level ${lvl}`).toBeDefined();
+    }
+  });
+
+  it("every spell id referenced resolves in refData.spells", () => {
+    for (const [tag, list] of Object.entries(ref.subdomainSpellLists)) {
+      for (const [lvl, ids] of Object.entries(list)) {
+        for (const id of ids) {
+          expect(ref.spells[id], `${tag} level ${lvl}: ${id}`).toBeDefined();
+        }
+      }
+    }
+  });
+});
+
+describe("druid nature-bond domains (domains/druid-domains/**)", () => {
+  it("emits 9 animal domains + 16 terrain domains", () => {
+    const all = Object.values(ref.druidDomains);
+    expect(all.length).toBe(25);
+    expect(ref.meta.counts.druidDomains).toBe(25);
+    expect(all.filter((d) => d.kind === "animal").length).toBe(9);
+    expect(all.filter((d) => d.kind === "terrain").length).toBe(16);
+  });
+
+  it("carries no structured granted-power links (source models them as prose only)", () => {
+    for (const domain of Object.values(ref.druidDomains)) {
+      expect(domain.features, domain.name).toEqual([]);
+    }
+  });
+
+  it("Wolf Domain (animal) and Desert Domain (terrain) are present with a description", () => {
+    const wolf = byName(ref.druidDomains, "Wolf Domain");
+    expect(wolf.kind).toBe("animal");
+    expect(wolf.description).toBeDefined();
+    const desert = byName(ref.druidDomains, "Desert Domain");
+    expect(desert.kind).toBe("terrain");
+    expect(desert.description).toBeDefined();
   });
 });
 

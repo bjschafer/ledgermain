@@ -9,6 +9,7 @@ import type {
   Class,
   ClassFeature,
   Domain,
+  DruidDomain,
   Feat,
   Item,
   Race,
@@ -16,6 +17,7 @@ import type {
   RefDataMeta,
   Spell,
   SpellList,
+  Subdomain,
   WeaponRef,
   WizardSchool,
 } from "@pf1/schema";
@@ -32,12 +34,21 @@ import {
   transformClass,
   transformClassFeature,
   transformDomain,
+  transformElementalWizardSchool,
   transformWizardSchool,
 } from "./transform/classes.js";
 import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
 import { transformRace } from "./transform/races.js";
 import { transformSpell } from "./transform/spells.js";
+import {
+  isFullDomainSpellList,
+  normalizeEntityName,
+  parseDomainSpellEntries,
+  parseSubdomainRefs,
+  transformDruidDomain,
+  transformSubdomain,
+} from "./transform/subdomains.js";
 import {
   applyArchetypeFeatureLevelSupplements,
   applyClassFeatureUsesSupplements,
@@ -111,13 +122,16 @@ export function normalize(opts: NormalizeOptions): {
   // Read the full class-abilities pack once (keyed by id) for resolution.
   const classAbilitiesById = readPackById(join(packsDir, "class-abilities"));
 
-  // --- domains + wizard schools (top-level only; see Domain/WizardSchool docs) -
+  // --- domains + wizard schools (+ their subdomain/druid/elemental variants) -
   // Foundry stores these as `type: feat` docs under class-abilities/domains/ and
   // class-abilities/wizard-schools/; each folder also contains a `type: Item`
   // folder-marker doc ("Druid Domains", "Subdomains", "Elemental Schools",
   // "Focused Schools") with no `system` at all, excluded by the `type === "feat"`
-  // check. Nested subfolders (subdomains, druid-domains, elemental/focused
-  // schools) are excluded by the relPath depth check.
+  // check. Nested subfolders are matched by their own relPath depth below; the
+  // "focused-schools" variant-rule subfolder (nested inside both wizard-schools/
+  // and wizard-schools/elemental-schools/) is never matched by any of them and
+  // stays excluded — too niche a combination (a focused elemental sub-school) to
+  // vendor.
   const classAbilitiesDocs = [...classAbilitiesById.values()];
   const domainDocs = classAbilitiesDocs
     .filter(
@@ -125,6 +139,30 @@ export function normalize(opts: NormalizeOptions): {
         pf.doc.type === "feat" &&
         pf.relPath.startsWith("domains/") &&
         pf.relPath.split("/").length === 2,
+    )
+    .map((pf) => pf.doc);
+  const subdomainDocs = classAbilitiesDocs
+    .filter(
+      (pf) =>
+        pf.doc.type === "feat" &&
+        pf.relPath.startsWith("domains/subdomains/") &&
+        pf.relPath.split("/").length === 3,
+    )
+    .map((pf) => pf.doc);
+  const druidAnimalDomainDocs = classAbilitiesDocs
+    .filter(
+      (pf) =>
+        pf.doc.type === "feat" &&
+        pf.relPath.startsWith("domains/druid-domains/animal-domains/") &&
+        pf.relPath.split("/").length === 4,
+    )
+    .map((pf) => pf.doc);
+  const druidTerrainDomainDocs = classAbilitiesDocs
+    .filter(
+      (pf) =>
+        pf.doc.type === "feat" &&
+        pf.relPath.startsWith("domains/druid-domains/terrain-domains/") &&
+        pf.relPath.split("/").length === 4,
     )
     .map((pf) => pf.doc);
   const schoolDocs = classAbilitiesDocs
@@ -135,10 +173,26 @@ export function normalize(opts: NormalizeOptions): {
         pf.relPath.split("/").length === 2,
     )
     .map((pf) => pf.doc);
+  const elementalSchoolDocs = classAbilitiesDocs
+    .filter(
+      (pf) =>
+        pf.doc.type === "feat" &&
+        pf.relPath.startsWith("wizard-schools/elemental-schools/") &&
+        pf.relPath.split("/").length === 3,
+    )
+    .map((pf) => pf.doc);
 
-  // Collect the feature ids referenced by selected classes + domains + schools.
+  // Collect the feature ids referenced by selected classes + domains + schools
+  // (+ subdomains + elemental schools — druid domains carry no `links.supplements`
+  // at all, see `DruidDomain` doc comment, so they contribute nothing here).
   const referencedFeatureIds = new Set<string>();
-  for (const cls of [...selectedClassDocs, ...domainDocs, ...schoolDocs]) {
+  for (const cls of [
+    ...selectedClassDocs,
+    ...domainDocs,
+    ...schoolDocs,
+    ...subdomainDocs,
+    ...elementalSchoolDocs,
+  ]) {
     for (const uuid of supplementUuids(cls)) {
       const parsed = parseUuid(uuid);
       if (parsed?.pack === "class-abilities") referencedFeatureIds.add(parsed.id);
@@ -166,9 +220,59 @@ export function normalize(opts: NormalizeOptions): {
   const domains: Domain[] = domainDocs.map((d) =>
     transformDomain(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
   );
-  const wizardSchools: WizardSchool[] = schoolDocs
-    .map((d) => transformWizardSchool(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid))
-    .filter((s): s is WizardSchool => s !== null);
+
+  // --- subdomains: resolve each one's parent domain(s) from every top-level
+  // domain's own "Subdomains:" description prose (not a structured link in
+  // the source — see `transform/subdomains.ts` doc comments) -----------------
+  const subdomainIds = new Set(subdomainDocs.map((d) => d._id));
+  const subdomainIdByName = new Map(subdomainDocs.map((d) => [normalizeEntityName(d.name), d._id]));
+  const subdomainParentTags = new Map<string, Set<string>>();
+  for (const d of domainDocs) {
+    const html = rawDescriptionHtml(d);
+    const tag = d.name.replace(/ Domain$/, "");
+    for (const ref of parseSubdomainRefs(html)) {
+      // Prefer the linked id when it names a real subdomain in this slice;
+      // fall back to matching the display name (a few links point at the
+      // wrong doc, and a few names don't match their subdomain's real name —
+      // see `SubdomainRef` doc comment).
+      const subId =
+        (ref.id && subdomainIds.has(ref.id) ? ref.id : undefined) ??
+        subdomainIdByName.get(normalizeEntityName(ref.name));
+      if (!subId) continue; // unresolvable against this slice — never crash, just skip
+      let set = subdomainParentTags.get(subId);
+      if (!set) {
+        set = new Set();
+        subdomainParentTags.set(subId, set);
+      }
+      set.add(tag);
+    }
+  }
+  const subdomains: Subdomain[] = subdomainDocs.map((d) =>
+    transformSubdomain(
+      d,
+      [...(subdomainParentTags.get(d._id) ?? [])].sort(),
+      (id) => classFeaturesById[id]?.name ?? null,
+      resolveUuid,
+    ),
+  );
+
+  const druidDomains: DruidDomain[] = [
+    ...druidAnimalDomainDocs.map((d) => transformDruidDomain(d, "animal", resolveUuid)),
+    ...druidTerrainDomainDocs.map((d) => transformDruidDomain(d, "terrain", resolveUuid)),
+  ];
+
+  const wizardSchools: WizardSchool[] = [
+    ...schoolDocs
+      .map((d) =>
+        transformWizardSchool(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
+      )
+      .filter((s): s is WizardSchool => s !== null),
+    ...elementalSchoolDocs
+      .map((d) =>
+        transformElementalWizardSchool(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
+      )
+      .filter((s): s is WizardSchool => s !== null),
+  ];
 
   // --- races (filtered to slice folders) -------------------------------------
   const races: Race[] = readPack(join(packsDir, "races"))
@@ -262,6 +366,29 @@ export function normalize(opts: NormalizeOptions): {
       list[Number(lvl)]!.sort();
     }
     domainSpellLists[tag] = list;
+  }
+
+  // --- per-subdomain spell lists (merge each subdomain's own replacement/full
+  // spell-list section onto its parent's domainSpellLists entry) -------------
+  // Unlike domainSpellLists above, this isn't inverted from any spell's
+  // `learnedAt` field — the vendored spell pack never tags a spell by
+  // subdomain (see `RefData.subdomainSpellLists` doc comment) — it's parsed
+  // from each subdomain doc's own description prose instead.
+  const spellsById = byId(spells);
+  const subdomainSpellLists: Record<string, SpellList> = {};
+  for (const doc of subdomainDocs) {
+    const sub = subdomains.find((s) => s.id === doc._id);
+    if (!sub) continue;
+    const html = rawDescriptionHtml(doc);
+    const entries = parseDomainSpellEntries(html).filter((e) => spellsById[e.spellId]);
+    const parentTag = sub.parentDomainTags[0];
+    const parentList = parentTag ? domainSpellLists[parentTag] : undefined;
+    const list: SpellList = {};
+    if (!isFullDomainSpellList(html) && parentList) {
+      for (const [lvl, ids] of Object.entries(parentList)) list[Number(lvl)] = [...ids];
+    }
+    for (const { level, spellId } of entries) list[level] = [spellId];
+    if (Object.keys(list).length > 0) subdomainSpellLists[sub.tag] = list;
   }
 
   // --- per-bloodline spell lists (invert learnedAt.bloodline) -----------------
@@ -360,6 +487,9 @@ export function normalize(opts: NormalizeOptions): {
     domainSpellLists: Object.keys(domainSpellLists).length,
     bloodlineSpellLists: Object.keys(bloodlineSpellLists).length,
     domains: domains.length,
+    subdomains: subdomains.length,
+    subdomainSpellLists: Object.keys(subdomainSpellLists).length,
+    druidDomains: druidDomains.length,
     wizardSchools: wizardSchools.length,
   };
 
@@ -397,6 +527,9 @@ export function normalize(opts: NormalizeOptions): {
     archetypes: byId(archetypes),
     archetypeFeatures: byId(archetypeFeatures),
     domains: byId(domains),
+    subdomains: byId(subdomains),
+    subdomainSpellLists,
+    druidDomains: byId(druidDomains),
     wizardSchools: byId(wizardSchools),
   };
 
@@ -406,6 +539,13 @@ export function normalize(opts: NormalizeOptions): {
 function asTag(doc: RawDoc): string {
   const sys = (doc.system ?? {}) as Record<string, unknown>;
   return typeof sys.tag === "string" ? sys.tag : doc.name.toLowerCase();
+}
+
+/** Raw (unresolved) `system.description.value` HTML, for text-parsing a doc before `descriptionValue` resolves its `@UUID` enrichers. */
+function rawDescriptionHtml(doc: RawDoc): string {
+  const sys = (doc.system ?? {}) as Record<string, unknown>;
+  const d = sys.description as Record<string, unknown> | undefined;
+  return typeof d?.value === "string" ? d.value : "";
 }
 
 function supplementUuids(doc: RawDoc): string[] {

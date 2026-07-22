@@ -1,7 +1,14 @@
 import { useMemo, useState, type ReactNode } from "react";
 
 import type { MetamagicDef } from "@pf1/engine";
-import type { AppliedMetamagic, Buff, CharacterDoc, RefData, Spell } from "@pf1/schema";
+import type {
+  AppliedMetamagic,
+  Buff,
+  CharacterDoc,
+  RefData,
+  Spell,
+  WizardSchoolTag,
+} from "@pf1/schema";
 
 import { addBuff, makeActiveBuff, removeBuff, suggestRounds } from "../../model/buffs.js";
 import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
@@ -571,7 +578,11 @@ function SchoolSlotsSection({
   const accessibleLevels = [...pickableByLevel.keys()].sort((a, b) => a - b);
   if (!school || school === "uni" || accessibleLevels.length === 0) return null;
 
-  const schoolLabel = SCHOOL_LABELS[school] ?? school;
+  // Elemental picks never reach here — `accessibleLevels` is always empty for
+  // one (no derived bonus-slot spell list, see `WizardSchool` doc comment),
+  // so the early return above already bails — but `school`'s type still
+  // includes `ElementalSchoolTag`, hence the cast.
+  const schoolLabel = SCHOOL_LABELS[school as WizardSchoolTag] ?? school;
 
   return (
     <div className="school-slots">

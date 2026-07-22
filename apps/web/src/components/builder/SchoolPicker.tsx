@@ -1,9 +1,14 @@
 import { useMemo } from "react";
 
-import type { CharacterDoc, RefData, WizardSchoolTag } from "@pf1/schema";
+import type { CharacterDoc, ElementalSchoolTag, RefData, WizardSchoolTag } from "@pf1/schema";
 
 import { setWizardSchool } from "../../model/doc.js";
-import { SCHOOL_LABELS, SCHOOL_TAGS } from "../../model/spellcasting.js";
+import {
+  ELEMENTAL_SCHOOL_LABELS,
+  ELEMENTAL_SCHOOL_TAGS,
+  SCHOOL_LABELS,
+  SCHOOL_TAGS,
+} from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { OppositionPicker } from "./OppositionPicker.js";
@@ -39,6 +44,12 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
 
   const chosen = doc.build.wizardSchool ?? "";
   const school = schoolByTag.get(chosen || "uni");
+  const isElemental = (ELEMENTAL_SCHOOL_TAGS as string[]).includes(chosen);
+  const chosenLabel = isElemental
+    ? ELEMENTAL_SCHOOL_LABELS[chosen as ElementalSchoolTag]
+    : chosen
+      ? SCHOOL_LABELS[chosen as WizardSchoolTag]
+      : null;
 
   return (
     <div className="subsection school-picker">
@@ -54,9 +65,7 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
       >
         <h3>
           Arcane School
-          {chosen ? (
-            <span className="hint"> · {SCHOOL_LABELS[chosen as WizardSchoolTag]}</span>
-          ) : null}
+          {chosenLabel ? <span className="hint"> · {chosenLabel}</span> : null}
         </h3>
         <Caret open={!collapsed} />
       </div>
@@ -67,25 +76,40 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
             specialist gains one bonus prepared slot per accessible spell level, exclusive to that
             school, and must pick two opposition schools. A Universalist gains no bonus slot — their
             compensation is arcane-school powers (Hand of the Apprentice, Metamagic Mastery),
-            granted below and in Class Features regardless of which school you pick.
+            granted below and in Class Features regardless of which school you pick. An elemental
+            school (APG variant rule) grants its own powers the same way, but its bonus-slot spell
+            list and single-element opposition aren't tracked here yet — see its description below.
           </p>
           <select
             className="school-select"
             value={chosen}
             onChange={(e) => {
               const value = e.target.value;
-              update((d) => setWizardSchool(d, value ? (value as WizardSchoolTag) : null));
+              update((d) =>
+                setWizardSchool(d, value ? (value as WizardSchoolTag | ElementalSchoolTag) : null),
+              );
             }}
           >
             <option value="">— none chosen —</option>
-            {SCHOOL_TAGS.map((tag) => (
-              <option key={tag} value={tag}>
-                {SCHOOL_LABELS[tag]}
-              </option>
-            ))}
+            <optgroup label="Standard Schools">
+              {SCHOOL_TAGS.map((tag) => (
+                <option key={tag} value={tag}>
+                  {SCHOOL_LABELS[tag]}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="Elemental Schools">
+              {ELEMENTAL_SCHOOL_TAGS.map((tag) => (
+                <option key={tag} value={tag}>
+                  {ELEMENTAL_SCHOOL_LABELS[tag]}
+                </option>
+              ))}
+            </optgroup>
           </select>
 
-          {chosen && chosen !== "uni" && <OppositionPicker doc={doc} update={update} />}
+          {chosen && chosen !== "uni" && !isElemental && (
+            <OppositionPicker doc={doc} update={update} />
+          )}
 
           {school?.description && (
             <div className="domain-description">

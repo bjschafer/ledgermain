@@ -28,6 +28,27 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.01m5lHnOP2E2FS5B"
   },
+  "05dlMQ4G1bTM74xp": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, when you make a Diplomacy or Intimidate check, you can roll twice and take the higher result. Using this ability is a free action. You can use this ability once per day at 8th level, plus one additional time per day for every 2 levels beyond 8th.</p><p>This power replaces the Freedom's Call power of the Liberation Domain.</p>",
+    "grantsBuffs": [],
+    "id": "05dlMQ4G1bTM74xp",
+    "name": "Powerful Persuader",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "96"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "powerfulPersuader",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 6) / 2)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.05dlMQ4G1bTM74xp"
+  },
   "0AXAMXGLJIw7CGBd": {
     "abilityType": "ex",
     "changes": [],
@@ -58,6 +79,26 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.0BFuaPpChxXneJwF"
+  },
+  "0BZYhHw4PbbWJuhP": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you gain the ability to move through earth, dirt, and stone for a number of rounds per day equal to your wizard level. You cannot move through worked earth or stone; only natural substances can be traversed. If your total duration expires before you exit the earth, you are flung back to the point where you entered the stone, take 4d6 points of damage, and are stunned for 1 round. Your burrowing does not leave a hole, nor does it give any sign of your presence (although you can be detected by creatures with tremorsense). These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "0BZYhHw4PbbWJuhP",
+    "name": "Earth Glide (WIZ)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.0BZYhHw4PbbWJuhP"
   },
   "0R8c0js1gWlCtbCY": {
     "abilityType": "su",
@@ -125,6 +166,26 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.0j7haa7K5O1CJ3ot"
+  },
+  "0nRLmRBWwS7NI7E4": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, as a standard action, you can sculpt fire to suit your desires. With one use of this ability you can move any nonmagical fire up to 30 feet. Alternatively you can use this ability to alter any fire spell that you cast with a duration of instantaneous by removing any number of squares from its area of affect. If the fire spell has a duration, you can use this ability to reposition the spell, within its original range (treat this as if you had just cast the spell, even though the duration is unchanged). You cannot use this ability on a fire spell that you did not cast. If you move a nonmagical flame, it must have a new source of fuel. If it does not, it is extinguished in one round. You can use this ability a number of times per day equal to 1/2 your wizard level.</p>",
+    "grantsBuffs": [],
+    "id": "0nRLmRBWwS7NI7E4",
+    "name": "Dancing Flame",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "floor(@class.unlevel / 2)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.0nRLmRBWwS7NI7E4"
   },
   "0oO5lfLEq2ggvGHg": {
     "abilityType": "ex",
@@ -243,6 +304,41 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.1jMb1iCiNjS5yfwe"
+  },
+  "1mwNVTch2j88G8h3": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "save",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["fire"]
+        },
+        "name": "Line of Fire",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.int.mod",
+          "type": "ref"
+        }
+      }
+    ],
+    "changes": [],
+    "description": "<p>As a standard action, you can send forth a 20-foot line of fire. Anyone in this line takes 1d6 points of fire damage + 1 point for every two wizard levels you possess. A successful Reflex save halves this damage. The DC of this save is equal to 10 + 1/2 your wizard level + your Intelligence modifier. Creatures that fail their saving throw catch fire and take 1d6 points of fire damage on the following round. Creatures that catch fire can avoid this damage by taking a full-round action to extinguish the flames by making a DC 15 Reflex save. Rolling on the ground gives a +2 circumstance bonus on the save. Dousing the creature with water automatically extinguishes the flame. You can use this ability a number of times per day equal to 3 + your Intelligence modifier.</p>",
+    "grantsBuffs": [],
+    "id": "1mwNVTch2j88G8h3",
+    "name": "Fire Jet",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.1mwNVTch2j88G8h3"
   },
   "1omEP6hrq86Bt46B": {
     "abilityType": "su",
@@ -687,6 +783,26 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.3wfFDagWXK5x1nQW"
   },
+  "3zggJMxuipE68IkT": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You maintain an unshakable sense of who you are, and no force can compel you to be anything else. You gain a +1 sacred (if your patron is good or neutral) or profane (if your patron is evil) bonus on saving throws against polymorph, petrification, and transmutation effects. This bonus increases by 1 for every 5 cleric levels you have (maximum +5). Once per day when you succeed at a saving throw against such an effect, you can gain a surge of self-confidence as an immediate action that grants you a number of temporary hit points equal to your cleric level and a +2 morale bonus on attack rolls, skill checks, and saving throws; both effects last for 1 minute.</p><p>This power replaces the Liberation power of the Liberation Domain or the Strength Surge power of the Strength Domain.</p>",
+    "grantsBuffs": [],
+    "id": "3zggJMxuipE68IkT",
+    "name": "Perfected Form",
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "26"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.3zggJMxuipE68IkT"
+  },
   "40X1l46RRbJE02qU": {
     "abilityType": "su",
     "changes": [],
@@ -706,6 +822,35 @@
     "name": "Masterful Tricks",
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.4IIOGeT5qafH4HRa"
+  },
+  "4KrSL8mgSPLF7f9c": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "rcman",
+        "activation": "standard",
+        "name": "Use",
+        "range": "30 ft"
+      }
+    ],
+    "changes": [],
+    "description": "<p>As a standard action, you can unleash a blast of air in a 30-foot line. Make a combat maneuver check against each creature in the line, using your caster level as your base attack bonus and your Wisdom modifier in place of your Strength modifier. Treat the results as a bull rush attempt. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>This power replaces the Lightning Arc power of the Air domain.</p>",
+    "grantsBuffs": [],
+    "id": "4KrSL8mgSPLF7f9c",
+    "name": "Wind Blast",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "97"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "windBlast",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.4KrSL8mgSPLF7f9c"
   },
   "4QeavCZeba7ApFD2": {
     "abilityType": "su",
@@ -1020,6 +1165,28 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5NS7Ec3WhKIkhygg"
+  },
+  "5awkon2RsvmNHcwb": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "1 + floor(@class.unlevel / 5)",
+        "target": "dex",
+        "type": "enh"
+      }
+    ],
+    "description": "<p>A master of the wood element is able to bend like bamboo when stressed and snap back into place. You gain a +1 enhancement bonus to your Dexterity, Constitution, or Wisdom ability score. This bonus increases by +1 for every five wizard levels you possess to a maximum of +5 at 20th level. You can change this bonus to a new ability score when you prepare spells. At 20th level, this bonus applies to two of these ability scores of your choice.</p>",
+    "grantsBuffs": [],
+    "id": "5awkon2RsvmNHcwb",
+    "name": "Flexible Enhancement",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.5awkon2RsvmNHcwb"
   },
   "5fTHyPmis1IyBmNF": {
     "abilityType": "su",
@@ -1585,6 +1752,35 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp"
   },
+  "9QBWuc6VMnX9nUgC": {
+    "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
+    "changes": [],
+    "description": "<p>You touch a willing creature as a standard action, granting it a boon. A creature with this boon can, as a swift action, make a saving throw against a single spell or effect it is suffering from that grants a save. The DC of the saving throw is equal to the original DC of the spell or effect. If the saving throw is successful, the effect ends. This boon lasts for 1 minute or until successfully used to remove a spell or effect, whichever duration is shorter. You can use this ability for a number of times equal to 3 + your Wisdom modifier.</p><p>This power replaces the Liberation power of the Liberation Domain.</p>",
+    "grantsBuffs": [],
+    "id": "9QBWuc6VMnX9nUgC",
+    "name": "Liberty’s Blessing",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "91"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.9QBWuc6VMnX9nUgC"
+  },
   "9Y9dpXEcjXGtH6Pe": {
     "abilityType": "ex",
     "changes": [],
@@ -1710,6 +1906,32 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.A54sLfcyoR5HGNbP"
+  },
+  "AAenkn51lUvD9cld": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "activation": "passive",
+        "damage": {
+          "formula": "floor(@class.unlevel / 2)",
+          "types": ["untyped"]
+        },
+        "name": "Bonus Damage"
+      }
+    ],
+    "changes": [],
+    "description": "<p>Whenever you cast a spell that deals hit point damage, you deal extra damage to creatures made of metal or wearing medium or heavy metal armor. Affected creatures take additional damage equal to 1/2 your wizard level. This bonus damage is not increased by Empower Spell or similar effects. This bonus only applies once to a spell, not once per missile or ray, and cannot be split between multiple missiles or rays. The damage is of the same type as the spell.</p><p>At 20th level, whenever you cast a spell on a creature made of metal or wearing medium or heavy armor, you can roll twice to penetrate the creature's spell resistance and take the better result.</p>",
+    "grantsBuffs": [],
+    "id": "AAenkn51lUvD9cld",
+    "name": "Metal Rending",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "87"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.AAenkn51lUvD9cld"
   },
   "AOasku7u72NB0q3J": {
     "abilityType": "ex",
@@ -2358,6 +2580,26 @@
       "source": "grit"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.D13TR3rNmjwMPXuD"
+  },
+  "DHeLMeoN4XioMupk": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, whenever a spell or effect targets you and one or more allies within 30 feet, you can use this ability to allow your allies to use your saving throw against the effect in place of their own. Each ally must make this choice individually before the rolls are made. Using this ability is an immediate action. You can use this ability once per day at 8th level, and one additional time per day for every four wizard levels beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "DHeLMeoN4XioMupk",
+    "name": "Cooperative Defense",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, floor(@class.unlevel / 4) - 1)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.DHeLMeoN4XioMupk"
   },
   "DbC7QZBYYIClw1m6": {
     "abilityType": "su",
@@ -3330,6 +3572,26 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.JKJoHy5NveXGaZqv"
   },
+  "JR0T67kfvoS5RQ9w": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can create a wave of water that starts at your location and moves 30 feet per round away from you in a direction of your choosing. Creatures struck by the wave might be knocked down and pushed away. Make a caster level check against the CMD of each creature struck. If you succeed, the creature is knocked prone. If your check exceeds the CMD of the creature by 5 or more, it is carried with the wave during the wave's movement this round. You receive a +5 bonus on this check if the creature shares its space with the wave at the start of your turn (when the wave moves). Creatures carried in this way can move out of the wave on their turn if they succeed on a Strength check (DC = 10 + 1/2 your caster level + your Intelligence modifier), but they cannot breathe while sharing space with the wave. The wave is up to 20 feet high and up to 5 feet long for each wizard level you possess. Nonmagical fires hit by the wave are automatically extinguished. Magical fire effects are unaffected. You can use this ability for a number of rounds per day equal to 1/2 your wizard level.</p>",
+    "grantsBuffs": [],
+    "id": "JR0T67kfvoS5RQ9w",
+    "name": "Wave",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "floor(@class.unlevel / 2)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.JR0T67kfvoS5RQ9w"
+  },
   "JZlCwRBCgOeFxIk7": {
     "abilityType": "su",
     "changes": [],
@@ -3344,6 +3606,21 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.JZlCwRBCgOeFxIk7"
+  },
+  "JdoL8b96paiDkn7y": {
+    "changes": [],
+    "description": "<p>At 1st level, add the following spells to your wizard spell list at the listed spell level:</p><ul><li><p>3rd—chill metal, heat metal,</p></li><li><p>5th—rusting grasp,</p></li><li><p>9th—repel metal or stone.</p></li></ul>",
+    "grantsBuffs": [],
+    "id": "JdoL8b96paiDkn7y",
+    "name": "Metal Magic",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "87"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.JdoL8b96paiDkn7y"
   },
   "JfD0rLUPsqEOjQqT": {
     "changes": [],
@@ -4389,6 +4666,32 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Pb9pxYrx6tS87euP"
   },
+  "PmO50ReytvNYsuFW": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "activation": "swift",
+        "damage": {
+          "formula": "max(1, floor(@class.unlevel / 2))",
+          "types": ["fire"]
+        },
+        "name": "Fire Damage"
+      }
+    ],
+    "changes": [],
+    "description": "<p>You gain resistance 5 to fire. At 10th level, this resistance increases to 10. At 20th level, you gain immunity to fire damage. In addition, whenever you are within 5 feet of a source of flame at least as large as a campfire, you can draw the fire around you for 1 round as a swift action. Anyone striking you with a melee weapon or unarmed strike takes an amount of fire damage equal to 1/2 your wizard level (minimum 1). Weapons with reach avoid this damage.</p>",
+    "grantsBuffs": [],
+    "id": "PmO50ReytvNYsuFW",
+    "name": "Fire Supremacy",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.PmO50ReytvNYsuFW"
+  },
   "PuzIaPLe5w4eF72t": {
     "abilityType": "su",
     "changes": [],
@@ -4633,6 +4936,26 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.RNIkkvqaq2iVrahs"
   },
+  "ROJkE2g2kWfhy6TI": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura of void energy for a number of rounds per day equal to your wizard level. Allies within this aura gain a +2 insight bonus on ability checks, attack rolls, damage rolls, saving throws, and skill checks. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "ROJkE2g2kWfhy6TI",
+    "name": "Aura of Prescience",
+    "sources": [
+      {
+        "id": "PZO9421",
+        "pages": "29"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.ROJkE2g2kWfhy6TI"
+  },
   "RSoy0ll1sNno6mJD": {
     "abilityType": "su",
     "changes": [],
@@ -4840,6 +5163,41 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.S9lYCsz7oA7v3GzR"
+  },
+  "SDMF55h3qjABNUhQ": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "save",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["electric"]
+        },
+        "name": "Use",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.int.mod",
+          "type": "ref"
+        }
+      }
+    ],
+    "changes": [],
+    "description": "<p>As a standard action, you can unleash a flash of electricity. This flash deals 1d6 points of electricity damage + 1 point for every two wizard levels you possess to all creatures within 5 feet of you and dazzles them for 1d4 rounds. A successful Reflex save negates the dazzled effect and halves the damage. The DC of this save is equal to 10 + 1/2 your wizard level + your Intelligence modifier. You can use this ability a number of times per day equal to 3 + your Intelligence modifier.</p>",
+    "grantsBuffs": [],
+    "id": "SDMF55h3qjABNUhQ",
+    "name": "Lightning Flash",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.SDMF55h3qjABNUhQ"
   },
   "SDe1qkWV2217wSao": {
     "abilityType": "ex",
@@ -5703,6 +6061,26 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.XJtvco1XWggmr5LU"
   },
+  "XRmCVkk55FNn4hml": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You gain a +2 armor bonus to your Armor Class for 10 minutes; this bonus increases by +1 for every 5 caster levels (maximum +6 at 20th level). You can use this ability a number of times per day equal to 3 + your Intelligence bonus.</p>",
+    "grantsBuffs": [],
+    "id": "XRmCVkk55FNn4hml",
+    "name": "Iron Skin",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "87"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.XRmCVkk55FNn4hml"
+  },
   "Xcim6WFtAtxJxnmA": {
     "abilityType": "su",
     "changes": [],
@@ -5855,6 +6233,49 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.YOanbBgt7VuD5QDt"
   },
+  "YPqkXzcxHtggndAY": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You gain a +2 enhancement bonus to your CMD to resist bull rush, reposition, trip, and overrun attempts as long as you are touching the ground. This bonus increases by +1 for every five wizard levels you possess. In addition, you gain a +1 insight bonus on melee attack and damage rolls whenever both you and your foe are touching the ground. At 20th level, earth and stone do not block the line of effect of your spells, although they do still block your line of sight.</p>",
+    "grantsBuffs": [],
+    "id": "YPqkXzcxHtggndAY",
+    "name": "Earth Supremacy",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.YPqkXzcxHtggndAY"
+  },
+  "YXHy6atHdR2fH6aE": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "min(1, floor(@class.unlevel / 10)) * @attributes.speed.land.total",
+        "target": "swimSpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "2 + floor(@class.unlevel / 5)",
+        "target": "skill.swm",
+        "type": "enh"
+      }
+    ],
+    "description": "<p>You gain a +2 enhancement bonus on Swim skill checks. This bonus increases by +1 for every five wizard levels you possess. In addition, you can hold your breath for a number of rounds equal to four times your Constitution score before you must start making checks to avoid drowning. At 10th level, you gain a swim speed equal to your base speed. At 20th level, whenever you make a Swim skill check, assume the roll resulted in a natural 20.</p>",
+    "grantsBuffs": [],
+    "id": "YXHy6atHdR2fH6aE",
+    "name": "Water Supremacy",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.YXHy6atHdR2fH6aE"
+  },
   "YeNdVzgR4OZMezrx": {
     "abilityType": "sp",
     "changes": [],
@@ -5939,6 +6360,37 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Yr8dfM2d8JEWoYkr"
+  },
+  "YvEe9B32X53ZCuWs": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "activation": "standard",
+        "damage": {
+          "formula": "2d6",
+          "types": ["electric"]
+        },
+        "name": "Use"
+      }
+    ],
+    "changes": [],
+    "description": "<p>At 8th level, you can, as a standard action, summon a storm cloud. This power functions as fog cloud except that creatures inside the cloud are deafened and take 2d6 points of electricity damage each round from the flashes of thunder and lightning. Once created, you can concentrate on the cloud to move it up to 30 feet each round. You can use this ability for a number of rounds per day equal to your cleric level. These rounds do not need to be consecutive.</p><p>This power replaces the Electricity Resistance power of the Air Domain.</p>",
+    "grantsBuffs": [],
+    "id": "YvEe9B32X53ZCuWs",
+    "name": "Thundercloud",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "thundercloud",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.YvEe9B32X53ZCuWs"
   },
   "Z2sZPjplxeUu0KNh": {
     "abilityType": "su",
@@ -6168,6 +6620,41 @@
       "source": "grit"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.a0jWCaAunG7XDqaE"
+  },
+  "a4Dm2SgIwTOfHyVx": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "save",
+        "activation": "swift",
+        "damage": {
+          "formula": "(max(1,floor(@class.unlevel / 2)))d6",
+          "types": ["piercing"]
+        },
+        "name": "Use",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.int.mod",
+          "type": "ref"
+        }
+      }
+    ],
+    "changes": [],
+    "description": "<p>At 8th level, as a swift action, you can cause jagged pieces of metal to explode outward from your body. These shards deal 1d6 points of piercing damage per two wizard levels (minimum 1d6) to all creatures within a 10-foot-radius burst. A Reflex save halves this damage. In addition, the twisted scraps of metal make the area difficult terrain until your next turn (at which time they disappear). You can use this ability once per day, plus one additional time per day at 13th level and 18th level. At 10th-level, the shrapnel bypasses damage reduction as if it were a magic weapon.</p>",
+    "grantsBuffs": [],
+    "id": "a4Dm2SgIwTOfHyVx",
+    "name": "Shrapnel Burst",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "87"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0,floor((@class.unlevel - 3) / 5))",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.a4Dm2SgIwTOfHyVx"
   },
   "a4SPdPuOFdmfJdHN": {
     "actions": [
@@ -6844,6 +7331,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.eM1RMYR1EUBuUVTv"
   },
+  "eP9PGRZ326RcCKhN": {
+    "changes": [],
+    "description": "<p>At 1st level, add the following spells to your wizard spell list at the listed spell level:</p><ul><li>2nd — entangle,</li><li>3rd — tree shape,</li><li>4th — plant growth,</li><li>5th — command plants,</li><li>6th — tree stride,</li><li>7th — liveoak,</li><li>8th — transmute metal to wood,</li><li>9th — control plants.</li></ul>",
+    "grantsBuffs": [],
+    "id": "eP9PGRZ326RcCKhN",
+    "name": "Wood Magic",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.eP9PGRZ326RcCKhN"
+  },
   "ePNt8fgtaAxmLnHs": {
     "abilityType": "ex",
     "changes": [],
@@ -6915,6 +7417,26 @@
     "name": "Elemental Defense",
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ecaBwckdxXf22eSg"
+  },
+  "emYKpbvyPXpLx1kw": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a swift action, you can grant yourself protection against nonmagical attacks by forming a field to telekinetically deflect them. You gain DR 5/magic for 1 round. You can use this ability a number of times per day equal to 3 + your Intelligence modifier.</p>",
+    "grantsBuffs": [],
+    "id": "emYKpbvyPXpLx1kw",
+    "name": "Telekinetic Protection",
+    "sources": [
+      {
+        "id": "PZO9483",
+        "pages": "20"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.emYKpbvyPXpLx1kw"
   },
   "etOoJgoeaBRenCir": {
     "abilityType": "ex",
@@ -7084,6 +7606,28 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.fkjS3pJidUdLWsFF"
   },
+  "fo0imMQ0szmaA6WB": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "2 + floor(@class.unlevel / 5)",
+        "target": "skill.fly",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>You gain a +2 enhancement bonus on fly skill checks. This bonus increases by +1 for every five wizard levels you possess. In addition, you can cast feather fall on yourself at will. At 5th level, you can cast levitate on yourself at will. At 10th level, you can cast fly on yourself at will. At 20th level, whenever you make a Fly skill check, assume the roll resulted in a natural 20.</p>",
+    "grantsBuffs": [],
+    "id": "fo0imMQ0szmaA6WB",
+    "name": "Air Supremacy",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.fo0imMQ0szmaA6WB"
+  },
   "fo3SQLOjFcQSmVMJ": {
     "abilityType": "ex",
     "changes": [],
@@ -7093,6 +7637,21 @@
     "name": "Mighty Charge",
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.fo3SQLOjFcQSmVMJ"
+  },
+  "gRnnwz48Oz0ohI6s": {
+    "changes": [],
+    "description": "<p>Add the following spells to your wizard spell list at the listed spell level:</p><ul><li>0—Telekinetic Projectile,</li><li>2nd—Spiritual Weapon,</li><li>4th—Spiritual Ally,</li><li>5th—Ethereal Envelopment,</li><li>6th—Animate Objects,</li><li>7th—Ectoplasmic Eruption,</li><li>9th—Telekinetic Storm.</li></ul>",
+    "grantsBuffs": [],
+    "id": "gRnnwz48Oz0ohI6s",
+    "name": "Aether Magic",
+    "sources": [
+      {
+        "id": "PZO9483",
+        "pages": "20"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.gRnnwz48Oz0ohI6s"
   },
   "gotW1ETzGrrwVtk2": {
     "abilityType": "su",
@@ -7285,6 +7844,22 @@
       "source": "kiPool"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.hp7tP0bRAj8eNqN9"
+  },
+  "hsPaehLs8BaMEmcj": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Your ability to recognize the void allows your body to react to magical manifestations before you’re even aware of them. You gain a +2 insight bonus on saving throws against spells and spell-like abilities. This bonus increases by +1 for every five wizard levels you possess. At 20th level, whenever you would be affected by a spell or spell-like ability that allows a saving throw, you can roll twice to save against the effect and take the better result.</p>",
+    "grantsBuffs": [],
+    "id": "hsPaehLs8BaMEmcj",
+    "name": "Void Awareness",
+    "sources": [
+      {
+        "id": "PZO9421",
+        "pages": "29"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.hsPaehLs8BaMEmcj"
   },
   "hslkjPA3AVl3hDWu": {
     "abilityType": "sp",
@@ -7653,6 +8228,36 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.jkigrVeg3TUKg0Gy"
   },
+  "jlGCqPjmgNH3lUXS": {
+    "abilityType": "sp",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
+    "changes": [],
+    "description": "<p>As a standard action, you can touch an ally to summon a floating blockade of stone, granting the ally the benefits of partial cover for 1 round plus 1 round for every 6 cleric levels you possess. This ability does not grant the ally enough cover to attempt a Stealth check or avoid provoking attacks of opportunity. If the ally benefits from any other form of cover against an attack, the bonuses to AC and on Reflex saving throws increase by 1. You can use this power a number of times per day equal to 3 + your Wisdom modifier.</p><p>This power replaces the Resistant Touch power of the Protection Domain.</p>",
+    "grantsBuffs": [],
+    "id": "jlGCqPjmgNH3lUXS",
+    "name": "Sheltering Walls",
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "18"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "shelteringWalls",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.jlGCqPjmgNH3lUXS"
+  },
   "jlvZK3xsfsDC358a": {
     "abilityType": "ex",
     "changes": [
@@ -7888,6 +8493,22 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.kXXz1lO4i7CibHJ9"
+  },
+  "khGQDuyL6TKASqYb": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you are constantly surrounded by ephemeral and invisible strands of aether, increasing your awareness of your surroundings. You are never denied your Dexterity bonus to AC against attacks made within 30 feet of you because you are flat-footed or because your assailant is unseen. In addition, you gain a bonus on Perception checks to avoid being surprised equal to half your wizard level.</p>",
+    "grantsBuffs": [],
+    "id": "khGQDuyL6TKASqYb",
+    "name": "Receptive Vibrations",
+    "sources": [
+      {
+        "id": "PZO9483",
+        "pages": "20"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.khGQDuyL6TKASqYb"
   },
   "kkVnlOkjhww8MoHc": {
     "abilityType": "ex",
@@ -8249,6 +8870,41 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nBpz562qzAntafUI"
   },
+  "nCYMi6znklN57vCz": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "save",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["cold"]
+        },
+        "name": "Use",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.int.mod",
+          "type": "ref"
+        }
+      }
+    ],
+    "changes": [],
+    "description": "<p>As a standard action, you can unleash a blast of freezing cold. This blast deals 1d6 points of cold damage + 1 point for every two wizard levels you possess to all creatures within 5 feet of you and staggers them for 1 round. A successful Reflex save negates the staggered effect and halves the damage. The DC of this save is equal to 10 + 1/2 your wizard level + your Intelligence modifier. You can use this ability a number of times per day equal to 3 + your Intelligence modifier.</p>",
+    "grantsBuffs": [],
+    "id": "nCYMi6znklN57vCz",
+    "name": "Cold Blast (WIZ)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.nCYMi6znklN57vCz"
+  },
   "nE79k9XBL67xrLCT": {
     "abilityType": "ex",
     "changes": [],
@@ -8462,6 +9118,26 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nyS8BwyNSLYTaHLL"
   },
+  "nys5AYQTTDq8c0OS": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can create a vortex of turbulent wind around yourself as a standard action. This vortex has a radius of up to 10 feet and a maximum height of 10 feet per wizard level you possess. Any ranged attack passing through this vortex automatically misses. Any flying creature moving through the vortex must make a Fly skill check or immediately fall from the sky, taking falling damage (the creature cannot make a Fly check to reduce or negate this damage). Creatures on the ground cannot pass through the vortex without first making a Strength check. The DC of this check is equal to 10 + your caster level. The vortex is faintly visible and can be spotted with a DC 15 Perception skill check. You can use this ability for a number of rounds per day equal to your wizard level. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "nys5AYQTTDq8c0OS",
+    "name": "Cyclone",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.nys5AYQTTDq8c0OS"
+  },
   "nyz3JgtYMrJZF6o5": {
     "abilityType": "su",
     "changes": [],
@@ -8561,6 +9237,21 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.o8rxNsQ7P7Yjlvvu"
+  },
+  "oE3CX55WPFERgMBF": {
+    "changes": [],
+    "description": "<p>Add the following spells to your wizard spell list at the listed spell level:</p><ul><li>1st— keen senses,</li><li>3rd— twilight knife*,</li><li>4th— wandering star motes*,</li><li>6th— true seeing,</li><li>8th— moment of prescience.</li></ul>",
+    "grantsBuffs": [],
+    "id": "oE3CX55WPFERgMBF",
+    "name": "Void Magic",
+    "sources": [
+      {
+        "id": "PZO9421",
+        "pages": "29"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.oE3CX55WPFERgMBF"
   },
   "oI2zqavECPLFkIHv": {
     "abilityType": "su",
@@ -8713,6 +9404,42 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.pMpN2f4mTgLt2NaR"
+  },
+  "pTJyyNp28f2Yd42u": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "save",
+        "activation": "standard",
+        "damage": {
+          "formula": "1d6 + floor(@class.unlevel / 2)",
+          "types": ["acid"]
+        },
+        "name": "Use",
+        "range": "30 ft",
+        "save": {
+          "dcFormula": "10 + floor(@class.unlevel / 2) + @abilities.int.mod",
+          "type": "fort"
+        }
+      }
+    ],
+    "changes": [],
+    "description": "<p>As a standard action, you can create a 5-foot-radius cloud of acid vapor within 30 feet that lasts for 1 round. This cloud deals 1d6 points of acid damage + 1 point for every two wizard levels you possess to all creatures in the cloud and sickens them for 1 round. A successful Fortitude save negates the sickened effect and halves the damage. The DC of this save is equal to 10 + 1/2 your wizard level + your Intelligence modifier. Creatures that begin their turn inside the cloud can move out that turn without penalty, but those that enter the cloud are affected. You can use this ability a number of times per day equal to 3 + your Intelligence modifier.</p>",
+    "grantsBuffs": [],
+    "id": "pTJyyNp28f2Yd42u",
+    "name": "Acid Cloud",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "142"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.pTJyyNp28f2Yd42u"
   },
   "pW1PNlDcdGl7KuEa": {
     "changes": [],
@@ -10441,6 +11168,28 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.qlQxKPARGGdOgNWm"
   },
+  "qnSivemzKLBEKfn3": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "2 + floor(@class.unlevel / 5)",
+        "target": "skill.slt",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>You gain a +2 enhancement bonus on Sleight of Hand checks. This bonus increases by 1 for every 5 wizard levels you have. In addition, you can cast mage hand at will as a spell-like ability that uses your caster level. At 5th level, you can attempt Sleight of Hand checks against a target within 30 feet, though the skill check DC increases by 5, and any creature within line of sight of either you or the target can attempt an opposed Perception check to notice the attempt. At 10th level, you can attempt a Sleight of Hand check as a move action with only a –10 penalty. At 20th level, whenever you attempt a Sleight of Hand check, assume the roll resulted in a natural 20.</p>",
+    "grantsBuffs": [],
+    "id": "qnSivemzKLBEKfn3",
+    "name": "Aether Supremacy",
+    "sources": [
+      {
+        "id": "PZO9483",
+        "pages": "20"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.qnSivemzKLBEKfn3"
+  },
   "qqfc9I2awuSdfCxf": {
     "abilityType": "ex",
     "changes": [],
@@ -10550,6 +11299,59 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.rO2rMMlGeDdyIxJv"
+  },
+  "rRgDV4GMJf7BosAE": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a swift action when you cast a spell with the electricity descriptor, you can designate one creature within line of sight. The spell’s damage against that creature increases by 50%, as if affected by the Empower Spell feat. This additional damage results from divine power that is not subject to being reduced by electricity resistance, and you take an equal amount of electricity damage immediately after you cast the spell. The spell can deal this additional damage only once, even if it could affect the target multiple times. You can use this ability once per day at 8th level and one additional time per day for every 4 cleric levels you have beyond 8th.</p><p>This power replaces the Electricity Resistance power granted by the Air Domain.</p>",
+    "grantsBuffs": [],
+    "id": "rRgDV4GMJf7BosAE",
+    "name": "Lightning Rod",
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "24"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "lightningRod",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 4) / 4)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.rRgDV4GMJf7BosAE"
+  },
+  "raSRxU51tCnX2oMy": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "rwak",
+        "activation": "standard",
+        "damage": {
+          "formula": "sizeRoll(1, 6, @size) + floor(@class.unlevel / 6)[Enhancement]",
+          "types": ["piercing"]
+        },
+        "name": "Use",
+        "range": "100 ft"
+      }
+    ],
+    "changes": [],
+    "description": "<p>As a standard action, you can create a wooden shortspear appropriate to your size, which hurls itself as a ranged attack against one target within 100 feet (range penalties apply), using your Intelligence modifier as an attack bonus instead of your Strength or Dexterity modifier. The spear deals normal damage according to its size, plus your Intelligence modifier, then breaks into countless splinters; the target takes 1 point of bleed damage each round on its turn. At 6th-level and every 6 levels thereafter, the spear gains a +1 enhancement bonus and the bleed damage increases by +1. You can use this ability a number of times per day equal to 3 + your Intelligence modifier.</p>",
+    "grantsBuffs": [],
+    "id": "raSRxU51tCnX2oMy",
+    "name": "Splintered Spear",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.raSRxU51tCnX2oMy"
   },
   "rg0FL5INDBUt2oSK": {
     "actions": [
@@ -11045,6 +11847,26 @@
     "name": "Energy Kinetic Blast",
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.u6q3Zk8XL1AMPxY4"
+  },
+  "uLPfDpPNzuyiKHKU": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When you activate this school power as a standard action, you select a foe within 30 feet. That creature takes a penalty to its AC and on saving throws equal to 1/2 your caster level (minimum –1) for 1 round. You can use this ability a number of times per day equal to 3 + your Intelligence bonus.</p>",
+    "grantsBuffs": [],
+    "id": "uLPfDpPNzuyiKHKU",
+    "name": "Reveal Weakness",
+    "sources": [
+      {
+        "id": "PZO9421",
+        "pages": "29"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.uLPfDpPNzuyiKHKU"
   },
   "uOQAy8ijKtqOj14V": {
     "changes": [],
@@ -11585,6 +12407,36 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.xj7Dp0lzyv7IYHcz"
   },
+  "xjMP6IXHO1JbmaXN": {
+    "abilityType": "su",
+    "actions": [
+      {
+        "actionType": "mwak",
+        "activation": "standard",
+        "name": "Use",
+        "range": "touch",
+        "touch": true
+      }
+    ],
+    "changes": [],
+    "description": "<p>At 8th level, you can touch a willing creature with divine power, giving it a saving throw against each effect currently affecting it, using the original saving throw DC of the effect. Each successful saving throw ends the related effect. The creature can choose not to make a save against an effect. You can use this ability once per day at 8th level, plus one additional time per day at 14th and 20th level.</p><p>This power replaces the Aura of Protection power of the Protection Domain.</p>",
+    "grantsBuffs": [],
+    "id": "xjMP6IXHO1JbmaXN",
+    "name": "Purifying Touch",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "94-95"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "purifyingTouch",
+    "uses": {
+      "maxFormula": "floor((@class.unlevel - 2) / 6)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.xjMP6IXHO1JbmaXN"
+  },
   "xqWYyijR7PxZGI69": {
     "abilityType": "su",
     "changes": [],
@@ -11672,6 +12524,26 @@
     "name": "Binding Circles",
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.y5VEa0kjV1UKYnZW"
+  },
+  "yDG7xVuH7oqWS4Mt": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Once each day, you can emit a 20-foot aura for a number of rounds equal to your cleric level. Allies within the aura gain a +2 deflection bonus to AC and combat maneuver defense.</p><p>This power replaces the Resistant Touch power of the Protection Domain.</p>",
+    "grantsBuffs": ["Compendium.pf1.buffs.Item.GS2jJQtdIw0TlCaD"],
+    "id": "yDG7xVuH7oqWS4Mt",
+    "name": "Deflection Aura",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "89"
+      }
+    ],
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.yDG7xVuH7oqWS4Mt"
   },
   "yTfzAVpEYSJaPQVZ": {
     "abilityType": "su",
@@ -11934,5 +12806,26 @@
     "name": "Cruelty",
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.zwZnq5WCBCijev6o"
+  },
+  "zx0lJIxpj8ZCDh97": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When a creature touches you or strikes you with a melee attack, you can activate this power as an immediate action. That creature takes a –1 penalty on saving throws for 1 minute. This penalty increases by 1 for every 5 levels you possess. When you use this ability, you lose your resistance bonus granted by the Protection domain for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p><p>This power replaces the Resistant Touch power of the Protection Domain.</p>",
+    "grantsBuffs": [],
+    "id": "zx0lJIxpj8ZCDh97",
+    "name": "Taboo (Domain Power)",
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "17"
+      }
+    ],
+    "subType": "classFeat",
+    "tag": "taboo",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.zx0lJIxpj8ZCDh97"
   }
 }

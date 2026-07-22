@@ -162,14 +162,36 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   if (clericLevel > 0) {
     for (const tag of doc.build.clericDomains ?? []) {
       const domain = Object.values(refData.domains).find((d) => d.tag === tag);
-      if (!domain) continue;
-      for (const grant of domain.features) {
+      if (domain) {
+        for (const grant of domain.features) {
+          if (grant.level > clericLevel || !grant.resolved) continue;
+          out.push({
+            classTag: "cleric",
+            level: grant.level,
+            grant,
+            origin: { kind: "domain", label: domain.name },
+          });
+        }
+        continue;
+      }
+      // Not a top-level domain tag — try a subdomain (`Subdomain` doc
+      // comment): grant its own `features` when the source models a
+      // structured override, else fall back to its parent domain's
+      // (identical granted powers as far as this data can tell).
+      const subdomain = Object.values(refData.subdomains).find((s) => s.tag === tag);
+      if (!subdomain) continue;
+      const parentDomain = Object.values(refData.domains).find(
+        (d) => d.tag === subdomain.parentDomainTags[0],
+      );
+      const features =
+        subdomain.features.length > 0 ? subdomain.features : (parentDomain?.features ?? []);
+      for (const grant of features) {
         if (grant.level > clericLevel || !grant.resolved) continue;
         out.push({
           classTag: "cleric",
           level: grant.level,
           grant,
-          origin: { kind: "domain", label: domain.name },
+          origin: { kind: "domain", label: subdomain.name },
         });
       }
     }

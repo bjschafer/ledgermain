@@ -73,8 +73,8 @@ describe("cleric domain powers", () => {
     expect(domainFeatureNames(doc)).toEqual([]);
   });
 
-  it("an unresolvable domain tag (e.g. a subdomain) grants nothing, not an error", () => {
-    const doc = makeCleric(6, ["Ash"]);
+  it("an unresolvable domain tag grants nothing, not an error", () => {
+    const doc = makeCleric(6, ["NotARealDomain"]);
     expect(domainFeatureNames(doc)).toEqual([]);
   });
 
@@ -89,5 +89,34 @@ describe("cleric domain powers", () => {
     expect(fireBolt!.max).toBe(6);
     expect(fireBolt!.per).toBe("day");
     expect(fireBolt!.classTag).toBe("cleric");
+  });
+});
+
+describe("cleric subdomain selection (in place of a parent domain)", () => {
+  it("Ash (Fire's subdomain, no structured override) grants exactly what Fire itself grants", () => {
+    const withAsh = makeCleric(6, ["Ash"]);
+    const withFire = makeCleric(6, ["Fire"]);
+    expect(domainFeatureNames(withAsh)).toEqual(domainFeatureNames(withFire));
+    expect(domainFeatureNames(withAsh)).toEqual(["Fire Bolt", "Fire Resistance"]);
+
+    const { classFeatures } = resolveClassFeatures(withAsh, ref);
+    const fireBolt = classFeatures.find((f) => f.name === "Fire Bolt")!;
+    // Label names the subdomain actually chosen, not its parent.
+    expect(fireBolt.origin).toEqual({ kind: "domain", label: "Ash Subdomain" });
+  });
+
+  it("Cloud (Air's subdomain, structured override) replaces Air's 2nd power with Thundercloud at level 8, keeps Lightning Arc", () => {
+    const withCloud = makeCleric(8, ["Cloud"]);
+    expect(domainFeatureNames(withCloud)).toEqual(["Lightning Arc", "Thundercloud"]);
+
+    // Air itself grants Electricity Resistance at level 6, not Thundercloud —
+    // confirms the subdomain's own `features` fully replaces Air's, not merges.
+    const withAir = makeCleric(8, ["Air"]);
+    expect(domainFeatureNames(withAir)).toEqual(["Electricity Resistance", "Lightning Arc"]);
+  });
+
+  it("Cloud's 8th-level Thundercloud is gated by cleric level like any other grant", () => {
+    const doc = makeCleric(6, ["Cloud"]);
+    expect(domainFeatureNames(doc)).toEqual(["Lightning Arc"]);
   });
 });

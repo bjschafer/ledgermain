@@ -4,6 +4,7 @@ import type {
   ClassFeature,
   ClassFeatureGrant,
   Domain,
+  ElementalSchoolTag,
   FeatureAction,
   SaveTier,
   WizardSchool,
@@ -45,8 +46,11 @@ export function transformClassFeature(doc: RawDoc, resolveUuid: UuidResolver): C
   };
 }
 
-/** Extract the `links.supplements` array off a raw doc's `system`, if present. */
-function supplementsOf(sys: Record<string, unknown>): Record<string, unknown>[] {
+/**
+ * Extract the `links.supplements` array off a raw doc's `system`, if present.
+ * Exported for `transform/subdomains.ts`, which shares this shape.
+ */
+export function supplementsOf(sys: Record<string, unknown>): Record<string, unknown>[] {
   const links = sys.links as Record<string, unknown> | undefined;
   return Array.isArray(links?.supplements) ? (links!.supplements as Record<string, unknown>[]) : [];
 }
@@ -232,6 +236,49 @@ export function transformWizardSchool(
 ): WizardSchool | null {
   const tag = SCHOOL_NAME_TO_TAG[doc.name];
   if (!tag) return null;
+  return buildWizardSchool(doc, tag, resolveFeatureName, resolveUuid);
+}
+
+/**
+ * Foundry names elemental schools "<Element> Elemental School"; the schema's
+ * `ElementalSchoolTag` matches that as a slug. Fixed 8-entry mapping, same
+ * posture as `SCHOOL_NAME_TO_TAG` above.
+ */
+const ELEMENTAL_SCHOOL_NAME_TO_TAG: Record<string, ElementalSchoolTag> = {
+  "Aether Elemental School": "aether-elemental",
+  "Air Elemental School": "air-elemental",
+  "Earth Elemental School": "earth-elemental",
+  "Fire Elemental School": "fire-elemental",
+  "Metal Elemental School": "metal-elemental",
+  "Void Elemental School": "void-elemental",
+  "Water Elemental School": "water-elemental",
+  "Wood Elemental School": "wood-elemental",
+};
+
+/**
+ * Transform a `class-abilities/wizard-schools/elemental-schools/*.yaml` entry
+ * (see `WizardSchool` doc comment for what's NOT derived here: bonus-slot
+ * spell list, opposition). Returns `null` for anything not in the fixed
+ * 8-entry map (the nested "focused-schools" variant-rule subfolder is
+ * excluded upstream in `normalize.ts` by relPath depth, so this should only
+ * ever see the eight real elemental schools).
+ */
+export function transformElementalWizardSchool(
+  doc: RawDoc,
+  resolveFeatureName: (id: string) => string | null,
+  resolveUuid: UuidResolver,
+): WizardSchool | null {
+  const tag = ELEMENTAL_SCHOOL_NAME_TO_TAG[doc.name];
+  if (!tag) return null;
+  return buildWizardSchool(doc, tag, resolveFeatureName, resolveUuid);
+}
+
+function buildWizardSchool(
+  doc: RawDoc,
+  tag: WizardSchoolTag | ElementalSchoolTag,
+  resolveFeatureName: (id: string) => string | null,
+  resolveUuid: UuidResolver,
+): WizardSchool {
   const sys = (doc.system ?? {}) as Record<string, unknown>;
   return {
     id: doc._id,
