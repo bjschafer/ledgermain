@@ -39,9 +39,20 @@ export const SYSTEM_VERSION = "11.11";
  * `maxFormula`/`per` shape as `ClassFeature.uses`, minus `source` (no vendored
  * feat draws from another feature's pool) — for feats like Combat Reflexes
  * and Alignment Channel that are themselves a resource pool; see
- * `deriveFeatResourcePools` in `@pf1/engine`'s `resources.ts`.
+ * `deriveFeatResourcePools` in `@pf1/engine`'s `resources.ts`. v10 (issue #74
+ * Phase 1) adds three collections and widens one: `traits`/`traits.json` (the
+ * pf1-content module's full ~2,000-entry character-trait catalog, reconciled
+ * with the hand-authored table via `@pf1/engine` traits.ts's `mergedTraits`);
+ * `racialTraits`/`racial-traits.json` (the module's alternate racial traits —
+ * entries with a "Replaced Trait(s)" header — covering all vendored races
+ * alongside the 8-race hand-authored RACIAL_TRAITS table);
+ * `subdomains`/`subdomains.json` + `subdomainSpellLists`/
+ * `subdomain-spell-lists.json` and `druidDomains`/`druid-domains.json`; and
+ * `wizardSchools` grows from 9 to 17 entries (elemental schools share the
+ * collection, `WizardSchool.tag` widened to `WizardSchoolTag |
+ * ElementalSchoolTag`).
  */
-export const SCHEMA_VERSION = 9;
+export const SCHEMA_VERSION = 10;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).
