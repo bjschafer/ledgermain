@@ -46,5 +46,10 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     hexes: readJson(dir, "hexes.json"),
     shamanHexes: readJson(dir, "shaman-hexes.json"),
     magusArcana: readJson(dir, "magus-arcana.json"),
+    rogueTalents: readJson(dir, "rogue-talents.json"),
+    ninjaTricks: readJson(dir, "ninja-tricks.json"),
+    slayerTalents: readJson(dir, "slayer-talents.json"),
+    vigilanteTalents: readJson(dir, "vigilante-talents.json"),
+    vigilanteSocialTalents: readJson(dir, "vigilante-social-talents.json"),
   };
 }

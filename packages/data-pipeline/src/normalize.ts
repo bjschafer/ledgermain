@@ -13,14 +13,19 @@ import type {
   MagusArcana,
   Race,
   RacialTrait,
+  NinjaTrick,
   RagePower,
   RefData,
   RefDataMeta,
+  RogueTalent,
   ShamanHex,
+  SlayerTalent,
   Spell,
   SpellList,
   Subdomain,
   Trait,
+  VigilanteSocialTalent,
+  VigilanteTalent,
   WeaponRef,
   WitchHex,
   WizardSchool,
@@ -64,10 +69,17 @@ import {
   SUPPLEMENTAL_PRESTIGE_CLASSES,
 } from "./supplements.js";
 import { transformMagusArcana } from "./transform/magusArcana.js";
+import { transformNinjaTricks } from "./transform/ninjaTricks.js";
 import { transformRagePowers } from "./transform/ragePowers.js";
+import { transformRogueTalents } from "./transform/rogueTalents.js";
 import { transformShamanHexes } from "./transform/shamanHexes.js";
-import { transformWitchHexes } from "./transform/witchHexes.js";
+import { transformSlayerTalents } from "./transform/slayerTalents.js";
+import {
+  transformVigilanteSocialTalents,
+  transformVigilanteTalents,
+} from "./transform/vigilanteTalents.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
+import { transformWitchHexes } from "./transform/witchHexes.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { readPfDataDictionary } from "./util/pfdata.js";
 import { makeUuid, parseUuid } from "./util/uuid.js";
@@ -567,6 +579,33 @@ export function normalize(opts: NormalizeOptions): {
   );
   const magusArcana: MagusArcana[] = transformMagusArcana(magusArcanaDict);
 
+  // --- rogue-family talent catalogs (fourth-party dataset, issue #74 Phase 3b) -
+  const rogueTalentDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_rogue_talents.json"),
+  );
+  const rogueTalents: RogueTalent[] = transformRogueTalents(rogueTalentDict);
+
+  const ninjaTrickDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_ninja_tricks.json"),
+  );
+  const ninjaTricks: NinjaTrick[] = transformNinjaTricks(ninjaTrickDict);
+
+  const slayerTalentDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_slayer_talents.json"),
+  );
+  const slayerTalents: SlayerTalent[] = transformSlayerTalents(slayerTalentDict);
+
+  const vigilanteTalentDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_vigilante_talents.json"),
+  );
+  const vigilanteTalents: VigilanteTalent[] = transformVigilanteTalents(vigilanteTalentDict);
+
+  const vigilanteSocialTalentDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_social_talents.json"),
+  );
+  const vigilanteSocialTalents: VigilanteSocialTalent[] =
+    transformVigilanteSocialTalents(vigilanteSocialTalentDict);
+
   const counts = {
     races: races.length,
     racialTraits: racialTraits.length,
@@ -592,6 +631,11 @@ export function normalize(opts: NormalizeOptions): {
     hexes: hexes.length,
     shamanHexes: shamanHexes.length,
     magusArcana: magusArcana.length,
+    rogueTalents: rogueTalents.length,
+    ninjaTricks: ninjaTricks.length,
+    slayerTalents: slayerTalents.length,
+    vigilanteTalents: vigilanteTalents.length,
+    vigilanteSocialTalents: vigilanteSocialTalents.length,
   };
 
   const meta: RefDataMeta = {
@@ -638,6 +682,11 @@ export function normalize(opts: NormalizeOptions): {
     hexes: byId(hexes),
     shamanHexes: byId(shamanHexes),
     magusArcana: byId(magusArcana),
+    rogueTalents: byId(rogueTalents),
+    ninjaTricks: byId(ninjaTricks),
+    slayerTalents: byId(slayerTalents),
+    vigilanteTalents: byId(vigilanteTalents),
+    vigilanteSocialTalents: byId(vigilanteSocialTalents),
   };
 
   return { refData, contentVersion };

@@ -228,7 +228,20 @@ export {
   MONK_STYLE_STRIKE_IDS,
   type MonkStyleStrikeDef,
 } from "./monk-style-strikes.js";
-export { ROGUE_TALENTS, ROGUE_TALENT_IDS, type RogueTalentDef } from "./rogue-talents.js";
+export {
+  ROGUE_TALENTS,
+  ROGUE_TALENT_IDS,
+  mergedRogueTalentCatalog,
+  resolveRogueTalent,
+  type RogueTalentDef,
+  type MergedRogueTalentEntry,
+} from "./rogue-talents.js";
+export {
+  isAdvancedSlayerTalent,
+  resolveSlayerTalent,
+  slayerTalentCatalog,
+  type SlayerTalentEntry,
+} from "./slayer-talents.js";
 export {
   ANTIPALADIN_CRUELTIES,
   ANTIPALADIN_CRUELTY_IDS,
@@ -241,8 +254,11 @@ export {
   NINJA_TRICKS,
   NINJA_TRICK_IDS,
   tricksForTier,
+  mergedNinjaTrickCatalog,
+  resolveNinjaTrick,
   type NinjaTrickDef,
   type NinjaTrickTier,
+  type MergedNinjaTrickEntry,
 } from "./ninja-tricks.js";
 export {
   INVESTIGATOR_TALENTS,
@@ -256,10 +272,16 @@ export {
   VIGILANTE_TALENTS,
   VIGILANTE_TALENT_IDS,
   vigilanteTalentsForSpecialization,
+  mergedVigilanteSocialTalentCatalog,
+  mergedVigilanteTalentCatalog,
+  resolveVigilanteSocialTalent,
+  resolveVigilanteTalent,
   type VigilanteTalentDef,
   type VigilanteTalentEntry,
   type VigilanteSpecialization,
   type VigilanteTalentGate,
+  type MergedVigilanteSocialTalentEntry,
+  type MergedVigilanteTalentEntry,
 } from "./vigilante-talents.js";
 export { SHIFTER_ASPECTS, SHIFTER_ASPECT_IDS, type ShifterAspectDef } from "./shifter-aspects.js";
 export {

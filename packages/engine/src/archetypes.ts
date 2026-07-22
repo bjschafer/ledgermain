@@ -31,7 +31,7 @@ import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { boldStareRiderSummary, MESMERIST_BOLD_STARES } from "./mesmerist-bold-stares.js";
 import { MESMERIST_TRICKS } from "./mesmerist-tricks.js";
 import { resolveMagusArcanum } from "./magus-arcana.js";
-import { NINJA_TRICKS } from "./ninja-tricks.js";
+import { resolveNinjaTrick } from "./ninja-tricks.js";
 import { MONK_KI_POWERS } from "./monk-ki-powers.js";
 import { MONK_STYLE_STRIKES } from "./monk-style-strikes.js";
 import { MEDIUM_SPIRITS } from "./medium-spirits.js";
@@ -42,12 +42,13 @@ import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { PHRENIC_AMPLIFICATIONS } from "./phrenic-amplifications.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { resolveRagePower } from "./rage-powers.js";
-import { ROGUE_TALENTS } from "./rogue-talents.js";
+import { resolveRogueTalent } from "./rogue-talents.js";
 import { resolveWitchHex } from "./witch-hexes.js";
 import { resolveGeneralShamanHex } from "./shaman-hexes.js";
+import { resolveSlayerTalent } from "./slayer-talents.js";
 import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
 import { INVESTIGATOR_TALENTS } from "./investigator-talents.js";
-import { VIGILANTE_SOCIAL_TALENTS, VIGILANTE_TALENTS } from "./vigilante-talents.js";
+import { resolveVigilanteSocialTalent, resolveVigilanteTalent } from "./vigilante-talents.js";
 import { SHIFTER_ASPECTS } from "./shifter-aspects.js";
 import {
   sneakAttackDice,
@@ -90,8 +91,8 @@ export interface GrantedFeature {
    * amplification/mesmerist trick/mesmerist bold stare/cruelty/ninja trick/
    * ki power/style strike/rogue talent/investigator talent/vigilante talent/
    * shifter aspect/rage power/occultist implement/focus power/kineticist
-   * composite blast/wild talent/medium spirit power rather than the class
-   * itself.
+   * composite blast/wild talent/medium spirit power/slayer talent rather than
+   * the class itself.
    */
   origin?: {
     kind:
@@ -121,7 +122,8 @@ export interface GrantedFeature {
       | "focusPower"
       | "compositeBlast"
       | "wildTalent"
-      | "spiritPower";
+      | "spiritPower"
+      | "slayerTalent";
     label: string;
   };
   /**
@@ -517,7 +519,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   );
   if (rogueClass && rogueClass.level > 0) {
     for (const talentId of doc.build.rogueTalents ?? []) {
-      const talent = ROGUE_TALENTS[talentId];
+      const talent = resolveRogueTalent(talentId, refData);
       if (!talent) continue;
       out.push({
         classTag: rogueClass.tag,
@@ -725,7 +727,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   const ninjaLevel = doc.identity.classes.find((c) => c.tag === "ninja")?.level ?? 0;
   if (ninjaLevel > 0) {
     for (const trickId of doc.build.ninjaTricks ?? []) {
-      const trick = NINJA_TRICKS[trickId];
+      const trick = resolveNinjaTrick(trickId, refData);
       if (!trick) continue;
       out.push({
         classTag: "ninja",
@@ -778,7 +780,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   const vigilanteLevel = doc.identity.classes.find((c) => c.tag === "vigilante")?.level ?? 0;
   if (vigilanteLevel > 0) {
     for (const talentId of doc.build.vigilanteSocialTalents ?? []) {
-      const talent = VIGILANTE_SOCIAL_TALENTS[talentId];
+      const talent = resolveVigilanteSocialTalent(talentId, refData);
       if (!talent) continue;
       out.push({
         classTag: "vigilante",
@@ -795,7 +797,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
       });
     }
     for (const talentId of doc.build.vigilanteTalents ?? []) {
-      const talent = VIGILANTE_TALENTS[talentId];
+      const talent = resolveVigilanteTalent(talentId, refData);
       if (!talent) continue;
       out.push({
         classTag: "vigilante",
@@ -808,6 +810,32 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           resolved: true,
         },
         origin: { kind: "vigilanteTalent", label: "Vigilante Talent" },
+        detail: talent.summary,
+      });
+    }
+  }
+
+  // Slayer talents (issue #74 Phase 3b) — vendored-catalog-only, no
+  // hand-authored table (see slayer-talents.ts's doc comment for why).
+  // Gated on actual slayer levels. Granted at a flat display level of 2 (the
+  // earliest a slayer has any talent at all), same rationale as
+  // discoveries/exploits/arcana above.
+  const slayerLevel = doc.identity.classes.find((c) => c.tag === "slayer")?.level ?? 0;
+  if (slayerLevel > 0) {
+    for (const talentId of doc.build.slayerTalents ?? []) {
+      const talent = resolveSlayerTalent(talentId, refData);
+      if (!talent) continue;
+      out.push({
+        classTag: "slayer",
+        level: 2,
+        grant: {
+          level: 2,
+          uuid: `slayerTalent:${talent.id}`,
+          featureId: `slayerTalent:${talent.id}`,
+          name: talent.name,
+          resolved: true,
+        },
+        origin: { kind: "slayerTalent", label: "Slayer Talent" },
         detail: talent.summary,
       });
     }

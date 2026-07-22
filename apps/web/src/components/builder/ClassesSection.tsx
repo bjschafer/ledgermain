@@ -45,6 +45,7 @@ import { PhrenicAmplificationPicker } from "./PhrenicAmplificationPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
 import { PhantomPicker } from "./PhantomPicker.js";
 import { ShifterAspectPicker } from "./ShifterAspectPicker.js";
+import { SlayerTalentPicker } from "./SlayerTalentPicker.js";
 import { ConfirmDialog } from "../ConfirmDialog.js";
 import { InfoTip, TipButton } from "../InfoTip.js";
 import { ShieldIcon } from "../icons.js";
@@ -602,8 +603,13 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {doc.identity.classes.some((c) => c.tag === "vigilante") && (
         <>
           <VigilanteSpecializationPicker doc={doc} update={update} />
-          <VigilanteTalentPicker doc={doc} update={update} />
+          <VigilanteTalentPicker doc={doc} refData={refData} update={update} />
         </>
+      )}
+
+      {/* Slayer talent picker — slayer only (issue #74 Phase 3b, free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "slayer") && (
+        <SlayerTalentPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Aspect picker — shifter only (free-choice, soft warning only). */}

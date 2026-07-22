@@ -51,6 +51,11 @@ async function fetchAll(): Promise<RefData> {
     hexes,
     shamanHexes,
     magusArcana,
+    rogueTalents,
+    ninjaTricks,
+    slayerTalents,
+    vigilanteTalents,
+    vigilanteSocialTalents,
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
@@ -78,6 +83,11 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["hexes"]>("hexes.json"),
     getJson<RefData["shamanHexes"]>("shaman-hexes.json"),
     getJson<RefData["magusArcana"]>("magus-arcana.json"),
+    getJson<RefData["rogueTalents"]>("rogue-talents.json"),
+    getJson<RefData["ninjaTricks"]>("ninja-tricks.json"),
+    getJson<RefData["slayerTalents"]>("slayer-talents.json"),
+    getJson<RefData["vigilanteTalents"]>("vigilante-talents.json"),
+    getJson<RefData["vigilanteSocialTalents"]>("vigilante-social-talents.json"),
   ]);
   return {
     meta,
@@ -106,5 +116,10 @@ async function fetchAll(): Promise<RefData> {
     hexes,
     shamanHexes,
     magusArcana,
+    rogueTalents,
+    ninjaTricks,
+    slayerTalents,
+    vigilanteTalents,
+    vigilanteSocialTalents,
   };
 }

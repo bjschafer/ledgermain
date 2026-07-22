@@ -52,6 +52,11 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "hexes", file: "hexes.json" },
   { key: "shamanHexes", file: "shaman-hexes.json" },
   { key: "magusArcana", file: "magus-arcana.json" },
+  { key: "rogueTalents", file: "rogue-talents.json" },
+  { key: "ninjaTricks", file: "ninja-tricks.json" },
+  { key: "slayerTalents", file: "slayer-talents.json" },
+  { key: "vigilanteTalents", file: "vigilante-talents.json" },
+  { key: "vigilanteSocialTalents", file: "vigilante-social-talents.json" },
 ];
 
 /**

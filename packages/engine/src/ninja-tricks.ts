@@ -68,7 +68,7 @@
  * prereqs are hybrid per CLAUDE.md) or a ki-cost/DC reminder where relevant.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { Change, ContextNote, NinjaTrick, RefData, SourceRef } from "@pf1/schema";
 
 export type NinjaTrickTier = "trick" | "master";
 
@@ -414,4 +414,125 @@ export const NINJA_TRICK_IDS: readonly string[] = TRICK_LIST.map((t) => t.id);
 /** All trick defs of a given tier, in table order. */
 export function tricksForTier(tier: NinjaTrickTier): NinjaTrickDef[] {
   return TRICK_LIST.filter((t) => t.tier === tier);
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3b: `RefData.ninjaTricks` (see that type's doc comment) is
+ * the FULL published catalog (65 entries after junk filtering), prose only.
+ * The hand-authored table above stays authoritative for MECHANICS — this
+ * section only merges the two for BROWSING/resolving, mirroring
+ * `rage-powers.ts`'s "vendored catalog overlay" section exactly.
+ *
+ * Collision audit (all 44 hand-authored entries): 43 matched a vendored
+ * entry by normalized name; the lone exception is `advancedTalents`
+ * ("Advanced Talents") — the vendored catalog spells the same trick
+ * "Advanced Talent" (singular, key `advanced_talent`), a wording drift
+ * confirmed by matching description text, recorded in `NAME_ALIASES` below.
+ */
+
+/** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see `rage-powers.ts`'s identical map. */
+const NINJA_TRICK_NAME_ALIASES: Record<string, string> = {
+  advancedTalents: "Advanced Talent",
+};
+
+function normalizeTrickName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Cheap HTML->text preview for a vendored-only entry's picker row — see `rage-powers.ts`'s identical helper. */
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** True when a vendored trick's own `category` marks it as the 10th-level "master" tier (see `NinjaTrick`'s doc comment) — used only for a vendored-only entry, which has no hand-authored `tier` to inherit. */
+function tierFromCategory(category: string | undefined): NinjaTrickTier {
+  return category?.startsWith("Master ") ? "master" : "trick";
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with the vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedNinjaTrickEntry extends NinjaTrickDef {
+  nameSuffix?: string;
+  /** Vendored grouping tag (e.g. "Ki Tricks", "Master Other Tricks"), when present. */
+  category?: string;
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id. */
+  description?: string;
+  sources?: SourceRef[];
+}
+
+function vendoredToDef(entry: NinjaTrick): MergedNinjaTrickEntry {
+  const tier = tierFromCategory(entry.category);
+  return {
+    id: entry.id,
+    name: entry.name,
+    nameSuffix: entry.nameSuffix,
+    category: entry.category,
+    tier,
+    // NOT `entry.level` — uninterpreted source field, see `NinjaTrick.level`'s doc comment.
+    minLevel: tier === "master" ? 10 : 2,
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/**
+ * Resolve a picked ninja-trick id (`doc.build.ninjaTricks` entries) to its
+ * definition — hand-authored table first, falling back to the vendored
+ * catalog for an id that only exists there. Used by `archetypes.ts` instead
+ * of indexing `NINJA_TRICKS` directly, so a vendored-only pick resolves to a
+ * real (display-only) definition rather than being silently dropped —
+ * mirrors `resolveRagePower`.
+ */
+export function resolveNinjaTrick(id: string, refData: RefData): NinjaTrickDef | undefined {
+  const hand = NINJA_TRICKS[id];
+  if (hand) return hand;
+  const vendored = refData.ninjaTricks?.[id];
+  return vendored ? vendoredToDef(vendored) : undefined;
+}
+
+/**
+ * The full picker-browsable catalog: every vendored entry, with any that
+ * collides (by normalized name, alias-mapped) against a hand-authored entry
+ * REPLACED by that hand-authored def, plus every hand-authored entry with no
+ * vendored counterpart (none today — see file doc comment) appended —
+ * mirrors `mergedRagePowerCatalog` exactly.
+ */
+export function mergedNinjaTrickCatalog(refData: RefData): MergedNinjaTrickEntry[] {
+  const handByNormName = new Map<string, NinjaTrickDef>();
+  for (const t of TRICK_LIST) {
+    handByNormName.set(normalizeTrickName(NINJA_TRICK_NAME_ALIASES[t.id] ?? t.name), t);
+  }
+
+  const vendored = Object.values(refData.ninjaTricks ?? {});
+  const usedHandIds = new Set<string>();
+  const seenNormNames = new Set<string>();
+  const merged: MergedNinjaTrickEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeTrickName(v.name);
+    const handMatch = seenNormNames.has(norm) ? undefined : handByNormName.get(norm);
+    if (handMatch) {
+      seenNormNames.add(norm);
+      usedHandIds.add(handMatch.id);
+      merged.push({ ...handMatch, description: v.description, sources: v.sources });
+    } else {
+      merged.push(vendoredToDef(v));
+    }
+  }
+  for (const t of TRICK_LIST) {
+    if (!usedHandIds.has(t.id)) merged.push(t);
+  }
+  return merged;
 }
