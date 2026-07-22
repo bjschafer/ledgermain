@@ -60,7 +60,7 @@
  * instead.
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
+import type { AlchemistDiscovery, Change, ContextNote, RefData, SourceRef } from "@pf1/schema";
 
 export interface AlchemistDiscoveryDef {
   id: string;
@@ -452,3 +452,122 @@ export const ALCHEMIST_DISCOVERIES: Record<string, AlchemistDiscoveryDef> = Obje
 );
 
 export const ALCHEMIST_DISCOVERY_IDS: readonly string[] = DISCOVERY_LIST.map((d) => d.id);
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.alchemistDiscoveries` (see that type's doc
+ * comment) is the FULL published discovery catalog (168 entries, far beyond
+ * this file's 41 hand-verified core-plus-selected-splatbook entries) —
+ * prose only. Same "hand-authored wins on a name collision, vendored
+ * catalog is the browsable/fallback source of definitions" pattern
+ * `rage-powers.ts`'s `mergedRagePowerCatalog` documents in full.
+ *
+ * Collision audit (all 41 hand-authored entries, run against the pinned Pf
+ * Data 1e slice): every one matched a vendored entry by normalized name — no
+ * drift, no alias needed, no orphan. No name collides within the vendored
+ * catalog itself either.
+ */
+
+/** Empty — see the collision-audit comment above; kept for the same reason `rage-powers.ts`'s alias map is kept empty. */
+const ALCHEMIST_DISCOVERY_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeDiscoveryName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Cheap HTML->text preview for a vendored-only entry's picker row — see `rage-powers.ts`'s identical helper. */
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def (matched) with vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedAlchemistDiscoveryEntry extends AlchemistDiscoveryDef {
+  /** Ability-type suffix as published — absent for most entries (see `AlchemistDiscovery.nameSuffix`'s doc comment) and for the hand-authored-only case (none exist here — see the collision audit above). */
+  nameSuffix?: string;
+  /** Grouping tag from the source, e.g. "Primary Bomb Discoveries", "Grand Discoveries". */
+  category?: string;
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id. */
+  description?: string;
+  /** Vendored source-book attribution, when known. */
+  sources?: SourceRef[];
+}
+
+function vendoredToDef(entry: AlchemistDiscovery): MergedAlchemistDiscoveryEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    nameSuffix: entry.nameSuffix,
+    category: entry.category,
+    // NOT `entry.level` — not a level-gate (see `AlchemistDiscovery.level`'s
+    // doc comment). A vendored-only entry gets the same 2nd-level floor
+    // every discovery shares, rather than a fabricated per-entry minimum.
+    minLevel: 2,
+    summary: plainTextPreview(entry.description ?? ""),
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/**
+ * Resolve a picked discovery id (`doc.build.alchemistDiscoveries` entries)
+ * to its definition — hand-authored table first (mechanics-authoritative),
+ * falling back to the vendored catalog for an id that only exists there.
+ * Used by `collect.ts`/`archetypes.ts` instead of indexing
+ * `ALCHEMIST_DISCOVERIES` directly, so a vendored-only pick resolves to a
+ * real (display-only) definition rather than being silently dropped.
+ */
+export function resolveAlchemistDiscovery(
+  id: string,
+  refData: RefData,
+): AlchemistDiscoveryDef | undefined {
+  const hand = ALCHEMIST_DISCOVERIES[id];
+  if (hand) return hand;
+  const vendored = refData.alchemistDiscoveries?.[id];
+  return vendored ? vendoredToDef(vendored) : undefined;
+}
+
+/**
+ * The full picker-browsable catalog: every vendored entry, with any that
+ * collides (by normalized name, alias-mapped) against a hand-authored entry
+ * REPLACED by that hand-authored def (keeping its id and real mechanics, but
+ * carrying the vendored entry's prose/sources along for display); no
+ * hand-authored-only entries exist to append per the collision audit above.
+ * `!entry.displayOnly` marks which rows carry real mechanics, for the
+ * picker's "M" badge.
+ */
+export function mergedAlchemistDiscoveryCatalog(refData: RefData): MergedAlchemistDiscoveryEntry[] {
+  const handByNormName = new Map<string, AlchemistDiscoveryDef>();
+  for (const d of DISCOVERY_LIST) {
+    handByNormName.set(normalizeDiscoveryName(ALCHEMIST_DISCOVERY_NAME_ALIASES[d.id] ?? d.name), d);
+  }
+
+  const vendored = Object.values(refData.alchemistDiscoveries ?? {});
+  const merged: MergedAlchemistDiscoveryEntry[] = [];
+  for (const v of vendored) {
+    const handMatch = handByNormName.get(normalizeDiscoveryName(v.name));
+    merged.push(
+      handMatch
+        ? {
+            ...handMatch,
+            nameSuffix: v.nameSuffix,
+            category: v.category,
+            description: v.description,
+            sources: v.sources,
+          }
+        : vendoredToDef(v),
+    );
+  }
+  return merged;
+}

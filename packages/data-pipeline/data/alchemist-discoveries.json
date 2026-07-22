@@ -1,0 +1,2058 @@
+{
+  "acid_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can choose to have it inflict acid damage. Creatures that take a direct hit from an acid bomb take an additional 1d6 points of acid damage 1 round later.</p>",
+    "id": "acid_bomb",
+    "name": "Acid Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:acid_bomb"
+  },
+  "air_lung": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{other=\"Aquatic subtype\"}</p>\n<p>An alchemist with this discovery has conditioned his body to adapt to life above water. He gains the amphibious special quality.</p>",
+    "id": "air_lung",
+    "name": "Air Lung",
+    "sources": [
+      {
+        "id": "pathfinder-123-the-flooded-cathedral"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:air_lung"
+  },
+  "alchemical_simulacrum": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>The alchemist gains the ability to create a lesser simulacrum. This works like the <em>lesser simulacrum</em> spell, except it costs 100 gp in alchemical materials per Hit Die of the simulacrum, requires 24 hours to grow, and decays into inert flesh rather than ice or snow if killed. The created simulacrum is a creature, not a supernatural effect.</p>",
+    "id": "alchemical_simulacrum",
+    "name": "Alchemical Simulacrum",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:alchemical_simulacrum"
+  },
+  "alchemical_strike": {
+    "category": "Other Discoveries",
+    "description": "<p>Gain Alchemical Strike as a bonus feat. You do not need to meet its prerequisites.</p>",
+    "id": "alchemical_strike",
+    "name": "Alchemical Strike",
+    "sources": [
+      {
+        "id": "magic-tactics-toolbox",
+        "pages": "12"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:alchemical_strike"
+  },
+  "alchemical_zombie": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>The alchemist gains the ability to animate a relatively complete corpse as an alchemy-powered zombie. This process takes 1 hour and costs 100 gp in alchemical reagents per HD of the corpse being animated; the dead creature gains the zombie template. Zombies that are created in this manner count as undead created by animate dead for the purposes of determining how many undead the alchemist can control. The created zombie is a creature, not a supernatural effect.</p>",
+    "id": "alchemical_zombie",
+    "name": "Alchemical Zombie",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:alchemical_zombie"
+  },
+  "anarchic_bombs": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have it deal chaotic divine damage. Lawful creatures that take a direct hit from an anarchic bomb must succeed at a Fortitude save or be staggered on their next turn. Against neutral creatures, anarchic bombs deal half damage, and such targets are not affected by their staggering effect. Anarchic bombs have no effect on chaotic-aligned creatures.</p>",
+    "id": "anarchic_bombs",
+    "name": "Anarchic Bombs",
+    "sources": [
+      {
+        "id": "champions-of-balance"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:anarchic_bombs"
+  },
+  "anguish_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>You can throw bombs infused with psychic trauma. This discovery allows other alchemists to duplicate the anguish bombs used by mnemostillers.</p>",
+    "id": "anguish_bomb",
+    "name": "Anguish Bomb",
+    "sources": [
+      {
+        "id": "distant-realms"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:anguish_bomb"
+  },
+  "aromatic_extract": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist g1=infusion g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist creates an inhaled version of an extract that is shared among multiple creatures. He must decide that an extract is an aromatic extract when he makes it. When used, the extract grants its benefit to all creatures within a 10-foot spread of the extract. The aromatic extract is treated as having the minimum caster level required for the original extract. An aromatic extract expends one of the alchemist's daily extracts as if it were an extract 2 levels higher. This discovery can be applied only to extracts with a range of touch.</p>",
+    "id": "aromatic_extract",
+    "level": 1,
+    "name": "Aromatic Extract",
+    "sources": [
+      {
+        "id": "heroes-of-the-high-court"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:aromatic_extract"
+  },
+  "awakened_intellect": {
+    "category": "Grand Discoveries",
+    "description": "<p>The alchemist's constant exposure to strange chemicals has expanded his mind. His Intelligence score permanently increases by 2 points.</p>",
+    "id": "awakened_intellect",
+    "name": "Awakened Intellect",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:awakened_intellect"
+  },
+  "axiomatic_bombs": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have it deal lawful divine damage. Chaotic creatures that take a direct hit from an axiomatic bomb must succeed at a Fortitude save or be staggered on their next turn. Against neutral creatures, axiomatic bombs deal half damage, and such targets are not affected by their staggering effect. Axiomatic bombs have no effect on lawful creatures.</p>",
+    "id": "axiomatic_bombs",
+    "name": "Axiomatic Bombs",
+    "sources": [
+      {
+        "id": "champions-of-balance"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:axiomatic_bombs"
+  },
+  "bitter_pill": {
+    "category": "Other Discoveries",
+    "description": "<p>The alchemist becomes bitter in flavor. Any creature that hits the bitter alchemist with a bite attack gains the sickened condition for 1 round unless it succeeds at a Fortitude save (DC = 10 + half the alchemist's level + the alchemist's Constitution modifier). Any creature that swallows the alchemist whole gains the nauseated condition for 1 round unless it succeeds at a Fortitude save (same DC as above). If the alchemist is trapped in the creature's gullet and it becomes nauseated, the creature vomits him back out immediately as a free action at the start of the creature's turn; the alchemist lands prone adjacent to the creature.</p>",
+    "id": "bitter_pill",
+    "name": "Bitter Pill",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:bitter_pill"
+  },
+  "blackstar_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{g1=\"void bomb\" g1title=Discovery g1protocol=discovery}</p>\n<p>This bomb crushes the target like a void bomb, then repels nearby creatures with a burst of gravity. The target takes damage as if hit by a void bomb. All other creatures within 5 feet of the target are subject to a bull rush. The alchemist uses his alchemist class level in place of his Combat Maneuver Bonus, and adds his Intelligence modifier in place of his Strength or Dexterity modifier to resolve the bull rush attempts. Creatures moved by a blackstar bomb are pushed directly away from the target's square.</p>",
+    "id": "blackstar_bomb",
+    "level": 1,
+    "name": "Blackstar Bomb",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "monster-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:blackstar_bomb"
+  },
+  "blinding_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose for it to detonate very brightly. Creatures that take a direct hit from a blinding bomb are blinded for 1 minute unless they succeed at a Fortitude save. Creatures in the splash area that fail their saves against the bomb are dazzled for 1 minute. This is a light effect.</p>",
+    "id": "blinding_bomb",
+    "name": "Blinding Bomb",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:blinding_bomb"
+  },
+  "bone_spike_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>When the alchemist imbibes a mutagen, he mutates his skeletal structure, causing the bones on his elbows, knuckles, spine, and shoulder blades to grow massive and pierce his skin, exposing themselves as large spikes. While the mutagen is in effect, the alchemist's natural armor bonus granted by the mutagen increases by 2. The spikes count as masterwork armor spikes with which the alchemist is proficient.</p>",
+    "id": "bone_spike_mutagen",
+    "name": "Bone-Spike Mutagen",
+    "sources": [
+      {
+        "id": "antihero-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:bone_spike_mutagen"
+  },
+  "boneshard_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{g1=\"alchemical zombie\" g1title=Discovery g1protocol=discovery}</p>\n<p>This discovery is popular among necromancers and necrologists alike; aside from its offensive potential, necrologists sometimes use it to turn uncooperative live creatures they wish to question into pliable undead. The alchemist's bomb deals piercing damage instead of fire damage, and creatures that take a direct hit from a boneshard bomb must succeed at a Fortitude save or take 1d4 points of bleed damage in addition to normal damage. If a creature is killed by a boneshard bomb or the resulting bleed effect, its corpse immediately reanimates as an undead creature with the skeleton template. Skeletons that are created in this manner count as undead created by animate dead for the purposes of determining how many undead the alchemist can control.</p>",
+    "id": "boneshard_bomb",
+    "name": "Boneshard Bomb",
+    "sources": [
+      {
+        "id": "undead-slayer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:boneshard_bomb"
+  },
+  "bottled_ooze": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>The alchemist has learned how to preserve a sample of oozes in a sealed bottle, which he can prepare for use as an extract. When the alchemist activates the extract, he actually throws the bottle at a square within 30 feet, releasing the ooze, which reconstitutes and attacks the closest creature. The ooze is not under the alchemist's control, but is otherwise treated as a summoned creature. The ooze remains for 1 round per caster level, and decays into powder when the duration expires. If the alchemist has the infusion discovery, another character can use the infused specimen. Creating a bottled ooze requires an extract with a level equal to the ooze's CR (so a CR 4 gray ooze requires a 4th-level extract).</p>",
+    "id": "bottled_ooze",
+    "name": "Bottled Ooze",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:bottled_ooze"
+  },
+  "breath_weapon_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>Instead of drawing the components of, creating, and throwing a bomb, the alchemist can draw the components, drink them, mix them within his body, and then expel them as a breath weapon as a standard action. This breath weapon is a 15-foot cone and has the same DC as the bomb. Each creature within the cone takes damage as if it had suffered a direct hit from the alchemist's bomb, but succeeding at a Reflex save (DC = 10 + 1/2 the alchemist's level + the alchemist's Intelligent modifier) halves the damage. Unlike throwing normal bombs, drawing, drinking, and expelling breath weapon bombs does not provoke attacks of opportunity.</p>",
+    "id": "breath_weapon_bomb",
+    "name": "Breath Weapon Bomb",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:breath_weapon_bomb"
+  },
+  "celestial_poisons": {
+    "category": "Poison Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>The alchemist is able to infuse poisons with celestial power so they can affect evil creatures that are normally immune to poison. Any poison the alchemist administers to a weapon can affect undead and evil outsiders, bypassing their inherent immunities. Magical effects that negate poisons still apply. If a creature fails its save, the poison acts as normal, but may have no effect on the creature, depending on the effect of the poison (such as dealing Constitution damage to undead).</p>",
+    "id": "celestial_poisons",
+    "name": "Celestial Poisons",
+    "sources": [
+      {
+        "id": "champions-of-purity"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:celestial_poisons"
+  },
+  "chameleon": {
+    "category": "Other Discoveries",
+    "description": "<p>An alchemist with this discovery can shift the colors of his skin and equipment to blend in with the surrounding terrain. He gains a +4 enhancement bonus on Stealth checks. At 10th level, the bonus on Stealth checks increases to +8.</p>",
+    "id": "chameleon",
+    "name": "Chameleon",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:chameleon"
+  },
+  "change_alignment": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist g1=infusion g1title=Discovery g1protocol=discovery}</p>\n<p>Once per day as part of his preparation of infusions, the alchemist can brew an infusion that shifts the imbiber's alignment to good. This change in alignment lasts for 10 minutes per alchemist level. An unwilling creature receives a Will save to resist this change. The alchemist may have only one such infusion at any one time. The effects of this infusion may have serious repercussions for a creature suddenly struggling with a new outlook. Many see it as little more than forced insanity, and some good faiths outlaw its use.</p>",
+    "id": "change_alignment",
+    "level": 1,
+    "name": "Change Alignment",
+    "sources": [
+      {
+        "id": "champions-of-purity"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:change_alignment"
+  },
+  "cognatogen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>The alchemist gains the ability to create a cognatogen, a mutagen-like mixture that heightens one mental ability score at the expense of a physical ability score. If the cognatogen enhances his Intelligence, it applies a penalty to his Strength. If it enhances his Wisdom, it applies a penalty to his Dexterity. If it enhances his Charisma, it applies a penalty to his Constitution. Otherwise, this ability works just like the mutagen ability (including the natural armor bonus). Anytime the alchemist would prepare a mutagen, he may instead prepare a cognatogen. All limitations of mutagens apply to cognatogens as if they were the same substance - an alchemist can only maintain one mutagen or cognatogen at a time, a cognatogen that is not in an alchemist's possession becomes inert, drinking a cognatogen makes a non-alchemist sick, and so on. When the effect of the cognatogen ends, the alchemist takes 2 points of ability damage to the ability score penalized by the cognatogen. The infuse mutagen discovery and the persistent mutagen class ability apply to cognatogens.</p>",
+    "id": "cognatogen",
+    "name": "Cognatogen",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:cognatogen"
+  },
+  "collective_memory": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{g1=cognatogen g1title=Discovery g1protocol=discovery}</p>\n<p>While under the effects of a cognatogen, the alchemist adds half his class level on all Knowledge skill checks and may attempt all Knowledge skill checks untrained. This bonus does not stack with the second Intelligence bonus granted by the mindchemist archetype's perfect recall class feature.</p>",
+    "id": "collective_memory",
+    "level": 1,
+    "name": "Collective Memory",
+    "sources": [
+      {
+        "id": "champions-of-balance"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:collective_memory"
+  },
+  "combine_extracts": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>When the alchemist creates an extract, he can place two formulae into one extract. When the extract is consumed, both formulae take effect. This extract has a level two levels higher than the highest-level formulae placed in the extract.</p>",
+    "id": "combine_extracts",
+    "name": "Combine Extracts",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:combine_extracts"
+  },
+  "concentrate_poison": {
+    "category": "Poison Discoveries",
+    "description": "<p>The alchemist can combine two doses of the same poison to increase their effects. This requires two doses of the poison and 1 minute of concentration. When completed, the alchemist has one dose of poison. The poison's frequency is extended by 50% and the save DC increases by +2. This poison must be used within 1 hour of its creation or it is ruined.</p>",
+    "id": "concentrate_poison",
+    "name": "Concentrate Poison",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:concentrate_poison"
+  },
+  "concussive_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have it inflict sonic damage. Concussive bombs deal 1d4 points of sonic damage, plus 1d4 points of sonic damage for every odd-numbered level, instead of 1d6. Creatures that take a direct hit from a concussive bomb are deafened for 1 minute unless they succeed at a Fortitude save.</p>",
+    "id": "concussive_bomb",
+    "name": "Concussive Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:concussive_bomb"
+  },
+  "confusion_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>The alchemist's bombs twist the target's perception of friend and foe. A creature that takes a direct hit from a confusion bomb takes damage from the bomb and is under the effect of a confusion spell for 1 round per caster level of the alchemist. Reduce the amount of normal damage dealt by the bomb by 2d6 (so a bomb that would normally deal 6d6+4 points of damage deals 4d6+4 points of damage instead).</p>",
+    "id": "confusion_bomb",
+    "name": "Confusion Bomb",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:confusion_bomb"
+  },
+  "constructive_dyes": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist g1=\"divine inks\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist's dyes congeal and solidify, allowing him to make physical objects from them. The alchemist can expend two uses of his daily bombs to create a nonmagical object, as minor creation, using his alchemist level as the spell's caster level.</p>",
+    "id": "constructive_dyes",
+    "level": 1,
+    "name": "Constructive Dyes",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:constructive_dyes"
+  },
+  "cursed_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist}</p>\n<p>When an alchemist creates a bomb, he can choose to have it deliver a debilitating curse. A creature that takes a direct hit from a cursed bomb must succeed at a Will save or be affected by bestow curse.</p>",
+    "id": "cursed_bomb",
+    "name": "Cursed Bomb",
+    "sources": [
+      {
+        "id": "champions-of-corruption"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:cursed_bomb"
+  },
+  "cytillesh_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can infuse it with cytillesh extract. Cytillesh bombs deal 1d4 points of damage, plus 1d4 points of damage for every odd-numbered level, instead of 1d6. Creatures that take a direct hit from a cytillesh bomb are sickened for 1 round per alchemist level unless they succeed at Fortitude saves. If a creature is rendered unconscious from this bomb or any other attack before it is able to remove the sickened condition, the victim loses all memory from the last hour and cannot form new memories for 8 hours. The lost and prevented memories might return later as dreams, and can be restored with a restoration spell.</p>",
+    "id": "cytillesh_bomb",
+    "name": "Cytillesh Bomb",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:cytillesh_bomb"
+  },
+  "darkness_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can choose to have it suppress light sources on the target. This extinguishes nonmagical light sources carried by the target and dispels magical light sources for 1 round/level as deeper darkness.</p>",
+    "id": "darkness_bomb",
+    "name": "Darkness Bomb",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:darkness_bomb"
+  },
+  "deadly_excretions": {
+    "category": "Poison Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist r=Grippli other=\"Toxic skin racial trait\"}</p>\n<p>When using his toxic skin ability, the alchemist can choose to excrete a Constitution poison instead of a Dexterity poison. This poison works the same as the normal grippli toxic skin poison except that a failed save deals 1 point of Constitution damage.</p>",
+    "id": "deadly_excretions",
+    "name": "Deadly Excretions",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:deadly_excretions"
+  },
+  "defoliant_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>These poisonous bombs clear away foliage, dealing extra damage to plant creatures. When the alchemist creates a bomb, he can choose to have it deal extra damage against plant creatures but less damage against other creatures. Against creatures with the plant type, a defoliant bomb deals 1d8 points of damage, plus 1d8 points of damage for every odd-numbered level the alchemist possesses, instead of 1d6. Against all other creatures, the defoliant bomb only deals 1d4 points of damage, plus 1d4 points of damage for every odd-numbered level, instead of 1d6. This is a poison effect. A defoliant bomb kills all normal vegetation in the target's square and its splash area; any plant-based difficult terrain in the affected area becomes normal terrain.</p>",
+    "id": "defoliant_bomb",
+    "name": "Defoliant Bomb",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:defoliant_bomb"
+  },
+  "delayed_bomb": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>The alchemist can place a bomb so that it explodes a number of rounds after the alchemist ceases contact with the bomb. This delay can be any number of rounds as chosen by the alchemist, up to a number of rounds equal to his level. If at any point the alchemist reclaims possession of the delayed bomb, he can end the timer and prevent the bomb's detonation. A delayed bomb detonates immediately if any other creature attempts to touch or move it, or if the bomb's contents are removed from the vial (such as if the vial breaks). The bomb deals damage as if it scored a direct hit to any creature in the square with the bomb when it detonates, and splash damage to all adjacent creatures as normal. An alchemist cannot have more than one delayed bomb at one time. If he creates another delayed bomb, the previous bomb becomes inert. Dispel magic can neutralize a delayed bomb, as can a successful Disable Device check (DC equals 10 + the alchemist's level + the alchemist's Intelligence modifier).</p>",
+    "id": "delayed_bomb",
+    "name": "Delayed Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:delayed_bomb"
+  },
+  "demolition_charge": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have it deal damage to an object as if by a sunder combat maneuver. If the item is worn or held by an opponent, the item is considered the direct target, and the wearer/holder takes splash damage from the blast. If the object is unattended, a demolition charge deals an additional 2d6 points of damage on a direct hit. This bonus doesn't affect the bomb's splash damage.</p>",
+    "id": "demolition_charge",
+    "name": "Demolition Charge",
+    "sources": [
+      {
+        "id": "dungeoneer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:demolition_charge"
+  },
+  "designer_poison": {
+    "category": "Poison Discoveries",
+    "description": "<p>The alchemist can create special poisons that are more effective against certain creatures. When crafting a poison, the alchemist can choose a single creature type (and subtype, if appropriate) from the ranger's favored enemy list. Against creatures of the chosen type, the poison's saving throw DC is increased by 4. Against all other creatures, it is reduced by 2. The alchemist must choose the creature type and subtype (if appropriate) while crafting the poison and afterward cannot change this choice.</p>",
+    "id": "designer_poison",
+    "name": "Designer Poison",
+    "sources": [
+      {
+        "id": "potions-and-poisons"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:designer_poison"
+  },
+  "dilution": {
+    "category": "Potion/Elixir Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist}</p>\n<p>Once per day, the alchemist can dilute any one potion or elixir, creating two doses of the same potion from one. Diluting a potion costs a number of gp equal to one-quarter of the potion's market value. A potion that has been diluted cannot be diluted again. This discovery cannot be used to dilute extracts or mutagens.</p>",
+    "id": "dilution",
+    "name": "Dilution",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:dilution"
+  },
+  "directed_bomb": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>The alchemist can cause his bombs to splash in a 15-foot cone instead of a 5-foot-radius burst. The alchemist chooses the direction of the cone. If the attack misses, roll an additional 1d8 to determine the direction of the blast from where the bomb lands. This discovery can't be combined with the explosive bomb discovery.</p>",
+    "id": "directed_bomb",
+    "name": "Directed Bomb",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:directed_bomb"
+  },
+  "dispelling_bomb": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have it dispel magic effects instead of deal damage. Creatures that take a direct hit from a dispelling bomb are subject to a targeted dispel magic spell, using the alchemist's level as the caster level. This cannot be used to target a specific spell effect.</p>",
+    "id": "dispelling_bomb",
+    "name": "Dispelling Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:dispelling_bomb"
+  },
+  "divine_inks": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>The alchemist can develop special pigments and combine them with his alchemical reagents to create unique dyes that cling to the empty space around him, allowing him to paint images in the air to fool his enemies. By expending two daily uses of his bombs, he can use the dyes to create an image in a space adjacent to him, as silent image, using his alchemist level as the spell's caster level. The image he creates remains for a number of minutes equal to his alchemist level. He can dismiss this image as a standard action.</p>",
+    "id": "divine_inks",
+    "name": "Divine Inks",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:divine_inks"
+  },
+  "doppelganger_simulacrum": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist g1=\"alchemical simulacrum\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist learns how to create a simulacrum, a soulless duplicate, into which he can project his consciousness. As a full-round action, he may shift his consciousness from his current body to any one of his available doppelganger simulacra, which must be on the same plane as the alchemist. If killed in a simulacrum, he transfers to his own body automatically; if killed in his own body, he is dead. Unused simulacra (including his abandoned original body) appear to be lifeless corpses, though they do not decay. Creating a duplicate costs 1,000 gp in alchemical materials and requires 1 week to grow. The created simulacrum is a creature, not a supernatural effect.</p>",
+    "id": "doppelganger_simulacrum",
+    "level": 1,
+    "name": "Doppelganger Simulacrum",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:doppelganger_simulacrum"
+  },
+  "dread_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist g1=\"anguish bomb\" g1title=\"Class Feature or Discovery\" g1protocol=discovery}</p>\n<p>Your anguish bombs are tainted with fear and dread. Creatures who take damage from your anguish bombs become frightened for 1d6 rounds. A target that succeeds at a Will saving throw is instead shaken for a single round.</p>",
+    "id": "dread_bomb",
+    "level": 1,
+    "name": "Dread Bomb",
+    "sources": [
+      {
+        "id": "distant-realms"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:dread_bomb"
+  },
+  "ectoplasmic_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>The alchemist can infuse her bombs with a special unction that damages incorporeal creatures and reveals the presence of undead creatures hiding in the area. Incorporeal creatures struck by an ectoplasmic bomb take full damage from the bomb. In addition, squares in the affected area of the bomb begin to faintly glow in the spaces where undead creatures have traveled in the last minute, including undead benefiting from invisibility or other forms of obscurity (such as ethereal jaunt), effectively creating a glowing trail. Any undead creatures in the affected area at the time of the explosion likewise glow faintly. This glowing effect lasts for 1 minute, and is otherwise identical to faerie fire.</p>",
+    "id": "ectoplasmic_bomb",
+    "name": "Ectoplasmic Bomb",
+    "sources": [
+      {
+        "id": "undead-slayer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:ectoplasmic_bomb"
+  },
+  "elemental_destabilizers": {
+    "category": "Poison Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>The alchemist is able to concoct reactive chemical compounds that affect elementals like poisons. The alchemist can craft poisons that affect only outsiders with the elemental subtype, bypassing their inherent immunity. Magical effects that negate poisons still apply. If a creature fails its saving throw, the poison acts as normal, but it may have no effect on the creature depending on the effect of the poison (such as dealing fire damage to a fire elemental).</p>",
+    "id": "elemental_destabilizers",
+    "name": "Elemental Destabilizers",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:elemental_destabilizers"
+  },
+  "elemental_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>The alchemist chooses an element (air, earth, fire, or water). Whenever the alchemist imbibes a mutagen, he gains resistance 5 to the associated energy type and a +2 competence bonus on an associated skill check. This resistance increases by 5 and the competence bonus by 2 for each of the following discoveries the alchemist possesses: grand mutagen, greater mutagen, and true mutagen. The elements and their associated energies and skills are air (electricity, Fly), earth (acid, Climb), fire (fire, Acrobatics), and water (cold, Swim). An alchemist can select this discovery up to four times, but must choose a different element each time. An alchemist can gain the benefits of only one elemental mutagen at a time, selected when he imbibes the mutagen.</p>",
+    "id": "elemental_mutagen",
+    "name": "Elemental Mutagen",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:elemental_mutagen"
+  },
+  "elixir_of_life": {
+    "category": "Potion/Elixir Discoveries",
+    "description": "<p>::prereq{l=16 c=alchemist}</p>\n<p>Once per day, the alchemist can brew an elixir of life. This special concoction costs 25,000 gp to create and takes 1 hour of work. An elixir of life, when administered by the alchemist who brewed it, restores life to a dead creature as per the spell true resurrection. Alternatively, the alchemist himself may drink the elixir of life, after which point he is immediately targeted with a resurrection spell the next time he is killed. Used in this manner, the effects of an elixir of life persist only for a number of days equal to the alchemist's Intelligence modifier; if he does not die before that time expires, the effects of the elixir of life end.</p>",
+    "id": "elixir_of_life",
+    "name": "Elixir of Life",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:elixir_of_life"
+  },
+  "enduring_toxin": {
+    "category": "Poison Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>The alchemist can alter the properties of a poison, causing it to persist longer in the victim's body. Altering a dose of poison in the way takes 1 hour, requires the expenditure of raw materials worth half the poison's market price, and exposes the alchemist to the poison, thereby affecting him if he is not immune. This doubles the poison's maximum duration.</p>",
+    "id": "enduring_toxin",
+    "name": "Enduring Toxin",
+    "sources": [
+      {
+        "id": "potions-and-poisons"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:enduring_toxin"
+  },
+  "enhance_potion": {
+    "category": "Potion/Elixir Discoveries",
+    "description": "<p>A number of times per day equal to his Intelligence modifier, the alchemist can cause any potion he drinks to function at a caster level equal to his class level.</p>",
+    "id": "enhance_potion",
+    "name": "Enhance Potion",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:enhance_potion"
+  },
+  "eternal_potion": {
+    "category": "Potion/Elixir Discoveries",
+    "description": "<p>::prereq{l=16 c=alchemist g1=\"extend potion\" g1title=Discovery g1protocol=discovery}</p>\n<p>If an alchemist drinks a potion that he extends, the effects of that potion become permanent until he chooses to make another potion effect permanent.</p>",
+    "id": "eternal_potion",
+    "name": "Eternal Potion",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:eternal_potion"
+  },
+  "eternal_youth": {
+    "category": "Grand Discoveries",
+    "description": "<p>The alchemist has discovered a cure for aging, and from this point forward he takes no penalty to his physical ability scores from advanced age. If the alchemist is already taking such penalties, they are removed at this time.</p>",
+    "id": "eternal_youth",
+    "name": "Eternal Youth",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:eternal_youth"
+  },
+  "explosive_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>The alchemist's bombs now have a splash radius of 10 feet rather than 5 feet. Creatures that take a direct hit from an explosive bomb catch fire, taking 1d6 points of fire damage each round until the fire is extinguished. Extinguishing the flames is a full-round action that requires a Reflex save. Rolling on the ground provides the target with a +2 to the save. Dousing the target with at least 2 gallons of water automatically extinguishes the flames.</p>",
+    "id": "explosive_bomb",
+    "name": "Explosive Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:explosive_bomb"
+  },
+  "explosive_calligraphy": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>The alchemist can create especially volatile pigments that detonate when agitated. This requires expending one daily use of his bombs, but otherwise functions as explosive runes except that it deals damage as one of the alchemist's bombs. The alchemist can expend an additional daily use of his bombs to apply one discovery that applies to his bombs, such as acid bomb or dispelling bomb, to the runes created with this discovery.</p>",
+    "id": "explosive_calligraphy",
+    "name": "Explosive Calligraphy",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:explosive_calligraphy"
+  },
+  "explosive_missile": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist}</p>\n<p>As a standard action, the alchemist can infuse a single arrow, crossbow bolt, or one-handed firearm bullet with the power of his bomb, load the ammunition, and shoot the ranged weapon. He must be proficient with the weapon in order to accomplish this. When the infused ammunition hits its target, it deals damage normally and detonates as if the alchemist had thrown the bomb at the target. If the explosive missile misses, it does not detonate.</p>",
+    "id": "explosive_missile",
+    "name": "Explosive Missile",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:explosive_missile"
+  },
+  "extend_potion": {
+    "category": "Potion/Elixir Discoveries",
+    "description": "<p>A number of times per day equal to his Intelligence modifier, the alchemist can cause any potion he drinks that does not have an instantaneous duration to function at twice its normal duration. This does not apply to extracts.</p>",
+    "id": "extend_potion",
+    "name": "Extend Potion",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:extend_potion"
+  },
+  "fast_bombs": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>An alchemist with this discovery can quickly create enough bombs to throw more than one in a single round. The alchemist can prepare and throw additional bombs as a full-round action if his base attack bonus is high enough to grant him additional attacks. This functions just like a full-attack with a ranged weapon.</p>",
+    "id": "fast_bombs",
+    "name": "Fast Bombs",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:fast_bombs"
+  },
+  "fast_healing": {
+    "category": "Grand Discoveries",
+    "description": "<p>The alchemist's flesh responds to damage with shocking speed - he gains fast healing 5.</p>",
+    "id": "fast_healing",
+    "name": "Fast Healing",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:fast_healing"
+  },
+  "feral_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>Whenever the alchemist imbibes a mutagen, he gains two claw attacks and a bite attack. These are natural&gt;primary attacks and are made using the alchemist's full base attack bonus. The claw attacks deal 1d6 points of damage (1d4 if the alchemist is Small) and the bite attack deals 1d8 points of damage (1d6 if the alchemist is Small). While the mutagen is in effect, the alchemist gains a +2 competence bonus on Intimidate skill checks.</p>",
+    "id": "feral_mutagen",
+    "name": "Feral Mutagen",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:feral_mutagen"
+  },
+  "fey_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>The alchemist gains the ability to create a fey mutagen, a mixture that lends him some of the grace and power of the First World. When imbibed, a fey mutagen grants a +2 alchemical bonus to the alchemist's Dexterity and Charisma, a -2 penalty to his Strength, and DR 2/cold iron. This otherwise works like the standard mutagen class feature and interacts with other effects as though it were a mutagen.</p>",
+    "id": "fey_mutagen",
+    "name": "Fey Mutagen",
+    "sources": [
+      {
+        "id": "legacy-of-the-first-world"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:fey_mutagen"
+  },
+  "fire_brand": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>(Goblin only) An alchemist with this discovery can expend one daily bomb use to apply the bomb reagents to his weapon as a swift action. A weapon treated this way deals fire damage as if it had the flaming weapon special ability. At 10th level, the weapon is treated as if it had the flaming burst weapon special ability. The bomb reagents continue burning for 1 minute or until extinguished by dousing the weapon in water. An alchemist can use this ability with natural weapons, but he takes 1d6 points of fire damage per round for each natural weapon treated.</p>",
+    "id": "fire_brand",
+    "name": "Fire Brand",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:fire_brand"
+  },
+  "flesh_eating_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>The alchemist can create bombs that devour living matter. The alchemist's bomb deals damage one die step higher than normal (regular bombs deal d8s, concussive bombs (see below) deal 1d6, and so on), but they have no effect on inorganic matter. In addition, a creature with at least a +1 armor bonus to AC is less likely to be harmed; such creatures in the bomb's splash radius take no damage on a successful Reflex save, and the target of a direct hit can attempt a Reflex save against the bomb's save DC to take only half damage.</p>\n<p>;;;aside</p>\n<p><strong>Note:</strong> Despite what the text seems to indicate, concussive bombs and flesh-eating bombs cannot be combined under the published rules. Consult your GM if you wish to use these two together.</p>\n<p>;;;</p>",
+    "id": "flesh_eating_bomb",
+    "name": "Flesh-Eating Bomb",
+    "sources": [
+      {
+        "id": "monster-hunter-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:flesh_eating_bomb"
+  },
+  "force_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have it inflict force damage. Force bombs deal 1d4 points of force damage, plus 1d4 points of force damage for every odd-numbered level, instead of 1d6. Creatures that take a direct hit from a force bomb are knocked prone unless they succeed on a Reflex save.</p>",
+    "id": "force_bomb",
+    "name": "Force Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:force_bomb"
+  },
+  "frost_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can choose to have it inflict cold damage. Creatures that take a direct hit from a frost bomb are staggered on their next turn unless they succeed on a Fortitude save.</p>",
+    "id": "frost_bomb",
+    "name": "Frost Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:frost_bomb"
+  },
+  "gills": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist}</p>\n<p>An alchemist with this discovery grows a set of gills that allow him to breathe water in addition to breathing air. When on land, the alchemist risks his gills drying out and must bathe his gills with 1/2 gallon of water every 24 hours he is out of the water or take 1 point of Constitution damage every hour thereafter.</p>",
+    "id": "gills",
+    "name": "Gills",
+    "sources": [
+      {
+        "id": "pathfinder-123-the-flooded-cathedral"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:gills"
+  },
+  "glassfoot_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can choose to have it cover the ground in volatile jagged crystals in addition to its normal effects. These crystals act like caltrops, evaporating into a smelly but harmless gas in 2d6 rounds.</p>",
+    "id": "glassfoot_bomb",
+    "name": "Glassfoot Bomb",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:glassfoot_bomb"
+  },
+  "glimmering_infusion": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{g1=infusion g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist can expend any prepared extract to produce a cube of glowing motes that act as per glitterdust. The area must be adjacent to the alchemist and covers one 5-foot square per level of extract sacrificed, and the effect's save DC is calculated using the level of the sacrificed extract.</p>",
+    "id": "glimmering_infusion",
+    "level": 1,
+    "name": "Glimmering Infusion",
+    "sources": [
+      {
+        "id": "spymaster-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:glimmering_infusion"
+  },
+  "grand_cognatogen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=16 c=alchemist g1=\"cognatogen~greater cognatogen\" g1title=\"Discoveries or Class Abilities\" g1protocol=discovery}</p>\n<p>The alchemist's cognatogen now grants a +6 natural armor bonus, a +8 alchemical bonus to one mental ability score (Intelligence, Wisdom, or Charisma), a +6 alchemical bonus to a second mental ability score, and a +4 alchemical bonus to a third mental ability score. The alchemist takes a -2 penalty to his Strength, Dexterity, and Constitution as long as the cognatogen persists, and takes 2 points of ability damage to each physical ability score when the cognatogen ends.</p>",
+    "id": "grand_cognatogen",
+    "level": 2,
+    "name": "Grand Cognatogen",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:grand_cognatogen"
+  },
+  "grand_fey_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=16 c=alchemist g1=\"fey mutagen~greater fey mutagen\" g1title=Discoveries g1protocol=discovery}</p>\n<p>The alchemist's fey mutagen now grants a +6 alchemical bonus to Dexterity and Charisma, a -2 penalty to his Strength, DR 10/cold iron, and the druid's woodland stride class feature. In addition, he can choose not to allow spells and effects to affect him if they would not be capable of affecting both his original creature type and the fey creature type.</p>",
+    "id": "grand_fey_mutagen",
+    "level": 2,
+    "name": "Grand Fey Mutagen",
+    "sources": [
+      {
+        "id": "legacy-of-the-first-world"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:grand_fey_mutagen"
+  },
+  "grand_inspiring_cognatogen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=16 c=alchemist g1=\"greater inspiring cognatogen\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist's inspiring cognatogen now grants a +4 dodge bonus to AC and a +4 bonus to Reflex saving throws; a -6 penalty to Strength and Constitution; and the effects of having the item lore, tenacious inspiration, and underworld inspiration investigator talents.</p>",
+    "id": "grand_inspiring_cognatogen",
+    "level": 2,
+    "name": "Grand Inspiring Cognatogen",
+    "sources": [
+      {
+        "id": "advanced-class-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:grand_inspiring_cognatogen"
+  },
+  "grand_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=16 c=alchemist g1=\"greater mutagen\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist's mutagen now grants a +6 natural armor bonus, a +8 alchemical bonus to one ability score (Strength, Dexterity, or Constitution), a +6 alchemical bonus to a second physical ability score, and a +4 alchemical bonus to a third physical ability score. The alchemist takes a -2 penalty to his Intelligence, Wisdom, and Charisma as long as the mutagen persists.</p>",
+    "id": "grand_mutagen",
+    "level": 1,
+    "name": "Grand Mutagen",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:grand_mutagen"
+  },
+  "grand_rasugen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=16 c=alchemist g1=\"greater rasugen\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist's rasugen now grants a +6 alchemical bonus on all saving throws, 4 temporary hit points per alchemist level, and immunity to disease, mind-affecting effects, and poison. The alchemist takes a -6 penalty to Intelligence and a -2 penalty to Charisma and Wisdom as long as the grand rasugen persists.</p>",
+    "id": "grand_rasugen",
+    "level": 1,
+    "name": "Grand Rasugen",
+    "sources": [
+      {
+        "id": "distant-realms"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:grand_rasugen"
+  },
+  "grease_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have it create a grease slick upon detonation. When a grease bomb detonates, it coats an area equal to the bomb's splash radius in grease (as the grease spell) for 1 round per level. The DC of the Reflex save to avoid falling after a failed Acrobatics check is equal to 10 + 1/2 the alchemist's level + the alchemist's Intelligence modifier. A grease bomb can't affect items or armor.</p>",
+    "id": "grease_bomb",
+    "name": "Grease Bomb",
+    "sources": [
+      {
+        "id": "dungeoneer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:grease_bomb"
+  },
+  "greater_alchemical_simulacrum": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=14 c=alchemist g1=\"alchemical simulacrum\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist gains the ability to create a simulacrum. This works like the simulacrum spell, except it costs 100 gp in alchemical materials per Hit Die of the simulacrum, requires 24 hours to grow, and decays into inert flesh rather than ice or snow if killed. The created simulacrum is a creature, not a supernatural effect.</p>",
+    "id": "greater_alchemical_simulacrum",
+    "level": 1,
+    "name": "Greater Alchemical Simulacrum",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_alchemical_simulacrum"
+  },
+  "greater_change_alignment": {
+    "category": "Grand Discoveries",
+    "description": "<p>::prereq{g1=\"change alignment~infusion\" g1title=Discoveries g1protocol=discovery}</p>\n<p>The effects of the alchemist's change alignment infusion become permanent and can only be reversed by a wish or miracle. A permanent, forced change of alignment may be devastating, and some believe it is little better than zealous slavery or mind control. Others consider a good alignment brought about by any means but purity of heart an affront to freedom. This discovery remains controversial at best.</p>",
+    "id": "greater_change_alignment",
+    "name": "Greater Change Alignment",
+    "nameSuffix": "(Su)",
+    "sources": [
+      {
+        "id": "champions-of-purity"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_change_alignment"
+  },
+  "greater_cognatogen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist g1=cognatogen g1title=\"Discovery or Class Feature\" g1protocol=discovery}</p>\n<p>The alchemist's mutagen now grants a +4 natural armor bonus, a +6 alchemical bonus to one mental ability score (Intelligence, Wisdom, or Charisma), and a +4 alchemical bonus to a second mental ability score. The alchemist takes a -2 penalty on both associated physical ability scores as long as the mutagen persists, and takes 2 points of ability damage to both associated physical ability scores when the cognatogen ends.</p>",
+    "id": "greater_cognatogen",
+    "level": 1,
+    "name": "Greater Cognatogen",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_cognatogen"
+  },
+  "greater_constructive_dyes": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist g1=\"divine inks~constructive dyes\" g1title=Discoveries g1protocol=discovery}</p>\n<p>The alchemist expands the set of objects he can create with his constructive dyes. The alchemist can expend one additional use of his daily bombs when using his constructive dyes discovery to create objects, as major creation.</p>",
+    "id": "greater_constructive_dyes",
+    "level": 2,
+    "name": "Greater Constructive Dyes",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_constructive_dyes"
+  },
+  "greater_divine_inks": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist g1=\"divine inks~improved divine inks\" g1title=Discoveries g1protocol=discovery}</p>\n<p>The alchemist's unique dyes allow him to create lifelike images. If he expends an additional daily use of his bombs, the image he creates with the divine inks discovery also produces sound, smell, and heat, as major image.</p>",
+    "id": "greater_divine_inks",
+    "level": 2,
+    "name": "Greater Divine Inks",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_divine_inks"
+  },
+  "greater_fey_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist g1=\"fey mutagen\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist's fey mutagen now grants a +4 alchemical bonus to Dexterity and Charisma, a -2 penalty to his Strength, DR 5/cold iron, and the druid's woodland stride class feature.</p>",
+    "id": "greater_fey_mutagen",
+    "level": 1,
+    "name": "Greater Fey Mutagen",
+    "sources": [
+      {
+        "id": "legacy-of-the-first-world"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_fey_mutagen"
+  },
+  "greater_inspiring_cognatogen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist g1=\"inspiring cognatogen\" g1title=\"Discovery or Class Feature\" g1protocol=discovery}</p>\n<p>The alchemist's inspiring cognatogen now grants a +2 dodge bonus to AC and a +2 bonus to Reflex saving throws; a -4 penalty to Strength and Constitution; and the effects of having the amazing inspiration, eidetic recollection, and expanded inspiration investigator talents.</p>",
+    "id": "greater_inspiring_cognatogen",
+    "level": 1,
+    "name": "Greater Inspiring Cognatogen",
+    "sources": [
+      {
+        "id": "advanced-class-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_inspiring_cognatogen"
+  },
+  "greater_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist}</p>\n<p>The alchemist's mutagen now grants a +4 natural armor bonus, a +6 alchemical bonus to one physical ability score (Strength, Dexterity, or Constitution), and a +4 alchemical bonus to a second physical ability score. The alchemist takes a -2 penalty on both associated mental ability scores as long as the mutagen persists.</p>",
+    "id": "greater_mutagen",
+    "name": "Greater Mutagen",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_mutagen"
+  },
+  "greater_plague_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=16 c=alchemist g1=\"smoke bomb~plague bomb\" g1title=Discoveries g1protocol=discovery}</p>\n<p>The effects of the smoke created by an alchemist's bomb duplicates the effects of greater contagion instead of fog cloud, filling an area equal to twice the bomb's splash radius for 1 round per level.</p>",
+    "id": "greater_plague_bomb",
+    "level": 2,
+    "name": "Greater Plague Bomb",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_plague_bomb"
+  },
+  "greater_rasugen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist other=\"Must be able to mnemostiller&gt;brew a rasugen\"}</p>\n<p>The alchemist's rasugen now grants a +4 alchemical bonus on all saving throws, 3 temporary hit points per alchemist level, and immunity to mind-affecting effects. The alchemist takes a -4 penalty to Intelligence as long as the greater rasugen persists.</p>",
+    "id": "greater_rasugen",
+    "name": "Greater Rasugen",
+    "sources": [
+      {
+        "id": "distant-realms"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:greater_rasugen"
+  },
+  "grounding_goo": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>The alchemist's bomb applies a sticky residue after any damage from the bomb is resolved. If a creature damaged by the bomb has a nonmagical fly speed, its flight is severely impaired, and it takes a penalty equal to the alchemist's level on Fly checks for 1 minute.</p>",
+    "id": "grounding_goo",
+    "name": "Grounding Goo",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:grounding_goo"
+  },
+  "healing_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can choose to have it heal damage instead of dealing it. Creating a healing bomb requires the alchemist to expend an infused extract or potion containing a cure spell. A creature that takes a direct hit from a healing bomb is healed as if she had imbibed the infusion or potion used to create the bomb. Creatures in the splash radius are healed for the minimum amount of damage the cure spell is capable of healing. A healing bomb damages undead instead of healing them.</p>",
+    "id": "healing_bomb",
+    "name": "Healing Bomb",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:healing_bomb"
+  },
+  "healing_touch": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist g1=\"spontaneous healing\" g1title=\"Discovery or Class Ability\" g1protocol=discovery}</p>\n<p>The alchemist gains the ability to heal other creatures. As a standard action, he may touch a creature and apply 1 round's effect of his spontaneous healing discovery to that creature; this counts toward his spontaneous healing limit for the day. The alchemist's daily limit for hit points healed by spontaneous healing increases to 5 × his alchemist level. This ability only functions if the target is the same type of creature (humanoid, undead, and so on) as the alchemist</p>",
+    "id": "healing_touch",
+    "level": 1,
+    "name": "Healing Touch",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:healing_touch"
+  },
+  "hellfire_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=9 c=alchemist g1=\"explosive bomb\" g1title=Discovery g1protocol=discovery}</p>\n<p>This discovery is available to tiefling alchemists. When the alchemist creates a bomb, he can have it act as an explosive bomb, but deal half of its damage as fire damage and half as unholy damage that is not subject to fire resistance or immunity.</p>",
+    "id": "hellfire_bomb",
+    "level": 1,
+    "name": "Hellfire Bomb",
+    "sources": [
+      {
+        "id": "agents-of-evil"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:hellfire_bomb"
+  },
+  "holy_bombs": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have it deal good divine damage. Evil creatures that take a direct hit from a holy bomb must succeed at a Fortitude save or be staggered on their next turn. Against neutral creatures, holy bombs deal half damage, and such targets are not affected by their staggering effect. Holy bombs have no effect on good-aligned creatures.</p>",
+    "id": "holy_bombs",
+    "name": "Holy Bombs",
+    "sources": [
+      {
+        "id": "champions-of-purity"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:holy_bombs"
+  },
+  "immolation_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=3 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have its substance coat the direct target's body, causing the bomb to deal its damage over time instead of all at once. The bomb's effect lasts for a number of rounds equal to the number of damage dice the bomb would normally deal (for instance, a 5d6 bomb lasts for 5 rounds). When the bomb hits the direct target, the bomb deals 1d6 + the alchemist's Intelligence modifier in damage, and those within the splash zone take damage equal to 1 + the alchemist's Intelligence modifier. It repeats this damage against the direct target of the bomb each round the immolation bomb lasts, dealing the damage at the start of the alchemist's turn. Splash damage is dealt again to any creature that is adjacent to the direct target when it takes damage from the immolation bomb. A creature taking damage from an immolation bomb's direct hit can attempt to extinguish the flames as a full-round action that requires a Reflex save (DC = 10 + 1/2 the alchemist's level + the alchemist's Intelligent modifier). Because of the alchemical nature of this bomb, rolling on the ground does not grant a bonus on the saving throw, and dousing a creature with water does not stop it from burning. These bombs can be used underwater.</p>",
+    "id": "immolation_bomb",
+    "name": "Immolation Bomb",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:immolation_bomb"
+  },
+  "improved_divine_inks": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist g1=\"divine inks\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist's unique dyes allow him to create images accompanied by sound. If he expends an additional daily use of his bombs, the image he creates with the divine inks discovery also produces minor sounds, as minor image.</p>",
+    "id": "improved_divine_inks",
+    "level": 1,
+    "name": "Improved Divine Inks",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:improved_divine_inks"
+  },
+  "incendiary_charge": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist}</p>\n<p>An incendiary charge is a bomb specifically designed to overcome the effects of any nonmagical object's hardness. As a full-round action, the alchemist can place an incendiary charge that burns and eats away at an object, dealing normal bomb damage to it. (The damage is not halved against an object with hardness, unlike most energy damage.) Furthermore, the incendiary charge ignores the first 5 points of hardness of the material being damaged.</p>",
+    "id": "incendiary_charge",
+    "name": "Incendiary Charge",
+    "sources": [
+      {
+        "id": "villain-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:incendiary_charge"
+  },
+  "inferno_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=16 c=alchemist g1=\"smoke bomb\" g1title=Discovery g1protocol=discovery}</p>\n<p>The effects of the smoke created by an alchemist's bomb duplicate the effects of incendiary cloud instead of fog cloud, filling an area equal to twice the bomb's splash radius for 1 round per level.</p>",
+    "id": "inferno_bomb",
+    "level": 1,
+    "name": "Inferno Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:inferno_bomb"
+  },
+  "infuse_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>When the alchemist creates a mutagen, he can infuse it with an extra bit of his own magical power. This inflicts 2 points of Intelligence damage to the alchemist and costs 1,000 gp in rare reagents, but the mutagen created persists on its own and is not rendered inert if the alchemist creates another mutagen. This allows an alchemist to create different types of mutagens and keep them handy for emergencies. This does not allow an alchemist to gain the effects of multiple mutagens - only the most recently imbibed mutagen has any effect.</p>",
+    "id": "infuse_mutagen",
+    "name": "Infuse Mutagen",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:infuse_mutagen"
+  },
+  "infusion": {
+    "category": "Extract Discoveries",
+    "description": "<p>When the alchemist creates an extract, he can infuse it with an extra bit of his own magical power. The extract created now persists even after the alchemist sets it down. As long as the extract exists, it continues to occupy one of the alchemist's daily extract slots. An infused extract can be imbibed by a non-alchemist to gain its effects.</p>",
+    "id": "infusion",
+    "name": "Infusion",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:infusion"
+  },
+  "inspired_bomb": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>An alchemist with this discovery and a pool of inspiration (by way of a class feature, a feat, or the inspiring cognatogen discovery) can expend two uses of inspiration to increase the bomb's damage by 1d6. The type of damage the bomb deals does not change. Unlike other a discoveries that affect bombs, this one can be applied to a bomb with another bomb discovery, though it cannot be applied to the same bomb more than once.</p>",
+    "id": "inspired_bomb",
+    "name": "Inspired Bomb",
+    "sources": [
+      {
+        "id": "advanced-class-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:inspired_bomb"
+  },
+  "inspiring_cognatogen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>An alchemist with this discovery leans how to make an inspiring cognatogen, a mutagen-like mixture that grants him inspiration (as the investigator's class feature) at the expense of Strength and Constitution. Upon drinking the inspiring cognatogen, the alchemist gains a pool of inspiration equal to 1/2 his alchemist level + his Intelligence modifier (minimum 1). He also gains a +2 dodge bonus to AC and takes a -2 penalty to both Strength and Constitution.</p>\n<p>As a free action, the alchemist can add 1d6 to the result of an ability or skill check (including any he takes 10 or 20 on) by expending one use of inspiration. This ability works exactly like the investigator's inspiration ability, except that the alchemist gains the pool of inspiration upon drinking the inspiring cognatogen, and any unspent inspiration is lost at the end of the cognatogen's duration. If the alchemist already has access to inspiration, the inspiration added by the inspiring cognatogen is added to his inspiration pool, but each time he expends at least one use of inspiration while this ability is active, he must succeed at a DC 20 Will saving throw or become dazed for 1 round. He cannot use inspiration to augment this saving throw.</p>\n<p>All limitations of mutagens apply to an inspiring cognatogen as if they were the same substance - an alchemist can only maintain one mutagen or cognatogen (either the standard cognatogen or the inspired cognatogen) at a time, a cognatogen not in an alchemist's possession becomes inert, drinking a cognatogen makes non-alchemists sick, and so on. When the effect of an inspiring cognatogen ends, the alchemist takes 2 points of ability damage to Strength and Dexterity. The infuse mutagen discovery and the persistent mutagen class ability apply to an inspiring cognatogen.</p>",
+    "id": "inspiring_cognatogen",
+    "name": "Inspiring Cognatogen",
+    "sources": [
+      {
+        "id": "advanced-class-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:inspiring_cognatogen"
+  },
+  "intuitive_understanding": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist g1=cognatogen g1title=Discovery g1protocol=discovery}</p>\n<p>If the alchemist drinks an extract of the divination school while under the effects of a cognatogen, his effective caster level temporarily increases by 2. In addition, while under the effects of a cognatogen, the alchemist may use augury once as a spell-like ability (caster level equal to his alchemist level). At 10th level, he can use divination instead.</p>",
+    "id": "intuitive_understanding",
+    "name": "Intuitive Understanding",
+    "sources": [
+      {
+        "id": "champions-of-balance"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:intuitive_understanding"
+  },
+  "jury_rigged_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist}</p>\n<p>Unlike normal bombs, jury-rigged bombs can be created from whatever materials the alchemist has on hand; this makes them particularly handy in situations where the alchemist might find himself imprisoned or stripped of his equipment. Jury-rigged bombs can be crafted and thrown as a swift action (this counts against the alchemist's daily use of bombs), and they deal only 1d4 points of damage + additional damage equal to half the alchemist's Intelligence modifier on a direct hit. This damage increases by 1d4 at 3rd level and every 2 levels thereafter. Despite being useful in a pinch, jury-rigged bombs are nonetheless crudely crafted and highly unstable; if the alchemist's attack roll results in a natural 1, the bomb explodes as he is creating it, and he takes damage as if he had taken a direct hit.</p>",
+    "id": "jury_rigged_bomb",
+    "name": "Jury-Rigged Bomb",
+    "sources": [
+      {
+        "id": "antihero-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:jury_rigged_bomb"
+  },
+  "lasting_tinctures": {
+    "category": "Potion/Elixir Discoveries",
+    "description": "<p>The alchemist knows how to make [tinctures](main/equipment_alchemical) that last much longer than normal. The durations of the effects of any tinctures the alchemist brews using the Craft skill are doubled. When the alchemist uses this discovery to brew a longer-lasting tincture, the tincture imposes its normal penalties on the alchemist even if the alchemist has an ability that reduces tinctures' penalties (such as the substance tolerance ability of the fermenter alchemist archetype). An alchemist with this discovery can brew tinctures with normal durations.</p>",
+    "id": "lasting_tinctures",
+    "name": "Lasting Tinctures",
+    "sources": [
+      {
+        "id": "potions-and-poisons"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:lasting_tinctures"
+  },
+  "lingering_plague": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>Any creature that must make a save against a disease caused by the alchemist's extract or other class ability must make a second save 1 round later to avoid doubling the duration of the disease effect. If the disease doesn't have a duration, this discovery reduces its onset time and frequencies by half.</p>",
+    "id": "lingering_plague",
+    "name": "Lingering Plague",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:lingering_plague"
+  },
+  "lingering_spirit": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist}</p>\n<p>The alchemist is familiar enough with the ties between his body and spirit that he lingers at death's door far longer than a normal person. He treats his Constitution as 10 points higher than normal for the purpose of determining when hit point damage kills him (so an alchemist with a Constitution of 10 and this discovery dies at -20 hit points instead of -10). Reducing him to 0 Constitution or its equivalent (from ability damage, ability drain, Constitution penalties, and so on) makes him unconscious and comatose, but he is only killed after taking an additional 5 points of Constitution damage, drain, or penalty (in effect, the alchemist must be brought to -5 Constitution in order to be killed by these attacks).</p>",
+    "id": "lingering_spirit",
+    "name": "Lingering Spirit",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:lingering_spirit"
+  },
+  "living_pigment": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{g1=\"divine inks\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist infuses his inks and dyes with a spark of animating force. As a standard action, he can expend one daily use of his bombs and a 1st-level extract he has prepared to create a creature, as summon monster I, using his level as the spell's caster level. The extract is expended as if the alchemist had consumed it. The alchemist can expend a higher-level extract when using this ability to create a creature using a summon monster spell of a level equal to the level of extract expended. For example, if the alchemist expends a 4th-level extract, he can create a creature as if using summon monster IV. Additionally, the alchemist can expend an additional use of his daily bombs when creating a creature in this way to grant the creature the celestial or fiendish template.</p>",
+    "id": "living_pigment",
+    "level": 1,
+    "name": "Living Pigment",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:living_pigment"
+  },
+  "madness_bomb": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist}</p>\n<p>The alchemist's bombs do more than sear flesh - they sear the mind. A creature that takes a direct hit from a madness bomb takes damage from the bomb plus 1d4 points of Wisdom damage. Reduce the amount of normal damage dealt by the bomb by 2d6 (so a bomb that would normally deal 6d6+4 points of damage deals 4d6+4 points of damage instead). The amount of Wisdom damage dealt by a madness bomb is reduced by 1 for each madness bomb that hit the target in the past 24 hours, to a minimum of 1 point of Wisdom damage.</p>",
+    "id": "madness_bomb",
+    "name": "Madness Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:madness_bomb"
+  },
+  "malignant_poison": {
+    "category": "Poison Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist}</p>\n<p>As a full-round action, the alchemist can increase the save DC of any poison by 4 and increase its duration by 2 frequency increments (for example, large scorpion venom lasts 8 rounds instead of 6 and drow poison lasts 4 minutes instead of 2). Additionally, malignant poisons take effect immediately and do not have an onset time. This alchemical change lasts until the poison's extended duration ends or for a number of minutes equal to the alchemist's level, whichever comes first. After that, the poison reverts back to its original state.</p>",
+    "id": "malignant_poison",
+    "name": "Malignant Poison",
+    "sources": [
+      {
+        "id": "dungeoneer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:malignant_poison"
+  },
+  "material_mastery": {
+    "category": "Other Discoveries",
+    "description": "<p>Your superior knowledge of the nature of matter enables you to ignore spell requirements more easily when crafting magic items. By expending an extract of the same school and level as a spell prerequisite when crafting a magic item, you take only a -2 penalty for ignoring that requirement, instead of -5.</p>",
+    "id": "material_mastery",
+    "name": "Material Mastery",
+    "sources": [
+      {
+        "id": "cohorts-and-companions"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:material_mastery"
+  },
+  "melancholy_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist g1=\"anguish bomb\" g1title=\"Class Feature or Discovery\" g1protocol=discovery}</p>\n<p>Your anguish bombs are filled with memories of sadness and regret. Creatures who take damage from your anguish bombs are also affected as per crushing despair for 1 round per alchemist level, or a single round if the target succeeds at a Will saving throw.</p>",
+    "id": "melancholy_bomb",
+    "level": 1,
+    "name": "Melancholy Bomb",
+    "sources": [
+      {
+        "id": "distant-realms"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:melancholy_bomb"
+  },
+  "method_to_the_madness": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{other=\"The derro&gt;madness extraordinary ability\"}</p>\n<p>The alchemist has learned to channel his madness into one of his alchemist class abilities. When the alchemist takes this discovery, he chooses one of either bombs or extracts. If he selects bombs, he uses his Charisma bonus in place of his Intelligence bonus when determining the bonus to damage and the saving throw DCs of his bombs. If the alchemist selects extracts, he uses his Charisma bonus in place of his Intelligence bonus to calculate bonus extracts per day. This discovery can be taken twice, allowing the alchemist to select both bombs and extracts.</p>",
+    "id": "method_to_the_madness",
+    "name": "Method to the Madness",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:method_to_the_madness"
+  },
+  "monstrous_graft": {
+    "category": "Other Discoveries",
+    "description": "<p>The alchemist can replace up to four of his own amputated limbs with those of a monstrous beast of the same size category. If the grafted limb is an arm, the alchemist gains either a climb speed of 15 feet or a claw or slam natural attack that deals 1d6 points of damage (1d4 for a Small alchemist). If the grafted limb is a leg, the alchemist gains one of the following benefits: a +5 bonus to land speed, a swim speed of 15 feet, or a +5 bonus on Acrobatics checks when jumping. For each limb the alchemist replaces in this manner, he takes a -2 penalty to Wisdom as he loses his sense of self. Derros are immune to this penalty.</p>",
+    "id": "monstrous_graft",
+    "name": "Monstrous Graft",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:monstrous_graft"
+  },
+  "mummification": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist g1=\"preserve organs\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist has mastered preserving flesh and applied this knowledge to his own body, turning himself into an undead-like creature. After learning this discovery, the alchemist must perform a 30-day regimen of a special diet, rigorous exercise, and drinking a mildly poisonous alchemical tea. At the end of this regimen, he falls unconscious for 24 hours, then awakens as a \"living mummy.\" The alchemist's type does not change, but he becomes immune to cold, nonlethal damage, paralysis, and sleep.</p>",
+    "id": "mummification",
+    "level": 1,
+    "name": "Mummification",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:mummification"
+  },
+  "mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>This discovery gives the alchemist the mutagen class ability. (This discovery exists so alchemist archetypes who have variant mutagens, such as the mindchemist, can learn how to make standard mutagens.)</p>",
+    "id": "mutagen",
+    "name": "Mutagen",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:mutagen"
+  },
+  "nauseating_flesh": {
+    "category": "Poison Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist}</p>\n<p>The alchemist's body is suffused with poison. Any creature that bites, engulfs, or swallows the alchemist must make a Fortitude saving throw or be nauseated for 1d4 rounds. The alchemist with this discovery does not suffer the effect of the poison of his own nauseating flesh.</p>",
+    "id": "nauseating_flesh",
+    "name": "Nauseating Flesh",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:nauseating_flesh"
+  },
+  "neutralizing_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can choose to give it the potential to end certain ongoing effects instead of dealing damage. Each creature in the splash radius can attempt a new saving throw against any poison afflicting it and any ongoing conditions or ongoing acid, cold, electricity, fire, or sonic damage. (If an effect did not allow a saving throw, this bomb doesn't allow affected creatures to attempt one.) Success counts as one successful save toward ending poison and immediately ends other conditions. Exposed poison in the splash radius is also rendered harmless. A creature with poison abilities that is directly struck by the bomb finds those abilities useless for 1d4 rounds unless it succeeds at a Fortitude saving throw.</p>",
+    "id": "neutralizing_bomb",
+    "name": "Neutralizing Bomb",
+    "sources": [
+      {
+        "id": "healer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:neutralizing_bomb"
+  },
+  "nostrum": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{g1=infusion g1title=Discovery g1protocol=discovery}</p>\n<p>When the alchemist creates an infusion, he can mask a delayed poison within the mixture. A nostrum can contain only an ingested poison, and the save DC of the poison is reduced by 2. The poison takes effect a number of hours after being imbibed equal to the alchemist's Intelligence bonus (minimum 0) decided by the alchemist at the creation of the nostrum. The poison within a nostrum can be detected as normal by spells such as detect poison and similar abilities. Until the nostrum is consumed or destroyed, it continues to occupy one of the alchemist's daily extract slots.</p>",
+    "id": "nostrum",
+    "level": 1,
+    "name": "Nostrum",
+    "sources": [
+      {
+        "id": "heroes-of-the-high-court"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:nostrum"
+  },
+  "ooze_blight": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>A target hit by the alchemist's bomb loses the split special quality for 1d4 rounds. In addition, against creatures with the ooze type, this bomb deals untyped damage that bypasses all resistances.</p>",
+    "id": "ooze_blight",
+    "name": "Ooze Blight",
+    "sources": [
+      {
+        "id": "monster-hunter-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:ooze_blight"
+  },
+  "parasitic_twin": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{other=\"Taken the vestigial arm discovery twice\"}</p>\n<p>The alchemist's vestigial limbs are part of a parasitic twin on his torso, consisting of a head, a torso, and two arms (from the vestigial limb discovery). Normally, the twin is mostly recessed within the alchemist's body, with the visible arms acting like the vestigial arm discovery, though the alchemist can manifest or hide the twin as a standard action. The twin is helpless, fully subservient to the alchemist, and cannot be targeted or harmed. Once per day, if the alchemist succumbs to a mental effect that would make him unconscious, helpless, or not in control of his own actions (such as charm person, feeblemind, or hold person), he can reroll his saving throw; success means the twin absorbs the effect and the alchemist can ignore it. Using this ability sickens the alchemist for the duration of the absorbed effect (removing the effect from the twin ends the sickened condition), and he cannot use the twin's limbs during that time, though passive effects (such as from rings worn on the vestigial limbs) continue normally.</p>",
+    "id": "parasitic_twin",
+    "level": 1,
+    "name": "Parasitic Twin",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:parasitic_twin"
+  },
+  "penetrating_charge": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>A penetrating charge is a bomb specifically designed to disable locks and similar mechanisms, though not other means of sealing a door, a container, or other sorts of devices. As a full-round action, the alchemist can place a penetrating charge on a lock. Instead of dealing damage, the penetrating charge seeps into the mechanism and eats away at it, granting a +5 circumstance bonus on any subsequent Disable Device checks against the mechanism. A creature can spend 10 minutes and attempt an appropriate Craft check (DC 15) to fix the lock and remove this bonus.</p>",
+    "id": "penetrating_charge",
+    "name": "Penetrating Charge",
+    "sources": [
+      {
+        "id": "villain-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:penetrating_charge"
+  },
+  "phantom_limb": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>The alchemist can manifest a ghostly, incorporeal arm that juts out from his torso. This phantom limb does not grant the alchemist any extra attacks or actions per round, and it cannot hold or grab anything (including incorporeal objects). The alchemist may use his phantom limb to make a touch attack against a foe as a standard action, scraping away at the very fibers of the victim's soul. This attack deals 1d4 points of damage per alchemist level (Fortitude half). Creatures that are immune to incorporeal attacks are immune to this damage, but otherwise the damage bypasses all forms of damage reduction except DR/epic. The alchemist may suppress or activate this ability as a free action, and can use his phantom limb for a number of rounds per day equal to 3 + his Intelligence modifier (these rounds need not be consecutive).</p>",
+    "id": "phantom_limb",
+    "name": "Phantom Limb",
+    "sources": [
+      {
+        "id": "undead-slayer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:phantom_limb"
+  },
+  "pheromones": {
+    "category": "Other Discoveries",
+    "description": "<p>The alchemist exudes an imperceptible musk that grants him a permanent +3 competence bonus on Bluff, Diplomacy, and Intimidate checks.</p>",
+    "id": "pheromones",
+    "name": "Pheromones",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:pheromones"
+  },
+  "philosophers_stone": {
+    "category": "Grand Discoveries",
+    "description": "<p>The alchemist learns how to create a philosopher's stone, and can do so once per month at no cost. Creating a philosopher's stone takes 1 day of work.</p>",
+    "id": "philosophers_stone",
+    "name": "Philosopher's Stone",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:philosophers_stone"
+  },
+  "pickled_quasit": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist}</p>\n<p>The alchemist has learned how to seal a quasit in a bottle, which he can prepare for use as an extract. When the alchemist activates the extract, he throws the bottle at a square within 30 feet, releasing the quasit. The quasit is not under the alchemist's control, but is otherwise treated as a summoned creature. The quasit remains for 1 round per caster level, then collapses into its associated elements. If the alchemist has the infusion discovery, another character can use the infused specimen. Creating a pickled quasit requires a 4th-level extract.</p>",
+    "id": "pickled_quasit",
+    "name": "Pickled Quasit",
+    "sources": [
+      {
+        "id": "champions-of-corruption"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:pickled_quasit"
+  },
+  "plague_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist g1=\"smoke bomb\" g1title=Discovery g1protocol=discovery}</p>\n<p>The effects of the smoke created by an alchemist's bomb duplicates the effects of contagion instead of fog cloud, filling an area equal to twice the bomb's splash area for 1 round per level.</p>",
+    "id": "plague_bomb",
+    "level": 1,
+    "name": "Plague Bomb",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:plague_bomb"
+  },
+  "plague_vector": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=14 c=alchemist g1=\"smoke bomb~plague bomb\" g1title=Discoveries g1protocol=discovery}</p>\n<p>The effects of the alchemist's plague bomb operate as normal except for the following changes. The chosen disease's save DC is equal to 10 + 1/2 the alchemist's level + his Intelligence modifier. Any creatures affected by the chosen disease become vectors for it, spreading the disease to any creatures they come in physical contact with for a number of days equal to the alchemist's Intelligence modifier (minimum 1). The save DC to avoid contracting the disease from the vector is the same as the DC used for this discovery.</p>",
+    "id": "plague_vector",
+    "level": 2,
+    "name": "Plague Vector",
+    "sources": [
+      {
+        "id": "champions-of-corruption"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:plague_vector"
+  },
+  "poison_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist g1=\"smoke bomb\" g1title=Discovery g1protocol=discovery}</p>\n<p>The effects of the smoke created by an alchemist's bomb duplicates the effects of cloudkill instead of fog cloud, filling an area equal to twice the bomb's splash radius for 1 round per level.</p>",
+    "id": "poison_bomb",
+    "level": 1,
+    "name": "Poison Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:poison_bomb"
+  },
+  "poison_conversion": {
+    "category": "Poison Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>By spending 1 minute, the alchemist can convert 1 dose of poison from its current type (contact, ingested, inhaled, or injury) to another type. For example, the alchemist can convert a dose of Small centipede poison (an injury poison) to an inhaled poison. This process requires an alchemy lab.</p>",
+    "id": "poison_conversion",
+    "name": "Poison Conversion",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:poison_conversion"
+  },
+  "poison_touch": {
+    "category": "Grand Discoveries",
+    "description": "<p>The alchemist gains a poisonous touch, as if under the effects of a poison spell. He can suppress or activate this ability as a free action. The physical appearance of how the alchemist generates and delivers his poisonous touch varies from alchemist to alchemist.</p>",
+    "id": "poison_touch",
+    "name": "Poison Touch",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:poison_touch"
+  },
+  "poisoned_explosive": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist other=\"Poison use class feature\"}</p>\n<p>When an alchemist creates a bomb, he can apply a dose of contact or injury poison to it, as if applying poison to a weapon. If the poisoned bomb hits its target, the bomb deals damage as normal, but the target must also succeed at a saving throw against the poison or be affected by that poison. No other creatures are affected by the poison.</p>",
+    "id": "poisoned_explosive",
+    "name": "Poisoned Explosive",
+    "sources": [
+      {
+        "id": "dirty-tactics-toolbox"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:poisoned_explosive"
+  },
+  "precise_bombs": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>Whenever the alchemist throws a bomb, he can select a number of squares equal to his Intelligence modifier that are not affected by the splash damage from his bombs. If the bomb misses, this discovery has no effect.</p>",
+    "id": "precise_bombs",
+    "name": "Precise Bombs",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:precise_bombs"
+  },
+  "precise_poison": {
+    "category": "Poison Discoveries",
+    "description": "<p>The alchemist is adept at delivering poison to the most vulnerable areas of his targets. When the alchemist confirms a critical hit with a poisoned weapon, he increases the save DC of the poison by an amount equal to the weapon's critical multiplier.</p>",
+    "id": "precise_poison",
+    "name": "Precise Poison",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:precise_poison"
+  },
+  "preserve_organs": {
+    "category": "Other Discoveries",
+    "description": "<p>The alchemist learns how to preserve and protect his vital organs, reducing the chance of a mortal wound. When a critical hit or sneak attack is scored on the alchemist, there is a 25% chance that the critical hit or sneak attack is negated and damage is instead rolled normally. This does not stack with similar abilities that negate critical hits and sneak attacks (such as fortification armor). An alchemist can take this discovery up to three times; the effects stack, increasing this chance to 50% and then 75%.</p>",
+    "id": "preserve_organs",
+    "name": "Preserve Organs",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:preserve_organs"
+  },
+  "profane_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=8 c=alchemist}</p>\n<p>When the alchemist creates a bomb, he can choose to have it deal evil divine damage. Good creatures that take a direct hit from a profane bomb must succeed at a Fortitude save or be staggered on their next turn. Against a neutral creature, a profane bomb deals half damage, and the target is not affected by the bomb's staggering effect. A profane bomb has no effect against evil-aligned creatures.</p>",
+    "id": "profane_bomb",
+    "name": "Profane Bomb",
+    "sources": [
+      {
+        "id": "champions-of-corruption"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:profane_bomb"
+  },
+  "promethean_disciple": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>An alchemist with this discovery learns how to craft constructs by way of alchemical research rather than arcane magic. The alchemist gains Craft Construct as a bonus feat without needing to meet its requirements. The alchemist substitutes his number of ranks in Craft (alchemy) for his total caster level and must use Craft (alchemy) to create the construct. The DC to create the construct still increases for any necessary spells that the alchemist does not have access to. However, the alchemist can use extracts in place of spells as spell prerequisites.</p>",
+    "id": "promethean_disciple",
+    "name": "Promethean Disciple",
+    "sources": [
+      {
+        "id": "occult-adventures"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:promethean_disciple"
+  },
+  "psychoactive_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>Psychoactive bombs are mixed with neurotoxic extracts that heighten certain sensations. A creature struck by a psychoactive bomb takes a -1 penalty on saving throws against charm, emotion, fear, and pain effects, and the DC for Intimidate checks against the victim decreases by 2. This effect lasts for 1 hour per alchemist level. These penalties do not stack, and a creature can only be affected by a single psychoactive bomb at a time. A psychoactive bomb deals 1d6 fewer hit points of damage than normal.</p>",
+    "id": "psychoactive_bomb",
+    "name": "Psychoactive Bomb",
+    "sources": [
+      {
+        "id": "blood-of-the-moon"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:psychoactive_bomb"
+  },
+  "psychokinetic_tincture": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist}</p>\n<p>Once per day, the alchemist can concoct a foul-tasting tincture that harnesses the power of the spirit. By drinking this tincture as a standard action, the alchemist can invite the latent spirits in the area to surround him. The alchemist can channel one spirit for every 4 alchemist levels he possesses. Each spirit channeled this way grants the alchemist a +1 deflection bonus to AC as the spirits whirl around his body. As a standard action, the alchemist can launch one of these spirits toward a target as a ranged touch attack. Launching a spirit this way reduces this discovery's deflection bonus to AC by 1. As a launched spirit passes through its target's body, it emits a terrible wail heard only in the target's mind, causing the target to become frightened for 1 round per alchemist level (Will negates). This is a mind-affecting fear effect. A creature that successfully saves against the wail cannot be affected by this discovery again for 24 hours. The spirits whirl around the alchemist's body for 10 minutes per alchemist level, or until the alchemist has launched all of the spirits.</p>",
+    "id": "psychokinetic_tincture",
+    "name": "Psychokinetic Tincture",
+    "sources": [
+      {
+        "id": "undead-slayer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:psychokinetic_tincture"
+  },
+  "purging_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>The alchemist's mutagen combines ipecac and other purgative components. A non-alchemist who consumes the mutagen is nauseated for only 1 round, during which time her body rapidly metabolizes or expels all extant toxins, granting her an immediate second saving throw against each ongoing disease and poison currently affecting her. Each successful save counts as two consecutive successful saving throws for the purpose of curing the affliction. Any failed saving throws do not result in additional damage or other effects. A non-alchemist who consumes a second purging mutagen in a 24-hour period is instead nauseated for 1 hour. When an alchemist drinks the mutagen, he can choose whether or not to also be affected by this discovery in addition to the mutagen's other effects.</p>",
+    "id": "purging_mutagen",
+    "name": "Purging Mutagen",
+    "sources": [
+      {
+        "id": "healer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:purging_mutagen"
+  },
+  "rag_doll_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>(Goblin only) When the alchemist imbibes a mutagen, his body and bones become rubbery and easy to contort. The alchemist gains a bonus equal to his class level on Escape Artist checks, can squeeze through places as if he were one size category smaller, and can make a Reflex save (DC equal to 15 + 1 for every 10 feet fallen) to take half damage from falling. At 10th level, all falling damage is considered nonlethal damage, and the alchemist can squeeze through places as if he were two size categories smaller than his size while under the effects of this mutagen.</p>",
+    "id": "rag_doll_mutagen",
+    "name": "Rag Doll Mutagen",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:rag_doll_mutagen"
+  },
+  "ranged_baptism": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist}</p>\n<p>When the alchemist uses holy water as a splash weapon, any squares subject to its effects (including creatures affected by splash damage) or that contain creatures subject to its effects are also affected as if by consecrate, for a number of rounds equal to the alchemist's Intelligence modifier. Undead struck by holy water remain affected by the <em>consecrate</em> effect even if they leave the affected area.</p>",
+    "id": "ranged_baptism",
+    "name": "Ranged Baptism",
+    "sources": [
+      {
+        "id": "champions-of-purity"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:ranged_baptism"
+  },
+  "remedy_extract": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist}</p>\n<p>When the alchemist creates an extract, he can add one nonmagical equipment_&gt;alchemical remedy (such as an antitoxin) to it. When the extract is consumed, both the formula and the alchemical remedy take effect. The extract has a level 1 higher than normal. This discovery cannot be combined with other methods of combining multiple consumed items or extracts into one.</p>",
+    "id": "remedy_extract",
+    "name": "Remedy Extract",
+    "sources": [
+      {
+        "id": "healer-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:remedy_extract"
+  },
+  "rocket_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>(Goblin only) Alchemists with this discovery can prepare special rockets to deliver their bombs. Rocket bombs travel farther and explode bigger than normal bombs, but cannot target individual creatures. Rocket bombs explode in a 20-foot radius, and all creatures in that area take the alchemist's normal splash damage. The range increment on a rocket bomb is 50 feet. Rocket bombs cannot be used with the precise bombs or fast bombs discoveries.</p>",
+    "id": "rocket_bomb",
+    "name": "Rocket Bomb",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:rocket_bomb"
+  },
+  "sand_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can pack the casing full of sand that explodes in an abrasive cloud on impact. A creature that takes a direct hit from a sand bomb is blinded for 1 round, as are any creatures in the splash radius that fail a Reflex save (DC = 10 + half the alchemist's level + his Intelligence modifier).</p>",
+    "id": "sand_bomb",
+    "name": "Sand Bomb",
+    "sources": [
+      {
+        "id": "antihero-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:sand_bomb"
+  },
+  "sandstone_solution": {
+    "category": "Extract Discoveries",
+    "description": "<p>As a full-round action, the alchemist can convert any potion or extract into a solution that, when thrown or applied, solidifies sand or dirt to the hardness of stone for 1 hour, affecting an area with a radius of 10 feet × the level of the potion or extract. If this solution is thrown at or applied to stone, it instead causes a 5-foot cube of stone to become crumbly and soft for 1 minute, reducing its hardness by double the level of the potion or extract.</p>",
+    "id": "sandstone_solution",
+    "name": "Sandstone Solution",
+    "sources": [
+      {
+        "id": "people-of-the-sands"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:sandstone_solution"
+  },
+  "scrap_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>(Goblin only) When the alchemist creates a bomb, he can choose to have it explode into shards of shrapnel that deal piercing damage. A creature that takes a direct hit from a scrap bomb takes 1 point of bleed damage per die of bomb damage unless it succeeds at a Reflex save.</p>",
+    "id": "scrap_bomb",
+    "name": "Scrap Bomb",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:scrap_bomb"
+  },
+  "shock_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can choose to have it inflict electricity damage. Creatures that take a direct hit from a shock bomb are dazzled for 1d4 rounds.</p>",
+    "id": "shock_bomb",
+    "name": "Shock Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:shock_bomb"
+  },
+  "siege_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist g1=\"explosive bomb\" g1title=Discovery g1protocol=discovery}</p>\n<p>As a standard action, the alchemist infuses a single piece of ammunition on a loaded siege weapon with the power of his bomb. As long as the siege engine with this ammunition is fired before the start of the alchemist's next turn, the ammunition does damage normally, and also deals the damage of the alchemist's bomb. The splash radius of the bomb effect is 20 feet rather than 5 feet. Creatures that take the bomb's damage (either direct damage or splash damage), take 1d6 points of fire damage each round until the fire is extinguished. Extinguishing the flames is a full-round action that requires a Reflex save. Rolling on the ground provides the target with a +2 bonus on the save. Dousing the target with at least 2 gallons of water automatically extinguishes the flames.</p>",
+    "id": "siege_bomb",
+    "level": 1,
+    "name": "Siege Bomb",
+    "sources": [
+      {
+        "id": "ultimate-combat"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:siege_bomb"
+  },
+  "sleeper_agent": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist}</p>\n<p>The alchemist learns how to create a sleeper agent, whom he releases back into its original society none the wiser. The alchemist can create a sleeper agent in a ritual that takes 1 minute; the target must be unconscious for the ritual's duration. At any time during the next year, as long as he is within 1 mile of the sleeper agent, the alchemist can activate the agent's programming. When the sleeper agent is activated, treat her as if she were the target of a dominate person spell with a caster level equal to the alchemist's level at the time the sleeper agent was created. If the sleeper agent is killed or the <em>dominate person</em> effect's duration expires, the sleeper agent is permanently released from the alchemist's control. The alchemist can also release any sleeper agent as a free action. The alchemist can have one active sleeper agent for every 6 alchemist levels he possesses.</p>",
+    "id": "sleeper_agent",
+    "name": "Sleeper Agent",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:sleeper_agent"
+  },
+  "smoke_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can choose to have it create a cloud of thick smoke when it detonates. The cloud functions as fog cloud, filling an area equal to twice the bomb's splash radius for 1 round per level.</p>",
+    "id": "smoke_bomb",
+    "name": "Smoke Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:smoke_bomb"
+  },
+  "solid_ground": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>The alchemist launches an explosive paste bomb that bonds with any earthen surface. Each application of this paste deals no damage and affects a 5-foot-cube of dirt, loose soil, or stone, transmuting the earth for a number of minutes equal to the alchemist's level. Creatures cannot use burrow, earthmeld, or similar abilities (such as the meld into stone spell) while the ground remains transmuted in this way.</p>",
+    "id": "solid_ground",
+    "name": "Solid Ground",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:solid_ground"
+  },
+  "spell_knowledge": {
+    "category": "Other Discoveries",
+    "description": "<p>Your studies into how all things are interconnected have taught you to cast a very limited number of spells. Select a single spell from the spells_&gt;sorcerer/wizard spell list that is at least 2 levels lower than your highest-level extract known. You can prepare and cast this spell as an arcane spell. Preparing the spell uses up an extract slot 1 level higher than the spell's level. Your caster level is equal to your alchemist level, and your save DCs and concentration checks are Intelligence-based. You're considered to have this spell on your spell list for purposes of prerequisites, spell completion items, and spell trigger items. You may select this discovery more than once. Each time, it grants you access to another spell from the sorcerer/wizard spell list.</p>",
+    "id": "spell_knowledge",
+    "name": "Spell Knowledge",
+    "sources": [
+      {
+        "id": "cohorts-and-companions"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:spell_knowledge"
+  },
+  "splitting_mutagen": {
+    "category": "Mutagen Discoveries",
+    "description": "<p>::prereq{l=12 c=alchemist}</p>\n<p>Once per day while under the effects of his mutagen, the alchemist can split into two identical copies of himself as an immediate action after being damaged by a piercing or slashing weapon. Each copy has an ooze-like complexion, most often manifesting as a slimy sheen to his skin. The alchemist splits his current hit points evenly between the copies. The copies use the same statistics, share the same resources, and have identical equipment (except artifacts, which only one copy has). Similarly, if one of the copies expends a charge or daily use from a magic item that a copy has, the charge or daily use is expended from both copies. If one copy drops or gives away an item, the duplicate item disappears from the other copy as well. The two copies act independently and each one has a full set of actions. At the end of the alchemist's next turn, he selects one of the copies, which loses its ooze-like complexion as it becomes the alchemist; the other copy dissolves into a fine mist and dissipates. If one of the copies is destroyed before this happens, the remaining copy immediately becomes the alchemist, and he gains 1 permanent negative level. If both copies are destroyed simultaneously (such as from a fireball), both copies collapse into formless goo; the alchemist can only be restored to life via resurrection or similarly powerful magic.</p>",
+    "id": "splitting_mutagen",
+    "name": "Splitting Mutagen",
+    "sources": [
+      {
+        "id": "monster-hunter-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:splitting_mutagen"
+  },
+  "spontaneous_healing": {
+    "category": "Other Discoveries",
+    "description": "<p>The alchemist gains the ability to heal from wounds rapidly. As a free action once per round, he can heal 5 hit points as if he had the fast healing ability. He can heal 5 hit points per day in this manner for every 2 alchemist levels he possesses. If the alchemist falls unconscious because of hit point damage and he still has healing available from this ability, the ability activates automatically each round until he is conscious again or the ability is depleted for the day.</p>",
+    "id": "spontaneous_healing",
+    "name": "Spontaneous Healing",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:spontaneous_healing"
+  },
+  "sticky_bomb": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist}</p>\n<p>The effects of the alchemist's bombs are persistent and continue to damage creatures for 1 round after the initial damage. Creatures that take a direct hit from a sticky bomb take the splash damage 1 round later. Bombs that have effects that would normally occur 1 round later instead have those effects occur 2 rounds later.</p>",
+    "id": "sticky_bomb",
+    "name": "Sticky Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:sticky_bomb"
+  },
+  "sticky_poison": {
+    "category": "Poison Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>Any poison the alchemist creates is sticky - when the alchemist applies it to a weapon, the weapon remains poisoned for a number of strikes equal to the alchemist's Intelligence modifier.</p>",
+    "id": "sticky_poison",
+    "name": "Sticky Poison",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:sticky_poison"
+  },
+  "stink_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{g1=\"smoke bomb\" g1title=Discovery g1protocol=discovery}</p>\n<p>The effects of the smoke created by an alchemist's bomb can duplicate the effects of stinking cloud instead of fog cloud, filling an area equal to twice the bomb's splash radius for 1 round. An alchemist must possess the smoke bomb discovery before selecting this discovery.</p>",
+    "id": "stink_bomb",
+    "level": 1,
+    "name": "Stink Bomb",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:stink_bomb"
+  },
+  "strafe_bomb": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>The alchemist can throw bombs that splash in a 40-foot line rather than affecting a radius. The line starts at the alchemist and extends away from him in the direction he chooses. The alchemist designates one creature in the squares affected by the line to be the target of the bomb and makes his attack roll against that creature; all other squares in the line take splash damage. If the alchemist has the explosive bomb discovery and throws an explosive strafe bomb, the line of splash damage is 80 feet long instead of 40 feet.</p>",
+    "id": "strafe_bomb",
+    "name": "Strafe Bomb",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:strafe_bomb"
+  },
+  "substantiating_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist}</p>\n<p>Your bombs are infused with ectoplasm and a longing for life, lending ethereal creatures a measure of substance. You can throw a bomb that inflicts no damage but instead creates a 10-foot-radius cloud of fog that functions as fog cloud and lasts for 1 round per alchemist level. Incorporeal creatures that pass through this cloud become partially solid, taking half damage from nonmagic attacks and full damage from magic weapons, spells, and spell-like abilities. This effect lasts for the duration of the smoke cloud, even if the incorporeal creature moves outside the cloud's area. A creature affected by the cloud can attempt a Will saving throw to negate the substantiating effects of this bomb.</p>",
+    "id": "substantiating_bomb",
+    "name": "Substantiating Bomb",
+    "sources": [
+      {
+        "id": "distant-realms"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:substantiating_bomb"
+  },
+  "subsumed_spirit": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{g1=\"parasitic twin\" g1title=Discovery g1protocol=discovery}</p>\n<p>As the alchemist grows in power, his parasitic twin laps up a portion of his soul, like a dog feeding on its master's scraps. The alchemist's parasitic twin can now manifest or hide within the alchemist's torso as a move action. As a standard action, the alchemist can cause his manifested twin to babble, driving listeners insane. All creatures without the insanity special ability (although see below) that are within 60 feet of the alchemist must succeed at a Will save or be affected by confusion for 1 round per alchemist level. The alchemist can urge his parasitic twin to babble a number of times per day equal to 3 + the alchemist's Intelligence modifier. Creatures that successfully save can't be affected by this effect for 24 hours. The alchemist is immune to its sibling's babbling. This is a sonic, mind-affecting compulsion effect.</p>\n<p>;;;aside</p>\n<p>This discovery was presented in a section on the Derro who have a special ability called <strong>Madness</strong>, which is referenced by a separate discovery (method to the madness) in that same section. It is unclear if this discovery is supposed to be referring to that ability, rather than \"insanity\", which is possessed by the unrelated Great Old Ones and warped ones. Consult your GM if needed.</p>\n<p>;;;</p>",
+    "id": "subsumed_spirit",
+    "level": 2,
+    "name": "Subsumed Spirit",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:subsumed_spirit"
+  },
+  "sunlight_acclimation": {
+    "category": "Other Discoveries",
+    "description": "<p>Time spent in the bright light of day has partially inured the alchemist to its effects. When the alchemist would normally take Constitution damage as a result of vulnerability to sunlight, he can attempt a DC 11 Fortitude saving throw to negate the effects. The DC of this saving throw increases by 1 for each hour after the first spent in sunlight within the last 24 hours.</p>",
+    "id": "sunlight_acclimation",
+    "name": "Sunlight Acclimation",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:sunlight_acclimation"
+  },
+  "sunlight_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=10 c=alchemist g1=\"blinding bomb\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist can throw bombs that explode with a searing radiance equivalent to that of sunlight and that act as blinding bombs. Undead, fungi, molds, oozes, slimes, and creatures to which sunlight is harmful or unnatural take +2 damage per die from the bomb. Undead that are harmed by sunlight and that fail their saves against the bomb are staggered for 1 round.</p>",
+    "id": "sunlight_bomb",
+    "level": 1,
+    "name": "Sunlight Bomb",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:sunlight_bomb"
+  },
+  "syringe_stirge": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>As a full-round action, you can expend two daily uses of bombs to create a syringe stirge, a tiny construct primed with a bomb (if you have multiple types of bombs, you must select which type the syringe stirge carries when created). Undirected, they take no actions except to flock around you in your square and follow you as best they can. They can be attacked normally, but gain cover while occupying your square. As a swift action, you can order one of your syringe stirges to attack an enemy it can see. Once ordered to attack that enemy, the syringe stirge will continue to attack every round, attempting to attach and deliver its payload.</p>\n<p>A syringe stirge has all of the statistics of a stirge but lacks the blood drain ability. If it ends its turn attached to an opponent, it injects your bomb into the opponent's bloodstream, dealing damage as a direct hit plus the alchemist's Intelligence modifier (as the Throw Anything feat - this injection is a direct attack and doesn't deal splash damage). A syringe stirge dies immediately after injecting its bomb. A syringe stirge lasts for 1 minute per alchemist level or until destroyed; if it has not attached to an enemy before the end of its life span it and its bomb payload fall inert.</p>",
+    "id": "syringe_stirge",
+    "name": "Syringe Stirge",
+    "sources": [
+      {
+        "id": "cohorts-and-companions"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:syringe_stirge"
+  },
+  "tainted_infusion": {
+    "category": "Extract Discoveries",
+    "description": "<p>::prereq{g1=\"delayed bomb~infusion\" g1title=Discoveries g1protocol=discovery}</p>\n<p>The alchemist can mask murder behind beneficence. When preparing an extract with the infusion discovery, he can lace the extract with one of his bombs as long as the extract has a duration greater than instantaneous. If he chooses, the alchemist can reduce the duration of the extract to 1 round. As soon as the extract's duration expires, it detonates, dealing 150% of the alchemist's bomb damage to the drinker. This effect does not produce a splash radius. Producing a tainted extract consumes both an infusion slot and a daily bomb use.</p>",
+    "id": "tainted_infusion",
+    "level": 1,
+    "name": "Tainted Infusion",
+    "sources": [
+      {
+        "id": "champions-of-corruption"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:tainted_infusion"
+  },
+  "tanglefoot_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>A creature that takes a direct hit from a tanglefoot bomb must save against the bomb's DC or be entangled and glued to the floor as if it had failed its save against a tanglefoot bag. Creatures in the splash area that fail their saves are entangled but not glued to the floor; those who make this save are not entangled at all.</p>",
+    "id": "tanglefoot_bomb",
+    "name": "Tanglefoot Bomb",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:tanglefoot_bomb"
+  },
+  "tentacle": {
+    "category": "Other Discoveries",
+    "description": "<p>The alchemist gains a prehensile, arm-length tentacle on his body. The tentacle is fully under his control and cannot be concealed except with magic or bulky clothing. The tentacle does not give the alchemist any extra attacks or actions per round, though he can use it to make a tentacle attack (1d4 damage for a Medium alchemist, 1d3 damage for a Small one) with the grab ability. The tentacle can manipulate or hold items as well as the alchemist's original arms can (for example, allowing the alchemist to use one hand to wield a weapon, the tentacle to hold a potion, and the third hand to throw a bomb). Unlike an arm, the tentacle has no magic item slots.</p>",
+    "id": "tentacle",
+    "name": "Tentacle",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:tentacle"
+  },
+  "thorny_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>When the alchemist creates a bomb, he can choose to have it deal piercing damage. Thorny bombs count as magic weapons for the purpose of overcoming damage reduction.</p>",
+    "id": "thorny_bomb",
+    "name": "Thorny Bomb",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:thorny_bomb"
+  },
+  "true_mutagen": {
+    "category": "Grand Discoveries",
+    "description": "<p>::prereq{g1=\"grand mutagen\" g1title=Discovery g1protocol=discovery}</p>\n<p>The alchemist's mutagen now grants a +8 natural armor bonus and a +8 alchemical bonus to Strength, Dexterity, and Constitution. The alchemist takes a -2 penalty to his Intelligence, Wisdom, and Charisma as long as the mutagen persists.</p>",
+    "id": "true_mutagen",
+    "name": "True Mutagen",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:true_mutagen"
+  },
+  "tumor_familiar": {
+    "category": "Other Discoveries",
+    "description": "<p>The alchemist creates a Diminutive or Tiny tumor on his body, usually on his back or stomach. As a standard action, the alchemist can have the tumor detach itself from his body as a separate creature vaguely resembling a kind of animal suitable for a familiar (bat, cat, and so on) and move about as if it were an independent creature. The tumor can reattach itself to the alchemist as a standard action. The tumor has all the abilities of the animal it resembles (for example, a bat-like tumor can fly) and familiar abilities based on the alchemist's caster level (though some familiar abilities may be useless to an alchemist). The tumor acts as the alchemist's familiar whether attached or separated (providing a skill bonus, the Alertness feat, and so on). When attached to the alchemist, the tumor has fast healing 5. An alchemist's extracts and mutagens are considered spells for the purposes of familiar abilities like share spells and deliver touch spells. If a tumor familiar is lost or dies, it can be replaced 1 week later through a specialized procedure that costs 200 gp per alchemist level. The ritual takes 8 hours to complete.</p>",
+    "id": "tumor_familiar",
+    "name": "Tumor Familiar",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:tumor_familiar"
+  },
+  "underwater_demolition": {
+    "category": "Other Bomb Discoveries",
+    "description": "<p>The alchemist gains the ability to throw bombs underwater (normally, thrown weapons cannot be used underwater), including throwing from the air into the water. If the bomb travels through water, the range increment is reduced to 5 feet.</p>",
+    "id": "underwater_demolition",
+    "name": "Underwater Demolition",
+    "sources": [
+      {
+        "id": "advanced-race-guide"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:underwater_demolition"
+  },
+  "vestigial_arm": {
+    "category": "Other Discoveries",
+    "description": "<p>The alchemist gains a new arm (left or right) on his torso. The arm is fully under his control and cannot be concealed except with magic or bulky clothing. The arm does not give the alchemist any extra attacks or actions per round, though the arm can wield a weapon and make attacks as part of the alchemist's attack routine (using two-weapon fighting). The arm can manipulate or hold items as well as the alchemist's original arms (for example, allowing the alchemist to use one hand to wield a weapon, another hand to hold a potion, and the third hand to throw a bomb). The arm has its own \"hand\" and \"ring\" magic item slots (though the alchemist can still only wear two rings and two hand magic items at a time). An alchemist may take this discovery up to two times.</p>",
+    "id": "vestigial_arm",
+    "name": "Vestigial Arm",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:vestigial_arm"
+  },
+  "void_bomb": {
+    "category": "Primary Bomb Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>(Drow only) By combining the spores from strange fungi with slivers from extradimensional voids, some drow alchemists create bombs that cause bursts of gravity capable of crushing those inside. Void bombs deals 1d4 points of bludgeoning damage, plus 1d4 points of bludgeoning damage for every 2 alchemist levels beyond 1st, instead of 1d6. A creature hit by the bomb must succeed at a Reflex save against the bomb's DC. If it fails, it is knocked prone and can't get up for 1 round. If it succeeds, all of its movement speeds are reduced to 5 feet for 1 round. Other creatures within 5 feet of the bomb's target take no damage, but must succeed at a Reflex save against the bomb's DC or have all their movement speeds reduced to 5 feet for 1 round.</p>",
+    "id": "void_bomb",
+    "name": "Void Bomb",
+    "sources": [
+      {
+        "id": "monster-codex"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:void_bomb"
+  },
+  "volumizer": {
+    "category": "Extract Discoveries",
+    "description": "<p>The alchemist can use an extract slot of any level to create a reactive tablet that purifies water and doubles its volume. This works like purify food and drink for a maximum volume of water equal to 1 gallon for each level the alchemist has × the level of the extract slot the alchemist used to create the tablet. Additionally, if the alchemist has a receptacle of sufficient volume to gather the water, the tablet doubles the volume of pure water. The water volume increases over the course of 1 minute, but the effect stops before it can create significant water pressure on a container that's not large enough to hold the entire volume. An unused tablet remains usable until the next time the alchemist recovers extract slots.</p>",
+    "id": "volumizer",
+    "name": "Volumizer",
+    "sources": [
+      {
+        "id": "ultimate-wilderness"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:volumizer"
+  },
+  "webbed_extremities": {
+    "category": "Other Discoveries",
+    "description": "<p>An alchemist with this discovery grows membranes between his fingers and toes, greatly improving his movement underwater. The alchemist gains a +4 alchemical bonus on Swim checks and can take 10 on a Swim check even if distracted or endangered while swimming.</p>",
+    "id": "webbed_extremities",
+    "name": "Webbed Extremities",
+    "sources": [
+      {
+        "id": "pathfinder-123-the-flooded-cathedral"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:webbed_extremities"
+  },
+  "wet_coat": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=4 c=alchemist other=\"Aquatic subtype and water dependency special quality\"}</p>\n<p>An alchemist with this discovery has conditioned his body so that it never completely dries out when on land. He effectively becomes immune to any detrimental effects of his water dependency.</p>",
+    "id": "wet_coat",
+    "name": "Wet Coat",
+    "sources": [
+      {
+        "id": "pathfinder-123-the-flooded-cathedral"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:wet_coat"
+  },
+  "wings": {
+    "category": "Other Discoveries",
+    "description": "<p>::prereq{l=6 c=alchemist}</p>\n<p>The alchemist gains bat-like, bird-like, or insect-like functional wings, allowing him to fly as the fly spell for a number of minutes per day equal to his caster level. These minutes do not need to be consecutive, but they must be spent in 1-minute increments. An alchemist can select this discovery multiple times; each time he does so, he adds his caster level to the number of minutes per day that he can fly with the wings. This flight is an extraordinary ability.</p>",
+    "id": "wings",
+    "name": "Wings",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "uuid": "pfdata:alchemist-discovery:wings"
+  }
+}

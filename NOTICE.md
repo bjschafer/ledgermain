@@ -113,7 +113,7 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   entries are skipped, since the system pack's own race docs already carry
   them).
 
-### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent / occult-class / caster-class subsystem catalogs)
+### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent / occult-class / caster-class / martial-class subsystem catalogs)
 
 - Repo: `https://github.com/jasontankapps/pathfinder-data-1-e`
 - Pinned commit: `33f1b75b8f62b43c59b96eab6bebb45e37c29229`
@@ -158,7 +158,19 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     + `json/class_ability_bloodrager_bloodlines.json` into
     `RefData.sorcererBloodlines`/`bloodragerBloodlines` (the full published
     oracle/witch/shaman/sorcerer/bloodrager subsystem catalogs, issue #74
-    Phase 3c) —
+    Phase 3c);
+  - `json/class_ability_discoveries.json` (the full published alchemist-
+    discovery catalog, issue #74 Phase 3c — NOT `class_ability_arcane_discoveries.json`,
+    the wizard's separate Arcane Discoveries subsystem, unvendored) into
+    `RefData.alchemistDiscoveries`, `json/class_ability_ki_powers.json` and
+    `json/class_ability_style_strikes.json` (the Monk (Unchained) ki-power
+    and style-strike catalogs, issue #74 Phase 3c) into
+    `RefData.monkKiPowers`/`monkStyleStrikes`, `json/class_ability_orders.json`
+    (the cavalier/samurai order catalog, issue #74 Phase 3c — NOT
+    `class_ability_hellknight_orders.json`, the unrelated Hellknight order
+    chassis, unvendored) into `RefData.cavalierOrders`, and
+    `json/class_ability_aspects.json` (the full published shifter-aspect
+    catalog, issue #74 Phase 3c) into `RefData.shifterAspects` —
 
   see each type's doc comment (`@pf1/schema`). Code is GPL-3.0-or-later
   (never copied in, same clean-room posture as Sec.2a/2c); its

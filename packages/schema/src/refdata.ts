@@ -151,6 +151,16 @@ export interface RefData {
   sorcererBloodlines: Record<string, SorcererBloodline>;
   /** The full published bloodrager bloodline catalog (fourth-source dataset, issue #74 Phase 3c; see `BloodragerBloodline` doc comment). */
   bloodragerBloodlines: Record<string, BloodragerBloodline>;
+  /** The full published alchemist discovery catalog (fourth-source dataset, issue #74 Phase 3c; see `AlchemistDiscovery` doc comment). */
+  alchemistDiscoveries: Record<string, AlchemistDiscovery>;
+  /** The full published Monk (Unchained) ki-power catalog (fourth-source dataset, issue #74 Phase 3c; see `MonkKiPower` doc comment). */
+  monkKiPowers: Record<string, MonkKiPower>;
+  /** The full published Monk (Unchained) style-strike catalog (fourth-source dataset, issue #74 Phase 3c; see `MonkStyleStrike` doc comment). */
+  monkStyleStrikes: Record<string, MonkStyleStrike>;
+  /** The full published cavalier/samurai order catalog, far beyond the 8 hand-authored orders (fourth-source dataset, issue #74 Phase 3c; see `CavalierOrder` doc comment). */
+  cavalierOrders: Record<string, CavalierOrder>;
+  /** The full published shifter aspect catalog (fourth-source dataset, issue #74 Phase 3c; see `ShifterAspect` doc comment). */
+  shifterAspects: Record<string, ShifterAspect>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -1491,5 +1501,121 @@ export interface SorcererBloodline extends RefEntity {}
  * display-only.
  */
 export interface BloodragerBloodline extends RefEntity {}
+/* -------------------------------------------------- alchemist discoveries -- */
+
+/**
+ * A published alchemist discovery (issue #74 Phase 3c), same "catalog from
+ * data, mechanics as overlay" pattern `RagePower` documents. Sourced from
+ * the "Pf Data 1e" dataset's `json/class_ability_discoveries.json` — NOT
+ * `json/class_ability_arcane_discoveries.json` (the wizard's Arcane
+ * Discoveries subsystem, a different class feature; this app has no picker
+ * for it, so it stays unvendored).
+ *
+ * The full published catalog (168 entries after junk filtering) with prose
+ * only; live mechanics for the hand-verified core-plus-selected-splatbook
+ * subset remain in `@pf1/engine` `alchemist-discoveries.ts`'s
+ * `ALCHEMIST_DISCOVERIES` table, authoritative on any name collision (see
+ * that file's `mergedAlchemistDiscoveryCatalog`).
+ */
+export interface AlchemistDiscovery extends RefEntity {
+  /** Ability-type suffix as published — absent for most entries (most discoveries are (Ex)/passive with no suffix stated). */
+  nameSuffix?: string;
+  /** Grouping tag from the source, e.g. "Primary Bomb Discoveries", "Mutagen Discoveries", "Grand Discoveries". */
+  category?: string;
+  /**
+   * Same "small integer the source attaches to some entries, NOT a
+   * character-level requirement" shape as `RagePower.level` — see that
+   * field's doc comment. Carried through uninterpreted; any real "requires
+   * Nth alchemist level" prerequisite is prose inside `description`.
+   */
+  level?: number;
+}
+
+/* ---------------------------------------------------- monk ki powers -- */
+
+/**
+ * A published Monk (Unchained) ki power (issue #74 Phase 3c), same pattern
+ * as `RagePower`. Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_ki_powers.json`.
+ *
+ * The full published catalog (44 entries after junk filtering) with prose
+ * only; live mechanics for the hand-verified core-book subset remain in
+ * `@pf1/engine` `monk-ki-powers.ts`'s `MONK_KI_POWERS` table, authoritative
+ * on any name collision (see that file's `mergedMonkKiPowerCatalog`).
+ */
+export interface MonkKiPower extends RefEntity {
+  /** Ability-type suffix as published, e.g. "(Su)", "(Ex)" — absent for a minority of entries. */
+  nameSuffix?: string;
+  /**
+   * Same "small integer the source attaches to some entries, NOT a
+   * character-level requirement" shape as `RagePower.level` — see that
+   * field's doc comment (empirically confirmed again here: e.g.
+   * `cobra_breath`/`ki_volley`/`master_thought_koan` all carry `level: 1`
+   * despite being 12th/16th/12th-level-minimum powers per the published
+   * rules). Carried through uninterpreted; any real "requires Nth monk
+   * level" prerequisite is prose inside `description`.
+   */
+  level?: number;
+}
+
+/* ------------------------------------------------- monk style strikes -- */
+
+/**
+ * A published Monk (Unchained) style strike (issue #74 Phase 3c), same
+ * pattern as `RagePower`. Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_style_strikes.json`.
+ *
+ * The full published catalog (15 entries after junk filtering — this
+ * subsystem file carries no `category`/`level`/`compilationSources` at all,
+ * unlike most others) with prose only; live mechanics for the hand-
+ * verified table remain in `@pf1/engine` `monk-style-strikes.ts`'s
+ * `MONK_STYLE_STRIKES` table, authoritative on any name collision (see that
+ * file's `mergedMonkStyleStrikeCatalog`). All 15 hand-authored entries
+ * matched a vendored entry 1:1 — there is no vendored-only style strike.
+ */
+export type MonkStyleStrike = RefEntity;
+
+/* -------------------------------------------------------- orders -- */
+
+/**
+ * A published cavalier/samurai order (issue #74 Phase 3c). Sourced from the
+ * "Pf Data 1e" dataset's `json/class_ability_orders.json` — NOT
+ * `json/class_ability_hellknight_orders.json` (the Hellknight prestige
+ * class's own, unrelated, "order" chassis; out of scope here).
+ *
+ * The full published catalog (38 entries after junk filtering) — far more
+ * than the 8 hand-authored orders (the 6 Advanced Player's Guide cavalier
+ * orders plus the Ultimate Combat samurai-specific Warrior/Ronin orders) in
+ * `@pf1/engine` `cavalier-orders.ts`. This subsystem file carries no
+ * `category`/`level` metadata at all — an order's 2nd/8th/15th-level
+ * ability tiers live ENTIRELY inside the free-text `description` (headed
+ * "### Order Abilities" in the source markdown), unlike the structured
+ * `OrderAbility[]` the hand-authored table carries. A vendored-only order
+ * (30 of the 38) therefore resolves to prose display only — its abilities
+ * aren't broken out into the picker's structured tier view, see
+ * `@pf1/engine` `cavalier-orders.ts`'s `mergedOrderCatalog` doc comment for
+ * how the picker renders that case.
+ */
+export interface CavalierOrder extends RefEntity {
+  /** Grouping tag — absent for every entry in this file (kept for shape parity with `pfDataSourceRefs`-adjacent types; always undefined here). */
+  category?: string;
+}
+
+/* -------------------------------------------------------- shifter aspects -- */
+
+/**
+ * A published shifter aspect (issue #74 Phase 3c), same pattern as
+ * `RagePower`. Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_aspects.json`.
+ *
+ * The full published catalog (30 entries after junk filtering) with prose
+ * only; live mechanics for the hand-verified table remain in `@pf1/engine`
+ * `shifter-aspects.ts`'s `SHIFTER_ASPECTS` table, authoritative on any name
+ * collision (see that file's `mergedShifterAspectCatalog`). All 30
+ * hand-authored entries matched a vendored entry 1:1 — this file carries no
+ * `category`/`level` metadata at all (the minor/major form split lives
+ * entirely in prose).
+ */
+export type ShifterAspect = RefEntity;
 
 export type { SourceRef };

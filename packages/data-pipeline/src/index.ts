@@ -66,5 +66,10 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     shamanSpirits: readJson(dir, "shaman-spirits.json"),
     sorcererBloodlines: readJson(dir, "sorcerer-bloodlines.json"),
     bloodragerBloodlines: readJson(dir, "bloodrager-bloodlines.json"),
+    alchemistDiscoveries: readJson(dir, "alchemist-discoveries.json"),
+    monkKiPowers: readJson(dir, "monk-ki-powers.json"),
+    monkStyleStrikes: readJson(dir, "monk-style-strikes.json"),
+    cavalierOrders: readJson(dir, "cavalier-orders.json"),
+    shifterAspects: readJson(dir, "shifter-aspects.json"),
   };
 }
