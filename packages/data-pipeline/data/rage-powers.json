@@ -641,7 +641,7 @@
   },
   "elemental_stance": {
     "category": "Stance",
-    "description": "<p>When the barbarian adopts this stance, she chooses an energy type (acid, cold, electricity, or fire). Her melee attacks deal 1 additional point of damage of the chosen type. This damage increases to 1d6 points at 8th level. At 12th level, the barbarian's critical hits deal an additional 1d10 points of energy damage of the same type (2d10 if the weapon deals &amp;times;3 damage on a critical hit, 3d10 if the weapon deals &amp;times;4 damage on a critical hit). A barbarian must be at least 4th level to select this rage power.</p>",
+    "description": "<p>When the barbarian adopts this stance, she chooses an energy type (acid, cold, electricity, or fire). Her melee attacks deal 1 additional point of damage of the chosen type. This damage increases to 1d6 points at 8th level. At 12th level, the barbarian's critical hits deal an additional 1d10 points of energy damage of the same type (2d10 if the weapon deals ×3 damage on a critical hit, 3d10 if the weapon deals ×4 damage on a critical hit). A barbarian must be at least 4th level to select this rage power.</p>",
     "id": "elemental_stance",
     "name": "Elemental Stance",
     "nameSuffix": "(Su)",
@@ -1022,7 +1022,7 @@
   },
   "greater_beast_totem": {
     "category": "Totem",
-    "description": "<p>While <em>raging,</em> the barbarian gains the pounce special ability, allowing her to make a full attack at the end of a charge. In addition, the damage from her claws increases to 1d8 (1d6 if Small) and the claws deal &amp;times;3 damage on a critical hit. A barbarian must have the beast totem rage power to select this rage power. A barbarian must be at least 10th level to select this rage power.</p>",
+    "description": "<p>While <em>raging,</em> the barbarian gains the pounce special ability, allowing her to make a full attack at the end of a charge. In addition, the damage from her claws increases to 1d8 (1d6 if Small) and the claws deal ×3 damage on a critical hit. A barbarian must have the beast totem rage power to select this rage power. A barbarian must be at least 10th level to select this rage power.</p>",
     "id": "greater_beast_totem",
     "level": 2,
     "name": "Greater Beast Totem",
@@ -1172,7 +1172,7 @@
     "uuid": "pfdata:rage-power:greater_elemental_blood"
   },
   "greater_elemental_rage": {
-    "description": "<p>While <em>raging,</em> all of the barbarian's critical hits made with melee weapons deal an additional 1d10 points of energy damage (2d10 if the weapon deals &amp;times;3 damage on a critical hit, 3d10 if the weapon deals &amp;times;4 on a critical hit). The type of this damage is the same as the type chosen for the elemental rage power. A barbarian must have the elemental rage power to select this rage power. A barbarian must be at least 12th level to select this rage power.</p>",
+    "description": "<p>While <em>raging,</em> all of the barbarian's critical hits made with melee weapons deal an additional 1d10 points of energy damage (2d10 if the weapon deals ×3 damage on a critical hit, 3d10 if the weapon deals ×4 on a critical hit). The type of this damage is the same as the type chosen for the elemental rage power. A barbarian must have the elemental rage power to select this rage power. A barbarian must be at least 12th level to select this rage power.</p>",
     "id": "greater_elemental_rage",
     "level": 2,
     "name": "Greater Elemental Rage",
@@ -2066,7 +2066,7 @@
     "uuid": "pfdata:rage-power:lesser_undead_blood"
   },
   "lethal_accuracy": {
-    "description": "<p>When using her surprise accuracy rage power, the barbarian's critical multiplier for damage increases by 1 (a &amp;times;2 multiplier becomes &amp;times;3, a 19-20/&amp;times;2 multiplier becomes 19-20/&amp;times;3, a &amp;times;3 multiplier becomes &amp;times;4, and a &amp;times;4 multiplier becomes &amp;times;5). A barbarian must have the surprise accuracy and deadly accuracy rage powers and be 16th level before selecting this rage power.</p>",
+    "description": "<p>When using her surprise accuracy rage power, the barbarian's critical multiplier for damage increases by 1 (a ×2 multiplier becomes ×3, a 19-20/×2 multiplier becomes 19-20/×3, a ×3 multiplier becomes ×4, and a ×4 multiplier becomes ×5). A barbarian must have the surprise accuracy and deadly accuracy rage powers and be 16th level before selecting this rage power.</p>",
     "id": "lethal_accuracy",
     "level": 2,
     "name": "Lethal Accuracy",

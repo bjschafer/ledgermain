@@ -138,6 +138,47 @@ function resolveLinkDirectives(text: string): string {
   );
 }
 
+/**
+ * Named HTML character entities observed across the dataset's `json/*.json`
+ * source prose (accented Latin letters, typographic punctuation, `&times;`
+ * for a "x2"-style multiplier, ...) — the source embeds these LITERALLY
+ * rather than as raw Unicode, so decoding them back to a real character
+ * BEFORE `escapeHtml` runs is required; otherwise `escapeHtml`'s blind `&` ->
+ * `&amp;` re-escapes an already-valid entity into a broken one (e.g.
+ * `&mdash;` -> `&amp;mdash;`, which browsers render as the literal text
+ * "&mdash;" instead of an em dash). Covers every entity seen in the pinned
+ * clone as of the magus-arcana import (issue #74 Phase 3b); extend this map
+ * if a future subsystem's slice surfaces one not listed here.
+ */
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  copy: "©",
+  deg: "°",
+  emsp: " ",
+  shy: "­",
+  mdash: "—",
+  ndash: "–",
+  times: "×",
+  pi: "π",
+  dagger: "†",
+  Dagger: "‡",
+  szlig: "ß",
+  acirc: "â",
+  auml: "ä",
+  euml: "ë",
+  ouml: "ö",
+  uuml: "ü",
+  eacute: "é",
+  iacute: "í",
+  oacute: "ó",
+};
+
+function decodeNamedEntities(text: string): string {
+  return text.replace(/&([A-Za-z]+);/g, (m, name: string) => NAMED_ENTITIES[name] ?? m);
+}
+
 function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
@@ -150,10 +191,11 @@ function resolveFormattingDirectives(text: string): string {
     .replace(/@span\[([^\]]*)\](?:\{[^}]*\})?/g, "$1");
 }
 
-/** Inline-level conversion for one line/cell of source text: cross-refs, link/formatting directives, entity-escaping, then markdown bold/italic. */
+/** Inline-level conversion for one line/cell of source text: cross-refs, link/formatting directives, entity-decoding, entity-escaping, then markdown bold/italic. */
 function inlineToHtml(raw: string): string {
   let text = resolveCrossRefs(raw);
   text = resolveLinkDirectives(text);
+  text = decodeNamedEntities(text);
   text = escapeHtml(text);
   text = resolveFormattingDirectives(text);
   text = text.replace(/\*\*([^*]+?)\*\*/g, "<strong>$1</strong>");
@@ -205,24 +247,30 @@ function parseDirectiveProps(raw: string): Record<string, string | true> {
 
 /**
  * `::aff[Name]{prop="value" ...}` — a Foundry-style affliction/curse/poison
- * stat block (used by a handful of rage powers' curse chains). We aren't
- * trying to fully re-render the block's game-mechanical structure (onset,
- * frequency, cure DC, ...) — just surface its `eff`/`effStr` prose (the
- * human-readable effect description, which is what a player actually reads)
- * under the block's own name, so no data is silently dropped even though the
- * rendering is plainer than the source app's.
+ * stat block (used by a handful of rage powers' curse chains), OR the
+ * name-less `::aff{prop="value" ...}` variant (no `[Name]` at all — a
+ * natural-attack-embedded poison/disease/curse stat block, e.g. a witch hex
+ * granting a claw attack with a poison rider; ~600 occurrences across the
+ * full pinned dataset, first exercised by the witch-hex import, issue #74
+ * Phase 3b). We aren't trying to fully re-render the block's game-mechanical
+ * structure (onset, frequency, cure DC, ...) — just surface its
+ * `eff`/`effStr` prose (the human-readable effect description, which is what
+ * a player actually reads), labeled with the block's own name when one is
+ * given. The name-less variant has nothing to label it with (`type=` is a
+ * delivery-vector tag like "Claw-injury", not a display name), so it renders
+ * its prose unlabeled rather than fabricating one.
  */
-function renderAfflictionBlock(name: string, propsRaw: string): string {
+function renderAfflictionBlock(name: string | undefined, propsRaw: string): string {
   const props = parseDirectiveProps(propsRaw);
   const effText = props.eff ?? props.effStr;
+  const hasEffText = typeof effText === "string" && effText.trim() !== "";
+  if (name === undefined) return hasEffText ? `<p>${inlineToHtml(effText)}</p>` : "";
   const label = inlineToHtml(name);
-  if (typeof effText === "string" && effText.trim() !== "") {
-    return `<p><strong>${label}:</strong> ${inlineToHtml(effText)}</p>`;
-  }
+  if (hasEffText) return `<p><strong>${label}:</strong> ${inlineToHtml(effText)}</p>`;
   return `<p><strong>${label}</strong></p>`;
 }
 
-const AFFLICTION_BLOCK_RE = /^::aff\[([^\]]*)\]\{([^}]*)\}$/;
+const AFFLICTION_BLOCK_RE = /^::aff(?:\[([^\]]*)\])?\{([^}]*)\}$/;
 
 /** Split an entry's `description` LINE array into blank-line-delimited blocks. */
 function splitIntoBlocks(lines: string[]): string[][] {
@@ -245,7 +293,7 @@ function renderBlock(lines: string[]): string {
 
   if (lines.length === 1) {
     const aff = AFFLICTION_BLOCK_RE.exec(lines[0]!);
-    if (aff) return renderAfflictionBlock(aff[1]!, aff[2]!);
+    if (aff) return renderAfflictionBlock(aff[1], aff[2]!);
   }
 
   // Soft-wrapped continuation lines within one paragraph join with a space.

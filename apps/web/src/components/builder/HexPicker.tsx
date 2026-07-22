@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { WITCH_HEXES, WITCH_HEX_IDS, witchHexDC } from "@pf1/engine";
+import { mergedWitchHexCatalog, witchHexDC } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "../../model/witchHexes.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -24,23 +25,32 @@ interface HexPickerProps {
 const TIER_LABEL: Record<string, string> = { hex: "Hex", major: "Major Hex", grand: "Grand Hex" };
 
 /**
- * Witch hex selection (issue #65), mirroring `MagusArcanaPicker` — hexes are
- * NOT patron-scoped (unlike oracle revelations, which are mystery-scoped;
- * see `@pf1/engine` `witch-hexes.ts`'s doc comment), so this is a flat
- * picker over every hex the witch's current level makes at least soft-
- * available. A witch learns a new hex at 1st level and every even level
- * thereafter, plus one more per "Extra Hex" feat (see
- * `model/witchHexes.ts`'s budget math). Free-choice, never blocks past the
- * expected count — same hybrid-prereqs posture as `MagusArcanaPicker`.
+ * Witch hex selection (issue #65, full-catalog issue #74 Phase 3b), mirroring
+ * `MagusArcanaPicker`/`RagePowerPicker` — hexes are NOT patron-scoped (unlike
+ * oracle revelations, which are mystery-scoped; see `@pf1/engine`
+ * `witch-hexes.ts`'s doc comment), so this is a flat picker over every hex
+ * the witch's current level makes at least soft-available. A witch learns a
+ * new hex at 1st level and every even level thereafter, plus one more per
+ * "Extra Hex" feat (see `model/witchHexes.ts`'s budget math). Free-choice,
+ * never blocks past the expected count — same hybrid-prereqs posture as
+ * `MagusArcanaPicker`.
  *
  * Major hexes (10th level) and Grand hexes (18th level) are soft-filtered by
  * `minLevel` exactly like a base arcana's own higher minimum — below-level
- * hexes stay pickable, just annotated, never disabled. Advanced Player's
- * Guide hexes only — see `@pf1/engine` `witch-hexes.ts`'s scope note.
+ * hexes stay pickable, just annotated, never disabled.
+ *
+ * Browses the FULL published hex catalog (`mergedWitchHexCatalog` — every
+ * vendored entry, overlaid with the 27-entry hand-verified table on a name
+ * match), not just the hand-verified Advanced Player's Guide "core" slice.
+ * Every entry today is display-only (see `@pf1/engine` `witch-hexes.ts`'s
+ * doc comment for why), so the "M" badge convention (`RagePowerPicker`'s)
+ * never actually lights up yet — kept for when a future hex is promoted to a
+ * real Change, same posture as rage powers before issue #75.
  *
  * Picked hexes also show up in the sheet's Class Features list (tagged
  * "— Hex"), via `collectGrantedFeatures`/`resolveClassFeatures` in
- * `@pf1/engine` `archetypes.ts`.
+ * `@pf1/engine` `archetypes.ts` (through `resolveWitchHex`, which resolves
+ * BOTH a hand-authored and a vendored-only pick).
  */
 export function HexPicker({ doc, refData, update }: HexPickerProps) {
   const isWitch = doc.identity.classes.some((c) => c.tag === "witch");
@@ -52,16 +62,18 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
   const intMod = Math.floor((doc.abilities.int - 10) / 2);
   const dc = witchHexDC(level, intMod);
 
+  const catalog = useMemo(() => mergedWitchHexCatalog(refData), [refData]);
+
   const hexes = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return WITCH_HEX_IDS.map((id) => WITCH_HEXES[id]!)
+    return catalog
       .filter((h) => !q || h.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.minLevel - b.minLevel || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenWitchHexCount(doc);
   const expected = expectedWitchHexCount(doc, refData);
@@ -102,9 +114,11 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
         <>
           <p className="hint revelation-picker-hint">
             Pick hexes as you level (1st, 2nd, 4th, 6th, …; +1 per Extra Hex feat). Major hexes
-            unlock at 10th, Grand hexes at 18th — Advanced Player's Guide hexes only. Hex save DC
-            (where applicable): {dc > 0 ? dc : "10 + 1/2 level + Int mod"}. Free-choice — never
-            blocks past the expected count.
+            unlock at 10th, Grand hexes at 18th. Browses the full published catalog; entries marked{" "}
+            <span className="badge-modeled">M</span> carry a real, live mechanical effect — the rest
+            are prose-only. Hex save DC (where applicable):{" "}
+            {dc > 0 ? dc : "10 + 1/2 level + Int mod"}. Free-choice — never blocks past the expected
+            count.
           </p>
           <input
             className="search"
@@ -121,7 +135,18 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
                 <div key={h.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
                     <div className="pname">
-                      {h.name} <span className="tag-mystery">{TIER_LABEL[h.tier] ?? h.tier}</span>
+                      {h.name}
+                      {h.nameSuffix ? ` ${h.nameSuffix}` : ""}{" "}
+                      <span className="tag-mystery">{TIER_LABEL[h.tier] ?? h.tier}</span>
+                      {!h.displayOnly && (
+                        <span
+                          className="badge-modeled"
+                          title="Carries a real, live mechanical effect"
+                        >
+                          {" "}
+                          M
+                        </span>
+                      )}
                     </div>
                     <div className="preq">
                       <span className="desc-text">{h.summary}</span>
@@ -137,6 +162,7 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
                         ⚠ {n.text}
                       </div>
                     ))}
+                    {h.description ? <FeatureDescription html={h.description} /> : null}
                   </div>
                   <button
                     type="button"

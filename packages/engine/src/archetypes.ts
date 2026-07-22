@@ -30,7 +30,7 @@ import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { boldStareRiderSummary, MESMERIST_BOLD_STARES } from "./mesmerist-bold-stares.js";
 import { MESMERIST_TRICKS } from "./mesmerist-tricks.js";
-import { MAGUS_ARCANA } from "./magus-arcana.js";
+import { resolveMagusArcanum } from "./magus-arcana.js";
 import { NINJA_TRICKS } from "./ninja-tricks.js";
 import { MONK_KI_POWERS } from "./monk-ki-powers.js";
 import { MONK_STYLE_STRIKES } from "./monk-style-strikes.js";
@@ -43,7 +43,8 @@ import { PHRENIC_AMPLIFICATIONS } from "./phrenic-amplifications.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { resolveRagePower } from "./rage-powers.js";
 import { ROGUE_TALENTS } from "./rogue-talents.js";
-import { WITCH_HEXES } from "./witch-hexes.js";
+import { resolveWitchHex } from "./witch-hexes.js";
+import { resolveGeneralShamanHex } from "./shaman-hexes.js";
 import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
 import { INVESTIGATOR_TALENTS } from "./investigator-talents.js";
 import { VIGILANTE_SOCIAL_TALENTS, VIGILANTE_TALENTS } from "./vigilante-talents.js";
@@ -309,18 +310,20 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
-  // Magus arcana (issue #61) — hand-authored (see magus-arcana.ts), gated on
-  // actual magus levels the same way arcanist exploits are gated above. A
-  // non-magus with a stale `magusArcana` field gets nothing. Like exploits,
-  // base arcana carry no individual level gate HERE (the picker's own
-  // `minLevel` soft-filters what's offered — see `model/magusArcana.ts`);
-  // every chosen, recognized arcana id is granted at a flat display level of
-  // 3 (the earliest a magus has any arcana at all) so it groups sensibly
-  // rather than inventing a fake per-arcana level.
+  // Magus arcana (issue #61, vendored catalog #74 3b) — hand-authored table
+  // first, falling back to the vendored catalog for a vendored-only pick
+  // (see `magus-arcana.ts`'s `resolveMagusArcanum`), gated on actual magus
+  // levels the same way arcanist exploits are gated above. A non-magus with
+  // a stale `magusArcana` field gets nothing. Like exploits, base arcana
+  // carry no individual level gate HERE (the picker's own `minLevel`
+  // soft-filters what's offered — see `model/magusArcana.ts`); every chosen,
+  // recognized arcana id is granted at a flat display level of 3 (the
+  // earliest a magus has any arcana at all) so it groups sensibly rather
+  // than inventing a fake per-arcana level.
   const magusLevel = doc.identity.classes.find((c) => c.tag === "magus")?.level ?? 0;
   if (magusLevel > 0) {
     for (const arcanaId of doc.build.magusArcana ?? []) {
-      const arcana = MAGUS_ARCANA[arcanaId];
+      const arcana = resolveMagusArcanum(arcanaId, refData);
       if (!arcana) continue;
       out.push({
         classTag: "magus",
@@ -370,16 +373,18 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
-  // Witch hexes (issue #65) — hand-authored (see witch-hexes.ts), gated on
-  // actual witch levels the same way magus arcana is gated above. Unlike
-  // revelations, hexes are NOT patron-scoped (a witch's patron only grants
-  // bonus spells — see witch-patrons.ts) so every chosen, recognized hex id
-  // is granted regardless of `build.witchPatron`. Granted at a flat display
-  // level of 1, same rationale as exploits/arcana above.
+  // Witch hexes (issue #65, vendored catalog #74 3b) — hand-authored table
+  // first, falling back to the vendored catalog for a vendored-only pick
+  // (see `witch-hexes.ts`'s `resolveWitchHex`), gated on actual witch levels
+  // the same way magus arcana is gated above. Unlike revelations, hexes are
+  // NOT patron-scoped (a witch's patron only grants bonus spells — see
+  // witch-patrons.ts) so every chosen, recognized hex id is granted
+  // regardless of `build.witchPatron`. Granted at a flat display level of 1,
+  // same rationale as exploits/arcana above.
   const witchLevel = doc.identity.classes.find((c) => c.tag === "witch")?.level ?? 0;
   if (witchLevel > 0) {
     for (const hexId of doc.build.witchHexes ?? []) {
-      const hex = WITCH_HEXES[hexId];
+      const hex = resolveWitchHex(hexId, refData);
       if (!hex) continue;
       out.push({
         classTag: "witch",
@@ -530,13 +535,16 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
-  // Shaman spirit ability + hexes (issue #65) — hand-authored (see
-  // shaman-spirits.ts), gated on actual shaman levels AND a chosen spirit,
-  // same shape as oracle revelations above. The spirit's own 1st-level
-  // Spirit Ability is granted automatically (not a budgeted pick); hexes are
-  // filtered to the CURRENT spirit's own hex list, tolerating a leftover
-  // pick from a since-abandoned spirit the same way revelations tolerate a
-  // stale mystery.
+  // Shaman spirit ability + hexes (issue #65, general-hex catalog #74 3b) —
+  // hand-authored (see shaman-spirits.ts), gated on actual shaman levels AND
+  // a chosen spirit, same shape as oracle revelations above. The spirit's
+  // own 1st-level Spirit Ability is granted automatically (not a budgeted
+  // pick); hexes are either the CURRENT spirit's own hex list (tolerating a
+  // leftover pick from a since-abandoned spirit the same way revelations
+  // tolerate a stale mystery) or, when a picked id isn't spirit-scoped, the
+  // vendored GENERAL shaman-hex catalog (`resolveGeneralShamanHex` — ACG's
+  // own spirit-agnostic "Shaman Hexes" table, see `shaman-hexes.ts`), which
+  // has no spirit-scoping restriction.
   const shamanLevel = doc.identity.classes.find((c) => c.tag === "shaman")?.level ?? 0;
   if (shamanLevel > 0 && doc.build.shamanSpirit) {
     const spirit = SHAMAN_SPIRITS[doc.build.shamanSpirit];
@@ -556,19 +564,23 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
       });
       for (const hexId of doc.build.shamanHexes ?? []) {
         const hexDef = findShamanHex(hexId);
-        if (!hexDef || hexDef.id.split(":")[0] !== spirit.tag) continue;
+        const spiritHexDef = hexDef && hexDef.id.split(":")[0] === spirit.tag ? hexDef : undefined;
+        const generalHex = spiritHexDef ? undefined : resolveGeneralShamanHex(hexId, refData);
+        if (!spiritHexDef && !generalHex) continue;
+        const name = spiritHexDef?.name ?? generalHex!.name;
+        const detail = spiritHexDef?.summary ?? generalHex!.summary;
         out.push({
           classTag: "shaman",
           level: 1,
           grant: {
             level: 1,
-            uuid: `hex:${hexDef.id}`,
-            featureId: `hex:${hexDef.id}`,
-            name: hexDef.name,
+            uuid: `hex:${hexId}`,
+            featureId: `hex:${hexId}`,
+            name,
             resolved: true,
           },
           origin: { kind: "hex", label: "Hex" },
-          detail: hexDef.summary,
+          detail,
         });
       }
     }

@@ -167,7 +167,14 @@ export {
   ARCANIST_EXPLOIT_IDS,
   type ArcanistExploitDef,
 } from "./arcanist-exploits.js";
-export { MAGUS_ARCANA, MAGUS_ARCANA_IDS, type MagusArcanaDef } from "./magus-arcana.js";
+export {
+  MAGUS_ARCANA,
+  MAGUS_ARCANA_IDS,
+  resolveMagusArcanum,
+  mergedMagusArcanaCatalog,
+  type MagusArcanaDef,
+  type MergedMagusArcanaEntry,
+} from "./magus-arcana.js";
 export {
   ORACLE_MYSTERIES,
   ORACLE_MYSTERY_TAGS,
@@ -199,9 +206,17 @@ export {
   WITCH_HEX_IDS,
   hexesForTier,
   witchHexDC,
+  resolveWitchHex,
+  mergedWitchHexCatalog,
   type WitchHexDef,
   type WitchHexTier,
+  type MergedWitchHexEntry,
 } from "./witch-hexes.js";
+export {
+  mergedShamanHexCatalog,
+  resolveGeneralShamanHex,
+  type ShamanGeneralHexEntry,
+} from "./shaman-hexes.js";
 export {
   ALCHEMIST_DISCOVERIES,
   ALCHEMIST_DISCOVERY_IDS,

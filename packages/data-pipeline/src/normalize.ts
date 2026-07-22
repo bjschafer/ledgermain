@@ -10,16 +10,19 @@ import type {
   DruidDomain,
   Feat,
   Item,
+  MagusArcana,
   Race,
   RacialTrait,
   RagePower,
   RefData,
   RefDataMeta,
+  ShamanHex,
   Spell,
   SpellList,
   Subdomain,
   Trait,
   WeaponRef,
+  WitchHex,
   WizardSchool,
 } from "@pf1/schema";
 
@@ -60,7 +63,10 @@ import {
   resolveBloodlineSupplements,
   SUPPLEMENTAL_PRESTIGE_CLASSES,
 } from "./supplements.js";
+import { transformMagusArcana } from "./transform/magusArcana.js";
 import { transformRagePowers } from "./transform/ragePowers.js";
+import { transformShamanHexes } from "./transform/shamanHexes.js";
+import { transformWitchHexes } from "./transform/witchHexes.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { readPfDataDictionary } from "./util/pfdata.js";
@@ -546,6 +552,21 @@ export function normalize(opts: NormalizeOptions): {
   );
   const ragePowers: RagePower[] = transformRagePowers(ragePowerDict);
 
+  // --- witch hexes / general shaman hexes / magus arcana (fourth-party
+  // dataset, issue #74 Phase 3b — same posture as rage powers above) --------
+  const witchHexDict = readPfDataDictionary(join(opts.pfDataJsonDir, "class_ability_hexes.json"));
+  const hexes: WitchHex[] = transformWitchHexes(witchHexDict);
+
+  const shamanHexDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_shaman_hexes.json"),
+  );
+  const shamanHexes: ShamanHex[] = transformShamanHexes(shamanHexDict);
+
+  const magusArcanaDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_magus_arcana.json"),
+  );
+  const magusArcana: MagusArcana[] = transformMagusArcana(magusArcanaDict);
+
   const counts = {
     races: races.length,
     racialTraits: racialTraits.length,
@@ -568,6 +589,9 @@ export function normalize(opts: NormalizeOptions): {
     druidDomains: druidDomains.length,
     wizardSchools: wizardSchools.length,
     ragePowers: ragePowers.length,
+    hexes: hexes.length,
+    shamanHexes: shamanHexes.length,
+    magusArcana: magusArcana.length,
   };
 
   const meta: RefDataMeta = {
@@ -611,6 +635,9 @@ export function normalize(opts: NormalizeOptions): {
     druidDomains: byId(druidDomains),
     wizardSchools: byId(wizardSchools),
     ragePowers: byId(ragePowers),
+    hexes: byId(hexes),
+    shamanHexes: byId(shamanHexes),
+    magusArcana: byId(magusArcana),
   };
 
   return { refData, contentVersion };

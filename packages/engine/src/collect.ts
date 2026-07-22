@@ -21,7 +21,7 @@ import { FAMILIARS } from "./familiars.js";
 import { featNameSlug } from "./feat-effects.js";
 import { resolveFeatEffect } from "./feat-effects-resolve.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
-import { MAGUS_ARCANA } from "./magus-arcana.js";
+import { resolveMagusArcanum } from "./magus-arcana.js";
 import { mediumSpiritBonus, MEDIUM_SPIRITS } from "./medium-spirits.js";
 import { OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import { ORACLE_CURSES } from "./oracle-curses.js";
@@ -34,7 +34,7 @@ import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
 import { raceGrantsFlexibleAbility, SKILL_ABILITY, weaponTrainingBonus } from "./tables.js";
 import { normalizeWeaponGroup } from "./weapon-groups.js";
-import { WITCH_HEXES } from "./witch-hexes.js";
+import { resolveWitchHex } from "./witch-hexes.js";
 
 /** A {@link TypedModifier} tagged with what it targets. */
 export interface CollectedModifier extends TypedModifier {
@@ -478,18 +478,19 @@ export function collectModifiers(
     }
   }
 
-  // --- magus arcana (build choice, issue #61) -------------------------------
-  // Arcana ids are hand-authored clean-room content (not in the vendored
-  // Foundry data pack — see `@pf1/engine` `magus-arcana.ts`), same posture as
-  // `traits.ts`/arcanist exploits above. Gated on the character actually
-  // having magus levels. Every base arcana is `displayOnly` with `changes: []`
-  // today (see that file's doc comment), so this loop currently contributes
-  // no numeric modifiers — wired the same way for a future arcana with a real
-  // unconditional Change to work for free.
+  // --- magus arcana (build choice, issue #61, vendored catalog #74 3b) -----
+  // Arcana ids resolve through the hand-authored table first, falling back
+  // to the vendored catalog (`RefData.magusArcana`) for a vendored-only pick
+  // — see `@pf1/engine` `magus-arcana.ts`'s `resolveMagusArcanum`. Gated on
+  // the character actually having magus levels. Every base arcana is
+  // `displayOnly` with `changes: []` today (see that file's doc comment), so
+  // this loop currently contributes no numeric modifiers — wired the same
+  // way for a future arcana with a real unconditional Change to work for
+  // free.
   const magusLevel = doc.identity.classes.find((c) => c.tag === "magus")?.level ?? 0;
   if (magusLevel > 0) {
     for (const arcanaId of doc.build.magusArcana ?? []) {
-      const arcana = MAGUS_ARCANA[arcanaId];
+      const arcana = resolveMagusArcanum(arcanaId, refData);
       if (!arcana) continue;
       for (const ch of arcana.changes) {
         if (!gateOpen(ch)) continue;
@@ -515,19 +516,20 @@ export function collectModifiers(
     }
   }
 
-  // --- witch hexes (build choice, issue #65) --------------------------------
-  // Hex ids are hand-authored clean-room content (not in the vendored Foundry
-  // data pack — see `@pf1/engine` `witch-hexes.ts`), same posture as magus
-  // arcana above. Gated on the character actually having witch levels. Every
-  // hex is `displayOnly` with `changes: []` today (see that file's doc
-  // comment — a few grant a passive fly speed or a toggleable ally buff, both
-  // out of this loop's scope, see `witch-hexes.ts`), so this loop currently
-  // contributes no numeric modifiers — wired the same way for a future hex
-  // with a real unconditional Change to work for free.
+  // --- witch hexes (build choice, issue #65, vendored catalog #74 3b) ------
+  // Hex ids resolve through the hand-authored table first, falling back to
+  // the vendored catalog (`RefData.hexes`) for a vendored-only pick — see
+  // `@pf1/engine` `witch-hexes.ts`'s `resolveWitchHex`. Gated on the
+  // character actually having witch levels. Every hex is `displayOnly` with
+  // `changes: []` today (see that file's doc comment — a few grant a passive
+  // fly speed or a toggleable ally buff, both out of this loop's scope, see
+  // `witch-hexes.ts`), so this loop currently contributes no numeric
+  // modifiers — wired the same way for a future hex with a real
+  // unconditional Change to work for free.
   const witchLevel = doc.identity.classes.find((c) => c.tag === "witch")?.level ?? 0;
   if (witchLevel > 0) {
     for (const hexId of doc.build.witchHexes ?? []) {
-      const hex = WITCH_HEXES[hexId];
+      const hex = resolveWitchHex(hexId, refData);
       if (!hex) continue;
       for (const ch of hex.changes) {
         if (!gateOpen(ch)) continue;

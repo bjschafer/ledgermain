@@ -92,7 +92,8 @@ export const PF_CONTENT_SHA = "c66bf333cafc451d817ead660473dd01d9846fb3";
  * Fourth pinned source: "Pf Data 1e", a flat-JSON dictionary dataset (one file
  * per subsystem under `json/`, each a slug-keyed dictionary of entries) that
  * fills gaps neither the Foundry system nor PF1 Content ship as structured
- * data — starting with the full rage-power catalog (issue #74 Phase 3a).
+ * data — starting with the full rage-power catalog (issue #74 Phase 3a), then
+ * the witch-hex, general shaman-hex, and magus-arcana catalogs (Phase 3b).
  * Single-maintainer repo, so pin like the others: exact commit, never a
  * branch.
  */

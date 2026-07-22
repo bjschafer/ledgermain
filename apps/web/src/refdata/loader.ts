@@ -48,6 +48,9 @@ async function fetchAll(): Promise<RefData> {
     druidDomains,
     wizardSchools,
     ragePowers,
+    hexes,
+    shamanHexes,
+    magusArcana,
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
@@ -72,6 +75,9 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["druidDomains"]>("druid-domains.json"),
     getJson<RefData["wizardSchools"]>("wizard-schools.json"),
     getJson<RefData["ragePowers"]>("rage-powers.json"),
+    getJson<RefData["hexes"]>("hexes.json"),
+    getJson<RefData["shamanHexes"]>("shaman-hexes.json"),
+    getJson<RefData["magusArcana"]>("magus-arcana.json"),
   ]);
   return {
     meta,
@@ -97,5 +103,8 @@ async function fetchAll(): Promise<RefData> {
     druidDomains,
     wizardSchools,
     ragePowers,
+    hexes,
+    shamanHexes,
+    magusArcana,
   };
 }
