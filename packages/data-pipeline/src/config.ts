@@ -67,7 +67,15 @@ export const SYSTEM_VERSION = "11.11";
  * `vigilanteSocialTalents`/`vigilante-social-talents.json`,
  * `arcanistExploits`/`arcanist-exploits.json`,
  * `investigatorTalents`/`investigator-talents.json`, and
- * `kineticWildTalents`/`kinetic-wild-talents.json`.
+ * `kineticWildTalents`/`kinetic-wild-talents.json`. Issue #74 Phase 3c adds
+ * six more "Pf Data 1e" subsystem catalogs on top of this same version —
+ * `oracleMysteries`/`oracle-mysteries.json`, `oracleCurses`/
+ * `oracle-curses.json`, `witchPatrons`/`witch-patrons.json`,
+ * `shamanSpirits`/`shaman-spirits.json`, `sorcererBloodlines`/
+ * `sorcerer-bloodlines.json`, and `bloodragerBloodlines`/
+ * `bloodrager-bloodlines.json` — the version bump for this wave (and its
+ * sibling Phase 3c waves) happens once, together, in a later integration
+ * commit rather than per-wave.
  */
 export const SCHEMA_VERSION = 12;
 

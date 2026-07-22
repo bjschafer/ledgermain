@@ -421,7 +421,7 @@
   },
   "combat_swipe": {
     "category": "R_Combat Talents",
-    "description": "<p>A rogue who selects this talent gains Improved Steal as a bonus feat.</p>\n<p>:::elephant</p>\n<p>This talent does not exist.</p>\n<p>:::</p>",
+    "description": "<p>A rogue who selects this talent gains Improved Steal as a bonus feat.</p>\n<p>This talent does not exist.</p>",
     "id": "combat_swipe",
     "name": "Combat Swipe",
     "sources": [
@@ -437,7 +437,7 @@
   },
   "combat_swipe_unchained_rogue": {
     "category": "UR_Combat Talents",
-    "description": "<p>A rogue who selects this talent gains Improved Steal as a bonus feat. At 6th level, she is treated as if she met all the prerequisites for Greater Steal (although she must take the feat as normal).</p>\n<p>:::elephant</p>\n<p>This talent does not exist.</p>\n<p>:::</p>",
+    "description": "<p>A rogue who selects this talent gains Improved Steal as a bonus feat. At 6th level, she is treated as if she met all the prerequisites for Greater Steal (although she must take the feat as normal).</p>\n<p>This talent does not exist.</p>",
     "id": "combat_swipe_unchained_rogue",
     "name": "Combat Swipe (Unchained Rogue)",
     "sources": [

@@ -282,6 +282,132 @@ function renderAfflictionBlock(name: string | undefined, propsRaw: string): stri
 
 const AFFLICTION_BLOCK_RE = /^::aff(?:\[([^\]]*)\])?\{([^}]*)\}$/;
 
+/**
+ * `::h3[Text]{...props}` — a sub-heading (e.g. a sorcerer bloodline's
+ * "Wildblooded Mutation" variant, a bloodrager bloodline's alternate form).
+ * We don't model the variant structurally, just render its heading as a bold
+ * paragraph so it doesn't leak raw directive syntax into the prose.
+ */
+const H3_DIRECTIVE_RE = /^::h3\[([^\]]*)\](?:\{[^}]*\})?$/;
+
+/**
+ * `::list[Label]{... all="A~B~C"}` — a tilde-separated named list (e.g. a
+ * bloodrager bloodline's "Bonus Feats"). Renders as a labeled, comma-joined
+ * line; falls back to just the label if the source omits `all`.
+ */
+const LIST_DIRECTIVE_RE = /^::list\[([^\]]*)\]\{([^}]*)\}$/;
+
+function renderListDirective(label: string, propsRaw: string): string {
+  const props = parseDirectiveProps(propsRaw);
+  const all = typeof props.all === "string" ? props.all : undefined;
+  const labelHtml = inlineToHtml(label);
+  if (!all) return `<p><strong>${labelHtml}</strong></p>`;
+  const items = all
+    .split("~")
+    .map((s) => inlineToHtml(s))
+    .join(", ");
+  return `<p><strong>${labelHtml}:</strong> ${items}</p>`;
+}
+
+/**
+ * `::ab[Name]{l=N icon=... <kind>="text" impNN="text" usage="..."}` — a
+ * bloodrager bloodline power/ability stat block (`icon`/`useF`/`useInc`/
+ * `useMod` are non-textual metadata this reader ignores). `<kind>` is
+ * whichever action-type key the source used (`passive`/`immediate`/
+ * `standard`/`swift`/`free`/`ability`) holding the actual ability text;
+ * `impNN` keys are level-gated improvements, folded in as "At Nth level: ..."
+ * sentences. A "Bonus Spells by Bloodrager Level"-style entry has no `<kind>`
+ * text at all, only level-keyed spell names (`s7`/`s10`/...) — rendered as a
+ * level list instead.
+ */
+const AB_DIRECTIVE_RE = /^::ab\[([^\]]*)\]\{([^}]*)\}$/;
+const AB_KIND_KEYS = [
+  "passive",
+  "immediate",
+  "standard",
+  "swift",
+  "free",
+  "ability",
+  "full",
+  "reaction",
+] as const;
+
+function ordinalSuffix(n: number): string {
+  if (n % 100 >= 11 && n % 100 <= 13) return "th";
+  switch (n % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
+function renderAbDirective(name: string, propsRaw: string): string {
+  const props = parseDirectiveProps(propsRaw);
+  const nameHtml = inlineToHtml(name);
+
+  let mainText: string | undefined;
+  for (const key of AB_KIND_KEYS) {
+    const v = props[key];
+    if (typeof v === "string") {
+      mainText = v;
+      break;
+    }
+  }
+
+  if (mainText === undefined) {
+    const levelEntries = Object.entries(props)
+      .filter((e): e is [string, string] => /^s\d+$/.test(e[0]) && typeof e[1] === "string")
+      .map(([k, v]) => ({ level: Number(k.slice(1)), text: v }))
+      .sort((a, b) => a.level - b.level);
+    if (levelEntries.length === 0) return `<p><strong>${nameHtml}</strong></p>`;
+    const items = levelEntries.map((e) => `Level ${e.level}: ${inlineToHtml(e.text)}`).join("; ");
+    return `<p><strong>${nameHtml}:</strong> ${items}</p>`;
+  }
+
+  const level = typeof props.l === "string" ? props.l : undefined;
+  let text = inlineToHtml(mainText);
+
+  const improvements = Object.entries(props)
+    .filter((e): e is [string, string] => /^imp\d+$/.test(e[0]) && typeof e[1] === "string")
+    .map(([k, v]) => ({ level: Number(k.slice(3)), text: v }))
+    .sort((a, b) => a.level - b.level);
+  for (const imp of improvements) {
+    text += ` At ${imp.level}${ordinalSuffix(imp.level)} level: ${inlineToHtml(imp.text)}`;
+  }
+  if (typeof props.usage === "string") text += ` (${inlineToHtml(props.usage)})`;
+
+  const label = level ? `${nameHtml} (Level ${level})` : nameHtml;
+  return `<p><strong>${label}:</strong> ${text}</p>`;
+}
+
+/**
+ * Strip the dataset's blockquote (`>`) and fenced-note (`:::label` / `:::`)
+ * markup, which this reader doesn't render as a distinct visual block —
+ * converting each to plain prose (or a paragraph break, for a bare `>`
+ * continuation/fence line) so the surrounding text still reads cleanly
+ * instead of leaking raw markup. First exercised by the sorcerer/bloodrager
+ * bloodline and shaman-spirit imports (issue #74 Phase 3c), whose "menu of
+ * named powers" sections are blockquoted rather than plain paragraphs.
+ */
+function stripBlockLevelMarkers(lines: string[]): string[] {
+  return lines.map((line) => {
+    if (line.trim().startsWith(":::")) return "";
+    // A `‹SOURCE ...›` citation embedded mid-prose (not just as the entry's
+    // OWN leading citation, already handled by `pfDataBodyLines`) — e.g. a
+    // nested variant/errata block citing its own book. Blanked rather than
+    // left to run into the following line (see `pfDataBodyLines`'s doc
+    // comment on why these lines carry no blank separator of their own).
+    if (SOURCE_LINE_RE.test(line.trim())) return "";
+    const bq = /^>[ \t]?(.*)$/.exec(line);
+    return bq ? bq[1]! : line;
+  });
+}
+
 /** Split an entry's `description` LINE array into blank-line-delimited blocks. */
 function splitIntoBlocks(lines: string[]): string[][] {
   const blocks: string[][] = [];
@@ -298,12 +424,29 @@ function splitIntoBlocks(lines: string[]): string[][] {
   return blocks;
 }
 
+/**
+ * An inline (non-leading, see `pfDataBodyLines` for the leading case) markdown
+ * header — a section divider like "### Revelations"/"### Bloodline Powers"
+ * appearing partway through an entry's prose, first seen in the oracle-
+ * mystery/bloodline imports (issue #74 Phase 3c). Rendered as a bold
+ * paragraph rather than left as literal "###" text.
+ */
+const INLINE_HEADER_RE = /^#{2,4}\s+(.+)$/;
+
 function renderBlock(lines: string[]): string {
   if (lines.every(isTableRow)) return renderTable(lines);
 
   if (lines.length === 1) {
     const aff = AFFLICTION_BLOCK_RE.exec(lines[0]!);
     if (aff) return renderAfflictionBlock(aff[1], aff[2]!);
+    const h3 = H3_DIRECTIVE_RE.exec(lines[0]!);
+    if (h3) return `<p><strong>${inlineToHtml(h3[1]!)}</strong></p>`;
+    const list = LIST_DIRECTIVE_RE.exec(lines[0]!);
+    if (list) return renderListDirective(list[1]!, list[2]!);
+    const ab = AB_DIRECTIVE_RE.exec(lines[0]!);
+    if (ab) return renderAbDirective(ab[1]!, ab[2]!);
+    const header = INLINE_HEADER_RE.exec(lines[0]!.trim());
+    if (header) return `<p><strong>${inlineToHtml(header[1]!)}</strong></p>`;
   }
 
   // Soft-wrapped continuation lines within one paragraph join with a space.
@@ -319,7 +462,7 @@ function renderBlock(lines: string[]): string {
  * equivalent, markdown bold/italic converted, GFM tables rendered.
  */
 export function pfDataDescriptionToHtml(lines: string[]): string {
-  return splitIntoBlocks(lines)
+  return splitIntoBlocks(stripBlockLevelMarkers(lines))
     .map(renderBlock)
     .filter((html) => html !== "")
     .join("\n");

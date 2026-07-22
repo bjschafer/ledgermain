@@ -1,0 +1,453 @@
+{
+  "aboleth": {
+    "description": "<p><strong>Aboleth:</strong> Your mind is marked by aboleth tampering, either as a result of a close encounter with one of these creatures while you were a child, or even through an ancestor, close family member, or one of your sisters or brothers in faith - this associate's interaction with the aboleths may be all that it takes to infect you.</p>\n<p><strong>Penalty:</strong> You take a -2 penalty on saving throws against mind-affecting effects.</p>\n<p><strong>Benefit:</strong> Add charm person and hypnotism to your list of 1st-level oracle spells known.</p>\n<p><strong>At 5th Level:</strong> Add minor image to your list of 2nd-level oracle spells known.</p>\n<p><strong>At 10th Level:</strong> Add modify memory to your list of 4th-level oracle spells known.</p>\n<p><strong>At 15th Level:</strong> Add veil to your list of 6th-level oracle spells known.</p>",
+    "id": "aboleth",
+    "name": "Aboleth",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:aboleth"
+  },
+  "acursed": {
+    "description": "<p><strong>Acursed:</strong> You are cursed with misfortune and sorrow.</p>\n<p><strong>Penalty:</strong> You cannot gain benefit from morale bonuses.</p>\n<p><strong>Benefit:</strong> You gain a +4 bonus to all saving throws against curse effects.</p>\n<p><strong>At 5th Level:</strong> Add ill omen to your list of spells known.</p>\n<p><strong>At 10th Level:</strong> Add greater brand to your list of spells known.</p>\n<p><strong>At 15th Level:</strong> You are immune to curse effects except for your own oracle curse.</p>",
+    "id": "acursed",
+    "name": "Acursed",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:acursed"
+  },
+  "blackened": {
+    "description": "<p><strong>Blackened:</strong> Your hands and forearms are shriveled and blackened, as if you had plunged your arms into a blazing fire, and your thin, papery skin is sensitive to the touch.</p>\n<p><strong>Penalty:</strong> You take a -4 penalty on weapon attack rolls.</p>\n<p><strong>Benefit:</strong> Add burning hands to your list of spells known.</p>\n<p><strong>At 5th Level:</strong> Add scorching ray and flaming sphere to your list of spells known.</p>\n<p><strong>At 10th Level:</strong> Add wall of fire to your list of spells known and your penalty on weapon attack rolls is reduced to -2.</p>\n<p><strong>At 15th Level:</strong> Add delayed blast fireball to your list of spells known.</p>",
+    "id": "blackened",
+    "name": "Blackened",
+    "sources": [
+      {
+        "id": "blood-of-angels"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:blackened"
+  },
+  "clouded_vision": {
+    "description": "<p><strong>Clouded Vision:</strong> Your eyes are obscured, making it difficult for you to see.</p>\n<p><strong>Penalty:</strong> You cannot see anything beyond 30 feet.</p>\n<p><strong>Benefit:</strong> You can see as if you had darkvision 30 ft.</p>\n<p><strong>At 5th Level:</strong> This distance increases to 60 feet.</p>\n<p><strong>At 10th Level:</strong> You gain blindsense out to a range of 30 feet.</p>\n<p><strong>At 15th Level:</strong> You gain blindsight out to a range of 15 feet.</p>",
+    "id": "clouded_vision",
+    "name": "Clouded Vision",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:clouded_vision"
+  },
+  "cold_blooded": {
+    "description": "<p><strong>Cold-Blooded:</strong> Your blood turns sluggish without sufficient heat, and you must seek warmth and shelter earlier than most. This oracle curse is common among lizardfolk and other oracles with the reptilian subtype.</p>\n<p><strong>Penalty:</strong> You take a -4 penalty on saves against cold spells and effects, and whenever you fail such a saving throw, you are staggered for 1 round.</p>\n<p><strong>Benefit:</strong> You can survive without food four times longer than a typical creature of your species before you begin to starve.</p>\n<p><strong>At 5th Level:</strong> Poisons affecting you have their onset time doubled and last half as long if they end after a set time (for example, a poison with a frequency of 1/round for 6 rounds would instead have a frequency of 1/round for 3 rounds). Poisons with no onset time gain an onset time of 1 round.</p>\n<p><strong>At 10th Level:</strong> Whenever an action you have readied is triggered, you can take an additional move action at half your speed - along with your readied action - even if you have already taken a move action that round.</p>\n<p><strong>At 15th Level:</strong> You can take an additional move action a number of times per day equal to your Charisma modifier. You can take these additional move actions only on your turn, and can take only one of these extra move actions per turn.</p>",
+    "id": "cold_blooded",
+    "name": "Cold-Blooded",
+    "sources": [
+      {
+        "id": "monster-codex"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:cold_blooded"
+  },
+  "consumed": {
+    "description": "<p><strong>Consumed:</strong> Your connection to Abaddon and the daemons that call it home has left you diminished but still able to scorn many mortal frailties.</p>\n<p><strong>Penalty:</strong> Whenever you take lethal hit point damage, you take an additional number of points of nonlethal damage equal to 1/2 the lethal damage you took.</p>\n<p><strong>Benefit:</strong> You automatically stabilize when brought below 0 hit points.</p>\n<p><strong>At 5th Level:</strong> Whenever you make a saving throw against a disease or poison effect, roll twice and use the higher roll as your result.</p>\n<p><strong>At 10th Level:</strong> You can go without food or water for a number of days equal to your oracle level before suffering any ill effects due to starvation or thirst.</p>\n<p><strong>At 15th Level:</strong> Whenever a creature within 30 feet takes damage while in combat, you automatically gain 1 temporary hit point. You can benefit from this ability a number of times per round equal to your Charisma modifier, and you can gain a total number of temporary hit points in this way equal to your oracle level. Temporary hit points gained this way disappear after 1 hour.</p>",
+    "id": "consumed",
+    "name": "Consumed",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:consumed"
+  },
+  "covetous": {
+    "description": "<p><strong>Covetous:</strong> You find yourself drawn to the luster of wealthy living.</p>\n<p><strong>Penalty:</strong> You must wear fine nonmagical clothing and jewelry worth at least 50 gp + 100 gp per character level you have beyond 1st. If you do not have sufficient wealth to purchase this additional equipment, you feel a strong desire (but are not compelled) to sell existing items or steal from others to obtain it. You are sickened whenever you do not meet this requirement; you are also sickened for 24 hours after anything worth 25 gp × your character level or more is taken from you against your will.</p>\n<p><strong>Benefit:</strong> Use Magic Device becomes a class skill for you.</p>\n<p><strong>At 5th Level:</strong> You gain a +4 insight bonus on Appraise checks, Spellcraft checks to identify magic items, and Use Magic Device checks.</p>\n<p><strong>At 10th Level:</strong> You add fabricate to your list of spells known.</p>\n<p><strong>At 15th Level:</strong> You add half your oracle level to your CMD against steal combat maneuvers and to the DC of Sleight of Hand checks to take items from you.</p>",
+    "id": "covetous",
+    "name": "Covetous",
+    "sources": [
+      {
+        "id": "legacy-of-dragons"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:covetous"
+  },
+  "deaf": {
+    "description": "<p><strong>Deaf:</strong> You cannot hear.</p>\n<p><strong>Penalty:</strong> You suffer all of the usual penalties for being deafened.</p>\n<p><strong>Benefit:</strong> You cast all of your spells as if they were modified by the Silent Spell feat. This does not increase their level or casting time.</p>\n<p><strong>At 5th Level:</strong> You receive a +3 competence bonus on Perception checks that do not rely upon hearing, and the initiative penalty for being deaf is reduced to -2.</p>\n<p><strong>At 10th Level:</strong> You gain scent and you do not suffer any penalty on initiative checks due to being deaf.</p>\n<p><strong>At 15th Level:</strong> You gain tremorsense out to a range of 30 feet.</p>",
+    "id": "deaf",
+    "name": "Deaf",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:deaf"
+  },
+  "deep_one": {
+    "description": "<p><strong>Deep One:</strong> The lure of the ocean tugs at your soul.</p>\n<p><strong>Penalty:</strong> You reduce your base land speed by 5 feet.</p>\n<p><strong>Benefit:</strong> You gain a swim speed equal to your land speed, and if you already have a swim speed, you increase it by 10 feet.</p>\n<p><strong>At 5th Level:</strong> Your natural armor bonus increases by 1 as your skin thickens.</p>\n<p><strong>At 10th Level:</strong> You gain a +1 bonus to your caster level when casting spells underwater and when casting spells with the water descriptor.</p>\n<p><strong>At 15th Level:</strong> You gain the benefits of freedom of movement while underwater.</p>",
+    "id": "deep_one",
+    "name": "Deep One",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:deep_one"
+  },
+  "demonic": {
+    "description": "<p><strong>Demonic:</strong> Your heart is cursed with the pull of the Abyss.</p>\n<p><strong>Penalty:</strong> You cannot cast spells with the good or lawful descriptors, nor can you summon good or lawful creatures. Good and lawful creatures instinctively distrust you, and you take a -4 penalty on all Diplomacy checks against such creatures. Diplomacy is not a class skill for you.</p>\n<p><strong>Benefit:</strong> You gain a +2 bonus on all Bluff and Intimidate checks. You gain Bluff or Intimidate (choose one) as a class skill.</p>\n<p><strong>At 5th Level:</strong> You gain a +4 bonus to all saving throws against fear effects.</p>\n<p><strong>At 10th Level:</strong> You gain immunity to poison.</p>\n<p><strong>At 15th Level:</strong> Any weapon you wield is treated as chaotic and evil for the purposes of overcoming damage reduction.</p>",
+    "id": "demonic",
+    "name": "Demonic",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:demonic"
+  },
+  "elemental_imbalance": {
+    "description": "<p><strong>Elemental Imbalance:</strong> You wield an element's might, but you are vulnerable to its opposite.</p>\n<p><strong>Penalty:</strong> Choose air, earth, fire, or water.</p>\n<p>If you select air, you gain vulnerability to acid, cannot benefit from any acid resistance or immunity, and cannot cast spells with the acid or earth descriptors.</p>\n<p>If you select earth, you gain vulnerability to electricity, cannot benefit from any electricity resistance or immunity, and cannot cast spells with the air or electricity descriptors.</p>\n<p>If you select fire, you gain vulnerability to cold, cannot benefit from any cold resistance or immunity, and cannot cast spells with the cold or water descriptors.</p>\n<p>If you select water, you gain vulnerability to fire, cannot benefit from any fire resistance or immunity, and cannot cast spells with the fire descriptor.</p>\n<p><strong>Benefits:</strong> As you advance in level, add the following spells to your oracle spells known based on your chosen element.</p>\n<table><thead><tr><th>Level</th><th>Fire Spell</th><th>Earth Spell</th><th>Water Spell</th><th>Air Spell</th></tr></thead><tbody><tr><td>1st</td><td>burning hands</td><td>grease</td><td>hydraulic push</td><td>shocking grasp</td></tr><tr><td>5th</td><td>scorching ray</td><td>glitterdust</td><td>frigid touch</td><td>levitate</td></tr><tr><td>10th</td><td>wall of fire</td><td>calcific touch</td><td>ice storm</td><td>ball lightning</td></tr><tr><td>15th</td><td>contagious flame</td><td>flesh to stone</td><td>freezing sphere</td><td>chain lightning</td></tr></tbody></table>",
+    "id": "elemental_imbalance",
+    "name": "Elemental Imbalance",
+    "sources": [
+      {
+        "id": "elemental-master-s-handbook"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:elemental_imbalance"
+  },
+  "ghoul": {
+    "description": "<p><strong>Ghoul:</strong> While your actual dietary needs don't change, you crave the flesh of sentient creatures.</p>\n<p><strong>Penalty:</strong> You can only go without food for 12 hours before you begin to starve, and when you do starve, the DC of the Constitution check to avoid taking damage increases by 5.</p>\n<p><strong>Benefit:</strong> If you feed on fresh, raw flesh (no older than 1 hour) from a creature of your own race, you gain a +1 morale bonus on all saving throws for 24 hours.</p>\n<p><strong>At 5th Level:</strong> You add ghoul touch to your list of 2nd-level oracle spells known.</p>\n<p><strong>At 10th Level:</strong> You become immune to paralysis and disease.</p>\n<p><strong>At 15th Level:</strong> You gain the effects of heroes' feast whenever you feed on the raw flesh of a sentient creature, and the effects of this <em>heroes' feast</em> double if the flesh you eat comes from a member of your own race (this effect applies no more often than once per day).</p>",
+    "id": "ghoul",
+    "name": "Ghoul",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:ghoul"
+  },
+  "god_meddled": {
+    "description": "<p><strong>God-Meddled:</strong> The isle of Iblydos is populated and watched over by hero-gods, some of whom are known for entangling mortals in their own affairs. The gods' interference in your life has left you with strange, unpredictable powers dependent on divine whim. Bizarre side effects occur whenever you are affected by a spell from a divine caster - for better or for worse.</p>\n<p><strong>Penalty/Benefit:</strong> Once per round, when a creature casts a divine spell including you as a target, roll 1d20 and consult the table below. The effect resulting from this roll begins at the end of that enemy's turn. This effect targets only you, even if other creatures were included as targets of the triggering spell.</p>\n<p><strong>At 5th Level:</strong> You gain a +2 competence bonus on saving throws to resist divine spells.</p>\n<p><strong>At 10th Level:</strong> You become immune to the confused condition.</p>\n<p><strong>At 15th Level:</strong> You gain a +4 competence bonus on saving throws to resist mind-affecting effects.</p>\n<p><strong>God-Meddled Effects</strong></p>\n<table><thead><tr><th>d20</th><th>Effect</th></tr></thead><tbody><tr><td>1</td><td>You provoke an attack of opportunity from one enemy adjacent to you. If no enemy is adjacent, the closest enemy can move its full movement speed in your direction as a free action. If multiple enemies qualify, the GM determines which creature attacks or moves. This movement does not trigger attacks of opportunity.</td></tr><tr><td>2-3</td><td>Your movement speed is halved for 1 round.</td></tr><tr><td>4-5</td><td>You are deafened for 1 round.</td></tr><tr><td>6-7</td><td>You are knocked prone.</td></tr><tr><td>8-10</td><td>You shrink by one size category for 1 round, as reduce person.</td></tr><tr><td>11-13</td><td>You grow by one size category for 1 round, as enlarge person.</td></tr><tr><td>14-15</td><td>Your caster level is treated as 1 higher for the purpose of spell durations for 1 round.</td></tr><tr><td>16-17</td><td>Creatures in squares adjacent to you are pushed 10 feet away from the space you occupy.</td></tr><tr><td>18-19</td><td>You are able to understand all languages for 1 round.</td></tr><tr><td>20</td><td>You gain the benefits of haste for 1 round.</td></tr></tbody></table>",
+    "id": "god_meddled",
+    "name": "God-Meddled",
+    "sources": [
+      {
+        "id": "heroes-of-golarion"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:god_meddled"
+  },
+  "haunted": {
+    "description": "<p><strong>Haunted:</strong> Malevolent spirits follow you wherever you go, causing minor mishaps and strange occurrences (such as unexpected breezes, small objects moving on their own, and faint noises).</p>\n<p><strong>Penalty:</strong> Retrieving any stored item from your gear requires a standard action, unless it would normally take longer. Any item you drop lands 10 feet away from you in a random direction.</p>\n<p><strong>Benefit:</strong> Add mage hand and ghost sound to your list of spells known.</p>\n<p><strong>At 5th Level:</strong> Add levitate and minor image to your list of spells known.</p>\n<p><strong>At 10th Level:</strong> Add telekinesis to your list of spells known.</p>\n<p><strong>At 15th Level:</strong> Add reverse gravity to your list of spells known.</p>",
+    "id": "haunted",
+    "name": "Haunted",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:haunted"
+  },
+  "hellbound": {
+    "description": "<p><strong>Hellbound:</strong> Infernal influence grants you profane insight and weighs on your soul.</p>\n<p><strong>Penalty:</strong> You cannot cast spells with the good or chaotic descriptors, and you can't summon good or chaotic creatures. Good and chaotic creatures instinctively distrust you, and you take a -4 penalty on all Diplomacy checks against such creatures.</p>\n<p><strong>Benefit:</strong> You gain a +2 bonus on all Bluff and Intimidate checks.</p>\n<p><strong>At 5th Level:</strong> You gain a +4 bonus to all saving throws against charm effects.</p>\n<p><strong>At 10th Level:</strong> You gain immunity to fire.</p>\n<p><strong>At 15th Level:</strong> Any weapon you wield is treated as lawful and evil for the purposes of overcoming damage reduction.</p>",
+    "id": "hellbound",
+    "name": "Hellbound",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:hellbound"
+  },
+  "hive": {
+    "description": "<p><strong>Hive:</strong> You were exposed at a young age (perhaps even before you were born) to the alien species known as the hive, but this exposure did not result in a full-blown infestation by these otherworldly monsters.</p>\n<p><strong>Penalty:</strong> Others (including animals) find the unsightly spines and rough growths that periodically emerge from your flesh to be disturbing and distracting, and you take a -4 penalty on Bluff, Diplomacy, Handle Animal, and Ride checks.</p>\n<p><strong>Benefit:</strong> Once per day as a standard action, you can cough up an ovoid, leathery sphere that can be hurled as a flask of acid, though it becomes inert after 24 hours.</p>\n<p><strong>At 5th Level:</strong> You gain the benefits of endure elements in hot environments and are immune to infestations (save for those from the hive itself).</p>\n<p><strong>At 10th Level:</strong> Your skin deformities grow numerous enough to increase your natural armor bonus by 1.</p>\n<p><strong>At 15th Level:</strong> You gain acid resistance 20.</p>",
+    "id": "hive",
+    "name": "Hive",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:hive"
+  },
+  "hunger": {
+    "description": "<p><strong>Hunger:</strong> Ravenous hunger wracks your body in stressful situations.</p>\n<p><strong>Penalty:</strong> You gain none of the benefits from spells or magic items that provide nourishment, such as goodberry, heroes' feast, or a ring of sustenance. You begin each combat with the sickened condition until you deal damage with your bite attack (see below).</p>\n<p><strong>Benefit:</strong> You gain a bite attack that deals an amount of piercing damage appropriate for your size (1d8 for a Large creature, 1d6 for Medium, 1d4 for Small) as a secondary natural attack.</p>\n<p><strong>At 5th Level:</strong> You gain the grab monster special ability on bite attacks against creatures smaller than yourself.</p>\n<p><strong>At 10th Level:</strong> Your bite attack deals damage as if you were one size category larger.</p>\n<p><strong>At 15th Level:</strong> You gain the blood drain monster special ability with your bite, dealing 1d2 points of Constitution damage at the end of a turn if you grapple a foe.</p>",
+    "id": "hunger",
+    "name": "Hunger",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:hunger"
+  },
+  "infested": {
+    "description": "<p><strong>Infested:</strong> Insects, spiders, grubs, and other vermin plague you constantly. They crawl in your hair, fill your clothes, and fly or crawl into your mouth, nose, and ears.</p>\n<p><strong>Penalty:</strong> You take a -4 penalty on Diplomacy checks, and when you first meet someone, the person's initial attitude toward you starts one level lower than normal. Animals shy away from you - you take a -4 penalty on Handle Animal checks.</p>\n<p><strong>Benefit:</strong> You gain a +2 bonus on Fortitude saves versus poisons from insects, scorpions, and spiders, as well as the distraction ability of swarms of such creatures.</p>\n<p><strong>At 5th Level:</strong> You add vomit swarm to your list of spells known.</p>\n<p><strong>At 7th Level:</strong> Your bonus on poison and distraction saves increases to +4, and you gain DR 10/- against all swarm damage.</p>\n<p><strong>At 13th Level:</strong> You add swarm skin to your list of spells known.</p>\n<p><strong>At 17th Level:</strong> You become immune to the swarm damage and the distraction ability of insect, scorpion, and spider swarms.</p>",
+    "id": "infested",
+    "name": "Infested",
+    "sources": [
+      {
+        "id": "monster-codex"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:infested"
+  },
+  "lame": {
+    "description": "<p><strong>Lame:</strong> One of your legs is permanently wounded.</p>\n<p><strong>Penalty:</strong> You reduce your base land speed by 10 feet if your base speed is 30 feet or more. If your base speed is less than 30 feet, your speed is reduced by 5 feet.</p>\n<p><strong>Benefit:</strong> Your speed is never reduced due to encumbrance.</p>\n<p><strong>At 5th Level:</strong> You are immune to the fatigued condition (but not exhaustion).</p>\n<p><strong>At 10th Level:</strong> Your speed is never reduced by armor.</p>\n<p><strong>At 15th Level:</strong> You are immune to the exhausted condition.</p>",
+    "id": "lame",
+    "name": "Lame",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:lame"
+  },
+  "legalistic": {
+    "description": "<p><strong>Legalistic:</strong> The shackles of Hell impose savage consequences should you violate a covenant, but also imbue you with remarkable guile.</p>\n<p><strong>Penalty:</strong> Whenever you break your word (either purposefully or unintentionally), you become sickened for 24 hours or until you meet your obligation, whichever comes first.</p>\n<p><strong>Benefit:</strong> Once per day, you can make a vow to yourself that grants a +4 morale bonus on any one roll you make while trying to fulfill a promise made to another individual.</p>\n<p><strong>At 5th Level:</strong> You gain a +3 competence bonus on Diplomacy, Intimidate, and Sense Motive checks while talking to an individual one-on-one.</p>\n<p><strong>At 10th Level:</strong> You can make a new saving throw each minute to resist mind-affecting effects as your subconscious searches for loopholes.</p>\n<p><strong>At 15th Level:</strong> Any creature that violates its freely given word to you takes a penalty to AC, to spell resistance, and on saving throws against your attacks and abilities equal to your Charisma modifier (minimum 1) for 24 hours.</p>",
+    "id": "legalistic",
+    "name": "Legalistic",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:legalistic"
+  },
+  "lich": {
+    "description": "<p><strong>Lich:</strong> Every living spellcaster hides a secret in their flesh - a unique, personalized set of conditions that, when all are fulfilled in the correct order, can trigger the transformation into a lich. Normally, one must expend years and tens of thousands of gold pieces to research this deeply personalized method of attaining immortality. Yet, in a rare few cases, chance and ill fortune can conspire against an unsuspecting spellcaster. You have (unknowingly) fulfilled most (but not all) of the ritualistic components to achieve lichdom. You have yet to turn into an undead creature, but you are close.</p>\n<p><strong>Penalty/Benefit:</strong> You take damage from positive energy and heal from negative energy as if you were undead.</p>\n<p><strong>At 5th Level:</strong> Add control undead to your list of 2nd-level oracle spells known.</p>\n<p><strong>At 10th Level:</strong> Add undead anatomy I to your list of 3rd-level oracle spells known and undead anatomy II to your list of 5th-level oracle spells known.</p>\n<p><strong>At 15th Level:</strong> You are immune to death effects.</p>",
+    "id": "lich",
+    "name": "Lich",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:lich"
+  },
+  "lycanthropy": {
+    "description": "<p><strong>Lycanthropy:</strong> You suffer from a minor form of lycanthropy. The exact animal your body and mind are aligned with can vary, but you should choose an animal that matches your faith thematically.</p>\n<p><strong>Penalty:</strong> In times of stress or unease, you cannot speak - only growl and snarl like an animal. This ability works similarly to the tongues curse, but whenever you are in combat, you cannot speak at all. This does not interfere with spellcasting but does apply to spells that are language dependent. A character under the effects of speak with animals can understand you, and you can communicate with such characters normally. You can speak with animals when in this condition.</p>\n<p><strong>Benefit:</strong> Choose one type of animal commonly associated with lycanthropy (such as rats, wolves, or bears); you gain a +4 bonus on Handle Animal checks with these creatures.</p>\n<p><strong>At 5th Level:</strong> Add charm animal to your list of 1st-level oracle spells known and animal messenger to your list of 2nd-level oracle spells known.</p>\n<p><strong>At 10th Level:</strong> Add beast shape I to your list of 3rd-level oracle spells known and beast shape II to your list of 5th-level oracle spells known.</p>\n<p><strong>At 15th Level:</strong> You gain damage reduction 5/silver, and if you already have this type of damage reduction, it increases in value by 5 (to a maximum of DR 15/silver).</p>",
+    "id": "lycanthropy",
+    "name": "Lycanthropy",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:lycanthropy"
+  },
+  "plagued": {
+    "description": "<p><strong>Plagued:</strong> You suffer from minor ailments and sicknesses. While you struggle to resist new diseases, you have grown accustomed to the many inconveniences of sickness.</p>\n<p><strong>Penalty:</strong> You take a -1 penalty on all saving throws against disease or infestation effects.</p>\n<p><strong>Benefit:</strong> You are immune to the sickened condition.</p>\n<p><strong>At 5th Level:</strong> Add pox pustules to your list of 2nd-level oracle spells known.</p>\n<p><strong>At 10th Level:</strong> Increase the save DC of any disease effect you create by +2, and you raise the number of saves required to recover naturally from these diseases by 1.</p>\n<p><strong>At 15th Level:</strong> You are immune to the effects of disease and infestations, but you can still function as a carrier for sickness.</p>",
+    "id": "plagued",
+    "name": "Plagued",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:plagued"
+  },
+  "possessed": {
+    "description": "<p><strong>Possessed:</strong> Another mind shares your body, interfering with your control, and it's more difficult for you to concentrate as a result.</p>\n<p><strong>Penalty:</strong> You take a -2 penalty on all concentration checks, and concentrating to maintain a spell duration provokes attacks of opportunity.</p>\n<p><strong>Benefit:</strong> Whenever a foe attempts to use an effect to possess or dominate you and the effect allows a saving throw to negate, you may roll twice and take the better of the two results.</p>\n<p><strong>At 5th Level:</strong> If you become dazed or stunned, you can choose instead to become confused for twice the duration the daze or stun effect would have normally lasted.</p>\n<p><strong>At 10th Level:</strong> Add possession to your list of 5th-level oracle spells known.</p>\n<p><strong>At 15th Level:</strong> Add greater object possession to your list of 7th-level oracle spells known.</p>",
+    "id": "possessed",
+    "name": "Possessed",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:possessed"
+  },
+  "powerless_prophecy": {
+    "description": "<p><strong>Powerless Prophecy:</strong> You are forewarned of danger but can't act to prevent it.</p>\n<p><strong>Penalty:</strong> You can't take any actions in a surprise round, including free actions, except for [flash of insight](arc-oracle/cyclopean_seer). In the absence of a surprise round, you are staggered for the entire first round of combat.</p>\n<p><strong>Benefit:</strong> You gain uncanny dodge, as the rogue class feature.</p>\n<p><strong>At 5th Level:</strong> You gain a +4 insight bonus on initiative checks.</p>\n<p><strong>At 10th Level:</strong> You gain improved uncanny dodge as the rogue ability, using your oracle level as your rogue level.</p>\n<p><strong>At 15th Level:</strong> You gain a +4 insight bonus on all your saving throws and to your AC during surprise rounds and when you are otherwise unaware of an attack.</p>",
+    "id": "powerless_prophecy",
+    "name": "Powerless Prophecy",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:powerless_prophecy"
+  },
+  "pranked": {
+    "description": "<p><strong>Pranked:</strong> Capricious fey constantly bedevil you, playing pranks on you such as tying your shoelaces together, hiding your gear, making inappropriate noises or smells at formal events, and mimicking your voice to tell embarrassing lies.</p>\n<p><strong>Penalty:</strong> You take a -4 penalty on initiative checks, in addition to any social consequences the fey mischief may cause for you. Furthermore, whenever you attempt to retrieve a stored item from your gear, there's a 25% chance that you fail to find it with that action.</p>\n<p><strong>Benefit:</strong> Add faerie fire and ghost sound to your list of spells known.</p>\n<p><strong>At 5th Level:</strong> Add glitterdust and minor image to your list of spells known.</p>\n<p><strong>At 10th Level:</strong> Add confusion to your list of spells known as a 5th-level spell.</p>\n<p><strong>At 15th Level:</strong> Add project image to your list of spells known.</p>",
+    "id": "pranked",
+    "name": "Pranked",
+    "sources": [
+      {
+        "id": "legacy-of-the-first-world"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:pranked"
+  },
+  "promethean": {
+    "description": "<p><strong>Promethean:</strong> Your body is falling apart, forcing you to rely on mechanical augmentations or replacements to keep yourself alive.</p>\n<p><strong>Penalty:</strong> You take 1 point of Constitution damage each day.</p>\n<p><strong>Benefit:</strong> After taking your Constitution damage, you ignore the first point of Strength, Dexterity, or Constitution damage you take for the remainder of that day.</p>\n<p><strong>At 5th Level:</strong> You gain a +2 bonus on all saving throws on effects that cause ability damage, ability drain, or ability score penalties.</p>\n<p><strong>At 10th Level:</strong> This bonus increases to +6.</p>\n<p><strong>At 15th Level:</strong> Any effect that would normally deal ability drain on you instead deals ability damage whenever you successfully save against the effect.</p>",
+    "id": "promethean",
+    "name": "Promethean",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:promethean"
+  },
+  "putrid": {
+    "description": "<p><strong>Putrid:</strong> Your presence causes liquids to spoil.</p>\n<p><strong>Penalty:</strong> Your presence stagnates water and befouls all liquids carried on your person, including magical items such as potions, and unattended sources of still water within 10 feet. Creatures who drink such a liquid are nauseated for 1 round (though potions and similar liquids still convey their usual benefits as well). Affected liquids remain stagnant for 1 hour after leaving your presence. Purify food and drink can cleanse a stagnant potion or water with a successful caster level check (DC = 15 + double the potion's caster level).</p>\n<p><strong>Benefit:</strong> None.</p>\n<p><strong>At 5th Level:</strong> You become immune to the nauseated effects created by liquids your presence has befouled.</p>\n<p><strong>At 10th Level:</strong> Your body is covered in noxious slime, and each creature adjacent to you at the beginning of its turn must succeed at a Fortitude save (DC = 10 + half your oracle level + your Charisma modifier) or become sickened for 1 round.</p>\n<p><strong>At 15th Level:</strong> Your slime coating grants you DR 10/-.</p>",
+    "id": "putrid",
+    "name": "Putrid",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:putrid"
+  },
+  "reclusive": {
+    "description": "<p><strong>Reclusive:</strong> You are reclusive and paranoid to the point that your allies cannot easily help you in times of stress or unease.</p>\n<p><strong>Penalty:</strong> Whenever you are in combat, your allies must succeed at a melee touch attack to affect you with touch spells, and you must attempt saving throws to resist all spells cast by anyone other than yourself, even those cast by allies.</p>\n<p><strong>Benefit:</strong> Instantaneous spells you cast only on yourself affect you as though your caster level were 1 higher.</p>\n<p><strong>At 5th Level:</strong> Any spells you cast only on yourself affect you as if they were modified by the Extend Spell feat. This does not increase their level or casting time.</p>\n<p><strong>At 10th Level:</strong> You are immune to charm spells and spell-like abilities.</p>\n<p><strong>At 15th Level:</strong> You gain spell resistance equal to 10 + your oracle level.</p>",
+    "id": "reclusive",
+    "name": "Reclusive",
+    "sources": [
+      {
+        "id": "legacy-of-the-first-world"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:reclusive"
+  },
+  "scourge": {
+    "description": "<p><strong>Scourge:</strong> You are a blight on the natural world.</p>\n<p><strong>Penalty:</strong> Bizarre natural hazards develop within a 300-foot radius around you whenever you linger in a natural area for more than 10 minutes, as lesser curse terrain. You cannot choose the hazards or their locations.</p>\n<p><strong>Benefit:</strong> Your movement is unimpeded by undergrowth, as a druid's woodland stride ability, as plants wither away in your footsteps.</p>\n<p><strong>At 5th Level:</strong> Add feast of ashes to your list of 2nd-lvel oracle spells known.</p>\n<p><strong>At 10th Level:</strong> Add explosion of rot to your list of 4th-level oracle spells known.</p>\n<p><strong>At 15th Level:</strong> Add swarm skin to your list of 6th-level oracle spells known.</p>",
+    "id": "scourge",
+    "name": "Scourge",
+    "sources": [
+      {
+        "id": "wilderness-origins"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:scourge"
+  },
+  "shadowbound": {
+    "description": "<p><strong>Shadowbound:</strong> Your pigmentation is oddly colorless, and your eyes are highly sensitive to light.</p>\n<p><strong>Penalty:</strong> You are blinded for 1 round when exposed to normal or bright light and dazzled while in such a lit area.</p>\n<p><strong>Benefit:</strong> You gain darkvision to a range of 30 feet.</p>\n<p><strong>At 5th Level:</strong> The range of your darkvision increases by 30 feet.</p>\n<p><strong>At 10th Level:</strong> Add shadow conjuration to your list of 4th-level oracle spells known and shadow evocation to your list of 5th-level oracle spells known.</p>\n<p><strong>At 15th Level:</strong> Add shadow walk to your list of 6th-level oracle spells known.</p>",
+    "id": "shadowbound",
+    "name": "Shadowbound",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:shadowbound"
+  },
+  "shattered_psyche": {
+    "description": "<p><strong>Shattered Psyche:</strong> Your mind is crowded with dozens of voices, fragmented snippets of your past lives.</p>\n<p><strong>Penalty:</strong> You take a -2 penalty on all Intelligence-based skill checks, Wisdom-based skill checks, and concentration checks.</p>\n<p><strong>Benefit:</strong> You gain a +4 competence bonus on saving throws made against mind-affecting effects.</p>\n<p><strong>At 5th Level:</strong> You're immune to charm effects.</p>\n<p><strong>At 10th Level:</strong> You're immune to compulsion effects.</p>\n<p><strong>At 15th Level:</strong> You're immune to all mind-affecting effects.</p>",
+    "id": "shattered_psyche",
+    "name": "Shattered Psyche",
+    "sources": [
+      {
+        "id": "pathfinder-88-valley-of-the-brain-collectors"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:shattered_psyche"
+  },
+  "site_bound": {
+    "description": "<p><strong>Site-Bound:</strong> You are bound to a particular place.</p>\n<p><strong>Penalty:</strong> You form a bond with a particular 10-foot square, and must remain within 1,500 feet of that site or immediately become sickened. You must succeed at a DC 15 Fortitude save each minute you spend outside of the boundary or become nauseated. For every hour spent outside of the boundary, you also take 1d4 points of Constitution damage (no save).</p>\n<p><strong>Benefit:</strong> When within range of your bonded site, you gain a +1 bonus to your caster level when casting oracle spells.</p>\n<p><strong>At 5th Level:</strong> The radius increases from 1,500 feet to 2,250 feet.</p>\n<p><strong>At 10th Level:</strong> The radius increases to 3,000 feet and the bonus to your caster level when casting oracle spells within the boundary increases by 1.</p>\n<p><strong>At 15th Level:</strong> You can move up to 1 mile from your bonded site.</p>",
+    "id": "site_bound",
+    "name": "Site-Bound",
+    "sources": [
+      {
+        "id": "inner-sea-monster-codex"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:site_bound"
+  },
+  "song_bound": {
+    "description": "<p><strong>Song-Bound:</strong> (Merfolk only) Whenever you speak, you are compelled to sing loudly, and you draw out even short utterances with vocal scales or simple melodies.</p>\n<p><strong>Penalty:</strong> You cannot speak in less than a loud voice, although you may choose not to speak.</p>\n<p><strong>Benefit:</strong> You can perform the countersong bardic performance (using Perform [sing] only) for a number of rounds per day equal to your oracle level. If you gain the bardic performance class feature, these rounds are in addition to any other bardic performance rounds you gain, but they can be used only for the <em>countersong</em> bardic performance.</p>\n<p><strong>At 5th Level:</strong> Add command and suggestion to your list of spells known.</p>\n<p><strong>At 10th Level:</strong> Add 1 to the DC of saving throws against language-dependent spells you cast.</p>\n<p><strong>At 15th Level:</strong> Add greater command and mass suggestion to your list of spells known.</p>",
+    "id": "song_bound",
+    "name": "Song-Bound",
+    "sources": [
+      {
+        "id": "blood-of-the-sea"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:song_bound"
+  },
+  "tongues": {
+    "description": "<p><strong>Tongues:</strong> In times of stress or unease, you speak in tongues.</p>\n<p><strong>Penalty:</strong> Pick one of the following languages: Abyssal, Aklo, Aquan, Auran, Celestial, Ignan, Infernal, or Terran. Whenever you are in combat, you can only speak and understand the selected language. This does not interfere with spellcasting, but it does apply to spells that are language dependent.</p>\n<p><strong>Benefit:</strong> You gain the selected language as a bonus language.</p>\n<p><strong>At 5th Level:</strong> Pick an additional language to speak in combat and add it to your list of known languages.</p>\n<p><strong>At 10th Level:</strong> You can understand any spoken language, as if under the effects of tongues, even during combat.</p>\n<p><strong>At 15th Level:</strong> You can speak and understand any language, but your speech is still restricted during combat.</p>",
+    "id": "tongues",
+    "name": "Tongues",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:tongues"
+  },
+  "toxic_blood": {
+    "description": "<p><strong>Toxic Blood:</strong> Your body is ravaged by a potent, slow-acting poison that resists all treatment.</p>\n<p><strong>Penalty:</strong> Whenever you must attempt a Fortitude save to resist a poison effect, roll twice and take the lowest result. Additionally, you need one more consecutive successful save to end an ongoing poison. You lose any immunity to poison you have upon receiving this curse, and you become immune to delay poison and neutralize poison, as well as other attempts to suppress or remove the poison from which you are suffering.</p>\n<p><strong>Benefit:</strong> You gain the poison use ability.</p>\n<p><strong>At 5th Level:</strong> You are so envenomed that your touch becomes poisonous. Once per day for every 4 oracle levels you have, you can deliver a unique contact poison as a touch attack or via an unarmed strike or natural weapon.</p>\n<p><strong>At 10th Level:</strong> The poison deals 1d3 points of Dexterity damage per round for 7 rounds.</p>\n<p><strong>At 15th Level:</strong> You can expend a use of your poison touch to transfer any poison effect you are currently experiencing from yourself to another creature. The touched creature must immediately attempt a saving throw against the poison (using the poison's initial DC and duration for a single dose, regardless of how many doses are currently affecting you). If the creature fails its save, the poison ceases to act on you, as if you had succeeded at all the necessary saves (this bypasses your immunity to effects that remove poison).</p>",
+    "id": "toxic_blood",
+    "name": "Toxic Blood",
+    "sources": [
+      {
+        "id": "villain-codex"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:toxic_blood"
+  },
+  "vampirism": {
+    "description": "<p><strong>Vampirism:</strong> You crave the taste of fresh, warm blood.</p>\n<p><strong>Penalty/Benefit:</strong> You take damage from positive energy and heal from negative energy as if you were undead.</p>\n<p><strong>At 5th Level:</strong> You gain channel resistance +4.</p>\n<p><strong>At 10th Level:</strong> You add vampiric touch to your list of 3rd-level oracle spells known and undead anatomy II to your list of 5th-level oracle spells known.</p>\n<p><strong>At 15th Level:</strong> You gain damage reduction 5/magic.</p>",
+    "id": "vampirism",
+    "name": "Vampirism",
+    "sources": [
+      {
+        "id": "horror-realms"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:vampirism"
+  },
+  "wasting": {
+    "description": "<p><strong>Wasting:</strong> Your body is slowly rotting away.</p>\n<p><strong>Penalty:</strong> You take a -4 penalty on Charisma-based skill checks, except for Intimidate.</p>\n<p><strong>Benefit:</strong> You gain a +4 competence bonus on saves made against disease.</p>\n<p><strong>At 5th Level:</strong> You are immune to the sickened condition (but not nauseated).</p>\n<p><strong>At 10th Level:</strong> You gain immunity to disease.</p>\n<p><strong>At 15th Level:</strong> You are immune to the nauseated condition.</p>",
+    "id": "wasting",
+    "name": "Wasting",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:wasting"
+  },
+  "wolfscarred_face": {
+    "description": "<p><strong>Wolfscarred Face:</strong> Your face is deformed, as though you were born with a wolf's muzzle instead of an ordinary nose and jaw. Many mistake you for a werewolf, and in areas plagued by lycanthropes, you must take pains to hide your face.</p>\n<p><strong>Penalty:</strong> You have a severe speech impediment, and any spells you cast with a verbal component have a 20% chance of failing, wasting your action but not expending the spell.</p>\n<p><strong>Benefit:</strong> You gain a natural bite attack that deals 1d4 points of damage if you are a Medium creature or 1d3 points of damage if you are Small.</p>\n<p><strong>At 5th Level:</strong> You add magic fang to your list of known spells and your bite damage increases to 1d6 if you are Medium or 1d4 if you are Small.</p>\n<p><strong>At 10th Level:</strong> The damage dealt by your bite attack increases to 1d8 if you are Medium or 1d6 if you are Small.</p>\n<p><strong>At 15th Level:</strong> You add greater magic fang to your list of known spells and the damage dealt by your bite attack increases to 2d6 if you are Medium or 1d8 if you are Small.</p>",
+    "id": "wolfscarred_face",
+    "name": "Wolfscarred Face",
+    "sources": [
+      {
+        "id": "blood-of-angels"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:wolfscarred_face"
+  },
+  "wrecker": {
+    "description": "<p><strong>Wrecker:</strong> The destructive power of the Abyss and its teeming hordes of demons seeps from your very pores and into your belongings and surroundings.</p>\n<p><strong>Penalty:</strong> Held objects gain the broken condition when you use or equip them but regain their actual condition if employed by anyone else. If a held item is restored to unbroken condition, it becomes broken again the following round.</p>\n<p><strong>Benefit:</strong> Disable Device becomes a class skill for you and you can make Disable Device checks to destroy nonmagical traps as a move action without the need to use tools or take any action beyond simply touching it.</p>\n<p><strong>At 5th Level:</strong> Whenever you attempt to damage an object with a melee attack, reduce its hardness by an amount equal to your oracle level before determining the damage you deal with that attack.</p>\n<p><strong>At 10th Level:</strong> Any attacks you make against objects and constructs automatically bypass any damage reduction they may possess except epic.</p>\n<p><strong>At 15th Level:</strong> Whenever you are dealt damage by an attack with a manufactured weapon, you can require the weapon's wielder to make a Reflex save (DC 10 + 1/2 your oracle level + your Charisma modifier) to avoid having the weapon collapse into dust immediately after striking you (magical weapons receive an additional saving throw against this effect).</p>",
+    "id": "wrecker",
+    "name": "Wrecker",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:wrecker"
+  },
+  "wrecking_mysticism": {
+    "description": "<p><strong>Wrecking Mysticism:</strong> (Kitsune only) A divine entity has blessed you with a source of eldritch power.</p>\n<p><strong>Penalty:</strong> This power erodes your fortitude, increasing by 50% the duration of any poison, sickened condition, or nauseated condition affecting you.</p>\n<p><strong>Benefit:</strong> Whenever you would gain a mystery spell, you can gain Magical Tail as a bonus feat instead. Once this choice has been made, it cannot be changed. You cannot replace a bonus spell granted to you by an oracle archetype with Magical Tail, even if it replaces a mystery spell.</p>\n<p><strong>At 5th Level:</strong> Add minor image and ventriloquism.</p>\n<p><strong>At 10th Level:</strong> Add magic jar to your list of spells known.</p>\n<p><strong>At 15th Level:</strong> Add project image to your list of spells known.</p>",
+    "id": "wrecking_mysticism",
+    "name": "Wrecking Mysticism",
+    "sources": [
+      {
+        "id": "dirty-tactics-toolbox"
+      }
+    ],
+    "uuid": "pfdata:oracle-curse:wrecking_mysticism"
+  }
+}

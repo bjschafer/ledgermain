@@ -38,6 +38,8 @@
  * note.
  */
 
+import type { RefData, SourceRef, WitchPatron } from "@pf1/schema";
+
 export interface WitchPatronBonusSpell {
   /** Witch class level at which this spell is added to the familiar's known list (2, 4, ..., 18). */
   level: number;
@@ -325,3 +327,90 @@ export const WITCH_PATRONS: Record<string, WitchPatronDef> = Object.fromEntries(
 );
 
 export const WITCH_PATRON_TAGS: readonly string[] = PATRON_LIST.map((p) => p.tag);
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.witchPatrons` is the FULL published catalog
+ * (61 entries after junk filtering), prose only — same "catalog from data,
+ * mechanics as overlay" pattern as `rage-powers.ts`'s
+ * `mergedRagePowerCatalog`. The hand-verified 17-core-patron table above
+ * stays authoritative for the bonus-spell progression; this section merges
+ * the two for browsing.
+ *
+ * Matching is by NORMALIZED NAME. Collision audit (all 17 hand-authored
+ * patrons): all 17 matched a vendored entry by normalized name (the
+ * vendored dictionary keys ARE this table's own `tag`s, verified) — no
+ * aliasing needed.
+ */
+
+const WITCH_PATRON_NAME_ALIASES: Record<string, string> = {};
+
+function normalizePatronName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedWitchPatronEntry extends WitchPatronDef {
+  /** Vendored "basic"/"unique" grouping, when present. */
+  category?: "basic" | "unique";
+  description?: string;
+  sources?: SourceRef[];
+  /** True for a vendored-only patron with no hand-authored bonus-spell progression — the picker's "M" (modeled) badge convention. */
+  displayOnly: boolean;
+}
+
+function vendoredPatronToDef(entry: WitchPatron): MergedWitchPatronEntry {
+  return {
+    tag: entry.id,
+    name: entry.name,
+    bonusSpells: [],
+    category: entry.category,
+    description: entry.description,
+    sources: entry.sources,
+    displayOnly: true,
+  };
+}
+
+/** Resolve a picked patron tag (`doc.build.witchPatron`) to its definition — hand-authored table first, falling back to the vendored catalog for a tag that only exists there. */
+export function resolveWitchPatron(
+  tag: string,
+  refData: RefData,
+): MergedWitchPatronEntry | undefined {
+  const hand = WITCH_PATRONS[tag];
+  if (hand) return { ...hand, displayOnly: false };
+  const vendored = refData.witchPatrons?.[tag];
+  return vendored ? vendoredPatronToDef(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog: every vendored patron, with any that collides (by normalized name) against a hand-authored entry replaced by that def, plus any hand-authored entry with no vendored counterpart appended. */
+export function mergedWitchPatronCatalog(refData: RefData): MergedWitchPatronEntry[] {
+  const handByNormName = new Map<string, WitchPatronDef>();
+  for (const p of PATRON_LIST) {
+    handByNormName.set(normalizePatronName(WITCH_PATRON_NAME_ALIASES[p.tag] ?? p.name), p);
+  }
+
+  const usedHandTags = new Set<string>();
+  const merged: MergedWitchPatronEntry[] = [];
+  for (const v of Object.values(refData.witchPatrons ?? {})) {
+    const handMatch = handByNormName.get(normalizePatronName(v.name));
+    if (handMatch) {
+      usedHandTags.add(handMatch.tag);
+      merged.push({
+        ...handMatch,
+        category: v.category,
+        description: v.description,
+        sources: v.sources,
+        displayOnly: false,
+      });
+    } else {
+      merged.push(vendoredPatronToDef(v));
+    }
+  }
+  for (const p of PATRON_LIST) {
+    if (!usedHandTags.has(p.tag)) merged.push({ ...p, displayOnly: false });
+  }
+  return merged;
+}

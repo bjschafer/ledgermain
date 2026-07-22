@@ -59,6 +59,12 @@ async function fetchAll(): Promise<RefData> {
     arcanistExploits,
     investigatorTalents,
     kineticWildTalents,
+    oracleMysteries,
+    oracleCurses,
+    witchPatrons,
+    shamanSpirits,
+    sorcererBloodlines,
+    bloodragerBloodlines,
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
@@ -94,6 +100,12 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["arcanistExploits"]>("arcanist-exploits.json"),
     getJson<RefData["investigatorTalents"]>("investigator-talents.json"),
     getJson<RefData["kineticWildTalents"]>("kinetic-wild-talents.json"),
+    getJson<RefData["oracleMysteries"]>("oracle-mysteries.json"),
+    getJson<RefData["oracleCurses"]>("oracle-curses.json"),
+    getJson<RefData["witchPatrons"]>("witch-patrons.json"),
+    getJson<RefData["shamanSpirits"]>("shaman-spirits.json"),
+    getJson<RefData["sorcererBloodlines"]>("sorcerer-bloodlines.json"),
+    getJson<RefData["bloodragerBloodlines"]>("bloodrager-bloodlines.json"),
   ]);
   return {
     meta,
@@ -130,5 +142,11 @@ async function fetchAll(): Promise<RefData> {
     arcanistExploits,
     investigatorTalents,
     kineticWildTalents,
+    oracleMysteries,
+    oracleCurses,
+    witchPatrons,
+    shamanSpirits,
+    sorcererBloodlines,
+    bloodragerBloodlines,
   };
 }

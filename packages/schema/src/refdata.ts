@@ -127,6 +127,18 @@ export interface RefData {
   investigatorTalents: Record<string, InvestigatorTalent>;
   /** The full published kineticist wild-talent catalog, every kind (fourth-source dataset; see `KineticWildTalent` doc comment). */
   kineticWildTalents: Record<string, KineticWildTalent>;
+  /** The full published oracle mystery catalog (fourth-source dataset, issue #74 Phase 3c; see `OracleMystery` doc comment). */
+  oracleMysteries: Record<string, OracleMystery>;
+  /** The full published oracle's curse catalog (fourth-source dataset, issue #74 Phase 3c; see `OracleCurse` doc comment). */
+  oracleCurses: Record<string, OracleCurse>;
+  /** The full published witch patron catalog (fourth-source dataset, issue #74 Phase 3c; see `WitchPatron` doc comment). */
+  witchPatrons: Record<string, WitchPatron>;
+  /** The full published shaman spirit catalog (fourth-source dataset, issue #74 Phase 3c; see `ShamanSpirit` doc comment). */
+  shamanSpirits: Record<string, ShamanSpirit>;
+  /** The full published sorcerer bloodline catalog (fourth-source dataset, issue #74 Phase 3c; see `SorcererBloodline` doc comment). */
+  sorcererBloodlines: Record<string, SorcererBloodline>;
+  /** The full published bloodrager bloodline catalog (fourth-source dataset, issue #74 Phase 3c; see `BloodragerBloodline` doc comment). */
+  bloodragerBloodlines: Record<string, BloodragerBloodline>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -1186,5 +1198,138 @@ export interface KineticWildTalent extends RefEntity {
   /** Burn cost, 0 or more (always a clean integer in the source for this file — no "variable"/"0 or 1" text to simplify, unlike a few other subsystems' prose). */
   burn: number;
 }
+
+/* -------------------------------------------------- oracle mysteries -- */
+
+/**
+ * A published oracle mystery (issue #74 Phase 3c, same "catalog from data,
+ * mechanics as overlay" pattern `RagePower` established). Sourced from the
+ * "Pf Data 1e" dataset's `json/class_ability_mysteries.json` (35 raw
+ * entries, 34 after dropping the source's `not_found` sentinel) rather than
+ * the Foundry pf1 system — the Oracle class def only links the generic
+ * "Mystery" stub `ClassFeature`, no per-mystery breakdown.
+ *
+ * The FULL published catalog with prose only — no structured bonus-spell/
+ * class-skill arrays. `@pf1/engine` `oracle-mysteries.ts`'s hand-authored
+ * `ORACLE_MYSTERIES` table (the 10 Advanced Player's Guide "core" mysteries)
+ * remains authoritative for those, matched by name (see that file's
+ * `mergedOracleMysteryCatalog`); the other ~24 vendored-only mysteries
+ * (Ancestor, Apocalypse, Dragon, Lunar, ...) are display-only.
+ *
+ * A mystery's REVELATIONS (its menu of choosable powers) are NOT their own
+ * dictionary entries in this source — they're prose embedded inside the
+ * mystery's own `description`, under a "### Revelations" heading, as bolded
+ * `**Name (Tag):**` paragraphs with no stable per-revelation key. Out of
+ * scope for this catalog (and for `@pf1/engine` `oracle-revelations.ts`,
+ * which stays scoped to its existing 10-core-mystery hand-authored table) —
+ * see the data-pipeline transform's doc comment for why parsing them out
+ * into discrete addressable records was deferred rather than forced.
+ */
+export interface OracleMystery extends RefEntity {}
+
+/* ----------------------------------------------------- oracle curses -- */
+
+/**
+ * A published oracle's curse (issue #74 Phase 3c, same pattern as
+ * `RagePower`). Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_curses.json` (42 raw entries, 41 after dropping
+ * `not_found`) — NOT the dataset's top-level `curses.json` (that file is
+ * spell/monster-ability afflictions, an unrelated catalog). The Oracle class
+ * def only links the generic "Oracle's Curse" stub `ClassFeature`.
+ *
+ * The FULL published catalog with prose only. `@pf1/engine`
+ * `oracle-curses.ts`'s hand-authored `ORACLE_CURSES` table (the 6 base APG
+ * curses) remains authoritative for those, matched by name (see that file's
+ * `mergedOracleCurseCatalog`); the rest are display-only.
+ */
+export interface OracleCurse extends RefEntity {}
+
+/* ----------------------------------------------------- witch patrons -- */
+
+/**
+ * A published witch patron (issue #74 Phase 3c, same pattern as
+ * `RagePower`). Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_patrons.json` (62 raw entries, 61 after dropping
+ * `not_found`) — the Witch class def only links the generic "Patron
+ * Spells" stub `ClassFeature`.
+ *
+ * The FULL published catalog with prose only. `@pf1/engine`
+ * `witch-patrons.ts`'s hand-authored `WITCH_PATRONS` table (17 APG/Ultimate
+ * Magic "core" patrons) remains authoritative for those, matched by name
+ * (see that file's `mergedWitchPatronCatalog`); the rest are display-only.
+ * `category` distinguishes the source's own `"basic"` (a simple 9-spell
+ * bonus-spell progression) from `"unique"` (a themed patron with its own
+ * prerequisite/restriction prose, e.g. "Celestial Agenda") — carried through
+ * for display grouping only, not gated.
+ */
+export interface WitchPatron extends RefEntity {
+  category?: "basic" | "unique";
+}
+
+/* ---------------------------------------------------- shaman spirits -- */
+
+/**
+ * A published shaman spirit (issue #74 Phase 3c, same pattern as
+ * `RagePower`). Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_shaman_spirits.json` (19 raw entries, 18 after
+ * dropping `not_found`) — NOT the dataset's `class_ability_spirits.json`
+ * (that file is the unrelated medium "spirit" catalog, a sibling import).
+ * The Shaman class def only links the generic "Spirit" stub `ClassFeature`.
+ *
+ * The FULL published catalog with prose only. `@pf1/engine`
+ * `shaman-spirits.ts`'s hand-authored `SHAMAN_SPIRITS` table (the 8
+ * Advanced Class Guide "core" spirits) remains authoritative for those,
+ * matched by name (see that file's `mergedShamanSpiritCatalog`); the other
+ * ~10 vendored-only spirits (Ancestors, Dark Tapestry, Frost, Lore,
+ * Mammoth, Restoration, Slums, Tribe, Wind, Wood) are display-only.
+ */
+export interface ShamanSpirit extends RefEntity {}
+
+/* ------------------------------------------------- sorcerer bloodlines -- */
+
+/**
+ * A published sorcerer bloodline (issue #74 Phase 3c, same pattern as
+ * `RagePower`). Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_sorcerer_bloodlines.json` (53 raw entries, 51 after
+ * dropping `not_found` and the one `kobold` -> `kobold_sorcerer` redirect)
+ * — distinct from `RefData.bloodlineSpellLists` (the Foundry-vendored
+ * per-bloodline BONUS SPELL progressions, a different source entirely);
+ * this catalog instead carries a bloodline's ARCANA and POWERS prose, which
+ * the Foundry pack doesn't vendor at all (the Sorcerer class def only links
+ * a generic "Bloodline" stub `ClassFeature`).
+ *
+ * The FULL published catalog with prose only — no structured power-level
+ * array. `@pf1/engine` `bloodlines.ts`'s hand-authored `BLOODLINES` table
+ * (the 10 Core Rulebook bloodlines) remains authoritative for those,
+ * matched by name (see that file's `mergedSorcererBloodlineCatalog`); the
+ * other ~41 vendored-only bloodlines (Accursed, Astral, Daemon, Djinni,
+ * Harrow, Rakshasa, ...) are display-only.
+ */
+export interface SorcererBloodline extends RefEntity {}
+
+/* ------------------------------------------------ bloodrager bloodlines -- */
+
+/**
+ * A published bloodrager bloodline (issue #74 Phase 3c, same pattern as
+ * `RagePower`). Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_bloodrager_bloodlines.json` (25 raw entries, 24 after
+ * dropping `not_found`) — the Bloodrager class def only links a generic
+ * "Bloodline" stub `ClassFeature`.
+ *
+ * Unlike `SorcererBloodline`, this source's prose IS internally structured
+ * via the dataset's own `::ab[Name]{l=N ...}`/`::list[Label]{...}`
+ * directives (bonus feats, bonus spells by level, and each bloodline power's
+ * own level gate) — see the data-pipeline reader's (`util/pfdata.ts`)
+ * directive rendering for how these are turned into readable prose. Still
+ * carried as prose only here, not parsed into a structured power array;
+ * `@pf1/engine` `bloodrager-bloodlines.ts`'s hand-authored
+ * `BLOODRAGER_BLOODLINES` table (the 10 Advanced Class Guide bloodlines
+ * shared with sorcerer) remains authoritative for those, matched by name
+ * (see that file's `mergedBloodragerBloodlineCatalog`); the other ~14
+ * vendored-only bloodlines (Aquatic, Black Blood, Hag, Kyton, Medusa, Naga,
+ * Phoenix, Salamander, Shadow, Shapechanger, Sphinx, Verdant, Vestige) are
+ * display-only.
+ */
+export interface BloodragerBloodline extends RefEntity {}
 
 export type { SourceRef };
