@@ -189,6 +189,23 @@ export function collectModifiers(
         evalChange(ch.formula, rollData, ch.target, ch.type, t.name, t.id, out, ch.operator);
       }
     }
+
+    // Vendored alternate racial traits (issue #74 fill plan) — the ~80-race
+    // `RefData.racialTraits` catalog. Unlike the hand-authored table above,
+    // these never suppress a standard `Race.change`: the source only names
+    // WHAT they replace, not a verified mapping to specific `Race.changes`/
+    // `contextNotes` entries, so suppressing here would risk dropping the
+    // wrong thing on an unaudited entry (see `RacialTrait`'s doc comment in
+    // `@pf1/schema`). The model layer excludes any vendored entry whose name
+    // already matches a hand-authored one for the character's race, so this
+    // never double-grants the SAME trait's bonus twice.
+    for (const id of doc.build.vendoredRacialTraits ?? []) {
+      const t = refData.racialTraits[id];
+      if (!t || !t.race.includes(race.name)) continue;
+      for (const ch of t.changes) {
+        evalChange(ch.formula, rollData, ch.target, ch.type, t.name, t.id, out, ch.operator);
+      }
+    }
   }
 
   // --- equipped items -----------------------------------------------------

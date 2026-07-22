@@ -28,6 +28,7 @@ function sha256(text: string): string {
 /** Map of RefData collection → output filename. */
 const FILES: { key: keyof RefData; file: string }[] = [
   { key: "races", file: "races.json" },
+  { key: "racialTraits", file: "racial-traits.json" },
   { key: "classes", file: "classes.json" },
   { key: "classFeatures", file: "class-features.json" },
   { key: "feats", file: "feats.json" },

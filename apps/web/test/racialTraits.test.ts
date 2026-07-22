@@ -8,10 +8,13 @@ import { expectedFeatCount } from "../src/model/feats.js";
 import { isMultitalented } from "../src/model/race.js";
 import {
   availableRacialTraits,
+  availableVendoredRacialTraits,
   conflictingRacialTraitIds,
   hasRacialTrait,
+  hasVendoredRacialTrait,
   suppressedRaceTargets,
   toggleRacialTrait,
+  toggleVendoredRacialTrait,
 } from "../src/model/racialTraits.js";
 import { skillBudget } from "../src/model/skills.js";
 
@@ -23,7 +26,11 @@ function raceId(name: string): string {
   return entry[0];
 }
 
-function makeDoc(raceName: string, racialTraits?: string[]): CharacterDoc {
+function makeDoc(
+  raceName: string,
+  racialTraits?: string[],
+  vendoredRacialTraits?: string[],
+): CharacterDoc {
   return {
     schemaVersion: 1,
     id: "test",
@@ -39,6 +46,7 @@ function makeDoc(raceName: string, racialTraits?: string[]): CharacterDoc {
       spells: { known: [] },
       gear: [],
       racialTraits,
+      vendoredRacialTraits,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -138,5 +146,67 @@ describe("Dual Minded disables Multitalented", () => {
   it("Half-Elf is multitalented until Dual Minded is taken", () => {
     expect(isMultitalented(makeDoc("Half-Elf"), ref)).toBe(true);
     expect(isMultitalented(makeDoc("Half-Elf", ["half-elf-dual-minded"]), ref)).toBe(false);
+  });
+});
+
+describe("vendored racial traits (issue #74 fill plan)", () => {
+  function vendoredIdByName(name: string): string {
+    const found = Object.values(ref.racialTraits).find((t) => t.name === name);
+    if (!found) throw new Error(`vendored racial trait not found: ${name}`);
+    return found.id;
+  }
+
+  it("toggleVendoredRacialTrait adds then removes an id", () => {
+    const graniteSkin = vendoredIdByName("Granite Skin");
+    let doc = makeDoc("Oread");
+    expect(hasVendoredRacialTrait(doc, graniteSkin)).toBe(false);
+    doc = toggleVendoredRacialTrait(doc, graniteSkin);
+    expect(hasVendoredRacialTrait(doc, graniteSkin)).toBe(true);
+    doc = toggleVendoredRacialTrait(doc, graniteSkin);
+    expect(hasVendoredRacialTrait(doc, graniteSkin)).toBe(false);
+  });
+
+  it("availableVendoredRacialTraits is scoped to the current race", () => {
+    const oread = availableVendoredRacialTraits(makeDoc("Oread"), ref).map((t) => t.name);
+    expect(oread).toContain("Granite Skin");
+    expect(availableVendoredRacialTraits(makeDoc("Human"), ref).map((t) => t.name)).not.toContain(
+      "Granite Skin",
+    );
+  });
+
+  it("extends coverage well beyond the 8 hand-authored races (e.g. Oread has none there)", () => {
+    expect(availableRacialTraits(makeDoc("Oread"), ref)).toEqual([]);
+    expect(availableVendoredRacialTraits(makeDoc("Oread"), ref).length).toBeGreaterThan(0);
+  });
+
+  it("excludes a vendored entry whose name duplicates a hand-authored one for the same race", () => {
+    // "Focused Study" is vendored for Human AND hand-authored as
+    // human-focused-study — the vendored duplicate must not appear, so a
+    // player can't pick a non-suppressing copy of a trait the hand-authored
+    // table already enforces correctly.
+    const humanVendored = availableVendoredRacialTraits(makeDoc("Human"), ref).map((t) => t.name);
+    expect(humanVendored).not.toContain("Focused Study");
+    // Sanity: the hand-authored version is still there, and other vendored
+    // Human entries (no hand-authored counterpart) are NOT filtered out.
+    const humanHandAuthored = availableRacialTraits(makeDoc("Human"), ref).map((t) => t.name);
+    expect(humanHandAuthored).toContain("Focused Study");
+    expect(humanVendored.length).toBeGreaterThan(0);
+  });
+
+  it("setRace clears chosen vendored racial traits too", () => {
+    const graniteSkin = vendoredIdByName("Granite Skin");
+    const doc = makeDoc("Oread", undefined, [graniteSkin]);
+    const switched = setRace(doc, raceId("Human"));
+    expect(switched.build.vendoredRacialTraits).toBeUndefined();
+  });
+
+  it("a vendored pick never suppresses race skill/feat budgets (no suppressTargets)", () => {
+    // Contrast with the hand-authored `human-focused-study` case above: a
+    // vendored-only pick must never move a budget number, since nothing
+    // suppresses the standard trait it claims to replace.
+    const graniteSkin = vendoredIdByName("Granite Skin");
+    const plain = expectedFeatCount(makeDoc("Oread"), ref);
+    const withVendored = expectedFeatCount(makeDoc("Oread", undefined, [graniteSkin]), ref);
+    expect(withVendored).toBe(plain);
   });
 });

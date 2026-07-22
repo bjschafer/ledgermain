@@ -113,6 +113,21 @@ export interface CharacterDoc {
      * none chosen.
      */
     racialTraits?: string[];
+    /**
+     * Vendored alternate racial trait ids chosen (keys into
+     * `RefData.racialTraits`, issue #74 fill plan). Distinct from
+     * `racialTraits` above: these come from the `pf1-content` catalog
+     * covering all 80 vendored races, not the hand-authored 8-race table, and
+     * carry a strictly weaker guarantee — the engine applies each entry's
+     * `changes[]` but does NOT suppress the standard trait(s) it claims to
+     * replace (see `RacialTrait.replacedTraitNames`'s doc comment in
+     * `@pf1/schema`; the UI surfaces the replaced name(s) as a reminder to
+     * retire the standard trait by hand). Free-choice/never blocked, same
+     * posture as `racialTraits`. Cleared on any race change
+     * (`model/doc.ts:setRace`); ids whose race doesn't match the current race
+     * are ignored by the engine. Optional/back-compat: absent = none chosen.
+     */
+    vendoredRacialTraits?: string[];
     skillRanks: Record<SkillId, number>;
     /**
      * Cleric domain tags chosen at L1 (PF1 grants two; UI is free-choice since
