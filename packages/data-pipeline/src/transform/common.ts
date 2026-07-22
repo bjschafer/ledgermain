@@ -68,6 +68,31 @@ export function asStringArray(value: unknown): string[] {
 }
 
 /**
+ * Kebab-case slug for synthesizing stable ids from a display name (e.g.
+ * "Dragon Disciple" -> "dragon-disciple"). Shared by the archetype and
+ * prestige-class transforms, both of which mint their own non-Foundry id
+ * scheme for third-party-module content.
+ */
+export function slug(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Best-effort "at the Nth level" scrape for a feature description with no
+ * structured level field — the source data (archetype and prestige-class
+ * features alike) doesn't always itemize which class level grants a feature,
+ * so this falls back to reading it off the feature's own prose. Defaults to
+ * 1 when no such phrase is found.
+ */
+export function guessLevelFromProse(description: string | undefined): number {
+  const m = /\b(\d+)(?:st|nd|rd|th)\s+level\b/i.exec(description ?? "");
+  return m ? Number(m[1]) : 1;
+}
+
+/**
  * Extracts `system.description.value` and resolves Foundry `@UUID[...]`
  * enrichers to plain names, e.g. "@UUID[...]{Rage}" -> "Rage" (and bare
  * `@UUID[...]` links to whatever `resolveUuid` finds), so raw enricher syntax

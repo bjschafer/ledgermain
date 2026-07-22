@@ -124,14 +124,27 @@ describe("classCategory", () => {
     }
   });
 
-  it("defaults unlisted names (future prestige/NPC-class vendoring) to other", () => {
-    expect(classCategory({ name: "Horizon Walker" })).toBe("other");
+  it("defaults an unlisted name with no subType to other (an NPC-class name, or a caller that only has a bare name)", () => {
     expect(classCategory({ name: "Adept" })).toBe("other");
+    expect(classCategory({ name: "Made-Up Class" })).toBe("other");
+  });
+
+  it("classifies EVERY vendored prestige class (issue #74 phase 2c's ~108 splatbook classes, not just the eleven hand-authored ones) as prestige via subType, even with a name not in CLASS_CATEGORY", () => {
+    // Horizon Walker is real vendored data (not hand-authored, and not in the
+    // CLASS_CATEGORY name table above) — it only resolves to "prestige"
+    // because its `subType` is passed through, proving the subType-first
+    // check (not the name table) is what makes phase 2c's classes work.
+    const horizonWalker = Object.values(ref.classes).find((c) => c.name === "Horizon Walker");
+    expect(horizonWalker?.subType).toBe("prestige");
+    expect(classCategory(horizonWalker!)).toBe("prestige");
+    // But the SAME name with no subType (a bare `{name}` caller) still falls
+    // through to "other" — subType is what disambiguates, not the name.
+    expect(classCategory({ name: "Horizon Walker" })).toBe("other");
   });
 });
 
 describe("groupClassesByCategory", () => {
-  it("splits the full vendored slice 11 / 10 / 10 / 4 / 3 / 6 / 11 into ordered sections with no 'other'", () => {
+  it("splits the full vendored slice 11 / 10 / 10 / 4 / 3 / 6 / 119 into ordered sections with no 'other'", () => {
     const groups = groupClassesByCategory(Object.values(ref.classes));
     expect(groups.map((g) => g.category)).toEqual([
       "core",
@@ -142,7 +155,7 @@ describe("groupClassesByCategory", () => {
       "occult",
       "prestige",
     ]);
-    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10, 4, 3, 6, 11]);
+    expect(groups.map((g) => g.items.length)).toEqual([11, 10, 10, 4, 3, 6, 119]);
   });
 
   it("orders sections per CLASS_CATEGORY_ORDER and drops empty ones", () => {

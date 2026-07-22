@@ -10,6 +10,7 @@ const ALL_PICKERS: readonly SearchMissPicker[] = [
   "gear",
   "archetypes",
   "buffs",
+  "classes",
 ];
 
 describe("pickerLabel", () => {
@@ -32,5 +33,6 @@ describe("escapeHatchFor", () => {
   it("has no escape hatch for pickers with no homebrew authoring door", () => {
     expect(escapeHatchFor("spells")).toBeUndefined();
     expect(escapeHatchFor("archetypes")).toBeUndefined();
+    expect(escapeHatchFor("classes")).toBeUndefined();
   });
 });

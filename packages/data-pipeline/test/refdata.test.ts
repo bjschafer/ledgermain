@@ -57,8 +57,11 @@ describe("metadata + provenance", () => {
     // (the CRB ten — Arcane Archer, Arcane Trickster, Assassin, Dragon
     // Disciple, Duelist, Eldritch Knight, Loremaster, Mystic Theurge,
     // Pathfinder Chronicler, Shadowdancer — plus Student of War from the
-    // Adventurer's Guide. Foundry ships no prestige classes at all).
-    expect(Object.keys(ref.classes)).toHaveLength(55);
+    // Adventurer's Guide. Foundry ships no prestige classes at all) + 108
+    // vendored prestige classes (issue #74 phase 2c — the remaining splatbook
+    // prestige classes from the same third-party archetype module, see
+    // `vendoredPrestigeClasses.test.ts`).
+    expect(Object.keys(ref.classes)).toHaveLength(163);
     // 390 system-pack feats + ~3,150 merged in from the community pf1-content
     // module (390 + 3,251 - 77 name collisions - 1 internal dupe; see
     // config.ts's PF_CONTENT_REPO and normalize.ts's feats merge).
@@ -179,7 +182,14 @@ describe("class feature actions (schema v8 — issue: bare resource-pool counter
   });
 
   it("Channel Energy carries all four heal/harm actions in source order", () => {
-    const channelEnergy = byName(ref.classFeatures, "Channel Energy");
+    // Resolved via Cleric's own grant, not `byName` — issue #74 phase 2c
+    // vendors several splatbook prestige classes with their own same-named
+    // "Channel Energy" feature (name collisions across classes are expected
+    // and not deduped, see `prestigeClasses.ts`), so a bare name lookup is
+    // no longer guaranteed to land on the Cleric's class-abilities one.
+    const cleric = Object.values(ref.classes).find((c) => c.tag === "cleric")!;
+    const grant = cleric.features.find((f) => f.name === "Channel Energy")!;
+    const channelEnergy = ref.classFeatures[grant.featureId]!;
     const names = channelEnergy.actions!.map((a) => a.name);
     expect(names).toEqual([
       "Positive - Heal living",

@@ -38,6 +38,7 @@ import {
 } from "./transform/classes.js";
 import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
+import { transformPrestigeClassPack } from "./transform/prestigeClasses.js";
 import { transformRace } from "./transform/races.js";
 import { transformRacialTrait } from "./transform/racialTraits.js";
 import { transformSpell } from "./transform/spells.js";
@@ -56,6 +57,7 @@ import {
   applyPrestigeClassSupplements,
   applySpellProjectileSupplements,
   resolveBloodlineSupplements,
+  SUPPLEMENTAL_PRESTIGE_CLASSES,
 } from "./supplements.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
@@ -67,6 +69,10 @@ export interface NormalizeOptions {
   archetypesDir: string;
   /** `src/pf-arch-features` directory from the pinned archetype module clone. */
   archFeaturesDir: string;
+  /** `src/pf-prestige-classes` directory from the pinned archetype module clone. */
+  prestigeClassesDir: string;
+  /** `src/pf-prestige-features` directory from the pinned archetype module clone. */
+  prestigeFeaturesDir: string;
   /**
    * Path to the previously-vendored `archetype-features.json` (typically
    * `OUTPUT_DIR`'s own copy, read before this run's `emit()` overwrites it) —
@@ -230,6 +236,22 @@ export function normalize(opts: NormalizeOptions): {
   // entries); throws loudly on any id/uuid/tag/name collision. See
   // `supplements.ts`'s doc comment for sourcing/verification notes.
   applyPrestigeClassSupplements(classes, classFeatures);
+
+  // --- vendored prestige classes (issue #74 phase 2c) — the remaining
+  // splatbook prestige classes the hand-authored CRB set above doesn't cover,
+  // from the same third-party archetype module's prestige-class packs.
+  // Mutates `classes`/`classFeatures` in place; skips any class whose name
+  // matches a hand-authored entry (those stay authoritative) and throws
+  // loudly on any other id/uuid/tag/name collision — see
+  // `transformPrestigeClassPack`'s doc comment.
+  transformPrestigeClassPack(
+    opts.prestigeClassesDir,
+    opts.prestigeFeaturesDir,
+    new Set(SUPPLEMENTAL_PRESTIGE_CLASSES.map((c) => c.name)),
+    classes,
+    classFeatures,
+    resolveUuid,
+  );
 
   const domains: Domain[] = domainDocs.map((d) =>
     transformDomain(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),

@@ -3,7 +3,13 @@ import { existsSync, readFileSync } from "node:fs";
 import type { Archetype, ArchetypeFeature, Class } from "@pf1/schema";
 
 import { isFolderDoc, readPack, type RawDoc } from "../util/packs.js";
-import { descriptionValue, normalizeSources, type UuidResolver } from "./common.js";
+import {
+  descriptionValue,
+  guessLevelFromProse,
+  normalizeSources,
+  slug,
+  type UuidResolver,
+} from "./common.js";
 
 /**
  * Attribution for the dataset's content (module + maintainer). See
@@ -34,13 +40,6 @@ export function loadLegacyArchetypeFeatureLevels(
     out.set(`${feature.archetypeId}:${slug(feature.name)}`, feature.level);
   }
   return out;
-}
-
-function slug(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
 }
 
 /**
@@ -212,12 +211,6 @@ export function pairableBaseFeatureLevels(classDef: Class): Map<number, string> 
     pairable.set(level, grants[0]!.uuid);
   }
   return pairable;
-}
-
-/** Best-effort "at the Nth level" scrape for features with no structured level (see below). */
-function guessLevelFromProse(description: string | undefined): number {
-  const m = /\b(\d+)(?:st|nd|rd|th)\s+level\b/i.exec(description ?? "");
-  return m ? Number(m[1]) : 1;
 }
 
 function makeFeature(

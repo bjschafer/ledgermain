@@ -13,7 +13,8 @@ export type SearchMissPicker =
   | "traits"
   | "gear"
   | "archetypes"
-  | "buffs";
+  | "buffs"
+  | "classes";
 
 /** The player-facing noun for a picker, e.g. for "Can't find a feat…" copy. */
 const PICKER_LABEL: Record<SearchMissPicker, string> = {
@@ -24,6 +25,7 @@ const PICKER_LABEL: Record<SearchMissPicker, string> = {
   gear: "item",
   archetypes: "archetype",
   buffs: "buff",
+  classes: "class",
 };
 
 export function pickerLabel(picker: SearchMissPicker): string {

@@ -58,6 +58,7 @@ import { RogueFinesseWeaponsPicker } from "./RogueFinesseWeaponsPicker.js";
 import { RogueSkillUnlocksPicker } from "./RogueSkillUnlocksPicker.js";
 import { RogueTalentPicker } from "./RogueTalentPicker.js";
 import { SchoolPicker } from "./SchoolPicker.js";
+import { SearchMiss } from "./SearchMiss.js";
 import { ShamanHexPicker } from "./ShamanHexPicker.js";
 import { SpiritPicker } from "./SpiritPicker.js";
 import { StyleStrikePicker } from "./StyleStrikePicker.js";
@@ -69,9 +70,15 @@ import { Caret } from "../Caret.js";
 
 /**
  * One collapsible category tier in the class picker (Core / Base / Hybrid) —
- * the same shape as the race picker's `RaceGroupSection`. Rendered per group
- * (a stable set), so `useCollapsed` inside a list is fine. All tiers default
- * open: 31 chips across three sections is small enough not to declutter.
+ * the same shape as the race picker's `RaceGroupSection`, including its
+ * search-forces-open behavior: an active search (`forceOpen`) expands every
+ * tier regardless of its own collapsed state, so a match is never hidden
+ * inside a tier the player happened to leave closed. Every tier but Prestige
+ * defaults open (31 chips across six sections is small enough not to
+ * declutter); Prestige defaults COLLAPSED — issue #74 phase 2c grew it from
+ * 11 hand-authored entries to 119 (the CRB ten + Student of War + ~108
+ * vendored splatbook classes), the same "big tier starts closed" call the
+ * race picker already makes for its 40+-entry "exotic" rarity tier.
  *
  * `plain` (issue #66 chunk 3): the Prestige tier needs a richer per-class row
  * (entry-requirement checks, not just a name) that doesn't fit the compact
@@ -84,31 +91,33 @@ function ClassGroupSection({
   label,
   count,
   plain,
+  forceOpen,
   children,
 }: {
   category: ClassCategory;
   label: string;
   count: number;
   plain?: boolean;
+  forceOpen: boolean;
   children: ReactNode;
 }) {
-  const [collapsed, toggle] = useCollapsed(`class-category:${category}`, false);
-  const open = !collapsed;
+  const [collapsed, toggle] = useCollapsed(`class-category:${category}`, category === "prestige");
+  const open = forceOpen || !collapsed;
   return (
     <div className="race-group">
       <div
         className="race-group-header"
-        onClick={toggle}
+        onClick={forceOpen ? undefined : toggle}
         role="button"
-        tabIndex={0}
+        tabIndex={forceOpen ? -1 : 0}
         aria-expanded={open}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") toggle();
+          if (!forceOpen && (e.key === "Enter" || e.key === " ")) toggle();
         }}
       >
         <span className="section-label">{label}</span>
         <span className="race-group-count">{count}</span>
-        <Caret open={open} />
+        {forceOpen ? null : <Caret open={open} />}
       </div>
       {open ? plain ? children : <div className="chips">{children}</div> : null}
     </div>
@@ -118,14 +127,19 @@ function ClassGroupSection({
 export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   const [fcbOpen, setFcbOpen] = useState(true);
   const [confirmRemoveTag, setConfirmRemoveTag] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
   // "base" = every ordinary (non-prestige, non-NPC) playable class; "prestige"
-  // = the ten hand-authored CRB prestige classes (issue #66 chunks 1 + 4).
-  // Both render in the picker below (`groupClassesByCategory` already sorts
-  // prestige into its own "Prestige" tier by name, see model/classCategory.ts);
-  // npc/other Foundry subTypes stay excluded, same as before. Also doubles as
-  // the class-def lookup for the "already added" rows below, so a prestige
-  // class's name/HD/etc. resolve there too.
+  // = the hand-authored CRB prestige classes plus Student of War (issue #66
+  // chunks 1 + 4) AND the ~108 vendored splatbook prestige classes (issue #74
+  // phase 2c) — both flow through the same `subType === "prestige"` filter,
+  // no separate wiring needed. Both render in the picker below
+  // (`groupClassesByCategory` already sorts prestige into its own "Prestige"
+  // tier by name, see model/classCategory.ts); npc/other Foundry subTypes
+  // stay excluded, same as before. Also doubles as the class-def lookup for
+  // the "already added" rows below, so a prestige class's name/HD/etc.
+  // resolve there too — kept UNFILTERED by search so an already-added class
+  // still resolves its name/HD while the picker above is mid-search.
   const pickerClasses = useMemo(
     () =>
       Object.values(refData.classes)
@@ -133,10 +147,23 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         .sort((a, b) => a.name.localeCompare(b.name)),
     [refData],
   );
+  // Search narrows the picker display only (118 base + 119 prestige = enough
+  // that a flat scroll through the Prestige tier alone isn't great once you
+  // know the name you want) — same inline top-of-panel search + "force every
+  // tier open while searching" behavior as the race picker's `RaceSection`.
+  const searchActive = query.trim().length > 0;
+  const filteredPickerClasses = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return q ? pickerClasses.filter((c) => c.name.toLowerCase().includes(q)) : pickerClasses;
+  }, [pickerClasses, query]);
   // Core / Base / Hybrid / … / Prestige sections (published Paizo categories,
   // see model/classCategory.ts) — alphabetical within each, mirroring the race
   // picker's rarity tiers.
-  const classGroups = useMemo(() => groupClassesByCategory(pickerClasses), [pickerClasses]);
+  const classGroups = useMemo(
+    () => groupClassesByCategory(filteredPickerClasses),
+    [filteredPickerClasses],
+  );
+  const hasMatches = classGroups.some((g) => g.items.length > 0);
 
   const chosen = new Set(doc.identity.classes.map((c) => c.tag));
   const totalLevel = doc.identity.classes.reduce((s, c) => s + c.level, 0);
@@ -175,6 +202,14 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       right={<span className="hint">multiclass-capable · total level {totalLevel}</span>}
       storageKey="panel:Classes"
     >
+      <input
+        className="search"
+        type="text"
+        placeholder="Search classes…"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        aria-label="Search classes"
+      />
       <div style={{ marginBottom: 14 }}>
         {classGroups.map((group) =>
           group.category === "prestige" ? (
@@ -191,6 +226,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
               category={group.category}
               label={group.label}
               count={group.items.length}
+              forceOpen={searchActive}
               plain
             >
               <div className="prestige-class-list">
@@ -245,6 +281,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
               category={group.category}
               label={group.label}
               count={group.items.length}
+              forceOpen={searchActive}
             >
               {group.items.map((c) => (
                 <button
@@ -264,6 +301,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
             </ClassGroupSection>
           ),
         )}
+        {!hasMatches ? <SearchMiss query={query.trim()} picker="classes" /> : null}
       </div>
 
       {doc.identity.classes.length === 0 ? (

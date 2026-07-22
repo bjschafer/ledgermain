@@ -19,6 +19,8 @@ import {
 
 const ARCHETYPES_DIR = join(ARCHETYPE_CLONE_DIR, "src", "pf-archetypes");
 const ARCH_FEATURES_DIR = join(ARCHETYPE_CLONE_DIR, "src", "pf-arch-features");
+const PRESTIGE_CLASSES_DIR = join(ARCHETYPE_CLONE_DIR, "src", "pf-prestige-classes");
+const PRESTIGE_FEATURES_DIR = join(ARCHETYPE_CLONE_DIR, "src", "pf-prestige-features");
 const PF_CONTENT_FEATS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-feats");
 const PF_CONTENT_TRAITS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-traits");
 const PF_CONTENT_RACIAL_TRAITS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-racial-traits");
@@ -47,6 +49,8 @@ function main(): void {
     packsDir: PACKS_DIR,
     archetypesDir: ARCHETYPES_DIR,
     archFeaturesDir: ARCH_FEATURES_DIR,
+    prestigeClassesDir: PRESTIGE_CLASSES_DIR,
+    prestigeFeaturesDir: PRESTIGE_FEATURES_DIR,
     legacyArchetypeFeaturesJsonPath: join(OUTPUT_DIR, "archetype-features.json"),
     pfContentFeatsDir: PF_CONTENT_FEATS_DIR,
     pfContentTraitsDir: PF_CONTENT_TRAITS_DIR,

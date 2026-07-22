@@ -92,7 +92,11 @@ This is derivative Open Game Content drawn from three pinned, upstream sources:
   relevant Paizo books (CRB, APG, ACG, ARG, BotD, UC, UM, UE, Horror
   Adventures, Occult Adventures, etc.), byte-identical (module content aside)
   to the fork's own -- we carry it forward verbatim and add our own
-  derivative-work entry per OGL Sec.6, unchanged by the repoint.
+  derivative-work entry per OGL Sec.6, unchanged by the repoint. Beyond its
+  `pf-archetypes`/`pf-arch-features` packs, we also vendor this module's
+  `pf-prestige-classes`/`pf-prestige-features` packs (the non-hand-authored
+  prestige-class catalog, `packages/data-pipeline/src/transform/prestigeClasses.ts`)
+  -- same module, same pinned commit, no separate attribution needed.
 
 ### c. PF1 Content module (community feats + traits + racial traits packs)
 
