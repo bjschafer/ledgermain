@@ -41,7 +41,7 @@ import { findKineticistWildTalent } from "./kineticist-wild-talents.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { PHRENIC_AMPLIFICATIONS } from "./phrenic-amplifications.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
-import { RAGE_POWERS } from "./rage-powers.js";
+import { resolveRagePower } from "./rage-powers.js";
 import { ROGUE_TALENTS } from "./rogue-talents.js";
 import { WITCH_HEXES } from "./witch-hexes.js";
 import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
@@ -415,7 +415,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   )?.tag;
   if (barbarianClassTag) {
     for (const powerId of doc.build.ragePowers ?? []) {
-      const power = RAGE_POWERS[powerId];
+      const power = resolveRagePower(powerId, refData);
       if (!power) continue;
       out.push({
         classTag: barbarianClassTag,

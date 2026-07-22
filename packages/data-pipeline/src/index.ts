@@ -37,5 +37,6 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     archetypeFeatures: readJson(dir, "archetype-features.json"),
     domains: readJson(dir, "domains.json"),
     wizardSchools: readJson(dir, "wizard-schools.json"),
+    ragePowers: readJson(dir, "rage-powers.json"),
   };
 }

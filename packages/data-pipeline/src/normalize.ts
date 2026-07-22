@@ -12,6 +12,7 @@ import type {
   Feat,
   Item,
   Race,
+  RagePower,
   RefData,
   RefDataMeta,
   Spell,
@@ -45,9 +46,11 @@ import {
   applySpellProjectileSupplements,
   resolveBloodlineSupplements,
 } from "./supplements.js";
+import { transformRagePowers } from "./transform/ragePowers.js";
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { readCsv } from "./util/csv.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
+import { readPfDataDictionary } from "./util/pfdata.js";
 import { makeUuid, parseUuid } from "./util/uuid.js";
 
 export interface NormalizeOptions {
@@ -56,6 +59,8 @@ export interface NormalizeOptions {
   archetypeSourceDir: string;
   /** `src/pf-feats` directory from the pinned PF1 Content module clone. */
   pfContentFeatsDir: string;
+  /** `json` directory from the pinned Pf Data 1e clone. */
+  pfDataJsonDir: string;
   sourceRepo: string;
   sourceSha: string;
   systemVersion: string;
@@ -345,6 +350,13 @@ export function normalize(opts: NormalizeOptions): {
   }
   applyArchetypeFeatureLevelSupplements(archetypeFeatures);
 
+  // --- rage powers (fourth-party dataset; Foundry ships only a stub — see
+  // config.ts PFDATA_REPO/PFDATA_SHA and RagePower's doc comment) -----------
+  const ragePowerDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_rage_powers.json"),
+  );
+  const ragePowers: RagePower[] = transformRagePowers(ragePowerDict);
+
   const counts = {
     races: races.length,
     classes: classes.length,
@@ -361,6 +373,7 @@ export function normalize(opts: NormalizeOptions): {
     bloodlineSpellLists: Object.keys(bloodlineSpellLists).length,
     domains: domains.length,
     wizardSchools: wizardSchools.length,
+    ragePowers: ragePowers.length,
   };
 
   const meta: RefDataMeta = {
@@ -398,6 +411,7 @@ export function normalize(opts: NormalizeOptions): {
     archetypeFeatures: byId(archetypeFeatures),
     domains: byId(domains),
     wizardSchools: byId(wizardSchools),
+    ragePowers: byId(ragePowers),
   };
 
   return { refData, contentVersion };

@@ -608,8 +608,11 @@ export {
   RAGE_POWERS,
   RAGE_POWER_IDS,
   ragePowersForEdition,
+  resolveRagePower,
+  mergedRagePowerCatalog,
   type RagePowerDef,
   type RagePowerEdition,
+  type MergedRagePowerEntry,
 } from "./rage-powers.js";
 export {
   POLYMORPH_TIERS,

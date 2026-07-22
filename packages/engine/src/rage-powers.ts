@@ -90,7 +90,7 @@
  * same way `WitchHexDef.minLevel`/`MagusArcanaDef.minLevel` do.
  */
 
-import type { BuffGate, Change, ContextNote } from "@pf1/schema";
+import type { BuffGate, Change, ContextNote, RagePower, RefData, SourceRef } from "@pf1/schema";
 
 export type RagePowerEdition = "barbarian" | "barbarianUnchained";
 
@@ -453,4 +453,166 @@ export const RAGE_POWER_IDS: readonly string[] = RAGE_POWER_LIST.map((p) => p.id
 /** All rage powers available to a given edition, in table order. */
 export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] {
   return RAGE_POWER_LIST.filter((p) => p.editions.includes(edition));
+}
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3a: `RefData.ragePowers` (see that type's doc comment) is
+ * the FULL published catalog (~244 entries after junk filtering), prose
+ * only. The hand-verified table above stays authoritative for MECHANICS —
+ * this section only merges the two for BROWSING (the picker) and for
+ * resolving a picked id back to a definition (`collect.ts`/`archetypes.ts`),
+ * mirroring `traits.ts`'s `resolveTrait` fallback-to-`doc.build.homebrew`
+ * pattern: hand-authored first, vendored catalog as the fallback source of
+ * definitions rather than a second table to keep in sync by hand.
+ *
+ * Matching is by NORMALIZED NAME, never id — the two tables use disjoint id
+ * spaces by construction (this file's camelCase vs. the vendored dataset's
+ * snake_case slug), so an id collision can't happen, but a hand-authored
+ * entry's `Change`/`contextNotes` must still land on the SAME published
+ * power the vendored catalog describes under a possibly-differently-cased
+ * name.
+ *
+ * Collision audit (all 30 hand-authored entries, run against the pinned Pf
+ * Data 1e slice): 29 matched a vendored entry by normalized name; the lone
+ * exception is Sixth Sense, which is not present in the vendored
+ * `class_ability_rage_powers.json` dictionary AT ALL under any key (verified
+ * — this is a gap in the source, not a naming mismatch) and so has no
+ * `NAME_ALIASES` entry to add; it's included in `mergedRagePowerCatalog`
+ * unconditionally below, same as a vendored-only entry, just sourced from
+ * this table instead of `RefData.ragePowers`. No other hand-authored name
+ * needed an alias — the source's own spelling/wording matched ours exactly
+ * (case-insensitively) for the other 29.
+ *
+ * One name COLLIDES within the vendored catalog itself: "Guarded Stance"
+ * appears twice — the Core Rulebook original (`guarded_stance`, no
+ * `category`) and a reworded Pathfinder Unchained "Stance"-category variant
+ * (`guarded_stance_stance`, different scaling/duration). The hand-authored
+ * entry's numbers (+1/6 levels, vs. melee only) match the CRB original, so
+ * `mergedRagePowerCatalog` prefers the vendored entry WITHOUT a `category`
+ * as the collision partner when more than one vendored entry shares a
+ * normalized name — the Unchained variant stays in the catalog as its own
+ * vendored-only (display-only) row rather than being silently dropped.
+ */
+
+/**
+ * Alias map for a hand-authored id whose vendored-catalog counterpart uses a
+ * different name than ours (misspelling/wording drift) — matched instead of
+ * this file's own `name`. Empty today: the full 30-entry audit found no
+ * drift (see the collision-audit comment above) — kept so a FUTURE
+ * hand-authored addition that DOES drift from the vendored spelling has
+ * somewhere to record it instead of silently going unmatched.
+ */
+const RAGE_POWER_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeRagePowerName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Cheap HTML->text preview for a vendored-only entry's picker row (the hand-authored table's `summary` field is a curated paraphrase this app doesn't have for vendored-only prose). */
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def (matched or Sixth-Sense-style unmatched) with the vendored prose attached, or a vendored-only entry rendered display-only. */
+export interface MergedRagePowerEntry extends RagePowerDef {
+  /** Ability-type suffix as published, e.g. "(Ex)" — undefined for the one hand-authored-only entry (Sixth Sense) with no vendored counterpart. */
+  nameSuffix?: string;
+  /** Vendored grouping tag (e.g. "Totem", "Blood", "Stance"), when present. */
+  category?: string;
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id — undefined only for Sixth Sense. */
+  description?: string;
+  /** Vendored source-book attribution, when known. */
+  sources?: SourceRef[];
+}
+
+function vendoredToDef(entry: RagePower): MergedRagePowerEntry {
+  return {
+    id: entry.id,
+    name: entry.name,
+    nameSuffix: entry.nameSuffix,
+    category: entry.category,
+    // NOT `entry.level` — that field isn't a level-gate (see `RagePower.level`'s
+    // doc comment). Any real "requires Nth level" prerequisite is already
+    // prose inside `description`; a vendored-only entry gets no soft-warning
+    // gate at all rather than a fabricated/misleading one.
+    minLevel: 1,
+    summary: plainTextPreview(entry.description ?? ""),
+    editions: BOTH,
+    changes: [],
+    displayOnly: true,
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/**
+ * Resolve a picked rage-power id (`doc.build.ragePowers` entries) to its
+ * definition — hand-authored table first (mechanics-authoritative), falling
+ * back to the vendored catalog for an id that only exists there (a power
+ * picked straight from the full-catalog picker with no hand-authored
+ * counterpart). Used by `collect.ts` (modifier collection) and
+ * `archetypes.ts` (the Class Features list) instead of indexing `RAGE_POWERS`
+ * directly, so a vendored-only pick resolves to a real (display-only)
+ * definition rather than being silently dropped.
+ */
+export function resolveRagePower(id: string, refData: RefData): RagePowerDef | undefined {
+  const hand = RAGE_POWERS[id];
+  if (hand) return hand;
+  const vendored = refData.ragePowers?.[id];
+  return vendored ? vendoredToDef(vendored) : undefined;
+}
+
+/**
+ * The full picker-browsable catalog: every vendored entry, with any that
+ * collides (by normalized name, alias-mapped) against a hand-authored entry
+ * REPLACED by that hand-authored def (keeping its id and real mechanics, but
+ * carrying the vendored entry's prose/sources along for display), plus any
+ * hand-authored entry with no vendored counterpart at all (Sixth Sense — see
+ * the file doc comment) appended. `!entry.displayOnly` marks which rows have
+ * live mechanics, for the picker's "M" badge (same convention as
+ * `archetypeModeledEffectTier`/`ArchetypePicker`'s `badge-modeled`).
+ */
+export function mergedRagePowerCatalog(refData: RefData): MergedRagePowerEntry[] {
+  const handByNormName = new Map<string, RagePowerDef>();
+  for (const p of RAGE_POWER_LIST) {
+    handByNormName.set(normalizeRagePowerName(RAGE_POWER_NAME_ALIASES[p.id] ?? p.name), p);
+  }
+
+  const vendored = Object.values(refData.ragePowers ?? {});
+  // Base (no `category`) vendored entries are processed first, so when a name
+  // collides WITHIN the vendored catalog itself (e.g. Guarded Stance's CRB
+  // original vs. its Pathfinder Unchained "Stance" variant — see file doc
+  // comment) the hand-authored match claims the base entry, leaving the
+  // variant as its own vendored-only row rather than being dropped.
+  const ordered = [...vendored].sort((a, b) => (a.category ? 1 : 0) - (b.category ? 1 : 0));
+
+  const usedHandIds = new Set<string>();
+  const seenNormNames = new Set<string>();
+  const merged: MergedRagePowerEntry[] = [];
+  for (const v of ordered) {
+    const norm = normalizeRagePowerName(v.name);
+    const handMatch = seenNormNames.has(norm) ? undefined : handByNormName.get(norm);
+    if (handMatch) {
+      seenNormNames.add(norm);
+      usedHandIds.add(handMatch.id);
+      merged.push({ ...handMatch, description: v.description, sources: v.sources });
+    } else {
+      merged.push(vendoredToDef(v));
+    }
+  }
+  for (const p of RAGE_POWER_LIST) {
+    if (!usedHandIds.has(p.id)) merged.push(p);
+  }
+  return merged;
 }

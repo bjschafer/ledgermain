@@ -65,7 +65,7 @@ mirrored into `apps/web/public/data/` and the production `dist/` bundle) is
 **Open Game Content** licensed under the **Open Game License v1.0a** -- see
 [`OGL.txt`](./OGL.txt). That license, not the AGPL, governs those files.
 
-This is derivative Open Game Content drawn from three pinned, upstream sources:
+This is derivative Open Game Content drawn from four pinned, upstream sources:
 
 ### a. Foundry VTT Pathfinder 1e system
 
@@ -96,8 +96,31 @@ This is derivative Open Game Content drawn from three pinned, upstream sources:
   only the feats not already present in the system pack (name collisions keep
   the system pack's richer record).
 
-Our `OGL.txt` is therefore the upstream Archetypes `OGL.txt` with the
-following appended to its COPYRIGHT NOTICE:
+### d. Pf Data 1e dataset (rage-power catalog)
+
+- Repo: `https://github.com/jasontankapps/pathfinder-data-1-e`
+- Pinned commit: `33f1b75b8f62b43c59b96eab6bebb45e37c29229`
+- Single-maintainer repo (Jason Tamez); pinned to an exact commit like the
+  other three sources, never a branch. A flat-JSON dictionary dataset (one
+  file per subsystem under `json/`); we currently vendor only
+  `json/class_ability_rage_powers.json` (the full published rage-power
+  catalog, issue #74 Phase 3a) into `RefData.ragePowers` — see that type's
+  doc comment (`@pf1/schema`). Code is GPL-3.0-or-later (never copied in,
+  same clean-room posture as Sec.2a/2c); its `OPENGAMECONTENT.md` carries an
+  OGL 1.0a Section 15 (with its own Paizo Community Use notice, folded into
+  Sec.3 below) that we carry forward into our `OGL.txt` in full rather than
+  hand-trimming to only the sourcebooks our vendored rage-power slice
+  actually cites — the source dataset spans far more subsystems than rage
+  powers, but carrying its complete attribution list is the simpler and
+  strictly safer call (over-inclusive credit has no downside; under-inclusive
+  credit is a real one), and it directly sets up the next subsystem imports
+  (hexes, arcana, talents, exploits, wild talents) this same pinned source
+  will eventually supply, at which point their citations are already present.
+
+Our `OGL.txt` is therefore the upstream Archetypes `OGL.txt`, with Pf Data
+1e's full Section 15 copyright-notice list appended (deduplicated against
+lines already present) and the following appended last, to its COPYRIGHT
+NOTICE:
 
 > Ledgermain normalized Pathfinder 1e reference data (vendored under
 > `packages/data-pipeline/data/`) Copyright 2026, Braxton Schafer. Derivative

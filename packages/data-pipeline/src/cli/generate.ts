@@ -14,11 +14,13 @@ import {
   OUTPUT_DIR,
   PACKS_DIR,
   PF_CONTENT_CLONE_DIR,
+  PFDATA_CLONE_DIR,
   SYSTEM_VERSION,
 } from "../config.js";
 
 const ARCHETYPE_SOURCE_DIR = join(ARCHETYPE_CLONE_DIR, "source files", "Archetypes");
 const PF_CONTENT_FEATS_DIR = join(PF_CONTENT_CLONE_DIR, "src", "pf-feats");
+const PFDATA_JSON_DIR = join(PFDATA_CLONE_DIR, "json");
 
 /** Committer date of the pinned commit (ISO 8601) — deterministic per SHA. */
 function sourceCommitDate(): string {
@@ -44,6 +46,7 @@ function main(): void {
     packsDir: PACKS_DIR,
     archetypeSourceDir: ARCHETYPE_SOURCE_DIR,
     pfContentFeatsDir: PF_CONTENT_FEATS_DIR,
+    pfDataJsonDir: PFDATA_JSON_DIR,
     sourceRepo: FOUNDRY_REPO,
     sourceSha: FOUNDRY_SHA,
     systemVersion: SYSTEM_VERSION,
