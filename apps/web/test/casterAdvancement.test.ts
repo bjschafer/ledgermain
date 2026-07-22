@@ -149,6 +149,42 @@ describe("castingAdvancementBonus / effectiveCasterClassLevel", () => {
     expect(rawSorcererLevel).toBe(5);
   });
 
+  it("Sorcerer 5 / Dragon Disciple: 5th level is one of Dragon Disciple's skipped levels (no gain over 4th), 6th resumes", () => {
+    // Dragon Disciple's Spells per Day column reads "—" at 1st/5th/9th level
+    // and "+1 level of existing arcane class" every other level (2,3,4,6,7,8,10)
+    // — unlike Eldritch Knight's uninterrupted 2nd-10th run, this exercises the
+    // "a reached prestige level doesn't always grant a slot" branch of
+    // `castingAdvancementBonus`'s level filter.
+    let atFour = classed([
+      { tag: "sorcerer", level: 5 },
+      { tag: "dragonDisciple", level: 4 },
+    ]);
+    atFour = setCastingAdvancementTarget(atFour, ref, "dragonDisciple", 0, "sorcerer");
+    expect(castingAdvancementBonus(atFour, ref, "sorcerer")).toBe(3); // DD levels 2, 3, 4 reached
+
+    let atFive = classed([
+      { tag: "sorcerer", level: 5 },
+      { tag: "dragonDisciple", level: 5 },
+    ]);
+    atFive = setCastingAdvancementTarget(atFive, ref, "dragonDisciple", 0, "sorcerer");
+    expect(castingAdvancementBonus(atFive, ref, "sorcerer")).toBe(3); // 5th grants nothing
+    expect(effectiveCasterClassLevel(atFive, ref, "sorcerer")).toBe(8);
+
+    let atSix = classed([
+      { tag: "sorcerer", level: 5 },
+      { tag: "dragonDisciple", level: 6 },
+    ]);
+    atSix = setCastingAdvancementTarget(atSix, ref, "dragonDisciple", 0, "sorcerer");
+    expect(castingAdvancementBonus(atSix, ref, "sorcerer")).toBe(4); // 6th resumes advancement
+
+    // Spells-known table genuinely differs between raw sorcerer level 5 and
+    // effective 8 (a spontaneous caster whose spells known — not just slots —
+    // advance with the prestige levels).
+    const knownAtEffective = spellsKnownLimitsByLevel(CASTER_MODELS.sorcerer!, 8);
+    const knownAtRaw = spellsKnownLimitsByLevel(CASTER_MODELS.sorcerer!, 5);
+    expect(knownAtEffective).not.toEqual(knownAtRaw);
+  });
+
   it("a stale stored target (the target class was since removed from the build) contributes 0", () => {
     let doc = classed([
       { tag: "wizard", level: 5 },
