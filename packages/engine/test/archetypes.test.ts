@@ -552,11 +552,13 @@ describe("Archetype-feature level-field corrections (issue #47)", () => {
     const at12 = archetypeOwnFeatureNames(
       makeDoc({ classes: [{ tag: "druid", level: 12 }], archetypes: [urbanDruid.id] }),
     );
-    expect(at12.includes("A thousand faces")).toBe(false);
+    // Capitalization drifted with the archetype data source repoint (was "A
+    // thousand faces"); the level-mismatch this test exists for is unchanged.
+    expect(at12.includes("A Thousand Faces")).toBe(false);
     const at13 = archetypeOwnFeatureNames(
       makeDoc({ classes: [{ tag: "druid", level: 13 }], archetypes: [urbanDruid.id] }),
     );
-    expect(at13.includes("A thousand faces")).toBe(true);
+    expect(at13.includes("A Thousand Faces")).toBe(true);
   });
 
   it("ranger:realm-wanderer Queen's Bond doesn't show until 4th level (prose: 'At 4th level')", () => {

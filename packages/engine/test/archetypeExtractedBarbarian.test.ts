@@ -130,22 +130,22 @@ describe("classification table covers every vendored barbarian archetype feature
     expect(blocked.sort()).toEqual(
       [
         "barbarian:elemental-kin:elemental-fury:3",
-        "barbarian:hateful-rager:feed-the-rage-ex:5",
+        "barbarian:hateful-rager:feed-the-rage:5",
         "barbarian:hateful-rager:reduced-rage:2",
         "barbarian:jungle-rager:damage-reduction:8",
         "barbarian:mad-dog:rage:4",
         "barbarian:raging-cannibal:consume-vigor:2",
-        "barbarian:sharptooth:swim-like-a-fish-10-ft:1",
-        "barbarian:shoanti-burn-rider:give-me-fire-ex:5",
+        "barbarian:sharptooth:swim-like-a-fish:1",
+        "barbarian:shoanti-burn-rider:give-me-fire:5",
       ].sort(),
     );
   });
 
   it("the four hand-verified ids are classified but never duplicated into the extracted table", () => {
     const handVerifiedIds = [
-      "barbarian:urban-barbarian:controlled-rage-ex:1",
-      "barbarian:invulnerable-rager:invulnerability-ex:2",
-      "barbarian:savage-barbarian:natural-toughness-1:7",
+      "barbarian:urban-barbarian:controlled-rage:1",
+      "barbarian:invulnerable-rager:invulnerability:2",
+      "barbarian:savage-barbarian:natural-toughness:7",
       "barbarian:wildborn:damage-reduction:7",
     ];
     for (const id of handVerifiedIds) {
@@ -198,7 +198,7 @@ describe("Wildborn (barbarian): hand-verified Damage Reduction reflavor — supp
 
 describe("Armored Hulk: Armored Swiftness grants +5 ft. land speed while medium/heavy armored", () => {
   const entry =
-    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:armored-hulk:armored-swiftness-ex:2"]!;
+    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:armored-hulk:armored-swiftness:2"]!;
   const formula = entry.changes[0]!.formula;
 
   it("0 unarmored, 0 in light armor, +5 in medium armor, +5 in heavy armor", () => {
@@ -227,8 +227,7 @@ describe("Armored Hulk: Improved Armored Swiftness grants +10 ft. land speed in 
 });
 
 describe("Deepwater Rager: Strong Lungs adds Con mod to Intimidate", () => {
-  const entry =
-    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:deepwater-rager:strong-lungs-ex:1"]!;
+  const entry = BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:deepwater-rager:strong-lungs:1"]!;
   const formula = entry.changes[0]!.formula;
 
   it("Con 14 (+2 mod) yields +2", () => {
@@ -249,8 +248,7 @@ describe("Deepwater Rager: Strong Lungs adds Con mod to Intimidate", () => {
 });
 
 describe("Fearsome Defender: Bloodlust adds Cha mod to initiative", () => {
-  const entry =
-    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:fearsome-defender:bloodlust-ex:5"]!;
+  const entry = BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:fearsome-defender:bloodlust:5"]!;
   const formula = entry.changes[0]!.formula;
 
   it("Cha 12 (+1 mod) yields +1", () => {
@@ -264,7 +262,7 @@ describe("Fearsome Defender: Bloodlust adds Cha mod to initiative", () => {
 
 describe("Fearsome Defender: Silent Threat grants scaling general Intimidate", () => {
   const entry =
-    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:fearsome-defender:silent-threat-1:3"]!;
+    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:fearsome-defender:silent-threat:3"]!;
   const formula = entry.changes[0]!.formula;
 
   it("+1 at L3, +2 at L6, +4 at L12", () => {
@@ -291,7 +289,7 @@ describe("Pack Rager: Bonus Feat grants a scaling teamwork-feat count", () => {
 
 describe("Savage Barbarian: Naked Courage grants dodge AC while unarmored", () => {
   const entry =
-    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:savage-barbarian:naked-courage-1:3"]!;
+    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:savage-barbarian:naked-courage:3"]!;
   const formula = entry.changes[0]!.formula;
 
   it("+1 unarmored at L3, 0 in light armor, +2 unarmored at L9", () => {
@@ -302,7 +300,7 @@ describe("Savage Barbarian: Naked Courage grants dodge AC while unarmored", () =
 });
 
 describe("Superstitious: Sixth Sense grants scaling general initiative", () => {
-  const entry = BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:superstitious:sixth-sense-1:3"]!;
+  const entry = BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:superstitious:sixth-sense:3"]!;
   const formula = entry.changes[0]!.formula;
 
   it("+1 at L3, +2 at L6, +3 at L9", () => {
@@ -314,7 +312,7 @@ describe("Superstitious: Sixth Sense grants scaling general initiative", () => {
 
 describe("Untamed Rager: Feral Appearance grants scaling general Intimidate (no dropped clauses)", () => {
   const entry =
-    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:untamed-rager:feral-appearance-1:3"]!;
+    BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:untamed-rager:feral-appearance:3"]!;
   const formula = entry.changes[0]!.formula;
 
   it("+1 at L3, +2 at L6, +6 at L18", () => {

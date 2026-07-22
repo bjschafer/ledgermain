@@ -440,9 +440,16 @@ exports[`normalized-output snapshots weapon: Composite Longbow (ranged, STR-to-d
 exports[`normalized-output snapshots archetype: Two-Handed Fighter 1`] = `
 {
   "classTag": "fighter",
-  "contributorModule": "baileymh/pf1e-archetypes",
+  "contributorModule": "Tryss_Farron/pf1e-archetypes",
+  "description": "<p>Some fighters focus their efforts on finding the biggest, heaviest, most imposing weapon they can find and training to manage and harness the weight of their massive weapons for maximum impact. These fighting school benefits only apply when using two-handed weapons.</p><p></p><p></p><p></p><p></p><p></p><p></p>",
   "id": "fighter:two-handed-fighter",
   "name": "Two-Handed Fighter",
+  "sources": [
+    {
+      "id": "PZO1115",
+      "pages": "108",
+    },
+  ],
   "uuid": "archetype:fighter:two-handed-fighter",
 }
 `;
@@ -455,6 +462,12 @@ exports[`normalized-output snapshots archetype feature: Two-Handed Fighter's Sha
   "level": 2,
   "name": "Shattering Strike",
   "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.h0Brxw6khcjlEf1T",
+  "sources": [
+    {
+      "id": "PZO1115",
+      "pages": "108",
+    },
+  ],
   "uuid": "archetype-feature:fighter:two-handed-fighter:shattering-strike:2",
 }
 `;

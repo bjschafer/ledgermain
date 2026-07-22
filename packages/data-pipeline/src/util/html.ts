@@ -1,5 +1,9 @@
 const UUID_LINK_RE = /@UUID\[([^\]]+)\](?:\{([^}]*)\})?/g;
-const EMBED_RE = /@Embed\[[^\]]+\]/g;
+// `@Embed[...]` optionally carries its own trailing `{Display}` override (the
+// archetype dataset always includes one, e.g.
+// `@Embed[...]{Shattering Strike (Ex)}`) — both must go together, or the
+// brace text leaks into the rendered prose as literal `{Display}`.
+const EMBED_RE = /@Embed\[[^\]]+\](?:\{[^}]*\})?/g;
 
 /**
  * Resolve Foundry `@UUID[...]` enrichers to plain display text: braced links
@@ -8,9 +12,10 @@ const EMBED_RE = /@Embed\[[^\]]+\]/g;
  * referenced item is often outside this dataset's slice) and dropped if
  * unresolvable. Also strips `@Embed[...]` enrichers (Foundry's inline-render
  * directive for another doc, e.g. a domain's description embedding its own
- * granted-power items) — the embedded content is already surfaced separately
- * wherever the referenced doc is itself normalized, so the raw enricher would
- * otherwise leak into the rendered prose.
+ * granted-power items, or an archetype embedding one of its own features) —
+ * the embedded content is already surfaced separately wherever the referenced
+ * doc is itself normalized, so the raw enricher would otherwise leak into the
+ * rendered prose.
  */
 export function resolveUuidLinks(
   html: string,

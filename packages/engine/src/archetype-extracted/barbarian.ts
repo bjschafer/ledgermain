@@ -10,6 +10,16 @@
  * this file; only `index.ts` (the aggregator, out of scope for this wave —
  * see below) needs one new import + one new spread per class.
  *
+ * The archetype data source repoint (`ARCHETYPE_REPO`/`ARCHETYPE_SHA`,
+ * `packages/data-pipeline/src/config.ts`) mechanically renamed most of this
+ * file's ids: the retired CSV dataset baked an ability-type or bonus-tier
+ * suffix into a lot of barbarian feature names (`"Invulnerability (Ex)"`,
+ * `"Natural Toughness (+1)"`) that the current YAML-pack source's plain names
+ * (`"Invulnerability"`, `"Natural Toughness"`) don't carry — so e.g.
+ * `invulnerability-ex:2` became `invulnerability:2`. Content/mechanics are
+ * unaffected; only id suffixes and (one case, `feral-gnasher`'s "Improvised
+ * Weapon Mastery", noted at its entry below) a level number changed.
+ *
  * ── BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION ────────────────────────────
  *
  * Every feature of every vendored barbarian archetype, read in full (not
@@ -92,9 +102,9 @@
  * same individual-judgment weight as the `numeric`/`blocked` buckets do.
  *
  * NOT re-added here: the four barbarian ids already hand-verified in
- * `archetype-effects.ts` (`barbarian:urban-barbarian:controlled-rage-ex:1`,
- * `barbarian:invulnerable-rager:invulnerability-ex:2`,
- * `barbarian:savage-barbarian:natural-toughness-1:7`,
+ * `archetype-effects.ts` (`barbarian:urban-barbarian:controlled-rage:1`,
+ * `barbarian:invulnerable-rager:invulnerability:2`,
+ * `barbarian:savage-barbarian:natural-toughness:7`,
  * `barbarian:wildborn:damage-reduction:7`) still get a classification entry
  * below (covering EVERY feature, matching fighter.ts's own posture of
  * classifying its hand-verified ids too) but are never duplicated into
@@ -123,7 +133,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   Record<string, ArchetypeFeatureClassificationEntry>
 > = {
   // ── Armored Hulk ───────────────────────────────────────────────────────
-  "barbarian:armored-hulk:armored-swiftness-ex:2": {
+  "barbarian:armored-hulk:armored-swiftness:2": {
     archetypeId: "barbarian:armored-hulk",
     name: "Armored Swiftness (Ex)",
     level: 2,
@@ -137,14 +147,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note: "+10 ft. land speed in any armor short of a heavy load — literal Fast-Movement-shaped condition, paired to Improved Uncanny Dodge (nothing to suppress)",
   },
-  "barbarian:armored-hulk:indomitable-stance-ex:1": {
+  "barbarian:armored-hulk:indomitable-stance:1": {
     archetypeId: "barbarian:armored-hulk",
     name: "Indomitable Stance (Ex)",
     level: 1,
     bucket: "situational",
     note: "real numbers, but each scoped to a specific maneuver (overrun), a specific save (vs. trample), or a specific enemy state (charging) — unpaired swap of fast movement, whose own real Change stays unsuppressed either way since nothing here is added on top",
   },
-  "barbarian:armored-hulk:resilience-of-steel-1:3": {
+  "barbarian:armored-hulk:resilience-of-steel:3": {
     archetypeId: "barbarian:armored-hulk",
     name: "Resilience of Steel (+1)",
     level: 3,
@@ -160,14 +170,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Beastkin Berserker ─────────────────────────────────────────────────
-  "barbarian:beastkin-berserker:feral-transformation-su:4": {
+  "barbarian:beastkin-berserker:feral-transformation:4": {
     archetypeId: "barbarian:beastkin-berserker",
     name: "Feral Transformation (Su)",
     level: 4,
     bucket: "subsystem",
     note: "polymorph (beast shape I/II/III) — no numeric effect to model",
   },
-  "barbarian:beastkin-berserker:savage-rapport-ex:1": {
+  "barbarian:beastkin-berserker:savage-rapport:1": {
     archetypeId: "barbarian:beastkin-berserker",
     name: "Savage Rapport (Ex)",
     level: 1,
@@ -176,14 +186,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Breaker ────────────────────────────────────────────────────────────
-  "barbarian:breaker:battle-scavenger-1:3": {
+  "barbarian:breaker:battle-scavenger:3": {
     archetypeId: "barbarian:breaker",
     name: "Battle Scavenger (+1)",
     level: 3,
     bucket: "situational",
     note: "no attack penalty + damage bonus scoped to improvised/broken weapons specifically — weapon-condition scoped, not a real weapon-group",
   },
-  "barbarian:breaker:destructive-ex:1": {
+  "barbarian:breaker:destructive:1": {
     archetypeId: "barbarian:breaker",
     name: "Destructive (Ex)",
     level: 1,
@@ -192,21 +202,21 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Brutal Pugilist ────────────────────────────────────────────────────
-  "barbarian:brutal-pugilist:improved-savage-grapple-ex:5": {
+  "barbarian:brutal-pugilist:improved-savage-grapple:5": {
     archetypeId: "barbarian:brutal-pugilist",
     name: "Improved Savage Grapple (Ex)",
     level: 5,
     bucket: "situational",
     note: "removes grappled-condition penalties + a size-treatment rule — condition-state scoped, no flat bonus",
   },
-  "barbarian:brutal-pugilist:pit-fighter-1:3": {
+  "barbarian:brutal-pugilist:pit-fighter:3": {
     archetypeId: "barbarian:brutal-pugilist",
     name: "Pit Fighter (+1)",
     level: 3,
     bucket: "situational",
     note: "CMB/CMD bonus on a player-chosen combat maneuver — free-choice maneuver scoping, no generic maneuver target exists",
   },
-  "barbarian:brutal-pugilist:savage-grapple-ex:2": {
+  "barbarian:brutal-pugilist:savage-grapple:2": {
     archetypeId: "barbarian:brutal-pugilist",
     name: "Savage Grapple (Ex)",
     level: 2,
@@ -215,28 +225,28 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Brutish Swamper ────────────────────────────────────────────────────
-  "barbarian:brutish-swamper:home-2:2": {
+  "barbarian:brutish-swamper:home:2": {
     archetypeId: "barbarian:brutish-swamper",
     name: "Home (+2)",
     level: 2,
     bucket: "situational",
     note: 'initiative + skill bonuses scoped to "in swamps" — terrain condition the engine can\'t check',
   },
-  "barbarian:brutish-swamper:marsh-march-ex:1": {
+  "barbarian:brutish-swamper:marsh-march:1": {
     archetypeId: "barbarian:brutish-swamper",
     name: "Marsh March (Ex)",
     level: 1,
     bucket: "subsystem",
     note: "removes swamp/bog terrain movement penalties this engine never modeled",
   },
-  "barbarian:brutish-swamper:stubborn-2:3": {
+  "barbarian:brutish-swamper:stubborn:3": {
     archetypeId: "barbarian:brutish-swamper",
     name: "Stubborn (-2)",
     level: 3,
     bucket: "situational",
     note: "vs.-traps-only save/AC bonus — same scoping bar Trap Sense's own real-world text fails",
   },
-  "barbarian:brutish-swamper:wrastlin-ex:6": {
+  "barbarian:brutish-swamper:wrastlin:6": {
     archetypeId: "barbarian:brutish-swamper",
     name: "Wrastlin (Ex)",
     level: 6,
@@ -245,21 +255,21 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Cave Dweller ───────────────────────────────────────────────────────
-  "barbarian:cave-dweller:sun-walker-1:7": {
+  "barbarian:cave-dweller:sun-walker:7": {
     archetypeId: "barbarian:cave-dweller",
     name: "Sun Walker (+1)",
     level: 7,
     bucket: "situational",
     note: "AC/save bonus + penalty reduction scoped to light-descriptor effects specifically — effect-type scoped; paired 1:1 to Damage Reduction so the base DR grant is already cleanly suppressed regardless of this feature's own bucket",
   },
-  "barbarian:cave-dweller:tight-tunnels-ex:1": {
+  "barbarian:cave-dweller:tight-tunnels:1": {
     archetypeId: "barbarian:cave-dweller",
     name: "Tight Tunnels (Ex)",
     level: 1,
     bucket: "subsystem",
     note: "turning-radius rule + squeezing-penalty removal — no numeric target",
   },
-  "barbarian:cave-dweller:tunnel-vision-1:3": {
+  "barbarian:cave-dweller:tunnel-vision:3": {
     archetypeId: "barbarian:cave-dweller",
     name: "Tunnel Vision (+1)",
     level: 3,
@@ -268,35 +278,35 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Deepwater Rager ────────────────────────────────────────────────────
-  "barbarian:deepwater-rager:crushing-grapple-ex:14": {
+  "barbarian:deepwater-rager:crushing-grapple:14": {
     archetypeId: "barbarian:deepwater-rager",
     name: "Crushing Grapple (Ex)",
     level: 14,
     bucket: "subsystem",
     note: "grants the constrict special attack — unrelated ability grant",
   },
-  "barbarian:deepwater-rager:disorienting-grapple-ex:5": {
+  "barbarian:deepwater-rager:disorienting-grapple:5": {
     archetypeId: "barbarian:deepwater-rager",
     name: "Disorienting Grapple (Ex)",
     level: 5,
     bucket: "subsystem",
     note: "imposes sickened + a save on the grappled FOE — not a bonus to the character's own sheet",
   },
-  "barbarian:deepwater-rager:full-lungs-ex:17": {
+  "barbarian:deepwater-rager:full-lungs:17": {
     archetypeId: "barbarian:deepwater-rager",
     name: "Full Lungs (Ex)",
     level: 17,
     bucket: "subsystem",
     note: "no breathing needed while raging — utility, no number",
   },
-  "barbarian:deepwater-rager:spiraling-charge-ex:2": {
+  "barbarian:deepwater-rager:spiraling-charge:2": {
     archetypeId: "barbarian:deepwater-rager",
     name: "Spiraling Charge (Ex)",
     level: 2,
     bucket: "subsystem",
     note: "charge-movement rule change — no numeric effect",
   },
-  "barbarian:deepwater-rager:strong-lungs-ex:1": {
+  "barbarian:deepwater-rager:strong-lungs:1": {
     archetypeId: "barbarian:deepwater-rager",
     name: "Strong Lungs (Ex)",
     level: 1,
@@ -305,28 +315,28 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Dreadnought ────────────────────────────────────────────────────────
-  "barbarian:dreadnought:dead-calm-ex:1": {
+  "barbarian:dreadnought:dead-calm:1": {
     archetypeId: "barbarian:dreadnought",
     name: "Dead Calm (Ex)",
     level: 1,
     bucket: "subsystem",
     note: "alters rage's action economy/downsides (half bonuses, no AC penalty) — rage's ability bonuses aren't auto-applied in the first place, nothing baseline to override",
   },
-  "barbarian:dreadnought:fearless-killer-su:14": {
+  "barbarian:dreadnought:fearless-killer:14": {
     archetypeId: "barbarian:dreadnought",
     name: "Fearless Killer (Su)",
     level: 14,
     bucket: "subsystem",
     note: "binary fear immunity while raging — no number",
   },
-  "barbarian:dreadnought:instant-dispassion-ex:17": {
+  "barbarian:dreadnought:instant-dispassion:17": {
     archetypeId: "barbarian:dreadnought",
     name: "Instant Dispassion (Ex)",
     level: 17,
     bucket: "subsystem",
     note: "rage re-entry timing rule — no number",
   },
-  "barbarian:dreadnought:stead-gait-ex:1": {
+  "barbarian:dreadnought:stead-gait:1": {
     archetypeId: "barbarian:dreadnought",
     name: "Stead Gait (Ex)",
     level: 1,
@@ -335,7 +345,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Drunken Brute ──────────────────────────────────────────────────────
-  "barbarian:drunken-brute:raging-drunk-ex:1": {
+  "barbarian:drunken-brute:raging-drunk:1": {
     archetypeId: "barbarian:drunken-brute",
     name: "Raging Drunk (Ex)",
     level: 1,
@@ -344,35 +354,35 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Drunken Rager ──────────────────────────────────────────────────────
-  "barbarian:drunken-rager:drunken-rage-ex:1": {
+  "barbarian:drunken-rager:drunken-rage:1": {
     archetypeId: "barbarian:drunken-rager",
     name: "Drunken Rage (Ex)",
     level: 1,
     bucket: "subsystem",
     note: "whole drunken-rage-point resource subsystem (occasionally spent for +20 ft. speed or +1 rage round) — unmodeled resource pool, not a static formula term; unpaired swap of fast movement",
   },
-  "barbarian:drunken-rager:drunken-swing-ex:12": {
+  "barbarian:drunken-rager:drunken-swing:12": {
     archetypeId: "barbarian:drunken-rager",
     name: "Drunken Swing (Ex)",
     level: 12,
     bucket: "subsystem",
     note: "resource-point-gated, swift-action-activated crit-range increase for a single attack — activated ability, same posture as ki/grit/panache",
   },
-  "barbarian:drunken-rager:improved-staggering-evasion-ex:5": {
+  "barbarian:drunken-rager:improved-staggering-evasion:5": {
     archetypeId: "barbarian:drunken-rager",
     name: "Improved Staggering Evasion (Ex)",
     level: 5,
     bucket: "subsystem",
     note: "grants improved evasion, resource-gated — unrelated ability grant",
   },
-  "barbarian:drunken-rager:staggering-evasion-ex:2": {
+  "barbarian:drunken-rager:staggering-evasion:2": {
     archetypeId: "barbarian:drunken-rager",
     name: "Staggering Evasion (Ex)",
     level: 2,
     bucket: "subsystem",
     note: "grants evasion, resource-gated — unrelated ability grant",
   },
-  "barbarian:drunken-rager:tolerance-1:3": {
+  "barbarian:drunken-rager:tolerance:3": {
     archetypeId: "barbarian:drunken-rager",
     name: "Tolerance (+1)",
     level: 3,
@@ -390,28 +400,28 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Fearsome Defender ──────────────────────────────────────────────────
-  "barbarian:fearsome-defender:bloodlust-ex:5": {
+  "barbarian:fearsome-defender:bloodlust:5": {
     archetypeId: "barbarian:fearsome-defender",
     name: "Bloodlust (Ex)",
     level: 5,
     bucket: "numeric",
     note: "Cha-mod-to-initiative half is a real, unconditional ability-mod bonus (extracted); the always-acts-in-surprise-round half has no numeric target",
   },
-  "barbarian:fearsome-defender:intractable-ex:1": {
+  "barbarian:fearsome-defender:intractable:1": {
     archetypeId: "barbarian:fearsome-defender",
     name: "Intractable (Ex)",
     level: 1,
     bucket: "situational",
     note: "save bonus scoped to pain effects specifically, plus a DC increase imposed on OTHERS' checks against her (no self-target exists for that half)",
   },
-  "barbarian:fearsome-defender:off-the-leash-ex:2": {
+  "barbarian:fearsome-defender:off-the-leash:2": {
     archetypeId: "barbarian:fearsome-defender",
     name: "Off the Leash (Ex)",
     level: 2,
     bucket: "subsystem",
     note: "action-economy rule (draw weapon while raging) — no number",
   },
-  "barbarian:fearsome-defender:silent-threat-1:3": {
+  "barbarian:fearsome-defender:silent-threat:3": {
     archetypeId: "barbarian:fearsome-defender",
     name: "Silent Threat (+1)",
     level: 3,
@@ -420,42 +430,42 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Feral Gnasher ──────────────────────────────────────────────────────
-  "barbarian:feral-gnasher:greater-lockjaw-ex:9": {
+  "barbarian:feral-gnasher:greater-lockjaw:9": {
     archetypeId: "barbarian:feral-gnasher",
     name: "Greater Lockjaw (Ex)",
     level: 9,
     bucket: "subsystem",
     note: "grab-size-increment rule — no number",
   },
-  "barbarian:feral-gnasher:impromptu-armament-ex:2": {
+  "barbarian:feral-gnasher:impromptu-armament:2": {
     archetypeId: "barbarian:feral-gnasher",
     name: "Impromptu Armament (Ex)",
     level: 2,
     bucket: "subsystem",
     note: "bonus feat + rage-power swap — feat/choice grants, no number",
   },
-  "barbarian:feral-gnasher:improved-lockjaw-ex:6": {
+  "barbarian:feral-gnasher:improved-lockjaw:6": {
     archetypeId: "barbarian:feral-gnasher",
     name: "Improved Lockjaw (Ex)",
     level: 6,
     bucket: "subsystem",
     note: "grappled-condition immunity while controlling a grapple — condition removal, no number",
   },
-  "barbarian:feral-gnasher:improvised-weapon-mastery-ex:2": {
+  "barbarian:feral-gnasher:improvised-weapon-mastery:5": {
     archetypeId: "barbarian:feral-gnasher",
     name: "Improvised Weapon Mastery (Ex)",
-    level: 2,
+    level: 5,
     bucket: "subsystem",
-    note: "bonus feat grant — no number",
+    note: "bonus feat grant — no number; the archetype data source repoint moved this from 2nd to 5th level (upstream data drift, not a rules change)",
   },
-  "barbarian:feral-gnasher:lockjaw-ex:3": {
+  "barbarian:feral-gnasher:lockjaw:3": {
     archetypeId: "barbarian:feral-gnasher",
     name: "Lockjaw (Ex)",
     level: 3,
     bucket: "subsystem",
     note: "grab ability on a bite attack — unrelated ability grant",
   },
-  "barbarian:feral-gnasher:savage-bite-ex:1": {
+  "barbarian:feral-gnasher:savage-bite:1": {
     archetypeId: "barbarian:feral-gnasher",
     name: "Savage Bite (Ex)",
     level: 1,
@@ -469,7 +479,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "proficiency LOSS list — no numeric target",
   },
-  "barbarian:feral-gnasher:wicked-improvisation-1:12": {
+  "barbarian:feral-gnasher:wicked-improvisation:12": {
     archetypeId: "barbarian:feral-gnasher",
     name: "Wicked Improvisation (+1)",
     level: 12,
@@ -478,14 +488,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Flesheater ─────────────────────────────────────────────────────────
-  "barbarian:flesheater:feast-su:14": {
+  "barbarian:flesheater:feast:14": {
     archetypeId: "barbarian:flesheater",
     name: "Feast (Su)",
     level: 14,
     bucket: "subsystem",
     note: "expands which consumed creature's abilities can be emulated — choice flexibility, no number",
   },
-  "barbarian:flesheater:one-flesh-su:2": {
+  "barbarian:flesheater:one-flesh:2": {
     archetypeId: "barbarian:flesheater",
     name: "One Flesh (Su)",
     level: 2,
@@ -499,14 +509,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "alters rage with an extra Int penalty while raging — rage's ability effects aren't auto-applied, nothing baseline to override",
   },
-  "barbarian:flesheater:unbound-form-su:20": {
+  "barbarian:flesheater:unbound-form:20": {
     archetypeId: "barbarian:flesheater",
     name: "Unbound Form (Su)",
     level: 20,
     bucket: "subsystem",
     note: "polymorph, replaces mighty rage — no number",
   },
-  "barbarian:flesheater:unbound-rage-su:11": {
+  "barbarian:flesheater:unbound-rage:11": {
     archetypeId: "barbarian:flesheater",
     name: "Unbound Rage (Su)",
     level: 11,
@@ -515,28 +525,28 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Geminate Invoker ───────────────────────────────────────────────────
-  "barbarian:geminate-invoker:contemplative-ex:1": {
+  "barbarian:geminate-invoker:contemplative:1": {
     archetypeId: "barbarian:geminate-invoker",
     name: "Contemplative (Ex)",
     level: 1,
     bucket: "subsystem",
     note: "class skill additions + alignment rule — no number",
   },
-  "barbarian:geminate-invoker:haunt-channeler-1:3": {
+  "barbarian:geminate-invoker:haunt-channeler:3": {
     archetypeId: "barbarian:geminate-invoker",
     name: "Haunt Channeler (+1)",
     level: 3,
     bucket: "subsystem",
     note: "haunt-damage special mechanic — no matching target",
   },
-  "barbarian:geminate-invoker:spirit-conduit-su:4": {
+  "barbarian:geminate-invoker:spirit-conduit:4": {
     archetypeId: "barbarian:geminate-invoker",
     name: "Spirit Conduit (Su)",
     level: 4,
     bucket: "subsystem",
     note: "grants a rage power via trance — rage powers are prose-only picks with no per-power modeling",
   },
-  "barbarian:geminate-invoker:trance-ex:1": {
+  "barbarian:geminate-invoker:trance:1": {
     archetypeId: "barbarian:geminate-invoker",
     name: "Trance (Ex)",
     level: 1,
@@ -545,21 +555,21 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Giant Stalker ──────────────────────────────────────────────────────
-  "barbarian:giant-stalker:giant-baiter-1:3": {
+  "barbarian:giant-stalker:giant-baiter:3": {
     archetypeId: "barbarian:giant-stalker",
     name: "Giant Baiter (+1)",
     level: 3,
     bucket: "situational",
     note: "AC bonus scoped to a specific baited-giant enemy state — enemy-state scoped",
   },
-  "barbarian:giant-stalker:harangue-giant-ex:2": {
+  "barbarian:giant-stalker:harangue-giant:2": {
     archetypeId: "barbarian:giant-stalker",
     name: "Harangue Giant (Ex)",
     level: 2,
     bucket: "situational",
     note: "Intimidate bonus scoped to speaking Giant while raging — double-conditional (language + live rage state)",
   },
-  "barbarian:giant-stalker:smell-giants-ex:2": {
+  "barbarian:giant-stalker:smell-giants:2": {
     archetypeId: "barbarian:giant-stalker",
     name: "Smell Giants (Ex)",
     level: 2,
@@ -568,21 +578,21 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Hateful Rager ──────────────────────────────────────────────────────
-  "barbarian:hateful-rager:amplified-by-hate-ex:9": {
+  "barbarian:hateful-rager:amplified-by-hate:9": {
     archetypeId: "barbarian:hateful-rager",
     name: "Amplified by Hate (Ex)",
     level: 9,
     bucket: "situational",
     note: "DC bonus to rage powers used against a favored enemy — scoped to enemy type + rage-power mechanic, and rage powers/save DCs aren't modeled targets anyway",
   },
-  "barbarian:hateful-rager:favored-enemy-ex:2": {
+  "barbarian:hateful-rager:favored-enemy:2": {
     archetypeId: "barbarian:hateful-rager",
     name: "Favored Enemy (Ex)",
     level: 2,
     bucket: "situational",
     note: "ranger favored-enemy analog — real numbers scoped to a chosen enemy type, engine can't check target creature type",
   },
-  "barbarian:hateful-rager:feed-the-rage-ex:5": {
+  "barbarian:hateful-rager:feed-the-rage:5": {
     archetypeId: "barbarian:hateful-rager",
     name: "Feed the Rage (Ex)",
     level: 5,
@@ -614,7 +624,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "situational",
     note: "fire OR cold energy resistance — real eres.<x> target exists, but which energy type applies is a player build-time choice this table has no generic way to record",
   },
-  "barbarian:invulnerable-rager:invulnerability-ex:2": {
+  "barbarian:invulnerable-rager:invulnerability:2": {
     archetypeId: "barbarian:invulnerable-rager",
     name: "Invulnerability (Ex)",
     level: 2,
@@ -630,7 +640,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "blocked",
     note: 'suspected vendored-data issue: restates the base Damage Reduction progression verbatim (1/— at 7th, +1 every 3 levels) with NO "this ability replaces…" language and an unpaired uuid, and its own `level` field (8) contradicts its own prose ("At 7th level…"). Jungle Rager\'s other 3 features swap uncanny dodge/improved uncanny dodge/trap sense, never damage reduction, so this reads as a vendored duplicate/reminder of the unchanged base feature rather than a real swap. Extracting a second DR number here would sit on top of the already-unsuppressed hardcoded barbarianDamageReduction table (barbarianDamageReductionReplaced returns false for this archetype) — recorded, not modeled. See report for a suggested follow-up.',
   },
-  "barbarian:jungle-rager:home-ground-advantage-ex:2": {
+  "barbarian:jungle-rager:home-ground-advantage:2": {
     archetypeId: "barbarian:jungle-rager",
     name: "Home Ground Advantage (Ex)",
     level: 2,
@@ -644,7 +654,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "situational",
     note: "woodland stride + AC bonus, both scoped to the same chosen favored terrain",
   },
-  "barbarian:jungle-rager:jungle-endurance-1:3": {
+  "barbarian:jungle-rager:jungle-endurance:3": {
     archetypeId: "barbarian:jungle-rager",
     name: "Jungle Endurance (+1)",
     level: 3,
@@ -653,14 +663,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Mad Dog ────────────────────────────────────────────────────────────
-  "barbarian:mad-dog:ferocious-fetch-ex:5": {
+  "barbarian:mad-dog:ferocious-fetch:5": {
     archetypeId: "barbarian:mad-dog",
     name: "Ferocious Fetch (Ex)",
     level: 5,
     bucket: "subsystem",
     note: "war-beast (animal companion) ability — no number to the character's own sheet",
   },
-  "barbarian:mad-dog:pack-tactics-ex:2": {
+  "barbarian:mad-dog:pack-tactics:2": {
     archetypeId: "barbarian:mad-dog",
     name: "Pack Tactics (Ex)",
     level: 2,
@@ -674,14 +684,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "blocked",
     note: "shifts rage's effective barbarian level by -3 for rounds/day purposes — would need to override the @class.unlevel term inside vendored Rage uses.maxFormula, not addable as a separate Change",
   },
-  "barbarian:mad-dog:throat-cutter-ex:14": {
+  "barbarian:mad-dog:throat-cutter:14": {
     archetypeId: "barbarian:mad-dog",
     name: "Throat Cutter (Ex)",
     level: 14,
     bucket: "subsystem",
     note: "grants a triggered attack of opportunity off the war beast's maneuver — no number",
   },
-  "barbarian:mad-dog:war-beast-ex:1": {
+  "barbarian:mad-dog:war-beast:1": {
     archetypeId: "barbarian:mad-dog",
     name: "War Beast (Ex)",
     level: 1,
@@ -711,7 +721,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "polymorph size upgrade, replaces mighty rage — no number",
   },
-  "barbarian:mooncursed:shifting-rage-su:1": {
+  "barbarian:mooncursed:shifting-rage:1": {
     archetypeId: "barbarian:mooncursed",
     name: "Shifting Rage (Su)",
     level: 1,
@@ -727,14 +737,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "raises foes' concentration DC to cast defensively near her — a DC imposed on OTHERS, not a bonus to her own sheet",
   },
-  "barbarian:numerian-liberator:hard-hitter-ex:2": {
+  "barbarian:numerian-liberator:hard-hitter:2": {
     archetypeId: "barbarian:numerian-liberator",
     name: "Hard Hitter (Ex)",
     level: 2,
     bucket: "subsystem",
     note: "bypasses object/creature hardness — no matching target",
   },
-  "barbarian:numerian-liberator:hide-from-constructs-su:14": {
+  "barbarian:numerian-liberator:hide-from-constructs:14": {
     archetypeId: "barbarian:numerian-liberator",
     name: "Hide from Constructs (Su)",
     level: 14,
@@ -743,7 +753,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Pack Hunter ────────────────────────────────────────────────────────
-  "barbarian:pack-hunter:in-and-out-1:3": {
+  "barbarian:pack-hunter:in-and-out:3": {
     archetypeId: "barbarian:pack-hunter",
     name: "In and Out (+1)",
     level: 3,
@@ -766,7 +776,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note: 'bonus-feat COUNT scaling is a clean, unconditional formula (extracted) — the "must be a combat/teamwork feat" restriction is dropped, same posture as the ranger combat-style-feat precedent in archetype-effects.ts',
   },
-  "barbarian:pack-rager:raging-tactician-30ft-1-feat:7": {
+  "barbarian:pack-rager:raging-tactician:7": {
     archetypeId: "barbarian:pack-rager",
     name: "Raging Tactician (30ft., 1 feat)",
     level: 7,
@@ -782,7 +792,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "bonus feat + weapon strength-rating increase — no generic target; unpaired swap of fast movement",
   },
-  "barbarian:primal-hunter:focused-rage-ex:1": {
+  "barbarian:primal-hunter:focused-rage:1": {
     archetypeId: "barbarian:primal-hunter",
     name: "Focused Rage (Ex)",
     level: 1,
@@ -805,21 +815,21 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "blocked",
     note: 'triggered "gain N rounds of rage" on reducing a same-type creature to 0 hp — rounds/day-cadence-changing mechanic that would fight vendored Rage uses.maxFormula; recorded, not modeled',
   },
-  "barbarian:raging-cannibal:feed-from-fury-ex:5": {
+  "barbarian:raging-cannibal:feed-from-fury:5": {
     archetypeId: "barbarian:raging-cannibal",
     name: "Feed from Fury (Ex)",
     level: 5,
     bucket: "subsystem",
     note: "triggered temporary-hit-point gain on a specific crit — no matching target for a triggered temp-HP grant",
   },
-  "barbarian:raging-cannibal:intimidating-gouge-ex:3": {
+  "barbarian:raging-cannibal:intimidating-gouge:3": {
     archetypeId: "barbarian:raging-cannibal",
     name: "Intimidating Gouge (Ex)",
     level: 3,
     bucket: "situational",
     note: "Intimidate bonus, triggered by a specific crit against a same-type creature, lasting only for the rage's duration — action- and rage-state-scoped",
   },
-  "barbarian:raging-cannibal:razor-toothed-fury-ex:6": {
+  "barbarian:raging-cannibal:razor-toothed-fury:6": {
     archetypeId: "barbarian:raging-cannibal",
     name: "Razor-Toothed Fury (Ex)",
     level: 6,
@@ -828,14 +838,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Savage Barbarian ───────────────────────────────────────────────────
-  "barbarian:savage-barbarian:naked-courage-1:3": {
+  "barbarian:savage-barbarian:naked-courage:3": {
     archetypeId: "barbarian:savage-barbarian",
     name: "Naked Courage (+1)",
     level: 3,
     bucket: "numeric",
     note: "dodge AC half is armor-gated (@armor.type, same convention this archetype's own hand-verified Natural Toughness uses) and extracted; the vs.-fear save half is dropped and flagged in the extracted entry's detail",
   },
-  "barbarian:savage-barbarian:natural-toughness-1:7": {
+  "barbarian:savage-barbarian:natural-toughness:7": {
     archetypeId: "barbarian:savage-barbarian",
     name: "Natural Toughness (+1)",
     level: 7,
@@ -888,7 +898,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "extends an unmodeled re-save mechanic to more conditions — no number",
   },
-  "barbarian:scarred-rager:scarification-1:3": {
+  "barbarian:scarred-rager:scarification:3": {
     archetypeId: "barbarian:scarred-rager",
     name: "Scarification (+1)",
     level: 3,
@@ -925,14 +935,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "hold-breath + terrain movement + cover-ignoring vs. submerged targets — no numeric target; unpaired swap of fast movement",
   },
-  "barbarian:sea-reaver:savage-sailor-1:3": {
+  "barbarian:sea-reaver:savage-sailor:3": {
     archetypeId: "barbarian:sea-reaver",
     name: "Savage Sailor (+1)",
     level: 3,
     bucket: "situational",
     note: "skill bonuses scoped to aquatic terrain — terrain condition the engine can't check",
   },
-  "barbarian:sea-reaver:sure-footed-ex:5": {
+  "barbarian:sea-reaver:sure-footed:5": {
     archetypeId: "barbarian:sea-reaver",
     name: "Sure-Footed (Ex)",
     level: 5,
@@ -955,7 +965,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "bleed damage while raging — bleed isn't a tracked mechanic here, also rage-state scoped",
   },
-  "barbarian:sharptooth:ocean-breath-1:3": {
+  "barbarian:sharptooth:ocean-breath:3": {
     archetypeId: "barbarian:sharptooth",
     name: "Ocean Breath (+1)",
     level: 3,
@@ -976,7 +986,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "scent sense grant — no number",
   },
-  "barbarian:sharptooth:swim-like-a-fish-10-ft:1": {
+  "barbarian:sharptooth:swim-like-a-fish:1": {
     archetypeId: "barbarian:sharptooth",
     name: "Swim Like a Fish (10 ft.)",
     level: 1,
@@ -985,28 +995,28 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Shoanti Burn Rider ─────────────────────────────────────────────────
-  "barbarian:shoanti-burn-rider:cinder-dance-ex:3": {
+  "barbarian:shoanti-burn-rider:cinder-dance:3": {
     archetypeId: "barbarian:shoanti-burn-rider",
     name: "Cinder Dance (Ex)",
     level: 3,
     bucket: "subsystem",
     note: "reflex-save-triggered repositioning ability — no flat number",
   },
-  "barbarian:shoanti-burn-rider:cinder-sight-ex:2": {
+  "barbarian:shoanti-burn-rider:cinder-sight:2": {
     archetypeId: "barbarian:shoanti-burn-rider",
     name: "Cinder Sight (Ex)",
     level: 2,
     bucket: "subsystem",
     note: "see-through-fire/fog/smoke sense — no number",
   },
-  "barbarian:shoanti-burn-rider:flame-runner-10-ft:1": {
+  "barbarian:shoanti-burn-rider:flame-runner:1": {
     archetypeId: "barbarian:shoanti-burn-rider",
     name: "Flame Runner (+10 ft.)",
     level: 1,
     bucket: "subsystem",
     note: "once-per-rage speed boost applied to her MOUNT, not herself — no self-facing target; unpaired swap of fast movement",
   },
-  "barbarian:shoanti-burn-rider:give-me-fire-ex:5": {
+  "barbarian:shoanti-burn-rider:give-me-fire:5": {
     archetypeId: "barbarian:shoanti-burn-rider",
     name: "Give Me Fire (Ex)",
     level: 5,
@@ -1057,7 +1067,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "special-sense grant tier — no number",
   },
-  "barbarian:superstitious:sixth-sense-1:3": {
+  "barbarian:superstitious:sixth-sense:3": {
     archetypeId: "barbarian:superstitious",
     name: "Sixth Sense (+1)",
     level: 3,
@@ -1066,35 +1076,35 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Titan Mauler ───────────────────────────────────────────────────────
-  "barbarian:titan-mauler:big-game-hunter-ex:1": {
+  "barbarian:titan-mauler:big-game-hunter:1": {
     archetypeId: "barbarian:titan-mauler",
     name: "Big Game Hunter (Ex)",
     level: 1,
     bucket: "situational",
     note: "attack/AC bonus scoped to melee vs. larger-than-self creatures — enemy-size scoped; unpaired swap of fast movement",
   },
-  "barbarian:titan-mauler:evade-reach-ex:5": {
+  "barbarian:titan-mauler:evade-reach:5": {
     archetypeId: "barbarian:titan-mauler",
     name: "Evade Reach (Ex)",
     level: 5,
     bucket: "subsystem",
     note: "reduces a chosen foe's effective reach — `reach` is a known vendored target string but is not in targets.ts's APPLIED_TARGETS, so no live effect is possible regardless of scoping",
   },
-  "barbarian:titan-mauler:jotungrip-ex:2": {
+  "barbarian:titan-mauler:jotungrip:2": {
     archetypeId: "barbarian:titan-mauler",
     name: "Jotungrip (Ex)",
     level: 2,
     bucket: "subsystem",
     note: "uncanny-dodge-equivalent immunity to flat-footedness — binary immunity, no number",
   },
-  "barbarian:titan-mauler:massive-weapons-1:3": {
+  "barbarian:titan-mauler:massive-weapons:3": {
     archetypeId: "barbarian:titan-mauler",
     name: "Massive Weapons (+1)",
     level: 3,
     bucket: "situational",
     note: "reduces the oversized-weapon attack penalty — scoped to a specific gear/size choice, not a general attack bonus",
   },
-  "barbarian:titan-mauler:titanic-rage-su:14": {
+  "barbarian:titan-mauler:titanic-rage:14": {
     archetypeId: "barbarian:titan-mauler",
     name: "Titanic Rage (Su)",
     level: 14,
@@ -1103,7 +1113,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── True Primitive ─────────────────────────────────────────────────────
-  "barbarian:true-primitive:favored-terrain-ex:1": {
+  "barbarian:true-primitive:favored-terrain:1": {
     archetypeId: "barbarian:true-primitive",
     name: "Favored Terrain (Ex)",
     level: 1,
@@ -1117,7 +1127,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "flavor restriction — no number",
   },
-  "barbarian:true-primitive:trophy-fetish-ex:3": {
+  "barbarian:true-primitive:trophy-fetish:3": {
     archetypeId: "barbarian:true-primitive",
     name: "Trophy Fetish (Ex)",
     level: 3,
@@ -1154,7 +1164,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "situational",
     note: "CMB/CMD bonus scoped to the dirty trick maneuver specifically — maneuver scoped; paired 1:1 to Damage Reduction so the base DR grant is already cleanly suppressed",
   },
-  "barbarian:untamed-rager:feral-appearance-1:3": {
+  "barbarian:untamed-rager:feral-appearance:3": {
     archetypeId: "barbarian:untamed-rager",
     name: "Feral Appearance (+1)",
     level: 3,
@@ -1163,14 +1173,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Urban Barbarian ────────────────────────────────────────────────────
-  "barbarian:urban-barbarian:controlled-rage-ex:1": {
+  "barbarian:urban-barbarian:controlled-rage:1": {
     archetypeId: "barbarian:urban-barbarian",
     name: "Controlled Rage (Ex)",
     level: 1,
     bucket: "subsystem",
     note: "hand-verified, ground truth (archetype-effects.ts) — rage's ability bonuses aren't auto-applied, nothing baseline to override",
   },
-  "barbarian:urban-barbarian:crowd-control-ex:1": {
+  "barbarian:urban-barbarian:crowd-control:1": {
     archetypeId: "barbarian:urban-barbarian",
     name: "Crowd Control (Ex)",
     level: 1,
@@ -1200,14 +1210,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "mind-affecting-save reroll into an alternate rage/confusion effect — conditional ability, no flat number",
   },
-  "barbarian:wild-rager:uncontrolled-rage-ex:1": {
+  "barbarian:wild-rager:uncontrolled-rage:1": {
     archetypeId: "barbarian:wild-rager",
     name: "Uncontrolled Rage (Ex)",
     level: 1,
     bucket: "subsystem",
     note: "adds a confusion-risk mechanic to rage without touching rounds/day cadence — no number",
   },
-  "barbarian:wild-rager:wild-fighting-ex:2": {
+  "barbarian:wild-rager:wild-fighting:2": {
     archetypeId: "barbarian:wild-rager",
     name: "Wild Fighting (Ex)",
     level: 2,
@@ -1265,7 +1275,7 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // upstream — nothing to suppress. The prose's "to a maximum of her speed"
   // clause (presumably meaning this can't push speed past double normal) is
   // dropped as an edge case no character sheet needs to render.
-  "barbarian:armored-hulk:armored-swiftness-ex:2": {
+  "barbarian:armored-hulk:armored-swiftness:2": {
     changes: [c("if(gte(@armor.type, 2), 5)", "landSpeed", "base")],
     detail: () => "+5 ft. land speed (medium/heavy armor)",
     confidence: "medium",
@@ -1303,7 +1313,7 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // use. The "as long as she is able to speak" qualifier is dropped (a rare
   // edge case, same posture as ignoring "this ability requires patience or
   // concentration"-style caveats elsewhere in this engine).
-  "barbarian:deepwater-rager:strong-lungs-ex:1": {
+  "barbarian:deepwater-rager:strong-lungs:1": {
     changes: [c("@abilities.con.mod", "skill.int")],
     detail: () => "+Con mod Intimidate (stacks with Cha)",
     confidence: "medium",
@@ -1317,7 +1327,7 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // companion "always acts during the surprise round" clause has no numeric
   // target (initiative order rules aren't modeled) and is dropped, flagged
   // here per the medium-confidence rubric.
-  "barbarian:fearsome-defender:bloodlust-ex:5": {
+  "barbarian:fearsome-defender:bloodlust:5": {
     changes: [c("@abilities.cha.mod", "init")],
     detail: () => "+Cha mod initiative (also always acts in the surprise round)",
     confidence: "medium",
@@ -1332,7 +1342,7 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // allies increase" clause imposes a DC on OTHERS' checks (no self-facing
   // target exists for it) and is dropped, flagged per the medium-confidence
   // rubric.
-  "barbarian:fearsome-defender:silent-threat-1:3": {
+  "barbarian:fearsome-defender:silent-threat:3": {
     changes: [c("1 + floor((@class.unlevel - 3) / 3)", "skill.int")],
     detail: (level) => `+${1 + Math.floor((level - 3) / 3)} Intimidate`,
     confidence: "medium",
@@ -1363,7 +1373,7 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // companion "+1 morale bonus on saves against fear" clause is scoped to
   // fear specifically (same bar traits.ts's courageous/birthmark entries
   // fail) and is dropped, flagged per the medium-confidence rubric.
-  "barbarian:savage-barbarian:naked-courage-1:3": {
+  "barbarian:savage-barbarian:naked-courage:3": {
     changes: [c("if(lt(@armor.type, 1), 1 + floor((@class.unlevel - 3) / 6), 0)", "ac", "dodge")],
     detail: (level) => `+${1 + Math.floor((level - 3) / 6)} dodge AC (no armor worn)`,
     confidence: "medium",
@@ -1377,7 +1387,7 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // thereafter). The companion "+1 insight bonus to AC during surprise
   // rounds" clause is scoped to a specific combat-timing state (surprise
   // rounds only) and is dropped, flagged per the medium-confidence rubric.
-  "barbarian:superstitious:sixth-sense-1:3": {
+  "barbarian:superstitious:sixth-sense:3": {
     changes: [c("1 + floor((@class.unlevel - 3) / 3)", "init")],
     detail: (level) => `+${1 + Math.floor((level - 3) / 3)} initiative`,
     confidence: "medium",
@@ -1390,7 +1400,7 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // general, unconditional Intimidate bonus (+1 at 3rd, +1 every 3 levels
   // thereafter) — no second clause to drop, the cleanest extraction in this
   // slice.
-  "barbarian:untamed-rager:feral-appearance-1:3": {
+  "barbarian:untamed-rager:feral-appearance:3": {
     changes: [c("1 + floor((@class.unlevel - 3) / 3)", "skill.int")],
     detail: (level) => `+${1 + Math.floor((level - 3) / 3)} Intimidate`,
     confidence: "high",

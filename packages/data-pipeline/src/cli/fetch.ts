@@ -1,6 +1,6 @@
 /**
  * Fetches all three pinned upstream repos (Foundry PF1 system + the archetype
- * dataset fork + the PF1 Content community feats module) at their EXACT
+ * dataset module + the PF1 Content community feats module) at their EXACT
  * pinned SHAs into the gitignored cache.
  *
  * Uses a shallow fetch of a single commit (no branch checkout), which is fast and

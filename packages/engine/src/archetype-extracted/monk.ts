@@ -174,7 +174,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "fear immunity conditional on holding at least 1 drunken ki point — an immunity, no Change-shaped number",
   },
-  "monk:drunken-master:drunken-resilience-1:13": {
+  "monk:drunken-master:drunken-resilience:13": {
     archetypeId: "monk:drunken-master",
     name: "Drunken Resilience",
     level: 13,
@@ -265,7 +265,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "modifies the CONTENTS of the monk bonus-feat list (adds Power Attack/Improved Sunder/Greater Sunder, removes Dodge/Mobility/Spring Attack), not its count/schedule — no Change-shaped number",
   },
-  "monk:maneuver-master:iron-skin-1:1": {
+  "monk:maneuver-master:iron-skin:1": {
     archetypeId: "monk:maneuver-master",
     name: "Iron Skin",
     level: 1,
@@ -300,7 +300,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "blocked",
     note: "the Ironskin Monk's SECOND documented trap: 'replaces fast movement and slow fall' — Fast Movement carries a REAL vendored landSpeed Change. An unpaired swap displacing it for a new DR number would either double-count (if Fast Movement stays unsuppressed) or silently zero out a real speed bonus (if generically suppressed) — same shape of trap as iron-skin-1 above.",
   },
-  "monk:maneuver-master:ki-pool-cold-iron-silver:7": {
+  "monk:maneuver-master:ki-pool:7": {
     archetypeId: "monk:maneuver-master",
     name: "Ki Pool (Cold Iron/Silver)",
     level: 7,
@@ -370,7 +370,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "grants a run of immunities by level (fatigue/exhaustion/stunning/death effects/energy drain) — no Change-shaped number",
   },
-  "monk:master-of-many-styles:physical-resistance-1:7": {
+  "monk:master-of-many-styles:physical-resistance:7": {
     archetypeId: "monk:master-of-many-styles",
     name: "Physical Resistance",
     level: 7,
@@ -426,7 +426,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "alters which attacks flurry of blows can use — flurry's own progression is a hardcoded tables.ts table with no per-archetype override mechanism, same posture as Claws above",
   },
-  "monk:monk-of-the-seven-forms:elemental-fist-1d6:1": {
+  "monk:monk-of-the-seven-forms:elemental-fist:1": {
     archetypeId: "monk:monk-of-the-seven-forms",
     name: "Elemental Fist (1d6)",
     level: 1,

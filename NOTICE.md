@@ -78,13 +78,21 @@ This is derivative Open Game Content drawn from three pinned, upstream sources:
 
 ### b. pf1e-archetypes dataset
 
-- Repo: `https://github.com/bjschafer/pf1e-archetypes`
-- Pinned commit: `815ef073685faf215be442cc5035c8198a89432b` (a fork of
-  `baileymh/pf1e-archetypes` with upstream merge-conflict corruption fixed)
-- The upstream ships an extended `OGL.txt` Section 15 citing the relevant
-  Paizo books (CRB, APG, ACG, ARG, BotD, UC, UM, UE, Horror Adventures,
-  Occult Adventures, etc.). We carry forward that extended Section 15
-  verbatim and add our own derivative-work entry per OGL Sec.6.
+- Repo: `https://gitlab.com/Tryss_Farron/pf1e-archetypes`
+- Pinned commit: `92ddcb60027e3088e5afd0645183c031ec3e9bb4`
+- Formerly vendored from `bjschafer/pf1e-archetypes` on GitHub, a personal
+  fork of the (by then abandoned) `baileymh/pf1e-archetypes` with upstream
+  merge-conflict corruption fixed. This GitLab repo is that module's
+  maintained successor -- same maintainer as the pinned `pf1-content` repo
+  (Sec.2c), registered on foundryvtt.com as "Pathfinder 1e Archetypes and
+  Abilities" -- and ships as per-entity YAML packs rather than the old fork's
+  per-class CSVs, so the fork-history/corruption note above no longer
+  applies. Content and attribution are otherwise a continuation of the same
+  module: the upstream ships an extended `OGL.txt` Section 15 citing the
+  relevant Paizo books (CRB, APG, ACG, ARG, BotD, UC, UM, UE, Horror
+  Adventures, Occult Adventures, etc.), byte-identical (module content aside)
+  to the fork's own -- we carry it forward verbatim and add our own
+  derivative-work entry per OGL Sec.6, unchanged by the repoint.
 
 ### c. PF1 Content module (community feats + traits + racial traits packs)
 
