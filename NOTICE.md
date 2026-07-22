@@ -86,15 +86,16 @@ This is derivative Open Game Content drawn from three pinned, upstream sources:
   Occult Adventures, etc.). We carry forward that extended Section 15
   verbatim and add our own derivative-work entry per OGL Sec.6.
 
-### c. PF1 Content module (community feats pack)
+### c. PF1 Content module (community feats + traits packs)
 
 - Repo: `https://gitlab.com/foundryvtt_pathfinder1e/pf1-content`
 - Pinned commit: `c66bf333cafc451d817ead660473dd01d9846fb3`
 - Same GitLab org as the pinned system repo (Sec.2a). Ships under GPL-3.0 for
   its module _code_ (never copied in, per Sec.1's clean-room discipline) and
-  OGL-covered compendium _data_ under `src/pf-feats/`, from which we vendor
-  only the feats not already present in the system pack (name collisions keep
-  the system pack's richer record).
+  OGL-covered compendium _data_ under `src/pf-feats/` and `src/pf-traits/`,
+  from which we vendor: every feat not already present in the system pack
+  (name collisions keep the system pack's richer record), and the full
+  character-trait catalog (the Foundry system pack ships no traits at all).
 
 Our `OGL.txt` is therefore the upstream Archetypes `OGL.txt` with the
 following appended to its COPYRIGHT NOTICE:

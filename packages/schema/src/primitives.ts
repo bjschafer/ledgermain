@@ -136,31 +136,52 @@ export interface ContextNote {
 }
 
 /**
- * A PF1 character-trait category (Advanced Player's Guide / Ultimate
- * Campaign). Lives here (rather than beside the engine's hand-authored
- * `TRAITS` table) so `CharacterDoc.build.homebrew.traits` — a schema-level
- * field — can reference the same shape a homebrew trait must conform to.
+ * A PF1 character-trait category. The engine's 28 hand-authored entries
+ * (issue #23) use one of the traditional four ("Combat" | "Faith" | "Magic" |
+ * "Social"); the vendored catalog (issue #74 Phase 1, `RefData.traits`) adds
+ * many more — Foundry's `traitType` values Title-Cased ("Region", "Race",
+ * "Campaign", "Religion", "Drawback", "Faction", "Equipment", "Mount",
+ * "Cosmic", "Family", "Exemplar"). Kept as `string` (not a closed union) so
+ * neither side needs to enumerate the other's values; the "two different
+ * categories" reminder (`model/traits.ts` `traitsNeedWarning`) is a soft
+ * warning that works over any string. Lives here (rather than beside the
+ * engine's hand-authored `TRAITS` table) so `CharacterDoc.build.homebrew.traits`
+ * — a schema-level field — can reference the same shape a homebrew trait must
+ * conform to.
  */
-export type TraitCategory = "Combat" | "Faith" | "Magic" | "Social";
+export type TraitCategory = string;
 
 /**
  * Shape shared by every entry in the engine's hand-authored `TRAITS` table
- * (`@pf1/engine` `traits.ts`, which re-exports this type) and by
- * user-authored entries in `CharacterDoc.build.homebrew.traits` — both flow
- * through the same lookup in `collect.ts`, so one definition covers both.
+ * (`@pf1/engine` `traits.ts`, which re-exports this type), the vendored
+ * catalog (`RefData.traits`, converted to this shape by the engine's
+ * `mergedTraits`/`resolveTraitDef`), and user-authored entries in
+ * `CharacterDoc.build.homebrew.traits` — all three flow through the same
+ * lookup in `collect.ts`, so one definition covers all of them.
  */
 export interface TraitDef {
   id: string;
   name: string;
   category: TraitCategory;
-  /** Short rules summary shown in the UI. */
-  summary: string;
+  /**
+   * Short rules summary shown inline in the picker. Every hand-authored and
+   * homebrew entry carries one; a vendored catalog entry doesn't (there's no
+   * hand-curated one-liner for ~2,000 items) — the UI falls back to the
+   * collapsible `description` for those (same posture as `FeatEntry`, which
+   * never had a summary field at all).
+   */
+  summary?: string;
   /** Typed modifiers granted by the trait (empty when purely situational/prose). */
   changes: Change[];
   /** Non-mechanical reminders (situational scope, class-skill grants, etc.). */
   contextNotes?: ContextNote[];
   /** True when the trait has no flat modifier the static sheet applies. */
   displayOnly?: boolean;
+  /** Full HTML description — vendored catalog entries only. */
+  description?: string;
+  sources?: SourceRef[];
+  /** Free-form tags carried from the vendored catalog (e.g. faction names). */
+  tags?: string[];
 }
 
 /** Base fields shared by every reference-data entity. */

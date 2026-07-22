@@ -25,6 +25,7 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     classes: readJson(dir, "classes.json"),
     classFeatures: readJson(dir, "class-features.json"),
     feats: readJson(dir, "feats.json"),
+    traits: readJson(dir, "traits.json"),
     spells: readJson(dir, "spells.json"),
     buffs: readJson(dir, "buffs.json"),
     items: readJson(dir, "items.json"),

@@ -47,7 +47,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Character traits",
-    note: "A curated core set is available, not the full published trait catalog. Anything missing can be added as a homebrew trait.",
+    note: "The full published trait catalog is searchable in the picker. Traits outside a core 28-entry set may show their benefit as text only rather than a live number the sheet tracks — anything still missing can be added as a homebrew trait.",
   },
   {
     category: "Subdomains & elemental wizard schools",

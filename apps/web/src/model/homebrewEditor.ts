@@ -230,7 +230,7 @@ export function traitToDraft(trait: TraitDef): HomebrewTraitDraft {
   return {
     name: trait.name,
     category: trait.category,
-    summary: trait.summary,
+    summary: trait.summary ?? "",
     changes: changesToDrafts(trait.changes),
   };
 }

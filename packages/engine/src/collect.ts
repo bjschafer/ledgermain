@@ -29,7 +29,7 @@ import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
 import { RAGE_POWERS } from "./rage-powers.js";
-import { TRAITS } from "./traits.js";
+import { resolveTraitDef } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
 import { raceGrantsFlexibleAbility, SKILL_ABILITY, weaponTrainingBonus } from "./tables.js";
@@ -347,14 +347,14 @@ export function collectModifiers(
   }
 
   // --- traits (build choices) ----------------------------------------------
-  // doc.build.traits holds trait ids (keys into the engine's hand-authored
-  // TRAITS table — traits aren't in the vendored Foundry pack, so unlike
-  // races/feats they can't be overlaid onto RefData; a homebrew trait's own
-  // definition instead rides in doc.build.homebrew.traits and is checked as
-  // a fallback here). Unknown ids are skipped, matching the conditions/feats
-  // posture: never crash on an unrecognized id.
+  // doc.build.traits holds trait ids: keys into the engine's 28-entry
+  // hand-authored TRAITS table (issue #23) OR the vendored RefData.traits
+  // catalog (issue #74 Phase 1) — resolveTraitDef checks both, hand-authored
+  // first. A homebrew trait's own definition rides in doc.build.homebrew.traits
+  // and is checked as a final fallback here. Unknown ids are skipped, matching
+  // the conditions/feats posture: never crash on an unrecognized id.
   for (const traitId of doc.build.traits ?? []) {
-    const trait = TRAITS[traitId] ?? doc.build.homebrew?.traits?.[traitId];
+    const trait = resolveTraitDef(traitId, refData) ?? doc.build.homebrew?.traits?.[traitId];
     if (!trait) continue;
     for (const ch of trait.changes) {
       if (!gateOpen(ch)) continue;

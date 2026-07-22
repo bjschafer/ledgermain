@@ -27,30 +27,36 @@ import type { BuilderProps } from "./types.js";
  * `chosenTraitCount`/`traitsNeedWarning` are id-source-agnostic already.
  */
 export function TraitsSection(props: BuilderProps) {
-  const { doc, update } = props;
+  const { doc, refData, update } = props;
   const [managerOpen, setManagerOpen] = useState(false);
   const selected = useMemo(() => new Set(doc.build.traits ?? []), [doc.build.traits]);
 
-  const catalogSize = useMemo(() => allTraitIds(doc).length, [doc]);
+  // Deliberately not keyed on the whole `doc` — recomputing the ~2,000-entry
+  // merged catalog on every unrelated doc edit would be wasteful; only a
+  // refData swap (never happens post-load) or a homebrew-trait edit changes
+  // this count.
+  const catalogSize = useMemo(
+    () => allTraitIds(doc, refData).length,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [refData, doc.build.homebrew?.traits],
+  );
 
-  // Chosen traits, listed here with their reminders (contextNotes) — same idea
-  // as ConditionsPanel's active-condition notes, so a trait's situational
-  // scope/class-skill grant/HD cap is never silently lost once picked.
+  // Chosen traits. TraitRow renders each one's summary/description AND its
+  // contextNotes reminders inline (situational scope, class-skill grants,
+  // HD caps, …) — same pattern as FeatEntry's per-row notes — so a trait's
+  // reminder is never silently lost once picked without a separate aggregate
+  // list to keep in sync.
   const chosenTraits = useMemo(
     () =>
       [...selected]
-        .map((id) => resolveTrait(doc, id))
+        .map((id) => resolveTrait(doc, refData, id))
         .filter((tr): tr is NonNullable<typeof tr> => !!tr)
         .sort((a, b) => a.name.localeCompare(b.name)),
-    [doc, selected],
+    [doc, refData, selected],
   );
 
-  // Only traits carrying a situational reminder need the notes list; the rows
-  // above already carry each trait's summary.
-  const reminders = chosenTraits.filter((tr) => (tr.contextNotes?.length ?? 0) > 0);
-
   const chosen = chosenTraitCount(doc);
-  const warn = traitsNeedWarning(doc);
+  const warn = traitsNeedWarning(doc, refData);
 
   return (
     <Panel
@@ -79,7 +85,12 @@ export function TraitsSection(props: BuilderProps) {
       </div>
 
       {managerOpen && (
-        <TraitManager doc={doc} update={update} onClose={() => setManagerOpen(false)} />
+        <TraitManager
+          doc={doc}
+          refData={refData}
+          update={update}
+          onClose={() => setManagerOpen(false)}
+        />
       )}
 
       <div className="scroll">
@@ -90,20 +101,6 @@ export function TraitsSection(props: BuilderProps) {
         )}
       </div>
 
-      {reminders.length > 0 ? (
-        <ul className="cond-notes">
-          {reminders.map((tr) => (
-            <li key={tr.id}>
-              <b>{tr.name}.</b>
-              {tr.contextNotes?.map((note, i) => (
-                <div key={i} className="hint" style={{ marginTop: 2 }}>
-                  ⚠ {note.text}
-                </div>
-              ))}
-            </li>
-          ))}
-        </ul>
-      ) : null}
       <HomebrewTraitEditor {...props} />
     </Panel>
   );

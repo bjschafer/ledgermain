@@ -1,30 +1,33 @@
 import { useMemo, useState } from "react";
 
-import type { CharacterDoc, TraitCategory } from "@pf1/schema";
+import type { CharacterDoc, RefData, TraitCategory, TraitDef } from "@pf1/schema";
 
-import {
-  allTraitIds,
-  chosenTraitCount,
-  EXPECTED_TRAIT_COUNT,
-  resolveTrait,
-  TRAIT_CATEGORIES,
-} from "../../model/traits.js";
+import { mergedTraits } from "@pf1/engine";
+
+import { catalogCategories, chosenTraitCount, EXPECTED_TRAIT_COUNT } from "../../model/traits.js";
 import { Dialog } from "../Dialog.js";
 import { SearchMiss } from "./SearchMiss.js";
 import { TraitRow } from "./TraitRow.js";
 
+/** Catalog entries shown per search before asking the player to narrow — mirrors `FeatManager`'s cap. */
+const MAX_RESULTS = 200;
+
 /**
- * The full-screen trait picker (issue #89) — the same two-pane shell as
- * `FeatManager`, so browsing the trait catalog behaves identically to browsing
- * feats: filters across the top, catalog on the left, chosen traits on the
- * right so an add lands somewhere visible.
+ * The full-screen trait picker (issue #89, scaled to the ~2,000-entry
+ * vendored catalog by issue #74 Phase 1) — the same two-pane shell as
+ * `FeatManager`, so browsing the trait catalog behaves identically to
+ * browsing feats: filters across the top, catalog on the left (capped at
+ * {@link MAX_RESULTS} like `FeatManager`), chosen traits on the right so an
+ * add lands somewhere visible.
  */
 export function TraitManager({
   doc,
+  refData,
   update,
   onClose,
 }: {
   doc: CharacterDoc;
+  refData: RefData;
   update: (fn: (doc: CharacterDoc) => CharacterDoc) => void;
   onClose: () => void;
 }) {
@@ -32,13 +35,23 @@ export function TraitManager({
   const [category, setCategory] = useState<TraitCategory | "All">("All");
   const selected = useMemo(() => new Set(doc.build.traits ?? []), [doc.build.traits]);
 
+  // The merged vendored + hand-authored catalog (issue #74 Phase 1) plus this
+  // doc's own homebrew traits — recomputed only when refData or the
+  // homebrew set changes, not on every doc edit (see `mergedTraits`'s doc
+  // comment on why it isn't cheap enough to call per keystroke).
+  const catalog = useMemo(() => {
+    const merged = mergedTraits(refData);
+    const homebrew = doc.build.homebrew?.traits;
+    return homebrew ? { ...merged, ...homebrew } : merged;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refData, doc.build.homebrew?.traits]);
+
   const all = useMemo(
-    () =>
-      allTraitIds(doc)
-        .map((id) => resolveTrait(doc, id)!)
-        .sort((a, b) => a.name.localeCompare(b.name)),
-    [doc],
+    () => Object.values(catalog).sort((a, b) => a.name.localeCompare(b.name)),
+    [catalog],
   );
+
+  const categories = useMemo(() => catalogCategories(catalog), [catalog]);
 
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -78,7 +91,7 @@ export function TraitManager({
             >
               All
             </button>
-            {TRAIT_CATEGORIES.map((cat) => (
+            {categories.map((cat: TraitDef["category"]) => (
               <button
                 key={cat}
                 type="button"
@@ -106,10 +119,20 @@ export function TraitManager({
                   <div className="empty">No traits match.</div>
                 )
               ) : (
-                matches.map((tr) => (
-                  <TraitRow key={tr.id} trait={tr} selected={selected.has(tr.id)} update={update} />
-                ))
+                matches
+                  .slice(0, MAX_RESULTS)
+                  .map((tr) => (
+                    <TraitRow
+                      key={tr.id}
+                      trait={tr}
+                      selected={selected.has(tr.id)}
+                      update={update}
+                    />
+                  ))
               )}
+              {matches.length > MAX_RESULTS ? (
+                <div className="empty">Showing first {MAX_RESULTS} — refine your search.</div>
+              ) : null}
             </div>
           </section>
 

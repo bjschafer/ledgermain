@@ -1,10 +1,15 @@
 /**
  * Clean-room PF1 character-traits table (DESIGN §6): hand-authored from the
  * published rules (Advanced Player's Guide / Ultimate Campaign, public SRD
- * content) — traits are NOT part of the vendored Foundry data pack, so there
- * is no upstream JSON to normalize (same posture as `tables.ts`/`familiars.ts`
- * for content the compendium doesn't carry).
+ * content). Written when traits were NOT part of any vendored data (same
+ * posture as `tables.ts`/`familiars.ts` for content the compendium doesn't
+ * carry) — issue #74 Phase 1 later added the full ~2,000-entry published
+ * catalog as `RefData.traits` (the pf1-content community module's
+ * `pf-traits` pack), but this hand-verified 28-entry table is kept as-is
+ * rather than replaced: `mergedTraits`/`resolveTraitDef` below fold the two
+ * together, hand-authored winning on a name collision.
  *
+
  * A PF1 character takes two traits at creation, normally from two DIFFERENT
  * categories (the traditional "no two traits from the same category" guideline
  * is a soft one at most tables and some traits are explicitly exempt) — this
@@ -38,7 +43,7 @@
  *     "not auto-applied" badge machinery) plus a clarifying `contextNotes`.
  */
 
-import type { Change, TraitCategory, TraitDef } from "@pf1/schema";
+import type { Change, RefData, Trait, TraitCategory, TraitDef } from "@pf1/schema";
 
 // TraitCategory/TraitDef live in @pf1/schema (not here) so a homebrew trait
 // stored in `CharacterDoc.build.homebrew.traits` can share the exact same
@@ -409,3 +414,81 @@ export const TRAITS: Record<string, TraitDef> = Object.fromEntries(
 );
 
 export const TRAIT_IDS: readonly string[] = TRAIT_LIST.map((tr) => tr.id);
+
+/**
+ * Normalizes a trait name for cross-catalog dedup — same recipe as
+ * `data-pipeline`'s `normalizeFeatName` (lowercase, strip non-alphanumerics),
+ * kept as a separate copy here since the engine doesn't depend on
+ * `data-pipeline`.
+ */
+function normalizeTraitName(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+/**
+ * Names already covered by the hand-authored table (issue #23) — used to
+ * drop the vendored catalog's duplicate of each one (issue #74 Phase 1). See
+ * {@link mergedTraits}'s doc comment for why the hand-authored side always
+ * wins rather than a field-by-field overlay.
+ */
+const HAND_AUTHORED_TRAIT_NAMES = new Set(TRAIT_LIST.map((tr) => normalizeTraitName(tr.name)));
+
+/** Foundry's lowercase `traitType` ("combat", "drawback", …) Title-Cased for display. */
+function traitCategoryFromType(traitType: string): TraitCategory {
+  return traitType.length === 0 ? "Campaign" : traitType[0]!.toUpperCase() + traitType.slice(1);
+}
+
+/**
+ * Converts one vendored `RefData.traits` entry to the `TraitDef` shape the
+ * rest of the app (picker, `collectModifiers`) already knows how to render
+ * and apply. No `summary` — see `TraitDef.summary`'s doc comment for why the
+ * UI falls back to `description` instead.
+ */
+function vendoredTraitToDef(tr: Trait): TraitDef {
+  return {
+    id: tr.id,
+    name: tr.name,
+    category: traitCategoryFromType(tr.traitType),
+    changes: tr.changes,
+    contextNotes: tr.contextNotes.length > 0 ? tr.contextNotes : undefined,
+    displayOnly: tr.changes.length === 0,
+    description: tr.description,
+    sources: tr.sources,
+    tags: tr.tags,
+  };
+}
+
+/**
+ * Resolves a trait id through the hand-authored table first, then the
+ * vendored catalog (`refData.traits`) — the cheap, single-id lookup used on
+ * the engine's hot path (`collect.ts`, called on every `compute()`). Does
+ * NOT check `doc.build.homebrew.traits`; see `apps/web/model/traits.ts`'s
+ * `resolveTrait` for the full chain including that fallback.
+ */
+export function resolveTraitDef(id: string, refData: RefData): TraitDef | undefined {
+  const handAuthored = TRAITS[id];
+  if (handAuthored) return handAuthored;
+  const vendored = refData.traits[id];
+  return vendored ? vendoredTraitToDef(vendored) : undefined;
+}
+
+/**
+ * The full pickable trait catalog for browsing: the 28 hand-authored entries
+ * (issue #23) plus every vendored trait (issue #74 Phase 1) whose normalized
+ * name doesn't collide with one of them. On a name collision the
+ * hand-authored entry wins outright — same "richer record wins" precedent as
+ * `data-pipeline`'s feats merge (system pack over the community pack) —
+ * rather than splicing fields from both, since every hand-authored trait's
+ * mechanics are already hand-verified against the published rules and a
+ * partial overlay risks quietly regressing that verification. Recomputes
+ * from `refData.traits` on every call; callers should memoize on `refData`
+ * (a stable reference for the app's lifetime), not call this per keystroke.
+ */
+export function mergedTraits(refData: RefData): Record<string, TraitDef> {
+  const out: Record<string, TraitDef> = { ...TRAITS };
+  for (const tr of Object.values(refData.traits)) {
+    if (HAND_AUTHORED_TRAIT_NAMES.has(normalizeTraitName(tr.name))) continue;
+    out[tr.id] = vendoredTraitToDef(tr);
+  }
+  return out;
+}

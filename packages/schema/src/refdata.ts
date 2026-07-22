@@ -24,6 +24,13 @@ export interface RefData {
   /** Class features (the `class-abilities` pack) referenced by classes. */
   classFeatures: Record<string, ClassFeature>;
   feats: Record<string, Feat>;
+  /**
+   * The full vendored PF1 character-trait catalog (~2,000 entries, see
+   * {@link Trait}). Not the same as the engine's hand-authored `TRAITS`
+   * table (28 verified entries, `CharacterDoc.build.traits` may reference
+   * either) — see `@pf1/engine` `traits.ts` for how the two are merged.
+   */
+  traits: Record<string, Trait>;
   spells: Record<string, Spell>;
   buffs: Record<string, Buff>;
   items: Record<string, Item>;
@@ -289,6 +296,32 @@ export interface Feat extends RefEntity {
    * alongside (never instead of) any table-resolved effect.
    */
   changes?: Change[];
+}
+
+/* ------------------------------------------------------------------ traits -- */
+
+/**
+ * A PF1 character trait, vendored from the pf1-content community module's
+ * `pf-traits` pack (issue #74 Phase 1) — same per-entity YAML shape as
+ * `Feat`, normalized by the same `readPack`/transform machinery. This is the
+ * FULL published catalog (~2,000 entries); it exists alongside, not instead
+ * of, the engine's 28-entry hand-authored `TRAITS` table (issue #23) — see
+ * `@pf1/engine` `traits.ts`'s `mergedTraits`/`resolveTraitDef` for how the two
+ * are reconciled (hand-authored wins on a name collision; every other
+ * vendored entry is pickable under its own Foundry id).
+ */
+export interface Trait extends RefEntity {
+  /** Foundry's raw category tag, e.g. "combat", "drawback", "region". Title-Case it for display (see `TraitCategory`'s doc comment). */
+  traitType: string;
+  tags: string[];
+  /** Typed modifiers — empty for purely situational/prose traits. */
+  changes: Change[];
+  contextNotes: ContextNote[];
+  /**
+   * Limited-use resource, same shape as `Feat.uses` — e.g. a once-per-day
+   * faction trait like "A Sure Thing". ~290 of the vendored 1,998 carry this.
+   */
+  uses?: { maxFormula?: string; per?: string };
 }
 
 /**
