@@ -67,23 +67,26 @@ export const SYSTEM_VERSION = "11.11";
  * `vigilanteSocialTalents`/`vigilante-social-talents.json`,
  * `arcanistExploits`/`arcanist-exploits.json`,
  * `investigatorTalents`/`investigator-talents.json`, and
- * `kineticWildTalents`/`kinetic-wild-talents.json`. (issue #74 Phase 3c adds
- * eleven more "Pf Data 1e" subsystem catalogs on top of this same version —
- * occult-class: `mesmeristTricks`/`mesmerist-tricks.json`,
- * `mesmeristBoldStares`/`mesmerist-bold-stares.json`,
- * `phrenicAmplifications`/`phrenic-amplifications.json`,
- * `psychicDisciplines`/`psychic-disciplines.json`,
- * `occultistImplements`/`occultist-implements.json`, and
- * `mediumSpirits`/`medium-spirits.json`; caster-class:
- * `oracleMysteries`/`oracle-mysteries.json`, `oracleCurses`/
+ * `kineticWildTalents`/`kinetic-wild-talents.json`. v13 (issue #74 Phase 3c)
+ * adds seventeen more "Pf Data 1e" subsystem catalogs across three waves,
+ * same prose-only/merged-at-read-time posture as `ragePowers` — occult-class:
+ * `mesmeristTricks`/`mesmerist-tricks.json`, `mesmeristBoldStares`/
+ * `mesmerist-bold-stares.json`, `phrenicAmplifications`/
+ * `phrenic-amplifications.json`, `psychicDisciplines`/
+ * `psychic-disciplines.json`, `occultistImplements`/
+ * `occultist-implements.json`, and `mediumSpirits`/`medium-spirits.json`;
+ * caster-class: `oracleMysteries`/`oracle-mysteries.json`, `oracleCurses`/
  * `oracle-curses.json`, `witchPatrons`/`witch-patrons.json`,
  * `shamanSpirits`/`shaman-spirits.json`, `sorcererBloodlines`/
  * `sorcerer-bloodlines.json`, and `bloodragerBloodlines`/
- * `bloodrager-bloodlines.json` — folded into this same v12 rather than
- * bumping again per-wave, per the phase's own "one integration bump later"
- * instruction.)
+ * `bloodrager-bloodlines.json`; martial/hybrid-class:
+ * `alchemistDiscoveries`/`alchemist-discoveries.json`, `monkKiPowers`/
+ * `monk-ki-powers.json`, `monkStyleStrikes`/`monk-style-strikes.json`,
+ * `cavalierOrders`/`cavalier-orders.json`, and `shifterAspects`/
+ * `shifter-aspects.json` — one integration bump covering all three sibling
+ * waves rather than bumping per-wave.
  */
-export const SCHEMA_VERSION = 12;
+export const SCHEMA_VERSION = 13;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

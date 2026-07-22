@@ -105,7 +105,7 @@
     "witch-patrons.json": "abe0bc21ba74cd13a5bd2230a6819764ff173dbe6d74a1b7074211f7428ec22c",
     "wizard-schools.json": "b6078da2c6e8837e7b12845869d7ee605ec27844619a4ce2257da8ba6665d315"
   },
-  "schemaVersion": 12,
+  "schemaVersion": 13,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"
