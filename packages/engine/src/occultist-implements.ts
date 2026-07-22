@@ -112,7 +112,7 @@
  * `changes: []` entries.
  */
 
-import type { AbilityId } from "@pf1/schema";
+import type { AbilityId, OccultistImplement, RefData, SourceRef } from "@pf1/schema";
 
 export interface OccultistBaseFocusPower {
   name: string;
@@ -683,3 +683,124 @@ export function findOccultistFocusPower(
 
 /** Physical ability score ids `occultistPhysicalEnhancementAbility` may hold. */
 export const OCCULTIST_PHYSICAL_ABILITIES: readonly AbilityId[] = ["str", "dex", "con"];
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.occultistImplements` (see that type's doc
+ * comment) is the FULL published catalog (12 entries after junk filtering),
+ * prose only. Same chassis caveat as `psychic-disciplines.ts`'s overlay: the
+ * hand-authored `OCCULTIST_SCHOOLS` table above is the ONLY source of
+ * base/resonant/focus powers — a vendored-only school has no structured data
+ * for those at all, so the merge produces a hand-authored branch
+ * (`vendoredOnly: false`, vendored prose attached) and a vendored-only stub
+ * branch (`vendoredOnly: true`, name + prose only).
+ *
+ * Collision audit: all 8 hand-authored core schools matched a vendored entry
+ * by normalized name — zero misses, zero aliases needed. The 4 vendored-only
+ * entries are the "Psychic Anthology" Panoply variant schools (Mage's
+ * Paraphernalia, Performer's Accoutrements, Saint's Holy Regalia, Trappings
+ * of the Warrior) — selectable in the implement-school stepper but grant no
+ * base/resonant/focus powers.
+ */
+
+const OCCULTIST_SCHOOL_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeSchoolName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A hand-authored implement school, browsable with its vendored prose/sources attached. */
+export interface MergedOccultistImplementHandEntry extends OccultistSchoolDef {
+  vendoredOnly: false;
+  description?: string;
+  sources?: SourceRef[];
+}
+
+/** An implement school that exists ONLY in the vendored catalog — no base/resonant/focus powers. */
+export interface MergedOccultistImplementVendoredEntry {
+  vendoredOnly: true;
+  tag: string;
+  name: string;
+  summary: string;
+  description?: string;
+  sources?: SourceRef[];
+}
+
+export type MergedOccultistImplementEntry =
+  | MergedOccultistImplementHandEntry
+  | MergedOccultistImplementVendoredEntry;
+
+function vendoredOnlyEntry(entry: OccultistImplement): MergedOccultistImplementVendoredEntry {
+  return {
+    vendoredOnly: true,
+    tag: entry.id,
+    name: entry.name,
+    summary: plainTextPreview(entry.description ?? ""),
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/** Resolve a picked implement-school tag to its merged entry — hand-authored table first, falling back to a vendored-only stub. */
+export function resolveOccultistImplement(
+  tag: string,
+  refData: RefData,
+): MergedOccultistImplementEntry | undefined {
+  const hand = OCCULTIST_SCHOOLS[tag];
+  if (hand) {
+    const vendored = refData.occultistImplements?.[tag];
+    return {
+      ...hand,
+      vendoredOnly: false,
+      description: vendored?.description,
+      sources: vendored?.sources,
+    };
+  }
+  const vendored = refData.occultistImplements?.[tag];
+  return vendored ? vendoredOnlyEntry(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog: every hand-authored school (vendored prose attached on a name match) plus every vendored-only school appended, sorted by name. */
+export function mergedOccultistImplementCatalog(refData: RefData): MergedOccultistImplementEntry[] {
+  const handByNormName = new Map<string, OccultistSchoolDef>();
+  for (const s of SCHOOL_LIST) {
+    handByNormName.set(normalizeSchoolName(OCCULTIST_SCHOOL_NAME_ALIASES[s.tag] ?? s.name), s);
+  }
+
+  const vendored = Object.values(refData.occultistImplements ?? {});
+  const usedHandTags = new Set<string>();
+  const merged: MergedOccultistImplementEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeSchoolName(v.name);
+    const handMatch = handByNormName.get(norm);
+    if (handMatch) {
+      usedHandTags.add(handMatch.tag);
+      merged.push({
+        ...handMatch,
+        vendoredOnly: false,
+        description: v.description,
+        sources: v.sources,
+      });
+    } else {
+      merged.push(vendoredOnlyEntry(v));
+    }
+  }
+  for (const s of SCHOOL_LIST) {
+    if (!usedHandTags.has(s.tag)) merged.push({ ...s, vendoredOnly: false });
+  }
+  return merged.sort((a, b) => a.name.localeCompare(b.name));
+}

@@ -1,0 +1,290 @@
+{
+  "allure": {
+    "description": "<p>The hypnotic stare penalty also applies on initiative checks and Perception checks.</p>",
+    "id": "allure",
+    "name": "Allure",
+    "sources": [
+      {
+        "id": "occult-adventures",
+        "pages": "42"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:allure"
+  },
+  "devilbane_binding": {
+    "description": "<p>The hypnotic stare penalty also applies to all Charisma checks to escape planar binding spells, and applies to the target's spell resistance against a planar binding spell.</p>",
+    "id": "devilbane_binding",
+    "name": "Devilbane Binding",
+    "sources": [
+      {
+        "id": "occult-origins",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:devilbane_binding"
+  },
+  "devilbane_dampening": {
+    "description": "<p>The hypnotic stare penalty also applies to the target's resistance to a single form of energy, chosen by the mesmerist when he initiates the stare. If the mesmerist targets a form of energy to which his target has no resistance, this improvement has no effect.</p>",
+    "id": "devilbane_dampening",
+    "name": "Devilbane Dampening",
+    "sources": [
+      {
+        "id": "occult-origins",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:devilbane_dampening"
+  },
+  "devilbane_dismissal": {
+    "description": "<p>The hypnotic stare reduces the duration of any conjuration (summoning) spells the target casts, or that are currently affecting the target, by half.</p>",
+    "id": "devilbane_dismissal",
+    "name": "Devilbane Dismissal",
+    "sources": [
+      {
+        "id": "occult-origins",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:devilbane_dismissal"
+  },
+  "devilbane_impediment": {
+    "description": "<p>The target of your hypnotic stare must succeed at a concentration check (DC = 15 + the level of the spell) to activate any of its spell-like abilities (but not standard spellcasting). If the target fails the check, the spell-like ability doesn't function but is still expended.</p>",
+    "id": "devilbane_impediment",
+    "name": "Devilbane Impediment",
+    "sources": [
+      {
+        "id": "occult-origins",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:devilbane_impediment"
+  },
+  "devilbane_mundanity": {
+    "description": "<p>The hypnotic stare penalty also applies to the target's spell resistance. This ability doesn't stack with the sapped magic bold stare improvement.</p>",
+    "id": "devilbane_mundanity",
+    "name": "Devilbane Mundanity",
+    "sources": [
+      {
+        "id": "occult-origins",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:devilbane_mundanity"
+  },
+  "devilbane_withering": {
+    "description": "<p>The hypnotic stare penalty also applies to attack rolls and damage rolls, but only if the target is an outsider. Unlike most devilbane gazes, this gaze has no effect on creatures not of the outsider type, and effect's penalty isn't doubled when it targets outsiders.</p>",
+    "id": "devilbane_withering",
+    "name": "Devilbane Withering",
+    "sources": [
+      {
+        "id": "occult-origins",
+        "pages": "13"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:devilbane_withering"
+  },
+  "disorientation": {
+    "description": "<p>The hypnotic stare penalty also applies on attack rolls.</p>",
+    "id": "disorientation",
+    "name": "Disorientation",
+    "sources": [
+      {
+        "id": "occult-adventures",
+        "pages": "42"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:disorientation"
+  },
+  "disquiet": {
+    "description": "<p>The target of the hypnotic stare is shaken while in areas of total darkness.</p>",
+    "id": "disquiet",
+    "name": "Disquiet",
+    "sources": [
+      {
+        "id": "occult-realms",
+        "pages": "16"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:disquiet"
+  },
+  "distracted": {
+    "description": "<p>The hypnotic stare penalty also applies to concentration checks.</p>",
+    "id": "distracted",
+    "name": "Distracted",
+    "sources": [
+      {
+        "id": "heroes-of-golarion",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:distracted"
+  },
+  "infiltration": {
+    "description": "<p>The hypnotic stare penalty also applies to the target's Perception checks and CMD.</p>",
+    "id": "infiltration",
+    "name": "Infiltration",
+    "sources": [
+      {
+        "id": "occult-realms",
+        "pages": "16"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:infiltration"
+  },
+  "lethality": {
+    "description": "<p>The hypnotic stare penalty also applies to the target's Fortitude saves versus poison and diseases.</p>",
+    "id": "lethality",
+    "name": "Lethality",
+    "sources": [
+      {
+        "id": "occult-realms",
+        "pages": "16"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:lethality"
+  },
+  "nightblindness": {
+    "description": "<p>The darkvision range of the hypnotic stare's target decreases by 10 feet.</p>",
+    "id": "nightblindness",
+    "name": "Nightblindness",
+    "sources": [
+      {
+        "id": "occult-realms",
+        "pages": "16"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:nightblindness"
+  },
+  "nightmare": {
+    "description": "<p>The target of the hypnotic stare rolls twice on all Will saves versus fear, taking the lower result.</p>",
+    "id": "nightmare",
+    "name": "Nightmare",
+    "sources": [
+      {
+        "id": "occult-realms",
+        "pages": "16"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:nightmare"
+  },
+  "oscillation": {
+    "description": "<p>The target of the hypnotic stare treats all enemies beyond 30 feet (except the mesmerist) as having concealment (20% miss chance).</p>",
+    "id": "oscillation",
+    "name": "Oscillation",
+    "sources": [
+      {
+        "id": "occult-realms",
+        "pages": "16"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:oscillation"
+  },
+  "psychic_inception": {
+    "description": "<p>The hypnotic stare and its penalty can affect creatures that are mindless or immune to mind-affecting effects (such as an undead or vermin). The mesmerist can also partially affect such a creature with his mind-affecting spells and abilities if it's under the effect of his hypnotic stare; it gains a +2 bonus on its saving throw (if any), and if affected, it still has a 50% chance each round of ignoring the effect. Ignoring the effect doesn't end the effect, but does allow the creature to act normally for that round.</p>",
+    "id": "psychic_inception",
+    "name": "Psychic Inception",
+    "sources": [
+      {
+        "id": "occult-adventures",
+        "pages": "43"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:psychic_inception"
+  },
+  "restriction": {
+    "description": "<p>The target of the hypnotic stare treats all areas of dim light or darker as difficult terrain.</p>",
+    "id": "restriction",
+    "name": "Restriction",
+    "sources": [
+      {
+        "id": "occult-realms",
+        "pages": "16"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:restriction"
+  },
+  "sabotage": {
+    "description": "<p>The hypnotic stare penalty also applies to Diplomacy and Intimidate checks.</p>",
+    "id": "sabotage",
+    "name": "Sabotage",
+    "sources": [
+      {
+        "id": "occult-realms",
+        "pages": "16"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:sabotage"
+  },
+  "sapped_magic": {
+    "description": "<p>The hypnotic stare penalty also applies to the DCs of spells and spell-like abilities used by the target, and to the target's spell resistance (if any).</p>",
+    "id": "sapped_magic",
+    "name": "Sapped Magic",
+    "sources": [
+      {
+        "id": "occult-adventures",
+        "pages": "43"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:sapped_magic"
+  },
+  "sensed": {
+    "description": "<p>The hypnotic stare penalty also applies to Stealth checks.</p>",
+    "id": "sensed",
+    "name": "Sensed",
+    "sources": [
+      {
+        "id": "heroes-of-golarion",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:sensed"
+  },
+  "sluggishness": {
+    "description": "<p>The target of the hypnotic stare has all of its speeds reduced by 5 feet (to a minimum of 5 feet), and the hypnotic stare penalty also applies to the target's Reflex saving throws.</p>",
+    "id": "sluggishness",
+    "name": "Sluggishness",
+    "sources": [
+      {
+        "id": "occult-adventures",
+        "pages": "43"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:sluggishness"
+  },
+  "susceptibility": {
+    "description": "<p>The hypnotic stare penalty also applies to the target's Sense Motive checks to oppose Bluff checks, and to the DCs of Diplomacy and Intimidate checks made against the target.</p>",
+    "id": "susceptibility",
+    "name": "Susceptibility",
+    "sources": [
+      {
+        "id": "occult-adventures",
+        "pages": "43"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:susceptibility"
+  },
+  "timidity": {
+    "description": "<p>The hypnotic stare penalty also applies to damage rolls.</p>",
+    "id": "timidity",
+    "name": "Timidity",
+    "sources": [
+      {
+        "id": "occult-adventures",
+        "pages": "43"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:timidity"
+  },
+  "unaided": {
+    "description": "<p>The target of the hypnotic stare is not able to grant or receive flanking bonuses.</p>",
+    "id": "unaided",
+    "name": "Unaided",
+    "sources": [
+      {
+        "id": "heroes-of-golarion",
+        "pages": "9"
+      }
+    ],
+    "uuid": "pfdata:mesmerist-bold-stare:unaided"
+  }
+}

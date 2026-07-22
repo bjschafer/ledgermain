@@ -59,6 +59,12 @@ async function fetchAll(): Promise<RefData> {
     arcanistExploits,
     investigatorTalents,
     kineticWildTalents,
+    mesmeristTricks,
+    mesmeristBoldStares,
+    phrenicAmplifications,
+    psychicDisciplines,
+    occultistImplements,
+    mediumSpirits,
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
@@ -94,6 +100,12 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["arcanistExploits"]>("arcanist-exploits.json"),
     getJson<RefData["investigatorTalents"]>("investigator-talents.json"),
     getJson<RefData["kineticWildTalents"]>("kinetic-wild-talents.json"),
+    getJson<RefData["mesmeristTricks"]>("mesmerist-tricks.json"),
+    getJson<RefData["mesmeristBoldStares"]>("mesmerist-bold-stares.json"),
+    getJson<RefData["phrenicAmplifications"]>("phrenic-amplifications.json"),
+    getJson<RefData["psychicDisciplines"]>("psychic-disciplines.json"),
+    getJson<RefData["occultistImplements"]>("occultist-implements.json"),
+    getJson<RefData["mediumSpirits"]>("medium-spirits.json"),
   ]);
   return {
     meta,
@@ -130,5 +142,11 @@ async function fetchAll(): Promise<RefData> {
     arcanistExploits,
     investigatorTalents,
     kineticWildTalents,
+    mesmeristTricks,
+    mesmeristBoldStares,
+    phrenicAmplifications,
+    psychicDisciplines,
+    occultistImplements,
+    mediumSpirits,
   };
 }

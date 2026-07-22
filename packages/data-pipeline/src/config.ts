@@ -67,7 +67,16 @@ export const SYSTEM_VERSION = "11.11";
  * `vigilanteSocialTalents`/`vigilante-social-talents.json`,
  * `arcanistExploits`/`arcanist-exploits.json`,
  * `investigatorTalents`/`investigator-talents.json`, and
- * `kineticWildTalents`/`kinetic-wild-talents.json`.
+ * `kineticWildTalents`/`kinetic-wild-talents.json`. (issue #74 Phase 3c adds
+ * six more "Pf Data 1e" occult-class subsystem catalogs —
+ * `mesmeristTricks`/`mesmerist-tricks.json`,
+ * `mesmeristBoldStares`/`mesmerist-bold-stares.json`,
+ * `phrenicAmplifications`/`phrenic-amplifications.json`,
+ * `psychicDisciplines`/`psychic-disciplines.json`,
+ * `occultistImplements`/`occultist-implements.json`, and
+ * `mediumSpirits`/`medium-spirits.json` — folded into this same v12 rather
+ * than bumping again, per the phase's own "one integration bump later"
+ * instruction.)
  */
 export const SCHEMA_VERSION = 12;
 
@@ -105,8 +114,10 @@ export const PF_CONTENT_SHA = "c66bf333cafc451d817ead660473dd01d9846fb3";
  * data — starting with the full rage-power catalog (issue #74 Phase 3a), then
  * the witch-hex, general shaman-hex, magus-arcana, rogue-family talent,
  * arcanist-exploit, investigator-talent, and kineticist-wild-talent catalogs
- * (Phase 3b). Single-maintainer repo, so pin like the others: exact commit,
- * never a branch.
+ * (Phase 3b), then the mesmerist trick/bold-stare, phrenic-amplification,
+ * psychic-discipline, occultist-implement, and Medium legendary-spirit
+ * catalogs (Phase 3c). Single-maintainer repo, so pin like the others: exact
+ * commit, never a branch.
  */
 export const PFDATA_REPO = "https://github.com/jasontankapps/pathfinder-data-1-e.git";
 

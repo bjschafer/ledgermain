@@ -125,7 +125,7 @@
  * same "automatic once you qualify" shape as a discipline power.
  */
 
-import type { AbilityId } from "@pf1/schema";
+import type { AbilityId, MediumSpirit, RefData, SourceRef } from "@pf1/schema";
 
 /** The 4 level gates at which a medium's Spirit Power tier unlocks (PF1 RAW). */
 export const MEDIUM_SPIRIT_POWER_LEVELS = {
@@ -479,3 +479,130 @@ export const MEDIUM_SPIRITS: Record<string, MediumSpiritDef> = Object.fromEntrie
 );
 
 export const MEDIUM_SPIRIT_TAGS: readonly string[] = SPIRIT_LIST.map((s) => s.tag);
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.mediumSpirits` (see that type's doc comment)
+ * is the FULL published catalog (40 entries after junk filtering), prose
+ * only. Same chassis caveat as `psychic-disciplines.ts`/
+ * `occultist-implements.ts`'s overlays: the hand-authored `MEDIUM_SPIRITS`
+ * table above is the ONLY source of Spirit Bonus targets/Séance Boon/
+ * influence penalty/Spirit Powers — a vendored-only spirit (an outsider-type
+ * spirit or a named historical/NPC legendary spirit) has no structured data
+ * for those, so the merge produces a hand-authored branch (`vendoredOnly:
+ * false`, vendored prose attached) and a vendored-only stub branch
+ * (`vendoredOnly: true`, name + prose only).
+ *
+ * Collision audit: all 6 hand-authored spirits (Archmage, Champion,
+ * Guardian, Hierophant, Marshal, Trickster) matched a vendored entry by
+ * normalized name — zero misses, zero aliases needed. The 34 vendored-only
+ * entries are a mix of 12 outsider-type spirits (Psychic Anthology: Aeon,
+ * Agathion, Angel, Archon, Azata, Daemon, Demon, Devil, Psychopomp, ...) and
+ * 22 named historical/NPC legendary spirits from later splatbooks (e.g.
+ * Abrogail Thrune I, Occult Realms) — several of the latter are flavored
+ * variants of one of the 6 core archetypes per their own prose, but this
+ * table does NOT attempt to infer or copy that archetype's mechanics onto
+ * them (that would be a fabricated, unverified claim) — they stay
+ * `vendoredOnly: true`, selectable for a séance but granting no Spirit Bonus
+ * targets/Séance Boon/Spirit Powers.
+ */
+
+const MEDIUM_SPIRIT_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeSpiritName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A hand-authored legendary spirit, browsable with its vendored prose/sources attached. */
+export interface MergedMediumSpiritHandEntry extends MediumSpiritDef {
+  vendoredOnly: false;
+  description?: string;
+  sources?: SourceRef[];
+}
+
+/** A legendary spirit that exists ONLY in the vendored catalog — no Spirit Bonus targets/Séance Boon/Spirit Powers. */
+export interface MergedMediumSpiritVendoredEntry {
+  vendoredOnly: true;
+  tag: string;
+  name: string;
+  summary: string;
+  description?: string;
+  sources?: SourceRef[];
+}
+
+export type MergedMediumSpiritEntry = MergedMediumSpiritHandEntry | MergedMediumSpiritVendoredEntry;
+
+function vendoredOnlyEntry(entry: MediumSpirit): MergedMediumSpiritVendoredEntry {
+  return {
+    vendoredOnly: true,
+    tag: entry.id,
+    name: entry.name,
+    summary: plainTextPreview(entry.description ?? ""),
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/** Resolve a channeled spirit tag (`live.mediumSpirit`) to its merged entry — hand-authored table first, falling back to a vendored-only stub. Direct `MEDIUM_SPIRITS[tag]` lookups elsewhere (`collect.ts`, `archetypes.ts`) intentionally keep resolving `undefined` for a vendored-only tag — there are no real Change targets/Spirit Powers to grant in that case, same "gracefully no-op" posture as no séance performed at all. */
+export function resolveMediumSpirit(
+  tag: string,
+  refData: RefData,
+): MergedMediumSpiritEntry | undefined {
+  const hand = MEDIUM_SPIRITS[tag];
+  if (hand) {
+    const vendored = refData.mediumSpirits?.[tag];
+    return {
+      ...hand,
+      vendoredOnly: false,
+      description: vendored?.description,
+      sources: vendored?.sources,
+    };
+  }
+  const vendored = refData.mediumSpirits?.[tag];
+  return vendored ? vendoredOnlyEntry(vendored) : undefined;
+}
+
+/** The full séance-panel-browsable catalog: every hand-authored spirit (vendored prose attached on a name match) plus every vendored-only spirit appended, sorted by name. */
+export function mergedMediumSpiritCatalog(refData: RefData): MergedMediumSpiritEntry[] {
+  const handByNormName = new Map<string, MediumSpiritDef>();
+  for (const s of SPIRIT_LIST) {
+    handByNormName.set(normalizeSpiritName(MEDIUM_SPIRIT_NAME_ALIASES[s.tag] ?? s.name), s);
+  }
+
+  const vendored = Object.values(refData.mediumSpirits ?? {});
+  const usedHandTags = new Set<string>();
+  const merged: MergedMediumSpiritEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeSpiritName(v.name);
+    const handMatch = handByNormName.get(norm);
+    if (handMatch) {
+      usedHandTags.add(handMatch.tag);
+      merged.push({
+        ...handMatch,
+        vendoredOnly: false,
+        description: v.description,
+        sources: v.sources,
+      });
+    } else {
+      merged.push(vendoredOnlyEntry(v));
+    }
+  }
+  for (const s of SPIRIT_LIST) {
+    if (!usedHandTags.has(s.tag)) merged.push({ ...s, vendoredOnly: false });
+  }
+  return merged.sort((a, b) => a.name.localeCompare(b.name));
+}

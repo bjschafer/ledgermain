@@ -296,10 +296,15 @@ export {
   OCCULTIST_APPLIED_RESONANT_SCHOOLS,
   OCCULTIST_PHYSICAL_ABILITIES,
   findOccultistFocusPower,
+  resolveOccultistImplement,
+  mergedOccultistImplementCatalog,
   type OccultistSchoolDef,
   type OccultistBaseFocusPower,
   type OccultistFocusPowerDef,
   type OccultistResonantPower,
+  type MergedOccultistImplementEntry,
+  type MergedOccultistImplementHandEntry,
+  type MergedOccultistImplementVendoredEntry,
 } from "./occultist-implements.js";
 export {
   KINETICIST_ELEMENTS,
@@ -331,29 +336,43 @@ export {
 export {
   PSYCHIC_DISCIPLINES,
   PSYCHIC_DISCIPLINE_TAGS,
+  resolvePsychicDiscipline,
+  mergedPsychicDisciplineCatalog,
   type PsychicDisciplineDef,
   type PsychicDisciplineBonusSpell,
   type PsychicDisciplinePower,
+  type MergedPsychicDisciplineEntry,
+  type MergedPsychicDisciplineHandEntry,
+  type MergedPsychicDisciplineVendoredEntry,
 } from "./psychic-disciplines.js";
 export {
   PHRENIC_AMPLIFICATIONS,
   PHRENIC_AMPLIFICATION_IDS,
   amplificationsForTier as phrenicAmplificationsForTier,
+  resolvePhrenicAmplification,
+  mergedPhrenicAmplificationCatalog,
   type PhrenicAmplificationDef,
   type PhrenicAmplificationTier,
+  type MergedPhrenicAmplificationEntry,
 } from "./phrenic-amplifications.js";
 export {
   MESMERIST_TRICKS,
   MESMERIST_TRICK_IDS,
   tricksForTier as mesmeristTricksForTier,
+  resolveMesmeristTrick,
+  mergedMesmeristTrickCatalog,
   type MesmeristTrickDef,
   type MesmeristTrickTier,
+  type MergedMesmeristTrickEntry,
 } from "./mesmerist-tricks.js";
 export {
   MESMERIST_BOLD_STARES,
   MESMERIST_BOLD_STARE_IDS,
   boldStareRiderSummary,
+  resolveMesmeristBoldStare,
+  mergedMesmeristBoldStareCatalog,
   type MesmeristBoldStareDef,
+  type MergedMesmeristBoldStareEntry,
 } from "./mesmerist-bold-stares.js";
 export {
   SHAMAN_SPIRITS,
@@ -370,10 +389,15 @@ export {
   MEDIUM_SPIRIT_TAGS,
   MEDIUM_SPIRIT_POWER_LEVELS,
   mediumSpiritBonus,
+  resolveMediumSpirit,
+  mergedMediumSpiritCatalog,
   type MediumSpiritDef,
   type MediumSpiritPower,
   type MediumSpiritPowerTier,
   type MediumSpiritBonusTarget,
+  type MergedMediumSpiritEntry,
+  type MergedMediumSpiritHandEntry,
+  type MergedMediumSpiritVendoredEntry,
 } from "./medium-spirits.js";
 export {
   GUNSLINGER_DEEDS,

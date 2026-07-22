@@ -621,7 +621,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {doc.identity.classes.some((c) => c.tag === "mesmerist") && (
         <>
           <MesmeristTrickPicker doc={doc} refData={refData} update={update} />
-          <MesmeristBoldStarePicker doc={doc} update={update} />
+          <MesmeristBoldStarePicker doc={doc} refData={refData} update={update} />
         </>
       )}
 

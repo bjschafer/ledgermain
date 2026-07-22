@@ -73,6 +73,8 @@
  * with a summary only, same posture as a shaman's spirit ability.
  */
 
+import type { PsychicDiscipline, RefData, SourceRef } from "@pf1/schema";
+
 export interface PsychicDisciplinePower {
   /** Psychic level this power is gained — 1, 5, or 13 (PF1 RAW: "Discipline Powers" gained at 1st, 5th, and 13th level). */
   level: 1 | 5 | 13;
@@ -587,3 +589,147 @@ export const PSYCHIC_DISCIPLINES: Record<string, PsychicDisciplineDef> = Object.
 );
 
 export const PSYCHIC_DISCIPLINE_TAGS: readonly string[] = DISCIPLINE_LIST.map((d) => d.tag);
+
+/* -------------------------------------------------- vendored catalog overlay -- */
+/*
+ * Issue #74 Phase 3c: `RefData.psychicDisciplines` (see that type's doc
+ * comment) is the FULL published catalog (23 entries after junk filtering),
+ * prose only. UNLIKE `RagePower`/`MesmeristTrick`/etc., a discipline is a
+ * CHASSIS — the hand-authored table above is the ONLY source of bonus
+ * spells/Discipline Powers/phrenic pool ability, and a vendored-only entry
+ * can never derive those (this catalog has no structured data for them at
+ * all). So the merge here produces two shapes instead of one:
+ *
+ *   - a hand-authored discipline, with the vendored prose/sources attached
+ *     for extra flavor text (`vendoredOnly: false`) — bonus spells/powers/
+ *     pool ability still come from the hand-authored table;
+ *   - a vendored-only discipline (`vendoredOnly: true`) — name + prose only,
+ *     no bonus spells/powers/pool ability at all. The picker must render
+ *     this branch honestly (no fabricated pool ability, no empty bonus-spell
+ *     list presented as if it were complete).
+ *
+ * Collision audit: all 12 hand-authored tags matched a vendored entry by
+ * normalized name — zero misses, zero aliases needed. 11 vendored-only
+ * splatbook disciplines (Bleaching, Hag-Called, Mindtech, Psychedelia,
+ * Rapport, Rivethun, Shadow, Sorrow, Superiority, Symbiosis, Warp) remain
+ * `vendoredOnly: true`.
+ */
+
+const PSYCHIC_DISCIPLINE_NAME_ALIASES: Record<string, string> = {};
+
+function normalizeDisciplineName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function plainTextPreview(html: string, max = 200): string {
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+}
+
+/** A hand-authored discipline, browsable with its vendored prose/sources attached (when a vendored counterpart matched). */
+export interface MergedPsychicDisciplineHandEntry extends PsychicDisciplineDef {
+  vendoredOnly: false;
+  summary: string;
+  description?: string;
+  sources?: SourceRef[];
+}
+
+/** A discipline that exists ONLY in the vendored catalog — no bonus spells/Discipline Powers/pool ability (see file doc comment). */
+export interface MergedPsychicDisciplineVendoredEntry {
+  vendoredOnly: true;
+  tag: string;
+  name: string;
+  summary: string;
+  description?: string;
+  sources?: SourceRef[];
+}
+
+export type MergedPsychicDisciplineEntry =
+  | MergedPsychicDisciplineHandEntry
+  | MergedPsychicDisciplineVendoredEntry;
+
+function vendoredOnlyEntry(entry: PsychicDiscipline): MergedPsychicDisciplineVendoredEntry {
+  return {
+    vendoredOnly: true,
+    tag: entry.id,
+    name: entry.name,
+    summary: plainTextPreview(entry.description ?? ""),
+    description: entry.description,
+    sources: entry.sources,
+  };
+}
+
+/**
+ * Resolve a picked discipline tag (`doc.build.psychicDiscipline`) to its
+ * merged entry — hand-authored table first (bonus spells/powers/pool
+ * ability authoritative), falling back to a vendored-only stub. Used by the
+ * picker; `PSYCHIC_DISCIPLINES[tag]` direct lookups elsewhere (`resources.ts`,
+ * `archetypes.ts`, `apps/web` spellcasting) intentionally keep resolving
+ * `undefined` for a vendored-only tag — there is no pool ability/bonus spell
+ * to alias in that case, same "gracefully no-op" posture as any other unset
+ * discipline.
+ */
+export function resolvePsychicDiscipline(
+  tag: string,
+  refData: RefData,
+): MergedPsychicDisciplineEntry | undefined {
+  const hand = PSYCHIC_DISCIPLINES[tag];
+  if (hand) {
+    const vendored = refData.psychicDisciplines?.[tag];
+    return {
+      ...hand,
+      vendoredOnly: false,
+      summary: plainTextPreview(vendored?.description ?? ""),
+      description: vendored?.description,
+      sources: vendored?.sources,
+    };
+  }
+  const vendored = refData.psychicDisciplines?.[tag];
+  return vendored ? vendoredOnlyEntry(vendored) : undefined;
+}
+
+/** The full picker-browsable catalog: every hand-authored discipline (vendored prose attached on a name match) plus every vendored-only discipline appended, sorted by name. */
+export function mergedPsychicDisciplineCatalog(refData: RefData): MergedPsychicDisciplineEntry[] {
+  const handByNormName = new Map<string, PsychicDisciplineDef>();
+  for (const d of DISCIPLINE_LIST) {
+    handByNormName.set(
+      normalizeDisciplineName(PSYCHIC_DISCIPLINE_NAME_ALIASES[d.tag] ?? d.name),
+      d,
+    );
+  }
+
+  const vendored = Object.values(refData.psychicDisciplines ?? {});
+  const usedHandTags = new Set<string>();
+  const merged: MergedPsychicDisciplineEntry[] = [];
+  for (const v of vendored) {
+    const norm = normalizeDisciplineName(v.name);
+    const handMatch = handByNormName.get(norm);
+    if (handMatch) {
+      usedHandTags.add(handMatch.tag);
+      merged.push({
+        ...handMatch,
+        vendoredOnly: false,
+        summary: plainTextPreview(v.description ?? ""),
+        description: v.description,
+        sources: v.sources,
+      });
+    } else {
+      merged.push(vendoredOnlyEntry(v));
+    }
+  }
+  for (const d of DISCIPLINE_LIST) {
+    if (!usedHandTags.has(d.tag)) {
+      merged.push({ ...d, vendoredOnly: false, summary: "", description: undefined });
+    }
+  }
+  return merged.sort((a, b) => a.name.localeCompare(b.name));
+}
