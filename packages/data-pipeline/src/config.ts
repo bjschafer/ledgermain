@@ -50,9 +50,16 @@ export const SYSTEM_VERSION = "11.11";
  * `subdomain-spell-lists.json` and `druidDomains`/`druid-domains.json`; and
  * `wizardSchools` grows from 9 to 17 entries (elemental schools share the
  * collection, `WizardSchool.tag` widened to `WizardSchoolTag |
- * ElementalSchoolTag`).
+ * ElementalSchoolTag`). v11 adds `RagePower`/`ragePowers` (rage-powers.json)
+ * — the full published barbarian rage-power catalog from the "Pf Data 1e"
+ * fourth pinned source (see `PFDATA_REPO`/`PFDATA_SHA`), prose-only reference
+ * data merged with `@pf1/engine`'s hand-verified `RAGE_POWERS` table at read
+ * time (see `mergedRagePowerCatalog`), not baked into RefData itself. (v10
+ * retroactively also documents `Class.castingAdvancement` and `Class.prereqs`
+ * — structured prestige casting-advancement slots and entry requirements,
+ * shipped under v9 with issue #66.)
  */
-export const SCHEMA_VERSION = 10;
+export const SCHEMA_VERSION = 11;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

@@ -15,6 +15,7 @@
     "items": 1089,
     "races": 80,
     "racialTraits": 750,
+    "ragePowers": 244,
     "spells": 3026,
     "subdomainSpellLists": 136,
     "subdomains": 136,
@@ -39,6 +40,7 @@
     "items.json": "c295c2406bccd0354a0fd5027f5ce2647543c05875dafa89d03f3c7623f9aa5f",
     "races.json": "89cd6f323902674b99bd8771a4282b243aa01056ddc9336e6df5f21e2d6be64d",
     "racial-traits.json": "4738679e46c48a545c19a8bc7bee2bc2414c928eba431a4c9dd9e36eeed99704",
+    "rage-powers.json": "e8632ec995d5c7ce4cc09c68d2affa037864a652ee28195a2eaae17ef15df3c6",
     "spell-lists.json": "b955e35ee16a2e4d391b3a32648d83c854e8b7477b472b95cdef50ed6cf0806c",
     "spells.json": "a68f9c2d9c28e0a6a8e34c32b19e595773c65f0b6c75730a85fb127437993e6d",
     "subdomain-spell-lists.json": "1286d1f7411978225172dd272c2fc1a220133bf6e7031bf5936acf70d139dd2e",
@@ -47,7 +49,7 @@
     "weapons.json": "286e9b97a5c1ca8b9b1126149b0abc4c3ddc968522d857d1d421e7abe06a0042",
     "wizard-schools.json": "b6078da2c6e8837e7b12845869d7ee605ec27844619a4ce2257da8ba6665d315"
   },
-  "schemaVersion": 10,
+  "schemaVersion": 11,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"
