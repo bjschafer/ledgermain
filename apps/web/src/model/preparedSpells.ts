@@ -281,21 +281,27 @@ export function spellLevelMap(refData: RefData, casterTag: string): Map<string, 
 }
 
 /**
- * spellId -> spell level for the given domain (or subdomain) tags, inverted
- * from `refData.domainSpellLists` / `refData.subdomainSpellLists`. Used to
- * bucket domain-slot prepared spells by level and to validate that a spell
- * prepared in a domain slot belongs to one of the cleric's chosen domains.
- * Empty if none of `domainTags` are vendored. When a spell appears in more
- * than one chosen domain at differing levels, the lowest level wins (rare;
- * canonical domains agree on level-by-level).
+ * spellId -> spell level for the given domain tags, inverted from the domain
+ * spell lists. Used to bucket domain-slot prepared spells by level and to
+ * validate that a spell prepared in a domain slot belongs to one of the
+ * caster's chosen domains. `variant` selects the source: `"cleric"` (default)
+ * reads `domainSpellLists`/`subdomainSpellLists`; `"druid"` reads
+ * `druidDomainSpellLists` (a druid's nature-bond domain, which the two Vermin/
+ * Ruins name collisions make distinct from the cleric list — see
+ * `RefData.druidDomainSpellLists`). Empty if none of `domainTags` are
+ * vendored. When a spell appears at differing levels, the lowest wins.
  */
 export function domainSpellLevelMap(
   refData: RefData,
   domainTags: readonly string[],
+  variant: "cleric" | "druid" = "cleric",
 ): Map<string, number> {
   const map = new Map<string, number>();
   for (const tag of domainTags) {
-    const list = refData.domainSpellLists[tag] ?? refData.subdomainSpellLists[tag];
+    const list =
+      variant === "druid"
+        ? refData.druidDomainSpellLists[tag]
+        : (refData.domainSpellLists[tag] ?? refData.subdomainSpellLists[tag]);
     if (!list) continue;
     for (const [lvl, ids] of Object.entries(list)) {
       const n = Number(lvl);

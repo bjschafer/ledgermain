@@ -21,10 +21,12 @@ interface DruidDomainPickerProps {
  * mapping, so validation is "soft warning only" per the project's
  * hybrid-prereqs philosophy (mirrors `DomainPicker`/`SchoolPicker`).
  *
- * Unlike a cleric's domain, a druid's nature bond grants only the domain's
- * *powers* (scaling off druid level) — no bonus spell slot and no spell list —
- * so this picker just sets the choice and surfaces the domain's prose powers
- * from `DruidDomain.description`; there is nothing to render in the tracker.
+ * Like a cleric's domain, a druid's nature bond grants one domain spell slot
+ * per accessible spell level (the tracker's Spells panel renders those and
+ * lets the druid prepare a domain spell into them, drawn from
+ * `refData.druidDomainSpellLists`). This picker sets the choice and surfaces
+ * the domain's prose powers from `DruidDomain.description`; the slot capacity +
+ * prepare-from-domain UI live in the tracker.
  */
 export function DruidDomainPicker({ doc, refData, update }: DruidDomainPickerProps) {
   const isDruid = doc.identity.classes.some((c) => c.tag === "druid");
@@ -67,10 +69,11 @@ export function DruidDomainPicker({ doc, refData, update }: DruidDomainPickerPro
       {!collapsed && (
         <>
           <p className="hint druid-domain-picker-hint">
-            Pick one nature-bond domain (the alternative to an animal companion). A druid gains only
-            the domain's granted powers, scaling off druid level — no domain spell slot and no bonus
-            spell list. Free-choice — no terrain validation. Leave unset for a druid who bonds with
-            an animal companion instead.
+            Pick one nature-bond domain (the alternative to an animal companion). A druid gains the
+            domain's granted powers (scaling off druid level) plus one bonus prepare-slot per
+            accessible spell level, drawable from the domain's spell list in the Spells panel.
+            Free-choice — no terrain validation. Leave unset for a druid who bonds with an animal
+            companion instead.
           </p>
           <select
             className="druid-domain-select"

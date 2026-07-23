@@ -153,10 +153,13 @@ export interface CharacterDoc {
      * Free-choice — no deity/terrain validation, matching the project's hybrid
      * soft-warning posture (see `clericDomains`).
      *
-     * Grants only the domain's *powers*, scaling off druid level (PF1 nature
-     * bond grants no domain spell slots and no bonus spell list — so there is
-     * nothing to wire into `preparedSpells`). Those powers are free-text prose
-     * on `DruidDomain.description` (the source models none as a
+     * Grants the domain's *powers* (scaling off druid level) AND one domain
+     * spell slot per accessible druid spell level, drawable from
+     * `refData.druidDomainSpellLists[<tag>]` — PF1 nature bond grants domain
+     * spell slots "just like a cleric" (the tracker renders them via the same
+     * `DomainSlotsSection` a cleric uses, and a `kind: "domain"` prepared
+     * instance holds each pick). The powers themselves are free-text prose on
+     * `DruidDomain.description` (the source models none as a
      * `links.supplements`-linked feature, so `DruidDomain.features` is always
      * `[]` and there is nothing structured for the engine to grant); the
      * builder surfaces them from the description. Back-compat: documents

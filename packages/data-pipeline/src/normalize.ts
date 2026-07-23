@@ -360,6 +360,23 @@ export function normalize(opts: NormalizeOptions): {
     ...druidTerrainDomainDocs.map((d) => transformDruidDomain(d, "terrain", resolveUuid)),
   ];
 
+  // Druid nature-bond domain spell lists — like subdomains, parsed from each
+  // domain's own description prose (the source `@UUID`-links every domain
+  // spell but tags NO spell by druid domain via `learnedAt`, so there's
+  // nothing to invert). Parse the refs up front so the referenced spells
+  // survive the spell slice below — most are off the druid class list (domain
+  // slots exist precisely to prepare those).
+  const druidDomainSpellRefs = new Map<string, { level: number; spellId: string }[]>();
+  for (const doc of [...druidAnimalDomainDocs, ...druidTerrainDomainDocs]) {
+    const dd = druidDomains.find((d) => d.id === doc._id);
+    if (!dd) continue;
+    druidDomainSpellRefs.set(dd.tag, parseDomainSpellEntries(rawDescriptionHtml(doc)));
+  }
+  const druidDomainSpellIds = new Set<string>();
+  for (const entries of druidDomainSpellRefs.values()) {
+    for (const e of entries) druidDomainSpellIds.add(e.spellId);
+  }
+
   const wizardSchools: WizardSchool[] = [
     ...schoolDocs
       .map((d) =>
@@ -450,7 +467,8 @@ export function normalize(opts: NormalizeOptions): {
       Object.keys(spell.learnedAt.domain ?? {}).length > 0 ||
       Object.keys(spell.learnedAt.subdomain ?? {}).length > 0;
     const hasBloodline = Object.keys(spell.learnedAt.bloodline ?? {}).length > 0;
-    if (hasClass || hasDomain || hasBloodline) spells.push(spell);
+    const hasDruidDomain = druidDomainSpellIds.has(spell.id);
+    if (hasClass || hasDomain || hasBloodline || hasDruidDomain) spells.push(spell);
   }
   // Attach `@cl`-keyed projectile counts to the multi-projectile spells whose
   // count scales in prose, not their damage formula (Magic Missile, Scorching
@@ -516,6 +534,22 @@ export function normalize(opts: NormalizeOptions): {
     }
     for (const { level, spellId } of entries) list[level] = [spellId];
     if (Object.keys(list).length > 0) subdomainSpellLists[sub.tag] = list;
+  }
+
+  // --- per-druid-domain spell lists (parsed from each domain's own prose) ----
+  // Nature bond grants a druid one domain spell slot per accessible level,
+  // drawable from these. Built from the refs parsed above, dropping any spell
+  // that didn't survive the slice (a handful reference spells outside the
+  // vendored content — graceful degradation, the slot just won't offer them).
+  const druidDomainSpellLists: Record<string, SpellList> = {};
+  for (const [tag, entries] of druidDomainSpellRefs) {
+    const list: SpellList = {};
+    for (const { level, spellId } of entries) {
+      if (!spellsById[spellId]) continue;
+      (list[level] ??= []).push(spellId);
+    }
+    for (const lvl of Object.keys(list)) list[Number(lvl)]!.sort();
+    if (Object.keys(list).length > 0) druidDomainSpellLists[tag] = list;
   }
 
   // --- per-bloodline spell lists (invert learnedAt.bloodline) -----------------
@@ -787,6 +821,7 @@ export function normalize(opts: NormalizeOptions): {
     subdomains: subdomains.length,
     subdomainSpellLists: Object.keys(subdomainSpellLists).length,
     druidDomains: druidDomains.length,
+    druidDomainSpellLists: Object.keys(druidDomainSpellLists).length,
     wizardSchools: wizardSchools.length,
     ragePowers: ragePowers.length,
     hexes: hexes.length,
@@ -858,6 +893,7 @@ export function normalize(opts: NormalizeOptions): {
     subdomains: byId(subdomains),
     subdomainSpellLists,
     druidDomains: byId(druidDomains),
+    druidDomainSpellLists,
     wizardSchools: byId(wizardSchools),
     ragePowers: byId(ragePowers),
     hexes: byId(hexes),

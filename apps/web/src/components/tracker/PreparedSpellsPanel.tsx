@@ -294,12 +294,12 @@ function ApplyBuffButton({
 // ---------------------------------------------------------------------------
 
 /**
- * The bonus domain-slot grid for a cleric with chosen domains. PF1 grants ONE
- * domain spell slot per accessible cleric spell level (1–9); the chosen domains
- * determine which spells SOURCED the prepare-from picker offers (union, deduped
- * by id across the chosen domains at each level). Each domain-prepare instance
- * stores `kind: "domain"` on the doc, keeping it out of the class-slot capacity
- * check in {@link PreparedView}.
+ * The bonus domain-slot grid for a cleric with chosen domains, or a druid with
+ * a nature-bond domain (`variant`). PF1 grants ONE domain spell slot per
+ * accessible spell level (1–9); the chosen domain(s) determine which spells the
+ * prepare-from picker offers (union, deduped by id across the chosen domains at
+ * each level). Each domain-prepare instance stores `kind: "domain"` on the doc,
+ * keeping it out of the class-slot capacity check in {@link PreparedView}.
  */
 function DomainSlotsSection({
   doc,
@@ -309,6 +309,7 @@ function DomainSlotsSection({
   abilityMod,
   casterLevel,
   classTag,
+  variant = "cleric",
 }: {
   doc: BuilderProps["doc"];
   refData: RefData;
@@ -317,11 +318,25 @@ function DomainSlotsSection({
   classLevel: number;
   abilityMod: number;
   casterLevel: number;
-  /** Stored class tag (see `model/spellcasting.ts` `storedClassTag`) — cleric's domain slots are always its own, but this scopes the bucketing correctly for a cleric that isn't the document's primary caster class. */
+  /** Stored class tag (see `model/spellcasting.ts` `storedClassTag`) — the domain slots are always their own class's, but this scopes the bucketing correctly for a caster that isn't the document's primary caster class. */
   classTag?: string;
+  /** Which caster's domain mechanic: `"cleric"` (two domains) or `"druid"` (one nature-bond domain). */
+  variant?: "cleric" | "druid";
 }) {
-  const domains = useMemo(() => doc.build.clericDomains ?? [], [doc]);
-  const domainMap = useMemo(() => domainSpellLevelMap(refData, domains), [refData, domains]);
+  const casterWord = variant === "druid" ? "druid" : "cleric";
+  const domains = useMemo(
+    () =>
+      variant === "druid"
+        ? doc.build.druidNatureBondDomain
+          ? [doc.build.druidNatureBondDomain]
+          : []
+        : (doc.build.clericDomains ?? []),
+    [doc, variant],
+  );
+  const domainMap = useMemo(
+    () => domainSpellLevelMap(refData, domains, variant),
+    [refData, domains, variant],
+  );
 
   // Bucket domain-kind prepared instances by their domain spell level.
   type Row = { index: number; spellId: string; name: string; expended: boolean };
@@ -350,7 +365,10 @@ function DomainSlotsSection({
       if (slot.level < 1 || slot.base === null) continue;
       const ids = new Set<string>();
       for (const tag of domains) {
-        const list = refData.domainSpellLists[tag];
+        const list =
+          variant === "druid"
+            ? refData.druidDomainSpellLists[tag]
+            : (refData.domainSpellLists[tag] ?? refData.subdomainSpellLists[tag]);
         if (!list) continue;
         for (const id of list[slot.level] ?? []) ids.add(id);
       }
@@ -363,7 +381,7 @@ function DomainSlotsSection({
       out.set(slot.level, entries);
     }
     return out;
-  }, [slots, domains, refData]);
+  }, [slots, domains, refData, variant]);
 
   const accessibleLevels = [...pickableByLevel.keys()].sort((a, b) => a - b);
   if (accessibleLevels.length === 0) return null;
@@ -373,8 +391,9 @@ function DomainSlotsSection({
       <header className="domain-slots-head">
         <h4 className="domain-slots-title">Domain Slots ({domains.join(", ")})</h4>
         <p className="hint domain-slots-hint">
-          One bonus prepare-slot per accessible cleric spell level. Fill it from the chosen domains'
-          spell list (a domain-only spell not on the cleric list may only be prepared here).
+          One bonus prepare-slot per accessible {casterWord} spell level. Fill it from the chosen
+          domain{variant === "cleric" ? "s" : ""}' spell list (a domain-only spell not on the{" "}
+          {casterWord} list may only be prepared here).
         </p>
       </header>
 
@@ -1164,6 +1183,21 @@ function PreparedView({
           abilityMod={abilityMod}
           casterLevel={casterLevel}
           classTag={classTag}
+        />
+      )}
+
+      {/* Nature-bond domain slots: druid's single-domain analogue of the above. */}
+      {doc.build.druidNatureBondDomain && casterTag === "druid" && (
+        <DomainSlotsSection
+          doc={doc}
+          refData={refData}
+          update={update}
+          slots={slots}
+          classLevel={effectiveClassLevel}
+          abilityMod={abilityMod}
+          casterLevel={casterLevel}
+          classTag={classTag}
+          variant="druid"
         />
       )}
 

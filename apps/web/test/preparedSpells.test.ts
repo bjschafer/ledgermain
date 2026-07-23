@@ -9,6 +9,7 @@ import {
   migrateDoc,
   parentDomainTagOf,
   setClericDomains,
+  setDruidNatureBondDomain,
   setWizardOppositionSchools,
   setWizardSchool,
   toggleKnownSpell,
@@ -326,6 +327,47 @@ describe("domain spell slots (cleric)", () => {
     };
     const out = migrateDoc(stale);
     expect(out.build.clericDomains).toEqual([]);
+  });
+});
+
+describe("nature-bond domain spell slots (druid)", () => {
+  it("druidDomainSpellLists is populated for all 25 vendored druid domains", () => {
+    expect(Object.keys(ref.druidDomainSpellLists).length).toBe(25);
+    // Wolf's list runs the full 1–9 with resolvable spell ids.
+    const wolf = ref.druidDomainSpellLists["Wolf"];
+    expect(wolf).toBeDefined();
+    for (let lvl = 1; lvl <= 9; lvl++) {
+      const id = wolf![lvl]?.[0];
+      expect(id).toBeDefined();
+      expect(ref.spells[id!]).toBeDefined();
+    }
+  });
+
+  it("domainSpellLevelMap('druid') inverts the chosen domain's druid list", () => {
+    const wolf = ref.druidDomainSpellLists["Wolf"]!;
+    const map = domainSpellLevelMap(ref, ["Wolf"], "druid");
+    expect(map.get(wolf[1]![0]!)).toBe(1);
+    expect(map.get(wolf[9]![0]!)).toBe(9);
+    // The default ('cleric') variant reads a different source and finds nothing
+    // for a druid-only tag.
+    expect(domainSpellLevelMap(ref, ["Wolf"]).size).toBe(0);
+  });
+
+  it("resolves the druid list for a name that also collides with a cleric tag", () => {
+    // Vermin exists as both a cleric subdomain and a druid domain — the two
+    // variants must draw from their own sources.
+    const druid = domainSpellLevelMap(ref, ["Vermin"], "druid");
+    const cleric = domainSpellLevelMap(ref, ["Vermin"], "cleric");
+    expect(druid.size).toBeGreaterThan(0);
+    expect(cleric.size).toBeGreaterThan(0);
+  });
+
+  it("prepareDomainSpell stores a druid domain pick as kind: 'domain'", () => {
+    let doc = addClass(fresh(), "druid");
+    doc = setDruidNatureBondDomain(doc, "Wolf");
+    const wolfL1 = ref.druidDomainSpellLists["Wolf"]![1]![0]!;
+    const out = prepareDomainSpell(doc, wolfL1);
+    expect(preparedSpells(out)).toEqual([{ spellId: wolfL1, expended: false, kind: "domain" }]);
   });
 });
 

@@ -634,6 +634,28 @@ describe("druid nature-bond domains (domains/druid-domains/**)", () => {
     expect(desert.kind).toBe("terrain");
     expect(desert.description).toBeDefined();
   });
+
+  it("parses a domain spell list (from the description's @UUID links) for every domain", () => {
+    expect(Object.keys(ref.druidDomainSpellLists).length).toBe(25);
+    expect(ref.meta.counts.druidDomainSpellLists).toBe(25);
+    // Every listed spell id resolves to a real vendored spell (the referenced
+    // spells were retained through the slice).
+    for (const [tag, list] of Object.entries(ref.druidDomainSpellLists)) {
+      for (const [lvl, ids] of Object.entries(list)) {
+        const n = Number(lvl);
+        expect(n, `${tag} level key`).toBeGreaterThanOrEqual(1);
+        expect(n).toBeLessThanOrEqual(9);
+        for (const id of ids) expect(ref.spells[id], `${tag} L${lvl} ${id}`).toBeDefined();
+      }
+    }
+  });
+
+  it("Wolf's list runs the full 1–9 with the expected spells", () => {
+    const wolf = ref.druidDomainSpellLists["Wolf"];
+    expect(wolf).toBeDefined();
+    for (let lvl = 1; lvl <= 9; lvl++) expect(wolf![lvl], `Wolf L${lvl}`).toBeDefined();
+    expect(ref.spells[wolf![1]![0]!]!.name).toBe("Hunter's Howl");
+  });
 });
 
 describe("sorcerer bloodline spell lists (inverted learnedAt.bloodline)", () => {

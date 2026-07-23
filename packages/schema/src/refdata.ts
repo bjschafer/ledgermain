@@ -78,11 +78,23 @@ export interface RefData {
   /**
    * Druid nature-bond domains (`class-abilities/domains/druid-domains/**`,
    * animal-companion-alternative and terrain domains) — see `DruidDomain` doc
-   * comment. Vendored for completeness; nothing in the builder/engine
-   * consumes this yet (no nature-bond domain-choice field exists to wire it
-   * into).
+   * comment. Selected via `build.druidNatureBondDomain`.
    */
   druidDomains: Record<string, DruidDomain>;
+  /**
+   * Per-druid-domain spell lists, keyed by `DruidDomain.tag` (e.g. "Wolf",
+   * "Jungle") → spell level → spell ids. Like `subdomainSpellLists`, this is
+   * parsed at build time from each domain's own description prose (the source
+   * `@UUID`-links every domain spell but tags NO spell by druid domain via
+   * `Spell.learnedAt`, so — unlike `domainSpellLists` — there is nothing to
+   * invert). A druid who takes a nature-bond domain gains one domain spell
+   * slot per accessible druid spell level, drawable from the matching list
+   * here (PF1 nature bond grants domain spell slots "just like a cleric").
+   * Empty for a domain whose prose lists no resolvable spell. Note two tags
+   * (Vermin, Ruins) collide with a cleric domain/subdomain of the same name —
+   * the druid list here is the correct source for a druid.
+   */
+  druidDomainSpellLists: Record<string, SpellList>;
   /**
    * Wizard arcane schools: the nine standard/Universalist schools (top-level
    * `wizard-schools/*.yaml`) plus the elemental schools (`wizard-schools/
@@ -402,7 +414,9 @@ export interface Subdomain extends RefEntity {
  * totem, `"terrain"` domains (Desert, Jungle, ...) off a landscape. `features`
  * is always `[]` — the source models every druid domain power as free-text
  * prose under its own description, never a `links.supplements`-linked
- * `class-abilities` entry, so there is nothing structured to resolve.
+ * `class-abilities` entry, so there is nothing structured to resolve for the
+ * granted *powers*. Its domain *spells*, by contrast, ARE `@UUID`-linked in
+ * that prose and parsed into `RefData.druidDomainSpellLists` (see there).
  */
 export interface DruidDomain extends RefEntity {
   tag: string;
