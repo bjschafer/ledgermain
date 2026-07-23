@@ -293,6 +293,44 @@ export function collectModifiers(
     }
   }
 
+  // --- cleric domain / subdomain direct changes (issue #99) ---------------
+  // A handful of domains carry a `system.changes` bonus directly on the domain
+  // doc rather than on a `links.supplements`-linked class feature (Protection's
+  // +1-per-5-levels save resistance, Travel's +10 land speed, Darkness/Rune's
+  // bonus feat), same shape as the four `Subdomain.changes` entries (Purity,
+  // Defense, Fortification, Solitude — all the save-resistance bonus). Gated on
+  // the cleric's level and evaluated with `@class.unlevel` = cleric level, the
+  // same granting-class convention `collectGrantedFeatures` uses for domain
+  // POWER grants. (Darkness/Rune's `bonusFeats` change is a fixed feat named
+  // only in prose — granted via the web layer's `grantedFeats`, see
+  // `apps/web/src/model/feats.ts`; the collected modifier here is inert for
+  // compute, which reads no `bonusFeats` target.)
+  const clericLevel = doc.identity.classes.find((c) => c.tag === "cleric")?.level ?? 0;
+  if (clericLevel > 0) {
+    const domainRollData: RollData = {
+      ...rollData,
+      class: { level: clericLevel, unlevel: clericLevel },
+    };
+    for (const tag of doc.build.clericDomains ?? []) {
+      const domain =
+        Object.values(refData.domains).find((d) => d.tag === tag) ??
+        Object.values(refData.subdomains).find((s) => s.tag === tag);
+      if (!domain) continue;
+      for (const ch of domain.changes) {
+        evalChange(
+          ch.formula,
+          domainRollData,
+          ch.target,
+          ch.type,
+          domain.name,
+          domain.id,
+          out,
+          ch.operator,
+        );
+      }
+    }
+  }
+
   // --- archetype feature effects (issue #7, extended by issue #45) --------
   // Hand-authored numeric effects for the small slice of archetype features
   // that grant an unconditional bonus (see `archetype-effects.ts`'s doc

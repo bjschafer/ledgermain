@@ -26,7 +26,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(13);
+    expect(ref.meta.schemaVersion).toBe(14);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -437,6 +437,22 @@ describe("cleric domain powers (top-level domains/*.yaml)", () => {
     for (const domain of Object.values(ref.domains)) {
       expect(ref.domainSpellLists[domain.tag]).toBeDefined();
     }
+  });
+
+  it("vendors the doc-level system.changes a handful of domains carry (issue #99)", () => {
+    // Protection's save resistance, Travel's +10 speed, Darkness/Rune's bonus
+    // feat — the direct `changes` block, distinct from the `links.supplements`
+    // power grants above. Everything else has an empty `changes`.
+    expect(byName(ref.domains, "Protection Domain").changes).toEqual([
+      { formula: "1 + floor(@class.unlevel / 5)", target: "allSavingThrows", type: "resist" },
+    ]);
+    expect(byName(ref.domains, "Travel Domain").changes).toEqual([
+      { formula: "10", target: "landSpeed", type: "base" },
+    ]);
+    expect(byName(ref.domains, "Darkness Domain").changes).toEqual([
+      { formula: "1", target: "bonusFeats", type: "untyped" },
+    ]);
+    expect(byName(ref.domains, "Fire Domain").changes).toEqual([]);
   });
 
   it("resolved granted powers all map into classFeatures", () => {

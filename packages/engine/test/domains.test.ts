@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { deriveResourcePools, resolveClassFeatures } from "../src/index.js";
+import { compute, deriveResourcePools, resolveClassFeatures } from "../src/index.js";
 import type { AbilityView } from "../src/rolldata.js";
 
 const ref = loadRefData();
@@ -118,5 +118,71 @@ describe("cleric subdomain selection (in place of a parent domain)", () => {
   it("Cloud's 8th-level Thundercloud is gated by cleric level like any other grant", () => {
     const doc = makeCleric(6, ["Cloud"]);
     expect(domainFeatureNames(doc)).toEqual(["Lightning Arc"]);
+  });
+});
+
+describe("cleric domain / subdomain direct changes (issue #99)", () => {
+  const saveTotals = (doc: CharacterDoc) => {
+    const sheet = compute(doc, ref);
+    return {
+      fort: sheet.saves.fort.total,
+      ref: sheet.saves.ref.total,
+      will: sheet.saves.will.total,
+    };
+  };
+
+  it("Protection domain grants a +1 resistance bonus to all saves at level 1", () => {
+    const withProtection = saveTotals(makeCleric(1, ["Protection"]));
+    const withoutDomain = saveTotals(makeCleric(1, []));
+    expect(withProtection.fort - withoutDomain.fort).toBe(1);
+    expect(withProtection.ref - withoutDomain.ref).toBe(1);
+    expect(withProtection.will - withoutDomain.will).toBe(1);
+  });
+
+  it("Protection's save bonus scales to +2 at level 5 and +3 at level 10 (1 + floor(level/5))", () => {
+    const l5 = saveTotals(makeCleric(5, ["Protection"]));
+    const l5None = saveTotals(makeCleric(5, []));
+    expect(l5.will - l5None.will).toBe(2);
+
+    const l10 = saveTotals(makeCleric(10, ["Protection"]));
+    const l10None = saveTotals(makeCleric(10, []));
+    expect(l10.will - l10None.will).toBe(3);
+  });
+
+  it("Purity subdomain (Protection's subdomain) grants the same save resistance", () => {
+    const withPurity = saveTotals(makeCleric(5, ["Purity"]));
+    const withoutDomain = saveTotals(makeCleric(5, []));
+    expect(withPurity.fort - withoutDomain.fort).toBe(2);
+    expect(withPurity.ref - withoutDomain.ref).toBe(2);
+    expect(withPurity.will - withoutDomain.will).toBe(2);
+  });
+
+  it("Travel domain grants +10 base land speed", () => {
+    const withTravel = compute(makeCleric(1, ["Travel"]), ref);
+    const withoutDomain = compute(makeCleric(1, []), ref);
+    expect((withTravel.speeds.land ?? 0) - (withoutDomain.speeds.land ?? 0)).toBe(10);
+  });
+
+  it("a domain change is inert without cleric levels (stale tag on a non-cleric)", () => {
+    // Same doc shape but the class isn't cleric — the gate must skip it.
+    const wizardWithStaleDomain: CharacterDoc = {
+      ...makeCleric(5, ["Protection"]),
+      identity: {
+        name: "Test",
+        race: raceId("Human"),
+        classes: [{ tag: "wizard", level: 5 }],
+      },
+    };
+    const wizardNoDomain: CharacterDoc = {
+      ...wizardWithStaleDomain,
+      build: { ...wizardWithStaleDomain.build, clericDomains: [] },
+    };
+    expect(saveTotals(wizardWithStaleDomain)).toEqual(saveTotals(wizardNoDomain));
+  });
+
+  it("a domain with no direct changes (Fire) contributes no save/speed modifier", () => {
+    const withFire = saveTotals(makeCleric(5, ["Fire"]));
+    const withoutDomain = saveTotals(makeCleric(5, []));
+    expect(withFire).toEqual(withoutDomain);
   });
 });

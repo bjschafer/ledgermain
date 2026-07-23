@@ -84,9 +84,12 @@ export const SYSTEM_VERSION = "11.11";
  * `monk-ki-powers.json`, `monkStyleStrikes`/`monk-style-strikes.json`,
  * `cavalierOrders`/`cavalier-orders.json`, and `shifterAspects`/
  * `shifter-aspects.json` — one integration bump covering all three sibling
- * waves rather than bumping per-wave.
+ * waves rather than bumping per-wave. v14 (issue #99) adds `changes` to
+ * `Domain` (the doc-level `system.changes` a handful of top-level domains
+ * carry — Protection's save resistance, Travel's +10 speed, Darkness/Rune's
+ * bonus feats), the same shape `Subdomain.changes` already vendored.
  */
-export const SCHEMA_VERSION = 13;
+export const SCHEMA_VERSION = 14;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

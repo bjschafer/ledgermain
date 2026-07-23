@@ -36,6 +36,7 @@ function makeDoc(over: {
   gmFeatSlots?: number;
   archetypes?: string[];
   rogueTalents?: string[];
+  clericDomains?: string[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -55,6 +56,7 @@ function makeDoc(over: {
       extraFeats: over.extraFeats,
       archetypes: over.archetypes,
       rogueTalents: over.rogueTalents,
+      clericDomains: over.clericDomains,
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
@@ -280,6 +282,58 @@ describe("expectedFeatCount: Monk Bonus Feat (Unarmed Strike quirk fixed)", () =
     expect(granted.map((g) => g.featName)).toEqual(["Stunning Fist", "Improved Unarmed Strike"]);
     const unarmed = granted.find((g) => g.featureName === "Unarmed Strike");
     expect(unarmed!.classTag).toBe("monk");
+  });
+});
+
+describe("cleric domain fixed bonus feats (issue #99)", () => {
+  it("Darkness domain grants Blind-Fight outright, Rune grants Scribe Scroll", () => {
+    const darkness = makeDoc({
+      classes: [{ tag: "cleric", level: 1 }],
+      race: "Elf",
+      clericDomains: ["Darkness"],
+    });
+    const grantedNames = grantedFeats(darkness, ref).map((g) => g.featName);
+    expect(grantedNames).toContain("Blind-Fight");
+    const blindFight = grantedFeats(darkness, ref).find((g) => g.featName === "Blind-Fight");
+    expect(blindFight!.classTag).toBe("cleric");
+    expect(blindFight!.featureName).toBe("Darkness Domain");
+
+    const rune = makeDoc({
+      classes: [{ tag: "cleric", level: 1 }],
+      race: "Elf",
+      clericDomains: ["Rune"],
+    });
+    expect(grantedFeats(rune, ref).map((g) => g.featName)).toContain("Scribe Scroll");
+  });
+
+  it("the fixed feat is not counted as a free bonus-feat slot", () => {
+    // Base expectation for a level-1 Elf cleric is 1 feat; the domain's fixed
+    // grant must not inflate that (it's surfaced via grantedFeats, not a slot).
+    const withDarkness = makeDoc({
+      classes: [{ tag: "cleric", level: 1 }],
+      race: "Elf",
+      clericDomains: ["Darkness"],
+    });
+    const withoutDomain = makeDoc({ classes: [{ tag: "cleric", level: 1 }], race: "Elf" });
+    expect(expectedFeatCount(withDarkness, ref)).toBe(expectedFeatCount(withoutDomain, ref));
+  });
+
+  it("a domain with no fixed-feat grant (Protection) grants no feat", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "cleric", level: 1 }],
+      race: "Elf",
+      clericDomains: ["Protection"],
+    });
+    expect(grantedFeats(doc, ref)).toEqual([]);
+  });
+
+  it("a stale domain tag on a non-cleric grants nothing", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      race: "Elf",
+      clericDomains: ["Darkness"],
+    });
+    expect(grantedFeats(doc, ref).map((g) => g.featName)).not.toContain("Blind-Fight");
   });
 });
 

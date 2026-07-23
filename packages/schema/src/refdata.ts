@@ -337,6 +337,17 @@ export interface Domain extends RefEntity {
   tag: string;
   /** Granted powers by level, resolved from `links.supplements` (same shape as `Class.features`). */
   features: ClassFeatureGrant[];
+  /**
+   * A numeric bonus carried directly on the domain doc itself, rather than
+   * proxied through a `links.supplements`-linked `ClassFeature.changes` the
+   * way `features` above works. Present for the handful of domains whose
+   * source doc has one (Protection's +1-per-5-levels save resistance, Travel's
+   * +10 land speed, and the Darkness/Rune `bonusFeats` grants — the latter two
+   * are fixed bonus feats named only in prose, granted via the web layer, see
+   * `apps/web/src/model/feats.ts`). `@class.unlevel` in a formula resolves to
+   * the cleric's level. Same shape as `Subdomain.changes`. Empty for the rest.
+   */
+  changes: Change[];
 }
 
 /**
@@ -375,12 +386,10 @@ export interface Subdomain extends RefEntity {
    * Purity's +1-per-5-levels resistance bonus to all saves), rather than
    * proxied through a `links.supplements`-linked `ClassFeature.changes` the
    * way `features` above works. Vendored for the ~4 subdomains that have one
-   * (the source's richest `system.changes` slice in the ecosystem — worth
-   * capturing even though nothing consumes it yet: **not yet applied by the
-   * engine** — `collectGrantedFeatures`/`compute()` don't read this field, the
-   * same pre-existing gap top-level `Domain` has for its own handful of
-   * directly-`changes`-bearing entries (Darkness, Protection, Rune, Travel).
-   * Empty for the rest.
+   * (Purity, Defense, Fortification, Solitude — the source's richest
+   * `system.changes` slice in the ecosystem). Applied by `collectModifiers`
+   * for a cleric's chosen subdomains, gated on cleric level, exactly like the
+   * same-shaped top-level `Domain.changes`. Empty for the rest.
    */
   changes: Change[];
 }

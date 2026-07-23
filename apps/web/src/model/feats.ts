@@ -88,6 +88,21 @@ function resolvedFeatureName(featureName: string): string {
   return FEATURE_NAME_OVERRIDES[key] ?? key;
 }
 
+/**
+ * Cleric domain tag (`Domain.tag`) -> the specific feat that domain hands the
+ * character as a bonus feat (issue #99). Two domains carry a `bonusFeats`
+ * change on the domain doc, but — unlike a class feature named after the feat
+ * it grants — the granted feat is named only in the domain's description prose
+ * ("...gains @UUID[...]{Blind-Fight} as a bonus feat"), so the feat identity
+ * can't be recovered from the change alone. Hand-authored from that prose,
+ * same clean-room posture as `FEATURE_NAME_OVERRIDES`. Values are feat names
+ * (lowercased, trimmed) resolved through `featIdByName`.
+ */
+const DOMAIN_GRANTED_FEATS: Record<string, string> = {
+  Darkness: "blind-fight",
+  Rune: "scribe scroll",
+};
+
 /** A specific feat handed to the character by a class feature (no slot used). */
 export interface GrantedFeat {
   /** Id into RefData.feats. */
@@ -127,6 +142,28 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
       out.push({ featId, featName, classTag: cls.tag, featureName: feature.name });
     }
   }
+  // Cleric domain fixed bonus feats (issue #99 — Darkness grants Blind-Fight,
+  // Rune grants Scribe Scroll). Gated on the character actually having cleric
+  // levels; a stale domain tag on a non-cleric grants nothing. `clericDomains`
+  // holds domain AND subdomain tags, but only these two top-level domains carry
+  // a fixed-feat grant, so an unmatched tag (any subdomain, any other domain)
+  // simply falls through.
+  if (doc.identity.classes.some((c) => c.tag === "cleric")) {
+    for (const tag of doc.build.clericDomains ?? []) {
+      const featName = DOMAIN_GRANTED_FEATS[tag];
+      if (!featName) continue;
+      const featId = byName.get(featName);
+      if (!featId || seen.has(featId)) continue;
+      seen.add(featId);
+      out.push({
+        featId,
+        featName: refData.feats[featId]?.name ?? featName,
+        classTag: "cleric",
+        featureName: `${tag} Domain`,
+      });
+    }
+  }
+
   // Rogue talents that grant a fixed feat outright (issue #65 — "Finesse
   // Rogue" grants Weapon Finesse, no player-chosen target needed; see
   // `ROGUE_TALENTS[id].grantsFeat` in `@pf1/engine` `rogue-talents.ts`), same

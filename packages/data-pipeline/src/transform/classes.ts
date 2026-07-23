@@ -202,6 +202,7 @@ export function transformDomain(
     sources: normalizeSources(sys.sources),
     tag: doc.name.replace(/ Domain$/, ""),
     features: resolveFeatureGrants(supplementsOf(sys), resolveFeatureName),
+    changes: normalizeChanges(sys.changes),
   };
 }
 

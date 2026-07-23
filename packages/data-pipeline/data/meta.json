@@ -66,7 +66,7 @@
     "class-features.json": "3b4995f62ebce487fc45053d74669441ce3c0ab8a41021af82a0a468f15ba783",
     "classes.json": "2b6d3ffcaf1f8d717dbe2a39d858ccda2abac1e1936827048950ee86e5d64a0f",
     "domain-spell-lists.json": "442e3bd1a6330bfcdde1592d714db1769657149af8681940bb08278534cdeb66",
-    "domains.json": "d2fad4782dcc18e0b19ec1a0d113e661eea2c1eb5756d97f630ffe361043284e",
+    "domains.json": "88c3c934cc17910f54692b1381271ecee5885498d10b5f90041a73f2fa8fa130",
     "druid-domains.json": "a5b3c18b81092f05afe929c2c2f59c920646e20f6673e9e608bb8548788479eb",
     "feats.json": "99c1bf84cf9b68c4e06816d63ebf05100506fe394db591979f61cb3aaad28d1c",
     "hexes.json": "58166ae4367bc31370336cc82ccc7ff550e223d230a6a0edfc31faac6b8ec51d",
@@ -105,7 +105,7 @@
     "witch-patrons.json": "abe0bc21ba74cd13a5bd2230a6819764ff173dbe6d74a1b7074211f7428ec22c",
     "wizard-schools.json": "b6078da2c6e8837e7b12845869d7ee605ec27844619a4ce2257da8ba6665d315"
   },
-  "schemaVersion": 13,
+  "schemaVersion": 14,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"
