@@ -154,6 +154,23 @@ export function setClericDomains(doc: CharacterDoc, domains: string[]): Characte
 }
 
 /**
+ * Set the druid's chosen nature-bond domain tag (a single tag, key into
+ * `refData.druidDomains` by `DruidDomain.tag`), or `null`/blank to clear (a
+ * druid who bonds with an animal companion instead). No validation that the
+ * tag exists — soft-warning posture, same as `setClericDomains`.
+ */
+export function setDruidNatureBondDomain(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const trimmed = typeof tag === "string" ? tag.trim() : "";
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      druidNatureBondDomain: trimmed.length > 0 ? trimmed : undefined,
+    },
+  };
+}
+
+/**
  * The top-level `Domain.tag` a `clericDomains` entry displays under: itself
  * for a domain tag, its `parentDomainTags[0]` for a subdomain tag (used by
  * `DomainPicker` to keep a swapped-in subdomain's slot highlighted under its

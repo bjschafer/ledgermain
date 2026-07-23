@@ -146,6 +146,24 @@ export interface CharacterDoc {
      */
     clericDomains?: string[];
     /**
+     * Druid nature-bond domain tag (key into `refData.druidDomains` by
+     * `DruidDomain.tag`), chosen at L1 as the alternative to an animal
+     * companion. A single tag (unlike the cleric's two), or undefined for a
+     * druid who bonds with an animal companion instead / any non-druid.
+     * Free-choice — no deity/terrain validation, matching the project's hybrid
+     * soft-warning posture (see `clericDomains`).
+     *
+     * Grants only the domain's *powers*, scaling off druid level (PF1 nature
+     * bond grants no domain spell slots and no bonus spell list — so there is
+     * nothing to wire into `preparedSpells`). Those powers are free-text prose
+     * on `DruidDomain.description` (the source models none as a
+     * `links.supplements`-linked feature, so `DruidDomain.features` is always
+     * `[]` and there is nothing structured for the engine to grant); the
+     * builder surfaces them from the description. Back-compat: documents
+     * without this field are unaffected.
+     */
+    druidNatureBondDomain?: string;
+    /**
      * Sorcerer bloodline tag (key into `refData.bloodlineSpellLists`), chosen at L1.
      * Free-choice since the vendored data carries no sorcerer-heritage mapping —
      * matches the project's hybrid soft-warning posture (see clericDomains above).

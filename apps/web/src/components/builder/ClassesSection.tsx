@@ -28,6 +28,7 @@ import { CursePicker } from "./CursePicker.js";
 import { DisciplinePicker } from "./DisciplinePicker.js";
 import { DiscoveryPicker } from "./DiscoveryPicker.js";
 import { DomainPicker } from "./DomainPicker.js";
+import { DruidDomainPicker } from "./DruidDomainPicker.js";
 import { EidolonPicker } from "./EidolonPicker.js";
 import { FiendishBoonPicker } from "./FiendishBoonPicker.js";
 import { HexPicker } from "./HexPicker.js";
@@ -479,6 +480,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Domain picker — cleric only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "cleric") && (
         <DomainPicker doc={doc} refData={refData} update={update} />
+      )}
+
+      {/* Nature-bond domain picker — druid only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "druid") && (
+        <DruidDomainPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/* Bloodline picker — sorcerer only (free-choice, soft warning only). */}
