@@ -4,7 +4,7 @@ import type { CharacterDoc, RefData, TraitCategory, TraitDef } from "@pf1/schema
 
 import { mergedTraits } from "@pf1/engine";
 
-import { catalogCategories, chosenTraitCount, EXPECTED_TRAIT_COUNT } from "../../model/traits.js";
+import { catalogCategories, chosenTraitCount, expectedTraitCount } from "../../model/traits.js";
 import { Dialog } from "../Dialog.js";
 import { SearchMiss } from "./SearchMiss.js";
 import { TraitRow } from "./TraitRow.js";
@@ -67,7 +67,7 @@ export function TraitManager({
   return (
     <Dialog
       title="Traits"
-      subtitle={`${chosenTraitCount(doc)} / ${EXPECTED_TRAIT_COUNT} chosen · ${all.length} in the catalog`}
+      subtitle={`${chosenTraitCount(doc)} / ${expectedTraitCount(doc, refData)} chosen · ${all.length} in the catalog`}
       onClose={onClose}
       right={<span className="dialog-esc-hint">esc to close</span>}
     >

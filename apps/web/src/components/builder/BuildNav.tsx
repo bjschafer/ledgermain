@@ -13,7 +13,7 @@ import {
 } from "../../model/oracleRevelations.js";
 import { skillBudget } from "../../model/skills.js";
 import { spellsPanelVisible } from "../../model/spellcasting.js";
-import { chosenTraitCount, EXPECTED_TRAIT_COUNT } from "../../model/traits.js";
+import { chosenTraitCount, expectedTraitCount } from "../../model/traits.js";
 import type { BuilderProps } from "./types.js";
 
 /**
@@ -155,15 +155,16 @@ export function useAttentionBadges({
       };
     }
 
-    // Traits: fewer than the conventional two. Informational, not urgent —
-    // traits are optional — so this gets the dim/neutral tone rather than
-    // gold, and never fires over-count (more than two is fine).
-    const traitShortfall = EXPECTED_TRAIT_COUNT - chosenTraitCount(doc);
+    // Traits: fewer than the budget (two, or three when a drawback is taken —
+    // see `expectedTraitCount`). Informational, not urgent — traits are
+    // optional — so this gets the dim/neutral tone rather than gold, and never
+    // fires over-count (more than the budget is fine).
+    const traitShortfall = expectedTraitCount(doc, refData) - chosenTraitCount(doc);
     if (traitShortfall > 0) {
       badges["section-traits"] = {
         count: traitShortfall,
         tone: "dim",
-        title: `${plural(traitShortfall, "trait")} short of the conventional two`,
+        title: `${plural(traitShortfall, "trait")} short of the expected count`,
       };
     }
 

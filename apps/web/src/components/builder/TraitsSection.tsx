@@ -3,7 +3,8 @@ import { useMemo, useState } from "react";
 import {
   allTraitIds,
   chosenTraitCount,
-  EXPECTED_TRAIT_COUNT,
+  expectedTraitCount,
+  hasDrawback,
   resolveTrait,
   traitsNeedWarning,
 } from "../../model/traits.js";
@@ -56,7 +57,9 @@ export function TraitsSection(props: BuilderProps) {
   );
 
   const chosen = chosenTraitCount(doc);
+  const expected = expectedTraitCount(doc, refData);
   const warn = traitsNeedWarning(doc, refData);
+  const drawbackBonus = hasDrawback(doc, refData);
 
   return (
     <Panel
@@ -70,10 +73,12 @@ export function TraitsSection(props: BuilderProps) {
           title={
             warn
               ? "PF1 characters conventionally take two traits from two different categories"
-              : undefined
+              : drawbackBonus
+                ? "A drawback grants one bonus trait (three total)"
+                : undefined
           }
         >
-          {chosen} / {EXPECTED_TRAIT_COUNT} traits
+          {chosen} / {expected} traits
         </span>
       }
     >

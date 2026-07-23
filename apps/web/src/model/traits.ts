@@ -20,11 +20,15 @@
  * The pickable catalog itself (issue #74 Phase 1) is two tables merged by
  * the engine: 28 hand-authored entries plus the ~2,000-entry vendored
  * catalog (`RefData.traits`) — see `mergedTraits`'s doc comment for the
- * merge rule. Drawback traits (PF1's "take a drawback, gain a third trait")
- * appear in the catalog like any other category; this module does not grant
- * the bonus third slot for taking one — `EXPECTED_TRAIT_COUNT` stays fixed
- * at two, and a drawback-taking character just reads as one soft warning
- * over budget, same as anyone taking a third trait for any other reason.
+ * merge rule.
+ *
+ * Drawbacks (issue #101): a `Drawback`-category trait implements PF1's "take
+ * a drawback, gain a third trait" allowance. Taking any drawback raises the
+ * budget by exactly one bonus slot ({@link expectedTraitCount}), regardless
+ * of how many drawbacks are taken — the CRB only grants one extra trait this
+ * way. The drawback itself is a separate allowance, not one of the two
+ * normal traits, so it's excluded from the "two different categories"
+ * reminder.
  */
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
@@ -32,6 +36,34 @@ import { mergedTraits, resolveTraitDef, type TraitCategory, type TraitDef } from
 
 /** The conventional number of traits a PF1 character takes at creation. */
 export const EXPECTED_TRAIT_COUNT = 2;
+
+/**
+ * True when a trait definition is a drawback (`Drawback` category, PF1's
+ * "take a drawback, gain a third trait"). Case-insensitive because the value
+ * is Foundry's `traitType` Title-Cased (`traitCategoryFromType` in
+ * `@pf1/engine`), while a homebrew author could type it in any case.
+ */
+export function isDrawbackTrait(trait: TraitDef): boolean {
+  return trait.category.toLowerCase() === "drawback";
+}
+
+/** Whether the doc has taken at least one drawback (which unlocks the bonus slot). */
+export function hasDrawback(doc: CharacterDoc, refData: RefData): boolean {
+  return (doc.build.traits ?? []).some((id) => {
+    const trait = resolveTrait(doc, refData, id);
+    return trait ? isDrawbackTrait(trait) : false;
+  });
+}
+
+/**
+ * This doc's trait budget: the conventional {@link EXPECTED_TRAIT_COUNT},
+ * plus one bonus slot when a drawback has been taken. PF1 grants exactly one
+ * extra trait for taking a drawback no matter how many drawbacks you take, so
+ * this never rises above three.
+ */
+export function expectedTraitCount(doc: CharacterDoc, refData: RefData): number {
+  return EXPECTED_TRAIT_COUNT + (hasDrawback(doc, refData) ? 1 : 0);
+}
 
 /**
  * The traditional four trait categories — used by the homebrew trait form's
@@ -106,18 +138,21 @@ export function chosenTraitCategories(doc: CharacterDoc, refData: RefData): Trai
 
 /**
  * True when the chosen traits should prompt a soft warning: more than the
- * conventional two, or two-plus traits sharing the same category. Never used
- * to block — only to color the count badge (see `FeatsSection`'s
- * `featCountClass` for the same pattern).
+ * budget ({@link expectedTraitCount}, which already accounts for a drawback's
+ * bonus slot), or two-plus *normal* traits sharing the same category.
+ * Drawbacks are excluded from the category check — a drawback is a separate
+ * allowance, not one of the two normal traits. Never used to block — only to
+ * color the count badge (see `FeatsSection`'s `featCountClass` for the same
+ * pattern).
  */
 export function traitsNeedWarning(doc: CharacterDoc, refData: RefData): boolean {
-  const count = chosenTraitCount(doc);
-  if (count > EXPECTED_TRAIT_COUNT) return true;
-  const cats = chosenTraitCategories(doc, refData);
+  if (chosenTraitCount(doc) > expectedTraitCount(doc, refData)) return true;
   const seen = new Set<string>();
-  for (const c of cats) {
-    if (seen.has(c)) return true;
-    seen.add(c);
+  for (const id of doc.build.traits ?? []) {
+    const trait = resolveTrait(doc, refData, id);
+    if (!trait || isDrawbackTrait(trait)) continue;
+    if (seen.has(trait.category)) return true;
+    seen.add(trait.category);
   }
   return false;
 }

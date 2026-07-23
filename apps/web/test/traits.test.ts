@@ -8,6 +8,8 @@ import {
   chosenTraitCategories,
   chosenTraitCount,
   EXPECTED_TRAIT_COUNT,
+  expectedTraitCount,
+  hasDrawback,
   hasTrait,
   resolveTrait,
   toggleTrait,
@@ -202,13 +204,37 @@ describe("model/traits: vendored catalog + id-stability migration (issue #74 Pha
     expect(trait?.description).toContain("+1 trait bonus on initiative checks");
   });
 
-  it("a drawback-type vendored trait is pickable but grants no extra slot (deferred — see model/traits.ts doc comment)", () => {
+  it("a drawback grants a third trait slot: two traits + a drawback is within budget (issue #101)", () => {
     const drawback = Object.values(ref.traits).find((t) => t.traitType === "drawback");
     expect(drawback).toBeDefined();
-    const doc = makeDoc([drawback!.id, "reactionary", "resilient"]);
-    // Three traits including a drawback still reads as "over budget" — the
-    // conventional third-trait allowance isn't modeled.
+    // reactionary (Combat) + indomitableFaith (Faith) + one drawback.
+    const doc = makeDoc([drawback!.id, "reactionary", "indomitableFaith"]);
+    expect(hasDrawback(doc, ref)).toBe(true);
+    expect(expectedTraitCount(doc, ref)).toBe(3);
     expect(chosenTraitCount(doc)).toBe(3);
+    expect(traitsNeedWarning(doc, ref)).toBe(false);
+  });
+
+  it("without a drawback the budget stays at two", () => {
+    const doc = makeDoc(["reactionary", "indomitableFaith"]);
+    expect(hasDrawback(doc, ref)).toBe(false);
+    expect(expectedTraitCount(doc, ref)).toBe(2);
+  });
+
+  it("a drawback is not counted toward the two-different-categories reminder", () => {
+    // Two Combat traits still warn even alongside a drawback — the drawback
+    // is a separate allowance, not one of the two normal traits.
+    const drawback = Object.values(ref.traits).find((t) => t.traitType === "drawback");
+    const doc = makeDoc([drawback!.id, "reactionary", "resilient"]);
+    expect(traitsNeedWarning(doc, ref)).toBe(true);
+  });
+
+  it("a second drawback does not raise the budget past three — only one bonus trait", () => {
+    const drawbacks = Object.values(ref.traits).filter((t) => t.traitType === "drawback");
+    expect(drawbacks.length).toBeGreaterThanOrEqual(2);
+    const doc = makeDoc([drawbacks[0]!.id, drawbacks[1]!.id, "reactionary", "indomitableFaith"]);
+    expect(expectedTraitCount(doc, ref)).toBe(3);
+    // Four chosen against a three budget reads as over budget.
     expect(traitsNeedWarning(doc, ref)).toBe(true);
   });
 });
