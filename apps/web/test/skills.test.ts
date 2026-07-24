@@ -7,7 +7,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { skillBudget } from "../src/model/skills.js";
+import { permanentIntMod, skillBudget } from "../src/model/skills.js";
 
 const ref = loadRefData();
 
@@ -225,5 +225,39 @@ describe("skillBudget: archetype-authored bonusSkillRanks (issue #62)", () => {
     });
     // wizard 2 + Int 0, no paladin level to satisfy the level-1 gate.
     expect(skillBudget(doc, ref, 0).total).toBe(2);
+  });
+});
+
+describe("permanentIntMod: excludes active buffs (temporary Int bonuses grant no skill ranks)", () => {
+  it("an active Int buff does not change the budget", () => {
+    const doc = makeDoc({ classes: [{ tag: "wizard", level: 5 }], race: "Elf", int: 14 });
+    const buffed: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "fox",
+            name: "Fox's Cunning",
+            changes: [{ target: "int", formula: "4", type: "enhancement" }],
+          },
+        ],
+      },
+    };
+
+    const plainMod = permanentIntMod(doc, ref);
+    const buffedMod = permanentIntMod(buffed, ref);
+    expect(buffedMod).toBe(plainMod);
+
+    const plainBudget = skillBudget(doc, ref, plainMod);
+    const buffedBudget = skillBudget(buffed, ref, buffedMod);
+    expect(buffedBudget.total).toBe(plainBudget.total);
+  });
+
+  it("a racial Int modifier still counts (not buff-sourced)", () => {
+    // Half-Elf is Int-neutral; use a race with a real Int mod instead — Elf
+    // grants +2 Int, so int 10 -> mod +1 via the race change, not a buff.
+    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf", int: 10 });
+    expect(permanentIntMod(doc, ref)).toBe(1);
   });
 });

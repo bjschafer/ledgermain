@@ -8,19 +8,17 @@
  *
  * Note: the engine's `@cl` roll-data field (packages/engine/src/rolldata.ts)
  * holds the parallel assumption for formula evaluation and is intentionally
- * separate — keep both in sync when extending this. As of issue #65
- * (bloodrager/medium), `rolldata.ts`'s `cl: maxClassLevel` already agrees
- * with this module's level-gated bloodrager/medium entries below WITHOUT
- * needing a code change there: `buildRollData`'s doc comment already flags
- * `cl` as a "single-class assumption for Stage 2" (`maxClassLevel`, no -3-
- * style offset applied for ANY class, including paladin/ranger) — for a
- * single-classed bloodrager/medium, `maxClassLevel` already equals
- * `classLevel` with no offset, matching `LEVEL_GATED_CASTER_TAGS`'s "CL =
- * classLevel once the gate is reached" rule exactly. The only place `@cl`
- * could read wrong below the gate level is inside a bloodrager/medium spell
- * formula — but `tables.ts`'s `BLOODRAGER_SPELLS_PER_DAY`/
- * `MEDIUM_SPELLS_PER_DAY`/`*_SPELLS_KNOWN` already return `null`/zero below
- * the gate, so no such formula is ever evaluated pre-gate in practice.
+ * separate — keep both in sync when extending this. `buildRollData`'s own
+ * `CL_OFFSET_CASTER_TAGS` constant mirrors this module's `OFFSET_CASTER_TAGS`
+ * (paladin/ranger/antipaladin's `-3` offset), so a formula like Divine
+ * Favor's `min(3, floor(@cl/3))` reads the same CL a paladin's sheet
+ * displays. For bloodrager/medium (level-gated, no offset), `rolldata.ts`'s
+ * `cl` already agreed with this module's `LEVEL_GATED_CASTER_TAGS` entries
+ * without needing a code change there: a single-classed bloodrager/medium's
+ * raw class level already equals its CL once the gate is reached, and
+ * `tables.ts`'s `BLOODRAGER_SPELLS_PER_DAY`/`MEDIUM_SPELLS_PER_DAY`/
+ * `*_SPELLS_KNOWN` return `null`/zero below the gate, so no formula is ever
+ * evaluated pre-gate in practice.
  *
  * Issue #66 chunk 2 (prestige casting advancement — Eldritch Knight, Mystic
  * Theurge, and any future "+1 level of existing spellcasting class" prestige
@@ -66,6 +64,11 @@ const FULL_CASTER_TAGS = new Set([
   // sibling, is a `LEVEL_GATED_CASTER_TAGS` entry instead — see below.
   // Kineticist casts no spells at all.)
   "psychic",
+  // Bard: a true full caster for CL purposes — CL = bard level from 1st
+  // level on, no late-start gate and no offset. (Not to be confused with
+  // paladin/ranger/antipaladin below, which DO diverge — see
+  // `OFFSET_CASTER_TAGS`.)
+  "bard",
 ]);
 
 /**
@@ -97,12 +100,27 @@ const LEVEL_GATED_CASTER_TAGS: Readonly<Record<string, number>> = {
 };
 
 /**
- * Per-class caster level. Defaults to class level for full casters, 0 for
- * non-casters, and (for `LEVEL_GATED_CASTER_TAGS` entries) 0 below the gate
- * level then class level from the gate on. Classes whose CL diverges from
- * class level by an OFFSET (paladin, ranger, ...) still get an explicit
- * override here when they're added to the vendored slice — this module's two
- * tables don't yet cover that shape.
+ * The CRB half-caster shape: no spellcasting at all through 3rd level, then
+ * CL = `classLevel - offset` from the gate level on (paladin, ranger,
+ * antipaladin — RAW "his caster level is equal to 1/2 his level"... in
+ * practice tabulated as `level - 3` from 4th on, per the class's own spells-
+ * per-day table). Distinct from `LEVEL_GATED_CASTER_TAGS`'s "late start, then
+ * FLAT classLevel" shape (bloodrager/medium) — do not merge the two tables.
+ */
+const OFFSET_CASTER_TAGS: Readonly<Record<string, { gate: number; offset: number }>> = {
+  paladin: { gate: 4, offset: 3 },
+  ranger: { gate: 4, offset: 3 },
+  antipaladin: { gate: 4, offset: 3 },
+};
+
+/**
+ * Per-class caster level. Defaults to class level for full casters (incl.
+ * bard, a true full caster despite its "spontaneous, capped at 6th-level
+ * spells" flavor — CL still tracks bard level 1:1), 0 for non-casters, and
+ * (for `LEVEL_GATED_CASTER_TAGS` entries) 0 below the gate level then class
+ * level from the gate on. `OFFSET_CASTER_TAGS` entries (paladin, ranger,
+ * antipaladin) are 0 below their gate, then `classLevel - offset` from the
+ * gate on.
  *
  * Warpriest and hunter (ACG) both cast starting at 1st level with CL equal to
  * class level throughout (verified on aonprd.com — neither has the "-3"-style
@@ -117,7 +135,11 @@ const LEVEL_GATED_CASTER_TAGS: Readonly<Record<string, number>> = {
 export function casterLevelForClass(tag: string, classLevel: number): number {
   if (FULL_CASTER_TAGS.has(tag)) return classLevel;
   const gate = LEVEL_GATED_CASTER_TAGS[tag];
-  if (gate !== undefined && classLevel >= gate) return classLevel;
+  if (gate !== undefined) return classLevel >= gate ? classLevel : 0;
+  const offsetShape = OFFSET_CASTER_TAGS[tag];
+  if (offsetShape !== undefined) {
+    return classLevel >= offsetShape.gate ? classLevel - offsetShape.offset : 0;
+  }
   return 0;
 }
 
@@ -132,7 +154,7 @@ export function casterLevel(doc: CharacterDoc): number {
 
 /** Whether a class tag is recognised as a caster at all (regardless of current level-gating). */
 export function isCasterTag(tag: string): boolean {
-  return FULL_CASTER_TAGS.has(tag) || tag in LEVEL_GATED_CASTER_TAGS;
+  return FULL_CASTER_TAGS.has(tag) || tag in LEVEL_GATED_CASTER_TAGS || tag in OFFSET_CASTER_TAGS;
 }
 
 // ---------------------------------------------------------------------------
@@ -146,13 +168,10 @@ export function isCasterTag(tag: string): boolean {
  * advance a class of the matching kind; an `"any"` slot accepts any of the
  * three (see `slotAcceptsKind` below for why).
  *
- * Deliberately broader than `FULL_CASTER_TAGS`/`LEVEL_GATED_CASTER_TAGS`
- * above: this module's own caster-LEVEL tables don't yet model bard, paladin,
- * or ranger (their CL diverges from class level and hasn't been wired in —
- * see `casterLevelForClass`'s doc comment), but `CASTER_MODELS` in
- * `model/spellcasting.ts` already treats all three as real casters with a
- * spells-per-day table, so they need a KIND here regardless of this module's
- * own CL-modeling gap.
+ * Bard, paladin, and ranger are all modeled by `casterLevelForClass` above
+ * (bard: `FULL_CASTER_TAGS`; paladin/ranger: `OFFSET_CASTER_TAGS`) as well as
+ * having an entry here — this table answers a different question (advancement-
+ * target kind, not CL) so it stays alongside those, not instead of them.
  *
  * Cross-check against `ARCANE_CASTER_TAGS` in `packages/engine/src/compute.ts`
  * (used for arcane-spell-failure display): every tag marked `"arcane"` here —

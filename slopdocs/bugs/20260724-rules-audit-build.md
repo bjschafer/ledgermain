@@ -2,14 +2,16 @@
 
 Audited 2026-07-24 inline. Siblings: `20260724-rules-audit-derived-math.md`,
 `20260724-rules-audit-spellcasting.md`. Scope: skill budget, feat slots (base
-+ class bonus formulas), ability increases, point buy, traits/drawbacks, XP
-tracks, favored-class bonuses, core race data spot-check, plus the
-afflictions/negative-levels/duration models (folded in here; they came up
-clean). **Nothing fixed yet.**
+
+- class bonus formulas), ability increases, point buy, traits/drawbacks, XP
+  tracks, favored-class bonuses, core race data spot-check, plus the
+  afflictions/negative-levels/duration models (folded in here; they came up
+  clean). **Nothing fixed yet.**
 
 ## Findings
 
 ### 1. Skill-point budget reads the FINAL derived Int mod (buffs included) — minor
+
 - `apps/web/src/model/skills.ts:27` — `skillBudget(doc, refData, intMod)` is
   fed the derived sheet's Int mod (per its own doc comment, "so racial and
   item bonuses are included").
@@ -20,12 +22,13 @@ clean). **Nothing fixed yet.**
   +2 ranks/level. Advisory-only (budget is soft), so low severity, but the
   number shown is wrong while any Int buff is active.
 - Fix shape: feed a "permanent-only" Int mod (base + racial + level increases
-  + permanent-flagged items) — needs a notion of permanence the collect
-  pipeline doesn't currently tag, OR simply exclude `live.activeBuffs`-sourced
-  Int deltas from the mod used here (headband items arguably SHOULD count —
-  they're permanent-while-worn and PF1 headbands even grant ranks).
+  - permanent-flagged items) — needs a notion of permanence the collect
+    pipeline doesn't currently tag, OR simply exclude `live.activeBuffs`-sourced
+    Int deltas from the mod used here (headband items arguably SHOULD count —
+    they're permanent-while-worn and PF1 headbands even grant ranks).
 
 ## Checked and found CORRECT (don't re-audit)
+
 - Skill points: `max(1, class + Int) × level` per class, human +1/level via
   `bonusSkillRanks` change (with alternate-trait suppression), FCB "skill"
   +1 each, rank cap = character level (enforced in `setSkillRank`).
@@ -56,6 +59,7 @@ clean). **Nothing fixed yet.**
   advance/expiry model trivially correct.
 
 ## Gaps (absent, not wrong)
+
 FCB entries aren't validated against levels actually taken in the favored
 class (builder UI gates it; a hand-edited doc could over-claim). Negative
 levels: no "dies at negLevels ≥ HD" check. Skill budget: no per-level

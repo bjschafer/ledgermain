@@ -9,6 +9,7 @@ each against RAW (unchained rage text verified by fetch). Siblings: parts 1–4.
 ## Findings
 
 ### 1. Unchained rage buff grants no temporary hit points
+
 - Vendored "Rage (Unchained)" buff (`buffs.json` id `ciAO4KwMonUzAGY0`)
   carries only ac −2 / mattack / mwdamage / twdamage / will changes.
 - RAW (Pathfinder Unchained): raging grants **temporary hit points equal to
@@ -22,21 +23,22 @@ each against RAW (unchained rage text verified by fetch). Siblings: parts 1–4.
   (`computeGrantedTempHp`, compute.ts:176) — fix shape: supplement the buff
   with a tempHP-granting change `2 × HD` scaling 3/4 at 11/20 (formula
   `(2 + floor((@classes.barbarianUnchained.level - 2) / 9)) *
-  @attributes.hd.total`-ish), plus the 1-minute non-replenish caveat as a
+@attributes.hd.total`-ish), plus the 1-minute non-replenish caveat as a
   context note.
 - The pinning test `barbarian-unchained.test.ts:161-164` checks Str/Con
   unchanged (correct) but never asserts HP behavior, so the omission is
   invisible to the suite.
 
 ### 2. Smite Evil uses/day keyed to character HD, not paladin level (multiclass)
+
 - Vendored Smite Evil `uses.maxFormula` = `floor((@attributes.hd.total - 1)/3)
-  + 1` — RAW schedule (1/day, +1 at 4th/7th/…/19th) but keyed to TOTAL character
-  HD. Single-class paladins are exact; a paladin 4 / fighter 3 gets 3/day
-  instead of 2. Upstream Foundry data quirk. Fix: supplements override to
-  `@class.unlevel`. (Same audit-pass should grep other `uses.maxFormula`s for
-  `@attributes.hd.total` where RAW says class level.)
+  - 1`— RAW schedule (1/day, +1 at 4th/7th/…/19th) but keyed to TOTAL character
+HD. Single-class paladins are exact; a paladin 4 / fighter 3 gets 3/day
+instead of 2. Upstream Foundry data quirk. Fix: supplements override to`@class.unlevel`. (Same audit-pass should grep other `uses.maxFormula`s for
+`@attributes.hd.total` where RAW says class level.)
 
 ## Verified corrections to my own initial suspicions (do NOT "fix" these)
+
 - **Unchained rage bonuses being `untyped` is RAW-correct** — the unchained
   text deliberately drops chained rage's "morale" typing (this is why
   unchained rage works while fatigued-adjacent effects/morale-immunity apply
@@ -47,6 +49,7 @@ each against RAW (unchained rage text verified by fetch). Siblings: parts 1–4.
   exactly.
 
 ## Checked and found CORRECT (don't re-audit)
+
 - Chained rage: rounds/day 4+Con+2(L−1); buff +4 Str/+4 Con/+2 Will morale,
   −2 AC untyped, greater/mighty tiers via floor((L−2)/9) at 11/20 — exact.
 - Rage powers: Raging Climber/Swimmer = +level enhancement Climb/Swim, Swift
@@ -88,6 +91,7 @@ each against RAW (unchained rage text verified by fetch). Siblings: parts 1–4.
   d6 ✔.
 
 ## Gaps (absent, not wrong)
+
 Rage/bloodrage fatigue aftermath untracked (chained: fatigued 2×rounds spent;
 unchained: fatigued 1 min — no "fatigued" auto-apply on buff drop); inspire
 courage save-bonus half display-only; judgment 10th-level upgrades (Justice

@@ -14,6 +14,28 @@ export function abilityMod(score: number): number {
   return Math.floor((score - 10) / 2);
 }
 
+/**
+ * Classes whose caster level lags class level by a fixed offset once
+ * spellcasting begins (the CRB half-caster shape: no spells through 3rd
+ * level, then CL = classLevel - 3 from 4th on). Mirrors
+ * `apps/web/src/model/casterLevel.ts`'s `OFFSET_CASTER_TAGS` — the engine
+ * can't import from `apps/web`, so this is a small parallel constant. Keep
+ * the two lists in sync; bard/bloodrager/medium do NOT belong here (their CL
+ * equals class level once casting starts — no offset).
+ */
+const CL_OFFSET_CASTER_TAGS: Readonly<Record<string, { gate: number; offset: number }>> = {
+  paladin: { gate: 4, offset: 3 },
+  ranger: { gate: 4, offset: 3 },
+  antipaladin: { gate: 4, offset: 3 },
+};
+
+/** `classLevel`, offset per `CL_OFFSET_CASTER_TAGS` for the three CRB half-casters; passed through unchanged for every other tag. */
+function casterLevelForRollData(tag: string, classLevel: number): number {
+  const shape = CL_OFFSET_CASTER_TAGS[tag];
+  if (shape === undefined) return classLevel;
+  return classLevel >= shape.gate ? classLevel - shape.offset : 0;
+}
+
 export interface AbilityView {
   base: number;
   total: number;
@@ -75,10 +97,11 @@ export function buildRollData(
   }
 
   const classes: Record<string, { level: number }> = {};
-  let maxClassLevel = 0;
+  let maxCasterLevel = 0;
   for (const c of doc.identity.classes) {
     classes[c.tag] = { level: c.level };
-    if (c.level > maxClassLevel) maxClassLevel = c.level;
+    const cl = casterLevelForRollData(c.tag, c.level);
+    if (cl > maxCasterLevel) maxCasterLevel = cl;
   }
 
   const skills: Record<string, { rank: number }> = {};
@@ -114,10 +137,14 @@ export function buildRollData(
     // `@class` is the "current class" context; defaults to the whole character
     // and is overridden per class-feature when its changes are evaluated.
     class: { level, unlevel: level },
-    // Caster level (single-class assumption for Stage 2). Issue #66 chunk 2
-    // (prestige casting advancement): `buildRollData` takes no `refData`
-    // parameter and can't cheaply gain one just for this, so `@cl` does NOT
-    // account for a prestige class's `castingAdvancement` bonus the way
+    // Caster level (single-class assumption for Stage 2) — `maxCasterLevel`
+    // applies the paladin/ranger/antipaladin `-3` offset (via
+    // `casterLevelForRollData` above) so e.g. Divine Favor's
+    // `min(3, floor(@cl/3))` reads a paladin 9's CL as 6, not her raw class
+    // level 9. Issue #66 chunk 2 (prestige casting advancement):
+    // `buildRollData` takes no `refData` parameter and can't cheaply gain one
+    // just for this, so `@cl` does NOT account for a prestige class's
+    // `castingAdvancement` bonus the way
     // `apps/web/src/model/casterLevel.ts`'s `effectiveCasterClassLevel` does
     // — a Wizard 5 / Eldritch Knight 1 with an EK slot targeting wizard reads
     // `@cl` = 5 here, not the effective 6 that module and the UI display. In
@@ -127,7 +154,7 @@ export function buildRollData(
     // `apps/web/src/components/builder/ClassesSection.tsx`), so no document
     // can reach this divergence today. Revisit once chunk 3 makes prestige
     // classes selectable.
-    cl: maxClassLevel,
+    cl: maxCasterLevel,
     skills,
     attributes: {
       hd: { total: level },

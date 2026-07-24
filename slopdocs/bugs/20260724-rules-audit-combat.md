@@ -9,19 +9,20 @@ Siblings: parts 1–3 in this directory. **Nothing fixed yet.**
 ## Findings (implemented-but-wrong, ranked)
 
 ### 1. Chained monk flurry display is wrong in both count and comment — 3.5e rules leaked in
+
 - `packages/engine/src/tables.ts:1244-1265` (`flurryOfBlowsLabel`).
 - Two defects:
   a. The doc comment asserts "the SRD actually reduces the flat -2 penalty to
-     -1 at monk level 11 and drops it entirely at level 16" — that is the
-     **D&D 3.5 monk** progression. PF1 chained flurry keeps the −2 at every
-     level (published flurry column is always monk level − 2: L11 +9/+9/…,
-     L16 +14/+14/…).
+  -1 at monk level 11 and drops it entirely at level 16" — that is the
+  **D&D 3.5 monk** progression. PF1 chained flurry keeps the −2 at every
+  level (published flurry column is always monk level − 2: L11 +9/+9/…,
+  L16 +14/+14/…).
   b. The attack-count schedule (2 at L1-7, 3 at L8-14, 4 at L15+) misses that
-     monk-level-as-BAB generates its own iteratives at effective BAB 6/11/16.
-     Real chained totals: 2 (L1-5), 3 (L6-7), 4 (L8-10, ITWF-style extra),
-     5 (L11-14), 6 (L15), 7 (L16-20). Published anchors: L6 +4/+4/−1,
-     L8 +6/+6/+1/+1, L11 +9/+9/+4/+4/−1, L15 +13/+13/+8/+8/+3/+3,
-     L20 +18/+18/+13/+13/+8/+8/+3.
+  monk-level-as-BAB generates its own iteratives at effective BAB 6/11/16.
+  Real chained totals: 2 (L1-5), 3 (L6-7), 4 (L8-10, ITWF-style extra),
+  5 (L11-14), 6 (L15), 7 (L16-20). Published anchors: L6 +4/+4/−1,
+  L8 +6/+6/+1/+1, L11 +9/+9/+4/+4/−1, L15 +13/+13/+8/+8/+3/+3,
+  L20 +18/+18/+13/+13/+8/+8/+3.
 - Display-only (flurry is deliberately not wired into live iteratives), but
   the displayed count is wrong from L6 on and the comment plants a false rule
   for future implementers. Unchained flurry (tables.ts:1360) is CORRECT
@@ -29,11 +30,12 @@ Siblings: parts 1–3 in this directory. **Nothing fixed yet.**
 - Pinning test `unarmedStrike.test.ts:71-93` encodes the wrong counts.
 
 ### 2. Multi-count single-kind natural attacks wrongly classified primary
+
 - `packages/engine/src/natural-attacks.ts:106-109` — `distinctNames.size <= 1`
   → every entry primary, explicitly "regardless of name or count".
 - RAW (UMR): "If a creature has ONLY ONE natural attack, it is always made
   using the creature's full base attack bonus and adds 1-1/2 times the
-  Strength bonus." One attack, not one *kind*. A creature with two hooves and
+  Strength bonus." One attack, not one _kind_. A creature with two hooves and
   nothing else keeps them SECONDARY (−5, half Str) — see the Bestiary pony:
   "2 hooves –3" = BAB 1 + Str 1 − 5.
 - Fix shape: the always-primary upgrade applies only when total attack count
@@ -44,6 +46,7 @@ Siblings: parts 1–3 in this directory. **Nothing fixed yet.**
   primary) encodes the misreading.
 
 ### 3. Vendored brawler "AC Bonus (BRA)" formula off by one at L4 and L17
+
 - Vendored `class-features.json` formula `clamp(floor((@class.unlevel-1)/4),0,4)`:
   gives +0 at L4 (RAW: +1 from 4th) and +4 at L17 (RAW: +4 arrives at 18th).
   Correct at 5-16 and 18-20. Already flagged as a quirk in
@@ -53,6 +56,7 @@ Siblings: parts 1–3 in this directory. **Nothing fixed yet.**
   +1@4, +2@9, +3@13, +4@18 is irregular; use explicit tiers).
 
 ## Checked and found CORRECT (don't re-audit)
+
 - Natural attacks: primary/secondary name table (bite/claw/gore/slam/sting/
   talon primary; hoof/pincer/tail-slap/tentacle/wing secondary); secondary −5
   (−2 with Multiattack); primary full Str, secondary HALF Str with penalties
@@ -85,6 +89,7 @@ Siblings: parts 1–3 in this directory. **Nothing fixed yet.**
   BAB thresholds; haste/TWF/flurry explicitly out of scope.
 
 ## Gaps (absent, not wrong)
+
 Single-natural-attack ×1.5 Str deliberately unmodeled (fold into finding 2's
 fix); weapon-group vocabulary lacks "natural" and "siege engines"; chained
 monk ki pool not compared here (class-features pass covers it); flurry not

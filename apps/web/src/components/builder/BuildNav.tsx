@@ -11,7 +11,7 @@ import {
   chosenOracleRevelationCount,
   expectedOracleRevelationCount,
 } from "../../model/oracleRevelations.js";
-import { skillBudget } from "../../model/skills.js";
+import { permanentIntMod, skillBudget } from "../../model/skills.js";
 import { spellsPanelVisible } from "../../model/spellcasting.js";
 import { chosenTraitCount, expectedTraitCount } from "../../model/traits.js";
 import type { BuilderProps } from "./types.js";
@@ -67,9 +67,8 @@ function plural(n: number, word: string): string {
  */
 export function useAttentionBadges({
   doc,
-  sheet,
   refData,
-}: Pick<BuilderProps, "doc" | "sheet" | "refData">): Partial<Record<string, Badge>> {
+}: Pick<BuilderProps, "doc" | "refData">): Partial<Record<string, Badge>> {
   return useMemo(() => {
     const badges: Partial<Record<string, Badge>> = {};
 
@@ -87,7 +86,7 @@ export function useAttentionBadges({
     }
 
     // Skills: ranks left to spend (or, rarely, overspent).
-    const { remaining } = skillBudget(doc, refData, sheet.abilities.int.mod);
+    const { remaining } = skillBudget(doc, refData, permanentIntMod(doc, refData));
     if (remaining > 0) {
       badges["section-skills"] = {
         count: remaining,
@@ -169,7 +168,7 @@ export function useAttentionBadges({
     }
 
     return badges;
-  }, [doc, sheet, refData]);
+  }, [doc, refData]);
 }
 
 /** Whether the visitor has asked for reduced motion (checked at click time). */
@@ -180,8 +179,8 @@ function prefersReducedMotion(): boolean {
   );
 }
 
-export function BuildNav({ doc, sheet, refData }: BuilderProps) {
-  const badges = useAttentionBadges({ doc, sheet, refData });
+export function BuildNav({ doc, refData }: BuilderProps) {
+  const badges = useAttentionBadges({ doc, refData });
   const [active, setActive] = useState<string>(SECTIONS[0]!.id);
 
   // The Spells panel hides itself for a non-caster, so its jump target would

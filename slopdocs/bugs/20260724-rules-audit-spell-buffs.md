@@ -8,6 +8,7 @@ verified inline against RAW spell/feature text; `feat-effects-extracted.ts`
 ## Findings
 
 ### 1. `carryMult` / `carryStr` change targets are dead — Ant Haul does nothing
+
 - `targets.ts:142-143` labels both as "carrying capacity" (so the buff editor
   shows them as real), but NO consumer exists — `encumbrance.ts`/`compute.ts`
   never read either target. Ant Haul (`carryMult 2`), and Enlarge/Reduce
@@ -21,6 +22,7 @@ verified inline against RAW spell/feature text; `feat-effects-extracted.ts`
   supplement) or strip the label so the UI stops implying it works.
 
 ### 2. Temp-HP-granting spells omit their temp HP (same class as unchained rage)
+
 - Divine Power: RAW also grants +1 temp HP per CL — formula is dice-free and
   modelable; vendored buff has attack/damage/Str-checks only.
 - Greater Heroism: RAW also grants temp HP = CL (max 20). Absent.
@@ -29,12 +31,14 @@ verified inline against RAW spell/feature text; `feat-effects-extracted.ts`
 - (Part-5 finding 1, unchained rage 2/HD, is the big sibling of this family.)
 
 ### 3. Stoneskin models nothing
+
 - Vendored Stoneskin has `changes: []` — RAW DR 10/adamantine. The engine
   already renders DR lines (barbarian DR, Resiliency judgment `dr.magic`), so
   a `dr.adamantine` change is expressible today. Currently the buff toggles
   and displays with zero effect.
 
 ## Checked and found CORRECT (don't re-audit) — buffs.json highlights
+
 Ability buffs ±4 enh (Bear's/Bull's/Cat's/Eagle's/Fox's/Owl's); Barkskin
 clamp(2+(CL−3)/3, 2, 5) enh-to-NA; Shield of Faith 2+min(3, CL/6) deflection;
 Divine Favor clamp(CL/3,1,3) luck atk/dmg; Divine Power min(6, CL/3) luck
@@ -58,6 +62,7 @@ Justice's 10th-level crit-confirm doubling (models the upgrade the hand
 judgments table only notes as prose).
 
 ## Extracted feat effects: ALL 13 CLEAN
+
 9 APG skill-pair feats with the exact +2/+4-at-10-ranks scaling (Acrobatic,
 Athletic, Deceitful, Animal Affinity, Deft Hands, Magical Aptitude,
 Persuasive, Self-Sufficient, Stealthy — pairings all correct); Intimidating
@@ -68,6 +73,7 @@ without a stored choice). Zero hand/extracted collisions; hand-wins
 precedence verified by synthetic fixture.
 
 ## Gaps (absent, not wrong)
+
 Resist Energy / Protection From Energy / Stoneskin-family carry no
 resistances (energy-resistance display lines absent engine-wide); False Life
 not vendored as a buff at all; Invisibility/See Invisibility display-only

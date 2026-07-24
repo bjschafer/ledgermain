@@ -1172,7 +1172,7 @@ function PreparedView({
         })}
       </div>
 
-      {/* Domain slots: one per accessible spell level per chosen domain. */}
+      {/* Domain slots: one per accessible spell level total, not per chosen domain. */}
       {(doc.build.clericDomains ?? []).length > 0 && casterTag === "cleric" && (
         <DomainSlotsSection
           doc={doc}

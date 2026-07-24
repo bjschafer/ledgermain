@@ -23,7 +23,7 @@ describe("casterLevel", () => {
   it("isCasterTag matches the full-caster set", () => {
     expect(isCasterTag("wizard")).toBe(true);
     expect(isCasterTag("druid")).toBe(true);
-    expect(isCasterTag("paladin")).toBe(false); // not in the Stage 1 slice yet
+    expect(isCasterTag("paladin")).toBe(true);
     expect(isCasterTag("fighter")).toBe(false);
   });
 
@@ -89,5 +89,35 @@ describe("casterLevel", () => {
         ]) as CharacterDoc,
       ),
     ).toBe(2);
+  });
+
+  it("bard is a true full caster: CL = bard level from 1st, no offset", () => {
+    expect(casterLevelForClass("bard", 1)).toBe(1);
+    expect(casterLevelForClass("bard", 5)).toBe(5);
+    expect(casterLevelForClass("bard", 20)).toBe(20);
+    expect(isCasterTag("bard")).toBe(true);
+  });
+
+  it("paladin/ranger/antipaladin cast nothing through 3rd level, CL = level - 3 from 4th on", () => {
+    for (const tag of ["paladin", "ranger", "antipaladin"]) {
+      expect(casterLevelForClass(tag, 1)).toBe(0);
+      expect(casterLevelForClass(tag, 3)).toBe(0);
+      expect(casterLevelForClass(tag, 4)).toBe(1);
+      expect(casterLevelForClass(tag, 9)).toBe(6);
+      expect(casterLevelForClass(tag, 20)).toBe(17);
+      expect(isCasterTag(tag)).toBe(true);
+    }
+  });
+
+  it("casterLevel() applies the paladin/ranger -3 offset in a multiclass document", () => {
+    // Paladin 9 / Fighter 5 -> CL 6 (9 - 3), fighter never contributes a CL.
+    expect(
+      casterLevel(
+        docWith([
+          { tag: "paladin", level: 9 },
+          { tag: "fighter", level: 5 },
+        ]) as CharacterDoc,
+      ),
+    ).toBe(6);
   });
 });

@@ -9,6 +9,7 @@ resonant powers). Siblings: parts 1–5. **No implemented-but-wrong findings in
 this domain** — the cleanest large domain audited.
 
 ## Verified-correct highlights (don't re-audit)
+
 - Kineticist: burn pool 3+Con, per-round limit 1 + 1 per 3 levels from 6th
   (1/2/3/4/5/6 at 1/6/9/12/15/18), nonlethal = character level per burn,
   rest clears (part-audited earlier, folded here); wild-talent level gate
@@ -50,6 +51,7 @@ this domain** — the cleanest large domain audited.
   matched 1:1 against vendored catalog; pool costs prose-only.
 
 ## Notes / minor
+
 - Vendored burn values for Spark of Life and Celerity read 0 vs hand-table 1;
   hand table is authoritative by design — if ever revisited, check the
   printed OA text rather than the vendored parse.

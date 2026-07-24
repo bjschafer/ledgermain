@@ -3,9 +3,11 @@
  * one place so the registry can be extended when more spell lists are vendored.
  *
  * Wizard, sorcerer, cleric, paladin, ranger, bard, druid, and arcanist are
- * modelled today. Cleric domain spell lists (one bonus prepare-slot per
- * accessible spell level per chosen domain) live in `refData.domainSpellLists`;
- * the tracker's Spells panel renders those slots. The UI falls back gracefully
+ * modelled today. Cleric domain spell lists live in `refData.domainSpellLists`;
+ * RAW grants exactly ONE domain-spell prepare-slot per accessible spell level
+ * TOTAL (not one per chosen domain) — a second domain only widens which
+ * spells may fill that one slot. The tracker's Spells panel renders those
+ * slots. The UI falls back gracefully
  * for any caster tag not in CASTER_MODELS. Paladin/ranger are prepared divine
  * half-casters like cleric but with no cantrips and no bonus domain-style
  * slots. Bard is a spontaneous arcane caster like sorcerer (own
@@ -229,9 +231,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "cleric",
     knownLabel: "Cleric List",
     learnGuidance:
-      "Clerics have no spellbook and nothing to learn \u2014 the entire cleric spell list below is always available to prepare from. Each chosen domain also grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list (see Domain picker above).",
+      "Clerics have no spellbook and nothing to learn \u2014 the entire cleric spell list below is always available to prepare from. Your domain(s) also grant one bonus prepare-slot per accessible spell level (total, not per domain), drawable from any chosen domain's spell list (see Domain picker above).",
     blurb:
-      "Prepared divine caster: there's no \u201cknown\u201d list to curate \u2014 prepare any spell(s) from the full cleric list each day, plus one domain spell per accessible level per chosen domain.",
+      "Prepared divine caster: there's no \u201cknown\u201d list to curate \u2014 prepare any spell(s) from the full cleric list each day, plus one domain spell per accessible level (one slot total, even with two domains).",
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },

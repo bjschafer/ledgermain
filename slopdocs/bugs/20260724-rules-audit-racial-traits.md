@@ -9,6 +9,7 @@ structural gaps + one dead change target.**
 ## Findings
 
 ### 1. `spellResist` change target is parsed but never applied (dead-target family)
+
 - Drow Noble (`11 + level`), Svirfneblin, Dwarf Magic Resistant / Half-Elf
   vendored traits (`5/6 + HD`) all carry `spellResist` changes; compute()
   ignores the target entirely (`races-other.test.ts:132-151` pins the
@@ -20,6 +21,7 @@ structural gaps + one dead change target.**
   would light up too).
 
 ### 2. Race-level senses are prose-only — and now inconsistent with traits
+
 - No race in races.json encodes darkvision/low-light mechanically (45 races
   mention darkvision in description text only), BUT 16 vendored alternate
   traits DO encode `sensedv` (60/90/120 ft), plus scent/tremorsense. Result:
@@ -29,14 +31,16 @@ structural gaps + one dead change target.**
   changes or surface description-derived sense lines.
 
 ### 3. Planetouched energy resistances unmodeled
+
 - Aasimar (acid/cold/elec 5), Tiefling (cold/elec/fire 5), Ifrit/Oread/
-  Sylph/Undine (element 5) — all prose-only. The engine renders eres.* lines
+  Sylph/Undine (element 5) — all prose-only. The engine renders eres.\* lines
   (archetype-extracted entries use them), so the data model supports it;
   the races just don't carry the changes. Supplement candidate. (Pairs with
   part 8's note that Resist Energy buffs are also empty — one eres pass
   would fix both.)
 
 ## Verified correct (don't re-audit)
+
 - All applied race numbers: ability changes (tiefling/kobold/oread fixtures
   exact), natural armor (kobold/nagaji/merfolk/etc.), svirfneblin +2 dodge,
   sizes (13 small, 2 large), speed table (20-ft races incl. slow-and-steady
@@ -61,6 +65,7 @@ structural gaps + one dead change target.**
   suppression for the 8 covered races.
 
 ## Gaps (absent, not wrong)
+
 Low-light vision entirely unrepresented even in traits; Dual Minded doesn't
 suppress Multitalented's second favored class (soft); 592 display-only
 vendored trait entries are picker-visible prose (by design); heritage

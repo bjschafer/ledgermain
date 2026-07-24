@@ -11,6 +11,7 @@ External verification via aonprd/d20pfsrd fetches where memory was uncertain.
 ## Findings (implemented-but-wrong, ranked)
 
 ### 1. `casterLevelForClass` returns CL 0 for bard, paladin, ranger, antipaladin
+
 - `apps/web/src/model/casterLevel.ts:42-122` — bard/paladin/ranger/antipaladin
   are in neither `FULL_CASTER_TAGS` nor `LEVEL_GATED_CASTER_TAGS`, so they
   fall through to `return 0` at every level.
@@ -34,6 +35,7 @@ External verification via aonprd/d20pfsrd fetches where memory was uncertain.
   needed for the CRB half-casters.
 
 ### 2. `@cl` roll data uses raw class level for paladin/ranger/antipaladin
+
 - `packages/engine/src/rolldata.ts` — `cl: maxClassLevel`, documented as a
   "single-class assumption", no −3 offset for any class.
 - Consequence: any buff/spell formula using `@cl` cast by a paladin/ranger/
@@ -43,6 +45,7 @@ External verification via aonprd/d20pfsrd fetches where memory was uncertain.
   it produces wrong sheet numbers in play, so it belongs on this list.
 
 ### 3. User-facing text misstates the cleric domain-slot rule (code is right)
+
 - RAW: ONE domain spell slot per accessible spell level total; the (two)
   domains only widen what may be prepared in it.
 - Enforcement is correct (`DomainSlotsSection` `total = 1` per level, union of
@@ -53,6 +56,7 @@ External verification via aonprd/d20pfsrd fetches where memory was uncertain.
   `PreparedSpellsPanel.tsx:1175`. Text-only fix.
 
 ## Verified with external sources (memory was wrong or uncertain)
+
 - **Bloodrager CL: the code is RIGHT and my initial recollection was wrong.**
   No printing of the ACG (legacy PRD 1st printing, current aonprd with errata,
   d20pfsrd) contains a "bloodrager level − 3" sentence, so the CRB default
@@ -65,6 +69,7 @@ External verification via aonprd/d20pfsrd fetches where memory was uncertain.
   (five-element wheel); void and aether → choose one of air/earth/fire/water.
 
 ## Checked and found CORRECT (don't re-audit)
+
 - All spells-per-day/known/prepared tables in `tables.ts`, hand-checked row
   anchors against published tables: wizard(=cleric=druid=witch=shaman),
   sorcerer(known too), bard(both; =inquisitor=summoner(+unchained)=skald=
@@ -93,6 +98,7 @@ External verification via aonprd/d20pfsrd fetches where memory was uncertain.
 - Channel energy floor((L+1)/2)d6, DC 10+L/2+Cha; sneak attack floor((L+1)/2).
 
 ## Gaps (absent, not wrong — mostly documented in-code)
+
 Concentration DCs other than defensive casting (damage-while-casting,
 grappled, vigorous motion) unmodeled; cleric spontaneous cure/inflict and
 druid summon swap untracked; shaman spirit-magic daily spontaneous slots

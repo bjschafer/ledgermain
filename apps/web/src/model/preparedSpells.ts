@@ -76,7 +76,8 @@ export function prepareSpell(doc: CharacterDoc, spellId: string, classTag?: stri
 /**
  * Append one un-expended prepared instance of `spellId` into a domain slot.
  * Clerics may prepare a domain spell in a domain slot (one per accessible spell
- * level per chosen domain); the caller is responsible for the capacity check.
+ * level TOTAL, not per chosen domain — a second domain only widens which
+ * spells may fill that one slot); the caller is responsible for the capacity check.
  * `classTag` is the stored class tag (see {@link prepareSpell}) — domain
  * slots only ever apply to a cleric class, but a cleric/X multiclass still
  * needs to tag its instances when cleric isn't the primary class.

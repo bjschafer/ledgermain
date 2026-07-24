@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import { totalLevel } from "../../model/doc.js";
 import { signed, skillName } from "../../model/names.js";
-import { skillBudget } from "../../model/skills.js";
+import { permanentIntMod, skillBudget } from "../../model/skills.js";
 import { InfoTip } from "../InfoTip.js";
 import { BookIcon } from "../icons.js";
 import { Panel } from "./Panel.js";
@@ -13,8 +13,8 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
   const [managerOpen, setManagerOpen] = useState(false);
 
   const budget = useMemo(
-    () => skillBudget(doc, refData, sheet.abilities.int.mod),
-    [doc, refData, sheet.abilities.int.mod],
+    () => skillBudget(doc, refData, permanentIntMod(doc, refData)),
+    [doc, refData],
   );
   const maxRank = totalLevel(doc);
 

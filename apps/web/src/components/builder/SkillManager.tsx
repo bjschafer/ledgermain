@@ -4,7 +4,7 @@ import { PARAMETERIZED_SKILL_PREFIXES } from "@pf1/engine";
 
 import { addSkillInstance, setSkillRank, totalLevel } from "../../model/doc.js";
 import { signed, skillName, SKILL_NAMES } from "../../model/names.js";
-import { skillBudget } from "../../model/skills.js";
+import { permanentIntMod, skillBudget } from "../../model/skills.js";
 import { Dialog } from "../Dialog.js";
 import { InfoTip } from "../InfoTip.js";
 import { NumberField } from "./NumberField.js";
@@ -32,8 +32,8 @@ export function SkillManager({
   const [newLabel, setNewLabel] = useState("");
 
   const budget = useMemo(
-    () => skillBudget(doc, refData, sheet.abilities.int.mod),
-    [doc, refData, sheet.abilities.int.mod],
+    () => skillBudget(doc, refData, permanentIntMod(doc, refData)),
+    [doc, refData],
   );
   const maxRank = totalLevel(doc);
 

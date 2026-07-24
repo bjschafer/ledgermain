@@ -9,7 +9,12 @@
  * doc.setSkillRank). This is the running total the builder shows.
  */
 import type { CharacterDoc, RefData } from "@pf1/schema";
-import { buildRollData, resolveArchetypeFeatureEffect, tryEvaluateFormula } from "@pf1/engine";
+import {
+  buildRollData,
+  compute,
+  resolveArchetypeFeatureEffect,
+  tryEvaluateFormula,
+} from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
 
 import { suppressedRaceTargets } from "./racialTraits.js";
@@ -21,8 +26,23 @@ export interface SkillBudget {
 }
 
 /**
- * @param intMod final Intelligence modifier (from the derived sheet, so racial
- *   and item bonuses are included).
+ * Intelligence modifier for the skill-point budget: PF1 RAW only grants
+ * retroactive skill ranks from a PERMANENT Int increase, never a temporary
+ * one (Fox's Cunning, a cognatogen, ...). Runs `compute()` on a copy of the
+ * doc with `live.activeBuffs` cleared, so racial/level/permanent-item (a worn
+ * headband) Int still counts but an active buff's Int bonus doesn't — cheap
+ * and pure, same pattern as `model/baseline.ts`'s `baselineSheet`.
+ */
+export function permanentIntMod(doc: CharacterDoc, refData: RefData): number {
+  const permanent: CharacterDoc = { ...doc, live: { ...doc.live, activeBuffs: [] } };
+  return compute(permanent, refData).abilities.int.mod;
+}
+
+/**
+ * @param intMod Intelligence modifier to use for the per-level budget — feed
+ *   {@link permanentIntMod}, not the derived sheet's buffed Int mod, so a
+ *   temporary Int buff doesn't grow the budget (see that function's doc
+ *   comment).
  */
 export function skillBudget(doc: CharacterDoc, refData: RefData, intMod: number): SkillBudget {
   let total = 0;

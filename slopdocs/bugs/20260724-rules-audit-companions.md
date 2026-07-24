@@ -5,6 +5,7 @@ familiar.ts, phantom.ts pattern-level). Unchained eidolon pool verified vs
 legacy PRD fetch. Siblings: parts 1–6. **No implemented-but-wrong findings.**
 
 ## IMPORTANT near-miss — do NOT "fix" this
+
 The unchained eidolon's evolution pool LOOKS like a bug next to the chained
 table (3,4,5,7,…,26) but `EIDOLON_UNCHAINED_POOL` = 1,2,3,3,4,5,6,6,7,8,9,9,
 10,11,12,12,13,14,15,15 is EXACTLY the published Unchained table (the pool
@@ -14,6 +15,7 @@ diffing the two tables will be tempted to "correct" the unchained pool upward
 — that would be wrong.
 
 ## Verified-correct (don't re-audit)
+
 - Animal companion: all 20 rows of Table: Animal Companion Base Statistics
   exact (HD/NA/Str-Dex/tricks/feats/specials incl. Evasion@3, Devotion@6,
   Multiattack@9, Improved Evasion@15); ASI slots at 4/9/14/20; BAB = 3/4 HD,
@@ -37,6 +39,7 @@ diffing the two tables will be tempted to "correct" the unchained pool upward
   verification not done; lowest-risk remaining surface.
 
 ## Interaction note
+
 The natural-attack classification bug (part 4 finding 2: single-KIND
 multi-count → wrongly primary) does not bite the shipped base forms (claws/
 bite/slam are primary types anyway) but would bite a hoofed/winged custom or

@@ -7,6 +7,7 @@ gear stats, rest/consumables/classPrereqs, phantom rows, UI copy sweep.
 **No new implemented-but-wrong findings in any of these surfaces.**
 
 ## Extracted archetype effects — clean, with residual-risk notes
+
 - 137 entries, all numeric, 89 high / 48 medium confidence; zero collisions
   with the hand table (hand-wins precedence never fires on real data).
 - Deep-verified against RAW and all exact: kensai iaijutsu (+Int init at 7th),
@@ -31,6 +32,7 @@ gear stats, rest/consumables/classPrereqs, phantom rows, UI copy sweep.
   archetype first (aonprd), same as the two above.
 
 ## Gear stats (weapons.json / armors.json) — clean
+
 Every core/common armor row matches the CRB table (incl. tower shield
 +4/maxDex 2/−10/50%, quickdraw and madu ACP −2 quirks, haramaki's unlimited
 maxDex/0 ACP/0 ASF); eastern and splatbook armors match UC/UE on all
@@ -42,6 +44,7 @@ entries; slaver's/launching crossbows carry crit "×1" (Foundry's no-crit
 marker — harmless but renders oddly if ever displayed as "×1").
 
 ## Model-layer misc — clean
+
 - rest.ts: natural-mode 1 HP/level, ability damage −1/day per ability, drain
   and permanent neg levels untouched, temp neg levels surfaced as a
   Fort-save reminder instead of auto-cleared — all RAW-faithful; full-heal

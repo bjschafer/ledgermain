@@ -15,7 +15,8 @@ before trusting them; file each domain's findings as a sibling doc.
 
 ## Confirmed findings (implemented-but-wrong, ranked)
 
-### 1. Flat-footed AC incorrectly removes a Dexterity *penalty*
+### 1. Flat-footed AC incorrectly removes a Dexterity _penalty_
+
 - `packages/engine/src/compute.ts:275` — `FLAT_FOOTED_CATEGORIES` excludes the
   `dex` category entirely, regardless of sign.
 - RAW: flat-footed loses your Dex **bonus** to AC; a Dex penalty still applies.
@@ -26,8 +27,9 @@ before trusting them; file each domain's findings as a sibling doc.
   though typed dodge penalties basically don't exist as data).
 
 ### 2. ACP from armor and from encumbrance load are summed; RAW takes the worse
+
 - `packages/engine/src/compute.ts:756-760` — `effectiveAcp = min(0, wornAcp +
-  acpReduction + loadAcp)`. The comment claims "additive with worn armor's ACP
+acpReduction + loadAcp)`. The comment claims "additive with worn armor's ACP
   (PF1 RAW)" — **the comment itself is wrong**.
 - RAW (CRB p.171, Carrying Capacity): "If your character is wearing armor, use
   the worse figure (from armor or from load) for each category. Do not stack the
@@ -39,8 +41,9 @@ before trusting them; file each domain's findings as a sibling doc.
   (`compute.ts:384-391`), so the file is internally inconsistent.
 
 ### 3. Strength penalties are multiplied by the damage multiplier
+
 - `packages/engine/src/compute.ts:1073` — `abilityDamage = floor(damageAbilityMod
-  * mult)` unconditionally.
+  - mult)` unconditionally.
 - RAW: two-handed adds 1.5× Str **bonus** — penalties are not multiplied; ×0.5
   off-hand — the **entire** penalty applies (not half).
 - Repro: Str 5 (mod −3): 2H engine floor(−4.5)=−5, RAW −3. Off-hand ×0.5 engine
@@ -50,12 +53,14 @@ before trusting them; file each domain's findings as a sibling doc.
 - `test/weapons.test.ts:220` only tests positive Str with ×1.5.
 
 ### 4. Tiny-or-smaller creatures' CMB uses Str; RAW says Dex
+
 - `packages/engine/src/compute.ts:1291` — `cmb = bab + strMod + sizeSpecial +
-  cmbStack.total`; no size check anywhere.
+cmbStack.total`; no size check anywhere.
 - RAW (CRB p.199): Tiny or smaller use Dex in place of Str for CMB.
 - Reachable via Reduce Person on a Small PC, polymorph.
 
 ### 5. AC penalties do not flow into CMD
+
 - `packages/engine/src/compute.ts:1314-1321` — auto-derivation from `"ac"`
   modifiers filters to `CMD_AC_TYPES` (eight named bonus types) regardless of
   sign, so untyped AC **penalties** are dropped.
@@ -69,6 +74,7 @@ before trusting them; file each domain's findings as a sibling doc.
   sources).
 
 ### 6. Tower shield's Max Dex bonus is ignored
+
 - `packages/engine/src/compute.ts:343-373` — `maxDex` only read in the
   `slot !== "shield"` branch; the shield branch drops it.
 - Vendored `armors.json` Tower Shield carries `"maxDex": 2` and
@@ -77,6 +83,7 @@ before trusting them; file each domain's findings as a sibling doc.
 - (Adjacent gap: tower shield's −2 attack penalty also unmodeled.)
 
 ### 7. Same-source circumstance bonuses stack (minor)
+
 - `packages/engine/src/stacking.ts:42` — `circumstance` unconditionally stacks;
   no same-source check. RAW: circumstance bonuses stack unless from essentially
   the same source. Low practical impact (distinct buffs are distinct sources).
@@ -84,12 +91,14 @@ before trusting them; file each domain's findings as a sibling doc.
   for temp HP if a pattern is wanted.
 
 ## Gaps noticed (absent, not wrong)
+
 Flat-footed CMD not computed; Agile Maneuvers / Tiny-finesse CMB substitution
 unmodeled; tower shield −2 attack unmodeled; vendored Bracers of Armor have
 empty `changes[]` (item does nothing); size changes don't scale weapon damage
 dice; helpless/paralyzed "Dex 0" is display-only (documented in conditions.ts).
 
 ## Checked and found CORRECT (don't re-audit)
+
 stacking.ts core semantics (highest-per-type, dodge/untyped/circumstance/""
 sum, penalties always stack, provenance); tables.ts BAB & save progressions
 incl. prestige tiers and multiclass summation; size AC/CMB-CMD modifiers and
