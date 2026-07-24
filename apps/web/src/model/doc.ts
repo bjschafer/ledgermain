@@ -632,6 +632,7 @@ export function setRace(doc: CharacterDoc, raceId: string): CharacterDoc {
   const build = { ...doc.build };
   delete build.racialTraits;
   delete build.vendoredRacialTraits;
+  delete build.vendoredRacialTraitTargets;
   return { ...doc, identity, build };
 }
 

@@ -25,6 +25,33 @@
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.0732ZhCzO00426kM"
   },
+  "09c76EsW9zGXAEZ0": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Dhampir - Ancient-Born</p><p><strong>Replaced Trait(s):</strong>Spell-Like Ability (Dhampir)</p><hr /><p>Ancient-Born gain Doom as a spell-like ability.</p>",
+    "heritage": "Ancient-Born",
+    "id": "09c76EsW9zGXAEZ0",
+    "name": "Alternate Spell-Like Ability (Dhampir - Ancient-Born)",
+    "race": ["Dhampir", "Ancient-Born"],
+    "racePoints": 3,
+    "replacedTraitNames": ["Spell-Like Ability (Dhampir)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "241"
+      },
+      {
+        "id": "PZO9427",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "3",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.09c76EsW9zGXAEZ0"
+  },
   "0CISUAPF2V91vvoo": {
     "changes": [],
     "contextNotes": [],
@@ -212,6 +239,39 @@
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.0zCDh21K2n1mqfJO"
   },
+  "0zwAyNsw272Wm9Xg": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.acr",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Fanglord</p><p><strong>Replaced Trait</strong>: Animal-Minded</p><hr /><p><strong>Alternate Skill Modifiers</strong> Acrobatics, Perception</p>",
+    "heritage": "Fanglord",
+    "id": "0zwAyNsw272Wm9Xg",
+    "name": "Alternate Skill Modifiers (Skinwalker - Fanglord)",
+    "race": ["Skinwalker", "Fanglord"],
+    "replacedTraitNames": ["Animal-Minded"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.0zwAyNsw272Wm9Xg"
+  },
   "14Yg8GAjRW3tW486": {
     "changes": [],
     "contextNotes": [
@@ -223,6 +283,18 @@
     "description": "<p><strong>Race</strong>: Catfolk<br /><strong>Replaced Trait(s)</strong>: Natural Hunter</p><hr /><p>Catfolk are naturally inquisitive about the world around them, though some are more curious than others. Such catfolk gain a +4 bonus on Diplomacy checks to gather information, and Knowledge (history) and Knowledge (local) are always class skills for them. If they choose a class that has either of these Knowledge skills as class skills, they gain a +2 racial bonus on those skills instead. This racial trait replaces natural hunter.</p><hr /><p><strong>Note</strong></p><p>If your class also grants Knowledge (local) or Knowledge (history), Update the untargeted changes on the changes tab of this trait to add a +[[2]] racial bonus change to those skills.</p>",
     "id": "14Yg8GAjRW3tW486",
     "name": "Curiosity",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Catfolk"],
     "racePoints": 4,
     "replacedTraitNames": ["Natural Hunter"],
@@ -377,6 +449,33 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.1a6WuPBFKqhIk4DC"
   },
+  "1bZoIL5ZYzbjTHnQ": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Dhampir - Svetocher</p><p><strong>Replaced Trait(s):</strong>Spell-Like Ability (Dhampir)</p><hr /><p>Svetochers gain Obscuring mist as a spell-like ability.</p>",
+    "heritage": "Svetocher",
+    "id": "1bZoIL5ZYzbjTHnQ",
+    "name": "Alternate Spell-Like Ability (Dhampir - Svetocher)",
+    "race": ["Dhampir", "Svetocher"],
+    "racePoints": 3,
+    "replacedTraitNames": ["Spell-Like Ability (Dhampir)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "241"
+      },
+      {
+        "id": "PZO9427",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "3",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.1bZoIL5ZYzbjTHnQ"
+  },
   "1kZ5mKCyb6CjEjFT": {
     "changes": [],
     "contextNotes": [],
@@ -397,6 +496,7 @@
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Bonus Languages</p><hr /><p>Half-elves with this trait count as drow for the purposes of any effect related to race, including prerequisites. This racial trait replaces the ability to choose any language as a bonus language, instead limiting the character to the bonus languages offered to drow.</p>",
+    "heritage": "Darkborn",
     "id": "1s61apBo9a9REri8",
     "name": "Drow Heritage",
     "race": ["Half-Elf", "Darkborn"],
@@ -593,6 +693,60 @@
     "traitCategory": "magical",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.2AJOaBUtrLSKx6n4"
   },
+  "2Do0WTfTNBwfKgjU": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Scaleheart</p><p><strong>Replaced Trait</strong>: Change Shape (Skinwalker)</p><hr /><p><strong>Ability Modifiers</strong> +2 Constitution, –2 Wisdom (+2 Strength while shapechanged) @Toggle[Change Shape (Skinwalker, STR)]</p><p><strong>Bestial Features</strong></p><ul><li><p>Bite attack that deals 1d6 points of damage</p></li><li><p>Darkvision to a range of @Distance[60 ft;dual] @Toggle[Change Shape (Skinwalker, Darkvision)]</p></li><li><p>Swim speed of @Distance[30 ft;dual] @Toggle[Change Shape (Skinwalker, Swim Speed)]</p></li><li><p>Ferocity @Toggle[Change Shape (Skinwalker, Ferocity)]</p></li></ul><hr /><p><strong>Note</strong></p><p>You must modify your natural attack(s) to match the parameters specified in this trait, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</p><p>This trait works exactly like Change Shape (Skinwalker) except as detailed above.</p>",
+    "heritage": "Scaleheart",
+    "id": "2Do0WTfTNBwfKgjU",
+    "name": "Change Shape (Skinwalker - Scaleheart)",
+    "race": ["Skinwalker", "Scaleheart"],
+    "replacedTraitNames": ["Change Shape (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "14"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.2Do0WTfTNBwfKgjU"
+  },
+  "2HJVv18LjvN5cW1c": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.hea",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.kpl",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Angelkin</p><hr /><p>Angelkins have a +2 racial bonus on Heal, and Knowledge (planes) checks.</p>",
+    "heritage": "Angelkin",
+    "id": "2HJVv18LjvN5cW1c",
+    "name": "Skilled (Aasimar - Angelkin)",
+    "race": ["Aasimar", "Angelkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9424",
+        "pages": "21"
+      },
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.2HJVv18LjvN5cW1c"
+  },
   "2NXp8S2ZZ2Lh5LS3": {
     "changes": [],
     "contextNotes": [],
@@ -724,6 +878,28 @@
     "traitCategory": "senses",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.2ltiVrbIQHhbrSGQ"
   },
+  "2mlJ9zKk5DkyT0Mm": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Oread - Ironsoul</p><hr /><p>Ironsouls can use unerring weapon 1/day as spell-like ability (with a caster level equal to the Gemsoul's character level).</p>",
+    "heritage": "Ironsoul",
+    "id": "2mlJ9zKk5DkyT0Mm",
+    "name": "Spell-Like Ability (Oread - Ironsoul)",
+    "race": ["Oread", "Ironsoul"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.2mlJ9zKk5DkyT0Mm"
+  },
   "2ppVDApnWAEYnzHO": {
     "changes": [],
     "contextNotes": [],
@@ -756,6 +932,28 @@
     ],
     "traitCategory": "senses",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.2t6pdfDHRiX6UbEQ"
+  },
+  "2uXjoDFad7NaBCOG": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Undine - Rimesoul</p><hr /><p>Rimesouls can cast chill touch once per day as a spell-like ability (with a caster level equal to the undine's character level).</p>",
+    "heritage": "Rimesoul",
+    "id": "2uXjoDFad7NaBCOG",
+    "name": "Spell-Like Ability (Undine - Rimesoul)",
+    "race": ["Undine", "Rimesoul"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.2uXjoDFad7NaBCOG"
   },
   "2y6Om4T1c7V7Stll": {
     "changes": [],
@@ -1033,6 +1231,13 @@
     "description": "<p><strong>Race</strong>: Vishkanya<br /><strong>Replaced Trait(s)</strong>: Keen Senses</p><hr /><p>You are trained in drawing attention to yourself. You gain a +2 bonus on any one Perform skill. This racial trait replaces keen senses.</p><hr /><p><strong>Note</strong></p><p>Choose any one perform skill. Update the Skills tab of your Actor to add the chosen skill. Update the target of the untargeted change on the Changes tab of this trait to reflect your choice.</p>",
     "id": "3gVV8juxNQF8nTYx",
     "name": "Sensual",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Vishkanya"],
     "replacedTraitNames": ["Keen Senses"],
     "sources": [
@@ -1277,6 +1482,39 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.4G4E4KbCE45gMnhL"
   },
+  "4MyvbEuO6QOS28bR": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Waker May</p><hr /><p>Ability Modifiers +2 Str, +2 Cha, -2 Wis</p><p></p>",
+    "heritage": "Waker May",
+    "id": "4MyvbEuO6QOS28bR",
+    "name": "Ability Modifiers (Changeling - Waker May)",
+    "race": ["Changeling", "Waker May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "6"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.4MyvbEuO6QOS28bR"
+  },
   "4UPvvBKe9UXgCLj2": {
     "changes": [],
     "contextNotes": [
@@ -1357,7 +1595,7 @@
     "id": "4eZSNsHGXAwZm4dk",
     "name": "Experimental Body: Scorched",
     "race": ["Wyrwood"],
-    "replacedTraitNames": ["Darkvision; Low-Light Vision"],
+    "replacedTraitNames": ["Darkvision", "Low-Light Vision"],
     "sources": [
       {
         "id": "PZO9495",
@@ -1522,7 +1760,7 @@
     "id": "4tq1PgGZzIsYSVkH",
     "name": "Experimental Body: Enchanted",
     "race": ["Wyrwood"],
-    "replacedTraitNames": ["Darkvision; Low-Light Vision"],
+    "replacedTraitNames": ["Darkvision", "Low-Light Vision"],
     "sources": [
       {
         "id": "PZO9495",
@@ -1740,6 +1978,28 @@
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.6922em9qimkrOqPG"
   },
+  "6AA4khYton1MWeXO": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Fanglord</p><p><strong>Replaced Trait</strong>: Spell-Like Ability (Skinwalker)</p><hr /><p><strong>Alternate Spell-Like Ability</strong> jump 1/day</p>",
+    "heritage": "Fanglord",
+    "id": "6AA4khYton1MWeXO",
+    "name": "Alternate Spell-Like Ability (Skinwalker - Fanglord)",
+    "race": ["Skinwalker", "Fanglord"],
+    "replacedTraitNames": ["Spell-Like Ability (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.6AA4khYton1MWeXO"
+  },
   "6BfXi2cAz6NupBHm": {
     "changes": [
       {
@@ -1926,6 +2186,46 @@
     ],
     "traitCategory": "other",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.6d96mOZtn3WCCN1A"
+  },
+  "6eYkzFOhZc6mL1Sc": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Aerieborn</p><p><strong>Replaced Trait</strong>: Spell-Like Ability (Skinwalker)</p><hr /><p><strong>Alternate Spell-Like Ability</strong> feather fall 1/day</p>",
+    "heritage": "Aerieborn",
+    "id": "6eYkzFOhZc6mL1Sc",
+    "name": "Alternate Spell-Like Ability (Skinwalker - Aerieborn)",
+    "race": ["Skinwalker", "Aerieborn"],
+    "replacedTraitNames": ["Spell-Like Ability (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO90115",
+        "pages": "89"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.6eYkzFOhZc6mL1Sc"
+  },
+  "75LOlnGJh2e6OAZc": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Coldborn</p><p><strong>Replaced Trait</strong>: Spell-Like Ability (Skinwalker)</p><hr /><p><strong>Alternate Spell-Like Ability</strong> calm animals 1/day</p>",
+    "heritage": "Coldborn",
+    "id": "75LOlnGJh2e6OAZc",
+    "name": "Alternate Spell-Like Ability (Skinwalker - Coldborn)",
+    "race": ["Skinwalker", "Coldborn"],
+    "replacedTraitNames": ["Spell-Like Ability (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "248"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "10"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.75LOlnGJh2e6OAZc"
   },
   "7B9RkslHip58EzP8": {
     "changes": [
@@ -2122,6 +2422,39 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.7cNjfrDIdpHxu8YJ"
+  },
+  "7lquuXyjHJKCYDOU": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Sorrow  May</p><hr /><p>Ability Modifiers  +2 Int, +2 Wis, -2 Con</p><p></p>",
+    "heritage": "Sorrow May",
+    "id": "7lquuXyjHJKCYDOU",
+    "name": "Ability Modifiers (Changeling - Sorrow May)",
+    "race": ["Changeling", "Sorrow May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "7"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.7lquuXyjHJKCYDOU"
   },
   "7tA7QryetJUIsI9M": {
     "changes": [],
@@ -2369,6 +2702,61 @@
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.8S3LbLY78NiCmXT8"
   },
+  "8S5F3TatyTW9rRSB": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Ragebred</p><p><strong>Replaced Trait</strong>: Spell-Like Ability (Skinwalker)</p><hr /><p><strong>Alternate Spell-Like Ability</strong> speak with animals (pigs and boars only) 3/day</p>",
+    "heritage": "Ragebred",
+    "id": "8S5F3TatyTW9rRSB",
+    "name": "Alternate Spell-Like Ability (Skinwalker - Ragebred)",
+    "race": ["Skinwalker", "Ragebred"],
+    "replacedTraitNames": ["Spell-Like Ability (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "248"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "12"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.8S5F3TatyTW9rRSB"
+  },
+  "8dxrQ9BRuv0eR6P1": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Virga May</p><hr /><p>Ability Modifiers +2 Wis, +2 Cha, -2 Con</p><p></p>",
+    "heritage": "Virga May",
+    "id": "8dxrQ9BRuv0eR6P1",
+    "name": "Ability Modifiers (Changeling - Virga May)",
+    "race": ["Changeling", "Virga May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "9"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.8dxrQ9BRuv0eR6P1"
+  },
   "8gIlEIGMp5PaAUpL": {
     "changes": [],
     "contextNotes": [
@@ -2406,6 +2794,7 @@
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>These half-elves clearly bear the features of their dark elf parents, branding them immediately as a potential threat in the eyes of others no matter what their intent or character. These half-elves have the drow-blooded and drow magic alternate racial traits.</p>",
+    "heritage": "Darkborn",
     "id": "8lSKScxOqbUF5X1H",
     "name": "Drow-Descended",
     "race": ["Half-Elf", "Darkborn"],
@@ -2543,6 +2932,33 @@
     ],
     "traitCategory": "magical",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.901VteaGCjg0FTKQ"
+  },
+  "93KXq6n1wiX0ifEy": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Shackleborn</p><hr /><p>Shackleborn can use Web once per day as a spell-like ability (with a caster level equal to their character level).</p><p></p>",
+    "heritage": "Shackleborn",
+    "id": "93KXq6n1wiX0ifEy",
+    "name": "Spell-Like Ability (Tiefling - Shackleborn)",
+    "race": ["Tiefling", "Shackleborn"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.93KXq6n1wiX0ifEy"
   },
   "94u0I9hX8LLAzvmk": {
     "changes": [],
@@ -2792,6 +3208,58 @@
     "traitCategory": "movement",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.ALR9GkMbRKfG24xw"
   },
+  "AQYBioB3D1EbhppG": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Ifrit - Lavasoul</p><hr /><p>Lavasoul sorcerers with the efreeti bloodline treat their Charisma scores as 2 points higher for the purposes of all sorcerer spells and class abilities. Lavasoul spellcasters with the Ash subdomain use their domain powers and spells at +1 caster level.</p><hr /><p><strong>Note</strong></p><p>Add the bonus for each related spell, class ability, or domain power manually.</p>",
+    "heritage": "Lavasoul",
+    "id": "AQYBioB3D1EbhppG",
+    "name": "Magma Affinity (Ifrit - Lavasoul)",
+    "race": ["Ifrit", "Lavasoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.AQYBioB3D1EbhppG"
+  },
+  "AgBhMGlaftYkCH0A": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.dip",
+        "text": "+[[2]] racial bonus on wild empathy checks."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Skinwalker - Witchwolf</p><p><strong>Replaced Trait</strong>: Animal-Minded</p><hr /><p><strong>Alternate Skill Modifiers</strong> Perception, wild empathy</p>",
+    "heritage": "Witchwolf",
+    "id": "AgBhMGlaftYkCH0A",
+    "name": "Alternate Skill Modifiers (Skinwalker - Witchwolf)",
+    "race": ["Skinwalker", "Witchwolf"],
+    "replacedTraitNames": ["Animal-Minded"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "24"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.AgBhMGlaftYkCH0A"
+  },
   "AqWhtrTEaKeJ9qZ6": {
     "changes": [],
     "contextNotes": [
@@ -2964,6 +3432,13 @@
     "description": "<p><strong>Race</strong>: Halfling<br /><strong>Replaced Trait(s)</strong>: Sure-Footed</p><hr /><p>Many halfling families have developed techniques to accomplish work faster and more efficiently, whether to contribute to the community or to please overbearing masters. These halflings gain a +4 racial bonus on checks with one Craft, Perform, or Profession skill. This racial trait replaces sure-footed.</p><hr /><p><strong>Note</strong></p><p>Select one Craft, Perform, or Profession skill when you take this trait.  Update the Skills tab of your Actor to add the chosen skill.  Update the target of the Change on the Changes tab of this trait to reflect your choice.</p>",
     "id": "B93R81ATGIvP1b5g",
     "name": "Driven Worker",
+    "openChanges": [
+      {
+        "formula": "4",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Halfling"],
     "replacedTraitNames": ["Sure-Footed"],
     "sources": [
@@ -2996,6 +3471,33 @@
     ],
     "traitCategory": "magical",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.BD8FBL0PfVe5qfrt"
+  },
+  "BDdZagTVnNqGFBxs": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "skill.blf",
+        "text": "The DCs of Sense Motive checks to gain a hunch about a you increase by 5."
+      },
+      {
+        "target": "skill.dip",
+        "text": "The DCs of Sense Motive checks to gain a hunch about a you increase by 5."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Changeling - Veil May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>The DCs of Sense Motive checks to gain a hunch about a blood-born changeling increase by 5.</p>",
+    "heritage": "Veil May",
+    "id": "BDdZagTVnNqGFBxs",
+    "name": "Hag Racial Trait (Changeling - Veil May)",
+    "race": ["Changeling", "Veil May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "6"
+      }
+    ],
+    "traitCategory": "defense",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.BDdZagTVnNqGFBxs"
   },
   "BE3QYzPCTLBEaGzv": {
     "changes": [],
@@ -3265,6 +3767,39 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.BvVgHyKfrWZxpi5x"
+  },
+  "C1PaDJ7bjwWd2U4C": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Brine May</p><hr /><p>Ability Modifiers +2 Dex, +2 Wis, -2 Con</p><p></p>",
+    "heritage": "Brine May",
+    "id": "C1PaDJ7bjwWd2U4C",
+    "name": "Ability Modifiers (Changeling - Brine May)",
+    "race": ["Changeling", "Brine May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "8"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.C1PaDJ7bjwWd2U4C"
   },
   "C2pF36QqsyrsmkFi": {
     "changes": [
@@ -3684,7 +4219,7 @@
     "id": "DlGjetJ3goyzTtno",
     "name": "Swamp Leshy",
     "race": ["Vine Leshy"],
-    "replacedTraitNames": ["Climber; Unassuming Foliage"],
+    "replacedTraitNames": ["Climber", "Unassuming Foliage"],
     "sources": [
       {
         "id": "PZO1140",
@@ -3813,6 +4348,18 @@
     "description": "<p><strong>Race</strong>: Wayang<br /><strong>Replaced Trait(s)</strong>: Lurker</p><hr /><p>Many wayangs perform a variety of unusual roles and tasks in wayang society. They gain a +2 racial bonus on their choice of two of the following skills: Appraise, Bluff, Craft, Profession, and Sleight of Hand. This racial trait replaces lurker.</p><hr /><p><strong>Note</strong></p><p>Set chosen skills as targets under Changes.</p>",
     "id": "DxVHodTFIi9AwMvr",
     "name": "In the Shadows",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Wayang"],
     "replacedTraitNames": ["Lurker"],
     "sources": [
@@ -3960,6 +4507,7 @@
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Adaptability, Multitalented</p><hr /><p>A few half-elves with drow ancestry exhibit the innate magic of that race. Half-elves with this trait have drow blood somewhere in their background, and can cast <em>dancing lights</em>, <em>darkness</em>, and <em>faerie fire </em>each once per day, using the half-elf's character level as the caster level for these spell-like abilities. This racial trait replaces the adaptability and multitalented racial traits.</p>",
+    "heritage": "Darkborn",
     "id": "EQELT4ORTRAZs06D",
     "name": "Drow Magic",
     "race": ["Half-Elf", "Darkborn"],
@@ -3975,6 +4523,33 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.EQELT4ORTRAZs06D"
+  },
+  "ETapFH3D6SF1WwVn": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Beastbrood</p><hr /><p>Beastbrood can use Detect Thoughts once per day as a spell-like ability (with a caster level equal to their character level).</p><p></p>",
+    "heritage": "Beastbrood",
+    "id": "ETapFH3D6SF1WwVn",
+    "name": "Spell-Like Ability (Tiefling - Beastbrood)",
+    "race": ["Tiefling", "Beastbrood"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "23"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.ETapFH3D6SF1WwVn"
   },
   "EUcZujQ4IkzBmgry": {
     "changes": [
@@ -4176,6 +4751,13 @@
     "description": "<p><strong>Race</strong>: Human<br /><strong>Replaced Trait(s)</strong>: Skilled</p><hr /><p>Humans raised with skilled teachers draw upon vast swathes of knowledge gained over centuries of civilization. They gain all Knowledge skills as class skills, and they gain a +1 racial bonus on skill checks for each Knowledge skill that they gain as a class skill from their class levels. This racial trait replaces skilled.</p><hr /><p><strong>Note</strong></p><p>Add a Change on the changes tab of this trait to add a +1 racial bonus to each knowledge skill you gain as a class skill from class levels.</p>",
     "id": "FEu0wt9x3Vzny6ur",
     "name": "Comprehensive Education",
+    "openChanges": [
+      {
+        "formula": "1",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Human"],
     "replacedTraitNames": ["Skilled"],
     "sources": [
@@ -4208,6 +4790,28 @@
     ],
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.FJHJNZFjwC1tvKnM"
+  },
+  "FNERRlnZL8mWZLLL": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Bloodmarked</p><p><strong>Replaced Trait</strong>: Spell-Like Ability (Skinwalker)</p><hr /><p><strong>Alternate Spell-Like Ability</strong> Obscuring mist 1/day</p>",
+    "heritage": "Bloodmarked",
+    "id": "FNERRlnZL8mWZLLL",
+    "name": "Alternate Spell-Like Ability (Skinwalker - Bloodmarked)",
+    "race": ["Skinwalker", "Bloodmarked"],
+    "replacedTraitNames": ["Spell-Like Ability (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "248"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "8"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.FNERRlnZL8mWZLLL"
   },
   "FOZo7WYLv1nrMiUm": {
     "changes": [
@@ -4247,6 +4851,62 @@
     ],
     "traitCategory": "senses",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.FTP7h1bfD3Zkmf2N"
+  },
+  "FVArwvrXwcHJtdNz": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.apr",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.klo",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Faultspawn</p><hr /><p>Faultspawn gain a +2 racial bonus on Appraise and Knowledge (local) checks.</p>",
+    "heritage": "Faultspawn",
+    "id": "FVArwvrXwcHJtdNz",
+    "name": "Skilled (Tiefling - Faultspawn)",
+    "race": ["Tiefling", "Faultspawn"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "251"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "19"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.FVArwvrXwcHJtdNz"
+  },
+  "FVyCe9ASrrxnXeyx": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Nightskulk</p><p><strong>Replaced Trait</strong>: Spell-Like Ability (Skinwalker)</p><hr /><p><strong>Alternate Spell-Like Ability</strong> speak with animals (rodents only) 3/day</p>",
+    "heritage": "Nightskulk",
+    "id": "FVyCe9ASrrxnXeyx",
+    "name": "Alternate Spell-Like Ability (Skinwalker - Nightskulk)",
+    "race": ["Skinwalker", "Nightskulk"],
+    "replacedTraitNames": ["Spell-Like Ability (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "18"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.FVyCe9ASrrxnXeyx"
   },
   "FkNwNCexIJKOgtY2": {
     "changes": [
@@ -4309,6 +4969,25 @@
     "traitCategory": "other",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.Foqsm1jgAOgvnWCV"
   },
+  "Fzzd5GnZy7J7wU8j": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Undine - Rimesoul</p><hr /><p>Rimesoul sorcerers with the boreal bloodline treat their Charisma scores as 2 points higher for the purposes of all sorcerer spells and class abilities. Rimesoul clerics with the Ice subdomain cast their Ice subdomain powers and spells at +1 caster level.</p><hr /><p><strong>Note</strong></p><p>Add the bonus for each related spell, class ability, or domain power manually.</p>",
+    "heritage": "Rimesoul",
+    "id": "Fzzd5GnZy7J7wU8j",
+    "name": "Ice Affinity (Undine - Rimesoul)",
+    "race": ["Undine", "Rimesoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.Fzzd5GnZy7J7wU8j"
+  },
   "G3dZnTfFV6wwUr3F": {
     "changes": [
       {
@@ -4369,6 +5048,27 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.GBfKld1Iw8C2wtli"
+  },
+  "GL7VJG5KSRQDF4GS": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "attack",
+        "text": "+[[1]] Racial bonus creatures of the dwarf or elf subtypes."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Duergar<br /><strong>Replaced Trait(s)</strong>: <em>Invisibility</em> Spell-Like Ability</p><hr /><p>Duergar have long warred against their dwarven cousins and the hated drow. Duergar with this racial trait receive a +1 racial bonus on attack rolls against humanoid creatures of the dwarf or elf subtypes. This racial trait replaces the <em>invisibility </em>spell-like ability.</p><hr /><p><strong>Note</strong></p><p>This trait replaces Spell-Like Abilities (Duergar - Invisibility) only</p>",
+    "id": "GL7VJG5KSRQDF4GS",
+    "name": "Blood Enmity",
+    "race": ["Duergar"],
+    "replacedTraitNames": ["Invisibility Spell-Like Ability"],
+    "sources": [
+      {
+        "id": "PZO1121",
+        "pages": "186"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.GL7VJG5KSRQDF4GS"
   },
   "GSkWHI5OKIScXKx3": {
     "changes": [
@@ -4565,6 +5265,39 @@
     "traitCategory": "movement",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.HC3Bca5jWDNu0lWb"
   },
+  "HEOPhaWDWb6tyTnS": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Snow May</p><hr /><p>Ability Modifiers +2 Int, +2 Wis, -2 Con</p><p></p>",
+    "heritage": "Snow May",
+    "id": "HEOPhaWDWb6tyTnS",
+    "name": "Ability Modifiers (Changeling - Snow May)",
+    "race": ["Changeling", "Snow May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "9"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.HEOPhaWDWb6tyTnS"
+  },
   "HFKHorjMw2dERwBo": {
     "changes": [],
     "contextNotes": [
@@ -4627,10 +5360,11 @@
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: alters the change shape and spell-like ability racial traits.</p><hr /><p>Some skinwalkers' ability to communicate with animals is stronger than their ability to transform. Such skinwalkers can only use their change shape ability once per day for 1 minute per level, but they can use their <em>speak with animals </em>spell-like ability at will. This racial trait alters the change shape and spell-like ability racial traits.</p><hr /><p><strong>Note</strong></p><p>Remove Change Shape (Skinwalker) Spell-Like Ability (Skinwalker) to ensure no conflicts with ability usage. Note that the trait specifies the speak with animals SLA so may not apply to subraces. If used in conjunction with a subrace you would need to limit duration of any associated buffs.</p><p><span style=\"mso-ansi-language:EN-CA\">You must modify your natural attack(s) to match the parameters specified in this trait or its parent, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</span></p>",
+    "heritage": "Beast Talker",
     "id": "HSEQTjNZ9ZPnhZUZ",
     "name": "Beast Talker",
     "race": ["Skinwalker", "Beast Talker"],
-    "replacedTraitNames": ["alters the change shape and spell-like ability racial traits."],
+    "replacedTraitNames": ["alters the change shape and spell-like ability racial traits"],
     "sources": [
       {
         "id": "PZO9280",
@@ -4715,6 +5449,7 @@
     ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Orc (Sandkin Only) <br /><strong>Replaced Trait(s)</strong>: Intimidating</p><hr /><p>Sandkin lack the chip on their shoulder that many half-orcs acquire as a result of prejudice, and their self-confidence puts others at ease. Desert half-orcs with this racial trait gain a +2 racial bonus on Diplomacy checks. This racial trait replaces the intimidating racial trait.</p>",
+    "heritage": "Sandkin",
     "id": "HgsRDdx0DWvccvNd",
     "name": "Burning Assurance (Sandkin)",
     "race": ["Half-Orc", "Sandkin"],
@@ -4847,6 +5582,27 @@
     ],
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.HzKBmWjSHjYSNsU9"
+  },
+  "I0yTReZxAfE5biVp": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Cragkin are widespread across Golarion, found across all the mountain ranges of western Avistan. Thanks to their thin frames and quick wits, mountain-born half-orcs excel at climbing and acrobatic stunts. Anything less than a vertical cliff face is traversable, and often even that isn’t enough to stop them. To mountain half-orcs, obstacles are merely a foothold on their path to the top.</p><p>Mountain orcs respect bravery, and cragkin have turned fearlessness and reckless abandon into a badge of honor. By using the terrain to their advantage against less surefooted enemies, they can attack from strange angles and gain advantages with just a few quick steps. They often take near-suicidal leaps to strike enemies from above, or trick enemies into falling to their deaths by leading them down impossible paths. Despite their great skill, accidents are common in this treacherous environment, and no one is surprised if one halforc returns after a raid and his companions do not.</p><p>Many mountain half-orcs find a place among Shoanti and Ulfen settlements, where valor in battle is highly prized. As long as they are willing to respect the traditions of their adopted clans, they usually integrate well into these societies and contribute much to the community.</p>",
+    "heritage": "Cragkin",
+    "id": "I0yTReZxAfE5biVp",
+    "name": "Mountain Half-Orcs (Cragkin)",
+    "race": ["Half-Orc", "Cragkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9491",
+        "pages": "25"
+      },
+      {
+        "id": "PZO9442",
+        "pages": "13"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.I0yTReZxAfE5biVp"
   },
   "I1G2vlwgLPPKgAkC": {
     "changes": [
@@ -4982,6 +5738,13 @@
     "description": "<p><strong>Race</strong>: Halfling<br /><strong>Replaced Trait(s)</strong>: Keen Senses, Sure-Footed</p><hr /><p>Halflings often survive at the whims of larger, more aggressive races. Because of this, they go out of their way to make themselves more useful, or at least entertaining, to larger folk. Halflings with this racial trait gain a +2 bonus on skill checks for a single Perform skill of their choice, and Perform is always a class skill for them. They also gain a +2 bonus on Craft and Profession checks. This racial trait replaces keen senses and sure-footed.</p><hr /><p><strong>Note</strong></p><p>Select one Perform skill when you take this trait. Update the Skills tab of your Actor to add the chosen skill. Update the untargeted Change on the Changes tab of this trait to reflect your choice.</p>",
     "id": "IJGd1TSyqGZb8BkZ",
     "name": "Ingratiating",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Halfling"],
     "replacedTraitNames": ["Keen Senses", "Sure-Footed"],
     "sources": [
@@ -5013,6 +5776,40 @@
       }
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.IJRr9hW0I3JvpP43"
+  },
+  "IMoj6UWbaCG3nGLM": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dis",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.sen",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Beastbrood</p><hr /><p>Beastbrood gain a +2 racial bonus on Disguise and Sense Motive checks.</p>",
+    "heritage": "Beastbrood",
+    "id": "IMoj6UWbaCG3nGLM",
+    "name": "Skilled (Tiefling - Beastbrood)",
+    "race": ["Tiefling", "Beastbrood"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "23"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.IMoj6UWbaCG3nGLM"
   },
   "IQMSioY3z5n7YnvD": {
     "changes": [],
@@ -5218,6 +6015,13 @@
     "description": "<p><strong>Race</strong>: Human<br /><strong>Replaced Trait(s)</strong>: Skilled</p><hr /><p>Humans are known in the Inner Sea for their drive and work ethic. Humans with this racial trait gain a +2 racial bonus on concentration checks and checks with their choice of one Craft or Profession skill. This racial trait replaces skilled.</p><hr /><p><strong>Note</strong></p><p>Select one Craft or Profession skill when you take this trait. Update the Skills tab of your Actor to add the chosen skill. Update the target of the untargeted Change on the Changes tab of this trait to reflect your choice.</p>",
     "id": "J4yZRm0uY0156HhY",
     "name": "Industrious",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Human"],
     "replacedTraitNames": ["Skilled"],
     "sources": [
@@ -5288,6 +6092,39 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.JLGJMVewolF9XNVW"
   },
+  "JQ5GKhU4fgbLDkpF": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.han",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.ste",
+        "text": "+[[2]] Racial bonus in urban environments."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Skinwalker - Nightskulk</p><p><strong>Replaced Trait</strong>: Animal-Minded</p><hr /><p><strong>Alternate Skill Modifiers</strong> Handle Animal, Stealth in urban environments</p>",
+    "heritage": "Nightskulk",
+    "id": "JQ5GKhU4fgbLDkpF",
+    "name": "Alternate Skill Modifiers (Skinwalker - Nightskulk)",
+    "race": ["Skinwalker", "Nightskulk"],
+    "replacedTraitNames": ["Animal-Minded"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "18"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.JQ5GKhU4fgbLDkpF"
+  },
   "JYBBbQdb096At3uS": {
     "changes": [],
     "contextNotes": [],
@@ -5322,6 +6159,80 @@
     "traitCategory": "other",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.JdUecbyHLbK4aqT3"
   },
+  "JdmRjdRfq9S16pmP": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Seascarred</p><p><strong>Replaced Trait</strong>: Change Shape (Skinwalker)</p><hr /><p><strong>Ability Modifiers</strong> +2 Wisdom, –2 Intelligence (+2 Constitution while shapechanged) @Toggle[Change Shape (Skinwalker, CON)]</p><p><strong>Bestial Features</strong></p><ul><li><p>Breathe water as well as air @Toggle[Change Shape (Skinwalker, Amphibious)]</p></li><li><p>Bite attack that deals 1d6 points of damage</p></li><li><p>Ferocity @Toggle[Change Shape (Skinwalker, Ferocity)]</p></li><li><p>Swim speed of @Distance[30 ft;dual] @Toggle[Change Shape (Skinwalker, Swim Speed)]</p></li></ul><hr /><p><strong>Note</strong></p><p><span style=\"mso-ansi-language:EN-CA\">You must modify your natural attack(s) to match the parameters specified in this trait, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</span></p><p>This trait works exactly like Change Shape (Skinwalker) except as detailed above.</p>",
+    "heritage": "Seascarred",
+    "id": "JdmRjdRfq9S16pmP",
+    "name": "Change Shape (Skinwalker - Seascarred)",
+    "race": ["Skinwalker", "Seascarred"],
+    "replacedTraitNames": ["Change Shape (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "20"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.JdmRjdRfq9S16pmP"
+  },
+  "JhEI4m5iFNvOgm9H": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Sylph - Stormsoul</p><hr /><p>Stormsoul sorcerers with the stormborn bloodline treat their Charisma scores as 2 points higher for the purposes of all sorcerer spells and class abilities. Stormsoul spellcasters with the Weather domain use their domain powers and spells at +1 caster level.</p><hr /><p><strong>Note</strong></p><p>Add the bonus for each related spell, class ability, or domain power manually.</p>",
+    "heritage": "Stormsoul",
+    "id": "JhEI4m5iFNvOgm9H",
+    "name": "Lightning Affinity (Sylph - Stormsoul)",
+    "race": ["Sylph", "Stormsoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.JhEI4m5iFNvOgm9H"
+  },
+  "JpCDy27IK3xb1DeK": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dev",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Pitborn</p><hr /><p>Pitborn gain a +2 racial bonus on Disable Device and Perception checks.</p>",
+    "heritage": "Pitborn",
+    "id": "JpCDy27IK3xb1DeK",
+    "name": "Skilled (Tiefling - Pitborn)",
+    "race": ["Tiefling", "Pitborn"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.JpCDy27IK3xb1DeK"
+  },
   "JtvsIm1JAxjAL2YL": {
     "changes": [],
     "contextNotes": [
@@ -5331,6 +6242,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Dhampir - Ancient-Born</p><p><strong>Replaced Trait(s)</strong>: Light Sensitivity (Dhampir)</p><hr /><p>Alternate Weakness: Ancient-born take a -1 penalty on saves against effects that damage, drain, or reduce physical ability scores.</p>",
+    "heritage": "Ancient-Born",
     "id": "JtvsIm1JAxjAL2YL",
     "name": "Alternate Weakness (Dhampir - Ancient-Born)",
     "race": ["Dhampir", "Ancient-Born"],
@@ -5374,6 +6286,27 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.JurU0JeI27uBxqLH"
+  },
+  "K0OwTmAv3gNkTc8B": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Bloodmarked</p><p><strong>Replaced Trait</strong>: Change Shape (Skinwalker)</p><hr /><p><strong>Ability Modifiers</strong> +2 Int, -2 Wis (+2 Dex while shapechanged) @Toggle[Change Shape (Skinwalker, DEX)]</p><p><strong>Bestial Features</strong></p><ul><li><p>Bite attack that deals 1d6 points of damage</p></li><li><p>+4 racial bonus on Perception checks @Toggle[Change Shape (Skinwalker, Perception)]</p></li><li><p>Scent to a range of @Distance[30 ft;dual] @Toggle[Change Shape (Skinwalker, Scent)]</p></li><li><p>Treat falling damage as @Distance[20 ft;dual] less than it actually is @Toggle[Change Shape (Skinwalker, Falling Damage)]</p></li></ul><hr /><p><strong>Note</strong></p><p>You must modify your natural attack(s) to match the parameters specified in this trait, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</p><p>This trait works exactly like Change Shape (Skinwalker) except as detailed above.</p>",
+    "heritage": "Bloodmarked",
+    "id": "K0OwTmAv3gNkTc8B",
+    "name": "Change Shape (Skinwalker - Bloodmarked)",
+    "race": ["Skinwalker", "Bloodmarked"],
+    "replacedTraitNames": ["Change Shape (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "248"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "8"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.K0OwTmAv3gNkTc8B"
   },
   "K7YBN0QKQeWCJZ9K": {
     "changes": [],
@@ -5555,6 +6488,39 @@
       }
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.KW6G6g9qFZLryJxQ"
+  },
+  "KXcFJRaHS35vdjSn": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "dex",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Moon May</p><hr /><p>Ability Modifiers +2 Wis, +2 Cha, -2 Dex</p><p></p>",
+    "heritage": "Moon May",
+    "id": "KXcFJRaHS35vdjSn",
+    "name": "Ability Modifiers (Changeling - Moon May)",
+    "race": ["Changeling", "Moon May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "8"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.KXcFJRaHS35vdjSn"
   },
   "Knp7L2HErvfmxF5k": {
     "changes": [],
@@ -5747,6 +6713,39 @@
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.LUlO5qY8jJdj6gtz"
   },
+  "LVFFlvan4N1BQTEg": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Hearth May</p><hr /><p>Ability Modifiers +2 Wis, +2 Cha, -2 Con</p><p></p>",
+    "heritage": "Hearth May",
+    "id": "LVFFlvan4N1BQTEg",
+    "name": "Ability Modifiers (Changeling - Hearth May)",
+    "race": ["Changeling", "Hearth May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "5"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.LVFFlvan4N1BQTEg"
+  },
   "LcNmShAWgSJlqeMG": {
     "changes": [],
     "contextNotes": [],
@@ -5776,6 +6775,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Dhampir - Ru-Shi</p><p><strong>Replaced Trait(s)</strong>: Light Sensitivity (Dhampir)</p><hr /><p>Alternate Weakness: Ru-shis take a -1 penalty on saves against sonic effects and spells.</p>",
+    "heritage": "Ru-Shi",
     "id": "LdbfPqPoza3xBUde",
     "name": "Alternate Weakness (Dhampir - Ru-Shi)",
     "race": ["Dhampir", "Ru-Shi"],
@@ -5932,6 +6932,44 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.LzVmMiyx87KxfDai"
+  },
+  "M8L159eLa2EZlLWg": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Coldborn</p><p><strong>Replaced Trait</strong>: Change Shape (Skinwalker)</p><hr /><p><strong>Ability Modifiers</strong> +2 Constitution, -2 Charisma (+2 Wisdom while shapechanged) @Toggle[Change Shape (Skinwalker, WIS)]</p><p><strong>Bestial Features</strong></p><ul><li><p>Bite attack that deals 1d6 points of damage</p></li><li><p>2 claw attacks that each deal 1d4 points of damage</p></li><li><p>Climb speed of @Distance[20 ft;dual] @Toggle[Change Shape (Skinwalker, Climb Speed, Short)]</p></li><li><p>Scent to a range of @Distance[30 ft;dual] @Toggle[Change Shape (Skinwalker, Scent)]</p></li></ul><hr /><p><strong>Note</strong></p><p>You must modify your natural attack(s) to match the parameters specified in this trait, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</p><p>This trait works exactly like Change Shape (Skinwalker) except as detailed above.</p>",
+    "heritage": "Coldborn",
+    "id": "M8L159eLa2EZlLWg",
+    "name": "Change Shape (Skinwalker - Coldborn)",
+    "race": ["Skinwalker", "Coldborn"],
+    "replacedTraitNames": ["Change Shape (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "248"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "10"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.M8L159eLa2EZlLWg"
+  },
+  "MHNxeoT3fFxa3kL2": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Aerieborn</p><p><strong>Replaced Trait</strong>: Change Shape (Skinwalker)</p><hr /><p><strong>Ability Modifiers</strong> +2 Wis, –2 Cha (+2 Dex while shapechanged) @Toggle[Change Shape (Skinwalker, DEX)]</p><p><strong>Bestial Features</strong></p><ul><li><p>Bite attack that deals 1d6 points of damage</p></li><li><p>2 talon attacks that each deal 1d4 points of damage</p></li><li><p>+4 racial bonus on Perception checks @Toggle[Change Shape (Skinwalker, Perception)]</p></li><li><p>Increase fly speeds from other sources by @Distance[10 ft;dual] @Toggle[Change Shape (Skinwalker, Fly Speed)]</p><p></p></li></ul><hr /><p><strong>Note</strong></p><p>You must modify your natural attack(s) to match the parameters specified in this trait, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</p><p>This trait works exactly like Change Shape (Skinwalker) except as detailed above.</p>",
+    "heritage": "Aerieborn",
+    "id": "MHNxeoT3fFxa3kL2",
+    "name": "Change Shape (Skinwalker - Aerieborn)",
+    "race": ["Skinwalker", "Aerieborn"],
+    "replacedTraitNames": ["Change Shape (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO90115",
+        "pages": "89"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.MHNxeoT3fFxa3kL2"
   },
   "MNr30PKDqT4GLw8q": {
     "changes": [],
@@ -6154,6 +7192,39 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.MvSLvnvs1jpqtzKq"
   },
+  "MzrlHdX4eG9oXoB5": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.clm",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.dip",
+        "text": "+[[2]] racial bonus on wild empathy checks."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Skinwalker - Coldborn</p><p><strong>Replaced Trait</strong>: Animal-Minded</p><hr /><p><strong>Alternate Skill Modifiers</strong> Climb, wild empathy</p>",
+    "heritage": "Coldborn",
+    "id": "MzrlHdX4eG9oXoB5",
+    "name": "Alternate Skill Modifiers (Skinwalker - Coldborn)",
+    "race": ["Skinwalker", "Coldborn"],
+    "replacedTraitNames": ["Animal-Minded"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "248"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "10"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.MzrlHdX4eG9oXoB5"
+  },
   "NApPIjNkVNBxzQS3": {
     "changes": [],
     "contextNotes": [
@@ -6198,7 +7269,7 @@
     "id": "NBbiF9fQTgRfNaFb",
     "name": "Hag Magic (AoE)",
     "race": ["Changeling"],
-    "replacedTraitNames": ["Claws; Natural Armor"],
+    "replacedTraitNames": ["Claws", "Natural Armor"],
     "sources": [
       {
         "id": "PZO9464",
@@ -6271,6 +7342,18 @@
     "description": "<p><strong>Race</strong>: Wyvaran<br /><strong>Replaced Trait(s)</strong>: Flight</p><hr /><p>Generations of wyvaran elders pass down tales that predate written history. While many ignore these or dismiss them as simple stories, others revere the lore of their elders. These wyvarans consider it their sacred duty to study the lost histories and pass them down to others. They gain a +2 racial bonus on two Knowledge skills of their choice. Those Knowledge skills are class skills for them. This racial trait replaces flight.</p><hr /><p><strong>Note</strong></p><p>Choose two Knowledge skills.  Update the class skills section of the details tab, and the untargeted changes on the changes tab, of this trait to reflect your choices.</p>",
     "id": "NNo2plkEqcGzHrDO",
     "name": "Memories of the Forgotten",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Wyvaran"],
     "replacedTraitNames": ["Flight"],
     "sources": [
@@ -6615,6 +7698,18 @@
     "description": "<p><strong>Race</strong>: Elf<br /><strong>Replaced Trait(s)</strong>: Elven Immunities, Elven Magic</p><hr /><p>Some elves are born with sensitive souls that absorb insight from others and from the spirits of the deceased. These elves gain a +2 racial bonus on saving throws against fear effects. They also choose two Knowledge skills and always treat those skills as class skills. If they take a class that grants either or both of those skills as class skills, they gain a +1 racial bonus on the overlapping skill or skills. This racial trait replaces elven immunities and elven magic.</p><hr /><p><strong>Note</strong></p><p>Activate chosen skills as class skills in the details tab of this trait and update or delete  the untargeted changes on the changes tab as applicable.</p>",
     "id": "O6yQCQgndhuYUxgN",
     "name": "Memories Beyond Death",
+    "openChanges": [
+      {
+        "formula": "1",
+        "target": "",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Elf"],
     "replacedTraitNames": ["Elven Immunities", "Elven Magic"],
     "sources": [
@@ -6664,6 +7759,40 @@
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.O79h8E0bytNQ3Wte"
   },
+  "OKOj8Njd7R51xoXM": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dis",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.int",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Hungerseed</p><hr /><p>Hungerseed gain a +2 racial bonus on Disguise and Intimidate checks.</p>",
+    "heritage": "Hungerseed",
+    "id": "OKOj8Njd7R51xoXM",
+    "name": "Skilled (Tiefling - Hungerseed)",
+    "race": ["Tiefling", "Hungerseed"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.OKOj8Njd7R51xoXM"
+  },
   "OSKe4wubLjYQOswq": {
     "changes": [],
     "contextNotes": [],
@@ -6683,6 +7812,33 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.OSKe4wubLjYQOswq"
+  },
+  "OayRgLPHanjzhdK0": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Hellspawn</p><hr /><p>Hellspawn can use Pyrotechnics once per day as a spell-like ability (with a caster level equal to their character level).</p><p></p>",
+    "heritage": "Hellspawn",
+    "id": "OayRgLPHanjzhdK0",
+    "name": "Spell-Like Ability (Tiefling - Hellspawn)",
+    "race": ["Tiefling", "Hellspawn"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.OayRgLPHanjzhdK0"
   },
   "OcHofX7dmPTO2FJc": {
     "changes": [],
@@ -6876,7 +8032,7 @@
     "id": "Owfw2qBYmmKJsSYD",
     "name": "Martial Recollection",
     "race": ["Ghoran"],
-    "replacedTraitNames": ["Seed; Nature Magic"],
+    "replacedTraitNames": ["Seed", "Nature Magic"],
     "sources": [
       {
         "id": "PZO1140",
@@ -6892,7 +8048,7 @@
     "id": "P32v41a5IFStjrX2",
     "name": "Experimental Body: Blessed",
     "race": ["Wyrwood"],
-    "replacedTraitNames": ["Darkvision; Low-Light Vision"],
+    "replacedTraitNames": ["Darkvision", "Low-Light Vision"],
     "sources": [
       {
         "id": "PZO9495",
@@ -7072,6 +8228,13 @@
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Ability Score Modifiers, Adaptability, Elven Immunities, Keen Senses, Multitalented</p><hr /><p>While most think of people with one human and one elven parent when they think of half-elves, some half-elves are raised by two half-elven parents. Such half-elves feel less like outsiders, making them more confident, but less adaptable without the exposure to a human parent. They gain a +2 bonus to Charisma and one other ability score of their choice. This racial trait replaces the half-elf 's usual racial ability score modifiers, as well as adaptability, elven immunities, keen senses, and multitalented.</p><hr /><p><strong>Note</strong></p><p>Select one ability, other than Charisma. Update the target of the untargeted Change on the Changes tab of this trait to reflect your choice.</p><p>remove all of these standard traits:</p><p>+2 to One Ability Score (Half-Elf); Adaptability; Elven Immunities (Half-Elf); Keen Senses (Half-Elf); Multitalented</p>",
     "id": "PZivMg8Pl1LRnSQE",
     "name": "Kindred-Raised",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "untyped"
+      }
+    ],
     "race": ["Half-Elf"],
     "replacedTraitNames": [
       "Ability Score Modifiers",
@@ -7141,6 +8304,32 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.PoeOzomLE0yQZG39"
+  },
+  "PpiI4GuDb2S5SPo6": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Angelkin</p><hr /><p>Idyllkins can use Summon Nature's Ally II once per day as a spell-like ability (with a caster level equal to the Idyllkin's character level).</p>",
+    "heritage": "Idyllkin",
+    "id": "PpiI4GuDb2S5SPo6",
+    "name": "Spell-Like Ability (Aasimar - Idyllkin)",
+    "race": ["Aasimar", "Idyllkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "238"
+      },
+      {
+        "id": "PZO9424",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.PpiI4GuDb2S5SPo6"
   },
   "PtZLDuOW5e0OoVsx": {
     "changes": [],
@@ -7348,6 +8537,27 @@
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.QdzlzrqWtgfjE4Fs"
   },
+  "Qgkfifudu74ghm0o": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Witchwolf</p><p><strong>Replaced Trait</strong>: Change Shape (Skinwalker)</p><hr /><p><strong>Ability Modifiers</strong> +2 Constitution, –2 Intelligence (+2 Wisdom while shapechanged) @Toggle[Change Shape (Skinwalker, WIS)]</p><p><strong>Bestial Features</strong></p><ul><li><p>Bite attack that deals 1d6 points of damage</p></li><li><p>2 claw attacks that each deal 1d4 points of damage</p></li><li><p>Darkvision @Distance[60 ft;dual] @Toggle[Change Shape (Skinwalker, Darkvision)]</p></li><li><p>+2 racial bonus on all saving throws @Toggle[Change Shape (Skinwalker, Saving Throws)]</p></li></ul><hr /><p><strong>Note</strong></p><p>You must modify your natural attack(s) to match the parameters specified in this trait, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</p><p>This trait works exactly like Change Shape (Skinwalker) except as detailed above.</p>",
+    "heritage": "Witchwolf",
+    "id": "Qgkfifudu74ghm0o",
+    "name": "Change Shape (Skinwalker - Witchwolf)",
+    "race": ["Skinwalker", "Witchwolf"],
+    "replacedTraitNames": ["Change Shape (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "24"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.Qgkfifudu74ghm0o"
+  },
   "QkJI00xDaBcowq2i": {
     "changes": [],
     "contextNotes": [],
@@ -7460,6 +8670,49 @@
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.R7UDXRs0E5klyzCY"
   },
+  "RI0jgkyo4Dhyk5zs": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "rangedWeapon",
+        "text": "You are treated as two size categories larger for the purpose of resolving wind effects."
+      },
+      {
+        "target": "skill.fly",
+        "text": "You are treated as two size categories larger for the purpose of resolving wind effects."
+      },
+      {
+        "target": "skill.per",
+        "text": "You are treated as two size categories larger for the purpose of resolving wind effects."
+      },
+      {
+        "target": "strChecks",
+        "text": "You are treated as two size categories larger for the purpose of resolving wind effects."
+      },
+      {
+        "target": "skill.acr",
+        "text": "You are treated as two size categories larger for the purpose of resolving wind effects."
+      },
+      {
+        "target": "skill.clm",
+        "text": "You are treated as two size categories larger for the purpose of resolving wind effects."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Changeling - Virga May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>Storm-born changelings are treated as two size categories larger for the purpose of resolving wind effects.</p><hr /><p><strong>Note</strong></p><p>see table 4-28 on page 170 of ultimate wilderness for wind effects</p>",
+    "heritage": "Virga May",
+    "id": "RI0jgkyo4Dhyk5zs",
+    "name": "Hag Racial Trait (Changeling - Virga May)",
+    "race": ["Changeling", "Virga May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "9"
+      }
+    ],
+    "traitCategory": "other",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.RI0jgkyo4Dhyk5zs"
+  },
   "RKCOV7Roq9MdxLZ5": {
     "changes": [
       {
@@ -7534,6 +8787,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Half-Elf (Snowborn only)<br /><strong>Replaced Trait(s)</strong>: Elven Immunities</p><hr /><p>Snowborn can move through natural snow and ice at their normal speed and gain a +4 racial bonus on Fortitude saves to avoid nonlethal damage from cold environments. This racial trait replaces the elven immunities racial trait.</p>",
+    "heritage": "Snowborn",
     "id": "RX8XCS2CoFhYwiBG",
     "name": "Cold-Honed",
     "race": ["Half-Elf", "Snowborn"],
@@ -7665,6 +8919,50 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.Rj3X80eJLvjX0SpQ"
   },
+  "RleWFHpXOUaneeqN": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Seascarred</p><p><strong>Replaced Trait</strong>: Spell-Like Ability (Skinwalker)</p><hr /><p><strong>Alternate Spell-Like Ability</strong> charm animal (aquatic animals only) 3/day</p>",
+    "heritage": "Seascarred",
+    "id": "RleWFHpXOUaneeqN",
+    "name": "Alternate Spell-Like Ability (Skinwalker - Seascarred)",
+    "race": ["Skinwalker", "Seascarred"],
+    "replacedTraitNames": ["Spell-Like Ability (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.RleWFHpXOUaneeqN"
+  },
+  "RpWzdpSJZcaBAvhn": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Sylph - Smokesoul</p><hr /><p>Smokesouls can use blurred movement 1/day as a spell-like ability (with a caster level equal to the Smokesoul's character level).</p>",
+    "heritage": "Smokesoul",
+    "id": "RpWzdpSJZcaBAvhn",
+    "name": "Spell-Like Ability (Sylph - Smokesoul)",
+    "race": ["Sylph", "Smokesoul"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.RpWzdpSJZcaBAvhn"
+  },
   "Rx1ayk8e3zpDoslL": {
     "changes": [],
     "contextNotes": [
@@ -7793,6 +9091,13 @@
     "description": "<p><strong>Race</strong>: Half-Orc<br /><strong>Replaced Trait(s)</strong>: Ability Score Modifiers, Intimidating, Orc Blood, Orc Ferocity</p><hr /><p>Some half-orcs have much stronger orc blood than human blood. Such half-orcs count as only half-orcs and orcs (not also humans) for any effect related to race. They gain a +2 bonus to Strength and a -2 penalty to one mental ability score of their choice. Finally, they gain the ferocity universal monster ability. This racial trait replaces the half-orc's usual racial ability score modifiers, as well as intimidating, orc blood, and orc ferocity.</p><hr /><p><strong>Note</strong></p><p>CHoose one mental ability score.  update the untargeted change on the changes tab of this trait to reflect your choice.</p><p>Remove all four of these traits: +2 to One Ability Score (Half-Orc); Intimidating; Orc Blood; Orc Ferocity</p>",
     "id": "SJOcTJ2MQI3AoMeh",
     "name": "Orc Atavism",
+    "openChanges": [
+      {
+        "formula": "-2",
+        "target": "",
+        "type": "untyped"
+      }
+    ],
     "race": ["Half-Orc"],
     "replacedTraitNames": ["Ability Score Modifiers", "Intimidating", "Orc Blood", "Orc Ferocity"],
     "sources": [
@@ -7913,6 +9218,18 @@
     "description": "<p><strong>Race</strong>: Human<br /><strong>Replaced Trait(s)</strong>: +2 to One Ability Score, Bonus Feat, Skilled</p><hr /><p>Some humans are uniquely skilled at maximizing their natural gifts. These humans pick two ability scores and gain a +2 racial bonus in each of those scores. This racial trait replaces the +2 bonus to any one ability score, the bonus feat, and the skilled traits.</p><hr /><p><strong>Note</strong></p><p>Select 2 different ability scores. Update the Changes on the changes tab of this trait to reflect your choices.</p><p>Remove +2 to One Ability Score (Human); Skilled (Human); Bonus Feat (Human)</p>",
     "id": "SRBfqkzIldwETAHB",
     "name": "Dual Talent",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Human"],
     "replacedTraitNames": ["+2 to One Ability Score", "Bonus Feat", "Skilled"],
     "sources": [
@@ -7995,6 +9312,33 @@
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.SnhFeGgq8qpGMVDh"
   },
+  "Son5Vq5HQepEZIzC": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "skill.acr",
+        "text": "+[[5]] Racial bonus on icy or slippery surfaces."
+      },
+      {
+        "target": "skill.clm",
+        "text": "+[[5]] Racial bonus on icy or slippery surfaces."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Changeling - Snow May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>Winter-born changelings gain a +5 racial bonus on Acrobatics and Climb checks on icy or slippery surfaces.</p>",
+    "heritage": "Snow May",
+    "id": "Son5Vq5HQepEZIzC",
+    "name": "Hag Racial Trait (Changeling - Snow May)",
+    "race": ["Changeling", "Snow May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "9"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.Son5Vq5HQepEZIzC"
+  },
   "SpAdy1qMBxoxTQLN": {
     "changes": [],
     "contextNotes": [],
@@ -8011,6 +9355,22 @@
     ],
     "traitCategory": "other",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.SpAdy1qMBxoxTQLN"
+  },
+  "SqRzbbqegU7NiqI0": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Duergar<br /><strong>Replaced Trait(s)</strong>: <i>Invisibility</i> Spell-Like Ability</p><hr /><p>Some duergar demonstrate magic of a more insidious kind than the rest of their kin, a difference that is often taken to be a sign of Droskar's blessing. They can use charm person once per day as a spell-like ability. The save DC is equal to 10 + 1/2 duergar's Hit Dice + duergar's Wisdom modifier. This racial trait replaces the invisibility spell-like ability racial trait.</p><hr /><p><strong>Note</strong></p><p>This trait replaces Spell-Like Abilities (Duergar - Invisibility)</p>",
+    "id": "SqRzbbqegU7NiqI0",
+    "name": "Magical Taskmaster",
+    "race": ["Duergar"],
+    "replacedTraitNames": ["Invisibility Spell-Like Ability"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "215"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.SqRzbbqegU7NiqI0"
   },
   "Sqo8OXSw1NiFWFKB": {
     "changes": [],
@@ -8145,6 +9505,75 @@
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.T88sJDx0MPvvjKtb"
   },
+  "TJfxEOgpWyjJcZJJ": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Ifrit - Sunsoul</p><hr /><p>Sunsouls gain sun metal as a spell-like ability.</p>",
+    "heritage": "Sunsoul",
+    "id": "TJfxEOgpWyjJcZJJ",
+    "name": "Spell-Like Ability (Ifrit - Sunsoul)",
+    "race": ["Ifrit", "Sunsoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.TJfxEOgpWyjJcZJJ"
+  },
+  "TNbX1iRPplCIvhdO": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Pitborn</p><hr /><p>Pitborn can use Shatter once per day as a spell-like ability (with a caster level equal to their character level).</p><p></p>",
+    "heritage": "Pitborn",
+    "id": "TNbX1iRPplCIvhdO",
+    "name": "Spell-Like Ability (Tiefling - Pitborn)",
+    "race": ["Tiefling", "Pitborn"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.TNbX1iRPplCIvhdO"
+  },
+  "TOl6oVYoCVFP8YbS": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Oread - Ironsoul</p><hr /><p>Ironsoul sorcerers with the shaitan bloodline treat their Charisma scores as 2 points higher for the purposes of all sorcerer spells and class abilities. Ironsoul clerics with the Metal subdomain use their domain powers and spells at +1 caster level.</p><hr /><p><strong>Note</strong></p><p>Add the bonus for each related spell, class ability, or domain power manually.</p>",
+    "heritage": "Ironsoul",
+    "id": "TOl6oVYoCVFP8YbS",
+    "name": "Metal Affinity (Oread - Ironsoul)",
+    "race": ["Oread", "Ironsoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.TOl6oVYoCVFP8YbS"
+  },
   "TQUVpXNu7bAbTEAy": {
     "changes": [],
     "contextNotes": [
@@ -8278,6 +9707,7 @@
     ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf (Spireborn only)<br /><strong>Replaced Trait(s)</strong>: Adaptability</p><hr /><p>Spireborn add +1 to the caster level of any transmutation spells they cast. Spireborn with a Charisma score of 11 or higher also gain the following spell-like abilities: 1/day: Comprehend languages, detect secret doors, erase, and read magic. The caster level for these effects is equal to the Spireborn's character level.</p><p>This replaces adaptability.</p><p></p>",
+    "heritage": "Spireborn",
     "id": "ThceEvBPQBpGFGS0",
     "name": "Mordant Envoy",
     "race": ["Half-Elf", "Spireborn"],
@@ -8515,6 +9945,30 @@
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.Ucd87mayBCsB4mpW"
   },
+  "Ud0HV2vZPaqEryKB": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "mdamage",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Slag May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>Annis-born changelings gain a +1 racial bonus on melee damage rolls.</p>",
+    "heritage": "Slag May",
+    "id": "Ud0HV2vZPaqEryKB",
+    "name": "Hag Racial Trait (Changeling - Slag May)",
+    "race": ["Changeling", "Slag May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "5"
+      }
+    ],
+    "traitCategory": "offense",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.Ud0HV2vZPaqEryKB"
+  },
   "Uu1wTwtXGLuFWugv": {
     "changes": [],
     "contextNotes": [
@@ -8594,6 +10048,37 @@
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.UzMmqEyE5E3VDox0"
   },
+  "V1sxwRKkE3x6qoMX": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Ifrit - Lavasoul</p><hr /><p>Lavasouls gain burning sands as a spell-like ability.</p>",
+    "heritage": "Lavasoul",
+    "id": "V1sxwRKkE3x6qoMX",
+    "name": "Spell-Like Ability (Ifrit - Lavasoul)",
+    "race": ["Ifrit", "Lavasoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "245"
+      },
+      {
+        "id": "PZO1116",
+        "pages": "160"
+      },
+      {
+        "id": "PZO1121",
+        "pages": "127"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.V1sxwRKkE3x6qoMX"
+  },
   "V20dpuTbpcjyZ61Z": {
     "changes": [],
     "contextNotes": [
@@ -8615,6 +10100,68 @@
     ],
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.V20dpuTbpcjyZ61Z"
+  },
+  "V4zztgoZn2hLGEld": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.sen",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Aerieborn</p><p><strong>Replaced Trait</strong>: Animal-Minded</p><hr /><p><strong>Alternate Skill Modifiers</strong> Perception, Sense Motive</p>",
+    "heritage": "Aerieborn",
+    "id": "V4zztgoZn2hLGEld",
+    "name": "Alternate Skill Modifiers (Skinwalker - Aerieborn)",
+    "race": ["Skinwalker", "Aerieborn"],
+    "replacedTraitNames": ["Animal-Minded"],
+    "sources": [
+      {
+        "id": "PZO90115",
+        "pages": "89"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.V4zztgoZn2hLGEld"
+  },
+  "V5V8tGIQ5JWnd9mq": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.han",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.sur",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Idyllkin</p><hr /><p>Idyllkins have a +2 racial bonus on Handle Animal, and Survival checks.</p>",
+    "heritage": "Idyllkin",
+    "id": "V5V8tGIQ5JWnd9mq",
+    "name": "Skilled (Aasimar - Idyllkin)",
+    "race": ["Aasimar", "Idyllkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9424",
+        "pages": "21"
+      },
+      {
+        "id": "PZO9280",
+        "pages": "238"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.V5V8tGIQ5JWnd9mq"
   },
   "VIBm0jH0Xerz1xxp": {
     "changes": [],
@@ -8657,6 +10204,28 @@
     ],
     "traitCategory": "movement",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.VIu4idSpcjqKbD1s"
+  },
+  "VKKENsPZuC210Ock": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Seascarred</p><p><strong>Replaced Trait</strong>: Spell-Like Ability (Skinwalker)</p><hr /><p><strong>Alternate Spell-Like Ability</strong> magic fang 1/day</p>",
+    "heritage": "Witchwolf",
+    "id": "VKKENsPZuC210Ock",
+    "name": "Alternate Spell-Like Ability (Skinwalker - Witchwolf)",
+    "race": ["Skinwalker", "Witchwolf"],
+    "replacedTraitNames": ["Spell-Like Ability (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "24"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.VKKENsPZuC210Ock"
   },
   "VMdfkHxhfKgt1aOq": {
     "changes": [],
@@ -8764,6 +10333,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Half-Orc (Gloomkin Only) <br /><strong>Replaced Trait(s)</strong>: Intimidating</p><hr /><p>Having lived all their lives at the mercy of savage underworld creatures, some gloomkin develop an uncanny knack for finding their way about silently in the dark. While underground, Darklands half-orcs with this racial trait gain a +5 racial bonus on Survival checks to avoid becoming lost, and a +1 racial bonus on Stealth checks. This racial trait replaces the intimidating racial trait.</p>",
+    "heritage": "Gloomkin",
     "id": "VmHT9b6yPqZD8typ",
     "name": "Evader (Gloomkin)",
     "race": ["Half-Orc", "Gloomkin"],
@@ -8893,6 +10463,13 @@
     "description": "<p><strong>Race</strong>: Halfling<br /><strong>Replaced Trait(s)</strong>: Fearless, Sure-Footed</p><hr /><p>Halflings value hard work and common sense. Halflings with this racial trait gain a +2 bonus on any one Craft or Profession skill, as well as on Sense Motive checks and saves against illusions. This racial trait replaces fearless and sure-footed.</p><hr /><p><strong>Note</strong></p><p>Select one Craft or Profession skill when you take this trait. Update the Skills tab of your Actor to add the chosen skill. Update the target of the untargeted Change on the Changes tab of this trait to reflect your choice.</p>",
     "id": "WDeyEgmjJDg4h1TC",
     "name": "Practicality",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Halfling"],
     "replacedTraitNames": ["Fearless", "Sure-Footed"],
     "sources": [
@@ -8948,7 +10525,7 @@
     "id": "WJO1PMH4T8qWg9wK",
     "name": "Experimental Body: Fey-Touched",
     "race": ["Wyrwood"],
-    "replacedTraitNames": ["Darkvision; Low-Light Vision"],
+    "replacedTraitNames": ["Darkvision", "Low-Light Vision"],
     "sources": [
       {
         "id": "PZO9495",
@@ -9107,6 +10684,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Half-Elf (Wildborn only)<br /><strong>Replaced Trait(s)</strong>: Multitalented</p><hr /><p>Wildborn gain a +4 racial bonus on Stealth checks while within jungle terrain and can move through natural difficult terrain in a jungle at their normal speed.</p><p>This trait replaces multitalented.</p>",
+    "heritage": "Wildborn",
     "id": "WyTkLcKys4Jy29Q2",
     "name": "Jungle Affinity",
     "race": ["Half-Elf", "Wildborn"],
@@ -9228,6 +10806,27 @@
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.XOISvyFa8ZziUEak"
   },
+  "XSk0ArPbEAnqz9Fm": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>At the end of the Age of Darkness, when light returned to Golarion, many orcs lost their footholds on the surface world and returned to the Darklands, taking their half-orc progeny with them. Of all the half-orcs, gloomkin face the harshest treatment; they are punished and abused from birth for what orcs consider the taint of their bloodline. As the bottom of the social ladder in orc society, gloomkin are assigned the task that very few orcs take on willingly: reading. They are the historians, scribes, and advisors, placing them in a key position to discover secrets and gain influence without drawing attention to themselves.</p>",
+    "heritage": "Gloomkin",
+    "id": "XSk0ArPbEAnqz9Fm",
+    "name": "Darklands Half-Orcs (Gloomkin)",
+    "race": ["Half-Orc", "Gloomkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9491",
+        "pages": "24"
+      },
+      {
+        "id": "PZO9442",
+        "pages": "11"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.XSk0ArPbEAnqz9Fm"
+  },
   "XVm7uHb6cw0AiUOh": {
     "changes": [],
     "contextNotes": [
@@ -9311,6 +10910,39 @@
     ],
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.XXB7Lnp9pMBlS5Or"
+  },
+  "XimaceQ6IAlJuIDD": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dip",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.prf",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Musetouched</p><hr /><p>Musetouched have a +2 racial bonus on Diplomacy and Perform checks.</p>",
+    "heritage": "Musetouched",
+    "id": "XimaceQ6IAlJuIDD",
+    "name": "Skilled (Aasimar - Musetouched)",
+    "race": ["Aasimar", "Musetouched"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9424",
+        "pages": "22"
+      },
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.XimaceQ6IAlJuIDD"
   },
   "XpZ3k2gmqEF6xnuE": {
     "changes": [
@@ -9659,10 +11291,34 @@
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.YoZiTsd9x0KSCOi7"
   },
+  "YrJvLipI70b73JIP": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Racial bonus against disease."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Changeling - Moon May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>Night-born changelings gain a +2 racial bonus on saving throws against disease.</p>",
+    "heritage": "Moon May",
+    "id": "YrJvLipI70b73JIP",
+    "name": "Hag Racial Trait (Changeling - Moon May)",
+    "race": ["Changeling", "Moon May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "8"
+      }
+    ],
+    "traitCategory": "defense",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.YrJvLipI70b73JIP"
+  },
   "YsUd35wRZBO17r05": {
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Wild and passionate, the half-elven children of the Ekujae live hard lives and constantly strive to prove themselves to others.</p><p><strong>Elven Ancestry</strong> Ekujae elves<br /><strong>Human Ancestry</strong> Garundi, Keleshite, Mwangi<br /><strong>Regions </strong>Mwangi Expanse, northern Garund<br /><strong>Languages </strong>Elven, Kelish, Osiriani, Polyglot</p><p>The half-elves of the Mwangi Expanse have the dark skin of their Ekujae parents, but they tend to be closer in stature and build to their human parents, allowing wildborn to pass for human more easily than most of their fellow half-elves. These half-elves are equally at home in the wilds of the jungle or arranging trade deals in the larger Mwangi cities. While some Ekujae raise their wildborn children, others ritually turn over their half-elven offspring to specific half-elven villages within their Mwangi nation. The adult wildborn of these villages seek out and accept any of these children who might have fallen through the cracks, raising them with respect for both the wilderness and society. Even a few half-elves from other backgrounds travel to the Mwangi Expanse to join these villages, finding acceptance they can’t get anywhere else. The members of these villages protect their homes fiercely, and few dare attack them.</p>",
+    "heritage": "Wildborn",
     "id": "YsUd35wRZBO17r05",
     "name": "Ekujae Half-Elves (Wildborn)",
     "race": ["Half-Elf", "Wildborn"],
@@ -9787,6 +11443,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Half-Orc (Rainkin Only)<br /><strong>Replaced Trait(s)</strong>: Orc Ferocity</p><hr /><p>Many rainkin are protected from Angazhan worshipers' power by elaborate tattoos that redirect demonic magic. Jungle half-orcs with this racial trait gain spell resistance against divine magic equal to 6 + their level. Additionally, divine spells cast on them by demon worshipers have a 10% chance of failure. This racial trait replaces the orc ferocity racial trait.</p>",
+    "heritage": "Rainkin",
     "id": "ZP4KHOyP79pyrBpj",
     "name": "Warded Skin (Rainkin)",
     "race": ["Half-Orc", "Rainkin"],
@@ -9803,6 +11460,28 @@
     ],
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.ZP4KHOyP79pyrBpj"
+  },
+  "ZTMNDc8mw9C76y6N": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Sylph - Stormsoul</p><hr /><p>Stormsouls can use shocking grasp 1/day as a spell-like ability (with a caster level equal to the Stormsoul's character level).</p>",
+    "heritage": "Stormsoul",
+    "id": "ZTMNDc8mw9C76y6N",
+    "name": "Spell-Like Ability (Sylph - Stormsoul)",
+    "race": ["Sylph", "Stormsoul"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.ZTMNDc8mw9C76y6N"
   },
   "ZUlAuMYGeCq9IacX": {
     "changes": [
@@ -10196,6 +11875,25 @@
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.aZ0NT0LR405tLHHB"
   },
+  "afX2SurqCJrV7f4B": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Ifrit - Sunsoul</p><hr /><p>Sunsoul sorcerers with the celestial bloodline treat their Charisma scores as 2 points higher for the purposes of all sorcerer spells and class abilities. Sunsoul spellcasters with the Sun domain use their domain powers and spells at +1 caster level.</p><hr /><p><strong>Note</strong></p><p>Add the bonus for each related spell, class ability, or domain power manually.</p>",
+    "heritage": "Sunsoul",
+    "id": "afX2SurqCJrV7f4B",
+    "name": "Solar Affinity (Ifrit - Sunsoul)",
+    "race": ["Ifrit", "Sunsoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.afX2SurqCJrV7f4B"
+  },
   "agV4JlEfsL4HLNZo": {
     "changes": [
       {
@@ -10333,6 +12031,32 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.b4nkYIUM9HzTUL76"
   },
+  "b6I8HENTNj6Gyyg1": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Emberkin</p><hr /><p>Emberkin can use Pyrotechnics once per day as a spell-like ability (with a caster level equal to the Emberkin's character level).</p>",
+    "heritage": "Emberkin",
+    "id": "b6I8HENTNj6Gyyg1",
+    "name": "Spell-Like Ability (Aasimar - Emberkin)",
+    "race": ["Aasimar", "Emberkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      },
+      {
+        "id": "PZO9424",
+        "pages": "23"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.b6I8HENTNj6Gyyg1"
+  },
   "b8mD388daeaoKidm": {
     "changes": [],
     "contextNotes": [],
@@ -10436,6 +12160,28 @@
     "traitCategory": "senses",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.bPXRe93Nx2bL4PL7"
   },
+  "bQz5WGBgK1x813HO": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Scaleheart</p><p><strong>Replaced Trait</strong>: Spell-Like Ability (Skinwalker)</p><hr /><p><strong>Alternate Spell-Like Ability</strong> scare 1/day</p>",
+    "heritage": "Scaleheart",
+    "id": "bQz5WGBgK1x813HO",
+    "name": "Alternate Spell-Like Ability (Skinwalker - Scaleheart)",
+    "race": ["Skinwalker", "Scaleheart"],
+    "replacedTraitNames": ["Spell-Like Ability (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "14"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.bQz5WGBgK1x813HO"
+  },
   "bTtU2YtIbpt4TyD1": {
     "changes": [
       {
@@ -10451,6 +12197,7 @@
     ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Dhampir - Svetocher<br /><strong>Replaced Trait(s)</strong>: Manipulative</p><hr /><p>Alternate Skill Modifiers: Diplomacy, Knowledge (nobility)</p>",
+    "heritage": "Svetocher",
     "id": "bTtU2YtIbpt4TyD1",
     "name": "Alternate Skill Modifiers (Dhampir - Svetocher)",
     "race": ["Dhampir", "Svetocher"],
@@ -10523,6 +12270,13 @@
     "description": "<p><strong>Race</strong>: Half-Orc<br /><strong>Replaced Trait(s)</strong>: Darkvision, Orc Ferocity</p><hr /><p>Some orcs seek out human mates in hopes of birthing intelligent leaders for their interminable war efforts. When nature and luck smile upon this endeavor and a half-orc child shows cunning, that child is raised with many harrowing opportunities to learn how to best lead on the battlefield. Such half-orcs gain a +2 bonus on Diplomacy and Profession (soldier) checks as well as to their Leadership score (for the purpose of the Leadership feat). Armies they control in mass combat gain a +1 bonus to Morale. (See <em>Pathfinder RPG Ultimate Campaign</em>.) This racial trait replaces darkvision and orc ferocity.</p><hr /><p><strong>Note</strong></p><p>Update the Skills tab of your Actor to add the Profession (soldier) skill.  Update the target of the changes on the Changes tab of this trait to reflect Profession (brewer).</p>",
     "id": "bWTblS61a4GQlsgx",
     "name": "War-Leader",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Half-Orc"],
     "replacedTraitNames": ["Darkvision", "Orc Ferocity"],
     "sources": [
@@ -10579,6 +12333,32 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.bcJGI384LPRwuj2a"
+  },
+  "biy9S2be3p758hMW": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Plumekith</p><hr /><p>Plumekith can use See Invisibility once per day as a spell-like ability (with a caster level equal to the Plumekith's character level).</p>",
+    "heritage": "Plumekith",
+    "id": "biy9S2be3p758hMW",
+    "name": "Spell-Like Ability (Aasimar - Plumekith)",
+    "race": ["Aasimar", "Plumekith"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      },
+      {
+        "id": "PZO9424",
+        "pages": "23"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.biy9S2be3p758hMW"
   },
   "bsDeGqpk9ZF84qoS": {
     "changes": [
@@ -10746,6 +12526,40 @@
     "traitCategory": "magical",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.cL7K05jKkXxOmOt5"
   },
+  "cML095CltG7ZpUSM": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.esc",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.int",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Shackleborn</p><hr /><p>Shackleborn gain a +2 racial bonus on Escape Artist and Intimidate checks.</p>",
+    "heritage": "Shackleborn",
+    "id": "cML095CltG7ZpUSM",
+    "name": "Skilled (Tiefling - Shackleborn)",
+    "race": ["Tiefling", "Shackleborn"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.cML095CltG7ZpUSM"
+  },
   "cRbTJE910TfKzJAt": {
     "changes": [
       {
@@ -10790,6 +12604,13 @@
     "description": "<p><strong>Race</strong>: Kobold<br /><strong>Replaced Trait(s)</strong>: Crafty</p><hr /><p>Your horns have grown to the extent  that they appear similar to those of a dragon who shares  your scale color, lending a draconic power or menace to  your dealings with others. Choose either Diplomacy or  Intimidate. You gain a +2 racial bonus on checks with that  skill, and it is always a class skill for you. This racial trait  replaces crafty.</p><hr /><p><strong>Note</strong></p><p>Choose <span style=\"font-family: Signika, sans-serif\">Diplomacy or Intimidate.  Update the </span>class skill section of the Details tab, and  the untargeted change on the Changes tab, of this trait to reflect your choice.</p>",
     "id": "cUYl6WPG3gIKBkIe",
     "name": "Wyrmcrowned",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Kobold"],
     "replacedTraitNames": ["Crafty"],
     "sources": [
@@ -10944,6 +12765,33 @@
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.d6YoCC2UVK8jUmf8"
   },
+  "dEtxdn5mLY5M3i45": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Dhampir - Ru-Shi</p><p><strong>Replaced Trait(s):</strong>Spell-Like Ability (Dhampir)</p><hr /><p>Ru-shis gain erase as a spell-like ability.</p>",
+    "heritage": "Ru-Shi",
+    "id": "dEtxdn5mLY5M3i45",
+    "name": "Alternate Spell-Like Ability (Dhampir - Ru-Shi)",
+    "race": ["Dhampir", "Ru-Shi"],
+    "racePoints": 3,
+    "replacedTraitNames": ["Spell-Like Ability (Dhampir)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "241"
+      },
+      {
+        "id": "PZO9427",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "3",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.dEtxdn5mLY5M3i45"
+  },
   "dMLf5DVvmyw2MLmm": {
     "changes": [],
     "contextNotes": [],
@@ -11033,6 +12881,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Dhampir - Ajibachana</p><p><strong>Replaced Trait(s)</strong>: Light Sensitivity (Dhampir)</p><hr /><p>Alternate Weakness: Ajibachanas take a -1 penalty to their caster level whenever they are in an area affected by consecrate, hallow, or a similar spell that makes an area holy.</p>",
+    "heritage": "Ajibachana",
     "id": "dX7u0gwFMcTexeSJ",
     "name": "Alternate Weakness (Dhampir - Ajibachana)",
     "race": ["Dhampir", "Ajibachana"],
@@ -11050,6 +12899,33 @@
     ],
     "traitCategory": "weakness",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.dX7u0gwFMcTexeSJ"
+  },
+  "dagWgGQYv20usVZW": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Grimspawn</p><hr /><p>Grimspawn can use death knell&nbsp;once per day as a spell-like ability (with a caster level equal to their character level).</p>",
+    "heritage": "Grimspawn",
+    "id": "dagWgGQYv20usVZW",
+    "name": "Spell-Like Ability (Tiefling - Grimspawn)",
+    "race": ["Tiefling", "Grimspawn"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "251"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "19"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.dagWgGQYv20usVZW"
   },
   "deYG2mmqNjWZ4rR5": {
     "changes": [],
@@ -11131,6 +13007,13 @@
     "description": "<p><strong>Race</strong>: Human<br /><strong>Replaced Trait(s)</strong>: Skilled</p><hr /><p>Humans born near the sea are always drawn to it. They gain a +2 racial bonus on Profession (sailor) and Swim checks, and these are always class skills for them. They can hold their breath twice as long as normal, and spellcasters gain a +4 racial bonus on concentration checks when attempting to cast spells underwater. This racial trait replaces skilled.</p><hr /><p><strong>Note</strong></p><p> Update the Skills tab of your Actor to add the Profession (sailor) skill. Update the untargeted Change on the Changes tab of this trait to reflect Profession (sailor). Update the Class skills section of the Details tab of this trait to reflect Profession (sailor).</p>",
     "id": "diZs3RkrvBKSq8sk",
     "name": "Heart of the Sea",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Human"],
     "replacedTraitNames": ["Skilled"],
     "sources": [
@@ -11172,6 +13055,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Half-Orc (Cragkin Only)<br /><strong>Replaced Trait(s)</strong>: Orc Ferocity, Weapon Familiarity</p><hr /><p>Cragkin are accustomed to traveling in the steep terrain of their mountain homes. When in mountain terrain, mountain half-orcs with this racial trait can move through natural difficult terrain at their normal speed; magically altered terrain affects them normally. In addition, cragkin gain a +@Distance[10 ft;dual] racial bonus to their speed while charging. This racial trait replaces the orc ferocity and weapon familiarity racial traits.</p>",
+    "heritage": "Cragkin",
     "id": "dtbQtYC7PMjK4Zs5",
     "name": "Cliffside Charger (Cragkin)",
     "race": ["Half-Orc", "Cragkin"],
@@ -11273,6 +13157,7 @@
     ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Dhampir - Ajibachana<br /><strong>Replaced Trait(s)</strong>: Manipulative</p><hr /><p>Alternate Skill Modifiers: Escape Artist, Use Magic Device</p>",
+    "heritage": "Ajibachana",
     "id": "eEo4SD2HVKDVOPpz",
     "name": "Alternate Skill Modifiers (Dhampir - Ajibachana)",
     "race": ["Dhampir", "Ajibachana"],
@@ -11290,6 +13175,32 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.eEo4SD2HVKDVOPpz"
+  },
+  "eIbeWPnBDu7zLYjF": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Lawbringers</p><hr /><p>Lawbringers can use Continual Flame once per day as a spell-like ability (with a caster level equal to the Lawbringers' character level).</p>",
+    "heritage": "Lawbringers",
+    "id": "eIbeWPnBDu7zLYjF",
+    "name": "Spell-Like Ability (Aasimar - Lawbringers)",
+    "race": ["Aasimar", "Lawbringers"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      },
+      {
+        "id": "PZO9424",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.eIbeWPnBDu7zLYjF"
   },
   "eIkJlRpLALMQNc4J": {
     "changes": [],
@@ -11329,6 +13240,56 @@
     ],
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.eKKCUEHE5IvE6x9L"
+  },
+  "eLnDyBKNO6J5VbOI": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Racial bonus against gaze attacks."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Changeling - Sorrow May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>Mute-born changelings gain a +2 racial bonus on saving throws against gaze attacks.</p>",
+    "heritage": "Sorrow May",
+    "id": "eLnDyBKNO6J5VbOI",
+    "name": "Hag Racial Trait (Changeling - Sorrow May)",
+    "race": ["Changeling", "Sorrow May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "7"
+      }
+    ],
+    "traitCategory": "defense",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.eLnDyBKNO6J5VbOI"
+  },
+  "eNSivYdOXqQpPe52": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Spitespawn</p><hr /><p>Spitespawn can use Misdirection once per day as a spell-like ability (with a caster level equal to their character level).</p><p></p>",
+    "heritage": "Spitespawn",
+    "id": "eNSivYdOXqQpPe52",
+    "name": "Spell-Like Ability (Tiefling - Spitespawn)",
+    "race": ["Tiefling", "Spitespawn"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.eNSivYdOXqQpPe52"
   },
   "eYZTYsiT5ssa2jrK": {
     "changes": [],
@@ -11537,6 +13498,22 @@
     "traitCategory": "other",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.erHe11Qn4judzeI1"
   },
+  "euX1ucchOBHkK62k": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Gathlain<br /><strong>Replaced Trait(s)</strong>: <i>Feather Step</i> Spell-Like Ability</p><hr /><p>Certain gathlains play at the games of courtly intrigue that dominate much of First World culture, assuming titles that other fey may or may not recognize. These gathlains treat Bluff, Diplomacy, and Knowledge (nobility) as class skills.</p><p> This replaces the <i>feather step</i> spell-like ability.</p>",
+    "id": "euX1ucchOBHkK62k",
+    "name": "Titled",
+    "race": ["Gathlain"],
+    "replacedTraitNames": ["Feather Step Spell-Like Ability"],
+    "sources": [
+      {
+        "id": "PZO1140",
+        "pages": "10"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.euX1ucchOBHkK62k"
+  },
   "f6rFJHkiEHN54rA8": {
     "changes": [
       {
@@ -11665,6 +13642,33 @@
     "traitCategory": "senses",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.fJekoMzjSbktf0X4"
   },
+  "fLfQPOGCnNhp6Q5A": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Foulspawn</p><hr /><p>Foulspawn can use Bear's Endurance&nbsp;once per day as a spell-like ability (with a caster level equal to their character level).</p>",
+    "heritage": "Foulspawn",
+    "id": "fLfQPOGCnNhp6Q5A",
+    "name": "Spell-Like Ability (Tiefling - Foulspawn)",
+    "race": ["Tiefling", "Foulspawn"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.fLfQPOGCnNhp6Q5A"
+  },
   "fRLqG0NKrKPmpHUr": {
     "changes": [],
     "contextNotes": [
@@ -11774,6 +13778,25 @@
     ],
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.fZAb027L9Kbww3js"
+  },
+  "fscyXaZvorGwGprq": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Undine - Mistsoul</p><hr /><p>Mistsoul sorcerers with the dreamspun bloodline treat their Charisma scores as 2 points higher for the purposes of all sorcerer spells and class abilities. Mistsoul clerics with the Repose domain cast their Repose domain powers and spells at +1 caster level.</p><hr /><p><strong>Note</strong></p><p>Add the bonus for each related spell, class ability, or domain power manually.</p>",
+    "heritage": "Mistsoul",
+    "id": "fscyXaZvorGwGprq",
+    "name": "Mist Affinity (Undine - Mistsoul)",
+    "race": ["Undine", "Mistsoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.fscyXaZvorGwGprq"
   },
   "fw9JHTLPAg54MLfp": {
     "changes": [
@@ -11899,6 +13922,66 @@
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.g9H3WgBwfJUfaU4m"
   },
+  "gDO7etqF3QCXKyWZ": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Hungerseed</p><hr /><p>Hungerseed can use Alter Self once per day as a spell-like ability (with a caster level equal to their character level).</p><p></p>",
+    "heritage": "Hungerseed",
+    "id": "gDO7etqF3QCXKyWZ",
+    "name": "Spell-Like Ability (Tiefling - Hungerseed)",
+    "race": ["Tiefling", "Hungerseed"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.gDO7etqF3QCXKyWZ"
+  },
+  "gG1JcCZ4lN9hbCqJ": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.int",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.sen",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Lawbringers</p><hr /><p>Lawbringers have a +2 racial bonus on Intimidate and Sense Motive checks.</p>",
+    "heritage": "Lawbringers",
+    "id": "gG1JcCZ4lN9hbCqJ",
+    "name": "Skilled (Aasimar - Lawbringers)",
+    "race": ["Aasimar", "Lawbringers"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9424",
+        "pages": "22"
+      },
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.gG1JcCZ4lN9hbCqJ"
+  },
   "gJJpUgd5CtLjLoAV": {
     "changes": [
       {
@@ -11931,6 +14014,60 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.gJJpUgd5CtLjLoAV"
+  },
+  "gKeid1JVhnRJtzWB": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>In the jungles of the Mwangi Expanse, the few remaining orc tribes have been largely cut off from others of their kind. Isolated since the orc empires collapsed after the Age of Darkness, only a handful of oral retellings recall the true heritage of these orcs and half-orcs, and their culture diverges greatly from other orc societies. It is said that some early Mwangi tribes participated in arranged marriages with orcs, leading half-orc children to be associated with alliances and prosperity, and true or not, half-orcs have been a major part of these orc tribes for generations. Even in the present day, many orcs are willing to pay a large dowry to bring half-orcs into their villages, and orphaned half-orcs are happily adopted.</p><p>Because they usually come from rich families, rainkin halforcs often receive better treatment than their orc or human cousins. This can create a self-fulfilling prophecy; because half-orc children receive the best care, protection, and training, they are usually stronger and more skilled than orcs or humans, increasing the desire to have half-orcs in a tribe. While jungle half-orcs typically have great pride and selfworth, many are also resentful of the high expectations placed on them from birth and angry to be treated like a commodity by so many. As a result, rainkin have trouble forming close bonds with non-half-orcs, so they often create close-knit groups between themselves. Some of these groups even grow large enough to break off and form their own tribes.</p>",
+    "heritage": "Rainkin",
+    "id": "gKeid1JVhnRJtzWB",
+    "name": "Jungle Half-Orcs (Rainkin)",
+    "race": ["Half-Orc", "Rainkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9491",
+        "pages": "25"
+      },
+      {
+        "id": "PZO9442",
+        "pages": "12"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.gKeid1JVhnRJtzWB"
+  },
+  "gNnNJoQSb0I7JKbt": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Slag May</p><hr /><p>Ability Modifiers +2 Str, +2 Cha, -2 Con</p><p></p>",
+    "heritage": "Slag May",
+    "id": "gNnNJoQSb0I7JKbt",
+    "name": "Ability Modifiers (Changeling - Slag May)",
+    "race": ["Changeling", "Slag May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "5"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.gNnNJoQSb0I7JKbt"
   },
   "gW9EZhxSnPytPicG": {
     "changes": [],
@@ -12573,6 +14710,25 @@
     "traitCategory": "other",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.iEAy4KMqEtQnvLHZ"
   },
+  "iES8aXKMApVmwZad": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Oread - Gemsoul</p><hr /><p>Gemsoul sorcerers with the deep earth bloodline treat their Charisma scores as 2 points higher for the purposes of all sorcerer spells and class abilities. Gemsoul clerics with the Charm domain use their domain powers and spells at +1 caster level.</p><hr /><p><strong>Note</strong></p><p>Add the bonus for each related spell, class ability, or domain power manually.</p>",
+    "heritage": "Gemsoul",
+    "id": "iES8aXKMApVmwZad",
+    "name": "Crystal Affinity (Oread - Gemsoul)",
+    "race": ["Oread", "Gemsoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.iES8aXKMApVmwZad"
+  },
   "iGw64UpXvwydi1MU": {
     "changes": [
       {
@@ -12585,6 +14741,13 @@
     "description": "<p><strong>Race</strong>: Gnome<br /><strong>Replaced Trait(s)</strong>: Hatred, Obsessive</p><hr /><p>Many gnomes are obsessed with seeing as much of the world as possible, rather than perfecting some specific talent or vocation. These gnomes gain a +2 racial bonus on Climb checks and checks for one Knowledge skill of their choice. This racial trait replaces hatred and obsessive.</p><hr /><p><strong>Note</strong></p><p>Update the untargeted change in the changes tab of this trait to the chosen knowledge skill.</p>",
     "id": "iGw64UpXvwydi1MU",
     "name": "Explorer",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Gnome"],
     "replacedTraitNames": ["Hatred", "Obsessive"],
     "sources": [
@@ -12633,6 +14796,40 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.iHI1zDebmLg28ZWW"
+  },
+  "iMdXJ73UwSIDDJdk": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.esc",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.sur",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - the Motherless</p><hr /><p>the Motherless gain a +2 racial bonus on Escape Artist and Survival checks.</p>",
+    "heritage": "the Motherless",
+    "id": "iMdXJ73UwSIDDJdk",
+    "name": "Skilled (Tiefling - the Motherless)",
+    "race": ["Tiefling", "the Motherless"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "23"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.iMdXJ73UwSIDDJdk"
   },
   "iPSjQFQo6BRxvAf8": {
     "changes": [],
@@ -12742,6 +14939,62 @@
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.iejEnNBqCFQ097Eh"
   },
+  "iuq7CaxD48jDZqT4": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.swm",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Seascarred</p><p><strong>Replaced Trait</strong>: Animal-Minded</p><hr /><p><strong>Alternate Skill Modifiers</strong> Perception, Swim</p>",
+    "heritage": "Seascarred",
+    "id": "iuq7CaxD48jDZqT4",
+    "name": "Alternate Skill Modifiers (Skinwalker - Seascarred)",
+    "race": ["Skinwalker", "Seascarred"],
+    "replacedTraitNames": ["Animal-Minded"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.iuq7CaxD48jDZqT4"
+  },
+  "iwAOQlZrKjN1SZLQ": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[2]] Racial bonus against mind-affecting effects."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Changeling - Waker May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>Dreamthief-born changelings gain a +2 racial bonus on saving throws against mind-affecting effects.</p>",
+    "heritage": "Waker May",
+    "id": "iwAOQlZrKjN1SZLQ",
+    "name": "Hag Racial Trait (Changeling - Waker May)",
+    "race": ["Changeling", "Waker May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "6"
+      }
+    ],
+    "traitCategory": "defense",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.iwAOQlZrKjN1SZLQ"
+  },
   "iy6e5v8YWE9upybn": {
     "changes": [],
     "contextNotes": [],
@@ -12779,9 +15032,10 @@
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Ifrit<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Like the primal fires of creation, lavasoul ifrits are both fluid and fixed, alternating between stability and violent alteration.</p><p><strong>Typical Alignment</strong> CN <br /><strong>Ability Modifiers</strong> +2 Con, +2 Int, -2 Dex <br /><strong>Alternate Spell-Like Ability</strong> Lavasouls gain burning sands as a spell-like ability. <br /><strong>Magma Affinity</strong> This racial trait functions as and can be replaced as the base ifrit's fire affinity, except it benefits sorcerers with the efreeti bloodline and spellcasters with the Ash subdomain.</p><p>Mutable and intense, lavasouls evoke the cycle of creation and destruction in their colorful lives, unafraid to pursue new paradigms when the old ones no longer suit them. Many are dark-skinned but riven with blazing lines, which are sometimes also reflected in bright hair or eye colors. They tend to embrace body modification, acquiring and discarding tattoos and piercings as they feel appropriate.</p><p>Lavasouls can be found in places where seismic change is commonplace and destructive creation is not seen as a contradiction; they excel in the fast-paced markets of Katapesh and the constant flux of Galt.</p>",
+    "heritage": "Lavasoul",
     "id": "jAQXQDgwCX0eKxZ2",
     "name": "Lavasoul (Magma Ifrit)",
-    "race": ["Ifrit", "Lavasoul "],
+    "race": ["Ifrit", "Lavasoul"],
     "replacedTraitNames": ["Base Statistics"],
     "sources": [
       {
@@ -13014,6 +15268,28 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.kAiZRNeT0r1ZAyz9"
   },
+  "kCnWl2gK9Q56djWG": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Oread - Gemsoul</p><hr /><p>Gemsouls can use color spray 1/day as spell-like ability (with a caster level equal to the Gemsoul's character level).</p>",
+    "heritage": "Gemsoul",
+    "id": "kCnWl2gK9Q56djWG",
+    "name": "Spell-Like Ability (Oread - Gemsoul)",
+    "race": ["Oread", "Gemsoul"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.kCnWl2gK9Q56djWG"
+  },
   "kD8isApIfN4y1ty0": {
     "changes": [
       {
@@ -13210,6 +15486,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Half-Elf (Darkborn Only) <br /><strong>Replaced Trait(s)</strong>: Elven Immunities</p><hr /><p>Darkborn are accustomed to torture at the hands of their drow forebears, and gain a +2 racial bonus on Fortitude saves against poison and disease, including magical diseases. Darkborn also gain the Poison Use ability and never risk accidentally poisoning themselves. This racial trait replaces the elven immunities racial trait.</p>",
+    "heritage": "Darkborn",
     "id": "lBS1mSrNfigoro8L",
     "name": "Thinblood Resistance",
     "race": ["Half-Elf", "Darkborn"],
@@ -13291,8 +15568,16 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Half-Elf (Shoreborn only)<br /><strong>Replaced Trait(s)</strong>: Low-Light Vision, Keen Senses</p><hr /><p>Shoreborn gain a +4 racial bonus on Swim checks as well as on Profession (sailor) checks and Wisdom checks to pilot a sea vessel. They also have an innate sense of direction and can never get lost at sea.</p><p>This replaces low-light vision and keen senses.</p><p></p><hr /><p><strong>Note</strong></p><p>Add  Profession (sailor) to your Actor.  Update the untargeted change on the changes tab of this trait to Profession (sailor).</p>",
+    "heritage": "Shoreborn",
     "id": "lUqi7xK2vxQvAnTX",
     "name": "Child of the Sea",
+    "openChanges": [
+      {
+        "formula": "4",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Half-Elf", "Shoreborn"],
     "replacedTraitNames": ["Low-Light Vision", "Keen Senses"],
     "sources": [
@@ -13340,6 +15625,7 @@
     ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Dhampir - Ru-Shi<br /><strong>Replaced Trait(s)</strong>: Manipulative</p><hr /><p>Alternate Skill Modifiers: Acrobatics, Knowledge (engineering)</p>",
+    "heritage": "Ru-Shi",
     "id": "lea9JOFyO8bGiD0v",
     "name": "Alternate Skill Modifiers (Dhampir - Ru-Shi)",
     "race": ["Dhampir", "Ru-Shi"],
@@ -13581,6 +15867,40 @@
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.lqFhyqE7frSbHfEA"
   },
+  "lrZtYK3baHZY6JnK": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dip",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.sen",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Hellspawn</p><hr /><p>Hellspawn gain a +2 racial bonus on Diplomacy and Sense Motive checks.</p>",
+    "heritage": "Hellspawn",
+    "id": "lrZtYK3baHZY6JnK",
+    "name": "Skilled (Tiefling - Hellspawn)",
+    "race": ["Tiefling", "Hellspawn"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.lrZtYK3baHZY6JnK"
+  },
   "lwZTXQ8zz2awYQh9": {
     "changes": [],
     "contextNotes": [
@@ -13603,6 +15923,27 @@
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.lwZTXQ8zz2awYQh9"
   },
+  "m6anXBE7DQrCaNPS": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Nightskulk</p><p><strong>Replaced Trait</strong>: Change Shape (Skinwalker)</p><hr /><p><strong>Ability Modifiers</strong> +2 Strength, –2 Charisma (+2 Constitution while shapechanged) @Toggle[Change Shape (Skinwalker, CON)]</p><p><strong>Bestial Features</strong></p><ul><li><p>+@Distance[10 ft;dual] racial bonus to base speed @Toggle[Change Shape (Skinwalker, Base Speed)]</p></li><li><p>Gore attack that deals 1d6 points of damage</p></li><li><p>2 hoof attacks that each deal 1d4 points of damage</p></li><li><p>Scent to a range of @Distance[30 ft;dual] @Toggle[Change Shape (Skinwalker, Scent)]</p></li></ul><hr /><p><strong>Note</strong></p><p>You must modify your natural attack(s) to match the parameters specified in this trait, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</p><p>This trait works exactly like Change Shape (Skinwalker) except as detailed above.</p>",
+    "heritage": "Ragebred",
+    "id": "m6anXBE7DQrCaNPS",
+    "name": "Change Shape (Skinwalker - Ragebred)",
+    "race": ["Skinwalker", "Ragebred"],
+    "replacedTraitNames": ["Change Shape (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "248"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "12"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.m6anXBE7DQrCaNPS"
+  },
   "mBfn8hCLwEsAxlnl": {
     "changes": [],
     "contextNotes": [],
@@ -13622,6 +15963,39 @@
       }
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.mBfn8hCLwEsAxlnl"
+  },
+  "mDDre98oyYIFLJy5": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.fly",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.per",
+        "text": "+[[2]] racial bonus at night."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Skinwalker - Bloodmarked</p><p><strong>Replaced Trait</strong>: Animal-Minded</p><hr /><p><strong>Alternate Skill Modifiers</strong> Fly, Perception at night</p>",
+    "heritage": "Bloodmarked",
+    "id": "mDDre98oyYIFLJy5",
+    "name": "Alternate Skill Modifiers (Skinwalker - Bloodmarked)",
+    "race": ["Skinwalker", "Bloodmarked"],
+    "replacedTraitNames": ["Animal-Minded"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "248"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "8"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.mDDre98oyYIFLJy5"
   },
   "mH8xEPH9wXFCmIgM": {
     "changes": [
@@ -13875,6 +16249,33 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.n8T5HDk4GBP7dsjx"
   },
+  "n98kLjKTeMEM5rdx": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - the Motherless</p><hr /><p>the Motherless can use Blur once per day as a spell-like ability (with a caster level equal to their character level).</p><p></p>",
+    "heritage": "the Motherless",
+    "id": "n98kLjKTeMEM5rdx",
+    "name": "Spell-Like Ability (Tiefling - the Motherless)",
+    "race": ["Tiefling", "the Motherless"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "23"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.n98kLjKTeMEM5rdx"
+  },
   "nIONejbfENvh4nQC": {
     "changes": [],
     "contextNotes": [
@@ -13909,6 +16310,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Half-Orc (Frostkin Only) <br /><strong>Replaced Trait(s)</strong>: Intimidating</p><hr /><p>Many fearsome arctic predators consider young frostkin easy prey, but some frostkin manage to surpass their fear and fight off these beasts in time for help to arrive. Winter half-orcs with this racial trait gain a +2 racial bonus on saving throws against fear effects, and a +1 racial bonus to CMD to avoid being grappled. This racial trait replaces the intimidating racial trait.</p>",
+    "heritage": "Frostkin",
     "id": "nJm4z2g5Xxv3TprR",
     "name": "Unflinching Valor (Frostkin)",
     "race": ["Half-Orc", "Frostkin"],
@@ -13925,6 +16327,39 @@
     ],
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.nJm4z2g5Xxv3TprR"
+  },
+  "nM1ZZgnbE390Enat": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.acr",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.fly",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Plumekith</p><hr /><p>Plumekith have a +2 racial bonus on Acrobatics and Fly checks.</p>",
+    "heritage": "Plumekith",
+    "id": "nM1ZZgnbE390Enat",
+    "name": "Skilled (Aasimar - Plumekith)",
+    "race": ["Aasimar", "Plumekith"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9424",
+        "pages": "23"
+      },
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.nM1ZZgnbE390Enat"
   },
   "nOZ9tdmFZ4sWgXv0": {
     "changes": [],
@@ -14049,6 +16484,39 @@
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.naQ5kacMK4kyrhfW"
   },
+  "nfHng6a21r2pANDD": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Veil May</p><hr /><p>Ability Modifiers +2 Wis, +2 Cha, -2 Int</p><p></p>",
+    "heritage": "Veil May",
+    "id": "nfHng6a21r2pANDD",
+    "name": "Ability Modifiers (Changeling - Veil May)",
+    "race": ["Changeling", "Veil May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "6"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.nfHng6a21r2pANDD"
+  },
   "nkri33C3iqcYSE7k": {
     "changes": [],
     "contextNotes": [
@@ -14135,6 +16603,13 @@
     "description": "<p><strong>Race</strong>: Human<br /><strong>Replaced Trait(s)</strong>: Skilled</p><hr /><p>Humans born in rural areas are used to hard labor. They gain a racial bonus equal to half their character level to any one Craft or Profession skill, and once per day they may ignore an effect that would cause them to become fatigued or exhausted. This racial trait replaces skilled.</p><hr /><p><strong>Note</strong></p><p>Select one Craft or Profession skill when you take this trait.  Update the Skills tab of your Actor to add the chosen skill. Update the untargeted change on the Changes tab of this trait to reflect your choice.</p>",
     "id": "noLFpNL6xVCMBkRp",
     "name": "Heart of the Fields",
+    "openChanges": [
+      {
+        "formula": "floor(@attributes.hd.total / 2)",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Human"],
     "replacedTraitNames": ["Skilled"],
     "sources": [
@@ -14168,6 +16643,40 @@
       }
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.nopyUgzhxcD4G8uD"
+  },
+  "ntICYwpS9NmCaXKI": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dev",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.slt",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Grimspawn</p><hr /><p>Grimspawn gain a +2 racial bonus on Disable Device and Sleight of Hand checks.</p>",
+    "heritage": "Grimspawn",
+    "id": "ntICYwpS9NmCaXKI",
+    "name": "Skilled (Tiefling - Grimspawn)",
+    "race": ["Tiefling", "Grimspawn"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "251"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "19"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.ntICYwpS9NmCaXKI"
   },
   "o0ooSUUjwVjL79XE": {
     "changes": [],
@@ -14321,6 +16830,7 @@
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Half-elves born to Snowcasters are outcasts from birth, and must struggle to survive the harsh environs of the north either alone or with an adopted family.</p><p><strong>Elven Ancestry </strong>Snowcaster elves<br /><strong>Human Ancestry </strong>Erutaki, Jadwiga, Ulfen, Varki<br /><strong>Regions </strong>Crown of the World, Irrisen, Lands of the Linnorm Kings, Varisia<br /><strong>Languages </strong>Elven, Erutaki, Hallit, Skald, Varki</p><p>Found throughout the northern countries, snowborn are typically the children of twilight speakers—religious envoys from the normally distrustful Snowcaster clans, who consider it a sacred duty to befriend humans and other non-elves. Snowcaster clans vary in their acceptance of these children, but the average clan’s seclusion from humanity and inability to understand half-elves almost invariably ends up driving the snowborn away. Twilight speakers, however, tend to enjoy a particularly close relationship with their snowborn children, and the two groups often wander together. Snowborn have their elven parents’ snowy white skin and particularly sharp ears. Some Snowcaster half-elves find welcome homes among the Jadwiga and Ulfen communities, as well as the Erutaki tribes. Others wander, looking for a permanent place to belong.</p>",
+    "heritage": "Snowborn",
     "id": "oMfDPZDS57LKJpHL",
     "name": "Snowcaster Half-Elves (Snowborn)",
     "race": ["Half-Elf", "Snowborn"],
@@ -14444,6 +16954,39 @@
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.obHDRlbtjOSn3oYE"
   },
+  "obv1n6iXuK6zfEpP": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Changeling - Callow May</p><hr /><p>Ability Modifiers +2 Wis, +2 Cha, -2 Con</p>",
+    "heritage": "Callow May",
+    "id": "obv1n6iXuK6zfEpP",
+    "name": "Ability Modifiers (Changeling - Callow May)",
+    "race": ["Changeling", "Callow May"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "7"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.obv1n6iXuK6zfEpP"
+  },
   "ocowKUaIg7ICeykv": {
     "changes": [],
     "contextNotes": [],
@@ -14507,6 +17050,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Low-Light Vision</p><hr /><p>Some half-elves born of drow parents exhibit more drow traits than others-particularly many of the physical features of the drow-and have darkvision @Distance[60 ft;dual] and light blindness. This racial trait replaces the low-light vision racial trait.</p><hr /><p><strong>Note</strong></p><p>Creatures with light blindness are @Condition[blind]ed for 1 round if exposed to bright light, such as sunlight or the daylight spell. Such creatures are @Condition[dazzled] as long as they remain in areas of bright light.</p>",
+    "heritage": "Darkborn",
     "id": "oqWnE9gSckkN51Wh",
     "name": "Drow-Blooded",
     "race": ["Half-Elf", "Darkborn"],
@@ -14519,6 +17063,32 @@
     ],
     "traitCategory": "senses",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.oqWnE9gSckkN51Wh"
+  },
+  "otRhDDnwAH3yY1Eu": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Angelkin</p><hr /><p>Angelkins can use Alter Self once per day as a spell-like ability (with a caster level equal to the Angelkin's character level).</p>",
+    "heritage": "Angelkin",
+    "id": "otRhDDnwAH3yY1Eu",
+    "name": "Spell-Like Ability (Aasimar - Angelkin)",
+    "race": ["Aasimar", "Angelkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      },
+      {
+        "id": "PZO9424",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.otRhDDnwAH3yY1Eu"
   },
   "owvQyYa6BVwKUxwd": {
     "changes": [],
@@ -14717,7 +17287,7 @@
     "id": "pTRlM5BESZuydrGY",
     "name": "Poisonous",
     "race": ["Vine Leshy"],
-    "replacedTraitNames": ["Plantspeech; Change Shape"],
+    "replacedTraitNames": ["Plantspeech", "Change Shape"],
     "sources": [
       {
         "id": "PZO1140",
@@ -14762,6 +17332,7 @@
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf (Spireborn only)</p><p><strong>Replaced Trait(s)</strong>: Languages</p><hr /><p>All Spireborn begin play speaking Azlanti and Elven. These replace the default half-elf languages.</p><hr /><p><strong>Note</strong></p><p>remove Languages (Half-Elf)</p>",
+    "heritage": "Spireborn",
     "id": "pYLyqjaqURyGSyTO",
     "name": "Languages (Spireborn)",
     "race": ["Half-Elf", "Spireborn"],
@@ -14800,6 +17371,7 @@
       }
     ],
     "description": "<p><strong>Race</strong>: Dhampir - Svetocher</p><p><strong>Replaced Trait(s)</strong>: Light Sensitivity (Dhampir)</p><hr /><p>Alternate Weakness: Svetochers take a -1 penalty on saves against effects that deal positive energy damage.</p>",
+    "heritage": "Svetocher",
     "id": "ph1cjGR44M6Cwycc",
     "name": "Alternate Weakness (Dhampir - Svetocher)",
     "race": ["Dhampir", "Svetocher"],
@@ -14979,6 +17551,13 @@
     "description": "<p><strong>Race</strong>: Gnome<br /><strong>Replaced Trait(s)</strong>: Obsessive</p><hr /><p>Some gnomes are more academically inclined than their kin. Gnomes with this racial trait gain a +2 bonus on any single Knowledge skill. This racial trait replaces the obsessive racial trait.</p><hr /><p><strong>Note</strong></p><p>Update the untargeted change in the changes tab of this trait to the chosen knowledge skill.</p>",
     "id": "qQU7DJtUNw9DkO14",
     "name": "Academician",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Gnome"],
     "replacedTraitNames": ["Obsessive"],
     "sources": [
@@ -15022,6 +17601,39 @@
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.qfnol8hHibIdZq96"
   },
+  "qjLRZfW1q83OAHlF": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.kpl",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.spl",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Emberkin</p><hr /><p>Emberkins have a +2 racial bonus on Knowledge (planes) and Spellcraft checks.</p>",
+    "heritage": "Emberkin",
+    "id": "qjLRZfW1q83OAHlF",
+    "name": "Skilled (Aasimar - Emberkin)",
+    "race": ["Aasimar", "Emberkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9424",
+        "pages": "23"
+      },
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.qjLRZfW1q83OAHlF"
+  },
   "qquaaM62KEX4ulIi": {
     "changes": [],
     "contextNotes": [],
@@ -15038,6 +17650,40 @@
     ],
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.qquaaM62KEX4ulIi"
+  },
+  "qrmdXUnDfaapHLd0": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.int",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.kre",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Foulspawn</p><hr /><p>Foulspawn gain a +2 racial bonus on Intimidate and Knowledge (religion) checks.</p>",
+    "heritage": "Foulspawn",
+    "id": "qrmdXUnDfaapHLd0",
+    "name": "Skilled (Tiefling - Foulspawn)",
+    "race": ["Tiefling", "Foulspawn"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "20"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.qrmdXUnDfaapHLd0"
   },
   "quudBE0oHTdD4ulL": {
     "changes": [],
@@ -15409,6 +18055,13 @@
     "description": "<p><strong>Race</strong>: Drow<br /><strong>Replaced Trait(s)</strong>: Keen Sight</p><hr /><p>Seduction and treachery are tools for advancement in drow society, even for the martially inclined. Drow with this racial trait may choose either Bluff or Diplomacy as a class skill, and gain a +2 bonus on such skill checks. This racial trait replaces keen sight.</p><hr /><p><strong>Note</strong></p><p>choose either Bluff or Diplomacy.  Add the chosen skill as a class skill on the details tab  and set the target of the change on the changes tab of this trait.</p><p>Note that the text of this racial trait says it replaces \"Keen Sight\"  this is a likely reference to the Keen Senses (Drow) trait.</p>",
     "id": "rxDmPBEQ1mH5TzvI",
     "name": "Ambitious Schemer",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "untyped"
+      }
+    ],
     "race": ["Drow"],
     "replacedTraitNames": ["Keen Sight"],
     "sources": [
@@ -15441,6 +18094,39 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.s07V8lcVJX3IkC6l"
+  },
+  "s75dJdsNdXcQBsNy": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.ste",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.dip",
+        "text": "+[[2]] racial bonus on wild empathy checks."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Skinwalker - Scaleheart</p><p><strong>Replaced Trait</strong>: Animal-Minded</p><hr /><p><strong>Alternate Skill Modifiers</strong> Stealth, wild empathy</p>",
+    "heritage": "Scaleheart",
+    "id": "s75dJdsNdXcQBsNy",
+    "name": "Alternate Skill Modifiers (Skinwalker - Scaleheart)",
+    "race": ["Skinwalker", "Scaleheart"],
+    "replacedTraitNames": ["Animal-Minded"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "14"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.s75dJdsNdXcQBsNy"
   },
   "s8ViF8uZdu09fKJw": {
     "changes": [],
@@ -15545,6 +18231,27 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.sOmwse1zXEEj1Wps"
+  },
+  "sOuYeZ0ADFtn4Inc": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>At the Crown of the World, nomadic clans of orcs live on the frozen wastes. The winter half-orcs that live among them are treated as the runts of the pack. However, strength in numbers is vital in the north, as many young do not survive the harsh winters. Even the weakest are provided for as long as they can prove their usefulness. Sewing, cooking, and child-rearing are all valued skills, and winter half-orcs who excel at these are treated better than most. Those who would rather prove their worth through their strength do so by hunting, as ritual combat is a frowned upon waste of energy and resources.</p><p>While half-orcs are not well liked in the Linnorm Kingdoms, they may be able to find homes in the Ironbound Isles. Merchants traveling between Tian Xia and Avistan are often willing to hire on a half-orc as a guide and bodyguard across the Crown of the World. Winter half-orcs who migrate south into Irrisen can find an easier life in the growing half-orc communities, but they are unlikely to find any upward mobility unless they show skill at witchcraft.</p>",
+    "heritage": "Frostkin",
+    "id": "sOuYeZ0ADFtn4Inc",
+    "name": "Winter Half-Orcs (Frostkin)",
+    "race": ["Half-Orc", "Frostkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9491",
+        "pages": "26"
+      },
+      {
+        "id": "PZO9442",
+        "pages": "13"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.sOuYeZ0ADFtn4Inc"
   },
   "sSd1qkQRLF6erfTf": {
     "changes": [],
@@ -15678,6 +18385,13 @@
     "description": "<p><strong>Race</strong>: Gnome<br /><strong>Replaced Trait(s)</strong>: Obsessive</p><hr /><p>Gnomes with this racial trait gain a +2 racial bonus on a Perform skill of their choice.</p><p>This replaces obsessive.</p><hr /><p><strong>Note</strong></p><p>Choose one type of Perform skill. Add this skill to your actor. Update the untargeted change on the changes tab of this trait to the chosen skill.</p>",
     "id": "soX6akWov1I9BaYr",
     "name": "Artistic",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Gnome"],
     "replacedTraitNames": ["Obsessive"],
     "sources": [
@@ -15816,6 +18530,23 @@
     ],
     "traitCategory": "defense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.tF9ythkMrLwffISo"
+  },
+  "tFQouhCp4FHZSOFR": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Duergar<br /><strong>Replaced Trait(s)</strong>: <em>Enlarge Person</em> Spell-Like Ability</p><hr /><p>The soul of the earth infuses some duergar, giving them the ability to harden their skin. Duergar with this racial trait can use <em>ironskin </em>(see page 45) once per day as a spell-like ability, using their character level as their caster level. This racial trait replaces the <em>enlarge person</em> spell-like ability.</p><hr /><p><strong>Note</strong></p><p>This trait replaces Spell-Like Abilities (Duergar - Enlarge Person)</p>",
+    "id": "tFQouhCp4FHZSOFR",
+    "name": "Ironskinned",
+    "race": ["Duergar"],
+    "replacedTraitNames": ["Enlarge Person Spell-Like Ability"],
+    "sources": [
+      {
+        "id": "PZO1130",
+        "pages": "44"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.tFQouhCp4FHZSOFR"
   },
   "tH5MSvbiO5EBzMbV": {
     "changes": [],
@@ -16030,6 +18761,29 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.uPfUcu59YuGhaoFX"
+  },
+  "uQXWDV9ooUimkH43": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "skill.blf",
+        "text": "+[[2]] Racial bonus against creatures that could be sexually attracted to you."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Changeling - Callow May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>Green-born changelings gain a +2 racial bonus on Bluff checks against creatures that could be sexually attracted to them.</p>",
+    "heritage": "Callow May",
+    "id": "uQXWDV9ooUimkH43",
+    "name": "Hag Racial Trait (Changeling - Callow May)",
+    "race": ["Changeling", "Callow May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "7"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.uQXWDV9ooUimkH43"
   },
   "uSED8jnh3FejGkiw": {
     "changes": [],
@@ -16290,6 +19044,7 @@
     ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Dhampir - Ancient-Born<br /><strong>Replaced Trait(s)</strong>: Manipulative</p><hr /><p>Alternate Skill Modifiers: Climb, Survival</p>",
+    "heritage": "Ancient-Born",
     "id": "v2usdAAHs5dROa65",
     "name": "Alternate Skill Modifiers (Dhampir - Ancient-Born)",
     "race": ["Dhampir", "Ancient-Born"],
@@ -16315,7 +19070,7 @@
     "id": "v5W731SKm6CeoMO4",
     "name": "Spelleater",
     "race": ["Ghoran"],
-    "replacedTraitNames": ["Past-Life Knowledge; Nature Magic"],
+    "replacedTraitNames": ["Past-Life Knowledge", "Nature Magic"],
     "sources": [
       {
         "id": "PZO1140",
@@ -16336,6 +19091,13 @@
     "description": "<p><strong>Race</strong>: Gathlain<br /><strong>Replaced Trait(s)</strong>: Spell-Like Abilities</p><hr /><p>Many gathlains excitedly share every last bit of gossip they can find. These gathlains gain a +2 racial bonus on Diplomacy checks to gather information and on checks with one Knowledge skill of the gathlain's choice. Once the choice of Knowledge skill is made, it can't be changed.</p><p> This replaces spell-like abilities.</p><hr /><p><strong>Note</strong></p><p>Choose Knowledge skill under the Changes tab</p>",
     "id": "v5fEQjunFTFRvJXT",
     "name": "Otherworldly Gossip",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Gathlain"],
     "replacedTraitNames": ["Spell-Like Abilities"],
     "sources": [
@@ -16366,6 +19128,33 @@
       }
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.v6db0gftaAJKUfvK"
+  },
+  "v6eFa2pTphzZzFDP": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Faultspawn</p><hr /><p>Faultspawn can use hideous laughter once per day as a spell-like ability (with a caster level equal to their character level).</p>",
+    "heritage": "Faultspawn",
+    "id": "v6eFa2pTphzZzFDP",
+    "name": "Spell-Like Ability (Tiefling - Faultspawn)",
+    "race": ["Tiefling", "Faultspawn"],
+    "racePoints": 2,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "251"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "19"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.v6eFa2pTphzZzFDP"
   },
   "v70XALZVLU2APfJ9": {
     "changes": [],
@@ -16456,6 +19245,13 @@
     "description": "<p><strong>Race</strong>: Half-Orc<br /><strong>Replaced Trait(s)</strong>: Darkvision</p><hr /><p>In the Lands of the Linnorm Kings and the Shackles, half-orcs frequently take up sailing as pirates, raiders, and fishers, where they are known as tenacious fighters. They gain a +2 racial bonus on Profession (sailor) checks and Craft checks to repair ships, and a +1 racial bonus on damage rolls against foes and objects in or on top of the water. This racial trait replaces darkvision.</p><hr /><p><strong>Note</strong></p><p>Update the Skills tab of your Actor to add the Profession (sailor) skill.</p><p>Update the target of the Change on the Changes tab of this trait to reflect Profession (sailor)</p>",
     "id": "vLOP9cyjnqOUGUGr",
     "name": "Sea Raider",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "racial"
+      }
+    ],
     "race": ["Half-Orc"],
     "replacedTraitNames": ["Darkvision"],
     "sources": [
@@ -16540,6 +19336,28 @@
     ],
     "traitCategory": "offense",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.vZvTS5zeW4AVNARd"
+  },
+  "vZxgYlH9KOMbIZdN": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Undine - Mistsoul</p><hr /><p>Mistsouls can cast obscuring mist once per day as a spell-like ability (with a caster level equal to the Mistsoul's character level).</p>",
+    "heritage": "Mistsoul",
+    "id": "vZxgYlH9KOMbIZdN",
+    "name": "Spell-Like Ability (Undine - Mistsoul)",
+    "race": ["Undine", "Mistsoul"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.vZxgYlH9KOMbIZdN"
   },
   "vjGYESFbD0sfHJjq": {
     "changes": [],
@@ -16749,6 +19567,7 @@
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Few in number and rarely seen, Spireborn retain many human features but are still as enigmatic as their elven forebears.</p><p><strong>Elven Ancestry</strong> Mordant Spire elves<br /><strong>Human Ancestry </strong>Arcadian, Ulfen, Varisian<br /><strong>Regions</strong> Mordant Spire (Steaming Sea)<br /><strong>Languages</strong> Azlanti, Elven</p><p>Mordant Spire elves and humans almost never meet by accident. Their offspring, the Spireborn, only come about when Mordant Spire elves travel to human villages. Spireborn half-elves are almost always taken back to the Mordant Spire by their elven parent, and they are usually trained from youth to go on important missions outside of the Mordant Spire. Spireborn undergo both physical training and extensive education on the Azlanti. They tell no one they meet on their travels of their heritage or their top-secret duties.</p><hr /><p><strong>Note</strong></p><p>alternate racial traits available to spireborn</p><p>Mordant Envoy</p><p>Languages (Spireborn)</p>",
+    "heritage": "Spireborn",
     "id": "wQnT357k2EwEAT49",
     "name": "Mordant Spire Half-Elves (Spireborn)",
     "race": ["Half-Elf", "Spireborn"],
@@ -16764,6 +19583,29 @@
       }
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.wQnT357k2EwEAT49"
+  },
+  "wSEWZMxeVVhOCYTg": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "conChecks",
+        "text": "You can hold your breath for a number of rounds equal to 3 × your Constitution before you risk drowning."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Changeling - Brine May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>Sea-born changelings can hold their breath for a number of rounds equal to three times their Constitution score before they risk drowning.</p>",
+    "heritage": "Brine May",
+    "id": "wSEWZMxeVVhOCYTg",
+    "name": "Hag Racial Trait (Changeling - Brine May)",
+    "race": ["Changeling", "Brine May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "8"
+      }
+    ],
+    "traitCategory": "other",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.wSEWZMxeVVhOCYTg"
   },
   "wUzya0Ps91Bo8xDG": {
     "changes": [
@@ -16831,6 +19673,13 @@
     "description": "<p><strong>Race</strong>: Sahuagin<br /><strong>Replaced Trait(s)</strong>: Speak with Sharks</p><hr /><p>While Outsear sahuagin typically don't have a history of music, over the years the merfolk of the city have shared their love of song with them. Sahuagin with this racial trait gain a +2 racial bonus on Perform (sing) checks and a +1 racial bonus on saves against language-dependent effects.</p><p> This replaces speak with sharks.</p><hr /><p><strong>Note</strong></p><p>Update the Skills tab of your Actor to add the Perform (sing) skill. Update the target of the untargeted change on the Changes tab of this trait to reflect Perform (sing).</p>",
     "id": "wjJMLojRWBvteEod",
     "name": "Sahuagin Song",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "untyped"
+      }
+    ],
     "race": ["Sahuagin"],
     "replacedTraitNames": ["Speak with Sharks"],
     "sources": [
@@ -17073,6 +19922,46 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.xCZNyb4ZbM34FYxZ"
   },
+  "xJ6s1PyLYiXqYZgo": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "spellEffect",
+        "text": "+[[1 + floor((@attributes.hd.total - 1) / 4)]] Racial bonus on damage rolls for spells with the fire descriptor."
+      }
+    ],
+    "description": "<p><strong>Race</strong>: Changeling - Hearth May</p><p><strong>Replaced Trait(s):</strong> Hag Racial Trait (Changeling)</p><hr /><p>Ash-born changelings gain a +1 racial bonus on damage rolls for spells with the fire descriptor. This bonus increases by 1 for every 4 character levels the changeling has beyond 1st.</p>",
+    "heritage": "Hearth May",
+    "id": "xJ6s1PyLYiXqYZgo",
+    "name": "Hag Racial Trait (Changeling - Hearth May)",
+    "race": ["Changeling", "Hearth May"],
+    "replacedTraitNames": ["Hag Racial Trait (Changeling)"],
+    "sources": [
+      {
+        "id": "PZO9485",
+        "pages": "5"
+      }
+    ],
+    "traitCategory": "offense",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.xJ6s1PyLYiXqYZgo"
+  },
+  "xMtcb3PDKZWAPrsy": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Duergar<br /><strong>Replaced Trait(s)</strong>: <em>Invisibility</em> Spell-Like Ability</p><hr /><p>While most duergar have the power to become invisible, a few are instead able to extinguish the light around them. Duergar with this racial trait can use Dust of Twilight<em> </em>(<em>Pathfinder RPG Advanced Player's Guide</em> 217) once per day as a spell-like ability, using their character level as their caster level. This racial trait replaces the <em>invisibility</em> spell-like ability.</p><hr /><p><strong>Note</strong></p><p>This trait replaces Spell-Like Abilities (Duergar - Invisibility)</p>",
+    "id": "xMtcb3PDKZWAPrsy",
+    "name": "Twilight-Touched",
+    "race": ["Duergar"],
+    "replacedTraitNames": ["Invisibility Spell-Like Ability"],
+    "sources": [
+      {
+        "id": "PZO1130",
+        "pages": "44"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.xMtcb3PDKZWAPrsy"
+  },
   "xN5RoU7EhodHzdld": {
     "changes": [
       {
@@ -17099,6 +19988,39 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.pf-racial-traits.Item.xN5RoU7EhodHzdld"
+  },
+  "xOBXCPMZiXNgvH9d": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.han",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.per",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Ragebred</p><p><strong>Replaced Trait</strong>: Animal-Minded</p><hr /><p><strong>Alternate Skill Modifiers</strong> Handle Animal, Perception</p>",
+    "heritage": "Ragebred",
+    "id": "xOBXCPMZiXNgvH9d",
+    "name": "Alternate Skill Modifiers (Skinwalker - Ragebred)",
+    "race": ["Skinwalker", "Ragebred"],
+    "replacedTraitNames": ["Animal-Minded"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "248"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "12"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.xOBXCPMZiXNgvH9d"
   },
   "xPtJg4WPKxVRmVdM": {
     "changes": [
@@ -17181,6 +20103,33 @@
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.xfVICBMFK0eGdT83"
   },
+  "xhPOVN5Vdz49m694": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Dhampir - Ajibachanas</p><p><strong>Replaced Trait(s):</strong>Spell-Like Ability (Dhampir)</p><hr /><p>Ajibachanas gain Comprehend Languages as a spell-like ability.</p>",
+    "heritage": "Ajibachana",
+    "id": "xhPOVN5Vdz49m694",
+    "name": "Alternate Spell-Like Ability (Dhampir - Ajibachana)",
+    "race": ["Dhampir", "Ajibachana"],
+    "racePoints": 3,
+    "replacedTraitNames": ["Spell-Like Ability (Dhampir)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "241"
+      },
+      {
+        "id": "PZO9427",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "3",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.xhPOVN5Vdz49m694"
+  },
   "xhSNgXRtupTp2rWh": {
     "changes": [],
     "contextNotes": [],
@@ -17198,6 +20147,27 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.xhSNgXRtupTp2rWh"
+  },
+  "xmVIIWMr8jcAFnhw": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Vine Leshy<br /><strong>Replaced Trait(s)</strong>: <em>Pass Without Trace</em></p><hr /><p>A vine leshy made from a grapevine can produce magically infused fruit that can heal her allies. She can cast Goodberry once per day as a spell-like ability, with a caster level equal to her character level.</p><p>This replaces pass without trace.</p>",
+    "id": "xmVIIWMr8jcAFnhw",
+    "name": "Grapevine",
+    "race": ["Vine Leshy"],
+    "replacedTraitNames": ["Pass Without Trace"],
+    "sources": [
+      {
+        "id": "PZO1140",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.xmVIIWMr8jcAFnhw"
   },
   "xn5DcmSjk5NIPJjN": {
     "changes": [],
@@ -17378,6 +20348,27 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.yH3vOEPKWRtwqQj9"
   },
+  "yPKap7yo06TY50DJ": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Nightskulk</p><p><strong>Replaced Trait</strong>: Change Shape (Skinwalker)</p><hr /><p><strong>Ability Modifiers</strong> +2 Intelligence, -2 Strength (+2 Dexterity while shapechanged) @Toggle[Change Shape (Skinwalker, DEX)]</p><p><strong>Bestial Features</strong></p><ul><li><p>Bite attack that deals 1d6 points of damage</p></li><li><p>Climb speed of @Distance[30 ft;dual] @Toggle[Change Shape (Skinwalker, Climb Speed, Long)]</p></li><li><p>Distraction (except with only one chosen natural attack per round, and sickens instead of nauseates). @Toggle[Change Shape (Skinwalker, Distraction)]</p></li><li><p>Scent to a range of @Distance[30 ft;dual] @Toggle[Change Shape (Skinwalker, Scent)]</p></li></ul><hr /><p><strong>Note</strong></p><p>You must modify your natural attack(s) to match the parameters specified in this trait, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</p><p>This trait works exactly like Change Shape (Skinwalker) except as detailed above.</p>",
+    "heritage": "Nightskulk",
+    "id": "yPKap7yo06TY50DJ",
+    "name": "Change Shape (Skinwalker - Nightskulk)",
+    "race": ["Skinwalker", "Nightskulk"],
+    "replacedTraitNames": ["Change Shape (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "18"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.yPKap7yo06TY50DJ"
+  },
   "yQFgtsFjg71gdHoO": {
     "changes": [
       {
@@ -17540,6 +20531,40 @@
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.yodj1nKWZ1hzQVVv"
   },
+  "z2iytHy3HzP6q7rE": {
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.dip",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.lin",
+        "type": "racial"
+      }
+    ],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Tiefling - Spitespawn</p><hr /><p>Spitespawn gain a +2 racial bonus on Diplomacy and Linguistics checks.</p>",
+    "heritage": "Spitespawn",
+    "id": "z2iytHy3HzP6q7rE",
+    "name": "Skilled (Tiefling - Spitespawn)",
+    "race": ["Tiefling", "Spitespawn"],
+    "racePoints": 4,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "252"
+      },
+      {
+        "id": "PZO9423",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "featSkills",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.z2iytHy3HzP6q7rE"
+  },
   "z2yoy6GDYtVe8JFA": {
     "changes": [
       {
@@ -17575,10 +20600,32 @@
     "traitCategory": "magical",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.z2yoy6GDYtVe8JFA"
   },
+  "z3qXw7vttJrJ0mfu": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Skinwalker - Fanglord</p><p><strong>Replaced Trait</strong>: Change Shape (Skinwalker)</p><hr /><p><strong>Ability Modifiers</strong> +2 Dexterity, –2 Wisdom (+2 Charisma while shapechanged) @Toggle[Change Shape (Skinwalker, CHA)]</p><p><strong>Bestial Features</strong></p><ul><li><p>Bite attack that deals 1d6 points of damage</p></li><li><p>2 claw attacks that each deal 1d4 points of damage</p></li><li><p>+@Distance[10 ft;dual] racial bonus to base speed @Toggle[Change Shape (Skinwalker, Base Speed)]</p></li><li><p>See in darkness @Toggle[Change Shape (Skinwalker, See in Darkness)]</p></li></ul><hr /><p><strong>Note</strong></p><p>You must modify your natural attack(s) to match the parameters specified in this trait, including setting damage, reach, etc. manually. These natural attacks may only be used when selected during a shape change.</p><p>This trait works exactly like Change Shape (Skinwalker) except as detailed above.</p>",
+    "heritage": "Fanglord",
+    "id": "z3qXw7vttJrJ0mfu",
+    "name": "Change Shape (Skinwalker - Fanglord)",
+    "race": ["Skinwalker", "Fanglord"],
+    "replacedTraitNames": ["Change Shape (Skinwalker)"],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "249"
+      },
+      {
+        "id": "PZO9439",
+        "pages": "22"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.z3qXw7vttJrJ0mfu"
+  },
   "z6SfY6xmgwI8vJTB": {
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Brutalized from birth, half­-drow are the lowest of the low in drow society, and often grow up to be pitiless, hateful beings.</p><p><strong>Elven Ancestry</strong> Drow<br /><strong>Human Ancestry</strong> Any<br /><strong>Regions </strong>Sekamina (the Darklands)<br /><strong>Languages </strong>Elven, Undercommon</p><p>Scorned by both drow, who call them thinbloods, and humans, who call them darkborn, half-drow face discrimination and tribulation from an early age. Those half-drow who are not crushed by persecution are forced to age into particularly strong and independent adults. Some give into bitterness from their upbringing, becoming hardened assassins or wanton killers. Others deliberately rebel against their brutal childhoods, becoming righteous warriors against evil. Either way, half-drow fight fiercely to the very last. Darkborn have the gray skin and light-colored hair of the drow but have human-looking eyes, and they have a more difficult time appearing fully elven or human than most half-elves do.</p>",
+    "heritage": "Darkborn",
     "id": "z6SfY6xmgwI8vJTB",
     "name": "Half-Drow (Darkborn)",
     "race": ["Half-Elf", "Darkborn"],
@@ -17686,6 +20733,13 @@
     "description": "<p><strong>Race</strong>: Hobgoblin<br /><strong>Replaced Trait(s)</strong>: Sneaky</p><hr /><p>Hobgoblin engineers tinker endlessly with fire, explosives, and the engines of war. Hobgoblins with this racial trait gain a +2 racial bonus on Craft (alchemy) and Knowledge (engineering) checks. This racial trait replaces sneaky.</p><hr /><p><strong>Note</strong></p><p>Update the Skills tab of your Actor to add the Craft (alchemy) skill. Update the target of the untargeted change on the Changes tab of this trait to reflect Craft (alchemy).</p>",
     "id": "zIJl9Bg6OCExA4YA",
     "name": "Engineer",
+    "openChanges": [
+      {
+        "formula": "2",
+        "target": "",
+        "type": "untyped"
+      }
+    ],
     "race": ["Hobgoblin"],
     "replacedTraitNames": ["Sneaky"],
     "sources": [
@@ -17695,6 +20749,27 @@
       }
     ],
     "uuid": "Compendium.pf1.pf-racial-traits.Item.zIJl9Bg6OCExA4YA"
+  },
+  "zN4wIRd7yB2Uzh5K": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p>Desert half-orcs are born primarily in northern Garund and Osirion and often hold a level of esteem and self-assurance that is rare for half-orcs. Among desert orc tribes, the ability to tolerate harsh sunlight is a sign of strength, and weathering the sun is a rite of passage. Lacking their ancestors’ light sensitivity, half-orcs excel at these contests of endurance and easily earn high positions within their tribes.<br /><br />Desert half-orcs also fare better than most among human civilizations. The strong presence of Sarenrae’s followers has led to a culture of forgiveness and understanding that is rare in other parts of Golarion, making it easier for half-orcs to thrive. Many desert half-orcs believe they are blessed by Sarenrae and become clerics or paladins of her church.</p>",
+    "heritage": "Sandkin",
+    "id": "zN4wIRd7yB2Uzh5K",
+    "name": "Desert Half-Orcs (Sandkin)",
+    "race": ["Half-Orc", "Sandkin"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9491",
+        "pages": "25"
+      },
+      {
+        "id": "PZO9442",
+        "pages": "12"
+      }
+    ],
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.zN4wIRd7yB2Uzh5K"
   },
   "zNCwRTjsrEqZDnqg": {
     "changes": [
@@ -17755,6 +20830,25 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.zOmlqno4V0mvAO4m"
+  },
+  "zXAUj1JzRHh8m5D5": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Sylph - Smokesoul</p><hr /><p>Smokesoul sorcerers with the shadow bloodline treat their Charisma scores as 2 points higher for the purposes of all sorcerer spells and class abilities. Smokesoul spellcasters with the Smoke subdomain use their domain powers and spells at +1 caster level.</p><hr /><p><strong>Note</strong></p><p>Add the bonus for each related spell, class ability, or domain power manually.</p>",
+    "heritage": "Smokesoul",
+    "id": "zXAUj1JzRHh8m5D5",
+    "name": "Smoke Affinity (Sylph - Smokesoul)",
+    "race": ["Sylph", "Smokesoul"],
+    "racePoints": 1,
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9492",
+        "pages": "21"
+      }
+    ],
+    "traitCategory": "magical",
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.zXAUj1JzRHh8m5D5"
   },
   "zZg9G22ykBGKWCuw": {
     "changes": [],
@@ -17873,6 +20967,7 @@
     "changes": [],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Half-Elf<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Children of both land and sea, the shoreborn revel in their freedom to travel and find joy in all forms of exploration and adventure.</p><p><strong>Elven Ancestry </strong>aquatic elves<br /><strong>Human Ancestry </strong>any near oceans or seas<br /><strong>Regions </strong>any islands or oceans<br /><strong>Languages </strong>Aquan, Common, Elven</p><p>The children of aquatic elves and land-bound humans feel the disparity between their heritages more than any other. These half-elves show their parentage on their faces, with sandy, russet, or green-black skin to match their elven parent. Slightly webbed fingers and toes aid in swimming, but their neck slits almost never function as gills. A few aquatic half-elves can breathe underwater and live with their elven parents, but far more shoreborn live on land, feeling a constant call to the water. Many find work as sailors. Fishing vessels and merchant ships often have shoreborn deckhands and first mates, and a crew made up solely of aquatic half-elves sails an infamous pirate ship known as the Shoreline Scourge.</p>",
+    "heritage": "Shoreborn",
     "id": "zh18VTq0JmGu7jP0",
     "name": "Aquatic Half-Elves (Shoreborn)",
     "race": ["Half-Elf", "Shoreborn"],
@@ -17980,5 +21075,31 @@
     ],
     "traitCategory": "featSkills",
     "uuid": "Compendium.pf1.pf-racial-traits.Item.zsHfAFzwio7xc52p"
+  },
+  "ztIiOJarIxqQPsij": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><strong>Race</strong>: Aasimar - Musetouched</p><hr /><p>Musetouched can use Glitterdust once per day as a spell-like ability (with a caster level equal to the Musetouched's character level).</p>",
+    "heritage": "Musetouched",
+    "id": "ztIiOJarIxqQPsij",
+    "name": "Spell-Like Ability (Aasimar - Musetouched)",
+    "race": ["Aasimar", "Musetouched"],
+    "replacedTraitNames": [],
+    "sources": [
+      {
+        "id": "PZO9280",
+        "pages": "239"
+      },
+      {
+        "id": "PZO9424",
+        "pages": "22"
+      }
+    ],
+    "traitCategory": "magical",
+    "uses": {
+      "maxFormula": "1",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.pf-racial-traits.Item.ztIiOJarIxqQPsij"
   }
 }

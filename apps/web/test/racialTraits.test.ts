@@ -12,9 +12,14 @@ import {
   conflictingRacialTraitIds,
   hasRacialTrait,
   hasVendoredRacialTrait,
+  openChangeTargetOptions,
+  setVendoredRacialTraitTarget,
   suppressedRaceTargets,
   toggleRacialTrait,
   toggleVendoredRacialTrait,
+  unfilledVendoredRacialTraitTargets,
+  vendoredRacialTraitPoints,
+  vendoredRacialTraitTarget,
 } from "../src/model/racialTraits.js";
 import { skillBudget } from "../src/model/skills.js";
 
@@ -208,5 +213,91 @@ describe("vendored racial traits (issue #74 fill plan)", () => {
     const plain = expectedFeatCount(makeDoc("Oread"), ref);
     const withVendored = expectedFeatCount(makeDoc("Oread", undefined, [graniteSkin]), ref);
     expect(withVendored).toBe(plain);
+  });
+
+  it("offers heritage variants for the base race, labeled by heritage", () => {
+    const aasimar = availableVendoredRacialTraits(makeDoc("Aasimar"), ref);
+    const plumekith = aasimar.find((t) => t.name === "Spell-Like Ability (Aasimar - Plumekith)");
+    expect(plumekith?.heritage).toBe("Plumekith");
+  });
+});
+
+describe("open-change target picks (issue #102)", () => {
+  function vendoredIdByName(name: string): string {
+    const found = Object.values(ref.racialTraits).find((t) => t.name === name);
+    if (!found) throw new Error(`vendored racial trait not found: ${name}`);
+    return found.id;
+  }
+  const kindredRaised = vendoredIdByName("Kindred-Raised");
+
+  it("sets and clears a slot's target", () => {
+    let doc = toggleVendoredRacialTrait(makeDoc("Half-Elf"), kindredRaised);
+    expect(vendoredRacialTraitTarget(doc, kindredRaised, 0)).toBe("");
+    doc = setVendoredRacialTraitTarget(doc, kindredRaised, 0, "int");
+    expect(vendoredRacialTraitTarget(doc, kindredRaised, 0)).toBe("int");
+    doc = setVendoredRacialTraitTarget(doc, kindredRaised, 0, null);
+    expect(vendoredRacialTraitTarget(doc, kindredRaised, 0)).toBe("");
+  });
+
+  it("pads earlier slots so a later one can be chosen first", () => {
+    const dualTalent = vendoredIdByName("Dual Talent");
+    const doc = setVendoredRacialTraitTarget(makeDoc("Human"), dualTalent, 1, "wis");
+    expect(doc.build.vendoredRacialTraitTargets?.[dualTalent]).toEqual(["", "wis"]);
+  });
+
+  it("removing the trait drops its target picks", () => {
+    let doc = toggleVendoredRacialTrait(makeDoc("Half-Elf"), kindredRaised);
+    doc = setVendoredRacialTraitTarget(doc, kindredRaised, 0, "int");
+    doc = toggleVendoredRacialTrait(doc, kindredRaised);
+    expect(doc.build.vendoredRacialTraitTargets?.[kindredRaised]).toBeUndefined();
+  });
+
+  it("setRace clears target picks alongside the traits", () => {
+    let doc = toggleVendoredRacialTrait(makeDoc("Half-Elf"), kindredRaised);
+    doc = setVendoredRacialTraitTarget(doc, kindredRaised, 0, "int");
+    expect(setRace(doc, raceId("Human")).build.vendoredRacialTraitTargets).toBeUndefined();
+  });
+
+  it("flags a chosen trait with an unfilled slot, and stops once it's filled", () => {
+    let doc = toggleVendoredRacialTrait(makeDoc("Half-Elf"), kindredRaised);
+    expect(unfilledVendoredRacialTraitTargets(doc, ref).has(kindredRaised)).toBe(true);
+    doc = setVendoredRacialTraitTarget(doc, kindredRaised, 0, "int");
+    expect(unfilledVendoredRacialTraitTargets(doc, ref).has(kindredRaised)).toBe(false);
+  });
+
+  it("never flags a trait that has no open changes", () => {
+    const graniteSkin = vendoredIdByName("Granite Skin");
+    const doc = toggleVendoredRacialTrait(makeDoc("Oread"), graniteSkin);
+    expect(unfilledVendoredRacialTraitTargets(doc, ref).size).toBe(0);
+  });
+
+  it("offers ability scores plus every skill, including the character's own subskills", () => {
+    const doc = makeDoc("Human");
+    doc.build.skillRanks = { "prf.sing": 1 };
+    const options = openChangeTargetOptions(doc);
+    expect(options.find((o) => o.value === "cha")).toMatchObject({ group: "Ability score" });
+    expect(options.find((o) => o.value === "skill.kar")?.label).toBe("Knowledge (arcana)");
+    expect(options.find((o) => o.value === "skill.prf.sing")?.label).toBe("Perform (Sing)");
+  });
+});
+
+describe("race points (issue #102)", () => {
+  function vendoredIdByName(name: string): string {
+    const found = Object.values(ref.racialTraits).find((t) => t.name === name);
+    if (!found) throw new Error(`vendored racial trait not found: ${name}`);
+    return found.id;
+  }
+
+  it("sums only the tagged picks, counting all of them", () => {
+    // Alternate Skill Modifiers (Dhampir - Svetocher) is tagged 4 RP.
+    const tagged = vendoredIdByName("Alternate Skill Modifiers (Dhampir - Svetocher)");
+    const doc = toggleVendoredRacialTrait(makeDoc("Dhampir"), tagged);
+    expect(vendoredRacialTraitPoints(doc, ref)).toEqual({ total: 4, tagged: 1, chosen: 1 });
+  });
+
+  it("ignores a pick whose race doesn't match the character's", () => {
+    const tagged = vendoredIdByName("Alternate Skill Modifiers (Dhampir - Svetocher)");
+    const doc = makeDoc("Human", undefined, [tagged]);
+    expect(vendoredRacialTraitPoints(doc, ref)).toEqual({ total: 0, tagged: 0, chosen: 0 });
   });
 });

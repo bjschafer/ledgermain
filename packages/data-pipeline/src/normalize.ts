@@ -400,13 +400,15 @@ export function normalize(opts: NormalizeOptions): {
     )
     .map((pf) => transformRace(pf.doc, resolveUuid));
 
-  // --- racial traits: pf1-content pf-racial-traits pack (alternate racial
-  // traits only — the pack's standard-trait entries are dropped by
-  // `transformRacialTrait`, see its doc comment) ------------------------------
+  // --- racial traits: pf1-content pf-racial-traits pack (alternates and
+  // heritage variants only — the pack's standard-trait entries are dropped by
+  // `transformRacialTrait`, see its doc comment; the race-name set is what
+  // its heritage-tag rule tests against) --------------------------------------
+  const raceNames = new Set(races.map((r) => r.name));
   const racialTraits: RacialTrait[] = [];
   for (const pf of readPack(opts.pfContentRacialTraitsDir)) {
     if (pf.doc.type !== "feat") continue;
-    const rt = transformRacialTrait(pf.doc, resolveUuid);
+    const rt = transformRacialTrait(pf.doc, resolveUuid, raceNames);
     if (rt) racialTraits.push(rt);
   }
 

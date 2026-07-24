@@ -26,7 +26,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(15);
+    expect(ref.meta.schemaVersion).toBe(16);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -115,9 +115,9 @@ describe("trait catalog (pf1-content pf-traits pack, issue #74 Phase 1)", () => 
 });
 
 describe("alternate racial traits (issue #74 fill plan — pf1-content pf-racial-traits pack)", () => {
-  it("emits only alternates (the pack's ~892 standard-trait entries are dropped)", () => {
-    expect(Object.keys(ref.racialTraits).length).toBe(750);
-    expect(ref.meta.counts.racialTraits).toBe(750);
+  it("emits only alternates and heritage variants (the pack's ~1,000 standard-trait entries are dropped)", () => {
+    expect(Object.keys(ref.racialTraits).length).toBe(860);
+    expect(ref.meta.counts.racialTraits).toBe(860);
   });
 
   it("Goblin's own 'Skilled' standard trait is NOT vendored here (already in races.json)", () => {
@@ -141,12 +141,57 @@ describe("alternate racial traits (issue #74 fill plan — pf1-content pf-racial
   it("a heritage-specific entry carries both its base race and heritage tags", () => {
     const drowHeritage = byName(ref.racialTraits, "Drow Heritage");
     expect(drowHeritage.race).toEqual(["Half-Elf", "Darkborn"]);
+    expect(drowHeritage.heritage).toBe("Darkborn");
   });
 
-  it("every entry has a non-empty replacedTraitNames (that's what makes it an alternate)", () => {
+  it("keeps a heritage variant that carries no 'Replaced Trait(s)' header (issue #102)", () => {
+    // Plumekith's *see invisibility* stands in for the base aasimar's
+    // *daylight*, but the source only says so in prose — the heritage tag is
+    // the structured signal. Safe to vendor because races.json carries the
+    // BASE aasimar only, so this can't double-apply.
+    const plumekith = byName(ref.racialTraits, "Spell-Like Ability (Aasimar - Plumekith)");
+    expect(plumekith.heritage).toBe("Plumekith");
+    expect(plumekith.replacedTraitNames).toEqual([]);
+    expect(plumekith.uses).toEqual({ maxFormula: "1", per: "day" });
+  });
+
+  it("Elf Blood's 'counts as' tag set is not mistaken for a heritage (issue #102)", () => {
+    // `["Half-Elf", "Elf", "Human"]` — later tags name races, so it's a
+    // standard trait, and standard traits stay dropped.
+    expect(Object.values(ref.racialTraits).find((t) => t.name === "Elf Blood")).toBeUndefined();
+  });
+
+  it("every entry is either an alternate (replacedTraitNames) or a heritage variant", () => {
     for (const t of Object.values(ref.racialTraits)) {
-      expect(t.replacedTraitNames.length, t.name).toBeGreaterThan(0);
+      expect(t.replacedTraitNames.length > 0 || t.heritage !== undefined, t.name).toBe(true);
     }
+  });
+
+  it("reads all four punctuation variants of the 'Replaced Trait(s)' header (issue #102)", () => {
+    // Singular "Trait", colon inside the <strong>, a name the source
+    // italicized, and a name written as a @UUID link — each was dropped or
+    // mangled by the original header regex.
+    expect(
+      byName(ref.racialTraits, "Change Shape (Skinwalker - Coldborn)").replacedTraitNames,
+    ).toEqual(["Change Shape (Skinwalker)"]);
+    expect(
+      byName(ref.racialTraits, "Hag Racial Trait (Changeling - Waker May)").replacedTraitNames,
+    ).toEqual(["Hag Racial Trait (Changeling)"]);
+    expect(byName(ref.racialTraits, "Blood Enmity").replacedTraitNames).toEqual([
+      "Invisibility Spell-Like Ability",
+    ]);
+    expect(
+      byName(ref.racialTraits, "Alternate Skill Modifiers (Dhampir - Svetocher)")
+        .replacedTraitNames,
+    ).toEqual(["Manipulative"]);
+  });
+
+  it("keeps a 'choose one' change untargeted in openChanges, out of changes (issue #102)", () => {
+    const kindredRaised = byName(ref.racialTraits, "Kindred-Raised");
+    expect(kindredRaised.changes).toEqual([{ formula: "2", target: "cha", type: "untyped" }]);
+    expect(kindredRaised.openChanges).toEqual([{ formula: "2", target: "", type: "untyped" }]);
+    // Two blanks, both open: "select 2 different ability scores".
+    expect(byName(ref.racialTraits, "Dual Talent").openChanges).toHaveLength(2);
   });
 
   it("covers races well beyond the 8 hand-authored in @pf1/engine's RACIAL_TRAITS", () => {

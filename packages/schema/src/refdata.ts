@@ -233,8 +233,8 @@ export interface Race extends RefEntity {
 
 /**
  * An alternate racial trait vendored from `pf1-content`'s `pf-racial-traits`
- * pack (1,872 entries, ~750 of which are alternates — see
- * data-pipeline `transformRacialTrait`'s doc comment for how alternates are
+ * pack (1,872 entries, ~900 of which are alternates or heritage variants —
+ * see data-pipeline `transformRacialTrait`'s doc comment for how those are
  * told apart from the pack's standard-trait entries, which are dropped
  * before emission since `Race.changes`/`contextNotes` already carry them).
  *
@@ -259,24 +259,47 @@ export interface RacialTrait extends RefEntity {
    */
   race: string[];
   /**
+   * The heritage this entry belongs to, when it is a heritage variant rather
+   * than a free-standing alternate — the second `system.tags` entry (e.g.
+   * `"Plumekith"` on `race: ["Aasimar", "Plumekith"]`). A heritage variant is
+   * only correct for a character of that heritage, which the doc doesn't
+   * model, so this is a display/grouping label the picker shows rather than a
+   * gate. Absent on ordinary alternates.
+   */
+  heritage?: string;
+  /**
    * The pack's own grouping tag: "featSkills" | "defense" | "offense" |
    * "senses" | "magical" | "movement" | "other" | "weakness". Absent on a
    * minority of entries.
    */
   traitCategory?: string;
   changes: Change[];
+  /**
+   * Changes the source ships with no `target` on purpose: the trait says
+   * "choose one" and the Foundry sheet expects the player to fill the target
+   * in by hand (Kindred-Raised's second +2 ability, Artistic's Perform
+   * skill). They are kept out of `changes` — which is only ever
+   * apply-as-written — so nothing can apply them untargeted; the engine
+   * applies one only once the player names a target in
+   * `build.vendoredRacialTraitTargets`. Absent when the entry has none.
+   */
+  openChanges?: Change[];
   contextNotes: ContextNote[];
   /**
    * Standard trait name(s) this entry replaces, parsed from the source
    * description's structured "Replaced Trait(s)" header — see this
-   * interface's doc comment. Always non-empty: entries without the header
-   * are the pack's STANDARD racial traits (already baked into `Race.changes`
-   * elsewhere) and never reach this collection at all.
+   * interface's doc comment. Empty only for a heritage variant (see
+   * `heritage`), which the source files under its heritage tag instead of
+   * naming what it swaps out.
    */
   replacedTraitNames: string[];
   /** The published point cost in the Race Builder point-buy system, when tagged. */
   racePoints?: number;
-  /** Limited-use resource, mirroring `Feat.uses` (e.g. a 3/day spell-like ability). */
+  /**
+   * Limited-use resource, mirroring `Feat.uses` (e.g. a 1/day spell-like
+   * ability). Becomes a tracker resource pool — see
+   * `deriveVendoredRacialTraitResourcePools` in `@pf1/engine`.
+   */
   uses?: { maxFormula?: string; per?: string };
 }
 

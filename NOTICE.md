@@ -108,10 +108,10 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   `src/pf-racial-traits/`, from which we vendor: every feat not already
   present in the system pack (name collisions keep the system pack's richer
   record), the full character-trait catalog (the Foundry system pack ships no
-  traits at all), and the alternate racial traits -- entries carrying a
-  structured "Replaced Trait(s)" description header (the pack's standard-trait
-  entries are skipped, since the system pack's own race docs already carry
-  them).
+  traits at all), and the alternate racial traits -- entries carrying either a
+  structured "Replaced Trait(s)" description header or a heritage tag (the
+  pack's standard-trait entries are skipped, since the system pack's own race
+  docs already carry them).
 
 ### d. Pf Data 1e dataset (rage-power / hex / magus-arcana / rogue-family talent / arcanist-exploit / investigator-talent / kineticist-wild-talent / occult-class / caster-class / martial-class subsystem catalogs)
 

@@ -93,9 +93,14 @@ export const SYSTEM_VERSION = "11.11";
  * bonus-slot spell list, resolved by name from its description prose) and
  * `WizardSchool.oppositionOptions` (the elements an elemental school may
  * oppose, parsed from the same prose); spells reachable only through an
- * elemental list now also survive the spell slice.
+ * elemental list now also survive the spell slice. v16 (issue #102) widens
+ * `RacialTrait`: `heritage` (the heritage a variant belongs to, e.g.
+ * Plumekith) and `openChanges` (changes the source ships untargeted because
+ * the trait says "choose one"), plus a classifier that now also keeps
+ * heritage-tagged entries and the three punctuation variants of the "Replaced
+ * Trait(s)" header it previously missed — 750 entries to 860.
  */
-export const SCHEMA_VERSION = 15;
+export const SCHEMA_VERSION = 16;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

@@ -126,6 +126,18 @@ export interface CharacterDoc {
      * are ignored by the engine. Optional/back-compat: absent = none chosen.
      */
     vendoredRacialTraits?: string[];
+    /**
+     * Player-chosen targets for a vendored racial trait's `openChanges` —
+     * changes the source ships deliberately untargeted because the trait says
+     * "choose one" (Kindred-Raised's second +2 ability, Artistic's Perform
+     * skill). Keyed by trait id; the array is positional against that trait's
+     * `RacialTrait.openChanges`, and an entry is a `Change.target` string
+     * (`"cha"`, `"skill.prf.sing"`). An empty/missing slot means "not chosen
+     * yet" and the engine applies nothing for it — never a guess. Optional/
+     * back-compat: absent = nothing chosen. Cleared on any race change
+     * (`model/doc.ts:setRace`) alongside `vendoredRacialTraits`.
+     */
+    vendoredRacialTraitTargets?: Record<string, string[]>;
     skillRanks: Record<SkillId, number>;
     /**
      * Cleric domain tags chosen at L1 (PF1 grants two; UI is free-choice since

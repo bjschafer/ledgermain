@@ -30,9 +30,10 @@
  *
  * Alternate racial traits can meter a benefit the same way (Sylph's Storm in
  * the Blood: 2 hp of fast healing per level per day) —
- * `deriveRacialTraitResourcePools` folds those in too, off the hand-authored
- * `AlternateRacialTrait.resourcePool` (alternates aren't vendored, so there is
- * no `uses.maxFormula` to read).
+ * `deriveRacialTraitResourcePools` folds those in off the hand-authored
+ * `AlternateRacialTrait.resourcePool`, and
+ * `deriveVendoredRacialTraitResourcePools` off `RacialTrait.uses` for the
+ * vendored catalog (heritage spell-like abilities, mostly).
  */
 
 import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/schema";
@@ -372,6 +373,9 @@ export function deriveResourcePools(
   // Alternate racial traits carrying a hand-authored pool (Sylph's Storm in
   // the Blood) — same character-level roll data as the feat scan above.
   pools.push(...deriveRacialTraitResourcePools(doc, refData, rollData));
+
+  // The vendored catalog's counterpart, off `RacialTrait.uses`.
+  pools.push(...deriveVendoredRacialTraitResourcePools(doc, refData, rollData));
 
   return pools;
 }
@@ -734,6 +738,58 @@ function deriveRacialTraitResourcePools(
       per: trait.resourcePool.per,
       classTag: "racial",
       detail: trait.resourcePool.detail,
+      linkedBuffIds: [],
+    });
+  }
+
+  return pools;
+}
+
+/**
+ * The vendored catalog's counterpart to the hand-authored scan above (issue
+ * #102): a `RefData.racialTraits` entry whose `uses.maxFormula` makes IT a
+ * pool — mostly heritage spell-like abilities (Plumekith's *see invisibility*
+ * 1/day, Angelkin's *alter self*), plus metered defenses like the tiefling
+ * heritages' resistances. Same character-level `rollData`, same race gate, and
+ * the same synthetic `"racial"` `classTag` as the hand-authored pools; the two
+ * scans can't collide on a pool id because `availableVendoredRacialTraits`
+ * keeps a vendored entry out of the picker when a hand-authored one covers the
+ * same trait.
+ */
+function deriveVendoredRacialTraitResourcePools(
+  doc: CharacterDoc,
+  refData: RefData,
+  rollData: RollData,
+): DerivedResourcePool[] {
+  const raceName = refData.races[doc.identity.race]?.name;
+  if (!raceName) return [];
+
+  const pools: DerivedResourcePool[] = [];
+  const seen = new Set<string>();
+
+  for (const id of doc.build.vendoredRacialTraits ?? []) {
+    if (seen.has(id)) continue;
+    const trait = refData.racialTraits[id];
+    const formula = trait?.uses?.maxFormula;
+    if (!trait || !formula || !trait.race.includes(raceName)) continue;
+    seen.add(id);
+
+    let max: number | null;
+    try {
+      max = tryEvaluateFormula(formula, rollData);
+    } catch {
+      continue;
+    }
+    if (max === null || Number.isNaN(max) || max <= 0) continue;
+
+    const truncatedMax = Math.trunc(max);
+    pools.push({
+      id: trait.id,
+      name: trait.name,
+      max: truncatedMax,
+      restValue: truncatedMax,
+      per: trait.uses?.per,
+      classTag: "racial",
       linkedBuffIds: [],
     });
   }

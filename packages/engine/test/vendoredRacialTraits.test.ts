@@ -13,7 +13,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute } from "../src/index.js";
+import { compute, deriveResourcePools } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -30,7 +30,11 @@ function traitId(name: string): string {
 }
 
 /** Fighter L1, all abilities 10 (mod 0) before racial changes, no gear. */
-function makeDoc(raceName: string, vendoredRacialTraits: string[] = []): CharacterDoc {
+function makeDoc(
+  raceName: string,
+  vendoredRacialTraits: string[] = [],
+  vendoredRacialTraitTargets?: Record<string, string[]>,
+): CharacterDoc {
   return {
     schemaVersion: 1,
     id: `vrt-test-${raceName}`,
@@ -50,6 +54,7 @@ function makeDoc(raceName: string, vendoredRacialTraits: string[] = []): Charact
       spells: { known: [] },
       gear: [],
       vendoredRacialTraits,
+      ...(vendoredRacialTraitTargets ? { vendoredRacialTraitTargets } : {}),
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -90,6 +95,73 @@ describe("Oread Granite Skin (vendored, +1 racial natural armor)", () => {
     expect(withTrait.abilities.str.total).toBe(base.abilities.str.total);
     expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total);
     expect(withTrait.abilities.dex.total).toBe(base.abilities.dex.total);
+  });
+});
+
+describe("Half-Elf Kindred-Raised open change (issue #102)", () => {
+  // "They gain a +2 bonus to Charisma and one other ability score of their
+  // choice." The source ships the Charisma half targeted and the player's
+  // half untargeted — `changes` vs `openChanges`.
+  const kindredRaised = traitId("Kindred-Raised");
+
+  it("applies the fixed +2 Cha but nothing for an unchosen open change", () => {
+    const base = compute(makeDoc("Half-Elf"), ref);
+    const picked = compute(makeDoc("Half-Elf", [kindredRaised]), ref);
+    expect(picked.abilities.cha.total).toBe(base.abilities.cha.total + 2);
+    for (const id of ["str", "dex", "con", "int", "wis"] as const) {
+      expect(picked.abilities[id].total).toBe(base.abilities[id].total);
+    }
+  });
+
+  it("applies the open change once a target is chosen", () => {
+    const base = compute(makeDoc("Half-Elf"), ref);
+    const picked = compute(makeDoc("Half-Elf", [kindredRaised], { [kindredRaised]: ["int"] }), ref);
+    expect(picked.abilities.int.total).toBe(base.abilities.int.total + 2);
+    expect(picked.abilities.cha.total).toBe(base.abilities.cha.total + 2);
+  });
+
+  it("ignores targets for a trait that isn't chosen", () => {
+    const base = compute(makeDoc("Half-Elf"), ref);
+    const stale = compute(makeDoc("Half-Elf", [], { [kindredRaised]: ["int"] }), ref);
+    expect(stale.abilities.int.total).toBe(base.abilities.int.total);
+  });
+
+  it("skips an unfilled slot but still applies a later filled one", () => {
+    // Dual Talent (Human) ships TWO open changes; choosing only the second
+    // must not shift the first one's grant onto it.
+    const dualTalent = traitId("Dual Talent");
+    const base = compute(makeDoc("Human"), ref);
+    const picked = compute(makeDoc("Human", [dualTalent], { [dualTalent]: ["", "wis"] }), ref);
+    expect(picked.abilities.wis.total).toBe(base.abilities.wis.total + 2);
+    expect(picked.abilities.str.total).toBe(base.abilities.str.total);
+  });
+});
+
+describe("vendored racial-trait resource pools (issue #102)", () => {
+  const plumekith = traitId("Spell-Like Ability (Aasimar - Plumekith)");
+
+  function pools(doc: CharacterDoc) {
+    return deriveResourcePools(doc, ref, compute(doc, ref).abilities);
+  }
+
+  it("a heritage spell-like ability's uses become a tracker pool", () => {
+    // Plumekith: *see invisibility* 1/day (uses.maxFormula "1", per "day").
+    const pool = pools(makeDoc("Aasimar", [plumekith])).find((p) => p.id === plumekith);
+    expect(pool).toMatchObject({
+      name: "Spell-Like Ability (Aasimar - Plumekith)",
+      max: 1,
+      restValue: 1,
+      per: "day",
+      classTag: "racial",
+    });
+  });
+
+  it("no pool for a trait the character hasn't chosen", () => {
+    expect(pools(makeDoc("Aasimar")).find((p) => p.id === plumekith)).toBeUndefined();
+  });
+
+  it("no pool when the trait's race doesn't match the character's", () => {
+    expect(pools(makeDoc("Human", [plumekith])).find((p) => p.id === plumekith)).toBeUndefined();
   });
 });
 

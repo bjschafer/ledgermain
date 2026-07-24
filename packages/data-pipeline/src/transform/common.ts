@@ -41,6 +41,25 @@ export function normalizeChanges(value: unknown): Change[] {
     .filter((c) => c.target !== "");
 }
 
+/**
+ * The complement of {@link normalizeChanges}: the changes it drops for having
+ * no `target`. Almost everywhere that's malformed data and dropping is right,
+ * but the `pf-racial-traits` pack leaves a target blank on purpose when the
+ * trait says "choose one" — see `RacialTrait.openChanges` in `@pf1/schema`
+ * and `transformRacialTrait`.
+ */
+export function normalizeUntargetedChanges(value: unknown): Change[] {
+  return asRecordArray(value)
+    .filter((c) => String(c.target ?? "") === "")
+    .map((c) => ({
+      formula: String(c.formula ?? ""),
+      target: "",
+      type: String(c.type ?? "untyped"),
+      ...(c.operator === "set" ? { operator: "set" as const } : {}),
+    }))
+    .filter((c) => c.formula !== "");
+}
+
 export function normalizeContextNotes(value: unknown, resolveUuid: UuidResolver): ContextNote[] {
   return asRecordArray(value)
     .map((n) => ({

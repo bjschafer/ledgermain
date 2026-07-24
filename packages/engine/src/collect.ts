@@ -205,6 +205,16 @@ export function collectModifiers(
       for (const ch of t.changes) {
         evalChange(ch.formula, rollData, ch.target, ch.type, t.name, t.id, out, ch.operator);
       }
+      // "Choose one" changes the source ships untargeted (`openChanges`): each
+      // applies only once the player has named a target, positionally, in
+      // `build.vendoredRacialTraitTargets`. An unfilled slot grants nothing
+      // rather than guessing a target — the picker flags it instead.
+      const chosenTargets = doc.build.vendoredRacialTraitTargets?.[id] ?? [];
+      for (const [i, ch] of (t.openChanges ?? []).entries()) {
+        const target = chosenTargets[i];
+        if (!target) continue;
+        evalChange(ch.formula, rollData, target, ch.type, t.name, t.id, out, ch.operator);
+      }
     }
   }
 
