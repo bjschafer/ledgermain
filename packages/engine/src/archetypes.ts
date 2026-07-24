@@ -282,8 +282,8 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
-  // Arcanist exploits (issue #42, vendored catalog overlay issue #74 Phase
-  // 3b) — hand-authored table first, falling back to the vendored catalog
+  // Arcanist exploits (issue #42, vendored catalog overlay issue #74) — hand-authored
+  // table first, falling back to the vendored catalog
   // via `resolveArcanistExploit` (see arcanist-exploits.ts), gated on actual
   // arcanist levels the same way domain/school/bloodline grants are gated
   // above. A non-arcanist with a stale `arcanistExploits` field gets
@@ -823,7 +823,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
-  // Slayer talents (issue #74 Phase 3b) — vendored-catalog-only, no
+  // Slayer talents (issue #74) — vendored-catalog-only, no
   // hand-authored table (see slayer-talents.ts's doc comment for why).
   // Gated on actual slayer levels. Granted at a flat display level of 2 (the
   // earliest a slayer has any talent at all), same rationale as
@@ -957,7 +957,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   // always valid) is tolerated silently, matching every other budgeted
   // picker's soft posture. Both `eligibleCompositeBlasts` and
   // `resolveKineticistWildTalent` resolve against the vendored catalog
-  // overlay too (issue #74 Phase 3b), so a vendored-only pick shows up here
+  // overlay too (issue #74), so a vendored-only pick shows up here
   // exactly like a hand-authored one.
   const kineticistLevel = doc.identity.classes.find((c) => c.tag === "kineticist")?.level ?? 0;
   if (kineticistLevel > 0) {

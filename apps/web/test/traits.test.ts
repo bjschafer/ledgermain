@@ -165,7 +165,7 @@ describe("model/traits: homebrew resolution (issue #87)", () => {
   });
 });
 
-describe("model/traits: vendored catalog + id-stability migration (issue #74 Phase 1)", () => {
+describe("model/traits: vendored catalog + id-stability migration (issue #74)", () => {
   it("the catalog now carries close to the full ~2,000-entry vendored trait pack", () => {
     // 28 hand-authored + ~1,950 surviving vendored entries after name-collision
     // dedup (see the next tests) — well above the pre-vendoring 28.

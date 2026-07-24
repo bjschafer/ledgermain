@@ -3,7 +3,7 @@
  * published rules (Advanced Player's Guide / Ultimate Campaign, public SRD
  * content). Written when traits were NOT part of any vendored data (same
  * posture as `tables.ts`/`familiars.ts` for content the compendium doesn't
- * carry) — issue #74 Phase 1 later added the full ~2,000-entry published
+ * carry) — issue #74 later added the full ~2,000-entry published
  * catalog as `RefData.traits` (the pf1-content community module's
  * `pf-traits` pack), but this hand-verified 28-entry table is kept as-is
  * rather than replaced: `mergedTraits`/`resolveTraitDef` below fold the two
@@ -427,7 +427,7 @@ function normalizeTraitName(name: string): string {
 
 /**
  * Names already covered by the hand-authored table (issue #23) — used to
- * drop the vendored catalog's duplicate of each one (issue #74 Phase 1). See
+ * drop the vendored catalog's duplicate of each one (issue #74). See
  * {@link mergedTraits}'s doc comment for why the hand-authored side always
  * wins rather than a field-by-field overlay.
  */
@@ -474,7 +474,7 @@ export function resolveTraitDef(id: string, refData: RefData): TraitDef | undefi
 
 /**
  * The full pickable trait catalog for browsing: the 28 hand-authored entries
- * (issue #23) plus every vendored trait (issue #74 Phase 1) whose normalized
+ * (issue #23) plus every vendored trait (issue #74) whose normalized
  * name doesn't collide with one of them. On a name collision the
  * hand-authored entry wins outright — same "richer record wins" precedent as
  * `data-pipeline`'s feats merge (system pack over the community pack) —

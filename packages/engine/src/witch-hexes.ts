@@ -331,7 +331,7 @@ export { witchHexDC } from "./tables.js";
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3b: `RefData.hexes` (see that type's doc comment) is the
+ * Issue #74: `RefData.hexes` (see that type's doc comment) is the
  * FULL published witch-hex catalog (~104 entries after junk filtering),
  * prose only. The hand-verified table above stays authoritative for
  * MECHANICS — this section only merges the two for BROWSING (the picker) and

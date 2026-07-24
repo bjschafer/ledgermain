@@ -25,7 +25,7 @@ interface HexPickerProps {
 const TIER_LABEL: Record<string, string> = { hex: "Hex", major: "Major Hex", grand: "Grand Hex" };
 
 /**
- * Witch hex selection (issue #65, full-catalog issue #74 Phase 3b), mirroring
+ * Witch hex selection (issue #65, full-catalog issue #74), mirroring
  * `MagusArcanaPicker`/`RagePowerPicker` — hexes are NOT patron-scoped (unlike
  * oracle revelations, which are mystery-scoped; see `@pf1/engine`
  * `witch-hexes.ts`'s doc comment), so this is a flat picker over every hex

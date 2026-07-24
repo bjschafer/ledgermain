@@ -188,7 +188,7 @@ export const MONK_STYLE_STRIKE_IDS: readonly string[] = STYLE_STRIKE_LIST.map((s
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.monkStyleStrikes` (see that type's doc
+ * Issue #74: `RefData.monkStyleStrikes` (see that type's doc
  * comment) is the full published style-strike catalog — 15 entries, an
  * EXACT 1:1 match with this file's 15 hand-authored entries (verified by
  * normalized name; no drift, no alias, no orphan on either side — unlike

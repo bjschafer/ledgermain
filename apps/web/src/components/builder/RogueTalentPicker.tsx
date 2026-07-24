@@ -33,8 +33,8 @@ interface RogueTalentPickerProps {
  * (reference Debilitating Injury) are soft-noted, never hidden, for a
  * chained-rogue picker. Free-choice, never blocks past the expected count.
  *
- * Browses the FULL published catalog (`mergedRogueTalentCatalog` — issue #74
- * Phase 3b), not just the 27-entry hand-verified slice — a vendored-only
+ * Browses the FULL published catalog (`mergedRogueTalentCatalog` — issue #74), not
+ * just the 27-entry hand-verified slice — a vendored-only
  * pick is display-only, same "no automatic effect" posture as most
  * hand-authored rows.
  */

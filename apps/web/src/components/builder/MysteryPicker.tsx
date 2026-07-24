@@ -24,7 +24,7 @@ interface MysteryPickerProps {
  * hybrid-prereqs philosophy — mirrors `BloodlinePicker`.
  *
  * Browses the FULL published mystery catalog (`mergedOracleMysteryCatalog`,
- * issue #74 Phase 3c) — the 10 Advanced Player's Guide "core" mysteries
+ * issue #74) — the 10 Advanced Player's Guide "core" mysteries
  * (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, Wind)
  * keep their hand-verified class-skill/bonus-spell mechanics (marked
  * `badge-modeled` "M"); the ~24 other vendored-only mysteries (Ancestor,

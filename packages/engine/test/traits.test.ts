@@ -12,7 +12,7 @@ import { compute } from "../src/index.js";
  * from the published PF1 rules, not derived from any oracle data. All deltas
  * are compared against the same doc with no traits chosen.
  *
- * Issue #74 Phase 1 added the full vendored trait catalog (`RefData.traits`)
+ * Issue #74 added the full vendored trait catalog (`RefData.traits`)
  * as a second source `collect.ts` resolves against — the "vendored trait"
  * block at the bottom exercises THAT path with a real catalog entry.
  */
@@ -124,7 +124,7 @@ describe("traits (hand-computed)", () => {
   });
 });
 
-describe("traits: vendored catalog (issue #74 Phase 1, RefData.traits)", () => {
+describe("traits: vendored catalog (issue #74, RefData.traits)", () => {
   it("a vendored-only trait's structured Change applies through the same collect.ts path as the hand-authored table", () => {
     // Ambush Training (Pathfinder Society): "+1 trait bonus on initiative
     // checks" (PZO9435 p.15) — a real published trait not among the 28

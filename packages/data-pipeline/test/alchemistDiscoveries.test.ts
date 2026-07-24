@@ -4,7 +4,7 @@ import { loadRefData } from "../src/index.js";
 
 /**
  * End-to-end coverage for the vendored alchemist-discovery catalog (issue
- * #74 Phase 3c) against the real pinned Pf Data 1e slice — mirrors
+ * #74) against the real pinned Pf Data 1e slice — mirrors
  * `ragePowers.test.ts`. `pfdata.test.ts` covers the generic reader in
  * isolation.
  */

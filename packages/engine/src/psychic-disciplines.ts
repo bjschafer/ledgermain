@@ -592,7 +592,7 @@ export const PSYCHIC_DISCIPLINE_TAGS: readonly string[] = DISCIPLINE_LIST.map((d
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.psychicDisciplines` (see that type's doc
+ * Issue #74: `RefData.psychicDisciplines` (see that type's doc
  * comment) is the FULL published catalog (23 entries after junk filtering),
  * prose only. UNLIKE `RagePower`/`MesmeristTrick`/etc., a discipline is a
  * CHASSIS — the hand-authored table above is the ONLY source of bonus

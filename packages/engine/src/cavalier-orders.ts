@@ -405,7 +405,7 @@ export function challengeRiderText(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.cavalierOrders` (see that type's doc comment)
+ * Issue #74: `RefData.cavalierOrders` (see that type's doc comment)
  * is the full published order catalog — 38 entries, far beyond this file's
  * 8 hand-authored orders (the 6 Advanced Player's Guide cavalier orders plus
  * the Ultimate Combat samurai-specific Warrior/Ronin orders). Unlike every

@@ -23,8 +23,8 @@ interface KiPowerPickerProps {
 }
 
 /**
- * Monk (Unchained) ki power selection (issue #65, full-catalog issue #74
- * Phase 3c), mirroring `HexPicker`/`RagePowerPicker`'s "M" badge convention —
+ * Monk (Unchained) ki power selection (issue #65, full-catalog issue #74), mirroring
+ * `HexPicker`/`RagePowerPicker`'s "M" badge convention —
  * ki powers are entirely `displayOnly` in the hand-authored table (see
  * `@pf1/engine` `monk-ki-powers.ts`'s doc comment for why none of the 39
  * core powers clear the bar for a real `Change`), so today every row shows

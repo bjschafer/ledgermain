@@ -117,7 +117,7 @@ export interface RefData {
   wizardSchools: Record<string, WizardSchool>;
   /**
    * Alternate racial traits from the pinned `pf1-content` module's
-   * `pf-racial-traits` pack (issue #74 fill plan phase 1), covering all 80
+   * `pf-racial-traits` pack (issue #74), covering all 80
    * vendored races. Distinct from the 7-core-races-plus-Sylph hand-authored
    * `RACIAL_TRAITS` table in `@pf1/engine` `racial-traits.ts`, which remains
    * authoritative (mechanically-enforced replacement) for those races — see
@@ -127,11 +127,11 @@ export interface RefData {
   racialTraits: Record<string, RacialTrait>;
   /** The full published barbarian rage-power catalog (fourth-source dataset; see `RagePower` doc comment). */
   ragePowers: Record<string, RagePower>;
-  /** The full published witch hex catalog (fourth-source dataset, issue #74 Phase 3b; see `WitchHex` doc comment). */
+  /** The full published witch hex catalog (fourth-source dataset, issue #74; see `WitchHex` doc comment). */
   hexes: Record<string, WitchHex>;
-  /** The full published GENERAL shaman hex catalog (fourth-source dataset, issue #74 Phase 3b; see `ShamanHex` doc comment) — spirit-specific hexes stay hand-authored only, see that type's doc comment. */
+  /** The full published GENERAL shaman hex catalog (fourth-source dataset, issue #74; see `ShamanHex` doc comment) — spirit-specific hexes stay hand-authored only, see that type's doc comment. */
   shamanHexes: Record<string, ShamanHex>;
-  /** The full published magus arcana catalog (fourth-source dataset, issue #74 Phase 3b; see `MagusArcana` doc comment). */
+  /** The full published magus arcana catalog (fourth-source dataset, issue #74; see `MagusArcana` doc comment). */
   magusArcana: Record<string, MagusArcana>;
   /** The full published rogue talent catalog, SHARED by chained rogue/Rogue (Unchained)/slayer's "Rogue Talent" option — see `RogueTalent` doc comment. */
   rogueTalents: Record<string, RogueTalent>;
@@ -149,39 +149,39 @@ export interface RefData {
   investigatorTalents: Record<string, InvestigatorTalent>;
   /** The full published kineticist wild-talent catalog, every kind (fourth-source dataset; see `KineticWildTalent` doc comment). */
   kineticWildTalents: Record<string, KineticWildTalent>;
-  /** The full published mesmerist trick catalog, tricks + masterful tricks (fourth-source dataset, issue #74 Phase 3c; see `MesmeristTrick` doc comment). */
+  /** The full published mesmerist trick catalog, tricks + masterful tricks (fourth-source dataset, issue #74; see `MesmeristTrick` doc comment). */
   mesmeristTricks: Record<string, MesmeristTrick>;
-  /** The full published mesmerist bold-stare catalog (fourth-source dataset, issue #74 Phase 3c; see `MesmeristBoldStare` doc comment). */
+  /** The full published mesmerist bold-stare catalog (fourth-source dataset, issue #74; see `MesmeristBoldStare` doc comment). */
   mesmeristBoldStares: Record<string, MesmeristBoldStare>;
-  /** The full published psychic phrenic-amplification catalog, basic + major (fourth-source dataset, issue #74 Phase 3c; see `PhrenicAmplification` doc comment). */
+  /** The full published psychic phrenic-amplification catalog, basic + major (fourth-source dataset, issue #74; see `PhrenicAmplification` doc comment). */
   phrenicAmplifications: Record<string, PhrenicAmplification>;
-  /** The full published psychic discipline catalog (fourth-source dataset, issue #74 Phase 3c; see `PsychicDiscipline` doc comment). */
+  /** The full published psychic discipline catalog (fourth-source dataset, issue #74; see `PsychicDiscipline` doc comment). */
   psychicDisciplines: Record<string, PsychicDiscipline>;
-  /** The full published occultist implement-school catalog (fourth-source dataset, issue #74 Phase 3c; see `OccultistImplement` doc comment). */
+  /** The full published occultist implement-school catalog (fourth-source dataset, issue #74; see `OccultistImplement` doc comment). */
   occultistImplements: Record<string, OccultistImplement>;
-  /** The full published medium legendary-spirit catalog (fourth-source dataset, issue #74 Phase 3c; see `MediumSpirit` doc comment). */
+  /** The full published medium legendary-spirit catalog (fourth-source dataset, issue #74; see `MediumSpirit` doc comment). */
   mediumSpirits: Record<string, MediumSpirit>;
-  /** The full published oracle mystery catalog (fourth-source dataset, issue #74 Phase 3c; see `OracleMystery` doc comment). */
+  /** The full published oracle mystery catalog (fourth-source dataset, issue #74; see `OracleMystery` doc comment). */
   oracleMysteries: Record<string, OracleMystery>;
-  /** The full published oracle's curse catalog (fourth-source dataset, issue #74 Phase 3c; see `OracleCurse` doc comment). */
+  /** The full published oracle's curse catalog (fourth-source dataset, issue #74; see `OracleCurse` doc comment). */
   oracleCurses: Record<string, OracleCurse>;
-  /** The full published witch patron catalog (fourth-source dataset, issue #74 Phase 3c; see `WitchPatron` doc comment). */
+  /** The full published witch patron catalog (fourth-source dataset, issue #74; see `WitchPatron` doc comment). */
   witchPatrons: Record<string, WitchPatron>;
-  /** The full published shaman spirit catalog (fourth-source dataset, issue #74 Phase 3c; see `ShamanSpirit` doc comment). */
+  /** The full published shaman spirit catalog (fourth-source dataset, issue #74; see `ShamanSpirit` doc comment). */
   shamanSpirits: Record<string, ShamanSpirit>;
-  /** The full published sorcerer bloodline catalog (fourth-source dataset, issue #74 Phase 3c; see `SorcererBloodline` doc comment). */
+  /** The full published sorcerer bloodline catalog (fourth-source dataset, issue #74; see `SorcererBloodline` doc comment). */
   sorcererBloodlines: Record<string, SorcererBloodline>;
-  /** The full published bloodrager bloodline catalog (fourth-source dataset, issue #74 Phase 3c; see `BloodragerBloodline` doc comment). */
+  /** The full published bloodrager bloodline catalog (fourth-source dataset, issue #74; see `BloodragerBloodline` doc comment). */
   bloodragerBloodlines: Record<string, BloodragerBloodline>;
-  /** The full published alchemist discovery catalog (fourth-source dataset, issue #74 Phase 3c; see `AlchemistDiscovery` doc comment). */
+  /** The full published alchemist discovery catalog (fourth-source dataset, issue #74; see `AlchemistDiscovery` doc comment). */
   alchemistDiscoveries: Record<string, AlchemistDiscovery>;
-  /** The full published Monk (Unchained) ki-power catalog (fourth-source dataset, issue #74 Phase 3c; see `MonkKiPower` doc comment). */
+  /** The full published Monk (Unchained) ki-power catalog (fourth-source dataset, issue #74; see `MonkKiPower` doc comment). */
   monkKiPowers: Record<string, MonkKiPower>;
-  /** The full published Monk (Unchained) style-strike catalog (fourth-source dataset, issue #74 Phase 3c; see `MonkStyleStrike` doc comment). */
+  /** The full published Monk (Unchained) style-strike catalog (fourth-source dataset, issue #74; see `MonkStyleStrike` doc comment). */
   monkStyleStrikes: Record<string, MonkStyleStrike>;
-  /** The full published cavalier/samurai order catalog, far beyond the 8 hand-authored orders (fourth-source dataset, issue #74 Phase 3c; see `CavalierOrder` doc comment). */
+  /** The full published cavalier/samurai order catalog, far beyond the 8 hand-authored orders (fourth-source dataset, issue #74; see `CavalierOrder` doc comment). */
   cavalierOrders: Record<string, CavalierOrder>;
-  /** The full published shifter aspect catalog (fourth-source dataset, issue #74 Phase 3c; see `ShifterAspect` doc comment). */
+  /** The full published shifter aspect catalog (fourth-source dataset, issue #74; see `ShifterAspect` doc comment). */
   shifterAspects: Record<string, ShifterAspect>;
 }
 
@@ -582,7 +582,7 @@ export interface Feat extends RefEntity {
 
 /**
  * A PF1 character trait, vendored from the pf1-content community module's
- * `pf-traits` pack (issue #74 Phase 1) — same per-entity YAML shape as
+ * `pf-traits` pack (issue #74) — same per-entity YAML shape as
  * `Feat`, normalized by the same `readPack`/transform machinery. This is the
  * FULL published catalog (~2,000 entries); it exists alongside, not instead
  * of, the engine's 28-entry hand-authored `TRAITS` table (issue #23) — see
@@ -899,7 +899,7 @@ export interface ArchetypeFeature extends RefEntity {
 /* ---------------------------------------------------------- rage powers -- */
 
 /**
- * A published barbarian rage power (issue #74 Phase 3a: the "catalog from
+ * A published barbarian rage power (issue #74: the "catalog from
  * data, mechanics as overlay" pattern later subsystems — hexes, arcana,
  * talents, exploits, wild talents — replicate). Unlike the rest of RefData,
  * rage powers are NOT sourced from the Foundry pf1 system — its Barbarian /
@@ -942,7 +942,7 @@ export interface RagePower extends RefEntity {
 /* --------------------------------------------------------- witch hexes -- */
 
 /**
- * A published witch hex (issue #74 Phase 3b, same "catalog from data,
+ * A published witch hex (issue #74, same "catalog from data,
  * mechanics as overlay" pattern `RagePower` established). Sourced from the
  * "Pf Data 1e" dataset's `json/class_ability_hexes.json` (~105 raw entries;
  * see `PFDATA_REPO`/`PFDATA_SHA` in data-pipeline) rather than the Foundry
@@ -977,7 +977,7 @@ export interface WitchHex extends RefEntity {
 /* -------------------------------------------------- general shaman hexes -- */
 
 /**
- * A published GENERAL shaman hex (issue #74 Phase 3b) — the Advanced Class
+ * A published GENERAL shaman hex (issue #74) — the Advanced Class
  * Guide's own "Shaman Hexes" table, available to any shaman regardless of
  * spirit. Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_shaman_hexes.json` (18 raw entries, 16 after dropping
@@ -1004,7 +1004,7 @@ export interface ShamanHex extends RefEntity {
 /* -------------------------------------------------------- magus arcana -- */
 
 /**
- * A published magus arcanum (issue #74 Phase 3b, same pattern as
+ * A published magus arcanum (issue #74, same pattern as
  * `RagePower`/`WitchHex`). Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_magus_arcana.json` (66 raw entries, 64 after dropping
  * the source's `not_found` sentinel and one `redirect` alias — Greater
@@ -1035,7 +1035,7 @@ export interface MagusArcana extends RefEntity {
 /* ------------------------------------------------------- rogue-family talents -- */
 
 /**
- * A published rogue talent (issue #74 Phase 3b), same "Pf Data 1e" source and
+ * A published rogue talent (issue #74), same "Pf Data 1e" source and
  * catalog-from-data posture as `RagePower` — prose only, no `changes`. SHARED
  * by the chained rogue, Rogue (Unchained), and (via that class's own "Rogue
  * Talent" menu option) slayer. `@pf1/engine` `rogue-talents.ts`'s
@@ -1065,7 +1065,7 @@ export interface RogueTalent extends RefEntity {
 }
 
 /**
- * A published ninja trick (issue #74 Phase 3b), same posture as `RagePower`.
+ * A published ninja trick (issue #74), same posture as `RagePower`.
  * `@pf1/engine` `ninja-tricks.ts`'s hand-authored `NINJA_TRICKS` table (44
  * entries: 31 tricks + 13 master tricks) is authoritative for mechanics on
  * any name collision — see that file's `mergedNinjaTrickCatalog`. The
@@ -1083,7 +1083,7 @@ export interface NinjaTrick extends RefEntity {
 }
 
 /**
- * A published slayer talent (issue #74 Phase 3b), same posture as
+ * A published slayer talent (issue #74), same posture as
  * `RagePower`. UNLIKE the other rogue-family subsystems, `@pf1/engine` has
  * NO hand-authored slayer-talent table today — the slayer class previously
  * had zero talent-picker support beyond the "Extra Slayer Talent" feat's
@@ -1107,8 +1107,8 @@ export interface SlayerTalent extends RefEntity {
 }
 
 /**
- * A published vigilante talent — the "Vigilante Talent" pool (issue #74
- * Phase 3b), same posture as `RagePower`. `@pf1/engine`
+ * A published vigilante talent — the "Vigilante Talent" pool (issue #74), same
+ * posture as `RagePower`. `@pf1/engine`
  * `vigilante-talents.ts`'s hand-authored `VIGILANTE_TALENTS` table (32
  * entries) is authoritative for mechanics on any name collision — see that
  * file's `mergedVigilanteTalentCatalog`. `category` distinguishes "Avenger
@@ -1145,7 +1145,7 @@ export interface VigilanteSocialTalent extends RefEntity {
 /* ------------------------------------------------- arcanist exploits -- */
 
 /**
- * A published arcanist exploit (issue #74 Phase 3b), same "catalog from
+ * A published arcanist exploit (issue #74), same "catalog from
  * data, mechanics as overlay" pattern `RagePower` documents. Sourced from
  * the "Pf Data 1e" dataset's `json/class_ability_exploits.json` (see
  * `PFDATA_REPO`/`PFDATA_SHA` in data-pipeline).
@@ -1181,7 +1181,7 @@ export interface ArcanistExploit extends RefEntity {
 /* --------------------------------------------- investigator talents -- */
 
 /**
- * A published investigator talent (issue #74 Phase 3b), same pattern as
+ * A published investigator talent (issue #74), same pattern as
  * `RagePower`. Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_investigator_talents.json`.
  *
@@ -1222,7 +1222,7 @@ export type KineticInfusionKind = "form" | "substance";
 
 /**
  * A published kineticist wild talent — infusion, utility talent, simple
- * blast, composite blast, or defense talent (issue #74 Phase 3b). Sourced
+ * blast, composite blast, or defense talent (issue #74). Sourced
  * from the "Pf Data 1e" dataset's `json/class_ability_kinetic_talents.json`,
  * the trickiest of the Phase 3b imports: unlike `RagePower`/
  * `InvestigatorTalent`, this subsystem file carries NO per-entry
@@ -1287,7 +1287,7 @@ export interface KineticWildTalent extends RefEntity {
 /* --------------------------------------------------------- mesmerist tricks -- */
 
 /**
- * A published mesmerist trick (issue #74 Phase 3c, same "catalog from data,
+ * A published mesmerist trick (issue #74, same "catalog from data,
  * mechanics as overlay" pattern `RagePower` established). Sourced from the
  * "Pf Data 1e" dataset's `json/class_ability_tricks.json` (44 real entries
  * after dropping the source's `not_found` sentinel — VERIFIED empirically:
@@ -1317,7 +1317,7 @@ export interface MesmeristTrick extends RefEntity {
 /* ----------------------------------------------------- mesmerist bold stares -- */
 
 /**
- * A published mesmerist bold stare (issue #74 Phase 3c), same posture as
+ * A published mesmerist bold stare (issue #74), same posture as
  * `MesmeristTrick`. Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_stares.json` (24 real entries after dropping the
  * source's `not_found` sentinel). Unlike tricks, this source carries NO
@@ -1338,7 +1338,7 @@ export type MesmeristBoldStare = RefEntity;
 /* ------------------------------------------------- phrenic amplifications -- */
 
 /**
- * A published psychic phrenic amplification (issue #74 Phase 3c), same
+ * A published psychic phrenic amplification (issue #74), same
  * posture as `RagePower`. Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_phrenic_amplifications.json` (31 real entries after
  * dropping the source's `not_found` sentinel). `@pf1/engine`
@@ -1366,7 +1366,7 @@ export interface PhrenicAmplification extends RefEntity {
 /* -------------------------------------------------------- psychic disciplines -- */
 
 /**
- * A published psychic discipline (issue #74 Phase 3c). Sourced from the
+ * A published psychic discipline (issue #74). Sourced from the
  * "Pf Data 1e" dataset's `json/class_ability_disciplines.json` (23 real
  * entries after dropping the source's `not_found` sentinel). Unlike the
  * other subsystems in this wave, a discipline is a CHASSIS — a single
@@ -1389,7 +1389,7 @@ export type PsychicDiscipline = RefEntity;
 /* -------------------------------------------------------- occultist implements -- */
 
 /**
- * A published occultist implement school (issue #74 Phase 3c). Sourced from
+ * A published occultist implement school (issue #74). Sourced from
  * the "Pf Data 1e" dataset's `json/class_ability_implements.json` (12 real
  * entries after dropping the source's `not_found` sentinel). Same chassis
  * caveat as `PsychicDiscipline`: an implement school grants a base focus
@@ -1409,7 +1409,7 @@ export type OccultistImplement = RefEntity;
 /* -------------------------------------------------------------- medium spirits -- */
 
 /**
- * A published Medium legendary spirit (issue #74 Phase 3c). Sourced from the
+ * A published Medium legendary spirit (issue #74). Sourced from the
  * "Pf Data 1e" dataset's `json/class_ability_spirits.json` (40 real entries
  * after dropping the source's `not_found` sentinel — VERIFIED empirically
  * against the sibling `json/class_ability_shaman_spirits.json` file, which
@@ -1435,7 +1435,7 @@ export type MediumSpirit = RefEntity;
 /* -------------------------------------------------- oracle mysteries -- */
 
 /**
- * A published oracle mystery (issue #74 Phase 3c, same "catalog from data,
+ * A published oracle mystery (issue #74, same "catalog from data,
  * mechanics as overlay" pattern `RagePower` established). Sourced from the
  * "Pf Data 1e" dataset's `json/class_ability_mysteries.json` (35 raw
  * entries, 34 after dropping the source's `not_found` sentinel) rather than
@@ -1463,7 +1463,7 @@ export interface OracleMystery extends RefEntity {}
 /* ----------------------------------------------------- oracle curses -- */
 
 /**
- * A published oracle's curse (issue #74 Phase 3c, same pattern as
+ * A published oracle's curse (issue #74, same pattern as
  * `RagePower`). Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_curses.json` (42 raw entries, 41 after dropping
  * `not_found`) — NOT the dataset's top-level `curses.json` (that file is
@@ -1480,7 +1480,7 @@ export interface OracleCurse extends RefEntity {}
 /* ----------------------------------------------------- witch patrons -- */
 
 /**
- * A published witch patron (issue #74 Phase 3c, same pattern as
+ * A published witch patron (issue #74, same pattern as
  * `RagePower`). Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_patrons.json` (62 raw entries, 61 after dropping
  * `not_found`) — the Witch class def only links the generic "Patron
@@ -1502,7 +1502,7 @@ export interface WitchPatron extends RefEntity {
 /* ---------------------------------------------------- shaman spirits -- */
 
 /**
- * A published shaman spirit (issue #74 Phase 3c, same pattern as
+ * A published shaman spirit (issue #74, same pattern as
  * `RagePower`). Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_shaman_spirits.json` (19 raw entries, 18 after
  * dropping `not_found`) — NOT the dataset's `class_ability_spirits.json`
@@ -1521,7 +1521,7 @@ export interface ShamanSpirit extends RefEntity {}
 /* ------------------------------------------------- sorcerer bloodlines -- */
 
 /**
- * A published sorcerer bloodline (issue #74 Phase 3c, same pattern as
+ * A published sorcerer bloodline (issue #74, same pattern as
  * `RagePower`). Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_sorcerer_bloodlines.json` (53 raw entries, 51 after
  * dropping `not_found` and the one `kobold` -> `kobold_sorcerer` redirect)
@@ -1543,7 +1543,7 @@ export interface SorcererBloodline extends RefEntity {}
 /* ------------------------------------------------ bloodrager bloodlines -- */
 
 /**
- * A published bloodrager bloodline (issue #74 Phase 3c, same pattern as
+ * A published bloodrager bloodline (issue #74, same pattern as
  * `RagePower`). Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_bloodrager_bloodlines.json` (25 raw entries, 24 after
  * dropping `not_found`) — the Bloodrager class def only links a generic
@@ -1567,7 +1567,7 @@ export interface BloodragerBloodline extends RefEntity {}
 /* -------------------------------------------------- alchemist discoveries -- */
 
 /**
- * A published alchemist discovery (issue #74 Phase 3c), same "catalog from
+ * A published alchemist discovery (issue #74), same "catalog from
  * data, mechanics as overlay" pattern `RagePower` documents. Sourced from
  * the "Pf Data 1e" dataset's `json/class_ability_discoveries.json` — NOT
  * `json/class_ability_arcane_discoveries.json` (the wizard's Arcane
@@ -1597,7 +1597,7 @@ export interface AlchemistDiscovery extends RefEntity {
 /* ---------------------------------------------------- monk ki powers -- */
 
 /**
- * A published Monk (Unchained) ki power (issue #74 Phase 3c), same pattern
+ * A published Monk (Unchained) ki power (issue #74), same pattern
  * as `RagePower`. Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_ki_powers.json`.
  *
@@ -1624,7 +1624,7 @@ export interface MonkKiPower extends RefEntity {
 /* ------------------------------------------------- monk style strikes -- */
 
 /**
- * A published Monk (Unchained) style strike (issue #74 Phase 3c), same
+ * A published Monk (Unchained) style strike (issue #74), same
  * pattern as `RagePower`. Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_style_strikes.json`.
  *
@@ -1641,7 +1641,7 @@ export type MonkStyleStrike = RefEntity;
 /* -------------------------------------------------------- orders -- */
 
 /**
- * A published cavalier/samurai order (issue #74 Phase 3c). Sourced from the
+ * A published cavalier/samurai order (issue #74). Sourced from the
  * "Pf Data 1e" dataset's `json/class_ability_orders.json` — NOT
  * `json/class_ability_hellknight_orders.json` (the Hellknight prestige
  * class's own, unrelated, "order" chassis; out of scope here).
@@ -1667,7 +1667,7 @@ export interface CavalierOrder extends RefEntity {
 /* -------------------------------------------------------- shifter aspects -- */
 
 /**
- * A published shifter aspect (issue #74 Phase 3c), same pattern as
+ * A published shifter aspect (issue #74), same pattern as
  * `RagePower`. Sourced from the "Pf Data 1e" dataset's
  * `json/class_ability_aspects.json`.
  *

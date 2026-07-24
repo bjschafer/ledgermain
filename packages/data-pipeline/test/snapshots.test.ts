@@ -50,7 +50,7 @@ describe("normalized-output snapshots", () => {
     expect(omitDescription(byName(ref.races, "Human")!)).toMatchSnapshot();
   });
 
-  it("trait: Reactionary (issue #74 Phase 1 — vendored trait catalog)", () => {
+  it("trait: Reactionary (issue #74 — vendored trait catalog)", () => {
     expect(omitDescription(byName(ref.traits, "Reactionary")!)).toMatchSnapshot();
   });
 

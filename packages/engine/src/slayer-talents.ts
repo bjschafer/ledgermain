@@ -1,5 +1,5 @@
 /**
- * PF1 slayer talent catalog (issue #74 Phase 3b) — UNLIKE every sibling
+ * PF1 slayer talent catalog (issue #74) — UNLIKE every sibling
  * rogue-family subsystem (`rogue-talents.ts`, `ninja-tricks.ts`,
  * `vigilante-talents.ts`), there is no pre-existing hand-authored table here:
  * the slayer class previously had zero talent-picker support in this app

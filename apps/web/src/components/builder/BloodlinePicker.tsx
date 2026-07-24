@@ -33,8 +33,8 @@ function normalizeBloodlineTag(name: string): string {
  * tags — the bonus-SPELLS-known source, unrelated to this wave; "Aberrant"
  * has no upstream spell tags, so its bonus-spell list is hand-authored as a
  * data-pipeline supplement, see `src/supplements.ts`) and the full published
- * ARCANA/POWERS catalog (`mergedSorcererBloodlineCatalog`, issue #74 Phase
- * 3c) — a tag present in both keeps the `bloodlineSpellLists` spelling (so
+ * ARCANA/POWERS catalog (`mergedSorcererBloodlineCatalog`, issue #74) — a tag present
+ * in both keeps the `bloodlineSpellLists` spelling (so
  * bonus-spell derivation, keyed on that exact tag, keeps working) with the
  * catalog's prose/mechanics attached for preview. "Kobold" is the one
  * `bloodlineSpellLists` tag the vendored catalog has no matching prose for

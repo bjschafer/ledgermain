@@ -58,7 +58,7 @@ describe("metadata + provenance", () => {
     // Disciple, Duelist, Eldritch Knight, Loremaster, Mystic Theurge,
     // Pathfinder Chronicler, Shadowdancer — plus Student of War from the
     // Adventurer's Guide. Foundry ships no prestige classes at all) + 108
-    // vendored prestige classes (issue #74 phase 2c — the remaining splatbook
+    // vendored prestige classes (issue #74 — the remaining splatbook
     // prestige classes from the same third-party archetype module, see
     // `vendoredPrestigeClasses.test.ts`).
     expect(Object.keys(ref.classes)).toHaveLength(163);
@@ -67,13 +67,13 @@ describe("metadata + provenance", () => {
     // config.ts's PF_CONTENT_REPO and normalize.ts's feats merge).
     expect(Object.keys(ref.feats)).toHaveLength(3563);
     // 1,998 pf-traits YAML files, deduped by normalized name within the pack
-    // itself (issue #74 Phase 1; no system-pack traits exist to prefer).
+    // itself (issue #74; no system-pack traits exist to prefer).
     expect(Object.keys(ref.traits)).toHaveLength(1981);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
   });
 });
 
-describe("trait catalog (pf1-content pf-traits pack, issue #74 Phase 1)", () => {
+describe("trait catalog (pf1-content pf-traits pack, issue #74)", () => {
   function traitByName(name: string) {
     const found = Object.values(ref.traits).find((t) => t.name === name);
     if (!found) throw new Error(`trait not found: ${name}`);
@@ -114,7 +114,7 @@ describe("trait catalog (pf1-content pf-traits pack, issue #74 Phase 1)", () => 
   });
 });
 
-describe("alternate racial traits (issue #74 fill plan — pf1-content pf-racial-traits pack)", () => {
+describe("alternate racial traits (issue #74 — pf1-content pf-racial-traits pack)", () => {
   it("emits only alternates and heritage variants (the pack's ~1,000 standard-trait entries are dropped)", () => {
     expect(Object.keys(ref.racialTraits).length).toBe(860);
     expect(ref.meta.counts.racialTraits).toBe(860);
@@ -227,7 +227,7 @@ describe("class feature actions (schema v8 — issue: bare resource-pool counter
   });
 
   it("Channel Energy carries all four heal/harm actions in source order", () => {
-    // Resolved via Cleric's own grant, not `byName` — issue #74 phase 2c
+    // Resolved via Cleric's own grant, not `byName` — issue #74
     // vendors several splatbook prestige classes with their own same-named
     // "Channel Energy" feature (name collisions across classes are expected
     // and not deduped, see `prestigeClasses.ts`), so a bare name lookup is

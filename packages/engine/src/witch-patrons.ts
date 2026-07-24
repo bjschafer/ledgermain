@@ -330,7 +330,7 @@ export const WITCH_PATRON_TAGS: readonly string[] = PATRON_LIST.map((p) => p.tag
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.witchPatrons` is the FULL published catalog
+ * Issue #74: `RefData.witchPatrons` is the FULL published catalog
  * (61 entries after junk filtering), prose only — same "catalog from data,
  * mechanics as overlay" pattern as `rage-powers.ts`'s
  * `mergedRagePowerCatalog`. The hand-verified 17-core-patron table above

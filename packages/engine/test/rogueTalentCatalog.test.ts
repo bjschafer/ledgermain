@@ -5,7 +5,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { mergedRogueTalentCatalog, resolveRogueTalent, ROGUE_TALENTS } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74 Phase 3b) — mirrors
+ * Coverage for the vendored-catalog overlay (issue #74) — mirrors
  * `ragePowerCatalog.test.ts`. All 27 hand-authored rogue talents matched a
  * vendored entry by name — no unmatched entries, unlike rage powers' Sixth
  * Sense gap.

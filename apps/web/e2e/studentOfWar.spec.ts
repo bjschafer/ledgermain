@@ -55,7 +55,7 @@ test("Student of War gates on entry, grants a chosen class skill, and substitute
   await page.goto("/");
   await expect(sealValue(page, "Armor Class")).toBeVisible({ timeout: 15_000 });
 
-  // The Prestige tier defaults collapsed (issue #74 phase 2c grew it to 119
+  // The Prestige tier defaults collapsed (issue #74 grew it to 119
   // entries, the same "big tier starts closed" call the race picker's
   // "exotic" rarity tier already makes) — expand it once, up front; the rest
   // of this test also needs Fighter's chip in its own (already-open) tier

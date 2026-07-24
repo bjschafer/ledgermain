@@ -14,7 +14,7 @@ import {
 
 /**
  * Vendors the ~108 splatbook prestige classes NOT already hand-authored in
- * `supplements.ts` (issue #74 phase 2c) from the same third-party archetype
+ * `supplements.ts` (issue #74) from the same third-party archetype
  * module already pinned for `pf-archetypes`/`pf-arch-features` (see
  * `transformArchetypePack`'s doc comment) — `pf-prestige-classes/` (one doc
  * per class, real chassis fields: `hd`, `bab`, `savingThrows`,

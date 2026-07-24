@@ -34,7 +34,7 @@
 import { findShamanHex } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
-/** True when `id` is a GENERAL shaman hex (the vendored, spirit-agnostic ACG "Shaman Hexes" table — issue #74 Phase 3b), not one of the current spirit's own 5 hexes. */
+/** True when `id` is a GENERAL shaman hex (the vendored, spirit-agnostic ACG "Shaman Hexes" table — issue #74), not one of the current spirit's own 5 hexes. */
 function isGeneralShamanHex(id: string, refData: RefData): boolean {
   return !findShamanHex(id) && refData.shamanHexes?.[id] !== undefined;
 }
@@ -71,7 +71,7 @@ export function chosenShamanHexCount(doc: CharacterDoc): number {
 
 /**
  * The number of chosen hexes that resolve against the vendored GENERAL
- * shaman-hex catalog (issue #74 Phase 3b) instead of the current spirit's
+ * shaman-hex catalog (issue #74) instead of the current spirit's
  * own list — counted separately from `chosenShamanHexCount` (which only
  * covers spirit-scoped ids) so the two can be summed for a total budget
  * count without double-counting or needing to change that function's

@@ -9,7 +9,7 @@ import {
 } from "../src/util/pfdata.js";
 
 /**
- * Unit coverage for the generic Pf Data 1e reader (issue #74 Phase 3a) — the
+ * Unit coverage for the generic Pf Data 1e reader (issue #74) — the
  * parts every future subsystem import (hexes, arcana, talents, exploits,
  * wild talents) reuses as-is. `ragePowers.test.ts` covers the rage-power
  * -specific mapping + the real vendored slice end-to-end.
@@ -120,7 +120,7 @@ describe("pfDataDescriptionToHtml", () => {
     expect(html).toBe("<p>Deals 1 &lt; 2 &amp; 3 &gt; 0 damage.</p>");
   });
 
-  it("strips blockquote '>' markers, treating a bare '>' line as a paragraph break (issue #74 Phase 3c)", () => {
+  it("strips blockquote '>' markers, treating a bare '>' line as a paragraph break (issue #74)", () => {
     const html = pfDataDescriptionToHtml([
       ">**First Power (Su):** Does a thing.",
       ">",

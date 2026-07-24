@@ -13,7 +13,7 @@ import {
 
 /**
  * Coverage for the cavalier/samurai order vendored-catalog overlay (issue
- * #74 Phase 3c). Unlike every other subsystem imported so far, this is a
+ * #74). Unlike every other subsystem imported so far, this is a
  * CHASSIS overlay (a hand-authored order carries bonus skills/Challenge
  * rider/leveled abilities, not just prose) — see `cavalier-orders.ts`'s
  * "vendored catalog overlay" doc comment for the collision-audit narrative

@@ -25,7 +25,7 @@ interface PatronPickerProps {
  * philosophy — same posture as `MysteryPicker`/`BloodlinePicker`.
  *
  * Browses the FULL published patron catalog (`mergedWitchPatronCatalog`,
- * issue #74 Phase 3c) — the 17 Advanced Player's Guide/Ultimate Magic "core"
+ * issue #74) — the 17 Advanced Player's Guide/Ultimate Magic "core"
  * patrons keep their hand-verified bonus-spell progression (marked
  * `badge-modeled` "M", surfaced via `model/spellcasting.patronSpellsKnown` at
  * witch level 2 and every two levels thereafter); the ~44 other vendored-only

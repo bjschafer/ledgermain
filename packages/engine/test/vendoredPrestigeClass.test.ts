@@ -6,7 +6,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute } from "../src/index.js";
 
 /**
- * Fixture coverage for issue #74 phase 2c — the ~108 vendored (non-hand-
+ * Fixture coverage for issue #74 — the ~108 vendored (non-hand-
  * authored) prestige classes now flowing through `classes.json` from the
  * same third-party archetype module as the archetype catalog (see
  * `packages/data-pipeline/src/transform/prestigeClasses.ts`). The point isn't

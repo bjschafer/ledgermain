@@ -34,7 +34,7 @@ interface InvestigatorTalentPickerProps {
  *
  * Browses the FULL published talent catalog (`mergedInvestigatorTalentCatalog`
  * — every vendored entry overlaid with the 28-entry hand-verified table on a
- * name match — issue #74 Phase 3b), not just the hand-verified core slice. A
+ * name match — issue #74), not just the hand-verified core slice. A
  * `badge-modeled` "M" marks which entries carry real, live mechanics;
  * everything else is prose-only, shown via the same collapsible
  * `FeatureDescription` the Class Features list uses.

@@ -138,7 +138,7 @@ export interface ContextNote {
 /**
  * A PF1 character-trait category. The engine's 28 hand-authored entries
  * (issue #23) use one of the traditional four ("Combat" | "Faith" | "Magic" |
- * "Social"); the vendored catalog (issue #74 Phase 1, `RefData.traits`) adds
+ * "Social"); the vendored catalog (issue #74, `RefData.traits`) adds
  * many more — Foundry's `traitType` values Title-Cased ("Region", "Race",
  * "Campaign", "Religion", "Drawback", "Faction", "Equipment", "Mount",
  * "Cosmic", "Family", "Exemplar"). Kept as `string` (not a closed union) so

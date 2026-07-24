@@ -4,7 +4,7 @@ import { loadRefData } from "../src/index.js";
 
 /**
  * End-to-end coverage for the vendored cavalier/samurai order catalog (issue
- * #74 Phase 3c) against the real pinned Pf Data 1e slice.
+ * #74) against the real pinned Pf Data 1e slice.
  */
 const ref = loadRefData();
 

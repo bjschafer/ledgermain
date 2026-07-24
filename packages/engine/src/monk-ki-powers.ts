@@ -373,7 +373,7 @@ export const MONK_KI_POWER_IDS: readonly string[] = KI_POWER_LIST.map((p) => p.i
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.monkKiPowers` (see that type's doc comment) is
+ * Issue #74: `RefData.monkKiPowers` (see that type's doc comment) is
  * the FULL published ki-power catalog (44 entries, beyond this file's 39
  * hand-verified Pathfinder Unchained core-book entries) — prose only. Same
  * "hand-authored wins on a name collision, vendored catalog is the

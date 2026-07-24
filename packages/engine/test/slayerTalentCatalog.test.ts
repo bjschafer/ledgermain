@@ -5,8 +5,8 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { isAdvancedSlayerTalent, resolveSlayerTalent, slayerTalentCatalog } from "../src/index.js";
 
 /**
- * Coverage for the pure vendored-catalog slayer-talent module (issue #74
- * Phase 3b) — UNLIKE `rogueTalentCatalog.test.ts`/`ninjaTrickCatalog.test.ts`/
+ * Coverage for the pure vendored-catalog slayer-talent module (issue #74) — UNLIKE
+ * `rogueTalentCatalog.test.ts`/`ninjaTrickCatalog.test.ts`/
  * `ragePowerCatalog.test.ts`, there is no hand-authored table to overlay
  * here, so every row is display-only; see `slayer-talents.ts`'s doc comment.
  */

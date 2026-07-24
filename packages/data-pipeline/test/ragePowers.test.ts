@@ -3,8 +3,8 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "../src/index.js";
 
 /**
- * End-to-end coverage for the vendored rage-power catalog (issue #74 Phase
- * 3a) against the real pinned Pf Data 1e slice — the exemplar the NEXT
+ * End-to-end coverage for the vendored rage-power catalog (issue #74) against the real
+ * pinned Pf Data 1e slice — the exemplar the NEXT
  * subsystem import (hexes, arcana, talents, exploits, wild talents) follows.
  * `pfdata.test.ts` covers the generic reader in isolation.
  */

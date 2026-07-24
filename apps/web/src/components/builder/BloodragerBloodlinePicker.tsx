@@ -26,7 +26,7 @@ interface BloodragerBloodlinePickerProps {
  * can't reuse `refData.bloodlineSpellLists` the way sorcerer's picker does).
  *
  * Browses the FULL published bloodline catalog
- * (`mergedBloodragerBloodlineCatalog`, issue #74 Phase 3c) — the 10 ACG
+ * (`mergedBloodragerBloodlineCatalog`, issue #74) — the 10 ACG
  * bloodlines (Abyssal, Arcane, Celestial, Destined, Draconic, Elemental,
  * Fey, Infernal, Undead, Martyred) keep their hand-verified mechanics
  * (marked `badge-modeled` "M"); the ~14 other vendored-only bloodlines

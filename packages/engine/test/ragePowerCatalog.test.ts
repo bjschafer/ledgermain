@@ -12,7 +12,7 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74 Phase 3a) — see
+ * Coverage for the vendored-catalog overlay (issue #74) — see
  * `rage-powers.ts`'s "vendored catalog overlay" section doc comment for the
  * collision-audit narrative this asserts against.
  */

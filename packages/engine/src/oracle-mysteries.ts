@@ -240,7 +240,7 @@ export const ORACLE_MYSTERY_TAGS: readonly string[] = MYSTERY_LIST.map((m) => m.
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.oracleMysteries` (see that type's doc
+ * Issue #74: `RefData.oracleMysteries` (see that type's doc
  * comment) is the FULL published catalog (34 entries after junk filtering),
  * prose only. The hand-verified 10-core-mystery table above stays
  * authoritative for MECHANICS (class skills + bonus spells) — this section

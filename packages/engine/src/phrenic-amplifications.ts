@@ -316,7 +316,7 @@ export function amplificationsForTier(tier: PhrenicAmplificationTier): PhrenicAm
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.phrenicAmplifications` (see that type's doc
+ * Issue #74: `RefData.phrenicAmplifications` (see that type's doc
  * comment) is the FULL published catalog (31 entries after junk filtering),
  * prose only. The hand-verified table above stays authoritative for
  * MECHANICS — this section only merges the two for BROWSING (the picker)

@@ -23,7 +23,7 @@ interface MagusArcanaPickerProps {
 }
 
 /**
- * Magus arcana selection (issue #61, full-catalog issue #74 Phase 3b),
+ * Magus arcana selection (issue #61, full-catalog issue #74),
  * mirroring `ArcanistExploitPicker`/`RagePowerPicker`. A magus learns a new
  * arcana at 3rd level and every 3 levels thereafter, plus one more per
  * "Extra Arcana" feat (see `model/magusArcana.ts`'s budget math).

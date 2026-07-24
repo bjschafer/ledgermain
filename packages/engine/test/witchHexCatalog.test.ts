@@ -12,7 +12,7 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the witch-hex vendored-catalog overlay (issue #74 Phase 3b) —
+ * Coverage for the witch-hex vendored-catalog overlay (issue #74) —
  * mirrors `ragePowerCatalog.test.ts` exactly. See `witch-hexes.ts`'s
  * "vendored catalog overlay" section doc comment for the collision-audit
  * narrative this asserts against.

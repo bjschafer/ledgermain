@@ -418,7 +418,7 @@ export function tricksForTier(tier: NinjaTrickTier): NinjaTrickDef[] {
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3b: `RefData.ninjaTricks` (see that type's doc comment) is
+ * Issue #74: `RefData.ninjaTricks` (see that type's doc comment) is
  * the FULL published catalog (65 entries after junk filtering), prose only.
  * The hand-authored table above stays authoritative for MECHANICS — this
  * section only merges the two for BROWSING/resolving, mirroring

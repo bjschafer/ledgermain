@@ -42,8 +42,8 @@ const TIER_LABEL: Record<string, string> = { trick: "Trick", master: "Master Tri
  * "— Ninja Trick"), via `collectGrantedFeatures`/`resolveClassFeatures` in
  * `@pf1/engine` `archetypes.ts`.
  *
- * Browses the FULL published catalog (`mergedNinjaTrickCatalog` — issue #74
- * Phase 3b), not just the 44-entry hand-verified slice — every ninja trick
+ * Browses the FULL published catalog (`mergedNinjaTrickCatalog` — issue #74), not
+ * just the 44-entry hand-verified slice — every ninja trick
  * (hand-authored or vendored-only) is `displayOnly` (no flat always-on
  * number, see `ninja-tricks.ts`'s doc comment), so unlike `RagePowerPicker`
  * there is no "M" (modeled) badge to show here.

@@ -23,8 +23,8 @@ interface RagePowerPickerProps {
 }
 
 /**
- * Barbarian rage power selection (issue #65/#67, full-catalog issue #74
- * Phase 3a), mirroring `DiscoveryPicker`'s layout and `ArchetypePicker`'s
+ * Barbarian rage power selection (issue #65/#67, full-catalog issue #74), mirroring
+ * `DiscoveryPicker`'s layout and `ArchetypePicker`'s
  * "M" badge convention. A barbarian (chained OR Unchained — both share this
  * one picker, see `@pf1/engine` `rage-powers.ts`'s doc comment) gains a new
  * rage power at 2nd level and every even level thereafter, plus one more per

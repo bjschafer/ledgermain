@@ -1,6 +1,6 @@
 /**
  * Hand-computed fixture tests for the vendored alternate-racial-trait catalog
- * (issue #74 fill plan, `RefData.racialTraits`) — distinct from the
+ * (issue #74, `RefData.racialTraits`) — distinct from the
  * hand-authored 8-race `RACIAL_TRAITS` table covered by `racial-traits.test.ts`.
  * Unlike that table, a vendored pick's `changes[]` apply but nothing suppresses
  * the race's standard `Change`s (see `RacialTrait`'s doc comment in

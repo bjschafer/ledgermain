@@ -397,7 +397,7 @@ export const SHIFTER_ASPECT_IDS: readonly string[] = ASPECT_LIST.map((a) => a.id
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.shifterAspects` (see that type's doc comment)
+ * Issue #74: `RefData.shifterAspects` (see that type's doc comment)
  * is the full published aspect catalog — 30 entries, an EXACT 1:1 match
  * with this file's 30 hand-authored entries (verified by normalized name;
  * no drift, no alias, no orphan on either side, same "nothing left over"

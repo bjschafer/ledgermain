@@ -17,7 +17,7 @@
  * function below (selection, counting, category-warning) is otherwise
  * unaware of the distinction — same posture as homebrew feats/races.
  *
- * The pickable catalog itself (issue #74 Phase 1) is two tables merged by
+ * The pickable catalog itself (issue #74) is two tables merged by
  * the engine: 28 hand-authored entries plus the ~2,000-entry vendored
  * catalog (`RefData.traits`) — see `mergedTraits`'s doc comment for the
  * merge rule.
@@ -77,7 +77,7 @@ export const TRAIT_CATEGORIES: readonly TraitCategory[] = ["Combat", "Faith", "M
 /**
  * Every distinct category present in a trait catalog, sorted alphabetically
  * — used by `TraitManager`'s filter chips, so the picker's category list
- * reflects the actual vendored `traitType` values (issue #74 Phase 1) rather
+ * reflects the actual vendored `traitType` values (issue #74) rather
  * than a hardcoded guess.
  */
 export function catalogCategories(catalog: Record<string, TraitDef>): TraitCategory[] {
@@ -103,7 +103,7 @@ export function chosenTraitCount(doc: CharacterDoc): number {
 
 /**
  * Resolve a trait id to its definition: the engine's hand-authored table,
- * then the vendored catalog (`refData.traits`, issue #74 Phase 1), then
+ * then the vendored catalog (`refData.traits`, issue #74), then
  * `doc.build.homebrew.traits` — mirrors
  * `resolveTraitDef(id, refData) ?? doc.build.homebrew?.traits?.[id]` in
  * `@pf1/engine` `collect.ts`, the same fallback chain the static sheet

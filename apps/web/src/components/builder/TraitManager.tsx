@@ -14,7 +14,7 @@ const MAX_RESULTS = 200;
 
 /**
  * The full-screen trait picker (issue #89, scaled to the ~2,000-entry
- * vendored catalog by issue #74 Phase 1) — the same two-pane shell as
+ * vendored catalog by issue #74) — the same two-pane shell as
  * `FeatManager`, so browsing the trait catalog behaves identically to
  * browsing feats: filters across the top, catalog on the left (capped at
  * {@link MAX_RESULTS} like `FeatManager`), chosen traits on the right so an
@@ -35,7 +35,7 @@ export function TraitManager({
   const [category, setCategory] = useState<TraitCategory | "All">("All");
   const selected = useMemo(() => new Set(doc.build.traits ?? []), [doc.build.traits]);
 
-  // The merged vendored + hand-authored catalog (issue #74 Phase 1) plus this
+  // The merged vendored + hand-authored catalog (issue #74) plus this
   // doc's own homebrew traits — recomputed only when refData or the
   // homebrew set changes, not on every doc edit (see `mergedTraits`'s doc
   // comment on why it isn't cheap enough to call per keystroke).

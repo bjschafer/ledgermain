@@ -129,7 +129,7 @@ describe("classCategory", () => {
     expect(classCategory({ name: "Made-Up Class" })).toBe("other");
   });
 
-  it("classifies EVERY vendored prestige class (issue #74 phase 2c's ~108 splatbook classes, not just the eleven hand-authored ones) as prestige via subType, even with a name not in CLASS_CATEGORY", () => {
+  it("classifies EVERY vendored prestige class (issue #74's ~108 splatbook classes, not just the eleven hand-authored ones) as prestige via subType, even with a name not in CLASS_CATEGORY", () => {
     // Horizon Walker is real vendored data (not hand-authored, and not in the
     // CLASS_CATEGORY name table above) — it only resolves to "prestige"
     // because its `subType` is passed through, proving the subType-first

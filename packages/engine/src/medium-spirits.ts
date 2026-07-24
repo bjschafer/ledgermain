@@ -482,7 +482,7 @@ export const MEDIUM_SPIRIT_TAGS: readonly string[] = SPIRIT_LIST.map((s) => s.ta
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.mediumSpirits` (see that type's doc comment)
+ * Issue #74: `RefData.mediumSpirits` (see that type's doc comment)
  * is the FULL published catalog (40 entries after junk filtering), prose
  * only. Same chassis caveat as `psychic-disciplines.ts`/
  * `occultist-implements.ts`'s overlays: the hand-authored `MEDIUM_SPIRITS`

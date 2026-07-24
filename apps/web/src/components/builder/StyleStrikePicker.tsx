@@ -23,7 +23,7 @@ interface StyleStrikePickerProps {
 
 /**
  * Monk (Unchained) style strike selection (issue #65, full-catalog issue
- * #74 Phase 3c), mirroring `KiPowerPicker` — every style strike is a
+ * #74), mirroring `KiPowerPicker` — every style strike is a
  * per-attack flurry rider, entirely `displayOnly` in the hand-authored
  * table (see `@pf1/engine` `monk-style-strikes.ts`'s doc comment). Flat
  * list, no level tiering per entry (unlike ki powers) — only the COUNT

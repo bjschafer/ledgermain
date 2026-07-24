@@ -284,7 +284,7 @@ export function tricksForTier(tier: MesmeristTrickTier): MesmeristTrickDef[] {
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.mesmeristTricks` (see that type's doc comment)
+ * Issue #74: `RefData.mesmeristTricks` (see that type's doc comment)
  * is the FULL published catalog (44 entries after junk filtering), prose
  * only. The hand-verified table above stays authoritative for MECHANICS —
  * this section only merges the two for BROWSING (the picker) and for

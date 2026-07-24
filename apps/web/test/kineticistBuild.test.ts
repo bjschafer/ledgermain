@@ -124,7 +124,7 @@ describe("wild talent toggle + budget math", () => {
     expect(chosenKineticistTalentCount(d, ref, "utility")).toBe(1);
   });
 
-  it("chosenKineticistTalentCount also counts a vendored-only pick (issue #74 Phase 3b)", () => {
+  it("chosenKineticistTalentCount also counts a vendored-only pick (issue #74)", () => {
     // air_cushion: vendored-only utility talent (air), no hand-authored counterpart.
     let d = withClass("kineticist", 5);
     d = toggleKineticistWildTalent(d, "air_cushion");

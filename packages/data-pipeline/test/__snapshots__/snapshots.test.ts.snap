@@ -472,7 +472,7 @@ exports[`normalized-output snapshots archetype feature: Two-Handed Fighter's Sha
 }
 `;
 
-exports[`normalized-output snapshots trait: Reactionary (issue #74 Phase 1 — vendored trait catalog) 1`] = `
+exports[`normalized-output snapshots trait: Reactionary (issue #74 — vendored trait catalog) 1`] = `
 {
   "changes": [
     {

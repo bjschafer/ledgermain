@@ -978,7 +978,7 @@ export function bloodlineVariantLabel(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.sorcererBloodlines` is the FULL published
+ * Issue #74: `RefData.sorcererBloodlines` is the FULL published
  * catalog (51 entries after junk filtering), prose only — same "catalog
  * from data, mechanics as overlay" pattern as `rage-powers.ts`'s
  * `mergedRagePowerCatalog`. The hand-verified 10-Core-Rulebook-bloodline

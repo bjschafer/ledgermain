@@ -190,7 +190,7 @@ export function collectModifiers(
       }
     }
 
-    // Vendored alternate racial traits (issue #74 fill plan) — the ~80-race
+    // Vendored alternate racial traits (issue #74) — the ~80-race
     // `RefData.racialTraits` catalog. Unlike the hand-authored table above,
     // these never suppress a standard `Race.change`: the source only names
     // WHAT they replace, not a verified mapping to specific `Race.changes`/
@@ -414,7 +414,7 @@ export function collectModifiers(
   // --- traits (build choices) ----------------------------------------------
   // doc.build.traits holds trait ids: keys into the engine's 28-entry
   // hand-authored TRAITS table (issue #23) OR the vendored RefData.traits
-  // catalog (issue #74 Phase 1) — resolveTraitDef checks both, hand-authored
+  // catalog (issue #74) — resolveTraitDef checks both, hand-authored
   // first. A homebrew trait's own definition rides in doc.build.homebrew.traits
   // and is checked as a final fallback here. Unknown ids are skipped, matching
   // the conditions/feats posture: never crash on an unrecognized id.

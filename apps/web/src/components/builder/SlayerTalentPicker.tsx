@@ -24,7 +24,7 @@ interface SlayerTalentPickerProps {
 }
 
 /**
- * Slayer talent selection (issue #74 Phase 3b) — slayer only. UNLIKE
+ * Slayer talent selection (issue #74) — slayer only. UNLIKE
  * `RogueTalentPicker`/`NinjaTrickPicker`/`VigilanteTalentPicker`, there is no
  * hand-authored mechanics table here: browses the full vendored catalog
  * (`slayerTalentCatalog`) straight, so no row ever carries a "M" (modeled)

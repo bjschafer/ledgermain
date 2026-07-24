@@ -25,7 +25,7 @@ interface OrderPickerProps {
  *
  * Browses the FULL published order catalog (`mergedOrdersForClass` — every
  * vendored entry, overlaid with the 8 hand-authored chassis on a name
- * match, issue #74 Phase 3c) rather than just the 8 hand-authored orders. A
+ * match, issue #74) rather than just the 8 hand-authored orders. A
  * `badge-modeled` "M" marks the entries with a real, structured chassis
  * (two bonus skills, a Challenge rider, 2nd/8th/15th abilities) — the
  * remaining ~30 published orders have no such structure in the vendored

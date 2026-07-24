@@ -10,7 +10,7 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74 Phase 3b) — mirrors
+ * Coverage for the vendored-catalog overlay (issue #74) — mirrors
  * `ragePowerCatalog.test.ts`. Of the 44 hand-authored entries, 43 matched a
  * vendored entry by name; `advancedTalents` ("Advanced Talents") needed an
  * alias to match the vendored "Advanced Talent" (singular).

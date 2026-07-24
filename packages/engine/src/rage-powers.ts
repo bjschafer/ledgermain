@@ -457,7 +457,7 @@ export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] 
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3a: `RefData.ragePowers` (see that type's doc comment) is
+ * Issue #74: `RefData.ragePowers` (see that type's doc comment) is
  * the FULL published catalog (~244 entries after junk filtering), prose
  * only. The hand-verified table above stays authoritative for MECHANICS —
  * this section only merges the two for BROWSING (the picker) and for

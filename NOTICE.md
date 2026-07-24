@@ -121,13 +121,13 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
   other three sources, never a branch. A flat-JSON dictionary dataset (one
   file per subsystem under `json/`); we vendor:
   - `json/class_ability_rage_powers.json` (the full published rage-power
-    catalog, issue #74 Phase 3a) into `RefData.ragePowers`;
+    catalog, issue #74) into `RefData.ragePowers`;
   - `json/class_ability_hexes.json` (the full published witch-hex catalog,
-    issue #74 Phase 3b) into `RefData.hexes`,
+    issue #74) into `RefData.hexes`,
     `json/class_ability_shaman_hexes.json` (the Advanced Class Guide's
-    spirit-agnostic general shaman-hex table, issue #74 Phase 3b) into
+    spirit-agnostic general shaman-hex table, issue #74) into
     `RefData.shamanHexes`, and `json/class_ability_magus_arcana.json` (the
-    full published magus-arcana catalog, issue #74 Phase 3b) into
+    full published magus-arcana catalog, issue #74) into
     `RefData.magusArcana`;
   - `json/class_ability_rogue_talents.json` into `RefData.rogueTalents`,
     `json/class_ability_ninja_tricks.json` into `RefData.ninjaTricks`,
@@ -135,9 +135,9 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     and `json/class_ability_vigilante_talents.json` +
     `json/class_ability_social_talents.json` into `RefData.vigilanteTalents`/
     `RefData.vigilanteSocialTalents` (the full published rogue-family talent
-    catalogs, issue #74 Phase 3b);
+    catalogs, issue #74);
   - `json/class_ability_exploits.json`, `json/class_ability_investigator_talents.json`,
-    and `json/class_ability_kinetic_talents.json` (issue #74 Phase 3b) into
+    and `json/class_ability_kinetic_talents.json` (issue #74) into
     `RefData.arcanistExploits`/`investigatorTalents`/`kineticWildTalents`;
   - `json/class_ability_tricks.json` into `RefData.mesmeristTricks`,
     `json/class_ability_stares.json` into `RefData.mesmeristBoldStares`,
@@ -147,7 +147,7 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     into `RefData.occultistImplements`, and `json/class_ability_spirits.json`
     (the Medium's legendary-spirit catalog — distinct from the sibling
     `json/class_ability_shaman_spirits.json`, not vendored under this
-    collection) into `RefData.mediumSpirits` (issue #74 Phase 3c);
+    collection) into `RefData.mediumSpirits` (issue #74);
   - `json/class_ability_mysteries.json` into `RefData.oracleMysteries`,
     `json/class_ability_curses.json` (the Oracle's Curse catalog -- NOT the
     dataset's unrelated top-level `curses.json`) into `RefData.oracleCurses`,
@@ -157,20 +157,19 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     `RefData.shamanSpirits`, and `json/class_ability_sorcerer_bloodlines.json`
     - `json/class_ability_bloodrager_bloodlines.json` into
       `RefData.sorcererBloodlines`/`bloodragerBloodlines` (the full published
-      oracle/witch/shaman/sorcerer/bloodrager subsystem catalogs, issue #74
-      Phase 3c);
+      oracle/witch/shaman/sorcerer/bloodrager subsystem catalogs, issue #74);
   - `json/class_ability_discoveries.json` (the full published alchemist-
-    discovery catalog, issue #74 Phase 3c — NOT `class_ability_arcane_discoveries.json`,
+    discovery catalog, issue #74 — NOT `class_ability_arcane_discoveries.json`,
     the wizard's separate Arcane Discoveries subsystem, unvendored) into
     `RefData.alchemistDiscoveries`, `json/class_ability_ki_powers.json` and
     `json/class_ability_style_strikes.json` (the Monk (Unchained) ki-power
-    and style-strike catalogs, issue #74 Phase 3c) into
+    and style-strike catalogs, issue #74) into
     `RefData.monkKiPowers`/`monkStyleStrikes`, `json/class_ability_orders.json`
-    (the cavalier/samurai order catalog, issue #74 Phase 3c — NOT
+    (the cavalier/samurai order catalog, issue #74 — NOT
     `class_ability_hellknight_orders.json`, the unrelated Hellknight order
     chassis, unvendored) into `RefData.cavalierOrders`, and
     `json/class_ability_aspects.json` (the full published shifter-aspect
-    catalog, issue #74 Phase 3c) into `RefData.shifterAspects` —
+    catalog, issue #74) into `RefData.shifterAspects` —
 
   see each type's doc comment (`@pf1/schema`). Code is GPL-3.0-or-later
   (never copied in, same clean-room posture as Sec.2a/2c); its

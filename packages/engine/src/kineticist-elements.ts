@@ -330,8 +330,8 @@ export const KINETICIST_COMPOSITE_BLASTS: readonly KineticistCompositeBlastDef[]
  * needs both required tags anywhere in {primary, ...expanded}.
  *
  * `catalog` defaults to the 13 hand-authored entries but accepts
- * `mergedCompositeBlastCatalog`'s broader vendored-overlay list (issue #74
- * Phase 3b) so a vendored-only composite blast becomes eligible the same way
+ * `mergedCompositeBlastCatalog`'s broader vendored-overlay list (issue #74) so a
+ * vendored-only composite blast becomes eligible the same way
  * a hand-authored one does, once its required element(s) are known.
  */
 export function eligibleCompositeBlasts(
@@ -352,7 +352,7 @@ export function eligibleCompositeBlasts(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3b: `RefData.kineticWildTalents` also carries every
+ * Issue #74: `RefData.kineticWildTalents` also carries every
  * published COMPOSITE BLAST (`kind: "compositeBlast"`, see that type's doc
  * comment) — 22 entries, vs. this file's 13 hand-authored core-element ones
  * — with a reliable `elements`/`burn` (always 2) parse, same stat-line

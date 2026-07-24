@@ -10,8 +10,8 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the investigator-talent vendored-catalog overlay (issue #74
- * Phase 3b) — mirrors `ragePowerCatalog.test.ts`'s pattern.
+ * Coverage for the investigator-talent vendored-catalog overlay (issue #74) — mirrors
+ * `ragePowerCatalog.test.ts`'s pattern.
  */
 const ref = loadRefData();
 

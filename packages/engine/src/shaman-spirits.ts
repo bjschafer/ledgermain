@@ -561,7 +561,7 @@ export function findShamanHex(hexId: string): ShamanSpiritHex | undefined {
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.shamanSpirits` is the FULL published catalog
+ * Issue #74: `RefData.shamanSpirits` is the FULL published catalog
  * (18 entries after junk filtering), prose only — same "catalog from data,
  * mechanics as overlay" pattern as `rage-powers.ts`'s
  * `mergedRagePowerCatalog`. The hand-verified 8-core-spirit table above

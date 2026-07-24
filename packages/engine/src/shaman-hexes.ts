@@ -1,5 +1,5 @@
 /**
- * The GENERAL shaman hex catalog (issue #74 Phase 3b) — the Advanced Class
+ * The GENERAL shaman hex catalog (issue #74) — the Advanced Class
  * Guide's own "Shaman Hexes" table, available to any shaman regardless of
  * spirit (see `RefData.shamanHexes`/`ShamanHex`'s doc comment in
  * `@pf1/schema`). Distinct from `shaman-spirits.ts`'s `ShamanSpiritHex` (the

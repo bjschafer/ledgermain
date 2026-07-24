@@ -686,7 +686,7 @@ export const OCCULTIST_PHYSICAL_ABILITIES: readonly AbilityId[] = ["str", "dex",
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.occultistImplements` (see that type's doc
+ * Issue #74: `RefData.occultistImplements` (see that type's doc
  * comment) is the FULL published catalog (12 entries after junk filtering),
  * prose only. Same chassis caveat as `psychic-disciplines.ts`'s overlay: the
  * hand-authored `OCCULTIST_SCHOOLS` table above is the ONLY source of

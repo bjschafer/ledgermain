@@ -4,7 +4,7 @@ import { loadRefData } from "../src/index.js";
 
 /**
  * End-to-end coverage for the vendored occultist-implement catalog (issue
- * #74 Phase 3c) against the real pinned Pf Data 1e slice, mirroring
+ * #74) against the real pinned Pf Data 1e slice, mirroring
  * `ragePowers.test.ts`.
  */
 const ref = loadRefData();

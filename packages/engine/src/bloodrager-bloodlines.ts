@@ -954,7 +954,7 @@ export function bloodragerBloodlineVariantLabel(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.bloodragerBloodlines` is the FULL published
+ * Issue #74: `RefData.bloodragerBloodlines` is the FULL published
  * catalog (24 entries after junk filtering), prose only — same "catalog
  * from data, mechanics as overlay" pattern as `rage-powers.ts`'s
  * `mergedRagePowerCatalog`. The hand-verified 10-ACG-bloodline table above

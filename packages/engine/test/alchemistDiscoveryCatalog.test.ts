@@ -10,8 +10,8 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the alchemist-discovery vendored-catalog overlay (issue #74
- * Phase 3c) — mirrors `ragePowerCatalog.test.ts`'s pattern. See
+ * Coverage for the alchemist-discovery vendored-catalog overlay (issue #74) — mirrors
+ * `ragePowerCatalog.test.ts`'s pattern. See
  * `alchemist-discoveries.ts`'s "vendored catalog overlay" doc comment for
  * the collision-audit narrative this asserts against.
  */

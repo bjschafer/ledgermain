@@ -11,7 +11,7 @@ import {
 
 /**
  * Coverage for the Monk (Unchained) ki-power vendored-catalog overlay (issue
- * #74 Phase 3c) — mirrors `ragePowerCatalog.test.ts`'s pattern.
+ * #74) — mirrors `ragePowerCatalog.test.ts`'s pattern.
  */
 const ref = loadRefData();
 

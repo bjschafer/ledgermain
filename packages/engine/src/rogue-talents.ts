@@ -297,7 +297,7 @@ export const ROGUE_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) => t.id);
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3b: `RefData.rogueTalents` (see that type's doc comment) is
+ * Issue #74: `RefData.rogueTalents` (see that type's doc comment) is
  * the FULL published catalog (234 entries after junk filtering), prose only.
  * The hand-authored table above stays authoritative for MECHANICS — this
  * section only merges the two for BROWSING (the picker) and for resolving a

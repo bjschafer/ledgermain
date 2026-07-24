@@ -12,8 +12,8 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the magus-arcana vendored-catalog overlay (issue #74 Phase
- * 3b) — mirrors `ragePowerCatalog.test.ts` exactly. See `magus-arcana.ts`'s
+ * Coverage for the magus-arcana vendored-catalog overlay (issue #74) — mirrors
+ * `ragePowerCatalog.test.ts` exactly. See `magus-arcana.ts`'s
  * "vendored catalog overlay" section doc comment for the collision-audit
  * narrative this asserts against.
  */

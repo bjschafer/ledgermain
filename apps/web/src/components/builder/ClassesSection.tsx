@@ -77,7 +77,7 @@ import { Caret } from "../Caret.js";
  * tier regardless of its own collapsed state, so a match is never hidden
  * inside a tier the player happened to leave closed. Every tier but Prestige
  * defaults open (31 chips across six sections is small enough not to
- * declutter); Prestige defaults COLLAPSED — issue #74 phase 2c grew it from
+ * declutter); Prestige defaults COLLAPSED — issue #74 grew it from
  * 11 hand-authored entries to 119 (the CRB ten + Student of War + ~108
  * vendored splatbook classes), the same "big tier starts closed" call the
  * race picker already makes for its 40+-entry "exotic" rarity tier.
@@ -613,7 +613,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         </>
       )}
 
-      {/* Slayer talent picker — slayer only (issue #74 Phase 3b, free-choice, soft warning only). */}
+      {/* Slayer talent picker — slayer only (issue #74, free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "slayer") && (
         <SlayerTalentPicker doc={doc} refData={refData} update={update} />
       )}

@@ -624,7 +624,7 @@ export function vigilanteTalentsForSpecialization(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3b: `RefData.vigilanteSocialTalents`/`vigilanteTalents` (see
+ * Issue #74: `RefData.vigilanteSocialTalents`/`vigilanteTalents` (see
  * those types' doc comments) are the FULL published catalogs (46 social + 81
  * vigilante entries after junk filtering), prose only. The hand-authored
  * tables above stay authoritative for MECHANICS — this section only merges

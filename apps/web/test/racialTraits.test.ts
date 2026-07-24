@@ -154,7 +154,7 @@ describe("Dual Minded disables Multitalented", () => {
   });
 });
 
-describe("vendored racial traits (issue #74 fill plan)", () => {
+describe("vendored racial traits (issue #74)", () => {
   function vendoredIdByName(name: string): string {
     const found = Object.values(ref.racialTraits).find((t) => t.name === name);
     if (!found) throw new Error(`vendored racial trait not found: ${name}`);

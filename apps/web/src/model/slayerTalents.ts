@@ -1,5 +1,5 @@
 /**
- * Pure slayer-talent transitions (issue #74 Phase 3b), mirroring
+ * Pure slayer-talent transitions (issue #74), mirroring
  * `model/rogueTalents.ts`'s shape closely — `build.slayerTalents` is a flat
  * id array into `RefData.slayerTalents` (see `@pf1/engine`
  * `slayer-talents.ts`; UNLIKE rogue talents there is no hand-authored

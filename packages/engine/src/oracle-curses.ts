@@ -178,7 +178,7 @@ export const ORACLE_CURSE_TAGS: readonly string[] = CURSE_LIST.map((cu) => cu.ta
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.oracleCurses` is the FULL published catalog
+ * Issue #74: `RefData.oracleCurses` is the FULL published catalog
  * (41 entries after junk filtering), prose only — same "catalog from data,
  * mechanics as overlay" pattern as `rage-powers.ts`'s
  * `mergedRagePowerCatalog`. The hand-verified 6-base-curse table above stays

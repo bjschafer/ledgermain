@@ -199,7 +199,7 @@ describe("model/shamanHexes: soft budget warning", () => {
   });
 });
 
-describe("model/shamanHexes: chosenGeneralShamanHexCount (issue #74 Phase 3b vendored catalog)", () => {
+describe("model/shamanHexes: chosenGeneralShamanHexCount (issue #74 vendored catalog)", () => {
   it("counts a picked id from the vendored general-hex catalog, regardless of spirit", () => {
     const doc = makeDoc({ shamanSpirit: "life", shamanHexes: ["fury"] });
     expect(chosenGeneralShamanHexCount(doc, ref)).toBe(1);

@@ -16,7 +16,7 @@
  * at the Animal Companion section. Later-splatbook investigator talents
  * (Pathfinder Unchained, Pathfinder Society boons, ...) have no hand-verified
  * mechanics HERE but ARE now browsable, display-only, via the vendored
- * catalog overlay at the bottom of this file (issue #74 Phase 3b) — see
+ * catalog overlay at the bottom of this file (issue #74) — see
  * `mergedInvestigatorTalentCatalog`.
  *
  * Budget (PF1 Advanced Class Guide, verified against the class table): an
@@ -289,7 +289,7 @@ export const INVESTIGATOR_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) =>
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3b: `RefData.investigatorTalents` (see that type's doc
+ * Issue #74: `RefData.investigatorTalents` (see that type's doc
  * comment) is the FULL published catalog — the 28 core talents above plus
  * every later-splatbook talent this table has never modeled — prose only.
  * Same pattern as `rage-powers.ts`'s `mergedRagePowerCatalog` (see that

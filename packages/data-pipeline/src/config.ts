@@ -39,8 +39,8 @@ export const SYSTEM_VERSION = "11.11";
  * `maxFormula`/`per` shape as `ClassFeature.uses`, minus `source` (no vendored
  * feat draws from another feature's pool) — for feats like Combat Reflexes
  * and Alignment Channel that are themselves a resource pool; see
- * `deriveFeatResourcePools` in `@pf1/engine`'s `resources.ts`. v10 (issue #74
- * Phase 1) adds three collections and widens one: `traits`/`traits.json` (the
+ * `deriveFeatResourcePools` in `@pf1/engine`'s `resources.ts`. v10 (issue #74) adds
+ * three collections and widens one: `traits`/`traits.json` (the
  * pf1-content module's full ~2,000-entry character-trait catalog, reconciled
  * with the hand-authored table via `@pf1/engine` traits.ts's `mergedTraits`);
  * `racialTraits`/`racial-traits.json` (the module's alternate racial traits —
@@ -57,7 +57,7 @@ export const SYSTEM_VERSION = "11.11";
  * time (see `mergedRagePowerCatalog`), not baked into RefData itself. (v10
  * retroactively also documents `Class.castingAdvancement` and `Class.prereqs`
  * — structured prestige casting-advancement slots and entry requirements,
- * shipped under v9 with issue #66.) v12 (issue #74 Phase 3b) adds eleven more
+ * shipped under v9 with issue #66.) v12 (issue #74) adds eleven more
  * "Pf Data 1e" subsystem catalogs, same prose-only/merged-at-read-time
  * posture as `ragePowers`: `hexes`/`hexes.json` (witch hexes),
  * `shamanHexes`/`shaman-hexes.json` (general shaman hexes),
@@ -67,7 +67,7 @@ export const SYSTEM_VERSION = "11.11";
  * `vigilanteSocialTalents`/`vigilante-social-talents.json`,
  * `arcanistExploits`/`arcanist-exploits.json`,
  * `investigatorTalents`/`investigator-talents.json`, and
- * `kineticWildTalents`/`kinetic-wild-talents.json`. v13 (issue #74 Phase 3c)
+ * `kineticWildTalents`/`kinetic-wild-talents.json`. v13 (issue #74)
  * adds seventeen more "Pf Data 1e" subsystem catalogs across three waves,
  * same prose-only/merged-at-read-time posture as `ragePowers` — occult-class:
  * `mesmeristTricks`/`mesmerist-tricks.json`, `mesmeristBoldStares`/
@@ -133,7 +133,7 @@ export const PF_CONTENT_SHA = "c66bf333cafc451d817ead660473dd01d9846fb3";
  * Fourth pinned source: "Pf Data 1e", a flat-JSON dictionary dataset (one file
  * per subsystem under `json/`, each a slug-keyed dictionary of entries) that
  * fills gaps neither the Foundry system nor PF1 Content ship as structured
- * data — starting with the full rage-power catalog (issue #74 Phase 3a), then
+ * data — starting with the full rage-power catalog (issue #74), then
  * the witch-hex, general shaman-hex, magus-arcana, rogue-family talent,
  * arcanist-exploit, investigator-talent, and kineticist-wild-talent catalogs
  * (Phase 3b), then the mesmerist trick/bold-stare, phrenic-amplification,

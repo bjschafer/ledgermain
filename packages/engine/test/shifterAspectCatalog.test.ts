@@ -10,8 +10,8 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the shifter-aspect vendored-catalog overlay (issue #74 Phase
- * 3c) — mirrors `ragePowerCatalog.test.ts`'s pattern. This catalog is the
+ * Coverage for the shifter-aspect vendored-catalog overlay (issue #74) — mirrors
+ * `ragePowerCatalog.test.ts`'s pattern. This catalog is the
  * rare EXACT 1:1 match (30 hand-authored, 30 vendored, zero orphan on either
  * side) — see `shifter-aspects.ts`'s doc comment.
  */

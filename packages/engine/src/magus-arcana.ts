@@ -301,7 +301,7 @@ export const MAGUS_ARCANA_IDS: readonly string[] = ARCANA_LIST.map((a) => a.id);
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3b: `RefData.magusArcana` (see that type's doc comment) is
+ * Issue #74: `RefData.magusArcana` (see that type's doc comment) is
  * the FULL published magus-arcana catalog (~64 entries after junk
  * filtering), prose only. The hand-verified table above stays authoritative
  * for MECHANICS — this section only merges the two for BROWSING (the picker)

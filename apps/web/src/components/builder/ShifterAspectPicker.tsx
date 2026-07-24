@@ -22,7 +22,7 @@ interface ShifterAspectPickerProps {
 }
 
 /**
- * Shifter aspect selection (issue #65, full-catalog issue #74 Phase 3c),
+ * Shifter aspect selection (issue #65, full-catalog issue #74),
  * mirroring `HexPicker` — this is the build-time "which aspects do I know"
  * pick; the live minor-form on/off toggle lives in the tracker's
  * `ShifterAspectPanel` instead (see that component's doc comment). A

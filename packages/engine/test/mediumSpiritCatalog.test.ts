@@ -10,7 +10,7 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74 Phase 3c) — see
+ * Coverage for the vendored-catalog overlay (issue #74) — see
  * `medium-spirits.ts`'s "vendored catalog overlay" section doc comment.
  * Same chassis two-shape merge as psychic disciplines/occultist implements:
  * a vendored-only spirit carries no Spirit Bonus targets/Séance Boon/

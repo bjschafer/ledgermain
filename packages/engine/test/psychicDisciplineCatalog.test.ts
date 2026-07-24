@@ -10,7 +10,7 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74 Phase 3c) — see
+ * Coverage for the vendored-catalog overlay (issue #74) — see
  * `psychic-disciplines.ts`'s "vendored catalog overlay" section doc comment.
  * A discipline is a CHASSIS (bonus spells/Discipline Powers/pool ability),
  * so unlike the flat-menu subsystems this asserts the two-shape merge:

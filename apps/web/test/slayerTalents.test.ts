@@ -1,5 +1,5 @@
 /**
- * Unit tests for `model/slayerTalents.ts` (issue #74 Phase 3b). Mirrors
+ * Unit tests for `model/slayerTalents.ts` (issue #74). Mirrors
  * `rogueTalents.test.ts`'s budget-math test pattern.
  */
 import { describe, expect, it } from "bun:test";

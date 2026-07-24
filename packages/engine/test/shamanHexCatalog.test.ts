@@ -6,7 +6,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, mergedShamanHexCatalog, resolveGeneralShamanHex } from "../src/index.js";
 
 /**
- * Coverage for the GENERAL shaman-hex catalog (issue #74 Phase 3b) — see
+ * Coverage for the GENERAL shaman-hex catalog (issue #74) — see
  * `shaman-hexes.ts`'s doc comment for why this one has no hand-authored
  * table to overlay (unlike its `witch-hexes.ts`/`magus-arcana.ts` siblings):
  * every row here is vendored-only and display-only.

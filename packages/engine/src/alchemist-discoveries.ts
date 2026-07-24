@@ -455,7 +455,7 @@ export const ALCHEMIST_DISCOVERY_IDS: readonly string[] = DISCOVERY_LIST.map((d)
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3c: `RefData.alchemistDiscoveries` (see that type's doc
+ * Issue #74: `RefData.alchemistDiscoveries` (see that type's doc
  * comment) is the FULL published discovery catalog (168 entries, far beyond
  * this file's 41 hand-verified core-plus-selected-splatbook entries) —
  * prose only. Same "hand-authored wins on a name collision, vendored

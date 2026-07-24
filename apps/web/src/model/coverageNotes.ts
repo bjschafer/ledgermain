@@ -6,10 +6,17 @@
  * (no runtime fetch — nothing in the UI should ever imply a GitHub round
  * trip is happening for something this small).
  *
- * Content is a plain-language summary of the project's own tracked list of
- * deliberate exclusions; keep it in sync by hand when that list changes.
- * Deliberately no issue numbers or "as of" dates in the copy — a player
- * doesn't care which tracker entry this came from, only what's true today.
+ * THIS IS THE PLAYER-FACING MIRROR OF ISSUE #74, which is the canonical
+ * inventory of known content gaps. The two drift silently — nothing
+ * enforces the pairing — so when a gap is filled or found, update both.
+ * Deliberately no issue numbers or "as of" dates in the copy itself — a
+ * player doesn't care which tracker entry this came from, only what's true
+ * today.
+ *
+ * Most gaps take one of two shapes, and the copy should say which:
+ * browsable-but-not-modeled (the entry is in the picker with its full rules
+ * text, but no live number moves — pickers mark modeled entries with an
+ * "M" badge), versus genuinely absent.
  */
 export interface CoverageNote {
   category: string;
@@ -19,23 +26,32 @@ export interface CoverageNote {
 export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category: "Prestige classes",
-    note: "Only the ten core-rulebook prestige classes are built in. Later-book prestige classes (Battle Herald, Rage Prophet, Master Chymist, and similar) aren't yet.",
+    note: "All of them are in the class picker, but only the ten core-rulebook ones (plus Student of War) have their spellcasting progression and entry requirements tracked. Later-book prestige classes show their full rules text, and their requirements appear as advice rather than something the sheet enforces.",
   },
   {
-    category: "Rage powers",
-    note: "The core set plus a handful of common additions are covered. The long tail of splatbook rage powers (totem chains, ultimate-line powers, and similar) isn't.",
+    category:
+      "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries)",
+    note: 'Every published entry is browsable and searchable, but only the core-book sets actually move numbers on your sheet — those are marked with an "M". The rest show their rules text for reference, so you\'ll need to apply them by hand.',
   },
   {
-    category: "Menu subsystems (hexes, arcana, talents, exploits, tricks)",
-    note: "Witch hexes, magus arcana, arcanist exploits, ninja tricks, investigator talents, and similar class picker lists cover the core books, not every later-splatbook addition.",
+    category: "Bloodlines, mysteries, spirits, disciplines, implements, and orders",
+    note: "The full published lists are browsable. Beyond the core-book ones, they show their rules text without wiring up the per-level powers you gain — deliberately, rather than inventing mechanics that might be wrong.",
+  },
+  {
+    category: "Oracle revelations",
+    note: "Covered for the ten Advanced Player's Guide mysteries (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, and Wind). Revelations from later mysteries aren't written up.",
+  },
+  {
+    category: "Bloodrager Aberrant bloodline",
+    note: "Selectable and shows its rules text, but its powers aren't modeled the way the other ten bloodrager bloodlines are.",
   },
   {
     category: "Kineticist wild talents",
-    note: "Roughly half the element-specific wild-talent catalog — deeper infusions, utility talents, and some composite blasts — isn't modeled yet.",
+    note: "The whole catalog is browsable, with the core infusions and utility talents modeled. The alternate air and water simple blasts (electric and cold) aren't offered as a choice.",
   },
   {
     category: "Summoner (Unchained) eidolon",
-    note: "The twelve core Pathfinder Unchained subtypes are in. Later-splatbook subtypes and a couple of rarer base-form options aren't.",
+    note: "The twelve core Pathfinder Unchained subtypes are in. Later-splatbook subtypes and a couple of rarer base-form options aren't, and a subtype's resistances, immunities, and spell-like abilities show as reference chips rather than live numbers.",
   },
   {
     category: "Alchemist's cognatogen",
@@ -43,18 +59,14 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Alternate racial traits",
-    note: "Written up for the seven core races plus sylph. The rest of the vendored races have their standard traits only.",
+    note: "Every race's published alternates are browsable. The seven core races plus sylph have theirs fully modeled, including swapping out the trait they replace; for other races they show as reference text.",
   },
   {
     category: "Character traits",
-    note: "The full published trait catalog is searchable in the picker. Traits outside a core 28-entry set may show their benefit as text only rather than a live number the sheet tracks — anything still missing can be added as a homebrew trait.",
-  },
-  {
-    category: "Subdomains & elemental wizard schools",
-    note: "Only top-level cleric domains and the standard wizard schools are wired up — subdomains and element-focused schools aren't.",
+    note: "The full published trait catalog is searchable in the picker. Traits outside a core set may show their benefit as text only rather than a live number the sheet tracks — anything still missing can be added as a homebrew trait.",
   },
   {
     category: "Community-pack feats",
-    note: "The bulk of the feat catalog is in, but a feat sourced from the wider community content pack may show its prerequisites as text only rather than enforcing them.",
+    note: "The bulk of the feat catalog is in, but a feat sourced from the wider community content pack may show its prerequisites as text only rather than enforcing them, and may not apply its effect to your sheet automatically.",
   },
 ];

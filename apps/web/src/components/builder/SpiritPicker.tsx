@@ -23,7 +23,7 @@ interface SpiritPickerProps {
  * posture as `MysteryPicker`/`DisciplinePicker`.
  *
  * Browses the FULL published spirit catalog (`mergedShamanSpiritCatalog`,
- * issue #74 Phase 3c) — the 8 Advanced Class Guide "core" spirits (Battle,
+ * issue #74) — the 8 Advanced Class Guide "core" spirits (Battle,
  * Bones, Flame, Heavens, Life, Nature, Stone, Waves) keep their hand-verified
  * spirit-magic spell list/spirit ability/hexes (marked `badge-modeled` "M");
  * the ~10 other vendored-only spirits (Ancestors, Dark Tapestry, Frost,

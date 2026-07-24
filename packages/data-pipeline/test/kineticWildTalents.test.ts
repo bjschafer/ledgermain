@@ -4,7 +4,7 @@ import { loadRefData } from "../src/index.js";
 
 /**
  * End-to-end coverage for the vendored kineticist-wild-talent catalog (issue
- * #74 Phase 3b) against the real pinned Pf Data 1e slice — the trickiest of
+ * #74) against the real pinned Pf Data 1e slice — the trickiest of
  * the three Phase 3b imports (see `transform/kineticWildTalents.ts`'s doc
  * comment): unlike rage powers/investigator talents/arcanist exploits, this
  * subsystem file carries NO per-entry `category`/`level`/`compilationSources`

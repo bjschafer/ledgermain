@@ -49,7 +49,7 @@
  * curated table left out, plus later-splatbook elements this app has no
  * selectable tag for at all) has no hand-verified mechanics HERE but IS now
  * browsable, display-only, via the vendored catalog overlay at the bottom of
- * this file (issue #74 Phase 3b) — see `mergedKineticistWildTalentCatalog`.
+ * this file (issue #74) — see `mergedKineticistWildTalentCatalog`.
  */
 
 import type { KineticWildTalent, RefData, SourceRef } from "@pf1/schema";
@@ -882,7 +882,7 @@ export const KINETICIST_UNIVERSAL_TALENT_IDS: readonly string[] = [
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74 Phase 3b: `RefData.kineticWildTalents` (see that type's doc
+ * Issue #74: `RefData.kineticWildTalents` (see that type's doc
  * comment) is the FULL published catalog, every kind — infusions, utility
  * talents, simple/composite blasts, defense talents — prose only, plus
  * (unlike rage powers/investigator talents/arcanist exploits) real

@@ -113,7 +113,7 @@ export interface CharacterDoc {
     racialTraits?: string[];
     /**
      * Vendored alternate racial trait ids chosen (keys into
-     * `RefData.racialTraits`, issue #74 fill plan). Distinct from
+     * `RefData.racialTraits`, issue #74). Distinct from
      * `racialTraits` above: these come from the `pf1-content` catalog
      * covering all 80 vendored races, not the hand-authored 8-race table, and
      * carry a strictly weaker guarantee — the engine applies each entry's
@@ -983,7 +983,7 @@ export interface CharacterDoc {
     rogueTalents?: string[];
     /**
      * Slayer talent ids chosen (keys into `RefData.slayerTalents` via
-     * `@pf1/engine` `resolveSlayerTalent` — issue #74 Phase 3b). UNLIKE
+     * `@pf1/engine` `resolveSlayerTalent` — issue #74). UNLIKE
      * `rogueTalents`/`ninjaTricks`/`vigilanteTalents`, there is no
      * hand-authored mechanics table backing this field yet — every entry is
      * display-only (see `@pf1/engine` `slayer-talents.ts`'s doc comment).

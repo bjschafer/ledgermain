@@ -141,7 +141,7 @@ const CLASS_CATEGORY: Readonly<Record<string, ClassCategory>> = {
  * (unlike core/base/hybrid/etc, which all share `subType: "base"` upstream) —
  * checked first so every `subType: "prestige"` class lands in the Prestige
  * section regardless of name, not just the eleven hand-authored ones listed
- * above (issue #74 phase 2c vendors ~108 more by name, which would otherwise
+ * above (issue #74 vendors ~108 more by name, which would otherwise
  * silently fall through to "other" and lose the prereq-checked picker row).
  */
 export function classCategory(cls: { name: string; subType?: string }): ClassCategory {

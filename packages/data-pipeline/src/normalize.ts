@@ -308,7 +308,7 @@ export function normalize(opts: NormalizeOptions): {
   // `supplements.ts`'s doc comment for sourcing/verification notes.
   applyPrestigeClassSupplements(classes, classFeatures);
 
-  // --- vendored prestige classes (issue #74 phase 2c) — the remaining
+  // --- vendored prestige classes (issue #74) — the remaining
   // splatbook prestige classes the hand-authored CRB set above doesn't cover,
   // from the same third-party archetype module's prestige-class packs.
   // Mutates `classes`/`classFeatures` in place; skips any class whose name
@@ -699,7 +699,7 @@ export function normalize(opts: NormalizeOptions): {
   const ragePowers: RagePower[] = transformRagePowers(ragePowerDict);
 
   // --- witch hexes / general shaman hexes / magus arcana (fourth-party
-  // dataset, issue #74 Phase 3b — same posture as rage powers above) --------
+  // dataset, issue #74 — same posture as rage powers above) --------
   const witchHexDict = readPfDataDictionary(join(opts.pfDataJsonDir, "class_ability_hexes.json"));
   const hexes: WitchHex[] = transformWitchHexes(witchHexDict);
 
@@ -713,7 +713,7 @@ export function normalize(opts: NormalizeOptions): {
   );
   const magusArcana: MagusArcana[] = transformMagusArcana(magusArcanaDict);
 
-  // --- rogue-family talent catalogs (fourth-party dataset, issue #74 Phase 3b) -
+  // --- rogue-family talent catalogs (fourth-party dataset, issue #74) -
   const rogueTalentDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_rogue_talents.json"),
   );
@@ -760,7 +760,7 @@ export function normalize(opts: NormalizeOptions): {
 
   // --- mesmerist tricks/bold stares, phrenic amplifications, psychic
   // disciplines, occultist implements, Medium legendary spirits (fourth-party
-  // dataset, issue #74 Phase 3c) — same posture as rage powers above.
+  // dataset, issue #74) — same posture as rage powers above.
   const mesmeristTrickDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_tricks.json"),
   );
@@ -798,7 +798,7 @@ export function normalize(opts: NormalizeOptions): {
   const mediumSpirits: MediumSpirit[] = transformMediumSpirits(mediumSpiritDict);
 
   // --- oracle mysteries/curses, witch patrons, shaman spirits, sorcerer/
-  // bloodrager bloodlines (fourth-party dataset, issue #74 Phase 3c) — same
+  // bloodrager bloodlines (fourth-party dataset, issue #74) — same
   // posture as rage powers above.
   const oracleMysteryDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_mysteries.json"),
@@ -833,8 +833,8 @@ export function normalize(opts: NormalizeOptions): {
     transformBloodragerBloodlines(bloodragerBloodlineDict);
 
   // --- alchemist discoveries / monk (unchained) ki powers + style strikes /
-  // cavalier orders / shifter aspects (fourth-party dataset, issue #74 Phase
-  // 3c) — same posture as rage powers above.
+  // cavalier orders / shifter aspects (fourth-party dataset, issue #74) — same
+  // posture as rage powers above.
   const alchemistDiscoveryDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_discoveries.json"),
   );

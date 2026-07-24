@@ -1,5 +1,5 @@
 /**
- * Vendored (non-hand-authored) prestige classes — issue #74 phase 2c.
+ * Vendored (non-hand-authored) prestige classes — issue #74.
  * `prestigeClasses.test.ts` covers the eleven hand-authored CRB/AG classes;
  * this file covers the ~108 remaining splatbook classes read from the same
  * third-party archetype module's `pf-prestige-classes`/`pf-prestige-features`

@@ -43,7 +43,7 @@ function matchesSpecialization(
 }
 
 /**
- * Vigilante talent selection (issue #65, full-catalog issue #74 Phase 3b) —
+ * Vigilante talent selection (issue #65, full-catalog issue #74) —
  * renders BOTH independent talent pools PF1 RAW grants (Social Talent at 1st
  * + every 2, Vigilante Talent at 2nd + every 2; see
  * `model/vigilanteTalents.ts`'s budget math for each), mirroring

@@ -14,7 +14,7 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74 Phase 3b) — mirrors
+ * Coverage for the vendored-catalog overlay (issue #74) — mirrors
  * `ragePowerCatalog.test.ts`, for BOTH independent vigilante talent pools.
  * All 30 hand-authored social talents matched a vendored entry by name; of
  * the 32 hand-authored vigilante talents, 31 matched — `evasion` ("Evasion")

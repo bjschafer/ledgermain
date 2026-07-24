@@ -3,8 +3,8 @@ import { readFileSync } from "node:fs";
 import type { SourceRef } from "@pf1/schema";
 
 /**
- * Reader for the "Pf Data 1e" dataset's `json/*.json` files (issue #74 Phase
- * 3a): each file is a flat dictionary, keyed by a snake_case slug, of entries
+ * Reader for the "Pf Data 1e" dataset's `json/*.json` files (issue #74): each file is a
+ * flat dictionary, keyed by a snake_case slug, of entries
  * sharing one loose shape (documented in the dataset's own `schema.json` /
  * `JSON.md`). The SAME shape backs every subsystem file in `json/` — rage
  * powers, hexes, arcana, talents, exploits, wild talents, … — so everything
@@ -157,7 +157,7 @@ function resolveLinkDirectives(text: string): string {
  * `&amp;` re-escapes an already-valid entity into a broken one (e.g.
  * `&mdash;` -> `&amp;mdash;`, which browsers render as the literal text
  * "&mdash;" instead of an em dash). Covers every entity seen in the pinned
- * clone as of the magus-arcana import (issue #74 Phase 3b); extend this map
+ * clone as of the magus-arcana import (issue #74); extend this map
  * if a future subsystem's slice surfaces one not listed here.
  */
 const NAMED_ENTITIES: Record<string, string> = {
@@ -261,8 +261,8 @@ function parseDirectiveProps(raw: string): Record<string, string | true> {
  * name-less `::aff{prop="value" ...}` variant (no `[Name]` at all — a
  * natural-attack-embedded poison/disease/curse stat block, e.g. a witch hex
  * granting a claw attack with a poison rider; ~600 occurrences across the
- * full pinned dataset, first exercised by the witch-hex import, issue #74
- * Phase 3b). We aren't trying to fully re-render the block's game-mechanical
+ * full pinned dataset, first exercised by the witch-hex import, issue #74). We aren't
+ * trying to fully re-render the block's game-mechanical
  * structure (onset, frequency, cure DC, ...) — just surface its
  * `eff`/`effStr` prose (the human-readable effect description, which is what
  * a player actually reads), labeled with the block's own name when one is
@@ -391,7 +391,7 @@ function renderAbDirective(name: string, propsRaw: string): string {
  * converting each to plain prose (or a paragraph break, for a bare `>`
  * continuation/fence line) so the surrounding text still reads cleanly
  * instead of leaking raw markup. First exercised by the sorcerer/bloodrager
- * bloodline and shaman-spirit imports (issue #74 Phase 3c), whose "menu of
+ * bloodline and shaman-spirit imports (issue #74), whose "menu of
  * named powers" sections are blockquoted rather than plain paragraphs.
  */
 function stripBlockLevelMarkers(lines: string[]): string[] {
@@ -428,7 +428,7 @@ function splitIntoBlocks(lines: string[]): string[][] {
  * An inline (non-leading, see `pfDataBodyLines` for the leading case) markdown
  * header — a section divider like "### Revelations"/"### Bloodline Powers"
  * appearing partway through an entry's prose, first seen in the oracle-
- * mystery/bloodline imports (issue #74 Phase 3c). Rendered as a bold
+ * mystery/bloodline imports (issue #74). Rendered as a bold
  * paragraph rather than left as literal "###" text.
  */
 const INLINE_HEADER_RE = /^#{2,4}\s+(.+)$/;
