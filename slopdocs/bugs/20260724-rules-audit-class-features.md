@@ -4,7 +4,15 @@ Audited 2026-07-24 — Opus subagent extracted implemented claims (bloodrage.ts,
 raging-song.ts, deeds.ts, judgments.ts, ranger.ts, resources.ts, vendored
 class-features.json/buffs.json pool formulas + tests); Fable main loop verified
 each against RAW (unchained rage text verified by fetch). Siblings: parts 1–4.
-**Nothing fixed yet.**
+**Both findings resolved 2026-07-24** (commit 8d57fe2). Finding 1 was already
+fixed before the audit: `buff-effects.ts` `BUFF_CHANGE_PATCHES["Rage
+(Unchained)"]` (committed 2026-07-08) patches the temp HP engine-side with the
+exact 2/3/4-per-HD tiers — the audit only inspected buffs.json and missed it.
+Now pinned by tests (barbarian-unchained.test.ts: L6→12, L13→39, L20→80); do
+NOT add a duplicate data-pipeline supplement (would render a spurious
+struck-through component). Finding 2 fixed via supplements override to
+`@class.unlevel`; the sweep found Stunning Fist as the only other HD-keyed
+uses formula and it is RAW-correct as-is (monk level + non-monk HD/4).
 
 ## Findings
 

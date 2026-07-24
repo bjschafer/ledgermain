@@ -6,7 +6,11 @@ This domain (core derived math: AC/CMB/CMD/attack/damage/stacking/tables/HP/
 conditions/encumbrance) was audited 2026-07-23 by a subagent whose report was
 recovered from session logs; every finding below was then re-verified 2026-07-24
 against both the cited code and the RAW independently. All 7 findings are
-confirmed real. **None are fixed yet.**
+confirmed real. **All 7 FIXED 2026-07-24** (commit e046168): each with
+hand-computed pinning tests; the wrong tests noted below were corrected.
+The Str-penalty-multiplier rule (finding 3) had a second, independent copy
+in `apps/web/src/model/twf.ts` `offHandAbilityDelta` — fixed in the same
+commit with its own test (apps/web/test/twf.test.ts).
 
 Remaining domains (not yet audited): combat mechanics detail, core class
 features, spellcasting, character build rules, occult/hybrid classes,

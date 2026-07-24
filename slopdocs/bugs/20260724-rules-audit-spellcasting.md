@@ -6,7 +6,11 @@ section, `metamagic.ts`, compute.ts ASF, web `model/spellcasting.ts`,
 `model/casterLevel.ts`, `model/preparedSpells.ts` (school/domain/opposition),
 domain-slot UI enforcement, vendored `wizard-schools.json` oppositions.
 External verification via aonprd/d20pfsrd fetches where memory was uncertain.
-**None fixed yet.**
+**All 3 FIXED 2026-07-24** (commit 3c48623): bard → FULL_CASTER_TAGS,
+paladin/ranger/antipaladin as a new gate-4/CL=level−3 shape (OFFSET_CASTER_TAGS
+in casterLevel.ts, mirrored engine-side in rolldata.ts since engine can't
+import web); domain-slot text corrected. Bloodrager/medium untouched, per the
+verified-correct note below.
 
 ## Findings (implemented-but-wrong, ranked)
 

@@ -4,7 +4,14 @@ Audited 2026-07-24 (second wave). Opus subagent extracted races.json (80
 races), racial-traits.json (860 entries, 252 with numeric changes), and the
 hand-authored racial-traits.ts table; Fable verified applied numbers against
 RAW. Siblings: parts 1–9. **Applied numbers all correct; findings are
-structural gaps + one dead change target.**
+structural gaps + one dead change target.** **Findings 1 and 3 FIXED
+2026-07-24** (finding 3 commit 8d57fe2, finding 1 commit 0507b60 — most of the
+SR pipeline already existed via issue #21; the real dead spots were
+`@details.level.value` missing from rollData, leaving Drow Noble flat at 11,
+and svirfneblin SR being prose-only in vendored data, now supplemented as
+`11 + @attributes.hd.total`). **Finding 2 (senses) deliberately NOT fixed**:
+supplementing darkvision/low-light for all 80 vendored races is a per-race
+RAW-verification data project, not a targeted fix — needs its own pass/issue.
 
 ## Findings
 

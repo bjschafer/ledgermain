@@ -6,7 +6,11 @@ Audited 2026-07-24 inline. Siblings: `20260724-rules-audit-derived-math.md`,
 - class bonus formulas), ability increases, point buy, traits/drawbacks, XP
   tracks, favored-class bonuses, core race data spot-check, plus the
   afflictions/negative-levels/duration models (folded in here; they came up
-  clean). **Nothing fixed yet.**
+  clean). **Finding 1 FIXED 2026-07-24** (commit 3c48623): `permanentIntMod()`
+  in skills.ts computes on a doc with `live.activeBuffs` cleared (same pattern
+  as baseline.ts), so racial/level/worn-item Int counts but toggled buffs
+  don't; the three feeding call sites (BuildNav/SkillsSection/SkillManager)
+  rewired.
 
 ## Findings
 

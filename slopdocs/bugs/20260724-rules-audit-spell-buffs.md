@@ -3,7 +3,15 @@
 Audited 2026-07-24 (second wave). Full dump of `buffs.json` (185 entries)
 verified inline against RAW spell/feature text; `feat-effects-extracted.ts`
 (13 entries) extracted by Opus subagent and verified. Siblings: parts 1–7.
-**Nothing fixed yet.**
+**All 3 FIXED 2026-07-24** (findings 2–3 commit 8d57fe2; finding 1 commit
+0507b60). Finding 1's brief was wrong in one place: Foundry `carryMult` is
+ADDITIVE onto a base ×1, so vendored Ant Haul +2 already means ×3 RAW — no
+override was needed (overriding to 3 would have made it ×4). Enlarge/Reduce's
+carryStr/carryMult are upstream-calibrated to cancel the size/Str carry gains
+(gear doesn't grow) and are consumed as-is, pinned by anti-double-count tests
+in compute.encumbrance.test.ts. Fixing this also surfaced and fixed a
+pre-existing bug: computeEncumbrance used race-base size, ignoring
+Enlarge/Reduce size changes.
 
 ## Findings
 

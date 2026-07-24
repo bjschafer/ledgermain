@@ -4,7 +4,12 @@ Audited 2026-07-24 — Opus subagent extracted implemented-rule claims
 (natural-attacks.ts, monk.ts, polymorph.ts, two-weapon-fighting.ts,
 weapon-groups.ts, tables.ts flurry/weapon-training + tests); Fable main loop
 verified every claim against RAW (Elemental Body II table verified by fetch).
-Siblings: parts 1–3 in this directory. **Nothing fixed yet.**
+Siblings: parts 1–3 in this directory. **All 3 FIXED 2026-07-24**
+(findings 1–2 commit fe1067c; finding 3 via supplements, commit 8d57fe2).
+Flurry label now derives from monk-level-as-BAB iteratives and reproduces all
+six published anchors; classifyNaturalAttacks keys on total attack count and
+carries a strMultiplier (1.5 for a sole attack, bonus-only) consumed by
+naturalAttackDamageBonus — the pony/companion pinning tests were corrected.
 
 ## Findings (implemented-but-wrong, ranked)
 
