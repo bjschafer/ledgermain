@@ -695,11 +695,11 @@ describe("compute: monk L5 (human, no armor)", () => {
     expect(unarmedStrike!.detail).toBe("1d8");
   });
 
-  it("Flurry of Blows class feature carries hand-authored attack-count detail (2 attacks at L5)", () => {
+  it("Flurry of Blows class feature carries hand-authored attack-sequence detail (+3/+3 at L5)", () => {
     const flurryOfBlows = sheet.classFeatures.find((f) => f.name === "Flurry of Blows");
     expect(flurryOfBlows).toBeDefined();
     expect(flurryOfBlows!.classTag).toBe("monk");
-    expect(flurryOfBlows!.detail).toBe("2 attacks at -2 (BAB = monk level)");
+    expect(flurryOfBlows!.detail).toBe("+3/+3 (BAB = monk level)");
   });
 
   // Diamond Soul (L13, "10 + @class.unlevel" targeting "spellResist") is

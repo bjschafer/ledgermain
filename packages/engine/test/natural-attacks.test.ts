@@ -8,22 +8,48 @@ import {
 } from "../src/natural-attacks.js";
 
 describe("classifyNaturalAttacks", () => {
-  it("a single distinct attack form is always primary, regardless of count", () => {
+  it("two Hoof entries (4 total attacks) stay SECONDARY — the UMR upgrade is per ATTACK, not per KIND", () => {
     const [hoof1, hoof2] = classifyNaturalAttacks([
       { name: "Hoof", count: 2 },
       { name: "Hoof", count: 2 },
     ]);
-    expect(hoof1!.attackType).toBe("primary");
-    expect(hoof2!.attackType).toBe("primary");
+    expect(hoof1!.attackType).toBe("secondary");
+    expect(hoof2!.attackType).toBe("secondary");
+    expect(hoof1!.strMultiplier).toBe(1);
   });
 
-  it("bite + claws: both are primary-type kinds, so ALL stay primary (bear/big-cat routine)", () => {
+  it("pony/horse: a single 'Hoof' entry with count 2 (2 total attacks) stays secondary, matching the Bestiary's '2 hooves −3'", () => {
+    const [hooves] = classifyNaturalAttacks([{ name: "Hoof", count: 2 }]);
+    expect(hooves!.attackType).toBe("secondary");
+    expect(hooves!.strMultiplier).toBe(1);
+    // BAB 1 + Str 12 (mod +1) = base bonus 2; secondary attack is base − 5.
+    expect(naturalAttackBonus(1 + 1, hooves!.attackType, false)).toBe(-3);
+    // Secondary damage halves a positive Str mod, rounded down: floor(1/2) = 0.
+    expect(naturalAttackDamageBonus(1, hooves!.attackType, hooves!.strMultiplier)).toBe(0);
+  });
+
+  it("a lone Slam (count 1, the creature's only attack) upgrades to primary with the UMR ×1.5 Str rider", () => {
+    const [slam] = classifyNaturalAttacks([{ name: "Slam", count: 1 }]);
+    expect(slam!.attackType).toBe("primary");
+    expect(slam!.strMultiplier).toBe(1.5);
+    expect(naturalAttackDamageBonus(4, slam!.attackType, slam!.strMultiplier)).toBe(6);
+  });
+
+  it("a lone naturally-secondary kind (single Hoof, count 1) still upgrades to primary + ×1.5 per the UMR 'only one natural attack' sentence", () => {
+    const [hoof] = classifyNaturalAttacks([{ name: "Hoof", count: 1 }]);
+    expect(hoof!.attackType).toBe("primary");
+    expect(hoof!.strMultiplier).toBe(1.5);
+  });
+
+  it("bear: bite + 2 claws (3 total attacks) — both primary-type kinds stay primary, unchanged, no ×1.5", () => {
     const [bite, claw] = classifyNaturalAttacks([
       { name: "Bite", count: 1 },
       { name: "Claw", count: 2 },
     ]);
     expect(bite!.attackType).toBe("primary");
     expect(claw!.attackType).toBe("primary");
+    expect(bite!.strMultiplier).toBe(1);
+    expect(claw!.strMultiplier).toBe(1);
   });
 
   it("bite + tail slap: tail slap is secondary-type by name, regardless of order", () => {
@@ -71,5 +97,14 @@ describe("naturalAttackBonus / naturalAttackDamageBonus", () => {
 
   it("a Strength PENALTY applies in full on a secondary attack, not halved", () => {
     expect(naturalAttackDamageBonus(-4, "secondary")).toBe(-4);
+  });
+
+  it("strMultiplier (1.5, sole-natural-attack UMR rider) scales a positive Str mod on a primary attack, rounded down", () => {
+    expect(naturalAttackDamageBonus(3, "primary", 1.5)).toBe(4);
+    expect(naturalAttackDamageBonus(4, "primary", 1.5)).toBe(6);
+  });
+
+  it("strMultiplier never scales a Strength PENALTY, same posture as the two-handed-weapon ×1.5 rule", () => {
+    expect(naturalAttackDamageBonus(-2, "primary", 1.5)).toBe(-2);
   });
 });

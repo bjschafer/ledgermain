@@ -955,7 +955,8 @@ export function deriveCompanion(
     count: a.count,
     attack: naturalAttackBonus(baseAttackBonus, a.attackType, hasMultiattack),
     damageDice: a.damageDice,
-    damageBonus: naturalAttackDamageBonus(strMod, a.attackType) + sharedDamageBonus,
+    damageBonus:
+      naturalAttackDamageBonus(strMod, a.attackType, a.strMultiplier) + sharedDamageBonus,
     note: a.note,
     attackType: a.attackType,
   }));

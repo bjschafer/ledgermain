@@ -121,13 +121,14 @@ describe("deriveEidolon (unchained, Elemental (Air) L8 quadruped)", () => {
     expect(eidolon!.speeds.fly).toBe(40);
   });
 
-  it("attacks with a bite (the subtype's quadruped attack)", () => {
+  it("attacks with a bite (the subtype's quadruped attack), ×1.5 Str (sole natural attack, UMR)", () => {
     expect(eidolon!.attacks).toHaveLength(1);
+    // Str mod that would otherwise give damageBonus 4 is scaled ×1.5 (floor) to 6 — this bite is the eidolon's only attack form.
     expect(eidolon!.attacks[0]).toMatchObject({
       name: "Bite",
       attack: 10,
       damageDice: "1d6",
-      damageBonus: 4,
+      damageBonus: 6,
       attackType: "primary",
     });
   });

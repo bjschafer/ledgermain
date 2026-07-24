@@ -14,13 +14,17 @@
  *     secondary attacks]."
  *   - "Some natural attacks are denoted as secondary natural attacks, such
  *     as tails and wings."
- * A creature with only ONE kind of natural attack (regardless of `count` —
- * e.g. a wolf's single bite, or a horse's two hooves) has nothing to be
- * secondary TO, so every instance of it stays primary — confirmed against
- * aonprd.com's own Wolf stat block (`Melee bite +2 (1d6+1)`: base attack
- * bonus + full Strength modifier, no reduction, no ×1.5 multiplier either —
- * see below for why this module does NOT apply a ×1.5 "single natural
- * attack" bonus).
+ * A creature making only ONE natural attack TOTAL (one kind, one instance —
+ * e.g. a wolf's single bite) has nothing to be secondary to, so it's always
+ * primary, and per the Universal Monster Rules also adds 1-1/2× its Strength
+ * modifier: "If a creature has only one natural attack, it is always made
+ * using the creature's full base attack bonus and adds 1-1/2 times the
+ * Strength bonus." Confirmed against aonprd.com's own Wolf stat block (`Melee
+ * bite +2 (1d6+1)`, Str 13: BAB 1 + Str mod 1 × 1.5 = 1 (floor) = +2 total,
+ * matching). Critically this is ONE ATTACK, not one KIND: a creature with
+ * TWO hooves and nothing else (e.g. the Bestiary pony/horse, `2 hooves −3`)
+ * still has two attacks of the same kind, and both stay SECONDARY (−5,
+ * half Str) — there's nothing "single" about a pair.
  *
  * Multiattack (bonus feat automatically granted once a companion/eidolon has
  * 3+ natural attacks — {@link ANIMAL_COMPANION_PROGRESSION}'s/
@@ -29,17 +33,8 @@
  * feat text: "The creature's secondary attacks with natural weapons take
  * only a −2 penalty").
  *
- * Deliberately NOT modeled: CRB Combat's "If you possess only one natural
- * attack... you add 1-1/2 times your Strength bonus" line. That provision
- * governs a CHARACTER (or humanoid-turned-natural-attacker) making a single
- * natural attack as their whole round's action, in place of an iterative
- * weapon/unarmed routine — a PC combat CHOICE, not a property of a
- * creature's fixed attack routine. It does not describe how a companion,
- * eidolon, or Bestiary creature's own baseline attack routine is built (the
- * verified Wolf stat block above confirms real creatures with one attack
- * form get NO multiplier), so it's out of scope here.
- *
- * Which attack NAMES are primary vs secondary isn't independently
+ * Which attack NAMES are primary vs secondary (once the total-attack-count
+ * is 2+, so name-based classification actually applies) isn't independently
  * re-derived per species — it reuses the exact classification this codebase
  * already established (and verified against aonprd.com/d20pfsrd.com) in
  * `eidolon.ts`'s evolution flavor text during issue #65: "Bite"/"Claws"/
@@ -95,21 +90,25 @@ function isPrimaryTypeName(name: string): boolean {
 
 /**
  * Classify every attack in a species'/base-form's attack list into primary
- * vs secondary (see module doc comment): a single distinct attack form is
- * always primary regardless of name or count; with 2+ distinct forms, each
- * is classified independently by name — a creature with several
- * primary-type forms (bear: Bite + Claws) keeps ALL of them primary.
+ * vs secondary (see module doc comment). The UMR "only one natural attack"
+ * upgrade counts total ATTACKS (sum of every entry's `count`), not distinct
+ * KINDS: a creature making exactly one attack total (one entry, count 1) is
+ * always primary and gets the ×1.5 Strength rider on damage (see
+ * {@link naturalAttackDamageBonus}); with 2+ total attacks (whether one kind
+ * repeated, like a pony's 2 hooves, or several kinds, like a bear's Bite + 2
+ * Claws), every entry is classified independently by name — no ×1.5 rider.
  */
-export function classifyNaturalAttacks<T extends { name: string }>(
+export function classifyNaturalAttacks<T extends { name: string; count: number }>(
   attacks: readonly T[],
-): (T & { attackType: NaturalAttackType })[] {
-  const distinctNames = new Set(attacks.map((a) => a.name));
-  if (distinctNames.size <= 1) {
-    return attacks.map((a) => ({ ...a, attackType: "primary" as const }));
+): (T & { attackType: NaturalAttackType; strMultiplier: number })[] {
+  const totalCount = attacks.reduce((sum, a) => sum + a.count, 0);
+  if (totalCount === 1) {
+    return attacks.map((a) => ({ ...a, attackType: "primary" as const, strMultiplier: 1.5 }));
   }
   return attacks.map((a) => ({
     ...a,
     attackType: isPrimaryTypeName(a.name) ? ("primary" as const) : ("secondary" as const),
+    strMultiplier: 1,
   }));
 }
 
@@ -144,9 +143,19 @@ function halfStrMod(strMod: number): number {
 }
 
 /**
- * The Strength-derived damage addend for one attack: the full modifier for
- * a primary attack, {@link halfStrMod} for a secondary one.
+ * The Strength-derived damage addend for one attack: {@link halfStrMod} for
+ * a secondary attack; for a primary attack, the full modifier scaled by
+ * `strMultiplier` (1 normally, 1.5 for a creature's sole natural attack —
+ * see {@link classifyNaturalAttacks}). Like the two-handed-weapon ×1.5 and
+ * the secondary half-Str rule above, the multiplier only scales a POSITIVE
+ * modifier; a penalty always applies in full.
  */
-export function naturalAttackDamageBonus(strMod: number, attackType: NaturalAttackType): number {
-  return attackType === "secondary" ? halfStrMod(strMod) : strMod;
+export function naturalAttackDamageBonus(
+  strMod: number,
+  attackType: NaturalAttackType,
+  strMultiplier = 1,
+): number {
+  if (attackType === "secondary") return halfStrMod(strMod);
+  if (strMultiplier === 1 || strMod <= 0) return strMod;
+  return Math.floor(strMod * strMultiplier);
 }

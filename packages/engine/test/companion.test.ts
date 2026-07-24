@@ -101,9 +101,10 @@ describe("deriveCompanion (druid-7 wolf, hand-computed fixture)", () => {
     expect(wolf!.cmd).toBe(21);
   });
 
-  it("Attack: bite +6 (1d8+3), grown attack dice", () => {
+  it("Attack: bite +6 (1d8+4), grown attack dice, ×1.5 Str (sole natural attack, UMR)", () => {
     const bite = wolf!.attacks.find((a) => a.name === "Bite");
-    expect(bite).toMatchObject({ attack: 6, damageDice: "1d8", damageBonus: 3 });
+    // Str mod +3 × 1.5 = 4 (rounded down) — the wolf's only attack form.
+    expect(bite).toMatchObject({ attack: 6, damageDice: "1d8", damageBonus: 4 });
   });
 
   it("HP max 39 (floor(4.5*6) + 2*6)", () => {
@@ -180,10 +181,10 @@ describe("deriveCompanion (ranger-7 dog, effective level 4)", () => {
     expect(dog!.cmd).toBe(19);
   });
 
-  it("Attack: bite +5 (1d6+2) — Str-based, not Dex (Str mod +2, Dex mod +4, no Weapon Finesse)", () => {
-    // bab(3) + strMod(2) + size(med, 0) = 5. Damage is always Str: strMod(2).
+  it("Attack: bite +5 (1d6+3) — Str-based, not Dex (Str mod +2, Dex mod +4, no Weapon Finesse), ×1.5 Str (sole natural attack, UMR)", () => {
+    // bab(3) + strMod(2) + size(med, 0) = 5. Damage is Str(2) × 1.5 = 3 (rounded down) — the dog's only attack form.
     const bite = dog!.attacks.find((a) => a.name === "Bite");
-    expect(bite).toMatchObject({ attack: 5, damageDice: "1d6", damageBonus: 2 });
+    expect(bite).toMatchObject({ attack: 5, damageDice: "1d6", damageBonus: 3 });
   });
 
   it("HP max 26", () => {
@@ -427,18 +428,19 @@ describe("deriveCompanion own active conditions (issue #68)", () => {
 });
 
 describe("deriveCompanion primary/secondary natural attacks (issue #68)", () => {
-  it("horse (2 hooves, single attack form): both hooves stay primary, no −5/half-Str reduction", () => {
+  it("horse (2 hooves, one KIND but two ATTACKS): stays SECONDARY, −5 attack and half Str damage — matches the Bestiary's own '2 hooves −3'", () => {
     const doc = makeDoc({
       classes: [{ tag: "druid", level: 1 }],
       animalCompanion: { speciesId: "horse", name: "Silver", source: ["nature-bond"] },
     });
     const rollData = buildRollData(doc, ref);
     const horse = deriveCompanion(doc, rollData)!;
-    // HD 2, BAB +1; Str 16 (mod +3); size Large (−1 attack); bab 1 + str 3 − 1 = 3.
+    // HD 2, BAB +1; Str 16 (mod +3); size Large (−1 attack); bab 1 + str 3 − 1 = 3, then secondary −5 = −2.
     expect(horse.bab).toBe(1);
     expect(horse.abilities.str.mod).toBe(3);
     const hoof = horse.attacks.find((a) => a.name === "Hoof")!;
-    expect(hoof).toMatchObject({ attackType: "primary", attack: 3, damageBonus: 3 });
+    // Damage: half of Str mod 3, rounded down = 1.
+    expect(hoof).toMatchObject({ attackType: "secondary", attack: -2, damageBonus: 1 });
   });
 
   it("badger (Bite + 2 Claws): both primary-type kinds stay primary at full bonus, Str-based (badger's Dex mod +4 is higher but unused without Weapon Finesse)", () => {

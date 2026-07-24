@@ -62,30 +62,57 @@ describe("unarmedDamageDie", () => {
 
 /**
  * Monk Flurry of Blows display summary. Clean-room from the published PF1
- * SRD: 1 extra attack at 1st level (2 attacks total), a 2nd extra attack at
- * 8th level (3 attacks total), a 3rd extra attack at 15th level (4 attacks
- * total), all at a flat -2 using monk level in place of true BAB. Display
- * only — not wired into the live attacks/iteratives table.
+ * SRD: a flat -2 on every attack at EVERY level (never stepped down, unlike
+ * the D&D 3.5 monk), using monk level in place of true BAB — and monk level
+ * generates its own iteratives at effective BAB 6/11/16, so the total attack
+ * count is 2 (L1-5), 3 (L6-7), 4 (L8-10), 5 (L11-14), 6 (L15), 7 (L16-20),
+ * not a flat 2/3/4. Display only — not wired into the live
+ * attacks/iteratives table. Six published anchors pinned exactly below, plus
+ * the tier-boundary levels in between.
  */
 describe("flurryOfBlowsLabel", () => {
-  it("level 1 monk -> 2 attacks at -2", () => {
-    expect(flurryOfBlowsLabel(1)).toBe("2 attacks at -2 (BAB = monk level)");
+  it("level 1 monk -> published anchor -1/-1", () => {
+    expect(flurryOfBlowsLabel(1)).toBe("-1/-1 (BAB = monk level)");
   });
 
-  it("level 7 monk -> 2 attacks at -2 (top of the first tier)", () => {
-    expect(flurryOfBlowsLabel(7)).toBe("2 attacks at -2 (BAB = monk level)");
+  it("level 5 monk -> 2 attacks (top of the first tier)", () => {
+    expect(flurryOfBlowsLabel(5)).toBe("+3/+3 (BAB = monk level)");
   });
 
-  it("level 8 monk -> 3 attacks at -2", () => {
-    expect(flurryOfBlowsLabel(8)).toBe("3 attacks at -2 (BAB = monk level)");
+  it("level 6 monk -> published anchor +4/+4/-1", () => {
+    expect(flurryOfBlowsLabel(6)).toBe("+4/+4/-1 (BAB = monk level)");
   });
 
-  it("level 14 monk -> 3 attacks at -2 (top of the second tier)", () => {
-    expect(flurryOfBlowsLabel(14)).toBe("3 attacks at -2 (BAB = monk level)");
+  it("level 7 monk -> 3 attacks (top of the second tier)", () => {
+    expect(flurryOfBlowsLabel(7)).toBe("+5/+5/+0 (BAB = monk level)");
   });
 
-  it("level 15 monk -> 4 attacks at -2", () => {
-    expect(flurryOfBlowsLabel(15)).toBe("4 attacks at -2 (BAB = monk level)");
+  it("level 8 monk -> published anchor +6/+6/+1/+1", () => {
+    expect(flurryOfBlowsLabel(8)).toBe("+6/+6/+1/+1 (BAB = monk level)");
+  });
+
+  it("level 10 monk -> 4 attacks (top of the third tier)", () => {
+    expect(flurryOfBlowsLabel(10)).toBe("+8/+8/+3/+3 (BAB = monk level)");
+  });
+
+  it("level 11 monk -> published anchor +9/+9/+4/+4/-1", () => {
+    expect(flurryOfBlowsLabel(11)).toBe("+9/+9/+4/+4/-1 (BAB = monk level)");
+  });
+
+  it("level 14 monk -> 5 attacks (top of the fourth tier)", () => {
+    expect(flurryOfBlowsLabel(14)).toBe("+12/+12/+7/+7/+2 (BAB = monk level)");
+  });
+
+  it("level 15 monk -> published anchor +13/+13/+8/+8/+3/+3", () => {
+    expect(flurryOfBlowsLabel(15)).toBe("+13/+13/+8/+8/+3/+3 (BAB = monk level)");
+  });
+
+  it("level 16 monk -> 7 attacks (top tier now capped at 3 extras)", () => {
+    expect(flurryOfBlowsLabel(16)).toBe("+14/+14/+9/+9/+4/+4/-1 (BAB = monk level)");
+  });
+
+  it("level 20 monk -> published anchor +18/+18/+13/+13/+8/+8/+3", () => {
+    expect(flurryOfBlowsLabel(20)).toBe("+18/+18/+13/+13/+8/+8/+3 (BAB = monk level)");
   });
 
   it("out-of-range level returns an empty string", () => {

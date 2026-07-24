@@ -1637,7 +1637,8 @@ export function deriveEidolon(
     count: a.count,
     attack: naturalAttackBonus(baseAttackBonus, a.attackType, hasMultiattack),
     damageDice: a.damageDice,
-    damageBonus: naturalAttackDamageBonus(strMod, a.attackType) + sharedDamageBonus,
+    damageBonus:
+      naturalAttackDamageBonus(strMod, a.attackType, a.strMultiplier) + sharedDamageBonus,
     attackType: a.attackType,
   }));
 
