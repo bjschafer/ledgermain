@@ -2587,6 +2587,15 @@ export interface DerivedSheet {
    */
   defenses?: Defenses;
   /**
+   * Special senses (darkvision, low-light vision, scent, …), display-only —
+   * nothing here feeds back into any other number. Empty (not undefined) when
+   * the character has none, so the UI can key its whole "Senses" line off
+   * `senses.length`. Fed by `sense*`-target changes from every source the
+   * rest of the sheet already reads (race, alternate racial traits, buffs,
+   * items) — see `@pf1/engine`'s `senses.ts`.
+   */
+  senses: DerivedSense[];
+  /**
    * Carrying capacity / encumbrance (issue #16) — an OPTIONAL PF1 rule, only
    * computed when `build.settings.encumbranceEnabled` is true. Undefined
    * whenever the setting is off/absent, which is the default for every
@@ -2786,6 +2795,44 @@ export interface DefenseEntry {
   total: number;
   /** Bypass type ("—" for DR/—, "magic", "cold iron", ...) or energy type ("fire", "cold", ...). */
   qualifier: string;
+  components: ModifierComponent[];
+}
+
+/**
+ * The special senses this engine models, in the order they should be
+ * displayed. Mirrors Foundry's `traits.senses.*` model fields (`dv`, `ll`,
+ * `sc`, `bse`, `bs`, `ts`, `ls`, `tr`, `ths`, `sid`), which the vendored
+ * `sense*` change targets write into — see `@pf1/engine`'s `senses.ts` for
+ * the target→kind map.
+ */
+export type SenseKind =
+  | "darkvision"
+  | "lowLight"
+  | "seeInDarkness"
+  | "blindsight"
+  | "blindsense"
+  | "tremorsense"
+  | "scent"
+  | "lifesense"
+  | "trueSeeing"
+  | "thoughtsense";
+
+/**
+ * One special-sense line. Senses of the same kind don't stack in PF1 — a
+ * creature with darkvision 60 ft. that gains darkvision 120 ft. sees 120 ft.,
+ * not 180 — so only the single longest-range source applies; the losers stay
+ * in `components` with `applied: false`, the same strike-through convention
+ * as `DefenseEntry` and typed-bonus stacking.
+ *
+ * `range` is absent for the two rangeless senses (low-light vision, see in
+ * darkness), which are on/off flags rather than distances.
+ */
+export interface DerivedSense {
+  kind: SenseKind;
+  /** Display label, e.g. "Darkvision", "Low-light vision". */
+  label: string;
+  /** Range in feet; absent for `lowLight`/`seeInDarkness`. */
+  range?: number;
   components: ModifierComponent[];
 }
 

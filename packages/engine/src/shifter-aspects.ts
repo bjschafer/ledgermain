@@ -122,9 +122,10 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     name: "Bat",
     summary:
       "Darkvision 60 ft. (90 ft. at 8th/15th; +30 ft. instead if you already have darkvision).",
+    minorFormChanges: [scaledChange("sensedv", "untyped", 60, 90, 90)],
     contextNotes: [
       note(
-        "Darkvision grant/increase — the engine resolves competing 'set' darkvision changes by lowest-value, which would be wrong for a beneficial grant like this; apply manually rather than risk suppressing a better existing source.",
+        "The flat grant applies (senses resolve highest-wins); the alternative '+30 ft. to darkvision you already have' is not modeled, so a race with darkvision keeps its own range — add the 30 ft. by hand.",
         "sensedv",
       ),
     ],
@@ -366,9 +367,10 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     name: "Wolf",
     summary:
       "Gain scent (10 ft. range, or +10 ft. if you already have scent); range increases to 20 ft. at 8th level and 30 ft. at 15th.",
+    minorFormChanges: [scaledChange("sensesc", "untyped", 10, 20, 30)],
     contextNotes: [
       note(
-        "Scent grant/increase — the engine resolves competing 'set' sense changes by lowest-value, which would be wrong for a beneficial grant like this; apply manually rather than risk suppressing a better existing source.",
+        "The flat grant applies (senses resolve highest-wins); the alternative '+10 ft. to scent you already have' is not modeled, so a race with scent keeps its own range — add the 10 ft. by hand.",
         "sensesc",
       ),
     ],

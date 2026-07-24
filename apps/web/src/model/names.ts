@@ -229,13 +229,21 @@ const CHANGE_TARGET_LABELS: Record<string, string> = {
   intPen: "Intelligence penalties",
   wisPen: "Wisdom penalties",
   chaPen: "Charisma penalties",
-  // carrying capacity / senses
+  // carrying capacity
   carryStr: "carrying capacity",
   carryMult: "carrying capacity",
-  sensedv: "senses",
-  sensebse: "senses",
-  sensetr: "senses",
-  senseall: "senses",
+  // senses (computeSenses) — `sensell`/`sensesid` are this engine's own
+  // targets for Foundry's two boolean sense flags; see engine `senses.ts`.
+  sensedv: "darkvision",
+  sensell: "low-light vision",
+  sensesid: "see in darkness",
+  sensebs: "blindsight",
+  sensebse: "blindsense",
+  sensets: "tremorsense",
+  sensesc: "scent",
+  sensels: "lifesense",
+  sensetr: "true seeing",
+  senseths: "thoughtsense",
 };
 
 /** "coldIron" -> "cold iron", "adamantine" -> "adamantine". */

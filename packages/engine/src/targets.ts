@@ -23,6 +23,8 @@
 import type { Change } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import { SENSE_TARGET_IDS } from "./senses.js";
+
 /**
  * Exact-match targets consumed by compute.ts.
  *
@@ -81,6 +83,8 @@ const APPLIED_TARGETS = new Set<string>([
   // spell resistance / damage reduction (computeDefenses, issue #21)
   "spellResist",
   "dr",
+  // special senses (computeSenses) — the whole `sense*` family
+  ...SENSE_TARGET_IDS,
   // carrying capacity (computeEncumbrance's carryAdjustments, only visible
   // on the sheet when `settings.encumbranceEnabled` is on — same posture as
   // `mDexA`/`acpA` above, which are also encumbrance/armor-training-gated)
@@ -144,10 +148,6 @@ export const UNAPPLIED_TARGET_LABELS: Record<string, string> = {
   intSkills: "Int-based skill checks",
   wisSkills: "Wis-based skill checks",
   chaSkills: "Cha-based skill checks",
-  sensedv: "senses",
-  sensebse: "senses",
-  sensetr: "senses",
-  senseall: "senses",
   strPen: "Strength penalties",
   dexPen: "Dexterity penalties",
   conPen: "Constitution penalties",

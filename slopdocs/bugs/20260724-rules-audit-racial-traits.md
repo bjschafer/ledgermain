@@ -4,14 +4,15 @@ Audited 2026-07-24 (second wave). Opus subagent extracted races.json (80
 races), racial-traits.json (860 entries, 252 with numeric changes), and the
 hand-authored racial-traits.ts table; Fable verified applied numbers against
 RAW. Siblings: parts 1–9. **Applied numbers all correct; findings are
-structural gaps + one dead change target.** **Findings 1 and 3 FIXED
-2026-07-24** (finding 3 commit 8d57fe2, finding 1 commit 0507b60 — most of the
+structural gaps + one dead change target.** **All 3 FIXED 2026-07-24**
+(finding 3 commit 8d57fe2, finding 1 commit 0507b60 — most of the
 SR pipeline already existed via issue #21; the real dead spots were
 `@details.level.value` missing from rollData, leaving Drow Noble flat at 11,
 and svirfneblin SR being prose-only in vendored data, now supplemented as
-`11 + @attributes.hd.total`). **Finding 2 (senses) deliberately NOT fixed**:
-supplementing darkvision/low-light for all 80 vendored races is a per-race
-RAW-verification data project, not a targeted fix — needs its own pass/issue.
+`11 + @attributes.hd.total`). Finding 2 was the deferred one and took its own
+pass: senses are now a first-class `DerivedSheet.senses` line fed by a
+`sense*` change family, and all 70 races with a Senses racial trait carry
+their darkvision/low-light/scent/blindsense/see-in-darkness mechanically.
 
 ## Findings
 
@@ -36,6 +37,23 @@ RAW-verification data project, not a targeted fix — needs its own pass/issue.
   a stock half-orc shows no senses at all — backwards-feeling UX and an
   audit trap. Fix shape: either supplement races with `sensedv`-style
   changes or surface description-derived sense lines.
+- FIXED: `DerivedSheet.senses` (engine `senses.ts`) resolves the whole
+  `sense*` family highest-range-wins with provenance, and
+  `SUPPLEMENTAL_RACE_SENSES` mechanizes each race's own description prose for
+  all 70 races that have a Senses racial trait (the other 10 genuinely have
+  none — pinned by `raceSenses.test.ts`, which also fails if a race grows
+  sense prose that the table doesn't cover). Adds `sensell`/`sensesid` as
+  this engine's targets for the two senses Foundry models as booleans.
+  Situational senses (Adaro underwater Keen Scent, Cecaelia's concentration-
+  gated blindsight, Skinwalker bestial-form darkvision) are deliberately left
+  as prose. Shifter Bat/Wolf and vigilante Shadow's Sight now grant their
+  flat sense values too — their old "resolves by lowest-value" caveat was
+  describing behavior that no longer exists. Uncovered en route: `ifelse`
+  (a real Foundry roll function) was missing from the formula evaluator, so
+  6 vendored buff changes — Evil Eye's four penalties and Animal Focus
+  (Bat)'s darkvision among them — were silently dropped; now supported.
+  Still missing from the evaluator: `lookup` (9 buff formulas), `sizeRoll`
+  (7), `clamped` (1), `mins` (1).
 
 ### 3. Planetouched energy resistances unmodeled
 
@@ -73,7 +91,8 @@ RAW-verification data project, not a targeted fix — needs its own pass/issue.
 
 ## Gaps (absent, not wrong)
 
-Low-light vision entirely unrepresented even in traits; Dual Minded doesn't
+Low-light vision entirely unrepresented even in traits (fixed with finding 2 —
+`sensell` is now a target and 38 races carry it); Dual Minded doesn't
 suppress Multitalented's second favored class (soft); 592 display-only
 vendored trait entries are picker-visible prose (by design); heritage
 variants (134) ride the same non-suppressing posture.

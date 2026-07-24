@@ -48,6 +48,7 @@ import { resolveClassFeatures } from "./archetypes.js";
 import { computeRanger } from "./ranger.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
 import { computeDefenses } from "./defenses.js";
+import { computeSenses } from "./senses.js";
 import {
   carryAdjustments,
   computeEncumbrance,
@@ -1445,6 +1446,9 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // DR / energy resistance / spell resistance — display-only (issue #21).
   const defenses = computeDefenses(doc, refData, collected);
 
+  // Special senses (darkvision, low-light vision, scent, ...) — display-only.
+  const senses = computeSenses(collected);
+
   // Active polymorph-family transformation (issue #70) — resolved sheet for
   // display: natural-attack lines (BAB/Str/size math done here, since `bab`/
   // `strMod`/`sizeAttackMod` are only available at this point in `compute`)
@@ -1498,6 +1502,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     activeArchetypes,
     ranger: computeRanger(doc),
     defenses,
+    senses,
     encumbrance,
     size,
     activeForm,

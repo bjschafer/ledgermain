@@ -243,8 +243,10 @@ const bool = (b: boolean) => (b ? 1 : 0);
 type Fn = (args: number[]) => number;
 
 const FUNCTIONS: Record<string, Fn> = {
-  // conditionals
+  // conditionals — `ifelse` is Foundry's own alias for the 3-arg `if` (see
+  // its roll-terminology tests); vendored buffs use both spellings.
   if: (a) => (truthy(a[0] ?? 0) ? (a[1] ?? 0) : (a[2] ?? 0)),
+  ifelse: (a) => (truthy(a[0] ?? 0) ? (a[1] ?? 0) : (a[2] ?? 0)),
   // comparisons (return 1/0)
   eq: (a) => bool((a[0] ?? 0) === (a[1] ?? 0)),
   ne: (a) => bool((a[0] ?? 0) !== (a[1] ?? 0)),

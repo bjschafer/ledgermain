@@ -504,9 +504,13 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
     name: "Shadow's Sight",
     summary:
       "Gain low-light vision and darkvision 60 ft. (or +30 ft. if you already have darkvision).",
+    changes: [
+      { formula: "60", operator: "set", target: "sensedv", type: "untyped" },
+      { formula: "1", operator: "set", target: "sensell", type: "untyped" },
+    ],
     contextNotes: [
       note(
-        "Darkvision grant/increase — the engine resolves competing 'set' darkvision changes by lowest-value, which would be wrong for a beneficial grant like this; apply manually rather than risk suppressing a better existing source.",
+        "The flat 60-ft. grant applies (senses resolve highest-wins); the alternative '+30 ft. to darkvision you already have' is not modeled, so a race with darkvision keeps its own range — add the 30 ft. by hand.",
         "sensedv",
       ),
     ],

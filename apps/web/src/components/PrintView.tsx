@@ -109,6 +109,7 @@ export function PrintView({
                 {data.sr !== undefined ? `SR ${data.sr}` : ""}
               </p>
             )}
+            {data.senses.length > 0 && <p className="print-hint">{data.senses.join(" · ")}</p>}
           </div>
 
           <div className="print-block">

@@ -20,11 +20,14 @@ describe("isTargetApplied", () => {
     "eres.fire",
     "carryStr",
     "carryMult",
+    "sensedv",
+    "sensell",
+    "sensesc",
   ])("treats %s as applied", (target) => {
     expect(isTargetApplied(target)).toBe(true);
   });
 
-  it.each(["nattack", "allChecks", "sensedv"])("treats %s as unapplied", (target) => {
+  it.each(["nattack", "allChecks"])("treats %s as unapplied", (target) => {
     expect(isTargetApplied(target)).toBe(false);
   });
 });

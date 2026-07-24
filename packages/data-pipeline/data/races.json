@@ -15,6 +15,12 @@
         "formula": "2",
         "target": "dex",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -105,6 +111,12 @@
         "formula": "2",
         "target": "cha",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -143,6 +155,18 @@
       {
         "formula": "2",
         "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -188,6 +212,12 @@
         "formula": "5",
         "target": "eres.acid",
         "type": "untyped"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -234,6 +264,18 @@
       {
         "formula": "2",
         "target": "skill.ste",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -314,6 +356,12 @@
         "formula": "2",
         "target": "wis",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -360,6 +408,18 @@
       {
         "formula": "2",
         "target": "skill.per",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -408,6 +468,18 @@
         "formula": "-2",
         "target": "dex",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -451,6 +523,12 @@
       {
         "formula": "2",
         "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -520,6 +598,12 @@
         "formula": "5",
         "target": "eres.electricity",
         "type": "untyped"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -561,6 +645,12 @@
       {
         "formula": "2",
         "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -608,6 +698,12 @@
       {
         "formula": "2",
         "target": "skill.sen",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -685,6 +781,12 @@
         "formula": "2",
         "target": "cha",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "classSkills": ["kar", "kdu", "ken", "kge", "khi", "klo", "kna", "kno", "kpl", "kre"],
@@ -732,6 +834,12 @@
       {
         "formula": "2",
         "target": "skill.kre",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -837,6 +945,12 @@
         "formula": "2",
         "target": "con",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -879,6 +993,12 @@
         "formula": "-2",
         "target": "cha",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -919,6 +1039,18 @@
       {
         "formula": "2",
         "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "30",
+        "operator": "set",
+        "target": "sensesc",
         "type": "racial"
       }
     ],
@@ -966,6 +1098,18 @@
       {
         "formula": "2",
         "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -1019,6 +1163,24 @@
         "formula": "-2",
         "target": "int",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
+      },
+      {
+        "formula": "30",
+        "operator": "set",
+        "target": "sensebse",
+        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -1068,6 +1230,12 @@
         "formula": "-2",
         "target": "con",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "classSkills": ["ste"],
@@ -1105,6 +1273,12 @@
       {
         "formula": "2",
         "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -1196,6 +1370,12 @@
         "formula": "-2",
         "target": "wis",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -1229,6 +1409,18 @@
       {
         "formula": "2",
         "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -1282,6 +1474,12 @@
         "formula": "-2",
         "target": "str",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -1325,6 +1523,12 @@
         "formula": "-2",
         "target": "int",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -1366,6 +1570,12 @@
       {
         "formula": "2",
         "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -1422,6 +1632,12 @@
         "formula": "2",
         "target": "nac",
         "type": "base"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -1460,6 +1676,18 @@
       {
         "formula": "2",
         "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -1508,6 +1736,12 @@
         "formula": "2",
         "target": "skill.sur",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -1550,6 +1784,12 @@
         "formula": "5",
         "target": "eres.fire",
         "type": "untyped"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -1591,6 +1831,18 @@
       {
         "formula": "-2",
         "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "30",
+        "operator": "set",
+        "target": "sensebse",
         "type": "racial"
       }
     ],
@@ -1640,6 +1892,12 @@
       {
         "formula": "2",
         "target": "skill.han",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -1694,6 +1952,12 @@
       {
         "formula": "2",
         "target": "skill.per",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -1780,6 +2044,12 @@
         "formula": "2",
         "target": "dex",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -1832,6 +2102,12 @@
         "formula": "2",
         "target": "wis",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -1875,6 +2151,12 @@
         "formula": "2",
         "target": "nac",
         "type": "base"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -1914,6 +2196,12 @@
         "formula": "-2",
         "target": "int",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensesid",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -1950,6 +2238,12 @@
       {
         "formula": "2",
         "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -2007,6 +2301,12 @@
       {
         "formula": "2",
         "target": "skill.ste",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -2098,6 +2398,12 @@
         "formula": "2",
         "target": "con",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -2146,6 +2452,12 @@
         "formula": "2",
         "target": "cha",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -2192,6 +2504,18 @@
         "formula": "-4",
         "target": "str",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -2230,6 +2554,18 @@
       {
         "formula": "2",
         "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
+      },
+      {
+        "formula": "30",
+        "operator": "set",
+        "target": "sensesc",
         "type": "racial"
       }
     ],
@@ -2278,6 +2614,12 @@
         "formula": "2",
         "target": "skill.ste",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -2321,6 +2663,12 @@
         "formula": "2",
         "target": "wis",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -2357,6 +2705,12 @@
       {
         "formula": "2",
         "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -2405,6 +2759,12 @@
         "formula": "-2",
         "target": "str",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -2437,6 +2797,12 @@
         "formula": "1",
         "target": "bonusFeats",
         "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -2468,6 +2834,12 @@
       {
         "formula": "2",
         "target": "skill.int",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -2538,6 +2910,12 @@
         "formula": "-4",
         "target": "cha",
         "type": "racial"
+      },
+      {
+        "formula": "120",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -2584,6 +2962,12 @@
       {
         "formula": "-2",
         "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -2669,6 +3053,18 @@
       {
         "formula": "11 + @attributes.hd.total",
         "target": "spellResist",
+        "type": "racial"
+      },
+      {
+        "formula": "120",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -2759,6 +3155,18 @@
         "formula": "4",
         "target": "str",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -2801,6 +3209,12 @@
         "formula": "5",
         "target": "eres.cold",
         "type": "untyped"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -2861,6 +3275,12 @@
         "formula": "2",
         "target": "skill.per",
         "type": "racial"
+      },
+      {
+        "formula": "120",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -2917,6 +3337,12 @@
       {
         "formula": "-2",
         "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "120",
+        "operator": "set",
+        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -2991,6 +3417,12 @@
         "formula": "2",
         "target": "wis",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -3040,6 +3472,12 @@
       {
         "formula": "-2",
         "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -3128,6 +3566,12 @@
         "formula": "5",
         "target": "eres.fire",
         "type": "untyped"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -3170,6 +3614,12 @@
         "formula": "5",
         "target": "eres.electricity",
         "type": "untyped"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -3217,6 +3667,18 @@
         "formula": "2",
         "target": "skill.blf",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -3258,6 +3720,12 @@
       {
         "formula": "-2",
         "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -3307,6 +3775,12 @@
         "formula": "2",
         "target": "skill.umd",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -3343,6 +3817,18 @@
       {
         "formula": "-2",
         "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -3401,6 +3887,12 @@
         "formula": "2",
         "target": "con",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -3453,6 +3945,12 @@
         "formula": "-2",
         "target": "wis",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -3494,6 +3992,12 @@
       {
         "formula": "2",
         "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
         "type": "racial"
       }
     ],
@@ -3549,6 +4053,12 @@
         "formula": "-2",
         "target": "con",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "operator": "set",
+        "target": "sensell",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -3591,6 +4101,12 @@
         "formula": "-2",
         "target": "con",
         "type": "racial"
+      },
+      {
+        "formula": "120",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -3632,6 +4148,12 @@
       {
         "formula": "2",
         "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
         "type": "racial"
       }
     ],

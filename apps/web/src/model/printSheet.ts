@@ -22,6 +22,7 @@ import {
 } from "./names.js";
 import { preparedSpells, spellLevelMap } from "./preparedSpells.js";
 import { remaining as remainingUses } from "./resources.js";
+import { senseChipLabel } from "./sensesDisplay.js";
 import {
   casterClassesOf,
   casterModelFor,
@@ -135,6 +136,8 @@ export interface PrintSheetData {
   dr: PrintDefenseEntry[];
   resistances: PrintDefenseEntry[];
   sr?: number;
+  /** Formatted sense chips, e.g. ["Darkvision 60 ft.", "Low-light vision"]. */
+  senses: string[];
   arcaneSpellFailure?: number;
 }
 
@@ -377,6 +380,7 @@ export function buildPrintSheet(
     resistances:
       sheet.defenses?.resistances.map((d) => ({ qualifier: d.qualifier, total: d.total })) ?? [],
     sr: sheet.defenses?.sr?.total,
+    senses: sheet.senses.map(senseChipLabel),
     arcaneSpellFailure: sheet.arcaneSpellFailure?.total,
   };
 }

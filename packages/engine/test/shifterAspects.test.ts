@@ -194,11 +194,28 @@ describe("minor-form Change formulas (applied as an active buff)", () => {
     expect(collectModifiers(at, ref, atRollData).find((m) => m.target === "reach")?.value).toBe(5);
   });
 
-  it("Bat (no genuine Change — darkvision set-change caveat) contributes nothing numeric", () => {
-    const doc = withMinorForm(makeShifter(10), "bat");
-    const rollData = buildRollData(doc, ref);
-    const mods = collectModifiers(doc, ref, rollData);
-    expect(mods.some((m) => m.source === "Bat (minor form)")).toBe(false);
+  it("Bat's darkvision scales 60 / 90 / 90 with shifter level", () => {
+    for (const [level, expected] of [
+      [1, 60],
+      [8, 90],
+      [15, 90],
+    ] as const) {
+      const doc = withMinorForm(makeShifter(level), "bat");
+      const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+      expect(mods.find((m) => m.target === "sensedv")?.value).toBe(expected);
+    }
+  });
+
+  it("Wolf's scent scales 10 / 20 / 30 with shifter level", () => {
+    for (const [level, expected] of [
+      [1, 10],
+      [8, 20],
+      [15, 30],
+    ] as const) {
+      const doc = withMinorForm(makeShifter(level), "wolf");
+      const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+      expect(mods.find((m) => m.target === "sensesc")?.value).toBe(expected);
+    }
   });
 });
 

@@ -375,6 +375,170 @@ export function applyRaceSpellResistanceSupplements(races: Race[]): void {
 }
 
 /**
+ * Hand-authored special senses for every vendored race, mechanizing what each
+ * race's own description prose already says. No race in the pinned pack
+ * carries a `sense*` change (senses live in the "Senses Racial Traits"
+ * section of `description` as text), while 20 of the pack's ALTERNATE racial
+ * traits DO carry `sensedv`/`sensesc`/`sensets` changes — so before this
+ * table a half-orc who took Acute Darkvision showed a 90-ft. darkvision line
+ * and a stock half-orc showed none at all.
+ *
+ * Every entry is transcribed from the sentence in that race's own vendored
+ * description (`applyRaceSenseSupplements` re-checks each one against the
+ * description text at build time and throws on a mismatch), so this table
+ * carries no independent numbers — it only makes the prose machine-readable.
+ * The ten races with no entry (Ghoran, Gillman, Green Martian, Halfling,
+ * Human, Kasatha, both Lashunta, Lizardfolk, Primitive Human) have no Senses
+ * racial trait in their write-up; that absence is asserted by
+ * `races.senses.test.ts` rather than assumed.
+ *
+ * Targets: Foundry's `sensedv`/`sensesc`/`sensebse`, plus this engine's own
+ * `sensell` (low-light vision) and `sensesid` (see in darkness) for the two
+ * senses Foundry models as actor booleans with no change target — see the
+ * engine's `senses.ts`. Values are flat numbers with `operator: "set"`,
+ * matching the vendored alternate traits; `1` is the on-value for the two
+ * flags.
+ *
+ * Deliberately excluded — senses a race only has SITUATIONALLY, which would
+ * be a lie as an unconditional sheet line (the prose stays visible in the
+ * builder's race description):
+ *
+ *   - Adaro "Keen Scent": scent only underwater, at 180 ft.
+ *   - Cecaelia "Tentacle Sense": blindsight 10 ft., a swift action that lasts
+ *     only while concentrating.
+ *   - Skinwalker's darkvision 60 ft.: bestial (change shape) form only.
+ *
+ * Astomoi are the one race whose entry needs reading alongside the prose:
+ * their darkvision 60 IS unconditional, but it is a sightless telepathic
+ * sense ("can't speak or see, but can mentally sense the area within 60 feet,
+ * as per darkvision") and also caps their vision at 60 ft. — the cap is not
+ * modeled.
+ */
+export const SUPPLEMENTAL_RACE_SENSES: Record<string, Readonly<Record<string, number>>> = {
+  Aasimar: { sensedv: 60 },
+  Adaro: { sensedv: 60, sensell: 1, sensebse: 30 },
+  Android: { sensedv: 60, sensell: 1 },
+  Aphorite: { sensedv: 60 },
+  "Aquatic Elf": { sensell: 1 },
+  Astomoi: { sensedv: 60, sensesc: 30 },
+  "Being of Ib": { sensedv: 60, sensell: 1 },
+  Caligni: { sensesid: 1 },
+  Catfolk: { sensell: 1 },
+  Cecaelia: { sensedv: 60 },
+  Changeling: { sensedv: 60 },
+  "Deep One Hybrid": { sensell: 1 },
+  Dhampir: { sensedv: 60, sensell: 1 },
+  Drow: { sensedv: 120 },
+  "Drow Noble": { sensedv: 120 },
+  Duergar: { sensedv: 120 },
+  Duskwalker: { sensedv: 60 },
+  Dwarf: { sensedv: 60 },
+  Elf: { sensell: 1 },
+  Fetchling: { sensedv: 60, sensell: 1 },
+  Ganzi: { sensedv: 60 },
+  Gathlain: { sensell: 1 },
+  Gnoll: { sensedv: 60 },
+  Gnome: { sensell: 1 },
+  Goblin: { sensedv: 60 },
+  Grindylow: { sensedv: 60 },
+  Grippli: { sensedv: 60 },
+  "Half-Elf": { sensell: 1 },
+  "Half-Orc": { sensedv: 60 },
+  Hobgoblin: { sensedv: 60 },
+  Ifrit: { sensedv: 60 },
+  Kitsune: { sensell: 1 },
+  Kobold: { sensedv: 60 },
+  Kuru: { sensell: 1 },
+  Locathah: { sensell: 1 },
+  Merfolk: { sensell: 1 },
+  "Monkey Goblin": { sensell: 1 },
+  Munavri: { sensedv: 120 },
+  Nagaji: { sensell: 1 },
+  Naiad: { sensell: 1 },
+  Ogre: { sensedv: 60, sensell: 1 },
+  "Orang-Pendak": { sensell: 1 },
+  Orc: { sensedv: 60 },
+  Oread: { sensedv: 60 },
+  Ratfolk: { sensedv: 60 },
+  "Reborn Samsaran": { sensell: 1 },
+  Reptoid: { sensell: 1 },
+  Rougarou: { sensell: 1, sensesc: 30 },
+  Sahuagin: { sensedv: 60, sensebse: 30 },
+  Samsaran: { sensell: 1 },
+  Shabti: { sensedv: 60 },
+  Skinwalker: { sensell: 1 },
+  Strix: { sensedv: 60, sensell: 1 },
+  Suli: { sensell: 1 },
+  Svirfneblin: { sensedv: 120, sensell: 1 },
+  Sylph: { sensedv: 60 },
+  Syrinx: { sensedv: 60, sensell: 1 },
+  Tengu: { sensell: 1 },
+  Tiefling: { sensedv: 60 },
+  Triaxian: { sensell: 1 },
+  Triton: { sensedv: 60, sensell: 1 },
+  Trox: { sensedv: 60 },
+  Undine: { sensedv: 60 },
+  Vanara: { sensell: 1 },
+  "Vine Leshy": { sensedv: 60, sensell: 1 },
+  Vishkanya: { sensell: 1 },
+  Wayang: { sensedv: 60 },
+  Wyrwood: { sensedv: 60, sensell: 1 },
+  Wyvaran: { sensedv: 60, sensell: 1 },
+  Yaddithian: { sensedv: 60 },
+};
+
+/**
+ * Words that must appear in a race's description for each supplemented sense
+ * target — the drift guard behind `SUPPLEMENTAL_RACE_SENSES`'s claim that
+ * every entry only restates the race's own prose. Matched case-insensitively
+ * against the description with HTML tags stripped.
+ */
+const SENSE_DESCRIPTION_KEYWORDS: Record<string, readonly string[]> = {
+  sensedv: ["darkvision"],
+  sensell: ["low-light", "lowlight", "low light"],
+  sensesid: ["see in darkness"],
+  sensesc: ["scent"],
+  sensebse: ["blindsense"],
+};
+
+/**
+ * Apply `SUPPLEMENTAL_RACE_SENSES` in place, appending one `set` change per
+ * sense to the matching race's `changes`. Throws if a named race is absent
+ * from the vendored slice (a data-drift guard, mirroring
+ * `resolveBloodlineSupplements`) or if a supplemented sense isn't mentioned
+ * anywhere in that race's own description — the latter catches both a typo
+ * here and an upstream rewrite that changes what a race can actually see.
+ *
+ * The darkvision RANGE is not cross-checked: several descriptions state it
+ * only in the "Senses Racial Traits" heading ("Darkvision: 60 ft") or spell
+ * it out in words ("see perfectly in the dark up to 120 feet"), so a numeric
+ * check would be a prose-parsing exercise with false failures. Ranges are
+ * covered by the fixture assertions in `races.senses.test.ts` instead.
+ */
+export function applyRaceSenseSupplements(races: Race[]): void {
+  const byName = new Map(races.map((r) => [r.name, r]));
+  for (const [name, senses] of Object.entries(SUPPLEMENTAL_RACE_SENSES)) {
+    const race = byName.get(name);
+    if (race === undefined) {
+      throw new Error(`[supplements] race "${name}" not found in vendored races`);
+    }
+    const description = (race.description ?? "").replace(/<[^>]*>/g, " ").toLowerCase();
+    for (const [target, value] of Object.entries(senses)) {
+      const keywords = SENSE_DESCRIPTION_KEYWORDS[target];
+      if (keywords && !keywords.some((k) => description.includes(k))) {
+        throw new Error(
+          `[supplements] race "${name}" has a supplemented ${target} sense, but its description never mentions ${keywords[0]}`,
+        );
+      }
+      race.changes = [
+        ...race.changes,
+        { formula: String(value), operator: "set", target, type: "racial" },
+      ];
+    }
+  }
+}
+
+/**
  * Apply `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL` in place to a list of
  * normalized archetype features (mutates `.level` only; `id`/`uuid` are left
  * untouched — see that map's doc comment for why).

@@ -22,6 +22,7 @@ import {
   skillName,
 } from "../model/names.js";
 import { d20Formula, d20FormulaFor, damageFormula } from "../model/rollFormula.js";
+import { senseChipLabel, senseTip } from "../model/sensesDisplay.js";
 import { CopyButton } from "./CopyButton.js";
 import { HomebrewBadge } from "./HomebrewBadge.js";
 import { InfoTip } from "./InfoTip.js";
@@ -422,6 +423,24 @@ export function Sheet({
                 content={`Granted by ${line.grants.map((g) => g.source).join(", ")}`}
               >
                 {line.label}
+              </InfoTip>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Senses (darkvision, low-light, scent, ...) — display-only, same
+          chip-strip treatment as Proficiencies. */}
+      {sheet.senses.length > 0 && (
+        <div className="stat-group">
+          <div className="stat-group-header">
+            <span className="stat-group-legend">Senses</span>
+            <div className="stat-group-rule" />
+          </div>
+          <div className="prof-strip">
+            {sheet.senses.map((sense) => (
+              <InfoTip key={sense.kind} className="prof-chip" content={senseTip(sense)}>
+                {senseChipLabel(sense)}
               </InfoTip>
             ))}
           </div>
