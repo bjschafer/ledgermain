@@ -127,6 +127,34 @@ describe("vendored non-core race: Oread (non-30ft base land speed)", () => {
     expect(sheet.abilities.wis.total).toBe(12);
     expect(sheet.abilities.cha.total).toBe(8);
   });
+
+  it("planetouched energy resistance 5/acid (SUPPLEMENTAL_RACE_ENERGY_RESISTANCE, prose-only upstream)", () => {
+    expect(sheet.defenses?.resistances).toEqual([
+      {
+        total: 5,
+        qualifier: "acid",
+        components: [
+          { source: "Oread", sourceId: raceId("Oread"), type: "untyped", value: 5, applied: true },
+        ],
+      },
+    ]);
+  });
+});
+
+describe("vendored non-core race: Aasimar / Tiefling planetouched energy resistances (all three elements each)", () => {
+  it("Aasimar: eres 5 for acid/cold/electricity", () => {
+    const sheet = compute(makeDoc("Aasimar"), ref);
+    const qualifiers = sheet.defenses?.resistances.map((r) => r.qualifier).sort();
+    expect(qualifiers).toEqual(["acid", "cold", "electricity"]);
+    expect(sheet.defenses?.resistances.every((r) => r.total === 5)).toBe(true);
+  });
+
+  it("Tiefling: eres 5 for cold/electricity/fire", () => {
+    const sheet = compute(makeDoc("Tiefling"), ref);
+    const qualifiers = sheet.defenses?.resistances.map((r) => r.qualifier).sort();
+    expect(qualifiers).toEqual(["cold", "electricity", "fire"]);
+    expect(sheet.defenses?.resistances.every((r) => r.total === 5)).toBe(true);
+  });
 });
 
 describe("vendored non-core race: Drow Noble (unmodeled scaling SR degrades gracefully)", () => {

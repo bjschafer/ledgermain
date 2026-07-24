@@ -185,13 +185,13 @@ describe("hasNoModeledEffect", () => {
     ).toBe(false);
   });
 
-  it("real vendored data: Stoneskin and Invisibility are flagged", () => {
+  it("real vendored data: Invisibility is flagged, Stoneskin (DR supplement) is not", () => {
     const ref = loadRefData();
     const stoneskin = Object.values(ref.buffs).find((b) => b.name === "Stoneskin");
     const invisibility = Object.values(ref.buffs).find((b) => b.name === "Invisibility");
     expect(stoneskin).toBeDefined();
     expect(invisibility).toBeDefined();
-    expect(hasNoModeledEffect(stoneskin!)).toBe(true);
+    expect(hasNoModeledEffect(stoneskin!)).toBe(false);
     expect(hasNoModeledEffect(invisibility!)).toBe(true);
   });
 

@@ -84,8 +84,11 @@ import {
 } from "./transform/subdomains.js";
 import {
   applyArchetypeFeatureLevelSupplements,
+  applyBuffSupplements,
+  applyClassFeatureChangesSupplements,
   applyClassFeatureUsesSupplements,
   applyPrestigeClassSupplements,
+  applyRaceEnergyResistanceSupplements,
   applySpellProjectileSupplements,
   resolveBloodlineSupplements,
   SUPPLEMENTAL_PRESTIGE_CLASSES,
@@ -290,6 +293,7 @@ export function normalize(opts: NormalizeOptions): {
     if (pf) classFeatures.push(transformClassFeature(pf.doc, resolveUuid));
   }
   applyClassFeatureUsesSupplements(classFeatures);
+  applyClassFeatureChangesSupplements(classFeatures);
   const classFeaturesById = byId(classFeatures);
 
   const classes: Class[] = selectedClassDocs.map((d) =>
@@ -399,6 +403,7 @@ export function normalize(opts: NormalizeOptions): {
         pf.doc.type === "race" && SLICE.raceFolders.some((f) => pf.relPath.startsWith(`${f}/`)),
     )
     .map((pf) => transformRace(pf.doc, resolveUuid));
+  applyRaceEnergyResistanceSupplements(races);
 
   // --- racial traits: pf1-content pf-racial-traits pack (alternates and
   // heritage variants only — the pack's standard-trait entries are dropped by
@@ -635,6 +640,7 @@ export function normalize(opts: NormalizeOptions): {
   const buffs: Buff[] = readPack(join(packsDir, "buffs"))
     .filter((pf) => pf.doc.type === "buff")
     .map((pf) => transformBuff(pf.doc, resolveUuid));
+  applyBuffSupplements(buffs);
 
   // --- items (full usable breadth of the `items` pack) -----------------------
   // Every real (non-folder) doc in the pack is one of five Item subtypes —

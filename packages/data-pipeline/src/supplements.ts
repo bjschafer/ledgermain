@@ -23,10 +23,13 @@
 
 import type {
   ArchetypeFeature,
+  Buff,
   Change,
   Class,
   ClassFeature,
   ClassFeatureGrant,
+  ContextNote,
+  Race,
   SourceRef,
   Spell,
   SpellList,
@@ -89,23 +92,41 @@ export function resolveBloodlineSupplements(
 }
 
 /**
- * Hand-authored fixes for vendored `ClassFeature.uses.maxFormula` values that
- * omit a RAW "minimum 1" floor, keyed by feature **name** (both are unique in
- * the vendored slice). Grit (gunslinger, Ultimate Combat p. 9) and Panache
- * (swashbuckler, Advanced Class Guide p. 16) are each RAW "equal to her
- * Wisdom/Charisma modifier (minimum 1)", but the vendored formula is a bare
- * `@abilities.wis.mod` / `@abilities.cha.mod` — for a character with a 0 or
- * negative modifier this evaluates to <= 0, and `deriveResourcePools` drops
- * any pool whose max evaluates to <= 0 entirely (no pool at all, instead of
- * RAW's 1). Compare `Arcane Pool` / `Inspiration`, whose vendored formulas
- * already bake in an equivalent `max(1, ...)` floor — this supplement brings
- * Grit/Panache in line with that existing pattern. Applied unconditionally
- * (unlike the bloodline-spell-list supplement above, this isn't a "fill only
- * if missing" gap-fill — it corrects an existing-but-incomplete formula).
+ * Hand-authored fixes for vendored `ClassFeature.uses.maxFormula` values,
+ * keyed by feature **name** (unique in the vendored slice). Applied
+ * unconditionally (unlike the bloodline-spell-list supplement above, this
+ * isn't a "fill only if missing" gap-fill — it corrects an
+ * existing-but-incomplete or existing-but-wrong formula).
+ *
+ * - Grit (gunslinger, Ultimate Combat p. 9) and Panache (swashbuckler,
+ *   Advanced Class Guide p. 16) are each RAW "equal to her Wisdom/Charisma
+ *   modifier (minimum 1)", but the vendored formula is a bare
+ *   `@abilities.wis.mod` / `@abilities.cha.mod` — for a character with a 0 or
+ *   negative modifier this evaluates to <= 0, and `deriveResourcePools` drops
+ *   any pool whose max evaluates to <= 0 entirely (no pool at all, instead of
+ *   RAW's 1). Compare `Arcane Pool` / `Inspiration`, whose vendored formulas
+ *   already bake in an equivalent `max(1, ...)` floor — this brings
+ *   Grit/Panache in line with that existing pattern.
+ * - Smite Evil (paladin, CRB p. 60-61) is RAW "1/day, +1 at 4th/7th/10th/
+ *   13th/16th/19th [paladin level]", but the vendored formula reads
+ *   `floor((@attributes.hd.total - 1) / 3) + 1` — TOTAL character Hit Dice,
+ *   not paladin level. Single-classed paladins are unaffected (the two are
+ *   equal), but a multiclass paladin (e.g. paladin 4/fighter 3) gets
+ *   `floor((7-1)/3)+1 = 3` instead of the correct 2. Retargeted to
+ *   `@class.unlevel`, the granting-class-level roll-data binding
+ *   `deriveResourcePools` sets up for every class-feature-scoped
+ *   `uses.maxFormula` (see `resources.ts`). (Swept every other vendored
+ *   `uses.maxFormula` referencing `@attributes.hd.total`: the only other hit
+ *   is Stunning Fist's `@class.unlevel + floor((@attributes.hd.total -
+ *   @class.unlevel) / 4)`, which is RAW-correct as written — Stunning Fist's
+ *   daily-use count genuinely scales off total character level plus a
+ *   monk-level bonus, not off a single class's level alone — so it's left
+ *   untouched.)
  */
 export const SUPPLEMENTAL_CLASS_FEATURE_USES_MAX_FORMULA: Record<string, string> = {
   Grit: "max(1, @abilities.wis.mod)",
   Panache: "max(1, @abilities.cha.mod)",
+  "Smite Evil": "floor((@class.unlevel - 1) / 3) + 1",
 };
 
 /**
@@ -120,6 +141,167 @@ export function applyClassFeatureUsesSupplements(features: ClassFeature[]): void
     if (formula && feature.uses) {
       feature.uses = { ...feature.uses, maxFormula: formula };
     }
+  }
+}
+
+/**
+ * Hand-authored replacement for the brawler's "AC Bonus (BRA)" `changes[]`
+ * (Advanced Class Guide p. 26), keyed by feature **name** (unique in the
+ * vendored slice). RAW schedule is a +1 dodge bonus to AC/CMD at 4th level,
+ * increasing by +1 at 9th, 13th, and 18th (irregular 5/4/5-level gaps — not a
+ * fixed-divisor progression). The vendored formula,
+ * `clamp(floor((@class.unlevel-1)/4),0,4)`, is a divisor-4 approximation that
+ * lands on the right value at 5-8/10-12/14-16/19-20 but is off by one at
+ * exactly 4th (reads +0, should be +1) and at 17th (reads +4 a level early —
+ * RAW's +4 doesn't arrive until 18th). Replaced with explicit level-tier
+ * `if`/`gte` nesting rather than a divisor, since the tier gaps aren't even;
+ * the light-armor/unencumbered gate multiplier is unchanged from the vendored
+ * formula.
+ */
+export const SUPPLEMENTAL_CLASS_FEATURE_CHANGES: Record<string, Change[]> = {
+  "AC Bonus (BRA)": [
+    {
+      formula:
+        "(if(and(lt(@armor.type, 2), lt(@attributes.encumbrance.level, 1)), 1)) * if(gte(@class.unlevel, 18), 4, if(gte(@class.unlevel, 13), 3, if(gte(@class.unlevel, 9), 2, if(gte(@class.unlevel, 4), 1, 0))))",
+      target: "ac",
+      type: "dodge",
+    },
+    {
+      formula:
+        "(if(and(lt(@armor.type, 2), lt(@attributes.encumbrance.level, 1)), 1)) * if(gte(@class.unlevel, 18), 4, if(gte(@class.unlevel, 13), 3, if(gte(@class.unlevel, 9), 2, if(gte(@class.unlevel, 4), 1, 0))))",
+      target: "cmd",
+      type: "dodge",
+    },
+  ],
+};
+
+/**
+ * Apply `SUPPLEMENTAL_CLASS_FEATURE_CHANGES` in place, replacing the named
+ * feature's whole `changes` array. Throws if a named feature is absent from
+ * the vendored set — a data-drift guard, mirroring
+ * `resolveBloodlineSupplements`.
+ */
+export function applyClassFeatureChangesSupplements(features: ClassFeature[]): void {
+  const byName = new Map(features.map((f) => [f.name, f]));
+  for (const [name, changes] of Object.entries(SUPPLEMENTAL_CLASS_FEATURE_CHANGES)) {
+    const feature = byName.get(name);
+    if (feature === undefined) {
+      throw new Error(`[supplements] class feature "${name}" not found in vendored class features`);
+    }
+    feature.changes = changes;
+  }
+}
+
+/**
+ * Hand-authored additions to vendored `Buff.changes`/`contextNotes` that omit
+ * numeric effects the published spell text actually grants, keyed by buff
+ * **name** (unique in the vendored slice). Additive only — appended alongside
+ * the vendored `changes`/`contextNotes`, never replacing them (unlike
+ * `SUPPLEMENTAL_CLASS_FEATURE_CHANGES` above, which corrects an
+ * existing-but-wrong formula rather than filling a gap).
+ *
+ * (Unchained Rage's own missing temp-HP grant — the same family of gap as
+ * these — is NOT here: it's already patched at the engine layer, see
+ * `@pf1/engine` `buff-effects.ts`'s `BUFF_CHANGE_PATCHES`. Don't re-add it
+ * here — the two mechanisms would double up, both keyed by the same buff
+ * name, and `computeGrantedTempHp` groups temp HP by source name, so a
+ * duplicate here would render as a spurious struck-through second component
+ * rather than actually double-counting the total, but it's still dead
+ * weight.)
+ *
+ * - Divine Power (CRB p. 273): "+1 temp HP per caster level" — the vendored
+ *   buff's own description already quotes this ([[@item.level]] temp. HP)
+ *   but `changes[]` never encoded it. `@item.level` (not `@cl`) matches the
+ *   buff's own existing changes and is bound to the same caster-level value
+ *   as `@cl` for an active buff (see `collect.ts`'s `withBuffCasterLevel`).
+ * - Heroism, Greater (CRB p. 295): "temp HP equal to caster level (max 20)".
+ * - Stoneskin (CRB p. 350): grants DR 10/adamantine; vendored `changes` is
+ *   empty. `dr.adamantine` is the engine's existing qualified-DR convention
+ *   (see `defenses.ts`), already exercised by Barbarian DR / Resiliency's
+ *   `dr.magic`.
+ * - Aid (CRB p. 239): "1d8 + caster level" temp HP — dice-based, so it can't
+ *   be a static `Change`; a context note is the honest option (same posture
+ *   as judgments.ts's energy-resistance-of-choice note).
+ */
+export const SUPPLEMENTAL_BUFF_CHANGES: Record<string, Change[]> = {
+  "Divine Power": [{ formula: "@item.level", target: "tempHp", type: "untyped" }],
+  "Heroism, Greater": [{ formula: "min(20, @item.level)", target: "tempHp", type: "untyped" }],
+  Stoneskin: [{ formula: "10", target: "dr.adamantine", type: "untyped" }],
+};
+
+export const SUPPLEMENTAL_BUFF_CONTEXT_NOTES: Record<string, ContextNote[]> = {
+  Aid: [
+    {
+      target: "tempHp",
+      text: "Also grants 1d8+CL temporary hit points — dice-based, not modeled as a static bonus; track manually.",
+    },
+  ],
+};
+
+/**
+ * Apply `SUPPLEMENTAL_BUFF_CHANGES`/`SUPPLEMENTAL_BUFF_CONTEXT_NOTES` in
+ * place, appending to the named buff's existing `changes`/`contextNotes`.
+ * Throws if a named buff is absent from the vendored set — a data-drift
+ * guard, mirroring `resolveBloodlineSupplements`.
+ */
+export function applyBuffSupplements(buffs: Buff[]): void {
+  const byName = new Map(buffs.map((b) => [b.name, b]));
+  for (const [name, changes] of Object.entries(SUPPLEMENTAL_BUFF_CHANGES)) {
+    const buff = byName.get(name);
+    if (buff === undefined) {
+      throw new Error(`[supplements] buff "${name}" not found in vendored buffs`);
+    }
+    buff.changes = [...buff.changes, ...changes];
+  }
+  for (const [name, notes] of Object.entries(SUPPLEMENTAL_BUFF_CONTEXT_NOTES)) {
+    const buff = byName.get(name);
+    if (buff === undefined) {
+      throw new Error(`[supplements] buff "${name}" not found in vendored buffs`);
+    }
+    buff.contextNotes = [...buff.contextNotes, ...notes];
+  }
+}
+
+/**
+ * Hand-authored fixed energy resistances for the six planetouched races,
+ * prose-only upstream (races.json carries no mechanical `eres.*` changes for
+ * any race). Values per the published Bestiary/Advanced Race Guide entries:
+ * Aasimar acid/cold/electricity 5, Tiefling cold/electricity/fire 5, and the
+ * four elemental-scion kineticist-adjacent races (Ifrit/Oread/Sylph/Undine)
+ * 5 against their own element (fire/acid/electricity/cold respectively).
+ * `eres.<energy>` is the engine's own convention for a qualified energy-
+ * resistance `Change` (see `targets.ts`/`defenses.ts`) — already exercised by
+ * several archetype-extracted entries and sorcerer/bloodrager bloodlines, so
+ * this rides an existing, tested consumer rather than a new one. Deliberately
+ * excludes Resist Energy / Protection From Energy spell buffs, which need a
+ * player-chosen element this table has no generic way to record.
+ */
+export const SUPPLEMENTAL_RACE_ENERGY_RESISTANCE: Record<string, readonly string[]> = {
+  Aasimar: ["acid", "cold", "electricity"],
+  Tiefling: ["cold", "electricity", "fire"],
+  Ifrit: ["fire"],
+  Oread: ["acid"],
+  Sylph: ["electricity"],
+  Undine: ["cold"],
+};
+
+/**
+ * Apply `SUPPLEMENTAL_RACE_ENERGY_RESISTANCE` in place, appending one
+ * `eres.<energy>` change per listed energy type to the matching race's
+ * `changes`. Throws if a named race is absent from the vendored slice — a
+ * data-drift guard, mirroring `resolveBloodlineSupplements`.
+ */
+export function applyRaceEnergyResistanceSupplements(races: Race[]): void {
+  const byName = new Map(races.map((r) => [r.name, r]));
+  for (const [name, energies] of Object.entries(SUPPLEMENTAL_RACE_ENERGY_RESISTANCE)) {
+    const race = byName.get(name);
+    if (race === undefined) {
+      throw new Error(`[supplements] race "${name}" not found in vendored races`);
+    }
+    race.changes = [
+      ...race.changes,
+      ...energies.map((energy) => ({ formula: "5", target: `eres.${energy}`, type: "untyped" })),
+    ];
   }
 }
 

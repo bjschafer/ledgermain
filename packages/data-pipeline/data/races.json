@@ -183,6 +183,11 @@
         "formula": "2",
         "target": "str",
         "type": "racial"
+      },
+      {
+        "formula": "5",
+        "target": "eres.acid",
+        "type": "untyped"
       }
     ],
     "contextNotes": [],
@@ -500,6 +505,21 @@
         "formula": "2",
         "target": "skill.dip",
         "type": "racial"
+      },
+      {
+        "formula": "5",
+        "target": "eres.acid",
+        "type": "untyped"
+      },
+      {
+        "formula": "5",
+        "target": "eres.cold",
+        "type": "untyped"
+      },
+      {
+        "formula": "5",
+        "target": "eres.electricity",
+        "type": "untyped"
       }
     ],
     "contextNotes": [],
@@ -1525,6 +1545,11 @@
         "formula": "-2",
         "target": "wis",
         "type": "racial"
+      },
+      {
+        "formula": "5",
+        "target": "eres.fire",
+        "type": "untyped"
       }
     ],
     "contextNotes": [],
@@ -2766,6 +2791,11 @@
         "formula": "-2",
         "target": "str",
         "type": "racial"
+      },
+      {
+        "formula": "5",
+        "target": "eres.cold",
+        "type": "untyped"
       }
     ],
     "classSkills": ["swm"],
@@ -3078,6 +3108,21 @@
         "formula": "2",
         "target": "int",
         "type": "racial"
+      },
+      {
+        "formula": "5",
+        "target": "eres.cold",
+        "type": "untyped"
+      },
+      {
+        "formula": "5",
+        "target": "eres.electricity",
+        "type": "untyped"
+      },
+      {
+        "formula": "5",
+        "target": "eres.fire",
+        "type": "untyped"
       }
     ],
     "contextNotes": [],
@@ -3115,6 +3160,11 @@
         "formula": "2",
         "target": "int",
         "type": "racial"
+      },
+      {
+        "formula": "5",
+        "target": "eres.electricity",
+        "type": "untyped"
       }
     ],
     "contextNotes": [],

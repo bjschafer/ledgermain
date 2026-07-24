@@ -157,6 +157,11 @@
         "formula": "(min(6, floor(@item.level / 3)))",
         "target": "wdamage",
         "type": "luck"
+      },
+      {
+        "formula": "@item.level",
+        "target": "tempHp",
+        "type": "untyped"
       }
     ],
     "contextNotes": [],
@@ -2517,6 +2522,11 @@
         "formula": "4",
         "target": "skills",
         "type": "morale"
+      },
+      {
+        "formula": "min(20, @item.level)",
+        "target": "tempHp",
+        "type": "untyped"
       }
     ],
     "contextNotes": [],
@@ -3583,7 +3593,13 @@
     "uuid": "Compendium.pf1.buffs.Item.dVqLY99ECYnLeoB5"
   },
   "dYMrU01t5FNMgNra": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "dr.adamantine",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>You gain DR 10/adamantine. You ignore the first 10 points of damage each time you take damage from a weapon, though an adamantine weapon bypasses the reduction. Once the spell has prevented a total of [[min(@item.level, 15) * 10]] points of damage, it is discharged as per Stoneskin.</p>",
     "duration": {
@@ -4848,6 +4864,10 @@
       {
         "target": "allSavingThrows",
         "text": "+[[1]] Morale vs Fear effects"
+      },
+      {
+        "target": "tempHp",
+        "text": "Also grants 1d8+CL temporary hit points — dice-based, not modeled as a static bonus; track manually."
       }
     ],
     "description": "<p>You have a +[[1]] morale bonus to attack rolls and saves against fear effects as per Aid spell.</p>",

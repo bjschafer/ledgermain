@@ -46,29 +46,39 @@ function makeBrawler(level: number, martialFlexibilityFeatId?: string): Characte
 }
 
 describe("Brawler AC Bonus / Bonus Combat Feats (already vendored, sanity check — issue #65)", () => {
-  // NOTE (flagged, not fixed — out of scope for issue #65's bloodrager/
-  // brawler build): the vendored "AC Bonus (BRA)" formula
-  // (`clamp(floor((@class.unlevel - 1) / 4), 0, 4)`) evaluates to 0 at
-  // class level 4 and only becomes +1 starting at level 5 — one level later
-  // than the published table ("4th: AC bonus +1"). This is a pre-existing
-  // vendored-data quirk (same `changes[]`-formula-vs-prose-table mismatch
-  // category `archetypes.ts` already documents for other classes), not
-  // something authored by this pass. These assertions describe the ACTUAL
-  // (already-shipped) behavior rather than the RAW table.
-  it("AC Bonus (BRA) grants +1 dodge AC/CMD starting at 5th level (see NOTE above)", () => {
-    const at4 = collectModifiers(makeBrawler(4), ref, buildRollData(makeBrawler(4), ref));
-    expect(at4.find((m) => m.target === "ac" && m.type === "dodge")!.value).toBe(0);
+  // The vendored "AC Bonus (BRA)" formula was a divisor-4 approximation
+  // (`clamp(floor((@class.unlevel - 1) / 4), 0, 4)`) that read +0 at 4th
+  // (RAW: +1) and +4 a level early at 17th (RAW: +4 arrives at 18th).
+  // `packages/data-pipeline/src/supplements.ts`'s
+  // `SUPPLEMENTAL_CLASS_FEATURE_CHANGES` replaces it with the exact
+  // (irregular) published tier schedule: +1@4, +2@9, +3@13, +4@18.
+  it("AC Bonus (BRA) is +0 before 4th level, +1 dodge AC/CMD starting at 4th", () => {
+    const at3 = collectModifiers(makeBrawler(3), ref, buildRollData(makeBrawler(3), ref));
+    // Not granted at all before 4th level (the class feature's own grant
+    // level), so no modifier is collected yet.
+    expect(at3.find((m) => m.target === "ac" && m.type === "dodge")).toBeUndefined();
 
-    const at5 = collectModifiers(makeBrawler(5), ref, buildRollData(makeBrawler(5), ref));
-    const acMod = at5.find((m) => m.target === "ac" && m.type === "dodge");
+    const at4 = collectModifiers(makeBrawler(4), ref, buildRollData(makeBrawler(4), ref));
+    const acMod = at4.find((m) => m.target === "ac" && m.type === "dodge");
     expect(acMod!.value).toBe(1);
-    expect(at5.find((m) => m.target === "cmd" && m.type === "dodge")!.value).toBe(1);
+    expect(at4.find((m) => m.target === "cmd" && m.type === "dodge")!.value).toBe(1);
   });
 
-  it("AC Bonus (BRA) scales to +2 at 9th level", () => {
-    const doc = makeBrawler(9);
-    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
-    expect(mods.find((m) => m.target === "ac" && m.type === "dodge")!.value).toBe(2);
+  it("AC Bonus (BRA) steps +2@9, +3@13, +4@18 (irregular tiers, not every-4-levels)", () => {
+    const at8 = collectModifiers(makeBrawler(8), ref, buildRollData(makeBrawler(8), ref));
+    expect(at8.find((m) => m.target === "ac" && m.type === "dodge")!.value).toBe(1);
+
+    const at9 = collectModifiers(makeBrawler(9), ref, buildRollData(makeBrawler(9), ref));
+    expect(at9.find((m) => m.target === "ac" && m.type === "dodge")!.value).toBe(2);
+
+    const at13 = collectModifiers(makeBrawler(13), ref, buildRollData(makeBrawler(13), ref));
+    expect(at13.find((m) => m.target === "ac" && m.type === "dodge")!.value).toBe(3);
+
+    const at17 = collectModifiers(makeBrawler(17), ref, buildRollData(makeBrawler(17), ref));
+    expect(at17.find((m) => m.target === "ac" && m.type === "dodge")!.value).toBe(3);
+
+    const at18 = collectModifiers(makeBrawler(18), ref, buildRollData(makeBrawler(18), ref));
+    expect(at18.find((m) => m.target === "ac" && m.type === "dodge")!.value).toBe(4);
   });
 
   it("Bonus Combat Feats (BRA) scales from 1 slot at 2nd level to 2 at 5th", () => {

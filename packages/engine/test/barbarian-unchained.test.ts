@@ -163,6 +163,63 @@ describe("Barbarian (Unchained) L13 (BAB high, Fort high/Ref+Will low, d12)", ()
     expect(raging.saves.will.total).toBe(baseline.saves.will.total + 3);
     expect(raging.ac.normal).toBe(baseline.ac.normal - 2);
   });
+
+  it("Rage (Unchained) also grants temp HP: 3/HD at L13 (greater rage tier, not the flat 2/HD base)", () => {
+    // Patched in at the engine layer (buff-effects.ts's BUFF_CHANGE_PATCHES,
+    // not a data-pipeline supplement — the vendored buff's own `changes[]`
+    // still carries no tempHp entry). Same tier formula as the melee
+    // attack/damage/Will bonuses above: 2 + floor((13-2)/9) = 3 per Hit Die.
+    // Total character HD at a single-classed L13 barbarian is 13, so 3*13=39.
+    const rageBuff = ref.buffs[buffId("Rage (Unchained)")]!;
+    const ragingDoc = makeDoc({
+      level: 13,
+      activeBuffs: [
+        {
+          instanceId: "rage-1",
+          buffId: rageBuff.id,
+          name: rageBuff.name,
+          changes: rageBuff.changes,
+        },
+      ],
+    });
+    const raging = compute(ragingDoc, ref);
+    expect(raging.hp.grantedTemp.total).toBe(39);
+    expect(raging.hp.grantedTemp.components).toEqual([
+      {
+        source: "Rage (Unchained)",
+        sourceId: "rage-1",
+        type: "untyped",
+        value: 39,
+        applied: true,
+      },
+    ]);
+  });
+});
+
+describe("Barbarian (Unchained) temp HP tiers below and above the L13 greater-rage case", () => {
+  function raging(level: number) {
+    const rageBuff = ref.buffs[buffId("Rage (Unchained)")]!;
+    const doc = makeDoc({
+      level,
+      activeBuffs: [
+        {
+          instanceId: "rage-1",
+          buffId: rageBuff.id,
+          name: rageBuff.name,
+          changes: rageBuff.changes,
+        },
+      ],
+    });
+    return compute(doc, ref);
+  }
+
+  it("L6 (below greater rage): base 2/HD = 12 temp HP", () => {
+    expect(raging(6).hp.grantedTemp.total).toBe(12);
+  });
+
+  it("L20 (mighty rage): 4/HD = 80 temp HP", () => {
+    expect(raging(20).hp.grantedTemp.total).toBe(80);
+  });
 });
 
 describe("Barbarian (Unchained) L6 has no Damage Reduction yet (gated at L7, same as chained)", () => {

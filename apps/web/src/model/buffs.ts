@@ -48,7 +48,7 @@ export function makeCustomBuff(
 /**
  * True when a buff has no `changes[]` AND no `contextNotes[]` — toggling it
  * does literally nothing visible on the sheet (e.g. several vendored buffs
- * like Stoneskin and Invisibility carry only prose `description`, which this
+ * like Invisibility carry only prose `description`, which this
  * app never surfaces mechanically). A buff with only `contextNotes` (e.g.
  * Freedom of Movement) still reads as a reminder, so it is NOT flagged — see
  * issue #21.
