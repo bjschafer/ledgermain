@@ -4,9 +4,8 @@
  * as the 7 core races but with content the core slice never touched: a
  * skill-tagged ability spread (Tiefling), a small-size race with a
  * `nac`/"base"-typed natural-armor change (Kobold), a non-30ft base land
- * speed (Oread), a race whose unmodeled racial trait (Drow Noble's scaling
- * spell resistance) must evaluate without throwing even though nothing in
- * the DerivedSheet surfaces it, and races that carry a `classSkills` grant
+ * speed (Oread), a race whose signature trait is a level-scaling `set`
+ * change (Drow Noble's spell resistance), and races that carry a `classSkills` grant
  * (issue #28) that the engine must union into the character's class-skill
  * set alongside the class-granted ones.
  */
@@ -157,25 +156,45 @@ describe("vendored non-core race: Aasimar / Tiefling planetouched energy resista
   });
 });
 
-describe("vendored non-core race: Drow Noble (unmodeled scaling SR degrades gracefully)", () => {
-  // Drow Noble carries a `{ target: "spellResist", operator: "set", formula:
-  // "11 + @details.level.value" }` change — spell resistance the engine does
-  // not surface anywhere in DerivedSheet. The formula must still evaluate
-  // (no dice terms, just an @data path) without crashing compute(), and the
-  // racial trait simply has no effect on the sheet beyond what IS modeled.
-  it("compute() does not throw despite the unmodeled spellResist change", () => {
-    expect(() => compute(makeDoc("Drow Noble"), ref)).not.toThrow();
+describe("vendored non-core race: Drow Noble (scaling spell resistance)", () => {
+  // Drow Noble carries `{ target: "spellResist", operator: "set", formula:
+  // "11 + @details.level.value" }`. `@details.level.value` used to be absent
+  // from roll data entirely (missing paths resolve to 0, so this evaluated as
+  // a flat 11 regardless of level) — rolldata.ts now threads character level
+  // through that path, so this scales as RAW intends.
+  const sheetL1 = compute(makeDoc("Drow Noble"), ref);
+
+  it("SR = 11 + level at L1", () => {
+    expect(sheetL1.defenses?.sr?.total).toBe(12);
   });
 
-  const sheet = compute(makeDoc("Drow Noble"), ref);
+  it("SR scales with total character level", () => {
+    const doc = makeDoc("Drow Noble");
+    doc.identity.classes = [{ tag: "fighter", level: 5 }];
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr?.total).toBe(16);
+  });
 
   it("the modeled ability/skill changes alongside it still apply normally", () => {
     // Int +2, Cha +2, Con -2, Wis +2, Dex +4
-    expect(sheet.abilities.int.total).toBe(12);
-    expect(sheet.abilities.cha.total).toBe(12);
-    expect(sheet.abilities.con.total).toBe(8);
-    expect(sheet.abilities.wis.total).toBe(12);
-    expect(sheet.abilities.dex.total).toBe(14);
+    expect(sheetL1.abilities.int.total).toBe(12);
+    expect(sheetL1.abilities.cha.total).toBe(12);
+    expect(sheetL1.abilities.con.total).toBe(8);
+    expect(sheetL1.abilities.wis.total).toBe(12);
+    expect(sheetL1.abilities.dex.total).toBe(14);
+  });
+});
+
+describe("vendored non-core race: Svirfneblin (SR 11 + HD, supplemented — prose-only upstream)", () => {
+  // Svirfneblin's signature "spell resistance equal to 11 + class levels"
+  // (Advanced Race Guide) has no `spellResist` Change in the vendored race
+  // entry at all (unlike Drow Noble/Dwarf/Half-Elf) — a
+  // SUPPLEMENTAL_RACE_SPELL_RESISTANCE entry in data-pipeline adds it.
+  it("SR = 11 + HD at L3", () => {
+    const doc = makeDoc("Svirfneblin");
+    doc.identity.classes = [{ tag: "fighter", level: 3 }];
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr?.total).toBe(14);
   });
 });
 

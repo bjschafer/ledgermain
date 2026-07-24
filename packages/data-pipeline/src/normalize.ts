@@ -89,6 +89,7 @@ import {
   applyClassFeatureUsesSupplements,
   applyPrestigeClassSupplements,
   applyRaceEnergyResistanceSupplements,
+  applyRaceSpellResistanceSupplements,
   applySpellProjectileSupplements,
   resolveBloodlineSupplements,
   SUPPLEMENTAL_PRESTIGE_CLASSES,
@@ -404,6 +405,7 @@ export function normalize(opts: NormalizeOptions): {
     )
     .map((pf) => transformRace(pf.doc, resolveUuid));
   applyRaceEnergyResistanceSupplements(races);
+  applyRaceSpellResistanceSupplements(races);
 
   // --- racial traits: pf1-content pf-racial-traits pack (alternates and
   // heritage variants only — the pack's standard-trait entries are dropped by

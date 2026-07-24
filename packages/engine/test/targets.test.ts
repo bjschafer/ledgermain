@@ -18,11 +18,13 @@ describe("isTargetApplied", () => {
     "dr",
     "dr.magic",
     "eres.fire",
+    "carryStr",
+    "carryMult",
   ])("treats %s as applied", (target) => {
     expect(isTargetApplied(target)).toBe(true);
   });
 
-  it.each(["nattack", "allChecks", "carryMult", "sensedv"])("treats %s as unapplied", (target) => {
+  it.each(["nattack", "allChecks", "sensedv"])("treats %s as unapplied", (target) => {
     expect(isTargetApplied(target)).toBe(false);
   });
 });
@@ -56,6 +58,16 @@ describe("real refdata buffs", () => {
 
   it("Spell Resistance has no unapplied changes now that spellResist feeds the defenses line", () => {
     const buff = buffByName("Spell Resistance");
+    expect(unappliedChanges(buff.changes)).toEqual([]);
+  });
+
+  it("Ant Haul has no unapplied changes now that carryMult feeds carrying capacity", () => {
+    const buff = buffByName("Ant Haul");
+    expect(unappliedChanges(buff.changes)).toEqual([]);
+  });
+
+  it("Enlarge Person has no unapplied changes now that carryStr/carryMult are consumed", () => {
+    const buff = buffByName("Enlarge Person");
     expect(unappliedChanges(buff.changes)).toEqual([]);
   });
 });

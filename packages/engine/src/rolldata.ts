@@ -168,6 +168,11 @@ export function buildRollData(
     armor: { type: armorType },
     shield: { type: shieldType },
     item: { level: 0 },
+    // `@details.level.value` was previously absent from roll data entirely.
+    // Missing paths resolve to 0 (Foundry behavior, see formula.ts), so Drow
+    // Noble's vendored spell resistance formula (`11 + @details.level.value`)
+    // silently evaluated as a flat 11 regardless of character level.
+    details: { level: { value: level } },
     level,
   };
 }

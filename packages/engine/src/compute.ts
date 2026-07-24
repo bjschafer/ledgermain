@@ -49,6 +49,7 @@ import { computeRanger } from "./ranger.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
 import { computeDefenses } from "./defenses.js";
 import {
+  carryAdjustments,
   computeEncumbrance,
   encumbranceLevelFor,
   encumberedSpeed,
@@ -1190,17 +1191,40 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const bootCollected = collectModifiers(doc, refData, bootRollData);
   const bootAbilities = computeAbilities(doc, bootCollected);
 
+  // Effective size category from a relative "size"-target Change (Enlarge/
+  // Reduce Person, ...), or an active polymorph form's absolute override (see
+  // the final `size` computation below for the full rationale) — resolved
+  // once here from the BOOT pass so encumbrance (next) can size its carrying-
+  // capacity multiplier correctly. `collect.ts`'s size-shifting changes are
+  // flat/unconditional formulas in the vendored slice (never ability- or
+  // encumbrance-level-dependent), so the boot-pass value matches the final
+  // one computed below in every case this app's data actually exercises.
+  const bootSizeShift = Math.trunc(
+    forTarget(bootCollected, "size").reduce((s, m) => s + m.value, 0),
+  );
+  const bootSize: SizeId = doc.live.activeForm
+    ? doc.live.activeForm.size
+    : shiftSize(baseSize, bootSizeShift);
+
   // Encumbrance (issue #16, optional rule — default off). Computed from the
   // BOOT-pass Strength (already reflects racial/item/buff ability changes, via
   // the same collected-modifier pass as everything else) so the resulting
   // `@attributes.encumbrance.level` can feed the FINAL roll data below, which
   // is what vendored formulas (e.g. monk's Wis-to-AC gate) actually evaluate
-  // against. Uses `baseSize` (race size, not any Enlarge/Reduce Person shift)
-  // for the same reason `rolldata.ts` uses race-base speeds: computing the
-  // size-shift itself requires `collected`, which would make this circular.
+  // against. Uses `bootSize` (see above) rather than `baseSize` so a Large
+  // Enlarge Person shift actually reaches the carrying-capacity size
+  // multiplier — `carryAdjustments` (Ant Haul, Enlarge/Reduce's own
+  // carryStr/carryMult) folds in on top from the same boot-pass collected
+  // modifiers, for the same circularity reason.
   const encumbranceEnabled = doc.build.settings?.encumbranceEnabled ?? false;
   const encumbrance = encumbranceEnabled
-    ? computeEncumbrance(doc, refData, bootAbilities.str.total, baseSize)
+    ? computeEncumbrance(
+        doc,
+        refData,
+        bootAbilities.str.total,
+        bootSize,
+        carryAdjustments(bootCollected),
+      )
     : undefined;
   const encumbranceLevel = encumbrance ? encumbranceLevelFor(encumbrance.tier) : 0;
 

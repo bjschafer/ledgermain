@@ -1,12 +1,17 @@
 /**
  * Carrying capacity / encumbrance (issue #16) — an OPTIONAL PF1 rule (gated by
  * `build.settings.encumbranceEnabled`, absent = off, same posture as
- * `settings.xpEnabled`). Every number in this file is hand-authored clean-room
- * from the published PF1 CRB "Table: Carrying Capacity" and "Table: Speed"
- * (Open Game Content / Paizo Community Use — see DESIGN.md §6); none of it is
- * derived from or ported out of Foundry's GPL system code, which doesn't model
- * encumbrance numerically at all (only reads `@attributes.encumbrance.level`,
- * hardcoded to 0 elsewhere in this engine until this feature wires it up).
+ * `settings.xpEnabled`). The carrying-capacity table, size multipliers, and
+ * load-tier thresholds are hand-authored clean-room from the published PF1
+ * CRB "Table: Carrying Capacity" and "Table: Speed" (Open Game Content /
+ * Paizo Community Use — see DESIGN.md §6); the load-tier gating
+ * (`@attributes.encumbrance.level`) is likewise not something Foundry's own
+ * system computes numerically. `carryAdjustments`'s `carryStr`/`carryMult`
+ * combination rule is the one piece here cross-checked against Foundry's GPL
+ * `apply-changes.mjs`/`base-character-model.mjs` as a behavioral oracle only
+ * (output comparison, not ported code or structure — see NOTICE.md §1) to
+ * pin down semantics the published CRB text doesn't spell out for temporary
+ * size-change spells.
  */
 
 import type {
@@ -17,6 +22,8 @@ import type {
   RefData,
   SizeId,
 } from "@pf1/schema";
+
+import { forTarget, type CollectedModifier } from "./collect.js";
 
 /* -------------------------------------------------------- carrying capacity */
 
@@ -106,13 +113,20 @@ export function sizeCarryingMultiplier(size: SizeId): number {
  * Light/medium/heavy weight ceilings (pounds) for `strScore` Strength and
  * `size`, with the size multiplier applied and each result floored to a whole
  * pound (PF1 RAW: round down).
+ *
+ * `carryStrDelta`/`carryMultiplier` fold in the `carryStr`/`carryMult` Change
+ * targets (Ant Haul, masterwork backpack, Enlarge/Reduce Person, ...) — see
+ * `carryAdjustments`'s doc comment for where they come from and why they're
+ * separate from `strScore`/`size` rather than pre-baked into them.
  */
 export function loadThresholds(
   strScore: number,
   size: SizeId = "med",
+  carryStrDelta = 0,
+  carryMultiplier = 1,
 ): { light: number; medium: number; heavy: number } {
-  const cap = carryingCapacity(strScore);
-  const mult = sizeCarryingMultiplier(size);
+  const cap = carryingCapacity(strScore + carryStrDelta);
+  const mult = sizeCarryingMultiplier(size) * carryMultiplier;
   return {
     light: Math.floor(cap.light * mult),
     medium: Math.floor(cap.medium * mult),
@@ -126,8 +140,14 @@ export function loadThresholds(
  * the heavy ceiling ("overloaded" — can't move at all under strict RAW) is
  * NOT modeled as a distinct state in v1 and is reported as `"heavy"`.
  */
-export function loadTier(weight: number, strScore: number, size: SizeId = "med"): LoadTier {
-  const { light, medium } = loadThresholds(strScore, size);
+export function loadTier(
+  weight: number,
+  strScore: number,
+  size: SizeId = "med",
+  carryStrDelta = 0,
+  carryMultiplier = 1,
+): LoadTier {
+  const { light, medium } = loadThresholds(strScore, size, carryStrDelta, carryMultiplier);
   if (weight <= light) return "light";
   if (weight <= medium) return "medium";
   return "heavy";
@@ -231,25 +251,59 @@ export function totalCarriedWeight(doc: CharacterDoc, refData: RefData): number 
 }
 
 /**
+ * Net carrying-capacity adjustment from `carryStr`/`carryMult` Change targets
+ * (Ant Haul, masterwork backpack, traits, Enlarge/Reduce Person). Both stack
+ * additively across sources — Foundry's own semantics (`carryStr`/`carryMult`
+ * are always-untyped targets, confirmed against `apply-changes.mjs`), not a
+ * guess: `carryStr` sums onto the character's Strength score before the carry
+ * table lookup (e.g. masterwork backpack's `+1` is a flat effective-Str
+ * bonus), and `carryMult` sums onto a base multiplier of `1` (Ant Haul's
+ * vendored `+2` therefore yields a total multiplier of `1 + 2 = 3`, an exact
+ * match for its RAW "carrying capacity triples" — no correction needed).
+ *
+ * Enlarge/Reduce Person's `carryStr ∓2`/`carryMult ∓0.5` are NOT a pipeline
+ * artifact to strip: they are a deliberate offset (see each buff's own
+ * description, "partially accounting for your gear not changing in size")
+ * against the size-category multiplier and the size-typed Str bonus the SAME
+ * spell also grants — both of which flow into carrying capacity through the
+ * ordinary size/Str paths below. Consuming carryStr/carryMult here (rather
+ * than stripping them) is what keeps a spell-enlarged character's carrying
+ * capacity close to its pre-spell value instead of jumping by a full size
+ * category on top of the size bonus to Strength, which no published ruling
+ * supports and which the Foundry-authored numbers were explicitly tuned to
+ * avoid.
+ */
+export function carryAdjustments(collected: CollectedModifier[]): {
+  strDelta: number;
+  multiplier: number;
+} {
+  const strDelta = forTarget(collected, "carryStr").reduce((s, m) => s + m.value, 0);
+  const multiplierDelta = forTarget(collected, "carryMult").reduce((s, m) => s + m.value, 0);
+  return { strDelta, multiplier: 1 + multiplierDelta };
+}
+
+/**
  * Full encumbrance computation for `compute()` — only called when
  * `settings.encumbranceEnabled` is true. `strScore` should be the character's
- * final (post racial/item/buff) Strength total; `size` is the character's
- * base race size (not shifted by size-changing buffs — same "race base only"
- * simplification `rolldata.ts` documents for speeds, to avoid a circular
- * dependency between size-shift and the collected-modifier pass this feeds).
+ * (post racial/item/buff) Strength total; `size` is the character's effective
+ * size category (post size-shift/polymorph, same value `compute()` uses for
+ * AC/attack); `carry` is `carryAdjustments`'s result, or omitted for none.
  */
 export function computeEncumbrance(
   doc: CharacterDoc,
   refData: RefData,
   strScore: number,
   size: SizeId,
+  carry?: { strDelta: number; multiplier: number },
 ): DerivedEncumbrance {
+  const carryStrDelta = carry?.strDelta ?? 0;
+  const carryMultiplier = carry?.multiplier ?? 1;
   const totalWeight = totalCarriedWeight(doc, refData);
-  const tier = loadTier(totalWeight, strScore, size);
+  const tier = loadTier(totalWeight, strScore, size, carryStrDelta, carryMultiplier);
   return {
     totalWeight,
     strScore,
-    thresholds: loadThresholds(strScore, size),
+    thresholds: loadThresholds(strScore, size, carryStrDelta, carryMultiplier),
     tier,
     maxDexCap: loadMaxDexCap(tier),
     acp: loadAcp(tier),

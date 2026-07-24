@@ -2733,9 +2733,15 @@ export type LoadTier = "light" | "medium" | "heavy";
 export interface DerivedEncumbrance {
   /** Sum of gear weight × quantity, plus equipped armor/weapon weight, in pounds. */
   totalWeight: number;
-  /** Effective Strength score (post racial/item/buff modifiers) the thresholds were computed from. */
+  /** Effective ability Strength score (post racial/item/buff modifiers) the thresholds were computed from. */
   strScore: number;
-  /** Light/medium/heavy weight ceilings in pounds (size-multiplier applied). */
+  /**
+   * Light/medium/heavy weight ceilings in pounds — size multiplier applied,
+   * plus any `carryStr`/`carryMult` Change (Ant Haul, Enlarge/Reduce Person,
+   * ...) folded in on top of `strScore`/size (see `@pf1/engine`
+   * `carryAdjustments`). Not derivable from `strScore` alone when a
+   * carryStr/carryMult source is active.
+   */
   thresholds: { light: number; medium: number; heavy: number };
   /** Which tier `totalWeight` falls into. "up to" a threshold stays the lighter tier (PF1 RAW). */
   tier: LoadTier;

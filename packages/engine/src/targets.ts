@@ -81,6 +81,11 @@ const APPLIED_TARGETS = new Set<string>([
   // spell resistance / damage reduction (computeDefenses, issue #21)
   "spellResist",
   "dr",
+  // carrying capacity (computeEncumbrance's carryAdjustments, only visible
+  // on the sheet when `settings.encumbranceEnabled` is on — same posture as
+  // `mDexA`/`acpA` above, which are also encumbrance/armor-training-gated)
+  "carryStr",
+  "carryMult",
 ]);
 
 /**
@@ -139,8 +144,6 @@ export const UNAPPLIED_TARGET_LABELS: Record<string, string> = {
   intSkills: "Int-based skill checks",
   wisSkills: "Wis-based skill checks",
   chaSkills: "Cha-based skill checks",
-  carryStr: "carrying capacity",
-  carryMult: "carrying capacity",
   sensedv: "senses",
   sensebse: "senses",
   sensetr: "senses",

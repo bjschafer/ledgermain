@@ -346,6 +346,35 @@ export const SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL: Record<string, number> = {
 };
 
 /**
+ * Hand-authored spell resistance for races whose signature SR is prose-only
+ * upstream (races.json carries no `spellResist` change for these). Values per
+ * the published Advanced Race Guide entries: Svirfneblin SR 11 + class
+ * levels, a standard (not alternate) racial trait — same non-suppressing
+ * posture as every other vendored alternate trait (`collect.ts`'s doc
+ * comment) applies here too, so this is not wired to any trait swap.
+ */
+export const SUPPLEMENTAL_RACE_SPELL_RESISTANCE: Record<string, string> = {
+  Svirfneblin: "11 + @attributes.hd.total",
+};
+
+/**
+ * Apply `SUPPLEMENTAL_RACE_SPELL_RESISTANCE` in place, appending a
+ * `spellResist` change to the matching race's `changes`. Throws if a named
+ * race is absent from the vendored slice — a data-drift guard, mirroring
+ * `resolveBloodlineSupplements`.
+ */
+export function applyRaceSpellResistanceSupplements(races: Race[]): void {
+  const byName = new Map(races.map((r) => [r.name, r]));
+  for (const [name, formula] of Object.entries(SUPPLEMENTAL_RACE_SPELL_RESISTANCE)) {
+    const race = byName.get(name);
+    if (race === undefined) {
+      throw new Error(`[supplements] race "${name}" not found in vendored races`);
+    }
+    race.changes = [...race.changes, { formula, target: "spellResist", type: "racial" }];
+  }
+}
+
+/**
  * Apply `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL` in place to a list of
  * normalized archetype features (mutates `.level` only; `id`/`uuid` are left
  * untouched — see that map's doc comment for why).

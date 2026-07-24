@@ -719,6 +719,7 @@ export {
   gearUnitWeight,
   totalCarriedWeight,
   computeEncumbrance,
+  carryAdjustments,
 } from "./encumbrance.js";
 export {
   WEAPON_GROUPS,

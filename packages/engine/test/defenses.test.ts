@@ -13,6 +13,12 @@ function raceId(name: string): string {
   return entry[0];
 }
 
+function buffId(name: string): string {
+  const entry = Object.entries(ref.buffs).find(([, b]) => b.name === name);
+  if (!entry) throw new Error(`buff not found: ${name}`);
+  return entry[0];
+}
+
 function makeDoc(over: {
   classes: { tag: string; level: number }[];
   abilities: CharacterDoc["abilities"];
@@ -109,6 +115,70 @@ describe("compute: defenses (issue #21)", () => {
         applied: true,
       },
     ]);
+  });
+
+  it("Drow Noble's vendored spellResist Change (set, 11 + level) routes into sr", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 4 }],
+      abilities: ABILITIES,
+      race: "Drow Noble",
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr).toEqual({
+      total: 15,
+      components: [
+        {
+          source: "Drow Noble",
+          sourceId: raceId("Drow Noble"),
+          type: "racial",
+          value: 15,
+          applied: true,
+        },
+      ],
+    });
+  });
+
+  it("the Spell Resistance buff (12 + CL, set) routes into sr at the buff's caster level", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 9 }],
+      abilities: ABILITIES,
+      activeBuffs: [
+        {
+          instanceId: "sr-buff",
+          buffId: buffId("Spell Resistance"),
+          name: "Spell Resistance",
+          changes: ref.buffs[buffId("Spell Resistance")]!.changes,
+          casterLevel: 9,
+        },
+      ],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr?.total).toBe(21);
+  });
+
+  it("SR from two `set` sources doesn't stack — only the higher value applies, the loser kept unapplied", () => {
+    // Drow Noble (L4): 11 + 4 = 15. Spell Resistance buff at CL9: 12 + 9 = 21.
+    // The buff wins; Drow Noble's own racial SR stays in components, struck through.
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 4 }],
+      abilities: ABILITIES,
+      race: "Drow Noble",
+      activeBuffs: [
+        {
+          instanceId: "sr-buff",
+          buffId: buffId("Spell Resistance"),
+          name: "Spell Resistance",
+          changes: ref.buffs[buffId("Spell Resistance")]!.changes,
+          casterLevel: 9,
+        },
+      ],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr?.total).toBe(21);
+    const byApplied = Object.fromEntries(
+      sheet.defenses!.sr!.components.map((c) => [c.source, c.applied]),
+    );
+    expect(byApplied).toEqual({ "Drow Noble": false, "Spell Resistance": true });
   });
 
   it("a custom (user-authored) buff granting fire resistance 10 flows through with provenance, no special-casing", () => {

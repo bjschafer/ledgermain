@@ -2665,6 +2665,11 @@
         "formula": "2",
         "target": "skill.crf",
         "type": "racial"
+      },
+      {
+        "formula": "11 + @attributes.hd.total",
+        "target": "spellResist",
+        "type": "racial"
       }
     ],
     "contextNotes": [

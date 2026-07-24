@@ -19,12 +19,20 @@ function raceId(name: string): string {
   return entry[0];
 }
 
+function buffId(name: string): string {
+  const entry = Object.entries(ref.buffs).find(([, b]) => b.name === name);
+  if (!entry) throw new Error(`buff not found: ${name}`);
+  return entry[0];
+}
+
 function makeDoc(over: {
   classes: { tag: string; level: number }[];
   abilities: CharacterDoc["abilities"];
+  race?: string;
   gear?: ItemInstance[];
   encumbranceEnabled?: boolean;
   skillRanks?: Record<string, number>;
+  activeBuffs?: CharacterDoc["live"]["activeBuffs"];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -32,7 +40,7 @@ function makeDoc(over: {
     ownerId: "owner",
     version: 1,
     updatedAt: "2026-01-01T00:00:00.000Z",
-    identity: { name: "Test", race: raceId("Human"), classes: over.classes },
+    identity: { name: "Test", race: raceId(over.race ?? "Human"), classes: over.classes },
     abilities: over.abilities,
     build: {
       feats: [],
@@ -47,7 +55,7 @@ function makeDoc(over: {
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
       conditions: [],
-      activeBuffs: [],
+      activeBuffs: over.activeBuffs ?? [],
       resources: {},
     },
   };
@@ -250,5 +258,98 @@ describe("compute: encumbrance combines with worn armor as 'more restrictive win
     const dexComponent = sheet.ac.components.find((c) => c.category === "dex");
     expect(dexComponent?.value).toBe(1);
     expect(dexComponent?.source).toBe("Dexterity (Heavy load)");
+  });
+});
+
+// A Str-10 Medium human — Enlarge/Reduce Person's ±2 size-typed Str bonus and
+// the size-category shift both start from a round baseline (33/66/100) here.
+const BASELINE: {
+  classes: { tag: string; level: number }[];
+  abilities: CharacterDoc["abilities"];
+} = {
+  classes: [{ tag: "fighter", level: 1 }],
+  abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+};
+
+describe("compute: encumbrance — carryStr/carryMult consumption (Ant Haul, masterwork backpack, Enlarge/Reduce Person)", () => {
+  it("Ant Haul triples carrying capacity (carryMult +2 sums onto a base multiplier of 1, not a bare ×2)", () => {
+    const doc = makeDoc({
+      ...FIGHTER,
+      encumbranceEnabled: true,
+      activeBuffs: [
+        {
+          instanceId: "ant-haul",
+          buffId: buffId("Ant Haul"),
+          name: "Ant Haul",
+          changes: ref.buffs[buffId("Ant Haul")]!.changes,
+        },
+      ],
+    });
+    const sheet = compute(doc, ref);
+    // Str 16 baseline (see FIGHTER's own comment): 76/153/230 -> ×3.
+    expect(sheet.encumbrance?.thresholds).toEqual({ light: 228, medium: 459, heavy: 690 });
+  });
+
+  it("a masterwork backpack's carryStr +1 raises the effective Str used for the carry table by 1", () => {
+    const doc = makeDoc({
+      ...BASELINE,
+      encumbranceEnabled: true,
+      gear: [
+        {
+          equipped: true,
+          itemId: "O1IuoaVvgX5nAl18", // Backpack, masterwork
+        },
+      ],
+    });
+    const sheet = compute(doc, ref);
+    // Str 10 (33/66/100) treated as Str 11 (38/76/115) for the carry table only.
+    expect(sheet.encumbrance?.thresholds).toEqual({ light: 38, medium: 76, heavy: 115 });
+  });
+
+  it("Enlarge Person's carryStr/carryMult offset the SAME spell's own size-category ×2 and +2 Str size bonus (anti-double-count)", () => {
+    const doc = makeDoc({
+      ...BASELINE,
+      encumbranceEnabled: true,
+      activeBuffs: [
+        {
+          instanceId: "enlarge",
+          buffId: buffId("Enlarge Person"),
+          name: "Enlarge Person",
+          changes: ref.buffs[buffId("Enlarge Person")]!.changes,
+        },
+      ],
+    });
+    const sheet = compute(doc, ref);
+    // The spell really did apply: Large, Str 12 (10 + size bonus 2).
+    expect(sheet.size).toBe("lg");
+    expect(sheet.abilities.str.total).toBe(12);
+    // A naive implementation that applies the size ×2 and the +2 Str size
+    // bonus WITHOUT consuming carryStr/carryMult would show thresholds far
+    // above baseline (~66/153/230+). Consuming them nets back to the
+    // pre-spell baseline instead — Foundry's own buff description says why
+    // ("partially accounting for your gear not changing in size"), and no
+    // published ruling grants a free carrying-capacity boost from this spell.
+    expect(sheet.encumbrance?.thresholds).toEqual({ light: 33, medium: 66, heavy: 100 });
+  });
+
+  it("Reduce Person's carryStr/carryMult keep carrying capacity close to baseline despite shrinking to Small", () => {
+    const doc = makeDoc({
+      ...BASELINE,
+      encumbranceEnabled: true,
+      activeBuffs: [
+        {
+          instanceId: "reduce",
+          buffId: buffId("Reduce Person"),
+          name: "Reduce Person",
+          changes: ref.buffs[buffId("Reduce Person")]!.changes,
+        },
+      ],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.size).toBe("sm");
+    expect(sheet.abilities.str.total).toBe(8);
+    // Effective Str-for-carry = 8 (actual) + 1 (carryStr) = 9 -> 30/60/90;
+    // multiplier = 0.75 (Small) * 1.5 (carryMult total 1 + 0.5) = 1.125.
+    expect(sheet.encumbrance?.thresholds).toEqual({ light: 33, medium: 67, heavy: 101 });
   });
 });
