@@ -424,14 +424,52 @@ describe("wizard school slots + opposition cost", () => {
 
   it("oppositionCost is 2 for an opposition-school spell, 1 otherwise", () => {
     const doc = evocationWizardDoc();
-    expect(oppositionCost(sleep, doc)).toBe(2);
-    expect(oppositionCost(burningHands, doc)).toBe(1);
+    expect(oppositionCost(sleep, doc, ref)).toBe(2);
+    expect(oppositionCost(burningHands, doc, ref)).toBe(1);
   });
 
   it("oppositionCost is 1 for everyone when no opposition schools are set", () => {
     const doc = addClass(fresh(), "wizard");
-    expect(oppositionCost(sleep, doc)).toBe(1);
-    expect(oppositionCost(burningHands, doc)).toBe(1);
+    expect(oppositionCost(sleep, doc, ref)).toBe(1);
+    expect(oppositionCost(burningHands, doc, ref)).toBe(1);
+  });
+
+  it("isSchoolSlotEligible follows the elemental school's own list, not Spell.school", () => {
+    // Air's 1st-level list carries Shocking Grasp (an evocation spell) but not
+    // Burning Hands — the elemental lists span schools, so `Spell.school` can't
+    // decide membership.
+    const shockingGraspId = spellIdByName("Shocking Grasp");
+    let doc = addClass(fresh(), "wizard");
+    doc = setWizardSchool(doc, "air-elemental", ref);
+    doc = toggleKnownSpell(doc, ref, shockingGraspId, "wizard");
+    doc = toggleKnownSpell(doc, ref, burningHandsId, "wizard");
+    expect(isSchoolSlotEligible(ref.spells[shockingGraspId]!, doc, ref)).toBe(true);
+    expect(isSchoolSlotEligible(burningHands, doc, ref)).toBe(false);
+  });
+
+  it("isSchoolSlotEligible is false for an on-list elemental spell not in the spellbook", () => {
+    const doc = setWizardSchool(addClass(fresh(), "wizard"), "air-elemental", ref);
+    expect(isSchoolSlotEligible(ref.spells[spellIdByName("Shocking Grasp")]!, doc, ref)).toBe(
+      false,
+    );
+  });
+
+  it("oppositionCost is 2 for a spell on the opposed element's list", () => {
+    // An air elementalist opposes Earth (fixed): Acid Arrow is on Earth's 2nd-
+    // level list, Scorching Ray (also conjuration/evocation, but Fire's) is not.
+    const doc = setWizardSchool(addClass(fresh(), "wizard"), "air-elemental", ref);
+    expect(doc.build.wizardOppositionElement).toBe("earth-elemental");
+    expect(oppositionCost(ref.spells[spellIdByName("Acid Arrow")]!, doc, ref)).toBe(2);
+    expect(oppositionCost(ref.spells[spellIdByName("Scorching Ray")]!, doc, ref)).toBe(1);
+  });
+
+  it("oppositionCost ignores a stale opposition element once a standard school is chosen", () => {
+    let doc = setWizardSchool(addClass(fresh(), "wizard"), "air-elemental", ref);
+    doc = setWizardSchool(doc, "evo", ref);
+    doc = setWizardOppositionSchools(doc, ["enc", "nec"]);
+    expect(doc.build.wizardOppositionElement).toBeUndefined();
+    expect(oppositionCost(ref.spells[spellIdByName("Acid Arrow")]!, doc, ref)).toBe(1);
+    expect(oppositionCost(sleep, doc, ref)).toBe(2);
   });
 
   it("schoolSlotCapacity is one per level 1-9, zero for cantrips", () => {

@@ -87,9 +87,15 @@ export const SYSTEM_VERSION = "11.11";
  * waves rather than bumping per-wave. v14 (issue #99) adds `changes` to
  * `Domain` (the doc-level `system.changes` a handful of top-level domains
  * carry — Protection's save resistance, Travel's +10 speed, Darkness/Rune's
- * bonus feats), the same shape `Subdomain.changes` already vendored.
+ * bonus feats), the same shape `Subdomain.changes` already vendored. v15
+ * (issue #100) adds `elementalSchoolSpellLists`/
+ * `elemental-school-spell-lists.json` (each elemental wizard school's
+ * bonus-slot spell list, resolved by name from its description prose) and
+ * `WizardSchool.oppositionOptions` (the elements an elemental school may
+ * oppose, parsed from the same prose); spells reachable only through an
+ * elemental list now also survive the spell slice.
  */
-export const SCHEMA_VERSION = 14;
+export const SCHEMA_VERSION = 15;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

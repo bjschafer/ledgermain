@@ -16,6 +16,7 @@
     "domains": 35,
     "druidDomainSpellLists": 25,
     "druidDomains": 25,
+    "elementalSchoolSpellLists": 8,
     "feats": 3563,
     "hexes": 104,
     "investigatorTalents": 67,
@@ -70,6 +71,7 @@
     "domains.json": "88c3c934cc17910f54692b1381271ecee5885498d10b5f90041a73f2fa8fa130",
     "druid-domain-spell-lists.json": "1422ccee986486bf2c14e44d9d1b89983d37200ab48dcd6eab63e5f0fadbcddf",
     "druid-domains.json": "a5b3c18b81092f05afe929c2c2f59c920646e20f6673e9e608bb8548788479eb",
+    "elemental-school-spell-lists.json": "93ee5498c0bbc6972bab7697b57d2280671c98c2f8d8a378b4bfb9a5e0e231a2",
     "feats.json": "99c1bf84cf9b68c4e06816d63ebf05100506fe394db591979f61cb3aaad28d1c",
     "hexes.json": "58166ae4367bc31370336cc82ccc7ff550e223d230a6a0edfc31faac6b8ec51d",
     "investigator-talents.json": "1fa9047b2b0e294e566d7e16b4928276b1653ddaa563563642004420019cd621",
@@ -105,9 +107,9 @@
     "vigilante-talents.json": "aa5575a9a68b6998a369519655391c3d6b65a15f2ebb07096cb9d2f5e8f9a771",
     "weapons.json": "286e9b97a5c1ca8b9b1126149b0abc4c3ddc968522d857d1d421e7abe06a0042",
     "witch-patrons.json": "abe0bc21ba74cd13a5bd2230a6819764ff173dbe6d74a1b7074211f7428ec22c",
-    "wizard-schools.json": "b6078da2c6e8837e7b12845869d7ee605ec27844619a4ce2257da8ba6665d315"
+    "wizard-schools.json": "7db6c49759678b5f3d8d7a7b7853cc85805a9ddafdb8101d37786a073a6fdb23"
   },
-  "schemaVersion": 14,
+  "schemaVersion": 15,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

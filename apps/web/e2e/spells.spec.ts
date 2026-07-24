@@ -186,3 +186,53 @@ test("an arcanist's prepared cantrips show as at-will in the Cast tab", async ({
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
+
+/**
+ * An elemental specialist (issue #100) exercises the two mechanics that don't
+ * work like a standard school's: the bonus school slot draws from the school's
+ * own cross-school spell list rather than a `Spell.school` match, and the
+ * opposition is a single element (Air's is fixed to Earth) instead of two
+ * schools. Shocking Grasp is evocation, but it's on Air's 1st-level list.
+ */
+test("an air elementalist opposes Earth and fills the school slot from Air's list", async ({
+  page,
+}) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  const panel = await gotoWizardSpells(page);
+
+  const school = page.locator(".school-picker");
+  await school.getByRole("combobox").selectOption({ label: "Air (Elemental)" });
+
+  // Fixed opposite: chosen for the player, and no two-school picker in sight.
+  const opposition = page.locator(".opposition-picker");
+  await expect(opposition.getByRole("heading", { name: /Opposition Element/ })).toBeVisible();
+  await expect(opposition.locator(".opposition-chosen")).toContainText("Earth");
+  await expect(page.getByRole("heading", { name: "Opposition Schools" })).toHaveCount(0);
+
+  // Learn Shocking Grasp — evocation, but on Air's list.
+  await panel.getByRole("button", { name: "Edit spellbook" }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByLabel("Search spells").fill("shocking grasp");
+  await spellRow(dialog.locator(".spell-pane").first(), page, "Shocking Grasp")
+    .getByRole("button", { name: "add" })
+    .click();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+
+  await page.getByRole("tab", { name: "Play" }).click();
+  const spells = page.locator(".panel").filter({
+    has: page.getByRole("heading", { name: "Spells" }),
+  });
+  const schoolSlots = spells.locator(".school-slots");
+  await expect(schoolSlots.locator(".school-slots-title")).toContainText("Air (Elemental)");
+
+  const slotL1 = schoolSlots
+    .locator("section.prep-level")
+    .filter({ has: page.locator(".prep-head-label", { hasText: /^School L1$/ }) });
+  await slotL1.locator("details.prep-add > summary").click();
+  await slotL1.getByRole("button", { name: "prepare Shocking Grasp in the school slot" }).click();
+  await expect(slotL1.locator(".prep-rows .prep-name")).toHaveText("Shocking Grasp");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});

@@ -256,11 +256,128 @@ const ELEMENTAL_SCHOOL_NAME_TO_TAG: Record<string, ElementalSchoolTag> = {
   "Wood Elemental School": "wood-elemental",
 };
 
+/** Element display name (as it appears in the "Opposing element / school" prose) -> tag. */
+const ELEMENT_NAME_TO_TAG: Record<string, ElementalSchoolTag> = {
+  aether: "aether-elemental",
+  air: "air-elemental",
+  earth: "earth-elemental",
+  fire: "fire-elemental",
+  metal: "metal-elemental",
+  void: "void-elemental",
+  water: "water-elemental",
+  wood: "wood-elemental",
+};
+
 /**
- * Transform a `class-abilities/wizard-schools/elemental-schools/*.yaml` entry
- * (see `WizardSchool` doc comment for what's NOT derived here: bonus-slot
- * spell list, opposition). Returns `null` for anything not in the fixed
- * 8-entry map (the nested "focused-schools" variant-rule subfolder is
+ * Parse an elemental school's "Opposing element / school: ..." line into the
+ * elements it may oppose. The heading wording varies ("Opposing element /
+ * school" vs plain "Opposing school") and the values come in three shapes: a
+ * single fixed element ("Earth"), a source-dependent choice of two
+ * ("Air<sup>(APG)</sup> or Wood<sup>(UM)</sup>"), and the four-way pick Void
+ * and Aether offer ("Air, Earth, Fire or Water"). `<sup>` source citations and
+ * `@UUID`/`@Source` markup are stripped before splitting on commas and "or".
+ */
+export function parseElementalOpposition(html: string): ElementalSchoolTag[] {
+  const norm = html.replace(/\s+/g, " ");
+  const m = /Opposing[^<]*?:?\s*<\/strong>\s*(.*?)<\/p>/i.exec(norm);
+  if (!m) return [];
+  const text = m[1]!
+    .replace(/<sup>.*?<\/sup>/g, " ")
+    .replace(/@UUID\[[^\]]*\]\{([^}]*)\}/g, "$1")
+    .replace(/<[^>]+>/g, " ");
+  const out: ElementalSchoolTag[] = [];
+  for (const part of text.split(/,|\bor\b/i)) {
+    const tag = ELEMENT_NAME_TO_TAG[part.trim().toLowerCase()];
+    if (tag && !out.includes(tag)) out.push(tag);
+  }
+  return out;
+}
+
+/**
+ * Upstream spell-name repairs for the elemental "Spells" lists: two entries
+ * lost the separator between adjacent names, one is misspelled. Applied before
+ * name resolution so the affected spells aren't silently dropped; everything
+ * else that fails to resolve (e.g. spells outside the vendored slice) is.
+ */
+const ELEMENTAL_SPELL_NAME_FIXES: Record<string, string[]> = {
+  "firey body": ["fiery body"],
+  "share memorypact": ["share memory"],
+  "spiritual weaponlife pact": ["spiritual weapon", "life pact"],
+};
+
+/**
+ * Normalize a spell name for matching an elemental school's free-text list
+ * against real spell names. Beyond case/whitespace/apostrophe folding, a
+ * trailing arabic numeral becomes its roman equivalent — the lists write
+ * "summon monster 2" and "elemental body i" interchangeably where the spell is
+ * named "Summon Monster II".
+ */
+export function normalizeElementalSpellName(name: string): string {
+  const ROMAN = ["", "i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix"];
+  return name
+    .toLowerCase()
+    .replace(/’/g, "'")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/ ([1-9])$/, (_, d: string) => ` ${ROMAN[Number(d)]}`);
+}
+
+/**
+ * Parse an elemental school's `<h3>Spells</h3>` list into level -> spellId
+ * entries. Unlike a domain's list, the source `@UUID`-links nothing here: each
+ * level is a comma-joined run of lowercase spell names, some of which
+ * themselves contain a comma ("resist energy, communal"). `resolveName` is the
+ * caller's index of real spell names — matching tries the longest candidate
+ * first, so "protection from energy, resist energy, communal" resolves to
+ * *Protection from Energy* plus *Resist Energy, Communal* rather than the
+ * (nonexistent) "Protection from Energy, Resist Energy". Names that resolve to
+ * nothing (spells outside the vendored slice) are dropped.
+ */
+export function parseElementalSpellEntries(
+  html: string,
+  resolveName: (name: string) => string | undefined,
+): { level: number; spellId: string }[] {
+  const norm = html.replace(/\s+/g, " ");
+  const start = norm.search(/<h3>\s*Spells\s*<\/h3>/i);
+  if (start < 0) return [];
+  const out: { level: number; spellId: string }[] = [];
+  for (const li of norm.slice(start).matchAll(/<li>(.*?)<\/li>/g)) {
+    const m = /^\s*<strong>\s*(\d)(?:st|nd|rd|th)?\s*<\/strong>\s*(.*)$/i.exec(li[1]!);
+    if (!m) continue;
+    const level = Number(m[1]);
+    const names = m[2]!
+      .replace(/<[^>]+>/g, " ")
+      .replace(/^\s*[-–—]\s*/, "")
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+    for (let i = 0; i < names.length; ) {
+      // Longest match first: a two-token join covers the ", greater"/", mass"/
+      // ", communal"/", lesser" variant names, which is the deepest the source goes.
+      const pairId =
+        names[i + 1] === undefined ? undefined : resolveName(`${names[i]}, ${names[i + 1]}`);
+      if (pairId) {
+        out.push({ level, spellId: pairId });
+        i += 2;
+        continue;
+      }
+      const single = names[i]!;
+      for (const name of ELEMENTAL_SPELL_NAME_FIXES[single.toLowerCase()] ?? [single]) {
+        const spellId = resolveName(name);
+        if (spellId) out.push({ level, spellId });
+      }
+      i += 1;
+    }
+  }
+  return out;
+}
+
+/**
+ * Transform a `class-abilities/wizard-schools/elemental-schools/*.yaml` entry.
+ * The bonus-slot spell list isn't derived here — it needs the full spell index
+ * to resolve names, so `normalize.ts` parses it separately into
+ * `RefData.elementalSchoolSpellLists`. Returns `null` for anything not in the
+ * fixed 8-entry map (the nested "focused-schools" variant-rule subfolder is
  * excluded upstream in `normalize.ts` by relPath depth, so this should only
  * ever see the eight real elemental schools).
  */
@@ -271,7 +388,15 @@ export function transformElementalWizardSchool(
 ): WizardSchool | null {
   const tag = ELEMENTAL_SCHOOL_NAME_TO_TAG[doc.name];
   if (!tag) return null;
-  return buildWizardSchool(doc, tag, resolveFeatureName, resolveUuid);
+  const sys = (doc.system ?? {}) as Record<string, unknown>;
+  const description = (sys.description ?? {}) as Record<string, unknown>;
+  const oppositionOptions = parseElementalOpposition(
+    typeof description.value === "string" ? description.value : "",
+  );
+  return {
+    ...buildWizardSchool(doc, tag, resolveFeatureName, resolveUuid),
+    ...(oppositionOptions.length > 0 ? { oppositionOptions } : {}),
+  };
 }
 
 function buildWizardSchool(

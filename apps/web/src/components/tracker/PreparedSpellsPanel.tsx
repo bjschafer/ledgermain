@@ -46,7 +46,9 @@ import {
   casterModelFor,
   curseSpellsKnown,
   disciplineSpellsKnown,
+  ELEMENTAL_SCHOOL_LABELS,
   grantedCantrips,
+  isElementalSchoolTag,
   knownSpellsFor,
   mysterySpellsKnown,
   patronSpellsKnown,
@@ -597,11 +599,9 @@ function SchoolSlotsSection({
   const accessibleLevels = [...pickableByLevel.keys()].sort((a, b) => a - b);
   if (!school || school === "uni" || accessibleLevels.length === 0) return null;
 
-  // Elemental picks never reach here — `accessibleLevels` is always empty for
-  // one (no derived bonus-slot spell list, see `WizardSchool` doc comment),
-  // so the early return above already bails — but `school`'s type still
-  // includes `ElementalSchoolTag`, hence the cast.
-  const schoolLabel = SCHOOL_LABELS[school as WizardSchoolTag] ?? school;
+  const schoolLabel = isElementalSchoolTag(school)
+    ? ELEMENTAL_SCHOOL_LABELS[school]
+    : (SCHOOL_LABELS[school as WizardSchoolTag] ?? school);
 
   return (
     <div className="school-slots">
@@ -871,7 +871,7 @@ function PreparedView({
       spellId: p.spellId,
       name: spellData?.name ?? p.spellId,
       expended: p.expended,
-      cost: spellData ? oppositionCost(spellData, doc) : 1,
+      cost: spellData ? oppositionCost(spellData, doc, refData) : 1,
       baseLevel,
       metamagic: p.metamagic ?? [],
     };
@@ -1107,7 +1107,7 @@ function PreparedView({
                       const count = preparedCountBySpell.get(sp.id) ?? 0;
                       const cantripPrepared = isCantrip && count > 0;
                       const spellData = refData.spells[sp.id];
-                      const cost = spellData ? oppositionCost(spellData, doc) : 1;
+                      const cost = spellData ? oppositionCost(spellData, doc, refData) : 1;
                       const wontFit = remaining < cost;
                       return (
                         <div key={sp.id} className="prep-add-row">

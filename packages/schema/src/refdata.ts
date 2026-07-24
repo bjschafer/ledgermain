@@ -96,13 +96,23 @@ export interface RefData {
    */
   druidDomainSpellLists: Record<string, SpellList>;
   /**
+   * Per-elemental-school bonus-slot spell lists, keyed by `ElementalSchoolTag`
+   * — resolved by NAME from each elemental school's own description prose (the
+   * source lists them as free text, not `@UUID` links; see
+   * `parseElementalSpellEntries` in `data-pipeline`). An elemental specialist's
+   * bonus school slot draws from this list rather than from `Spell.school`,
+   * and their single opposition element's list drives the double-slot cost.
+   * A handful of listed names don't resolve (upstream typos, spells outside
+   * the vendored slice) and are simply absent.
+   */
+  elementalSchoolSpellLists: Record<string, SpellList>;
+  /**
    * Wizard arcane schools: the nine standard/Universalist schools (top-level
    * `wizard-schools/*.yaml`) plus the elemental schools (`wizard-schools/
    * elemental-schools/*.yaml`) in the same collection, distinguished only by
    * `tag`'s type (`WizardSchoolTag` vs `ElementalSchoolTag`) — both are
    * selected and granted identically via `build.wizardSchool` /
-   * `collectGrantedFeatures`. See `WizardSchool` doc comment for what's NOT
-   * derived for the elemental entries (bonus-slot spell list, opposition).
+   * `collectGrantedFeatures`.
    */
   wizardSchools: Record<string, WizardSchool>;
   /**
@@ -429,20 +439,27 @@ export interface DruidDomain extends RefEntity {
  * (`class-abilities/wizard-schools/*.yaml`) or one of the eight elemental
  * schools (`wizard-schools/elemental-schools/*.yaml`; the elemental/focused
  * variant-rule subfolder within THAT folder is excluded — too niche a
- * combination to vendor). Elemental entries have real `features` (resolved
- * from `links.supplements` exactly like the standard schools) but no derived
- * bonus-slot spell list: the source lists each elemental school's spells as
- * free-text names, not `@UUID`-linked entries, which isn't reliably
- * parseable (comma-separated names, some containing commas themselves, e.g.
- * "protection from energy, communal") — so `spell.school === build.
- * wizardSchool` (the mechanic standard schools use) simply matches nothing
- * for an elemental pick. Their opposition-school mechanic (one of four
- * elements, not two of the eight standard schools) also isn't modeled.
+ * combination to vendor). Elemental entries carry `features` resolved from
+ * `links.supplements` exactly like the standard schools, but their two other
+ * mechanics come from prose rather than structure: the bonus-slot spell list
+ * is free-text names (parsed into `RefData.elementalSchoolSpellLists`, since
+ * `spell.school` never matches an elemental tag) and the opposition is a
+ * single element rather than two standard schools (see `oppositionOptions`).
  */
 export interface WizardSchool extends RefEntity {
   tag: WizardSchoolTag | ElementalSchoolTag;
   /** Granted powers by level, resolved from `links.supplements`. */
   features: ClassFeatureGrant[];
+  /**
+   * Elemental schools only: the elements this school may oppose, parsed from
+   * its "Opposing element / school" prose. An elemental specialist opposes
+   * exactly ONE element and takes no second opposition school. Most schools
+   * list a single fixed opposite (Air opposes Earth); a few offer a choice
+   * (Earth opposes Air or Wood; Void and Aether pick any of air/earth/fire/
+   * water). Absent for the standard schools, which use
+   * `build.wizardOppositionSchools` instead.
+   */
+  oppositionOptions?: ElementalSchoolTag[];
 }
 
 /** An entry from the `class-abilities` pack (e.g. Rage, Bravery). */

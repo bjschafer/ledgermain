@@ -26,7 +26,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(14);
+    expect(ref.meta.schemaVersion).toBe(15);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -522,6 +522,81 @@ describe("wizard arcane school powers (wizard-schools/*.yaml + elemental-schools
       expect(school, tag).toBeDefined();
       expect(school!.features.length).toBeGreaterThan(0);
     }
+  });
+
+  it("every elemental school parses its opposition options; only the standard schools have none", () => {
+    for (const school of Object.values(ref.wizardSchools)) {
+      const isElemental = school.tag.endsWith("-elemental");
+      if (!isElemental) {
+        expect(school.oppositionOptions, school.name).toBeUndefined();
+        continue;
+      }
+      expect(school.oppositionOptions?.length, school.name).toBeGreaterThan(0);
+      for (const opt of school.oppositionOptions!) {
+        expect(
+          Object.values(ref.wizardSchools).some((s) => s.tag === opt),
+          opt,
+        ).toBe(true);
+      }
+    }
+    const byTag = (tag: string) => Object.values(ref.wizardSchools).find((s) => s.tag === tag)!;
+    // A fixed single opposite, a source-dependent pair, and the four-way pick.
+    expect(byTag("air-elemental").oppositionOptions).toEqual(["earth-elemental"]);
+    expect(byTag("earth-elemental").oppositionOptions).toEqual(["air-elemental", "wood-elemental"]);
+    expect(byTag("void-elemental").oppositionOptions).toEqual([
+      "air-elemental",
+      "earth-elemental",
+      "fire-elemental",
+      "water-elemental",
+    ]);
+  });
+});
+
+describe("elemental school bonus-slot spell lists (elemental-school-spell-lists.json)", () => {
+  it("emits a list for all 8 elemental schools, every level 0-9 populated", () => {
+    expect(Object.keys(ref.elementalSchoolSpellLists).length).toBe(8);
+    expect(ref.meta.counts.elementalSchoolSpellLists).toBe(8);
+    for (const [tag, list] of Object.entries(ref.elementalSchoolSpellLists)) {
+      for (let level = 0; level <= 9; level++) {
+        expect(list[level]?.length, `${tag} L${level}`).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("every listed spell id resolves against the vendored spell slice", () => {
+    for (const [tag, list] of Object.entries(ref.elementalSchoolSpellLists)) {
+      for (const ids of Object.values(list)) {
+        for (const id of ids) expect(ref.spells[id], `${tag}: ${id}`).toBeDefined();
+      }
+    }
+  });
+
+  it("splits comma-bearing spell names by longest match, not by comma", () => {
+    // Air's 3rd-level run reads "...protection from energy, resist energy,
+    // communal, second wind..." — two spells, one of which contains the comma.
+    const names = ref.elementalSchoolSpellLists["air-elemental"]![3]!.map(
+      (id) => ref.spells[id]!.name,
+    );
+    expect(names).toContain("Protection from Energy");
+    expect(names).toContain("Resist Energy, Communal");
+    expect(names).not.toContain("Resist Energy");
+  });
+
+  it("matches names the source writes with arabic numerals or lowercase romans", () => {
+    const names = (tag: string, level: number) =>
+      ref.elementalSchoolSpellLists[tag]![level]!.map((id) => ref.spells[id]!.name);
+    expect(names("air-elemental", 2)).toContain("Summon Monster II"); // "summon monster 2"
+    expect(names("earth-elemental", 2)).toContain("Summon Monster II"); // "summon monster ii"
+    expect(names("fire-elemental", 4)).toContain("Elemental Body I"); // "elemental body i"
+  });
+
+  it("repairs the three known upstream name defects", () => {
+    const names = (tag: string, level: number) =>
+      ref.elementalSchoolSpellLists[tag]![level]!.map((id) => ref.spells[id]!.name);
+    expect(names("fire-elemental", 9)).toContain("Fiery Body"); // source: "firey body"
+    expect(names("aether-elemental", 2)).toContain("Spiritual Weapon"); // "spiritual weaponlife pact"
+    expect(names("aether-elemental", 2)).toContain("Life Pact");
+    expect(names("void-elemental", 2)).toContain("Share Memory"); // "share memorypact"
   });
 });
 

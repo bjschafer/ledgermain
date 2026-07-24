@@ -1137,8 +1137,8 @@ export const SCHOOL_TAGS: WizardSchoolTag[] = [
  * `WizardSchool` doc comments in `@pf1/schema`). Kept separate from
  * `SCHOOL_LABELS`/`SCHOOL_TAGS` rather than merged in: `OppositionPicker`
  * iterates `SCHOOL_TAGS` to offer the two-of-eight standard opposition
- * schools, which doesn't apply to an elemental pick (a different,
- * one-of-four-elements mechanic — not modeled).
+ * schools, which doesn't apply to an elemental pick (which opposes a single
+ * element instead — see `ElementalOppositionPicker`).
  */
 export const ELEMENTAL_SCHOOL_LABELS: Record<ElementalSchoolTag, string> = {
   "air-elemental": "Air (Elemental)",
@@ -1162,6 +1162,11 @@ export const ELEMENTAL_SCHOOL_TAGS: ElementalSchoolTag[] = [
   "void-elemental",
   "aether-elemental",
 ];
+
+/** True when `tag` names an elemental school rather than one of the nine standard ones. */
+export function isElementalSchoolTag(tag: string | undefined): tag is ElementalSchoolTag {
+  return tag !== undefined && (ELEMENTAL_SCHOOL_TAGS as string[]).includes(tag);
+}
 
 /**
  * Display label for a school tag read off `Spell.school` (a bare `string` in

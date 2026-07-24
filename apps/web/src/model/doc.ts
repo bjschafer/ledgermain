@@ -26,7 +26,12 @@ import { eligibleAdvancementTargets } from "./casterLevel.js";
 import { localId } from "./ids.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 import { normalizeAlignmentCode, slugifySkillLabel } from "./names.js";
-import { knownSpellsFor, setKnownSpellsFor, storedClassTag } from "./spellcasting.js";
+import {
+  isElementalSchoolTag,
+  knownSpellsFor,
+  setKnownSpellsFor,
+  storedClassTag,
+} from "./spellcasting.js";
 
 const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
 
@@ -444,23 +449,51 @@ export function setWeaponTrainingGroup(
  * `ElementalSchoolTag`. Pass `null` to clear the choice entirely (back-compat
  * "unset" state, treated identically to Universalist by the model layer).
  * Setting `"uni"` clears `wizardOppositionSchools` — a Universalist has none.
- * Setting any other tag leaves opposition alone; the player must set it via
- * `setWizardOppositionSchools` (no auto-suggestion — free-choice, same
- * soft-warning posture as `setClericDomains`). An elemental tag leaves
- * opposition alone too, though the builder doesn't render the opposition
- * picker for one (see `SchoolPicker`) — elemental schools use a different,
- * unmodeled one-of-four-elements opposition mechanic (see `WizardSchool` doc
- * comment in `@pf1/schema`).
+ * Setting any other standard tag leaves opposition alone; the player must set
+ * it via `setWizardOppositionSchools` (no auto-suggestion — free-choice, same
+ * soft-warning posture as `setClericDomains`).
+ *
+ * The two opposition mechanics are mutually exclusive, so switching between a
+ * standard and an elemental school clears whichever no longer applies. An
+ * elemental school with a single fixed opposite (Air opposes Earth) has it set
+ * here rather than asked for — only the schools offering a real choice (Earth,
+ * Water, Void, Aether) leave it unset for `ElementalOppositionPicker`.
  */
 export function setWizardSchool(
   doc: CharacterDoc,
   tag: WizardSchoolTag | ElementalSchoolTag | null,
+  refData?: RefData,
 ): CharacterDoc {
   const build = { ...doc.build, wizardSchool: tag ?? undefined };
   if (tag === "uni") {
     build.wizardOppositionSchools = [];
   }
+  if (isElementalSchoolTag(tag ?? undefined)) {
+    build.wizardOppositionSchools = [];
+    const options = refData
+      ? Object.values(refData.wizardSchools).find((s) => s.tag === tag)?.oppositionOptions
+      : undefined;
+    build.wizardOppositionElement = options?.length === 1 ? options[0] : undefined;
+  } else {
+    build.wizardOppositionElement = undefined;
+  }
   return { ...doc, build };
+}
+
+/**
+ * Set the elemental specialist's single opposed element. Pass `null` to clear.
+ * No validation that the element is among the school's
+ * `WizardSchool.oppositionOptions` — free-choice, same soft-warning posture as
+ * `setWizardOppositionSchools`; the picker only offers valid ones.
+ */
+export function setWizardOppositionElement(
+  doc: CharacterDoc,
+  tag: ElementalSchoolTag | null,
+): CharacterDoc {
+  return {
+    ...doc,
+    build: { ...doc.build, wizardOppositionElement: tag ?? undefined },
+  };
 }
 
 /**

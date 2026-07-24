@@ -1,0 +1,523 @@
+{
+  "aether-elemental": {
+    "0": ["f6k11j4pvmkka4e9"],
+    "1": ["49yc9dpr4kvgki2s", "gdyto5az5aveibsb", "jhyb2ana8jrk2lut"],
+    "2": [
+      "00wyen2uho8firph",
+      "18kryvj2dfuymk9d",
+      "476th5lyxxemseyx",
+      "835n5zqjvh3dybwq",
+      "avofn5q2v0f0qxjy",
+      "j9qpy0d585f8lpm4",
+      "ucx4ee5qu1fau2ka",
+      "v8czhud6wpmc9esu",
+      "zrwk56c6gl27zwfx"
+    ],
+    "3": ["clo5w5mow21nln10", "lmst00dtapf4xhya", "qmorw7eojkfqr00m", "spmmt3l9ch7t3zfj"],
+    "4": ["0lrux8tmaml5fkw6", "3mrnqy6jbl4tnlhy", "lus8q7aa6wrunafj", "p0bhjyhpgn4pfgzi"],
+    "5": [
+      "3lfx1ccxo2hdqrf3",
+      "b1wzbehqfac9s1be",
+      "c3revq5uj4vtqzxb",
+      "d6lfhyonb3ewpjt4",
+      "jmtzhbgzqpboahhn",
+      "wc5oz0ozbazl1k6o",
+      "wu4y1ilg6iq28cr6"
+    ],
+    "6": ["62oq0e87kd4i36a7", "aoov6nqfm195txdb", "k9iu3d82hlo7coct", "uher0sfh94mol9ta"],
+    "7": ["8fyg16j34uruuy45", "btccs4sjo2nog1a0", "h2r6m68142borl8k", "nq4txj4d0dtzscu2"],
+    "8": ["0amu53wegzdp0axj", "v8s6gfrhzzzhru7k"],
+    "9": ["egbw0mba2cpe3xe5", "gw9bes9othfqm7mi"]
+  },
+  "air-elemental": {
+    "0": ["msaqovkgfxi6q8s8"],
+    "1": [
+      "33pe0bge7b7aq3io",
+      "5m7ci3da78ugjwkz",
+      "68m9du7zw2di7ew6",
+      "lzxzkqyxl9gw0e6d",
+      "nkd3xocluvt1rovu",
+      "vfgsorrwfyhxfcxg"
+    ],
+    "2": [
+      "26vm5jhjkxpq1xm3",
+      "66pt5ntiacbzsuov",
+      "ba8ur1roqmqxn0j5",
+      "cnuin981hdq7ryit",
+      "d8yy4njnr25hacek",
+      "jgx8sur7w4k93mql",
+      "plou8h168bfn5hq6",
+      "tkjnm3lw7ni82tag",
+      "v8czhud6wpmc9esu",
+      "xmw9a4h8bgvlx0ub"
+    ],
+    "3": [
+      "1vh2ewwvzvxunoxk",
+      "7d6sv5ecvi7kho3m",
+      "8h84spdczbsi69gr",
+      "JmX68u3q4lCxuB0l",
+      "acjpqe8vchvzt5rl",
+      "akwOzTsxjZcBGzIS",
+      "ay8nnkkegcb1zfb0",
+      "fe8jy0h1l3su2322",
+      "jwhZBdIuoKxfl68f",
+      "m84969gni5iu4bdt",
+      "mjxpdh9jlmr92f1q",
+      "mqdoexj35atgqafn",
+      "q35l6m4pggb4y98v",
+      "wgb8cwRU0skJtB5O",
+      "xhd6734dulevnwef"
+    ],
+    "4": [
+      "0s8w9wfs3ygc21wh",
+      "1moeejp3mch70ys5",
+      "2nv15766n5lluhpq",
+      "2p0gz8lgaowcojx1",
+      "4gxx3bodf76e63en",
+      "5l72if837ynbu3gz",
+      "SJqQO3f3l2PXrVaH",
+      "aqri3zf6mzgd4di6",
+      "bacuzpculp9tld48",
+      "cdedzw5d9ui73ua7",
+      "frp3ioj2ny5br5ti",
+      "kaqoed3i78k02n6r",
+      "pawbnw1nm4f0b98e"
+    ],
+    "5": [
+      "9s5oseou738k2qif",
+      "evoz9r9n186nsjf0",
+      "ggt7q1ds0fvxxjgx",
+      "hd7ukybisvv7j5r6",
+      "ive4f1t2funreg5v",
+      "wp6qm9gnjxoqww4h",
+      "wqvy12w1xgk6l9b0",
+      "y4b1zmhmsa0gvf06",
+      "yldjnorgbx4jsldz"
+    ],
+    "6": [
+      "6vfauefzzmwl4az7",
+      "hd32fuc6e7j4isbn",
+      "mf6k8tg8xu0wedoz",
+      "nk37t5em8q4v1djs",
+      "pgsw180d62ekw83m",
+      "qf4bqjgeff1q4hjt"
+    ],
+    "7": [
+      "578t0lra5ll3aifs",
+      "7hakpmv7enojm4jg",
+      "et3440o24hcgrfwl",
+      "kuaup99425ovuou0",
+      "m6nj8x0gd1cugw6g",
+      "v42t5kpxc8mvd615"
+    ],
+    "8": ["5if5rln4qlsccrbn", "bbmd0fj17jsf5300", "f7gaaxcschrg2r0q", "j91n23p4tfjixp3s"],
+    "9": ["6yeorbvt5ysym3nh", "lun2gymejsmkjg4g", "ursm11405zobemi3", "xnaypubwvslrof5d"]
+  },
+  "earth-elemental": {
+    "0": ["eu2xv8klucttzqmd"],
+    "1": [
+      "3nxf2nap088jjzbi",
+      "3v1k7qnzd13s5dj3",
+      "67hykfkm8zbj53rn",
+      "879sdozw7ca7ci9k",
+      "8c326bzvz1dbe6q4",
+      "ik9u3eel5vfwrtb5",
+      "psrxebolpvm64xlg"
+    ],
+    "2": [
+      "26vm5jhjkxpq1xm3",
+      "6h3p3zr2hbrjea8k",
+      "8w67l6dzzsi6oz5f",
+      "ba8ur1roqmqxn0j5",
+      "ec2zmvdzi4m3puh4",
+      "gqtg9ruv8kkd0knf",
+      "jgx8sur7w4k93mql",
+      "q63jn0kbrrb6t3ea",
+      "tkjnm3lw7ni82tag",
+      "v2vylzr1sxk2em93",
+      "wh9zc2reqneafxro"
+    ],
+    "3": [
+      "1vh2ewwvzvxunoxk",
+      "55yke7az6gco0tyn",
+      "ay8nnkkegcb1zfb0",
+      "gfpijdqnckv9i34s",
+      "kjke96zd1j1jz48z",
+      "mjxpdh9jlmr92f1q",
+      "pbbzalvsxxhop3q3",
+      "q35l6m4pggb4y98v",
+      "v8cj29iz2ok4z694",
+      "wfa5wcs9pym2iq6c",
+      "y7i8c7lsu6pt8j4h"
+    ],
+    "4": [
+      "2p0gz8lgaowcojx1",
+      "5l72if837ynbu3gz",
+      "9ha7fyq951iijvt8",
+      "aqri3zf6mzgd4di6",
+      "cdedzw5d9ui73ua7",
+      "g1evszmk8wfgnsv5",
+      "knyako6zopc1chrv",
+      "lnqlbs0hrb7ta45d",
+      "pawbnw1nm4f0b98e",
+      "tziyew0s5ufahcmv",
+      "wcjlvlkpnjhx5pcf",
+      "wvpa1pt2gyh75g3x"
+    ],
+    "5": [
+      "4osvw3l6mq9unkec",
+      "bdyr9oebse6haser",
+      "evoz9r9n186nsjf0",
+      "fdg9goug5f6s1qtx",
+      "fijw9aq7ltt8w7j6",
+      "hd7ukybisvv7j5r6",
+      "l83djt5019ujasjh",
+      "rkkrwzflg6t9mx2v",
+      "ujo3w551azr3kran",
+      "wuxy7y7voivz3gza",
+      "y4b1zmhmsa0gvf06",
+      "yldjnorgbx4jsldz"
+    ],
+    "6": [
+      "361rc74674l3zt9a",
+      "a1jn7g374wcrb9mz",
+      "fnxgq54y02f6ri82",
+      "hd32fuc6e7j4isbn",
+      "hzkaqaa8n6ygwmub",
+      "ky8n4yzn6kc2cume",
+      "mf6k8tg8xu0wedoz",
+      "qf4bqjgeff1q4hjt",
+      "ukuyfbufbglbzfco"
+    ],
+    "7": [
+      "3bdfw5f15hwcxlth",
+      "8nnswcde15poheci",
+      "et3440o24hcgrfwl",
+      "g52zx1t1giteg5h1",
+      "kuaup99425ovuou0",
+      "mqrflbi6p6cltdze",
+      "v42t5kpxc8mvd615"
+    ],
+    "8": ["bbmd0fj17jsf5300", "h17ad4lpmphnospf", "j91n23p4tfjixp3s", "mkrjbrp57yfdqrx0"],
+    "9": ["o8jhvddxgunzx94i", "refg1teqkrdtxllg", "ursm11405zobemi3"]
+  },
+  "fire-elemental": {
+    "0": ["eg2gwmkpoaqljkzu"],
+    "1": ["0j43l3u9eqj5gvnp", "0li6cdx4qgwihry7", "lndeaqm2j2nvgm6p"],
+    "2": [
+      "0d756xyqhinsstas",
+      "1wnzvfrpl2gp829u",
+      "26vm5jhjkxpq1xm3",
+      "27c9726op3gzidra",
+      "6h3p3zr2hbrjea8k",
+      "ba8ur1roqmqxn0j5",
+      "jgx8sur7w4k93mql",
+      "lzos34s87qsc620l",
+      "q4ixxjb4v281g2xv",
+      "tkjnm3lw7ni82tag",
+      "wt8fih9q3once7vr"
+    ],
+    "3": [
+      "17iuomx6dc1h5cfx",
+      "184d4mq7yubz2qnq",
+      "1vh2ewwvzvxunoxk",
+      "6oq1wcryviik9ice",
+      "ay8nnkkegcb1zfb0",
+      "cjdhah1epnn4i6ft",
+      "mjxpdh9jlmr92f1q",
+      "o7er5j77wzgf84fc",
+      "q35l6m4pggb4y98v",
+      "sw043b79qfk3lj2e",
+      "xjv9gmx42uqn7d85"
+    ],
+    "4": [
+      "2p0gz8lgaowcojx1",
+      "5l72if837ynbu3gz",
+      "69ct5zzucwn62npo",
+      "8qligfr61kotnlwx",
+      "92hth51cs9oi0nfe",
+      "aqri3zf6mzgd4di6",
+      "cdedzw5d9ui73ua7",
+      "co28xtj01acamq9z",
+      "lnqlbs0hrb7ta45d",
+      "nfm6i9z9r3n2fku7",
+      "pawbnw1nm4f0b98e",
+      "ph3krpxerzptnwbl",
+      "sbp5rh42pqlsmzxn",
+      "vi5fko8sb8mxlk0i"
+    ],
+    "5": [
+      "2mhlwyddg7wk1it8",
+      "d3a93wcwatqhywqy",
+      "evoz9r9n186nsjf0",
+      "hd7ukybisvv7j5r6",
+      "nll8ip8348eti0ff",
+      "y4b1zmhmsa0gvf06",
+      "yldjnorgbx4jsldz"
+    ],
+    "6": [
+      "0cbreqkr1vp7meyi",
+      "hd32fuc6e7j4isbn",
+      "hzkaqaa8n6ygwmub",
+      "mf6k8tg8xu0wedoz",
+      "nk37t5em8q4v1djs",
+      "qf4bqjgeff1q4hjt",
+      "ydiw433eopef79r5"
+    ],
+    "7": [
+      "cm3l4h4mld9j8lar",
+      "et3440o24hcgrfwl",
+      "hfca2lb4tlmrzoxm",
+      "kuaup99425ovuou0",
+      "v42t5kpxc8mvd615"
+    ],
+    "8": ["bbmd0fj17jsf5300", "h17ad4lpmphnospf", "iq0as5470o8q9y39", "j91n23p4tfjixp3s"],
+    "9": ["qk3oeq4awbc1smjw", "ursm11405zobemi3", "xhzme0v6tjq95fg6"]
+  },
+  "metal-elemental": {
+    "0": ["24zg8a05hqum3e6j"],
+    "1": [
+      "0g0pgsbjns61ovln",
+      "33pe0bge7b7aq3io",
+      "48nw971qka3wgeui",
+      "a6vrmpywwpg4dpwx",
+      "cvv6oimqks9n62vy",
+      "hmqkmh2d5no4nprp",
+      "hqorwsybk8u2wrd7"
+    ],
+    "2": [
+      "22xn589bmr7ginow",
+      "5rwjrf2ojhc9b0sx",
+      "66pt5ntiacbzsuov",
+      "ec2zmvdzi4m3puh4",
+      "q63jn0kbrrb6t3ea",
+      "ryr9ng43nvcwv4ml",
+      "uk340huvgyg1z8yh",
+      "vhfj5bkt9hmgvh9p",
+      "x23pz2agjub1eh89"
+    ],
+    "3": [
+      "2h33n1q61h3yhu06",
+      "3b1x69kfhnsa2d54",
+      "3p5s2rkpe7u7ifzn",
+      "9smnjoxx4y6bb6iz",
+      "bbrkkjmgo5kof6gn",
+      "m84969gni5iu4bdt",
+      "vjnynvz1omleni8a",
+      "zq7xi7l5vgpqu7rt"
+    ],
+    "4": [
+      "09ug139wqsyr0lu6",
+      "1yt3bidqyhkdf6a1",
+      "bacuzpculp9tld48",
+      "kaqoed3i78k02n6r",
+      "knyako6zopc1chrv"
+    ],
+    "5": [
+      "7xrhh9ima7jqtegg",
+      "954iw1i71kdsanjv",
+      "b8lt1275mz4ez4d8",
+      "fhary5oz1t4uhc2l",
+      "rhlv5ckupqn127i9",
+      "wp6qm9gnjxoqww4h",
+      "ymn35wwseihya15d"
+    ],
+    "6": ["6vfauefzzmwl4az7", "fnxgq54y02f6ri82", "mcoji0jbqaodr4fd", "sxyiwj0z95piv96i"],
+    "7": ["1jeheeuzvfy1el9u", "cqjtlth3uqafuwnn", "g52zx1t1giteg5h1", "xa4xvoswgiq54zzn"],
+    "8": ["5dqqieb7vr4ated0", "5if5rln4qlsccrbn", "f7gaaxcschrg2r0q", "mkrjbrp57yfdqrx0"],
+    "9": ["oeemcnfjod9zd7my", "xhzme0v6tjq95fg6", "xnaypubwvslrof5d"]
+  },
+  "void-elemental": {
+    "0": ["o8ds5jtvf0hf92dw"],
+    "1": ["54x9nw6ni4rpphcn", "hqorwsybk8u2wrd7", "sz7j540uypmqqvti", "xco22162bwgxn7pj"],
+    "2": [
+      "00wyen2uho8firph",
+      "835n5zqjvh3dybwq",
+      "9hi94t05i449j5ul",
+      "b8vp8fgt1o6pq1qc",
+      "g17ayjso7j8s8l2l",
+      "j9qpy0d585f8lpm4",
+      "nokru6mxk9p3r513",
+      "oylikodnyku2zewu",
+      "v8czhud6wpmc9esu",
+      "y71mqkh49c6lfgec"
+    ],
+    "3": [
+      "2dc7e9wby8qpi6m0",
+      "6kmkxepwgsbta6ui",
+      "awia42zci8nufpfl",
+      "bp1j6n5r1lsok3kf",
+      "gmgwyjfpeuuc4t4o",
+      "s7jujnadsgd9sroc"
+    ],
+    "4": ["2mh7g81k30bv7b5m", "jsvjsax2eabrlx8g", "ni93l43asrq29ytd"],
+    "5": [
+      "b8lt1275mz4ez4d8",
+      "dlmeq0hpxfbjtibb",
+      "ptqu8gtrujxsvwy1",
+      "rxk9rk8gvqau3f3l",
+      "zuqlok69lapqc6lg"
+    ],
+    "6": ["7b04vuc86ivh51tr", "b5mz8voksps5g4yq", "e5kw4dwf9qwty6tl", "jbqo4o2b2tmdz7wv"],
+    "7": ["5cdmojmydhwowzy1", "aqeaxoaozlv9vg35", "bvsi2gzhq49mmt2f"],
+    "8": ["003tu19dpyoaj0se", "2vb5orfcy57lrfmc", "blvetbc929cfx4m8", "i9greyz3c0ap32vi"],
+    "9": ["19p4nr8rsvt42lmn", "7mstq5c76h3e6zzx", "vl7yer8k1leyuxld"]
+  },
+  "water-elemental": {
+    "0": ["n879x6fw79jiofew"],
+    "1": [
+      "Q1SwHEAnMZpQDN3W",
+      "be8yiccvifj38hd1",
+      "dpdfv4rvj5quxo7e",
+      "ohy0ty2dawfaaqwd",
+      "rps3ryz3fwtjv18e",
+      "ts50hpvkdgerfp1a",
+      "tuh5vc2bojaws3ig",
+      "wn45wjbebnbtdllt"
+    ],
+    "2": [
+      "10nnddmxvgxo78og",
+      "26vm5jhjkxpq1xm3",
+      "3fkwj6d8s65ufwar",
+      "7fvsn0gbv6ynlp63",
+      "NnbDuJ1RbfbuiiY0",
+      "ba8ur1roqmqxn0j5",
+      "cb2svqlo50o2gd6k",
+      "g33euis7yi9pwddy",
+      "jgx8sur7w4k93mql",
+      "tkjnm3lw7ni82tag",
+      "ue0h9b1fl21m8lzy",
+      "wifi44l62ymqdvt8"
+    ],
+    "3": [
+      "1vh2ewwvzvxunoxk",
+      "478jgozgfbt20u0q",
+      "7m5us8d4a9lwh1ap",
+      "a4z9yazsd7ez1p0h",
+      "ay8nnkkegcb1zfb0",
+      "mjxpdh9jlmr92f1q",
+      "q35l6m4pggb4y98v",
+      "qnp4eosajai8s3sf"
+    ],
+    "4": [
+      "2p0gz8lgaowcojx1",
+      "499phaxpgce53z6q",
+      "5l72if837ynbu3gz",
+      "BcZC63EPa8AuJBdq",
+      "UBp9cManySiQEhQD",
+      "aqri3zf6mzgd4di6",
+      "cdedzw5d9ui73ua7",
+      "g0q8c0ni0rvipjpn",
+      "ijui94bv4uzu8awb",
+      "pawbnw1nm4f0b98e",
+      "t1uhggjfimtabp4v"
+    ],
+    "5": [
+      "evoz9r9n186nsjf0",
+      "hd7ukybisvv7j5r6",
+      "im8z5kfg8ohowie9",
+      "jjjy56tcyfq8wa9g",
+      "nll8ip8348eti0ff",
+      "pkm8um5t1cxsn6jh",
+      "y4b1zmhmsa0gvf06",
+      "yldjnorgbx4jsldz"
+    ],
+    "6": [
+      "4SkqICrRfq3BYu2j",
+      "h4nlrm44ubsyzuhz",
+      "hd32fuc6e7j4isbn",
+      "mf6k8tg8xu0wedoz",
+      "o2y1z1uh1nja3jd2",
+      "ol05jfb606v0lzj9",
+      "qf4bqjgeff1q4hjt",
+      "z20pbbpjqkxnltts"
+    ],
+    "7": [
+      "578t0lra5ll3aifs",
+      "et3440o24hcgrfwl",
+      "kuaup99425ovuou0",
+      "ljz85cb6CjZbUD71",
+      "qubzqiz5mqs8tbqr",
+      "tpid8izzs2rrfxv3",
+      "v42t5kpxc8mvd615"
+    ],
+    "8": [
+      "8jq1atxonnerix55",
+      "bbmd0fj17jsf5300",
+      "e8zen5nzixnt7bde",
+      "j91n23p4tfjixp3s",
+      "o4rwtizvdj7216qd"
+    ],
+    "9": ["ezpm33cvtlq8aswa", "ltda70etgwje43x6", "refg1teqkrdtxllg", "ursm11405zobemi3"]
+  },
+  "wood-elemental": {
+    "0": ["ip9onjfp6nf1vlv9"],
+    "1": [
+      "1n5lzg61yjkv64wa",
+      "7k5ypftnzy9r7mzz",
+      "8jqq8kxdzx01ogl9",
+      "lbwaw6pjcdnfp58p",
+      "nju9j6zlv9sbiznw",
+      "nkd3xocluvt1rovu",
+      "pumqlg17ixbjp6s3",
+      "tjog6bufg5b08lvq"
+    ],
+    "2": [
+      "00wyen2uho8firph",
+      "2nn2tshkn4p7k25l",
+      "835n5zqjvh3dybwq",
+      "j9qpy0d585f8lpm4",
+      "ns8jbp0ilbvbvuif",
+      "q2z1tw7ehj8684yw",
+      "tjy5bd336mq43wum",
+      "v8czhud6wpmc9esu",
+      "zrwk56c6gl27zwfx"
+    ],
+    "3": [
+      "6ho3wsspkqkhypt0",
+      "acjpqe8vchvzt5rl",
+      "cdaib7n0z1tv1qpq",
+      "fe8jy0h1l3su2322",
+      "m1rmcpcaixcpz9ib",
+      "rifw5peupd2hjtq9",
+      "xhd6734dulevnwef"
+    ],
+    "4": [
+      "4gxx3bodf76e63en",
+      "a2y1yf0a4jy3610w",
+      "jsvjsax2eabrlx8g",
+      "nk37t5em8q4v1djs",
+      "rl2548va6asfnhig",
+      "smbkd2yobhshbpqf",
+      "tvhm9lzgnjlcucsn",
+      "w8v617tw8wjlcl53"
+    ],
+    "5": [
+      "82vi1xife3nlu8a0",
+      "9s5oseou738k2qif",
+      "d0d86z521shpman1",
+      "lf7xf41mmcdaaxzb",
+      "rxk9rk8gvqau3f3l",
+      "wi9uvm8p12qvq616",
+      "y653mq8kmma3kg3w",
+      "zuqlok69lapqc6lg"
+    ],
+    "6": [
+      "6x6epf4g5wgzl1gh",
+      "eg3i21asvo69mbma",
+      "ik4riccm7tozdwox",
+      "li8zwqjorsww6o82",
+      "xlch97n99ea0pog6",
+      "z8hhy7qitegvb7a4"
+    ],
+    "7": [
+      "578t0lra5ll3aifs",
+      "7hakpmv7enojm4jg",
+      "ed0epy1pofukpgm6",
+      "eqrqv2ofspk574d3",
+      "sheso071mxbywlah"
+    ],
+    "8": ["3fravqa4vrm4ygkr", "q2r6jrgsbwjgssdg", "xlzqpkl8fpm3sn4u"],
+    "9": ["080el1lfozrhf6c2", "9fd7mcoint902oyb", "lun2gymejsmkjg4g", "szzwom7utm3sm15z"]
+  }
+}

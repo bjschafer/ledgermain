@@ -6,12 +6,13 @@ import { setWizardSchool } from "../../model/doc.js";
 import {
   ELEMENTAL_SCHOOL_LABELS,
   ELEMENTAL_SCHOOL_TAGS,
+  isElementalSchoolTag,
   SCHOOL_LABELS,
   SCHOOL_TAGS,
 } from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
-import { OppositionPicker } from "./OppositionPicker.js";
+import { ElementalOppositionPicker, OppositionPicker } from "./OppositionPicker.js";
 import { Caret } from "../Caret.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -44,7 +45,7 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
 
   const chosen = doc.build.wizardSchool ?? "";
   const school = schoolByTag.get(chosen || "uni");
-  const isElemental = (ELEMENTAL_SCHOOL_TAGS as string[]).includes(chosen);
+  const isElemental = isElementalSchoolTag(chosen);
   const chosenLabel = isElemental
     ? ELEMENTAL_SCHOOL_LABELS[chosen as ElementalSchoolTag]
     : chosen
@@ -77,8 +78,8 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
             school, and must pick two opposition schools. A Universalist gains no bonus slot — their
             compensation is arcane-school powers (Hand of the Apprentice, Metamagic Mastery),
             granted below and in Class Features regardless of which school you pick. An elemental
-            school (APG variant rule) grants its own powers the same way, but its bonus-slot spell
-            list and single-element opposition aren't tracked here yet — see its description below.
+            school (APG variant rule) works the same way, except its bonus slot draws from the
+            school's own spell list and it opposes a single element rather than two schools.
           </p>
           <select
             className="school-select"
@@ -86,7 +87,11 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
             onChange={(e) => {
               const value = e.target.value;
               update((d) =>
-                setWizardSchool(d, value ? (value as WizardSchoolTag | ElementalSchoolTag) : null),
+                setWizardSchool(
+                  d,
+                  value ? (value as WizardSchoolTag | ElementalSchoolTag) : null,
+                  refData,
+                ),
               );
             }}
           >
@@ -110,6 +115,7 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
           {chosen && chosen !== "uni" && !isElemental && (
             <OppositionPicker doc={doc} update={update} />
           )}
+          {isElemental && <ElementalOppositionPicker doc={doc} school={school} update={update} />}
 
           {school?.description && (
             <div className="domain-description">

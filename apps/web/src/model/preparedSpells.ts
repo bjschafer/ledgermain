@@ -18,6 +18,7 @@ import type { AppliedMetamagic, CharacterDoc, PreparedSpell, RefData, Spell } fr
 import {
   casterClassesOf,
   casterModelFor,
+  isElementalSchoolTag,
   knownSpellsFor,
   setKnownSpellsFor,
   storedClassTag,
@@ -319,30 +320,61 @@ export function domainSpellLevelMap(
 // ---------------------------------------------------------------------------
 
 /**
+ * Every spell id on an elemental school's bonus-slot list, flattened across
+ * levels. Empty for a standard school tag or an unvendored one.
+ */
+function elementalSchoolSpellIds(refData: RefData, tag: string): Set<string> {
+  const out = new Set<string>();
+  for (const ids of Object.values(refData.elementalSchoolSpellLists[tag] ?? {})) {
+    for (const id of ids) out.add(id);
+  }
+  return out;
+}
+
+/**
+ * True when `spell` is on the wizard's specialty school list: `spell.school ===
+ * build.wizardSchool` for a standard school, or membership in
+ * `refData.elementalSchoolSpellLists` for an elemental one (whose spells span
+ * many `Spell.school` values — see `ElementalSchoolTag`).
+ */
+function isInSchoolList(spell: Spell, school: string, refData: RefData): boolean {
+  return isElementalSchoolTag(school)
+    ? elementalSchoolSpellIds(refData, school).has(spell.id)
+    : spell.school === school;
+}
+
+/**
  * True when `spell` may be prepared in the wizard's bonus school slot: it must
- * match the wizard's specialty school (`spell.school === build.wizardSchool`)
- * AND already be in the wizard's spellbook (`build.spells.known`, or its
- * `byClass["wizard"]` list for a multiclass wizard who isn't the primary
- * caster class — see `model/spellcasting.ts` `knownSpellsFor`) — PF1 RAW, the
- * bonus slot is not a free pick from the whole school, only from spells the
- * wizard has actually learned. Always false for a Universalist or when no
- * school is chosen — Universalists get no bonus school slot (PF1 RAW
- * correction: their compensation is arcane-school powers, deferred to Stage 4).
+ * be on the specialty school's list (see {@link isInSchoolList}) AND already be
+ * in the wizard's spellbook (`build.spells.known`, or its `byClass["wizard"]`
+ * list for a multiclass wizard who isn't the primary caster class — see
+ * `model/spellcasting.ts` `knownSpellsFor`) — PF1 RAW, the bonus slot is not a
+ * free pick from the whole school, only from spells the wizard has actually
+ * learned. Always false for a Universalist or when no school is chosen —
+ * Universalists get no bonus school slot (PF1 RAW correction: their
+ * compensation is arcane-school powers, deferred to Stage 4).
  */
 export function isSchoolSlotEligible(spell: Spell, doc: CharacterDoc, refData: RefData): boolean {
   const school = doc.build.wizardSchool;
   if (!school || school === "uni") return false;
-  if (spell.school !== school) return false;
+  if (!isInSchoolList(spell, school, refData)) return false;
   return knownSpellsFor(doc, refData, "wizard").includes(spell.id);
 }
 
 /**
- * How many normal slots preparing `spell` costs: 1 normally, 2 when
- * `spell.school` is one of the wizard's chosen opposition schools (PF1 RAW —
- * opposition-school spells always count double against the daily prepared
- * limit). Non-wizards (no `wizardOppositionSchools` set) always cost 1.
+ * How many normal slots preparing `spell` costs: 1 normally, 2 when it's
+ * opposed (PF1 RAW — opposition spells always count double against the daily
+ * prepared limit). A standard specialist opposes two schools by `spell.school`
+ * (`build.wizardOppositionSchools`); an elemental specialist opposes a single
+ * element (`build.wizardOppositionElement`), whose spells are its own
+ * bonus-slot list rather than a `Spell.school` value. Non-wizards (neither
+ * field set) always cost 1.
  */
-export function oppositionCost(spell: Spell, doc: CharacterDoc): number {
+export function oppositionCost(spell: Spell, doc: CharacterDoc, refData: RefData): number {
+  const element = doc.build.wizardOppositionElement;
+  if (element && isElementalSchoolTag(doc.build.wizardSchool)) {
+    return elementalSchoolSpellIds(refData, element).has(spell.id) ? 2 : 1;
+  }
   const opposition = doc.build.wizardOppositionSchools ?? [];
   if (opposition.length === 0) return 1;
   return spell.school && opposition.includes(spell.school) ? 2 : 1;

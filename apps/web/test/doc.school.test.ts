@@ -1,10 +1,20 @@
 /**
  * Unit tests for Stage 2 (wizard specialization schools) additions to
- * model/doc.ts: `setWizardSchool` and `setWizardOppositionSchools`.
+ * model/doc.ts: `setWizardSchool`, `setWizardOppositionSchools` and
+ * `setWizardOppositionElement`.
  */
 import { describe, expect, it } from "bun:test";
 
-import { createEmptyDoc, setWizardOppositionSchools, setWizardSchool } from "../src/model/doc.js";
+import { loadRefData } from "@pf1/data-pipeline";
+
+import {
+  createEmptyDoc,
+  setWizardOppositionElement,
+  setWizardOppositionSchools,
+  setWizardSchool,
+} from "../src/model/doc.js";
+
+const ref = loadRefData();
 
 function doc() {
   return createEmptyDoc("t");
@@ -44,12 +54,50 @@ describe("setWizardSchool()", () => {
     expect(doc().build.wizardSchool).toBeUndefined();
   });
 
-  it("sets an elemental school tag, leaving opposition schools alone", () => {
+  it("an elemental school clears the two-school opposition (it opposes one element instead)", () => {
     let d = setWizardSchool(doc(), "evo");
     d = setWizardOppositionSchools(d, ["enc", "nec"]);
-    d = setWizardSchool(d, "air-elemental");
+    d = setWizardSchool(d, "air-elemental", ref);
     expect(d.build.wizardSchool).toBe("air-elemental");
-    expect(d.build.wizardOppositionSchools).toEqual(["enc", "nec"]);
+    expect(d.build.wizardOppositionSchools).toEqual([]);
+  });
+
+  it("an elemental school with one fixed opposite sets it; a choice leaves it unset", () => {
+    expect(setWizardSchool(doc(), "air-elemental", ref).build.wizardOppositionElement).toBe(
+      "earth-elemental",
+    );
+    // Earth opposes Air (APG) or Wood (UM) — the player picks.
+    expect(
+      setWizardSchool(doc(), "earth-elemental", ref).build.wizardOppositionElement,
+    ).toBeUndefined();
+  });
+
+  it("switching back to a standard school clears the opposition element", () => {
+    let d = setWizardSchool(doc(), "air-elemental", ref);
+    d = setWizardSchool(d, "evo", ref);
+    expect(d.build.wizardOppositionElement).toBeUndefined();
+  });
+
+  it("without refData an elemental pick still clears opposition, just auto-selects nothing", () => {
+    const d = setWizardSchool(doc(), "air-elemental");
+    expect(d.build.wizardSchool).toBe("air-elemental");
+    expect(d.build.wizardOppositionElement).toBeUndefined();
+  });
+});
+
+describe("setWizardOppositionElement()", () => {
+  it("sets and clears the opposed element", () => {
+    let d = setWizardOppositionElement(
+      setWizardSchool(doc(), "void-elemental", ref),
+      "fire-elemental",
+    );
+    expect(d.build.wizardOppositionElement).toBe("fire-elemental");
+    d = setWizardOppositionElement(d, null);
+    expect(d.build.wizardOppositionElement).toBeUndefined();
+  });
+
+  it("a fresh document has no opposition element set", () => {
+    expect(doc().build.wizardOppositionElement).toBeUndefined();
   });
 });
 

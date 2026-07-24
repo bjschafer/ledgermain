@@ -59,6 +59,8 @@ import {
 } from "./transform/archetypes.js";
 import { transformBuff } from "./transform/buffs.js";
 import {
+  normalizeElementalSpellName,
+  parseElementalSpellEntries,
   transformClass,
   transformClassFeature,
   transformDomain,
@@ -458,17 +460,48 @@ export function normalize(opts: NormalizeOptions): {
   // Keeping any spell with a non-empty domain/subdomain entry lets us invert a
   // per-domain spell list for clerics.
   const spellListTags = new Set<string>(SLICE.spellListClassTags);
+  const allSpells: Spell[] = readPack(join(packsDir, "spells"))
+    .filter((pf) => pf.doc.type === "spell")
+    .map((pf) => transformSpell(pf.doc, resolveUuid));
+
+  // --- elemental wizard school bonus-slot spell lists ------------------------
+  // Resolved by NAME against every transformed spell (not just the slice): the
+  // source lists these as free-text prose rather than `@UUID` links, so this
+  // has to happen after `transformSpell` but before the slice filter below,
+  // which retains whatever the lists reference.
+  const spellIdByElementalName = new Map<string, string>();
+  for (const spell of allSpells) {
+    const key = normalizeElementalSpellName(spell.name);
+    if (!spellIdByElementalName.has(key)) spellIdByElementalName.set(key, spell.id);
+  }
+  const resolveElementalSpellName = (name: string) =>
+    spellIdByElementalName.get(normalizeElementalSpellName(name));
+  const elementalSchoolSpellRefs = new Map<string, { level: number; spellId: string }[]>();
+  for (const doc of elementalSchoolDocs) {
+    const school = wizardSchools.find((s) => s.id === doc._id);
+    if (!school) continue;
+    elementalSchoolSpellRefs.set(
+      school.tag,
+      parseElementalSpellEntries(rawDescriptionHtml(doc), resolveElementalSpellName),
+    );
+  }
+  const elementalSchoolSpellIds = new Set<string>();
+  for (const entries of elementalSchoolSpellRefs.values()) {
+    for (const e of entries) elementalSchoolSpellIds.add(e.spellId);
+  }
+
   const spells: Spell[] = [];
-  for (const pf of readPack(join(packsDir, "spells"))) {
-    if (pf.doc.type !== "spell") continue;
-    const spell = transformSpell(pf.doc, resolveUuid);
+  for (const spell of allSpells) {
     const hasClass = Object.keys(spell.learnedAt.class).some((t) => spellListTags.has(t));
     const hasDomain =
       Object.keys(spell.learnedAt.domain ?? {}).length > 0 ||
       Object.keys(spell.learnedAt.subdomain ?? {}).length > 0;
     const hasBloodline = Object.keys(spell.learnedAt.bloodline ?? {}).length > 0;
     const hasDruidDomain = druidDomainSpellIds.has(spell.id);
-    if (hasClass || hasDomain || hasBloodline || hasDruidDomain) spells.push(spell);
+    const hasElementalSchool = elementalSchoolSpellIds.has(spell.id);
+    if (hasClass || hasDomain || hasBloodline || hasDruidDomain || hasElementalSchool) {
+      spells.push(spell);
+    }
   }
   // Attach `@cl`-keyed projectile counts to the multi-projectile spells whose
   // count scales in prose, not their damage formula (Magic Missile, Scorching
@@ -550,6 +583,21 @@ export function normalize(opts: NormalizeOptions): {
     }
     for (const lvl of Object.keys(list)) list[Number(lvl)]!.sort();
     if (Object.keys(list).length > 0) druidDomainSpellLists[tag] = list;
+  }
+
+  // --- per-elemental-school bonus-slot spell lists (parsed above) ------------
+  // Every referenced spell survived the slice by construction (the filter
+  // retains them), so nothing needs dropping here — unlike the druid domains,
+  // whose refs are `@UUID`s that may point outside the vendored content.
+  const elementalSchoolSpellLists: Record<string, SpellList> = {};
+  for (const [tag, entries] of elementalSchoolSpellRefs) {
+    const list: SpellList = {};
+    for (const { level, spellId } of entries) {
+      const ids = (list[level] ??= []);
+      if (!ids.includes(spellId)) ids.push(spellId);
+    }
+    for (const lvl of Object.keys(list)) list[Number(lvl)]!.sort();
+    if (Object.keys(list).length > 0) elementalSchoolSpellLists[tag] = list;
   }
 
   // --- per-bloodline spell lists (invert learnedAt.bloodline) -----------------
@@ -822,6 +870,7 @@ export function normalize(opts: NormalizeOptions): {
     subdomainSpellLists: Object.keys(subdomainSpellLists).length,
     druidDomains: druidDomains.length,
     druidDomainSpellLists: Object.keys(druidDomainSpellLists).length,
+    elementalSchoolSpellLists: Object.keys(elementalSchoolSpellLists).length,
     wizardSchools: wizardSchools.length,
     ragePowers: ragePowers.length,
     hexes: hexes.length,
@@ -894,6 +943,7 @@ export function normalize(opts: NormalizeOptions): {
     subdomainSpellLists,
     druidDomains: byId(druidDomains),
     druidDomainSpellLists,
+    elementalSchoolSpellLists,
     wizardSchools: byId(wizardSchools),
     ragePowers: byId(ragePowers),
     hexes: byId(hexes),

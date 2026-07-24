@@ -11,12 +11,10 @@ export type WizardSchoolTag = "abj" | "con" | "div" | "enc" | "evo" | "ill" | "n
 /**
  * An elemental arcane school tag (APG's elemental-school variant rule, `WizardSchool`
  * doc comment): a wizard may specialize in one of these instead of a standard
- * `WizardSchoolTag`. These are NOT `Spell.school` values — the source models each
- * elemental school's bonus-slot spell list as free-text spell names, not
- * `@UUID`-linked entries, so unlike the standard schools it can't be derived into a
- * `Spell.school`-matchable set (see `WizardSchool` doc comment); the bonus slot
- * mechanic (`spell.school === build.wizardSchool`) simply finds nothing for an
- * elemental pick today.
+ * `WizardSchoolTag`. These are NOT `Spell.school` values — an elemental school's
+ * bonus-slot spell list is an explicit set of spell ids
+ * (`RefData.elementalSchoolSpellLists`) resolved by name from its description
+ * prose, not a `Spell.school` match.
  */
 export type ElementalSchoolTag =
   | "air-elemental"
@@ -192,34 +190,45 @@ export interface CharacterDoc {
      * Wizard specialization school tag. One of the eight PF1 schools
      * ("abj","con","div","enc","evo","ill","nec","trs"), "uni" (Universalist —
      * no opposition schools, no bonus slot), or an `ElementalSchoolTag` (an
-     * elemental school in place of a standard one — see its doc comment for
-     * why the bonus-slot mechanic doesn't resolve any spells for those yet).
-     * Free-choice; the vendored Foundry data has no per-school mapping of
-     * *spell-slot* effects (that part is still hand-authored). Default
-     * undefined = Universalist (back-compat: existing wizard docs load as
-     * Universalist).
+     * elemental school in place of a standard one). Free-choice; the vendored
+     * Foundry data has no per-school mapping of *spell-slot* effects (that
+     * part is still hand-authored). Default undefined = Universalist
+     * (back-compat: existing wizard docs load as Universalist).
      *
      * A specialist (any non-"uni" tag) gains one bonus prepared slot per
      * accessible spell level 1–9 (rendered with `PreparedSpell.kind ===
      * "school"`), exclusive to spells of that school, plus two opposition
-     * schools (see `wizardOppositionSchools`) — elemental schools instead
-     * pick a single elemental opposition, not modeled here (builder skips
-     * rendering the opposition picker for an elemental choice). A
-     * Universalist gains NO bonus slot (PF1 RAW — their compensation is
-     * school powers). School powers (Hand of the Apprentice, Intense Spells,
-     * etc., for every school including Universalist and the elemental
-     * schools) ARE vendored and granted via `refData.wizardSchools` /
-     * `collectGrantedFeatures` in `@pf1/engine` — `undefined` here resolves
-     * to Universalist for power-granting too.
+     * schools (see `wizardOppositionSchools`) — an elemental specialist draws
+     * that slot from `refData.elementalSchoolSpellLists` instead and opposes a
+     * single element (see `wizardOppositionElement`). A Universalist gains NO
+     * bonus slot (PF1 RAW — their compensation is school powers). School
+     * powers (Hand of the Apprentice, Intense Spells, etc., for every school
+     * including Universalist and the elemental schools) ARE vendored and
+     * granted via `refData.wizardSchools` / `collectGrantedFeatures` in
+     * `@pf1/engine` — `undefined` here resolves to Universalist for
+     * power-granting too.
      */
     wizardSchool?: WizardSchoolTag | ElementalSchoolTag;
     /**
      * Two opposition school tags for a specialist wizard; empty/omitted for
      * Universalist. Opposition-school spells cost two normal slots to prepare
      * (PF1 RAW). Free-choice (no school-vs-opposition validation — soft-warning
-     * posture, matching the cleric domain free-choice policy).
+     * posture, matching the cleric domain free-choice policy). Unused by an
+     * elemental specialist, which opposes one element instead — see
+     * `wizardOppositionElement`.
      */
     wizardOppositionSchools?: string[];
+    /**
+     * The single opposed element of an elemental specialist wizard, in place of
+     * the two `wizardOppositionSchools` a standard specialist takes. Spells on
+     * the opposed element's own bonus-slot list
+     * (`refData.elementalSchoolSpellLists`) cost two normal slots to prepare.
+     * Constrained by the chosen school's `WizardSchool.oppositionOptions` —
+     * set automatically when a school has one fixed opposite, picked by the
+     * player when it offers a choice. Ignored for a standard/Universalist
+     * school.
+     */
+    wizardOppositionElement?: ElementalSchoolTag;
     /**
      * Arcane bond chosen at L1 by wizards (some sorcerer archetypes also bond —
      * that gate is deferred; the picker renders for wizards only in v1). A
@@ -2038,10 +2047,12 @@ export interface PreparedSpell {
    * may only be prepared in a domain slot and vice versa). `"school"` is a
    * specialist wizard's bonus school slot (one per accessible spell level
    * 1–9), exclusive to spells whose `Spell.school` matches `build.wizardSchool`
-   * — never granted to a Universalist. A `"normal"`-kind spell whose school is
-   * one of `build.wizardOppositionSchools` costs two normal slots to prepare
-   * (PF1 RAW), accounted for in `model/preparedSpells.oppositionCost`, not by
-   * a distinct `kind`.
+   * (or, for an elemental specialist, spells on that school's
+   * `refData.elementalSchoolSpellLists` entry) — never granted to a
+   * Universalist. A `"normal"`-kind spell opposed by the wizard's choice
+   * (`build.wizardOppositionSchools`, or `build.wizardOppositionElement`'s
+   * spell list) costs two normal slots to prepare (PF1 RAW), accounted for in
+   * `model/preparedSpells.oppositionCost`, not by a distinct `kind`.
    */
   kind?: "normal" | "domain" | "school";
   /**
