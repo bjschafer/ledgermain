@@ -1121,6 +1121,42 @@ describe("compute: armor & shield enhancement bonuses to AC", () => {
   });
 });
 
+describe("compute: flat-footed AC keeps a Dex PENALTY (loses only the bonus)", () => {
+  it("unarmored, Dex 6 (mod -2): flat-footed equals normal AC, not the un-penalized base", () => {
+    const d = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      abilities: { str: 10, dex: 6, con: 10, int: 10, wis: 10, cha: 10 },
+    });
+    const sheet = compute(d, ref);
+    expect(sheet.ac.normal).toBe(8); // 10 - 2 dex
+    // Flat-footed AC can never exceed normal AC — a Dex bonus is lost, but a
+    // Dex penalty still applies.
+    expect(sheet.ac.flatFooted).toBe(8);
+  });
+});
+
+describe("compute: a shield's own max-Dex cap applies (not just armor's)", () => {
+  it("Tower Shield's maxDex 2 caps AC's Dex bonus", () => {
+    const gear: ItemInstance[] = [
+      {
+        equipped: true,
+        name: "Tower Shield",
+        armor: { slot: "shield", ac: 4, maxDex: 2, acp: -10 },
+      },
+    ];
+    const d = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      abilities: { str: 10, dex: 20, con: 10, int: 10, wis: 10, cha: 10 },
+      gear,
+    });
+    const sheet = compute(d, ref);
+    // 10 + shield4 + capped-dex(2, uncapped would be 5) = 16
+    expect(sheet.ac.normal).toBe(16);
+    const dexComponent = sheet.ac.components.find((c) => c.category === "dex");
+    expect(dexComponent?.value).toBe(2);
+  });
+});
+
 describe("compute: maxHpOverride", () => {
   const base = makeDoc({
     classes: [{ tag: "barbarian", level: 1 }],

@@ -77,6 +77,9 @@ export function resolveTwf(
 export function offHandAbilityDelta(atk: ResolvedWeaponAttack, multiplier: 0.5 | 1): number {
   const mod = atk.damageAbilityMod;
   if (mod === undefined) return 0;
-  const applied = Math.floor(mod * (atk.damageMultiplier ?? 1));
-  return Math.floor(mod * multiplier) - applied;
+  // Multipliers scale a BONUS only — a penalty always applies in full,
+  // matching the engine's weapon-damage rule.
+  const scaled = (mult: number) => (mod >= 0 ? Math.floor(mod * mult) : mod);
+  const applied = scaled(atk.damageMultiplier ?? 1);
+  return scaled(multiplier) - applied;
 }

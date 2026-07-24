@@ -117,6 +117,39 @@ describe("size: Reduce Person (-1 size step) shifts AC/attack/CMB/CMD the other 
   });
 });
 
+describe("size: Tiny or smaller substitutes Dex for Str in CMB only (CRB p.199)", () => {
+  // Medium -> Tiny is a 2-step reduction (med, lg, ... index 4; tiny index 2).
+  const shrinkToTiny: ActiveBuff = {
+    instanceId: "buff-tiny",
+    name: "Shrink to Tiny",
+    changes: [{ target: "size", type: "untyped", formula: "-2" }],
+  };
+  const sheet = compute(makeDoc([shrinkToTiny]), ref);
+
+  it("CMB uses Dex (2) instead of Str (3): BAB(1) + DEX(2) + specialSize(-2) = 1", () => {
+    expect(sheet.cmb).toBe(1);
+  });
+
+  it("CMD keeps using Str — the Dex-for-Str swap is CMB-only: 10 + BAB(1) + STR(3) + DEX(2) + specialSize(-2) = 14", () => {
+    expect(sheet.cmd).toBe(14);
+  });
+});
+
+describe("size: Small (not Tiny-or-smaller) still uses Str for CMB", () => {
+  // Reduce Person only shifts one step (Medium -> Small), which is above the
+  // Tiny-or-smaller threshold, so Str keeps governing CMB.
+  const reduceToSmall: ActiveBuff = {
+    instanceId: "buff-small",
+    name: "Reduce Person",
+    changes: [{ target: "size", type: "untyped", formula: "-1" }],
+  };
+  const sheet = compute(makeDoc([reduceToSmall]), ref);
+
+  it("CMB still uses Str: BAB(1) + STR(3) + specialSize(-1) = 3", () => {
+    expect(sheet.cmb).toBe(3);
+  });
+});
+
 describe("size: per-weapon attack lines pick up the shifted size mod too", () => {
   const sword: WeaponInstance = {
     name: "Longsword",

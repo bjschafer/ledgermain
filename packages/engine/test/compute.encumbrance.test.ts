@@ -182,7 +182,7 @@ describe("compute: encumbrance enabled — heavy load", () => {
 });
 
 describe("compute: encumbrance combines with worn armor as 'more restrictive wins'", () => {
-  it("armor's tighter max-Dex cap (not the load's looser one) binds, and ACP is additive", () => {
+  it("armor's tighter max-Dex cap (not the load's looser one) binds, and ACP takes the worse of the two (not additive)", () => {
     const doc = makeDoc({
       ...FIGHTER,
       encumbranceEnabled: true,
@@ -199,14 +199,36 @@ describe("compute: encumbrance combines with worn armor as 'more restrictive win
     });
     const sheet = compute(doc, ref);
     expect(sheet.encumbrance?.tier).toBe("medium");
-    // Combined ACP: armor -4 + load -3 = -7.
-    expect(sheet.skills.acr!.acp).toBe(-7);
+    // RAW (CRB p.171): the worse of armor ACP (-4) and load ACP (-3) applies,
+    // not the sum — so -4, not -7.
+    expect(sheet.skills.acr!.acp).toBe(-4);
     // Combined max-Dex cap: min(3 armor, 3 load) = 3 — a tie. The load is
     // reported as (also) binding in this case (`<=`, not `<`), since it's
     // just as restrictive as the armor.
     const dexComponent = sheet.ac.components.find((c) => c.category === "dex");
     expect(dexComponent?.value).toBe(3);
     expect(dexComponent?.source).toBe("Dexterity (Medium load)");
+  });
+
+  it("the load's worse ACP wins over a lighter armor's ACP (worse-of, not additive)", () => {
+    const doc = makeDoc({
+      ...FIGHTER,
+      encumbranceEnabled: true,
+      gear: [
+        // Light armor: acp -1 only. Heavy load's own ACP (-6) is worse.
+        {
+          equipped: true,
+          name: "Studded Leather",
+          armor: { slot: "armor", ac: 3, maxDex: 5, acp: -1, type: 1, weight: 20 },
+        },
+        { equipped: true, name: "Treasure Chest", weight: 250 }, // heavy load: acp -6
+      ],
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.encumbrance?.tier).toBe("heavy");
+    expect(sheet.encumbrance?.acp).toBe(-6);
+    // Worse of armor(-1) and load(-6) is -6, not -7.
+    expect(sheet.skills.acr!.acp).toBe(-6);
   });
 
   it("the load's tighter cap wins over a looser armor cap", () => {

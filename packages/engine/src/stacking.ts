@@ -41,8 +41,40 @@ export interface StackResult {
  */
 const STACKING_TYPES = new Set(["dodge", "untyped", "circumstance", ""]);
 
+/**
+ * Of the stacking types above, `circumstance` is the one RAW carves an
+ * exception into: bonuses stack "unless from essentially the same source".
+ * Grouped by display-name `source` — the same "same source" convention
+ * `computeGrantedTempHp` (compute.ts) uses for temp HP, since two instances of
+ * the identical effect share a `source` string even when their `sourceId`s
+ * differ. Dodge/untyped bonuses have no such exception and always stack.
+ */
+const SAME_SOURCE_LIMITED_TYPES = new Set(["circumstance"]);
+
 function isStackingType(type: string): boolean {
   return STACKING_TYPES.has(type.toLowerCase());
+}
+
+/** Applies `m` against the current best-seen modifier for `key`, marking the loser unapplied. */
+function competeAgainstBest(
+  result: ResolvedModifier[],
+  best: Map<string, number>,
+  key: string,
+  m: ResolvedModifier,
+  idx: number,
+): void {
+  const bestIdx = best.get(key);
+  if (bestIdx === undefined) {
+    best.set(key, idx);
+    return;
+  }
+  const bestMod = result[bestIdx]!;
+  if (m.value > bestMod.value) {
+    bestMod.applied = false;
+    best.set(key, idx);
+  } else {
+    m.applied = false;
+  }
 }
 
 /**
@@ -50,27 +82,22 @@ function isStackingType(type: string): boolean {
  * total plus a per-modifier `applied` breakdown.
  */
 export function resolveStack(mods: TypedModifier[]): StackResult {
-  // Highest surviving bonus per non-stacking type. Track the winner's index so
-  // ties keep the first-seen modifier applied (deterministic).
+  // Highest surviving bonus per non-stacking type, and (separately) per
+  // same-source group within a same-source-limited stacking type. Track the
+  // winner's index so ties keep the first-seen modifier applied (deterministic).
   const bestByType = new Map<string, number>();
+  const bestBySource = new Map<string, number>();
   const result: ResolvedModifier[] = mods.map((m) => ({ ...m, applied: true }));
 
   result.forEach((m, idx) => {
-    // Penalties and stacking-type bonuses always apply.
-    if (m.value < 0 || isStackingType(m.type)) return;
-    const key = m.type.toLowerCase();
-    const bestIdx = bestByType.get(key);
-    if (bestIdx === undefined) {
-      bestByType.set(key, idx);
+    if (m.value < 0) return; // penalties always stack, regardless of type
+    const type = m.type.toLowerCase();
+    if (SAME_SOURCE_LIMITED_TYPES.has(type)) {
+      competeAgainstBest(result, bestBySource, `${type}|${m.source}`, m, idx);
       return;
     }
-    const best = result[bestIdx]!;
-    if (m.value > best.value) {
-      best.applied = false;
-      bestByType.set(key, idx);
-    } else {
-      m.applied = false;
-    }
+    if (isStackingType(type)) return; // dodge/untyped/"" bonuses always stack
+    competeAgainstBest(result, bestByType, type, m, idx);
   });
 
   const total = result.reduce((sum, m) => (m.applied ? sum + m.value : sum), 0);

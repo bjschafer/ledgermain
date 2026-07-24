@@ -242,6 +242,37 @@ describe("weapons: two-handed weapon applies 1.5× STR to damage", () => {
   });
 });
 
+describe("weapons: a Str PENALTY is never multiplied up or down (RAW: only a bonus scales)", () => {
+  // STR 5 -> mod -3.
+  it("two-handed (×1.5): damage is -3, not floor(-3 × 1.5) = -5", () => {
+    const greatsword: WeaponInstance = {
+      name: "Greatsword",
+      attackAbility: "str",
+      damageMultiplier: 1.5,
+      damageDice: "2d6",
+    };
+    const doc = makeDoc({ str: 5, dex: 14, con: 14, int: 10, wis: 12, cha: 8 }, [greatsword]);
+    const sheet = compute(doc, ref);
+    expect(sheet.attacks[0]!.damageBonus.total).toBe(-3);
+    const abilityComp = sheet.attacks[0]!.damageBonus.components.find((c) => c.type === "ability");
+    expect(abilityComp?.value).toBe(-3);
+    // Not actually scaled, so no "×" annotation on the label either.
+    expect(abilityComp?.source).not.toContain("×");
+  });
+
+  it("off-hand (×0.5): the ENTIRE penalty applies, not floor(-3 × 0.5) = -2", () => {
+    const offHandDagger: WeaponInstance = {
+      name: "Dagger (off-hand)",
+      attackAbility: "str",
+      damageMultiplier: 0.5,
+      damageDice: "1d4",
+    };
+    const doc = makeDoc({ str: 5, dex: 14, con: 14, int: 10, wis: 12, cha: 8 }, [offHandDagger]);
+    const sheet = compute(doc, ref);
+    expect(sheet.attacks[0]!.damageBonus.total).toBe(-3);
+  });
+});
+
 describe("weapons: +2 attack buff flows into per-weapon attack", () => {
   // Active buff targeting "attack" with +2 morale bonus
   const moraleBuff: ActiveBuff = {

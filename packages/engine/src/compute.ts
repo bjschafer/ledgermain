@@ -283,13 +283,17 @@ const FLAT_FOOTED_CATEGORIES: ReadonlySet<AcCategory> = new Set<AcCategory>([
 ]);
 
 /**
- * RAW: CMD benefits from these eight *named* AC bonus types (deflection,
+ * RAW: CMD benefits from these eight *named* AC BONUS types (deflection,
  * dodge, circumstance, insight, luck, morale, profane, sacred) in addition to
  * BAB/Str/Dex/size. Armor, shield, and natural-armor bonuses never apply.
  * Untyped/enhancement/racial/etc. AC bonuses are likewise excluded — a
  * vendored source that wants an untyped bonus to also affect CMD (e.g. a
  * monk's Wis-to-AC class feature) carries its own explicit `cmd`-target
  * change for that (see the CMB/CMD block in {@link compute}).
+ *
+ * This exclusion is for BONUSES only — "any penalties to a creature's AC
+ * also apply to its CMD" (CRB p.199) is unconditional, so an "ac" PENALTY
+ * (negative value) auto-applies to CMD regardless of its type, named or not.
  */
 const CMD_AC_TYPES: ReadonlySet<string> = new Set([
   "deflection",
@@ -366,9 +370,12 @@ function computeAc(
           source: `${label} (enhancement)`,
         });
       }
-      if (a.maxDex !== undefined) {
-        maxDexCap = maxDexCap === undefined ? a.maxDex : Math.min(maxDexCap ?? a.maxDex, a.maxDex);
-      }
+    }
+    // A tower shield's max-Dex cap binds the same as an armor's (RAW) — read
+    // regardless of slot, and combined as the worst (lowest) of every
+    // equipped piece that carries one.
+    if (a.maxDex !== undefined) {
+      maxDexCap = maxDexCap === undefined ? a.maxDex : Math.min(maxDexCap, a.maxDex);
     }
   }
   void armorTotal;
@@ -450,10 +457,19 @@ function computeAc(
   const sumWhere = (pred: (c: AcComponent) => boolean) =>
     components.reduce((s, c) => (c.applied && pred(c) ? s + c.value : s), 0);
 
+  // Flat-footed loses the Dex (and dodge) bonus to AC, but a Dex/dodge
+  // PENALTY still applies — flat-footed AC can never exceed normal AC. So a
+  // component outside FLAT_FOOTED_CATEGORIES still counts when it's negative.
+  const flatFooted = components.reduce(
+    (s, c) =>
+      c.applied && (FLAT_FOOTED_CATEGORIES.has(c.category) || c.value < 0) ? s + c.value : s,
+    0,
+  );
+
   return {
     normal: sumWhere(() => true),
     touch: sumWhere((c) => TOUCH_CATEGORIES.has(c.category)),
-    flatFooted: sumWhere((c) => FLAT_FOOTED_CATEGORIES.has(c.category)),
+    flatFooted,
     components,
   };
 }
@@ -755,9 +771,11 @@ function computeSkills(
   );
   const acpReduction = forTarget(collected, "acpA").reduce((s, m) => s + Math.abs(m.value), 0);
   // Encumbrance (issue #16, optional rule): a medium/heavy load imposes its
-  // own flat armor check penalty, additive with worn armor's ACP (PF1 RAW).
+  // own flat armor check penalty. RAW (CRB p.171, Carrying Capacity): when
+  // wearing armor, use the WORSE of armor ACP or load ACP for each category —
+  // the two never stack additively. Mirrors the max-Dex worse-of just below.
   const loadAcp = encumbrance?.acp ?? 0;
-  const effectiveAcp = Math.min(0, wornAcp + acpReduction + loadAcp);
+  const effectiveAcp = Math.min(0, wornAcp + acpReduction, loadAcp);
 
   // Every skill.* modifier target, split into its "skill." suffix. Resolved
   // against the final id set below (a raw target with a dot, e.g.
@@ -1070,7 +1088,14 @@ function computeWeaponAttacks(
     const mult = w.damageMultiplier ?? 1;
     const appliesAbilityDamage =
       (damageAbility === "str" || damageAbility === "dex") && category === "melee";
-    const abilityDamage = appliesAbilityDamage ? Math.floor(damageAbilityMod * mult) : 0;
+    // The multiplier (1.5× two-handed, 0.5× off-hand) scales a Str/Dex BONUS
+    // only — a penalty is never multiplied up or reduced (PF1 RAW: the full
+    // penalty always applies).
+    const abilityDamage = !appliesAbilityDamage
+      ? 0
+      : damageAbilityMod >= 0
+        ? Math.floor(damageAbilityMod * mult)
+        : damageAbilityMod;
 
     // General "damage" target changes + per-group feat bonuses (e.g. Weapon
     // Specialization via "damage.weapon.<group>", or a semantic weapon-group
@@ -1091,7 +1116,9 @@ function computeWeaponAttacks(
 
     const damageComponents: ModifierComponent[] = [];
     if (appliesAbilityDamage) {
-      const multLabel = mult !== 1 ? ` ×${mult}` : "";
+      // The ×multiplier annotation only describes what actually happened —
+      // a penalty (see abilityDamage above) isn't scaled, so it gets no label.
+      const multLabel = mult !== 1 && damageAbilityMod >= 0 ? ` ×${mult}` : "";
       const abilityLabel = damageAbility === "dex" ? "Dexterity" : "Strength";
       damageComponents.push(synthetic(`${abilityLabel}${multLabel}`, "ability", abilityDamage));
     }
@@ -1288,14 +1315,18 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // CMB / CMD
   const sizeSpecial = specialSizeMod(size);
   const cmbStack = resolveStack(forTarget(collected, "cmb"));
-  const cmb = bab + strMod + sizeSpecial + cmbStack.total;
+  // Tiny or smaller creatures use Dex in place of Str for CMB (CRB p.199) —
+  // CMD keeps using Str below regardless, since the substitution is CMB-only.
+  const cmbAbilityMod = SIZE_LADDER.indexOf(size) <= SIZE_LADDER.indexOf("tiny") ? dexMod : strMod;
+  const cmb = bab + cmbAbilityMod + sizeSpecial + cmbStack.total;
 
   // CMD = 10 + BAB + Str + Dex + special size mod, auto-including any of the
-  // eight RAW-named AC bonus types (CMD_AC_TYPES above) plus whatever carries
-  // an explicit "cmd"-target change. Read from the same `collected` "ac"
-  // modifiers computeAc reads (armor/shield/natural bonuses live under the
-  // separate "aac"/"sac"/"nac" targets, so filtering to bare "ac" already
-  // excludes them without a category check).
+  // eight RAW-named AC bonus types (CMD_AC_TYPES above), any "ac" PENALTY
+  // regardless of type ("any penalties to a creature's AC also apply to its
+  // CMD" — CRB p.199), plus whatever carries an explicit "cmd"-target change.
+  // Read from the same `collected` "ac" modifiers computeAc reads (armor/
+  // shield/natural bonuses live under the separate "aac"/"sac"/"nac" targets,
+  // so filtering to bare "ac" already excludes them without a category check).
   //
   // Some vendored sources (Iron Mask, the Deflection Aura buff, monk's
   // Wis-to-AC class feature) carry BOTH a generic "ac" change and their own
@@ -1315,7 +1346,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const explicitCmdSourceIds = new Set(explicitCmdMods.map((m) => m.sourceId ?? m.source));
   const autoCmdFromAc = forTarget(collected, "ac").filter(
     (m) =>
-      CMD_AC_TYPES.has(m.type.toLowerCase()) && !explicitCmdSourceIds.has(m.sourceId ?? m.source),
+      (m.value < 0 || CMD_AC_TYPES.has(m.type.toLowerCase())) &&
+      !explicitCmdSourceIds.has(m.sourceId ?? m.source),
   );
   const cmdStack = resolveStack([...autoCmdFromAc, ...explicitCmdMods]);
   const cmd = 10 + bab + strMod + dexMod + sizeSpecial + cmdStack.total;

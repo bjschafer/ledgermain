@@ -37,14 +37,42 @@ describe("stacking: dodge / untyped / circumstance stack", () => {
     expect(r.total).toBe(4);
   });
 
-  it("multiple circumstance bonuses all stack", () => {
-    const r = resolveStack([mod("circumstance", 2), mod("circumstance", 2)]);
+  it("circumstance bonuses from different sources all stack", () => {
+    const r = resolveStack([
+      mod("circumstance", 2, "Higher Ground"),
+      mod("circumstance", 2, "Favorable Wind"),
+    ]);
     expect(r.total).toBe(4);
   });
 
   it("empty type is treated as untyped and stacks", () => {
     const r = resolveStack([mod("", 2), mod("", 3)]);
     expect(r.total).toBe(5);
+  });
+});
+
+describe("stacking: circumstance bonuses from the same source do not stack", () => {
+  it("two circumstance bonuses sharing a source → highest only, not summed", () => {
+    const r = resolveStack([
+      mod("circumstance", 2, "Aid Another"),
+      mod("circumstance", 4, "Aid Another"),
+    ]);
+    expect(r.total).toBe(4);
+    const applied = r.modifiers.filter((m) => m.applied);
+    expect(applied).toHaveLength(1);
+    expect(applied[0]!.value).toBe(4);
+    // Provenance preserved: the overridden +2 is still present, struck through.
+    expect(r.modifiers).toHaveLength(2);
+    expect(r.modifiers.find((m) => m.value === 2)!.applied).toBe(false);
+  });
+
+  it("a circumstance PENALTY always stacks, even from the same source as a bonus", () => {
+    const r = resolveStack([
+      mod("circumstance", 2, "Aid Another"),
+      mod("circumstance", -2, "Aid Another"),
+    ]);
+    expect(r.total).toBe(0);
+    expect(r.modifiers.every((m) => m.applied)).toBe(true);
   });
 });
 

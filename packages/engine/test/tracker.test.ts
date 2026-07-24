@@ -146,6 +146,9 @@ describe("buffs + conditions feed compute() with exact deltas", () => {
     // ladder auto-upgrade (apps/web/src/model/conditions.ts) is what keeps
     // "grappled" from also being active once "pinned" is toggled on.
     expect(sheet.attack.melee.total - base.attack.melee.total).toBe(0);
+    // RAW (CRB p.199): "Any penalties to a creature's AC also apply to its
+    // CMD" — pinned's -4 untyped AC penalty must lower CMD by 4 too.
+    expect(sheet.cmd - base.cmd).toBe(-4);
   });
 });
 
