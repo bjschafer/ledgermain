@@ -58,6 +58,10 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     note: "The full published trait catalog is searchable in the picker. Traits outside a core set may show their benefit as text only rather than a live number the sheet tracks — anything still missing can be added as a homebrew trait.",
   },
   {
+    category: "Damage reduction and energy resistance",
+    note: 'Your DR and resistances come off incoming damage automatically — enter the hit on the Hit Points panel, naming types if the GM did ("12b 6c", "18 fire"), and each part meets the right defense. Whether an attack bypassed your DR is a switch you flip, since only your GM knows what the attacker was swinging. Spells that soak a limited pool of damage before running out, like stoneskin and protection from energy, don\'t track that pool yet.',
+  },
+  {
     category: "Community-pack feats",
     note: "The bulk of the feat catalog is in, but a feat sourced from the wider community content pack may show its prerequisites as text only rather than enforcing them, and may not apply its effect to your sheet automatically.",
   },

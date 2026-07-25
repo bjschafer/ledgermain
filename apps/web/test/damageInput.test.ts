@@ -8,11 +8,25 @@ function pairs(input: string): [number, string][] {
 }
 
 describe("bare numbers stay exactly as fast as the plain field they replace", () => {
-  it("parses a bare number as one unspecified term", () => {
+  it("parses a bare number as one assumed-weapon term", () => {
+    // Unqualified damage at a table is almost always weapon damage, so DR
+    // gets a chance to apply; `inferred` marks it as an assumption.
     const parse = parseDamageInput("17");
     expect(parse.ok).toBe(true);
     expect(parse.total).toBe(17);
-    expect(parse.terms).toEqual([{ amount: 17, type: "unspecified" }]);
+    expect(parse.terms).toEqual([{ amount: 17, type: "weapon", inferred: true }]);
+  });
+
+  it("keeps a stated type unflagged, so assumptions are distinguishable", () => {
+    expect(parseDamageInput("17 fire").terms).toEqual([
+      { amount: 17, type: "fire", inferred: false },
+    ]);
+  });
+
+  it("still reaches genuinely untyped damage explicitly", () => {
+    expect(parseDamageInput("17 untyped").terms).toEqual([
+      { amount: 17, type: "unspecified", inferred: false },
+    ]);
   });
 
   it("tolerates surrounding whitespace", () => {
@@ -44,8 +58,8 @@ describe("additive phrasing", () => {
     expect(parse.mode).toBe("additive");
     expect(parse.total).toBe(16);
     expect(parse.terms).toEqual([
-      { amount: 9, type: "weapon" },
-      { amount: 7, type: "sonic" },
+      { amount: 9, type: "weapon", inferred: false },
+      { amount: 7, type: "sonic", inferred: false },
     ]);
   });
 
@@ -68,8 +82,8 @@ describe("carve-out phrasing", () => {
     expect(parse.mode).toBe("carve-out");
     expect(parse.total).toBe(9);
     expect(parse.terms).toEqual([
-      { amount: 6, type: "unspecified" },
-      { amount: 3, type: "cold" },
+      { amount: 6, type: "weapon", inferred: true },
+      { amount: 3, type: "cold", inferred: false },
     ]);
   });
 
@@ -78,7 +92,7 @@ describe("carve-out phrasing", () => {
     expect(parse.mode).toBe("carve-out");
     expect(parse.total).toBe(9);
     expect(pairs("9 3c")).toEqual([
-      [6, "unspecified"],
+      [6, "weapon"],
       [3, "cold"],
     ]);
   });
@@ -87,7 +101,7 @@ describe("carve-out phrasing", () => {
     const parse = parseDamageInput("9 9c");
     expect(parse.mode).toBe("carve-out");
     expect(parse.total).toBe(9);
-    expect(parse.terms).toEqual([{ amount: 9, type: "cold" }]);
+    expect(parse.terms).toEqual([{ amount: 9, type: "cold", inferred: false }]);
   });
 
   it("falls back to additive when the named parts overflow the stated total", () => {
@@ -121,11 +135,11 @@ describe("warnings", () => {
 
 describe("describeDamageParse", () => {
   it("echoes a multi-term parse with its total", () => {
-    expect(describeDamageParse(parseDamageInput("9 3c"))).toBe("6 unspecified + 3 cold = 9");
+    expect(describeDamageParse(parseDamageInput("9 3c"))).toBe("6 weapon + 3 cold = 9");
   });
 
   it("omits the total for a single term", () => {
-    expect(describeDamageParse(parseDamageInput("17"))).toBe("17 unspecified");
+    expect(describeDamageParse(parseDamageInput("17"))).toBe("17 weapon");
   });
 
   it("is empty for unparseable input", () => {

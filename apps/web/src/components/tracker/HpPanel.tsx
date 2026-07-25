@@ -1,7 +1,10 @@
 import { useState } from "react";
 
+import { qualifierLabel } from "@pf1/engine";
+
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { damagePreview } from "../../model/damagePreview.js";
 import {
   addNonlethal,
   applyDamage,
@@ -51,7 +54,10 @@ function statusLabel(state: HpState): string {
 
 /** Current/temp/nonlethal HP with fast damage + healing controls. */
 export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
-  const [amount, setAmount] = useState(5);
+  // Free text rather than a number, so "12b 6c" and "9 damage, 3 of which are
+  // cold" are typeable; a bare number still behaves exactly as it always did.
+  const [amountText, setAmountText] = useState("5");
+  const [bypasses, setBypasses] = useState<string[]>([]);
   const max = sheet.hp.max;
   const restMode = doc.build.settings?.restMode ?? "full";
   const { current, temp, nonlethal } = doc.live.hp;
@@ -65,7 +71,11 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   // flip it on or back off while the character is actually dying.
   const dyingRange = current < 0 && current > state.diesAt;
 
-  const amt = Number.isNaN(amount) ? 0 : amount;
+  const preview = damagePreview(amountText, sheet.defenses, bypasses);
+  // Damage applies the post-defense number; Heal and Nonlethal are untouched
+  // by DR/resistance and use the raw total.
+  const dmgAmt = preview.amount;
+  const amt = preview.raw;
 
   return (
     <Panel title="Hit Points" step="hp" icon={<HeartIcon />} storageKey="panel:PlayHP">
@@ -104,25 +114,28 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
       ) : null}
 
       <div className="hp-controls">
-        <NumberField
+        <input
+          type="text"
           className="hp-amt num"
-          size={4}
-          value={amount}
-          min={0}
-          commitOnChange
-          onCommit={(n) => setAmount(n)}
+          size={6}
+          value={amountText}
+          onChange={(e) => setAmountText(e.target.value)}
+          placeholder="5"
           aria-label="Amount"
+          title="A number, or typed damage: “12b 6c”, “18 fire”, “9 damage, 3 of which are cold”"
         />
         <button
           type="button"
           className="btn-act dmg"
           onClick={() => {
-            const next = applyDamage(doc, amt);
+            const next = applyDamage(doc, dmgAmt);
             update(() => next);
             const droppedToZero = next.live.hp.current <= 0;
-            if (amt >= HP_TOAST_THRESHOLD || droppedToZero) {
+            if (dmgAmt >= HP_TOAST_THRESHOLD || droppedToZero) {
               showToast({
-                message: `Damage ${amt} · HP ${current}→${next.live.hp.current}`,
+                message: `Damage ${dmgAmt}${
+                  preview.reduced ? ` (${preview.raw} − ${preview.raw - dmgAmt})` : ""
+                } · HP ${current}→${next.live.hp.current}`,
                 action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
               });
             }
@@ -147,6 +160,61 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           Heal
         </button>
       </div>
+
+      {preview.ok && (preview.reduced || preview.parse.terms.length > 1) ? (
+        <div className="hp-damage-preview">
+          <span className="hp-damage-terms">
+            {preview.resolution.terms.map((t, i) => (
+              <span key={`${t.type}-${i}`} className="hp-chip dmg-term">
+                <span className="num">{t.amount}</span> {t.type}
+                {t.final !== t.amount ? <span className="num"> → {t.final}</span> : null}
+              </span>
+            ))}
+          </span>
+          {preview.reduced ? (
+            <span className="hp-damage-result">
+              {preview.resolution.reductions.map((r) => r.label).join(", ")} ={" "}
+              <span className="num">{preview.amount}</span>
+            </span>
+          ) : null}
+        </div>
+      ) : null}
+
+      {preview.assumed ? (
+        <div className="hp-damage-note">
+          Untyped amounts are treated as weapon damage, so DR applies. Add a type (“
+          {preview.raw} fire”) or “untyped” to change that.
+        </div>
+      ) : null}
+
+      {preview.parse.warnings.map((w) => (
+        <div key={w} className="hp-damage-note affliction-warn">
+          {w}
+        </div>
+      ))}
+
+      {preview.bypassOptions.length > 0 ? (
+        <div className="hp-bypass-row">
+          <span className="hp-inline-label">Attack bypasses</span>
+          {preview.bypassOptions.map((q) => {
+            const on = bypasses.includes(q);
+            return (
+              <button
+                key={q}
+                type="button"
+                className="btn-ghost hp-bypass-chip"
+                aria-pressed={on}
+                data-on={on}
+                onClick={() =>
+                  setBypasses((prev) => (on ? prev.filter((b) => b !== q) : [...prev, q]))
+                }
+              >
+                {qualifierLabel(q)}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
       <div className="hp-row">
         <label className="hp-inline">

@@ -26,10 +26,27 @@
  */
 import { resolveDamageWord, type DamageTypeId } from "@pf1/engine";
 
+/**
+ * What an amount with no type word attached is assumed to be. Unqualified
+ * damage at a table is overwhelmingly weapon damage ("you take 9 damage" from
+ * a claw or a greatsword), and assuming otherwise would silently skip the DR
+ * the character actually has. `unspecified` stays reachable by typing it, for
+ * the case where DR genuinely shouldn't apply.
+ */
+export const DEFAULT_DAMAGE_TYPE: DamageTypeId = "weapon";
+
 /** One component of an incoming attack. */
 export interface DamageTerm {
   amount: number;
   type: DamageTypeId;
+  /**
+   * True when `type` came from {@link DEFAULT_DAMAGE_TYPE} rather than from a
+   * word in the input. Drives two things: the carve-out heuristic (a bare
+   * leading amount reads as a stated total, a named one doesn't), and the
+   * UI's ability to mark an assumed type as assumed rather than presenting a
+   * guess as though the GM had said it.
+   */
+  inferred?: boolean;
 }
 
 /**
@@ -129,7 +146,7 @@ export function parseDamageInput(raw: string): DamageParse {
     if (FILLER.has(token)) continue;
 
     if (/^\d+$/.test(token)) {
-      terms.push({ amount: Number(token), type: "unspecified" });
+      terms.push({ amount: Number(token), type: DEFAULT_DAMAGE_TYPE, inferred: true });
       continue;
     }
 
@@ -145,11 +162,12 @@ export function parseDamageInput(raw: string): DamageParse {
       warnings.push(`Ignored "${token}" — no amount before it.`);
       continue;
     }
-    if (target.type !== "unspecified") {
+    if (!target.inferred) {
       warnings.push(`Ignored "${token}" — ${target.amount} is already ${target.type}.`);
       continue;
     }
     target.type = type;
+    target.inferred = false;
   }
 
   if (terms.length === 0) {
@@ -160,15 +178,15 @@ export function parseDamageInput(raw: string): DamageParse {
   const rest = terms.slice(1);
   const restTotal = rest.reduce((sum, t) => sum + t.amount, 0);
 
-  // Carve-out applies only when there is a stated total to carve from: an
-  // untyped leading amount with typed terms that fit inside it. An explicit
-  // additive marker always wins; an explicit "of which" forces the reading
-  // even when the heuristic wouldn't have taken it.
+  // Carve-out applies only when there is a stated total to carve from: a
+  // leading amount that names no specific type, with typed terms that fit
+  // inside it. "Names no specific type" covers both the bare number (whose
+  // type was inferred) and an explicit "untyped" — either way the GM stated a
+  // total rather than a component. An explicit additive marker always wins;
+  // an explicit "of which" forces the reading the heuristic wouldn't take.
+  const leadIsBareTotal = lead.inferred === true || lead.type === "unspecified";
   const heuristicCarve =
-    lead.type === "unspecified" &&
-    rest.length > 0 &&
-    !sawAdditiveMarker &&
-    restTotal <= lead.amount;
+    leadIsBareTotal && rest.length > 0 && !sawAdditiveMarker && restTotal <= lead.amount;
 
   if (sawCarveMarker && rest.length > 0 && restTotal > lead.amount) {
     warnings.push(
@@ -191,14 +209,18 @@ export function parseDamageInput(raw: string): DamageParse {
 
 /**
  * Splits a stated total into its named parts plus whatever is left over. The
- * remainder stays `unspecified` rather than being promoted to weapon damage:
- * "the rest was probably physical" is a guess the UI should offer, not one
- * the parser should bake in.
+ * remainder keeps the lead's type and its `inferred` flag, so "9 damage, 3 of
+ * which are cold" leaves 6 assumed-weapon (DR applies, flagged as an
+ * assumption) while "9 untyped, 3 of which are cold" leaves 6 genuinely
+ * untyped.
  */
 function carveOut(lead: DamageTerm, rest: DamageTerm[], warnings: string[]): DamageParse {
   const restTotal = rest.reduce((sum, t) => sum + t.amount, 0);
   const remainder = lead.amount - restTotal;
-  const terms = remainder > 0 ? [{ amount: remainder, type: lead.type }, ...rest] : rest;
+  const terms =
+    remainder > 0
+      ? [{ amount: remainder, type: lead.type, inferred: lead.inferred }, ...rest]
+      : rest;
   return { ok: true, terms, total: lead.amount, mode: "carve-out", warnings };
 }
 

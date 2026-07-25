@@ -1,6 +1,10 @@
 /**
- * DR / energy resistance / spell resistance derivation (issue #21),
- * display-only — nothing here feeds back into damage/attack math.
+ * DR / energy resistance / spell resistance derivation (issue #21).
+ *
+ * This module only *derives* the numbers; applying them to an incoming hit
+ * lives in `damage-resolution.ts`, which consumes the {@link Defenses} built
+ * here. Spell resistance remains display-only (nothing in this engine rolls
+ * against it).
  *
  * Sources, all flowing in through the same `collectModifiers` pipeline as
  * every other change target (race/item/class-feature/buff/condition — see

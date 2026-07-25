@@ -712,6 +712,15 @@ export { MONK_BONUS_FEAT_SLUGS } from "./monk.js";
 export { computeDefenses } from "./defenses.js";
 export { computeSenses, isSenseTarget, SENSE_TARGET_IDS } from "./senses.js";
 export {
+  qualifierBypassedBy,
+  resolveDamage,
+  type AppliedReduction,
+  type DamageResolution,
+  type DamageResolutionOptions,
+  type IncomingDamage,
+  type ResolvedDamageTerm,
+} from "./damage-resolution.js";
+export {
   DAMAGE_TYPES,
   DR_NONE_QUALIFIER,
   damageType,

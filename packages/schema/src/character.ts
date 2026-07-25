@@ -2788,7 +2788,10 @@ export interface DerivedRanger {
  * DR / energy resistance / spell resistance, gathered from the same collected-
  * modifier pipeline as every other change target (race/item/class-feature/buff/
  * condition) plus the hand-authored barbarian Damage Reduction progression.
- * Display-only: nothing here feeds back into damage/attack math.
+ *
+ * `dr`/`resistances` feed `@pf1/engine`'s `resolveDamage`, which reduces an
+ * incoming hit before it reaches HP. `sr` is display-only — nothing in this
+ * engine rolls against spell resistance.
  */
 export interface Defenses {
   /** One entry per distinct bypass qualifier (e.g. "—", "magic", "cold iron"). */

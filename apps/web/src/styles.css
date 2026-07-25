@@ -2746,6 +2746,52 @@ button:focus-visible,
   margin-bottom: 12px;
 }
 
+/* Typed-damage preview: what the parser read and what the defenses did to it.
+   Shown only when there is something to say (a reduction, or more than one
+   damage term) so a bare number on an undefended character stays silent. */
+.hp-damage-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: -4px 0 10px;
+  font-size: 0.75rem;
+}
+
+.hp-damage-terms {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.hp-chip.dmg-term {
+  color: var(--muted);
+}
+
+.hp-damage-result {
+  color: var(--sage);
+  font-weight: 600;
+}
+
+.hp-damage-note {
+  font-size: 0.6875rem;
+  color: var(--muted);
+  margin: -4px 0 10px;
+}
+
+.hp-bypass-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.hp-bypass-chip[data-on="true"] {
+  color: var(--sage);
+  border-color: var(--gold-dim);
+}
+
 .hp-row {
   display: flex;
   align-items: center;
