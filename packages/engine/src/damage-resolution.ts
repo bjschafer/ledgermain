@@ -1,6 +1,6 @@
 /**
- * Resolves an incoming attack against a character's damage reduction and
- * energy resistance (clean-room from the published PF1 rules).
+ * Resolves an incoming attack against a character's immunities, damage
+ * reduction and energy resistance (clean-room from the published PF1 rules).
  *
  * Deliberately NOT part of `compute`. `compute(doc, refData)` is a pure
  * function of stored state; an incoming attack is neither stored nor derived
@@ -22,6 +22,12 @@
  *  3. **Energy resistance applies per energy type, per instance.** Resist
  *     Fire 10 does nothing to cold damage in the same hit, and applies in
  *     full to every separate fire hit in a round.
+ *
+ * Immunity resolves ahead of everything else, so a type taken to zero can't
+ * also spend an ablative pool or a DR line on damage that no longer exists.
+ * Only *damage-type* immunity is modeled; PF1's effect immunities (sleep,
+ * poison, mind-affecting, critical hits) gate effects rather than damage and
+ * have no place in this function.
  *
  * What bypasses a DR line is not derivable — the engine cannot know the
  * attacker's weapon material or alignment. `bypasses` is therefore an input
@@ -141,16 +147,22 @@ export function qualifierBypassedBy(qualifier: string, bypasses: readonly string
  * any term whose own damage type satisfies the qualifier (DR 5/bludgeoning
  * against a hit that includes bludgeoning). Returns 0 when the attack's
  * declared `bypasses` defeat the line outright.
+ *
+ * Reads `remaining` rather than the raw term amounts so a physical type
+ * already zeroed by immunity cannot be "absorbed" a second time by DR.
  */
 function applicablePhysical(
   entry: DefenseEntry,
   terms: readonly IncomingDamage[],
   bypasses: readonly string[],
+  remaining: readonly number[],
 ): number {
   if (qualifierBypassedBy(entry.qualifier, bypasses)) return 0;
-  return terms
-    .filter((t) => isPhysicalDamage(t.type) && t.type !== entry.qualifier)
-    .reduce((sum, t) => sum + t.amount, 0);
+  return terms.reduce(
+    (sum, t, i) =>
+      isPhysicalDamage(t.type) && t.type !== entry.qualifier ? sum + remaining[i]! : sum,
+    0,
+  );
 }
 
 /**
@@ -181,7 +193,24 @@ export function resolveDamage(
     consumed.set(pool.id, (consumed.get(pool.id) ?? 0) + amount);
   };
 
-  // --- Ablative energy pools absorb first. RAW: when both protection from
+  // --- Immunity first: damage you take none of should not spend anything
+  // else. Resolving it ahead of the pools is what stops a protection from
+  // energy charge being burned on a type you already shrug off entirely. ---
+  const immune = new Set((defenses?.immunities ?? []).map((e) => e.qualifier));
+  if (immune.size > 0) {
+    const absorbedByImmunity = new Map<string, number>();
+    for (let i = 0; i < terms.length; i++) {
+      const term = terms[i]!;
+      if (!immune.has(term.type) || finals[i]! <= 0) continue;
+      absorbedByImmunity.set(term.type, (absorbedByImmunity.get(term.type) ?? 0) + finals[i]!);
+      finals[i] = 0;
+    }
+    for (const [type, absorbed] of absorbedByImmunity) {
+      reductions.push({ label: `Immune to ${qualifierLabel(type)}`, absorbed });
+    }
+  }
+
+  // --- Ablative energy pools absorb next. RAW: when both protection from
   // energy and resist energy are up, the pool is spent before the resistance
   // applies. ---
   for (const pool of allPools) {
@@ -213,7 +242,7 @@ export function resolveDamage(
   let bestPool: AblativePool | undefined;
   let bestAbsorbed = 0;
   for (const entry of defenses?.dr ?? []) {
-    const available = applicablePhysical(entry, terms, bypasses);
+    const available = applicablePhysical(entry, terms, bypasses, finals);
     const pool = poolForEntry(entry);
     const cap = pool ? Math.min(entry.total, pool.remaining) : entry.total;
     const absorbed = Math.min(cap, available);

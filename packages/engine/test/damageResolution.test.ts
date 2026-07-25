@@ -297,3 +297,85 @@ describe("ablative pools", () => {
     expect(out.pools).toEqual([{ id: "pfe", absorbed: 5, exhausted: false }]);
   });
 });
+
+describe("immunity", () => {
+  const immuneTo = (...types: string[]): Defenses => ({
+    dr: [],
+    resistances: [],
+    immunities: types.map((qualifier) => ({ qualifier, components: [] })),
+  });
+
+  it("takes the immune type to zero and leaves the rest alone", () => {
+    const out = resolveDamage(
+      [
+        { amount: 30, type: "fire" },
+        { amount: 6, type: "cold" },
+      ],
+      immuneTo("fire"),
+    );
+    expect(out.final).toBe(6);
+    expect(out.reductions).toEqual([{ label: "Immune to fire", absorbed: 30 }]);
+  });
+
+  it("covers every immune type in one hit", () => {
+    const out = resolveDamage(
+      [
+        { amount: 10, type: "fire" },
+        { amount: 10, type: "cold" },
+      ],
+      immuneTo("fire", "cold"),
+    );
+    expect(out.final).toBe(0);
+    expect(out.reductions).toHaveLength(2);
+  });
+
+  it("does not spend an ablative pool on damage already taken to zero", () => {
+    // The reason immunity resolves first: a protection from energy charge
+    // must not be burned on a type the character shrugs off entirely.
+    const out = resolveDamage([{ amount: 30, type: "fire" }], immuneTo("fire"), {
+      pools: [
+        {
+          id: "pfe",
+          label: "Protection From Energy",
+          remaining: 60,
+          kind: "energy",
+          element: "fire",
+        },
+      ],
+    });
+    expect(out.final).toBe(0);
+    expect(out.pools).toEqual([]);
+  });
+
+  it("does not let DR claim to absorb physical damage immunity already zeroed", () => {
+    const d: Defenses = {
+      dr: [entry(10, "—")],
+      resistances: [],
+      immunities: [{ qualifier: "slashing", components: [] }],
+    };
+    const out = resolveDamage(
+      [
+        { amount: 20, type: "slashing" },
+        { amount: 12, type: "bludgeoning" },
+      ],
+      d,
+    );
+    // Slashing is gone; DR meets only the 12 bludgeoning.
+    expect(out.final).toBe(2);
+    expect(out.reductions).toEqual([
+      { label: "Immune to slashing", absorbed: 20 },
+      { label: "DR 10/—", absorbed: 10 },
+    ]);
+  });
+
+  it("ignores immunity to a type not present in the hit", () => {
+    const out = resolveDamage([{ amount: 8, type: "cold" }], immuneTo("fire"));
+    expect(out.final).toBe(8);
+    expect(out.reductions).toEqual([]);
+  });
+
+  it("never reports a reduction for a zero-amount immune term", () => {
+    const out = resolveDamage([{ amount: 0, type: "fire" }], immuneTo("fire"));
+    expect(out.reductions).toEqual([]);
+  });
+});

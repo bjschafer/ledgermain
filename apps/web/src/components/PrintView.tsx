@@ -99,7 +99,10 @@ export function PrintView({
                 ))}
               </tbody>
             </table>
-            {(data.dr.length > 0 || data.resistances.length > 0 || data.sr !== undefined) && (
+            {(data.dr.length > 0 ||
+              data.resistances.length > 0 ||
+              data.immunities.length > 0 ||
+              data.sr !== undefined) && (
               <p className="print-hint">
                 {data.dr.map((d) => `DR ${d.total}/${qualifierLabel(d.qualifier)}`).join(", ")}
                 {data.dr.length > 0 && (data.resistances.length > 0 || data.sr !== undefined)
@@ -108,7 +111,14 @@ export function PrintView({
                 {data.resistances
                   .map((r) => `Resist ${qualifierLabel(r.qualifier)} ${r.total}`)
                   .join(", ")}
-                {data.resistances.length > 0 && data.sr !== undefined ? " · " : ""}
+                {data.resistances.length > 0 &&
+                (data.immunities.length > 0 || data.sr !== undefined)
+                  ? " · "
+                  : ""}
+                {data.immunities.length > 0
+                  ? `Immune ${data.immunities.map(qualifierLabel).join(", ")}`
+                  : ""}
+                {data.immunities.length > 0 && data.sr !== undefined ? " · " : ""}
                 {data.sr !== undefined ? `SR ${data.sr}` : ""}
               </p>
             )}

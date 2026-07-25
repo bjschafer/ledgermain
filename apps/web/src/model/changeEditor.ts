@@ -44,6 +44,11 @@ export const CHANGE_TARGETS: readonly string[] = [
   "eres.electricity",
   "eres.acid",
   "eres.sonic",
+  "imm.acid",
+  "imm.cold",
+  "imm.electricity",
+  "imm.fire",
+  "imm.sonic",
 ];
 
 /** Stacking-type options offered by every Change-authoring form. */

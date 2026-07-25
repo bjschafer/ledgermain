@@ -257,6 +257,20 @@ export function Sheet({
                 resetKey={doc.id}
               />
             ))}
+            {/* Immunity is a flag, not a magnitude, so it gets a chip rather
+                than a StatSeal — there is no number to seal. */}
+            {sheet.defenses.immunities?.map((entry) => (
+              <InfoTip
+                key={`imm-${entry.qualifier}`}
+                className="prof-chip immunity-chip"
+                content={`Immune to ${qualifierLabel(entry.qualifier)} damage — from ${entry.components
+                  .filter((c) => c.applied)
+                  .map((c) => c.source)
+                  .join(", ")}`}
+              >
+                Immune: {capitalizeFirst(qualifierLabel(entry.qualifier))}
+              </InfoTip>
+            ))}
             {sheet.defenses.sr ? (
               <StatSeal
                 label="SR"

@@ -135,6 +135,8 @@ export interface PrintSheetData {
   resources: PrintResource[];
   dr: PrintDefenseEntry[];
   resistances: PrintDefenseEntry[];
+  /** Damage types taken no damage from at all — a flag, so no magnitude. */
+  immunities: string[];
   sr?: number;
   /** Formatted sense chips, e.g. ["Darkvision 60 ft.", "Low-light vision"]. */
   senses: string[];
@@ -379,6 +381,7 @@ export function buildPrintSheet(
     dr: sheet.defenses?.dr.map((d) => ({ qualifier: d.qualifier, total: d.total })) ?? [],
     resistances:
       sheet.defenses?.resistances.map((d) => ({ qualifier: d.qualifier, total: d.total })) ?? [],
+    immunities: sheet.defenses?.immunities?.map((d) => d.qualifier) ?? [],
     sr: sheet.defenses?.sr?.total,
     senses: sheet.senses.map(senseChipLabel),
     arcaneSpellFailure: sheet.arcaneSpellFailure?.total,

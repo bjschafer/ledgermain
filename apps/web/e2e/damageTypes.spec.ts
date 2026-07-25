@@ -222,3 +222,25 @@ test("bypass chips stay hidden against pure energy damage", async ({ page }) => 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
+
+test("an immunity zeroes its damage type and shows on the sheet", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  await grantDr(page, "imm.fire", "1");
+
+  // The sheet advertises it as a flag chip, not a number.
+  await expect(page.locator(".immunity-chip")).toContainText("Immune: Fire");
+
+  const amount = page.getByLabel("Amount");
+  await amount.fill("30 fire");
+  await expect(page.locator(".hp-damage-result")).toContainText("0");
+  await expect(page.locator(".hp-damage-preview")).toContainText("Immune to fire");
+
+  // Another type is untouched.
+  await amount.fill("30 cold");
+  await expect(page.locator(".hp-damage-result")).toHaveCount(0);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});

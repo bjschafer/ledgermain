@@ -2817,8 +2817,30 @@ export interface Defenses {
   dr: DefenseEntry[];
   /** One entry per distinct energy type (e.g. "fire", "cold"). */
   resistances: DefenseEntry[];
+  /**
+   * Damage types this character takes no damage from at all. Absent rather
+   * than empty when nothing grants immunity.
+   *
+   * Scoped to *damage-type* immunity, which is the only kind damage
+   * resolution can act on. PF1's other immunities (sleep, poison, paralysis,
+   * mind-affecting, fear, critical hits) are a different axis entirely — they
+   * gate effects rather than reduce damage, and nothing here models them.
+   */
+  immunities?: ImmunityEntry[];
   /** Spell resistance, if any source grants it. */
   sr?: { total: number; components: ModifierComponent[] };
+}
+
+/**
+ * One damage-type immunity. Unlike {@link DefenseEntry} there is no magnitude
+ * — immunity is a flag, so sources are collected purely for provenance. Any
+ * source evaluating above zero turns it on, the same posture `senses.ts` uses
+ * for its rangeless flag senses.
+ */
+export interface ImmunityEntry {
+  /** Damage type immune to ("fire", "cold", ...). */
+  qualifier: string;
+  components: ModifierComponent[];
 }
 
 /**

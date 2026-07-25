@@ -53,7 +53,14 @@
  * feature.
  */
 
-import type { CharacterDoc, Defenses, DefenseEntry, ModifierComponent, RefData } from "@pf1/schema";
+import type {
+  CharacterDoc,
+  Defenses,
+  DefenseEntry,
+  ImmunityEntry,
+  ModifierComponent,
+  RefData,
+} from "@pf1/schema";
 
 import {
   antipaladinDamageReductionReplaced,
@@ -68,6 +75,7 @@ import { antipaladinDamageReduction, barbarianDamageReduction } from "./tables.j
 const DR_TARGET = "dr";
 const DR_PREFIX = "dr.";
 const ERES_PREFIX = "eres.";
+const IMM_PREFIX = "imm.";
 
 function isDrTarget(target: string): boolean {
   return target === DR_TARGET || target.startsWith(DR_PREFIX);
@@ -85,6 +93,45 @@ function isEresTarget(target: string): boolean {
 
 function eresQualifier(target: string): string {
   return normalizeQualifier(target.slice(ERES_PREFIX.length));
+}
+
+function isImmTarget(target: string): boolean {
+  return target.startsWith(IMM_PREFIX);
+}
+
+/**
+ * Groups immunity sources by damage type. Immunity is a flag, not a
+ * magnitude: any source evaluating above zero turns it on, and a type whose
+ * every source evaluates to zero is dropped entirely (the same conditional-
+ * formula guard `groupByQualifier` applies, and the same posture `senses.ts`
+ * uses for its rangeless flag senses). Losing sources are retained, unapplied,
+ * for provenance.
+ */
+function groupImmunities(mods: QualifiedMod[]): ImmunityEntry[] {
+  const byQualifier = new Map<string, QualifiedMod[]>();
+  for (const m of mods) {
+    const list = byQualifier.get(m.qualifier);
+    if (list) list.push(m);
+    else byQualifier.set(m.qualifier, [m]);
+  }
+
+  const entries: ImmunityEntry[] = [];
+  for (const [qualifier, list] of byQualifier) {
+    if (!list.some((m) => m.value > 0)) continue;
+    entries.push({
+      qualifier,
+      components: list.map((m) => ({
+        source: m.source,
+        sourceId: m.sourceId,
+        type: m.type,
+        value: m.value,
+        applied: m.value > 0,
+      })),
+    });
+  }
+
+  entries.sort((a, b) => a.qualifier.localeCompare(b.qualifier));
+  return entries;
 }
 
 interface QualifiedMod {
@@ -281,10 +328,23 @@ export function computeDefenses(
       sourceId: m.sourceId,
     }));
 
+  const immMods: QualifiedMod[] = collected
+    .filter((m) => isImmTarget(m.target))
+    .map((m) => ({
+      qualifier: normalizeQualifier(m.target.slice(IMM_PREFIX.length)),
+      type: m.type,
+      value: m.value,
+      source: m.source,
+      sourceId: m.sourceId,
+    }));
+
   const dr = groupByQualifier(drMods);
   const resistances = groupByQualifier(eresMods);
+  const immunities = groupImmunities(immMods);
   const sr = computeSr(collected);
 
-  if (dr.length === 0 && resistances.length === 0 && !sr) return undefined;
-  return { dr, resistances, sr };
+  if (dr.length === 0 && resistances.length === 0 && immunities.length === 0 && !sr) {
+    return undefined;
+  }
+  return { dr, resistances, immunities: immunities.length > 0 ? immunities : undefined, sr };
 }

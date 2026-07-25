@@ -59,7 +59,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Damage reduction and energy resistance",
-    note: 'Your DR and resistances come off incoming damage automatically — enter the hit on the Hit Points panel, naming types if the GM did ("12b 6c", "18 fire"), and each part meets the right defense. Stoneskin and protection from energy track how much they have left to absorb, and end when they are spent. Whether an attack bypassed your DR is a switch you flip, since only your GM knows what the attacker was swinging. Immunities aren\'t modeled at all, so damage you should shrug off entirely still lands.',
+    note: 'Your DR and resistances come off incoming damage automatically — enter the hit on the Hit Points panel, naming types if the GM did ("12b 6c", "18 fire"), and each part meets the right defense. Stoneskin and protection from energy track how much they have left to absorb, and end when they are spent. Whether an attack bypassed your DR is a switch you flip, since only your GM knows what the attacker was swinging. Immunity to a damage type works too, but nothing in the catalog grants one automatically yet — the high-level bloodline, mystery, and spirit powers that would aren\'t wired up, so add it as a custom buff for now. Immunity to things that aren\'t damage — sleep, poison, paralysis, mind-affecting, critical hits — isn\'t tracked at all.',
   },
   {
     category: "Buffs marked “reminder only”",

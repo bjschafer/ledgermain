@@ -152,3 +152,55 @@ describe("Resist Energy's per-element variants grant eres.<energy> (vendored cha
     expect(resolveDamage([{ amount: 25, type: "cold" }], sheet.defenses).final).toBe(25);
   });
 });
+
+describe("imm.<type> derivation (this engine's own change target)", () => {
+  /** A user-authored buff granting one immunity, as BuffsPanel would build it. */
+  function immunityBuff(target: string, formula = "1"): ActiveBuff {
+    return {
+      instanceId: "inst-imm",
+      name: "Test Immunity",
+      changes: [{ formula, target, type: "untyped" }],
+    };
+  }
+
+  it("materializes an immunity entry with provenance", () => {
+    const sheet = compute(makeDoc([immunityBuff("imm.fire")]), ref);
+    expect(sheet.defenses?.immunities).toEqual([
+      {
+        qualifier: "fire",
+        components: [
+          {
+            source: "Test Immunity",
+            sourceId: "inst-imm",
+            type: "untyped",
+            value: 1,
+            applied: true,
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("treats any positive value as the flag being on", () => {
+    const sheet = compute(makeDoc([immunityBuff("imm.cold", "7")]), ref);
+    expect(sheet.defenses?.immunities?.map((i) => i.qualifier)).toEqual(["cold"]);
+  });
+
+  it("drops an immunity whose conditional formula evaluates to zero", () => {
+    // Same guard as the dr-at-0 wart: a collected-but-inactive change must
+    // not materialize a spurious immunity chip.
+    const sheet = compute(makeDoc([immunityBuff("imm.fire", "0")]), ref);
+    expect(sheet.defenses).toBeUndefined();
+  });
+
+  it("normalizes the qualifier like every other defense target", () => {
+    const sheet = compute(makeDoc([immunityBuff("imm.Fire")]), ref);
+    expect(sheet.defenses?.immunities?.[0]?.qualifier).toBe("fire");
+  });
+
+  it("actually zeroes matching damage end to end", () => {
+    const sheet = compute(makeDoc([immunityBuff("imm.fire")]), ref);
+    expect(resolveDamage([{ amount: 40, type: "fire" }], sheet.defenses).final).toBe(0);
+    expect(resolveDamage([{ amount: 40, type: "cold" }], sheet.defenses).final).toBe(40);
+  });
+});

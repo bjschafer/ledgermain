@@ -2811,6 +2811,14 @@ button:focus-visible,
   margin: -4px 0 10px;
 }
 
+/* Immunity has no magnitude, so it reads as a chip inside the otherwise
+   numeric Damage Reduction & Resistances group. */
+.immunity-chip {
+  align-self: center;
+  color: var(--sage);
+  border-color: var(--gold-dim);
+}
+
 .hp-pool-row {
   display: flex;
   align-items: center;

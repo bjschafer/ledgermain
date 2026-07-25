@@ -288,6 +288,9 @@ export function changeTargetLabel(target: string): string {
   if (target.startsWith("eres.")) {
     return `${qualifierLabel(normalizeQualifier(target.slice(5)))} resistance`;
   }
+  if (target.startsWith("imm.")) {
+    return `${qualifierLabel(normalizeQualifier(target.slice(4)))} immunity`;
+  }
 
   return target;
 }
