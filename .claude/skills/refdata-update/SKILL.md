@@ -5,13 +5,12 @@ description: Bump the pinned Foundry reference data — regenerate the vendored 
 
 # Updating reference data
 
-Only needed when bumping the pinned Foundry content. The app builds offline from the vendored JSON; never make data updates implicit.
+Only needed when bumping one of the pinned upstream sources (Foundry `pf1` system, the archetype module, PF1 Content, or Pf Data 1e). The app builds offline from the vendored JSON; never make data updates implicit.
 
-```bash
-bun run data:fetch   # shallow-clone the pinned SHA into packages/data-pipeline/.cache/ (gitignored)
-bun run data:build   # regenerate normalized JSON into packages/data-pipeline/data/ (committed)
-```
+**Full procedure, the formatting trap, and verification steps: `docs/refdata-update.md`.** Read that doc before doing this — don't reconstruct the steps from memory or from this file.
 
-To update data: edit `FOUNDRY_SHA` / `SYSTEM_VERSION` in `packages/data-pipeline/src/config.ts`, run the two commands, **then run `bun run fmt`**, review the diff, commit.
+Quick reference once you've read the doc:
 
-> **`bun run fmt` is a required post-`data:build` step, not optional cleanup.** The emitter writes JSON with every array expanded one-element-per-line, but the committed `data/*.json` is oxfmt-formatted (short arrays collapsed onto one line). Skip the fmt and `git status` shows thousands of lines changed across _every_ data file (all whitespace) even when only one value actually changed — and `fmt:check` fails in CI. After fmt, the diff collapses to just the real content change. The same applies to hand-authored data supplements (e.g. `data-pipeline/src/supplements.ts`): edit the supplement → `data:build` → `fmt`.
+1. Hand-edit the relevant `*_SHA` (and `SYSTEM_VERSION` if bumping Foundry) in `packages/data-pipeline/src/config.ts` — the one judgment-call step.
+2. Run `bun run data:bump` (`scripts/refdata-bump.ts`) — runs `data:fetch` → `data:build` → `fmt` in order, so the formatting trap documented in `docs/refdata-update.md` can't be hit by skipping a step.
+3. Review the diff and commit per the doc's verification section.

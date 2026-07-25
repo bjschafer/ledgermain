@@ -6,12 +6,15 @@
  * (no runtime fetch — nothing in the UI should ever imply a GitHub round
  * trip is happening for something this small).
  *
- * THIS IS THE PLAYER-FACING MIRROR OF ISSUE #74, which is the canonical
- * inventory of known content gaps. The two drift silently — nothing
- * enforces the pairing — so when a gap is filled or found, update both.
- * Deliberately no issue numbers or "as of" dates in the copy itself — a
- * player doesn't care which tracker entry this came from, only what's true
- * today.
+ * THIS IS THE SINGLE SOURCE OF TRUTH for known content gaps, including
+ * issue #74's inventory: `bun run coverage:issue` (scripts/coverage-issue.ts)
+ * renders #74's body from this file — edit here and regenerate rather than
+ * hand-editing the issue. `COVERAGE_NOTES` is also what the Settings panel
+ * renders directly, so keep its `note` copy player-facing; `issueDetail` is
+ * extra specificity (counts, vendored-entry names) that's useful in the
+ * issue but too dense for the panel. `INTERNAL_GAPS` holds gaps with no
+ * player-facing surface at all (pure data-pipeline facts) that belong in the
+ * issue but have nowhere to render in Settings.
  *
  * Most gaps take one of two shapes, and the copy should say which:
  * browsable-but-not-modeled (the entry is in the picker with its full rules
@@ -21,20 +24,28 @@
 export interface CoverageNote {
   category: string;
   note: string;
+  /**
+   * Extra technical detail (counts, vendored-entry names) for the generated
+   * issue #74 mirror only — never rendered by `CoverageNotesPanel`.
+   */
+  issueDetail?: string;
 }
 
 export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category: "Prestige classes",
     note: "All of them are in the class picker, but only the ten core-rulebook ones (plus Student of War and Soul Warden) have their spellcasting progression and entry requirements tracked. Later-book prestige classes show their full rules text, and their requirements appear as advice rather than something the sheet enforces. If one you're playing advances your spellcasting, say so and it can be added.",
+    issueDetail:
+      "108 vendored splatbook prestige classes have no structured castingAdvancement (schedules are prose) and no structured prereqs (requirements are soft advisories).",
   },
   {
     category:
-      "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries)",
+      "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries, ki powers, style strikes, bold stares, phrenic amplifications)",
     note: 'Every published entry is browsable and searchable, but only the core-book sets actually move numbers on your sheet — those are marked with an "M". The rest show their rules text for reference, so you\'ll need to apply them by hand.',
   },
   {
-    category: "Bloodlines, mysteries, spirits, disciplines, implements, and orders",
+    category:
+      "Bloodlines, mysteries, spirits, disciplines, implements, orders, patrons, and shifter aspects",
     note: "The full published lists are browsable. Beyond the core-book ones, they show their rules text without wiring up the per-level powers you gain — deliberately, rather than inventing mechanics that might be wrong.",
   },
   {
@@ -48,25 +59,61 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category: "Summoner (Unchained) eidolon",
     note: "The twelve core Pathfinder Unchained subtypes are in. Later-splatbook subtypes and a couple of rarer base-form options aren't, and a subtype's resistances, immunities, and spell-like abilities show as reference chips rather than live numbers.",
+    issueDetail:
+      "Not covered: the Aeon, Ancestor, Astral, Deepwater, Genie, Kami, Kyton, Radiant, Shadow, Storykin, Tapestry-Warped, Twinned, and Void subtypes, the Aberrant base form, and the Small-variant option.",
   },
   {
     category: "Alternate racial traits",
     note: "Every race's published alternates are browsable. The seven core races plus sylph have theirs fully modeled, including swapping out the trait they replace; for other races they show as reference text.",
+    issueDetail:
+      "750 vendored across all 80 races; only the hand-authored 8-race set carries mechanics and replacement enforcement.",
   },
   {
     category: "Character traits",
     note: "The full published trait catalog is searchable in the picker. Traits outside a core set may show their benefit as text only rather than a live number the sheet tracks — anything still missing can be added as a homebrew trait.",
+    issueDetail:
+      "1,981 vendored and searchable; only the hand-authored core set is mechanically modeled.",
+  },
+  {
+    category: "Spell resistance",
+    note: "Your SR shows on the sheet, but nothing rolls against it — whether an effect needs to beat it, and whether it does, is still on you and your GM to resolve.",
   },
   {
     category: "Damage reduction and energy resistance",
-    note: 'Your DR and resistances come off incoming damage automatically — enter the hit on the Hit Points panel, naming types if the GM did ("12b 6c", "18 fire"), and each part meets the right defense. Stoneskin and protection from energy track how much they have left to absorb, and end when they are spent. Whether an attack bypassed your DR is yours to say, since only your GM knows what the attacker was swinging — name the material in the hit ("12 adamantine", "18 cold iron") or flip the switch by hand. Immunity to a damage type works too, but nothing in the catalog grants one automatically yet — the high-level bloodline, mystery, and spirit powers that would aren\'t wired up, so add it as a custom buff for now. Immunity to things that aren\'t damage — sleep, poison, paralysis, mind-affecting, critical hits — isn\'t tracked at all.',
+    note: 'Your DR and resistances come off incoming damage automatically — enter the hit on the Hit Points panel, naming types if the GM did ("12b 6c", "18 fire"), and each part meets the right defense. Stoneskin and protection from energy track how much they have left to absorb, and end when they are spent. Whether an attack bypassed your DR is yours to say, since only your GM knows what the attacker was swinging — name the material in the hit ("12 adamantine", "18 cold iron") or flip the switch by hand. Immunity to a damage type works too, but nothing in the catalog grants one automatically yet — the high-level bloodline, mystery, and spirit powers that would aren\'t wired up, so add it as a custom buff for now. Immunity to things that aren\'t damage — sleep, poison, paralysis, mind-affecting, fear, disease, critical hits — isn\'t tracked at all.',
+    issueDetail:
+      "A sweep found zero player-race damage-type immunities — the real sources are capstone-tier class content (sorcerer/bloodrager bloodlines, class features, oracle mysteries, archetype features, feats, domains, spirits), which sit inside the chassis subsystems already listed above as core-only. Non-damage immunity is a different axis resolveDamage has no place for — this is where nearly all race immunity content actually lives (elves/half-elves/drow vs. magic sleep, duergar vs. paralysis/poison, androids vs. fear, Being of Ib vs. crits).",
   },
   {
     category: "Buffs marked “reminder only”",
     note: "Most buffs move real numbers on your sheet. Twenty-seven don't, and they say so on the buff itself — either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus (the Danger Wards). Toggle them as trackers for the duration; apply what they do by hand.",
+    issueDetail:
+      "185 buffs vendored total; 27 have empty changes[]/contextNotes[]. Some are genuinely unmodelable (Invisibility, See Invisibility, Endure Elements, Delay Poison), some are reroll- or narrative-shaped (the Danger Wards), and some would need mechanics that don't exist yet (Force Field, Divine Transfer, Resiliency's alignment-DR variant, the Veemod set).",
   },
   {
     category: "Community-pack feats",
     note: "The bulk of the feat catalog is in, but a feat sourced from the wider community content pack may show its prerequisites as text only rather than enforcing them, and may not apply its effect to your sheet automatically.",
+  },
+];
+
+/**
+ * Gaps with no player-facing surface — pure data-pipeline facts that belong
+ * in the generated issue #74 mirror but have nowhere to render in the
+ * Settings panel, which only reads `COVERAGE_NOTES`.
+ */
+export interface InternalGap {
+  category: string;
+  detail: string;
+}
+
+export const INTERNAL_GAPS: readonly InternalGap[] = [
+  {
+    category: "Archetype buffs",
+    detail: "The pf-arch-buffs pack (8 buffs across 2 archetypes) isn't vendored at all.",
+  },
+  {
+    category: "Beyond data",
+    detail:
+      "Situational/activated effects, prestige-class prereq structuring, and Paths of Prestige-tier mechanics tables have no machine-readable source and must be hand-authored against the published rules.",
   },
 ];
