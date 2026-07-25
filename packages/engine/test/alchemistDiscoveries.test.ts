@@ -15,7 +15,14 @@ import { loadRefData } from "@pf1/data-pipeline";
 
 import { collectModifiers } from "../src/collect.js";
 import { ALCHEMIST_DISCOVERIES, ALCHEMIST_DISCOVERY_IDS } from "../src/alchemist-discoveries.js";
-import { collectGrantedFeatures, resolveClassFeatures } from "../src/index.js";
+import {
+  COGNATOGEN_BUFF_IDS,
+  COGNATOGEN_BUFFS,
+  collectGrantedFeatures,
+  compute,
+  deriveResourcePools,
+  resolveClassFeatures,
+} from "../src/index.js";
 import { buildRollData } from "../src/rolldata.js";
 
 const ref = loadRefData();
@@ -65,11 +72,13 @@ function discoveryFeatureNames(doc: CharacterDoc): string[] {
 }
 
 describe("ALCHEMIST_DISCOVERIES table", () => {
-  it("every discovery is displayOnly with no changes (no unconditional flat number)", () => {
+  it("no discovery carries unconditional changes; Cognatogen alone isn't displayOnly", () => {
     for (const id of ALCHEMIST_DISCOVERY_IDS) {
       const discovery = ALCHEMIST_DISCOVERIES[id]!;
-      expect(discovery.displayOnly).toBe(true);
       expect(discovery.changes).toEqual([]);
+      // Cognatogen's mechanics ride toggleable buffs, not `changes` — it's
+      // the one entry the picker's "M" badge should mark as modeled.
+      expect(discovery.displayOnly).toBe(id !== "cognatogen");
     }
   });
 
@@ -146,5 +155,70 @@ describe("alchemist discoveries (collectGrantedFeatures / resolveClassFeatures d
     };
     const granted = collectGrantedFeatures(doc, ref);
     expect(granted.some((g) => g.origin?.kind === "discovery")).toBe(false);
+  });
+});
+
+describe("Cognatogen buffs (cognatogen.ts) and their Mutagen-pool link", () => {
+  const mutagenPool = (doc: CharacterDoc) =>
+    deriveResourcePools(doc, ref).find((p) => p.name === "Mutagen");
+
+  it("the Mutagen pool links only the 3 vendored Mutagen buffs without the discovery", () => {
+    const pool = mutagenPool(makeAlchemist(6));
+    expect(pool).toBeDefined();
+    for (const id of Object.values(COGNATOGEN_BUFF_IDS)) {
+      expect(pool!.linkedBuffIds).not.toContain(id);
+    }
+  });
+
+  it("taking Cognatogen adds its 3 buffs to the SAME pool (RAW: brewed in place of a mutagen)", () => {
+    const pool = mutagenPool(makeAlchemist(6, ["cognatogen"]))!;
+    for (const id of Object.values(COGNATOGEN_BUFF_IDS)) {
+      expect(pool.linkedBuffIds).toContain(id);
+    }
+    // The vendored Mutagen buffs are still there — cognatogen adds, not replaces.
+    expect(pool.linkedBuffIds.length).toBe(6);
+  });
+
+  it("each Cognatogen buff mirrors Mutagen: +4 mental, -2 to the linked physical score, +2 natural armor", () => {
+    const expected: Record<string, [string, string]> = {
+      [COGNATOGEN_BUFF_IDS.int]: ["int", "str"],
+      [COGNATOGEN_BUFF_IDS.wis]: ["wis", "dex"],
+      [COGNATOGEN_BUFF_IDS.cha]: ["cha", "con"],
+    };
+    for (const [id, [boosted, penalized]] of Object.entries(expected)) {
+      const buff = COGNATOGEN_BUFFS[id]!;
+      expect(buff.changes).toEqual([
+        { formula: "4", target: boosted, type: "alchemical" },
+        { formula: "-2", target: penalized, type: "alchemical" },
+        { formula: "2", target: "nac", type: "alchemical" },
+      ]);
+      // Namespaced so it can never collide with a real vendored buff key.
+      expect(ref.buffs[id]).toBeUndefined();
+    }
+  });
+
+  it("a Cognatogen buff applies as an alchemical bonus once activated", () => {
+    const doc = makeAlchemist(6, ["cognatogen"]);
+    const buff = COGNATOGEN_BUFFS[COGNATOGEN_BUFF_IDS.int]!;
+    // The tracker's linked-buff toggle copies a `Buff`'s changes into the
+    // `ActiveBuff` instance (see `model/buffs.ts` `makeActiveBuff`), which is
+    // what makes a non-`refData.buffs` buff computable at all.
+    const active: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "buff-cognatogen-int",
+            buffId: buff.id,
+            name: buff.name,
+            changes: buff.changes.map((c) => ({ ...c })),
+          },
+        ],
+      },
+    };
+    const sheet = compute(active, ref);
+    expect(sheet.abilities.int.total).toBe(doc.abilities.int + 4);
+    expect(sheet.abilities.str.total).toBe(doc.abilities.str - 2);
   });
 });

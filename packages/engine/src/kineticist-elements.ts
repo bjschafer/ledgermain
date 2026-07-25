@@ -21,21 +21,22 @@
  * published 22 core-book composite blasts qualify with only the 5 core
  * elements — the other 9 are Void/Wood-gated).
  *
- * SIMPLE BLAST SIMPLIFICATION: two of the five elements (air, water) RAW
- * actually offer a CHOICE of two simple blasts each (air blast OR electric
- * blast; water blast OR cold blast) — a kineticist picks ONE at 1st level.
- * This table models only the flavor-canonical blast of each element (Air
- * Blast, Water Blast) and does NOT track which specific simple blast a
- * player chose — matching this codebase's existing `kineticBlastDetail`
- * (`tables.ts`), which already displays kinetic-blast damage generically
- * (physical/energy dice) with no blast-NAME tracking anywhere. A documented
- * consequence: two composite blasts that RAW require the ALTERNATE blast
- * specifically (Blizzard Blast needs "air blast, cold blast"; Charged Water
- * Blast needs "electric blast, water blast") are modeled here as available
- * once BOTH elements are known (air + water), not gated on which specific
- * simple blast was picked — a deliberate simplification in the generous
- * direction (same "near miss, not worth new infra" call `rage-powers.ts`
- * makes for its own conditional gates), not a silent drop.
+ * SIMPLE BLASTS: two of the five elements (air, water) RAW offer a CHOICE of
+ * two simple blasts each — air blast OR electric blast, water blast OR cold
+ * blast — picked when the element is gained ({@link
+ * KineticistElementDef.alternateSimpleBlast}, recorded in
+ * `build.kineticistSimpleBlasts`). Expanding into an element you already have
+ * grants the OTHER blast rather than a second choice, which is why
+ * {@link knownSimpleBlasts} counts occurrences of a tag across
+ * {primary, ...expanded} rather than deduping them.
+ *
+ * That distinction is load-bearing for exactly two composite blasts whose RAW
+ * prerequisites name specific ALTERNATE blasts rather than elements (Blizzard
+ * Blast needs air blast + cold blast; Charged Water Blast needs electric
+ * blast + water blast) — see {@link KineticistCompositeBlastDef.requiredBlasts}.
+ * An air+water kineticist qualifies for at most ONE of the two, decided by
+ * which blasts she picked; both were previously offered unconditionally.
+ * Every other composite is element-gated as before.
  *
  * CLASS SKILLS: each element grants 2 bonus class skills (Elemental Focus:
  * "grants her access to specific wild talents ... and additional class
@@ -68,6 +69,8 @@ import type { RefData, SourceRef } from "@pf1/schema";
 export type KineticistDamageType = "physical" | "energy";
 
 export interface KineticistSimpleBlast {
+  /** Stable slug, unique across all elements (e.g. "fireBlast") — what `build.kineticistSimpleBlasts` stores and `requiredBlasts` names. */
+  id: string;
   /** e.g. "Fire Blast". */
   name: string;
   damageType: KineticistDamageType;
@@ -92,7 +95,10 @@ export interface KineticistElementDef {
   name: string;
   /** Two bonus class skill ids (see file doc comment re: the `classSkillSet` wiring gap). */
   classSkills: string[];
+  /** The element's flavor-canonical simple blast — also the default when no explicit choice is recorded. */
   simpleBlast: KineticistSimpleBlast;
+  /** The element's second simple blast, for the two elements (air, water) that RAW offer a choice. */
+  alternateSimpleBlast?: KineticistSimpleBlast;
   /** Granted automatically at 2nd level for the PRIMARY element only (never for an expanded element). */
   defense: KineticistDefenseDef;
   /** Granted automatically as a bonus wild talent the moment the element is known (primary or expanded). */
@@ -104,7 +110,12 @@ const ELEMENT_LIST: KineticistElementDef[] = [
     tag: "aether",
     name: "Aether",
     classSkills: ["ken", "slt"],
-    simpleBlast: { name: "Telekinetic Blast", damageType: "physical", descriptor: "bludgeoning" },
+    simpleBlast: {
+      id: "telekineticBlast",
+      name: "Telekinetic Blast",
+      damageType: "physical",
+      descriptor: "bludgeoning",
+    },
     defense: {
       name: "Force Ward",
       summary:
@@ -120,7 +131,18 @@ const ELEMENT_LIST: KineticistElementDef[] = [
     tag: "air",
     name: "Air",
     classSkills: ["fly", "kna"],
-    simpleBlast: { name: "Air Blast", damageType: "physical", descriptor: "bludgeoning" },
+    simpleBlast: {
+      id: "airBlast",
+      name: "Air Blast",
+      damageType: "physical",
+      descriptor: "bludgeoning",
+    },
+    alternateSimpleBlast: {
+      id: "electricBlast",
+      name: "Electric Blast",
+      damageType: "energy",
+      descriptor: "electricity",
+    },
     defense: {
       name: "Enveloping Winds",
       summary:
@@ -136,7 +158,12 @@ const ELEMENT_LIST: KineticistElementDef[] = [
     tag: "earth",
     name: "Earth",
     classSkills: ["clm", "kdu"],
-    simpleBlast: { name: "Earth Blast", damageType: "physical", descriptor: "bludgeoning" },
+    simpleBlast: {
+      id: "earthBlast",
+      name: "Earth Blast",
+      damageType: "physical",
+      descriptor: "bludgeoning",
+    },
     defense: {
       name: "Flesh of Stone",
       summary:
@@ -152,7 +179,7 @@ const ELEMENT_LIST: KineticistElementDef[] = [
     tag: "fire",
     name: "Fire",
     classSkills: ["esc", "kna"],
-    simpleBlast: { name: "Fire Blast", damageType: "energy", descriptor: "fire" },
+    simpleBlast: { id: "fireBlast", name: "Fire Blast", damageType: "energy", descriptor: "fire" },
     defense: {
       name: "Searing Flesh",
       summary:
@@ -168,7 +195,18 @@ const ELEMENT_LIST: KineticistElementDef[] = [
     tag: "water",
     name: "Water",
     classSkills: ["kna", "swm"],
-    simpleBlast: { name: "Water Blast", damageType: "physical", descriptor: "bludgeoning" },
+    simpleBlast: {
+      id: "waterBlast",
+      name: "Water Blast",
+      damageType: "physical",
+      descriptor: "bludgeoning",
+    },
+    alternateSimpleBlast: {
+      id: "coldBlast",
+      name: "Cold Blast",
+      damageType: "energy",
+      descriptor: "cold",
+    },
     defense: {
       name: "Shroud of Water",
       summary:
@@ -188,6 +226,58 @@ export const KINETICIST_ELEMENTS: Record<string, KineticistElementDef> = Object.
 
 export const KINETICIST_ELEMENT_TAGS: readonly string[] = ELEMENT_LIST.map((e) => e.tag);
 
+/** Both simple blasts an element offers, canonical first (a one-element array for the three that offer no choice). */
+export function elementSimpleBlasts(tag: string): readonly KineticistSimpleBlast[] {
+  const element = KINETICIST_ELEMENTS[tag];
+  if (!element) return [];
+  return element.alternateSimpleBlast
+    ? [element.simpleBlast, element.alternateSimpleBlast]
+    : [element.simpleBlast];
+}
+
+/**
+ * The simple blast an element contributes given the player's recorded choice
+ * — the canonical blast when nothing is recorded, or when the recorded id
+ * isn't one of this element's two (a stale pick left over from a since-changed
+ * element, tolerated the same way every other picker tolerates stale ids).
+ */
+export function chosenSimpleBlast(
+  tag: string,
+  choices: Readonly<Record<string, string>> = {},
+): KineticistSimpleBlast | undefined {
+  const blasts = elementSimpleBlasts(tag);
+  return blasts.find((b) => b.id === choices[tag]) ?? blasts[0];
+}
+
+/**
+ * Every simple blast the kineticist actually knows. An element named once
+ * across {primary, ...expanded} contributes its chosen blast; an element named
+ * TWICE (primary plus an Expanded Element pick of the same element)
+ * contributes BOTH of its blasts, per RAW's "she gains the other simple blast
+ * of that element" — which is the only way to reach Thunderstorm/Ice Blast.
+ */
+export function knownSimpleBlasts(
+  primaryElement: string | undefined,
+  expandedElements: readonly string[],
+  choices: Readonly<Record<string, string>> = {},
+): KineticistSimpleBlast[] {
+  if (!primaryElement) return [];
+  const counts = new Map<string, number>();
+  for (const tag of [primaryElement, ...expandedElements]) {
+    if (tag) counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+  const out: KineticistSimpleBlast[] = [];
+  for (const [tag, count] of counts) {
+    const blasts = elementSimpleBlasts(tag);
+    if (count > 1) out.push(...blasts);
+    else {
+      const chosen = chosenSimpleBlast(tag, choices);
+      if (chosen) out.push(chosen);
+    }
+  }
+  return out;
+}
+
 export interface KineticistCompositeBlastDef {
   id: string;
   name: string;
@@ -198,6 +288,15 @@ export interface KineticistCompositeBlastDef {
    * element she already has") — see {@link eligibleCompositeBlasts}.
    */
   requiredElements: string[];
+  /**
+   * The RAW prerequisite when it names specific SIMPLE BLASTS rather than
+   * elements ({@link KineticistSimpleBlast.id}s) — set only for the four
+   * composites gated on air's or water's blast choice. When present it
+   * REPLACES the `requiredElements` check in {@link eligibleCompositeBlasts};
+   * `requiredElements` stays populated so the picker can still group and
+   * filter by element.
+   */
+  requiredBlasts?: string[];
   /**
    * Undefined for a vendored-only entry (see `mergedCompositeBlastCatalog`'s
    * doc comment for why it isn't reliably recoverable from the source for
@@ -223,6 +322,7 @@ const COMPOSITE_BLAST_LIST: KineticistCompositeBlastDef[] = [
     id: "blizzardBlast",
     name: "Blizzard Blast",
     requiredElements: ["air", "water"],
+    requiredBlasts: ["airBlast", "coldBlast"],
     damageType: "physical",
     burn: 2,
     summary: "A directed blizzard dealing half piercing, half cold damage.",
@@ -239,6 +339,7 @@ const COMPOSITE_BLAST_LIST: KineticistCompositeBlastDef[] = [
     id: "chargedWaterBlast",
     name: "Charged Water Blast",
     requiredElements: ["air", "water"],
+    requiredBlasts: ["electricBlast", "waterBlast"],
     damageType: "physical",
     burn: 2,
     summary: "Slams a foe with electrically charged water, half bludgeoning/half electricity.",
@@ -255,6 +356,7 @@ const COMPOSITE_BLAST_LIST: KineticistCompositeBlastDef[] = [
     id: "iceBlast",
     name: "Ice Blast",
     requiredElements: ["water"],
+    requiredBlasts: ["waterBlast", "coldBlast"],
     damageType: "physical",
     burn: 2,
     summary: "Shoots chilling icicles, half piercing/half cold damage.",
@@ -311,6 +413,7 @@ const COMPOSITE_BLAST_LIST: KineticistCompositeBlastDef[] = [
     id: "thunderstormBlast",
     name: "Thunderstorm Blast",
     requiredElements: ["air"],
+    requiredBlasts: ["airBlast", "electricBlast"],
     damageType: "physical",
     burn: 2,
     summary: "Batters foes with electrically charged air, half bludgeoning/half electricity.",
@@ -329,6 +432,11 @@ export const KINETICIST_COMPOSITE_BLASTS: readonly KineticistCompositeBlastDef[]
  * understanding of an element she already has"); a cross-element composite
  * needs both required tags anywhere in {primary, ...expanded}.
  *
+ * An entry carrying `requiredBlasts` is gated on the SIMPLE BLASTS known
+ * ({@link knownSimpleBlasts}) instead — the air/water blast choice decides
+ * which of Blizzard Blast / Charged Water Blast an air+water kineticist gets,
+ * and both remain out of reach if she picked air blast + water blast.
+ *
  * `catalog` defaults to the 13 hand-authored entries but accepts
  * `mergedCompositeBlastCatalog`'s broader vendored-overlay list (issue #74) so a
  * vendored-only composite blast becomes eligible the same way
@@ -338,10 +446,15 @@ export function eligibleCompositeBlasts(
   primaryElement: string | undefined,
   expandedElements: readonly string[],
   catalog: readonly KineticistCompositeBlastDef[] = COMPOSITE_BLAST_LIST,
+  blastChoices: Readonly<Record<string, string>> = {},
 ): KineticistCompositeBlastDef[] {
   if (!primaryElement) return [];
   const known = new Set<string>([primaryElement, ...expandedElements]);
+  const knownBlasts = new Set(
+    knownSimpleBlasts(primaryElement, expandedElements, blastChoices).map((b) => b.id),
+  );
   return catalog.filter((cb) => {
+    if (cb.requiredBlasts) return cb.requiredBlasts.every((id) => knownBlasts.has(id));
     if (cb.requiredElements.length === 1) {
       const el = cb.requiredElements[0]!;
       return primaryElement === el && expandedElements.includes(el);

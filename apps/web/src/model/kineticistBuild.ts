@@ -65,6 +65,30 @@ export function knownKineticistElements(doc: CharacterDoc): string[] {
   return [...new Set(tags.filter((t): t is string => !!t))];
 }
 
+/**
+ * Record (or clear, passing `null`) which simple blast was picked for
+ * `elementTag` — only air and water offer a choice. Clearing drops the key
+ * entirely rather than storing "", so the doc never carries an entry that
+ * `chosenSimpleBlast` would have to treat as stale.
+ */
+export function setKineticistSimpleBlast(
+  doc: CharacterDoc,
+  elementTag: string,
+  blastId: string | null,
+): CharacterDoc {
+  const trimmed = typeof blastId === "string" ? blastId.trim() : "";
+  const next = { ...doc.build.kineticistSimpleBlasts };
+  if (trimmed.length > 0) next[elementTag] = trimmed;
+  else delete next[elementTag];
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      kineticistSimpleBlasts: Object.keys(next).length > 0 ? next : undefined,
+    },
+  };
+}
+
 /* ---------------------------------------------------------- wild talents */
 
 export function hasKineticistWildTalent(doc: CharacterDoc, id: string): boolean {

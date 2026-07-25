@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import {
   BLOODRAGE_BUFF,
   BLOODRAGE_BUFF_ID,
+  COGNATOGEN_BUFFS,
   deriveResourcePools,
   OCCULTIST_PHYSICAL_ABILITIES,
   OCCULTIST_SCHOOLS,
@@ -268,12 +269,14 @@ function ResourceRow({
 
 /**
  * Buffs linked from a resource pool that have no `refData.buffs` entry to
- * resolve against (issue #65: Bloodrager's Bloodrage — see `@pf1/engine`
- * `bloodrage.ts`'s doc comment for why it's hand-authored rather than
- * vendored). Checked as a fallback in {@link LinkedBuffToggle} below.
+ * resolve against (Bloodrager's Bloodrage; the alchemist's Cognatogen — see
+ * `@pf1/engine`'s `bloodrage.ts`/`cognatogen.ts` doc comments for why they're
+ * hand-authored rather than vendored). Checked as a fallback in
+ * {@link LinkedBuffToggle} below.
  */
 const SYNTHETIC_LINKED_BUFFS: Readonly<Record<string, Buff>> = {
   [BLOODRAGE_BUFF_ID]: BLOODRAGE_BUFF,
+  ...COGNATOGEN_BUFFS,
 };
 
 /**

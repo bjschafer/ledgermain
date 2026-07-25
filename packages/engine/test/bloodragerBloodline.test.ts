@@ -193,6 +193,30 @@ describe("bloodrager bloodline powers (collectGrantedFeatures / resolveClassFeat
     ]);
   });
 
+  it("a level-20 Aberrant bloodrager gets all 6 powers, tagged with the bloodline origin", () => {
+    expect(bloodlineFeatureNames(makeBloodrager(20, "Aberrant"))).toEqual([
+      "Aberrant Form",
+      "Aberrant Fortitude",
+      "Aberrant Resistance",
+      "Abnormal Reach",
+      "Staggering Strike",
+      "Unusual Anatomy",
+    ]);
+  });
+
+  it("Aberrant contributes nothing numeric before its capstone — every earlier power is bloodrage-gated", () => {
+    const doc16 = makeBloodrager(16, "Aberrant");
+    const at16 = collectModifiers(doc16, ref, buildRollData(doc16, ref));
+    expect(at16.some((m) => m.sourceId?.startsWith("bloodragerBloodline:"))).toBe(false);
+  });
+
+  it("Aberrant Form grants blindsight 60 ft. and +1 DR at 20th, the one power that's always on", () => {
+    const doc20 = makeBloodrager(20, "Aberrant");
+    const at20 = collectModifiers(doc20, ref, buildRollData(doc20, ref));
+    expect(at20.find((m) => m.target === "sensebs")!.value).toBe(60);
+    expect(at20.find((m) => m.target === "dr")!.value).toBe(1);
+  });
+
   it("Arcane has no unconditional numeric Changes at any level (all powers are activated/situational)", () => {
     const doc = makeBloodrager(20, "Arcane");
     const mods = collectModifiers(doc, ref, buildRollData(doc, ref));

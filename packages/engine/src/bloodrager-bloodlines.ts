@@ -8,11 +8,11 @@
  * "Bloodline Spells (BLO)" class features are vendored — see `class-
  * features.json`; the per-bloodline content itself is NOT).
  *
- * Scope: the 9 ACG bloodrager bloodlines (Abyssal, Arcane, Celestial,
- * Destined, Draconic, Elemental, Fey, Infernal, Undead) plus Martyred (a
- * later Paizo-splatbook bloodline, added by player request) — all verified
- * against AoN's `BloodragerBloodlineDisplay.aspx`, which carries 14 further
- * later-splatbook bloodlines (Aberrant, Aquatic, Black Blood, Hag, Kyton,
+ * Scope: the 10 ACG bloodrager bloodlines (Aberrant, Abyssal, Arcane,
+ * Celestial, Destined, Draconic, Elemental, Fey, Infernal, Undead) plus
+ * Martyred (a later Paizo-splatbook bloodline, added by player request) — all
+ * verified against AoN's `BloodragerBloodlineDisplay.aspx`, which carries 13
+ * further later-splatbook bloodlines (Aquatic, Black Blood, Hag, Kyton,
  * Medusa, Naga, Phoenix, Salamander, Shadow, Shapechanger, Sphinx, Verdant,
  * Vestige) still out of scope — same "Core-book-first" posture `bloodlines.ts`
  * takes for the 10 CRB sorcerer bloodlines, relaxed only where a request
@@ -163,6 +163,107 @@ const ELEMENT_OPTIONS: readonly BloodragerBloodlineVariantOption[] = [
 ];
 
 const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
+  // ---- Aberrant ------------------------------------------------------------
+  // Every power below 20th sits under this bloodline's own umbrella sentence
+  // ("While bloodraging, you gain the abilities and immunities of some
+  // aberrations"), so none of them carry unconditional `changes` — unlike the
+  // Abyssal/Celestial/Infernal "Resistances" powers, whose text has no such
+  // gate (see the KNOWN AMBIGUITY note above). Only the capstone, which says
+  // "constantly, even while not bloodraging" in as many words, is modeled.
+  {
+    tag: "Aberrant",
+    name: "Aberrant",
+    bonusFeatSlugs: feats(
+      "Combat Reflexes",
+      "Great Fortitude",
+      "Improved Disarm",
+      "Improved Grapple",
+      "Improved Initiative",
+      "Improved Unarmed Strike",
+      "Iron Will",
+    ),
+    bonusSpells: bonusSpells(
+      "Enlarge Person",
+      "See Invisibility",
+      "Displacement",
+      "Black Tentacles",
+    ),
+    powers: [
+      {
+        id: "staggeringStrike",
+        level: 1,
+        name: "Staggering Strike",
+        summary:
+          "On a confirmed critical hit, the target is staggered 1 round unless it succeeds at a Fortitude save (DC 10 + 1/2 bloodrager level + Con mod). Stacks with Staggering Critical — save against each separately.",
+        contextNotes: [
+          { target: "allChecks", text: "Only while bloodraging — crit-confirmation rider." },
+        ],
+      },
+      {
+        id: "abnormalReach",
+        level: 4,
+        name: "Abnormal Reach",
+        summary: "Your limbs elongate; your reach increases by 5 feet.",
+        contextNotes: [
+          {
+            target: "allChecks",
+            text: "Only while bloodraging, so the +5 ft. isn't added to your standing reach.",
+          },
+        ],
+      },
+      {
+        id: "aberrantFortitude",
+        level: 8,
+        name: "Aberrant Fortitude",
+        summary: "Immune to the sickened and nauseated conditions.",
+        contextNotes: [
+          {
+            target: "allChecks",
+            text: "Only while bloodraging; immunities aren't tracked on the sheet — display only.",
+          },
+        ],
+      },
+      {
+        id: "unusualAnatomy",
+        level: 12,
+        name: "Unusual Anatomy",
+        summary:
+          "Your organs shift, giving a 50% chance to negate any critical hit or sneak attack against you (damage is rolled normally instead).",
+        contextNotes: [
+          {
+            target: "allChecks",
+            text: "Only while bloodraging — roll the 50% miss chance manually.",
+          },
+        ],
+      },
+      {
+        id: "aberrantResistance",
+        level: 16,
+        name: "Aberrant Resistance",
+        summary: "Immune to disease, exhaustion, fatigue, poison, and the staggered condition.",
+        contextNotes: [
+          {
+            target: "allChecks",
+            text: "Only while bloodraging; immunities aren't tracked on the sheet — display only.",
+          },
+        ],
+      },
+      {
+        id: "aberrantForm",
+        level: 20,
+        name: "Aberrant Form",
+        summary:
+          "Immune to critical hits and sneak attacks, blindsight 60 ft., and your bloodrager damage reduction increases by 1 — constantly, even while not bloodraging.",
+        changes: [c("60", "sensebs", "untyped"), c("1", "dr", "untyped")],
+        contextNotes: [
+          {
+            target: "allChecks",
+            text: "Crit/sneak-attack immunity isn't tracked on the sheet — display only.",
+          },
+        ],
+      },
+    ],
+  },
   // ---- Abyssal -----------------------------------------------------------
   {
     tag: "Abyssal",
@@ -962,11 +1063,8 @@ export function bloodragerBloodlineVariantLabel(
  * merges the two for browsing.
  *
  * Matching is by NORMALIZED NAME (this table's `tag` doubles as its display
- * `name`). Collision audit (all 10 hand-authored bloodlines): all 10
+ * `name`). Collision audit (all 11 hand-authored bloodlines): all 11
  * matched a vendored entry by normalized name — no aliasing needed.
- * "Aberrant" has NO hand-authored bloodrager counterpart (see this table's
- * scope note) despite existing for sorcerer — it resolves display-only here
- * like any other vendored-only bloodline, not an error.
  */
 
 const BLOODRAGER_BLOODLINE_NAME_ALIASES: Record<string, string> = {};

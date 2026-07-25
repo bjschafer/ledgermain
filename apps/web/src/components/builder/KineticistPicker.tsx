@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 
 import {
+  chosenSimpleBlast,
   eligibleCompositeBlasts,
+  elementSimpleBlasts,
   KINETICIST_ELEMENTS,
   KINETICIST_ELEMENT_TAGS,
   KINETICIST_WILD_TALENTS,
@@ -21,6 +23,7 @@ import {
   knownKineticistElements,
   setKineticistElement,
   setKineticistExpandedElement,
+  setKineticistSimpleBlast,
   toggleKineticistWildTalent,
 } from "../../model/kineticistBuild.js";
 import { SKILL_NAMES } from "../../model/names.js";
@@ -92,12 +95,23 @@ function ElementalFocusSection({
   const expanded = doc.build.kineticistExpandedElements ?? [];
   const primaryDef = primary ? KINETICIST_ELEMENTS[primary] : undefined;
 
+  const blastChoices = doc.build.kineticistSimpleBlasts ?? {};
   const compositeCatalog = useMemo(() => mergedCompositeBlastCatalog(refData), [refData]);
   const composites = useMemo(
-    () => eligibleCompositeBlasts(primary, expanded, compositeCatalog),
+    () => eligibleCompositeBlasts(primary, expanded, compositeCatalog, blastChoices),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [primary, expanded.join(","), compositeCatalog],
+    [primary, expanded.join(","), compositeCatalog, JSON.stringify(blastChoices)],
   );
+
+  // Expanding into the element you already have grants the OTHER simple blast
+  // outright (RAW), so the expanded row names that one rather than repeating
+  // the primary's pick.
+  const expandedBlastLabel = (tag: string): string => {
+    const kept = chosenSimpleBlast(tag, blastChoices);
+    if (tag !== primary || !kept) return chosenSimpleBlast(tag, blastChoices)?.name ?? "";
+    const other = elementSimpleBlasts(tag).find((b) => b.id !== kept.id);
+    return other ? other.name : kept.name;
+  };
 
   return (
     <div className="subsection order-picker">
@@ -139,10 +153,33 @@ function ElementalFocusSection({
 
           {primaryDef && (
             <div className="order-preview">
-              <div className="hint" style={{ marginTop: 4 }}>
-                Simple blast — {primaryDef.simpleBlast.name} ({primaryDef.simpleBlast.damageType},{" "}
-                {primaryDef.simpleBlast.descriptor})
-              </div>
+              {primaryDef.alternateSimpleBlast ? (
+                <div style={{ marginTop: 4 }}>
+                  <div className="hint">
+                    Simple blast — {primaryDef.name} offers two; pick one when you gain the element.
+                  </div>
+                  <select
+                    className="order-select"
+                    value={chosenSimpleBlast(primaryDef.tag, blastChoices)?.id ?? ""}
+                    onChange={(e) =>
+                      update((d) =>
+                        setKineticistSimpleBlast(d, primaryDef.tag, e.target.value || null),
+                      )
+                    }
+                  >
+                    {elementSimpleBlasts(primaryDef.tag).map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name} ({b.damageType}, {b.descriptor})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                <div className="hint" style={{ marginTop: 4 }}>
+                  Simple blast — {primaryDef.simpleBlast.name} ({primaryDef.simpleBlast.damageType},{" "}
+                  {primaryDef.simpleBlast.descriptor})
+                </div>
+              )}
               <div className="hint" style={{ marginTop: 2 }}>
                 Bonus class skills —{" "}
                 {primaryDef.classSkills.map((id) => SKILL_NAMES[id] ?? id).join(", ")}
@@ -184,8 +221,8 @@ function ElementalFocusSection({
                 </select>
                 {chosenDef && (
                   <div className="hint" style={{ marginTop: 2 }}>
-                    +{chosenDef.simpleBlast.name}, {chosenDef.basicUtility.name} (no defense wild
-                    talent from an expanded element)
+                    +{expandedBlastLabel(chosenDef.tag)}, {chosenDef.basicUtility.name} (no defense
+                    wild talent from an expanded element)
                   </div>
                 )}
               </div>

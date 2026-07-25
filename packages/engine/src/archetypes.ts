@@ -37,7 +37,9 @@ import { resolveMonkStyleStrike } from "./monk-style-strikes.js";
 import { MEDIUM_SPIRITS } from "./medium-spirits.js";
 import { findOccultistFocusPower, OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import {
+  chosenSimpleBlast,
   eligibleCompositeBlasts,
+  elementSimpleBlasts,
   KINETICIST_ELEMENTS,
   mergedCompositeBlastCatalog,
 } from "./kineticist-elements.js";
@@ -963,11 +965,13 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   if (kineticistLevel > 0) {
     const primaryElement = doc.build.kineticistElement;
     const expandedElements = doc.build.kineticistExpandedElements ?? [];
+    const blastChoices = doc.build.kineticistSimpleBlasts ?? {};
     const compositeCatalog = mergedCompositeBlastCatalog(refData);
     for (const blast of eligibleCompositeBlasts(
       primaryElement,
       expandedElements,
       compositeCatalog,
+      blastChoices,
     )) {
       out.push({
         classTag: "kineticist",
@@ -1598,9 +1602,12 @@ export function resolveClassFeatures(
         ? KINETICIST_ELEMENTS[doc.build.kineticistElement]
         : undefined;
       if (element) {
+        const blast =
+          chosenSimpleBlast(element.tag, doc.build.kineticistSimpleBlasts ?? {}) ??
+          element.simpleBlast;
         detail =
-          `${element.name} — simple blast: ${element.simpleBlast.name} ` +
-          `(${element.simpleBlast.damageType}, ${element.simpleBlast.descriptor}); ` +
+          `${element.name} — simple blast: ${blast.name} ` +
+          `(${blast.damageType}, ${blast.descriptor}); ` +
           `bonus wild talent: ${element.basicUtility.name}`;
       }
     } else if (
@@ -1627,14 +1634,28 @@ export function resolveClassFeatures(
       // indices 0/1) are summarized here rather than inventing a synthetic
       // second grant row, since the vendored dataset has none to attach it to.
       const picks = doc.build.kineticistExpandedElements ?? [];
+      const choices = doc.build.kineticistSimpleBlasts ?? {};
+      // Expanding into the element you already have grants the OTHER simple
+      // blast rather than a fresh choice, so name that one specifically.
+      const expandedBlastName = (tag: string): string => {
+        const el = KINETICIST_ELEMENTS[tag]!;
+        if (tag !== doc.build.kineticistElement) {
+          return (chosenSimpleBlast(tag, choices) ?? el.simpleBlast).name;
+        }
+        const kept = chosenSimpleBlast(tag, choices) ?? el.simpleBlast;
+        const other = elementSimpleBlasts(tag).find((b) => b.id !== kept.id);
+        return other ? other.name : kept.name;
+      };
       const parts: string[] = [];
       if (classLevel >= 7 && picks[0]) {
         const el = KINETICIST_ELEMENTS[picks[0]];
-        if (el) parts.push(`7th: ${el.name} (+${el.simpleBlast.name}, ${el.basicUtility.name})`);
+        if (el)
+          parts.push(`7th: ${el.name} (+${expandedBlastName(el.tag)}, ${el.basicUtility.name})`);
       }
       if (classLevel >= 15 && picks[1]) {
         const el = KINETICIST_ELEMENTS[picks[1]];
-        if (el) parts.push(`15th: ${el.name} (+${el.simpleBlast.name}, ${el.basicUtility.name})`);
+        if (el)
+          parts.push(`15th: ${el.name} (+${expandedBlastName(el.tag)}, ${el.basicUtility.name})`);
       }
       if (parts.length > 0) detail = parts.join(" · ");
     } else if (

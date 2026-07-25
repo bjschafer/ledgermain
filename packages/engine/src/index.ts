@@ -168,6 +168,7 @@ export {
   type MergedBloodragerBloodlineEntry,
 } from "./bloodrager-bloodlines.js";
 export { BLOODRAGE_BUFF, BLOODRAGE_BUFF_ID } from "./bloodrage.js";
+export { COGNATOGEN_BUFFS, COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
 export {
   ARCANIST_EXPLOITS,
   ARCANIST_EXPLOIT_IDS,
@@ -346,6 +347,9 @@ export {
   KINETICIST_ELEMENT_TAGS,
   KINETICIST_COMPOSITE_BLASTS,
   eligibleCompositeBlasts,
+  elementSimpleBlasts,
+  chosenSimpleBlast,
+  knownSimpleBlasts,
   mergedCompositeBlastCatalog,
   type KineticistElementDef,
   type KineticistSimpleBlast,

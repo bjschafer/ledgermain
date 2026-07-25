@@ -31,20 +31,16 @@
  * against 3 real vendored buffs — "Mutagen, Str"/"Mutagen, Dex"/"Mutagen,
  * Con" — audited before writing this file; no new mechanism needed).
  *
- * Cognatogen (Ultimate Magic) is confirmed RAW to share Mutagen's EXACT
- * numeric shape (+4/-2/+2 natural armor, same duration, "only one
- * mutagen-family effect active at a time" rule) but boosts a MENTAL score
- * instead (Int/Wis/Cha) at the cost of the linked physical score, plus 2
- * points of ability damage to the penalized score when it expires. Unlike
- * Mutagen, there is NO vendored buff data to piggyback on at all (checked
- * `buffs.json` for "Cognatogen" — zero hits) — reproducing Mutagen's toggle
- * for it would mean inventing a NEW linking mechanism (discoveries don't
- * ride `deriveResourcePools`'s vendored-`ClassFeature.grantsBuffs` pipeline
- * the way base class features do), which is more than "cheap" at this
- * table's scope. So Cognatogen (and its Greater/Grand upgrades) are
- * `displayOnly: true` here with the exact numbers spelled out in
- * `contextNotes` — deferred with a clear note rather than promising a toggle
- * that doesn't exist, same honesty bar as everything else in this file.
+ * Cognatogen (Ultimate Magic) shares Mutagen's EXACT numeric shape (+4/-2/+2
+ * natural armor, same duration, "only one mutagen-family effect active at a
+ * time" rule) but boosts a MENTAL score instead (Int/Wis/Cha) at the cost of
+ * the linked physical score. It has no vendored buff data at all (`buffs.json`
+ * has zero "Cognatogen" hits, unlike Mutagen's three), so its three buffs are
+ * hand-authored in `cognatogen.ts` and appended to the Mutagen resource pool's
+ * `linkedBuffIds` when this discovery is taken — the base entry below is
+ * therefore a real toggle, not display-only. Greater/Grand Cognatogen remain
+ * display-only, matching the vendored Mutagen buffs, which likewise don't
+ * model Greater/Grand Mutagen.
  *
  * Modelling posture (mirrors magus-arcana.ts/oracle-revelations.ts's honesty
  * bar): every discovery here is a bomb-type rider (mutually exclusive with
@@ -55,9 +51,10 @@
  * natural attacks require a natural-attack builder this engine doesn't have;
  * Precise Bombs' splash-exclusion and Sticky Poison's strike-count aren't
  * sheet stats; Preserve Organs' crit/sneak-negation percentage has no Change
- * target). So EVERY entry here is `displayOnly: true` with `changes: []`; a
- * `contextNotes` reminder carries the mechanic's numbers/prerequisite
- * instead.
+ * target). So every entry here has `changes: []` and a `contextNotes`
+ * reminder carrying the mechanic's numbers/prerequisite instead. Cognatogen
+ * is the one entry that isn't `displayOnly` — its mechanics ride three
+ * toggleable buffs rather than `changes` (see above).
  */
 
 import type { AlchemistDiscovery, Change, ContextNote, RefData, SourceRef } from "@pf1/schema";
@@ -78,8 +75,12 @@ export interface AlchemistDiscoveryDef {
   changes: Change[];
   /** Non-mechanical reminders (bomb-rider exclusivity, prerequisite discovery, activation cost/count, ...). */
   contextNotes?: ContextNote[];
-  /** Always true here — no discovery has a flat always-on numeric effect this engine can safely target. */
-  displayOnly: true;
+  /**
+   * True for every discovery whose effect this engine can't apply — which is
+   * all of them but Cognatogen, the one entry with real mechanics (three
+   * toggleable buffs, see `cognatogen.ts`). Drives the picker's "M" badge.
+   */
+  displayOnly: boolean;
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });
@@ -93,6 +94,8 @@ interface RawDiscovery {
   summary: string;
   minLevel?: number;
   contextNotes?: ContextNote[];
+  /** Set only on Cognatogen — see {@link AlchemistDiscoveryDef.displayOnly}. */
+  modeled?: true;
 }
 
 function build(entries: RawDiscovery[]): AlchemistDiscoveryDef[] {
@@ -103,7 +106,7 @@ function build(entries: RawDiscovery[]): AlchemistDiscoveryDef[] {
     minLevel: e.minLevel ?? 2,
     changes: [],
     contextNotes: e.contextNotes,
-    displayOnly: true,
+    displayOnly: !e.modeled,
   }));
 }
 
@@ -328,11 +331,12 @@ const DISCOVERY_LIST: AlchemistDiscoveryDef[] = build([
   {
     id: "cognatogen",
     name: "Cognatogen",
+    modeled: true,
     summary:
       "As Mutagen, but grants +4 alchemical bonus to a chosen MENTAL ability score (Int, Wis, or Cha), -2 to the linked physical score (Int→Str, Wis→Dex, Cha→Con), +2 natural armor, 10 min/level; deals 2 points of ability damage to the penalized score when it expires.",
     contextNotes: [
       note(
-        "Same numeric shape as base Mutagen, but no vendored buff exists to toggle it automatically (unlike Mutagen's 3 vendored buffs) — apply the +4/-2/+2 by hand while active.",
+        "Toggle the matching Cognatogen buff from the Mutagen resource pool on the tracker. Only one mutagen or cognatogen can be active at a time.",
       ),
     ],
   },
@@ -342,7 +346,11 @@ const DISCOVERY_LIST: AlchemistDiscoveryDef[] = build([
     minLevel: 12,
     summary:
       "Requires Cognatogen. Your cognatogen instead grants +4 to two chosen mental ability scores and +6 natural armor, with the usual physical penalties.",
-    contextNotes: [note("Scales Cognatogen's numbers — apply by hand. Requires Cognatogen.")],
+    contextNotes: [
+      note(
+        "Scales Cognatogen's numbers past what the Cognatogen buffs model — apply the extra by hand. Requires Cognatogen.",
+      ),
+    ],
   },
   {
     id: "grandCognatogen",

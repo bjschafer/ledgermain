@@ -42,20 +42,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     note: "Covered for the ten Advanced Player's Guide mysteries (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, and Wind). Revelations from later mysteries aren't written up.",
   },
   {
-    category: "Bloodrager Aberrant bloodline",
-    note: "Selectable and shows its rules text, but its powers aren't modeled the way the other ten bloodrager bloodlines are.",
-  },
-  {
     category: "Kineticist wild talents",
-    note: "The whole catalog is browsable, with the core infusions and utility talents modeled. The alternate air and water simple blasts (electric and cold) aren't offered as a choice.",
+    note: "The whole catalog is browsable, with the core infusions and utility talents modeled.",
   },
   {
     category: "Summoner (Unchained) eidolon",
     note: "The twelve core Pathfinder Unchained subtypes are in. Later-splatbook subtypes and a couple of rarer base-form options aren't, and a subtype's resistances, immunities, and spell-like abilities show as reference chips rather than live numbers.",
-  },
-  {
-    category: "Alchemist's cognatogen",
-    note: "Its numbers show up as reference text rather than a toggleable buff, unlike the alchemist's mutagen.",
   },
   {
     category: "Alternate racial traits",

@@ -19,6 +19,7 @@ import {
   knownKineticistElements,
   setKineticistElement,
   setKineticistExpandedElement,
+  setKineticistSimpleBlast,
   toggleKineticistWildTalent,
 } from "../src/model/kineticistBuild.js";
 
@@ -68,6 +69,38 @@ describe("setKineticistElement / setKineticistExpandedElement", () => {
     d = setKineticistExpandedElement(d, 0, "water");
     d = setKineticistExpandedElement(d, 0, null);
     expect(d.build.kineticistExpandedElements).toBeUndefined();
+  });
+});
+
+describe("setKineticistSimpleBlast", () => {
+  it("records an element's simple-blast pick and clears the key (not the value) on unset", () => {
+    const base = setKineticistElement(withClass("kineticist", 1), "air");
+    const picked = setKineticistSimpleBlast(base, "air", "electricBlast");
+    expect(picked.build.kineticistSimpleBlasts).toEqual({ air: "electricBlast" });
+
+    const cleared = setKineticistSimpleBlast(picked, "air", null);
+    expect(cleared.build.kineticistSimpleBlasts).toBeUndefined();
+  });
+
+  it("keeps other elements' picks when one changes", () => {
+    let doc = setKineticistSimpleBlast(withClass("kineticist", 7), "air", "electricBlast");
+    doc = setKineticistSimpleBlast(doc, "water", "coldBlast");
+    expect(doc.build.kineticistSimpleBlasts).toEqual({
+      air: "electricBlast",
+      water: "coldBlast",
+    });
+
+    doc = setKineticistSimpleBlast(doc, "air", null);
+    expect(doc.build.kineticistSimpleBlasts).toEqual({ water: "coldBlast" });
+  });
+
+  it("treats an empty/whitespace blast id as a clear", () => {
+    const doc = setKineticistSimpleBlast(
+      setKineticistSimpleBlast(withClass("kineticist", 1), "water", "coldBlast"),
+      "water",
+      "   ",
+    );
+    expect(doc.build.kineticistSimpleBlasts).toBeUndefined();
   });
 });
 

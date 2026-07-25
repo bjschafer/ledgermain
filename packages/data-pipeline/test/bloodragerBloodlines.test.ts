@@ -18,8 +18,9 @@ describe("RefData.bloodragerBloodlines", () => {
     expect(ref.bloodragerBloodlines.not_found).toBeUndefined();
   });
 
-  it("includes all 10 Advanced Class Guide bloodlines the hand-authored engine table covers", () => {
+  it("includes all 11 bloodlines the hand-authored engine table covers", () => {
     for (const tag of [
+      "aberrant",
       "abyssal",
       "arcane",
       "celestial",
@@ -33,10 +34,6 @@ describe("RefData.bloodragerBloodlines", () => {
     ]) {
       expect(ref.bloodragerBloodlines[tag]?.name).toBeDefined();
     }
-  });
-
-  it("has no hand-authored counterpart for Aberrant (vendored-only for this class, unlike sorcerer)", () => {
-    expect(ref.bloodragerBloodlines.aberrant?.name).toBe("Aberrant");
   });
 
   it("renders the source's ::list[...]/::ab[...] directives as readable labeled prose, not raw directive syntax", () => {

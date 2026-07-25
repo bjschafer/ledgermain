@@ -4,9 +4,12 @@ import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import {
+  chosenSimpleBlast,
   compute,
   eligibleCompositeBlasts,
+  elementSimpleBlasts,
   findKineticistWildTalent,
+  knownSimpleBlasts,
   KINETICIST_COMPOSITE_BLASTS,
   KINETICIST_ELEMENT_TAGS,
   KINETICIST_ELEMENTS,
@@ -131,9 +134,104 @@ describe("eligibleCompositeBlasts", () => {
         expect(eligibleCompositeBlasts(el, [el]).some((x) => x.id === cb.id)).toBe(true);
       } else {
         const [a, b] = cb.requiredElements;
-        expect(eligibleCompositeBlasts(a!, [b!]).some((x) => x.id === cb.id)).toBe(true);
+        // A blast-gated composite also needs the right simple-blast picks —
+        // `requiredBlasts` names them, so pick exactly those.
+        const choices: Record<string, string> = {};
+        for (const blastId of cb.requiredBlasts ?? []) {
+          for (const tag of cb.requiredElements) {
+            if (elementSimpleBlasts(tag).some((sb) => sb.id === blastId)) choices[tag] = blastId;
+          }
+        }
+        expect(
+          eligibleCompositeBlasts(a!, [b!], undefined, choices).some((x) => x.id === cb.id),
+        ).toBe(true);
       }
     }
+  });
+
+  it("Blizzard Blast and Charged Water Blast are decided by the air/water blast picks, never both at once", () => {
+    const has = (choices: Record<string, string>, id: string) =>
+      eligibleCompositeBlasts("air", ["water"], undefined, choices).some((b) => b.id === id);
+
+    // Default picks (air blast + water blast) qualify for NEITHER — both RAW
+    // prerequisites name an alternate blast.
+    expect(has({}, "blizzardBlast")).toBe(false);
+    expect(has({}, "chargedWaterBlast")).toBe(false);
+
+    expect(has({ air: "airBlast", water: "coldBlast" }, "blizzardBlast")).toBe(true);
+    expect(has({ air: "airBlast", water: "coldBlast" }, "chargedWaterBlast")).toBe(false);
+
+    expect(has({ air: "electricBlast", water: "waterBlast" }, "chargedWaterBlast")).toBe(true);
+    expect(has({ air: "electricBlast", water: "waterBlast" }, "blizzardBlast")).toBe(false);
+
+    // Both alternates: neither, since each prerequisite still names one canonical blast.
+    expect(has({ air: "electricBlast", water: "coldBlast" }, "blizzardBlast")).toBe(false);
+    expect(has({ air: "electricBlast", water: "coldBlast" }, "chargedWaterBlast")).toBe(false);
+  });
+
+  it("expanding into an element you already have grants BOTH its blasts, unlocking Thunderstorm/Ice Blast regardless of the original pick", () => {
+    for (const pick of ["airBlast", "electricBlast"]) {
+      expect(
+        eligibleCompositeBlasts("air", ["air"], undefined, { air: pick }).some(
+          (b) => b.id === "thunderstormBlast",
+        ),
+      ).toBe(true);
+    }
+    for (const pick of ["waterBlast", "coldBlast"]) {
+      expect(
+        eligibleCompositeBlasts("water", ["water"], undefined, { water: pick }).some(
+          (b) => b.id === "iceBlast",
+        ),
+      ).toBe(true);
+    }
+  });
+});
+
+describe("simple blast choice (air/water)", () => {
+  it("only air and water offer a second simple blast", () => {
+    expect(elementSimpleBlasts("air").map((b) => b.id)).toEqual(["airBlast", "electricBlast"]);
+    expect(elementSimpleBlasts("water").map((b) => b.id)).toEqual(["waterBlast", "coldBlast"]);
+    for (const tag of ["aether", "earth", "fire"]) {
+      expect(elementSimpleBlasts(tag)).toHaveLength(1);
+    }
+    expect(elementSimpleBlasts("not-an-element")).toEqual([]);
+  });
+
+  it("the alternates are energy blasts, unlike air's and water's physical canonical ones", () => {
+    expect(KINETICIST_ELEMENTS.air!.alternateSimpleBlast).toMatchObject({
+      name: "Electric Blast",
+      damageType: "energy",
+      descriptor: "electricity",
+    });
+    expect(KINETICIST_ELEMENTS.water!.alternateSimpleBlast).toMatchObject({
+      name: "Cold Blast",
+      damageType: "energy",
+      descriptor: "cold",
+    });
+  });
+
+  it("falls back to the canonical blast with no choice recorded, or a stale one", () => {
+    expect(chosenSimpleBlast("air")!.id).toBe("airBlast");
+    expect(chosenSimpleBlast("air", { air: "coldBlast" })!.id).toBe("airBlast");
+    expect(chosenSimpleBlast("air", { air: "electricBlast" })!.id).toBe("electricBlast");
+    expect(chosenSimpleBlast("not-an-element")).toBeUndefined();
+  });
+
+  it("knownSimpleBlasts returns one blast per element, or both when the element was expanded into itself", () => {
+    expect(knownSimpleBlasts(undefined, [])).toEqual([]);
+    expect(knownSimpleBlasts("air", [], { air: "electricBlast" }).map((b) => b.id)).toEqual([
+      "electricBlast",
+    ]);
+    expect(knownSimpleBlasts("air", ["water"], {}).map((b) => b.id)).toEqual([
+      "airBlast",
+      "waterBlast",
+    ]);
+    expect(knownSimpleBlasts("air", ["air"], { air: "electricBlast" }).map((b) => b.id)).toEqual([
+      "airBlast",
+      "electricBlast",
+    ]);
+    // An element with no alternate contributes its one blast even when expanded into.
+    expect(knownSimpleBlasts("fire", ["fire"]).map((b) => b.id)).toEqual(["fireBlast"]);
   });
 });
 

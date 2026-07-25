@@ -31,7 +31,9 @@ describe("mergedAlchemistDiscoveryCatalog", () => {
       const entry = byId.get(id);
       expect(entry).toBeDefined();
       expect(entry!.changes).toEqual(ALCHEMIST_DISCOVERIES[id]!.changes);
-      expect(entry!.displayOnly).toBe(true);
+      // Cognatogen is the one modeled entry (toggleable buffs, see
+      // `cognatogen.ts`) — the merge must carry that through, not flatten it.
+      expect(entry!.displayOnly).toBe(ALCHEMIST_DISCOVERIES[id]!.displayOnly);
       expect(entry!.description).toBeDefined();
       matched++;
     }

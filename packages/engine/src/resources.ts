@@ -40,6 +40,7 @@ import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/sc
 
 import { collectGrantedFeatures } from "./archetypes.js";
 import { BLOODRAGE_BUFF_ID } from "./bloodrage.js";
+import { COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
 import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
@@ -331,6 +332,21 @@ export function deriveResourcePools(
       feature.tag === "bloodrage" && classTag === "bloodrager"
         ? [BLOODRAGE_BUFF_ID]
         : resolveGrantsBuffs(feature.grantsBuffs, refData);
+
+    // Alchemist Cognatogen (Ultimate Magic discovery): RAW it's brewed in
+    // place of a mutagen, so it shares the Mutagen pool rather than getting
+    // one of its own — the three Cognatogen buffs just join the three
+    // vendored Mutagen buffs already linked here. Keyed on the feature NAME
+    // because the vendored Mutagen `ClassFeature` carries no `tag` (unlike
+    // Bloodrage above); see `cognatogen.ts` for why the buffs are hand-
+    // authored rather than vendored.
+    if (
+      classTag === "alchemist" &&
+      feature.name === "Mutagen" &&
+      (doc.build.alchemistDiscoveries ?? []).includes(COGNATOGEN_DISCOVERY_ID)
+    ) {
+      linkedBuffIds.push(...Object.values(COGNATOGEN_BUFF_IDS));
+    }
 
     pools.push({
       id: feature.id,

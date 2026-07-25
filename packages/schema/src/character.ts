@@ -840,6 +840,21 @@ export interface CharacterDoc {
      */
     kineticistExpandedElements?: string[];
     /**
+     * Which simple blast the kineticist picked for each element that offers a
+     * choice — element tag → `@pf1/engine` `KineticistSimpleBlast` id (air:
+     * `"airBlast"` | `"electricBlast"`; water: `"waterBlast"` | `"coldBlast"`).
+     * PF1 RAW: air and water each offer two simple blasts and the kineticist
+     * picks one when she gains the element; the other three modeled elements
+     * offer only one, so they never appear here. An absent (or stale) entry
+     * falls back to the element's canonical blast — see
+     * `@pf1/engine` `chosenSimpleBlast`. Taking the SAME element again via
+     * Expanded Element grants the other blast outright, so this field is
+     * ignored for that element (see `knownSimpleBlasts`). Free-choice, soft
+     * posture. Empty/undefined for non-kineticists. Back-compat: documents
+     * without this field behave exactly as before — the canonical blast.
+     */
+    kineticistSimpleBlasts?: Record<string, string>;
+    /**
      * Kineticist wild talent ids chosen from the infusion/utility menus
      * (`"<elementTag>:<slug>"` for element-specific entries, or
      * `"universal:<slug>"` for talents any element can take — keys into
