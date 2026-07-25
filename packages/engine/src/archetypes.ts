@@ -156,6 +156,24 @@ export interface GrantedFeature {
  * (uses/day tracking) so both stay in sync automatically.
  */
 /**
+ * Archetype id for the kineticist's Psychokinetcist (Occult Adventures p.56).
+ * The misspelling is the vendored source's, not a typo here — see the
+ * `pf1e-archetypes` module's `kineticist:psychokinetcist`. Matching on the id
+ * keeps this stable if the display name is ever corrected upstream.
+ */
+export const PSYCHOKINETCIST_ARCHETYPE_ID = "kineticist:psychokinetcist";
+
+/**
+ * Whether this build channels its kinetic power through the mind rather than
+ * the body: burn keys off Wisdom, its cap is the bare modifier rather than
+ * `3 + mod`, and it inflicts a stacking Wis-based penalty instead of
+ * nonlethal damage (Mind Burn / Emotional Intensity).
+ */
+export function isPsychokinetcist(doc: CharacterDoc): boolean {
+  return (doc.build.archetypes ?? []).includes(PSYCHOKINETCIST_ARCHETYPE_ID);
+}
+
+/**
  * The class level a domain's granted powers scale off. Clerics are the common
  * case; inquisitors also pick a domain at 1st level and "use their inquisitor
  * level as their cleric level" for its granted powers (they get the powers

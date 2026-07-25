@@ -140,3 +140,52 @@ describe("kineticBlastDetail (hand-computed vs. the published progression)", () 
     expect(energy?.detail).toBe("2d6+1 (energy, touch)");
   });
 });
+
+describe("Psychokinetcist (Occult Adventures p.56) — mind-channeled burn", () => {
+  /** Cai Dukun: dwarf Psychokinetcist 11, Wis 25 (belt/headband boosted), Con 20. */
+  function makeCai(): CharacterDoc {
+    const doc = makeDoc([{ tag: "kineticist", level: 11 }], 20);
+    return {
+      ...doc,
+      abilities: { str: 10, dex: 18, con: 20, int: 14, wis: 25, cha: 11 },
+      build: { ...doc.build, archetypes: ["kineticist:psychokinetcist"] },
+    };
+  }
+
+  function burnPool(doc: CharacterDoc) {
+    const pools = deriveResourcePools(doc, ref, compute(doc, ref).abilities);
+    return pools.find((p) => p.name === "Burn");
+  }
+
+  it("caps burn at the bare Wisdom modifier, not 3 + Constitution", () => {
+    // Mind Burn: "an amount of burn equal to his Wisdom modifier (rather than
+    // 3 + his Wisdom modifier)". Wis 25 -> +7, matching the play sheet.
+    expect(burnPool(makeCai())?.max).toBe(7);
+  });
+
+  it("leaves a normal kineticist on 3 + Constitution", () => {
+    const doc = makeDoc([{ tag: "kineticist", level: 11 }], 20);
+    // Con 20 -> +5, so 3 + 5 = 8 — and notably NOT the psychokinetcist's 7.
+    expect(burnPool(doc)?.max).toBe(8);
+  });
+
+  it("describes the Wis penalty instead of nonlethal damage, scaled to burn held", () => {
+    const doc = makeCai();
+    const feature = Object.values(ref.classFeatures).find((f) => f.tag === "burn");
+    const held = {
+      ...doc,
+      live: { ...doc.live, resources: { [feature!.id]: { used: 3 } } },
+    } as CharacterDoc;
+
+    expect(burnPool(doc)?.detail).toContain("no nonlethal damage");
+    expect(burnPool(doc)?.detail).not.toContain("currently");
+    expect(burnPool(held)?.detail).toContain("currently -6");
+  });
+
+  it("still swaps Elemental Overflow out for Mental Overflow", () => {
+    const sheet = compute(makeCai(), ref);
+    const overflow = sheet.classFeatures.find((f) => f.name === "Elemental Overflow");
+    expect(overflow?.applied).toBe(false);
+    expect(overflow?.replacedBy).toBe("Mental Overflow");
+  });
+});

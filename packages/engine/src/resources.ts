@@ -38,7 +38,7 @@
 
 import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/schema";
 
-import { collectGrantedFeatures } from "./archetypes.js";
+import { collectGrantedFeatures, isPsychokinetcist } from "./archetypes.js";
 import { BLOODRAGE_BUFF_ID } from "./bloodrage.js";
 import { COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
@@ -51,6 +51,7 @@ import { buildRollData, type AbilityView } from "./rolldata.js";
 import {
   bombDamageDetail,
   burnDetailLabel,
+  mindBurnDetailLabel,
   smiteEvilDetail,
   smiteEvilLabel,
   smiteGoodLabel,
@@ -229,9 +230,19 @@ export function deriveResourcePools(
     ) {
       featureRollData = withClericWisdomHouserule(featureRollData);
     }
+    // Psychokinetcist (Occult Adventures p.56) Mind Burn: "He can accept an
+    // amount of burn equal to his Wisdom modifier (rather than 3 + his
+    // Wisdom modifier)." Both the ability AND the shape of the cap change,
+    // so this replaces the vendored `3 + @abilities.con.mod` outright rather
+    // than aliasing one ability onto another the way the phrenic-pool
+    // correction above does.
+    const effectiveFormula =
+      feature.tag === "burn" && classTag === "kineticist" && isPsychokinetcist(doc)
+        ? "@abilities.wis.mod"
+        : formula;
     let max: number | null;
     try {
-      max = tryEvaluateFormula(formula, featureRollData);
+      max = tryEvaluateFormula(effectiveFormula, featureRollData);
     } catch {
       continue;
     }
@@ -265,8 +276,14 @@ export function deriveResourcePools(
       // `3 + Con` `uses.maxFormula` that made this pool) — hand-authored,
       // same posture as Smite Evil above. Deliberately does NOT auto-apply
       // the nonlethal damage — see `burnDetailLabel`'s doc comment.
-      const characterLevel = doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
-      detail = burnDetailLabel(characterLevel, classLevel);
+      if (isPsychokinetcist(doc)) {
+        // Mind Burn swaps the nonlethal damage for a stacking Wis-based
+        // penalty, so the whole sub-line is different (not just scaled).
+        detail = mindBurnDetailLabel(classLevel, doc.live.resources[feature.id]?.used ?? 0);
+      } else {
+        const characterLevel = doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
+        detail = burnDetailLabel(characterLevel, classLevel);
+      }
     } else if (feature.tag === "bomb" && classTag === "alchemist") {
       // Bomb's vendored action damage formula is a flat, non-scaling "1d6"
       // (confirmed against the pinned data slice — it neither scales with

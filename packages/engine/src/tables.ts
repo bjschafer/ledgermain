@@ -1523,6 +1523,28 @@ export function burnDetailLabel(characterLevel: number, kineticistLevel: number)
 }
 
 /**
+ * Burn summary for a Psychokinetcist (Occult Adventures p.56), whose Mind
+ * Burn feature replaces burn's nonlethal damage outright: "He takes a -2
+ * penalty on Will saves, Wisdom checks, and Wisdom-based skill checks for
+ * each point of burn he has accepted, rather than taking nonlethal damage
+ * from burn."
+ *
+ * The penalty is NOT auto-applied, for the same reason the nonlethal damage
+ * in {@link burnDetailLabel} isn't: accepting burn is a table-time choice
+ * this engine doesn't drive, and the pool's `used` count is the player's to
+ * set. The label states the arithmetic so it can be applied by hand.
+ */
+export function mindBurnDetailLabel(kineticistLevel: number, currentBurn: number): string {
+  const perRound = burnPerRoundLimit(kineticistLevel);
+  const penalty = Math.max(0, currentBurn) * 2;
+  return (
+    `each point held is -2 on Will saves, Wis checks, and Wis-based skills ` +
+    `(no nonlethal damage)${penalty > 0 ? ` — currently -${penalty}` : ""} · ` +
+    `max ${perRound} accepted/round`
+  );
+}
+
+/**
  * Kineticist Elemental Overflow attack/damage bonus, clean-room from the
  * published PF1 Occult Adventures rules: "she receives a bonus on her
  * attack rolls with kinetic blasts equal to the total number of points of

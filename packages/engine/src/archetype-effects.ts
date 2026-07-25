@@ -70,6 +70,21 @@ const c = (formula: string, target: string, type = "untyped"): Change => ({
 });
 
 export const ARCHETYPE_FEATURE_EFFECTS: Readonly<Record<string, ArchetypeFeatureEffect>> = {
+  // Psychokinetcist's Mental Overflow replaces Elemental Overflow (the swap
+  // is already carried by the vendored `pairedBaseFeatureUuid`, which strikes
+  // the base feature through). The attack/damage half is numerically
+  // IDENTICAL to Elemental Overflow's — but that half is live-burn-dependent
+  // and `detail` only receives a class level, so the sub-line states the
+  // formula rather than the current value (the base feature's live label in
+  // `archetypes.ts` is unreachable once the row is struck through). The
+  // ability-score half differs: mental scores instead of physical, and a flat
+  // +2 rather than elemental overflow's scaling size bonuses.
+  "kineticist:psychokinetcist:mental-overflow:3": {
+    changes: [],
+    detail: (level) =>
+      `+1 atk / +2 dmg per burn held with kinetic blasts (max +${Math.floor(level / 3)} atk) · ` +
+      `at 3+ burn, +2 to two mental ability scores — apply by hand`,
+  },
   // ── Fighter ──────────────────────────────────────────────────────────────
 
   // Weapon Master's "Weapon Training" (Ultimate Combat p. 16) replaces Armor
