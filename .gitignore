@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 
+# AI working docs (audits, planning notes) — ephemeral by convention, never committed.
+# Durable findings get promoted to issues / coverageNotes.ts instead.
+slopdocs/
+
 # Build output
 dist/
 *.tsbuildinfo
