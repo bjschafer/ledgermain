@@ -155,6 +155,24 @@ export interface GrantedFeature {
  * Shared by `resolveClassFeatures` (display) and `deriveResourcePools`
  * (uses/day tracking) so both stay in sync automatically.
  */
+/**
+ * The class level a domain's granted powers scale off. Clerics are the common
+ * case; inquisitors also pick a domain at 1st level and "use their inquisitor
+ * level as their cleric level" for its granted powers (they get the powers
+ * only — never the domain's bonus spell slots, which is why the web layer's
+ * domain-spell wiring stays cleric-gated).
+ *
+ * `build.clericDomains` is a single flat list with no record of which class
+ * granted each pick, so a cleric/inquisitor multiclass resolves to the cleric
+ * level rather than trying to split one list across two progressions —
+ * picking the class that would actually have granted a second domain slot.
+ */
+export function domainCasterLevel(doc: CharacterDoc): number {
+  const level = (tag: string): number =>
+    doc.identity.classes.find((c) => c.tag === tag)?.level ?? 0;
+  return level("cleric") || level("inquisitor");
+}
+
 export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): GrantedFeature[] {
   const out: GrantedFeature[] = [];
 
@@ -167,15 +185,18 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
-  const clericLevel = doc.identity.classes.find((c) => c.tag === "cleric")?.level ?? 0;
-  if (clericLevel > 0) {
+  const domainLevel = domainCasterLevel(doc);
+  const domainClassTag = doc.identity.classes.some((c) => c.tag === "cleric")
+    ? "cleric"
+    : "inquisitor";
+  if (domainLevel > 0) {
     for (const tag of doc.build.clericDomains ?? []) {
       const domain = Object.values(refData.domains).find((d) => d.tag === tag);
       if (domain) {
         for (const grant of domain.features) {
-          if (grant.level > clericLevel || !grant.resolved) continue;
+          if (grant.level > domainLevel || !grant.resolved) continue;
           out.push({
-            classTag: "cleric",
+            classTag: domainClassTag,
             level: grant.level,
             grant,
             origin: { kind: "domain", label: domain.name },
@@ -195,9 +216,9 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
       const features =
         subdomain.features.length > 0 ? subdomain.features : (parentDomain?.features ?? []);
       for (const grant of features) {
-        if (grant.level > clericLevel || !grant.resolved) continue;
+        if (grant.level > domainLevel || !grant.resolved) continue;
         out.push({
-          classTag: "cleric",
+          classTag: domainClassTag,
           level: grant.level,
           grant,
           origin: { kind: "domain", label: subdomain.name },

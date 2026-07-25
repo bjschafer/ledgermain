@@ -144,11 +144,24 @@ export function setDeity(doc: CharacterDoc, deity: string): CharacterDoc {
 }
 
 /**
- * Set the cleric's chosen domain tags (PF1 normally two; UI caps at two here).
- * Pass `[]` to clear. A tag may name either a `Domain` (`refData.domainSpellLists`
- * key) or a `Subdomain` (`refData.subdomainSpellLists` key) — no validation here
- * (pure model layer — the builder picker gates the choices). Replaces the whole
- * list (not add-remove) to keep domain swapping simple.
+ * How many domains a build may pick: two for a cleric, one for an inquisitor
+ * (who gets the granted powers only, never the domain's spells), zero for
+ * anyone else. A cleric/inquisitor multiclass gets the cleric's two — see
+ * `domainCasterLevel` in `@pf1/engine` for the matching level resolution.
+ */
+export function domainSlotCount(doc: CharacterDoc): number {
+  const has = (tag: string) => doc.identity.classes.some((c) => c.tag === tag);
+  if (has("cleric")) return 2;
+  return has("inquisitor") ? 1 : 0;
+}
+
+/**
+ * Set the chosen domain tags (PF1's largest allowance is a cleric's two; UI
+ * caps at two here). Pass `[]` to clear. A tag may name either a `Domain`
+ * (`refData.domainSpellLists` key) or a `Subdomain` (`refData.subdomainSpellLists`
+ * key) — no validation here, and deliberately no per-class narrowing either
+ * (pure model layer — `domainSlotCount` + the builder picker gate the choices).
+ * Replaces the whole list (not add-remove) to keep domain swapping simple.
  */
 export function setClericDomains(doc: CharacterDoc, domains: string[]): CharacterDoc {
   const trimmed = domains.filter((d) => typeof d === "string" && d.length > 0);

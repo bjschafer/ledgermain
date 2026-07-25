@@ -239,3 +239,33 @@ describe("castingAdvancementBonus / effectiveCasterClassLevel", () => {
     expect(effectiveCasterClassLevel(doc, ref, "wizard")).toBe(0);
   });
 });
+
+describe("vendored prestige class casting advancement (Soul Warden)", () => {
+  it("advances a divine caster at every level 1-10", () => {
+    let doc = classed([
+      { tag: "cleric", level: 6 },
+      { tag: "soulWarden", level: 4 },
+    ]);
+    doc = setCastingAdvancementTarget(doc, ref, "soulWarden", 0, "cleric");
+    doc = setCastingAdvancementTarget(doc, ref, "soulWarden", 1, "cleric");
+    doc = setCastingAdvancementTarget(doc, ref, "soulWarden", 2, "cleric");
+    doc = setCastingAdvancementTarget(doc, ref, "soulWarden", 3, "cleric");
+
+    // Soul Warden's table reads "+1 level of spellcasting class" on all ten
+    // rows, so 4 prestige levels are worth 4 caster levels.
+    expect(castingAdvancementBonus(doc, ref, "cleric")).toBe(4);
+    expect(effectiveCasterClassLevel(doc, ref, "cleric")).toBe(10);
+  });
+
+  it("accepts an arcane target — its column says 'spellcasting class', unrestricted", () => {
+    let doc = classed([
+      { tag: "sorcerer", level: 5 },
+      { tag: "soulWarden", level: 2 },
+    ]);
+    doc = setCastingAdvancementTarget(doc, ref, "soulWarden", 0, "sorcerer");
+    doc = setCastingAdvancementTarget(doc, ref, "soulWarden", 1, "sorcerer");
+
+    expect(castingAdvancementBonus(doc, ref, "sorcerer")).toBe(2);
+    expect(effectiveCasterClassLevel(doc, ref, "sorcerer")).toBe(7);
+  });
+});

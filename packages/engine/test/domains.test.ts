@@ -186,3 +186,39 @@ describe("cleric domain / subdomain direct changes (issue #99)", () => {
     expect(withFire).toEqual(withoutDomain);
   });
 });
+
+describe("inquisitor domains (granted powers only, no bonus spell slots)", () => {
+  function makeInquisitor(level: number, clericDomains: string[]): CharacterDoc {
+    const doc = makeCleric(level, clericDomains);
+    return { ...doc, identity: { ...doc.identity, classes: [{ tag: "inquisitor", level }] } };
+  }
+
+  it("grants a domain's powers off the inquisitor level", () => {
+    // Balras: Inquisitor 7 with the Magic domain, whose 1st-level granted
+    // power is Hand of the Acolyte.
+    const { classFeatures } = resolveClassFeatures(makeInquisitor(7, ["Magic"]), ref);
+    const domainFeatures = classFeatures.filter((f) => f.origin?.kind === "domain");
+
+    expect(domainFeatures.length).toBeGreaterThan(0);
+    expect(domainFeatures.map((f) => f.name)).toContain("Hand of the Acolyte (Domain Power)");
+    // Attributed to the class that actually granted it, not a phantom cleric.
+    expect(domainFeatures.every((f) => f.classTag === "inquisitor")).toBe(true);
+  });
+
+  it("gates a domain power the inquisitor's level hasn't reached", () => {
+    // Magic's second granted power (Dispelling Touch) comes at 8th.
+    const at7 = domainFeatureNames(makeInquisitor(7, ["Magic"]));
+    const at8 = domainFeatureNames(makeInquisitor(8, ["Magic"]));
+
+    expect(at8.length).toBeGreaterThan(at7.length);
+  });
+
+  it("grants nothing to a class with no domain access", () => {
+    const doc = makeCleric(7, ["Magic"]);
+    const fighter = {
+      ...doc,
+      identity: { ...doc.identity, classes: [{ tag: "fighter", level: 7 }] },
+    };
+    expect(domainFeatureNames(fighter)).toEqual([]);
+  });
+});

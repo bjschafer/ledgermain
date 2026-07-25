@@ -12,7 +12,7 @@ import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 import { resolveAlchemistDiscovery } from "./alchemist-discoveries.js";
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
-import { activeArchetypeSwaps, weaponTrainingReplaced } from "./archetypes.js";
+import { activeArchetypeSwaps, domainCasterLevel, weaponTrainingReplaced } from "./archetypes.js";
 import { BLOODLINES } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
@@ -315,11 +315,11 @@ export function collectModifiers(
   // only in prose — granted via the web layer's `grantedFeats`, see
   // `apps/web/src/model/feats.ts`; the collected modifier here is inert for
   // compute, which reads no `bonusFeats` target.)
-  const clericLevel = doc.identity.classes.find((c) => c.tag === "cleric")?.level ?? 0;
-  if (clericLevel > 0) {
+  const domainLevel = domainCasterLevel(doc);
+  if (domainLevel > 0) {
     const domainRollData: RollData = {
       ...rollData,
-      class: { level: clericLevel, unlevel: clericLevel },
+      class: { level: domainLevel, unlevel: domainLevel },
     };
     for (const tag of doc.build.clericDomains ?? []) {
       const domain =

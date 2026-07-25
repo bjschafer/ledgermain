@@ -51,11 +51,27 @@ describe("vendored prestige catalog size", () => {
     }
   });
 
-  it("every vendored class carries no castingAdvancement (out of scope; see prereqs-are-prose posture)", () => {
+  it("carries castingAdvancement only for the classes transcribed on demand", () => {
+    // The source's "Spells Per Day" column is prose, so advancement is
+    // hand-transcribed per class in `prestigeClasses.ts`'s
+    // CASTING_ADVANCEMENT rather than derived. Everything else stays
+    // undefined (untracked, prose-only) — the same posture as prereqs.
+    const TRANSCRIBED = new Set(["Soul Warden"]);
     const vendored = allPrestige().filter((c) => !HAND_AUTHORED_NAMES.has(c.name));
     for (const c of vendored) {
+      if (TRANSCRIBED.has(c.name)) continue;
       expect(c.castingAdvancement, c.name).toBeUndefined();
     }
+  });
+
+  it("Soul Warden advances a spellcasting class at every level 1-10", () => {
+    const soulWarden = allPrestige().find((c) => c.name === "Soul Warden");
+    // Undead Slayer's Handbook p.30: all ten rows read "+1 level of
+    // spellcasting class", unrestricted as to arcane/divine (its own Channel
+    // Casting example advances a sorcerer).
+    expect(soulWarden?.castingAdvancement).toEqual([
+      { kind: "any", levels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+    ]);
   });
 
   it("every vendored class's feature grants resolve to a real classFeature", () => {

@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
-import { parentDomainTagOf, setClericDomains } from "../../model/doc.js";
+import { domainSlotCount, parentDomainTagOf, setClericDomains } from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { Caret } from "../Caret.js";
@@ -16,14 +16,18 @@ interface DomainPickerProps {
 }
 
 /**
- * Cleric domain selection (PF1 grants two). Free-choice: the vendored data has
- * no deity→domain mapping, so validation is "soft warning only" per the project's
+ * Domain selection for the two classes that get one: clerics (two domains) and
+ * inquisitors (one). Free-choice: the vendored data has no deity→domain
+ * mapping, so validation is "soft warning only" per the project's
  * hybrid-prereqs philosophy. Domain tags come from `refData.domainSpellLists`.
  *
- * The chosen domains each grant one bonus prepared slot per accessible spell
+ * A CLERIC's domains each grant one bonus prepared slot per accessible spell
  * level (1–9); the tracker's Spells panel renders those slots and
  * lets the cleric prepare a domain spell into them. This picker only sets the
  * choice — the slot capacity + prepare-from-domain UI live in the tracker.
+ * An INQUISITOR gets the granted powers only and no bonus slots at all, which
+ * is why `SpellsSection`'s domain-slot wiring stays cleric-gated — don't
+ * "fix" that gate to match this picker.
  *
  * Either slot may swap its domain for one of that domain's subdomains
  * (`refData.subdomains`), entirely replacing the domain choice for that slot —
@@ -31,7 +35,7 @@ interface DomainPickerProps {
  * the top grid keeps highlighting the parent domain so the slot stays visible.
  */
 export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
-  const isCleric = doc.identity.classes.some((c) => c.tag === "cleric");
+  const slots = domainSlotCount(doc);
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Domains", false);
 
@@ -66,7 +70,7 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
 
   const chosen = doc.build.clericDomains ?? [];
 
-  if (!isCleric) return null;
+  if (slots === 0) return null;
 
   const parentTagOf = (tag: string): string => parentDomainTagOf(refData, tag);
 
@@ -81,7 +85,7 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
       update((d) => setClericDomains(d, next));
       return;
     }
-    if (chosen.length >= 2) return; // PF1 grants two — silently no-op beyond 2
+    if (chosen.length >= slots) return; // silently no-op past the class's allowance
     update((d) => setClericDomains(d, [...chosen, tag]));
   }
 
@@ -112,10 +116,11 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
       {!collapsed && (
         <>
           <p className="hint domain-picker-hint">
-            Pick two domains (PF1 grants two at level 1). Each grants one bonus prepare-slot per
-            accessible spell level, drawable from that domain's spell list. Free-choice — no deity
-            validation. A domain with subdomains may swap in one of them below, entirely replacing
-            that domain choice.
+            {slots === 1
+              ? "Pick one domain (an inquisitor gets one at level 1). You gain its granted powers, but not its spells."
+              : "Pick two domains (PF1 grants two at level 1). Each grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list."}{" "}
+            Free-choice — no deity validation. A domain with subdomains may swap in one of them
+            below, entirely replacing that domain choice.
           </p>
           <input
             className="search"

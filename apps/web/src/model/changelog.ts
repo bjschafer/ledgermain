@@ -32,6 +32,18 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-25-inquisitor-domains",
+    date: "2026-07-25",
+    title: "Inquisitors can pick a domain",
+    note: "The Domains picker now opens for inquisitors, who choose one and gain its granted powers scaled off inquisitor level. You don't get the domain's bonus spell slots — those stay a cleric thing, same as the book.",
+  },
+  {
+    id: "2026-07-25-soul-warden-casting",
+    date: "2026-07-25",
+    title: "Soul Warden advances your spellcasting",
+    note: "Levels in Soul Warden now carry your existing spellcasting class forward, so a cleric who takes the prestige class keeps gaining spell levels instead of stalling. Pick which class each level feeds in the Casting Advancement panel.",
+  },
+  {
     id: "2026-07-24-damage-types",
     date: "2026-07-24",
     title: "Damage knows its type",

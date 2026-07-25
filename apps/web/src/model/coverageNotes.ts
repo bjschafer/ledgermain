@@ -26,7 +26,7 @@ export interface CoverageNote {
 export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category: "Prestige classes",
-    note: "All of them are in the class picker, but only the ten core-rulebook ones (plus Student of War) have their spellcasting progression and entry requirements tracked. Later-book prestige classes show their full rules text, and their requirements appear as advice rather than something the sheet enforces.",
+    note: "All of them are in the class picker, but only the ten core-rulebook ones (plus Student of War and Soul Warden) have their spellcasting progression and entry requirements tracked. Later-book prestige classes show their full rules text, and their requirements appear as advice rather than something the sheet enforces. If one you're playing advances your spellcasting, say so and it can be added.",
   },
   {
     category:

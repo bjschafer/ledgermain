@@ -6,6 +6,7 @@ import type { CharacterDoc } from "@pf1/schema";
 import {
   addClass,
   createEmptyDoc,
+  domainSlotCount,
   migrateDoc,
   parentDomainTagOf,
   setClericDomains,
@@ -493,5 +494,27 @@ describe("wizard school slots + opposition cost", () => {
     doc = prepareSchoolSpell(doc, burningHandsId); // school
     doc = unprepareSpell(doc, burningHandsId, "school");
     expect(preparedSpells(doc)).toEqual([{ spellId: burningHandsId, expended: false }]);
+  });
+});
+
+describe("domainSlotCount", () => {
+  const classed = (tags: string[]) => {
+    let doc = createEmptyDoc("t");
+    for (const tag of tags) doc = addClass(doc, tag);
+    return doc;
+  };
+
+  it("gives a cleric two and an inquisitor one", () => {
+    expect(domainSlotCount(classed(["cleric"]))).toBe(2);
+    expect(domainSlotCount(classed(["inquisitor"]))).toBe(1);
+  });
+
+  it("gives everyone else none", () => {
+    expect(domainSlotCount(classed(["fighter"]))).toBe(0);
+    expect(domainSlotCount(classed([]))).toBe(0);
+  });
+
+  it("gives a cleric/inquisitor the cleric's two", () => {
+    expect(domainSlotCount(classed(["inquisitor", "cleric"]))).toBe(2);
   });
 });

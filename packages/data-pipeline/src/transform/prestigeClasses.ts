@@ -50,9 +50,10 @@ import {
  *
  * ## What's NOT derived
  *
- * No `castingAdvancement` — the "Spells per Day" column is prose
- * ("+1 level of existing arcane spellcasting class"), not a structured value,
- * and hand-authoring ~108 tables is out of scope (demand-driven follow-up).
+ * No `castingAdvancement` in the general case — the "Spells per Day" column is
+ * prose ("+1 level of existing arcane spellcasting class"), not a structured
+ * value, and hand-authoring ~108 tables is out of scope. Individual classes
+ * get theirs transcribed on demand via {@link CASTING_ADVANCEMENT}.
  * No `armorProf`/`weaponProf` — the source class template carries neither
  * field at all (unlike the hand-authored set, which states "no proficiencies"
  * from the published text); defaulting to `[]` doesn't assert anything false,
@@ -65,6 +66,29 @@ import {
  * class with only `prereqText` as a pure soft-advisory (no checks, never
  * blocked).
  */
+/**
+ * Hand-transcribed "Spells Per Day" columns for vendored prestige classes,
+ * keyed by class NAME (the same key `excludeNames` matches on). Each entry is
+ * read off the class's own published table, which survives in the vendored
+ * `description` prose as a run of "+1 level of spellcasting class" cells — the
+ * source carries no structured field for it, so this is the same
+ * hand-authored posture `supplements.ts` uses for the CRB ten.
+ *
+ * `kind` follows the column's own wording: "any" when it says "spellcasting
+ * class" with no school restriction, "arcane"/"divine" only when the text
+ * actually restricts it. Getting this wrong silently mis-advances a caster,
+ * so transcribe from the published table rather than inferring from theme.
+ *
+ * Deliberately sparse — a class absent from this map keeps `undefined`
+ * (advancement untracked, prose-only), which is honest rather than a guess.
+ */
+const CASTING_ADVANCEMENT: Readonly<Record<string, NonNullable<Class["castingAdvancement"]>>> = {
+  // Undead Slayer's Handbook p.30: "+1 level of spellcasting class" on every
+  // row, 1st-10th, with no arcane/divine restriction — the same shape as
+  // Loremaster's, hence "any".
+  "Soul Warden": [{ kind: "any", levels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }],
+};
+
 export function transformPrestigeClassPack(
   classesDir: string,
   featuresDir: string,
@@ -116,6 +140,9 @@ export function transformPrestigeClassPack(
 
     const requirements = extractRequirementsText(cls.description);
     if (requirements) cls.prereqs = { prereqText: requirements };
+
+    const advancement = CASTING_ADVANCEMENT[doc.name];
+    if (advancement) cls.castingAdvancement = advancement;
 
     assertNoCollision(existingClasses, cls);
     existingClasses.push(cls);
