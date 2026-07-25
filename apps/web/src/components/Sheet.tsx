@@ -223,11 +223,13 @@ export function Sheet({
         </div>
       </div>
 
-      {/* Defenses (DR / energy resistance / SR) — issue #21, display-only. */}
+      {/* DR / energy resistance / SR — issue #21, display-only. Kept out of the
+          Defense group above: everyone has an AC and a CMD, but most characters
+          have none of these, so an always-present heading would read as a gap. */}
       {sheet.defenses ? (
         <div className="stat-group">
           <div className="stat-group-header">
-            <span className="stat-group-legend">Defenses</span>
+            <span className="stat-group-legend">Damage Reduction &amp; Resistances</span>
             <div className="stat-group-rule" />
           </div>
           <div className="stat-group-grid stat-group-grid--3">
