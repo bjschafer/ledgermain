@@ -282,11 +282,11 @@ a {
   margin-top: 24px;
 }
 
-/* Build mode only: a third, narrow track for BuildNav's vertical rail (see
-   "Build nav" section below). Deliberately a real grid column rather than an
-   absolutely-positioned overlay into the page margin — the margin outside
-   `.app` (max-width: 1280px) evaporates well before 1280px viewport width, so
-   an overlay rail would have nowhere to go at e.g. 1100px. */
+/* A third, narrow track for the section-jump rail (see "Build nav" section
+   below). Deliberately a real grid column rather than an absolutely-positioned
+   overlay into the page margin — the margin outside `.app` (max-width: 1280px)
+   evaporates well before 1280px viewport width, so an overlay rail would have
+   nowhere to go at e.g. 1100px. */
 .layout.layout--with-nav {
   /* 142px: wide enough that no section label ("HIT POINTS", "ABILITIES" +
      numeral + badge) ellipsizes at the 11px mono size. */
@@ -5503,12 +5503,15 @@ input[type="text"].saved-roll-name:focus {
   margin-top: 0;
 }
 
-/* Group dividers between the panel clusters in the tracker column itself. */
-.play-group {
+/* Group dividers between the panel clusters in the tracker/settings column
+   itself. Settings uses the same shape (SettingsSection + SettingsNav). */
+.play-group,
+.settings-group {
   display: block;
 }
 
-.play-group-head {
+.play-group-head,
+.settings-group-head {
   font-family: var(--mono);
   font-size: 0.6875rem;
   letter-spacing: 0.12em;
@@ -5520,7 +5523,8 @@ input[type="text"].saved-roll-name:focus {
   border-top: 1px solid var(--line);
 }
 
-.tracker-col > .play-group:first-of-type .play-group-head {
+.tracker-col > .play-group:first-of-type .play-group-head,
+.settings-col > .settings-group:first-of-type .settings-group-head {
   margin-top: 0;
   padding-top: 0;
   border-top: none;
@@ -5529,11 +5533,13 @@ input[type="text"].saved-roll-name:focus {
 /* Collapse a whole group (label included) when none of its panels rendered —
    every conditional panel self-hides to `null`, so a group with no `.panel`
    inside is empty. */
-.play-group:not(:has(.panel)) {
+.play-group:not(:has(.panel)),
+.settings-group:not(:has(.panel)) {
   display: none;
 }
 
-.play-section {
+.play-section,
+.settings-section {
   scroll-margin-top: 16px;
 }
 
@@ -5546,6 +5552,11 @@ input[type="text"].saved-roll-name:focus {
   .play-section {
     /* Clears the taller two-row sticky header (stat strip + nav chips). */
     scroll-margin-top: 112px;
+  }
+
+  .settings-section {
+    /* Settings' sticky header is the chip row alone — no stat strip above it. */
+    scroll-margin-top: 60px;
   }
 }
 

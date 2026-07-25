@@ -18,6 +18,7 @@ import { WeaponsSection } from "./components/builder/WeaponsSection.js";
 import { HitPointsSection } from "./components/builder/HitPointsSection.js";
 import { IdentitySection } from "./components/builder/IdentitySection.js";
 import { RaceSection } from "./components/builder/RaceSection.js";
+import { SettingsNav } from "./components/builder/SettingsNav.js";
 import { SettingsSection } from "./components/builder/SettingsSection.js";
 import { SkillsSection } from "./components/builder/SkillsSection.js";
 import { SpellsSection } from "./components/builder/SpellsSection.js";
@@ -229,7 +230,7 @@ function Workbench({
 
   return (
     <>
-      <div className={`layout${mode === "build" || mode === "play" ? " layout--with-nav" : ""}`}>
+      <div className="layout layout--with-nav">
         {mode === "build" && (
           /* On mobile (<=940px) `.mobile-build-header` collapses to a single
            sticky block stacking the compact stat strip over the section-jump
@@ -249,6 +250,8 @@ function Workbench({
             <PlayNav {...props} />
           </div>
         )}
+        {/* Settings has no stat strip to stack with — the rail stands alone. */}
+        {mode === "settings" && <SettingsNav doc={props.doc} />}
         <div className="build-col">
           {mode === "build" ? (
             <>

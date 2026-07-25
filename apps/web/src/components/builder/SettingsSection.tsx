@@ -3,8 +3,12 @@
  * Controls: HP mode, FCB rule toggle, max hero-point cap, and manual stat
  * overrides for the bounded allowlist. Each control calls a pure model
  * transition and delegates persistence to the parent's `update` callback.
+ *
+ * Panels are grouped and each wrapped in a `.settings-section` anchor whose
+ * `data-nav-*` feed the sticky `SettingsNav` jump rail (rendered from
+ * `App.tsx`'s layout) — same arrangement as the tracker column and PlayNav.
  */
-import { useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent, type ReactNode } from "react";
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
@@ -53,6 +57,11 @@ function classSummary(parsed: CharacterDoc, refData: RefData): string {
   return parsed.identity.classes
     .map((c) => `${classesByTag.find((def) => def.tag === c.tag)?.name ?? c.tag} ${c.level}`)
     .join(" / ");
+}
+
+interface SettingsGroup {
+  name: string;
+  sections: { id: string; label: string; node: ReactNode }[];
 }
 
 /** Human-readable labels for the stat-override allowlist. */
@@ -161,515 +170,631 @@ export function SettingsSection({
     }
   }
 
-  return (
-    <>
-      {/* Display (device preference — not part of the character) */}
-      <Panel title="Display" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Text size for this browser/device. Not saved with the character — every character on this
-          device uses the same setting.
-        </p>
-        <div className="chips">
-          {TEXT_SIZES.map((s) => (
-            <button
-              key={s}
-              type="button"
-              className="chip"
-              aria-pressed={textSize === s}
-              onClick={() => onTextSizeChange(s)}
-            >
-              {TEXT_SIZE_LABEL[s]}
-            </button>
-          ))}
-        </div>
-      </Panel>
-
-      {/* HP mode */}
-      <Panel title="HP Mode" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Controls how maximum HP is computed when levelling up.
-        </p>
-        <div className="chips">
-          {(["average", "max", "rolled"] as const).map((m) => (
-            <button
-              key={m}
-              type="button"
-              className="chip"
-              aria-pressed={hpMode === m}
-              onClick={() => update((d) => setHpMode(d, m))}
-            >
-              {m === "average" ? "Average (default)" : m === "max" ? "Maximised" : "Rolled"}
-            </button>
-          ))}
-        </div>
-        <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
-          {hpMode === "average" && "L1 = max HD; each subsequent level = ⌊HD/2⌋ + 1."}
-          {hpMode === "max" && "Every level equals the full die value."}
-          {hpMode === "rolled" &&
-            "L1 = max HD; enter your rolls per level in the Hit Points panel."}
-        </p>
-      </Panel>
-
-      {/* Rest healing mode */}
-      <Panel title="Rest Healing" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Controls how much HP the "Rest" button and "New Day" action restore overnight.
-        </p>
-        <div className="chips">
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={restMode === "full"}
-            onClick={() => update((d) => setRestMode(d, "full"))}
-          >
-            Full (house rule)
-          </button>
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={restMode === "natural"}
-            onClick={() => update((d) => setRestMode(d, "natural"))}
-          >
-            Natural (1×level per night, RAW)
-          </button>
-        </div>
-        <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
-          {restMode === "full"
-            ? "Heals current HP straight to max — a common table simplification."
-            : "Heals 1 HP per character level per night, capped at max (PF1 RAW). Full bed rest (2×level/day) isn't modelled yet."}{" "}
-          Nonlethal damage always clears fully on rest.
-        </p>
-      </Panel>
-
-      {/* FCB rule toggle */}
-      <Panel title="Favored Class Bonus Rule" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Standard PF1: each favored-class level grants <em>one</em> of +1 HP, +1 skill rank, or
-          alternate. House-rule: a "Both" option adds +1 HP AND +1 skill rank simultaneously.
-        </p>
-        <div className="chips">
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={!fcbHouserule}
-            onClick={() => update((d) => setFcbHouserule(d, false))}
-          >
-            Standard PF1
-          </button>
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={fcbHouserule}
-            onClick={() => update((d) => setFcbHouserule(d, true))}
-          >
-            House-rule (Both)
-          </button>
-        </div>
-      </Panel>
-
-      {/* Cleric Wisdom house-rule */}
-      <Panel title="Cleric Wisdom Rule" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Homebrew rule (issue #56): cleric class features — Channel Energy's uses/day and save DC —
-          key off <em>Wisdom</em> instead of Charisma. The cleric's actual Charisma score, skills,
-          and saves are unaffected; other Cha-driven classes (paladin, sorcerer, oracle, bard) are
-          untouched either way.
-        </p>
-        <div className="chips">
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={!clericWisdomHouserule}
-            onClick={() => update((d) => setClericWisdomHouserule(d, false))}
-          >
-            Standard PF1 (Cha)
-          </button>
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={clericWisdomHouserule}
-            onClick={() => update((d) => setClericWisdomHouserule(d, true))}
-          >
-            House-rule (Wis)
-          </button>
-        </div>
-      </Panel>
-
-      {/* Hero points */}
-      <Panel title="Hero Points" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Hero points are a PF1 optional rule — a small pool spent at the table for mechanical
-          benefits. Disable if your table doesn't use them.
-        </p>
-        <div className="chips">
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={heroEnabled}
-            onClick={() => update((d) => setHeroPointsEnabled(d, true))}
-          >
-            Enabled
-          </button>
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={!heroEnabled}
-            onClick={() => update((d) => setHeroPointsEnabled(d, false))}
-          >
-            Disabled
-          </button>
-        </div>
-        {heroEnabled && (
-          <div className="settings-row" style={{ marginTop: 12 }}>
-            <label className="hint" htmlFor="hero-cap-input">
-              Maximum hero points
-            </label>
-            <NumberField
-              className="num"
-              size={3}
-              value={heroCap}
-              min={1}
-              max={999}
-              onCommit={(n) => update((d) => setHeroPointsCap(d, n))}
-              aria-label="Hero point cap"
-            />
-            {settings.heroPointsCap != null && (
-              <button
-                type="button"
-                className="btn-ghost"
-                onClick={() => update((d) => setHeroPointsCap(d, null))}
-              >
-                reset to {HERO_POINT_CAP}
-              </button>
-            )}
-          </div>
-        )}
-      </Panel>
-
-      {/* XP tracking */}
-      <Panel title="Experience Points" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Some tables level up at milestones instead. Enable to log XP and see how far you are from
-          the next level.
-        </p>
-        <div className="chips">
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={xpEnabled}
-            onClick={() => update((d) => setXpEnabled(d, true))}
-          >
-            Enabled
-          </button>
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={!xpEnabled}
-            onClick={() => update((d) => setXpEnabled(d, false))}
-          >
-            Disabled
-          </button>
-        </div>
-        {xpEnabled && (
-          <div className="settings-row" style={{ marginTop: 12 }}>
-            <label className="hint" htmlFor="xp-track-select">
-              Advancement track
-            </label>
-            <select
-              id="xp-track-select"
-              value={xpTrack}
-              onChange={(e) => update((d) => setXpTrack(d, e.target.value as XpTrack))}
-            >
-              <option value="slow">Slow</option>
-              <option value="medium">Medium (default)</option>
-              <option value="fast">Fast</option>
-            </select>
-          </div>
-        )}
-      </Panel>
-
-      {/* Encumbrance (issue #16) */}
-      <Panel title="Encumbrance" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Carrying capacity is a PF1 OPTIONAL rule — many tables skip it. Enable to compute a
-          Strength-based load tier (light/medium/heavy) from your total gear weight and apply its
-          RAW penalties (max Dex to AC, armor check penalty, reduced land speed).
-        </p>
-        <div className="chips">
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={encumbranceEnabled}
-            onClick={() => update((d) => setEncumbranceEnabled(d, true))}
-          >
-            Enabled
-          </button>
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={!encumbranceEnabled}
-            onClick={() => update((d) => setEncumbranceEnabled(d, false))}
-          >
-            Disabled (default)
-          </button>
-        </div>
-        {encumbranceEnabled && (
-          <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
-            See the Load readout on the Gear &amp; Inventory panel (Build tab) for your current
-            weight, thresholds, and tier.
-          </p>
-        )}
-      </Panel>
-
-      {/* Polymorph / Wild Shape panel visibility */}
-      <Panel title="Polymorph / Wild Shape" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          By default the tracker only offers the Polymorph / Wild Shape panel when this character
-          has a source for it — druid Wild Shape levels, the shifter class, or a known Beast Shape /
-          Elemental Body / Plant Shape spell. Force it on if your access is off-sheet (a scroll, a
-          potion, a GM handout).
-        </p>
-        <div className="chips">
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={polymorphEnabled === undefined}
-            onClick={() => update((d) => setPolymorphEnabled(d, null))}
-          >
-            Auto (default)
-          </button>
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={polymorphEnabled === true}
-            onClick={() => update((d) => setPolymorphEnabled(d, true))}
-          >
-            Always show
-          </button>
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={polymorphEnabled === false}
-            onClick={() => update((d) => setPolymorphEnabled(d, false))}
-          >
-            Never show
-          </button>
-        </div>
-        {polymorphEnabled === false && doc.live.activeForm ? (
-          <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
-            This character is currently transformed, so the panel stays visible until the form ends.
-          </p>
-        ) : null}
-      </Panel>
-
-      {/* Class alignment restrictions (issue #53) */}
-      <Panel title="Class Alignment Restrictions" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          PF1 RAW restricts a few classes (Barbarian, Monk, Paladin, Druid) to certain alignments.
-          Ledgermain only ever warns on a mismatch in the Classes panel, never blocks — enable this
-          for tables that don't use alignment restrictions at all.
-        </p>
-        <div className="chips">
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={!ignoreAlignmentRestrictions}
-            onClick={() => update((d) => setIgnoreClassAlignmentRestrictions(d, false))}
-          >
-            Warn on mismatch (default)
-          </button>
-          <button
-            type="button"
-            className="chip"
-            aria-pressed={ignoreAlignmentRestrictions}
-            onClick={() => update((d) => setIgnoreClassAlignmentRestrictions(d, true))}
-          >
-            Unrestricted (house rule)
-          </button>
-        </div>
-      </Panel>
-
-      {/* GM grants */}
-      <Panel title="GM Grants" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Homebrew adjustments to how many skill ranks and feats this character may spend. Additive
-          to the rules-derived budget — negative values claw back. Leave blank to use the rules
-          amount.
-        </p>
-        <div className="settings-row" style={{ marginBottom: 10 }}>
-          <label className="hint" htmlFor="gm-skill-input">
-            Extra skill ranks
-          </label>
-          <NumberField
-            className="num"
-            size={5}
-            value={gmSkillRanks ?? undefined}
-            allowEmpty
-            placeholder="0"
-            min={-999}
-            max={999}
-            stepper={false}
-            onCommit={(n) =>
-              update((d) => setGmGrantSkillRanks(d, n == null || Number.isNaN(n) ? null : n))
-            }
-            aria-label="Extra skill ranks"
-          />
-          {gmSkillRanks != null && (
-            <button
-              type="button"
-              className="btn-ghost"
-              onClick={() => update((d) => setGmGrantSkillRanks(d, null))}
-            >
-              clear
-            </button>
-          )}
-        </div>
-        <div className="settings-row">
-          <label className="hint" htmlFor="gm-feat-input">
-            Extra feat slots
-          </label>
-          <NumberField
-            className="num"
-            size={5}
-            value={gmFeatSlots ?? undefined}
-            allowEmpty
-            placeholder="0"
-            min={-999}
-            max={999}
-            stepper={false}
-            onCommit={(n) =>
-              update((d) => setGmGrantFeatSlots(d, n == null || Number.isNaN(n) ? null : n))
-            }
-            aria-label="Extra feat slots"
-          />
-          {gmFeatSlots != null && (
-            <button
-              type="button"
-              className="btn-ghost"
-              onClick={() => update((d) => setGmGrantFeatSlots(d, null))}
-            >
-              clear
-            </button>
-          )}
-        </div>
-      </Panel>
-
-      {/* Stat overrides */}
-      <Panel title="Manual Stat Overrides" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Force a derived stat to a specific value. Leave blank to use the computed value. The
-          breakdown shows the override as a separate component.
-        </p>
-        <div className="stat-overrides-grid">
-          {STAT_OVERRIDE_KEYS.map((key) => {
-            const override = overrides[key];
-            const computed = resolveComputed(key, sheet);
-            return (
-              <div key={key} className="stat-override-row">
-                <span className="hint stat-override-label">{STAT_LABEL[key]}</span>
-                <span className="hint num stat-override-computed">
-                  {computed != null ? computed : "—"}
-                </span>
+  const groups: SettingsGroup[] = [
+    {
+      name: "Display",
+      sections: [
+        {
+          id: "settings-text-size",
+          label: "Text Size",
+          node: (
+            /* Device preference — not part of the character */
+            <Panel title="Text Size" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Text size for this browser/device. Not saved with the character — every character on
+                this device uses the same setting.
+              </p>
+              <div className="chips">
+                {TEXT_SIZES.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    className="chip"
+                    aria-pressed={textSize === s}
+                    onClick={() => onTextSizeChange(s)}
+                  >
+                    {TEXT_SIZE_LABEL[s]}
+                  </button>
+                ))}
+              </div>
+            </Panel>
+          ),
+        },
+      ],
+    },
+    {
+      name: "Rules",
+      sections: [
+        {
+          id: "settings-hp-mode",
+          label: "HP Mode",
+          node: (
+            <Panel title="HP Mode" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Controls how maximum HP is computed when levelling up.
+              </p>
+              <div className="chips">
+                {(["average", "max", "rolled"] as const).map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    className="chip"
+                    aria-pressed={hpMode === m}
+                    onClick={() => update((d) => setHpMode(d, m))}
+                  >
+                    {m === "average" ? "Average (default)" : m === "max" ? "Maximised" : "Rolled"}
+                  </button>
+                ))}
+              </div>
+              <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
+                {hpMode === "average" && "L1 = max HD; each subsequent level = ⌊HD/2⌋ + 1."}
+                {hpMode === "max" && "Every level equals the full die value."}
+                {hpMode === "rolled" &&
+                  "L1 = max HD; enter your rolls per level in the Hit Points panel."}
+              </p>
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-rest",
+          label: "Rest Healing",
+          node: (
+            <Panel title="Rest Healing" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Controls how much HP the "Rest" button and "New Day" action restore overnight.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={restMode === "full"}
+                  onClick={() => update((d) => setRestMode(d, "full"))}
+                >
+                  Full (house rule)
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={restMode === "natural"}
+                  onClick={() => update((d) => setRestMode(d, "natural"))}
+                >
+                  Natural (1×level per night, RAW)
+                </button>
+              </div>
+              <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
+                {restMode === "full"
+                  ? "Heals current HP straight to max — a common table simplification."
+                  : "Heals 1 HP per character level per night, capped at max (PF1 RAW). Full bed rest (2×level/day) isn't modelled yet."}{" "}
+                Nonlethal damage always clears fully on rest.
+              </p>
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-fcb",
+          label: "Favored Class",
+          node: (
+            <Panel title="Favored Class Bonus Rule" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Standard PF1: each favored-class level grants <em>one</em> of +1 HP, +1 skill rank,
+                or alternate. House-rule: a "Both" option adds +1 HP AND +1 skill rank
+                simultaneously.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!fcbHouserule}
+                  onClick={() => update((d) => setFcbHouserule(d, false))}
+                >
+                  Standard PF1
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={fcbHouserule}
+                  onClick={() => update((d) => setFcbHouserule(d, true))}
+                >
+                  House-rule (Both)
+                </button>
+              </div>
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-cleric-wis",
+          label: "Cleric Wisdom",
+          node: (
+            <Panel title="Cleric Wisdom Rule" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Homebrew rule (issue #56): cleric class features — Channel Energy's uses/day and
+                save DC — key off <em>Wisdom</em> instead of Charisma. The cleric's actual Charisma
+                score, skills, and saves are unaffected; other Cha-driven classes (paladin,
+                sorcerer, oracle, bard) are untouched either way.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!clericWisdomHouserule}
+                  onClick={() => update((d) => setClericWisdomHouserule(d, false))}
+                >
+                  Standard PF1 (Cha)
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={clericWisdomHouserule}
+                  onClick={() => update((d) => setClericWisdomHouserule(d, true))}
+                >
+                  House-rule (Wis)
+                </button>
+              </div>
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-hero",
+          label: "Hero Points",
+          node: (
+            <Panel title="Hero Points" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Hero points are a PF1 optional rule — a small pool spent at the table for mechanical
+                benefits. Disable if your table doesn't use them.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={heroEnabled}
+                  onClick={() => update((d) => setHeroPointsEnabled(d, true))}
+                >
+                  Enabled
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!heroEnabled}
+                  onClick={() => update((d) => setHeroPointsEnabled(d, false))}
+                >
+                  Disabled
+                </button>
+              </div>
+              {heroEnabled && (
+                <div className="settings-row" style={{ marginTop: 12 }}>
+                  <label className="hint" htmlFor="hero-cap-input">
+                    Maximum hero points
+                  </label>
+                  <NumberField
+                    className="num"
+                    size={3}
+                    value={heroCap}
+                    min={1}
+                    max={999}
+                    onCommit={(n) => update((d) => setHeroPointsCap(d, n))}
+                    aria-label="Hero point cap"
+                  />
+                  {settings.heroPointsCap != null && (
+                    <button
+                      type="button"
+                      className="btn-ghost"
+                      onClick={() => update((d) => setHeroPointsCap(d, null))}
+                    >
+                      reset to {HERO_POINT_CAP}
+                    </button>
+                  )}
+                </div>
+              )}
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-xp",
+          label: "Experience",
+          node: (
+            <Panel title="Experience Points" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Some tables level up at milestones instead. Enable to log XP and see how far you are
+                from the next level.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={xpEnabled}
+                  onClick={() => update((d) => setXpEnabled(d, true))}
+                >
+                  Enabled
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!xpEnabled}
+                  onClick={() => update((d) => setXpEnabled(d, false))}
+                >
+                  Disabled
+                </button>
+              </div>
+              {xpEnabled && (
+                <div className="settings-row" style={{ marginTop: 12 }}>
+                  <label className="hint" htmlFor="xp-track-select">
+                    Advancement track
+                  </label>
+                  <select
+                    id="xp-track-select"
+                    value={xpTrack}
+                    onChange={(e) => update((d) => setXpTrack(d, e.target.value as XpTrack))}
+                  >
+                    <option value="slow">Slow</option>
+                    <option value="medium">Medium (default)</option>
+                    <option value="fast">Fast</option>
+                  </select>
+                </div>
+              )}
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-encumbrance",
+          label: "Encumbrance",
+          node: (
+            <Panel title="Encumbrance" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Carrying capacity is a PF1 OPTIONAL rule — many tables skip it. Enable to compute a
+                Strength-based load tier (light/medium/heavy) from your total gear weight and apply
+                its RAW penalties (max Dex to AC, armor check penalty, reduced land speed).
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={encumbranceEnabled}
+                  onClick={() => update((d) => setEncumbranceEnabled(d, true))}
+                >
+                  Enabled
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!encumbranceEnabled}
+                  onClick={() => update((d) => setEncumbranceEnabled(d, false))}
+                >
+                  Disabled (default)
+                </button>
+              </div>
+              {encumbranceEnabled && (
+                <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
+                  See the Load readout on the Gear &amp; Inventory panel (Build tab) for your
+                  current weight, thresholds, and tier.
+                </p>
+              )}
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-polymorph",
+          label: "Polymorph",
+          node: (
+            <Panel title="Polymorph / Wild Shape" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                By default the tracker only offers the Polymorph / Wild Shape panel when this
+                character has a source for it — druid Wild Shape levels, the shifter class, or a
+                known Beast Shape / Elemental Body / Plant Shape spell. Force it on if your access
+                is off-sheet (a scroll, a potion, a GM handout).
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={polymorphEnabled === undefined}
+                  onClick={() => update((d) => setPolymorphEnabled(d, null))}
+                >
+                  Auto (default)
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={polymorphEnabled === true}
+                  onClick={() => update((d) => setPolymorphEnabled(d, true))}
+                >
+                  Always show
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={polymorphEnabled === false}
+                  onClick={() => update((d) => setPolymorphEnabled(d, false))}
+                >
+                  Never show
+                </button>
+              </div>
+              {polymorphEnabled === false && doc.live.activeForm ? (
+                <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
+                  This character is currently transformed, so the panel stays visible until the form
+                  ends.
+                </p>
+              ) : null}
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-alignment",
+          label: "Alignment",
+          node: (
+            <Panel title="Class Alignment Restrictions" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                PF1 RAW restricts a few classes (Barbarian, Monk, Paladin, Druid) to certain
+                alignments. Ledgermain only ever warns on a mismatch in the Classes panel, never
+                blocks — enable this for tables that don't use alignment restrictions at all.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!ignoreAlignmentRestrictions}
+                  onClick={() => update((d) => setIgnoreClassAlignmentRestrictions(d, false))}
+                >
+                  Warn on mismatch (default)
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={ignoreAlignmentRestrictions}
+                  onClick={() => update((d) => setIgnoreClassAlignmentRestrictions(d, true))}
+                >
+                  Unrestricted (house rule)
+                </button>
+              </div>
+            </Panel>
+          ),
+        },
+      ],
+    },
+    {
+      name: "Overrides",
+      sections: [
+        {
+          id: "settings-gm-grants",
+          label: "GM Grants",
+          node: (
+            <Panel title="GM Grants" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Homebrew adjustments to how many skill ranks and feats this character may spend.
+                Additive to the rules-derived budget — negative values claw back. Leave blank to use
+                the rules amount.
+              </p>
+              <div className="settings-row" style={{ marginBottom: 10 }}>
+                <label className="hint" htmlFor="gm-skill-input">
+                  Extra skill ranks
+                </label>
                 <NumberField
                   className="num"
                   size={5}
-                  value={override ?? undefined}
+                  value={gmSkillRanks ?? undefined}
                   allowEmpty
-                  placeholder={computed != null ? String(computed) : undefined}
+                  placeholder="0"
                   min={-999}
-                  max={99999}
+                  max={999}
                   stepper={false}
                   onCommit={(n) =>
-                    update((d) => setStatOverride(d, key, n == null || Number.isNaN(n) ? null : n))
+                    update((d) => setGmGrantSkillRanks(d, n == null || Number.isNaN(n) ? null : n))
                   }
-                  aria-label={`Override ${STAT_LABEL[key]}`}
+                  aria-label="Extra skill ranks"
                 />
-                {override != null && (
+                {gmSkillRanks != null && (
                   <button
                     type="button"
                     className="btn-ghost"
-                    onClick={() => update((d) => setStatOverride(d, key, null))}
+                    onClick={() => update((d) => setGmGrantSkillRanks(d, null))}
                   >
                     clear
                   </button>
                 )}
               </div>
-            );
-          })}
-        </div>
-      </Panel>
-
-      {/* Export / import */}
-      <Panel title="Export / Import" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Export this character to a JSON file you can back up or move to another device. The
-          importer auto-detects the file: a Ledgermain export (.json) makes the character active in
-          place (re-importing the same export updates it; a different file adds a new one); a
-          Pathbuilder 1e export (.json) or Hero Lab classic export (.xml) is added as a new
-          character, best-effort — anything that couldn't be matched to this app's reference data is
-          listed below so you can add it by hand.
-        </p>
-        <div className="settings-row">
-          <button
-            type="button"
-            className="btn-ghost"
-            disabled={actionPending}
-            onClick={handleExport}
-          >
-            Export character (.json)
-          </button>
-          <label
-            className={`btn-ghost${actionPending ? " btn-disabled" : ""}`}
-            style={{ cursor: actionPending ? "wait" : "pointer" }}
-          >
-            Import character…
-            <input
-              type="file"
-              accept=".json,.xml,.html,application/json,text/xml,text/html"
-              disabled={actionPending}
-              style={{ display: "none" }}
-              onChange={(e) => void handleImportChange(e)}
+              <div className="settings-row">
+                <label className="hint" htmlFor="gm-feat-input">
+                  Extra feat slots
+                </label>
+                <NumberField
+                  className="num"
+                  size={5}
+                  value={gmFeatSlots ?? undefined}
+                  allowEmpty
+                  placeholder="0"
+                  min={-999}
+                  max={999}
+                  stepper={false}
+                  onCommit={(n) =>
+                    update((d) => setGmGrantFeatSlots(d, n == null || Number.isNaN(n) ? null : n))
+                  }
+                  aria-label="Extra feat slots"
+                />
+                {gmFeatSlots != null && (
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={() => update((d) => setGmGrantFeatSlots(d, null))}
+                  >
+                    clear
+                  </button>
+                )}
+              </div>
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-stat-overrides",
+          label: "Stat Overrides",
+          node: (
+            <Panel title="Manual Stat Overrides" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Force a derived stat to a specific value. Leave blank to use the computed value. The
+                breakdown shows the override as a separate component.
+              </p>
+              <div className="stat-overrides-grid">
+                {STAT_OVERRIDE_KEYS.map((key) => {
+                  const override = overrides[key];
+                  const computed = resolveComputed(key, sheet);
+                  return (
+                    <div key={key} className="stat-override-row">
+                      <span className="hint stat-override-label">{STAT_LABEL[key]}</span>
+                      <span className="hint num stat-override-computed">
+                        {computed != null ? computed : "—"}
+                      </span>
+                      <NumberField
+                        className="num"
+                        size={5}
+                        value={override ?? undefined}
+                        allowEmpty
+                        placeholder={computed != null ? String(computed) : undefined}
+                        min={-999}
+                        max={99999}
+                        stepper={false}
+                        onCommit={(n) =>
+                          update((d) =>
+                            setStatOverride(d, key, n == null || Number.isNaN(n) ? null : n),
+                          )
+                        }
+                        aria-label={`Override ${STAT_LABEL[key]}`}
+                      />
+                      {override != null && (
+                        <button
+                          type="button"
+                          className="btn-ghost"
+                          onClick={() => update((d) => setStatOverride(d, key, null))}
+                        >
+                          clear
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </Panel>
+          ),
+        },
+      ],
+    },
+    {
+      name: "Data",
+      sections: [
+        {
+          id: "settings-export-import",
+          label: "Export / Import",
+          node: (
+            <Panel title="Export / Import" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Export this character to a JSON file you can back up or move to another device. The
+                importer auto-detects the file: a Ledgermain export (.json) makes the character
+                active in place (re-importing the same export updates it; a different file adds a
+                new one); a Pathbuilder 1e export (.json) or Hero Lab classic export (.xml) is added
+                as a new character, best-effort — anything that couldn't be matched to this app's
+                reference data is listed below so you can add it by hand.
+              </p>
+              <div className="settings-row">
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  disabled={actionPending}
+                  onClick={handleExport}
+                >
+                  Export character (.json)
+                </button>
+                <label
+                  className={`btn-ghost${actionPending ? " btn-disabled" : ""}`}
+                  style={{ cursor: actionPending ? "wait" : "pointer" }}
+                >
+                  Import character…
+                  <input
+                    type="file"
+                    accept=".json,.xml,.html,application/json,text/xml,text/html"
+                    disabled={actionPending}
+                    style={{ display: "none" }}
+                    onChange={(e) => void handleImportChange(e)}
+                  />
+                </label>
+              </div>
+              {importError && (
+                <p className="hint" style={{ color: "var(--oxblood-ink)", marginTop: 8 }}>
+                  {importError}
+                </p>
+              )}
+              {importReport && <ImportReportPanel report={importReport} />}
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-print",
+          label: "Print",
+          node: (
+            <Panel title="Print" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                A dense, read-only reference layout of this character's current stats — abilities,
+                saves, AC, attacks, skills, feats, class features, spell slots/known, and resources
+                — sized for printing or saving to PDF from the browser's print dialog.
+              </p>
+              <div className="settings-row">
+                <button type="button" className="btn-ghost" onClick={onOpenPrint}>
+                  Print character sheet…
+                </button>
+              </div>
+            </Panel>
+          ),
+        },
+      ],
+    },
+    {
+      // What's new, then what's not covered — added next to missing, in that order.
+      name: "About",
+      sections: [
+        { id: "settings-whats-new", label: "What's New", node: <WhatsNewPanel /> },
+        { id: "settings-coverage", label: "Not Covered", node: <CoverageNotesPanel /> },
+        {
+          id: "settings-about",
+          label: "About & Legal",
+          node: <AboutAndLegalPanel dataVersion={refData.meta.dataVersion} />,
+        },
+      ],
+    },
+    {
+      name: "Danger Zone",
+      sections: [
+        {
+          id: "settings-danger",
+          label: "Delete & Reset",
+          node: (
+            <DangerZonePanel
+              characterId={doc.id}
+              characterName={doc.identity.name}
+              actionPending={actionPending}
+              onDeleteCharacter={onDeleteCharacter}
+              onResetAll={onResetAll}
             />
-          </label>
-        </div>
-        {importError && (
-          <p className="hint" style={{ color: "var(--oxblood-ink)", marginTop: 8 }}>
-            {importError}
-          </p>
-        )}
-        {importReport && <ImportReportPanel report={importReport} />}
-      </Panel>
+          ),
+        },
+      ],
+    },
+  ];
 
-      {/* Print sheet (issue #69) */}
-      <Panel title="Print" step="⚙" icon={<GearIcon />}>
-        <p className="hint" style={{ marginBottom: 12 }}>
-          A dense, read-only reference layout of this character's current stats — abilities, saves,
-          AC, attacks, skills, feats, class features, spell slots/known, and resources — sized for
-          printing or saving to PDF from the browser's print dialog.
-        </p>
-        <div className="settings-row">
-          <button type="button" className="btn-ghost" onClick={onOpenPrint}>
-            Print character sheet…
-          </button>
-        </div>
-      </Panel>
-
-      {/* What's new, then what's not covered — added next to missing, in that order */}
-      <WhatsNewPanel />
-      <CoverageNotesPanel />
-
-      {/* About & legal */}
-      <AboutAndLegalPanel dataVersion={refData.meta.dataVersion} />
-
-      {/* Danger zone */}
-      <DangerZonePanel
-        characterId={doc.id}
-        characterName={doc.identity.name}
-        actionPending={actionPending}
-        onDeleteCharacter={onDeleteCharacter}
-        onResetAll={onResetAll}
-      />
-    </>
+  return (
+    <div className="settings-col">
+      {groups.map((group) => (
+        <section className="settings-group" data-group={group.name} key={group.name}>
+          <h3 className="settings-group-head">{group.name}</h3>
+          {group.sections.map((section) => (
+            <div
+              className="settings-section"
+              id={section.id}
+              data-nav-label={section.label}
+              data-nav-group={group.name}
+              key={section.id}
+            >
+              {section.node}
+            </div>
+          ))}
+        </section>
+      ))}
+    </div>
   );
 }
 
@@ -911,7 +1036,7 @@ function DangerZonePanel({
   onResetAll: () => void;
 }) {
   return (
-    <Panel title="Danger Zone" step="⚙" icon={<GearIcon />}>
+    <Panel title="Delete & Reset" step="⚙" icon={<GearIcon />}>
       <ConfirmAction
         description={`Permanently deletes this character ("${characterName || "Unnamed"}"). This cannot be undone.`}
         confirmWord="DELETE"

@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-25-settings-nav",
+    date: "2026-07-25",
+    title: "Settings has a jump menu",
+    note: "Settings now carries the same section rail as Build and Play, with its panels sorted into Display, Rules, Overrides, Data, About, and Danger Zone. Finding the encumbrance toggle or the export button no longer means scrolling the whole page looking for it.",
+  },
+  {
     id: "2026-07-25-solar-mystery",
     date: "2026-07-25",
     title: "The Solar mystery is fully in",
