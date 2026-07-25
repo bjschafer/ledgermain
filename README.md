@@ -120,6 +120,12 @@ This repository ships under a **mixed license** — the thing distributed decide
 
 - **Source code → [GNU AGPL v3.0-or-later](./LICENSE).** Engine, schema, pipeline scripts, web app, and config. The engine is a clean-room reimplementation of the PF1 rules; Foundry's GPL-3.0 system code is never copied in (its clone is gitignored and used only as a behavioral test oracle). AGPL is compatible with Foundry's GPL-3.0 and its network-copyleft ensures hosted forks share their source.
 - **Vendored compendium data → [Open Game License v1.0a](./OGL.txt).** The normalized JSON under `packages/data-pipeline/data/` is Open Game Content mined from the pinned Foundry PF1 system, the `Tryss_Farron/pf1e-archetypes` dataset, the community `pf1-content` module's feats pack, and the `jasontankapps/pathfinder-data-1-e` dataset (the full rage-power, witch-hex, general shaman-hex, magus-arcana, mesmerist-trick, mesmerist-bold-stare, phrenic-amplification, psychic-discipline, occultist-implement, and Medium legendary-spirit catalogs), with OGL §15 attribution intact.
-- **Paizo Community Use Policy** covers references to Paizo Product Identity (deity names, Golarion places, etc.).
+- **[Paizo Community Use Policy](https://paizo.com/licenses/communityuse)** covers references to Paizo Product Identity (deity names, Golarion places, etc.). It also fixes a hard constraint on the project: Ledgermain must stay free to use and free of paywalls, sign-up gates, and supporter-only features. See [`NOTICE.md`](./NOTICE.md) §3.
+
+Ledgermain uses trademarks and/or copyrights owned by Paizo Inc., used under Paizo's Community Use Policy (paizo.com/licenses/communityuse). We are expressly prohibited from charging you to use or access this content. Ledgermain is not published, endorsed, or specifically approved by Paizo.
 
 **Not affiliated with, endorsed by, or sponsored by Paizo Inc., Foundry Gaming LLC, or Wizards of the Coast.** "Pathfinder" is a trademark of Paizo Inc.
+
+## Support
+
+Ledgermain is free and stays free — the Community Use Policy requires it, and it's the right shape for the project anyway. If it's earned its keep at your table, there's a [Ko-fi](https://ko-fi.com/bjschafer) and [GitHub Sponsors](https://github.com/sponsors/bjschafer). Purely optional; no tier buys a feature.

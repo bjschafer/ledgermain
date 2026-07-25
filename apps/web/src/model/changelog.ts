@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-25-support-links",
+    date: "2026-07-25",
+    title: "A tip jar, if you're so inclined",
+    note: "Settings has a new Support panel with a Ko-fi and a GitHub Sponsors link. Ledgermain stays free and unpaywalled — no feature, class, or character slot will ever sit behind a donation. It's a coffee fund, nothing more.",
+  },
+  {
     id: "2026-07-25-settings-nav",
     date: "2026-07-25",
     title: "Settings has a jump menu",

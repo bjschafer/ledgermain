@@ -40,7 +40,7 @@ import { DEFAULT_XP_TRACK, type XpTrack } from "../../model/xp.js";
 import { showToast } from "../../state/toast.js";
 import { TEXT_SIZE_LABEL, TEXT_SIZES, type TextSize } from "../../state/useTextSize.js";
 import { Explainer } from "../Explainer.js";
-import { GearIcon, SparklesIcon } from "../icons.js";
+import { GearIcon, HeartIcon, SparklesIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -754,6 +754,7 @@ export function SettingsSection({
           label: "About & Legal",
           node: <AboutAndLegalPanel dataVersion={refData.meta.dataVersion} />,
         },
+        { id: "settings-support", label: "Support", node: <SupportPanel /> },
       ],
     },
     {
@@ -959,10 +960,50 @@ function AboutAndLegalPanel({ dataVersion }: { dataVersion: string }) {
         {" · "}
         <a href="https://github.com/bjschafer/ledgermain">Source on GitHub</a>
       </p>
+      <p className="hint" style={{ marginTop: 10 }}>
+        Questions, bug reports, or licensing contact:{" "}
+        <a
+          href="https://github.com/bjschafer/ledgermain/issues"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          github.com/bjschafer/ledgermain/issues
+        </a>
+      </p>
       <p className="hint" style={{ fontSize: "0.6875rem", marginTop: 10 }}>
-        This product uses trademarks and/or copyrights owned by Paizo Inc., used under Paizo's
-        Community Use Policy. We are expressly prohibited from charging you to use or access this
-        product.
+        Ledgermain uses trademarks and/or copyrights owned by Paizo Inc., used under Paizo's
+        Community Use Policy (paizo.com/licenses/communityuse). We are expressly prohibited from
+        charging you to use or access this content. Ledgermain is not published, endorsed, or
+        specifically approved by Paizo.
+      </p>
+    </Panel>
+  );
+}
+
+/**
+ * Donation links. Deliberately its own panel rather than a line inside
+ * About & Legal: Paizo's Community Use Policy permits donations but requires
+ * the project itself stay free and unaffiliated, and a "buy me a coffee"
+ * button sitting against Paizo's trademark notice invites exactly the
+ * misreading the policy forbids. Everything here must stay optional —
+ * no supporter tier may unlock app features or Paizo material.
+ */
+function SupportPanel() {
+  return (
+    <Panel title="Support" step="♥" icon={<HeartIcon />}>
+      <p className="hint" style={{ marginBottom: 10 }}>
+        Ledgermain is free, open source, and always will be — nothing here is behind a paywall or a
+        sign-up. If it's saved you time at the table and you'd like to chip in toward the coffee, it
+        is very much appreciated and entirely optional.
+      </p>
+      <p className="hint" style={{ marginBottom: 4 }}>
+        <a href="https://ko-fi.com/bjschafer" target="_blank" rel="noreferrer noopener">
+          Buy me a coffee (Ko-fi)
+        </a>
+        {" · "}
+        <a href="https://github.com/sponsors/bjschafer" target="_blank" rel="noreferrer noopener">
+          GitHub Sponsors
+        </a>
       </p>
     </Panel>
   );

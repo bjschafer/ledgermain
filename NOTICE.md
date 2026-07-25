@@ -211,20 +211,45 @@ descriptions. Product Identity is **not** Open Game Content and is not
 licensed by the OGL itself.
 
 We rely on **Paizo Inc.'s Community Use Policy**
-(`https://paizo.com/community/communityuse`) -- which expressly permits the
+(`https://paizo.com/licenses/communityuse`) -- which expressly permits the
 use of Paizo's trademarks and copyrighted Product Identity in fan
 (non-commercial, properly-attributed) works -- as the "independent Agreement
 with the owner of each element of Product Identity" that OGL Sec.7 requires.
 We do not challenge Paizo's ownership of any Product Identity; all rights,
 title, and interest in and to Paizo's Product Identity remain with Paizo.
 
-> **Paizo Community Use Notice:** This product uses trademarks and/or
-> copyrights owned by Paizo Inc., which are used under Paizo's Community
-> Use Policy. We are expressly prohibited from charging you to use or
-> access this product. You are responsible for complying with the
-> Community Use Policy and any portion of it that might apply to you.
-> Paizo, the Paizo logo, the Pathfinder logo, and the Pathfinder
-> Roleplaying Game logo are trademarks of Paizo Inc.
+Paizo retired the Community Use Policy in July 2024 in favor of a new Fan
+Content Policy, then reinstated it that August; the two now coexist. The CUP
+is the one this project depends on, and not interchangeably -- the Fan
+Content Policy's list of excluded works names "character generators" and
+"rules compendiums" outright, which is what Ledgermain is. The reinstated CUP
+(last updated 2024-08-22) dropped the Community Use Registry, moved to the
+URL above, and asks two things of us: the declaration below reproduced
+verbatim, and up-to-date contact information in a visible location. Both are
+carried in the app's "About & Legal" panel (Sec.4).
+
+> **Paizo Community Use Notice:** Ledgermain uses trademarks and/or
+> copyrights owned by Paizo Inc., used under Paizo's Community Use Policy
+> (paizo.com/licenses/communityuse). We are expressly prohibited from
+> charging you to use or access this content. Ledgermain is not published,
+> endorsed, or specifically approved by Paizo.
+
+Paizo, the Paizo logo, the Pathfinder logo, and the Pathfinder Roleplaying
+Game logo are trademarks of Paizo Inc. You are responsible for complying with
+the Community Use Policy and any portion of it that might apply to you.
+
+### Donations, and the "must be free" rule
+
+The CUP requires the project be free to reach -- "free from payment" and
+"free from hassle" alike -- but expressly permits accepting donations and
+running advertising alongside it. The donate links in the app are therefore
+within the policy, and stay within it only while they remain wholly optional:
+nothing in Ledgermain may be gated behind a donation, a supporter tier, a
+sign-up, or a prompt that blocks play until dismissed, and no reward offered
+through those platforms may consist of Paizo material or of app
+functionality. Commercial use beyond what the policy allows terminates the
+grant automatically, with no cure period -- which is why this is a hard line
+and not a preference.
 
 If your redistribution introduces new OGL content, or removes Product
 Identity references you'd rather not surface, you must keep `OGL.txt` Section
@@ -233,11 +258,15 @@ Community Use Policy.
 
 ## 4. Application runtime notice
 
-The deployed web app at `apps/web` ships a copy of `OGL.txt` and a short
-NOTICE at `/OGL.txt` and `/NOTICE.txt` (copied by
-`apps/web/scripts/copy-refdata.ts`), and surfaces both via an "About &
-Legal" panel inside Settings. Nothing in the app's UI -- declarative text,
-character exports, derived numbers -- is itself Product Identity.
+The deployed web app at `apps/web` ships copies of this notice and the
+license texts at `/NOTICE.md`, `/OGL.txt`, and `/LICENSE` (copied by
+`apps/web/scripts/copy-refdata.ts`), and links all three -- along with the
+Sec.3 declaration and the contact channel that policy requires -- from an
+"About & Legal" panel inside Settings. Nothing in the app's UI --
+declarative text, character exports, derived numbers -- is itself Product
+Identity. The donate links live in their own "Support" panel rather than
+inside About & Legal, so that no solicitation sits adjacent to Paizo's
+trademark notice where it could read as Paizo's.
 
 ## 5. Not affiliated
 
