@@ -1,0 +1,75 @@
+name: CI
+
+"on":
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same PR/branch; keep every push to main.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  checks:
+    name: Checks (typecheck, lint, fmt, unit tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      # Vendored RefData under packages/data-pipeline/data/ is committed, so
+      # install never needs to hit the network for game data.
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Format check
+        run: bun run fmt:check
+
+      # Covers engine/data-pipeline/web (bun test) and apps/api (vitest +
+      # Workers pool) via the root --filter '*' fan-out.
+      - name: Unit tests
+        run: bun run test
+
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # `bunx playwright install` is fine even though `bunx playwright test`
+      # isn't (see .claude/skills/playwright/SKILL.md) — install doesn't load
+      # playwright.config.ts, so it can't resolve to the wrong module copy.
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps chromium
+
+      # playwright.config.ts keys retries/reporter/webServer reuse off CI,
+      # which GitHub Actions sets automatically — no manual CI=1 needed here.
+      - name: Run e2e tests
+        run: bun run e2e
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
+          retention-days: 7
