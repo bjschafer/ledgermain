@@ -97,22 +97,22 @@ Content breadth and known gaps are tracked in the [issue tracker](https://github
 
 ## Contributing
 
-Contributions are welcome — bug reports, rules corrections, and PRs alike.
+Contributions are welcome — bug reports, rules corrections, and PRs alike. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the conventions; the short version:
 
 - **Prerequisites:** [Bun](https://bun.sh) (`1.3+`). Everything else installs with `bun install`.
-- **The gates** (all must stay green; CI shape):
+- **The gates** (CI runs these on every push and PR; all must stay green):
 
   ```bash
   bun run typecheck    # tsc --noEmit across all packages — the primary gate
   bun run lint         # oxlint (errors block; warnings tolerated)
   bun run fmt:check    # oxfmt --check
-  bun run test         # unit tests (engine + data-pipeline + web)
+  bun run test         # unit tests (engine + data-pipeline + web + api)
   bun run e2e          # Playwright (Chromium); boots its own dev server
   ```
 
-- **Where logic goes:** game logic is **pure and tested** — in `packages/engine` or `apps/web/src/model/`, never in React components (which are thin views). Add a fixture/model test with any behavior change.
+- **Where logic goes:** game logic is **pure and tested** — in `packages/engine` or `apps/web/src/model/`, never in React components (which are thin views). Add a fixture/model test with any behavior change. [`docs/engine-cookbook.md`](./docs/engine-cookbook.md) walks through the engine's structure and the common kinds of change.
 - **Clean-room discipline (important):** the rules engine is a clean-room reimplementation from the published PF1 rules. Foundry's GPL-3.0 system _code_ may be used **only as a behavioral test oracle** — compare outputs, never copy, transcribe, or port. Do not paste upstream source into this repo. See [`NOTICE.md`](./NOTICE.md) §1.
-- **Reference data** is vendored and pinned; never update it implicitly. To bump it, edit `FOUNDRY_SHA` / `SYSTEM_VERSION` in `packages/data-pipeline/src/config.ts`, run `bun run data:fetch && bun run data:build`, then **`bun run fmt`**, review the diff, and commit.
+- **Reference data** is vendored and pinned; never update it implicitly. To bump the pin, follow [`docs/refdata-update.md`](./docs/refdata-update.md).
 
 ## License & attribution
 
