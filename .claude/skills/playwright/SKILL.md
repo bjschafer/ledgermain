@@ -20,7 +20,7 @@ macOS), so they usually don't need reinstalling per-worktree — but
 
 ```bash
 bun install                      # once per worktree — node_modules isn't shared
-bunx playwright install chromium # idempotent; fast no-op if already cached
+apps/web/node_modules/.bin/playwright install chromium # idempotent; fast no-op if already cached
 ```
 
 ## Running tests
@@ -57,8 +57,12 @@ runs and then switch to its own, so a spec that passed twice starts failing
 untouched.
 
 Use `bun run e2e` / `bun run screenshots`, or `apps/web/node_modules/.bin/playwright`
-(verified working). `bunx playwright install chromium` is still fine — that
-only downloads browsers and doesn't load the config.
+(verified working). `bunx playwright install` bites too, differently: when
+bunx fetches its own (newer) copy, it downloads that version's browser
+revisions, and the pinned `@playwright/test` then fails at launch with
+`Executable doesn't exist … chromium_headless_shell-<rev>`. A warm global
+browser cache masks this locally; a clean machine (CI runner, fresh
+workstation) hits it every time. Install via the local bin path above.
 
 ## The dev-server gotcha (read this before trusting a green run)
 

@@ -55,11 +55,12 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # `bunx playwright install` is fine even though `bunx playwright test`
-      # isn't (see .claude/skills/playwright/SKILL.md) — install doesn't load
-      # playwright.config.ts, so it can't resolve to the wrong module copy.
+      # Invoke the workspace's pinned CLI by path: on a clean runner, `bunx
+      # playwright` resolves the latest registry package instead of the local
+      # @playwright/test, and installs browser revisions the pinned version
+      # can't find (chromium_headless_shell mismatch).
       - name: Install Playwright browsers
-        run: bunx playwright install --with-deps chromium
+        run: apps/web/node_modules/.bin/playwright install --with-deps chromium
 
       # playwright.config.ts keys retries/reporter/webServer reuse off CI,
       # which GitHub Actions sets automatically — no manual CI=1 needed here.
