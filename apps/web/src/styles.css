@@ -2586,6 +2586,18 @@ button:focus-visible,
   vertical-align: 1px;
 }
 
+/* A quieter sibling of .mode-tab-badge: a count reads as "unspent choices you
+   owe the sheet", which is wrong for an announcement. A dot just points. */
+.mode-tab-dot {
+  display: inline-block;
+  margin-left: 6px;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--gold-2);
+  vertical-align: 3px;
+}
+
 .tracker-col h4.tracker-sub {
   font-family: var(--mono);
   font-size: 0.6875rem;
@@ -2927,6 +2939,41 @@ button:focus-visible,
 
 .cond-notes b {
   color: var(--ink);
+}
+
+/* what's-new list (Settings) */
+.changelog {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.changelog li {
+  padding: 8px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.changelog li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.changelog b {
+  color: var(--ink);
+  font-size: 0.8125rem;
+}
+
+.changelog p {
+  margin: 3px 0 0;
+}
+
+.changelog-date {
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  color: var(--gold-dim-ink);
+  white-space: nowrap;
 }
 
 /* afflictions (ability damage/drain/penalty + negative levels) */

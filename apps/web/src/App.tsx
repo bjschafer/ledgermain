@@ -1,6 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { CharacterDoc } from "@pf1/schema";
+
+import {
+  CHANGELOG,
+  hasUnseenEntries,
+  initChangelogSeen,
+  markChangelogSeen,
+} from "./model/changelog.js";
 
 import { AbilitiesSection } from "./components/builder/AbilitiesSection.js";
 import { BuildNav, useAttentionBadges } from "./components/builder/BuildNav.js";
@@ -59,6 +66,17 @@ export function App() {
   const [mode, setMode] = useState<Mode>("build");
   const [printOpen, setPrintOpen] = useState(false);
   const [textSize, setTextSize] = useTextSize();
+  const [changelogUnseen, setChangelogUnseen] = useState(() =>
+    hasUnseenEntries(CHANGELOG, initChangelogSeen()),
+  );
+
+  // Opening Settings *is* seeing the list — the newest entries render inline
+  // at the top of the What's New panel, so there's nothing further to click.
+  useEffect(() => {
+    if (mode !== "settings" || !changelogUnseen) return;
+    markChangelogSeen();
+    setChangelogUnseen(false);
+  }, [mode, changelogUnseen]);
 
   if (printOpen && store.doc && store.sheet && store.refData) {
     return (
@@ -112,6 +130,9 @@ export function App() {
             onClick={() => setMode("settings")}
           >
             Settings
+            {changelogUnseen ? (
+              <span className="mode-tab-dot" title="Something new since your last visit" />
+            ) : null}
           </button>
         </div>
         <div className="masthead-right">

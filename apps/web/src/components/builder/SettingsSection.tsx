@@ -8,6 +8,7 @@ import { useState, type ChangeEvent } from "react";
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
+import { CHANGELOG, formatEntryDate } from "../../model/changelog.js";
 import { COVERAGE_NOTES } from "../../model/coverageNotes.js";
 import { characterExportFilename, characterExportJson } from "../../model/exportCharacter.js";
 import {
@@ -35,7 +36,7 @@ import { DEFAULT_XP_TRACK, type XpTrack } from "../../model/xp.js";
 import { showToast } from "../../state/toast.js";
 import { TEXT_SIZE_LABEL, TEXT_SIZES, type TextSize } from "../../state/useTextSize.js";
 import { Explainer } from "../Explainer.js";
-import { GearIcon } from "../icons.js";
+import { GearIcon, SparklesIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -653,7 +654,8 @@ export function SettingsSection({
         </div>
       </Panel>
 
-      {/* What's not covered (issue #88) */}
+      {/* What's new, then what's not covered — added next to missing, in that order */}
+      <WhatsNewPanel />
       <CoverageNotesPanel />
 
       {/* About & legal */}
@@ -724,6 +726,49 @@ function ImportReportPanel({ report }: { report: ImportReport }) {
  * requires attribution). The linked files are copied into `public/` by
  * `scripts/copy-refdata.ts`.
  */
+/** How many entries show without expanding. The rest fold into an Explainer. */
+const RECENT_CHANGE_COUNT = 4;
+
+/**
+ * Recent player-visible changes, newest first. The most recent few render
+ * inline rather than behind the usual collapsed `Explainer`, because the
+ * Settings tab's unseen cue is cleared by opening this tab — if the newest
+ * entry needed a second click to reach, clearing the cue would be a lie.
+ * Content lives in `model/changelog.ts`, maintained by hand.
+ */
+function WhatsNewPanel() {
+  const recent = CHANGELOG.slice(0, RECENT_CHANGE_COUNT);
+  const earlier = CHANGELOG.slice(RECENT_CHANGE_COUNT);
+  if (recent.length === 0) return null;
+
+  return (
+    <Panel title="What's New" step="✦" icon={<SparklesIcon />}>
+      <ul className="changelog">
+        {recent.map((e) => (
+          <li key={e.id}>
+            <b>{e.title}</b>
+            <span className="changelog-date">{formatEntryDate(e.date)}</span>
+            <p className="hint">{e.note}</p>
+          </li>
+        ))}
+      </ul>
+      {earlier.length > 0 && (
+        <Explainer title="Earlier changes">
+          <ul className="changelog">
+            {earlier.map((e) => (
+              <li key={e.id}>
+                <b>{e.title}</b>
+                <span className="changelog-date">{formatEntryDate(e.date)}</span>
+                <p className="hint">{e.note}</p>
+              </li>
+            ))}
+          </ul>
+        </Explainer>
+      )}
+    </Panel>
+  );
+}
+
 /**
  * A short, honest, player-language rundown of content that's deliberately
  * not covered yet (issue #88) — the Settings-tab counterpart to `SearchMiss`
