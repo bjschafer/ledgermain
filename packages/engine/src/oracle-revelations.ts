@@ -10,11 +10,12 @@
  * two stubs), so there is no upstream JSON to normalize.
  *
  * Scope: revelations for the 10 Advanced Player's Guide "core" mysteries
- * (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, Wind —
- * same 10 as `ORACLE_MYSTERY_TAGS`), 10 revelations apiece plus that
- * mystery's 20th-level Final Revelation. Revelations from 3rd-party/later
- * mysteries (Ancestor, Apocalypse, Dragon, Lunar, ...) are OUT OF SCOPE,
- * matching `oracle-mysteries.ts`'s own scope note.
+ * (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, Wind),
+ * plus Solar (Inner Sea Gods) — 10 revelations apiece plus that mystery's
+ * 20th-level Final Revelation. Every mystery here has a matching entry in
+ * `ORACLE_MYSTERY_TAGS`. The remaining mysteries (Ancestor, Apocalypse,
+ * Dragon, Lunar, ...) are still out of scope and browse as vendored prose; a
+ * mystery graduates to this table when a real build needs it.
  *
  * IDs are mystery-scoped (`<mysteryTag>:<camelCaseName>`) because a handful
  * of revelations share a name across mysteries with identical text (e.g.
@@ -764,6 +765,86 @@ const REVELATION_LIST: OracleRevelationDef[] = [
         "Manifest wings granting a 60-ft. fly speed for 1 minute per oracle level, once per day.",
     },
   ]),
+  // Solar (Inner Sea Gods) — outside the APG ten, added because it's the
+  // mystery a real 14th-level oracle build needed. Same posture as the rest:
+  // every entry display-only. Many Roads comes closest to a flat number
+  // (insight bonus on two skills, scaling with level), but the file's
+  // invariant is one all-display-only table, and breaking it for a single
+  // entry would make "no revelation moves a number" stop being checkable.
+  ...forMystery("solar", [
+    {
+      id: "astralCaravan",
+      name: "Astral Caravan",
+      summary:
+        "Full-round action: step into the planar border with the Astral Plane, carrying one extra person per class level and covering 50 miles per hour as shadow walk. 1 hour/day per oracle level, spent in 1-hour increments.",
+    },
+    {
+      id: "blisteredCaress",
+      name: "Blistered Caress",
+      summary:
+        "Melee touch attack dealing 1d8 fire per 2 oracle levels (Fortitude half); heals or harms plant creatures for 1d6 per level instead. Sickens on a failed save at 7th, also staggers at 15th. Once per day, twice at 10th.",
+    },
+    {
+      id: "luminousForm",
+      name: "Luminous Form",
+      summary:
+        "Become churning light: gain blur and shed light as a sunrod. Blinds adjacent creatures that end their turn there from 7th (Fortitude negates), longer at 13th, and counts as natural sunlight at 18th. 1 minute/day per oracle level.",
+    },
+    {
+      id: "manyRoads",
+      name: "Many Roads",
+      summary:
+        "Insight bonus on Fly and Survival equal to half your oracle level, and you learn three additional languages.",
+      contextNotes: [
+        note(
+          "Many Roads' Fly/Survival insight bonus is not applied automatically — add it by hand.",
+        ),
+      ],
+    },
+    {
+      id: "serpentInTheSun",
+      name: "Serpent in the Sun",
+      summary:
+        "While you get 4 hours of sunlight a day: no need to eat, +2 vs. disease. 5th — immune to nonmagical disease, no need to drink. 10th — immune to magical disease, +2 vs. poison, half sleep. 15th — immune to poison and fatigue.",
+    },
+    {
+      id: "solarWind",
+      name: "Solar Wind",
+      summary:
+        "Ranged touch attack within 30 ft. (no range increment) dealing 1d6 fire + 1 per 2 oracle levels. From 7th it also bull rushes, using caster level + Charisma in place of your CMB. 3 + Cha modifier times per day.",
+    },
+    {
+      id: "starlightAgility",
+      name: "Starlight Agility",
+      summary:
+        "Gain Dodge as a bonus feat, Wind Stance at 8th, and Lightning Stance at 15th — prerequisites waived.",
+      contextNotes: [
+        note(
+          "The three granted feats are not added to your feat list automatically — take them as bonus feats.",
+        ),
+      ],
+    },
+    {
+      id: "sunStride",
+      name: "Sun Stride",
+      minLevel: 5,
+      summary:
+        "Travel between areas of natural sunlight as dimension door, in 10-ft. increments. 40 ft./day at 5th, doubling at 9th and every 4 levels after. Doesn't work in less than bright light.",
+    },
+    {
+      id: "sungazer",
+      name: "Sungazer",
+      minLevel: 5,
+      summary:
+        "Use clairaudience/clairvoyance (sight only) to observe anywhere sunlight touches; scrying at 10th, greater scrying at 15th. 1 minute/day per oracle level.",
+    },
+    {
+      id: "torchTouch",
+      name: "Torch Touch",
+      summary:
+        "Move action: halve or double the light radius of a nonmagical light source within 60 ft. Torch-sized at 1st, Medium at 7th, Large plus magical sources up to an everburning torch at 14th. A holder may attempt a Reflex save.",
+    },
+  ]),
 ];
 
 export const ORACLE_REVELATIONS: Record<string, OracleRevelationDef> = Object.fromEntries(
@@ -842,5 +923,11 @@ export const ORACLE_MYSTERY_FINAL_REVELATIONS: Record<string, OracleMysteryFinal
     name: "Final Revelation",
     summary:
       "Apply the Enlarge, Extend, Silent, or Still Spell metamagic feat to an air or electricity spell without increasing its level or casting time.",
+  },
+  solar: {
+    mysteryTag: "solar",
+    name: "Final Revelation",
+    summary:
+      "You cease aging, take no age-related ability penalties, and can't be magically aged. Spells you cast of the conjuration (teleportation) subschool or with the fire or light descriptor are automatically enlarged, without affecting their level.",
   },
 };

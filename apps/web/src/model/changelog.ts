@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-25-solar-mystery",
+    date: "2026-07-25",
+    title: "The Solar mystery is fully in",
+    note: "Solar oracles now get their bonus spells at the right levels and their ten revelations in the revelation picker, alongside the Advanced Player's Guide mysteries. Sun Stride and Sungazer show as available from 5th level, the way the book gates them.",
+  },
+  {
     id: "2026-07-25-inquisitor-domains",
     date: "2026-07-25",
     title: "Inquisitors can pick a domain",

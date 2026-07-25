@@ -230,6 +230,29 @@ const MYSTERY_LIST: OracleMysteryDef[] = [
       { level: 18, id: "lun2gymejsmkjg4g", name: "Winds of Vengeance" },
     ],
   },
+  // Solar is the one entry here NOT sourced from the Foundry pack: it comes
+  // from the `pfdata` catalog, whose mystery docs carry no `system.classSkills`
+  // array and embed no `@UUID` spell links — the bonus-spell list is plain
+  // prose. So unlike every mystery above, `classSkills` is transcribed from
+  // that prose and `bonusSpells` ids are resolved by NAME (each of the nine
+  // matches exactly one vendored spell — the ambiguity the file doc comment
+  // warns about doesn't arise for this list, and a test pins that).
+  {
+    tag: "solar",
+    name: "Solar",
+    classSkills: ["fly", "kge", "lin", "sur"],
+    bonusSpells: [
+      { level: 2, id: "bl71og1gklwncmt7", name: "Faerie Fire" },
+      { level: 4, id: "lzos34s87qsc620l", name: "Flaming Sphere" },
+      { level: 6, id: "7x2z0i8rcx7s81fk", name: "Daylight" },
+      { level: 8, id: "ojwg1ki98tq8xyh9", name: "Dimension Door" },
+      { level: 10, id: "evoz9r9n186nsjf0", name: "Planar Adaptation" },
+      { level: 12, id: "nk37t5em8q4v1djs", name: "Sirocco" },
+      { level: 14, id: "vax8ojz8g3oovwzu", name: "Sunbeam" },
+      { level: 16, id: "j2mwv9wfxhqch10g", name: "Sunburst" },
+      { level: 18, id: "lxxliyxfw9uvbxmt", name: "Prismatic Sphere" },
+    ],
+  },
 ];
 
 export const ORACLE_MYSTERIES: Record<string, OracleMysteryDef> = Object.fromEntries(

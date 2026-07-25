@@ -17,7 +17,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 
 import { collectModifiers } from "../src/collect.js";
 import { collectGrantedFeatures, resolveClassFeatures } from "../src/index.js";
-import { ORACLE_MYSTERY_TAGS } from "../src/oracle-mysteries.js";
+import { ORACLE_MYSTERIES, ORACLE_MYSTERY_TAGS } from "../src/oracle-mysteries.js";
 import {
   ORACLE_MYSTERY_FINAL_REVELATIONS,
   ORACLE_REVELATIONS,
@@ -86,10 +86,13 @@ describe("ORACLE_REVELATIONS table", () => {
     }
   });
 
-  it("covers all 10 APG core mysteries with 10 revelations apiece (100 total)", () => {
-    expect(ORACLE_REVELATION_IDS.length).toBe(100);
+  it("covers every modeled mystery with 10 revelations apiece", () => {
+    // The APG ten plus Solar. ORACLE_MYSTERY_TAGS is the source of truth for
+    // which mysteries are modeled, so this stays honest as more graduate.
+    expect(ORACLE_MYSTERY_TAGS.length).toBe(11);
+    expect(ORACLE_REVELATION_IDS.length).toBe(ORACLE_MYSTERY_TAGS.length * 10);
     for (const tag of ORACLE_MYSTERY_TAGS) {
-      expect(revelationsForMystery(tag).length).toBe(10);
+      expect(revelationsForMystery(tag).length, tag).toBe(10);
     }
   });
 
@@ -183,5 +186,45 @@ describe("oracle revelations (collectGrantedFeatures / resolveClassFeatures disp
     };
     const granted = collectGrantedFeatures(doc, ref);
     expect(granted.some((g) => g.origin?.kind === "revelation")).toBe(false);
+  });
+});
+
+describe("Solar mystery (Inner Sea Gods)", () => {
+  it("surfaces the revelations a 14th-level solar oracle picked", () => {
+    // Moeru Tsubasa: tengu oracle 14, solar mystery via the Shigenjo archetype.
+    const doc = makeOracle(14, "solar", [
+      "solar:astralCaravan",
+      "solar:blisteredCaress",
+      "solar:luminousForm",
+      "solar:starlightAgility",
+    ]);
+    expect(revelationFeatureNames(doc)).toEqual([
+      "Astral Caravan",
+      "Blistered Caress",
+      "Luminous Form",
+      "Starlight Agility",
+    ]);
+  });
+
+  it("soft-gates the two revelations with a 5th-level minimum", () => {
+    expect(ORACLE_REVELATIONS["solar:sunStride"]?.minLevel).toBe(5);
+    expect(ORACLE_REVELATIONS["solar:sungazer"]?.minLevel).toBe(5);
+    // Everything else in the mystery is selectable from 1st.
+    const others = revelationsForMystery("solar").filter(
+      (r) => !["solar:sunStride", "solar:sungazer"].includes(r.id),
+    );
+    expect(others.every((r) => r.minLevel === 1)).toBe(true);
+  });
+
+  it("resolves every bonus spell by name to exactly one vendored spell", () => {
+    // Solar comes from the `pfdata` catalog, whose prose carries no @UUID
+    // spell links — so unlike the APG ten these ids were resolved by name.
+    // This pins that each still points at the spell it claims to.
+    const solar = ORACLE_MYSTERIES["solar"]!;
+    expect(solar.bonusSpells.length).toBe(9);
+    for (const bonus of solar.bonusSpells) {
+      expect(ref.spells[bonus.id]?.name, bonus.name).toBe(bonus.name);
+    }
+    expect(solar.bonusSpells.map((b) => b.level)).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18]);
   });
 });

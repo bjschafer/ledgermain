@@ -39,7 +39,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Oracle revelations",
-    note: "Covered for the ten Advanced Player's Guide mysteries (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, and Wind). Revelations from later mysteries aren't written up.",
+    note: "Covered for the ten Advanced Player's Guide mysteries (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, and Wind) plus Solar. Revelations from other mysteries aren't written up — the mystery itself is still browsable with its full rules text, revelations included, so you can pick from it and apply them by hand.",
   },
   {
     category: "Kineticist wild talents",
