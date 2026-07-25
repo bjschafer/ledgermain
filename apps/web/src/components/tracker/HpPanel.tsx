@@ -57,7 +57,7 @@ function statusLabel(state: HpState): string {
 export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   // Free text rather than a number, so "12b 6c" and "9 damage, 3 of which are
   // cold" are typeable; a bare number still behaves exactly as it always did.
-  const [amountText, setAmountText] = useState("5");
+  const [amountText, setAmountText] = useState("");
   const [bypasses, setBypasses] = useState<string[]>([]);
   const max = sheet.hp.max;
   const restMode = doc.build.settings?.restMode ?? "full";
@@ -122,7 +122,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
             className="hp-amt num"
             value={amountText}
             onChange={(e) => setAmountText(e.target.value)}
-            placeholder="5"
+            placeholder="12b 6c"
             aria-label="Amount"
           />
           <InfoTip
@@ -159,6 +159,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
             // full strength for the next one.
             const next = applyDamage(consumePools(doc, preview.resolution.pools), dmgAmt);
             update(() => next);
+            setAmountText("");
             const droppedToZero = next.live.hp.current <= 0;
             if (dmgAmt >= HP_TOAST_THRESHOLD || droppedToZero) {
               showToast({
@@ -178,6 +179,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           onClick={() => {
             const next = applyHealing(doc, amt, max);
             update(() => next);
+            setAmountText("");
             if (amt >= HP_TOAST_THRESHOLD) {
               showToast({
                 message: `Heal ${amt} · HP ${current}→${next.live.hp.current}`,
@@ -193,14 +195,14 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
       {/* Discoverability for the free-text field: shown while the amount is a
           single bare number (nobody has typed a damage type yet) and retired
           the moment one is used, so it teaches once rather than nagging. */}
-      {preview.ok && !preview.reduced && preview.parse.terms.every((t) => t.inferred) ? (
+      {!preview.ok || (preview.bare && !preview.reduced) ? (
         <div className="hp-damage-hint">
           Tip: name the damage type — <code>12b 6c</code>, <code>18 fire</code>,{" "}
           <code>9, 3 of which are cold</code>
         </div>
       ) : null}
 
-      {preview.ok && (preview.reduced || preview.parse.terms.length > 1) ? (
+      {preview.showTerms ? (
         <div className="hp-damage-preview">
           <span className="hp-damage-terms">
             {preview.resolution.terms.map((t, i) => (
@@ -246,7 +248,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
         </div>
       ) : null}
 
-      {preview.bypassOptions.length > 0 ? (
+      {preview.bypassOptions.length > 0 && preview.hasPhysical ? (
         <div className="hp-bypass-row">
           <span className="hp-inline-label">Attack bypasses</span>
           {preview.bypassOptions.map((q) => {
@@ -294,6 +296,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           <button
             type="button"
             className="btn-ghost"
+            disabled={amt === 0}
             onClick={() => update((d) => addNonlethal(d, amt))}
           >
             +{amt}
@@ -301,6 +304,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           <button
             type="button"
             className="btn-ghost"
+            disabled={amt === 0}
             onClick={() => update((d) => healNonlethal(d, amt))}
           >
             −{amt}

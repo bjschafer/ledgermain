@@ -165,3 +165,60 @@ test("protection from energy asks for an element and soaks only that type", asyn
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
+
+test("naming a type is echoed back even when no defense touches it", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  const amount = page.getByLabel("Amount");
+  // No resistances at all — the echo is confirmation the parse was understood,
+  // not a report of a reduction.
+  await amount.fill("5 fire");
+  await expect(page.locator(".hp-damage-preview")).toContainText("5 fire");
+  await expect(page.locator(".hp-damage-result")).toHaveCount(0);
+
+  // A plain number stays quiet and shows the syntax tip instead.
+  await amount.fill("5");
+  await expect(page.locator(".hp-damage-preview")).toHaveCount(0);
+  await expect(page.locator(".hp-damage-hint")).toBeVisible();
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("the amount clears after applying, ready for the next hit", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  const amount = page.getByLabel("Amount");
+  await expect(amount).toHaveValue("");
+
+  await amount.fill("7");
+  await page.getByRole("button", { name: "Damage", exact: true }).click();
+  await expect(amount).toHaveValue("");
+
+  await amount.fill("3");
+  await page.getByRole("button", { name: "Heal", exact: true }).click();
+  await expect(amount).toHaveValue("");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("bypass chips stay hidden against pure energy damage", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  await grantDr(page, "dr.adamantine", "10");
+
+  const amount = page.getByLabel("Amount");
+  await amount.fill("10");
+  await expect(page.locator(".hp-bypass-chip")).toBeVisible();
+
+  // DR can't touch fire, so offering to bypass it is noise.
+  await amount.fill("10 fire");
+  await expect(page.locator(".hp-bypass-chip")).toHaveCount(0);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});

@@ -12,7 +12,12 @@
  * type an explicit damage type to fix the first, toggle a bypass chip for the
  * second.
  */
-import { resolveDamage, type AblativePool, type DamageResolution } from "@pf1/engine";
+import {
+  isPhysicalDamage,
+  resolveDamage,
+  type AblativePool,
+  type DamageResolution,
+} from "@pf1/engine";
 import type { Defenses } from "@pf1/schema";
 
 import { parseDamageInput, type DamageParse } from "./damageInput.js";
@@ -35,6 +40,23 @@ export interface DamagePreview {
   assumed: boolean;
   /** Distinct bypass atoms the character's DR cares about, for the chip row. */
   bypassOptions: string[];
+  /**
+   * True when the input is a single amount with no type named — the case the
+   * field has always handled, and the only one worth showing a syntax tip for.
+   */
+  bare: boolean;
+  /**
+   * Whether to echo the parsed terms back. Anything other than a plain bare
+   * number gets an echo, even when no defense touched it: naming a type is a
+   * deliberate act, and it should be visibly understood rather than silently
+   * accepted.
+   */
+  showTerms: boolean;
+  /**
+   * True when this hit contains physical damage, i.e. when DR could apply at
+   * all. Gates the bypass chips — they are meaningless against pure energy.
+   */
+  hasPhysical: boolean;
   /** One-line explanation, e.g. `"18 → 3 · DR 10/—, Resist cold 5"`. */
   summary: string;
 }
@@ -77,6 +99,8 @@ export function damagePreview(
       ? `${resolution.raw} → ${resolution.final}${detail ? ` · ${detail}` : ""}`
       : `${resolution.final}`;
 
+  const bare = parse.terms.length === 1 && parse.terms[0]!.inferred === true;
+
   return {
     ok: parse.ok,
     parse,
@@ -86,6 +110,9 @@ export function damagePreview(
     reduced,
     assumed,
     bypassOptions: bypassOptionsFor(defenses),
+    bare,
+    showTerms: parse.ok && (!bare || reduced),
+    hasPhysical: parse.terms.some((t) => isPhysicalDamage(t.type)),
     summary,
   };
 }

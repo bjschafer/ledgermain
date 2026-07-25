@@ -108,3 +108,36 @@ describe("bypass chips", () => {
     expect(bypassOptionsFor(defenses([entry(5, "—")]))).toEqual([]);
   });
 });
+
+describe("what the panel should show", () => {
+  it("treats a plain number as bare and shows no term echo", () => {
+    const p = damagePreview("17", undefined);
+    expect(p.bare).toBe(true);
+    expect(p.showTerms).toBe(false);
+  });
+
+  it("echoes the terms as soon as a type is named, even with nothing to reduce", () => {
+    // The gap this fixes: "5 fire" on a character with no fire resistance
+    // used to show nothing at all, so the parse was invisible.
+    const p = damagePreview("5 fire", undefined);
+    expect(p.bare).toBe(false);
+    expect(p.showTerms).toBe(true);
+  });
+
+  it("echoes a bare number once a defense has changed it", () => {
+    const p = damagePreview("17", defenses([entry(10, "—")]));
+    expect(p.bare).toBe(true);
+    expect(p.showTerms).toBe(true);
+  });
+
+  it("shows nothing for unparseable input", () => {
+    expect(damagePreview("", undefined).showTerms).toBe(false);
+  });
+
+  it("reports physical damage so the bypass chips can hide against pure energy", () => {
+    expect(damagePreview("17", undefined).hasPhysical).toBe(true);
+    expect(damagePreview("12b 6c", undefined).hasPhysical).toBe(true);
+    expect(damagePreview("5 fire", undefined).hasPhysical).toBe(false);
+    expect(damagePreview("5 untyped", undefined).hasPhysical).toBe(false);
+  });
+});
