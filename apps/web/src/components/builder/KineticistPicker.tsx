@@ -219,6 +219,25 @@ function ElementalFocusSection({
                     </option>
                   ))}
                 </select>
+                {chosenDef && chosenDef.alternateSimpleBlast && chosenDef.tag !== primary && (
+                  <select
+                    className="order-select"
+                    style={{ marginTop: 2 }}
+                    value={chosenSimpleBlast(chosenDef.tag, blastChoices)?.id ?? ""}
+                    disabled={!reached}
+                    onChange={(e) =>
+                      update((d) =>
+                        setKineticistSimpleBlast(d, chosenDef.tag, e.target.value || null),
+                      )
+                    }
+                  >
+                    {elementSimpleBlasts(chosenDef.tag).map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name} ({b.damageType}, {b.descriptor})
+                      </option>
+                    ))}
+                  </select>
+                )}
                 {chosenDef && (
                   <div className="hint" style={{ marginTop: 2 }}>
                     +{expandedBlastLabel(chosenDef.tag)}, {chosenDef.basicUtility.name} (no defense
