@@ -20,25 +20,7 @@ bun run e2e          # Playwright (Chromium); boots its own dev server
 bun run screenshots  # regenerate docs/images/{tracker,builder}.png from the sample character
 ```
 
-Run one package's tests / a single test:
-
-```bash
-bun test packages/engine                       # one package
-bun --filter @pf1/engine test                  # via workspace filter
-bun test packages/engine/test/stacking.test.ts # one file
-bun test -t "two morale bonuses don't stack"   # by test name
-```
-
-Reference data (only when bumping the pinned Foundry content):
-
-```bash
-bun run data:fetch   # shallow-clone the pinned SHA into packages/data-pipeline/.cache/ (gitignored)
-bun run data:build   # regenerate normalized JSON into packages/data-pipeline/data/ (committed)
-```
-
-To update data: edit `FOUNDRY_SHA` / `SYSTEM_VERSION` in `packages/data-pipeline/src/config.ts`, run the two commands, **then run `bun run fmt`**, review the diff, commit. The app builds offline from the vendored JSON; never make data updates implicit.
-
-> **`bun run fmt` is a required post-`data:build` step, not optional cleanup.** The emitter writes JSON with every array expanded one-element-per-line, but the committed `data/*.json` is oxfmt-formatted (short arrays collapsed onto one line). Skip the fmt and `git status` shows thousands of lines changed across _every_ data file (all whitespace) even when only one value actually changed — and `fmt:check` fails in CI. After fmt, the diff collapses to just the real content change. The same applies to hand-authored data supplements (e.g. `data-pipeline/src/supplements.ts`): edit the supplement → `data:build` → `fmt`.
+Bumping the pinned Foundry reference data has its own procedure with a formatting trap that produces a thousands-of-lines-changed diff if skipped — use the `refdata-update` skill.
 
 ## Architecture
 
@@ -49,7 +31,7 @@ packages/schema         shared types: CharacterDoc, DerivedSheet, RefData (the c
 packages/data-pipeline  pinned Foundry YAML → normalized JSON (vendored under data/, committed)
 packages/engine         pure rules engine — compute(doc, refData) -> DerivedSheet (the crown jewel)
 apps/web                React + Vite builder + live tracker
-apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5, docs/design.md.md §2.1)
+apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5, docs/design.md §2.1)
 ```
 
 ### The one rule that governs everything
@@ -68,17 +50,13 @@ The engine has two genuinely hard pieces, both clean-room (see licensing below):
 1. **Typed bonus-stacking** (`stacking.ts`) — highest-within-type; `dodge`/`untyped`/`circumstance` sum; penalties always stack. Retains per-source provenance (`applied` flag) so the UI can strike through overridden bonuses.
 2. **Formula DSL evaluator** (`formula.ts`) — recursive-descent parser + tree-walker (no `eval`) for the Foundry roll-formula dialect: `@data.paths`, functions (`if`, `gte`, `min`, `max`, …), and dice terms. Missing paths resolve to `0` (Foundry behavior). Dice terms parse but throw on numeric eval; use `tryEvaluateFormula` (returns `null`) so damage formulas never crash the static sheet. BAB/save numeric tables are hardcoded in `tables.ts` (the YAML only carries `high|med|low` tiers).
 
-### Web app structure (the important split)
+### Web app structure
 
-All builder/tracker **logic is pure and in `apps/web/src/model/`** (`doc.ts` doc transitions, `prereqs.ts`, `skills.ts`, `hp.ts`, `buffs.ts`, etc.) — tested directly with no DOM. React components in `components/` are thin views. `state/useCharacter.ts` is the **only** binding layer: model transition → `compute()` → Dexie. When adding a feature, put the logic in a `model/` module with tests, then wire a thin component.
-
-- **RefData in the browser**: `data-pipeline`'s `loadRefData()` is Node-fs based; the app instead uses `src/refdata/loader.ts` (fetch). `scripts/copy-refdata.ts` copies vendored JSON into `public/data/` at predev/prebuild (gitignored — source of truth stays in the package). `refdata/loader.ts` is the _only_ place that knows where data lives, so Stage 5 can swap in lazy R2 loading there.
-- **Persistence**: IndexedDB via Dexie (`src/db/characters.ts`, database `pf1-tracker`) is the source of truth; one active character; autosaves and restores most-recently-edited on load. `src/sync/` (Stage 5) layers optional background push/pull to `apps/api` on top — pure decision logic in `sync/planSync.ts`, a thin `fetch` wrapper in `sync/client.ts`, orchestration in `sync/backgroundSync.ts`, all wired into `state/useCharacter.ts`. Degrades to a complete no-op when `VITE_API_URL` is unset.
-- **Vite/workspace-TS gotcha**: `@pf1/engine` and `@pf1/schema` publish raw `.ts` (no build step). `apps/web/vite.config.ts` aliases the bare specifiers to their `src/index.ts`; Vite's resolver handles their internal `./foo.js` → `./foo.ts` fallback. Keep these aliases in sync if package entry points move.
+`apps/web/CLAUDE.md` covers the pure-logic-in-`model/` split, RefData loading, Dexie persistence, and the Vite alias gotcha.
 
 ## Licensing — clean-room discipline (important)
 
-The engine is a **clean-room reimplementation** from the published PF1 rules. The codebase is licensed **`AGPL-3.0-or-later`** (see `NOTICE.md` §1 / `docs/design.md.md` §6 for why AGPL over a permissive license: provenance honesty + network-copyleft; it's compatible with Foundry's GPL-3.0). Foundry's GPL-3.0 system code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied, transcribed, or ported**. When validating engine behavior, compare _outputs_ (given input X, both produce Y), not code structure. Compendium _data_ is used under OGL / Paizo Community Use with attribution intact. Do not paste upstream source into this repo.
+The engine is a **clean-room reimplementation** from the published PF1 rules. The codebase is licensed **`AGPL-3.0-or-later`** (see `NOTICE.md` §1 / `docs/design.md` §6 for why AGPL over a permissive license: provenance honesty + network-copyleft; it's compatible with Foundry's GPL-3.0). Foundry's GPL-3.0 system code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied, transcribed, or ported**. When validating engine behavior, compare _outputs_ (given input X, both produce Y), not code structure. Compendium _data_ is used under OGL / Paizo Community Use with attribution intact. Do not paste upstream source into this repo.
 
 ## Conventions
 
