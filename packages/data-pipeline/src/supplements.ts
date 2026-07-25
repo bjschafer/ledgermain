@@ -223,10 +223,33 @@ export function applyClassFeatureChangesSupplements(features: ClassFeature[]): v
  *   be a static `Change`; a context note is the honest option (same posture
  *   as judgments.ts's energy-resistance-of-choice note).
  */
+/**
+ * Resist energy's caster-level progression, clean-room from the published
+ * spell: resistance 10, rising to 20 at CL 7 and 30 at CL 11. Written as a
+ * capped step count rather than nested `if`s so it stays one expression.
+ *
+ * Deliberately NOT derived from the vendored description's own formula, which
+ * steps on a 4-level cadence (`ceil((level + 1) / 4)`) and so reaches 20 at
+ * CL 6 — a level early.
+ */
+const RESIST_ENERGY_FORMULA = "10 * min(3, 1 + floor(max(0, @item.level - 3) / 4))";
+
+/** One `eres.<energy>` change for a per-element Resist Energy buff variant. */
+function resistEnergy(energy: string): Change[] {
+  return [{ formula: RESIST_ENERGY_FORMULA, target: `eres.${energy}`, type: "untyped" }];
+}
+
 export const SUPPLEMENTAL_BUFF_CHANGES: Record<string, Change[]> = {
   "Divine Power": [{ formula: "@item.level", target: "tempHp", type: "untyped" }],
   "Heroism, Greater": [{ formula: "min(20, @item.level)", target: "tempHp", type: "untyped" }],
   Stoneskin: [{ formula: "10", target: "dr.adamantine", type: "untyped" }],
+  // The per-element variants name their energy, so unlike the generic "Resist
+  // Energy" buff they need no player choice and can carry a real change.
+  "Resist Energy (Acid)": resistEnergy("acid"),
+  "Resist Energy (Cold)": resistEnergy("cold"),
+  "Resist Energy (Electricity)": resistEnergy("electricity"),
+  "Resist Energy (Fire)": resistEnergy("fire"),
+  "Resist Energy (Sonic)": resistEnergy("sonic"),
 };
 
 export const SUPPLEMENTAL_BUFF_CONTEXT_NOTES: Record<string, ContextNote[]> = {
@@ -273,8 +296,10 @@ export function applyBuffSupplements(buffs: Buff[]): void {
  * resistance `Change` (see `targets.ts`/`defenses.ts`) — already exercised by
  * several archetype-extracted entries and sorcerer/bloodrager bloodlines, so
  * this rides an existing, tested consumer rather than a new one. Deliberately
- * excludes Resist Energy / Protection From Energy spell buffs, which need a
- * player-chosen element this table has no generic way to record.
+ * excludes the generic Resist Energy / Protection From Energy spell buffs,
+ * which need a player-chosen element neither this table nor a `Change` has a
+ * way to record; the per-element Resist Energy variants, which do name their
+ * energy, are covered in `SUPPLEMENTAL_BUFF_CHANGES`.
  */
 export const SUPPLEMENTAL_RACE_ENERGY_RESISTANCE: Record<string, readonly string[]> = {
   Aasimar: ["acid", "cold", "electricity"],

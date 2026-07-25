@@ -2193,7 +2193,13 @@
     "uuid": "Compendium.pf1.buffs.Item.OCAbaLfEP5nPn6fc"
   },
   "OEPLhd4m46A6QA31": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10 * min(3, 1 + floor(max(0, @item.level - 3) / 4))",
+        "target": "eres.fire",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against fire as per Resist Energy.</p>",
     "duration": {
@@ -3692,7 +3698,13 @@
     "uuid": "Compendium.pf1.buffs.Item.ebyFqTewZ1K54aBX"
   },
   "efd99dVtQUUSoz5Z": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10 * min(3, 1 + floor(max(0, @item.level - 3) / 4))",
+        "target": "eres.acid",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against acid as per Resist Energy.</p>",
     "duration": {
@@ -4639,7 +4651,13 @@
     "uuid": "Compendium.pf1.buffs.Item.p2JgcKLVXMawO3uL"
   },
   "p8gZ2WaceSCWT4LK": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10 * min(3, 1 + floor(max(0, @item.level - 3) / 4))",
+        "target": "eres.electricity",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against electricity as per Resist Energy.</p>",
     "duration": {
@@ -5027,7 +5045,13 @@
     "uuid": "Compendium.pf1.buffs.Item.sfmKrukx8vFoXLBf"
   },
   "tV3x332iNS0WpFf3": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10 * min(3, 1 + floor(max(0, @item.level - 3) / 4))",
+        "target": "eres.sonic",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against sonic as per Resist Energy.</p>",
     "duration": {
@@ -5048,7 +5072,13 @@
     "uuid": "Compendium.pf1.buffs.Item.tV3x332iNS0WpFf3"
   },
   "u2g0irnJ5BeNvh0R": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10 * min(3, 1 + floor(max(0, @item.level - 3) / 4))",
+        "target": "eres.cold",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>Grants [[10 * clamp(ceil((@item.level + 1) / 4), 1, 3)]] resistance against cold as per Resist Energy.</p>",
     "duration": {

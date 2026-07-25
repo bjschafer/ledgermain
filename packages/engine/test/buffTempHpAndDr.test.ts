@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { ActiveBuff, CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute } from "../src/index.js";
+import { compute, resolveDamage } from "../src/index.js";
 
 /**
  * Fixture coverage for the `SUPPLEMENTAL_BUFF_CHANGES` additions in
@@ -99,5 +99,56 @@ describe("Stoneskin grants DR 10/adamantine (vendored changes[] was empty)", () 
   it("no Stoneskin active → no DR line at all", () => {
     const sheet = compute(makeDoc([]), ref);
     expect(sheet.defenses).toBeUndefined();
+  });
+});
+
+describe("Resist Energy's per-element variants grant eres.<energy> (vendored changes[] was empty)", () => {
+  // Published progression: resistance 10, 20 at CL 7, 30 at CL 11. The
+  // boundaries are the point — the vendored description's own formula steps a
+  // level early at CL 6.
+  it.each([
+    [1, 10],
+    [6, 10],
+    [7, 20],
+    [10, 20],
+    [11, 30],
+    [20, 30],
+  ])("CL %i → resist fire %i", (cl, expected) => {
+    const sheet = compute(makeDoc([activeAt("Resist Energy (Fire)", cl)]), ref);
+    expect(sheet.defenses?.resistances).toEqual([
+      {
+        total: expected,
+        qualifier: "fire",
+        components: [
+          {
+            source: "Resist Energy (Fire)",
+            sourceId: "inst-" + buffByName("Resist Energy (Fire)").id,
+            type: "untyped",
+            value: expected,
+            applied: true,
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("each element variant lands on its own qualifier", () => {
+    for (const [name, qualifier] of [
+      ["Resist Energy (Acid)", "acid"],
+      ["Resist Energy (Cold)", "cold"],
+      ["Resist Energy (Electricity)", "electricity"],
+      ["Resist Energy (Sonic)", "sonic"],
+    ] as const) {
+      const sheet = compute(makeDoc([activeAt(name, 7)]), ref);
+      expect(sheet.defenses?.resistances).toEqual([
+        { total: 20, qualifier, components: [expect.objectContaining({ source: name })] },
+      ]);
+    }
+  });
+
+  it("the granted resistance actually comes off matching damage", () => {
+    const sheet = compute(makeDoc([activeAt("Resist Energy (Fire)", 7)]), ref);
+    expect(resolveDamage([{ amount: 25, type: "fire" }], sheet.defenses).final).toBe(5);
+    expect(resolveDamage([{ amount: 25, type: "cold" }], sheet.defenses).final).toBe(25);
   });
 });

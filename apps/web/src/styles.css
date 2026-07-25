@@ -2741,9 +2741,41 @@ button:focus-visible,
 
 .hp-controls {
   display: grid;
-  grid-template-columns: auto 1fr 1fr;
+  grid-template-columns: minmax(9ch, 0.8fr) 1fr 1fr;
   gap: 8px;
   margin-bottom: 12px;
+}
+
+/* The amount field takes free text ("12b 6c"), so it needs room for more than
+   a two-digit number — and its ⓘ rides alongside without adding a grid column. */
+.hp-amt-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* The input flexes; the ⓘ must not be squeezed to a sliver beside it. */
+.hp-amt {
+  flex: 1 1 auto;
+  min-width: 6ch;
+}
+
+.hp-amt-wrap > .chip-info {
+  flex: 0 0 auto;
+}
+
+.hp-damage-hint {
+  font-size: 0.6875rem;
+  color: var(--muted);
+  margin: -4px 0 10px;
+}
+
+.hp-damage-hint code,
+.hp-damage-note code {
+  font-size: 0.9em;
+  padding: 1px 4px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
 }
 
 /* Typed-damage preview: what the parser read and what the defenses did to it.

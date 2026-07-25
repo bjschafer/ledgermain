@@ -215,8 +215,13 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
 
 /**
  * "This buff does nothing on this sheet" flag — for buffs with an empty
- * `changes[]` AND an empty `contextNotes[]` (e.g. Stoneskin, Invisibility):
- * toggling them is a silent trap with no visible effect at all. Distinct from
+ * `changes[]` AND an empty `contextNotes[]` (e.g. Invisibility, Endure
+ * Elements): toggling them is a silent trap with no visible effect at all.
+ * Buffs whose effect IS expressible as a `Change` but which ship empty
+ * upstream are fixed at the data layer instead, via `data-pipeline`'s
+ * `SUPPLEMENTAL_BUFF_CHANGES` (Stoneskin, the per-element Resist Energy
+ * variants, …) — so anything still carrying this badge is genuinely
+ * unmodeled rather than merely unwired. Distinct from
  * {@link PartialBadge}, which flags buffs that DO have changes but some of
  * them land on an unconsumed target. See `model/buffs.ts`'s
  * `hasNoModeledEffect` and issue #21.

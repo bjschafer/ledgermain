@@ -114,16 +114,40 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
       ) : null}
 
       <div className="hp-controls">
-        <input
-          type="text"
-          className="hp-amt num"
-          size={6}
-          value={amountText}
-          onChange={(e) => setAmountText(e.target.value)}
-          placeholder="5"
-          aria-label="Amount"
-          title="A number, or typed damage: “12b 6c”, “18 fire”, “9 damage, 3 of which are cold”"
-        />
+        <span className="hp-amt-wrap">
+          <input
+            type="text"
+            className="hp-amt num"
+            value={amountText}
+            onChange={(e) => setAmountText(e.target.value)}
+            placeholder="5"
+            aria-label="Amount"
+          />
+          <InfoTip
+            className="chip-info"
+            content={
+              <>
+                <strong>A plain number works as always.</strong> You can also name damage types the
+                way your GM says them, and your DR and resistances come off automatically:
+                <br />
+                <br />
+                <code>12b 6c</code> — 12 bludgeoning and 6 cold
+                <br />
+                <code>18 fire</code> — one energy type
+                <br />
+                <code>9, 3 of which are cold</code> — a 9-point total, 3 of it cold
+                <br />
+                <code>12 untyped</code> — damage nothing should reduce
+                <br />
+                <br />
+                First letters work: b, p, s, f, c, e, a, w. Use <code>so</code> for sonic and{" "}
+                <code>ph</code> for physical.
+              </>
+            }
+          >
+            ⓘ
+          </InfoTip>
+        </span>
         <button
           type="button"
           className="btn-act dmg"
@@ -160,6 +184,16 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           Heal
         </button>
       </div>
+
+      {/* Discoverability for the free-text field: shown while the amount is a
+          single bare number (nobody has typed a damage type yet) and retired
+          the moment one is used, so it teaches once rather than nagging. */}
+      {preview.ok && !preview.reduced && preview.parse.terms.every((t) => t.inferred) ? (
+        <div className="hp-damage-hint">
+          Tip: name the damage type — <code>12b 6c</code>, <code>18 fire</code>,{" "}
+          <code>9, 3 of which are cold</code>
+        </div>
+      ) : null}
 
       {preview.ok && (preview.reduced || preview.parse.terms.length > 1) ? (
         <div className="hp-damage-preview">
