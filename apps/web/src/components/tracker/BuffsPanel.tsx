@@ -145,7 +145,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
                 <div className="pname">
                   {buff.name} <PartialBadge changes={buff.changes} />{" "}
                   <NoEffectHint
-                    name={buff.name}
+                    buffId={buff.id}
                     changes={buff.changes}
                     contextNotes={buff.contextNotes}
                   />
@@ -165,7 +165,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
                 >
                   Active ✓
                 </InfoTip>
-              ) : needsElementChoice(buff.name) ? (
+              ) : needsElementChoice(buff.id) ? (
                 <ElementAdd onAdd={(element) => add(buff, element)} />
               ) : (
                 <button type="button" className="pick-btn add" onClick={() => add(buff)}>
@@ -263,15 +263,15 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
  * `hasNoModeledEffect` and issue #21.
  */
 function NoEffectHint({
-  name,
+  buffId,
   changes,
   contextNotes,
 }: {
-  name?: string;
+  buffId?: string;
   changes: readonly Change[];
   contextNotes?: readonly ContextNote[];
 }) {
-  if (!hasNoModeledEffect({ name, changes, contextNotes })) return null;
+  if (!hasNoModeledEffect({ buffId, changes, contextNotes })) return null;
   return (
     <InfoTip
       className="soft"
@@ -345,7 +345,11 @@ function BuffRow({
           {buff.name}
           {buff.element ? <span className="buff-element"> ({buff.element})</span> : null}{" "}
           <PartialBadge changes={buff.changes} />{" "}
-          <NoEffectHint name={buff.name} changes={buff.changes} contextNotes={buff.contextNotes} />
+          <NoEffectHint
+            buffId={buff.buffId}
+            changes={buff.changes}
+            contextNotes={buff.contextNotes}
+          />
         </div>
         <div className="buff-changes num">
           {buff.changes.map((c, i) => (

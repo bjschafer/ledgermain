@@ -19,8 +19,17 @@ function doc(activeBuffs: ActiveBuff[]): CharacterDoc {
   };
 }
 
-function buff(name: string, extra: Partial<ActiveBuff> = {}): ActiveBuff {
-  return { instanceId: `inst-${name}`, name, changes: [], ...extra };
+/** Vendored buff ids the instance-state catalog is keyed on. */
+const IDS = {
+  Stoneskin: "dYMrU01t5FNMgNra",
+  "Protection From Energy": "p2JgcKLVXMawO3uL",
+  "Resist Energy": "H9Qopdm0LVhvA4Pm",
+  Resistance: "W9TR1oh1KpDxOKr1",
+  Barkskin: "not-a-catalogued-buff",
+} as const;
+
+function buff(name: keyof typeof IDS, extra: Partial<ActiveBuff> = {}): ActiveBuff {
+  return { instanceId: `inst-${name}`, buffId: IDS[name], name, changes: [], ...extra };
 }
 
 describe("pool capacity is derived from caster level, never stored", () => {
@@ -113,8 +122,8 @@ describe("consumePools", () => {
 });
 
 describe("element choice is resolved at activation", () => {
-  const refBuff = (name: string) => ({
-    id: `id-${name}`,
+  const refBuff = (name: keyof typeof IDS) => ({
+    id: IDS[name],
     name,
     changes: [],
     contextNotes: [],
@@ -152,8 +161,56 @@ describe("element choice is resolved at activation", () => {
 
   it("does not flag a pool-only buff as having no modeled effect", () => {
     expect(
-      hasNoModeledEffect({ name: "Protection From Energy", changes: [], contextNotes: [] }),
+      hasNoModeledEffect({
+        buffId: IDS["Protection From Energy"],
+        changes: [],
+        contextNotes: [],
+      }),
     ).toBe(false);
-    expect(hasNoModeledEffect({ name: "Invisibility", changes: [], contextNotes: [] })).toBe(true);
+    expect(
+      hasNoModeledEffect({ buffId: "some-invisibility-id", changes: [], contextNotes: [] }),
+    ).toBe(true);
+    // A user-authored buff has no id at all and must not blow up the lookup.
+    expect(hasNoModeledEffect({ changes: [], contextNotes: [] })).toBe(true);
+  });
+});
+
+describe('the two buffs named "Resistance" are addressed independently', () => {
+  it("the energy-resistance one takes an element and grants eres.<element>", () => {
+    // Unreachable while the supplement tables keyed on name: a lookup for
+    // "Resistance" could only ever find one of the two.
+    const b = makeActiveBuff(
+      { id: IDS.Resistance, name: "Resistance", changes: [], contextNotes: [] } as never,
+      { casterLevel: 9, element: "acid" },
+    );
+    expect(b.element).toBe("acid");
+    expect(b.changes).toEqual([
+      { formula: "(1 + floor(@item.level / 3)) * 2", target: "eres.acid", type: "untyped" },
+    ]);
+  });
+
+  it("the saving-throw cantrip of the same name takes no element", () => {
+    const saves = { id: "GdU6Xlwn2phRnfc6", name: "Resistance", changes: [], contextNotes: [] };
+    const b = makeActiveBuff(saves as never, { casterLevel: 9, element: "acid" });
+    expect(b.element).toBeUndefined();
+    expect(b.changes).toEqual([]);
+  });
+});
+
+describe("buffs whose effect arrives at activation are not badged as unmodeled", () => {
+  it.each([
+    ["Protection From Energy", IDS["Protection From Energy"]],
+    ["Resist Energy", IDS["Resist Energy"]],
+    ["Resistance (energy)", IDS.Resistance],
+  ])("%s", (_label, buffId) => {
+    // Vendored `changes[]` is empty for all three — the pool or the chosen
+    // element supplies the effect — so a naive emptiness check mislabels them.
+    expect(hasNoModeledEffect({ buffId, changes: [], contextNotes: [] })).toBe(false);
+  });
+
+  it("still badges a genuinely unmodeled buff", () => {
+    expect(hasNoModeledEffect({ buffId: "invisibility-id", changes: [], contextNotes: [] })).toBe(
+      true,
+    );
   });
 });

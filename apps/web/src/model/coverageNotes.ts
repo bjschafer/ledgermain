@@ -63,7 +63,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Buffs marked “reminder only”",
-    note: "Most buffs move real numbers on your sheet. Just under thirty don't, and they say so on the buff itself — either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus (the Danger Wards). Toggle them as trackers for the duration; apply what they do by hand.",
+    note: "Most buffs move real numbers on your sheet. Twenty-seven don't, and they say so on the buff itself — either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus (the Danger Wards). Toggle them as trackers for the duration; apply what they do by hand.",
   },
   {
     category: "Community-pack feats",

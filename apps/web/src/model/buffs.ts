@@ -38,7 +38,7 @@ export interface BuffOptions {
  */
 export function makeActiveBuff(buff: Buff, opts: BuffOptions = {}): ActiveBuff {
   const changes = buff.changes.map((c) => ({ ...c }));
-  const elementSpec = buffInstanceState(buff.name)?.element;
+  const elementSpec = buffInstanceState(buff.id)?.element;
 
   if (elementSpec && opts.element) {
     const target = elementTarget(elementSpec, opts.element);
@@ -86,14 +86,15 @@ export function makeCustomBuff(
  * issue #21.
  */
 export function hasNoModeledEffect(buff: {
-  name?: string;
+  buffId?: string;
   changes: readonly Change[];
   contextNotes?: readonly ContextNote[];
 }): boolean {
-  // A buff whose whole effect is an ablative pool (protection from energy)
-  // carries no changes and no notes, but is very much modeled — the pool is
-  // tracked on the HP panel and soaks real damage.
-  if (buff.name && buffInstanceState(buff.name)?.ablative) return false;
+  // Buffs carrying per-instance state look empty in the vendored data but are
+  // fully modeled: an ablative pool IS the effect (protection from energy),
+  // and an element-choice buff only gains its `eres.<element>` change at
+  // activation (resist energy), so before that its `changes[]` is bare.
+  if (buffInstanceState(buff.buffId)) return false;
   return buff.changes.length === 0 && (buff.contextNotes?.length ?? 0) === 0;
 }
 

@@ -23,11 +23,11 @@
  * `data-pipeline`'s `SUPPLEMENTAL_BUFF_CHANGES`). The compendium text is data
  * under OGL, not an oracle for mechanics.
  *
- * Keyed by buff name, matching `SUPPLEMENTAL_BUFF_CHANGES`. Names must be
- * unique among vendored buffs to be addressable this way — the vendored slice
- * has two distinct buffs both named "Resistance" (a saving-throw one and an
- * energy-resistance one), so that pair is deliberately absent here rather than
- * silently resolving to whichever one a name lookup happens to find.
+ * Keyed by buff **id**, matching `SUPPLEMENTAL_BUFF_CHANGES`. Names are not
+ * unique in the vendored slice — two distinct buffs are both called
+ * "Resistance" (the Core Rulebook cantrip's +1 to saves, and a level-scaling
+ * energy resistance from another book) — so a name-keyed table cannot address
+ * one without the other. `name` is carried for readability only.
  */
 
 import type { DamageTypeId } from "./damage-types.js";
@@ -68,12 +68,15 @@ export interface AblativeSpec {
 }
 
 export interface BuffInstanceStateSpec {
+  /** Vendored buff name — documentation for the opaque id key, not a lookup. */
+  name: string;
   element?: ElementChoiceSpec;
   ablative?: AblativeSpec;
 }
 
 export const BUFF_INSTANCE_STATE: Record<string, BuffInstanceStateSpec> = {
-  Stoneskin: {
+  dYMrU01t5FNMgNra: {
+    name: "Stoneskin",
     // DR 10/adamantine until it has prevented 10 damage per caster level,
     // to a maximum of 150.
     ablative: {
@@ -82,7 +85,8 @@ export const BUFF_INSTANCE_STATE: Record<string, BuffInstanceStateSpec> = {
       exhaustedNote: "Stoneskin is discharged once it has prevented its full total.",
     },
   },
-  "Resist Energy": {
+  H9Qopdm0LVhvA4Pm: {
+    name: "Resist Energy",
     // Resistance 10 against the chosen type, 20 at CL 7 and 30 at CL 11 —
     // the same progression the per-element variants carry.
     element: {
@@ -91,7 +95,22 @@ export const BUFF_INSTANCE_STATE: Record<string, BuffInstanceStateSpec> = {
       type: "untyped",
     },
   },
-  "Protection From Energy": {
+  W9TR1oh1KpDxOKr1: {
+    name: "Resistance",
+    // The energy-resistance "Resistance", distinct from the Core Rulebook
+    // cantrip of the same name (GdU6Xlwn2phRnfc6, +1 resistance on saves,
+    // already modeled upstream). Unlike resist energy — whose vendored
+    // formula contradicts the published spell and so was rewritten — nothing
+    // here disagrees with a published reading, so the compendium's own
+    // scaling stands.
+    element: {
+      target: "eres.{element}",
+      formula: "(1 + floor(@item.level / 3)) * 2",
+      type: "untyped",
+    },
+  },
+  p2JgcKLVXMawO3uL: {
+    name: "Protection From Energy",
     // Absorbs damage of the chosen type outright — 12 per caster level, to a
     // maximum of 120 — then ends. Not a resistance value, so it grants no
     // `eres` change at all; the pool does the whole job.
@@ -104,14 +123,18 @@ export const BUFF_INSTANCE_STATE: Record<string, BuffInstanceStateSpec> = {
   },
 };
 
-/** The instance-state spec for a buff name, or `undefined` if it carries none. */
-export function buffInstanceState(name: string): BuffInstanceStateSpec | undefined {
-  return BUFF_INSTANCE_STATE[name];
+/**
+ * The instance-state spec for a buff id, or `undefined` if it carries none.
+ * Tolerates `undefined` so callers can pass an `ActiveBuff.buffId` straight
+ * through — a user-authored buff has no id and never carries instance state.
+ */
+export function buffInstanceState(buffId: string | undefined): BuffInstanceStateSpec | undefined {
+  return buffId === undefined ? undefined : BUFF_INSTANCE_STATE[buffId];
 }
 
 /** True when activating this buff must ask the player to choose an energy type. */
-export function needsElementChoice(name: string): boolean {
-  return buffInstanceState(name)?.element !== undefined;
+export function needsElementChoice(buffId: string | undefined): boolean {
+  return buffInstanceState(buffId)?.element !== undefined;
 }
 
 /**

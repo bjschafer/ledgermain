@@ -239,49 +239,89 @@ function resistEnergy(energy: string): Change[] {
   return [{ formula: RESIST_ENERGY_FORMULA, target: `eres.${energy}`, type: "untyped" }];
 }
 
-export const SUPPLEMENTAL_BUFF_CHANGES: Record<string, Change[]> = {
-  "Divine Power": [{ formula: "@item.level", target: "tempHp", type: "untyped" }],
-  "Heroism, Greater": [{ formula: "min(20, @item.level)", target: "tempHp", type: "untyped" }],
-  Stoneskin: [{ formula: "10", target: "dr.adamantine", type: "untyped" }],
+/**
+ * A supplement entry. Keyed by buff **id**, not name: the vendored slice has
+ * two distinct buffs both called "Resistance" (the Core Rulebook cantrip's
+ * +1 to saves, and a level-scaling energy resistance from another book), so a
+ * name-keyed map silently collapses them and can only ever address whichever
+ * one a lookup happens to find. `name` is carried alongside purely so these
+ * tables stay readable, and is verified against the vendored buff on apply —
+ * an opaque id that quietly stops matching after a content re-vendor is
+ * exactly the kind of drift these tables need to fail loudly on.
+ */
+interface BuffSupplement<T> {
+  name: string;
+  entries: T[];
+}
+
+export const SUPPLEMENTAL_BUFF_CHANGES: Record<string, BuffSupplement<Change>> = {
+  "0hRYCva2hdwUNFh6": {
+    name: "Divine Power",
+    entries: [{ formula: "@item.level", target: "tempHp", type: "untyped" }],
+  },
+  T2j3SnpatLbS32O1: {
+    name: "Heroism, Greater",
+    entries: [{ formula: "min(20, @item.level)", target: "tempHp", type: "untyped" }],
+  },
+  dYMrU01t5FNMgNra: {
+    name: "Stoneskin",
+    entries: [{ formula: "10", target: "dr.adamantine", type: "untyped" }],
+  },
   // The per-element variants name their energy, so unlike the generic "Resist
   // Energy" buff they need no player choice and can carry a real change.
-  "Resist Energy (Acid)": resistEnergy("acid"),
-  "Resist Energy (Cold)": resistEnergy("cold"),
-  "Resist Energy (Electricity)": resistEnergy("electricity"),
-  "Resist Energy (Fire)": resistEnergy("fire"),
-  "Resist Energy (Sonic)": resistEnergy("sonic"),
+  efd99dVtQUUSoz5Z: { name: "Resist Energy (Acid)", entries: resistEnergy("acid") },
+  u2g0irnJ5BeNvh0R: { name: "Resist Energy (Cold)", entries: resistEnergy("cold") },
+  p8gZ2WaceSCWT4LK: {
+    name: "Resist Energy (Electricity)",
+    entries: resistEnergy("electricity"),
+  },
+  OEPLhd4m46A6QA31: { name: "Resist Energy (Fire)", entries: resistEnergy("fire") },
+  tV3x332iNS0WpFf3: { name: "Resist Energy (Sonic)", entries: resistEnergy("sonic") },
 };
 
-export const SUPPLEMENTAL_BUFF_CONTEXT_NOTES: Record<string, ContextNote[]> = {
-  Aid: [
-    {
-      target: "tempHp",
-      text: "Also grants 1d8+CL temporary hit points — dice-based, not modeled as a static bonus; track manually.",
-    },
-  ],
+export const SUPPLEMENTAL_BUFF_CONTEXT_NOTES: Record<string, BuffSupplement<ContextNote>> = {
+  qmwVJUZ7ZuvF3tAB: {
+    name: "Aid",
+    entries: [
+      {
+        target: "tempHp",
+        text: "Also grants 1d8+CL temporary hit points — dice-based, not modeled as a static bonus; track manually.",
+      },
+    ],
+  },
 };
 
 /**
  * Apply `SUPPLEMENTAL_BUFF_CHANGES`/`SUPPLEMENTAL_BUFF_CONTEXT_NOTES` in
- * place, appending to the named buff's existing `changes`/`contextNotes`.
- * Throws if a named buff is absent from the vendored set — a data-drift
- * guard, mirroring `resolveBloodlineSupplements`.
+ * place, appending to each identified buff's existing `changes`/`contextNotes`.
+ * Throws if an id is absent from the vendored set, or if the vendored buff's
+ * name no longer matches the one recorded here — data-drift guards mirroring
+ * `resolveBloodlineSupplements`.
  */
 export function applyBuffSupplements(buffs: Buff[]): void {
-  const byName = new Map(buffs.map((b) => [b.name, b]));
-  for (const [name, changes] of Object.entries(SUPPLEMENTAL_BUFF_CHANGES)) {
-    const buff = byName.get(name);
+  const byId = new Map(buffs.map((b) => [b.id, b]));
+
+  const resolve = <T>(id: string, supp: BuffSupplement<T>): Buff => {
+    const buff = byId.get(id);
     if (buff === undefined) {
-      throw new Error(`[supplements] buff "${name}" not found in vendored buffs`);
+      throw new Error(`[supplements] buff "${supp.name}" (${id}) not found in vendored buffs`);
     }
-    buff.changes = [...buff.changes, ...changes];
+    if (buff.name !== supp.name) {
+      throw new Error(
+        `[supplements] buff ${id} is named "${buff.name}" upstream, not "${supp.name}" — ` +
+          `the vendored content moved under this id`,
+      );
+    }
+    return buff;
+  };
+
+  for (const [id, supp] of Object.entries(SUPPLEMENTAL_BUFF_CHANGES)) {
+    const buff = resolve(id, supp);
+    buff.changes = [...buff.changes, ...supp.entries];
   }
-  for (const [name, notes] of Object.entries(SUPPLEMENTAL_BUFF_CONTEXT_NOTES)) {
-    const buff = byName.get(name);
-    if (buff === undefined) {
-      throw new Error(`[supplements] buff "${name}" not found in vendored buffs`);
-    }
-    buff.contextNotes = [...buff.contextNotes, ...notes];
+  for (const [id, supp] of Object.entries(SUPPLEMENTAL_BUFF_CONTEXT_NOTES)) {
+    const buff = resolve(id, supp);
+    buff.contextNotes = [...buff.contextNotes, ...supp.entries];
   }
 }
 

@@ -33,7 +33,7 @@ export interface LivePool extends AblativePool {
 export function livePools(doc: CharacterDoc, characterLevel: number): LivePool[] {
   const pools: LivePool[] = [];
   for (const buff of doc.live.activeBuffs) {
-    const spec = buffInstanceState(buff.name)?.ablative;
+    const spec = buffInstanceState(buff.buffId)?.ablative;
     if (!spec) continue;
     const capacity = poolCapacity(buff, characterLevel);
     if (capacity <= 0) continue;
@@ -58,7 +58,7 @@ export function livePools(doc: CharacterDoc, characterLevel: number): LivePool[]
  * caster level falls back to character level.
  */
 export function poolCapacity(buff: ActiveBuff, characterLevel: number): number {
-  const spec = buffInstanceState(buff.name)?.ablative;
+  const spec = buffInstanceState(buff.buffId)?.ablative;
   if (!spec) return 0;
   const level = buff.casterLevel ?? characterLevel;
   const value = tryEvaluateFormula(spec.capacityFormula, { item: { level }, cl: level });
