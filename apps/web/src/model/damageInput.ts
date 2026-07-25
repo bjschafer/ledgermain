@@ -20,11 +20,24 @@
  * explicit "of which" always forces carve-out, so either reading stays
  * reachable when the heuristic guesses wrong.
  *
+ * A GM naming the attack's material or alignment ("12 adamantine", "18 cold
+ * iron") is saying something about the *attacker*, not about the damage, so
+ * those words come back separately as {@link DamageParse.bypasses} rather
+ * than as a term. They read the same way at the table and cost the same
+ * keystrokes; only the destination differs. Materials abbreviate the same way
+ * damage types do — "12 ad", "12 ci" — because "adamantine" is nine letters
+ * of typing in the middle of someone else's turn.
+ *
  * Nothing here decides what the numbers *mean* for a character — no DR or
  * resistance is consulted. This module only answers "what did they say",
  * which keeps it testable without a doc, a sheet, or RefData.
  */
-import { resolveDamageWord, type DamageTypeId } from "@pf1/engine";
+import {
+  DR_NONE_QUALIFIER,
+  normalizeQualifier,
+  resolveDamageWord,
+  type DamageTypeId,
+} from "@pf1/engine";
 
 /**
  * What an amount with no type word attached is assumed to be. Unqualified
@@ -63,6 +76,12 @@ export interface DamageParse {
   total: number;
   mode: DamageParseMode;
   /**
+   * Canonical DR-bypass qualifiers named in the input ("adamantine", "cold
+   * iron", "magic"). A property of the attack rather than of any one term, so
+   * it is not scoped to the amount it was typed next to.
+   */
+  bypasses: string[];
+  /**
    * Human-readable notes about anything the parser had to decide or discard
    * (an unrecognized type word, a carve-out that overflowed its total).
    * Always safe to ignore; never a reason to reject the input.
@@ -98,6 +117,108 @@ const FILLER = new Set([
   "an",
 ]);
 
+/**
+ * The DR bypasses a PF1 attack can carry that aren't already damage types:
+ * weapon materials, "magic"/"epic", and the four alignment components. The
+ * B/P/S qualifiers are deliberately absent — `resolveDamage` decides those
+ * from the damage's own type, so "12 slashing" must stay a damage type here.
+ *
+ * Caller-supplied qualifiers (a character's own DR lines, including homebrew)
+ * are folded in on top, so a hand-authored `dr.frostbitten` is typeable
+ * without this list ever having heard of it.
+ */
+const MATERIAL_BYPASSES: readonly string[] = [
+  "adamantine",
+  "cold-iron",
+  "silver",
+  "magic",
+  "epic",
+  "good",
+  "evil",
+  "lawful",
+  "chaotic",
+];
+
+/**
+ * Words that resolve to a bypass without being one: alternate spellings
+ * `normalizeQualifier` doesn't already fold (it handles "alchemical silver"
+ * and "coldIron"), and the abbreviations prefix matching can't reach.
+ *
+ * Mithral is here rather than in the vocabulary above because RAW it isn't
+ * its own DR qualifier — a mithral weapon counts as silver for overcoming
+ * damage reduction. A character whose own DR names `mithral` anyway (a
+ * homebrew line) still gets it verbatim: the vocabulary is consulted first.
+ *
+ * `ci` earns a curated entry because "cold iron" is two words, so no prefix
+ * of it is short. Everything else is reachable by prefix and doesn't need
+ * one. Kept to unambiguous restatements of the same bypass — never
+ * inference, so "holy" is not "good".
+ */
+const BYPASS_SPELLINGS: Record<string, string> = {
+  ci: "cold-iron",
+  silvered: "silver",
+  adamantium: "adamantine",
+  magical: "magic",
+  mithral: "silver",
+  mithril: "silver",
+};
+
+/** Longest multi-token bypass we look ahead for ("cold iron" is 2, "alchemical silver" is 2). */
+const MAX_BYPASS_TOKENS = 3;
+
+/** Every bypass this parse will recognize, canonical form. */
+function bypassVocabulary(known: readonly string[]): Set<string> {
+  const vocab = new Set(MATERIAL_BYPASSES);
+  for (const q of known) {
+    const canonical = normalizeQualifier(q);
+    if (canonical && canonical !== DR_NONE_QUALIFIER) vocab.add(canonical);
+  }
+  return vocab;
+}
+
+/**
+ * Resolves one candidate phrase to a bypass: an exact qualifier first, then a
+ * curated spelling, then any qualifier or spelling the phrase is an
+ * unambiguous prefix of ("ada" -> adamantine, "sil" -> silver, "mith" ->
+ * silver). Exact-before-abbreviation is what lets a homebrew `dr.mithral`
+ * mean itself while a plain character's "mithral" still folds onto silver.
+ *
+ * A prefix matching two bypasses resolves to neither, the same discipline
+ * `resolveDamageWord` applies — "ep"/"ev" are each unambiguous, bare "e" is
+ * not, and guessing between epic and evil would be worse than the warning.
+ */
+function resolveBypass(candidate: string, vocab: ReadonlySet<string>): string | undefined {
+  const canonical = normalizeQualifier(candidate);
+  if (vocab.has(canonical)) return canonical;
+
+  const spelled = BYPASS_SPELLINGS[canonical];
+  if (spelled) return spelled;
+
+  const hits = new Set<string>();
+  for (const q of vocab) if (q.startsWith(canonical)) hits.add(q);
+  for (const [word, target] of Object.entries(BYPASS_SPELLINGS)) {
+    if (word.startsWith(canonical)) hits.add(target);
+  }
+  return hits.size === 1 ? [...hits][0] : undefined;
+}
+
+/**
+ * The longest run of tokens starting at `i` that names a bypass, or
+ * `undefined`. Longest-first is what lets "cold iron" win over "cold" — the
+ * single token would otherwise resolve as an energy damage type.
+ */
+function matchBypass(
+  tokens: readonly string[],
+  i: number,
+  vocab: ReadonlySet<string>,
+): { qualifier: string; length: number } | undefined {
+  for (let len = Math.min(MAX_BYPASS_TOKENS, tokens.length - i); len >= 1; len--) {
+    const qualifier = resolveBypass(tokens.slice(i, i + len).join("-"), vocab);
+    if (qualifier) return { qualifier, length: len };
+  }
+  return undefined;
+}
+
 /** Tokens that force the additive reading. */
 const ADDITIVE_MARKERS = new Set(["+", "and", "plus", "&"]);
 
@@ -126,15 +247,27 @@ function tokenize(raw: string): string[] {
  * `ok: false` and an empty term list, which callers treat as "no damage
  * entered yet" rather than as an error to show.
  */
-export function parseDamageInput(raw: string): DamageParse {
+export function parseDamageInput(raw: string, knownBypasses: readonly string[] = []): DamageParse {
   const tokens = tokenize(raw);
   const warnings: string[] = [];
+  const vocab = bypassVocabulary(knownBypasses);
 
   const terms: DamageTerm[] = [];
+  const bypasses = new Set<string>();
   let sawAdditiveMarker = false;
   let sawCarveMarker = false;
 
-  for (const token of tokens) {
+  // "a" is both an article and acid's documented shorthand. It reads as acid
+  // only when it directly follows the amount it would type, which is a shape
+  // prose never has ("take a 9", "9 points of a fire spell" both keep the
+  // article reading).
+  let afterAmount = false;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i]!;
+    const followsAmount = afterAmount;
+    afterAmount = false;
+
     if (ADDITIVE_MARKERS.has(token)) {
       sawAdditiveMarker = true;
       continue;
@@ -143,10 +276,21 @@ export function parseDamageInput(raw: string): DamageParse {
       sawCarveMarker = true;
       continue;
     }
-    if (FILLER.has(token)) continue;
+    if (FILLER.has(token) && !(followsAmount && token.length === 1)) continue;
 
     if (/^\d+$/.test(token)) {
       terms.push({ amount: Number(token), type: DEFAULT_DAMAGE_TYPE, inferred: true });
+      afterAmount = true;
+      continue;
+    }
+
+    // Multi-token bypasses go first so "cold iron" isn't read as cold damage;
+    // single-token ones go after the damage-type check, which owns any word
+    // that could be either.
+    const multi = matchBypass(tokens, i, vocab);
+    if (multi && multi.length > 1) {
+      bypasses.add(multi.qualifier);
+      i += multi.length - 1;
       continue;
     }
 
@@ -155,6 +299,10 @@ export function parseDamageInput(raw: string): DamageParse {
     const type = resolveDamageWord(token);
     const target = terms[terms.length - 1];
     if (!type) {
+      if (multi) {
+        bypasses.add(multi.qualifier);
+        continue;
+      }
       warnings.push(`Ignored "${token}" — not a damage type.`);
       continue;
     }
@@ -170,8 +318,10 @@ export function parseDamageInput(raw: string): DamageParse {
     target.inferred = false;
   }
 
+  const named = [...bypasses].sort();
+
   if (terms.length === 0) {
-    return { ok: false, terms: [], total: 0, mode: "additive", warnings };
+    return { ok: false, terms: [], total: 0, mode: "additive", bypasses: named, warnings };
   }
 
   const lead = terms[0]!;
@@ -193,9 +343,9 @@ export function parseDamageInput(raw: string): DamageParse {
       `The ${restTotal} typed damage exceeds the stated total of ${lead.amount} — read as additive.`,
     );
   } else if (sawCarveMarker && rest.length > 0) {
-    return carveOut(lead, rest, warnings);
+    return carveOut(lead, rest, named, warnings);
   } else if (heuristicCarve) {
-    return carveOut(lead, rest, warnings);
+    return carveOut(lead, rest, named, warnings);
   }
 
   return {
@@ -203,6 +353,7 @@ export function parseDamageInput(raw: string): DamageParse {
     terms,
     total: terms.reduce((sum, t) => sum + t.amount, 0),
     mode: "additive",
+    bypasses: named,
     warnings,
   };
 }
@@ -214,14 +365,19 @@ export function parseDamageInput(raw: string): DamageParse {
  * assumption) while "9 untyped, 3 of which are cold" leaves 6 genuinely
  * untyped.
  */
-function carveOut(lead: DamageTerm, rest: DamageTerm[], warnings: string[]): DamageParse {
+function carveOut(
+  lead: DamageTerm,
+  rest: DamageTerm[],
+  bypasses: string[],
+  warnings: string[],
+): DamageParse {
   const restTotal = rest.reduce((sum, t) => sum + t.amount, 0);
   const remainder = lead.amount - restTotal;
   const terms =
     remainder > 0
       ? [{ amount: remainder, type: lead.type, inferred: lead.inferred }, ...rest]
       : rest;
-  return { ok: true, terms, total: lead.amount, mode: "carve-out", warnings };
+  return { ok: true, terms, total: lead.amount, mode: "carve-out", bypasses, warnings };
 }
 
 /** One-line echo of a parse, e.g. `"6 unspecified + 3 cold = 9"`. */

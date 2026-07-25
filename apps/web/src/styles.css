@@ -3274,13 +3274,40 @@ button:focus-visible,
 }
 
 /* Head: the roll's name (left, flexes + truncates) and its value block
-   (right), with the remove button trailing. Aligned to the top so the remove
-   button and the first value line sit level even when a two-line (main/off-
-   hand) value block makes the right column taller than the name. */
+   (right), with the remove button trailing. Baseline-aligned rather than
+   top-aligned: the value button carries its own padding and border, so
+   top-alignment left its number sitting a few pixels below the name it
+   belongs to. */
 .saved-roll-head {
   display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   gap: 10px;
+}
+
+/* Two-weapon rolls: name (and the remove button) on row 1, both hand
+   sequences full-width on row 2. Nothing about a full-attack sequence fits
+   beside a name in a sidebar-width panel.
+
+   Every child is placed explicitly: a `grid-column: 1 / -1` on the value
+   block alone would auto-flow it onto its own row AND push the remove button
+   down to a third one. */
+.saved-roll-head--stacked {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+
+.saved-roll-head--stacked .saved-roll-title {
+  grid-area: 1 / 1;
+}
+
+.saved-roll-head--stacked > .res-btns {
+  grid-area: 1 / 2;
+}
+
+.saved-roll-head--stacked .saved-roll-values {
+  grid-area: 2 / 1 / 3 / -1;
 }
 
 .saved-roll-title {
@@ -3304,6 +3331,14 @@ button:focus-visible,
   gap: 8px;
 }
 
+/* Both hand lines carry the value button's own padding + border so the caret,
+   hand label and number columns line up between them — the off-hand line has
+   no button to supply that inset of its own. */
+.saved-roll-value-line--off {
+  padding: 4px 8px;
+  border: 1px solid transparent;
+}
+
 .saved-roll-value-num {
   font-family: var(--mono);
 }
@@ -3318,10 +3353,11 @@ button:focus-visible,
 }
 
 /* Off-hand line: a hair dimmer than the main sequence, and an invisible caret
-   placeholder keeps its number aligned under the main-hand number. */
+   placeholder keeps its number aligned under the main-hand number. Same type
+   size as the main hand — a smaller one made the digits fall out of column. */
 .saved-roll-value-line--off {
   color: var(--gold-dim);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 .caret-ghost {
@@ -3337,15 +3373,20 @@ button:focus-visible,
   border-radius: var(--radius);
   padding: 4px 8px;
   display: flex;
-  align-items: center;
-  gap: 4px;
+  align-items: baseline;
+  /* Matches `.saved-roll-value-line`'s gap so the off-hand line, which lays
+     the same three parts out itself, columns up with this one. */
+  gap: 8px;
 }
 
 .saved-roll-value-btn:hover {
   border-color: var(--gold-dim);
 }
 
-.saved-roll-value-btn .caret {
+/* The off-hand line's ghost caret is a spacer, so it has to match the real
+   one's width exactly or the two sequences drift apart. */
+.saved-roll-value-btn .caret,
+.saved-roll-value-line--off .caret {
   font-size: 0.625rem;
   color: var(--faint);
 }

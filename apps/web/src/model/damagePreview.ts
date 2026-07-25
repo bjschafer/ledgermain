@@ -11,6 +11,12 @@
  * something only the GM knows. Both are visible and both are overridable —
  * type an explicit damage type to fix the first, toggle a bypass chip for the
  * second.
+ *
+ * A bypass has two ways in, and they compose: naming the material in the
+ * damage text ("12 adamantine") turns the matching chip on, and a chip click
+ * overrides whatever the text said in either direction. The text is the
+ * default because it's what the GM actually announced; the click stays
+ * authoritative because it's the later, more deliberate act.
  */
 import {
   isPhysicalDamage,
@@ -40,6 +46,10 @@ export interface DamagePreview {
   assumed: boolean;
   /** Distinct bypass atoms the character's DR cares about, for the chip row. */
   bypassOptions: string[];
+  /** Bypasses actually in force — chip overrides layered over what was typed. */
+  bypasses: string[];
+  /** Of those, the ones that came from the damage text rather than a chip. */
+  typedBypasses: string[];
   /**
    * True when the input is a single amount with no type named — the case the
    * field has always handled, and the only one worth showing a syntax tip for.
@@ -78,14 +88,29 @@ export function bypassOptionsFor(defenses: Defenses | undefined): string[] {
   return [...atoms].sort();
 }
 
-/** Builds the panel's view of what typing `raw` would do. */
+/**
+ * Builds the panel's view of what typing `raw` would do.
+ *
+ * `bypassOverrides` is the chip row's state, and holds only the qualifiers
+ * the player actually clicked — `true` forces a bypass on, `false` forces off
+ * one the damage text named. Everything unmentioned follows the text.
+ */
 export function damagePreview(
   raw: string,
   defenses: Defenses | undefined,
-  bypasses: readonly string[] = [],
+  bypassOverrides: Readonly<Record<string, boolean>> = {},
   pools: readonly AblativePool[] = [],
 ): DamagePreview {
-  const parse = parseDamageInput(raw);
+  const bypassOptions = bypassOptionsFor(defenses);
+  const parse = parseDamageInput(raw, bypassOptions);
+
+  const active = new Set(parse.bypasses);
+  for (const [qualifier, on] of Object.entries(bypassOverrides)) {
+    if (on) active.add(qualifier);
+    else active.delete(qualifier);
+  }
+  const bypasses = [...active].sort();
+
   const resolution = resolveDamage(parse.terms, defenses, { bypasses, pools });
   const reduced = resolution.final !== resolution.raw;
   // Only an assumption that DR actually acted on is worth flagging; an
@@ -109,7 +134,9 @@ export function damagePreview(
     raw: resolution.raw,
     reduced,
     assumed,
-    bypassOptions: bypassOptionsFor(defenses),
+    bypassOptions,
+    bypasses,
+    typedBypasses: parse.bypasses,
     bare,
     showTerms: parse.ok && (!bare || reduced),
     hasPhysical: parse.terms.some((t) => isPhysicalDamage(t.type)),

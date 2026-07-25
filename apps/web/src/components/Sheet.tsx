@@ -426,27 +426,6 @@ export function Sheet({
         </div>
       )}
 
-      {/* Proficiencies (issue #81) — read-only, provenance on hover/tap. */}
-      {(sheet.proficiencies.weapons.length > 0 || sheet.proficiencies.armor.length > 0) && (
-        <div className="stat-group">
-          <div className="stat-group-header">
-            <span className="stat-group-legend">Proficiencies</span>
-            <div className="stat-group-rule" />
-          </div>
-          <div className="prof-strip">
-            {[...sheet.proficiencies.weapons, ...sheet.proficiencies.armor].map((line, i) => (
-              <InfoTip
-                key={`${line.label}-${i}`}
-                className="prof-chip"
-                content={`Granted by ${line.grants.map((g) => g.source).join(", ")}`}
-              >
-                {line.label}
-              </InfoTip>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Senses (darkvision, low-light, scent, ...) — display-only, same
           chip-strip treatment as Proficiencies. */}
       {sheet.senses.length > 0 && (
@@ -567,6 +546,30 @@ export function Sheet({
           {rollableSkills.map((s) => (
             <SkillRow key={s.id} s={s} resetKey={doc.id} />
           ))}
+        </div>
+      )}
+
+      {/* Proficiencies (issue #81) — read-only, provenance on hover/tap. Last
+          on the sheet on purpose: what you're proficient with is settled at
+          build time and almost never consulted mid-combat, so it shouldn't
+          push the numbers that are down the page. */}
+      {(sheet.proficiencies.weapons.length > 0 || sheet.proficiencies.armor.length > 0) && (
+        <div className="stat-group">
+          <div className="stat-group-header">
+            <span className="stat-group-legend">Proficiencies</span>
+            <div className="stat-group-rule" />
+          </div>
+          <div className="prof-strip">
+            {[...sheet.proficiencies.weapons, ...sheet.proficiencies.armor].map((line, i) => (
+              <InfoTip
+                key={`${line.label}-${i}`}
+                className="prof-chip"
+                content={`Granted by ${line.grants.map((g) => g.source).join(", ")}`}
+              >
+                {line.label}
+              </InfoTip>
+            ))}
+          </div>
         </div>
       )}
     </section>

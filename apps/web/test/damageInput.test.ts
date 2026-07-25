@@ -118,6 +118,126 @@ describe("carve-out phrasing", () => {
   });
 });
 
+describe("materials and other DR bypasses", () => {
+  it("pulls a material out of the amount instead of typing the damage with it", () => {
+    const parse = parseDamageInput("12 adamantine");
+    expect(parse.bypasses).toEqual(["adamantine"]);
+    expect(parse.total).toBe(12);
+    expect(parse.terms).toEqual([{ amount: 12, type: "weapon", inferred: true }]);
+    expect(parse.warnings).toEqual([]);
+  });
+
+  it("joins a two-word material rather than reading its first word as a type", () => {
+    expect(parseDamageInput("12 cold iron").bypasses).toEqual(["cold-iron"]);
+    expect(parseDamageInput("12 cold iron").terms[0]!.type).toBe("weapon");
+    // The damage type still wins when the second word isn't there.
+    expect(parseDamageInput("12 cold").terms[0]!.type).toBe("cold");
+    expect(parseDamageInput("12 cold").bypasses).toEqual([]);
+  });
+
+  it("keeps a cold-iron weapon and cold damage in the same hit apart", () => {
+    // "cold" only stops being a damage type when "iron" is the very next word.
+    const parse = parseDamageInput("12 cold iron and 6 cold");
+    expect(parse.bypasses).toEqual(["cold-iron"]);
+    expect(parse.terms).toEqual([
+      { amount: 12, type: "weapon", inferred: true },
+      { amount: 6, type: "cold", inferred: false },
+    ]);
+  });
+
+  it("folds alternate spellings onto the canonical qualifier", () => {
+    expect(parseDamageInput("12 alchemical silver").bypasses).toEqual(["silver"]);
+    expect(parseDamageInput("12 silvered").bypasses).toEqual(["silver"]);
+    expect(parseDamageInput("12 magical").bypasses).toEqual(["magic"]);
+  });
+
+  it("treats mithral as silver, which is what it counts as for DR", () => {
+    expect(parseDamageInput("12 mithral").bypasses).toEqual(["silver"]);
+    expect(parseDamageInput("12 mithril").bypasses).toEqual(["silver"]);
+    // ...unless the character's own DR names mithral, which is then meant literally.
+    expect(parseDamageInput("12 mithral", ["mithral"]).bypasses).toEqual(["mithral"]);
+  });
+
+  it("abbreviates a material down to an unambiguous prefix", () => {
+    const bypassOf = (raw: string) => parseDamageInput(raw).bypasses;
+    expect(bypassOf("12 ad")).toEqual(["adamantine"]);
+    expect(bypassOf("12 ada")).toEqual(["adamantine"]);
+    expect(bypassOf("12 sil")).toEqual(["silver"]);
+    expect(bypassOf("12 mith")).toEqual(["silver"]);
+    expect(bypassOf("12 ma")).toEqual(["magic"]);
+    expect(bypassOf("12 ep")).toEqual(["epic"]);
+    expect(bypassOf("12 ev")).toEqual(["evil"]);
+    expect(bypassOf("12 go")).toEqual(["good"]);
+    expect(bypassOf("12 la")).toEqual(["lawful"]);
+    expect(bypassOf("12 ch")).toEqual(["chaotic"]);
+    // "cold iron" has no short prefix of its own, so it gets a curated one —
+    // and abbreviates by its second word too.
+    expect(bypassOf("12 ci")).toEqual(["cold-iron"]);
+    expect(bypassOf("12 cold i")).toEqual(["cold-iron"]);
+  });
+
+  it("refuses an abbreviation that names two bypasses at once", () => {
+    // "m" is magic or mithral-as-silver. Guessing is worse than saying
+    // nothing, so it falls through to the warning.
+    expect(parseDamageInput("12 m").bypasses).toEqual([]);
+    expect(parseDamageInput("12 m").warnings.length).toBe(1);
+  });
+
+  it("never lets a material abbreviation shadow a damage-type one", () => {
+    // The letters the damage types already claim keep meaning damage: "s" is
+    // slashing not silver, "e" is electricity not epic/evil, "a" is acid not
+    // adamantine, "frost" is cold rather than a prefix of some homebrew DR.
+    expect(parseDamageInput("12 s").terms[0]!.type).toBe("slashing");
+    expect(parseDamageInput("12 e").terms[0]!.type).toBe("electricity");
+    expect(parseDamageInput("12 a").terms[0]!.type).toBe("acid");
+    expect(parseDamageInput("12 frost", ["frostbitten"]).terms[0]!.type).toBe("cold");
+    expect(parseDamageInput("12 a").bypasses).toEqual([]);
+  });
+
+  it("abbreviates a homebrew qualifier the character's DR names", () => {
+    expect(parseDamageInput("12 frostb", ["frostbitten"]).bypasses).toEqual(["frostbitten"]);
+  });
+
+  it("takes a material anywhere in the phrase, including before the amount", () => {
+    expect(parseDamageInput("adamantine, 12 points of damage").bypasses).toEqual(["adamantine"]);
+    expect(parseDamageInput("adamantine, 12 points of damage").total).toBe(12);
+  });
+
+  it("keeps materials and damage types in one phrase apart", () => {
+    const parse = parseDamageInput("12 slashing silver and 6 fire");
+    expect(parse.bypasses).toEqual(["silver"]);
+    expect(parse.total).toBe(18);
+    expect(parse.terms.map((t) => t.type)).toEqual(["slashing", "fire"]);
+  });
+
+  it("accepts a qualifier the caller supplies that the built-in list has never heard of", () => {
+    expect(parseDamageInput("12 frostbitten").warnings.length).toBe(1);
+    expect(parseDamageInput("12 frostbitten", ["frostbitten"]).bypasses).toEqual(["frostbitten"]);
+    expect(parseDamageInput("12 frostbitten", ["frostbitten"]).warnings).toEqual([]);
+  });
+
+  it("never treats a B/P/S word as a bypass — the resolver decides those from the damage", () => {
+    const parse = parseDamageInput("12 bludgeoning", ["bludgeoning"]);
+    expect(parse.bypasses).toEqual([]);
+    expect(parse.terms[0]!.type).toBe("bludgeoning");
+  });
+});
+
+describe("the article/acid collision", () => {
+  it("reads a lone 'a' as acid when it types the amount it follows", () => {
+    expect(parseDamageInput("12 a").terms).toEqual([{ amount: 12, type: "acid", inferred: false }]);
+  });
+
+  it("keeps the article reading everywhere else", () => {
+    expect(parseDamageInput("you take a 9").terms).toEqual([
+      { amount: 9, type: "weapon", inferred: true },
+    ]);
+    expect(parseDamageInput("you take a 9").warnings).toEqual([]);
+    // Filler in between means the "a" is prose, not a type for the 9.
+    expect(parseDamageInput("9 points of a fire spell").terms[0]!.type).toBe("fire");
+  });
+});
+
 describe("warnings", () => {
   it("notes an unrecognized type word but still parses the numbers", () => {
     const parse = parseDamageInput("10 banana");

@@ -58,7 +58,10 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   // Free text rather than a number, so "12b 6c" and "9 damage, 3 of which are
   // cold" are typeable; a bare number still behaves exactly as it always did.
   const [amountText, setAmountText] = useState("");
-  const [bypasses, setBypasses] = useState<string[]>([]);
+  // Only the chips the player actually clicked. Everything else follows what
+  // the damage text named, so typing "12 adamantine" lights the chip up
+  // without a second click and without pinning it for the next attack.
+  const [bypassOverrides, setBypassOverrides] = useState<Record<string, boolean>>({});
   const max = sheet.hp.max;
   const restMode = doc.build.settings?.restMode ?? "full";
   const { current, temp, nonlethal } = doc.live.hp;
@@ -73,7 +76,10 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   const dyingRange = current < 0 && current > state.diesAt;
 
   const pools = livePools(doc, sheet.level);
-  const preview = damagePreview(amountText, sheet.defenses, bypasses, pools);
+  const preview = damagePreview(amountText, sheet.defenses, bypassOverrides, pools);
+  // Chips for the character's own DR, plus anything the text named that their
+  // DR doesn't care about — a material heard and understood still shows.
+  const bypassChips = [...new Set([...preview.bypassOptions, ...preview.typedBypasses])].sort();
   // Damage applies the post-defense number; Heal and Nonlethal are untouched
   // by DR/resistance and use the raw total.
   const dmgAmt = preview.amount;
@@ -141,9 +147,17 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
                 <br />
                 <code>12 untyped</code> — damage nothing should reduce
                 <br />
+                <code>12 ad</code> — names what the attacker was swinging (adamantine), so the DR it
+                bypasses steps aside
+                <br />
                 <br />
                 First letters work: b, p, s, f, c, e, a, w. Use <code>so</code> for sonic and{" "}
                 <code>ph</code> for physical.
+                <br />
+                <br />
+                Materials and alignments set the bypass switches below, and shorten too:{" "}
+                <code>ad</code>, <code>ci</code> (cold iron), <code>sil</code>, <code>ma</code>gic,{" "}
+                <code>go</code>od, <code>ev</code>il, <code>la</code>wful, <code>ch</code>aotic.
               </>
             }
           >
@@ -160,6 +174,9 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
             const next = applyDamage(consumePools(doc, preview.resolution.pools), dmgAmt);
             update(() => next);
             setAmountText("");
+            // The next attack is a different attack — a chip left on would
+            // silently bypass DR for a hit nobody said anything about.
+            setBypassOverrides({});
             const droppedToZero = next.live.hp.current <= 0;
             if (dmgAmt >= HP_TOAST_THRESHOLD || droppedToZero) {
               showToast({
@@ -251,8 +268,8 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
       {preview.bypassOptions.length > 0 && preview.hasPhysical ? (
         <div className="hp-bypass-row">
           <span className="hp-inline-label">Attack bypasses</span>
-          {preview.bypassOptions.map((q) => {
-            const on = bypasses.includes(q);
+          {bypassChips.map((q) => {
+            const on = preview.bypasses.includes(q);
             return (
               <button
                 key={q}
@@ -260,9 +277,10 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
                 className="btn-ghost hp-bypass-chip"
                 aria-pressed={on}
                 data-on={on}
-                onClick={() =>
-                  setBypasses((prev) => (on ? prev.filter((b) => b !== q) : [...prev, q]))
+                title={
+                  preview.typedBypasses.includes(q) ? "Named in the damage you typed" : undefined
                 }
+                onClick={() => setBypassOverrides((prev) => ({ ...prev, [q]: !on }))}
               >
                 {qualifierLabel(q)}
               </button>

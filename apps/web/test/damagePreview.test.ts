@@ -101,11 +101,62 @@ describe("bypass chips", () => {
   it("falls back to the next-best DR once a chip is toggled on", () => {
     const d = defenses([entry(5, "—"), entry(10, "magic")]);
     expect(damagePreview("20", d).amount).toBe(10);
-    expect(damagePreview("20", d, ["magic"]).amount).toBe(15);
+    expect(damagePreview("20", d, { magic: true }).amount).toBe(15);
   });
 
   it("is empty for a character whose only DR is unbypassable", () => {
     expect(bypassOptionsFor(defenses([entry(5, "—")]))).toEqual([]);
+  });
+});
+
+describe("a material named in the damage text", () => {
+  const d = defenses([entry(10, "adamantine")]);
+
+  it("bypasses the DR it names without a chip click", () => {
+    const p = damagePreview("12 adamantine", d);
+    expect(p.amount).toBe(12);
+    expect(p.bypasses).toEqual(["adamantine"]);
+    expect(p.typedBypasses).toEqual(["adamantine"]);
+    expect(p.parse.warnings).toEqual([]);
+  });
+
+  it("still meets the DR when no material is named", () => {
+    expect(damagePreview("12", d).amount).toBe(2);
+  });
+
+  it("leaves the damage type alone — the material is not a term", () => {
+    const p = damagePreview("12 adamantine", d);
+    expect(p.resolution.terms).toEqual([{ amount: 12, type: "weapon", final: 12 }]);
+  });
+
+  it("reads 'cold iron' as a bypass rather than as cold damage", () => {
+    const p = damagePreview("12 cold iron", defenses([entry(10, "cold-iron")]));
+    expect(p.amount).toBe(12);
+    expect(p.resolution.terms).toEqual([{ amount: 12, type: "weapon", final: 12 }]);
+  });
+
+  it("still reads a bare 'cold' as cold damage", () => {
+    const p = damagePreview("12 cold", defenses([entry(10, "cold-iron")], [entry(5, "cold")]));
+    expect(p.amount).toBe(7);
+    expect(p.resolution.terms).toEqual([{ amount: 12, type: "cold", final: 7 }]);
+  });
+
+  it("recognizes a homebrew qualifier the character's own DR names", () => {
+    const p = damagePreview("12 frostbitten", defenses([entry(10, "frostbitten")]));
+    expect(p.amount).toBe(12);
+    expect(p.parse.warnings).toEqual([]);
+  });
+
+  it("lets a chip click override what the text said, in either direction", () => {
+    expect(damagePreview("12 adamantine", d, { adamantine: false }).amount).toBe(2);
+    expect(damagePreview("12", d, { adamantine: true }).amount).toBe(12);
+  });
+
+  it("carries a material through a mixed hit", () => {
+    const p = damagePreview("12 slashing adamantine and 6 fire", d);
+    expect(p.raw).toBe(18);
+    expect(p.amount).toBe(18);
+    expect(p.bypasses).toEqual(["adamantine"]);
   });
 });
 

@@ -211,7 +211,10 @@ function SavedRollRow({
 
   return (
     <div className="res-row saved-roll-row">
-      <div className="saved-roll-head">
+      {/* A two-hand value block leaves a name no readable width beside it, so
+          a two-weapon roll drops its numbers onto their own line and gives the
+          name the whole row. */}
+      <div className={`saved-roll-head${resolved.offHand ? " saved-roll-head--stacked" : ""}`}>
         <div className="saved-roll-title">
           <RenameField value={roll.label} onCommit={(label) => onUpdate({ label })} />
           {resolved.missing ? <div className="res-sub">source no longer available</div> : null}
