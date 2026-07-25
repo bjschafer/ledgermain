@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { useMemo } from "react";
 
+import { qualifierLabel } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, DerivedSkill, RefData } from "@pf1/schema";
 
 import { useFlashKey } from "../hooks/useFlashKey.js";
@@ -17,6 +18,7 @@ import {
   ALIGNMENT_LABELS,
   SAVE_ABBR,
   SAVE_NAMES,
+  capitalizeFirst,
   signed,
   signedSequence,
   skillName,
@@ -236,10 +238,10 @@ export function Sheet({
             {sheet.defenses.dr.map((entry) => (
               <StatSeal
                 key={`dr-${entry.qualifier}`}
-                label={`DR/${entry.qualifier}`}
+                label={`DR/${qualifierLabel(entry.qualifier)}`}
                 value={entry.total}
                 components={entry.components}
-                provTitle={`DR/${entry.qualifier}`}
+                provTitle={`DR/${qualifierLabel(entry.qualifier)}`}
                 className="seal--compact"
                 resetKey={doc.id}
               />
@@ -247,10 +249,10 @@ export function Sheet({
             {sheet.defenses.resistances.map((entry) => (
               <StatSeal
                 key={`eres-${entry.qualifier}`}
-                label={`Resist ${entry.qualifier.charAt(0).toUpperCase()}${entry.qualifier.slice(1)}`}
+                label={`Resist ${capitalizeFirst(qualifierLabel(entry.qualifier))}`}
                 value={entry.total}
                 components={entry.components}
-                provTitle={`${entry.qualifier} resistance`}
+                provTitle={`${qualifierLabel(entry.qualifier)} resistance`}
                 className="seal--compact"
                 resetKey={doc.id}
               />

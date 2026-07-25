@@ -2,6 +2,7 @@
  * Display labels for the Foundry abbreviations the engine/data use. Pure data;
  * no framework deps so it can be unit-tested and reused anywhere.
  */
+import { normalizeQualifier, qualifierLabel } from "@pf1/engine";
 import type { AbilityId, SkillId } from "@pf1/schema";
 
 export const ABILITY_NAMES: Record<AbilityId, string> = {
@@ -246,9 +247,9 @@ const CHANGE_TARGET_LABELS: Record<string, string> = {
   senseths: "thoughtsense",
 };
 
-/** "coldIron" -> "cold iron", "adamantine" -> "adamantine". */
-function humanizeCamel(id: string): string {
-  return id.replace(/([a-z0-9])([A-Z])/g, "$1 $2").toLowerCase();
+/** "fire" -> "Fire". Leaves an already-capitalized or empty string alone. */
+export function capitalizeFirst(s: string): string {
+  return s ? `${s.charAt(0).toUpperCase()}${s.slice(1)}` : s;
 }
 
 /** "blades-light" -> "Blades Light" (a `WEAPON_GROUPS` slug). */
@@ -281,8 +282,12 @@ export function changeTargetLabel(target: string): string {
   if (target.startsWith("damage.weapon.")) {
     return `${weaponGroupLabel(target.slice("damage.weapon.".length))} weapon damage`;
   }
-  if (target.startsWith("dr.")) return `DR (bypassed by ${humanizeCamel(target.slice(3))})`;
-  if (target.startsWith("eres.")) return `${humanizeCamel(target.slice(5))} resistance`;
+  if (target.startsWith("dr.")) {
+    return `DR (bypassed by ${qualifierLabel(normalizeQualifier(target.slice(3)))})`;
+  }
+  if (target.startsWith("eres.")) {
+    return `${qualifierLabel(normalizeQualifier(target.slice(5)))} resistance`;
+  }
 
   return target;
 }

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { qualifierLabel } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { buildPrintSheet } from "../model/printSheet.js";
@@ -100,11 +101,13 @@ export function PrintView({
             </table>
             {(data.dr.length > 0 || data.resistances.length > 0 || data.sr !== undefined) && (
               <p className="print-hint">
-                {data.dr.map((d) => `DR ${d.total}/${d.qualifier}`).join(", ")}
+                {data.dr.map((d) => `DR ${d.total}/${qualifierLabel(d.qualifier)}`).join(", ")}
                 {data.dr.length > 0 && (data.resistances.length > 0 || data.sr !== undefined)
                   ? " · "
                   : ""}
-                {data.resistances.map((r) => `Resist ${r.qualifier} ${r.total}`).join(", ")}
+                {data.resistances
+                  .map((r) => `Resist ${qualifierLabel(r.qualifier)} ${r.total}`)
+                  .join(", ")}
                 {data.resistances.length > 0 && data.sr !== undefined ? " · " : ""}
                 {data.sr !== undefined ? `SR ${data.sr}` : ""}
               </p>

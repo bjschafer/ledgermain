@@ -57,6 +57,7 @@ import {
 } from "./archetypes.js";
 import type { CollectedModifier } from "./collect.js";
 import { forTarget } from "./collect.js";
+import { DR_NONE_QUALIFIER, normalizeQualifier } from "./damage-types.js";
 import { resolveStack } from "./stacking.js";
 import { antipaladinDamageReduction, barbarianDamageReduction } from "./tables.js";
 
@@ -69,7 +70,9 @@ function isDrTarget(target: string): boolean {
 }
 
 function drQualifier(target: string): string {
-  return target === DR_TARGET ? "—" : target.slice(DR_PREFIX.length);
+  return target === DR_TARGET
+    ? DR_NONE_QUALIFIER
+    : normalizeQualifier(target.slice(DR_PREFIX.length));
 }
 
 function isEresTarget(target: string): boolean {
@@ -77,7 +80,7 @@ function isEresTarget(target: string): boolean {
 }
 
 function eresQualifier(target: string): string {
-  return target.slice(ERES_PREFIX.length);
+  return normalizeQualifier(target.slice(ERES_PREFIX.length));
 }
 
 interface QualifiedMod {
@@ -127,7 +130,11 @@ function groupByQualifier(mods: QualifiedMod[]): DefenseEntry[] {
   }
 
   entries.sort((a, b) =>
-    a.qualifier === "—" ? -1 : b.qualifier === "—" ? 1 : a.qualifier.localeCompare(b.qualifier),
+    a.qualifier === DR_NONE_QUALIFIER
+      ? -1
+      : b.qualifier === DR_NONE_QUALIFIER
+        ? 1
+        : a.qualifier.localeCompare(b.qualifier),
   );
   return entries;
 }
@@ -229,7 +236,7 @@ export function computeDefenses(
     const { amount } = barbarianDamageReduction(barbLevel);
     if (amount > 0) {
       drMods.push({
-        qualifier: "—",
+        qualifier: DR_NONE_QUALIFIER,
         type: "untyped",
         value: amount,
         source: "Damage Reduction",
