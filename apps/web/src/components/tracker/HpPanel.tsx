@@ -4,6 +4,7 @@ import { qualifierLabel } from "@pf1/engine";
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
+import { consumePools, livePools } from "../../model/ablative.js";
 import { damagePreview } from "../../model/damagePreview.js";
 import {
   addNonlethal,
@@ -71,7 +72,8 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   // flip it on or back off while the character is actually dying.
   const dyingRange = current < 0 && current > state.diesAt;
 
-  const preview = damagePreview(amountText, sheet.defenses, bypasses);
+  const pools = livePools(doc, sheet.level);
+  const preview = damagePreview(amountText, sheet.defenses, bypasses, pools);
   // Damage applies the post-defense number; Heal and Nonlethal are untouched
   // by DR/resistance and use the raw total.
   const dmgAmt = preview.amount;
@@ -152,7 +154,10 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           type="button"
           className="btn-act dmg"
           onClick={() => {
-            const next = applyDamage(doc, dmgAmt);
+            // Draining the pools is part of the same transaction as the HP
+            // hit — a stoneskin that soaked this blow must not still be at
+            // full strength for the next one.
+            const next = applyDamage(consumePools(doc, preview.resolution.pools), dmgAmt);
             update(() => next);
             const droppedToZero = next.live.hp.current <= 0;
             if (dmgAmt >= HP_TOAST_THRESHOLD || droppedToZero) {
@@ -226,6 +231,20 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           {w}
         </div>
       ))}
+
+      {pools.length > 0 ? (
+        <div className="hp-pool-row">
+          {pools.map((p) => (
+            <span key={p.id} className="hp-chip pool" title={p.exhaustedNote}>
+              {p.label}
+              {p.element ? ` (${p.element})` : ""}{" "}
+              <span className="num">
+                {p.remaining}/{p.capacity}
+              </span>
+            </span>
+          ))}
+        </div>
+      ) : null}
 
       {preview.bypassOptions.length > 0 ? (
         <div className="hp-bypass-row">

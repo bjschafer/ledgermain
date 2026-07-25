@@ -204,3 +204,96 @@ describe("DR and resistance together", () => {
     ]);
   });
 });
+
+describe("ablative pools", () => {
+  const stoneskinDr = defenses([
+    {
+      total: 10,
+      qualifier: "adamantine",
+      components: [
+        { source: "Stoneskin", sourceId: "buff-1", type: "untyped", value: 10, applied: true },
+      ],
+    },
+  ]);
+
+  const stoneskinPool = (remaining: number) => [
+    { id: "buff-1", label: "Stoneskin", remaining, kind: "dr" as const },
+  ];
+
+  it("bounds its DR line and drains by exactly what that line absorbed", () => {
+    const out = resolveDamage([{ amount: 25, type: "weapon" }], stoneskinDr, {
+      pools: stoneskinPool(150),
+    });
+    expect(out.final).toBe(15);
+    expect(out.pools).toEqual([{ id: "buff-1", absorbed: 10, exhausted: false }]);
+  });
+
+  it("a nearly-spent pool caps the DR to what is left", () => {
+    // 4 left, so DR 10/adamantine can only prevent 4 of the 25.
+    const out = resolveDamage([{ amount: 25, type: "weapon" }], stoneskinDr, {
+      pools: stoneskinPool(4),
+    });
+    expect(out.final).toBe(21);
+    expect(out.pools).toEqual([{ id: "buff-1", absorbed: 4, exhausted: true }]);
+  });
+
+  it("loses to a smaller but unlimited DR line once nearly spent", () => {
+    const both = defenses([entry(5, "—"), ...stoneskinDr.dr]);
+    const out = resolveDamage([{ amount: 25, type: "weapon" }], both, {
+      pools: stoneskinPool(2),
+    });
+    // DR 5/— absorbs 5, beating the 2 a spent stoneskin could manage.
+    expect(out.final).toBe(20);
+    expect(out.reductions).toEqual([{ label: "DR 5/—", absorbed: 5 }]);
+    expect(out.pools).toEqual([]);
+  });
+
+  it("an energy pool absorbs its type outright, ahead of resistance", () => {
+    // Protection from energy soaks fire entirely until spent; resist energy
+    // only sees what is left. 30 fire vs a 20-point pool + Resist Fire 10 -> 0.
+    const out = resolveDamage([{ amount: 30, type: "fire" }], defenses([], [entry(10, "fire")]), {
+      pools: [
+        {
+          id: "pfe",
+          label: "Protection From Energy",
+          remaining: 20,
+          kind: "energy",
+          element: "fire",
+        },
+      ],
+    });
+    expect(out.final).toBe(0);
+    expect(out.pools).toEqual([{ id: "pfe", absorbed: 20, exhausted: true }]);
+  });
+
+  it("an energy pool ignores damage of another type", () => {
+    const out = resolveDamage([{ amount: 30, type: "cold" }], undefined, {
+      pools: [
+        {
+          id: "pfe",
+          label: "Protection From Energy",
+          remaining: 20,
+          kind: "energy",
+          element: "fire",
+        },
+      ],
+    });
+    expect(out.final).toBe(30);
+    expect(out.pools).toEqual([]);
+  });
+
+  it("reports exhaustion only when the pool actually hits zero", () => {
+    const out = resolveDamage([{ amount: 5, type: "fire" }], undefined, {
+      pools: [
+        {
+          id: "pfe",
+          label: "Protection From Energy",
+          remaining: 20,
+          kind: "energy",
+          element: "fire",
+        },
+      ],
+    });
+    expect(out.pools).toEqual([{ id: "pfe", absorbed: 5, exhausted: false }]);
+  });
+});

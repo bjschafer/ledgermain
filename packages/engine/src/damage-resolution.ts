@@ -56,6 +56,35 @@ export interface AppliedReduction {
   absorbed: number;
 }
 
+/**
+ * A depleting damage pool contributed by an active buff (*stoneskin*,
+ * *protection from energy*). Capacity lives in the buff's caster level; only
+ * what is left is passed here.
+ */
+export interface AblativePool {
+  /**
+   * The owning buff's `ActiveBuff.instanceId`. For a `"dr"` pool this is
+   * matched against the DR line's applied component `sourceId`, which is how
+   * a pool is tied to the DR it bounds.
+   */
+  id: string;
+  label: string;
+  /** Damage this pool can still absorb. */
+  remaining: number;
+  /** See `AblativeSpec.kind`. */
+  kind: "dr" | "energy";
+  /** For an `"energy"` pool, the damage type it soaks. Unused for `"dr"`. */
+  element?: DamageTypeId;
+}
+
+/** How much of a pool this attack consumed, for the caller to persist. */
+export interface PoolConsumption {
+  id: string;
+  absorbed: number;
+  /** True when this attack drained the pool to nothing, ending the buff. */
+  exhausted: boolean;
+}
+
 /** Per-term outcome, in input order. */
 export interface ResolvedDamageTerm {
   amount: number;
@@ -71,6 +100,8 @@ export interface DamageResolution {
   final: number;
   reductions: AppliedReduction[];
   terms: ResolvedDamageTerm[];
+  /** Pool draw-down this attack caused; empty when no pool was touched. */
+  pools: PoolConsumption[];
 }
 
 export interface DamageResolutionOptions {
@@ -79,6 +110,8 @@ export interface DamageResolutionOptions {
    * "silver"]`. Supplied by the player from what the GM said, never inferred.
    */
   bypasses?: readonly string[];
+  /** Ablative pools currently protecting the character. */
+  pools?: readonly AblativePool[];
 }
 
 /**
@@ -137,19 +170,57 @@ export function resolveDamage(
   options: DamageResolutionOptions = {},
 ): DamageResolution {
   const bypasses = options.bypasses ?? [];
+  const allPools = options.pools ?? [];
   const raw = terms.reduce((sum, t) => sum + t.amount, 0);
   const reductions: AppliedReduction[] = [];
   const finals = terms.map((t) => t.amount);
+  const consumed = new Map<string, number>();
+
+  const drawPool = (pool: AblativePool, amount: number) => {
+    if (amount <= 0) return;
+    consumed.set(pool.id, (consumed.get(pool.id) ?? 0) + amount);
+  };
+
+  // --- Ablative energy pools absorb first. RAW: when both protection from
+  // energy and resist energy are up, the pool is spent before the resistance
+  // applies. ---
+  for (const pool of allPools) {
+    if (pool.kind !== "energy" || !pool.element) continue;
+    let left = pool.remaining;
+    for (let i = 0; i < terms.length && left > 0; i++) {
+      if (terms[i]!.type !== pool.element) continue;
+      const bite = Math.min(left, finals[i]!);
+      if (bite <= 0) continue;
+      finals[i] = finals[i]! - bite;
+      left -= bite;
+      drawPool(pool, bite);
+    }
+    const used = consumed.get(pool.id) ?? 0;
+    if (used > 0) reductions.push({ label: pool.label, absorbed: used });
+  }
 
   // --- Damage reduction: one line, once, across all physical damage. ---
+  // A DR line backed by a pool can absorb no more than the pool has left, so
+  // the pool is folded in before choosing the best line — a nearly-spent
+  // stoneskin should lose to a smaller but unlimited DR/—.
+  const poolForEntry = (entry: DefenseEntry): AblativePool | undefined => {
+    const applied = entry.components.find((c) => c.applied);
+    if (!applied?.sourceId) return undefined;
+    return allPools.find((p) => p.kind === "dr" && p.id === applied.sourceId);
+  };
+
   let bestEntry: DefenseEntry | undefined;
+  let bestPool: AblativePool | undefined;
   let bestAbsorbed = 0;
   for (const entry of defenses?.dr ?? []) {
-    const pool = applicablePhysical(entry, terms, bypasses);
-    const absorbed = Math.min(entry.total, pool);
+    const available = applicablePhysical(entry, terms, bypasses);
+    const pool = poolForEntry(entry);
+    const cap = pool ? Math.min(entry.total, pool.remaining) : entry.total;
+    const absorbed = Math.min(cap, available);
     if (absorbed > bestAbsorbed) {
       bestAbsorbed = absorbed;
       bestEntry = entry;
+      bestPool = pool;
     }
   }
 
@@ -158,6 +229,7 @@ export function resolveDamage(
       label: `DR ${bestEntry.total}/${qualifierLabel(bestEntry.qualifier)}`,
       absorbed: bestAbsorbed,
     });
+    if (bestPool) drawPool(bestPool, bestAbsorbed);
     let remaining = bestAbsorbed;
     for (let i = 0; i < terms.length && remaining > 0; i++) {
       const term = terms[i]!;
@@ -201,5 +273,10 @@ export function resolveDamage(
     final: finals.reduce((sum, n) => sum + n, 0),
     reductions,
     terms: terms.map((t, i) => ({ amount: t.amount, type: t.type, final: finals[i]! })),
+    pools: [...consumed].map(([id, absorbed]) => ({
+      id,
+      absorbed,
+      exhausted: absorbed >= (allPools.find((p) => p.id === id)?.remaining ?? 0),
+    })),
   };
 }

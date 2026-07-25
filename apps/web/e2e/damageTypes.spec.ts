@@ -111,3 +111,57 @@ test("the Damage button applies the reduced number to HP", async ({ page }) => {
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
+
+test("stoneskin's pool depletes as it absorbs, and the spell ends when spent", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  // Level-0 character → caster level floors at 1 → pool capacity 10.
+  await page.getByPlaceholder("Search the buff compendium…").fill("Stoneskin");
+  await page
+    .locator(".pick-row", { hasText: "Stoneskin" })
+    .getByRole("button", { name: "Add" })
+    .click();
+
+  const pool = page.locator(".hp-chip.pool");
+  await expect(pool).toContainText("10/10");
+
+  // A 4-point hit: DR 10/adamantine prevents all 4, drawing 4 from the pool.
+  await page.getByLabel("Amount").fill("4");
+  await page.getByRole("button", { name: "Damage", exact: true }).click();
+  await expect(pool).toContainText("6/10");
+
+  // Spend the rest — the discharged spell ends rather than sitting at zero.
+  await page.getByLabel("Amount").fill("6");
+  await page.getByRole("button", { name: "Damage", exact: true }).click();
+  await expect(page.locator(".hp-chip.pool")).toHaveCount(0);
+  await expect(page.locator(".buff-row", { hasText: "Stoneskin" })).toHaveCount(0);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("protection from energy asks for an element and soaks only that type", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  await page.getByPlaceholder("Search the buff compendium…").fill("Protection From Energy");
+  const row = page.locator(".pick-row", { hasText: "Protection From Energy" });
+  await row.getByLabel("Energy type").selectOption("cold");
+  await row.getByRole("button", { name: "Add" }).click();
+
+  // CL 1 → 12-point pool, labelled with the chosen element.
+  await expect(page.locator(".hp-chip.pool")).toContainText("cold");
+  await expect(page.locator(".hp-chip.pool")).toContainText("12/12");
+
+  // Fire is untouched by a cold pool.
+  await page.getByLabel("Amount").fill("8 fire");
+  await expect(page.locator(".hp-damage-result")).toHaveCount(0);
+
+  // Cold is absorbed outright.
+  await page.getByLabel("Amount").fill("8 cold");
+  await expect(page.locator(".hp-damage-result")).toContainText("0");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});

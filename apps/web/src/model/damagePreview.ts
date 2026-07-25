@@ -12,7 +12,7 @@
  * type an explicit damage type to fix the first, toggle a bypass chip for the
  * second.
  */
-import { resolveDamage, type DamageResolution } from "@pf1/engine";
+import { resolveDamage, type AblativePool, type DamageResolution } from "@pf1/engine";
 import type { Defenses } from "@pf1/schema";
 
 import { parseDamageInput, type DamageParse } from "./damageInput.js";
@@ -61,9 +61,10 @@ export function damagePreview(
   raw: string,
   defenses: Defenses | undefined,
   bypasses: readonly string[] = [],
+  pools: readonly AblativePool[] = [],
 ): DamagePreview {
   const parse = parseDamageInput(raw);
-  const resolution = resolveDamage(parse.terms, defenses, { bypasses });
+  const resolution = resolveDamage(parse.terms, defenses, { bypasses, pools });
   const reduced = resolution.final !== resolution.raw;
   // Only an assumption that DR actually acted on is worth flagging; an
   // inferred type on a character with no DR changed nothing.

@@ -712,8 +712,20 @@ export { MONK_BONUS_FEAT_SLUGS } from "./monk.js";
 export { computeDefenses } from "./defenses.js";
 export { computeSenses, isSenseTarget, SENSE_TARGET_IDS } from "./senses.js";
 export {
+  BUFF_INSTANCE_STATE,
+  SELECTABLE_ELEMENTS,
+  buffInstanceState,
+  elementTarget,
+  needsElementChoice,
+  type AblativeSpec,
+  type BuffInstanceStateSpec,
+  type ElementChoiceSpec,
+} from "./buff-instance-state.js";
+export {
   qualifierBypassedBy,
   resolveDamage,
+  type AblativePool,
+  type PoolConsumption,
   type AppliedReduction,
   type DamageResolution,
   type DamageResolutionOptions,

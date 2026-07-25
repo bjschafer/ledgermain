@@ -5,7 +5,12 @@
  * engine's pure `advanceRounds` so duration logic has one home.
  */
 
-import { advanceRounds, type ToggleBuffOption } from "@pf1/engine";
+import {
+  advanceRounds,
+  buffInstanceState,
+  elementTarget,
+  type ToggleBuffOption,
+} from "@pf1/engine";
 import type { ActiveBuff, Buff, Change, CharacterDoc, ContextNote } from "@pf1/schema";
 
 import { localId } from "./ids.js";
@@ -14,18 +19,45 @@ export interface BuffOptions {
   instanceId?: string;
   casterLevel?: number;
   remainingRounds?: number;
+  /**
+   * Energy type for a "select one energy type" buff (see the engine's
+   * `BUFF_INSTANCE_STATE`). Ignored for every other buff.
+   */
+  element?: string;
 }
 
-/** Build an {@link ActiveBuff} from a reference-data buff, snapshotting its changes. */
+/**
+ * Build an {@link ActiveBuff} from a reference-data buff, snapshotting its
+ * changes.
+ *
+ * For an element-choice buff the chosen type is resolved here rather than
+ * stored as a parameter the engine would have to interpret: a `Change` has a
+ * fixed `target`, so "resistance against whatever you picked" only becomes
+ * expressible once the pick is known. The concrete `eres.<element>` change is
+ * baked into this instance and the engine then treats it like any other.
+ */
 export function makeActiveBuff(buff: Buff, opts: BuffOptions = {}): ActiveBuff {
+  const changes = buff.changes.map((c) => ({ ...c }));
+  const elementSpec = buffInstanceState(buff.name)?.element;
+
+  if (elementSpec && opts.element) {
+    const target = elementTarget(elementSpec, opts.element);
+    // An empty target means the spec grants no change at all (protection from
+    // energy, whose whole effect is its ablative pool).
+    if (target) {
+      changes.push({ formula: elementSpec.formula, target, type: elementSpec.type });
+    }
+  }
+
   return {
     instanceId: opts.instanceId ?? localId("buff-"),
     buffId: buff.id,
     name: buff.name,
-    changes: buff.changes.map((c) => ({ ...c })),
+    changes,
     contextNotes: buff.contextNotes?.map((n) => ({ ...n })),
     casterLevel: opts.casterLevel,
     remainingRounds: opts.remainingRounds,
+    element: elementSpec ? opts.element : undefined,
   };
 }
 
@@ -54,9 +86,14 @@ export function makeCustomBuff(
  * issue #21.
  */
 export function hasNoModeledEffect(buff: {
+  name?: string;
   changes: readonly Change[];
   contextNotes?: readonly ContextNote[];
 }): boolean {
+  // A buff whose whole effect is an ablative pool (protection from energy)
+  // carries no changes and no notes, but is very much modeled — the pool is
+  // tracked on the HP panel and soaks real damage.
+  if (buff.name && buffInstanceState(buff.name)?.ablative) return false;
   return buff.changes.length === 0 && (buff.contextNotes?.length ?? 0) === 0;
 }
 

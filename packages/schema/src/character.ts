@@ -2306,6 +2306,25 @@ export interface ActiveBuff {
    * the default, applies to the master as usual.
    */
   excludeMaster?: boolean;
+  /**
+   * Energy type chosen when this buff was activated, for spells that protect
+   * against "one energy type you select" (*resist energy*, *protection from
+   * energy*). A `Change` has nowhere to record a player's choice, so the
+   * choice is resolved at activation and baked into this instance's
+   * `changes[]`; this field records what was picked so the UI can label it
+   * and an ablative pool knows which damage it soaks. Absent for every buff
+   * whose effect isn't element-scoped.
+   */
+  element?: string;
+  /**
+   * Damage this buff has already absorbed, for spells that soak a fixed
+   * quantity and then end (*stoneskin*, *protection from energy*). Counts up
+   * toward the capacity in `@pf1/engine`'s `BUFF_INSTANCE_STATE`, which is a
+   * formula of caster level rather than a stored number — storing only the
+   * consumed side means a corrected caster level re-derives the capacity
+   * instead of stranding a stale total. Absent/0 = nothing absorbed yet.
+   */
+  absorbed?: number;
 }
 
 /**

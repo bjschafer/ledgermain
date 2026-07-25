@@ -59,11 +59,11 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Damage reduction and energy resistance",
-    note: 'Your DR and resistances come off incoming damage automatically — enter the hit on the Hit Points panel, naming types if the GM did ("12b 6c", "18 fire"), and each part meets the right defense. Whether an attack bypassed your DR is a switch you flip, since only your GM knows what the attacker was swinging. Spells that soak a limited pool of damage before running out, like stoneskin and protection from energy, don\'t track that pool yet.',
+    note: 'Your DR and resistances come off incoming damage automatically — enter the hit on the Hit Points panel, naming types if the GM did ("12b 6c", "18 fire"), and each part meets the right defense. Stoneskin and protection from energy track how much they have left to absorb, and end when they are spent. Whether an attack bypassed your DR is a switch you flip, since only your GM knows what the attacker was swinging. Immunities aren\'t modeled at all, so damage you should shrug off entirely still lands.',
   },
   {
     category: "Buffs marked “reminder only”",
-    note: "Most buffs move real numbers on your sheet. About thirty don't, and they say so on the buff itself — either the effect isn't a number (invisibility, see invisibility, endure elements), it's a reroll rather than a bonus (the Danger Wards), or it needs you to pick an energy type the sheet has no way to record (the general resist energy and protection from energy). Toggle them as trackers for the duration; apply what they do by hand.",
+    note: "Most buffs move real numbers on your sheet. Just under thirty don't, and they say so on the buff itself — either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus (the Danger Wards). Toggle them as trackers for the duration; apply what they do by hand.",
   },
   {
     category: "Community-pack feats",

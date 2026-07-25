@@ -1,7 +1,13 @@
 import { useMemo, useState } from "react";
 
 import type { ActiveBuff, Buff, CharacterDoc, Change, ContextNote } from "@pf1/schema";
-import { buildRollData, evaluateBuffChange, unappliedChanges } from "@pf1/engine";
+import {
+  SELECTABLE_ELEMENTS,
+  buildRollData,
+  evaluateBuffChange,
+  needsElementChoice,
+  unappliedChanges,
+} from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
@@ -58,13 +64,14 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
     [doc.live.activeBuffs],
   );
 
-  const add = (buff: Buff) =>
+  const add = (buff: Buff, element?: string) =>
     update((d) =>
       addBuff(
         d,
         makeActiveBuff(buff, {
           casterLevel,
           remainingRounds: suggestRounds(buff, casterLevel),
+          element,
         }),
       ),
     );
@@ -137,7 +144,11 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
               <div className="pmain">
                 <div className="pname">
                   {buff.name} <PartialBadge changes={buff.changes} />{" "}
-                  <NoEffectHint changes={buff.changes} contextNotes={buff.contextNotes} />
+                  <NoEffectHint
+                    name={buff.name}
+                    changes={buff.changes}
+                    contextNotes={buff.contextNotes}
+                  />
                 </div>
                 <div className="preq">
                   {buff.changes.slice(0, 4).map((c, i) => (
@@ -154,6 +165,8 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
                 >
                   Active ✓
                 </InfoTip>
+              ) : needsElementChoice(buff.name) ? (
+                <ElementAdd onAdd={(element) => add(buff, element)} />
               ) : (
                 <button type="button" className="pick-btn add" onClick={() => add(buff)}>
                   Add
@@ -202,6 +215,29 @@ function formulaHint(
  * Divine Power's `strChecks`/`strSkills`. Non-blocking, matches the existing
  * `.soft` prose-prereq warning style.
  */
+/**
+ * Add control for a "select one energy type" buff. The choice can't ride on
+ * the buff's `changes[]` (a `Change` target is fixed at authoring time), so it
+ * is made here and resolved into a concrete target by `makeActiveBuff`.
+ */
+function ElementAdd({ onAdd }: { onAdd: (element: string) => void }) {
+  const [element, setElement] = useState<string>(SELECTABLE_ELEMENTS[0]!);
+  return (
+    <span className="buff-element-add">
+      <select value={element} onChange={(e) => setElement(e.target.value)} aria-label="Energy type">
+        {SELECTABLE_ELEMENTS.map((el) => (
+          <option key={el} value={el}>
+            {el}
+          </option>
+        ))}
+      </select>
+      <button type="button" className="pick-btn add" onClick={() => onAdd(element)}>
+        Add
+      </button>
+    </span>
+  );
+}
+
 function PartialBadge({ changes }: { changes: readonly Change[] }) {
   const missing = unappliedChanges(changes);
   if (missing.length === 0) return null;
@@ -227,13 +263,15 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
  * `hasNoModeledEffect` and issue #21.
  */
 function NoEffectHint({
+  name,
   changes,
   contextNotes,
 }: {
+  name?: string;
   changes: readonly Change[];
   contextNotes?: readonly ContextNote[];
 }) {
-  if (!hasNoModeledEffect({ changes, contextNotes })) return null;
+  if (!hasNoModeledEffect({ name, changes, contextNotes })) return null;
   return (
     <InfoTip
       className="soft"
@@ -304,8 +342,10 @@ function BuffRow({
     <div className="buff-row">
       <div className="buff-main">
         <div className="buff-name">
-          {buff.name} <PartialBadge changes={buff.changes} />{" "}
-          <NoEffectHint changes={buff.changes} contextNotes={buff.contextNotes} />
+          {buff.name}
+          {buff.element ? <span className="buff-element"> ({buff.element})</span> : null}{" "}
+          <PartialBadge changes={buff.changes} />{" "}
+          <NoEffectHint name={buff.name} changes={buff.changes} contextNotes={buff.contextNotes} />
         </div>
         <div className="buff-changes num">
           {buff.changes.map((c, i) => (

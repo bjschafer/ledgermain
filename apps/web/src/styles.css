@@ -2811,6 +2811,19 @@ button:focus-visible,
   margin: -4px 0 10px;
 }
 
+.hp-pool-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.hp-chip.pool {
+  color: var(--sage);
+  border-color: var(--gold-dim);
+}
+
 .hp-bypass-row {
   display: flex;
   align-items: center;
