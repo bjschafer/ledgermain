@@ -1,10 +1,10 @@
-# Pathfinder 1e In-Play Tracker — Design
+# Pathfinder 1e In-Play Tracker -- Design
 
-> Architecture decisions and rationale — the source of truth for _why_ the code is shaped the way it is. For what the project is and how to run it, see [`README.md`](./README.md).
+> Architecture decisions and rationale -- the source of truth for _why_ the code is shaped the way it is. For what the project is and how to run it, see [`README.md`](./README.md).
 
 ## 1. What this is (and isn't)
 
-A **web-based, in-play character sheet and tracker for Pathfinder 1e** — plus a **full character builder**. The product's center of gravity is _play at the table_, not character construction. Every existing tool (PCGen, HeroLab, Pathbuilder, Foundry's sheet) is a builder that displays a character; the live-session experience is an afterthought. The differentiator here is a tracker that **knows the rules well enough to recompute correct numbers as session state changes**.
+A **web-based, in-play character sheet and tracker for Pathfinder 1e** -- plus a **full character builder**. The product's center of gravity is _play at the table_, not character construction. Every existing tool (PCGen, HeroLab, Pathbuilder, Foundry's sheet) is a builder that displays a character; the live-session experience is an afterthought. The differentiator here is a tracker that **knows the rules well enough to recompute correct numbers as session state changes**.
 
 ### Scope (decided)
 
@@ -28,20 +28,20 @@ Derived stats are **never** computed server-side and **never** stored. The serve
 
 The corner to avoid: ever requiring a server round-trip to toggle a buff, apply damage, or compute a modifier.
 
-### 2.1 Cross-device sync — Level 1 for v1 (DECIDED)
+### 2.1 Cross-device sync -- Level 1 for v1 (DECIDED)
 
 The payoff of the rule above: because the document is an opaque blob and the client owns all logic, syncing across a user's devices (build on desktop → play on laptop) is a _persistence + identity_ problem, not a rules problem.
 
-**v1 = Level 1:** account-scoped cloud document. Each device pulls the latest on open and pushes on change. Single-user multi-device, so concurrency is handled by **optimistic concurrency**, not a merge engine: every save carries the `version` it was based on; the server rejects a stale write and the client prompts _"a newer version exists on another device — reload?"_ The document therefore carries `ownerId` / `version` / `updatedAt` (see §3.1).
+**v1 = Level 1:** account-scoped cloud document. Each device pulls the latest on open and pushes on change. Single-user multi-device, so concurrency is handled by **optimistic concurrency**, not a merge engine: every save carries the `version` it was based on; the server rejects a stale write and the client prompts _"a newer version exists on another device -- reload?"_ The document therefore carries `ownerId` / `version` / `updatedAt` (see §3.1).
 
-Deliberately deferred, and _cheap because of this model_ — they reuse the **same Durable Object sync infra**, so cross-device and party are one investment, not two:
+Deliberately deferred, and _cheap because of this model_ -- they reuse the **same Durable Object sync infra**, so cross-device and party are one investment, not two:
 
-- **Level 2 — live mirror:** changes appear on the other device in near-real-time (DO + WebSocket).
-- **Level 3 — conflict-free concurrent editing:** CRDT (Yjs/Automerge); only if simultaneous editing becomes a real need.
+- **Level 2 -- live mirror:** changes appear on the other device in near-real-time (DO + WebSocket).
+- **Level 3 -- conflict-free concurrent editing:** CRDT (Yjs/Automerge); only if simultaneous editing becomes a real need.
 
-> **DECIDED (2026-07-09): not pursuing Level 2, Level 3, or the offline PWA.** Level 1 sync shipped and is the end state for connectivity. The architectural rule above stays (it's what keeps the client fast and the server simple), but party sync / live mirror / CRDT / service-worker offline are off the roadmap entirely — the product stays a single-player sheet. Content breadth limits are inventoried in issue #74. Future work is driven by real at-the-table feedback, not this list.
+> **DECIDED (2026-07-09): not pursuing Level 2, Level 3, or the offline PWA.** Level 1 sync shipped and is the end state for connectivity. The architectural rule above stays (it's what keeps the client fast and the server simple), but party sync / live mirror / CRDT / service-worker offline are off the roadmap entirely -- the product stays a single-player sheet. Content breadth limits are inventoried in issue #74. Future work is driven by real at-the-table feedback, not this list.
 
-Identity stays boring: Discord OAuth, sessions in KV/D1. (GitHub OAuth and email magic-link were the alternatives considered; Discord fits the actual TTRPG-player audience better than a dev-tool login, and needs no email-sending infra. Cloudflare Access is org-oriented overkill — it assumes an IdP the project owner administers, the opposite of "a stranger can sign up.")
+Identity stays boring: Discord OAuth, sessions in KV/D1. (GitHub OAuth and email magic-link were the alternatives considered; Discord fits the actual TTRPG-player audience better than a dev-tool login, and needs no email-sending infra. Cloudflare Access is org-oriented overkill -- it assumes an IdP the project owner administers, the opposite of "a stranger can sign up.")
 
 ## 3. The backbone data model
 
@@ -89,7 +89,7 @@ Pure, framework-agnostic, exhaustively unit-tested. Takes a document + reference
 
 Source: `gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1` (cloned, **system v11.11**, content `coreVersion 13.351`).
 
-**The packs are source YAML, one entity per file** — _not_ compiled LevelDB. This eliminates the hardest part of the original Stage 1 (no binary extraction). They live in `packs/<type>/<name>.<foundryId>.yaml`, sometimes nested in folders.
+**The packs are source YAML, one entity per file** -- _not_ compiled LevelDB. This eliminates the hardest part of the original Stage 1 (no binary extraction). They live in `packs/<type>/<name>.<foundryId>.yaml`, sometimes nested in folders.
 
 ### Verified entity volumes
 
@@ -133,7 +133,7 @@ system:
       - { level: 1, uuid: Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV }
 ```
 
-**Correction to an earlier assumption:** feature-by-level grants _are_ data (UUID links), not code. Only the BAB/save _numbers_ per tier are fixed lookup tables we hardcode (trivial — three BAB tiers, two save tiers).
+**Correction to an earlier assumption:** feature-by-level grants _are_ data (UUID links), not code. Only the BAB/save _numbers_ per tier are fixed lookup tables we hardcode (trivial -- three BAB tiers, two save tiers).
 
 **Spells are richly structured**, including per-class spell level (`packs/spells/evocation/fireball.*.yaml`):
 
@@ -162,19 +162,19 @@ There is no structured prereq field. Feat→feat dependencies are extractable fr
 
 ## 5. The two genuinely hard components
 
-1. **Bonus-stacking engine** — typed modifiers, "highest within type," dodge+untyped stack, penalties always stack. The data is pre-typed (§4); the algorithm is the work. Reference: their `module/utils/apply-changes.mjs` (808 lines).
-2. **Formula DSL evaluator** — changes/spells use a Foundry roll-formula dialect with `@data.paths` and functions (`if`, `gte`, `min`, dice). The engine must evaluate these against a character data context. Reference: `module/utils/formulas.mjs` (422), `module/dice/roll.mjs` (145), `module/utils/roll-functions.mjs` (288).
-3. _(builder)_ **Prerequisite validation graph** — hybrid structured/soft per §4.
+1. **Bonus-stacking engine** -- typed modifiers, "highest within type," dodge+untyped stack, penalties always stack. The data is pre-typed (§4); the algorithm is the work. Reference: their `module/utils/apply-changes.mjs` (808 lines).
+2. **Formula DSL evaluator** -- changes/spells use a Foundry roll-formula dialect with `@data.paths` and functions (`if`, `gte`, `min`, dice). The engine must evaluate these against a character data context. Reference: `module/utils/formulas.mjs` (422), `module/dice/roll.mjs` (145), `module/utils/roll-functions.mjs` (288).
+3. _(builder)_ **Prerequisite validation graph** -- hybrid structured/soft per §4.
 
 Everything else (sheets, search, CRUD, level-up wizard UI) is conventional app work.
 
-## 6. Licensing — DECIDED: AGPL-3.0-or-later (clean-room engine, Option B → AGPL)
+## 6. Licensing -- DECIDED: AGPL-3.0-or-later (clean-room engine, Option B → AGPL)
 
-> **Decision (2026-07-10):** Source code is licensed **`AGPL-3.0-or-later`**. We reimplement the stacking + formula engine ourselves from the published PF1 rules; their GPL-3.0 code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle — never copied or pasted**. Compendium _data_ remains usable under OGL/Paizo Community Use with attribution intact.
+> **Decision (2026-07-10):** Source code is licensed **`AGPL-3.0-or-later`**. We reimplement the stacking + formula engine ourselves from the published PF1 rules; their GPL-3.0 code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle -- never copied or pasted**. Compendium _data_ remains usable under OGL/Paizo Community Use with attribution intact.
 >
-> **Why AGPL rather than the "license-free" outcome Option B nominally allows:** two reasons converged. (1) _Provenance honesty._ The engine was authored clean-room, but a chunk of it was written with an LLM assistant whose training corpus plausibly includes Foundry's public GPL-3.0 source, and the owner cannot personally certify line-by-line that no protected _expression_ carried over. A permissive license (MIT) is only correct in the world where the clean-room held perfectly; AGPL-3.0 is correct in _both_ worlds, because GPL-3.0 §13 expressly permits combining GPL-3.0 with AGPL-3.0 code — copyleft copies through either way. Under genuine uncertainty you pick the license valid regardless of which world is true. (2) _Network copyleft has teeth for a hosted app._ Plain GPL's copyleft triggers on distribution, which a SaaS deployment never does; AGPL §13 ensures a hosted fork of this web app must share its modified source. This also matches the spirit of building on shared OGL content. See `NOTICE.md` §1.
+> **Why AGPL rather than the "license-free" outcome Option B nominally allows:** two reasons converged. (1) _Provenance honesty._ The engine was authored clean-room, but a chunk of it was written with an LLM assistant whose training corpus plausibly includes Foundry's public GPL-3.0 source, and the owner can't personally certify line-by-line that no protected _expression_ carried over. A permissive license (MIT) is only correct in the world where the clean-room held perfectly; AGPL-3.0 is correct in _both_ worlds, because GPL-3.0 §13 expressly permits combining GPL-3.0 with AGPL-3.0 code -- copyleft copies through either way. Under genuine uncertainty you pick the license valid regardless of which world is true. (2) _Network copyleft has teeth for a hosted app._ Plain GPL's copyleft triggers on distribution, which a SaaS deployment never does; AGPL §13 ensures a hosted fork of this web app must share its modified source. This also matches the spirit of building on shared OGL content. See `NOTICE.md` §1.
 >
-> **Clean-room discipline:** implement from the rules text and observed behavior; do not transcribe their source. When validating, compare _outputs_ (given input X, both produce Y), not code structure.
+> **Clean-room discipline:** implement from the rules text and observed behavior; don't transcribe their source. When validating, compare _outputs_ (given input X, both produce Y), not code structure.
 
 ### Background (why this was the choice)
 
@@ -189,7 +189,7 @@ Three options:
 | **B. Clean-room reimplement** the engine from the published PF1 rules; use their code only as a _correctness oracle_ in tests, not copied | License-free (algorithms/rules aren't copyrightable; only their specific expression is) | Medium |
 | **C. Reimplement + only use OGL data**                                                                                                    | License-free                                                                            | Medium |
 
-**Chosen: B (clean-room engine), released under AGPL-3.0-or-later.** The stacking and formula _algorithms_ are simple and rules-derived, so reimplementing them is cheap and lets us validate against Foundry's behavior. Option B nominally permits a "license-free"/permissive outcome, but we deliberately adopt AGPL-3.0 instead — see the Decision note above for the provenance-honesty and network-copyleft reasons. (Option A — porting their code — was never on the table; it would force GPL-3.0 anyway and violate clean-room discipline.)
+**Chosen: B (clean-room engine), released under AGPL-3.0-or-later.** The stacking and formula _algorithms_ are simple and rules-derived, so reimplementing them is cheap and lets us validate against Foundry's behavior. Option B nominally permits a "license-free"/permissive outcome, but we deliberately adopt AGPL-3.0 instead -- see the Decision note above for the provenance-honesty and network-copyleft reasons. (Option A -- porting their code -- was never on the table; it would force GPL-3.0 anyway and violate clean-room discipline.)
 
 ## 7. Stack (decided)
 

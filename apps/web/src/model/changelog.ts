@@ -35,13 +35,13 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-07-25-combat-math-sweep",
     date: "2026-07-25",
     title: "Combat math fills in its corners",
-    note: "CMD now shows a flat-footed value next to the regular one, tower shields apply their −2 attack penalty, the Agile Maneuvers feat swaps Dex into your CMB, and growing or shrinking (enlarge person, polymorph forms) steps your weapon's damage dice up or down the official chart. Kineticist elements, cavalier orders, and oracle mysteries now grant their bonus class skills for real, and Elemental Overflow's bonus cap is corrected.",
+    note: "CMD now shows a flat-footed value next to the regular one, tower shields apply their −2 attack penalty, the Agile Maneuvers feat swaps Dex into your CMB, and growing or shrinking (enlarge person, polymorph forms) steps your weapon's damage dice up or down the official chart. Kineticist elements, cavalier orders, and oracle mysteries now grant their bonus class skills for real, and Elemental Overflow's bonus cap is fixed.",
   },
   {
     id: "2026-07-25-casting-table-rules",
     date: "2026-07-25",
     title: "Spellcasting knows its table rules",
-    note: "Clerics and druids can cast a prepared spell as a cure, inflict, or summon nature's ally on the fly, with the slot bookkeeping handled. Shamans get their spirit-magic casts tracked as their own pool, oracles' free cure or inflict spells land on the known list automatically, and occultists see a warning when they know more spells than their implements allow. Every spell also shows the full concentration-DC reference — damage, grapples, motion, weather — next to the defensive-casting DC.",
+    note: "Clerics and druids can cast a prepared spell as a cure, inflict, or summon nature's ally on the fly, with the slot bookkeeping handled. Shamans get their spirit-magic casts tracked as their own pool, oracles' free cure or inflict spells land on the known list automatically, and occultists see a warning when they know more spells than their implements allow. Every spell also shows the full concentration-DC reference (damage, grapples, motion, weather) next to the defensive-casting DC.",
   },
   {
     id: "2026-07-25-rage-items-hero-points",
@@ -53,7 +53,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-07-25-support-links",
     date: "2026-07-25",
     title: "A tip jar, if you're so inclined",
-    note: "Settings has a new Support panel with a Ko-fi and a GitHub Sponsors link. Ledgermain stays free and unpaywalled — no feature, class, or character slot will ever sit behind a donation. It's a coffee fund, nothing more.",
+    note: "Settings has a new Support panel with a Ko-fi and a GitHub Sponsors link. Ledgermain stays free and unpaywalled: no feature, class, or character slot will ever sit behind a donation. It's a coffee fund, nothing more.",
   },
   {
     id: "2026-07-25-settings-nav",
@@ -71,7 +71,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-07-25-inquisitor-domains",
     date: "2026-07-25",
     title: "Inquisitors can pick a domain",
-    note: "The Domains picker now opens for inquisitors, who choose one and gain its granted powers scaled off inquisitor level. You don't get the domain's bonus spell slots — those stay a cleric thing, same as the book.",
+    note: "The Domains picker now opens for inquisitors, who choose one and gain its granted powers scaled off inquisitor level. You don't get the domain's bonus spell slots; those stay a cleric thing, same as the book.",
   },
   {
     id: "2026-07-25-soul-warden-casting",
@@ -83,7 +83,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-07-24-damage-types",
     date: "2026-07-24",
     title: "Damage knows its type",
-    note: 'Enter a hit as "12 fire" or "9 slashing" and the sheet applies your damage reduction, energy resistance, and immunities before anything reaches your hit points — spending ablative pools like stoneskin or protection from energy first. The Play sidebar shows what\'s soaking and how much is left.',
+    note: 'Enter a hit as "12 fire" or "9 slashing" and the sheet applies your damage reduction, energy resistance, and immunities before anything reaches your hit points, spending ablative pools like stoneskin or protection from energy first. The Play sidebar shows what\'s soaking and how much is left.',
   },
   {
     id: "2026-07-24-race-senses",

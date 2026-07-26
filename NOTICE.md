@@ -145,7 +145,7 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     `RefData.phrenicAmplifications`, `json/class_ability_disciplines.json`
     into `RefData.psychicDisciplines`, `json/class_ability_implements.json`
     into `RefData.occultistImplements`, and `json/class_ability_spirits.json`
-    (the Medium's legendary-spirit catalog — distinct from the sibling
+    (the Medium's legendary-spirit catalog -- distinct from the sibling
     `json/class_ability_shaman_spirits.json`, not vendored under this
     collection) into `RefData.mediumSpirits` (issue #74);
   - `json/class_ability_mysteries.json` into `RefData.oracleMysteries`,
@@ -159,24 +159,24 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
       `RefData.sorcererBloodlines`/`bloodragerBloodlines` (the full published
       oracle/witch/shaman/sorcerer/bloodrager subsystem catalogs, issue #74);
   - `json/class_ability_discoveries.json` (the full published alchemist-
-    discovery catalog, issue #74 — NOT `class_ability_arcane_discoveries.json`,
+    discovery catalog, issue #74 -- NOT `class_ability_arcane_discoveries.json`,
     the wizard's separate Arcane Discoveries subsystem, unvendored) into
     `RefData.alchemistDiscoveries`, `json/class_ability_ki_powers.json` and
     `json/class_ability_style_strikes.json` (the Monk (Unchained) ki-power
     and style-strike catalogs, issue #74) into
     `RefData.monkKiPowers`/`monkStyleStrikes`, `json/class_ability_orders.json`
-    (the cavalier/samurai order catalog, issue #74 — NOT
+    (the cavalier/samurai order catalog, issue #74 -- NOT
     `class_ability_hellknight_orders.json`, the unrelated Hellknight order
     chassis, unvendored) into `RefData.cavalierOrders`, and
     `json/class_ability_aspects.json` (the full published shifter-aspect
-    catalog, issue #74) into `RefData.shifterAspects` —
+    catalog, issue #74) into `RefData.shifterAspects` --
 
   see each type's doc comment (`@pf1/schema`). Code is GPL-3.0-or-later
   (never copied in, same clean-room posture as Sec.2a/2c); its
   `OPENGAMECONTENT.md` carries an OGL 1.0a Section 15 (with its own Paizo
   Community Use notice, folded into Sec.3 below) that we carry forward into
   our `OGL.txt` in full rather than hand-trimming to only the sourcebooks our
-  vendored slices actually cite — the source dataset spans far more
+  vendored slices actually cite -- the source dataset spans far more
   subsystems than what's vendored so far, but carrying its complete
   attribution list is the simpler and strictly safer call (over-inclusive
   credit has no downside; under-inclusive credit is a real one), and it

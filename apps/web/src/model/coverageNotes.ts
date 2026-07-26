@@ -41,16 +41,16 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category:
       "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries, ki powers, style strikes, bold stares, phrenic amplifications)",
-    note: 'Every published entry is browsable and searchable, but only the core-book sets actually move numbers on your sheet — those are marked with an "M". The rest show their rules text for reference, so you\'ll need to apply them by hand.',
+    note: 'Every published entry is browsable and searchable, but only the core-book sets actually move numbers on your sheet; those are marked with an "M". The rest show their rules text for reference, so you\'ll need to apply them by hand.',
   },
   {
     category:
       "Bloodlines, mysteries, spirits, disciplines, implements, orders, patrons, and shifter aspects",
-    note: "The full published lists are browsable. Beyond the core-book ones, they show their rules text without wiring up the per-level powers you gain — deliberately, rather than inventing mechanics that might be wrong.",
+    note: "The full published lists are browsable. Beyond the core-book ones, they show their rules text without wiring up the per-level powers you gain. That's deliberate, rather than inventing mechanics that might be wrong.",
   },
   {
     category: "Oracle revelations",
-    note: "Covered for the ten Advanced Player's Guide mysteries (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, and Wind) plus Solar. Revelations from other mysteries aren't written up — the mystery itself is still browsable with its full rules text, revelations included, so you can pick from it and apply them by hand.",
+    note: "Covered for the ten Advanced Player's Guide mysteries (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, and Wind) plus Solar. Revelations from other mysteries aren't written up, but the mystery itself is still browsable with its full rules text, revelations included, so you can pick from it and apply them by hand.",
   },
   {
     category: "Kineticist wild talents",
@@ -70,23 +70,23 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Character traits",
-    note: "The full published trait catalog is searchable in the picker. Traits outside a core set may show their benefit as text only rather than a live number the sheet tracks — anything still missing can be added as a homebrew trait.",
+    note: "The full published trait catalog is searchable in the picker. Traits outside a core set may show their benefit as text only rather than a live number the sheet tracks. Anything still missing can be added as a homebrew trait.",
     issueDetail:
       "1,981 vendored and searchable; only the hand-authored core set is mechanically modeled.",
   },
   {
     category: "Spell resistance",
-    note: "Your SR shows on the sheet, but nothing rolls against it — whether an effect needs to beat it, and whether it does, is still on you and your GM to resolve.",
+    note: "Your SR shows on the sheet, but nothing rolls against it. Whether an effect needs to beat it, and whether it does, is still on you and your GM to resolve.",
   },
   {
     category: "Damage reduction and energy resistance",
-    note: 'Your DR and resistances come off incoming damage automatically — enter the hit on the Hit Points panel, naming types if the GM did ("12b 6c", "18 fire"), and each part meets the right defense. Stoneskin and protection from energy track how much they have left to absorb, and end when they are spent. Whether an attack bypassed your DR is yours to say, since only your GM knows what the attacker was swinging — name the material in the hit ("12 adamantine", "18 cold iron") or flip the switch by hand. Immunity to a damage type works too, but nothing in the catalog grants one automatically yet — the high-level bloodline, mystery, and spirit powers that would aren\'t wired up, so add it as a custom buff for now. Immunity to things that aren\'t damage — sleep, poison, paralysis, mind-affecting, fear, disease, critical hits — isn\'t tracked at all.',
+    note: 'Your DR and resistances come off incoming damage automatically. Enter the hit on the Hit Points panel, naming types if the GM did ("12b 6c", "18 fire"), and each part meets the right defense. Stoneskin and protection from energy track how much they have left to absorb, and end when they\'re spent. Whether an attack bypassed your DR is yours to say, since only your GM knows what the attacker was swinging: name the material in the hit ("12 adamantine", "18 cold iron") or flip the switch by hand. Immunity to a damage type works too, but nothing in the catalog grants one automatically yet. The high-level bloodline, mystery, and spirit powers that would aren\'t wired up, so add it as a custom buff for now. Immunity to things that aren\'t damage (sleep, poison, paralysis, mind-affecting, fear, disease, critical hits) isn\'t tracked at all.',
     issueDetail:
       "A sweep found zero player-race damage-type immunities — the real sources are capstone-tier class content (sorcerer/bloodrager bloodlines, class features, oracle mysteries, archetype features, feats, domains, spirits), which sit inside the chassis subsystems already listed above as core-only. Non-damage immunity is a different axis resolveDamage has no place for — this is where nearly all race immunity content actually lives (elves/half-elves/drow vs. magic sleep, duergar vs. paralysis/poison, androids vs. fear, Being of Ib vs. crits).",
   },
   {
     category: "Buffs marked “reminder only”",
-    note: "Most buffs move real numbers on your sheet. Twenty-seven don't, and they say so on the buff itself — either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus (the Danger Wards). Toggle them as trackers for the duration; apply what they do by hand.",
+    note: "Most buffs move real numbers on your sheet. Twenty-seven don't, and they say so on the buff itself: either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus (the Danger Wards). Toggle them as trackers for the duration; apply what they do by hand.",
     issueDetail:
       "185 buffs vendored total; 27 have empty changes[]/contextNotes[]. Some are genuinely unmodelable (Invisibility, See Invisibility, Endure Elements, Delay Poison), some are reroll- or narrative-shaped (the Danger Wards), and some would need mechanics that don't exist yet (Force Field, Divine Transfer, Resiliency's alignment-DR variant, the Veemod set).",
   },
@@ -96,7 +96,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Skill rank history",
-    note: "Skill ranks are checked against your lifetime budget and per-skill level cap, but the sheet doesn't record which level each rank was bought at — so a rank that was spent before it was legally available (say, after re-ordering multiclass levels) isn't caught.",
+    note: "Skill ranks are checked against your lifetime budget and per-skill level cap, but the sheet doesn't record which level each rank was bought at, so a rank that was spent before it was legally available (say, after re-ordering multiclass levels) isn't caught.",
     issueDetail:
       "CharacterDoc stores running rank totals with no per-level purchase ledger and no level-up ordering, so per-level spent-vs-earned auditing would need a schema addition and a level-gated allocator UX.",
   },
