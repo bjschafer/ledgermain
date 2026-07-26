@@ -26,6 +26,7 @@ import { eligibleAdvancementTargets } from "./casterLevel.js";
 import { localId } from "./ids.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 import { normalizeAlignmentCode, slugifySkillLabel } from "./names.js";
+import { favoredClassBonusLevels } from "./race.js";
 import {
   isElementalSchoolTag,
   knownSpellsFor,
@@ -1625,6 +1626,29 @@ export function setFavoredClassBonus(
 /** Total character level (sum of class levels). */
 export function totalLevel(doc: CharacterDoc): number {
   return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
+}
+
+/**
+ * Trim `build.favoredClassBonus` down to the character's actual favored-
+ * class-eligible levels (`favoredClassBonusLevels` — mind Half-Elf
+ * Multitalented's combined budget). The builder's picker only ever writes
+ * indices `0..fcbLevel-1` (`ClassesSection.tsx`), but a hand-edited or
+ * imported doc — or one whose favored class/level was reduced after picks
+ * were already made — can carry more entries than that. Both `compute()`'s
+ * +1 HP/level and `model/skills.ts`'s +1 skill/level sum every entry in the
+ * array unconditionally, with no bound check of their own, so an untrimmed
+ * excess silently over-grants. Silent clamp on load, same posture as
+ * `model/preparedSpells.ts`'s `reconcileGrantedCantrips` (called alongside
+ * this in `state/useCharacter.ts`) — there's nothing to warn about in the
+ * builder because the excess is already gone by the time anything could
+ * render a warning for it.
+ */
+export function reconcileFavoredClassBonus(doc: CharacterDoc, refData: RefData): CharacterDoc {
+  const picks = doc.build.favoredClassBonus;
+  if (!picks || picks.length === 0) return doc;
+  const cap = favoredClassBonusLevels(doc, refData);
+  if (picks.length <= cap) return doc;
+  return { ...doc, build: { ...doc.build, favoredClassBonus: picks.slice(0, cap) } };
 }
 
 /**

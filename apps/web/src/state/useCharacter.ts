@@ -20,7 +20,8 @@ import {
   loadOrCreateActive,
   resetAllCharacters,
 } from "../db/characters.js";
-import { migrateDoc } from "../model/doc.js";
+import { migrateDoc, reconcileFavoredClassBonus } from "../model/doc.js";
+import { HERO_POINT_CAP, heroPoints, heroPointsEnabled } from "../model/heroPoints.js";
 import { reconcileCurrentHp } from "../model/hp.js";
 import { resolveRefData } from "../model/homebrew.js";
 import { reconcileGrantedCantrips } from "../model/preparedSpells.js";
@@ -44,6 +45,19 @@ import {
   invalidateSnapshot,
   recordSnapshot,
 } from "./undoSnapshot.js";
+
+/**
+ * Load-time normalization applied to every doc entering this hook's state
+ * (initial load, switch/create/import/reset/delete, a remote pull landing on
+ * the active doc, conflict resolution): strips granted cantrips a pre-change
+ * doc may have stored directly (`reconcileGrantedCantrips`), then trims any
+ * favored-class-bonus picks beyond what the character's favored-class levels
+ * actually support (`reconcileFavoredClassBonus` — see its doc comment for
+ * why a hand-edited/imported doc can otherwise carry too many).
+ */
+function reconcileLoadedDoc(doc: CharacterDoc, refData: RefData): CharacterDoc {
+  return reconcileFavoredClassBonus(reconcileGrantedCantrips(doc, refData), refData);
+}
 
 export type LoadStatus = "loading" | "ready" | "error";
 
@@ -152,7 +166,7 @@ export function useCharacter(): CharacterStore {
         // `loaded` is already migrateDoc'd by the loader; reconcile strips any
         // granted cantrips a pre-change doc may have stored in `known`/`prepared`
         // (cantrips are now derived from the class list, not stored).
-        setDoc(reconcileGrantedCantrips(loaded, resolveRefData(loaded, ref)));
+        setDoc(reconcileLoadedDoc(loaded, resolveRefData(loaded, ref)));
         setStatus("ready");
         void refreshList();
       })
@@ -248,7 +262,7 @@ export function useCharacter(): CharacterStore {
           // doc that no longer exists in the store (#39).
           invalidateCrossTransitionTracking();
           const fresh = await loadOrCreateActive();
-          setDoc(reconcileGrantedCantrips(fresh, resolveRefData(fresh, rawRefData)));
+          setDoc(reconcileLoadedDoc(fresh, resolveRefData(fresh, rawRefData)));
         } else if (activeId && result.pulled.includes(activeId) && rawRefData) {
           const refreshed = await db.characters.get(activeId);
           if (refreshed) {
@@ -257,7 +271,7 @@ export function useCharacter(): CharacterStore {
             // exists in this lineage, so drop it rather than risk restoring
             // over the just-pulled remote state.
             invalidateCrossTransitionTracking();
-            setDoc(reconcileGrantedCantrips(refreshed, resolveRefData(refreshed, rawRefData)));
+            setDoc(reconcileLoadedDoc(refreshed, resolveRefData(refreshed, rawRefData)));
           }
         }
         if (result.pulled.length > 0 || result.pushed.length > 0 || result.deleted.length > 0)
@@ -416,7 +430,7 @@ export function useCharacter(): CharacterStore {
       if (!rawRefData) {
         throw new Error("Cannot switch characters before reference data has loaded");
       }
-      const reconciled = reconcileGrantedCantrips(loaded, resolveRefData(loaded, rawRefData));
+      const reconciled = reconcileLoadedDoc(loaded, resolveRefData(loaded, rawRefData));
       // Refresh the list before flipping `doc`, so the two land in the same
       // render — otherwise the switcher briefly shows an id with no matching
       // option (its list query resolves a tick after `doc` does).
@@ -596,6 +610,27 @@ export function useCharacter(): CharacterStore {
       grants.push(`${newFeatSlots} new feat${newFeatSlots === 1 ? "" : "s"}`);
     }
 
+    // Hero points (APG p.322-325, optional rule): +1 per level gained, up to
+    // the standard cap of 3. Skipped once the pool is already at cap so a
+    // level-up never silently drops a point the player hasn't spent yet.
+    // Gated the same way as everywhere else hero points appear
+    // (`heroPointsEnabled` — Settings), so a table that doesn't use the rule
+    // never sees it mentioned.
+    if (heroPointsEnabled(doc)) {
+      const cap = doc.build.settings?.heroPointsCap ?? HERO_POINT_CAP;
+      const before = heroPoints(doc);
+      if (before < cap) {
+        setDoc((d) => {
+          if (!d || heroPoints(d) !== before) return d;
+          // A genuine local change to live state — bump + flag it the same way
+          // `update()` does, so it eventually reaches the sync push too.
+          pendingUserEditRef.current = true;
+          return { ...d, version: d.version + 1, live: { ...d.live, heroPoints: before + 1 } };
+        });
+        grants.push("+1 hero point");
+      }
+    }
+
     showToast({
       message: `Level ${level}!${classSummary ? ` — ${classSummary}` : ""}${
         grants.length > 0 ? ` · ${grants.join(", ")}` : ""
@@ -646,7 +681,7 @@ export function useCharacter(): CharacterStore {
         // conflict — any pending undo snapshot predates that and would
         // restore over it, so drop it (and the level-up tracker alongside it).
         invalidateCrossTransitionTracking();
-        setDoc(reconcileGrantedCantrips(resolved, resolveRefData(resolved, rawRefData)));
+        setDoc(reconcileLoadedDoc(resolved, resolveRefData(resolved, rawRefData)));
       }
       void refreshList();
 

@@ -5,12 +5,18 @@
  */
 import { describe, expect, it } from "bun:test";
 
+import { loadRefData } from "@pf1/data-pipeline";
+import type { CharacterDoc } from "@pf1/schema";
+
 import {
   createEmptyDoc,
+  reconcileFavoredClassBonus,
   setAge,
   setAppearance,
   setDeity,
   setEncumbranceEnabled,
+  setFavoredClass,
+  setFavoredClass2,
   setFavoredClassBonus,
   setFcbHouserule,
   setGender,
@@ -21,6 +27,7 @@ import {
   setHeroPointsEnabled,
   setHpMode,
   setHpRoll,
+  setRace,
   setRestMode,
   setStatOverride,
   setWeight,
@@ -29,6 +36,18 @@ import {
 
 function doc() {
   return createEmptyDoc("t");
+}
+
+const ref = loadRefData();
+
+function raceId(name: string): string {
+  const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+  if (!entry) throw new Error(`race not found: ${name}`);
+  return entry[0];
+}
+
+function withClasses(d: CharacterDoc, classes: { tag: string; level: number }[]): CharacterDoc {
+  return { ...d, identity: { ...d.identity, classes } };
 }
 
 // ---------------------------------------------------------------------------
@@ -273,6 +292,67 @@ describe("setFavoredClassBonus()", () => {
   it("is a no-op for negative index", () => {
     const d = doc();
     expect(setFavoredClassBonus(d, -1, "hp")).toBe(d);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// reconcileFavoredClassBonus — trims picks beyond the favored class's actual
+// levels (issue: hand-edited/imported docs aren't gated by the builder's
+// picker, which only ever writes indices 0..fcbLevel-1).
+// ---------------------------------------------------------------------------
+describe("reconcileFavoredClassBonus()", () => {
+  it("is a no-op when picks are within the favored-class level budget", () => {
+    let d = withClasses(setRace(doc(), raceId("Human")), [{ tag: "fighter", level: 5 }]);
+    d = setFavoredClass(d, "fighter");
+    d = setFavoredClassBonus(d, 0, "hp");
+    d = setFavoredClassBonus(d, 4, "skill");
+    const reconciled = reconcileFavoredClassBonus(d, ref);
+    expect(reconciled).toBe(d);
+    expect(reconciled.build.favoredClassBonus).toHaveLength(5);
+  });
+
+  it("trims excess picks beyond the favored class's level (e.g. a hand-edited/imported doc)", () => {
+    let d = withClasses(setRace(doc(), raceId("Human")), [{ tag: "fighter", level: 3 }]);
+    d = setFavoredClass(d, "fighter");
+    // Simulate an imported doc claiming more FCB picks than 3 levels support.
+    d = {
+      ...d,
+      build: { ...d.build, favoredClassBonus: ["hp", "skill", "hp", "skill", "hp", "skill"] },
+    };
+    const reconciled = reconcileFavoredClassBonus(d, ref);
+    expect(reconciled.build.favoredClassBonus).toEqual(["hp", "skill", "hp"]);
+  });
+
+  it("trims to 0 when no favored class is set at all", () => {
+    let d = withClasses(setRace(doc(), raceId("Human")), [{ tag: "fighter", level: 3 }]);
+    d = { ...d, build: { ...d.build, favoredClassBonus: ["hp", "skill"] } };
+    expect(reconcileFavoredClassBonus(d, ref).build.favoredClassBonus).toEqual([]);
+  });
+
+  it("Multitalented Half-Elf: budget covers both favored classes combined", () => {
+    let d = withClasses(setRace(doc(), raceId("Half-Elf")), [
+      { tag: "fighter", level: 3 },
+      { tag: "rogue", level: 2 },
+    ]);
+    d = setFavoredClass(d, "fighter");
+    d = setFavoredClass2(d, "rogue");
+    d = {
+      ...d,
+      build: { ...d.build, favoredClassBonus: ["hp", "skill", "hp", "skill", "hp", "skill"] },
+    };
+    // fcbLevel = 3 (fighter) + 2 (rogue) = 5, not just the primary class's 3.
+    expect(reconcileFavoredClassBonus(d, ref).build.favoredClassBonus).toEqual([
+      "hp",
+      "skill",
+      "hp",
+      "skill",
+      "hp",
+    ]);
+  });
+
+  it("leaves an absent favoredClassBonus array untouched", () => {
+    const d = doc();
+    expect(reconcileFavoredClassBonus(d, ref)).toBe(d);
   });
 });
 

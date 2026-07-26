@@ -11,6 +11,50 @@ import type { CharacterDoc } from "@pf1/schema";
 /** Standard maximum number of hero points a character may hold at once (PF1 CRB). */
 export const HERO_POINT_CAP = 3;
 
+/**
+ * What a hero point buys (Advanced Player's Guide p.322-325). This app is a
+ * tracker, not a resolver — it never rolls or auto-applies any of these, so
+ * the pool above is the only mechanical state; this table is purely a
+ * reference the panel renders so a table doesn't need the book open to
+ * remember the menu. Hand-authored from the published rule text (clean-room
+ * — see CLAUDE.md §Licensing), not extracted from Foundry data.
+ */
+export interface HeroPointSpendOption {
+  label: string;
+  cost: string;
+  effect: string;
+}
+
+export const HERO_POINT_SPEND_OPTIONS: readonly HeroPointSpendOption[] = [
+  { label: "Bonus", cost: "1", effect: "+8 luck bonus on one d20 roll before rolling (+4 after)." },
+  { label: "Reroll", cost: "1", effect: "Reroll any one d20 roll; the second result stands." },
+  { label: "Extra action", cost: "1", effect: "Gain one additional move or standard action now." },
+  {
+    label: "Act out of turn",
+    cost: "1",
+    effect: "Act immediately, then resume normal init order.",
+  },
+  {
+    label: "Inspiration",
+    cost: "1",
+    effect: "Ask the GM for a hint; refunded if there's none to give.",
+  },
+  {
+    label: "Recall",
+    cost: "1",
+    effect: "Recast a spell already cast today, or regain one use of a daily ability.",
+  },
+  {
+    label: "Cheat death",
+    cost: "2",
+    effect: "Instead of dying, drop to -1 HP and stabilize automatically.",
+  },
+] as const;
+
+/** Only one hero point may be spent per combat round (Cheat Death is the sole exception). */
+export const HERO_POINT_COMBAT_LIMIT_NOTE =
+  "At most 1 hero point per round in combat (Cheat Death is the exception).";
+
 function withHeroPoints(doc: CharacterDoc, n: number): CharacterDoc {
   return { ...doc, live: { ...doc.live, heroPoints: n } };
 }

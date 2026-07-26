@@ -2,6 +2,8 @@ import { Panel } from "../builder/Panel.js";
 import { LaurelIcon } from "../icons.js";
 import {
   HERO_POINT_CAP,
+  HERO_POINT_COMBAT_LIMIT_NOTE,
+  HERO_POINT_SPEND_OPTIONS,
   gainHeroPoint,
   heroPoints,
   spendHeroPoint,
@@ -49,6 +51,18 @@ export function HeroPointsPanel({ doc, update }: BuilderProps) {
           Gain
         </button>
       </div>
+
+      <ul className="hero-spend-ref">
+        {HERO_POINT_SPEND_OPTIONS.map((opt) => (
+          <li key={opt.label}>
+            <span className="hero-spend-label">
+              {opt.label} ({opt.cost})
+            </span>{" "}
+            {opt.effect}
+          </li>
+        ))}
+      </ul>
+      <p className="hint">{HERO_POINT_COMBAT_LIMIT_NOTE}</p>
     </Panel>
   );
 }

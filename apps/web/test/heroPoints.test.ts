@@ -3,6 +3,8 @@ import { describe, expect, it } from "bun:test";
 import { createEmptyDoc } from "../src/model/doc.js";
 import {
   HERO_POINT_CAP,
+  HERO_POINT_COMBAT_LIMIT_NOTE,
+  HERO_POINT_SPEND_OPTIONS,
   gainHeroPoint,
   heroPoints,
   heroPointsEnabled,
@@ -130,5 +132,32 @@ describe("heroPointsEnabled()", () => {
   it("returns true when explicitly enabled", () => {
     const d = { ...doc(), build: { ...doc().build, settings: { heroPointsEnabled: true } } };
     expect(heroPointsEnabled(d)).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// HERO_POINT_SPEND_OPTIONS / HERO_POINT_COMBAT_LIMIT_NOTE — static reference
+// data rendered by HeroPointsPanel (APG p.322-325). Not derived values, so
+// these are just well-formedness checks, not rule-math fixtures.
+// ---------------------------------------------------------------------------
+describe("HERO_POINT_SPEND_OPTIONS", () => {
+  it("every option has a non-empty label, cost, and effect", () => {
+    expect(HERO_POINT_SPEND_OPTIONS.length).toBeGreaterThan(0);
+    for (const opt of HERO_POINT_SPEND_OPTIONS) {
+      expect(opt.label.length).toBeGreaterThan(0);
+      expect(opt.cost.length).toBeGreaterThan(0);
+      expect(opt.effect.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("includes Cheat Death at the 2-point cost called out by the rulebook", () => {
+    const cheatDeath = HERO_POINT_SPEND_OPTIONS.find((o) => o.label === "Cheat death");
+    expect(cheatDeath?.cost).toBe("2");
+  });
+});
+
+describe("HERO_POINT_COMBAT_LIMIT_NOTE", () => {
+  it("mentions the once-per-round combat restriction", () => {
+    expect(HERO_POINT_COMBAT_LIMIT_NOTE).toMatch(/1 hero point per round/);
   });
 });
