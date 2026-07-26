@@ -65,6 +65,7 @@ export {
   baseSpellsPerDay,
   baseSpellsKnown,
   baseSpellsPrepared,
+  shamanSpiritMagicSlotLevels,
   type SpellProgression,
   type SpellKnownProgression,
   type SpellPreparedProgression,
@@ -96,6 +97,7 @@ export {
   burnDetailLabel,
   kineticOverflowBonus,
   kineticOverflowLabel,
+  kineticOverflowUpgradeLabel,
   type KineticOverflowBonus,
   metakinesisLabel,
   gatherPowerLabel,
@@ -168,6 +170,7 @@ export {
   type MergedBloodragerBloodlineEntry,
 } from "./bloodrager-bloodlines.js";
 export { BLOODRAGE_BUFF, BLOODRAGE_BUFF_ID } from "./bloodrage.js";
+export { FALSE_LIFE_BUFF, FALSE_LIFE_BUFF_ID } from "./false-life.js";
 export { COGNATOGEN_BUFFS, COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
 export {
   ARCANIST_EXPLOITS,
@@ -631,6 +634,7 @@ export {
   type JudgmentDef,
 } from "./judgments.js";
 export { SKALD_INSPIRED_RAGE, RAGING_SONG_DETAIL } from "./raging-song.js";
+export { rageFatigueApplies } from "./rage-fatigue.js";
 export {
   resolveClassFeatures,
   archetypeSwappedUuids,
@@ -773,6 +777,7 @@ export {
   isShieldTierProficient,
 } from "./proficiency.js";
 export { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
+export { ITEM_CHANGE_PATCHES } from "./item-effects.js";
 export {
   RAGE_POWERS,
   RAGE_POWER_IDS,

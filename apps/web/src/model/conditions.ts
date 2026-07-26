@@ -55,21 +55,12 @@ export function isImpliedCondition(doc: CharacterDoc, id: string): boolean {
 }
 
 /**
- * The ladder-aware toggle transition on a plain conditions array — extracted
- * (issue #68) so a second tracked creature (the animal companion's own
- * `live.animalCompanion.conditions`, independent of the master's
- * `live.conditions`) can reuse the exact same auto-upgrade/implied-condition
- * behavior rather than a hand-copied duplicate. `toggleCondition` below is
- * just this applied to the master's own array.
+ * The ladder-aware ACTIVATION half shared by {@link toggleConditionIn} (which
+ * additionally handles deactivation) and {@link activateConditionIn} (which
+ * never deactivates, for a caller that only ever wants to ensure a condition
+ * is on — see that function's doc comment).
  */
-export function toggleConditionIn(conditions: readonly string[], id: string): string[] {
-  const has = conditions.includes(id);
-
-  if (has) {
-    // Deactivation never cascades: only this id is removed.
-    return conditions.filter((c) => c !== id);
-  }
-
+function activateInLadder(conditions: readonly string[], id: string): string[] {
   const pos = ladderPositionOf(id);
   if (pos) {
     // A stricter sibling is already active: activating the milder `id` is a
@@ -82,11 +73,43 @@ export function toggleConditionIn(conditions: readonly string[], id: string): st
     const milder = new Set(pos.ladder.slice(0, pos.index));
     return [...conditions.filter((c) => !milder.has(c)), id];
   }
-
   return [...conditions, id];
+}
+
+/**
+ * The ladder-aware toggle transition on a plain conditions array — extracted
+ * (issue #68) so a second tracked creature (the animal companion's own
+ * `live.animalCompanion.conditions`, independent of the master's
+ * `live.conditions`) can reuse the exact same auto-upgrade/implied-condition
+ * behavior rather than a hand-copied duplicate. `toggleCondition` below is
+ * just this applied to the master's own array.
+ */
+export function toggleConditionIn(conditions: readonly string[], id: string): string[] {
+  if (conditions.includes(id)) {
+    // Deactivation never cascades: only this id is removed.
+    return conditions.filter((c) => c !== id);
+  }
+  return activateInLadder(conditions, id);
 }
 
 export function toggleCondition(doc: CharacterDoc, id: string): CharacterDoc {
   const conditions = toggleConditionIn(doc.live.conditions, id);
+  return { ...doc, live: { ...doc.live, conditions } };
+}
+
+/**
+ * Ensure `id` is active — unlike {@link toggleConditionIn}, never removes it
+ * if it's already present (idempotent "turn on", not a flip). For an
+ * automatic system-driven activation (e.g. rage's fatigue aftermath,
+ * `model/buffs.ts`'s `applyRageFatigueAftermath`) where accidentally
+ * toggling an already-active condition OFF would be exactly backwards.
+ */
+export function activateConditionIn(conditions: readonly string[], id: string): string[] {
+  if (conditions.includes(id)) return [...conditions];
+  return activateInLadder(conditions, id);
+}
+
+export function activateCondition(doc: CharacterDoc, id: string): CharacterDoc {
+  const conditions = activateConditionIn(doc.live.conditions, id);
   return { ...doc, live: { ...doc.live, conditions } };
 }

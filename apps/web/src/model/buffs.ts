@@ -9,10 +9,12 @@ import {
   advanceRounds,
   buffInstanceState,
   elementTarget,
+  rageFatigueApplies,
   type ToggleBuffOption,
 } from "@pf1/engine";
 import type { ActiveBuff, Buff, Change, CharacterDoc, ContextNote } from "@pf1/schema";
 
+import { activateCondition } from "./conditions.js";
 import { localId } from "./ids.js";
 
 export interface BuffOptions {
@@ -102,14 +104,32 @@ export function addBuff(doc: CharacterDoc, buff: ActiveBuff): CharacterDoc {
   return { ...doc, live: { ...doc.live, activeBuffs: [...doc.live.activeBuffs, buff] } };
 }
 
+/**
+ * Auto-apply the `fatigued` condition when any buff in `ended` is a rage
+ * flavor whose RAW ending causes fatigue for THIS character right now (see
+ * `@pf1/engine`'s `rageFatigueApplies` — chained Rage and Bloodrage, gated
+ * off once the granting class hits 17th/Tireless Rage-or-Bloodrage; Rage
+ * (Unchained), Rage (Spell), and Inspired Rage never qualify). Applied
+ * untimed (see that function's doc comment for why this tracker can't
+ * represent "2x rounds spent raging" as an actual timer) — the player clears
+ * it by hand once the real-world duration has passed.
+ */
+function applyRageFatigueAftermath(doc: CharacterDoc, ended: readonly ActiveBuff[]): CharacterDoc {
+  return ended.some((b) => rageFatigueApplies(doc, b.name))
+    ? activateCondition(doc, "fatigued")
+    : doc;
+}
+
 export function removeBuff(doc: CharacterDoc, instanceId: string): CharacterDoc {
-  return {
+  const ending = doc.live.activeBuffs.find((b) => b.instanceId === instanceId);
+  const dropped: CharacterDoc = {
     ...doc,
     live: {
       ...doc.live,
       activeBuffs: doc.live.activeBuffs.filter((b) => b.instanceId !== instanceId),
     },
   };
+  return ending ? applyRageFatigueAftermath(dropped, [ending]) : dropped;
 }
 
 /**
@@ -215,7 +235,8 @@ export interface AdvanceRoundResult {
 /** Advance the round clock: tick durations and auto-drop expired buffs. */
 export function advanceRound(doc: CharacterDoc, rounds = 1): AdvanceRoundResult {
   const { buffs, expired } = advanceRounds(doc.live.activeBuffs, rounds);
-  return { doc: { ...doc, live: { ...doc.live, activeBuffs: buffs } }, expired };
+  const advanced: CharacterDoc = { ...doc, live: { ...doc.live, activeBuffs: buffs } };
+  return { doc: applyRageFatigueAftermath(advanced, expired), expired };
 }
 
 /**

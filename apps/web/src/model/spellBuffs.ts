@@ -17,9 +17,22 @@
  * a choice when there's more than one.
  */
 
+import { FALSE_LIFE_BUFF } from "@pf1/engine";
 import type { Buff, RefData, Spell } from "@pf1/schema";
 
 const norm = (s: string): string => s.toLowerCase().trim().replace(/\s+/g, " ");
+
+/**
+ * Hand-authored buffs for spells the vendored compendium carries with NO
+ * linked buff at all (unlike the common case below, where the gap is only in
+ * matching an EXISTING vendored buff by name) — see `@pf1/engine`'s
+ * `false-life.ts` for why False Life needs one and why it isn't vendored
+ * instead. Checked only after the vendored index comes up empty, so an
+ * upstream data bump that ever adds a real "False Life" buff wins outright.
+ */
+const HAND_AUTHORED_SPELL_BUFFS: ReadonlyMap<string, Buff> = new Map([
+  [norm(FALSE_LIFE_BUFF.name), FALSE_LIFE_BUFF],
+]);
 
 /** Strip a single trailing parenthetical qualifier, e.g. `"resist energy (fire)"` → `"resist energy"`. */
 const parenBase = (s: string): string => s.replace(/\s*\([^()]*\)\s*$/, "").trim();
@@ -61,5 +74,8 @@ function spellBuffIndex(refData: RefData): Map<string, Buff[]> {
  * mechanical buff (the common case: most spells aren't buffs).
  */
 export function buffsForSpell(spell: Spell, refData: RefData): Buff[] {
-  return spellBuffIndex(refData).get(norm(spell.name)) ?? [];
+  const vendored = spellBuffIndex(refData).get(norm(spell.name));
+  if (vendored) return vendored;
+  const handAuthored = HAND_AUTHORED_SPELL_BUFFS.get(norm(spell.name));
+  return handAuthored ? [handAuthored] : [];
 }

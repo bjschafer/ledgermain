@@ -9,6 +9,8 @@ import {
   compute,
   deriveResourcePools,
   kineticBlastDetail,
+  kineticOverflowBonus,
+  kineticOverflowUpgradeLabel,
 } from "../src/index.js";
 
 /**
@@ -187,5 +189,112 @@ describe("Psychokinetcist (Occult Adventures p.56) — mind-channeled burn", () 
     const overflow = sheet.classFeatures.find((f) => f.name === "Elemental Overflow");
     expect(overflow?.applied).toBe(false);
     expect(overflow?.replacedBy).toBe("Mental Overflow");
+  });
+});
+
+/**
+ * Elemental Overflow attack/damage cap (issue #67), aonprd.com's live
+ * Kineticist page (2026-07-25): "a maximum bonus of +1 for every 3
+ * kineticist levels she possesses" — floor(level / 3): +1 at 3rd, +2 at
+ * 6th, ..., +6 at 18th-20th. A previous version of `kineticOverflowBonus`
+ * read `1 + floor(level / 3)`, one point too high at every level (e.g. +2 at
+ * 3rd instead of +1) — cross-checked against the Psychokinetcist's
+ * identically-scaled Mental Overflow (`archetype-effects.ts`), which was
+ * already using the correct bare `floor(level / 3)`.
+ */
+describe("kineticOverflowBonus (Elemental Overflow attack/damage cap fix)", () => {
+  it("cap = floor(level/3): +1 at L3-5, +2 at L6-8, +3 at L9-11, +6 at L18-20", () => {
+    expect(kineticOverflowBonus(3, 10).cap).toBe(1);
+    expect(kineticOverflowBonus(5, 10).cap).toBe(1);
+    expect(kineticOverflowBonus(6, 10).cap).toBe(2);
+    expect(kineticOverflowBonus(9, 10).cap).toBe(3);
+    expect(kineticOverflowBonus(18, 10).cap).toBe(6);
+    expect(kineticOverflowBonus(20, 10).cap).toBe(6);
+  });
+
+  it("nothing below 3rd level (Elemental Overflow isn't granted yet)", () => {
+    expect(kineticOverflowBonus(2, 5)).toEqual({ cap: 0, attackBonus: 0, damageBonus: 0 });
+  });
+
+  it("attack bonus is capped at the level cap even with more burn held; damage is always 2x attack", () => {
+    // Level 3 kineticist (cap +1) holding 4 burn: capped at +1 atk / +2 dmg.
+    expect(kineticOverflowBonus(3, 4)).toEqual({ cap: 1, attackBonus: 1, damageBonus: 2 });
+    // Level 9 kineticist (cap +3) holding 2 burn: under the cap, so uncapped.
+    expect(kineticOverflowBonus(9, 2)).toEqual({ cap: 3, attackBonus: 2, damageBonus: 4 });
+  });
+
+  it("surfaces the corrected cap on the computed sheet's Elemental Overflow row", () => {
+    const doc = makeDoc([{ tag: "kineticist", level: 3 }], 14);
+    const sheet = compute(doc, ref);
+    const overflow = sheet.classFeatures.find((f) => f.name === "Elemental Overflow");
+    expect(overflow?.detail).toContain("cap +1 atk at this level");
+  });
+});
+
+/**
+ * Elemental Overflow's 6th/11th/16th-level physical-ability-score and
+ * crit/sneak-negation upgrades (issue #67), aonprd.com (2026-07-25): +2 size
+ * bonus to two physical ability scores at 6th/3+ burn, upgrading to +4/+2/+2
+ * at 11th/5+ burn and +6/+4/+2 at 16th/7+ burn, plus a 5%-per-burn chance to
+ * ignore a critical hit or sneak attack. Which ability score(s) get which
+ * tier is the player's own choice (not a build field), so this stays
+ * display-only — see `tables.ts`'s doc comment for why it isn't a `Change`.
+ */
+describe("kineticOverflowUpgradeLabel (6th/11th/16th-level upgrades)", () => {
+  it("nothing below 6th level, even with 3+ burn", () => {
+    expect(kineticOverflowUpgradeLabel(5, 5)).toBeUndefined();
+  });
+
+  it("nothing below 3 burn, even at high level", () => {
+    expect(kineticOverflowUpgradeLabel(20, 2)).toBeUndefined();
+  });
+
+  it("6th level, 3 burn: +2/+2 tier, 15% crit/sneak negation", () => {
+    const label = kineticOverflowUpgradeLabel(6, 3)!;
+    expect(label).toContain("+2 size bonus to two physical ability scores");
+    expect(label).toContain("15% chance to ignore a critical hit or sneak attack");
+  });
+
+  it("11th level requires 5+ burn to reach the +4/+2/+2 tier — 3 burn still reads the base tier", () => {
+    expect(kineticOverflowUpgradeLabel(11, 3)).toContain(
+      "+2 size bonus to two physical ability scores",
+    );
+    const upgraded = kineticOverflowUpgradeLabel(11, 5)!;
+    expect(upgraded).toContain(
+      "+4 size bonus to one physical ability score, +2 to each of the other two",
+    );
+    expect(upgraded).toContain("25% chance");
+  });
+
+  it("16th level requires 7+ burn to reach the +6/+4/+2 tier — 5 burn still reads the 11th-level tier", () => {
+    expect(kineticOverflowUpgradeLabel(16, 5)).toContain(
+      "+4 size bonus to one physical ability score",
+    );
+    const maxed = kineticOverflowUpgradeLabel(16, 7)!;
+    expect(maxed).toContain("+6/+4/+2 size bonus to your three physical ability scores");
+    expect(maxed).toContain("35% chance");
+  });
+
+  it("crit/sneak-negation chance caps at 100% (20 burn -> 100%, not 100+)", () => {
+    expect(kineticOverflowUpgradeLabel(16, 20)).toContain("100% chance");
+  });
+
+  it("surfaces on the computed sheet's Elemental Overflow row once the burn/level floor is met", () => {
+    const doc = makeDoc([{ tag: "kineticist", level: 6 }], 14);
+    const feature = Object.values(ref.classFeatures).find((f) => f.tag === "burn");
+    const held = {
+      ...doc,
+      live: { ...doc.live, resources: { [feature!.id]: { used: 3 } } },
+    } as CharacterDoc;
+    const sheet = compute(held, ref);
+    const overflow = sheet.classFeatures.find((f) => f.name === "Elemental Overflow");
+    expect(overflow?.detail).toContain("+2 size bonus to two physical ability scores");
+  });
+
+  it("does not surface the upgrade text on the sheet below the burn floor", () => {
+    const doc = makeDoc([{ tag: "kineticist", level: 6 }], 14);
+    const sheet = compute(doc, ref); // 0 burn held
+    const overflow = sheet.classFeatures.find((f) => f.name === "Elemental Overflow");
+    expect(overflow?.detail).not.toContain("size bonus");
   });
 });

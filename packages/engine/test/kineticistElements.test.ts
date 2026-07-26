@@ -270,9 +270,9 @@ describe("kineticOverflowBonus", () => {
     expect(kineticOverflowBonus(2, 3)).toEqual({ cap: 0, attackBonus: 0, damageBonus: 0 });
   });
 
-  it("attack bonus = min(currentBurn, cap); damage = 2x attack — L6 cap is 1+floor(6/3)=3", () => {
-    expect(kineticOverflowBonus(6, 1)).toEqual({ cap: 3, attackBonus: 1, damageBonus: 2 });
-    expect(kineticOverflowBonus(6, 5)).toEqual({ cap: 3, attackBonus: 3, damageBonus: 6 });
+  it("attack bonus = min(currentBurn, cap); damage = 2x attack — L6 cap is floor(6/3)=2 (OA p.12: +1 per 3 levels)", () => {
+    expect(kineticOverflowBonus(6, 1)).toEqual({ cap: 2, attackBonus: 1, damageBonus: 2 });
+    expect(kineticOverflowBonus(6, 5)).toEqual({ cap: 2, attackBonus: 2, damageBonus: 4 });
   });
 });
 

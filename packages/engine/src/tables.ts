@@ -651,9 +651,10 @@ const WITCH_SPELLS_PER_DAY = WIZARD_SPELLS_PER_DAY;
  * numbers as the wizard/cleric ("Table: Shaman" is numerically identical to
  * "Table: Cleric") — verified against aonprd.com's "Table: Shaman", exact
  * match at every level including the L20 all-4s row. The shaman's Spirit
- * Magic bonus spontaneous-cast slots granted by her spirit are NOT included
- * here (not modeled yet — see `CASTER_MODELS.shaman`'s blurb). (PF1 ACG SRD —
- * clean-room table from the published rules, open game content.)
+ * Magic bonus spontaneous-cast slots granted by her spirit are a SEPARATE
+ * pool, not part of this table — see {@link shamanSpiritMagicSlotLevels}
+ * below. (PF1 ACG SRD — clean-room table from the published rules, open game
+ * content.)
  */
 const SHAMAN_SPELLS_PER_DAY = CLERIC_SPELLS_PER_DAY;
 
@@ -964,6 +965,34 @@ export function baseSpellsPerDay(
   if (classLevel < 1 || classLevel > table.length) return null;
   if (spellLevel < 0 || spellLevel > 9) return null;
   return table[classLevel - 1]![spellLevel] ?? null;
+}
+
+/**
+ * Shaman Spirit Magic bonus spontaneous-cast slot levels at `shamanLevel`
+ * (ACG "Spirit Magic" class feature, verified verbatim on aonprd.com): "She
+ * has one spell slot per day of each shaman spell level she can cast, not
+ * including orisons." One bonus slot per spell level 1-9 the shaman's normal
+ * per-day table ({@link SHAMAN_SPELLS_PER_DAY}, via `"shaman"` progression)
+ * already grants her access to — this is never scaled by Wisdom (unlike her
+ * normal per-day slots, which add {@link bonusSpellsForLevel} on top) and
+ * never includes orisons (level 0). Castable only with a spell from the
+ * shaman's chosen spirit's Spirit Magic list (`SHAMAN_SPIRITS[tag]
+ * .spiritMagicSpells` in `shaman-spirits.ts`, surfaced to the tracker via
+ * `apps/web/src/model/spellcasting.ts`'s `shamanSpiritSpellsKnown`); the pool
+ * itself is tracked as its own slot pool in
+ * `apps/web/src/model/preparedSpells.ts` (a shaman has BOTH a prepared
+ * loadout AND this bonus spontaneous pool active at once).
+ *
+ * @example
+ *   shamanSpiritMagicSlotLevels(3)  // → [1]        (only 1st-level spells accessible)
+ *   shamanSpiritMagicSlotLevels(7)  // → [1, 2, 3, 4]
+ */
+export function shamanSpiritMagicSlotLevels(shamanLevel: number): number[] {
+  const out: number[] = [];
+  for (let level = 1; level <= 9; level++) {
+    if (baseSpellsPerDay("shaman", shamanLevel, level) !== null) out.push(level);
+  }
+  return out;
 }
 
 /**
@@ -1557,9 +1586,16 @@ export function mindBurnDetailLabel(kineticistLevel: number, currentBurn: number
  * pool the Burn class feature already rides via `deriveResourcePools`.
  * Returns `{ attackBonus: 0, damageBonus: 0, cap: 0 }` below 3rd level
  * (Elemental Overflow isn't granted until 3rd).
+ *
+ * `cap = floor(kineticistLevel / 3)` (verified against aonprd.com and
+ * cross-checked against the Psychokinetcist's identically-scaled Mental
+ * Overflow, `archetype-effects.ts`'s `Math.floor(level / 3)`, 2026-07-25):
+ * +1 at 3rd, +2 at 6th, +3 at 9th, ..., +6 at 18th-20th. A previous version
+ * of this function read `1 + floor(level / 3)`, one point too high at every
+ * level (+2 at 3rd instead of +1) — fixed here.
  */
 export interface KineticOverflowBonus {
-  /** `1 + floor(kineticistLevel / 3)`. */
+  /** `floor(kineticistLevel / 3)`. */
   cap: number;
   attackBonus: number;
   damageBonus: number;
@@ -1570,7 +1606,7 @@ export function kineticOverflowBonus(
   currentBurn: number,
 ): KineticOverflowBonus {
   if (kineticistLevel < 3) return { cap: 0, attackBonus: 0, damageBonus: 0 };
-  const cap = 1 + Math.floor(kineticistLevel / 3);
+  const cap = Math.floor(kineticistLevel / 3);
   const attackBonus = Math.max(0, Math.min(currentBurn, cap));
   return { cap, attackBonus, damageBonus: attackBonus * 2 };
 }
@@ -1582,6 +1618,44 @@ export function kineticOverflowLabel(kineticistLevel: number, currentBurn: numbe
     `+${attackBonus} atk / +${damageBonus} dmg with kinetic blasts ` +
     `(currently holding ${currentBurn} burn; cap +${cap} atk at this level)`
   );
+}
+
+/**
+ * Elemental Overflow's 6th/11th/16th-level upgrades, clean-room from the
+ * published rules (verified aonprd.com, 2026-07-25):
+ *   - 6th: "whenever she has at least 3 points of burn, the kineticist gains
+ *     a +2 size bonus to two physical ability scores of her choice. She also
+ *     receives a chance to ignore the effects of a critical hit or sneak
+ *     attack equal to 5% x her current number of points of burn."
+ *   - 11th: "whenever the kineticist has at least 5 points of burn, these
+ *     bonuses increase to a +4 size bonus to one physical ability score of
+ *     her choice and a +2 size bonus to each of her other two physical
+ *     ability scores."
+ *   - 16th: "whenever the kineticist has at least 7 points of burn, these
+ *     bonuses increase to a +6 size bonus to one physical ability score of
+ *     her choice, a +4 size bonus to a second physical ability score of her
+ *     choice, and a +2 size bonus to the remaining physical ability score."
+ * Which ability score(s) get which tier is the kineticist's own choice at
+ * the table, and isn't recorded anywhere in `build.*` — so (matching the
+ * rest of this file's other kineticist riders: Metakinesis, Gather Power,
+ * Infusion Specialization) this stays a display-only detail string rather
+ * than a wired `Change`, appended to {@link kineticOverflowLabel}'s line by
+ * the caller. Returns `undefined` below the 6th-level/3-burn floor, i.e.
+ * whenever there is nothing to show yet.
+ */
+export function kineticOverflowUpgradeLabel(
+  kineticistLevel: number,
+  currentBurn: number,
+): string | undefined {
+  if (kineticistLevel < 6 || currentBurn < 3) return undefined;
+  const critChance = Math.min(100, currentBurn * 5);
+  const abilityPart =
+    kineticistLevel >= 16 && currentBurn >= 7
+      ? "+6/+4/+2 size bonus to your three physical ability scores (your choice which gets which)"
+      : kineticistLevel >= 11 && currentBurn >= 5
+        ? "+4 size bonus to one physical ability score, +2 to each of the other two (your choice)"
+        : "+2 size bonus to two physical ability scores of your choice";
+  return `${abilityPart} · ${critChance}% chance to ignore a critical hit or sneak attack`;
 }
 
 /**

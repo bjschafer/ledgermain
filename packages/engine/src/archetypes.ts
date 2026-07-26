@@ -69,6 +69,7 @@ import {
   hypnoticStareLabel,
   kineticBlastDetail,
   kineticOverflowLabel,
+  kineticOverflowUpgradeLabel,
   metakinesisLabel,
   gatherPowerLabel,
   infusionSpecializationReduction,
@@ -1709,7 +1710,10 @@ export function resolveClassFeatures(
       // than re-deriving burn tracking here.
       const burnFeature = Object.values(refData.classFeatures).find((f) => f.tag === "burn");
       const currentBurn = burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0;
-      detail = kineticOverflowLabel(classLevel, currentBurn);
+      const upgrade = kineticOverflowUpgradeLabel(classLevel, currentBurn);
+      detail = upgrade
+        ? `${kineticOverflowLabel(classLevel, currentBurn)} · ${upgrade}`
+        : kineticOverflowLabel(classLevel, currentBurn);
     } else if (detail === undefined && classTag === "kineticist" && grant.name === "Metakinesis") {
       detail = metakinesisLabel(classLevel);
     } else if (detail === undefined && classTag === "kineticist" && grant.name === "Gather Power") {

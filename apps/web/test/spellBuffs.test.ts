@@ -80,3 +80,33 @@ describe("buffsForSpell (synthetic edge cases)", () => {
     expect(buffsForSpell(testSpell("Bull's Strength"), rd)).toHaveLength(1);
   });
 });
+
+/**
+ * False Life (CRB p. 239, issue #67): unlike Divine Power/Greater Heroism/
+ * Aid, all of which correctly resolve to a vendored buff, False Life has NO
+ * `RefData.buffs` entry at all — confirmed against the real vendored slice.
+ * `@pf1/engine`'s `FALSE_LIFE_BUFF` (see that module's doc comment) fills the
+ * gap as a hand-authored fallback, checked only once the vendored index
+ * comes up empty.
+ */
+describe("buffsForSpell (False Life hand-authored fallback)", () => {
+  it("resolves False Life to the hand-authored buff (no vendored buff exists)", () => {
+    const buffs = buffsForSpell(spell("False Life"), ref);
+    expect(buffs.map((b) => b.name)).toEqual(["False Life"]);
+    expect(buffs[0]?.contextNotes[0]?.text).toContain("1d10 + 1 per caster level");
+  });
+
+  it("a real vendored buff of the same name would win over the hand-authored fallback", () => {
+    const vendored: Buff = {
+      id: "vendored-false-life",
+      uuid: "vendored-false-life",
+      name: "False Life",
+      subType: "spell",
+      changes: [],
+      contextNotes: [],
+    };
+    const rd: RefData = { ...ref, buffs: { ...ref.buffs, [vendored.id]: vendored } };
+    const buffs = buffsForSpell(spell("False Life"), rd);
+    expect(buffs).toEqual([vendored]);
+  });
+});

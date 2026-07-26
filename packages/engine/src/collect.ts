@@ -21,6 +21,7 @@ import { FAMILIARS } from "./familiars.js";
 import { featNameSlug } from "./feat-effects.js";
 import { resolveFeatEffect } from "./feat-effects-resolve.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
+import { ITEM_CHANGE_PATCHES } from "./item-effects.js";
 import { resolveMagusArcanum } from "./magus-arcana.js";
 import { mediumSpiritBonus, MEDIUM_SPIRITS } from "./medium-spirits.js";
 import { OCCULTIST_SCHOOLS } from "./occultist-implements.js";
@@ -223,7 +224,8 @@ export function collectModifiers(
     if (!inst.equipped || !inst.itemId) continue;
     const item = refData.items[inst.itemId];
     if (!item) continue;
-    for (const ch of item.changes) {
+    const changes = [...item.changes, ...(ITEM_CHANGE_PATCHES[item.name] ?? [])];
+    for (const ch of changes) {
       evalChange(ch.formula, rollData, ch.target, ch.type, item.name, item.id, out, ch.operator);
     }
   }
