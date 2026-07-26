@@ -149,8 +149,12 @@ Defense in depth for the one public, unauthenticated write:
   its caller (anything the client holds is visible in devtools), but this makes
   scripted abuse defeat a CAPTCHA per submit rather than curl a URL.
 - **Per-IP rate limit** (KV, coarse) — a burst backstop, not the main defense.
-- **Envelope validation** — category enum, message length — before any of the
-  above runs. Free text is mention-neutralized before it lands in the issue.
+- **Envelope validation** — category enum, message length, and a streamed body
+  cap (never `content-length`, which a caller may omit or fake) — before any of
+  the above runs. Free text is stripped of GitHub's autolink sigils (`@name`
+  mentions, `#123` issue refs) so a submission can't make the bot notify people
+  or repos it wasn't aimed at, and quoted text goes in a fence sized to be
+  unclosable by its own content.
 
 Until configured the endpoint fails closed (verification/issue creation error,
 never a silent open), and the web app hides the feedback button entirely unless

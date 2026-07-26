@@ -159,6 +159,13 @@ describe("character CRUD", () => {
     expect(res.status).toBe(413);
   });
 
+  // Malformed percent-encoding makes `decodeURIComponent` throw; that's the
+  // caller's mistake, and must not surface as a 500 with a logged stack.
+  it("400s a malformed percent-encoded id rather than throwing", async () => {
+    const res = await authedRequest(ownerId, "/api/characters/%E0%A4%A");
+    expect(res.status).toBe(400);
+  });
+
   it("DELETE is idempotent for a character that never existed", async () => {
     const res = await authedRequest(ownerId, "/api/characters/never-existed", { method: "DELETE" });
     expect(res.status).toBe(204);
