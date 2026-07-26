@@ -23,6 +23,13 @@ apps/web/public/OGL.txt
 apps/web/public/NOTICE.md
 apps/web/public/LICENSE
 
+# Reference app: search index + entry shards generated from the vendored data at
+# predev/prebuild by scripts/build-ref-index.ts, plus the same license copies.
+apps/reference/public/ref/
+apps/reference/public/OGL.txt
+apps/reference/public/NOTICE.md
+apps/reference/public/LICENSE
+
 # Playwright e2e artifacts (browsers are cached globally, not in-repo)
 test-results/
 playwright-report/

@@ -11,6 +11,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --filter @pf1/web dev",
+    "dev:ref": "bun run --filter @pf1/reference dev",
     "build": "bun run --filter '*' build",
     "test": "bun run --filter '*' test",
     "typecheck": "bun run --filter '*' typecheck",

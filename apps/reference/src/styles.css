@@ -1,0 +1,534 @@
+/* ============================================================================
+   Ledgermain Reference — a table lookup tool, not a marketing page.
+   Dense, dark, and quiet: the search box is the interface, everything else
+   stays out of the way. Palette matches the tracker so the two read as one
+   product without sharing a stylesheet.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  --bg: #15171c;
+  --surface: #1d2027;
+  --surface-2: #23262f;
+  --line: #33373f;
+  --line-soft: #2a2e36;
+  --ink: #e8e3d6;
+  --muted: #a49e91;
+  --faint: #94907f;
+  --gold: #c9a227;
+  --gold-2: #e8c34a;
+  --gold-dim: #8a7320;
+  --gold-dim-ink: #ad8e2e;
+  --oxblood: #b04a37;
+  --oxblood-ink: #d4705a;
+  --sage: #88a06a;
+
+  --body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", "IBM Plex Mono", monospace;
+
+  --radius: 4px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+a {
+  color: var(--gold-2);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+}
+
+/* ------------------------------------------------------------------ chrome -- */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 14px 0 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.app-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--gold);
+}
+
+.app-title:hover {
+  text-decoration: none;
+  color: var(--gold-2);
+}
+
+.app-title-sub {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* The pinned dataset is the whole trust story of this site — never hide it. */
+.app-version {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.03em;
+  color: var(--faint);
+}
+
+.app-main {
+  flex: 1;
+  padding: 16px 0 32px;
+}
+
+.app-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  justify-content: space-between;
+  padding: 12px 0 20px;
+  border-top: 1px solid var(--line);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.notice {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 12px 0;
+}
+
+.notice.is-error {
+  color: var(--oxblood-ink);
+}
+
+/* ------------------------------------------------------------------ search -- */
+
+.search-box {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.05rem;
+}
+
+.search-box:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.chip:hover {
+  color: var(--ink);
+  border-color: var(--line-soft);
+}
+
+.chip.is-on {
+  border-color: var(--gold-dim);
+  background: var(--surface-2);
+  color: var(--gold-2);
+}
+
+.chip.is-small {
+  padding: 2px 8px;
+  font-size: 0.6875rem;
+}
+
+.chip-count {
+  color: var(--faint);
+  font-size: 0.6875rem;
+}
+
+.result-list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.result {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 8px;
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--ink);
+}
+
+.result:hover {
+  background: var(--surface);
+  text-decoration: none;
+}
+
+.result-name {
+  font-weight: 600;
+}
+
+.result-facet {
+  grid-column: 1 / -1;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.badge {
+  align-self: center;
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.badge.is-spells {
+  border-color: var(--gold-dim);
+  color: var(--gold-dim-ink);
+}
+
+.badge.is-conditions {
+  border-color: var(--oxblood);
+  color: var(--oxblood-ink);
+}
+
+/* -------------------------------------------------- zero-keystroke browse -- */
+
+.board {
+  margin-top: 24px;
+}
+
+.board-title {
+  margin: 0 0 8px;
+  font-size: 0.6875rem;
+  font-family: var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-dim-ink);
+}
+
+.condition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.condition-tile {
+  display: block;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.875rem;
+}
+
+.condition-tile:hover {
+  border-color: var(--gold-dim);
+  text-decoration: none;
+}
+
+.board-hint {
+  margin-top: 14px;
+  font-size: 0.75rem;
+  color: var(--faint);
+}
+
+/* ------------------------------------------------------------------ detail -- */
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.detail-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.detail-sub {
+  margin: 4px 0 10px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* Always-visible stat strip: the at-the-table facts (casting time · range ·
+   save · damage) shown without opening anything. */
+.stat-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin-bottom: 12px;
+}
+
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.stat-chip.is-save {
+  border-color: var(--gold-dim);
+  color: var(--gold-2);
+}
+
+/* --oxblood is a border/fill token; text uses the AA-compliant --oxblood-ink. */
+.stat-chip.is-damage {
+  border-color: var(--oxblood);
+  color: var(--oxblood-ink);
+}
+
+.cl-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-dim-ink);
+}
+
+.cl-input input {
+  width: 56px;
+  padding: 3px 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+}
+
+.cl-hint {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--faint);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  font-size: 0.8125rem;
+}
+
+.row-label {
+  min-width: 128px;
+  flex-shrink: 0;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dim-ink);
+  padding-top: 2px;
+}
+
+.row-value {
+  color: var(--ink);
+}
+
+.prose {
+  margin-top: 14px;
+  font-size: 0.9375rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.prose p {
+  margin: 0 0 10px;
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+.prose table {
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.prose td,
+.prose th {
+  border: 1px solid var(--line-soft);
+  padding: 3px 6px;
+  text-align: left;
+}
+
+.sources {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--faint);
+}
+
+.muted-note {
+  margin-top: 12px;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.muted-note-label {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ------------------------------------------------------------- conditions -- */
+
+.condition-summary {
+  margin: 8px 0 14px;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.ladder {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.ladder-label {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dim-ink);
+}
+
+.ladder-chain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.ladder-chain li + li::before {
+  content: "→ ";
+  color: var(--faint);
+}
+
+.ladder-chain .is-current {
+  color: var(--gold-2);
+  font-weight: 600;
+}
+
+.ladder-note {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  color: var(--faint);
+}
+
+.note-list {
+  margin: 14px 0 0;
+  padding-left: 1.1em;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+@media (max-width: 520px) {
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .row-label {
+    min-width: 0;
+  }
+}

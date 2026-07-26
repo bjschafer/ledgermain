@@ -20,6 +20,24 @@
         "wrangler": "^4.107.0",
       },
     },
+    "apps/reference": {
+      "name": "@pf1/reference",
+      "version": "0.0.0",
+      "dependencies": {
+        "@pf1/engine": "workspace:*",
+        "@pf1/schema": "workspace:*",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+      },
+      "devDependencies": {
+        "@types/bun": "^1.1.14",
+        "@types/node": "^22",
+        "@types/react": "^18.3.12",
+        "@types/react-dom": "^18.3.1",
+        "@vitejs/plugin-react": "^5.2.0",
+        "vite": "^6.4.3",
+      },
+    },
     "apps/web": {
       "name": "@pf1/web",
       "version": "0.0.0",
@@ -324,6 +342,8 @@
     "@pf1/data-pipeline": ["@pf1/data-pipeline@workspace:packages/data-pipeline"],
 
     "@pf1/engine": ["@pf1/engine@workspace:packages/engine"],
+
+    "@pf1/reference": ["@pf1/reference@workspace:apps/reference"],
 
     "@pf1/schema": ["@pf1/schema@workspace:packages/schema"],
 
