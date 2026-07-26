@@ -82,7 +82,15 @@ async function route(request: Request, env: Env): Promise<Response> {
   if (charMatch) {
     const ownerId = await ownerIdFromRequest(request, env.KV);
     if (!ownerId) return errorJson(401, "Not authenticated");
-    const id = charMatch[1] ? decodeURIComponent(charMatch[1]) : undefined;
+    // `decodeURIComponent` throws on malformed percent-encoding (`/%E0%A4%A`),
+    // which is a client error, not ours — decode defensively so it lands as a
+    // 400 rather than a 500 with a logged stack trace.
+    let id: string | undefined;
+    try {
+      id = charMatch[1] ? decodeURIComponent(charMatch[1]) : undefined;
+    } catch {
+      return errorJson(400, "Malformed character id");
+    }
 
     if (!id && method === "GET") return listCharacters(ownerId, env);
     if (id && method === "GET") return getCharacter(ownerId, id, env);

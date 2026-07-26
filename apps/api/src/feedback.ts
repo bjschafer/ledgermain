@@ -19,6 +19,7 @@
  * assertion is the strongest practical approximation; it makes scripted abuse
  * defeat a CAPTCHA per submit rather than curl a URL.
  */
+import { PayloadTooLargeError, readBodyWithCap } from "./body.js";
 import { allowedHostnames } from "./cors.js";
 import { createIssue, getInstallationToken } from "./githubApp.js";
 import { errorJson, json } from "./http.js";
@@ -118,13 +119,17 @@ function parseBody(raw: unknown): ParseResult {
 }
 
 /**
- * Neutralize GitHub @mentions in untrusted text so a submission can't ping
- * arbitrary users: a zero-width space after `@` breaks the mention without
- * visibly changing the text. (GitHub also sanitizes raw HTML in markdown, so
- * that isn't a separate concern here.)
+ * Neutralize GitHub's two autolinking sigils in untrusted text, so a submission
+ * can't make the bot notify people or places it wasn't aimed at:
+ *  - `@name` \u2014 a mention, which pings that user.
+ *  - `#123` / `owner/repo#123` \u2014 an issue reference, which posts a "referenced"
+ *    backlink onto the target issue, including in *other* repositories.
+ * A zero-width space after the sigil breaks the autolink without visibly
+ * changing the text. (GitHub sanitizes raw HTML in markdown, so that isn't a
+ * separate concern here.)
  */
-function neutralizeMentions(text: string): string {
-  return text.replace(/@(?=[A-Za-z0-9])/g, "@\u200B");
+function neutralizeRefs(text: string): string {
+  return text.replace(/@(?=[A-Za-z0-9])/g, "@\u200B").replace(/#(?=\d)/g, "#\u200B");
 }
 
 /**
@@ -159,13 +164,23 @@ export function issueTitle(category: string, message: string): string {
     summary = `${lastSpace > 40 ? clipped.slice(0, lastSpace) : clipped}…`;
   }
   const tag = CATEGORY_TAGS[category] ?? "Feedback";
-  return neutralizeMentions(`[${tag}] ${summary || "(no summary)"}`);
+  return neutralizeRefs(`[${tag}] ${summary || "(no summary)"}`);
 }
 
-/** Wrap untrusted text in a collapsed block so it never dominates the issue. */
+/**
+ * Wrap untrusted text in a collapsed block so it never dominates the issue.
+ *
+ * The fence is sized from the content rather than fixed: CommonMark closes a
+ * backtick fence on the first line holding *at least* as many backticks as the
+ * opener, so any constant-width fence can be escaped by text containing that
+ * many backticks — which would drop attacker-chosen markdown into the issue
+ * body (and past `neutralizeRefs`, which never sees fenced content). One more
+ * backtick than the longest run in `text` makes the block unclosable from
+ * inside.
+ */
 function details(summary: string, lang: string, text: string): string {
-  // A fence long enough that fenced content inside `text` can't break out.
-  const fence = "``````";
+  const longestRun = Math.max(0, ...Array.from(text.matchAll(/`+/g), (m) => m[0].length));
+  const fence = "`".repeat(Math.max(3, longestRun + 1));
   return [
     `<details><summary>${summary}</summary>`,
     "",
@@ -179,8 +194,8 @@ function details(summary: string, lang: string, text: string): string {
 
 export function issueBody(value: FeedbackBody): string {
   const parts = [
-    // Blockquote the free text; mentions already neutralized.
-    neutralizeMentions(value.message)
+    // Blockquote the free text; mentions/refs already neutralized.
+    neutralizeRefs(value.message)
       .split("\n")
       .map((line) => `> ${line}`)
       .join("\n"),
@@ -188,13 +203,14 @@ export function issueBody(value: FeedbackBody): string {
     `**Category:** ${CATEGORY_LABELS[value.category]}`,
   ];
   if (value.context) {
-    parts.push(`**Context:** ${neutralizeMentions(value.context)}`);
+    parts.push(`**Context:** ${neutralizeRefs(value.context)}`);
   }
   if (value.contact) {
-    parts.push(`**Contact (opt-in):** ${neutralizeMentions(value.contact)}`);
+    parts.push(`**Contact (opt-in):** ${neutralizeRefs(value.contact)}`);
   }
   if (value.userAgent) {
-    // Inside a code fence, so no mention-neutralizing needed.
+    // Inside an unclosable code fence (see `details`), so nothing here can
+    // autolink — the raw string is worth more to triage than a sanitized one.
     parts.push("", details("User agent", "", value.userAgent));
   }
   if (value.build) {
@@ -218,13 +234,26 @@ async function isRateLimited(env: Env, ip: string): Promise<boolean> {
 }
 
 export async function handleFeedback(request: Request, env: Env): Promise<Response> {
-  // Reject oversized bodies up front when the caller declares a length.
+  // Cheap early reject when the caller declares an oversized length. This is
+  // only an optimization — `content-length` may be absent (chunked/HTTP2) or
+  // non-numeric, so the authoritative cap is the streaming one below.
   const declaredLength = Number(request.headers.get("content-length") ?? "0");
   if (declaredLength > MAX_BODY_BYTES) return errorJson(413, "Request too large");
 
+  // Never `request.json()` straight off an unauthenticated public endpoint: it
+  // buffers the entire body first, so an omitted/garbage `content-length` would
+  // let one request pin the isolate's memory before any validation runs.
+  let text: string;
+  try {
+    text = await readBodyWithCap(request, MAX_BODY_BYTES);
+  } catch (e) {
+    if (e instanceof PayloadTooLargeError) return errorJson(413, "Request too large");
+    throw e;
+  }
+
   let raw: unknown;
   try {
-    raw = await request.json();
+    raw = JSON.parse(text);
   } catch {
     return errorJson(400, "Invalid JSON");
   }
@@ -237,9 +266,12 @@ export async function handleFeedback(request: Request, env: Env): Promise<Respon
 
   const verdict = await verifyTurnstile(env.TURNSTILE_SECRET, value.turnstileToken, ip);
   if (!verdict.success) return errorJson(403, "Verification failed");
-  // Assert the challenge was solved on one of our own hostnames.
+  // Assert the challenge was solved on one of our own hostnames. A *missing*
+  // hostname fails closed too: siteverify reports it on every success, so its
+  // absence means we can't make the assertion — which is not the same as the
+  // assertion passing.
   const hostnames = allowedHostnames(env);
-  if (verdict.hostname && hostnames.length > 0 && !hostnames.includes(verdict.hostname)) {
+  if (hostnames.length > 0 && (!verdict.hostname || !hostnames.includes(verdict.hostname))) {
     return errorJson(403, "Verification failed");
   }
 

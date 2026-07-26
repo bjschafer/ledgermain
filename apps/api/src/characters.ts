@@ -13,6 +13,7 @@
  * single KV `list` call — no need to fetch and parse every owned blob just
  * to show a character switcher.
  */
+import { PayloadTooLargeError, readBodyWithCap } from "./body.js";
 import { errorJson, json } from "./http.js";
 
 /**
@@ -54,37 +55,6 @@ function keyFor(ownerId: string, id: string): string {
 // collide with, or show up in, the `<ownerId>::` document-list scan.
 function tombKeyFor(ownerId: string, id: string): string {
   return `tomb::${ownerId}::${id}`;
-}
-
-class PayloadTooLargeError extends Error {}
-
-/**
- * Read the request body as text, aborting the stream (never buffering
- * unbounded input in memory) the moment it exceeds `maxBytes` — the
- * workers-best-practices "stream large/unknown payloads" rule applied to a
- * body whose *expected* size is small but whose *actual* size is
- * client-controlled.
- */
-async function readBodyWithCap(request: Request, maxBytes: number): Promise<string> {
-  const reader = request.body?.getReader();
-  if (!reader) return "";
-  const decoder = new TextDecoder();
-  let out = "";
-  let total = 0;
-  for (;;) {
-    // oxlint-disable-next-line no-await-in-loop -- stream chunks are inherently sequential
-    const { done, value } = await reader.read();
-    if (done) break;
-    total += value.byteLength;
-    if (total > maxBytes) {
-      // oxlint-disable-next-line no-await-in-loop -- abort path, loop exits here
-      await reader.cancel();
-      throw new PayloadTooLargeError();
-    }
-    out += decoder.decode(value, { stream: true });
-  }
-  out += decoder.decode();
-  return out;
 }
 
 /**

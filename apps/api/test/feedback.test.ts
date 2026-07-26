@@ -1,7 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { issueBody, issueTitle } from "../src/feedback.js";
-import { request } from "./helpers.js";
+import { request, stubFetch } from "./helpers.js";
 
 const ORIGIN = "http://localhost:5173";
 
@@ -52,6 +52,37 @@ describe("POST /api/feedback — guard rails", () => {
 
   it("413s an oversized declared body", async () => {
     const res = await post({ message: "hi", turnstileToken: "t" }, { "content-length": "999999" });
+    expect(res.status).toBe(413);
+  });
+
+  // `content-length` is a claim, not a fact: a client can omit it (chunked /
+  // HTTP2) or send garbage. Either way the cap has to hold, or one request
+  // buffers unbounded input into the isolate before any validation runs.
+  it("413s an oversized body sent with no content-length at all", async () => {
+    const payload = JSON.stringify({ message: "x".repeat(200_000), turnstileToken: "t" });
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode(payload));
+        controller.close();
+      },
+    });
+    const res = await request("https://api.test/api/feedback", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: stream,
+      // @ts-expect-error `duplex` is required for a streamed request body
+      duplex: "half",
+    });
+    expect(res.status).toBe(413);
+  });
+
+  it("413s an oversized body behind a non-numeric content-length", async () => {
+    const res = await post(
+      { message: "x".repeat(200_000), turnstileToken: "t" },
+      {
+        "content-length": "not-a-number",
+      },
+    );
     expect(res.status).toBe(413);
   });
 });
@@ -132,6 +163,61 @@ describe("issueBody", () => {
     const body = issueBody({ ...base, message: "cc @maintainer", contact: "@someone" });
     expect(body).toContain("@​maintainer");
     expect(body).toContain("@​someone");
+  });
+
+  it("neutralizes issue references so the bot can't backlink-spam", () => {
+    const body = issueBody({ ...base, message: "like #74 and torvalds/linux#1" });
+    expect(body).not.toContain("#74");
+    expect(body).not.toContain("linux#1");
+    expect(body).toContain("#​74");
+  });
+
+  // A fixed-width fence is closable by content holding that many backticks,
+  // which would land raw attacker markdown (mentions included) in the issue.
+  it("sizes the fence so fenced content cannot break out", () => {
+    const escape = ["Mozilla/5.0", "``````", "", "</details>", "", "cc @maintainer"].join("\n");
+    const body = issueBody({ ...base, userAgent: escape });
+    const fence = "`".repeat(7);
+    expect(body).toContain(`${fence}\n${escape}\n${fence}`);
+    expect(body).not.toContain("\n@maintainer");
+  });
+
+  it("keeps the fence unclosable for an arbitrarily long backtick run", () => {
+    const build = `{"note":"${"`".repeat(20)}"}`;
+    const body = issueBody({ ...base, build });
+    expect(body).toContain(`${"`".repeat(21)}json`);
+  });
+});
+
+/**
+ * The hostname assertion is what turns "a human solved a CAPTCHA" into "a human
+ * solved *our* CAPTCHA on *our* site". It must fail closed on a hostname we
+ * can't match — including one siteverify didn't report — or the assertion is
+ * skippable rather than enforced.
+ */
+describe("POST /api/feedback — Turnstile hostname assertion", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  const siteverify = (payload: object) => stubFetch(() => Promise.resolve(Response.json(payload)));
+
+  it("403s when the challenge was solved on someone else's hostname", async () => {
+    siteverify({ success: true, hostname: "evil.example" });
+    const res = await post({ message: "hi", turnstileToken: "t" });
+    expect(res.status).toBe(403);
+  });
+
+  it("403s when siteverify reports no hostname at all", async () => {
+    siteverify({ success: true });
+    const res = await post({ message: "hi", turnstileToken: "t" });
+    expect(res.status).toBe(403);
+  });
+
+  it("gets past the assertion for one of our own hostnames", async () => {
+    siteverify({ success: true, hostname: "ledgermain.whizkid.dev" });
+    const res = await post({ message: "hi", turnstileToken: "t" });
+    // Past the gate; the same stub then feeds the GitHub App call nonsense, so
+    // anything but a 403 proves the hostname check let this through.
+    expect(res.status).not.toBe(403);
   });
 });
 
