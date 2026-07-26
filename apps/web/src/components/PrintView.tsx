@@ -91,6 +91,10 @@ export function PrintView({
                   <td>CMD</td>
                   <td className="num">{data.ac.cmd}</td>
                 </tr>
+                <tr>
+                  <td colSpan={3}>CMD (flat-footed)</td>
+                  <td className="num">{data.ac.cmdFlatFooted}</td>
+                </tr>
                 {data.saves.map((s) => (
                   <tr key={s.label}>
                     <td colSpan={3}>{s.label} Save</td>

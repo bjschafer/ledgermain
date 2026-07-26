@@ -156,6 +156,24 @@ export interface CharacterDoc {
      */
     clericDomains?: string[];
     /**
+     * Cleric's cure-vs-inflict spontaneous-casting choice, for a TRUE NEUTRAL
+     * cleric only (PF1 CRB "Spontaneous Casting" class feature, verbatim: "A
+     * cleric who is neither good nor evil and whose deity is neither good nor
+     * evil can convert spells to either cure spells or inflict spells
+     * [player's choice]. Once the player makes this choice, it cannot be
+     * reversed."). A good cleric (or one worshiping a good deity) always
+     * converts to cure spells, an evil one always to inflict — resolved from
+     * `identity.alignment` at read time (see
+     * `model/preparedSpells.clericSpontaneousAlignment`), no field needed for
+     * either case. This field is consulted only as the neutral-cleric
+     * tiebreaker (and, as a graceful fallback, whenever `identity.alignment`
+     * isn't set to a recognized code at all). Free-choice, same soft "chosen
+     * once, never enforced-immutable" posture as `oracleChannelAlignment`.
+     * Empty/undefined for non-clerics or a neutral cleric who hasn't picked
+     * yet. Back-compat: documents without this field are unaffected.
+     */
+    clericChannelAlignment?: "cure" | "inflict";
+    /**
      * Druid nature-bond domain tag (key into `refData.druidDomains` by
      * `DruidDomain.tag`), chosen at L1 as the alternative to an animal
      * companion. A single tag (unlike the cleric's two), or undefined for a
@@ -581,10 +599,9 @@ export interface CharacterDoc {
      * project's hybrid soft-warning posture (see `clericDomains`/
      * `sorcererBloodline` above). Grants one bonus spell known at oracle level
      * 2 and every two levels thereafter (see `model/spellcasting.mysterySpellsKnown`)
-     * and (display-only) class skills — see `ORACLE_MYSTERIES` doc comment for
-     * why class-skill grants aren't wired into the derived skill list.
-     * Empty/undefined for non-oracles. Back-compat: documents without this
-     * field are unaffected.
+     * and 2 bonus class skills, both wired via `compute.ts`'s `classSkillSet`
+     * (see `ORACLE_MYSTERIES` doc comment). Empty/undefined for non-oracles.
+     * Back-compat: documents without this field are unaffected.
      */
     oracleMystery?: string;
     /**
@@ -607,6 +624,20 @@ export interface CharacterDoc {
      * `ORACLE_MYSTERY_FINAL_REVELATIONS`, informational only).
      */
     oracleRevelations?: string[];
+    /**
+     * Oracle's permanent cure-vs-inflict spells-known choice (PF1 APG/CRB
+     * "Spells" class feature, verbatim: "each oracle also adds all of either
+     * the cure spells or the inflict spells to her list of spells known...
+     * This choice is made when the oracle gains her first level and cannot
+     * be changed"). Unlike the cleric's spontaneous-casting cure/inflict
+     * split, this is NOT alignment-gated — a free player choice, same soft
+     * "chosen once, never enforced-immutable" posture as `oracleMystery`/
+     * `oracleCurse`. Undefined means "not chosen yet" — the bonus grant
+     * (`model/spellcasting.oracleChannelSpellsKnown`) contributes nothing
+     * until set, never a guess. Empty/undefined for non-oracles. Back-compat:
+     * documents without this field are unaffected.
+     */
+    oracleChannelAlignment?: "cure" | "inflict";
     /**
      * Fighter's Weapon Training group picks, in grant order — index 0 = the
      * group chosen at 5th level, index 1 = 9th, index 2 = 13th, index 3 =
@@ -722,9 +753,9 @@ export interface CharacterDoc {
      * cross-field migration the day a samurai picks "sword" — a character
      * with both classes (unusual but not illegal) is expected to have one
      * order in play, matching the single swift-action Challenge each grants.
-     * Order skills/abilities are display-only (same documented
-     * `classSkillSet`-wiring gap as `oracleMystery`'s bonus class skills —
-     * see `CAVALIER_ORDERS`' doc comment); the challenge damage/AC/save rider
+     * Order skills are wired via `compute.ts`'s `classSkillSet` (see
+     * `CAVALIER_ORDERS`' doc comment); the order's 2nd/8th/15th-level
+     * abilities stay display-only, and the challenge damage/AC/save rider
      * is context-note tier (target-scoped — see `resources.ts`'s Challenge
      * pool `detail`). Empty/undefined for non-cavalier/samurai. Back-compat:
      * documents without this field are unaffected.
@@ -811,8 +842,8 @@ export interface CharacterDoc {
      * (the 5 core elements this app models — see `kineticist-elements.ts`'s
      * doc comment for the Void/Wood scoping cut). PF1 RAW: chosen once at
      * 1st level and never changes; determines the kineticist's simple
-     * blast, 2 bonus class skills (display-only — same `classSkillSet`-
-     * wiring gap `cavalierOrder`'s doc comment documents), the Elemental
+     * blast, 2 bonus class skills (wired via `compute.ts`'s `classSkillSet`
+     * — see `KINETICIST_ELEMENTS`' doc comment), the Elemental
      * Defense wild talent auto-granted at 2nd level, and an automatic bonus
      * basic utility wild talent. Free-choice, soft posture — no validation
      * that it's one of the 5 modeled tags. Empty/undefined for
@@ -2582,6 +2613,16 @@ export interface DerivedSheet {
   ac: ArmorClass;
   cmb: number;
   cmd: number;
+  /**
+   * CMD as it stands while flat-footed: loses the Dexterity bonus and any
+   * dodge bonus feeding `cmd` above, but keeps a Dex/dodge PENALTY (same
+   * "penalties always apply" asymmetry `ArmorClass.flatFooted` already
+   * documents) and every other bonus type — CRB p.199 ("Flat-Footed" sidebar:
+   * "A creature that hasn't yet acted... loses its Dexterity bonus to AC, if
+   * any... the same is true of a creature's CMD"). Mirrors `ac.flatFooted`'s
+   * modeling exactly, just for the CMD side.
+   */
+  cmdFlatFooted: number;
   /**
    * The character's current effective size category — race base size,
    * shifted by any relative "size"-target Change (Enlarge/Reduce Person,

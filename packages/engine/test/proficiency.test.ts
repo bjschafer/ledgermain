@@ -396,6 +396,8 @@ describe("compute(): non-proficient armor/shield attack penalty (issue #81)", ()
       c.source.includes("non-proficient"),
     );
     expect(penalties.map((p) => p.value).sort()).toEqual([-10, -6]);
-    expect(sheet.attack.melee.total).toBe(-16);
+    // -6 (armor ACP) + -10 (shield ACP) + -2 (tower shield's own flat attack
+    // penalty, CRB p.153 — independent of proficiency, so it applies on top).
+    expect(sheet.attack.melee.total).toBe(-18);
   });
 });

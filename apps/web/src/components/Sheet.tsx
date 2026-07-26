@@ -221,7 +221,13 @@ export function Sheet({
             resetKey={doc.id}
             baseline={baseline.ac.flatFooted}
           />
-          <StatSeal label="CMD" value={sheet.cmd} resetKey={doc.id} baseline={baseline.cmd} />
+          <StatSeal
+            label="CMD"
+            value={sheet.cmd}
+            foot={`flat-footed ${sheet.cmdFlatFooted}`}
+            resetKey={doc.id}
+            baseline={baseline.cmd}
+          />
         </div>
       </div>
 

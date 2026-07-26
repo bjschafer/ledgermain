@@ -40,12 +40,11 @@
  *
  * CLASS SKILLS: each element grants 2 bonus class skills (Elemental Focus:
  * "grants her access to specific wild talents ... and additional class
- * skills"). Like `cavalierOrder`/`oracleMystery`'s own bonus class skills,
- * these are NOT wired into `compute.ts`'s `classSkillSet` — a documented
- * gap (see `cavalierOrder`'s schema doc comment for the exact wiring this
- * shares), surfaced as display-only prose on the Elemental Focus grant's
- * `detail` line instead of silently promising a skill-point bonus that
- * isn't applied.
+ * skills" — Occult Adventures, per-element Elemental Focus entries, verified
+ * against aonprd.com). Wired into `compute.ts`'s `classSkillSet` alongside
+ * `cavalierOrder`/`oracleMystery`'s own bonus class skills, gated on the
+ * character having kineticist levels — see the primary/expanded-element loop
+ * in `computeSkills`.
  *
  * DEFENSE WILD TALENTS: every one of the 5 scales with burn ACCEPTED
  * (variable, "you can accept an additional point of burn to increase...")
@@ -93,7 +92,7 @@ export interface KineticistElementDef {
   /** Matches `build.kineticistElement` / entries of `build.kineticistExpandedElements`. */
   tag: string;
   name: string;
-  /** Two bonus class skill ids (see file doc comment re: the `classSkillSet` wiring gap). */
+  /** Two bonus class skill ids, wired into `compute.ts`'s `classSkillSet` (see file doc comment). */
   classSkills: string[];
   /** The element's flavor-canonical simple blast — also the default when no explicit choice is recorded. */
   simpleBlast: KineticistSimpleBlast;

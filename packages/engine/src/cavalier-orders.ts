@@ -17,12 +17,10 @@
  *
  * Every order grants three things, each with a different modeling posture:
  *
- * 1. **Order skills** — two bonus class skills. Display-only, same
- *    documented gap `oracle-mysteries.ts`'s `classSkills` already carries:
- *    `compute.ts`'s `classSkillSet` only unions `RefData.classes[].
- *    classSkills` + race, with no hook for a sub-choice (mystery, curse,
- *    domain-adjacent order) to add more. Not new machinery here — the
- *    existing gap, not a regression.
+ * 1. **Order skills** — two bonus class skills, wired into `compute.ts`'s
+ *    `classSkillSet` (gated on the character having cavalier or samurai
+ *    levels), the same pathway `oracle-mysteries.ts`'s `classSkills` and
+ *    `kineticist-elements.ts`'s `classSkills` use.
  * 2. **Challenge rider** — the specific numeric bonus/rider the order grants
  *    to the base Challenge ability (base Challenge itself is order-
  *    agnostic: it just lets the cavalier/samurai designate a target and
@@ -70,7 +68,7 @@ export interface OrderDef {
   name: string;
   /** Which class(es) can select this order. */
   forClasses: readonly ("cavalier" | "samurai")[];
-  /** Two bonus class skills the order grants (display-only — see file doc comment). */
+  /** Two bonus class skills the order grants, wired into `compute.ts`'s `classSkillSet` (see file doc comment). */
   orderSkills: readonly SkillId[];
   /** One-line paraphrase of the order's edicts. */
   edicts: string;

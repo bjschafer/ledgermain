@@ -38,10 +38,10 @@ interface OrderPickerProps {
  * option list is class-scoped via `mergedOrdersForClass`, so a pure
  * cavalier never sees Warrior/Ronin, while a samurai sees all orders.
  *
- * Order skills and the 2nd/8th/15th-level order abilities are display-only
- * prose (same posture as `MysteryPicker`'s bonus class skills — see
- * `cavalier-orders.ts`'s doc comment for the documented `classSkillSet`
- * wiring gap this doesn't attempt to close). The Challenge rider IS a real
+ * Order skills ARE wired into the derived sheet's class-skill set (`@pf1/engine`
+ * `compute.ts`, see `cavalier-orders.ts`'s doc comment) — this picker doesn't
+ * need to do anything extra for that. The 2nd/8th/15th-level order abilities
+ * stay display-only prose. The Challenge rider IS a real
  * number, shown live via `challengeRiderText` against the character's
  * current cavalier/samurai level (modeled orders only) — but it's
  * target-scoped ("against the challenge target", "while mounted", ...) so

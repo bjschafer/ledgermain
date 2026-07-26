@@ -54,10 +54,16 @@ import { tryEvaluateFormula, type RollData } from "./formula.js";
  * A derived term whose ability modifier can be substituted.
  *
  * `ac` covers the single Dexterity line in `computeAc`, and only that — CMD's
- * Dex term is deliberately left alone, because Mind Over Metal reads "for
- * determining her Armor Class" and CMD is a separate defense. `init` is
- * initiative's Dex term. The attack/damage slots are per-weapon and apply to
- * every weapon the character carries.
+ * own Dex term (`cmd`, not `cmb`) is deliberately left alone, because Mind
+ * Over Metal reads "for determining her Armor Class" and CMD is a separate
+ * defense. `init` is initiative's Dex term. The attack/damage slots are
+ * per-weapon and apply to every weapon the character carries. `cmb` is CMB's
+ * ability term specifically — Agile Maneuvers (APG p.150: "you can use your
+ * Dexterity modifier instead of your Strength modifier when calculating your
+ * CMB") is the one registered user; unlike the Tiny-or-smaller substitution
+ * (CRB p.199, still hardcoded in `compute.ts` since it is a SIZE rule, not a
+ * granted feature/feat this registry's name-slug lookup can key on), Agile
+ * Maneuvers applies at any size, so it fits this module's shape exactly.
  *
  * Known boundary: weapon-restricted substitutions (Zen Archer's Wis-to-hit
  * with bows only, the Guided property on one specific weapon) would need a
@@ -65,7 +71,13 @@ import { tryEvaluateFormula, type RollData } from "./formula.js";
  * hand-authored needs one today, so it is deliberately not built — an
  * untested restriction path would be worse than an honest gap.
  */
-export type SubstitutionSlot = "ac" | "init" | "attack.melee" | "attack.ranged" | "damage.melee";
+export type SubstitutionSlot =
+  | "ac"
+  | "init"
+  | "attack.melee"
+  | "attack.ranged"
+  | "damage.melee"
+  | "cmb";
 
 /** A registry entry: one ability-for-ability swap on one slot. */
 export interface AbilitySubstitutionDef {
@@ -99,14 +111,15 @@ export interface ActiveAbilitySubstitution extends AbilitySubstitutionDef {
  * Substitutions keyed by feature/feat name slug (see {@link featNameSlug}).
  * Clean-room from the published rules.
  *
- * Only Mind Over Metal is registered today. That is not a placeholder: the
- * other real PF1 substitutions are either already handled elsewhere (the
- * per-weapon `attackAbility`/`damageAbility` fields on `WeaponInstance` cover
- * Weapon Finesse and Slashing Grace, driven by an explicit player choice) or
- * weapon-restricted in a way this registry deliberately does not yet express
- * (see {@link SubstitutionSlot}). The non-`ac` slots are exercised by the
- * engine's fixture tests against synthetic registry entries, so they are live
- * code paths rather than speculative ones.
+ * Only Mind Over Metal and Agile Maneuvers are registered today. That is not
+ * a placeholder: the other real PF1 substitutions are either already handled
+ * elsewhere (the per-weapon `attackAbility`/`damageAbility` fields on
+ * `WeaponInstance` cover Weapon Finesse and Slashing Grace, driven by an
+ * explicit player choice) or weapon-restricted in a way this registry
+ * deliberately does not yet express (see {@link SubstitutionSlot}). The
+ * non-`ac` slots are exercised by the engine's fixture tests against
+ * synthetic registry entries (and, for `cmb`, by Agile Maneuvers itself), so
+ * they are live code paths rather than speculative ones.
  */
 export const ABILITY_SUBSTITUTIONS: Readonly<Record<string, AbilitySubstitutionDef>> = {
   // "At 2nd level, when a student of war is using armor or a shield, she can
@@ -119,6 +132,17 @@ export const ABILITY_SUBSTITUTIONS: Readonly<Record<string, AbilitySubstitutionD
     from: "dex",
     to: "int",
     condition: "if(or(gte(@armor.type, 1), gte(@shield.type, 1)), 1, 0)",
+  },
+  // Agile Maneuvers (APG p.150): "you can use your Dexterity modifier
+  // instead of your Strength modifier when calculating your Combat Maneuver
+  // Bonus." Unconditional (no size/armor gate) — unlike the Tiny-or-smaller
+  // CMB substitution (CRB p.199), which stays a direct size check in
+  // `compute.ts` since it isn't granted by a named feature this registry
+  // can key on.
+  "agile-maneuvers": {
+    slot: "cmb",
+    from: "str",
+    to: "dex",
   },
 };
 

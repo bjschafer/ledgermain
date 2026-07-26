@@ -46,8 +46,11 @@ import {
 import { chosenBonusClassSkills } from "./bonus-class-skills.js";
 import { resolveClassFeatures } from "./archetypes.js";
 import { computeRanger } from "./ranger.js";
+import { orderByTag } from "./cavalier-orders.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
 import { computeDefenses } from "./defenses.js";
+import { KINETICIST_ELEMENTS } from "./kineticist-elements.js";
+import { ORACLE_MYSTERIES } from "./oracle-mysteries.js";
 import { computeSenses } from "./senses.js";
 import {
   carryAdjustments,
@@ -108,6 +111,81 @@ function shiftSize(size: SizeId, steps: number): SizeId {
   const idx = SIZE_LADDER.indexOf(size);
   const clamped = Math.min(SIZE_LADDER.length - 1, Math.max(0, idx + steps));
   return SIZE_LADDER[clamped]!;
+}
+
+/**
+ * Weapon damage-die size progression (CRB p.145 weapon-size damage table,
+ * reprinted from the designer FAQ on size changes: "Occasionally a
+ * character's size will change... to determine the new damage, find the
+ * die on the size chart and move it the appropriate number of size
+ * categories"). Two independent chains, since the published chart isn't one
+ * single sequence — a die's neighbors depend on which family it's in:
+ *
+ * - `SIZE_DIE_CHAIN_MAIN`: the common one-handed/light-weapon family
+ *   (1 -> 1d2 -> 1d3 -> 1d4 -> 1d6 -> 1d8 -> 2d6 -> 3d6 -> 4d6 -> 6d6 -> 8d6
+ *   -> 12d6 -> 16d6).
+ * - `SIZE_DIE_CHAIN_D8`: the "big single-die" family starting at 1d10 (e.g.
+ *   greatclub) — 1d10 -> 2d8 -> 3d8 -> 4d8 -> 6d8 -> 8d8 -> 12d8 -> 16d8.
+ *
+ * Deliberately narrow (see `scaleWeaponDamageDice`'s doc comment): dice this
+ * app's vendored weapon data actually uses but that aren't confidently
+ * placed on either published chain (2d4, 1d12, 2d12) are left OUT of both
+ * chains entirely, so `scaleWeaponDamageDice` leaves them unscaled rather
+ * than guessing.
+ */
+const SIZE_DIE_CHAIN_MAIN: readonly string[] = [
+  "1",
+  "1d2",
+  "1d3",
+  "1d4",
+  "1d6",
+  "1d8",
+  "2d6",
+  "3d6",
+  "4d6",
+  "6d6",
+  "8d6",
+  "12d6",
+  "16d6",
+];
+const SIZE_DIE_CHAIN_D8: readonly string[] = [
+  "1d10",
+  "2d8",
+  "3d8",
+  "4d8",
+  "6d8",
+  "8d8",
+  "12d8",
+  "16d8",
+];
+const SIZE_DIE_INDEX: ReadonlyMap<string, { chain: readonly string[]; idx: number }> = new Map(
+  [SIZE_DIE_CHAIN_MAIN, SIZE_DIE_CHAIN_D8].flatMap((chain) =>
+    chain.map((die, idx) => [die, { chain, idx }] as const),
+  ),
+);
+
+/**
+ * Shifts a weapon damage-dice display string (e.g. `"1d8"`) by `steps` size
+ * categories along its {@link SIZE_DIE_INDEX} chain, clamped at either end of
+ * that chain (mirrors {@link shiftSize}'s own clamp-don't-throw posture) —
+ * used when the wielder's effective size differs from the size the weapon's
+ * `damageDice` was written for (issue #19/#70: Enlarge Person, Reduce
+ * Person, and active polymorph forms all change effective size but not the
+ * stored per-weapon dice string). Returns `dice` UNCHANGED (not clamped, not
+ * guessed) when it isn't on either chain, or when `steps` is 0 — this app's
+ * vendored weapon data includes a few dice (2d4, 1d12, 2d12) this pass
+ * deliberately leaves unscaled rather than inventing an unverified
+ * progression for them (see the chain doc comment above). Also does not
+ * attempt the FAQ's separate "two steps per category for Fine/Diminutive/
+ * Tiny wielders" nuance — out of scope for this pass, same honesty-bar
+ * posture as every other documented gap in this file.
+ */
+export function scaleWeaponDamageDice(dice: string, steps: number): string {
+  if (steps === 0) return dice;
+  const entry = SIZE_DIE_INDEX.get(dice);
+  if (!entry) return dice;
+  const clamped = Math.min(entry.chain.length - 1, Math.max(0, entry.idx + steps));
+  return entry.chain[clamped]!;
 }
 
 /**
@@ -766,6 +844,37 @@ function computeSkills(
   // Skill), already truncated to the character's current entitlement.
   for (const s of chosenBonusClassSkills(doc, refData)) classSkillSet.add(s);
 
+  // Element/order/mystery-granted bonus class skills: fixed by the choice
+  // itself (which mystery/order/element), not a separate player pick, so
+  // each is wired directly here rather than through `chosenBonusClassSkills`'
+  // budgeted-pick pathway. Gated on the granting class's level, same "never
+  // apply to a stale field on the wrong class" posture as every other
+  // build-choice loop in `collect.ts` (see the cookbook's oracle-curse
+  // example).
+  const oracleLevel = doc.identity.classes.find((c) => c.tag === "oracle")?.level ?? 0;
+  if (oracleLevel > 0 && doc.build.oracleMystery) {
+    for (const s of ORACLE_MYSTERIES[doc.build.oracleMystery]?.classSkills ?? []) {
+      classSkillSet.add(s);
+    }
+  }
+  const orderGrantingLevel =
+    (doc.identity.classes.find((c) => c.tag === "cavalier")?.level ?? 0) +
+    (doc.identity.classes.find((c) => c.tag === "samurai")?.level ?? 0);
+  if (orderGrantingLevel > 0 && doc.build.cavalierOrder) {
+    for (const s of orderByTag(doc.build.cavalierOrder)?.orderSkills ?? []) classSkillSet.add(s);
+  }
+  const kineticistLevel = doc.identity.classes.find((c) => c.tag === "kineticist")?.level ?? 0;
+  if (kineticistLevel > 0) {
+    const elementTags = [
+      doc.build.kineticistElement,
+      ...(doc.build.kineticistExpandedElements ?? []),
+    ];
+    for (const tag of elementTags) {
+      if (!tag) continue;
+      for (const s of KINETICIST_ELEMENTS[tag]?.classSkills ?? []) classSkillSet.add(s);
+    }
+  }
+
   // Effective armor check penalty (negative), reduced by armor-training acpA.
   const wornAcp = (doc.build.gear ?? []).reduce(
     (s, inst) => (inst.equipped && inst.armor?.acp ? s + inst.armor.acp : s),
@@ -974,6 +1083,24 @@ function nonProficientArmorAttackComponents(
 }
 
 /**
+ * Tower shield's separate −2 penalty on attack rolls (CRB p.153, Tower
+ * Shield: "you take a –2 penalty on attack rolls because it is so unwieldy")
+ * — independent of proficiency (applies whether or not the wielder is
+ * proficient with tower shields) and independent of the shield's armor check
+ * penalty already folded into `nonProficientArmorAttackComponents`/
+ * `wornAcp`'s ACP handling, so it's a separate flat component rather than
+ * routed through either of those. One flat -2 regardless of how many tower
+ * shields are (implausibly) equipped at once — PF1 has no rule for stacking
+ * a second one.
+ */
+function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
+  const hasTowerShield = (doc.build.gear ?? []).some(
+    (inst) => inst.equipped && inst.armor?.shieldTier === "tower",
+  );
+  return hasTowerShield ? [synthetic("Tower shield", "penalty", -2)] : [];
+}
+
+/**
  * Builds a ResolvedWeaponAttack for each entry in build.weapons.
  *
  * Attack formula (PF1 CRB):
@@ -984,6 +1111,7 @@ function nonProficientArmorAttackComponents(
  *              or `attack.weapon.bows` from a semantic weapon-group bonus)
  *            + -4 if non-proficient with the weapon, + non-proficient worn
  *              armor/shield's ACP (issue #81, see {@link nonProficientArmorAttackComponents})
+ *              + tower shield's flat -2 (CRB p.153, see {@link towerShieldAttackComponents})
  *
  * Damage bonus (numeric; dice displayed separately):
  *   damage = floor(ability mod × damageMultiplier) [melee, damageAbility="str"/"dex" only]
@@ -1005,6 +1133,11 @@ function nonProficientArmorAttackComponents(
  * for a matching weapon — see {@link rogueFinesseTrainingMatches} — so the
  * player doesn't have to flip the per-weapon field by hand for the class
  * feature that's supposed to grant it for free.
+ *
+ * `weaponSizeShift` (size categories the wielder's effective size differs
+ * from base) rewrites the DISPLAYED `damageDice` string when nonzero — see
+ * {@link scaleWeaponDamageDice} — since the numeric damage bonus above never
+ * carries a dice term to begin with.
  */
 function computeWeaponAttacks(
   doc: CharacterDoc,
@@ -1012,11 +1145,12 @@ function computeWeaponAttacks(
   sizeAttackMod: number,
   collected: CollectedModifier[],
   proficiencies: DerivedProficiencies,
-  armorProfComponents: ModifierComponent[],
+  flatAttackPenaltyComponents: ModifierComponent[],
   abilityMods: Readonly<Record<AbilityId, number>>,
   substitutions: readonly ActiveAbilitySubstitution[],
+  weaponSizeShift: number,
 ): ResolvedWeaponAttack[] {
-  const armorProfPenalty = armorProfComponents.reduce((s, c) => s + c.value, 0);
+  const flatAttackPenalty = flatAttackPenaltyComponents.reduce((s, c) => s + c.value, 0);
   const weapons = doc.build.weapons ?? [];
   return weapons.map((w) => {
     const category = w.category ?? "melee";
@@ -1058,7 +1192,7 @@ function computeWeaponAttacks(
       masterworkBonus +
       weaponAttackStack.total +
       weaponProfPenalty +
-      armorProfPenalty;
+      flatAttackPenalty;
     const attackComponents: ModifierComponent[] = [
       synthetic("BAB", "base", bab),
       synthetic(attackAbilityLabel, "ability", attackAbilityMod),
@@ -1069,7 +1203,7 @@ function computeWeaponAttacks(
         : []),
       ...toComponents(weaponAttackStack.modifiers),
       ...weaponProfComponents,
-      ...armorProfComponents,
+      ...flatAttackPenaltyComponents,
     ];
 
     // Ability-to-damage: STR or DEX, only melee, scaled by damageMultiplier.
@@ -1148,7 +1282,15 @@ function computeWeaponAttacks(
       result.damageAbilityMod = damageAbilityMod;
       result.damageMultiplier = mult;
     }
-    if (w.damageDice !== undefined) result.damageDice = w.damageDice;
+    // Display-only dice string, size-scaled when the wielder's effective
+    // size (issue #19/#70: Enlarge/Reduce Person, an active polymorph form)
+    // differs from the size `w.damageDice` was written for — see
+    // `scaleWeaponDamageDice`. The numeric `damageBonus.total` above never
+    // includes a dice term (formula.ts can't evaluate one — see the engine
+    // cookbook §2.2), so this scaling is purely a display correction.
+    if (w.damageDice !== undefined) {
+      result.damageDice = scaleWeaponDamageDice(w.damageDice, weaponSizeShift);
+    }
     return result;
   });
 }
@@ -1250,6 +1392,13 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // player's chosen size is still meaningful on its own).
   if (doc.live.activeForm) size = doc.live.activeForm.size;
   const sizeAttackMod = SIZE_AC_MOD[size];
+  // How many size categories the wielder's EFFECTIVE size differs from their
+  // base (race) size — the size the vendored/hand-entered `damageDice` on
+  // `build.weapons` was written for (issue #19/#70, see
+  // `scaleWeaponDamageDice`). Covers both a relative "size" Change (Enlarge/
+  // Reduce Person) and an active polymorph form's absolute override, since
+  // both are already folded into `size` above by this point.
+  const weaponSizeShift = SIZE_LADDER.indexOf(size) - SIZE_LADDER.indexOf(baseSize);
 
   const strMod = abilities.str.mod;
   const dexMod = abilities.dex.mod;
@@ -1283,10 +1432,15 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // worn armor/shield attack penalty derived from them. Weapon non-proficiency
   // (-4) is necessarily per-weapon (see computeWeaponAttacks below); the
   // armor/shield ACP-on-attack penalty isn't weapon-specific, so it applies
-  // here too, on the base melee/ranged lines.
+  // here too, on the base melee/ranged lines — same for the tower shield's
+  // flat -2 (CRB p.153, see {@link towerShieldAttackComponents}), which also
+  // isn't weapon-specific.
   const proficiencies = deriveProficiencies(doc, refData);
-  const armorProfComponents = nonProficientArmorAttackComponents(doc, proficiencies);
-  const armorProfPenalty = armorProfComponents.reduce((s, c) => s + c.value, 0);
+  const flatAttackPenaltyComponents = [
+    ...nonProficientArmorAttackComponents(doc, proficiencies),
+    ...towerShieldAttackComponents(doc),
+  ];
+  const flatAttackPenalty = flatAttackPenaltyComponents.reduce((s, c) => s + c.value, 0);
 
   // Attack. `attack` applies to both lines; `mattack`/`rattack` are melee/ranged
   // specific (e.g. prone's -4 is melee only).
@@ -1303,19 +1457,19 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     synthetic(abilityLabelFor(meleeAttackAbility), "ability", meleeAttackAbility.mod),
     ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
     ...toComponents(meleeStack.modifiers),
-    ...armorProfComponents,
+    ...flatAttackPenaltyComponents,
   ];
   const rangedComponents: ModifierComponent[] = [
     synthetic("BAB", "base", bab),
     synthetic(abilityLabelFor(rangedAttackAbility), "ability", rangedAttackAbility.mod),
     ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
     ...toComponents(rangedStack.modifiers),
-    ...armorProfComponents,
+    ...flatAttackPenaltyComponents,
   ];
   const meleeTotal =
-    bab + meleeAttackAbility.mod + sizeAttackMod + meleeStack.total + armorProfPenalty;
+    bab + meleeAttackAbility.mod + sizeAttackMod + meleeStack.total + flatAttackPenalty;
   const rangedTotal =
-    bab + rangedAttackAbility.mod + sizeAttackMod + rangedStack.total + armorProfPenalty;
+    bab + rangedAttackAbility.mod + sizeAttackMod + rangedStack.total + flatAttackPenalty;
   const meleeIteratives = iterativeSequence(bab, meleeTotal);
   const rangedIteratives = iterativeSequence(bab, rangedTotal);
   const attack = {
@@ -1332,17 +1486,30 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   };
 
   // AC. The Dexterity line is substitutable; CMD's Dex term below deliberately
-  // is not — Mind Over Metal (the only substitution registered today) reads
-  // "for determining her Armor Class", and CMD is a separate defense.
+  // is not — Mind Over Metal reads "for determining her Armor Class", and CMD
+  // is a separate defense. (CMB's own ability term, below, has its own
+  // registered substitution — Agile Maneuvers — which is unrelated to this one.)
   const acAbility = resolveSubstitution("ac", "dex", abilityMods, substitutions);
   const ac = computeAc(doc, size, acAbility, collected, encumbrance);
 
   // CMB / CMD
   const sizeSpecial = specialSizeMod(size);
   const cmbStack = resolveStack(forTarget(collected, "cmb"));
-  // Tiny or smaller creatures use Dex in place of Str for CMB (CRB p.199) —
-  // CMD keeps using Str below regardless, since the substitution is CMB-only.
-  const cmbAbilityMod = SIZE_LADDER.indexOf(size) <= SIZE_LADDER.indexOf("tiny") ? dexMod : strMod;
+  // Tiny or smaller creatures use Dex in place of Str for CMB (CRB p.199);
+  // Agile Maneuvers (APG p.150, "you can use your Dexterity modifier instead
+  // of your Strength modifier when calculating your Combat Maneuver Bonus")
+  // extends the same swap to any size. Both are ability SUBSTITUTIONS (not
+  // additive bonuses), so both route through `resolveSubstitution` — the size
+  // rule sets `cmbBaseAbility` first, then the feat (if present) competes
+  // against whichever ability that leaves in place, per
+  // `resolveSubstitution`'s highest-wins convention (see `ability-
+  // substitution.ts`'s doc comment). For a Tiny-or-smaller character (already
+  // on Dex) Agile Maneuvers is simply a no-op, matching RAW — there's nothing
+  // left to substitute. CMD keeps using Str below regardless — neither
+  // substitution touches CMD, only CMB.
+  const cmbBaseAbility = SIZE_LADDER.indexOf(size) <= SIZE_LADDER.indexOf("tiny") ? "dex" : "str";
+  const cmbAbility = resolveSubstitution("cmb", cmbBaseAbility, abilityMods, substitutions);
+  const cmbAbilityMod = cmbAbility.mod;
   const cmb = bab + cmbAbilityMod + sizeSpecial + cmbStack.total;
 
   // CMD = 10 + BAB + Str + Dex + special size mod, auto-including any of the
@@ -1376,6 +1543,21 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   );
   const cmdStack = resolveStack([...autoCmdFromAc, ...explicitCmdMods]);
   const cmd = 10 + bab + strMod + dexMod + sizeSpecial + cmdStack.total;
+
+  // Flat-footed CMD (CRB p.199, same "Flat-Footed" sidebar that defines
+  // flat-footed AC): loses the Dexterity bonus and any dodge bonus feeding
+  // `cmd` above, but a Dex/dodge PENALTY still counts (penalties always
+  // apply) — mirrors `computeAc`'s `flatFooted` derivation exactly. CMD has
+  // no `components` array to filter post hoc (see the note above), so the
+  // dodge exclusion happens on the input modifier list instead of on stacked
+  // output.
+  const flatFootedDexMod = Math.min(dexMod, 0);
+  const flatFootedCmdMods = [...autoCmdFromAc, ...explicitCmdMods].filter(
+    (m) => m.type.toLowerCase() !== "dodge" || m.value < 0,
+  );
+  const flatFootedCmdStack = resolveStack(flatFootedCmdMods);
+  const cmdFlatFooted =
+    10 + bab + strMod + flatFootedDexMod + sizeSpecial + flatFootedCmdStack.total;
 
   // Initiative
   const initStack = resolveStack(forTarget(collected, "init"));
@@ -1438,9 +1620,10 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     sizeAttackMod,
     collected,
     proficiencies,
-    armorProfComponents,
+    flatAttackPenaltyComponents,
     abilityMods,
     substitutions,
+    weaponSizeShift,
   );
 
   // DR / energy resistance / spell resistance — display-only (issue #21).
@@ -1492,6 +1675,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     ac,
     cmb,
     cmd,
+    cmdFlatFooted,
     initiative,
     attack,
     attacks,

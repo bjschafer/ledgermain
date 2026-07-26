@@ -38,7 +38,16 @@ export const WEAPON_GROUPS = [
   "flails",
   "hammers",
   "monk",
+  // "natural" and "siege-engines" are Ultimate Combat's two additions to the
+  // fighter Weapon Training group list (UC p.106-107) — neither occurs in
+  // this app's vendored `weapons.json` slice (verified via the same `jq`
+  // query cited above: no weapon carries either as a `weaponGroups` tag), so
+  // adding them here doesn't change any existing match. They exist so a
+  // hand-authored Weapon Training-style effect (or a future extraction wave)
+  // can target them by name instead of the target silently being unspellable.
+  "natural",
   "polearms",
+  "siege-engines",
   "spears",
   "thrown",
   "tribal",

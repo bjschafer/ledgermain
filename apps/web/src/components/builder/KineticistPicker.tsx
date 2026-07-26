@@ -135,8 +135,8 @@ function ElementalFocusSection({
         <>
           <p className="hint order-picker-hint">
             Pick one primary element at 1st level (never changed thereafter). Determines your simple
-            blast, 2 bonus class skills (display-only), Elemental Defense, and a bonus basic utility
-            wild talent. Free-choice.
+            blast, 2 bonus class skills, Elemental Defense, and a bonus basic utility wild talent.
+            Free-choice.
           </p>
           <select
             className="order-select"

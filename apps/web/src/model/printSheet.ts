@@ -119,7 +119,7 @@ export interface PrintSheetData {
   header: PrintHeader;
   abilities: PrintAbility[];
   saves: PrintSave[];
-  ac: { normal: number; touch: number; flatFooted: number; cmd: number };
+  ac: { normal: number; touch: number; flatFooted: number; cmd: number; cmdFlatFooted: number };
   hp: { current: number; max: number; temp: number; nonlethal: number };
   speeds: { label: string; value: number }[];
   initiative: string;
@@ -343,6 +343,7 @@ export function buildPrintSheet(
       touch: sheet.ac.touch,
       flatFooted: sheet.ac.flatFooted,
       cmd: sheet.cmd,
+      cmdFlatFooted: sheet.cmdFlatFooted,
     },
     hp: {
       current: doc.live.hp.current,

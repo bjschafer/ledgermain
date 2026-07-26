@@ -22,12 +22,12 @@
  *   - `classSkills` below is copied VERBATIM from each mystery's vendored
  *     `system.classSkills` array (real Foundry skill ids, e.g. "han", "kna",
  *     "sur" for Life) — already the same vocabulary as this engine's
- *     `SKILL_ABILITY` table. Like `Domain.classSkills` (see refdata.ts), this
- *     is DISPLAY-ONLY: the engine's class-skill set is derived solely from
- *     `RefData.classes[].classSkills` (see `compute.ts`'s `classSkillSet` /
- *     `traits.ts`'s doc comment for why) — there is no per-mystery hook into
- *     it, so a mystery's class-skill grant surfaces as text only, exactly the
- *     posture `traits.ts` already documents for trait-granted class skills.
+ *     `SKILL_ABILITY` table. Unlike `Domain.classSkills` (see refdata.ts,
+ *     still display-only — no per-domain hook exists) or trait-granted class
+ *     skills (`traits.ts`), a mystery's class-skill grant IS wired into
+ *     `compute.ts`'s `classSkillSet`, gated on the character having oracle
+ *     levels, alongside `cavalierOrder`'s and `kineticistElement`'s own
+ *     bonus class skills.
  *   - `bonusSpells` ids are copied VERBATIM from the `@UUID[Compendium.pf1.
  *     spells.<id>]` references embedded in each mystery's vendored prose
  *     (`system.description.value`) — these ARE real vendored Foundry spell
@@ -63,7 +63,7 @@ export interface OracleMysteryDef {
   /** Matches `doc.build.oracleMystery` keys. */
   tag: string;
   name: string;
-  /** Real Foundry skill ids this mystery adds to the oracle's class skills (display-only — see file doc comment). */
+  /** Real Foundry skill ids this mystery adds to the oracle's class skills, wired into `compute.ts`'s `classSkillSet` (see file doc comment). */
   classSkills: string[];
   /** One bonus spell known at oracle level 2, 4, 6, ..., 18 (ascending). */
   bonusSpells: OracleMysteryBonusSpell[];
