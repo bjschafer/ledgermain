@@ -145,4 +145,9 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
     detail:
       "Weapon damage-die size scaling covers the die shapes present in the vendored weapon data; 2d4/1d12/2d12 are deliberately left unscaled, and the FAQ's two-step rule below Small is not implemented.",
   },
+  {
+    category: "Per-spell SR flag never set",
+    detail:
+      "Vendored spells.json never carries `sr: true` (1,331 spells say false, 1,695 omit it), so whether a spell allows spell resistance is undisplayable; the transform is a faithful passthrough of `system.sr`, so the loss is upstream in the source packs.",
+  },
 ];
