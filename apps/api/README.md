@@ -59,7 +59,16 @@ redeploy.
 
 CORS: `ALLOWED_APP_ORIGINS` (comma-separated, exact origin match — never
 `*`) gates both the OAuth `redirect_uri` and the `Access-Control-Allow-Origin`
-reflected on every response.
+reflected on every response — and, via the bare hostnames, the Turnstile
+"solved on our site" assertion.
+
+Because that one list carries all three jobs, it holds **production origins
+only**: a `localhost` entry would let anyone host a page on their own machine
+with our public sitekey, solve the challenge, and pass the feedback endpoint's
+hostname check — and would make a plain-HTTP origin a valid delivery target for
+a real session token. Local dev supplies its own value in `.dev.vars`, which
+replaces (not merges with) the deployed one; the test suite pins its own in
+`vitest.config.ts`.
 
 ## Local development
 
@@ -69,6 +78,10 @@ cd apps/api
 cp .dev.vars.example .dev.vars   # then paste a real DISCORD_CLIENT_SECRET if testing OAuth end-to-end
 bun run dev                 # wrangler dev — Miniflare, local KV, no account needed
 ```
+
+The `.dev.vars` copy is no longer optional: it carries the localhost
+`ALLOWED_APP_ORIGINS` that the deployed config deliberately omits, so without it
+a browser calling this Worker from `localhost:5173` gets no CORS headers.
 
 Hitting the CRUD routes locally doesn't need a real Discord OAuth app — mint
 a session directly against local KV (e.g. via `wrangler kv key put --local`)
@@ -163,7 +176,13 @@ both `VITE_API_URL` **and** `VITE_TURNSTILE_SITEKEY` are set at build time.
 ### One-time owner setup
 
 1. **Create a Turnstile widget** (Cloudflare dashboard → Turnstile → Add):
-   - Add the app's hostnames (`ledgermain.whizkid.dev`, and `localhost` for dev).
+   - Add `ledgermain.whizkid.dev`, and **only** that. Listing `localhost` would
+     let anyone serve a page from their own machine under this sitekey, solve
+     the challenge there, and produce a token whose reported hostname the Worker
+     can't distinguish from a real one — which is the whole basis of the
+     endpoint's "came from our app" check. Local dev doesn't need it: the
+     feedback button is hidden unless `VITE_TURNSTILE_SITEKEY` is set at build
+     time, which a dev build normally leaves unset.
    - Copy the **Site Key** → set it as the web build var `VITE_TURNSTILE_SITEKEY`
      (same place as `VITE_API_URL`: Workers Builds → the `ledgermain` Worker →
      Settings → Build → Build variables). The site key is public.
