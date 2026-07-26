@@ -32,6 +32,24 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-25-combat-math-sweep",
+    date: "2026-07-25",
+    title: "Combat math fills in its corners",
+    note: "CMD now shows a flat-footed value next to the regular one, tower shields apply their −2 attack penalty, the Agile Maneuvers feat swaps Dex into your CMB, and growing or shrinking (enlarge person, polymorph forms) steps your weapon's damage dice up or down the official chart. Kineticist elements, cavalier orders, and oracle mysteries now grant their bonus class skills for real, and Elemental Overflow's bonus cap is corrected.",
+  },
+  {
+    id: "2026-07-25-casting-table-rules",
+    date: "2026-07-25",
+    title: "Spellcasting knows its table rules",
+    note: "Clerics and druids can cast a prepared spell as a cure, inflict, or summon nature's ally on the fly, with the slot bookkeeping handled. Shamans get their spirit-magic casts tracked as their own pool, oracles' free cure or inflict spells land on the known list automatically, and occultists see a warning when they know more spells than their implements allow. Every spell also shows the full concentration-DC reference — damage, grapples, motion, weather — next to the defensive-casting DC.",
+  },
+  {
+    id: "2026-07-25-rage-items-hero-points",
+    date: "2026-07-25",
+    title: "Rage hangovers, working bracers, hero points",
+    note: "Ending a barbarian's rage or a bloodrager's bloodrage now applies the fatigue the rules demand (and knows who's exempt). Bracers of Armor actually grant their armor bonus, casting false life offers a one-click buff, and hero points gain automatically on level-up with a spend-options reference on the panel.",
+  },
+  {
     id: "2026-07-25-support-links",
     date: "2026-07-25",
     title: "A tip jar, if you're so inclined",

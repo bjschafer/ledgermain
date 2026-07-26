@@ -94,6 +94,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Community-pack feats",
     note: "The bulk of the feat catalog is in, but a feat sourced from the wider community content pack may show its prerequisites as text only rather than enforcing them, and may not apply its effect to your sheet automatically.",
   },
+  {
+    category: "Skill rank history",
+    note: "Skill ranks are checked against your lifetime budget and per-skill level cap, but the sheet doesn't record which level each rank was bought at — so a rank that was spent before it was legally available (say, after re-ordering multiclass levels) isn't caught.",
+    issueDetail:
+      "CharacterDoc stores running rank totals with no per-level purchase ledger and no level-up ordering, so per-level spent-vs-earned auditing would need a schema addition and a level-gated allocator UX.",
+  },
 ];
 
 /**
@@ -115,5 +121,25 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
     category: "Beyond data",
     detail:
       "Situational/activated effects, prestige-class prereq structuring, and Paths of Prestige-tier mechanics tables have no machine-readable source and must be hand-authored against the published rules.",
+  },
+  {
+    category: "Unevaluated Foundry inline rolls in buff notes",
+    detail:
+      "~46 vendored buff contextNotes still contain Foundry's raw `[[formula]]` inline-roll syntax, rendered verbatim instead of evaluated (e.g. Inspire Courage's morale-vs-fear note).",
+  },
+  {
+    category: "Armor-bonus items stack instead of competing",
+    detail:
+      "Bracers of Armor and Robe of the Archmagi grant their armor bonus via the `aac` target with untyped stacking, so they add to worn armor rather than taking the higher of the two as RAW requires.",
+  },
+  {
+    category: "Unchained rage fatigue timer",
+    detail:
+      "Chained rage/bloodrage aftermath fatigue auto-applies (untimed) when the buff ends; Rage (Unchained)'s flat 1-minute fatigue is not auto-applied because conditions have no minute-scale timer.",
+  },
+  {
+    category: "Size-die scaling exclusions",
+    detail:
+      "Weapon damage-die size scaling covers the die shapes present in the vendored weapon data; 2d4/1d12/2d12 are deliberately left unscaled, and the FAQ's two-step rule below Small is not implemented.",
   },
 ];
