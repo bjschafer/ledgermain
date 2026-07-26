@@ -84,9 +84,14 @@ Two ledgers track what players see, and both are easy to forget:
 - The coverage notes. `apps/web/src/model/coverageNotes.ts` is the single source
   of truth for content Ledgermain doesn't cover; it renders as the "What's Not
   Covered" panel in Settings. Filling a gap means deleting its entry; finding one
-  means adding it. The GitHub inventory issue (#74) is generated from this file
-  -- run `bun run coverage:issue` and paste the output into the issue body
-  rather than editing either side by hand.
+  means adding it.
+
+  **Editing that file obligates you to sync issue #74 in the same change.** #74
+  is a generated mirror, so any edit -- a filled gap, a new gap, or a reworded
+  sentence -- leaves it stale. Run `bun run coverage:issue --write` and it
+  rewrites the issue body for you. Never hand-edit the issue, and don't treat
+  this as an issue comment needing sign-off; it's generated output, and the only
+  way to get it wrong is to skip it.
 
 ## Reference data
 
