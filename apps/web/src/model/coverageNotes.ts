@@ -8,15 +8,9 @@
  *
  * THIS IS THE SINGLE SOURCE OF TRUTH for known content gaps, including
  * issue #74's inventory: `bun run coverage:issue` (scripts/coverage-issue.ts)
- * renders #74's body from this file — edit here and regenerate rather than
- * hand-editing the issue.
- *
- * IF YOU EDIT THIS FILE, YOU MUST SYNC #74 in the same change — filling a
- * gap, adding one, or just reworking a sentence all leave the issue stale.
- * Run `bun run coverage:issue --write`. The repo's usual "don't touch
- * issues without asking" rule is explicitly waived here: #74 is generated
- * output, not correspondence, so pushing it needs no confirmation and
- * leaving it stale is the actual mistake.
+ * renders #74's body from this file, so any edit here — a filled gap, a new
+ * one, or only reworded copy — leaves that issue stale until it's
+ * regenerated. Never hand-edit the issue.
  *
  * `COVERAGE_NOTES` is also what the Settings panel
  * renders directly, so keep its `note` copy player-facing; `issueDetail` is

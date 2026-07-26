@@ -86,12 +86,15 @@ Two ledgers track what players see, and both are easy to forget:
   Covered" panel in Settings. Filling a gap means deleting its entry; finding one
   means adding it.
 
-  **Editing that file obligates you to sync issue #74 in the same change.** #74
-  is a generated mirror, so any edit -- a filled gap, a new gap, or a reworded
-  sentence -- leaves it stale. Run `bun run coverage:issue --write` and it
-  rewrites the issue body for you. Never hand-edit the issue, and don't treat
-  this as an issue comment needing sign-off; it's generated output, and the only
-  way to get it wrong is to skip it.
+  The GitHub inventory issue (#74) is a generated mirror of that file, so any
+  edit -- a filled gap, a new gap, or a reworded sentence -- leaves it stale.
+  Run `bun run coverage:issue --write`, which rewrites the issue body for you.
+  Never hand-edit the issue.
+
+  Editing #74 needs write access to the repo, which you won't have on a fork.
+  That's fine and expected: `--write` detects it, skips the write, and prints
+  the body instead. Just mention in your PR that `coverageNotes.ts` changed,
+  and a maintainer syncs the issue when the PR lands.
 
 ## Reference data
 

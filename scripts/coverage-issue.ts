@@ -3,15 +3,14 @@
  * inventory) from `apps/web/src/model/coverageNotes.ts` — the single source
  * of truth.
  *
- * ANY edit to `coverageNotes.ts` — a filled gap, a new gap, or a pure copy
- * tweak — leaves #74 stale, so regenerating and pushing it is part of that
- * edit, not a follow-up. The repo's usual "don't touch issues without
- * asking" rule does not apply to #74: it is generated output, and syncing it
- * needs no confirmation. Skipping the sync is the failure mode, not writing
- * to the issue.
+ * Any edit to `coverageNotes.ts` — a filled gap, a new gap, or a pure copy
+ * tweak — leaves #74 stale until this runs.
  *
- * `bun run coverage:issue` prints the body to stdout for review;
- * `bun run coverage:issue --write` pushes it straight to #74 via `gh`.
+ * `bun run coverage:issue` prints the body to stdout.
+ * `bun run coverage:issue --write` pushes it to #74, which needs write
+ * access to the repo. Without that access the write is skipped and the body
+ * is printed instead — not an error, since syncing the issue is a maintainer
+ * step that a fork-based contributor can't perform and isn't asked to.
  */
 import { spawnSync } from "node:child_process";
 
@@ -61,7 +60,33 @@ ${INTERNAL_GAPS.map(renderInternalGap).join("\n\n")}
 When something on this list comes up at a real table, file an issue for that item and reference this one. This issue stays open as a reference.
 `;
 
-if (process.argv.includes("--write")) {
+/**
+ * Whether this checkout can edit the issue body. Only WRITE and above can;
+ * TRIAGE and READ can't, which is the normal state for a fork-based
+ * contributor. A missing, unauthenticated, or offline `gh` fails the same
+ * way and is treated the same, so the fallback path covers every reason the
+ * write can't happen rather than only the permissions one.
+ */
+function canEditIssues(): boolean {
+  const result = spawnSync(
+    "gh",
+    ["repo", "view", "--json", "viewerPermission", "-q", ".viewerPermission"],
+    { encoding: "utf8" },
+  );
+  if (result.error || result.status !== 0) return false;
+  return ["ADMIN", "MAINTAIN", "WRITE"].includes(result.stdout.trim());
+}
+
+if (!process.argv.includes("--write")) {
+  console.log(body);
+} else if (!canEditIssues()) {
+  console.error(
+    `[coverage-issue] Can't write to #${ISSUE_NUMBER} from this checkout, so it was left alone.\n` +
+      `[coverage-issue] Expected on a fork: a maintainer syncs the issue. Note the coverageNotes.ts\n` +
+      `[coverage-issue] change in your PR and you're done. The rendered body follows.\n`,
+  );
+  console.log(body);
+} else {
   const result = spawnSync("gh", ["issue", "edit", ISSUE_NUMBER, "--body-file", "-"], {
     input: body,
     stdio: ["pipe", "inherit", "inherit"],
@@ -73,6 +98,4 @@ if (process.argv.includes("--write")) {
     );
     process.exit(result.status ?? 1);
   }
-} else {
-  console.log(body);
 }
