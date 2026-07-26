@@ -1,3 +1,9 @@
+# Local-dev origin allow-list. `wrangler.jsonc`'s `vars` carries production
+# origins only; a `.dev.vars` entry of the same name replaces it for
+# `wrangler dev`, so localhost stays out of the deployed config (it would
+# otherwise weaken the Turnstile hostname assertion — see wrangler.jsonc).
+ALLOWED_APP_ORIGINS=http://localhost:5173
+
 DISCORD_CLIENT_SECRET=paste-a-real-discord-oauth-app-client-secret-here
 
 # Feedback -> GitHub-issue path (src/feedback.ts). See README "In-app feedback"

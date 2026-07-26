@@ -15,6 +15,15 @@ export default defineConfig({
   plugins: [
     cloudflareTest({
       wrangler: { configPath: "./wrangler.jsonc" },
+      miniflare: {
+        bindings: {
+          // Pinned for tests rather than inherited from `wrangler.jsonc`, which
+          // carries production origins only. These tests are about the
+          // allowed-vs-disallowed *behavior*, so they supply both kinds of
+          // origin themselves — and stay green when the deployed list changes.
+          ALLOWED_APP_ORIGINS: "http://localhost:5173,https://ledgermain.whizkid.dev",
+        },
+      },
     }),
   ],
 });
