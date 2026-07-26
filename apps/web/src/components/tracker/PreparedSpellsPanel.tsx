@@ -13,6 +13,8 @@ import type {
 import { addBuff, makeActiveBuff, removeBuff, suggestRounds } from "../../model/buffs.js";
 import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
 import {
+  castPreparedAsConversion,
+  castSpiritMagicSlot,
   classSpellsByLevel,
   clearPrepared,
   domainSpellLevelMap,
@@ -23,11 +25,15 @@ import {
   prepareSpell,
   preparedSpells,
   removePreparedAt,
+  resetSpiritMagicSlots,
+  restoreSpiritMagicSlot,
   restPreparedSpells,
   schoolSlotCapacity,
   setExpendedAt,
   setPreparedMetamagicLevels,
+  shamanSpiritMagicSlotStatus,
   spellLevelMap,
+  spontaneousConversionOptions,
   togglePreparedMetamagic,
   unprepareSpell,
 } from "../../model/preparedSpells.js";
@@ -51,6 +57,7 @@ import {
   isElementalSchoolTag,
   knownSpellsFor,
   mysterySpellsKnown,
+  oracleChannelSpellsKnown,
   patronSpellsKnown,
   preparedCapacityByLevel,
   SCHOOL_LABELS,
@@ -286,6 +293,75 @@ function ApplyBuffButton({
             </button>
           );
         })}
+      </div>
+    </details>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Spontaneous conversion — cleric cure/inflict, druid summon nature's ally.
+// ---------------------------------------------------------------------------
+
+/**
+ * "Cast as cure/inflict…" / "Cast as Summon Nature's Ally…" on a ready
+ * (un-expended) prepared spell — PF1's Spontaneous Casting exception (CRB
+ * p.40-41/51): lose THIS prepared spell to cast one of these instead, of the
+ * same level or lower. Only rendered when
+ * `spontaneousConversionOptions` has candidates (i.e. `casterTag` is cleric
+ * or druid AND at least one substitute spell exists at this slot's level or
+ * below — always true once any level ≥1 slot exists, since Cure/Inflict
+ * Light Wounds and Summon Nature's Ally I are both 1st level). Spends the
+ * SAME slot the row's own Cast button would (`castPreparedAsConversion` is a
+ * thin alias for `setExpendedAt`) — the doc never records which substitute
+ * was cast, only that the slot was spent, so the toast is the only record.
+ */
+function ConversionCastMenu({
+  doc,
+  refData,
+  update,
+  casterTag,
+  index,
+  maxLevel,
+}: {
+  doc: CharacterDoc;
+  refData: RefData;
+  update: BuilderProps["update"];
+  casterTag: string;
+  index: number;
+  maxLevel: number;
+}) {
+  const options = useMemo(
+    () => spontaneousConversionOptions(doc, refData, casterTag, maxLevel),
+    [doc, refData, casterTag, maxLevel],
+  );
+  if (options.length === 0) return null;
+  const summaryLabel = casterTag === "druid" ? "⇄ Summon" : "⇄ Cure/Inflict";
+  const menuLabel =
+    casterTag === "druid" ? "Cast as Summon Nature's Ally…" : "Cast as cure/inflict…";
+
+  return (
+    <details className="conversion-cast-menu">
+      <summary
+        className="pick-btn conversion-cast-summary"
+        title="Spontaneous Casting exception: lose this prepared spell to cast one of these instead, of the same level or lower."
+      >
+        {summaryLabel}
+      </summary>
+      <div className="conversion-cast-list">
+        <p className="hint conversion-cast-hint">{menuLabel}</p>
+        {options.map((opt) => (
+          <button
+            key={`${opt.kind}:${opt.id}`}
+            type="button"
+            className="pick-btn add conversion-cast-item"
+            onClick={() => {
+              update((d) => castPreparedAsConversion(d, index));
+              showToast({ message: `Cast ${opt.name} instead (spontaneous conversion)` });
+            }}
+          >
+            {opt.name} <span className="hint">L{opt.level}</span>
+          </button>
+        ))}
       </div>
     </details>
   );
@@ -740,6 +816,91 @@ function SchoolSlotsSection({
 }
 
 // ---------------------------------------------------------------------------
+// Shaman Spirit Magic — a bonus spontaneous slot per accessible spell level.
+// ---------------------------------------------------------------------------
+
+/**
+ * The shaman's Spirit Magic bonus pool (ACG): ONE bonus spontaneous slot per
+ * spell level she can cast, castable only with a spell from her chosen
+ * spirit's Spirit Magic list — a separate pool from her ordinary prepared
+ * loadout above (`model/preparedSpells.ts`'s "Shaman Spirit Magic" section
+ * has the full RAW citation). Each level is a single Cast/Recover pip, not a
+ * counted slot pool, since RAW never grants more than one.
+ */
+function SpiritMagicSlotsSection({
+  doc,
+  refData,
+  update,
+  shamanLevel,
+  effectiveClassLevel,
+}: {
+  doc: BuilderProps["doc"];
+  refData: RefData;
+  update: BuilderProps["update"];
+  /** RAW shaman class level — which spirit-magic spells are known is a class-feature grant, never advancement-accelerated. */
+  shamanLevel: number;
+  /** Advancement-aware class level — which slot LEVELS exist follows the same table lookup as her ordinary per-day slots. */
+  effectiveClassLevel: number;
+}) {
+  const status = shamanSpiritMagicSlotStatus(doc, effectiveClassLevel);
+  const spiritSpellsByLevel = useMemo(() => {
+    const map = new Map<number, { id: string; name: string }[]>();
+    for (const sp of shamanSpiritSpellsKnown(refData, doc.build.shamanSpirit, shamanLevel)) {
+      (map.get(sp.level) ?? map.set(sp.level, []).get(sp.level)!).push(sp);
+    }
+    return map;
+  }, [refData, doc.build.shamanSpirit, shamanLevel]);
+
+  if (status.length === 0) return null;
+
+  return (
+    <div className="spirit-magic-slots">
+      <header className="domain-slots-head">
+        <h4 className="domain-slots-title">Spirit Magic</h4>
+        <p className="hint domain-slots-hint">
+          One bonus spontaneous slot per spell level you can cast, filled from your spirit's Spirit
+          Magic list (see the Spirit picker in the builder) — doesn't touch your prepared loadout
+          above.
+        </p>
+      </header>
+      {status.map(({ level, remaining }) => {
+        const spells = spiritSpellsByLevel.get(level) ?? [];
+        return (
+          <section key={level} className="prep-level is-domain">
+            <header className="prep-head">
+              <span className="prep-head-label">Spirit Magic L{level}</span>
+              <span className="prep-count">{remaining}/1 available</span>
+            </header>
+            {spells.length > 0 ? (
+              <p className="hint">{spells.map((s) => s.name).join(", ")}</p>
+            ) : (
+              <p className="prep-none">No spirit chosen, or no spirit-magic spell at this level.</p>
+            )}
+            {remaining > 0 ? (
+              <button
+                type="button"
+                className="pick-btn remove prep-cast"
+                onClick={() => update((d) => castSpiritMagicSlot(d, effectiveClassLevel, level))}
+              >
+                Cast
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="pick-btn add prep-cast"
+                onClick={() => update((d) => restoreSpiritMagicSlot(d, level))}
+              >
+                Recover
+              </button>
+            )}
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Prepared-caster (wizard) view
 // ---------------------------------------------------------------------------
 
@@ -884,6 +1045,14 @@ function PreparedView({
   const anyExpended = classPrepared.some(({ p }) => p.expended);
   const totalPrepared = classPrepared.length;
 
+  // Shaman Spirit Magic (ACG): a separate bonus spontaneous-slot pool, so its
+  // own usage also has to enable this class's "New day" button and get reset
+  // alongside the ordinary prepared loadout — see
+  // `model/preparedSpells.ts`'s "Shaman Spirit Magic" section.
+  const isShaman = casterTag === "shaman";
+  const anySpiritMagicUsed =
+    isShaman && shamanSpiritMagicSlotStatus(doc, effectiveClassLevel).some((s) => s.used > 0);
+
   return (
     <Panel
       title="Spells"
@@ -894,10 +1063,11 @@ function PreparedView({
         <button
           type="button"
           className="btn-ghost rest"
-          disabled={!anyExpended}
+          disabled={!anyExpended && !anySpiritMagicUsed}
           title="Same as the global New day action, scoped to this class's spells"
           onClick={() => {
-            const next = restPreparedSpells(doc, classTag);
+            let next = restPreparedSpells(doc, classTag);
+            if (isShaman) next = resetSpiritMagicSlots(next);
             update(() => next);
             setConfirmClear(false);
             showToast({
@@ -1044,6 +1214,16 @@ function PreparedView({
                             update={update}
                             casterLevel={casterLevel}
                             onCast={(d) => (isCantrip ? d : setExpendedAt(d, r.index, true))}
+                          />
+                        )}
+                        {!isCantrip && !r.expended && (
+                          <ConversionCastMenu
+                            doc={doc}
+                            refData={refData}
+                            update={update}
+                            casterTag={casterTag}
+                            index={r.index}
+                            maxLevel={r.baseLevel}
                           />
                         )}
                         {isCantrip ? (
@@ -1213,6 +1393,17 @@ function PreparedView({
           classTag={classTag}
         />
       )}
+
+      {/* Spirit Magic: one bonus spontaneous slot per level, shaman only. */}
+      {isShaman && (
+        <SpiritMagicSlotsSection
+          doc={doc}
+          refData={refData}
+          update={update}
+          shamanLevel={classLevel}
+          effectiveClassLevel={effectiveClassLevel}
+        />
+      )}
     </Panel>
   );
 }
@@ -1318,6 +1509,7 @@ function SpontaneousView({
     const bonus = [
       ...mysterySpellsKnown(refData, doc.build.oracleMystery, classLevel),
       ...curseSpellsKnown(refData, doc.build.oracleCurse, classLevel),
+      ...oracleChannelSpellsKnown(refData, doc.build.oracleChannelAlignment, classLevel),
     ];
     for (const sp of bonus) {
       if (known.has(sp.id)) continue;

@@ -12,12 +12,17 @@
  * stable within one render of the prepared list.
  */
 
-import { metamagicDef } from "@pf1/engine";
+import { metamagicDef, shamanSpiritMagicSlotLevels } from "@pf1/engine";
 import type { AppliedMetamagic, CharacterDoc, PreparedSpell, RefData, Spell } from "@pf1/schema";
 
+import { normalizeAlignmentCode } from "./names.js";
+import { chosenOccultistImplementCount } from "./occultistImplements.js";
 import {
+  accessibleSpellLevels,
   casterClassesOf,
   casterModelFor,
+  channelSpellLine,
+  type ChannelSpellLine,
   isElementalSchoolTag,
   knownSpellsFor,
   setKnownSpellsFor,
@@ -266,6 +271,265 @@ export function clearPrepared(doc: CharacterDoc, classTag?: string): CharacterDo
   const toKeep = list.filter((p) => (p.classTag ?? undefined) !== classTag);
   if (toKeep.length === list.length) return doc;
   return withPrepared(doc, toKeep);
+}
+
+// ---------------------------------------------------------------------------
+// Spontaneous casting exceptions (cleric cure/inflict, druid summon nature's
+// ally — CRB p.40-41/51 "Spontaneous Casting"). Both let a prepared caster
+// "lose" a prepared spell (never an orison or domain/nature-bond-domain
+// spell) to cast, instead, any spell of the relevant name-defined line (see
+// `model/spellcasting.channelSpellLine`) of the SAME LEVEL OR LOWER. RAW is a
+// genuine substitution at the moment of casting — the loadout itself never
+// changes, only which slot gets spent — so the only doc-state this needs is
+// the ordinary expend-a-slot transition (`setExpendedAt`); the "model" work
+// here is entirely about resolving WHICH spells are legal substitutes.
+// ---------------------------------------------------------------------------
+
+const GOOD_ALIGNMENT_CODES = new Set(["LG", "NG", "CG"]);
+const EVIL_ALIGNMENT_CODES = new Set(["LE", "NE", "CE"]);
+
+/**
+ * Which spontaneous-casting line a cleric's Spontaneous Casting exception
+ * converts to, or `undefined` when unresolved (see below). PF1 RAW (CRB
+ * p.51, verbatim): a good cleric (or one who worships a good deity) always
+ * converts to cure spells; an evil cleric (or one who worships an evil
+ * deity) always to inflict; "a cleric who is neither good nor evil and whose
+ * deity is neither good nor evil can convert spells to either cure spells or
+ * inflict spells (player's choice). Once the player makes this choice, it
+ * cannot be reversed."
+ *
+ * Resolved from `identity.alignment` first (no per-class deity-alignment
+ * mapping exists in the vendored data — same gap `alignment.ts` documents
+ * for cleric's OWN alignment restriction — so this reads the character's
+ * personal alignment, matching RAW's "or whose deity is" fallback in
+ * practice for the overwhelming majority of characters, who share their
+ * deity's alignment). Falls back to `build.clericChannelAlignment` — the
+ * neutral-cleric build choice — whenever the alignment doesn't resolve to an
+ * unambiguous good or evil code (a true-neutral alignment, OR no
+ * alignment/an unrecognized one set at all, so the mechanic never silently
+ * vanishes just because the player hasn't filled in Identity yet).
+ */
+export function clericSpontaneousAlignment(doc: CharacterDoc): "cure" | "inflict" | undefined {
+  const code = doc.identity.alignment ? normalizeAlignmentCode(doc.identity.alignment) : undefined;
+  if (code && GOOD_ALIGNMENT_CODES.has(code)) return "cure";
+  if (code && EVIL_ALIGNMENT_CODES.has(code)) return "inflict";
+  return doc.build.clericChannelAlignment;
+}
+
+/** Set (or clear) the neutral-cleric cure/inflict build choice (see {@link clericSpontaneousAlignment}). */
+export function setClericChannelAlignment(
+  doc: CharacterDoc,
+  alignment: "cure" | "inflict" | null,
+): CharacterDoc {
+  return { ...doc, build: { ...doc.build, clericChannelAlignment: alignment ?? undefined } };
+}
+
+/** Set (or clear) the oracle's one-time cure/inflict spells-known choice (see `model/spellcasting.oracleChannelSpellsKnown`). */
+export function setOracleChannelAlignment(
+  doc: CharacterDoc,
+  alignment: "cure" | "inflict" | null,
+): CharacterDoc {
+  return { ...doc, build: { ...doc.build, oracleChannelAlignment: alignment ?? undefined } };
+}
+
+/**
+ * Which {@link ChannelSpellLine}(s) `casterTag`'s Spontaneous Casting
+ * exception may convert a prepared spell into, for `doc`. A druid always
+ * gets exactly `["summonNature"]` (not alignment-gated — every druid has the
+ * same exception, CRB p.40-41). A cleric gets the one line
+ * {@link clericSpontaneousAlignment} resolves to, or — when that's
+ * `undefined` (a true-neutral or not-yet-specified cleric who hasn't made
+ * the one-time build choice) — BOTH lines, so the exception stays usable
+ * rather than disappearing behind an unmade choice; this is the one
+ * deliberately permissive spot in an otherwise RAW-exact mechanic. Every
+ * other caster gets `[]` — the exception simply doesn't exist for them.
+ */
+export function spontaneousConversionLines(
+  doc: CharacterDoc,
+  casterTag: string,
+): ChannelSpellLine[] {
+  if (casterTag === "druid") return ["summonNature"];
+  if (casterTag === "cleric") {
+    const alignment = clericSpontaneousAlignment(doc);
+    return alignment ? [alignment] : ["cure", "inflict"];
+  }
+  return [];
+}
+
+export interface SpontaneousConversionOption {
+  /** Which spell line this candidate belongs to (only meaningful for a cleric offered both, per {@link spontaneousConversionLines}). */
+  kind: ChannelSpellLine;
+  id: string;
+  name: string;
+  level: number;
+}
+
+/**
+ * Legal spontaneous-conversion substitutes for a prepared slot of
+ * `maxLevel` (PF1 RAW: "same spell level or lower") — the full cross product
+ * of {@link spontaneousConversionLines} and {@link channelSpellLine}, sorted
+ * by level then name. Empty for a caster with no exception, or a cleric
+ * whose resolved line(s) have no vendored spells at `maxLevel` or below
+ * (shouldn't happen for any level ≥1, since Cure/Inflict Light Wounds and
+ * Summon Nature's Ally I are all 1st-level).
+ */
+export function spontaneousConversionOptions(
+  doc: CharacterDoc,
+  refData: RefData,
+  casterTag: string,
+  maxLevel: number,
+): SpontaneousConversionOption[] {
+  const out: SpontaneousConversionOption[] = [];
+  for (const kind of spontaneousConversionLines(doc, casterTag)) {
+    for (const sp of channelSpellLine(refData, kind, maxLevel)) out.push({ kind, ...sp });
+  }
+  return out;
+}
+
+/**
+ * Cast the prepared instance at `index` as a spontaneous conversion (see
+ * {@link spontaneousConversionOptions}) instead of its own prepared spell.
+ * RAW spends the SLOT, not the specific prepared spell, so this is
+ * mechanically identical to an ordinary cast — a thin, self-documenting
+ * alias for {@link setExpendedAt} rather than new doc state. The caller
+ * picks which substitute was cast (from `spontaneousConversionOptions`) only
+ * to tell the player what happened (e.g. a toast); the doc itself doesn't
+ * record which specific cure/inflict/summon spell filled the slot, same as
+ * it doesn't record which specific damage type a Resist Energy cast on
+ * someone else affected.
+ */
+export function castPreparedAsConversion(doc: CharacterDoc, index: number): CharacterDoc {
+  return setExpendedAt(doc, index, true);
+}
+
+// ---------------------------------------------------------------------------
+// Shaman Spirit Magic bonus spontaneous-cast slots (ACG "Spirit Magic").
+//
+// Distinct from the ordinary spontaneous-slot pool in `model/spontaneousSpells.ts`:
+// that module tracks a REAL caster class's per-day slots against its own
+// per-day/known tables (keyed by that class's own tag/classTag). This pool
+// belongs to no `identity.classes` entry at all — it's a shaman-only bonus
+// mechanic layered ON TOP of her ordinary prepared loadout — so it's tracked
+// here, under a synthetic key (`"shaman:spiritMagic"`) in the SAME
+// `live.spells.slotsUsedByClass` storage `spontaneousSpells.ts` uses (that
+// field only requires a string key, never validated against
+// `identity.classes`), rather than inventing a parallel schema field.
+// ---------------------------------------------------------------------------
+
+const SPIRIT_MAGIC_POOL_KEY = "shaman:spiritMagic";
+
+function spiritMagicSlotsUsed(doc: CharacterDoc): Record<number, number> {
+  return doc.live.spells?.slotsUsedByClass?.[SPIRIT_MAGIC_POOL_KEY] ?? {};
+}
+
+function withSpiritMagicSlotsUsed(doc: CharacterDoc, used: Record<number, number>): CharacterDoc {
+  const prepared = doc.live.spells?.prepared ?? [];
+  return {
+    ...doc,
+    live: {
+      ...doc.live,
+      spells: {
+        prepared,
+        ...(doc.live.spells?.slotsUsed !== undefined
+          ? { slotsUsed: doc.live.spells.slotsUsed }
+          : {}),
+        slotsUsedByClass: { ...doc.live.spells?.slotsUsedByClass, [SPIRIT_MAGIC_POOL_KEY]: used },
+      },
+    },
+  };
+}
+
+export interface SpiritMagicSlotStatus {
+  level: number;
+  /** 0 or 1 — RAW grants exactly one Spirit Magic slot per accessible spell level. */
+  used: number;
+  remaining: number;
+}
+
+/**
+ * Spirit Magic slot status at every level `shamanLevel` can cast (see
+ * `@pf1/engine`'s `shamanSpiritMagicSlotLevels`) — one bonus spontaneous slot
+ * per level, castable only from the chosen spirit's Spirit Magic list
+ * (`model/spellcasting.ts`'s `shamanSpiritSpellsKnown`).
+ */
+export function shamanSpiritMagicSlotStatus(
+  doc: CharacterDoc,
+  shamanLevel: number,
+): SpiritMagicSlotStatus[] {
+  const used = spiritMagicSlotsUsed(doc);
+  return shamanSpiritMagicSlotLevels(shamanLevel).map((level) => {
+    const u = (used[level] ?? 0) > 0 ? 1 : 0;
+    return { level, used: u, remaining: 1 - u };
+  });
+}
+
+/** Spend the Spirit Magic slot at `spellLevel`. No-op if already used or the level isn't accessible at `shamanLevel`. */
+export function castSpiritMagicSlot(
+  doc: CharacterDoc,
+  shamanLevel: number,
+  spellLevel: number,
+): CharacterDoc {
+  if (!shamanSpiritMagicSlotLevels(shamanLevel).includes(spellLevel)) return doc;
+  const used = spiritMagicSlotsUsed(doc);
+  if ((used[spellLevel] ?? 0) >= 1) return doc;
+  return withSpiritMagicSlotsUsed(doc, { ...used, [spellLevel]: 1 });
+}
+
+/** Restore (undo) the Spirit Magic slot at `spellLevel`. No-op if not spent. */
+export function restoreSpiritMagicSlot(doc: CharacterDoc, spellLevel: number): CharacterDoc {
+  const used = spiritMagicSlotsUsed(doc);
+  if ((used[spellLevel] ?? 0) === 0) return doc;
+  const next = { ...used };
+  delete next[spellLevel];
+  return withSpiritMagicSlotsUsed(doc, next);
+}
+
+/** New day: restore every spent Spirit Magic slot. Returns the same doc reference when none were spent. */
+export function resetSpiritMagicSlots(doc: CharacterDoc): CharacterDoc {
+  const used = spiritMagicSlotsUsed(doc);
+  if (Object.keys(used).length === 0) return doc;
+  return withSpiritMagicSlotsUsed(doc, {});
+}
+
+// ---------------------------------------------------------------------------
+// Occultist known-spell cap (implement schools).
+// ---------------------------------------------------------------------------
+
+/**
+ * Occultist known-spell cap per spell level (Occult Adventures "Implements"
+ * class feature, verified verbatim on aonprd.com): "For each implement
+ * school he learns to use, he can add one spell of each level he can cast to
+ * his list of spells known, chosen from that school's spell list... If he
+ * selects the same implement school multiple times, he adds one spell of
+ * each level from that school's list for each time he has selected that
+ * school." The cap at every level she can currently cast (0-9, including
+ * knacks — `CASTER_MODELS.occultist`'s own doc comment confirms knacks are
+ * granted per implement school too, not a separate free-cantrip pool) is
+ * therefore simply her total implement-school PICK COUNT — a multiset, so
+ * repeats count individually (same convention
+ * `occultistImplements.chosenOccultistImplementCount` uses for its own
+ * budget) — uniform across every accessible level, never varying by level
+ * the way a normal spells-known table does.
+ *
+ * `CASTER_MODELS.occultist` deliberately has no `knownProgression` (no
+ * generic SRD "Spells Known" table exists for this class at all), so
+ * `spellsKnownLimitsByLevel` can't express this cap — it only takes a class
+ * level, never a build-choice-dependent `doc`. This is the occultist-specific
+ * replacement callers should use instead, wherever they'd otherwise call
+ * `spellsKnownLimitsByLevel` for occultist's known-spell picker.
+ *
+ * Same soft-warning posture as every other spells-known cap in this app
+ * (sorcerer, bard, ...): advisory only — the caller is responsible for never
+ * hard-blocking a pick past it.
+ */
+export function occultistKnownSpellLimitsByLevel(
+  doc: CharacterDoc,
+  classLevel: number,
+): { level: number; limit: number }[] {
+  const model = casterModelFor("occultist");
+  if (!model) return [];
+  const cap = chosenOccultistImplementCount(doc);
+  return accessibleSpellLevels(model, classLevel).map((level) => ({ level, limit: cap }));
 }
 
 /**

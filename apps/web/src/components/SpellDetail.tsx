@@ -1,7 +1,7 @@
 import type { Spell } from "@pf1/schema";
 
 import type { ResolvedMetamagic } from "../model/metamagic.js";
-import { concentrationDC, spellSaveDC } from "../model/spellcasting.js";
+import { concentrationDC, concentrationScenarios, spellSaveDC } from "../model/spellcasting.js";
 import {
   formatCastingTime,
   formatSpellArea,
@@ -163,7 +163,20 @@ export function SpellDetail({
           )}
           <div className="spell-detail-row">
             <span className="spell-detail-label">Concentration</span>
-            <span className="spell-detail-value">DC {concDC} to cast defensively</span>
+            <span className="spell-detail-value">
+              DC {concDC} to cast defensively
+              <details className="conc-scenarios">
+                <summary>other concentration DCs</summary>
+                <ul className="conc-scenarios-list">
+                  {concentrationScenarios(spellLevel).map((s) => (
+                    <li key={s.id}>
+                      DC {s.dc}
+                      {s.externalTerm ? ` + ${s.externalTerm}` : ""} — {s.label}
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </span>
           </div>
           {showSlot && (
             <div className="spell-detail-row">

@@ -168,10 +168,14 @@ export function isCasterTag(tag: string): boolean {
  * advance a class of the matching kind; an `"any"` slot accepts any of the
  * three (see `slotAcceptsKind` below for why).
  *
- * Bard, paladin, and ranger are all modeled by `casterLevelForClass` above
- * (bard: `FULL_CASTER_TAGS`; paladin/ranger: `OFFSET_CASTER_TAGS`) as well as
- * having an entry here — this table answers a different question (advancement-
- * target kind, not CL) so it stays alongside those, not instead of them.
+ * Bard, paladin, ranger, and antipaladin are all modeled by
+ * `casterLevelForClass` above (bard: `FULL_CASTER_TAGS`; paladin/ranger/
+ * antipaladin: `OFFSET_CASTER_TAGS`) as well as having an entry here — this
+ * table answers a different question (advancement-target kind, not CL) so it
+ * stays alongside those, not instead of them. Antipaladin was previously
+ * absent from this table (moot until something actually advanced antipaladin
+ * casting, but wrong regardless — a paladin's mirror-image class is divine
+ * too, same as paladin/ranger above it).
  *
  * Cross-check against `ARCANE_CASTER_TAGS` in `packages/engine/src/compute.ts`
  * (used for arcane-spell-failure display): every tag marked `"arcane"` here —
@@ -205,6 +209,7 @@ export const CASTER_KIND: Readonly<Record<string, "arcane" | "divine" | "psychic
   druid: "divine",
   paladin: "divine",
   ranger: "divine",
+  antipaladin: "divine",
   oracle: "divine",
   inquisitor: "divine",
   shaman: "divine",

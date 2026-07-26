@@ -15,11 +15,16 @@ import {
   setWizardSchool,
   toggleKnownSpell,
 } from "../src/model/doc.js";
+import { addOccultistImplement } from "../src/model/occultistImplements.js";
 import {
+  castPreparedAsConversion,
+  castSpiritMagicSlot,
   classSpellsByLevel,
   clearPrepared,
+  clericSpontaneousAlignment,
   domainSpellLevelMap,
   isSchoolSlotEligible,
+  occultistKnownSpellLimitsByLevel,
   oppositionCost,
   prepareDomainSpell,
   prepareSchoolSpell,
@@ -27,9 +32,14 @@ import {
   preparedSpells,
   reconcileGrantedCantrips,
   removePreparedAt,
+  resetSpiritMagicSlots,
+  restoreSpiritMagicSlot,
   restPreparedSpells,
   schoolSlotCapacity,
+  setClericChannelAlignment,
   setExpendedAt,
+  shamanSpiritMagicSlotStatus,
+  spontaneousConversionOptions,
   unprepareSpell,
 } from "../src/model/preparedSpells.js";
 import { casterModelFor, spellSlotsByLevel } from "../src/model/spellcasting.js";
@@ -516,5 +526,167 @@ describe("domainSlotCount", () => {
 
   it("gives a cleric/inquisitor the cleric's two", () => {
     expect(domainSlotCount(classed(["inquisitor", "cleric"]))).toBe(2);
+  });
+});
+
+describe("clericSpontaneousAlignment (CRB p.51 Spontaneous Casting)", () => {
+  function withAlignment(alignment: string | undefined): CharacterDoc {
+    const doc = createEmptyDoc("t");
+    return { ...doc, identity: { ...doc.identity, alignment } };
+  }
+
+  it("resolves any good alignment to cure", () => {
+    expect(clericSpontaneousAlignment(withAlignment("LG"))).toBe("cure");
+    expect(clericSpontaneousAlignment(withAlignment("NG"))).toBe("cure");
+    expect(clericSpontaneousAlignment(withAlignment("CG"))).toBe("cure");
+  });
+
+  it("resolves any evil alignment to inflict", () => {
+    expect(clericSpontaneousAlignment(withAlignment("LE"))).toBe("inflict");
+    expect(clericSpontaneousAlignment(withAlignment("NE"))).toBe("inflict");
+    expect(clericSpontaneousAlignment(withAlignment("CE"))).toBe("inflict");
+  });
+
+  it("falls back to the build choice for a true-neutral-flavored alignment", () => {
+    const neutral = withAlignment("LN");
+    expect(clericSpontaneousAlignment(neutral)).toBeUndefined();
+    const chosen = setClericChannelAlignment(neutral, "inflict");
+    expect(clericSpontaneousAlignment(chosen)).toBe("inflict");
+  });
+
+  it("falls back to the build choice when no alignment is set at all", () => {
+    const noAlignment = withAlignment(undefined);
+    expect(clericSpontaneousAlignment(noAlignment)).toBeUndefined();
+    expect(clericSpontaneousAlignment(setClericChannelAlignment(noAlignment, "cure"))).toBe("cure");
+  });
+});
+
+describe("spontaneousConversionOptions (cleric cure/inflict, druid summon nature's ally)", () => {
+  it("a good cleric can convert a level-2 prepared slot into Cure Light or Moderate Wounds, never a level-3 spell", () => {
+    let doc = createEmptyDoc("t");
+    doc = { ...doc, identity: { ...doc.identity, alignment: "NG" } };
+    const options = spontaneousConversionOptions(doc, ref, "cleric", 2);
+    expect(options.every((o) => o.kind === "cure")).toBe(true);
+    expect(options.map((o) => o.name)).toContain("Cure Light Wounds");
+    expect(options.map((o) => o.name)).toContain("Cure Moderate Wounds");
+    expect(options.some((o) => o.level > 2)).toBe(false);
+  });
+
+  it("an evil cleric only sees inflict spells", () => {
+    let doc = createEmptyDoc("t");
+    doc = { ...doc, identity: { ...doc.identity, alignment: "NE" } };
+    const options = spontaneousConversionOptions(doc, ref, "cleric", 1);
+    expect(options.length).toBeGreaterThan(0);
+    expect(options.every((o) => o.kind === "inflict")).toBe(true);
+  });
+
+  it("a neutral cleric who hasn't chosen yet is offered both cure and inflict, not blocked", () => {
+    let doc = createEmptyDoc("t");
+    doc = { ...doc, identity: { ...doc.identity, alignment: "LN" } };
+    const options = spontaneousConversionOptions(doc, ref, "cleric", 1);
+    expect(options.some((o) => o.kind === "cure")).toBe(true);
+    expect(options.some((o) => o.kind === "inflict")).toBe(true);
+  });
+
+  it("a druid always gets Summon Nature's Ally, regardless of alignment", () => {
+    const doc = createEmptyDoc("t");
+    const options = spontaneousConversionOptions(doc, ref, "druid", 3);
+    expect(options.length).toBeGreaterThan(0);
+    expect(options.every((o) => o.kind === "summonNature")).toBe(true);
+    expect(options.map((o) => o.name)).toContain("Summon Nature's Ally III");
+    expect(options.some((o) => o.level > 3)).toBe(false);
+  });
+
+  it("a non-eligible caster (e.g. wizard) gets no conversion options", () => {
+    const doc = createEmptyDoc("t");
+    expect(spontaneousConversionOptions(doc, ref, "wizard", 5)).toEqual([]);
+  });
+
+  it("castPreparedAsConversion just expends the slot, same as an ordinary cast", () => {
+    let doc = createEmptyDoc("t");
+    doc = prepareSpell(doc, "bless");
+    doc = castPreparedAsConversion(doc, 0);
+    expect(preparedSpells(doc)).toEqual([{ spellId: "bless", expended: true }]);
+  });
+});
+
+describe("shaman Spirit Magic bonus slots (ACG)", () => {
+  it("grants one slot per accessible level, none below 1st", () => {
+    const doc = createEmptyDoc("t");
+    const status = shamanSpiritMagicSlotStatus(doc, 1);
+    expect(status.map((s) => s.level)).toEqual([1]);
+    expect(status[0]).toMatchObject({ used: 0, remaining: 1 });
+  });
+
+  it("a level-7 shaman has slots at levels 1-4", () => {
+    const doc = createEmptyDoc("t");
+    const status = shamanSpiritMagicSlotStatus(doc, 7);
+    expect(status.map((s) => s.level)).toEqual([1, 2, 3, 4]);
+  });
+
+  it("casting spends the slot; casting again is a no-op; restoring undoes it", () => {
+    let doc = createEmptyDoc("t");
+    doc = castSpiritMagicSlot(doc, 3, 1);
+    expect(shamanSpiritMagicSlotStatus(doc, 3)[0]).toMatchObject({ used: 1, remaining: 0 });
+
+    const again = castSpiritMagicSlot(doc, 3, 1);
+    expect(shamanSpiritMagicSlotStatus(again, 3)[0]).toMatchObject({ used: 1, remaining: 0 });
+
+    doc = restoreSpiritMagicSlot(doc, 1);
+    expect(shamanSpiritMagicSlotStatus(doc, 3)[0]).toMatchObject({ used: 0, remaining: 1 });
+  });
+
+  it("casting an inaccessible level is a no-op", () => {
+    const doc = createEmptyDoc("t");
+    const out = castSpiritMagicSlot(doc, 1, 5); // level 1 shaman can't cast 5th yet
+    expect(out).toBe(doc); // unchanged
+    expect(shamanSpiritMagicSlotStatus(out, 1)).toEqual([{ level: 1, used: 0, remaining: 1 }]);
+  });
+
+  it("resetSpiritMagicSlots restores every spent slot and no-ops when nothing was spent", () => {
+    let doc = createEmptyDoc("t");
+    expect(resetSpiritMagicSlots(doc)).toBe(doc); // same reference, nothing to reset
+    doc = castSpiritMagicSlot(doc, 5, 1);
+    doc = castSpiritMagicSlot(doc, 5, 2);
+    doc = resetSpiritMagicSlots(doc);
+    expect(shamanSpiritMagicSlotStatus(doc, 5).every((s) => s.used === 0)).toBe(true);
+  });
+
+  it("the Spirit Magic pool is independent of the ordinary prepared loadout", () => {
+    let doc = createEmptyDoc("t");
+    doc = prepareSpell(doc, "bless");
+    doc = castSpiritMagicSlot(doc, 3, 1);
+    // The prepared loadout is untouched by spending a Spirit Magic slot.
+    expect(preparedSpells(doc)).toEqual([{ spellId: "bless", expended: false }]);
+  });
+});
+
+describe("occultistKnownSpellLimitsByLevel (Occult Adventures Implements)", () => {
+  it("a level-1 occultist with 2 implement schools (the 1st-level default) caps every accessible level at 2", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "occultist");
+    doc = addOccultistImplement(doc, "abjuration");
+    doc = addOccultistImplement(doc, "evocation");
+    const limits = occultistKnownSpellLimitsByLevel(doc, 1);
+    expect(limits.length).toBeGreaterThan(0);
+    expect(limits.every((l) => l.limit === 2)).toBe(true);
+  });
+
+  it("picking the same school twice raises the cap (a multiset, not a set)", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "occultist");
+    doc = addOccultistImplement(doc, "abjuration");
+    doc = addOccultistImplement(doc, "abjuration");
+    doc = addOccultistImplement(doc, "evocation");
+    const limits = occultistKnownSpellLimitsByLevel(doc, 1);
+    expect(limits.every((l) => l.limit === 3)).toBe(true);
+  });
+
+  it("no implements chosen yet caps every level at 0, never unbounded", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "occultist");
+    const limits = occultistKnownSpellLimitsByLevel(doc, 1);
+    expect(limits.length).toBeGreaterThan(0);
+    expect(limits.every((l) => l.limit === 0)).toBe(true);
   });
 });

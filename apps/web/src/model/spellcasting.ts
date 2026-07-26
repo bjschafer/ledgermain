@@ -51,9 +51,10 @@
  * so `knownLabel` reads "Familiar's Spells" rather than "Spellbook". Shaman
  * (ACG) is a plain wis-based prepared-divine caster modeled like cleric/druid
  * (reusing the cleric spells-per-day table, also verified identical), with a
- * Spirit Magic bonus-spontaneous-cast mechanic tied to her chosen spirit that
- * is NOT modeled here (same posture as druid's unmodeled spontaneous
- * summoning note).
+ * Spirit Magic bonus-spontaneous-cast mechanic tied to her chosen spirit —
+ * one bonus slot per spell level she can cast, tracked as its own pool in
+ * `model/preparedSpells.ts` (see its "Shaman Spirit Magic" section) and
+ * surfaced in the tracker's Spells panel.
  * Warpriest (ACG) is a plain wis-based prepared-divine caster with orisons —
  * own spells-per-day table (with a 0-level column), modeled identically to
  * cleric otherwise (`grantsAllCantrips: true`, `preparesFromClassList: true`)
@@ -233,7 +234,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Clerics have no spellbook and nothing to learn \u2014 the entire cleric spell list below is always available to prepare from. Your domain(s) also grant one bonus prepare-slot per accessible spell level (total, not per domain), drawable from any chosen domain's spell list (see Domain picker above).",
     blurb:
-      "Prepared divine caster: there's no \u201cknown\u201d list to curate \u2014 prepare any spell(s) from the full cleric list each day, plus one domain spell per accessible level (one slot total, even with two domains).",
+      "Prepared divine caster: there's no \u201cknown\u201d list to curate \u2014 prepare any spell(s) from the full cleric list each day, plus one domain spell per accessible level (one slot total, even with two domains). A good (or good-worshiping) cleric can spontaneously lose a prepared spell to cast a cure spell instead, of the same level or lower; an evil one likewise for inflict spells \u2014 see \u201cCast as cure/inflict\u2026\u201d on each prepared spell in the tracker.",
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },
@@ -282,7 +283,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Druids have no spellbook and nothing to learn — the entire druid spell list below is always available to prepare from.",
     blurb:
-      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full druid list each day. (Druids can also spontaneously swap a prepared spell for a summon nature's ally spell of the same level or lower — not modeled here, same posture as cleric's spontaneous cure/inflict casting.)",
+      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full druid list each day. A druid can also spontaneously lose a prepared spell to cast a summon nature's ally spell instead, of the same level or lower — see “Cast as Summon Nature's Ally…” on each prepared spell in the tracker.",
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },
@@ -324,7 +325,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     knownProgression: "sorcerer",
     knownLabel: "Spells Known",
     learnGuidance:
-      "Oracles learn a fixed set of spells known at each level from the cleric spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. An oracle also adds every “cure” spell OR every “inflict” spell she can cast to her known list for free (a permanent choice made at 1st level, not tracked as a separate field here — add the relevant spells to your known list manually). Her mystery (see the Mystery picker) also grants one bonus spell known at 2nd level and every two levels thereafter.",
+      "Oracles learn a fixed set of spells known at each level from the cleric spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. An oracle also adds every “cure” spell OR every “inflict” spell she can cast to her known list for free — a permanent choice made at 1st level (pick Cure or Inflict below); once chosen, the spells are added automatically as you reach the levels to cast them. Her mystery (see the Mystery picker) also grants one bonus spell known at 2nd level and every two levels thereafter.",
     blurb:
       "Spontaneous divine caster: you know a limited set of spells drawn from the cleric list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; orisons (cantrips) are cast at will once known.",
     grantsAllCantrips: false,
@@ -444,9 +445,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "shaman",
     knownLabel: "Shaman List",
     learnGuidance:
-      "Shamans have no spellbook and nothing to learn — the entire shaman spell list below is always available to prepare from. Her chosen spirit (see the Spirit picker) also grants a Spirit Magic spell list — one spell per spell level, 1st through 9th — shown as bonus known spells once she can cast that level (see model/spellcasting.shamanSpiritSpellsKnown). RAW she can additionally cast ONE of those spirit-magic spells per spell level per day SPONTANEOUSLY, without expending a normal prepared slot — that specific per-level daily-cast bookkeeping isn't tracked as its own resource pool here (a single fungible per-day counter would misrepresent 9 separate per-level uses), so treat the spirit-magic list as a reminder of which spells you can freely swap in.",
+      "Shamans have no spellbook and nothing to learn — the entire shaman spell list below is always available to prepare from. Her chosen spirit (see the Spirit picker) also grants a Spirit Magic spell list — one spell per spell level, 1st through 9th — shown as bonus known spells once she can cast that level (see model/spellcasting.shamanSpiritSpellsKnown). RAW she can additionally cast ONE of those spirit-magic spells per spell level per day SPONTANEOUSLY, without expending a normal prepared slot — tracked as its own bonus-slot pool in the tracker's Spells panel (Spirit Magic section, below your ordinary prepared loadout).",
     blurb:
-      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full shaman list each day, plus your spirit's Spirit Magic bonus spells (shown once accessible). Spirit-specific hexes (see the Hexes picker) are a separate class feature, not part of casting.",
+      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full shaman list each day, plus your spirit's Spirit Magic bonus spells (shown once accessible) — one bonus spontaneous slot per spell level, tracked separately in the tracker's Spirit Magic section. Spirit-specific hexes (see the Hexes picker) are a separate class feature, not part of casting.",
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },
@@ -564,20 +565,19 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     // table for this class at all. An occultist's spells known are instead
     // granted entirely by her implement schools (two chosen at 1st level,
     // one more at 2nd level and every 4 levels thereafter, to a maximum of
-    // seven; each school grants one spell per accessible spell level) — a
-    // real, vendored-but-unlinked subsystem (8 "*-resonant-school"
-    // class-abilities entries exist in the pipeline's raw cache but are not
-    // referenced from the Occultist class's own feature grants, so wiring an
-    // implement-school picker + resonant/focus powers is nontrivial and is
-    // deliberately NOT built here, same posture as the summoner's eidolon).
-    // Leaving `knownProgression` unset makes the known-spell picker simply
-    // unbounded (no advisory cap enforced) rather than inventing a fake
-    // table — `spellsKnownLimitsByLevel` already handles a missing
-    // `knownProgression` gracefully (returns `[]`).
+    // seven, repeatable to learn extra spells from the same school — see
+    // `model/occultistImplements.ts` and the builder's `ImplementPicker`;
+    // resonant/focus powers ride the same picker), each granting one spell
+    // per accessible spell level. Leaving `knownProgression` unset here
+    // means the STATIC `spellsKnownLimitsByLevel` table lookup can't express
+    // this cap (it depends on `doc.build.occultistImplements`, not just
+    // class level) — `model/preparedSpells.ts`'s
+    // `occultistKnownSpellLimitsByLevel` is the doc-aware replacement the
+    // builder's known-spell picker actually uses.
     progression: "occultist",
     knownLabel: "Spells Known",
     learnGuidance:
-      "An occultist's spells known are governed by her implement schools (not modeled here, so no known-spell cap is enforced) — add spells to your known list according to your implement selections. She gains two implement schools at 1st level, a further school at 2nd level and every 4 levels thereafter (to a maximum of seven), each granting one spell of every spell level she can cast. Knacks (0-level spells) are likewise granted per implement school, not tracked separately. Mental Focus (a resource pool spent to activate focus powers) rides the generic per-day pool pipeline; implements, resonant powers, and focus powers themselves are a separate subsystem, not modeled here.",
+      "An occultist's spells known are governed by her implement schools — add spells to your known list according to your implement selections (see the Implements picker). She gains two implement schools at 1st level, a further school at 2nd level and every 4 levels thereafter (to a maximum of seven; a school can be picked more than once to learn an extra spell from it), each granting one spell of every spell level she can cast, INCLUDING knacks (0-level). Your known-spell cap at every level equals your total implement picks — shown as an advisory limit, same soft posture as a sorcerer's spells-known cap. Mental Focus (a resource pool spent to activate focus powers) rides the generic per-day pool pipeline; resonant and focus powers themselves are picked in the Implements section, not part of casting.",
     blurb:
       "Spontaneous psychic caster: casts spells known from her implement schools by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane — no arcane spell failure applies. (Implements, resonant powers, and focus powers are a separate subsystem, not modeled here.)",
     grantsAllCantrips: false,
@@ -795,6 +795,119 @@ export function concentrationDC(spellLevel: number): number {
 }
 
 // ---------------------------------------------------------------------------
+// Concentration DC reference table (CRB p.206-207) — every situation OTHER
+// than defensive casting (see `concentrationDC` above).
+// ---------------------------------------------------------------------------
+
+/**
+ * One row of PF1's "Concentration Checks" table (CRB p.206-207, "Injuries
+ * and Distractions"). Every DC is `base(spellLevel) [+ externalAmount]` —
+ * `base` is the part this app can compute unassisted; `externalTerm`, when
+ * present, names an amount the sheet has no way to know (damage just taken,
+ * an opponent's CMB, ...) so the reference table shows the known part plus a
+ * plain-language reminder of what to add, rather than inventing a number or
+ * silently omitting the row. This is a display/reference surface only — the
+ * app computes and explains a DC, it never rolls the check itself.
+ */
+export interface ConcentrationScenario {
+  id: string;
+  /** Short label for the triggering situation. */
+  label: string;
+  /** The DC's fixed part (10/15/20 + spell level, or 5 for the mildest wind row) at a given spell level. */
+  base: (spellLevel: number) => number;
+  /** Name of an amount this DC also adds that the app cannot know, e.g. "damage taken" — undefined when `base` is the whole DC. */
+  externalTerm?: string;
+}
+
+/**
+ * Every "Concentration Checks" table row except defensive casting (which
+ * gets its own top-level {@link concentrationDC} — it's the one every spell
+ * row shows inline, per `SpellDetail`). Order matches the CRB table's own
+ * grouping: injury/damage rows, then the grappled row, then the four
+ * motion/weather rows (increasing severity), then entangled, then the
+ * generic "affected by a non-damaging spell" catch-all.
+ */
+export const CONCENTRATION_SCENARIOS: readonly ConcentrationScenario[] = [
+  {
+    id: "injured",
+    label: "Injured while casting (took damage this turn)",
+    base: (lvl) => 10 + lvl,
+    externalTerm: "the damage taken",
+  },
+  {
+    id: "continuousDamage",
+    label: "Taking continuous damage (ongoing fire, etc.)",
+    base: (lvl) => 10 + lvl,
+    externalTerm: "half the damage last dealt",
+  },
+  {
+    id: "grappled",
+    label: "Grappled or pinned",
+    base: (lvl) => 10 + lvl,
+    externalTerm: "the grappler's CMB",
+  },
+  {
+    id: "vigorousMotion",
+    label: "Vigorous motion (moving mount, small boat in rough water, a wagon)",
+    base: (lvl) => 10 + lvl,
+  },
+  {
+    id: "violentMotion",
+    label: "Violent motion (rowboat in rough water, wagon on a rough road, a mount at a run)",
+    base: (lvl) => 15 + lvl,
+  },
+  {
+    id: "extremelyViolentMotion",
+    label: "Extremely violent motion (earthquake, storm-tossed ship)",
+    base: (lvl) => 20 + lvl,
+  },
+  {
+    id: "windRainSleet",
+    label: "High wind carrying blinding rain or sleet",
+    base: (lvl) => 5 + lvl,
+  },
+  {
+    id: "windHailDebris",
+    label: "Wind-driven hail, dust, or debris",
+    base: (lvl) => 10 + lvl,
+  },
+  {
+    id: "entangled",
+    label: "Entangled (net, tanglefoot bag, or similar)",
+    base: (lvl) => 15 + lvl,
+  },
+  {
+    id: "nonDamagingSpell",
+    label: "Affected by another non-damaging spell effect while casting",
+    base: (lvl) => lvl,
+    externalTerm: "that effect's save DC",
+  },
+] as const;
+
+/** One resolved row of {@link CONCENTRATION_SCENARIOS} at a specific spell level, ready to display. */
+export interface ConcentrationScenarioResult {
+  id: string;
+  label: string;
+  /** The known part of the DC (`base(spellLevel)`, or `base(spellLevel) + externalTerm's amount` — unknowable here). */
+  dc: number;
+  externalTerm?: string;
+}
+
+/**
+ * Every non-defensive-casting concentration DC at `spellLevel`, resolved for
+ * display (see {@link ConcentrationScenario} for the "known part + named
+ * external amount" shape). Order matches {@link CONCENTRATION_SCENARIOS}.
+ */
+export function concentrationScenarios(spellLevel: number): ConcentrationScenarioResult[] {
+  return CONCENTRATION_SCENARIOS.map((s) => ({
+    id: s.id,
+    label: s.label,
+    dc: s.base(spellLevel),
+    externalTerm: s.externalTerm,
+  }));
+}
+
+// ---------------------------------------------------------------------------
 // Bloodline bonus spells (sorcerer)
 // ---------------------------------------------------------------------------
 
@@ -945,6 +1058,87 @@ export function curseSpellsKnown(
     .filter((sp) => sp.level <= oracleLevel)
     .map((sp) => ({ id: sp.id, name: refData.spells[sp.id]?.name ?? sp.name, level: sp.level }))
     .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ---------------------------------------------------------------------------
+// Cure/inflict/summon-nature's-ally "spell lines" — PF1's three name-defined
+// spell groups, used by the oracle's auto-known cure/inflict grant below and
+// by the cleric/druid spontaneous-conversion casting in
+// `model/preparedSpells.ts`.
+// ---------------------------------------------------------------------------
+
+export type ChannelSpellLine = "cure" | "inflict" | "summonNature";
+
+/**
+ * Name prefix for each spell line (case-insensitive, followed by a space) —
+ * a PREFIX match, not a substring match: the vendored data has unrelated
+ * spells (Obscure Object, Obscured Script, Secure Shelter) whose name merely
+ * *contains* "cure", so anchoring to the start of the name is required to
+ * avoid false positives. Verified against the full vendored spell slice.
+ */
+const CHANNEL_SPELL_LINE_PREFIX: Record<ChannelSpellLine, RegExp> = {
+  cure: /^cure\s/i,
+  inflict: /^inflict\s/i,
+  summonNature: /^summon nature's ally\s/i,
+};
+
+/**
+ * Every vendored spell on one of PF1's three name-defined "spell lines" —
+ * cure, inflict (Oracle's "Spells" class feature, CRB p.38, verbatim: "cure
+ * spells include all spells with 'cure' in the name, inflict spells include
+ * all spells with 'inflict' in the name"), or Summon Nature's Ally I-IX
+ * (CRB p.40-41, Druid's "Spontaneous Casting") — at or below `maxLevel`.
+ * None of the three is grouped by anything structured in the vendored data
+ * (no shared `Spell.group`/tag), so this is a hand-authored name-prefix
+ * match (see {@link CHANNEL_SPELL_LINE_PREFIX}), sorted by level then name.
+ */
+export function channelSpellLine(
+  refData: RefData,
+  line: ChannelSpellLine,
+  maxLevel: number,
+): { id: string; name: string; level: number }[] {
+  const pattern = CHANNEL_SPELL_LINE_PREFIX[line];
+  const out: { id: string; name: string; level: number }[] = [];
+  for (const [id, sp] of Object.entries(refData.spells)) {
+    if (sp.level > maxLevel) continue;
+    if (!pattern.test(sp.name)) continue;
+    out.push({ id, name: sp.name, level: sp.level });
+  }
+  return out.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+}
+
+/**
+ * Oracle's auto-known cure/inflict spells (PF1 APG/CRB "Spells" class
+ * feature, verbatim): "In addition to the spells gained... each oracle also
+ * adds all of either the cure spells or the inflict spells to her list of
+ * spells known... These spells are added as soon as the oracle is capable of
+ * casting them. This choice is made when the oracle gains her first level
+ * and cannot be changed." Unlike {@link mysterySpellsKnown}'s fixed
+ * per-mystery list, this list is defined purely by NAME (see
+ * {@link channelSpellLine}) and — unlike the cleric's spontaneous-casting
+ * cure/inflict split (`model/preparedSpells.ts`'s
+ * `clericSpontaneousAlignment`) — is NOT alignment-gated: it's a free
+ * one-time build choice (`build.oracleChannelAlignment`).
+ *
+ * Returns `[]` when `alignment` is `undefined` (not yet chosen) — nothing is
+ * guessed on the player's behalf, same as an unset `mysteryTag`.
+ *
+ * These are *bonus* spells known — the tracker/builder add them to the
+ * displayed known list automatically and they do NOT count against the
+ * spells-known cap, same posture as {@link mysterySpellsKnown}.
+ *
+ * @example
+ *   oracleChannelSpellsKnown(ref, "cure", 3)  // → Cure Light/Moderate/Serious Wounds
+ *   oracleChannelSpellsKnown(ref, undefined, 3)  // → []  (not chosen yet)
+ */
+export function oracleChannelSpellsKnown(
+  refData: RefData,
+  alignment: "cure" | "inflict" | undefined,
+  oracleLevel: number,
+): { id: string; name: string; level: number }[] {
+  if (!alignment) return [];
+  const accessible = new Set(accessibleSpellLevels(CASTER_MODELS.oracle!, oracleLevel));
+  return channelSpellLine(refData, alignment, 9).filter((sp) => accessible.has(sp.level));
 }
 
 // ---------------------------------------------------------------------------

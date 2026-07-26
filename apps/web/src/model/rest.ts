@@ -45,7 +45,7 @@ import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { getNegativeLevels, restAbilityDamage } from "./afflictions.js";
 import { restHp } from "./hp.js";
-import { restPreparedSpells } from "./preparedSpells.js";
+import { resetSpiritMagicSlots, restPreparedSpells } from "./preparedSpells.js";
 import { remaining, restAllResources } from "./resources.js";
 import { casterClassesOf, storedClassTag } from "./spellcasting.js";
 import { resetSpontaneousSlots } from "./spontaneousSpells.js";
@@ -238,6 +238,11 @@ export function restNewDay(
       const classTag = storedClassTag(next, refData, tag);
       next = restPreparedSpells(next, classTag);
       next = resetSpontaneousSlots(next, classTag);
+      // Shaman Spirit Magic (ACG): a separate bonus spontaneous-slot pool
+      // layered on top of her ordinary prepared loadout (see
+      // `model/preparedSpells.ts`'s "Shaman Spirit Magic" section) — reset
+      // alongside her normal spells so "New day" doesn't leave it stale.
+      if (tag === "shaman") next = resetSpiritMagicSlots(next);
       casterClasses.push({
         classTag,
         name: classDefs.find((c) => c.tag === tag)?.name ?? tag,

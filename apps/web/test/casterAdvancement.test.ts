@@ -53,6 +53,10 @@ describe("CASTER_KIND", () => {
     expect(CASTER_KIND.mesmerist).toBe("psychic");
   });
 
+  it("classifies antipaladin as divine (paladin's mirror-image class, APG)", () => {
+    expect(CASTER_KIND.antipaladin).toBe("divine");
+  });
+
   it("deliberately excludes alchemist/investigator — extract preparers, not spellcasters", () => {
     expect(CASTER_KIND.alchemist).toBeUndefined();
     expect(CASTER_KIND.investigator).toBeUndefined();

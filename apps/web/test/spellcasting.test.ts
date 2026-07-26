@@ -9,10 +9,13 @@ import {
   bonusSpellsForLevel,
   casterClassesOf,
   casterModelFor,
+  channelSpellLine,
   concentrationDC,
+  concentrationScenarios,
   curseSpellsKnown,
   grantedCantrips,
   mysterySpellsKnown,
+  oracleChannelSpellsKnown,
   preparedCapacityByLevel,
   shamanSpiritSpellsKnown,
   spellSaveDC,
@@ -185,6 +188,37 @@ describe("concentrationDC()", () => {
 
   it("level 9 → 33 (15 + 18)", () => {
     expect(concentrationDC(9)).toBe(33);
+  });
+});
+
+describe("concentrationScenarios() (CRB p.206-207 concentration DC table)", () => {
+  it("level-3 spell: grappled/pinned is 10 + level, with the grappler's CMB named as an unknown addend", () => {
+    const grappled = concentrationScenarios(3).find((s) => s.id === "grappled")!;
+    expect(grappled.dc).toBe(13);
+    expect(grappled.externalTerm).toBe("the grappler's CMB");
+  });
+
+  it("level-3 spell: injured while casting is 10 + level, with damage taken as the unknown addend", () => {
+    const injured = concentrationScenarios(3).find((s) => s.id === "injured")!;
+    expect(injured.dc).toBe(13);
+    expect(injured.externalTerm).toBe("the damage taken");
+  });
+
+  it("vigorous/violent/extremely violent motion scale 10/15/20 + level with no unknown addend", () => {
+    const rows = concentrationScenarios(2);
+    expect(rows.find((s) => s.id === "vigorousMotion")).toMatchObject({ dc: 12 });
+    expect(rows.find((s) => s.id === "violentMotion")).toMatchObject({ dc: 17 });
+    expect(rows.find((s) => s.id === "extremelyViolentMotion")).toMatchObject({ dc: 22 });
+    for (const id of ["vigorousMotion", "violentMotion", "extremelyViolentMotion"]) {
+      expect(rows.find((s) => s.id === id)!.externalTerm).toBeUndefined();
+    }
+  });
+
+  it("wind and entangled DCs at level 1: 5/10 for wind tiers, 15 for entangled", () => {
+    const rows = concentrationScenarios(1);
+    expect(rows.find((s) => s.id === "windRainSleet")).toMatchObject({ dc: 6 });
+    expect(rows.find((s) => s.id === "windHailDebris")).toMatchObject({ dc: 11 });
+    expect(rows.find((s) => s.id === "entangled")).toMatchObject({ dc: 16 });
   });
 });
 
@@ -884,5 +918,57 @@ describe("spellsPanelVisible()", () => {
   it("stays visible for stranded prepared spells", () => {
     const d = doc({ classes: [], prepared: [{ spellId: "x", level: 1 }] });
     expect(spellsPanelVisible(d, ref)).toBe(true);
+  });
+});
+
+describe("channelSpellLine() (PF1's name-defined cure/inflict/summon-nature's-ally spell lines)", () => {
+  it("matches every 'Cure ...' spell up to maxLevel, never 'Secure Shelter' or 'Obscure Object'", () => {
+    const names = channelSpellLine(ref, "cure", 4).map((s) => s.name);
+    expect(names).toContain("Cure Light Wounds");
+    expect(names).toContain("Cure Critical Wounds");
+    expect(names).not.toContain("Cure Light Wounds, Mass"); // 5th level, above maxLevel 4
+    expect(names).not.toContain("Secure Shelter");
+    expect(names).not.toContain("Obscure Object");
+  });
+
+  it("matches every 'Inflict ...' spell up to maxLevel", () => {
+    const names = channelSpellLine(ref, "inflict", 2).map((s) => s.name);
+    expect(names).toContain("Inflict Light Wounds");
+    expect(names).toContain("Inflict Moderate Wounds");
+    expect(names).not.toContain("Inflict Serious Wounds"); // 3rd level
+  });
+
+  it("matches Summon Nature's Ally I-N up to maxLevel", () => {
+    const names = channelSpellLine(ref, "summonNature", 3).map((s) => s.name);
+    expect(names).toEqual([
+      "Summon Nature's Ally I",
+      "Summon Nature's Ally II",
+      "Summon Nature's Ally III",
+    ]);
+  });
+});
+
+describe("oracleChannelSpellsKnown() (APG/CRB oracle 'Spells' cure/inflict grant)", () => {
+  it("returns [] when the choice hasn't been made yet", () => {
+    expect(oracleChannelSpellsKnown(ref, undefined, 10)).toEqual([]);
+  });
+
+  it("a level-1 oracle who chose cure knows Cure Light Wounds already", () => {
+    const names = oracleChannelSpellsKnown(ref, "cure", 1).map((s) => s.name);
+    expect(names).toContain("Cure Light Wounds");
+    expect(names).not.toContain("Cure Moderate Wounds"); // 2nd level, not yet accessible
+  });
+
+  it("scales up with oracle level, gated by what she can actually cast", () => {
+    // Oracle reuses the sorcerer's spells-per-day table: 2nd-level access
+    // starts at class level 4, 3rd at level 6, 4th at level 8.
+    const atFive = oracleChannelSpellsKnown(ref, "inflict", 5).map((s) => s.name);
+    expect(atFive).toContain("Inflict Light Wounds");
+    expect(atFive).toContain("Inflict Moderate Wounds");
+    expect(atFive).not.toContain("Inflict Serious Wounds"); // 3rd level — not yet at oracle 5
+
+    const atSix = oracleChannelSpellsKnown(ref, "inflict", 6).map((s) => s.name);
+    expect(atSix).toContain("Inflict Serious Wounds");
+    expect(atSix).not.toContain("Inflict Critical Wounds"); // 4th level — not yet at oracle 6
   });
 });

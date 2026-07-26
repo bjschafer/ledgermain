@@ -8,6 +8,7 @@ import {
   hypnoticStarePenalty,
   painfulStareBonus,
   painfulStareLabel,
+  shamanSpiritMagicSlotLevels,
 } from "../src/index.js";
 
 describe("baseSpellsPerDay() — wizard", () => {
@@ -883,5 +884,23 @@ describe("painfulStareBonus()/hypnoticStarePenalty() — mesmerist", () => {
   it("label helpers format the bonus/penalty", () => {
     expect(painfulStareLabel(4)).toBe("+2 dmg vs. stared target");
     expect(hypnoticStareLabel(8)).toBe("-3 Will save on stared target");
+  });
+});
+
+describe("shamanSpiritMagicSlotLevels() — ACG Spirit Magic", () => {
+  it("a level-1 shaman has one bonus slot at 1st level only (no orisons)", () => {
+    expect(shamanSpiritMagicSlotLevels(1)).toEqual([1]);
+  });
+
+  it("a level-7 shaman has bonus slots at every level she can cast (1-4)", () => {
+    expect(shamanSpiritMagicSlotLevels(7)).toEqual([1, 2, 3, 4]);
+  });
+
+  it("a level-20 shaman has bonus slots at every level 1-9", () => {
+    expect(shamanSpiritMagicSlotLevels(20)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  });
+
+  it("out-of-range level returns no slots", () => {
+    expect(shamanSpiritMagicSlotLevels(0)).toEqual([]);
   });
 });

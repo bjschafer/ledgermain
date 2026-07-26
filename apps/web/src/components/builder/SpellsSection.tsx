@@ -14,12 +14,21 @@ import {
   grantedCantrips,
   knownSpellsFor,
   mysterySpellsKnown,
+  oracleChannelSpellsKnown,
   patronSpellsKnown,
   shamanSpiritSpellsKnown,
   spellsKnownLimitsByLevel,
   spellsPanelVisible,
 } from "../../model/spellcasting.js";
-import { classSpellsByLevel, spellLevelMap } from "../../model/preparedSpells.js";
+import {
+  classSpellsByLevel,
+  clericSpontaneousAlignment,
+  occultistKnownSpellLimitsByLevel,
+  setClericChannelAlignment,
+  setOracleChannelAlignment,
+  spellLevelMap,
+} from "../../model/preparedSpells.js";
+import { normalizeAlignmentCode } from "../../model/names.js";
 import type { SpellEntry } from "../../model/spellSearch.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
@@ -139,6 +148,17 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     ];
   }, [casterTag, refData, doc.build.oracleMystery, doc.build.oracleCurse, classLevel]);
 
+  // Oracle's auto-known cure/inflict spells (her permanent 1st-level choice,
+  // `build.oracleChannelAlignment`): same "auto-granted, read-only, exempt
+  // from the cap" treatment as mysteryEntries above, but rendered in its own
+  // block (see the ChannelAlignmentPicker chips below) since it's a distinct
+  // RAW mechanic from the mystery/curse bonus spells. See
+  // model/spellcasting.oracleChannelSpellsKnown.
+  const channelEntries = useMemo<SpellEntry[]>(() => {
+    if (casterTag !== "oracle") return [];
+    return oracleChannelSpellsKnown(refData, doc.build.oracleChannelAlignment, classLevel);
+  }, [casterTag, refData, doc.build.oracleChannelAlignment, classLevel]);
+
   // Psychic discipline bonus spells known: same "auto-granted, read-only,
   // exempt from the cap" treatment as bloodlineEntries/mysteryEntries above.
   // See model/spellcasting.disciplineSpellsKnown.
@@ -195,11 +215,20 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   );
 
   // Spells-known limits for spontaneous casters (advisory only).
+  // Occultist has no generic spells-known table (`CASTER_MODELS.occultist`'s
+  // `knownProgression` is deliberately unset) — her cap instead comes from
+  // how many implement schools she's picked, so it needs its own
+  // doc-dependent lookup rather than `spellsKnownLimitsByLevel`'s
+  // class-level-only table lookup. See
+  // `model/preparedSpells.occultistKnownSpellLimitsByLevel`.
   const knownLimits = useMemo(() => {
     if (!model) return new Map<number, number>();
-    const limits = spellsKnownLimitsByLevel(model, effectiveClassLevel);
+    const limits =
+      casterTag === "occultist"
+        ? occultistKnownSpellLimitsByLevel(doc, effectiveClassLevel)
+        : spellsKnownLimitsByLevel(model, effectiveClassLevel);
     return new Map(limits.map((l) => [l.level, l.limit]));
-  }, [model, effectiveClassLevel]);
+  }, [model, effectiveClassLevel, casterTag, doc]);
 
   // Count known spells per level (for the advisory).
   const levelMap = useMemo(
@@ -307,6 +336,39 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
         />
       )}
 
+      {casterTag === "oracle" && (
+        <ChannelAlignmentPicker
+          label="Cure/Inflict (1st level, permanent)"
+          value={doc.build.oracleChannelAlignment}
+          onChange={(v) => update((d) => setOracleChannelAlignment(d, v))}
+        />
+      )}
+
+      {casterTag === "cleric" &&
+        (() => {
+          const code = doc.identity.alignment
+            ? normalizeAlignmentCode(doc.identity.alignment)
+            : undefined;
+          const alignmentDecides =
+            code !== undefined && code !== "LN" && code !== "N" && code !== "CN";
+          const resolved = clericSpontaneousAlignment(doc);
+          if (alignmentDecides && resolved) {
+            return (
+              <p className="hint spell-hint-line">
+                Spontaneous casting converts prepared spells to <strong>{resolved}</strong> spells
+                (from your alignment).
+              </p>
+            );
+          }
+          return (
+            <ChannelAlignmentPicker
+              label="Spontaneous casting (neutral cleric, permanent once chosen)"
+              value={doc.build.clericChannelAlignment}
+              onChange={(v) => update((d) => setClericChannelAlignment(d, v))}
+            />
+          );
+        })()}
+
       <div className="spell-manager-launch">
         <button type="button" className="btn-gold" onClick={() => setManagerOpen(true)}>
           {preparesFromClassList ? `Browse the ${casterName} spell list` : "Edit spellbook"}
@@ -380,6 +442,19 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             refData={refData}
             abilityMod={abilityMod}
             casterLevel={casterLevel}
+          />
+        )}
+
+        {/* Oracle cure/inflict bonus spells (the permanent 1st-level choice above): read-only, auto-granted, exempt from the known cap. */}
+        {channelEntries.length > 0 && (
+          <MysterySpellsBlock
+            entries={channelEntries}
+            refData={refData}
+            abilityMod={abilityMod}
+            casterLevel={casterLevel}
+            title={`${doc.build.oracleChannelAlignment === "inflict" ? "Inflict" : "Cure"} Bonus Spells`}
+            tagLabel="cure/inflict"
+            storageKey="channel-spells"
           />
         )}
 
@@ -494,6 +569,48 @@ function SpellHints({
         </p>
       )}
     </Explainer>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Cure/inflict alignment choice (oracle's auto-known grant, a neutral
+// cleric's spontaneous-casting tiebreaker)
+// ---------------------------------------------------------------------------
+
+/**
+ * A two-chip Cure/Inflict toggle, shared by the oracle's one-time known-
+ * spells choice (`build.oracleChannelAlignment`) and the neutral cleric's
+ * spontaneous-casting tiebreaker (`build.clericChannelAlignment`) — same
+ * shape, different underlying field and RAW citation (see
+ * `model/preparedSpells.ts` `clericSpontaneousAlignment`/
+ * `model/spellcasting.ts` `oracleChannelSpellsKnown`). Free-choice — clicking
+ * the active chip clears it, matching the project's other single-pick chip
+ * toggles.
+ */
+function ChannelAlignmentPicker({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: "cure" | "inflict" | undefined;
+  onChange: (next: "cure" | "inflict" | null) => void;
+}) {
+  return (
+    <div className="chips channel-alignment-picker" role="group" aria-label={label}>
+      <span className="hint">{label}</span>
+      {(["cure", "inflict"] as const).map((v) => (
+        <button
+          key={v}
+          type="button"
+          className="chip"
+          aria-pressed={value === v}
+          onClick={() => onChange(value === v ? null : v)}
+        >
+          {v === "cure" ? "Cure" : "Inflict"}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -794,13 +911,21 @@ function MysterySpellsBlock({
   refData,
   abilityMod,
   casterLevel,
+  title = "Mystery / Curse Bonus Spells",
+  tagLabel = "mystery",
+  storageKey = "mystery-spells",
 }: {
   entries: SpellEntry[];
   refData: RefData;
   abilityMod: number;
   casterLevel: number;
+  /** Block heading — overridden for the oracle's cure/inflict channel-spell reuse of this same layout. */
+  title?: string;
+  /** Per-row chip text — overridden alongside `title`. */
+  tagLabel?: string;
+  storageKey?: string;
 }) {
-  const [collapsed, toggle] = useCollapsed("mystery-spells", true);
+  const [collapsed, toggle] = useCollapsed(storageKey, true);
   const byLevel = new Map<number, SpellEntry[]>();
   for (const e of entries) {
     (byLevel.get(e.level) ?? byLevel.set(e.level, []).get(e.level)!).push(e);
@@ -819,7 +944,7 @@ function MysterySpellsBlock({
           if (e.key === "Enter" || e.key === " ") toggle();
         }}
       >
-        <span className="spell-level-label">Mystery / Curse Bonus Spells</span>
+        <span className="spell-level-label">{title}</span>
         <span className="spell-level-count">{entries.length}</span>
         <Caret open={!collapsed} />
       </div>
@@ -833,7 +958,7 @@ function MysterySpellsBlock({
                 <div key={`${lvl}-${sp.id}`} className="pick-row is-granted">
                   <div className="pmain">
                     <div className="pname">
-                      {sp.name} <span className="tag-mystery">mystery</span>
+                      {sp.name} <span className="tag-mystery">{tagLabel}</span>
                     </div>
                     {spellData && (
                       <SpellDetail
