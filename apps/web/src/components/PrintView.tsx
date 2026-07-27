@@ -103,29 +103,23 @@ export function PrintView({
                 ))}
               </tbody>
             </table>
-            {(data.dr.length > 0 ||
-              data.resistances.length > 0 ||
-              data.immunities.length > 0 ||
-              data.sr !== undefined) && (
-              <p className="print-hint">
-                {data.dr.map((d) => `DR ${d.total}/${qualifierLabel(d.qualifier)}`).join(", ")}
-                {data.dr.length > 0 && (data.resistances.length > 0 || data.sr !== undefined)
-                  ? " · "
-                  : ""}
-                {data.resistances
-                  .map((r) => `Resist ${qualifierLabel(r.qualifier)} ${r.total}`)
-                  .join(", ")}
-                {data.resistances.length > 0 &&
-                (data.immunities.length > 0 || data.sr !== undefined)
-                  ? " · "
-                  : ""}
-                {data.immunities.length > 0
+            {(() => {
+              // One joined line rather than a chain of hand-written
+              // separators — four optional parts is where that stops being
+              // readable or safe to extend.
+              const parts = [
+                ...data.dr.map((d) => `DR ${d.total}/${qualifierLabel(d.qualifier)}`),
+                ...data.resistances.map((r) => `Resist ${qualifierLabel(r.qualifier)} ${r.total}`),
+                data.immunities.length > 0
                   ? `Immune ${data.immunities.map(qualifierLabel).join(", ")}`
-                  : ""}
-                {data.immunities.length > 0 && data.sr !== undefined ? " · " : ""}
-                {data.sr !== undefined ? `SR ${data.sr}` : ""}
-              </p>
-            )}
+                  : null,
+                data.effectImmunities.length > 0
+                  ? `Immune ${data.effectImmunities.join(", ")}`
+                  : null,
+                data.sr !== undefined ? `SR ${data.sr}` : null,
+              ].filter((p): p is string => p !== null);
+              return parts.length > 0 ? <p className="print-hint">{parts.join(" · ")}</p> : null;
+            })()}
             {data.senses.length > 0 && <p className="print-hint">{data.senses.join(" · ")}</p>}
           </div>
 

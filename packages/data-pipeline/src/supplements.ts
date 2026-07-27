@@ -371,6 +371,74 @@ export function applyRaceEnergyResistanceSupplements(races: Race[]): void {
 }
 
 /**
+ * Racial immunities to things that AREN'T damage — the axis
+ * `resolveDamage` has no place for (it reduces damage; these gate effects).
+ * Prose-only upstream: every one of these is stated in the race's own
+ * description and in nothing structured, so the sheet couldn't show them.
+ *
+ * `immEffect.<slug>` is the counterpart to the existing `imm.<damageType>`
+ * target, deliberately a separate prefix so damage resolution's immunity set
+ * can't be polluted with qualifiers it would never match anyway (see
+ * `defenses.ts`). Slugs are the engine's own vocabulary
+ * (`EFFECT_IMMUNITY_LABELS` in `@pf1/engine`'s `defenses.ts`), not free text.
+ *
+ * Each entry quotes the published wording it comes from, since "immune to X"
+ * and "not subject to X" and "can't become X" all appear and all mean the
+ * same thing mechanically. Deliberately excluded: the plant/leshy-type races
+ * (Ghoran, Vine Leshy), whose prose exists specifically to say they LACK the
+ * type's usual immunities, and Ganzi's Entropic Flesh, which is one outcome
+ * of a lineage roll rather than a trait every ganzi has.
+ */
+export const SUPPLEMENTAL_RACE_EFFECT_IMMUNITY: Record<string, readonly string[]> = {
+  // "Elves are immune to magic sleep effects..." (Elven Immunities)
+  Elf: ["magicSleep"],
+  "Half-Elf": ["magicSleep"],
+  "Aquatic Elf": ["magicSleep"],
+  Drow: ["magicSleep"],
+  "Drow Noble": ["magicSleep"],
+  // "Duergar are immune to paralysis, phantasms, and poison." (Duergar Immunities)
+  Duergar: ["paralysis", "phantasms", "poison"],
+  // "...are not subject to fatigue or exhaustion, and are immune to disease
+  // and sleep effects" + "are immune to fear effects and all emotion-based
+  // effects" (Constructed / Emotionless)
+  Android: ["disease", "sleep", "fatigue", "exhaustion", "fear", "emotion"],
+  // "...the being of Ib is immune to precision damage (such as sneak attacks)
+  // and critical hits."
+  "Being of Ib": ["criticalHits", "precisionDamage"],
+  // "Shabti can't become undead." / duskwalkers are "immune to all abilities
+  // that would transform their bodies or souls into undead."
+  Shabti: ["undeath"],
+  Duskwalker: ["undeath"],
+  // "...they gain no benefit or penalty from aging and are immune to magical
+  // aging effects." (Long-Lived)
+  Yaddithian: ["magicalAging"],
+};
+
+/**
+ * Apply `SUPPLEMENTAL_RACE_EFFECT_IMMUNITY` in place, appending one
+ * `immEffect.<slug>` change per listed effect to the matching race's
+ * `changes`. Throws if a named race is absent from the vendored slice — the
+ * same data-drift guard `applyRaceEnergyResistanceSupplements` uses.
+ */
+export function applyRaceEffectImmunitySupplements(races: Race[]): void {
+  const byName = new Map(races.map((r) => [r.name, r]));
+  for (const [name, effects] of Object.entries(SUPPLEMENTAL_RACE_EFFECT_IMMUNITY)) {
+    const race = byName.get(name);
+    if (race === undefined) {
+      throw new Error(`[supplements] race "${name}" not found in vendored races`);
+    }
+    race.changes = [
+      ...race.changes,
+      ...effects.map((effect) => ({
+        formula: "1",
+        target: `immEffect.${effect}`,
+        type: "untyped",
+      })),
+    ];
+  }
+}
+
+/**
  * Hand-authored corrections for vendored `ArchetypeFeature.level` values that
  * contradict the feature's own description prose — issue #47 (consolidated
  * #45-wave archetype-extraction bug list). The third-party archetype CSV

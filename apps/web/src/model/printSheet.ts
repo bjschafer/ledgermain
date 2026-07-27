@@ -5,7 +5,7 @@
  * a single plain-data shape the print view renders. No React here — kept
  * testable the same way every other `model/` module is.
  */
-import { deriveResourcePools } from "@pf1/engine";
+import { deriveResourcePools, EFFECT_IMMUNITY_LABELS } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { casterLevelForClass, effectiveCasterClassLevel } from "./casterLevel.js";
@@ -137,6 +137,8 @@ export interface PrintSheetData {
   resistances: PrintDefenseEntry[];
   /** Damage types taken no damage from at all — a flag, so no magnitude. */
   immunities: string[];
+  /** Already-worded non-damage immunities ("magic sleep effects", "critical hits"). */
+  effectImmunities: string[];
   sr?: number;
   /** Formatted sense chips, e.g. ["Darkvision 60 ft.", "Low-light vision"]. */
   senses: string[];
@@ -383,6 +385,10 @@ export function buildPrintSheet(
     resistances:
       sheet.defenses?.resistances.map((d) => ({ qualifier: d.qualifier, total: d.total })) ?? [],
     immunities: sheet.defenses?.immunities?.map((d) => d.qualifier) ?? [],
+    effectImmunities:
+      sheet.defenses?.effectImmunities
+        ?.map((d) => EFFECT_IMMUNITY_LABELS[d.qualifier])
+        .filter((label): label is string => label !== undefined) ?? [],
     sr: sheet.defenses?.sr?.total,
     senses: sheet.senses.map(senseChipLabel),
     arcaneSpellFailure: sheet.arcaneSpellFailure?.total,

@@ -18,7 +18,7 @@
  *     if anything, the character reverts to.
  */
 
-import type { CharacterDoc } from "@pf1/schema";
+import type { CharacterDoc, DerivedSheet } from "@pf1/schema";
 import { CONDITION_LADDERS } from "@pf1/engine";
 
 export function hasCondition(doc: CharacterDoc, id: string): boolean {
@@ -154,4 +154,36 @@ export function activateCondition(doc: CharacterDoc, id: string, rounds?: number
 /** Rounds left on a timed condition, or `undefined` when it's untimed (or not active). */
 export function conditionRoundsLeft(doc: CharacterDoc, id: string): number | undefined {
   return hasCondition(doc, id) ? doc.live.conditionRounds?.[id] : undefined;
+}
+
+/**
+ * Condition id → the `Defenses.effectImmunities` slug that would keep the
+ * character from ever getting it. Only the unambiguous ones: fear immunity
+ * covers the whole shaken/frightened/panicked ladder, and paralysis/fatigue/
+ * exhaustion each name their own condition outright.
+ *
+ * Deliberately partial. Poison immunity, say, doesn't map onto a condition at
+ * all (it stops the poison, and only some poisons sicken you), and inventing
+ * a mapping for it would flag conditions a player legitimately has.
+ */
+const CONDITION_IMMUNITY_SLUG: Readonly<Record<string, string>> = {
+  paralyzed: "paralysis",
+  fatigued: "fatigue",
+  exhausted: "exhaustion",
+  shaken: "fear",
+  frightened: "fear",
+  panicked: "fear",
+};
+
+/**
+ * The immunity slug covering `id` for this character, if any — the Conditions
+ * panel flags such a chip rather than disabling it. A soft warning, matching
+ * the project's posture everywhere else: the GM may have a reason (an effect
+ * that bypasses immunity, a temporary suppression), and the sheet doesn't get
+ * to overrule the table.
+ */
+export function conditionImmunityFor(sheet: DerivedSheet, id: string): string | undefined {
+  const slug = CONDITION_IMMUNITY_SLUG[id];
+  if (!slug) return undefined;
+  return sheet.defenses?.effectImmunities?.some((e) => e.qualifier === slug) ? slug : undefined;
 }

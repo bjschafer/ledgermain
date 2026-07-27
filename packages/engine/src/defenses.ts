@@ -100,6 +100,44 @@ function isImmTarget(target: string): boolean {
 }
 
 /**
+ * Immunity to something that isn't damage — the axis `resolveDamage` has no
+ * place for, since these gate whole effects rather than reduce a number.
+ * Slug → the wording to show the player, taken from the published racial
+ * traits these come from (`data-pipeline`'s
+ * `SUPPLEMENTAL_RACE_EFFECT_IMMUNITY`): the elves' "magic sleep effects" is
+ * narrower than the androids' "sleep effects", so the two are separate slugs
+ * rather than one rounded-off "sleep".
+ *
+ * A closed vocabulary on purpose. An `immEffect.<slug>` change naming
+ * something absent from this table is dropped rather than shown under its raw
+ * slug — a display-only defense whose label is a guess is worse than one that
+ * isn't there, and the supplement that authors these is right next to it.
+ */
+export const EFFECT_IMMUNITY_LABELS: Readonly<Record<string, string>> = {
+  magicSleep: "magic sleep effects",
+  sleep: "sleep effects",
+  paralysis: "paralysis",
+  phantasms: "phantasms",
+  poison: "poison",
+  disease: "disease",
+  fatigue: "fatigue",
+  exhaustion: "exhaustion",
+  fear: "fear effects",
+  emotion: "emotion effects",
+  mindAffecting: "mind-affecting effects",
+  criticalHits: "critical hits",
+  precisionDamage: "precision damage",
+  undeath: "becoming undead",
+  magicalAging: "magical aging",
+};
+
+const IMM_EFFECT_PREFIX = "immEffect.";
+
+function isImmEffectTarget(target: string): boolean {
+  return target.startsWith(IMM_EFFECT_PREFIX);
+}
+
+/**
  * Groups immunity sources by damage type. Immunity is a flag, not a
  * magnitude: any source evaluating above zero turns it on, and a type whose
  * every source evaluates to zero is dropped entirely (the same conditional-
@@ -338,13 +376,39 @@ export function computeDefenses(
       sourceId: m.sourceId,
     }));
 
+  const effectImmMods: QualifiedMod[] = collected
+    .filter((m) => isImmEffectTarget(m.target))
+    .map((m) => ({
+      qualifier: m.target.slice(IMM_EFFECT_PREFIX.length),
+      type: m.type,
+      value: m.value,
+      source: m.source,
+      sourceId: m.sourceId,
+    }))
+    // Unknown slugs are dropped rather than displayed raw — see
+    // EFFECT_IMMUNITY_LABELS.
+    .filter((m) => m.qualifier in EFFECT_IMMUNITY_LABELS);
+
   const dr = groupByQualifier(drMods);
   const resistances = groupByQualifier(eresMods);
   const immunities = groupImmunities(immMods);
+  const effectImmunities = groupImmunities(effectImmMods);
   const sr = computeSr(collected);
 
-  if (dr.length === 0 && resistances.length === 0 && immunities.length === 0 && !sr) {
+  if (
+    dr.length === 0 &&
+    resistances.length === 0 &&
+    immunities.length === 0 &&
+    effectImmunities.length === 0 &&
+    !sr
+  ) {
     return undefined;
   }
-  return { dr, resistances, immunities: immunities.length > 0 ? immunities : undefined, sr };
+  return {
+    dr,
+    resistances,
+    immunities: immunities.length > 0 ? immunities : undefined,
+    effectImmunities: effectImmunities.length > 0 ? effectImmunities : undefined,
+    sr,
+  };
 }

@@ -334,3 +334,63 @@ describe("compute: defenses (issue #21)", () => {
     expect(byQualifier).toEqual({ "—": 3, magic: 10 });
   });
 });
+
+/**
+ * Immunity to things that aren't damage (`immEffect.<slug>`) — hand-authored
+ * onto the races in `data-pipeline`'s `SUPPLEMENTAL_RACE_EFFECT_IMMUNITY`,
+ * since the vendored races carry these only as description prose. Expected
+ * values quote the published racial trait each comes from.
+ */
+describe("compute: non-damage immunities", () => {
+  function effectImmunities(race: string): string[] {
+    const sheet = compute(makeDoc({ classes: [], abilities: ABILITIES, race }), ref);
+    return (sheet.defenses?.effectImmunities ?? []).map((e) => e.qualifier).sort();
+  }
+
+  it("gives an elf immunity to magic sleep (Elven Immunities)", () => {
+    expect(effectImmunities("Elf")).toEqual(["magicSleep"]);
+  });
+
+  it("gives a half-elf the same, via elf blood", () => {
+    expect(effectImmunities("Half-Elf")).toEqual(["magicSleep"]);
+  });
+
+  it("gives a duergar paralysis, phantasms, and poison (Duergar Immunities)", () => {
+    expect(effectImmunities("Duergar")).toEqual(["paralysis", "phantasms", "poison"]);
+  });
+
+  it("gives an android all six of its Constructed/Emotionless immunities", () => {
+    expect(effectImmunities("Android")).toEqual([
+      "disease",
+      "emotion",
+      "exhaustion",
+      "fatigue",
+      "fear",
+      "sleep",
+    ]);
+  });
+
+  it("gives a being of Ib immunity to critical hits and precision damage", () => {
+    expect(effectImmunities("Being of Ib")).toEqual(["criticalHits", "precisionDamage"]);
+  });
+
+  it("gives a human none", () => {
+    expect(effectImmunities("Human")).toEqual([]);
+  });
+
+  it("does not give a plant-type race the immunities its type would normally carry", () => {
+    // Ghoran's own prose exists to say it LACKS them.
+    expect(effectImmunities("Ghoran")).toEqual([]);
+  });
+
+  it("names its source, so the sheet can say where the immunity came from", () => {
+    const sheet = compute(makeDoc({ classes: [], abilities: ABILITIES, race: "Elf" }), ref);
+    const entry = sheet.defenses!.effectImmunities!.find((e) => e.qualifier === "magicSleep")!;
+    expect(entry.components.some((c) => c.applied && c.source === "Elf")).toBe(true);
+  });
+
+  it("keeps effect immunity out of damage-type immunity entirely", () => {
+    const sheet = compute(makeDoc({ classes: [], abilities: ABILITIES, race: "Duergar" }), ref);
+    expect(sheet.defenses!.immunities).toBeUndefined();
+  });
+});

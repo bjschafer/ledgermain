@@ -2889,11 +2889,21 @@ export interface Defenses {
    * than empty when nothing grants immunity.
    *
    * Scoped to *damage-type* immunity, which is the only kind damage
-   * resolution can act on. PF1's other immunities (sleep, poison, paralysis,
-   * mind-affecting, fear, critical hits) are a different axis entirely — they
-   * gate effects rather than reduce damage, and nothing here models them.
+   * resolution can act on. See {@link Defenses.effectImmunities} for the
+   * other axis.
    */
   immunities?: ImmunityEntry[];
+  /**
+   * Immunity to things that aren't damage — magic sleep, paralysis, poison,
+   * fear, critical hits. Absent rather than empty when nothing grants one.
+   *
+   * Display-only, and a different axis from {@link Defenses.immunities}:
+   * these gate whole effects rather than reduce a number, so `resolveDamage`
+   * has nowhere to apply them and deliberately never sees them. Each
+   * `qualifier` is a slug from `@pf1/engine`'s `EFFECT_IMMUNITY_LABELS`,
+   * which owns the wording shown to the player.
+   */
+  effectImmunities?: ImmunityEntry[];
   /** Spell resistance, if any source grants it. */
   sr?: { total: number; components: ModifierComponent[] };
 }

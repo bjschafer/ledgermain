@@ -719,7 +719,7 @@ export {
   type CombatStyle,
 } from "./ranger.js";
 export { MONK_BONUS_FEAT_SLUGS } from "./monk.js";
-export { computeDefenses } from "./defenses.js";
+export { computeDefenses, EFFECT_IMMUNITY_LABELS } from "./defenses.js";
 export { computeSenses, isSenseTarget, SENSE_TARGET_IDS } from "./senses.js";
 export {
   BUFF_INSTANCE_STATE,

@@ -411,6 +411,36 @@
         "type": "racial"
       },
       {
+        "formula": "1",
+        "target": "immEffect.disease",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.sleep",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.fatigue",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.exhaustion",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.fear",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.emotion",
+        "type": "untyped"
+      },
+      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
@@ -524,6 +554,11 @@
         "formula": "2",
         "target": "int",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.magicSleep",
+        "type": "untyped"
       },
       {
         "formula": "1",
@@ -783,6 +818,11 @@
         "type": "racial"
       },
       {
+        "formula": "1",
+        "target": "immEffect.undeath",
+        "type": "untyped"
+      },
+      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
@@ -835,6 +875,11 @@
         "formula": "2",
         "target": "skill.kre",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.undeath",
+        "type": "untyped"
       },
       {
         "formula": "60",
@@ -1571,6 +1616,11 @@
         "formula": "2",
         "target": "dex",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.magicSleep",
+        "type": "untyped"
       },
       {
         "formula": "1",
@@ -2506,6 +2556,16 @@
         "type": "racial"
       },
       {
+        "formula": "1",
+        "target": "immEffect.criticalHits",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.precisionDamage",
+        "type": "untyped"
+      },
+      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
@@ -2800,6 +2860,11 @@
       },
       {
         "formula": "1",
+        "target": "immEffect.magicSleep",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
         "operator": "set",
         "target": "sensell",
         "type": "racial"
@@ -2910,6 +2975,21 @@
         "formula": "-4",
         "target": "cha",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.paralysis",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.phantasms",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
       },
       {
         "formula": "120",
@@ -3275,6 +3355,11 @@
         "formula": "2",
         "target": "skill.per",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.magicSleep",
+        "type": "untyped"
       },
       {
         "formula": "120",
@@ -3947,6 +4032,11 @@
         "type": "racial"
       },
       {
+        "formula": "1",
+        "target": "immEffect.magicalAging",
+        "type": "untyped"
+      },
+      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
@@ -4101,6 +4191,11 @@
         "formula": "-2",
         "target": "con",
         "type": "racial"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.magicSleep",
+        "type": "untyped"
       },
       {
         "formula": "120",

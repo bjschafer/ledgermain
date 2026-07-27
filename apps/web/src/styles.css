@@ -2963,6 +2963,15 @@ button:focus-visible,
   vertical-align: super;
 }
 
+/* A condition the character is immune to. Still toggleable (only the table
+   knows why it might apply anyway), so this is a hint, not a disabled state —
+   dimmer than normal but not as dim as `.implied`, which genuinely can't be
+   clicked. */
+.chip.cond.immune {
+  opacity: 0.7;
+  border-style: dotted;
+}
+
 /* Rounds left on a timed condition (a rage's fatigue aftermath) — a quiet
    trailing count, not a second label, so the chip still reads as its name. */
 .chip.cond .cond-rounds {

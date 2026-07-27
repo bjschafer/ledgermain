@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-26-racial-immunities",
+    date: "2026-07-26",
+    title: "Your race's immunities are on the sheet",
+    note: "Elves, half-elves, and drow against magic sleep; duergar against paralysis, phantasms, and poison; androids against disease, sleep, fear, and the rest; a being of Ib against critical hits. These were buried in your race's rules text and now sit with your DR and resistances, and the matching condition chip is marked so you notice before you toggle it. Nothing rolls against them — it's there so you and your GM can see it at a glance.",
+  },
+  {
     id: "2026-07-26-rage-fatigue-counts-down",
     date: "2026-07-26",
     title: "Rage's hangover counts itself down",

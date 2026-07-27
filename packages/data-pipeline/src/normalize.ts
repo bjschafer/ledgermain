@@ -88,6 +88,7 @@ import {
   applyClassFeatureChangesSupplements,
   applyClassFeatureUsesSupplements,
   applyPrestigeClassSupplements,
+  applyRaceEffectImmunitySupplements,
   applyRaceEnergyResistanceSupplements,
   applyRaceSenseSupplements,
   applyRaceSpellResistanceSupplements,
@@ -406,6 +407,7 @@ export function normalize(opts: NormalizeOptions): {
     )
     .map((pf) => transformRace(pf.doc, resolveUuid));
   applyRaceEnergyResistanceSupplements(races);
+  applyRaceEffectImmunitySupplements(races);
   applyRaceSpellResistanceSupplements(races);
   applyRaceSenseSupplements(races);
 

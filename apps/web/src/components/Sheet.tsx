@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { useMemo } from "react";
 
-import { qualifierLabel } from "@pf1/engine";
+import { EFFECT_IMMUNITY_LABELS, qualifierLabel } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, DerivedSkill, RefData } from "@pf1/schema";
 
 import { useFlashKey } from "../hooks/useFlashKey.js";
@@ -275,6 +275,23 @@ export function Sheet({
                   .join(", ")}`}
               >
                 Immune: {capitalizeFirst(qualifierLabel(entry.qualifier))}
+              </InfoTip>
+            ))}
+            {/* Immunity to something that isn't damage (magic sleep,
+                paralysis, critical hits) — same chip, but nothing in damage
+                resolution consumes it, so the tooltip says so outright. */}
+            {sheet.defenses.effectImmunities?.map((entry) => (
+              <InfoTip
+                key={`immEffect-${entry.qualifier}`}
+                className="prof-chip immunity-chip"
+                content={`Immune to ${EFFECT_IMMUNITY_LABELS[entry.qualifier]} — from ${entry.components
+                  .filter((c) => c.applied)
+                  .map((c) => c.source)
+                  .join(
+                    ", ",
+                  )}. Nothing rolls against this; it's here so you and your GM can see it.`}
+              >
+                Immune: {capitalizeFirst(EFFECT_IMMUNITY_LABELS[entry.qualifier] ?? "")}
               </InfoTip>
             ))}
             {sheet.defenses.sr ? (

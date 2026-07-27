@@ -103,12 +103,22 @@ const APPLIED_TARGETS = new Set<string>([
  *   Training and its archetype reflavors, keyed by the weapon's vendored,
  *   normalized `.weaponGroups` — see `weapon-groups.ts`'s
  *   `normalizeWeaponGroup`/`WEAPON_GROUPS`, issue #45) in computeWeaponAttacks.
- * - `dr.<bypass>` / `eres.<energy>` — qualified DR / energy resistance
- *   (computeDefenses, issue #21). Not a vendored Foundry vocabulary (no
- *   `dr`/`eres`-shaped target occurs upstream today) — this engine's own
- *   convention so a user-authored buff can grant them.
+ * - `dr.<bypass>` / `eres.<energy>` / `imm.<damageType>` /
+ *   `immEffect.<effect>` — qualified DR, energy resistance, damage-type
+ *   immunity, and immunity to something that isn't damage (computeDefenses,
+ *   issue #21). Not a vendored Foundry vocabulary (no such target occurs
+ *   upstream today) — this engine's own convention so a user-authored buff
+ *   can grant them.
  */
-const APPLIED_TARGET_PREFIXES = ["skill.", "attack.weapon.", "damage.weapon.", "dr.", "eres."];
+const APPLIED_TARGET_PREFIXES = [
+  "skill.",
+  "attack.weapon.",
+  "damage.weapon.",
+  "dr.",
+  "eres.",
+  "imm.",
+  "immEffect.",
+];
 
 /** True if `compute()` (or the model-layer budgets it feeds) applies `target`. */
 export function isTargetApplied(target: string): boolean {
