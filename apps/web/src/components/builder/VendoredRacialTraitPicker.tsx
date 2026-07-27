@@ -14,6 +14,7 @@ import {
 } from "../../model/racialTraits.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -149,11 +150,7 @@ export function VendoredRacialTraitPicker({
                       ) : null}
                     </div>
                     {isSel
-                      ? t.contextNotes.map((note, i) => (
-                          <div key={i} className="hint" style={{ marginTop: 2 }}>
-                            ⚠ {note.text}
-                          </div>
-                        ))
+                      ? t.contextNotes.map((note, i) => <RulesNote key={i} text={note.text} />)
                       : null}
                     {isSel && openChanges.length > 0 ? (
                       <div style={{ marginTop: 4 }}>

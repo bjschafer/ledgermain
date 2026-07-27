@@ -29,21 +29,14 @@
     "cha": 15
   },
   "build": {
-    "feats": [
-      "8snLqsJN4LLL00Nq",
-      "WnWRcte0jppClLpz",
-      "7zJTztNW7hdaqjKc"
-    ],
+    "feats": ["8snLqsJN4LLL00Nq", "WnWRcte0jppClLpz", "7zJTztNW7hdaqjKc"],
     "skillRanks": {
       "hea": 5,
       "kre": 2,
       "dip": 2,
       "sen": 1
     },
-    "clericDomains": [
-      "War",
-      "Strength"
-    ],
+    "clericDomains": ["War", "Strength"],
     "archetypes": [],
     "classFeatureChoices": [],
     "spells": {
@@ -82,16 +75,8 @@
         "equipped": true
       }
     ],
-    "favoredClassBonus": [
-      "hp",
-      "hp",
-      "hp",
-      "hp",
-      "hp"
-    ],
-    "abilityIncreases": [
-      "wis"
-    ],
+    "favoredClassBonus": ["hp", "hp", "hp", "hp", "hp"],
+    "abilityIncreases": ["wis"],
     "featChoices": {
       "7zJTztNW7hdaqjKc": "hea"
     },
@@ -103,9 +88,7 @@
         "category": "melee",
         "damageDice": "1d8",
         "group": "heavy-mace",
-        "weaponGroups": [
-          "hammers"
-        ],
+        "weaponGroups": ["hammers"],
         "weight": 8,
         "proficiency": "simple",
         "weaponId": "AbmnL8ilLH6r95Oa"

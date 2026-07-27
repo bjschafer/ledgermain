@@ -36,6 +36,7 @@ import { ToastHost } from "./components/ToastHost.js";
 import { PlayNav } from "./components/tracker/PlayNav.js";
 import { StatStrip } from "./components/tracker/StatStrip.js";
 import { Tracker } from "./components/tracker/Tracker.js";
+import { RollDataProvider } from "./state/rollData.js";
 import { useCharacter } from "./state/useCharacter.js";
 import { useTextSize, type TextSize } from "./state/useTextSize.js";
 
@@ -229,7 +230,7 @@ function Workbench({
   const [sheetOpen, setSheetOpen] = useState(false);
 
   return (
-    <>
+    <RollDataProvider doc={props.doc} sheet={props.sheet} refData={props.refData}>
       <div className="layout layout--with-nav">
         {mode === "build" && (
           /* On mobile (<=940px) `.mobile-build-header` collapses to a single
@@ -317,6 +318,6 @@ function Workbench({
           <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} hideName />
         </Dialog>
       )}
-    </>
+    </RollDataProvider>
   );
 }

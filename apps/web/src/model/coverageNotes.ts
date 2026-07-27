@@ -67,9 +67,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Alternate racial traits",
-    note: "Every race's published alternates are browsable. The seven core races plus sylph have theirs fully modeled, including swapping out the trait they replace; for other races they show as reference text.",
+    note: "Every race's published alternates are browsable, and picking one applies whatever bonuses it spells out as numbers. What differs is the trade: for the seven core races plus sylph, taking an alternate also retires the standard trait it replaces. For every other race the swap is yours to make — the entry names what it replaces, but nothing takes that standard trait away for you.",
     issueDetail:
-      "750 vendored across all 80 races; only the hand-authored 8-race set carries mechanics and replacement enforcement.",
+      "860 vendored across all 80 races, 252 of them carrying structured `changes` that `collect.ts` applies live (plus `openChanges` once a target is chosen). Only the hand-authored 8-race table enforces the replacement via `suppressTargets`: the vendored catalog names replaced traits by name only, with no verified mapping onto that race's `changes`/`contextNotes` entries.",
   },
   {
     category: "Character traits",
@@ -126,9 +126,9 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
       "Situational/activated effects, prestige-class prereq structuring, and Paths of Prestige-tier mechanics tables have no machine-readable source and must be hand-authored against the published rules.",
   },
   {
-    category: "Character-dependent inline rolls in vendored notes",
+    category: "Foundry use counters in vendored notes",
     detail:
-      "210 vendored strings (148 contextNotes, 62 buff descriptions) still carry Foundry's `[[formula]]` inline-roll syntax where the formula reads an `@` path — a caster level, an ability mod, or a Foundry-only `@resources.*` use counter. The data-pipeline resolves every other inline roll and enricher to plain text at build time, but these need a character to evaluate against, which a build step doesn't have; resolving them would mean a render-time evaluator at each of the ~20 note call sites.",
+      '`model/inlineRolls.ts` resolves the vendored `[[formula]]` inline rolls the data-pipeline can\'t (they read an `@` path, so they need a character), but ~78 of them read `@resources.*` — Foundry\'s per-day use counter, which has no roll-data equivalent here since this app meters uses through `deriveResourcePools` instead. Those resolve to nothing rather than to a wrong 0, dropping the "(N remaining uses)" clause; the note\'s own "once per day" wording carries the frequency.',
   },
   {
     category: "Unchained rage fatigue timer",

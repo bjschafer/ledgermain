@@ -23,6 +23,7 @@ import { Caret } from "../Caret.js";
 import { ConfirmDialog } from "../ConfirmDialog.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { LeafIcon } from "../icons.js";
+import { RulesNote } from "../RulesNote.js";
 import { HomebrewRaceEditor } from "./HomebrewRaceEditor.js";
 import { Panel } from "./Panel.js";
 import { SearchMiss } from "./SearchMiss.js";
@@ -248,11 +249,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
                       <span className="desc-text">{tr.summary}</span>
                     </div>
                     {isSel
-                      ? tr.contextNotes?.map((note, i) => (
-                          <div key={i} className="hint" style={{ marginTop: 2 }}>
-                            ⚠ {note.text}
-                          </div>
-                        ))
+                      ? tr.contextNotes?.map((note, i) => <RulesNote key={i} text={note.text} />)
                       : null}
                   </div>
                   <button

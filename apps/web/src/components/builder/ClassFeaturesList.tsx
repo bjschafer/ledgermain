@@ -1,5 +1,6 @@
 import type { DerivedSheet, RefData } from "@pf1/schema";
 
+import { useInlineRolls } from "../../state/rollData.js";
 import { InfoTip } from "../InfoTip.js";
 
 /**
@@ -8,6 +9,7 @@ import { InfoTip } from "../InfoTip.js";
  * archetype feature instead of a spell).
  */
 export function FeatureDescription({ html }: { html: string }) {
+  const resolve = useInlineRolls();
   return (
     <details className="spell-detail">
       <summary className="spell-detail-summary">description</summary>
@@ -17,7 +19,7 @@ export function FeatureDescription({ html }: { html: string }) {
         // dataset (open game content) and contain only formatting tags
         // (<p>, <i>, <strong>) — no user input.
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: html }}
+        dangerouslySetInnerHTML={{ __html: resolve(html) }}
       />
     </details>
   );

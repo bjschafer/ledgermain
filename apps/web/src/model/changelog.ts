@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-26-formulas-read-as-numbers",
+    date: "2026-07-26",
+    title: "Reminders quote your number, not a formula",
+    note: 'The last few hundred trait and racial-trait reminders that showed a formula where a number belongs — "You have SR [[5 + @attributes.hd.total]]" — now read as the number for your character, and follow it as you level. Where the formula counted uses per day, which this sheet tracks in its own resource pools instead, the count is left off rather than printed as a wrong zero; the rule still says how often you get it.',
+  },
+  {
     id: "2026-07-26-armor-bonuses-compete",
     date: "2026-07-26",
     title: "Armor bonuses stop double-counting",

@@ -6,6 +6,7 @@ import { changeTargetLabel } from "../../model/names.js";
 import { toggleTrait } from "../../model/traits.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { InfoTip } from "../InfoTip.js";
+import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 
 /**
@@ -49,9 +50,7 @@ export function TraitRow({
           </div>
         ) : null}
         {trait.contextNotes?.map((note, i) => (
-          <div key={i} className="hint" style={{ marginTop: 2 }}>
-            ⚠ {note.text}
-          </div>
+          <RulesNote key={i} text={note.text} />
         ))}
         {trait.description ? <FeatureDescription html={trait.description} /> : null}
       </div>
