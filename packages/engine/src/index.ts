@@ -623,7 +623,12 @@ export {
   naturalAttackDamageBonus,
   type NaturalAttackType,
 } from "./natural-attacks.js";
-export { advanceRounds, type AdvanceResult } from "./duration.js";
+export {
+  advanceConditionRounds,
+  advanceRounds,
+  type AdvanceConditionsResult,
+  type AdvanceResult,
+} from "./duration.js";
 export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
 export type { ToggleBuffOption } from "./toggle-buffs.js";
 export {
@@ -634,7 +639,8 @@ export {
   type JudgmentDef,
 } from "./judgments.js";
 export { SKALD_INSPIRED_RAGE, RAGING_SONG_DETAIL } from "./raging-song.js";
-export { rageFatigueApplies } from "./rage-fatigue.js";
+export { rageFatigueOnEnd, UNCHAINED_RAGE_FATIGUE_ROUNDS } from "./rage-fatigue.js";
+export type { RageFatigue } from "./rage-fatigue.js";
 export {
   resolveClassFeatures,
   archetypeSwappedUuids,

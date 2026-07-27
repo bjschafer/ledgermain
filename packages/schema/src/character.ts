@@ -1256,6 +1256,20 @@ export interface CharacterDoc {
     hp: { current: number; temp: number; nonlethal: number };
     /** Active condition ids (keys into the engine's conditions table). */
     conditions: string[];
+    /**
+     * Rounds remaining for conditions that arrived with a known duration —
+     * condition id → countdown, ticked by the same round clock that expires
+     * buffs (`model/buffs.ts`'s `advanceRound`), which drops the condition
+     * when it reaches zero.
+     *
+     * Sparse on purpose: most conditions last until something in the fiction
+     * ends them, and those simply have no entry here (an id in `conditions`
+     * with no entry is untimed, the default). Only an effect that states its
+     * own duration in rounds — a rage's fatigue aftermath is the first —
+     * writes one. Removing a condition must clear its entry, or a later
+     * re-activation would inherit a stale countdown.
+     */
+    conditionRounds?: Record<string, number>;
     /** Active buffs with remaining duration + the changes they apply (Stage 4). */
     activeBuffs: ActiveBuff[];
     /** Resource pools: ki, rounds/day, item charges. */
@@ -2327,6 +2341,18 @@ export interface ActiveBuff {
    * (stays until manually removed; e.g. a worn-item or stance buff).
    */
   remainingRounds?: number;
+  /**
+   * Rounds this buff has been active for, counted up by the round clock
+   * (`advanceRounds`) rather than down. Needed by the aftermath effects whose
+   * duration is a function of how long the buff ran — chained rage's "fatigued
+   * for twice the number of rounds spent raging" — which `remainingRounds`
+   * can't answer, since it's a countdown that says nothing about a buff added
+   * with no duration or one whose duration was edited mid-rage. Absent/0 means
+   * the clock was never advanced while this buff was up, which is not the same
+   * as "it ran for zero rounds": callers treat it as an unknown elapsed time
+   * rather than a measured one.
+   */
+  roundsActive?: number;
   /**
    * When true, this buff is NOT applied to the master's own derived sheet —
    * only to whichever companion creatures it's shared with (`FamiliarLive

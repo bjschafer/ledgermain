@@ -1,7 +1,11 @@
 import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
-import { supersedingCondition, toggleCondition } from "../../model/conditions.js";
+import {
+  conditionRoundsLeft,
+  supersedingCondition,
+  toggleCondition,
+} from "../../model/conditions.js";
 import { Explainer } from "../Explainer.js";
 import { InfoTip } from "../InfoTip.js";
 import { AlertTriangleIcon } from "../icons.js";
@@ -29,11 +33,14 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
           // Full explanation of the chip's state — the only place this text
           // lives, so it needs a tap-reachable form too (issue #60), not just
           // the button's `title=` (invisible on touch).
+          const roundsLeft = conditionRoundsLeft(doc, id);
           const tipContent = implied
             ? `Implied by ${impliedName} — that's the stricter condition on this ladder. Turn ${impliedName} off to control ${cond.name} directly.`
             : cond.displayOnly
               ? `${cond.summary} (reference only — no numeric modifier applied)`
-              : cond.summary;
+              : roundsLeft !== undefined
+                ? `${cond.summary} Ends in ${roundsLeft} round${roundsLeft === 1 ? "" : "s"} — the round clock clears it.`
+                : cond.summary;
           return (
             <span key={id} className="chip-wrap">
               <button
@@ -45,6 +52,9 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
                 onClick={() => update((d) => toggleCondition(d, id))}
               >
                 {cond.name}
+                {roundsLeft !== undefined ? (
+                  <span className="cond-rounds"> {roundsLeft}r</span>
+                ) : null}
                 {implied ? (
                   <span className="dot" aria-hidden="true">
                     ▲
@@ -66,7 +76,8 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
         <p className="hint">
           Dashed + ° = reference only (doesn't change numbers yet). ▲ = implied by a stricter
           condition on the same ladder (e.g. frightened implies shaken); turn the stricter one off
-          to toggle this directly.
+          to toggle this directly. A round count (e.g. "10r") means something applied it with a
+          known duration — advancing the round clock counts it down and clears it.
         </p>
       </Explainer>
       {active.size > 0 ? (
@@ -77,6 +88,9 @@ export function ConditionsPanel({ doc, update }: BuilderProps) {
             return (
               <li key={id}>
                 <b>{cond.name}.</b> {cond.summary}
+                {conditionRoundsLeft(doc, id) !== undefined ? (
+                  <span className="hint"> Ends in {conditionRoundsLeft(doc, id)} rounds.</span>
+                ) : null}
               </li>
             );
           })}

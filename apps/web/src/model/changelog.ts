@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-26-rage-fatigue-counts-down",
+    date: "2026-07-26",
+    title: "Rage's hangover counts itself down",
+    note: "When a rage ends, the fatigue it leaves now comes with a duration and the round clock clears it: twice the rounds you raged for a barbarian or bloodrager, a flat minute for the unchained barbarian, whose fatigue the sheet previously didn't apply at all. The Conditions panel shows the rounds left on the chip. Ending a rage without ever advancing the clock still leaves the fatigue untimed for you to clear — the sheet won't guess how long you were raging.",
+  },
+  {
     id: "2026-07-26-formulas-read-as-numbers",
     date: "2026-07-26",
     title: "Reminders quote your number, not a formula",

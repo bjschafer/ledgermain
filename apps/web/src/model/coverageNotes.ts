@@ -131,9 +131,9 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
       '`model/inlineRolls.ts` resolves the vendored `[[formula]]` inline rolls the data-pipeline can\'t (they read an `@` path, so they need a character), but ~78 of them read `@resources.*` — Foundry\'s per-day use counter, which has no roll-data equivalent here since this app meters uses through `deriveResourcePools` instead. Those resolve to nothing rather than to a wrong 0, dropping the "(N remaining uses)" clause; the note\'s own "once per day" wording carries the frequency.',
   },
   {
-    category: "Unchained rage fatigue timer",
+    category: "Timed conditions",
     detail:
-      "Chained rage/bloodrage aftermath fatigue auto-applies (untimed) when the buff ends; Rage (Unchained)'s flat 1-minute fatigue is not auto-applied because conditions have no minute-scale timer.",
+      "`live.conditionRounds` gives a condition a countdown the round clock ticks, which the rage/bloodrage fatigue aftermath is currently the only thing that sets. Nothing else in the catalog states its duration in rounds structurally, so every other condition is still applied untimed and cleared by hand.",
   },
   {
     category: "Size-die scaling exclusions",

@@ -6,10 +6,11 @@
  */
 
 import {
+  advanceConditionRounds,
   advanceRounds,
   buffInstanceState,
   elementTarget,
-  rageFatigueApplies,
+  rageFatigueOnEnd,
   type ToggleBuffOption,
 } from "@pf1/engine";
 import type { ActiveBuff, Buff, Change, CharacterDoc, ContextNote } from "@pf1/schema";
@@ -107,17 +108,21 @@ export function addBuff(doc: CharacterDoc, buff: ActiveBuff): CharacterDoc {
 /**
  * Auto-apply the `fatigued` condition when any buff in `ended` is a rage
  * flavor whose RAW ending causes fatigue for THIS character right now (see
- * `@pf1/engine`'s `rageFatigueApplies` — chained Rage and Bloodrage, gated
- * off once the granting class hits 17th/Tireless Rage-or-Bloodrage; Rage
- * (Unchained), Rage (Spell), and Inspired Rage never qualify). Applied
- * untimed (see that function's doc comment for why this tracker can't
- * represent "2x rounds spent raging" as an actual timer) — the player clears
- * it by hand once the real-world duration has passed.
+ * `@pf1/engine`'s `rageFatigueOnEnd` — chained Rage and Bloodrage for twice
+ * the rounds raged, gated off once the granting class hits 17th/Tireless
+ * Rage-or-Bloodrage; Rage (Unchained) for a flat minute; Rage (Spell) and
+ * Inspired Rage never qualify).
+ *
+ * Two rages ending at once take the longer aftermath, and any untimed one
+ * wins outright — it represents an unknown duration, not a short one, so
+ * letting a measured countdown clear it would end the fatigue early.
  */
 function applyRageFatigueAftermath(doc: CharacterDoc, ended: readonly ActiveBuff[]): CharacterDoc {
-  return ended.some((b) => rageFatigueApplies(doc, b.name))
-    ? activateCondition(doc, "fatigued")
-    : doc;
+  const fatigues = ended.map((b) => rageFatigueOnEnd(doc, b)).filter((f) => f !== null);
+  if (fatigues.length === 0) return doc;
+  const untimed = fatigues.some((f) => f.rounds === undefined);
+  const rounds = untimed ? undefined : Math.max(...fatigues.map((f) => f.rounds ?? 0));
+  return activateCondition(doc, "fatigued", rounds);
 }
 
 export function removeBuff(doc: CharacterDoc, instanceId: string): CharacterDoc {
@@ -230,13 +235,35 @@ export function setBuffRounds(
 export interface AdvanceRoundResult {
   doc: CharacterDoc;
   expired: ActiveBuff[];
+  /** Timed conditions the clock just ran out on (e.g. a rage's fatigue). */
+  expiredConditions: string[];
 }
 
-/** Advance the round clock: tick durations and auto-drop expired buffs. */
+/**
+ * Advance the round clock: tick buff durations and timed conditions, dropping
+ * whatever ran out.
+ *
+ * Conditions tick off the PRE-advance state, before the buff pass. A rage
+ * expiring on this very round applies a fresh fatigue countdown, and that
+ * countdown must not be spent by the same round that started it.
+ */
 export function advanceRound(doc: CharacterDoc, rounds = 1): AdvanceRoundResult {
+  const ticked = advanceConditionRounds(doc.live.conditions, doc.live.conditionRounds, rounds);
   const { buffs, expired } = advanceRounds(doc.live.activeBuffs, rounds);
-  const advanced: CharacterDoc = { ...doc, live: { ...doc.live, activeBuffs: buffs } };
-  return { doc: applyRageFatigueAftermath(advanced, expired), expired };
+  const advanced: CharacterDoc = {
+    ...doc,
+    live: {
+      ...doc.live,
+      activeBuffs: buffs,
+      conditions: ticked.conditions,
+      conditionRounds: ticked.conditionRounds,
+    },
+  };
+  return {
+    doc: applyRageFatigueAftermath(advanced, expired),
+    expired,
+    expiredConditions: ticked.expired,
+  };
 }
 
 /**

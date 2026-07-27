@@ -1,8 +1,8 @@
 /**
- * Which active buffs trigger PF1's "fatigued after rage ends" aftermath, and
- * which don't — the rule is NOT uniform across the rage family (issue #67),
- * verified against aonprd.com's live Barbarian / Barbarian (Unchained) /
- * Bloodrager / Rage-spell pages (2026-07-25):
+ * Which active buffs trigger PF1's "fatigued after rage ends" aftermath, for
+ * how long, and which don't — the rule is NOT uniform across the rage family
+ * (issue #67), verified against aonprd.com's live Barbarian / Barbarian
+ * (Unchained) / Bloodrager / Rage-spell pages (2026-07-25):
  *
  *   - Chained Rage (CRB barbarian, buff name "Rage"): "A barbarian can end
  *     her rage as a free action and is fatigued after rage for a number of
@@ -16,11 +16,8 @@
  *     bloodrager no longer becomes fatigued at the end of his bloodrage."
  *   - Rage (Unchained) (buff name "Rage (Unchained)"): "A barbarian can end
  *     her rage as a free action, and is fatigued for 1 minute after a rage
- *     ends" — a real but DIFFERENT aftermath (flat 1 minute, not 2x rounds
- *     raged) that this table deliberately does NOT trigger: this tracker has
- *     no timed-condition model (see below), so the only honest options are
- *     "untimed toggle" or "nothing," and an untimed toggle would overstate a
- *     genuinely time-boxed 1-minute effect worse than omitting it.
+ *     ends" — the same aftermath on a different clock (a flat 10 rounds,
+ *     regardless of how long the rage ran).
  *   - Rage (Spell) (buff name "Rage (Spell)"): "The effect is otherwise
  *     identical with a barbarian's rage except that the subjects aren't
  *     fatigued at the end of the rage" — explicitly excluded.
@@ -28,13 +25,13 @@
  *     `SKALD_INSPIRED_RAGE`): grants no fatigue at all per its own RAW (see
  *     that file's doc comment) — excluded.
  *
- * This tracker has no "rounds spent active" counter (`ActiveBuff` only
- * carries `remainingRounds`, a countdown to zero, never an elapsed count)
- * and `live.conditions` has no duration model at all (a flat id array) — so
- * there is nowhere to store "fatigued for 2x rounds raged" as an actual
- * timer. The honest floor is auto-activating the `fatigued` condition
- * UNTIMED the moment a covered buff ends (expires or is toggled off); the
- * player clears it by hand once the real-world duration has passed.
+ * The two clocks differ in what they need from the tracker. Unchained's flat
+ * minute is always knowable. The chained "2x rounds spent raging" needs the
+ * elapsed duration, which is `ActiveBuff.roundsActive` — accurate only for a
+ * table that advances the round clock. When it reads zero the rage was ended
+ * without the clock ever moving, and the honest answer is an UNTIMED fatigue
+ * (the long-standing behavior) for the player to clear by hand, rather than a
+ * confident "0 rounds" that would clear itself instantly.
  *
  * Keyed by `ActiveBuff.name` (a stable snapshot, not `RefData.buffs`' id —
  * see `buff-effects.ts`'s `BUFF_CHANGE_PATCHES` doc comment for why), so
@@ -42,26 +39,46 @@
  * (manual removal, a linked resource-pool toggle, or the round clock).
  */
 
-import type { CharacterDoc } from "@pf1/schema";
+import type { ActiveBuff, CharacterDoc } from "@pf1/schema";
 
-const RAGE_FATIGUE_BUFF_NAMES: ReadonlySet<string> = new Set(["Rage", "Bloodrage"]);
+/** How each rage flavor's aftermath duration is derived from the ended buff. */
+type FatigueClock =
+  | { kind: "twiceRoundsRaged"; tirelessClassTag: string }
+  | { kind: "fixed"; rounds: number };
 
-/** Barbarian/bloodrager level negates the aftermath entirely at 17th (Tireless Rage/Bloodrage). */
-const TIRELESS_LEVEL_BY_BUFF: Readonly<Record<string, string>> = {
-  Rage: "barbarian",
-  Bloodrage: "bloodrager",
+const RAGE_FATIGUE_CLOCKS: Readonly<Record<string, FatigueClock>> = {
+  Rage: { kind: "twiceRoundsRaged", tirelessClassTag: "barbarian" },
+  Bloodrage: { kind: "twiceRoundsRaged", tirelessClassTag: "bloodrager" },
+  "Rage (Unchained)": { kind: "fixed", rounds: 10 },
 };
 
+/** PF1 rounds in the 1 minute Rage (Unchained) states outright. */
+export const UNCHAINED_RAGE_FATIGUE_ROUNDS = 10;
+
+export interface RageFatigue {
+  /**
+   * Rounds the fatigue lasts, or `undefined` for an untimed one the player
+   * clears by hand (a chained rage ended without the round clock running).
+   */
+  rounds?: number;
+}
+
 /**
- * True when `buffName` ending should auto-apply the fatigued condition for
- * this character right now — combines {@link RAGE_FATIGUE_BUFF_NAMES}'
- * membership with the granting class's own Tireless Rage/Bloodrage level
- * gate. Non-rage buffs (and Rage (Unchained)/Rage (Spell)/Inspired Rage,
- * deliberately absent from the table above) always return `false`.
+ * The fatigue a rage buff's ending inflicts on this character right now, or
+ * `null` when it inflicts none — a non-rage buff, Rage (Spell)/Inspired Rage,
+ * or a barbarian/bloodrager who has reached 17th level and Tireless
+ * Rage/Bloodrage.
  */
-export function rageFatigueApplies(doc: CharacterDoc, buffName: string): boolean {
-  if (!RAGE_FATIGUE_BUFF_NAMES.has(buffName)) return false;
-  const classTag = TIRELESS_LEVEL_BY_BUFF[buffName];
-  const level = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
-  return level < 17;
+export function rageFatigueOnEnd(
+  doc: CharacterDoc,
+  buff: Pick<ActiveBuff, "name" | "roundsActive">,
+): RageFatigue | null {
+  const clock = RAGE_FATIGUE_CLOCKS[buff.name];
+  if (!clock) return null;
+  if (clock.kind === "fixed") return { rounds: clock.rounds };
+
+  const level = doc.identity.classes.find((c) => c.tag === clock.tirelessClassTag)?.level ?? 0;
+  if (level >= 17) return null;
+  const raged = buff.roundsActive ?? 0;
+  return raged > 0 ? { rounds: raged * 2 } : {};
 }

@@ -2963,6 +2963,14 @@ button:focus-visible,
   vertical-align: super;
 }
 
+/* Rounds left on a timed condition (a rage's fatigue aftermath) — a quiet
+   trailing count, not a second label, so the chip still reads as its name. */
+.chip.cond .cond-rounds {
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85em;
+}
+
 .cond-legend {
   margin-top: 8px;
 }

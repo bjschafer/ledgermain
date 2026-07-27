@@ -94,7 +94,7 @@ export function toggleConditionIn(conditions: readonly string[], id: string): st
 
 export function toggleCondition(doc: CharacterDoc, id: string): CharacterDoc {
   const conditions = toggleConditionIn(doc.live.conditions, id);
-  return { ...doc, live: { ...doc.live, conditions } };
+  return withConditions(doc, conditions);
 }
 
 /**
@@ -109,7 +109,49 @@ export function activateConditionIn(conditions: readonly string[], id: string): 
   return activateInLadder(conditions, id);
 }
 
-export function activateCondition(doc: CharacterDoc, id: string): CharacterDoc {
+/**
+ * Write a new condition list onto the doc, dropping the `conditionRounds`
+ * countdown of anything no longer active. Every condition transition goes
+ * through here so a timer can never outlive its condition — a stale entry
+ * would otherwise re-arm itself the next time the same condition came back.
+ */
+function withConditions(
+  doc: CharacterDoc,
+  conditions: string[],
+  timers?: Record<string, number>,
+): CharacterDoc {
+  const active = new Set(conditions);
+  const merged = { ...doc.live.conditionRounds, ...timers };
+  const kept = Object.fromEntries(Object.entries(merged).filter(([id]) => active.has(id)));
+  return {
+    ...doc,
+    live: {
+      ...doc.live,
+      conditions,
+      conditionRounds: Object.keys(kept).length > 0 ? kept : undefined,
+    },
+  };
+}
+
+/**
+ * Ensure `id` is active, optionally for a known number of rounds — the round
+ * clock (`model/buffs.ts`'s `advanceRound`) counts it down and clears the
+ * condition when it runs out. Omit `rounds` for the untimed default.
+ *
+ * Re-activating an already-active condition with a duration REPLACES the
+ * running countdown rather than adding to it: raging again while still
+ * fatigued from the last rage restarts the aftermath, which is both the
+ * generous reading and the one a player can predict.
+ */
+export function activateCondition(doc: CharacterDoc, id: string, rounds?: number): CharacterDoc {
   const conditions = activateConditionIn(doc.live.conditions, id);
-  return { ...doc, live: { ...doc.live, conditions } };
+  // The ladder may have declined the activation (a stricter sibling is
+  // already on), in which case there's no condition here to time.
+  if (rounds === undefined || !conditions.includes(id)) return withConditions(doc, conditions);
+  return withConditions(doc, conditions, { [id]: Math.max(1, Math.trunc(rounds)) });
+}
+
+/** Rounds left on a timed condition, or `undefined` when it's untimed (or not active). */
+export function conditionRoundsLeft(doc: CharacterDoc, id: string): number | undefined {
+  return hasCondition(doc, id) ? doc.live.conditionRounds?.[id] : undefined;
 }

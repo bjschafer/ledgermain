@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { ActiveBuff, CharacterDoc } from "@pf1/schema";
 
 import { advanceRound, removeBuff, toggleLinkedBuff, toggleTableBuff } from "../src/model/buffs.js";
-import { hasCondition } from "../src/model/conditions.js";
+import { conditionRoundsLeft, hasCondition, toggleCondition } from "../src/model/conditions.js";
 
 /**
  * Rage/bloodrage fatigue aftermath (issue #67): PF1 RAW differs by rage
@@ -12,13 +12,14 @@ import { hasCondition } from "../src/model/conditions.js";
  *     Tireless Rage (17th level) — aonprd.com, 2026-07-25.
  *   - Bloodrage (bloodrager, ACG): identical, gated by Tireless Bloodrage
  *     (17th) — aonprd.com, 2026-07-25.
- *   - Rage (Unchained): fatigued 1 minute flat — a DIFFERENT, timer-shaped
- *     claim this tracker doesn't attempt (see `rage-fatigue.ts`), so no
- *     fatigue is auto-applied for it at all.
+ *   - Rage (Unchained): fatigued for a flat 1 minute (10 rounds), regardless
+ *     of how long the rage ran.
  *   - Inspired Rage (skald's Raging Song): no fatigue at all per RAW.
- * This app has no timed-condition model, so the tested behavior is: ending a
- * covered buff auto-activates `fatigued` UNTIMED (never a duration), and
- * never for the excluded buffs.
+ * Ending a covered buff auto-activates `fatigued`, with a `conditionRounds`
+ * countdown whenever the duration is knowable — the flat unchained minute
+ * always, and twice the rounds raged when the round clock measured them. A
+ * chained rage ended without the clock running yields an UNTIMED fatigue, the
+ * honest answer for an unknown elapsed time.
  */
 function makeDoc(classes: { tag: string; level: number }[]): CharacterDoc {
   return {
@@ -65,17 +66,43 @@ describe("rage fatigue aftermath — manual removal (removeBuff)", () => {
     expect(hasCondition(after, "fatigued")).toBe(true);
   });
 
-  it("Rage (Unchained) ending does NOT auto-apply fatigued (1-minute flat duration, not modeled as untimed)", () => {
+  it("Rage (Unchained) ending applies fatigued for a flat 10 rounds (1 minute)", () => {
     const doc = makeDoc([{ tag: "barbarianUnchained", level: 4 }]);
     const withBuff = {
       ...doc,
       live: {
         ...doc.live,
-        activeBuffs: [activeBuff({ name: "Rage (Unchained)", instanceId: "b1" })],
+        // Raged for 6 rounds: the unchained aftermath ignores that entirely.
+        activeBuffs: [activeBuff({ name: "Rage (Unchained)", instanceId: "b1", roundsActive: 6 })],
       },
     };
     const after = removeBuff(withBuff, "b1");
-    expect(hasCondition(after, "fatigued")).toBe(false);
+    expect(hasCondition(after, "fatigued")).toBe(true);
+    expect(conditionRoundsLeft(after, "fatigued")).toBe(10);
+  });
+
+  it("chained Rage ending after a measured rage lasts twice the rounds raged", () => {
+    const doc = makeDoc([{ tag: "barbarian", level: 4 }]);
+    const withBuff = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [activeBuff({ name: "Rage", instanceId: "b1", roundsActive: 5 })],
+      },
+    };
+    const after = removeBuff(withBuff, "b1");
+    expect(conditionRoundsLeft(after, "fatigued")).toBe(10);
+  });
+
+  it("chained Rage ended without the round clock leaves the fatigue untimed", () => {
+    const doc = makeDoc([{ tag: "barbarian", level: 4 }]);
+    const withBuff = {
+      ...doc,
+      live: { ...doc.live, activeBuffs: [activeBuff({ name: "Rage", instanceId: "b1" })] },
+    };
+    const after = removeBuff(withBuff, "b1");
+    expect(hasCondition(after, "fatigued")).toBe(true);
+    expect(conditionRoundsLeft(after, "fatigued")).toBeUndefined();
   });
 
   it("Inspired Rage (skald's Raging Song) ending does NOT auto-apply fatigued", () => {
@@ -208,7 +235,7 @@ describe("rage fatigue aftermath — round-clock expiry (advanceRound)", () => {
     expect(hasCondition(after, "fatigued")).toBe(true);
   });
 
-  it("a timed Rage (Unchained) buff expiring on the clock does NOT auto-apply fatigued", () => {
+  it("a timed Rage (Unchained) buff expiring on the clock applies its 10-round fatigue", () => {
     const doc = makeDoc([{ tag: "barbarianUnchained", level: 4 }]);
     const withBuff = {
       ...doc,
@@ -220,7 +247,56 @@ describe("rage fatigue aftermath — round-clock expiry (advanceRound)", () => {
       },
     };
     const { doc: after } = advanceRound(withBuff, 1);
-    expect(hasCondition(after, "fatigued")).toBe(false);
+    expect(hasCondition(after, "fatigued")).toBe(true);
+    // The round that ended the rage must not also spend a round of the fatigue.
+    expect(conditionRoundsLeft(after, "fatigued")).toBe(10);
+  });
+
+  it("the fatigue countdown ticks down and clears itself when it runs out", () => {
+    const doc = makeDoc([{ tag: "barbarianUnchained", level: 4 }]);
+    const withBuff = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          activeBuff({ name: "Rage (Unchained)", instanceId: "b1", remainingRounds: 1 }),
+        ],
+      },
+    };
+    const raged = advanceRound(withBuff, 1).doc;
+    expect(conditionRoundsLeft(advanceRound(raged, 9).doc, "fatigued")).toBe(1);
+    const tenLater = advanceRound(raged, 10);
+    expect(hasCondition(tenLater.doc, "fatigued")).toBe(false);
+    expect(tenLater.expiredConditions).toEqual(["fatigued"]);
+    expect(tenLater.doc.live.conditionRounds).toBeUndefined();
+  });
+
+  it("clearing a timed condition by hand takes its countdown with it", () => {
+    const doc = makeDoc([{ tag: "barbarianUnchained", level: 4 }]);
+    const withBuff = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          activeBuff({ name: "Rage (Unchained)", instanceId: "b1", remainingRounds: 1 }),
+        ],
+      },
+    };
+    const raged = advanceRound(withBuff, 1).doc;
+    const cleared = toggleCondition(raged, "fatigued");
+    expect(cleared.live.conditionRounds).toBeUndefined();
+  });
+
+  it("counts rounds raged for a rage with no set duration", () => {
+    const doc = makeDoc([{ tag: "barbarian", level: 4 }]);
+    const withBuff = {
+      ...doc,
+      live: { ...doc.live, activeBuffs: [activeBuff({ name: "Rage", instanceId: "b1" })] },
+    };
+    const threeRounds = advanceRound(advanceRound(advanceRound(withBuff).doc).doc).doc;
+    expect(threeRounds.live.activeBuffs[0]!.roundsActive).toBe(3);
+    const after = removeBuff(threeRounds, "b1");
+    expect(conditionRoundsLeft(after, "fatigued")).toBe(6);
   });
 
   it("a still-active (non-expiring) Rage buff never triggers the aftermath early", () => {
