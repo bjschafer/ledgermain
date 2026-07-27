@@ -5,7 +5,7 @@
   // Off for the same reason as apps/web: a live workers.dev subdomain would
   // bypass zone-level WAF, bot management, and rate limiting on whizkid.dev.
   "workers_dev": false,
-  "routes": [{ "pattern": "ledgermain-ref.whizkid.dev", "custom_domain": true }],
+  "routes": [{ "pattern": "ref.ledgermain.whizkid.dev", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
     // Routing is hash-based, so any real path should land on the shell.
