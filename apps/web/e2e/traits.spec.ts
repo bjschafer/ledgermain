@@ -72,3 +72,30 @@ test("add and remove a trait through the trait manager", async ({ page }) => {
   expect(errs.pageErrors).toEqual([]);
   expect(errs.consoleErrors).toEqual([]);
 });
+
+/**
+ * A trait reminder carrying Foundry's `[[formula]]` inline-roll syntax reads
+ * as the character's own number (`model/inlineRolls.ts`). Only a real browser
+ * proves this: the resolver reaches these rows through `RollDataProvider`, and
+ * a misplaced provider would silently degrade every note to an em dash
+ * instead of failing anything a unit test can see.
+ */
+test("a trait's reminder shows a real number, not the formula behind it", async ({ page }) => {
+  const errs = guard(page);
+  const panel = await gotoTraits(page);
+
+  await panel.getByRole("button", { name: "Choose traits" }).click();
+  const dialog = page.getByRole("dialog");
+  // Iron Lungs: "You can hold your breath for twice as long
+  // ([[4*@abilities.con.total]] rounds)".
+  await dialog.getByRole("textbox", { name: "Search traits" }).fill("Iron Lungs");
+
+  const note = dialog.locator(".pick-row .hint").first();
+  await expect(note).toContainText("hold your breath");
+  await expect(note).toContainText(/\(\d+ rounds\)/);
+  await expect(note).not.toContainText("[[");
+  await expect(note).not.toContainText("@abilities");
+
+  expect(errs.pageErrors).toEqual([]);
+  expect(errs.consoleErrors).toEqual([]);
+});
