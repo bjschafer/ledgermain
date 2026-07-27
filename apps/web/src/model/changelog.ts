@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-27-faster-spell-browsing",
+    date: "2026-07-27",
+    title: "The spell list opens without the wait",
+    note: "Opening your spellbook to browse a full class list meant building every spell's stat table and rules text up front, hundreds of them, before the list would show — and every keystroke in the search box paid for it again. Each spell's write-up is now put together when you open that spell's details, so the list appears straight away and searching keeps up with your typing. Nothing about what you can see or add has changed; it just stops making you wait for it.",
+  },
+  {
     id: "2026-07-26-racial-immunities",
     date: "2026-07-26",
     title: "Your race's immunities are on the sheet",

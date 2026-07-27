@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import type { Spell } from "@pf1/schema";
 
 import type { ResolvedMetamagic } from "../model/metamagic.js";
@@ -77,17 +79,19 @@ export function SpellDetail({
   const save = spellSave(spell);
   const dc = save ? spellSaveDC(spellLevel, abilityMod) : null;
   const saveLabel = save ? (SAVE_LABEL[save.type] ?? save.type) : null;
-  const concDC = concentrationDC(spellLevel);
-  const showSlot = slotLevel !== undefined && slotLevel !== spellLevel;
 
   const castingTime = formatCastingTime(spell);
   const range = formatSpellRange(spell, casterLevel);
-  const area = formatSpellArea(spell);
-  const duration = formatSpellDuration(spell, casterLevel);
-  const components = formatSpellComponents(spell);
   const damage = spellDamageParts(spell, casterLevel);
 
   const hasStrip = castingTime !== null || range !== null || dc !== null || damage.length > 0;
+
+  // The body is built only once the disclosure is opened. A closed <details>
+  // still constructs its whole subtree, and the browse pane in the spell
+  // manager renders a row per spell on the class list — eagerly building the
+  // stat table and the full HTML description for all of them put ~90k nodes on
+  // the page and made opening the manager take seconds.
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -108,110 +112,158 @@ export function SpellDetail({
         </div>
       )}
 
-      <details className="spell-detail">
+      <details className="spell-detail" onToggle={(e) => setOpen(e.currentTarget.open)}>
         <summary className="spell-detail-summary">details</summary>
-        <div className="spell-detail-body">
-          {castingTime && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">Casting Time</span>
-              <span className="spell-detail-value">{castingTime}</span>
-            </div>
-          )}
-          {range && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">Range</span>
-              <span className="spell-detail-value">{range}</span>
-            </div>
-          )}
-          {area && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">Area/Target</span>
-              <span className="spell-detail-value">{area}</span>
-            </div>
-          )}
-          {duration && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">Duration</span>
-              <span className="spell-detail-value">{duration}</span>
-            </div>
-          )}
-          {components && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">Components</span>
-              <span className="spell-detail-value">{components}</span>
-            </div>
-          )}
-          {damage.length > 0 && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">Damage</span>
-              <span className="spell-detail-value">{damage.map(damageLabel).join(", ")}</span>
-            </div>
-          )}
-          {dc !== null && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">Save</span>
-              <span className="spell-detail-value">
-                DC {dc} {save!.description}
-              </span>
-            </div>
-          )}
-          {spell.sr !== undefined && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">SR</span>
-              <span className="spell-detail-value">{spell.sr ? "Yes" : "No"}</span>
-            </div>
-          )}
-          <div className="spell-detail-row">
-            <span className="spell-detail-label">Concentration</span>
-            <span className="spell-detail-value">
-              DC {concDC} to cast defensively
-              <details className="conc-scenarios">
-                <summary>other concentration DCs</summary>
-                <ul className="conc-scenarios-list">
-                  {concentrationScenarios(spellLevel).map((s) => (
-                    <li key={s.id}>
-                      DC {s.dc}
-                      {s.externalTerm ? ` + ${s.externalTerm}` : ""} — {s.label}
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </span>
-          </div>
-          {showSlot && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">Slot</span>
-              <span className="spell-detail-value">
-                Level {slotLevel} (base {spellLevel})
-              </span>
-            </div>
-          )}
-          {metamagic && metamagic.length > 0 && (
-            <div className="spell-detail-row">
-              <span className="spell-detail-label">Metamagic</span>
-              <span className="spell-detail-value">
-                {metamagic.map((m) => (
-                  <span key={m.def.slug} className="spell-detail-metamagic" title={m.def.note}>
-                    {m.def.name}
-                    {m.def.variable ? ` +${m.increase}` : ""}
-                  </span>
-                ))}
-              </span>
-            </div>
-          )}
-          {spell.description && (
-            <div
-              className="spell-detail-desc"
-              // HTML descriptions come from the Foundry PF1 data (open game
-              // content) and contain only spell text — no user input. We render
-              // them with dangerouslySetInnerHTML because they use formatting
-              // tags (<p>, <i>, <strong>) that are meaningless as plain text.
-              // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={{ __html: spell.description }}
-            />
-          )}
-        </div>
+        {open && (
+          <SpellDetailBody
+            spell={spell}
+            spellLevel={spellLevel}
+            casterLevel={casterLevel}
+            castingTime={castingTime}
+            range={range}
+            damage={damage}
+            dc={dc}
+            save={save}
+            slotLevel={slotLevel}
+            metamagic={metamagic}
+          />
+        )}
       </details>
     </>
+  );
+}
+
+/** The opened half of `SpellDetail` — see the `open` note there for why it's split out. */
+function SpellDetailBody({
+  spell,
+  spellLevel,
+  casterLevel,
+  castingTime,
+  range,
+  damage,
+  dc,
+  save,
+  slotLevel,
+  metamagic,
+}: {
+  spell: Spell;
+  spellLevel: number;
+  casterLevel: number;
+  castingTime: string | null;
+  range: string | null;
+  damage: ReturnType<typeof spellDamageParts>;
+  dc: number | null;
+  save: { type: string; description: string } | null;
+  slotLevel?: number;
+  metamagic?: ResolvedMetamagic[];
+}) {
+  const area = formatSpellArea(spell);
+  const duration = formatSpellDuration(spell, casterLevel);
+  const components = formatSpellComponents(spell);
+  const concDC = concentrationDC(spellLevel);
+  const showSlot = slotLevel !== undefined && slotLevel !== spellLevel;
+
+  return (
+    <div className="spell-detail-body">
+      {castingTime && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">Casting Time</span>
+          <span className="spell-detail-value">{castingTime}</span>
+        </div>
+      )}
+      {range && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">Range</span>
+          <span className="spell-detail-value">{range}</span>
+        </div>
+      )}
+      {area && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">Area/Target</span>
+          <span className="spell-detail-value">{area}</span>
+        </div>
+      )}
+      {duration && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">Duration</span>
+          <span className="spell-detail-value">{duration}</span>
+        </div>
+      )}
+      {components && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">Components</span>
+          <span className="spell-detail-value">{components}</span>
+        </div>
+      )}
+      {damage.length > 0 && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">Damage</span>
+          <span className="spell-detail-value">{damage.map(damageLabel).join(", ")}</span>
+        </div>
+      )}
+      {dc !== null && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">Save</span>
+          <span className="spell-detail-value">
+            DC {dc} {save!.description}
+          </span>
+        </div>
+      )}
+      {spell.sr !== undefined && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">SR</span>
+          <span className="spell-detail-value">{spell.sr ? "Yes" : "No"}</span>
+        </div>
+      )}
+      <div className="spell-detail-row">
+        <span className="spell-detail-label">Concentration</span>
+        <span className="spell-detail-value">
+          DC {concDC} to cast defensively
+          <details className="conc-scenarios">
+            <summary>other concentration DCs</summary>
+            <ul className="conc-scenarios-list">
+              {concentrationScenarios(spellLevel).map((s) => (
+                <li key={s.id}>
+                  DC {s.dc}
+                  {s.externalTerm ? ` + ${s.externalTerm}` : ""} — {s.label}
+                </li>
+              ))}
+            </ul>
+          </details>
+        </span>
+      </div>
+      {showSlot && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">Slot</span>
+          <span className="spell-detail-value">
+            Level {slotLevel} (base {spellLevel})
+          </span>
+        </div>
+      )}
+      {metamagic && metamagic.length > 0 && (
+        <div className="spell-detail-row">
+          <span className="spell-detail-label">Metamagic</span>
+          <span className="spell-detail-value">
+            {metamagic.map((m) => (
+              <span key={m.def.slug} className="spell-detail-metamagic" title={m.def.note}>
+                {m.def.name}
+                {m.def.variable ? ` +${m.increase}` : ""}
+              </span>
+            ))}
+          </span>
+        </div>
+      )}
+      {spell.description && (
+        <div
+          className="spell-detail-desc"
+          // HTML descriptions come from the Foundry PF1 data (open game
+          // content) and contain only spell text — no user input. We render
+          // them with dangerouslySetInnerHTML because they use formatting
+          // tags (<p>, <i>, <strong>) that are meaningless as plain text.
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: spell.description }}
+        />
+      )}
+    </div>
   );
 }
