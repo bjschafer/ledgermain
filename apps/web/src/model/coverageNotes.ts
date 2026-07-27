@@ -89,9 +89,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Buffs marked “reminder only”",
-    note: "Most buffs move real numbers on your sheet. Twenty-seven don't, and they say so on the buff itself: either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus (the Danger Wards). Toggle them as trackers for the duration; apply what they do by hand.",
+    note: "Most buffs move real numbers on your sheet. Twenty-eight don't, and they say so on the buff itself: either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus (the Danger Wards). Toggle them as trackers for the duration; apply what they do by hand.",
     issueDetail:
-      "185 buffs vendored total; 27 have empty changes[]/contextNotes[]. Some are genuinely unmodelable (Invisibility, See Invisibility, Endure Elements, Delay Poison), some are reroll- or narrative-shaped (the Danger Wards), and some would need mechanics that don't exist yet (Force Field, Divine Transfer, Resiliency's alignment-DR variant, the Veemod set).",
+      "190 buffs vendored total; 28 are empty by `hasNoModeledEffect` (no changes[], no contextNotes[], no BUFF_INSTANCE_STATE). Some are genuinely unmodelable (Invisibility, See Invisibility, Endure Elements, Delay Poison), some are reroll- or narrative-shaped (the Danger Wards), and some would need mechanics that don't exist yet (Force Field, Divine Transfer, Resiliency's alignment-DR variant, the Veemod set).",
   },
   {
     category: "Community-pack feats",
@@ -116,10 +116,6 @@ export interface InternalGap {
 }
 
 export const INTERNAL_GAPS: readonly InternalGap[] = [
-  {
-    category: "Archetype buffs",
-    detail: "The pf-arch-buffs pack (8 buffs across 2 archetypes) isn't vendored at all.",
-  },
   {
     category: "Beyond data",
     detail:

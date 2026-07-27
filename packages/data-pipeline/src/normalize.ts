@@ -136,6 +136,15 @@ export interface NormalizeOptions {
   packsDir: string;
   /** `src/pf-archetypes` directory from the pinned archetype module clone. */
   archetypesDir: string;
+  /**
+   * `src/pf-arch-buffs` directory from the pinned archetype module clone —
+   * the handful of archetype-granted buffs (an aerochemist's Aeromantic
+   * Concoctions, a cryptid scholar's Knowledgeable Strike) that live in their
+   * own pack rather than the system's `buffs` one. Merged into the same
+   * `buffs` collection: a buff is a buff to every consumer, and keeping them
+   * apart would mean a second lookup path for no gain.
+   */
+  archBuffsDir: string;
   /** `src/pf-arch-features` directory from the pinned archetype module clone. */
   archFeaturesDir: string;
   /** `src/pf-prestige-classes` directory from the pinned archetype module clone. */
@@ -643,7 +652,12 @@ export function normalize(opts: NormalizeOptions): {
   );
 
   // --- buffs (all; small + engine-relevant) ----------------------------------
-  const buffs: Buff[] = readPack(join(packsDir, "buffs"))
+  // The archetype module's own small buff pack rides along here (see
+  // `archBuffsDir`). Its files sit one and two directories deep, which
+  // `readPack` already walks, and the folder documents interleaved with them
+  // carry `type: "Item"` rather than "buff", so the same type filter drops
+  // them.
+  const buffs: Buff[] = [...readPack(join(packsDir, "buffs")), ...readPack(opts.archBuffsDir)]
     .filter((pf) => pf.doc.type === "buff")
     .map((pf) => transformBuff(pf.doc, resolveUuid));
   applyBuffSupplements(buffs);

@@ -136,6 +136,31 @@
     "subType": "item",
     "uuid": "Compendium.pf1.buffs.Item.0MmlqFG4XodHOIzn"
   },
+  "0aNpHoPtmRy8OPJ9": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "skill.acr",
+        "text": "+5 bonus to attempt high jumps or long jumps, and always treated as having a running start when attempting long jumps"
+      }
+    ],
+    "description": "<p>Gains bonus to acrobatics and Air Walk according to Aeromantic Concoction.</p><hr /><p><strong>Usage</strong>: At level 14 adjust duration from 10 minutes per level to 1 hour per level.</p>",
+    "duration": {
+      "units": "minute",
+      "value": "10 * @item.level"
+    },
+    "id": "0aNpHoPtmRy8OPJ9",
+    "level": 1,
+    "name": "Aeromantic Concoction (Air Walk)",
+    "sources": [
+      {
+        "id": "PZO9490",
+        "pages": "25"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.0aNpHoPtmRy8OPJ9"
+  },
   "0hRYCva2hdwUNFh6": {
     "changes": [
       {
@@ -2052,6 +2077,34 @@
     "subType": "spell",
     "uuid": "Compendium.pf1.buffs.Item.MFogxSkB5dBmUI5i"
   },
+  "MIcAWPFhShjwSY3i": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+[[floor(@item.level / 4)]] insight bonus against extraordinary, supernatural, and spell-like abilities used by creatures of the same type and subtype as the monster identified"
+      },
+      {
+        "target": "ac",
+        "text": "+[[floor(@item.level / 4)]] insight bonus against creatures of the same type and subtype as the monster identified"
+      }
+    ],
+    "description": "<p>Allies within 30 feet who can hear the cryptid scholar gain a +1 insight bonus to their ACs and on saving throws against extraordinary, supernatural, and spell-like abilities used by creatures of the same type and all the same subtypes as the monster identified. This bonus lasts for a number of rounds equal to the cryptid scholar's Intelligence modifier (minimum 1) or until he uses knowledgeable strike (see below), whichever comes first. This bonus increases by 1 at 8th level and every 4 investigator levels thereafter (to a maximum of +5 at 20th level). A creature cannot benefit from opportune advice regarding more than one specific kind of monster at a time.</p><hr /><p><strong>Usage</strong>: Set this buff's level equal to the level of the Crypted Scholar and duration to their INT-mod.</p>",
+    "duration": {
+      "units": "round"
+    },
+    "id": "MIcAWPFhShjwSY3i",
+    "level": 4,
+    "name": "Opportune Advice (Cryptid Scholar)",
+    "sources": [
+      {
+        "id": "PZO9468",
+        "pages": "18"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.MIcAWPFhShjwSY3i"
+  },
   "Mgi0taTxLOPN6y2V": {
     "changes": [
       {
@@ -2342,6 +2395,31 @@
     ],
     "subType": "feat",
     "uuid": "Compendium.pf1.buffs.Item.QAL8jtr7BkTSVpXK"
+  },
+  "QO0fKMcX23t6ZdOv": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "skill.acr",
+        "text": "+5 bonus to attempt high jumps or long jumps, and always treated as having a running start when attempting long jumps"
+      }
+    ],
+    "description": "<p>Gains bonus to acrobatics and Feather Fall according to Aeromantic Concoction.</p><hr /><p><strong>Usage</strong>: At level 14 adjust duration from 10 minutes per level to 1 hour per level.</p>",
+    "duration": {
+      "units": "minute",
+      "value": "10 * @item.level"
+    },
+    "id": "QO0fKMcX23t6ZdOv",
+    "level": 1,
+    "name": "Aeromantic Concoction (Feather Fall)",
+    "sources": [
+      {
+        "id": "PZO9490",
+        "pages": "25"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.QO0fKMcX23t6ZdOv"
   },
   "QYVZS8MfOKzjpCm1": {
     "changes": [
@@ -3155,6 +3233,42 @@
     ],
     "subType": "feat",
     "uuid": "Compendium.pf1.buffs.Item.Z92Q2f8oUrKW5y5M"
+  },
+  "ZXZxH8xYtjhgYJKi": {
+    "changes": [
+      {
+        "formula": "if(or(gt(@attributes.encumbrance.level, 0), gt(@armor.type, 1)), 40, 60)",
+        "target": "flySpeed",
+        "type": "untyped"
+      },
+      {
+        "formula": "floor(@item.level / 2)",
+        "target": "skill.fly",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "skill.acr",
+        "text": "+5 bonus to attempt high jumps or long jumps, and always treated as having a running start when attempting long jumps"
+      }
+    ],
+    "description": "<p>Gains bonus to acrobatics and Fly according to Aeromantic Concoction.</p><p><strong>Note</strong>: Script call changes the speed fly maneuverability to good, if deactivated back to average.</p><hr /><p><strong>Usage</strong>: At level 14 adjust duration from 10 minutes per level to 1 hour per level.</p>",
+    "duration": {
+      "units": "minute",
+      "value": "10 * @item.level"
+    },
+    "id": "ZXZxH8xYtjhgYJKi",
+    "level": 1,
+    "name": "Aeromantic Concoction (Fly Buff)",
+    "sources": [
+      {
+        "id": "PZO9490",
+        "pages": "25"
+      }
+    ],
+    "subType": "temp",
+    "uuid": "Compendium.pf1.buffs.Item.ZXZxH8xYtjhgYJKi"
   },
   "a3P821aUxxJbSpVV": {
     "changes": [
@@ -5460,6 +5574,26 @@
     ],
     "subType": "feat",
     "uuid": "Compendium.pf1.buffs.Item.wm3VB0brsAuhua0V"
+  },
+  "xpyNffVwG9jHIJNO": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><span style=\"font-family:Signika, sans-serif\">Each ally within 30 feet who can hear the cryptid scholar deals additional damage on its next successful unarmed, natural, or weapon attack against that specific kind of monster within 1 round. The additional damage is 1d6 at 4th level and increases by 1d6 for every 4 investigator levels thereafter (to a maximum of 5d6 at 20th level). The damage of knowledgeable strike is precision damage and is not multiplied on a critical hit; creatures that are immune to sneak attacks are also immune to knowledgeable strike. Ranged attacks gain this additional damage only against a target within 30 feet. The ally must be able to see the target well enough to pick out a vital spot and must be able to reach such a spot. Knowledgeable strike cannot be used against a creature with concealment.</span></p><hr /><p><strong>Usage</strong>: Set this buff's level equal to the level of the Crypted Scholar.</p>",
+    "duration": {
+      "units": "round",
+      "value": "1"
+    },
+    "id": "xpyNffVwG9jHIJNO",
+    "level": 4,
+    "name": "Knowledgeable Strike (Cryptid Scholar)",
+    "sources": [
+      {
+        "id": "PZO9468",
+        "pages": "18"
+      }
+    ],
+    "subType": "feat",
+    "uuid": "Compendium.pf1.buffs.Item.xpyNffVwG9jHIJNO"
   },
   "yqdRqkADURTHBvVH": {
     "changes": [
