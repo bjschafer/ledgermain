@@ -52516,7 +52516,7 @@
   "monk:zen-archer:bonus-feat:6": {
     "archetypeId": "monk:zen-archer",
     "classTag": "monk",
-    "description": "<p>A zen archer’s bonus feats must be taken from the following list:</p><p>@Compendium[pf-content.pf-feats.Rc5rGOpYGM2jHKjS]{Combat Reflexes}, @Compendium[pf-content.pf-feats.ZXRYDKgJZxG4QqQw]{Deflect Arrows}, @Compendium[pf-content.pf-feats.7LOj6vlgK5fxnVM1]{Dodge}, @Compendium[pf-content.pf-feats.PYGKhmkKbs8XXORc]{Far Shot}, @Compendium[pf-content.pf-feats.9NhhkpgqlZC62Rk4]{Point-Blank Shot}, @Compendium[pf-content.pf-feats.uGha5BUlM7NMr1Xh]{Precise Shot}, and @Compendium[pf-content.pf-feats.rzqvzyD4HLJ1MPpH]{Rapid Shot}.</p>      <p>At 6th level, the following feats are added to the list: @Compendium[pf-content.pf-feats.ngLkJM9za5xaFYdH]{Focused Shot}, @Compendium[pf-content.pf-feats.VkTJGL7O6hu7Ur4j]{Improved Precise Shot}, @Compendium[pf-content.pf-feats.eqL8l9wvfR7wojRs]{Manyshot}, @Compendium[pf-content.pf-feats.Ow61sFHLnFi7mb5N]{Mobility}, and @Compendium[pf-content.pf-feats.3jOyHy00LpOvKz3O]{Parting Shot}.</p>      <p>At 10th level, the following feats are added to the list: @Compendium[pf-content.pf-feats.g7kh4SIUFHeATfBp]{Improved Critical}, @Compendium[pf-content.pf-feats.XfG1ofamhBRRF7wv]{Pinpoint Targeting}, @Compendium[pf1.feats.ymtj17MI4MdwB0v2]{Shot on the Run}, and @Compendium[pf-content.pf-feats.P4rE8TPEwMWguofs]{Snatch Arrows}.</p>      <p>A monk need not have any of the prerequisites normally required for these feats to select them. These feats replace the monk’s normal bonus feats.</p>",
+    "description": "<p>A zen archer’s bonus feats must be taken from the following list:</p><p>Combat Reflexes, Deflect Arrows, Dodge, Far Shot, Point-Blank Shot, Precise Shot, and Rapid Shot.</p>      <p>At 6th level, the following feats are added to the list: Focused Shot, Improved Precise Shot, Manyshot, Mobility, and Parting Shot.</p>      <p>At 10th level, the following feats are added to the list: Improved Critical, Pinpoint Targeting, Shot on the Run, and Snatch Arrows.</p>      <p>A monk need not have any of the prerequisites normally required for these feats to select them. These feats replace the monk’s normal bonus feats.</p>",
     "id": "monk:zen-archer:bonus-feat:6",
     "level": 6,
     "name": "Bonus Feat",
@@ -52576,7 +52576,7 @@
   "monk:zen-archer:ki-pool:4": {
     "archetypeId": "monk:zen-archer",
     "classTag": "monk",
-    "description": "<p>At 4th level, in addition to the normal abilities of his @Compendium[pf1.class-abilities.2Og23i3rRXu5QQlg]{Ki Pool}, a zen archer may spend 1 point from his ki pool to increase the range increment for his bow by 50 feet for 1 round.</p>",
+    "description": "<p>At 4th level, in addition to the normal abilities of his Ki Pool, a zen archer may spend 1 point from his ki pool to increase the range increment for his bow by 50 feet for 1 round.</p>",
     "id": "monk:zen-archer:ki-pool:4",
     "level": 4,
     "name": "Ki Pool",

@@ -1,6 +1,6 @@
 import type { RacialTrait } from "@pf1/schema";
 
-import { resolveUuidLinks, stripHtml } from "../util/html.js";
+import { resolveFoundryMarkup, stripHtml } from "../util/html.js";
 import type { RawDoc } from "../util/packs.js";
 import { makeUuid } from "../util/uuid.js";
 import {
@@ -102,7 +102,7 @@ export function transformRacialTrait(
   const instructions = typeof desc?.instructions === "string" ? desc.instructions : undefined;
   let description = descriptionValue(sys, resolveUuid) ?? "";
   if (instructions) {
-    description += `<hr /><p><strong>Note</strong></p>${resolveUuidLinks(instructions, resolveUuid)}`;
+    description += `<hr /><p><strong>Note</strong></p>${resolveFoundryMarkup(instructions, resolveUuid)}`;
   }
 
   const racePoints = asNumber(sys.racePoints);

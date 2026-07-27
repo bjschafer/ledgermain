@@ -1,6 +1,6 @@
 import type { AbilityId, FeatPrerequisites, FeatRef } from "@pf1/schema";
 
-import { resolveUuidLinks, stripHtml } from "../util/html.js";
+import { resolveFoundryMarkup, stripHtml } from "../util/html.js";
 import { parseUuid } from "../util/uuid.js";
 import type { UuidResolver } from "./common.js";
 
@@ -106,7 +106,7 @@ export function parsePrerequisites(
   const section = extractPrereqSection(descriptionHtml);
   if (!section) return empty;
 
-  const text = stripHtml(resolveUuidLinks(section, resolveUuid));
+  const text = stripHtml(resolveFoundryMarkup(section, resolveUuid));
   const result: FeatPrerequisites = {
     abilities: parseAbilities(text),
     feats: extractFeatRefs(section, resolveUuid),

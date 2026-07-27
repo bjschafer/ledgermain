@@ -1,6 +1,6 @@
 import type { Change, ContextNote, SourceRef } from "@pf1/schema";
 
-import { resolveUuidLinks } from "../util/html.js";
+import { resolveFoundryMarkup } from "../util/html.js";
 
 /** Looks up a compendium doc's name from its `Compendium.pf1.<pack>.Item.<id>` uuid. */
 export type UuidResolver = (uuid: string) => string | undefined;
@@ -64,7 +64,7 @@ export function normalizeContextNotes(value: unknown, resolveUuid: UuidResolver)
   return asRecordArray(value)
     .map((n) => ({
       target: String(n.target ?? ""),
-      text: resolveUuidLinks(String(n.text ?? ""), resolveUuid),
+      text: resolveFoundryMarkup(String(n.text ?? ""), resolveUuid),
     }))
     .filter((n) => n.text !== "");
 }
@@ -112,17 +112,16 @@ export function guessLevelFromProse(description: string | undefined): number {
 }
 
 /**
- * Extracts `system.description.value` and resolves Foundry `@UUID[...]`
- * enrichers to plain names, e.g. "@UUID[...]{Rage}" -> "Rage" (and bare
- * `@UUID[...]` links to whatever `resolveUuid` finds), so raw enricher syntax
- * never leaks into the rendered sheet.
+ * Extracts `system.description.value` and resolves Foundry's enrichers and
+ * inline rolls to plain text (see {@link resolveFoundryMarkup}), so raw
+ * authoring syntax never leaks into the rendered sheet.
  */
 export function descriptionValue(
   sys: Record<string, unknown>,
   resolveUuid: UuidResolver,
 ): string | undefined {
   const d = sys.description as Record<string, unknown> | undefined;
-  return typeof d?.value === "string" ? resolveUuidLinks(d.value, resolveUuid) : undefined;
+  return typeof d?.value === "string" ? resolveFoundryMarkup(d.value, resolveUuid) : undefined;
 }
 
 export function asNumber(value: unknown): number | undefined {

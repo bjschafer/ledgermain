@@ -1,6 +1,7 @@
 import type { Spell, SpellAction } from "@pf1/schema";
 
 import type { RawDoc } from "../util/packs.js";
+import { resolveFoundryMarkup } from "../util/html.js";
 import { makeUuid } from "../util/uuid.js";
 import {
   asNumber,
@@ -21,7 +22,14 @@ function numberMap(value: unknown): Record<string, number> {
   return out;
 }
 
-function transformActions(value: unknown): SpellAction[] {
+/**
+ * An action's free-text fields (area, save description, and the range/duration
+ * quantities, which a few entries write as prose) can carry the same Foundry
+ * markup a description does, and reach the sheet the same way.
+ */
+function transformActions(value: unknown, resolveUuid: UuidResolver): SpellAction[] {
+  const text = (v: unknown) =>
+    v == null ? undefined : resolveFoundryMarkup(String(v), resolveUuid);
   if (!value || typeof value !== "object") return [];
   const entries = Array.isArray(value) ? value : Object.values(value as Record<string, unknown>);
   const out: SpellAction[] = [];
@@ -47,20 +55,20 @@ function transformActions(value: unknown): SpellAction[] {
       save: save
         ? {
             type: typeof save.type === "string" ? save.type : undefined,
-            description: typeof save.description === "string" ? save.description : undefined,
+            description: typeof save.description === "string" ? text(save.description) : undefined,
           }
         : undefined,
       range: range
         ? {
             units: typeof range.units === "string" ? range.units : undefined,
-            value: range.value == null ? undefined : String(range.value),
+            value: text(range.value),
           }
         : undefined,
-      area: typeof a.area === "string" ? a.area : undefined,
+      area: typeof a.area === "string" ? text(a.area) : undefined,
       duration: duration
         ? {
             units: typeof duration.units === "string" ? duration.units : undefined,
-            value: duration.value == null ? undefined : String(duration.value),
+            value: text(duration.value),
           }
         : undefined,
       damage: parts.length > 0 ? { parts } : undefined,
@@ -104,6 +112,6 @@ export function transformSpell(doc: RawDoc, resolveUuid: UuidResolver): Spell {
       bloodline: numberMap(learnedAt.bloodline),
       subdomain: numberMap(learnedAt.subdomain),
     },
-    actions: transformActions(sys.actions),
+    actions: transformActions(sys.actions, resolveUuid),
   };
 }

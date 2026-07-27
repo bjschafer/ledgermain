@@ -29,14 +29,21 @@
     "cha": 15
   },
   "build": {
-    "feats": ["8snLqsJN4LLL00Nq", "WnWRcte0jppClLpz", "7zJTztNW7hdaqjKc"],
+    "feats": [
+      "8snLqsJN4LLL00Nq",
+      "WnWRcte0jppClLpz",
+      "7zJTztNW7hdaqjKc"
+    ],
     "skillRanks": {
       "hea": 5,
       "kre": 2,
       "dip": 2,
       "sen": 1
     },
-    "clericDomains": ["War", "Strength"],
+    "clericDomains": [
+      "War",
+      "Strength"
+    ],
     "archetypes": [],
     "classFeatureChoices": [],
     "spells": {
@@ -64,7 +71,8 @@
           "ac": 2,
           "acp": -2,
           "asf": 15,
-          "weight": 15
+          "weight": 15,
+          "shieldTier": "heavy"
         },
         "armorId": "2fK608aSYU9QDmzw",
         "name": "Heavy Steel Shield"
@@ -74,8 +82,16 @@
         "equipped": true
       }
     ],
-    "favoredClassBonus": ["hp", "hp", "hp", "hp", "hp"],
-    "abilityIncreases": ["wis"],
+    "favoredClassBonus": [
+      "hp",
+      "hp",
+      "hp",
+      "hp",
+      "hp"
+    ],
+    "abilityIncreases": [
+      "wis"
+    ],
     "featChoices": {
       "7zJTztNW7hdaqjKc": "hea"
     },
@@ -87,8 +103,11 @@
         "category": "melee",
         "damageDice": "1d8",
         "group": "heavy-mace",
-        "weaponGroups": ["hammers"],
+        "weaponGroups": [
+          "hammers"
+        ],
         "weight": 8,
+        "proficiency": "simple",
         "weaponId": "AbmnL8ilLH6r95Oa"
       }
     ]
@@ -102,7 +121,7 @@
     "conditions": [],
     "activeBuffs": [
       {
-        "instanceId": "bb137d2a-123f-46a0-9227-4efda0492e34",
+        "instanceId": "7ca91160-0e1e-4e61-9e68-90026a970830",
         "buffId": "ClOy4KHJFDdt0ALh",
         "name": "Bull's Strength",
         "changes": [
@@ -117,7 +136,7 @@
         "remainingRounds": 42
       },
       {
-        "instanceId": "74eecf98-395c-4520-b11d-58cdeb91c0a0",
+        "instanceId": "e654d9c5-6208-4405-a6e5-9bae362e4b80",
         "buffId": "QYVZS8MfOKzjpCm1",
         "name": "Bless",
         "changes": [
@@ -130,7 +149,7 @@
         "contextNotes": [
           {
             "target": "allSavingThrows",
-            "text": "+[[1]] Morale vs Fear effects"
+            "text": "+1 Morale vs Fear effects"
           }
         ],
         "casterLevel": 5,

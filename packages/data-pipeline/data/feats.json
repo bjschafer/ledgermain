@@ -41227,7 +41227,7 @@
     "uuid": "Compendium.pf1.feats.Item.eyLuIfPjsT7mmJ9H"
   },
   "ezNxW33BtSafLl0J": {
-    "description": "<p><em>You've learned to summon a more diverse array of monsters.</em></p><p><strong>Prerequisites</strong>: Knowledge (arcana) 1 rank, Knowledge (planes) 1 rank.</p><p><strong>Benefit</strong>: Pick any two templates from the following list (see Simple Summoning Templates on @Source[PZO9458;pages=18]): Aerial, Aqueous, Chthonic, Dark, Fiery, or Primordial. When you summon one or more creatures that would normally be available with the celestial, entropic, fiendish, or resolute template using a summon monster spell (or an effect that mimics such a spell), you can instead apply one of the chosen templates to each creature. You can apply a different template to each creature you summon.</p><p><strong>Special</strong>: You can select this feat more than once. Each time you do, you can choose an additional two templates.</p>",
+    "description": "<p><em>You've learned to summon a more diverse array of monsters.</em></p><p><strong>Prerequisites</strong>: Knowledge (arcana) 1 rank, Knowledge (planes) 1 rank.</p><p><strong>Benefit</strong>: Pick any two templates from the following list (see Simple Summoning Templates on PZO9458 p. 18): Aerial, Aqueous, Chthonic, Dark, Fiery, or Primordial. When you summon one or more creatures that would normally be available with the celestial, entropic, fiendish, or resolute template using a summon monster spell (or an effect that mimics such a spell), you can instead apply one of the chosen templates to each creature. You can apply a different template to each creature you summon.</p><p><strong>Special</strong>: You can select this feat more than once. Each time you do, you can choose an additional two templates.</p>",
     "id": "ezNxW33BtSafLl0J",
     "name": "Versatile Summon Monster",
     "prerequisites": {
@@ -44968,7 +44968,7 @@
     "uuid": "Compendium.pf1.feats.Item.ikkSCZyFZni68ehV"
   },
   "ilbaNfzWRIhpuE9v": {
-    "description": "<p><em>To the surprise of others, that strange growth on you is actually your spellcasting companion.</em></p><p><strong>Prerequisites</strong>: Aberrant bloodline.</p><p><strong>Benefits</strong>: You gain a tumor familiar, as the @Compendium[pf1e-archetypes.pf-class-abilities.PetD6zWBj0yF7uX1]{Tumor Familiar (Ex)} alchemist discovery (Pathfinder RPG Ultimate Magic 17), with an effective alchemist level equal to the level of the class that grants your aberrant bloodline for determining the tumor familiar's abilities.</p><p>If multiple classes grant you the aberrant bloodline, those class levels stack for determining your effective alchemist level.</p>",
+    "description": "<p><em>To the surprise of others, that strange growth on you is actually your spellcasting companion.</em></p><p><strong>Prerequisites</strong>: Aberrant bloodline.</p><p><strong>Benefits</strong>: You gain a tumor familiar, as the Tumor Familiar (Ex) alchemist discovery (Pathfinder RPG Ultimate Magic 17), with an effective alchemist level equal to the level of the class that grants your aberrant bloodline for determining the tumor familiar's abilities.</p><p>If multiple classes grant you the aberrant bloodline, those class levels stack for determining your effective alchemist level.</p>",
     "id": "ilbaNfzWRIhpuE9v",
     "name": "Aberrant Tumor",
     "prerequisites": {

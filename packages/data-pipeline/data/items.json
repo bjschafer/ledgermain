@@ -258,7 +258,7 @@
     "changes": [],
     "cl": 1,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer would gain the frightened or panicked condition, he gains the @Condition[shaken;as=auto] condition instead.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer would gain the frightened or panicked condition, he gains the shaken condition instead.</p>",
     "id": "1xX9RpN7lE1Kmb90",
     "name": "Talisman of Warrior's Courage, Greater",
     "price": 4500,
@@ -1066,7 +1066,7 @@
     "contextNotes": [
       {
         "target": "fort",
-        "text": "+[[5]] <b>Circumstance</b> vs cold weather effects"
+        "text": "+5 <b>Circumstance</b> vs cold weather effects"
       }
     ],
     "description": "<p>This vestment works just like a cold-weather outfit, granting a +5 <em>circumstance bonus</em> on <em>Fortitude</em> saving throws against exposure to cold weather, except it is custom made for an <em>animal companion</em>. The added cost represents custom tailoring to ensure that the furs used don't cause unwanted reactions from the <em>animal</em> wearing the outfit.</p>",
@@ -1130,7 +1130,7 @@
     "contextNotes": [
       {
         "target": "skill.slt",
-        "text": "+[[2]] circumstance to conceal a small object on your body"
+        "text": "+2 circumstance to conceal a small object on your body"
       }
     ],
     "description": "<p>These clothes are favored by Gnome inventors and wanderers, and consist of sturdy boots, a pair of stout linen pants or skirt, a cloth shirt, leather gloves, a hat and cloak, and numerous belts, straps, and accessories (such as scarves, a vest, bits of rope or twine, and bandoleers). These items are generally mismatched, each having been selected as \"superior\" from some other set of clothing, and are rife with pockets and small hidey-holes. It grants the wearer a +2 <em>circumstance bonus</em> on Sleight of Hand checks made to conceal a small object on her body.</p><p>As this outfit does not cost 10 gp or less, player characters can not choose this outfit for free when first beginning play.</p>",
@@ -1263,7 +1263,7 @@
     "contextNotes": [
       {
         "target": "skill.slt",
-        "text": "+[[2]] to hide small items on your body."
+        "text": "+2 to hide small items on your body."
       }
     ],
     "description": "<p>Outfitted with concealed pockets, this clothing gives you a +2 bonus on hiding small objects on your person.</p>",
@@ -1623,7 +1623,7 @@
     "changes": [],
     "cl": 18,
     "contextNotes": [],
-    "description": "<p>This ring resembles a ring of psychic mastery, but its flawless sapphire serves as a vessel for the wearer's soul. It possesses all the abilities of a Ring of Psychic Mastery in addition to the following effects. The wearer's soul instantly enters the ring upon the wearer's death, even if her body is utterly destroyed. This counts as an Object Possession spell, except that the possessing soul cannot animate the ring and must instead wait for someone to wear it.</p><p>From inside the ring, she can attempt a Possession, Greater on anyone who voluntarily wears the ring (@Save[will;dc=23] negates). A successful save against the greater possession effect renders the new wearer immune to further such attempts for 24 hours. Dispelling the object possession effect on the ring banishes the soul from the ring to its appropriate afterlife. Otherwise, a soul can remain in the ring indefinitely.</p><p>While in the ring, the soul knows when a creature has put on the ring. The soul can't otherwise sense the area around it or take actions other than attempting the greater possession effect. A ring of the hidden psyche resists attempts to discern its true nature. <em>Detect magic</em> reveals only the properties of a ring of psychic mastery, though <em>identify</em> or stronger magic can reveal the ring's full powers if the caster succeeds at a DC 23 Will save.</p>",
+    "description": "<p>This ring resembles a ring of psychic mastery, but its flawless sapphire serves as a vessel for the wearer's soul. It possesses all the abilities of a Ring of Psychic Mastery in addition to the following effects. The wearer's soul instantly enters the ring upon the wearer's death, even if her body is utterly destroyed. This counts as an Object Possession spell, except that the possessing soul cannot animate the ring and must instead wait for someone to wear it.</p><p>From inside the ring, she can attempt a Possession, Greater on anyone who voluntarily wears the ring (will DC 23 negates). A successful save against the greater possession effect renders the new wearer immune to further such attempts for 24 hours. Dispelling the object possession effect on the ring banishes the soul from the ring to its appropriate afterlife. Otherwise, a soul can remain in the ring indefinitely.</p><p>While in the ring, the soul knows when a creature has put on the ring. The soul can't otherwise sense the area around it or take actions other than attempting the greater possession effect. A ring of the hidden psyche resists attempts to discern its true nature. <em>Detect magic</em> reveals only the properties of a ring of psychic mastery, though <em>identify</em> or stronger magic can reveal the ring's full powers if the caster succeeds at a DC 23 Will save.</p>",
     "id": "7wVpGfxaz1Jv0pBA",
     "name": "Ring of the Hidden Psyche",
     "price": 160000,
@@ -2847,7 +2847,7 @@
     "contextNotes": [
       {
         "target": "cl",
-        "text": "+[[2]] enhancement bonus made to overcome spell resistance"
+        "text": "+2 enhancement bonus made to overcome spell resistance"
       }
     ],
     "description": "<p>This normal-appearing garment is attuned to one of three types of alignment. It can be white (01–45 on d%, good alignment), gray (46–75, neither good nor evil alignment), or black (76–100, evil alignment). To most wearers, the robe offers no powers or has no effects unless the wearer’s alignment doesn’t match that of the robe (see below). Only an arcane spellcaster can fully realize this potent magic item’s powers once the robe is donned. These powers are as follows.</p><ul><li>+5 armor bonus to AC</li><li>Spell resistance 18</li><li>+4 resistance bonus on all saving throws</li><li>+2 enhancement bonus on caster level checks made to overcome spell resistance</li></ul><p>If a white robe is donned by an evil character, she immediately gains three permanent negative levels. The same is true with respect to a black robe donned by a good character. An evil or good character who puts on a gray robe, or a neutral character who dons either a white or black robe, gains two permanent negative levels. These negative levels remain as long as the garment is worn and cannot be overcome in any way (including through restoration spells). Negative levels are immediately removed if the robe is removed from the wearer.</p>",
@@ -3105,7 +3105,7 @@
     "contextNotes": [
       {
         "target": "fort",
-        "text": "+[[1]] circumstance on hourly save in heaty environments"
+        "text": "+1 circumstance on hourly save in heaty environments"
       }
     ],
     "description": "<p>An umbrella is a heavier, waterproof parasol made of oiled or waxed cloth. It is intended to keep you dry in the rain or snow, but can still protect against sunlight just like a standard parasol.</p>",
@@ -3209,7 +3209,7 @@
     "contextNotes": [
       {
         "target": "cl",
-        "text": "+[[2]] enhancement bonus made to overcome spell resistance"
+        "text": "+2 enhancement bonus made to overcome spell resistance"
       }
     ],
     "description": "<p>This normal-appearing garment is attuned to one of three types of alignment. It can be white (01–45 on d%, good alignment), gray (46–75, neither good nor evil alignment), or black (76–100, evil alignment). To most wearers, the robe offers no powers or has no effects unless the wearer’s alignment doesn’t match that of the robe (see below). Only an arcane spellcaster can fully realize this potent magic item’s powers once the robe is donned. These powers are as follows.</p><ul><li>+5 armor bonus to AC</li><li>Spell resistance 18</li><li>+4 resistance bonus on all saving throws</li><li>+2 enhancement bonus on caster level checks made to overcome spell resistance</li></ul><p>If a white robe is donned by an evil character, she immediately gains three permanent negative levels. The same is true with respect to a black robe donned by a good character. An evil or good character who puts on a gray robe, or a neutral character who dons either a white or black robe, gains two permanent negative levels. These negative levels remain as long as the garment is worn and cannot be overcome in any way (including through restoration spells). Negative levels are immediately removed if the robe is removed from the wearer.</p>",
@@ -3355,7 +3355,7 @@
     "contextNotes": [
       {
         "target": "skill.spl",
-        "text": "+[[5]] compentence bonus on Spellcraft checks to identify magic auras and items."
+        "text": "+5 compentence bonus on Spellcraft checks to identify magic auras and items."
       }
     ],
     "description": "<p>These simple goggles, made of two emeralds attached to a twin frame, grant the wearer low-light vision and a +5 compentence bonus on Spellcraft checks to identify magic auras and items. If the wearer already has low-light vision, it grants the wearer double the normal range for low-light vision.</p>",
@@ -3427,7 +3427,7 @@
     "contextNotes": [
       {
         "target": "skill.per",
-        "text": "+[[6]] Circumstance bonus to discern celestial bodies and on Knowledge (geography) checks to learn about the planets when used at night."
+        "text": "+6 Circumstance bonus to discern celestial bodies and on Knowledge (geography) checks to learn about the planets when used at night."
       }
     ],
     "description": "<p>This basic, semi-portable telescope allows the user to see greater detail on very distant objects. Telescopes can be built to a variety of specifications, but those most often used by adventuring stargazers are listed here. A telescope grants the listed <em>circumstance bonus</em> (+2, +4, or +6) on <em>Perception</em> checks (see table below) to discern celestial bodies and on <em>Knowledge</em> (geography) checks to learn about the planets when used at night.</p><p>A telescope can be used to look at either terrestrial or celestial objects. Distance penalties on <em>Perception</em> checks for viewing objects through the telescope are divided by the telescope's magnification. Assembling, disassembling, or significantly moving a telescope takes 1 minute.</p><table><thead><tr><th>Magnification</th><th>Circumstance Bonus</th></tr></thead><tbody><tr><td>×10</td><td>+2</td></tr><tr><td>×50</td><td>+4</td></tr><tr><td>×250</td><td>+6</td></tr></tbody></table>",
@@ -4012,7 +4012,7 @@
     "contextNotes": [
       {
         "target": "skill.per",
-        "text": "+[[4]] Circumstance bonus to discern celestial bodies and on Knowledge (geography) checks to learn about the planets when used at night."
+        "text": "+4 Circumstance bonus to discern celestial bodies and on Knowledge (geography) checks to learn about the planets when used at night."
       }
     ],
     "description": "<p>This basic, semi-portable telescope allows the user to see greater detail on very distant objects. Telescopes can be built to a variety of specifications, but those most often used by adventuring stargazers are listed here. A telescope grants the listed <em>circumstance bonus</em> (+2, +4, or +6) on <em>Perception</em> checks (see table below) to discern celestial bodies and on <em>Knowledge</em> (geography) checks to learn about the planets when used at night.</p><p>A telescope can be used to look at either terrestrial or celestial objects. Distance penalties on <em>Perception</em> checks for viewing objects through the telescope are divided by the telescope's magnification. Assembling, disassembling, or significantly moving a telescope takes 1 minute.</p><table><thead><tr><th>Magnification</th><th>Circumstance Bonus</th></tr></thead><tbody><tr><td>×10</td><td>+2</td></tr><tr><td>×50</td><td>+4</td></tr><tr><td>×250</td><td>+6</td></tr></tbody></table>",
@@ -4034,7 +4034,7 @@
     "contextNotes": [
       {
         "target": "skill.dip",
-        "text": "+[[1]] Circumstance to gather information about the poster's subject"
+        "text": "+1 Circumstance to gather information about the poster's subject"
       }
     ],
     "description": "<p>This illustrated piece of paper typically measures 24 inches wide and 32 inches long. An artist's poster is typically used as an advertisement that can be easily seen by crowds of people. Placing a poster within a settlement grants creatures a +1 circumstance bonus on Diplomacy checks to gather information regarding the subject of the poster. If the settlement's population is greater than 1,000 people, one additional poster must be placed for every additional 1,000 people (or portion thereof) to gain the bonus. The cost of this item includes commissioning an artist of appropriate talent to complete the poster, and copies of the poster beyond the first cost 5 sp each.</p>",
@@ -4521,7 +4521,7 @@
     "contextNotes": [
       {
         "target": "concentration",
-        "text": "+[[5]] competence bonus to cast a spell defensively"
+        "text": "+5 competence bonus to cast a spell defensively"
       }
     ],
     "description": "<p>These plain gray leather gloves grant a +5 competence bonus on Spellcraft checks and concentration checks made to cast a spell defensively. Both gloves must be worn for the magic to be effective.</p>",
@@ -4704,7 +4704,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[4]] Insight vs mind-affecting effects and attempts to gather information from divinations"
+        "text": "+4 Insight vs mind-affecting effects and attempts to gather information from divinations"
       }
     ],
     "description": "<p>This simple tin headpiece is a lesser replica of the powerful stannum crown. A tin cap feeds on its wearer's paranoia, granting her a +4 insight bonus on saving throws against mind-affecting effects and divinations that gather information about her. Donning a tin cap saps the mind of the wearer, imposing a -2 penalty to her Intelligence, Wisdom, and Charisma. The increased paranoia causes the wearer to always attempt saving throws, even against harmless effects. Removing the tin cap removes both the benefits and drawbacks until it is donned again.</p>",
@@ -5306,7 +5306,7 @@
     "contextNotes": [
       {
         "target": "skill.dis",
-        "text": "+[[2]] circumstance to appear as a geisha, noble, or other high standing member of Minkai society"
+        "text": "+2 circumstance to appear as a geisha, noble, or other high standing member of Minkai society"
       }
     ],
     "description": "<p>This exquisite silken garment is vitally important formal wear for certain social roles in many Tian cultures, including Minkai. Properly donning a kimono requires assistance and a successful DC 15 Knowledge (nobility) check. When dealing with Minkaians or others familiar with the cultural significance of this garment, a properly worn kimono grants a +2 circumstance bonus on Diplomacy checks, as well as on Disguise checks made to appear as a geisha, noble, or other high standing member of Minkai society.</p>",
@@ -5713,7 +5713,7 @@
     "changes": [],
     "cl": 7,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer is reduced to fewer than 1/2 his maximum hit points, he automatically heals @Heal[4d8+7;dual;card] hit points.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer is reduced to fewer than 1/2 his maximum hit points, he automatically heals 4d8+7 hit points.</p>",
     "id": "Ot3fahTlX8fKBJyt",
     "name": "Talisman of Healing Power, Lesser",
     "price": 2400,
@@ -6167,7 +6167,7 @@
     "changes": [],
     "cl": 7,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer is reduced to fewer than 1/2 his maximum hit points, he automatically heals @Heal[4d8+7;dual;card] hit points.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer is reduced to fewer than 1/2 his maximum hit points, he automatically heals 4d8+7 hit points.</p>",
     "id": "Qq43T3lvVznI2IU0",
     "name": "Talisman of Healing Power, Greater",
     "price": 24000,
@@ -6400,7 +6400,7 @@
     "contextNotes": [
       {
         "target": "fort",
-        "text": "+[[5]] <b>Circumstance</b> vs cold weather effects"
+        "text": "+5 <b>Circumstance</b> vs cold weather effects"
       }
     ],
     "description": "<p>This outfit includes a wool coat, linen shirt, wool cap, heavy cloak, thick pants or skirt, and boots. This outfit grants a +5 circumstance bonus on Fortitude saving throws against exposure to cold weather.</p>",
@@ -6611,7 +6611,7 @@
     "contextNotes": [
       {
         "target": "skill.clm",
-        "text": "can climb with one hand with -[[5]]"
+        "text": "can climb with one hand with -5"
       }
     ],
     "description": "<p>The palms and fingers of these leather gloves are covered in small hairlike bristles, resembling those found on the feet of geckos, that aid you when climbing. Gecko gloves grant you a +1 circumstance bonus on Climb checks. They also enable you to climb with only one hand; doing so imposes a -5 penalty on your Climb checks.</p>",
@@ -7321,11 +7321,11 @@
     "contextNotes": [
       {
         "target": "skill.acr",
-        "text": "+[[2]] competence when using hands to aid movement and no penalty for icy surface"
+        "text": "+2 competence when using hands to aid movement and no penalty for icy surface"
       },
       {
         "target": "skill.clm",
-        "text": "+[[2]] competence when using hands to aid movement and no penalty for icy surface"
+        "text": "+2 competence when using hands to aid movement and no penalty for icy surface"
       }
     ],
     "description": "<p>Strapped to the hands, these spiked climbing claws grant a +2 competence bonus on Climb checks and Acrobatics checks made when using both hands to aid in movement, and allow the wearer to ignore the normal penalties on those skills for slippery or icy surfaces. In addition, up to 3 times per day, the wearer can activate the claws as a swift action to gain the benefits of spider climb for 1 round. The wearer cannot hold anything else in her hands while using claws of the ice bear. If used as a weapon, claws of the ice bear function as spiked gauntlets.</p>",
@@ -7483,7 +7483,7 @@
     "contextNotes": [
       {
         "target": "skill.sur",
-        "text": "+[[2]] competence to avoid getting lost and to avoid hazards in the Crown of the World"
+        "text": "+2 competence to avoid getting lost and to avoid hazards in the Crown of the World"
       }
     ],
     "description": "<p>Studying the map provides a +2 competence bonus on Survival checks to avoid getting lost and to avoid hazards in the High Ice region of the Crown of the World, as well as a +5 bonus on caravan Security checks while on the High Ice (with the exception of checks made to avoid the effects of altitude, extreme cold, or severe weather).</p>",
@@ -7667,15 +7667,15 @@
     "contextNotes": [
       {
         "target": "strChecks",
-        "text": "+[[4]] circumstance on magnetic surface to not get blown away by strong wind"
+        "text": "+4 circumstance on magnetic surface to not get blown away by strong wind"
       },
       {
         "target": "skill.clm",
-        "text": "+[[4]] circumstance on magnetic surface"
+        "text": "+4 circumstance on magnetic surface"
       },
       {
         "target": "fort",
-        "text": "+[[4]] circumstance on magnetic surface to not get blown away by strong wind"
+        "text": "+4 circumstance on magnetic surface to not get blown away by strong wind"
       }
     ],
     "description": "<p>The soles of these tough boots include lodestones that have been augmented through alchemical processes to be very strong. While climbing a rope, you can pinch the rope between the boots to prevent yourself from falling; you can release the boots' grip by carefully twisting them apart. The boots also stick to steel, iron, and other magnetizable surfaces.</p><p>You gain a +4 circumstance bonus on your Climb checks while using the boots' magnetism to help you climb a rope or magnetic surface. While standing on a magnetic surface, the boots grant you a +4 circumstance bonus on Strength checks and Fortitude saving throws to avoid being blown away by winds. Leaving a square when you the boots are attached to a magnetic surface requires an additional 5 feet of movement, as your overland speed is effectively reduced in exchange for the boots' assistance in climbing.</p>",
@@ -8249,7 +8249,7 @@
       },
       {
         "target": "ref",
-        "text": "+[[1]] circumstance against defensive abilities that deal damage when you strike a creature with a nonreach weapon, unarmed strike, or natural attack"
+        "text": "+1 circumstance against defensive abilities that deal damage when you strike a creature with a nonreach weapon, unarmed strike, or natural attack"
       }
     ],
     "description": "<p>Fine plates of articulated steel reinforce these elbow-length leather gloves, which are designed to allow animal handlers and animal hunters alike to confront beasts with natural defenses like spines and quills. While wearing the gloves, you gain DR 2/magic against attacks of opportunity provoked when you attempt a combat maneuver check to grapple a creature. You also gain this damage reduction and a +1 circumstance bonus on Reflex saves against defensive abilities that deal damage when you strike a creature with a nonreach weapon, unarmed strike, or natural attack. The thick gloves restrict your movement, imposing a -2 penalty on precision-based skill checks that involve your hands (such as using Disable Device to pick a lock)</p>",
@@ -9349,7 +9349,7 @@
     "contextNotes": [
       {
         "target": "fort",
-        "text": "+[[1]] circumstance on hourly save in heaty environments"
+        "text": "+1 circumstance on hourly save in heaty environments"
       }
     ],
     "description": "<p>This folding umbrella is translucent and not waterproof. It cuts down on the heat from direct sunlight. In very hot conditions where the sun is a factor (such as a desert), it gives you a +1 circumstance bonus on your hourly Fortitude saves against heat, and reduces the damage from a failed save by 1 hit point (minimum 1). It provides insufficient protection in conditions of severe or extreme heat. You must hold a parasol in one hand and use it to shade yourself from the sun. Alternatively, you can hold the parasol and use it to shade another creature of your size or smaller. The listed price is for a simple, functional parasol made of fabric or lacquered paper. A parasol used as a fashion accessory can be far more expensive, depending on the materials used, and can cost from 1 gp to 10 gp.</p>",
@@ -10673,7 +10673,7 @@
     "contextNotes": [
       {
         "target": "fort",
-        "text": "+[[2]] to resist cold weather. Does not stack with survival skill bonus."
+        "text": "+2 to resist cold weather. Does not stack with survival skill bonus."
       }
     ],
     "id": "dthfczwrxurvmcyo",
@@ -10772,7 +10772,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[8]] vs sight based attacks"
+        "text": "+8 vs sight based attacks"
       }
     ],
     "id": "dxoaodiakqybbbyc",
@@ -11955,7 +11955,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[8]] vs sight based attacks"
+        "text": "+8 vs sight based attacks"
       }
     ],
     "id": "gEoAP62h3nRtBBYH",
@@ -12142,11 +12142,11 @@
     "contextNotes": [
       {
         "target": "meleeWeapon",
-        "text": "+[[1]] Insight on attack and damage with alchemical items and bombs."
+        "text": "+1 Insight on attack and damage with alchemical items and bombs."
       },
       {
         "target": "rangedWeapon",
-        "text": "+[[1]] Insight on attack and damage with alchemical items and bombs."
+        "text": "+1 Insight on attack and damage with alchemical items and bombs."
       }
     ],
     "description": "<p>Two entwined wooden snakes run the length of this laurel rod, which is capped with a pair of brass wings. This mystical implement gives its possessor a +5 insight bonus on Craft (alchemy) checks and a +1 insight bonus on attack and damage rolls with alchemical items, including alchemists' bombs. When it's held in hand, the caduceus rod can be invoked five times per day to grant one of the following boons, each of which counts as a 6th-level spell-like ability.</p><p><strong>Awaken</strong>: The rod awakens all sleeping creatures within a 40-foot-radius burst centered on the wielder. Creatures in the burst gain immunity to sleep effects for 1 minute.</p><p><strong>Exchange</strong>: The wielder transmutes one of his prepared alchemical extracts into an extract of another formula in his formula book of equal or lower level.</p><p><strong>Mercy</strong>: All dying (-1 or fewer hit points) creatures in a 40-foot-radius burst centered on the wielder die. Each such creature can attempt a DC 19 Fortitude save to instead take 1d6 points of negative energy damage. This is a death effect.</p><p><strong>Revive</strong>: The wielder targets a creature within 40 feet with empowered breath of life.</p><p><strong>Slumber</strong>: As deep slumber, except that it affects a 20-foot-radius burst centered on the wielder, can affect up to 20 HD of creatures, and has a Will save DC of 19. The wielder of the rod is unaffected and can choose to exclude up to four other targets from the effects.</p>",
@@ -12196,7 +12196,7 @@
     "contextNotes": [
       {
         "target": "fort",
-        "text": "+[[2]] to resist warm or hot weather. Does not stack with survival skill bonus."
+        "text": "+2 to resist warm or hot weather. Does not stack with survival skill bonus."
       }
     ],
     "description": "<p>Covering your body from head to foot in light, airy cloth keeps you cooler than baring your skin to the sun. This outfit typically consists of a loose linen robe and either a turban or loose head covering and veil. The outfit provides a +2 bonus on <em>Fortitude</em> saves to resist warm or hot weather. This does not stack with any bonuses gained from the Survival skill.</p>",
@@ -12780,7 +12780,7 @@
     "changes": [],
     "cl": 1,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer would gain the frightened or panicked condition, he gains the @Condition[shaken;as=auto] condition instead.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer would gain the frightened or panicked condition, he gains the shaken condition instead.</p>",
     "id": "h0Qfttpk46Tm7mWg",
     "name": "Talisman of Warrior's Courage, Lesser",
     "price": 450,
@@ -12828,7 +12828,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[8]] circumstance on saving throws against vision-based effects."
+        "text": "+8 circumstance on saving throws against vision-based effects."
       },
       {
         "target": "attack",
@@ -12836,7 +12836,7 @@
       },
       {
         "target": "skill.per",
-        "text": "-[[4]] penalty on vision-based checks."
+        "text": "-4 penalty on vision-based checks."
       }
     ],
     "description": "<p>The menacing, eyeless masks of the Hellknight signifers were first created by members of the Order of the Gate, and are semitransparent when viewed from the inside. This alchemical treating of the material obscures the face of the wearer as a full helm does but allows the wearer to see as if through a smoky pane of glass. When wearing a signifer mask, the wearer is always treated as averting her gaze when dealing with gaze attacks, and she gains a +8 circumstance bonus on saving throws against vision-based effects. However, the obscuring nature of the mask means that the wearer also takes a -4 penalty on vision-based Perception checks while wearing the mask, and all opponents are treated as having concealment (20% miss chance).</p><p>A character with the Hellknight signifer prestige class can see through the mask as normal, but she can also adjust her mask as a standard action to function as detailed above. Signifer masks are often magically enhanced, becoming variants of items that take up the head item slot. Additionally, when a character takes levels in the Hellknight signifer prestige class, this mask grants the benefits and capabilities of the signifer mask class feature.</p>",
@@ -13345,7 +13345,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[4]] circumstance against contact poisons on objects touched"
+        "text": "+4 circumstance against contact poisons on objects touched"
       }
     ],
     "description": "<p>These full-length gloves of layered silk are popular among Kalistocrats and others who disdain physical contact. The wearer gains a +4 circumstance bonus on saving throws against contact poisons on objects he touches.</p>",
@@ -13665,7 +13665,7 @@
     "changes": [],
     "cl": 10,
     "contextNotes": [],
-    "description": "<p>This is the most common form of scrying device, a crystal sphere about 6 inches in diameter. So well-known are these items that many so-called oracles or fortune-tellers use similar appearing (but completely nonmagical) replicas of these items to ply their trades. A character can use a magical crystal ball to see over virtually any distance or into other planes of existence, as with the spell Scrying<em> </em>(Will DC 16 negates). A crystal ball can be used multiple times per day, but the DC to resist its power decreases by 1 for each additional use. Certain crystal balls have additional powers that can be used through the crystal ball on the target viewed.</p>\n<p>While looking through the crystal ball, you are affected by Telepathy. In addition, you can implant a Suggestion in the subject once per day (Will DC [[10[Base] + 2[SL] + 2[CAM]]] negates) on the subject.</p>",
+    "description": "<p>This is the most common form of scrying device, a crystal sphere about 6 inches in diameter. So well-known are these items that many so-called oracles or fortune-tellers use similar appearing (but completely nonmagical) replicas of these items to ply their trades. A character can use a magical crystal ball to see over virtually any distance or into other planes of existence, as with the spell Scrying<em> </em>(Will DC 16 negates). A crystal ball can be used multiple times per day, but the DC to resist its power decreases by 1 for each additional use. Certain crystal balls have additional powers that can be used through the crystal ball on the target viewed.</p>\n<p>While looking through the crystal ball, you are affected by Telepathy. In addition, you can implant a Suggestion in the subject once per day (Will DC 10[Base] + 2[SL] + 2[CAM] negates) on the subject.</p>",
     "id": "iq0zFnc5LMWnbOZd",
     "name": "Crystal Ball (Telepathy)",
     "price": 70000,
@@ -13913,7 +13913,7 @@
     "contextNotes": [
       {
         "target": "skill.slt",
-        "text": "+[[2]] circumstance to conceal an item in the pocket."
+        "text": "+2 circumstance to conceal an item in the pocket."
       }
     ],
     "description": "<p>This is an extra pocket sewn on the inside of a piece of clothing. You gain a +2 <em>circumstance bonus</em> on <em>Sleight of Hand</em> checks to conceal an item in an inside pocket. Detecting the compartment requires a successful DC 15 <em>Perception</em> check at minimum (DC 20 if empty), even if you aren't trained in <em>Sleight of Hand</em>.</p><p>The inside pocket is 1 inch deep. Different styles open from the top or from the side, and some have button flaps to secure the contents.</p>",
@@ -14784,7 +14784,7 @@
     "contextNotes": [
       {
         "target": "skill.slt",
-        "text": "+[[4]] to hide objects on your body"
+        "text": "+4 to hide objects on your body"
       }
     ],
     "description": "<p>An elaborate design disguises several small pockets on one side of this scarf. This scarf grants you a +4 bonus on <em>Sleight of Hand</em> checks made to hide objects on your body. This bonus does not stack with the bonus wearing heavy clothing provides but does stack with bonuses for attempting to hide small objects.</p>",
@@ -14962,11 +14962,11 @@
     "contextNotes": [
       {
         "target": "cmb.trip",
-        "text": "-[[4]] on rough ice"
+        "text": "-4 on rough ice"
       },
       {
         "target": "cmb.drag",
-        "text": "-[[4]] on rough ice"
+        "text": "-4 on rough ice"
       },
       {
         "target": "landSpeed",
@@ -14974,11 +14974,11 @@
       },
       {
         "target": "cmd",
-        "text": "-[[4]] on rough ice against bull rush, drag or trip maneuver"
+        "text": "-4 on rough ice against bull rush, drag or trip maneuver"
       },
       {
         "target": "cmb.bullRush",
-        "text": "-[[4]] on rough ice"
+        "text": "-4 on rough ice"
       }
     ],
     "id": "lQrG8StzgHP2bdGD",
@@ -17680,7 +17680,7 @@
     "contextNotes": [
       {
         "target": "skill.sur",
-        "text": "+[[2]] Circumstance on Occult Skill Unlocks"
+        "text": "+2 Circumstance on Occult Skill Unlocks"
       }
     ],
     "description": "<p>Made from specially crafted materials, a dowsing rod is used by the psychically attuned to locate water, find graves, or uncover minerals. Most commonly manufactured from forked branches cut from hazel, peach, or willow trees, dowsing rods can also come in other forms, such as bent, L-shaped rods of charged cold iron. Though a dowser can use any forked twig found in nature for dowsing, these specially prepared rods provide a +2 circumstance bonus on Survival checks for the dowsing occult skill unlock.</p>",
@@ -19315,7 +19315,7 @@
     "contextNotes": [
       {
         "target": "skill.per",
-        "text": "+[[2]] Circumstance bonus to discern celestial bodies and on Knowledge (geography) checks to learn about the planets when used at night."
+        "text": "+2 Circumstance bonus to discern celestial bodies and on Knowledge (geography) checks to learn about the planets when used at night."
       }
     ],
     "description": "<p>This basic, semi-portable telescope allows the user to see greater detail on very distant objects. Telescopes can be built to a variety of specifications, but those most often used by adventuring stargazers are listed here. A telescope grants the listed <em>circumstance bonus</em> (+2, +4, or +6) on <em>Perception</em> checks (see table below) to discern celestial bodies and on <em>Knowledge</em> (geography) checks to learn about the planets when used at night.</p><p>A telescope can be used to look at either terrestrial or celestial objects. Distance penalties on <em>Perception</em> checks for viewing objects through the telescope are divided by the telescope's magnification. Assembling, disassembling, or significantly moving a telescope takes 1 minute.</p><table><thead><tr><th>Magnification</th><th>Circumstance Bonus</th></tr></thead><tbody><tr><td>×10</td><td>+2</td></tr><tr><td>×50</td><td>+4</td></tr><tr><td>×250</td><td>+6</td></tr></tbody></table>",
@@ -19873,7 +19873,7 @@
     "contextNotes": [
       {
         "target": "skill.pro",
-        "text": "+[[1]] circumstance bonus while fishing in shallow water."
+        "text": "+1 circumstance bonus while fishing in shallow water."
       }
     ],
     "description": "<p>These waterproof boots are felt lined and have a thin layer of metal around the soles. The top of each boot ends just before the knee, with a cord for tying the top shut over clothing or exposed skin. These boots assist in prolonged hikes through deep mud or shallow pools, granting the wearer a +1 circumstance bonus on Profession (fisher) checks while fishing in shallow water.</p>",
@@ -19927,7 +19927,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[1]] resistance vs. inhaled poisons and other airborne effects that require breathing"
+        "text": "+1 resistance vs. inhaled poisons and other airborne effects that require breathing"
       }
     ],
     "description": "<p>Made of heavy material, this <em>scarf</em> filters out dust, sand, smoke, and other airborne contaminants. When worn over your nose and mouth, this <em>scarf</em> grants you a +1 <em>resistance bonus</em> on saving throws against inhaled poisons and other airborne effects that require breathing.</p>",
@@ -20613,7 +20613,7 @@
     "contextNotes": [
       {
         "target": "skill.slt",
-        "text": "+[[2]] vs Perception check of someone observing or frisking you regarding items in the sheath"
+        "text": "+2 vs Perception check of someone observing or frisking you regarding items in the sheath"
       }
     ],
     "description": "<p>This is a sheath designed to be strapped to your forearm and hidden under a long sleeve. The sheath can hold one forearm-length item such as a <em>dagger</em>, <em>dart</em>, or <em>wand</em>, or up to five arrows or crossbow bolts. Alternatively, you may store up to 1 pound of ammunition in a wrist sheath. As a <em>move action</em>, you can bend your wrist to cause some or all of these items to drop into your hand (provoking <em>attacks of opportunity</em> as normal). You have a +2 bonus on <em>Sleight of Hand</em> checks made to oppose the <em>Perception</em> check of someone observing or frisking you regarding items in the sheath. You can only wear one wrist sheath per arm.</p>",
@@ -20643,7 +20643,7 @@
     "contextNotes": [
       {
         "target": "ref",
-        "text": "+[[2]] competence bonus on Reflex saves to avoid falling (including falling prone)."
+        "text": "+2 competence bonus on Reflex saves to avoid falling (including falling prone)."
       },
       {
         "target": "skill.clm",
@@ -20651,7 +20651,7 @@
       },
       {
         "target": "cmd",
-        "text": "+[[2]] competence bonus to CMD against trip maneuvers."
+        "text": "+2 competence bonus to CMD against trip maneuvers."
       },
       {
         "target": "skill.acr",
@@ -20740,7 +20740,7 @@
     "contextNotes": [
       {
         "target": "ac",
-        "text": "+[[1]] stacking armor bonus against vampires."
+        "text": "+1 stacking armor bonus against vampires."
       }
     ],
     "description": "<p>Made from hardened leather reinforced with a band of metal, this collar protects the wearer against <em>vampire</em> bites when worn around the throat. It provides a +1 <em>armor bonus</em> to AC against <em>vampire</em> bites or similar attacks that specifically target the wearer's throat. Unlike most armor bonuses, the neck guard's +1 bonus stacks with the <em>armor bonus</em> of light or medium <em>armor</em>, but it provides no additional bonus when worn with heavy armor.</p>",
@@ -21820,7 +21820,7 @@
     "changes": [],
     "cl": 10,
     "contextNotes": [],
-    "description": "<p>This is the most common form of scrying device, a crystal sphere about 6 inches in diameter. So well-known are these items that many so-called oracles or fortune-tellers use similar appearing (but completely nonmagical) replicas of these items to ply their trades. A character can use a magical crystal ball to see over virtually any distance or into other planes of existence, as with the spell Scrying<em> </em>(Will DC 16 negates). A crystal ball can be used multiple times per day, but the DC to resist its power decreases by 1 for each additional use. Certain crystal balls have additional powers that can be used through the crystal ball on the target viewed.</p>\n<p>While looking through the crystal ball, you can use Detect Thoughts (Will DC [[10[Base] + 1[SL] + 2[CAM]]] negates) on the subject.</p>",
+    "description": "<p>This is the most common form of scrying device, a crystal sphere about 6 inches in diameter. So well-known are these items that many so-called oracles or fortune-tellers use similar appearing (but completely nonmagical) replicas of these items to ply their trades. A character can use a magical crystal ball to see over virtually any distance or into other planes of existence, as with the spell Scrying<em> </em>(Will DC 16 negates). A crystal ball can be used multiple times per day, but the DC to resist its power decreases by 1 for each additional use. Certain crystal balls have additional powers that can be used through the crystal ball on the target viewed.</p>\n<p>While looking through the crystal ball, you can use Detect Thoughts (Will DC 10[Base] + 1[SL] + 2[CAM] negates) on the subject.</p>",
     "id": "xOb5JuJKdNUsh6kP",
     "name": "Crystal Ball (Detect Thoughts)",
     "price": 51000,
@@ -22140,7 +22140,7 @@
     "contextNotes": [
       {
         "target": "fort",
-        "text": "+[[2]] <b>Circumstance</b> vs Contact Diseases"
+        "text": "+2 <b>Circumstance</b> vs Contact Diseases"
       }
     ],
     "description": "<p>Any creature wearing this outfit gains a +2 <em>circumstance bonus</em> on <em>Fortitude</em> saves made to resist contact diseases.</p>\n<p>As this outfit does not cost 10 gp or less, player characters can not choose this outfit for free when first beginning play.</p>",
@@ -22166,7 +22166,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Sacred bonus while asleep"
+        "text": "+2 Sacred bonus while asleep"
       }
     ],
     "description": "<p>This protective ward is fashioned from a thin, supple piece of wood bound in a circle, and then woven with sinew to create a weblike pattern. Dreamcatchers are often decorated with beads and feathers. More elaborate dreamcatchers might be made of gold or silver instead, and decorated with dangling jewels and metal figurines. A dreamcatcher protects its sleeping owner from malicious influences. The owner gains a +2 sacred bonus on saving throws while asleep. Further, any ability damage or ability drain he takes during this time is reduced by 1 point (to a minimum of 0 points).</p>",
@@ -22236,7 +22236,7 @@
     "contextNotes": [
       {
         "target": "skill.acr",
-        "text": "+[[5]] competence bonus on checks to make high or long jumps"
+        "text": "+5 competence bonus on checks to make high or long jumps"
       }
     ],
     "description": "<p>This ring continually allows the wearer to leap about, providing a +5 competence bonus on all her Acrobatics checks made to make high or long jumps.</p>",
@@ -22336,7 +22336,7 @@
     "contextNotes": [
       {
         "target": "cl",
-        "text": "+[[2]] enhancement bonus made to overcome spell resistance"
+        "text": "+2 enhancement bonus made to overcome spell resistance"
       }
     ],
     "description": "<p>This normal-appearing garment is attuned to one of three types of alignment. It can be white (01–45 on d%, good alignment), gray (46–75, neither good nor evil alignment), or black (76–100, evil alignment). To most wearers, the robe offers no powers or has no effects unless the wearer’s alignment doesn’t match that of the robe (see below). Only an arcane spellcaster can fully realize this potent magic item’s powers once the robe is donned. These powers are as follows.</p><ul><li>+5 armor bonus to AC</li><li>Spell resistance 18</li><li>+4 resistance bonus on all saving throws</li><li>+2 enhancement bonus on caster level checks made to overcome spell resistance</li></ul><p>If a white robe is donned by an evil character, she immediately gains three permanent negative levels. The same is true with respect to a black robe donned by a good character. An evil or good character who puts on a gray robe, or a neutral character who dons either a white or black robe, gains two permanent negative levels. These negative levels remain as long as the garment is worn and cannot be overcome in any way (including through restoration spells). Negative levels are immediately removed if the robe is removed from the wearer.</p>",
@@ -22700,7 +22700,7 @@
     "contextNotes": [
       {
         "target": "conChecks",
-        "text": "+[[1]] to avoid nonlethal damage from a forced march"
+        "text": "+1 to avoid nonlethal damage from a forced march"
       }
     ],
     "description": "<p>These rubber boot or shoe inserts cushion your feet and improve your gait, granting you a +1 <em>circumstance bonus</em> on <em>Constitution</em> checks to continue running and to avoid <em>nonlethal damage</em> from a forced march.</p>",
@@ -23242,7 +23242,7 @@
     "contextNotes": [
       {
         "target": "skill.slt",
-        "text": "+[[8]] to hide a tiny object on your person"
+        "text": "+8 to hide a tiny object on your person"
       }
     ],
     "description": "<p>Favored by <em>rogues</em>, these adornments hide tiny secret compartments. False jewelry grants a +8 bonus on <em>Sleight of Hand</em> checks to hide a tiny object on your person (does not stack with the bonus for hiding very small objects) and negates the +4 bonuses searchers receive when frisking you. False jewelry costs 20 gp in addition to the value of the ornament being fitted with the secret compartment.</p>",

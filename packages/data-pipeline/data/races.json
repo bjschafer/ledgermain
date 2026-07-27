@@ -426,7 +426,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[4]] Racial vs Mind Affecting, Paralysis, Poison, Stun\nImmune to Disease, Sleep and Emotion-based Effects"
+        "text": "+4 Racial vs Mind Affecting, Paralysis, Poison, Stun\nImmune to Disease, Sleep and Emotion-based Effects"
       }
     ],
     "creatureSubtypes": ["android"],
@@ -536,11 +536,11 @@
     "contextNotes": [
       {
         "target": "skill.spl",
-        "text": "+[[2]] to Identify Magic Items"
+        "text": "+2 to Identify Magic Items"
       },
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Enchantment Effects\nImmune to Magic Sleep"
+        "text": "+2 Racial vs Enchantment Effects\nImmune to Magic Sleep"
       }
     ],
     "creatureSubtypes": ["elf", "aquatic"],
@@ -748,7 +748,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Enchantment Effects (non-aboleths)\n-[[2]] Racial vs Enchantment Effects (aboleths)"
+        "text": "+2 Racial vs Enchantment Effects (non-aboleths)\n-2 Racial vs Enchantment Effects (aboleths)"
       }
     ],
     "creatureSubtypes": ["aquatic"],
@@ -846,7 +846,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs. Negative Energy and Death effects"
+        "text": "+2 Racial vs. Negative Energy and Death effects"
       }
     ],
     "creatureSubtypes": ["native"],
@@ -908,7 +908,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Fear"
+        "text": "+2 Racial vs Fear"
       }
     ],
     "creatureSubtypes": ["halfling"],
@@ -1057,7 +1057,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "-[[2]] vs Disease and Inhaled Poisons"
+        "text": "-2 vs Disease and Inhaled Poisons"
       }
     ],
     "creatureSubtypes": ["astomoi"],
@@ -1116,7 +1116,7 @@
     "contextNotes": [
       {
         "target": "skill.ste",
-        "text": "+[[4]] Racial in Forests"
+        "text": "+4 Racial in Forests"
       }
     ],
     "creatureSubtypes": ["leshy"],
@@ -1428,15 +1428,15 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs. Illusions"
+        "text": "+2 Racial vs. Illusions"
       },
       {
         "target": "skill.ste",
-        "text": "+[[2]] Racial to Stealth in Dim Light or Darkness"
+        "text": "+2 Racial to Stealth in Dim Light or Darkness"
       },
       {
         "target": "skill.per",
-        "text": "+[[2]] Racial to Perception in Dim Light or Darkness"
+        "text": "+2 Racial to Perception in Dim Light or Darkness"
       }
     ],
     "creatureSubtypes": ["Strix"],
@@ -1485,7 +1485,7 @@
     "contextNotes": [
       {
         "target": "skill.ste",
-        "text": "+[[4]] Racial in Marshes and Forested Areas"
+        "text": "+4 Racial in Marshes and Forested Areas"
       }
     ],
     "creatureSubtypes": ["grippli"],
@@ -1582,15 +1582,15 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Enchantment Effects\nImmune to Magic Sleep"
+        "text": "+2 Racial vs Enchantment Effects\nImmune to Magic Sleep"
       },
       {
         "target": "skill.spl",
-        "text": "+[[2]] to Identify Magic Items"
+        "text": "+2 to Identify Magic Items"
       },
       {
         "target": "cl",
-        "text": "+[[2]] to overcome Spell Resistance"
+        "text": "+2 to overcome Spell Resistance"
       }
     ],
     "creatureSubtypes": ["elf"],
@@ -2055,7 +2055,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs. Shadow Subschool"
+        "text": "+2 Racial vs. Shadow Subschool"
       }
     ],
     "creatureSubtypes": ["wayang"],
@@ -2250,7 +2250,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial bonus against mind-affecting effects and poison."
+        "text": "+2 Racial bonus against mind-affecting effects and poison."
       }
     ],
     "creatureSubtypes": ["shapechanger", "Reptoid"],
@@ -2356,7 +2356,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Fear Effects"
+        "text": "+2 Racial vs Fear Effects"
       }
     ],
     "creatureSubtypes": [],
@@ -2463,11 +2463,11 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs. Mind-Affecting Effects and Poison"
+        "text": "+2 Racial vs. Mind-Affecting Effects and Poison"
       },
       {
         "target": "skill.han",
-        "text": "+[[2]] Racial vs. Reptiles"
+        "text": "+2 Racial vs. Reptiles"
       }
     ],
     "creatureSubtypes": ["Nagaji"],
@@ -2625,7 +2625,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs. Fear Effects"
+        "text": "+2 Racial vs. Fear Effects"
       }
     ],
     "creatureSubtypes": ["goblinoid"],
@@ -2808,7 +2808,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Enchantment Effects\nImmune to Magic Sleep"
+        "text": "+2 Racial vs Enchantment Effects\nImmune to Magic Sleep"
       }
     ],
     "creatureSubtypes": ["human", "elf"],
@@ -2921,7 +2921,7 @@
     "contextNotes": [
       {
         "target": "cmd",
-        "text": "+[[4]] Racial vs Bull Rush and Trip while on ground"
+        "text": "+4 Racial vs Bull Rush and Trip while on ground"
       }
     ],
     "creatureSubtypes": ["dwarf"],
@@ -2974,15 +2974,15 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Illusion Effects"
+        "text": "+2 Racial vs Illusion Effects"
       },
       {
         "target": "attack",
-        "text": "+[[1]] Racial vs Humanoids (Reptillian, Goblinoid)"
+        "text": "+1 Racial vs Humanoids (Reptillian, Goblinoid)"
       },
       {
         "target": "ac",
-        "text": "+[[4]] Dodge vs Giants"
+        "text": "+4 Dodge vs Giants"
       }
     ],
     "creatureSubtypes": ["gnome"],
@@ -3071,7 +3071,7 @@
     "contextNotes": [
       {
         "target": "attack",
-        "text": "+[[1]] vs. Reptilian and Dwarf"
+        "text": "+1 vs. Reptilian and Dwarf"
       }
     ],
     "creatureSubtypes": ["gnome"],
@@ -3286,7 +3286,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Enchantment Effects\nImmune to Magic Sleep"
+        "text": "+2 Racial vs Enchantment Effects\nImmune to Magic Sleep"
       }
     ],
     "creatureSubtypes": ["elf"],
@@ -3428,15 +3428,15 @@
     "contextNotes": [
       {
         "target": "skill.han",
-        "text": "+[[4]] Racial vs. Apes and Monkeys"
+        "text": "+4 Racial vs. Apes and Monkeys"
       },
       {
         "target": "skill.clm",
-        "text": "+[[2]] Racial in Jungles and Forests"
+        "text": "+2 Racial in Jungles and Forests"
       },
       {
         "target": "skill.ste",
-        "text": "+[[2]] Racial in Jungles and Forests"
+        "text": "+2 Racial in Jungles and Forests"
       }
     ],
     "creatureSubtypes": ["Orang-Pendak"],
@@ -3484,27 +3484,27 @@
     "contextNotes": [
       {
         "target": "cmd",
-        "text": "+[[4]] Racial vs Bull Rush and Trip while on ground"
+        "text": "+4 Racial vs Bull Rush and Trip while on ground"
       },
       {
         "target": "skill.per",
-        "text": "+[[2]] to Notice Unusual Stonework"
+        "text": "+2 to Notice Unusual Stonework"
       },
       {
         "target": "ac",
-        "text": "+[[4]] Dodge vs Giants"
+        "text": "+4 Dodge vs Giants"
       },
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Poisons, Spells and Spell-likes"
+        "text": "+2 Racial vs Poisons, Spells and Spell-likes"
       },
       {
         "target": "skill.apr",
-        "text": "+[[2]] Racial to Appraise Items with Gems"
+        "text": "+2 Racial to Appraise Items with Gems"
       },
       {
         "target": "attack",
-        "text": "+[[1]] Racial vs Humanoids (Orc, Goblinoid)"
+        "text": "+1 Racial vs Humanoids (Orc, Goblinoid)"
       }
     ],
     "creatureSubtypes": ["dwarf"],
@@ -3786,7 +3786,7 @@
     "contextNotes": [
       {
         "target": "skill.han",
-        "text": "+[[4]] to Influence Rodents"
+        "text": "+4 to Influence Rodents"
       }
     ],
     "creatureSubtypes": ["ratfolk"],
@@ -3836,15 +3836,15 @@
     "contextNotes": [
       {
         "target": "skill.per",
-        "text": "+[[2]] Racial at Night"
+        "text": "+2 Racial at Night"
       },
       {
         "target": "skill.ste",
-        "text": "+[[2]] Racial at Night"
+        "text": "+2 Racial at Night"
       },
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs. Mind-Affecting Effects"
+        "text": "+2 Racial vs. Mind-Affecting Effects"
       }
     ],
     "creatureSubtypes": ["Syrinx"],
@@ -4112,7 +4112,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] Racial vs Enchantment Effects\nImmune to Magic Sleep"
+        "text": "+2 Racial vs Enchantment Effects\nImmune to Magic Sleep"
       }
     ],
     "creatureSubtypes": ["elf"],
@@ -4160,7 +4160,7 @@
     "contextNotes": [
       {
         "target": "allSavingThrows",
-        "text": "+[[2]] vs Poison and Mind-affecting effects"
+        "text": "+2 vs Poison and Mind-affecting effects"
       }
     ],
     "creatureSubtypes": ["native"],
