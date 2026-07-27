@@ -19,19 +19,10 @@
  * "untyped" }`), so this rides the same existing, tested consumer rather
  * than inventing a new one.
  *
- * RAW note this does NOT enforce, matching the Robe of the Archmagi's own
- * pre-existing gap: "bracers of armor and ordinary armor do not stack" (the
- * higher one should apply, not both). `computeAc()`'s stacking groups an
- * `aac` change and worn armor's own AC value together by category, but both
- * carry `type: "untyped"` — a type this engine's stacking resolver always
- * sums rather than competes (`stacking.ts`: dodge/untyped/circumstance are
- * exempt from the "same type, only the highest counts" rule) — so equipping
- * bracers alongside worn body armor currently adds both rather than taking
- * the higher, exactly like Robe of the Archmagi already does. Fixing that
- * would mean changing how worn armor's own base AC value is typed in
- * `compute.ts`, out of scope for this patch (and a `compute.ts` change no
- * agent working this file should make lightly, since it'd shift every
- * character's AC computation, not just bracers).
+ * "Bracers of armor and ordinary armor do not stack" is enforced by
+ * `computeAc()`, not here: `ac-bonus-types.ts` normalizes every untyped `aac`
+ * bonus onto the real `armor` bonus type, so worn armor and these compete for
+ * the highest like any other same-type pair.
  */
 
 import type { Change } from "@pf1/schema";

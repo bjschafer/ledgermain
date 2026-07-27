@@ -43,6 +43,7 @@ import {
   type ActiveAbilitySubstitution,
   type ResolvedAbility,
 } from "./ability-substitution.js";
+import { acBonusType } from "./ac-bonus-types.js";
 import { chosenBonusClassSkills } from "./bonus-class-skills.js";
 import { resolveClassFeatures } from "./archetypes.js";
 import { computeRanger } from "./ranger.js";
@@ -409,6 +410,16 @@ function computeAc(
   // luck bonuses to AC do not.
   interface AcCand extends TypedModifier {
     category: AcCategory;
+    /**
+     * Set on a worn piece's enhancement bonus, naming the piece whose own
+     * armor/shield bonus it enhances. A magic armor's "+1" enhances *that
+     * armor's* bonus, so when the piece loses the armor-bonus competition
+     * (bracers of armor beat it, say) its enhancement has nothing left to
+     * enhance and drops out with it.
+     */
+    enhances?: string;
+    /** Identity a worn piece's `enhances` back-reference points at. */
+    pieceKey?: string;
   }
   const cands: AcCand[] = [];
 
@@ -424,32 +435,35 @@ function computeAc(
   let maxDexCap: number | undefined;
   let armorTotal = 0;
   let shieldTotal = 0;
+  let wornIndex = 0;
   for (const inst of doc.build.gear ?? []) {
     if (!inst.equipped || !inst.armor) continue;
     const a = inst.armor;
     const label = inst.name ?? (a.slot === "shield" ? "Shield" : "Armor");
-    if (a.slot === "shield") {
-      shieldTotal += a.ac;
-      cands.push({ category: "shield", type: "untyped", value: a.ac, source: label });
-      if (a.enhancement) {
-        cands.push({
-          category: "shield",
-          type: "enh",
-          value: a.enhancement,
-          source: `${label} (enhancement)`,
-        });
-      }
-    } else {
-      armorTotal += a.ac;
-      cands.push({ category: "armor", type: "untyped", value: a.ac, source: label });
-      if (a.enhancement) {
-        cands.push({
-          category: "armor",
-          type: "enh",
-          value: a.enhancement,
-          source: `${label} (enhancement)`,
-        });
-      }
+    // Per-piece, not per-label: two identically-named pieces must not have one's
+    // enhancement follow the other's base bonus out of the breakdown.
+    const pieceKey = `worn:${wornIndex++}`;
+    const isShield = a.slot === "shield";
+    const category: AcCategory = isShield ? "shield" : "armor";
+    if (isShield) shieldTotal += a.ac;
+    else armorTotal += a.ac;
+    cands.push({
+      // Worn armor's own AC IS the armor (or shield) bonus, so it competes with
+      // every other source of one — mage armor, bracers, a second worn piece.
+      category,
+      type: acBonusType(isShield ? "sac" : "aac", "untyped"),
+      value: a.ac,
+      source: label,
+      pieceKey,
+    });
+    if (a.enhancement) {
+      cands.push({
+        category,
+        type: "enh",
+        value: a.enhancement,
+        source: `${label} (enhancement)`,
+        enhances: pieceKey,
+      });
     }
     // A tower shield's max-Dex cap binds the same as an armor's (RAW) — read
     // regardless of slot, and combined as the worst (lowest) of every
@@ -506,7 +520,11 @@ function computeAc(
   // typed AC changes from items/features: ac / aac / sac / nac
   for (const target of ["ac", "aac", "sac", "nac"]) {
     for (const m of forTarget(collected, target)) {
-      cands.push({ ...m, category: categoryFor(target, m.type) });
+      cands.push({
+        ...m,
+        type: acBonusType(target, m.type),
+        category: categoryFor(target, m.type),
+      });
     }
   }
 
@@ -520,18 +538,31 @@ function computeAc(
   }
 
   const components: AcComponent[] = [];
+  /** Worn pieces whose own armor/shield bonus survived the competition. */
+  const winningPieces = new Set<string>();
+  const enhancements: { component: AcComponent; enhances: string }[] = [];
   for (const [, group] of groups) {
     const stack = resolveStack(group);
     stack.modifiers.forEach((m, i) => {
-      components.push({
+      const cand = group[i]!;
+      const component: AcComponent = {
         source: m.source,
         sourceId: m.sourceId,
         type: m.type,
         value: m.value,
         applied: m.applied,
-        category: group[i]!.category,
-      });
+        category: cand.category,
+      };
+      if (m.applied && cand.pieceKey !== undefined) winningPieces.add(cand.pieceKey);
+      if (cand.enhances !== undefined) enhancements.push({ component, enhances: cand.enhances });
+      components.push(component);
     });
+  }
+  // An enhancement bonus only ever enhanced its own piece's armor/shield bonus,
+  // so it goes when that bonus does (a +1 chain shirt under bracers of armor +8
+  // contributes 8, not 9).
+  for (const { component, enhances } of enhancements) {
+    if (!winningPieces.has(enhances)) component.applied = false;
   }
 
   const sumWhere = (pred: (c: AcComponent) => boolean) =>

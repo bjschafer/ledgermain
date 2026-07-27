@@ -18,6 +18,7 @@
 import type { AbilityId, ActiveBuff } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import { acBonusType } from "./ac-bonus-types.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { resolveStack, type TypedModifier } from "./stacking.js";
 
@@ -128,6 +129,8 @@ export function routeSharedBuffs(
       };
       const speedMode = SPEED_TARGET_MODE[ch.target];
       if (ch.target === "ac" || ch.target === "aac" || ch.target === "sac" || ch.target === "nac") {
+        // Same highest-wins normalization the master's own sheet applies.
+        mod.type = acBonusType(ch.target, mod.type);
         const category =
           ch.target === "aac"
             ? "armor"

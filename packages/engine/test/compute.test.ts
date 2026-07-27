@@ -1047,9 +1047,7 @@ describe("compute: armor & shield enhancement bonuses to AC", () => {
     // 10 + 9 armor + 3 enh + 1 capped-dex = 23
     expect(sheet.ac.normal).toBe(23);
     // Both components appear in provenance
-    const armorBase = sheet.ac.components.find(
-      (c) => c.category === "armor" && c.type === "untyped",
-    );
+    const armorBase = sheet.ac.components.find((c) => c.category === "armor" && c.type === "armor");
     const armorEnh = sheet.ac.components.find((c) => c.category === "armor" && c.type === "enh");
     expect(armorBase?.value).toBe(9);
     expect(armorBase?.applied).toBe(true);

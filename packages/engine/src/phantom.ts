@@ -512,7 +512,7 @@ export function derivePhantom(doc: CharacterDoc, rollData: RollData): DerivedPha
     { category: "base", type: "base", value: 10, source: "Base" },
     { category: "dex", type: "untyped", value: dexMod, source: "Dexterity" },
     ...(row.acBonus !== 0
-      ? [{ category: "natural", type: "untyped", value: row.acBonus, source: "Manifestation" }]
+      ? [{ category: "natural", type: "natural", value: row.acBonus, source: "Manifestation" }]
       : []),
     ...(sizeAcMod !== 0
       ? [{ category: "size", type: "size", value: sizeAcMod, source: "Size" }]

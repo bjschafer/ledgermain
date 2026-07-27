@@ -602,7 +602,7 @@ export function deriveFamiliar(
   const acCandidates: AcCandidate[] = [
     { category: "base", type: "base", value: 10, source: "Base" },
     { category: "dex", type: "untyped", value: dexMod, source: "Dexterity" },
-    { category: "natural", type: "untyped", value: naturalArmor, source: "Natural armor" },
+    { category: "natural", type: "natural", value: naturalArmor, source: "Natural armor" },
     ...(sizeAcMod !== 0
       ? [{ category: "size", type: "size", value: sizeAcMod, source: "Size" }]
       : []),

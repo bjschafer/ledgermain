@@ -55,13 +55,44 @@ describe("Bracers of Armor (ITEM_CHANGE_PATCHES)", () => {
     expect(sheet.ac.normal).toBe(10);
   });
 
-  it("adds onto worn armor rather than capping at the higher of the two (a pre-existing engine gap shared with the vendored Robe of the Archmagi — see item-effects.ts's doc comment; RAW says bracers and ordinary armor should not stack)", () => {
+  it("does not stack with worn armor — the higher armor bonus applies (CRB p. 460)", () => {
     const doc = makeDoc([
       { equipped: true, itemId: itemByName("Bracers of Armor +1") },
       { equipped: true, name: "Chain Shirt", armor: { slot: "armor", ac: 4, type: 1 } },
     ]);
     const sheet = compute(doc, ref);
-    expect(sheet.ac.normal).toBe(15); // 10 base + 4 (chain shirt) + 1 (bracers) — see note above
+    expect(sheet.ac.normal).toBe(14); // 10 base + 4 (chain shirt beats the +1 bracers)
+    const bracers = sheet.ac.components.find((c) => c.source.startsWith("Bracers of Armor"));
+    expect(bracers?.applied).toBe(false);
+  });
+
+  it("beats worn armor when the bracers are the higher bonus", () => {
+    const doc = makeDoc([
+      { equipped: true, itemId: itemByName("Bracers of Armor +6") },
+      { equipped: true, name: "Chain Shirt", armor: { slot: "armor", ac: 4, type: 1 } },
+    ]);
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(16); // 10 base + 6 (bracers beat the chain shirt)
+    const shirt = sheet.ac.components.find((c) => c.source === "Chain Shirt");
+    expect(shirt?.applied).toBe(false);
+  });
+
+  it("takes the losing armor's enhancement bonus down with it", () => {
+    // A +1 chain shirt's enhancement bonus enhances the chain shirt's own armor
+    // bonus; once the bracers beat that bonus, there is nothing left for it to
+    // enhance, so AC is 16 (10 + 6), not 17.
+    const doc = makeDoc([
+      { equipped: true, itemId: itemByName("Bracers of Armor +6") },
+      {
+        equipped: true,
+        name: "Chain Shirt +1",
+        armor: { slot: "armor", ac: 4, enhancement: 1, type: 1 },
+      },
+    ]);
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(16);
+    const enh = sheet.ac.components.find((c) => c.source === "Chain Shirt +1 (enhancement)");
+    expect(enh?.applied).toBe(false);
   });
 
   it("every Bracers of Armor variant (+1 through +8) grants exactly its own bonus", () => {
