@@ -32,6 +32,18 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-26-armor-bonuses-compete",
+    date: "2026-07-26",
+    title: "Armor bonuses stop double-counting",
+    note: "Mage armor, bracers of armor, a robe of the archmagi, and the armor on your back all grant an armor bonus, and the rules say only the best one counts. The sheet was adding them together. Now they compete, the loser is struck through in the AC breakdown next to whatever beat it, and a magic armor's enhancement bonus steps aside with it. The shield spell and a worn shield settle the same way. If your AC just dropped, this is why — it was too high before.",
+  },
+  {
+    id: "2026-07-26-readable-rules-text",
+    date: "2026-07-26",
+    title: "Rules text reads like rules text",
+    note: 'Traits, racial traits, gear, and buffs were showing their reminders with the raw markup they were authored in — "+[[1]] Trait bonus to disable traps", "@Distance[20 ft;dual] below you", "@Condition[dazzled]". Around 2,800 of those now read as plain numbers and words. A couple hundred that depend on your caster level or an ability modifier still show their formula.',
+  },
+  {
     id: "2026-07-25-combat-math-sweep",
     date: "2026-07-25",
     title: "Combat math fills in its corners",

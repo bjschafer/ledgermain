@@ -126,14 +126,9 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
       "Situational/activated effects, prestige-class prereq structuring, and Paths of Prestige-tier mechanics tables have no machine-readable source and must be hand-authored against the published rules.",
   },
   {
-    category: "Unevaluated Foundry inline rolls in buff notes",
+    category: "Character-dependent inline rolls in vendored notes",
     detail:
-      "~46 vendored buff contextNotes still contain Foundry's raw `[[formula]]` inline-roll syntax, rendered verbatim instead of evaluated (e.g. Inspire Courage's morale-vs-fear note).",
-  },
-  {
-    category: "Armor-bonus items stack instead of competing",
-    detail:
-      "Bracers of Armor and Robe of the Archmagi grant their armor bonus via the `aac` target with untyped stacking, so they add to worn armor rather than taking the higher of the two as RAW requires.",
+      "210 vendored strings (148 contextNotes, 62 buff descriptions) still carry Foundry's `[[formula]]` inline-roll syntax where the formula reads an `@` path — a caster level, an ability mod, or a Foundry-only `@resources.*` use counter. The data-pipeline resolves every other inline roll and enricher to plain text at build time, but these need a character to evaluate against, which a build step doesn't have; resolving them would mean a render-time evaluator at each of the ~20 note call sites.",
   },
   {
     category: "Unchained rage fatigue timer",
