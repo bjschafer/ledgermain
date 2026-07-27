@@ -166,7 +166,7 @@ export function Sheet({
             <InfoTip
               className="ability-pip"
               key={id}
-              content={`Total ${a.total} — base ${a.base} before racial/other modifiers`}
+              content={`Total ${a.total}, from a base of ${a.base} before racial and other modifiers`}
             >
               <div className="ap-abbr">{ABILITY_ABBR[id]}</div>
               <div className="ap-mod num">{signed(a.mod)}</div>
@@ -269,7 +269,7 @@ export function Sheet({
               <InfoTip
                 key={`imm-${entry.qualifier}`}
                 className="prof-chip immunity-chip"
-                content={`Immune to ${qualifierLabel(entry.qualifier)} damage — from ${entry.components
+                content={`Immune to ${qualifierLabel(entry.qualifier)} damage, from ${entry.components
                   .filter((c) => c.applied)
                   .map((c) => c.source)
                   .join(", ")}`}
@@ -284,7 +284,7 @@ export function Sheet({
               <InfoTip
                 key={`immEffect-${entry.qualifier}`}
                 className="prof-chip immunity-chip"
-                content={`Immune to ${EFFECT_IMMUNITY_LABELS[entry.qualifier]} — from ${entry.components
+                content={`Immune to ${EFFECT_IMMUNITY_LABELS[entry.qualifier]}, from ${entry.components
                   .filter((c) => c.applied)
                   .map((c) => c.source)
                   .join(

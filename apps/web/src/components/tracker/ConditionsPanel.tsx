@@ -37,13 +37,13 @@ export function ConditionsPanel({ doc, sheet, update }: BuilderProps) {
           const roundsLeft = conditionRoundsLeft(doc, id);
           const immuneTo = conditionImmunityFor(sheet, id);
           const tipContent = immuneTo
-            ? `You're immune to ${EFFECT_IMMUNITY_LABELS[immuneTo]}, so this shouldn't normally apply. Toggling it anyway is still allowed — your GM may have a reason.`
+            ? `You're immune to ${EFFECT_IMMUNITY_LABELS[immuneTo]}, so this shouldn't normally apply. Toggling it anyway is still allowed, since your GM may have a reason.`
             : implied
-              ? `Implied by ${impliedName} — that's the stricter condition on this ladder. Turn ${impliedName} off to control ${cond.name} directly.`
+              ? `Implied by ${impliedName}, the stricter condition on this ladder. Turn ${impliedName} off to control ${cond.name} directly.`
               : cond.displayOnly
-                ? `${cond.summary} (reference only — no numeric modifier applied)`
+                ? `${cond.summary} (reference only; no numeric modifier applied)`
                 : roundsLeft !== undefined
-                  ? `${cond.summary} Ends in ${roundsLeft} round${roundsLeft === 1 ? "" : "s"} — the round clock clears it.`
+                  ? `${cond.summary} Ends in ${roundsLeft} round${roundsLeft === 1 ? "" : "s"}; the round clock clears it.`
                   : cond.summary;
           return (
             <span key={id} className="chip-wrap">
@@ -86,7 +86,7 @@ export function ConditionsPanel({ doc, sheet, update }: BuilderProps) {
           condition on the same ladder (e.g. frightened implies shaken); turn the stricter one off
           to toggle this directly. ⊘ = something you're immune to; you can still toggle it, since
           only your table knows why. A round count (e.g. "10r") means something applied it with a
-          known duration — advancing the round clock counts it down and clears it.
+          known duration, and advancing the round clock counts it down and clears it.
         </p>
       </Explainer>
       {active.size > 0 ? (
