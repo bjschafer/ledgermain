@@ -66,11 +66,19 @@ function hexFeatureNames(doc: CharacterDoc): string[] {
 }
 
 describe("WITCH_HEXES table", () => {
-  it("every hex is displayOnly with no changes (no unconditional flat number)", () => {
+  it("every hex is displayOnly with no changes EXCEPT Iceplant's unconditional natural armor", () => {
+    // Iceplant (Ultimate Wilderness / vendored text): "+2 natural armor
+    // bonus" — always-on and self-only, the lone promotable hex found by
+    // the #74 Phase 5 sweep.
     for (const id of WITCH_HEX_IDS) {
       const hex = WITCH_HEXES[id]!;
-      expect(hex.displayOnly).toBe(true);
-      expect(hex.changes).toEqual([]);
+      if (id === "iceplant") {
+        expect(hex.displayOnly).toBe(false);
+        expect(hex.changes).toEqual([{ formula: "2", target: "nac", type: "natural" }]);
+        continue;
+      }
+      expect(hex.displayOnly, id).toBe(true);
+      expect(hex.changes, id).toEqual([]);
     }
   });
 
@@ -81,11 +89,11 @@ describe("WITCH_HEXES table", () => {
     expect(WITCH_HEXES.lifeGiver?.tier).toBe("grand");
   });
 
-  it("covers the 27 APG core hexes (14 regular + 8 major + 5 grand; UM hexes out of scope)", () => {
-    expect(WITCH_HEX_IDS.length).toBe(27);
-    expect(hexesForTier("hex").length).toBe(14);
-    expect(hexesForTier("major").length).toBe(8);
-    expect(hexesForTier("grand").length).toBe(5);
+  it("covers every vendored hex (60 regular + 31 major + 13 grand — full parity, issue #74 Phase 5)", () => {
+    expect(WITCH_HEX_IDS.length).toBe(104);
+    expect(hexesForTier("hex").length).toBe(60);
+    expect(hexesForTier("major").length).toBe(31);
+    expect(hexesForTier("grand").length).toBe(13);
   });
 
   it("regular hexes have minLevel 1, major hexes 10, grand hexes 18", () => {

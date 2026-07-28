@@ -79,8 +79,8 @@ describe("MAGUS_ARCANA table", () => {
     expect(MAGUS_ARCANA.poolStrike?.name).toBe("Pool Strike");
   });
 
-  it("covers the 20 base Ultimate Magic arcana (later-book arcana out of scope)", () => {
-    expect(MAGUS_ARCANA_IDS.length).toBe(20);
+  it("covers every vendored arcana (64 — full parity, issue #74 Phase 5)", () => {
+    expect(MAGUS_ARCANA_IDS.length).toBe(64);
   });
 
   it("every entry has a minLevel of at least 3 (no arcana before 3rd level)", () => {

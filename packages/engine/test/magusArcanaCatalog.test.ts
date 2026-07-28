@@ -23,12 +23,12 @@ describe("mergedMagusArcanaCatalog", () => {
   const merged = mergedMagusArcanaCatalog(ref);
   const byId = new Map(merged.map((a) => [a.id, a]));
 
-  it("has exactly one row per vendored entry — all 20 hand-authored entries matched", () => {
+  it("has exactly one row per vendored entry — all 64 hand-authored entries matched", () => {
     const vendoredCount = Object.keys(ref.magusArcana).length;
     expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("all 20 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+  it("all 64 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
     let matched = 0;
     for (const id of MAGUS_ARCANA_IDS) {
       const entry = byId.get(id);
@@ -39,17 +39,14 @@ describe("mergedMagusArcanaCatalog", () => {
       expect(entry!.description).toBeDefined();
       matched++;
     }
-    expect(matched).toBe(20);
+    expect(matched).toBe(64);
   });
 
-  it("a vendored-only entry (no hand-authored counterpart) resolves display-only with its own id + prose + parsed nameSuffix, and the base minLevel of 3 (no fabricated higher gate)", () => {
-    const entry = byId.get("arcane_scent")!;
-    expect(entry.displayOnly).toBe(true);
-    expect(entry.changes).toEqual([]);
-    expect(entry.minLevel).toBe(3);
-    expect(entry.nameSuffix).toBe("(Ex)");
-    expect(entry.description).toContain("scent");
-    expect(MAGUS_ARCANA.arcane_scent).toBeUndefined();
+  it("no vendored-only arcana remain — the fallback path only exists for a future data bump", () => {
+    // Full hand-table parity as of the #74 Phase 5 extension.
+    for (const entry of merged) {
+      expect(MAGUS_ARCANA[entry.id], entry.id).toBeDefined();
+    }
   });
 
   it("every id is unique", () => {

@@ -23,12 +23,12 @@ describe("mergedWitchHexCatalog", () => {
   const merged = mergedWitchHexCatalog(ref);
   const byId = new Map(merged.map((h) => [h.id, h]));
 
-  it("has exactly one row per vendored entry — all 27 hand-authored entries matched", () => {
+  it("has exactly one row per vendored entry — all 104 hand-authored entries matched", () => {
     const vendoredCount = Object.keys(ref.hexes).length;
     expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("all 27 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+  it("all 104 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
     let matched = 0;
     for (const id of WITCH_HEX_IDS) {
       const entry = byId.get(id);
@@ -40,26 +40,14 @@ describe("mergedWitchHexCatalog", () => {
       expect(entry!.description).toBeDefined();
       matched++;
     }
-    expect(matched).toBe(27);
+    expect(matched).toBe(104);
   });
 
-  it("a vendored-only entry (no hand-authored counterpart) resolves display-only with its own id + prose, and a soft minLevel derived from its tier", () => {
-    const entry = byId.get("aura_of_purity")!;
-    expect(entry.displayOnly).toBe(true);
-    expect(entry.changes).toEqual([]);
-    expect(entry.tier).toBe("hex");
-    expect(entry.minLevel).toBe(1);
-    expect(entry.description).toContain("purifies");
-    expect(WITCH_HEXES.aura_of_purity).toBeUndefined();
-  });
-
-  it("a vendored-only MAJOR hex gets minLevel 10, a vendored-only GRAND hex gets minLevel 18", () => {
-    // "Cure Sight" isn't a real vendored key — pick any vendored-only entry
-    // per tier instead of hardcoding a possibly-renamed id.
-    const majorOnly = merged.find((h) => h.tier === "major" && !WITCH_HEX_IDS.includes(h.id));
-    const grandOnly = merged.find((h) => h.tier === "grand" && !WITCH_HEX_IDS.includes(h.id));
-    expect(majorOnly?.minLevel).toBe(10);
-    expect(grandOnly?.minLevel).toBe(18);
+  it("no vendored-only hexes remain — the fallback path only exists for a future data bump", () => {
+    // Full hand-table parity as of the #74 Phase 5 extension.
+    for (const entry of merged) {
+      expect(WITCH_HEXES[entry.id], entry.id).toBeDefined();
+    }
   });
 
   it("every id is unique", () => {

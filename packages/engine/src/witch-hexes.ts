@@ -8,13 +8,11 @@
  * `ClassFeature`s, no per-hex breakdown — confirmed: `class-features.json`
  * carries no per-hex entries), so there is no upstream JSON to normalize.
  *
- * Scope: the 27 Advanced Player's Guide "core" hexes — 14 regular hexes
- * (available from 1st level), 8 major hexes (10th level), 5 grand hexes
- * (18th level). Ultimate Magic adds another 21 hexes (10 regular/8 major/3
- * grand) that are OUT OF SCOPE here, same posture as `oracle-revelations.ts`
- * scoping down to APG-core-only mysteries and `magus-arcana.ts` scoping down
- * to base Ultimate Magic arcana — add them in a follow-up if the tracker
- * needs to represent a higher-splatbook witch.
+ * Scope: FULL vendored parity as of issue #74's Phase 5 extension — all 104
+ * vendored hexes (60 regular from 1st level, 31 major from 10th, 13 grand
+ * from 18th), the APG core set plus every splatbook addition the pinned
+ * data carries (Ultimate Magic, Heroes of Golarion, Healer's Handbook,
+ * Champions of Purity, Legacy of the First World, ...).
  *
  * Save DC (PF1 APG RAW, stated once as a blanket rule on the witch's Hex
  * class feature, not repeated per-hex): "10 + 1/2 the witch's level + the
@@ -47,10 +45,12 @@
  *     "self" Change target either.
  * None of these clear the bar for an unconditional Change on the WITCH's own
  * sheet, so — same discipline as `oracle-revelations.ts`'s Sidestep
- * Secret/Mental Acuity near-misses — EVERY entry here is `displayOnly: true`
- * with `changes: []`; a `contextNotes` reminder carries the DC/duration/
- * activation shape instead, and flags Cauldron/Flight/Ward specifically as
- * the ones worth a closer look by hand.
+ * Secret/Mental Acuity near-misses — every entry here is `displayOnly` with
+ * `changes: []`, with ONE exception: Iceplant's always-on +2 natural armor
+ * (the lone unconditional self-effect in the whole catalog). A
+ * `contextNotes` reminder carries the DC/duration/activation shape for the
+ * rest, and flags Cauldron/Flight/Ward specifically as the ones worth a
+ * closer look by hand.
  *
  * Issue #75 audit: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
  * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
@@ -74,12 +74,12 @@ export interface WitchHexDef {
   summary: string;
   /** Earliest witch level this hex can be selected at — 1 (hex), 10 (major), or 18 (grand). Soft-filtered only. */
   minLevel: number;
-  /** Typed modifiers granted by the hex (empty for every entry — see file doc comment). */
+  /** Typed modifiers granted by the hex (empty for all but a lone unconditional-passive entry, Iceplant — see file doc comment). */
   changes: Change[];
   /** Non-mechanical reminders (save DC, duration, nested per-use choice, ...). */
   contextNotes?: ContextNote[];
-  /** Always true here — no hex has a flat always-on numeric effect. */
-  displayOnly: true;
+  /** Derived: false only when the entry carries a real Change. */
+  displayOnly: boolean;
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });
@@ -88,6 +88,7 @@ interface RawHex {
   id: string;
   name: string;
   summary: string;
+  changes?: Change[];
   contextNotes?: ContextNote[];
 }
 
@@ -98,9 +99,9 @@ function forTier(tier: WitchHexTier, minLevel: number, entries: RawHex[]): Witch
     tier,
     summary: e.summary,
     minLevel,
-    changes: [],
+    changes: e.changes ?? [],
     contextNotes: e.contextNotes,
-    displayOnly: true,
+    displayOnly: (e.changes ?? []).length === 0,
   }));
 }
 
@@ -217,6 +218,452 @@ const HEX_LIST: WitchHexDef[] = [
         ),
       ],
     },
+
+    // ---- splatbook additions (issue #74 Phase 5; full vendored parity) ----
+    {
+      id: "ameliorating",
+      name: "Ameliorating",
+      summary:
+        "Touch a creature to suppress the dazzled, fatigued, shaken, or sickened condition (your choice) for minutes equal to your witch level, or instead grant a +4 circumstance bonus on saves against two of those conditions for 24 hours.",
+      contextNotes: [
+        note("Once a creature benefits from this hex, it can't benefit again for 24 hours."),
+      ],
+    },
+    {
+      id: "auraOfPurity",
+      name: "Aura of Purity",
+      summary:
+        "Project a 10-ft. purifying aura for minutes/day equal to your witch level, negating diseases, inhaled poisons, and noxious gas effects (of no more than half your level in spell levels) within it.",
+      contextNotes: [
+        note("Minutes need not be consecutive but must be spent in 1-minute increments."),
+      ],
+    },
+    {
+      id: "beastOfIllOmen",
+      name: "Beast of Ill-Omen",
+      summary:
+        "Curse the next enemy to see your familiar (while within 60 ft. of it) with bane (caster level = witch level) unless it saves.",
+      contextNotes: [note("Will negates; DC = 10 + 1/2 witch level + Int mod.")],
+    },
+    {
+      id: "childScent",
+      name: "Child-Scent",
+      summary: "Gain the scent ability, but only to track humanoid children and immature animals.",
+      contextNotes: [
+        note(
+          "Narrower than a full scent grant (children/immature animals only) — not modeled as a sense bonus; the engine's Scent sense target would overstate it.",
+          "sensesc",
+        ),
+      ],
+    },
+    {
+      id: "citySight",
+      name: "City Sight",
+      summary:
+        "Curse a target to lose darkvision, greensight, low-light vision, and similar enhanced sight for 1 minute (10 minutes at 8th level), leaving ordinary sight and nonvisual senses intact.",
+      contextNotes: [
+        note("Fort negates; DC = 10 + 1/2 witch level + Int mod. Once per target per day."),
+      ],
+    },
+    {
+      id: "combatHypnosis",
+      name: "Combat Hypnosis",
+      summary:
+        "Functions as hypnotism against a single target, even mid-combat, without granting the target's usual +2 saving throw bonus for being in combat.",
+      contextNotes: [
+        note("Will negates; DC = 10 + 1/2 witch level + Int mod. Once per target per day."),
+      ],
+    },
+    {
+      id: "congeal",
+      name: "Congeal",
+      summary:
+        "Turn the water in a 10-ft. radius around you sludgy for 1 minute — difficult terrain for other swimmers and partial cover against effects passing through it.",
+    },
+    {
+      id: "cursedWound",
+      name: "Cursed Wound",
+      summary:
+        "Curse a living creature so that, for 3 + your Int modifier days (minimum 1), any healing applied to it can't restore its last 10 hit points unless the healer beats a caster level check (DC = 11 + witch level).",
+      contextNotes: [
+        note(
+          "Will save reduces the duration to 1 round. At 5th level also imposes a -2 Fortitude penalty vs. disease/poison contracted from the wound. Curse effect, removable by remove curse.",
+        ),
+      ],
+    },
+    {
+      id: "darkApothecary",
+      name: "Dark Apothecary",
+      summary: "Gain a +4 insight bonus on checks to craft poison and on checks to apply poison.",
+      contextNotes: [
+        note(
+          "+4 insight bonus on Craft checks to craft poison — not auto-applied (Craft is a player-named parameterized skill with no guaranteed matching entry); add it by hand to your Craft (poison) skill if you have one.",
+          "skill.crf",
+        ),
+      ],
+    },
+    {
+      id: "deathcall",
+      name: "Deathcall",
+      summary:
+        "Wounded creatures within 120 ft. of you take a penalty on checks to stabilize while dying: -1 (-2 at 8th level, -3 at 16th).",
+      contextNotes: [
+        note(
+          "Passive aura affecting OTHER creatures' stabilize checks, not your own sheet — apply manually.",
+        ),
+      ],
+    },
+    {
+      id: "discord",
+      name: "Discord",
+      summary:
+        "Make a target distrust another creature it can see, worsening its attitude toward that creature by one step (two at 8th level) for rounds equal to your Int modifier.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Mind-affecting charm effect; the Cackle hex extends its duration. Once per target per day.",
+        ),
+      ],
+    },
+    {
+      id: "disruptConnection",
+      name: "Disrupt Connection",
+      summary:
+        "Force a summoned creature within 30 ft. to save or be confused for 1d4 rounds; on a high enough confusion roll (51+ at 8th level, 26+ at 16th) it instead acts as if you had summoned it.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. The Cackle hex extends its duration by 1 round. Once per target per 24 hours.",
+        ),
+      ],
+    },
+    {
+      id: "distraction",
+      name: "Distraction",
+      summary:
+        "Force a target within 30 ft. to make a concentration check (DC 15 + twice the spell level) or lose any spell or spell-like ability it tries to cast, for 1 round.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Duration extends by 1 round at 8th and 16th level; hexes that extend Misfortune (such as Cackle) extend this too. Once per target per day.",
+        ),
+      ],
+    },
+    {
+      id: "enemyGround",
+      name: "Enemy Ground",
+      summary:
+        "Curse a target with clumsiness in dangerous terrain: -4 (-8 at 8th level) on Acrobatics checks over slippery or uneven ground and to avoid attacks of opportunity while moving through threatened squares, for 1 minute.",
+      contextNotes: [
+        note(
+          "Will save halves the penalty and cuts the duration to 1 round; DC = 10 + 1/2 witch level + Int mod.",
+        ),
+      ],
+    },
+    {
+      id: "feralSpeech",
+      name: "Feral Speech",
+      summary:
+        "Speak with and understand one animal type of your choice (amphibians, birds, fish, mammals, or reptiles) each time you use this hex, as speak with animals; vermin are added to the list at 12th level.",
+    },
+    {
+      id: "floatingLotus",
+      name: "Floating Lotus",
+      summary:
+        "Conjure a floating lotus flower for minutes/day equal to your witch level, letting you cross water as water walk and granting a +10 (+20 at 5th level, +30 at 9th) enhancement bonus on Acrobatics checks for high and long jumps.",
+      contextNotes: [
+        note("Minutes need not be consecutive but must be spent in 1-minute increments."),
+      ],
+    },
+    {
+      id: "giftOfConsumption",
+      name: "Gift of Consumption",
+      summary:
+        "As an immediate action, curse a creature within 30 ft. to share a Fortitude-save effect targeting you; it saves at your DC and suffers the same effect on a failure.",
+      contextNotes: [
+        note(
+          "Doesn't work with effects that require an additional or different kind of save. Once per target per day.",
+        ),
+      ],
+    },
+    {
+      id: "greaterGiftOfConsumption",
+      name: "Greater Gift of Consumption",
+      summary:
+        "Redirect a Fortitude-save effect entirely onto your Gift of Consumption proxy instead of sharing it, or, if you succeed at your own save, impose a -4 penalty on the proxy's save against a shared effect.",
+      contextNotes: [
+        note(
+          "Requires the Gift of Consumption hex. A creature redirected to in this way is immune to Gift of Consumption again for 24 hours.",
+        ),
+      ],
+    },
+    {
+      id: "heraldingBloom",
+      name: "Heralding Bloom",
+      summary:
+        "Compel a plant within 30 ft. to repeat a 25-word message you choose to any intelligent creature that comes near, until 24 hours after you place the hex.",
+      contextNotes: [
+        note(
+          "An intelligent plant target may negate with a Will save. Active blooms are limited to your witch level + Cha modifier.",
+        ),
+      ],
+    },
+    {
+      id: "iceplant",
+      name: "Iceplant",
+      summary:
+        "Gain a +2 natural armor bonus and the constant effect of endure elements, for you and your familiar; your skin turns thick and stiff to the touch.",
+      changes: [{ formula: "2", target: "nac", type: "natural" }],
+      contextNotes: [
+        note(
+          "The +2 natural armor bonus above is yours; your familiar gets its own copy of this hex's bonuses, not modeled here. The constant endure elements effect isn't a number this sheet tracks.",
+          "nac",
+        ),
+      ],
+    },
+    {
+      id: "leshySummoning",
+      name: "Leshy Summoning",
+      summary:
+        "Count as a plant creature for growing leshys, and add leaf, gourd, fungus, seaweed, and lotus leshys to your summon monster I-V lists respectively.",
+    },
+    {
+      id: "minorProphecy",
+      name: "Minor Prophecy",
+      summary:
+        "Cast augury once per day; spending a full hour instead of the normal casting time skips the material component but drops the spell's accuracy by 5%.",
+    },
+    {
+      id: "mothersEye",
+      name: "Mother's Eye",
+      summary:
+        "See through plant matter, as the greensight universal monster ability, for minutes/day equal to your witch level.",
+      contextNotes: [
+        note(
+          "Limited daily use, not a permanent sense (and greensight has no matching engine sense target) — minutes need not be consecutive but must be spent in 1-minute increments; apply manually while active.",
+        ),
+      ],
+    },
+    {
+      id: "mudWitch",
+      name: "Mud Witch",
+      summary:
+        "Assume a mud form for minutes/day equal to your witch level: your type becomes ooze, speed drops to 10 ft. with a 20 ft. swim speed (20 ft./40 ft. at 10th level), and you gain DR 10/slashing plus cold resistance 10 — but lose spellcasting and supernatural abilities while in that form.",
+      contextNotes: [
+        note(
+          "Requires the Swamp Hag hex. Minutes need not be consecutive but must be spent in 1-minute increments; a readied touch spell discharges harmlessly when you activate this hex.",
+        ),
+      ],
+    },
+    {
+      id: "murksight",
+      name: "Murksight",
+      summary:
+        "See through natural fog, mist, and rain without penalty (ignoring their concealment), and up to 15 ft. through magical versions of the same, including underwater in murky water.",
+      contextNotes: [
+        note(
+          "Doesn't let you see anything you couldn't otherwise see, such as an invisible creature.",
+        ),
+      ],
+    },
+    {
+      id: "nails",
+      name: "Nails",
+      summary:
+        "Your nails grow into natural weapons dealing 1d3 damage (1d2 if Small) as a secondary attack; trimmed nails regrow within 1d4 days.",
+      contextNotes: [
+        note(
+          "Grants a natural claw attack — natural attacks aren't tracked on this sheet; add it by hand if you use it.",
+          "nattack",
+        ),
+      ],
+    },
+    {
+      id: "noPlaceLikeHome",
+      name: "No Place Like Home",
+      summary:
+        "Grant an ally within 30 ft. a +2 (+4 at 8th, +6 at 16th) dodge bonus to AC and on Reflex saves against traps, or impose the same penalty on an enemy, for 1 minute.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Save-category-scoped (traps only) and targets an ally or enemy you choose, not reliably yourself — apply manually. Once per target per day.",
+        ),
+      ],
+    },
+    {
+      id: "peacebond",
+      name: "Peacebond",
+      summary:
+        "Prevent a target from drawing a weapon (including nocking an arrow) for rounds equal to your witch level; has no effect on natural weapons or a weapon already in hand.",
+      contextNotes: [
+        note("Will negates; DC = 10 + 1/2 witch level + Int mod. Once per target per day."),
+      ],
+    },
+    {
+      id: "poisonSteep",
+      name: "Poison Steep",
+      summary:
+        "Spend an hour brewing a toxin and steeping up to a pound of food or drink so that eating it poisons the eater for 24 hours.",
+      contextNotes: [note("Requires the Cauldron hex.")],
+    },
+    {
+      id: "poisonTouch",
+      name: "Poison Touch",
+      summary:
+        "Grant yourself or an ally within 30 ft. a poisoned claw attack (1d3 damage, 1d2 if Small, as a secondary attack) for minutes equal to your witch level.",
+      contextNotes: [
+        note(
+          "Poison: Fort DC 10 + 1/2 witch level + Int mod negates; frequency 1/round for 6 rounds; 1d2 Str damage; cure 1 save. If the target already has a claw attack, that attack gains the poison instead, at DC +1. Natural attack — not tracked on this sheet; apply manually. Once per creature per 24 hours.",
+          "nattack",
+        ),
+      ],
+    },
+    {
+      id: "polluteWater",
+      name: "Pollute Water",
+      summary:
+        "Corrupt an area of standing water (or an aquatic/water-subtype creature) as the Blight hex; a creature that drinks from polluted water is nauseated for 1d3 rounds and afflicted with Blight's curse unless it saves.",
+      contextNotes: [
+        note(
+          "Fort save negates; DC = 10 + 1/2 witch level + Int mod. A successful save grants 24-hour immunity to that polluted source.",
+        ),
+      ],
+    },
+    {
+      id: "pollutingGlance",
+      name: "Polluting Glance",
+      summary:
+        "Turn a nonmagical liquid item within 30 ft. into polluted water, as the Pollute Water hex.",
+      contextNotes: [
+        note(
+          "Requires the Pollute Water hex. Active glances are limited to your Int bonus (minimum 1).",
+        ),
+      ],
+    },
+    {
+      id: "prehensileHair",
+      name: "Prehensile Hair",
+      summary:
+        "Extend your hair (or eyebrows) into a 10-ft.-reach limb with Strength equal to your Intelligence, usable as a secondary natural attack (1d3, 1d2 if Small) or to manipulate objects, for minutes/day equal to your witch level.",
+      contextNotes: [
+        note(
+          "Natural attack — not tracked on this sheet. Minutes need not be consecutive but must be spent in 1-minute increments.",
+          "nattack",
+        ),
+      ],
+    },
+    {
+      id: "protectiveLuck",
+      name: "Protective Luck",
+      summary:
+        "Force anyone targeting an ally within 30 ft. with an attack roll to roll twice and take the worse result, for 1 round (extended by hexes that extend Fortune, such as Cackle, and by 1 round at 8th/16th level).",
+      contextNotes: [
+        note(
+          "Cannot target yourself — targets an ally you choose, so there's no reliable self Change target here.",
+        ),
+      ],
+    },
+    {
+      id: "scar",
+      name: "Scar",
+      summary:
+        "Mark a touched target with a persistent, curse-linked scar, letting you use your hexes on it at up to 1 mile and treat it as a body part for scrying and similar divinations.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Simultaneous scars are limited to your Int bonus; removable by remove curse or your own move-action withdrawal.",
+        ),
+      ],
+    },
+    {
+      id: "seduction",
+      name: "Seduction",
+      summary:
+        "Fascinate one creature within 60 ft. that can see you for 1 round, extendable a round at a time (up to your class level) by continuing a standard action; the DC rises by 2 if the target could be attracted to you.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Mind-affecting charm effect; at 8th level fascination lingers 2 extra rounds after you stop maintaining it. Once per target per day.",
+        ),
+      ],
+    },
+    {
+      id: "sink",
+      name: "Sink",
+      summary:
+        "Impose a -4 penalty on Swim checks and cut a target's swim speed by 10 ft. for 1 minute (1 round on a successful save) while it's in water.",
+      contextNotes: [
+        note(
+          "Fort save reduces duration to 1 round; DC = 10 + 1/2 witch level + Int mod. The Cackle hex extends its duration; doesn't stack with itself.",
+        ),
+      ],
+    },
+    {
+      id: "soothsayer",
+      name: "Soothsayer",
+      summary:
+        "Delay the effect of your Evil Eye, Fortune, Misfortune, or Retribution hex until the target's next relevant roll or triggering action, instead of applying it immediately.",
+      contextNotes: [note("Wasted if not triggered within 24 hours.")],
+    },
+    {
+      id: "summersHeat",
+      name: "Summer's Heat",
+      summary:
+        "Deal nonlethal damage equal to your witch level to a target and fatigue it, unless a Fortitude save halves the damage and negates the fatigue.",
+      contextNotes: [note("DC = 10 + 1/2 witch level + Int mod. Once per target per day.")],
+    },
+    {
+      id: "swampHag",
+      name: "Swamp Hag",
+      summary:
+        "Leave no trail and can't be tracked in swamps, mires, bogs, and similar terrain (as trackless step), and can walk across mud or quicksand as if it were solid ground.",
+    },
+    {
+      id: "swampsGrasp",
+      name: "Swamp's Grasp",
+      summary:
+        "Turn up to one 10-ft. square per witch level within 90 ft. into difficult terrain, for 3 + your Int modifier rounds.",
+      contextNotes: [
+        note(
+          "Using this hex again before the previous use's duration ends ends that earlier effect immediately.",
+        ),
+      ],
+    },
+    {
+      id: "swine",
+      name: "Swine",
+      summary:
+        "Partially transform an enemy into a pig: it takes a -2 penalty on Will saves for rounds equal to your Int modifier; at 8th level its hands (or paws) also become hooves, blocking claw attacks and finger-dependent actions.",
+      contextNotes: [note("Will negates; DC = 10 + 1/2 witch level + Int mod.")],
+    },
+    {
+      id: "unnerveBeasts",
+      name: "Unnerve Beasts",
+      summary:
+        "Make a target repellent to animals for hours equal to your Int modifier — nearby animals grow distraught and aggressive toward it.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. A successful save grants 24-hour immunity. The animals' reaction is mind-affecting; the hex itself is not.",
+        ),
+      ],
+    },
+    {
+      id: "verdantFamiliar",
+      name: "Verdant Familiar",
+      summary: "Your familiar's creature type changes to plant, gaining all plant traits.",
+      contextNotes: [note("Affects your familiar's sheet, not your own.")],
+    },
+    {
+      id: "waterLung",
+      name: "Water Lung",
+      summary:
+        "Let an air-breathing target breathe water, or an aquatic target breathe air, for 1 minute — used on yourself, the effect persists through sleep.",
+    },
+    {
+      id: "witchsBottle",
+      name: "Witch's Bottle",
+      summary:
+        "Once per day, spend a 10-minute ritual to brew a potion that delivers one of your other hexes (any that can target someone other than you) to whoever drinks it.",
+      contextNotes: [
+        note(
+          "Requires the Cauldron hex. You can't use the bottled hex again until the potion is consumed or rendered inert.",
+        ),
+      ],
+    },
   ]),
   ...forTier("major", 10, [
     {
@@ -273,6 +720,207 @@ const HEX_LIST: WitchHexDef[] = [
       name: "Weather Control",
       summary: "Use as control weather, once per day, requiring a 1-hour casting time.",
     },
+
+    // ---- splatbook additions (issue #74 Phase 5; full vendored parity) ----
+    {
+      id: "animalSkin",
+      name: "Animal Skin",
+      summary:
+        "Take on the appearance and general form of a specific Tiny to Large animal whose skin you wear, as beast shape II.",
+    },
+    {
+      id: "beastEye",
+      name: "Beast Eye",
+      summary:
+        "Project your senses into an animal within 100 ft. (sensing but not controlling it), then leap those senses onward to another animal within 100 ft. of the first, for minutes/day equal to your witch level.",
+      contextNotes: [
+        note(
+          "Normal animals get no save; animal companions, paladin mounts, and similar unusual animals may resist with Will. DC = 10 + 1/2 witch level + Int mod.",
+        ),
+      ],
+    },
+    {
+      id: "beastsGift",
+      name: "Beast's Gift",
+      summary:
+        "Grant a willing ally natural attacks for minutes equal to your witch level: either one bite (1d8) plus one secondary attack of your choice (1d6), or two claws (1d4 each).",
+      contextNotes: [
+        note(
+          "Targets a willing ally, not yourself — apply manually to the ally's sheet while active.",
+        ),
+      ],
+    },
+    {
+      id: "cookPeople",
+      name: "Cook People",
+      summary:
+        "Cook an intelligent humanoid (living or dead) in your cauldron over 1 hour to create food that, when eaten, grants one of a list of buff-spell effects (or removes disease/poison) for 1 hour; alternatively shape the leftover dough into a homunculus for 1 hour.",
+      contextNotes: [
+        note(
+          "Requires the Cauldron hex to select. Using this hex, or knowingly eating its food, is an evil act.",
+        ),
+      ],
+    },
+    {
+      id: "deliciousFright",
+      name: "Delicious Fright",
+      summary:
+        "Shake a target for 3 + your Intelligence modifier rounds; while you stay within 30 ft. of a target still shaken by this hex, you gain a +1 morale bonus on attack rolls and a +1 morale bonus on saves.",
+      contextNotes: [
+        note(
+          "Will save reduces the duration to 1 round; DC = 10 + 1/2 witch level + Int mod. Mind-affecting fear effect.",
+        ),
+      ],
+    },
+    {
+      id: "drugged",
+      name: "Drugged",
+      summary:
+        "When you craft a poison, you can require its save to be Will instead of the normal Fortitude; once chosen, this can't be undone without remaking the poison.",
+      contextNotes: [note("Applies only to poisons you personally craft.")],
+    },
+    {
+      id: "falseHospitality",
+      name: "False Hospitality",
+      summary:
+        "Once per day, gain the benefits of glibness, with caster level equal to your witch level.",
+    },
+    {
+      id: "harrowingCurse",
+      name: "Harrowing Curse",
+      summary:
+        "Touch a target with a card drawn from a harrow deck you own to curse it as bestow curse (your caster level), but limited to only the ability-score-penalty option matching the drawn card's suit; becomes major curse at 15th level.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Same target can't be retargeted within 24 hours.",
+        ),
+      ],
+    },
+    {
+      id: "hiddenHome",
+      name: "Hidden Home",
+      summary:
+        "After spending 1 day marking out a roughly 200-ft.-by-200-ft. home territory, change that area's appearance at will (as mirage arcana) while standing in it; the illusion persists until you change or dismiss it.",
+      contextNotes: [note("Only one home territory active at a time.")],
+    },
+    {
+      id: "hoarfrost",
+      name: "Hoarfrost",
+      summary:
+        "Rime a target in frost needles that deal 1 point of Constitution damage per minute until it dies, saves, or is cured; a successful save grants 1 day of immunity. Cold effect.",
+      contextNotes: [
+        note("Fortitude negates (checked each minute); DC = 10 + 1/2 witch level + Int mod."),
+      ],
+    },
+    {
+      id: "iceTomb",
+      name: "Ice Tomb",
+      summary:
+        "Envelop a target in ice and freezing wind for 3d8 cold damage (Fort half); on a failed save it's also paralyzed and encased (needing neither food nor air) until the ice — 20 hp — is destroyed, leaving it staggered for 1d4 rounds.",
+      contextNotes: [
+        note(
+          "Fort save for half damage/negates paralysis; DC = 10 + 1/2 witch level + Int mod. Same target can't be retargeted within 24 hours.",
+        ),
+      ],
+    },
+    {
+      id: "infectedWounds",
+      name: "Infected Wounds",
+      summary:
+        "Infect a target's wounds, dealing 1 point of Constitution damage per day; starting the second day, it may save once per day to cure the infection. Disease effect.",
+      contextNotes: [note("Fortitude negates; DC = 10 + 1/2 witch level + Int mod.")],
+    },
+    {
+      id: "majorAmeliorating",
+      name: "Major Ameliorating",
+      summary:
+        "Touch a creature to suppress the blinded or deafened condition (or a curse/disease/poison effect) for minutes equal to your witch level if it's currently or later afflicted, or instead grant a +4 circumstance bonus on saves against two chosen conditions/effects for 24 hours; at 15th level, cover two conditions to suppress or three to grant the bonus against.",
+      contextNotes: [note("Same target can't benefit again for 24 hours.")],
+    },
+    {
+      id: "pariah",
+      name: "Pariah",
+      summary:
+        "Make a target within 60 ft. shunned for rounds equal to your Intelligence modifier: any other creature attempting to aid it (a harmless spell or aid another action) must save or waste that action and be unable to aid the target again for the duration.",
+      contextNotes: [
+        note(
+          "Will save (by the would-be helper, not the target) negates; DC = 10 + 1/2 witch level + Int mod. Doesn't block area-effect benefits.",
+        ),
+      ],
+    },
+    {
+      id: "prophecy",
+      name: "Prophecy",
+      summary:
+        "Cast divination once per day, spending a full hour in place of the usual material component.",
+    },
+    {
+      id: "regenerativeSinew",
+      name: "Regenerative Sinew",
+      summary:
+        "Touch a creature to grant fast healing 5 for rounds equal to half your witch level, or instead heal up to 4 points of damage from two ability scores of your choice; at 15th level, also regrows lost body parts as regenerate.",
+      contextNotes: [note("Same target can't benefit again for 24 hours.")],
+    },
+    {
+      id: "restlessSlumber",
+      name: "Restless Slumber",
+      summary:
+        "As the slumber hex, but the sleeper also thrashes for 1d10 damage to itself each turn (not enough to wake it) and wakes confused for rounds equal to half your witch level.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Requires the Slumber hex to select.",
+        ),
+      ],
+    },
+    {
+      id: "speakInDreams",
+      name: "Speak in Dreams",
+      summary:
+        "Contact a creature as dream, for a number of creatures per day equal to your Intelligence bonus (each contacted creature can be dream-spoken to as often as you like during that period).",
+    },
+    {
+      id: "stealVoice",
+      name: "Steal Voice",
+      summary:
+        "Steal a target's voice for rounds equal to your Intelligence bonus (hours, if willing), silencing every ability that needs speech — talking, verbal spellcasting, auditory bardic performance; while a stolen voice is held, you can mimic it as vocal alteration.",
+      contextNotes: [
+        note(
+          "Will negates (unwilling targets); DC = 10 + 1/2 witch level + Int mod. Tiefling witches only.",
+        ),
+      ],
+    },
+    {
+      id: "witchsBounty",
+      name: "Witch's Bounty",
+      summary:
+        "Bless a planted bush, plant, or tree so it grows goodberries equal to twice your witch level every dawn (never holding more than that many uncollected at once); moving the blessing to a new plant takes a 1-hour ritual.",
+      contextNotes: [note("Only one Witch's Bounty active at a time.")],
+    },
+    {
+      id: "witchsBrew",
+      name: "Witch's Brew",
+      summary:
+        "When brewing a potion with your cauldron, spend double the cost to brew 2 identical potions that day instead of 1 (triple the cost for 3 at 15th level).",
+      contextNotes: [note("Requires the Cauldron hex to select.")],
+    },
+    {
+      id: "witchsCharge",
+      name: "Witch's Charge",
+      summary:
+        "Once per day when preparing spells, designate a willing creature as your charge: you gain a constant status on them and can target them with beneficial touch spells from 30 ft.; the designation lasts until you name a new charge.",
+      contextNotes: [note("Targets a willing ally you designate, not yourself.")],
+    },
+    {
+      id: "withering",
+      name: "Withering",
+      summary:
+        "Age a target within 30 ft. one age category (Fort negates; can never be aged past venerable). You gain 1d10 + your witch level temporary hit points and a +2 enhancement bonus to Strength, Dexterity, or Constitution (your choice), lasting hours equal to your witch level.",
+      contextNotes: [
+        note(
+          "Fortitude negates; DC = 10 + 1/2 witch level + Int mod. A creature that saves against Withering can't be affected by it again. The self buff (temp HP + ability enhancement) only triggers once the hex lands on a target — apply manually while active.",
+        ),
+      ],
+    },
   ]),
   ...forTier("grand", 18, [
     {
@@ -306,6 +954,90 @@ const HEX_LIST: WitchHexDef[] = [
       name: "Natural Disaster",
       summary:
         "Once per day, unleash a combined storm of vengeance and earthquake effect, requiring concentration to maintain.",
+    },
+
+    // ---- splatbook additions (issue #74 Phase 5; full vendored parity) ----
+    {
+      id: "abominate",
+      name: "Abominate",
+      summary:
+        "Transform a target within 30 ft. into a Small, Medium, or Large aberration, as baleful polymorph, with its ability scores set as monstrous physique IV.",
+      contextNotes: [
+        note(
+          "Fortitude negates (as baleful polymorph); DC = 10 + 1/2 witch level + Int mod. Same target can't be retargeted within 24 hours.",
+        ),
+      ],
+    },
+    {
+      id: "animalServant",
+      name: "Animal Servant",
+      summary:
+        "Transform a humanoid enemy into an animal and dominate it — as beast shape II plus a dominate monster effect (no further saves) lasting until removed by wish/miracle or your death; the target keeps its Intelligence score and languages but you control its mind.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Same target can't be retargeted within 24 hours.",
+        ),
+      ],
+    },
+    {
+      id: "curseOfNonviolence",
+      name: "Curse of Nonviolence",
+      summary:
+        "Curse a target so it can't take violent or destructive action against any creature with fewer Hit Dice than itself (unless that creature attacks it first); permanent until removed by break enchantment, miracle, or wish.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Abjuration effect; same target can't be retargeted within 24 hours.",
+        ),
+      ],
+    },
+    {
+      id: "deathInterrupted",
+      name: "Death Interrupted",
+      summary:
+        "While adjacent to a freshly or long-dead creature (with some remains left and a free, willing soul) and to your familiar, pull that soul into your familiar as familiar melding; while housed there (up to 1 hour/class level), you can talk to it telepathically and, as a standard action within 300 ft., return it to life with 5d8 + 1 hp per caster level.",
+      contextNotes: [
+        note(
+          "Same target can't benefit again for 24 hours. If the housed soul's time runs out, or you attempt the return from out of range, the creature stays dead.",
+        ),
+      ],
+    },
+    {
+      id: "direProphecy",
+      name: "Dire Prophecy",
+      summary:
+        "Curse a target as doomed to die: while the curse lasts it takes a -4 penalty to AC and on attacks, saves, and ability/skill checks; you can instead end the curse early to unleash it all at once as a penalty equal to your caster level to a single AC, attack, combat maneuver, opposed check, or save of your choosing, applied before that roll.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Only one dire prophecy can be on a target at a time; can't be retargeted within 24 hours. Curse effect.",
+        ),
+      ],
+    },
+    {
+      id: "layToRest",
+      name: "Lay to Rest",
+      summary: "Target a single undead creature as undeath to death.",
+      contextNotes: [
+        note(
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Same target can't be retargeted within 24 hours.",
+        ),
+      ],
+    },
+    {
+      id: "summonSpirit",
+      name: "Summon Spirit",
+      summary:
+        "Call the ghost of a humanoid (18 HD or less) to bargain with you, as greater planar ally; sealing the deal costs you 1 temporary negative level in addition to the ghost's usual payment.",
+      contextNotes: [
+        note(
+          "The negative level persists for as long as the ghost serves; ending the agreement (a standard action) removes it.",
+        ),
+      ],
+    },
+    {
+      id: "witchsHut",
+      name: "Witch's Hut",
+      summary:
+        'Animate a hut, small house, wagon, or tent (up to Huge) as an animated object with doubled hit points and hardness 8, commandable to guard (watches and screams at trespassers within 120 ft. using your Perception), hide (illusory wall + arcane lock at entrances), or move (speed 60, even by relative directions like "follow me from 100 feet away"); lasts 24 hours or until dismissed or replaced.',
     },
   ]),
 ];
@@ -343,8 +1075,8 @@ export { witchHexDC } from "./tables.js";
  * this file's camelCase ids vs. the vendored dataset's snake_case slugs are
  * disjoint by construction.
  *
- * Collision audit (all 27 hand-authored entries, run against the pinned Pf
- * Data 1e slice): all 27 matched a vendored entry by normalized name, with NO
+ * Collision audit (all 104 hand-authored entries, run against the pinned Pf
+ * Data 1e slice): every one matched a vendored entry by normalized name, with NO
  * naming drift — the source's own spelling matched ours exactly
  * (case-insensitively) for every entry, so `HEX_NAME_ALIASES` is empty (kept
  * for the same reason `rage-powers.ts`'s alias map is: a FUTURE

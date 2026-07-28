@@ -7,13 +7,13 @@
  * plus a single generic "Magus Arcana" stub `ClassFeature` with no per-arcana
  * breakdown), so there is no upstream JSON to normalize.
  *
- * Scope: the 20 BASE Ultimate Magic magus arcana (UM p.10-12) a magus can
- * pick starting at 3rd level. Arcana added by LATER books (Ultimate Combat's
- * Enduring Blade, Weapon Master's Handbook's Arcane Redoubt/Bane Blade,
- * various Pathfinder Society boons, race-restricted arcana like
- * Vision-Clouding Strike, ...) are OUT OF SCOPE — add them in a follow-up if
- * the tracker needs to represent a higher-splatbook magus, mirroring how
- * arcanist Greater Exploits were deferred at that class's launch.
+ * Scope: FULL vendored parity as of issue #74's Phase 5 extension — all 64
+ * vendored arcana: the 20 base Ultimate Magic ones plus every later-book
+ * addition the pinned data carries (Ultimate Combat's Enduring Blade and
+ * Arcane Redoubt/Bane Blade — vendored `sources` attribute those two to UC
+ * p. 54, correcting this comment's former Weapon Master's Handbook claim —
+ * plus Magic Tactics Toolbox, Heroes of Golarion, race-restricted arcana,
+ * and the rest).
  *
  * Level gating (PF1 RAW: "starting at 3rd level, a magus gains an arcana...
  * at 3rd level and every 3 levels thereafter"): `minLevel` is the earliest
@@ -291,6 +291,576 @@ const ARCANA_LIST: MagusArcanaDef[] = [
     contextNotes: [note("Action-economy option only — no numeric effect to model.")],
     displayOnly: true,
   },
+  // ---- splatbook additions (issue #74 Phase 5; full vendored parity) ----
+  {
+    id: "accurateStrike",
+    name: "Accurate Strike",
+    summary:
+      "Swift action, 2 arcane pool points: resolve all melee weapon attacks as melee touch attacks until the end of your turn.",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note("Costs 2 arcane pool points per use; apply the touch-AC targeting manually.", "mattack"),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "aquaticAgility",
+    name: "Aquatic Agility",
+    summary:
+      "Immediate action, 1 arcane pool point: gain water breathing for 1 round per level and ignore the penalties of rough water and underwater combat.",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use; temporary effect — apply manually while active.",
+        "swimSpeed",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "arcaneCloak",
+    name: "Arcane Cloak",
+    summary:
+      "1 arcane pool point: add your Intelligence bonus to Stealth checks, and to Bluff checks made to create a diversion to hide, for 1 minute.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use; scoped to two specific skills — apply the bonus manually.",
+        "skills",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "arcaneDealer",
+    name: "Arcane Dealer",
+    summary:
+      "Gain Deadly Dealer as a bonus feat even without meeting its prerequisites, and spend arcane pool points to grant your harrow/card deck an enhancement bonus as a ranged weapon.",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [
+      note(
+        "Grants Deadly Dealer as a bonus feat — add it to doc.build.feats separately; this table doesn't auto-grant it.",
+        "bonusFeats",
+      ),
+      note("Card-deck enhancement draws from the same arcane pool as weapon enhancement."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "arcaneDeed",
+    name: "Arcane Deed",
+    summary:
+      "Choose one swashbuckler deed you qualify for by magus level; spend arcane pool points as the panache cost to use it. Can be taken multiple times for different deeds.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note(
+        "Requires the flamboyant arcana; effective swashbuckler level for the deed's own scaling is treated as 0.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "arcaneEdge",
+    name: "Arcane Edge",
+    summary:
+      "Immediate action, 1 arcane pool point, after hitting with a slashing or piercing weapon: inflict bleed damage equal to your Intelligence modifier (minimum 0).",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note("Costs 1 arcane pool point per use; roll the bleed damage manually.", "damage"),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "arcaneRedoubt",
+    name: "Arcane Redoubt",
+    summary:
+      "Swift action, 1 arcane pool point: treat your shield bonus to AC (including any enhancement bonus) as a bonus to touch AC until the start of your next turn.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use; temporary touch-AC conversion — apply manually while active.",
+        "ac",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "arcaneScent",
+    name: "Arcane Scent",
+    summary:
+      "1 arcane pool point: gain the scent special quality (spellcasters only) for 1 hour per level, plus a once-per-creature-per-day Spellcraft check to gauge a detected creature's highest spell level.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use; situational detection ability — not a discrete sheet stat.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "arcingPoolStrike",
+    name: "Arcing Pool Strike",
+    summary:
+      "When making a pool strike that hits, spend 1 additional arcane pool point to also hit a number of enemies within 15 ft. equal to your Intelligence modifier (minimum 0) with the same energy damage.",
+    minLevel: 12,
+    changes: [],
+    contextNotes: [note("Requires the pool strike arcana; costs 1 additional arcane pool point.")],
+    displayOnly: true,
+  },
+  {
+    id: "baneBlade",
+    name: "Bane Blade",
+    summary:
+      "Whenever you enhance your weapon with your arcane pool, spend 1 additional point to add the bane special ability.",
+    minLevel: 15,
+    changes: [],
+    contextNotes: [
+      note("Costs 1 additional arcane pool point on top of the weapon enhancement itself."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "bookBound",
+    name: "Book-Bound",
+    summary:
+      "While wielding your spellbook in your off hand, take an immediate action 3/day to gain a +4 bonus on a concentration check attempted within the next round (stacks with the concentrate arcana).",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [note("Usable 3/day; requires wielding your spellbook in your off hand.")],
+    displayOnly: true,
+  },
+  {
+    id: "circleOfOrder",
+    name: "Circle of Order",
+    summary:
+      "Swift action, 1 arcane pool point: gain a dodge bonus to AC equal to half your magus level (max +10) against chaotic-aligned attacks and effects until the start of your next turn.",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use; bonus applies only against chaotic-aligned attacks/effects — apply manually.",
+        "ac",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "clingingPoolStrike",
+    name: "Clinging Pool Strike",
+    summary:
+      "When making a pool strike, spend 1 additional arcane pool point so the target also takes half the strike's energy damage again at the start of its next turn.",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note(
+        "Requires the pool strike arcana; costs 1 additional arcane pool point and stacks with its other modifiers.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "darkShifter",
+    name: "Dark Shifter",
+    summary:
+      "Move action, 1 arcane pool point: relocate the target of an ongoing darkness-descriptor spell effect within its original range (caster level check required if you didn't create the effect).",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use; situational battlefield-control ability, not a discrete sheet stat.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "devotedBlade",
+    name: "Devoted Blade",
+    summary:
+      "Whenever you enhance your weapon with your arcane pool, spend 1 additional point to add anarchic, axiomatic, holy, or unholy — limited to the option matching your own alignment.",
+    minLevel: 12,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 additional arcane pool point on top of the weapon enhancement itself; alignment-restricted to your own.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "disruptive",
+    name: "Disruptive",
+    summary: "Gain Disruptive as a bonus feat.",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [
+      note(
+        "Grants Disruptive as a bonus feat (prerequisites already satisfied) — add it to doc.build.feats separately; this table doesn't auto-grant it.",
+        "bonusFeats",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "distantSpellstrike",
+    name: "Distant Spellstrike",
+    summary:
+      "Spells delivered through a ranged weapon attack via spellstrike use the weapon's maximum range instead of the spell's own range, if greater.",
+    minLevel: 12,
+    changes: [],
+    contextNotes: [
+      note(
+        "Requires ranged spellstrike (Eldritch Archer/Myrmidarch archetype); range-extension only, no numeric sheet effect.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "divinatoryStrike",
+    name: "Divinatory Strike",
+    summary:
+      "On a melee critical hit, automatically gain the result of a natural-20 Knowledge check to identify the struck creature (your normal bonuses still apply).",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note("Situational, once per critical hit — not tracked as a discrete sheet stat."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "enduringBlade",
+    name: "Enduring Blade",
+    summary:
+      "Whenever you enchant your weapon with your arcane pool, spend 1 additional point to extend the enchantment's duration to 1 minute per magus level.",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [
+      note("Costs 1 additional arcane pool point on top of the weapon enhancement itself."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "flamboyantArcana",
+    name: "Flamboyant Arcana",
+    summary:
+      "Gain the derring-do and opportune parry and riposte swashbuckler deeds, usable only by spending arcane pool points (never panache points, and this arcana grants no panache pool of its own).",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note(
+        "Prerequisite for the arcane deed arcana; deeds gained this way draw only from your arcane pool.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "ghostBlade",
+    name: "Ghost Blade",
+    summary:
+      "Whenever you enchant your weapon with your arcane pool, spend 1 additional point to add the brilliant energy and ghost touch special abilities to the available options.",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note("Costs 1 additional arcane pool point on top of the weapon enhancement itself."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "greaterArcaneRedoubt",
+    name: "Greater Arcane Redoubt",
+    summary:
+      "When using arcane redoubt, spend 1 additional arcane pool point to also apply your shield bonus to AC on Reflex saves; when targeted by a Reflex-save effect while active, spend 2 points for evasion or 4 for improved evasion.",
+    minLevel: 12,
+    changes: [],
+    contextNotes: [
+      note(
+        "Requires the arcane redoubt arcana; each option layers an additional arcane pool point cost.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "intuitiveProtection",
+    name: "Intuitive Protection",
+    summary:
+      "Immediate action, 1 arcane pool point, after identifying an opponent's conjuration (summoning) spell with Spellcraft: cast protection from chaos/evil/good/law on yourself (magic circle instead at 7th level) for a number of rounds equal to your magus level.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note("Costs 1 arcane pool point per use; requires identifying the triggering spell first."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "kiArcana",
+    name: "Ki Arcana",
+    summary: "Spend arcane pool points and ki points from another class's ki pool interchangeably.",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [
+      note(
+        "Requires levels in a class with its own ki pool; pools become fungible, not a numeric change.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "lingeringPain",
+    name: "Lingering Pain",
+    summary:
+      "Immediate action, 1 arcane pool point, after hitting with a weapon attack: that attack's damage (including a spellstrike spell's damage) counts as continuous damage for the target's concentration checks until the start of your next turn.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use; affects the target's own concentration checks, not yours.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "naturalSpellCombat",
+    name: "Natural Spell Combat",
+    summary:
+      "Use spell combat with a chosen natural attack instead of a weapon, gaining a +2 bonus on concentration checks (doesn't stack if selected again for another natural attack).",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note(
+        "Can be selected multiple times, once per natural attack type; the +2 concentration bonus doesn't stack across picks.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "planarHunter",
+    name: "Planar Hunter",
+    summary:
+      "Whenever you enhance your weapon with your arcane pool, spend 1 additional point to add the planar special ability, or 2 additional points for phase locking.",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note("Costs additional arcane pool points on top of the weapon enhancement itself."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "poolRay",
+    name: "Pool Ray",
+    summary:
+      "Standard action, 1 arcane pool point: infuse a ranged weapon so your next attack with it can release a charge for 1d6 energy damage (acid/cold/electricity/fire, chosen on activation), scaling by 1d6 every 3 levels from 6th; a miss wastes the charge.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note("Costs 1 arcane pool point per use; roll the scaling energy damage manually.", "damage"),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "prescientAttack",
+    name: "Prescient Attack",
+    summary:
+      "Immediate action, 1 arcane pool point, after hitting with a weapon attack: the target loses its Dexterity bonus to AC against your attacks until the end of your next turn.",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [
+      note("Costs 1 arcane pool point per use; apply the denied-Dex effect manually."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "prescientDefense",
+    name: "Prescient Defense",
+    summary:
+      "Immediate action, 1 arcane pool point, after hitting with a weapon attack: gain a bonus to AC and Reflex saves equal to your Intelligence modifier (minimum 0) against that opponent until the start of your next turn.",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use; bonus is scoped to a single opponent — apply manually.",
+        "ac",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "rakshasasFortune",
+    name: "Rakshasa's Fortune",
+    summary:
+      "When casting a polymorph-subschool spell on yourself, draw a harrow card as a free action: a matching alignment doubles the spell's duration and grants extra chosen abilities, a partial match grants one extra ability, and an opposed match halves the duration and forfeits an ability.",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note(
+        "Requires owning a complete harrow deck; situational draw effect, not a discrete sheet stat.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "rangerTrap",
+    name: "Ranger Trap",
+    summary: "Learn one ranger trap.",
+    minLevel: 10,
+    changes: [],
+    contextNotes: [note("Which trap you learn is a separate pick — record it in a note.")],
+    displayOnly: true,
+  },
+  {
+    id: "reachMagic",
+    name: "Reach Magic",
+    summary:
+      "Once per day, cast a spell as if affected by the Reach Spell feat, at no increase to casting time or spell level.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [note("Once-per-day metamagic swap — apply manually when cast.")],
+    displayOnly: true,
+  },
+  {
+    id: "reachSpellstrike",
+    name: "Reach Spellstrike",
+    summary:
+      "Deliver touch-range spells through ranged spellstrike out to close range (25 ft. + 5 ft. per 2 caster levels).",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note(
+        "Requires ranged spellstrike (Eldritch Archer/Myrmidarch archetype); range-extension only, no numeric sheet effect.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "rodMastery",
+    name: "Rod Mastery",
+    summary:
+      "When using a rod, calculate its spells' save DCs from your own Intelligence modifier (minimum 0) instead of the rod's default minimum caster modifier.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [note("Mechanic substitution only — no dedicated rod-DC sheet stat to modify.")],
+    displayOnly: true,
+  },
+  {
+    id: "rodWielder",
+    name: "Rod Wielder",
+    summary:
+      "Add your Intelligence bonus (minimum 0) to caster level checks to overcome spell resistance when casting from a rod or delivering a rod's spell through spellstrike.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note("Mechanic substitution only — no dedicated caster-level-check sheet stat to modify."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "scrollMastery",
+    name: "Scroll Mastery",
+    summary:
+      "1 arcane pool point: when using a scroll, calculate its spell's save DC from your own Intelligence modifier instead of the scroll's default minimum caster modifier.",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use; mechanic substitution only — no dedicated scroll-DC sheet stat to modify.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "spellScars",
+    name: "Spell-Scars",
+    summary:
+      "Inscribe spells as skin tattoos usable like scrolls (consumed on cast) or prepared without expending them (as Spell Mastery); up to 18 total spell levels of scars at once, using the normal scroll-scribing rules minus Scribe Scroll.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note(
+        "18-spell-level capacity is a bookkeeping cap, not a modeled resource pool — track it in a note.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "spellTrickery",
+    name: "Spell Trickery",
+    summary:
+      "Once per day, after a successful dirty trick combat maneuver, cast a prepared illusion or enchantment spell (1 standard action casting time or less) as a swift action.",
+    minLevel: 12,
+    changes: [],
+    contextNotes: [note("Once-per-day action-economy swap — apply manually when triggered.")],
+    displayOnly: true,
+  },
+  {
+    id: "spellbreaker",
+    name: "Spellbreaker",
+    summary: "Gain Spellbreaker as a bonus feat.",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note(
+        "Grants Spellbreaker as a bonus feat (prerequisites already satisfied) — add it to doc.build.feats separately; this table doesn't auto-grant it.",
+        "bonusFeats",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "tabrissStep",
+    name: "Tabris's Step",
+    summary:
+      "Swift action, 1 arcane pool point: gain water walk for 10 minutes per level; spend 2 points instead to extend it to a number of touched creatures equal to your magus level.",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [
+      note("Costs 1-2 arcane pool points per use depending on how many creatures are affected."),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "throwingMagus",
+    name: "Throwing Magus",
+    summary:
+      "Whenever you enhance your weapon with your arcane pool, spend 1 additional point to add the returning and throwing weapon abilities; regain 1 arcane pool point (up to your Intelligence modifier per day) whenever a thrown, arcane-pool-enhanced weapon hits.",
+    minLevel: 3,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1 additional arcane pool point on top of the weapon enhancement; the regained-point daily cap is a bookkeeping detail to track in a note.",
+      ),
+    ],
+    displayOnly: true,
+  },
+  {
+    id: "thunderousPoolStrike",
+    name: "Thunderous Pool Strike",
+    summary:
+      "When making a pool strike, spend 1 additional arcane pool point to deal sonic damage instead and deafen the target for 1 round (DC 10 + 1/2 magus level + Intelligence modifier).",
+    minLevel: 6,
+    changes: [],
+    contextNotes: [note("Requires the pool strike arcana; costs 1 additional arcane pool point.")],
+    displayOnly: true,
+  },
+  {
+    id: "visionCloudingStrike",
+    name: "Vision-Clouding Strike",
+    summary:
+      "Swift action, 1+ arcane pool points: empower your weapon for 1 minute so a struck creature that fails a Will save (DC 1/2 level + Intelligence modifier) treats you as being in dim light for 1d4 rounds, +1 round per additional point spent.",
+    minLevel: 9,
+    changes: [],
+    contextNotes: [
+      note(
+        "Costs 1+ arcane pool points per use, scaling the duration; true seeing (but not darkvision) penetrates the effect.",
+      ),
+    ],
+    displayOnly: true,
+  },
 ];
 
 export const MAGUS_ARCANA: Record<string, MagusArcanaDef> = Object.fromEntries(
@@ -312,7 +882,7 @@ export const MAGUS_ARCANA_IDS: readonly string[] = ARCANA_LIST.map((a) => a.id);
  * Matching is by NORMALIZED NAME, never id — same rationale as rage
  * powers/hexes.
  *
- * Collision audit (all 20 hand-authored entries, run against the pinned Pf
+ * Collision audit (all 64 hand-authored entries, run against the pinned Pf
  * Data 1e slice): all 20 matched a vendored entry by normalized name, with NO
  * naming drift, so `ARCANA_NAME_ALIASES` is empty (kept for a future
  * hand-authored addition that DOES drift). No vendored-catalog-internal name
