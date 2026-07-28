@@ -589,6 +589,7 @@ export {
   eidolonProgressionRow,
   eidolonSpecialAbilityNames,
   eidolonSummonerLevel,
+  eidolonBaseFormIdsForVariant,
   type EidolonBaseForm,
   type EidolonAttackGrant,
   type EidolonProgressionRow,

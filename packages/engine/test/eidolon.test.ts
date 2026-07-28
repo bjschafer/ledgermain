@@ -6,6 +6,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import {
   buildRollData,
   deriveEidolon,
+  eidolonBaseFormIdsForVariant,
   eidolonStartingAbilities,
   eidolonSummonerLevel,
 } from "../src/index.js";
@@ -344,6 +345,23 @@ describe("deriveEidolon edge cases", () => {
     expect(eidolon).toBeDefined();
     expect(eidolon!.evolutionPointsSpent).toBe(0);
     expect(eidolon!.chosenEvolutions).toEqual([]);
+  });
+
+  it("returns undefined for a CHAINED summoner with baseForm 'aberrant' (Horror Realms/unchained-only, gated via EidolonBaseForm.variants)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "summoner", level: 5 }],
+      eidolon: { baseForm: "aberrant", name: "Ghost", evolutions: [] },
+    });
+    const rollData = buildRollData(doc, ref);
+    expect(deriveEidolon(doc, rollData)).toBeUndefined();
+  });
+
+  it("eidolonBaseFormIdsForVariant excludes 'aberrant' for chained, includes it for unchained", () => {
+    expect(eidolonBaseFormIdsForVariant("chained")).not.toContain("aberrant");
+    expect(eidolonBaseFormIdsForVariant("chained")).toEqual(
+      expect.arrayContaining(["biped", "quadruped", "serpentine"]),
+    );
+    expect(eidolonBaseFormIdsForVariant("unchained")).toContain("aberrant");
   });
 
   it("overspending the evolution pool is a soft warning only — no clamping, no crash", () => {

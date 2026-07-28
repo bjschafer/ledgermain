@@ -13,6 +13,7 @@ import {
   CONDITION_LADDERS,
   deriveEidolon,
   EIDOLON_BASE_FORMS,
+  eidolonBaseFormIdsForVariant,
   EIDOLON_EVOLUTIONS,
   eidolonEvolutionPoolAvailable,
   eidolonStartingAbilities,
@@ -51,6 +52,28 @@ export function setEidolonSubtype(doc: CharacterDoc, subtypeId: string | undefin
     return { ...doc, build: { ...doc.build, eidolon: rest } };
   }
   return { ...doc, build: { ...doc.build, eidolon: { ...current, subtype: subtypeId } } };
+}
+
+/**
+ * Toggle the Pathfinder Unchained "Small eidolon" sidebar variant
+ * (`EidolonBuild.small`) — meaningful only once `eidolonVariant(doc)` is
+ * `"unchained"`; a chained eidolon just carries the field unused, same
+ * posture as `setEidolonSubtype`. No-ops if there's no eidolon yet.
+ */
+export function setEidolonSmall(doc: CharacterDoc, small: boolean): CharacterDoc {
+  const current = doc.build.eidolon;
+  if (!current) return doc;
+  return { ...doc, build: { ...doc.build, eidolon: { ...current, small } } };
+}
+
+/**
+ * Base-form ids to offer in the builder's picker for `doc`'s current eidolon
+ * variant — filters out unchained-only forms (currently just Aberrant) for
+ * a chained summoner, so the picker never offers an option that would
+ * silently derive nothing (see `@pf1/engine` `eidolonBaseFormIdsForVariant`).
+ */
+export function eidolonBaseFormIdsForDoc(doc: CharacterDoc): readonly string[] {
+  return eidolonBaseFormIdsForVariant(eidolonVariant(doc));
 }
 
 /**

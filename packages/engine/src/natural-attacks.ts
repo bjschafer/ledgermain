@@ -79,13 +79,28 @@ const PRIMARY_ATTACK_NAMES: ReadonlySet<string> = new Set([
   "talons",
 ]);
 
+/**
+ * Full (not just first-word) lowercased names that are primary-type despite
+ * not matching {@link PRIMARY_ATTACK_NAMES} — currently just the Horror
+ * Realms/Unchained "Tentacle Mass" evolution (`eidolon.ts`'s Aberrant base
+ * form/subtype), whose own rules text calls it out as an exception to the
+ * ordinary secondary-type Tentacle: "The eidolon grows a thick mass of
+ * tentacles that can be used as a primary natural weapon" (d20pfsrd.com
+ * "Eidolons (Unchained)"). Matched on the FULL name so the plain, still-
+ * secondary "Tentacle" evolution (first word "tentacle") is unaffected.
+ */
+const PRIMARY_ATTACK_FULL_NAMES: ReadonlySet<string> = new Set(["tentacle mass"]);
+
 function firstWord(name: string): string {
   return (name.trim().split(/\s+/)[0] ?? "").toLowerCase();
 }
 
-/** Classify one attack NAME by {@link PRIMARY_ATTACK_NAMES} (case-insensitive, first word only). */
+/** Classify one attack NAME by {@link PRIMARY_ATTACK_NAMES}/{@link PRIMARY_ATTACK_FULL_NAMES} (case-insensitive). */
 function isPrimaryTypeName(name: string): boolean {
-  return PRIMARY_ATTACK_NAMES.has(firstWord(name));
+  return (
+    PRIMARY_ATTACK_NAMES.has(firstWord(name)) ||
+    PRIMARY_ATTACK_FULL_NAMES.has(name.trim().toLowerCase())
+  );
 }
 
 /**

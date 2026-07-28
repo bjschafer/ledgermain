@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-28-every-eidolon-subtype",
+    date: "2026-07-28",
+    title: "Eidolons of every stripe",
+    note: "Thirteen more eidolon subtypes join the builder — Aberrant, Aeon, Ancestor, Astral, Deepwater, Genie, Kami, Kyton, Radiant, Shadow, Storykin, Twinned, and Void — each with its forms, attacks, and level-by-level grants spelled out, and the free evolutions and pool bonuses applied for real. The Aberrant base form is here too (bite, tentacle, and a swim speed), and you can finally make your eidolon Small: its dice step down, its size modifiers land on AC and attacks, and its Fly and Stealth pick up the bonuses, all computed.",
+  },
+  {
     id: "2026-07-28-every-oracle-mystery",
     date: "2026-07-28",
     title: "Every oracle mystery, revelations and all",

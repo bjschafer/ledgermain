@@ -1959,11 +1959,14 @@ export interface EidolonEvolutionPick {
  */
 export interface EidolonBuild {
   /**
-   * Base form id — key into `@pf1/engine` `EIDOLON_BASE_FORMS`. Only
-   * `"biped" | "quadruped" | "serpentine"` are offered in v1 (the three
-   * forms every eidolon-optimization guide treats as core); APG's other
-   * three forms (Aquatic, Avian, Tauric) are a documented deferral — see
-   * `eidolon.ts`'s module doc comment.
+   * Base form id — key into `@pf1/engine` `EIDOLON_BASE_FORMS`. Four are
+   * offered: `"biped" | "quadruped" | "serpentine"` (the three forms every
+   * eidolon-optimization guide treats as core) plus `"aberrant"`
+   * (Pathfinder Campaign Setting: Horror Realms, UNCHAINED-ONLY — a chained
+   * doc carrying this id derives nothing, see `eidolon.ts`'s
+   * `eidolonBaseFormIdsForVariant`). APG's other three forms (Aquatic,
+   * Avian, Tauric) are a documented deferral — see `eidolon.ts`'s module
+   * doc comment.
    */
   baseForm: string;
   /**
@@ -2020,6 +2023,20 @@ export interface EidolonBuild {
    * Omitted/empty = pure RAW defaults.
    */
   baseAbilities?: Partial<Record<AbilityId, number>>;
+  /**
+   * The Pathfinder Unchained "Small eidolon" sidebar option (printed
+   * alongside the base-form list, distinct from the "Large" evolution): "If
+   * the eidolon is Small, it gains a +2 bonus to Dexterity. It takes a -4
+   * penalty to Strength and a -2 penalty to Constitution. It also has a +1
+   * size bonus to AC and on attack rolls, a -1 penalty on combat maneuver
+   * checks and to CMD, a +2 bonus on Fly checks, and a +4 bonus on Stealth
+   * checks. Reduce the damage of all of its attacks by one step." (d20pfsrd.com
+   * "Eidolons (Unchained)"). Unchained-only; ignored for a chained eidolon.
+   * Mutually exclusive with the "Large" evolution (`@pf1/engine`
+   * `deriveEidolon` lets Large win if both are somehow set — there's no RAW
+   * for combining a size increase and a size decrease).
+   */
+  small?: boolean;
   /** Player-given name (e.g. "Grix"). */
   name: string;
   /**

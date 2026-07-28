@@ -16,6 +16,7 @@ import {
   clearEidolon,
   deriveEidolonSheet,
   eidolonBaseAbilityScores,
+  eidolonBaseFormIdsForDoc,
   eidolonEvolutionCount,
   eidolonEvolutionPointsAvailable,
   eidolonEvolutionPointsSpent,
@@ -32,6 +33,7 @@ import {
   setEidolonBaseAbility,
   setEidolonEvolutionChoice,
   setEidolonNotes,
+  setEidolonSmall,
   setEidolonSubtype,
   setEidolonSubtypeGrantChoice,
   toggleEidolonFeat,
@@ -124,9 +126,9 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
                   onChange={(e) => update((d) => setEidolon(d, e.target.value, eidolon.name))}
                   aria-label="Base form"
                 >
-                  {Object.entries(EIDOLON_BASE_FORMS).map(([id, def]) => (
+                  {eidolonBaseFormIdsForDoc(doc).map((id) => (
                     <option key={id} value={id}>
-                      {def.name}
+                      {EIDOLON_BASE_FORMS[id]!.name}
                     </option>
                   ))}
                 </select>
@@ -454,6 +456,15 @@ function SubtypeSection({
   return (
     <div className="subsection">
       <h4 className="tracker-sub">Subtype</h4>
+      <label className="hint" style={{ display: "flex", alignItems: "center", gap: 4 }}>
+        <input
+          type="checkbox"
+          checked={eidolon.small ?? false}
+          onChange={(e) => update((d) => setEidolonSmall(d, e.target.checked))}
+        />
+        Small (Pathfinder Unchained sidebar variant: +2 Dex/−4 Str/−2 Con, +1 AC &amp; attack, −1
+        CMB/CMD, +2 Fly/+4 Stealth, natural attack damage dice reduced one step)
+      </label>
       <div className="familiar-fields">
         <select
           className="familiar-select"

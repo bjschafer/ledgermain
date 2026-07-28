@@ -65,6 +65,7 @@ function makeEidolon(overrides: Partial<DerivedEidolon> = {}): DerivedEidolon {
     variant: "chained",
     grantedEvolutions: [],
     abilityIncreaseSlots: 0,
+    small: false,
     ...overrides,
   };
 }

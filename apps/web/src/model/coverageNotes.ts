@@ -62,9 +62,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Summoner (Unchained) eidolon",
-    note: "The twelve core Pathfinder Unchained subtypes are in. Later-splatbook subtypes and a couple of rarer base-form options aren't, and a subtype's resistances, immunities, and spell-like abilities show as reference chips rather than live numbers.",
+    note: "Every published Paizo subtype is in — the twelve Unchained core ones plus Aberrant, Aeon, Ancestor, Astral, Deepwater, Genie, Kami, Kyton, Radiant, Shadow, Storykin, Twinned, and Void — along with the Aberrant base form and the Small-eidolon option (its smaller dice, size modifiers, and skill bonuses all computed). A subtype's resistances, immunities, and spell-like abilities still show as reference chips rather than live numbers, and a grant that says \"choose one\" (like the Genie's 8th-level movement pick) is yours to apply. The Aquatic, Avian, and Tauric base forms are still absent, as is the third-party Tapestry-Warped subtype.",
     issueDetail:
-      "Not covered: the Aeon, Ancestor, Astral, Deepwater, Genie, Kami, Kyton, Radiant, Shadow, Storykin, Tapestry-Warped, Twinned, and Void subtypes, the Aberrant base form, and the Small-variant option.",
+      "28 EidolonSubtypeDefs (Elemental split into 4 element ids). Known prose-only accuracy gaps: Astral's halved Str/Dex table-accrual has no per-subtype override hook; choose-one-of evolution grants (Genie 8th) have no structured mechanism; Tapestry-Warped is non-Paizo (Orphaned Bookworm Productions) with no vendored/AoN text to verify against, excluded on provenance. Vendored RefData.eidolonSubtypes prose (26 entries) is not yet surfaced in the picker — the hand-authored grant notes carry the mechanics.",
   },
   {
     category: "Alternate racial traits",

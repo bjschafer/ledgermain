@@ -101,9 +101,9 @@
  *     pipeline as a shared buff, same as `companion.ts`'s own conditions.
  *
  * Scope/deferrals (all documented here, none silently dropped):
- *   - **Unchained subtype system: 12 core subtypes, Elemental split into 4**
- *     (Agathion/Angel/Archon/Azata/Daemon/Demon/Devil/Div/Elemental ×4
- *     elements/Inevitable/Protean/Psychopomp — see `eidolon-unchained.ts`).
+ *   - **Unchained subtype system: 13 core subtypes, Elemental split into 4**
+ *     (Aberrant/Agathion/Angel/Archon/Azata/Daemon/Demon/Devil/Div/Elemental
+ *     ×4 elements/Inevitable/Protean/Psychopomp — see `eidolon-unchained.ts`).
  *     `eidolonSummonerLevel` below still sums BOTH `summoner` (chained) and
  *     `summonerUnchained` class levels for the LEVEL number itself (a
  *     character genuinely multiclassed across both, though PF1 doesn't
@@ -114,12 +114,20 @@
  *     small structured set (evolution pool bonuses, one free evolution,
  *     land-speed bonuses, a free +2 ability increase) is a paraphrased
  *     display-only chip, same honesty-bar discipline as this file's own
- *     `displayOnly` evolutions — later-splatbook subtypes (e.g. Pathfinder
- *     Campaign Setting: Heroes of the Wild's "Aberrant") are out of scope,
- *     matching the base-form deferral immediately below.
- *   - **Three base forms only** (Biped, Quadruped, Serpentine) of APG's six
- *     — Aquatic, Avian, and Tauric are deferred (no `EIDOLON_BASE_FORMS`
- *     entry), matching the task brief's explicit scoping call.
+ *     `displayOnly` evolutions.
+ *   - **Four base forms** (Biped, Quadruped, Serpentine, Aberrant) of APG's
+ *     six-plus-Horror-Realms's-one — Aquatic, Avian, and Tauric (APG) are
+ *     still deferred (no `EIDOLON_BASE_FORMS` entry), matching the task
+ *     brief's explicit scoping call. Aberrant (Pathfinder Campaign Setting:
+ *     Horror Realms) is UNCHAINED-only (`EidolonBaseForm.variants`) — the
+ *     chained (APG) eidolon never had this option printed for it, so
+ *     `deriveEidolon` returns `undefined` for a chained doc that somehow
+ *     carries `baseForm: "aberrant"`, same soft "nothing shown" posture as
+ *     an unrecognized form id.
+ *   - **The Unchained "Small eidolon" sidebar variant** (Pathfinder
+ *     Unchained, printed alongside the base-form list) is modeled as
+ *     `EidolonBuild.small` — unchained-only, ignored for a chained eidolon.
+ *     See `deriveEidolon`'s small-size block below for the exact deltas.
  *   - **~80 evolutions curated, the complete APG-core list** — every 1/2/3/4
  *     point evolution from Advanced Player's Guide's own "Evolutions" list
  *     is present below (no splatbook-only entries beyond APG core), but only
@@ -142,6 +150,7 @@
 import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import { scaleWeaponDamageDice } from "./compute.js";
 import { CONDITIONS } from "./conditions.js";
 import {
   eidolonSubtypeGrantedEvolutions,
@@ -218,7 +227,7 @@ export interface EidolonAttackGrant {
   damageDice: string;
 }
 
-/** One of the three modeled PF1 APG "Base Forms" (see module doc comment for the other three's deferral). */
+/** One of the four modeled base forms (three PF1 APG core forms plus Horror Realms's Aberrant — see module doc comment for the deferred APG three). */
 export interface EidolonBaseForm {
   name: string;
   abilities: { str: number; dex: number; con: number };
@@ -230,12 +239,23 @@ export interface EidolonBaseForm {
   goodSaves: readonly ("fort" | "ref" | "will")[];
   /** Display-only chip names for the evolutions this form grants for free (already reflected in `baseAttacks`/`speeds` above — not separately spent from the pool). */
   freeEvolutionNames: readonly string[];
+  /** Which eidolon variant(s) this form is available to — `undefined` means both (the three APG core forms). Aberrant is `["unchained"]` only: it was never printed for the chained (APG) eidolon (see module doc comment). */
+  variants?: readonly ("chained" | "unchained")[];
 }
 
 /**
  * The three core PF1 APG eidolon base forms (verified against aonprd.com/
  * d20pfsrd.com's "Base Forms" section during authoring — see module doc
- * comment for the three deferred forms).
+ * comment for the three deferred forms) plus Aberrant (Pathfinder Campaign
+ * Setting: Horror Realms, unchained-only — aonprd.com's "Subtypes - Eidolon
+ * (Unchained)" page/d20pfsrd.com's "Eidolons (Unchained)" page: "Base Form:
+ * Aberrant (bite, grab [tentacle mass], tentacle mass) ...", with starting
+ * stats "Str 12, Dex 13, Con 16 ...; Speed 20 ft., swim 20 ft.; ... Saves
+ * Fort (good), Ref (poor), Will (good)" cross-checked against the raw OGL
+ * dataset's `aberrant` entry). Its free "Tentacle Mass" evolution deals
+ * 1d8 at Medium size and is explicitly a PRIMARY attack per its own rules
+ * text (unlike the ordinary secondary-type "Tentacle" evolution) — see
+ * `natural-attacks.ts`'s `PRIMARY_ATTACK_FULL_NAMES`.
  */
 export const EIDOLON_BASE_FORMS: Readonly<Record<string, EidolonBaseForm>> = {
   biped: {
@@ -265,10 +285,30 @@ export const EIDOLON_BASE_FORMS: Readonly<Record<string, EidolonBaseForm>> = {
     goodSaves: ["ref", "will"],
     freeEvolutionNames: ["Bite", "Climb", "Reach (bite)", "Tail", "Tail Slap"],
   },
+  aberrant: {
+    name: "Aberrant",
+    abilities: { str: 12, dex: 13, con: 16 },
+    speeds: { land: 20, swim: 20 },
+    baseAttacks: [
+      { name: "Bite", count: 1, damageDice: "1d6" },
+      { name: "Tentacle mass", count: 1, damageDice: "1d8" },
+    ],
+    goodSaves: ["fort", "will"],
+    freeEvolutionNames: ["Bite", "Grab (tentacle mass)", "Tentacle Mass"],
+    variants: ["unchained"],
+  },
 };
 
 /** All base-form slugs, for the builder's picker. */
 export const EIDOLON_BASE_FORM_IDS = Object.keys(EIDOLON_BASE_FORMS);
+
+/** Base-form slugs available to `variant` — filters out `["unchained"]`-only forms (currently just Aberrant) for a chained doc. Used by the builder's picker so a chained summoner is never offered an option that would silently derive nothing. */
+export function eidolonBaseFormIdsForVariant(variant: "chained" | "unchained"): readonly string[] {
+  return EIDOLON_BASE_FORM_IDS.filter((id) => {
+    const variants = EIDOLON_BASE_FORMS[id]!.variants;
+    return !variants || variants.includes(variant);
+  });
+}
 
 /** One row of the APG "Table: Eidolon Base Statistics", by summoner level. */
 export interface EidolonProgressionRow {
@@ -1290,6 +1330,8 @@ export interface DerivedEidolon {
   grantedEvolutions: { level: number; note: string; unlocked: boolean }[];
   /** Automatic Ability Score Increase slots earned so far (unchained 5th/10th/15th — see `eidolon-unchained.ts`). Always 0 for a chained eidolon, which has no automatic ASI slots at all. */
   abilityIncreaseSlots: number;
+  /** Whether the Pathfinder Unchained "Small eidolon" sidebar variant is in effect (`EidolonBuild.small`, unchained-only) — see `deriveEidolon`'s small-size block. Always `false` for a chained eidolon or one with the Large evolution (mutually exclusive with Small; Large wins if both are somehow picked). */
+  small: boolean;
 }
 
 /** A skeletal minimal skills set surfaced for an eidolon — the six physical/perceptual skills every companion-style creature in this codebase surfaces, plus any "Skilled" evolution chip note is left to the UI (see module doc comment). */
@@ -1419,6 +1461,12 @@ export function deriveEidolon(
   // call) — `row` below carries the RIGHT evolutionPool/special columns for
   // either variant; every other column is identical between the two tables --
   const variant = eidolonVariant(doc);
+
+  // A base form restricted to a variant (currently just Aberrant, unchained-
+  // only per module doc comment) derives nothing for the other variant —
+  // same soft "nothing shown" posture as an unrecognized form id above.
+  if (form.variants && !form.variants.includes(variant)) return undefined;
+
   const row =
     variant === "unchained" ? eidolonUnchainedProgressionRow(level) : eidolonProgressionRow(level);
   const hd = row.hd;
@@ -1481,18 +1529,37 @@ export function deriveEidolon(
     acc.abilityBonus[ability] += 1;
   }
 
+  // --- Pathfinder Unchained "Small eidolon" sidebar variant (`EidolonBuild.small`),
+  // unchained-only, mutually exclusive with the Large evolution (Large wins
+  // if a build somehow has both picked — RAW never combines them, and Large
+  // is the pre-existing mechanic). d20pfsrd.com "Eidolons (Unchained)": "If
+  // the eidolon is Small, it gains a +2 bonus to Dexterity. It takes a -4
+  // penalty to Strength and a -2 penalty to Constitution. It also has a +1
+  // size bonus to AC and on attack rolls, a -1 penalty on combat maneuver
+  // checks and to CMD, a +2 bonus on Fly checks, and a +4 bonus on Stealth
+  // checks. Reduce the damage of all of its attacks by one step." The AC/
+  // attack/CMB/CMD deltas fall straight out of `size` below (SIZE_AC_MOD/
+  // `specialSizeMod` already have a "sm" row); only the ability deltas,
+  // Fly/Stealth racial bonuses, and attack-die stepping need dedicated code.
+  const small = variant === "unchained" && !!build.small && !acc.isLarge;
+
   // --- ability scores: starting scores (form + universal, or the player's own
   // `baseAbilities` override) + table strDexBonus (both Str and Dex) + Large's
   // fixed deltas + evolution picks --------------------------------------
   const largeDelta: Record<AbilityId, number> = acc.isLarge
     ? { str: 8, dex: -2, con: 4, int: 0, wis: 0, cha: 0 }
     : { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
+  const smallDelta: Record<AbilityId, number> = small
+    ? { str: -4, dex: 2, con: -2, int: 0, wis: 0, cha: 0 }
+    : { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 };
 
   const start = eidolonStartingAbilities(build.baseForm, build.baseAbilities);
 
-  const baseStr = start.str + row.strDexBonus + largeDelta.str + acc.abilityBonus.str;
-  const baseDex = start.dex + row.strDexBonus + largeDelta.dex + acc.abilityBonus.dex;
-  const baseCon = start.con + largeDelta.con + acc.abilityBonus.con;
+  const baseStr =
+    start.str + row.strDexBonus + largeDelta.str + smallDelta.str + acc.abilityBonus.str;
+  const baseDex =
+    start.dex + row.strDexBonus + largeDelta.dex + smallDelta.dex + acc.abilityBonus.dex;
+  const baseCon = start.con + largeDelta.con + smallDelta.con + acc.abilityBonus.con;
   const baseInt = start.int + acc.abilityBonus.int;
   const baseWis = start.wis + acc.abilityBonus.wis;
   const baseCha = start.cha + acc.abilityBonus.cha;
@@ -1506,7 +1573,7 @@ export function deriveEidolon(
     cha: { score: baseCha, mod: abilityMod(baseCha) },
   };
 
-  const size: SizeId = acc.isLarge ? "lg" : "med";
+  const size: SizeId = acc.isLarge ? "lg" : small ? "sm" : "med";
   const sizeAcMod = SIZE_AC_MOD[size];
 
   // --- shared buffs: evaluate + bucket by target (mirrors companion.ts/phantom.ts) --
@@ -1538,6 +1605,10 @@ export function deriveEidolon(
   const landSpeed = (form.speeds.land ?? 0) + acc.legPairs * 10 + subtypeLandSpeedBonus;
   const speeds: Record<string, number> = { land: landSpeed };
   if (form.speeds.climb) speeds.climb = form.speeds.climb;
+  // Aberrant is the first base form with its own innate swim speed (20 ft.,
+  // not from a "Swim" evolution pick) — mirrors the `climb` line above,
+  // which Serpentine already needed.
+  if (form.speeds.swim) speeds.swim = form.speeds.swim;
   if (acc.climbPicks > 0) speeds.climb = landSpeed + 20 * (acc.climbPicks - 1);
   if (acc.swimPicks > 0) speeds.swim = landSpeed + 20 * (acc.swimPicks - 1);
   if (acc.hasFlight) speeds.fly = landSpeed;
@@ -1632,11 +1703,16 @@ export function deriveEidolon(
   const baseAttacksForVariant = subtypeForm ? subtypeForm.attacks : form.baseAttacks;
   const allAttacks = [...baseAttacksForVariant, ...acc.attacks];
   const classifiedAttacks = classifyNaturalAttacks(allAttacks);
+  // Small steps every attack's damage die down one (e.g. 1d6 -> 1d4) via the
+  // same weapon-size-scaling chain the CRB's own size chart uses for
+  // manufactured weapons (`compute.ts`'s `scaleWeaponDamageDice`) — a no-op
+  // (`steps === 0`) for a non-Small eidolon.
+  const attackDieSteps = small ? -1 : 0;
   const attacks: DerivedEidolonAttack[] = classifiedAttacks.map((a) => ({
     name: a.name,
     count: a.count,
     attack: naturalAttackBonus(baseAttackBonus, a.attackType, hasMultiattack),
-    damageDice: a.damageDice,
+    damageDice: scaleWeaponDamageDice(a.damageDice, attackDieSteps),
     damageBonus:
       naturalAttackDamageBonus(strMod, a.attackType, a.strMultiplier) + sharedDamageBonus,
     attackType: a.attackType,
@@ -1657,6 +1733,8 @@ export function deriveEidolon(
     let racial = 0;
     if (id === "clm" && hasClimbSpeed) racial += 8;
     if (id === "swm" && hasSwimSpeed) racial += 8;
+    if (id === "fly" && small) racial += 2;
+    if (id === "ste" && small) racial += 4;
 
     const miscStack = resolveStack([...(routed.skill.get(id) ?? []), ...routed.skillsGlobal]);
     const components: ModifierComponent[] = [];
@@ -1720,5 +1798,6 @@ export function deriveEidolon(
     subtypeAlignmentText: subtype?.alignmentText,
     grantedEvolutions: eidolonSubtypeGrantedEvolutions(subtypeId, level),
     abilityIncreaseSlots,
+    small,
   };
 }

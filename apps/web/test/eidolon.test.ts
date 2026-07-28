@@ -10,6 +10,7 @@ import {
   clearEidolon,
   deriveEidolonSheet,
   eidolonBaseAbilityScores,
+  eidolonBaseFormIdsForDoc,
   eidolonEvolutionPointsAvailable,
   eidolonEvolutionPointsSpent,
   eidolonEvolutionPoolNeedsWarning,
@@ -33,6 +34,7 @@ import {
   setEidolonAbilityIncrease,
   setEidolonBaseAbility,
   setEidolonNotes,
+  setEidolonSmall,
   setEidolonSubtype,
   setEidolonSubtypeGrantChoice,
   toggleEidolonCondition,
@@ -348,6 +350,32 @@ describe("model/eidolon.ts unchained subtype transitions", () => {
   it("setEidolonSubtypeGrantChoice no-ops without an eidolon", () => {
     const d = createEmptyDoc("t");
     expect(setEidolonSubtypeGrantChoice(d, 8, "str")).toBe(d);
+  });
+});
+
+describe("model/eidolon.ts small-variant + base-form-picker helpers", () => {
+  it("setEidolonSmall toggles build.eidolon.small on and off", () => {
+    let d = setEidolon(createEmptyDoc("t"), "biped", "Grix");
+    expect(d.build.eidolon?.small).toBeUndefined();
+    d = setEidolonSmall(d, true);
+    expect(d.build.eidolon?.small).toBe(true);
+    d = setEidolonSmall(d, false);
+    expect(d.build.eidolon?.small).toBe(false);
+  });
+
+  it("setEidolonSmall no-ops without an eidolon", () => {
+    const d = createEmptyDoc("t");
+    expect(setEidolonSmall(d, true)).toBe(d);
+  });
+
+  it("eidolonBaseFormIdsForDoc excludes 'aberrant' for a chained summoner, includes it for unchained", () => {
+    let chained = createEmptyDoc("t");
+    chained = addClass(chained, "summoner");
+    chained = setClassLevel(chained, "summoner", 1);
+    expect(eidolonBaseFormIdsForDoc(chained)).not.toContain("aberrant");
+
+    const unchained = summonerUnchained(1);
+    expect(eidolonBaseFormIdsForDoc(unchained)).toContain("aberrant");
   });
 });
 
