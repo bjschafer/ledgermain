@@ -36,12 +36,14 @@ describe("mergedOracleMysteryCatalog", () => {
     }
   });
 
-  it("a vendored-only mystery (no hand-authored counterpart) resolves display-only with its own prose", () => {
-    const entry = byTag.get("ancestor")!;
-    expect(entry.displayOnly).toBe(true);
-    expect(entry.classSkills).toEqual([]);
-    expect(entry.description).toContain("Ancestral Weapon");
-    expect(ORACLE_MYSTERIES.ancestor).toBeUndefined();
+  it("no vendored-only mysteries remain — every vendored tag has a hand-authored entry", () => {
+    // Issue #74's Phase 2 authored the remaining 23, so the merged catalog's
+    // display-only fallback now only exists for a future data bump that
+    // vendors a mystery this table hasn't caught up with.
+    for (const entry of merged) {
+      expect(ORACLE_MYSTERIES[entry.tag], entry.tag).toBeDefined();
+      expect(entry.displayOnly, entry.tag).toBe(false);
+    }
   });
 
   it("every tag is unique", () => {
@@ -57,10 +59,11 @@ describe("resolveOracleMystery", () => {
     expect(mystery?.classSkills).toEqual(ORACLE_MYSTERIES.battle!.classSkills);
   });
 
-  it("falls back to the vendored catalog for a vendored-only tag", () => {
+  it("resolves a formerly vendored-only tag through the hand table now", () => {
     const mystery = resolveOracleMystery("ancestor", ref);
-    expect(mystery?.displayOnly).toBe(true);
+    expect(mystery?.displayOnly).toBe(false);
     expect(mystery?.name).toBe("Ancestor");
+    expect(mystery?.classSkills).toEqual(ORACLE_MYSTERIES.ancestor!.classSkills);
   });
 
   it("returns undefined for a tag in neither table", () => {

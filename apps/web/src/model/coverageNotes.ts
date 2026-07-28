@@ -47,13 +47,14 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     note: 'Every published entry is browsable and searchable, but only the core-book sets actually move numbers on your sheet; those are marked with an "M". The rest show their rules text for reference, so you\'ll need to apply them by hand.',
   },
   {
-    category:
-      "Bloodlines, mysteries, spirits, disciplines, implements, orders, patrons, and shifter aspects",
-    note: "The full published lists are browsable. Beyond the core-book ones, they show their rules text without wiring up the per-level powers you gain. That's deliberate, rather than inventing mechanics that might be wrong.",
+    category: "Bloodlines, spirits, disciplines, implements, orders, patrons, and shifter aspects",
+    note: "The full published lists are browsable. Beyond the core-book ones, they show their rules text without wiring up the per-level powers you gain. That's deliberate, rather than inventing mechanics that might be wrong. Oracle mysteries used to be on this list and no longer are: every published mystery now grants its class skills and bonus spells for real, with its whole revelation list pickable.",
   },
   {
     category: "Oracle revelations",
-    note: "Covered for the ten Advanced Player's Guide mysteries (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, and Wind) plus Solar. Revelations from other mysteries aren't written up, but the mystery itself is still browsable with its full rules text, revelations included, so you can pick from it and apply them by hand.",
+    note: "Every published mystery's full revelation list is pickable, with level requirements enforced softly and each pick showing on your sheet with its write-up. What a revelation does is still yours to apply at the table — none of them move numbers on the sheet yet.",
+    issueDetail:
+      "336 revelations across all 34 mysteries, all displayOnly by the forMystery factory's construction. Known promotion candidates for a modeling pass: metal's Iron Constitution, spellscar's Eldritch Resistance and Mystic Null, elemental's Elemental Resistance, streets' Face in the Crowd, apocalypse's Defy Elements and Near Death, and the darkvision grants (dark_tapestry's Pierce the Veil, shadow's Pierce the Shadows).",
   },
   {
     category: "Kineticist wild talents",

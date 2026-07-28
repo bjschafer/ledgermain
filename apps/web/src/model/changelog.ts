@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-28-every-oracle-mystery",
+    date: "2026-07-28",
+    title: "Every oracle mystery, revelations and all",
+    note: "Oracles were the class with the biggest hole: only the eleven core mysteries knew their class skills, bonus spells, and revelations. All thirty-four published mysteries are in now — pick Dark Tapestry or Reaper or Whimsy and your class skills appear, your bonus spells arrive on schedule, and the full revelation list is right there to choose from, level requirements and all. That's two hundred twenty-six newly written-up revelations. What each revelation does when you use it is still applied at the table, same as before.",
+  },
+  {
     id: "2026-07-28-class-immunities-and-talent-catalogs",
     date: "2026-07-28",
     title: "Your class's immunities show up on their own",
