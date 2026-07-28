@@ -235,8 +235,11 @@ export {
   type MergedWitchHexEntry,
 } from "./witch-hexes.js";
 export {
+  SHAMAN_GENERAL_HEXES,
+  SHAMAN_GENERAL_HEX_IDS,
   mergedShamanHexCatalog,
   resolveGeneralShamanHex,
+  type ShamanGeneralHexDef,
   type ShamanGeneralHexEntry,
 } from "./shaman-hexes.js";
 export {
@@ -272,10 +275,13 @@ export {
   type MergedRogueTalentEntry,
 } from "./rogue-talents.js";
 export {
+  SLAYER_TALENTS,
+  SLAYER_TALENT_IDS,
   isAdvancedSlayerTalent,
   resolveSlayerTalent,
-  slayerTalentCatalog,
-  type SlayerTalentEntry,
+  mergedSlayerTalentCatalog,
+  type SlayerTalentDef,
+  type MergedSlayerTalentEntry,
 } from "./slayer-talents.js";
 export {
   ANTIPALADIN_CRUELTIES,

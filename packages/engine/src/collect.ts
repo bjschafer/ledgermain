@@ -30,6 +30,9 @@ import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
 import { resolveRagePower } from "./rage-powers.js";
+import { resolveGeneralShamanHex } from "./shaman-hexes.js";
+import { findShamanHex } from "./shaman-spirits.js";
+import { resolveSlayerTalent } from "./slayer-talents.js";
 import { resolveTraitDef } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
@@ -588,6 +591,32 @@ export function collectModifiers(
     }
   }
 
+  // --- shaman hexes (build choice, issue #65, general catalog #74) --------
+  // Hex ids may be spirit-scoped (`<spiritTag>:<name>` — `findShamanHex`,
+  // hand-authored in `shaman-spirits.ts`, always `displayOnly`/no
+  // `changes[]` at all — see that file's doc comment) or drawn from the
+  // vendored, spirit-agnostic GENERAL catalog (`resolveGeneralShamanHex`,
+  // `shaman-hexes.ts`). Only the general catalog can ever carry a live
+  // Change, so a spirit-scoped id resolves to nothing here and is skipped —
+  // same "gate on the granting class's level, never crash on an
+  // unknown/stale id" shape the witch-hex loop above uses. Every general
+  // hex is `displayOnly` with `changes: []` today (see `shaman-hexes.ts`'s
+  // doc comment), so this loop currently contributes no numeric modifiers —
+  // wired the same way for a future hex with a real unconditional/buff-gated
+  // Change to work for free.
+  const shamanLevel = doc.identity.classes.find((c) => c.tag === "shaman")?.level ?? 0;
+  if (shamanLevel > 0) {
+    for (const hexId of doc.build.shamanHexes ?? []) {
+      if (findShamanHex(hexId)) continue;
+      const hex = resolveGeneralShamanHex(hexId, refData);
+      if (!hex) continue;
+      for (const ch of hex.changes) {
+        if (!gateOpen(ch)) continue;
+        evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out);
+      }
+    }
+  }
+
   // --- barbarian rage powers (build choice, issue #65/#67, gated #75) ------
   // Power ids are hand-authored clean-room content (not in the vendored
   // Foundry data pack — see `@pf1/engine` `rage-powers.ts`), same posture as
@@ -629,6 +658,28 @@ export function collectModifiers(
       for (const ch of discovery.changes) {
         if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, discovery.name, discovery.id, out);
+      }
+    }
+  }
+
+  // --- slayer talents (build choice, issue #74 hand-table follow-up) ------
+  // Talent ids are hand-authored clean-room content overlaid onto the
+  // vendored catalog (`@pf1/engine` `slayer-talents.ts`'s
+  // `resolveSlayerTalent`, hand-authored table first, vendored fallback for
+  // an id not yet promoted), same posture as rage powers above. Gated on the
+  // character actually having slayer levels. Most talents are `displayOnly`
+  // with `changes: []` (sneak-attack/studied-target riders, activated
+  // abilities, or scoped-target near misses — see that file's doc comment),
+  // but Foil Scrutiny/Armored Marauder/Armored Swiftness carry a real
+  // Change (the latter two conditional on `@armor.type`, not buff-gated).
+  const slayerLevel = doc.identity.classes.find((c) => c.tag === "slayer")?.level ?? 0;
+  if (slayerLevel > 0) {
+    for (const talentId of doc.build.slayerTalents ?? []) {
+      const talent = resolveSlayerTalent(talentId, refData);
+      if (!talent) continue;
+      for (const ch of talent.changes) {
+        if (!gateOpen(ch)) continue;
+        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out);
       }
     }
   }

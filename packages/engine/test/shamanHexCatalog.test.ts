@@ -3,20 +3,27 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, mergedShamanHexCatalog, resolveGeneralShamanHex } from "../src/index.js";
+import {
+  compute,
+  mergedShamanHexCatalog,
+  resolveGeneralShamanHex,
+  SHAMAN_GENERAL_HEXES,
+  SHAMAN_GENERAL_HEX_IDS,
+} from "../src/index.js";
 
 /**
- * Coverage for the GENERAL shaman-hex catalog (issue #74) — see
- * `shaman-hexes.ts`'s doc comment for why this one has no hand-authored
- * table to overlay (unlike its `witch-hexes.ts`/`magus-arcana.ts` siblings):
- * every row here is vendored-only and display-only.
+ * Coverage for the GENERAL shaman-hex catalog (issue #74) plus its
+ * hand-authored overlay (`shaman-hexes.ts`'s `SHAMAN_GENERAL_HEXES`),
+ * mirroring `witchHexCatalog.test.ts` closely — see that file's doc comment
+ * for the collision-audit narrative this asserts against.
  */
 const ref = loadRefData();
 
 describe("mergedShamanHexCatalog", () => {
   const merged = mergedShamanHexCatalog(ref);
+  const byId = new Map(merged.map((h) => [h.id, h]));
 
-  it("has one row per vendored entry (16)", () => {
+  it("has one row per vendored entry (16) — all 16 hand-authored entries matched", () => {
     expect(merged).toHaveLength(16);
     expect(merged).toHaveLength(Object.keys(ref.shamanHexes).length);
   });
@@ -30,6 +37,21 @@ describe("mergedShamanHexCatalog", () => {
     expect(entry.summary).not.toContain("<");
   });
 
+  it("all 16 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+    let matched = 0;
+    for (const id of SHAMAN_GENERAL_HEX_IDS) {
+      const entry = byId.get(id);
+      expect(entry).toBeDefined();
+      expect(entry!.changes).toEqual(SHAMAN_GENERAL_HEXES[id]!.changes);
+      expect(entry!.displayOnly).toBe(SHAMAN_GENERAL_HEXES[id]!.displayOnly);
+      expect(entry!.summary).toBe(SHAMAN_GENERAL_HEXES[id]!.summary);
+      // ...but pick up the vendored prose for display.
+      expect(entry!.description).toBeDefined();
+      matched++;
+    }
+    expect(matched).toBe(16);
+  });
+
   it("every id is unique", () => {
     const ids = merged.map((h) => h.id);
     expect(new Set(ids).size).toBe(ids.length);
@@ -37,9 +59,12 @@ describe("mergedShamanHexCatalog", () => {
 });
 
 describe("resolveGeneralShamanHex", () => {
-  it("resolves a real vendored id", () => {
+  it("resolves a real vendored id, preferring the hand-authored table's summary/mechanics", () => {
     const entry = resolveGeneralShamanHex("fury", ref);
     expect(entry?.name).toBe("Fury");
+    expect(entry?.summary).toBe(SHAMAN_GENERAL_HEXES.fury!.summary);
+    expect(entry?.displayOnly).toBe(true);
+    expect(entry?.changes).toEqual([]);
   });
 
   it("returns undefined for an id in neither table (including the excluded 'witch_hex' meta-rule entry)", () => {

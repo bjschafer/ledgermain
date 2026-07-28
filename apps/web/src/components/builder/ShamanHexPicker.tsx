@@ -163,7 +163,9 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
                 General Hexes — the Advanced Class Guide's own spirit-agnostic hex table, available
                 to any shaman (draws from the same pick budget above). A shaman may also select from
                 the witch's own Hex list (excluding major/grand hexes), using shaman level as witch
-                level — see the Witch class's Hexes section to browse those.
+                level — see the Witch class's Hexes section to browse those. Entries marked{" "}
+                <span className="badge-modeled">M</span> carry a real, live mechanical effect (see
+                Class Features) — the rest are prose-only.
               </p>
               <input
                 className="search"
@@ -181,10 +183,24 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
                         <div className="pname">
                           {h.name}
                           {h.nameSuffix ? ` ${h.nameSuffix}` : ""}
+                          {!h.displayOnly && (
+                            <span
+                              className="badge-modeled"
+                              title="Carries a real, live mechanical effect (see Class Features)"
+                            >
+                              {" "}
+                              M
+                            </span>
+                          )}
                         </div>
                         <div className="preq">
                           <span className="desc-text">{h.summary}</span>
                         </div>
+                        {h.contextNotes?.map((noteEntry, i) => (
+                          <div key={i} className="hint" style={{ marginTop: 2 }}>
+                            ⚠ {noteEntry.text}
+                          </div>
+                        ))}
                         {h.description ? <FeatureDescription html={h.description} /> : null}
                       </div>
                       <button
