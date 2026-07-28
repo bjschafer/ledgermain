@@ -137,7 +137,7 @@ export interface RefData {
   rogueTalents: Record<string, RogueTalent>;
   /** The full published ninja trick catalog (tricks + master tricks) — see `NinjaTrick` doc comment. */
   ninjaTricks: Record<string, NinjaTrick>;
-  /** The full published slayer talent catalog (talents + advanced talents) — see `SlayerTalent` doc comment. No hand-authored overlay exists yet (`@pf1/engine` has no `slayer-talents.ts`); every entry is display-only. */
+  /** The full published slayer talent catalog (talents + advanced talents) — see `SlayerTalent` doc comment. `@pf1/engine` `slayer-talents.ts` hand-authors an overlay on top (mechanics-authoritative on a name match), same posture as `RagePower`. */
   slayerTalents: Record<string, SlayerTalent>;
   /** The full published vigilante talent catalog (Avenger/Stalker/shared) — see `VigilanteTalent` doc comment. */
   vigilanteTalents: Record<string, VigilanteTalent>;
@@ -1084,11 +1084,10 @@ export interface NinjaTrick extends RefEntity {
 
 /**
  * A published slayer talent (issue #74), same posture as
- * `RagePower`. UNLIKE the other rogue-family subsystems, `@pf1/engine` has
- * NO hand-authored slayer-talent table today — the slayer class previously
- * had zero talent-picker support beyond the "Extra Slayer Talent" feat's
- * repeatable-feat audit note (`feat-classification.ts`). Every entry here is
- * therefore necessarily display-only; there is nothing to overlay onto. The
+ * `RagePower`. `@pf1/engine` `slayer-talents.ts` hand-authors a mechanics
+ * overlay on top of this vendored catalog (matched by normalized name), the
+ * same pattern `RagePower`/`WitchHex` use — see that file's doc comment for
+ * which entries carry a real `Change` and why most stay display-only. The
  * source's own `rogue_talent` entry (category "Other Talents") documents PF1
  * RAW's "or select a rogue talent instead" option structurally, as its own
  * catalog row, rather than needing a cross-wired mechanic — see

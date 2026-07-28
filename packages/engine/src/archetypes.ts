@@ -865,11 +865,11 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
-  // Slayer talents (issue #74) — vendored-catalog-only, no
-  // hand-authored table (see slayer-talents.ts's doc comment for why).
-  // Gated on actual slayer levels. Granted at a flat display level of 2 (the
-  // earliest a slayer has any talent at all), same rationale as
-  // discoveries/exploits/arcana above.
+  // Slayer talents (issue #74, hand-table follow-up) — resolved through
+  // `resolveSlayerTalent` (hand-authored table first, vendored catalog
+  // fallback — see slayer-talents.ts's doc comment). Gated on actual slayer
+  // levels. Granted at a flat display level of 2 (the earliest a slayer has
+  // any talent at all), same rationale as discoveries/exploits/arcana above.
   const slayerLevel = doc.identity.classes.find((c) => c.tag === "slayer")?.level ?? 0;
   if (slayerLevel > 0) {
     for (const talentId of doc.build.slayerTalents ?? []) {

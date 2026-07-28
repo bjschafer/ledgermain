@@ -1029,11 +1029,11 @@ export interface CharacterDoc {
     rogueTalents?: string[];
     /**
      * Slayer talent ids chosen (keys into `RefData.slayerTalents` via
-     * `@pf1/engine` `resolveSlayerTalent` — issue #74). UNLIKE
-     * `rogueTalents`/`ninjaTricks`/`vigilanteTalents`, there is no
-     * hand-authored mechanics table backing this field yet — every entry is
-     * display-only (see `@pf1/engine` `slayer-talents.ts`'s doc comment).
-     * Gained at 2nd level and every 2 levels thereafter (10 total by 20th,
+     * `@pf1/engine` `resolveSlayerTalent` — issue #74, hand-authored overlay
+     * added in a follow-up). Most entries are still `displayOnly` (see
+     * `@pf1/engine` `slayer-talents.ts`'s doc comment for the small set that
+     * carry a real `Change`). Gained at 2nd level and every 2 levels
+     * thereafter (10 total by 20th,
      * same cadence as rogue talents — verified against the vendored Foundry
      * "Slayer Talents" `ClassFeature` description), plus one per "Extra
      * Slayer Talent" feat taken. "Advanced Slayer Talents" (10th level and

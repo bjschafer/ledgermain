@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { isAdvancedSlayerTalent, slayerTalentCatalog } from "@pf1/engine";
+import { mergedSlayerTalentCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import {
@@ -24,13 +24,14 @@ interface SlayerTalentPickerProps {
 }
 
 /**
- * Slayer talent selection (issue #74) — slayer only. UNLIKE
- * `RogueTalentPicker`/`NinjaTrickPicker`/`VigilanteTalentPicker`, there is no
- * hand-authored mechanics table here: browses the full vendored catalog
- * (`slayerTalentCatalog`) straight, so no row ever carries a "M" (modeled)
- * badge today — every entry is a reminder only (see `@pf1/engine`
- * `slayer-talents.ts`'s doc comment). "Advanced" tagged entries (10th level+)
- * are chosen in place of a normal pick, same as ninja master tricks — not an
+ * Slayer talent selection (issue #74, hand-table follow-up) — slayer only.
+ * Browses the full published catalog (`mergedSlayerTalentCatalog` — every
+ * vendored entry, overlaid with the hand-verified table on a name match),
+ * same convention as `RagePowerPicker`. A `badge-modeled` "M" marks which
+ * entries carry a real, live mechanical effect (`changes`); everything else
+ * is prose-only, shown via the same collapsible `FeatureDescription` the
+ * Class Features list uses. "Advanced" tagged entries (10th level+) are
+ * chosen in place of a normal pick, same as ninja master tricks — not an
  * extra budget slot. Free-choice, never blocks past the expected count.
  */
 export function SlayerTalentPicker({ doc, refData, update }: SlayerTalentPickerProps) {
@@ -41,7 +42,7 @@ export function SlayerTalentPicker({ doc, refData, update }: SlayerTalentPickerP
   const selected = useMemo(() => new Set(doc.build.slayerTalents ?? []), [doc.build.slayerTalents]);
   const level = getSlayerLevel(doc);
 
-  const catalog = useMemo(() => slayerTalentCatalog(refData), [refData]);
+  const catalog = useMemo(() => mergedSlayerTalentCatalog(refData), [refData]);
 
   const talents = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -94,8 +95,9 @@ export function SlayerTalentPicker({ doc, refData, update }: SlayerTalentPickerP
           <p className="hint magus-arcana-picker-hint">
             Pick a talent at 2nd level and every 2 levels thereafter (+1 per Extra Slayer Talent
             feat). Advanced talents unlock at 10th, chosen in place of a normal talent. Browses the
-            full published catalog — every entry is a reminder only (no hand-verified mechanics
-            yet). Free-choice — never blocks past the expected count.
+            full published catalog; entries marked <span className="badge-modeled">M</span> carry a
+            real, live mechanical effect (see Class Features) — the rest are prose-only. Free-choice
+            — never blocks past the expected count.
           </p>
           <input
             className="search"
@@ -107,7 +109,7 @@ export function SlayerTalentPicker({ doc, refData, update }: SlayerTalentPickerP
           <div className="scroll">
             {talents.map((t) => {
               const isSel = hasSlayerTalent(doc, t.id);
-              const belowLevel = level > 0 && isAdvancedSlayerTalent(t.category) && level < 10;
+              const belowLevel = level > 0 && level < t.minLevel;
               return (
                 <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
@@ -115,15 +117,29 @@ export function SlayerTalentPicker({ doc, refData, update }: SlayerTalentPickerP
                       {t.name}
                       {t.nameSuffix ? ` ${t.nameSuffix}` : ""}
                       {t.advanced && <span className="tag-mystery">Advanced</span>}
+                      {!t.displayOnly && (
+                        <span
+                          className="badge-modeled"
+                          title="Carries a real, live mechanical effect (see Class Features)"
+                        >
+                          {" "}
+                          M
+                        </span>
+                      )}
                     </div>
                     <div className="preq">
                       <span className="desc-text">{t.summary}</span>
                     </div>
                     {belowLevel && (
                       <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires slayer 10th (currently {level})
+                        ⚠ Requires slayer {t.minLevel}th (currently {level})
                       </div>
                     )}
+                    {t.contextNotes?.map((noteEntry, i) => (
+                      <div key={i} className="hint" style={{ marginTop: 2 }}>
+                        ⚠ {noteEntry.text}
+                      </div>
+                    ))}
                     {t.description ? <FeatureDescription html={t.description} /> : null}
                   </div>
                   <button
