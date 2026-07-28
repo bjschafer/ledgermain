@@ -83,11 +83,49 @@ describe("scaleWeaponDamageDice(): the pure die-chain helper", () => {
     expect(scaleWeaponDamageDice("1", -5)).toBe("1");
   });
 
-  it("leaves an unrecognized die (not on either chain) unscaled rather than guessing", () => {
-    // 2d4 / 1d12 / 2d12 are real vendored dice this pass deliberately leaves
-    // off both chains (see the chain doc comment in compute.ts).
-    expect(scaleWeaponDamageDice("2d4", 1)).toBe("2d4");
-    expect(scaleWeaponDamageDice("1d12", -1)).toBe("1d12");
+  it("leaves a die that isn't on a chain and has no charted equivalent unscaled", () => {
+    expect(scaleWeaponDamageDice("1d7", 1)).toBe("1d7");
+    expect(scaleWeaponDamageDice("", 1)).toBe("");
+  });
+});
+
+/**
+ * Size-change FAQ: "If the die type is not referenced on this chart, apply the
+ * following rules before adjusting the damage dice. 2d4 counts as 1d8 on the
+ * chart, 3d4 counts as 2d6 on the chart, and so on for higher numbers of d4.
+ * 1d12 counts as 2d6 on the chart, and so on for higher numbers of d12."
+ */
+describe("scaleWeaponDamageDice(): dice the chart doesn't print convert first", () => {
+  it("2d4 counts as 1d8, so a scythe steps up to 2d6", () => {
+    expect(scaleWeaponDamageDice("2d4", 1)).toBe("2d6");
+  });
+
+  it("2d4 counts as 1d8 stepping down too: 1d6", () => {
+    expect(scaleWeaponDamageDice("2d4", -1)).toBe("1d6");
+  });
+
+  it("3d4 counts as 2d6, so it steps up to 3d6", () => {
+    expect(scaleWeaponDamageDice("3d4", 1)).toBe("3d6");
+  });
+
+  it("1d12 counts as 2d6, so a greataxe steps up to 3d6", () => {
+    expect(scaleWeaponDamageDice("1d12", 1)).toBe("3d6");
+  });
+
+  it("1d12 counts as 2d6 stepping down: 1d8, not the printed 1d12's own row", () => {
+    expect(scaleWeaponDamageDice("1d12", -1)).toBe("1d8");
+  });
+
+  it("2d12 continues the d12 run one step past 1d12: counts as 3d6, steps to 4d6", () => {
+    expect(scaleWeaponDamageDice("2d12", 1)).toBe("4d6");
+  });
+
+  it("1d4 is printed on the chart already and is not redirected", () => {
+    expect(scaleWeaponDamageDice("1d4", 1)).toBe("1d6");
+  });
+
+  it("a converted die still clamps at the top of its chain", () => {
+    expect(scaleWeaponDamageDice("2d4", 99)).toBe("16d6");
   });
 });
 
@@ -134,6 +172,31 @@ describe("compute(): Reduce Person scales the displayed weapon damage dice down"
   it("Reduced (Small, -1 size step): damageDice becomes 1d6", () => {
     const sheet = compute(makeDoc([sword], [reduce]), ref);
     expect(sheet.attacks[0]!.damageDice).toBe("1d6");
+  });
+});
+
+describe("compute(): a greataxe (1d12, off the chart) scales through its equivalent", () => {
+  const greataxe: WeaponInstance = {
+    name: "Greataxe",
+    attackAbility: "str",
+    damageDice: "1d12",
+  };
+  const enlarge: ActiveBuff = {
+    instanceId: "buff-enlarge",
+    name: "Enlarge Person",
+    changes: [{ target: "size", type: "untyped", formula: "1" }],
+  };
+
+  it("at base size the printed die is untouched: 1d12", () => {
+    expect(compute(makeDoc([greataxe]), ref).attacks[0]!.damageDice).toBe("1d12");
+  });
+
+  it("Enlarged: counts as 2d6, so it reads 3d6", () => {
+    expect(compute(makeDoc([greataxe], [enlarge]), ref).attacks[0]!.damageDice).toBe("3d6");
+  });
+
+  it("dropping the buff prints 1d12 again — scaling always recomputes from the stored die", () => {
+    expect(compute(makeDoc([greataxe], []), ref).attacks[0]!.damageDice).toBe("1d12");
   });
 });
 

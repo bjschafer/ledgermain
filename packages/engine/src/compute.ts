@@ -128,11 +128,9 @@ function shiftSize(size: SizeId, steps: number): SizeId {
  * - `SIZE_DIE_CHAIN_D8`: the "big single-die" family starting at 1d10 (e.g.
  *   greatclub) — 1d10 -> 2d8 -> 3d8 -> 4d8 -> 6d8 -> 8d8 -> 12d8 -> 16d8.
  *
- * Deliberately narrow (see `scaleWeaponDamageDice`'s doc comment): dice this
- * app's vendored weapon data actually uses but that aren't confidently
- * placed on either published chain (2d4, 1d12, 2d12) are left OUT of both
- * chains entirely, so `scaleWeaponDamageDice` leaves them unscaled rather
- * than guessing.
+ * Kept exactly as published: a die the chart doesn't print (2d4, 1d12, 2d12)
+ * is NOT inserted here, it's converted to its charted equivalent first — see
+ * {@link normalizeToChain}.
  */
 const SIZE_DIE_CHAIN_MAIN: readonly string[] = [
   "1",
@@ -166,24 +164,51 @@ const SIZE_DIE_INDEX: ReadonlyMap<string, { chain: readonly string[]; idx: numbe
 );
 
 /**
+ * Converts a die the size chart doesn't print onto the charted die it counts
+ * as, per the FAQ's own escape hatch: "If the die type is not referenced on
+ * this chart, apply the following rules before adjusting the damage dice. 2d4
+ * counts as 1d8 on the chart, 3d4 counts as 2d6 on the chart, and so on for
+ * higher numbers of d4. 1d12 counts as 2d6 on the chart, and so on for higher
+ * numbers of d12."
+ *
+ * Both "and so on" runs advance one chart step per extra die, so this is index
+ * arithmetic on {@link SIZE_DIE_CHAIN_MAIN} rather than a lookup table: `Nd4`
+ * lands at index 3 + N (2d4 -> 1d8, 3d4 -> 2d6, ...) and `Nd12` at index 5 + N
+ * (1d12 -> 2d6, 2d12 -> 3d6, ...). 1d4 is printed on the chart already and is
+ * left alone.
+ */
+function normalizeToChain(dice: string): string {
+  const m = /^(\d+)d(4|12)$/.exec(dice);
+  if (!m) return dice;
+  const count = Number(m[1]);
+  const isD4 = m[2] === "4";
+  if (count < (isD4 ? 2 : 1)) return dice;
+  const idx = (isD4 ? 3 : 5) + count;
+  return SIZE_DIE_CHAIN_MAIN[Math.min(idx, SIZE_DIE_CHAIN_MAIN.length - 1)]!;
+}
+
+/**
  * Shifts a weapon damage-dice display string (e.g. `"1d8"`) by `steps` size
  * categories along its {@link SIZE_DIE_INDEX} chain, clamped at either end of
  * that chain (mirrors {@link shiftSize}'s own clamp-don't-throw posture) —
  * used when the wielder's effective size differs from the size the weapon's
  * `damageDice` was written for (issue #19/#70: Enlarge Person, Reduce
  * Person, and active polymorph forms all change effective size but not the
- * stored per-weapon dice string). Returns `dice` UNCHANGED (not clamped, not
- * guessed) when it isn't on either chain, or when `steps` is 0 — this app's
- * vendored weapon data includes a few dice (2d4, 1d12, 2d12) this pass
- * deliberately leaves unscaled rather than inventing an unverified
- * progression for them (see the chain doc comment above). Also does not
- * attempt the FAQ's separate "two steps per category for Fine/Diminutive/
- * Tiny wielders" nuance — out of scope for this pass, same honesty-bar
- * posture as every other documented gap in this file.
+ * stored per-weapon dice string). Returns `dice` UNCHANGED when `steps` is 0
+ * or when it doesn't resolve onto a chain even after {@link normalizeToChain}.
+ *
+ * The conversion is one-way by design — a Medium greataxe counts as 2d6, so it
+ * reads 3d6 at Large and 1d8 at Small, never 1d12 at either. That's not lossy
+ * in practice because scaling always recomputes from the weapon's stored die,
+ * so returning to base size prints 1d12 again.
+ *
+ * Does not attempt the FAQ's separate "two steps per category for Fine/
+ * Diminutive/Tiny wielders" nuance — same honesty-bar posture as every other
+ * documented gap in this file.
  */
 export function scaleWeaponDamageDice(dice: string, steps: number): string {
   if (steps === 0) return dice;
-  const entry = SIZE_DIE_INDEX.get(dice);
+  const entry = SIZE_DIE_INDEX.get(normalizeToChain(dice));
   if (!entry) return dice;
   const clamped = Math.min(entry.chain.length - 1, Math.max(0, entry.idx + steps));
   return entry.chain[clamped]!;

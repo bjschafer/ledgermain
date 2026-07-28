@@ -132,9 +132,9 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
       "`live.conditionRounds` gives a condition a countdown the round clock ticks, which the rage/bloodrage fatigue aftermath is currently the only thing that sets. Nothing else in the catalog states its duration in rounds structurally, so every other condition is still applied untimed and cleared by hand.",
   },
   {
-    category: "Size-die scaling exclusions",
+    category: "Size-die scaling below Small",
     detail:
-      "Weapon damage-die size scaling covers the die shapes present in the vendored weapon data; 2d4/1d12/2d12 are deliberately left unscaled, and the FAQ's two-step rule below Small is not implemented.",
+      "Weapon damage-die size scaling steps one category at a time in both directions. The size-change FAQ's separate two-step rule for Fine/Diminutive/Tiny wielders is not implemented, so a weapon sized for a wielder below Small reads too high.",
   },
   {
     category: "Per-spell SR flag never set",

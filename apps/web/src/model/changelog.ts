@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-27-odd-weapon-dice-scale",
+    date: "2026-07-27",
+    title: "Greataxes and scythes grow when you do",
+    note: "Enlarge Person, Reduce Person, and polymorph forms already resized most weapons' damage dice, but a handful of shapes sat out: the greataxe, musket, and lucerne hammer at 1d12, the scythe, estoc, and guisarme at 2d4. Those aren't printed on the size chart, so they now convert to the die the rules say they count as before stepping. An enlarged greataxe reads 3d6. Drop the buff and it reads 1d12 again.",
+  },
+  {
     id: "2026-07-26-racial-immunities",
     date: "2026-07-26",
     title: "Your race's immunities are on the sheet",
