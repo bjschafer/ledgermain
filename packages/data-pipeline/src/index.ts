@@ -73,5 +73,6 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     monkStyleStrikes: readJson(dir, "monk-style-strikes.json"),
     cavalierOrders: readJson(dir, "cavalier-orders.json"),
     shifterAspects: readJson(dir, "shifter-aspects.json"),
+    eidolonSubtypes: readJson(dir, "eidolon-subtypes.json"),
   };
 }

@@ -183,6 +183,8 @@ export interface RefData {
   cavalierOrders: Record<string, CavalierOrder>;
   /** The full published shifter aspect catalog (fourth-source dataset, issue #74; see `ShifterAspect` doc comment). */
   shifterAspects: Record<string, ShifterAspect>;
+  /** The full published unchained-summoner eidolon-subtype catalog (fourth-source dataset, issue #74; see `EidolonSubtype` doc comment). */
+  eidolonSubtypes: Record<string, EidolonSubtype>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -1679,5 +1681,25 @@ export interface CavalierOrder extends RefEntity {
  * entirely in prose).
  */
 export type ShifterAspect = RefEntity;
+
+/* ---------------------------------------------------- eidolon subtypes -- */
+
+/**
+ * A published unchained-summoner eidolon subtype (issue #74), sourced from
+ * the "Pf Data 1e" dataset's `json/class_ability_unchained_eidolons.json`
+ * (27 raw entries, 26 after dropping the source's `not_found` sentinel).
+ *
+ * The FULL published catalog with prose only — no structured base-form/
+ * free-evolution/themed-grant data. `@pf1/engine` `eidolon-unchained.ts`'s
+ * hand-authored `EIDOLON_SUBTYPES` table (11 core outsider subtypes plus 4
+ * elemental variants, 15 modeled ids total) remains the mechanically
+ * enforced source for Summoner (Unchained) character builds and is NOT
+ * merged with this catalog at read time — the two are presented separately
+ * (this one is prose-only browsing/reference data, covering both the 11
+ * core subtypes the engine already models AND the later-splatbook subtypes
+ * it doesn't — Aberrant, Aeon, Ancestor, Astral, Deepwater, Genie, Kami,
+ * Kyton, Plant, Radiant, Shadow, Storykin, Twinned, Void).
+ */
+export type EidolonSubtype = RefEntity;
 
 export type { SourceRef };

@@ -98,9 +98,15 @@ export const SYSTEM_VERSION = "11.11";
  * Plumekith) and `openChanges` (changes the source ships untargeted because
  * the trait says "choose one"), plus a classifier that now also keeps
  * heritage-tagged entries and the three punctuation variants of the "Replaced
- * Trait(s)" header it previously missed — 750 entries to 860.
+ * Trait(s)" header it previously missed — 750 entries to 860. v17 (issue #74)
+ * adds `eidolonSubtypes`/`eidolon-subtypes.json` — the full published
+ * unchained-summoner eidolon-subtype catalog from the "Pf Data 1e" fourth
+ * pinned source (`json/class_ability_unchained_eidolons.json`, 26 entries
+ * after dropping `not_found`), prose-only browsing data alongside (not
+ * merged with) `@pf1/engine` `eidolon-unchained.ts`'s hand-authored
+ * `EIDOLON_SUBTYPES` table.
  */
-export const SCHEMA_VERSION = 16;
+export const SCHEMA_VERSION = 17;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

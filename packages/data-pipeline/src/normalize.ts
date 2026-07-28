@@ -12,6 +12,7 @@ import type {
   ClassFeature,
   Domain,
   DruidDomain,
+  EidolonSubtype,
   Feat,
   InvestigatorTalent,
   Item,
@@ -101,6 +102,7 @@ import { transformAlchemistDiscoveries } from "./transform/alchemistDiscoveries.
 import { transformArcanistExploits } from "./transform/arcanistExploits.js";
 import { transformBloodragerBloodlines } from "./transform/bloodragerBloodlines.js";
 import { transformCavalierOrders } from "./transform/cavalierOrders.js";
+import { transformEidolonSubtypes } from "./transform/eidolonSubtypes.js";
 import { transformInvestigatorTalents } from "./transform/investigatorTalents.js";
 import { transformKineticWildTalents } from "./transform/kineticWildTalents.js";
 import { transformMagusArcana } from "./transform/magusArcana.js";
@@ -883,6 +885,13 @@ export function normalize(opts: NormalizeOptions): {
   );
   const shifterAspects: ShifterAspect[] = transformShifterAspects(shifterAspectDict);
 
+  // --- unchained-summoner eidolon subtypes (fourth-party dataset, issue #74)
+  // — same posture as rage powers above.
+  const eidolonSubtypeDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_unchained_eidolons.json"),
+  );
+  const eidolonSubtypes: EidolonSubtype[] = transformEidolonSubtypes(eidolonSubtypeDict);
+
   const counts = {
     races: races.length,
     racialTraits: racialTraits.length,
@@ -935,6 +944,7 @@ export function normalize(opts: NormalizeOptions): {
     monkStyleStrikes: monkStyleStrikes.length,
     cavalierOrders: cavalierOrders.length,
     shifterAspects: shifterAspects.length,
+    eidolonSubtypes: eidolonSubtypes.length,
   };
 
   const meta: RefDataMeta = {
@@ -1008,6 +1018,7 @@ export function normalize(opts: NormalizeOptions): {
     monkStyleStrikes: byId(monkStyleStrikes),
     cavalierOrders: byId(cavalierOrders),
     shifterAspects: byId(shifterAspects),
+    eidolonSubtypes: byId(eidolonSubtypes),
   };
 
   return { refData, contentVersion };

@@ -79,6 +79,7 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "monkStyleStrikes", file: "monk-style-strikes.json" },
   { key: "cavalierOrders", file: "cavalier-orders.json" },
   { key: "shifterAspects", file: "shifter-aspects.json" },
+  { key: "eidolonSubtypes", file: "eidolon-subtypes.json" },
 ];
 
 /**
