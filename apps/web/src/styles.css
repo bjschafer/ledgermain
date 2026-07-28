@@ -162,6 +162,27 @@ a {
   gap: var(--space-3);
 }
 
+/* Masthead link out to the companion reference site (ReferenceLink.tsx).
+   Borrows .btn-ghost so it sits in the same visual register as the feedback
+   and sync controls beside it, rather than reading as body-copy link. */
+.ref-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ref-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+.ref-link:hover {
+  color: var(--gold-2);
+  border-color: var(--gold-dim);
+}
+
 .char-switcher {
   width: auto;
   background: var(--surface-2);
@@ -264,8 +285,15 @@ a {
   .sync-signin,
   .sync-signout,
   .sync-status,
+  .ref-link,
   .action-error {
     min-height: var(--tap-min);
+  }
+
+  /* Phone: the book glyph carries it. The word costs a line-wrap in a row
+     that's already fighting for width. */
+  .ref-link-label {
+    display: none;
   }
 
   .sync-conflict {

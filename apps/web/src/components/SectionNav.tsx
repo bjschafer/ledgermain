@@ -46,6 +46,7 @@ export function SectionNav({
   ariaLabel,
   className,
   badges,
+  onActiveChange,
 }: {
   /** Selector for the anchors to list, e.g. `".tracker-col [data-nav-label]"`. */
   containerSelector: string;
@@ -54,6 +55,8 @@ export function SectionNav({
   ariaLabel: string;
   className?: string;
   badges?: Partial<Record<string, NavBadge>>;
+  /** Notified as the reader scrolls, so the app can remember the place. */
+  onActiveChange?: (sectionId: string) => void;
 }) {
   const [sections, setSections] = useState<Section[]>([]);
   const [active, setActive] = useState<string>("");
@@ -104,6 +107,10 @@ export function SectionNav({
     }
     return () => observer.disconnect();
   }, [ids]);
+
+  useEffect(() => {
+    if (active) onActiveChange?.(active);
+  }, [active, onActiveChange]);
 
   const groups = useMemo(() => {
     const order: string[] = [];

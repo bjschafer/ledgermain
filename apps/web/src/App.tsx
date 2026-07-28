@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { CharacterDoc } from "@pf1/schema";
 
+import type { AppLocation, Mode } from "./model/appLocation.js";
 import {
   CHANGELOG,
   hasUnseenEntries,
@@ -30,6 +31,7 @@ import { FeedbackButton } from "./components/FeedbackButton.js";
 import { FloatingControls } from "./components/FloatingControls.js";
 import { PreviewNotice } from "./components/PreviewNotice.js";
 import { PrintView } from "./components/PrintView.js";
+import { ReferenceLink } from "./components/ReferenceLink.js";
 import { Sheet } from "./components/Sheet.js";
 import { SyncStatus } from "./components/SyncStatus.js";
 import { ToastHost } from "./components/ToastHost.js";
@@ -37,10 +39,9 @@ import { PlayNav } from "./components/tracker/PlayNav.js";
 import { StatStrip } from "./components/tracker/StatStrip.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { RollDataProvider } from "./state/rollData.js";
+import { useAppLocation } from "./state/useAppLocation.js";
 import { useCharacter } from "./state/useCharacter.js";
 import { useTextSize, type TextSize } from "./state/useTextSize.js";
-
-type Mode = "build" | "play" | "settings";
 
 /**
  * Aggregate "unfinished business" cue on the Build mode tab — the sum of the
@@ -65,7 +66,8 @@ function BuildTabBadge(props: Pick<BuilderProps, "doc" | "sheet" | "refData">) {
 
 export function App() {
   const store = useCharacter();
-  const [mode, setMode] = useState<Mode>("build");
+  const { location, initial: initialLocation, setMode, setSection } = useAppLocation();
+  const mode = location.mode;
   const [printOpen, setPrintOpen] = useState(false);
   const [textSize, setTextSize] = useTextSize();
   const [changelogUnseen, setChangelogUnseen] = useState(() =>
@@ -138,6 +140,7 @@ export function App() {
           </button>
         </div>
         <div className="masthead-right">
+          <ReferenceLink />
           <FeedbackButton mode={mode} doc={store.doc} />
           <SyncStatus
             status={store.syncStatus}
@@ -189,6 +192,8 @@ export function App() {
       {store.status === "ready" && store.doc && store.sheet && store.refData && (
         <Workbench
           mode={mode}
+          initialLocation={initialLocation}
+          onActiveSection={setSection}
           doc={store.doc}
           sheet={store.sheet}
           refData={store.refData}
@@ -207,8 +212,41 @@ export function App() {
   );
 }
 
+/**
+ * Scroll back to the section this page load asked for, once. The panels all
+ * commit in a single render, so one frame to lay them out and a second for
+ * anything that sizes itself off that layout is enough; nothing here retries,
+ * because a target that isn't in the DOM by then belongs to a tab the reader
+ * isn't in.
+ */
+function useRestoreSection(sectionId: string | undefined) {
+  const restored = useRef(false);
+
+  useEffect(() => {
+    if (restored.current || !sectionId) return;
+    let cancelled = false;
+    // Marked restored only once the scroll actually lands, not on scheduling:
+    // StrictMode mounts, tears down, and remounts, and a flag set up front
+    // would be spent on the run whose cleanup cancels the frame.
+    let frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() => {
+        if (cancelled) return;
+        restored.current = true;
+        // Never animated: this is where the reader already was, not a trip.
+        document.getElementById(sectionId)?.scrollIntoView({ block: "start", behavior: "auto" });
+      });
+    });
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+    };
+  }, [sectionId]);
+}
+
 function Workbench({
   mode,
+  initialLocation,
+  onActiveSection,
   onImportCharacter,
   onResetAll,
   onDeleteCharacter,
@@ -219,6 +257,8 @@ function Workbench({
   ...props
 }: BuilderProps & {
   mode: Mode;
+  initialLocation: AppLocation;
+  onActiveSection: (mode: Mode, sectionId: string) => void;
   onImportCharacter: (doc: CharacterDoc) => void;
   onResetAll: () => void;
   onDeleteCharacter: (id: string) => void;
@@ -228,6 +268,18 @@ function Workbench({
   onTextSizeChange: (size: TextSize) => void;
 }) {
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  useRestoreSection(initialLocation.section);
+
+  const onBuildSection = useCallback(
+    (id: string) => onActiveSection("build", id),
+    [onActiveSection],
+  );
+  const onPlaySection = useCallback((id: string) => onActiveSection("play", id), [onActiveSection]);
+  const onSettingsSection = useCallback(
+    (id: string) => onActiveSection("settings", id),
+    [onActiveSection],
+  );
 
   return (
     <RollDataProvider doc={props.doc} sheet={props.sheet} refData={props.refData}>
@@ -240,7 +292,7 @@ function Workbench({
            exactly as before. */
           <div className="mobile-build-header">
             <StatStrip {...props} />
-            <BuildNav {...props} />
+            <BuildNav {...props} onActiveChange={onBuildSection} />
           </div>
         )}
         {mode === "play" && (
@@ -248,11 +300,11 @@ function Workbench({
            (see components/tracker/PlayNav). */
           <div className="mobile-build-header">
             <StatStrip {...props} />
-            <PlayNav {...props} />
+            <PlayNav {...props} onActiveChange={onPlaySection} />
           </div>
         )}
         {/* Settings has no stat strip to stack with — the rail stands alone. */}
-        {mode === "settings" && <SettingsNav doc={props.doc} />}
+        {mode === "settings" && <SettingsNav doc={props.doc} onActiveChange={onSettingsSection} />}
         <div className="build-col">
           {mode === "build" ? (
             <>

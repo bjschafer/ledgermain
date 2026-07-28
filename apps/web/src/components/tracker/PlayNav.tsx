@@ -72,7 +72,11 @@ function usePlayBadges({
   }, [doc, sheet]);
 }
 
-export function PlayNav({ doc, sheet }: BuilderProps) {
+export function PlayNav({
+  doc,
+  sheet,
+  onActiveChange,
+}: BuilderProps & { onActiveChange?: (sectionId: string) => void }) {
   const badges = usePlayBadges({ doc, sheet });
 
   return (
@@ -82,6 +86,7 @@ export function PlayNav({ doc, sheet }: BuilderProps) {
       ariaLabel="Jump to play section"
       className="play-nav"
       badges={badges}
+      onActiveChange={onActiveChange}
     />
   );
 }

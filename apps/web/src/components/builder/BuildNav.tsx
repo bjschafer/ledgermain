@@ -179,7 +179,11 @@ function prefersReducedMotion(): boolean {
   );
 }
 
-export function BuildNav({ doc, refData }: BuilderProps) {
+export function BuildNav({
+  doc,
+  refData,
+  onActiveChange,
+}: BuilderProps & { onActiveChange?: (sectionId: string) => void }) {
   const badges = useAttentionBadges({ doc, refData });
   const [active, setActive] = useState<string>(SECTIONS[0]!.id);
 
@@ -218,6 +222,10 @@ export function BuildNav({ doc, refData }: BuilderProps) {
     }
     return () => observer.disconnect();
   }, [sections]);
+
+  useEffect(() => {
+    onActiveChange?.(active);
+  }, [active, onActiveChange]);
 
   const onJump = (id: string) => {
     const el = document.getElementById(id);

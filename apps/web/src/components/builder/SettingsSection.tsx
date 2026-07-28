@@ -12,6 +12,7 @@ import { useState, type ChangeEvent, type ReactNode } from "react";
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
+import { absoluteLink, whatsNewHash } from "../../model/appLocation.js";
 import { CHANGELOG, formatEntryDate } from "../../model/changelog.js";
 import { COVERAGE_NOTES } from "../../model/coverageNotes.js";
 import { characterExportFilename, characterExportJson } from "../../model/exportCharacter.js";
@@ -39,6 +40,7 @@ import { importCharacterFile } from "../../model/importExternalFile.js";
 import { DEFAULT_XP_TRACK, type XpTrack } from "../../model/xp.js";
 import { showToast } from "../../state/toast.js";
 import { TEXT_SIZE_LABEL, TEXT_SIZES, type TextSize } from "../../state/useTextSize.js";
+import { CopyButton } from "../CopyButton.js";
 import { Explainer } from "../Explainer.js";
 import { GearIcon, HeartIcon, SparklesIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
@@ -867,8 +869,17 @@ function WhatsNewPanel() {
   const earlier = CHANGELOG.slice(RECENT_CHANGE_COUNT);
   if (recent.length === 0) return null;
 
+  // Deep link straight to this panel, for pointing a table at what changed
+  // without walking them through Settings first (`model/appLocation.ts`).
+  const link = absoluteLink(window.location.href, whatsNewHash());
+
   return (
-    <Panel title="What's New" step="✦" icon={<SparklesIcon />}>
+    <Panel
+      title="What's New"
+      step="✦"
+      icon={<SparklesIcon />}
+      right={<CopyButton text={link} label="link to What's New" />}
+    >
       <ul className="changelog">
         {recent.map((e) => (
           <li key={e.id}>
