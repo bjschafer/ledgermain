@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-28-more-picks-move-real-numbers",
+    date: "2026-07-28",
+    title: "More of your picks move real numbers",
+    note: "A sweep through the pick lists promoted everything that honestly could be automatic. Eleven oracle revelations now compute live — Iron Constitution's Fortitude bonus, the elemental- and spellscar-resistance lines, the energy-skin revelations up through their 17th-level immunity, Face in the Crowd's Stealth bonus, Pierce the Veil's darkvision. The ninja's Wall Climber and the vigilante's Rooftop Infiltrator grant their climb speeds for real — and that fix ran deeper: rogue, ninja, investigator, and vigilante talent picks weren't feeding the sheet's numbers at all, so the vigilante's Shadow's Speed and Monkey's Paws now actually do what their badge claimed. The sweep also corrected four rage-power write-ups that didn't match the printed rules, and removed one — \"Sixth Sense\" — that turns out not to exist in any book. If your barbarian had it picked, that slot is free again.",
+  },
+  {
     id: "2026-07-28-every-eidolon-subtype",
     date: "2026-07-28",
     title: "Eidolons of every stripe",

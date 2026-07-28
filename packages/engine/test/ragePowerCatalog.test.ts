@@ -22,16 +22,16 @@ describe("mergedRagePowerCatalog", () => {
   const merged = mergedRagePowerCatalog(ref);
   const byId = new Map(merged.map((p) => [p.id, p]));
 
-  it("has one row per vendored entry, plus exactly one hand-authored-only row (Sixth Sense)", () => {
+  it("has exactly one row per vendored entry — no hand-authored-only rows remain", () => {
+    // "Sixth Sense", formerly the one hand-only row, was removed after an
+    // audit found no such Paizo rage power exists (see rage-powers.ts).
     const vendoredCount = Object.keys(ref.ragePowers).length;
-    expect(merged).toHaveLength(vendoredCount + 1);
-    expect(byId.has("sixthSense")).toBe(true);
+    expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("29 of the 30 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+  it("all 29 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
     let matched = 0;
     for (const id of RAGE_POWER_IDS) {
-      if (id === "sixthSense") continue; // the one confirmed-unmatched entry
       const entry = byId.get(id);
       expect(entry).toBeDefined();
       // Matched entries keep the hand-authored def's own mechanics...
@@ -42,13 +42,6 @@ describe("mergedRagePowerCatalog", () => {
       matched++;
     }
     expect(matched).toBe(29);
-  });
-
-  it("Sixth Sense (no vendored counterpart) is included display-mechanics-as-authored, with no vendored description", () => {
-    const entry = byId.get("sixthSense")!;
-    expect(entry.name).toBe("Sixth Sense");
-    expect(entry.description).toBeUndefined();
-    expect(entry.changes).toEqual(RAGE_POWERS.sixthSense!.changes);
   });
 
   it("a vendored-only entry (no hand-authored counterpart) resolves display-only with its own id + prose", () => {

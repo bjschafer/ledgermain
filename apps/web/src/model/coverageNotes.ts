@@ -52,9 +52,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Oracle revelations",
-    note: "Every published mystery's full revelation list is pickable, with level requirements enforced softly and each pick showing on your sheet with its write-up. What a revelation does is still yours to apply at the table — none of them move numbers on the sheet yet.",
+    note: 'Every published mystery\'s full revelation list is pickable, with level requirements enforced softly and each pick showing on your sheet with its write-up. Eleven of them move real numbers now — the always-on ones like Iron Constitution, the elemental-resistance lines, and the energy-skin revelations, marked with an "M" in the picker. The rest are yours to apply at the table.',
     issueDetail:
-      "336 revelations across all 34 mysteries, all displayOnly by the forMystery factory's construction. Known promotion candidates for a modeling pass: metal's Iron Constitution, spellscar's Eldritch Resistance and Mystic Null, elemental's Elemental Resistance, streets' Face in the Crowd, apocalypse's Defy Elements and Near Death, and the darkvision grants (dark_tapestry's Pierce the Veil, shadow's Pierce the Shadows).",
+      "336 revelations, 11 promoted to live changes[] (metal ironConstitution, elemental elementalResistance, spellscar eldritchResistance + spellResistance, the five energy-Skin revelations incl. their 17th-level damage immunity, streets faceInTheCrowd, dark_tapestry pierceTheVeil). Audited and rejected with reasons recorded inline: save-category-scoped bonuses (nearDeath, mysticNull), player-chosen energy (defyElements), and additive-to-existing darkvision (shadow pierceTheShadows) — the last two blocked on missing engine mechanisms (choose-one grants; additive senses).",
   },
   {
     category: "Kineticist wild talents",

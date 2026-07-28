@@ -30,26 +30,82 @@
  * handful the APG restricts further. Soft availability filtering only (see
  * `magus-arcana.ts`'s identical convention) — never blocks selection.
  *
- * Modelling posture (mirrors arcanist-exploits.ts/magus-arcana.ts): every
- * revelation here is a situational, activated, scaling, or mechanic-
- * substitution ability with no flat always-on number the engine tracks (a
- * few — Sidestep Secret's Cha-for-Dex AC/Reflex swap, Lore Keeper's Cha-for-
- * Int Knowledge swap, Mental Acuity's inherent Int bonus that scales by WHEN
- * it was taken — come close, but each requires either a structural
- * ability-substitution the compute pipeline doesn't support outside its one
- * hardcoded Cleric Wisdom house rule, or per-character "which level did you
- * take this" state this table doesn't carry; see `traits.ts`'s honesty bar).
- * So EVERY entry here is `displayOnly: true` with `changes: []`; a handful
+ * Modelling posture (mirrors arcanist-exploits.ts/magus-arcana.ts): the vast
+ * majority of revelations are situational, activated, scaling-but-choice-
+ * gated, or mechanic-substitution abilities with no flat always-on number the
+ * engine tracks (a few — Sidestep Secret's Cha-for-Dex AC/Reflex swap, Lore
+ * Keeper's Cha-for-Int Knowledge swap, Mental Acuity's inherent Int bonus
+ * that scales by WHEN it was taken — come close, but each requires either a
+ * structural ability-substitution the compute pipeline doesn't support
+ * outside its one hardcoded Cleric Wisdom house rule, or per-character "which
+ * level did you take this" state this table doesn't carry; see `traits.ts`'s
+ * honesty bar). Those stay `displayOnly: true` with `changes: []`; a handful
  * carry a `contextNotes` reminder when the ability requires a nested pick
  * this table doesn't model (which weapon, which combat maneuver, ...) or
  * points at an existing tracked feature (a companion, a bonus feat).
  *
+ * A small, deliberately narrow set of revelations DO carry a real `changes[]`
+ * (issue #75-style promotion, same bar as `rage-powers.ts`'s WHILE_RAGING
+ * promotions): a genuinely unconditional, always-on flat number with a named
+ * (or explicitly untyped) bonus, scaling only on the character's own oracle
+ * level via `@classes.oracle.level` — never on a player pick this table
+ * doesn't carry. See each entry's inline comment for its RAW citation. The
+ * promoted set, as of this pass:
+ *
+ *   - `metal:ironConstitution` — flat Fortitude bonus (+1/+2/+3 at 1st/7th/14th).
+ *   - `elemental:elementalResistance` — energy resistance to all four core
+ *     types, scaling 2/5/10/20 at 1st/7th/11th/17th.
+ *   - `spellscar:eldritchResistance` — same shape, five types (adds sonic),
+ *     scaling 2/5/10/20 at 1st/5th/11th/17th.
+ *   - `spellscar:spellResistance` — SR = oracle level + 5, self-gated in its
+ *     own formula on the RAW 11th-level selection minimum (since `minLevel`
+ *     is soft-filtered only — see below — an off-spec early pick must not
+ *     grant SR the character isn't RAW-entitled to yet).
+ *   - `flame:moltenSkin` / `waves:icySkin` / `wind:sparkSkin` /
+ *     `stone:acidSkin` — single-energy resistance 5/10/20 at 1st/5th/11th,
+ *     plus true immunity to that energy at 17th (`imm.<energy>`).
+ *   - `streets:faceInTheCrowd` — flat +4 Stealth (the crowd-while-observed
+ *     half of the ability stays a `contextNotes` reminder — see its entry).
+ *   - `dark_tapestry:pierceTheVeil` — darkvision 60 ft. (`sensedv`, "set" —
+ *     see `senses.ts`: same-kind senses resolve HIGHEST-wins, unlike the
+ *     landSpeed/flySpeed family's lowest-wins "set" convention, so granting a
+ *     flat 60 ft. never regresses a race with better darkvision), plus
+ *     perfect darkness sight at 11th (`sensesid`).
+ *
+ * Everything else stays deliberately display-only, including several
+ * near-misses worth naming so a future pass doesn't re-litigate them:
+ *
+ *   - `apocalypse:defyElements` — the energy type is a player pick this table
+ *     doesn't carry (same class of gap as `elemental:elementalAegis` /
+ *     `dragon:draconicResistance`'s chosen-element revelations, which are
+ *     likewise display-only).
+ *   - `bones:nearDeath` / `apocalypse:nearDeath` and `spellscar:mysticNull` —
+ *     an insight bonus scoped to a save-CATEGORY ("against disease,
+ *     mind-affecting effects, and poison" / "against spells and spell-like
+ *     abilities"), not a whole save type — the engine only has whole-save
+ *     targets (`fort`/`ref`/`will`/`allSavingThrows`), no
+ *     "saves against a source-category" target, so an unconditional Change
+ *     here would overstate the bonus onto every save. Identical shape to
+ *     `rage-powers.ts`'s Superstition near-miss — see that file's doc
+ *     comment.
+ *   - `shadow:pierceTheShadows` — RAW: "you gain darkvision 60 feet. If you
+ *     already have darkvision, increase your existing darkvision by 60 feet
+ *     instead." The `sensedv` target's highest-wins resolution (see
+ *     `pierceTheVeil` above) can express "gain 60 ft." but not "add 60 to
+ *     whatever you already have" — a race with existing darkvision (dwarf,
+ *     tiefling, ...) would be silently capped at 60 instead of getting +60,
+ *     understating the ability. A documented blocker class, not an
+ *     oversight; stays display-only with a `contextNotes` reminder.
+ *
  * Issue #75 audit: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
  * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
- * does NOT unlock anything here. The near-misses above are ability
- * SUBSTITUTIONS (a structural compute change, not a typed modifier) or
- * take-level-dependent scaling — neither is "unconditional while a specific,
- * id-identifiable buff is active", so all stay deliberately deferred.
+ * does NOT unlock anything here — nothing in this table is conditioned on a
+ * separate buff being active. The remaining near-misses above are ability
+ * SUBSTITUTIONS (a structural compute change, not a typed modifier),
+ * take-level-dependent scaling with no numeric hook, a player-pick this
+ * table doesn't carry, a save-category the engine can't target, or a
+ * set-semantics mismatch — none unlockable by that mechanism, so they stay
+ * deliberately deferred.
  *
  * The Final Revelation (20th level, automatic — NOT one of the six budgeted
  * picks) is tracked separately in `ORACLE_MYSTERY_FINAL_REVELATIONS`,
@@ -72,12 +128,12 @@ export interface OracleRevelationDef {
    * never blocks selection.
    */
   minLevel: number;
-  /** Typed modifiers granted by the revelation (empty for every entry — see file doc comment). */
+  /** Typed modifiers granted by the revelation (empty for most entries — see file doc comment for the promoted set). */
   changes: Change[];
   /** Non-mechanical reminders (nested choice, resource cost, pointer to another tracked feature, ...). */
   contextNotes?: ContextNote[];
-  /** Always true here — no revelation has a flat always-on numeric effect. */
-  displayOnly: true;
+  /** True when `changes` is empty — mirrors `RagePowerDef.displayOnly`'s convention rather than being hardcoded `true`. */
+  displayOnly: boolean;
 }
 
 export interface OracleMysteryFinalRevelation {
@@ -94,21 +150,39 @@ interface RawRevelation {
   name: string;
   summary: string;
   minLevel?: number;
+  /** Typed modifiers this revelation grants — omitted (or `[]`) for the vast majority; see file doc comment for the promoted set. */
+  changes?: Change[];
   contextNotes?: ContextNote[];
 }
 
+/** `c()` mirrors `oracle-curses.ts`/`bloodlines.ts`'s helper — a terse Change literal for the handful of promoted revelations below. */
+const c = (
+  formula: string,
+  target: string,
+  type = "untyped",
+  operator?: "add" | "set",
+): Change => ({
+  formula,
+  target,
+  type,
+  ...(operator ? { operator } : {}),
+});
+
 /** Builds a mystery's revelation defs from a terse per-mystery list, prefixing every id with its mystery tag. */
 function forMystery(mysteryTag: string, entries: RawRevelation[]): OracleRevelationDef[] {
-  return entries.map((e) => ({
-    id: `${mysteryTag}:${e.id}`,
-    mysteryTag,
-    name: e.name,
-    summary: e.summary,
-    minLevel: e.minLevel ?? 1,
-    changes: [],
-    contextNotes: e.contextNotes,
-    displayOnly: true,
-  }));
+  return entries.map((e) => {
+    const changes = e.changes ?? [];
+    return {
+      id: `${mysteryTag}:${e.id}`,
+      mysteryTag,
+      name: e.name,
+      summary: e.summary,
+      minLevel: e.minLevel ?? 1,
+      changes,
+      contextNotes: e.contextNotes,
+      displayOnly: changes.length === 0,
+    };
+  });
 }
 
 const REVELATION_LIST: OracleRevelationDef[] = [
@@ -207,6 +281,12 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Near Death",
       summary:
         "Gain an insight bonus on saves against disease, mind-affecting effects, and poison, extending to death and sleep effects at higher levels.",
+      contextNotes: [
+        note(
+          "Insight bonus is scoped to saves against disease/mind-affecting/poison (and, at higher levels, death/sleep/stunning), not every save — the engine has no save-category target, only whole fort/ref/will, so this isn't modeled as a Change (would overstate onto every save). Apply manually.",
+          "allSavingThrows",
+        ),
+      ],
     },
     {
       id: "raiseTheDead",
@@ -296,6 +376,17 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       id: "moltenSkin",
       name: "Molten Skin",
       summary: "Gain scaling fire resistance, reaching immunity at 17th level.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Flame): "You gain
+      // resist fire 5. This resistance increases to 10 at 5th level and 20
+      // at 11th level. At 17th level, you gain immunity to fire." No bonus
+      // type named. Unconditional, single fixed energy — no player pick.
+      changes: [
+        c(
+          "if(gte(@classes.oracle.level, 11), 20, if(gte(@classes.oracle.level, 5), 10, 5))",
+          "eres.fire",
+        ),
+        c("if(gte(@classes.oracle.level, 17), 1, 0)", "imm.fire"),
+      ],
     },
     {
       id: "touchOfFlame",
@@ -593,6 +684,17 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       id: "acidSkin",
       name: "Acid Skin",
       summary: "Gain scaling acid resistance, reaching immunity at 17th level.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Stone): "You gain
+      // resist acid 5. This resistance increases to 10 at 5th level and 20
+      // at 11th level. At 17th level, you gain immunity to acid." No bonus
+      // type named. Unconditional, single fixed energy — no player pick.
+      changes: [
+        c(
+          "if(gte(@classes.oracle.level, 11), 20, if(gte(@classes.oracle.level, 5), 10, 5))",
+          "eres.acid",
+        ),
+        c("if(gte(@classes.oracle.level, 17), 1, 0)", "imm.acid"),
+      ],
     },
     {
       id: "clobberingStrike",
@@ -680,6 +782,17 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       id: "icySkin",
       name: "Icy Skin",
       summary: "Gain scaling cold resistance, reaching immunity at 17th level.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Waves): "You gain
+      // resist cold 5. This resistance increases to 10 at 5th level and 20
+      // at 11th level. At 17th level, you gain immunity to cold." No bonus
+      // type named. Unconditional, single fixed energy — no player pick.
+      changes: [
+        c(
+          "if(gte(@classes.oracle.level, 11), 20, if(gte(@classes.oracle.level, 5), 10, 5))",
+          "eres.cold",
+        ),
+        c("if(gte(@classes.oracle.level, 17), 1, 0)", "imm.cold"),
+      ],
     },
     {
       id: "punitiveTransformation",
@@ -734,6 +847,18 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       id: "sparkSkin",
       name: "Spark Skin",
       summary: "Gain scaling electricity resistance, reaching immunity at 17th level.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Wind): "You gain
+      // resist electricity 5. This resistance increases to 10 at 5th level
+      // and 20 at 11th level. At 17th level, you gain immunity to
+      // electricity." No bonus type named. Unconditional, single fixed
+      // energy — no player pick.
+      changes: [
+        c(
+          "if(gte(@classes.oracle.level, 11), 20, if(gte(@classes.oracle.level, 5), 10, 5))",
+          "eres.electricity",
+        ),
+        c("if(gte(@classes.oracle.level, 17), 1, 0)", "imm.electricity"),
+      ],
     },
     {
       id: "thunderburst",
@@ -957,6 +1082,12 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Near Death",
       summary:
         "+2 insight bonus on saves against disease, mind-affecting effects, and poison; extends to death effects, sleep, and stunning at 7th level; the bonus increases to +4 at 11th.",
+      contextNotes: [
+        note(
+          "Insight bonus is scoped to saves against disease/mind-affecting/poison (and, from 7th, death/sleep/stunning), not every save — the engine has no save-category target, only whole fort/ref/will, so this isn't modeled as a Change (would overstate onto every save). Apply manually.",
+          "allSavingThrows",
+        ),
+      ],
     },
     {
       id: "passTheTorch",
@@ -1093,6 +1224,17 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Pierce the Veil",
       summary:
         "Gain darkvision 60 feet. At 11th level, you can see perfectly in darkness of any kind, including magical or absolute darkness.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Dark+Tapestry): "You
+      // gain darkvision 60 feet. At 11th level, you can see perfectly in
+      // darkness of any kind, even in absolute darkness or the darkness
+      // created by a deeper darkness spell." Unlike shadow:pierceTheShadows
+      // (below), there's no "add to existing darkvision" clause, so a flat
+      // `sensedv` grant is exact: `senses.ts` resolves same-kind senses by
+      // HIGHEST value, so a race with better darkvision already keeps it.
+      changes: [
+        c("60", "sensedv", "untyped", "set"),
+        c("if(gte(@classes.oracle.level, 11), 1, 0)", "sensesid", "untyped", "set"),
+      ],
     },
     {
       id: "readTheTapestry",
@@ -1228,6 +1370,34 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Elemental Resistance",
       summary:
         "Resistance 2 to acid, cold, electricity, and fire (stacks with other resistance of the same type), increasing to 5 at 7th level, 10 at 11th level, and 20 at 17th level.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Elemental): "You gain
+      // resistance 2 to acid, cold, electricity, and fire ... This
+      // resistance increases to 5 at 7th level, 10 at 11th level, and 20 at
+      // 17th level." No bonus type named; unconditional, all four energies
+      // fixed by name (no player pick). RAW's "stacks with any other
+      // resistance of that type" clause is a narrower exception than
+      // `defenses.ts`'s general same-qualifier highest-wins rule can
+      // express — same pre-existing `eres.*` simplification every other
+      // energy-resistance source in this engine already lives with, not a
+      // new gap introduced here.
+      changes: [
+        c(
+          "if(gte(@classes.oracle.level, 17), 20, if(gte(@classes.oracle.level, 11), 10, if(gte(@classes.oracle.level, 7), 5, 2)))",
+          "eres.acid",
+        ),
+        c(
+          "if(gte(@classes.oracle.level, 17), 20, if(gte(@classes.oracle.level, 11), 10, if(gte(@classes.oracle.level, 7), 5, 2)))",
+          "eres.cold",
+        ),
+        c(
+          "if(gte(@classes.oracle.level, 17), 20, if(gte(@classes.oracle.level, 11), 10, if(gte(@classes.oracle.level, 7), 5, 2)))",
+          "eres.electricity",
+        ),
+        c(
+          "if(gte(@classes.oracle.level, 17), 20, if(gte(@classes.oracle.level, 11), 10, if(gte(@classes.oracle.level, 7), 5, 2)))",
+          "eres.fire",
+        ),
+      ],
     },
     {
       id: "flowingStep",
@@ -1550,6 +1720,13 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       id: "ironConstitution",
       name: "Iron Constitution",
       summary: "+1 bonus on Fortitude saves, increasing to +2 at 7th level and +3 at 14th level.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Metal): "You gain a +1
+      // bonus on Fortitude saves. At 7th level, and again at 14th level,
+      // this bonus increases by +1." No bonus type named — `untyped` per
+      // this file's/`targets.ts`'s convention. Unconditional.
+      changes: [
+        c("if(gte(@classes.oracle.level, 14), 3, if(gte(@classes.oracle.level, 7), 2, 1))", "fort"),
+      ],
     },
     {
       id: "ironSkin",
@@ -1851,6 +2028,11 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Pierce the Shadows",
       summary:
         "Gain darkvision 60 ft. (or +60 ft. to darkvision you already have). At 11th level, see perfectly in any darkness, including absolute darkness or a deeper darkness spell.",
+      contextNotes: [
+        note(
+          "Not modeled as a sensedv Change (unlike dark_tapestry's Pierce the Veil): RAW adds 60 ft. to darkvision you already have, but the sensedv target resolves same-kind senses by HIGHEST value, not by summing — a race with existing darkvision (dwarf, tiefling, ...) would be silently capped at 60 ft. instead of getting +60. Apply the darkvision (and 11th-level perfect-darkness-sight) manually.",
+        ),
+      ],
     },
     {
       id: "shadowArmament",
@@ -1908,6 +2090,33 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Eldritch Resistance",
       summary:
         "Gain resistance 2 to acid, cold, electricity, fire, and sonic, increasing to 5 at 5th level, 10 at 11th level, and 20 at 17th level.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Spellscar): "You gain
+      // resistance 2 to acid, cold, electricity, fire, and sonic. This
+      // resistance increases to 5 at 5th level, 10 at 11th level, and 20 at
+      // 17th level." No bonus type named; unconditional, all five energies
+      // fixed by name (no player pick).
+      changes: [
+        c(
+          "if(gte(@classes.oracle.level, 17), 20, if(gte(@classes.oracle.level, 11), 10, if(gte(@classes.oracle.level, 5), 5, 2)))",
+          "eres.acid",
+        ),
+        c(
+          "if(gte(@classes.oracle.level, 17), 20, if(gte(@classes.oracle.level, 11), 10, if(gte(@classes.oracle.level, 5), 5, 2)))",
+          "eres.cold",
+        ),
+        c(
+          "if(gte(@classes.oracle.level, 17), 20, if(gte(@classes.oracle.level, 11), 10, if(gte(@classes.oracle.level, 5), 5, 2)))",
+          "eres.electricity",
+        ),
+        c(
+          "if(gte(@classes.oracle.level, 17), 20, if(gte(@classes.oracle.level, 11), 10, if(gte(@classes.oracle.level, 5), 5, 2)))",
+          "eres.fire",
+        ),
+        c(
+          "if(gte(@classes.oracle.level, 17), 20, if(gte(@classes.oracle.level, 11), 10, if(gte(@classes.oracle.level, 5), 5, 2)))",
+          "eres.sonic",
+        ),
+      ],
     },
     {
       id: "eldritchScar",
@@ -1927,6 +2136,12 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Mystic Null",
       summary:
         "+2 insight bonus on saves against spells and spell-like abilities, extending to supernatural abilities at 7th level; the bonus increases to +4 at 11th level.",
+      contextNotes: [
+        note(
+          "Insight bonus is scoped to saves against spells/spell-like abilities (and, from 7th, supernatural abilities), not every save — the engine has no save-category target, only whole fort/ref/will, so this isn't modeled as a Change (would overstate onto every save). Apply manually.",
+          "allSavingThrows",
+        ),
+      ],
     },
     {
       id: "primalManipulation",
@@ -1953,6 +2168,22 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Spell Resistance",
       minLevel: 11,
       summary: "Gain spell resistance equal to your oracle level + 5.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Spellscar): "You gain
+      // SR equal to your oracle level + 5. You must be at least 11th level
+      // before selecting this revelation." `minLevel` is soft-filtered only
+      // (never blocks selection — see file doc comment), so the formula
+      // self-gates on the same 11th-level minimum: an off-spec early pick
+      // must not grant SR the character isn't RAW-entitled to yet. Below
+      // 11th the formula evaluates to 0, which `computeSr`'s zero-value
+      // guard drops entirely rather than showing "SR 0".
+      changes: [
+        c(
+          "if(gte(@classes.oracle.level, 11), @classes.oracle.level + 5, 0)",
+          "spellResist",
+          "untyped",
+          "set",
+        ),
+      ],
     },
   ]),
   ...forMystery("streets", [
@@ -1973,6 +2204,19 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Face in the Crowd",
       summary:
         "+4 bonus on Stealth checks, and you can attempt a Stealth check in a crowd even while observed.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Streets): "You gain a
+      // +4 bonus on Stealth checks, and can attempt a Stealth check in a
+      // crowd even while being observed." The +4 is unconditional (no
+      // crowd/urban requirement) and no bonus type is named. The
+      // crowd-while-observed half is a distinct situational permission with
+      // no numeric hook — left as a note below.
+      changes: [c("4", "skill.ste")],
+      contextNotes: [
+        note(
+          "The Stealth check-in-a-crowd-while-observed permission is situational and not tracked here — only the flat +4 bonus is applied.",
+          "skill.ste",
+        ),
+      ],
     },
     {
       id: "keepToTheCorners",
@@ -2330,6 +2574,16 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Icy Skin",
       summary:
         "Gain cold resistance 5, rising to 10 at 5th level and 20 at 11th; immune to cold at 17th.",
+      // Same published Icy Skin ability as waves:icySkin (People of the
+      // North reuses the APG revelation verbatim) — same Change, no bonus
+      // type named, unconditional, single fixed energy.
+      changes: [
+        c(
+          "if(gte(@classes.oracle.level, 11), 20, if(gte(@classes.oracle.level, 5), 10, 5))",
+          "eres.cold",
+        ),
+        c("if(gte(@classes.oracle.level, 17), 1, 0)", "imm.cold"),
+      ],
     },
     {
       id: "servantOfWinter",

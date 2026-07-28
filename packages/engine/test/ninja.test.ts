@@ -4,6 +4,7 @@ import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { compute, deriveResourcePools } from "../src/index.js";
+import { NINJA_TRICKS } from "../src/ninja-tricks.js";
 
 /**
  * Fixture coverage for the Ninja (UC) — a rogue-chassis alternate class: BAB
@@ -22,11 +23,22 @@ import { compute, deriveResourcePools } from "../src/index.js";
  *   `floor(@class.unlevel / 2) + @abilities.cha.mod`. This rides the fully
  *   generic `uses.maxFormula` pipeline with zero hand-authoring.
  *
- * Ninja Tricks / Master Tricks (issue #65 wave B): hand-authored clean-room
- * menu table (`@pf1/engine` `ninja-tricks.ts`), same displayOnly posture as
- * witch hexes/oracle revelations — see that file's doc comment for the
- * honesty-bar audit. Wired into `collectGrantedFeatures`/`resolveClassFeatures`
- * (`archetypes.ts`) exactly like witch hexes are; covered below.
+ * Ninja Tricks / Master Tricks (issue #65 wave B, issue #74 sweep for Wall
+ * Climber): hand-authored clean-room menu table (`@pf1/engine`
+ * `ninja-tricks.ts`), mostly `displayOnly` — see that file's doc comment for
+ * the honesty-bar audit — except Wall Climber's flat `climbSpeed` grant.
+ * Wired into `collectGrantedFeatures`/`resolveClassFeatures` (`archetypes.ts`)
+ * exactly like witch hexes are for the classFeatures DISPLAY list; covered
+ * below. NOTE: unlike rage powers/slayer talents, `doc.build.ninjaTricks`
+ * has no `collect.ts` loop applying a picked trick's `changes[]` to the
+ * derived sheet yet — same pre-existing gap across this whole "talents/
+ * tricks" file family (rogue talents, ninja tricks, investigator talents,
+ * vigilante talents all lack one; see `vigilante-talents.ts`'s Shadow's
+ * Speed for the identical gap). Wall Climber's fixture below therefore
+ * validates its `Change` formula through the already-wired active-buffs
+ * pipeline (as if a future toggle injected it, mirroring the shifter-aspect
+ * shape) rather than through `doc.build.ninjaTricks`, which doesn't reach
+ * `compute()` at all today.
  */
 const ref = loadRefData();
 
@@ -181,5 +193,34 @@ describe("ninja L12 — ninja tricks wiring (issue #65 wave B)", () => {
     };
     const fighterSheet = compute(fighterDoc, ref);
     expect(fighterSheet.classFeatures.find((f) => f.name === "Fast Stealth")).toBeUndefined();
+  });
+});
+
+describe("Wall Climber (issue #74 sweep) — the sole ninja trick with a live Change", () => {
+  it("carries a flat, unconditional climbSpeed Change — d20pfsrd's 'Wall Climber (Su)' page and legacy.aonprd.com's Ultimate Combat ninja listing both read: 'gains a climb speed of 20 feet, but only on vertical surfaces'", () => {
+    expect(NINJA_TRICKS.wallClimber?.changes).toEqual([
+      { formula: "20", target: "climbSpeed", type: "untyped" },
+    ]);
+    expect(NINJA_TRICKS.wallClimber?.displayOnly).toBe(false);
+  });
+
+  it("evaluates to a flat 20-ft. climb speed through compute() (applied as an active buff — doc.build.ninjaTricks itself has no collect.ts consumer yet, see file-top doc comment)", () => {
+    const doc = makeDoc("ninja", 5, { str: 12, dex: 16, con: 12, int: 10, wis: 10, cha: 12 });
+    doc.live.activeBuffs = [
+      {
+        instanceId: "b1",
+        buffId: "ninja-trick:wallClimber",
+        name: "Wall Climber",
+        changes: NINJA_TRICKS.wallClimber!.changes.map((c) => ({ ...c })),
+      },
+    ];
+    const sheet = compute(doc, ref);
+    expect(sheet.speeds.climb).toBe(20);
+  });
+
+  it("a ninja with no such buff active has no climb speed", () => {
+    const doc = makeDoc("ninja", 5, { str: 12, dex: 16, con: 12, int: 10, wis: 10, cha: 12 });
+    const sheet = compute(doc, ref);
+    expect(sheet.speeds.climb).toBeUndefined();
   });
 });

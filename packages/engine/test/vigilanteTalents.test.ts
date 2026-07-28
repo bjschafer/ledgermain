@@ -148,6 +148,20 @@ describe("VIGILANTE_SOCIAL_TALENTS / VIGILANTE_TALENTS tables", () => {
     expect(talent?.changes).toEqual([{ formula: "4", target: "skill.esc", type: "competence" }]);
   });
 
+  it("Rooftop Infiltrator carries a genuine climbSpeed Change (issue #74 sweep)", () => {
+    const talent = VIGILANTE_TALENTS.rooftopInfiltrator;
+    expect(talent?.changes).toEqual([
+      { formula: "floor(@attributes.speed.land.total / 2)", target: "climbSpeed", type: "untyped" },
+    ]);
+  });
+
+  it("Monkey's Paws' own climb-speed clause stays unmodeled — promoting it too would double-count against Rooftop Infiltrator, its required prerequisite", () => {
+    const talent = VIGILANTE_TALENTS.monkeysPaws;
+    // Still just the Escape Artist Change — no second entry for the climb speed.
+    expect(talent?.changes.length).toBe(1);
+    expect(talent?.contextNotes?.some((n) => n.text.includes("1.5x"))).toBe(true);
+  });
+
   it("gate-restricted talents filter correctly by specialization", () => {
     const avengerOnly = vigilanteTalentsForSpecialization("avenger");
     const stalkerOnly = vigilanteTalentsForSpecialization("stalker");
@@ -195,6 +209,27 @@ describe("Shadow's Speed's Change formula (applied as an active buff, mirroring 
   });
 });
 
+describe("Rooftop Infiltrator's Change formula (applied as an active buff, mirroring Shadow's Speed's test shape above — doc.build.vigilanteTalents itself has no collect.ts consumer yet, same pre-existing gap Shadow's Speed's test already works around)", () => {
+  it("climb speed = floor(base land speed / 2) — Human base land speed 30 -> 15", () => {
+    const doc = makeVigilante(5, "stalker");
+    doc.live.activeBuffs = [
+      {
+        instanceId: "b1",
+        buffId: "vigilante-talent:rooftopInfiltrator",
+        name: "Rooftop Infiltrator",
+        changes: VIGILANTE_TALENTS.rooftopInfiltrator!.changes.map((c) => ({ ...c })),
+      },
+    ];
+    const sheet = compute(doc, ref);
+    expect(sheet.speeds.climb).toBe(15);
+  });
+
+  it("a vigilante with no such buff active has no climb speed", () => {
+    const doc = makeVigilante(5, "stalker");
+    expect(compute(doc, ref).speeds.climb).toBeUndefined();
+  });
+});
+
 describe("vigilante talents (collectGrantedFeatures / resolveClassFeatures display)", () => {
   function socialFeatureNames(doc: CharacterDoc): string[] {
     const { classFeatures } = resolveClassFeatures(doc, ref);
@@ -235,5 +270,23 @@ describe("vigilante talents (collectGrantedFeatures / resolveClassFeatures displ
       vigilanteTalents: ["also-not-real"],
     });
     expect(() => resolveClassFeatures(doc, ref)).not.toThrow();
+  });
+});
+
+describe("vigilante talent changes flow through collect.ts (the loop added with the #74 sweep)", () => {
+  // Rooftop Infiltrator: "gains a climb speed equal to half his base speed"
+  // (aonprd.com Vigilante Talents). Human base land 30 -> climb 15.
+  it("Rooftop Infiltrator grants a live climb speed of half base land speed via build picks alone", () => {
+    const doc = makeVigilante(4, "stalker", { vigilanteTalents: ["rooftopInfiltrator"] });
+    const sheet = compute(doc, ref);
+    expect(sheet.speeds.land).toBe(30);
+    expect(sheet.speeds.climb).toBe(15);
+  });
+
+  it("a non-vigilante with a stale vigilanteTalents field gets nothing", () => {
+    const doc = makeVigilante(4, "stalker", { vigilanteTalents: ["rooftopInfiltrator"] });
+    doc.identity.classes = [{ tag: "fighter", level: 4 }];
+    const sheet = compute(doc, ref);
+    expect(sheet.speeds.climb).toBeUndefined();
   });
 });

@@ -8,9 +8,10 @@
  * breakdown — confirmed: `class-features.json` carries no per-rage-power
  * entries), so there is no upstream JSON to normalize.
  *
- * Scope: 30 entries — the 23 Core Rulebook rage powers plus 7 commonly-taken
+ * Scope: 29 entries — the 23 Core Rulebook rage powers plus 6 commonly-taken
  * Advanced Player's Guide additions (Superstition, Witch Hunter, Good For
- * What Ails You, Internal Fortitude, Sixth Sense, Spell Sunder, Swift Foot).
+ * What Ails You, Internal Fortitude, Spell Sunder, Swift Foot). A former
+ * 30th entry, "Sixth Sense", was removed (see the note below).
  * The remaining ~150+ splatbook rage powers (Totem chains, Bloodrager-shared
  * powers, Ultimate-line additions, ...) are OUT OF SCOPE — add them in a
  * follow-up, same posture as `witch-hexes.ts`/`magus-arcana.ts` scoping down
@@ -88,6 +89,75 @@
  * `contextNotes` carries the exact numbers/scaling/activation-cost for every
  * still-display-only entry, and `minLevel` gates soft-warn (never block) the
  * same way `WitchHexDef.minLevel`/`MagusArcanaDef.minLevel` do.
+ *
+ * A follow-up audit (re-checking every remaining entry against
+ * aonprd.com/d20pfsrd.com for a promotable Change) found no further
+ * candidates that clear the bar, but did turn up both new near-misses worth
+ * recording and — separately — several entries whose `summary`/
+ * `contextNotes` didn't match verified RAW at all (now corrected below,
+ * same "factually wrong, fix it" posture as everywhere else in this repo):
+ *
+ *   - **Fearless Rage**: real RAW (CRB, verified against both
+ *     legacy.aonprd.com's Core Rulebook page and d20pfsrd.com) is "immune to
+ *     the shaken and frightened conditions" only — not "the fear condition"
+ *     generically, and with no below-0-HP/unconsciousness clause (that
+ *     clause doesn't exist in the actual power; this file's old summary
+ *     fabricated it). Even corrected, it's still a near-miss for promotion:
+ *     the engine's only fear-adjacent target, `immEffect.fear` ("fear
+ *     effects"), reads as the whole fear family INCLUDING panicked, which
+ *     Fearless Rage does not grant immunity to — same over-broad-target
+ *     shape as Superstition, so it stays displayOnly.
+ *   - **Witch Hunter** and **Spell Sunder**: both `summary`/`contextNotes`
+ *     described a different mechanic than the real rage power (Witch
+ *     Hunter's bonus targets creatures with spells/SLAs, not "hexes", and
+ *     has no save-bonus clause; Spell Sunder requires the Witch Hunter power
+ *     at barbarian level 6, not a standalone level-8 pick, and is a combat
+ *     maneuver check against a spell effect, not an attack-of-opportunity
+ *     dispel) — corrected below, verified against d20pfsrd.com's dedicated
+ *     page for each. Neither is a promotion candidate regardless (both
+ *     target-scoped/once-per-rage, same as before).
+ *   - **Good For What Ails You**: corrected — real RAW (d20pfsrd.com) is
+ *     "drink alcohol while raging to re-attempt a save against one of a
+ *     listed set of conditions, or against an active poison"; this file's
+ *     old summary described an unrelated Renewed-Vigor-gated cure that
+ *     isn't the power's actual text. Still not a promotion candidate
+ *     (triggered, situational, no flat number).
+ *   - **Increased Damage Reduction**: "+1/— while raging, stacks up to 3
+ *     times" (d20pfsrd.com) looks identical in shape to Raging
+ *     Climber/Swift Foot, but `defenses.ts`'s `groupByQualifier` resolves
+ *     competing `dr` modifiers by taking the HIGHEST value per qualifier,
+ *     not summing them (DR generally doesn't stack in PF1, unlike a typed
+ *     bonus) — a separate gated Change here would be silently swallowed by
+ *     the barbarian's own (larger) base DR entry rather than adding to it,
+ *     which is a WRONG number, not an honestly-partial one. Correctly
+ *     representing this needs a `defenses.ts`-side change (out of this
+ *     file's scope), not a rage-powers.ts Change.
+ *   - **Internal Fortitude**: immunity to sickened/nauseated while raging
+ *     would otherwise be a clean `immEffect`-gated Change, but neither
+ *     condition is in `defenses.ts`'s `EFFECT_IMMUNITY_LABELS` closed
+ *     vocabulary (only `fear`/`poison`/`disease`/... — no sickened/nauseated
+ *     slug exists today) — a new-target addition, out of this file's scope.
+ *   - **Guarded Stance** / **Rolling Dodge**: a +1 (scaling) dodge AC bonus
+ *     vs. melee/ranged respectively, but each is its OWN move-action
+ *     activation with its own Con-modifier-round duration (verified:
+ *     d20pfsrd.com) — not simply "on while raging" the way Swift Foot is.
+ *     Shape-matches the toggle-buff-pool pattern (`judgments.ts`'s
+ *     `ToggleBuffOption`) better than the `activeWhenBuff` gate; flagged as
+ *     a toggle-buff candidate, not implemented (needs `resources.ts`
+ *     plumbing beyond this file).
+ *   - **Sixth Sense**: REMOVED. An audit could not corroborate it as a
+ *     real barbarian rage power in any Paizo source — aonprd.com and
+ *     d20pfsrd.com's full Paizo rage-power index both lack it, and it never
+ *     matched the vendored catalog under any key. The only published
+ *     "Sixth Sense" is the Superstitious archetype's own class feature,
+ *     with different numbers and no raging gate. A stale `sixthSense` pick
+ *     in a saved doc resolves to nothing, same as any unknown id.
+ *
+ * The remaining ~20 entries in this table were spot-checked, not
+ * exhaustively re-verified line-by-line against source in this pass — the
+ * error rate found above (4 of the 7 APG additions this file's own scope
+ * note calls out by name) suggests a fuller correctness audit of the CRB
+ * portion is worth doing as a follow-up, separate from this promotion sweep.
  */
 
 import type { BuffGate, Change, ContextNote, RagePower, RefData, SourceRef } from "@pf1/schema";
@@ -199,8 +269,12 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     id: "fearlessRage",
     name: "Fearless Rage",
     minLevel: 12,
-    summary:
-      "Immune to the fear condition while raging (but not other emotion effects), and can keep fighting below 0 HP without falling unconscious for one extra round.",
+    summary: "Immune to the shaken and frightened conditions while raging.",
+    contextNotes: [
+      note(
+        "Immune to shaken/frightened only (not panicked or other fear/emotion effects), only while raging — the engine's only fear-adjacent target (immEffect.fear) reads as the whole fear family including panicked, so an unconditional gated Change here would overstate it (same over-broad-target issue as Superstition).",
+      ),
+    ],
   },
   {
     id: "guardedStance",
@@ -396,16 +470,25 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     name: "Witch Hunter",
     minLevel: 1,
     summary:
-      "+2 bonus on damage rolls against creatures with hexes, and +2 on saves against hexes, while raging.",
-    contextNotes: [note("+2 damage/+2 save vs. hexes only, only while raging.", "damage")],
+      "+1 bonus on damage rolls (scaling +1/4 levels) against creatures possessing spells or spell-like abilities, while raging.",
+    contextNotes: [
+      note(
+        "+1 damage vs. creatures with spells/SLAs, scaling +1 at 4th/8th/12th/16th/20th, only while raging — no save-bonus clause; target-scoped (which creature you're fighting), so not a Change on the barbarian's own sheet.",
+        "damage",
+      ),
+    ],
   },
   {
     id: "goodForWhatAilsYou",
     name: "Good For What Ails You",
     minLevel: 4,
     summary:
-      "Requires Renewed Vigor: using Renewed Vigor also cures the barbarian of one poison, disease, or ability-damage-draining effect currently affecting her.",
-    contextNotes: [note("Requires Renewed Vigor; triggers whenever Renewed Vigor is used.")],
+      "While raging, drinking a dose of alcohol lets you re-attempt a saving throw against one of several ongoing conditions (blinded, confused, dazzled, deafened, exhausted, fatigued, frightened, nauseated, panicked, shaken, sickened) or against a poison currently affecting you.",
+    contextNotes: [
+      note(
+        "Triggered by drinking alcohol while raging; success suppresses the chosen condition for the rage's duration, or counts as one save toward curing the poison.",
+      ),
+    ],
   },
   {
     id: "internalFortitude",
@@ -414,18 +497,16 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     summary: "Immune to the sickened and nauseated conditions while raging.",
   },
   {
-    id: "sixthSense",
-    name: "Sixth Sense",
-    minLevel: 8,
-    summary: "+2 insight bonus to initiative and cannot be caught flat-footed while raging.",
-    contextNotes: [note("+2 insight to initiative, only while raging.", "init")],
-  },
-  {
     id: "spellSunder",
     name: "Spell Sunder",
-    minLevel: 8,
+    minLevel: 6,
     summary:
-      "As an attack of opportunity, forgo an attack against a spellcaster to instead attempt to dispel one of their active spells (as targeted greater dispel magic).",
+      "Requires Witch Hunter. Once per rage, attempt to sunder an ongoing spell effect with a combat maneuver check against CMD 15 + the effect's caster level (or the target's CMD + 5 for an effect on a creature); exceeding it by 5+ suppresses the effect for extra rounds, by 10+ dispels it outright. Also ignores miss chances from spells/SLAs.",
+    contextNotes: [
+      note(
+        "Requires the Witch Hunter rage power and barbarian level 6 (not a standalone level-8 pick); once per rage, roll the combat maneuver check manually.",
+      ),
+    ],
   },
   {
     id: "swiftFoot",
@@ -473,16 +554,12 @@ export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] 
  * power the vendored catalog describes under a possibly-differently-cased
  * name.
  *
- * Collision audit (all 30 hand-authored entries, run against the pinned Pf
- * Data 1e slice): 29 matched a vendored entry by normalized name; the lone
- * exception is Sixth Sense, which is not present in the vendored
- * `class_ability_rage_powers.json` dictionary AT ALL under any key (verified
- * — this is a gap in the source, not a naming mismatch) and so has no
- * `NAME_ALIASES` entry to add; it's included in `mergedRagePowerCatalog`
- * unconditionally below, same as a vendored-only entry, just sourced from
- * this table instead of `RefData.ragePowers`. No other hand-authored name
- * needed an alias — the source's own spelling/wording matched ours exactly
- * (case-insensitively) for the other 29.
+ * Collision audit (all 29 hand-authored entries, run against the pinned Pf
+ * Data 1e slice): every one matched a vendored entry by normalized name, so
+ * no `NAME_ALIASES` entry is needed — the source's own spelling/wording
+ * matched ours exactly (case-insensitively). (The former 30th entry, Sixth
+ * Sense, matched nothing under any key — one of the tells it wasn't real;
+ * see the file doc comment.)
  *
  * One name COLLIDES within the vendored catalog itself: "Guarded Stance"
  * appears twice — the Core Rulebook original (`guarded_stance`, no
@@ -526,11 +603,11 @@ function plainTextPreview(html: string, max = 200): string {
 
 /** A catalog entry the picker can browse — either the hand-authored def (matched or Sixth-Sense-style unmatched) with the vendored prose attached, or a vendored-only entry rendered display-only. */
 export interface MergedRagePowerEntry extends RagePowerDef {
-  /** Ability-type suffix as published, e.g. "(Ex)" — undefined for the one hand-authored-only entry (Sixth Sense) with no vendored counterpart. */
+  /** Ability-type suffix as published, e.g. "(Ex)" — undefined for a hand-authored entry with no vendored counterpart (none today). */
   nameSuffix?: string;
   /** Vendored grouping tag (e.g. "Totem", "Blood", "Stance"), when present. */
   category?: string;
-  /** Full vendored HTML prose, when a vendored catalog entry backs this id — undefined only for Sixth Sense. */
+  /** Full vendored HTML prose, when a vendored catalog entry backs this id — always present today (every hand entry matches a vendored one). */
   description?: string;
   /** Vendored source-book attribution, when known. */
   sources?: SourceRef[];
@@ -578,8 +655,8 @@ export function resolveRagePower(id: string, refData: RefData): RagePowerDef | u
  * collides (by normalized name, alias-mapped) against a hand-authored entry
  * REPLACED by that hand-authored def (keeping its id and real mechanics, but
  * carrying the vendored entry's prose/sources along for display), plus any
- * hand-authored entry with no vendored counterpart at all (Sixth Sense — see
- * the file doc comment) appended. `!entry.displayOnly` marks which rows have
+ * hand-authored entry with no vendored counterpart appended (none today —
+ * see the collision-audit comment above). `!entry.displayOnly` marks which rows have
  * live mechanics, for the picker's "M" badge (same convention as
  * `archetypeModeledEffectTier`/`ArchetypePicker`'s `badge-modeled`).
  */

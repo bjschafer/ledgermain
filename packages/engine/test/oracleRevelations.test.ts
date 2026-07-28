@@ -1,13 +1,21 @@
 /**
- * Hand-computed fixture tests for oracle revelations (issue #61). Every
- * revelation in `ORACLE_REVELATIONS` is `displayOnly` with `changes: []`
- * (see that file's doc comment), so `collectModifiers` should never emit a
- * numeric modifier for one. What IS exercised: gating on actual oracle
- * levels AND a chosen mystery, per-mystery scoping (a revelation from a
- * DIFFERENT mystery than the one selected is silently skipped), unknown-id
+ * Hand-computed fixture tests for oracle revelations (issue #61). Almost
+ * every revelation in `ORACLE_REVELATIONS` is `displayOnly` with
+ * `changes: []` (see that file's doc comment), so `collectModifiers` should
+ * never emit a numeric modifier for one. What IS exercised: gating on actual
+ * oracle levels AND a chosen mystery, per-mystery scoping (a revelation from
+ * a DIFFERENT mystery than the one selected is silently skipped), unknown-id
  * tolerance, and surfacing picked revelations through
  * `collectGrantedFeatures`/`resolveClassFeatures` — same pattern as
  * `arcanistExploits.test.ts`.
+ *
+ * A small, deliberately narrow set of revelations WAS promoted off
+ * `displayOnly` (see `oracle-revelations.ts`'s doc comment for the RAW
+ * citations) — `PROMOTED_REVELATION_IDS` below is the explicit exceptions
+ * list, and each has its own `compute()` fixture describe block further
+ * down: right level/mystery moves the cited number, below the scaling
+ * breakpoint gives the smaller number, and the wrong mystery contributes
+ * nothing.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -16,7 +24,7 @@ import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { collectModifiers } from "../src/collect.js";
-import { collectGrantedFeatures, resolveClassFeatures } from "../src/index.js";
+import { collectGrantedFeatures, compute, resolveClassFeatures } from "../src/index.js";
 import { ORACLE_MYSTERIES, ORACLE_MYSTERY_TAGS } from "../src/oracle-mysteries.js";
 import {
   ORACLE_MYSTERY_FINAL_REVELATIONS,
@@ -77,12 +85,44 @@ function revelationFeatureNames(doc: CharacterDoc): string[] {
     .sort();
 }
 
+/**
+ * Every revelation promoted off `displayOnly` (issue #75-style pass — see
+ * `oracle-revelations.ts`'s doc comment for each one's RAW citation). This
+ * is the explicit exceptions list the invariant test below checks against —
+ * any revelation NOT in this set must still be `displayOnly` with
+ * `changes: []`.
+ */
+const PROMOTED_REVELATION_IDS = [
+  "metal:ironConstitution",
+  "elemental:elementalResistance",
+  "spellscar:eldritchResistance",
+  "spellscar:spellResistance",
+  "flame:moltenSkin",
+  "stone:acidSkin",
+  "waves:icySkin",
+  "wind:sparkSkin",
+  "winter:icySkin",
+  "streets:faceInTheCrowd",
+  "dark_tapestry:pierceTheVeil",
+];
+
 describe("ORACLE_REVELATIONS table", () => {
-  it("every revelation is displayOnly with no changes (no unconditional flat number)", () => {
+  it("every non-promoted revelation is displayOnly with no changes (no unconditional flat number)", () => {
+    const promoted = new Set(PROMOTED_REVELATION_IDS);
     for (const id of ORACLE_REVELATION_IDS) {
+      if (promoted.has(id)) continue;
       const revelation = ORACLE_REVELATIONS[id]!;
-      expect(revelation.displayOnly).toBe(true);
-      expect(revelation.changes).toEqual([]);
+      expect(revelation.displayOnly, id).toBe(true);
+      expect(revelation.changes, id).toEqual([]);
+    }
+  });
+
+  it("every promoted revelation actually carries a non-empty changes[] and displayOnly: false", () => {
+    for (const id of PROMOTED_REVELATION_IDS) {
+      const revelation = ORACLE_REVELATIONS[id];
+      expect(revelation, id).toBeDefined();
+      expect(revelation!.displayOnly, id).toBe(false);
+      expect(revelation!.changes.length, id).toBeGreaterThan(0);
     }
   });
 
@@ -193,6 +233,204 @@ describe("oracle revelations (collectGrantedFeatures / resolveClassFeatures disp
     };
     const granted = collectGrantedFeatures(doc, ref);
     expect(granted.some((g) => g.origin?.kind === "revelation")).toBe(false);
+  });
+});
+
+// Promoted revelations (see oracle-revelations.ts's doc comment for each
+// RAW citation). Each block exercises: right level/mystery moves the number
+// by the cited amount, below the scaling breakpoint gives the smaller
+// number, and the wrong mystery contributes nothing.
+describe("promoted revelation: metal:ironConstitution", () => {
+  // AoN (MysteryDisplay.aspx?ItemName=Metal): "You gain a +1 bonus on
+  // Fortitude saves. At 7th level, and again at 14th level, this bonus
+  // increases by +1."
+  it("grants +1 Fortitude at 1st level", () => {
+    const doc = makeOracle(1, "metal", ["metal:ironConstitution"]);
+    const before = compute(makeOracle(1, "metal", []), ref);
+    const after = compute(doc, ref);
+    expect(after.saves.fort.total - before.saves.fort.total).toBe(1);
+  });
+
+  it("increases to +2 at 7th level", () => {
+    const doc = makeOracle(7, "metal", ["metal:ironConstitution"]);
+    const before = compute(makeOracle(7, "metal", []), ref);
+    const after = compute(doc, ref);
+    expect(after.saves.fort.total - before.saves.fort.total).toBe(2);
+  });
+
+  it("increases to +3 at 14th level", () => {
+    const doc = makeOracle(14, "metal", ["metal:ironConstitution"]);
+    const before = compute(makeOracle(14, "metal", []), ref);
+    const after = compute(doc, ref);
+    expect(after.saves.fort.total - before.saves.fort.total).toBe(3);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const doc = makeOracle(14, "life", ["metal:ironConstitution"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.saves.fort.total).toBe(compute(makeOracle(14, "life", []), ref).saves.fort.total);
+  });
+});
+
+describe("promoted revelation: elemental:elementalResistance", () => {
+  // AoN (MysteryDisplay.aspx?ItemName=Elemental): resistance 2 to acid,
+  // cold, electricity, and fire; 5 at 7th, 10 at 11th, 20 at 17th.
+  it("grants resistance 2 to all four energies at 1st level", () => {
+    const doc = makeOracle(1, "elemental", ["elemental:elementalResistance"]);
+    const sheet = compute(doc, ref);
+    for (const energy of ["acid", "cold", "electricity", "fire"]) {
+      expect(sheet.defenses?.resistances.find((r) => r.qualifier === energy)?.total, energy).toBe(
+        2,
+      );
+    }
+  });
+
+  it("increases to 5 at 7th level (below the 11th-level breakpoint)", () => {
+    const doc = makeOracle(7, "elemental", ["elemental:elementalResistance"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+  });
+
+  it("increases to 20 at 17th level", () => {
+    const doc = makeOracle(17, "elemental", ["elemental:elementalResistance"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(20);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const doc = makeOracle(17, "life", ["elemental:elementalResistance"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses).toBeUndefined();
+  });
+});
+
+describe("promoted revelation: spellscar:eldritchResistance", () => {
+  // AoN (MysteryDisplay.aspx?ItemName=Spellscar): resistance 2 to acid,
+  // cold, electricity, fire, and sonic; 5 at 5th, 10 at 11th, 20 at 17th.
+  it("grants resistance 2 to all five energies at 1st level, including sonic", () => {
+    const doc = makeOracle(1, "spellscar", ["spellscar:eldritchResistance"]);
+    const sheet = compute(doc, ref);
+    for (const energy of ["acid", "cold", "electricity", "fire", "sonic"]) {
+      expect(sheet.defenses?.resistances.find((r) => r.qualifier === energy)?.total, energy).toBe(
+        2,
+      );
+    }
+  });
+
+  it("increases to 5 at 5th level (below the 11th-level breakpoint)", () => {
+    const doc = makeOracle(5, "spellscar", ["spellscar:eldritchResistance"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "sonic")?.total).toBe(5);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const doc = makeOracle(17, "life", ["spellscar:eldritchResistance"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses).toBeUndefined();
+  });
+});
+
+describe("promoted revelation: spellscar:spellResistance", () => {
+  // AoN (MysteryDisplay.aspx?ItemName=Spellscar): "You gain SR equal to your
+  // oracle level + 5. You must be at least 11th level before selecting this
+  // revelation." minLevel is soft-filtered only, so the Change self-gates.
+  it("grants SR = oracle level + 5 at 11th level (16)", () => {
+    const doc = makeOracle(11, "spellscar", ["spellscar:spellResistance"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr?.total).toBe(16);
+  });
+
+  it("grants SR 20 at 15th level", () => {
+    const doc = makeOracle(15, "spellscar", ["spellscar:spellResistance"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr?.total).toBe(20);
+  });
+
+  it("grants nothing below the 11th-level RAW minimum, even if picked early", () => {
+    const doc = makeOracle(7, "spellscar", ["spellscar:spellResistance"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr).toBeUndefined();
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const doc = makeOracle(15, "life", ["spellscar:spellResistance"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr).toBeUndefined();
+  });
+});
+
+describe.each([
+  ["flame", "moltenSkin", "fire"],
+  ["stone", "acidSkin", "acid"],
+  ["waves", "icySkin", "cold"],
+  ["wind", "sparkSkin", "electricity"],
+  ["winter", "icySkin", "cold"],
+] as const)("promoted revelation: %s:%s (single-energy resist/immunity)", (mystery, id, energy) => {
+  // AoN: "You gain resist <energy> 5. This resistance increases to 10 at 5th
+  // level and 20 at 11th level. At 17th level, you gain immunity to
+  // <energy>." (Flame/Stone/Waves/Wind mysteries; People of the North's
+  // Winter mystery reuses the identical published Icy Skin ability.)
+  const revelationId = `${mystery}:${id}`;
+
+  it("grants resist 5 at 1st level, no immunity yet", () => {
+    const sheet = compute(makeOracle(1, mystery, [revelationId]), ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === energy)?.total).toBe(5);
+    expect(sheet.defenses?.immunities?.some((i) => i.qualifier === energy)).toBeFalsy();
+  });
+
+  it("increases to 10 at 5th level (below the 11th-level breakpoint)", () => {
+    const sheet = compute(makeOracle(5, mystery, [revelationId]), ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === energy)?.total).toBe(10);
+  });
+
+  it("reaches immunity at 17th level", () => {
+    const sheet = compute(makeOracle(17, mystery, [revelationId]), ref);
+    expect(sheet.defenses?.immunities?.some((i) => i.qualifier === energy)).toBe(true);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const sheet = compute(makeOracle(17, "life", [revelationId]), ref);
+    expect(sheet.defenses).toBeUndefined();
+  });
+});
+
+describe("promoted revelation: streets:faceInTheCrowd", () => {
+  // AoN (MysteryDisplay.aspx?ItemName=Streets): "You gain a +4 bonus on
+  // Stealth checks..." — unconditional, no crowd requirement on the +4.
+  it("grants +4 Stealth at 1st level", () => {
+    const doc = makeOracle(1, "streets", ["streets:faceInTheCrowd"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.skills["ste"]!.miscMod).toBe(4);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const doc = makeOracle(7, "life", ["streets:faceInTheCrowd"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.skills["ste"]!.miscMod).toBe(0);
+  });
+});
+
+describe("promoted revelation: dark_tapestry:pierceTheVeil", () => {
+  // AoN (MysteryDisplay.aspx?ItemName=Dark+Tapestry): "You gain darkvision
+  // 60 feet. At 11th level, you can see perfectly in darkness of any kind..."
+  it("grants darkvision 60 ft. below 11th level, no perfect-darkness sight yet", () => {
+    const doc = makeOracle(7, "dark_tapestry", ["dark_tapestry:pierceTheVeil"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(60);
+    expect(sheet.senses.some((s) => s.kind === "seeInDarkness")).toBe(false);
+  });
+
+  it("adds perfect-darkness sight at 11th level", () => {
+    const doc = makeOracle(11, "dark_tapestry", ["dark_tapestry:pierceTheVeil"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(60);
+    expect(sheet.senses.some((s) => s.kind === "seeInDarkness")).toBe(true);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const doc = makeOracle(11, "life", ["dark_tapestry:pierceTheVeil"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.length).toBe(0);
   });
 });
 

@@ -43,9 +43,18 @@
  * Modelling posture (mirrors witch-hexes.ts/oracle-revelations.ts's honesty
  * bar): the overwhelming majority of tricks are limited-use ki-activated
  * abilities, bonus feats, or narrow situational/opposed-check bonuses — no
- * flat always-on number on the ninja's own sheet. Two came close enough to
- * be worth flagging explicitly (both deliberately left `displayOnly` too,
- * for reasons noted inline):
+ * flat always-on number on the ninja's own sheet. One trick clears the bar
+ * for a real, unconditional `Change` (issue #74 sweep):
+ *   - Wall Climber (Su) grants a flat, unconditional 20-ft. climb speed on
+ *     vertical surfaces (not perfectly smooth ones, nor the underside of a
+ *     horizontal surface — an applicability caveat every climb speed shares,
+ *     not a triggered/activated condition), no ki cost — verified against
+ *     d20pfsrd's "Wall Climber (Su)" ninja-trick page and
+ *     legacy.aonprd.com's Ultimate Combat ninja listing. Targets `climbSpeed`
+ *     (additive, base 0 for a ninja with no other climb speed source), same
+ *     shape as `vigilante-talents.ts`'s Rooftop Infiltrator.
+ * Two more came close enough to be worth flagging explicitly (both
+ * deliberately left `displayOnly` too, for reasons noted inline):
  *   - Deadly Range (Ex) grants a flat, unconditional +10 ft. to RANGED sneak
  *     attack range (explicitly stackable — the one trick RAW allows taking
  *     more than once) with no activation cost, but this engine has no
@@ -62,7 +71,7 @@
  *     into `unarmedDamageDie`/`archetypes.ts`'s monk-only Unarmed Strike
  *     grant for a class that doesn't otherwise have that class feature at
  *     all, which is a bigger structural change than this table's scope.
- * Every entry here is `displayOnly: true` with `changes: []`; a
+ * Every other entry here is `displayOnly: true` with `changes: []`; a
  * `contextNotes` reminder carries a trick-name prerequisite (a small handful
  * require another specific trick already known — soft-noted only, PF1
  * prereqs are hybrid per CLAUDE.md) or a ki-cost/DC reminder where relevant.
@@ -80,12 +89,12 @@ export interface NinjaTrickDef {
   summary: string;
   /** Earliest ninja level this trick can be selected at — 2 (trick) or 10 (master). Soft-filtered only. */
   minLevel: number;
-  /** Typed modifiers granted by the trick (empty for every entry — see file doc comment). */
+  /** Typed modifiers granted by the trick (empty for every entry except Wall Climber — see file doc comment). */
   changes: Change[];
   /** Non-mechanical reminders (prerequisite trick, ki cost, DC, ...). */
   contextNotes?: ContextNote[];
-  /** Always true here — no trick has a flat always-on numeric effect. */
-  displayOnly: true;
+  /** True when this trick has no live `Change` — Wall Climber is the sole exception, see file doc comment. */
+  displayOnly: boolean;
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });
@@ -95,19 +104,24 @@ interface RawTrick {
   name: string;
   summary: string;
   contextNotes?: ContextNote[];
+  /** Real Changes — omitted/empty for every entry except Wall Climber, see file doc comment. */
+  changes?: Change[];
 }
 
 function forTier(tier: NinjaTrickTier, minLevel: number, entries: RawTrick[]): NinjaTrickDef[] {
-  return entries.map((e) => ({
-    id: e.id,
-    name: e.name,
-    tier,
-    summary: e.summary,
-    minLevel,
-    changes: [],
-    contextNotes: e.contextNotes,
-    displayOnly: true,
-  }));
+  return entries.map((e) => {
+    const changes = e.changes ?? [];
+    return {
+      id: e.id,
+      name: e.name,
+      tier,
+      summary: e.summary,
+      minLevel,
+      changes,
+      contextNotes: e.contextNotes,
+      displayOnly: changes.length === 0,
+    };
+  });
 }
 
 const TRICK_LIST: NinjaTrickDef[] = [
@@ -310,6 +324,7 @@ const TRICK_LIST: NinjaTrickDef[] = [
       id: "wallClimber",
       name: "Wall Climber",
       summary: "Gain a 20-ft. climb speed on vertical surfaces (not smooth or overhanging ones).",
+      changes: [{ formula: "20", target: "climbSpeed", type: "untyped" }],
     },
     {
       id: "weaponTrainingTrick",

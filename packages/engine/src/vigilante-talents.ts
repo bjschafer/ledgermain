@@ -34,7 +34,19 @@
  * Modelling posture (mirrors alchemist-discoveries.ts's honesty bar): a
  * handful of talents here DO carry a flat, unconditional, self-targeting
  * numeric bonus once selected (Shadow's Speed's landSpeed bump, Monkey's
- * Paws's Escape Artist bonus) — these get real `changes[]`. Every other
+ * Paws's Escape Artist bonus, Rooftop Infiltrator's half-base-speed climb
+ * speed grant — issue #74 sweep) — these get real `changes[]`. Rooftop
+ * Infiltrator's grant targets `climbSpeed` (additive, base 0 for a vigilante
+ * with no other climb speed source — same shape as `ninja-tricks.ts`'s Wall
+ * Climber); Monkey's Paws' OWN "climb speed equal to base speed" clause is
+ * deliberately NOT promoted alongside its Escape Artist bonus, even though
+ * `climbSpeed` is a live target, because Monkey's Paws requires Rooftop
+ * Infiltrator as a prerequisite (a vigilante who has it always has Rooftop
+ * Infiltrator's grant active too), and this engine's `climbSpeed` target is
+ * purely additive with no "highest wins" resolution (`compute.ts`'s
+ * `applySpeedTarget`) — stacking both would silently overstate the climb
+ * speed to 1.5x base rather than the RAW-intended flat base speed, so it
+ * stays a `contextNotes` reminder instead. Every other
  * "flagged" talent turns out on close reading to be conditional on
  * something this engine doesn't track when the bonus applies (identity
  * state — Renown/Social Grace/Great Renown/Incredible Renown/Owl's Sight/
@@ -474,7 +486,7 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
     changes: [{ formula: "4", target: "skill.esc", type: "competence" }],
     contextNotes: [
       note(
-        "Requires the Rooftop Infiltrator talent. Climb-speed grant not modeled — apply manually.",
+        "Requires the Rooftop Infiltrator talent. This talent's own climb-speed clause isn't auto-applied: you already have Rooftop Infiltrator's half-base-speed grant active, and climbSpeed is purely additive here, so a second automatic grant would wrongly stack to 1.5x base speed instead of the flat base speed RAW intends — set your climb speed to full base speed by hand instead.",
         "climbSpeed",
       ),
     ],
@@ -497,7 +509,15 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
     id: "rooftopInfiltrator",
     name: "Rooftop Infiltrator",
     summary: "Gain a climb speed equal to half your base speed (full speed when climbing a rope).",
-    contextNotes: [note("Climb-speed grant not modeled — apply manually.", "climbSpeed")],
+    changes: [
+      { formula: "floor(@attributes.speed.land.total / 2)", target: "climbSpeed", type: "untyped" },
+    ],
+    contextNotes: [
+      note(
+        "The 'full speed when climbing a rope' upgrade isn't modeled — only the flat half-base-speed climb speed applies automatically.",
+        "climbSpeed",
+      ),
+    ],
   },
   {
     id: "shadowsSight",

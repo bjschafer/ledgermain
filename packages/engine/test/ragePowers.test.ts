@@ -58,8 +58,8 @@ function makeDoc(over: { classTag: string; level: number; ragePowers?: string[] 
 const PROMOTED_IDS = new Set(["ragingClimber", "ragingSwimmer", "swiftFoot"]);
 
 describe("RAGE_POWERS table", () => {
-  it("has 30 entries, every one available to both editions; every entry is displayOnly with no changes EXCEPT the three issue #75 promotions", () => {
-    expect(RAGE_POWER_IDS).toHaveLength(30);
+  it("has 29 entries, every one available to both editions; every entry is displayOnly with no changes EXCEPT the three issue #75 promotions", () => {
+    expect(RAGE_POWER_IDS).toHaveLength(29);
     for (const id of RAGE_POWER_IDS) {
       const power = RAGE_POWERS[id]!;
       if (PROMOTED_IDS.has(id)) {
