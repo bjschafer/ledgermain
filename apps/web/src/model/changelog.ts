@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-28-class-immunities-and-talent-catalogs",
+    date: "2026-07-28",
+    title: "Your class's immunities show up on their own",
+    note: "A paladin who hits 3rd level now sees disease and fear immunity on the sheet without typing anything, and trying to mark her shaken gets flagged. Same for the monk's Purity of Body and Diamond Body, the druid's Venom Immunity and Timeless Body, the alchemist's and investigator's Poison Immunity, the antipaladin's Plague Bringer, and the paladin's charm and compulsion auras when they arrive. Alongside that, the shaman's general hexes and the slayer's full talent list got real write-ups in their pickers — every entry summarized with its level gate and table notes, and a slayer in full plate with Armored Marauder watches the armor check penalty actually shrink.",
+  },
+  {
     id: "2026-07-27-the-app-keeps-your-place",
     date: "2026-07-27",
     title: "Reload and you're still where you were",
