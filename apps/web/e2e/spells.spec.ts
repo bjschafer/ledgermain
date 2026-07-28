@@ -78,6 +78,10 @@ test("a spell added in the manager lands in the panel's known list", async ({ pa
 });
 
 test("spell levels collapse, and the state survives reopening", async ({ page }) => {
+  // The only test that browses the class list unfiltered, so it holds the
+  // suite's largest DOM — and a retry adds trace snapshots of it on top. The
+  // default 30s budget left no room for that on a loaded CI runner.
+  test.slow();
   const { consoleErrors, pageErrors } = guard(page);
   const panel = await gotoWizardSpells(page);
   await panel.getByRole("button", { name: "Edit spellbook" }).click();

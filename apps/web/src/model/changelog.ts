@@ -38,6 +38,12 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     note: "Enlarge Person, Reduce Person, and polymorph forms already resized most weapons' damage dice, but a handful of shapes sat out: the greataxe, musket, and lucerne hammer at 1d12, the scythe, estoc, and guisarme at 2d4. Those aren't printed on the size chart, so they now convert to the die the rules say they count as before stepping. An enlarged greataxe reads 3d6. Drop the buff and it reads 1d12 again.",
   },
   {
+    id: "2026-07-27-faster-spell-browsing",
+    date: "2026-07-27",
+    title: "The spell list opens without the wait",
+    note: "Opening your spellbook to browse a full class list meant building every spell's stat table and rules text up front, hundreds of them, before the list would show — and every keystroke in the search box paid for it again. Each spell's write-up is now put together when you open that spell's details, so the list appears straight away and searching keeps up with your typing. Nothing about what you can see or add has changed; it just stops making you wait for it.",
+  },
+  {
     id: "2026-07-26-racial-immunities",
     date: "2026-07-26",
     title: "Your race's immunities are on the sheet",

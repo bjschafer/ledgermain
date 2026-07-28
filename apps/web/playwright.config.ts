@@ -10,7 +10,11 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  reporter: process.env.CI ? "github" : "list",
+  // The `github` reporter only annotates the run — it writes nothing to disk,
+  // so CI's artifact upload had no report (and no retry traces) to collect.
+  // Pair it with the HTML reporter, which is what actually produces the
+  // uploaded directory and embeds the traces as attachments.
+  reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "list",
   use: {
     baseURL: "http://localhost:5173",
     trace: "on-first-retry",
