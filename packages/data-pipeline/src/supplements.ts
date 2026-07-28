@@ -193,6 +193,153 @@ export function applyClassFeatureChangesSupplements(features: ClassFeature[]): v
 }
 
 /**
+ * Class features whose published text grants an unconditional immunity to
+ * something that ISN'T damage — the same `immEffect.<slug>` axis as
+ * `SUPPLEMENTAL_RACE_EFFECT_IMMUNITY` below (display-only plus a soft flag on
+ * mapped conditions; `resolveDamage` never sees it), prose-only upstream for
+ * every entry here. Slugs are the engine's closed vocabulary
+ * (`EFFECT_IMMUNITY_LABELS` in `@pf1/engine` `defenses.ts`); an unknown slug
+ * is silently dropped at display time, so the fixture tests assert the sheet
+ * output, not just the data.
+ *
+ * Keyed by feature **id**, not name: unlike the uses/changes tables above,
+ * several of these names are NOT unique in the vendored slice (three distinct
+ * "Aura of Courage" features, three "Timeless Body"). `name` is carried for
+ * readability and verified on apply, and each entry also records a `keyword`
+ * that must appear in the feature's own vendored description — the same
+ * drift-guard posture as `SUPPLEMENTAL_RACE_SENSES`, since every entry only
+ * makes that description's own sentence machine-readable. Level gating comes
+ * free: a class feature's `changes` only apply once its granting level is
+ * reached (see `@pf1/engine` `collect.ts`'s per-grant loop).
+ *
+ * Several entries are shared by, or belong to, vendored splatbook prestige
+ * classes (Asavir, Chevalier, Green Faith Acolyte, Magaambyan Arcanist) —
+ * those ride along at no extra cost because the feature is the unit here,
+ * not the class.
+ *
+ * Swept the whole vendored class-feature slice for immunity wording and
+ * deliberately excluded:
+ *   - Samurai's Honorable Stand (immune to shaken/frightened/panicked only
+ *     WHILE making an activated resolve-fueled stand);
+ *   - Spiritualist's Empowered Consciousness (conditional on the phantom
+ *     being confined in her consciousness);
+ *   - Antipaladin's Aura of Cowardice (strips ENEMIES' fear immunity — not a
+ *     self-immunity);
+ *   - Liberator's Poison Resistance (a save bonus that never becomes
+ *     immunity, unlike the alchemist/investigator line, which culminates in
+ *     the separate "Poison Immunity" feature included below).
+ */
+interface ClassFeatureEffectImmunitySupplement {
+  /** Vendored feature name, verified on apply (ids are unique; names aren't). */
+  name: string;
+  /** `EFFECT_IMMUNITY_LABELS` slugs — the engine's vocabulary, not free text. */
+  effects: readonly string[];
+  /**
+   * Case-insensitive substring that must appear in the feature's own
+   * description (HTML-stripped) — catches both a typo here and an upstream
+   * rewrite that changes what the feature actually grants.
+   */
+  keyword: string;
+}
+
+export const SUPPLEMENTAL_CLASS_FEATURE_EFFECT_IMMUNITY: Record<
+  string,
+  ClassFeatureEffectImmunitySupplement
+> = {
+  // Paladin 3 — "is immune to all diseases, including supernatural and
+  // magical diseases" (CRB, paladin).
+  C5tWPm12qyz5ND9u: {
+    name: "Divine Health",
+    effects: ["disease"],
+    keyword: "immune to all diseases",
+  },
+  // Paladin 3 — "is immune to fear (magical or otherwise)" (CRB, paladin).
+  RNIkkvqaq2iVrahs: { name: "Aura of Courage", effects: ["fear"], keyword: "immune to fear" },
+  // Asavir 3 / Chevalier 1 — each "gains an aura of courage like that of a
+  // 3rd-level paladin", i.e. the fear immunity above.
+  DxiQ7EiOese2Wqtu: { name: "Aura of Courage", effects: ["fear"], keyword: "aura of courage" },
+  RFu1MEABBOupnzD0: { name: "Aura of Courage", effects: ["fear"], keyword: "aura of courage" },
+  // Paladin 8 — "is immune to charm spells and spell-like abilities"
+  // (CRB, paladin).
+  jiBCmy0kP1Uwaz0D: { name: "Aura of Resolve", effects: ["charm"], keyword: "immune to charm" },
+  // Paladin 17 — "immunity to compulsion spells and spell-like abilities"
+  // (CRB, paladin).
+  iFq0EX4yovswIox9: {
+    name: "Aura of Righteousness",
+    effects: ["compulsion"],
+    keyword: "compulsion",
+  },
+  // Monk 5 / Monk (Unchained) 5 — "immunity to all diseases, including
+  // supernatural and magical diseases" (CRB, monk; one shared feature).
+  "82G7gl4C1AvtSHI4": { name: "Purity of Body", effects: ["disease"], keyword: "diseases" },
+  // Monk 11 — "immunity to poisons of all kinds" (CRB, monk).
+  nRffrQSKTqjeBAO5: { name: "Diamond Body", effects: ["poison"], keyword: "poison" },
+  // Druid 9 — "immunity to all poisons" (CRB, druid).
+  yzmKDxR63yS5fqlc: { name: "Venom Immunity", effects: ["poison"], keyword: "poison" },
+  // Green Faith Acolyte 6 — "gains immunity to all poisons".
+  N5AR6U6lJnB1WJ21: { name: "Venom Immunity", effects: ["poison"], keyword: "poison" },
+  // Alchemist 10 / Investigator 11 — "becomes completely immune to poison"
+  // (APG alchemist / ACG investigator; one shared feature, the culmination of Poison Resistance).
+  tflIOhX6ukxtwXLx: { name: "Poison Immunity", effects: ["poison"], keyword: "immune to poison" },
+  // Antipaladin 3 — "does not take any damage or take any penalty from
+  // diseases" (APG, antipaladin; he can still contract and spread them — the
+  // carrier nuance stays in the feature's own prose).
+  jz0LkAoq9lgyZXGM: { name: "Plague Bringer", effects: ["disease"], keyword: "diseases" },
+  // Druid 15 / Monk 17 / Monk (Unchained) 17 / Shifter 18 — one shared
+  // feature: "cannot be magically aged" (CRB druid/monk). Already-accrued
+  // penalties remaining is prose the label doesn't contradict.
+  "5JlthJkVGEHPZypG": {
+    name: "Timeless Body",
+    effects: ["magicalAging"],
+    keyword: "magically aged",
+  },
+  // Green Faith Acolyte 10 / Magaambyan Arcanist 10 — each "functions
+  // exactly like the druid ability of the same name".
+  TPrvvB6UluI4xvAH: { name: "Timeless Body", effects: ["magicalAging"], keyword: "aging" },
+  "1QAyvkvu1svUPTSi": { name: "Timeless Body", effects: ["magicalAging"], keyword: "aging" },
+};
+
+/**
+ * Apply `SUPPLEMENTAL_CLASS_FEATURE_EFFECT_IMMUNITY` in place, appending one
+ * `immEffect.<slug>` change per listed effect to the identified feature's
+ * `changes`. Throws if an id is absent, its name no longer matches, or its
+ * description no longer contains the recorded keyword — the drift guards
+ * described in the table's doc comment.
+ */
+export function applyClassFeatureEffectImmunitySupplements(features: ClassFeature[]): void {
+  const byId = new Map(features.map((f) => [f.id, f]));
+  for (const [id, supp] of Object.entries(SUPPLEMENTAL_CLASS_FEATURE_EFFECT_IMMUNITY)) {
+    const feature = byId.get(id);
+    if (feature === undefined) {
+      throw new Error(
+        `[supplements] class feature "${supp.name}" (${id}) not found in vendored class features`,
+      );
+    }
+    if (feature.name !== supp.name) {
+      throw new Error(
+        `[supplements] class feature ${id} is named "${feature.name}" upstream, not "${supp.name}" — ` +
+          `the vendored content moved under this id`,
+      );
+    }
+    const description = (feature.description ?? "").replace(/<[^>]*>/g, " ").toLowerCase();
+    if (!description.includes(supp.keyword.toLowerCase())) {
+      throw new Error(
+        `[supplements] class feature "${supp.name}" (${id}) description no longer mentions ` +
+          `"${supp.keyword}" — re-verify its immunity before trusting this supplement`,
+      );
+    }
+    feature.changes = [
+      ...feature.changes,
+      ...supp.effects.map((effect) => ({
+        formula: "1",
+        target: `immEffect.${effect}`,
+        type: "untyped",
+      })),
+    ];
+  }
+}
+
+/**
  * Hand-authored additions to vendored `Buff.changes`/`contextNotes` that omit
  * numeric effects the published spell text actually grants, keyed by buff
  * **name** (unique in the vendored slice). Additive only — appended alongside

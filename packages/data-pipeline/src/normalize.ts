@@ -86,6 +86,7 @@ import {
   applyArchetypeFeatureLevelSupplements,
   applyBuffSupplements,
   applyClassFeatureChangesSupplements,
+  applyClassFeatureEffectImmunitySupplements,
   applyClassFeatureUsesSupplements,
   applyPrestigeClassSupplements,
   applyRaceEffectImmunitySupplements,
@@ -333,6 +334,11 @@ export function normalize(opts: NormalizeOptions): {
     classFeatures,
     resolveUuid,
   );
+
+  // After BOTH prestige passes above: several supplemented features (the
+  // Asavir/Chevalier auras, Green Faith Acolyte's Venom Immunity/Timeless
+  // Body) only exist once `transformPrestigeClassPack` has pushed them.
+  applyClassFeatureEffectImmunitySupplements(classFeatures);
 
   const domains: Domain[] = domainDocs.map((d) =>
     transformDomain(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),

@@ -103,10 +103,14 @@ function isImmTarget(target: string): boolean {
  * Immunity to something that isn't damage — the axis `resolveDamage` has no
  * place for, since these gate whole effects rather than reduce a number.
  * Slug → the wording to show the player, taken from the published racial
- * traits these come from (`data-pipeline`'s
- * `SUPPLEMENTAL_RACE_EFFECT_IMMUNITY`): the elves' "magic sleep effects" is
- * narrower than the androids' "sleep effects", so the two are separate slugs
- * rather than one rounded-off "sleep".
+ * traits and class features these come from (`data-pipeline`'s
+ * `SUPPLEMENTAL_RACE_EFFECT_IMMUNITY` and
+ * `SUPPLEMENTAL_CLASS_FEATURE_EFFECT_IMMUNITY`): the elves' "magic sleep
+ * effects" is narrower than the androids' "sleep effects", so the two are
+ * separate slugs rather than one rounded-off "sleep". Likewise the paladin
+ * auras' "charm spells and spell-like abilities" / "compulsion spells and
+ * spell-like abilities" are narrower than full-school immunity, so their
+ * labels keep the spells-only qualifier.
  *
  * A closed vocabulary on purpose. An `immEffect.<slug>` change naming
  * something absent from this table is dropped rather than shown under its raw
@@ -123,6 +127,8 @@ export const EFFECT_IMMUNITY_LABELS: Readonly<Record<string, string>> = {
   fatigue: "fatigue",
   exhaustion: "exhaustion",
   fear: "fear effects",
+  charm: "charm spells and spell-like abilities",
+  compulsion: "compulsion spells and spell-like abilities",
   emotion: "emotion effects",
   mindAffecting: "mind-affecting effects",
   criticalHits: "critical hits",

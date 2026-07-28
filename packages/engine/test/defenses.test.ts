@@ -3,6 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
+import { EFFECT_IMMUNITY_LABELS } from "../src/defenses.js";
 import { compute } from "../src/index.js";
 
 const ref = loadRefData();
@@ -392,5 +393,104 @@ describe("compute: non-damage immunities", () => {
   it("keeps effect immunity out of damage-type immunity entirely", () => {
     const sheet = compute(makeDoc({ classes: [], abilities: ABILITIES, race: "Duergar" }), ref);
     expect(sheet.defenses!.immunities).toBeUndefined();
+  });
+});
+
+/**
+ * Class-feature non-damage immunities — hand-authored in `data-pipeline`'s
+ * `SUPPLEMENTAL_CLASS_FEATURE_EFFECT_IMMUNITY`, prose-only upstream. Expected
+ * values quote the published class feature each comes from; level gating is
+ * the feature grant's own level, so each case asserts the level just below
+ * the grant stays clean.
+ */
+describe("compute: class-feature non-damage immunities", () => {
+  function classImmunities(tag: string, level: number): string[] {
+    const sheet = compute(makeDoc({ classes: [{ tag, level }], abilities: ABILITIES }), ref);
+    return (sheet.defenses?.effectImmunities ?? []).map((e) => e.qualifier).sort();
+  }
+
+  it("every immEffect slug in the vendored data is in the engine's closed vocabulary", () => {
+    // defenses.ts silently drops an unknown slug, so a typo'd supplement
+    // would otherwise vanish rather than fail.
+    const slugs = new Set(
+      Object.values(ref.classFeatures)
+        .flatMap((f) => f.changes)
+        .map((c) => c.target)
+        .filter((t) => t.startsWith("immEffect."))
+        .map((t) => t.slice("immEffect.".length)),
+    );
+    for (const slug of slugs) expect(EFFECT_IMMUNITY_LABELS[slug]).toBeDefined();
+  });
+
+  it("gives a 3rd-level paladin disease and fear immunity (Divine Health, Aura of Courage)", () => {
+    // "is immune to all diseases" / "is immune to fear (magical or
+    // otherwise)", both gained at 3rd (CRB, paladin).
+    expect(classImmunities("paladin", 3)).toEqual(["disease", "fear"]);
+    expect(classImmunities("paladin", 2)).toEqual([]);
+  });
+
+  it("adds charm at paladin 8 (Aura of Resolve) and compulsion at 17 (Aura of Righteousness)", () => {
+    // "immune to charm spells and spell-like abilities" at 8th; "immunity to
+    // compulsion spells and spell-like abilities" at 17th (CRB, paladin).
+    expect(classImmunities("paladin", 8)).toEqual(["charm", "disease", "fear"]);
+    expect(classImmunities("paladin", 16)).toEqual(["charm", "disease", "fear"]);
+    expect(classImmunities("paladin", 17)).toEqual(["charm", "compulsion", "disease", "fear"]);
+  });
+
+  it("gives a monk disease at 5 (Purity of Body) and poison at 11 (Diamond Body)", () => {
+    // "immunity to all diseases" at 5th; "immunity to poisons of all kinds"
+    // at 11th (CRB, monk).
+    expect(classImmunities("monk", 4)).toEqual([]);
+    expect(classImmunities("monk", 5)).toEqual(["disease"]);
+    expect(classImmunities("monk", 11)).toEqual(["disease", "poison"]);
+  });
+
+  it("gives an unchained monk Purity of Body too (shared feature), but never Diamond Body", () => {
+    // The unchained monk keeps Purity of Body at 5th; Diamond Body became an
+    // optional ki power rather than a granted feature (Pathfinder Unchained).
+    expect(classImmunities("monkUnchained", 5)).toEqual(["disease"]);
+    expect(classImmunities("monkUnchained", 11)).toEqual(["disease"]);
+  });
+
+  it("gives a druid poison at 9 (Venom Immunity) and magical-aging at 15 (Timeless Body)", () => {
+    // "immunity to all poisons" at 9th; "cannot be magically aged" at 15th
+    // (CRB, druid).
+    expect(classImmunities("druid", 9)).toEqual(["poison"]);
+    expect(classImmunities("druid", 15)).toEqual(["magicalAging", "poison"]);
+  });
+
+  it("gives an alchemist poison immunity at 10 and an investigator the same at 11", () => {
+    // "becomes completely immune to poison" — Poison Immunity, one shared
+    // feature granted at alchemist 10 (APG) / investigator 11 (ACG).
+    expect(classImmunities("alchemist", 9)).toEqual([]);
+    expect(classImmunities("alchemist", 10)).toEqual(["poison"]);
+    expect(classImmunities("investigator", 10)).toEqual([]);
+    expect(classImmunities("investigator", 11)).toEqual(["poison"]);
+  });
+
+  it("gives an antipaladin disease immunity at 3 (Plague Bringer)", () => {
+    // "does not take any damage or take any penalty from diseases" (APG);
+    // the still-a-carrier nuance stays in the feature's own prose.
+    expect(classImmunities("antipaladin", 3)).toEqual(["disease"]);
+  });
+
+  it("stacks race and class sources on one sheet", () => {
+    // An elf paladin 3 has the racial magic-sleep immunity alongside both
+    // 3rd-level aura grants.
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "paladin", level: 3 }], abilities: ABILITIES, race: "Elf" }),
+      ref,
+    );
+    const qualifiers = (sheet.defenses?.effectImmunities ?? []).map((e) => e.qualifier).sort();
+    expect(qualifiers).toEqual(["disease", "fear", "magicSleep"]);
+  });
+
+  it("names the granting feature as the source", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "paladin", level: 3 }], abilities: ABILITIES }),
+      ref,
+    );
+    const entry = sheet.defenses!.effectImmunities!.find((e) => e.qualifier === "fear")!;
+    expect(entry.components.some((c) => c.applied && c.source === "Aura of Courage")).toBe(true);
   });
 });

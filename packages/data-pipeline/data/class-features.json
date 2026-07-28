@@ -633,7 +633,13 @@
   },
   "1QAyvkvu1svUPTSi": {
     "abilityType": "ex",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.magicalAging",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 10th level, a Magaambyan arcanist no longer takes penalties for aging. This functions exactly like the druid ability of the same name.</p>",
     "grantsBuffs": [],
     "id": "1QAyvkvu1svUPTSi",
@@ -2638,7 +2644,13 @@
   },
   "5JlthJkVGEHPZypG": {
     "abilityType": "ex",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.magicalAging",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>This character no longer takes ability score penalties for aging and cannot be magically aged. Any penalties she may have already incurred, however, remain in place. Bonuses still accrue, and the character still dies of old age when her time is up.</p>",
     "grantsBuffs": [],
     "id": "5JlthJkVGEHPZypG",
@@ -3866,7 +3878,13 @@
   },
   "82G7gl4C1AvtSHI4": {
     "abilityType": "ex",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.disease",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 5th level, a monk gains <em>immunity</em> to all diseases, including <em>supernatural</em> and magical diseases.</p>",
     "grantsBuffs": [],
     "id": "82G7gl4C1AvtSHI4",
@@ -6122,7 +6140,13 @@
   },
   "C5tWPm12qyz5ND9u": {
     "abilityType": "ex",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.disease",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 3rd level, a paladin is immune to all diseases, including supernatural and magical diseases, including <em>mummy rot</em>.</p>",
     "grantsBuffs": [],
     "id": "C5tWPm12qyz5ND9u",
@@ -6970,7 +6994,13 @@
   },
   "DxiQ7EiOese2Wqtu": {
     "abilityType": "su",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.fear",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 3rd level, an asavir gains an aura of courage like that of a 3rd-level paladin.</p>",
     "grantsBuffs": [],
     "id": "DxiQ7EiOese2Wqtu",
@@ -11772,7 +11802,13 @@
   },
   "N5AR6U6lJnB1WJ21": {
     "abilityType": "ex",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 6th level, a Green Faith acolyte gains immunity to all poisons.</p>",
     "grantsBuffs": [],
     "id": "N5AR6U6lJnB1WJ21",
@@ -13775,7 +13811,13 @@
   },
   "RFu1MEABBOupnzD0": {
     "abilityType": "su",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.fear",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>A chevalier has an aura of courage like that of a 3rd-level paladin.</p>",
     "grantsBuffs": [],
     "id": "RFu1MEABBOupnzD0",
@@ -13845,7 +13887,13 @@
   },
   "RNIkkvqaq2iVrahs": {
     "abilityType": "su",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.fear",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 3rd level, a paladin is immune to fear (magical or otherwise). Each ally within 10 feet of her gains a +4 morale bonus on <em>saving throws</em> against fear effects. This ability functions only while the paladin is conscious, not if she is <em>unconscious</em> or dead.</p>",
     "grantsBuffs": [],
     "id": "RNIkkvqaq2iVrahs",
@@ -14900,7 +14948,13 @@
   },
   "TPrvvB6UluI4xvAH": {
     "abilityType": "ex",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.magicalAging",
+        "type": "untyped"
+      }
+    ],
     "description": "<p><span id=\"ctl00_MainContent_DataListTypes_ctl00_LabelName\">At 10th level, a Green Faith acolyte no longer takes penalties for aging. This functions exactly like the druid ability of the same name.</span></p>",
     "grantsBuffs": [],
     "id": "TPrvvB6UluI4xvAH",
@@ -22197,7 +22251,13 @@
   },
   "iFq0EX4yovswIox9": {
     "abilityType": "su",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.compulsion",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 17th level, a paladin gains <em>DR</em> 5/evil and immunity to compulsion spells and spell-like abilities. Each ally within 10 feet of her gains a +4 morale bonus on <em>saving throws</em> against compulsion effects.</p>\n<p>This ability functions only while the paladin is conscious, not if she is <em>unconscious</em> or dead.</p>",
     "grantsBuffs": [],
     "id": "iFq0EX4yovswIox9",
@@ -22864,7 +22924,13 @@
   },
   "jiBCmy0kP1Uwaz0D": {
     "abilityType": "su",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.charm",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 8th level, a paladin is immune to charm spells and spell-like abilities. Each ally within 10 feet of her gains a +4 morale bonus on <em>saving throws</em> against charm effects.</p>\n<p>This ability functions only while the paladin is conscious, not if she is <em>unconscious</em> or dead.</p>",
     "grantsBuffs": [],
     "id": "jiBCmy0kP1Uwaz0D",
@@ -23063,7 +23129,13 @@
   },
   "jz0LkAoq9lgyZXGM": {
     "abilityType": "ex",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.disease",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 3rd level, the powers of darkness make an antipaladin a beacon of corruption and disease. An antipaladin does not take any damage or take any penalty from diseases. He can still contract diseases and spread them to others, but he is otherwise immune to their effects.</p>",
     "grantsBuffs": [],
     "id": "jz0LkAoq9lgyZXGM",
@@ -24998,7 +25070,13 @@
   },
   "nRffrQSKTqjeBAO5": {
     "abilityType": "su",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 11th level, a monk gains <em>immunity</em> to poisons of all kinds.</p>",
     "grantsBuffs": [],
     "id": "nRffrQSKTqjeBAO5",
@@ -29803,7 +29881,13 @@
   },
   "tflIOhX6ukxtwXLx": {
     "abilityType": "ex",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>The character becomes completely immune to poison.</p>",
     "grantsBuffs": [],
     "id": "tflIOhX6ukxtwXLx",
@@ -32059,7 +32143,13 @@
   },
   "yzmKDxR63yS5fqlc": {
     "abilityType": "ex",
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "description": "<p>At 9th level, a druid gains immunity to all poisons.</p>",
     "grantsBuffs": [],
     "id": "yzmKDxR63yS5fqlc",
