@@ -301,18 +301,25 @@ describe("bloodrager bloodline capstone immunities/senses (20th level)", () => {
     expect(effectImmune(doc, "poison")).toBe(true);
   });
 
-  it("Ascension (Celestial): immune to acid and cold (petrification has no matching slug)", () => {
+  it("Ascension (Celestial): immune to acid, cold, and petrification", () => {
     // RAW: "You gain immunity to acid, cold, and petrification."
     const doc = makeBloodrager(20, "Celestial");
     expect(immune(doc, "acid")).toBe(true);
     expect(immune(doc, "cold")).toBe(true);
+    expect(effectImmune(doc, "petrification")).toBe(true);
   });
 
-  it("Victory or Death (Destined): immune to paralysis (petrification/stunned/dazed/staggered have no matching slugs)", () => {
+  it("Victory or Death (Destined): immune to paralysis, petrification, stunned, dazed, and staggered", () => {
     // RAW: "You are immune to paralysis and petrification, as well as to the
     // stunned, dazed, and staggered conditions."
     const doc = makeBloodrager(20, "Destined");
     expect(effectImmune(doc, "paralysis")).toBe(true);
+    expect(effectImmune(doc, "petrification")).toBe(true);
+    expect(effectImmune(doc, "stunned")).toBe(true);
+    expect(effectImmune(doc, "dazed")).toBe(true);
+    expect(effectImmune(doc, "staggered")).toBe(true);
+    // Below the 20th-level gate none of it applies.
+    expect(effectImmune(makeBloodrager(19, "Destined"), "staggered")).toBe(false);
   });
 
   it("Power of Wyrms (Draconic): immune to paralysis, sleep, and your energy type; blindsense 60 (blue → electricity)", () => {
@@ -356,12 +363,13 @@ describe("bloodrager bloodline capstone immunities/senses (20th level)", () => {
     expect(compute(doc, ref).defenses?.dr.find((d) => d.qualifier === "—")?.total).toBe(8);
   });
 
-  it("Eternal Martyr (Martyred): can't be raised as undead (death effects have no matching slug)", () => {
+  it("Eternal Martyr (Martyred): immune to death effects, can't be raised as undead", () => {
     // RAW: "You become immune to death effects. ... Your body cannot be
     // turned into an undead creature, as though you were affected by a
     // permanent hallow effect."
     const doc = makeBloodrager(20, "Martyred");
     expect(effectImmune(doc, "undeath")).toBe(true);
+    expect(effectImmune(doc, "deathEffects")).toBe(true);
   });
 
   it("Aberrant Form: immune to critical hits and precision damage too (same pair as the sorcerer sibling)", () => {

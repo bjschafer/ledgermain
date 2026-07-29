@@ -135,6 +135,11 @@ export const EFFECT_IMMUNITY_LABELS: Readonly<Record<string, string>> = {
   precisionDamage: "precision damage",
   undeath: "becoming undead",
   magicalAging: "magical aging",
+  petrification: "petrification",
+  stunned: "being stunned",
+  dazed: "being dazed",
+  staggered: "being staggered",
+  deathEffects: "death effects",
 };
 
 const IMM_EFFECT_PREFIX = "immEffect.";

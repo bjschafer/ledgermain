@@ -530,20 +530,19 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         // resist electricity 10, resist fire 10, and a +4 racial bonus on
         // saves against poison. Finally, you gain unlimited use of the wings
         // of heaven ability. Finally, you gain the ability to speak with any
-        // creature that has a language (as per the tongues spell)." No
-        // `immEffect.petrification` slug exists in the closed
-        // EFFECT_IMMUNITY_LABELS vocabulary — that piece stays display-only.
+        // creature that has a language (as per the tongues spell)."
         changes: [
           c("10", "eres.electricity", "untyped"),
           c("10", "eres.fire", "untyped"),
           c("1", "imm.acid", "untyped"),
           c("1", "imm.cold", "untyped"),
+          c("1", "immEffect.petrification", "untyped"),
         ],
         contextNotes: [
           { target: "allSavingThrows", text: "+4 vs. poison only — not a general save bonus." },
           {
             target: "allChecks",
-            text: "Also grants petrification immunity (no matching slug on the sheet), unlimited flight, and tongues (display only).",
+            text: "Also grants unlimited flight and tongues (display only).",
           },
         ],
       },

@@ -113,9 +113,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Immunities",
-    note: "A few immunity grants still have no slot on the sheet: petrification, the stunned, dazed, and staggered conditions, death effects, and nonlethal damage. Apply those from the ability's own text. Immunity to things that aren't damage shows on your sheet and flags the matching condition, but it's a reminder for you and your GM. Nothing rolls against it.",
+    note: "Immunity to nonlethal damage has no slot on the sheet; apply it from the ability's own text. Immunity to things that aren't damage shows on your sheet and flags the matching condition, but it's a reminder for you and your GM. Nothing rolls against it.",
     issueDetail:
-      "Missing effect-immunity slugs: petrification, stunned, dazed, staggered, and death effects sit outside the closed EFFECT_IMMUNITY_LABELS vocabulary; nonlethal damage is a category with no imm.* type; telepathy has no sense target. Non-damage immunity is a separate axis (Defenses.effectImmunities) that resolveDamage deliberately never sees: display-only, plus a soft flag on the conditions it maps onto.",
+      "Nonlethal damage is a category, not a damage type, so no imm.* target can hold it; telepathy has no sense target. Non-damage immunity is a separate axis (Defenses.effectImmunities) that resolveDamage deliberately never sees: display-only, plus a soft flag on the conditions it maps onto.",
   },
   {
     category: "Buffs marked “reminder only”",

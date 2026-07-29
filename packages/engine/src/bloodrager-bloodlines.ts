@@ -504,21 +504,16 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         // You gain immunity to acid, cold, and petrification. You also gain
         // resistance 10 to electricity and fire, as well as a +4 racial
         // bonus on saving throws against poison. You have these benefits
-        // constantly, even while not bloodraging." No `immEffect.petrification`
-        // slug exists in the closed EFFECT_IMMUNITY_LABELS vocabulary — that
-        // piece stays display-only.
+        // constantly, even while not bloodraging."
         changes: [
           c("10", "eres.electricity", "untyped"),
           c("10", "eres.fire", "untyped"),
           c("1", "imm.acid", "untyped"),
           c("1", "imm.cold", "untyped"),
+          c("1", "immEffect.petrification", "untyped"),
         ],
         contextNotes: [
           { target: "allSavingThrows", text: "+4 vs. poison only — not a general save bonus." },
-          {
-            target: "allChecks",
-            text: "Also grants petrification immunity (no matching slug on the sheet) — display only.",
-          },
         ],
       },
     ],
@@ -594,16 +589,13 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Destined):
         // "You are immune to paralysis and petrification, as well as to the
         // stunned, dazed, and staggered conditions. You have these benefits
-        // constantly, even while not bloodraging." Only `immEffect.paralysis`
-        // is in the closed EFFECT_IMMUNITY_LABELS vocabulary — petrification/
-        // stunned/dazed/staggered have no matching slug, so those four stay
-        // display-only.
-        changes: [c("1", "immEffect.paralysis", "untyped")],
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Also immune to petrification and the stunned/dazed/staggered conditions (no matching slugs on the sheet) — display only.",
-          },
+        // constantly, even while not bloodraging."
+        changes: [
+          c("1", "immEffect.paralysis", "untyped"),
+          c("1", "immEffect.petrification", "untyped"),
+          c("1", "immEffect.stunned", "untyped"),
+          c("1", "immEffect.dazed", "untyped"),
+          c("1", "immEffect.staggered", "untyped"),
         ],
       },
     ],
@@ -1147,15 +1139,17 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         // permanent hallow effect (caster level = your bloodrager level). You
         // have these benefits constantly, even while not bloodraging."
         // "Cannot be turned into an undead creature" is exactly
-        // immEffect.undeath's "becoming undead" wording. "Death effects" has
-        // no matching slug in the closed EFFECT_IMMUNITY_LABELS vocabulary,
-        // and the half-cost resurrection component is an economy detail, not
-        // an immunity — both stay display-only.
-        changes: [c("1", "immEffect.undeath", "untyped")],
+        // immEffect.undeath's "becoming undead" wording. The half-cost
+        // resurrection component is an economy detail, not an immunity —
+        // display-only.
+        changes: [
+          c("1", "immEffect.undeath", "untyped"),
+          c("1", "immEffect.deathEffects", "untyped"),
+        ],
         contextNotes: [
           {
             target: "allChecks",
-            text: "Also immune to death effects (no matching slug) and halves resurrection material-component cost — display only.",
+            text: "Also halves the material-component cost of spells that bring you back to life — display only.",
           },
         ],
       },

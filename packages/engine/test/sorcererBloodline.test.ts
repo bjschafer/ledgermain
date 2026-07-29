@@ -169,11 +169,12 @@ describe("sorcerer bloodline capstone immunities/senses (20th level)", () => {
     expect(effectImmune(doc, "poison")).toBe(true);
   });
 
-  it("Ascension: immune to acid and cold (petrification has no matching slug)", () => {
+  it("Ascension: immune to acid, cold, and petrification", () => {
     // RAW: "You gain immunity to acid, cold, and petrification."
     const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Celestial");
     expect(immune(doc, "acid")).toBe(true);
     expect(immune(doc, "cold")).toBe(true);
+    expect(effectImmune(doc, "petrification")).toBe(true);
   });
 
   it("Power of Wyrms: immune to paralysis, sleep, and your energy type; blindsense 60 (red → fire)", () => {
