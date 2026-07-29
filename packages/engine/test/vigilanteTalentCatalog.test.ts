@@ -15,10 +15,13 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay (issue #74) — mirrors
- * `ragePowerCatalog.test.ts`, for BOTH independent vigilante talent pools.
- * All 30 hand-authored social talents matched a vendored entry by name; of
- * the 32 hand-authored vigilante talents, 31 matched — `evasion` ("Evasion")
- * needed an alias to match the vendored "Evasive".
+ * `ragePowerCatalog.test.ts` and `witchHexCatalog.test.ts`, for BOTH
+ * independent vigilante talent pools. Full hand-table parity as of the #74
+ * follow-up: all 46 hand-authored social talents match a vendored entry by
+ * name, except `seamlessShapechanger` ("Seamless Shapechanger"), which needed
+ * an alias to match the vendored "Seemless Shapechanger" (source typo); all
+ * 81 hand-authored vigilante talents match, except `evasion` ("Evasion"),
+ * which needed an alias to match the vendored "Evasive".
  */
 const ref = loadRefData();
 
@@ -26,24 +29,40 @@ describe("mergedVigilanteSocialTalentCatalog", () => {
   const merged = mergedVigilanteSocialTalentCatalog(ref);
   const byId = new Map(merged.map((t) => [t.id, t]));
 
-  it("has exactly one row per vendored entry — every hand-authored entry matched", () => {
-    expect(merged).toHaveLength(Object.keys(ref.vigilanteSocialTalents).length);
+  it("has exactly one row per vendored entry — all 46 hand-authored entries matched", () => {
+    const vendoredCount = Object.keys(ref.vigilanteSocialTalents).length;
+    expect(vendoredCount).toBe(46);
+    expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("every hand-authored entry matched a vendored entry by name and kept its own id + mechanics", () => {
+  it("all 46 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+    let matched = 0;
     for (const id of VIGILANTE_SOCIAL_TALENT_IDS) {
       const entry = byId.get(id);
       expect(entry).toBeDefined();
       expect(entry!.changes).toEqual(VIGILANTE_SOCIAL_TALENTS[id]!.changes);
+      // ...but pick up the vendored prose for display.
       expect(entry!.description).toBeDefined();
+      matched++;
+    }
+    expect(matched).toBe(46);
+  });
+
+  it("no vendored-only social talents remain — the fallback path only exists for a future data bump", () => {
+    for (const entry of merged) {
+      expect(VIGILANTE_SOCIAL_TALENTS[entry.id], entry.id).toBeDefined();
     }
   });
 
-  it("a vendored-only entry resolves display-only with its own id + prose", () => {
-    const entry = byId.get("ancestral_enlightenment")!;
-    expect(entry.changes).toEqual([]);
+  it("resolves the 'Seamless Shapechanger' / 'Seemless Shapechanger' naming drift via alias", () => {
+    const entry = byId.get("seamlessShapechanger")!;
+    expect(entry.name).toBe("Seamless Shapechanger");
     expect(entry.description).toBeDefined();
-    expect(VIGILANTE_SOCIAL_TALENTS.ancestral_enlightenment).toBeUndefined();
+  });
+
+  it("every id is unique", () => {
+    const ids = merged.map((t) => t.id);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 });
 
@@ -51,17 +70,29 @@ describe("mergedVigilanteTalentCatalog", () => {
   const merged = mergedVigilanteTalentCatalog(ref);
   const byId = new Map(merged.map((t) => [t.id, t]));
 
-  it("has exactly one row per vendored entry — every hand-authored entry matched (via alias where needed)", () => {
-    expect(merged).toHaveLength(Object.keys(ref.vigilanteTalents).length);
+  it("has exactly one row per vendored entry — all 81 hand-authored entries matched (via alias where needed)", () => {
+    const vendoredCount = Object.keys(ref.vigilanteTalents).length;
+    expect(vendoredCount).toBe(81);
+    expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("every hand-authored entry matched a vendored entry by name and kept its own id + mechanics", () => {
+  it("all 81 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+    let matched = 0;
     for (const id of VIGILANTE_TALENT_IDS) {
       const entry = byId.get(id);
       expect(entry).toBeDefined();
       expect(entry!.changes).toEqual(VIGILANTE_TALENTS[id]!.changes);
       expect(entry!.gate).toBe(VIGILANTE_TALENTS[id]!.gate);
+      // ...but pick up the vendored prose for display.
       expect(entry!.description).toBeDefined();
+      matched++;
+    }
+    expect(matched).toBe(81);
+  });
+
+  it("no vendored-only vigilante talents remain — the fallback path only exists for a future data bump", () => {
+    for (const entry of merged) {
+      expect(VIGILANTE_TALENTS[entry.id], entry.id).toBeDefined();
     }
   });
 
@@ -69,12 +100,6 @@ describe("mergedVigilanteTalentCatalog", () => {
     const entry = byId.get("evasion")!;
     expect(entry.gate).toBe("stalker");
     expect(entry.description).toContain("evasion");
-  });
-
-  it("a vendored-only entry defaults its gate to 'either' (never hides an option the specialization filter can't verify)", () => {
-    const entry = byId.get("animal_patron")!;
-    expect(entry.gate).toBe("either");
-    expect(entry.changes).toEqual([]);
   });
 
   it("every id is unique", () => {
