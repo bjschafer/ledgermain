@@ -7,6 +7,7 @@ import {
   chosenRogueTalentCount,
   expectedRogueTalentCount,
   hasRogueTalent,
+  rogueLevel,
   rogueTalentsNeedWarning,
   toggleRogueTalent,
 } from "../../model/rogueTalents.js";
@@ -25,18 +26,17 @@ interface RogueTalentPickerProps {
 /**
  * Rogue talent selection (issue #65), SHARED between the chained rogue and
  * Rogue (Unchained) — mirrors `HexPicker`'s flat-list shape. Most talents
- * are `displayOnly`; "Combat Trick" and "Finesse Rogue" carry a real
- * mechanical grant (a bonus-feat slot / Weapon Finesse outright — see
- * `@pf1/engine` `rogue-talents.ts`'s doc comment) auto-applied through
- * `apps/web/src/model/feats.ts`, so those two rows are annotated instead of
- * showing a "no automatic effect" note. Entries flagged `unchainedOnly`
- * (reference Debilitating Injury) are soft-noted, never hidden, for a
- * chained-rogue picker. Free-choice, never blocks past the expected count.
+ * are `displayOnly`; "Combat Trick" (bonus-feat slot) and the dozen
+ * `grantsFeat` talents (Finesse Rogue's Weapon Finesse, Strong Impression's
+ * Intimidating Prowess, ... — see `@pf1/engine` `rogue-talents.ts`'s doc
+ * comment) are auto-applied through `apps/web/src/model/feats.ts`, so those
+ * rows are annotated instead of showing a "no automatic effect" note; Stony
+ * Skin carries real `changes[]` (DR). Advanced talents (`minLevel` 10+) and
+ * the `chainedOnly`/`unchainedOnly` list flags are soft-noted, never hidden.
+ * Free-choice, never blocks past the expected count.
  *
- * Browses the FULL published catalog (`mergedRogueTalentCatalog` — issue #74), not
- * just the 27-entry hand-verified slice — a vendored-only
- * pick is display-only, same "no automatic effect" posture as most
- * hand-authored rows.
+ * Browses the full hand-authored catalog (`mergedRogueTalentCatalog` —
+ * issue #74, at full vendored parity since the Phase 5 extension).
  */
 export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerProps) {
   const isRogue = doc.identity.classes.some((c) => c.tag === "rogue" || c.tag === "rogueUnchained");
@@ -53,10 +53,11 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
-        return sa - sb || a.name.localeCompare(b.name);
+        return sa - sb || a.minLevel - b.minLevel || a.name.localeCompare(b.name);
       });
   }, [catalog, query, selected]);
 
+  const level = rogueLevel(doc);
   const chosen = chosenRogueTalentCount(doc);
   const expected = expectedRogueTalentCount(doc, refData);
   const warn = rogueTalentsNeedWarning(doc, refData);
@@ -96,9 +97,10 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
         <>
           <p className="hint revelation-picker-hint">
             Pick a talent at 2nd level and every 2 levels thereafter (+1 per Extra Rogue Talent
-            feat). "Combat Trick" grants a bonus combat feat slot; "Finesse Rogue" grants Weapon
-            Finesse outright — both apply automatically. Every other talent is a reminder only.
-            Free-choice — never blocks past the expected count.
+            feat). "Combat Trick" grants a bonus combat feat slot, talents marked "Grants a feat"
+            apply their feat automatically, and Stony Skin's DR lands on the sheet — everything else
+            is a reminder only. Advanced talents (10th+) and chained/Unchained-only talents are
+            flagged, never hidden. Free-choice — never blocks past the expected count.
           </p>
           <input
             className="search"
@@ -110,13 +112,16 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
           <div className="scroll">
             {talents.map((t) => {
               const isSel = hasRogueTalent(doc, t.id);
+              const belowLevel = level > 0 && level < t.minLevel;
               return (
                 <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
                     <div className="pname">
                       {t.name}
                       {t.nameSuffix ? ` ${t.nameSuffix}` : ""}
+                      {t.minLevel >= 10 ? <span className="tag-mystery">Advanced</span> : null}
                       {t.unchainedOnly ? <span className="tag-mystery">Unchained</span> : null}
+                      {t.chainedOnly ? <span className="tag-mystery">Chained</span> : null}
                       {t.bonusFeatSlot || t.grantsFeat ? (
                         <span className="tag-mystery">Grants a feat</span>
                       ) : null}
@@ -124,6 +129,11 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
                     <div className="preq">
                       <span className="desc-text">{t.summary}</span>
                     </div>
+                    {belowLevel ? (
+                      <div className="hint" style={{ marginTop: 2 }}>
+                        ⚠ Requires rogue {t.minLevel}th (currently {level})
+                      </div>
+                    ) : null}
                     {t.contextNotes?.map((n, i) => (
                       <div key={i} className="hint" style={{ marginTop: 2 }}>
                         ⚠ {n.text}

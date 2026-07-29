@@ -8,10 +8,12 @@ import { compute, ROGUE_TALENT_IDS, ROGUE_TALENTS } from "../src/index.js";
 /**
  * Fixture coverage for Rogue Talents (issue #65) — the deferred choice-
  * bearing subsystem, SHARED between the chained rogue and Rogue (Unchained).
- * Clean-room, hand-authored curated ~28-entry menu (see `rogue-talents.ts`),
- * mostly `displayOnly` with two feat-bridging exceptions (Combat Trick,
- * Finesse Rogue — covered by `apps/web/test/feats.test.ts` since the bridge
- * lives in `apps/web/src/model/feats.ts`, not the engine).
+ * Clean-room, hand-authored at full vendored parity (234 entries — see
+ * `rogue-talents.ts`), mostly `displayOnly`; the feat-bridging entries
+ * (Combat Trick's slot, the dozen `grantsFeat` grants) are covered by
+ * `apps/web/test/feats.test.ts` since the bridge lives in
+ * `apps/web/src/model/feats.ts`, not the engine. Stony Skin is the one
+ * entry with real `changes[]` (always-on DR — fixture below).
  */
 const ref = loadRefData();
 
@@ -48,13 +50,15 @@ function makeDoc(classTag: string, level: number, rogueTalents: string[] = []): 
 }
 
 describe("ROGUE_TALENTS table", () => {
-  it("has a curated core menu, all displayOnly with no changes", () => {
-    expect(ROGUE_TALENT_IDS.length).toBeGreaterThanOrEqual(25);
+  it("covers the full 234-entry vendored catalog; Stony Skin is the only entry with changes", () => {
+    expect(ROGUE_TALENT_IDS.length).toBe(234);
+    const withChanges: string[] = [];
     for (const id of ROGUE_TALENT_IDS) {
       const talent = ROGUE_TALENTS[id]!;
-      expect(talent.displayOnly).toBe(true);
-      expect(talent.changes).toEqual([]);
+      expect(talent.displayOnly).toBe(talent.changes.length === 0);
+      if (talent.changes.length > 0) withChanges.push(id);
     }
+    expect(withChanges).toEqual(["stonySkin"]);
   });
 
   it("Combat Trick contributes a bonus-feat slot, Finesse Rogue grants Weapon Finesse outright", () => {
@@ -62,9 +66,49 @@ describe("ROGUE_TALENTS table", () => {
     expect(ROGUE_TALENTS.finesseRogue!.grantsFeat).toBe("weapon finesse");
   });
 
+  it("the Phase 5 grantsFeat promotions carry vendored-verified feat names", () => {
+    // Strong Impression (APG p.131), Unbalancing Trick (Elemental Master's
+    // Handbook p.9), Thrill of the Chase (Inner Sea Intrigue p.32) — each
+    // grant is unconditional, no player choice.
+    expect(ROGUE_TALENTS.strongImpression!.grantsFeat).toBe("intimidating prowess");
+    expect(ROGUE_TALENTS.unbalancingTrick!.grantsFeat).toBe("improved trip");
+    expect(ROGUE_TALENTS.thrillOfTheChase!.grantsFeat).toBe("run");
+    expect(ROGUE_TALENTS.combatSwipe!.grantsFeat).toBe("improved steal");
+    // Superior Sniper's grant forks if Expert Sniper is already known —
+    // deliberately note-tier, never auto-applied.
+    expect(ROGUE_TALENTS.superiorSniper!.grantsFeat).toBeUndefined();
+  });
+
   it("Double Debilitation is flagged unchainedOnly (references Debilitating Injury)", () => {
     expect(ROGUE_TALENTS.doubleDebilitation!.unchainedOnly).toBe(true);
     expect(ROGUE_TALENTS.combatTrick!.unchainedOnly).toBeUndefined();
+  });
+
+  it("minLevel soft gates: 2 for regular talents, 10 for advanced, prose overrides win", () => {
+    expect(ROGUE_TALENTS.bleedingAttack!.minLevel).toBe(2);
+    // Against the Wall — "Advanced Combat Talents" (Elemental Master's Handbook p.9).
+    expect(ROGUE_TALENTS.againstTheWall!.minLevel).toBe(10);
+    expect(ROGUE_TALENTS.doubleDebilitation!.minLevel).toBe(10);
+    // Blinding Strike states a 15th-level requirement outright (Blood of Shadows p.9).
+    expect(ROGUE_TALENTS.blindingStrike!.minLevel).toBe(15);
+    // Chained-only vs Unchained-only list flags ride the vendored prefixes.
+    expect(ROGUE_TALENTS.finesseRogue!.chainedOnly).toBe(true);
+    expect(ROGUE_TALENTS.certainty!.unchainedOnly).toBe(true);
+  });
+});
+
+describe("Stony Skin (Elemental Master's Handbook p.9) — the one changes[] promotion", () => {
+  it("rogue 10 with Stony Skin shows DR 2/adamantine on the sheet", () => {
+    const doc = makeDoc("rogue", 10, ["stonySkin"]);
+    const sheet = compute(doc, ref);
+    const dr = sheet.defenses?.dr.find((d) => d.qualifier === "adamantine");
+    expect(dr?.total).toBe(2);
+  });
+
+  it("a non-rogue character with the same stale pick gets no DR", () => {
+    const doc = makeDoc("monkUnchained", 10, ["stonySkin"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.dr.find((d) => d.qualifier === "adamantine")).toBeUndefined();
   });
 });
 
