@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-28-featured-race-trait-swaps",
+    date: "2026-07-28",
+    title: "Featured-race trait swaps now trade honestly",
+    note: "For aasimars, tieflings, dhampirs, kitsune, ratfolk, and tengu, picking an alternate racial trait now retires the standard bonus it replaces instead of stacking on top. An aasimar taking Deathless Spirit loses Celestial Resistance's acid, cold, and electricity 5; a tiefling's Scaled Skin trades the fiendish resistances for its natural armor; Keen Kitsune really swaps +2 Charisma for +2 Intelligence; and a heritage's alternate skill bonuses replace the standard pair rather than doubling up. One part stays yours to apply by hand: a heritage that changes your ability-score spread still describes that swap as text.",
+  },
+  {
     id: "2026-07-28-every-pick-list-written-up",
     date: "2026-07-28",
     title: "The five big pick lists, fully written up",

@@ -2,10 +2,12 @@
  * Hand-computed fixture tests for the vendored alternate-racial-trait catalog
  * (issue #74, `RefData.racialTraits`) — distinct from the
  * hand-authored 8-race `RACIAL_TRAITS` table covered by `racial-traits.test.ts`.
- * Unlike that table, a vendored pick's `changes[]` apply but nothing suppresses
- * the race's standard `Change`s (see `RacialTrait`'s doc comment in
- * `@pf1/schema`) — these tests prove both halves of that posture: the granted
- * bonus lands, and the race's own baseline is untouched alongside it.
+ * A vendored pick's `changes[]` apply; whether the race's standard `Change`s
+ * are suppressed alongside depends on the race: the six featured races in
+ * `VENDORED_STANDARD_TRAIT_TARGETS` drop the replaced standard trait's
+ * verified targets (Phase 6 fixtures below), every other race keeps the
+ * historical apply-on-top posture (see `RacialTrait`'s doc comment in
+ * `@pf1/schema`), which the Granite Skin fixtures prove.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -13,7 +15,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, deriveResourcePools } from "../src/index.js";
+import { compute, deriveResourcePools, VENDORED_STANDARD_TRAIT_TARGETS } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -175,5 +177,84 @@ describe("guards", () => {
 
   it("ignores an unknown vendored trait id without throwing", () => {
     expect(() => compute(makeDoc("Oread", ["not-a-real-vendored-trait"]), ref)).not.toThrow();
+  });
+});
+
+/**
+ * Featured-race suppression (issue #74 Phase 6): for the six races in
+ * `VENDORED_STANDARD_TRAIT_TARGETS`, a vendored alternate that names a
+ * structured standard trait in `replacedTraitNames` now DROPS that trait's
+ * `Race.changes` while active — expected values verified against the ARG
+ * race write-ups and the vendored `races.json` change lists.
+ */
+describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
+  it("Aasimar Deathless Spirit (Blood of Angels): Celestial Resistance's acid/cold/electricity 5 disappears", () => {
+    const base = compute(makeDoc("Aasimar"), ref);
+    for (const q of ["acid", "cold", "electricity"]) {
+      expect(base.defenses?.resistances.find((r) => r.qualifier === q)?.total).toBe(5);
+    }
+    const withTrait = compute(makeDoc("Aasimar", [traitId("Deathless Spirit")]), ref);
+    expect(withTrait.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("Aasimar Halo (Blood of Angels): darkvision 60 is swapped away", () => {
+    const base = compute(makeDoc("Aasimar"), ref);
+    expect(base.senses.some((s) => s.label === "Darkvision" && s.range === 60)).toBe(true);
+    const withTrait = compute(makeDoc("Aasimar", [traitId("Halo")]), ref);
+    expect(withTrait.senses.some((s) => s.label === "Darkvision")).toBe(false);
+  });
+
+  it("Tiefling Scaled Skin (Blood of Fiends): fiendish resistance goes, its own +1 natural armor lands", () => {
+    const base = compute(makeDoc("Tiefling"), ref);
+    expect(base.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+    const withTrait = compute(makeDoc("Tiefling", [traitId("Scaled Skin")]), ref);
+    expect(withTrait.defenses?.resistances ?? []).toEqual([]);
+    expect(withTrait.ac.flatFooted).toBe(base.ac.flatFooted + 1);
+  });
+
+  it("Kitsune Keen Kitsune (ARG): +2 Dex/+2 Int/-2 Str replaces the standard +2 Dex/+2 Cha/-2 Str", () => {
+    const base = compute(makeDoc("Kitsune"), ref);
+    expect(base.abilities.cha.total).toBe(12);
+    expect(base.abilities.dex.total).toBe(12);
+    expect(base.abilities.str.total).toBe(8);
+    const withTrait = compute(makeDoc("Kitsune", [traitId("Keen Kitsune")]), ref);
+    expect(withTrait.abilities.cha.total).toBe(10);
+    expect(withTrait.abilities.dex.total).toBe(12);
+    expect(withTrait.abilities.int.total).toBe(12);
+    expect(withTrait.abilities.str.total).toBe(8);
+  });
+
+  it("Aasimar heritage Skilled variant (Plumekith): standard Diplomacy/Perception +2 swaps for Acrobatics/Fly +2", () => {
+    // `replacedTraitNames` is empty on heritage Skilled bundles — the
+    // `"Skilled ("` name inference in `vendoredTraitSuppressTargets` covers
+    // them (see its doc comment).
+    const base = compute(makeDoc("Aasimar"), ref);
+    const withTrait = compute(makeDoc("Aasimar", [traitId("Skilled (Aasimar - Plumekith)")]), ref);
+    expect(withTrait.skills["dip"]!.total).toBe(base.skills["dip"]!.total - 2);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total - 2);
+    expect(withTrait.skills["acr"]!.total).toBe(base.skills["acr"]!.total + 2);
+    expect(withTrait.skills["fly"]!.total).toBe(base.skills["fly"]!.total + 2);
+  });
+
+  it("Tengu Carrion Sense (ARG): Gifted Linguist's +4 Linguistics drops, Sneaky stays", () => {
+    const base = compute(makeDoc("Tengu"), ref);
+    const withTrait = compute(makeDoc("Tengu", [traitId("Carrion Sense")]), ref);
+    expect(withTrait.skills["lin"]!.total).toBe(base.skills["lin"]!.total - 4);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total);
+  });
+
+  it("an unmapped race keeps the historical apply-on-top posture (Oread above is the proof)", () => {
+    // Oread has no `VENDORED_STANDARD_TRAIT_TARGETS` entry, so Granite
+    // Skin's replaced Energy Resistance still applies alongside it — covered
+    // by the Granite Skin describe block; this fixture pins the map itself.
+    expect(VENDORED_STANDARD_TRAIT_TARGETS["Oread"]).toBeUndefined();
+    expect(Object.keys(VENDORED_STANDARD_TRAIT_TARGETS).sort()).toEqual([
+      "Aasimar",
+      "Dhampir",
+      "Kitsune",
+      "Ratfolk",
+      "Tengu",
+      "Tiefling",
+    ]);
   });
 });

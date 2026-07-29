@@ -70,9 +70,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Alternate racial traits",
-    note: "Every race's published alternates are browsable, and picking one applies whatever bonuses it spells out as numbers. What differs is the trade: for the seven core races plus sylph, taking an alternate also retires the standard trait it replaces. For every other race the swap is yours to make: the entry names what it replaces, but nothing takes that standard trait away for you.",
+    note: "Every race's published alternates are browsable, and picking one applies whatever bonuses it spells out as numbers. What differs is the trade: for the seven core races plus sylph — and now aasimar, tiefling, dhampir, kitsune, ratfolk, and tengu — taking an alternate also retires the standard trait it replaces (a tiefling's Scaled Skin really trades the fiendish resistances for its armor). One honest exception: a heritage's different ability-score spread is still yours to apply, since the entry only describes it as text. For the remaining races the swap is yours to make: the entry names what it replaces, but nothing takes that standard trait away for you.",
     issueDetail:
-      "860 vendored across all 80 races, 252 of them carrying structured `changes` that `collect.ts` applies live (plus `openChanges` once a target is chosen). Only the hand-authored 8-race table enforces the replacement via `suppressTargets`: the vendored catalog names replaced traits by name only, with no verified mapping onto that race's `changes`/`contextNotes` entries.",
+      '860 vendored across all 80 races, 252 of them carrying structured `changes` that `collect.ts` applies live (plus `openChanges` once a target is chosen). Replacement enforcement: the hand-authored 8-race table via `suppressTargets`, plus the six featured races via `VENDORED_STANDARD_TRAIT_TARGETS` (a verified standard-trait-name → `Race.changes`-target map consumed by the vendored loop; heritage "Base Statistics" swaps deliberately unmapped — no structured replacement stats to swap in). All other races\' vendored entries name replaced traits with no verified target mapping, so they still apply on top.',
   },
   {
     category: "Character traits",

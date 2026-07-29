@@ -614,3 +614,97 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
     .filter((t): t is AlternateRacialTrait => t != null && t.race === race!.name);
   return !slowAndSteadySuppressedBy(activeRacialTraits);
 }
+
+/* ------------------- vendored alternate-trait suppression (issue #74) ------ */
+
+/**
+ * Verified mapping from a race's STANDARD trait name (as it appears in the
+ * vendored catalog's `RacialTrait.replacedTraitNames`) to the `Race.changes`
+ * targets that standard trait contributes — the six most-played featured
+ * races, audited by hand against `races.json`'s change lists exactly like the
+ * core-race `suppressTargets` audit above. `collect.ts` uses this to drop a
+ * replaced standard trait's structured bonus while a vendored alternate that
+ * names it is active, so e.g. an Aasimar taking Deathless Spirit stops
+ * showing Celestial Resistance's acid/cold/electricity 5 alongside it.
+ *
+ * Deliberately unmapped names, recorded here so the next audit doesn't
+ * re-litigate them:
+ *   - "Base Statistics" (every heritage's ability-score swap): the heritage
+ *     entries carry NO structured replacement stats of their own, so
+ *     suppressing the standard ability changes would zero the character's
+ *     racial modifiers instead of swapping them — worse than the double-count
+ *     it prevents. Heritage ability swaps stay prose.
+ *   - Prose-only standard traits (Spell-Like Ability, Fiendish Sorcery,
+ *     Swordtrained, Natural Weapon, Kitsune Magic, Swarming, Rodent Empathy,
+ *     Light Sensitivity, Languages, Subtype/Type): no structured change to
+ *     drop.
+ *   - Ratfolk "Slow Speed" (Surface Sprinter): base speed reads off
+ *     `Race.speeds`, not a change — Surface Sprinter's own `landSpeed`
+ *     change already carries the delta.
+ *   - Ratfolk "Tinker"'s Craft (alchemy) half: the vendored race changes
+ *     only carry Tinker's Perception/UMD bonuses (no crf subskill target),
+ *     so those two are what suppression can honestly drop.
+ */
+export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
+  Record<string, Readonly<Record<string, readonly string[]>>>
+> = {
+  Aasimar: {
+    Skilled: ["skill.dip", "skill.per"],
+    "Celestial Resistance": ["eres.acid", "eres.cold", "eres.electricity"],
+    Darkvision: ["sensedv"],
+  },
+  Tiefling: {
+    Skilled: ["skill.blf", "skill.ste"],
+    "Fiendish Resistance": ["eres.cold", "eres.electricity", "eres.fire"],
+    Darkvision: ["sensedv"],
+  },
+  Dhampir: {
+    Manipulative: ["skill.blf", "skill.per"],
+    Darkvision: ["sensedv"],
+    "Low-Light Vision": ["sensell"],
+  },
+  Kitsune: {
+    Agile: ["skill.acr"],
+    "Ability Score Modifiers": ["cha", "dex", "str"],
+    "Low-Light Vision": ["sensell"],
+  },
+  Ratfolk: {
+    Tinker: ["skill.per", "skill.umd"],
+    Darkvision: ["sensedv"],
+  },
+  Tengu: {
+    Sneaky: ["skill.per", "skill.ste"],
+    "Gifted Linguist": ["skill.lin"],
+    "Low-Light Vision": ["sensell"],
+  },
+};
+
+/**
+ * The `Race.changes` targets a picked vendored alternate suppresses for
+ * `raceName`, per the verified mapping above — empty for an unmapped race or
+ * an alternate that only replaces prose traits.
+ *
+ * One inference beyond `replacedTraitNames`: heritage-variant "Skilled (...)"
+ * entries ship with an EMPTY `replacedTraitNames` (the pack models a heritage
+ * as a Base Statistics + Skilled + Spell-Like Ability bundle, each entry
+ * nameless about what it swaps), but each is by definition that heritage's
+ * replacement for the race's standard Skilled modifiers — so a name starting
+ * with `"Skilled ("` (and the dhampir pack's `"Alternate Skill Modifiers"`
+ * spelling, which DOES carry `replacedTraitNames`) suppresses the standard
+ * Skilled/Manipulative targets. Without this, picking a heritage's Skilled
+ * variant double-counts both skill pairs.
+ */
+export function vendoredTraitSuppressTargets(
+  trait: { name: string; replacedTraitNames: string[] },
+  raceName: string,
+): string[] {
+  const raceMap = VENDORED_STANDARD_TRAIT_TARGETS[raceName];
+  if (!raceMap) return [];
+  const replaced =
+    trait.replacedTraitNames.length > 0
+      ? trait.replacedTraitNames
+      : trait.name.startsWith("Skilled (")
+        ? ["Skilled"]
+        : [];
+  return replaced.flatMap((name) => [...(raceMap[name] ?? [])]);
+}

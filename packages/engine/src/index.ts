@@ -140,6 +140,8 @@ export {
   raceHasSlowAndSteady,
   slowAndSteadySuppressedBy,
   SLOW_AND_STEADY_SUPPRESS_TARGET,
+  VENDORED_STANDARD_TRAIT_TARGETS,
+  vendoredTraitSuppressTargets,
   type AlternateRacialTrait,
   type RacialTraitResourcePool,
 } from "./racial-traits.js";

@@ -28,7 +28,7 @@ import { OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
-import { RACIAL_TRAITS } from "./racial-traits.js";
+import { RACIAL_TRAITS, vendoredTraitSuppressTargets } from "./racial-traits.js";
 import { resolveInvestigatorTalent } from "./investigator-talents.js";
 import { resolveNinjaTrick } from "./ninja-tricks.js";
 import { resolveRagePower } from "./rage-powers.js";
@@ -175,6 +175,16 @@ export function collectModifiers(
     for (const t of activeRacialTraits) {
       for (const target of t.suppressTargets ?? []) suppressed.add(target);
     }
+    // Vendored alternates suppress too, where the replaced standard trait has
+    // a hand-verified target mapping (`VENDORED_STANDARD_TRAIT_TARGETS` — the
+    // featured races; unmapped races/names fall through to the historical
+    // "apply on top" posture documented on the loop below).
+    const activeVendoredTraits = (doc.build.vendoredRacialTraits ?? [])
+      .map((id) => refData.racialTraits[id])
+      .filter((t): t is NonNullable<typeof t> => t != null && t.race.includes(race.name));
+    for (const t of activeVendoredTraits) {
+      for (const target of vendoredTraitSuppressTargets(t, race.name)) suppressed.add(target);
+    }
 
     for (const ch of race.changes) {
       if (suppressed.has(ch.target)) continue;
@@ -199,17 +209,17 @@ export function collectModifiers(
     }
 
     // Vendored alternate racial traits (issue #74) — the ~80-race
-    // `RefData.racialTraits` catalog. Unlike the hand-authored table above,
-    // these never suppress a standard `Race.change`: the source only names
-    // WHAT they replace, not a verified mapping to specific `Race.changes`/
-    // `contextNotes` entries, so suppressing here would risk dropping the
-    // wrong thing on an unaudited entry (see `RacialTrait`'s doc comment in
-    // `@pf1/schema`). The model layer excludes any vendored entry whose name
-    // already matches a hand-authored one for the character's race, so this
-    // never double-grants the SAME trait's bonus twice.
-    for (const id of doc.build.vendoredRacialTraits ?? []) {
-      const t = refData.racialTraits[id];
-      if (!t || !t.race.includes(race.name)) continue;
+    // `RefData.racialTraits` catalog. For the featured races with a verified
+    // `VENDORED_STANDARD_TRAIT_TARGETS` mapping, the replaced standard
+    // trait's structured bonus was already suppressed above; everywhere else
+    // the source only names WHAT it replaces, not a verified mapping to
+    // specific `Race.changes`/`contextNotes` entries, so these apply on top
+    // rather than risk dropping the wrong thing on an unaudited entry (see
+    // `RacialTrait`'s doc comment in `@pf1/schema`). The model layer excludes
+    // any vendored entry whose name already matches a hand-authored one for
+    // the character's race, so this never double-grants the SAME trait's
+    // bonus twice.
+    for (const t of activeVendoredTraits) {
       for (const ch of t.changes) {
         evalChange(ch.formula, rollData, ch.target, ch.type, t.name, t.id, out, ch.operator);
       }
@@ -217,7 +227,7 @@ export function collectModifiers(
       // applies only once the player has named a target, positionally, in
       // `build.vendoredRacialTraitTargets`. An unfilled slot grants nothing
       // rather than guessing a target — the picker flags it instead.
-      const chosenTargets = doc.build.vendoredRacialTraitTargets?.[id] ?? [];
+      const chosenTargets = doc.build.vendoredRacialTraitTargets?.[t.id] ?? [];
       for (const [i, ch] of (t.openChanges ?? []).entries()) {
         const target = chosenTargets[i];
         if (!target) continue;
