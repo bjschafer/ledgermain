@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import type { CharacterDoc } from "@pf1/schema";
+import type { CharacterDoc, WeaponInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { compute, RAGE_POWERS } from "../src/index.js";
@@ -293,5 +293,159 @@ describe("rage-power while-raging buff gate (issue #75)", () => {
       // sources target entirely different things (skills/speed vs. Will).
       expect(sheetWithPowers.saves.will.total).toBe(sheetWithoutPowers.saves.will.total);
     });
+  });
+});
+
+/**
+ * Fixture coverage for the #74 parity-sweep batch-1 (A-F) promotions added
+ * alongside the original issue #75 three (see `rage-powers.ts`'s doc
+ * comment for the full per-power promotion rationale). Beast Totem,
+ * Celestial Blood, Chaos Totem, Draconic Blood, and Earth Totem use the same
+ * while-raging `activeWhenBuff` gate as Raging Climber/Swimmer/Swift Foot;
+ * the three Linnorm Death Curses are a NEW shape — a flat damage bonus
+ * verified as unconditional (not scoped to "while raging" at all), so they
+ * carry a plain ungated `Change`.
+ */
+describe("#74 parity sweep batch 1 (A-F): newly promoted rage powers", () => {
+  function raceId(name: string): string {
+    const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  function makeDoc(over: {
+    level: number;
+    ragePowers?: string[];
+    activeBuffs?: CharacterDoc["live"]["activeBuffs"];
+    weapons?: WeaponInstance[];
+  }): CharacterDoc {
+    return {
+      schemaVersion: 1,
+      id: "test",
+      ownerId: "owner",
+      version: 1,
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      identity: {
+        name: "Test",
+        race: raceId("Human"),
+        classes: [{ tag: "barbarian", level: over.level }],
+      },
+      abilities: { str: 16, dex: 12, con: 14, int: 10, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        ragePowers: over.ragePowers,
+        weapons: over.weapons,
+      },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        activeBuffs: over.activeBuffs ?? [],
+        resources: {},
+      },
+    };
+  }
+
+  function raging(activeBuffs: CharacterDoc["live"]["activeBuffs"] = []) {
+    const rageBuff = buffByName("Rage");
+    return [
+      ...activeBuffs,
+      {
+        instanceId: "rage-1",
+        buffId: rageBuff.id,
+        name: rageBuff.name,
+        changes: rageBuff.changes,
+      },
+    ];
+  }
+
+  it("Beast Totem: +1 natural armor at 6th, +2 at 10th, only while raging", () => {
+    const l6 = compute(
+      makeDoc({ level: 6, ragePowers: ["beastTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    const l6Baseline = compute(makeDoc({ level: 6, activeBuffs: raging() }), ref);
+    expect(l6.ac.normal - l6Baseline.ac.normal).toBe(1);
+
+    const l10 = compute(
+      makeDoc({ level: 10, ragePowers: ["beastTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    const l10Baseline = compute(makeDoc({ level: 10, activeBuffs: raging() }), ref);
+    expect(l10.ac.normal - l10Baseline.ac.normal).toBe(2);
+
+    const notRaging = compute(makeDoc({ level: 10, ragePowers: ["beastTotem"] }), ref);
+    const notRagingBaseline = compute(makeDoc({ level: 10 }), ref);
+    expect(notRaging.ac.normal).toBe(notRagingBaseline.ac.normal);
+  });
+
+  it("Celestial Blood: resistance 5 to acid and cold while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 6, ragePowers: ["celestialBlood"], activeBuffs: raging() }),
+      ref,
+    );
+    const acid = sheet.defenses?.resistances.find((r) => r.qualifier === "acid");
+    const cold = sheet.defenses?.resistances.find((r) => r.qualifier === "cold");
+    expect(acid?.total).toBe(5);
+    expect(cold?.total).toBe(5);
+
+    const notRaging = compute(makeDoc({ level: 6, ragePowers: ["celestialBlood"] }), ref);
+    expect(notRaging.defenses?.resistances.find((r) => r.qualifier === "acid")).toBeUndefined();
+  });
+
+  it("Chaos Totem: +4 Escape Artist while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 6, ragePowers: ["chaosTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    const baseline = compute(makeDoc({ level: 6, activeBuffs: raging() }), ref);
+    expect(sheet.skills["esc"]!.total - baseline.skills["esc"]!.total).toBe(4);
+
+    const notRaging = compute(makeDoc({ level: 6, ragePowers: ["chaosTotem"] }), ref);
+    const notRagingBaseline = compute(makeDoc({ level: 6 }), ref);
+    expect(notRaging.skills["esc"]!.total).toBe(notRagingBaseline.skills["esc"]!.total);
+  });
+
+  it("Draconic Blood: +1 natural armor while raging only (energy resistance is a player choice, not modeled)", () => {
+    const sheet = compute(
+      makeDoc({ level: 6, ragePowers: ["draconicBlood"], activeBuffs: raging() }),
+      ref,
+    );
+    const baseline = compute(makeDoc({ level: 6, activeBuffs: raging() }), ref);
+    expect(sheet.ac.normal - baseline.ac.normal).toBe(1);
+  });
+
+  it("Earth Totem: burrow speed 20 ft. while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 6, ragePowers: ["earthTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.speeds.burrow).toBe(20);
+
+    const notRaging = compute(makeDoc({ level: 6, ragePowers: ["earthTotem"] }), ref);
+    expect(notRaging.speeds.burrow ?? 0).toBe(0);
+  });
+
+  it("Crag Linnorm Death Curse: +1 melee weapon damage, UNCONDITIONAL (no rage-buff gate)", () => {
+    expect(RAGE_POWERS.cragLinnormDeathCurse!.changes[0]!.activeWhenBuff).toBeUndefined();
+    const sword: WeaponInstance = { name: "Longsword", category: "melee", attackAbility: "str" };
+    const sheet = compute(
+      makeDoc({ level: 4, ragePowers: ["cragLinnormDeathCurse"], weapons: [sword] }),
+      ref,
+    );
+    const baseline = compute(makeDoc({ level: 4, weapons: [sword] }), ref);
+    // Not raging at all — the bonus still applies, unlike every gated entry above.
+    expect(sheet.attacks[0]!.damageBonus.total - baseline.attacks[0]!.damageBonus.total).toBe(1);
+  });
+
+  it("Cairn/Fjord Linnorm Death Curse also carry ungated +1 mwdamage Changes", () => {
+    for (const id of ["cairnLinnormDeathCurse", "fjordLinnormDeathCurse"]) {
+      const power = RAGE_POWERS[id]!;
+      expect(power.displayOnly).toBe(false);
+      expect(power.changes).toEqual([{ formula: "1", target: "mwdamage", type: "untyped" }]);
+    }
   });
 });

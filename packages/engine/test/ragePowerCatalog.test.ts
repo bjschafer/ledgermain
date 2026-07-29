@@ -29,7 +29,7 @@ describe("mergedRagePowerCatalog", () => {
     expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("all 29 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+  it("all 99 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
     let matched = 0;
     for (const id of RAGE_POWER_IDS) {
       const entry = byId.get(id);
@@ -41,7 +41,7 @@ describe("mergedRagePowerCatalog", () => {
       expect(entry!.description).toBeDefined();
       matched++;
     }
-    expect(matched).toBe(29);
+    expect(matched).toBe(99);
   });
 
   it("a vendored-only entry (no hand-authored counterpart) resolves display-only with its own id + prose", () => {

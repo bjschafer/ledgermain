@@ -9,11 +9,14 @@ import { collectGrantedFeatures, compute, RAGE_POWER_IDS, RAGE_POWERS } from "..
  * Fixture coverage for the rage-power table + picker plumbing (issue #65/#67).
  * Most entries are `displayOnly` (see `rage-powers.ts`'s doc comment); a
  * small set (Raging Climber, Raging Swimmer, Swift Foot) was promoted to a
- * real buff-gated `Change` by issue #75 — see `rageBuffGate.test.ts` for
- * that mechanism's dedicated fixture coverage (raging vs. not, typed
- * stacking). These tests cover: table shape/count, shared-editions
- * availability, gating on barbarian levels (either edition) in
- * `collectGrantedFeatures`, and that picked powers surface on
+ * real buff-gated `Change` by issue #75, and a further set by the #74
+ * parity-sweep batch-1 (A-F) pass (Beast Totem, Celestial Blood, Chaos
+ * Totem, Draconic Blood, Earth Totem, plus the three Linnorm Death Curses'
+ * UNCONDITIONAL — not rage-gated — damage Changes) — see
+ * `rageBuffGate.test.ts` for that mechanism's dedicated fixture coverage
+ * (raging vs. not, typed stacking). These tests cover: table shape/count,
+ * shared-editions availability, gating on barbarian levels (either edition)
+ * in `collectGrantedFeatures`, and that picked powers surface on
  * `DerivedSheet.classFeatures` with a "Rage Power" origin label.
  */
 const ref = loadRefData();
@@ -54,12 +57,25 @@ function makeDoc(over: { classTag: string; level: number; ragePowers?: string[] 
   };
 }
 
-// Promoted by issue #75 to a real buff-gated Change — see rageBuffGate.test.ts.
-const PROMOTED_IDS = new Set(["ragingClimber", "ragingSwimmer", "swiftFoot"]);
+// Promoted by issue #75 (while-raging buff gate) or the #74 parity-sweep
+// batch-1 (A-F) pass — see rageBuffGate.test.ts.
+const PROMOTED_IDS = new Set([
+  "ragingClimber",
+  "ragingSwimmer",
+  "swiftFoot",
+  "beastTotem",
+  "celestialBlood",
+  "chaosTotem",
+  "draconicBlood",
+  "earthTotem",
+  "cairnLinnormDeathCurse",
+  "cragLinnormDeathCurse",
+  "fjordLinnormDeathCurse",
+]);
 
 describe("RAGE_POWERS table", () => {
-  it("has 29 entries, every one available to both editions; every entry is displayOnly with no changes EXCEPT the three issue #75 promotions", () => {
-    expect(RAGE_POWER_IDS).toHaveLength(29);
+  it("has 99 entries, every one available to both editions; every entry is displayOnly with no changes EXCEPT the promoted set", () => {
+    expect(RAGE_POWER_IDS).toHaveLength(99);
     for (const id of RAGE_POWER_IDS) {
       const power = RAGE_POWERS[id]!;
       if (PROMOTED_IDS.has(id)) {
