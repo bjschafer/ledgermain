@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-28-every-pick-list-written-up",
+    date: "2026-07-28",
+    title: "The five big pick lists, fully written up",
+    note: "Witch hexes, magus arcana, arcanist exploits, rogue talents, and alchemist discoveries are now complete: every published entry — over 600 across the five lists — has a proper write-up, a level requirement that's flagged when you're not there yet, and notes on prerequisites and activation costs, instead of a wall of raw rules text. Along the way, everything that could honestly be automatic became so. A dozen rogue talents that grant a specific feat (Finesse Rogue's Weapon Finesse, Strong Impression's Intimidating Prowess, Unbalancing Trick's Improved Trip, and friends) now add it to your sheet themselves, and Stony Skin's DR 2/adamantine meets incoming damage for real. For alchemists, Awakened Intellect raises your Intelligence, Chameleon and Webbed Extremities boost Stealth and Swim, Pheromones lifts your social skills, and Mummification's cold, paralysis, and sleep immunities all land on the sheet. The witch's Iceplant hex applies its natural armor too. Rogue talents also now say which list they belong to — chained, unchained, or both.",
+  },
+  {
     id: "2026-07-28-more-picks-move-real-numbers",
     date: "2026-07-28",
     title: "More of your picks move real numbers",

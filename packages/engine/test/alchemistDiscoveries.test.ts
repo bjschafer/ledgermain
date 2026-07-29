@@ -1,9 +1,10 @@
 /**
- * Hand-computed fixture tests for alchemist discoveries (issue #65). Every
- * discovery in `ALCHEMIST_DISCOVERIES` is `displayOnly` with `changes: []`
- * (see that file's doc comment), so `collectModifiers` should never emit a
- * numeric modifier for one. What IS exercised: gating on actual alchemist
- * levels, unknown-id tolerance, and surfacing picked discoveries through
+ * Hand-computed fixture tests for alchemist discoveries (issue #65; full
+ * vendored parity since the #74 Phase 5 extension). Nearly every discovery
+ * in `ALCHEMIST_DISCOVERIES` is `displayOnly` with `changes: []` (see that
+ * file's doc comment) — the five always-on promotions have cited fixtures
+ * below. Also exercised: gating on actual alchemist levels, unknown-id
+ * tolerance, and surfacing picked discoveries through
  * `collectGrantedFeatures`/`resolveClassFeatures` — same pattern as
  * `magusArcana.test.ts`.
  */
@@ -72,14 +73,22 @@ function discoveryFeatureNames(doc: CharacterDoc): string[] {
 }
 
 describe("ALCHEMIST_DISCOVERIES table", () => {
-  it("no discovery carries unconditional changes; Cognatogen alone isn't displayOnly", () => {
+  it("only the five Phase 5 promotions carry unconditional changes; Cognatogen alone is modeled without them", () => {
+    const withChanges: string[] = [];
     for (const id of ALCHEMIST_DISCOVERY_IDS) {
       const discovery = ALCHEMIST_DISCOVERIES[id]!;
-      expect(discovery.changes).toEqual([]);
-      // Cognatogen's mechanics ride toggleable buffs, not `changes` — it's
-      // the one entry the picker's "M" badge should mark as modeled.
-      expect(discovery.displayOnly).toBe(id !== "cognatogen");
+      if (discovery.changes.length > 0) withChanges.push(id);
+      // Cognatogen's mechanics ride toggleable buffs, not `changes` — it and
+      // the changes[] promotions are what the picker's "M" badge marks.
+      expect(discovery.displayOnly).toBe(id !== "cognatogen" && discovery.changes.length === 0);
     }
+    expect(withChanges.sort()).toEqual([
+      "awakenedIntellect",
+      "chameleon",
+      "mummification",
+      "pheromones",
+      "webbedExtremities",
+    ]);
   });
 
   it("includes well-known APG entries", () => {
@@ -94,8 +103,8 @@ describe("ALCHEMIST_DISCOVERIES table", () => {
     expect(ALCHEMIST_DISCOVERIES.grandCognatogen?.minLevel).toBe(16);
   });
 
-  it("covers 41 discoveries (29 APG core + 10 selected UM + 2 selected UC)", () => {
-    expect(ALCHEMIST_DISCOVERY_IDS.length).toBe(41);
+  it("covers the full 168-entry vendored catalog (issue #74 Phase 5 parity)", () => {
+    expect(ALCHEMIST_DISCOVERY_IDS.length).toBe(168);
   });
 
   it("every entry has a minLevel of at least 2 (no discovery before 2nd level)", () => {
@@ -117,6 +126,64 @@ describe("alchemist discoveries (collectModifiers)", () => {
     const doc = makeAlchemist(6, ["not-a-real-discovery"]);
     const rollData = buildRollData(doc, ref);
     expect(() => collectModifiers(doc, ref, rollData)).not.toThrow();
+  });
+
+  it("Chameleon (Advanced Race Guide): +4 enhancement to Stealth, +8 from alchemist 10th", () => {
+    const at6 = collectModifiers(
+      makeAlchemist(6, ["chameleon"]),
+      ref,
+      buildRollData(makeAlchemist(6, ["chameleon"]), ref),
+    );
+    const mod6 = at6.find((m) => m.sourceId === "chameleon");
+    expect(mod6?.target).toBe("skill.ste");
+    expect(mod6?.value).toBe(4);
+    const doc10 = makeAlchemist(10, ["chameleon"]);
+    const mod10 = collectModifiers(doc10, ref, buildRollData(doc10, ref)).find(
+      (m) => m.sourceId === "chameleon",
+    );
+    expect(mod10?.value).toBe(8);
+  });
+
+  it("Pheromones (Ultimate Wilderness): permanent +3 competence to Bluff, Diplomacy, Intimidate", () => {
+    const doc = makeAlchemist(6, ["pheromones"]);
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref)).filter(
+      (m) => m.sourceId === "pheromones",
+    );
+    expect(mods.map((m) => [m.target, m.value]).sort()).toEqual([
+      ["skill.blf", 3],
+      ["skill.dip", 3],
+      ["skill.int", 3],
+    ]);
+    for (const m of mods) expect(m.type).toBe("competence");
+  });
+
+  it("Webbed Extremities (Pathfinder #123): +4 alchemical to Swim", () => {
+    const doc = makeAlchemist(4, ["webbedExtremities"]);
+    const mod = collectModifiers(doc, ref, buildRollData(doc, ref)).find(
+      (m) => m.sourceId === "webbedExtremities",
+    );
+    expect(mod?.target).toBe("skill.swm");
+    expect(mod?.value).toBe(4);
+    expect(mod?.type).toBe("alchemical");
+  });
+
+  it("Awakened Intellect (APG grand discovery): permanent +2 Intelligence", () => {
+    const doc = makeAlchemist(20, ["awakenedIntellect"]);
+    const mod = collectModifiers(doc, ref, buildRollData(doc, ref)).find(
+      (m) => m.sourceId === "awakenedIntellect",
+    );
+    expect(mod?.target).toBe("int");
+    expect(mod?.value).toBe(2);
+    expect(ALCHEMIST_DISCOVERIES.awakenedIntellect!.minLevel).toBe(20);
+  });
+
+  it("Mummification (Ultimate Magic): cold immunity + paralysis/sleep effect immunities on the sheet", () => {
+    const doc = makeAlchemist(10, ["mummification"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.immunities?.some((i) => i.qualifier === "cold")).toBe(true);
+    const slugs = sheet.defenses?.effectImmunities?.map((e) => e.qualifier) ?? [];
+    expect(slugs).toContain("paralysis");
+    expect(slugs).toContain("sleep");
   });
 
   it("a non-alchemist with a stale alchemistDiscoveries field gets nothing (gated on class level)", () => {

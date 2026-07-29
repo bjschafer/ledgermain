@@ -37,11 +37,18 @@ describe("mergedAlchemistDiscoveryCatalog", () => {
       expect(entry!.description).toBeDefined();
       matched++;
     }
-    expect(matched).toBe(41);
+    expect(matched).toBe(168);
   });
 
-  it("a vendored-only entry (no hand-authored counterpart) resolves display-only with its own id + prose + category", () => {
-    const entry = byId.get("dread_bomb")!;
+  it("no vendored-only discoveries remain — the fallback path only exists for a future data bump", () => {
+    // Full hand-table parity as of the #74 Phase 5 extension.
+    for (const entry of merged) {
+      expect(ALCHEMIST_DISCOVERIES[entry.id], entry.id).toBeDefined();
+    }
+  });
+
+  it("a hand-authored entry carries the vendored prose + category for display", () => {
+    const entry = byId.get("dreadBomb")!;
     expect(entry.displayOnly).toBe(true);
     expect(entry.changes).toEqual([]);
     expect(entry.category).toBe("Primary Bomb Discoveries");
