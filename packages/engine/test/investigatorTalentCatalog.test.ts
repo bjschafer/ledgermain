@@ -10,8 +10,9 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the investigator-talent vendored-catalog overlay (issue #74) — mirrors
- * `ragePowerCatalog.test.ts`'s pattern.
+ * Coverage for the investigator-talent vendored-catalog overlay (issue #74,
+ * full vendored-catalog parity) — mirrors `witchHexCatalog.test.ts`'s
+ * pattern.
  */
 const ref = loadRefData();
 
@@ -19,11 +20,11 @@ describe("mergedInvestigatorTalentCatalog", () => {
   const merged = mergedInvestigatorTalentCatalog(ref);
   const byId = new Map(merged.map((t) => [t.id, t]));
 
-  it("has exactly one row per vendored entry — every hand-authored entry matched, no orphan to append", () => {
+  it("has exactly one row per vendored entry — all 67 hand-authored entries matched", () => {
     expect(merged).toHaveLength(Object.keys(ref.investigatorTalents).length);
   });
 
-  it("all 28 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+  it("all 67 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
     let matched = 0;
     for (const id of INVESTIGATOR_TALENT_IDS) {
       const entry = byId.get(id);
@@ -33,18 +34,14 @@ describe("mergedInvestigatorTalentCatalog", () => {
       expect(entry!.description).toBeDefined();
       matched++;
     }
-    expect(matched).toBe(28);
+    expect(matched).toBe(67);
   });
 
-  it("a vendored-only entry resolves display-only with its own id + prose, bucketed by the source's own category label", () => {
-    // Not a hand-authored entry: any studied-strike-labeled vendored-only talent.
-    const entry = [...byId.values()].find(
-      (t) => t.vendorCategory === "Other Studied Strike Talents",
-    )!;
-    expect(entry).toBeDefined();
-    expect(entry.category).toBe("studiedStrike");
-    expect(entry.displayOnly).toBe(true);
-    expect(entry.changes).toEqual([]);
+  it("no vendored-only entries remain — the fallback path only exists for a future data bump", () => {
+    // Full hand-table parity as of issue #74.
+    for (const entry of merged) {
+      expect(INVESTIGATOR_TALENTS[entry.id], entry.id).toBeDefined();
+    }
   });
 
   it("every id is unique", () => {
@@ -59,7 +56,7 @@ describe("resolveInvestigatorTalent", () => {
     expect(talent).toBe(INVESTIGATOR_TALENTS.blindingStrike);
   });
 
-  it("falls back to the vendored catalog for a vendored-only id", () => {
+  it("falls back to the vendored catalog for the vendored snake_case id (not indexed under that string in the hand table, even though the name now matches)", () => {
     const talent = resolveInvestigatorTalent("domino_effect", ref);
     expect(talent?.displayOnly).toBe(true);
     expect(talent?.name).toBe("Domino Effect");

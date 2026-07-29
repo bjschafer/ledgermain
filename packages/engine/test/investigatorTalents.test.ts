@@ -82,8 +82,8 @@ describe("INVESTIGATOR_TALENTS table", () => {
     }
   });
 
-  it("covers the 28 core ACG investigator talents", () => {
-    expect(INVESTIGATOR_TALENT_IDS.length).toBe(28);
+  it("covers the full 67-entry vendored investigator talent catalog (issue #74)", () => {
+    expect(INVESTIGATOR_TALENT_IDS.length).toBe(67);
   });
 
   it("includes well-known talents, tagged where they ride Studied Strike", () => {
