@@ -357,3 +357,60 @@ describe("Kineticist class-feature grants (classFeatures list via compute)", () 
     expect(() => compute(doc, ref)).not.toThrow();
   });
 });
+
+/**
+ * The promoted wild-talent set (`KineticistWildTalentDef.changes`, applied by
+ * collect.ts's wild-talent loop). Clockwork Heart is the first — RAW (Heroes
+ * of Golarion p.27, aonprd.com KineticistTalentsDisplay): "While these
+ * clockwork components are kept wound ... they gain the benefits of both
+ * Improved Initiative and Lightning Reflexes feats" — +4 initiative, +2
+ * Reflex.
+ */
+describe("promoted wild talents (changes[] via collect.ts)", () => {
+  it("Clockwork Heart grants +4 initiative and +2 Reflex", () => {
+    const withTalent = compute(
+      makeDoc(6, {
+        kineticistElement: "earth",
+        kineticistWildTalents: ["earth:clockworkHeart"],
+      }),
+      ref,
+    );
+    const baseline = compute(makeDoc(6, { kineticistElement: "earth" }), ref);
+    expect(withTalent.initiative.total).toBe(baseline.initiative.total + 4);
+    expect(withTalent.saves.ref.total).toBe(baseline.saves.ref.total + 2);
+    const comp = withTalent.initiative.components.find((c) => c.source === "Clockwork Heart");
+    expect(comp?.value).toBe(4);
+    expect(comp?.applied).toBe(true);
+  });
+
+  it("a display-only wild talent contributes no numeric modifier", () => {
+    const withTalent = compute(
+      makeDoc(6, {
+        kineticistElement: "earth",
+        kineticistWildTalents: ["earth:earthWalk", "earth:kineticCover"],
+      }),
+      ref,
+    );
+    const baseline = compute(makeDoc(6, { kineticistElement: "earth" }), ref);
+    expect(withTalent.initiative.total).toBe(baseline.initiative.total);
+    expect(withTalent.saves.ref.total).toBe(baseline.saves.ref.total);
+  });
+
+  it("a stale pick on a non-kineticist gets nothing", () => {
+    const doc = makeDoc(6, {
+      kineticistElement: "earth",
+      kineticistWildTalents: ["earth:clockworkHeart"],
+    });
+    const fighter: CharacterDoc = {
+      ...doc,
+      identity: { ...doc.identity, classes: [{ tag: "fighter", level: 6 }] },
+    };
+    const sheet = compute(fighter, ref);
+    const baseline = compute(
+      { ...fighter, build: { ...fighter.build, kineticistWildTalents: [] } },
+      ref,
+    );
+    expect(sheet.initiative.total).toBe(baseline.initiative.total);
+    expect(sheet.saves.ref.total).toBe(baseline.saves.ref.total);
+  });
+});

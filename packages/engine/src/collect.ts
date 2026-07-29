@@ -22,6 +22,7 @@ import { featNameSlug } from "./feat-effects.js";
 import { resolveFeatEffect } from "./feat-effects-resolve.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { ITEM_CHANGE_PATCHES } from "./item-effects.js";
+import { resolveKineticistWildTalent } from "./kineticist-wild-talents.js";
 import { resolveMagusArcanum } from "./magus-arcana.js";
 import { mediumSpiritBonus, MEDIUM_SPIRITS } from "./medium-spirits.js";
 import { OCCULTIST_SCHOOLS } from "./occultist-implements.js";
@@ -878,6 +879,35 @@ export function collectModifiers(
           ch.type,
           discovery.name,
           discovery.id,
+          out,
+          ch.operator,
+        );
+      }
+    }
+  }
+
+  // --- kineticist wild talents (build choice) -------------------------------
+  // Talent ids resolve through the hand-authored table first, falling back
+  // to the vendored catalog — see `@pf1/engine` `kineticist-wild-talents.ts`
+  // `resolveKineticistWildTalent`. Gated on the character actually having
+  // kineticist levels. Nearly every talent is display-only (activated
+  // abilities with burn/action state — see that file's doc comment); the
+  // promoted set (Clockwork Heart's feat benefits) carries a real
+  // unconditional Change.
+  const kineticistLevel = doc.identity.classes.find((c) => c.tag === "kineticist")?.level ?? 0;
+  if (kineticistLevel > 0) {
+    for (const talentId of doc.build.kineticistWildTalents ?? []) {
+      const talent = resolveKineticistWildTalent(talentId, refData);
+      if (!talent) continue;
+      for (const ch of talent.changes ?? []) {
+        if (!gateOpen(ch)) continue;
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          talent.name,
+          talent.id,
           out,
           ch.operator,
         );

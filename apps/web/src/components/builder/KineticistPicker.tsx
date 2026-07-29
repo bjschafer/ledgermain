@@ -330,7 +330,10 @@ function WildTalentSection({
       }
       rows.push({
         id: talent.id,
-        isModeled: !!KINETICIST_WILD_TALENTS[talent.id],
+        // "M" = moves real numbers (a live changes[]), matching every other
+        // picker's badge semantics — not merely "hand-authored" (level/burn
+        // are tracked for every row regardless).
+        isModeled: (KINETICIST_WILD_TALENTS[talent.id]?.changes?.length ?? 0) > 0,
         elementName,
         name: talent.name,
         nameSuffix: talent.nameSuffix,

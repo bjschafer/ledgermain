@@ -45,11 +45,28 @@
  * not enforced, matching the project's hybrid feat-prereq posture (hard-
  * block only on structured signals this engine actually tracks).
  *
- * Every entry here is `displayOnly: true` (activated abilities spent as a
- * standard/move/swift action with their own save/duration — not a passive
- * always-on bonus a sheet `Change` could safely target), same honesty bar
- * `occultist-implements.ts`'s base/menu focus powers and `witch-hexes.ts`
- * use for their own activated abilities.
+ * Every entry here except the promoted set below is display-only (activated
+ * abilities spent as a standard/move/swift action with their own
+ * save/duration — not a passive always-on bonus a sheet `Change` could
+ * safely target), same honesty bar `occultist-implements.ts`'s base/menu
+ * focus powers and `witch-hexes.ts` use for their own activated abilities.
+ *
+ * The promoted set (a real unconditional `changes[]`, applied by
+ * `collect.ts`'s wild-talent loop — see each entry's RAW citation):
+ *
+ *   - `earth:clockworkHeart` — the benefits of Improved Initiative and
+ *     Lightning Reflexes while the graft stays wound (daily upkeep, kept as
+ *     a contextNotes reminder rather than a live gate).
+ *
+ * Two flagged near-misses stay display-only, so a future pass doesn't
+ * re-litigate them: `earth:earthWalk` (its overflow bonus lands on
+ * CMD-vs-two-maneuvers and balance-scoped Acrobatics — maneuver- and
+ * task-scoped targets this engine doesn't have, the same class of gap as
+ * the save-category near-misses in `oracle-revelations.ts`) and
+ * `fire:firesFury` (adds to blast damage, and blasts aren't rolled by the
+ * sheet at all — no blast weapon model). Both would ALSO need
+ * elemental-overflow state (the bonus scales with burn accepted today),
+ * which nothing models yet; even with it, the scoped-target blockers stand.
  *
  * The vendored catalog overlay at the bottom of this file (issue #74) — see
  * `mergedKineticistWildTalentCatalog` — still exists for completeness (a
@@ -58,7 +75,7 @@
  * table's 7 elements + universal pool cover is now hand-verified.
  */
 
-import type { KineticWildTalent, RefData, SourceRef } from "@pf1/schema";
+import type { Change, ContextNote, KineticWildTalent, RefData, SourceRef } from "@pf1/schema";
 
 export type KineticistWildTalentCategory = "infusion" | "utility";
 export type KineticistInfusionKind = "form" | "substance";
@@ -77,6 +94,15 @@ export interface KineticistWildTalentDef {
   /** Burn cost (0 = no burn, or a RAW "0 or 1"/"variable" cost simplified to its base). */
   burn: number;
   summary: string;
+  /**
+   * Typed modifiers this talent grants unconditionally — empty/omitted for
+   * all but the promoted set (see the file doc comment's honesty-bar
+   * paragraph; Clockwork Heart is the first). Applied by `collect.ts`'s
+   * wild-talent loop.
+   */
+  changes?: Change[];
+  /** Non-mechanical reminders (upkeep, scaling, prerequisites). */
+  contextNotes?: ContextNote[];
 }
 
 /** `level <= 1 ? 1 : 2 * level` — see file doc comment's "LEVEL GATE" section. */
@@ -1259,6 +1285,10 @@ const EARTH_TALENTS: KineticistWildTalentDef[] = [
     element: "earth",
     level: 1,
     burn: 0,
+    // Deliberately display-only: the bonus lands on CMD against two specific
+    // maneuvers and on balance-scoped Acrobatics — scoped targets this
+    // engine doesn't have (see the file doc comment's near-miss paragraph) —
+    // and it scales with elemental overflow, which nothing models either.
     summary:
       "While standing on an earthen surface, ignore difficult terrain from rock, earth, or mud, and add your elemental overflow bonus to CMD against bull rush/trip and to Acrobatics checks to balance.",
   },
@@ -1289,6 +1319,23 @@ const EARTH_TALENTS: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "Requires metal blast; keep clockwork components grafted into your body wound to gain the benefits of both Improved Initiative and Lightning Reflexes.",
+    // RAW (aonprd.com, KineticistTalentsDisplay.aspx?ItemName=Clockwork%20Heart,
+    // Heroes of Golarion p.27): "While these clockwork components are kept
+    // wound ... they gain the benefits of both Improved Initiative and
+    // Lightning Reflexes feats" — +4 initiative and +2 Reflex (both feats are
+    // untyped flat bonuses). The winding upkeep is daily maintenance, not a
+    // per-scene activation, so the numbers apply as always-on with the
+    // upkeep kept as a reminder.
+    changes: [
+      { formula: "4", target: "init", type: "untyped" },
+      { formula: "2", target: "ref", type: "untyped" },
+    ],
+    contextNotes: [
+      {
+        target: "init",
+        text: "Only while the clockwork components are kept wound (the clockwork subtype's winding ability) — lapse the upkeep and both feat benefits stop.",
+      },
+    ],
   },
   {
     slug: "earthChild",
@@ -1600,6 +1647,10 @@ const FIRE_TALENTS: KineticistWildTalentDef[] = [
     element: "fire",
     level: 1,
     burn: 0,
+    // Deliberately display-only: adds to BLAST damage, and blasts aren't
+    // rolled by the sheet at all (no blast weapon model) — plus the bonus is
+    // elemental overflow, which nothing models. See the file doc comment's
+    // near-miss paragraph.
     summary:
       "Add your elemental overflow bonus to fire (and fire-inclusive composite) blast damage; stacks with blasts that already double that bonus.",
   },
