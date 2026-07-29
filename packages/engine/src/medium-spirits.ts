@@ -53,8 +53,9 @@
  *     there is no discrete "ability check" stat anywhere in `DerivedSheet`
  *     (same gap `occultist-implements.ts`'s Glorious Presence documents for
  *     its own ability-check half).
- *   - "<Ability>-BASED skill checks" (Archmage's Int-skills, Hierophant's
- *     Wis-skills, Marshal's Cha-skills) ARE modeled — NOT via a fake
+ *   - "<Ability>-BASED skill checks" (Archmage's Int-skills, Champion's
+ *     Str-skills, Hierophant's Wis-skills, Marshal's Cha-skills) ARE
+ *     modeled — NOT via a fake
  *     `chaSkills`-style group target (confirmed inert: `oracle-curses.ts`
  *     copies a vendored `chaSkills` target verbatim for Wasting curse, but
  *     `compute.ts` never special-cases it, so it silently contributes
@@ -69,6 +70,10 @@
  *   - Flat named stats (Champion's attack/non-spell-damage/Fortitude,
  *     Guardian's AC/Fortitude/Reflex, Trickster's Reflex) map directly to
  *     `attack`/`damage`/`fort`/`ref`/`ac` — all confirmed real targets.
+ *   - Guardian's spirit-bonus text also names "Constitution checks", which
+ *     stays prose-only for the same bare-ability-check reason as above —
+ *     unlike the other four spirits' ability-based-skill half, there is no
+ *     Constitution-keyed skill in `SKILL_ABILITY` for it to fan out to.
  *   - Marshal's "spirit surge rolls" bonus has no modeled target (spirit
  *     surge itself — rolling 1d6/1d8/1d10 onto a failed check at the cost of
  *     1 influence — is an at-the-table die roll this app doesn't simulate,
@@ -89,7 +94,10 @@
  * INFLUENCE PENALTY: each spirit's own "when influence is 3 or more, you
  * suffer this specific penalty" clause (PF1 RAW, "Legendary Spirit" —
  * "Whenever a medium's current amount of influence reaches 3 or more, he
- * takes a penalty based on the spirit he is currently channeling"). Soft,
+ * takes a penalty based on the spirit he is currently channeling"), PLUS
+ * a universal "-2 penalty on initiative checks" the same RAW passage
+ * levies regardless of spirit (every `influencePenaltySummary` below states
+ * this first, ahead of the spirit-specific clause). Soft,
  * prose-only — surfaced by the tracker panel as a warning banner once
  * `live.mediumInfluence >= 3`, never auto-applied as a `Change` (several
  * reference unmodeled stats like Constitution/Wisdom checks; the few that
@@ -218,7 +226,7 @@ const SPIRIT_LIST: MediumSpiritDef[] = [
     seanceBoonSummary:
       "Damaging spells you cast deal an additional 2 points of damage of the spell's own type to each target. Spell damage isn't computed on this sheet — apply manually.",
     influencePenaltySummary:
-      "At 3+ influence: the Spirit Bonus becomes a PENALTY on Strength checks/skills, Constitution checks, attack rolls, and non-spell damage rolls instead.",
+      "At 3+ influence: a further -2 penalty on initiative checks, plus the Spirit Bonus becomes a PENALTY on Strength checks/skills, Constitution checks, attack rolls, and non-spell damage rolls instead.",
     favoredLocations: "Arcane redoubts, areas of unusual magic, libraries, schools",
     taboos:
       "Example: refuse to use or benefit from divine magic; never pass up a real chance to learn something (DC 20+ Knowledge check); always prefer a magical solution over a mundane one.",
@@ -257,12 +265,12 @@ const SPIRIT_LIST: MediumSpiritDef[] = [
     tag: "champion",
     name: "Champion",
     spiritBonusSummary:
-      "Applies to attack rolls, non-spell damage rolls, Strength checks, Strength-based skill checks, and Fortitude saves. Strength checks/skills aren't tracked on this sheet — apply manually.",
-    spiritBonusTargets: [flat("attack"), flat("damage"), flat("fort")],
+      "Applies to attack rolls, non-spell damage rolls, Strength checks, Strength-based skill checks, and Fortitude saves. Strength checks aren't tracked on this sheet — apply manually; Strength-based skills (Climb, Swim) are applied automatically below.",
+    spiritBonusTargets: [flat("attack"), flat("damage"), flat("fort"), abilitySkills("str")],
     seanceBoonSummary: "+2 bonus on all non-spell damage rolls.",
     seanceBoonChange: { target: "damage", value: 2 },
     influencePenaltySummary:
-      "At 3+ influence: the Spirit Bonus becomes a penalty on Intelligence checks/skills, and your effective caster level drops by the bonus's value (minimum 0, no caster-level-boosting benefits while reduced).",
+      "At 3+ influence: a further -2 penalty on initiative checks, plus the Spirit Bonus becomes a penalty on Intelligence checks/skills, and your effective caster level drops by the bonus's value (minimum 0, no caster-level-boosting benefits while reduced).",
     favoredLocations: "Arenas, battlefields, places of violence, practice yards",
     taboos:
       "Example: refuse to use or benefit from arcane magic; fight only with one chosen manufactured weapon; never refuse a legitimate challenge to combat.",
@@ -306,7 +314,7 @@ const SPIRIT_LIST: MediumSpiritDef[] = [
     seanceBoonSummary: "+1 bonus to Combat Maneuver Defense (CMD).",
     seanceBoonChange: { target: "cmd", value: 1 },
     influencePenaltySummary:
-      "At 3+ influence: you must always fight and cast defensively, and take a penalty equal to the bonus's value on all damage rolls.",
+      "At 3+ influence: a further -2 penalty on initiative checks, plus you must always fight and cast defensively, and take a penalty equal to the bonus's value on all damage rolls.",
     favoredLocations: "City walls, forts, gates, keeps",
     taboos:
       "Example: protect others whenever able (breaks if you drop below half your max hp while an ally you could protect is endangered); never speak or use sonic effects; breaks if you become enraged, frightened, or panicked.",
@@ -349,7 +357,7 @@ const SPIRIT_LIST: MediumSpiritDef[] = [
     seanceBoonSummary:
       "Your healing spells and abilities restore an additional 2 hit points to each target (not healing from magic items or fast healing). Healing amounts aren't summed on this sheet — apply manually.",
     influencePenaltySummary:
-      "At 3+ influence: you must deal nonlethal damage whenever possible, and take a penalty equal to the bonus's value on Charisma checks/skills against anyone who doesn't share your faith (except attempts to convert them).",
+      "At 3+ influence: a further -2 penalty on initiative checks, plus you must deal nonlethal damage whenever possible, and take a penalty equal to the bonus's value on Charisma checks/skills against anyone who doesn't share your faith (except attempts to convert them).",
     favoredLocations: "Altars, churches, sacred groves, shrines",
     taboos:
       "Example: never wear metal armor or carry a metal shield; follow a code of conduct matching the spirit's faith (as a paladin or antipaladin); never speak an outright lie, or knowingly withhold the truth when directly asked.",
@@ -393,7 +401,7 @@ const SPIRIT_LIST: MediumSpiritDef[] = [
     seanceBoonSummary:
       "Choose a Séance Boon from any of the other five legends instead of your own; each participant in a shared séance may choose a different boon.",
     influencePenaltySummary:
-      "At 3+ influence: the Spirit Bonus becomes a penalty on Wisdom checks/skills, and you lose the Spirit Bonus and Séance Boon entirely whenever you aren't nominally in charge of the allies present.",
+      "At 3+ influence: a further -2 penalty on initiative checks, plus the Spirit Bonus becomes a penalty on Wisdom checks/skills, and you lose the Spirit Bonus and Séance Boon entirely whenever you aren't nominally in charge of the allies present.",
     favoredLocations: "Council rooms, stages, theaters, throne rooms",
     taboos:
       "Example: never let a fleeing (not regrouping) enemy escape without pursuit; never abandon or sacrifice an ally, including summoned creatures; always seize a genuine chance to spread your (or an ally's) legend.",
@@ -437,7 +445,7 @@ const SPIRIT_LIST: MediumSpiritDef[] = [
     seanceBoonSummary:
       "Choose one skill: gain a +1 bonus on it, and it becomes a class skill for you if it wasn't already. Which skill was chosen isn't tracked on this sheet — apply manually.",
     influencePenaltySummary:
-      "At 3+ influence: you no longer count as an ally for the purposes of others' abilities or as a willing target for spells, touch spells targeting you require a melee touch attack roll (harmless spells skip their save), and you gain no benefit when someone aids another on your behalf.",
+      "At 3+ influence: a further -2 penalty on initiative checks, plus you no longer count as an ally for the purposes of others' abilities or as a willing target for spells, touch spells targeting you require a melee touch attack roll (harmless spells skip their save), and you gain no benefit when someone aids another on your behalf.",
     favoredLocations: "Alleys, mazes, taverns, trap-filled locations",
     taboos:
       "Example: your true identity must stay hidden — breaks the instant anyone (even an ally) sees through a disguise; you can never speak the truth; you must always take the more lucrative of two offers, even if it means switching sides.",

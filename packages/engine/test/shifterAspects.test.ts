@@ -217,6 +217,32 @@ describe("minor-form Change formulas (applied as an active buff)", () => {
       expect(mods.find((m) => m.target === "sensesc")?.value).toBe(expected);
     }
   });
+
+  // Ultimate Wilderness pg. 28: Bat's blindsense grant ("gain blindsense
+  // with a range of 15 feet") only exists at 15th level — 0 below it, same
+  // zero-guard as senses.ts drops for a not-yet-active conditional sense.
+  it("Bat's blindsense is absent below 15th level and 15 ft. at 15th+", () => {
+    const below = withMinorForm(makeShifter(14), "bat");
+    const belowMods = collectModifiers(below, ref, buildRollData(below, ref));
+    expect(belowMods.find((m) => m.target === "sensebse")?.value).toBe(0);
+
+    const at = withMinorForm(makeShifter(15), "bat");
+    const atMods = collectModifiers(at, ref, buildRollData(at, ref));
+    expect(atMods.find((m) => m.target === "sensebse")?.value).toBe(15);
+  });
+
+  // Ultimate Wilderness pg. 34: Wolverine's "1 additional hit point per Hit
+  // Die you have" is flat from 1st level and doesn't scale further at
+  // 8th/15th (only the death threshold and bonus feat do, neither modeled).
+  it("Wolverine's HP bonus equals total Hit Dice, flat at every shifter level", () => {
+    for (const level of [1, 8, 15, 20] as const) {
+      const doc = withMinorForm(makeShifter(level), "wolverine");
+      const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+      const hpMod = mods.find((m) => m.target === "hp");
+      expect(hpMod?.value).toBe(level);
+      expect(hpMod?.type).toBe("untyped");
+    }
+  });
 });
 
 describe("shifter aspects (collectGrantedFeatures / resolveClassFeatures display)", () => {

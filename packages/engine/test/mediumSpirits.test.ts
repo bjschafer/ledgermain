@@ -167,6 +167,24 @@ describe("Champion: attack/damage/Fortitude Spirit Bonus + non-spell-damage Séa
     );
     expect(boonDamageComp?.value).toBe(2);
   });
+
+  // RAW (Occult Adventures, Champion spirit): Spirit Bonus "applies on attack
+  // rolls, non-spell damage rolls, Strength checks, Strength-based skill
+  // checks, and Fortitude saves." Climb and Swim are Strength-based skills
+  // (`SKILL_ABILITY`), so they get the flat bonus the same way Archmage's
+  // Int-skills/Hierophant's Wis-skills/Marshal's Cha-skills do.
+  it("applies to Climb/Swim (Strength-based skills), not Dexterity-based skills", () => {
+    const sheet = compute(makeDoc(6, { mediumSpirit: "champion" }), ref);
+    const bonus = mediumSpiritBonus(6); // 1 + floor(6/4) = 2
+
+    for (const skillId of ["clm", "swm"]) {
+      const comp = sheet.skills[skillId]!.components.find((c) => c.source.includes("Spirit Bonus"));
+      expect(comp?.value).toBe(bonus);
+    }
+    expect(sheet.skills["acr"]!.components.some((c) => c.source.includes("Spirit Bonus"))).toBe(
+      false,
+    );
+  });
 });
 
 describe("Archmage: Intelligence-based skills only (no flat targets)", () => {

@@ -54,13 +54,13 @@
  * in `contextNotes` instead, with `minorFormChanges: []` — same discipline
  * as `witch-hexes.ts`'s Cauldron/Flight/Ward carve-outs.
  *
- * Issue #75 audit: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
- * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
- * changes nothing here. A minor form already IS its own toggleable buff
+ * The buff-gated-changes mechanism (`Change.activeWhenBuff`, built for the
+ * rage powers' "while raging" shape — see `rage-powers.ts`) adds nothing
+ * here: a minor form already IS its own toggleable buff
  * (`model/shifterAspects.ts` copies `minorFormChanges` onto an `ActiveBuff`,
  * which naturally scopes them to while-toggled-on — no gate needed), and the
  * carve-outs above are blocked by target/scope/set-resolution problems, not
- * by the lack of a buff gate. Zero promotions; all stay as documented.
+ * by the lack of a buff gate.
  */
 
 import type { Change, ContextNote, RefData, ShifterAspect, SourceRef } from "@pf1/schema";
@@ -129,12 +129,27 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     id: "bat",
     name: "Bat",
     summary:
-      "Darkvision 60 ft. (90 ft. at 8th/15th; +30 ft. instead if you already have darkvision).",
-    minorFormChanges: [scaledChange("sensedv", "untyped", 60, 90, 90)],
+      "Darkvision 60 ft. (90 ft. at 8th/15th; +30 ft. instead if you already have darkvision). " +
+      "Blindsense 15 ft. at 15th level (+10 ft. instead if you already have blindsense 15 ft.+).",
+    // Ultimate Wilderness pg. 28. Both grants are flat and unconditional
+    // (highest-wins against any other darkvision/blindsense source) — the
+    // ONLY unrepresentable part is each one's "+N ft. instead if you already
+    // have this sense at this range or greater" rider, since grant and rider
+    // differ (max(grant, existing + rider) isn't expressible via the
+    // highest-wins pool or the additive `operator: "add"` convention —
+    // see senses.ts's doc comment).
+    minorFormChanges: [
+      scaledChange("sensedv", "untyped", 60, 90, 90),
+      scaledChange("sensebse", "untyped", 0, 0, 15),
+    ],
     contextNotes: [
       note(
-        "The flat grant applies (senses resolve highest-wins). RAW's rider differs from the grant — '+30 ft. if you already have darkvision with this range or greater' — which is max(grant, existing + 30), a shape neither the highest-wins pool nor the additive `operator: \"add\"` convention (senses.ts) can express; add the 30 ft. by hand. Same for the 15th-level blindsense 15 ft. (+10 ft. rider).",
+        "The flat darkvision grant applies (senses resolve highest-wins). RAW's rider differs from the grant — '+30 ft. if you already have darkvision with this range or greater' — which is max(grant, existing + 30), a shape neither the highest-wins pool nor the additive `operator: \"add\"` convention (senses.ts) can express; add the 30 ft. by hand.",
         "sensedv",
+      ),
+      note(
+        "The flat 15th-level blindsense grant applies the same way. RAW's '+10 ft. if you already have blindsense 15 ft. or greater' rider has the same grant-differs-from-rider shape and isn't applied; add the 10 ft. by hand.",
+        "sensebse",
       ),
     ],
   },
@@ -386,9 +401,17 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     name: "Wolverine",
     summary:
       "+1 hit point per Hit Die; treat Constitution as 4 higher for the negative-HP death threshold. Gain Diehard as a bonus feat at 8th level; treat Constitution as 8 higher at 15th.",
+    // Ultimate Wilderness pg. 34. "1 additional hit point per Hit Die you
+    // have" is flat and unconditional at 1st level (unlike the rest of the
+    // table, it doesn't scale further at 8th/15th — those tiers only touch
+    // the death threshold and the bonus feat). Same `@attributes.hd.total`
+    // roll-data path and untyped-so-it-stacks convention as Toughness
+    // (feat-effects.ts: `max(3, @attributes.hd.total)`); total HD, not
+    // shifter level, per RAW's unqualified "Hit Die you have."
+    minorFormChanges: [{ formula: "@attributes.hd.total", target: "hp", type: "untyped" }],
     contextNotes: [
       note(
-        "Per-Hit-Die HP bonus and death-threshold adjustment — this engine doesn't model an incapacitation/death threshold stat.",
+        "Death-threshold adjustment (Con treated as 4/8 higher for negative-HP death) — this engine doesn't model an incapacitation/death threshold stat.",
       ),
       note("Grants a bonus feat at 8th level — add it to Feats separately.", "bonusFeats"),
     ],
