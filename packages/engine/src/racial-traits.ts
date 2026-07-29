@@ -665,6 +665,30 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
  *     slice), so there is nothing for suppression to drop; alternates that
  *     name it (Daylight Adaptation, Champion of Dark Powers, Poison Minion)
  *     have no numeric effect on SR either way.
+ *   - Skinwalker "Spell-Like Ability (Skinwalker)" / "Change Shape
+ *     (Skinwalker)" (named by every heritage's Alternate Spell-Like Ability /
+ *     Change Shape variant): prose-only, as is the "+2 to one physical
+ *     ability score while shapechanged" rider, which has no structured
+ *     representation at all. The nine "…-Kin" heritage bundles replace "Base
+ *     Statistics" (the rule above), and Beast Talker's `replacedTraitNames`
+ *     is a prose fragment ("alters the change shape and spell-like ability
+ *     racial traits") no name-keyed lookup can match — harmless, since both
+ *     traits it alters are prose-only anyway.
+ *   - Changeling "Claws", "Sea Lungs", "Hulking Changeling", "Green Widow",
+ *     "Hag Trait", and "Hag Racial Trait (Changeling)" (the pack's collective
+ *     name for the baked-in one-of-nine hag heritage trait): all prose-only —
+ *     the base race's structured changes are just abilities + natural armor +
+ *     darkvision.
+ *   - Gathlain "Spell-Like Abilities" / "Spell-Like Ability" / "Feather Step
+ *     Spell-Like Ability": prose-only. The pack names the same standard speed
+ *     trait three different ways ("Racial Fly Speed", "Speed", "Normal Speed
+ *     (Gathlain)"), but all are unreachable regardless: base land/fly speed
+ *     reads off `Race.speeds`, and the alternates' own `set`-operator
+ *     `landSpeed`/`flySpeed` changes already override it in
+ *     `applySpeedTarget`. The one residual wart is Sticky Tendrils, whose
+ *     prose trades flight away entirely but whose vendored changes never
+ *     touch `flySpeed` — a picked Sticky Tendrils gathlain incorrectly keeps
+ *     fly 40 ft., and suppression has no target to fix that with.
  *
  * Two names are intentional aliases for the same real trait rather than
  * separate ones: Drow's "Keen Sight" (named by Ambitious Schemer) is the
@@ -680,6 +704,29 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
  * full replacement (`dex` +2, `wis` +2, `int` -2 in place of `con` +2,
  * `wis` +2, `int` -2) — safe to suppress because there's a genuine
  * replacement landing, not a zeroed-out gap.
+ *
+ * Two more verified full-replacement exceptions of the same shape:
+ *
+ * Changeling's ten "Ability Modifiers (Changeling - <Hag> May)" heritage
+ * entries (Blood of the Coven) each ship a complete three-change ability
+ * array (e.g. Brine May: `dex` +2, `wis` +2, `con` -2) — and they MUST
+ * suppress the base array, because they're typed `untyped` rather than
+ * `racial` and would otherwise sum with it outright (+4 Cha for most Mays)
+ * instead of merely double-displaying. They ship an empty
+ * `replacedTraitNames`, so `vendoredTraitSuppressTargets` infers the
+ * "Ability Score Modifiers" key from the `"Ability Modifiers ("` name prefix
+ * (a Changeling-only naming pattern in this slice), the same way it infers
+ * `"Skilled ("` heritage entries.
+ *
+ * Gathlain's Tree-Born names "Constitution Penalty" + "Speed", but its
+ * vendored bundle is designed as a full ability-array replacement: its own
+ * changes re-supply `cha` +2 and `dex` +2 alongside the speed sets, and its
+ * description note tells the player to remove the base ability modifiers
+ * wholesale. So "Constitution Penalty" maps to the whole base trio
+ * (`cha`/`con`/`dex`) — suppress all three, let the bundle's own pair land,
+ * and the net effect is exactly the published "no Constitution penalty,
+ * slower speeds." Mapping only `con` would instead double-display Cha/Dex
+ * (and double-count Dex, whose replacement is typed `base`, not `racial`).
  */
 export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
   Record<string, Readonly<Record<string, readonly string[]>>>
@@ -759,6 +806,19 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
     "Low-Light Vision": ["sensell"],
     "Ability Scores": ["int", "con", "wis"],
   },
+  Skinwalker: {
+    "Animal-Minded": ["skill.han"],
+  },
+  Changeling: {
+    "Ability Score Modifiers": ["cha", "con", "wis"],
+    "Natural Armor": ["nac"],
+  },
+  Gathlain: {
+    "Natural Armor": ["nac"],
+    "Low-Light Vision": ["sensell"],
+    // Tree-Born's full-replacement bundle — see the module doc comment.
+    "Constitution Penalty": ["cha", "con", "dex"],
+  },
 };
 
 /**
@@ -766,15 +826,20 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
  * `raceName`, per the verified mapping above — empty for an unmapped race or
  * an alternate that only replaces prose traits.
  *
- * One inference beyond `replacedTraitNames`: heritage-variant "Skilled (...)"
- * entries ship with an EMPTY `replacedTraitNames` (the pack models a heritage
- * as a Base Statistics + Skilled + Spell-Like Ability bundle, each entry
- * nameless about what it swaps), but each is by definition that heritage's
- * replacement for the race's standard Skilled modifiers — so a name starting
- * with `"Skilled ("` (and the dhampir pack's `"Alternate Skill Modifiers"`
- * spelling, which DOES carry `replacedTraitNames`) suppresses the standard
- * Skilled/Manipulative targets. Without this, picking a heritage's Skilled
- * variant double-counts both skill pairs.
+ * Two inferences beyond `replacedTraitNames`, both for heritage-variant
+ * entries that ship with an EMPTY `replacedTraitNames` (the pack models a
+ * heritage as a bundle of nameless swaps):
+ *
+ *   - A name starting with `"Skilled ("` (and the dhampir pack's `"Alternate
+ *     Skill Modifiers"` spelling, which DOES carry `replacedTraitNames`) is
+ *     that heritage's replacement for the race's standard Skilled modifiers.
+ *     Without this, picking a heritage's Skilled variant double-counts both
+ *     skill pairs.
+ *   - A name starting with `"Ability Modifiers ("` (the Changeling hag-May
+ *     heritages, this slice's only use of that prefix) is that heritage's
+ *     complete replacement ability array — see the map doc comment for why
+ *     these must suppress (their `untyped` changes would SUM with the base
+ *     `racial` ones).
  */
 export function vendoredTraitSuppressTargets(
   trait: { name: string; replacedTraitNames: string[] },
@@ -787,6 +852,8 @@ export function vendoredTraitSuppressTargets(
       ? trait.replacedTraitNames
       : trait.name.startsWith("Skilled (")
         ? ["Skilled"]
-        : [];
+        : trait.name.startsWith("Ability Modifiers (")
+          ? ["Ability Score Modifiers"]
+          : [];
   return replaced.flatMap((name) => [...(raceMap[name] ?? [])]);
 }

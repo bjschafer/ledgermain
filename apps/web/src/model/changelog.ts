@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-shapechanger-race-trait-swaps",
+    date: "2026-07-29",
+    title: "Skinwalkers, changelings, and gathlains trade traits honestly",
+    note: "The three trickiest races caught up with the other twenty-five: picking an alternate racial trait now retires the standard bonus it replaces. A skinwalker heritage's alternate skill bonuses replace Animal-Minded's Handle Animal bonus instead of stacking on it, a changeling's Witchborn really swaps +2 Wisdom for +2 Intelligence, and a gathlain trading its natural armor loses it. Bigger still: a changeling's hag heritage — Brine May through Waker May — now applies its full ability-score spread for real, replacing the standard one, and the gathlain's Tree-Born drops the Constitution penalty and slows its speeds just like the book says.",
+  },
+  {
     id: "2026-07-29-every-pick-list-written-up",
     date: "2026-07-29",
     title: "Every class pick list is now fully written up",

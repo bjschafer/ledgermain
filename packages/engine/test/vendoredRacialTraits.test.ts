@@ -405,34 +405,32 @@ describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
     expect(withTrait.abilities.int.total).toBe(base.abilities.int.total);
   });
 
-  it("an unmapped race keeps the historical apply-on-top posture (Skinwalker Fanglord)", () => {
-    // Skinwalker has no `VENDORED_STANDARD_TRAIT_TARGETS` entry. Its standard
-    // Animal-Minded grants +2 Handle Animal; the Fanglord heritage's
-    // "Alternate Skill Modifiers" does name `replacedTraitNames: ["Animal-
-    // Minded"]`, but `vendoredTraitSuppressTargets` looks that name up in
-    // `VENDORED_STANDARD_TRAIT_TARGETS["Skinwalker"]`, which doesn't exist —
-    // so the lookup is empty regardless, and its own +2 Acrobatics/+2
-    // Perception stack on top of the untouched Handle Animal bonus, the
-    // historical (pre-Phase-6) posture for every unmapped race.
-    expect(VENDORED_STANDARD_TRAIT_TARGETS["Skinwalker"]).toBeUndefined();
-    const base = compute(makeDoc("Skinwalker"), ref);
-    const withTrait = compute(
-      makeDoc("Skinwalker", [traitId("Alternate Skill Modifiers (Skinwalker - Fanglord)")]),
-      ref,
-    );
-    expect(withTrait.skills["han"]!.total).toBe(base.skills["han"]!.total);
-    expect(withTrait.skills["acr"]!.total).toBe(base.skills["acr"]!.total + 2);
-    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total + 2);
+  it("an unmapped race keeps the historical apply-on-top posture (Duskwalker Fosterling)", () => {
+    // Duskwalker has no `VENDORED_STANDARD_TRAIT_TARGETS` entry. Its standard
+    // Skilled grants +2 Heal/+2 Knowledge (religion); Fosterling does name
+    // `replacedTraitNames: ["Skilled"]`, but `vendoredTraitSuppressTargets`
+    // looks that name up in `VENDORED_STANDARD_TRAIT_TARGETS["Duskwalker"]`,
+    // which doesn't exist — so the lookup is empty regardless, and its own
+    // +2 Handle Animal/+2 Diplomacy stack on top of the untouched standard
+    // bonuses, the historical (pre-Phase-6) posture for every unmapped race.
+    expect(VENDORED_STANDARD_TRAIT_TARGETS["Duskwalker"]).toBeUndefined();
+    const base = compute(makeDoc("Duskwalker"), ref);
+    const withTrait = compute(makeDoc("Duskwalker", [traitId("Fosterling")]), ref);
+    expect(withTrait.skills["hea"]!.total).toBe(base.skills["hea"]!.total);
+    expect(withTrait.skills["han"]!.total).toBe(base.skills["han"]!.total + 2);
+    expect(withTrait.skills["dip"]!.total).toBe(base.skills["dip"]!.total + 2);
   });
 
   it("pins the full set of mapped featured races (issue #74 Phase 6 follow-up)", () => {
     expect(Object.keys(VENDORED_STANDARD_TRAIT_TARGETS).sort()).toEqual([
       "Aasimar",
       "Catfolk",
+      "Changeling",
       "Dhampir",
       "Drow",
       "Duergar",
       "Fetchling",
+      "Gathlain",
       "Goblin",
       "Hobgoblin",
       "Ifrit",
@@ -440,10 +438,90 @@ describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
       "Kobold",
       "Oread",
       "Ratfolk",
+      "Skinwalker",
       "Tengu",
       "Tiefling",
       "Undine",
       "Vine Leshy",
     ]);
+  });
+});
+
+describe("Skinwalker / Changeling / Gathlain suppression (issue #74, messy-race round)", () => {
+  it("Skinwalker Fanglord's Alternate Skill Modifiers retires Animal-Minded's Handle Animal bonus", () => {
+    // Standard Animal-Minded: +2 Handle Animal (the wild-empathy half is
+    // prose). Fanglord's replacement: +2 Acrobatics/+2 Perception.
+    const base = compute(makeDoc("Skinwalker"), ref);
+    expect(base.skills["han"]!.total).toBe(2);
+    const withTrait = compute(
+      makeDoc("Skinwalker", [traitId("Alternate Skill Modifiers (Skinwalker - Fanglord)")]),
+      ref,
+    );
+    expect(withTrait.skills["han"]!.total).toBe(base.skills["han"]!.total - 2);
+    expect(withTrait.skills["acr"]!.total).toBe(base.skills["acr"]!.total + 2);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total + 2);
+  });
+
+  it("Changeling Witchborn swaps the +2 Wis for +2 Int, Cha/Con unchanged", () => {
+    // Standard: Cha +2, Wis +2, Con -2. Witchborn: Int +2, Cha +2, Con -2.
+    const base = compute(makeDoc("Changeling"), ref);
+    const withTrait = compute(makeDoc("Changeling", [traitId("Witchborn")]), ref);
+    expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total - 2);
+    expect(withTrait.abilities.int.total).toBe(base.abilities.int.total + 2);
+    expect(withTrait.abilities.cha.total).toBe(base.abilities.cha.total);
+    expect(withTrait.abilities.con.total).toBe(base.abilities.con.total);
+  });
+
+  it("Changeling Brine May's Ability Modifiers bundle replaces the base array via prefix inference", () => {
+    // "Ability Modifiers (Changeling - Brine May)" ships empty
+    // `replacedTraitNames`; the "Ability Modifiers (" prefix inference maps
+    // it to "Ability Score Modifiers". Standard: Cha +2, Wis +2, Con -2.
+    // Brine May: Dex +2, Wis +2, Con -2 — and its changes are `untyped`, so
+    // WITHOUT suppression they'd sum with the base racial ones (+4 net Wis).
+    const base = compute(makeDoc("Changeling"), ref);
+    const withTrait = compute(
+      makeDoc("Changeling", [traitId("Ability Modifiers (Changeling - Brine May)")]),
+      ref,
+    );
+    expect(withTrait.abilities.cha.total).toBe(base.abilities.cha.total - 2);
+    expect(withTrait.abilities.dex.total).toBe(base.abilities.dex.total + 2);
+    expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total);
+    expect(withTrait.abilities.con.total).toBe(base.abilities.con.total);
+  });
+
+  it("Changeling Hag Magic (ISR) retires the +1 natural armor", () => {
+    const base = compute(makeDoc("Changeling"), ref);
+    const withTrait = compute(makeDoc("Changeling", [traitId("Hag Magic (ISR)")]), ref);
+    expect(withTrait.ac.flatFooted).toBe(base.ac.flatFooted - 1);
+    expect(withTrait.ac.touch).toBe(base.ac.touch);
+  });
+
+  it("Gathlain Photosynthetic Vision trades low-light vision for +2 Perception", () => {
+    const base = compute(makeDoc("Gathlain"), ref);
+    expect(base.senses.some((s) => s.kind === "lowLight")).toBe(true);
+    const withTrait = compute(makeDoc("Gathlain", [traitId("Photosynthetic Vision")]), ref);
+    expect(withTrait.senses.some((s) => s.kind === "lowLight")).toBe(false);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total + 2);
+  });
+
+  it("Gathlain Bower Born retires the +1 natural armor for +2 Diplomacy/Handle Animal", () => {
+    const base = compute(makeDoc("Gathlain"), ref);
+    const withTrait = compute(makeDoc("Gathlain", [traitId("Bower Born")]), ref);
+    expect(withTrait.ac.flatFooted).toBe(base.ac.flatFooted - 1);
+    expect(withTrait.skills["dip"]!.total).toBe(base.skills["dip"]!.total + 2);
+    expect(withTrait.skills["han"]!.total).toBe(base.skills["han"]!.total + 2);
+  });
+
+  it("Gathlain Tree-Born drops the Con penalty, keeps Cha/Dex, and slows both speeds", () => {
+    // The bundle re-supplies Cha +2/Dex +2 itself (see the map doc comment),
+    // so the visible net effect is only "no Con penalty" plus the speed sets.
+    const base = compute(makeDoc("Gathlain"), ref);
+    expect(base.abilities.con.total).toBe(8);
+    const withTrait = compute(makeDoc("Gathlain", [traitId("Tree-Born")]), ref);
+    expect(withTrait.abilities.con.total).toBe(10);
+    expect(withTrait.abilities.cha.total).toBe(base.abilities.cha.total);
+    expect(withTrait.abilities.dex.total).toBe(base.abilities.dex.total);
+    expect(withTrait.speeds.land).toBe(20);
+    expect(withTrait.speeds.fly).toBe(30);
   });
 });
