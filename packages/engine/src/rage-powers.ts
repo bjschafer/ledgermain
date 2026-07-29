@@ -2234,12 +2234,17 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     minLevel: 1,
     summary:
       "While raging, gains darkvision 30 ft., or if she already has darkvision, its range increases by 30 ft.",
-    changes: [{ formula: "30", target: "sensedv", type: "untyped", activeWhenBuff: WHILE_RAGING }],
-    contextNotes: [
-      note(
-        "Darkvision grants resolve highest-source-wins in this engine (senses.ts, mirrored by shifter-aspects.ts's Bat aspect), so a flat 30-ft. Change is safe: it correctly does nothing when a stronger source is already present. What it can't express is the '+30 to darkvision you already have' alternate wording — a character who already has, say, 60 ft. darkvision won't see the extra 30 ft. this power promises; same documented limitation as shifter-aspects.ts's Bat/Wolf entries.",
-        "sensedv",
-      ),
+    // `operator: "add"` extends existing darkvision instead of competing
+    // with it (senses.ts) — "gain 30, or +30 if you already have it" is
+    // exactly `existing + 30`, so both halves of the wording apply for real.
+    changes: [
+      {
+        formula: "30",
+        operator: "add",
+        target: "sensedv",
+        type: "untyped",
+        activeWhenBuff: WHILE_RAGING,
+      },
     ],
   },
   {

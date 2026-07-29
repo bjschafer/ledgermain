@@ -54,9 +54,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Oracle revelations",
-    note: 'Every published mystery\'s full revelation list is pickable, with level requirements enforced softly and each pick showing on your sheet with its write-up. Eleven of them move real numbers now — the always-on ones like Iron Constitution, the elemental-resistance lines, and the energy-skin revelations, marked with an "M" in the picker. The rest are yours to apply at the table.',
+    note: "Every published mystery's full revelation list is pickable, with level requirements enforced softly and each pick showing on your sheet with its write-up. Twelve of them move real numbers now — the always-on ones like Iron Constitution, the elemental-resistance lines, the energy-skin revelations, and both Pierce revelations' darkvision (Pierce the Shadows really adds its 60 feet on top of darkvision you already have), marked with an \"M\" in the picker. The rest are yours to apply at the table.",
     issueDetail:
-      "336 revelations, 11 promoted to live changes[] (metal ironConstitution, elemental elementalResistance, spellscar eldritchResistance + spellResistance, the five energy-Skin revelations incl. their 17th-level damage immunity, streets faceInTheCrowd, dark_tapestry pierceTheVeil). Audited and rejected with reasons recorded inline: save-category-scoped bonuses (nearDeath, mysticNull), player-chosen energy (defyElements), and additive-to-existing darkvision (shadow pierceTheShadows) — the last two blocked on missing engine mechanisms (choose-one grants; additive senses).",
+      '336 revelations, 12 promoted to live changes[] (metal ironConstitution, elemental elementalResistance, spellscar eldritchResistance + spellResistance, the five energy-Skin revelations incl. their 17th-level damage immunity, streets faceInTheCrowd, dark_tapestry pierceTheVeil, shadow pierceTheShadows via senses.ts\'s additive `operator: "add"` convention). Audited and rejected with reasons recorded inline: save-category-scoped bonuses (nearDeath, mysticNull) and player-chosen energy (defyElements, blocked on a choose-one-grant mechanism).',
   },
   {
     category: "Kineticist wild talents",

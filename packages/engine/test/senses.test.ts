@@ -79,6 +79,41 @@ function senseList(doc: CharacterDoc): [string, number | undefined][] {
   return compute(doc, ref).senses.map((s) => [s.kind, s.range]);
 }
 
+describe('additive senses (`operator: "add"` extends the winner — senses.ts)', () => {
+  // A user-authored buff shaped like the "gain darkvision X ft., or +X if
+  // you already have it" wording (Lesser Moon Totem, Pierce the Shadows).
+  const addBuff: ActiveBuff = {
+    instanceId: "inst-add-dv",
+    buffId: "custom-add-dv",
+    name: "Moonlit Eyes",
+    changes: [{ formula: "30", operator: "add", target: "sensedv", type: "untyped" }],
+    casterLevel: 1,
+  };
+
+  it("adds to a race's existing darkvision instead of competing with it", () => {
+    expect(senseList(makeDoc("Dwarf", { buffs: [addBuff] }))).toEqual([["darkvision", 90]]);
+  });
+
+  it("grants the sense outright when nothing else does (0 + 30)", () => {
+    expect(senseList(makeDoc("Human", { buffs: [addBuff] }))).toEqual([["darkvision", 30]]);
+  });
+
+  it("stacks on whichever non-add source wins, not on all of them", () => {
+    // Dwarf 60 vs. Darkvision, Greater 120: winner 120, plus the add's 30.
+    const doc = makeDoc("Dwarf", { buffs: [activeBuff("Darkvision, Greater", 7), addBuff] });
+    expect(senseList(doc)).toEqual([["darkvision", 150]]);
+  });
+
+  it("marks both the winner and every add source as applied", () => {
+    const doc = makeDoc("Dwarf", { buffs: [activeBuff("Darkvision, Greater", 7), addBuff] });
+    const dv = compute(doc, ref).senses.find((s) => s.kind === "darkvision")!;
+    const applied = dv.components.filter((c) => c.applied).map((c) => c.source);
+    expect(applied).toContain("Darkvision, Greater");
+    expect(applied).toContain("Moonlit Eyes");
+    expect(dv.components.find((c) => c.source === "Dwarf")?.applied).toBe(false);
+  });
+});
+
 describe("race senses reach the sheet", () => {
   it("a dwarf has darkvision 60 ft.", () => {
     expect(senseList(makeDoc("Dwarf"))).toEqual([["darkvision", 60]]);

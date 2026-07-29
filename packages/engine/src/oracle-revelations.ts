@@ -71,6 +71,12 @@
  *     landSpeed/flySpeed family's lowest-wins "set" convention, so granting a
  *     flat 60 ft. never regresses a race with better darkvision), plus
  *     perfect darkness sight at 11th (`sensesid`).
+ *   - `shadow:pierceTheShadows` — darkvision via `operator: "add"`
+ *     (senses.ts's additive-sense convention): RAW "gain darkvision 60
+ *     feet; if you already have darkvision, increase your existing
+ *     darkvision by 60 feet instead" is exactly `existing + 60`, so the
+ *     dwarf/tiefling case that once blocked this entry now computes right.
+ *     Perfect darkness sight at 11th (`sensesid`), like pierceTheVeil.
  *
  * Everything else stays deliberately display-only, including several
  * near-misses worth naming so a future pass doesn't re-litigate them:
@@ -88,14 +94,6 @@
  *     here would overstate the bonus onto every save. Identical shape to
  *     `rage-powers.ts`'s Superstition near-miss — see that file's doc
  *     comment.
- *   - `shadow:pierceTheShadows` — RAW: "you gain darkvision 60 feet. If you
- *     already have darkvision, increase your existing darkvision by 60 feet
- *     instead." The `sensedv` target's highest-wins resolution (see
- *     `pierceTheVeil` above) can express "gain 60 ft." but not "add 60 to
- *     whatever you already have" — a race with existing darkvision (dwarf,
- *     tiefling, ...) would be silently capped at 60 instead of getting +60,
- *     understating the ability. A documented blocker class, not an
- *     oversight; stays display-only with a `contextNotes` reminder.
  *
  * Issue #75 audit: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
  * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
@@ -2028,10 +2026,13 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Pierce the Shadows",
       summary:
         "Gain darkvision 60 ft. (or +60 ft. to darkvision you already have). At 11th level, see perfectly in any darkness, including absolute darkness or a deeper darkness spell.",
-      contextNotes: [
-        note(
-          "Not modeled as a sensedv Change (unlike dark_tapestry's Pierce the Veil): RAW adds 60 ft. to darkvision you already have, but the sensedv target resolves same-kind senses by HIGHEST value, not by summing — a race with existing darkvision (dwarf, tiefling, ...) would be silently capped at 60 ft. instead of getting +60. Apply the darkvision (and 11th-level perfect-darkness-sight) manually.",
-        ),
+      // RAW (aonprd.com, shadow mystery): "You gain darkvision 60 feet. If
+      // you already have darkvision, increase your existing darkvision by 60
+      // feet instead." — `operator: "add"` is exactly that: existing + 60,
+      // with no existing darkvision resolving to 0 + 60. See senses.ts.
+      changes: [
+        c("60", "sensedv", "untyped", "add"),
+        c("if(gte(@classes.oracle.level, 11), 1, 0)", "sensesid", "untyped", "set"),
       ],
     },
     {

@@ -104,6 +104,7 @@ const PROMOTED_REVELATION_IDS = [
   "winter:icySkin",
   "streets:faceInTheCrowd",
   "dark_tapestry:pierceTheVeil",
+  "shadow:pierceTheShadows",
 ];
 
 describe("ORACLE_REVELATIONS table", () => {
@@ -429,6 +430,34 @@ describe("promoted revelation: dark_tapestry:pierceTheVeil", () => {
 
   it("contributes nothing when picked under the wrong mystery", () => {
     const doc = makeOracle(11, "life", ["dark_tapestry:pierceTheVeil"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.length).toBe(0);
+  });
+});
+
+describe("promoted revelation: shadow:pierceTheShadows", () => {
+  // AoN (shadow mystery): "You gain darkvision 60 feet. If you already have
+  // darkvision, increase your existing darkvision by 60 feet instead. At
+  // 11th level, you can see perfectly in darkness of any kind..." — modeled
+  // with `operator: "add"` (senses.ts), so both halves compute: a human
+  // oracle reads 0 + 60, a race with darkvision reads existing + 60 (the
+  // additive-sense fixtures in senses.test.ts cover the second half).
+  it("grants darkvision 60 ft. to a human oracle below 11th, no perfect-darkness sight yet", () => {
+    const doc = makeOracle(7, "shadow", ["shadow:pierceTheShadows"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(60);
+    expect(sheet.senses.some((s) => s.kind === "seeInDarkness")).toBe(false);
+  });
+
+  it("adds perfect-darkness sight at 11th level", () => {
+    const doc = makeOracle(11, "shadow", ["shadow:pierceTheShadows"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(60);
+    expect(sheet.senses.some((s) => s.kind === "seeInDarkness")).toBe(true);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const doc = makeOracle(11, "life", ["shadow:pierceTheShadows"]);
     const sheet = compute(doc, ref);
     expect(sheet.senses.length).toBe(0);
   });

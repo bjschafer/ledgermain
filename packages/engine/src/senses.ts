@@ -28,11 +28,24 @@
  * sees 120 ft., not 180. So the single longest-range source wins and the rest
  * are kept, unapplied, for provenance. That is why this can't be routed
  * through `resolveStack` (whose "untyped always sums" behavior is right for
- * ability/skill bonuses and wrong here), and it is also why every vendored
- * sense change uses Foundry's `operator: "set"`: the operator is redundant
- * for this target family, so it is deliberately ignored — a plain additive
- * `sensedv` change is resolved exactly like a `set` one rather than stacking
- * on top of the winner.
+ * ability/skill bonuses and wrong here). Vendored sense changes carry
+ * Foundry's `operator: "set"` (or none at all — Merfolk's alternates); both
+ * shapes land in the same highest-wins pool, so the distinction is ignored
+ * for them.
+ *
+ * One operator IS meaningful here, as this engine's own opt-in convention
+ * (no vendored change uses it — verified across the slice): a sense change
+ * with `operator: "add"` EXTENDS the sense instead of competing for it.
+ * Resolution becomes `highest non-add source (or 0) + sum of add sources`.
+ * That is the exact shape of PF1's recurring "gain darkvision X ft., or if
+ * you already have darkvision, its range increases by X ft." wording —
+ * because the grant and the rider are the same X, `existing + X` reproduces
+ * both halves (no darkvision → 0 + X = X). Used by Lesser Moon Totem, the
+ * shifter's Wolf aspect, and the shadow mystery's Pierce the Shadows.
+ * Entries whose grant and rider DIFFER (Bat's "gain 60, +30 if you already
+ * have 60 or more", Shadow's Sight's "gain 60, +30 if any") are NOT
+ * expressible this way — max(grant, existing + rider) isn't a winner-plus-sum
+ * — so those stay flat highest-wins grants with a contextNote for the rider.
  *
  * Zero-value entries are dropped, same guard as `defenses.ts`: a conditional
  * formula (Animal Focus (Bat)'s `if(gte(@item.level, 15), 10)` blindsense
@@ -95,23 +108,33 @@ export function computeSenses(collected: CollectedModifier[]): DerivedSense[] {
     const mods = byTarget.get(target);
     if (!mods) continue;
 
-    let bestIdx = 0;
-    for (let i = 1; i < mods.length; i++) {
-      if (mods[i]!.value > mods[bestIdx]!.value) bestIdx = i;
+    // `operator: "add"` sources extend the winner instead of competing for
+    // it (module doc comment); meaningless for rangeless flag senses, where
+    // every source is just an on-switch.
+    const isAdd = (m: CollectedModifier): boolean =>
+      !def.flag && m.operator === "add" && m.value > 0;
+
+    let bestIdx = -1;
+    for (let i = 0; i < mods.length; i++) {
+      if (isAdd(mods[i]!)) continue;
+      if (bestIdx === -1 || mods[i]!.value > mods[bestIdx]!.value) bestIdx = i;
     }
-    if (mods[bestIdx]!.value <= 0) continue;
+    const baseValue = bestIdx >= 0 ? Math.max(0, mods[bestIdx]!.value) : 0;
+    const addTotal = mods.reduce((s, m) => s + (isAdd(m) ? m.value : 0), 0);
+    const total = baseValue + addTotal;
+    if (total <= 0) continue;
 
     const components: ModifierComponent[] = mods.map((m, i) => ({
       source: m.source,
       sourceId: m.sourceId,
       type: m.type,
       value: m.value,
-      applied: i === bestIdx,
+      applied: isAdd(m) || (i === bestIdx && baseValue > 0),
     }));
     senses.push({
       kind: def.kind,
       label: def.label,
-      range: def.flag ? undefined : mods[bestIdx]!.value,
+      range: def.flag ? undefined : total,
       components,
     });
   }

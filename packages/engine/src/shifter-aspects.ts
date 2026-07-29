@@ -89,11 +89,19 @@ const MAJOR_FORM_NOTE =
   "Major form (Wild Shape into this aspect's battle form) is a polymorph-family effect — deferred to issue #70.";
 
 /** `if(gte(@classes.shifter.level, 15), v15, if(gte(@classes.shifter.level, 8), v8, v1))` */
-function scaledChange(target: string, type: string, v1: number, v8: number, v15: number): Change {
+function scaledChange(
+  target: string,
+  type: string,
+  v1: number,
+  v8: number,
+  v15: number,
+  operator?: "add",
+): Change {
   return {
     formula: `if(gte(@classes.shifter.level, 15), ${v15}, if(gte(@classes.shifter.level, 8), ${v8}, ${v1}))`,
     target,
     type,
+    ...(operator ? { operator } : {}),
   };
 }
 
@@ -125,7 +133,7 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     minorFormChanges: [scaledChange("sensedv", "untyped", 60, 90, 90)],
     contextNotes: [
       note(
-        "The flat grant applies (senses resolve highest-wins); the alternative '+30 ft. to darkvision you already have' is not modeled, so a race with darkvision keeps its own range — add the 30 ft. by hand.",
+        "The flat grant applies (senses resolve highest-wins). RAW's rider differs from the grant — '+30 ft. if you already have darkvision with this range or greater' — which is max(grant, existing + 30), a shape neither the highest-wins pool nor the additive `operator: \"add\"` convention (senses.ts) can express; add the 30 ft. by hand. Same for the 15th-level blindsense 15 ft. (+10 ft. rider).",
         "sensedv",
       ),
     ],
@@ -367,13 +375,11 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     name: "Wolf",
     summary:
       "Gain scent (10 ft. range, or +10 ft. if you already have scent); range increases to 20 ft. at 8th level and 30 ft. at 15th.",
-    minorFormChanges: [scaledChange("sensesc", "untyped", 10, 20, 30)],
-    contextNotes: [
-      note(
-        "The flat grant applies (senses resolve highest-wins); the alternative '+10 ft. to scent you already have' is not modeled, so a race with scent keeps its own range — add the 10 ft. by hand.",
-        "sensesc",
-      ),
-    ],
+    // RAW scales the grant and the already-have-scent rider in lockstep
+    // ("the range of this scent or the increase to your scent increases to
+    // 20 feet at 8th level and 30 feet at 15th"), so `operator: "add"`
+    // (senses.ts) expresses both halves exactly: `existing + 10/20/30`.
+    minorFormChanges: [scaledChange("sensesc", "untyped", 10, 20, 30, "add")],
   },
   {
     id: "wolverine",
