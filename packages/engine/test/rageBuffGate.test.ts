@@ -622,7 +622,11 @@ describe("#74 parity sweep batch 2 (G-R): newly promoted rage powers", () => {
     expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(30);
   });
 
-  it("Night Vision's darkvision 60 ft. beats Lesser Moon Totem's 30 ft. when both are known (highest-wins, not summed)", () => {
+  it("Lesser Moon Totem adds its 30 ft. on top of Night Vision's 60 ft. (additive operator, senses.ts)", () => {
+    // RAW: Night Vision grants darkvision 60; Lesser Moon Totem "increases
+    // by 30 ft." darkvision you already have — `operator: "add"`, so 90.
+    // This also regression-guards the rage-power collect loop actually
+    // passing `ch.operator` through (it silently dropped it once).
     const sheet = compute(
       makeDoc({
         level: 1,
@@ -631,7 +635,7 @@ describe("#74 parity sweep batch 2 (G-R): newly promoted rage powers", () => {
       }),
       ref,
     );
-    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(60);
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(90);
   });
 
   it("Raging Flyer: enhancement bonus equal to barbarian level on Fly checks, while raging only", () => {

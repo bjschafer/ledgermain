@@ -417,7 +417,16 @@ export function collectModifiers(
     // temp-HP grant). Keyed by name so it applies regardless of activation
     // path (linked-pool toggle, table-buff toggle, or a manual add).
     for (const ch of BUFF_CHANGE_PATCHES[buff.name] ?? []) {
-      evalChange(ch.formula, buffRollData, ch.target, ch.type, buff.name, buff.instanceId, out);
+      evalChange(
+        ch.formula,
+        buffRollData,
+        ch.target,
+        ch.type,
+        buff.name,
+        buff.instanceId,
+        out,
+        ch.operator,
+      );
     }
   }
 
@@ -540,7 +549,7 @@ export function collectModifiers(
       if (!exploit) continue;
       for (const ch of exploit.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, exploit.name, exploit.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, exploit.name, exploit.id, out, ch.operator);
       }
     }
   }
@@ -561,7 +570,7 @@ export function collectModifiers(
       if (!arcana) continue;
       for (const ch of arcana.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, arcana.name, arcana.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, arcana.name, arcana.id, out, ch.operator);
       }
     }
   }
@@ -578,7 +587,7 @@ export function collectModifiers(
       if (!revelation || revelation.mysteryTag !== doc.build.oracleMystery) continue;
       for (const ch of revelation.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, revelation.name, revelation.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, revelation.name, revelation.id, out, ch.operator);
       }
     }
   }
@@ -600,7 +609,7 @@ export function collectModifiers(
       if (!hex) continue;
       for (const ch of hex.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out, ch.operator);
       }
     }
   }
@@ -626,7 +635,7 @@ export function collectModifiers(
       if (!hex) continue;
       for (const ch of hex.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out, ch.operator);
       }
     }
   }
@@ -649,7 +658,7 @@ export function collectModifiers(
       if (!talent) continue;
       for (const ch of talent.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out, ch.operator);
       }
     }
   }
@@ -660,7 +669,7 @@ export function collectModifiers(
       if (!trick) continue;
       for (const ch of trick.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, trick.name, trick.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, trick.name, trick.id, out, ch.operator);
       }
     }
   }
@@ -672,7 +681,7 @@ export function collectModifiers(
       if (!talent) continue;
       for (const ch of talent.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out, ch.operator);
       }
     }
   }
@@ -683,7 +692,7 @@ export function collectModifiers(
       if (!talent) continue;
       for (const ch of talent.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out, ch.operator);
       }
     }
     for (const talentId of doc.build.vigilanteSocialTalents ?? []) {
@@ -691,7 +700,7 @@ export function collectModifiers(
       if (!talent) continue;
       for (const ch of talent.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out, ch.operator);
       }
     }
   }
@@ -716,7 +725,7 @@ export function collectModifiers(
       if (!power) continue;
       for (const ch of power.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, power.name, power.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, power.name, power.id, out, ch.operator);
       }
     }
   }
@@ -736,7 +745,7 @@ export function collectModifiers(
       if (!discovery) continue;
       for (const ch of discovery.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, discovery.name, discovery.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, discovery.name, discovery.id, out, ch.operator);
       }
     }
   }
@@ -758,7 +767,7 @@ export function collectModifiers(
       if (!talent) continue;
       for (const ch of talent.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, talent.name, talent.id, out, ch.operator);
       }
     }
   }
@@ -777,7 +786,7 @@ export function collectModifiers(
     if (curse) {
       for (const ch of curse.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, curse.name, `curse:${curse.tag}`, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, curse.name, `curse:${curse.tag}`, out, ch.operator);
       }
     }
   }
@@ -802,14 +811,14 @@ export function collectModifiers(
 
     if (entry?.type === "static") {
       for (const ch of entry.changes) {
-        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out, ch.operator);
       }
     } else if (entry?.type === "choice") {
       // Choice-based feat: only emit changes when a choice has been stored.
       const choiceId = doc.build.featChoices?.[featId];
       if (choiceId) {
         for (const ch of entry.build(choiceId)) {
-          evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out);
+          evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out, ch.operator);
         }
       }
     }
@@ -842,11 +851,11 @@ export function collectModifiers(
 
     if (entry?.type === "static") {
       for (const ch of entry.changes) {
-        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, instance.instanceId, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, instance.instanceId, out, ch.operator);
       }
     } else if (entry?.type === "choice" && instance.choiceId) {
       for (const ch of entry.build(instance.choiceId)) {
-        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, instance.instanceId, out);
+        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, instance.instanceId, out, ch.operator);
       }
     }
 
