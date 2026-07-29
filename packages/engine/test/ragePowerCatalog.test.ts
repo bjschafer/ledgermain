@@ -29,7 +29,7 @@ describe("mergedRagePowerCatalog", () => {
     expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("all 99 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+  it("all 205 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
     let matched = 0;
     for (const id of RAGE_POWER_IDS) {
       const entry = byId.get(id);
@@ -41,15 +41,19 @@ describe("mergedRagePowerCatalog", () => {
       expect(entry!.description).toBeDefined();
       matched++;
     }
-    expect(matched).toBe(99);
+    expect(matched).toBe(205);
   });
 
   it("a vendored-only entry (no hand-authored counterpart) resolves display-only with its own id + prose", () => {
-    const entry = byId.get("greater_animal_fury")!;
+    // "Smasher" is still vendored-only after batches 1-2 (A-R) — it's an
+    // S-prefixed entry, due in batch 3. (Batch 1 used "Greater Animal Fury"
+    // for this example; batch 2 promoted that one to a hand-authored,
+    // still-displayOnly entry, so it no longer demonstrates "no hand match".)
+    const entry = byId.get("smasher")!;
     expect(entry.displayOnly).toBe(true);
     expect(entry.changes).toEqual([]);
-    expect(entry.description).toContain("animal fury");
-    expect(RAGE_POWERS.greater_animal_fury).toBeUndefined();
+    expect(entry.description).toContain("hardness");
+    expect(RAGE_POWERS.smasher).toBeUndefined();
   });
 
   it("Guarded Stance: the CRB vendored entry (no category) matches the hand-authored entry; the Pathfinder Unchained 'Stance' variant stays a separate vendored-only row", () => {
@@ -76,9 +80,9 @@ describe("resolveRagePower", () => {
   });
 
   it("falls back to the vendored catalog for a vendored-only id", () => {
-    const power = resolveRagePower("greater_animal_fury", ref);
+    const power = resolveRagePower("smasher", ref);
     expect(power?.displayOnly).toBe(true);
-    expect(power?.name).toBe("Greater Animal Fury");
+    expect(power?.name).toBe("Smasher");
   });
 
   it("returns undefined for an id in neither table", () => {
@@ -124,8 +128,8 @@ describe("a vendored-only pick surfaces on the sheet like any other rage power",
   }
 
   it("appears in classFeatures, tagged Rage Power, with no crash and no numeric Change applied", () => {
-    const doc = makeDoc(["greater_animal_fury"]);
+    const doc = makeDoc(["smasher"]);
     const sheet = compute(doc, ref);
-    expect(sheet.classFeatures.map((f) => f.name)).toContain("Greater Animal Fury");
+    expect(sheet.classFeatures.map((f) => f.name)).toContain("Smasher");
   });
 });

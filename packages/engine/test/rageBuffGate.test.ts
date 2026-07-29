@@ -449,3 +449,212 @@ describe("#74 parity sweep batch 1 (A-F): newly promoted rage powers", () => {
     }
   });
 });
+
+/**
+ * Fixture coverage for the #74 parity-sweep batch-2 (G-R) promotions (see
+ * `rage-powers.ts`'s doc comment for the full per-power promotion
+ * rationale). Greater Chaos Totem uses the `dr.<qualifier>` shape (new for
+ * this table — DR is inherently bypass-qualified, unlike a plain `dr`
+ * Change); the rest are either the same `eres.<energy>`-while-raging shape
+ * as Celestial Blood, the same `sensedv`-while-raging shape as
+ * shifter-aspects.ts's Bat aspect (this batch's corrected understanding that
+ * senses resolve highest-wins, not lowest — see the file doc comment), the
+ * same enhancement-skill-while-raging shape as Raging Climber/Swimmer, or an
+ * ungated flat damage Change like the other Linnorm Death Curses.
+ */
+describe("#74 parity sweep batch 2 (G-R): newly promoted rage powers", () => {
+  function raceId(name: string): string {
+    const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  function makeDoc(over: {
+    level: number;
+    ragePowers?: string[];
+    activeBuffs?: CharacterDoc["live"]["activeBuffs"];
+    weapons?: WeaponInstance[];
+  }): CharacterDoc {
+    return {
+      schemaVersion: 1,
+      id: "test",
+      ownerId: "owner",
+      version: 1,
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      identity: {
+        name: "Test",
+        race: raceId("Human"),
+        classes: [{ tag: "barbarian", level: over.level }],
+      },
+      abilities: { str: 16, dex: 12, con: 14, int: 10, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        ragePowers: over.ragePowers,
+        weapons: over.weapons,
+      },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        activeBuffs: over.activeBuffs ?? [],
+        resources: {},
+      },
+    };
+  }
+
+  function raging(activeBuffs: CharacterDoc["live"]["activeBuffs"] = []) {
+    const rageBuff = buffByName("Rage");
+    return [
+      ...activeBuffs,
+      {
+        instanceId: "rage-1",
+        buffId: rageBuff.id,
+        name: rageBuff.name,
+        changes: rageBuff.changes,
+      },
+    ];
+  }
+
+  it("Greater Abyssal Blood: resistance 5 to acid, cold, and fire while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 10, ragePowers: ["greaterAbyssalBlood"], activeBuffs: raging() }),
+      ref,
+    );
+    for (const qualifier of ["acid", "cold", "fire"]) {
+      expect(sheet.defenses?.resistances.find((r) => r.qualifier === qualifier)?.total).toBe(5);
+    }
+    const notRaging = compute(makeDoc({ level: 10, ragePowers: ["greaterAbyssalBlood"] }), ref);
+    expect(notRaging.defenses?.resistances.find((r) => r.qualifier === "acid")).toBeUndefined();
+  });
+
+  it("Greater Chaos Totem: DR/lawful equal to half barbarian level, while raging only", () => {
+    const l10 = compute(
+      makeDoc({ level: 10, ragePowers: ["greaterChaosTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(l10.defenses?.dr.find((d) => d.qualifier === "lawful")?.total).toBe(5);
+
+    const l20 = compute(
+      makeDoc({ level: 20, ragePowers: ["greaterChaosTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(l20.defenses?.dr.find((d) => d.qualifier === "lawful")?.total).toBe(10);
+
+    const notRaging = compute(makeDoc({ level: 10, ragePowers: ["greaterChaosTotem"] }), ref);
+    expect(notRaging.defenses?.dr.find((d) => d.qualifier === "lawful")).toBeUndefined();
+  });
+
+  it("Greater Sun Totem: fire resistance 20 while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 10, ragePowers: ["greaterSunTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(20);
+
+    const notRaging = compute(makeDoc({ level: 10, ragePowers: ["greaterSunTotem"] }), ref);
+    expect(notRaging.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+  });
+
+  it("Greater Sun Totem's fire resistance 20 beats Lesser Sun Totem's 5 when both are known (highest-wins, not summed)", () => {
+    const sheet = compute(
+      makeDoc({
+        level: 10,
+        ragePowers: ["lesserSunTotem", "greaterSunTotem"],
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(20);
+  });
+
+  it("Greater Undead Blood: cold resistance 10 while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 10, ragePowers: ["greaterUndeadBlood"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "cold")?.total).toBe(10);
+
+    const notRaging = compute(makeDoc({ level: 10, ragePowers: ["greaterUndeadBlood"] }), ref);
+    expect(notRaging.defenses?.resistances.find((r) => r.qualifier === "cold")).toBeUndefined();
+  });
+
+  it("Infernal Blood: fire resistance 5 while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 6, ragePowers: ["infernalBlood"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+
+    const notRaging = compute(makeDoc({ level: 6, ragePowers: ["infernalBlood"] }), ref);
+    expect(notRaging.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+  });
+
+  it("Lesser Sun Totem: fire resistance 5 while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 1, ragePowers: ["lesserSunTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+
+    const notRaging = compute(makeDoc({ level: 1, ragePowers: ["lesserSunTotem"] }), ref);
+    expect(notRaging.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+  });
+
+  it("Night Vision: darkvision 60 ft. while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 1, ragePowers: ["nightVision"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(60);
+
+    const notRaging = compute(makeDoc({ level: 1, ragePowers: ["nightVision"] }), ref);
+    expect(notRaging.senses.find((s) => s.kind === "darkvision")).toBeUndefined();
+  });
+
+  it("Lesser Moon Totem: darkvision 30 ft. while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 1, ragePowers: ["lesserMoonTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(30);
+  });
+
+  it("Night Vision's darkvision 60 ft. beats Lesser Moon Totem's 30 ft. when both are known (highest-wins, not summed)", () => {
+    const sheet = compute(
+      makeDoc({
+        level: 1,
+        ragePowers: ["lesserMoonTotem", "nightVision"],
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(60);
+  });
+
+  it("Raging Flyer: enhancement bonus equal to barbarian level on Fly checks, while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 10, ragePowers: ["ragingFlyer"], activeBuffs: raging() }),
+      ref,
+    );
+    const baseline = compute(makeDoc({ level: 10, activeBuffs: raging() }), ref);
+    expect(sheet.skills["fly"]!.total - baseline.skills["fly"]!.total).toBe(10);
+
+    const notRaging = compute(makeDoc({ level: 10, ragePowers: ["ragingFlyer"] }), ref);
+    const notRagingBaseline = compute(makeDoc({ level: 10 }), ref);
+    expect(notRaging.skills["fly"]!.total).toBe(notRagingBaseline.skills["fly"]!.total);
+  });
+
+  it("Ice Linnorm Death Curse: +1 melee weapon cold damage, UNCONDITIONAL (no rage-buff gate)", () => {
+    expect(RAGE_POWERS.iceLinnormDeathCurse!.changes[0]!.activeWhenBuff).toBeUndefined();
+    const sword: WeaponInstance = { name: "Longsword", category: "melee", attackAbility: "str" };
+    const sheet = compute(
+      makeDoc({ level: 4, ragePowers: ["iceLinnormDeathCurse"], weapons: [sword] }),
+      ref,
+    );
+    const baseline = compute(makeDoc({ level: 4, weapons: [sword] }), ref);
+    expect(sheet.attacks[0]!.damageBonus.total - baseline.attacks[0]!.damageBonus.total).toBe(1);
+  });
+});

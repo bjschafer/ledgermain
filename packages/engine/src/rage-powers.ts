@@ -16,7 +16,7 @@
  * powers, Ultimate-line additions, ...) were OUT OF SCOPE as of the above —
  * a full-catalog #74 parity sweep is now in progress across this file (same
  * posture as `witch-hexes.ts`/`alchemist-discoveries.ts`'s own #74 passes):
- * batch 1 of 3 (A-F, +70 entries) has landed below; batches 2-3 (G-Z) follow.
+ * batches 1-2 of 3 (A-F, G-R) have landed below; batch 3 (S-Z) follows.
  *
  * Shared by BOTH `barbarian` (chained) and `barbarianUnchained` — Pathfinder
  * Unchained's own "Rage Powers" class feature restates rather than replaces
@@ -159,6 +159,37 @@
  * error rate found above (4 of the 7 APG additions this file's own scope
  * note calls out by name) suggests a fuller correctness audit of the CRB
  * portion is worth doing as a follow-up, separate from this promotion sweep.
+ *
+ * Batch 2 (G-R) of the #74 catalog sweep added 106 entries and, along the
+ * way, corrected a claim from the batch-1 promotion-bar writeup above: senses
+ * (`sensedv`/`sensell`/...) do NOT share the beneficial-"set"-grant hazard
+ * `landSpeed`/`flySpeed`/... have (`compute.ts`'s `applySpeedTarget` really
+ * does resolve competing "set" changes by lowest value) — `senses.ts`'s
+ * `computeSenses` is a separate, bespoke resolver that takes the single
+ * HIGHEST value per sense kind, confirmed by reading it directly and by
+ * `shifter-aspects.ts`'s Bat/Wolf aspects, which already promote flat
+ * `sensedv`/`sensesc` grants on exactly that basis. This batch promotes
+ * **Night Vision** (flat darkvision 60 ft. while raging) and **Lesser Moon
+ * Totem** (flat darkvision 30 ft. while raging, with a note that the "+30 to
+ * darkvision you already have" alternate wording isn't modeled — same
+ * documented gap as shifter-aspects.ts's Bat) on this corrected understanding.
+ * The existing Low-Light Vision/Scent entries are untouched by this batch
+ * (out of scope — they're original-29-entry rows, not G-R), so their own
+ * displayOnly status is left for a future pass to revisit against this
+ * corrected understanding rather than changed here as a side effect.
+ *
+ * Also promoted this batch, all fixed-type/qualifier and unconditional while
+ * raging, same bar as Celestial Blood: **Greater Abyssal Blood** (acid/cold/
+ * fire resistance 5), **Infernal Blood** and **Lesser Sun Totem** (fire
+ * resistance 5 each), **Greater Sun Totem** (fire resistance 20), **Greater
+ * Undead Blood** (cold resistance 10 — its DR 10/- vs. nonlethal damage stays
+ * note-only, a different mechanic than this engine's qualifier-bypass
+ * `dr.<qualifier>` targets), **Raging Flyer** (enhancement bonus equal to
+ * barbarian level on Fly checks, the same shape as Raging Climber/Swimmer),
+ * and **Greater Chaos Totem** (DR/lawful equal to half barbarian level — a
+ * genuinely qualifier-scoped DR entry, unlike Lesser Chaos Totem's
+ * alignment-scoped deflection AC, which stays displayOnly). Ice Linnorm Death
+ * Curse's +1 cold damage is ungated, matching its Cairn/Crag/Fjord siblings.
  */
 
 import type { BuffGate, Change, ContextNote, RagePower, RefData, SourceRef } from "@pf1/schema";
@@ -1269,6 +1300,1257 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
       ),
     ],
   },
+
+  /* ---------------------------------------------------------- #74 sweep, batch 2 (G-R) -- */
+
+  {
+    id: "ghostRager",
+    name: "Ghost Rager",
+    minLevel: 6,
+    summary:
+      "While raging, deals full damage to incorporeal creatures even with nonmagical weapons, and gains a +3 morale bonus to touch AC (scaling +1 at 8th and every 4 levels after, max +7 at 20th) — never raising touch AC above full AC.",
+    contextNotes: [
+      note(
+        "Barbarian level 6. The touch-AC bonus can't be modeled as a Change: this engine derives touch AC as full AC minus the armor/shield/natural components, so any other bonus type automatically counts toward BOTH full and touch AC — there's no way to grant a bonus that raises touch AC only, and an unconditional Change here would incorrectly also raise full AC.",
+        "ac",
+      ),
+    ],
+  },
+  {
+    id: "greaterAbyssalBlood",
+    name: "Greater Abyssal Blood",
+    minLevel: 10,
+    summary: "While raging, resistance 5 to acid, cold, and fire.",
+    changes: [
+      { formula: "5", target: "eres.acid", type: "untyped", activeWhenBuff: WHILE_RAGING },
+      { formula: "5", target: "eres.cold", type: "untyped", activeWhenBuff: WHILE_RAGING },
+      { formula: "5", target: "eres.fire", type: "untyped", activeWhenBuff: WHILE_RAGING },
+    ],
+    contextNotes: [
+      note(
+        "Requires Abyssal Blood and barbarian level 10; three fixed energy types, the same promotable shape as Celestial Blood.",
+      ),
+    ],
+  },
+  {
+    id: "greaterAirTotem",
+    name: "Greater Air Totem",
+    minLevel: 10,
+    summary:
+      "While raging, surrounded by a howling-wind aura: nearby spellcasters must succeed at a concentration check, ranged attacks against her take a penalty, and smaller creatures attacking her in melee with a natural weapon or touch attack risk being flung back and knocked prone.",
+    contextNotes: [
+      note(
+        "Requires having chosen air with Lesser Elemental Totem and taken Air Totem, plus barbarian level 10. Every effect here targets attackers/other creatures, not the barbarian's own sheet — not modeled.",
+      ),
+    ],
+  },
+  {
+    id: "greaterAncestorTotem",
+    name: "Greater Ancestor Totem",
+    minLevel: 10,
+    summary:
+      "Raises Lesser Ancestor Totem's insight bonus to +6 on the chosen skill, and once per rage allows rerolling a check with that skill (must keep the second result).",
+    contextNotes: [
+      note(
+        "Requires Ancestor Totem and barbarian level 10; the skill choice is free-text from Lesser Ancestor Totem, not a fixed Change target — same as Ancestor Totem itself.",
+      ),
+    ],
+  },
+  {
+    id: "greaterAnimalFury",
+    name: "Greater Animal Fury",
+    minLevel: 1,
+    summary:
+      "As Animal Fury, but the bite attack deals damage as though the barbarian were one size category larger.",
+    contextNotes: [
+      note(
+        "Requires Animal Fury. Natural-attack sizing bump, not modeled as a Change — same manual-Weapons-entry posture as Animal Fury itself.",
+      ),
+    ],
+  },
+  {
+    id: "greaterAtavismTotem",
+    name: "Greater Atavism Totem",
+    minLevel: 10,
+    summary: "Grants the trample special attack.",
+    contextNotes: [
+      note("Requires Atavism Totem and barbarian level 10; trample isn't tracked as a Change."),
+    ],
+  },
+  {
+    id: "greaterBeastTotem",
+    name: "Greater Beast Totem",
+    minLevel: 10,
+    summary:
+      "While raging, gains the pounce ability (a full attack at the end of a charge); claw attacks improve to 1d8 damage (1d6 if Small) and ×3 on a critical hit.",
+    contextNotes: [
+      note(
+        "Requires Beast Totem and barbarian level 10. No natural armor rider here (unlike Beast Totem itself, verified against d20pfsrd.com) — pounce and the claw-damage-die bump aren't Change targets this table has, so there's no double-counting risk with Beast Totem's own promoted nac Change.",
+        "nac",
+      ),
+    ],
+  },
+  {
+    id: "greaterBrawler",
+    name: "Greater Brawler",
+    minLevel: 1,
+    summary: "While raging, fights as though wielding two weapons when making unarmed strikes.",
+    contextNotes: [
+      note("Requires Brawler. Feat-like grant, not modeled as a Change — same posture as Brawler."),
+    ],
+  },
+  {
+    id: "greaterCelestialBlood",
+    name: "Greater Celestial Blood",
+    minLevel: 10,
+    summary:
+      "Once per rage, reroll an ability check, skill check, or saving throw just made, before the result is revealed — must keep the second roll.",
+    contextNotes: [note("Requires Celestial Blood and barbarian level 10.")],
+  },
+  {
+    id: "greaterCelestialTotem",
+    name: "Greater Celestial Totem",
+    minLevel: 12,
+    summary:
+      "While raging, gains spell resistance (11 + class level) against spells with the evil descriptor, plus a +2 bonus on saves against spells and effects from evil creatures.",
+    contextNotes: [
+      note(
+        "Requires Celestial Totem and barbarian level 12. Both bonuses are scoped to evil-descriptor/evil-source effects only — the engine's spellResist target is an unconditional whole-SR grant, so applying it here would give SR against every spell, not just evil ones; same over-broad-target issue as Superstition.",
+        "spellResist",
+      ),
+    ],
+  },
+  {
+    id: "greaterChaosTotem",
+    name: "Greater Chaos Totem",
+    minLevel: 10,
+    summary:
+      "While raging, gains DR/lawful equal to half barbarian level, and her weapons (including natural weapons) count as chaotic for bypassing damage reduction.",
+    changes: [
+      {
+        formula: `floor((${BARBARIAN_LEVEL_SUM}) / 2)`,
+        target: "dr.lawful",
+        type: "untyped",
+        activeWhenBuff: WHILE_RAGING,
+      },
+    ],
+    contextNotes: [
+      note(
+        "Requires Chaos Totem and barbarian level 10; verified as a genuinely qualifier-scoped DR entry (d20pfsrd.com), unlike Lesser Chaos Totem's alignment-scoped deflection AC — DR is inherently bypass-qualified, so dr.lawful is a clean target the same way judgments.ts's dr.magic and rogue-talents.ts's dr.adamantine are. The chaotic-weapons clause isn't modeled.",
+        "dr.lawful",
+      ),
+    ],
+  },
+  {
+    id: "greaterCultTotem",
+    name: "Greater Cult Totem",
+    minLevel: 10,
+    summary:
+      "While raging, hit-point damage that would drop her to dying/dead instead leaves her conscious (though disabled) until the end of her next turn, at which point the normal result applies.",
+    contextNotes: [
+      note(
+        "Requires Lesser Cult Totem and Cult Totem, barbarian level 10. No effect against non-hit-point death (death effects, Constitution damage/drain). Not modeled as a Change — no target for delaying an HP threshold.",
+      ),
+    ],
+  },
+  {
+    id: "greaterDaemonTotem",
+    name: "Greater Daemon Totem",
+    minLevel: 10,
+    summary:
+      "While raging, killing an intelligent creature of CR at least half her level heals 5 hit points (or grants 5 temporary hit points if already at full, non-stacking).",
+    contextNotes: [
+      note(
+        "Requires Lesser Daemon Totem and Daemon Totem, barbarian level 10. Triggered by a kill — not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "greaterDraconicBlood",
+    name: "Greater Draconic Blood",
+    minLevel: 10,
+    summary:
+      "While raging, gains a once-per-day breath weapon (30-ft. cone for cold/fire, 60-ft. line for acid/electricity) dealing 1d6 damage per 2 barbarian levels of the energy type chosen for Draconic Blood, Reflex half.",
+    contextNotes: [
+      note(
+        "Requires Draconic Blood and barbarian level 10. Dice-based damage with a player-chosen energy type — same not-modeled reasoning as Elemental Rage.",
+        "damage",
+      ),
+    ],
+  },
+  {
+    id: "greaterEarthTotem",
+    name: "Greater Earth Totem",
+    minLevel: 10,
+    summary:
+      "While raging, skin hardens like stone — any manufactured weapon that hits her takes damage equal to half the damage dealt, ignoring damage reduction.",
+    contextNotes: [
+      note(
+        "Requires having chosen earth with Lesser Elemental Totem and taken Earth Totem, plus barbarian level 10. Damages the attacker's weapon, not the barbarian's own sheet — not modeled.",
+      ),
+    ],
+  },
+  {
+    id: "greaterEclipsingRage",
+    name: "Greater Eclipsing Rage",
+    minLevel: 10,
+    summary:
+      "While raging, the light-level reduction from Eclipsing Rage doubles to two steps within 20 ft. (never below darkness).",
+    contextNotes: [
+      note(
+        "Requires Eclipsing Rage and barbarian level 10; not a target this engine's light model tracks, same as Eclipsing Rage.",
+      ),
+    ],
+  },
+  {
+    id: "greaterElementalBlood",
+    name: "Greater Elemental Blood",
+    minLevel: 10,
+    summary:
+      "While raging, gains a movement benefit keyed to the energy type chosen for Elemental Blood: burrow 30 ft. (acid), swim 60 ft. (cold), +30 ft. land speed (fire), or fly 60 ft. with good maneuverability (electricity).",
+    contextNotes: [
+      note(
+        "Requires Elemental Blood and barbarian level 10. The energy type — and therefore which speed this grants — is a player choice fixed at the earlier pick, with no chooser in this table; same blocked-choice shape as Elemental Blood itself.",
+        "flySpeed",
+      ),
+    ],
+  },
+  {
+    id: "greaterElementalRage",
+    name: "Greater Elemental Rage",
+    minLevel: 12,
+    summary:
+      "While raging, melee critical hits deal an extra 1d10 points of the Elemental Rage energy type (2d10 at ×3 crit, 3d10 at ×4 crit).",
+    contextNotes: [
+      note(
+        "Requires Elemental Rage and barbarian level 12. Crit-triggered dice damage of a player-chosen type — the static sheet doesn't add unresolved dice.",
+        "damage",
+      ),
+    ],
+  },
+  {
+    id: "greaterEnergyResistance",
+    name: "Greater Energy Resistance",
+    minLevel: 8,
+    summary:
+      "Once per rage, halve the damage of a single attack of the energy type covered by Energy Resistance before applying resistance, with no save.",
+    contextNotes: [
+      note(
+        "Requires Energy Resistance and barbarian level 8. Once-per-rage triggered mitigation, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "greaterErraticCharge",
+    name: "Greater Erratic Charge",
+    minLevel: 8,
+    summary:
+      "As Erratic Charge, but the initial repositioning move increases to 10 ft. (the charge's maximum distance drops by 20 ft. instead of 10).",
+    contextNotes: [
+      note(
+        "Requires Erratic Charge and barbarian level 8; same not-modeled reasoning as Erratic Charge — a situational movement mechanic, not a flat self-buff.",
+      ),
+    ],
+  },
+  {
+    id: "greaterFerociousBeast",
+    name: "Greater Ferocious Beast",
+    minLevel: 8,
+    summary:
+      "While raging, the animal companion shares the benefit of any of the barbarian's rage powers that are constant in effect (not ones requiring an action to activate).",
+    contextNotes: [
+      note(
+        "Requires Ferocious Beast and barbarian level 8. Affects the companion, not the barbarian's own sheet.",
+      ),
+    ],
+  },
+  {
+    id: "greaterFerociousMount",
+    name: "Greater Ferocious Mount",
+    minLevel: 8,
+    summary:
+      "While raging and mounted, the mount gains the benefit of any of the barbarian's constantly-active rage powers (not ones requiring an action to activate).",
+    contextNotes: [
+      note(
+        "Requires Ferocious Mount and barbarian level 8. Affects the mount, not the barbarian's own sheet.",
+      ),
+    ],
+  },
+  {
+    id: "greaterFerociousTrample",
+    name: "Greater Ferocious Trample",
+    minLevel: 12,
+    summary:
+      "The mount's Ferocious Trample can affect creatures up to its own size, and it may attempt a free overrun against a creature that fails (or forgoes) its save against the trample.",
+    contextNotes: [
+      note(
+        "Requires Ferocious Trample and barbarian level 12. Affects the mount's trample attack, not the barbarian's own sheet.",
+      ),
+    ],
+  },
+  {
+    id: "greaterFeyBlood",
+    name: "Greater Fey Blood",
+    minLevel: 10,
+    summary:
+      "While raging, moving at least 10 ft. in a round grants the benefit of blur for 1 round.",
+    contextNotes: [
+      note(
+        "Requires Fey Blood and barbarian level 10. Movement-triggered concealment effect, not a flat AC/save Change.",
+      ),
+    ],
+  },
+  {
+    id: "greaterFiendTotem",
+    name: "Greater Fiend Totem",
+    minLevel: 10,
+    summary:
+      "While raging, radiates a menacing aura: adjacent good creatures are shaken and take 2d6 slashing damage each round, adjacent neutral creatures are shaken only, and evil creatures are unaffected.",
+    contextNotes: [
+      note(
+        "Requires Fiend Totem and barbarian level 10. Damages/debuffs nearby creatures, not a self-buff on the barbarian's own sheet.",
+      ),
+    ],
+  },
+  {
+    id: "greaterFireTotem",
+    name: "Greater Fire Totem",
+    minLevel: 10,
+    summary:
+      "While raging, can wreathe herself in a 10-ft.-radius cloud of smoke that follows her, forcing Fortitude saves on creatures inside or they suffer smoke-inhalation effects; the barbarian is immune to it.",
+    contextNotes: [
+      note(
+        "Requires having chosen fire with Lesser Elemental Totem and taken Fire Totem, plus barbarian level 10. Affects nearby creatures, not the barbarian's own sheet.",
+      ),
+    ],
+  },
+  {
+    id: "greaterGroundBreaker",
+    name: "Greater Ground Breaker",
+    minLevel: 8,
+    summary:
+      "Ground Breaker's difficult-terrain/knockdown radius extends by 5 ft.; can be taken up to three times, stacking.",
+    contextNotes: [
+      note(
+        "Requires Ground Breaker and barbarian level 8; same not-modeled reasoning as Ground Breaker — an area effect, not a flat self-buff.",
+      ),
+    ],
+  },
+  {
+    id: "greaterGuardedLife",
+    name: "Greater Guarded Life",
+    minLevel: 6,
+    summary:
+      "Guarded Life's lethal-to-nonlethal conversion increases by 1 additional hit point per barbarian level.",
+    contextNotes: [
+      note(
+        "Requires Guarded Life and barbarian level 6; same not-modeled reasoning as Guarded Life — no Change target for converting damage type on a triggered threshold.",
+      ),
+    ],
+  },
+  {
+    id: "greaterHurling",
+    name: "Greater Hurling",
+    minLevel: 12,
+    summary:
+      "As Hurling, but may instead increase the range increment to 30 ft. or the hurled object's size by two categories.",
+    contextNotes: [
+      note(
+        "Requires Hurling and barbarian level 12; same not-modeled reasoning as Hurling — an activated ranged attack.",
+      ),
+    ],
+  },
+  {
+    id: "greaterInfernalBlood",
+    name: "Greater Infernal Blood",
+    minLevel: 10,
+    summary: "While raging, gains a +4 bonus against enchantment effects and fear effects.",
+    contextNotes: [
+      note(
+        "Requires Infernal Blood and barbarian level 10. Scoped to two effect categories, not a whole save type — the engine has no 'saves vs. enchantment+fear' target, so an unconditional Change here would overstate onto every save (same over-broad-target issue as Superstition).",
+        "will",
+      ),
+    ],
+  },
+  {
+    id: "greaterMoonTotem",
+    name: "Greater Moon Totem",
+    minLevel: 10,
+    summary:
+      "While raging, ignores the miss chance from concealment and treats total concealment as ordinary concealment.",
+    contextNotes: [
+      note(
+        "Requires Moon Totem and barbarian level 10; a miss-chance rule, not a Change target this engine has.",
+      ),
+    ],
+  },
+  {
+    id: "greaterPsychopompTotem",
+    name: "Greater Psychopomp Totem",
+    minLevel: 10,
+    summary:
+      "While raging, detects and locates undead within 30 ft. as though by blindsight, and any weapon she wields counts as having the ghost touch quality.",
+    contextNotes: [
+      note(
+        "Requires Psychopomp Totem and barbarian level 10. The blindsight is scoped to undead only, not all creatures — the engine's sensebs target is an unconditional whole-blindsight grant, so applying it here would overstate detection to every creature type. The weapon quality grant isn't modeled either.",
+        "sensebs",
+      ),
+    ],
+  },
+  {
+    id: "greaterSpireTotem",
+    name: "Greater Spire Totem",
+    minLevel: 10,
+    summary:
+      "While raging, allies within 30 ft. gain a +2 morale bonus on Will saves, and may roll twice (taking the better) against fear effects.",
+    contextNotes: [
+      note(
+        "Requires Spire Totem and barbarian level 10. Buffs allies, not the barbarian's own sheet.",
+      ),
+    ],
+  },
+  {
+    id: "greaterSpiritTotem",
+    name: "Greater Spirit Totem",
+    minLevel: 10,
+    summary:
+      "While raging, the spirit wisps from Spirit Totem reach 15 ft., their slam upgrades to 1d6 negative energy damage, and living enemies adjacent to the barbarian at the start of her turn take 1d8 negative energy damage.",
+    contextNotes: [
+      note(
+        "Requires Spirit Totem and barbarian level 10. Damages nearby enemies, not the barbarian's own sheet.",
+      ),
+    ],
+  },
+  {
+    id: "greaterSuffocatingGrip",
+    name: "Greater Suffocating Grip",
+    minLevel: 12,
+    summary:
+      "A creature grappled by Suffocating Grip can't hold its breath and begins suffocating immediately.",
+    contextNotes: [
+      note(
+        "Requires Suffocating Grip and barbarian level 12; grapple-conditioned, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "greaterSunTotem",
+    name: "Greater Sun Totem",
+    minLevel: 10,
+    summary:
+      "While raging, gains fire resistance 20, a fiery halo that burns anyone hitting her with a touch/unarmed attack or a bull rush, drag, or grapple maneuver, and +1d6 fire damage on her own unarmed and natural-weapon attacks.",
+    changes: [
+      { formula: "20", target: "eres.fire", type: "untyped", activeWhenBuff: WHILE_RAGING },
+    ],
+    contextNotes: [
+      note(
+        "Requires Sun Totem and barbarian level 10; the fire resistance is unconditional and fixed-type, promoted the same way as Celestial Blood — but the retaliatory halo damage (hits an attacker) and the +1d6 fire on her own attacks are dice-based/targeted and aren't modeled.",
+        "eres.fire",
+      ),
+    ],
+  },
+  {
+    id: "greaterTyrantTotem",
+    name: "Greater Tyrant Totem",
+    minLevel: 12,
+    summary: "While raging, gains the swallow whole special attack.",
+    contextNotes: [
+      note(
+        "Requires Tyrant Totem and barbarian level 12; swallow whole isn't tracked as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "greaterUndeadBlood",
+    name: "Greater Undead Blood",
+    minLevel: 10,
+    summary: "While raging, gains cold resistance 10 and DR 10/— against nonlethal damage.",
+    changes: [
+      { formula: "10", target: "eres.cold", type: "untyped", activeWhenBuff: WHILE_RAGING },
+    ],
+    contextNotes: [
+      note(
+        "Requires Undead Blood and barbarian level 10; the cold resistance is unconditional and fixed-type, promoted the same way as Celestial Blood. The nonlethal-only DR is a different mechanic than this engine's qualifier-bypass dr.<qualifier> targets (which reduce damage unless the attack has a specific quality, not 'only applies against one damage category') — no matching target, so it stays note-only.",
+        "eres.cold",
+      ),
+    ],
+  },
+  {
+    id: "greaterWaterTotem",
+    name: "Greater Water Totem",
+    minLevel: 10,
+    summary:
+      "While raging, gains tremorsense to 30 ft. while underwater, and can move and attack underwater as though under freedom of movement.",
+    contextNotes: [
+      note(
+        "Requires Water Totem and barbarian level 10. Scoped to underwater only — the engine's sense/movement targets have no 'only while submerged' condition beyond the rage-buff gate, so an unconditional Change would overstate onto dry-land tremorsense.",
+        "sensets",
+      ),
+    ],
+  },
+  {
+    id: "groundBreaker",
+    name: "Ground Breaker",
+    minLevel: 6,
+    summary:
+      "Once per rage, as a standard action, attack the floor around her; if the damage exceeds the floor's hardness, her square and every adjacent square become difficult terrain and force a Reflex save or knock down anyone standing there.",
+    contextNotes: [
+      note("Barbarian level 6. Once-per-rage activated area attack, not modeled as a Change."),
+    ],
+  },
+  {
+    id: "guardedLife",
+    name: "Guarded Life",
+    minLevel: 1,
+    summary:
+      "While raging, if reduced below 0 hit points, converts 1 point of lethal damage per barbarian level to nonlethal; if already at negative hit points from lethal damage, stabilizes immediately.",
+    contextNotes: [
+      note(
+        "Triggered by dropping below 0 hp — no Change target converts damage type on a threshold like this.",
+      ),
+    ],
+  },
+  {
+    id: "hissingRage",
+    name: "Hissing Rage",
+    minLevel: 1,
+    summary:
+      "Once per hour, spit venom at an adjacent foe as a standard action (touch attack) or apply it as a swift action when a bite attack hits, dealing 1d2 Constitution damage on a failed save.",
+    contextNotes: [note("Triggered poison delivery, once per hour; not modeled as a Change.")],
+  },
+  {
+    id: "hiveTotem",
+    name: "Hive Totem",
+    minLevel: 4,
+    summary:
+      "While raging, takes half damage from vermin-swarm attacks (including swarm-like spells), and gains +1 per 4 barbarian levels (max +5) on Strength ability checks and to CMD against bull rush, drag, and trip.",
+    contextNotes: [
+      note(
+        "Requires Animal Fury and barbarian level 4. Both bonuses are scoped — Strength ability checks only (not the whole ability score) and CMD against three specific maneuvers only (not whole CMD) — the engine has no 'ability check only' or 'CMD vs. specific maneuvers' target, so an unconditional Change would overstate onto every Strength use or every combat maneuver.",
+        "cmd",
+      ),
+    ],
+  },
+  {
+    id: "hiveTotemResilience",
+    name: "Hive Totem Resilience",
+    minLevel: 6,
+    summary:
+      "While raging, takes no damage at all from vermin-swarm attacks (including their secondary effects), and gains +1 per 4 barbarian levels (max +5) on combat maneuver checks and to CMD when grappling.",
+    contextNotes: [
+      note(
+        "Requires Hive Totem and barbarian level 6. The CMB/CMD bonus is scoped to grappling only — same over-broad-target issue as Hive Totem.",
+        "cmb",
+      ),
+    ],
+  },
+  {
+    id: "hiveTotemToxicity",
+    name: "Hive Totem Toxicity",
+    minLevel: 8,
+    summary:
+      "While raging, the Animal Fury bite's damage die improves one step and its attack-roll penalty shrinks to -2; once per rage, a successful bite can deliver an injury poison (1d3 Constitution damage per round for 4 rounds, one save cures).",
+    contextNotes: [
+      note(
+        "Requires Hive Totem and Hive Totem Resilience, barbarian level 8. Natural-attack die/poison mechanics, not Change targets this table models.",
+      ),
+    ],
+  },
+  {
+    id: "hshurhasVeil",
+    name: "Hshurha's Veil",
+    minLevel: 6,
+    summary:
+      "While raging, can use Stealth and gains a bonus equal to half barbarian level on Stealth checks, plus the benefit of concealment against ranged attacks and attacks of opportunity.",
+    contextNotes: [
+      note(
+        "An 'Elemental' rage power: requires Lesser Elemental Rage or Lesser Elemental Blood and barbarian level 6, only one elemental-category power (this, Aryzul's Curse, Kelizandri's Tide, Ymeri's Pyre) usable at a time, and an unchained barbarian needs the Elemental Stance to use it. That per-rage exclusive-choice shape is the same reason the stances in this table stay display-only — not simply 'on while raging'.",
+        "skill.ste",
+      ),
+    ],
+  },
+  {
+    id: "hurling",
+    name: "Hurling",
+    minLevel: 8,
+    summary:
+      "As Lesser Hurling, but may instead increase the range increment to 20 ft. or the hurled object's size by one category.",
+    contextNotes: [
+      note(
+        "Requires Lesser Hurling and barbarian level 8; same not-modeled reasoning as Lesser Hurling — an activated ranged attack.",
+      ),
+    ],
+  },
+  {
+    id: "hurlingCharge",
+    name: "Hurling Charge",
+    minLevel: 6,
+    summary:
+      "While raging and charging, may draw and throw a weapon partway through the charge (gaining the usual +2 on both that attack and the melee attack ending the charge), provided at least 10 ft. is moved before the throw and 10 more before the melee attack.",
+    contextNotes: [
+      note(
+        "Requires Lesser Hurling and barbarian level 6; an activated charge variant, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "iceLinnormDeathCurse",
+    name: "Ice Linnorm Death Curse",
+    minLevel: 4,
+    summary:
+      "Melee attacks deal 1 additional point of cold damage. If the barbarian is knocked unconscious or killed by an attack or spell, the attacker must save or suffer the curse of frost (vulnerability to cold).",
+    changes: [{ formula: "1", target: "mwdamage", type: "untyped" }],
+    contextNotes: [
+      note(
+        "The +1 damage is unconditional, same as Cairn/Crag/Fjord Linnorm Death Curse — verified NOT scoped to 'while raging' (d20pfsrd.com). Barbarian level 4. The retaliation clause targets the attacker — not modeled.",
+        "mwdamage",
+      ),
+    ],
+  },
+  {
+    id: "impellingDisarm",
+    name: "Impelling Disarm",
+    minLevel: 4,
+    summary:
+      "Once per rage, in place of a melee attack, attempt a no-AoO disarm; on success, make a ranged attack (at -4) to send the disarmed weapon flying at the original target or another creature within 20 ft., dealing the weapon's damage on a hit.",
+    contextNotes: [
+      note("Barbarian level 4. Once-per-rage activated combat maneuver, not modeled as a Change."),
+    ],
+  },
+  {
+    id: "infernalBlood",
+    name: "Infernal Blood",
+    minLevel: 6,
+    summary: "While raging, gains fire resistance 5 and a +2 bonus on saves against poison.",
+    changes: [{ formula: "5", target: "eres.fire", type: "untyped", activeWhenBuff: WHILE_RAGING }],
+    contextNotes: [
+      note(
+        "Requires Lesser Infernal Blood and barbarian level 6; the fire resistance is unconditional and fixed-type (promoted the same way as Celestial Blood). The poison-save bonus is scoped to poison only, not whole Fortitude — the engine has no 'saves vs. poison' target, so it stays note-only (same over-broad-target issue as Fierce Fortitude).",
+        "fort",
+      ),
+    ],
+  },
+  {
+    id: "inspireFerocity",
+    name: "Inspire Ferocity",
+    minLevel: 1,
+    summary:
+      "While raging, spend a move action to share the current Reckless Abandon trade-off with willing allies within 30 ft. for a number of rounds equal to Charisma modifier (minimum 1).",
+    contextNotes: [note("Requires Reckless Abandon. Buffs allies, not the barbarian's own sheet.")],
+  },
+  {
+    id: "inuredToTheDead",
+    name: "Inured to the Dead",
+    minLevel: 4,
+    summary:
+      "Once per rage, when failing a save against an undead-created effect, may reroll it (keeping the second result) as a free action.",
+    contextNotes: [
+      note("Barbarian level 4. Once-per-rage triggered reroll, not modeled as a Change."),
+    ],
+  },
+  {
+    id: "kelizandrisTide",
+    name: "Kelizandri's Tide",
+    minLevel: 6,
+    summary:
+      "While raging, as a full-round action, attempt a combat maneuver against every creature within 10 ft. to pull each 5 ft. closer on a success; once per day, may follow up with a free Whirlwind-Attack-style strike against every adjacent creature (twice per day if she also has Whirlwind Attack).",
+    contextNotes: [
+      note(
+        "An 'Elemental' rage power — same exclusive-per-rage-choice shape as Hshurha's Veil (requires Lesser Elemental Rage/Blood, barbarian level 6, only one elemental power active at a time). Not modeled, same reasoning.",
+      ),
+    ],
+  },
+  {
+    id: "knockdown",
+    name: "Knockdown",
+    minLevel: 1,
+    summary:
+      "Once per rage, in place of a melee attack, make a no-AoO trip attempt; on success also deals Strength-modifier damage.",
+    contextNotes: [note("Once-per-rage activated combat maneuver, not modeled as a Change.")],
+  },
+  {
+    id: "knockdownStance",
+    name: "Knockdown Stance",
+    minLevel: 1,
+    summary:
+      "Stance: while active, once per round may substitute a no-AoO trip attempt for a melee attack; success knocks the target prone (no extra damage).",
+    contextNotes: [note("Activated stance, not modeled as a Change.")],
+  },
+  {
+    id: "lesserAbyssalBlood",
+    name: "Lesser Abyssal Blood",
+    minLevel: 1,
+    summary:
+      "While raging, grows two primary claw attacks dealing 1d6 slashing (1d4 if Small) plus Strength modifier, at full base attack bonus.",
+    contextNotes: [
+      note(
+        "Blood rage powers are mutually exclusive as a family — only one blood line may be known. Natural-attack grant, not modeled as a Change — add the claws manually to Weapons while raging, same posture as Animal Fury.",
+      ),
+    ],
+  },
+  {
+    id: "lesserAncestorTotem",
+    name: "Lesser Ancestor Totem",
+    minLevel: 1,
+    summary:
+      "On entering a rage, choose a skill usable while raging; gain a +2 insight bonus to it for the rage's duration.",
+    contextNotes: [
+      note(
+        "The skill choice is free-text, not a fixed Change target — no chooser mechanism in this table.",
+      ),
+    ],
+  },
+  {
+    id: "lesserAtavismTotem",
+    name: "Lesser Atavism Totem",
+    minLevel: 1,
+    summary:
+      "Gains a bite attack, or if she already has one, it deals damage as though she were one size larger.",
+    contextNotes: [note("Natural-attack grant/upsize, not modeled as a Change.")],
+  },
+  {
+    id: "lesserBeastTotem",
+    name: "Lesser Beast Totem",
+    minLevel: 1,
+    summary:
+      "While raging, grows two primary claw attacks dealing 1d6 slashing (1d4 if Small) plus Strength modifier, at full base attack bonus.",
+    contextNotes: [
+      note(
+        "Natural-attack grant, not modeled as a Change — same manual-Weapons-entry posture as Animal Fury/Lesser Abyssal Blood.",
+      ),
+    ],
+  },
+  {
+    id: "lesserCelestialBlood",
+    name: "Lesser Celestial Blood",
+    minLevel: 1,
+    summary:
+      "While raging, melee attacks count as good-aligned for bypassing damage reduction, and deal an extra 1d6 damage against evil outsiders.",
+    contextNotes: [
+      note(
+        "Situational bonus damage against a specific creature type plus a DR-bypass quality — neither is a flat self-buff this table models as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "lesserCelestialTotem",
+    name: "Lesser Celestial Totem",
+    minLevel: 1,
+    summary:
+      "While raging, magical healing she receives is more effective: +1 hit point per caster level from spells, or an amount equal to the healer's class level from non-spell healing (channeled energy, lay on hands, ...); doesn't affect fast healing or regeneration.",
+    contextNotes: [
+      note(
+        "A rider on incoming healing, not a flat self-buff — no Change target for 'boost healing received'.",
+      ),
+    ],
+  },
+  {
+    id: "lesserChaosTotem",
+    name: "Lesser Chaos Totem",
+    minLevel: 1,
+    summary:
+      "While raging, +1 deflection bonus to AC against lawful creatures' attacks and +1 resistance bonus on saves against confusion, insanity, polymorph, and lawful-descriptor effects; the bonus rises by 1 per additional Chaos Totem power known.",
+    contextNotes: [
+      note(
+        "Both bonuses are alignment/effect-category-scoped (vs. lawful only) — not a general AC or save bonus, so the engine's whole ac/allSavingThrows targets would overstate it onto every attacker and every save. Same over-broad-target issue as Superstition.",
+        "ac",
+      ),
+    ],
+  },
+  {
+    id: "lesserCultTotem",
+    name: "Lesser Cult Totem",
+    minLevel: 1,
+    summary:
+      "While raging, morale bonuses and flanking bonuses that would apply to attack rolls are added to damage rolls instead (still morale bonuses, so they don't stack with other morale damage bonuses).",
+    contextNotes: [
+      note(
+        "Reassigns an existing bonus's target rather than granting a new number — not representable as a flat Change.",
+      ),
+    ],
+  },
+  {
+    id: "lesserDaemonTotem",
+    name: "Lesser Daemon Totem",
+    minLevel: 1,
+    summary:
+      "While raging, +2 bonus on saves against acid damage, death effects, disease, and poison, rising by 1 per additional Daemon Totem power known (excluding this one).",
+    contextNotes: [
+      note(
+        "Scoped to four specific save categories, not a whole save type — the engine has no matching target, so an unconditional Change would overstate onto every Fortitude/Reflex save. Same over-broad-target issue as Superstition.",
+        "fort",
+      ),
+    ],
+  },
+  {
+    id: "lesserDraconicBlood",
+    name: "Lesser Draconic Blood",
+    minLevel: 1,
+    summary:
+      "While raging, grows two primary claw attacks dealing 1d6 slashing (1d4 if Small) plus Strength modifier, at full base attack bonus.",
+    contextNotes: [
+      note(
+        "Natural-attack grant, not modeled as a Change — same manual-Weapons-entry posture as Lesser Abyssal Blood/Lesser Beast Totem.",
+      ),
+    ],
+  },
+  {
+    id: "lesserElementalBlood",
+    name: "Lesser Elemental Blood",
+    minLevel: 1,
+    summary:
+      "Choose an energy type; while raging, up to three times a day as a swift action, imbue melee attacks with that energy for 1 round, adding 1d6 damage of that type.",
+    contextNotes: [
+      note(
+        "Activated (swift action, limited uses/day) with a player-chosen energy type — not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "lesserElementalRage",
+    name: "Lesser Elemental Rage",
+    minLevel: 4,
+    summary:
+      "As a swift action, cause melee attacks to deal an extra 1d6 energy damage (acid, cold, electricity, or fire, chosen when used) for 1 round; usable once per rage.",
+    contextNotes: [
+      note(
+        "Barbarian level 4. Activated, once per rage, dice-based, player-chosen type — not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "lesserElementalTotem",
+    name: "Lesser Elemental Totem",
+    minLevel: 1,
+    summary:
+      "Choose an elemental type (air, earth, fire, or water), permanently; while raging, gain a +1 bonus (scaling +1 every 4 levels, max +6 at 20th) on saves against spells with that descriptor, and gain access to the matching Totem power.",
+    contextNotes: [
+      note(
+        "The save bonus is scoped to one elemental descriptor, not a whole save type, and the element itself is a player choice with no chooser in this table — same over-broad-target/blocked-choice issues as Superstition and Elemental Blood.",
+        "will",
+      ),
+    ],
+  },
+  {
+    id: "lesserFeyBlood",
+    name: "Lesser Fey Blood",
+    minLevel: 1,
+    summary:
+      "While raging, confirming a critical hit forces the target to save or be confused for 1 round (mind-affecting compulsion).",
+    contextNotes: [note("Crit-triggered debuff on the target, not a self-buff.")],
+  },
+  {
+    id: "lesserFiendTotem",
+    name: "Lesser Fiend Totem",
+    minLevel: 1,
+    summary:
+      "While raging, grows a gore attack (1d8 piercing, 1d6 if Small, plus Strength modifier) — primary if unarmed, secondary (half Strength, -5 to hit) if also attacking with weapons.",
+    contextNotes: [
+      note(
+        "Natural-attack grant, not modeled as a Change — same manual-Weapons-entry posture as Animal Fury.",
+      ),
+    ],
+  },
+  {
+    id: "lesserHurling",
+    name: "Lesser Hurling",
+    minLevel: 1,
+    summary:
+      "As a full-round action while raging, hurl an improvised object (up to one size smaller two-handed, or two sizes smaller one-handed) as a ranged touch attack with a 10-ft. range increment, dealing falling-object damage plus Strength bonus (halved if not stone/metal); Reflex save for half.",
+    contextNotes: [note("Activated ranged attack, not modeled as a Change.")],
+  },
+  {
+    id: "lesserInfernalBlood",
+    name: "Lesser Infernal Blood",
+    minLevel: 1,
+    summary:
+      "Up to three times a day as a swift action while raging, infuse melee attacks with the flaming weapon special ability for 1 round.",
+    contextNotes: [note("Activated, limited uses/day — not modeled as a Change.")],
+  },
+  {
+    id: "lesserMoonTotem",
+    name: "Lesser Moon Totem",
+    minLevel: 1,
+    summary:
+      "While raging, gains darkvision 30 ft., or if she already has darkvision, its range increases by 30 ft.",
+    changes: [{ formula: "30", target: "sensedv", type: "untyped", activeWhenBuff: WHILE_RAGING }],
+    contextNotes: [
+      note(
+        "Darkvision grants resolve highest-source-wins in this engine (senses.ts, mirrored by shifter-aspects.ts's Bat aspect), so a flat 30-ft. Change is safe: it correctly does nothing when a stronger source is already present. What it can't express is the '+30 to darkvision you already have' alternate wording — a character who already has, say, 60 ft. darkvision won't see the extra 30 ft. this power promises; same documented limitation as shifter-aspects.ts's Bat/Wolf entries.",
+        "sensedv",
+      ),
+    ],
+  },
+  {
+    id: "lesserPsychopompTotem",
+    name: "Lesser Psychopomp Totem",
+    minLevel: 1,
+    summary:
+      "While raging, +1 deflection bonus to AC against undead attacks and +1 bonus on saves against death effects, disease, and poison, rising by 1 per additional Psychopomp Totem power known (excluding this one).",
+    contextNotes: [
+      note(
+        "Both bonuses are creature-type/effect-category-scoped, not general — same over-broad-target issue as Lesser Daemon Totem/Superstition.",
+        "ac",
+      ),
+    ],
+  },
+  {
+    id: "lesserSpireTotem",
+    name: "Lesser Spire Totem",
+    minLevel: 1,
+    summary:
+      "While raging, +1 morale bonus on attack rolls against any creature that targeted an ally with an attack or harmful spell in the last round.",
+    contextNotes: [note("Conditional on which creature she's fighting, not a flat self-buff.")],
+  },
+  {
+    id: "lesserSpiritTotem",
+    name: "Lesser Spirit Totem",
+    minLevel: 1,
+    summary:
+      "While raging, spirit wisps surround her and make a slam attack (full base attack bonus + Charisma modifier, 1d4 + Charisma modifier negative energy damage) each round against an adjacent living foe.",
+    contextNotes: [note("Damages nearby enemies, not the barbarian's own sheet.")],
+  },
+  {
+    id: "lesserSunTotem",
+    name: "Lesser Sun Totem",
+    minLevel: 1,
+    summary:
+      "Immune to environmental heat, +2 Fortitude bonus against extreme heat, and fire resistance 5 while raging.",
+    changes: [{ formula: "5", target: "eres.fire", type: "untyped", activeWhenBuff: WHILE_RAGING }],
+    contextNotes: [
+      note(
+        "The fire resistance is unconditional and fixed-type (promoted the same way as Celestial Blood). The environmental-heat immunity and the extreme-heat Fortitude bonus have no matching targets — a whole-Fortitude Change would overstate the latter onto every save.",
+        "eres.fire",
+      ),
+    ],
+  },
+  {
+    id: "lesserTyrantTotem",
+    name: "Lesser Tyrant Totem",
+    minLevel: 1,
+    summary:
+      "While raging, the barbarian's bite attack (from Animal Fury or a natural bite) deals damage as though she were one size larger.",
+    contextNotes: [
+      note(
+        "Requires Animal Fury or a natural bite attack. Natural-attack upsize, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "lesserUndeadBlood",
+    name: "Lesser Undead Blood",
+    minLevel: 1,
+    summary:
+      "While raging, a successful charge attack leaves the target shaken for rounds equal to half barbarian level (minimum 1); doesn't stack with other fear effects into a worse condition.",
+    contextNotes: [note("Charge-triggered debuff on the target, not a self-buff.")],
+  },
+  {
+    id: "lethalAccuracy",
+    name: "Lethal Accuracy",
+    minLevel: 16,
+    summary:
+      "When using Surprise Accuracy, the critical multiplier for that attack's damage increases by 1 step.",
+    contextNotes: [
+      note(
+        "Requires Surprise Accuracy, Deadly Accuracy, and barbarian level 16. Conditioned on activating Surprise Accuracy, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "liquidCourage",
+    name: "Liquid Courage",
+    minLevel: 1,
+    summary:
+      "While raging, each alcoholic drink consumed adds +1 morale bonus on saves against mind-affecting effects, up to +1 per 4 barbarian levels.",
+    contextNotes: [
+      note(
+        "Scoped to mind-affecting saves only, and scales with drinks consumed rather than a level formula alone — not modeled as a Change.",
+        "will",
+      ),
+    ],
+  },
+  {
+    id: "lizardStride",
+    name: "Lizard Stride",
+    minLevel: 1,
+    summary:
+      "While charging or running during a rage, can cross the surface of water without sinking (sinks if she stops on it).",
+    contextNotes: [note("Situational movement rule, not a Change target this engine has.")],
+  },
+  {
+    id: "masterOfTheDeep",
+    name: "Master of the Deep",
+    minLevel: 8,
+    summary:
+      "As a standard action, issue a command-spell-style order (or an attack order, for a mindless/near-mindless target) to an aquatic creature within 30 ft.; a failed Will save compels obedience next turn. A creature is immune for 24 hours after its first save.",
+    contextNotes: [
+      note("Barbarian level 8. Activated, targets another creature — not modeled as a Change."),
+    ],
+  },
+  {
+    id: "mightySwing",
+    name: "Mighty Swing",
+    minLevel: 12,
+    summary: "As an immediate action once per rage, automatically confirm a critical hit.",
+    contextNotes: [
+      note("Barbarian level 12. Once-per-rage activated ability, not modeled as a Change."),
+    ],
+  },
+  {
+    id: "moonTotem",
+    name: "Moon Totem",
+    minLevel: 6,
+    summary:
+      "While raging, gains a bonus equal to half barbarian level on Perception checks to pinpoint unseen creatures, and unseen attackers gain no bonus on attacks against her.",
+    contextNotes: [
+      note(
+        "Requires Lesser Moon Totem and barbarian level 6. The Perception bonus is scoped to pinpointing unseen creatures only, not general Perception — same over-broad-target/partial-skill-use-case issue as Raging Leaper.",
+        "skill.per",
+      ),
+    ],
+  },
+  {
+    id: "nightVision",
+    name: "Night Vision",
+    minLevel: 1,
+    summary: "While raging, gains darkvision 60 ft.",
+    changes: [{ formula: "60", target: "sensedv", type: "untyped", activeWhenBuff: WHILE_RAGING }],
+    contextNotes: [
+      note(
+        "Requires Low-Light Vision (as a rage power or racial trait). Unconditional flat grant while raging, and (per senses.ts / shifter-aspects.ts's Bat aspect) darkvision sources resolve highest-wins — so this correctly does nothing when a better darkvision source is already present.",
+        "sensedv",
+      ),
+    ],
+  },
+  {
+    id: "overbearingAdvance",
+    name: "Overbearing Advance",
+    minLevel: 1,
+    summary:
+      "While raging, a successful overrun combat maneuver also deals damage equal to her Strength bonus.",
+    contextNotes: [
+      note("Triggered by a successful maneuver against a target — not a self-buff Change."),
+    ],
+  },
+  {
+    id: "overbearingOnslaught",
+    name: "Overbearing Onslaught",
+    minLevel: 6,
+    summary:
+      "While raging, may overrun more than one target in a round, taking a cumulative -2 penalty on the combat maneuver check for each overrun attempt after the first.",
+    contextNotes: [
+      note(
+        "Requires Overbearing Advance and barbarian level 6. A per-use penalty on a triggered maneuver, not a self-buff Change.",
+      ),
+    ],
+  },
+  {
+    id: "packRage",
+    name: "Pack Rage",
+    minLevel: 6,
+    summary:
+      "When entering a rage, any other barbarian within 30 ft. who also knows this power may enter a rage too, spending rage rounds accordingly if it's not her turn.",
+    contextNotes: [
+      note(
+        "Barbarian level 6. A rage-sharing trigger between characters, not a Change on the barbarian's own sheet.",
+      ),
+    ],
+  },
+  {
+    id: "penetratingBite",
+    name: "Penetrating Bite",
+    minLevel: 4,
+    summary:
+      "The Animal Fury bite progressively bypasses more damage reduction as barbarian level rises: magic at 4th, cold iron and silver at 7th, chaotic at 10th, adamantine (also bypassing hardness) at 16th.",
+    contextNotes: [
+      note(
+        "Requires Animal Fury and barbarian level 4. Upgrades a natural weapon's DR-bypass quality, not a Change target on the barbarian's own defenses.",
+      ),
+    ],
+  },
+  {
+    id: "perfectClarity",
+    name: "Perfect Clarity",
+    minLevel: 1,
+    summary:
+      "While using Moment of Clarity, may roll twice (taking the better) for miss chances or Will saves to disbelieve illusions.",
+    contextNotes: [
+      note(
+        "Requires Moment of Clarity. Conditioned on activating that free action, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "powerfulStance",
+    name: "Powerful Stance",
+    minLevel: 1,
+    summary:
+      "Stance: while active, +1 bonus on melee and thrown weapon damage rolls, scaling +1 per 4 barbarian levels.",
+    contextNotes: [
+      note(
+        "Activated stance (own action to enter/exit), not simply on-while-raging — not modeled as a Change, same posture as Accurate Stance.",
+        "damage",
+      ),
+    ],
+  },
+  {
+    id: "primalScent",
+    name: "Primal Scent",
+    minLevel: 8,
+    summary:
+      "While using Scent, adds half barbarian level on Survival checks to track by scent and on Perception checks to pinpoint creatures she can't see; a pinpointed totally-concealed creature is treated as merely concealed.",
+    contextNotes: [
+      note(
+        "Requires Scent and barbarian level 8. Both bonuses are scoped to specific check use-cases (tracking-by-scent, pinpointing-the-unseen), not whole Survival/Perception — same over-broad-target issue as Raging Leaper.",
+        "skill.sur",
+      ),
+    ],
+  },
+  {
+    id: "psychopompTotem",
+    name: "Psychopomp Totem",
+    minLevel: 6,
+    summary:
+      "While raging, the first time each round she strikes a creature with regeneration or fast healing, it must save or have that ability suppressed for 1 round.",
+    contextNotes: [
+      note(
+        "Requires Lesser Psychopomp Totem and barbarian level 6. Debuffs a struck creature, not a self-buff.",
+      ),
+    ],
+  },
+  {
+    id: "ragingFlier",
+    name: "Raging Flier",
+    minLevel: 6,
+    summary:
+      "Once per rage, as a move action, fly up to base speed (usable as part of a charge's movement).",
+    contextNotes: [
+      note(
+        "Requires Raging Leaper and barbarian level 6. Once-per-rage activated flight, not unconditional-while-raging — not modeled as a Change, unlike Raging Flyer's flat skill bonus below.",
+      ),
+    ],
+  },
+  {
+    id: "ragingFlyer",
+    name: "Raging Flyer",
+    minLevel: 1,
+    summary: "While raging, adds barbarian level as an enhancement bonus on Fly checks.",
+    changes: [
+      {
+        formula: BARBARIAN_LEVEL_SUM,
+        target: "skill.fly",
+        type: "enhancement",
+        activeWhenBuff: WHILE_RAGING,
+      },
+    ],
+    contextNotes: [
+      note(
+        "Same shape as Raging Climber/Raging Swimmer: an enhancement bonus equal to barbarian level on one whole skill, with no partial-use-case split — promoted the same way.",
+        "skill.fly",
+      ),
+    ],
+  },
+  {
+    id: "ragingGrappler",
+    name: "Raging Grappler",
+    minLevel: 1,
+    summary:
+      "While raging, a successful check to start a grapple can also count as succeeding at maintaining it, and a successful check to maintain a grapple can impose prone on herself, the target, or both as a free action.",
+    contextNotes: [
+      note("A set of player-chosen options on a combat maneuver, not a flat self-buff."),
+    ],
+  },
+  {
+    id: "ragingWhirlwind",
+    name: "Raging Whirlwind",
+    minLevel: 12,
+    summary:
+      "As an immediate action after confirming a melee critical hit, may spin the target into the air until the end of her turn; a failed Fortitude save strips its Dexterity bonus to AC for the rest of her turn and drops it prone at the end. No effect on flying creatures.",
+    contextNotes: [
+      note("Barbarian level 12. Crit-triggered debuff on the target, not a self-buff."),
+    ],
+  },
+  {
+    id: "recklessStance",
+    name: "Reckless Stance",
+    minLevel: 1,
+    summary:
+      "Stance: while active, +1 bonus on attack rolls and -1 penalty to AC, both scaling by 1 every 4 barbarian levels.",
+    contextNotes: [
+      note(
+        "Activated stance, not modeled as a Change — same posture as Accurate Stance/Powerful Stance.",
+        "attack",
+      ),
+    ],
+  },
+  {
+    id: "reflexiveDodge",
+    name: "Reflexive Dodge",
+    minLevel: 6,
+    summary: "While using Rolling Dodge, may also apply its dodge bonus to Reflex saving throws.",
+    contextNotes: [
+      note(
+        "Requires Rolling Dodge and barbarian level 6. Conditioned on activating Rolling Dodge (itself a per-round activation, not modeled), so this isn't either.",
+      ),
+    ],
+  },
+  {
+    id: "regenerativeStance",
+    name: "Regenerative Stance",
+    minLevel: 4,
+    summary:
+      "Stance: at the start of her turn, regains 1 temporary hit point per 4 barbarian levels (max 5/round), capped by rage's normal temporary-hit-point maximum.",
+    contextNotes: [note("Barbarian level 4. Activated stance, not modeled as a Change.")],
+  },
+  {
+    id: "regenerativeVigor",
+    name: "Regenerative Vigor",
+    minLevel: 6,
+    summary:
+      "After using Renewed Vigor, gains fast healing 1 per 6 barbarian levels (max 3) until the current rage ends.",
+    contextNotes: [
+      note(
+        "Requires Renewed Vigor and barbarian level 6. Conditioned on having just used the once-per-day Renewed Vigor, not unconditional-while-raging — not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "renewedLife",
+    name: "Renewed Life",
+    minLevel: 6,
+    summary:
+      "While raging, ignores the effect of one temporary negative level per 4 barbarian levels (max 5); once per day on ending a rage with negative levels remaining, may attempt saves to remove up to that many.",
+    contextNotes: [
+      note(
+        "Requires Renewed Vitality and barbarian level 6. No Change target for ignoring negative-level effects; the once-daily save-off clause isn't modeled either.",
+      ),
+    ],
+  },
+  {
+    id: "renewedVitality",
+    name: "Renewed Vitality",
+    minLevel: 4,
+    summary:
+      "While raging, ignores 1 point of ability penalty or damage per 2 barbarian levels (max 10); once per day on ending a rage with such damage remaining, may reroll a save that caused it and remove a matching amount on success.",
+    contextNotes: [
+      note(
+        "Requires Renewed Vigor and barbarian level 4. No Change target for ignoring ability damage/penalties; the once-daily reroll clause isn't modeled either.",
+      ),
+    ],
+  },
+  {
+    id: "roaringDrunk",
+    name: "Roaring Drunk",
+    minLevel: 1,
+    summary:
+      "While raging, each alcoholic drink consumed adds +1 morale bonus on Intimidate checks and to the save DC of fear effects she creates, up to +1 per 4 barbarian levels.",
+    contextNotes: [
+      note(
+        "Scales with drinks consumed rather than a level formula alone, and the fear-DC bonus isn't a self-buff Change target — not modeled.",
+        "skill.int",
+      ),
+    ],
+  },
 ]);
 
 export const RAGE_POWERS: Record<string, RagePowerDef> = Object.fromEntries(
@@ -1306,8 +2588,8 @@ export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] 
  * spelling/wording matched ours exactly (case-insensitively). (The former
  * 30th entry, Sixth Sense, matched nothing under any key — one of the tells
  * it wasn't real; see the file doc comment.) The batch-1 (A-F) sweep re-ran
- * this same audit for its 70 additions — also zero collisions, zero aliases
- * needed.
+ * this same audit for its 70 additions, and batch 2 (G-R) for its 106 —
+ * both zero collisions, zero aliases needed.
  *
  * One name COLLIDES within the vendored catalog itself: "Guarded Stance"
  * appears twice — the Core Rulebook original (`guarded_stance`, no
