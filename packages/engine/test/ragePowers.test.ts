@@ -66,6 +66,15 @@ function makeDoc(over: { classTag: string; level: number; ragePowers?: string[] 
 // Promoted by issue #75 (while-raging buff gate) or the #74 parity-sweep
 // batch-1 (A-F) / batch-2 (G-R) / batch-3 (S-Z) passes — see
 // rageBuffGate.test.ts.
+//
+// Choose-one powers (`choiceChanges` keyed off `build.pickChoices`) also
+// count as promoted even when their unconditional `changes` list is empty —
+// they move real numbers once the pick is stored.
+const CHOICE_PROMOTED_IDS = new Set([
+  "energyResistance",
+  "elementalBlood",
+  "greaterElementalBlood",
+]);
 const PROMOTED_IDS = new Set([
   "ragingClimber",
   "ragingSwimmer",
@@ -102,7 +111,10 @@ describe("RAGE_POWERS table", () => {
     expect(RAGE_POWER_IDS).toHaveLength(243);
     for (const id of RAGE_POWER_IDS) {
       const power = RAGE_POWERS[id]!;
-      if (PROMOTED_IDS.has(id)) {
+      if (CHOICE_PROMOTED_IDS.has(id)) {
+        expect(power.displayOnly).toBe(false);
+        expect(power.choiceChanges).toBeDefined();
+      } else if (PROMOTED_IDS.has(id)) {
         expect(power.displayOnly).toBe(false);
         expect(power.changes.length).toBeGreaterThan(0);
       } else {

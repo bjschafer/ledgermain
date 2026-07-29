@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-chosen-energy-and-stacking-darkvision",
+    date: "2026-07-29",
+    title: "Pick your energy type, and darkvision that really adds up",
+    note: "Rage powers that make you choose an energy type when you take them now let you make that choice right in the picker — and apply it. Energy Resistance scales with your level in the type you picked, Draconic Blood adds its resistance 5 alongside its natural armor, Elemental Blood reads the element you chose at its Lesser pick, and Greater Elemental Blood grants the matching movement (burrow, swim, fly, or faster land speed) the moment you rage. Separately, abilities worded \"gain darkvision, or extend it if you already have it\" now truly extend it: a dwarf raging with Lesser Moon Totem sees 90 feet, not 60, the shifter's Wolf aspect lengthens scent you already have, and the shadow oracle's Pierce the Shadows adds its full 60 feet on top of any racial darkvision.",
+  },
+  {
     id: "2026-07-29-shapechanger-race-trait-swaps",
     date: "2026-07-29",
     title: "Skinwalkers, changelings, and gathlains trade traits honestly",

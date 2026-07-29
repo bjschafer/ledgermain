@@ -7,7 +7,9 @@ import {
   barbarianLevel,
   chosenRagePowerCount,
   expectedRagePowerCount,
+  ragePowerChoice,
   ragePowersNeedWarning,
+  setRagePowerChoice,
   toggleRagePower,
 } from "../../model/ragePowers.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
@@ -156,6 +158,30 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
                         ⚠ {noteEntry.text}
                       </div>
                     ))}
+                    {isSel && p.choice ? (
+                      // Choose-one selection (RAW locks it in when the power
+                      // is gained) — stored via model/ragePowers.ts's
+                      // setRagePowerChoice; chain powers keyed off this pick
+                      // apply nothing until one is chosen.
+                      <label className="hint" style={{ marginTop: 2, display: "block" }}>
+                        {p.choice.label}:{" "}
+                        <select
+                          value={ragePowerChoice(doc, p.id) ?? ""}
+                          onChange={(e) =>
+                            update((d2) =>
+                              setRagePowerChoice(d2, p.id, e.target.value || undefined),
+                            )
+                          }
+                        >
+                          <option value="">— choose —</option>
+                          {p.choice.options.map((o) => (
+                            <option key={o.id} value={o.id}>
+                              {o.label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    ) : null}
                     {p.description ? <FeatureDescription html={p.description} /> : null}
                   </div>
                   <button

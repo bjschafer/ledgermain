@@ -270,6 +270,32 @@ export interface RagePowerDef {
    * real gated `Change`.
    */
   displayOnly: boolean;
+  /**
+   * A selection RAW locks in when the power is gained (an energy type, a
+   * skill, ...). The player's pick is stored in
+   * `doc.build.pickChoices["ragePower:<this id>"]`; until one is stored,
+   * `choiceChanges` emit nothing (same safe default as `featChoices`).
+   */
+  choice?: PickChoice;
+  /**
+   * Which power's stored choice `choiceChanges` are keyed off — for chain
+   * powers whose RAW selection was made by an earlier pick (Elemental
+   * Blood reads Lesser Elemental Blood's element). Defaults to this
+   * power's own id.
+   */
+  choiceFrom?: string;
+  /**
+   * Per-option Changes, keyed by option id — applied (through the usual
+   * `activeWhenBuff` gating) only when the resolved choice matches a key.
+   */
+  choiceChanges?: Readonly<Record<string, readonly Change[]>>;
+}
+
+/** A choose-one selection an entry declares — see {@link RagePowerDef.choice}. */
+export interface PickChoice {
+  /** Dropdown prompt, e.g. "Energy type". */
+  label: string;
+  options: readonly { id: string; label: string }[];
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });
@@ -308,6 +334,9 @@ interface RawPower {
   contextNotes?: ContextNote[];
   /** Real gated (or, in principle, unconditional) Changes — empty/omitted for every non-promoted entry, see file doc comment. */
   changes?: Change[];
+  choice?: PickChoice;
+  choiceFrom?: string;
+  choiceChanges?: Readonly<Record<string, readonly Change[]>>;
 }
 
 function build(entries: RawPower[]): RagePowerDef[] {
@@ -321,9 +350,31 @@ function build(entries: RawPower[]): RagePowerDef[] {
       editions: BOTH,
       changes,
       contextNotes: e.contextNotes,
-      displayOnly: changes.length === 0,
+      // A choice-gated power still counts as modeled: it moves real numbers
+      // once its selection is stored.
+      displayOnly: changes.length === 0 && !e.choiceChanges,
+      choice: e.choice,
+      choiceFrom: e.choiceFrom,
+      choiceChanges: e.choiceChanges,
     };
   });
+}
+
+/** The four classic elemental energies, shared by the choose-one powers below. */
+const ENERGY_CHOICE_OPTIONS = [
+  { id: "acid", label: "Acid" },
+  { id: "cold", label: "Cold" },
+  { id: "electricity", label: "Electricity" },
+  { id: "fire", label: "Fire" },
+] as const;
+
+/** `eres.<type> = formula`, while raging — the shape every chosen-energy resistance shares. */
+function energyResistChoiceChanges(formula: string): Record<string, readonly Change[]> {
+  const out: Record<string, readonly Change[]> = {};
+  for (const { id } of ENERGY_CHOICE_OPTIONS) {
+    out[id] = [{ formula, target: `eres.${id}`, type: "untyped", activeWhenBuff: WHILE_RAGING }];
+  }
+  return out;
 }
 
 const RAGE_POWER_LIST: RagePowerDef[] = build([
@@ -1039,12 +1090,9 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     summary:
       "While raging, resistance 5 to a chosen energy type (acid, cold, fire, or electricity) and a +1 natural armor bonus.",
     changes: [{ formula: "1", target: "nac", type: "natural", activeWhenBuff: WHILE_RAGING }],
-    contextNotes: [
-      note(
-        "Requires Lesser Draconic Blood and barbarian level 6. The energy-resistance type is a player choice this table has no chooser for — track it manually; only the unconditional +1 natural armor is modeled.",
-        "eres.*",
-      ),
-    ],
+    choice: { label: "Energy type", options: ENERGY_CHOICE_OPTIONS },
+    choiceChanges: energyResistChoiceChanges("5"),
+    contextNotes: [note("Requires Lesser Draconic Blood and barbarian level 6.")],
   },
   {
     id: "dragonTotem",
@@ -1118,10 +1166,11 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     minLevel: 6,
     summary:
       "While raging, energy resistance 10 to the energy type chosen with Lesser Elemental Blood.",
+    choiceFrom: "lesserElementalBlood",
+    choiceChanges: energyResistChoiceChanges("10"),
     contextNotes: [
       note(
-        "Requires Lesser Elemental Blood and barbarian level 6. The energy type is a player choice fixed at that earlier pick — no chooser in this table, so this stays note-only (same blocked-choice shape as the standalone Energy Resistance power).",
-        "eres.*",
+        "Requires Lesser Elemental Blood and barbarian level 6; the resistance keys off the energy type chosen there.",
       ),
     ],
   },
@@ -1174,12 +1223,25 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     minLevel: 1,
     summary:
       "While raging, resistance to one chosen energy type (acid, cold, electricity, fire, or sonic) equal to half barbarian level (minimum 1); can be taken again for a different type, but instances don't stack with each other.",
-    contextNotes: [
-      note(
-        "The energy type is a player choice — this app has no mechanism to let a build pick which energy type a rage power applies to, so this stays note-only even though the scaling itself (half level, min 1) is a clean level formula.",
-        "eres.*",
-      ),
-    ],
+    // RAW adds sonic to the classic four, so this power carries its own
+    // option list instead of ENERGY_CHOICE_OPTIONS. The taken-again-for-a-
+    // second-type case has no second pick slot (one choice per power id) —
+    // track a second instance's type manually.
+    choice: {
+      label: "Energy type",
+      options: [...ENERGY_CHOICE_OPTIONS, { id: "sonic", label: "Sonic" }],
+    },
+    choiceChanges: {
+      ...energyResistChoiceChanges(`max(1, floor((${BARBARIAN_LEVEL_SUM}) / 2))`),
+      sonic: [
+        {
+          formula: `max(1, floor((${BARBARIAN_LEVEL_SUM}) / 2))`,
+          target: "eres.sonic",
+          type: "untyped",
+          activeWhenBuff: WHILE_RAGING,
+        },
+      ],
+    },
   },
   {
     id: "enhanceVenom",
@@ -1569,10 +1631,45 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     minLevel: 10,
     summary:
       "While raging, gains a movement benefit keyed to the energy type chosen for Elemental Blood: burrow 30 ft. (acid), swim 60 ft. (cold), +30 ft. land speed (fire), or fly 60 ft. with good maneuverability (electricity).",
+    choiceFrom: "lesserElementalBlood",
+    // Whole-speed GRANTS use `operator: "set"` (applySpeedTarget replaces
+    // the mode's value outright — correct for "gains a burrow/swim/fly
+    // speed of N", and never additive-inflates a race that already flies or
+    // swims); fire's "+30 ft." is an increase, so it stays additive.
+    // Maneuverability (good, for fly) is prose-only, as everywhere else.
+    choiceChanges: {
+      acid: [
+        {
+          formula: "30",
+          operator: "set",
+          target: "burrowSpeed",
+          type: "base",
+          activeWhenBuff: WHILE_RAGING,
+        },
+      ],
+      cold: [
+        {
+          formula: "60",
+          operator: "set",
+          target: "swimSpeed",
+          type: "base",
+          activeWhenBuff: WHILE_RAGING,
+        },
+      ],
+      electricity: [
+        {
+          formula: "60",
+          operator: "set",
+          target: "flySpeed",
+          type: "base",
+          activeWhenBuff: WHILE_RAGING,
+        },
+      ],
+      fire: [{ formula: "30", target: "landSpeed", type: "untyped", activeWhenBuff: WHILE_RAGING }],
+    },
     contextNotes: [
       note(
-        "Requires Elemental Blood and barbarian level 10. The energy type — and therefore which speed this grants — is a player choice fixed at the earlier pick, with no chooser in this table; same blocked-choice shape as Elemental Blood itself.",
-        "flySpeed",
+        "Requires Elemental Blood and barbarian level 10; the movement benefit keys off the energy type chosen at Lesser Elemental Blood.",
       ),
     ],
   },
@@ -2161,9 +2258,14 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     minLevel: 1,
     summary:
       "Choose an energy type; while raging, up to three times a day as a swift action, imbue melee attacks with that energy for 1 round, adding 1d6 damage of that type.",
+    // Declares the chain's energy-type choice: Elemental Blood and Greater
+    // Elemental Blood key their choiceChanges off THIS power's stored pick
+    // (`choiceFrom`). Its own swift-action 1d6 imbue stays prose — the
+    // choice slot alone doesn't promote it.
+    choice: { label: "Energy type", options: ENERGY_CHOICE_OPTIONS },
     contextNotes: [
       note(
-        "Activated (swift action, limited uses/day) with a player-chosen energy type — not modeled as a Change.",
+        "Activated (swift action, limited uses/day) — the imbue itself is not modeled as a Change; the chosen energy type feeds Elemental Blood and Greater Elemental Blood.",
       ),
     ],
   },

@@ -816,3 +816,192 @@ describe("#74 parity sweep batch 3 (S-Z): newly promoted rage powers", () => {
     expect(notRaging.senses.find((s) => s.kind === "scent")).toBeUndefined();
   });
 });
+
+/**
+ * Choose-one rage powers (`RagePowerDef.choice`/`choiceChanges`, stored in
+ * `build.pickChoices` under the declaring power's `ragePower:<id>` key):
+ * Energy Resistance, Draconic Blood, and the Lesser Elemental Blood chain.
+ * RAW citations live on the entries; the fixtures pin the three behaviors
+ * that matter — a stored pick applies, no pick applies nothing, and chain
+ * powers read the DECLARING power's key.
+ */
+describe("choose-one rage powers (build.pickChoices)", () => {
+  function raceId(name: string): string {
+    const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  function makeDoc(over: {
+    level: number;
+    ragePowers?: string[];
+    pickChoices?: Record<string, string>;
+    activeBuffs?: CharacterDoc["live"]["activeBuffs"];
+  }): CharacterDoc {
+    return {
+      schemaVersion: 1,
+      id: "test",
+      ownerId: "owner",
+      version: 1,
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      identity: {
+        name: "Test",
+        race: raceId("Human"),
+        classes: [{ tag: "barbarian", level: over.level }],
+      },
+      abilities: { str: 16, dex: 12, con: 14, int: 10, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        ragePowers: over.ragePowers,
+        pickChoices: over.pickChoices,
+      },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        activeBuffs: over.activeBuffs ?? [],
+        resources: {},
+      },
+    };
+  }
+
+  function raging() {
+    const rageBuff = buffByName("Rage");
+    return [
+      { instanceId: "rage-1", buffId: rageBuff.id, name: rageBuff.name, changes: rageBuff.changes },
+    ];
+  }
+
+  it("Energy Resistance: chosen fire resistance equal to half level (min 1), while raging only", () => {
+    // RAW (aonprd.com, Advanced Player's Guide): "While raging, the
+    // barbarian gains resistance to one energy type (acid, cold,
+    // electricity, fire, or sonic) equal to 1/2 her barbarian level
+    // (minimum 1)." — L8 → 4.
+    const sheet = compute(
+      makeDoc({
+        level: 8,
+        ragePowers: ["energyResistance"],
+        pickChoices: { "ragePower:energyResistance": "fire" },
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(4);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "cold")).toBeUndefined();
+
+    const notRaging = compute(
+      makeDoc({
+        level: 8,
+        ragePowers: ["energyResistance"],
+        pickChoices: { "ragePower:energyResistance": "fire" },
+      }),
+      ref,
+    );
+    expect(notRaging.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+  });
+
+  it("Energy Resistance: level 1 floor (minimum 1) and the sonic fifth option", () => {
+    const sheet = compute(
+      makeDoc({
+        level: 1,
+        ragePowers: ["energyResistance"],
+        pickChoices: { "ragePower:energyResistance": "sonic" },
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "sonic")?.total).toBe(1);
+  });
+
+  it("Energy Resistance: no stored choice applies nothing, even while raging", () => {
+    const sheet = compute(
+      makeDoc({ level: 8, ragePowers: ["energyResistance"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("Draconic Blood: chosen acid resistance 5 alongside the unconditional-while-raging +1 natural armor", () => {
+    const sheet = compute(
+      makeDoc({
+        level: 6,
+        ragePowers: ["draconicBlood"],
+        pickChoices: { "ragePower:draconicBlood": "acid" },
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "acid")?.total).toBe(5);
+    const noChoice = compute(
+      makeDoc({ level: 6, ragePowers: ["draconicBlood"], activeBuffs: raging() }),
+      ref,
+    );
+    // The natural-armor half never depended on the choice.
+    expect(noChoice.ac.normal).toBe(sheet.ac.normal);
+    expect(noChoice.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("Elemental Blood chain: both powers key off Lesser Elemental Blood's stored choice", () => {
+    // RAW: Elemental Blood grants resistance 10 to the type chosen at
+    // Lesser Elemental Blood; Greater Elemental Blood keys its movement to
+    // the same pick (electricity → fly 60 ft.).
+    const sheet = compute(
+      makeDoc({
+        level: 10,
+        ragePowers: ["lesserElementalBlood", "elementalBlood", "greaterElementalBlood"],
+        pickChoices: { "ragePower:lesserElementalBlood": "electricity" },
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "electricity")?.total).toBe(10);
+    expect(sheet.speeds.fly).toBe(60);
+
+    const notRaging = compute(
+      makeDoc({
+        level: 10,
+        ragePowers: ["lesserElementalBlood", "elementalBlood", "greaterElementalBlood"],
+        pickChoices: { "ragePower:lesserElementalBlood": "electricity" },
+      }),
+      ref,
+    );
+    expect(notRaging.speeds.fly ?? 0).toBe(0);
+  });
+
+  it("Greater Elemental Blood: fire's +30 ft. is additive to land speed (fast movement included)", () => {
+    const sheet = compute(
+      makeDoc({
+        level: 10,
+        ragePowers: ["lesserElementalBlood", "greaterElementalBlood"],
+        pickChoices: { "ragePower:lesserElementalBlood": "fire" },
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    const baseline = compute(
+      makeDoc({
+        level: 10,
+        ragePowers: ["lesserElementalBlood", "greaterElementalBlood"],
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(sheet.speeds.land).toBe(baseline.speeds.land! + 30);
+  });
+
+  it("a stale option id (edited by hand, option since renamed) applies nothing", () => {
+    const sheet = compute(
+      makeDoc({
+        level: 8,
+        ragePowers: ["energyResistance"],
+        pickChoices: { "ragePower:energyResistance": "force" },
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances ?? []).toEqual([]);
+  });
+});

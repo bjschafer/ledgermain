@@ -395,6 +395,20 @@ export interface CharacterDoc {
      */
     featChoices?: Record<string, string>;
     /**
+     * Player choices for pick-list entries that require a selection locked
+     * in when the pick is gained (e.g. the Energy Resistance rage power's
+     * energy type). Keyed `"<table>:<entryId>"` — `"ragePower:energyResistance"`
+     * — by the entry that DECLARES the choice; chain entries that reuse an
+     * earlier pick's choice (Elemental Blood reading Lesser Elemental
+     * Blood's element) resolve through the declaring entry's key rather than
+     * storing their own. Values are option ids from the entry's declared
+     * option list.
+     *
+     * Optional for back-compat, same posture as `featChoices` above: no
+     * choice stored means the entry's choice-gated changes emit nothing.
+     */
+    pickChoices?: Record<string, string>;
+    /**
      * Additional instances of a RAW-repeatable feat (issue #58) beyond the
      * first — Weapon Focus, Skill Focus, Improved Critical, the "Extra X"
      * pool feats, and the rest of `apps/web/src/model/repeatableFeats.ts`'s

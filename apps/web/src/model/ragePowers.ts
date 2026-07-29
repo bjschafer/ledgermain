@@ -43,12 +43,50 @@ export function hasRagePower(doc: CharacterDoc, id: string): boolean {
   return (doc.build.ragePowers ?? []).includes(id);
 }
 
-/** Add or remove a rage power id. No-op add if already present (no duplicates). */
+/**
+ * Add or remove a rage power id. No-op add if already present (no
+ * duplicates). Removing a power that DECLARES a choose-one selection
+ * (`RagePowerDef.choice`) also drops its stored `pickChoices` entry — a
+ * re-added power should start unchosen, and chain powers keyed off it
+ * (`choiceFrom`) must stop applying rather than read a ghost pick.
+ */
 export function toggleRagePower(doc: CharacterDoc, powerId: string): CharacterDoc {
   const current = doc.build.ragePowers ?? [];
   const has = current.includes(powerId);
   const ragePowers = has ? current.filter((p) => p !== powerId) : [...current, powerId];
-  return { ...doc, build: { ...doc.build, ragePowers } };
+  let pickChoices = doc.build.pickChoices;
+  const choiceKey = `ragePower:${powerId}`;
+  if (has && pickChoices && choiceKey in pickChoices) {
+    const { [choiceKey]: _dropped, ...rest } = pickChoices;
+    pickChoices = rest;
+  }
+  return { ...doc, build: { ...doc.build, ragePowers, pickChoices } };
+}
+
+/**
+ * Store (or clear, with `undefined`) the choose-one selection for a
+ * declaring power — `build.pickChoices["ragePower:<powerId>"]`. Pure
+ * transition consumed by `RagePowerPicker`'s per-entry dropdown.
+ */
+export function setRagePowerChoice(
+  doc: CharacterDoc,
+  powerId: string,
+  optionId: string | undefined,
+): CharacterDoc {
+  const key = `ragePower:${powerId}`;
+  const existing = doc.build.pickChoices ?? {};
+  if (optionId === undefined) {
+    if (!(key in existing)) return doc;
+    const { [key]: _dropped, ...rest } = existing;
+    return { ...doc, build: { ...doc.build, pickChoices: rest } };
+  }
+  if (existing[key] === optionId) return doc;
+  return { ...doc, build: { ...doc.build, pickChoices: { ...existing, [key]: optionId } } };
+}
+
+/** The stored choose-one selection for a declaring power, if any. */
+export function ragePowerChoice(doc: CharacterDoc, powerId: string): string | undefined {
+  return doc.build.pickChoices?.[`ragePower:${powerId}`];
 }
 
 /** The number of rage powers currently chosen. */

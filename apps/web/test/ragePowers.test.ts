@@ -8,7 +8,9 @@ import {
   chosenRagePowerCount,
   expectedRagePowerCount,
   hasRagePower,
+  ragePowerChoice,
   ragePowersNeedWarning,
+  setRagePowerChoice,
   toggleRagePower,
 } from "../src/model/ragePowers.js";
 
@@ -141,5 +143,58 @@ describe("model/ragePowers: ragePowersNeedWarning", () => {
       ragePowers: ["animalFury", "guardedStance"],
     });
     expect(ragePowersNeedWarning(doc, ref)).toBe(true);
+  });
+});
+
+describe("model/ragePowers: choose-one selections (build.pickChoices)", () => {
+  it("setRagePowerChoice stores the pick under the ragePower:<id> key", () => {
+    const doc = setRagePowerChoice(
+      makeDoc({ ragePowers: ["energyResistance"] }),
+      "energyResistance",
+      "fire",
+    );
+    expect(doc.build.pickChoices).toEqual({ "ragePower:energyResistance": "fire" });
+    expect(ragePowerChoice(doc, "energyResistance")).toBe("fire");
+  });
+
+  it("setRagePowerChoice with undefined clears the stored pick", () => {
+    let doc = setRagePowerChoice(
+      makeDoc({ ragePowers: ["energyResistance"] }),
+      "energyResistance",
+      "fire",
+    );
+    doc = setRagePowerChoice(doc, "energyResistance", undefined);
+    expect(ragePowerChoice(doc, "energyResistance")).toBeUndefined();
+  });
+
+  it("setRagePowerChoice is a no-op (same object) when the value is unchanged", () => {
+    const doc = setRagePowerChoice(
+      makeDoc({ ragePowers: ["energyResistance"] }),
+      "energyResistance",
+      "fire",
+    );
+    expect(setRagePowerChoice(doc, "energyResistance", "fire")).toBe(doc);
+    expect(setRagePowerChoice(makeDoc({}), "energyResistance", undefined)).toEqual(makeDoc({}));
+  });
+
+  it("removing a declaring power drops its stored choice (no ghost pick on re-add)", () => {
+    let doc = setRagePowerChoice(
+      makeDoc({ ragePowers: ["lesserElementalBlood", "elementalBlood"] }),
+      "lesserElementalBlood",
+      "electricity",
+    );
+    doc = toggleRagePower(doc, "lesserElementalBlood");
+    expect(doc.build.ragePowers).toEqual(["elementalBlood"]);
+    expect(ragePowerChoice(doc, "lesserElementalBlood")).toBeUndefined();
+  });
+
+  it("removing a non-declaring power leaves other stored choices alone", () => {
+    let doc = setRagePowerChoice(
+      makeDoc({ ragePowers: ["lesserElementalBlood", "elementalBlood"] }),
+      "lesserElementalBlood",
+      "cold",
+    );
+    doc = toggleRagePower(doc, "elementalBlood");
+    expect(ragePowerChoice(doc, "lesserElementalBlood")).toBe("cold");
   });
 });
