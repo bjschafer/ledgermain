@@ -77,14 +77,19 @@
  *     darkvision by 60 feet instead" is exactly `existing + 60`, so the
  *     dwarf/tiefling case that once blocked this entry now computes right.
  *     Perfect darkness sight at 11th (`sensesid`), like pierceTheVeil.
+ *   - The chosen-element trio, promoted via the choose-one mechanism
+ *     (`choice`/`choiceChanges`, mirroring `rage-powers.ts`; the pick is
+ *     stored in `doc.build.pickChoices`): `apocalypse:defyElements` (chosen
+ *     type resistance 5 — the later new-type-or-increase grants stay a
+ *     reminder), `dragon:draconicResistance` (scaling resistance keyed off
+ *     the MYSTERY's associated element via `choiceFromMystery`, plus
+ *     unconditional scaling natural armor), and `elemental:elementalAegis`
+ *     (the 13th-level per-element boon only — the aegis armor itself is
+ *     activated and stays a reminder; see the entry's disclosed reading).
  *
  * Everything else stays deliberately display-only, including several
  * near-misses worth naming so a future pass doesn't re-litigate them:
  *
- *   - `apocalypse:defyElements` — the energy type is a player pick this table
- *     doesn't carry (same class of gap as `elemental:elementalAegis` /
- *     `dragon:draconicResistance`'s chosen-element revelations, which are
- *     likewise display-only).
  *   - `bones:nearDeath` / `apocalypse:nearDeath` and `spellscar:mysticNull` —
  *     an insight bonus scoped to a save-CATEGORY ("against disease,
  *     mind-affecting effects, and poison" / "against spells and spell-like
@@ -100,10 +105,9 @@
  * does NOT unlock anything here — nothing in this table is conditioned on a
  * separate buff being active. The remaining near-misses above are ability
  * SUBSTITUTIONS (a structural compute change, not a typed modifier),
- * take-level-dependent scaling with no numeric hook, a player-pick this
- * table doesn't carry, a save-category the engine can't target, or a
- * set-semantics mismatch — none unlockable by that mechanism, so they stay
- * deliberately deferred.
+ * take-level-dependent scaling with no numeric hook, a save-category the
+ * engine can't target, or a set-semantics mismatch — none unlockable by
+ * that mechanism, so they stay deliberately deferred.
  *
  * The Final Revelation (20th level, automatic — NOT one of the six budgeted
  * picks) is tracked separately in `ORACLE_MYSTERY_FINAL_REVELATIONS`,
@@ -111,6 +115,8 @@
  */
 
 import type { Change, ContextNote } from "@pf1/schema";
+
+import type { PickChoice } from "./rage-powers.js";
 
 export interface OracleRevelationDef {
   /** `<mysteryTag>:<camelCaseName>` — unique across every mystery. */
@@ -130,8 +136,26 @@ export interface OracleRevelationDef {
   changes: Change[];
   /** Non-mechanical reminders (nested choice, resource cost, pointer to another tracked feature, ...). */
   contextNotes?: ContextNote[];
-  /** True when `changes` is empty — mirrors `RagePowerDef.displayOnly`'s convention rather than being hardcoded `true`. */
+  /** True when the revelation moves no numbers at all — no `changes` and no `choiceChanges` (mirrors `RagePowerDef.displayOnly`'s convention). */
   displayOnly: boolean;
+  /**
+   * A selection RAW locks in when the revelation is gained (an energy type,
+   * an element). The pick is stored in
+   * `doc.build.pickChoices["oracleRevelation:<this id>"]`; until one is
+   * stored, `choiceChanges` emit nothing — same safe default as
+   * `RagePowerDef.choice`.
+   */
+  choice?: PickChoice;
+  /**
+   * True when `choiceChanges` key off the MYSTERY's own stored pick
+   * (`pickChoices["oracleMystery:<mysteryTag>"]`, declared by
+   * `OracleMysteryDef.choice`) rather than a revelation-level one — the
+   * Dragon mystery's associated element is chosen with the mystery, not the
+   * revelation.
+   */
+  choiceFromMystery?: boolean;
+  /** Per-option Changes, keyed by option id — applied only when the resolved choice matches a key. */
+  choiceChanges?: Readonly<Record<string, readonly Change[]>>;
 }
 
 export interface OracleMysteryFinalRevelation {
@@ -151,6 +175,9 @@ interface RawRevelation {
   /** Typed modifiers this revelation grants — omitted (or `[]`) for the vast majority; see file doc comment for the promoted set. */
   changes?: Change[];
   contextNotes?: ContextNote[];
+  choice?: PickChoice;
+  choiceFromMystery?: boolean;
+  choiceChanges?: Readonly<Record<string, readonly Change[]>>;
 }
 
 /** `c()` mirrors `oracle-curses.ts`/`bloodlines.ts`'s helper — a terse Change literal for the handful of promoted revelations below. */
@@ -166,6 +193,14 @@ const c = (
   ...(operator ? { operator } : {}),
 });
 
+/** Dragon's Draconic Resistance energy-resistance scaling — 5, 10 at 9th, 20 at 15th (see the entry's RAW citation). */
+const DRACONIC_RESISTANCE_FORMULA =
+  "if(gte(@classes.oracle.level, 15), 20, if(gte(@classes.oracle.level, 9), 10, 5))";
+
+/** Elemental Aegis's 13th-level boon, self-gated on the RAW level (minLevel is soft-filtered only — an early pick must not grant the boon yet). */
+const AEGIS_BOON_AT_13 = (amount: string): string =>
+  `if(gte(@classes.oracle.level, 13), ${amount}, 0)`;
+
 /** Builds a mystery's revelation defs from a terse per-mystery list, prefixing every id with its mystery tag. */
 function forMystery(mysteryTag: string, entries: RawRevelation[]): OracleRevelationDef[] {
   return entries.map((e) => {
@@ -178,7 +213,12 @@ function forMystery(mysteryTag: string, entries: RawRevelation[]): OracleRevelat
       minLevel: e.minLevel ?? 1,
       changes,
       contextNotes: e.contextNotes,
-      displayOnly: changes.length === 0,
+      // A choice-gated revelation still counts as modeled: it moves real
+      // numbers once its selection is stored (same convention as rage powers).
+      displayOnly: changes.length === 0 && !e.choiceChanges,
+      choice: e.choice,
+      choiceFromMystery: e.choiceFromMystery,
+      choiceChanges: e.choiceChanges,
     };
   });
 }
@@ -1045,8 +1085,33 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Defy Elements",
       summary:
         "Choose an energy type for resistance 5. At 5th level and every five levels thereafter, add resistance 5 to a new energy type or increase an existing one by 5 (maximum 20 per type).",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Apocalypse): "Choose
+      // one energy type (acid, cold, fire, electricity, or sonic). You gain
+      // resistance 5 to the selected energy type." Only the 1st-level pick is
+      // stored — the 5th/10th/15th/20th-level grants are each a fresh
+      // new-type-or-increase player choice with no slot in the one-key
+      // choose-one mechanism, so they stay a contextNotes reminder.
+      choice: {
+        label: "Energy type",
+        options: [
+          { id: "acid", label: "Acid" },
+          { id: "cold", label: "Cold" },
+          { id: "electricity", label: "Electricity" },
+          { id: "fire", label: "Fire" },
+          { id: "sonic", label: "Sonic" },
+        ],
+      },
+      choiceChanges: {
+        acid: [c("5", "eres.acid")],
+        cold: [c("5", "eres.cold")],
+        electricity: [c("5", "eres.electricity")],
+        fire: [c("5", "eres.fire")],
+        sonic: [c("5", "eres.sonic")],
+      },
       contextNotes: [
-        note("Which energy type(s) you chose is a separate pick — record it in a note."),
+        note(
+          "The extra resistance 5 gained at 5th level and every five levels thereafter (a new energy type, or +5 to an existing one, max 20) is a fresh pick each time — apply those manually.",
+        ),
       ],
     },
     {
@@ -1270,6 +1335,29 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Draconic Resistance",
       summary:
         "Resistance 5 against your chosen energy type and a +1 natural armor bonus, increasing to resistance 10/+2 natural armor at 9th level and resistance 20/+4 natural armor at 15th level.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Dragon): "You gain
+      // resistance 5 against your chosen energy type and a +1 natural armor
+      // bonus. At 9th level, your energy resistance increases to 10 and your
+      // natural armor bonus increases to +2. At 15th level, your energy
+      // resistance increases to 20 and your natural armor bonus increases to
+      // +4." The energy type is the MYSTERY's associated element (chosen when
+      // the mystery is selected — see oracle-mysteries.ts), so the resistance
+      // half keys off that stored pick; the natural armor half is
+      // unconditional.
+      changes: [
+        c(
+          "if(gte(@classes.oracle.level, 15), 4, if(gte(@classes.oracle.level, 9), 2, 1))",
+          "nac",
+          "natural",
+        ),
+      ],
+      choiceFromMystery: true,
+      choiceChanges: {
+        acid: [c(DRACONIC_RESISTANCE_FORMULA, "eres.acid")],
+        cold: [c(DRACONIC_RESISTANCE_FORMULA, "eres.cold")],
+        electricity: [c(DRACONIC_RESISTANCE_FORMULA, "eres.electricity")],
+        fire: [c(DRACONIC_RESISTANCE_FORMULA, "eres.fire")],
+      },
     },
     {
       id: "dragonMagic",
@@ -1348,7 +1436,38 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Elemental Aegis",
       summary:
         "Choose air, earth, fire, or water; conjure a protective covering granting a +4 armor bonus to AC, increasing by 2 every 4 levels starting at 7th. At 13th level, gain an additional boon by element: +2 Reflex saves (air), +2 CMD (earth), stacking fire resistance 2 (fire), or +4 Swim (water). Usable 1 hour per oracle level per day, in 1-hour increments.",
-      contextNotes: [note("Which element you chose is a separate pick — record it in a note.")],
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Elemental): the aegis
+      // itself is activated (1 hour/level per day), so its armor bonus stays
+      // a contextNotes reminder. The 13th-level boon is modeled as always-on:
+      // "At 13th level, you receive an additional boon depending on the
+      // element you chose" reads as a standing grant with no stated tie to
+      // the aegis being conjured — a disclosed reading (the same
+      // no-explicit-gate bar bloodrager-bloodlines.ts's KNOWN AMBIGUITY note
+      // applies); if it turns out to be aegis-gated, the fix is scoped to
+      // this entry. Fire's "stacks with any other fire resistance" clause is
+      // the same pre-existing eres.* highest-wins simplification every other
+      // energy-resistance source lives with.
+      choice: {
+        label: "Element",
+        options: [
+          { id: "air", label: "Air" },
+          { id: "earth", label: "Earth" },
+          { id: "fire", label: "Fire" },
+          { id: "water", label: "Water" },
+        ],
+      },
+      choiceChanges: {
+        air: [c(AEGIS_BOON_AT_13("2"), "ref")],
+        earth: [c(AEGIS_BOON_AT_13("2"), "cmd")],
+        fire: [c(AEGIS_BOON_AT_13("2"), "eres.fire")],
+        water: [c(AEGIS_BOON_AT_13("4"), "skill.swm")],
+      },
+      contextNotes: [
+        note(
+          "The aegis armor itself (+4 AC, +2 every 4 levels from 7th, 1 hour per level per day) is an activated ability — apply it manually while conjured.",
+          "ac",
+        ),
+      ],
     },
     {
       id: "elementalAllies",

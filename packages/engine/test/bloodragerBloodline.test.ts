@@ -5,7 +5,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 
 import { bloodragerBloodlineVariantLabel } from "../src/bloodrager-bloodlines.js";
 import { collectModifiers } from "../src/collect.js";
-import { deriveResourcePools, resolveClassFeatures } from "../src/index.js";
+import { compute, deriveResourcePools, resolveClassFeatures } from "../src/index.js";
 import { BLOODRAGE_BUFF_ID } from "../src/bloodrage.js";
 import { evaluateFormula } from "../src/formula.js";
 import { buildRollData } from "../src/rolldata.js";
@@ -22,6 +22,7 @@ function makeBloodrager(
   level: number,
   bloodragerBloodline?: string,
   abilities: Partial<Record<"str" | "dex" | "con" | "int" | "wis" | "cha", number>> = {},
+  bloodragerBloodlineVariant?: string,
 ): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -50,6 +51,7 @@ function makeBloodrager(
       spells: { known: [] },
       gear: [],
       ...(bloodragerBloodline ? { bloodragerBloodline } : {}),
+      ...(bloodragerBloodlineVariant ? { bloodragerBloodlineVariant } : {}),
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -113,7 +115,10 @@ describe("bloodrager bloodline powers (collectGrantedFeatures / resolveClassFeat
     expect(mods.some((m) => m.sourceId?.startsWith("bloodragerBloodline:"))).toBe(false);
   });
 
-  it("Draconic's natural armor bonus is a flat +1 once 4th level is reached", () => {
+  it("Draconic's natural armor bonus scales +1 at 4th, +2 at 8th, +4 at 16th", () => {
+    // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Draconic):
+    // "+1 natural armor bonus ... increases to +2 [at 8th] ... to +4 [at
+    // 16th]."
     const low = collectModifiers(
       makeBloodrager(3, "Draconic"),
       ref,
@@ -121,11 +126,60 @@ describe("bloodrager bloodline powers (collectGrantedFeatures / resolveClassFeat
     );
     expect(low.some((m) => m.target === "nac")).toBe(false);
 
-    const doc4 = makeBloodrager(4, "Draconic");
-    const high = collectModifiers(doc4, ref, buildRollData(doc4, ref));
-    const nacMod = high.find((m) => m.target === "nac");
-    expect(nacMod).toBeDefined();
-    expect(nacMod!.value).toBe(1);
+    for (const [level, expected] of [
+      [4, 1],
+      [8, 2],
+      [16, 4],
+    ] as const) {
+      const doc = makeBloodrager(level, "Draconic");
+      const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+      expect(mods.find((m) => m.target === "nac")!.value, `level ${level}`).toBe(expected);
+    }
+  });
+
+  it("Draconic Resistance: the dragon-type variant sets the energy, resist 5 then 10 at 8th (blue → electricity)", () => {
+    // Same RAW citation as above: "resistance 5 against your energy type ...
+    // increases to 10 [at 8th]" — and no 16th-level step for the resistance.
+    const doc4 = makeBloodrager(4, "Draconic", {}, "blue");
+    const at4 = collectModifiers(doc4, ref, buildRollData(doc4, ref));
+    expect(at4.find((m) => m.target === "eres.electricity")!.value).toBe(5);
+
+    const doc16 = makeBloodrager(16, "Draconic", {}, "blue");
+    const at16 = collectModifiers(doc16, ref, buildRollData(doc16, ref));
+    expect(at16.find((m) => m.target === "eres.electricity")!.value).toBe(10);
+
+    // No stored variant → the natural armor still applies, the resistance
+    // doesn't.
+    const noVariant = makeBloodrager(8, "Draconic");
+    const mods = collectModifiers(noVariant, ref, buildRollData(noVariant, ref));
+    expect(mods.find((m) => m.target === "nac")!.value).toBe(2);
+    expect(mods.some((m) => m.target.startsWith("eres."))).toBe(false);
+  });
+
+  it("Elemental Resistance: flat 10 to the chosen element's energy (earth → acid), no scaling step", () => {
+    // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Elemental):
+    // "At 4th level, you gain energy resistance 10 against your energy
+    // type." — flat, unlike the sorcerer power's 20 at 9th.
+    const doc4 = makeBloodrager(4, "Elemental", {}, "earth");
+    const at4 = collectModifiers(doc4, ref, buildRollData(doc4, ref));
+    expect(at4.find((m) => m.target === "eres.acid")!.value).toBe(10);
+
+    const doc20 = makeBloodrager(20, "Elemental", {}, "earth");
+    const at20 = collectModifiers(doc20, ref, buildRollData(doc20, ref));
+    expect(at20.find((m) => m.target === "eres.acid")!.value).toBe(10);
+  });
+
+  it("Elemental Movement at 8th: air flies 60, water swims 60, fire adds 30 ft. land speed", () => {
+    const air = compute(makeBloodrager(8, "Elemental", {}, "air"), ref);
+    expect(air.speeds.fly).toBe(60);
+    const water = compute(makeBloodrager(8, "Elemental", {}, "water"), ref);
+    expect(water.speeds.swim).toBe(60);
+    const fire = compute(makeBloodrager(8, "Elemental", {}, "fire"), ref);
+    const baseline = compute(makeBloodrager(8, "Elemental"), ref);
+    expect(fire.speeds.land).toBe(baseline.speeds.land! + 30);
+    // Below the 8th-level gate the movement power hasn't arrived.
+    const below = compute(makeBloodrager(7, "Elemental", {}, "air"), ref);
+    expect(below.speeds.fly ?? 0).toBe(0);
   });
 
   it("Celestial's eres.acid/cold scales from 5 to 10 at 12th level", () => {

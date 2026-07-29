@@ -307,13 +307,54 @@ export function setMartialFlexibilityFeat(doc: CharacterDoc, featId: string | nu
  * L1, never changed thereafter). Pass `null` (or a blank/whitespace string)
  * to clear. No validation that the tag exists in `@pf1/engine`
  * `ORACLE_MYSTERIES` (soft-warning posture, same as `setSorcererBloodline`).
+ *
+ * Changing away from a mystery also drops its stored mystery-level
+ * choose-one pick (`pickChoices["oracleMystery:<oldTag>"]`, e.g. Dragon's
+ * associated element) — revelations keyed off it must stop applying rather
+ * than read a ghost choice, the same cleanup `toggleRagePower` does for a
+ * removed declaring power.
  */
 export function setOracleMystery(doc: CharacterDoc, tag: string | null): CharacterDoc {
   const trimmed = typeof tag === "string" ? tag.trim() : "";
+  const next = trimmed.length > 0 ? trimmed : undefined;
+  let pickChoices = doc.build.pickChoices;
+  const oldTag = doc.build.oracleMystery;
+  const oldKey = `oracleMystery:${oldTag}`;
+  if (oldTag && oldTag !== next && pickChoices && oldKey in pickChoices) {
+    const { [oldKey]: _dropped, ...rest } = pickChoices;
+    pickChoices = rest;
+  }
   return {
     ...doc,
-    build: { ...doc.build, oracleMystery: trimmed.length > 0 ? trimmed : undefined },
+    build: { ...doc.build, oracleMystery: next, pickChoices },
   };
+}
+
+/**
+ * Store (or clear, with `undefined`) the mystery-level choose-one selection
+ * (`pickChoices["oracleMystery:<tag>"]`, declared by
+ * `OracleMysteryDef.choice` — the Dragon mystery's associated element).
+ * Pure transition consumed by `MysteryPicker`'s dropdown.
+ */
+export function setOracleMysteryChoice(
+  doc: CharacterDoc,
+  mysteryTag: string,
+  optionId: string | undefined,
+): CharacterDoc {
+  const key = `oracleMystery:${mysteryTag}`;
+  const existing = doc.build.pickChoices ?? {};
+  if (optionId === undefined) {
+    if (!(key in existing)) return doc;
+    const { [key]: _dropped, ...rest } = existing;
+    return { ...doc, build: { ...doc.build, pickChoices: rest } };
+  }
+  if (existing[key] === optionId) return doc;
+  return { ...doc, build: { ...doc.build, pickChoices: { ...existing, [key]: optionId } } };
+}
+
+/** The stored mystery-level choose-one selection, if any. */
+export function oracleMysteryChoice(doc: CharacterDoc, mysteryTag: string): string | undefined {
+  return doc.build.pickChoices?.[`oracleMystery:${mysteryTag}`];
 }
 
 /**

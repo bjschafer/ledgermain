@@ -39,14 +39,57 @@ export function hasOracleRevelation(doc: CharacterDoc, id: string): boolean {
   return (doc.build.oracleRevelations ?? []).includes(id);
 }
 
-/** Add or remove a revelation id. No-op add if already present (no duplicates). */
+/**
+ * Add or remove a revelation id. No-op add if already present (no
+ * duplicates). Removing a revelation that DECLARES a choose-one selection
+ * (`OracleRevelationDef.choice`) also drops its stored `pickChoices` entry —
+ * a re-added revelation should start unchosen, the same cleanup
+ * `toggleRagePower` does. (A `choiceFromMystery` revelation stores nothing
+ * of its own — the mystery-level pick outlives it by design.)
+ */
 export function toggleOracleRevelation(doc: CharacterDoc, revelationId: string): CharacterDoc {
   const current = doc.build.oracleRevelations ?? [];
   const has = current.includes(revelationId);
   const oracleRevelations = has
     ? current.filter((r) => r !== revelationId)
     : [...current, revelationId];
-  return { ...doc, build: { ...doc.build, oracleRevelations } };
+  let pickChoices = doc.build.pickChoices;
+  const choiceKey = `oracleRevelation:${revelationId}`;
+  if (has && pickChoices && choiceKey in pickChoices) {
+    const { [choiceKey]: _dropped, ...rest } = pickChoices;
+    pickChoices = rest;
+  }
+  return { ...doc, build: { ...doc.build, oracleRevelations, pickChoices } };
+}
+
+/**
+ * Store (or clear, with `undefined`) the choose-one selection for a
+ * declaring revelation — `build.pickChoices["oracleRevelation:<id>"]`. Pure
+ * transition consumed by `RevelationPicker`'s per-entry dropdown (mirrors
+ * `setRagePowerChoice`).
+ */
+export function setOracleRevelationChoice(
+  doc: CharacterDoc,
+  revelationId: string,
+  optionId: string | undefined,
+): CharacterDoc {
+  const key = `oracleRevelation:${revelationId}`;
+  const existing = doc.build.pickChoices ?? {};
+  if (optionId === undefined) {
+    if (!(key in existing)) return doc;
+    const { [key]: _dropped, ...rest } = existing;
+    return { ...doc, build: { ...doc.build, pickChoices: rest } };
+  }
+  if (existing[key] === optionId) return doc;
+  return { ...doc, build: { ...doc.build, pickChoices: { ...existing, [key]: optionId } } };
+}
+
+/** The stored choose-one selection for a declaring revelation, if any. */
+export function oracleRevelationChoice(
+  doc: CharacterDoc,
+  revelationId: string,
+): string | undefined {
+  return doc.build.pickChoices?.[`oracleRevelation:${revelationId}`];
 }
 
 /**

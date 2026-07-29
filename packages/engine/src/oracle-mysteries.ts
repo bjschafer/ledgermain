@@ -49,6 +49,8 @@
 
 import type { OracleMystery, RefData, SourceRef } from "@pf1/schema";
 
+import type { PickChoice } from "./rage-powers.js";
+
 export interface OracleMysteryBonusSpell {
   /** Oracle class level at which this spell is added to the known list (2, 4, ..., 18). */
   level: number;
@@ -66,6 +68,15 @@ export interface OracleMysteryDef {
   classSkills: string[];
   /** One bonus spell known at oracle level 2, 4, 6, ..., 18 (ascending). */
   bonusSpells: OracleMysteryBonusSpell[];
+  /**
+   * A choose-one selection RAW locks in when the MYSTERY itself is chosen
+   * (Dragon: "Upon selecting this mystery, the oracle must select an energy
+   * type ... to be her associated element"). Stored in
+   * `doc.build.pickChoices["oracleMystery:<tag>"]`; revelations whose
+   * numbers key off it read that entry via
+   * `OracleRevelationDef.choiceFromMystery`.
+   */
+  choice?: PickChoice;
 }
 
 const MYSTERY_LIST: OracleMysteryDef[] = [
@@ -327,6 +338,21 @@ const MYSTERY_LIST: OracleMysteryDef[] = [
     tag: "dragon",
     name: "Dragon",
     classSkills: ["fly", "int", "per", "kar"],
+    // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Dragon): "Upon selecting
+    // this mystery, the oracle must select an energy type (acid, cold,
+    // electricity, or fire) to be her associated element, which impacts
+    // several revelations." A MYSTERY-level pick, not a per-revelation one —
+    // Draconic Resistance's energy resistance reads it via
+    // `choiceFromMystery` (see oracle-revelations.ts).
+    choice: {
+      label: "Associated element",
+      options: [
+        { id: "acid", label: "Acid" },
+        { id: "cold", label: "Cold" },
+        { id: "electricity", label: "Electricity" },
+        { id: "fire", label: "Fire" },
+      ],
+    },
     bonusSpells: [
       { level: 2, id: "9tww9fc9049h6iqc", name: "Cause Fear" },
       { level: 4, id: "tkjnm3lw7ni82tag", name: "Resist Energy" },

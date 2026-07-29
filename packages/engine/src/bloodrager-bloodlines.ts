@@ -62,7 +62,12 @@
 
 import type { BloodragerBloodline, Change, ContextNote, RefData, SourceRef } from "@pf1/schema";
 
-import type { BloodlineResourcePool } from "./bloodlines.js";
+import {
+  type BloodlineResourcePool,
+  DRAGON_TYPE_ENERGY,
+  ELEMENT_ENERGY,
+  energyResistanceVariantChanges,
+} from "./bloodlines.js";
 import { featNameSlug } from "./feat-effects.js";
 
 /** Bloodrager bloodline power level gates (ACG: always 1st/4th/8th/12th/16th/20th). */
@@ -77,6 +82,13 @@ export interface BloodragerBloodlinePower {
   summary: string;
   /** Unconditional numeric modifiers (rare — see file doc comment). */
   changes?: Change[];
+  /**
+   * Per-variant Changes, keyed by `variantOptions` id — applied only when
+   * `doc.build.bloodragerBloodlineVariant` matches a key (mirrors
+   * `BloodlinePower.variantChanges`). No stored variant, or a stale id,
+   * emits nothing.
+   */
+  variantChanges?: Readonly<Record<string, readonly Change[]>>;
   contextNotes?: ContextNote[];
   resourcePool?: BloodlineResourcePool;
 }
@@ -588,14 +600,25 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         id: "draconicResistance",
         level: 4,
         name: "Draconic Resistance",
-        summary: "Resist 5 to your energy type; +1 natural armor bonus to AC.",
-        changes: [c("1", "nac", "natural")],
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Energy resistance is to your chosen dragon type only — free-text pick, not tracked as a number; add it manually.",
-          },
+        summary:
+          "Resist 5 to your energy type and a +1 natural armor bonus (resist 10 and +2 at 8th; +4 natural armor at 16th, resistance unchanged).",
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Draconic):
+        // "At 4th level, you gain resistance 5 against your energy type and a
+        // +1 natural armor bonus to AC. At 8th level, your energy resistance
+        // increases to 10 and your natural armor bonus increases to +2. At
+        // 16th level, your natural armor bonus increases to +4." (Resistance
+        // stays 10 — unlike the sorcerer power, there is no 20 step.)
+        changes: [
+          c(
+            "if(gte(@classes.bloodrager.level, 16), 4, if(gte(@classes.bloodrager.level, 8), 2, 1))",
+            "nac",
+            "natural",
+          ),
         ],
+        variantChanges: energyResistanceVariantChanges(
+          DRAGON_TYPE_ENERGY,
+          "if(gte(@classes.bloodrager.level, 8), 10, 5)",
+        ),
       },
       {
         id: "breathWeapon",
@@ -671,12 +694,11 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         level: 4,
         name: "Elemental Resistance",
         summary: "Energy resistance 10 against your chosen energy type.",
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Resistance is to your chosen element's energy type only — free-text pick, not tracked as a number; add it manually.",
-          },
-        ],
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Elemental):
+        // "At 4th level, you gain energy resistance 10 against your energy
+        // type." Flat — no scaling step, unlike the sorcerer power's 20 at
+        // 9th.
+        variantChanges: energyResistanceVariantChanges(ELEMENT_ENERGY, "10"),
       },
       {
         id: "elementalMovement",
@@ -684,12 +706,17 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         name: "Elemental Movement",
         summary:
           "Gain a movement mode keyed to your element: Air flies 60 ft., Earth burrows 30 ft., Fire adds 30 ft. speed, Water swims 60 ft.",
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Movement mode depends on your chosen element — not tracked as a number; add it manually.",
-          },
-        ],
+        // Same speed-grant conventions as the sorcerer power (see
+        // bloodlines.ts's elementalMovement): whole-speed grants "set", fire's
+        // "+30 ft." additive. Like the resistances above, the text carries no
+        // "while bloodraging" qualifier — the file's KNOWN AMBIGUITY posture
+        // models it as constant, matching the sorcerer sibling.
+        variantChanges: {
+          air: [c("60", "flySpeed", "base", "set")],
+          earth: [c("30", "burrowSpeed", "base", "set")],
+          fire: [c("30", "landSpeed", "untyped")],
+          water: [c("60", "swimSpeed", "base", "set")],
+        },
       },
       {
         id: "powerOfTheElements",

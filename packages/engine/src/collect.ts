@@ -485,7 +485,13 @@ export function collectModifiers(
       }
       for (const power of bloodline.powers) {
         if (power.level > sorcererLevel) continue;
-        for (const ch of power.changes ?? []) {
+        // Variant-dependent grants (Dragon Resistances' energy resistance,
+        // Elemental Movement's mode) key off the bloodline variant stored at
+        // pick time — no stored variant, or a stale id, emits nothing.
+        const variantChanges = doc.build.sorcererBloodlineVariant
+          ? (power.variantChanges?.[doc.build.sorcererBloodlineVariant] ?? [])
+          : [];
+        for (const ch of [...(power.changes ?? []), ...variantChanges]) {
           if (!gateOpen(ch)) continue;
           evalChange(
             ch.formula,
@@ -516,7 +522,12 @@ export function collectModifiers(
     if (bloodline) {
       for (const power of bloodline.powers) {
         if (power.level > bloodragerLevel) continue;
-        for (const ch of power.changes ?? []) {
+        // Same variant-dependent path as the sorcerer loop above, off
+        // `bloodragerBloodlineVariant`.
+        const variantChanges = doc.build.bloodragerBloodlineVariant
+          ? (power.variantChanges?.[doc.build.bloodragerBloodlineVariant] ?? [])
+          : [];
+        for (const ch of [...(power.changes ?? []), ...variantChanges]) {
           if (!gateOpen(ch)) continue;
           evalChange(
             ch.formula,
@@ -594,16 +605,30 @@ export function collectModifiers(
   }
 
   // --- oracle revelations (build choice, issue #61) -------------------------
-  // Same posture as magus arcana above — every base revelation is
-  // `displayOnly` with `changes: []` (see `oracle-revelations.ts`'s doc
-  // comment), scoped to the character's chosen mystery.
+  // Most revelations are `displayOnly` with `changes: []`, but a promoted
+  // handful carry real changes and three carry choose-one `choiceChanges`
+  // (see `oracle-revelations.ts`'s doc comment) — scoped to the character's
+  // chosen mystery.
   const oracleLevelForRevelations =
     doc.identity.classes.find((c) => c.tag === "oracle")?.level ?? 0;
   if (oracleLevelForRevelations > 0 && doc.build.oracleMystery) {
     for (const revelationId of doc.build.oracleRevelations ?? []) {
       const revelation = ORACLE_REVELATIONS[revelationId];
       if (!revelation || revelation.mysteryTag !== doc.build.oracleMystery) continue;
-      for (const ch of revelation.changes) {
+      // Choose-one revelations: the pick lives under the revelation's own
+      // key, or — for the Dragon mystery's associated element
+      // (`choiceFromMystery`) — under the MYSTERY's key, since RAW makes
+      // that choice when the mystery is selected. No stored pick, or a
+      // stale option id, emits nothing (same safe default as rage powers).
+      let choiceChanges: readonly Change[] = [];
+      if (revelation.choiceChanges) {
+        const key = revelation.choiceFromMystery
+          ? `oracleMystery:${revelation.mysteryTag}`
+          : `oracleRevelation:${revelation.id}`;
+        const picked = doc.build.pickChoices?.[key];
+        choiceChanges = (picked && revelation.choiceChanges[picked]) || [];
+      }
+      for (const ch of [...revelation.changes, ...choiceChanges]) {
         if (!gateOpen(ch)) continue;
         evalChange(
           ch.formula,

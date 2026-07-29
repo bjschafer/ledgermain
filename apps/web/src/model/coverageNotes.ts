@@ -75,9 +75,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Oracle revelations",
-    note: 'Every published mystery\'s full revelation list is pickable, with level requirements flagged softly and each pick showing on your sheet with its write-up. Twelve of them carry an "M" and move real numbers. The rest are yours to apply at the table.',
+    note: 'Every published mystery\'s full revelation list is pickable, with level requirements flagged softly and each pick showing on your sheet with its write-up. Fifteen of them carry an "M" and move real numbers. The rest are yours to apply at the table.',
     issueDetail:
-      "336 revelations, 12 promoted to live changes[]. Rejected with reasons recorded inline: save-category-scoped bonuses, and revelations that make you choose an energy type, which need the choose-one mechanism that so far exists only for rage powers.",
+      "336 revelations, 15 promoted to live changes[]. Rejected with reasons recorded inline: save-category-scoped bonuses and ability substitutions the compute pipeline can't express. Defy Elements' 5th-level-and-beyond new-type-or-increase grants are fresh picks with no slot in the one-key choose-one mechanism and stay manual.",
   },
   {
     category: "Kineticist wild talents",

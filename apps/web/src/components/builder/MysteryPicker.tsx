@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { mergedOracleMysteryCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
-import { setOracleMystery } from "../../model/doc.js";
+import { oracleMysteryChoice, setOracleMystery, setOracleMysteryChoice } from "../../model/doc.js";
 import { SKILL_NAMES } from "../../model/names.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
@@ -24,14 +24,15 @@ interface MysteryPickerProps {
  * hybrid-prereqs philosophy — mirrors `BloodlinePicker`.
  *
  * Browses the FULL published mystery catalog (`mergedOracleMysteryCatalog`,
- * issue #74) — the 10 Advanced Player's Guide "core" mysteries
- * (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves, Wind)
- * keep their hand-verified class-skill/bonus-spell mechanics (marked
- * `badge-modeled` "M"); the ~24 other vendored-only mysteries (Ancestor,
- * Apocalypse, Dragon, Lunar, ...) show their full vendored prose instead,
- * including revelations — which are NOT modeled as discrete picks anywhere
- * in this app (see `@pf1/schema` `OracleMystery`'s doc comment); a mystery's
- * Revelations panel below only lists picks for the 10 core mysteries.
+ * issue #74). All 34 published mysteries carry hand-verified
+ * class-skill/bonus-spell mechanics (marked `badge-modeled` "M") and their
+ * own revelation pick lists in the Revelations panel below; a vendored-only
+ * mystery (one a future data bump adds before the hand table catches up)
+ * would show its full vendored prose instead. A mystery that RAW gives a
+ * choose-one made at selection time (Dragon's associated element) shows
+ * that dropdown here — the pick is stored in
+ * `pickChoices["oracleMystery:<tag>"]` and read by the revelations keyed
+ * off it.
  */
 export function MysteryPicker({ doc, refData, update }: MysteryPickerProps) {
   const isOracle = doc.identity.classes.some((c) => c.tag === "oracle");
@@ -92,6 +93,31 @@ export function MysteryPicker({ doc, refData, update }: MysteryPickerProps) {
               </option>
             ))}
           </select>
+
+          {mysteryDef?.choice ? (
+            // Mystery-level choose-one (RAW: made when the mystery is
+            // selected — the Dragon mystery's associated element). Stored in
+            // pickChoices["oracleMystery:<tag>"]; revelations keyed off it
+            // (Draconic Resistance) apply nothing until one is chosen.
+            <label className="hint" style={{ marginTop: 4, display: "block" }}>
+              {mysteryDef.choice.label}:{" "}
+              <select
+                value={oracleMysteryChoice(doc, mysteryDef.tag) ?? ""}
+                onChange={(e) =>
+                  update((d) =>
+                    setOracleMysteryChoice(d, mysteryDef.tag, e.target.value || undefined),
+                  )
+                }
+              >
+                <option value="">— choose —</option>
+                {mysteryDef.choice.options.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
 
           {mysteryDef &&
             (mysteryDef.displayOnly ? (

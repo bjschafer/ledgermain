@@ -802,6 +802,7 @@ export {
   type RagePowerDef,
   type RagePowerEdition,
   type MergedRagePowerEntry,
+  type PickChoice,
 } from "./rage-powers.js";
 export {
   POLYMORPH_TIERS,

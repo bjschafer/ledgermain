@@ -11,7 +11,9 @@ import {
   chosenOracleRevelationCount,
   expectedOracleRevelationCount,
   oracleLevel,
+  oracleRevelationChoice,
   oracleRevelationsNeedWarning,
+  setOracleRevelationChoice,
   toggleOracleRevelation,
 } from "../../model/oracleRevelations.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
@@ -117,7 +119,9 @@ export function RevelationPicker({ doc, refData, update }: RevelationPickerProps
             <>
               <p className="hint revelation-picker-hint">
                 Pick revelations as you level (1st, 3rd, 7th, 11th, 15th, 19th; +1 per Extra
-                Revelation feat). Free-choice — never blocks past the expected count.
+                Revelation feat). Entries marked <span className="badge-modeled">M</span> carry a
+                real, live mechanical effect (see Class Features) — the rest are prose-only.
+                Free-choice — never blocks past the expected count.
               </p>
               <input
                 className="search"
@@ -133,7 +137,18 @@ export function RevelationPicker({ doc, refData, update }: RevelationPickerProps
                   return (
                     <div key={r.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                       <div className="pmain">
-                        <div className="pname">{r.name}</div>
+                        <div className="pname">
+                          {r.name}
+                          {!r.displayOnly && (
+                            <span
+                              className="badge-modeled"
+                              title="Carries a real, live mechanical effect (see Class Features)"
+                            >
+                              {" "}
+                              M
+                            </span>
+                          )}
+                        </div>
                         <div className="preq">
                           <span className="desc-text">{r.summary}</span>
                         </div>
@@ -149,6 +164,29 @@ export function RevelationPicker({ doc, refData, update }: RevelationPickerProps
                             ⚠ {note.text}
                           </div>
                         ))}
+                        {isSel && r.choice ? (
+                          // Choose-one selection (RAW locks it in when the
+                          // revelation is gained) — stored via
+                          // setOracleRevelationChoice; mirrors RagePowerPicker.
+                          <label className="hint" style={{ marginTop: 2, display: "block" }}>
+                            {r.choice.label}:{" "}
+                            <select
+                              value={oracleRevelationChoice(doc, r.id) ?? ""}
+                              onChange={(e) =>
+                                update((d) =>
+                                  setOracleRevelationChoice(d, r.id, e.target.value || undefined),
+                                )
+                              }
+                            >
+                              <option value="">— choose —</option>
+                              {r.choice.options.map((o) => (
+                                <option key={o.id} value={o.id}>
+                                  {o.label}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                        ) : null}
                       </div>
                       <button
                         type="button"

@@ -46,6 +46,7 @@ function makeOracle(
   level: number,
   oracleMystery?: string,
   oracleRevelations?: string[],
+  pickChoices?: Record<string, string>,
 ): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -67,6 +68,7 @@ function makeOracle(
       gear: [],
       ...(oracleMystery ? { oracleMystery } : {}),
       ...(oracleRevelations ? { oracleRevelations } : {}),
+      ...(pickChoices ? { pickChoices } : {}),
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -107,14 +109,28 @@ const PROMOTED_REVELATION_IDS = [
   "shadow:pierceTheShadows",
 ];
 
+/**
+ * The chosen-element trio promoted via the choose-one mechanism
+ * (`choice`/`choiceChanges` — see `oracle-revelations.ts`'s doc comment):
+ * their numbers key off a stored `pickChoices` selection rather than (or, for
+ * Draconic Resistance's natural armor, in addition to) unconditional
+ * `changes`.
+ */
+const CHOICE_PROMOTED_REVELATION_IDS = [
+  "apocalypse:defyElements",
+  "dragon:draconicResistance",
+  "elemental:elementalAegis",
+];
+
 describe("ORACLE_REVELATIONS table", () => {
   it("every non-promoted revelation is displayOnly with no changes (no unconditional flat number)", () => {
-    const promoted = new Set(PROMOTED_REVELATION_IDS);
+    const promoted = new Set([...PROMOTED_REVELATION_IDS, ...CHOICE_PROMOTED_REVELATION_IDS]);
     for (const id of ORACLE_REVELATION_IDS) {
       if (promoted.has(id)) continue;
       const revelation = ORACLE_REVELATIONS[id]!;
       expect(revelation.displayOnly, id).toBe(true);
       expect(revelation.changes, id).toEqual([]);
+      expect(revelation.choiceChanges, id).toBeUndefined();
     }
   });
 
@@ -124,6 +140,31 @@ describe("ORACLE_REVELATIONS table", () => {
       expect(revelation, id).toBeDefined();
       expect(revelation!.displayOnly, id).toBe(false);
       expect(revelation!.changes.length, id).toBeGreaterThan(0);
+    }
+  });
+
+  it("every choice-promoted revelation carries non-empty choiceChanges and resolves its pick key", () => {
+    for (const id of CHOICE_PROMOTED_REVELATION_IDS) {
+      const revelation = ORACLE_REVELATIONS[id];
+      expect(revelation, id).toBeDefined();
+      expect(revelation!.displayOnly, id).toBe(false);
+      expect(Object.keys(revelation!.choiceChanges ?? {}).length, id).toBeGreaterThan(0);
+      if (revelation!.choiceFromMystery) {
+        // The declaring pick lives on the mystery — it must actually declare
+        // one, and every choiceChanges key must be one of its option ids.
+        const mystery = ORACLE_MYSTERIES[revelation!.mysteryTag];
+        expect(mystery?.choice, id).toBeDefined();
+        const optionIds = new Set(mystery!.choice!.options.map((o) => o.id));
+        for (const key of Object.keys(revelation!.choiceChanges!)) {
+          expect(optionIds.has(key), `${id} option ${key}`).toBe(true);
+        }
+      } else {
+        expect(revelation!.choice, id).toBeDefined();
+        const optionIds = new Set(revelation!.choice!.options.map((o) => o.id));
+        for (const key of Object.keys(revelation!.choiceChanges!)) {
+          expect(optionIds.has(key), `${id} option ${key}`).toBe(true);
+        }
+      }
     }
   });
 
@@ -1077,5 +1118,110 @@ describe("Wood mystery (Ultimate Magic)", () => {
     const levelTwo = wood.bonusSpells.find((b) => b.level === 2);
     expect(levelTwo?.name).toBe("Shillelagh");
     expect(ref.spells[levelTwo!.id]?.name).toBe("Shillelagh");
+  });
+});
+
+/**
+ * Choose-one revelations (`OracleRevelationDef.choice`/`choiceChanges`,
+ * stored in `build.pickChoices` — see `rage-powers.ts` for the mechanism's
+ * origin): Defy Elements and Elemental Aegis declare their own pick;
+ * Draconic Resistance reads the Dragon MYSTERY's associated element
+ * (`choiceFromMystery`, key `oracleMystery:dragon`). RAW citations live on
+ * the entries; expected values hand-computed from the AoN text quoted there.
+ */
+describe("choose-one revelations (build.pickChoices)", () => {
+  it("Defy Elements: chosen sonic resistance 5 (the five-type list includes sonic)", () => {
+    const sheet = compute(
+      makeOracle(1, "apocalypse", ["apocalypse:defyElements"], {
+        "oracleRevelation:apocalypse:defyElements": "sonic",
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "sonic")?.total).toBe(5);
+  });
+
+  it("Defy Elements: no stored choice applies nothing", () => {
+    const sheet = compute(makeOracle(1, "apocalypse", ["apocalypse:defyElements"]), ref);
+    expect(sheet.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("Defy Elements: a stale option id applies nothing", () => {
+    const sheet = compute(
+      makeOracle(1, "apocalypse", ["apocalypse:defyElements"], {
+        "oracleRevelation:apocalypse:defyElements": "force",
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("Draconic Resistance: fire mystery pick scales resistance 5/10/20 at 1st/9th/15th", () => {
+    // AoN Dragon mystery: resistance 5 → 10 at 9th → 20 at 15th.
+    const pick = { "oracleMystery:dragon": "fire" };
+    const at1 = compute(makeOracle(1, "dragon", ["dragon:draconicResistance"], pick), ref);
+    expect(at1.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+    const at9 = compute(makeOracle(9, "dragon", ["dragon:draconicResistance"], pick), ref);
+    expect(at9.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(10);
+    const at15 = compute(makeOracle(15, "dragon", ["dragon:draconicResistance"], pick), ref);
+    expect(at15.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(20);
+  });
+
+  it("Draconic Resistance: natural armor +1/+2/+4 is unconditional (applies with no mystery pick)", () => {
+    // AoN Dragon mystery: +1 natural armor → +2 at 9th → +4 at 15th.
+    const before = compute(makeOracle(9, "dragon", []), ref);
+    const at9 = compute(makeOracle(9, "dragon", ["dragon:draconicResistance"]), ref);
+    expect(at9.ac.normal).toBe(before.ac.normal + 2);
+    // No stored mystery element → no energy resistance, but the armor half
+    // still applies.
+    expect(at9.defenses?.resistances ?? []).toEqual([]);
+    const at15 = compute(makeOracle(15, "dragon", ["dragon:draconicResistance"]), ref);
+    expect(at15.ac.normal).toBe(compute(makeOracle(15, "dragon", []), ref).ac.normal + 4);
+  });
+
+  it("Elemental Aegis: the 13th-level boon keys off the chosen element (earth → +2 CMD)", () => {
+    const pick = { "oracleRevelation:elemental:elementalAegis": "earth" };
+    const at13 = compute(makeOracle(13, "elemental", ["elemental:elementalAegis"], pick), ref);
+    const before = compute(makeOracle(13, "elemental", [], pick), ref);
+    expect(at13.cmd).toBe(before.cmd + 2);
+    // Below 13th the boon hasn't arrived yet (the formula self-gates, since
+    // minLevel is soft-filtered only).
+    const at12 = compute(makeOracle(12, "elemental", ["elemental:elementalAegis"], pick), ref);
+    expect(at12.cmd).toBe(compute(makeOracle(12, "elemental", [], pick), ref).cmd);
+  });
+
+  it("Elemental Aegis: air grants +2 Reflex, water +4 Swim, fire resistance 2, all at 13th", () => {
+    const air = compute(
+      makeOracle(13, "elemental", ["elemental:elementalAegis"], {
+        "oracleRevelation:elemental:elementalAegis": "air",
+      }),
+      ref,
+    );
+    const baseline = compute(makeOracle(13, "elemental", []), ref);
+    expect(air.saves.ref.total).toBe(baseline.saves.ref.total + 2);
+
+    const water = compute(
+      makeOracle(13, "elemental", ["elemental:elementalAegis"], {
+        "oracleRevelation:elemental:elementalAegis": "water",
+      }),
+      ref,
+    );
+    expect(water.skills.swm!.total).toBe(baseline.skills.swm!.total + 4);
+
+    const fire = compute(
+      makeOracle(13, "elemental", ["elemental:elementalAegis"], {
+        "oracleRevelation:elemental:elementalAegis": "fire",
+      }),
+      ref,
+    );
+    expect(fire.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(2);
+  });
+
+  it("the Dragon mystery declares its associated-element choice (acid/cold/electricity/fire)", () => {
+    expect(ORACLE_MYSTERIES["dragon"]?.choice?.options.map((o) => o.id)).toEqual([
+      "acid",
+      "cold",
+      "electricity",
+      "fire",
+    ]);
   });
 });

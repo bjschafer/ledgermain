@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-chosen-elements-oracles-and-bloodlines",
+    date: "2026-07-29",
+    title: "Oracles and bloodlines apply their chosen element",
+    note: "The choose-your-energy-type picks that rage powers got now reach oracles and the two elemental bloodlines. A Dragon mystery oracle picks their associated element right on the mystery, and Draconic Resistance scales that resistance 5, 10, 20 alongside its natural armor. Defy Elements applies its chosen resistance (sonic included), and Elemental Aegis grants its 13th-level boon by element: Reflex saves for air, CMD for earth, fire resistance for fire, Swim for water. Sorcerers and bloodragers with the Draconic or Elemental bloodline get more from the dragon type or element they already chose: energy resistance matched to it, and Elemental Movement's fly, burrow, swim, or faster land speed, all live on the sheet. The bloodrager's Draconic Resistance natural armor also now climbs to +2 at 8th and +4 at 16th the way the book says, instead of sitting at +1 forever.",
+  },
+  {
     id: "2026-07-29-kineticist-all-seven-elements",
     date: "2026-07-29",
     title: "Kineticists get all seven elements, fully written up",

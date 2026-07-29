@@ -8,9 +8,12 @@ import {
   expectedOracleRevelationCount,
   hasOracleRevelation,
   oracleLevel,
+  oracleRevelationChoice,
   oracleRevelationsNeedWarning,
+  setOracleRevelationChoice,
   toggleOracleRevelation,
 } from "../src/model/oracleRevelations.js";
+import { oracleMysteryChoice, setOracleMystery, setOracleMysteryChoice } from "../src/model/doc.js";
 
 const ref = loadRefData();
 
@@ -80,6 +83,83 @@ describe("model/oracleRevelations: toggleOracleRevelation", () => {
     });
     const withExtra = toggleOracleRevelation(doc, "life:combatHealer");
     expect(withExtra.build.oracleRevelations).toEqual(["life:channel", "life:combatHealer"]);
+  });
+});
+
+describe("model/oracleRevelations: choose-one selections (build.pickChoices)", () => {
+  it("setOracleRevelationChoice stores the pick under the oracleRevelation:<id> key", () => {
+    const doc = setOracleRevelationChoice(
+      makeDoc({ oracleRevelations: ["apocalypse:defyElements"] }),
+      "apocalypse:defyElements",
+      "sonic",
+    );
+    expect(doc.build.pickChoices).toEqual({ "oracleRevelation:apocalypse:defyElements": "sonic" });
+    expect(oracleRevelationChoice(doc, "apocalypse:defyElements")).toBe("sonic");
+  });
+
+  it("setOracleRevelationChoice with undefined clears the stored pick", () => {
+    let doc = setOracleRevelationChoice(makeDoc({}), "elemental:elementalAegis", "earth");
+    doc = setOracleRevelationChoice(doc, "elemental:elementalAegis", undefined);
+    expect(doc.build.pickChoices).toEqual({});
+    expect(oracleRevelationChoice(doc, "elemental:elementalAegis")).toBeUndefined();
+  });
+
+  it("setOracleRevelationChoice is a no-op (same object) when the value is unchanged", () => {
+    const doc = setOracleRevelationChoice(makeDoc({}), "apocalypse:defyElements", "acid");
+    expect(setOracleRevelationChoice(doc, "apocalypse:defyElements", "acid")).toBe(doc);
+    expect(setOracleRevelationChoice(makeDoc({}), "apocalypse:defyElements", undefined)).toEqual(
+      makeDoc({}),
+    );
+  });
+
+  it("removing a declaring revelation drops its stored choice (no ghost pick on re-add)", () => {
+    let doc = makeDoc({ oracleRevelations: ["apocalypse:defyElements"] });
+    doc = setOracleRevelationChoice(doc, "apocalypse:defyElements", "cold");
+    doc = toggleOracleRevelation(doc, "apocalypse:defyElements");
+    expect(doc.build.oracleRevelations).toEqual([]);
+    expect(doc.build.pickChoices).toEqual({});
+  });
+
+  it("removing a revelation leaves other stored choices (and the mystery-level pick) alone", () => {
+    let doc = makeDoc({
+      oracleMystery: "dragon",
+      oracleRevelations: ["dragon:draconicResistance", "apocalypse:defyElements"],
+    });
+    doc = setOracleMysteryChoice(doc, "dragon", "fire");
+    doc = setOracleRevelationChoice(doc, "apocalypse:defyElements", "cold");
+    // Removing Draconic Resistance (a choiceFromMystery reader that stores
+    // nothing of its own) must not disturb either stored pick.
+    doc = toggleOracleRevelation(doc, "dragon:draconicResistance");
+    expect(doc.build.pickChoices).toEqual({
+      "oracleMystery:dragon": "fire",
+      "oracleRevelation:apocalypse:defyElements": "cold",
+    });
+  });
+});
+
+describe("model/doc: mystery-level choose-one (oracleMystery:<tag>)", () => {
+  it("setOracleMysteryChoice stores and clears the mystery-level pick", () => {
+    let doc = setOracleMysteryChoice(makeDoc({ oracleMystery: "dragon" }), "dragon", "acid");
+    expect(doc.build.pickChoices).toEqual({ "oracleMystery:dragon": "acid" });
+    expect(oracleMysteryChoice(doc, "dragon")).toBe("acid");
+    doc = setOracleMysteryChoice(doc, "dragon", undefined);
+    expect(doc.build.pickChoices).toEqual({});
+  });
+
+  it("changing away from a mystery drops its stored pick (no ghost element)", () => {
+    let doc = setOracleMysteryChoice(makeDoc({ oracleMystery: "dragon" }), "dragon", "fire");
+    doc = setOracleMystery(doc, "life");
+    expect(doc.build.oracleMystery).toBe("life");
+    expect(doc.build.pickChoices).toEqual({});
+  });
+
+  it("clearing the mystery drops its stored pick too, but re-setting the SAME mystery keeps it", () => {
+    let doc = setOracleMysteryChoice(makeDoc({ oracleMystery: "dragon" }), "dragon", "fire");
+    const sameAgain = setOracleMystery(doc, "dragon");
+    expect(sameAgain.build.pickChoices).toEqual({ "oracleMystery:dragon": "fire" });
+    doc = setOracleMystery(doc, null);
+    expect(doc.build.oracleMystery).toBeUndefined();
+    expect(doc.build.pickChoices).toEqual({});
   });
 });
 

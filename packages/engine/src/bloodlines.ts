@@ -28,15 +28,13 @@
  *     there's no vendored formula to read.
  *   - Draconic (dragon type) and Elemental (element) require a player pick of
  *     energy type at bloodline selection; `CharacterDoc.build.sorcererBloodlineVariant`
- *     records it. That choice is DISPLAY-ONLY in this table (which energy type
- *     the flavor text names) — the numeric bonuses these two bloodlines grant
- *     that would otherwise depend on the chosen type (energy resistance,
- *     Elemental Movement's mode) are deliberately left as `contextNotes`
- *     rather than wired as variant-conditional `Change`s, keeping the data
- *     shape static and simple; only the variant-INDEPENDENT numbers (Draconic
- *     natural armor, +1 HP/level, wings' fly speed) are modeled as `Change`s.
- *     Unknown/absent variant ids just fall back to generic text — never a
- *     crash (`variantLabel` returns `undefined` for them).
+ *     records it. Powers whose numbers depend on that pick carry
+ *     `variantChanges` — per-variant `Change` lists collect.ts applies only
+ *     when the stored variant matches a key (Dragon Resistances' scaling
+ *     energy resistance, Elemental Resistance, Elemental Movement's mode).
+ *     No stored variant, or a stale id, emits nothing — the same safe
+ *     default as `pickChoices` (`variantLabel` likewise returns `undefined`,
+ *     never a crash).
  *   - `bonusFeatSlugs` (issue #57) is the bloodline's "Bonus Feats" list (CRB:
  *     a sorcerer picks one of these — no prerequisites waived, unlike a
  *     ranger's combat style — at 7th level and every six levels thereafter).
@@ -75,6 +73,12 @@ export interface BloodlinePower {
   summary: string;
   /** Unconditional numeric modifiers (rare — most powers are activated). */
   changes?: Change[];
+  /**
+   * Per-variant Changes, keyed by `variantOptions` id — applied only when
+   * `doc.build.sorcererBloodlineVariant` matches a key (see file doc
+   * comment). No stored variant, or a stale id, emits nothing.
+   */
+  variantChanges?: Readonly<Record<string, readonly Change[]>>;
   contextNotes?: ContextNote[];
   resourcePool?: BloodlineResourcePool;
 }
@@ -116,6 +120,41 @@ const c = (formula: string, target: string, type: string, operator?: "add" | "se
 
 /** `featNameSlug` every name in a bloodline's "Bonus Feats" list. */
 const feats = (...names: string[]): readonly string[] => names.map((n) => featNameSlug(n));
+
+/** CRB dragon type → its energy type — shared by every dragon-type variant list (sorcerer Draconic here, bloodrager Draconic in `bloodrager-bloodlines.ts`). */
+export const DRAGON_TYPE_ENERGY: Readonly<Record<string, string>> = {
+  black: "acid",
+  blue: "electricity",
+  brass: "fire",
+  bronze: "electricity",
+  copper: "acid",
+  gold: "fire",
+  green: "acid",
+  red: "fire",
+  silver: "cold",
+  white: "cold",
+};
+
+/** The four classic elements → their energy type (CRB Elemental bloodline chart), shared with `bloodrager-bloodlines.ts`. */
+export const ELEMENT_ENERGY: Readonly<Record<string, string>> = {
+  air: "electricity",
+  earth: "acid",
+  fire: "fire",
+  water: "cold",
+};
+
+/** Per-variant `eres.<energy>` grants for a whole variant→energy map, all sharing one scaling formula. */
+export function energyResistanceVariantChanges(
+  variantEnergy: Readonly<Record<string, string>>,
+  formula: string,
+): Readonly<Record<string, readonly Change[]>> {
+  return Object.fromEntries(
+    Object.entries(variantEnergy).map(([variant, energy]) => [
+      variant,
+      [c(formula, `eres.${energy}`, "untyped")],
+    ]),
+  );
+}
 
 const POOL_3_CHA: BloodlineResourcePool = {
   usesFormula: "3 + @abilities.cha.mod",
@@ -594,6 +633,11 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Dragon Resistances",
         summary:
           "Resist 5 to your energy type + 1 natural armor (10/+2 at 9th; +4 natural armor at 15th, resistance unchanged).",
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Draconic): "At 3rd
+        // level, you gain resist 5 against your energy type and a +1 natural
+        // armor bonus. At 9th level, your energy resistance increases to 10
+        // and natural armor bonus increases to +2. At 15th level, your
+        // natural armor bonus increases to +4." (Resistance stays 10.)
         changes: [
           c(
             "if(gte(@classes.sorcerer.level, 15), 4, if(gte(@classes.sorcerer.level, 9), 2, 1))",
@@ -601,12 +645,10 @@ const BLOODLINE_LIST: BloodlineDef[] = [
             "natural",
           ),
         ],
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Energy resistance (5, 10 at 9th) is to your chosen dragon type only — since that's a free-text pick, it isn't tracked as a number here; add it manually.",
-          },
-        ],
+        variantChanges: energyResistanceVariantChanges(
+          DRAGON_TYPE_ENERGY,
+          "if(gte(@classes.sorcerer.level, 9), 10, 5)",
+        ),
       },
       {
         id: "breathWeapon",
@@ -684,12 +726,13 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         level: 3,
         name: "Elemental Resistance",
         summary: "Resist 10 to your chosen energy type (20 at 9th level).",
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Resistance is to your chosen element's energy type only — since that's a free-text pick, it isn't tracked as a number here; add it manually.",
-          },
-        ],
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Elemental): "At 3rd
+        // level, you gain energy resistance 10 against your energy type. At
+        // 9th level, your energy resistance increases to 20."
+        variantChanges: energyResistanceVariantChanges(
+          ELEMENT_ENERGY,
+          "if(gte(@classes.sorcerer.level, 9), 20, 10)",
+        ),
       },
       {
         id: "elementalBlast",
@@ -704,13 +747,20 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         level: 15,
         name: "Elemental Movement",
         summary:
-          "Gain a movement mode keyed to your element: Air flies 60 ft., Earth burrows 30 ft., Fire adds 30 ft. to base speed, Water swims 60 ft.",
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Movement mode depends on your chosen element — not tracked as a number here; add it manually.",
-          },
-        ],
+          "Gain a movement mode keyed to your element: Air flies 60 ft. (average), Earth burrows 30 ft., Fire adds 30 ft. to base speed, Water swims 60 ft.",
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Elemental) chart:
+        // air fly 60 ft. (average), earth burrow 30 ft., fire +30 ft. base
+        // speed, water swim 60 ft. Whole-speed GRANTS use `operator: "set"`
+        // and fire's "+30 ft." stays additive — the same convention as
+        // rage-powers.ts's Greater Elemental Blood (see that entry's comment
+        // on applySpeedTarget's set semantics). Maneuverability is
+        // prose-only, as everywhere else.
+        variantChanges: {
+          air: [c("60", "flySpeed", "base", "set")],
+          earth: [c("30", "burrowSpeed", "base", "set")],
+          fire: [c("30", "landSpeed", "untyped")],
+          water: [c("60", "swimSpeed", "base", "set")],
+        },
       },
       {
         id: "elementalBody",
