@@ -32,6 +32,18 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-every-pick-list-written-up",
+    date: "2026-07-29",
+    title: "Every class pick list is now fully written up",
+    note: "The last seven pick lists caught up with the big ones: rage powers, ninja tricks, investigator talents, vigilante talents (both the social and vigilante pools), monk ki powers, mesmerist tricks, and bold stares now have every published entry written up with its level requirement flagged — no more raw rules text for the later-splatbook picks. Rage powers got the deepest treatment: twenty-five more of them now move real numbers the moment you rage, including the totem resistance and damage-reduction lines, Beast Totem's scaling natural armor, darkvision and scent grants, and the Linnorm death curses' extra melee damage. Look for the \"M\" badge in any picker to spot the entries that apply themselves.",
+  },
+  {
+    id: "2026-07-29-more-race-trait-swaps",
+    date: "2026-07-29",
+    title: "Eleven more races trade traits honestly",
+    note: "Alternate racial traits now retire what they replace for ifrits, oreads, undines, drow, kobolds, duergar, hobgoblins, goblins, fetchlings, catfolk, and vine leshies — same treatment the core and featured races already had. A drow alternate that trades away Keen Senses really removes the Perception bonus, a kobold that swaps its scales loses the natural armor, and a duergar alternate that gives up the dwarven immunities drops them from the sheet. As before, a heritage's different ability-score spread stays yours to apply by hand — with one exception: the vine leshy's Agile trait swaps its full spread for real.",
+  },
+  {
     id: "2026-07-28-featured-race-trait-swaps",
     date: "2026-07-28",
     title: "Featured-race trait swaps now trade honestly",
