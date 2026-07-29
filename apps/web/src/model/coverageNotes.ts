@@ -83,11 +83,11 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Kineticist wild talents",
     note: "Every published infusion and utility talent is written up across all seven elements, plus every composite blast. Level gates and burn costs are tracked and the infusion and utility budgets counted. What a talent does is rules text you apply at the table: blasts aren't rolled by the sheet, and defense talents scale with burn you accept in play.",
     issueDetail:
-      "236 hand-authored wild talents, 22 composite blasts, 7 elements, all display-only per the honesty bar (activated abilities with action, save, and burn state). Blast attack and damage rolls aren't computed, since there's no blast weapon model. Burn is a real resource pool, but its nonlethal damage stays player-applied.",
+      "236 hand-authored wild talents, 22 composite blasts, 7 elements, display-only per the honesty bar (activated abilities with action, save, and burn state). Blast attack and damage rolls aren't computed, since there's no blast weapon model. Burn is a real resource pool, but its nonlethal damage stays player-applied.",
   },
   {
     category: "Summoner (Unchained) eidolon",
-    note: 'Every published Paizo subtype is in, along with the Aberrant base form and the Small-eidolon option. A subtype\'s resistances, immunities, and spell-like abilities show as reference chips rather than live numbers, and a grant that says "choose one" is yours to apply. The Aquatic, Avian, and Tauric base forms are absent, as is the third-party Tapestry-Warped subtype.',
+    note: 'Every published Paizo subtype and base form is in. A subtype\'s resistances, immunities, and spell-like abilities show as reference chips rather than live numbers, and a grant that says "choose one" is yours to apply. An avian or tauric eidolon is built at its Medium baseline, with the start-Small option yours to apply. The third-party Tapestry-Warped subtype is absent.',
     issueDetail:
       "28 subtype defs. Astral's halved Str/Dex table-accrual has no per-subtype override hook; choose-one-of evolution grants have no structured mechanism; Tapestry-Warped is non-Paizo with no verifiable source and is excluded on provenance. Vendored subtype prose is not surfaced in the picker.",
   },
@@ -113,9 +113,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Immunities",
-    note: "Most of the high-level bloodline, mystery, and spirit powers that grant immunity to a damage type aren't wired up, so add those as a custom buff. Immunity to things that aren't damage shows on your sheet and flags the matching condition, but it's a reminder for you and your GM. Nothing rolls against it.",
+    note: "A few immunity grants still have no slot on the sheet: petrification, the stunned, dazed, and staggered conditions, death effects, and nonlethal damage. Apply those from the ability's own text. Immunity to things that aren't damage shows on your sheet and flags the matching condition, but it's a reminder for you and your GM. Nothing rolls against it.",
     issueDetail:
-      "Player-race damage-type immunities: none exist. The real sources are capstone-tier class content sitting inside the chassis subsystems listed above as core-only. Non-damage immunity is a separate axis (Defenses.effectImmunities) that resolveDamage deliberately never sees: display-only, plus a soft flag on the conditions it maps onto.",
+      "Missing effect-immunity slugs: petrification, stunned, dazed, staggered, and death effects sit outside the closed EFFECT_IMMUNITY_LABELS vocabulary; nonlethal damage is a category with no imm.* type; telepathy has no sense target. Non-damage immunity is a separate axis (Defenses.effectImmunities) that resolveDamage deliberately never sees: display-only, plus a soft flag on the conditions it maps onto.",
   },
   {
     category: "Buffs marked “reminder only”",

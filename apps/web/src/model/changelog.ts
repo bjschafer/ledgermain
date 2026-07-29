@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-capstone-immunities-and-new-eidolon-forms",
+    date: "2026-07-29",
+    title: "Capstone immunities land, and eidolons get three more base forms",
+    note: "A sweep of every class subsystem against the published text wired up what was honestly wireable. All the sorcerer and bloodrager bloodline capstones now grant their immunities, senses, and damage reduction for real: fire immunity from Power of the Pit, paralysis and sleep immunity from Power of Wyrms alongside its blindsense, crit and sneak attack immunity from both Elemental Bodies, and immunity to your chosen energy type keyed to the dragon type or element you picked. Psychics gained six live discipline powers, including Psychic Safeguard's spell resistance and Self-Perfection's Wisdom to AC. The Aquatic, Avian, and Tauric eidolon base forms are now buildable. Smaller catches: the kineticist's Clockwork Heart applies its initiative and Reflex feat benefits, the Champion medium spirit boosts Climb and Swim, Flame shamans get Cinder Dance's speed, shifter Bats gain their 15th-level blindsense and Wolverines their bonus hit points, and eight shaman hex write-ups that described the wrong mechanics were corrected against the book.",
+  },
+  {
     id: "2026-07-29-chosen-elements-oracles-and-bloodlines",
     date: "2026-07-29",
     title: "Oracles and bloodlines apply their chosen element",
