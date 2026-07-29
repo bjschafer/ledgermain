@@ -12,15 +12,18 @@ import { collectGrantedFeatures, compute, RAGE_POWER_IDS, RAGE_POWERS } from "..
  * real buff-gated `Change` by issue #75, and a further set by the #74
  * parity-sweep batch-1 (A-F) pass (Beast Totem, Celestial Blood, Chaos
  * Totem, Draconic Blood, Earth Totem, plus the three Linnorm Death Curses'
- * UNCONDITIONAL — not rage-gated — damage Changes) and batch-2 (G-R) pass
+ * UNCONDITIONAL — not rage-gated — damage Changes), batch-2 (G-R) pass
  * (Greater Abyssal Blood, Greater Chaos Totem, Greater Sun Totem, Greater
  * Undead Blood, Infernal Blood, Lesser Sun Totem, Lesser Moon Totem, Night
  * Vision, Raging Flyer, plus Ice Linnorm Death Curse's UNCONDITIONAL damage
- * Change) — see `rageBuffGate.test.ts` for that mechanism's dedicated fixture
- * coverage (raging vs. not, typed stacking). These tests cover: table
- * shape/count, shared-editions availability, gating on barbarian levels
- * (either edition) in `collectGrantedFeatures`, and that picked powers
- * surface on `DerivedSheet.classFeatures` with a "Rage Power" origin label.
+ * Change), and batch-3 (S-Z) pass, which closed out full vendored parity
+ * (Sun Totem, Unrestrained Rage, plus a legacy revisit that promoted the two
+ * original-29-entry rows Low-Light Vision and Scent) — see
+ * `rageBuffGate.test.ts` for that mechanism's dedicated fixture coverage
+ * (raging vs. not, typed stacking). These tests cover: table shape/count,
+ * shared-editions availability, gating on barbarian levels (either edition)
+ * in `collectGrantedFeatures`, and that picked powers surface on
+ * `DerivedSheet.classFeatures` with a "Rage Power" origin label.
  */
 const ref = loadRefData();
 
@@ -61,7 +64,8 @@ function makeDoc(over: { classTag: string; level: number; ragePowers?: string[] 
 }
 
 // Promoted by issue #75 (while-raging buff gate) or the #74 parity-sweep
-// batch-1 (A-F) / batch-2 (G-R) passes — see rageBuffGate.test.ts.
+// batch-1 (A-F) / batch-2 (G-R) / batch-3 (S-Z) passes — see
+// rageBuffGate.test.ts.
 const PROMOTED_IDS = new Set([
   "ragingClimber",
   "ragingSwimmer",
@@ -84,11 +88,18 @@ const PROMOTED_IDS = new Set([
   "nightVision",
   "ragingFlyer",
   "iceLinnormDeathCurse",
+  "sunTotem",
+  "unrestrainedRage",
+  "taigaLinnormDeathCurse",
+  "tarnLinnormDeathCurse",
+  "torLinnormDeathCurse",
+  "lowLightVision",
+  "scent",
 ]);
 
 describe("RAGE_POWERS table", () => {
-  it("has 205 entries, every one available to both editions; every entry is displayOnly with no changes EXCEPT the promoted set", () => {
-    expect(RAGE_POWER_IDS).toHaveLength(205);
+  it("has 243 entries, every one available to both editions; every entry is displayOnly with no changes EXCEPT the promoted set", () => {
+    expect(RAGE_POWER_IDS).toHaveLength(243);
     for (const id of RAGE_POWER_IDS) {
       const power = RAGE_POWERS[id]!;
       if (PROMOTED_IDS.has(id)) {

@@ -658,3 +658,157 @@ describe("#74 parity sweep batch 2 (G-R): newly promoted rage powers", () => {
     expect(sheet.attacks[0]!.damageBonus.total - baseline.attacks[0]!.damageBonus.total).toBe(1);
   });
 });
+
+/**
+ * Fixture coverage for the #74 parity-sweep batch-3 (S-Z) promotions,
+ * closing out full vendored parity — see `rage-powers.ts`'s doc comment for
+ * the full per-power promotion rationale. Sun Totem is the same
+ * `eres.fire`-while-raging shape as Lesser/Greater Sun Totem; Unrestrained
+ * Rage is a new shape for this table (`immEffect.paralysis`, the engine's
+ * closed effect-immunity vocabulary); Taiga/Tarn/Tor Linnorm Death Curse are
+ * three more ungated flat `mwdamage` Changes, same as the other Linnorm
+ * Death Curses; Low-Light Vision and Scent are the legacy revisit — two
+ * original-29-entry rows promoted this batch using the same
+ * `sensell`/`sensesc` flag-Change shape as `vigilante-talents.ts`'s Shadow's
+ * Sight and `shifter-aspects.ts`'s aspects.
+ */
+describe("#74 parity sweep batch 3 (S-Z): newly promoted rage powers", () => {
+  function raceId(name: string): string {
+    const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  function makeDoc(over: {
+    level: number;
+    ragePowers?: string[];
+    activeBuffs?: CharacterDoc["live"]["activeBuffs"];
+    weapons?: WeaponInstance[];
+  }): CharacterDoc {
+    return {
+      schemaVersion: 1,
+      id: "test",
+      ownerId: "owner",
+      version: 1,
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      identity: {
+        name: "Test",
+        race: raceId("Human"),
+        classes: [{ tag: "barbarian", level: over.level }],
+      },
+      abilities: { str: 16, dex: 12, con: 14, int: 10, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        ragePowers: over.ragePowers,
+        weapons: over.weapons,
+      },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        activeBuffs: over.activeBuffs ?? [],
+        resources: {},
+      },
+    };
+  }
+
+  function raging(activeBuffs: CharacterDoc["live"]["activeBuffs"] = []) {
+    const rageBuff = buffByName("Rage");
+    return [
+      ...activeBuffs,
+      {
+        instanceId: "rage-1",
+        buffId: rageBuff.id,
+        name: rageBuff.name,
+        changes: rageBuff.changes,
+      },
+    ];
+  }
+
+  it("Sun Totem: fire resistance 10 while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 6, ragePowers: ["sunTotem"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(10);
+
+    const notRaging = compute(makeDoc({ level: 6, ragePowers: ["sunTotem"] }), ref);
+    expect(notRaging.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+  });
+
+  it("Sun Totem's fire resistance 10 sits between Lesser (5) and Greater (20) — highest-wins, not summed", () => {
+    const sheet = compute(
+      makeDoc({
+        level: 10,
+        ragePowers: ["lesserSunTotem", "sunTotem"],
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(10);
+
+    const withGreater = compute(
+      makeDoc({
+        level: 10,
+        ragePowers: ["lesserSunTotem", "sunTotem", "greaterSunTotem"],
+        activeBuffs: raging(),
+      }),
+      ref,
+    );
+    expect(withGreater.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(20);
+  });
+
+  it("Unrestrained Rage: immune to paralysis while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 12, ragePowers: ["unrestrainedRage"], activeBuffs: raging() }),
+      ref,
+    );
+    const slugs = sheet.defenses?.effectImmunities?.map((e) => e.qualifier) ?? [];
+    expect(slugs).toContain("paralysis");
+
+    const notRaging = compute(makeDoc({ level: 12, ragePowers: ["unrestrainedRage"] }), ref);
+    const notRagingSlugs = notRaging.defenses?.effectImmunities?.map((e) => e.qualifier) ?? [];
+    expect(notRagingSlugs).not.toContain("paralysis");
+  });
+
+  it("Taiga/Tarn/Tor Linnorm Death Curse each carry ungated +1 mwdamage Changes", () => {
+    for (const id of ["taigaLinnormDeathCurse", "tarnLinnormDeathCurse", "torLinnormDeathCurse"]) {
+      const power = RAGE_POWERS[id]!;
+      expect(power.displayOnly).toBe(false);
+      expect(power.changes).toEqual([{ formula: "1", target: "mwdamage", type: "untyped" }]);
+      expect(power.changes[0]!.activeWhenBuff).toBeUndefined();
+    }
+  });
+
+  it("Tor Linnorm Death Curse: +1 melee weapon fire damage applies without raging", () => {
+    const sword: WeaponInstance = { name: "Longsword", category: "melee", attackAbility: "str" };
+    const sheet = compute(
+      makeDoc({ level: 8, ragePowers: ["torLinnormDeathCurse"], weapons: [sword] }),
+      ref,
+    );
+    const baseline = compute(makeDoc({ level: 8, weapons: [sword] }), ref);
+    expect(sheet.attacks[0]!.damageBonus.total - baseline.attacks[0]!.damageBonus.total).toBe(1);
+  });
+
+  it("legacy revisit — Low-Light Vision: flag grant while raging only", () => {
+    const sheet = compute(
+      makeDoc({ level: 1, ragePowers: ["lowLightVision"], activeBuffs: raging() }),
+      ref,
+    );
+    expect(sheet.senses.find((s) => s.kind === "lowLight")).toBeDefined();
+
+    const notRaging = compute(makeDoc({ level: 1, ragePowers: ["lowLightVision"] }), ref);
+    expect(notRaging.senses.find((s) => s.kind === "lowLight")).toBeUndefined();
+  });
+
+  it("legacy revisit — Scent: flag grant while raging only", () => {
+    const sheet = compute(makeDoc({ level: 1, ragePowers: ["scent"], activeBuffs: raging() }), ref);
+    expect(sheet.senses.find((s) => s.kind === "scent")).toBeDefined();
+
+    const notRaging = compute(makeDoc({ level: 1, ragePowers: ["scent"] }), ref);
+    expect(notRaging.senses.find((s) => s.kind === "scent")).toBeUndefined();
+  });
+});

@@ -8,15 +8,19 @@
  * breakdown — confirmed: `class-features.json` carries no per-rage-power
  * entries), so there is no upstream JSON to normalize.
  *
- * Scope: 29 entries — the 23 Core Rulebook rage powers plus 6 commonly-taken
- * Advanced Player's Guide additions (Superstition, Witch Hunter, Good For
- * What Ails You, Internal Fortitude, Spell Sunder, Swift Foot). A former
- * 30th entry, "Sixth Sense", was removed (see the note below).
- * The remaining ~150+ splatbook rage powers (Totem chains, Bloodrager-shared
- * powers, Ultimate-line additions, ...) were OUT OF SCOPE as of the above —
- * a full-catalog #74 parity sweep is now in progress across this file (same
- * posture as `witch-hexes.ts`/`alchemist-discoveries.ts`'s own #74 passes):
- * batches 1-2 of 3 (A-F, G-R) have landed below; batch 3 (S-Z) follows.
+ * Scope: FULL vendored parity (issue #74) — 243 hand-authored entries,
+ * matching every one of the 243 uniquely-named rage powers in the pinned
+ * Pf Data 1e catalog (`packages/data-pipeline/data/rage-powers.json`, 244
+ * raw rows — see the "vendored catalog overlay" section below for why 244
+ * raw rows collapse to 243 unique names). Started from a 29-entry seed (the
+ * 23 Core Rulebook rage powers plus 6 commonly-taken Advanced Player's Guide
+ * additions: Superstition, Witch Hunter, Good For What Ails You, Internal
+ * Fortitude, Spell Sunder, Swift Foot) and closed the remaining ~215-entry
+ * gap (Totem chains, Bloodrager-shared powers, Ultimate-line additions, the
+ * Linnorm Death Curses, ...) across three batches (same posture as
+ * `witch-hexes.ts`'s/`alchemist-discoveries.ts`'s own #74 sweeps): batch 1
+ * (A-F, +70), batch 2 (G-R, +106), batch 3 (S-Z, +38). A former 30th seed
+ * entry, "Sixth Sense", was removed (see the note below) rather than counted.
  *
  * Shared by BOTH `barbarian` (chained) and `barbarianUnchained` — Pathfinder
  * Unchained's own "Rage Powers" class feature restates rather than replaces
@@ -79,13 +83,16 @@
  *     rule; `contextNotes` corrected to state the enhancement (not
  *     competence) bonus type and level-equal scaling.
  *
- * Sense grants (Low-Light Vision, Scent) are NOT promoted even though they
- * ARE unconditional-while-raging — beneficial "set"-change grants are a
+ * Sense grants (Low-Light Vision, Scent) were NOT promoted at this point in
+ * the sweep, on the theory that beneficial "set"-change grants are a
  * documented engine hazard (`compute.ts` resolves competing "set" changes on
- * a sense/speed target by LOWEST value, which is tuned for penalties like
- * Slow, not beneficial grants — see `shifter-aspects.ts`'s Bat/Wolf entries
- * for the identical carve-out) — these stay `displayOnly` regardless of the
- * new gate mechanism.
+ * a SPEED target by LOWEST value, which is tuned for penalties like Slow,
+ * not beneficial grants). Batch 2 (G-R) found this reasoning didn't actually
+ * apply to senses — `senses.ts`'s sense resolver is bespoke and takes the
+ * HIGHEST value per sense kind regardless of operator — and batch 3 (S-Z)
+ * finished the job by promoting Low-Light Vision and Scent themselves (see
+ * that batch's writeup below); this paragraph is kept for the historical
+ * record of how the original (incorrect) call was reached.
  *
  * `contextNotes` carries the exact numbers/scaling/activation-cost for every
  * still-display-only entry, and `minLevel` gates soft-warn (never block) the
@@ -190,6 +197,46 @@
  * genuinely qualifier-scoped DR entry, unlike Lesser Chaos Totem's
  * alignment-scoped deflection AC, which stays displayOnly). Ice Linnorm Death
  * Curse's +1 cold damage is ungated, matching its Cairn/Crag/Fjord siblings.
+ *
+ * Batch 3 (S-Z) of the #74 catalog sweep added the final 38 entries, closing
+ * the table out to full vendored parity, plus a two-entry LEGACY revisit:
+ *
+ *   - **Sun Totem** (fire resistance 10 while raging) is the middle tier of
+ *     the Lesser (5, batch 2) / Sun Totem (10) / Greater (20, batch 2)
+ *     fire-resistance chain — promoted the same `eres.fire`-while-raging way
+ *     as its siblings, verified against d20pfsrd.com. Its 1d6-round,
+ *     flame-contact-triggered +10 ft. speed bonus stays note-only.
+ *   - **Unrestrained Rage** (immune to paralysis while raging) is a new
+ *     promotable shape for this table: the engine's closed `immEffect.*`
+ *     vocabulary (`defenses.ts`) has an exact `paralysis` slug — unlike
+ *     Fearless Rage's `immEffect.fear` (over-broad: reads as the whole fear
+ *     family, including panicked, which Fearless Rage doesn't grant immunity
+ *     to), "immune to paralysis" IS the whole, exact effect this power
+ *     grants, so an unconditional gated `immEffect.paralysis` Change doesn't
+ *     overstate anything. Same slug `alchemist-discoveries.ts`'s Cognatogen
+ *     already uses unconditionally.
+ *   - **Low-Light Vision** / **Scent** (the two original-29-entry rows batch
+ *     2 flagged as a legacy revisit once senses were confirmed to resolve
+ *     highest-wins, not lowest) are now promoted, using the same
+ *     `sensell`/`sensesc` flag-Change shape `vigilante-talents.ts`'s Shadow's
+ *     Sight and `shifter-aspects.ts`'s aspects already establish. Re-verifying
+ *     Low-Light Vision's RAW against both the vendored prose and
+ *     d20pfsrd.com in the process turned up a fabrication in its old
+ *     `summary`: "(or double existing range)" is not real text anywhere in
+ *     the published rage power (RAW is simply "gains low-light vision while
+ *     raging," no doubling clause, no prerequisite) — corrected.
+ *
+ * Undead Blood (the non-Lesser, non-Greater tier) was checked as a promotion
+ * candidate on the same basis as Greater Undead Blood's cold resistance, but
+ * verified (d20pfsrd.com) to grant only the ghost touch weapon quality on
+ * melee attacks while raging — no numeric resistance/DR at all — so there is
+ * nothing to promote; stays displayOnly. Water Sense, Sharpened Accuracy, and
+ * Spiritual Awareness were also close-read as candidates and found to be,
+ * respectively: a conditional cover/range-penalty reduction (not a sense
+ * grant — no fixed-range tremorsense/blindsense involved), an ability
+ * conditioned on activating the (unmodeled) Surprise Accuracy, and a rider on
+ * an existing Trap Sense bonus rather than a flat number of its own — all
+ * three stay displayOnly.
  */
 
 import type { BuffGate, Change, ContextNote, RagePower, RefData, SourceRef } from "@pf1/schema";
@@ -341,7 +388,14 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     id: "lowLightVision",
     name: "Low-Light Vision",
     minLevel: 1,
-    summary: "Gain low-light vision while raging (or double existing range).",
+    summary: "Gain low-light vision while raging.",
+    changes: [{ formula: "1", target: "sensell", type: "untyped", activeWhenBuff: WHILE_RAGING }],
+    contextNotes: [
+      note(
+        "Batch 3 legacy revisit: the old summary's '(or double existing range)' clause was a fabrication — verified against both the vendored prose and d20pfsrd.com, RAW is simply 'gains low-light vision while raging', no doubling clause and no prerequisite. Flag-only grant (senses.ts resolves sensell highest-source-wins, mirroring shifter-aspects.ts's Bat/Wolf and vigilante-talents.ts's Shadow's Sight), so it correctly does nothing when a race already has low-light vision.",
+        "sensell",
+      ),
+    ],
   },
   {
     id: "momentOfClarity",
@@ -457,6 +511,13 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     name: "Scent",
     minLevel: 1,
     summary: "Gain the scent ability while raging.",
+    changes: [{ formula: "1", target: "sensesc", type: "untyped", activeWhenBuff: WHILE_RAGING }],
+    contextNotes: [
+      note(
+        "Batch 3 legacy revisit: unconditional while-raging grant, no prerequisite (verified against both the vendored prose and d20pfsrd.com) — flag-only, same shape and highest-source-wins resolution as Low-Light Vision above.",
+        "sensesc",
+      ),
+    ],
   },
   {
     id: "strengthSurge",
@@ -2551,6 +2612,471 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
       ),
     ],
   },
+
+  /* ---------------------------------------------------------- #74 sweep, batch 3 (S-Z) -- */
+
+  {
+    id: "savageDirtyTrick",
+    name: "Savage Dirty Trick",
+    minLevel: 6,
+    summary:
+      "Once per round while raging, substitute a no-AoO dirty trick combat maneuver for a melee attack, dealing Strength-modifier damage; on a failed Fortitude save the target also suffers a brief extra penalty tied to the dirty trick chosen (e.g. blinded → staggered). Usable once per opponent per rage.",
+    contextNotes: [
+      note(
+        "Barbarian level 6. Triggered combat-maneuver substitute with a save-DC table keyed to the maneuver's initial condition — not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "savageHurl",
+    name: "Savage Hurl",
+    minLevel: 1,
+    summary:
+      "+1 bonus on ranged attack rolls with thrown weapons that add Dexterity bonus to the attack roll, scaling to +2/+3/+4 at 4th/8th/12th level, each step gated on a rising Strength-modifier minimum.",
+    contextNotes: [
+      note(
+        "Scoped to thrown weapons using Dex-to-attack only, not a general ranged-attack bonus, and gated on a Strength-modifier threshold as well as barbarian level — no clean Change target.",
+        "attack",
+      ),
+    ],
+  },
+  {
+    id: "savageIntuition",
+    name: "Savage Intuition",
+    minLevel: 1,
+    summary:
+      "If rounds of rage remain, automatically enter a rage at the start of the first round of combat (or the surprise round) with no action required, even if unaware combat has begun.",
+    contextNotes: [
+      note(
+        "Requires being wereboar-kin or associated with wereboar-kin (not modeled). A combat-start trigger, not a Change.",
+      ),
+    ],
+  },
+  {
+    id: "savageJaw",
+    name: "Savage Jaw",
+    minLevel: 1,
+    summary:
+      "While using Animal Fury, activate as a free action to gain the grab ability with the bite attack until the start of the next turn. Once per rage.",
+    contextNotes: [
+      note("Requires Animal Fury. Once-per-rage activated grab, not modeled as a Change."),
+    ],
+  },
+  {
+    id: "sharpenedAccuracy",
+    name: "Sharpened Accuracy",
+    minLevel: 8,
+    summary:
+      "While using Surprise Accuracy, ignore the miss chance from concealment (treating total concealment as concealment) and ignore cover penalties except from total cover.",
+    contextNotes: [
+      note(
+        "Requires Surprise Accuracy and barbarian level 8. Conditioned on activating Surprise Accuracy (itself not modeled), so this isn't either.",
+      ),
+    ],
+  },
+  {
+    id: "smasher",
+    name: "Smasher",
+    minLevel: 1,
+    summary:
+      "Once per rage, before the attack roll or sunder check, ignore an unattended object's hardness for an attack against it or a sunder combat maneuver.",
+    contextNotes: [note("Once-per-rage activated ability, not modeled as a Change.")],
+  },
+  {
+    id: "spellbreaker",
+    name: "Spellbreaker",
+    minLevel: 12,
+    summary: "While raging, gain Spellbreaker as a bonus feat.",
+    contextNotes: [
+      note("Requires Disruptive and barbarian level 12. Feat grant, not modeled as a Change."),
+    ],
+  },
+  {
+    id: "spireTotem",
+    name: "Spire Totem",
+    minLevel: 6,
+    summary:
+      "While raging, take no penalty for dealing nonlethal damage with a weapon, and add half barbarian level to nonlethal damage rolls.",
+    contextNotes: [
+      note(
+        "Requires Lesser Spire Totem and barbarian level 6. Scoped to nonlethal damage rolls only, not general damage — the engine's damage target is whole-attack, so an unconditional Change here would overstate onto lethal damage too.",
+        "damage",
+      ),
+    ],
+  },
+  {
+    id: "spiritSteed",
+    name: "Spirit Steed",
+    minLevel: 6,
+    summary:
+      "While raging and mounted, the mount gains DR/magic equal to half barbarian level, and its natural weapons count as magic for bypassing damage reduction.",
+    contextNotes: [
+      note(
+        "Requires Ferocious Mount and barbarian level 6. Affects the mount, not the barbarian's own sheet.",
+      ),
+    ],
+  },
+  {
+    id: "spiritTotem",
+    name: "Spirit Totem",
+    minLevel: 6,
+    summary:
+      "While raging, spirits surrounding the barbarian grant a 20% miss chance against ranged attacks and against melee attacks from non-adjacent creatures.",
+    contextNotes: [
+      note(
+        "Requires Lesser Spirit Totem and barbarian level 6. A percentage miss chance, not a Change target this engine has (same posture as Chaos Totem's crit/sneak-attack-negation chance).",
+      ),
+    ],
+  },
+  {
+    id: "spiritualAwareness",
+    name: "Spiritual Awareness",
+    minLevel: 1,
+    summary:
+      "While raging, the dodge bonus to AC from Trap Sense also applies against attacks made by incorporeal creatures.",
+    contextNotes: [
+      note(
+        "Requires Trap Sense. A rider on an existing Trap Sense bonus, not a flat self-buff — no Change target for widening what an existing bonus applies against.",
+        "ac",
+      ),
+    ],
+  },
+  {
+    id: "springRage",
+    name: "Spring Rage",
+    minLevel: 1,
+    summary:
+      "While raging, ignore ability-score penalties from aging and the penalties (not the levels themselves) from negative levels.",
+    contextNotes: [
+      note(
+        "Only one season-themed rage power (spring/summer/autumn/winter) can be known at a time. Ignoring a specific penalty source has no matching Change target — not modeled.",
+      ),
+    ],
+  },
+  {
+    id: "sprint",
+    name: "Sprint",
+    minLevel: 4,
+    summary: "Once per rage, run at 6x speed or charge at 3x speed as a full-round action.",
+    contextNotes: [
+      note(
+        "Requires Swift Foot and barbarian level 4. Once-per-rage activated movement, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "staggeringDrunk",
+    name: "Staggering Drunk",
+    minLevel: 1,
+    summary:
+      "While raging, +1 dodge bonus to AC against attacks of opportunity per alcoholic drink consumed this rage, up to +1 per 4 barbarian levels.",
+    contextNotes: [
+      note(
+        "Scoped to AoO only and scales with drinks consumed rather than a level formula alone, same posture as Roaring Drunk/Liquid Courage — not modeled.",
+        "ac",
+      ),
+    ],
+  },
+  {
+    id: "strengthStance",
+    name: "Strength Stance",
+    minLevel: 1,
+    summary:
+      "Stance: while active, +1 competence bonus (scaling +1/4 levels) on combat maneuver checks and to CMD, plus a flat +8 competence bonus on Strength checks to lift/push/bend/break objects.",
+    contextNotes: [
+      note(
+        "Activated stance, not modeled as a Change — same posture as Accurate Stance/Powerful Stance/Reckless Stance.",
+        "cmb",
+      ),
+    ],
+  },
+  {
+    id: "suffocatingGrip",
+    name: "Suffocating Grip",
+    minLevel: 1,
+    summary:
+      "While raging, a maintained grapple can choke the opponent instead of dealing damage/moving/pinning/tying it up — it can't speak or breathe and must hold its breath or begin suffocating.",
+    contextNotes: [note("Triggered by maintaining a grapple, not a self-buff Change.")],
+  },
+  {
+    id: "summerRage",
+    name: "Summer Rage",
+    minLevel: 1,
+    summary:
+      "While raging, a creature within reach becomes fatigued for as long as it remains there, unless it succeeds at a Fortitude save (becoming immune for 24 hours).",
+    contextNotes: [
+      note(
+        "Only one season-themed rage power can be known at a time. Debuffs nearby creatures, not a self-buff.",
+      ),
+    ],
+  },
+  {
+    id: "sunTotem",
+    name: "Sun Totem",
+    minLevel: 6,
+    summary:
+      "While raging, fire resistance 10; also, for 1d6 rounds after touching open flame, speed increases by 10 ft.",
+    changes: [
+      { formula: "10", target: "eres.fire", type: "untyped", activeWhenBuff: WHILE_RAGING },
+    ],
+    contextNotes: [
+      note(
+        "Requires Lesser Sun Totem and barbarian level 6 — the middle tier of the Lesser (5) / Sun Totem (10) / Greater (20) fire-resistance chain, promoted the same way as its siblings (verified against d20pfsrd.com: 'She gains fire resistance 10 when raging'). The 1d6-round, flame-contact-triggered +10 ft. speed bonus is dice-duration and conditional — not modeled.",
+        "eres.fire",
+      ),
+    ],
+  },
+  {
+    id: "sunderEnchantment",
+    name: "Sunder Enchantment",
+    minLevel: 8,
+    summary:
+      "While raging, a successful sunder against a magic item suppresses its magical abilities for 1 round, plus 1 round per 5 points the combat maneuver check exceeded the target's CMD.",
+    contextNotes: [
+      note(
+        "Requires Spell Sunder and barbarian level 8. Triggered by a successful sunder, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "taigaLinnormDeathCurse",
+    name: "Taiga Linnorm Death Curse",
+    minLevel: 4,
+    summary:
+      "Melee attacks deal 1 additional point of electricity damage. If the barbarian is knocked unconscious or killed by an attack or spell, the attacker must save or gain vulnerability to electricity.",
+    changes: [{ formula: "1", target: "mwdamage", type: "untyped" }],
+    contextNotes: [
+      note(
+        "The +1 damage is unconditional, same as the Cairn/Crag/Fjord/Ice/Tor Linnorm Death Curses — verified NOT scoped to 'while raging'. Barbarian level 4. The retaliation clause targets the attacker — not modeled.",
+        "mwdamage",
+      ),
+    ],
+  },
+  {
+    id: "tarnLinnormDeathCurse",
+    name: "Tarn Linnorm Death Curse",
+    minLevel: 4,
+    summary:
+      "Melee attacks deal 1 additional point of acid damage. If the barbarian is knocked unconscious or killed by an attack or spell, the attacker must save or become immune to healing (magical or natural) until the curse is removed.",
+    changes: [{ formula: "1", target: "mwdamage", type: "untyped" }],
+    contextNotes: [
+      note(
+        "The +1 damage is unconditional, same as the other Linnorm Death Curses. Barbarian level 4. The retaliation clause targets the attacker — not modeled.",
+        "mwdamage",
+      ),
+    ],
+  },
+  {
+    id: "tauntingStance",
+    name: "Taunting Stance",
+    minLevel: 12,
+    summary:
+      "Stance: while active, enemies gain +4 on attack and damage rolls against the barbarian, but every attack against her provokes an attack of opportunity from her, resolved before the provoking attack.",
+    contextNotes: [
+      note(
+        "Activated stance, same shape as Come and Get Me but toggled rather than free-action — not modeled as a Change; the bonus applies to enemies, not the barbarian's own sheet, either way.",
+      ),
+    ],
+  },
+  {
+    id: "torLinnormDeathCurse",
+    name: "Tor Linnorm Death Curse",
+    minLevel: 8,
+    summary:
+      "Melee attacks deal 1 additional point of fire damage. If the barbarian is knocked unconscious or killed by an attack or spell, the attacker must save or gain vulnerability to fire and become permanently staggered by the pain.",
+    changes: [{ formula: "1", target: "mwdamage", type: "untyped" }],
+    contextNotes: [
+      note(
+        "The +1 damage is unconditional, same as the other Linnorm Death Curses. Barbarian level 8. The retaliation clause targets the attacker — not modeled.",
+        "mwdamage",
+      ),
+    ],
+  },
+  {
+    id: "twoFangedPounce",
+    name: "Two-Fanged Pounce",
+    minLevel: 1,
+    summary:
+      "While charging with a pair of daggers, kukris, or punching daggers, attack once with each weapon in place of the normal charge attack, losing the charge attack bonus and taking an extra -2 AC penalty; precision damage/on-hit effects apply only once even if both attacks land.",
+    contextNotes: [
+      note(
+        "Requires wielding a matched pair of light piercing weapons and charging — a full attack-routine substitution with its own trade-offs, not a flat self-buff Change.",
+      ),
+    ],
+  },
+  {
+    id: "tyrantTotem",
+    name: "Tyrant Totem",
+    minLevel: 8,
+    summary:
+      "While raging, begin a grapple as a free action against any creature hit with the bite attack.",
+    contextNotes: [
+      note(
+        "Requires Lesser Tyrant Totem and barbarian level 8. Triggered by a successful bite hit, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "ultimateClarity",
+    name: "Ultimate Clarity",
+    minLevel: 6,
+    summary:
+      "Once per rage, for 1 round, see through normal and magical darkness, invisibility, and illusions, and discern the exact location of concealed creatures — usable without activating Moment of Clarity.",
+    contextNotes: [
+      note(
+        "Requires Moment of Clarity, Perfect Clarity, and barbarian level 6. Once-per-rage activated true-seeing-style ability, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "undeadBlood",
+    name: "Undead Blood",
+    minLevel: 6,
+    summary: "While raging, all melee attacks count as though made with a ghost touch weapon.",
+    contextNotes: [
+      note(
+        "Requires Lesser Undead Blood and barbarian level 6. Verified against d20pfsrd.com: unlike Greater Undead Blood (cold resistance 10, promoted in batch 2), this base tier grants only the ghost touch weapon quality — no numeric resistance or DR at all, so there's nothing here to promote.",
+      ),
+    ],
+  },
+  {
+    id: "unexpectedStrike",
+    name: "Unexpected Strike",
+    minLevel: 8,
+    summary:
+      "Once per rage, make an attack of opportunity against a foe that moves into a threatened square, even if that movement wouldn't normally provoke one.",
+    contextNotes: [
+      note("Barbarian level 8. Once-per-rage triggered attack, not modeled as a Change."),
+    ],
+  },
+  {
+    id: "unrestrainedRage",
+    name: "Unrestrained Rage",
+    minLevel: 12,
+    summary:
+      "While raging, immune to paralysis. If targeted by a would-be paralysis effect while not raging, may enter a rage as an immediate action (if rounds remain) to avoid it.",
+    changes: [
+      {
+        formula: "1",
+        target: "immEffect.paralysis",
+        type: "untyped",
+        activeWhenBuff: WHILE_RAGING,
+      },
+    ],
+    contextNotes: [
+      note(
+        "Barbarian level 12. The flat while-raging paralysis immunity matches the engine's closed immEffect vocabulary exactly (immEffect.paralysis — same slug alchemist-discoveries.ts's Cognatogen uses unconditionally), unlike Fearless Rage's over-broad fear target, so it's promoted. The immediate-action rage-to-dodge-paralysis clause (relevant only while NOT already raging) isn't modeled.",
+        "immEffect.paralysis",
+      ),
+    ],
+  },
+  {
+    id: "vipersBreath",
+    name: "Viper's Breath",
+    minLevel: 1,
+    summary:
+      "While holding a dose of poison in the mouth, exhale a 15-ft. cone of it as inhaled poison; targets save against the poison at DC -4 or suffer its effects immediately.",
+    contextNotes: [
+      note("Requires Viper's Kiss. Activated ranged attack, not modeled as a Change."),
+    ],
+  },
+  {
+    id: "vipersKiss",
+    name: "Viper's Kiss",
+    minLevel: 1,
+    summary:
+      "Drink a dose of ingested poison as a move action instead of standard; can hold it in the mouth for rounds equal to Constitution modifier (min 1) and deliver it via the next successful bite attack instead.",
+    contextNotes: [
+      note(
+        "Requires a bite attack (e.g. from Animal Fury) at least while raging. Activated poison-delivery mechanic, not modeled as a Change.",
+      ),
+    ],
+  },
+  {
+    id: "waterSense",
+    name: "Water Sense",
+    minLevel: 1,
+    summary:
+      "While raging and on land, foes in water gain only partial (not improved) cover from the barbarian's attacks, and ranged attacks against them suffer only -1 per 5 ft. of water instead of -2.",
+    contextNotes: [
+      note(
+        "Not a sense grant (no fixed-range tremorsense/blindsense) — it reduces an existing cover/range penalty in a specific attacker-vs.-target-in-water scenario, which has no matching Change target.",
+      ),
+    ],
+  },
+  {
+    id: "waterTotem",
+    name: "Water Totem",
+    minLevel: 6,
+    summary: "While raging, breathe water as well as air.",
+    contextNotes: [
+      note(
+        "Requires having chosen water with Lesser Elemental Totem, and barbarian level 6. Waterbreathing isn't a Change target this engine tracks (same posture as Air Totem's air walk).",
+      ),
+    ],
+  },
+  {
+    id: "winterRage",
+    name: "Winter Rage",
+    minLevel: 1,
+    summary:
+      "Standard action: exhale a 20-ft. cone of frigid air; creatures moving through it move at half speed until the barbarian's next turn.",
+    contextNotes: [
+      note(
+        "Only one season-themed rage power can be known at a time. Debuffs an area, not a self-buff.",
+      ),
+    ],
+  },
+  {
+    id: "worldSerpentSpirit",
+    name: "World Serpent Spirit",
+    minLevel: 6,
+    summary:
+      "While raging, weapons count as chaotic, evil, good, and lawful for bypassing damage reduction; also +1 resistance bonus on saves against alignment-descriptor effects or effects from outsiders/aberrations, scaling +1 per other World Serpent power known.",
+    contextNotes: [
+      note(
+        "Requires World Serpent Totem and barbarian level 6. The DR-bypass weapon quality isn't a numeric Change (same as Greater Chaos Totem's unmodeled chaotic-weapons clause); the save bonus is scoped to alignment-descriptor/outsider/aberration sources only, not a whole save type — same over-broad-target issue as Superstition.",
+        "will",
+      ),
+    ],
+  },
+  {
+    id: "worldSerpentTotem",
+    name: "World Serpent Totem",
+    minLevel: 1,
+    summary:
+      "While raging, +1 insight bonus to AC against outsiders and aberrations, scaling +1 per other World Serpent power known. Requires the Totem Warrior archetype; mutually exclusive with every other totem family.",
+    contextNotes: [
+      note(
+        "Creature-type-scoped AC bonus (outsiders/aberrations only), not a general AC bonus — same never-promote rule as Lesser Chaos Totem's alignment-scoped deflection AC.",
+        "ac",
+      ),
+    ],
+  },
+  {
+    id: "worldSerpentTotemUnity",
+    name: "World Serpent Totem Unity",
+    minLevel: 10,
+    summary:
+      "While raging, doubles the barbarian's fast-movement bonus to land speed, prevents being knocked prone, and doubles World Serpent Totem's AC bonus specifically against outsiders'/aberrations' critical-hit confirmation rolls.",
+    contextNotes: [
+      note(
+        "Requires World Serpent Totem, World Serpent Spirit, and barbarian level 10. Every clause here derives from another bonus/condition rather than granting a flat number of its own — not modeled.",
+      ),
+    ],
+  },
+  {
+    id: "ymerisPyre",
+    name: "Ymeri's Pyre",
+    minLevel: 6,
+    summary:
+      "While raging, each round reduces the remaining duration of harmful ongoing effects on the barbarian as though 2 rounds had passed; once per day, spend 5 rounds of rage to re-attempt saves against every non-permanent effect currently affecting her.",
+    contextNotes: [
+      note(
+        "An 'Elemental' rage power — same exclusive-per-rage-choice shape as Hshurha's Veil/Aryzul's Curse/Kelizandri's Tide (requires Lesser Elemental Rage/Blood, barbarian level 6, only one elemental power usable at a time; an unchained barbarian needs Elemental Stance). Not modeled, same reasoning.",
+      ),
+    ],
+  },
 ]);
 
 export const RAGE_POWERS: Record<string, RagePowerDef> = Object.fromEntries(
@@ -2588,8 +3114,11 @@ export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] 
  * spelling/wording matched ours exactly (case-insensitively). (The former
  * 30th entry, Sixth Sense, matched nothing under any key — one of the tells
  * it wasn't real; see the file doc comment.) The batch-1 (A-F) sweep re-ran
- * this same audit for its 70 additions, and batch 2 (G-R) for its 106 —
- * both zero collisions, zero aliases needed.
+ * this same audit for its 70 additions, batch 2 (G-R) for its 106, and batch
+ * 3 (S-Z) for its final 38 — all three batches: zero collisions, zero
+ * aliases needed. FINAL STATE (issue #74, full parity): all 243
+ * hand-authored entries matched a vendored entry by normalized name; `RAGE_POWER_NAME_ALIASES`
+ * stays empty across the entire table.
  *
  * One name COLLIDES within the vendored catalog itself: "Guarded Stance"
  * appears twice — the Core Rulebook original (`guarded_stance`, no
@@ -2599,13 +3128,22 @@ export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] 
  * `mergedRagePowerCatalog` prefers the vendored entry WITHOUT a `category`
  * as the collision partner when more than one vendored entry shares a
  * normalized name — the Unchained variant stays in the catalog as its own
- * vendored-only (display-only) row rather than being silently dropped.
+ * vendored-only (display-only) row rather than being silently dropped. This
+ * is why the vendored catalog has 244 raw rows but only 243 UNIQUE
+ * normalized names, and therefore why the hand-authored table's full-parity
+ * count is 243, not 244: every unique published rage power has a
+ * hand-authored row, and the one duplicate raw row (a reworded restatement
+ * of a power already covered) surfaces correctly as its own display-only
+ * catalog entry rather than being force-fit into a second "Guarded Stance"
+ * hand entry (which the id-per-normalized-name matching below has no
+ * mechanism to disambiguate, and which isn't needed — the Unchained
+ * restatement has no numbers this table would add anything by duplicating).
  */
 
 /**
  * Alias map for a hand-authored id whose vendored-catalog counterpart uses a
  * different name than ours (misspelling/wording drift) — matched instead of
- * this file's own `name`. Empty today: the full 30-entry audit found no
+ * this file's own `name`. Empty today: the full 243-entry audit found no
  * drift (see the collision-audit comment above) — kept so a FUTURE
  * hand-authored addition that DOES drift from the vendored spelling has
  * somewhere to record it instead of silently going unmatched.

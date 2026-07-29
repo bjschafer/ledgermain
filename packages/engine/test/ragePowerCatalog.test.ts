@@ -29,7 +29,7 @@ describe("mergedRagePowerCatalog", () => {
     expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("all 205 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+  it("all 243 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
     let matched = 0;
     for (const id of RAGE_POWER_IDS) {
       const entry = byId.get(id);
@@ -41,19 +41,21 @@ describe("mergedRagePowerCatalog", () => {
       expect(entry!.description).toBeDefined();
       matched++;
     }
-    expect(matched).toBe(205);
+    expect(matched).toBe(243);
   });
 
-  it("a vendored-only entry (no hand-authored counterpart) resolves display-only with its own id + prose", () => {
-    // "Smasher" is still vendored-only after batches 1-2 (A-R) — it's an
-    // S-prefixed entry, due in batch 3. (Batch 1 used "Greater Animal Fury"
-    // for this example; batch 2 promoted that one to a hand-authored,
-    // still-displayOnly entry, so it no longer demonstrates "no hand match".)
-    const entry = byId.get("smasher")!;
-    expect(entry.displayOnly).toBe(true);
-    expect(entry.changes).toEqual([]);
-    expect(entry.description).toContain("hardness");
-    expect(RAGE_POWERS.smasher).toBeUndefined();
+  it("no vendored-only entries remain except the pre-existing Guarded Stance (Unchained Stance) duplicate — the fallback path only exists for a future data bump", () => {
+    // Full hand-table parity as of the #74 batch-3 (S-Z) close-out: every
+    // one of the 243 UNIQUE vendored names has a hand-authored row. The one
+    // exception is a documented, deliberate non-match rather than a gap —
+    // see the file doc comment's collision-audit section: the vendored
+    // catalog's 244th raw row is a reworded Pathfinder Unchained restatement
+    // of Guarded Stance that shares its normalized name with the
+    // hand-authored (CRB) entry, so it can never win a name-based match.
+    for (const entry of merged) {
+      if (entry.id === "guarded_stance_stance") continue;
+      expect(RAGE_POWERS[entry.id], entry.id).toBeDefined();
+    }
   });
 
   it("Guarded Stance: the CRB vendored entry (no category) matches the hand-authored entry; the Pathfinder Unchained 'Stance' variant stays a separate vendored-only row", () => {
@@ -80,9 +82,12 @@ describe("resolveRagePower", () => {
   });
 
   it("falls back to the vendored catalog for a vendored-only id", () => {
-    const power = resolveRagePower("smasher", ref);
+    // "guarded_stance_stance" (the Pathfinder Unchained restatement of
+    // Guarded Stance — see the file doc comment's collision-audit section)
+    // is the sole remaining vendored-only entry after full #74 parity.
+    const power = resolveRagePower("guarded_stance_stance", ref);
     expect(power?.displayOnly).toBe(true);
-    expect(power?.name).toBe("Smasher");
+    expect(power?.name).toBe("Guarded Stance");
   });
 
   it("returns undefined for an id in neither table", () => {
@@ -128,8 +133,8 @@ describe("a vendored-only pick surfaces on the sheet like any other rage power",
   }
 
   it("appears in classFeatures, tagged Rage Power, with no crash and no numeric Change applied", () => {
-    const doc = makeDoc(["smasher"]);
+    const doc = makeDoc(["guarded_stance_stance"]);
     const sheet = compute(doc, ref);
-    expect(sheet.classFeatures.map((f) => f.name)).toContain("Smasher");
+    expect(sheet.classFeatures.map((f) => f.name)).toContain("Guarded Stance");
   });
 });
