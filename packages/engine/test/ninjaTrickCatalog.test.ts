@@ -11,9 +11,10 @@ import {
 
 /**
  * Coverage for the vendored-catalog overlay (issue #74) — mirrors
- * `ragePowerCatalog.test.ts`. Of the 44 hand-authored entries, 43 matched a
- * vendored entry by name; `advancedTalents` ("Advanced Talents") needed an
- * alias to match the vendored "Advanced Talent" (singular).
+ * `witchHexCatalog.test.ts` exactly. The table reached full vendored parity
+ * in the #74 follow-up (44 -> 65 entries); all 65 matched a vendored entry
+ * by name, `advancedTalents` ("Advanced Talents") via the alias to the
+ * vendored "Advanced Talent" (singular).
  */
 const ref = loadRefData();
 
@@ -21,19 +22,24 @@ describe("mergedNinjaTrickCatalog", () => {
   const merged = mergedNinjaTrickCatalog(ref);
   const byId = new Map(merged.map((t) => [t.id, t]));
 
-  it("has exactly one row per vendored entry — every hand-authored entry matched (via alias where needed)", () => {
+  it("has exactly one row per vendored entry — all 65 hand-authored entries matched", () => {
     const vendoredCount = Object.keys(ref.ninjaTricks).length;
+    expect(vendoredCount).toBe(65);
     expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("every hand-authored entry matched a vendored entry by name and kept its own id + mechanics", () => {
+  it("all 65 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+    let matched = 0;
     for (const id of NINJA_TRICK_IDS) {
       const entry = byId.get(id);
       expect(entry).toBeDefined();
       expect(entry!.changes).toEqual(NINJA_TRICKS[id]!.changes);
+      expect(entry!.displayOnly).toBe(NINJA_TRICKS[id]!.displayOnly);
       expect(entry!.tier).toBe(NINJA_TRICKS[id]!.tier);
       expect(entry!.description).toBeDefined();
+      matched++;
     }
+    expect(matched).toBe(65);
   });
 
   it("resolves the 'Advanced Talents' / 'Advanced Talent' naming drift via alias", () => {
@@ -41,16 +47,11 @@ describe("mergedNinjaTrickCatalog", () => {
     expect(entry.description).toContain("Advanced Talents");
   });
 
-  it("a vendored-only entry (no hand-authored counterpart) resolves display-only, with tier derived from its category prefix", () => {
-    const trick = byId.get("arcane_backfire")!;
-    expect(trick.displayOnly).toBe(true);
-    expect(trick.changes).toEqual([]);
-    expect(trick.tier).toBe("trick");
-    expect(trick.minLevel).toBe(2);
-
-    const master = byId.get("deep_cover")!;
-    expect(master.tier).toBe("master");
-    expect(master.minLevel).toBe(10);
+  it("no vendored-only tricks remain — the fallback path only exists for a future data bump", () => {
+    // Full hand-table parity as of the #74 follow-up.
+    for (const entry of merged) {
+      expect(NINJA_TRICKS[entry.id], entry.id).toBeDefined();
+    }
   });
 
   it("every id is unique", () => {
@@ -65,7 +66,12 @@ describe("resolveNinjaTrick", () => {
     expect(trick).toBe(NINJA_TRICKS.smokeBomb);
   });
 
-  it("falls back to the vendored catalog for a vendored-only id", () => {
+  it("falls back to the vendored catalog when looked up by the vendored snake_case id (hand-authored ids are always camelCase, so this id is never a direct hit in NINJA_TRICKS)", () => {
+    // Confirms the fallback path still resolves a real (display-only)
+    // definition for a future data bump this hand table hasn't caught up
+    // to yet — even though `arcaneBackfire` (this trick's hand-authored id)
+    // now carries the real mechanics, matched into the picker catalog by
+    // name rather than by id.
     const trick = resolveNinjaTrick("arcane_backfire", ref);
     expect(trick?.displayOnly).toBe(true);
     expect(trick?.name).toBe("Arcane Backfire");

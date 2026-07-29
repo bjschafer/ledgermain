@@ -10,11 +10,13 @@
  * breakdown — confirmed: `class-features.json` carries no per-trick entries),
  * so there is no upstream JSON to normalize.
  *
- * Scope: the 31 standard Ultimate Combat ninja tricks plus the 13 Ultimate
- * Combat master tricks (10th level+). Tricks added by later splatbooks
- * (Legacy of Dragons, Martial Arts Handbook, Champions of Balance, Heroes
- * from the Fringe, Chronicle of Legends, ...) are OUT OF SCOPE, same posture
- * as `oracle-revelations.ts`/`witch-hexes.ts` scoping to their own core book.
+ * Scope: FULL vendored parity as of issue #74's follow-up sweep — all 65
+ * vendored tricks (41 regular from 2nd level, 24 master from 10th), the
+ * Ultimate Combat core set (31 tricks + 13 master tricks) plus every
+ * splatbook addition the pinned data carries (Legacy of Dragons, Martial
+ * Arts Handbook, Champions of Balance, Heroes from the Fringe, Chronicle of
+ * Legends, ...), same posture as `witch-hexes.ts`'s issue #74 extension to
+ * full-catalog scope.
  *
  * Budget (PF1 Ultimate Combat RAW): "Starting at 2nd level, a ninja gains
  * one ninja trick. She gains one additional ninja trick for every 2 levels
@@ -75,6 +77,16 @@
  * `contextNotes` reminder carries a trick-name prerequisite (a small handful
  * require another specific trick already known — soft-noted only, PF1
  * prereqs are hybrid per CLAUDE.md) or a ki-cost/DC reminder where relevant.
+ *
+ * The 21 tricks added by the #74 follow-up (bringing the table from 44 to
+ * 65 — full vendored parity) were reviewed against the same honesty bar and
+ * none cleared it: every one is either ki-activated/limited-use (Kamikaze,
+ * Occulted Soul, Kawarimi, ...), a bonus-feat grant (Blood Debt, Kami
+ * Warden), a nested modifier to another trick requiring it as a prerequisite
+ * (Fractured Mirror needs Shadow Clone, Greater Ki Venom needs Ki Venom,
+ * Many Guises needs Deep Cover), or a non-numeric ability (Deep Cover's
+ * vigilante identities, Spiritual Companion's familiar, All the Stars in the
+ * Sky's shuriken economy) — all stay `displayOnly`.
  */
 
 import type { Change, ContextNote, NinjaTrick, RefData, SourceRef } from "@pf1/schema";
@@ -132,6 +144,13 @@ const TRICK_LIST: NinjaTrickDef[] = [
       summary: "Swift action, spend 1 ki: +20 bonus on one Acrobatics check before your next turn.",
     },
     {
+      id: "arcaneBackfire",
+      name: "Arcane Backfire",
+      summary:
+        "On a successful attack against a foe wielding a magic item with charges or daily uses, attempt a Use Magic Device check to drain one daily use or a number of charges equal to your sneak attack dice.",
+      contextNotes: [note("DC = 20 + the item's caster level.")],
+    },
+    {
       id: "bleedingAttack",
       name: "Bleeding Attack",
       summary:
@@ -141,6 +160,20 @@ const TRICK_LIST: NinjaTrickDef[] = [
           "Sneak-attack-modifying trick (marked *): only one such trick can apply to a given attack, chosen before the attack roll.",
         ),
       ],
+    },
+    {
+      id: "bloodDebt",
+      name: "Blood Debt",
+      summary:
+        "Gain In Harm's Way as a bonus feat (prerequisites waived). Spend 1 ki to place a blood debt on an ally you just protected with it, reducing your ki pool by 1 until you end the debt; ending it in response to a further attack on that ally shifts that damage onto you instead.",
+      contextNotes: [note("Ki pool stays reduced by 1 for as long as the debt is active.")],
+    },
+    {
+      id: "breathOfTheAncestors",
+      name: "Breath of the Ancestors",
+      summary:
+        "Choose an imperial dragon lineage when picked (fixed thereafter). Standard action, spend up to 2 ki: exhale that dragon's damage type in a 15-ft. cone (30-ft. line for underworld) dealing damage equal to your sneak attack, Reflex half; usable again only after 1d4 rounds.",
+      contextNotes: [note("Save DC = 10 + 1/2 ninja level + Int modifier.")],
     },
     {
       id: "chokingBomb",
@@ -197,6 +230,12 @@ const TRICK_LIST: NinjaTrickDef[] = [
         "Temporarily 'borrow' one ninja trick you don't know (not a master trick or rogue talent) for a number of rounds equal to your ninja level.",
     },
     {
+      id: "herbalCompound",
+      name: "Herbal Compound",
+      summary:
+        "Move action, spend 1 ki: consume a prepared herbal compound for a +4 alchemical bonus on Will saves for 10 minutes per ninja level, at a -2 penalty to AC and Reflex saves for the duration.",
+    },
+    {
       id: "hiddenWeapons",
       name: "Hidden Weapons",
       summary:
@@ -207,6 +246,12 @@ const TRICK_LIST: NinjaTrickDef[] = [
       name: "High Jumper",
       summary: "Halve the DC of Acrobatics checks to jump high.",
       contextNotes: [note("Requires the Acrobatic Master trick already known.")],
+    },
+    {
+      id: "kamikaze",
+      name: "Kamikaze",
+      summary:
+        "Spend 1 ki: your unarmed strikes and wielded weapons gain the vicious weapon property for 1 round per ninja level. Spend another ki point to end the effect early.",
     },
     {
       id: "kiBlock",
@@ -226,6 +271,12 @@ const TRICK_LIST: NinjaTrickDef[] = [
         "Standard action: imbue a thrown weapon with ki so it explodes for fire damage on impact.",
     },
     {
+      id: "kiVenom",
+      name: "Ki Venom",
+      summary:
+        "Full-round action, spend 1 ki: brew a venom from mundane materials dealing 1d4 Strength or Dexterity damage, lasting 24 hours before going inert. Extra ki spent while brewing can bump the damage die to d6, retarget the damage to Int/Wis/Cha, or add an extra save needed to cure it.",
+    },
+    {
       id: "poisonBomb",
       name: "Poison Bomb",
       summary: "Your smoke bomb cloud can also carry an inhaled poison you possess.",
@@ -240,6 +291,12 @@ const TRICK_LIST: NinjaTrickDef[] = [
           "Sneak-attack-modifying trick (marked *): only one such trick can apply to a given attack.",
         ),
       ],
+    },
+    {
+      id: "redirectForce",
+      name: "Redirect Force",
+      summary:
+        "When a feat lets you attempt a combat maneuver without provoking an attack of opportunity, you may choose to provoke it anyway; damage you take from that provoked attack is added as a bonus to your maneuver check instead of applying as a penalty.",
     },
     {
       id: "rogueTalent",
@@ -290,6 +347,12 @@ const TRICK_LIST: NinjaTrickDef[] = [
       ],
     },
     {
+      id: "strangler",
+      name: "Strangler",
+      summary:
+        "Use an improvised garrote (a scarf, for instance) with no penalty. As a free action while attempting a grapple check, spend 1 ki to add a constrict attack dealing damage equal to half your sneak attack dice (minimum 1d6).",
+    },
+    {
       id: "styleMaster",
       name: "Style Master",
       summary: "Gain a style feat you qualify for as a bonus feat.",
@@ -298,6 +361,18 @@ const TRICK_LIST: NinjaTrickDef[] = [
       id: "suddenDisguise",
       name: "Sudden Disguise",
       summary: "Swift action, spend 1 ki: disguise self for 1 minute per ninja level.",
+    },
+    {
+      id: "swarmingAttack",
+      name: "Swarming Attack",
+      summary:
+        "While sharing a square with an ally via the swarming racial trait, gain a bonus on your damage rolls equal to that ally's sneak attack dice count.",
+      contextNotes: [note("Requires the swarming racial trait (e.g. ratfolk).")],
+    },
+    {
+      id: "swiftPoisoner",
+      name: "Swift Poisoner",
+      summary: "Apply poison to a weapon as a swift action instead of a standard action.",
     },
     {
       id: "unarmedCombatTraining",
@@ -334,6 +409,12 @@ const TRICK_LIST: NinjaTrickDef[] = [
   ]),
   ...forTier("master", 10, [
     {
+      id: "accelerationOfForm",
+      name: "Acceleration of Form",
+      summary:
+        "Standard action, spend 1 ki: gain the effects of both displacement and haste for 1 round per 2 ninja levels.",
+    },
+    {
       id: "advancedTalents",
       name: "Advanced Talents",
       summary:
@@ -343,6 +424,12 @@ const TRICK_LIST: NinjaTrickDef[] = [
           "This project has no rogue-talent picker/budget yet (pre-existing gap) — record the chosen talent as a note; not wired to a live budget.",
         ),
       ],
+    },
+    {
+      id: "allTheStarsInTheSky",
+      name: "All the Stars in the Sky",
+      summary:
+        "Once you own a set of 50 identical magic shuriken, that stockpile never runs out and restocks itself for free. The whole stock can be upgraded together as if it were a single magic weapon.",
     },
     {
       id: "assassinate",
@@ -363,15 +450,34 @@ const TRICK_LIST: NinjaTrickDef[] = [
         "Full-round action: a single shuriken throw resolves as multiple attack rolls based on your full base attack bonus.",
     },
     {
+      id: "deepCover",
+      name: "Deep Cover",
+      summary:
+        "Gain a vigilante's dual identity and seamless guise class features (calling the two identities 'social' and 'ninja' rather than 'social' and 'vigilante'), except that switching identities is a move action that costs 1 ki instead of the vigilante's usual trigger.",
+    },
+    {
       id: "evasionTrick",
       name: "Evasion",
       summary:
         "Standard Evasion (no damage on a successful Reflex save that would normally halve damage); light or no armor only.",
     },
     {
+      id: "falseFace",
+      name: "False Face",
+      summary:
+        "While you have at least 1 ki point, gain the change shape universal monster ability, limited to Small or Medium humanoid forms (as alter self).",
+    },
+    {
       id: "masterTrickFeat",
       name: "Feat",
       summary: "Gain any feat you qualify for, in place of a master trick.",
+    },
+    {
+      id: "fracturedMirror",
+      name: "Fractured Mirror",
+      summary:
+        "Shadow Clone creates one additional duplicate per 3 ninja levels (max 8 total); as part of a move action, any active clone can split off to move independently at your speed. A separated clone can't act (though it still provides flanking), occupies no space, and has AC 5 lower than yours.",
+      contextNotes: [note("Requires the Shadow Clone ninja trick already known.")],
     },
     {
       id: "ghostStep",
@@ -380,16 +486,51 @@ const TRICK_LIST: NinjaTrickDef[] = [
         "Swift action: pass through walls and other surfaces up to 5 ft. thick per ninja level until the end of your turn.",
     },
     {
+      id: "greaterKiVenom",
+      name: "Greater Ki Venom",
+      summary:
+        "Spend 2 ki while brewing ki venom to raise its damage die to a d8, or spend another 2 ki to retarget the ability damage to Constitution.",
+      contextNotes: [note("Requires the Ki Venom ninja trick already known.")],
+    },
+    {
       id: "invisibleBlade",
       name: "Invisible Blade",
       summary: "Vanishing Trick's invisibility becomes greater-invisibility-equivalent.",
       contextNotes: [note("Requires the Vanishing Trick ninja trick already known.")],
     },
     {
+      id: "kamiWarden",
+      name: "Kami Warden",
+      summary:
+        "Gain Bodyguard and In Harm's Way as bonus feats (prerequisites waived). When using In Harm's Way to intercept an attack, spend 1 ki for DR 10/cold iron and resistance 10 to acid, electricity, and fire against that attack.",
+    },
+    {
+      id: "kawarimi",
+      name: "Kawarimi",
+      summary:
+        "Once per day as an immediate action when hit by an attack, spend 1 ki to attempt a Stealth check opposed by the attacker's Perception in place of taking the hit, provided you have at least cover or concealment. On success, the attack instead strikes a mistaken object, and you may move into an adjacent square, hidden from the attacker.",
+    },
+    {
+      id: "manyGuises",
+      name: "Many Guises",
+      summary: "Gain the vigilante social talent of the same name.",
+      contextNotes: [
+        note(
+          "Requires the Deep Cover master trick already known. Not cross-wired to `vigilante-talents.ts`'s Many Guises entry — apply its effect manually.",
+        ),
+      ],
+    },
+    {
       id: "masterDisguise",
       name: "Master Disguise",
       summary: "Sudden Disguise's duration extends to 10 minutes per ninja level.",
       contextNotes: [note("Requires the Sudden Disguise ninja trick already known.")],
+    },
+    {
+      id: "occultedSoul",
+      name: "Occulted Soul",
+      summary:
+        "Spend 1 ki to cast nondetection on yourself as a spell-like ability, caster level = ninja level.",
     },
     {
       id: "seeTheUnseen",
@@ -400,6 +541,17 @@ const TRICK_LIST: NinjaTrickDef[] = [
       id: "shadowSplit",
       name: "Shadow Split",
       summary: "Create an illusory double of yourself that moves away as a distraction.",
+    },
+    {
+      id: "spiritualCompanion",
+      name: "Spiritual Companion",
+      summary:
+        "Gain an improved familiar (treating your ninja level as your effective wizard level), chosen from calligraphy wyrm, pipefox, shikigami kami, or spirit oni, provided your alignment is compatible with the choice.",
+      contextNotes: [
+        note(
+          "None of those familiar options exist in this project's Familiar picker (familiars.ts) — set up a stand-in in the Familiar section of the Classes panel; this entry is informational only.",
+        ),
+      ],
     },
     {
       id: "unarmedCombatMastery",
@@ -439,11 +591,12 @@ export function tricksForTier(tier: NinjaTrickTier): NinjaTrickDef[] {
  * section only merges the two for BROWSING/resolving, mirroring
  * `rage-powers.ts`'s "vendored catalog overlay" section exactly.
  *
- * Collision audit (all 44 hand-authored entries): 43 matched a vendored
- * entry by normalized name; the lone exception is `advancedTalents`
- * ("Advanced Talents") — the vendored catalog spells the same trick
- * "Advanced Talent" (singular, key `advanced_talent`), a wording drift
- * confirmed by matching description text, recorded in `NAME_ALIASES` below.
+ * Collision audit (all 65 hand-authored entries, after the #74 follow-up
+ * brought the table to full parity): 64 matched a vendored entry by
+ * normalized name; the lone exception is `advancedTalents` ("Advanced
+ * Talents") — the vendored catalog spells the same trick "Advanced Talent"
+ * (singular, key `advanced_talent`), a wording drift confirmed by matching
+ * description text, recorded in `NAME_ALIASES` below.
  */
 
 /** Alias map for a hand-authored id whose vendored-catalog counterpart uses a different name — see `rage-powers.ts`'s identical map. */
