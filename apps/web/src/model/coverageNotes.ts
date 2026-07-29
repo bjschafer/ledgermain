@@ -77,7 +77,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Oracle revelations",
     note: 'Every published mystery\'s full revelation list is pickable, with level requirements flagged softly and each pick showing on your sheet with its write-up. Fifteen of them carry an "M" and move real numbers. The rest are yours to apply at the table.',
     issueDetail:
-      "336 revelations, 15 promoted to live changes[]. Rejected with reasons recorded inline: save-category-scoped bonuses and ability substitutions the compute pipeline can't express. Defy Elements' 5th-level-and-beyond new-type-or-increase grants are fresh picks with no slot in the one-key choose-one mechanism and stay manual.",
+      "336 revelations, 15 promoted to live changes[]. Rejected with reasons recorded inline: save-category-scoped bonuses, ability substitutions, and repeat picks the one-key choose-one mechanism can't store.",
   },
   {
     category: "Kineticist wild talents",
@@ -99,9 +99,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Character traits",
-    note: "The full published trait catalog is searchable in the picker. Traits outside a core set may show their benefit as text only rather than a live number the sheet tracks. Anything still missing can be added as a homebrew trait.",
+    note: "The full published trait catalog is searchable in the picker, and a trait whose benefit comes with structured numbers applies them to your sheet automatically. The rest show their benefit as text to apply at the table. Anything still missing can be added as a homebrew trait.",
     issueDetail:
-      "1,981 vendored and searchable; only the hand-authored core set is mechanically modeled.",
+      "1,981 vendored and searchable; 434 carry structured changes the sheet applies live, plus the 28 hand-authored core entries. The other ~1,500 are prose-only upstream.",
   },
   {
     category: "Spell resistance",
