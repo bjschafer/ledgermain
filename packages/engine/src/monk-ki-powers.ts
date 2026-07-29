@@ -2,15 +2,22 @@
  * Clean-room PF1 Monk (Unchained) Ki Powers table (Pathfinder Unchained,
  * issue #65): hand-authored from the published rules (verified against
  * aonprd.com's "Ki Powers - Monk (Unchained)" listing, cross-checked against
- * d20pfsrd's Unchained Monk page to scope down to the Pathfinder Unchained
- * BOOK's own core list — the AoN listing aggregates cross-splatbook
- * additions, e.g. "Qinggong Power"/"Improvised Weapon Proficiency", that are
- * NOT part of the core book and are excluded here, same scoping discipline
- * as `witch-hexes.ts`/`oracle-revelations.ts` scoping to APG-core-only).
- * Ki powers are NOT part of the vendored Foundry data pack (the Monk
- * (Unchained) class def only links a single generic "Ki powers (UC)" stub
- * `ClassFeature`, no per-power breakdown — confirmed, mirroring the witch's
- * generic "Hex" stub), so there is no upstream JSON to normalize.
+ * d20pfsrd's Unchained Monk page). Ki powers are NOT part of the vendored
+ * Foundry data pack (the Monk (Unchained) class def only links a single
+ * generic "Ki powers (UC)" stub `ClassFeature`, no per-power breakdown —
+ * confirmed, mirroring the witch's generic "Hex" stub), so there is no
+ * upstream JSON to normalize for MECHANICS; `RefData.monkKiPowers` (see the
+ * "vendored catalog overlay" section below) supplies PROSE only.
+ *
+ * Scope: FULL vendored parity as of issue #74's extension — all 44 vendored
+ * ki powers, the Pathfinder Unchained core book's own 39 plus every
+ * splatbook addition the pinned data carries (Martial Arts Handbook,
+ * Wilderness Origins, Blood of the Beast). The original issue #65 cut
+ * scoped to Pathfinder Unchained core only, excluding "Qinggong
+ * Power"/"Improvised Weapon Proficiency" as cross-splatbook additions; #74
+ * folds those back in (plus Branch Runner/Freedom of Movement/Ki
+ * Meditation) for full-catalog parity, same posture as `witch-hexes.ts`'s
+ * #74 extension.
  *
  * PF1 RAW: "At 4th level, and every two levels thereafter, a monk gains a ki
  * power" — 9 total picks by 20th level (see `model/monkKiPowers.ts` for the
@@ -31,7 +38,17 @@
  *     sundering") is passive, but there is no sunder-specific damage target;
  *   - Furious Defense/Formless Mastery grant a flat AC bonus, but only for
  *     limited duration once activated (immediate action, spends ki), same
- *     "activated, not always-on" gap as the witch's Ward hex.
+ *     "activated, not always-on" gap as the witch's Ward hex;
+ *   - Branch Runner (#74 addition) is passive, but it adds HALF the fast
+ *     movement bonus (itself a value that scales by monk level) to a racial
+ *     climb speed the monk may not even have — not a flat number, and
+ *     conditional on already having a climb speed;
+ *   - Improvised Weapon Proficiency (#74 addition)'s passive half ("no
+ *     penalty on attack rolls for using an improvised weapon") IS
+ *     unconditional and always-on, but this engine doesn't model the
+ *     improvised-weapon attack penalty at all, so there is no Change target
+ *     to cancel it against — a real promotion candidate blocked purely on a
+ *     missing mechanism, not on conditionality.
  * None of these clear the bar for an unconditional Change on the monk's own
  * sheet, so — same discipline as `witch-hexes.ts` — EVERY entry here is
  * `displayOnly: true` with `changes: []`; a `contextNotes` reminder carries
@@ -80,6 +97,17 @@ function toDef(e: RawPower): MonkKiPowerDef {
 const KI_POWER_LIST: MonkKiPowerDef[] = [
   // -- 4th level (baseline) --
   toDef({
+    id: "branchRunner",
+    name: "Branch Runner",
+    summary:
+      "Add half your fast movement bonus to your racial climb speed (if any); when you use Sudden Speed, also add that power's speed bonus to your climb speed for 1 round. Requires Sudden Speed.",
+    contextNotes: [
+      note(
+        "Requires the Sudden Speed ki power; only matters with an existing racial climb speed. No Change applied — the bonus tracks fast movement's own level scaling.",
+      ),
+    ],
+  }),
+  toDef({
     id: "emptyBody",
     name: "Empty Body",
     summary: "Assume an ethereal state for 1 minute, as the spell etherealness (self only).",
@@ -104,6 +132,24 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     ],
   }),
   toDef({
+    id: "improvisedWeaponProficiency",
+    name: "Improvised Weapon Proficiency",
+    summary:
+      "Take no attack-roll penalty for wielding an improvised weapon; spend 1 ki point to fight with a broken weapon for 1 round without any attack or damage penalty.",
+    contextNotes: [
+      note(
+        "The passive half is unconditional, but this engine doesn't model an improvised-weapon attack penalty to cancel — no Change applied. The broken-weapon activation is 1 ki point.",
+      ),
+    ],
+  }),
+  toDef({
+    id: "kiMeditation",
+    name: "Ki Meditation",
+    summary:
+      "Spend 2 ki points to meditate as a full-round action (or 4 ki points as a move action), gaining your meditation feats' usual benefits without spending a daily Combat Meditation use. Requires Combat Meditation.",
+    contextNotes: [note("Requires the Combat Meditation feat.")],
+  }),
+  toDef({
     id: "kiMetabolism",
     name: "Ki Metabolism",
     summary:
@@ -122,6 +168,17 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     contextNotes: [
       note(
         "No sunder-specific damage target modeled — apply the monk-level bonus by hand when sundering.",
+      ),
+    ],
+  }),
+  toDef({
+    id: "qinggongPower",
+    name: "Qinggong Power",
+    summary:
+      "Take a qinggong monk ki power you qualify for in place of this pick. Repeatable, choosing a different qinggong power each time.",
+    contextNotes: [
+      note(
+        "Qinggong monk ki powers are a separate splatbook power list this app doesn't model as its own table — pick per the published qinggong list by hand.",
       ),
     ],
   }),
@@ -262,6 +319,14 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     contextNotes: [note("1 ki point to activate.")],
   }),
   toDef({
+    id: "freedomOfMovement",
+    name: "Freedom of Movement",
+    minLevel: 8,
+    summary:
+      "Spend 1 ki point as a swift action to gain the effects of freedom of movement for 1 round.",
+    contextNotes: [note("1 ki point, swift action to activate.")],
+  }),
+  toDef({
     id: "insightfulWisdom",
     name: "Insightful Wisdom",
     minLevel: 8,
@@ -374,13 +439,14 @@ export const MONK_KI_POWER_IDS: readonly string[] = KI_POWER_LIST.map((p) => p.i
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
  * Issue #74: `RefData.monkKiPowers` (see that type's doc comment) is
- * the FULL published ki-power catalog (44 entries, beyond this file's 39
- * hand-verified Pathfinder Unchained core-book entries) — prose only. Same
- * "hand-authored wins on a name collision, vendored catalog is the
- * browsable/fallback source of definitions" pattern `rage-powers.ts`'s
+ * the FULL published ki-power catalog (44 entries) — prose only. This file's
+ * hand-verified table now matches it 1:1 (full parity, see the file's top
+ * doc comment), but the merge still exists for BROWSING (the picker) and for
+ * resolving a picked id, same "hand-authored wins on a name collision,
+ * vendored catalog supplies prose" pattern `rage-powers.ts`'s
  * `mergedRagePowerCatalog` documents in full.
  *
- * Collision audit (all 39 hand-authored entries, run against the pinned Pf
+ * Collision audit (all 44 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every one matched a vendored entry by normalized name — no
  * drift, no alias needed, no orphan. No name collides within the vendored
  * catalog itself either.

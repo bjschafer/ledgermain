@@ -17,15 +17,15 @@
  * `resources.ts`); this table is only the MENU of which trick a given
  * implant applies, not the pool itself.
  *
- * Scope: aonprd.com's Mesmerist Tricks index lists 30 regular + 14 masterful
- * tricks pooled across several splatbooks (Occult Adventures, Occult
- * Origins, Occult Realms, Heroes of Golarion, Blood of the Beast) — this
- * table scopes to OCCULT ADVENTURES CORE ONLY (pg. 40-44, verified per-entry
- * against each trick's own source citation), matching this project's usual
- * "core rulebook first" posture (`witch-hexes.ts`/`oracle-revelations.ts`):
- * 17 regular + 9 masterful, 26 total. The issue #65 task brief's own worked
- * example list ("Astounding Avoidance, Compel Alacrity, False Flanker, ...")
- * is exactly this OA-core regular subset.
+ * Scope: FULL vendored parity as of issue #74's extension — all 44 vendored
+ * tricks (30 regular + 14 masterful), pooled across every splatbook the
+ * pinned data carries (Occult Adventures, Occult Origins, Occult Realms,
+ * Heroes of Golarion, Blood of the Beast). The original issue #65 cut
+ * scoped to OCCULT ADVENTURES CORE ONLY (17 regular + 9 masterful, matching
+ * the task brief's own worked example list — "Astounding Avoidance, Compel
+ * Alacrity, False Flanker, ..."); #74 folds in the remaining 18 splatbook
+ * tricks for full-catalog parity, same posture as `witch-hexes.ts`'s #74
+ * extension.
  *
  * Modelling posture (mirrors witch-hexes.ts's honesty bar): every trick here
  * is a TARGET-SCOPED implant/trigger ability — implanted on a chosen
@@ -91,11 +91,34 @@ const TRICK_LIST: MesmeristTrickDef[] = [
         "The implanted subject negates all damage from a successful half-damage-on-save effect (or takes half on a failed save at 12th+ level).",
     },
     {
+      id: "breakStupor",
+      name: "Break Stupor",
+      actionNote:
+        "implant: standard · trigger: free (subject would break from fascination/sleep, or becomes confused)",
+      summary:
+        "End a fascination or magical-sleep effect on the subject fast enough to stop her falling prone or dropping items; can also end confusion, though she then attacks you on her next turn.",
+    },
+    {
+      id: "chainOfEyes",
+      name: "Chain of Eyes",
+      actionNote: "implant: standard · trigger: free (concentrate to share senses)",
+      summary:
+        "See and hear through the subject's own senses for 1 minute per level, or until you shift your view back; you're flat-footed while viewing through her.",
+    },
+    {
       id: "compelAlacrity",
       name: "Compel Alacrity",
       actionNote: "implant: standard · trigger: free (start of turn, enemy in reach)",
       summary:
         "The subject moves 10 ft. (scaling to 30 ft. at 20th level) without provoking attacks of opportunity.",
+    },
+    {
+      id: "enchantingWords",
+      name: "Enchanting Words",
+      actionNote:
+        "implant: standard · trigger: free (subject attempts a Diplomacy/Intimidate check to adjust attitude)",
+      summary:
+        "The subject uses your Charisma modifier on the check in place of her own; an Intimidate-based adjustment also lasts longer (10 × your Charisma modifier extra minutes, minimum 10).",
     },
     {
       id: "falseFlanker",
@@ -108,6 +131,13 @@ const TRICK_LIST: MesmeristTrickDef[] = [
       name: "Fearsome Guise",
       actionNote: "implant: standard (grants a disguise) · trigger: free (subject attacks)",
       summary: "You use Intimidate against the subject's target as part of its attack.",
+    },
+    {
+      id: "fleetInShadows",
+      name: "Fleet in Shadows",
+      actionNote: "implant: standard · trigger: free (subject enters dim light or darker)",
+      summary:
+        "The subject can move up to double speed (max +30 ft.) for 1 round while in dim light or darker, and can use that bonus speed even in total darkness without being able to see.",
     },
     {
       id: "giftOfWill",
@@ -123,6 +153,14 @@ const TRICK_LIST: MesmeristTrickDef[] = [
       actionNote:
         "implant: standard · trigger: free (enemy moves adjacent or starts turn adjacent)",
       summary: "Lift the enemy (half speed, -4 CMD) or push it away as a free bull rush.",
+    },
+    {
+      id: "lifeRevier",
+      name: "Life Revier",
+      actionNote:
+        "implant: standard · trigger: free (subject attempts an Intelligence/Knowledge check to recall a past experience)",
+      summary:
+        "The subject can use your Charisma modifier in place of her Intelligence modifier on the check, and can attempt it untrained; she still can't recall anything she never actually experienced.",
     },
     {
       id: "linkedReaction",
@@ -167,11 +205,26 @@ const TRICK_LIST: MesmeristTrickDef[] = [
       summary: "You feint the subject's target, denying it its Dexterity bonus to AC.",
     },
     {
+      id: "psychicImpression",
+      name: "Psychic Impression",
+      actionNote: "implant: standard · trigger: free (subject touches a recently-touched object)",
+      summary:
+        "You sense the emotional state of the last creature (Intelligence 3+) to have touched an object the subject touches, if within the last 10 minutes; no images, language, or identity come through.",
+    },
+    {
       id: "psychosomaticSurge",
       name: "Psychosomatic Surge",
       actionNote: "implant: standard (lasts 1 hour) · trigger: free (subject takes damage)",
       summary:
         "The subject gains 1d8 + half your level temporary hit points (another 1d8 if brought near death).",
+    },
+    {
+      id: "reflectFear",
+      name: "Reflect Fear",
+      actionNote:
+        "implant: standard · trigger: free (subject is affected by fear, or targeted by a demoralize attempt)",
+      summary:
+        "The subject suppresses the triggering fear effect for 1d4 rounds (ending it entirely if that outlasts the effect's own duration), and whoever caused it must save or be shaken for 1 round.",
     },
     {
       id: "reflectionOfWeakness",
@@ -182,11 +235,25 @@ const TRICK_LIST: MesmeristTrickDef[] = [
         "Reduce the effect on the subject by 2 and inflict 2 ability damage on the attacker (Will negates).",
     },
     {
+      id: "seeInDarkness",
+      name: "See in Darkness",
+      actionNote: "implant: standard · trigger: free (subject moves into darkness)",
+      summary: "The subject gains 60-foot darkvision for 1 minute.",
+    },
+    {
       id: "shadowSplinter",
       name: "Shadow Splinter",
       actionNote: "implant: standard · trigger: free (subject takes damage)",
       summary:
         "Reduce the subject's damage (max 3 + Cha mod) and redirect the difference to a nearby creature (Will disbelieves).",
+    },
+    {
+      id: "slipBonds",
+      name: "Slip Bonds",
+      actionNote:
+        "implant: standard (also grants +2 circumstance on Escape Artist) · trigger: free (subject is grappled/pinned/restrained)",
+      summary:
+        "The subject briefly turns incorporeal to slip a restraint (not long enough to pass through barriers); at 12th level she stays incorporeal until the start of your next turn.",
     },
     {
       id: "spectralSmoke",
@@ -197,6 +264,30 @@ const TRICK_LIST: MesmeristTrickDef[] = [
         "A 10-ft.-radius smoke cloud (scaling +5 ft. per 5 levels) appears around the subject for 1 round per level.",
     },
     {
+      id: "telepathicLink",
+      name: "Telepathic Link",
+      actionNote:
+        "implant: standard · trigger: free (subject and allies are outnumbered in combat)",
+      summary:
+        "You and the subject can communicate telepathically for 1 minute per level, severed beyond a medium range (100 ft. + 10 ft. per level); you must share a language.",
+    },
+    {
+      id: "umbralShield",
+      name: "Umbral Shield",
+      actionNote:
+        "implant: standard · trigger: free (subject would be exposed to harmful bright light)",
+      summary:
+        "The subject ignores harmful effects of bright light or sunlight and is immune to the dazzled condition, for 1 minute.",
+    },
+    {
+      id: "unwittingMessenger",
+      name: "Unwitting Messenger",
+      actionNote:
+        "implant: standard (a described recipient plus a short verbal message) · trigger: automatic (subject meets the recipient)",
+      summary:
+        "The subject delivers your message verbatim to the described recipient on meeting her, with no memory of the message afterward; it fades after 24 hours if never delivered, and a disguise or illusion can misdirect it.",
+    },
+    {
       id: "vanishArrow",
       name: "Vanish Arrow",
       actionNote:
@@ -204,13 +295,33 @@ const TRICK_LIST: MesmeristTrickDef[] = [
       summary:
         "Opposed Sleight of Hand vs. the attacker's Perception; success negates the ranged attack entirely.",
     },
+    {
+      id: "voiceOfReason",
+      name: "Voice of Reason",
+      actionNote:
+        "implant: standard · trigger: free (subject saves to disbelieve a sight-based illusion)",
+      summary:
+        "The subject gains an insight bonus equal to your Charisma modifier on that save, as long as you aren't affected by (or haven't already disbelieved) the illusion yourself.",
+    },
   ]),
   ...forTier("masterful", 12, [
+    {
+      id: "allayPain",
+      name: "Allay Pain",
+      actionNote: "implant: standard · trigger: free (subject hit by nonlethal damage)",
+      summary: "The subject gains DR 15/- against one attack that deals nonlethal damage.",
+    },
     {
       id: "avianEscape",
       name: "Avian Escape",
       actionNote: "implant: standard · trigger: free (subject takes damage)",
       summary: "The subject transforms into a raven (raven statistics) to escape.",
+    },
+    {
+      id: "concealingVeil",
+      name: "Concealing Veil",
+      actionNote: "implant: standard · trigger: free (as needed)",
+      summary: "The subject gains the effects of nondetection for 1 round per level.",
     },
     {
       id: "cursedSanction",
@@ -248,6 +359,14 @@ const TRICK_LIST: MesmeristTrickDef[] = [
         "You take control of the effect in the subject's place for a number of rounds equal to your level.",
     },
     {
+      id: "shadowBlend",
+      name: "Shadow Blend",
+      actionNote:
+        "implant: standard · trigger: free (subject attempts Stealth in dim light or darker)",
+      summary:
+        "The subject gains total concealment (or just concealment against darkvision) while she stays in dim light or darker, lasting 1 round per level or until she enters normal/bright light.",
+    },
+    {
       id: "spatialSwitch",
       name: "Spatial Switch",
       actionNote:
@@ -262,11 +381,25 @@ const TRICK_LIST: MesmeristTrickDef[] = [
       summary: "You cast the anticipated prepared spell at the spellcaster.",
     },
     {
+      id: "umbralTransformation",
+      name: "Umbral Transformation",
+      actionNote: "implant: standard · trigger: free (as needed)",
+      summary:
+        "The subject becomes a living shadow for 1 round, as shadow body, then is staggered for 1 round afterward.",
+    },
+    {
       id: "visionOfBlood",
       name: "Vision of Blood",
       actionNote:
         "implant: standard · trigger: free (subject hits with a weapon/natural/unarmed attack)",
       summary: "The target is stunned for 1 round (Will negates; no save on a critical hit).",
+    },
+    {
+      id: "willfulIgnorance",
+      name: "Willful Ignorance",
+      actionNote: "implant: standard · trigger: free (subject tells a lie)",
+      summary:
+        "That lie resists truth-detecting magic — a creature trying to detect it must beat a caster level check against DC 15 + your class level, or the magic simply fails to catch it.",
     },
   ]),
 ];
@@ -286,14 +419,18 @@ export function tricksForTier(tier: MesmeristTrickTier): MesmeristTrickDef[] {
 /*
  * Issue #74: `RefData.mesmeristTricks` (see that type's doc comment)
  * is the FULL published catalog (44 entries after junk filtering), prose
- * only. The hand-verified table above stays authoritative for MECHANICS —
- * this section only merges the two for BROWSING (the picker) and for
- * resolving a picked id back to a definition, mirroring
- * `rage-powers.ts`'s `mergedRagePowerCatalog`/`resolveRagePower` exactly.
+ * only. The hand-verified table above now matches it 1:1 (full parity, see
+ * the file's top doc comment), but this section still merges the two for
+ * BROWSING (the picker) and for resolving a picked id back to a definition,
+ * mirroring `rage-powers.ts`'s `mergedRagePowerCatalog`/`resolveRagePower`
+ * exactly.
  *
- * Collision audit: all 26 hand-authored entries matched a vendored entry by
- * normalized name — zero misses, zero aliases needed (every hand-authored
- * name's spelling matched the source's own, case-insensitively).
+ * Collision audit: all 44 hand-authored entries matched a vendored entry by
+ * normalized name — zero misses, zero aliases needed. Notably "Life Revier"
+ * (the `life_revier` id) is NOT a transcription typo — it's the vendored
+ * source's own spelling and AoN's own page title for the trick, verified
+ * directly against aonprd.com, so it's transcribed as-is rather than
+ * "corrected" to a guessed "Life Reviver".
  */
 
 const MESMERIST_TRICK_NAME_ALIASES: Record<string, string> = {};

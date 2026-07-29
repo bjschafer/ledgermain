@@ -63,8 +63,8 @@ function makeDoc(
 }
 
 describe("MESMERIST_TRICKS table", () => {
-  it("has 26 OA-core tricks (17 regular + 9 masterful), all displayOnly with no changes", () => {
-    expect(MESMERIST_TRICK_IDS.length).toBe(26);
+  it("has all 44 vendored tricks (30 regular + 14 masterful, full parity, issue #74), all displayOnly with no changes", () => {
+    expect(MESMERIST_TRICK_IDS.length).toBe(44);
     for (const id of MESMERIST_TRICK_IDS) {
       const trick = MESMERIST_TRICKS[id]!;
       expect(trick.displayOnly).toBe(true);
@@ -73,14 +73,14 @@ describe("MESMERIST_TRICKS table", () => {
     const masterful = MESMERIST_TRICK_IDS.filter(
       (id) => MESMERIST_TRICKS[id]!.tier === "masterful",
     );
-    expect(masterful.length).toBe(9);
+    expect(masterful.length).toBe(14);
     expect(masterful.every((id) => MESMERIST_TRICKS[id]!.minLevel === 12)).toBe(true);
   });
 });
 
 describe("MESMERIST_BOLD_STARES table", () => {
-  it("has the 7 OA-core bold stare options, all displayOnly with no changes", () => {
-    expect(MESMERIST_BOLD_STARE_IDS.length).toBe(7);
+  it("has all 24 vendored bold stare options (full parity, issue #74), all displayOnly with no changes", () => {
+    expect(MESMERIST_BOLD_STARE_IDS.length).toBe(24);
     for (const id of MESMERIST_BOLD_STARE_IDS) {
       const stare = MESMERIST_BOLD_STARES[id]!;
       expect(stare.displayOnly).toBe(true);

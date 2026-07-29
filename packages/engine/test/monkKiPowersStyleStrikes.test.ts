@@ -66,8 +66,8 @@ function makeDoc(
 }
 
 describe("MONK_KI_POWERS table", () => {
-  it("has 39 core Pathfinder Unchained ki powers, all displayOnly with no changes", () => {
-    expect(MONK_KI_POWER_IDS.length).toBe(39);
+  it("has all 44 vendored ki powers (full parity, issue #74), all displayOnly with no changes", () => {
+    expect(MONK_KI_POWER_IDS.length).toBe(44);
     for (const id of MONK_KI_POWER_IDS) {
       const power = MONK_KI_POWERS[id]!;
       expect(power.displayOnly).toBe(true);

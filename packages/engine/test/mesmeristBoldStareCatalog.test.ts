@@ -12,7 +12,8 @@ import {
 /**
  * Coverage for the vendored-catalog overlay (issue #74) — see
  * `mesmerist-bold-stares.ts`'s "vendored catalog overlay" section doc
- * comment for the collision-audit narrative this asserts against.
+ * comment for the collision-audit narrative this asserts against, and
+ * `witchHexCatalog.test.ts` for the full-parity pattern this mirrors.
  */
 const ref = loadRefData();
 
@@ -20,24 +21,27 @@ describe("mergedMesmeristBoldStareCatalog", () => {
   const merged = mergedMesmeristBoldStareCatalog(ref);
   const byId = new Map(merged.map((s) => [s.id, s]));
 
-  it("has exactly one row per vendored entry — every one of the 7 hand-authored entries matched", () => {
+  it("has exactly one row per vendored entry — all 24 hand-authored entries matched", () => {
     expect(merged).toHaveLength(Object.keys(ref.mesmeristBoldStares).length);
+    expect(merged).toHaveLength(24);
   });
 
-  it("all 7 hand-authored entries matched a vendored entry by name and kept their own id + riderText", () => {
+  it("all 24 hand-authored entries matched a vendored entry by name and kept their own id + riderText", () => {
+    let matched = 0;
     for (const id of MESMERIST_BOLD_STARE_IDS) {
       const entry = byId.get(id);
       expect(entry).toBeDefined();
       expect(entry!.riderText).toBe(MESMERIST_BOLD_STARES[id]!.riderText);
       expect(entry!.description).toBeDefined();
+      matched++;
     }
+    expect(matched).toBe(24);
   });
 
-  it("a vendored-only entry resolves display-only with empty riderText", () => {
-    const entry = byId.get("nightmare")!;
-    expect(entry.displayOnly).toBe(true);
-    expect(entry.riderText).toBe("");
-    expect(MESMERIST_BOLD_STARES.nightmare).toBeUndefined();
+  it("no vendored-only bold stares remain — the fallback path only exists for a future data bump", () => {
+    for (const entry of merged) {
+      expect(MESMERIST_BOLD_STARES[entry.id], entry.id).toBeDefined();
+    }
   });
 
   it("every id is unique", () => {
@@ -51,8 +55,9 @@ describe("resolveMesmeristBoldStare", () => {
     expect(resolveMesmeristBoldStare("allure", ref)).toBe(MESMERIST_BOLD_STARES.allure);
   });
 
-  it("falls back to the vendored catalog for a vendored-only id", () => {
+  it("resolves a formerly vendored-only stare (now hand-authored, issue #74) via the hand table", () => {
     const stare = resolveMesmeristBoldStare("nightmare", ref);
+    expect(stare).toBe(MESMERIST_BOLD_STARES.nightmare);
     expect(stare?.displayOnly).toBe(true);
     expect(stare?.name).toBe("Nightmare");
   });

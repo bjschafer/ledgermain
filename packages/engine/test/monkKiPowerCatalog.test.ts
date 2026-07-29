@@ -11,7 +11,7 @@ import {
 
 /**
  * Coverage for the Monk (Unchained) ki-power vendored-catalog overlay (issue
- * #74) — mirrors `ragePowerCatalog.test.ts`'s pattern.
+ * #74) — mirrors `witchHexCatalog.test.ts`'s full-parity pattern.
  */
 const ref = loadRefData();
 
@@ -19,11 +19,12 @@ describe("mergedMonkKiPowerCatalog", () => {
   const merged = mergedMonkKiPowerCatalog(ref);
   const byId = new Map(merged.map((p) => [p.id, p]));
 
-  it("has exactly one row per vendored entry — every hand-authored entry matched, no orphan to append", () => {
+  it("has exactly one row per vendored entry — all 44 hand-authored entries matched", () => {
     expect(merged).toHaveLength(Object.keys(ref.monkKiPowers).length);
+    expect(merged).toHaveLength(44);
   });
 
-  it("all 39 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
+  it("all 44 hand-authored entries matched a vendored entry by name and kept their own id + mechanics", () => {
     let matched = 0;
     for (const id of MONK_KI_POWER_IDS) {
       const entry = byId.get(id);
@@ -33,15 +34,13 @@ describe("mergedMonkKiPowerCatalog", () => {
       expect(entry!.description).toBeDefined();
       matched++;
     }
-    expect(matched).toBe(39);
+    expect(matched).toBe(44);
   });
 
-  it("a vendored-only entry (a splatbook power outside the Pathfinder Unchained core book, no hand-authored counterpart) resolves display-only", () => {
-    const entry = byId.get("qinggong_power")!;
-    expect(entry.displayOnly).toBe(true);
-    expect(entry.changes).toEqual([]);
-    expect(entry.description).toBeDefined();
-    expect(MONK_KI_POWERS.qinggong_power).toBeUndefined();
+  it("no vendored-only ki powers remain — the fallback path only exists for a future data bump", () => {
+    for (const entry of merged) {
+      expect(MONK_KI_POWERS[entry.id], entry.id).toBeDefined();
+    }
   });
 
   it("every id is unique", () => {
@@ -56,8 +55,9 @@ describe("resolveMonkKiPower", () => {
     expect(power).toBe(MONK_KI_POWERS.abundantStep);
   });
 
-  it("falls back to the vendored catalog for a vendored-only id", () => {
-    const power = resolveMonkKiPower("qinggong_power", ref);
+  it("resolves a formerly vendored-only power (now hand-authored, issue #74) via the hand table", () => {
+    const power = resolveMonkKiPower("qinggongPower", ref);
+    expect(power).toBe(MONK_KI_POWERS.qinggongPower);
     expect(power?.displayOnly).toBe(true);
     expect(power?.name).toBe("Qinggong Power");
   });
