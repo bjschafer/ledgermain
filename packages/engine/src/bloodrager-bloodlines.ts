@@ -66,6 +66,7 @@ import {
   type BloodlineResourcePool,
   DRAGON_TYPE_ENERGY,
   ELEMENT_ENERGY,
+  energyImmunityVariantChanges,
   energyResistanceVariantChanges,
 } from "./bloodlines.js";
 import { featNameSlug } from "./feat-effects.js";
@@ -266,12 +267,25 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         name: "Aberrant Form",
         summary:
           "Immune to critical hits and sneak attacks, blindsight 60 ft., and your bloodrager damage reduction increases by 1 — constantly, even while not bloodraging.",
-        changes: [c("60", "sensebs", "untyped"), c("1", "dr", "untyped")],
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Crit/sneak-attack immunity isn't tracked on the sheet — display only.",
-          },
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Aberrant):
+        // "At 20th level, your body becomes truly unnatural. You are immune
+        // to critical hits and sneak attacks. In addition, you gain
+        // blindsight with a range of 60 feet and your bloodrager damage
+        // reduction increases by 1. You have these benefits constantly, even
+        // while not bloodraging." Sneak attack is precision damage
+        // (immEffect.precisionDamage); "critical hits" is
+        // immEffect.criticalHits verbatim — same pair the sorcerer sibling
+        // and the Elemental capstones use. The "+1" is a delta on the base
+        // bloodrager class's own Damage Reduction progression (level 7/10/
+        // 13/16/19, vendored with an empty `changes[]` and not otherwise
+        // hand-authored in this engine — see `defenses.ts`), so this flat
+        // `dr` grant understates the true total for a 20th-level Aberrant
+        // bloodrager; fixing that needs the base progression modeled first.
+        changes: [
+          c("60", "sensebs", "untyped"),
+          c("1", "dr", "untyped"),
+          c("1", "immEffect.criticalHits", "untyped"),
+          c("1", "immEffect.precisionDamage", "untyped"),
         ],
       },
     ],
@@ -335,9 +349,10 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         level: 20,
         name: "Demonic Immunities",
         summary: "Immune to electricity and poison, constantly, even while not bloodraging.",
-        contextNotes: [
-          { target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." },
-        ],
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Abyssal):
+        // "At 20th level, you're immune to electricity and poison. You have
+        // this benefit constantly, even while not bloodraging."
+        changes: [c("1", "imm.electricity", "untyped"), c("1", "immEffect.poison", "untyped")],
       },
     ],
   },
@@ -484,12 +499,25 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         name: "Ascension",
         summary:
           "Immune to acid, cold, and petrification; resist electricity and fire 10; +4 vs. poison — constantly, even while not bloodraging.",
-        changes: [c("10", "eres.electricity", "untyped"), c("10", "eres.fire", "untyped")],
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Celestial):
+        // "At 20th level, you become infused with the power of the heavens.
+        // You gain immunity to acid, cold, and petrification. You also gain
+        // resistance 10 to electricity and fire, as well as a +4 racial
+        // bonus on saving throws against poison. You have these benefits
+        // constantly, even while not bloodraging." No `immEffect.petrification`
+        // slug exists in the closed EFFECT_IMMUNITY_LABELS vocabulary — that
+        // piece stays display-only.
+        changes: [
+          c("10", "eres.electricity", "untyped"),
+          c("10", "eres.fire", "untyped"),
+          c("1", "imm.acid", "untyped"),
+          c("1", "imm.cold", "untyped"),
+        ],
         contextNotes: [
           { target: "allSavingThrows", text: "+4 vs. poison only — not a general save bonus." },
           {
             target: "allChecks",
-            text: "Also grants acid/cold/petrification immunity (display only).",
+            text: "Also grants petrification immunity (no matching slug on the sheet) — display only.",
           },
         ],
       },
@@ -563,8 +591,19 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         name: "Victory or Death",
         summary:
           "Immune to paralysis, petrification, stunned, dazed, and staggered — constantly, even while not bloodraging.",
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Destined):
+        // "You are immune to paralysis and petrification, as well as to the
+        // stunned, dazed, and staggered conditions. You have these benefits
+        // constantly, even while not bloodraging." Only `immEffect.paralysis`
+        // is in the closed EFFECT_IMMUNITY_LABELS vocabulary — petrification/
+        // stunned/dazed/staggered have no matching slug, so those four stay
+        // display-only.
+        changes: [c("1", "immEffect.paralysis", "untyped")],
         contextNotes: [
-          { target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." },
+          {
+            target: "allChecks",
+            text: "Also immune to petrification and the stunned/dazed/staggered conditions (no matching slugs on the sheet) — display only.",
+          },
         ],
       },
     ],
@@ -649,9 +688,17 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         level: 20,
         name: "Power of Wyrms",
         summary: "Immune to paralysis, sleep, and your energy type; blindsense 60 ft.",
-        contextNotes: [
-          { target: "allChecks", text: "Immunities/blindsense aren't tracked — display only." },
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Draconic):
+        // "At 20th level, you gain immunity to paralysis, sleep, and damage
+        // from your energy type. You also gain blindsense with a range of 60
+        // feet. You have these benefits constantly, even while not
+        // bloodraging."
+        changes: [
+          c("60", "sensebse", "untyped"),
+          c("1", "immEffect.paralysis", "untyped"),
+          c("1", "immEffect.sleep", "untyped"),
         ],
+        variantChanges: energyImmunityVariantChanges(DRAGON_TYPE_ENERGY),
       },
     ],
   },
@@ -739,9 +786,17 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         level: 20,
         name: "Elemental Body",
         summary: "Immune to sneak attacks, critical hits, and damage of your energy type.",
-        contextNotes: [
-          { target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." },
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Elemental):
+        // "elemental power surges through your body. You gain immunity to
+        // sneak attacks, critical hits, and damage from your energy type. You
+        // have this benefit constantly, even while not bloodraging." Sneak
+        // attack is precision damage (immEffect.precisionDamage); "critical
+        // hits" is immEffect.criticalHits verbatim.
+        changes: [
+          c("1", "immEffect.precisionDamage", "untyped"),
+          c("1", "immEffect.criticalHits", "untyped"),
         ],
+        variantChanges: energyImmunityVariantChanges(ELEMENT_ENERGY),
       },
     ],
   },
@@ -886,12 +941,20 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         name: "Fiend of the Pit",
         summary:
           "Immune to fire and poison; resist acid and cold 10; see in darkness — constantly, even while not bloodraging.",
-        changes: [c("10", "eres.acid", "untyped"), c("10", "eres.cold", "untyped")],
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Also grants fire/poison immunity and see in darkness (display only).",
-          },
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Infernal):
+        // "At 20th level, you gain immunity to fire and poison. You also gain
+        // resistance 10 to acid and cold, and gain the see in darkness
+        // ability. You have these benefits constantly, even while not
+        // bloodraging." Unlike the sorcerer Infernal capstone, no range is
+        // stated for the darkness sight — a plain, rangeless `sensesid` flag
+        // (senses.ts's "see in darkness" target) fits without overstating a
+        // cap that isn't in the text.
+        changes: [
+          c("10", "eres.acid", "untyped"),
+          c("10", "eres.cold", "untyped"),
+          c("1", "imm.fire", "untyped"),
+          c("1", "immEffect.poison", "untyped"),
+          c("1", "sensesid", "untyped", "set"),
         ],
       },
     ],
@@ -963,8 +1026,29 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         name: "One Foot in the Grave",
         summary:
           "Immune to cold, nonlethal damage, paralysis, and sleep — constantly, even while not bloodraging.",
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Undead):
+        // "At 20th level, you gain immunity to cold, nonlethal damage,
+        // paralysis, and sleep. The DR from your damage reduction ability
+        // increases to 8. Unintelligent undead don't notice you unless you
+        // attack them." ("Damage reduction ability" is the base bloodrager
+        // class's own DR progression, not modeled anywhere in this engine
+        // today — see coverage notes; "increases to 8" is this bloodline's
+        // final number regardless, so a flat `dr` grant is exact for a 20th-
+        // level Undead bloodrager specifically, same posture as the sorcerer
+        // sibling's flat DR 5. Nonlethal damage isn't a damage TYPE — no
+        // `imm.<x>` target can hold it, same gap `rage-powers.ts`'s Undead
+        // Blood note documents.)
+        changes: [
+          c("8", "dr", "untyped"),
+          c("1", "imm.cold", "untyped"),
+          c("1", "immEffect.paralysis", "untyped"),
+          c("1", "immEffect.sleep", "untyped"),
+        ],
         contextNotes: [
-          { target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." },
+          {
+            target: "allChecks",
+            text: "Also immune to nonlethal damage — no damage-type target holds that, so it stays manual.",
+          },
         ],
       },
     ],
@@ -1054,8 +1138,25 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         name: "Eternal Martyr",
         summary:
           "Immune to death effects; can't be raised as undead (constant hallow); resurrection material components cost half — constantly, even while not bloodraging.",
+        // RAW (aonprd.com, BloodragerBloodlineDisplay.aspx?ItemName=Martyred):
+        // "At 20th level, your ancestor's act of martyrdom infuses your
+        // spirit. You become immune to death effects. Material components for
+        // spells and effects to bring you back to life (such as raise dead or
+        // resurrection) cost half as much as normal. Your body cannot be
+        // turned into an undead creature, as though you were affected by a
+        // permanent hallow effect (caster level = your bloodrager level). You
+        // have these benefits constantly, even while not bloodraging."
+        // "Cannot be turned into an undead creature" is exactly
+        // immEffect.undeath's "becoming undead" wording. "Death effects" has
+        // no matching slug in the closed EFFECT_IMMUNITY_LABELS vocabulary,
+        // and the half-cost resurrection component is an economy detail, not
+        // an immunity — both stay display-only.
+        changes: [c("1", "immEffect.undeath", "untyped")],
         contextNotes: [
-          { target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." },
+          {
+            target: "allChecks",
+            text: "Also immune to death effects (no matching slug) and halves resurrection material-component cost — display only.",
+          },
         ],
       },
     ],

@@ -137,3 +137,95 @@ describe("variant-dependent bloodline powers (build.sorcererBloodlineVariant)", 
     expect(sheet.defenses?.resistances ?? []).toEqual([]);
   });
 });
+
+/**
+ * 20th-level capstone immunities/senses/DR, newly wired to real Change
+ * targets (imm.<type>/immEffect.<slug>/sense*) rather than left display-only.
+ * RAW citations live on each entry in `bloodlines.ts`; expected values
+ * hand-computed from the quoted text.
+ */
+describe("sorcerer bloodline capstone immunities/senses (20th level)", () => {
+  const immune = (doc: CharacterDoc, qualifier: string) =>
+    compute(doc, ref).defenses?.immunities?.some((i) => i.qualifier === qualifier) ?? false;
+  const effectImmune = (doc: CharacterDoc, qualifier: string) =>
+    compute(doc, ref).defenses?.effectImmunities?.some((i) => i.qualifier === qualifier) ?? false;
+  const senseRange = (doc: CharacterDoc, kind: string) =>
+    compute(doc, ref).senses.find((s) => s.kind === kind)?.range;
+
+  it("Aberrant Form: immune to critical hits and precision damage, blindsight 60, DR 5/—", () => {
+    // RAW: "You are immune to critical hits and sneak attacks. In addition,
+    // you gain blindsight with a range of 60 feet and damage reduction 5/—."
+    const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Aberrant");
+    expect(effectImmune(doc, "criticalHits")).toBe(true);
+    expect(effectImmune(doc, "precisionDamage")).toBe(true);
+    expect(senseRange(doc, "blindsight")).toBe(60);
+    expect(compute(doc, ref).defenses?.dr.find((d) => d.qualifier === "—")?.total).toBe(5);
+  });
+
+  it("Demonic Might: immune to electricity and poison", () => {
+    // RAW: "You gain immunity to electricity and poison."
+    const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Abyssal");
+    expect(immune(doc, "electricity")).toBe(true);
+    expect(effectImmune(doc, "poison")).toBe(true);
+  });
+
+  it("Ascension: immune to acid and cold (petrification has no matching slug)", () => {
+    // RAW: "You gain immunity to acid, cold, and petrification."
+    const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Celestial");
+    expect(immune(doc, "acid")).toBe(true);
+    expect(immune(doc, "cold")).toBe(true);
+  });
+
+  it("Power of Wyrms: immune to paralysis, sleep, and your energy type; blindsense 60 (red → fire)", () => {
+    // RAW: "You gain immunity to paralysis, sleep, and damage of your energy
+    // type. You also gain blindsense 60 feet."
+    const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Draconic", "red");
+    expect(effectImmune(doc, "paralysis")).toBe(true);
+    expect(effectImmune(doc, "sleep")).toBe(true);
+    expect(immune(doc, "fire")).toBe(true);
+    expect(senseRange(doc, "blindsense")).toBe(60);
+    // No stored variant: the energy immunity doesn't fire, but the
+    // level-gated paralysis/sleep immunity and blindsense still do.
+    const noVariant = makeDoc([{ tag: "sorcerer", level: 20 }], "Draconic");
+    expect(immune(noVariant, "fire")).toBe(false);
+    expect(effectImmune(noVariant, "paralysis")).toBe(true);
+  });
+
+  it("Elemental Body: immune to precision damage, critical hits, and your energy type (fire → fire)", () => {
+    // RAW: "You gain immunity to sneak attacks, critical hits, and damage
+    // from your energy type."
+    const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Elemental", "fire");
+    expect(effectImmune(doc, "precisionDamage")).toBe(true);
+    expect(effectImmune(doc, "criticalHits")).toBe(true);
+    expect(immune(doc, "fire")).toBe(true);
+    const water = makeDoc([{ tag: "sorcerer", level: 20 }], "Elemental", "water");
+    expect(immune(water, "fire")).toBe(false);
+    expect(immune(water, "cold")).toBe(true);
+  });
+
+  it("Soul of the Fey: immune to poison", () => {
+    // RAW: "You gain immunity to poison and DR 10/cold iron."
+    const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Fey");
+    expect(effectImmune(doc, "poison")).toBe(true);
+    expect(compute(doc, ref).defenses?.dr.find((d) => d.qualifier === "cold-iron")?.total).toBe(10);
+  });
+
+  it("Power of the Pit: immune to fire and poison, darkvision 60", () => {
+    // RAW: "You gain immunity to fire and poison. ... the ability to see
+    // perfectly in darkness of any kind to a range of 60 feet."
+    const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Infernal");
+    expect(immune(doc, "fire")).toBe(true);
+    expect(effectImmune(doc, "poison")).toBe(true);
+    expect(senseRange(doc, "darkvision")).toBe(60);
+  });
+
+  it("One of Us: immune to cold, paralysis, sleep; DR 5/—", () => {
+    // RAW: "You gain immunity to cold, nonlethal damage, paralysis, and
+    // sleep. You also gain DR 5/—."
+    const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Undead");
+    expect(immune(doc, "cold")).toBe(true);
+    expect(effectImmune(doc, "paralysis")).toBe(true);
+    expect(effectImmune(doc, "sleep")).toBe(true);
+    expect(compute(doc, ref).defenses?.dr.find((d) => d.qualifier === "—")?.total).toBe(5);
+  });
+});

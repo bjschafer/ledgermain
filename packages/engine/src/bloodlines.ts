@@ -156,6 +156,24 @@ export function energyResistanceVariantChanges(
   );
 }
 
+/**
+ * Per-variant `imm.<energy>` grants (true damage immunity, not resistance) for
+ * a whole variant→energy map — the Draconic/Elemental capstones' "immune to
+ * damage of your energy type" clause, unconditional once the capstone is
+ * held. Immunity is a flag (`defenses.ts`'s `groupImmunities`): any positive
+ * source turns it on, so a bare `"1"` formula is the whole grant.
+ */
+export function energyImmunityVariantChanges(
+  variantEnergy: Readonly<Record<string, string>>,
+): Readonly<Record<string, readonly Change[]>> {
+  return Object.fromEntries(
+    Object.entries(variantEnergy).map(([variant, energy]) => [
+      variant,
+      [c("1", `imm.${energy}`, "untyped")],
+    ]),
+  );
+}
+
 const POOL_3_CHA: BloodlineResourcePool = {
   usesFormula: "3 + @abilities.cha.mod",
   per: "day",
@@ -245,11 +263,19 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Aberrant Form",
         summary:
           "Immune to critical hits and sneak attacks; blindsight 60 ft.; damage reduction 5/—.",
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Crit/sneak-attack immunity and blindsight aren't tracked on the sheet — apply manually.",
-          },
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Aberrant): "At 20th
+        // level, your body becomes truly unnatural. You are immune to
+        // critical hits and sneak attacks. In addition, you gain blindsight
+        // with a range of 60 feet and damage reduction 5/—." Sneak attack is
+        // precision damage (immEffect.precisionDamage); "immune to critical
+        // hits" is immEffect.criticalHits verbatim — both in the closed
+        // EFFECT_IMMUNITY_LABELS vocabulary, same mapping the Elemental
+        // bloodline's capstone uses below.
+        changes: [
+          c("60", "sensebs", "untyped"),
+          c("5", "dr", "untyped"),
+          c("1", "immEffect.criticalHits", "untyped"),
+          c("1", "immEffect.precisionDamage", "untyped"),
         ],
       },
     ],
@@ -330,15 +356,21 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Demonic Might",
         summary:
           "Immune to electricity and poison; resist acid 10, cold 10, and fire 10; telepathy 60 ft.",
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Abyssal): "At 20th
+        // level, the power of the Abyss flows through you. You gain immunity
+        // to electricity and poison. You also gain resistance to acid 10,
+        // cold 10, and fire 10, and gain telepathy with a range of 60 feet."
         changes: [
           c("10", "eres.acid", "untyped"),
           c("10", "eres.cold", "untyped"),
           c("10", "eres.fire", "untyped"),
+          c("1", "imm.electricity", "untyped"),
+          c("1", "immEffect.poison", "untyped"),
         ],
         contextNotes: [
           {
             target: "allChecks",
-            text: "Also grants electricity/poison immunity and 60-ft. telepathy (display only).",
+            text: "Also grants 60-ft. telepathy — no telepathy sense target on the sheet, display only.",
           },
         ],
       },
@@ -492,12 +524,26 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Ascension",
         summary:
           "Immune to acid, cold, and petrification; resist electricity 10 and fire 10; +4 vs. poison; unlimited Wings of Heaven; speak with any creature.",
-        changes: [c("10", "eres.electricity", "untyped"), c("10", "eres.fire", "untyped")],
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Celestial): "At
+        // 20th level, you become infused with the power of the heavens. You
+        // gain immunity to acid, cold, and petrification. You also gain
+        // resist electricity 10, resist fire 10, and a +4 racial bonus on
+        // saves against poison. Finally, you gain unlimited use of the wings
+        // of heaven ability. Finally, you gain the ability to speak with any
+        // creature that has a language (as per the tongues spell)." No
+        // `immEffect.petrification` slug exists in the closed
+        // EFFECT_IMMUNITY_LABELS vocabulary — that piece stays display-only.
+        changes: [
+          c("10", "eres.electricity", "untyped"),
+          c("10", "eres.fire", "untyped"),
+          c("1", "imm.acid", "untyped"),
+          c("1", "imm.cold", "untyped"),
+        ],
         contextNotes: [
           { target: "allSavingThrows", text: "+4 vs. poison only — not a general save bonus." },
           {
             target: "allChecks",
-            text: "Also grants acid/cold/petrification immunity, unlimited flight, and tongues (display only).",
+            text: "Also grants petrification immunity (no matching slug on the sheet), unlimited flight, and tongues (display only).",
           },
         ],
       },
@@ -671,12 +717,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         level: 20,
         name: "Power of Wyrms",
         summary: "Immune to paralysis, sleep, and your energy type; blindsense 60 ft.",
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Immunities and blindsense aren't tracked on the sheet — display only.",
-          },
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Draconic): "At 20th
+        // level, your draconic heritage becomes manifest. You gain immunity
+        // to paralysis, sleep, and damage of your energy type. You also gain
+        // blindsense 60 feet."
+        changes: [
+          c("60", "sensebse", "untyped"),
+          c("1", "immEffect.paralysis", "untyped"),
+          c("1", "immEffect.sleep", "untyped"),
         ],
+        variantChanges: energyImmunityVariantChanges(DRAGON_TYPE_ENERGY),
       },
     ],
   },
@@ -767,9 +817,17 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         level: 20,
         name: "Elemental Body",
         summary: "Immune to sneak attacks, critical hits, and damage of your chosen energy type.",
-        contextNotes: [
-          { target: "allChecks", text: "Immunities aren't tracked on the sheet — display only." },
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Elemental): "At
+        // 20th level, elemental power surges through your body. You gain
+        // immunity to sneak attacks, critical hits, and damage from your
+        // energy type." Sneak attack is precision damage
+        // (immEffect.precisionDamage); "critical hits" is immEffect.criticalHits
+        // verbatim.
+        changes: [
+          c("1", "immEffect.precisionDamage", "untyped"),
+          c("1", "immEffect.criticalHits", "untyped"),
         ],
+        variantChanges: energyImmunityVariantChanges(ELEMENT_ENERGY),
       },
     ],
   },
@@ -844,11 +902,17 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Soul of the Fey",
         summary:
           "Immune to poison; DR 10/cold iron; animals won't attack you unless magically forced to; cast shadow walk once/day.",
-        changes: [c("10", "dr.cold-iron", "untyped")],
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Fey): "At 20th
+        // level, your soul becomes one with the world of the fey. You gain
+        // immunity to poison and DR 10/cold iron. Creatures of the animal
+        // type do not attack you unless compelled to do so through magic.
+        // Once per day, you can cast shadow walk as a spell-like ability
+        // using your sorcerer level as your caster level."
+        changes: [c("10", "dr.cold-iron", "untyped"), c("1", "immEffect.poison", "untyped")],
         contextNotes: [
           {
             target: "allChecks",
-            text: "Also grants poison immunity, animal non-aggression, and shadow walk (display only).",
+            text: "Also grants animal non-aggression and shadow walk (display only).",
           },
         ],
       },
@@ -918,11 +982,25 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Power of the Pit",
         summary:
           "Immune to fire and poison; resist acid 10 and cold 10; see perfectly in darkness to 60 ft.",
-        changes: [c("10", "eres.acid", "untyped"), c("10", "eres.cold", "untyped")],
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Infernal): "Your
+        // form becomes infused with vile power. You gain immunity to fire
+        // and poison. You also gain resistance to acid 10 and cold 10, and
+        // the ability to see perfectly in darkness of any kind to a range of
+        // 60 feet." The 60-ft. cap is exactly darkvision's shape; the "of any
+        // kind" (i.e. penetrates magical darkness too) piece has no
+        // range-limited sense target to hold it, so only the numeric
+        // darkvision half is modeled.
+        changes: [
+          c("10", "eres.acid", "untyped"),
+          c("10", "eres.cold", "untyped"),
+          c("1", "imm.fire", "untyped"),
+          c("1", "immEffect.poison", "untyped"),
+          c("60", "sensedv", "untyped", "set"),
+        ],
         contextNotes: [
           {
             target: "allChecks",
-            text: "Also grants fire/poison immunity and 60-ft. darkvision (display only).",
+            text: "Also sees through magical darkness within that 60 ft. — the darkvision number is tracked, that extra qualifier isn't.",
           },
         ],
       },
@@ -998,11 +1076,29 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "One of Us",
         summary:
           "Immune to cold, nonlethal damage, paralysis, and sleep; DR 5/—; unintelligent undead ignore you; +4 morale vs. undead spells/abilities.",
-        changes: [c("5", "dr", "untyped")],
+        // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Undead): "At 20th
+        // level, your form begins to rot ... and undead see you as one of
+        // them. You gain immunity to cold, nonlethal damage, paralysis, and
+        // sleep. You also gain DR 5/—. Unintelligent undead do not notice you
+        // unless you attack them. You receive a +4 morale bonus on saving
+        // throws made against spells and spell-like abilities cast by
+        // undead." Nonlethal damage isn't a damage TYPE (it's a category of
+        // hit, not a `DamageTypeId`) — no `imm.<x>` target can hold it, same
+        // gap `rage-powers.ts`'s Undead Blood note documents.
+        changes: [
+          c("5", "dr", "untyped"),
+          c("1", "imm.cold", "untyped"),
+          c("1", "immEffect.paralysis", "untyped"),
+          c("1", "immEffect.sleep", "untyped"),
+        ],
         contextNotes: [
           {
             target: "allSavingThrows",
             text: "+4 morale vs. undead spells/abilities only — not a general save bonus.",
+          },
+          {
+            target: "allChecks",
+            text: "Also immune to nonlethal damage — no damage-type target holds that, so it stays manual.",
           },
         ],
       },

@@ -278,6 +278,104 @@ describe("bloodrager bloodline powers (collectGrantedFeatures / resolveClassFeat
   });
 });
 
+/**
+ * 20th-level capstone immunities/senses/DR, newly wired to real Change
+ * targets (imm.<type>/immEffect.<slug>/sense*) rather than left display-only.
+ * RAW citations live on each entry in `bloodrager-bloodlines.ts`; expected
+ * values hand-computed from the quoted text. Every capstone says "constantly,
+ * even while not bloodraging", so none of these are gated on the Bloodrage
+ * buff.
+ */
+describe("bloodrager bloodline capstone immunities/senses (20th level)", () => {
+  const immune = (doc: CharacterDoc, qualifier: string) =>
+    compute(doc, ref).defenses?.immunities?.some((i) => i.qualifier === qualifier) ?? false;
+  const effectImmune = (doc: CharacterDoc, qualifier: string) =>
+    compute(doc, ref).defenses?.effectImmunities?.some((i) => i.qualifier === qualifier) ?? false;
+  const senseRange = (doc: CharacterDoc, kind: string) =>
+    compute(doc, ref).senses.find((s) => s.kind === kind)?.range;
+
+  it("Demonic Immunities (Abyssal): immune to electricity and poison", () => {
+    // RAW: "you're immune to electricity and poison."
+    const doc = makeBloodrager(20, "Abyssal");
+    expect(immune(doc, "electricity")).toBe(true);
+    expect(effectImmune(doc, "poison")).toBe(true);
+  });
+
+  it("Ascension (Celestial): immune to acid and cold (petrification has no matching slug)", () => {
+    // RAW: "You gain immunity to acid, cold, and petrification."
+    const doc = makeBloodrager(20, "Celestial");
+    expect(immune(doc, "acid")).toBe(true);
+    expect(immune(doc, "cold")).toBe(true);
+  });
+
+  it("Victory or Death (Destined): immune to paralysis (petrification/stunned/dazed/staggered have no matching slugs)", () => {
+    // RAW: "You are immune to paralysis and petrification, as well as to the
+    // stunned, dazed, and staggered conditions."
+    const doc = makeBloodrager(20, "Destined");
+    expect(effectImmune(doc, "paralysis")).toBe(true);
+  });
+
+  it("Power of Wyrms (Draconic): immune to paralysis, sleep, and your energy type; blindsense 60 (blue → electricity)", () => {
+    // RAW: "you gain immunity to paralysis, sleep, and damage from your
+    // energy type. You also gain blindsense with a range of 60 feet."
+    const doc = makeBloodrager(20, "Draconic", {}, "blue");
+    expect(effectImmune(doc, "paralysis")).toBe(true);
+    expect(effectImmune(doc, "sleep")).toBe(true);
+    expect(immune(doc, "electricity")).toBe(true);
+    expect(senseRange(doc, "blindsense")).toBe(60);
+    const noVariant = makeBloodrager(20, "Draconic");
+    expect(immune(noVariant, "electricity")).toBe(false);
+    expect(effectImmune(noVariant, "paralysis")).toBe(true);
+  });
+
+  it("Elemental Body: immune to precision damage, critical hits, and your energy type (earth → acid)", () => {
+    // RAW: "You gain immunity to sneak attacks, critical hits, and damage
+    // from your energy type."
+    const doc = makeBloodrager(20, "Elemental", {}, "earth");
+    expect(effectImmune(doc, "precisionDamage")).toBe(true);
+    expect(effectImmune(doc, "criticalHits")).toBe(true);
+    expect(immune(doc, "acid")).toBe(true);
+  });
+
+  it("Fiend of the Pit (Infernal): immune to fire and poison, sees in darkness", () => {
+    // RAW: "you gain immunity to fire and poison. ... and gain the see in
+    // darkness ability."
+    const doc = makeBloodrager(20, "Infernal");
+    expect(immune(doc, "fire")).toBe(true);
+    expect(effectImmune(doc, "poison")).toBe(true);
+    expect(compute(doc, ref).senses.some((s) => s.kind === "seeInDarkness")).toBe(true);
+  });
+
+  it("One Foot in the Grave (Undead): immune to cold, paralysis, sleep; DR increases to 8", () => {
+    // RAW: "you gain immunity to cold, nonlethal damage, paralysis, and
+    // sleep. The DR from your damage reduction ability increases to 8."
+    const doc = makeBloodrager(20, "Undead");
+    expect(immune(doc, "cold")).toBe(true);
+    expect(effectImmune(doc, "paralysis")).toBe(true);
+    expect(effectImmune(doc, "sleep")).toBe(true);
+    expect(compute(doc, ref).defenses?.dr.find((d) => d.qualifier === "—")?.total).toBe(8);
+  });
+
+  it("Eternal Martyr (Martyred): can't be raised as undead (death effects have no matching slug)", () => {
+    // RAW: "You become immune to death effects. ... Your body cannot be
+    // turned into an undead creature, as though you were affected by a
+    // permanent hallow effect."
+    const doc = makeBloodrager(20, "Martyred");
+    expect(effectImmune(doc, "undeath")).toBe(true);
+  });
+
+  it("Aberrant Form: immune to critical hits and precision damage too (same pair as the sorcerer sibling)", () => {
+    // RAW: "You are immune to critical hits and sneak attacks. In addition,
+    // you gain blindsight with a range of 60 feet and your bloodrager damage
+    // reduction increases by 1."
+    const doc = makeBloodrager(20, "Aberrant");
+    expect(effectImmune(doc, "criticalHits")).toBe(true);
+    expect(effectImmune(doc, "precisionDamage")).toBe(true);
+    expect(senseRange(doc, "blindsight")).toBe(60);
+    expect(compute(doc, ref).defenses?.dr.find((d) => d.qualifier === "—")?.total).toBe(1);
+  });
+});
+
 describe("bloodrager bloodline resource pools (Destined Strike, Hellfire Strike, ...)", () => {
   it("a Destined bloodrager gets a 3/day Destined Strike pool at 1st level", () => {
     const doc = makeBloodrager(1, "Destined");
