@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
+import type { RefData } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import {
@@ -44,19 +45,45 @@ describe("mergedKineticistWildTalentCatalog", () => {
     expect(byId.get("aether:selfTelekinesisGreater")?.description).toBeDefined();
   });
 
-  it("a vendored-only entry (Absentia, no hand-authored counterpart) resolves display-only with its own vendored-key id + real level/burn gate", () => {
-    const entry = byId.get("absentia")!;
-    expect(entry.level).toBe(4);
+  it("a vendored-only entry (Basic Telekinesis, no hand-authored counterpart — it's auto-granted as aether's basicUtility instead) resolves display-only with its own vendored-key id + real level/burn gate", () => {
+    const entry = byId.get("basic_telekinesis")!;
+    expect(entry.level).toBe(1);
     expect(entry.burn).toBe(0);
     expect(entry.category).toBe("utility");
-    expect(entry.elements).toEqual(["void"]);
-    expect(KINETICIST_WILD_TALENTS.absentia).toBeUndefined();
+    expect(entry.elements).toEqual(["aether"]);
+    expect(KINETICIST_WILD_TALENTS.basic_telekinesis).toBeUndefined();
   });
 
-  it("a vendored-only MULTI-element entry (Cloud, no hand-authored counterpart) keeps every element, not just the first", () => {
-    const entry = byId.get("cloud")!;
+  it("every element's auto-granted 'Basic <Element>kinesis' talent is the only intentional vendored-only gap (all 7, one per element)", () => {
+    const orphans = merged.filter((e) => !(e.id in KINETICIST_WILD_TALENTS));
+    expect(orphans).toHaveLength(7);
+    expect(new Set(orphans.map((o) => o.elements[0]))).toEqual(
+      new Set(["aether", "air", "earth", "fire", "water", "void", "wood"]),
+    );
+    for (const o of orphans) expect(o.name).toMatch(/^Basic \w+kinesis$/);
+  });
+
+  it("a vendored-only MULTI-element entry keeps every element, not just the first (synthetic fixture — the real catalog has no naturally-occurring orphan with 2+ elements after full parity)", () => {
+    const synthetic: RefData = {
+      ...ref,
+      kineticWildTalents: {
+        ...ref.kineticWildTalents,
+        synthetic_multi_element: {
+          id: "synthetic_multi_element",
+          uuid: "test:synthetic_multi_element",
+          name: "Synthetic Multi-Element Fixture",
+          kind: "utility",
+          elements: ["air", "water"],
+          level: 3,
+          burn: 0,
+          description: "<p>Test fixture only — not a real published talent.</p>",
+        },
+      },
+    };
+    const syntheticMerged = mergedKineticistWildTalentCatalog(synthetic);
+    const entry = syntheticMerged.find((e) => e.id === "synthetic_multi_element")!;
+    expect(entry).toBeDefined();
     expect(entry.elements).toEqual(["air", "water"]);
-    expect(KINETICIST_WILD_TALENTS.cloud).toBeUndefined();
   });
 
   it("simple/composite blasts and defense talents are excluded from this merge (see file doc comment)", () => {
@@ -78,9 +105,9 @@ describe("resolveKineticistWildTalent", () => {
     expect(talent?.summary).toBe(KINETICIST_WILD_TALENTS["universal:extendedRange"]!.summary);
   });
 
-  it("falls back to the vendored catalog (infusion/utility only) for a vendored-only id", () => {
-    const talent = resolveKineticistWildTalent("absentia", ref);
-    expect(talent?.name).toBe("Absentia");
+  it("falls back to the vendored catalog (infusion/utility only) for a vendored-only id (Basic Telekinesis — auto-granted, not hand-authored as a separate pick)", () => {
+    const talent = resolveKineticistWildTalent("basic_telekinesis", ref);
+    expect(talent?.name).toBe("Basic Telekinesis");
     expect(talent?.category).toBe("utility");
   });
 
@@ -96,24 +123,36 @@ describe("resolveKineticistWildTalent", () => {
 });
 
 describe("mergedCompositeBlastCatalog / eligibleCompositeBlasts", () => {
-  it("has exactly one row per vendored composite-blast entry — all 13 hand-authored entries matched", () => {
+  it("has exactly one row per vendored composite-blast entry — all 22 hand-authored entries matched, full parity", () => {
     const catalog = mergedCompositeBlastCatalog(ref);
     const vendoredCount = Object.values(ref.kineticWildTalents).filter(
       (t) => t.kind === "compositeBlast",
     ).length;
+    expect(vendoredCount).toBe(22);
+    expect(KINETICIST_COMPOSITE_BLASTS).toHaveLength(22);
     expect(catalog).toHaveLength(vendoredCount);
     const byId = new Map(catalog.map((cb) => [cb.id, cb]));
     expect(byId.get("aethericBoost")?.description).toBeDefined();
+    // Every entry in the merged catalog carries vendored prose — no
+    // vendored-only orphan remains once void/wood are hand-authored too.
+    for (const cb of catalog) expect(cb.description).toBeDefined();
   });
 
-  it("every vendored-only composite blast requires a later-splatbook element (void/wood) — the full 5-core-element set is already covered by the 13 hand-authored entries (confirmed by the collision audit)", () => {
+  it("the 9 void/wood-gated composite blasts (Autumn/Gravitic Boost/Negative Admixture/Positive Admixture/Spring/Summer/Verdant/Void/Winter Blast) all resolve via the merged catalog", () => {
     const catalog = mergedCompositeBlastCatalog(ref);
-    const handIds = new Set(KINETICIST_COMPOSITE_BLASTS.map((cb) => cb.id));
-    const CORE = new Set(["aether", "air", "earth", "fire", "water"]);
-    const vendoredOnly = catalog.filter((cb) => !handIds.has(cb.id));
-    expect(vendoredOnly.length).toBeGreaterThan(0);
-    for (const cb of vendoredOnly) {
-      expect(cb.requiredElements.some((el) => !CORE.has(el))).toBe(true);
+    const byId = new Map(catalog.map((cb) => [cb.id, cb]));
+    for (const id of [
+      "autumnBlast",
+      "graviticBoost",
+      "negativeAdmixture",
+      "positiveAdmixture",
+      "springBlast",
+      "summerBlast",
+      "verdantBlast",
+      "voidBlast",
+      "winterBlast",
+    ]) {
+      expect(byId.get(id)?.description).toBeDefined();
     }
   });
 

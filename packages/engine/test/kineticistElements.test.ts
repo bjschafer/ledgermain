@@ -77,10 +77,10 @@ function makeDoc(
 }
 
 describe("KINETICIST_ELEMENTS table", () => {
-  it("has all 5 core elements, each with a simple blast, defense, and basic utility talent", () => {
-    expect(KINETICIST_ELEMENT_TAGS.length).toBe(5);
+  it("has all 7 published elements, each with a simple blast, defense, and basic utility talent", () => {
+    expect(KINETICIST_ELEMENT_TAGS.length).toBe(7);
     expect(new Set(KINETICIST_ELEMENT_TAGS)).toEqual(
-      new Set(["aether", "air", "earth", "fire", "water"]),
+      new Set(["aether", "air", "earth", "fire", "water", "void", "wood"]),
     );
     for (const tag of KINETICIST_ELEMENT_TAGS) {
       const el = KINETICIST_ELEMENTS[tag]!;
@@ -91,12 +91,27 @@ describe("KINETICIST_ELEMENTS table", () => {
     }
   });
 
-  it("fire and aether are energy/physical as RAW states; earth/air/water default to physical", () => {
+  it("fire and aether are energy/physical as RAW states; earth/air/water/void/wood default to physical", () => {
     expect(KINETICIST_ELEMENTS.fire!.simpleBlast.damageType).toBe("energy");
     expect(KINETICIST_ELEMENTS.aether!.simpleBlast.damageType).toBe("physical");
     expect(KINETICIST_ELEMENTS.earth!.simpleBlast.damageType).toBe("physical");
     expect(KINETICIST_ELEMENTS.air!.simpleBlast.damageType).toBe("physical");
     expect(KINETICIST_ELEMENTS.water!.simpleBlast.damageType).toBe("physical");
+    expect(KINETICIST_ELEMENTS.void!.simpleBlast.damageType).toBe("physical");
+    expect(KINETICIST_ELEMENTS.wood!.simpleBlast.damageType).toBe("physical");
+  });
+
+  it("void and wood each offer an alternate energy blast (negative/positive), like air/water's electric/cold", () => {
+    expect(KINETICIST_ELEMENTS.void!.alternateSimpleBlast).toMatchObject({
+      name: "Negative Blast",
+      damageType: "energy",
+      descriptor: "negative",
+    });
+    expect(KINETICIST_ELEMENTS.wood!.alternateSimpleBlast).toMatchObject({
+      name: "Positive Blast",
+      damageType: "energy",
+      descriptor: "positive",
+    });
   });
 });
 
@@ -187,10 +202,12 @@ describe("eligibleCompositeBlasts", () => {
   });
 });
 
-describe("simple blast choice (air/water)", () => {
-  it("only air and water offer a second simple blast", () => {
+describe("simple blast choice (air/water/void/wood)", () => {
+  it("air, water, void, and wood each offer a second simple blast; aether/earth/fire don't", () => {
     expect(elementSimpleBlasts("air").map((b) => b.id)).toEqual(["airBlast", "electricBlast"]);
     expect(elementSimpleBlasts("water").map((b) => b.id)).toEqual(["waterBlast", "coldBlast"]);
+    expect(elementSimpleBlasts("void").map((b) => b.id)).toEqual(["gravityBlast", "negativeBlast"]);
+    expect(elementSimpleBlasts("wood").map((b) => b.id)).toEqual(["woodBlast", "positiveBlast"]);
     for (const tag of ["aether", "earth", "fire"]) {
       expect(elementSimpleBlasts(tag)).toHaveLength(1);
     }

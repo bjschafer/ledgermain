@@ -60,7 +60,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Kineticist wild talents",
-    note: "The whole catalog is browsable, with the core infusions and utility talents modeled.",
+    note: "Every published infusion and utility talent is written up across all seven elements — aether, air, earth, fire, water, and now void and wood, which are pickable as your elemental focus with their own blasts, defenses, and class skills — plus every composite blast. Level gates and burn costs are tracked and the infusion/utility budgets counted, but a wild talent's effect is rules text you apply at the table: blasts aren't rolled by the sheet, and defense wild talents scale with burn you accept in play.",
+    issueDetail:
+      "236 hand-authored wild talents at full parity with the vendored 238-row infusion/utility catalog (the 7 auto-granted \"Basic X\" utility rows are deliberately excluded from the budgeted picker — they come free with the element), 22/22 composite blasts, 7/7 KineticistElementDefs. All display-only per the honesty bar (activated abilities with action/save/burn state). Recorded promotion candidates: earthWalk/firesFury (need elemental-overflow state), clockworkHeart (offscreen upkeep), Air's Reach (no blast-range stat to target). Kinetic blast attack/damage rolls aren't computed (no blast weapon model); burn is a real resource pool (3 + Con mod, Psychokineticist Wis swap) but its nonlethal damage stays player-applied.",
   },
   {
     category: "Summoner (Unchained) eidolon",

@@ -1242,13 +1242,11 @@ export type KineticInfusionKind = "form" | "substance";
  * `mergedKineticistWildTalentCatalog`). Composite blasts additionally merge
  * through `kineticist-elements.ts`'s `mergedCompositeBlastCatalog`. Simple
  * blasts and defense talents are carried here for data completeness but are
- * NOT merged into new picker machinery — this app only offers the 5 core
+ * NOT merged into new picker machinery — this app offers all 7 published
  * elements as a selectable primary/expanded element (see
- * `KINETICIST_ELEMENT_TAGS`), and every one of those 5 elements' simple
- * blast/defense talent is already hand-authored in `kineticist-elements.ts`;
- * a vendored-only simple blast/defense talent exists only for a later-
- * splatbook element (`void`, `wood`) this app has no selectable tag for, so
- * it could never actually apply.
+ * `KINETICIST_ELEMENT_TAGS`), and every one of those 7 elements' simple
+ * blast/defense talent is already hand-authored in `kineticist-elements.ts`,
+ * so a vendored-only simple blast/defense talent entry never applies.
  */
 export interface KineticWildTalent extends RefEntity {
   /** Ability-type suffix as published, e.g. "(Su)", "(Sp)" — parsed from the stat-line's `**Type**` field (or, for a form/substance infusion the source doesn't tag, the description header) when present. */
@@ -1258,12 +1256,10 @@ export interface KineticWildTalent extends RefEntity {
   infusionKind?: KineticInfusionKind;
   /**
    * Element tag(s) this talent needs/is associated with — lowercase,
-   * matching `@pf1/engine` `KINETICIST_ELEMENT_TAGS` values for the 5 core
-   * elements this app models (`aether`/`air`/`earth`/`fire`/`water`), plus
-   * `"universal"` for an infusion/utility talent usable with any element,
-   * or a later-splatbook element (`"void"`, `"wood"`) this app has no
-   * selectable tag for but carries through as-is rather than dropping.
-   * Length 2 for a composite blast requiring two distinct elements; length
+   * matching `@pf1/engine` `KINETICIST_ELEMENT_TAGS` values for the 7
+   * elements this app models (`aether`/`air`/`earth`/`fire`/`water`/`void`/
+   * `wood`), plus `"universal"` for an infusion/utility talent usable with
+   * any element. Length 2 for a composite blast requiring two distinct elements; length
    * 1 (same element) for one requiring the SAME element twice (primary +
    * Expanded Element) — same convention as
    * `KineticistCompositeBlastDef.requiredElements`.

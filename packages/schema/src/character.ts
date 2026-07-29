@@ -852,9 +852,9 @@ export interface CharacterDoc {
     /**
      * Kineticist primary element tag chosen at 1st level (keys into
      * `@pf1/engine` `KINETICIST_ELEMENTS` — issue #65, Occult Adventures
-     * "Elemental Focus"). One of "aether"|"air"|"earth"|"fire"|"water"
-     * (the 5 core elements this app models — see `kineticist-elements.ts`'s
-     * doc comment for the Void/Wood scoping cut). PF1 RAW: chosen once at
+     * "Elemental Focus"). One of "aether"|"air"|"earth"|"fire"|"water"|
+     * "void"|"wood" (all 7 elements this app models — see
+     * `kineticist-elements.ts`'s doc comment). PF1 RAW: chosen once at
      * 1st level and never changes; determines the kineticist's simple
      * blast, 2 bonus class skills (wired via `compute.ts`'s `classSkillSet`
      * — see `KINETICIST_ELEMENTS`' doc comment), the Elemental

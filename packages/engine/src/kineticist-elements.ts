@@ -13,17 +13,17 @@
  * hand-authored from the SRD prose, not transcribed from any GPL system
  * file.
  *
- * Scope: the 5 CORE Occult Adventures elements (aether, air, earth, fire,
- * water) — the two later-splatbook elements (Void, from Horror Adventures;
- * Wood, from a Player Companion) are OUT OF SCOPE, same "cover the core set,
- * defer the rest" posture `alchemist-discoveries.ts`/`rage-powers.ts` use.
- * Composite blasts requiring Void or Wood are likewise excluded (13 of the
- * published 22 core-book composite blasts qualify with only the 5 core
- * elements — the other 9 are Void/Wood-gated).
+ * Scope: all 7 published elements — the 5 core Occult Adventures elements
+ * (aether, air, earth, fire, water) plus the two later-splatbook elements
+ * (Void, from Horror Adventures; Wood, from a Player Companion). Full parity
+ * with the vendored composite-blast catalog too: all 22 published composite
+ * blasts are hand-authored below (13 core-element-only + 9 requiring Void
+ * and/or Wood).
  *
- * SIMPLE BLASTS: two of the five elements (air, water) RAW offer a CHOICE of
- * two simple blasts each — air blast OR electric blast, water blast OR cold
- * blast — picked when the element is gained ({@link
+ * SIMPLE BLASTS: four of the seven elements (air, water, void, wood) RAW
+ * offer a CHOICE of two simple blasts each — air blast OR electric blast,
+ * water blast OR cold blast, gravity blast OR negative blast, wood blast OR
+ * positive blast — picked when the element is gained ({@link
  * KineticistElementDef.alternateSimpleBlast}, recorded in
  * `build.kineticistSimpleBlasts`). Expanding into an element you already have
  * grants the OTHER blast rather than a second choice, which is why
@@ -46,7 +46,7 @@
  * character having kineticist levels — see the primary/expanded-element loop
  * in `computeSkills`.
  *
- * DEFENSE WILD TALENTS: every one of the 5 scales with burn ACCEPTED
+ * DEFENSE WILD TALENTS: every one of the 7 scales with burn ACCEPTED
  * (variable, "you can accept an additional point of burn to increase...")
  * — a live, per-activation player choice this engine's static `Change`
  * system can't safely target as an always-on bonus (same "situational,
@@ -215,6 +215,64 @@ const ELEMENT_LIST: KineticistElementDef[] = [
       name: "Basic Hydrokinesis",
       summary:
         "Create, purify, or foul up to 5 gallons of water per kineticist level, dry a wet area, or create a mild current — functions as a cross between create water and prestidigitation for water-related tasks.",
+    },
+  },
+  {
+    tag: "void",
+    name: "Void",
+    classSkills: ["esc", "kdu"],
+    simpleBlast: {
+      id: "gravityBlast",
+      name: "Gravity Blast",
+      damageType: "physical",
+      descriptor: "bludgeoning",
+    },
+    alternateSimpleBlast: {
+      id: "negativeBlast",
+      name: "Negative Blast",
+      damageType: "energy",
+      descriptor: "negative",
+    },
+    defense: {
+      name: "Emptiness",
+      summary:
+        "Constant negative energy resistance 2, a 5% chance to negate critical hits and sneak attacks, and a +1 bonus on Will saves vs. emotion effects; accept 1 burn to increase the resistance by 2, the negation chance by 5%, and the Will bonus by 1. Accepting burn on a void wild talent temporarily broadens the Will bonus to all mind-affecting effects for 1 round.",
+    },
+    basicUtility: {
+      name: "Basic Chaokinesis",
+      summary:
+        "Cloak a target in light-blocking shadow, boost a creature's carrying capacity, or grant a +4 Acrobatics bonus to jump — one effect active at a time, lasting 1 hour or until reused.",
+    },
+  },
+  {
+    tag: "wood",
+    name: "Wood",
+    classSkills: ["han", "kna"],
+    simpleBlast: {
+      id: "woodBlast",
+      name: "Wood Blast",
+      damageType: "physical",
+      // RAW lets the player choose bludgeoning/piercing/slashing per use;
+      // this schema's descriptor is a single fixed string (same
+      // simplification air/water/earth blast already make), so this
+      // defaults to bludgeoning for consistency with those.
+      descriptor: "bludgeoning",
+    },
+    alternateSimpleBlast: {
+      id: "positiveBlast",
+      name: "Positive Blast",
+      damageType: "energy",
+      descriptor: "positive",
+    },
+    defense: {
+      name: "Flesh of Wood",
+      summary:
+        "+1 enhancement bonus to natural armor (an additional +1 burn slot unlocks every 3 kineticist levels beyond 2nd, capping at +7 at 17th level); accept burn to increase the bonus by 1 per point. Accepting burn on a wood wild talent grants your full natural armor bonus as touch AC for 1 round.",
+    },
+    basicUtility: {
+      name: "Basic Phytokinesis",
+      summary:
+        "Tend or prune plants within 30 ft. without tools, remotely search plant-heavy terrain as the sift cantrip, or concentrate to detect nearby plant life within 120 ft. as detect animals or plants.",
     },
   },
 ];
@@ -417,6 +475,104 @@ const COMPOSITE_BLAST_LIST: KineticistCompositeBlastDef[] = [
     burn: 2,
     summary: "Batters foes with electrically charged air, half bludgeoning/half electricity.",
   },
+  {
+    id: "autumnBlast",
+    name: "Autumn Blast",
+    requiredElements: ["earth", "wood"],
+    requiredBlasts: ["earthBlast", "woodBlast"],
+    damageType: "physical",
+    burn: 2,
+    summary:
+      "A burst of rotting leaves and stony debris, splitting damage between any two of bludgeoning, piercing, or slashing (your choice).",
+  },
+  {
+    id: "graviticBoost",
+    name: "Gravitic Boost",
+    requiredElements: ["void"],
+    requiredBlasts: ["gravityBlast"],
+    damageType: "physical",
+    burn: 2,
+    // RAW is a passive modifier upgrading an already-known physical simple
+    // blast's damage die (d6 -> d8), not a blast in its own right — modeled
+    // in the same shape as its sibling entries anyway, since that's the only
+    // vessel available; RAW also requires knowing a SECOND physical simple
+    // blast, which `requiredBlasts` (an ALL-of list) can't express as an
+    // open choice, so only the fixed anchor blast is enforced here.
+    summary:
+      "Not a blast in its own right — weights an already-known physical simple blast with gravity, upgrading its damage die from d6 to d8 (or, at 15th level, a known composite blast for +1 burn instead).",
+  },
+  {
+    id: "negativeAdmixture",
+    name: "Negative Admixture",
+    requiredElements: ["void"],
+    requiredBlasts: ["negativeBlast"],
+    damageType: "energy",
+    burn: 2,
+    // RAW also requires knowing a second, chosen energy simple blast — the
+    // same open-choice limitation as Gravitic Boost above.
+    summary:
+      "Blends negative energy with a second energy type of your choosing (fire, cold, electricity, or sonic), half damage each.",
+  },
+  {
+    id: "positiveAdmixture",
+    name: "Positive Admixture",
+    requiredElements: ["wood"],
+    requiredBlasts: ["positiveBlast"],
+    damageType: "energy",
+    burn: 2,
+    summary:
+      "As Negative Admixture, but blends positive energy with a second chosen energy type instead.",
+  },
+  {
+    id: "springBlast",
+    name: "Spring Blast",
+    requiredElements: ["air", "wood"],
+    requiredBlasts: ["airBlast", "woodBlast"],
+    damageType: "physical",
+    burn: 2,
+    summary:
+      "A wind-driven volley of sharp seed pods and thorny blossoms, half bludgeoning and half your choice of piercing or slashing.",
+  },
+  {
+    id: "summerBlast",
+    name: "Summer Blast",
+    requiredElements: ["fire", "wood"],
+    requiredBlasts: ["fireBlast", "woodBlast"],
+    damageType: "physical",
+    burn: 2,
+    summary:
+      "Scorching, sun-dried foliage: half fire damage, half your choice of bludgeoning, piercing, or slashing (a true physical/energy hybrid — this table's `damageType` can't express that; see its doc comment).",
+  },
+  {
+    id: "verdantBlast",
+    name: "Verdant Blast",
+    requiredElements: ["wood"],
+    requiredBlasts: ["woodBlast", "positiveBlast"],
+    damageType: "physical",
+    burn: 2,
+    summary:
+      "First-World growth infused with life energy: physical damage (your choice of type) plus a sliver of positive energy that only manifests when it would benefit you.",
+  },
+  {
+    id: "voidBlast",
+    name: "Void Blast",
+    requiredElements: ["void"],
+    requiredBlasts: ["gravityBlast", "negativeBlast"],
+    damageType: "physical",
+    burn: 2,
+    summary:
+      "Raw void force crushes and unmakes a target in one blow: a fixed half bludgeoning, half negative energy split, with no damage-type choice.",
+  },
+  {
+    id: "winterBlast",
+    name: "Winter Blast",
+    requiredElements: ["water", "wood"],
+    requiredBlasts: ["coldBlast", "woodBlast"],
+    damageType: "physical",
+    burn: 2,
+    summary:
+      "Killing frost tangled with frozen branches: half cold damage, half your choice of bludgeoning, piercing, or slashing.",
+  },
 ];
 
 export const KINETICIST_COMPOSITE_BLASTS: readonly KineticistCompositeBlastDef[] =
@@ -436,10 +592,10 @@ export const KINETICIST_COMPOSITE_BLASTS: readonly KineticistCompositeBlastDef[]
  * which of Blizzard Blast / Charged Water Blast an air+water kineticist gets,
  * and both remain out of reach if she picked air blast + water blast.
  *
- * `catalog` defaults to the 13 hand-authored entries but accepts
- * `mergedCompositeBlastCatalog`'s broader vendored-overlay list (issue #74) so a
- * vendored-only composite blast becomes eligible the same way
- * a hand-authored one does, once its required element(s) are known.
+ * `catalog` defaults to the 22 hand-authored entries but accepts
+ * `mergedCompositeBlastCatalog`'s vendored-overlay list (issue #74, full
+ * parity with the 22 hand-authored entries) for a caller that wants
+ * vendored prose/sources attached.
  */
 export function eligibleCompositeBlasts(
   primaryElement: string | undefined,
@@ -466,7 +622,7 @@ export function eligibleCompositeBlasts(
 /*
  * Issue #74: `RefData.kineticWildTalents` also carries every
  * published COMPOSITE BLAST (`kind: "compositeBlast"`, see that type's doc
- * comment) — 22 entries, vs. this file's 13 hand-authored core-element ones
+ * comment) — 22 entries, full parity with this file's 22 hand-authored ones
  * — with a reliable `elements`/`burn` (always 2) parse, same stat-line
  * source `kineticist-wild-talents.ts` documents in full. No `damageType`
  * (physical/energy) is recoverable from the source without parsing free
@@ -475,7 +631,7 @@ export function eligibleCompositeBlasts(
  * `damageType` is left undefined rather than fabricated — safe because nothing
  * downstream (the picker's preview, `eligibleCompositeBlasts`) reads it.
  *
- * Collision audit (all 13 hand-authored entries): every one matched a
+ * Collision audit (all 22 hand-authored entries): every one matched a
  * vendored entry by normalized name — no drift, no alias needed. No name
  * collides within the vendored catalog's composite-blast subset either.
  */

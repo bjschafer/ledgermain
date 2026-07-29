@@ -32,6 +32,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-kineticist-all-seven-elements",
+    date: "2026-07-29",
+    title: "Kineticists get all seven elements, fully written up",
+    note: "Void and wood join the five core elements as pickable elemental focuses, each with its own blasts (gravity or negative; wood or positive), elemental defense, basic utility talent, and class skills. And the wild-talent catalog is now complete: every published infusion and utility talent across all seven elements has a proper write-up with its level gate and burn cost — around 160 more than before — along with all twenty-two composite blasts, including the void and wood admixtures and the seasonal blasts. Spark of Life's description also got corrected: it summons an elemental, it never granted temporary hit points.",
+  },
+  {
     id: "2026-07-29-chosen-energy-and-stacking-darkvision",
     date: "2026-07-29",
     title: "Pick your energy type, and darkvision that really adds up",
