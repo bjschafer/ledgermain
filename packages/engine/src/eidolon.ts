@@ -115,15 +115,32 @@
  *     land-speed bonuses, a free +2 ability increase) is a paraphrased
  *     display-only chip, same honesty-bar discipline as this file's own
  *     `displayOnly` evolutions.
- *   - **Four base forms** (Biped, Quadruped, Serpentine, Aberrant) of APG's
- *     six-plus-Horror-Realms's-one — Aquatic, Avian, and Tauric (APG) are
- *     still deferred (no `EIDOLON_BASE_FORMS` entry), matching the task
- *     brief's explicit scoping call. Aberrant (Pathfinder Campaign Setting:
- *     Horror Realms) is UNCHAINED-only (`EidolonBaseForm.variants`) — the
- *     chained (APG) eidolon never had this option printed for it, so
- *     `deriveEidolon` returns `undefined` for a chained doc that somehow
- *     carries `baseForm: "aberrant"`, same soft "nothing shown" posture as
- *     an unrecognized form id.
+ *   - **Seven base forms modeled**: Biped/Quadruped/Serpentine (Advanced
+ *     Player's Guide "Base Forms"), Aquatic (Ultimate Magic p.74), Avian and
+ *     Tauric (Player Companion: Cohorts and Companions p.9), plus Aberrant
+ *     (Pathfinder Campaign Setting: Horror Realms, unchained-only). Aberrant
+ *     is UNCHAINED-only (`EidolonBaseForm.variants`) — the chained (APG)
+ *     eidolon never had this option printed for it, so `deriveEidolon`
+ *     returns `undefined` for a chained doc that somehow carries
+ *     `baseForm: "aberrant"`, same soft "nothing shown" posture as an
+ *     unrecognized form id. Aquatic/Avian/Tauric are left `variants:
+ *     undefined` (available to both) even though NO published Pathfinder
+ *     Unchained subtype's own `baseForms` list actually offers them (see
+ *     `eidolon-unchained.ts`'s module doc comment) — an unchained doc with
+ *     one of these three simply falls back to the form's own `baseAttacks`,
+ *     the same soft-fallback posture an unrecognized/unmodeled subtype+form
+ *     combination already gets.
+ *   - Avian and Tauric's own sidebar text ("a[n] avian/tauric eidolon is
+ *     Small unless it spends 2 points from its evolution pool") is NOT
+ *     modeled — both are derived at their printed Medium baseline only, a
+ *     documented v1 simplification (the toggle has no attached named
+ *     evolution to hang a pick on, unlike the unrelated, already-modeled
+ *     Pathfinder Unchained "Small eidolon" sidebar variant, `EidolonBuild.small`).
+ *   - Aquatic's free "Improved Natural Armor" evolution (part of its printed
+ *     "+4 natural armor" starting AC) is a display-only chip like every
+ *     other form's free evolutions that aren't already baked into
+ *     `baseAttacks`/`speeds` — same posture as Serpentine's free "Reach
+ *     (bite)"/"Tail", not a new gap.
  *   - **The Unchained "Small eidolon" sidebar variant** (Pathfinder
  *     Unchained, printed alongside the base-form list) is modeled as
  *     `EidolonBuild.small` — unchained-only, ignored for a chained eidolon.
@@ -227,7 +244,7 @@ export interface EidolonAttackGrant {
   damageDice: string;
 }
 
-/** One of the four modeled base forms (three PF1 APG core forms plus Horror Realms's Aberrant — see module doc comment for the deferred APG three). */
+/** One of the seven modeled base forms (three PF1 APG core forms, Ultimate Magic's Aquatic, Cohorts and Companions's Avian/Tauric, plus Horror Realms's Aberrant — see module doc comment). */
 export interface EidolonBaseForm {
   name: string;
   abilities: { str: number; dex: number; con: number };
@@ -245,17 +262,30 @@ export interface EidolonBaseForm {
 
 /**
  * The three core PF1 APG eidolon base forms (verified against aonprd.com/
- * d20pfsrd.com's "Base Forms" section during authoring — see module doc
- * comment for the three deferred forms) plus Aberrant (Pathfinder Campaign
- * Setting: Horror Realms, unchained-only — aonprd.com's "Subtypes - Eidolon
- * (Unchained)" page/d20pfsrd.com's "Eidolons (Unchained)" page: "Base Form:
- * Aberrant (bite, grab [tentacle mass], tentacle mass) ...", with starting
- * stats "Str 12, Dex 13, Con 16 ...; Speed 20 ft., swim 20 ft.; ... Saves
- * Fort (good), Ref (poor), Will (good)" cross-checked against the raw OGL
- * dataset's `aberrant` entry). Its free "Tentacle Mass" evolution deals
- * 1d8 at Medium size and is explicitly a PRIMARY attack per its own rules
- * text (unlike the ordinary secondary-type "Tentacle" evolution) — see
- * `natural-attacks.ts`'s `PRIMARY_ATTACK_FULL_NAMES`.
+ * d20pfsrd.com's "Base Forms" section during authoring), Aquatic (Ultimate
+ * Magic p.74, aonprd.com's "Base Forms - Eidolon" page: "Size Medium; Speed
+ * 20 ft., swim 40 ft.; AC +4 natural armor ...; Saves Fort (good), Ref
+ * (good), Will (bad); Attack bite (1d6); ... Str 16, Dex 12, Con 13 ...;
+ * Free Evolutions bite, improved natural armor, gills, swim (2)" — the swim
+ * 40 ft. is the form's own land speed 20 ft. plus the two free Swim picks'
+ * usual +20 ft./additional-pick math), Avian and Tauric (Player Companion:
+ * Cohorts and Companions p.9, same page: Avian "Speed 30 ft., fly 30 ft.
+ * (good); ... Saves Fort (bad), Ref (good), Will (good); Attack 2 claws
+ * (1d3); ... Str 12, Dex 16, Con 13 ...; Free Evolutions claws, flight,
+ * limbs (legs)"; Tauric "Speed 40 ft.; ... Saves Fort (good), Ref (bad),
+ * Will (good); Attack 2 claws (1d4); ... Str 14, Dex 14, Con 13 ...; Free
+ * Evolutions claws, limbs (arms), limbs (legs) (2)" — both forms' own text
+ * also says they start Small unless 2 evolution points are spent, which
+ * this module doesn't model, see module doc comment), plus Aberrant
+ * (Pathfinder Campaign Setting: Horror Realms, unchained-only — aonprd.com's
+ * "Subtypes - Eidolon (Unchained)" page/d20pfsrd.com's "Eidolons
+ * (Unchained)" page: "Base Form: Aberrant (bite, grab [tentacle mass],
+ * tentacle mass) ...", with starting stats "Str 12, Dex 13, Con 16 ...;
+ * Speed 20 ft., swim 20 ft.; ... Saves Fort (good), Ref (poor), Will (good)"
+ * cross-checked against the raw OGL dataset's `aberrant` entry). Its free
+ * "Tentacle Mass" evolution deals 1d8 at Medium size and is explicitly a
+ * PRIMARY attack per its own rules text (unlike the ordinary secondary-type
+ * "Tentacle" evolution) — see `natural-attacks.ts`'s `PRIMARY_ATTACK_FULL_NAMES`.
  */
 export const EIDOLON_BASE_FORMS: Readonly<Record<string, EidolonBaseForm>> = {
   biped: {
@@ -296,6 +326,30 @@ export const EIDOLON_BASE_FORMS: Readonly<Record<string, EidolonBaseForm>> = {
     goodSaves: ["fort", "will"],
     freeEvolutionNames: ["Bite", "Grab (tentacle mass)", "Tentacle Mass"],
     variants: ["unchained"],
+  },
+  aquatic: {
+    name: "Aquatic",
+    abilities: { str: 16, dex: 12, con: 13 },
+    speeds: { land: 20, swim: 40 },
+    baseAttacks: [{ name: "Bite", count: 1, damageDice: "1d6" }],
+    goodSaves: ["fort", "ref"],
+    freeEvolutionNames: ["Bite", "Improved Natural Armor", "Gills", "Swim x2"],
+  },
+  avian: {
+    name: "Avian",
+    abilities: { str: 12, dex: 16, con: 13 },
+    speeds: { land: 30, fly: 30 },
+    baseAttacks: [{ name: "Claw", count: 2, damageDice: "1d3" }],
+    goodSaves: ["ref", "will"],
+    freeEvolutionNames: ["Claws", "Flight", "Limbs (legs)"],
+  },
+  tauric: {
+    name: "Tauric",
+    abilities: { str: 14, dex: 14, con: 13 },
+    speeds: { land: 40 },
+    baseAttacks: [{ name: "Claw", count: 2, damageDice: "1d4" }],
+    goodSaves: ["fort", "will"],
+    freeEvolutionNames: ["Claws", "Limbs (arms)", "Limbs (legs) x2"],
   },
 };
 
@@ -1607,8 +1661,11 @@ export function deriveEidolon(
   if (form.speeds.climb) speeds.climb = form.speeds.climb;
   // Aberrant is the first base form with its own innate swim speed (20 ft.,
   // not from a "Swim" evolution pick) — mirrors the `climb` line above,
-  // which Serpentine already needed.
+  // which Serpentine already needed. Aquatic reuses this same swim line;
+  // Avian is the first (and so far only) form with its own innate FLY speed
+  // (its free "Flight" evolution, baked in the same way).
   if (form.speeds.swim) speeds.swim = form.speeds.swim;
+  if (form.speeds.fly) speeds.fly = form.speeds.fly;
   if (acc.climbPicks > 0) speeds.climb = landSpeed + 20 * (acc.climbPicks - 1);
   if (acc.swimPicks > 0) speeds.swim = landSpeed + 20 * (acc.swimPicks - 1);
   if (acc.hasFlight) speeds.fly = landSpeed;

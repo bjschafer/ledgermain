@@ -296,6 +296,114 @@ describe("deriveEidolon base-form variants", () => {
     // Two swim picks: first = land speed, each additional +20.
     expect(eidolon.speeds.swim).toBe(60);
   });
+
+  // Ultimate Magic p.74 "Base Forms - Eidolon" (aonprd.com): "Size Medium;
+  // Speed 20 ft., swim 40 ft.; AC +4 natural armor ...; Saves Fort (good),
+  // Ref (good), Will (bad); Attack bite (1d6); ... Str 16, Dex 12, Con 13
+  // ...; Free Evolutions bite, improved natural armor, gills, swim (2)".
+  it("Aquatic: Fort/Ref good, Will poor; swim 40 (land 20 + two free Swim picks); sole bite gets the UMR ×1.5 Str rider", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "summoner", level: 1 }],
+      eidolon: { baseForm: "aquatic", name: "Riptide", evolutions: [] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const eidolon = deriveEidolon(doc, rollData)!;
+    expect(eidolon.baseFormName).toBe("Aquatic");
+    expect(eidolon.speeds).toEqual({ land: 20, swim: 40 });
+    // level 1: hd 1, strDexBonus 0. Str 16 -> mod +3. bab = babForLevels("high", 1) = 1.
+    expect(eidolon.abilities.str).toEqual({ score: 16, mod: 3 });
+    expect(eidolon.hd).toBe(1);
+    expect(eidolon.bab).toBe(1);
+    expect(eidolon.saves.fort).toBeGreaterThan(eidolon.saves.will);
+    expect(eidolon.saves.ref).toBeGreaterThan(eidolon.saves.will);
+    // Bite is the ONLY attack form (count 1 total) -> UMR sole-natural-attack
+    // rule applies (natural-attacks.ts): full BAB, ×1.5 Str on damage
+    // (floor(3*1.5)=4), not the ordinary ×1 primary multiplier.
+    expect(eidolon.attacks).toEqual([
+      {
+        name: "Bite",
+        count: 1,
+        attack: 4,
+        damageDice: "1d6",
+        damageBonus: 4,
+        attackType: "primary",
+      },
+    ]);
+    expect(eidolon.freeEvolutionNames).toEqual([
+      "Bite",
+      "Improved Natural Armor",
+      "Gills",
+      "Swim x2",
+    ]);
+  });
+
+  // Player Companion: Cohorts and Companions p.9 (aonprd.com "Base Forms -
+  // Eidolon"): "Speed 30 ft., fly 30 ft. (good); ... Saves Fort (bad), Ref
+  // (good), Will (good); Attack 2 claws (1d3); ... Str 12, Dex 16, Con 13
+  // ...; Free Evolutions claws, flight, limbs (legs)". (The form's own note
+  // that it starts Small unless 2 evolution points are spent isn't modeled
+  // — see eidolon.ts's module doc comment.)
+  it("Avian: Ref/Will good, Fort poor; innate fly speed equal to land speed; 2 claws (1d3), no ×1.5 (2 total attacks)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "summoner", level: 1 }],
+      eidolon: { baseForm: "avian", name: "Skree", evolutions: [] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const eidolon = deriveEidolon(doc, rollData)!;
+    expect(eidolon.baseFormName).toBe("Avian");
+    expect(eidolon.speeds).toEqual({ land: 30, fly: 30 });
+    // level 1: Str 12 -> mod +1, Dex 16 -> mod +3. bab = 1.
+    expect(eidolon.abilities.str).toEqual({ score: 12, mod: 1 });
+    expect(eidolon.abilities.dex).toEqual({ score: 16, mod: 3 });
+    expect(eidolon.saves.ref).toBeGreaterThan(eidolon.saves.fort);
+    expect(eidolon.saves.will).toBeGreaterThan(eidolon.saves.fort);
+    // "2 claws" totals 2 attacks (not the UMR sole-attack case), so the usual
+    // ×1 primary multiplier applies: bab(1)+strMod(1)+size(0)=2; damage strMod(1) -> 1d3+1.
+    expect(eidolon.attacks).toEqual([
+      {
+        name: "Claw",
+        count: 2,
+        attack: 2,
+        damageDice: "1d3",
+        damageBonus: 1,
+        attackType: "primary",
+      },
+    ]);
+  });
+
+  // Player Companion: Cohorts and Companions p.9 (aonprd.com "Base Forms -
+  // Eidolon"): "Speed 40 ft.; ... Saves Fort (good), Ref (bad), Will (good);
+  // Attack 2 claws (1d4); ... Str 14, Dex 14, Con 13 ...; Free Evolutions
+  // claws, limbs (arms), limbs (legs) (2)". (Same unmodeled Small-unless-
+  // 2-points note as Avian's — see eidolon.ts's module doc comment.)
+  it("Tauric: Fort/Will good, Ref poor; land speed 40 with no other movement mode; 2 claws (1d4)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "summoner", level: 1 }],
+      eidolon: { baseForm: "tauric", name: "Centaur", evolutions: [] },
+    });
+    const rollData = buildRollData(doc, ref);
+    const eidolon = deriveEidolon(doc, rollData)!;
+    expect(eidolon.baseFormName).toBe("Tauric");
+    expect(eidolon.speeds).toEqual({ land: 40 });
+    // level 1: Str 14 -> mod +2, Dex 14 -> mod +2. bab = 1.
+    expect(eidolon.abilities.str).toEqual({ score: 14, mod: 2 });
+    expect(eidolon.abilities.dex).toEqual({ score: 14, mod: 2 });
+    // fort (good): saveForLevels("high",1)=2 + conMod(1) = 3. ref (poor): 0 + dexMod(2) = 2.
+    // will (good): 2 + wisMod(0) = 2 — ties Ref here since Wis is untouched, but Fort is
+    // unambiguously the higher of the two good saves.
+    expect(eidolon.saves).toEqual({ fort: 3, ref: 2, will: 2 });
+    // bab(1)+strMod(2)+size(0)=3; damage strMod(2) -> 1d4+2 (2 total attacks, no ×1.5).
+    expect(eidolon.attacks).toEqual([
+      {
+        name: "Claw",
+        count: 2,
+        attack: 3,
+        damageDice: "1d4",
+        damageBonus: 2,
+        attackType: "primary",
+      },
+    ]);
+  });
 });
 
 describe("deriveEidolon multiclass summoner levels", () => {
@@ -362,6 +470,14 @@ describe("deriveEidolon edge cases", () => {
       expect.arrayContaining(["biped", "quadruped", "serpentine"]),
     );
     expect(eidolonBaseFormIdsForVariant("unchained")).toContain("aberrant");
+  });
+
+  it("eidolonBaseFormIdsForVariant offers Aquatic/Avian/Tauric to BOTH variants (no variants restriction, unlike Aberrant)", () => {
+    for (const variant of ["chained", "unchained"] as const) {
+      expect(eidolonBaseFormIdsForVariant(variant)).toEqual(
+        expect.arrayContaining(["aquatic", "avian", "tauric"]),
+      );
+    }
   });
 
   it("overspending the evolution pool is a soft warning only — no clamping, no crash", () => {
@@ -438,7 +554,7 @@ describe("baseAbilities override (player-set starting scores)", () => {
   });
 
   it("falls back to the biped's scores for an unrecognized base form", () => {
-    expect(eidolonStartingAbilities("aquatic")).toEqual(eidolonStartingAbilities("biped"));
+    expect(eidolonStartingAbilities("not-a-real-form")).toEqual(eidolonStartingAbilities("biped"));
   });
 
   // Same summoner-7 biped fixture as above (Str 16 base + 3 table + 2 evolution

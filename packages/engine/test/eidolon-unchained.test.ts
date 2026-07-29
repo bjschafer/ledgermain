@@ -221,6 +221,26 @@ describe("deriveEidolon (unchained with no subtype set — chained-form fallback
   });
 });
 
+describe("deriveEidolon (unchained, Aquatic base form with no subtype — no subtype's baseForms list offers Aquatic/Avian/Tauric, so this always falls back to the form's own attacks)", () => {
+  const doc = makeDoc({
+    classTag: "summonerUnchained",
+    level: 1,
+    eidolon: { baseForm: "aquatic", subtype: "elemental-water", name: "Undine", evolutions: [] },
+  });
+  const rollData = buildRollData(doc, ref);
+  const eidolon = deriveEidolon(doc, rollData);
+
+  it("falls back to the chained Aquatic form's own bite, even with Elemental (Water) set (RAW's Elemental baseForms list never offers Aquatic)", () => {
+    expect(eidolon!.attacks).toHaveLength(1);
+    expect(eidolon!.attacks[0]).toMatchObject({ name: "Bite", count: 1, damageDice: "1d6" });
+  });
+
+  it("still gets the unchained +2 base-form armor bonus and the subtype's own grants (1st-level immunity note, elemental pool)", () => {
+    expect(eidolon!.naturalArmor).toBe(2);
+    expect(eidolon!.subtypeName).toBe("Elemental (Water)");
+  });
+});
+
 describe("deriveEidolon (chained summoner regression guard — same level, unaffected by the unchained system)", () => {
   const doc = makeDoc({
     classTag: "summoner",

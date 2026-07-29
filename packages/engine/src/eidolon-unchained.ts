@@ -33,11 +33,19 @@
  * `baseAttacks` when no subtype is set (or the subtype doesn't model the
  * chosen form) — a soft-warning posture, never a missing/undefined result.
  *
- * Only the four base forms this codebase models (Biped/Quadruped/
- * Serpentine/Aberrant) appear in any subtype's `baseForms` below — APG's
- * other three (Aquatic/Avian/Tauric) remain deferred, see
- * {@link EIDOLON_BASE_FORMS}'s module doc comment. Elemental is split into
- * four separate subtype ids (air/earth/fire/water) since the eidolon's
+ * Only Biped/Quadruped/Serpentine/Aberrant appear in any subtype's
+ * `baseForms` below — verified against aonprd.com's "Subtypes - Eidolon
+ * (Unchained)" page during the Aquatic/Avian/Tauric authoring pass: RAW's own
+ * "Base Form(s)" line for every one of the 28 modeled subtypes (including
+ * every Elemental element, e.g. Elemental (Water) — the one subtype where
+ * Aquatic would seem like an obvious fit) lists only some subset of those
+ * four; NONE of them ever lists Aquatic, Avian, or Tauric, even though
+ * {@link EIDOLON_BASE_FORMS} models all three as of that pass. A doc with one
+ * of those three forms and an unchained subtype set therefore always falls
+ * through to the chained form's own `baseAttacks` (see this module's
+ * "Base forms" paragraph above) — the same soft fallback an unmodeled
+ * subtype+form combination already gets, not a new gap. Elemental is split
+ * into four separate subtype ids (air/earth/fire/water) since the eidolon's
  * element is chosen permanently at first summoning.
  *
  * Every subtype grant is either a paraphrased display-only `note` (the
